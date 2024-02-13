@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-19945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5160A853805
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:32:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31FA9853760
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:25:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83D7F1C2620D
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:32:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C22481F237A4
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:25:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4A1E5FF04;
-	Tue, 13 Feb 2024 17:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFA925FF17;
+	Tue, 13 Feb 2024 17:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2SGwWDgE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fJDBiRZV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A13455F54E;
-	Tue, 13 Feb 2024 17:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C59A5FF10;
+	Tue, 13 Feb 2024 17:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845535; cv=none; b=r5mV/l4Nx1yGLoQs6K1BbdNm57wd83jUEW4CwHK5czJu1ECk81L2finBPQQwASyL+IyQCYyXR8+PHnLGCsWE2zvr546NwVazpDosZcKdSUVvKzCzqBfCliRx/PdVzOuyMEzXoof4lFgayY8mM5EokSQBFhroknMN5BsoamqTyyg=
+	t=1707845079; cv=none; b=awRlcvEqeCUv/01as1+EAhhnFACroK6W7bL3qp7cAaTPLNgJO1ZPsMF5D0DYwRjnn32w3qSwi65vbji+9F0h/WblR4sZphdNiRty4rdWseZm2y+UCk4bypk+WQzAqY4fsIpLT5Y4bbaR4Fx+vfFNUNQcsKz8tdTM+x9RtbMl3Co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845535; c=relaxed/simple;
-	bh=EbWAPEy4ekzfZ9MuNLLJCnRfzWs1dREZF4n7E0btWyg=;
+	s=arc-20240116; t=1707845079; c=relaxed/simple;
+	bh=EfYLTaaW/mifBJZZ2HlJyPwh+t/zUHTHF0io/kLAQbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NITNHYmWLzcSAFCJE1Z7RgLP9FsNnP1PwpvQju+kvtspZKCLeqw2QNZ5OXmhuP8pstgWoK63Cwcm2IfpMXUS5sCmhZ1F9TAhnZ9tPjeYeZYDcMOhBd95G/NBWUoyDvpbW2EQG1bDHi2IRUWmp0oK7sDqJEdrFYzgR914yB2XB0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2SGwWDgE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B815EC433F1;
-	Tue, 13 Feb 2024 17:32:14 +0000 (UTC)
+	 MIME-Version; b=PGsoC6U6oiBYVmbxaJ0vy5jNJmhVs6X0+RKx+UtvCwGflVjl+UJ4om+TobSPqvl5Eequ8ylfAE35IjNkS2smJSL6ztF22sT/UcRC0CEWzgJa7u7er2YaVrvSBK5/rGAH/AakUQPF1gz6glrGBbQqyc1gj4baHgNWlrGg7JvzVAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fJDBiRZV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E269C433C7;
+	Tue, 13 Feb 2024 17:24:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845535;
-	bh=EbWAPEy4ekzfZ9MuNLLJCnRfzWs1dREZF4n7E0btWyg=;
+	s=korg; t=1707845078;
+	bh=EfYLTaaW/mifBJZZ2HlJyPwh+t/zUHTHF0io/kLAQbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2SGwWDgEstj2x0J6kzx9ZPKm2Q9EJb1UHamsc0Wrvc/bIJ4891nZcYXo9idacI1BE
-	 9X7fqS2KeFGO8dXMGrHJsbm8Q7Q9IXXmsIahaonEPLlZliTcMiY0XG2Oo9SNBM8t5Y
-	 lAenGFQeFR6dN8qlVvOKc8kEibkRLbOPQAXJIuOQ=
+	b=fJDBiRZVlB6gz7OzlrN1Q4uU3goBUs4pMaPnqYIDdk7MrUUi9a9vnNNtVJhsu5TAT
+	 CuwavkB6lhVgO8KHnSI88VGmmLk5VfH2CefPmPSpcAXNOrm/G/+9aBlcA0SNt9yoFV
+	 Zvhg/O0n7ZkervqF+XHISI4xVHMq8/WON8feUbOk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yongqiang Sun <yongqiang.sun@amd.com>,
-	Anthony Koo <Anthony.Koo@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Sathya Prakash Veerichetty <safhya.prakash@broadcom.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Ewan D. Milne" <emilne@redhat.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 078/121] drm/amd/display: Add NULL test for timing generator in dcn21_set_pipe()
+Subject: [PATCH 6.1 41/64] scsi: core: Move scsi_host_busy() out of host lock if it is for per-command
 Date: Tue, 13 Feb 2024 18:21:27 +0100
-Message-ID: <20240213171855.268962975@linuxfoundation.org>
+Message-ID: <20240213171846.043137952@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
+References: <20240213171844.702064831@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,78 +65,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit 66951d98d9bf45ba25acf37fe0747253fafdf298 ]
+[ Upstream commit 4e6c9011990726f4d175e2cdfebe5b0b8cce4839 ]
 
-In "u32 otg_inst = pipe_ctx->stream_res.tg->inst;"
-pipe_ctx->stream_res.tg could be NULL, it is relying on the caller to
-ensure the tg is not NULL.
+Commit 4373534a9850 ("scsi: core: Move scsi_host_busy() out of host lock
+for waking up EH handler") intended to fix a hard lockup issue triggered by
+EH. The core idea was to move scsi_host_busy() out of the host lock when
+processing individual commands for EH. However, a suggested style change
+inadvertently caused scsi_host_busy() to remain under the host lock. Fix
+this by calling scsi_host_busy() outside the lock.
 
-Fixes: 474ac4a875ca ("drm/amd/display: Implement some asic specific abm call backs.")
-Cc: Yongqiang Sun <yongqiang.sun@amd.com>
-Cc: Anthony Koo <Anthony.Koo@amd.com>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Anthony Koo <Anthony.Koo@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 4373534a9850 ("scsi: core: Move scsi_host_busy() out of host lock for waking up EH handler")
+Cc: Sathya Prakash Veerichetty <safhya.prakash@broadcom.com>
+Cc: Bart Van Assche <bvanassche@acm.org>
+Cc: Ewan D. Milne <emilne@redhat.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20240203024521.2006455-1-ming.lei@redhat.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/display/dc/dcn21/dcn21_hwseq.c    | 24 +++++++++++--------
- 1 file changed, 14 insertions(+), 10 deletions(-)
+ drivers/scsi/scsi_error.c | 3 ++-
+ drivers/scsi/scsi_lib.c   | 4 +++-
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn21/dcn21_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn21/dcn21_hwseq.c
-index 7238930e6383..1b08749b084b 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn21/dcn21_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn21/dcn21_hwseq.c
-@@ -206,28 +206,32 @@ void dcn21_set_abm_immediate_disable(struct pipe_ctx *pipe_ctx)
- void dcn21_set_pipe(struct pipe_ctx *pipe_ctx)
+diff --git a/drivers/scsi/scsi_error.c b/drivers/scsi/scsi_error.c
+index 66290961c47c..cfa6f0edff17 100644
+--- a/drivers/scsi/scsi_error.c
++++ b/drivers/scsi/scsi_error.c
+@@ -277,11 +277,12 @@ static void scsi_eh_inc_host_failed(struct rcu_head *head)
  {
- 	struct abm *abm = pipe_ctx->stream_res.abm;
--	uint32_t otg_inst = pipe_ctx->stream_res.tg->inst;
-+	struct timing_generator *tg = pipe_ctx->stream_res.tg;
- 	struct panel_cntl *panel_cntl = pipe_ctx->stream->link->panel_cntl;
- 	struct dmcu *dmcu = pipe_ctx->stream->ctx->dc->res_pool->dmcu;
-+	uint32_t otg_inst;
-+
-+	if (!abm && !tg && !panel_cntl)
-+		return;
-+
-+	otg_inst = tg->inst;
+ 	struct scsi_cmnd *scmd = container_of(head, typeof(*scmd), rcu);
+ 	struct Scsi_Host *shost = scmd->device->host;
++	unsigned int busy = scsi_host_busy(shost);
+ 	unsigned long flags;
  
- 	if (dmcu) {
- 		dce110_set_pipe(pipe_ctx);
- 		return;
- 	}
- 
--	if (abm && panel_cntl) {
--		if (abm->funcs && abm->funcs->set_pipe_ex) {
--			abm->funcs->set_pipe_ex(abm,
-+	if (abm->funcs && abm->funcs->set_pipe_ex) {
-+		abm->funcs->set_pipe_ex(abm,
- 					otg_inst,
- 					SET_ABM_PIPE_NORMAL,
- 					panel_cntl->inst,
- 					panel_cntl->pwrseq_inst);
--		} else {
--				dmub_abm_set_pipe(abm, otg_inst,
--						SET_ABM_PIPE_NORMAL,
--						panel_cntl->inst,
--						panel_cntl->pwrseq_inst);
--		}
-+	} else {
-+		dmub_abm_set_pipe(abm, otg_inst,
-+				  SET_ABM_PIPE_NORMAL,
-+				  panel_cntl->inst,
-+				  panel_cntl->pwrseq_inst);
- 	}
+ 	spin_lock_irqsave(shost->host_lock, flags);
+ 	shost->host_failed++;
+-	scsi_eh_wakeup(shost, scsi_host_busy(shost));
++	scsi_eh_wakeup(shost, busy);
+ 	spin_unlock_irqrestore(shost->host_lock, flags);
  }
  
+diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
+index 0e7e9f1e5a02..5c5954b78585 100644
+--- a/drivers/scsi/scsi_lib.c
++++ b/drivers/scsi/scsi_lib.c
+@@ -280,9 +280,11 @@ static void scsi_dec_host_busy(struct Scsi_Host *shost, struct scsi_cmnd *cmd)
+ 	rcu_read_lock();
+ 	__clear_bit(SCMD_STATE_INFLIGHT, &cmd->state);
+ 	if (unlikely(scsi_host_in_recovery(shost))) {
++		unsigned int busy = scsi_host_busy(shost);
++
+ 		spin_lock_irqsave(shost->host_lock, flags);
+ 		if (shost->host_failed || shost->host_eh_scheduled)
+-			scsi_eh_wakeup(shost, scsi_host_busy(shost));
++			scsi_eh_wakeup(shost, busy);
+ 		spin_unlock_irqrestore(shost->host_lock, flags);
+ 	}
+ 	rcu_read_unlock();
 -- 
 2.43.0
 
