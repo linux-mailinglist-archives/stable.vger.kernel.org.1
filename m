@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-19955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74E4A853814
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:32:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8ACB8538AC
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:39:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31852283FB8
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:32:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4420282732
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:39:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 084DE5FF0E;
-	Tue, 13 Feb 2024 17:32:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 526565FF16;
+	Tue, 13 Feb 2024 17:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PVIgzi4N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="esWZkfpx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9E65FDDF;
-	Tue, 13 Feb 2024 17:32:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D7C15FF04;
+	Tue, 13 Feb 2024 17:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845567; cv=none; b=FNjrlzp5PojUlnJgy3zVBIbxOuA4IQGiln2nhIjh8SwIkNnoS9noxQUZj4E4UcLwb63kglyAq63YjNXJXEOgk5wus3TfxUL0k5/f7IXo6AdN4l5V37FbcWwMfd+x6uRREhgT1FoiC3aPZ31W3Mt+YNAzFP5eaGkroiL2V/e7Fo8=
+	t=1707845956; cv=none; b=QFBY39hFcMvLKZRU4Sj8CK0inSDusjuDUhXmbI2yZlv66SuDVwd4J8SsqmqBImfkCwVpeLQBUZzv3G9/xlqQUulo/udzCKGJsZVPFd/NyCQaiMaTlNWgI2jPOHxASSP3tkAiS25vUU/mPwCixGTzyKs5gZsR489MBFMGVNOoBk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845567; c=relaxed/simple;
-	bh=6DvIEJQ7cQNB0HrkYxHzhU07II9VkVbEYYxRZhIY1Rc=;
+	s=arc-20240116; t=1707845956; c=relaxed/simple;
+	bh=os8518AXoW3S8LaFW0pXcbcrz/aGJpdj9oZZix/XmLY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jYz6BlSV6gqzWgGo4You1A0WEsQvFjVhtLsTGKLNZJ4R7gWV6uvg5Jaz3B6+uu+g5O9b/FR3KdtRhOWESGhsQxdqS8o+npiynzg5yEwWKJg5m6opZ1mDX4XqYHYDmJTjU2WaPLBYt1n6xFc/KYwkodAemh/gMUN6rrqs4US/REM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PVIgzi4N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D86AC433F1;
-	Tue, 13 Feb 2024 17:32:46 +0000 (UTC)
+	 MIME-Version; b=dnPDDDEMieYsTTcptjpVgRa+T7p7YlpsGC77CVALmb2rf+X4JoPLEr7kRqX/2EUkhq2fS/lLX8da74XDzL8vtxWoYQZOz2CDndBKK0nVv4euS61ISzm28u8o6TLKXGcfGGgMEMEQSVhP2j22HG3XhHpQEhWjdMuHJpTsaisJNSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=esWZkfpx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64DC2C433C7;
+	Tue, 13 Feb 2024 17:39:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845567;
-	bh=6DvIEJQ7cQNB0HrkYxHzhU07II9VkVbEYYxRZhIY1Rc=;
+	s=korg; t=1707845955;
+	bh=os8518AXoW3S8LaFW0pXcbcrz/aGJpdj9oZZix/XmLY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PVIgzi4N02E/trMsRLZb/Wi2O3CgFfVOYKifdhKopCcBsJvl0fkgCXHpgCcJ1tNBj
-	 3Bm5o4A0Dicu571hPXdvMu/cp+nyh29A+X9n/WQYMVNGUb8pKKpt8oZP9tw7DFJvqc
-	 1WDIyBuknH6lKmw8mFgBB+Q+Je8xim7jHluCIBhY=
+	b=esWZkfpx5DyWCopu5yxXtIT3m+C3vs1Hq5UR+tFu2pkRpUlGSwxfCUjZ4ArnfReEj
+	 RhHAk9xxyML5uSFYcW9zAayaC04mBoRLGkwtJp3XUBg27hfGTHd+RmwrNalO326LkE
+	 8ocoxfWXfmDRIXooRRNwU7vn1J91FSdN0Vwi/I9E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 117/121] io_uring/net: fix sr->len for IORING_OP_RECV with MSG_WAITALL and buffers
-Date: Tue, 13 Feb 2024 18:22:06 +0100
-Message-ID: <20240213171856.403075045@linuxfoundation.org>
+Subject: [PATCH 6.7 105/124] io_uring/net: fix sr->len for IORING_OP_RECV with MSG_WAITALL and buffers
+Date: Tue, 13 Feb 2024 18:22:07 +0100
+Message-ID: <20240213171856.795785052@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+References: <20240213171853.722912593@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,7 +60,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
