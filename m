@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-20017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DFC685386D
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:37:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F9FB85374D
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:24:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 407361C2551A
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:37:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3AE2B231D6
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:23:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A56D55FF0B;
-	Tue, 13 Feb 2024 17:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15ADB5FEEB;
+	Tue, 13 Feb 2024 17:23:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S5t0pUQV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dmo1Af72"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63ECC1EB22;
-	Tue, 13 Feb 2024 17:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47625FDB5;
+	Tue, 13 Feb 2024 17:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845787; cv=none; b=rDU4lVRy1EAsY+rl7YAOyes/VarQL88TY0d47I5IZQzM61PSka54aRvPkEP70e6We+N0SAch6tm7RHoLj7AC32uRdI/oGEJWRGOMnANghDn0071WQhdB40bJIyWus7EP/87E3XS8eIImIF1y7SkldwMSDko0AyUcNCUsPMYL3ac=
+	t=1707845036; cv=none; b=WA9zCvLdgg/RtKVWpMFNbaYF4TReX8vk90DLWVRsh4IW5teffst5CZJ5VRtZx3LZpsiX7r8ioEBOzdoyQ31rzQeycnVieUilxSle96Z4aZ10XdEh2Sxn/9+OM4aLxWJoUfi6JC4niu7TMoNWF38vBDGW7At0fpjzuQdndbHqwWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845787; c=relaxed/simple;
-	bh=gI0yEYTg+5oXf78+i0QpYTHqV1UxW9uZHzognPFDdbc=;
+	s=arc-20240116; t=1707845036; c=relaxed/simple;
+	bh=pXrh1Kzr3MQ6/qZ+31yls6V+qhnE3KRy9ayA0+AwmUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fBl+hL5SsMuxAAXuGAW7gNpGUKDjXNnqASedGpNePbb9M3arI+Ym9/Ja9SGCS5HeUQxcCMVvKgoKXNJ5ZvgExg9aUlb11gqK5m/GykGPmbKw2vYzURa4rpWz+gaCMyErIVG81ghLNjvXd4eaRLPBSchwqgUT3vfrqXqO8Kwipxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S5t0pUQV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6A73C433F1;
-	Tue, 13 Feb 2024 17:36:26 +0000 (UTC)
+	 MIME-Version; b=feEALDhu1sMdDEyfaIJhisbtQY4f0xkgpNzpzGHpBZa18zUcKOkd6gsCMSN07FqD6PrtIPucF+zp5DB6r2FRMf5CN4BMp55q5oFiQaqaGMaHZSINaCH20Qo6vyUUQFX/eXChKOcXxKlhEyn75SWnTU2tY7BzsUYQPThtlJQFaqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dmo1Af72; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF41C433C7;
+	Tue, 13 Feb 2024 17:23:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845787;
-	bh=gI0yEYTg+5oXf78+i0QpYTHqV1UxW9uZHzognPFDdbc=;
+	s=korg; t=1707845036;
+	bh=pXrh1Kzr3MQ6/qZ+31yls6V+qhnE3KRy9ayA0+AwmUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S5t0pUQVsINSd5U5Ak8r41IoCCtwDhcBOMFULB+8IrMD2WNYymgr0iaMrc6mivDNZ
-	 wXZ0J+1X1fklmpOOH8jprwH7u/ZUtj+UuOvdmo1yIXOCn6YycwqllZiD4QYyOf/UIq
-	 IV+6FoyLn/6ze52CTNqC5dg7AeRYoaGXAJbtM4e8=
+	b=dmo1Af72g2YisO3RZRZfz6VlPiZXTEprlGpgclP0lZlVot+Px8qz8O8OvKb0mJSpN
+	 nQg/3VhMGlaMgYkOYJTs8NArbwnHiLlEIhIAIs3rDgBjL1DCASOrXMPws205pFUG7J
+	 0gKVJFMmgBcooIQ/iY9yPxSAmsaYD5WPOLrCG9G4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 028/124] wifi: mac80211: fix waiting for beacons logic
-Date: Tue, 13 Feb 2024 18:20:50 +0100
-Message-ID: <20240213171854.552866642@linuxfoundation.org>
+Subject: [PATCH 6.1 05/64] dmaengine: fsl-qdma: Fix a memory leak related to the queue command DMA
+Date: Tue, 13 Feb 2024 18:20:51 +0100
+Message-ID: <20240213171844.898037427@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
-References: <20240213171853.722912593@linuxfoundation.org>
+In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
+References: <20240213171844.702064831@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit a0b4f2291319c5d47ecb196b90400814fdcfd126 ]
+[ Upstream commit 3aa58cb51318e329d203857f7a191678e60bb714 ]
 
-This should be waiting if we don't have a beacon yet,
-but somehow I managed to invert the logic. Fix that.
+This dma_alloc_coherent() is undone neither in the remove function, nor in
+the error handling path of fsl_qdma_probe().
 
-Fixes: 74e1309acedc ("wifi: mac80211: mlme: look up beacon elems only if needed")
-Link: https://msgid.link/20240131164856.922701229546.I239b379e7cee04608e73c016b737a5245e5b23dd@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Switch to the managed version to fix both issues.
+
+Fixes: b092529e0aa0 ("dmaengine: fsl-qdma: Add qDMA controller driver for Layerscape SoCs")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/7f66aa14f59d32b13672dde28602b47deb294e1f.1704621515.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mlme.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/dma/fsl-qdma.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index bbe36d87ac59..5a03bf1de6bb 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -8025,8 +8025,7 @@ int ieee80211_mgd_assoc(struct ieee80211_sub_if_data *sdata,
+diff --git a/drivers/dma/fsl-qdma.c b/drivers/dma/fsl-qdma.c
+index 5cc887acb05b..69385f32e275 100644
+--- a/drivers/dma/fsl-qdma.c
++++ b/drivers/dma/fsl-qdma.c
+@@ -514,11 +514,11 @@ static struct fsl_qdma_queue
+ 			queue_temp = queue_head + i + (j * queue_num);
  
- 		rcu_read_lock();
- 		beacon_ies = rcu_dereference(req->bss->beacon_ies);
--
--		if (beacon_ies) {
-+		if (!beacon_ies) {
- 			/*
- 			 * Wait up to one beacon interval ...
- 			 * should this be more if we miss one?
+ 			queue_temp->cq =
+-			dma_alloc_coherent(&pdev->dev,
+-					   sizeof(struct fsl_qdma_format) *
+-					   queue_size[i],
+-					   &queue_temp->bus_addr,
+-					   GFP_KERNEL);
++			dmam_alloc_coherent(&pdev->dev,
++					    sizeof(struct fsl_qdma_format) *
++					    queue_size[i],
++					    &queue_temp->bus_addr,
++					    GFP_KERNEL);
+ 			if (!queue_temp->cq)
+ 				return NULL;
+ 			queue_temp->block_base = fsl_qdma->block_base +
 -- 
 2.43.0
 
