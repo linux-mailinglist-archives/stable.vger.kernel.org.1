@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-19875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CFFA8537AB
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:28:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DB79853855
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:36:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 121F61F21574
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:28:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A807289E16
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:36:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 285D05FEF0;
-	Tue, 13 Feb 2024 17:28:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AF1C5FEE9;
+	Tue, 13 Feb 2024 17:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yWAfpO76"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cKeX5PDQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D98715F54E;
-	Tue, 13 Feb 2024 17:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57D1C5F54E;
+	Tue, 13 Feb 2024 17:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845283; cv=none; b=BMCe6MEIcF5bvQ7NiZNd7zATW9DgUno0gnkmfoPBQD3tQGHboi/bB5lB3vg7D9ev7GKFgjfPt6WP1PQdSfV2d7atE4khEgzNpKbRt+gYrOvwIIVGgSgMKsTozq/Cx1t+LD26c8/q7wSQyV8GfNoGCAWOnJtnzpSfx3kWNA7aCxo=
+	t=1707845725; cv=none; b=hMzNmO05P632IAmbba4FtFYzIoCMThtEKWvyxAnYPFUZUHpgzUSu9dFbW68eivC66guAoK6rHf+NA3kagKevU7g9NgXQlto0yHOEHO7BuJwpgxbCWlgdMUiG4op/IvdXCspk2fMM0MtFUajEZytxGFjVVcyohIfQTHNpBcWqBDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845283; c=relaxed/simple;
-	bh=e/MgmcDUJMEMNOA9Zcl12vH5N7hoqom8eSVlUlnPn50=;
+	s=arc-20240116; t=1707845725; c=relaxed/simple;
+	bh=lVGp/9fYjcHUUZGUO3WtPLcFjOS35ul9iacUwcNHI3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OgR0IwaZaOwbKii+WWOJzOKLfWrRDyeNH6rZAyDUhkoH6lpKWzMES4CTuNm89Ms+3WpwqvNvVmjoHQ09JTZZRVGy1VdQbkjWtKLUpshdtdjeWS3MY7RlgoZbo//osV8XkOMo8V36bTnPFqQK/pGdQUzlOgLGRwK7v6DsF/Zxj00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yWAfpO76; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DC7EC433F1;
-	Tue, 13 Feb 2024 17:28:03 +0000 (UTC)
+	 MIME-Version; b=XV3uUMuSK13heKsZqVaDVlvW3hSHgD2DaY7JPK/tpT5G3EHEEphSWXI2bDUa36fFpiA2QBuKdDcbOx0CzH69LaCIV7sPCcVwxK0EdE/+enXrEJzRmMdzi/1J1BJMlBTRLCyUf2+k+QVo9gphXAJ5aoF9N151L/Bh5sK8yK8Ke8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cKeX5PDQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AED5EC433C7;
+	Tue, 13 Feb 2024 17:35:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845283;
-	bh=e/MgmcDUJMEMNOA9Zcl12vH5N7hoqom8eSVlUlnPn50=;
+	s=korg; t=1707845725;
+	bh=lVGp/9fYjcHUUZGUO3WtPLcFjOS35ul9iacUwcNHI3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yWAfpO76N8f9ihSxwvGNR2Y4hlmDBz24FmCUUpETfrseDdQ5utLRu4l4cOO++qoqF
-	 ZG7qXWlqd7foZ8zR3T0vkcpOcGfBo5S7EsTJxIHKxf0+XT+1Ci0RivUVGTycHrt9ix
-	 C9KwLzd2+75tvEIOr01erXK/Z4yAa1PxwfIn2BEg=
+	b=cKeX5PDQ1lWiCk25p1UzSumJP6scHB2KQLfqjXKNoj4doxbfiYQWBreBpiB9LJgcV
+	 QuXKoCu6jDcfcD1Eqla0GLs7okaP38rDndU/nCK1GY4SMnCfLAVQwSBd76v7Koi/F2
+	 ZvVktMtmRx8NCqOwDJ4jbM9RKF1rpqYjRuHrEouc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Catherine Hoang <catherine.hoang@oracle.com>,
-	Chandan Babu R <chandanbabu@kernel.org>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 036/121] xfs: clean up FS_XFLAG_REALTIME handling in xfs_ioctl_setattr_xflags
+Subject: [PATCH 6.7 023/124] wifi: cfg80211: consume both probe response and beacon IEs
 Date: Tue, 13 Feb 2024 18:20:45 +0100
-Message-ID: <20240213171854.054172077@linuxfoundation.org>
+Message-ID: <20240213171854.407964909@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+References: <20240213171853.722912593@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,69 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-commit c421df0b19430417a04f68919fc3d1943d20ac04 upstream.
+[ Upstream commit f510bcc21ed97911b811c5bf36ed43a0e94ab702 ]
 
-Introduce a local boolean variable if FS_XFLAG_REALTIME to make the
-checks for it more obvious, and de-densify a few of the conditionals
-using it to make them more readable while at it.
+When doing a channel switch, cfg80211_update_known_bss may be called
+with a BSS where both proberesp_ies and beacon_ies is set. If that
+happens, both need to be consumed.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20231025141020.192413-4-hch@lst.de
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20231211085121.07a88656d7df.I0fe9fc599382de0eccf96455617e377d9c231966@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Stable-dep-of: 177fbbcb4ed6 ("wifi: cfg80211: detect stuck ECSA element in probe resp")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_ioctl.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ net/wireless/scan.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/xfs/xfs_ioctl.c b/fs/xfs/xfs_ioctl.c
-index 55bb01173cde..be69e7be713e 100644
---- a/fs/xfs/xfs_ioctl.c
-+++ b/fs/xfs/xfs_ioctl.c
-@@ -1120,23 +1120,25 @@ xfs_ioctl_setattr_xflags(
- 	struct fileattr		*fa)
- {
- 	struct xfs_mount	*mp = ip->i_mount;
-+	bool			rtflag = (fa->fsx_xflags & FS_XFLAG_REALTIME);
- 	uint64_t		i_flags2;
- 
--	/* Can't change realtime flag if any extents are allocated. */
--	if ((ip->i_df.if_nextents || ip->i_delayed_blks) &&
--	    XFS_IS_REALTIME_INODE(ip) != (fa->fsx_xflags & FS_XFLAG_REALTIME))
--		return -EINVAL;
-+	if (rtflag != XFS_IS_REALTIME_INODE(ip)) {
-+		/* Can't change realtime flag if any extents are allocated. */
-+		if (ip->i_df.if_nextents || ip->i_delayed_blks)
-+			return -EINVAL;
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index b9da6f5152cb..f819ca3891fc 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -1746,7 +1746,9 @@ cfg80211_update_known_bss(struct cfg80211_registered_device *rdev,
+ 				   new->pub.proberesp_ies);
+ 		if (old)
+ 			kfree_rcu((struct cfg80211_bss_ies *)old, rcu_head);
+-	} else if (rcu_access_pointer(new->pub.beacon_ies)) {
 +	}
++
++	if (rcu_access_pointer(new->pub.beacon_ies)) {
+ 		const struct cfg80211_bss_ies *old;
  
--	/* If realtime flag is set then must have realtime device */
--	if (fa->fsx_xflags & FS_XFLAG_REALTIME) {
-+	if (rtflag) {
-+		/* If realtime flag is set then must have realtime device */
- 		if (mp->m_sb.sb_rblocks == 0 || mp->m_sb.sb_rextsize == 0 ||
- 		    (ip->i_extsize % mp->m_sb.sb_rextsize))
- 			return -EINVAL;
--	}
- 
--	/* Clear reflink if we are actually able to set the rt flag. */
--	if ((fa->fsx_xflags & FS_XFLAG_REALTIME) && xfs_is_reflink_inode(ip))
--		ip->i_diflags2 &= ~XFS_DIFLAG2_REFLINK;
-+		/* Clear reflink if we are actually able to set the rt flag. */
-+		if (xfs_is_reflink_inode(ip))
-+			ip->i_diflags2 &= ~XFS_DIFLAG2_REFLINK;
-+	}
- 
- 	/* diflags2 only valid for v3 inodes. */
- 	i_flags2 = xfs_flags2diflags2(ip, fa->fsx_xflags);
+ 		if (known->pub.hidden_beacon_bss &&
 -- 
 2.43.0
 
