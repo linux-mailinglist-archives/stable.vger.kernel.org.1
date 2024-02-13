@@ -1,101 +1,107 @@
-Return-Path: <stable+bounces-19780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A12A8536E6
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:13:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8E8D8536FA
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:15:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F7171F26BDF
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:13:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6206286E13
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:15:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C3045FEEB;
-	Tue, 13 Feb 2024 17:12:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED32E5FDBA;
+	Tue, 13 Feb 2024 17:14:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M7DUp+U4"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Kgm4XOi6"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A6A25F84B;
-	Tue, 13 Feb 2024 17:12:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DD1D5FDA8
+	for <stable@vger.kernel.org>; Tue, 13 Feb 2024 17:14:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707844362; cv=none; b=cw5KQyZc5IV2Fhj9OqO9ZQRBTECj6dAaAxDx0JCfeTbG4XLX4jlg+qDRSuhB0WRFhbpz+RBTu/79gB3Jirhp952YboCmuEHCHK97V6+e7KBmHex9iL3KAIzr/1F/TlgKu6J/u3m1FqG/zaInHYWinM6qvDPx3+2TQGu+GmCVuJI=
+	t=1707844494; cv=none; b=YdDOPoMCP5OEV7fp7XzGyr5gMl08FSI4+Uuu8Bg6sPl1P2MvfsUQ4RubPYRTyVCxUckUDoN1/yjUyiBIow0wVjLOLEefrizItELcqcCRGlYVxycASOCMZs2oWaCaF2SwDBTPRqH+Eu30iUflYg8tk4YzXmpDvSrkZe3PH8HabcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707844362; c=relaxed/simple;
-	bh=DODOhjUD2slZ/cgfwysouYBG0XDvcKxiIpc358gSyao=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=G5UWNceocbCCfAhD+sV/SzikIBcazZvUcwYeLEpIU/Lo2NASJEaxcn0lDeQvJuTiJzgZ7cx5cAwB8p7ervFVmdTayClBx1dePffsRIBkJ/A2JGeMa7A+QGXzpumvXqByt7aSvVmYFK3sa/WAqKWGQAWXumpJq2OcvhdnoICBVlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M7DUp+U4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4590C433C7;
-	Tue, 13 Feb 2024 17:12:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707844361;
-	bh=DODOhjUD2slZ/cgfwysouYBG0XDvcKxiIpc358gSyao=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=M7DUp+U4yRiCZkSDg4dYkigqH4LdxlXWe1xFiEvofBwXWa3L8UySlRO//QOdQ5ZG5
-	 /BOCvYYBTIiL9UFL6LxFGTsd5EvecRPyH8tZcOMMmBxWQrv4s4xLIh3Qb142KEDE3h
-	 8dA+Feb4mBjlET/D/b+2Y0pmUAAMZM+l8KVmLkcRLsN/yyRzW2AAJSwatdi5eJR3vm
-	 rpO02OHmfZ6WQP90h/bPidM3BpJv6ubkLGfldxH7LDJ7+A1t51KyWj1en+ufak1jJH
-	 4JGuRxuf5iaki+lkRArZsHbWdmDNiMQ3b4mQ+rgUXN3ODQv/uw7JQRDPHrjKQBnsff
-	 4XYEunu/HDLVg==
-From: Mark Brown <broonie@kernel.org>
-To: lgirdwood@gmail.com, Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Cc: linux-sound@vger.kernel.org, pierre-louis.bossart@linux.intel.com, 
- kai.vehmanen@linux.intel.com, ranjani.sridharan@linux.intel.com, 
- timvp@google.com, cujomalainey@chromium.org, daniel.baluta@nxp.com, 
- stable@vger.kernel.org
-In-Reply-To: <20240213123834.4827-1-peter.ujfalusi@linux.intel.com>
-References: <20240213123834.4827-1-peter.ujfalusi@linux.intel.com>
-Subject: Re: [PATCH] ASoC: SOF: IPC3: fix message bounds on ipc ops
-Message-Id: <170784435966.387832.16439838513913761669.b4-ty@kernel.org>
-Date: Tue, 13 Feb 2024 17:12:39 +0000
+	s=arc-20240116; t=1707844494; c=relaxed/simple;
+	bh=CMX1H0ZqodWgM5ABFYTHuKqzJAXD48ZCW2YnSyH/wHs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=g2ANigxgErcB41ncBPGNWM4KzR8bMpEveqUt5gc9iBuSBcRm9i/wwLzOI5OQQLj6gUP5JVkaXFaLhUUbvKti1duGdaahNPPuUJqSMf8KrGBAp2Prt259D3roQPaagY0d1ICtEmSb82uNIXac16flGWEmG/LFtE+Ucvxl7Z1ZdaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Kgm4XOi6; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-55f279dca99so7279878a12.3
+        for <stable@vger.kernel.org>; Tue, 13 Feb 2024 09:14:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1707844491; x=1708449291; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CMX1H0ZqodWgM5ABFYTHuKqzJAXD48ZCW2YnSyH/wHs=;
+        b=Kgm4XOi6+uAodFie+Ml3KQLQYg5xyqtjbCT4STflmNjAlYYnwrk1axsx0UhKa11lCB
+         Gq1gzPq0FPjZitN+5+bq9bsYuoxjRrAZ4QGZczO6EFXXkJtbaTBWk23yKRv9w5TtSMI4
+         bbyhXI4ZsquGkZALTBUFwi1bVeXt1Pw8KyAcCImu6vGQ5UkPs+1tLICxsJ+R4U4Z8b09
+         sPvY3SdEUgAoCt5Kx5RrpnnmGzrGeMo7PtMYXRHmaa2j0c5e5QzNeFZFNSk4t/apVPmw
+         qBRgZMzSIbs5lsNvfqAdaaq3N7IrovSylCah2ZyrX0Ci98OycvBocDdhEygWNZrJyXw9
+         wjhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707844491; x=1708449291;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CMX1H0ZqodWgM5ABFYTHuKqzJAXD48ZCW2YnSyH/wHs=;
+        b=B1yuP3+7Oa5P2lz9VBz/3SGUaQi9kOzZCTUAPXyiY4kR9HRz2VcNOzZI1n6ETS9eEt
+         OKM3US3Rv+gCTZXO7L7wdOl2qg0KbThBqotnNqyx/zc4EgvBv1yDPOBZKH2EmmIEe6Ga
+         298WRU/7UPbZn52EWt6TKX0GHvRkZqIXL8bkjaIHLkzXzQUux95Fi0kP+FmLercaL6Ff
+         CO++Bsmn3FajwCaIjtY8YH3FpgVNJroyzhIAWiXX1v4CmFGWOBaRrqEBgmk6Go3ImNyn
+         m4gc3TFKuJ2auGh65AzG6pm0UO3CLEYkTg3ndUyfTm9N/LSMEM8XKaFxYgvk5PTGEYwq
+         zLuQ==
+X-Gm-Message-State: AOJu0YzNHRjQXnHWtn0z7LaBhbSUiCPwSyyoeI4GBvV4LqvqOa4WqyQk
+	UkXNVJApFO1FUVmnTSc9sIH+NCjfO/f+ASDKkfPscRiKqL7KayUehX3iYKo7CG8ip3tOFfWcS49
+	8iBiIuuFoQ0WbULP/RkH0iPQj2RTsAW4FqIZq
+X-Google-Smtp-Source: AGHT+IGqPPDAXaXRIb9VKY097fLKeOJiALCYHDB5uKAlVhZ85hlEM7wsGwDf1M4RGItANASh8sBUPG6Kb+1Kq4T9s1o=
+X-Received: by 2002:a17:906:d961:b0:a3d:2367:499a with SMTP id
+ rp1-20020a170906d96100b00a3d2367499amr629806ejb.43.1707844491315; Tue, 13 Feb
+ 2024 09:14:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13-dev-a684c
+References: <20240209162658.70763-2-jrife@google.com> <ZcZ0Tb13ZG9knz_P@sashalap>
+ <CADKFtnROEHN4w8pRz7u1Udjg+Jm3kVb5meJSjGXZQ_=zQp-=qw@mail.gmail.com>
+ <Zcj17ysVY9kU8xVs@sashalap> <CADKFtnRk9HG0=SPhqCG-72eG8Hb4dMoWjUCV6Wur_uQgGKEWPQ@mail.gmail.com>
+ <ZctedYIYhNlX_HAz@sashalap>
+In-Reply-To: <ZctedYIYhNlX_HAz@sashalap>
+From: Jordan Rife <jrife@google.com>
+Date: Tue, 13 Feb 2024 09:14:37 -0800
+Message-ID: <CADKFtnTRCaCbvPpNva017ctvoFQavqzwQJJWvpStwRBb9DXAOw@mail.gmail.com>
+Subject: Re: [PATCH 6.1.y] dlm: Treat dlm_local_addr[0] as sockaddr_storage *
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, ccaulfie@redhat.com, teigland@redhat.com, 
+	cluster-devel@redhat.com, valentin@vrvis.at, aahringo@redhat.com, 
+	carnil@debian.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 13 Feb 2024 14:38:34 +0200, Peter Ujfalusi wrote:
-> commit 74ad8ed65121 ("ASoC: SOF: ipc3: Implement rx_msg IPC ops")
-> introduced a new allocation before the upper bounds check in
-> do_rx_work. As a result A DSP can cause bad allocations if spewing
-> garbage.
-> 
-> 
+Ack. Thanks.
 
-Applied to
+-Jordan
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-
-Thanks!
-
-[1/1] ASoC: SOF: IPC3: fix message bounds on ipc ops
-      commit: fcbe4873089c84da641df75cda9cac2e9addbb4b
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+On Tue, Feb 13, 2024 at 4:20=E2=80=AFAM Sasha Levin <sashal@kernel.org> wro=
+te:
+>
+> On Sun, Feb 11, 2024 at 09:30:02AM -0800, Jordan Rife wrote:
+> >Sasha,
+> >
+> >OK, fair enough. I will send out another patch to backport c51c9cd ("fs:
+> >>> >dlm: don't put dlm_local_addrs on heap") to 6.1.
+>
+> Already queued up, thanks :)
+>
+> --
+> Thanks,
+> Sasha
 
