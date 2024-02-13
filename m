@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-19658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85EEF852502
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 02:05:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 429EE852506
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 02:05:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 25AD0B21B81
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 01:04:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF02DB27826
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 01:05:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4BAA12C52E;
-	Tue, 13 Feb 2024 00:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D148412C7E6;
+	Tue, 13 Feb 2024 00:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Svvesnbf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K17b8BRD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E1C712C528;
-	Tue, 13 Feb 2024 00:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D13712C7E3;
+	Tue, 13 Feb 2024 00:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707783848; cv=none; b=YemaQ1hXqja5BtlWR6qEgvnAPbUOfB1Zowlat37vMQokZLa0p+dv0w1uHF3TG4gvpBB5D0WU0IUTwZUxDYGZaYhh0OYsmAET3GflHAVqYhAtM7wY4QLUI7Lwx+OljBdZ49jBmM2SnkDqsjhZVXYrjwXDDizqFVbjOQknPzjPAIQ=
+	t=1707783852; cv=none; b=mpEeXF36Woy1LM1kvR5qfEmRopLsMkvEwgJxH5sCymEtUGO2GKu4snOy+iC+AYDRw2IqFfIFEphBS5ItBa16N1mnur9OG+KgD+EEPkjxIZ1AcdAQHKx7mEn9+XGyRY3nUHQmS7OyIlveEvzf/yN6lQanBYP3MAMJJMUj67kSri4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707783848; c=relaxed/simple;
-	bh=P6IiayZnxUnVu8pDJ9fjn9U6XBed8UgSmuM/5zP5ywo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d/zl8x7KZOS/BcNxBslVIh67BVge8iBfI+G4Gzp25z2HpDZ0WAdiR9POg/fdH2g/kTuYaGYTzxiYJDYRub02Qx2+6TbmdesWDoftHcYZ52TSr4zEV7RYksjC8p7WK7ldb7vvZvNCL79fwib1TGt5udiianSP2wxPJfciDZl8FZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Svvesnbf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E246C433C7;
-	Tue, 13 Feb 2024 00:24:07 +0000 (UTC)
+	s=arc-20240116; t=1707783852; c=relaxed/simple;
+	bh=Pn07thD0aJ/gRCqlLhA7LBD8t5v3filXzrlPtc3D2NY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lpMxN+95NTy88E7eCMRHpFghDCXH1W0PWIrGD9b7X4Og8tJBfqG4gB2d0/M/QbMpBiOtvFn3ESCCx4Y9BQeTLziDdTVuMhcwdwyq8mBRvKxKt5MCe5mSjIdUmEroD1IShMzSOo/AoyeJWy14HrtXw/3QrKuF5lYfhwv4AQE0+10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K17b8BRD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22279C433C7;
+	Tue, 13 Feb 2024 00:24:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707783848;
-	bh=P6IiayZnxUnVu8pDJ9fjn9U6XBed8UgSmuM/5zP5ywo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SvvesnbfYucybKQxD2uB0FcQlozlhd0CW+lBC3Fmk5nP/5JRluo5zrfSY9aykpC/O
-	 EMxlrdlDYPU5peq4EhB5HSEzV/1Tpn2kS18xXEn/wMmuMWwgVOebyLd7kOtIan02Lz
-	 pZjO5shd3+YYl5vQGbnLTxyoatT9RYbZdMhudmMG17OG5sn5lSJe86+jVNpZ4u+8E6
-	 MattQ6Gl9q1Tttm8wPt2E/H/P7Re4swrMAO0xVkGBYgI/Lg2t/XJXExJkvkoyUf1YZ
-	 cy7Vn/zSIwViNaO2GqRL7YPC6nfg+jop/wphLjU4V4MHrDYwqgY7yCPj6puiyqwiny
-	 eRxXSrq8I5klQ==
+	s=k20201202; t=1707783852;
+	bh=Pn07thD0aJ/gRCqlLhA7LBD8t5v3filXzrlPtc3D2NY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=K17b8BRDXI9UUuYCQuEkx/LtHYQa8/raXBzAwPwXFrdqUFc+aNCFsiK4DBaZnaVy1
+	 aXdes+Tn14bQ+6lradtiXUG/wpIwVXG4OeS3gdk3UA90Z4Ir9JoVuKnsA67RvLNTbh
+	 /96xQW/BuUI1lVnsG6AIjabkL9Dal0rTLKvaJEVc+ecVBUaPrx7Cv3Vsn3bFPUq3kH
+	 8rOpVbcQRDLKl1Puwjwl55fwmIV6MOlhSf+PL5Q40KA+S84iK+2K6UpDZ6jFf7LPqq
+	 iE5Uk5THw9S1IxZqUUDuZl8FYeVmiGUmSzxAUd29Kkw0yo4/3h8afSaYb1NkOUJbb7
+	 t8hjKLUipykhw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Yi Sun <yi.sun@unisoc.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+Cc: Andrew Bresticker <abrestic@rivosinc.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	mst@redhat.com,
-	jasowang@redhat.com,
-	virtualization@lists.linux.dev,
-	linux-block@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 22/22] virtio-blk: Ensure no requests in virtqueues before deleting vqs.
-Date: Mon, 12 Feb 2024 19:23:24 -0500
-Message-ID: <20240213002331.672583-22-sashal@kernel.org>
+	paul.walmsley@sifive.com,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	linux-efi@vger.kernel.org,
+	linux-riscv@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.10 1/6] efi: runtime: Fix potential overflow of soft-reserved region size
+Date: Mon, 12 Feb 2024 19:24:03 -0500
+Message-ID: <20240213002409.673084-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240213002331.672583-1-sashal@kernel.org>
-References: <20240213002331.672583-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,65 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.148
+X-stable-base: Linux 5.10.209
 Content-Transfer-Encoding: 8bit
 
-From: Yi Sun <yi.sun@unisoc.com>
+From: Andrew Bresticker <abrestic@rivosinc.com>
 
-[ Upstream commit 4ce6e2db00de8103a0687fb0f65fd17124a51aaa ]
+[ Upstream commit de1034b38a346ef6be25fe8792f5d1e0684d5ff4 ]
 
-Ensure no remaining requests in virtqueues before resetting vdev and
-deleting virtqueues. Otherwise these requests will never be completed.
-It may cause the system to become unresponsive.
+md_size will have been narrowed if we have >= 4GB worth of pages in a
+soft-reserved region.
 
-Function blk_mq_quiesce_queue() can ensure that requests have become
-in_flight status, but it cannot guarantee that requests have been
-processed by the device. Virtqueues should never be deleted before
-all requests become complete status.
-
-Function blk_mq_freeze_queue() ensure that all requests in virtqueues
-become complete status. And no requests can enter in virtqueues.
-
-Signed-off-by: Yi Sun <yi.sun@unisoc.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Link: https://lore.kernel.org/r/20240129085250.1550594-1-yi.sun@unisoc.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Andrew Bresticker <abrestic@rivosinc.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/virtio_blk.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/firmware/efi/arm-runtime.c   | 2 +-
+ drivers/firmware/efi/riscv-runtime.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
-index affeca0dbc7e..7f73e7447ecb 100644
---- a/drivers/block/virtio_blk.c
-+++ b/drivers/block/virtio_blk.c
-@@ -989,14 +989,15 @@ static int virtblk_freeze(struct virtio_device *vdev)
- {
- 	struct virtio_blk *vblk = vdev->priv;
+diff --git a/drivers/firmware/efi/arm-runtime.c b/drivers/firmware/efi/arm-runtime.c
+index 3359ae2adf24..9054c2852580 100644
+--- a/drivers/firmware/efi/arm-runtime.c
++++ b/drivers/firmware/efi/arm-runtime.c
+@@ -107,7 +107,7 @@ static int __init arm_enable_runtime_services(void)
+ 		efi_memory_desc_t *md;
  
-+	/* Ensure no requests in virtqueues before deleting vqs. */
-+	blk_mq_freeze_queue(vblk->disk->queue);
-+
- 	/* Ensure we don't receive any more interrupts */
- 	vdev->config->reset(vdev);
+ 		for_each_efi_memory_desc(md) {
+-			int md_size = md->num_pages << EFI_PAGE_SHIFT;
++			u64 md_size = md->num_pages << EFI_PAGE_SHIFT;
+ 			struct resource *res;
  
- 	/* Make sure no work handler is accessing the device. */
- 	flush_work(&vblk->config_work);
+ 			if (!(md->attribute & EFI_MEMORY_SP))
+diff --git a/drivers/firmware/efi/riscv-runtime.c b/drivers/firmware/efi/riscv-runtime.c
+index d28e715d2bcc..6711e64eb0b1 100644
+--- a/drivers/firmware/efi/riscv-runtime.c
++++ b/drivers/firmware/efi/riscv-runtime.c
+@@ -85,7 +85,7 @@ static int __init riscv_enable_runtime_services(void)
+ 		efi_memory_desc_t *md;
  
--	blk_mq_quiesce_queue(vblk->disk->queue);
--
- 	vdev->config->del_vqs(vdev);
- 	kfree(vblk->vqs);
+ 		for_each_efi_memory_desc(md) {
+-			int md_size = md->num_pages << EFI_PAGE_SHIFT;
++			u64 md_size = md->num_pages << EFI_PAGE_SHIFT;
+ 			struct resource *res;
  
-@@ -1014,7 +1015,7 @@ static int virtblk_restore(struct virtio_device *vdev)
- 
- 	virtio_device_ready(vdev);
- 
--	blk_mq_unquiesce_queue(vblk->disk->queue);
-+	blk_mq_unfreeze_queue(vblk->disk->queue);
- 	return 0;
- }
- #endif
+ 			if (!(md->attribute & EFI_MEMORY_SP))
 -- 
 2.43.0
 
