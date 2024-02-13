@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-19821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20033-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 029E9853768
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:25:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40B5C853883
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:38:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FE8E1C264AA
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:25:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73DE71C2664F
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:38:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B0A5FF15;
-	Tue, 13 Feb 2024 17:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B2D65FF1C;
+	Tue, 13 Feb 2024 17:37:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dINi2t8i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iqagxk5C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826005FB86;
-	Tue, 13 Feb 2024 17:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18DFC6027A;
+	Tue, 13 Feb 2024 17:37:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845102; cv=none; b=t4WsrcZJ62LKzLqpKvlmGy+n7w8HP1iK64V1cz3uPmvr1mTsRJOaoTPYJwZB9fQoz7HWX7QZsJTWrTEFxEYjg9y7Tv65OmdjDMwAv977h0NE5pn5U8BWYZ7lOd9hrDTvVOJzsj8ccef+gx5zPe0ihoU7kdH66uzVZT1mS+Hi/qg=
+	t=1707845843; cv=none; b=NVMZqrIoO/bg/LAJPRv/tZBthr8juglIkJz1c/EE1RKPsCesfLg8K66w939aqXmnPcq5XFvYl3+Mu+tCvPBBtJ0dmPiDWnSUd0MjuseSylwfgbcX7XGy7+F20TivzeprvGeE1x56DJkRDkTCh/Ea9p/pMYLUXJNd5M7ZUw1hONs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845102; c=relaxed/simple;
-	bh=z2x7bwmHJW25lWJoQgnOYxeScBq6qND1bdQYAZVQIAw=;
+	s=arc-20240116; t=1707845843; c=relaxed/simple;
+	bh=mjcgVbvOCu5a7q9mSDtJ2SXMfOSFUOaciUDbny4Ab+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BrpoLZtIoLbLAp3hfv4jGB6+jWT2cbgpakQlTsw5DjGXzNkWIvsIOY9rL0HWlKDOd+FZVU5S9aIFTCyqUTZ8OVtbQEkkq4mM95yzMRZxYJbfCQxdH6bqiSVQeqHS/Og6mgOds3MStGKysk16v+uobh6MocmaC4YZhzkuPZ5zyYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dINi2t8i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC69AC433F1;
-	Tue, 13 Feb 2024 17:25:01 +0000 (UTC)
+	 MIME-Version; b=ulvsDI22RCKtzGoTFV+0mMFFgBtmRnSjtycE//EZlYFx9n3wlVjrZNk9facIg8euljuxaCmdSUPRySuqQf0B8zzvLePpDZHgnQWuFZkWfwtDrie2ZlgSAZcxJPI1j2BWpaEEKaccd0ITmJBSXJWjiXPcpy8h0AMdaVy0r3/zdu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iqagxk5C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 717D4C433C7;
+	Tue, 13 Feb 2024 17:37:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845102;
-	bh=z2x7bwmHJW25lWJoQgnOYxeScBq6qND1bdQYAZVQIAw=;
+	s=korg; t=1707845842;
+	bh=mjcgVbvOCu5a7q9mSDtJ2SXMfOSFUOaciUDbny4Ab+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dINi2t8i+b+yHByWaI6svIjv4i26wwQDzRXuRKix1NAV4/YNm6lLXv8N/p6zU+kOm
-	 QPYo1MWXk/ausGsm2XnhHJcvfUITg5+gmMWGCBLejyXH8EP2xNgSD8xrb5zY1JG7Hp
-	 eoaRlww5rOFRv2PzNORgpFyiP/KPTCU/LeHYBx50=
+	b=Iqagxk5CDDWla7RrhE0ofanvye4HcM9JjDVqrQINvVZ0HTtlkgbZFAWi10cVD79/5
+	 49hyBiQjzeE6hmYJBKk17RppwNV2A5ErYxaiErMLsQ8gFSNDYkj+rew4CDzUNpuaU9
+	 RrHhdhJc6/kwEoogm/ATqFhIZaABSn8C2dRsijKI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Young <sean@mess.org>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 47/64] ALSA: usb-audio: add quirk for RODE NT-USB+
-Date: Tue, 13 Feb 2024 18:21:33 +0100
-Message-ID: <20240213171846.218957890@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 072/124] fs/ntfs3: Fix an NULL dereference bug
+Date: Tue, 13 Feb 2024 18:21:34 +0100
+Message-ID: <20240213171855.842078148@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
-References: <20240213171844.702064831@linuxfoundation.org>
+In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+References: <20240213171853.722912593@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,55 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Young <sean@mess.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 7822baa844a87cbb93308c1032c3d47d4079bb8a upstream.
+[ Upstream commit b2dd7b953c25ffd5912dda17e980e7168bebcf6c ]
 
-The RODE NT-USB+ is marketed as a professional usb microphone, however the
-usb audio interface is a mess:
+The issue here is when this is called from ntfs_load_attr_list().  The
+"size" comes from le32_to_cpu(attr->res.data_size) so it can't overflow
+on a 64bit systems but on 32bit systems the "+ 1023" can overflow and
+the result is zero.  This means that the kmalloc will succeed by
+returning the ZERO_SIZE_PTR and then the memcpy() will crash with an
+Oops on the next line.
 
-[    1.130977] usb 1-5: new full-speed USB device number 2 using xhci_hcd
-[    1.503906] usb 1-5: config 1 has an invalid interface number: 5 but max is 4
-[    1.503912] usb 1-5: config 1 has no interface number 4
-[    1.519689] usb 1-5: New USB device found, idVendor=19f7, idProduct=0035, bcdDevice= 1.09
-[    1.519695] usb 1-5: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-[    1.519697] usb 1-5: Product: RØDE NT-USB+
-[    1.519699] usb 1-5: Manufacturer: RØDE
-[    1.519700] usb 1-5: SerialNumber: 1D773A1A
-[    8.327495] usb 1-5: 1:1: cannot get freq at ep 0x82
-[    8.344500] usb 1-5: 1:2: cannot get freq at ep 0x82
-[    8.365499] usb 1-5: 2:1: cannot get freq at ep 0x2
-
-Add QUIRK_FLAG_GET_SAMPLE_RATE to work around the broken sample rate get.
-I have asked Rode support to fix it, but they show no interest.
-
-Signed-off-by: Sean Young <sean@mess.org>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240124151524.23314-1-sean@mess.org
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: be71b5cba2e6 ("fs/ntfs3: Add attrib operations")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/ntfs3/ntfs_fs.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -2181,6 +2181,8 @@ static const struct usb_audio_quirk_flag
- 		   QUIRK_FLAG_FIXED_RATE),
- 	DEVICE_FLG(0x1bcf, 0x2283, /* NexiGo N930AF FHD Webcam */
- 		   QUIRK_FLAG_GET_SAMPLE_RATE),
-+	DEVICE_FLG(0x19f7, 0x0035, /* RODE NT-USB+ */
-+		   QUIRK_FLAG_GET_SAMPLE_RATE),
+diff --git a/fs/ntfs3/ntfs_fs.h b/fs/ntfs3/ntfs_fs.h
+index f6706143d14b..a46d30b84bf3 100644
+--- a/fs/ntfs3/ntfs_fs.h
++++ b/fs/ntfs3/ntfs_fs.h
+@@ -473,7 +473,7 @@ bool al_delete_le(struct ntfs_inode *ni, enum ATTR_TYPE type, CLST vcn,
+ int al_update(struct ntfs_inode *ni, int sync);
+ static inline size_t al_aligned(size_t size)
+ {
+-	return (size + 1023) & ~(size_t)1023;
++	return size_add(size, 1023) & ~(size_t)1023;
+ }
  
- 	/* Vendor matches */
- 	VENDOR_FLG(0x045e, /* MS Lifecam */
+ /* Globals from bitfunc.c */
+-- 
+2.43.0
+
 
 
 
