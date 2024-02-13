@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-19946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87507853806
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:32:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C78B853761
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:25:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44B84281F73
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:32:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 316481F235EC
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:25:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB1D85FF07;
-	Tue, 13 Feb 2024 17:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4B0A5FF08;
+	Tue, 13 Feb 2024 17:24:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z6O8Xo0n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qdTkxkHg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88DAC5F54E;
-	Tue, 13 Feb 2024 17:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7266A5FB86;
+	Tue, 13 Feb 2024 17:24:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845538; cv=none; b=sBpowhx+4JPyCip/EhL8PqclmDBNgCvAldK0xJ84BMZO+niz5xgKRC4TfPmOX5Dloh8IH7/Va298yH7D1nMdwIqqlotHY9rB3L/oOmrxkv0MvzV1XzaAzrhuDU9ot/5czwZbjkAPfhoeojJgqV30DsSEcdgWyZSvKE/8Sclo2Uc=
+	t=1707845082; cv=none; b=PjVYoFdO76PY/HqkCliIrhGV5pF9DbqWXwYDG1a6e2W0it9i/cblPGEWX4GjwohQv0QovEXLUYeRUjWT9vGTgy+yqfU4hSgxRRRUEOfAODo7Hcbpbf2cYJZnj5Z+vo6QWEe34Hic1pJh4itLukMPpx43su1E0n42hfsoQfKLDu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845538; c=relaxed/simple;
-	bh=dkgOXRbZUfExhfUgglUxT9AazFGIq/9nJ0KyJG47DTM=;
+	s=arc-20240116; t=1707845082; c=relaxed/simple;
+	bh=uZpQRxp+1a8U2Au+PsT3U55rBEQg0XL5q4PJcgzAbpM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PYXtSxiZoaKBdu089t7j1J88I2+DUGaL8af8jk9ZhZ3rrj8rRIt2/iu3G/uqaKx0jG/6I8MkE+U6mIfu0lGJxtlcESMGH+NL2ysqN87jRrDl4ruG67cNB23RanohmQ3zxEoPNGwFSaZjwMXg0+Tvuc3gjIJR8rY76enr2l6qCIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z6O8Xo0n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07093C433C7;
-	Tue, 13 Feb 2024 17:32:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bbjrEdPiIueDsBgUyVfDQ2LEUuQXm/DjzojYERTCU4TeQqzymMPHarr7HLt3PzebJymadzmDpPuyDG+pTMf9Ok+/PuYi772aCITd3/Q2GKI6c3kWHAiFlUpjSdSQ7tXO3STCItq1jgyspbxLoQh1kqtRO6+x2c5yw9U67Pvuez0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qdTkxkHg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA941C433C7;
+	Tue, 13 Feb 2024 17:24:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845538;
-	bh=dkgOXRbZUfExhfUgglUxT9AazFGIq/9nJ0KyJG47DTM=;
+	s=korg; t=1707845082;
+	bh=uZpQRxp+1a8U2Au+PsT3U55rBEQg0XL5q4PJcgzAbpM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z6O8Xo0nIDadvKL9jF+xXC8FKa6bECSRPkkS2cgvYLn7ddSscHkhGMlNutqgdnVi2
-	 oQ5U/xqvxHJft4H8vTJkWAAT8ngCPWhwftKWziVaYyziEdzsiBFFSDJLoq5CCDTfyb
-	 LkUR8QEejXU53schVB9OWnpe5FTLwcjNNcVl2I+E=
+	b=qdTkxkHgN4IGdCmR99d8gCjGO62LXRsGwmxAoSk2l3ZHJF13iGR29q5D4X13Ey2ZL
+	 8LGyiGqGWlhJxpPT2aHYpgGVdhFsicvJ4DZxtvqLhu9GkvUdgSybaFFvv3FbKVHiVI
+	 45fvrRYytxiCaJ8olHbG7wPftB6xM4kBOpehnMvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roman Li <Roman.Li@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Breno=20Leit=C3=A3o?= <leitao@debian.org>,
+	Tejun Heo <tj@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 079/121] drm/amd/display: Implement bounds check for stream encoder creation in DCN301
+Subject: [PATCH 6.1 42/64] blk-iocost: Fix an UBSAN shift-out-of-bounds warning
 Date: Tue, 13 Feb 2024 18:21:28 +0100
-Message-ID: <20240213171855.297236070@linuxfoundation.org>
+Message-ID: <20240213171846.071921248@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
+References: <20240213171844.702064831@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +61,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Tejun Heo <tj@kernel.org>
 
-[ Upstream commit 58fca355ad37dcb5f785d9095db5f748b79c5dc2 ]
+[ Upstream commit 2a427b49d02995ea4a6ff93a1432c40fa4d36821 ]
 
-'stream_enc_regs' array is an array of dcn10_stream_enc_registers
-structures. The array is initialized with four elements, corresponding
-to the four calls to stream_enc_regs() in the array initializer. This
-means that valid indices for this array are 0, 1, 2, and 3.
+When iocg_kick_delay() is called from a CPU different than the one which set
+the delay, @now may be in the past of @iocg->delay_at leading to the
+following warning:
 
-The error message 'stream_enc_regs' 4 <= 5 below, is indicating that
-there is an attempt to access this array with an index of 5, which is
-out of bounds. This could lead to undefined behavior
+  UBSAN: shift-out-of-bounds in block/blk-iocost.c:1359:23
+  shift exponent 18446744073709 is too large for 64-bit type 'u64' (aka 'unsigned long long')
+  ...
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x79/0xc0
+   __ubsan_handle_shift_out_of_bounds+0x2ab/0x300
+   iocg_kick_delay+0x222/0x230
+   ioc_rqos_merge+0x1d7/0x2c0
+   __rq_qos_merge+0x2c/0x80
+   bio_attempt_back_merge+0x83/0x190
+   blk_attempt_plug_merge+0x101/0x150
+   blk_mq_submit_bio+0x2b1/0x720
+   submit_bio_noacct_nocheck+0x320/0x3e0
+   __swap_writepage+0x2ab/0x9d0
 
-Here, eng_id is used as an index to access the stream_enc_regs array. If
-eng_id is 5, this would result in an out-of-bounds access on the
-stream_enc_regs array.
+The underflow itself doesn't really affect the behavior in any meaningful
+way; however, the past timestamp may exaggerate the delay amount calculated
+later in the code, which shouldn't be a material problem given the nature of
+the delay mechanism.
 
-Thus fixing Buffer overflow error in dcn301_stream_encoder_create
-reported by Smatch:
-drivers/gpu/drm/amd/amdgpu/../display/dc/resource/dcn301/dcn301_resource.c:1011 dcn301_stream_encoder_create() error: buffer overflow 'stream_enc_regs' 4 <= 5
+If @now is in the past, this CPU is racing another CPU which recently set up
+the delay and there's nothing this CPU can contribute w.r.t. the delay.
+Let's bail early from iocg_kick_delay() in such cases.
 
-Fixes: 3a83e4e64bb1 ("drm/amd/display: Add dcn3.01 support to DC (v2)")
-Cc: Roman Li <Roman.Li@amd.com>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Roman Li <roman.li@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reported-by: Breno Leitão <leitao@debian.org>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: 5160a5a53c0c ("blk-iocost: implement delay adjustment hysteresis")
+Link: https://lore.kernel.org/r/ZVvc9L_CYk5LO1fT@slm.duckdns.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn301/dcn301_resource.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ block/blk-iocost.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_resource.c b/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_resource.c
-index 79d6697d13b6..9485fda890cd 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_resource.c
-@@ -996,7 +996,7 @@ static struct stream_encoder *dcn301_stream_encoder_create(enum engine_id eng_id
- 	vpg = dcn301_vpg_create(ctx, vpg_inst);
- 	afmt = dcn301_afmt_create(ctx, afmt_inst);
+diff --git a/block/blk-iocost.c b/block/blk-iocost.c
+index 7dd6a33e1d6a..e6557024e3da 100644
+--- a/block/blk-iocost.c
++++ b/block/blk-iocost.c
+@@ -1337,6 +1337,13 @@ static bool iocg_kick_delay(struct ioc_gq *iocg, struct ioc_now *now)
  
--	if (!enc1 || !vpg || !afmt) {
-+	if (!enc1 || !vpg || !afmt || eng_id >= ARRAY_SIZE(stream_enc_regs)) {
- 		kfree(enc1);
- 		kfree(vpg);
- 		kfree(afmt);
+ 	lockdep_assert_held(&iocg->waitq.lock);
+ 
++	/*
++	 * If the delay is set by another CPU, we may be in the past. No need to
++	 * change anything if so. This avoids decay calculation underflow.
++	 */
++	if (time_before64(now->now, iocg->delay_at))
++		return false;
++
+ 	/* calculate the current delay in effect - 1/2 every second */
+ 	tdelta = now->now - iocg->delay_at;
+ 	if (iocg->delay)
 -- 
 2.43.0
 
