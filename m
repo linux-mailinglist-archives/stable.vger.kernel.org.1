@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-19954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80CEC853813
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:32:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 824148538AE
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:39:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CAF528319F
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:32:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E24B7B264C1
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:39:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAD7A5FF07;
-	Tue, 13 Feb 2024 17:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E18B57885;
+	Tue, 13 Feb 2024 17:39:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D82ieYb8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="asi6Bw9l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AB2D5F54E;
-	Tue, 13 Feb 2024 17:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE4DF5FF04;
+	Tue, 13 Feb 2024 17:39:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845564; cv=none; b=ljGDSd1FYTu2xHxaj6C+FA2DzwoabdFS55wawOxMQ4Bq8pfylAQJub24WvHtgtLUQGWT7znkyZX5/yyAf1sEeRfH+zi/JFwQqfKHP+HBsHVl3hlKfWgIINCksURVxOF0fyNLKtVGcdd2FwbzNIrgLmhiKtWf+6Gfy+YXVOaN6no=
+	t=1707845952; cv=none; b=m+fkgh8ojPeELI6IeAwxMG2N87PvreuuKMUlSHm139piQeO4v6YAISSMlnFdSM5CwLQ0TcFHOLrncw0ZyCe0QmYNj77EzgjskvaswQNDYKwZKR7hRWyYEjXsnS4LDdYyzAYG9zRWsezE8oWI8nhk6Hn4YW5wOxP5wYvFZQ5/V3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845564; c=relaxed/simple;
-	bh=T9UjOiiKyY6dnm6W2KxCACkJkIM4jLIpEUHv19NLCjg=;
+	s=arc-20240116; t=1707845952; c=relaxed/simple;
+	bh=nbgkVGmzcpsgH1eLTbVcXFUPdixJ8ImJDCAKXvkOenQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M7Jb6xxhHtTOyRx1LrK4PMNy/sqHBt+HRGNv9q0ziLeoyRNS+eE8tMZB30CVH/AD9TUSqM2Onch9XeunwjK/pMwxmmQbGfAh51qkBRpyqAghyqG6PLrBBQh2kjknzsAGe3PQGKigE2aQ3Spq3qNJDIFmsBwzgLjKLP1SZMDAOjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D82ieYb8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4F72C433C7;
-	Tue, 13 Feb 2024 17:32:43 +0000 (UTC)
+	 MIME-Version; b=gOxCzoCNP0acdLGL/deY352NXnc4YO54RdAsYLgZhB8JNN4+IdeJRRr/NjRplknGvPWNN6qFvbyD5vTOaxRn8hWsvRj+IDjZC/WPetPGHSRRbG+9OiyRt1jRABNdD65xQJZAuYI3DcqOfWAVLwpjo2XfJGegaO5SOJxLyli5Eg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=asi6Bw9l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2421BC433C7;
+	Tue, 13 Feb 2024 17:39:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845564;
-	bh=T9UjOiiKyY6dnm6W2KxCACkJkIM4jLIpEUHv19NLCjg=;
+	s=korg; t=1707845952;
+	bh=nbgkVGmzcpsgH1eLTbVcXFUPdixJ8ImJDCAKXvkOenQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D82ieYb8JX8VGP9/Ej4nu6kcWGaG6cAJmT4f4zxDjqU5P8X8/j1F2KU7NsL9ZLvNL
-	 bDEt7tPDDUc1bEPjYgkju4EGcW4jaf0AS7Z7GDlIEFUqzHC3mFAZl47PisEXA/TIJT
-	 WDl4In5p7eZAZNF7PKEa0u6MAWDrsQqvyJYE2H2I=
+	b=asi6Bw9ldmLapBIedYBi5z44+gUwl4Ev6BUfCJbJZ+WLsyHRgsSHGqgXkDOlCYlXO
+	 Ar60l4rfY9lzHUGSTEg58uJ/lN2kxGjQVI4/edW6nB701PtYcNs+Jo4XpofGWWh8E2
+	 JjBSNpIKD17ooJRYmM8GfizAQjoquRGcKpIxxHNI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Slaby <jirislaby@gmail.com>,
-	David Laight <David.Laight@ACULAB.COM>,
-	Aurelien Jarno <aurelien@aurel32.net>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	regressions@leemhuis.info
-Subject: [PATCH 6.6 116/121] media: solo6x10: replace max(a, min(b, c)) by clamp(b, a, c)
-Date: Tue, 13 Feb 2024 18:22:05 +0100
-Message-ID: <20240213171856.373579744@linuxfoundation.org>
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Eilon Rinat <eilon.rinat@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.7 104/124] wifi: iwlwifi: mvm: fix a battery life regression
+Date: Tue, 13 Feb 2024 18:22:06 +0100
+Message-ID: <20240213171856.766729935@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+References: <20240213171853.722912593@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,65 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aurelien Jarno <aurelien@aurel32.net>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-commit 31e97d7c9ae3de072d7b424b2cf706a03ec10720 upstream.
+commit 1fa942f31665ea5dc5d4d95893dd13723eaa97cc upstream.
 
-This patch replaces max(a, min(b, c)) by clamp(b, a, c) in the solo6x10
-driver.  This improves the readability and more importantly, for the
-solo6x10-p2m.c file, this reduces on my system (x86-64, gcc 13):
+Fix the DBG_CONFIG_TOKEN to not enable debug components that would
+prevent the device to save power.
 
- - the preprocessed size from 121 MiB to 4.5 MiB;
-
- - the build CPU time from 46.8 s to 1.6 s;
-
- - the build memory from 2786 MiB to 98MiB.
-
-In fine, this allows this relatively simple C file to be built on a
-32-bit system.
-
-Reported-by: Jiri Slaby <jirislaby@gmail.com>
-Closes: https://lore.kernel.org/lkml/18c6df0d-45ed-450c-9eda-95160a2bbb8e@gmail.com/
-Cc:  <stable@vger.kernel.org> # v6.7+
-Suggested-by: David Laight <David.Laight@ACULAB.COM>
-Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
-Reviewed-by: David Laight <David.Laight@ACULAB.COM>
-Reviewed-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: <regressions@leemhuis.info>
+Fixes: fc2fe0a5e856 ("wifi: iwlwifi: fw: disable firmware debug asserts")
+Cc: stable@vger.kernel.org
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Reviewed-by: Eilon Rinat <eilon.rinat@intel.com>
+Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240128084842.90d2600edc27.Id657ea2f0ddb131f5f9d0ac39aeb8c88754fe54b@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/pci/solo6x10/solo6x10-offsets.h |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/api/debug.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/pci/solo6x10/solo6x10-offsets.h
-+++ b/drivers/media/pci/solo6x10/solo6x10-offsets.h
-@@ -57,16 +57,16 @@
- #define SOLO_MP4E_EXT_ADDR(__solo) \
- 	(SOLO_EREF_EXT_ADDR(__solo) + SOLO_EREF_EXT_AREA(__solo))
- #define SOLO_MP4E_EXT_SIZE(__solo) \
--	max((__solo->nr_chans * 0x00080000),				\
--	    min(((__solo->sdram_size - SOLO_MP4E_EXT_ADDR(__solo)) -	\
--		 __SOLO_JPEG_MIN_SIZE(__solo)), 0x00ff0000))
-+	clamp(__solo->sdram_size - SOLO_MP4E_EXT_ADDR(__solo) -	\
-+	      __SOLO_JPEG_MIN_SIZE(__solo),			\
-+	      __solo->nr_chans * 0x00080000, 0x00ff0000)
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/debug.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/debug.h
+@@ -531,7 +531,7 @@ enum iwl_fw_dbg_config_cmd_type {
+ }; /* LDBG_CFG_CMD_TYPE_API_E_VER_1 */
  
- #define __SOLO_JPEG_MIN_SIZE(__solo)		(__solo->nr_chans * 0x00080000)
- #define SOLO_JPEG_EXT_ADDR(__solo) \
- 		(SOLO_MP4E_EXT_ADDR(__solo) + SOLO_MP4E_EXT_SIZE(__solo))
- #define SOLO_JPEG_EXT_SIZE(__solo) \
--	max(__SOLO_JPEG_MIN_SIZE(__solo),				\
--	    min((__solo->sdram_size - SOLO_JPEG_EXT_ADDR(__solo)), 0x00ff0000))
-+	clamp(__solo->sdram_size - SOLO_JPEG_EXT_ADDR(__solo),	\
-+	      __SOLO_JPEG_MIN_SIZE(__solo), 0x00ff0000)
+ /* this token disables debug asserts in the firmware */
+-#define IWL_FW_DBG_CONFIG_TOKEN 0x00011301
++#define IWL_FW_DBG_CONFIG_TOKEN 0x00010001
  
- #define SOLO_SDRAM_END(__solo) \
- 	(SOLO_JPEG_EXT_ADDR(__solo) + SOLO_JPEG_EXT_SIZE(__solo))
+ /**
+  * struct iwl_fw_dbg_config_cmd - configure FW debug
 
 
 
