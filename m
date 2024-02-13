@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-19897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D2D98537C6
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:29:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F0AE853745
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:23:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FEA51C24F6F
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:29:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BBE4282F89
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:23:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EE6E5FF07;
-	Tue, 13 Feb 2024 17:29:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C66005FDD8;
+	Tue, 13 Feb 2024 17:23:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bFbkjrVZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HAaIofdi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA3545FEFE;
-	Tue, 13 Feb 2024 17:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C395FBB5;
+	Tue, 13 Feb 2024 17:23:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845367; cv=none; b=jdDl08hbV/S537fVknklrHHS/6vs5BdEIWRzNhaQmjCA4jtBAB/b+WrbvwbYGT5bC8HPtTM5Y5wX9RFL3eFM0QTFDHXw3ssift7zr/TcdvZdNoR6PNGfksohscUTIHUCH4StqD9t/HTrozG1OTRugvSNSe0EzVIj5Im55dfkUh4=
+	t=1707845020; cv=none; b=CU73FbdO15s52lVdyqxmz+sRD4qjM2VAtfmCvx0RHMbaaAG//V4AfnpKhpJANqTndzz3IXgzYSczbZi/+k//ZQiK7+mJzA5/36iHJJZ6e4G4UY63R4P/BfS09p9PflcV18cO9n0dtD03bbFG8t1autjKLDY3D1az2Qr//G6Qj7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845367; c=relaxed/simple;
-	bh=xRTB0XnJX9dXkAxL9qTnQdnNrEshuaeEeMjuP6YWeZ4=;
+	s=arc-20240116; t=1707845020; c=relaxed/simple;
+	bh=F8FGg0KhfaYDrYp+USm4WBjknsJyjx+zBvYZrVDnRq0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZfbF8Ia55MFu9SwEjJwX6kUOGvThJX3uRQeTS8XFkhNt8kzHQoExTikNZpeELiL/92WjlmbRvyCHC5tCYSBxbYdiyhWgkf7xTLcYPhpfFAF9R3pkuSqTNm92NiKXabD/Nf1/zLLT+fkVqG0+VfnngrQRz9gUyWO3t80qU73FC5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bFbkjrVZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 942ECC433C7;
-	Tue, 13 Feb 2024 17:29:26 +0000 (UTC)
+	 MIME-Version; b=BVVJD9NBRmay8Z5r6x3JHKU5a+/rTG8FWcnVSYnT55wOc5nodBh0nCtUjHZEYqInFRDg4IPlD2xR18iuFSpm2bHeAf5n7qX0rfxk1qBBwKP4/AaIVOHMu4lEsbxyDOMHQB5bfG97WorttOhiSxb5WxNNy7kI+Bez3NbFVEYo6Fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HAaIofdi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCA63C433F1;
+	Tue, 13 Feb 2024 17:23:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845367;
-	bh=xRTB0XnJX9dXkAxL9qTnQdnNrEshuaeEeMjuP6YWeZ4=;
+	s=korg; t=1707845020;
+	bh=F8FGg0KhfaYDrYp+USm4WBjknsJyjx+zBvYZrVDnRq0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bFbkjrVZunI3xbdsitRVvTVdYEwCuLp/vdPz0o9LOl3XUXDb3Kpi6OaQaO4j6RhZu
-	 papVgGsHW4RSdtx076rJE8pQKpjgxfJIcqsdxLGf0fqXr7h1KZwcGEfN8kBNP8/b8+
-	 uLaBR+AjuFP0JLXzfT9GqK7eJdtEgU7FNa1LrSx0=
+	b=HAaIofdi2QW7A+v39PgidpEt0X61EHjNdMMyPFr/sfZIuUYOPdvVY45mXzm5Pa/cU
+	 gL2PM0u5d4mtY+NllDv+/fzYtLPHtFtQk7LDivfOME2cW+Bo7wBDP1NrwCuaKBnFjR
+	 mPAAFuO9jK20x5x63vLe+nW6f7SM+MWohexeHwIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Jiri Pirko <jiri@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Loic Prylli <lprylli@netflix.com>,
+	Alexander Hansen <alexander.hansen@9elements.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 059/121] octeontx2-pf: Fix a memleak otx2_sq_init
+Subject: [PATCH 6.1 22/64] hwmon: (aspeed-pwm-tacho) mutex for tach reading
 Date: Tue, 13 Feb 2024 18:21:08 +0100
-Message-ID: <20240213171854.717190785@linuxfoundation.org>
+Message-ID: <20240213171845.444302085@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
+References: <20240213171844.702064831@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Loic Prylli <lprylli@netflix.com>
 
-[ Upstream commit b09b58e31b0f43d76f79b9943da3fb7c2843dcbb ]
+[ Upstream commit 1168491e7f53581ba7b6014a39a49cfbbb722feb ]
 
-When qmem_alloc and pfvf->hw_ops->sq_aq_init fails, sq->sg should be
-freed to prevent memleak.
+the ASPEED_PTCR_RESULT Register can only hold the result for a
+single fan input. Adding a mutex to protect the register until the
+reading is done.
 
-Fixes: c9c12d339d93 ("octeontx2-pf: Add support for PTP clock")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Acked-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Loic Prylli <lprylli@netflix.com>
+Signed-off-by: Alexander Hansen <alexander.hansen@9elements.com>
+Fixes: 2d7a548a3eff ("drivers: hwmon: Support for ASPEED PWM/Fan tach")
+Link: https://lore.kernel.org/r/121d888762a1232ef403cf35230ccf7b3887083a.1699007401.git.alexander.hansen@9elements.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/marvell/octeontx2/nic/otx2_common.c   | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/hwmon/aspeed-pwm-tacho.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-index 629cf1659e5f..e6df4e6a78ab 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-@@ -951,8 +951,11 @@ int otx2_sq_init(struct otx2_nic *pfvf, u16 qidx, u16 sqb_aura)
- 	if (pfvf->ptp && qidx < pfvf->hw.tx_queues) {
- 		err = qmem_alloc(pfvf->dev, &sq->timestamps, qset->sqe_cnt,
- 				 sizeof(*sq->timestamps));
--		if (err)
-+		if (err) {
-+			kfree(sq->sg);
-+			sq->sg = NULL;
- 			return err;
-+		}
- 	}
+diff --git a/drivers/hwmon/aspeed-pwm-tacho.c b/drivers/hwmon/aspeed-pwm-tacho.c
+index d11f674e3dc3..51f321bcd778 100644
+--- a/drivers/hwmon/aspeed-pwm-tacho.c
++++ b/drivers/hwmon/aspeed-pwm-tacho.c
+@@ -194,6 +194,8 @@ struct aspeed_pwm_tacho_data {
+ 	u8 fan_tach_ch_source[16];
+ 	struct aspeed_cooling_device *cdev[8];
+ 	const struct attribute_group *groups[3];
++	/* protects access to shared ASPEED_PTCR_RESULT */
++	struct mutex tach_lock;
+ };
  
- 	sq->head = 0;
-@@ -968,7 +971,14 @@ int otx2_sq_init(struct otx2_nic *pfvf, u16 qidx, u16 sqb_aura)
- 	sq->stats.bytes = 0;
- 	sq->stats.pkts = 0;
+ enum type { TYPEM, TYPEN, TYPEO };
+@@ -528,6 +530,8 @@ static int aspeed_get_fan_tach_ch_rpm(struct aspeed_pwm_tacho_data *priv,
+ 	u8 fan_tach_ch_source, type, mode, both;
+ 	int ret;
  
--	return pfvf->hw_ops->sq_aq_init(pfvf, qidx, sqb_aura);
-+	err = pfvf->hw_ops->sq_aq_init(pfvf, qidx, sqb_aura);
-+	if (err) {
-+		kfree(sq->sg);
-+		sq->sg = NULL;
-+		return err;
-+	}
++	mutex_lock(&priv->tach_lock);
 +
-+	return 0;
+ 	regmap_write(priv->regmap, ASPEED_PTCR_TRIGGER, 0);
+ 	regmap_write(priv->regmap, ASPEED_PTCR_TRIGGER, 0x1 << fan_tach_ch);
  
- }
+@@ -545,6 +549,8 @@ static int aspeed_get_fan_tach_ch_rpm(struct aspeed_pwm_tacho_data *priv,
+ 		ASPEED_RPM_STATUS_SLEEP_USEC,
+ 		usec);
  
++	mutex_unlock(&priv->tach_lock);
++
+ 	/* return -ETIMEDOUT if we didn't get an answer. */
+ 	if (ret)
+ 		return ret;
+@@ -904,6 +910,7 @@ static int aspeed_pwm_tacho_probe(struct platform_device *pdev)
+ 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+ 	if (!priv)
+ 		return -ENOMEM;
++	mutex_init(&priv->tach_lock);
+ 	priv->regmap = devm_regmap_init(dev, NULL, (__force void *)regs,
+ 			&aspeed_pwm_tacho_regmap_config);
+ 	if (IS_ERR(priv->regmap))
 -- 
 2.43.0
 
