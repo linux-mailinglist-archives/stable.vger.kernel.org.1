@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-19981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E8B6853834
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:34:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F35188537A8
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:28:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE28D1F2A5E7
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:34:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6980A1F21BDB
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:28:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8381660243;
-	Tue, 13 Feb 2024 17:34:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3805D5FEEF;
+	Tue, 13 Feb 2024 17:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vhfU5HW4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Yh6sfAp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428FCAD55;
-	Tue, 13 Feb 2024 17:34:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E23925FF0D;
+	Tue, 13 Feb 2024 17:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845654; cv=none; b=Eose/JTQRLHyWK4jofsqClYSSnAJ5n9qKdkScHxutUDA67YaIR9T4w/9yeBI8K73ozZz4DGVLhob1hy3FY+QGImW8wrWEQJBnzSwAmBsWaD5j4YKT+pnHgMNQ+mrrTAh9K3GJE4RZLWkgswXWAXgr47PtPdwMjT9dJe+ewinWoI=
+	t=1707845274; cv=none; b=FofTpEwVUvgqLY5SrCvPfdALwU6i6v56ulcRYw1fmd1kqOZYE8AMAgnWFLeRQ4ITgJeh+TpvPwcUrGv61fKQEtSi4qr8tA6kpDPgyq0qF8K5lbyJxUpQ1xRJnB8lHU6wzv7iGi2RwcetXFEYY7guwsizYoqJBrMjeC0uGDpe87A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845654; c=relaxed/simple;
-	bh=B333NfeITKiolNdBwohX4Sc9O10wf74jmr5civ+oxeE=;
+	s=arc-20240116; t=1707845274; c=relaxed/simple;
+	bh=bk088VhOqT59aGjSMM6am5Ua8qx4W+MhbQCZJQv8Sj4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L5t3tb4qvPRM4zvcQu/car1hoYiNwixnwslJH+/YkdfwjtnPBO4lepDGltKJxo85ZwCyv8VwQEUxew2juNhpjpF3eCvGHrINvfI+4kxJbHbzEBG4CnTQz4Qhxd9TWq3PnC1m7LnzrVga8GKj4xBKIUBstR3sKIEkDRcZvxKD6Ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vhfU5HW4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C1C8C43390;
-	Tue, 13 Feb 2024 17:34:13 +0000 (UTC)
+	 MIME-Version; b=WcQQPUq0n1q1hYZOsG3DZQ7WtEUbwlIGUf+2iqVakoG5TF+UQn4a1jbJOz+7xGddZ0fsjyNz0BNnK1NTyaeuxZ3SpH0RoGzTXc7mx6aUqTLCaqPLx5OMNsPSBApn1HTVM84XA3Co1apLuNgo8FB++zBweu567x5W/u/AFn2P+So=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Yh6sfAp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33265C433F1;
+	Tue, 13 Feb 2024 17:27:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845654;
-	bh=B333NfeITKiolNdBwohX4Sc9O10wf74jmr5civ+oxeE=;
+	s=korg; t=1707845273;
+	bh=bk088VhOqT59aGjSMM6am5Ua8qx4W+MhbQCZJQv8Sj4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vhfU5HW4KwfH+Oj6IDAShYsEj0JyOIEfO2X+hG6pBaNGU3hdPcMdn9tGI6rlE3nBC
-	 UP4Hbc92rD6ELVeKjtkrPw0UdSaK4LrPzsEN3qlGEmE2pUiuaowpc90aq1hWlCmhML
-	 0NGxPYrUSM7CAHGQKpqk0NPLUywLUOXALuxXZ4dA=
+	b=2Yh6sfApCsjLZcTFKWSpgviDsrhs2W7mqbZjaPx7ej9gksWm/RUlHhPDWbuAq/wGt
+	 SfBNoKrrKkSS6q2xHgUV00yDP4JX6YG0qO8adhx361+J+Y9AxvC7K4LlrDzAoUfyNj
+	 92dHojFlmAfhEJtUOHi2xYw9vFIqvDcXysfQ+MkQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
+	Dave Chinner <dchinner@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Catherine Hoang <catherine.hoang@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 020/124] x86/efistub: Give up if memory attribute protocol returns an error
+Subject: [PATCH 6.6 033/121] xfs: inode recovery does not validate the recovered inode
 Date: Tue, 13 Feb 2024 18:20:42 +0100
-Message-ID: <20240213171854.322552854@linuxfoundation.org>
+Message-ID: <20240213171853.956310557@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
-References: <20240213171853.722912593@linuxfoundation.org>
+In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
+References: <20240213171852.948844634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,122 +64,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Dave Chinner <dchinner@redhat.com>
 
-[ Upstream commit a7a6a01f88e87dec4bf2365571dd2dc7403d52d0 ]
+commit 038ca189c0d2c1570b4d922f25b524007c85cf94 upstream.
 
-The recently introduced EFI memory attributes protocol should be used
-if it exists to ensure that the memory allocation created for the kernel
-permits execution. This is needed for compatibility with tightened
-requirements related to Windows logo certification for x86 PCs.
+Discovered when trying to track down a weird recovery corruption
+issue that wasn't detected at recovery time.
 
-Currently, we simply strip the execute protect (XP) attribute from the
-entire range, but this might be rejected under some firmware security
-policies, and so in a subsequent patch, this will be changed to only
-strip XP from the executable region that runs early, and make it
-read-only (RO) as well.
+The specific corruption was a zero extent count field when big
+extent counts are in use, and it turns out the dinode verifier
+doesn't detect that specific corruption case, either. So fix it too.
 
-In order to catch any issues early, ensure that the memory attribute
-protocol works as intended, and give up if it produces spurious errors.
-
-Note that the DXE services based fallback was always based on best
-effort, so don't propagate any errors returned by that API.
-
-Fixes: a1b87d54f4e4 ("x86/efistub: Avoid legacy decompressor when doing EFI boot")
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Dave Chinner <dchinner@redhat.com>
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Chandan Babu R <chandanbabu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/libstub/x86-stub.c | 24 ++++++++++++++----------
- drivers/firmware/efi/libstub/x86-stub.h |  4 ++--
- 2 files changed, 16 insertions(+), 12 deletions(-)
+ fs/xfs/libxfs/xfs_inode_buf.c   |  3 +++
+ fs/xfs/xfs_inode_item_recover.c | 14 +++++++++++++-
+ 2 files changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index 0d510c9a06a4..cb0be88c8131 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -223,8 +223,8 @@ static void retrieve_apple_device_properties(struct boot_params *boot_params)
- 	}
- }
+diff --git a/fs/xfs/libxfs/xfs_inode_buf.c b/fs/xfs/libxfs/xfs_inode_buf.c
+index a35781577cad..0f970a0b3382 100644
+--- a/fs/xfs/libxfs/xfs_inode_buf.c
++++ b/fs/xfs/libxfs/xfs_inode_buf.c
+@@ -508,6 +508,9 @@ xfs_dinode_verify(
+ 	if (mode && nextents + naextents > nblocks)
+ 		return __this_address;
  
--void efi_adjust_memory_range_protection(unsigned long start,
--					unsigned long size)
-+efi_status_t efi_adjust_memory_range_protection(unsigned long start,
-+						unsigned long size)
- {
- 	efi_status_t status;
- 	efi_gcd_memory_space_desc_t desc;
-@@ -236,13 +236,17 @@ void efi_adjust_memory_range_protection(unsigned long start,
- 	rounded_end = roundup(start + size, EFI_PAGE_SIZE);
++	if (nextents + naextents == 0 && nblocks != 0)
++		return __this_address;
++
+ 	if (S_ISDIR(mode) && nextents > mp->m_dir_geo->max_extents)
+ 		return __this_address;
  
- 	if (memattr != NULL) {
--		efi_call_proto(memattr, clear_memory_attributes, rounded_start,
--			       rounded_end - rounded_start, EFI_MEMORY_XP);
--		return;
-+		status = efi_call_proto(memattr, clear_memory_attributes,
-+					rounded_start,
-+					rounded_end - rounded_start,
-+					EFI_MEMORY_XP);
-+		if (status != EFI_SUCCESS)
-+			efi_warn("Failed to clear EFI_MEMORY_XP attribute\n");
-+		return status;
- 	}
+diff --git a/fs/xfs/xfs_inode_item_recover.c b/fs/xfs/xfs_inode_item_recover.c
+index e6609067ef26..144198a6b270 100644
+--- a/fs/xfs/xfs_inode_item_recover.c
++++ b/fs/xfs/xfs_inode_item_recover.c
+@@ -286,6 +286,7 @@ xlog_recover_inode_commit_pass2(
+ 	struct xfs_log_dinode		*ldip;
+ 	uint				isize;
+ 	int				need_free = 0;
++	xfs_failaddr_t			fa;
  
- 	if (efi_dxe_table == NULL)
--		return;
-+		return EFI_SUCCESS;
+ 	if (item->ri_buf[0].i_len == sizeof(struct xfs_inode_log_format)) {
+ 		in_f = item->ri_buf[0].i_addr;
+@@ -530,8 +531,19 @@ xlog_recover_inode_commit_pass2(
+ 	    (dip->di_mode != 0))
+ 		error = xfs_recover_inode_owner_change(mp, dip, in_f,
+ 						       buffer_list);
+-	/* re-generate the checksum. */
++	/* re-generate the checksum and validate the recovered inode. */
+ 	xfs_dinode_calc_crc(log->l_mp, dip);
++	fa = xfs_dinode_verify(log->l_mp, in_f->ilf_ino, dip);
++	if (fa) {
++		XFS_CORRUPTION_ERROR(
++			"Bad dinode after recovery",
++				XFS_ERRLEVEL_LOW, mp, dip, sizeof(*dip));
++		xfs_alert(mp,
++			"Metadata corruption detected at %pS, inode 0x%llx",
++			fa, in_f->ilf_ino);
++		error = -EFSCORRUPTED;
++		goto out_release;
++	}
  
- 	/*
- 	 * Don't modify memory region attributes, they are
-@@ -255,7 +259,7 @@ void efi_adjust_memory_range_protection(unsigned long start,
- 		status = efi_dxe_call(get_memory_space_descriptor, start, &desc);
- 
- 		if (status != EFI_SUCCESS)
--			return;
-+			break;
- 
- 		next = desc.base_address + desc.length;
- 
-@@ -280,8 +284,10 @@ void efi_adjust_memory_range_protection(unsigned long start,
- 				 unprotect_start,
- 				 unprotect_start + unprotect_size,
- 				 status);
-+			break;
- 		}
- 	}
-+	return EFI_SUCCESS;
- }
- 
- static void setup_unaccepted_memory(void)
-@@ -805,9 +811,7 @@ static efi_status_t efi_decompress_kernel(unsigned long *kernel_entry)
- 
- 	*kernel_entry = addr + entry;
- 
--	efi_adjust_memory_range_protection(addr, kernel_total_size);
--
--	return EFI_SUCCESS;
-+	return efi_adjust_memory_range_protection(addr, kernel_total_size);
- }
- 
- static void __noreturn enter_kernel(unsigned long kernel_addr,
-diff --git a/drivers/firmware/efi/libstub/x86-stub.h b/drivers/firmware/efi/libstub/x86-stub.h
-index 37c5a36b9d8c..1c20e99a6494 100644
---- a/drivers/firmware/efi/libstub/x86-stub.h
-+++ b/drivers/firmware/efi/libstub/x86-stub.h
-@@ -5,8 +5,8 @@
- extern void trampoline_32bit_src(void *, bool);
- extern const u16 trampoline_ljmp_imm_offset;
- 
--void efi_adjust_memory_range_protection(unsigned long start,
--					unsigned long size);
-+efi_status_t efi_adjust_memory_range_protection(unsigned long start,
-+						unsigned long size);
- 
- #ifdef CONFIG_X86_64
- efi_status_t efi_setup_5level_paging(void);
+ 	ASSERT(bp->b_mount == mp);
+ 	bp->b_flags |= _XBF_LOGRECOVERY;
 -- 
 2.43.0
 
