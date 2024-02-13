@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-19799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A49C485374A
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:23:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 784298537B1
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:28:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D74D81C2584A
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:23:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E9A228379A
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:28:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9891D5FEF5;
-	Tue, 13 Feb 2024 17:23:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F4C45FEF7;
+	Tue, 13 Feb 2024 17:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sZ2FgIf8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gYT1GtqI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5581E5FDD8;
-	Tue, 13 Feb 2024 17:23:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2AC5F56B;
+	Tue, 13 Feb 2024 17:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845030; cv=none; b=pkJBVbc1SrC2YlHSOY0x95NfbbSCVhEzCMFdVzDGSFQlgQU1l4+VBaSRsWlfgoI/TGDKcziPeRNm9nzaezY7XUPz7uHW6y49IUIYi6TtfLVOmaM0lUaVboY9/5BgUQpsIAUa84IYbk2zHL2PeWMiVYfaYI2x//gnKikLm1RqPmk=
+	t=1707845304; cv=none; b=hGEHN2IM6bjYgkLboQ5z5QhlMgUP9bmK5GN2MSMKyY68aNjJD7VeermGvPihpohEeMWtUsy1/pXP0KcK9k6INuahLtdKy7JdL2S0qYTGCXIR7ebsiKYJA4T1WGs5jpp5+44YtadIhq3Kv31IA2AOy7hj32NuV+GNY0ayBKIWAt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845030; c=relaxed/simple;
-	bh=R2Ww+BDKfkuYHMME2VwVWxu5i6a7gSBTapt0B8n4U54=;
+	s=arc-20240116; t=1707845304; c=relaxed/simple;
+	bh=7m1a6zxxujqA3j0x2TL9jJj26I55zfjN6c7IwMh+Y90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=syt56zCXSdZ3I8sQ22WV/T7uysylcEju4xPn8xY4+qp8KLAK47GsVW0fYPCyobHMiVoENAC9t1O8U06Xm5OrnMHBoghYuBYaFPv7t62wtziD6K+FMiWy4EcFVGAm9LBucGXM9rGwMo4wKQE+3wDng19ynX9ziEJnYqqxmINlWUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sZ2FgIf8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5BBDC433C7;
-	Tue, 13 Feb 2024 17:23:49 +0000 (UTC)
+	 MIME-Version; b=CsxyoB735I/OdZPs7cxHNZrpTGWaF5IgHWEeCITj6FMqpEV6IOOKiQx3AcLH7ihRILDFo/CKWsypfO4cid3yGalxB2ejOL1Mk20VKsPJBQOMS1rdxK/uQNzSLlViChoJeIJRrSbO0YhIqPkCmex5r7tTRLu8KhzYdolhMHOCt2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gYT1GtqI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82920C433F1;
+	Tue, 13 Feb 2024 17:28:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845030;
-	bh=R2Ww+BDKfkuYHMME2VwVWxu5i6a7gSBTapt0B8n4U54=;
+	s=korg; t=1707845304;
+	bh=7m1a6zxxujqA3j0x2TL9jJj26I55zfjN6c7IwMh+Y90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sZ2FgIf8FvqB+dvRI4k7DPy4IzLXnCvZSnFc3QDU5PkaRb4Ll6Bosc3PoCVWvDXWw
-	 T2DoBQP2Z6gmWM1A3mnQ5quq6j+m4PPEa2q+9Nh28Gs60EV0leRZ4tQDqwhjA+r8Jg
-	 vzj3R6NbEFBiWkGKbEGIYaN9VnkWeHgFy9ebGTgM=
+	b=gYT1GtqIHho7JAR9w2Fo8rBc8ORNNUZ0dq12M1FU36sK2O3uxVRaC+pdgQ2Sih/QP
+	 O1G3yLS5lnc9vsxM49lNNQiVFMzu+sQbBpu0iADgOwMx/VGmxqXN1HPo9W+xtaO+uZ
+	 nClmKYn+kZs5BfZ7nHUNm8ZzJ1aJ24i9uKVSzw0g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jai Luthra <j-luthra@ti.com>,
-	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 03/64] dmaengine: ti: k3-udma: Report short packet errors
-Date: Tue, 13 Feb 2024 18:20:49 +0100
-Message-ID: <20240213171844.830813079@linuxfoundation.org>
+Subject: [PATCH 6.6 041/121] x86/efistub: Give up if memory attribute protocol returns an error
+Date: Tue, 13 Feb 2024 18:20:50 +0100
+Message-ID: <20240213171854.197828144@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
-References: <20240213171844.702064831@linuxfoundation.org>
+In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
+References: <20240213171852.948844634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +61,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jai Luthra <j-luthra@ti.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit bc9847c9ba134cfe3398011e343dcf6588c1c902 ]
+[ Upstream commit a7a6a01f88e87dec4bf2365571dd2dc7403d52d0 ]
 
-Propagate the TR response status to the device using BCDMA
-split-channels. For example CSI-RX driver should be able to check if a
-frame was not transferred completely (short packet) and needs to be
-discarded.
+The recently introduced EFI memory attributes protocol should be used
+if it exists to ensure that the memory allocation created for the kernel
+permits execution. This is needed for compatibility with tightened
+requirements related to Windows logo certification for x86 PCs.
 
-Fixes: 25dcb5dd7b7c ("dmaengine: ti: New driver for K3 UDMA")
-Signed-off-by: Jai Luthra <j-luthra@ti.com>
-Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Link: https://lore.kernel.org/r/20240103-tr_resp_err-v1-1-2fdf6d48ab92@ti.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Currently, we simply strip the execute protect (XP) attribute from the
+entire range, but this might be rejected under some firmware security
+policies, and so in a subsequent patch, this will be changed to only
+strip XP from the executable region that runs early, and make it
+read-only (RO) as well.
+
+In order to catch any issues early, ensure that the memory attribute
+protocol works as intended, and give up if it produces spurious errors.
+
+Note that the DXE services based fallback was always based on best
+effort, so don't propagate any errors returned by that API.
+
+Fixes: a1b87d54f4e4 ("x86/efistub: Avoid legacy decompressor when doing EFI boot")
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/ti/k3-udma.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/firmware/efi/libstub/x86-stub.c | 24 ++++++++++++++----------
+ drivers/firmware/efi/libstub/x86-stub.h |  4 ++--
+ 2 files changed, 16 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/dma/ti/k3-udma.c b/drivers/dma/ti/k3-udma.c
-index b86b809eb1f7..82e7acfda6ed 100644
---- a/drivers/dma/ti/k3-udma.c
-+++ b/drivers/dma/ti/k3-udma.c
-@@ -3963,6 +3963,7 @@ static void udma_desc_pre_callback(struct virt_dma_chan *vc,
- {
- 	struct udma_chan *uc = to_udma_chan(&vc->chan);
- 	struct udma_desc *d;
-+	u8 status;
- 
- 	if (!vd)
- 		return;
-@@ -3972,12 +3973,12 @@ static void udma_desc_pre_callback(struct virt_dma_chan *vc,
- 	if (d->metadata_size)
- 		udma_fetch_epib(uc, d);
- 
--	/* Provide residue information for the client */
- 	if (result) {
- 		void *desc_vaddr = udma_curr_cppi5_desc_vaddr(d, d->desc_idx);
- 
- 		if (cppi5_desc_get_type(desc_vaddr) ==
- 		    CPPI5_INFO0_DESC_TYPE_VAL_HOST) {
-+			/* Provide residue information for the client */
- 			result->residue = d->residue -
- 					  cppi5_hdesc_get_pktlen(desc_vaddr);
- 			if (result->residue)
-@@ -3986,7 +3987,12 @@ static void udma_desc_pre_callback(struct virt_dma_chan *vc,
- 				result->result = DMA_TRANS_NOERROR;
- 		} else {
- 			result->residue = 0;
--			result->result = DMA_TRANS_NOERROR;
-+			/* Propagate TR Response errors to the client */
-+			status = d->hwdesc[0].tr_resp_base->status;
-+			if (status)
-+				result->result = DMA_TRANS_ABORTED;
-+			else
-+				result->result = DMA_TRANS_NOERROR;
- 		}
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index 70b325a2f1f3..5d0934ae7dc8 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -223,8 +223,8 @@ static void retrieve_apple_device_properties(struct boot_params *boot_params)
  	}
  }
+ 
+-void efi_adjust_memory_range_protection(unsigned long start,
+-					unsigned long size)
++efi_status_t efi_adjust_memory_range_protection(unsigned long start,
++						unsigned long size)
+ {
+ 	efi_status_t status;
+ 	efi_gcd_memory_space_desc_t desc;
+@@ -236,13 +236,17 @@ void efi_adjust_memory_range_protection(unsigned long start,
+ 	rounded_end = roundup(start + size, EFI_PAGE_SIZE);
+ 
+ 	if (memattr != NULL) {
+-		efi_call_proto(memattr, clear_memory_attributes, rounded_start,
+-			       rounded_end - rounded_start, EFI_MEMORY_XP);
+-		return;
++		status = efi_call_proto(memattr, clear_memory_attributes,
++					rounded_start,
++					rounded_end - rounded_start,
++					EFI_MEMORY_XP);
++		if (status != EFI_SUCCESS)
++			efi_warn("Failed to clear EFI_MEMORY_XP attribute\n");
++		return status;
+ 	}
+ 
+ 	if (efi_dxe_table == NULL)
+-		return;
++		return EFI_SUCCESS;
+ 
+ 	/*
+ 	 * Don't modify memory region attributes, they are
+@@ -255,7 +259,7 @@ void efi_adjust_memory_range_protection(unsigned long start,
+ 		status = efi_dxe_call(get_memory_space_descriptor, start, &desc);
+ 
+ 		if (status != EFI_SUCCESS)
+-			return;
++			break;
+ 
+ 		next = desc.base_address + desc.length;
+ 
+@@ -280,8 +284,10 @@ void efi_adjust_memory_range_protection(unsigned long start,
+ 				 unprotect_start,
+ 				 unprotect_start + unprotect_size,
+ 				 status);
++			break;
+ 		}
+ 	}
++	return EFI_SUCCESS;
+ }
+ 
+ static void setup_unaccepted_memory(void)
+@@ -837,9 +843,7 @@ static efi_status_t efi_decompress_kernel(unsigned long *kernel_entry)
+ 
+ 	*kernel_entry = addr + entry;
+ 
+-	efi_adjust_memory_range_protection(addr, kernel_total_size);
+-
+-	return EFI_SUCCESS;
++	return efi_adjust_memory_range_protection(addr, kernel_total_size);
+ }
+ 
+ static void __noreturn enter_kernel(unsigned long kernel_addr,
+diff --git a/drivers/firmware/efi/libstub/x86-stub.h b/drivers/firmware/efi/libstub/x86-stub.h
+index 2748bca192df..4433d0f97441 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.h
++++ b/drivers/firmware/efi/libstub/x86-stub.h
+@@ -7,8 +7,8 @@ extern struct boot_params *boot_params_pointer asm("boot_params");
+ extern void trampoline_32bit_src(void *, bool);
+ extern const u16 trampoline_ljmp_imm_offset;
+ 
+-void efi_adjust_memory_range_protection(unsigned long start,
+-					unsigned long size);
++efi_status_t efi_adjust_memory_range_protection(unsigned long start,
++						unsigned long size);
+ 
+ #ifdef CONFIG_X86_64
+ efi_status_t efi_setup_5level_paging(void);
 -- 
 2.43.0
 
