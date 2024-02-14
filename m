@@ -1,156 +1,137 @@
-Return-Path: <stable+bounces-20156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 239E1854537
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 10:29:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C5348546B5
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 10:57:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FA521C22476
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 09:29:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFF961C2284E
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 09:57:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 598A0134C5;
-	Wed, 14 Feb 2024 09:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1E5D1428A;
+	Wed, 14 Feb 2024 09:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="lUJ+pxNd"
+	dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b="BCLoYihU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp93.iad3b.emailsrvr.com (smtp93.iad3b.emailsrvr.com [146.20.161.93])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C241642A
-	for <stable@vger.kernel.org>; Wed, 14 Feb 2024 09:29:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0535A79DF
+	for <stable@vger.kernel.org>; Wed, 14 Feb 2024 09:57:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=146.20.161.93
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707902957; cv=none; b=ZieiWKrcT4qPzE7I+yPCI9MOKGiGdTqd49FfSzXJ/VR5Pnu3XjBBI1+1mvEhQsg8jJJBn6YPe2dqrI7h/Inn5F+z/0tI6c88p1b/Y0TlCyJfbty7l5BVNbQ6JhQVv6eZulOFK/J9CFjwgB8g6GBMLNJYmfCAdaC51Vp3BZdq/k8=
+	t=1707904622; cv=none; b=PrUwdufvG9K4GTjNexj7168iTg3gcl1UJsDr+6u3dfhaVaUIzgf6/qWTclmkZiWTOfU+p8zvcV86nBNw03llNjuC5NVZHHbHCNAMWe+B5HjKPIVsi7q9xQCfMFZLyz08mx9BuyrBwu588ZGOt2MxwEQ0lbMiA4Ldjtp2jsBavsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707902957; c=relaxed/simple;
-	bh=Upu2SWUrhW/35hgoaD1ciLNHHP2AgZTNscBKJpsggnc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KhuXpLxC4eqpvhy2LJdJWC6Qo8b8ybrd8BM4hgxJNuyeD+ipUUu2aPS/tA+t5H6xET1qnOFDcvDWgE2ht6e+NYoEZBehX92oiHuIuoj6TnIrJf83VuLPlGjdaemrMsa+rSuIUbUypMNQNslgn1Lkr2wptE58eQ8EM+EY/tI409g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=lUJ+pxNd; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-411de7c6b3dso5109195e9.3
-        for <stable@vger.kernel.org>; Wed, 14 Feb 2024 01:29:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1707902953; x=1708507753; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0IDjaBFrcqK08V4TvukbGfzSrUeUUgCPpW8iYr8qsNw=;
-        b=lUJ+pxNdglpep3gGYwdLtttirwi0LU5NO8sKEJHz2rWcaHRRfTKX8LPlW81TLqaCiU
-         5pSuXOU/O/2eJDgp2gTOj2WDiPfkXt6oSenF51ELuoOb0E0OuhNMr7q2aUPjeg4eQ8Vg
-         Ka0yrTIU7QUiLvi1ij1mTonhj1Kzl2Ddd7Hc/SLg6Az1jqvLxYIiKkDFfys6LAFK1F2w
-         4u6NwTTd6+DiyFHj/kz3BLbBaL438v2umOhAU6HiMjxQXwyC4tj8GF3EDijD1+YBRV/j
-         C1SBHu8MJUxiLmsA+r1VqE269Ui9XH33tA/pFAfXBYeIL/5M5jDZulzT9uBV1xMI3mVI
-         aXuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707902953; x=1708507753;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0IDjaBFrcqK08V4TvukbGfzSrUeUUgCPpW8iYr8qsNw=;
-        b=ww/djk3jB8eir+Hx2C7jHt0kMaxl8HzRXX836guE5CqOPgJ5Jo8OQUNmocu1iiKQy8
-         myRtzWIpK02zrNf4NqW1CDyOQC4QDqvm7HKLYD3LK00vPn8OFLIQH9hmlGJxxIs7nMtr
-         ZR4b+M5LFjmDGN6w9irQQifl8ChDrR4nzLJCjIgkU8xsmKRoubWTWpaKzVi/vlTUtaHt
-         oSjx2fs+7b2FG4o8mmdP2OWAfzd9gNYt9tbb1PW2ULQOs+ygvRVYpp9IjIax8kndVcJs
-         zANJbTJNBOQUMkysoZOv8b+zIXgDud+rTVV9uquLBLQDr8JSKQRyLMSzzwgPKyBP3yzJ
-         hb0A==
-X-Forwarded-Encrypted: i=1; AJvYcCXRdNWgK4gz6QAkjrNu64zr9YVM9k/3kwldJlu/WxHrTAha11MaD2Zb6e0PqV191jhUrXTjJNVYY1PAac6V9n/4iBE45GeU
-X-Gm-Message-State: AOJu0YyTmzSedrs2fIiP/jPkbf8KBYVdAwScLWLArlbCzuNMKgM0847B
-	xQj6lRGP0ablU+3UjLBzrpFUhzDmFC0CAY/1HLmtQniJSmG0BFVW6HYiCcrdlLE=
-X-Google-Smtp-Source: AGHT+IF35kx8fDcqPegx+LX9rbLQtQ9LFkKnwSLkrtYsJzFgxf26jqeRQbcx5k1Pg7huYacEIrcXHQ==
-X-Received: by 2002:a05:600c:a48:b0:410:cc53:a358 with SMTP id c8-20020a05600c0a4800b00410cc53a358mr1975751wmq.16.1707902953626;
-        Wed, 14 Feb 2024 01:29:13 -0800 (PST)
-Received: from localhost (cst-prg-65-8.cust.vodafone.cz. [46.135.65.8])
-        by smtp.gmail.com with ESMTPSA id u3-20020a05600c00c300b00411ec07674esm1012499wmm.31.2024.02.14.01.29.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Feb 2024 01:29:13 -0800 (PST)
-Date: Wed, 14 Feb 2024 10:29:11 +0100
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Samuel Holland <samuel.holland@sifive.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>, linux-kernel@vger.kernel.org, 
-	Conor Dooley <conor@kernel.org>, linux-riscv@lists.infradead.org, 
-	Stefan O'Rear <sorear@fastmail.com>, stable@vger.kernel.org
-Subject: Re: [PATCH -fixes v3 2/2] riscv: Save/restore envcfg CSR during CPU
- suspend
-Message-ID: <20240214-cd40380c3969dc9450f05848@orel>
-References: <20240214090206.195754-1-samuel.holland@sifive.com>
- <20240214090206.195754-3-samuel.holland@sifive.com>
+	s=arc-20240116; t=1707904622; c=relaxed/simple;
+	bh=/ld5vGvXRP2hSvgBY+VJzWtlXK+B5HhsvmC/rXZS9F8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TJH4LGGqcRSjKrVLjEGBsmJ7MjVpEwgDTgGSEpq8iF1+blmbiYd+6YKLKhdGiB35BddDJdgaO+vH9PeAPTLvebJNhuAMdgXYEEJw+POUWDCSQP3sxA3cJMjRw0Dxk+wH/ofmOu8tnCEUHftw3lfHq65X7nJD9w+sbNMwFHqZ0OU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk; spf=pass smtp.mailfrom=mev.co.uk; dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b=BCLoYihU; arc=none smtp.client-ip=146.20.161.93
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mev.co.uk
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
+	s=20221208-6x11dpa4; t=1707904015;
+	bh=/ld5vGvXRP2hSvgBY+VJzWtlXK+B5HhsvmC/rXZS9F8=;
+	h=Date:Subject:To:From:From;
+	b=BCLoYihUA6MDtJU8A9Cz/n5HDcGpWb7P4OlVDK48Rd0yVD8NKSuNGp+KPDcFb7ruO
+	 NfeGZtZTW5QIYSYjRlKmVs7DJFQ1wP6/JJnyRb88XfF+NHLpyndVWl7UJ23COoFuP/
+	 6icn2jhdcMaQ0HkjEf6TnEEw43T9RF7P0BEAjxTo=
+X-Auth-ID: abbotti@mev.co.uk
+Received: by smtp12.relay.iad3b.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id F3306C00BA;
+	Wed, 14 Feb 2024 04:46:54 -0500 (EST)
+Message-ID: <7b29252e-41dc-4fb5-a8aa-050b9c63f7bb@mev.co.uk>
+Date: Wed, 14 Feb 2024 09:46:54 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240214090206.195754-3-samuel.holland@sifive.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] comedi: comedi_test: Prevent timers rescheduling during
+ deletion
+To: linux-kernel@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ H Hartley Sweeten <hsweeten@visionengravers.com>, stable@vger.kernel.org
+References: <20240213181004.105072-1-abbotti@mev.co.uk>
+Content-Language: en-GB
+From: Ian Abbott <abbotti@mev.co.uk>
+Organization: MEV Ltd.
+In-Reply-To: <20240213181004.105072-1-abbotti@mev.co.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Classification-ID: 882c513c-da9e-419c-9719-dff49a88041d-1-1
 
-On Wed, Feb 14, 2024 at 01:01:57AM -0800, Samuel Holland wrote:
-> The value of the [ms]envcfg CSR is lost when entering a nonretentive
-> idle state, so the CSR must be rewritten when resuming the CPU.
+On 13/02/2024 18:10, Ian Abbott wrote:
+> The comedi_test devices have a couple of timers (ai_timer and ao_timer)
+> that can be started to simulate hardware interrupts.  Their expiry
+> functions normally reschedule the timer.  The driver code calls either
+> del_timer_sync() or del_timer() to delete the timers from the queue, but
+> does not currently prevent the timers from rescheduling themselves so
+> synchronized deletion may be ineffective.
 > 
-> The [ms]envcfg CSR was added in version 1.12 of the privileged ISA, and
-> is used by extensions other than Zicboz. However, the kernel currenly
-> has no way to determine the privileged ISA version. Since Zicboz is the
-> only in-kernel user of this CSR so far, use it as a proxy for
-> determining if the CSR is implemented.
+> Add a couple of boolean members (one for each timer: ai_timer_enable and
+> ao_timer_enable) to the device private data structure to indicate
+> whether the timers are allowed to reschedule themselves.  Set the member
+> to true when adding the timer to the queue, and to false when deleting
+> the timer from the queue in the waveform_ai_cancel() and
+> waveform_ao_cancel() functions.
 > 
-> Cc: <stable@vger.kernel.org> # v6.7+
-> Fixes: 43c16d51a19b ("RISC-V: Enable cbo.zero in usermode")
-> Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+> The del_timer_sync() function is also called from the waveform_detach()
+> function, but the timer enable members will already be set to false when
+> that function is called, so no change is needed there.
+> 
+> Fixes: 403fe7f34e33 ("staging: comedi: comedi_test: fix timer race conditions")
+> Cc: <stable@vger.kernel.org> # 4.4+
+> Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
 > ---
+>   drivers/comedi/drivers/comedi_test.c | 37 +++++++++++++++++++++++++---
+>   1 file changed, 33 insertions(+), 4 deletions(-)
 > 
-> Changes in v3:
->  - Check for Zicboz instead of the privileged ISA version
-> 
-> Changes in v2:
->  - Check for privileged ISA v1.12 instead of the specific CSR
->  - Use riscv_has_extension_likely() instead of new ALTERNATIVE()s
-> 
->  arch/riscv/include/asm/suspend.h | 1 +
->  arch/riscv/kernel/suspend.c      | 4 ++++
->  2 files changed, 5 insertions(+)
-> 
-> diff --git a/arch/riscv/include/asm/suspend.h b/arch/riscv/include/asm/suspend.h
-> index 02f87867389a..491296a335d0 100644
-> --- a/arch/riscv/include/asm/suspend.h
-> +++ b/arch/riscv/include/asm/suspend.h
-> @@ -14,6 +14,7 @@ struct suspend_context {
->  	struct pt_regs regs;
->  	/* Saved and restored by high-level functions */
->  	unsigned long scratch;
-> +	unsigned long envcfg;
->  	unsigned long tvec;
->  	unsigned long ie;
->  #ifdef CONFIG_MMU
-> diff --git a/arch/riscv/kernel/suspend.c b/arch/riscv/kernel/suspend.c
-> index 239509367e42..28166006688e 100644
-> --- a/arch/riscv/kernel/suspend.c
-> +++ b/arch/riscv/kernel/suspend.c
-> @@ -15,6 +15,8 @@
->  void suspend_save_csrs(struct suspend_context *context)
->  {
->  	context->scratch = csr_read(CSR_SCRATCH);
-> +	if (riscv_cpu_has_extension_unlikely(smp_processor_id(), RISCV_ISA_EXT_ZICBOZ))
-> +		context->envcfg = csr_read(CSR_ENVCFG);
->  	context->tvec = csr_read(CSR_TVEC);
->  	context->ie = csr_read(CSR_IE);
->  
-> @@ -36,6 +38,8 @@ void suspend_save_csrs(struct suspend_context *context)
->  void suspend_restore_csrs(struct suspend_context *context)
->  {
->  	csr_write(CSR_SCRATCH, context->scratch);
-> +	if (riscv_cpu_has_extension_unlikely(smp_processor_id(), RISCV_ISA_EXT_ZICBOZ))
-> +		csr_write(CSR_ENVCFG, context->envcfg);
->  	csr_write(CSR_TVEC, context->tvec);
->  	csr_write(CSR_IE, context->ie);
->  
-> -- 
-> 2.43.0
->
+> diff --git a/drivers/comedi/drivers/comedi_test.c b/drivers/comedi/drivers/comedi_test.c
+> index 30ea8b53ebf8..7fefe0de0bcc 100644
+> --- a/drivers/comedi/drivers/comedi_test.c
+> +++ b/drivers/comedi/drivers/comedi_test.c
+> @@ -87,6 +87,8 @@ struct waveform_private {
+>   	struct comedi_device *dev;	/* parent comedi device */
+>   	u64 ao_last_scan_time;		/* time of previous AO scan in usec */
+>   	unsigned int ao_scan_period;	/* AO scan period in usec */
+> +	bool ai_timer_enable:1;		/* should AI timer be running? */
+> +	bool ao_timer_enable:1;		/* should AO timer be running? */
+>   	unsigned short ao_loopbacks[N_CHANS];
+>   };
+>   
+> @@ -232,12 +234,18 @@ static void waveform_ai_timer(struct timer_list *t)
+>   	if (cmd->stop_src == TRIG_COUNT && async->scans_done >= cmd->stop_arg) {
+>   		async->events |= COMEDI_CB_EOA;
+>   	} else {
+> +		unsigned long flags;
+> +
+>   		if (devpriv->ai_convert_time > now)
+>   			time_increment = devpriv->ai_convert_time - now;
+>   		else
+>   			time_increment = 1;
+> -		mod_timer(&devpriv->ai_timer,
+> -			  jiffies + usecs_to_jiffies(time_increment));
+> +		spin_lock_irqsave(&dev->spinlock, flags);
+> +		if (devpriv->ai_timer_enable) {
+> +			mod_timer(&devpriv->ai_timer,
+> +				  jiffies + usecs_to_jiffies(time_increment));
+> +		}
+> +		spin_unlock_irqrestore(&dev->spinlock, flags);
 
+Actually, I should have used a plain old spin_lock() in the above (and 
+spin_lock_bh() elsewhere in the code) instead of spin_lock_irqsave(), 
+since there are no hard interrupts involved.
 
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+I'll send a v2 patch shortly.
+
+-- 
+-=( Ian Abbott <abbotti@mev.co.uk> || MEV Ltd. is a company  )=-
+-=( registered in England & Wales.  Regd. number: 02862268.  )=-
+-=( Regd. addr.: S11 & 12 Building 67, Europa Business Park, )=-
+-=( Bird Hall Lane, STOCKPORT, SK3 0XA, UK. || www.mev.co.uk )=-
+
 
