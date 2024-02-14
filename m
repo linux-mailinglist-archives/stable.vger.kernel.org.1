@@ -1,159 +1,110 @@
-Return-Path: <stable+bounces-20136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD90385424E
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 06:22:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AE4485427B
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 06:42:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C29F4B23776
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 05:22:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DB461C24508
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 05:42:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB81DC14F;
-	Wed, 14 Feb 2024 05:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8381D30B;
+	Wed, 14 Feb 2024 05:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="OB2tvQZv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="olwoA2tA"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2067.outbound.protection.outlook.com [40.107.223.67])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC678C147
-	for <stable@vger.kernel.org>; Wed, 14 Feb 2024 05:22:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.67
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707888153; cv=fail; b=ifc0xg83s8NGC4Mrn1mQVWh0xBg123EGR25Qvzb110EktMNlFNUtVVTpjXSSA5WfV2BZD6pDxq0Xfnq9GbLeDp804lD3/8yQ0+6iUof6kLGvIg9pP5MMQFT2RymbETBektfuwMumhb/0R4sLQ/09JU/iV2VFRwcGPfszrzzgZYw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707888153; c=relaxed/simple;
-	bh=3s9b+l8cAtrkdFRSRa+uWlun1hhC2asd1F1Qw9AZVB0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=otuqZ8p1syH1DgNQ3Jo9hX/WIXr/zycpQ6ounFV1fJB5g6rgkSABG55kBo4FCA6psYrL3qPRrYwfMBNBHkQf2ZMzbqDg17yiMQkMgNJ+rgTyswleT61h16sIRtFYxeuNfQ2cops9xdyK7ki+/EKekRWSEE1IzTVLSjkNQe/jPYM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=OB2tvQZv; arc=fail smtp.client-ip=40.107.223.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=WIZqMrIreR2bMNKfCjcocrB3RfO50RQr94Ux8aOiBgFW7xZjuBzX/qWJ8hAMHUvb9tkc1OZzXKing0g6ii7hpFD6XOtpO6Nkfbu6v8Qgc4mZ5XIweMQiW6O3x3jVGLOm4bIfclblzx05W//SvObbWSgE6R3L8FaGrWZg5dD42Cci+t2O9+GJaOw586m9polMf2VhIQBZdbmEnO4eIpq3PNQ41Qkp6ULXmFzYkEDXGkDimWjYekRqgtWOSi0ZDBX1nI1GavEMSw973vPwaekLLXPN4LdDwla2Q6pOMy5BpKbB2S4qec4SI92Sbs/IOVTg+fmiP+bOsDOQNS9PORMMIA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qkdu6Myyqg8Cmg4PTCDnX9YhrNcYLp3uOeKpuuacY9c=;
- b=J62AqdRLKu1m1MxsAarTDssrrarVXUXv0V6ymV17tdUrHxXWuKLbKPZALsTqtINZidQPuT2FvuqN9BRV/Sk/u8x2m0HC9N2/VVHMC7lZQ52xCMBS40cIMMKEWBre3lRv+2bpPVNOyatWT+mtnvzo+0iIoQcfZj5F8c1xufPgHwPzO3tVhbwW2ezzXejqissuLfFzlLLgkEKOkriLofUdmPsZng6mLjBJ7mKKGtrCrqzh+ULOj3S3K6WQNvK8F0pbLHDiauLIyyhsLqDrZhaeoJEK9YuYwLukpHJd3oGBphw/jHol5RGqewesoWC92BWK9DhspejgpxNQmqSul62Dpw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qkdu6Myyqg8Cmg4PTCDnX9YhrNcYLp3uOeKpuuacY9c=;
- b=OB2tvQZv+Co0DPZSxnjmkmsSxHgVWtxoXniNr44Bj157hBV4WMqM5ZYVPBkGso4EqQ1ySdCvztFONbbe2RdOlsa9j/qZsWGZThhm4o5kSn2a5bYhBzX1kfaB9gdm5AzKIpyLfflSCugHZnKLHa0Kcu8uP46lAIIRxRY+9yXjINQ=
-Received: from DM6PR12CA0003.namprd12.prod.outlook.com (2603:10b6:5:1c0::16)
- by DS7PR12MB5837.namprd12.prod.outlook.com (2603:10b6:8:78::6) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7292.21; Wed, 14 Feb 2024 05:22:29 +0000
-Received: from CY4PEPF0000EE34.namprd05.prod.outlook.com
- (2603:10b6:5:1c0:cafe::b2) by DM6PR12CA0003.outlook.office365.com
- (2603:10b6:5:1c0::16) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7270.39 via Frontend
- Transport; Wed, 14 Feb 2024 05:22:29 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CY4PEPF0000EE34.mail.protection.outlook.com (10.167.242.40) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7292.25 via Frontend Transport; Wed, 14 Feb 2024 05:22:28 +0000
-Received: from amd-X570-AORUS-ELITE.amd.com (10.180.168.240) by
- SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 13 Feb 2024 23:22:25 -0600
-From: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
-To: <dri-devel@lists.freedesktop.org>, <amd-gfx@lists.freedesktop.org>,
-	<intel-gfx@lists.freedesktop.org>
-CC: <christian.koenig@amd.com>, <alexander.deucher@amd.com>,
-	<matthew.auld@intel.com>, <mario.limonciello@amd.com>, <daniel@ffwll.ch>,
-	Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>,
-	<stable@vger.kernel.org>
-Subject: [PATCH 1/2] drm/buddy: Fix alloc_range() error handling code
-Date: Wed, 14 Feb 2024 10:52:07 +0530
-Message-ID: <20240214052208.3035-1-Arunpravin.PaneerSelvam@amd.com>
-X-Mailer: git-send-email 2.25.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9726133EA;
+	Wed, 14 Feb 2024 05:42:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1707889339; cv=none; b=uvJgiwzfmKUZk0bajge/l32k9ZUAFzTyB4If8lHFzGURlEAoXfXEio77pkR40wjKNRH+lunAQKZ4EiY+v47mYjIxHGnr3MiMLChG4QC9CBBofvm3rh9YdgaPLZM6LFjtGW3doyjpGZr32ai/BGOggc0AOPB1DolW23Gbatjdohg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1707889339; c=relaxed/simple;
+	bh=4mDh0LX7kjicHsC+/bogzJBPJ1vYaIpsGeKF5S23PFQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kJisoaT1frzfWLKRuXUkMbUA3b/HXpd9QLgPf7XmDQxSUj/jB/e/lYwsOGAKaqtszfK7BZvYTtZSJnEh9Xlk1Jy+2Rr/F1yQFTL0SYkTdP7vTE9tqcMg3vHrzt15vm0jwecLjf7MfNq0ehnis0uyqocxuVKUYSKSx89Eq1tKNfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=olwoA2tA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5D31C433F1;
+	Wed, 14 Feb 2024 05:42:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707889339;
+	bh=4mDh0LX7kjicHsC+/bogzJBPJ1vYaIpsGeKF5S23PFQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=olwoA2tAvRitfGmHoVY0DqilINYX9nwBfOyF7olEZcMqx33n0FtBZWIgYQgJCaGxl
+	 exJUOUaJzi7Ssc3LMxh6CGIgOZyDtszGRinH1/oD7VING9JhKh5Demig9tCgV4UzH+
+	 6+zVBaL5wt/3ZYigGrAXeJK7TmLZVHv1VNwolH+c9VTX4CIXpWjP1nuhifk5Ky0UZJ
+	 rVujQVWmBoxY6gKOblG88WN2ZJDYWzP2EbFD7aZCpT9N0UVV4sv9e+tSkE0ToAY1vq
+	 rx0sNpYOF3pIBRiE9ULnQUmEXcdCsOCZe5VCseayKDQckiijX/y6Axxe20LQg6uNd3
+	 MEDY2FUHMijAg==
+Date: Tue, 13 Feb 2024 23:42:16 -0600
+From: Bjorn Andersson <andersson@kernel.org>
+To: Auditya Bhattaram <quic_audityab@quicinc.com>
+Cc: konrad.dybcio@linaro.org, linux-arm-msm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v4] soc: qcom: mdt_loader: Add Upperbounds check for
+ program header access
+Message-ID: <y6em73mzbh47fzpgfvfsrypw5ktgt6zaqfujscaxkjuqivlxcr@vcke7w4omq7b>
+References: <20240213080010.16924-1-quic_audityab@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE34:EE_|DS7PR12MB5837:EE_
-X-MS-Office365-Filtering-Correlation-Id: bf322ab0-1c77-4c89-2fff-08dc2d1cf02b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	N1oh+SLwFdgW13Wtg+wIpWTRo2hV+Zj5BHDVflKJXgnoLav5+W2nkxOJ30jAonPieY4qMI8NtGvqXc2VEpmZ0Ko8RuSZEE+hAbfD8qSnDwZGyQ9AwltpqLpt8nem4Hd45NmUe+0ARdlMXNG3FKdgx9ODMCwqBT65d88sH0CFiXeDji99F7OPAl8GNAs/l1AHPDWEGdqwunC3u2xJzISlUZlusTVhp1Ypi4h9FNV28IkbznDjT7PAIg/ub/LQSrPkjDzVZxfAKYejcTU4Du+3tqOcqmam190W82MSqpKWIMatvMaPLgrY7NhKZWmy4XcRfwY4yOMNWwN3SHxDk72rT9Pp8wzYDz53WJ5aG2xKR/SvN1tslaX0eDnjkeb3mp8kp+DgFIv1ikdny9n/6dDpwXBvfdnkiINhteJmEDb3vCiO4OvOAu36VBi93zeJtCF0FAhuFzbsi4TFOiDR80/NcFdWU6NQpn2H6vvol9WKbxF65meFYzSutIelSGamQxgS9rmSCkB+2GLYbQDjFaB8bXrto0VjMWztFaIB8d2PPrILJOBT9SnOj1zgIfF1xmFen5JeRiJ8ZyATUXQYWctAmg==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(396003)(136003)(346002)(376002)(39860400002)(230922051799003)(451199024)(1800799012)(64100799003)(82310400011)(186009)(36840700001)(46966006)(40470700004)(2906002)(966005)(7696005)(36756003)(1076003)(110136005)(6666004)(82740400003)(83380400001)(426003)(54906003)(26005)(336012)(478600001)(316002)(2616005)(41300700001)(70586007)(16526019)(70206006)(8676002)(8936002)(4326008)(86362001)(81166007)(5660300002)(356005);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Feb 2024 05:22:28.9745
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: bf322ab0-1c77-4c89-2fff-08dc2d1cf02b
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000EE34.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5837
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240213080010.16924-1-quic_audityab@quicinc.com>
 
-Few users have observed display corruption when they boot
-the machine to KDE Plasma or playing games. We have root
-caused the problem that whenever alloc_range() couldn't
-find the required memory blocks the function was returning
-SUCCESS in some of the corner cases.
+On Tue, Feb 13, 2024 at 01:30:10PM +0530, Auditya Bhattaram wrote:
+> hash_index is evaluated by looping phdrs till QCOM_MDT_TYPE_HASH
+> is found. Add an upperbound check to phdrs to access within elf size.
+> 
 
-The right approach would be if the total allocated size
-is less than the required size, the function should
-return -ENOSPC.
+How is this compatible with what is being observed on SM8450 and
+implemented in commit 8bd42e2341a7 ("soc: qcom: mdt_loader: Allow hash
+segment to be split out"?
 
-Cc: <stable@vger.kernel.org> # 6.7+
-Fixes: 0a1844bf0b53 ("drm/buddy: Improve contiguous memory allocation")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3097
-Tested-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20240207174456.341121-1-Arunpravin.PaneerSelvam@amd.com/
-Acked-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Signed-off-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
----
- drivers/gpu/drm/drm_buddy.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+Regards,
+Bjorn
 
-diff --git a/drivers/gpu/drm/drm_buddy.c b/drivers/gpu/drm/drm_buddy.c
-index f57e6d74fb0e..c1a99bf4dffd 100644
---- a/drivers/gpu/drm/drm_buddy.c
-+++ b/drivers/gpu/drm/drm_buddy.c
-@@ -539,6 +539,12 @@ static int __alloc_range(struct drm_buddy *mm,
- 	} while (1);
- 
- 	list_splice_tail(&allocated, blocks);
-+
-+	if (total_allocated < size) {
-+		err = -ENOSPC;
-+		goto err_free;
-+	}
-+
- 	return 0;
- 
- err_undo:
-
-base-commit: 2c80a2b715df75881359d07dbaacff8ad411f40e
--- 
-2.25.1
-
+> Fixes: 64fb5eb87d58 ("soc: qcom: mdt_loader: Allow hash to reside in any segment")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Auditya Bhattaram <quic_audityab@quicinc.com>
+> Acked-by: Mukesh Ojha <quic_mojha@quicinc.com>
+> ---
+> Changes in v4:
+>  - Added additional prints incase of Invalid access.
+> Link to v3 https://lore.kernel.org/stable/1c91c653-cebe-4407-bdd6-cfc73b64c0fb@quicinc.com
+> Link to v2 https://lore.kernel.org/linux-arm-msm/9773d189-c896-d5c5-804c-e086c24987b4@quicinc.com/T/#t
+> Link to v1 https://lore.kernel.org/linux-arm-msm/5d7a3b97-d840-4863-91a0-32c1d8e7532f@linaro.org/T/#t
+> ---
+>  drivers/soc/qcom/mdt_loader.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/drivers/soc/qcom/mdt_loader.c b/drivers/soc/qcom/mdt_loader.c
+> index 6f177e46fa0f..1a79a7bba468 100644
+> --- a/drivers/soc/qcom/mdt_loader.c
+> +++ b/drivers/soc/qcom/mdt_loader.c
+> @@ -145,6 +143,13 @@ void *qcom_mdt_read_metadata(const struct firmware *fw, size_t *data_len,
+>  	if (phdrs[0].p_type == PT_LOAD)
+>  		return ERR_PTR(-EINVAL);
+> 
+> +	if (((size_t)(phdrs + ehdr->e_phnum)) > ((size_t)ehdr + fw->size)) {
+> +		dev_err(dev,
+> +			"Invalid phdrs access for fw: %s, e_phnum: %u, fw->size: %zu\n",
+> +			fw_name, ehdr->e_phnum, fw->size);
+> +		return ERR_PTR(-EINVAL);
+> +	}
+> +
+>  	for (i = 1; i < ehdr->e_phnum; i++) {
+>  		if ((phdrs[i].p_flags & QCOM_MDT_TYPE_MASK) == QCOM_MDT_TYPE_HASH) {
+>  			hash_segment = i;
+> --
+> 2.17.1
+> 
 
