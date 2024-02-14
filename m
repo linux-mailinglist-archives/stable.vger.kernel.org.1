@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-20192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81F3C854CA6
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 16:27:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39216854CA7
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 16:27:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 227E2B27213
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 15:26:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BBFD1C2158F
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 15:27:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0BDD5C914;
-	Wed, 14 Feb 2024 15:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C397B5D480;
+	Wed, 14 Feb 2024 15:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m7C+Xs4F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mTzjSrhi"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B07F15C910
-	for <Stable@vger.kernel.org>; Wed, 14 Feb 2024 15:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 849C65D467
+	for <Stable@vger.kernel.org>; Wed, 14 Feb 2024 15:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707924409; cv=none; b=G8xuUVcswf+5L6Q7GKbaotRwvqHZ2tCNU9Wqkx8nHyKg9JSKvqlDFyEir6iuBy9JRHCCUejqN96Mgyh7jcycireHOUTctPPV6sexLPAp/1YeTWrGRC7uDMhZgFAx3aePKGxDL+bFu3co7bCwplVeckmi53U+mNrHlofxwVB9UOM=
+	t=1707924413; cv=none; b=YcTm0j7QKVUQfcVbtS3PyAoCoMBubTDwT2BFy0iGi11sBrGbF42D9kdToqIP0TeUIEPF51lq5CTK18RSK2rbeet4uwQQk+ckN+Wr6IMxSeHdePVW/qSfZ8XqVcINXjgiD9I5WYP8JbffcjKF4GXcY5N2xGpbqL4H7RSqmzqbrG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707924409; c=relaxed/simple;
-	bh=xQf+HufpCGQNjGKymtJF8+5m0Hr56zmFYPW9euaWNCg=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=bO5HIkefKnp72LRizpfkOhLWXCzZwKXOVhjdf9golN1ek4SHxMp4Pd0MMSm/HC3Y+zEA5We6L3XEDx7NShyI76FQ9fBJJ0w5ph6ZebGLuQ3KVVKSMBMcMrmYZDFTZrX0ozPn6z/c5swyOGTez83Wlpc6UR5T4WCjbOdJjn+cFmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m7C+Xs4F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17846C433C7;
-	Wed, 14 Feb 2024 15:26:48 +0000 (UTC)
+	s=arc-20240116; t=1707924413; c=relaxed/simple;
+	bh=FuJpeeRm/oAFUDIsfDsz8iMYRPJUYAdfX63huvw+guw=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=Wtvbi6eqbLEWaGyv9Vra1Fmfo+7wp3zWEhcFmbmFerJzxohpyLv0oFIP95iDsEXP4OGYHdyN7FTFIERQFG0hpeXIRPsNmTt2YP+5702/VsaoUW+AqBVoIC7MbIGO4zcvi7S4ah3xTQXjdxgfWmRRtZmB7VoHVdBkTWg2YS2uhAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mTzjSrhi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84F77C433C7;
+	Wed, 14 Feb 2024 15:26:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707924409;
-	bh=xQf+HufpCGQNjGKymtJF8+5m0Hr56zmFYPW9euaWNCg=;
+	s=korg; t=1707924413;
+	bh=FuJpeeRm/oAFUDIsfDsz8iMYRPJUYAdfX63huvw+guw=;
 	h=Subject:To:From:Date:From;
-	b=m7C+Xs4FObBsMhlUxWuOk2AIV2YE2h/xLyZAGf8f8FO32RaOskvZabOa+uUElWFGO
-	 xbRTKLz4dEfsgmv8QT0mzk9c4atHl85kWUyuXO29QLpYQhtPNtWL1FOYjVk17iDhgo
-	 o15PSmcrPe3fQlGLbJXWEwr5X0Y5aBsQ5eNQCufw=
-Subject: patch "iio: commom: st_sensors: ensure proper DMA alignment" added to char-misc-linus
-To: nuno.sa@analog.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
+	b=mTzjSrhiO3+d14ME0KNHnOw9u29qudTv4/RqK4/iudGsjxzzmu2Aj/11wjLbF0Vhh
+	 xfeXds2ReSJCsFmv/vi2fZWeKxgCIH7wtYmDxD//LUyS9TJtEqTUnMNwqR1W0YZYaZ
+	 GM2bdHUKpkUmZieAe8LWlbbCxrxh7NbuYuSt1TsM=
+Subject: patch "iio: accel: bma400: Fix a compilation problem" added to char-misc-linus
+To: mario.limonciello@amd.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 14 Feb 2024 16:26:11 +0100
-Message-ID: <2024021411-escapist-passivism-831d@gregkh>
+Date: Wed, 14 Feb 2024 16:26:12 +0100
+Message-ID: <2024021412-handbrake-jubilant-91ef@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ Content-Transfer-Encoding: 8bit
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: commom: st_sensors: ensure proper DMA alignment
+    iio: accel: bma400: Fix a compilation problem
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -69,48 +69,46 @@ next -rc kernel release.
 If you have any questions about this process, please let me know.
 
 
-From 862cf85fef85becc55a173387527adb4f076fab0 Mon Sep 17 00:00:00 2001
-From: Nuno Sa <nuno.sa@analog.com>
-Date: Wed, 31 Jan 2024 10:16:47 +0100
-Subject: iio: commom: st_sensors: ensure proper DMA alignment
+From 4cb81840d8f29b66d9d05c6d7f360c9560f7e2f4 Mon Sep 17 00:00:00 2001
+From: Mario Limonciello <mario.limonciello@amd.com>
+Date: Wed, 31 Jan 2024 16:52:46 -0600
+Subject: iio: accel: bma400: Fix a compilation problem
 
-Aligning the buffer to the L1 cache is not sufficient in some platforms
-as they might have larger cacheline sizes for caches after L1 and thus,
-we can't guarantee DMA safety.
+The kernel fails when compiling without `CONFIG_REGMAP_I2C` but with
+`CONFIG_BMA400`.
+```
+ld: drivers/iio/accel/bma400_i2c.o: in function `bma400_i2c_probe':
+bma400_i2c.c:(.text+0x23): undefined reference to `__devm_regmap_init_i2c'
+```
 
-That was the whole reason to introduce IIO_DMA_MINALIGN in [1]. Do the same
-for st_sensors common buffer.
-
-While at it, moved the odr_lock before buffer_data as we definitely
-don't want any other data to share a cacheline with the buffer.
-
-[1]: https://lore.kernel.org/linux-iio/20220508175712.647246-2-jic23@kernel.org/
-
-Fixes: e031d5f558f1 ("iio:st_sensors: remove buffer allocation at each buffer enable")
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://download.01.org/0day-ci/archive/20240131/202401311634.FE5CBVwe-lkp@intel.com/config
+Fixes: 465c811f1f20 ("iio: accel: Add driver for the BMA400")
+Fixes: 9bea10642396 ("iio: accel: bma400: add support for bma400 spi")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20240131225246.14169-1-mario.limonciello@amd.com
 Cc: <Stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240131-dev_dma_safety_stm-v2-1-580c07fae51b@analog.com
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- include/linux/iio/common/st_sensors.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/accel/Kconfig | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/linux/iio/common/st_sensors.h b/include/linux/iio/common/st_sensors.h
-index 607c3a89a647..f9ae5cdd884f 100644
---- a/include/linux/iio/common/st_sensors.h
-+++ b/include/linux/iio/common/st_sensors.h
-@@ -258,9 +258,9 @@ struct st_sensor_data {
- 	bool hw_irq_trigger;
- 	s64 hw_timestamp;
+diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
+index 91adcac875a4..c9d7afe489e8 100644
+--- a/drivers/iio/accel/Kconfig
++++ b/drivers/iio/accel/Kconfig
+@@ -219,10 +219,12 @@ config BMA400
  
--	char buffer_data[ST_SENSORS_MAX_BUFFER_SIZE] ____cacheline_aligned;
--
- 	struct mutex odr_lock;
-+
-+	char buffer_data[ST_SENSORS_MAX_BUFFER_SIZE] __aligned(IIO_DMA_MINALIGN);
- };
+ config BMA400_I2C
+ 	tristate
++	select REGMAP_I2C
+ 	depends on BMA400
  
- #ifdef CONFIG_IIO_BUFFER
+ config BMA400_SPI
+ 	tristate
++	select REGMAP_SPI
+ 	depends on BMA400
+ 
+ config BMC150_ACCEL
 -- 
 2.43.1
 
