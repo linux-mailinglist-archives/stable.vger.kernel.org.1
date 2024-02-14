@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-20187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86492854C9F
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 16:26:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29322854CA0
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 16:26:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36E9E1F224E2
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CB9F1C210F2
 	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 15:26:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 852B85B696;
-	Wed, 14 Feb 2024 15:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D72FF5C8F8;
+	Wed, 14 Feb 2024 15:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWGHxuAx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y5XltpUU"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C2943157
-	for <Stable@vger.kernel.org>; Wed, 14 Feb 2024 15:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99AE743157
+	for <Stable@vger.kernel.org>; Wed, 14 Feb 2024 15:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707924383; cv=none; b=LmTFJM4jvdpegSmZIuu0KK5HtCcUCCa/jpN8vT1uVT5wPrbfYigeRBoVYxT7EHzgP2qEHRiATTZ+eksTTzD3NoFgj/JXQQtteXODTJfrsTcAMGUyXF/talgWTc1AQ+B9h2hfbbLWvUy9BcuKcepPoKm41i3L5r3XLnVcUOLArjA=
+	t=1707924386; cv=none; b=XM9z++b2v4mKGi9IQzc/OMhak4CZkQXMi4BvwHReRALrr2AUm//skgCwZoJpAck//mmQ3gO3quBNhbs6BE8yO2telIBMMMrk/lDN0X5odQj1ftjFemZSL0S3LZSzuqvcQJB5mPpzWbAxkb3L/lfOL6TFQVnLEK6vFVb0H7GgXT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707924383; c=relaxed/simple;
-	bh=h88HO2OWx/AtF/xfM7rJmwjE6a9Imyg78b1nmdXZqhU=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=qWmcTb5kKvXjAyZ3fGu5GYvu/5WlwtUrb8O/LbVATYnX0k47NUivOfemEzjFedOS+VmeJIU+geQHQh8r5INcDAcDloZfwPOUtYUaFwtIkyY+xbo2dgw5Q5BtnwPnxuFKFwnGvIuoFEM4m/h8rEZUMuduZ5bT5H0lbC6cVU8hDdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWGHxuAx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA583C433F1;
-	Wed, 14 Feb 2024 15:26:22 +0000 (UTC)
+	s=arc-20240116; t=1707924386; c=relaxed/simple;
+	bh=p59L3R+ZkRrDWknJak2fEEY4lAonxV1kmMiWSZZ+eFU=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=MFMGZZqTDajcJI5Vv+zf1q9+LA+/mo84VizeWXzbGsgist/ON102I0DykIfiWiDtvfR/Jp3ZsOy3b5r5ovPoeFg4XVNEKwdHthl22Vosp8ISo08FPhObcKJvLWSse08kapMvGP8LN+Ocgk7YWaHkLRV4x4x9h8nbQh5kB03eR2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y5XltpUU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB89BC433F1;
+	Wed, 14 Feb 2024 15:26:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707924383;
-	bh=h88HO2OWx/AtF/xfM7rJmwjE6a9Imyg78b1nmdXZqhU=;
+	s=korg; t=1707924386;
+	bh=p59L3R+ZkRrDWknJak2fEEY4lAonxV1kmMiWSZZ+eFU=;
 	h=Subject:To:From:Date:From;
-	b=MWGHxuAxlumN1SI6Ti04j7mw2tnibZ6OPyRqmdnOCXfUIdg4CS4y2fiaVjwv2otFg
-	 01OCltqe8dLiP6JFnkuiPuhOYp226KrUlmSekGHKx/TuOtlkwP38+h93TIafP6pQ4o
-	 nVZDuSKWuPv3J7Ta3VCexOTYFmSUJ0+hvwbTfReo=
-Subject: patch "iio: imu: bno055: serdev requires REGMAP" added to char-misc-linus
-To: rdunlap@infradead.org,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,andrea.merello@iit.it,jic23@kernel.org,lars@metafoo.de
+	b=y5XltpUU33vkVHOCWX92Fiw9nCBZQAjEy7I91wPGGfkwHKgwPVFAmdFnfW3A511YY
+	 4NjNf1oaQFjYE0sh9fcUW2vOZCtw3vIK6YoNWX08LU3qS3RwnsxJpUxTiYHOsS+DV4
+	 Qrb+Ug2IRSTXehd465a8End7clI4UJC7dVWiD88s=
+Subject: patch "iio: imu: adis: ensure proper DMA alignment" added to char-misc-linus
+To: nuno.sa@analog.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 14 Feb 2024 16:26:05 +0100
-Message-ID: <2024021404-renounce-answering-8a31@gregkh>
+Date: Wed, 14 Feb 2024 16:26:06 +0100
+Message-ID: <2024021406-hypnoses-enjoyer-f063@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ Content-Transfer-Encoding: 8bit
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: imu: bno055: serdev requires REGMAP
+    iio: imu: adis: ensure proper DMA alignment
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -69,56 +69,50 @@ next -rc kernel release.
 If you have any questions about this process, please let me know.
 
 
-From 35ec2d03b282a939949090bd8c39eb37a5856721 Mon Sep 17 00:00:00 2001
-From: Randy Dunlap <rdunlap@infradead.org>
-Date: Wed, 10 Jan 2024 10:56:11 -0800
-Subject: iio: imu: bno055: serdev requires REGMAP
+From 8e98b87f515d8c4bae521048a037b2cc431c3fd5 Mon Sep 17 00:00:00 2001
+From: Nuno Sa <nuno.sa@analog.com>
+Date: Wed, 17 Jan 2024 14:10:49 +0100
+Subject: iio: imu: adis: ensure proper DMA alignment
 
-There are a ton of build errors when REGMAP is not set, so select
-REGMAP to fix all of them.
+Aligning the buffer to the L1 cache is not sufficient in some platforms
+as they might have larger cacheline sizes for caches after L1 and thus,
+we can't guarantee DMA safety.
 
-Examples (not all of them):
+That was the whole reason to introduce IIO_DMA_MINALIGN in [1]. Do the same
+for the sigma_delta ADCs.
 
-../drivers/iio/imu/bno055/bno055_ser_core.c:495:15: error: variable 'bno055_ser_regmap_bus' has initializer but incomplete type
-  495 | static struct regmap_bus bno055_ser_regmap_bus = {
-../drivers/iio/imu/bno055/bno055_ser_core.c:496:10: error: 'struct regmap_bus' has no member named 'write'
-  496 |         .write = bno055_ser_write_reg,
-../drivers/iio/imu/bno055/bno055_ser_core.c:497:10: error: 'struct regmap_bus' has no member named 'read'
-  497 |         .read = bno055_ser_read_reg,
-../drivers/iio/imu/bno055/bno055_ser_core.c: In function 'bno055_ser_probe':
-../drivers/iio/imu/bno055/bno055_ser_core.c:532:18: error: implicit declaration of function 'devm_regmap_init'; did you mean 'vmem_map_init'? [-Werror=implicit-function-declaration]
-  532 |         regmap = devm_regmap_init(&serdev->dev, &bno055_ser_regmap_bus,
-../drivers/iio/imu/bno055/bno055_ser_core.c:532:16: warning: assignment to 'struct regmap *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
-  532 |         regmap = devm_regmap_init(&serdev->dev, &bno055_ser_regmap_bus,
-../drivers/iio/imu/bno055/bno055_ser_core.c: At top level:
-../drivers/iio/imu/bno055/bno055_ser_core.c:495:26: error: storage size of 'bno055_ser_regmap_bus' isn't known
-  495 | static struct regmap_bus bno055_ser_regmap_bus = {
+[1]: https://lore.kernel.org/linux-iio/20220508175712.647246-2-jic23@kernel.org/
 
-Fixes: 2eef5a9cc643 ("iio: imu: add BNO055 serdev driver")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Andrea Merello <andrea.merello@iit.it>
-Cc: Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>
-Cc: linux-iio@vger.kernel.org
+Fixes: ccd2b52f4ac6 ("staging:iio: Add common ADIS library")
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20240117-adis-improv-v1-1-7f90e9fad200@analog.com
 Cc: <Stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240110185611.19723-1-rdunlap@infradead.org
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/imu/bno055/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/iio/imu/adis.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/imu/bno055/Kconfig b/drivers/iio/imu/bno055/Kconfig
-index 83e53acfbe88..c7f5866a177d 100644
---- a/drivers/iio/imu/bno055/Kconfig
-+++ b/drivers/iio/imu/bno055/Kconfig
-@@ -8,6 +8,7 @@ config BOSCH_BNO055
- config BOSCH_BNO055_SERIAL
- 	tristate "Bosch BNO055 attached via UART"
- 	depends on SERIAL_DEV_BUS
-+	select REGMAP
- 	select BOSCH_BNO055
- 	help
- 	  Enable this to support Bosch BNO055 IMUs attached via UART.
+diff --git a/include/linux/iio/imu/adis.h b/include/linux/iio/imu/adis.h
+index dc9ea299e088..8898966bc0f0 100644
+--- a/include/linux/iio/imu/adis.h
++++ b/include/linux/iio/imu/adis.h
+@@ -11,6 +11,7 @@
+ 
+ #include <linux/spi/spi.h>
+ #include <linux/interrupt.h>
++#include <linux/iio/iio.h>
+ #include <linux/iio/types.h>
+ 
+ #define ADIS_WRITE_REG(reg) ((0x80 | (reg)))
+@@ -131,7 +132,7 @@ struct adis {
+ 	unsigned long		irq_flag;
+ 	void			*buffer;
+ 
+-	u8			tx[10] ____cacheline_aligned;
++	u8			tx[10] __aligned(IIO_DMA_MINALIGN);
+ 	u8			rx[4];
+ };
+ 
 -- 
 2.43.1
 
