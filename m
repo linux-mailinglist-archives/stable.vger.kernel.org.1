@@ -1,72 +1,47 @@
-Return-Path: <stable+bounces-20132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 751358540C6
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 01:17:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD60F8540CA
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 01:19:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30AAF28321E
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 00:17:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5AC58B2194D
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 00:19:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF440370;
-	Wed, 14 Feb 2024 00:17:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 326CA372;
+	Wed, 14 Feb 2024 00:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AygqfzxP"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="ViEHfV3o"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f42.google.com (mail-io1-f42.google.com [209.85.166.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFCF04436
-	for <stable@vger.kernel.org>; Wed, 14 Feb 2024 00:17:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.42
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FED87F;
+	Wed, 14 Feb 2024 00:19:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707869849; cv=none; b=kSR5EfnXVHrV61yRRdpPJwODrch0TvTtQF+5SWImRWhaQl5AC37HQ9UvBsEpTfj0LU6fTzvtinhMex72L0LP+2clPfzwXv9aMO2vR7Z51cV4zveMWgIw84ZvCupN/qX/ks5scSKNn77jDTAbDLsAYQTELkydJROM1Qdhh40WANI=
+	t=1707869959; cv=none; b=E05m+9gn5/BkUQFAjmlzVEmZsjkgUZ55i7GtogbCe3ieJWbdr9qsBYOT8LdNk+zK2BHdqziag8xJm+01IsDVvhamWF0t2CifRH7jJg2dBH5qAhSdVkCTMgkwFguc+0wGcscwVguF//BqFHAdEbXCAz5M6pw+XXTHTh9wxkuns0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707869849; c=relaxed/simple;
-	bh=GtNPwOVeYqEoQND8csoZlzv6nrrvTMepd1LrHxfG9Dc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QNSwPeoROJgdB76FBPmgD9Lyv4IBRX4hf0YPYRuJ/fff13FstUzta+7HRYp85mGyJ5sEKeoaiPaHQ/K0esHKbrb2G94y09NaQIUm4SFkOp0R5OkoazmhNZz0Zsi9GTKoG0+oXZcZTZ0Hw4xRTSNs90dOAEikry11jZtO3Fz+o9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AygqfzxP; arc=none smtp.client-ip=209.85.166.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-io1-f42.google.com with SMTP id ca18e2360f4ac-7bf3283c18dso48707139f.0
-        for <stable@vger.kernel.org>; Tue, 13 Feb 2024 16:17:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1707869846; x=1708474646; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8R1ZRFNPBDSJKTf9xhbBZxVe1DfFeuBRTvA+gPMKArY=;
-        b=AygqfzxPcSpBt9KesQnE6Wuz8+5q0GZR5EcNGqBqN5oL4sLwczwO+s8i4cw4u/S+Bg
-         BBGV26psU4x1Yj1nVOVSMlfYWbJSP9k7vok+ek0JkCE32/iMA75mwA9Dq3459qN5/0ln
-         CZqKu3IyxAhsA7aWS2+3GjkxrPRo+VLcPguCg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707869846; x=1708474646;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8R1ZRFNPBDSJKTf9xhbBZxVe1DfFeuBRTvA+gPMKArY=;
-        b=dFG3vObEMWgccpvZRjd6SbmltMiGtMIKC5S7hyKds0p49i7cO03TLrHMVVjMHoKHmH
-         ow14tD61WYnPkhWaEp9wCq6fZBgiFZRBTlzL9FbIKjDxKThtbiNs69ClEd6X1vGgt0IB
-         8wn3FRn3H9AmVb337/xYHwAtonmL3GNytwsqolaXRY6lYC03KVoHuVVVjJLufSUy+bQR
-         BxBZinhyv/YAWZQkIrA/5GmO4At5D47H9FYZzbrLE4JQA7cWZbnFLNvURi6FhrK0rrDr
-         uzmnWi2m+ac3Mdncmh7Whk3/2o55xNqKZT6EB/LDLJP5Y1EejcIJsr+5AKIQQR0PbEYr
-         Kg8w==
-X-Forwarded-Encrypted: i=1; AJvYcCXYpdeKh97qrRo+BNFkFXWbd+2Z3vZGdZEQ8xEOXvy3skg7eYTrut90atzxco5kIef9HT4qEpxzbxf+6gO8HiAL6sew+Ar6
-X-Gm-Message-State: AOJu0YxBjeQtE66iO0EOjVhS0FHkNuwCczLMCLEumoD1o5/3fcins5/H
-	W6tNDsJN1TWPHqKDzarq7rvl6sSMTsy9POLvWGmqCDme6oQ3QZq3NXQ5+vNtvSk=
-X-Google-Smtp-Source: AGHT+IFGag4hMH+UjZfIrNALOjx0iTOt+qW4FggRBh/NEjikHy6F0nGspfe+Go/nWvUqvVrOBwQjsw==
-X-Received: by 2002:a05:6e02:1d87:b0:363:dc84:ef56 with SMTP id h7-20020a056e021d8700b00363dc84ef56mr1461086ila.1.1707869846047;
-        Tue, 13 Feb 2024 16:17:26 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUJQruroDPboQu4W7vqSgcJpaFCwZkx/7K+IODSFDmLCHX3CTRFDleS5GZ+DK9cXEIPmDW3GVdi/2QrMsTZFoVHFT0CGXm99RLcvIXrcUBkxYNE0HgGeywyUvYLxTtVagWmjn0T9FhGUws1tvh+0x0x4YmRzcai0KfCTiWNa8x9/OUbwPeMPgCRWUtgoQ4QkJvWMAL84DzUUqdBO15C3fV9dJ/DrA0J48IKjUNn8v4vP6aoHNhkVXz3jAzSfhv7C3inKy6yNcREy1/rKgW6CYNF6R0rynxpLdb3KPlS3NSvAkNdE7jQ1t6ipIfcwIbMNR3yLlCPLAqVncB0kO1cXFF9OUnQWyEFhuo7/IJn5T17NW1PffTbqmJ59DHlBwaheWmAPMmEUochD3e68A4jmOhUZNOQq9ILcBdT2ImxIsewiBMEac1P6JmEWObXxarlYltdOiLnKqOsRrDfaTs4IEqSa+GhdtqjJkpj4Lt89dDKyrZNOeu9gT/4MwPxoSqiE4PnjPdOxarLJ4keORWfZZskCwbncdbK/vTCWzDf3sARJOLeF+pCu+d4BveMbSWknPW7kzVgDzSywA==
-Received: from [192.168.1.128] ([38.175.170.29])
-        by smtp.gmail.com with ESMTPSA id db7-20020a056e023d0700b00363bf95e16fsm2788860ilb.15.2024.02.13.16.17.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Feb 2024 16:17:25 -0800 (PST)
-Message-ID: <a343de6a-c377-4a81-abbf-6e98652bac29@linuxfoundation.org>
-Date: Tue, 13 Feb 2024 17:17:25 -0700
+	s=arc-20240116; t=1707869959; c=relaxed/simple;
+	bh=QAN7hZYSM3BJP81M/eLzNlJdF60Jewpg46NuJgdpOG0=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=kt+yUnUgbs3GIQof+AU3VOWVyK1ZjL1sFvC9RFiCZhtwJA7BXoshpYNb5sj0f+XpTlxbUqzlBnIj1ttXFjmSiv8QemZnwQySxsUgK7xLMkHuQFFAjm5XiDlZzftTPonkbCjLT+vLENomaa5X4ARYPbiLQo+W6Ab7hdvgZ7jOpCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=ViEHfV3o; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from [100.64.232.238] (unknown [20.29.225.195])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 16E3E20B2000;
+	Tue, 13 Feb 2024 16:19:10 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 16E3E20B2000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1707869951;
+	bh=H/WOKYyDPl6rQRUKTgqiCkym15mdTfioSDzSyvm7rqA=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
+	b=ViEHfV3oyxygjlUGYt/LLeSl96uQs8jUhmk++Wv0C8TJztCa2gsJu2BznCSuDKBMD
+	 Y2/gocRsP3+tPKr+v1ioILaBAZgaNkFZ/7Csq8saVZ9Rnve6jLiSBiiFTH8NEc9DQP
+	 WJK+8Ydb2sCZPAKXYfMdgk3C8JBWvZjSK4I6Ar0M=
+Message-ID: <18b3ac3e-2bfc-4fce-9be4-3e75e487f9fc@linux.microsoft.com>
+Date: Tue, 13 Feb 2024 16:19:08 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,46 +49,80 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 00/64] 6.1.78-rc1 review
+From: Easwar Hariharan <eahariha@linux.microsoft.com>
+Subject: Re: [PATCH] arm64: Subscribe Microsoft Azure Cobalt 100 to ARM
+ Neoverse N2 errata
+To: Oliver Upton <oliver.upton@linux.dev>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Marc Zyngier <maz@kernel.org>,
+ Andre Przywara <andre.przywara@arm.com>, Rob Herring <robh@kernel.org>,
+ Zenghui Yu <yuzenghui@huawei.com>, Mark Rutland <mark.rutland@arm.com>,
+ "moderated list:ARM64 PORT (AARCH64 ARCHITECTURE)"
+ <linux-arm-kernel@lists.infradead.org>,
+ "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+ open list <linux-kernel@vger.kernel.org>,
+ Anshuman Khandual <anshuman.khandual@arm.com>, stable@vger.kernel.org
+References: <20240212232909.2276378-1-eahariha@linux.microsoft.com>
+ <ZcqtUxhqUbYoRH-G@linux.dev>
 Content-Language: en-US
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <20240213171844.702064831@linuxfoundation.org>
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <ZcqtUxhqUbYoRH-G@linux.dev>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 2/13/24 10:20, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.78 release.
-> There are 64 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On 2/12/2024 3:44 PM, Oliver Upton wrote:
+> Hi Easwar,
 > 
-> Responses should be made by Thu, 15 Feb 2024 17:18:29 +0000.
-> Anything received after that time might be too late.
+> On Mon, Feb 12, 2024 at 11:29:06PM +0000, Easwar Hariharan wrote:
+>> Add the MIDR value of Microsoft Azure Cobalt 100, which is a Microsoft
+>> implemented CPU based on r0p0 of the ARM Neoverse N2 CPU, and therefore
+>> suffers from all the same errata.
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.78-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
+> Can you comment at all on where one might find this MIDR? That is, does
+> your hypervisor report the native MIDR of the implementation or does it
+> repaint it as an Arm Neoverse N2 (0x410FD490)?
+
+We will check on the Microsoft hypervisor's plans, and get back to you.
+
+Notwithstanding that, we do have baremetal use cases for Microsoft Azure Cobalt 100
+as well where this MIDR value will show through.
+
 > 
-> thanks,
+>> diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
+>> index 7c7493cb571f..a632a7514e55 100644
+>> --- a/arch/arm64/include/asm/cputype.h
+>> +++ b/arch/arm64/include/asm/cputype.h
+>> @@ -61,6 +61,7 @@
+>>  #define ARM_CPU_IMP_HISI		0x48
+>>  #define ARM_CPU_IMP_APPLE		0x61
+>>  #define ARM_CPU_IMP_AMPERE		0xC0
+>> +#define ARM_CPU_IMP_MICROSOFT		0x6D
+>>  
+>>  #define ARM_CPU_PART_AEM_V8		0xD0F
+>>  #define ARM_CPU_PART_FOUNDATION		0xD00
+>> @@ -135,6 +136,8 @@
+>>  
+>>  #define AMPERE_CPU_PART_AMPERE1		0xAC3
+>>  
+>> +#define MSFT_CPU_PART_AZURE_COBALT_100	0xD49 /* Based on r0p0 of ARM Neoverse N2 */
+>> +
+>>  #define MIDR_CORTEX_A53 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A53)
+>>  #define MIDR_CORTEX_A57 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A57)
+>>  #define MIDR_CORTEX_A72 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A72)
+>> @@ -193,6 +196,7 @@
+>>  #define MIDR_APPLE_M2_BLIZZARD_MAX MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M2_BLIZZARD_MAX)
+>>  #define MIDR_APPLE_M2_AVALANCHE_MAX MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M2_AVALANCHE_MAX)
+>>  #define MIDR_AMPERE1 MIDR_CPU_MODEL(ARM_CPU_IMP_AMPERE, AMPERE_CPU_PART_AMPERE1)
+>> +#define MIDR_MICROSOFT_AZURE_COBALT_100 MIDR_CPU_MODEL(ARM_CPU_IMP_MICROSOFT, MSFT_CPU_PART_AZURE_COBALT_100)
 > 
-> greg k-h
+> nitpick: consistently use the abbreviated 'MSFT' for all the definitions
+> you're adding.
 > 
 
-Compiled and booted on my test system. No dmesg regressions.
+I was rather hoping to use Microsoft throughout, but I chose MSFT for the CPU_PART* to align columns
+with the other defines. :) If consistency is of a higher priority than column alignment, I can change it
+to MICROSOFT rather than MSFT throughout.
 
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
+Thanks,
+Easwar
 
-thanks,
--- Shuah
 
