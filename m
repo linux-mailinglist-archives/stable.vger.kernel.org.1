@@ -1,109 +1,155 @@
-Return-Path: <stable+bounces-20197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AC47854EEA
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 17:45:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92573854F08
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 17:48:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7E0E28858C
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 16:45:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4ECF028FC4E
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 16:48:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC32B60DC3;
-	Wed, 14 Feb 2024 16:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FC50604AF;
+	Wed, 14 Feb 2024 16:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=svenjoac@gmx.de header.b="YuvTpkTt"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NOPZxgRG"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3783660BBE;
-	Wed, 14 Feb 2024 16:44:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4E2F60273
+	for <stable@vger.kernel.org>; Wed, 14 Feb 2024 16:48:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707929069; cv=none; b=kgB5pzjF12Q+KJn35HScASsNMZoeeoFxikojqFSpANoi+NVaTR39FYE6ocr0lZbalwcnJDjBIk5U5xbUFQORUbdg52/zaj+XQHmmVGh3gWqZpEsqeRjgCMAVf58so+Po7W/q53yUnrYFY5b9ICgVfZXuSEBx0JjxjjEvU2T+2e8=
+	t=1707929294; cv=none; b=bSQrDDuR20U+bsYZyGIT97yOD/SUnDVX+ybL4tdNHDbeVWPTgHA4dh18cvZi6rAhbALGIzU1j7GPDX4ddRrp6QybJLZRZ6SB8ZeTFOUWeOHknFMC3M7ZnruBcsr7xfLAVFBRfAPIjA+PsVzxm6OH4ezjlnJ7VEzu8CajNvoHBaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707929069; c=relaxed/simple;
-	bh=oGw9fVB7x4DqTTJd1RZp9jcHpF1ROTXB3RtCnAkqmII=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=NSOqjL+TNn/Ap0FdJMCKn6J28I1eG3rmIoKci2kvvoLUbo28B6P5mF+ktnuUu4YcPBNOJ/fX5Ga0u73qmXhbbvd5bKxJ4W/HTrR/kgLaBB3cxaCDGSiO7ej5FXqiqZ2I7OuM0aK3SQEfSLEs65hKGmIJzcdwa4BC30QNhfBD/rI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=svenjoac@gmx.de header.b=YuvTpkTt; arc=none smtp.client-ip=212.227.17.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1707929042; x=1708533842; i=svenjoac@gmx.de;
-	bh=oGw9fVB7x4DqTTJd1RZp9jcHpF1ROTXB3RtCnAkqmII=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:In-Reply-To:References:
-	 Date;
-	b=YuvTpkTtxxPUIsgtfJ8tfRSeipuQq9MtNIizxhdgQlIrtuD3m7xaKZKcSYBYMOGs
-	 6R6gMpXSQLLkT1s7Im1Qdre3uvrODgkj28uVcFS9sXctud0MibqNftnilSgh9LJyD
-	 pMyYt9AfpyyRMcxtLVfawf4nb9CQ+9biIbv54QeEvwDEYZ8lkd/vecHv13G44S+9w
-	 2rsFG+fbtr1Qlz9u1TZSKK+z6gcrignSx3gdvYczvN0e5/8nVWVjNbNlBtWU5HdtY
-	 3LI69WPqo1PibdeP4jgA0GMr3ySe8hTVWGGA5QrA1V+cUB9lfRHNxA8ih37b9UK5d
-	 CgqgD4EEmMiiKEEK6Q==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from localhost.localdomain ([79.203.86.131]) by mail.gmx.net
- (mrgmx105 [212.227.17.168]) with ESMTPSA (Nemesis) id
- 1M3lYB-1rb7Zp1mHj-000vwn; Wed, 14 Feb 2024 17:44:02 +0100
-Received: by localhost.localdomain (Postfix, from userid 1000)
-	id 5CB7880095; Wed, 14 Feb 2024 17:44:00 +0100 (CET)
-From: Sven Joachim <svenjoac@gmx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org,  patches@lists.linux.dev,
-  linux-kernel@vger.kernel.org,  torvalds@linux-foundation.org,
-  akpm@linux-foundation.org,  linux@roeck-us.net,  shuah@kernel.org,
-  patches@kernelci.org,  lkft-triage@lists.linaro.org,  pavel@denx.de,
-  jonathanh@nvidia.com,  f.fainelli@gmail.com,  sudipm.mukherjee@gmail.com,
-  srw@sladewatkins.net,  rwarsow@gmx.de,  conor@kernel.org,
-  allen.lkml@gmail.com
-Subject: Re: [PATCH 6.1 00/64] 6.1.78-rc1 review
-In-Reply-To: <20240213171844.702064831@linuxfoundation.org> (Greg
-	Kroah-Hartman's message of "Tue, 13 Feb 2024 18:20:46 +0100")
-References: <20240213171844.702064831@linuxfoundation.org>
-Date: Wed, 14 Feb 2024 17:44:00 +0100
-Message-ID: <871q9f3sj3.fsf@turtle.gmx.de>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=arc-20240116; t=1707929294; c=relaxed/simple;
+	bh=xT+RgJHSo2vdxV88Vs4x/fXB4DI5601vkyLotJ9HM50=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ize+V5y3fZYYjIuD6KkvoetC001XCbdie5zSE2AJ4tITrJ1NTSJW9NrhiRK9KgPxcrKyesUe63uSney8iv7jTqVp9jyBYBtHKvbOSXwqOoI+m2Db9R8T8g4gXTDOH7GIIrAf//t0lCTWe1YBM85NhibvMPP7X/erIzISMd7oYy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NOPZxgRG; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-1db559a5e1fso7150915ad.1
+        for <stable@vger.kernel.org>; Wed, 14 Feb 2024 08:48:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1707929291; x=1708534091; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=pTWGu0/bskT9cMMUwm6IW0mSn4D9b4Ks6cVTC54GxjE=;
+        b=NOPZxgRG+Y9Qhi0Uhnl7GgRdAy4RAuP1S40JD6AMjpa/j9PFaQPmxWJvW61i3+QarS
+         XSWxGSW+1Qxcv5Ar3EFH5StajTM1yJ/3VLEWEEgqye9B5cNTUL7CJF2EEt4zdSWE6LDw
+         L4G6mNTjJHssnj1Bznd857Pywe4B41oHNig0T7ervWFdRs8aLppxF22vbF4kAu2rX2hG
+         24TOJ5+jbSbZ0v4EGZx/ZoMy5ifT86quHgP9QRgFhZ/GEQQ+2s+jGLtRZhN/DsbkQ5C4
+         VPvZh9W3472OQR5dnc3CWGzFqv3wK/Fb+3hUowvZNNPHdQhGS+L2bEx69hUwFH2ng+BI
+         lHQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707929291; x=1708534091;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pTWGu0/bskT9cMMUwm6IW0mSn4D9b4Ks6cVTC54GxjE=;
+        b=rErXNWEK826kYRo6KDutiZkRoWQVtdDBFzMyphBrrBj78RgMoy8384KxB7PfAEAAgA
+         KGbYKHYjY6v66uMJ3G9OQ0p7IDM/ObKTzpurkIr3CYvCME0YIZbX1PzQXT7W7atH9VoP
+         BHPesAT0sQMoZpVOrMWSO5IGIF5xPk7i6yuj4DR+CYym25zC1CTGJE1RQ6s41xE2UgPI
+         YWb6dpMoDEg/gtTEgI8GU4VSFbTils7LX2Ue+hlMvNbBZwjnOXitn8E6YvTmqz0sqIpS
+         5H9ObIl7Pm0bn7hf/pcYxOe/X5cUmJhopmSdmX0xtwJNq2x6QZcMnNiEumk8BYFsF0Oy
+         ryaw==
+X-Gm-Message-State: AOJu0YynOs7iUFr6q2AA+xpGzxzMclAqk9eDPcV6Gg5DU4qk0ziFeb2U
+	w70XmO5NnYOh52jSfpLV6+76R8BKQItNWhjCrlThITItmog/iZxpHWimzcA2
+X-Google-Smtp-Source: AGHT+IFmvGdHT1t4k6QDpQpf/J6tWfObKKZ/9Bug1lj0KueheWUmFAShducWSwBNV1pWB59hMwLfBA==
+X-Received: by 2002:a17:903:2652:b0:1db:2ad2:eff5 with SMTP id je18-20020a170903265200b001db2ad2eff5mr2992586plb.60.1707929290681;
+        Wed, 14 Feb 2024 08:48:10 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWOG8vVlH+l4csiNvftoUArKQx0U7MKRZMtwK/6D7AeSXkYNQGB9FTArm9DWJ2MAcFzSc/de+p7vAqLMV9bgfGVQ9xgcCjbeePPOw==
+Received: from carrot.. (i223-217-149-232.s42.a014.ap.plala.or.jp. [223.217.149.232])
+        by smtp.gmail.com with ESMTPSA id h13-20020a170902680d00b001d8d0487edbsm4065112plk.223.2024.02.14.08.48.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Feb 2024 08:48:08 -0800 (PST)
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 5.4 5.10 5.15 6.1] nilfs2: fix hang in nilfs_lookup_dirty_data_buffers()
+Date: Thu, 15 Feb 2024 01:45:19 +0900
+Message-Id: <20240214164519.8908-1-konishi.ryusuke@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Provags-ID: V03:K1:K+HOG/GQYW5pwarb/ntOh32vSaVyV1m9avODePCAc8oUG6iv0KR
- Gy6ajZl3yVsYiFhL392ecAAHAAQW/FUL7zGa6sC4YRthNDMqNma6cPci4kLTKNAxVY3KjtF
- unh2aUt2aFJUPpZ/5Kj6/0cOyWj+Kcwx1gFZPY5pzc7a1lFxtE4WNpmYx5CQi76q3B69aQw
- JNsMYFJ0jQhZKvSaRi0PQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:qNJA9s8d16w=;MREgZfBOcuYvsbAw3nmPjZh63RO
- STE5gDCZje4oqY7UJ8xIR2xaLqfKsLN05ag0kyX9i2IrXebmwxOqDlJged+a84k+9w6GTpXea
- gulf5wyrMuWmdngoTxpBBBt9XepA8cF4Ybz9w6nrADfVkAdGMWBkO+ALhekmKyQbaUPR3MTJz
- 5v07nSOachnKf1ctnZ8Ajodos21bSpVxxbs0C1rW3InSp2U/JA3IVpvrUAQNPsk08lJmhO9DX
- yx3EhSVbXoTiqIltf93MZNXWNPAgeP5Jqvlkw8W+wMG8blEKyfiBYlyyeoSs2NSv60wgYb//Y
- 0tgxXo7CHD9KScyK56EgogvT7RszOX6XbnWONi2CG8ZokJYdYIJw6FRRbajrdZp8FFQ7746wA
- WWbm2bBee3nVGIYO/6pMT6oNObtX/BPStu3xgnZO+0Z0XPvjLuBrsdrzmxELzDfaRlsEdQFlu
- 1xgEi0/WXz+hRINMQBcc9u7gM9Hpa9C3kIQBsc0lXhDMxdf1uOUq8+wsq9Sdk5v0wCdHhq9qW
- 21ANEpwxjIpNuykUbA19aQQ25eF7alNjgPpbECt9BRXniySyaGjdOz0nGMsrbt98QL5LFpKfL
- PqFu3a6SDpVJf+M8C7euEep2qs9BHZz/PPjFzmWfpMHdwUzwZAJeEdB+6p4bpBG9Fdk+TP7w3
- yttKlYYCa8EpOsppwrsDZy3GuYxe+/XDvDj6wuIh6zFa6llpMpXyLytJAP91YMhr9ZcX99FVX
- UQta/ngggqwfAHNmKS7fLarVnpi5/xeTI/jNAf8DLoosVOWiIZlmVn1ingMcMWn9408LNPMnX
- 1OJVG2Tujcxg5VF8mY2g53HTp8gXlay3FjVAAkHmInH9g=
+Content-Transfer-Encoding: 8bit
 
-On 2024-02-13 18:20 +0100, Greg Kroah-Hartman wrote:
+commit 38296afe3c6ee07319e01bb249aa4bb47c07b534 upstream.
 
-> This is the start of the stable review cycle for the 6.1.78 release.
-> There are 64 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 15 Feb 2024 17:18:29 +0000.
-> Anything received after that time might be too late.
+Syzbot reported a hang issue in migrate_pages_batch() called by mbind()
+and nilfs_lookup_dirty_data_buffers() called in the log writer of nilfs2.
 
-Works fine for me on x86_64.
+While migrate_pages_batch() locks a folio and waits for the writeback to
+complete, the log writer thread that should bring the writeback to
+completion picks up the folio being written back in
+nilfs_lookup_dirty_data_buffers() that it calls for subsequent log
+creation and was trying to lock the folio.  Thus causing a deadlock.
 
-Tested-by: Sven Joachim <svenjoac@gmx.de>
+In the first place, it is unexpected that folios/pages in the middle of
+writeback will be updated and become dirty.  Nilfs2 adds a checksum to
+verify the validity of the log being written and uses it for recovery at
+mount, so data changes during writeback are suppressed.  Since this is
+broken, an unclean shutdown could potentially cause recovery to fail.
 
-Cheers,
-       Sven
+Investigation revealed that the root cause is that the wait for writeback
+completion in nilfs_page_mkwrite() is conditional, and if the backing
+device does not require stable writes, data may be modified without
+waiting.
+
+Fix these issues by making nilfs_page_mkwrite() wait for writeback to
+finish regardless of the stable write requirement of the backing device.
+
+Link: https://lkml.kernel.org/r/20240131145657.4209-1-konishi.ryusuke@gmail.com
+Fixes: 1d1d1a767206 ("mm: only enforce stable page writes if the backing device requires it")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+ee2ae68da3b22d04cd8d@syzkaller.appspotmail.com
+Closes: https://lkml.kernel.org/r/00000000000047d819061004ad6c@google.com
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+Please apply this patch to the stable trees indicated by the subject line
+prefix.
+
+This patch is tailored to account for page/folio conversion and an fs-wide
+change around page_mkwrite, and is applicable as-is to all versions from
+v3.9 (where the issue was introduced) to v6.5.
+
+Also, all the builds and retests I did on each stable tree passed.
+
+Thanks,
+Ryusuke Konishi
+
+ fs/nilfs2/file.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/fs/nilfs2/file.c b/fs/nilfs2/file.c
+index a265d391ffe9..822e8d95d31e 100644
+--- a/fs/nilfs2/file.c
++++ b/fs/nilfs2/file.c
+@@ -105,7 +105,13 @@ static vm_fault_t nilfs_page_mkwrite(struct vm_fault *vmf)
+ 	nilfs_transaction_commit(inode->i_sb);
+ 
+  mapped:
+-	wait_for_stable_page(page);
++	/*
++	 * Since checksumming including data blocks is performed to determine
++	 * the validity of the log to be written and used for recovery, it is
++	 * necessary to wait for writeback to finish here, regardless of the
++	 * stable write requirement of the backing device.
++	 */
++	wait_on_page_writeback(page);
+  out:
+ 	sb_end_pagefault(inode->i_sb);
+ 	return block_page_mkwrite_return(ret);
+-- 
+2.39.3
+
 
