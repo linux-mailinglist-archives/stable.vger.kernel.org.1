@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-20134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 562F8854169
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 03:16:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 933CB85418C
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 03:29:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE910B23117
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 02:16:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B557E28FCE9
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 02:29:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F8157465;
-	Wed, 14 Feb 2024 02:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C3E48BFA;
+	Wed, 14 Feb 2024 02:29:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="l1c2Tq7W"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="k+y8Hwll"
 X-Original-To: stable@vger.kernel.org
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB844C79
-	for <stable@vger.kernel.org>; Wed, 14 Feb 2024 02:16:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED8D16138
+	for <stable@vger.kernel.org>; Wed, 14 Feb 2024 02:29:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707876983; cv=none; b=uTuwVqvFnGS3eDg/DJOoXmbmNGcvPFI83h0YgC86ssoxVDOGHmkXVzR06kpoJSeINAqJIGAC510jhmf+acT7LgZQ2nZnzPG1a6uF0gCxH+VM4bTiL080zHH7CDiKiQ4GdEbzrdmiXBBUaXE1L6akSemgSTSniQkWeaeSsAaDtso=
+	t=1707877755; cv=none; b=UlT3/YvX11kp+8G++Qw5Xb2Bb7uPuLe2S5wy5PFJh+iPOqK3h1esbBdCiqdeT5WheEF3JpWbbiJDLM3Lt03uk8u/LT1h9gjC7bq/OJWW/szv4ONieDStB/ZUiLi8RkznQ5fzu68cOzbpc1eYWkCqA8q9sX/+yvuvpVCWC1GDwK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707876983; c=relaxed/simple;
-	bh=iuxI6YgKspcrKvyEQmU8Mrpps9ANMvPaobvGKTHdBUA=;
+	s=arc-20240116; t=1707877755; c=relaxed/simple;
+	bh=qnMXIzAsvwbg9RdPvS3yVDUsbE7YmK9K5gnzIv7DBfA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=awk75ayCi8UhzfpPwR0iIIIaG8q/FUCWQWOzr1SugGZV9jT1ZwR8tWh7U+ew3vuk2pB+ra2VE+zp2G3tNb3+sO8g8/6SOY7OpkhqfDnHuFhNhUZIYt76qToccv57J/pss3TgHAv86Ltyu42zu2/pRGyxExUXhufw6hCbu6LGptE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=l1c2Tq7W; arc=none smtp.client-ip=91.218.175.182
+	 Content-Type:Content-Disposition:In-Reply-To; b=krvV2dYtSC4/u+ZmxV6Du9/jGWQ6y5AemwXPj0qQXDJucNP6JqnZN2He5Hl1luWoQuZgCqhUI41tQcvKaNrVsV1Cy0J5f6YV/qp3nQPq10vYPPTb5BEPDhtL55kiHoe90osmQS1kYzAVGyxmf5QAWzVGhELEVlrB1NY0B1c2heQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=k+y8Hwll; arc=none smtp.client-ip=95.215.58.186
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Tue, 13 Feb 2024 21:16:16 -0500
+Date: Tue, 13 Feb 2024 21:28:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1707876979;
+	t=1707877750;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=mKcZYelQ3mQpgjTTUmYpkiR/PdoQNrHP6TmzEhQHtHs=;
-	b=l1c2Tq7WpUkKS3LnbF61FKIoWRLGygt8C25g02dZVEs9tjzu8XGJCHu18bIhZ2//X++XKg
-	FNdzlVBwez1Ma648XlCHlO8afR58ofVG2Ru1hHjInlWL5kOaPOca01WLS+K5pceuZv5fVy
-	vtvgNon/OW73gxwFulDgE05LDYartJc=
+	bh=Rh748CJKLC8xvLfwlnns4OR7wyB9t3Vax7RM1Ml7NJM=;
+	b=k+y8HwllTEJkXP1GNY0NZLbw388OpCwxLx7tXyNC7iE5VZmjzj1ISGEwkoehdqMz3OoPA9
+	jTAgAeuEymJPjQZ6ebnnRCkk6FEdfJo2YQ+LN7P8QuEdQ2n+E5y+zKV1vFWzlq42RMO5As
+	tjTHAIcg3kJ657Lhyb9cZ8V5BCW63eE=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Kent Overstreet <kent.overstreet@linux.dev>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: linux-bcachefs@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	stable@vger.kernel.org
 Subject: Re: [GIT PULL] bcachefs stable updates for v6.7
-Message-ID: <lt2fhreexozfddp676fcyhulbsjjvdan7lza3eczk7jkixmeoe@aynpcpcwspol>
+Message-ID: <jhwinzfpw2xjjdwsgqsrtjnzcqdbfoqev3qrm65oaxktua4c7m@mes2iwvk2yep>
 References: <6yl6zvu2pa3mz7irsaax5ivp6kh3dae5kaslvst7yafmg6672g@mskleu2vjfp2>
  <2024021307-reactive-woven-8543@gregkh>
+ <2024021300-deck-duffel-5d2b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,38 +59,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2024021307-reactive-woven-8543@gregkh>
+In-Reply-To: <2024021300-deck-duffel-5d2b@gregkh>
 X-Migadu-Flow: FLOW_OUT
 
-On Tue, Feb 13, 2024 at 03:38:10PM +0100, Greg Kroah-Hartman wrote:
-> On Thu, Feb 08, 2024 at 08:14:39PM -0500, Kent Overstreet wrote:
-> > Hi Greg, few stable updates for you -
+On Tue, Feb 13, 2024 at 03:44:25PM +0100, Greg Kroah-Hartman wrote:
+> On Tue, Feb 13, 2024 at 03:38:10PM +0100, Greg Kroah-Hartman wrote:
+> > On Thu, Feb 08, 2024 at 08:14:39PM -0500, Kent Overstreet wrote:
+> > > Hi Greg, few stable updates for you -
+> > > 
+> > > Cheers,
+> > > Kent
+> > > 
+> > > The following changes since commit 0dd3ee31125508cd67f7e7172247f05b7fd1753a:
+> > > 
+> > >   Linux 6.7 (2024-01-07 12:18:38 -0800)
+> > > 
+> > > are available in the Git repository at:
+> > > 
+> > >   https://evilpiepirate.org/git/bcachefs.git tags/bcachefs-for-v6.7-stable-20240208
+> > > 
+> > > for you to fetch changes up to f1582f4774ac7c30c5460a8c7a6e5a82b9ce5a6a:
+> > > 
+> > >   bcachefs: time_stats: Check for last_event == 0 when updating freq stats (2024-02-08 15:33:11 -0500)
 > > 
-> > Cheers,
-> > Kent
+> > This didn't work well :(
 > > 
-> > The following changes since commit 0dd3ee31125508cd67f7e7172247f05b7fd1753a:
+> > All of the original git commit ids are gone, and for me to look them up
+> > and add them back by hand is a pain.  I'll do it this time, but next
+> > time can you please include them in the commit somewhere (cherry-pick -x
+> > will do it automatically for you)
 > > 
-> >   Linux 6.7 (2024-01-07 12:18:38 -0800)
-> > 
-> > are available in the Git repository at:
-> > 
-> >   https://evilpiepirate.org/git/bcachefs.git tags/bcachefs-for-v6.7-stable-20240208
-> > 
-> > for you to fetch changes up to f1582f4774ac7c30c5460a8c7a6e5a82b9ce5a6a:
-> > 
-> >   bcachefs: time_stats: Check for last_event == 0 when updating freq stats (2024-02-08 15:33:11 -0500)
+> > Let's see if I can figure it out...
 > 
-> This didn't work well :(
-> 
-> All of the original git commit ids are gone, and for me to look them up
-> and add them back by hand is a pain.  I'll do it this time, but next
-> time can you please include them in the commit somewhere (cherry-pick -x
-> will do it automatically for you)
+> I got all but 3 applied, can you please send an updated set of 3 patches
+> for the ones I couldn't just cherry-pick from Linus's tree?
 
-Ah, apologies - I was pretty sure I was supposed to do something like
-cherry-pick -x; couldn't find the option and then went looking through
-the stable log, and I didn't see the tag anywhere?
+New pull request work?
 
-New pull request inc momentarily...
+The following changes since commit 0dd3ee31125508cd67f7e7172247f05b7fd1753a:
+
+  Linux 6.7 (2024-01-07 12:18:38 -0800)
+
+are available in the Git repository at:
+
+  https://evilpiepirate.org/git/bcachefs.git tags/bcachefs-6.7-stable-2024-02-13
+
+for you to fetch changes up to b291ceeb4faa9ee34d1704116fe393d66ff1f221:
+
+  bcachefs: time_stats: Check for last_event == 0 when updating freq stats (2024-02-13 21:22:41 -0500)
+
+----------------------------------------------------------------
+bcachefs fixes for 6.7 stable
+
+----------------------------------------------------------------
+Al Viro (2):
+      new helper: user_path_locked_at()
+      bch2_ioctl_subvolume_destroy(): fix locking
+
+Christoph Hellwig (1):
+      bcachefs: fix incorrect usage of REQ_OP_FLUSH
+
+Daniel Hill (1):
+      bcachefs: rebalance should wakeup on shutdown if disabled
+
+Guoyu Ou (1):
+      bcachefs: unlock parent dir if entry is not found in subvolume deletion
+
+Helge Deller (1):
+      bcachefs: Fix build on parisc by avoiding __multi3()
+
+Kent Overstreet (4):
+      bcachefs: Don't pass memcmp() as a pointer
+      bcachefs: Add missing bch2_moving_ctxt_flush_all()
+      bcachefs: bch2_kthread_io_clock_wait() no longer sleeps until full amount
+      bcachefs: time_stats: Check for last_event == 0 when updating freq stats
+
+Mathias Krause (1):
+      bcachefs: install fd later to avoid race with close
+
+Su Yue (2):
+      bcachefs: kvfree bch_fs::snapshots in bch2_fs_snapshots_exit
+      bcachefs: grab s_umount only if snapshotting
+
+ fs/bcachefs/chardev.c           |  3 +--
+ fs/bcachefs/clock.c             |  4 ++--
+ fs/bcachefs/fs-io.c             |  2 +-
+ fs/bcachefs/fs-ioctl.c          | 42 +++++++++++++++++++++--------------------
+ fs/bcachefs/journal_io.c        |  3 ++-
+ fs/bcachefs/mean_and_variance.h |  2 +-
+ fs/bcachefs/move.c              |  2 +-
+ fs/bcachefs/move.h              |  1 +
+ fs/bcachefs/rebalance.c         | 13 +++++++++++--
+ fs/bcachefs/replicas.c          | 10 ++++++++--
+ fs/bcachefs/snapshot.c          |  2 +-
+ fs/bcachefs/util.c              |  5 +++--
+ fs/namei.c                      | 16 +++++++++++++---
+ include/linux/namei.h           |  1 +
+ 14 files changed, 68 insertions(+), 38 deletions(-)
 
