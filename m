@@ -1,255 +1,105 @@
-Return-Path: <stable+bounces-20165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE6718547BF
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 12:08:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FFEA8547CF
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 12:11:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 150EA1C20F0B
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 11:08:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1B08290D4B
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 11:11:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69B7C18EA2;
-	Wed, 14 Feb 2024 11:08:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NbQoxGpn"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADDFB18E2F;
+	Wed, 14 Feb 2024 11:11:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com [209.85.222.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD70718E10
-	for <stable@vger.kernel.org>; Wed, 14 Feb 2024 11:08:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.42
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BF1F18E28;
+	Wed, 14 Feb 2024 11:11:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707908885; cv=none; b=oECqb9QLv37ByRSomkI5BrLrHg+ajefgsRRGp5Z8hLTR2FGdZf835c8S8+oCuKZxSSsMjCyB0alhojFzpqPbMlRoLrX/74UyB/7nrlifFORwiB2pH2hqPORlYdYCQEZycr/+1eBiZUySwQlnNRHF0Rt9w38hiarEpfmZ893nNcY=
+	t=1707909085; cv=none; b=OPfil/lJ7dRJ94XHc5fbqCT11vhnaIT8+ty9yCty6MVv1DY4EUQZ685AbVC9v2k7mEam6/lY4MQRD3OK3GO4SMINVsURjlhkLqbxxZDZHOn8hHttDsKG9tZBj1x5zDevNxDz0hZIbz7FBZ0W064lBZvCRDBhzVUAR5FC6TtN7WU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707908885; c=relaxed/simple;
-	bh=A3p6dvBkfrPe+QYcRYOO0BIOw+bilpkXrxJFPkswnJs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Mu+BKcRRyB9PJIpzS2UgNZGW//hWT1CypgWpi/gsPknyMo3wQLeqI3tswtFlcW08l6KgnWnYzekjGBJDSsYYnoHW7MNvFLc4BqmKvBNcozO4viKFZ+RDIT1IYLtN2AE518SmA/8oaneLWYVUFUfW1zpMI7YDtidxZKhyavPS6hY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NbQoxGpn; arc=none smtp.client-ip=209.85.222.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-7d5bbbe57b9so2117038241.3
-        for <stable@vger.kernel.org>; Wed, 14 Feb 2024 03:08:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1707908881; x=1708513681; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=72WvijmG/p/dIh/NSuC/Lvzmr8cJPzL16ZxCDMhhDUU=;
-        b=NbQoxGpnf+sDvUEoMkrxNEZUkBNLdtbLczv6WzRHHoy7jsYX3u2F2zSQ6gE1FaKuZ7
-         +42CMzri5ymNKl9X0orRmmJzlD0jKzsYvayrTGBLm5mCwsberOQImYRgqgruz4iv3qvk
-         moJ8oYIdfjS4k9jjJfa45f3VQ53c/iUf18JiSwJlZmyE/qYve3+lcfkuZ/X4EF7yvi8u
-         uPOoE19RzsnPlslEhHNKMVclbrJKW2QgvBoc65VG908i/EZNlT/5eW1coqDTohClPjLN
-         kqguMSLuXPa6P1/yyoLQ2lVA8CYlR0qqMfC5Cj987Pd46gcDwaP+JITHixElaBRJ3NrI
-         AzLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707908881; x=1708513681;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=72WvijmG/p/dIh/NSuC/Lvzmr8cJPzL16ZxCDMhhDUU=;
-        b=moN7jl0ns5p0TP3XbQw4z8D2jv+rUNTQd6sYm1eUIlsIjQ35u6lyL3wUlharhYf7OM
-         P0f11eN2jP5uRZ6n+xuscm3ZCUDOdu/YCMNg6+YmMr9Mea2fnPt2lFhwMjoF0WyRczQY
-         r2t6lQDrxusGw959yaY58j9j+AL7fTFHmAOTLkOSV9YXWcIhtoMTTA2Wj0z4f6Kvi+w4
-         n5McxdS5C0OozPSHxYQhI6rbWyWS8zP7uS4fdOkhACUciZ+B4lrhlaEYpcWn2QRrVXWT
-         yDFCQjmw7ZeC8UwF5iPbj6wqwyFAVU/V0KSbeOmu+SX7PxGmksW5DcqJS8ZTBmzUKbwb
-         sqtA==
-X-Gm-Message-State: AOJu0YyjPVlycbyf4JVVRCM/CuK9CKqOI7bZwmzreW74/qZlUdsMKmPH
-	+jtflslTYEy3fjQV8S7Sqz87dsM30Up26FaW35rVygiFPofc2p7ltvMUhK/+k2QKQz/67Im/PBa
-	7yq903geP9WpnFOoIh+2WNWIcLuKdr8vehjEhQA==
-X-Google-Smtp-Source: AGHT+IEQ36E1X3jer9pbjUng+y7hZJGp3oEbnN68Y5/nwPhnD/gymeIRPC2uUIDzWpO9yfPCrh/JQu65JbsQVsdRi6Y=
-X-Received: by 2002:a1f:de44:0:b0:4c0:d28:9557 with SMTP id
- v65-20020a1fde44000000b004c00d289557mr2020482vkg.1.1707908881598; Wed, 14 Feb
- 2024 03:08:01 -0800 (PST)
+	s=arc-20240116; t=1707909085; c=relaxed/simple;
+	bh=HsZd4cCR70HE0iyjlUKYCOohLKrz8PN3AKztuMP3OWc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=la3AL3Czfumqllwr7wFA3ndGh8aHuM7sbAlnyVsZ73KiZxHx3y5/4NFSn3gMPJ9xUNmOqMU4TCHyP1dqIEJHZ6BauqPJPv+L4VpbPMSyPctXnqRP8Sz1Q4SBMCmU96zfshqH3iv+fC4eVzYjBfBkEw+nCmJ3iAHaz31HCsVmnPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EC7D61FB;
+	Wed, 14 Feb 2024 03:12:03 -0800 (PST)
+Received: from FVFF77S0Q05N (unknown [10.57.64.145])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 957893F766;
+	Wed, 14 Feb 2024 03:11:20 -0800 (PST)
+Date: Wed, 14 Feb 2024 11:11:14 +0000
+From: Mark Rutland <mark.rutland@arm.com>
+To: Easwar Hariharan <eahariha@linux.microsoft.com>
+Cc: Oliver Upton <oliver.upton@linux.dev>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Marc Zyngier <maz@kernel.org>,
+	Andre Przywara <andre.przywara@arm.com>,
+	Rob Herring <robh@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>,
+	"moderated list:ARM64 PORT (AARCH64 ARCHITECTURE)" <linux-arm-kernel@lists.infradead.org>,
+	"open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] arm64: Subscribe Microsoft Azure Cobalt 100 to ARM
+ Neoverse N2 errata
+Message-ID: <Zcyf0oIJe7ukH0si@FVFF77S0Q05N>
+References: <20240212232909.2276378-1-eahariha@linux.microsoft.com>
+ <ZcqtUxhqUbYoRH-G@linux.dev>
+ <18b3ac3e-2bfc-4fce-9be4-3e75e487f9fc@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240213171844.702064831@linuxfoundation.org>
-In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Wed, 14 Feb 2024 16:37:50 +0530
-Message-ID: <CA+G9fYu1ycnmEymAuAWLwdRQLUL9gAnkw-zPAFoGDQH+YQShHA@mail.gmail.com>
-Subject: Re: [PATCH 6.1 00/64] 6.1.78-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <18b3ac3e-2bfc-4fce-9be4-3e75e487f9fc@linux.microsoft.com>
 
-On Tue, 13 Feb 2024 at 22:54, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.1.78 release.
-> There are 64 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 15 Feb 2024 17:18:29 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.1.78-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On Tue, Feb 13, 2024 at 04:19:08PM -0800, Easwar Hariharan wrote:
+> >> diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
+> >> index 7c7493cb571f..a632a7514e55 100644
+> >> --- a/arch/arm64/include/asm/cputype.h
+> >> +++ b/arch/arm64/include/asm/cputype.h
+> >> @@ -61,6 +61,7 @@
+> >>  #define ARM_CPU_IMP_HISI		0x48
+> >>  #define ARM_CPU_IMP_APPLE		0x61
+> >>  #define ARM_CPU_IMP_AMPERE		0xC0
+> >> +#define ARM_CPU_IMP_MICROSOFT		0x6D
+> >>  
+> >>  #define ARM_CPU_PART_AEM_V8		0xD0F
+> >>  #define ARM_CPU_PART_FOUNDATION		0xD00
+> >> @@ -135,6 +136,8 @@
+> >>  
+> >>  #define AMPERE_CPU_PART_AMPERE1		0xAC3
+> >>  
+> >> +#define MSFT_CPU_PART_AZURE_COBALT_100	0xD49 /* Based on r0p0 of ARM Neoverse N2 */
+> >> +
+> >>  #define MIDR_CORTEX_A53 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A53)
+> >>  #define MIDR_CORTEX_A57 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A57)
+> >>  #define MIDR_CORTEX_A72 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A72)
+> >> @@ -193,6 +196,7 @@
+> >>  #define MIDR_APPLE_M2_BLIZZARD_MAX MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M2_BLIZZARD_MAX)
+> >>  #define MIDR_APPLE_M2_AVALANCHE_MAX MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M2_AVALANCHE_MAX)
+> >>  #define MIDR_AMPERE1 MIDR_CPU_MODEL(ARM_CPU_IMP_AMPERE, AMPERE_CPU_PART_AMPERE1)
+> >> +#define MIDR_MICROSOFT_AZURE_COBALT_100 MIDR_CPU_MODEL(ARM_CPU_IMP_MICROSOFT, MSFT_CPU_PART_AZURE_COBALT_100)
+> > 
+> > nitpick: consistently use the abbreviated 'MSFT' for all the definitions
+> > you're adding.
+> 
+> I was rather hoping to use Microsoft throughout, but I chose MSFT for the CPU_PART* to align columns
+> with the other defines. :) If consistency is of a higher priority than column alignment, I can change it
+> to MICROSOFT rather than MSFT throughout.
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+Consistency across the definitions is more important than alignmen; please
+choose either "MSFT" or "MICROSOFT" and use that consistently.
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-## Build
-* kernel: 6.1.78-rc1
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-6.1.y
-* git commit: b29c5b14893f8c7e4ce99e7ee1c69848798a686f
-* git describe: v6.1.77-65-gb29c5b14893f
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.7=
-7-65-gb29c5b14893f
-
-## Test Regressions (compared to v6.1.77)
-
-## Metric Regressions (compared to v6.1.77)
-
-## Test Fixes (compared to v6.1.77)
-
-## Metric Fixes (compared to v6.1.77)
-
-## Test result summary
-total: 134243, pass: 114089, fail: 2705, skip: 17286, xfail: 163
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 151 total, 135 passed, 16 failed
-* arm64: 52 total, 47 passed, 5 failed
-* i386: 39 total, 39 passed, 0 failed
-* mips: 26 total, 25 passed, 1 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 36 total, 33 passed, 3 failed
-* riscv: 11 total, 11 passed, 0 failed
-* s390: 16 total, 15 passed, 1 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 8 total, 8 passed, 0 failed
-* x86_64: 46 total, 45 passed, 1 failed
-
-## Test suites summary
-* boot
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-kvm
-* kselftest-lib
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-memory-hotplug
-* kselftest-mincore
-* kselftest-mount
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-splice
-* kselftest-static_keys
-* kselftest-sync
-* kselftest-sysctl
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-vm
-* kselftest-x86
-* kselftest-zram
-* kunit
-* kvm-unit-tests
-* libgpiod
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* network-basic-tests
-* perf
-* rcutorture
-* v4l2-compliance
-
---
-Linaro LKFT
-https://lkft.linaro.org
+Mark.
 
