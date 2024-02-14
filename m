@@ -1,259 +1,145 @@
-Return-Path: <stable+bounces-20147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E961854403
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 09:28:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D103854481
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 10:02:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C32FA1C227CE
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 08:28:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1FCBB2769D
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 09:02:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1AB5125AB;
-	Wed, 14 Feb 2024 08:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 520FE79F4;
+	Wed, 14 Feb 2024 09:02:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="BUFntmSk"
+	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="Vu3CK0nb"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2C2D125A2
-	for <stable@vger.kernel.org>; Wed, 14 Feb 2024 08:28:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA23379E1
+	for <stable@vger.kernel.org>; Wed, 14 Feb 2024 09:02:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707899333; cv=none; b=HW3LXmmwTIVMnJ7M+JRF8PVKvd75eE7v6TiZZgF/L059fy85yE4axLqFZ0mkXTFsx4RIVB1EdTIZbH6LgSllqnxTvR6dW40OQojB5W8zrRPX8nOgXYmVXLjHoSYqjgKiku+2wv36tgYKgzlGD8x/RtEk4dw8CUmE9VfhwjqM0EY=
+	t=1707901332; cv=none; b=BC5VwHFOeJOHDFnqc9/r4oJKhD/XR+BtytqxwwmlvL+ES5ZpXJMDnT40/aJUqlCKB+/zfQehePW11fGFBXzSCiDHon+i3ZNxZ9dIxLPRu5x2RfpCo8F3lmOhgLQVZObpOmi3Juc0dgD58CskOuz29/zjlDmYOhjQjN1smHRc49I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707899333; c=relaxed/simple;
-	bh=z1RzFrnMZf3GiNGXTX2mQFwYpYduJ0m3d8+ydYvytKU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MtMjl8vbOrSzbc6RdDQVYORHXTEV31lpw/sA7nDecv8FhOvkKwtHYUQ5ZI9Lwra0Cg2bwYJkbwCWqnom1kRCyDMZf9j0t9RGMQTdbB2lphShwpBU/SilwU29bquSSB4kLOAx8YuKhpWorlPOWSsxJYeHoSix0ASeo02emR8H29k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=BUFntmSk; arc=none smtp.client-ip=209.85.221.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-4c0215837e2so1100226e0c.1
-        for <stable@vger.kernel.org>; Wed, 14 Feb 2024 00:28:51 -0800 (PST)
+	s=arc-20240116; t=1707901332; c=relaxed/simple;
+	bh=whB7Ohz/aZw41jDLmsNbB2EZqD6VWqw1GxgDMy7wNzw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=PE/Az+vbh7XxLDucc/meFu76GZhB74+U6Kr4fSw/LXKQ6lsYi7KocH0iTqZKlO7YxxMobvlOxCAZReFxXO/GuitA9fVZ4BCH8i2IRDFu7FNZ7abNen82mVrNeVp9t1MveT1uclV2V8vZndBCRGwqev4TEgjOB2zEd9Nk2Ls/Ln8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=Vu3CK0nb; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-6e09a890341so2430545b3a.3
+        for <stable@vger.kernel.org>; Wed, 14 Feb 2024 01:02:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1707899330; x=1708504130; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=sifive.com; s=google; t=1707901329; x=1708506129; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wuolcvOTiNcGT/sHrvkvrIkmAZtBKK3PrIqOvcXIMOg=;
-        b=BUFntmSksxDULKGDSwD+vFdwekUlqzcuHIPd9KkEsVJpAywNrUr4XGAjpiXwF4BaWq
-         WW874ldvJb0gSswMsuRhsdSwDe0YLNDRt0kTBrEPXh0AKddVmxvLulwcU+wqubHsmj0C
-         uZl36Y7BKq6sciE/dm7vzPQ3MwL1yke80uhkpS+VhSI8WEyvyX3RotLzDVrQFsLyNyfB
-         R6UMo6p7dTHpPAlHeGvyj2kd6vMRP1ftQGTckith8u6ouqffTrhVgfdn43SRdW73PF6r
-         2rz45k8RXFtAUJRiaFo74wHJlaye+BrSpZdHPGn/c/32R7YdkCH2tmqNnjlmOFKwr8rZ
-         PqwA==
+        bh=DbCTJ5IGhkP1LmE7TbGdUdt79kYAcBAyFyeC8QWmnbA=;
+        b=Vu3CK0nbeZvAPFO8TBI187ZZSnXKk7NZyQOjaKzW17lmGlge1A3wFJ+niufluvOIfo
+         suRI5Bh4QxSL+yPaJ3PhNTH4xyB5ANsob4+9cXUFJGvhvYmsmz+KnR4l92mX8/seUfAn
+         u8BbKc2d7FfTxNJrssFZA1OmXrA/T/Fhf+Fi8l93+YnyUMA06HQj502xrg978mj2Yrl8
+         yhiS7riKONRBPnZjnlZ4Yna6fz/rM3IrngSUtM1vNkq1plu/57/9dH3XbL3PLZOT/PCV
+         jB0AQ2YWUg8KDPDKmetsLNCBNyqnX59dCWTpm7OsumSqifx64E8t7Gj2W4Hf24yOrD8K
+         fFQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707899330; x=1708504130;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1707901329; x=1708506129;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=wuolcvOTiNcGT/sHrvkvrIkmAZtBKK3PrIqOvcXIMOg=;
-        b=e/lBxziwAYbDjtzlBJDbAlJGcMjX64j5KXOdLR4OC7UDXGjVheNpcK9qc3z/bMporo
-         bCLej6WUcwGoQxegbVGDepbEJ3hSNvU6K30rKaBYXntBkzxg6ZaR43o/P5IHxAcs1VjH
-         V3xQXcqceiEsyV1FYrYhPAXykiyMxIwqZyFoRFGHGaMCo7yXYyoh8mvs/oyZ42CHQiiN
-         ZFNZixJwwQjkQLFEIhTuozQdH3WPRUuqHlRWnmtw+v7+qxw4bcLTJ0awlrFTuuCoFPt/
-         /JXcI5+jv4iyl7agGpbyV1+cH/RbhpvXDvS3Rz7TEMb7vZd4Ewtr6a1azC1K4KhiBU/p
-         GQMw==
-X-Gm-Message-State: AOJu0Yz7DnvsaZ1+wuXgDj8mfuZXn8jQhGKuscdvS8ynPajMWJUalSMv
-	DlKEUSvSpO3yx+pIA3YOybkJ4V7T/ZwBKWmkj+Hn/DnaDUyBwsz5KrpFFQD9fPWxYxyfxY9/b+E
-	/9TyXco1rN5U8/u6ZCmG2jURZlT4XIqYPodPP6A==
-X-Google-Smtp-Source: AGHT+IH5gPatoltUuSpmQuogAkITp7Yv65/QnblbYKRWzTEZiP/Cga8EbN3q0wNeVyUMaUSMn5SZXDDhJha4BoXbx+w=
-X-Received: by 2002:a1f:4f04:0:b0:4c0:3000:8b26 with SMTP id
- d4-20020a1f4f04000000b004c030008b26mr1874842vkb.4.1707899330557; Wed, 14 Feb
- 2024 00:28:50 -0800 (PST)
+        bh=DbCTJ5IGhkP1LmE7TbGdUdt79kYAcBAyFyeC8QWmnbA=;
+        b=O+WAl2y8VCCtZ2+8+IgIRqcDU9WwhW4dKfLRymuhm7DkxjOvHT1mGn6gqSQbI9RGge
+         4/WO0JviiJZsXC0t/EcsOr7LkqhyIE8sz4Vf7d2HHL9C21K6Fr5/UXcHHjDTJ5la7gwk
+         t3M5+BIlrA6J5WL7za5a7DrKhBCxA9sqje8uYLDLrzJN4KT17h7q2FncKy9taEeJRl9S
+         1xMSMe0i4hxqwTyN4DXEaM4mIa7pAycuvI4a8Pgy2nfaYbmQRawT0OI6xcJ+NHNN1Uga
+         108VGJm1eCouqrZ48hJG4gJpTY5tVq9dx/O8nEFxninvc3PEkh0d97qz0bCcq/GrHWOZ
+         GyXg==
+X-Forwarded-Encrypted: i=1; AJvYcCUNCh7KkyApIcDqg5bmvkvCkew8EqRM5sx/G4TquZnuH84bCWDJKtsnJE2L0XUUDPIgUQxfurnUbWXWO1wFSv/foNtCmTPE
+X-Gm-Message-State: AOJu0YwJD7M4BLwPw0+LJbGrHY5tjEzvW0WtAMordUaXaK7SwoUqFD79
+	LVtwGRXnKSIpIamWv4KNSyazBKZfK9I54mx97rs89TmH8eecewqhT5Xyr5nzIl0=
+X-Google-Smtp-Source: AGHT+IFsjTuVAsJab6ip88ByI9QyNPkKm0np9TXh01qjGS2E4T32B1s1GFubfCKk7kV11vqAbji1+g==
+X-Received: by 2002:a05:6a21:3a44:b0:19e:4f38:d8b8 with SMTP id zu4-20020a056a213a4400b0019e4f38d8b8mr2502137pzb.49.1707901329240;
+        Wed, 14 Feb 2024 01:02:09 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCV7j4Fc4POZ09+xXH83jfYc+PuXbyH/VpOIAqmnBvkJ7GqY+HqUjeaxss0dPHCrRc2j31VDWX26D00yKHkfrVrh/CtH4mEa+eXidreRJPQVQm1CHNxDFHSujA1O2DtcTmfQJnAyb7E4fgp4iJkddZeH14jt0tzjkqeMTpNzqbiEa+Ttjq1fIS3GLjWb/svp7lzGE6D9Zk/QFtwED28vrb5ty1QHbbn+rGhZxsay3cXFF5d9pj9rukcYm/6vj7pH010lIbqQV9ff
+Received: from sw06.internal.sifive.com ([4.53.31.132])
+        by smtp.gmail.com with ESMTPSA id m25-20020a638c19000000b005d7994a08dcsm2476681pgd.36.2024.02.14.01.02.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Feb 2024 01:02:08 -0800 (PST)
+From: Samuel Holland <samuel.holland@sifive.com>
+To: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Andrew Jones <ajones@ventanamicro.com>,
+	linux-kernel@vger.kernel.org,
+	Conor Dooley <conor@kernel.org>,
+	linux-riscv@lists.infradead.org,
+	Stefan O'Rear <sorear@fastmail.com>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	stable@vger.kernel.org
+Subject: [PATCH -fixes v3 1/2] riscv: Fix enabling cbo.zero when running in M-mode
+Date: Wed, 14 Feb 2024 01:01:56 -0800
+Message-ID: <20240214090206.195754-2-samuel.holland@sifive.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240214090206.195754-1-samuel.holland@sifive.com>
+References: <20240214090206.195754-1-samuel.holland@sifive.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240213171852.948844634@linuxfoundation.org>
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Wed, 14 Feb 2024 13:58:39 +0530
-Message-ID: <CA+G9fYvdvQzb8dxjeYrvAPMw-qzQ2s=6AO0Z4t1Zgs5pxY+Z=Q@mail.gmail.com>
-Subject: Re: [PATCH 6.6 000/121] 6.6.17-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, 13 Feb 2024 at 22:57, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.6.17 release.
-> There are 121 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 15 Feb 2024 17:18:29 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.6.17-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+When the kernel is running in M-mode, the CBZE bit must be set in the
+menvcfg CSR, not in senvcfg.
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+Cc: <stable@vger.kernel.org>
+Fixes: 43c16d51a19b ("RISC-V: Enable cbo.zero in usermode")
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+---
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+(no changes since v1)
 
-## Build
-* kernel: 6.6.17-rc1
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-6.6.y
-* git commit: bea54b0cb986e2c93aa5d99a24eb2255850384b1
-* git describe: v6.6.16-122-gbea54b0cb986
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.1=
-6-122-gbea54b0cb986
+ arch/riscv/include/asm/csr.h   | 2 ++
+ arch/riscv/kernel/cpufeature.c | 2 +-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-## Test Regressions (compared to v6.6.16)
+diff --git a/arch/riscv/include/asm/csr.h b/arch/riscv/include/asm/csr.h
+index 510014051f5d..2468c55933cd 100644
+--- a/arch/riscv/include/asm/csr.h
++++ b/arch/riscv/include/asm/csr.h
+@@ -424,6 +424,7 @@
+ # define CSR_STATUS	CSR_MSTATUS
+ # define CSR_IE		CSR_MIE
+ # define CSR_TVEC	CSR_MTVEC
++# define CSR_ENVCFG	CSR_MENVCFG
+ # define CSR_SCRATCH	CSR_MSCRATCH
+ # define CSR_EPC	CSR_MEPC
+ # define CSR_CAUSE	CSR_MCAUSE
+@@ -448,6 +449,7 @@
+ # define CSR_STATUS	CSR_SSTATUS
+ # define CSR_IE		CSR_SIE
+ # define CSR_TVEC	CSR_STVEC
++# define CSR_ENVCFG	CSR_SENVCFG
+ # define CSR_SCRATCH	CSR_SSCRATCH
+ # define CSR_EPC	CSR_SEPC
+ # define CSR_CAUSE	CSR_SCAUSE
+diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
+index 89920f84d0a3..c5b13f7dd482 100644
+--- a/arch/riscv/kernel/cpufeature.c
++++ b/arch/riscv/kernel/cpufeature.c
+@@ -950,7 +950,7 @@ arch_initcall(check_unaligned_access_all_cpus);
+ void riscv_user_isa_enable(void)
+ {
+ 	if (riscv_cpu_has_extension_unlikely(smp_processor_id(), RISCV_ISA_EXT_ZICBOZ))
+-		csr_set(CSR_SENVCFG, ENVCFG_CBZE);
++		csr_set(CSR_ENVCFG, ENVCFG_CBZE);
+ }
+ 
+ #ifdef CONFIG_RISCV_ALTERNATIVE
+-- 
+2.43.0
 
-## Metric Regressions (compared to v6.6.16)
-
-## Test Fixes (compared to v6.6.16)
-
-## Metric Fixes (compared to v6.6.16)
-
-## Test result summary
-total: 149653, pass: 129011, fail: 2047, skip: 18425, xfail: 170
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 147 total, 132 passed, 15 failed
-* arm64: 54 total, 47 passed, 7 failed
-* i386: 43 total, 42 passed, 1 failed
-* mips: 26 total, 25 passed, 1 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 36 total, 33 passed, 3 failed
-* riscv: 18 total, 18 passed, 0 failed
-* s390: 13 total, 12 passed, 1 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 8 total, 8 passed, 0 failed
-* x86_64: 48 total, 46 passed, 2 failed
-
-## Test suites summary
-* boot
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-kvm
-* kselftest-lib
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-memory-hotplug
-* kselftest-mincore
-* kselftest-mount
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-splice
-* kselftest-static_keys
-* kselftest-sync
-* kselftest-sysctl
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-vm
-* kselftest-watchdog
-* kselftest-x86
-* kselftest-zram
-* kunit
-* kvm-unit-tests
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-fsx
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* network-basic-tests
-* perf
-* rcutorture
-* v4l2-compliance
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
