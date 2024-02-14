@@ -1,232 +1,113 @@
-Return-Path: <stable+bounces-20183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08F0D854B7A
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 15:34:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40AC9854C9B
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 16:26:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B18D5282C90
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 14:34:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3A1A1F21FBF
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 15:26:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1BF158210;
-	Wed, 14 Feb 2024 14:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2311A5B671;
+	Wed, 14 Feb 2024 15:26:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HYBhecqr"
-X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yrv8m9II"
+X-Original-To: Stable@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6AF158211
-	for <stable@vger.kernel.org>; Wed, 14 Feb 2024 14:34:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6ABF43157
+	for <Stable@vger.kernel.org>; Wed, 14 Feb 2024 15:26:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707921272; cv=none; b=dBnPNCe4UcImcQt7ne7tp3lyxTk87kukTF+kaO0hBUeD3K5dWwWyGEEWpjihOFuyW92EyyDeY84yAdZOhWuFe8QQPK2zSxVUfMEV3I6MhWCAKpM96U3jIKMOeNrgxpMj1aUAOc2aIofKxtJk49gmtmEnV60rno1F7FD/4L7ERRs=
+	t=1707924365; cv=none; b=YdEHgok50ucpKGL5G3crZKp3NJWiTjvc6undwMrJrYyyrPA3iWBAO+nS/8dVXIPQVBkh8ZVkeFhZE8d7K9hL3ZUi9ycUMdmmO8c6o0OeB2yZEVG9VPMqpZgssWbdZwJwn6YZlIjzo5h7jMCE1YuFD4XoHbbzrSKn5soQhBllOeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707921272; c=relaxed/simple;
-	bh=KCrba6UK8EXlGRdj4QcMTPo/ycuCLzV9fFa2r0rSgzA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bsetFS8SQceX5gebd+Mtkh6cH1tiscCP44lm4aU+h55KZv9eJvwft4dE17+QKa50oZcD/UBBhdqV+1xdwtvaVx0EPaZLkBfOmL+4EfXALdPaPhW6yaVPTqbOmXxoozr2GhmlssXxvUOEDOOAoha2kMpb+aXbOe3BsedM+b5zOqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HYBhecqr; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1707921269;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=G/CXa47vCO+On1sBQqAHOelo6CVXqbmEV9d4ZtRHY98=;
-	b=HYBhecqrTx86AoYRKEAfo8wFGaRsWYBEYykP5G8BH47i7OWu7e8r03KIakQXwIzWGZmG7y
-	tX4ni3Rgm6purR/Q4BKA7sipfvsGZGl8HUzGlMBRmgIZLYjHpo8A+KTS2BPmHtlSDeELFy
-	MeA3if42KMlFAGrBvMBJP3NtpwwXC9M=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-574-aMO9ce33NFeLjN3GliMwWA-1; Wed, 14 Feb 2024 09:34:28 -0500
-X-MC-Unique: aMO9ce33NFeLjN3GliMwWA-1
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-33ceca744d9so367415f8f.0
-        for <stable@vger.kernel.org>; Wed, 14 Feb 2024 06:34:27 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707921267; x=1708526067;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
-         :references:cc:to:content-language:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=G/CXa47vCO+On1sBQqAHOelo6CVXqbmEV9d4ZtRHY98=;
-        b=t21keJpgPfSSQKxxDGgU1KLjXuxtrldMdg8gMqRP1hPudIZ8Lu+Zs5Zx6S9qPq0QjQ
-         C0C9xnt0FtLbkaKVl47Z4o/ZhjXGyhZ4i8f+ONBevT8EFJ++Ntxx1XdSMSviC92oMudC
-         /jGLRrOfS6VxVYUL7ryTI/yDZplv1ke5Z3RZCpCfD3o1E+8Y1cHBIMC5JvbIUzb4VC2n
-         atwJSJ2RfsXPii2zDWFn40o9blUc1WoU6vB+WjHbct7YKeukrmj52DdAFtciIXOANomi
-         dZc3ovQ54/+2wf18QhzOoiybvoCAbaox2MHT5+XOw8hClBKDoFAJ+FUGe45NONpcXU5q
-         gEPw==
-X-Forwarded-Encrypted: i=1; AJvYcCUAH7FkC3jlX+AfnppelEn4fXHiP5O//dLTGRV44U3PKXgc5BV0K/IHWHwg1/LYoGnGDZV5fI3ZzG5zWE9u3HJg2QKdhhMy
-X-Gm-Message-State: AOJu0Yzb/N4WH5v2ax0+XQu7YSQpyI26Mz2K2nH0YT19Ud8+OfVTrUnL
-	EuAcQIL83BakBVMFakA1dQy2p6VZ9SraymbDbhMrZRphAwwxwBnTQDXGdNxGRLCnNikzHPvYGKv
-	0e8HnGTySbhBLGxNLqKsCg7K/drB3hvfWEIFhEza3hXXOHNTqLIm4/g==
-X-Received: by 2002:adf:f348:0:b0:33c:d310:73cb with SMTP id e8-20020adff348000000b0033cd31073cbmr2177952wrp.19.1707921267003;
-        Wed, 14 Feb 2024 06:34:27 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGGInr2x1NzVvLC2uIezN5JQPtd0nNudiXofTvJruw4LRJIm3hT9JpHwbZqb4yeZEp1zbWu6A==
-X-Received: by 2002:adf:f348:0:b0:33c:d310:73cb with SMTP id e8-20020adff348000000b0033cd31073cbmr2177925wrp.19.1707921266559;
-        Wed, 14 Feb 2024 06:34:26 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVMvvxAKDVB8PSUDgeu8gEZRhpU4IfTbtJg2qjYk9caDBC+a/2k4y3rwQTzCMKl3epXawgxcC5j0/vOLf/t1liYsAriI6pp6SdEvZex2dtMRgPIOKsZdoPNMA0KQSyB3W7QT17h3yV1CPu4jYBEs2dsvIeZ5SAisEk5g/ypWCYywDjaVp92aOfTHOSvxWny4z3JSU2RAYoEHrI0RAfF0V2Mf7BlUiKflY/psSslnFgU+JJ0SKvypy/ohvirnxEKPyk2jYSv2p8GwiQ+GlgqsLxe5iJdIAZGcaxKieeDq/sKLrvoykfy3jV5WPrG+EN3JH9J7IlJzU90RvVh1V4=
-Received: from ?IPV6:2003:d8:2f3c:3f00:7177:eb0c:d3d2:4b0e? (p200300d82f3c3f007177eb0cd3d24b0e.dip0.t-ipconnect.de. [2003:d8:2f3c:3f00:7177:eb0c:d3d2:4b0e])
-        by smtp.gmail.com with ESMTPSA id f5-20020a056000128500b0033cf2063052sm1076695wrx.111.2024.02.14.06.34.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 14 Feb 2024 06:34:25 -0800 (PST)
-Message-ID: <f2ad5918-7e36-4a7c-a619-c6807cfca5ec@redhat.com>
-Date: Wed, 14 Feb 2024 15:34:24 +0100
+	s=arc-20240116; t=1707924365; c=relaxed/simple;
+	bh=k2pMBFaBnGbC/LIWFlSKXYBbw2Z9l0Z4LKs+jvBHeec=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=be1wWZ5IguawykjHl0MNn2PjzgZGoa/kr1k9/V/VX3ySLav7EpFsACf7DL4EH41Zdh9Lol2qSQFXvYpBC9QWCbc33sO3106xQvJPmMatQZYIgWb5kMBJ8o0teu1dQluKGTPORt3bA4aDXgO5cNvdF0feN7yORglOZaM35kr4r2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yrv8m9II; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA23BC433F1;
+	Wed, 14 Feb 2024 15:26:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1707924365;
+	bh=k2pMBFaBnGbC/LIWFlSKXYBbw2Z9l0Z4LKs+jvBHeec=;
+	h=Subject:To:From:Date:From;
+	b=Yrv8m9IIUf+SD/Czuc4xZ27HMSFLmDG2oLtP1UqADqrt4Fd7CV2nrV5Yl7XphTN3W
+	 6o16uRNpkj9bH3SAOex9GMGfezEOXVjI6vg+7hhA0gUDXDY7UhPRfeDhFH6QLQtXtm
+	 QkcwzVNIwfuu2uc1fa32i/oM1etXBmS7suYiIbHk=
+Subject: patch "iio: core: fix memleak in iio_device_register_sysfs" added to char-misc-linus
+To: dinghao.liu@zju.edu.cn,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
+From: <gregkh@linuxfoundation.org>
+Date: Wed, 14 Feb 2024 16:26:02 +0100
+Message-ID: <2024021402-woof-jot-1a2d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/huge_memory: fix swap entry values of tail pages of
- THP
-Content-Language: en-US
-To: Matthew Wilcox <willy@infradead.org>,
- Charan Teja Kalla <quic_charante@quicinc.com>
-Cc: gregkh@linuxfoundation.org, akpm@linux-foundation.org, vbabka@suse.cz,
- dhowells@redhat.com, surenb@google.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- # see patch description <stable@vger.kernel.org>,
- Huang Ying <ying.huang@intel.com>
-References: <1707814102-22682-1-git-send-email-quic_charante@quicinc.com>
- <a683e199-ce8a-4534-a21e-65f2528415a6@redhat.com>
- <8620c1a0-e091-46e9-418a-db66e621b9c4@quicinc.com>
- <845ca78f-913b-4a92-8b40-ff772a7ad333@redhat.com>
- <bc1a5e36-1983-1a39-4d06-8062993a4ca4@quicinc.com>
- <ZczLoOqdpMJpkO5N@casper.infradead.org>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <ZczLoOqdpMJpkO5N@casper.infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
-On 14.02.24 15:18, Matthew Wilcox wrote:
-> On Wed, Feb 14, 2024 at 12:04:10PM +0530, Charan Teja Kalla wrote:
->>> 1) Is it broken in 5.15? Did you actually try to reproduce or is this
->>>     just a guess?
->>>
->>
->> We didn't run the tests with THP enabled on 5.15, __so we didn't
->> encounter this issue__ on older to 6.1 kernels.
->>
->> I mentioned that issue exists is based on my understanding after code
->> walk through. To be specific, I just looked to the
->> migrate_pages()->..->migrate_page_move_mapping() &
->> __split_huge_page_tail() where the ->private field of thp sub-pages is
->> not filled with swap entry. If it could have set, I think these are the
->> only places where it would have done, per my understanding. CMIW.
-> 
-> I think you have a misunderstanding.  David's patch cfeed8ffe55b (part
-> of 6.6) _stopped_ us using the tail ->private entries.  So in 6.1, these
-> tail pages should already have page->private set, and I don't understand
-> what you're fixing.
 
-I think the issue is, that migrate_page_move_mapping() / 
-folio_migrate_mapping() would update ->private for a folio in the 
-swapcache (head page)
+This is a note to let you know that I've just added the patch titled
 
-	newfolio->private = folio_get_private(folio);
+    iio: core: fix memleak in iio_device_register_sysfs
 
-but not the ->private of the tail pages.
+to my char-misc git tree which can be found at
+    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
+in the char-misc-linus branch.
 
-So once you migrate a THP that is in the swapcache, ->private of the 
-tail pages would not be migrated and, therefore, be stale/wrong.
+The patch will show up in the next release of the linux-next tree
+(usually sometime within the next 24 hours during the week.)
 
-Even before your patch that was the case.
+The patch will hopefully also be merged in Linus's tree for the
+next -rc kernel release.
 
-Looking at migrate_page_move_mapping(), we had:
-
-	if (PageSwapBacked(page)) {
-		__SetPageSwapBacked(newpage);
-		if (PageSwapCache(page)) {
-			SetPageSwapCache(newpage);
-			set_page_private(newpage, page_private(page));
-		}
-	} else {
-		VM_BUG_ON_PAGE(PageSwapCache(page), page);
-	}
+If you have any questions about this process, please let me know.
 
 
-I don't immediately see where the tail pages would similarly get updated 
-(via set_page_private).
+From 95a0d596bbd0552a78e13ced43f2be1038883c81 Mon Sep 17 00:00:00 2001
+From: Dinghao Liu <dinghao.liu@zju.edu.cn>
+Date: Fri, 8 Dec 2023 15:31:19 +0800
+Subject: iio: core: fix memleak in iio_device_register_sysfs
 
-With my patch the problem is gone, because the tail page entries don't 
-have to be migrated, because they are unused.
+When iio_device_register_sysfs_group() fails, we should
+free iio_dev_opaque->chan_attr_group.attrs to prevent
+potential memleak.
 
+Fixes: 32f171724e5c ("iio: core: rework iio device group creation")
+Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
+Link: https://lore.kernel.org/r/20231208073119.29283-1-dinghao.liu@zju.edu.cn
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+---
+ drivers/iio/industrialio-core.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-Maybe this was an oversight from THP_SWAP -- 38d8b4e6bdc8 ("mm, THP, 
-swap: delay splitting THP during swap out").
-
-It did update __add_to_swap_cache():
-
-for (i = 0; i < nr; i++) {
-         set_page_private(page + i, entry.val + i);
-         error = radix_tree_insert(&address_space->page_tree,
-                                   idx + i, page + i);
-         if (unlikely(error))
-                 break;
-}
-
-and similarly __delete_from_swap_cache().
-
-But I don't see any updates to migration code.
-
-Now, it could be that THP migration was added later (post 2017), in that 
-case the introducing commit would not have been 38d8b4e6bdc8.
-
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index 9a85752124dd..173dc00762a1 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -1584,10 +1584,13 @@ static int iio_device_register_sysfs(struct iio_dev *indio_dev)
+ 	ret = iio_device_register_sysfs_group(indio_dev,
+ 					      &iio_dev_opaque->chan_attr_group);
+ 	if (ret)
+-		goto error_clear_attrs;
++		goto error_free_chan_attrs;
+ 
+ 	return 0;
+ 
++error_free_chan_attrs:
++	kfree(iio_dev_opaque->chan_attr_group.attrs);
++	iio_dev_opaque->chan_attr_group.attrs = NULL;
+ error_clear_attrs:
+ 	iio_free_chan_devattr_list(&iio_dev_opaque->channel_attr_list);
+ 
 -- 
-Cheers,
+2.43.1
 
-David / dhildenb
 
 
