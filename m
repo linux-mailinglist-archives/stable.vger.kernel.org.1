@@ -1,671 +1,133 @@
-Return-Path: <stable+bounces-20170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1730854909
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 13:19:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A17685491A
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 13:22:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56C9828974B
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 12:19:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA1CE28EBCF
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 12:22:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 907481B962;
-	Wed, 14 Feb 2024 12:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 096641BC3A;
+	Wed, 14 Feb 2024 12:21:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marliere.net header.i=@marliere.net header.b="dCwH1DB5"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=devnull.tasossah.com header.i=@devnull.tasossah.com header.b="cuX/gMZj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from devnull.tasossah.com (devnull.tasossah.com [91.121.165.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0C381B952;
-	Wed, 14 Feb 2024 12:19:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB73E1B81A;
+	Wed, 14 Feb 2024 12:21:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.121.165.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707913161; cv=none; b=YCYDS6aBSoMcenmm6/pgmJihH/Db1VWmFsBwG2wA9C2cvIDEb0A5NkgF0woR7Dxt9Hq5Zhj+9J0Oe0PFF8TVNRgoLknBluKPl1PqpKwivbyl5oPO6m0FzBrK3fmxcd5eybsG4fuleSIig1NIAtHSHxZ+dCCV8XqG05tCiwmS0mQ=
+	t=1707913313; cv=none; b=nnLyQmFBY+9DJr42/I7HC6X/ZnLQU/0tm+kNVve6NG+fUI0RZY+J35kgExaGnEi/CKN2vz++Od0AgiA5flGdkmdfJg0xdA9TF9cZm8JMD8FRKsJgoVMbe3ZQi2NGXe1y3DJh/LvCakDMijdwvL1ZMBLz7WQtpe+3fDu4kRtMkq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707913161; c=relaxed/simple;
-	bh=7FpMnmjcF29ibu8HMN+TVwBsGjJvbnLMRh376bIZYnk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JXVihckvDR28KXo9aakv513slqYB+QSdXRFuPTleRFcDJJ6SkA6g4DfkyUa8U3+JSgSlHNYAmdzo3vYZI62Ylx75hIJ6eNJQYx4GTyIZtVoFv6HRxtJDl0hs3nNbF5Lq3FbB83s3t7pmy9I1ohS0BP8cPYFqM8if8Sao7KUppeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=marliere.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=marliere.net header.i=@marliere.net header.b=dCwH1DB5; arc=none smtp.client-ip=209.85.215.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=marliere.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-5d8b887bb0cso4348678a12.2;
-        Wed, 14 Feb 2024 04:19:18 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707913158; x=1708517958;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:dkim-signature:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=lURjBtlF/Pqbh7ehhnwUz2RA0HtzWHs+DrDpVNwDP74=;
-        b=OucFxTaEAlmrKBUWv6k+ZxoeDczGad8M2LHuWAeRuYiooan5P1aWWSu754hxFIiXN2
-         ZwViDhmD/0TbWak5+tUk0mhSDeh89A83gxIZZki2yp+1zMp5vIarWtFLbNJDlMuG7YGh
-         NzHaO4xLONbyCcNClNhZ6/V8KXLuI4suV2qXkevgAVjqatlI5bCL0pidf1Yb8btiaEJp
-         T7AgCFosJ62RUckbv7vrt08+oYILT8i8W35D1lc8172ynPLxYhy0FcWokp32ihMNr4Vp
-         BRj/l3FJzewHgznXjWTT97odLeeIFgd/AHKiFnTeCbfjvR8d1i/mtsLRdeJJue7jkdNb
-         HLzg==
-X-Forwarded-Encrypted: i=1; AJvYcCV21p5dUfDGtWqHiFpsqLCl4OFfzQ4U9pmPGwxzz3Nh4Xjoqpax90lTNEjotldNJ9Y4zQD8HHfe8oLsCZJ0phkMx7VjT+K8ME1U6FvH
-X-Gm-Message-State: AOJu0YyYQlu3eRMwa00Z1b9vSDRWF41nIXzf7tIbC4LWDHhmS4fkjQqT
-	uF/PUCOQbVmXKMI0RmO6Rgc8TH6jvpSfQz40kYYogwhEX8Nbfont
-X-Google-Smtp-Source: AGHT+IEUbtJiPZLSApamkpb7cOwSgj09RkLUlvzh2JxPJ+O8RJdV3xiLExozNb1f0pI8J3KoZy1U8g==
-X-Received: by 2002:a05:6a20:ce4e:b0:1a0:6c85:b48b with SMTP id id14-20020a056a20ce4e00b001a06c85b48bmr1005441pzb.0.1707913157933;
-        Wed, 14 Feb 2024 04:19:17 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWZLXWFyhpOCegkfNT6sCGqOh9itqPqJ66nvTTKBz0wOI4QXSwV23N7neCjqrpXk49XyWFCigzuStt2C7OcmlzR8+go/UT9e6GGj4r2jY2xIXshFaceiGsA523tX4nmSD1aqp3rKs4/vi3P82VLaGaVbLBrxsK5Hos+Okjy8obM9yaZkg1Ph/tvOaeYz76uSxX1Ii8ATLvZwAF5/ZffcLnOG7DDilKBVeDJLLfFNPqfEq/oZukD+asagfwV+ir23yBB9VgmxlHt6x77Tip9cJh4F/XYo+6xgriEDxetACglhBVV0wDk0j2YBJNZUKygA57MpYBGz1d6/XdLHa/AjFnCl1Yz23iUzAFPkuJu+rYCJy9TZwMiEiidp/fPRWvivPr4d9SS9n6y7Ta+Xk/u5rjRzhhdGmM5TPWnfaFpmQPAUKzC4UArFOrUty6QBRyLdH8xhU4gXUamxZkaHeNcbeIWVeok04i1styNVGHkt1bhZ1nahh4H793/0NGFDFnDpk9cUNMQf3AL5niKkJta9MFf6BnZyWLO9dV6hK200I8=
-Received: from mail.marliere.net ([24.199.118.162])
-        by smtp.gmail.com with ESMTPSA id lm17-20020a056a003c9100b006e080d792acsm8973624pfb.184.2024.02.14.04.19.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Feb 2024 04:19:17 -0800 (PST)
-Date: Wed, 14 Feb 2024 09:19:56 -0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marliere.net;
-	s=2024; t=1707913155;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lURjBtlF/Pqbh7ehhnwUz2RA0HtzWHs+DrDpVNwDP74=;
-	b=dCwH1DB5Y7md0umCtzpnCed1tyTgeTd4qcf4LhFzW6VSlOEc9/aozAUStHz/EJky0ANZG0
-	j3kawavLLgaps+5Q5X5SMLjA7NPDXlJM3vPTYda7LSamfE8je6W6sHwoQF5pToBfLUQTg4
-	MxlsTRaRtUvX0HK/tLkbtYynxlw9PgjZvCDdDgKTgpY9MtEV9tg6X7QNuJA7sVE/gupfy5
-	eyUuvoYYJs7dE2/5EKizNwnWgAXJHjMq+coCHa+h58RIfEf0KoOdYNyGe1GyQiNujP3YJm
-	scPKGwJjhZiTEzw3jSg3aPbM/Ea9zII8Qh5bulfJiBZUtDyaixOo/PYHoROV7g==
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=ricardo@marliere.net smtp.mailfrom=ricardo@marliere.net
-From: "Ricardo B. Marliere" <ricardo@marliere.net>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, 
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, 
-	allen.lkml@gmail.com
-Subject: Re: [PATCH 6.7 000/124] 6.7.5-rc1 review
-Message-ID: <44fdkxl344e3smkt6s7syhx2xrckpdkqbk3td7zytgk4bvklaj@ser6c3c3rkyd>
-References: <20240213171853.722912593@linuxfoundation.org>
+	s=arc-20240116; t=1707913313; c=relaxed/simple;
+	bh=S1X0Mrkhc1/eoO8nCsORmtBd8Av5gB6rLBM32VNDBq8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Z5c/2u2TJVu/X9Afy9x2HMnylZdu4z2DnoAkMVqvDPu/1/nq3GG4asJWN3ZKpNqooEplVZXC87kuF4KdZYTPP7Ss+hx/gK7dLJqeEQz0gMvnVa/uWnXynhc+t9wiCBOKx36Sp+TaGHc6sRFsKPiNwIMxpTHU3Yfzg4aqQMBIMo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=tasossah.com; spf=pass smtp.mailfrom=tasossah.com; dkim=pass (1024-bit key) header.d=devnull.tasossah.com header.i=@devnull.tasossah.com header.b=cuX/gMZj; arc=none smtp.client-ip=91.121.165.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=tasossah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tasossah.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=devnull.tasossah.com; s=vps; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=uMTTpA3ex/tasYG5jcUWjHuUgalpX560MSu3l8bptPs=; b=cuX/gMZj1+bxWV15tuawTCfTag
+	Q2WomxkN9wqXnIr59LCvaycBcfOZBSYb2Vg6zCblh4V3mxSlZ+jnolbYj7T/Ta9V/zapVCtKoQWng
+	EqJqAIXR7yTbJ3R807W/2H3rvAYXXiMdulmxK3ldWG0qbnt2hsrPwTvpdTRZQzA3OWtE=;
+Received: from [2a02:587:6a0e:de00::d54]
+	by devnull.tasossah.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <tasos@tasossah.com>)
+	id 1raEGk-008qr8-7l; Wed, 14 Feb 2024 14:21:42 +0200
+Message-ID: <b597d766-6e05-48a3-9d4c-6a1ebf8899bf@tasossah.com>
+Date: Wed, 14 Feb 2024 14:21:41 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] scsi: sd: usb_storage: uas: Access media prior to
+ querying device properties
+Content-Language: el-GR, en-GB
+To: "Martin K. Petersen" <martin.petersen@oracle.com>,
+ linux-scsi@vger.kernel.org, linux-usb@vger.kernel.org
+Cc: belegdol@gmail.com, stable@vger.kernel.org
+References: <20240213143306.2194237-1-martin.petersen@oracle.com>
+From: Tasos Sahanidis <tasos@tasossah.com>
+Autocrypt: addr=tasos@tasossah.com; keydata=
+ xsFNBFhyWVcBEADVELXbk5Xn/wh5VoGfZboTxp3dX8+aUXJ/cLH7hh68VuTPM1M0dEQTv5iW
+ xP2VVONdujPlEMSXXPZjFifs3yNK02S1t2szl4+bteFm7uIMjzKFaIDHSddccvaSXQ3ZzKMx
+ aywYgIIe5/3oJnVlg9yE/1ZGok2Qss73YMst+dbYDkO+43v4tnXTWF8MbqyDVA2E1+Aa43Gh
+ BukdbrTPzXk4WGpxN9wLLgpmLScL17Lh9k1XejJ7lXCMfSfXX3/fyLtuHr0Df2DDZ6LX0blw
+ Nf7McYmmNWU67KBMkRhKFBScYVpDX+gnqocaxITzWo4d/NQtBPAeYHq4ursA70AcHxBkdrUf
+ CYdRTd0iT7NvYuJut8g7Z8MtLFFJoRI3vCAay0YXzhjSw1ozIkFl90WUh3SqOArbPmp1li6L
+ 4t/gjTf9jcBZvBBPZo4k3Jzioq8qAMZZcqzChUtPYYGpr+4YJako0gtjJaVsJPxDBeMmvh3/
+ qXntii2PuXmzXBb3S/0720ym2dgLeF6fe+Lu0bNQbAB31tAANzpC+nftnzdFB8MgRgkHnqQr
+ wSWRsVwySvkxwJqOaeBug7DokW5KiWKEc5vUs0N+h+wboeP6bl9rouehgJo5wxGdWzaoJPp6
+ quyQOmEVodcJrwYQm31cMekUDj2zW7OGjSzuEcP7rBPwSgSY1QARAQABzSRUYXNvcyBTYWhh
+ bmlkaXMgPHRhc29zQHRhc29zc2FoLmNvbT7CwXcEEwEIACEFAlhyWVcCGwMFCwkIBwIGFQgJ
+ CgsCBBYCAwECHgECF4AACgkQAaHcuiLgBcQ97A//an1iqkH0qT55W7vtUaWlRVwB8dhBgcZo
+ PbdlGAL2aBleuTRQ3zBuMr1fOBGSn/01Xkp80SfjNpW7ps+eTWRFHo6SjoeU4GzX7y0yvoFc
+ dpFsjrrteHyOyn4mbG9lrt4z3uvQ9LxMNOucgXOlDaibQbfzeIUGBO1YLaaOLtsC81TGj0iU
+ KkDYcTr5fgqEc15sSywDPF+jWMbFEalDyMYL8+WKsUTUkaooinQ6omIhU0xTQe8TtDwtSyFf
+ brgPem9P1DlFPK6Dty4z6LiUrtTxvcs8UhbAHMxUEYQ40yNpJKhDc1KgFb3UtRl9CYG8my27
+ O088UCWJ7KAWSr1u2i7rx5A+eChfiXyQ+n27AIPvPtEJDLTb/nD3v46Xtf1T2n9T0Yaq1OFA
+ uUrz9uFb4y3EdNa/t0eQPm6BgHWfZ5dszOu+pqNeOdvtQqJbeZ8ogx9BwoBPuQ4mCnnXMkjb
+ aniO51avZ6fOHOCoh/TwiLCGLypKjrQ8vJQ/Rc8u1GyZTtOhFikvz6SZeznQs7Sst7eaWcxz
+ 70FZBeV1r5Yed/VmTpX++t4N/41gKzLbohXgYTPBnBzXBIcpA5s07VuWvK4SdXLV2H2QvaxS
+ Ypp7iIy5oVoPvcFLNH+OHEudcPQOPByboHqe60SdMPyxrer9cuxemGEikFbesYnZGC/N6nJJ
+ 3AzOwU0EWHJZVwEQANTB2/2ZRi3zoS/znvraUrZ2lggOgyLZCh3Wy9AA7msvkuyrQjoVuPnK
+ 4thaGmLGbQJEguKbCyMbKJTynm2gpwGouEzqhfYZURyb4WtT/wUEk5+WMwLvFOc00JlWjs5e
+ bEkADo6NkMOUq3AI23Mh0qstfgS5kCm7iJi+9SRIgSZzRkoghd4cBUJWhHt6MZggjPtUPl4d
+ Y6LG/odcFBiHOSM+TVOKWo5LVwUAUodt5cSqop6ol7PiByfcPewl4m/kQJSjLqzOjgFUW5Gs
+ aHpulIXf+OfzEwmHyla7R+f/scwrpMDrJLHyqzvInogq17hf3AM2XlyNfhwz02KqsuOVUrv4
+ NtJbyg2V906+LwTNI+HRviUBnfWiAwlHiiUXQ1dTBHI9ZOyZhLUAS2ejyqCJMovCL/+Ldd7Z
+ EVw68UzhkPWi6mMC0XzOC4pmAEawvmxZRkBE+1kLRR1UkcQe7EB45QF2bDDpqEvumLJMWzKo
+ Lx5X2U24LaQ+m+z43xc09MHdt1xaZvZcax4qDT5N5fmPWj/6STM38DGOq7Bdvhc8LrR5aAnM
+ OijsDsxbtj7HLTHiHZKsH+tP1LbzXg5Ffbysvek7bF8Bq79TG6CjbTpGsud8QzpXOpquVRSt
+ Pr2E6Xt3DYbBdJ7Nk9RsVQ7DrGeaHl24ScuPOw8WihY80SXOaWvNABEBAAHCwV8EGAEIAAkF
+ AlhyWVcCGwwACgkQAaHcuiLgBcS3txAA0qDQSgzjCPgnwPHI1HGyj2vQVww50a5sAvjVfGLG
+ cuA7Y7FdUVrPtBmMfcIqNezgX3vu2ChVUSXW5yKXuTJfZ+r3D3YMVIwL444ECOU1EpdrN5XM
+ Gy5OSP+mm13G4s2DOKu6qk8lUt26UfSJeROntFnVrty2xHfHy/lEhyh/w36LAxngMYhxIFNr
+ 7punXSTyvTXTgBJmENvA2K9ClB7XmaihIzVIMSZ+q8olE0QVzS3EnpHTqmAUkI4pyUzBC1h/
+ s/dm5S6UxGA91XGaUSYavJOXT7yFqs8wHGdIxzzS6YMgNLuTRhCmMjsNJ7Qrj1swwRFapU8b
+ V0IPIDBMRCizS6R5L803p1jKSkDnSqxFqZOQs1E60tQkPeKKDrYFZiAdoJA72M+445LeI+UZ
+ J9AZN07ou/KOI45rZr4b6mOa/9ZLeiCOOtw3duUf4aCbX7mZCx/h/6ftR0ORSZYXngUcyeHU
+ LGgUMIh4G/AErjVzHN14l32vXOw2Gqtm/ZOB6Dbc8TE6xZfvhm8umKDSJMMgUwGpmR0afFqY
+ z1BoGgqb+Obimcy8gj/lHTEJ3XuAsWVgh6qdAW+btexzxFNBZNRlvf0iWKS9ZrJoGm75vP6G
+ cq8pgdDuXavruyMo+8FAM271vGEkaQdYOegODcSPutYoK8jtXj3r5zRHvSbk1xOOsIw=
+In-Reply-To: <20240213143306.2194237-1-martin.petersen@oracle.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Greg,
+On 2024-02-13 16:33, Martin K. Petersen wrote:
+> Match the behavior of a well known commercial operating system and
+> trigger a READ operation prior to querying device characteristics to
+> force the device to populate mode pages and VPDs.
 
-On 13 Feb 18:20, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.7.5 release.
-> There are 124 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 15 Feb 2024 17:18:29 +0000.
-> Anything received after that time might be too late.
+Applied the patch, reverted the Kingston quirk, and:
 
-No regressions in my system.
+[  447.655130] usb-storage 3-2:1.0: USB Mass Storage device detected
+[  447.664875] scsi host10: usb-storage 3-2:1.0
+[  448.690959] scsi 10:0:0:0: Direct-Access     Kingston DT Ultimate G3   PMAP PQ: 0 ANSI: 6
+[  448.709502] sd 10:0:0:0: Attached scsi generic sg1 type 0
+[  448.837376] sd 10:0:0:0: [sdb] 61472768 512-byte logical blocks: (31.5 GB/29.3 GiB)
+[  448.847489] sd 10:0:0:0: [sdb] Write Protect is off
+[  448.852593] sd 10:0:0:0: [sdb] Mode Sense: 2b 00 00 08
+[  448.854221] sd 10:0:0:0: [sdb] Write cache: disabled, read cache: enabled, doesn't support DPO or FUA
 
-Tested-by: Ricardo B. Marliere <ricardo@marliere.net>
+Thanks!
 
-Thanks,
--	Ricardo.
+Tested-by: Tasos Sahanidis <tasos@tasossah.com>
 
-
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.7.5-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.7.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
-> -------------
-> Pseudo-Shortlog of commits:
-> 
-> Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->     Linux 6.7.5-rc1
-> 
-> Michael Lass <bevan@bi-co.net>
->     net: Fix from address in memcpy_to_iter_csum()
-> 
-> Jens Axboe <axboe@kernel.dk>
->     io_uring/net: limit inline multishot retries
-> 
-> Jens Axboe <axboe@kernel.dk>
->     io_uring/poll: add requeue return code from poll multishot handling
-> 
-> Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->     Revert "ASoC: amd: Add new dmi entries for acp5x platform"
-> 
-> Kent Overstreet <kent.overstreet@linux.dev>
->     bcachefs: time_stats: Check for last_event == 0 when updating freq stats
-> 
-> Guoyu Ou <benogy@gmail.com>
->     bcachefs: unlock parent dir if entry is not found in subvolume deletion
-> 
-> Christoph Hellwig <hch@lst.de>
->     bcachefs: fix incorrect usage of REQ_OP_FLUSH
-> 
-> Su Yue <glass.su@suse.com>
->     bcachefs: grab s_umount only if snapshotting
-> 
-> Su Yue <glass.su@suse.com>
->     bcachefs: kvfree bch_fs::snapshots in bch2_fs_snapshots_exit
-> 
-> Kent Overstreet <kent.overstreet@linux.dev>
->     bcachefs: bch2_kthread_io_clock_wait() no longer sleeps until full amount
-> 
-> Kent Overstreet <kent.overstreet@linux.dev>
->     bcachefs: Add missing bch2_moving_ctxt_flush_all()
-> 
-> Daniel Hill <daniel@gluo.nz>
->     bcachefs: rebalance should wakeup on shutdown if disabled
-> 
-> Kent Overstreet <kent.overstreet@linux.dev>
->     bcachefs: Don't pass memcmp() as a pointer
-> 
-> Al Viro <viro@zeniv.linux.org.uk>
->     bch2_ioctl_subvolume_destroy(): fix locking
-> 
-> Al Viro <viro@zeniv.linux.org.uk>
->     new helper: user_path_locked_at()
-> 
-> Johan Hovold <johan+linaro@kernel.org>
->     PCI/ASPM: Fix deadlock when enabling ASPM
-> 
-> Jens Axboe <axboe@kernel.dk>
->     io_uring/rw: ensure poll based multishot read retries appropriately
-> 
-> Jens Axboe <axboe@kernel.dk>
->     io_uring/net: un-indent mshot retry path in io_recv_finish()
-> 
-> Jens Axboe <axboe@kernel.dk>
->     io_uring/poll: move poll execution helpers higher up
-> 
-> Jens Axboe <axboe@kernel.dk>
->     io_uring/net: fix sr->len for IORING_OP_RECV with MSG_WAITALL and buffers
-> 
-> Emmanuel Grumbach <emmanuel.grumbach@intel.com>
->     wifi: iwlwifi: mvm: fix a battery life regression
-> 
-> Hans de Goede <hdegoede@redhat.com>
->     Input: atkbd - skip ATKBD_CMD_SETLEDS when skipping ATKBD_CMD_GETID
-> 
-> Werner Sembach <wse@tuxedocomputers.com>
->     Input: i8042 - fix strange behavior of touchpad on Clevo NS70PU
-> 
-> Frederic Weisbecker <frederic@kernel.org>
->     hrtimer: Report offline hrtimer enqueue
-> 
-> Heikki Krogerus <heikki.krogerus@linux.intel.com>
->     usb: dwc3: pci: add support for the Intel Arrow Lake-H
-> 
-> Michal Pecio <michal.pecio@gmail.com>
->     xhci: handle isoc Babble and Buffer Overrun events properly
-> 
-> Mathias Nyman <mathias.nyman@linux.intel.com>
->     xhci: process isoc TD properly when there was a transaction error mid TD.
-> 
-> Prashanth K <quic_prashk@quicinc.com>
->     usb: host: xhci-plat: Add support for XHCI_SG_TRB_CACHE_SIZE_QUIRK
-> 
-> Prashanth K <quic_prashk@quicinc.com>
->     usb: dwc3: host: Set XHCI_SG_TRB_CACHE_SIZE_QUIRK
-> 
-> Qiuxu Zhuo <qiuxu.zhuo@intel.com>
->     x86/lib: Revert to _ASM_EXTABLE_UA() for {get,put}_user() fixups
-> 
-> Mario Limonciello <mario.limonciello@amd.com>
->     Revert "drm/amd/pm: fix the high voltage and temperature issue"
-> 
-> Badhri Jagan Sridharan <badhri@google.com>
->     Revert "usb: typec: tcpm: fix cc role at port reset"
-> 
-> Leonard Dallmayr <leonard.dallmayr@mailbox.org>
->     USB: serial: cp210x: add ID for IMST iM871A-USB
-> 
-> Puliang Lu <puliang.lu@fibocom.com>
->     USB: serial: option: add Fibocom FM101-GL variant
-> 
-> JackBB Wu <wojackbb@gmail.com>
->     USB: serial: qcserial: add new usb-id for Dell Wireless DW5826e
-> 
-> Sean Young <sean@mess.org>
->     ALSA: usb-audio: add quirk for RODE NT-USB+
-> 
-> Julian Sikorski <belegdol+github@gmail.com>
->     ALSA: usb-audio: Add a quirk for Yamaha YIT-W12TX transmitter
-> 
-> Alexander Tsoy <alexander@tsoy.me>
->     ALSA: usb-audio: Add delay quirk for MOTU M Series 2nd revision
-> 
-> Tejun Heo <tj@kernel.org>
->     blk-iocost: Fix an UBSAN shift-out-of-bounds warning
-> 
-> Muhammad Usama Anjum <usama.anjum@collabora.com>
->     selftests: core: include linux/close_range.h for CLOSE_RANGE_* macros
-> 
-> Maurizio Lombardi <mlombard@redhat.com>
->     nvme-host: fix the updating of the firmware version
-> 
-> Ben Dooks <ben.dooks@codethink.co.uk>
->     riscv: declare overflow_stack as exported from traps.c
-> 
-> Alexandre Ghiti <alexghiti@rivosinc.com>
->     riscv: Fix arch_hugetlb_migration_supported() for NAPOT
-> 
-> Xiubo Li <xiubli@redhat.com>
->     ceph: always set initial i_blkbits to CEPH_FSCRYPT_BLOCK_SHIFT
-> 
-> Xiubo Li <xiubli@redhat.com>
->     libceph: just wait for more data to be available on the socket
-> 
-> Xiubo Li <xiubli@redhat.com>
->     libceph: rename read_sparse_msg_*() to read_partial_sparse_msg_*()
-> 
-> Alexandre Ghiti <alexghiti@rivosinc.com>
->     riscv: Flush the tlb when a page directory is freed
-> 
-> Ming Lei <ming.lei@redhat.com>
->     scsi: core: Move scsi_host_busy() out of host lock if it is for per-command
-> 
-> Alexandre Ghiti <alexghiti@rivosinc.com>
->     riscv: Fix hugetlb_mask_last_page() when NAPOT is enabled
-> 
-> Alexandre Ghiti <alexghiti@rivosinc.com>
->     riscv: Fix set_huge_pte_at() for NAPOT mapping
-> 
-> Vincent Chen <vincent.chen@sifive.com>
->     riscv: mm: execute local TLB flush after populating vmemmap
-> 
-> Alexandre Ghiti <alexghiti@rivosinc.com>
->     mm: Introduce flush_cache_vmap_early()
-> 
-> Dan Carpenter <dan.carpenter@linaro.org>
->     fs/ntfs3: Fix an NULL dereference bug
-> 
-> Florian Westphal <fw@strlen.de>
->     netfilter: nft_set_pipapo: remove scratch_aligned pointer
-> 
-> Florian Westphal <fw@strlen.de>
->     netfilter: nft_set_pipapo: add helper to release pcpu scratch area
-> 
-> Florian Westphal <fw@strlen.de>
->     netfilter: nft_set_pipapo: store index in scratch maps
-> 
-> Florian Westphal <fw@strlen.de>
->     netfilter: nfnetlink_queue: un-break NF_REPEAT
-> 
-> Pablo Neira Ayuso <pablo@netfilter.org>
->     netfilter: nf_tables: use timestamp to check for set element timeout
-> 
-> Pablo Neira Ayuso <pablo@netfilter.org>
->     netfilter: nft_ct: reject direction for ct id
-> 
-> Pablo Neira Ayuso <pablo@netfilter.org>
->     netfilter: nft_set_pipapo: remove static in nft_pipapo_get()
-> 
-> Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
->     drm/amd/display: Implement bounds check for stream encoder creation in DCN301
-> 
-> Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
->     drm/amd/display: Add NULL test for 'timing generator' in 'dcn21_set_pipe()'
-> 
-> Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
->     drm/amd/display: Fix 'panel_cntl' could be null in 'dcn21_set_backlight_level()'
-> 
-> Pablo Neira Ayuso <pablo@netfilter.org>
->     netfilter: nft_compat: restrict match/target protocol to u16
-> 
-> Pablo Neira Ayuso <pablo@netfilter.org>
->     netfilter: nft_compat: reject unused compat flag
-> 
-> Pablo Neira Ayuso <pablo@netfilter.org>
->     netfilter: nft_compat: narrow down revision to unsigned 8-bits
-> 
-> Jakub Kicinski <kuba@kernel.org>
->     selftests: cmsg_ipv6: repeat the exact packet
-> 
-> Eric Dumazet <edumazet@google.com>
->     ppp_async: limit MRU to 64K
-> 
-> Jiri Pirko <jiri@resnulli.us>
->     devlink: avoid potential loop in devlink_rel_nested_in_notify_work()
-> 
-> Kuniyuki Iwashima <kuniyu@amazon.com>
->     af_unix: Call kfree_skb() for dead unix_(sk)->oob_skb in GC.
-> 
-> Shigeru Yoshida <syoshida@redhat.com>
->     tipc: Check the bearer type before calling tipc_udp_nl_bearer_add()
-> 
-> Paolo Abeni <pabeni@redhat.com>
->     selftests: net: let big_tcp test cope with slow env
-> 
-> David Howells <dhowells@redhat.com>
->     rxrpc: Fix counting of new acks and nacks
-> 
-> David Howells <dhowells@redhat.com>
->     rxrpc: Fix response to PING RESPONSE ACKs to a dead call
-> 
-> David Howells <dhowells@redhat.com>
->     rxrpc: Fix delayed ACKs to not set the reference serial number
-> 
-> David Howells <dhowells@redhat.com>
->     rxrpc: Fix generation of serial numbers to skip zero
-> 
-> Ard Biesheuvel <ardb@kernel.org>
->     x86/efistub: Use 1:1 file:memory mapping for PE/COFF .compat section
-> 
-> Dan Carpenter <dan.carpenter@linaro.org>
->     drm/i915/gvt: Fix uninitialized variable in handle_mmio()
-> 
-> Eric Dumazet <edumazet@google.com>
->     inet: read sk->sk_family once in inet_recv_error()
-> 
-> Zhang Rui <rui.zhang@intel.com>
->     hwmon: (coretemp) Fix bogus core_id to attr name mapping
-> 
-> Zhang Rui <rui.zhang@intel.com>
->     hwmon: (coretemp) Fix out-of-bounds memory access
-> 
-> Loic Prylli <lprylli@netflix.com>
->     hwmon: (aspeed-pwm-tacho) mutex for tach reading
-> 
-> Zhipeng Lu <alexious@zju.edu.cn>
->     octeontx2-pf: Fix a memleak otx2_sq_init
-> 
-> Zhipeng Lu <alexious@zju.edu.cn>
->     atm: idt77252: fix a memleak in open_card_ubr0
-> 
-> Antoine Tenart <atenart@kernel.org>
->     tunnels: fix out of bounds access when building IPv6 PMTU error
-> 
-> Gerhard Engleder <gerhard@engleder-embedded.com>
->     tsnep: Fix mapping for zero copy XDP_TX action
-> 
-> Paolo Abeni <pabeni@redhat.com>
->     selftests: net: avoid just another constant wait
-> 
-> Paolo Abeni <pabeni@redhat.com>
->     selftests: net: fix tcp listener handling in pmtu.sh
-> 
-> Yujie Liu <yujie.liu@intel.com>
->     selftests/net: change shebang to bash to support "source"
-> 
-> Hangbin Liu <liuhangbin@gmail.com>
->     selftests/net: convert pmtu.sh to run it in unique namespace
-> 
-> Hangbin Liu <liuhangbin@gmail.com>
->     selftests/net: convert unicast_extensions.sh to run it in unique namespace
-> 
-> Paolo Abeni <pabeni@redhat.com>
->     selftests: net: cut more slack for gro fwd tests.
-> 
-> Ivan Vecera <ivecera@redhat.com>
->     net: atlantic: Fix DMA mapping for PTP hwts ring
-> 
-> Eric Dumazet <edumazet@google.com>
->     netdevsim: avoid potential loop in nsim_dev_trap_report_work()
-> 
-> Kees Cook <keescook@chromium.org>
->     wifi: brcmfmac: Adjust n_channels usage for __counted_by
-> 
-> Miri Korenblit <miriam.rachel.korenblit@intel.com>
->     wifi: iwlwifi: exit eSR only after the FW does
-> 
-> Johannes Berg <johannes.berg@intel.com>
->     wifi: mac80211: fix waiting for beacons logic
-> 
-> Johannes Berg <johannes.berg@intel.com>
->     wifi: mac80211: fix unsolicited broadcast probe config
-> 
-> Johannes Berg <johannes.berg@intel.com>
->     wifi: mac80211: fix RCU use in TDLS fast-xmit
-> 
-> Johannes Berg <johannes.berg@intel.com>
->     wifi: mac80211: improve CSA/ECSA connection refusal
-> 
-> Johannes Berg <johannes.berg@intel.com>
->     wifi: cfg80211: detect stuck ECSA element in probe resp
-> 
-> Benjamin Berg <benjamin.berg@intel.com>
->     wifi: cfg80211: consume both probe response and beacon IEs
-> 
-> Furong Xu <0x1207@gmail.com>
->     net: stmmac: xgmac: fix handling of DPP safety error for DMA channels
-> 
-> Ard Biesheuvel <ardb@kernel.org>
->     x86/efistub: Avoid placing the kernel below LOAD_PHYSICAL_ADDR
-> 
-> Ard Biesheuvel <ardb@kernel.org>
->     x86/efistub: Give up if memory attribute protocol returns an error
-> 
-> Benjamin Berg <benjamin.berg@intel.com>
->     wifi: iwlwifi: mvm: skip adding debugfs symlink for reconfig
-> 
-> Abhinav Kumar <quic_abhinavk@quicinc.com>
->     drm/msm/dpu: check for valid hw_pp in dpu_encoder_helper_phys_cleanup
-> 
-> Kuogee Hsieh <quic_khsieh@quicinc.com>
->     drm/msm/dp: return correct Colorimetry for DP_TEST_DYNAMIC_RANGE_CEA case
-> 
-> Kuogee Hsieh <quic_khsieh@quicinc.com>
->     drm/msms/dp: fixed link clock divider bits be over written in BPC unknown case
-> 
-> Shyam Prasad N <sprasad@microsoft.com>
->     cifs: failure to add channel on iface should bump up weight
-> 
-> Shyam Prasad N <sprasad@microsoft.com>
->     cifs: avoid redundant calls to disable multichannel
-> 
-> Tony Lindgren <tony@atomide.com>
->     phy: ti: phy-omap-usb2: Fix NULL pointer dereference for SRP
-> 
-> Frank Li <Frank.Li@nxp.com>
->     dmaengine: fix is_slave_direction() return false when DMA_DEV_TO_DEV
-> 
-> James Clark <james.clark@arm.com>
->     perf evlist: Fix evlist__new_default() for > 1 core PMU
-> 
-> Thomas Richter <tmricht@linux.ibm.com>
->     perf test: Fix 'perf script' tests on s390
-> 
-> Ian Rogers <irogers@google.com>
->     perf tests: Add perf script test
-> 
-> Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
->     phy: renesas: rcar-gen3-usb2: Fix returning wrong error code
-> 
-> Mantas Pucka <mantas@8devices.com>
->     phy: qcom-qmp-usb: fix serdes init sequence for IPQ6018
-> 
-> Mantas Pucka <mantas@8devices.com>
->     phy: qcom-qmp-usb: fix register offsets for ipq8074/ipq6018
-> 
-> Christophe JAILLET <christophe.jaillet@wanadoo.fr>
->     dmaengine: fsl-qdma: Fix a memory leak related to the queue command DMA
-> 
-> Christophe JAILLET <christophe.jaillet@wanadoo.fr>
->     dmaengine: fsl-qdma: Fix a memory leak related to the status queue DMA
-> 
-> Jai Luthra <j-luthra@ti.com>
->     dmaengine: ti: k3-udma: Report short packet errors
-> 
-> Guanhua Gao <guanhua.gao@nxp.com>
->     dmaengine: fsl-dpaa2-qdma: Fix the size of dma pools
-> 
-> Baokun Li <libaokun1@huawei.com>
->     ext4: regenerate buddy after block freeing failed if under fc replay
-> 
-> 
-> -------------
-> 
-> Diffstat:
-> 
->  Makefile                                           |   4 +-
->  arch/arc/include/asm/cacheflush.h                  |   1 +
->  arch/arm/include/asm/cacheflush.h                  |   2 +
->  arch/csky/abiv1/inc/abi/cacheflush.h               |   1 +
->  arch/csky/abiv2/inc/abi/cacheflush.h               |   1 +
->  arch/m68k/include/asm/cacheflush_mm.h              |   1 +
->  arch/mips/include/asm/cacheflush.h                 |   2 +
->  arch/nios2/include/asm/cacheflush.h                |   1 +
->  arch/parisc/include/asm/cacheflush.h               |   1 +
->  arch/riscv/include/asm/cacheflush.h                |   3 +-
->  arch/riscv/include/asm/hugetlb.h                   |   3 +
->  arch/riscv/include/asm/stacktrace.h                |   5 +
->  arch/riscv/include/asm/tlb.h                       |   2 +-
->  arch/riscv/include/asm/tlbflush.h                  |   2 +
->  arch/riscv/mm/hugetlbpage.c                        |  78 ++++++++++++-
->  arch/riscv/mm/init.c                               |   4 +
->  arch/riscv/mm/tlbflush.c                           |   6 +
->  arch/sh/include/asm/cacheflush.h                   |   1 +
->  arch/sparc/include/asm/cacheflush_32.h             |   1 +
->  arch/sparc/include/asm/cacheflush_64.h             |   1 +
->  arch/x86/boot/header.S                             |  14 +--
->  arch/x86/boot/setup.ld                             |   6 +-
->  arch/x86/lib/getuser.S                             |  24 ++--
->  arch/x86/lib/putuser.S                             |  20 ++--
->  arch/xtensa/include/asm/cacheflush.h               |   6 +-
->  block/blk-iocost.c                                 |   7 ++
->  drivers/atm/idt77252.c                             |   2 +
->  drivers/dma/fsl-dpaa2-qdma/dpaa2-qdma.c            |  10 +-
->  drivers/dma/fsl-qdma.c                             |  28 ++---
->  drivers/dma/ti/k3-udma.c                           |  10 +-
->  drivers/firmware/efi/libstub/efistub.h             |   3 +-
->  drivers/firmware/efi/libstub/kaslr.c               |   2 +-
->  drivers/firmware/efi/libstub/randomalloc.c         |  12 +-
->  drivers/firmware/efi/libstub/x86-stub.c            |  25 ++--
->  drivers/firmware/efi/libstub/x86-stub.h            |   4 +-
->  drivers/firmware/efi/libstub/zboot.c               |   2 +-
->  drivers/gpu/drm/amd/amdgpu/amdgpu_device.c         |  24 ++--
->  .../drm/amd/display/dc/dcn301/dcn301_resource.c    |   2 +-
->  .../drm/amd/display/dc/hwss/dcn21/dcn21_hwseq.c    |  63 +++++-----
->  drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c          |  33 +-----
->  drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h      |   1 -
->  .../gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c   |   8 +-
->  .../gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c   |   8 +-
->  drivers/gpu/drm/i915/gvt/handlers.c                |   3 +-
->  drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c        |   4 +-
->  drivers/gpu/drm/msm/dp/dp_ctrl.c                   |   5 -
->  drivers/gpu/drm/msm/dp/dp_link.c                   |  22 ++--
->  drivers/gpu/drm/msm/dp/dp_reg.h                    |   3 +
->  drivers/hwmon/aspeed-pwm-tacho.c                   |   7 ++
->  drivers/hwmon/coretemp.c                           |  40 ++++---
->  drivers/input/keyboard/atkbd.c                     |  13 ++-
->  drivers/input/serio/i8042-acpipnpio.h              |   6 +
->  drivers/net/ethernet/aquantia/atlantic/aq_ptp.c    |   4 +-
->  drivers/net/ethernet/aquantia/atlantic/aq_ring.c   |  13 +++
->  drivers/net/ethernet/aquantia/atlantic/aq_ring.h   |   1 +
->  drivers/net/ethernet/engleder/tsnep_main.c         |  16 ++-
->  .../ethernet/marvell/octeontx2/nic/otx2_common.c   |  14 ++-
->  drivers/net/ethernet/stmicro/stmmac/common.h       |   1 +
->  drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h     |   3 +
->  .../net/ethernet/stmicro/stmmac/dwxgmac2_core.c    |  57 ++++++++-
->  drivers/net/netdevsim/dev.c                        |   8 +-
->  drivers/net/ppp/ppp_async.c                        |   4 +
->  .../broadcom/brcm80211/brcmfmac/cfg80211.c         |   6 +-
->  drivers/net/wireless/intel/iwlwifi/fw/api/debug.h  |   2 +-
->  drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c  |   6 +-
->  .../net/wireless/intel/iwlwifi/mvm/mld-mac80211.c  |   9 +-
->  drivers/nvme/host/core.c                           |   7 +-
->  drivers/pci/bus.c                                  |  49 +++++---
->  drivers/pci/controller/dwc/pcie-qcom.c             |   2 +-
->  drivers/pci/pci.c                                  |  78 ++++++++-----
->  drivers/pci/pci.h                                  |   4 +-
->  drivers/pci/pcie/aspm.c                            |  13 ++-
->  drivers/phy/qualcomm/phy-qcom-qmp-usb.c            |  30 ++++-
->  drivers/phy/renesas/phy-rcar-gen3-usb2.c           |   4 -
->  drivers/phy/ti/phy-omap-usb2.c                     |   4 +-
->  drivers/scsi/scsi_error.c                          |   3 +-
->  drivers/scsi/scsi_lib.c                            |   4 +-
->  drivers/usb/dwc3/dwc3-pci.c                        |   4 +
->  drivers/usb/dwc3/host.c                            |   4 +-
->  drivers/usb/host/xhci-plat.c                       |   3 +
->  drivers/usb/host/xhci-ring.c                       |  80 ++++++++++---
->  drivers/usb/host/xhci.h                            |   1 +
->  drivers/usb/serial/cp210x.c                        |   1 +
->  drivers/usb/serial/option.c                        |   1 +
->  drivers/usb/serial/qcserial.c                      |   2 +
->  drivers/usb/typec/tcpm/tcpm.c                      |   3 +-
->  fs/bcachefs/clock.c                                |   4 +-
->  fs/bcachefs/fs-io.c                                |   2 +-
->  fs/bcachefs/fs-ioctl.c                             |  42 +++----
->  fs/bcachefs/journal_io.c                           |   3 +-
->  fs/bcachefs/move.c                                 |   2 +-
->  fs/bcachefs/move.h                                 |   1 +
->  fs/bcachefs/rebalance.c                            |  13 ++-
->  fs/bcachefs/replicas.c                             |  10 +-
->  fs/bcachefs/snapshot.c                             |   2 +-
->  fs/bcachefs/util.c                                 |   5 +-
->  fs/ceph/inode.c                                    |   2 +
->  fs/ext4/mballoc.c                                  |  20 ++++
->  fs/namei.c                                         |  16 ++-
->  fs/ntfs3/ntfs_fs.h                                 |   2 +-
->  fs/smb/client/sess.c                               |   2 +
->  fs/smb/client/smb2pdu.c                            |   2 +-
->  include/asm-generic/cacheflush.h                   |   6 +
->  include/linux/ceph/messenger.h                     |   2 +-
->  include/linux/dmaengine.h                          |   3 +-
->  include/linux/hrtimer.h                            |   4 +-
->  include/linux/namei.h                              |   1 +
->  include/linux/pci.h                                |   5 +
->  include/net/cfg80211.h                             |   4 +
->  include/net/netfilter/nf_tables.h                  |  16 ++-
->  include/trace/events/rxrpc.h                       |   8 +-
->  include/uapi/linux/netfilter/nf_tables.h           |   2 +
->  io_uring/io_uring.h                                |   7 ++
->  io_uring/net.c                                     |  54 ++++++---
->  io_uring/poll.c                                    |  49 ++++----
->  io_uring/poll.h                                    |   9 ++
->  io_uring/rw.c                                      |  10 +-
->  kernel/time/hrtimer.c                              |   3 +
->  mm/percpu.c                                        |   8 +-
->  net/ceph/messenger_v1.c                            |  33 +++---
->  net/ceph/messenger_v2.c                            |   4 +-
->  net/ceph/osd_client.c                              |   9 +-
->  net/core/datagram.c                                |   2 +-
->  net/devlink/core.c                                 |  12 +-
->  net/ipv4/af_inet.c                                 |   6 +-
->  net/ipv4/ip_tunnel_core.c                          |   2 +-
->  net/mac80211/cfg.c                                 |  14 +--
->  net/mac80211/mlme.c                                | 106 ++++++++++++-----
->  net/mac80211/tx.c                                  |   7 +-
->  net/netfilter/nf_tables_api.c                      |   4 +-
->  net/netfilter/nfnetlink_queue.c                    |  13 ++-
->  net/netfilter/nft_compat.c                         |  17 ++-
->  net/netfilter/nft_ct.c                             |   3 +
->  net/netfilter/nft_set_hash.c                       |   8 +-
->  net/netfilter/nft_set_pipapo.c                     | 128 +++++++++++----------
->  net/netfilter/nft_set_pipapo.h                     |  18 ++-
->  net/netfilter/nft_set_pipapo_avx2.c                |  17 ++-
->  net/netfilter/nft_set_rbtree.c                     |  11 +-
->  net/rxrpc/ar-internal.h                            |  37 ++++--
->  net/rxrpc/call_event.c                             |  12 +-
->  net/rxrpc/call_object.c                            |   1 +
->  net/rxrpc/conn_event.c                             |  10 +-
->  net/rxrpc/input.c                                  | 115 +++++++++++++++---
->  net/rxrpc/output.c                                 |   8 +-
->  net/rxrpc/proc.c                                   |   2 +-
->  net/rxrpc/rxkad.c                                  |   4 +-
->  net/tipc/bearer.c                                  |   6 +
->  net/unix/garbage.c                                 |  11 ++
->  net/wireless/scan.c                                |  63 +++++++++-
->  sound/soc/amd/acp-config.c                         |  15 +--
->  sound/usb/quirks.c                                 |   6 +
->  tools/perf/tests/shell/script.sh                   |  73 ++++++++++++
->  tools/perf/util/evlist.c                           |   9 +-
->  tools/testing/selftests/core/close_range_test.c    |   1 +
->  tools/testing/selftests/net/big_tcp.sh             |   4 +-
->  tools/testing/selftests/net/cmsg_ipv6.sh           |   4 +-
->  tools/testing/selftests/net/pmtu.sh                |  52 +++++----
->  tools/testing/selftests/net/udpgro_fwd.sh          |  14 ++-
->  tools/testing/selftests/net/udpgso_bench_rx.c      |   2 +-
->  tools/testing/selftests/net/unicast_extensions.sh  |  93 +++++++--------
->  160 files changed, 1538 insertions(+), 715 deletions(-)
-> 
-> 
-> 
+--
+Tasos
 
