@@ -1,155 +1,109 @@
-Return-Path: <stable+bounces-20196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ADFF854E60
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 17:30:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AC47854EEA
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 17:45:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EA671C28AC3
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 16:30:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7E0E28858C
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 16:45:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEC6F604A4;
-	Wed, 14 Feb 2024 16:27:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC32B60DC3;
+	Wed, 14 Feb 2024 16:44:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=svenjoac@gmx.de header.b="YuvTpkTt"
 X-Original-To: stable@vger.kernel.org
-Received: from air.basealt.ru (air.basealt.ru [194.107.17.39])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC80D6025A;
-	Wed, 14 Feb 2024 16:27:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3783660BBE;
+	Wed, 14 Feb 2024 16:44:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707928077; cv=none; b=J0kJuF8JXLvCOT/F6u+PekvtmKKEonVx7tKWTItFP8aRmS7olGlHUWwmIYwueTv2GEDgD+qaWYVg+6A6A3fpvShtEyG7Tji7ATXpfEXo7f8bves3y0Wap8lHfMQUJRpeYxKjypMnUJ6bJytlBAW/k04Au5lNRakSRi+B5gBv6UA=
+	t=1707929069; cv=none; b=kgB5pzjF12Q+KJn35HScASsNMZoeeoFxikojqFSpANoi+NVaTR39FYE6ocr0lZbalwcnJDjBIk5U5xbUFQORUbdg52/zaj+XQHmmVGh3gWqZpEsqeRjgCMAVf58so+Po7W/q53yUnrYFY5b9ICgVfZXuSEBx0JjxjjEvU2T+2e8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707928077; c=relaxed/simple;
-	bh=pQJlihVfjtSfZ4xDAFcZyiTy4mQy3t/31h0t8ugdBlA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=s41YDUCVo6tJf7Dbx8H9Cn9cVYDXW6lKK8LmhhdH8GpfKrQ/LLqttLlBrsiN44bThe1wabcnFphi4aHKeJspu1j/GXfAhTQMlldBOgMLljWS3hfkLVpjX7x1v9g4LkcwhEFybojmdQuniNAEE/zDgAbSeWY8zz6YtJY745ztG3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: by air.basealt.ru (Postfix, from userid 490)
-	id 3C4CD2F20256; Wed, 14 Feb 2024 16:27:51 +0000 (UTC)
-X-Spam-Level: 
-Received: from altlinux.ipa.basealt.ru (unknown [178.76.204.78])
-	by air.basealt.ru (Postfix) with ESMTPSA id 349C62F2025D;
-	Wed, 14 Feb 2024 16:27:46 +0000 (UTC)
-From: kovalev@altlinux.org
-To: linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: edumazet@google.com,
-	pablo@netfilter.org,
-	laforge@gnumonks.org,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	kovalev@altlinux.org,
-	nickel@altlinux.org,
-	oficerovas@altlinux.org,
-	dutyrok@altlinux.org,
-	stable@vger.kernel.org
-Subject: [PATCH ver.2] gtp: fix use-after-free and null-ptr-deref in gtp_genl_dump_pdp()
-Date: Wed, 14 Feb 2024 19:27:33 +0300
-Message-Id: <20240214162733.34214-1-kovalev@altlinux.org>
-X-Mailer: git-send-email 2.33.8
+	s=arc-20240116; t=1707929069; c=relaxed/simple;
+	bh=oGw9fVB7x4DqTTJd1RZp9jcHpF1ROTXB3RtCnAkqmII=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=NSOqjL+TNn/Ap0FdJMCKn6J28I1eG3rmIoKci2kvvoLUbo28B6P5mF+ktnuUu4YcPBNOJ/fX5Ga0u73qmXhbbvd5bKxJ4W/HTrR/kgLaBB3cxaCDGSiO7ej5FXqiqZ2I7OuM0aK3SQEfSLEs65hKGmIJzcdwa4BC30QNhfBD/rI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=svenjoac@gmx.de header.b=YuvTpkTt; arc=none smtp.client-ip=212.227.17.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+	t=1707929042; x=1708533842; i=svenjoac@gmx.de;
+	bh=oGw9fVB7x4DqTTJd1RZp9jcHpF1ROTXB3RtCnAkqmII=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:In-Reply-To:References:
+	 Date;
+	b=YuvTpkTtxxPUIsgtfJ8tfRSeipuQq9MtNIizxhdgQlIrtuD3m7xaKZKcSYBYMOGs
+	 6R6gMpXSQLLkT1s7Im1Qdre3uvrODgkj28uVcFS9sXctud0MibqNftnilSgh9LJyD
+	 pMyYt9AfpyyRMcxtLVfawf4nb9CQ+9biIbv54QeEvwDEYZ8lkd/vecHv13G44S+9w
+	 2rsFG+fbtr1Qlz9u1TZSKK+z6gcrignSx3gdvYczvN0e5/8nVWVjNbNlBtWU5HdtY
+	 3LI69WPqo1PibdeP4jgA0GMr3ySe8hTVWGGA5QrA1V+cUB9lfRHNxA8ih37b9UK5d
+	 CgqgD4EEmMiiKEEK6Q==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from localhost.localdomain ([79.203.86.131]) by mail.gmx.net
+ (mrgmx105 [212.227.17.168]) with ESMTPSA (Nemesis) id
+ 1M3lYB-1rb7Zp1mHj-000vwn; Wed, 14 Feb 2024 17:44:02 +0100
+Received: by localhost.localdomain (Postfix, from userid 1000)
+	id 5CB7880095; Wed, 14 Feb 2024 17:44:00 +0100 (CET)
+From: Sven Joachim <svenjoac@gmx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org,  patches@lists.linux.dev,
+  linux-kernel@vger.kernel.org,  torvalds@linux-foundation.org,
+  akpm@linux-foundation.org,  linux@roeck-us.net,  shuah@kernel.org,
+  patches@kernelci.org,  lkft-triage@lists.linaro.org,  pavel@denx.de,
+  jonathanh@nvidia.com,  f.fainelli@gmail.com,  sudipm.mukherjee@gmail.com,
+  srw@sladewatkins.net,  rwarsow@gmx.de,  conor@kernel.org,
+  allen.lkml@gmail.com
+Subject: Re: [PATCH 6.1 00/64] 6.1.78-rc1 review
+In-Reply-To: <20240213171844.702064831@linuxfoundation.org> (Greg
+	Kroah-Hartman's message of "Tue, 13 Feb 2024 18:20:46 +0100")
+References: <20240213171844.702064831@linuxfoundation.org>
+Date: Wed, 14 Feb 2024 17:44:00 +0100
+Message-ID: <871q9f3sj3.fsf@turtle.gmx.de>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Provags-ID: V03:K1:K+HOG/GQYW5pwarb/ntOh32vSaVyV1m9avODePCAc8oUG6iv0KR
+ Gy6ajZl3yVsYiFhL392ecAAHAAQW/FUL7zGa6sC4YRthNDMqNma6cPci4kLTKNAxVY3KjtF
+ unh2aUt2aFJUPpZ/5Kj6/0cOyWj+Kcwx1gFZPY5pzc7a1lFxtE4WNpmYx5CQi76q3B69aQw
+ JNsMYFJ0jQhZKvSaRi0PQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:qNJA9s8d16w=;MREgZfBOcuYvsbAw3nmPjZh63RO
+ STE5gDCZje4oqY7UJ8xIR2xaLqfKsLN05ag0kyX9i2IrXebmwxOqDlJged+a84k+9w6GTpXea
+ gulf5wyrMuWmdngoTxpBBBt9XepA8cF4Ybz9w6nrADfVkAdGMWBkO+ALhekmKyQbaUPR3MTJz
+ 5v07nSOachnKf1ctnZ8Ajodos21bSpVxxbs0C1rW3InSp2U/JA3IVpvrUAQNPsk08lJmhO9DX
+ yx3EhSVbXoTiqIltf93MZNXWNPAgeP5Jqvlkw8W+wMG8blEKyfiBYlyyeoSs2NSv60wgYb//Y
+ 0tgxXo7CHD9KScyK56EgogvT7RszOX6XbnWONi2CG8ZokJYdYIJw6FRRbajrdZp8FFQ7746wA
+ WWbm2bBee3nVGIYO/6pMT6oNObtX/BPStu3xgnZO+0Z0XPvjLuBrsdrzmxELzDfaRlsEdQFlu
+ 1xgEi0/WXz+hRINMQBcc9u7gM9Hpa9C3kIQBsc0lXhDMxdf1uOUq8+wsq9Sdk5v0wCdHhq9qW
+ 21ANEpwxjIpNuykUbA19aQQ25eF7alNjgPpbECt9BRXniySyaGjdOz0nGMsrbt98QL5LFpKfL
+ PqFu3a6SDpVJf+M8C7euEep2qs9BHZz/PPjFzmWfpMHdwUzwZAJeEdB+6p4bpBG9Fdk+TP7w3
+ yttKlYYCa8EpOsppwrsDZy3GuYxe+/XDvDj6wuIh6zFa6llpMpXyLytJAP91YMhr9ZcX99FVX
+ UQta/ngggqwfAHNmKS7fLarVnpi5/xeTI/jNAf8DLoosVOWiIZlmVn1ingMcMWn9408LNPMnX
+ 1OJVG2Tujcxg5VF8mY2g53HTp8gXlay3FjVAAkHmInH9g=
 
-From: Vasiliy Kovalev <kovalev@altlinux.org>
+On 2024-02-13 18:20 +0100, Greg Kroah-Hartman wrote:
 
-The gtp_net_ops pernet operations structure for the subsystem must be
-registered before registering the generic netlink family.
+> This is the start of the stable review cycle for the 6.1.78 release.
+> There are 64 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 15 Feb 2024 17:18:29 +0000.
+> Anything received after that time might be too late.
 
-Syzkaller hit 'general protection fault in gtp_genl_dump_pdp' bug:
+Works fine for me on x86_64.
 
-general protection fault, probably for non-canonical address
-0xdffffc0000000002: 0000 [#1] PREEMPT SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
-CPU: 1 PID: 5826 Comm: gtp Not tainted 6.8.0-rc3-std-def-alt1 #1
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.0-alt1 04/01/2014
-RIP: 0010:gtp_genl_dump_pdp+0x1be/0x800 [gtp]
-Code: c6 89 c6 e8 64 e9 86 df 58 45 85 f6 0f 85 4e 04 00 00 e8 c5 ee 86
-      df 48 8b 54 24 18 48 b8 00 00 00 00 00 fc ff df 48 c1 ea 03 <80>
-      3c 02 00 0f 85 de 05 00 00 48 8b 44 24 18 4c 8b 30 4c 39 f0 74
-RSP: 0018:ffff888014107220 EFLAGS: 00010202
-RAX: dffffc0000000000 RBX: 0000000000000000 RCX: 0000000000000000
-RDX: 0000000000000002 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
-R13: ffff88800fcda588 R14: 0000000000000001 R15: 0000000000000000
-FS:  00007f1be4eb05c0(0000) GS:ffff88806ce80000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f1be4e766cf CR3: 000000000c33e000 CR4: 0000000000750ef0
-PKRU: 55555554
-Call Trace:
- <TASK>
- ? show_regs+0x90/0xa0
- ? die_addr+0x50/0xd0
- ? exc_general_protection+0x148/0x220
- ? asm_exc_general_protection+0x22/0x30
- ? gtp_genl_dump_pdp+0x1be/0x800 [gtp]
- ? __alloc_skb+0x1dd/0x350
- ? __pfx___alloc_skb+0x10/0x10
- genl_dumpit+0x11d/0x230
- netlink_dump+0x5b9/0xce0
- ? lockdep_hardirqs_on_prepare+0x253/0x430
- ? __pfx_netlink_dump+0x10/0x10
- ? kasan_save_track+0x10/0x40
- ? __kasan_kmalloc+0x9b/0xa0
- ? genl_start+0x675/0x970
- __netlink_dump_start+0x6fc/0x9f0
- genl_family_rcv_msg_dumpit+0x1bb/0x2d0
- ? __pfx_genl_family_rcv_msg_dumpit+0x10/0x10
- ? genl_op_from_small+0x2a/0x440
- ? cap_capable+0x1d0/0x240
- ? __pfx_genl_start+0x10/0x10
- ? __pfx_genl_dumpit+0x10/0x10
- ? __pfx_genl_done+0x10/0x10
- ? security_capable+0x9d/0xe0
+Tested-by: Sven Joachim <svenjoac@gmx.de>
 
-Fixes: 459aa660eb1d ("gtp: add initial driver for datapath of GPRS Tunneling Protocol (GTP-U)")
-Cc: stable@vger.kernel.org
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
----
- drivers/net/gtp.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
-index b1919278e931f4..2129ae42c70304 100644
---- a/drivers/net/gtp.c
-+++ b/drivers/net/gtp.c
-@@ -1907,20 +1907,20 @@ static int __init gtp_init(void)
- 	if (err < 0)
- 		goto error_out;
- 
--	err = genl_register_family(&gtp_genl_family);
-+	err = register_pernet_subsys(&gtp_net_ops);
- 	if (err < 0)
- 		goto unreg_rtnl_link;
- 
--	err = register_pernet_subsys(&gtp_net_ops);
-+	err = genl_register_family(&gtp_genl_family);
- 	if (err < 0)
--		goto unreg_genl_family;
-+		goto unreg_pernet_subsys;
- 
- 	pr_info("GTP module loaded (pdp ctx size %zd bytes)\n",
- 		sizeof(struct pdp_ctx));
- 	return 0;
- 
--unreg_genl_family:
--	genl_unregister_family(&gtp_genl_family);
-+unreg_pernet_subsys:
-+	unregister_pernet_subsys(&gtp_net_ops);
- unreg_rtnl_link:
- 	rtnl_link_unregister(&gtp_link_ops);
- error_out:
--- 
-2.33.8
-
+Cheers,
+       Sven
 
