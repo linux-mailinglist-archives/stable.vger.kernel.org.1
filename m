@@ -1,184 +1,119 @@
-Return-Path: <stable+bounces-20129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24D5085406F
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 00:56:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D221A8540BA
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 01:13:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9DCC28DB07
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 23:56:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87FC7288EA6
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 00:13:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F4089633FF;
-	Tue, 13 Feb 2024 23:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2035E7F;
+	Wed, 14 Feb 2024 00:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WxlZD6g7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J4JtaeP/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f174.google.com (mail-il1-f174.google.com [209.85.166.174])
+Received: from mail-il1-f179.google.com (mail-il1-f179.google.com [209.85.166.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18A266313D
-	for <stable@vger.kernel.org>; Tue, 13 Feb 2024 23:56:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40B9E8821
+	for <stable@vger.kernel.org>; Wed, 14 Feb 2024 00:13:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707868598; cv=none; b=cl3vh5Rq1dTVAjSILEj4Cuxh9Y74EMi8t3EkU97t0YNYF/jjq5jwSyvPloY5WDqKJkVD7AOivhvOYNNRcC+w6O8utOjzx+CHq2f9zWpxOpa5gA0ckmDMKAMHfXRWBA2ohFM7BGRy3QJMstIouSCsWrT/iTqCK1uo6cUfYGm8HtA=
+	t=1707869610; cv=none; b=VpQ/a9y5SwXBZJRQd2VK6ztfyn39jka8sxM1zeCTapHwPXIlr8+FNbsvQ/DlEcDRg16m4T5hKM31MVYcCiq1WpiNtajokN1B/nhpiCGGY0qFCcp9qnleRcJPUNDGdwqXoJcUWJVlWig88IdPV3Tou9W++P1BfJoc/dV2x4a2zYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707868598; c=relaxed/simple;
-	bh=eG1Z7qXp1jDGBo50wsnYjDQwhUF5D2ifiNDV1RQ+kpQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r4GP+yKOX1PxGyCQv9wU5dSRLtelOzhsj8WycurlQX79oyNbGo7i2n79ZkX0PigYsli4TZXEHHaBH0b9ye/z8BChRACmFq2qM8GPyCzGdwfc3TNZ3r7jixWV03216svxZFsvtyVFQ045abNrSglK9mlJLoQMlH/Nx9dgXUVaxdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WxlZD6g7; arc=none smtp.client-ip=209.85.166.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-il1-f174.google.com with SMTP id e9e14a558f8ab-363dde86f0bso13247335ab.3
-        for <stable@vger.kernel.org>; Tue, 13 Feb 2024 15:56:36 -0800 (PST)
+	s=arc-20240116; t=1707869610; c=relaxed/simple;
+	bh=blGoqFSG+bM4MY2OkxkXog0upiI3/Y+AsY70uk/SFk8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bI/6B86B3qtb97p1Qrb55YDCUs78s5Le6b/CFj6UP3prnf3Lk+O3y+UCrJwllUC1o/N6ycRfp641ITN4nPvqDi6RF6tEOkestk1/zyKpsyYfHxWsQJ59wj4M2TLABxPKwDFeNPU6+bi49+Agp72E8U2IVPU4Q/AEGdjYGpH8/nY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J4JtaeP/; arc=none smtp.client-ip=209.85.166.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-il1-f179.google.com with SMTP id e9e14a558f8ab-363e7d542f4so4491655ab.0
+        for <stable@vger.kernel.org>; Tue, 13 Feb 2024 16:13:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1707868596; x=1708473396; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=j5i0+7qUkGUR+StQ2aGirnK2+rjtRkZXXH7K9o3+5lE=;
-        b=WxlZD6g7OdQLjuRfBGPOhxKRIg8AqBXP4EHhI5tcB2vs2JGR9Q9UX7v7HF/VpJfW6I
-         sqgDWwRo9ccvV/iREbDb69y5Hu9nuYHikBdvxM3hfuhiyMOzdGAvSiKEKTecv3So6Vdj
-         3YEoBy36bNfQYLe2omuzplTiE3I30r8zuhfIr/0glJkUM9vLpZZTvji5OkBmtWm+zwDm
-         R7/zvmzb3ZuB+wSckTdkPUgs+zABNzWPRze1vhPkdw80qjx67JVSqf5ZYQECt9ggWisW
-         OMkibnCWnQFa2pSCWQi35FTv9tLt+SkCYThCEDsCW/Vj+n1SAYpl0wYdd/v+FBUhNhgY
-         7Vhg==
+        d=linuxfoundation.org; s=google; t=1707869608; x=1708474408; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=yPDqGsGVRBXi/v9PW7ctsmPDNaShTV4LQ+ip6JTA0Hk=;
+        b=J4JtaeP/x+wuBKqvEEml+awb8N6ipO6TEuNzML7LOHwn8uofV6SX7YHnGSlNXBwZXd
+         +DgkjEkH4DusgRJl8yU3eR8lX1sEJTpKHeclf2X35Kyq5Kmk/FAjLnccSrvEwVrbacDq
+         h7d+C4/4jOj13rsJ5OpuvnTXw4QV1cUabFY24=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707868596; x=1708473396;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=j5i0+7qUkGUR+StQ2aGirnK2+rjtRkZXXH7K9o3+5lE=;
-        b=e8LM01qsTNMo+V7OU2M26QD0aQj5omqGWa3fFYi6M8BEe6vj5tlRLWyp5M1Ca+GEcK
-         rBYX1XhX00MvQ6dOfte+tnIlAOCK+H6CJdkimWfzFQXBZGdmKvwaQMWIoq7kXCDLR3bR
-         PDZ2K6drxWPURN682adDmyXbvDjDvA7bW/tMTDM0rFOenBxxQfT48TdDW+9JSfLjUSkj
-         QyU8G2I/Y2fyrmyc5AWp7QI+73KKDYNuYrmJfeMq9riL/b2bKlmS+d71+n2fWJSJamlm
-         rUjdUfvtRUpqZX+9HcLPbjPBn1U6oZvvbxExKB1pZ6PbveidjbtAkfSfrQCt+M6HjkQr
-         hnmg==
-X-Forwarded-Encrypted: i=1; AJvYcCVu1AGykGM3Yh42lb3N9TI/1392KcDAHH7OiPuYnVIa0YIVARFRC0+OwwwNeui5NiWkGJ3zVJqDCkYRKCfMjr/QwpCVVhbh
-X-Gm-Message-State: AOJu0Yw+9BwwaSUvqPahl+JMWywAoPOKMSMr4CSP+7TyEDatFX1r5UnO
-	JqtMWo+A5NrxS0ZAhMw7OgmIi29Qno427o8iw/tjxnUfBfQQkUhnuUQfAAUcpQ==
-X-Google-Smtp-Source: AGHT+IG62RuLwq2OLE5Yz0FmcAHGNtv9/YBtgvIUbfni/ZF6on/cLe36ocrjEhGbaxm7Edp0+sjhbg==
-X-Received: by 2002:a05:6e02:1bc7:b0:363:cbb8:53c7 with SMTP id x7-20020a056e021bc700b00363cbb853c7mr1787567ilv.23.1707868596087;
-        Tue, 13 Feb 2024 15:56:36 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXYvP9l0sxOZNWxefz67TKAm7Fu6CaEpFHauX0AQItVIogkJSLzPJZFx0UakEwLZxl00t5oU+31mhKid7inxkeFp2reqoNF7I1kQxXuMe0ZLLjU+VNcyvi5h0kzhX+TyeJ1VP43aVOT4m3qsJuZ2WTnAEwLcwMnWktU04ycyXRDgCmsBODEflPdYmaHZucstimY66Km2/Z5gIAEwJ1hCoRUXhk25LYKDboLX3KT8nLXdpopsd/2CwWbSm4unOobRINWMcfmsvORIfDXc7r/Zsi25RKx+qHoRGHeVwQ1Bb6ybiJKW3ABwCmcS53hIVlmX6p+Il8fLHtHn7VLINZCCIx57OjUssEr+x0lmRVkHqzYzjQ=
-Received: from google.com (20.10.132.34.bc.googleusercontent.com. [34.132.10.20])
-        by smtp.gmail.com with ESMTPSA id n11-20020a02cc0b000000b004739f0fc27fsm2028449jap.164.2024.02.13.15.56.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Feb 2024 15:56:35 -0800 (PST)
-Date: Tue, 13 Feb 2024 23:56:30 +0000
-From: Justin Stitt <justinstitt@google.com>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: masahiroy@kernel.org, nicolas@fjasle.eu, ndesaulniers@google.com,
-	morbo@google.com, keescook@chromium.org, maskray@google.com,
-	linux-kbuild@vger.kernel.org, bpf@vger.kernel.org,
-	llvm@lists.linux.dev, patches@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] kbuild: Fix changing ELF file type for output of
- gen_btf for big endian
-Message-ID: <20240213235630.423raijsgijkgrnj@google.com>
-References: <20240212-fix-elf-type-btf-vmlinux-bin-o-big-endian-v2-1-22c0a6352069@kernel.org>
+        d=1e100.net; s=20230601; t=1707869608; x=1708474408;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yPDqGsGVRBXi/v9PW7ctsmPDNaShTV4LQ+ip6JTA0Hk=;
+        b=LNq3icGxcyC+pIPaJwgTNoA2d+OhE+gGXDJ7MzjLaGZVFhSCRXwYQNImOkAXnm+f1J
+         fcogks4X3C+cN9S5HoseaNfD0biXnG9zHCI3WBStQh8vKjBTPHGtju0+7rQD5KahICaX
+         8U1U2aFgNXt2n57bR5ZNm7q9fZWoKm3AbOWEPv0ovX/4VlkRACvyhqyolTRQBc3ERdIC
+         8ekAIIZS7zvluPvQMar0evWnSyAW2CP9f0jj9OxDpJ6kqQtS/SnTauTIThJvQWI3vj5r
+         T+0AABDLOa+e5BnBRQGWAGcVnJM76axPpMG+BE1RFt5aKkiwVUZRz5t2yI/t36SHgmp+
+         +kPg==
+X-Forwarded-Encrypted: i=1; AJvYcCUL6JC1r+aF1+GrJHbdohFFU6TntCm3bLt2DwjG4mb5l3vRqKvQ9PzgG99XPkiJtnYI+MP2JnbaU8WKVLGKqGiOxGNIRk3e
+X-Gm-Message-State: AOJu0Yz7WpL4AsvQXd68nE+NVnZ5A/3jH06g1W8PERqiOlV9G1DzVCkK
+	TwtyeEqTtzBlDWHf3CNlNPU+EygIP76JnFt/8ufimwhtx5D0fYZuEjjcZPPdVRI=
+X-Google-Smtp-Source: AGHT+IFj3DIzE8TUG3KuUciUIn0QgQ8h3JK6FQ/JtamGNxaKJ+e6Cs9gS1k8YQ4vLigeLUxYKfVwKA==
+X-Received: by 2002:a05:6e02:1b8e:b0:35f:bc09:c56b with SMTP id h14-20020a056e021b8e00b0035fbc09c56bmr1410174ili.2.1707869608280;
+        Tue, 13 Feb 2024 16:13:28 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUlRfBRzl53Qpa1e5k4sZBQjm6mmkehiuSVkzvDmLjCCxZQ6dHTfpladZ0qu8fqLi1FYonvVXAq6JIvnnis3b9fJP2R9/PyLh/9m1L8dIuVQyxdu7uF7RDTs93CIzbrWK+VWnsngZyogbd8xrT7rObS57nyqilAWdEJ5ZDDSBVcsjE/qnFrLF82j9BPBVfawKiua8L/me31gsAVPjjS8Dq6M/qqFfRIeJOvopZdAVFd9a4TgwmChgW4H94d/N6Or9jquGBsAsehslOf/e3hZoC5j2nh2+EsICBXI/VdXAMoZMEt5n93zilacIgQO3aamtPQ8qHCqZrlLvVErTIHIjsUpQkTNplO9dGK1h4STPhC1jRuGb5Frc7wewX5OeaZV55ynWOza4hEWEbI1KruA6q4f5/NxBAytyaajsCoEb9jCDV/LOx4whuZHuFE/KPnC46iNS+xgNcAj5lpY444OMhrU98CAV6OleVbascJRkIuHGBPakBcOM/VBgvHx93G14retu6GQQujrRtL8mfGENKH4n4HvNksgyfD3Mn1CxsgYbSAzykZXyCCgr8xuDUBM0qcbuM1epZcJw==
+Received: from [192.168.1.128] ([38.175.170.29])
+        by smtp.gmail.com with ESMTPSA id z11-20020a92da0b000000b00363ea1209basm2752707ilm.11.2024.02.13.16.13.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 13 Feb 2024 16:13:28 -0800 (PST)
+Message-ID: <5ff3912d-abb5-4049-831c-81a3bc8da929@linuxfoundation.org>
+Date: Tue, 13 Feb 2024 17:13:27 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240212-fix-elf-type-btf-vmlinux-bin-o-big-endian-v2-1-22c0a6352069@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.7 000/124] 6.7.5-rc1 review
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20240213171853.722912593@linuxfoundation.org>
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi,
+On 2/13/24 10:20, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.7.5 release.
+> There are 124 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 15 Feb 2024 17:18:29 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.7.5-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.7.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+> 
 
-On Mon, Feb 12, 2024 at 07:05:10PM -0700, Nathan Chancellor wrote:
-> Commit 90ceddcb4950 ("bpf: Support llvm-objcopy for vmlinux BTF")
-> changed the ELF type of .btf.vmlinux.bin.o to ET_REL via dd, which works
-> fine for little endian platforms:
->
->    00000000  7f 45 4c 46 02 01 01 00  00 00 00 00 00 00 00 00  |.ELF............|
->   -00000010  03 00 b7 00 01 00 00 00  00 00 00 80 00 80 ff ff  |................|
->   +00000010  01 00 b7 00 01 00 00 00  00 00 00 80 00 80 ff ff  |................|
->
-> However, for big endian platforms, it changes the wrong byte, resulting
-> in an invalid ELF file type, which ld.lld rejects:
->
->    00000000  7f 45 4c 46 02 02 01 00  00 00 00 00 00 00 00 00  |.ELF............|
->   -00000010  00 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |................|
->   +00000010  01 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |................|
->
->   Type:                              <unknown>: 103
->
->   ld.lld: error: .btf.vmlinux.bin.o: unknown file type
->
-> Fix this by updating the entire 16-bit e_type field rather than just a
-> single byte, so that everything works correctly for all platforms and
-> linkers.
->
->    00000000  7f 45 4c 46 02 02 01 00  00 00 00 00 00 00 00 00  |.ELF............|
->   -00000010  00 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |................|
->   +00000010  00 01 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |................|
->
->   Type:                              REL (Relocatable file)
->
-> While in the area, update the comment to mention that binutils 2.35+
-> matches LLD's behavior of rejecting an ET_EXEC input, which occurred
-> after the comment was added.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 90ceddcb4950 ("bpf: Support llvm-objcopy for vmlinux BTF")
-> Link: https://github.com/llvm/llvm-project/pull/75643
-> Suggested-by: Masahiro Yamada <masahiroy@kernel.org>
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Compiled and booted on my test system. No dmesg regressions.
 
-I prefer this version to v1 as well. This seems better than setting the
-seek value.
+Tested-by: Shuah Khan <skhan@linuxfoundation.org>
 
-Reviewed-by: Justin Stitt <justinstitt@google.com>
-
-> ---
-> Changes in v2:
-> - Rather than change the seek value for dd, update the entire e_type
->   field (Masahiro). Due to this change, I did not carry forward the
->   tags of v1.
-> - Slightly update commit message to remove mention of ET_EXEC, which
->   does not match the dump (Masahiro).
-> - Update comment to mention binutils 2.35+ has the same behavior as LLD
->   (Fangrui).
-> - Link to v1: https://lore.kernel.org/r/20240208-fix-elf-type-btf-vmlinux-bin-o-big-endian-v1-1-cb3112491edc@kernel.org
-> ---
->  scripts/link-vmlinux.sh | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
->
-> diff --git a/scripts/link-vmlinux.sh b/scripts/link-vmlinux.sh
-> index a432b171be82..7862a8101747 100755
-> --- a/scripts/link-vmlinux.sh
-> +++ b/scripts/link-vmlinux.sh
-> @@ -135,8 +135,13 @@ gen_btf()
->  	${OBJCOPY} --only-section=.BTF --set-section-flags .BTF=alloc,readonly \
->  		--strip-all ${1} ${2} 2>/dev/null
->  	# Change e_type to ET_REL so that it can be used to link final vmlinux.
-> -	# Unlike GNU ld, lld does not allow an ET_EXEC input.
-> -	printf '\1' | dd of=${2} conv=notrunc bs=1 seek=16 status=none
-> +	# GNU ld 2.35+ and lld do not allow an ET_EXEC input.
-> +	if is_enabled CONFIG_CPU_BIG_ENDIAN; then
-> +		et_rel='\0\1'
-> +	else
-> +		et_rel='\1\0'
-> +	fi
-> +	printf "${et_rel}" | dd of=${2} conv=notrunc bs=1 seek=16 status=none
->  }
->
->  # Create ${2} .S file with all symbols from the ${1} object file
->
-> ---
-> base-commit: 54be6c6c5ae8e0d93a6c4641cb7528eb0b6ba478
-> change-id: 20240208-fix-elf-type-btf-vmlinux-bin-o-big-endian-dbc55a1e1296
->
-> Best regards,
-> --
-> Nathan Chancellor <nathan@kernel.org>
->
-Thanks
-Justin
+thanks,
+-- Shuah
 
