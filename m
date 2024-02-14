@@ -1,114 +1,126 @@
-Return-Path: <stable+bounces-20176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32027854B36
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 15:18:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AE15854B55
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 15:23:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E198F28B481
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 14:18:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E0F91C21943
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 14:23:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB7A754FBB;
-	Wed, 14 Feb 2024 14:18:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFF4055C1A;
+	Wed, 14 Feb 2024 14:23:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="MxzaA5Ac"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aK0vGsTH"
 X-Original-To: stable@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8242445C15;
-	Wed, 14 Feb 2024 14:18:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F5455C2B;
+	Wed, 14 Feb 2024 14:23:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707920298; cv=none; b=loV4XX4JpSkVmVhTTKSTZc96Q9Q3o0Bh1ZLd1tdlT8VeW1f1f68SUUk+kXym6m4ekn9svcO80Sxo1yYxkS504PJB4+MABc+TUXvCu0mhxakJNr8LuAS37dDZicNoXc8VlOnJvwVd92ZTjW0Mx3Ql1GVrpG7m8FjbtNVfQW5OK98=
+	t=1707920608; cv=none; b=jPRxm2wX30Ah1nylrwZ/L1HVqcFODXKW1cyaxzBWdf+jqJMgW9dpKYYlodhphTnDHgYgKVboP+9ZqfMo9B+AuTxE45Sq5cczS20btavNlRqSJCdHjStUd3jb4XqkO19gWT986dsoYSebm4zFnDLTMtNqrpX6nRE37PQemTg6mXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707920298; c=relaxed/simple;
-	bh=F/m7H9XcLg+gnuaRo9ZLUMqLmFCPe8stNoV8lxI9SqQ=;
+	s=arc-20240116; t=1707920608; c=relaxed/simple;
+	bh=Mufo7QEixa/saMH4nPt9rUB9pLUn5tKDkcuXjluUZpU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b+yD/wIaI0Z+fEyPkxqmvaSNhdWWs54PihAXwJmFHL0lH1twtOR/0IlaaGzTphvpcso9fpr6FEqAg6t2xLVHRl6OyS5MZ/iE0cbkmessRVoqHrQnzjboi+b0BhaOonwoQXIokro9pg5FGC4axHh+mAX37W9troc+F2jHR1uumZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=MxzaA5Ac; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=xx3kjMO2T22FWPmvqpk/qy733P8AnnIkS7R4fayZqCM=; b=MxzaA5AcaLprG4OZFJelwSCpVl
-	VR59HG6x3rHCUPUh4IeHN6nmNeHGfGZ8AeDXxtphOXVRyW/P1G9+d0RpmzVy44NDKhBF4OgXYJscc
-	K4X1ca5yntHy6vsl+SdfVS5zh4IvS/uJIiz05g/PqYC8erwhhkrbQn6OXkGmfdhlo1XBZus7y3/7n
-	WMVlEdDgIHTc0KJ8y8Qsb/VAyWDnrLZXwcseM0cQ019hUBHpzQPqSq0VgY0usNmgMMsipWROoYNXw
-	OF8zErOzwDJk1IJj9/uc4yD0mpLk0tVBQBMNtAiVSysZUaRvOELZaE4jKrqN5ePPxmju/ptfpYRcY
-	HZoj9xEQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1raG5Q-0000000Gn3y-2ZrO;
-	Wed, 14 Feb 2024 14:18:08 +0000
-Date: Wed, 14 Feb 2024 14:18:08 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Charan Teja Kalla <quic_charante@quicinc.com>
-Cc: David Hildenbrand <david@redhat.com>, gregkh@linuxfoundation.org,
-	akpm@linux-foundation.org, vbabka@suse.cz, dhowells@redhat.com,
-	surenb@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	# see patch description <stable@vger.kernel.org>
-Subject: Re: [PATCH] mm/huge_memory: fix swap entry values of tail pages of
- THP
-Message-ID: <ZczLoOqdpMJpkO5N@casper.infradead.org>
-References: <1707814102-22682-1-git-send-email-quic_charante@quicinc.com>
- <a683e199-ce8a-4534-a21e-65f2528415a6@redhat.com>
- <8620c1a0-e091-46e9-418a-db66e621b9c4@quicinc.com>
- <845ca78f-913b-4a92-8b40-ff772a7ad333@redhat.com>
- <bc1a5e36-1983-1a39-4d06-8062993a4ca4@quicinc.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=CwVnAGabAznuJWsj/LulewgXB+XO35SUVsI4tHed8VckFwZCXGW3gsGsevSX7bDWy1J4S1qB5hi4ii0xFfzbTnN3ggY+90RAhZjDnyVaA+EjWDqAej+gy+DyqdcnVVHCty9tiDWfCnkZl9ScIX0wfHRyVOUIlqm3g2XT9zFjXI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aK0vGsTH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 844ECC433C7;
+	Wed, 14 Feb 2024 14:23:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1707920608;
+	bh=Mufo7QEixa/saMH4nPt9rUB9pLUn5tKDkcuXjluUZpU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aK0vGsTHEZvh+MwhN6vDZ93Lal1aDL2/mht7nnXd9I6atr3e5WL69y80mbzic5kmb
+	 1yfeJDYYO6x1OaD7f+H5i+KEEgTRS5TIzZvTnxf79Uvi4h4nRbH246+IkFfq2aVwqY
+	 B3TsSD+UCd0TqM7/WwF1YrkNh0/5dIaYBABijQi8=
+Date: Wed, 14 Feb 2024 15:23:22 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Jon Hunter <jonathanh@nvidia.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	allen.lkml@gmail.com,
+	"linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
+Subject: Re: [PATCH 6.1 00/64] 6.1.78-rc1 review
+Message-ID: <2024021409-elusive-overlaid-4fef@gregkh>
+References: <20240213171844.702064831@linuxfoundation.org>
+ <83771838-c346-4a90-92c1-6ba592a620ac@nvidia.com>
+ <2024021422-reckless-remark-e721@gregkh>
+ <d74b1c1d-a0dd-43f4-ad6a-0dca69329c16@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <bc1a5e36-1983-1a39-4d06-8062993a4ca4@quicinc.com>
+In-Reply-To: <d74b1c1d-a0dd-43f4-ad6a-0dca69329c16@nvidia.com>
 
-On Wed, Feb 14, 2024 at 12:04:10PM +0530, Charan Teja Kalla wrote:
-> > 1) Is it broken in 5.15? Did you actually try to reproduce or is this
-> >    just a guess?
+On Wed, Feb 14, 2024 at 01:15:47PM +0000, Jon Hunter wrote:
+> 
+> On 14/02/2024 13:08, Greg Kroah-Hartman wrote:
+> > On Wed, Feb 14, 2024 at 09:03:59AM +0000, Jon Hunter wrote:
+> > > Hi Greg,
+> > > 
+> > > On 13/02/2024 17:20, Greg Kroah-Hartman wrote:
+> > > > This is the start of the stable review cycle for the 6.1.78 release.
+> > > > There are 64 patches in this series, all will be posted as a response
+> > > > to this one.  If anyone has any issues with these being applied, please
+> > > > let me know.
+> > > > 
+> > > > Responses should be made by Thu, 15 Feb 2024 17:18:29 +0000.
+> > > > Anything received after that time might be too late.
+> > > > 
+> > > > The whole patch series can be found in one patch at:
+> > > > 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.78-rc1.gz
+> > > > or in the git tree and branch at:
+> > > > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> > > > and the diffstat can be found below.
+> > > > 
+> > > > thanks,
+> > > > 
+> > > > greg k-h
+> > > 
+> > > 
+> > > Builds are failing for Tegra ...
+> > > 
+> > > Test results for stable-v6.1:
+> > >      10 builds:	3 pass, 7 fail
+> > >      6 boots:	6 pass, 0 fail
+> > >      18 tests:	18 pass, 0 fail
+> > > 
+> > > Linux version:	6.1.78-rc1-gb29c5b14893f
+> > > Boards tested:	tegra124-jetson-tk1, tegra20-ventana,
+> > >                  tegra30-cardhu-a04
+> > > 
+> > > Builds failed:	aarch64+defconfig+jetson, arm+multi_v7
+> > > 
+> > > 
+> > > > Furong Xu <0x1207@gmail.com>
+> > > >       net: stmmac: xgmac: fix handling of DPP safety error for DMA channels
+> > > 
+> > > The above commit is causing a build regression for older toolchains and
+> > > I have reported this [0]. This is also seen on the mainline and -next and
+> > > there is a fix in the works [1].
+> > > 
+> > > Note this is breaking the build for linux-6.6.y and linux-6.7.y too.
 > > 
+> > Thanks, I've now queued up the fix.  Do you need me to push out a -rc2
+> > for this issue for your testing?
 > 
-> We didn't run the tests with THP enabled on 5.15, __so we didn't
-> encounter this issue__ on older to 6.1 kernels.
 > 
-> I mentioned that issue exists is based on my understanding after code
-> walk through. To be specific, I just looked to the
-> migrate_pages()->..->migrate_page_move_mapping() &
-> __split_huge_page_tail() where the ->private field of thp sub-pages is
-> not filled with swap entry. If it could have set, I think these are the
-> only places where it would have done, per my understanding. CMIW.
+> Ideally yes. That would be great.
 
-I think you have a misunderstanding.  David's patch cfeed8ffe55b (part
-of 6.6) _stopped_ us using the tail ->private entries.  So in 6.1, these
-tail pages should already have page->private set, and I don't understand
-what you're fixing.
+Ok, will do in a few minutes, thanks for testing!
 
-> > 2) How did you come up with 417013e0d18 ("mm/migrate: Add
-> >    folio_migrate_mapping()")
-> OOPS, I mean it is Fixes: 3417013e0d18 ("mm/migrate: Add
-> folio_migrate_mapping()").
-> 
-> My understanding is that it a miss in folio_migrate_mapping() where the
-> sub-pages should've the ->private set. But this is just a
-> reimplementation of migrate_page_move_mapping()(where also the issue
-> exists, tmk).
-> 
-> commit 3417013e0d183be9b42d794082eec0ec1c5b5f15
-> Author: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Date:   Fri May 7 07:28:40 2021 -0400
-> 
->     mm/migrate: Add folio_migrate_mapping()
-> 
->     Reimplement migrate_page_move_mapping() as a wrapper around
->     folio_migrate_mapping().  Saves 193 bytes of kernel text.
-> 
-> Thanks.
-> 
+greg k-h
 
