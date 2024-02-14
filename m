@@ -1,135 +1,107 @@
-Return-Path: <stable+bounces-20218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90C848554FB
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 22:38:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7687855505
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 22:41:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4448D282D77
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 21:38:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DBBB1F2837F
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 21:41:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9641913EFF5;
-	Wed, 14 Feb 2024 21:38:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u/X0U+Jq"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78C1C13F006;
+	Wed, 14 Feb 2024 21:41:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 505941B7E2;
-	Wed, 14 Feb 2024 21:38:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11161DDC1;
+	Wed, 14 Feb 2024 21:41:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707946689; cv=none; b=TmLDGa0drVyEz6b3uJujsptBI0Y1HF25omJLsl2R/082M055fEnSDB4b/4gzth0/2KIcWUhnPTNM85PSwAux+bNDqKlE4YRDJ91eVl2hmHteu970Hj3GtBVc+ZCXgr98yviRD+a6rtOVwRfCjhbjpE8/LTA7vy8fWiN8NbPZp/o=
+	t=1707946890; cv=none; b=Cis0y71KfbZLvN3/g+8IB31AlDKqPwJHKCqy+tNfcfMF4JSSa/NpfLpK5yHAvqiaFoEaiP+U5Ca+K3wbOLiZFQfHaSULY1dttDFSSnDJoIOJ9JiW8exAFwhS9pcZGtfl3J+pT/0TxydOz/JaFM0BppZVrZRG3snvq7pFwmzvyTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707946689; c=relaxed/simple;
-	bh=UUPKAcrXV3sriobv5a2MejWKkdWDLFLi5VZHMfDG010=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CW7VkYQAMMsuSEEWaTtSf3sf9KWxj77qKLZqO0iquOYS9A/X5s3DZJNUYpOY/i5N0MAH+vRLVBYGbj5gUEe9hEzyYUjjCxK16aHi4lczqzq9cr3IVlAceC0AqKp28Gbsb5+P8FdznoXE4tc7vxy5xPn9ZSzxF19RuJF2oqmz1Lw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u/X0U+Jq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBA19C43394;
-	Wed, 14 Feb 2024 21:38:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707946689;
-	bh=UUPKAcrXV3sriobv5a2MejWKkdWDLFLi5VZHMfDG010=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=u/X0U+JqFqRNrle6IPy7xdizrvaz3w5fRFbyoqrUiaiJlrKgKcKMx7PgqLeGr4Xr+
-	 A8OahwP6epdjZgFXgJp9etsF42qn1YNLAzEoNquyTvQn04s/HuDPNSYQ75mJRqil6o
-	 iFL30I83YlRm0BkOeGXyvIibjhmqIslDKIWkxSHp5Cu0b3JYXKC+ftnguU4BSRaUv7
-	 vFLHEezVEDfSF+h86rJ59/eAuA8uSDyGG0zx/HHWae92vnPYBhJhLqwUdLmX3cytIg
-	 M/vF+UxTGRRg8l3p8Jb/Hn19d4ty/6QmtpKryPL64pkOay57Tokhs1bVZtSbVq93BL
-	 D/wuRiM9XEZaQ==
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-511a45f6a57so215515e87.2;
-        Wed, 14 Feb 2024 13:38:08 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUywtNjOwHk3lE9Sx593u7f7KSmhkFa6ja5XqUp4Upd0vzNJsJP7CfC4bmZqwbDmPvnlZk68mRXSbMUPJfp3ZBI8lvWXNH8LZIITcA476a8q/V8HPtQMPlQt/FG+j5DuZxD2RjKdK1l6FfK2uoeinlg/ID/7HAyM+bK
-X-Gm-Message-State: AOJu0YxxEs21+5faBkLf6CmU+8OYdGuzjL2cvwUZKBVI5lrNDRACgNg5
-	Yaf/qL7zE3aoV0hr+Bq07NdVqS4giz0AN/R9sYfhTJ9fCQJ2lcFXI7vcBQEhBgFEfxSaG4kZRMt
-	0fvroHu7BB7mwuBZ7SdouDP48dCY=
-X-Google-Smtp-Source: AGHT+IGaYKxN9IyHvOKM2lTDAnhg9bpSWHXdMQSUzrkADaDd9GpHqhCli3rtc+UYqlFqe/KCZCHWjCJQjugyya5+E0A=
-X-Received: by 2002:a05:6512:781:b0:511:a690:45dd with SMTP id
- x1-20020a056512078100b00511a69045ddmr31552lfr.16.1707946687494; Wed, 14 Feb
- 2024 13:38:07 -0800 (PST)
+	s=arc-20240116; t=1707946890; c=relaxed/simple;
+	bh=USAMHb5Lc3KHzMNKyog7LxDBXuChMu/TA0N3FfeNrx8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BWVpdzGKrEBT9ky7TGPUIKJlxkpm/wY0SwijFtxdWs1p/7/ZxZ/rMZCtmxgjb23lAuh4Bs/2sJPqYQC57SqG4PEmZ8mf+jU7dH7/0SURHle0q01t1UG3Mkf44X25eTJagWdJLXSB9TxoIpAmHpRlyQiK50nVd9rlOZTKftsqvIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-6e0cc8d740cso212680b3a.3;
+        Wed, 14 Feb 2024 13:41:28 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707946888; x=1708551688;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UdZGCyYcbUt1nHuI1BHrCvgXmwb2NwTzncbFWjfEht8=;
+        b=r8D1B0LyXnv3dDMKDPxs+kX+ICZaWg2PiFkZmDMVi2TPBB5SkapwbKD+UpQBt/2SUm
+         p+6wfpMZK/x5ln4VwWoXF+wG4kLPMqvmbPTdGcbk7m9SWLePo8egDy0VOXdUgCcXZYcS
+         bR2Du9ir41Cdj27zbzD5JP7IkTdvBIUd8iJ+ZJyMVOXHijrZ5L+VNmR448HvhDkpSNFp
+         dB4o2gsfQt4DepZD7EVBDq5Fb2duH9ADqCYak+DmmAflyD2kgSGgcJJArJcIVRxUQtxR
+         NnnmSNOGcZDSn/bTdUwUwt/MpMh4vkHu3w0LjVePu5DGKbGZKFq9tWJchpc2sImU/rNx
+         OOVw==
+X-Forwarded-Encrypted: i=1; AJvYcCXEhyK70kNECabfA1vlq2pjy0Z5iAQSDsxjumuzZldEqa+tbKrvJIpBPVwbjCs1zc8DY7xlOZNC4og5qxUiVeEQ1GVFEp6GKArkRFU/viSpKdxBhy09LFUs4dcycaRY6yHg
+X-Gm-Message-State: AOJu0YzweOasnb2IkmsR8qHe1DCvP2nXXu+aQPLYwu/at0S/VdtL/0cm
+	Us547WPTb8eUW+XxXuYKzhWC3Psn/RTr8859c3MwdS+edRNoFTiQ
+X-Google-Smtp-Source: AGHT+IE0HZOLfBYHe734ZO8wNK+6UYDx2Id8Ab+IDOEArOTnHMjg6tp949DtT+hIq++qDD2ghANuqQ==
+X-Received: by 2002:a05:6a00:17aa:b0:6e0:9d0b:fb4c with SMTP id s42-20020a056a0017aa00b006e09d0bfb4cmr68930pfg.26.1707946888107;
+        Wed, 14 Feb 2024 13:41:28 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVELsMHGCmbrxbT9Fbbmwe4EeAHPWNxp1Q4/5mAXGNox442xzKSWz3MRt3Gck7vstj/W4wOelHFqTMRkVsNpGl7SAcyilJ/SBVt2P+B1N7gKnM/KFn27ec29Sx8HU085uzYL9bHw7jYNsKQ+7mFyvbF1u/Vp9s=
+Received: from ?IPV6:2620:0:1000:8411:cc45:481:45f0:7434? ([2620:0:1000:8411:cc45:481:45f0:7434])
+        by smtp.gmail.com with ESMTPSA id s23-20020a632c17000000b005dc816b2369sm3930115pgs.28.2024.02.14.13.41.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 14 Feb 2024 13:41:27 -0800 (PST)
+Message-ID: <1669f330-836b-4747-ba4b-dec0a78768b6@acm.org>
+Date: Wed, 14 Feb 2024 13:41:25 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240212-fix-elf-type-btf-vmlinux-bin-o-big-endian-v2-1-22c0a6352069@kernel.org>
-In-Reply-To: <20240212-fix-elf-type-btf-vmlinux-bin-o-big-endian-v2-1-22c0a6352069@kernel.org>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Thu, 15 Feb 2024 06:37:31 +0900
-X-Gmail-Original-Message-ID: <CAK7LNATZAh9fa8rd6jLwdEGUBHkAs9e4hZh=WvKeNLkGs2=8Aw@mail.gmail.com>
-Message-ID: <CAK7LNATZAh9fa8rd6jLwdEGUBHkAs9e4hZh=WvKeNLkGs2=8Aw@mail.gmail.com>
-Subject: Re: [PATCH v2] kbuild: Fix changing ELF file type for output of
- gen_btf for big endian
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: nicolas@fjasle.eu, ndesaulniers@google.com, morbo@google.com, 
-	justinstitt@google.com, keescook@chromium.org, maskray@google.com, 
-	linux-kbuild@vger.kernel.org, bpf@vger.kernel.org, llvm@lists.linux.dev, 
-	patches@lists.linux.dev, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] scsi: core: Consult supported VPD page list prior to
+ fetching page
+Content-Language: en-US
+To: "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc: linux-scsi@vger.kernel.org, linux-usb@vger.kernel.org,
+ belegdol@gmail.com, stable@vger.kernel.org
+References: <20240214182535.2533977-1-martin.petersen@oracle.com>
+ <a0f6d397-8162-4e89-a1ff-99540c70fa00@acm.org>
+ <yq1plwyhlc6.fsf@ca-mkp.ca.oracle.com>
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <yq1plwyhlc6.fsf@ca-mkp.ca.oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Feb 13, 2024 at 11:06=E2=80=AFAM Nathan Chancellor <nathan@kernel.o=
-rg> wrote:
->
-> Commit 90ceddcb4950 ("bpf: Support llvm-objcopy for vmlinux BTF")
-> changed the ELF type of .btf.vmlinux.bin.o to ET_REL via dd, which works
-> fine for little endian platforms:
->
->    00000000  7f 45 4c 46 02 01 01 00  00 00 00 00 00 00 00 00  |.ELF.....=
-.......|
->   -00000010  03 00 b7 00 01 00 00 00  00 00 00 80 00 80 ff ff  |.........=
-.......|
->   +00000010  01 00 b7 00 01 00 00 00  00 00 00 80 00 80 ff ff  |.........=
-.......|
->
-> However, for big endian platforms, it changes the wrong byte, resulting
-> in an invalid ELF file type, which ld.lld rejects:
->
->    00000000  7f 45 4c 46 02 02 01 00  00 00 00 00 00 00 00 00  |.ELF.....=
-.......|
->   -00000010  00 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |.........=
-.......|
->   +00000010  01 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |.........=
-.......|
->
->   Type:                              <unknown>: 103
->
->   ld.lld: error: .btf.vmlinux.bin.o: unknown file type
->
-> Fix this by updating the entire 16-bit e_type field rather than just a
-> single byte, so that everything works correctly for all platforms and
-> linkers.
->
->    00000000  7f 45 4c 46 02 02 01 00  00 00 00 00 00 00 00 00  |.ELF.....=
-.......|
->   -00000010  00 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |.........=
-.......|
->   +00000010  00 01 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |.........=
-.......|
->
->   Type:                              REL (Relocatable file)
->
-> While in the area, update the comment to mention that binutils 2.35+
-> matches LLD's behavior of rejecting an ET_EXEC input, which occurred
-> after the comment was added.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 90ceddcb4950 ("bpf: Support llvm-objcopy for vmlinux BTF")
-> Link: https://github.com/llvm/llvm-project/pull/75643
-> Suggested-by: Masahiro Yamada <masahiroy@kernel.org>
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-> ---
+On 2/14/24 12:20, Martin K. Petersen wrote:
+>> On 2/14/24 10:25, Martin K. Petersen wrote:
+>>> +		for (unsigned int i = SCSI_VPD_HEADER_SIZE ; i < result ; i++) {
+>>> +			if (vpd[i] == page)
+>>> +				goto found;
+>>> +		}
+>>
+>> Can this loop be changed into a memchr() call?
+> 
+> Would you prefer the following?
+> 
+> 	/* Look for page number in the returned list of supported VPDs */
+> 	result -= SCSI_VPD_HEADER_SIZE;
+> 	if (!memchr(&vpd[SCSI_VPD_HEADER_SIZE], page, result))
+> 		return 0;
+> 
+> I find that the idiomatic for loop is easy to understand whereas the
+> memchr() requires a bit of squinting. But I don't really have a strong
+> preference. I do like that the memchr() gets rid of the goto.
 
-Applied to linux-kbuild/fixes.
-Thanks.
+Although I slightly prefer the memchr() variant, I'm also fine with keeping the
+for-loop.
 
+Thanks,
 
---=20
-Best Regards
-Masahiro Yamada
+Bart.
+
 
