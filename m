@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-20185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 744EE854C9C
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 16:26:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86492854C9F
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 16:26:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 301A1287ABF
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 15:26:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36E9E1F224E2
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 15:26:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ADAC5C8F8;
-	Wed, 14 Feb 2024 15:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 852B85B696;
+	Wed, 14 Feb 2024 15:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NQZPqQpT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWGHxuAx"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4BA5C615
-	for <Stable@vger.kernel.org>; Wed, 14 Feb 2024 15:26:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C2943157
+	for <Stable@vger.kernel.org>; Wed, 14 Feb 2024 15:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707924371; cv=none; b=ohssEDNpbDsjy8q6HsyETqHHMpcnJ0nqokhYDQrrr0o47LHZGEcYka3/RRykmXfxumsF/qRNK4lkk1gTFIM7jNPxGAMONayEdOL1aW8iMiX7HpK3Zl/ZcTvg0N4MHPrbYc1CK2jNa12R7O84Dfc4mBup8gpvU2cFkwpNVxgT0Nw=
+	t=1707924383; cv=none; b=LmTFJM4jvdpegSmZIuu0KK5HtCcUCCa/jpN8vT1uVT5wPrbfYigeRBoVYxT7EHzgP2qEHRiATTZ+eksTTzD3NoFgj/JXQQtteXODTJfrsTcAMGUyXF/talgWTc1AQ+B9h2hfbbLWvUy9BcuKcepPoKm41i3L5r3XLnVcUOLArjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707924371; c=relaxed/simple;
-	bh=kRgnwvZqGKzNNMdiuSizJCIAIKGvyoetADvESC248Vs=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=ZRxkmQ7UZb7OEw1mZkNs2siYG2rpSqbN0dktK1XTyWk/Ux3sU6ZATKYSCaPJA0ru7GPeZw5xly3nDHM1LhWrNmOxBS8s3U9FS5RtLgmihb/BkoKpaa6ktH+w0NJ3AzL+h8Bf8S2KZNnnAyTRTlbUfWdX0sjOdVKSSyTEk4apuoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NQZPqQpT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DE1DC433C7;
-	Wed, 14 Feb 2024 15:26:09 +0000 (UTC)
+	s=arc-20240116; t=1707924383; c=relaxed/simple;
+	bh=h88HO2OWx/AtF/xfM7rJmwjE6a9Imyg78b1nmdXZqhU=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=qWmcTb5kKvXjAyZ3fGu5GYvu/5WlwtUrb8O/LbVATYnX0k47NUivOfemEzjFedOS+VmeJIU+geQHQh8r5INcDAcDloZfwPOUtYUaFwtIkyY+xbo2dgw5Q5BtnwPnxuFKFwnGvIuoFEM4m/h8rEZUMuduZ5bT5H0lbC6cVU8hDdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWGHxuAx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA583C433F1;
+	Wed, 14 Feb 2024 15:26:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707924369;
-	bh=kRgnwvZqGKzNNMdiuSizJCIAIKGvyoetADvESC248Vs=;
+	s=korg; t=1707924383;
+	bh=h88HO2OWx/AtF/xfM7rJmwjE6a9Imyg78b1nmdXZqhU=;
 	h=Subject:To:From:Date:From;
-	b=NQZPqQpTh5ujygLE6EEcYgOOS9/zLn625v3Lyd7JKiFk0EWbjIJXO1/5UcTm9lSrg
-	 AMfWUgfHbvPOC+2xgBdUABb33Y+oIWYvYfdkUJyz4Tutmr534nCyrfdA2dLVt+khtD
-	 H9t9RUC/BG8c2huBLSTPMN5ka5Z4YNuGZ1IKI5WE=
-Subject: patch "iio: magnetometer: rm3100: add boundary check for the value read from" added to char-misc-linus
-To: zhili.liu@ucas.com.cn,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,zhouzhouyi@gmail.com
+	b=MWGHxuAxlumN1SI6Ti04j7mw2tnibZ6OPyRqmdnOCXfUIdg4CS4y2fiaVjwv2otFg
+	 01OCltqe8dLiP6JFnkuiPuhOYp226KrUlmSekGHKx/TuOtlkwP38+h93TIafP6pQ4o
+	 nVZDuSKWuPv3J7Ta3VCexOTYFmSUJ0+hvwbTfReo=
+Subject: patch "iio: imu: bno055: serdev requires REGMAP" added to char-misc-linus
+To: rdunlap@infradead.org,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,andrea.merello@iit.it,jic23@kernel.org,lars@metafoo.de
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 14 Feb 2024 16:26:03 +0100
-Message-ID: <2024021403-stature-negate-4fc0@gregkh>
+Date: Wed, 14 Feb 2024 16:26:05 +0100
+Message-ID: <2024021404-renounce-answering-8a31@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ Content-Transfer-Encoding: 8bit
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: magnetometer: rm3100: add boundary check for the value read from
+    iio: imu: bno055: serdev requires REGMAP
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -69,56 +69,56 @@ next -rc kernel release.
 If you have any questions about this process, please let me know.
 
 
-From 792595bab4925aa06532a14dd256db523eb4fa5e Mon Sep 17 00:00:00 2001
-From: "zhili.liu" <zhili.liu@ucas.com.cn>
-Date: Tue, 2 Jan 2024 09:07:11 +0800
-Subject: iio: magnetometer: rm3100: add boundary check for the value read from
- RM3100_REG_TMRC
+From 35ec2d03b282a939949090bd8c39eb37a5856721 Mon Sep 17 00:00:00 2001
+From: Randy Dunlap <rdunlap@infradead.org>
+Date: Wed, 10 Jan 2024 10:56:11 -0800
+Subject: iio: imu: bno055: serdev requires REGMAP
 
-Recently, we encounter kernel crash in function rm3100_common_probe
-caused by out of bound access of array rm3100_samp_rates (because of
-underlying hardware failures). Add boundary check to prevent out of
-bound access.
+There are a ton of build errors when REGMAP is not set, so select
+REGMAP to fix all of them.
 
-Fixes: 121354b2eceb ("iio: magnetometer: Add driver support for PNI RM3100")
-Suggested-by: Zhouyi Zhou <zhouzhouyi@gmail.com>
-Signed-off-by: zhili.liu <zhili.liu@ucas.com.cn>
-Link: https://lore.kernel.org/r/1704157631-3814-1-git-send-email-zhouzhouyi@gmail.com
+Examples (not all of them):
+
+../drivers/iio/imu/bno055/bno055_ser_core.c:495:15: error: variable 'bno055_ser_regmap_bus' has initializer but incomplete type
+  495 | static struct regmap_bus bno055_ser_regmap_bus = {
+../drivers/iio/imu/bno055/bno055_ser_core.c:496:10: error: 'struct regmap_bus' has no member named 'write'
+  496 |         .write = bno055_ser_write_reg,
+../drivers/iio/imu/bno055/bno055_ser_core.c:497:10: error: 'struct regmap_bus' has no member named 'read'
+  497 |         .read = bno055_ser_read_reg,
+../drivers/iio/imu/bno055/bno055_ser_core.c: In function 'bno055_ser_probe':
+../drivers/iio/imu/bno055/bno055_ser_core.c:532:18: error: implicit declaration of function 'devm_regmap_init'; did you mean 'vmem_map_init'? [-Werror=implicit-function-declaration]
+  532 |         regmap = devm_regmap_init(&serdev->dev, &bno055_ser_regmap_bus,
+../drivers/iio/imu/bno055/bno055_ser_core.c:532:16: warning: assignment to 'struct regmap *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
+  532 |         regmap = devm_regmap_init(&serdev->dev, &bno055_ser_regmap_bus,
+../drivers/iio/imu/bno055/bno055_ser_core.c: At top level:
+../drivers/iio/imu/bno055/bno055_ser_core.c:495:26: error: storage size of 'bno055_ser_regmap_bus' isn't known
+  495 | static struct regmap_bus bno055_ser_regmap_bus = {
+
+Fixes: 2eef5a9cc643 ("iio: imu: add BNO055 serdev driver")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Andrea Merello <andrea.merello@iit.it>
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: linux-iio@vger.kernel.org
 Cc: <Stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240110185611.19723-1-rdunlap@infradead.org
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/magnetometer/rm3100-core.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/iio/imu/bno055/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/iio/magnetometer/rm3100-core.c b/drivers/iio/magnetometer/rm3100-core.c
-index 69938204456f..42b70cd42b39 100644
---- a/drivers/iio/magnetometer/rm3100-core.c
-+++ b/drivers/iio/magnetometer/rm3100-core.c
-@@ -530,6 +530,7 @@ int rm3100_common_probe(struct device *dev, struct regmap *regmap, int irq)
- 	struct rm3100_data *data;
- 	unsigned int tmp;
- 	int ret;
-+	int samp_rate_index;
- 
- 	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
- 	if (!indio_dev)
-@@ -586,9 +587,14 @@ int rm3100_common_probe(struct device *dev, struct regmap *regmap, int irq)
- 	ret = regmap_read(regmap, RM3100_REG_TMRC, &tmp);
- 	if (ret < 0)
- 		return ret;
-+
-+	samp_rate_index = tmp - RM3100_TMRC_OFFSET;
-+	if (samp_rate_index < 0 || samp_rate_index >=  RM3100_SAMP_NUM) {
-+		dev_err(dev, "The value read from RM3100_REG_TMRC is invalid!\n");
-+		return -EINVAL;
-+	}
- 	/* Initializing max wait time, which is double conversion time. */
--	data->conversion_time = rm3100_samp_rates[tmp - RM3100_TMRC_OFFSET][2]
--				* 2;
-+	data->conversion_time = rm3100_samp_rates[samp_rate_index][2] * 2;
- 
- 	/* Cycle count values may not be what we want. */
- 	if ((tmp - RM3100_TMRC_OFFSET) == 0)
+diff --git a/drivers/iio/imu/bno055/Kconfig b/drivers/iio/imu/bno055/Kconfig
+index 83e53acfbe88..c7f5866a177d 100644
+--- a/drivers/iio/imu/bno055/Kconfig
++++ b/drivers/iio/imu/bno055/Kconfig
+@@ -8,6 +8,7 @@ config BOSCH_BNO055
+ config BOSCH_BNO055_SERIAL
+ 	tristate "Bosch BNO055 attached via UART"
+ 	depends on SERIAL_DEV_BUS
++	select REGMAP
+ 	select BOSCH_BNO055
+ 	help
+ 	  Enable this to support Bosch BNO055 IMUs attached via UART.
 -- 
 2.43.1
 
