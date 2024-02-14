@@ -1,105 +1,135 @@
-Return-Path: <stable+bounces-20210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88C4485527F
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 19:44:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2905885528C
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 19:45:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C76D5B27410
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 18:44:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3B75283B9E
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 18:45:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9C6013A264;
-	Wed, 14 Feb 2024 18:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CD05134CD9;
+	Wed, 14 Feb 2024 18:45:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=hp.com header.i=@hp.com header.b="HazIUWUD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-162.mimecast.com (us-smtp-delivery-162.mimecast.com [170.10.133.162])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48E22127B43;
-	Wed, 14 Feb 2024 18:44:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6BC127B74
+	for <stable@vger.kernel.org>; Wed, 14 Feb 2024 18:45:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.162
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707936279; cv=none; b=OG1idKjN18ZihoxijbI4GN7f73lSaxFh/3XGdtqFDUFDLuy/1GfpXAXNEpXXOORzv65Aax9pRPLM6j4DU/Qmfb7aBeiTBvmYvKZXbu9NvQ4TBwUYQfXz4BKGP4L3njlBLL2ngul7kHl2a/CHeMWNDkcIy5u5/QQyOYZ1tE6f0xg=
+	t=1707936341; cv=none; b=riyPZLyRDF4gebxl1XdLfvzqlo2E5EkFqnstFsh8p7NP5JYsWiXH07QRzQ9CFwHtSCuGdzvy0BySV0+R0PSRS9Cu+bZFy3cO5R1KNzF3p6FACMdSA50GdxeJH0jOB1wB+qDPF9lb5KrK+xniKm6PV/IQy0OjRuWzNlKPj6OVjGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707936279; c=relaxed/simple;
-	bh=+X0FloUbsegVqgAvK2TCIorZvQiYlNoG05piNcrQwJM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CCowEzagOe4u4YYi2sRD3RF4f1GoqeeDMtJeRpvRJOW34tCxz+oMRi5gaHJmj34o37oKO/lZLopy0qMXD+4nKpIov34wYVBQLCvxkz4qvUWJWI82Xnl3eOKI+nKeQCcCAypNanCEvl+vK0QgUx8tjHTqadPQ5OuCws0TRNsF+RA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-1d780a392fdso241165ad.3;
-        Wed, 14 Feb 2024 10:44:38 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707936277; x=1708541077;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ab6rz456v2LneYUCzmeaWwz9ju2k0FrgP+8M7GgPKas=;
-        b=g6rI67Ct0oULNtPSt1pr+9+TD5aqFJv7uJSPBbxvVnwNvTNcxwceNjw4JjT6hwbzB8
-         DSPM3YT4lcbnjqra+mL+jyJeSbBLIs4XRoijEYklCKcAlACeCIXtGn9mCFJMPus0Z6oY
-         MvHe8CWSuB8wLK5zr8rMaSIQVo/QkomcrLrZXs/dRkYg5mYKsmvXb4dIUdmALGZcLVN9
-         e/wbLV8QABdvQGMH/Trd5fuXEgATdE90J3T+jezaX25xO8n2k8WbGUq+Zq0KXGXVkJJh
-         LXEFo602DmWbXqGZ11v1f6/tA8JrgSlFeBhONu+WjEM8gGJqXSNPUcG4Pz06tHri99Kn
-         nQ/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUCODGi84OMD0mpEvklAgvNf3y/EANPiN0LGlPhkj46TCPxfG3tx69+pL7UFp9oOUjZHyZJgUR5cSQi6fZwxwRovghKJWr31UPH/T9DQJ5JnazkQYbSKtOgO9fqxc3ksoKA0/ZNQOS8TyRmEbZcuLl1J8ECguye3U9bSSvd/g==
-X-Gm-Message-State: AOJu0Yy//JG2wI25Ld8m4fGarvDXkkOE9w7QRxLLEFaYzpFbEeww3tew
-	N5E8wsfxNJxnO+GVr1uBmeuU/shikVNDydBjCtMV3N86yJvata+f
-X-Google-Smtp-Source: AGHT+IFVEOTyfCjg8k0UE97GjtqLcfGRXI8IGvdBKTyHXMQ9mZ1x+QYW4q/hEQreAxCfrWxGdy4OqA==
-X-Received: by 2002:a17:902:82c6:b0:1d9:3101:c46d with SMTP id u6-20020a17090282c600b001d93101c46dmr3052119plz.55.1707936277347;
-        Wed, 14 Feb 2024 10:44:37 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVKkSQqo7ukCx3TID/2vH80Jrs1+5giWyOj56xJ9A3A2SQGm1fYMZNmI2/uepMF1OZAmdec9/jguerbdQdB5P9zI3RK6iYbzaFsHlBAyr5DwPLgT8n0TY/eatKiHMPk/rAuTyLLtkBWF7fZ2kvvF13kDe/x3AWzUinWzOgiCw==
-Received: from ?IPV6:2620:0:1000:8411:85a5:575d:be51:8037? ([2620:0:1000:8411:85a5:575d:be51:8037])
-        by smtp.gmail.com with ESMTPSA id jc13-20020a17090325cd00b001d70af5be17sm4049158plb.229.2024.02.14.10.44.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 14 Feb 2024 10:44:36 -0800 (PST)
-Message-ID: <a0f6d397-8162-4e89-a1ff-99540c70fa00@acm.org>
-Date: Wed, 14 Feb 2024 10:44:35 -0800
+	s=arc-20240116; t=1707936341; c=relaxed/simple;
+	bh=f+Ss+Vy5U6cHed6RvKSyVpq8OJxkSd2PHhtjh/PmpPk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=qwglcsYTml4JRYmzcL5V+plsiNdLCVXa5V14u/1w18rjfVgfmp+egREZKKZGGFTU1TsQgo0ElQhOIqBJDQabFW/ZKroKwOco/PAjnE1uG7OgZVfRvV8HGeUopUJ1J6W35A7JWPGTm2/4LGEV6OIJWNt0xaoJuDPNR7Zcl3QfXcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hp.com; spf=pass smtp.mailfrom=hp.com; dkim=pass (1024-bit key) header.d=hp.com header.i=@hp.com header.b=HazIUWUD; arc=none smtp.client-ip=170.10.133.162
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hp.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hp.com; s=mimecast20180716;
+	t=1707936338;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=f+Ss+Vy5U6cHed6RvKSyVpq8OJxkSd2PHhtjh/PmpPk=;
+	b=HazIUWUDqyGqt7E6KTC3CzbsbOCKwRnpLQ21TJSChwD4yhtnmHI/oqjgrzeu9UxfH062nQ
+	mS+HTgQjmiH9Yl3HFXi43tTVnLdAvRA1bUqLkcKJtUIg8d1WtUHaXxLDSJ8JuLHkyIIzXz
+	4LKJStQwBmGJW53POAUOMsu3GV8r9T4=
+Received: from g8t01559s.inc.hp.com (g8t01559s.inc.hp.com [15.72.64.153]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-556-qdKEUu9zPUieSwWbA3Rg_w-1; Wed, 14 Feb 2024 13:45:37 -0500
+X-MC-Unique: qdKEUu9zPUieSwWbA3Rg_w-1
+Received: from g7t14407g.inc.hpicorp.net (g7t14407g.inc.hpicorp.net [15.63.19.131])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by g8t01559s.inc.hp.com (Postfix) with ESMTPS id E75CF2056B;
+	Wed, 14 Feb 2024 18:45:35 +0000 (UTC)
+Received: from localhost.localdomain (unknown [15.53.255.151])
+	by g7t14407g.inc.hpicorp.net (Postfix) with ESMTP id A5C7917;
+	Wed, 14 Feb 2024 18:45:33 +0000 (UTC)
+From: Alexandru Gagniuc <alexandru.gagniuc@hp.com>
+To: linux-sound@vger.kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com
+Cc: linux-kernel@vger.kernel.org,
+	eniac-xw.zhang@hp.com,
+	Eniac Zhang <eniacz@gmail.com>,
+	Alexandru Gagniuc <mr.nuke.me@gmail.com>,
+	Alexandru Gagniuc <alexandru.gagniuc@hp.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] ALSA: hda/realtek: fix mute/micmute LED For HP mt645
+Date: Wed, 14 Feb 2024 18:45:07 +0000
+Message-Id: <20240214184507.777349-1-alexandru.gagniuc@hp.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] scsi: core: Consult supported VPD page list prior to
- fetching page
-Content-Language: en-US
-To: "Martin K. Petersen" <martin.petersen@oracle.com>,
- linux-scsi@vger.kernel.org, linux-usb@vger.kernel.org
-Cc: belegdol@gmail.com, stable@vger.kernel.org
-References: <20240214182535.2533977-1-martin.petersen@oracle.com>
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20240214182535.2533977-1-martin.petersen@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: hp.com
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=WINDOWS-1252; x-default=true
 
-On 2/14/24 10:25, Martin K. Petersen wrote:
-> +		for (unsigned int i = SCSI_VPD_HEADER_SIZE ; i < result ; i++) {
-> +			if (vpd[i] == page)
-> +				goto found;
-> +		}
+From: Eniac Zhang <eniacz@gmail.com>
 
-Can this loop be changed into a memchr() call?
+The HP mt645 G7 Thin Client uses an ALC236 codec and needs the
+ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF quirk to make the mute and
+micmute LEDs work.
 
-> diff --git a/include/scsi/scsi_device.h b/include/scsi/scsi_device.h
-> index cb019c80763b..6673885565e3 100644
-> --- a/include/scsi/scsi_device.h
-> +++ b/include/scsi/scsi_device.h
-> @@ -102,6 +102,7 @@ struct scsi_vpd {
->   
->   enum scsi_vpd_parameters {
->   	SCSI_VPD_HEADER_SIZE = 4,
-> +	SCSI_VPD_LIST_SIZE = 36,
->   };
->   
->   struct scsi_device {
+There are two variants of the USB-C PD chip on this device. Each uses
+a different BIOS and board ID, hence the two entries.
 
-Since these constants are only used inside drivers/scsi/scsi.c, how about
-moving these constants into the drivers/scsi/scsi.c file?
+Signed-off-by: Alexandru Gagniuc <mr.nuke.me@gmail.com>
+Signed-off-by: Alexandru Gagniuc <alexandru.gagniuc@hp.com>
+Cc: <stable@vger.kernel.org>
+---
+ sound/pci/hda/patch_realtek.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Thanks,
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 6994c4c5073c..c837470ef5b8 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9928,6 +9928,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] =
+=3D {
+ =09SND_PCI_QUIRK(0x103c, 0x8abb, "HP ZBook Firefly 14 G9", ALC245_FIXUP_CS=
+35L41_SPI_2_HP_GPIO_LED),
+ =09SND_PCI_QUIRK(0x103c, 0x8ad1, "HP EliteBook 840 14 inch G9 Notebook PC"=
+, ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ =09SND_PCI_QUIRK(0x103c, 0x8ad2, "HP EliteBook 860 16 inch G9 Notebook PC"=
+, ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
++=09SND_PCI_QUIRK(0x103c, 0x8b0f, "HP Elite mt645 G7 Mobile Thin Client U81=
+", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ =09SND_PCI_QUIRK(0x103c, 0x8b2f, "HP 255 15.6 inch G10 Notebook PC", ALC23=
+6_FIXUP_HP_MUTE_LED_COEFBIT2),
+ =09SND_PCI_QUIRK(0x103c, 0x8b42, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_=
+LED),
+ =09SND_PCI_QUIRK(0x103c, 0x8b43, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_=
+LED),
+@@ -9935,6 +9936,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] =
+=3D {
+ =09SND_PCI_QUIRK(0x103c, 0x8b45, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_=
+LED),
+ =09SND_PCI_QUIRK(0x103c, 0x8b46, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_=
+LED),
+ =09SND_PCI_QUIRK(0x103c, 0x8b47, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_=
+LED),
++=09SND_PCI_QUIRK(0x103c, 0x8b59, "HP Elite mt645 G7 Mobile Thin Client U89=
+", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ =09SND_PCI_QUIRK(0x103c, 0x8b5d, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VR=
+EF),
+ =09SND_PCI_QUIRK(0x103c, 0x8b5e, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VR=
+EF),
+ =09SND_PCI_QUIRK(0x103c, 0x8b63, "HP Elite Dragonfly 13.5 inch G4", ALC245=
+_FIXUP_CS35L41_SPI_4_HP_GPIO_LED),
+--=20
+2.42.0
 
-Bart.
 
