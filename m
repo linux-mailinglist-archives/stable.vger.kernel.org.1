@@ -1,257 +1,242 @@
-Return-Path: <stable+bounces-20244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97062855CC4
-	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 09:45:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C736856065
+	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 11:58:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE64A287927
-	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 08:45:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7AEC282DBE
+	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 10:58:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56DB0134D7;
-	Thu, 15 Feb 2024 08:45:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="y6gFcjhR"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD6AD12C81C;
+	Thu, 15 Feb 2024 10:44:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com [209.85.221.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685A7134CE
-	for <stable@vger.kernel.org>; Thu, 15 Feb 2024 08:45:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5700B12C7F0
+	for <stable@vger.kernel.org>; Thu, 15 Feb 2024 10:44:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707986731; cv=none; b=sRrVDWGkzHSd/tgKRfq/pl/TafbTTlwYuoT6lMUkP5VDUa8zyUjc3hM+fWzlr2Cby5Ti77eAUnNBD9SGBdijjgMvgqdto/dNesJ5Z+VBTw2xZ6AXFSn/Tmw1eyG91zIDp87lJyRIcm/LYdFjlVXTquENt7Nrss07PMoVp0gncNo=
+	t=1707993889; cv=none; b=e8HbSt4Up3eIHWb0cxHK3U1D+zna42AQs3j0jHWu9q491JZRzFhi6TWo6QC/yeXaqxkqHlef5rqH3gGJ/HWWHgG+FKEl8G29lQq7NmmZu/znUFyWwAz5gESgyiuEDHoXF2CjNtLRhjNbBQNja+Bm77rjtm5Lsmar9MyyctbPxdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707986731; c=relaxed/simple;
-	bh=x0Tw6BNK11EGdmc5ZGxRfDLUmSeE8Z6xhgnpSMVoYtY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RfZHP7Quof+/8BdRTmAzKVIC2MvnIRzS2L4QPxMNEsDhU+On8I+ZrCZB705GG6QqXU5X1OIsA+nnG7EQ+/o55iwLdi4VRzAQprsMEKGXb/OdPCC3skxFVYr1wwINFB1mve5DfGqrco2ky0/XeXT+sxD4DyyazgjvjjKYszkP6LU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=y6gFcjhR; arc=none smtp.client-ip=209.85.221.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-4c02af52a21so274117e0c.3
-        for <stable@vger.kernel.org>; Thu, 15 Feb 2024 00:45:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1707986728; x=1708591528; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5x8+nXLLVCvqxzw2c9wjn6NCQJrdXn/C+WdlvHqn43s=;
-        b=y6gFcjhR3ek62TDjgHkHCAPKcpUeHbFXy/SZRJEOJnhRvIyLGDFnNTWBjkzpkgqCF0
-         YPtgWBbBgt95hPsdZHpLibypmHEZy08YyF2lM6wKMo1PGGZ11VH3TcsGU/3V2H9fLmWR
-         BsAIOjj24BCwrhoQ4A/hsWoE0pDlX+eFYIdfY7eRTFTfWKX8wgqR4LVlZn6IeOBwf0rF
-         W97HMjHVsvq13TqwbYdjDb5vFAPxgILrxuoPCPwrnGtfhsJRKzop/wge7Wu0EXqVZojE
-         SgMNOo1vh68jOClryH5ZQzqik5BYKLSgbWEgxtMIwO3p2MRR8O25dCY9DpqO6AU7J/p0
-         j9uA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707986728; x=1708591528;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5x8+nXLLVCvqxzw2c9wjn6NCQJrdXn/C+WdlvHqn43s=;
-        b=nCt9Yq/b2Sj9+pA8wQLnU3EbnHNSybK7t0VSYKrQwnZgDYRGotS7nbDpndvdGzp6cD
-         uNvMogUDUJqWLKRbfzw5Zw3vHvUK9KNMkjCGgg7UqGqnqmULmwETBRbXrh3i4P2YHIzK
-         LJELCi3ipyuL35cv6FqbFpuTPeMiKkUl+14Kz7m6iJMYU9SNd5CrWrHjl9pnMsxaNYx/
-         F83RPLSzsXp+C54RPaBdiRdUXc3DYk9R0iPxW3N9USiVITRs1n3EjyyQ/SWewsSYVXyR
-         48+RPuCsta9oW0LIcZeYFBIkuFT0nHLM1dZC5cwPSuBxRqksJgVtMthtcMVnn2D20wia
-         9Nrw==
-X-Gm-Message-State: AOJu0YyZloGFNustNzFxQdT1Owhlaeytm8rTHljFNkqPX1ngCaYKQBM8
-	Q/mLhlMDsa9avdTjqXmxFiGRebP2Z7X1r6c/3MmYMAocw3AhQnzlCe20EIzffQ+oG5KRdMDiMZO
-	NfCH70nsuKxgRHOx8UCYa6SEtmZm+AdFMut8NBQ==
-X-Google-Smtp-Source: AGHT+IFNWJdaAhQzckrGqOsKbWuM1nCexSm2uMnTOxJzkJyZSa1i/i1yEuc4m0ViYJU/94nEC61OEU899J5XPGpQ6/w=
-X-Received: by 2002:a1f:ed01:0:b0:4c0:263e:bc8a with SMTP id
- l1-20020a1fed01000000b004c0263ebc8amr1035101vkh.10.1707986728180; Thu, 15 Feb
- 2024 00:45:28 -0800 (PST)
+	s=arc-20240116; t=1707993889; c=relaxed/simple;
+	bh=rGiK4UiGq+EU2Tgzuzy+h3fUBnuURSZgohX9zjoVJ3A=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=WI4KHGjFAI1iUPIZWr0P6JruRyxNSVWSoWbP0UamcBOlKtUuUgoTnjw4uoAvhp6xhWwbunWIx33CptcNgPR8M5Qjv8TpW9teRchsfWQ4wZ63UZRkdZCHmht9cwYhPQaNXS4fsYxPKLTQXSAAPajBx1oz1LfZreVgdyqgx2voEkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1raZES-0000oI-Mo
+	for stable@vger.kernel.org; Thu, 15 Feb 2024 11:44:44 +0100
+Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1raZES-000rlR-2M
+	for stable@vger.kernel.org; Thu, 15 Feb 2024 11:44:44 +0100
+Received: from dspam.blackshift.org (localhost [127.0.0.1])
+	by bjornoya.blackshift.org (Postfix) with SMTP id 4FA7828E57B
+	for <stable@vger.kernel.org>; Wed, 14 Feb 2024 14:03:52 +0000 (UTC)
+Received: from hardanger.blackshift.org (unknown [172.20.34.65])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id 13AEB28E53F;
+	Wed, 14 Feb 2024 14:03:50 +0000 (UTC)
+Received: from blackshift.org (localhost [::1])
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 6eb6e279;
+	Wed, 14 Feb 2024 14:03:49 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	linux-can@vger.kernel.org,
+	kernel@pengutronix.de,
+	Ziqi Zhao <astrajoan@yahoo.com>,
+	syzbot+1591462f226d9cbf0564@syzkaller.appspotmail.com,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	stable@vger.kernel.org,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH net 1/3] can: j1939: prevent deadlock by changing j1939_socks_lock to rwlock
+Date: Wed, 14 Feb 2024 14:59:05 +0100
+Message-ID: <20240214140348.2412776-2-mkl@pengutronix.de>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240214140348.2412776-1-mkl@pengutronix.de>
+References: <20240214140348.2412776-1-mkl@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240214142941.551330912@linuxfoundation.org>
-In-Reply-To: <20240214142941.551330912@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Thu, 15 Feb 2024 14:15:16 +0530
-Message-ID: <CA+G9fYt92+z5kTh3LUYiu5rNgnMyMe=O6Mve68ZrfsQ6TR-y0A@mail.gmail.com>
-Subject: Re: [PATCH 6.1 00/65] 6.1.78-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-On Wed, 14 Feb 2024 at 20:00, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.1.78 release.
-> There are 65 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 16 Feb 2024 14:28:54 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.1.78-rc2.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+From: Ziqi Zhao <astrajoan@yahoo.com>
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+The following 3 locks would race against each other, causing the
+deadlock situation in the Syzbot bug report:
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+- j1939_socks_lock
+- active_session_list_lock
+- sk_session_queue_lock
 
-## Build
-* kernel: 6.1.78-rc2
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-6.1.y
-* git commit: ea6a03790c420fec42790d8c5db2e81663954186
-* git describe: v6.1.77-66-gea6a03790c42
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.7=
-7-66-gea6a03790c42
+A reasonable fix is to change j1939_socks_lock to an rwlock, since in
+the rare situations where a write lock is required for the linked list
+that j1939_socks_lock is protecting, the code does not attempt to
+acquire any more locks. This would break the circular lock dependency,
+where, for example, the current thread already locks j1939_socks_lock
+and attempts to acquire sk_session_queue_lock, and at the same time,
+another thread attempts to acquire j1939_socks_lock while holding
+sk_session_queue_lock.
 
-## Test Regressions (compared to v6.1.77)
+NOTE: This patch along does not fix the unregister_netdevice bug
+reported by Syzbot; instead, it solves a deadlock situation to prepare
+for one or more further patches to actually fix the Syzbot bug, which
+appears to be a reference counting problem within the j1939 codebase.
 
-## Metric Regressions (compared to v6.1.77)
+Reported-by: <syzbot+1591462f226d9cbf0564@syzkaller.appspotmail.com>
+Signed-off-by: Ziqi Zhao <astrajoan@yahoo.com>
+Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://lore.kernel.org/all/20230721162226.8639-1-astrajoan@yahoo.com
+[mkl: remove unrelated newline change]
+Cc: stable@vger.kernel.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ net/can/j1939/j1939-priv.h |  2 +-
+ net/can/j1939/main.c       |  2 +-
+ net/can/j1939/socket.c     | 24 ++++++++++++------------
+ 3 files changed, 14 insertions(+), 14 deletions(-)
 
-## Test Fixes (compared to v6.1.77)
+diff --git a/net/can/j1939/j1939-priv.h b/net/can/j1939/j1939-priv.h
+index 16af1a7f80f6..74f15592d170 100644
+--- a/net/can/j1939/j1939-priv.h
++++ b/net/can/j1939/j1939-priv.h
+@@ -86,7 +86,7 @@ struct j1939_priv {
+ 	unsigned int tp_max_packet_size;
+ 
+ 	/* lock for j1939_socks list */
+-	spinlock_t j1939_socks_lock;
++	rwlock_t j1939_socks_lock;
+ 	struct list_head j1939_socks;
+ 
+ 	struct kref rx_kref;
+diff --git a/net/can/j1939/main.c b/net/can/j1939/main.c
+index ecff1c947d68..a6fb89fa6278 100644
+--- a/net/can/j1939/main.c
++++ b/net/can/j1939/main.c
+@@ -274,7 +274,7 @@ struct j1939_priv *j1939_netdev_start(struct net_device *ndev)
+ 		return ERR_PTR(-ENOMEM);
+ 
+ 	j1939_tp_init(priv);
+-	spin_lock_init(&priv->j1939_socks_lock);
++	rwlock_init(&priv->j1939_socks_lock);
+ 	INIT_LIST_HEAD(&priv->j1939_socks);
+ 
+ 	mutex_lock(&j1939_netdev_lock);
+diff --git a/net/can/j1939/socket.c b/net/can/j1939/socket.c
+index 14c431663233..94cfc2315e54 100644
+--- a/net/can/j1939/socket.c
++++ b/net/can/j1939/socket.c
+@@ -80,16 +80,16 @@ static void j1939_jsk_add(struct j1939_priv *priv, struct j1939_sock *jsk)
+ 	jsk->state |= J1939_SOCK_BOUND;
+ 	j1939_priv_get(priv);
+ 
+-	spin_lock_bh(&priv->j1939_socks_lock);
++	write_lock_bh(&priv->j1939_socks_lock);
+ 	list_add_tail(&jsk->list, &priv->j1939_socks);
+-	spin_unlock_bh(&priv->j1939_socks_lock);
++	write_unlock_bh(&priv->j1939_socks_lock);
+ }
+ 
+ static void j1939_jsk_del(struct j1939_priv *priv, struct j1939_sock *jsk)
+ {
+-	spin_lock_bh(&priv->j1939_socks_lock);
++	write_lock_bh(&priv->j1939_socks_lock);
+ 	list_del_init(&jsk->list);
+-	spin_unlock_bh(&priv->j1939_socks_lock);
++	write_unlock_bh(&priv->j1939_socks_lock);
+ 
+ 	j1939_priv_put(priv);
+ 	jsk->state &= ~J1939_SOCK_BOUND;
+@@ -329,13 +329,13 @@ bool j1939_sk_recv_match(struct j1939_priv *priv, struct j1939_sk_buff_cb *skcb)
+ 	struct j1939_sock *jsk;
+ 	bool match = false;
+ 
+-	spin_lock_bh(&priv->j1939_socks_lock);
++	read_lock_bh(&priv->j1939_socks_lock);
+ 	list_for_each_entry(jsk, &priv->j1939_socks, list) {
+ 		match = j1939_sk_recv_match_one(jsk, skcb);
+ 		if (match)
+ 			break;
+ 	}
+-	spin_unlock_bh(&priv->j1939_socks_lock);
++	read_unlock_bh(&priv->j1939_socks_lock);
+ 
+ 	return match;
+ }
+@@ -344,11 +344,11 @@ void j1939_sk_recv(struct j1939_priv *priv, struct sk_buff *skb)
+ {
+ 	struct j1939_sock *jsk;
+ 
+-	spin_lock_bh(&priv->j1939_socks_lock);
++	read_lock_bh(&priv->j1939_socks_lock);
+ 	list_for_each_entry(jsk, &priv->j1939_socks, list) {
+ 		j1939_sk_recv_one(jsk, skb);
+ 	}
+-	spin_unlock_bh(&priv->j1939_socks_lock);
++	read_unlock_bh(&priv->j1939_socks_lock);
+ }
+ 
+ static void j1939_sk_sock_destruct(struct sock *sk)
+@@ -1080,12 +1080,12 @@ void j1939_sk_errqueue(struct j1939_session *session,
+ 	}
+ 
+ 	/* spread RX notifications to all sockets subscribed to this session */
+-	spin_lock_bh(&priv->j1939_socks_lock);
++	read_lock_bh(&priv->j1939_socks_lock);
+ 	list_for_each_entry(jsk, &priv->j1939_socks, list) {
+ 		if (j1939_sk_recv_match_one(jsk, &session->skcb))
+ 			__j1939_sk_errqueue(session, &jsk->sk, type);
+ 	}
+-	spin_unlock_bh(&priv->j1939_socks_lock);
++	read_unlock_bh(&priv->j1939_socks_lock);
+ };
+ 
+ void j1939_sk_send_loop_abort(struct sock *sk, int err)
+@@ -1273,7 +1273,7 @@ void j1939_sk_netdev_event_netdown(struct j1939_priv *priv)
+ 	struct j1939_sock *jsk;
+ 	int error_code = ENETDOWN;
+ 
+-	spin_lock_bh(&priv->j1939_socks_lock);
++	read_lock_bh(&priv->j1939_socks_lock);
+ 	list_for_each_entry(jsk, &priv->j1939_socks, list) {
+ 		jsk->sk.sk_err = error_code;
+ 		if (!sock_flag(&jsk->sk, SOCK_DEAD))
+@@ -1281,7 +1281,7 @@ void j1939_sk_netdev_event_netdown(struct j1939_priv *priv)
+ 
+ 		j1939_sk_queue_drop_all(priv, jsk, error_code);
+ 	}
+-	spin_unlock_bh(&priv->j1939_socks_lock);
++	read_unlock_bh(&priv->j1939_socks_lock);
+ }
+ 
+ static int j1939_sk_no_ioctlcmd(struct socket *sock, unsigned int cmd,
 
-## Metric Fixes (compared to v6.1.77)
+base-commit: 858b31133dbec88465bcc0a006f4dc43173662b8
+-- 
+2.43.0
 
-## Test result summary
-total: 138874, pass: 117646, fail: 2876, skip: 18182, xfail: 170
 
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 151 total, 151 passed, 0 failed
-* arm64: 52 total, 52 passed, 0 failed
-* i386: 39 total, 39 passed, 0 failed
-* mips: 26 total, 26 passed, 0 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 36 total, 34 passed, 2 failed
-* riscv: 11 total, 11 passed, 0 failed
-* s390: 16 total, 16 passed, 0 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 8 total, 8 passed, 0 failed
-* x86_64: 46 total, 45 passed, 1 failed
-
-## Test suites summary
-* boot
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-kvm
-* kselftest-lib
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-memory-hotplug
-* kselftest-mincore
-* kselftest-mount
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-splice
-* kselftest-static_keys
-* kselftest-sync
-* kselftest-sysctl
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-vm
-* kselftest-watchdog
-* kselftest-x86
-* kselftest-zram
-* kunit
-* kvm-unit-tests
-* libgpiod
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* network-basic-tests
-* perf
-* rcutorture
-* v4l2-compliance
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
