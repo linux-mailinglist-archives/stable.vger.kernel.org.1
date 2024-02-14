@@ -1,83 +1,135 @@
-Return-Path: <stable+bounces-20217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 360CF855471
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 21:58:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90C848554FB
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 22:38:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 684F11C21354
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 20:58:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4448D282D77
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 21:38:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 716A413DBBC;
-	Wed, 14 Feb 2024 20:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9641913EFF5;
+	Wed, 14 Feb 2024 21:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="aSGvgHdB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u/X0U+Jq"
 X-Original-To: stable@vger.kernel.org
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C39B013DB88
-	for <stable@vger.kernel.org>; Wed, 14 Feb 2024 20:58:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 505941B7E2;
+	Wed, 14 Feb 2024 21:38:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707944310; cv=none; b=K9QHuqJQbO3P1nitRpFTcDADVAr4aZBudCDocVltgOAE4sD2Ps7HutR0Plh7tUAJMbu6BWLgVMRXXBI+HfwQvnJsSp7CPjZ6W0KpN2kgEL7bA2ZgmXfxTfhVKdwxdtiHod6zHRDIu23rPREPbCbsT62nrPjErvX9odK754SfyZo=
+	t=1707946689; cv=none; b=TmLDGa0drVyEz6b3uJujsptBI0Y1HF25omJLsl2R/082M055fEnSDB4b/4gzth0/2KIcWUhnPTNM85PSwAux+bNDqKlE4YRDJ91eVl2hmHteu970Hj3GtBVc+ZCXgr98yviRD+a6rtOVwRfCjhbjpE8/LTA7vy8fWiN8NbPZp/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707944310; c=relaxed/simple;
-	bh=XQj8poqrg4+CfO5snNegLfdzlb6jX7sbVrbQUXh9Bv0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lGY1tS2oItNKUj0cXWu6rhJnSzdg/LAKCpb9dwlIIR6GNwqHK4fn/SXGGB9azb5IUDM8/Fc6wfXHewSkPZULb1Tu2p2XjYQ3xWDY7xsUdDmA0S7H2sHu39mL6jgcQgy1AceSe0hS2q1sxVSeUhOWP0nt44vZyLB65nvYML8eEnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=aSGvgHdB; arc=none smtp.client-ip=91.218.175.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Wed, 14 Feb 2024 12:58:21 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1707944306;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VZ7qxsgvekArPpn3g43oSJoyx4+B3LXb9434aIWbmSc=;
-	b=aSGvgHdBczCTABLRPiix5khxX8WLiPNatU8bn9sZZLpBSXxJna9ftCOa2ZGZy1BKnWG2ep
-	5NJY6K4lNBc+PfA1DLtYBm0Zh7J7mrtEGONm1UEYEoiWLvhQATu2r/85aA441cfA5z6+UH
-	MPabeqy+u1MzQYXgzxCRFaF8s5EgzL4=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Oliver Upton <oliver.upton@linux.dev>
-To: Easwar Hariharan <eahariha@linux.microsoft.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Marc Zyngier <maz@kernel.org>, Rob Herring <robh@kernel.org>,
-	Andre Przywara <andre.przywara@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	"moderated list:ARM64 PORT (AARCH64 ARCHITECTURE)" <linux-arm-kernel@lists.infradead.org>,
-	"open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v2] arm64: Subscribe Microsoft Azure Cobalt 100 to ARM
- Neoverse N2 errata
-Message-ID: <Zc0pbaa0mnQta-mw@linux.dev>
-References: <20240214175522.2457857-1-eahariha@linux.microsoft.com>
+	s=arc-20240116; t=1707946689; c=relaxed/simple;
+	bh=UUPKAcrXV3sriobv5a2MejWKkdWDLFLi5VZHMfDG010=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CW7VkYQAMMsuSEEWaTtSf3sf9KWxj77qKLZqO0iquOYS9A/X5s3DZJNUYpOY/i5N0MAH+vRLVBYGbj5gUEe9hEzyYUjjCxK16aHi4lczqzq9cr3IVlAceC0AqKp28Gbsb5+P8FdznoXE4tc7vxy5xPn9ZSzxF19RuJF2oqmz1Lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u/X0U+Jq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBA19C43394;
+	Wed, 14 Feb 2024 21:38:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707946689;
+	bh=UUPKAcrXV3sriobv5a2MejWKkdWDLFLi5VZHMfDG010=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=u/X0U+JqFqRNrle6IPy7xdizrvaz3w5fRFbyoqrUiaiJlrKgKcKMx7PgqLeGr4Xr+
+	 A8OahwP6epdjZgFXgJp9etsF42qn1YNLAzEoNquyTvQn04s/HuDPNSYQ75mJRqil6o
+	 iFL30I83YlRm0BkOeGXyvIibjhmqIslDKIWkxSHp5Cu0b3JYXKC+ftnguU4BSRaUv7
+	 vFLHEezVEDfSF+h86rJ59/eAuA8uSDyGG0zx/HHWae92vnPYBhJhLqwUdLmX3cytIg
+	 M/vF+UxTGRRg8l3p8Jb/Hn19d4ty/6QmtpKryPL64pkOay57Tokhs1bVZtSbVq93BL
+	 D/wuRiM9XEZaQ==
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-511a45f6a57so215515e87.2;
+        Wed, 14 Feb 2024 13:38:08 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUywtNjOwHk3lE9Sx593u7f7KSmhkFa6ja5XqUp4Upd0vzNJsJP7CfC4bmZqwbDmPvnlZk68mRXSbMUPJfp3ZBI8lvWXNH8LZIITcA476a8q/V8HPtQMPlQt/FG+j5DuZxD2RjKdK1l6FfK2uoeinlg/ID/7HAyM+bK
+X-Gm-Message-State: AOJu0YxxEs21+5faBkLf6CmU+8OYdGuzjL2cvwUZKBVI5lrNDRACgNg5
+	Yaf/qL7zE3aoV0hr+Bq07NdVqS4giz0AN/R9sYfhTJ9fCQJ2lcFXI7vcBQEhBgFEfxSaG4kZRMt
+	0fvroHu7BB7mwuBZ7SdouDP48dCY=
+X-Google-Smtp-Source: AGHT+IGaYKxN9IyHvOKM2lTDAnhg9bpSWHXdMQSUzrkADaDd9GpHqhCli3rtc+UYqlFqe/KCZCHWjCJQjugyya5+E0A=
+X-Received: by 2002:a05:6512:781:b0:511:a690:45dd with SMTP id
+ x1-20020a056512078100b00511a69045ddmr31552lfr.16.1707946687494; Wed, 14 Feb
+ 2024 13:38:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240214175522.2457857-1-eahariha@linux.microsoft.com>
-X-Migadu-Flow: FLOW_OUT
+References: <20240212-fix-elf-type-btf-vmlinux-bin-o-big-endian-v2-1-22c0a6352069@kernel.org>
+In-Reply-To: <20240212-fix-elf-type-btf-vmlinux-bin-o-big-endian-v2-1-22c0a6352069@kernel.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Thu, 15 Feb 2024 06:37:31 +0900
+X-Gmail-Original-Message-ID: <CAK7LNATZAh9fa8rd6jLwdEGUBHkAs9e4hZh=WvKeNLkGs2=8Aw@mail.gmail.com>
+Message-ID: <CAK7LNATZAh9fa8rd6jLwdEGUBHkAs9e4hZh=WvKeNLkGs2=8Aw@mail.gmail.com>
+Subject: Re: [PATCH v2] kbuild: Fix changing ELF file type for output of
+ gen_btf for big endian
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: nicolas@fjasle.eu, ndesaulniers@google.com, morbo@google.com, 
+	justinstitt@google.com, keescook@chromium.org, maskray@google.com, 
+	linux-kbuild@vger.kernel.org, bpf@vger.kernel.org, llvm@lists.linux.dev, 
+	patches@lists.linux.dev, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 14, 2024 at 05:55:18PM +0000, Easwar Hariharan wrote:
-> Add the MIDR value of Microsoft Azure Cobalt 100, which is a Microsoft
-> implemented CPU based on r0p0 of the ARM Neoverse N2 CPU, and therefore
-> suffers from all the same errata.
-> 
-> CC: stable@vger.kernel.org # 5.15+
-> Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+On Tue, Feb 13, 2024 at 11:06=E2=80=AFAM Nathan Chancellor <nathan@kernel.o=
+rg> wrote:
+>
+> Commit 90ceddcb4950 ("bpf: Support llvm-objcopy for vmlinux BTF")
+> changed the ELF type of .btf.vmlinux.bin.o to ET_REL via dd, which works
+> fine for little endian platforms:
+>
+>    00000000  7f 45 4c 46 02 01 01 00  00 00 00 00 00 00 00 00  |.ELF.....=
+.......|
+>   -00000010  03 00 b7 00 01 00 00 00  00 00 00 80 00 80 ff ff  |.........=
+.......|
+>   +00000010  01 00 b7 00 01 00 00 00  00 00 00 80 00 80 ff ff  |.........=
+.......|
+>
+> However, for big endian platforms, it changes the wrong byte, resulting
+> in an invalid ELF file type, which ld.lld rejects:
+>
+>    00000000  7f 45 4c 46 02 02 01 00  00 00 00 00 00 00 00 00  |.ELF.....=
+.......|
+>   -00000010  00 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |.........=
+.......|
+>   +00000010  01 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |.........=
+.......|
+>
+>   Type:                              <unknown>: 103
+>
+>   ld.lld: error: .btf.vmlinux.bin.o: unknown file type
+>
+> Fix this by updating the entire 16-bit e_type field rather than just a
+> single byte, so that everything works correctly for all platforms and
+> linkers.
+>
+>    00000000  7f 45 4c 46 02 02 01 00  00 00 00 00 00 00 00 00  |.ELF.....=
+.......|
+>   -00000010  00 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |.........=
+.......|
+>   +00000010  00 01 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |.........=
+.......|
+>
+>   Type:                              REL (Relocatable file)
+>
+> While in the area, update the comment to mention that binutils 2.35+
+> matches LLD's behavior of rejecting an ET_EXEC input, which occurred
+> after the comment was added.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 90ceddcb4950 ("bpf: Support llvm-objcopy for vmlinux BTF")
+> Link: https://github.com/llvm/llvm-project/pull/75643
+> Suggested-by: Masahiro Yamada <masahiroy@kernel.org>
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> ---
 
-Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
+Applied to linux-kbuild/fixes.
+Thanks.
 
--- 
-Thanks,
-Oliver
+
+--=20
+Best Regards
+Masahiro Yamada
 
