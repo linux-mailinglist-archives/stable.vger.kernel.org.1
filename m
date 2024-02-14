@@ -1,90 +1,161 @@
-Return-Path: <stable+bounces-20204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE0308550F1
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 18:57:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BA6B8551E7
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 19:16:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AD4528F10C
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 17:57:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DC191C29BD5
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 18:16:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92C5B1272CD;
-	Wed, 14 Feb 2024 17:56:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="cXgGDjnz"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36E781292EB;
+	Wed, 14 Feb 2024 18:15:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 203B91272C1;
-	Wed, 14 Feb 2024 17:56:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4295B126F38;
+	Wed, 14 Feb 2024 18:15:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707933396; cv=none; b=lTO1AD+GB4tgTDwWWdM2wWms4uzbjypcdPVrodS6LCx7Wlzm5VcXnM2bS3aznJ4mTeetflRLt7Qq32Nwlmdg05jwjb7ycEQ6PIeRnr/wZz/LdYvTLAmNJ93GAQ6EeQfVAjiwAsQsZzLlGY9oCaEoKKj3O93oFl++ZMWC/U/hGiU=
+	t=1707934505; cv=none; b=UGdZEhSYUuv1R/xFLQIoFrvhi7ab+xC77pHhY9/4+uhsvCug373JBZTp4KrT2evWucg8dB/ngyWE8MR5V2rJxN5h0eUim9lkN9eX1jOWgeW33fdt7RGlE/NEBGW+0Q+oR4u91nPyCNn1kffTrPVbBFQ8E+UXvyk1vLDFjK2AsGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707933396; c=relaxed/simple;
-	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
-	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=MudqNiApihLg8wTttOErkaJAsZtFOAJ0QzVY4AM3BVZbrGjl8P+gkQbip9u09CNcAJ1Vh6F3tfEkqavvZ83+FE5e6A4QAlMCehW8g2h1NBM3xWJ8xFUixS6j/vr0vwvgkz0c5SdiTP1Ti8bydG+N8oQKSN6yCcr6shUDTsZCC9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=cXgGDjnz; arc=none smtp.client-ip=212.227.17.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1707933391; x=1708538191; i=rwarsow@gmx.de;
-	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
-	h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
-	b=cXgGDjnzoEb5SpEpFcWxrF8sJ9/yPMJf5330cQ9YPN0aKyyqPUTs9f4n3wTebCuc
-	 D4KjmEjlnLglI1cOuVYrM3v0OBdNjdrMu5BDYKoZUr56JY+nbtgpR+Z7rNUUCIIxw
-	 ia4q4nN4XRK7dZ/zA+CungZ6+oIP/aKlqy6a5vDuOntm7jKnVsRrrYI2pkZcFZraN
-	 RgpRZhhXz/AjUjpyD9kdY6UE+ZM20NGG5Oh10KTJcd58jtPuNSFPBkyMrzy0iVFFP
-	 yM8zKMuSPILVbPZDP5EtmES7+F6Qn/QLSyqFi/zmMNOIhZdyUYUKIpwsNLsxh8TFO
-	 uLnvkYv4ee5DBd5eLg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.100.20] ([46.142.32.74]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MLzFx-1rIvCY2GbR-00Hto9; Wed, 14
- Feb 2024 18:56:31 +0100
-Message-ID: <06410db1-8e61-426b-b204-fd2bc6b8a1ec@gmx.de>
-Date: Wed, 14 Feb 2024 18:56:31 +0100
+	s=arc-20240116; t=1707934505; c=relaxed/simple;
+	bh=RjqtADI9MyVFi2kOV6/vS40eHkYIpFO3ZcnSOROaE1Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=c0w+HL9RogYz0OazKVt7MJoqPrw/6Q3EsO0CRqdZG5sXL7uINOoGezMKtBcszAsqDEBgYrNE2NSHbKHzMuxgZcFmYayjtSmI0wLXFYgrMrJOcS9xLBWkYCjHFytyu0k95VzTiu3pHvFk3LO+c0xXJ4LDH3+ayIrmoAUmZwfnckk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 28EE21FB;
+	Wed, 14 Feb 2024 10:15:43 -0800 (PST)
+Received: from FVFF77S0Q05N (unknown [10.57.64.145])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ED1813F7B4;
+	Wed, 14 Feb 2024 10:14:59 -0800 (PST)
+Date: Wed, 14 Feb 2024 18:14:51 +0000
+From: Mark Rutland <mark.rutland@arm.com>
+To: Easwar Hariharan <eahariha@linux.microsoft.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Marc Zyngier <maz@kernel.org>, Rob Herring <robh@kernel.org>,
+	Andre Przywara <andre.przywara@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	"moderated list:ARM64 PORT (AARCH64 ARCHITECTURE)" <linux-arm-kernel@lists.infradead.org>,
+	"open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH v2] arm64: Subscribe Microsoft Azure Cobalt 100 to ARM
+ Neoverse N2 errata
+Message-ID: <Zc0DEmbhgPMessV0@FVFF77S0Q05N>
+References: <20240214175522.2457857-1-eahariha@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Ronald Warsow <rwarsow@gmx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Content-Language: de-DE, en-US
-Subject: Re: [PATCH 6.7 000/127] 6.7.5-rc2 review
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:qaZ/0nh/k1WhowqGYe/anG+vLQAhVKj+0i4vPCvQlchzmlkIRcW
- S1EwtF00Wgl/f5c2EeKoXMkT1QxTnoLwHfJyNj0GvUEeFjKvCPPNvGQZGeHuJM27pA4gMYp
- lt3MayhBjm+aE2HURcWiBsF02jc4lhdcu9Z9i+5t/v9YA0FPy3rDb44WoZ9NOrPutRsTGBK
- XEeEZ2kOYA2miABl30JxA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:ZNAMGBlmx3I=;ph1Rc/1kF/RcPK5c+Qs4yl8dt5e
- /TfotRLSR3p1MRhamnwDaMRxnkoxUjjgPiTkT5Oo1E4/nNtausSfF2haT4qXlB4PW3lJtfLJl
- SNr5u56MIHfZm5ZS/WXGqf3Enk5mqTPdH1x+x2eeHH4knJ0Uicj3XbBSGoSPHxWzFtsqs164U
- HqPBp9/xzbSr7n6rcdwlTGHXIOsW1aoEwtiharUO09gv4OPbs9wKvgZgUHtwHRt2z3kvE8Wad
- O3sp4EDdJd0p/hE62rDEZHIr/AkiCic64B1tGkVu4XpMBO3gxnqb2CL2vaTaC6FuHQgalUKdp
- tNvs+iJ6e3Oi0vHfZ/zzpN0tXKaVqBBHGF2ebvrkcRzFvoJmgJTXlVX0hqafiBAjyuZzb0GiX
- kak83jG5EYpNEcKIGbzhgsskpnEV+B+La0aY1yUBAhm06ek6yea2MuN+AMXJm3jXbEKnh9aZo
- IIEnKbAB+cz3DCMzzHI7vk8evXO4UDYrs9z341OmgnoWSaAF5JOzfbpTEUYQ81eNMRjfnnpVp
- HzN+uOucIgalL5o//yjFBE7lQH2bHpwYuccTI6iPGR4MLspvd7xdfrBK8OpL6SqJNfBIs+qxi
- dswEcZguo3aiPiIncxwtQ1y0lO6/YIY3Yvlpqtsq7B6mu7fuWF+Wh5OhMB3HMqk4C4ues39Od
- ebjIczmrS6Eqpht76u0mVs0+JOwF5X1ynYuDC0chymGx4jCeuP4WEryqKmLAhe87VoaYvo1tE
- lwQIsyleEqyFOg2ms9vl6nsFxop8VjjTg/Tf/aZmRpvMI1nV+JDUhUJGO2Mjc4meJAyAJ6tFb
- e5jJdbJPoyrqUDMY00GSPSj92nl2aPw8iwF3rglg5PNAY=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240214175522.2457857-1-eahariha@linux.microsoft.com>
 
-Hi Greg
+On Wed, Feb 14, 2024 at 05:55:18PM +0000, Easwar Hariharan wrote:
+> Add the MIDR value of Microsoft Azure Cobalt 100, which is a Microsoft
+> implemented CPU based on r0p0 of the ARM Neoverse N2 CPU, and therefore
+> suffers from all the same errata.
+> 
+> CC: stable@vger.kernel.org # 5.15+
+> Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
 
-no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
+Acked-by: Mark Rutland <mark.rutland@arm.com>
 
-Thanks
+I assume that Catalin/Will will take this through the arm64 tree.
 
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+Mark.
 
+> ---
+> changelog:
+> v1->v2:
+> * v1: https://lore.kernel.org/linux-arm-kernel/20240212232909.2276378-1-eahariha@linux.microsoft.com/T/#u
+> * Consistently use MICROSOFT throughout
+> ---
+>  Documentation/arch/arm64/silicon-errata.rst | 7 +++++++
+>  arch/arm64/include/asm/cputype.h            | 4 ++++
+>  arch/arm64/kernel/cpu_errata.c              | 3 +++
+>  3 files changed, 14 insertions(+)
+> 
+> diff --git a/Documentation/arch/arm64/silicon-errata.rst b/Documentation/arch/arm64/silicon-errata.rst
+> index e8c2ce1f9df6..45a7f4932fe0 100644
+> --- a/Documentation/arch/arm64/silicon-errata.rst
+> +++ b/Documentation/arch/arm64/silicon-errata.rst
+> @@ -243,3 +243,10 @@ stable kernels.
+>  +----------------+-----------------+-----------------+-----------------------------+
+>  | ASR            | ASR8601         | #8601001        | N/A                         |
+>  +----------------+-----------------+-----------------+-----------------------------+
+> ++----------------+-----------------+-----------------+-----------------------------+
+> +| Microsoft      | Azure Cobalt 100| #2139208        | ARM64_ERRATUM_2139208       |
+> ++----------------+-----------------+-----------------+-----------------------------+
+> +| Microsoft      | Azure Cobalt 100| #2067961        | ARM64_ERRATUM_2067961       |
+> ++----------------+-----------------+-----------------+-----------------------------+
+> +| Microsoft      | Azure Cobalt 100| #2253138        | ARM64_ERRATUM_2253138       |
+> ++----------------+-----------------+-----------------+-----------------------------+
+> diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
+> index 7c7493cb571f..52f076afeb96 100644
+> --- a/arch/arm64/include/asm/cputype.h
+> +++ b/arch/arm64/include/asm/cputype.h
+> @@ -61,6 +61,7 @@
+>  #define ARM_CPU_IMP_HISI		0x48
+>  #define ARM_CPU_IMP_APPLE		0x61
+>  #define ARM_CPU_IMP_AMPERE		0xC0
+> +#define ARM_CPU_IMP_MICROSOFT		0x6D
+>  
+>  #define ARM_CPU_PART_AEM_V8		0xD0F
+>  #define ARM_CPU_PART_FOUNDATION		0xD00
+> @@ -135,6 +136,8 @@
+>  
+>  #define AMPERE_CPU_PART_AMPERE1		0xAC3
+>  
+> +#define MICROSOFT_CPU_PART_AZURE_COBALT_100	0xD49 /* Based on r0p0 of ARM Neoverse N2 */
+> +
+>  #define MIDR_CORTEX_A53 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A53)
+>  #define MIDR_CORTEX_A57 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A57)
+>  #define MIDR_CORTEX_A72 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A72)
+> @@ -193,6 +196,7 @@
+>  #define MIDR_APPLE_M2_BLIZZARD_MAX MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M2_BLIZZARD_MAX)
+>  #define MIDR_APPLE_M2_AVALANCHE_MAX MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M2_AVALANCHE_MAX)
+>  #define MIDR_AMPERE1 MIDR_CPU_MODEL(ARM_CPU_IMP_AMPERE, AMPERE_CPU_PART_AMPERE1)
+> +#define MIDR_MICROSOFT_AZURE_COBALT_100 MIDR_CPU_MODEL(ARM_CPU_IMP_MICROSOFT, MICROSOFT_CPU_PART_AZURE_COBALT_100)
+>  
+>  /* Fujitsu Erratum 010001 affects A64FX 1.0 and 1.1, (v0r0 and v1r0) */
+>  #define MIDR_FUJITSU_ERRATUM_010001		MIDR_FUJITSU_A64FX
+> diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
+> index 967c7c7a4e7d..76b8dd37092a 100644
+> --- a/arch/arm64/kernel/cpu_errata.c
+> +++ b/arch/arm64/kernel/cpu_errata.c
+> @@ -374,6 +374,7 @@ static const struct midr_range erratum_1463225[] = {
+>  static const struct midr_range trbe_overwrite_fill_mode_cpus[] = {
+>  #ifdef CONFIG_ARM64_ERRATUM_2139208
+>  	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
+> +	MIDR_ALL_VERSIONS(MIDR_MICROSOFT_AZURE_COBALT_100),
+>  #endif
+>  #ifdef CONFIG_ARM64_ERRATUM_2119858
+>  	MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
+> @@ -387,6 +388,7 @@ static const struct midr_range trbe_overwrite_fill_mode_cpus[] = {
+>  static const struct midr_range tsb_flush_fail_cpus[] = {
+>  #ifdef CONFIG_ARM64_ERRATUM_2067961
+>  	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
+> +	MIDR_ALL_VERSIONS(MIDR_MICROSOFT_AZURE_COBALT_100),
+>  #endif
+>  #ifdef CONFIG_ARM64_ERRATUM_2054223
+>  	MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
+> @@ -399,6 +401,7 @@ static const struct midr_range tsb_flush_fail_cpus[] = {
+>  static struct midr_range trbe_write_out_of_range_cpus[] = {
+>  #ifdef CONFIG_ARM64_ERRATUM_2253138
+>  	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
+> +	MIDR_ALL_VERSIONS(MIDR_MICROSOFT_AZURE_COBALT_100),
+>  #endif
+>  #ifdef CONFIG_ARM64_ERRATUM_2224489
+>  	MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
+> -- 
+> 2.34.1
+> 
 
