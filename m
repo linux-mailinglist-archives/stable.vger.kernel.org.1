@@ -1,159 +1,159 @@
-Return-Path: <stable+bounces-20135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 933CB85418C
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 03:29:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD90385424E
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 06:22:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B557E28FCE9
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 02:29:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C29F4B23776
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 05:22:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C3E48BFA;
-	Wed, 14 Feb 2024 02:29:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB81DC14F;
+	Wed, 14 Feb 2024 05:22:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="k+y8Hwll"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="OB2tvQZv"
 X-Original-To: stable@vger.kernel.org
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2067.outbound.protection.outlook.com [40.107.223.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED8D16138
-	for <stable@vger.kernel.org>; Wed, 14 Feb 2024 02:29:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.186
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707877755; cv=none; b=UlT3/YvX11kp+8G++Qw5Xb2Bb7uPuLe2S5wy5PFJh+iPOqK3h1esbBdCiqdeT5WheEF3JpWbbiJDLM3Lt03uk8u/LT1h9gjC7bq/OJWW/szv4ONieDStB/ZUiLi8RkznQ5fzu68cOzbpc1eYWkCqA8q9sX/+yvuvpVCWC1GDwK0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707877755; c=relaxed/simple;
-	bh=qnMXIzAsvwbg9RdPvS3yVDUsbE7YmK9K5gnzIv7DBfA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=krvV2dYtSC4/u+ZmxV6Du9/jGWQ6y5AemwXPj0qQXDJucNP6JqnZN2He5Hl1luWoQuZgCqhUI41tQcvKaNrVsV1Cy0J5f6YV/qp3nQPq10vYPPTb5BEPDhtL55kiHoe90osmQS1kYzAVGyxmf5QAWzVGhELEVlrB1NY0B1c2heQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=k+y8Hwll; arc=none smtp.client-ip=95.215.58.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Tue, 13 Feb 2024 21:28:37 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1707877750;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Rh748CJKLC8xvLfwlnns4OR7wyB9t3Vax7RM1Ml7NJM=;
-	b=k+y8HwllTEJkXP1GNY0NZLbw388OpCwxLx7tXyNC7iE5VZmjzj1ISGEwkoehdqMz3OoPA9
-	jTAgAeuEymJPjQZ6ebnnRCkk6FEdfJo2YQ+LN7P8QuEdQ2n+E5y+zKV1vFWzlq42RMO5As
-	tjTHAIcg3kJ657Lhyb9cZ8V5BCW63eE=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-bcachefs@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [GIT PULL] bcachefs stable updates for v6.7
-Message-ID: <jhwinzfpw2xjjdwsgqsrtjnzcqdbfoqev3qrm65oaxktua4c7m@mes2iwvk2yep>
-References: <6yl6zvu2pa3mz7irsaax5ivp6kh3dae5kaslvst7yafmg6672g@mskleu2vjfp2>
- <2024021307-reactive-woven-8543@gregkh>
- <2024021300-deck-duffel-5d2b@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC678C147
+	for <stable@vger.kernel.org>; Wed, 14 Feb 2024 05:22:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.67
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1707888153; cv=fail; b=ifc0xg83s8NGC4Mrn1mQVWh0xBg123EGR25Qvzb110EktMNlFNUtVVTpjXSSA5WfV2BZD6pDxq0Xfnq9GbLeDp804lD3/8yQ0+6iUof6kLGvIg9pP5MMQFT2RymbETBektfuwMumhb/0R4sLQ/09JU/iV2VFRwcGPfszrzzgZYw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1707888153; c=relaxed/simple;
+	bh=3s9b+l8cAtrkdFRSRa+uWlun1hhC2asd1F1Qw9AZVB0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=otuqZ8p1syH1DgNQ3Jo9hX/WIXr/zycpQ6ounFV1fJB5g6rgkSABG55kBo4FCA6psYrL3qPRrYwfMBNBHkQf2ZMzbqDg17yiMQkMgNJ+rgTyswleT61h16sIRtFYxeuNfQ2cops9xdyK7ki+/EKekRWSEE1IzTVLSjkNQe/jPYM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=OB2tvQZv; arc=fail smtp.client-ip=40.107.223.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=WIZqMrIreR2bMNKfCjcocrB3RfO50RQr94Ux8aOiBgFW7xZjuBzX/qWJ8hAMHUvb9tkc1OZzXKing0g6ii7hpFD6XOtpO6Nkfbu6v8Qgc4mZ5XIweMQiW6O3x3jVGLOm4bIfclblzx05W//SvObbWSgE6R3L8FaGrWZg5dD42Cci+t2O9+GJaOw586m9polMf2VhIQBZdbmEnO4eIpq3PNQ41Qkp6ULXmFzYkEDXGkDimWjYekRqgtWOSi0ZDBX1nI1GavEMSw973vPwaekLLXPN4LdDwla2Q6pOMy5BpKbB2S4qec4SI92Sbs/IOVTg+fmiP+bOsDOQNS9PORMMIA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qkdu6Myyqg8Cmg4PTCDnX9YhrNcYLp3uOeKpuuacY9c=;
+ b=J62AqdRLKu1m1MxsAarTDssrrarVXUXv0V6ymV17tdUrHxXWuKLbKPZALsTqtINZidQPuT2FvuqN9BRV/Sk/u8x2m0HC9N2/VVHMC7lZQ52xCMBS40cIMMKEWBre3lRv+2bpPVNOyatWT+mtnvzo+0iIoQcfZj5F8c1xufPgHwPzO3tVhbwW2ezzXejqissuLfFzlLLgkEKOkriLofUdmPsZng6mLjBJ7mKKGtrCrqzh+ULOj3S3K6WQNvK8F0pbLHDiauLIyyhsLqDrZhaeoJEK9YuYwLukpHJd3oGBphw/jHol5RGqewesoWC92BWK9DhspejgpxNQmqSul62Dpw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qkdu6Myyqg8Cmg4PTCDnX9YhrNcYLp3uOeKpuuacY9c=;
+ b=OB2tvQZv+Co0DPZSxnjmkmsSxHgVWtxoXniNr44Bj157hBV4WMqM5ZYVPBkGso4EqQ1ySdCvztFONbbe2RdOlsa9j/qZsWGZThhm4o5kSn2a5bYhBzX1kfaB9gdm5AzKIpyLfflSCugHZnKLHa0Kcu8uP46lAIIRxRY+9yXjINQ=
+Received: from DM6PR12CA0003.namprd12.prod.outlook.com (2603:10b6:5:1c0::16)
+ by DS7PR12MB5837.namprd12.prod.outlook.com (2603:10b6:8:78::6) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7292.21; Wed, 14 Feb 2024 05:22:29 +0000
+Received: from CY4PEPF0000EE34.namprd05.prod.outlook.com
+ (2603:10b6:5:1c0:cafe::b2) by DM6PR12CA0003.outlook.office365.com
+ (2603:10b6:5:1c0::16) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7270.39 via Frontend
+ Transport; Wed, 14 Feb 2024 05:22:29 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CY4PEPF0000EE34.mail.protection.outlook.com (10.167.242.40) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7292.25 via Frontend Transport; Wed, 14 Feb 2024 05:22:28 +0000
+Received: from amd-X570-AORUS-ELITE.amd.com (10.180.168.240) by
+ SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 13 Feb 2024 23:22:25 -0600
+From: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+To: <dri-devel@lists.freedesktop.org>, <amd-gfx@lists.freedesktop.org>,
+	<intel-gfx@lists.freedesktop.org>
+CC: <christian.koenig@amd.com>, <alexander.deucher@amd.com>,
+	<matthew.auld@intel.com>, <mario.limonciello@amd.com>, <daniel@ffwll.ch>,
+	Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>,
+	<stable@vger.kernel.org>
+Subject: [PATCH 1/2] drm/buddy: Fix alloc_range() error handling code
+Date: Wed, 14 Feb 2024 10:52:07 +0530
+Message-ID: <20240214052208.3035-1-Arunpravin.PaneerSelvam@amd.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2024021300-deck-duffel-5d2b@gregkh>
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE34:EE_|DS7PR12MB5837:EE_
+X-MS-Office365-Filtering-Correlation-Id: bf322ab0-1c77-4c89-2fff-08dc2d1cf02b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	N1oh+SLwFdgW13Wtg+wIpWTRo2hV+Zj5BHDVflKJXgnoLav5+W2nkxOJ30jAonPieY4qMI8NtGvqXc2VEpmZ0Ko8RuSZEE+hAbfD8qSnDwZGyQ9AwltpqLpt8nem4Hd45NmUe+0ARdlMXNG3FKdgx9ODMCwqBT65d88sH0CFiXeDji99F7OPAl8GNAs/l1AHPDWEGdqwunC3u2xJzISlUZlusTVhp1Ypi4h9FNV28IkbznDjT7PAIg/ub/LQSrPkjDzVZxfAKYejcTU4Du+3tqOcqmam190W82MSqpKWIMatvMaPLgrY7NhKZWmy4XcRfwY4yOMNWwN3SHxDk72rT9Pp8wzYDz53WJ5aG2xKR/SvN1tslaX0eDnjkeb3mp8kp+DgFIv1ikdny9n/6dDpwXBvfdnkiINhteJmEDb3vCiO4OvOAu36VBi93zeJtCF0FAhuFzbsi4TFOiDR80/NcFdWU6NQpn2H6vvol9WKbxF65meFYzSutIelSGamQxgS9rmSCkB+2GLYbQDjFaB8bXrto0VjMWztFaIB8d2PPrILJOBT9SnOj1zgIfF1xmFen5JeRiJ8ZyATUXQYWctAmg==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(396003)(136003)(346002)(376002)(39860400002)(230922051799003)(451199024)(1800799012)(64100799003)(82310400011)(186009)(36840700001)(46966006)(40470700004)(2906002)(966005)(7696005)(36756003)(1076003)(110136005)(6666004)(82740400003)(83380400001)(426003)(54906003)(26005)(336012)(478600001)(316002)(2616005)(41300700001)(70586007)(16526019)(70206006)(8676002)(8936002)(4326008)(86362001)(81166007)(5660300002)(356005);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Feb 2024 05:22:28.9745
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: bf322ab0-1c77-4c89-2fff-08dc2d1cf02b
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000EE34.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5837
 
-On Tue, Feb 13, 2024 at 03:44:25PM +0100, Greg Kroah-Hartman wrote:
-> On Tue, Feb 13, 2024 at 03:38:10PM +0100, Greg Kroah-Hartman wrote:
-> > On Thu, Feb 08, 2024 at 08:14:39PM -0500, Kent Overstreet wrote:
-> > > Hi Greg, few stable updates for you -
-> > > 
-> > > Cheers,
-> > > Kent
-> > > 
-> > > The following changes since commit 0dd3ee31125508cd67f7e7172247f05b7fd1753a:
-> > > 
-> > >   Linux 6.7 (2024-01-07 12:18:38 -0800)
-> > > 
-> > > are available in the Git repository at:
-> > > 
-> > >   https://evilpiepirate.org/git/bcachefs.git tags/bcachefs-for-v6.7-stable-20240208
-> > > 
-> > > for you to fetch changes up to f1582f4774ac7c30c5460a8c7a6e5a82b9ce5a6a:
-> > > 
-> > >   bcachefs: time_stats: Check for last_event == 0 when updating freq stats (2024-02-08 15:33:11 -0500)
-> > 
-> > This didn't work well :(
-> > 
-> > All of the original git commit ids are gone, and for me to look them up
-> > and add them back by hand is a pain.  I'll do it this time, but next
-> > time can you please include them in the commit somewhere (cherry-pick -x
-> > will do it automatically for you)
-> > 
-> > Let's see if I can figure it out...
-> 
-> I got all but 3 applied, can you please send an updated set of 3 patches
-> for the ones I couldn't just cherry-pick from Linus's tree?
+Few users have observed display corruption when they boot
+the machine to KDE Plasma or playing games. We have root
+caused the problem that whenever alloc_range() couldn't
+find the required memory blocks the function was returning
+SUCCESS in some of the corner cases.
 
-New pull request work?
+The right approach would be if the total allocated size
+is less than the required size, the function should
+return -ENOSPC.
 
-The following changes since commit 0dd3ee31125508cd67f7e7172247f05b7fd1753a:
+Cc: <stable@vger.kernel.org> # 6.7+
+Fixes: 0a1844bf0b53 ("drm/buddy: Improve contiguous memory allocation")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3097
+Tested-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20240207174456.341121-1-Arunpravin.PaneerSelvam@amd.com/
+Acked-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Signed-off-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+---
+ drivers/gpu/drm/drm_buddy.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-  Linux 6.7 (2024-01-07 12:18:38 -0800)
+diff --git a/drivers/gpu/drm/drm_buddy.c b/drivers/gpu/drm/drm_buddy.c
+index f57e6d74fb0e..c1a99bf4dffd 100644
+--- a/drivers/gpu/drm/drm_buddy.c
++++ b/drivers/gpu/drm/drm_buddy.c
+@@ -539,6 +539,12 @@ static int __alloc_range(struct drm_buddy *mm,
+ 	} while (1);
+ 
+ 	list_splice_tail(&allocated, blocks);
++
++	if (total_allocated < size) {
++		err = -ENOSPC;
++		goto err_free;
++	}
++
+ 	return 0;
+ 
+ err_undo:
 
-are available in the Git repository at:
+base-commit: 2c80a2b715df75881359d07dbaacff8ad411f40e
+-- 
+2.25.1
 
-  https://evilpiepirate.org/git/bcachefs.git tags/bcachefs-6.7-stable-2024-02-13
-
-for you to fetch changes up to b291ceeb4faa9ee34d1704116fe393d66ff1f221:
-
-  bcachefs: time_stats: Check for last_event == 0 when updating freq stats (2024-02-13 21:22:41 -0500)
-
-----------------------------------------------------------------
-bcachefs fixes for 6.7 stable
-
-----------------------------------------------------------------
-Al Viro (2):
-      new helper: user_path_locked_at()
-      bch2_ioctl_subvolume_destroy(): fix locking
-
-Christoph Hellwig (1):
-      bcachefs: fix incorrect usage of REQ_OP_FLUSH
-
-Daniel Hill (1):
-      bcachefs: rebalance should wakeup on shutdown if disabled
-
-Guoyu Ou (1):
-      bcachefs: unlock parent dir if entry is not found in subvolume deletion
-
-Helge Deller (1):
-      bcachefs: Fix build on parisc by avoiding __multi3()
-
-Kent Overstreet (4):
-      bcachefs: Don't pass memcmp() as a pointer
-      bcachefs: Add missing bch2_moving_ctxt_flush_all()
-      bcachefs: bch2_kthread_io_clock_wait() no longer sleeps until full amount
-      bcachefs: time_stats: Check for last_event == 0 when updating freq stats
-
-Mathias Krause (1):
-      bcachefs: install fd later to avoid race with close
-
-Su Yue (2):
-      bcachefs: kvfree bch_fs::snapshots in bch2_fs_snapshots_exit
-      bcachefs: grab s_umount only if snapshotting
-
- fs/bcachefs/chardev.c           |  3 +--
- fs/bcachefs/clock.c             |  4 ++--
- fs/bcachefs/fs-io.c             |  2 +-
- fs/bcachefs/fs-ioctl.c          | 42 +++++++++++++++++++++--------------------
- fs/bcachefs/journal_io.c        |  3 ++-
- fs/bcachefs/mean_and_variance.h |  2 +-
- fs/bcachefs/move.c              |  2 +-
- fs/bcachefs/move.h              |  1 +
- fs/bcachefs/rebalance.c         | 13 +++++++++++--
- fs/bcachefs/replicas.c          | 10 ++++++++--
- fs/bcachefs/snapshot.c          |  2 +-
- fs/bcachefs/util.c              |  5 +++--
- fs/namei.c                      | 16 +++++++++++++---
- include/linux/namei.h           |  1 +
- 14 files changed, 68 insertions(+), 38 deletions(-)
 
