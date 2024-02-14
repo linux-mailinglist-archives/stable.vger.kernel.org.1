@@ -1,116 +1,145 @@
-Return-Path: <stable+bounces-20193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39216854CA7
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 16:27:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85338854D7E
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 16:58:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BBFD1C2158F
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 15:27:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B81531C21367
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 15:58:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C397B5D480;
-	Wed, 14 Feb 2024 15:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CC245D91A;
+	Wed, 14 Feb 2024 15:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mTzjSrhi"
-X-Original-To: Stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TwF2HKBl"
+X-Original-To: stable@vger.kernel.org
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 849C65D467
-	for <Stable@vger.kernel.org>; Wed, 14 Feb 2024 15:26:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C30D5C906;
+	Wed, 14 Feb 2024 15:58:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707924413; cv=none; b=YcTm0j7QKVUQfcVbtS3PyAoCoMBubTDwT2BFy0iGi11sBrGbF42D9kdToqIP0TeUIEPF51lq5CTK18RSK2rbeet4uwQQk+ckN+Wr6IMxSeHdePVW/qSfZ8XqVcINXjgiD9I5WYP8JbffcjKF4GXcY5N2xGpbqL4H7RSqmzqbrG4=
+	t=1707926308; cv=none; b=fSPmGMA+4zfDclcWz7wZYHsGyG7dbgJFn3rlWr5qcmQZP+giE2OBDebSD2TK9Jx1WUS2j3xtswKgLYFGjkHNAfNYNHrhg4v/1OxE66Bbkl1uCbszD1q0YzAHM/aW4ltBHZLpFIwastQkt7pynwoTLYEGcfbyvY1JqUeqHPyQdt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707924413; c=relaxed/simple;
-	bh=FuJpeeRm/oAFUDIsfDsz8iMYRPJUYAdfX63huvw+guw=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=Wtvbi6eqbLEWaGyv9Vra1Fmfo+7wp3zWEhcFmbmFerJzxohpyLv0oFIP95iDsEXP4OGYHdyN7FTFIERQFG0hpeXIRPsNmTt2YP+5702/VsaoUW+AqBVoIC7MbIGO4zcvi7S4ah3xTQXjdxgfWmRRtZmB7VoHVdBkTWg2YS2uhAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mTzjSrhi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84F77C433C7;
-	Wed, 14 Feb 2024 15:26:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707924413;
-	bh=FuJpeeRm/oAFUDIsfDsz8iMYRPJUYAdfX63huvw+guw=;
-	h=Subject:To:From:Date:From;
-	b=mTzjSrhiO3+d14ME0KNHnOw9u29qudTv4/RqK4/iudGsjxzzmu2Aj/11wjLbF0Vhh
-	 xfeXds2ReSJCsFmv/vi2fZWeKxgCIH7wtYmDxD//LUyS9TJtEqTUnMNwqR1W0YZYaZ
-	 GM2bdHUKpkUmZieAe8LWlbbCxrxh7NbuYuSt1TsM=
-Subject: patch "iio: accel: bma400: Fix a compilation problem" added to char-misc-linus
-To: mario.limonciello@amd.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
-From: <gregkh@linuxfoundation.org>
-Date: Wed, 14 Feb 2024 16:26:12 +0100
-Message-ID: <2024021412-handbrake-jubilant-91ef@gregkh>
+	s=arc-20240116; t=1707926308; c=relaxed/simple;
+	bh=av2l3DT4NNuDgqnCviERNX6CQA5HMtu7XOCwtcpS+1I=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YOxyAwsodSvcTSNXjzQUviT6g/njb8rnSPhOgPoboyrMEt1utffReuRT3nIU7Y01tpKpgEkrZTJGWa0UYR0Tbf2Pf7YyJEmLkM3pmEBFWKh+hMihMsuY85tuQX4jM7Bs2AxK0yL2b5CPf0DvY+lPimPUKC3UUBH9Z6BZS71Yh+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TwF2HKBl; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1707926307; x=1739462307;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=av2l3DT4NNuDgqnCviERNX6CQA5HMtu7XOCwtcpS+1I=;
+  b=TwF2HKBloaJxf28A8QeePFzTwbg/+Ccfhc0li9TEbhDshp2OPiUtVZtc
+   +IEy8McpTKFJiQu+s2T6ox11hVnFmDaEE9fA6PPQZNHwyKrB8bJEVFv8+
+   AM3cxzo29auRmB9ciT7PMPYaCXm9WdaGYEhSiqYilv16tVBhLYhLE4wbc
+   RzPNmXbLiRmepJbF1ZE6xuUffLCP0PIuNmuRxSUvh3nQmQ42clBiG6+di
+   SgdhrReLi2g7nCiyxs/7azEbPBxCd0RVRJitHY1UOODqRQLxeST8Wghsd
+   45eywLqs/+Eh4kPMcmU84c0h02dualbjQPIZFJSbUaAzCWPb9CIS6XnfJ
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10984"; a="19392327"
+X-IronPort-AV: E=Sophos;i="6.06,159,1705392000"; 
+   d="scan'208";a="19392327"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2024 07:58:26 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,159,1705392000"; 
+   d="scan'208";a="34286813"
+Received: from kanliang-dev.jf.intel.com ([10.165.154.102])
+  by fmviesa001.fm.intel.com with ESMTP; 14 Feb 2024 07:58:25 -0800
+From: kan.liang@linux.intel.com
+To: peterz@infradead.org,
+	mingo@kernel.org,
+	acme@kernel.org,
+	namhyung@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org
+Cc: irogers@google.com,
+	mpetlan@redhat.com,
+	eranian@google.com,
+	ak@linux.intel.com,
+	Kan Liang <kan.liang@linux.intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] perf/x86/intel/uncore: Fix the bits of the CHA extended umask for SPR
+Date: Wed, 14 Feb 2024 07:57:40 -0800
+Message-Id: <20240214155740.3256216-1-kan.liang@linux.intel.com>
+X-Mailer: git-send-email 2.35.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
+From: Kan Liang <kan.liang@linux.intel.com>
 
-This is a note to let you know that I've just added the patch titled
+The perf stat errors out with UNC_CHA_TOR_INSERTS.IA_HIT_CXL_ACC_LOCAL
+event.
 
-    iio: accel: bma400: Fix a compilation problem
+ $perf stat -e uncore_cha_55/event=0x35,umask=0x10c0008101/ -a -- ls
+    event syntax error: '..0x35,umask=0x10c0008101/'
+                                      \___ Bad event or PMU
 
-to my char-misc git tree which can be found at
-    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
-in the char-misc-linus branch.
+The definition of the CHA umask is config:8-15,32-55, which is 32bit.
+However, the umask of the event is bigger than 32bit.
+This is an error in the original uncore spec.
 
-The patch will show up in the next release of the linux-next tree
-(usually sometime within the next 24 hours during the week.)
+Add a new umask_ext5 for the new CHA umask range.
 
-The patch will hopefully also be merged in Linus's tree for the
-next -rc kernel release.
-
-If you have any questions about this process, please let me know.
-
-
-From 4cb81840d8f29b66d9d05c6d7f360c9560f7e2f4 Mon Sep 17 00:00:00 2001
-From: Mario Limonciello <mario.limonciello@amd.com>
-Date: Wed, 31 Jan 2024 16:52:46 -0600
-Subject: iio: accel: bma400: Fix a compilation problem
-
-The kernel fails when compiling without `CONFIG_REGMAP_I2C` but with
-`CONFIG_BMA400`.
-```
-ld: drivers/iio/accel/bma400_i2c.o: in function `bma400_i2c_probe':
-bma400_i2c.c:(.text+0x23): undefined reference to `__devm_regmap_init_i2c'
-```
-
-Link: https://download.01.org/0day-ci/archive/20240131/202401311634.FE5CBVwe-lkp@intel.com/config
-Fixes: 465c811f1f20 ("iio: accel: Add driver for the BMA400")
-Fixes: 9bea10642396 ("iio: accel: bma400: add support for bma400 spi")
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20240131225246.14169-1-mario.limonciello@amd.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 949b11381f81 ("perf/x86/intel/uncore: Add Sapphire Rapids server CHA support")
+Closes: https://lore.kernel.org/linux-perf-users/alpine.LRH.2.20.2401300733310.11354@Diego/
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Cc: stable@vger.kernel.org
 ---
- drivers/iio/accel/Kconfig | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/events/intel/uncore_snbep.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
-index 91adcac875a4..c9d7afe489e8 100644
---- a/drivers/iio/accel/Kconfig
-+++ b/drivers/iio/accel/Kconfig
-@@ -219,10 +219,12 @@ config BMA400
+diff --git a/arch/x86/events/intel/uncore_snbep.c b/arch/x86/events/intel/uncore_snbep.c
+index a96496bef678..7924f315269a 100644
+--- a/arch/x86/events/intel/uncore_snbep.c
++++ b/arch/x86/events/intel/uncore_snbep.c
+@@ -461,6 +461,7 @@
+ #define SPR_UBOX_DID				0x3250
  
- config BMA400_I2C
- 	tristate
-+	select REGMAP_I2C
- 	depends on BMA400
+ /* SPR CHA */
++#define SPR_CHA_EVENT_MASK_EXT			0xffffffff
+ #define SPR_CHA_PMON_CTL_TID_EN			(1 << 16)
+ #define SPR_CHA_PMON_EVENT_MASK			(SNBEP_PMON_RAW_EVENT_MASK | \
+ 						 SPR_CHA_PMON_CTL_TID_EN)
+@@ -477,6 +478,7 @@ DEFINE_UNCORE_FORMAT_ATTR(umask_ext, umask, "config:8-15,32-43,45-55");
+ DEFINE_UNCORE_FORMAT_ATTR(umask_ext2, umask, "config:8-15,32-57");
+ DEFINE_UNCORE_FORMAT_ATTR(umask_ext3, umask, "config:8-15,32-39");
+ DEFINE_UNCORE_FORMAT_ATTR(umask_ext4, umask, "config:8-15,32-55");
++DEFINE_UNCORE_FORMAT_ATTR(umask_ext5, umask, "config:8-15,32-63");
+ DEFINE_UNCORE_FORMAT_ATTR(qor, qor, "config:16");
+ DEFINE_UNCORE_FORMAT_ATTR(edge, edge, "config:18");
+ DEFINE_UNCORE_FORMAT_ATTR(tid_en, tid_en, "config:19");
+@@ -5957,7 +5959,7 @@ static struct intel_uncore_ops spr_uncore_chabox_ops = {
  
- config BMA400_SPI
- 	tristate
-+	select REGMAP_SPI
- 	depends on BMA400
- 
- config BMC150_ACCEL
+ static struct attribute *spr_uncore_cha_formats_attr[] = {
+ 	&format_attr_event.attr,
+-	&format_attr_umask_ext4.attr,
++	&format_attr_umask_ext5.attr,
+ 	&format_attr_tid_en2.attr,
+ 	&format_attr_edge.attr,
+ 	&format_attr_inv.attr,
+@@ -5993,7 +5995,7 @@ ATTRIBUTE_GROUPS(uncore_alias);
+ static struct intel_uncore_type spr_uncore_chabox = {
+ 	.name			= "cha",
+ 	.event_mask		= SPR_CHA_PMON_EVENT_MASK,
+-	.event_mask_ext		= SPR_RAW_EVENT_MASK_EXT,
++	.event_mask_ext		= SPR_CHA_EVENT_MASK_EXT,
+ 	.num_shared_regs	= 1,
+ 	.constraints		= skx_uncore_chabox_constraints,
+ 	.ops			= &spr_uncore_chabox_ops,
 -- 
-2.43.1
-
+2.35.1
 
 
