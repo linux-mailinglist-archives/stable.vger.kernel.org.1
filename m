@@ -1,184 +1,259 @@
-Return-Path: <stable+bounces-20146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB1E585436E
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 08:30:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E961854403
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 09:28:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A7011F2361A
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 07:30:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C32FA1C227CE
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 08:28:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B660211701;
-	Wed, 14 Feb 2024 07:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1AB5125AB;
+	Wed, 14 Feb 2024 08:28:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="O3+Q1akR";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="c2qs+NDO";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="N+8IxVxb";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="ne44OUBy"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="BUFntmSk"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8FB0111B0;
-	Wed, 14 Feb 2024 07:30:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2C2D125A2
+	for <stable@vger.kernel.org>; Wed, 14 Feb 2024 08:28:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707895817; cv=none; b=uWy0/dslCQxZp8SMc6EggSj3HiydorroHnM9pi57969kOOuMiqhJZao9uN7SFtnYs/MQDietcBSM4NAmSgytDCZ3eEhSTzoH1twPVJr1KMTDA8Xdg8QG1zypHXQKDUKWxvP2ONtgqt45bgPXQKIMDitJrz3v1GeQUqPW3nkSdtQ=
+	t=1707899333; cv=none; b=HW3LXmmwTIVMnJ7M+JRF8PVKvd75eE7v6TiZZgF/L059fy85yE4axLqFZ0mkXTFsx4RIVB1EdTIZbH6LgSllqnxTvR6dW40OQojB5W8zrRPX8nOgXYmVXLjHoSYqjgKiku+2wv36tgYKgzlGD8x/RtEk4dw8CUmE9VfhwjqM0EY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707895817; c=relaxed/simple;
-	bh=h/HJdVWhBe7KNKmXLFxf+nH5k0PyqXWWQjFTeyZSBUs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JrQ7R3H6Ce2HO2LLgimIidWxBPR6JX0vPpzgmjzNR6lygWfSXAlADwPLefI99u6SHvI60cQkz1vqydw3tNGE93sn4G0iY++81KypAaF9SbQmQ6GPCGj8QpKRhac12K3drdfSsdKknVJ3aBiS4XxN33TUDWwB5rDkk6sixSPVRm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=O3+Q1akR; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=c2qs+NDO; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=N+8IxVxb; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=ne44OUBy; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:98])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id CDA3E21B3E;
-	Wed, 14 Feb 2024 07:30:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1707895813;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MG3lyq/Sv9dHZGxrAhUJL4BKP0D+6YiFnkcapsju9dw=;
-	b=O3+Q1akR+VgZCr2vKONNPS1snikvZA7vs+sX7B16F3IO5e+RVFJ7Xshq/8hSgaT4E8MtSG
-	5Oy7Acw8W7TrMjEmR20hvPsrBIWKoAHZIRKfT36AyccxT5sPRG2CaPs+2IUf2dwuXIqVYq
-	JQvnxERGZQHI4tagrVzpXnCoqYRi/gU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1707895813;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MG3lyq/Sv9dHZGxrAhUJL4BKP0D+6YiFnkcapsju9dw=;
-	b=c2qs+NDOoB/KatkkvfMgokjWvotodewlxMim18VIS3oukUEg27r8tZ1Q74GAafBGqcdUq/
-	2vKmjcV4Umz4Z8CA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1707895812;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MG3lyq/Sv9dHZGxrAhUJL4BKP0D+6YiFnkcapsju9dw=;
-	b=N+8IxVxbjeSfmrichjlDa2mOneaDu0IAtgEI+HzePgrog+Hl43AiXBI0hC3djm/XxQPgWf
-	OBF8E847Jy34ZUtf1I7Rnsiq43Pgc+xhaY5X7edhaj1F90ENEkHMOnTHzurwx3QW8ctM73
-	F8qbjHO0BpOezgoydpMm3dv0t3KoMKE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1707895812;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MG3lyq/Sv9dHZGxrAhUJL4BKP0D+6YiFnkcapsju9dw=;
-	b=ne44OUBykqfeMhwQrEnXj6Z4EGJWUCJqQgZ7XogMwdB3hHR2rExXlxInY9CENj9F/z2V1o
-	Orofxh6BHZgkfaBw==
-Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id BCEA313A1A;
-	Wed, 14 Feb 2024 07:30:12 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap2.dmz-prg2.suse.org with ESMTPSA
-	id 9I/4LQRszGViLgAAn2gu4w
-	(envelope-from <dsterba@suse.cz>); Wed, 14 Feb 2024 07:30:12 +0000
-Date: Wed, 14 Feb 2024 08:29:31 +0100
-From: David Sterba <dsterba@suse.cz>
-To: Qu Wenruo <quwenruo.btrfs@gmx.com>
-Cc: Johannes Thumshirn <Johannes.Thumshirn@wdc.com>,
-	Qu Wenruo <wqu@suse.com>,
-	"linux-btrfs@vger.kernel.org" <linux-btrfs@vger.kernel.org>,
-	HAN Yuwei <hrx@bupt.moe>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] btrfs: reject zoned RW mount if sectorsize is smaller
- than page size
-Message-ID: <20240214072931.GN355@twin.jikos.cz>
-Reply-To: dsterba@suse.cz
-References: <2a19a500ccb297397018dac23d30106977153d62.1707714970.git.wqu@suse.com>
- <11533563-8e88-4b4f-acc3-0846ec3e8d1f@wdc.com>
- <1150c409-f2ed-4e5a-a2b6-9f410fb7aff5@gmx.com>
+	s=arc-20240116; t=1707899333; c=relaxed/simple;
+	bh=z1RzFrnMZf3GiNGXTX2mQFwYpYduJ0m3d8+ydYvytKU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MtMjl8vbOrSzbc6RdDQVYORHXTEV31lpw/sA7nDecv8FhOvkKwtHYUQ5ZI9Lwra0Cg2bwYJkbwCWqnom1kRCyDMZf9j0t9RGMQTdbB2lphShwpBU/SilwU29bquSSB4kLOAx8YuKhpWorlPOWSsxJYeHoSix0ASeo02emR8H29k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=BUFntmSk; arc=none smtp.client-ip=209.85.221.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-4c0215837e2so1100226e0c.1
+        for <stable@vger.kernel.org>; Wed, 14 Feb 2024 00:28:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1707899330; x=1708504130; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wuolcvOTiNcGT/sHrvkvrIkmAZtBKK3PrIqOvcXIMOg=;
+        b=BUFntmSksxDULKGDSwD+vFdwekUlqzcuHIPd9KkEsVJpAywNrUr4XGAjpiXwF4BaWq
+         WW874ldvJb0gSswMsuRhsdSwDe0YLNDRt0kTBrEPXh0AKddVmxvLulwcU+wqubHsmj0C
+         uZl36Y7BKq6sciE/dm7vzPQ3MwL1yke80uhkpS+VhSI8WEyvyX3RotLzDVrQFsLyNyfB
+         R6UMo6p7dTHpPAlHeGvyj2kd6vMRP1ftQGTckith8u6ouqffTrhVgfdn43SRdW73PF6r
+         2rz45k8RXFtAUJRiaFo74wHJlaye+BrSpZdHPGn/c/32R7YdkCH2tmqNnjlmOFKwr8rZ
+         PqwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707899330; x=1708504130;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wuolcvOTiNcGT/sHrvkvrIkmAZtBKK3PrIqOvcXIMOg=;
+        b=e/lBxziwAYbDjtzlBJDbAlJGcMjX64j5KXOdLR4OC7UDXGjVheNpcK9qc3z/bMporo
+         bCLej6WUcwGoQxegbVGDepbEJ3hSNvU6K30rKaBYXntBkzxg6ZaR43o/P5IHxAcs1VjH
+         V3xQXcqceiEsyV1FYrYhPAXykiyMxIwqZyFoRFGHGaMCo7yXYyoh8mvs/oyZ42CHQiiN
+         ZFNZixJwwQjkQLFEIhTuozQdH3WPRUuqHlRWnmtw+v7+qxw4bcLTJ0awlrFTuuCoFPt/
+         /JXcI5+jv4iyl7agGpbyV1+cH/RbhpvXDvS3Rz7TEMb7vZd4Ewtr6a1azC1K4KhiBU/p
+         GQMw==
+X-Gm-Message-State: AOJu0Yz7DnvsaZ1+wuXgDj8mfuZXn8jQhGKuscdvS8ynPajMWJUalSMv
+	DlKEUSvSpO3yx+pIA3YOybkJ4V7T/ZwBKWmkj+Hn/DnaDUyBwsz5KrpFFQD9fPWxYxyfxY9/b+E
+	/9TyXco1rN5U8/u6ZCmG2jURZlT4XIqYPodPP6A==
+X-Google-Smtp-Source: AGHT+IH5gPatoltUuSpmQuogAkITp7Yv65/QnblbYKRWzTEZiP/Cga8EbN3q0wNeVyUMaUSMn5SZXDDhJha4BoXbx+w=
+X-Received: by 2002:a1f:4f04:0:b0:4c0:3000:8b26 with SMTP id
+ d4-20020a1f4f04000000b004c030008b26mr1874842vkb.4.1707899330557; Wed, 14 Feb
+ 2024 00:28:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1150c409-f2ed-4e5a-a2b6-9f410fb7aff5@gmx.com>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=N+8IxVxb;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ne44OUBy
-X-Spamd-Result: default: False [-0.01 / 50.00];
-	 ARC_NA(0.00)[];
-	 HAS_REPLYTO(0.30)[dsterba@suse.cz];
-	 R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	 TO_DN_EQ_ADDR_SOME(0.00)[];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 FREEMAIL_ENVRCPT(0.00)[gmx.com];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 REPLYTO_ADDR_EQ_FROM(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 RCPT_COUNT_FIVE(0.00)[6];
-	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:98:from];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	 DKIM_TRACE(0.00)[suse.cz:+];
-	 MX_GOOD(-0.01)[];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,bupt.moe:email];
-	 FREEMAIL_TO(0.00)[gmx.com];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 RCVD_TLS_ALL(0.00)[];
-	 BAYES_HAM(-0.00)[27.85%]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Score: -0.01
-X-Rspamd-Queue-Id: CDA3E21B3E
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spamd-Bar: /
+References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Wed, 14 Feb 2024 13:58:39 +0530
+Message-ID: <CA+G9fYvdvQzb8dxjeYrvAPMw-qzQ2s=6AO0Z4t1Zgs5pxY+Z=Q@mail.gmail.com>
+Subject: Re: [PATCH 6.6 000/121] 6.6.17-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Feb 12, 2024 at 08:20:21PM +1030, Qu Wenruo wrote:
-> 
-> 
-> On 2024/2/12 20:15, Johannes Thumshirn wrote:
-> > On 12.02.24 06:16, Qu Wenruo wrote:
-> >> Reported-by: HAN Yuwei <hrx@bupt.moe>
-> >> Link: https://lore.kernel.org/all/1ACD2E3643008A17+da260584-2c7f-432a-9e22-9d390aae84cc@bupt.moe/
-> >> CC: stable@vger.kernel.org # 5.10+
-> >> Signed-off-by: Qu Wenruo <wqu@suse.com>
-> >> ---
-> >>    fs/btrfs/disk-io.c | 3 ++-
-> >>    1 file changed, 2 insertions(+), 1 deletion(-)
-> >>
-> >> diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-> >> index c3ab268533ca..85cd23aebdd6 100644
-> >> --- a/fs/btrfs/disk-io.c
-> >> +++ b/fs/btrfs/disk-io.c
-> >> @@ -3193,7 +3193,8 @@ int btrfs_check_features(struct btrfs_fs_info *fs_info, bool is_rw_mount)
-> >>    	 * part of @locked_page.
-> >>    	 * That's also why compression for subpage only work for page aligned ranges.
-> >>    	 */
-> >> -	if (fs_info->sectorsize < PAGE_SIZE && btrfs_is_zoned(fs_info) && is_rw_mount) {
-> >> +	if (fs_info->sectorsize < PAGE_SIZE &&
-> >> +	    btrfs_fs_incompat(fs_info, ZONED) && is_rw_mount) {
-> >>    		btrfs_warn(fs_info,
-> >>    	"no zoned read-write support for page size %lu with sectorsize %u",
-> >>    			   PAGE_SIZE, fs_info->sectorsize);
-> >
-> > Please keep btrfs_is_zoned(fs_info) instead of using
-> > btrfs_fs_incompat(fs_info, ZONED).
-> 
-> At the time of calling, we haven't yet populate fs_info->zone_size, thus
-> we have to use super flags to verify if it's zoned.
-> 
-> If needed, I can add a comment for it.
+On Tue, 13 Feb 2024 at 22:57, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.6.17 release.
+> There are 121 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 15 Feb 2024 17:18:29 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.6.17-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Yes please add a comment the difference is quite subtle.
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
+
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+## Build
+* kernel: 6.6.17-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-6.6.y
+* git commit: bea54b0cb986e2c93aa5d99a24eb2255850384b1
+* git describe: v6.6.16-122-gbea54b0cb986
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.1=
+6-122-gbea54b0cb986
+
+## Test Regressions (compared to v6.6.16)
+
+## Metric Regressions (compared to v6.6.16)
+
+## Test Fixes (compared to v6.6.16)
+
+## Metric Fixes (compared to v6.6.16)
+
+## Test result summary
+total: 149653, pass: 129011, fail: 2047, skip: 18425, xfail: 170
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 147 total, 132 passed, 15 failed
+* arm64: 54 total, 47 passed, 7 failed
+* i386: 43 total, 42 passed, 1 failed
+* mips: 26 total, 25 passed, 1 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 36 total, 33 passed, 3 failed
+* riscv: 18 total, 18 passed, 0 failed
+* s390: 13 total, 12 passed, 1 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 48 total, 46 passed, 2 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-vm
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* network-basic-tests
+* perf
+* rcutorture
+* v4l2-compliance
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
