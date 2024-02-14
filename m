@@ -1,54 +1,100 @@
-Return-Path: <stable+bounces-20142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE9A1854313
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 07:51:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C21D854357
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 08:17:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 732B0B23574
-	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 06:51:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50C791C264A0
+	for <lists+stable@lfdr.de>; Wed, 14 Feb 2024 07:17:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B14D1119B;
-	Wed, 14 Feb 2024 06:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF929111B6;
+	Wed, 14 Feb 2024 07:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="It9aJZ4O"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="i71glT7C";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="x0eJQ9A3";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="i71glT7C";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="x0eJQ9A3"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C99AA10A2C;
-	Wed, 14 Feb 2024 06:51:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86716111B5;
+	Wed, 14 Feb 2024 07:16:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707893465; cv=none; b=X2GV2bFiRutan8FGrip7FaHprvp01ovMy1L1USHug5JEw5XzP4PJ72513z4iAK/xa2knUn5cIZqRw6n0bVv7BNXb5VbDfCSrpUnxz8h0d262p+g6xeR3bvX51xLm/aj7d0I4dAnImxGApdjklgj0ua++bZxmQEHXcdk6V/FBcnM=
+	t=1707895017; cv=none; b=upZAOeuLsZeJ4BgdEGesU7V2UktTmGuXD5+pRhSrnGLFh9xIu8Wi13L9dyO3KVVE4CNUQyHslX0v/3Qo4nwCMMj5655Tv+0+UUDo0XMZF1/gspUdOaHaHuD0l+SdDljwUSRwnUKt1kKkLQGDQ4EHSOrM6EtK4z/HOIHwACA1XUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707893465; c=relaxed/simple;
-	bh=aQ6hoQhEEktF2OuJ2Hoy8uVio86hfNxqjG4grkuZUmM=;
+	s=arc-20240116; t=1707895017; c=relaxed/simple;
+	bh=PRaho9Lsuh8wUCTTzE5bFWBJmTQKUBTjUwE1AhcZ+tI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UM0OEcp8ZYFdTsi69+ucZhGOeTP2ugFpa/qd+whV0lJEL4Czi61/0UqUtW0UPR6fC4VmadDuD3yJ10CEnUnTZZ3yFdqH2B9m2HfE7GKH/nXHqBXV7vMZDpH8vazL9VBS59pd18N12v7dp2LU2DMtqX8+vNSEAwNXXDnSoPQwr9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=It9aJZ4O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB39CC433C7;
-	Wed, 14 Feb 2024 06:51:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707893464;
-	bh=aQ6hoQhEEktF2OuJ2Hoy8uVio86hfNxqjG4grkuZUmM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=It9aJZ4OqNistmpUNs7I0MWAeI45pneN/pklFDF+U543FgxU8x1SkjbUzVI/RpH5t
-	 10dtsdv0t6sEhYlLtn7A5ZMNiY+RPA9/mnawbo0NRxU4aeMQmSy5cqHNiQe38ScYBU
-	 CDxt0EwdAHEoEjaON9uj2QC5w/FqTnncI8ww6Ei8=
-Date: Wed, 14 Feb 2024 07:51:01 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: linux-bcachefs@vger.kernel.org, linux-kernel@vger.kernel.org,
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y00zdWRgrOa4Snh6eRp6vzvCp5TQxNNE06Ob4Fl+UDMwHZxv92T8ARYuHrZqT2OgvsH3MMkWXwJLcF2S9Axulv7eUhrU/otNy5pgMJoWc6w94JftSRgMb0wHrET0frrmzTqzYcqlAYmxKtSkLFLJazM8E43TPrBAJByJT/jvpcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=i71glT7C; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=x0eJQ9A3; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=i71glT7C; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=x0eJQ9A3; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [10.150.64.98])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 7E4B61F7DE;
+	Wed, 14 Feb 2024 07:16:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1707895013;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ScPkoj0V7Gt3bE0h7L3gJL4vW80ApKfAZOdEsqMCBus=;
+	b=i71glT7CMUczkdpx8IuRmxGJRxl+Kc0hzC2xG81AygEkFxiFAZFCnT+U8nlcLsXWDuFY9s
+	H8qdfoVU868V3myObcIPgfbrSLqZ/Ff431lY6xfupxyOu0uTskPC1Fk5W/1ojQx2xE4Anu
+	bQeDyx1xm1wZ0SWO695v0mc5kz229tY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1707895013;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ScPkoj0V7Gt3bE0h7L3gJL4vW80ApKfAZOdEsqMCBus=;
+	b=x0eJQ9A3T4yaev9KO0AGs5npO2KfFnz+lNSR6Rg5lP8EwIAhIJzUvh1qGLkoINiney/QZ+
+	FGDUkfIBda3js+DA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1707895013;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ScPkoj0V7Gt3bE0h7L3gJL4vW80ApKfAZOdEsqMCBus=;
+	b=i71glT7CMUczkdpx8IuRmxGJRxl+Kc0hzC2xG81AygEkFxiFAZFCnT+U8nlcLsXWDuFY9s
+	H8qdfoVU868V3myObcIPgfbrSLqZ/Ff431lY6xfupxyOu0uTskPC1Fk5W/1ojQx2xE4Anu
+	bQeDyx1xm1wZ0SWO695v0mc5kz229tY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1707895013;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ScPkoj0V7Gt3bE0h7L3gJL4vW80ApKfAZOdEsqMCBus=;
+	b=x0eJQ9A3T4yaev9KO0AGs5npO2KfFnz+lNSR6Rg5lP8EwIAhIJzUvh1qGLkoINiney/QZ+
+	FGDUkfIBda3js+DA==
+Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 5A38113A1A;
+	Wed, 14 Feb 2024 07:16:53 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+	by imap2.dmz-prg2.suse.org with ESMTPSA
+	id x5KPFeVozGUKLAAAn2gu4w
+	(envelope-from <dsterba@suse.cz>); Wed, 14 Feb 2024 07:16:53 +0000
+Date: Wed, 14 Feb 2024 08:16:20 +0100
+From: David Sterba <dsterba@suse.cz>
+To: Anand Jain <anand.jain@oracle.com>
+Cc: linux-btrfs@vger.kernel.org, dsterba@suse.com, aromosan@gmail.com,
+	bernd.feige@gmx.net, CHECK_1234543212345@protonmail.com,
 	stable@vger.kernel.org
-Subject: Re: [GIT PULL] bcachefs stable updates for v6.7
-Message-ID: <2024021419-tumbling-rewind-dd83@gregkh>
-References: <6yl6zvu2pa3mz7irsaax5ivp6kh3dae5kaslvst7yafmg6672g@mskleu2vjfp2>
- <2024021307-reactive-woven-8543@gregkh>
- <2024021300-deck-duffel-5d2b@gregkh>
- <jhwinzfpw2xjjdwsgqsrtjnzcqdbfoqev3qrm65oaxktua4c7m@mes2iwvk2yep>
+Subject: Re: [PATCH v2] btrfs: do not skip re-registration for the mounted
+ device
+Message-ID: <20240214071620.GL355@twin.jikos.cz>
+Reply-To: dsterba@suse.cz
+References: <88673c60b1d866c289ef019945647adfc8ab51d0.1707781507.git.anand.jain@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,53 +103,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <jhwinzfpw2xjjdwsgqsrtjnzcqdbfoqev3qrm65oaxktua4c7m@mes2iwvk2yep>
+In-Reply-To: <88673c60b1d866c289ef019945647adfc8ab51d0.1707781507.git.anand.jain@oracle.com>
+User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
+Authentication-Results: smtp-out2.suse.de;
+	none
+X-Spam-Level: 
+X-Spam-Score: -4.00
+X-Spamd-Result: default: False [-4.00 / 50.00];
+	 ARC_NA(0.00)[];
+	 HAS_REPLYTO(0.30)[dsterba@suse.cz];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 FROM_HAS_DN(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.net,protonmail.com];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 MIME_GOOD(-0.10)[text/plain];
+	 REPLYTO_ADDR_EQ_FROM(0.00)[];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	 NEURAL_HAM_SHORT(-0.20)[-1.000];
+	 RCPT_COUNT_SEVEN(0.00)[7];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 FREEMAIL_CC(0.00)[vger.kernel.org,suse.com,gmail.com,gmx.net,protonmail.com];
+	 RCVD_TLS_ALL(0.00)[];
+	 BAYES_HAM(-3.00)[100.00%]
+X-Spam-Flag: NO
 
-On Tue, Feb 13, 2024 at 09:28:37PM -0500, Kent Overstreet wrote:
-> On Tue, Feb 13, 2024 at 03:44:25PM +0100, Greg Kroah-Hartman wrote:
-> > On Tue, Feb 13, 2024 at 03:38:10PM +0100, Greg Kroah-Hartman wrote:
-> > > On Thu, Feb 08, 2024 at 08:14:39PM -0500, Kent Overstreet wrote:
-> > > > Hi Greg, few stable updates for you -
-> > > > 
-> > > > Cheers,
-> > > > Kent
-> > > > 
-> > > > The following changes since commit 0dd3ee31125508cd67f7e7172247f05b7fd1753a:
-> > > > 
-> > > >   Linux 6.7 (2024-01-07 12:18:38 -0800)
-> > > > 
-> > > > are available in the Git repository at:
-> > > > 
-> > > >   https://evilpiepirate.org/git/bcachefs.git tags/bcachefs-for-v6.7-stable-20240208
-> > > > 
-> > > > for you to fetch changes up to f1582f4774ac7c30c5460a8c7a6e5a82b9ce5a6a:
-> > > > 
-> > > >   bcachefs: time_stats: Check for last_event == 0 when updating freq stats (2024-02-08 15:33:11 -0500)
-> > > 
-> > > This didn't work well :(
-> > > 
-> > > All of the original git commit ids are gone, and for me to look them up
-> > > and add them back by hand is a pain.  I'll do it this time, but next
-> > > time can you please include them in the commit somewhere (cherry-pick -x
-> > > will do it automatically for you)
-> > > 
-> > > Let's see if I can figure it out...
-> > 
-> > I got all but 3 applied, can you please send an updated set of 3 patches
-> > for the ones I couldn't just cherry-pick from Linus's tree?
+On Tue, Feb 13, 2024 at 09:13:56AM +0800, Anand Jain wrote:
+> There are reports that since version 6.7 update-grub fails to find the
+> device of the root on systems without initrd and on a single device.
 > 
-> New pull request work?
+> This looks like the device name changed in the output of
+> /proc/self/mountinfo:
 > 
-> The following changes since commit 0dd3ee31125508cd67f7e7172247f05b7fd1753a:
+> 6.5-rc5 working
 > 
->   Linux 6.7 (2024-01-07 12:18:38 -0800)
+>   18 1 0:16 / / rw,noatime - btrfs /dev/sda8 ...
 > 
-> are available in the Git repository at:
+> 6.7 not working:
 > 
->   https://evilpiepirate.org/git/bcachefs.git tags/bcachefs-6.7-stable-2024-02-13
+>   17 1 0:15 / / rw,noatime - btrfs /dev/root ...
+> 
+> and "update-grub" shows this error:
+> 
+>   /usr/sbin/grub-probe: error: cannot find a device for / (is /dev mounted?)
+> 
+> This looks like it's related to the device name, but grub-probe
+> recognizes the "/dev/root" path and tries to find the underlying device.
+> However there's a special case for some filesystems, for btrfs in
+> particular.
+> 
+> The generic root device detection heuristic is not done and it all
+> relies on reading the device infos by a btrfs specific ioctl. This ioctl
+> returns the device name as it was saved at the time of device scan (in
+> this case it's /dev/root).
+> 
+> The change in 6.7 for temp_fsid to allow several single device
+> filesystem to exist with the same fsid (and transparently generate a new
+> UUID at mount time) was to skip caching/registering such devices.
+> 
+> This also skipped mounted device. One step of scanning is to check if
+> the device name hasn't changed, and if yes then update the cached value.
+> 
+> This broke the grub-probe as it always read the device /dev/root and
+> couldn't find it in the system. A temporary workaround is to create a
+> symlink but this does not survive reboot.
+> 
+> The right fix is to allow updating the device path of a mounted
+> filesystem even if this is a single device one.
+> 
+> In the fix, check if the device's major:minor number matches with the
+> cached device. If they do, then we can allow the scan to happen so that
+> device_list_add() can take care of updating the device path. The file
+> descriptor remains unchanged.
+> 
+> This does not affect the temp_fsid feature, the UUID of the mounted
+> filesystem remains the same and the matching is based on device major:minor
+> which is unique per mounted filesystem.
+> 
+> This covers the path when the device (that exists for all mounted
+> devices) name changes, updating /dev/root to /dev/sdx. Any other single
+> device with filesystem and is not mounted is still skipped.
+> 
+> Note that if a system is booted and initial mount is done on the
+> /dev/root device, this will be the cached name of the device. Only after
+> the command "btrfs device scan" it will change as it triggers the
+> rename.
+> 
+> The fix was verified by users whose systems were affected.
+> 
+> CC: stable@vger.kernel.org # 6.7+
+> Fixes: bc27d6f0aa0e ("btrfs: scan but don't register device on single device filesystem")
+> Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=218353
+> Link: https://lore.kernel.org/lkml/CAKLYgeJ1tUuqLcsquwuFqjDXPSJpEiokrWK2gisPKDZLs8Y2TQ@mail.gmail.com/
+> Signed-off-by: Anand Jain <anand.jain@oracle.com>
+> Tested-by: Alex Romosan <aromosan@gmail.com>
+> Tested-by: CHECK_1234543212345@protonmail.com
 
-Thanks, I'll look at these after this round of -rc kernels are released,
-which should have most of these in the release alraedy, but not all.
+Reviewed-by: David Sterba <dsterba@suse.com>
 
-greg k-h
+When you commit the patch, please reorder the tags according to
+https://btrfs.readthedocs.io/en/latest/dev/Developer-s-FAQ.html#ordering
 
