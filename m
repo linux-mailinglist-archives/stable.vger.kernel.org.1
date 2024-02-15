@@ -1,115 +1,228 @@
-Return-Path: <stable+bounces-20282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70B2D85676D
-	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 16:24:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4F3F856781
+	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 16:26:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A38E51C22670
-	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 15:24:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C7B6285615
+	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 15:26:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4065B132497;
-	Thu, 15 Feb 2024 15:20:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 799111332B3;
+	Thu, 15 Feb 2024 15:25:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=hp.com header.i=@hp.com header.b="QM+3t+le"
 X-Original-To: stable@vger.kernel.org
-Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
-	by smtp.subspace.kernel.org (Postfix) with SMTP id C5F3C132C23
-	for <stable@vger.kernel.org>; Thu, 15 Feb 2024 15:20:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.131.102.5
+Received: from us-smtp-delivery-162.mimecast.com (us-smtp-delivery-162.mimecast.com [170.10.129.162])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED92B132C18
+	for <stable@vger.kernel.org>; Thu, 15 Feb 2024 15:25:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.162
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708010403; cv=none; b=H2Y9FlhxOvWTPXSgCsJ5SzydJR0b5xYaL6oK5lcHLlX5NXPr8qymwtXZEvg0ZeRDkHwuQLtT5O+t3JZKCZuoCi8N6C2faKrzqkvwlrwxf9WNAii/bF4/uusUhbUxs0f5Me4UjYBu0uoZIsetKQjloIWf5c5MSykUMs3eK/ZxvBk=
+	t=1708010717; cv=none; b=fSjqzy/bTzyEp4At1Vus7AlFKUTj92YN1XXnpMGepuFmzAKKrmtDPMqGhfATT9Px+8RlAQLf0GLR4mYwDOXi/bpooAN5LQWCpH1t66kRhCR9Nye4CaiBH7lZq0rvJqdIhn/xXhU6y7cMwEnSD2TYSZlM3Vqxm2PUNNdwvK2OZjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708010403; c=relaxed/simple;
-	bh=Jx+iRtNlS80TV4/SAvkSPzKcQEUz7hjxzT++6QCGkv8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Eyh0MV7FDuJ/9qqzGiOSYcJkdQryNRi82lBWd2OrjIhOE9xMKjWeuoGXcNZVq4RvwAuoMk9Nv+sa65sL4zaLPOGTadOQ+126h1a4+pq6qg+jNZfWflNug7UshTn/OxrUv4O9X3z3TboOBC8/NoekPBCQQvly6ldinCmjUw/h1Bc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=rowland.harvard.edu; spf=pass smtp.mailfrom=netrider.rowland.org; arc=none smtp.client-ip=192.131.102.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netrider.rowland.org
-Received: (qmail 434834 invoked by uid 1000); 15 Feb 2024 10:19:54 -0500
-Date: Thu, 15 Feb 2024 10:19:54 -0500
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Martin Steigerwald <martin@lichtvoll.de>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>, stable@vger.kernel.org,
-  regressions@lists.linux.dev, linux-usb@vger.kernel.org,
-  Holger =?iso-8859-1?Q?Hoffst=E4tte?= <holger@applied-asynchrony.com>,
-  linux-bcachefs@vger.kernel.org, linux-block@vger.kernel.org
-Subject: Re: I/O errors while writing to external Transcend XS-2000 4TB SSD
-Message-ID: <eec1464d-4e9f-48b5-b619-868f0e5c1d4d@rowland.harvard.edu>
-References: <1854085.atdPhlSkOF@lichtvoll.de>
- <6599603.G0QQBjFxQf@lichtvoll.de>
- <ypeck262h6ccdnsxzo46vydzygh2y6coe3d4mvgermaaeo5ygg@4nvailbg7ay3>
- <1979818.usQuhbGJ8B@lichtvoll.de>
+	s=arc-20240116; t=1708010717; c=relaxed/simple;
+	bh=zfKf6YOFPNClMz/WsPi6+JfTtXDu7Hqrion2Mc0HhnM=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 MIME-Version:Content-Type; b=TjHvJAUVTdNfe6eVCoyqz1T6EBrDA/8yE/oAVwo0JPvzaXxMTUpuNjqBl3WcSQT6oQgDOJKE8k0y63hsbwygKrvJirydSVdOJ3kxcOiFqdoVNWW97L6apbQuebNY8bJ0CcVZWHdKe0TlVKYP83WHde5+VZFMPoMDuT4VTMzYzO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hp.com; spf=pass smtp.mailfrom=hp.com; dkim=pass (1024-bit key) header.d=hp.com header.i=@hp.com header.b=QM+3t+le; arc=none smtp.client-ip=170.10.129.162
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hp.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hp.com; s=mimecast20180716;
+	t=1708010710;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=r9cb4Qe0LxhSaPGrTH0X2PnyMbFVlpVCd61B6q4hYKg=;
+	b=QM+3t+leH8nyyiweAQfGicI0EcnHyNv9QCu+d3Q0Y9BOdfvYeaikBkEvoDSXvjUGwxuAk9
+	DkBgPMJSX2iNui/Ha1048qbBcIVQsiiqvuYMC1yh2Tq5yBS/WrZGmasxMYKvT8WhXFd+Wa
+	xrCE9/ixWDvBlTjaWe/iHdc101jYaQM=
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com
+ (mail-sn1nam02lp2041.outbound.protection.outlook.com [104.47.57.41]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-539-3sYCxmiwMxKg90OaZin89A-1; Thu, 15 Feb 2024 10:25:09 -0500
+X-MC-Unique: 3sYCxmiwMxKg90OaZin89A-1
+Received: from DS0PR84MB3417.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:8:1be::14)
+ by LV3PR84MB3528.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:408:218::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.26; Thu, 15 Feb
+ 2024 15:25:05 +0000
+Received: from DS0PR84MB3417.NAMPRD84.PROD.OUTLOOK.COM
+ ([fe80::9727:7112:c46a:c619]) by DS0PR84MB3417.NAMPRD84.PROD.OUTLOOK.COM
+ ([fe80::9727:7112:c46a:c619%7]) with mapi id 15.20.7270.036; Thu, 15 Feb 2024
+ 15:25:05 +0000
+From: "Zhang, Eniac" <eniac-xw.zhang@hp.com>
+To: Takashi Iwai <tiwai@suse.de>, "Gagniuc, Alexandru"
+	<alexandru.gagniuc@hp.com>
+CC: "linux-sound@vger.kernel.org" <linux-sound@vger.kernel.org>,
+	"perex@perex.cz" <perex@perex.cz>, "tiwai@suse.com" <tiwai@suse.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Eniac Zhang
+	<eniacz@gmail.com>, Alexandru Gagniuc <mr.nuke.me@gmail.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH] ALSA: hda/realtek: fix mute/micmute LED For HP mt645
+Thread-Topic: [PATCH] ALSA: hda/realtek: fix mute/micmute LED For HP mt645
+Thread-Index: AQHaX3YE63Fkmi67ykykdCA++KhMzLELXAgAgAAq4lA=
+Date: Thu, 15 Feb 2024 15:25:05 +0000
+Message-ID: <DS0PR84MB341799A29B99290A1FB10F58BB4D2@DS0PR84MB3417.NAMPRD84.PROD.OUTLOOK.COM>
+References: <20240214184507.777349-1-alexandru.gagniuc@hp.com>
+ <87v86pevt7.wl-tiwai@suse.de>
+In-Reply-To: <87v86pevt7.wl-tiwai@suse.de>
+Accept-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DS0PR84MB3417:EE_|LV3PR84MB3528:EE_
+x-ms-office365-filtering-correlation-id: 668e171e-9537-4421-51e1-08dc2e3a4931
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0
+x-microsoft-antispam-message-info: n4Q5IkXQYvSaM5UyYpWG1/ItKKAp8g9j6A/BS1NDYvpEpqe/RNp4Frdrw77b1l7UUGULPARwUoPk/Dws2mFu9RbbY6OHUENoS2vSWIECLUy4TBZfBJOJJ8N/nHXe4a6/KtOn3Nz5xMyCGWZP0KtMc43mkn3VdUxfZ+KiciT0cPrah3A9MKsoGvB8D0hy0ivifm8qtY+xlQ0SUUpXn8HKw1aFsnX5W/I5Zc1eMZw+7e9i5z1+jV1nyNw8uJb/CbmPewsgxSKuPTAIY/4x9TmQSIIegf59jFe6wR+2r4HZhXm5tGbtaj/ZGSjnyBUGhq6GT/8LaAVXUe6L8jxOcwi5od0pNhnMgNUCn3jw8l7cJgxtyrBIjJBIXLEEY8VQdlwtgeKaygdUFF5b8acMxxkNMQB4hJZAGB5ue7eJ/NxUrFM+s6lw600+KOePDCEkE2iSF6gIJo+UTCXdg6usZLgdsJwq4SxqIHxoJeMu4mMf6+zAt/q/yGp1USgfWAUmt4JizGohalPStgLTupw/3xO/YE1JlQPXrS5S9R85AHN2ZkRKBw4c3jpe0opePmfpYFbVOsfreCB3lqLGlFK5AuRxTRQ38H79OsaNQyue7ppa0vuiAPDUjAyYAUabgEfc6wPp
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR84MB3417.NAMPRD84.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(396003)(346002)(376002)(39860400002)(366004)(136003)(230273577357003)(230922051799003)(1800799012)(451199024)(186009)(64100799003)(66476007)(4326008)(8676002)(52536014)(64756008)(66556008)(8936002)(66946007)(76116006)(66446008)(2906002)(83380400001)(26005)(38070700009)(33656002)(82960400001)(122000001)(86362001)(71200400001)(38100700002)(110136005)(6636002)(54906003)(316002)(41300700001)(7696005)(9686003)(6506007)(478600001)(53546011)(55016003)(5660300002);DIR:OUT;SFP:1101
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?GtlyrLjEOIFx8DDtBzC6E14knlgfMuygGbV8d7rsfey17mJ3m2Kro/Vut0Cp?=
+ =?us-ascii?Q?CC9zxbBUeJe1Oysn9nI++MI/jMimHBnBFIdVVfB/u4oyvr6FXzAEEicASC0W?=
+ =?us-ascii?Q?juEh22tQlKe+EQyHcOwcmFRTJnL8xq9BRvW06qM0TM3tf57sL3yj/n8NaDKP?=
+ =?us-ascii?Q?Y873kyP6iNkIFX8GHyqc2+3wTlGwNIgzNEqlNRBHs+INPIAXiZCJMl/KVkLA?=
+ =?us-ascii?Q?ygmzHAeRtdZnIIqvb1XRTZJLeOWvupdjzO/xKU+O/AQiF3772BFo3jLSrTy6?=
+ =?us-ascii?Q?4WAWX2XvLx8F27CAqloC6CItLKZEaw50nE8eH75jEudVD9W34mojxl3NLd5v?=
+ =?us-ascii?Q?RJMGaaMOLtLZ57YgqeWOPV3HEhzt4q3iU9ig85S53c4nvl8+GkbP+wV7+9I9?=
+ =?us-ascii?Q?BvxjIkU9nqbHkGfMVtaiLjlKqjeViTU4Nwf5V8udGF3NPX+ug5avPi6mhiU9?=
+ =?us-ascii?Q?rTG9BrHZQ9XyN0ypUW0cRaFm38BfMTGOUCoIshNqHlCylqyieCHrYrvWiYJE?=
+ =?us-ascii?Q?UOB7du2QW7wY6ZG8ZKWg33MX0/FxU3yi5nTkmbU0DZZDet5oxZPeB5Ss13jn?=
+ =?us-ascii?Q?xCjkXdxBdzs4CAgR0K7/AQ27BUx9Jlf/6s6UoTjnGWMIF/p4ebAH75kVKoke?=
+ =?us-ascii?Q?fw48SMZC7iZCqpW6HqELicU4rU3q4aPdtsO6yN/PSuwoQJ+CAv4k6c51ADFO?=
+ =?us-ascii?Q?MN+r04MvG0Gjo9lPuxFQjICOTKofCm/neYouqT5UmGxSyv+Z6RFdmDwaIUqb?=
+ =?us-ascii?Q?zLmoQ1RGD+AHUb992PyKgzmFPgUngxrpN2ZnS9qvP2nommP/1O9I2amBm4PM?=
+ =?us-ascii?Q?1iLH4uBqO3+essCeW9Jcni+UYFIDuCL7s6qKkoFuMxEahKogZJC0niFvUpWI?=
+ =?us-ascii?Q?KnPY6I/bjQRLLv8VlpW/S/HFPI2iM0AKC/ZffXbOt/rBM0R/NQR+6l5hzC4A?=
+ =?us-ascii?Q?ChrGj9GnGBUSQD5kqB/kSjviFKswJxrn42pkDCELgTyk4sx+FfuCfKXf2u0W?=
+ =?us-ascii?Q?pl5zfIxB+IpehcDR36plloZeiVUEX/svJ50cS8PhoLD7HA22+uSLEfxDmY/O?=
+ =?us-ascii?Q?/3goxVgEvRXHUEDfH/lS1meiCv4m/h+H2zUR2h+znskjEcV0JnNcUT2TwdnV?=
+ =?us-ascii?Q?IGKx4xZXdX0y+76Gp1xAqYIGj0rZbZzYJgEHPb93RP653hlvTrSab8DskLpR?=
+ =?us-ascii?Q?Kr3NEmRxjEUB9oQ9/HWHeHv27tey51xI7f8+5EasJadTSNkOi4StXpoRY4dW?=
+ =?us-ascii?Q?e0fnZ7UdwLAmZTj9I+MuFzWv0xprwWgAFMrC5Qz3XmqQihTXedNubLz6jbko?=
+ =?us-ascii?Q?OJncHZS2ADV0JjDV8eg7544kMg6OohmlWqLjvgARqK2eUAI0WpOCjYtr0Lwi?=
+ =?us-ascii?Q?hSjuEy14CO3TW0LTTCuHKLjrKbWNjT+lPXEa/LD/rEsS4vpyslwkbl1yqJQJ?=
+ =?us-ascii?Q?Kd/NH4MZeUSRJ+dbvtol8hwvdcOOy18wzDS0O3MVqrCEYnvFyeg1dOALaoUp?=
+ =?us-ascii?Q?LRj4+f1IkduYgBFJcIfQ2EhBlA6M6D+h3zoahHCjC9jfJipY8TVJDqtW3IQ0?=
+ =?us-ascii?Q?dqwICOoQM3du/dyCp8gH0A1DMfYor8fB3R4T6Vsm?=
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1979818.usQuhbGJ8B@lichtvoll.de>
+X-OriginatorOrg: hp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR84MB3417.NAMPRD84.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 668e171e-9537-4421-51e1-08dc2e3a4931
+X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Feb 2024 15:25:05.0454
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: ca7981a2-785a-463d-b82a-3db87dfc3ce6
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: D/5adw/HAqy6XFhnqDnteTNyJj+nOgCSC2Uf9uUzSjVl/Mt3PCMIToDaWtUJ5ESd/1eyQPrppbxXKj8UQt0KOg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR84MB3528
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: hp.com
+Content-Language: en-US
+Content-Type: text/plain; charset=WINDOWS-1252
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 15, 2024 at 12:09:20PM +0100, Martin Steigerwald wrote:
-> Kent Overstreet - 12.02.24, 21:42:26 CET:
-> 
-> [thoughts about whether a cache flush / FUA request with write caches 
-> disabled would be a no-op anyway]
-> 
-> > > I may test the Transcend XS2000 with BTRFS to see whether it makes a
-> > > difference, however I really like to use it with BCacheFS and I do not
-> > > really like to use LUKS for external devices. According to the kernel
-> > > log I still don't really think those errors at the block layer were
-> > > about anything filesystem specific, but what  do I know?
-> > 
-> > It's definitely not unheard of for one specific filesystem to be
-> > tickling driver/device bugs and not others.
-> > 
-> > I wonder what it would take to dump the outstanding requests on device
-> > timeout.
-> 
-> I got some reply back from Transcend support.
-> 
-> They brought up two possible issues:
-> 
-> 1) Copied to many files at once. I am not going to accept that one. An 
-> external 4 TB SSD should handle writing 1,4 TB in about 215000 files, 
-> coming from a slower Toshiba Canvio Basics external HD, just fine. About 
-> 90000 files was larger files like sound and video files or installation 
-> archives. The rest is from a Linux system backup, so smaller files. I 
-> likely move those elsewhere before I try again as I do not need these on 
-> flash anyway. However if the amount of files or data matters I could never 
-> know what amount of data I could write safely in one go. That is not 
-> acceptable to me.
-> 
-> 2) Power management related to USB port. Cause I am using a laptop. It may 
-> have been that the Linux kernel decided to put the USB port the SSD was 
-> connected to into some kind of sleep state. However it was a constant 
-> rsync based copy workload. Yes, the kernel buffers data and the reads from 
-> Toshiba HD should be quite a bit slower than the Transcend SSD could 
-> handle the writes. I saw now more than 80-90 MiB/s coming from the hard 
-> disk. However I would doubt this lead to pauses of write activity of more 
-> than 30 seconds. Still it could be a thing.
-> 
-> Regarding further testing I am unsure whether to first test with BTRFS on 
-> top of LUKS – I do not like to store clear text data on the SSD – or with 
-> BCacheFS plus fixes which are 6.7.5 or 6.8-rc4 in just in the case the flush 
-> handling fixes would still have an influence on the issue at hand.
-> 
-> First I will have a look on how to see what USB power management options 
-> may be in place and how to tell Linux to keep the USB port the SSD is 
-> connected to at all times.
-> 
-> Let's see how this story unfolds. At least I am in no hurry about it.
+Hi Takashi,
 
-This may not be an issue of power management but rather one of 
-insufficient power.  A laptop may not provide enough power through its 
-USB ports for the Transcend SSD to work properly under load.
+I can sign off this merge request.  Alex is ThinPro's new kernel maintainer=
+.  He is trying to push all those old HP patches upstream to make our life =
+(and other HP machine user's life) easier.
 
-You can test this by connecting a powered UBS-3 hub between the laptop 
-and the drive.
+Let me know if there's anything else I can do.
 
-Alan Stern
+Regards/Eniac
+
+-----Original Message-----
+From: Takashi Iwai <tiwai@suse.de>=20
+Sent: Thursday, February 15, 2024 5:50 AM
+To: Gagniuc, Alexandru <alexandru.gagniuc@hp.com>
+Cc: linux-sound@vger.kernel.org; perex@perex.cz; tiwai@suse.com; linux-kern=
+el@vger.kernel.org; Zhang, Eniac <eniac-xw.zhang@hp.com>; Eniac Zhang <enia=
+cz@gmail.com>; Alexandru Gagniuc <mr.nuke.me@gmail.com>; stable@vger.kernel=
+.org
+Subject: Re: [PATCH] ALSA: hda/realtek: fix mute/micmute LED For HP mt645
+
+CAUTION: External Email
+
+On Wed, 14 Feb 2024 19:45:07 +0100,
+Alexandru Gagniuc wrote:
+>
+> From: Eniac Zhang <eniacz@gmail.com>
+>
+> The HP mt645 G7 Thin Client uses an ALC236 codec and needs the=20
+> ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF quirk to make the mute and=20
+> micmute LEDs work.
+>
+> There are two variants of the USB-C PD chip on this device. Each uses=20
+> a different BIOS and board ID, hence the two entries.
+>
+> Signed-off-by: Alexandru Gagniuc <mr.nuke.me@gmail.com>
+> Signed-off-by: Alexandru Gagniuc <alexandru.gagniuc@hp.com>
+
+Any reason to have two your sign-offs?
+Also, can we get a sign-off from the original author?
+
+
+thanks,
+
+Takashi
+
+> Cc: <stable@vger.kernel.org>
+> ---
+>  sound/pci/hda/patch_realtek.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/sound/pci/hda/patch_realtek.c=20
+> b/sound/pci/hda/patch_realtek.c index 6994c4c5073c..c837470ef5b8=20
+> 100644
+> --- a/sound/pci/hda/patch_realtek.c
+> +++ b/sound/pci/hda/patch_realtek.c
+> @@ -9928,6 +9928,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[=
+] =3D {
+>       SND_PCI_QUIRK(0x103c, 0x8abb, "HP ZBook Firefly 14 G9", ALC245_FIXU=
+P_CS35L41_SPI_2_HP_GPIO_LED),
+>       SND_PCI_QUIRK(0x103c, 0x8ad1, "HP EliteBook 840 14 inch G9 Notebook=
+ PC", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+>       SND_PCI_QUIRK(0x103c, 0x8ad2, "HP EliteBook 860 16 inch G9=20
+> Notebook PC", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+> +     SND_PCI_QUIRK(0x103c, 0x8b0f, "HP Elite mt645 G7 Mobile Thin=20
+> + Client U81", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+>       SND_PCI_QUIRK(0x103c, 0x8b2f, "HP 255 15.6 inch G10 Notebook PC", A=
+LC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+>       SND_PCI_QUIRK(0x103c, 0x8b42, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_G=
+PIO_LED),
+>       SND_PCI_QUIRK(0x103c, 0x8b43, "HP",=20
+> ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+> @@ -9935,6 +9936,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[=
+] =3D {
+>       SND_PCI_QUIRK(0x103c, 0x8b45, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_G=
+PIO_LED),
+>       SND_PCI_QUIRK(0x103c, 0x8b46, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_G=
+PIO_LED),
+>       SND_PCI_QUIRK(0x103c, 0x8b47, "HP",=20
+> ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+> +     SND_PCI_QUIRK(0x103c, 0x8b59, "HP Elite mt645 G7 Mobile Thin=20
+> + Client U89", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+>       SND_PCI_QUIRK(0x103c, 0x8b5d, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUT=
+E_VREF),
+>       SND_PCI_QUIRK(0x103c, 0x8b5e, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUT=
+E_VREF),
+>       SND_PCI_QUIRK(0x103c, 0x8b63, "HP Elite Dragonfly 13.5 inch G4",=20
+> ALC245_FIXUP_CS35L41_SPI_4_HP_GPIO_LED),
+> --
+> 2.42.0
+>
+
 
