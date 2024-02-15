@@ -1,194 +1,78 @@
-Return-Path: <stable+bounces-20269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 687ED8563A6
-	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 13:50:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB2598563B6
+	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 13:53:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C9AF1F263F4
-	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 12:50:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB364B253CD
+	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 12:52:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 648C612E1C3;
-	Thu, 15 Feb 2024 12:50:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="nbJE4MbZ";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="teZGAvuO";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="nbJE4MbZ";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="teZGAvuO"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 722B312E1FF;
+	Thu, 15 Feb 2024 12:52:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from air.basealt.ru (air.basealt.ru [194.107.17.39])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8282912DDB4;
-	Thu, 15 Feb 2024 12:50:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D65E18EA2;
+	Thu, 15 Feb 2024 12:52:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708001402; cv=none; b=GXZtW70AOnJJj8zIYdTBfanDkZXfLRReUHCtWfkbKr7ovLPF3dMEhgTrxJw7XhRJfm5FOm+ZYdG8yr7Kdo3VzOft0gBHPxNOdXU6EzaPfR0JfCk03iNCywB1JgqKAv9IKrsdcQOJEFfOaRaqwwy7JWKrlJX8CGy2Hp3wlCt43gw=
+	t=1708001538; cv=none; b=NVBURfPlaCsWoGjGQNrzAyo1nAHWxT5AKAQmJOeGp6vSNYYScy+Eu9y4lY8paAzQmVte58Sma67+sdMwT9aAeNA/xG14hseTGeOkeYxJF6XE7Buz0E2yDf/gGl7zV8yJ697jzd+jVKl0vx3pPENP/A5qEA0A+3gDHN2CLavbFsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708001402; c=relaxed/simple;
-	bh=4zz8eo1kQI8ow+hZNuKgds833uuafq8U6qjU+AcVAZs=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BEjOLdG6Rh1lJ2KrKfCeRT7QS22b8SR+FDLIGPzTvlUQ8gjPPAPPrP2F0lUYA6QsWtagFbPMLUL1mt+AvXibZT1GdkN4471Qk1zNmNPkAlTUkSzz802Nk2yiq1oVE+JMgM9K94HoXQWtsTYRAYAShI3wCRswO29ZEbghUHcsskE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=nbJE4MbZ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=teZGAvuO; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=nbJE4MbZ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=teZGAvuO; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 947E621F92;
-	Thu, 15 Feb 2024 12:49:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1708001397; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5zWTjtS4yOYIrAnS3x5ojeu9zhlBFd5xLh3M3Wvv1Bk=;
-	b=nbJE4MbZZF1FF6QxG0sakzq5OAqFbpyPro8qahY5GKLoB08oY4RHktnZDIIQg/c8bN+zEP
-	Ofj2HudMmXbSHis4hfYhxQt0urFFm11KNsjAPJ5oCUSO5TNVRvaSpah1pcVrdm9hbBqdqD
-	5coqjPfXIA6pjz82DsNWqLp2baW2ocs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1708001397;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5zWTjtS4yOYIrAnS3x5ojeu9zhlBFd5xLh3M3Wvv1Bk=;
-	b=teZGAvuOv9iPubX5biVScmaoxICF+AUvZA/SQYYjvNfmv8I3oDP42qeAeBV6B38qSdItQN
-	Pu4wybSo9mrr8ZAQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1708001397; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5zWTjtS4yOYIrAnS3x5ojeu9zhlBFd5xLh3M3Wvv1Bk=;
-	b=nbJE4MbZZF1FF6QxG0sakzq5OAqFbpyPro8qahY5GKLoB08oY4RHktnZDIIQg/c8bN+zEP
-	Ofj2HudMmXbSHis4hfYhxQt0urFFm11KNsjAPJ5oCUSO5TNVRvaSpah1pcVrdm9hbBqdqD
-	5coqjPfXIA6pjz82DsNWqLp2baW2ocs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1708001397;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5zWTjtS4yOYIrAnS3x5ojeu9zhlBFd5xLh3M3Wvv1Bk=;
-	b=teZGAvuOv9iPubX5biVScmaoxICF+AUvZA/SQYYjvNfmv8I3oDP42qeAeBV6B38qSdItQN
-	Pu4wybSo9mrr8ZAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5438113A53;
-	Thu, 15 Feb 2024 12:49:57 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Ut9DE3UIzmXlTAAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Thu, 15 Feb 2024 12:49:57 +0000
-Date: Thu, 15 Feb 2024 13:49:56 +0100
-Message-ID: <87v86pevt7.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Alexandru Gagniuc <alexandru.gagniuc@hp.com>
-Cc: linux-sound@vger.kernel.org,
-	perex@perex.cz,
-	tiwai@suse.com,
-	linux-kernel@vger.kernel.org,
-	eniac-xw.zhang@hp.com,
-	Eniac Zhang <eniacz@gmail.com>,
-	Alexandru Gagniuc <mr.nuke.me@gmail.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] ALSA: hda/realtek: fix mute/micmute LED For HP mt645
-In-Reply-To: <20240214184507.777349-1-alexandru.gagniuc@hp.com>
-References: <20240214184507.777349-1-alexandru.gagniuc@hp.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+	s=arc-20240116; t=1708001538; c=relaxed/simple;
+	bh=bLWbQ46DZVFP3cIkPj3Ky15ZObtsdDCn3VqGQSFbZdY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OGd/xHuLK8HvfkAEWe1cxtByW/ljKKkTkwpEeZog8UKh+lkzEnZh+eBy8toUGFiy9eECFGH+/AFqH2BLYx567JWJA6WnxQ0mrHnVHE8YYZZFSrvwqxoBEzuZDaGeLQ4aifJLhQbeuWyli1KhWtVqvdjaBF5WjozTeQNlaEBPbGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
+Received: by air.basealt.ru (Postfix, from userid 490)
+	id 425662F20246; Thu, 15 Feb 2024 12:52:11 +0000 (UTC)
+X-Spam-Level: 
+Received: from [192.168.0.102] (unknown [178.76.204.78])
+	by air.basealt.ru (Postfix) with ESMTPSA id 60AF62F20242;
+	Thu, 15 Feb 2024 12:52:08 +0000 (UTC)
+Message-ID: <d16f0d00-b4de-27b1-f968-2ff177ef4903@basealt.ru>
+Date: Thu, 15 Feb 2024 15:52:07 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Level: 
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=nbJE4MbZ;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=teZGAvuO
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-2.01 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 BAYES_HAM(-3.00)[100.00%];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 TAGGED_RCPT(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 DKIM_TRACE(0.00)[suse.de:+];
-	 MX_GOOD(-0.01)[];
-	 RCPT_COUNT_SEVEN(0.00)[9];
-	 MID_CONTAINS_FROM(1.00)[];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 NEURAL_HAM_SHORT(-0.20)[-1.000];
-	 FREEMAIL_CC(0.00)[vger.kernel.org,perex.cz,suse.com,hp.com,gmail.com];
-	 RCVD_TLS_ALL(0.00)[];
-	 SUSPICIOUS_RECIPS(1.50)[]
-X-Spam-Score: -2.01
-X-Rspamd-Queue-Id: 947E621F92
-X-Spam-Flag: NO
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 5.15.y] bpf: Convert BPF_DISPATCHER to use static_call()
+ (not ftrace)
+Content-Language: en-US
+To: stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+ netdev@vger.kernel.org, kpsingh@kernel.org, john.fastabend@gmail.com,
+ yhs@fb.com, songliubraving@fb.com, kafai@fb.com, andrii@kernel.org,
+ daniel@iogearbox.net, ast@kernel.org
+References: <20240129180108.284057-1-kovalev@altlinux.org>
+From: kovalev@altlinux.org
+In-Reply-To: <20240129180108.284057-1-kovalev@altlinux.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, 14 Feb 2024 19:45:07 +0100,
-Alexandru Gagniuc wrote:
-> 
-> From: Eniac Zhang <eniacz@gmail.com>
-> 
-> The HP mt645 G7 Thin Client uses an ALC236 codec and needs the
-> ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF quirk to make the mute and
-> micmute LEDs work.
-> 
-> There are two variants of the USB-C PD chip on this device. Each uses
-> a different BIOS and board ID, hence the two entries.
-> 
-> Signed-off-by: Alexandru Gagniuc <mr.nuke.me@gmail.com>
-> Signed-off-by: Alexandru Gagniuc <alexandru.gagniuc@hp.com>
+29.01.2024 21:01, kovalev@altlinux.org wrote:
+> From: Peter Zijlstra <peterz@infradead.org>
+>
+> [ Upstream commit c86df29d11dfba27c0a1f5039cd6fe387fbf4239 ]
+>
+> [...]
 
-Any reason to have two your sign-offs?
-Also, can we get a sign-off from the original author?
+This patch fix warning in ftrace_verify_code (found Syzkaller), see log 
+and the C reproduccer by link:
 
+https://lore.kernel.org/bpf/87f74eab-ae51-08a4-5b7e-261f437146f4@basealt.ru/T/#maac87a6679825bbe8a14a2ec2ec4cf94681aa885
 
-thanks,
+-- 
+Regards,
+Vasiliy Kovalev
 
-Takashi
-
-> Cc: <stable@vger.kernel.org>
-> ---
->  sound/pci/hda/patch_realtek.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-> index 6994c4c5073c..c837470ef5b8 100644
-> --- a/sound/pci/hda/patch_realtek.c
-> +++ b/sound/pci/hda/patch_realtek.c
-> @@ -9928,6 +9928,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
->  	SND_PCI_QUIRK(0x103c, 0x8abb, "HP ZBook Firefly 14 G9", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
->  	SND_PCI_QUIRK(0x103c, 0x8ad1, "HP EliteBook 840 14 inch G9 Notebook PC", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
->  	SND_PCI_QUIRK(0x103c, 0x8ad2, "HP EliteBook 860 16 inch G9 Notebook PC", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
-> +	SND_PCI_QUIRK(0x103c, 0x8b0f, "HP Elite mt645 G7 Mobile Thin Client U81", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
->  	SND_PCI_QUIRK(0x103c, 0x8b2f, "HP 255 15.6 inch G10 Notebook PC", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
->  	SND_PCI_QUIRK(0x103c, 0x8b42, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
->  	SND_PCI_QUIRK(0x103c, 0x8b43, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
-> @@ -9935,6 +9936,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
->  	SND_PCI_QUIRK(0x103c, 0x8b45, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
->  	SND_PCI_QUIRK(0x103c, 0x8b46, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
->  	SND_PCI_QUIRK(0x103c, 0x8b47, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
-> +	SND_PCI_QUIRK(0x103c, 0x8b59, "HP Elite mt645 G7 Mobile Thin Client U89", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
->  	SND_PCI_QUIRK(0x103c, 0x8b5d, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
->  	SND_PCI_QUIRK(0x103c, 0x8b5e, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
->  	SND_PCI_QUIRK(0x103c, 0x8b63, "HP Elite Dragonfly 13.5 inch G4", ALC245_FIXUP_CS35L41_SPI_4_HP_GPIO_LED),
-> -- 
-> 2.42.0
-> 
 
