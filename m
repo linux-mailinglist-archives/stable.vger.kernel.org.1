@@ -1,100 +1,93 @@
-Return-Path: <stable+bounces-20267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8820585627B
-	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 13:04:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DADD856383
+	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 13:45:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9D0E8B23596
-	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 11:50:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27DD2287627
+	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 12:45:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88B4912B16D;
-	Thu, 15 Feb 2024 11:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C8FB12E1C7;
+	Thu, 15 Feb 2024 12:44:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tksbYUhY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V/MtHXi8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD526350A;
-	Thu, 15 Feb 2024 11:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1496812DDBB;
+	Thu, 15 Feb 2024 12:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707997827; cv=none; b=ZpelHQigrHyelo2vkCpuAX5OGYB3utVxYa/9LN8zTIgd+b9O4Wkz7XYsezpWME1gPhPx+Y/DXbBUuUOdA0CqlKXgYj7Nl9DEPIHZaRJzAq4pgjw0Mcu4axC/tkEszK+KO0yc5SrmPo1QUYzQerMUhxm8pUuTvvhnOD49xHU6rhc=
+	t=1708001088; cv=none; b=TXBKvnHy0p4CypsMPfyaP9/fUJ/jFdvuv92ss1EztO4gOiRNGZUiHWXeUty5Dm6BU/8RAEDIg/esI6V39ZmundsUlX7kG7w1V/mbZMH+SZirr4oMG1v9H/AqcFNoyekXerWQ8TawwAhbZOunH2K7zWccwikdczR40Sp0GxeDzmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707997827; c=relaxed/simple;
-	bh=CJ6RhVSWX8EO1QCTDm3p5CYx/7yaPGtVUXLW4uqRpIU=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=guNaJL8FvThwPwOlsqDlBKU1b1Py2O044ziZ8Y3hVL7c4z3anx6o8GEzEPHx5+gPJNUinDXxJe8+XhMOE4YWYYljfGKZqwVhzDG8x8XPqERNMus3TdAqlXn0zpab02xTt7ZnER0SmdwfOduEDi4Bj4JWGxBLj5vFAPitLjJSoFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tksbYUhY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id CF784C43390;
-	Thu, 15 Feb 2024 11:50:26 +0000 (UTC)
+	s=arc-20240116; t=1708001088; c=relaxed/simple;
+	bh=EdmufWQaVwffxLhQdQ6E7nT/EWdxxAEZpxmh/Eg8Yig=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=US1h/SeB38LekCG3quvX+XG6lrK5NOjPSnuf6hfduD9V+wedKK2ISeTJnwpVQJz+iQU6f25lUOAULorz9Sse7Aeq1jqwZDQ5pGWRUqJgbxWR5WRWALM2HGU5Ds9sKCD1sXkJzXgzDAfQVme1I37JJo/toQioeGJjJI7l5nuy6Sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V/MtHXi8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE682C433F1;
+	Thu, 15 Feb 2024 12:44:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707997826;
-	bh=CJ6RhVSWX8EO1QCTDm3p5CYx/7yaPGtVUXLW4uqRpIU=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=tksbYUhYmHOESZMuc7J+iXDcGfLcLTsuZSqsmhH46UVEZlsLCAiIReUgYS6wD672q
-	 n+0NZmbQw1HbRD7kmm27XSNi4neLpHJkChtXgwYwaA8W/d0DM4G5Q/XKd2giAs+zLI
-	 VpVy2DMefVLekGqAtK3zI3tOLHTxoZOR9GsOyYchHgGEMIhPFQRTLYPodRVxUGWtkB
-	 Nsv94dJ4kcz/zBD7VpuiHh9E7cwBHuP20fmgwULGxE/zDVUdyQZRTvfNJx+XGpXK9o
-	 O86ztEjlkzGpjzdbC0w9k4mwfAuMZegSpNiySYcEwg73Rjm4OVcf1S4zTC/wu69kj/
-	 X8PAfbZlr/Lyg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id B38DBD8C97D;
-	Thu, 15 Feb 2024 11:50:26 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1708001087;
+	bh=EdmufWQaVwffxLhQdQ6E7nT/EWdxxAEZpxmh/Eg8Yig=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=V/MtHXi8TXRaLI/EM3ODSpXgDDCPQdOxCps6ATcUHyNUss4BXT8xxpK5xF3T1kfC9
+	 mqEue4P6Ypu8e1Rv1EHR22aX0fYeal74X2pwdhVjjyxiolwBB6qMuy0bygf16ZpUWx
+	 m1YuhBdq3iINziHsfVCE4ax6YK/pBnifXyBfgwMvRcLWQ/tg5w5y1OK6dPFRIMHP3O
+	 RCcZj+UmU1eS3Kt0UqPvGR0DJNIpuPmOtCGiHP44Jf9vyo0UOuHeBRRSTx65SDRA4t
+	 lngLtn4MGguAQ9dwGzrSPX9y0Hj91DqI1Bb1lyyuUn6e9nWZT6CkLjMcmxE3FV+fen
+	 gr6tApkDqqlmw==
+From: Will Deacon <will@kernel.org>
+To: Marc Zyngier <maz@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Easwar Hariharan <eahariha@linux.microsoft.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	"open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Rob Herring <robh@kernel.org>,
+	"moderated list:ARM64 PORT AARCH64 ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Andre Przywara <andre.przywara@arm.com>
+Cc: kernel-team@android.com,
+	Will Deacon <will@kernel.org>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] arm64: Subscribe Microsoft Azure Cobalt 100 to ARM Neoverse N2 errata
+Date: Thu, 15 Feb 2024 12:44:38 +0000
+Message-Id: <170799764265.3746091.15823620803100752366.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20240214175522.2457857-1-eahariha@linux.microsoft.com>
+References: <20240214175522.2457857-1-eahariha@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 1/3] can: j1939: prevent deadlock by changing
- j1939_socks_lock to rwlock
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <170799782672.19486.13037464955262911596.git-patchwork-notify@kernel.org>
-Date: Thu, 15 Feb 2024 11:50:26 +0000
-References: <20240214140348.2412776-2-mkl@pengutronix.de>
-In-Reply-To: <20240214140348.2412776-2-mkl@pengutronix.de>
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- linux-can@vger.kernel.org, kernel@pengutronix.de, astrajoan@yahoo.com,
- syzbot+1591462f226d9cbf0564@syzkaller.appspotmail.com,
- o.rempel@pengutronix.de, stable@vger.kernel.org
 
-Hello:
-
-This series was applied to netdev/net.git (main)
-by Marc Kleine-Budde <mkl@pengutronix.de>:
-
-On Wed, 14 Feb 2024 14:59:05 +0100 you wrote:
-> From: Ziqi Zhao <astrajoan@yahoo.com>
+On Wed, 14 Feb 2024 17:55:18 +0000, Easwar Hariharan wrote:
+> Add the MIDR value of Microsoft Azure Cobalt 100, which is a Microsoft
+> implemented CPU based on r0p0 of the ARM Neoverse N2 CPU, and therefore
+> suffers from all the same errata.
 > 
-> The following 3 locks would race against each other, causing the
-> deadlock situation in the Syzbot bug report:
 > 
-> - j1939_socks_lock
-> - active_session_list_lock
-> - sk_session_queue_lock
-> 
-> [...]
 
-Here is the summary with links:
-  - [net,1/3] can: j1939: prevent deadlock by changing j1939_socks_lock to rwlock
-    https://git.kernel.org/netdev/net/c/6cdedc18ba7b
-  - [net,2/3] can: j1939: Fix UAF in j1939_sk_match_filter during setsockopt(SO_J1939_FILTER)
-    https://git.kernel.org/netdev/net/c/efe7cf828039
-  - [net,3/3] can: netlink: Fix TDCO calculation using the old data bittiming
-    https://git.kernel.org/netdev/net/c/2aa0a5e65eae
+Applied to arm64 (for-next/fixes), thanks!
 
-You are awesome, thank you!
+[1/1] arm64: Subscribe Microsoft Azure Cobalt 100 to ARM Neoverse N2 errata
+      https://git.kernel.org/arm64/c/fb091ff39479
+
+Cheers,
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Will
 
-
+https://fixes.arm64.dev
+https://next.arm64.dev
+https://will.arm64.dev
 
