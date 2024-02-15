@@ -1,124 +1,163 @@
-Return-Path: <stable+bounces-20257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 195C5856103
-	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 12:11:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF428856116
+	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 12:12:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9481291250
-	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 11:11:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D7C01F213BE
+	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 11:12:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADABD12BF0D;
-	Thu, 15 Feb 2024 11:09:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E4C3129A91;
+	Thu, 15 Feb 2024 11:12:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="crCSa6Vg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.lichtvoll.de (luna.lichtvoll.de [194.150.191.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04158127B6D;
-	Thu, 15 Feb 2024 11:09:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.150.191.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDCE1128837;
+	Thu, 15 Feb 2024 11:12:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707995372; cv=none; b=NPSglT9Tv88+cDwq+NJ/cCpHUaOrs+WsZHvCsTTTdplO3hQ/r5UFUrE0MvzYZoZnXI8rGaVtNSJe3KLJNzxqVPS7ycThBXWU5bS0vw45c7NeiDzUDLaX3U/UsMJrfo7Nsq7y9pnAFchWAE1XzkuoYFQIPRvVZKK2MzxFScfk18c=
+	t=1707995526; cv=none; b=OgUv5ebW+725rRLhndJwsBfqAoo4nAuZdek+Y7C0Ku1RNQfyU8B1c5o/HGgwqHxhdEVFAzoeuUQ3rRqkrToIFtuXv2yau2ron0jOKqHbs+hafeaX4ZnYeyGkY/LpRB4ohKuiq7O8xAo1WtdT/cGAfcHSKEOrbAtLMqxREre2dvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707995372; c=relaxed/simple;
-	bh=Y2pGpvd23nSIXN6OktBS6/0YBWljbrMTHz18LGF/8m8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Maa+PXmriJ22Xsyaa3nZmUa/LTAZN4Q7vW0nCtOWQxHgleuWvaixjBZYqV++XH4CdWhA+MtG3usckR4fEac4MW6I/9h7Iv7Uc3SgjFSopue/hjGdGgg7459kZTHp9YU0Jf5PuS74nNZ+rRbIZtkp7MaW5/YyhKu5RA3919ugpQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lichtvoll.de; spf=pass smtp.mailfrom=lichtvoll.de; arc=none smtp.client-ip=194.150.191.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lichtvoll.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lichtvoll.de
-Received: from 127.0.0.1 (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384)
-	(No client certificate requested)
-	by mail.lichtvoll.de (Postfix) with ESMTPSA id BF16C89B671;
-	Thu, 15 Feb 2024 12:09:20 +0100 (CET)
-Authentication-Results: mail.lichtvoll.de;
-	auth=pass smtp.auth=martin smtp.mailfrom=martin@lichtvoll.de
-From: Martin Steigerwald <martin@lichtvoll.de>
-To: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
- linux-usb@vger.kernel.org,
- Holger =?ISO-8859-1?Q?Hoffst=E4tte?= <holger@applied-asynchrony.com>,
- linux-bcachefs@vger.kernel.org, linux-block@vger.kernel.org
-Subject: Re: I/O errors while writing to external Transcend XS-2000 4TB SSD
-Date: Thu, 15 Feb 2024 12:09:20 +0100
-Message-ID: <1979818.usQuhbGJ8B@lichtvoll.de>
-In-Reply-To: <ypeck262h6ccdnsxzo46vydzygh2y6coe3d4mvgermaaeo5ygg@4nvailbg7ay3>
-References:
- <1854085.atdPhlSkOF@lichtvoll.de> <6599603.G0QQBjFxQf@lichtvoll.de>
- <ypeck262h6ccdnsxzo46vydzygh2y6coe3d4mvgermaaeo5ygg@4nvailbg7ay3>
+	s=arc-20240116; t=1707995526; c=relaxed/simple;
+	bh=SJcrFIOTHrB95xddXSdy5IjhQ8kFKHDldJOFnNw7YXE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Lpwdn+QgRvpQd+ujF6fom1h+8GQZxgrzyoMqpRTCcWI18FvGl72nJd2Z/yDRihckVtWXUunsoEhZGW+fte0SXNL1PjvhsrAjTTXnwgzw9+1OU2uU6lgsjlM11R/XzcATR5o24M5ZcfrVsg4gCS2vw6xHDdjIXwGivaKKJYAmMPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=crCSa6Vg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C8F8C433F1;
+	Thu, 15 Feb 2024 11:12:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1707995526;
+	bh=SJcrFIOTHrB95xddXSdy5IjhQ8kFKHDldJOFnNw7YXE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=crCSa6Vg6S2e6yFv6jZXkczccOCBSJPPDDmhi2qXUZ5qErMURTcBiNVv+mzvSS+I4
+	 OgjPIdXYSVHPkfo/2qmcMPkq3cRaz0Qi41NJmPt97mLMjLSmk7l2fgbpatXNJI6K40
+	 pCpwBP/NTP/sDUXlHj2BoOvNmEcEIAsFfNk1eO5M=
+Date: Thu, 15 Feb 2024 12:12:03 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: "# 3.4.x" <stable@vger.kernel.org>,
+	linux-efi <linux-efi@vger.kernel.org>, jan.setjeeilers@oracle.com,
+	Peter Jones <pjones@redhat.com>, Steve McIntyre <steve@einval.com>,
+	Julian Andres Klode <julian.klode@canonical.com>,
+	Luca Boccassi <bluca@debian.org>,
+	James Bottomley <jejb@linux.ibm.com>
+Subject: Re: x86 efistub stable backports for v6.6
+Message-ID: <2024021545-coconut-stylishly-26ed@gregkh>
+References: <CAMj1kXEGzHW07X963Q3q4VPEqUtKC==y152JyfuK_t=cZ0CKYA@mail.gmail.com>
+ <2024021552-bats-tabby-a00b@gregkh>
+ <CAMj1kXHVMDq670JhAwsYeGjYVVfgCxFC7YUChUF1GSerCUB1ow@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXHVMDq670JhAwsYeGjYVVfgCxFC7YUChUF1GSerCUB1ow@mail.gmail.com>
 
-Kent Overstreet - 12.02.24, 21:42:26 CET:
+On Thu, Feb 15, 2024 at 10:41:57AM +0100, Ard Biesheuvel wrote:
+> On Thu, 15 Feb 2024 at 10:27, Greg KH <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Thu, Feb 15, 2024 at 10:17:20AM +0100, Ard Biesheuvel wrote:
+> > > (cc stakeholders from various distros - apologies if I missed anyone)
+> > >
+> > > Please consider the patches below for backporting to the linux-6.6.y
+> > > stable tree.
+> > >
+> > > These are prerequisites for building a signed x86 efistub kernel image
+> > > that complies with the tightened UEFI boot requirements imposed by
+> > > MicroSoft, and this is the condition under which it is willing to sign
+> > > future Linux secure boot shim builds with its 3rd party CA
+> > > certificate. (Such builds must enforce a strict separation between
+> > > executable and writable code, among other things)
+> > >
+> > > The patches apply cleanly onto 6.6.17 (-rc2), resulting in a defconfig
+> > > build that boots as expected under OVMF/KVM.
+> > >
+> > > 5f51c5d0e905 x86/efi: Drop EFI stub .bss from .data section
+> > > 7e50262229fa x86/efi: Disregard setup header of loaded image
+> > > bfab35f552ab x86/efi: Drop alignment flags from PE section headers
+> > > 768171d7ebbc x86/boot: Remove the 'bugger off' message
+> > > 8eace5b35556 x86/boot: Omit compression buffer from PE/COFF image
+> > > memory footprint
+> > > 7448e8e5d15a x86/boot: Drop redundant code setting the root device
+> > > b618d31f112b x86/boot: Drop references to startup_64
+> > > 2e765c02dcbf x86/boot: Grab kernel_info offset from zoffset header directly
+> > > eac956345f99 x86/boot: Set EFI handover offset directly in header asm
+> > > 093ab258e3fb x86/boot: Define setup size in linker script
+> > > aeb92067f6ae x86/boot: Derive file size from _edata symbol
+> > > efa089e63b56 x86/boot: Construct PE/COFF .text section from assembler
+> > > fa5750521e0a x86/boot: Drop PE/COFF .reloc section
+> > > 34951f3c28bd x86/boot: Split off PE/COFF .data section
+> > > 3e3eabe26dc8 x86/boot: Increase section and file alignment to 4k/512
+> > >
+> > > 1ad55cecf22f x86/efistub: Use 1:1 file:memory mapping for PE/COFF
+> > > .compat section
+> >
+> > Is the list here the order in which they should be applied in?
+> >
+> 
+> Yes. These are all from v6.7 except the last one, but that has been
+> queued for v6.7 already.
+> 
+> > And is this not an issue for 6.1.y as well?
+> >
+> 
+> It is, but there are many more changes that would need to go into v6.1:
+> 
+>  Documentation/x86/boot.rst                     |   2 +-
+>  arch/x86/Kconfig                               |  17 +
+>  arch/x86/boot/Makefile                         |   2 +-
+>  arch/x86/boot/compressed/Makefile              |  13 +-
+>  arch/x86/boot/compressed/efi_mixed.S           | 328 ++++++++++++++
+>  arch/x86/boot/compressed/efi_thunk_64.S        | 195 --------
+>  arch/x86/boot/compressed/head_32.S             |  38 +-
+>  arch/x86/boot/compressed/head_64.S             | 593 +++++--------------------
+>  arch/x86/boot/compressed/mem_encrypt.S         | 152 ++++++-
+>  arch/x86/boot/compressed/misc.c                |  61 ++-
+>  arch/x86/boot/compressed/misc.h                |   2 -
+>  arch/x86/boot/compressed/pgtable.h             |  10 +-
+>  arch/x86/boot/compressed/pgtable_64.c          |  87 ++--
+>  arch/x86/boot/compressed/sev.c                 | 112 +++--
+>  arch/x86/boot/compressed/vmlinux.lds.S         |   6 +-
+>  arch/x86/boot/header.S                         | 215 ++++-----
+>  arch/x86/boot/setup.ld                         |  14 +-
+>  arch/x86/boot/tools/build.c                    | 271 +----------
+>  arch/x86/include/asm/boot.h                    |   8 +
+>  arch/x86/include/asm/efi.h                     |  14 +-
+>  arch/x86/include/asm/sev.h                     |   7 +
+>  drivers/firmware/efi/libstub/Makefile          |   8 +-
+>  drivers/firmware/efi/libstub/alignedmem.c      |   5 +-
+>  drivers/firmware/efi/libstub/arm64-stub.c      |   6 +-
+>  drivers/firmware/efi/libstub/efi-stub-helper.c |   2 +
+>  drivers/firmware/efi/libstub/efistub.h         |  28 +-
+>  drivers/firmware/efi/libstub/mem.c             |   3 +-
+>  drivers/firmware/efi/libstub/randomalloc.c     |  13 +-
+>  drivers/firmware/efi/libstub/x86-5lvl.c        |  95 ++++
+>  drivers/firmware/efi/libstub/x86-stub.c        | 327 +++++++-------
+>  drivers/firmware/efi/libstub/x86-stub.h        |  17 +
+>  include/linux/efi.h                            |   1 +
+>  32 files changed, 1204 insertions(+), 1448 deletions(-)
+> 
+> (Note: the commit hashes below are bogus, they are from my tree [0])
+> 
+> If you're happy to take these too, I can give you the proper list, but
+> perhaps we should deal with v6.6 first?
 
-[thoughts about whether a cache flush / FUA request with write caches=20
-disabled would be a no-op anyway]
+Yeah, let's deal with 6.6 first :)
 
-> > I may test the Transcend XS2000 with BTRFS to see whether it makes a
-> > difference, however I really like to use it with BCacheFS and I do not
-> > really like to use LUKS for external devices. According to the kernel
-> > log I still don't really think those errors at the block layer were
-> > about anything filesystem specific, but what  do I know?
->=20
-> It's definitely not unheard of for one specific filesystem to be
-> tickling driver/device bugs and not others.
->=20
-> I wonder what it would take to dump the outstanding requests on device
-> timeout.
+What distros are going to need/want this for 6.1.y?  Will normal users
+care as this is only for a new requirement by Microsoft, not for older
+releases, right?
 
-I got some reply back from Transcend support.
+thanks,
 
-They brought up two possible issues:
-
-1) Copied to many files at once. I am not going to accept that one. An=20
-external 4 TB SSD should handle writing 1,4 TB in about 215000 files,=20
-coming from a slower Toshiba Canvio Basics external HD, just fine. About=20
-90000 files was larger files like sound and video files or installation=20
-archives. The rest is from a Linux system backup, so smaller files. I=20
-likely move those elsewhere before I try again as I do not need these on=20
-flash anyway. However if the amount of files or data matters I could never=
-=20
-know what amount of data I could write safely in one go. That is not=20
-acceptable to me.
-
-2) Power management related to USB port. Cause I am using a laptop. It may=
-=20
-have been that the Linux kernel decided to put the USB port the SSD was=20
-connected to into some kind of sleep state. However it was a constant=20
-rsync based copy workload. Yes, the kernel buffers data and the reads from=
-=20
-Toshiba HD should be quite a bit slower than the Transcend SSD could=20
-handle the writes. I saw now more than 80-90 MiB/s coming from the hard=20
-disk. However I would doubt this lead to pauses of write activity of more=20
-than 30 seconds. Still it could be a thing.
-
-Regarding further testing I am unsure whether to first test with BTRFS on=20
-top of LUKS =E2=80=93 I do not like to store clear text data on the SSD =E2=
-=80=93 or with=20
-BCacheFS plus fixes which are 6.7.5 or 6.8-rc4 in just in the case the flus=
-h=20
-handling fixes would still have an influence on the issue at hand.
-
-=46irst I will have a look on how to see what USB power management options=
-=20
-may be in place and how to tell Linux to keep the USB port the SSD is=20
-connected to at all times.
-
-Let's see how this story unfolds. At least I am in no hurry about it.
-
-Best,
-=2D-=20
-Martin
-
-
+greg k-h
 
