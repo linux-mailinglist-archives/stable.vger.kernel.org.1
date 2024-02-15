@@ -1,110 +1,124 @@
-Return-Path: <stable+bounces-20256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 389E18560E6
-	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 12:08:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 195C5856103
+	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 12:11:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6C89289AED
-	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 11:08:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9481291250
+	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 11:11:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0232129A73;
-	Thu, 15 Feb 2024 11:06:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bkfbM1j0"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADABD12BF0D;
+	Thu, 15 Feb 2024 11:09:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.lichtvoll.de (luna.lichtvoll.de [194.150.191.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F5B657A0;
-	Thu, 15 Feb 2024 11:06:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04158127B6D;
+	Thu, 15 Feb 2024 11:09:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.150.191.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707995198; cv=none; b=P1YAEa6h9jg3TMgk/L82Zb4vKBGHTHONCVO/ynF7nnmy3KheuTI8+9cMgPTl9Hi0CXE9m7IQrRDDjJ6KdCZJLaGBEh0rQvyzu0seTZnmd3O4BkXjfcLsMzWr+BRZfRvxDc/6bg6bogcJumTTZlUBH3X+ltDY1AwaU5x60Jdc97k=
+	t=1707995372; cv=none; b=NPSglT9Tv88+cDwq+NJ/cCpHUaOrs+WsZHvCsTTTdplO3hQ/r5UFUrE0MvzYZoZnXI8rGaVtNSJe3KLJNzxqVPS7ycThBXWU5bS0vw45c7NeiDzUDLaX3U/UsMJrfo7Nsq7y9pnAFchWAE1XzkuoYFQIPRvVZKK2MzxFScfk18c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707995198; c=relaxed/simple;
-	bh=+6f1RjKwFKHZixh15TYArKSQpcNXqz9ekQ2XC+tFlWM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QCFMq7FeSCmoanxbjflteW/Wj6+N+vGpaYzfkpzXpfrxbYTocNuDqcu8emYfh+BUPd58lztAdlB6DoLYZ6KuGve8FyM4+JHZ/uZ4ilUMIDI8GpGAIBA0XkfaBpgZzElSX2V4OKb3dyWZ5ZqkjK4JfYGSyzhVRvhSo7+2/UDiRk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bkfbM1j0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39266C433F1;
-	Thu, 15 Feb 2024 11:06:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707995197;
-	bh=+6f1RjKwFKHZixh15TYArKSQpcNXqz9ekQ2XC+tFlWM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bkfbM1j03Xn2tLhferLdzpwA8mvcu5xz9iPxpo+a7uNtPCdHmafXlWfYvvZNaVoFi
-	 41Rm546gcGXlNPKE9oP/lpZoFFcCyI+EArUmHilcTlVggFsigBBjY8KEuLwkXhqi3C
-	 UjDP0RqCBjia3enJec7y5MNDD19d81J+NDRIh9V4=
-Date: Thu, 15 Feb 2024 12:06:34 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Jon Hunter <jonathanh@nvidia.com>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	allen.lkml@gmail.com,
-	"linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
-Subject: Re: [PATCH 6.1 00/65] 6.1.78-rc2 review
-Message-ID: <2024021517-robust-tuition-4ce0@gregkh>
-References: <20240214142941.551330912@linuxfoundation.org>
- <6e281665-10d8-4db7-98cf-45829d3abf06@nvidia.com>
+	s=arc-20240116; t=1707995372; c=relaxed/simple;
+	bh=Y2pGpvd23nSIXN6OktBS6/0YBWljbrMTHz18LGF/8m8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Maa+PXmriJ22Xsyaa3nZmUa/LTAZN4Q7vW0nCtOWQxHgleuWvaixjBZYqV++XH4CdWhA+MtG3usckR4fEac4MW6I/9h7Iv7Uc3SgjFSopue/hjGdGgg7459kZTHp9YU0Jf5PuS74nNZ+rRbIZtkp7MaW5/YyhKu5RA3919ugpQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lichtvoll.de; spf=pass smtp.mailfrom=lichtvoll.de; arc=none smtp.client-ip=194.150.191.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lichtvoll.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lichtvoll.de
+Received: from 127.0.0.1 (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384)
+	(No client certificate requested)
+	by mail.lichtvoll.de (Postfix) with ESMTPSA id BF16C89B671;
+	Thu, 15 Feb 2024 12:09:20 +0100 (CET)
+Authentication-Results: mail.lichtvoll.de;
+	auth=pass smtp.auth=martin smtp.mailfrom=martin@lichtvoll.de
+From: Martin Steigerwald <martin@lichtvoll.de>
+To: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
+ linux-usb@vger.kernel.org,
+ Holger =?ISO-8859-1?Q?Hoffst=E4tte?= <holger@applied-asynchrony.com>,
+ linux-bcachefs@vger.kernel.org, linux-block@vger.kernel.org
+Subject: Re: I/O errors while writing to external Transcend XS-2000 4TB SSD
+Date: Thu, 15 Feb 2024 12:09:20 +0100
+Message-ID: <1979818.usQuhbGJ8B@lichtvoll.de>
+In-Reply-To: <ypeck262h6ccdnsxzo46vydzygh2y6coe3d4mvgermaaeo5ygg@4nvailbg7ay3>
+References:
+ <1854085.atdPhlSkOF@lichtvoll.de> <6599603.G0QQBjFxQf@lichtvoll.de>
+ <ypeck262h6ccdnsxzo46vydzygh2y6coe3d4mvgermaaeo5ygg@4nvailbg7ay3>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6e281665-10d8-4db7-98cf-45829d3abf06@nvidia.com>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Feb 15, 2024 at 11:04:11AM +0000, Jon Hunter wrote:
-> 
-> On 14/02/2024 14:30, Greg Kroah-Hartman wrote:
-> > This is the start of the stable review cycle for the 6.1.78 release.
-> > There are 65 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> > 
-> > Responses should be made by Fri, 16 Feb 2024 14:28:54 +0000.
-> > Anything received after that time might be too late.
-> > 
-> > The whole patch series can be found in one patch at:
-> > 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.78-rc2.gz
-> > or in the git tree and branch at:
-> > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> > and the diffstat can be found below.
-> > 
-> > thanks,
-> > 
-> > greg k-h
-> 
-> 
-> No new regressions for Tegra ...
-> 
-> Test results for stable-v6.7:
->     10 builds:	10 pass, 0 fail
->     26 boots:	26 pass, 0 fail
->     116 tests:	115 pass, 1 fail
-> 
-> Linux version:	6.7.5-rc2-gc94a8b48bd4b
-> Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
->                 tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
->                 tegra20-ventana, tegra210-p2371-2180,
->                 tegra210-p3450-0000, tegra30-cardhu-a04
-> 
-> Test failures:	tegra186-p2771-0000: pm-system-suspend.sh
-> 
-> Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Kent Overstreet - 12.02.24, 21:42:26 CET:
 
-You sent 2 of these, one without a failure, and one with?
+[thoughts about whether a cache flush / FUA request with write caches=20
+disabled would be a no-op anyway]
 
-confused,
+> > I may test the Transcend XS2000 with BTRFS to see whether it makes a
+> > difference, however I really like to use it with BCacheFS and I do not
+> > really like to use LUKS for external devices. According to the kernel
+> > log I still don't really think those errors at the block layer were
+> > about anything filesystem specific, but what  do I know?
+>=20
+> It's definitely not unheard of for one specific filesystem to be
+> tickling driver/device bugs and not others.
+>=20
+> I wonder what it would take to dump the outstanding requests on device
+> timeout.
 
-greg k-h
+I got some reply back from Transcend support.
+
+They brought up two possible issues:
+
+1) Copied to many files at once. I am not going to accept that one. An=20
+external 4 TB SSD should handle writing 1,4 TB in about 215000 files,=20
+coming from a slower Toshiba Canvio Basics external HD, just fine. About=20
+90000 files was larger files like sound and video files or installation=20
+archives. The rest is from a Linux system backup, so smaller files. I=20
+likely move those elsewhere before I try again as I do not need these on=20
+flash anyway. However if the amount of files or data matters I could never=
+=20
+know what amount of data I could write safely in one go. That is not=20
+acceptable to me.
+
+2) Power management related to USB port. Cause I am using a laptop. It may=
+=20
+have been that the Linux kernel decided to put the USB port the SSD was=20
+connected to into some kind of sleep state. However it was a constant=20
+rsync based copy workload. Yes, the kernel buffers data and the reads from=
+=20
+Toshiba HD should be quite a bit slower than the Transcend SSD could=20
+handle the writes. I saw now more than 80-90 MiB/s coming from the hard=20
+disk. However I would doubt this lead to pauses of write activity of more=20
+than 30 seconds. Still it could be a thing.
+
+Regarding further testing I am unsure whether to first test with BTRFS on=20
+top of LUKS =E2=80=93 I do not like to store clear text data on the SSD =E2=
+=80=93 or with=20
+BCacheFS plus fixes which are 6.7.5 or 6.8-rc4 in just in the case the flus=
+h=20
+handling fixes would still have an influence on the issue at hand.
+
+=46irst I will have a look on how to see what USB power management options=
+=20
+may be in place and how to tell Linux to keep the USB port the SSD is=20
+connected to at all times.
+
+Let's see how this story unfolds. At least I am in no hurry about it.
+
+Best,
+=2D-=20
+Martin
+
+
 
