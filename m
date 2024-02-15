@@ -1,117 +1,115 @@
-Return-Path: <stable+bounces-20250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9780D856064
-	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 11:58:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48108855DA1
+	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 10:17:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22408282BB3
-	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 10:58:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 053112846D8
+	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 09:17:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11EA212C809;
-	Thu, 15 Feb 2024 10:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2616D13FF6;
+	Thu, 15 Feb 2024 09:17:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uWO6Fl3z"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E84C12C7FA
-	for <stable@vger.kernel.org>; Thu, 15 Feb 2024 10:44:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D25B217585;
+	Thu, 15 Feb 2024 09:17:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707993888; cv=none; b=q65VhbneOnCoGsPSHCskvAu8aDnNxAX4OhFlECV13s0CGTDC9fF1Hy/wEE3p99K4liCBlxki2rArhd6uLSa1k+KERMVKR2QVbj0ilaKl51kiEx5aYBmeMQ3jSQPSGNSVoFhjwg2AAO0tGu0ol2ql3EiFlk80Stn8MNGQjbP/wHk=
+	t=1707988653; cv=none; b=spbcMOBjIhm5cQHSr5dgPpck5HnAkKkjKNoP8i8lAesuHsLXazwSs5tSGS0YKSglQxpwjkxYJMDrBMd7bsOFOyuO4TzB9KMJYNgnh22Bz1CDJQScl+NPYfRku8JviAOpVuVYR7GkHn2SZ8ZpbmIU3b5aey0cxk5SSARDOkGqMmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707993888; c=relaxed/simple;
-	bh=8/wN0UCU9b4QoDCfFWY9uQTPHgMz7cNz6DKSZGXpEoc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PZDJQOhj3Fkd4bcEo4v/JLU4QL/aI00BaaIiKLaxuotoWikKs2Ha9inYUCI6LEJ7d0ZXtfyWRdN3MylvLbHyseDRpDlT+NFmBvHB522/4aGdLeuyWT7rOyyDLqhTGZQryGU3oOnY0A2EDC9BNCTt2nHKdmfh4/32ElvPP2XIQnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1raZET-0000oX-Ch
-	for stable@vger.kernel.org; Thu, 15 Feb 2024 11:44:45 +0100
-Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1raZES-000rlP-2A
-	for stable@vger.kernel.org; Thu, 15 Feb 2024 11:44:44 +0100
-Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id 4BC3B28E57A
-	for <stable@vger.kernel.org>; Wed, 14 Feb 2024 14:03:52 +0000 (UTC)
-Received: from hardanger.blackshift.org (unknown [172.20.34.65])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id 4D0F428E542;
-	Wed, 14 Feb 2024 14:03:50 +0000 (UTC)
-Received: from blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 49d7ae4e;
-	Wed, 14 Feb 2024 14:03:49 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	linux-can@vger.kernel.org,
-	kernel@pengutronix.de,
-	Maxime Jayat <maxime.jayat@mobile-devices.fr>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	stable@vger.kernel.org,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 3/3] can: netlink: Fix TDCO calculation using the old data bittiming
-Date: Wed, 14 Feb 2024 14:59:07 +0100
-Message-ID: <20240214140348.2412776-4-mkl@pengutronix.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240214140348.2412776-1-mkl@pengutronix.de>
-References: <20240214140348.2412776-1-mkl@pengutronix.de>
+	s=arc-20240116; t=1707988653; c=relaxed/simple;
+	bh=QZiznrS2WZfM5jOXwf3IdqrvwBaCJtTnQvrq4O0MPBo=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=qt6bJb9Vn4fw2uEZ7bajGeHDrHDRkGR78OP7zgD/eEeh+QVry23ThPLemXV8QiRHNQmve8ZGI3Sqxsa3uIkcPsDoGQEIBQ+vAPN+x6LzO4StKX1sBVHxZWAM56ifqCEYPY6YI/wdpJcuFw3gRVAARKgaK/2GEaHUEFAS1I0zt5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uWO6Fl3z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 532B8C433B2;
+	Thu, 15 Feb 2024 09:17:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707988653;
+	bh=QZiznrS2WZfM5jOXwf3IdqrvwBaCJtTnQvrq4O0MPBo=;
+	h=From:Date:Subject:To:Cc:From;
+	b=uWO6Fl3zqsuK/hgQE5fu1onQlzrPtfdZRMDWOfXLvnfe9YrEwBEmipEO15+VUW6L1
+	 cmxjyGLi00o/v2aVf43lLrbMwIGlzFCSF99Fwu9OGyIoB9gzjBLPoSDYwNlj05DnGh
+	 iJov8VtTXsnNQ4lM/B15xK0PpQu3mn7zn9dRWH5DYQ+pdTEzwaUh8K8faitwYtDd3D
+	 +l7n0joTr3gf1YhV9U3+SMRI54/hXuoDWNcpiXHAh3ih5/NxkPDCcfowyNpR3LrXNp
+	 KM1IwvUeDpRUeb1mQYnMX2Agh7fJ9a2TPaRbM3a1PHphUjMjZwHXgO+PSbCFaUWtWz
+	 4yFRYNcKiaINw==
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-51182f8590bso779222e87.0;
+        Thu, 15 Feb 2024 01:17:33 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVtYR+6GUF6VWTaoWLqmLW4bbDMozhrz4E7sKOXdzFrZpkq7WNH2jPwuSOJDxtbishgX77CKOCuGE2mu30v708sKYg+Jh3ZROmT
+X-Gm-Message-State: AOJu0Ywkhm71swu/0ec1Clbv4+Q6OPQyETOdQD3RGolhyeEv1MJdng4x
+	9wNACaNkvWrnNZgT2geJ/Ti4R/qW29xUGCCWy/d/vKYeglBDhHiz2gEBFEaCfT5e8O9LFjz84Qj
+	/fBjcQ/fwSvzieEufbKPKuiUk7rg=
+X-Google-Smtp-Source: AGHT+IHswqCRJVEJAcStwpUMDg0QUZ+gkyp8zGMVICCUkF6T3wZcpIhgk7dYjhMVp0baPORTwbwcWaLv5Qe2FLJ5KvE=
+X-Received: by 2002:a19:f011:0:b0:511:a2ed:f6cc with SMTP id
+ p17-20020a19f011000000b00511a2edf6ccmr972818lfc.29.1707988651362; Thu, 15 Feb
+ 2024 01:17:31 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Thu, 15 Feb 2024 10:17:20 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXEGzHW07X963Q3q4VPEqUtKC==y152JyfuK_t=cZ0CKYA@mail.gmail.com>
+Message-ID: <CAMj1kXEGzHW07X963Q3q4VPEqUtKC==y152JyfuK_t=cZ0CKYA@mail.gmail.com>
+Subject: x86 efistub stable backports for v6.6
+To: "# 3.4.x" <stable@vger.kernel.org>, linux-efi <linux-efi@vger.kernel.org>, 
+	jan.setjeeilers@oracle.com, Peter Jones <pjones@redhat.com>, 
+	Steve McIntyre <steve@einval.com>, Julian Andres Klode <julian.klode@canonical.com>, 
+	Luca Boccassi <bluca@debian.org>
+Cc: James Bottomley <jejb@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 
-From: Maxime Jayat <maxime.jayat@mobile-devices.fr>
+(cc stakeholders from various distros - apologies if I missed anyone)
 
-The TDCO calculation was done using the currently applied data bittiming,
-instead of the newly computed data bittiming, which means that the TDCO
-had an invalid value unless setting the same data bittiming twice.
+Please consider the patches below for backporting to the linux-6.6.y
+stable tree.
 
-Fixes: d99755f71a80 ("can: netlink: add interface for CAN-FD Transmitter Delay Compensation (TDC)")
-Signed-off-by: Maxime Jayat <maxime.jayat@mobile-devices.fr>
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://lore.kernel.org/all/40579c18-63c0-43a4-8d4c-f3a6c1c0b417@munic.io
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- drivers/net/can/dev/netlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+These are prerequisites for building a signed x86 efistub kernel image
+that complies with the tightened UEFI boot requirements imposed by
+MicroSoft, and this is the condition under which it is willing to sign
+future Linux secure boot shim builds with its 3rd party CA
+certificate. (Such builds must enforce a strict separation between
+executable and writable code, among other things)
 
-diff --git a/drivers/net/can/dev/netlink.c b/drivers/net/can/dev/netlink.c
-index 036d85ef07f5..dfdc039d92a6 100644
---- a/drivers/net/can/dev/netlink.c
-+++ b/drivers/net/can/dev/netlink.c
-@@ -346,7 +346,7 @@ static int can_changelink(struct net_device *dev, struct nlattr *tb[],
- 			/* Neither of TDC parameters nor TDC flags are
- 			 * provided: do calculation
- 			 */
--			can_calc_tdco(&priv->tdc, priv->tdc_const, &priv->data_bittiming,
-+			can_calc_tdco(&priv->tdc, priv->tdc_const, &dbt,
- 				      &priv->ctrlmode, priv->ctrlmode_supported);
- 		} /* else: both CAN_CTRLMODE_TDC_{AUTO,MANUAL} are explicitly
- 		   * turned off. TDC is disabled: do nothing
--- 
-2.43.0
+The patches apply cleanly onto 6.6.17 (-rc2), resulting in a defconfig
+build that boots as expected under OVMF/KVM.
+
+5f51c5d0e905 x86/efi: Drop EFI stub .bss from .data section
+7e50262229fa x86/efi: Disregard setup header of loaded image
+bfab35f552ab x86/efi: Drop alignment flags from PE section headers
+768171d7ebbc x86/boot: Remove the 'bugger off' message
+8eace5b35556 x86/boot: Omit compression buffer from PE/COFF image
+memory footprint
+7448e8e5d15a x86/boot: Drop redundant code setting the root device
+b618d31f112b x86/boot: Drop references to startup_64
+2e765c02dcbf x86/boot: Grab kernel_info offset from zoffset header directly
+eac956345f99 x86/boot: Set EFI handover offset directly in header asm
+093ab258e3fb x86/boot: Define setup size in linker script
+aeb92067f6ae x86/boot: Derive file size from _edata symbol
+efa089e63b56 x86/boot: Construct PE/COFF .text section from assembler
+fa5750521e0a x86/boot: Drop PE/COFF .reloc section
+34951f3c28bd x86/boot: Split off PE/COFF .data section
+3e3eabe26dc8 x86/boot: Increase section and file alignment to 4k/512
+
+1ad55cecf22f x86/efistub: Use 1:1 file:memory mapping for PE/COFF
+.compat section
 
 
+ arch/x86/boot/Makefile                  |   2 +-
+ arch/x86/boot/compressed/vmlinux.lds.S  |   6 +-
+ arch/x86/boot/header.S                  | 211 ++++++++++--------------
+ arch/x86/boot/setup.ld                  |  14 +-
+ arch/x86/boot/tools/build.c             | 273 ++------------------------------
+ drivers/firmware/efi/libstub/Makefile   |   7 -
+ drivers/firmware/efi/libstub/x86-stub.c |  46 +-----
+ 7 files changed, 112 insertions(+), 447 deletions(-)
 
