@@ -1,84 +1,116 @@
-Return-Path: <stable+bounces-20272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EBBD8563E1
-	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 14:02:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAF2B85641B
+	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 14:14:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 824FCB24E3F
-	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 12:58:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59C661F28A00
+	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 13:14:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDBBF12DDB6;
-	Thu, 15 Feb 2024 12:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEA8F12FF64;
+	Thu, 15 Feb 2024 13:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Z8fBaZPo"
+	dkim=pass (2048-bit key) header.d=cadence.com header.i=@cadence.com header.b="DTsfJQQ4";
+	dkim=pass (1024-bit key) header.d=cadence.com header.i=@cadence.com header.b="vcbeKchR"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2073.outbound.protection.outlook.com [40.107.220.73])
+Received: from mx0a-0014ca01.pphosted.com (mx0a-0014ca01.pphosted.com [208.84.65.235])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D6D12BF3D
-	for <stable@vger.kernel.org>; Thu, 15 Feb 2024 12:58:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9443212F582;
+	Thu, 15 Feb 2024 13:13:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=208.84.65.235
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708001895; cv=fail; b=Dmj2ghk24EtyEh36oHL0ywhaZ5ifwMiLJnbw3R4SdhE1zVgYrERKsTmFB99KOGZw6n4PwbFBBQQDV188+MSMiu5kfOFz25nDzu29H1jhRXHZtFO0aZMSXaYAQCVT8047QWAd9722qX2cswhJF+MJjhBWD35zovsmYfyz4BzMoS4=
+	t=1708002838; cv=fail; b=Ml6iRezDzp+xA3SAN5RO6EGiFURADR3K4oJLCl9bG6W0huCQ9x7KfU841pWXKyooEHFSf/zWfORpBKqPEaglmMrOmKq471wGaw6VZYo3Cm31oADhU6SW2SHPE7OiOkUk3S4sReDUdTbeC3UJpExx2FVjahIcsRnwFbUwy/z5/uc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708001895; c=relaxed/simple;
-	bh=ijqiJaCXO2ObCoddifvVxFcOsXUFr/z8XN7uArP4Ycw=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dMFXoxvvGvpIqaOCmpluBpStwx1YqjWSNPhbyRie9h1Wg04s3jbF+JoUB1QduGAC54fOE2uuEbrioxci6V4yqyxKs/SbLoaS+NPuejrjCqnETb6FaNdccg2NIy9//gwP9YQtDMo+qmydUgtJtTaeJEs2DDZnDik3A9FvHUk+9SQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Z8fBaZPo; arc=fail smtp.client-ip=40.107.220.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1708002838; c=relaxed/simple;
+	bh=EexJT4jFWaEPB2e7MtMAm1XWm6+Spf+mxas/O7X/hU0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OK3AYLeLuolP/5wfVVWAgcdT1NnI1QxC56Nv80jcdA4gPXk9dW+PhJVhtPhzIl9iVjj0rQpEear+fnT7x+7aGDhNOFEP7IJ5gfnzScFfcLF5hqfGkwAA1fKAA2db9AVdmZ+/q03GR7mKZKmLh8V219I9cxPT/7J8YxskDWoaMo8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cadence.com; spf=pass smtp.mailfrom=cadence.com; dkim=pass (2048-bit key) header.d=cadence.com header.i=@cadence.com header.b=DTsfJQQ4; dkim=pass (1024-bit key) header.d=cadence.com header.i=@cadence.com header.b=vcbeKchR; arc=fail smtp.client-ip=208.84.65.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cadence.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cadence.com
+Received: from pps.filterd (m0042385.ppops.net [127.0.0.1])
+	by mx0a-0014ca01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41F3fvnV031565;
+	Thu, 15 Feb 2024 04:16:28 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cadence.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=proofpoint; bh=ZfMXSC
+	L0BrDiHN3JJbGkJNx0MnD5467RvxiBDQeoHqI=; b=DTsfJQQ47h6lpc38zY5gfO
+	omd47nJji6pRW8n9Cm7eFV4QjvA87xD8p8JalUHliM9MPuS0KMfR8Hvm9QOM6b71
+	stIJPhSLbGxmSAkhSEgXa0v5WIPyavmlAIYqUGOgsb5VFt5RA1Itk3WYgDKotn9C
+	qVCfmHRG3e9ldn4JcChtjYaqXf5Pyxr12ny5BEAN9BIrOxv4GEKx3kQZE7qwkZo+
+	g9zXKy5Ca+/L1Y1WFV5N05wv1VwqPyVp8getbXuSqdKj87+wxb0tDEBrVNG2Nr0v
+	18J770YtnWqyynHl5G73lDCxw1V3n+/h++T6zGdQeJHZaJk5KA64CG5ZjEIRy53w
+	==
+Received: from nam11-bn8-obe.outbound.protection.outlook.com (mail-bn8nam11lp2169.outbound.protection.outlook.com [104.47.58.169])
+	by mx0a-0014ca01.pphosted.com (PPS) with ESMTPS id 3w9axd1b7m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 15 Feb 2024 04:16:28 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YQYR21kfMTxCps64BM7fqt2JTFAzpYaUNnASKhsdmeK/M2CZKscnKH+4PlqFWHOGbG+a4XyWqp3fuS9x5D8iWgHuaevmwLX4MrhKrdU66wLpzSaEh+fZ1RIHICoLy5hMhxlQvS0ocM3v+Zf9iQfyGfgdckV7sC6eyVykF6em5A0zIfNPaKuT9n6jD7mWtAxZdPRXb6IU2j9d/i6msaNyiWZwH2+031yLvfaobakjIoDHbHzwBh5C6YL6m2hb7Ni8XeymtW/VCeM/+bC+FR1MTDB0p3jaMClaoF++4TRGxYxbVlyu6CPTFsB4wJ8qHHK6PIER3LOrT/lSOL+wAHXtHg==
+ b=YMVRPmZxJxk0q95Jf+Xs4llsF9kpps2qvdZzVASlgPp3i09x72LNdyzIivnoYcsZi/NThGjKMPUpRAi1dl1TIsWFFj2G2M4GPMprk0jQ5WxnmMUbPv+aF5zzwvPk9C/sNlOTLXBQWztCU+Dbvyj8MJf4U5d93BwMPMb0g2DNn/qbwG3qQzNvzeiKPMFK15L3vT62tEG55/cVCYFFThlNUtXHJIuQ/yS5NKvbYRHzu/9i3EEee0GFwOz8UPwQwbZoDlQEmBepX6DCwlYUlr53xJj+njljNXtwQAQEPEi5/3VFQ3AxyLmt8MLP7PpLW4a018tgs9CLszU4fvSFvllYZQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=i/xMMthJao8Gd8OCYGQTZHZrmXuL0LNzVRZYe5S3kGM=;
- b=h5jmt61b3tit9yInj0DQbmlmrHJMINWaLleBe8R7VND9NEyJxitqkMkKKevSH5dDx1/C9ylmoQVQpvt/e1et3HH4Rr/9rmxZjDr2nEeJWinTk8cP5Cy1SnYvaEuiHzg0O0yhLg6ePC9ZaAsGpMygMJdhAYVQfOVKkadII/UhfLY6lq+PQ2fOLVBQiEUEs5Nd/CEKlQTjqCeUatHr+o70awer3nv7mN2Hqc5km7KDFjkUf3BPzyuUgeQ2tm0N1iSHDZlaVCZ4/qwtPK06gdbcWsMH6a92uUi0QIwQ/giB9WIBk31uzzitBZ2sSs2spSmVKWhUU1yiX8Pbxh6rA02KPA==
+ bh=ZfMXSCL0BrDiHN3JJbGkJNx0MnD5467RvxiBDQeoHqI=;
+ b=f7P0/K1tSubTYdkjVGnasysJ6UU5RrecV5iB8TkOGeToc7poCm/cnTMKaP+tE5028AQ8zGJpZWSuIka3cDusFjZfXLUGJSW2+s4lplSW3iL8FWU2yRkL3LmMtqR0HgOXIlb8ISD36XTQ3e/YHdGKRdEx8mRf+AjpGWuYyKwVjTzh0KNmRd2OjqUow3g2NBs7vVPr2nc6ukKYBgE0VI7fg1g1Rk2Ke+Ud7sMO8W9naZCXpnMYoiBljKzB+wiE4tp5oTcE6/0akQbSLOwQg022iJVtoCGzbBXBlmoVfJyy5ifeaiKvc9QGB4dtATZ8fQ9FeT+EX9R1odL7p1/sZM7xHA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ 158.140.1.147) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=cadence.com;
+ dmarc=pass (p=none sp=none pct=100) action=none header.from=cadence.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cadence.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=i/xMMthJao8Gd8OCYGQTZHZrmXuL0LNzVRZYe5S3kGM=;
- b=Z8fBaZPoO1mwDN7KMquOUv/rfeNz0m3RWpzm+Ka14+9XoFGKLjxIAgWEK4MMlKkTs715VmDc+Ft1t40d5pPISO/voG5UGeIVqpnei9w9dQZnmZC4lM8atDyd8N0c7hgFg1+zcst9cXSpMsB1Fo8m94G38YNuQWwmSAC5xHPBDX0=
-Received: from MN2PR14CA0003.namprd14.prod.outlook.com (2603:10b6:208:23e::8)
- by CH2PR12MB4070.namprd12.prod.outlook.com (2603:10b6:610:ae::22) with
+ bh=ZfMXSCL0BrDiHN3JJbGkJNx0MnD5467RvxiBDQeoHqI=;
+ b=vcbeKchRgbQFxCtTYNIzEz6HeYRldeLFqPhwZJoXDQYRQBuMothdsseo0Tjg9FsySQlSEsYxICbK51jsD7tmiNUxcvy+/UN9YuCNRrExL4WW8l0wOZtVUy3lNTGbi55MrEJf5q2nLjZ1BDtupJ+a8jnVgXkLv1LRaB2TOJ3hhi4=
+Received: from BN8PR04CA0007.namprd04.prod.outlook.com (2603:10b6:408:70::20)
+ by SJ0PR07MB8418.namprd07.prod.outlook.com (2603:10b6:a03:335::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.14; Thu, 15 Feb
- 2024 12:58:09 +0000
-Received: from BL02EPF0001A0FE.namprd03.prod.outlook.com
- (2603:10b6:208:23e:cafe::92) by MN2PR14CA0003.outlook.office365.com
- (2603:10b6:208:23e::8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.28; Thu, 15 Feb
+ 2024 12:16:26 +0000
+Received: from BN8NAM12FT115.eop-nam12.prod.protection.outlook.com
+ (2603:10b6:408:70:cafe::d5) by BN8PR04CA0007.outlook.office365.com
+ (2603:10b6:408:70::20) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.26 via Frontend
- Transport; Thu, 15 Feb 2024 12:58:09 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BL02EPF0001A0FE.mail.protection.outlook.com (10.167.242.105) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7292.25 via Frontend Transport; Thu, 15 Feb 2024 12:58:09 +0000
-Received: from srishanm-Cloudripper.amd.com (10.180.168.240) by
- SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server
+ Transport; Thu, 15 Feb 2024 12:16:25 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 158.140.1.147)
+ smtp.mailfrom=cadence.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=cadence.com;
+Received-SPF: Pass (protection.outlook.com: domain of cadence.com designates
+ 158.140.1.147 as permitted sender) receiver=protection.outlook.com;
+ client-ip=158.140.1.147; helo=sjmaillnx1.cadence.com; pr=C
+Received: from sjmaillnx1.cadence.com (158.140.1.147) by
+ BN8NAM12FT115.mail.protection.outlook.com (10.13.182.156) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7316.14 via Frontend Transport; Thu, 15 Feb 2024 12:16:25 +0000
+Received: from maileu5.global.cadence.com (eudvw-maileu5.cadence.com [10.160.110.202])
+	by sjmaillnx1.cadence.com (8.14.4/8.14.4) with ESMTP id 41FCGLjt012652
+	(version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 15 Feb 2024 04:16:22 -0800
+Received: from maileu5.global.cadence.com (10.160.110.202) by
+ maileu5.global.cadence.com (10.160.110.202) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 15 Feb 2024 06:58:06 -0600
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-To: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>, Aurabindo Pillai
-	<aurabindo.pillai@amd.com>
-CC: <amd-gfx@lists.freedesktop.org>, Srinivasan Shanmugam
-	<srinivasan.shanmugam@amd.com>, <stable@vger.kernel.org>, Hamza Mahfooz
-	<hamza.mahfooz@amd.com>, Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH] drm/amdgpu/display: Address kdoc for 'is_psr_su' in 'fill_dc_dirty_rects'
-Date: Thu, 15 Feb 2024 18:27:54 +0530
-Message-ID: <20240215125754.2333021-1-srinivasan.shanmugam@amd.com>
-X-Mailer: git-send-email 2.34.1
+ 15.1.2375.24; Thu, 15 Feb 2024 13:16:21 +0100
+Received: from eu-cn01.cadence.com (10.160.89.184) by
+ maileu5.global.cadence.com (10.160.110.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24 via Frontend Transport; Thu, 15 Feb 2024 13:16:21 +0100
+Received: from eu-cn01.cadence.com (localhost.localdomain [127.0.0.1])
+	by eu-cn01.cadence.com (8.14.7/8.14.7) with ESMTP id 41FCGKE2259946;
+	Thu, 15 Feb 2024 13:16:20 +0100
+Received: (from pawell@localhost)
+	by eu-cn01.cadence.com (8.14.7/8.14.7/Submit) id 41FCGK7c259942;
+	Thu, 15 Feb 2024 13:16:20 +0100
+From: Pawel Laszczak <pawell@cadence.com>
+To: <peter.chen@kernel.org>
+CC: <gregkh@linuxfoundation.org>, <linux-usb@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <pawell@cadence.com>,
+        <stable@vger.kernel.org>
+Subject: [PATCH] usb: cdnsp: fixed issue with incorrect detecting CDNSP family controllers
+Date: Thu, 15 Feb 2024 13:16:09 +0100
+Message-ID: <20240215121609.259772-1-pawell@cadence.com>
+X-Mailer: git-send-email 2.30.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -87,67 +119,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
+X-CrossPremisesHeadersFilteredBySendConnector: maileu5.global.cadence.com
+X-OrganizationHeadersPreserved: maileu5.global.cadence.com
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0001A0FE:EE_|CH2PR12MB4070:EE_
-X-MS-Office365-Filtering-Correlation-Id: f328b3c7-3327-46fe-b5df-08dc2e25c293
+X-MS-TrafficTypeDiagnostic: BN8NAM12FT115:EE_|SJ0PR07MB8418:EE_
+X-MS-Office365-Filtering-Correlation-Id: b5876c7a-ba8b-42bd-c053-08dc2e1fee13
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	ZvxewD56keVjQ/1S+GeX1emcG903KyiPYbhE3bbn0nQ6KfjOs56XAbWnMO2Y64w+KT5u6HxNnLs7sSF4RR/gmw6Tig2EJHdsbz7hrfKvTbWIshWayTcYOju27I5KEGR3dmBLMJpqRj4dbJVi4W3LG9TywRztaBvht0zFNkfqlVl9UzA2F71iynZkr86ZBShNB8wJ4vd89TCP0BAXzw4bA1rzJc6xZFFrkGoytVx4yc8a8gCePvMnPMesdMnsZMS61TKnPm7v7hm2hvnVzmX38DEWml55N88vJemr9dbah3ixGiKQnh3fP0p89qqiLoFxQlNPe3kA6IHEsJ0Zt5PoBRp/h3yfLWeZ7P9ArWqEPVpXaZE3VVZZx5l7/SBX059eCHX+ixtcX9p6hvgK6D/8ZP9JTe5EHqAy64tSf2T1XsxDLNSjuQCpvSlsZhdNp/DsRvBNcm3z8WR8ChZczp/s6EAuKdxc1PvX8qJ6EnZ0NmHHwR10kQnYgJ+XsvbOQ+GXYOr0Yv/bRyLay2FDZRFVj7G0Fly1T/5kbZUJgkGdOnkvxrrY3U5F8YCP8h7jaGJsI4yGLJQRGBry8bhsri8JlmrFUglDmKm04PuKbIupne5AhYrWLO7W4tQW4jNA1b8Gnu5NSnCzPCGe1MZgGmPzLNWxEfYnu6x57zlMJMcQ30M=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(396003)(136003)(39860400002)(346002)(376002)(230273577357003)(230922051799003)(64100799003)(451199024)(36860700004)(1800799012)(186009)(82310400011)(40470700004)(46966006)(2906002)(6666004)(70586007)(7696005)(36756003)(26005)(478600001)(2616005)(82740400003)(356005)(81166007)(426003)(336012)(1076003)(16526019)(83380400001)(86362001)(8676002)(8936002)(70206006)(4326008)(5660300002)(44832011)(6636002)(54906003)(316002)(110136005)(41300700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Feb 2024 12:58:09.2583
+X-Microsoft-Antispam-Message-Info: 
+	FSpBstMc56VivpOzLDU0uI1+G7oq6NBg+SEynWDLr7GOanH7aWksYCQbH9Xkv6tW5wT+ePoE9rvATKRXGlfSBwR/7uLcP0c2PHhprCS4VQTWtxYHfMn4S7bGBQFCkNRSYodpC3IzifviJCsX6hDcRkdHGDQ06sw/ytvgrBH4QyajyvuKHbIU2084g7akRfV8YkpjBF+nnw6gOxhq31UgmMoPzxwFBb16/+IS3u7dsutRC3VWDasT9/AMfD085kA68xvG3Su5ZKqqpnmIHfXZBCwuGfgxKj0nEqlXVHDZhh5544hYEpZSHOBujo2NcXf3wTyY8Ra517uiZUEyUC15H7G0seeb7mqHpo7/9qqSJ3XWCLTEq8+MYpEnyHpUgVrDs+Tj9ZXGkdB1Zhpb5Iw8587bIK/UMxwIPjA/TFmIXHYhBdKYOJteoT82TV1+4vn1AtCQwtxLtpHDHb/sq72ttTHIiuKhvm8pNYjmKjDm/hDUVsV0AXdf4djAC8qjvBjK72DgaphxQ7ExGxCQ72gwUWcoiko2yr0TNximiyiuopjG+NHbrXAWh5ebAJDpOMpW/DOyBXeUeuG7H+iVa7lGqOhyt4IdZWH3ey2FuIDb6E+WmBJ/eCZkfh5DWeZIetPOCVVpfWXjzKRu+khCOpFRtXVi11yJWqLtLIrCt1/2oAY=
+X-Forefront-Antispam-Report: 
+	CIP:158.140.1.147;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:sjmaillnx1.cadence.com;PTR:unknown.Cadence.COM;CAT:NONE;SFS:(13230031)(4636009)(396003)(346002)(136003)(39860400002)(376002)(230922051799003)(1800799012)(451199024)(36860700004)(186009)(82310400011)(64100799003)(46966006)(40470700004)(5660300002)(8936002)(8676002)(6916009)(4326008)(70586007)(2906002)(83380400001)(26005)(1076003)(82740400003)(336012)(426003)(7636003)(356005)(36756003)(86362001)(42186006)(316002)(54906003)(6666004)(41300700001)(2616005)(478600001)(70206006);DIR:OUT;SFP:1102;
+X-OriginatorOrg: cadence.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Feb 2024 12:16:25.1497
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f328b3c7-3327-46fe-b5df-08dc2e25c293
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF0001A0FE.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b5876c7a-ba8b-42bd-c053-08dc2e1fee13
+X-MS-Exchange-CrossTenant-Id: d36035c5-6ce6-4662-a3dc-e762e61ae4c9
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=d36035c5-6ce6-4662-a3dc-e762e61ae4c9;Ip=[158.140.1.147];Helo=[sjmaillnx1.cadence.com]
+X-MS-Exchange-CrossTenant-AuthSource: 
+	BN8NAM12FT115.eop-nam12.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4070
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR07MB8418
+X-Proofpoint-GUID: TAesQK7eAcvTwTydkzvpeom-I8ASJge9
+X-Proofpoint-ORIG-GUID: TAesQK7eAcvTwTydkzvpeom-I8ASJge9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-15_11,2024-02-14_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_check_notspam policy=outbound_check score=0 suspectscore=0
+ mlxlogscore=475 malwarescore=0 spamscore=0 lowpriorityscore=0 phishscore=0
+ impostorscore=0 adultscore=0 mlxscore=0 clxscore=1015 bulkscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401310000 definitions=main-2402150098
 
-The is_psr_su parameter is a boolean flag indicating whether the Panel
-Self Refresh Selective Update (PSR SU) feature is enabled which is a
-power-saving feature that allows only the updated regions of the screen
-to be refreshed, reducing the amount of data that needs to be sent to
-the display.
+Cadence have several controllers from 0x000403xx family but current
+driver suuport detecting only one with DID equal 0x0004034E.
+It causes that if someone uses different CDNSP controller then driver
+will use incorrect version and register space.
+Patch fix this issue.
 
-Fixes the below with gcc W=1:
-drivers/gpu/drm/amd/amdgpu/../display/amdgpu_dm/amdgpu_dm.c:5257: warning: Function parameter or member 'is_psr_su' not described in 'fill_dc_dirty_rects'
-
-Fixes: 13d6b0812e58 ("drm/amdgpu: make damage clips support configurable")
-Cc: stable@vger.kernel.org
-Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+cc: <stable@vger.kernel.org>
+Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
+Signed-off-by: Pawel Laszczak <pawell@cadence.com>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Changlog:
+v2:
+- typo have been removed
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index b9ac3d2f8029..1b51f7fb48ea 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -5234,6 +5234,10 @@ static inline void fill_dc_dirty_rect(struct drm_plane *plane,
-  * @new_plane_state: New state of @plane
-  * @crtc_state: New state of CRTC connected to the @plane
-  * @flip_addrs: DC flip tracking struct, which also tracts dirty rects
-+ * @is_psr_su: Flag indicating whether Panel Self Refresh Selective Update (PSR SU) is enabled.
-+ *             If PSR SU is enabled and damage clips are available, only the regions of the screen
-+ *             that have changed will be updated. If PSR SU is not enabled,
-+ *             or if damage clips are not available, the entire screen will be updated.
-  * @dirty_regions_changed: dirty regions changed
-  *
-  * For PSR SU, DC informs the DMUB uController of dirty rectangle regions
+ drivers/usb/cdns3/core.c |  1 -
+ drivers/usb/cdns3/drd.c  | 13 +++++++++----
+ drivers/usb/cdns3/drd.h  |  6 +++++-
+ 3 files changed, 14 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/usb/cdns3/core.c b/drivers/usb/cdns3/core.c
+index 33548771a0d3..465e9267b49c 100644
+--- a/drivers/usb/cdns3/core.c
++++ b/drivers/usb/cdns3/core.c
+@@ -395,7 +395,6 @@ static int cdns_role_set(struct usb_role_switch *sw, enum usb_role role)
+ 	return ret;
+ }
+ 
+-
+ /**
+  * cdns_wakeup_irq - interrupt handler for wakeup events
+  * @irq: irq number for cdns3/cdnsp core device
+diff --git a/drivers/usb/cdns3/drd.c b/drivers/usb/cdns3/drd.c
+index 04b6d12f2b9a..ee917f1b091c 100644
+--- a/drivers/usb/cdns3/drd.c
++++ b/drivers/usb/cdns3/drd.c
+@@ -156,7 +156,8 @@ bool cdns_is_device(struct cdns *cdns)
+  */
+ static void cdns_otg_disable_irq(struct cdns *cdns)
+ {
+-	writel(0, &cdns->otg_irq_regs->ien);
++	if (cdns->version)
++		writel(0, &cdns->otg_irq_regs->ien);
+ }
+ 
+ /**
+@@ -422,15 +423,20 @@ int cdns_drd_init(struct cdns *cdns)
+ 
+ 		cdns->otg_regs = (void __iomem *)&cdns->otg_v1_regs->cmd;
+ 
+-		if (readl(&cdns->otg_cdnsp_regs->did) == OTG_CDNSP_DID) {
++		state = readl(&cdns->otg_cdnsp_regs->did);
++
++		if (OTG_CDNSP_CHECK_DID(state)) {
+ 			cdns->otg_irq_regs = (struct cdns_otg_irq_regs __iomem *)
+ 					      &cdns->otg_cdnsp_regs->ien;
+ 			cdns->version  = CDNSP_CONTROLLER_V2;
+-		} else {
++		} else if (OTG_CDNS3_CHECK_DID(state)) {
+ 			cdns->otg_irq_regs = (struct cdns_otg_irq_regs __iomem *)
+ 					      &cdns->otg_v1_regs->ien;
+ 			writel(1, &cdns->otg_v1_regs->simulate);
+ 			cdns->version  = CDNS3_CONTROLLER_V1;
++		} else {
++			dev_err(cdns->dev, "not supporte DID=0x%08x\n", state);
++			return -EINVAL;
+ 		}
+ 
+ 		dev_dbg(cdns->dev, "DRD version v1 (ID: %08x, rev: %08x)\n",
+@@ -483,7 +489,6 @@ int cdns_drd_exit(struct cdns *cdns)
+ 	return 0;
+ }
+ 
+-
+ /* Indicate the cdns3 core was power lost before */
+ bool cdns_power_is_lost(struct cdns *cdns)
+ {
+diff --git a/drivers/usb/cdns3/drd.h b/drivers/usb/cdns3/drd.h
+index cbdf94f73ed9..d72370c321d3 100644
+--- a/drivers/usb/cdns3/drd.h
++++ b/drivers/usb/cdns3/drd.h
+@@ -79,7 +79,11 @@ struct cdnsp_otg_regs {
+ 	__le32 susp_timing_ctrl;
+ };
+ 
+-#define OTG_CDNSP_DID	0x0004034E
++/* CDNSP driver supports 0x000403xx Cadence USB controller family. */
++#define OTG_CDNSP_CHECK_DID(did) (((did) & GENMASK(31, 8)) == 0x00040300)
++
++/* CDNS3 driver supports 0x000402xx Cadence USB controller family. */
++#define OTG_CDNS3_CHECK_DID(did) (((did) & GENMASK(31, 8)) == 0x00040200)
+ 
+ /*
+  * Common registers interface for both CDNS3 and CDNSP version of DRD.
 -- 
-2.34.1
+2.37.2
 
 
