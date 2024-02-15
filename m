@@ -1,114 +1,141 @@
-Return-Path: <stable+bounces-20287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CEBE856888
-	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 16:51:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 539E685687B
+	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 16:50:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A3CAB2A1C0
-	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 15:49:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 864851C23ABE
+	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 15:50:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCFB3134CDB;
-	Thu, 15 Feb 2024 15:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA89C13399E;
+	Thu, 15 Feb 2024 15:49:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="UM4kEtm1"
+	dkim=pass (1024-bit key) header.d=hp.com header.i=@hp.com header.b="DPdt9LWk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-162.mimecast.com (us-smtp-delivery-162.mimecast.com [170.10.133.162])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F602134CD4
-	for <stable@vger.kernel.org>; Thu, 15 Feb 2024 15:45:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50DA4132C04
+	for <stable@vger.kernel.org>; Thu, 15 Feb 2024 15:49:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.162
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708011961; cv=none; b=AMWneqB+NrM8OicTmW0Tmj84MnvyY/uSYjW+l8L8JB7g/kmLUi2xFm/CwuC9qrMi9V1w1yh7dLtuU3JRd36yIxPcYD98GJ87IZxIvFOTK8KOjeevrPlzOlh6Kca7yP9iRqa32sa8m70EfCzVb67XTeG8WzKGil0S2HP1gV5esNk=
+	t=1708012197; cv=none; b=UxuE0XM7m6lY/dfH2LdaZSZqnMzEtQChFckFh9pstKbZZFkbCA8Qr7ZYME3cr+iigL/1v0dyzPetPRpoFjZpYXUUaGrfZP6MsPvELf35Ytxnt734c0Wz17VkoD+xgPOjOOBnCOxOW7K51DLqjoP+ad2JxunxhDnle91C9CFurOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708011961; c=relaxed/simple;
-	bh=OyYvR0nJ9m4/M/6O/Io2rVD4FvPDQMXmtlWBsQVhziI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eU35Oo7gaOFy89VrKBc2OejydQ2fK0zG1BztcUfzU8xnpSSJajJWzglZD5ifTBb0mz9HXzsp9yG/ZDRJkzU+4JadC4FCGqW5hINxHVeZB8S03UIJY8zxZGo1ZWnx2306xyDDcKJc4bVl81XfPGzm68SHsQfBtO8Ahl4TYg2nKNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=UM4kEtm1; arc=none smtp.client-ip=209.85.167.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
-Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-3c134813841so396672b6e.0
-        for <stable@vger.kernel.org>; Thu, 15 Feb 2024 07:45:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxtx.org; s=google; t=1708011958; x=1708616758; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VHgBe25+eERSHksZlJnlC2Hz2Jbap8NDk0LVkzb97yk=;
-        b=UM4kEtm18h/GdOPefrxJUwwc/e2A1FrwnaPJ8+c4ixvqQlPjKe+T8qlZbfTYbHDqWH
-         UGQc4kZWaUTDIgdrLYX5A1Yjuc1TmlzP5fXxnN7wRjsfU+kSwlJnUTY1z17wd5MCPTmo
-         dhkqkGefMF0PaXJDyzZq75fW0JKw6kwPTAJOM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708011958; x=1708616758;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VHgBe25+eERSHksZlJnlC2Hz2Jbap8NDk0LVkzb97yk=;
-        b=IzxVs8FJgT6aIWk/xxWDeYj0GN1HqDmQntEOUjKMaul1NpofsU+AHDx5/p6YeukLaQ
-         sHSdcXEE+JaKVmzvgEBI+Smrs1gjAdUiwnhIFJZaoRyECXDhhO566IAqTJor2BlMlP/5
-         40Hd8kUiROqoLJXHT0g+Zcgez8uuRYuaIWec4ThmHcpRLY5Q2cIw0SeBPANezjaEsUeT
-         9nVP/tsXm+PyvBgVZ+ygZYINj99OyXNnL7EzGoeCPtI/SwCFkqqvcXNxHoAPXmSibt6v
-         +21k/VeK2Ycv9OGD1RSZA1hmYKl8icMBcr8WwcSKhB2GdIbdrHtu5lbWyTk81Hhsbw2Y
-         bubg==
-X-Gm-Message-State: AOJu0YxPhty+FXfdp/UWP8RmjqkEXLyL6+Sx6n72am1NW+Z/bI7egFUq
-	FZHriJdgQ6Xep/R0qiiGddWxRU5TYEpOXuuERsidd8ZyUdvjaR9VWZzKuD3y4G1iO2KjPMR+XCV
-	1xQ==
-X-Google-Smtp-Source: AGHT+IEn/CD+jUYHryIveWJjl5955TfMP6i4py7xzlOW5kREQ2c3KhoyBlQ5B2a7aIT2H4QVAoUOKA==
-X-Received: by 2002:a05:6808:187:b0:3c0:33cc:3a36 with SMTP id w7-20020a056808018700b003c033cc3a36mr2386664oic.6.1708011958410;
-        Thu, 15 Feb 2024 07:45:58 -0800 (PST)
-Received: from fedora64.linuxtx.org ([99.47.93.78])
-        by smtp.gmail.com with ESMTPSA id bx39-20020a0568081b2700b003c072ae9b4asm219086oib.27.2024.02.15.07.45.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Feb 2024 07:45:58 -0800 (PST)
-Sender: Justin Forbes <jmforbes@linuxtx.org>
-Date: Thu, 15 Feb 2024 09:45:56 -0600
-From: Justin Forbes <jforbes@fedoraproject.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com
-Subject: Re: [PATCH 6.7 000/127] 6.7.5-rc2 review
-Message-ID: <Zc4xtIwDdjm_Odrr@fedora64.linuxtx.org>
-References: <20240214142244.209814342@linuxfoundation.org>
+	s=arc-20240116; t=1708012197; c=relaxed/simple;
+	bh=0UxlDs5v98il8Yvx5898jp0zflTPlEd7LBBWGgaz4vE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Ma5dsXKws0+eG1IyG/O1zHHVccASx59mupeorABe2gwne7dp45/BfIPxJ8/ppZxvcEp1OXYtOTdl5GVqeseia4aFhruDZ7c2V4/ilRygHavE7EK6H8FIjpQVf2A/tvr1rFuWfG6R8Dj5EBy6/tgsKMkKrHKTR3Infa75h4MSqI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hp.com; spf=pass smtp.mailfrom=hp.com; dkim=pass (1024-bit key) header.d=hp.com header.i=@hp.com header.b=DPdt9LWk; arc=none smtp.client-ip=170.10.133.162
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hp.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hp.com; s=mimecast20180716;
+	t=1708012193;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0UxlDs5v98il8Yvx5898jp0zflTPlEd7LBBWGgaz4vE=;
+	b=DPdt9LWkOPjBXUEiNVNUIQMGOD6ZyBi/Qy/zg3jWugvbGgcyYVw3QJFQrVi2d1MB753gat
+	mXtuCHl9R5veWpyLJzRcEB6W6fdnOYp7XVGbu8c2HZMo0bGvUe0tUONJ1C923NP64RiKiH
+	lXbNMzBqGl2L22GhxML7YSBL1luXaGg=
+Received: from g8t01560s.inc.hp.com (g8t01560s.inc.hp.com [15.72.64.154]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-352-5jmfhb03Pduo__cOpimguQ-1; Thu, 15 Feb 2024 10:49:52 -0500
+X-MC-Unique: 5jmfhb03Pduo__cOpimguQ-1
+Received: from g7t14407g.inc.hpicorp.net (g7t14407g.inc.hpicorp.net [15.63.19.131])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by g8t01560s.inc.hp.com (Postfix) with ESMTPS id 06CD720399;
+	Thu, 15 Feb 2024 15:49:50 +0000 (UTC)
+Received: from localhost.localdomain (unknown [15.53.255.151])
+	by g7t14407g.inc.hpicorp.net (Postfix) with ESMTP id C23FF17;
+	Thu, 15 Feb 2024 15:49:48 +0000 (UTC)
+From: Alexandru Gagniuc <alexandru.gagniuc@hp.com>
+To: linux-sound@vger.kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com
+Cc: linux-kernel@vger.kernel.org,
+	eniac-xw.zhang@hp.com,
+	Alexandru Gagniuc <alexandru.gagniuc@hp.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] ALSA: hda/realtek: fix mute/micmute LED For HP mt645
+Date: Thu, 15 Feb 2024 15:49:22 +0000
+Message-Id: <20240215154922.778394-1-alexandru.gagniuc@hp.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <87frxteoil.wl-tiwai@suse.de>
+References: <87frxteoil.wl-tiwai@suse.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240214142244.209814342@linuxfoundation.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: hp.com
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=WINDOWS-1252; x-default=true
 
-On Wed, Feb 14, 2024 at 03:29:59PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.7.5 release.
-> There are 127 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Fri, 16 Feb 2024 14:22:16 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.7.5-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.7.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+From: Eniac Zhang <eniac-xw.zhang@hp.com>
 
-Tested rc2 against the Fedora build system (aarch64, ppc64le, s390x,
-x86_64), and boot tested x86_64. No regressions noted.
+The HP mt645 G7 Thin Client uses an ALC236 codec and needs the
+ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF quirk to make the mute and
+micmute LEDs work.
 
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+There are two variants of the USB-C PD chip on this device. Each uses
+a different BIOS and board ID, hence the two entries.
+
+Signed-off-by: Eniac Zhang <eniac-xw.zhang@hp.com>
+Signed-off-by: Alexandru Gagniuc <alexandru.gagniuc@hp.com>
+Cc: <stable@vger.kernel.org>
+---
+
+Changes since version 1:
+ - Adjusted Signed-off-by lines to include original author.
+
+ sound/pci/hda/patch_realtek.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 6994c4c5073c..c837470ef5b8 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9928,6 +9928,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] =
+=3D {
+ =09SND_PCI_QUIRK(0x103c, 0x8abb, "HP ZBook Firefly 14 G9", ALC245_FIXUP_CS=
+35L41_SPI_2_HP_GPIO_LED),
+ =09SND_PCI_QUIRK(0x103c, 0x8ad1, "HP EliteBook 840 14 inch G9 Notebook PC"=
+, ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ =09SND_PCI_QUIRK(0x103c, 0x8ad2, "HP EliteBook 860 16 inch G9 Notebook PC"=
+, ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
++=09SND_PCI_QUIRK(0x103c, 0x8b0f, "HP Elite mt645 G7 Mobile Thin Client U81=
+", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ =09SND_PCI_QUIRK(0x103c, 0x8b2f, "HP 255 15.6 inch G10 Notebook PC", ALC23=
+6_FIXUP_HP_MUTE_LED_COEFBIT2),
+ =09SND_PCI_QUIRK(0x103c, 0x8b42, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_=
+LED),
+ =09SND_PCI_QUIRK(0x103c, 0x8b43, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_=
+LED),
+@@ -9935,6 +9936,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] =
+=3D {
+ =09SND_PCI_QUIRK(0x103c, 0x8b45, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_=
+LED),
+ =09SND_PCI_QUIRK(0x103c, 0x8b46, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_=
+LED),
+ =09SND_PCI_QUIRK(0x103c, 0x8b47, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_=
+LED),
++=09SND_PCI_QUIRK(0x103c, 0x8b59, "HP Elite mt645 G7 Mobile Thin Client U89=
+", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ =09SND_PCI_QUIRK(0x103c, 0x8b5d, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VR=
+EF),
+ =09SND_PCI_QUIRK(0x103c, 0x8b5e, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VR=
+EF),
+ =09SND_PCI_QUIRK(0x103c, 0x8b63, "HP Elite Dragonfly 13.5 inch G4", ALC245=
+_FIXUP_CS35L41_SPI_4_HP_GPIO_LED),
+--=20
+2.42.0
+
 
