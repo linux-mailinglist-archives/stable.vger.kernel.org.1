@@ -1,156 +1,157 @@
-Return-Path: <stable+bounces-20318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9763F856E76
-	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 21:19:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 902B6856ED9
+	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 21:49:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38BF6281009
-	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 20:19:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F02ACB250DC
+	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 20:48:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 883F613AA3E;
-	Thu, 15 Feb 2024 20:19:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=o2.pl header.i=@o2.pl header.b="wmxjmVhv"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77C3513B784;
+	Thu, 15 Feb 2024 20:48:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx-out.tlen.pl (mx-out.tlen.pl [193.222.135.142])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C6513AA35
-	for <stable@vger.kernel.org>; Thu, 15 Feb 2024 20:19:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.222.135.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D2A13B2A9;
+	Thu, 15 Feb 2024 20:48:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708028374; cv=none; b=r1qkuyaXQJKdDebdR6BVB0bNCAD8/T78d27YZuSuHiq8cVm5Yhog8OxJhRGD08toQ/NgQmfoV4x6//X5n8FjhRUV+GYuXhRg29VGrYlWPVAVv3idOEQLrCtplXEd9qhetnGwj+8g9jYdk5ktQ3SnIKmPj5Fhpw+j2p44/AVrhoQ=
+	t=1708030095; cv=none; b=jw351kxFmVf7eSvlAIgP/JsuSlVNwBk+SjXJrCBYh2Vp8NnnX0q6oxFEdq6lYXlRomqQlzm9XLwhBqs0vjish8ncdOhIMNtPWKSo5mmtYMOJUeGe+tuxQKrStwpmPS97KCcBlGBU+Z8h2XJcx0PcDmC0HvzNRzbAUUbRizo+Cxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708028374; c=relaxed/simple;
-	bh=zwtZdDAZCHCv7MVfKCwJCAfj/bM75uI5M8ydaCTquRw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=scc26thG1CsFKdlew79mDi944ca64C76nZCIbyn2nrHYNwgRpiMNhRAqGz/ElYN7JpzQJ7ZCEpDgtqHEgOo0PMCQ9UWrIbFNF5NULK8MwgCPUKgs6sj/hsX2PREdEdP+KKjzv6B7vhYu4QA5ezchEwX8pJ1pa/AygyOKCdmjgzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl; spf=pass smtp.mailfrom=o2.pl; dkim=pass (1024-bit key) header.d=o2.pl header.i=@o2.pl header.b=wmxjmVhv; arc=none smtp.client-ip=193.222.135.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=o2.pl
-Received: (wp-smtpd smtp.tlen.pl 10145 invoked from network); 15 Feb 2024 21:12:48 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=o2.pl; s=1024a;
-          t=1708027969; bh=l2XU1Zv7tmP64B6JYFSA/UXnKYI6xED59aak4SWl+tk=;
-          h=Subject:To:Cc:From;
-          b=wmxjmVhveThRI2MN35AC/YfwmvTpgmAOoNLi7J9lYJtJTXgdg3g4+69yciiAbOlcR
-           C4FX/0a45go8uSsS45TSRX5OIsX1PziyMz34i2eILQjHDu5qXMCK0vPBTrjw6JU3Fo
-           m2jP6Lm0hATWLfNznJMsbu8dnrGijbesj1iKQ+qk=
-Received: from aafh184.neoplus.adsl.tpnet.pl (HELO [192.168.1.22]) (mat.jonczyk@o2.pl@[83.4.137.184])
-          (envelope-sender <mat.jonczyk@o2.pl>)
-          by smtp.tlen.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <gregkh@linuxfoundation.org>; 15 Feb 2024 21:12:48 +0100
-Message-ID: <92f05564-158d-4ced-bb0c-80845688213a@o2.pl>
-Date: Thu, 15 Feb 2024 21:12:46 +0100
+	s=arc-20240116; t=1708030095; c=relaxed/simple;
+	bh=SoHAHffZ4RCJ/GSPZH6Zk08SApNjYRlemmf8PUDMp+M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Tv8I2yIF9OyXbUKbMnnPkFFJIHV1p/oDVNqievgCQwTWdMFsG6i/wSETCrBXEz/+0hWhQxQyL6edHT79XglVe6KYZT30XOFP4CDnquveUBR+pyhAq0r9SktD54dslcTbVQruwYC/uJFGlVNYx5aYj5Rl8xkGdPCpIrdJGYKWz+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.215.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-5d8b70b39efso91181a12.0;
+        Thu, 15 Feb 2024 12:48:13 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708030093; x=1708634893;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jpqvRb2dxir6jw5v/wwCFjc5/+hKohMo9RksbxvA9rc=;
+        b=rQ08UWEIXI8XXkut5sIbC0iCRjxxi5Cai5PLkIQfEvEwB/Z5qu3Gc59Q5Wi+QDFHWJ
+         +XlrdF6OMb0kl+j177nWqFoS+OULVHZEXuf7AE3yeKYZPfiJ0Asp2UATuXxJ1+g1q4G6
+         /1aancAXdxFpDok74DicRGhuzO+d4b9u9lJ9BbWiPYJvDTEkh7tb5Ch9ctCYYiWP2Mng
+         f1opUiRvUMhUtvp827wDs2hmwFJWJXB6/4WctxBpvgVNU4KNsn0UwD26NAMxHVANhani
+         snYBGfnOYcwySjERJ8w+fCgORzHjzOhH0qVIN92AFBu5wQS8MtKpzxFot11pT/fb2lbl
+         T+Aw==
+X-Forwarded-Encrypted: i=1; AJvYcCWTfjZxUO4EMWAVnfYTH7gqw56/f61fZN6DOAiueYmhyINUaJ3ORmP3vB5LGeDw9pAjZPZGPrYNTJA8Fm7L5vdcmqOHQ25q
+X-Gm-Message-State: AOJu0Yy+2PFVhLvUiFkvHzdz4hDz2eQpVlCPNpOUAfa+qAxn/w7zeqKl
+	aI7Jxj7ek1iQ8vkAHAy4ffLn4QbUGJC2H3CAPQJnWaau35TIx2Ag
+X-Google-Smtp-Source: AGHT+IEfaHjF66NyQ5adjTHxfKVvTo3cItTBAnIthr0YDuzrKl8pLBhvrAqrWW594JXdyaB4L2pa/g==
+X-Received: by 2002:a17:903:11c8:b0:1da:2a50:cbf8 with SMTP id q8-20020a17090311c800b001da2a50cbf8mr3345049plh.43.1708030092973;
+        Thu, 15 Feb 2024 12:48:12 -0800 (PST)
+Received: from bvanassche-linux.mtv.corp.google.com ([2620:0:1000:8411:3612:25f8:d146:bb56])
+        by smtp.gmail.com with ESMTPSA id v22-20020a170902e8d600b001db5e807cd2sm1677703plg.82.2024.02.15.12.48.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Feb 2024 12:48:12 -0800 (PST)
+From: Bart Van Assche <bvanassche@acm.org>
+To: Christian Brauner <brauner@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: linux-fsdevel@vger.kernel.org,
+	Christoph Hellwig <hch@lst.de>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Avi Kivity <avi@scylladb.com>,
+	Sandeep Dhavale <dhavale@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	stable@vger.kernel.org
+Subject: [PATCH v4 1/2] fs/aio: Restrict kiocb_set_cancel_fn() to I/O submitted via libaio
+Date: Thu, 15 Feb 2024 12:47:38 -0800
+Message-ID: <20240215204739.2677806-2-bvanassche@acm.org>
+X-Mailer: git-send-email 2.44.0.rc0.258.g7320e95886-goog
+In-Reply-To: <20240215204739.2677806-1-bvanassche@acm.org>
+References: <20240215204739.2677806-1-bvanassche@acm.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 00/65] 6.1.78-rc2 review
-Content-Language: en-GB
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20240214142941.551330912@linuxfoundation.org>
-From: =?UTF-8?Q?Mateusz_Jo=C5=84czyk?= <mat.jonczyk@o2.pl>
-Autocrypt: addr=mat.jonczyk@o2.pl; keydata=
- xsFNBFqMDyQBEAC2VYhOvwXdcGfmMs9amNUFjGFgLixeS2C1uYwaC3tYqjgDQNo/qDoPh52f
- ExoTMJRqx48qvvY/i6iwia7wOTBxbYCBDqGYxDudjtL41ko8AmbGOSkxJww5X/2ZAtFjUJxO
- QjNESFlRscMfDv5vcCvtH7PaJJob4TBZvKxdL4VCDCgEsmOadTy5hvwv0rjNjohau1y4XfxU
- DdvOcl6LpWMEezsHGc/PbSHNAKtVht4BZYg66kSEAhs2rOTN6pnWJVd7ErauehrET2xo2JbO
- 4lAv0nbXmCpPj37ZvURswCeP8PcHoA1QQKWsCnHU2WeVw+XcvR/hmFMI2QnE6V/ObHAb9bzg
- jxSYVZRAWVsdNakfT7xhkaeHjEQMVRQYBL6bqrJMFFXyh9YDj+MALjyb5hDG3mUcB4Wg7yln
- DRrda+1EVObfszfBWm2pC9Vz1QUQ4CD88FcmrlC7n2witke3gr38xmiYBzDqi1hRmrSj2WnS
- RP/s9t+C8M8SweQ2WuoVBLWUvcULYMzwy6mte0aSA8XV6+02a3VuBjP/6Y8yZUd0aZfAHyPi
- Rf60WVjYNRSeg27lZ9DJmHjSfZNn1FrtZi3W9Ff6bry/SY9D136qXBQxPYxXQfaGDhVeLUVF
- Q+NIZ6NEjqrLQ07LEvUW2Qzk2q851/IaXZPtP6swx0gqrpjNrwARAQABzSRNYXRldXN6IEpv
- xYRjenlrIDxtYXQuam9uY3p5a0BvMi5wbD7CwX4EEwECACgFAlqMDyQCGwMFCRLMAwAGCwkI
- BwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEPvWWrhhCv7Gb0MQAJVIpJ1KAOH6WaT8e65xZulI
- 1jkwGwNp+3bWWc5eLjKUnXtOYpa9oIsUUAqvh/L8MofGtM1V11kSX9dEloyqlqDyNSQk0h52
- hZxMsCQyzjGOcBAi0zmWGYB4xu6SXj4LpVpIPW0sogduEOfbC0i7uAIyotHgepQ8RPGmZoXU
- 9bzFCyqZ8kAqwOoCCx+ccnXtbnlAXQmDb88cIprAU+Elk4k4t7Bpjn2ek4fv35PsvsBdRTq3
- ADg8sGuq4KQXhbY53n1tyiab3M88uv6Cv//Ncgx+AqMdXq2AJ7amFsYdvkTC98sx20qk6Cul
- oHggmCre4MBcDD4S0qDXo5Z9NxVR/e9yUHxGLc5BlNj+FJPO7zwvkmIaMMnMlbydWVke0FSR
- AzJaEV/NNZKYctw2wYThdXPiz/y7aKd6/sM1jgPlleQhs3tZAIdjPfFjGdeeggv668M7GmKl
- +SEzpeFQ4b0x64XfLfLXX8GP/ArTuxEfJX4L05/Y9w9AJwXCVEwW4q17v8gNsPyVUVEdIroK
- cve6cgNNSWoxTaYcATePmkKnrAPqfg+6qFM4TuOWmyzCLQ1YoUZMxH+ddivDQtlKCp6JgGCz
- c9YCESxVii0vo8TsHdIAjQ/px9KsuYBmOlKnHXKbj6BsE/pkMMKQg/L415dvKzhLm2qVih7I
- U16IAtK5b7RpzsFNBFqMDyQBEACclVvbzpor4XfU6WLUofqnO3QSTwDuNyoNQaE4GJKEXA+p
- Bw5/D2ruHhj1Bgs6Qx7G4XL3odzO1xT3Iz6w26ZrxH69hYjeTdT8VW4EoYFvliUvgye2cC01
- ltYrMYV1IBXwJqSEAImU0Xb+AItAnHA1NNUUb9wKHvOLrW4Y7Ntoy1tp7Vww2ecAWEIYjcO6
- AMoUX8Q6gfVPxVEQv1EpspSwww+x/VlDGEiiYO4Ewm4MMSP4bmxsTmPb/f/K3rv830ZCQ5Ds
- U0rzUMG2CkyF45qXVWZ974NqZIeVCTE+liCTU7ARX1bN8VlU/yRs/nP2ISO0OAAMBKea7slr
- mu93to9gXNt3LEt+5aVIQdwEwPcqR09vGvTWdRaEQPqgkOJFyiZ0vYAUTwtITyjYxZWJbKJh
- JFaHpMds9kZLF9bH45SGb64uZrrE2eXTyI3DSeUS1YvMlJwKGumRTPXIzmVQ5PHiGXr2/9S4
- 16W9lBDJeHhmcVOsn+04x5KIxHtqAP3mkMjDBYa0A3ksqD84qUBNuEKkZKgibBbs4qT35oXf
- kgWJtW+JziZf6LYx4WvRa80VDIIYCcQM6TrpsXIJI+su5qpzON1XJQG2iswY8PJ40pkRI9Sm
- kfTFrHOgiTpwZnI9saWqJh2ABavtnKZ1CtAY2VA8gmEqQeqs2hjdiNHAmRxR2wARAQABwsFl
- BBgBAgAPBQJajA8kAhsMBQkSzAMAAAoJEPvWWrhhCv7GhpYP/1tH/Kc35OgWu2lsgJxR9Z49
- 4q+yYAuu11p0aQidL5utMFiemYHvxh/sJ4vMq65uPQXoQ3vo8lu9YR/p8kEt8jbljJusw6xQ
- iKA1Cc68xtseiKcUrjmN/rk3csbT+Qj2rZwkgod8v9GlKo6BJXMcKGbHb1GJtLF5HyI1q4j/
- zfeu7G1gVjGTx8e2OLyuBJp0HlFXWs2vWSMesmZQIBVNyyL9mmDLEwO4ULK2quF6RYtbvg+2
- PMyomNAaQB4s1UbXAO87s75hM79iszIzak2am4dEjTx+uYCWpvcw3rRDz7aMs401CphrlMKr
- WndS5qYcdiS9fvAfu/Jp5KIawpM0tVrojnKWCKHG4UnJIn+RF26+E7bjzE/Q5/NpkMblKD/Y
- 6LHzJWsnLnL1o7MUARU++ztOl2Upofyuj7BSath0N632+XCTXk9m5yeDCl/UzPbP9brIChuw
- gF7DbkdscM7fkYzkUVRJM45rKOupy5Z03EtAzuT5Z/If3qJPU0txAJsquDohppFsGHrzn/X2
- 0nI2LedLnIMUWwLRT4EvdYzsbP6im/7FXps15jaBOreobCaWTWtKtwD2LNI0l9LU9/RF+4Ac
- gwYu1CerMmdFbSo8ZdnaXlbEHinySUPqKmLHmPgDfxKNhfRDm1jJcGATkHCP80Fww8Ihl8aS
- TANkZ3QqXNX2
-In-Reply-To: <20240214142941.551330912@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-WP-MailID: 78e4807c1add0326667b1f8f7e799d13
-X-WP-AV: skaner antywirusowy Poczty o2
-X-WP-SPAM: NO 0000000 [IbOU]                               
 
-W dniu 14.02.2024 o 15:30, Greg Kroah-Hartman pisze:
-> This is the start of the stable review cycle for the 6.1.78 release.
-> There are 65 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 16 Feb 2024 14:28:54 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.78-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+If kiocb_set_cancel_fn() is called for I/O submitted via io_uring, the
+following kernel warning appears:
 
-Hello,
+WARNING: CPU: 3 PID: 368 at fs/aio.c:598 kiocb_set_cancel_fn+0x9c/0xa8
+Call trace:
+ kiocb_set_cancel_fn+0x9c/0xa8
+ ffs_epfile_read_iter+0x144/0x1d0
+ io_read+0x19c/0x498
+ io_issue_sqe+0x118/0x27c
+ io_submit_sqes+0x25c/0x5fc
+ __arm64_sys_io_uring_enter+0x104/0xab0
+ invoke_syscall+0x58/0x11c
+ el0_svc_common+0xb4/0xf4
+ do_el0_svc+0x2c/0xb0
+ el0_svc+0x2c/0xa4
+ el0t_64_sync_handler+0x68/0xb4
+ el0t_64_sync+0x1a4/0x1a8
 
-Tested on a HP 17-by0001nw laptop with an Intel Kaby Lake CPU and Ubuntu 20.04.
+Fix this by setting the IOCB_AIO_RW flag for read and write I/O that is
+submitted by libaio.
 
-Used technologies:
-- ext4, vfat,
-- LUKS, LVM,
-- mdraid on top of NVMe and SATA drives (the SATA drive in a write-mostly mode).
+Suggested-by: Jens Axboe <axboe@kernel.dk>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Avi Kivity <avi@scylladb.com>
+Cc: Sandeep Dhavale <dhavale@google.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+---
+ fs/aio.c           | 9 ++++++++-
+ include/linux/fs.h | 2 ++
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
-Tested:
-- GPU (Intel Corporation HD Graphics 620, with a 3D game)
-- WiFi (Realtek RTL8822BE),
-- Bluetooth (Realtek RTL8822BE),
-- USB soundcard (Logitech Pro X),
-- PCI soundcard (Intel HD Audio),
-- webcam,
-- suspend to disk, suspend to RAM,
-- NFS (light usage).
-
-Issues found: none
-
-Tested-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
-
-Greetings,
-
-Mateusz Jończyk
-
+diff --git a/fs/aio.c b/fs/aio.c
+index bb2ff48991f3..da18dbcfcb22 100644
+--- a/fs/aio.c
++++ b/fs/aio.c
+@@ -593,6 +593,13 @@ void kiocb_set_cancel_fn(struct kiocb *iocb, kiocb_cancel_fn *cancel)
+ 	struct kioctx *ctx = req->ki_ctx;
+ 	unsigned long flags;
+ 
++	/*
++	 * kiocb didn't come from aio or is neither a read nor a write, hence
++	 * ignore it.
++	 */
++	if (!(iocb->ki_flags & IOCB_AIO_RW))
++		return;
++
+ 	if (WARN_ON_ONCE(!list_empty(&req->ki_list)))
+ 		return;
+ 
+@@ -1509,7 +1516,7 @@ static int aio_prep_rw(struct kiocb *req, const struct iocb *iocb)
+ 	req->ki_complete = aio_complete_rw;
+ 	req->private = NULL;
+ 	req->ki_pos = iocb->aio_offset;
+-	req->ki_flags = req->ki_filp->f_iocb_flags;
++	req->ki_flags = req->ki_filp->f_iocb_flags | IOCB_AIO_RW;
+ 	if (iocb->aio_flags & IOCB_FLAG_RESFD)
+ 		req->ki_flags |= IOCB_EVENTFD;
+ 	if (iocb->aio_flags & IOCB_FLAG_IOPRIO) {
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index c9deac59c29a..d47306fe1121 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -352,6 +352,8 @@ enum rw_hint {
+  * unrelated IO (like cache flushing, new IO generation, etc).
+  */
+ #define IOCB_DIO_CALLER_COMP	(1 << 22)
++/* kiocb is a read or write operation submitted by fs/aio.c. */
++#define IOCB_AIO_RW		(1 << 23)
+ 
+ /* for use in trace events */
+ #define TRACE_IOCB_STRINGS \
 
