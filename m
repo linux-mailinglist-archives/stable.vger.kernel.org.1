@@ -1,157 +1,157 @@
-Return-Path: <stable+bounces-20320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CDD1856EDA
-	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 21:49:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61EA8856EF2
+	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 21:55:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFE8B1C23069
-	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 20:49:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D02A81F25FCF
+	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 20:55:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96E371419AD;
-	Thu, 15 Feb 2024 20:48:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D659113B2AB;
+	Thu, 15 Feb 2024 20:55:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XTWdWTFO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD17213B295;
-	Thu, 15 Feb 2024 20:48:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24EB26A349;
+	Thu, 15 Feb 2024 20:55:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708030096; cv=none; b=MZqberlHMWxklVq9KaVQ5SYtXjmoHCElFMHPDy6krGgkTT9d8FVZx8/ZE61bhMv2IDB0KUvJ7JDjbQiYZwzRbDoUvF9Vlyiu0tDMh2TNwOZyFw6h+qiPsukYn3Qwo0xGD83gJiJzzrhZ1St6DrdUvmzA5xZP7CfrlDMHaOH6+a8=
+	t=1708030516; cv=none; b=KM3svwPKGBaIMeMnJBqlL3PXknvT+C1OEWGxX3hwbnC/9Zc3hfK5e6GJMTVS6csRM7QrEZSvL6NES8mKS3l9hdfHOUITGHE0zGagWBrddu4yDrNu6Pdtmfw8vbUzWxtIIZSeRFYhZWwvTq0EofFTWULNyH7veRxaut8OYH76hho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708030096; c=relaxed/simple;
-	bh=C9Le9uH79wJNuQ0B7IWoi0V9qKFedQvPFtt2PfJbyoE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JlyC89ruNFfpaX38ww9rLlrmP9joVACsTC9lNuqH2wOVpyXCbtZEcofB7VhPZjM7YjZkKP6E3HhnfG4urLKEJ82d+mWP1r4pFk9Cy5XaPFHCdnbYQj3Jzcb6QQ+mIC07OS0qz9ZHcY/NW97GOBrjig1EsbzXEc37RRIs9Hg/CbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.215.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org
+	s=arc-20240116; t=1708030516; c=relaxed/simple;
+	bh=+BMQn3bOtWH+FWUM64l+j3RtIw016nUn+Jnnh0s+X2c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Kn5N8qmlAAxRZhIhoiJYPfJS2Jd4OmSPffCJ5GDw1XGFjibs3FKOm/q5y5VXdn1fJqoLAKutgIt0NlYvaUejuUkj6tS8VFaYHCSdyd8q+p/opSDVJdMi/5LZTHpPuu1TQWoyd4lXha6nziNWT9ztaGn89oGFAIXO3xQ6KvUsm0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XTWdWTFO; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-517ab9a4a13so1143605a12.1;
-        Thu, 15 Feb 2024 12:48:14 -0800 (PST)
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-1d7232dcb3eso10822795ad.2;
+        Thu, 15 Feb 2024 12:55:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708030514; x=1708635314; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=r7KeUmQ5rtQIKjg5bbnS3xkReICqYXg+NK0gShllzn0=;
+        b=XTWdWTFO41LkP3ajBo/IfnkDBaOM5TO5ob3AWl+3iQV4d5UYxfDsbgb0k+KDwBSM7l
+         CxrJUFNFm9LOs1ls15BwoQdwRPRBOq4FVf+sc+Tp2+DpbCGWMOB+JiVpj0aFv51oFEyW
+         QvFo/JS+azW0zR/IDebriZJt3WbdkvLnXHpbM4tgFCuEVaywTez9hTtHYZEu7XRh6M9A
+         JhKo/W04HXExW1pTVxZ6pHFOVmzB45sVuefClgs+4A6CxtSOBVIUtgPKXmNjXum/sbS2
+         e+fu5sTzQ/JpTWdg4L61AaYV86MLiqEWGnfEsLG0UkUAM7lABG0C6djWjngrpdQ6kzMR
+         7lcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708030094; x=1708634894;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1708030514; x=1708635314;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=b7owj2dc+ZeaBUzwGLeqY8Tlacmkmv7ErqrIRGSf8hk=;
-        b=XhdBKP3KlvMA2hfAeC37JS57YhYbGkkegGPjbdaYRG8G4xTKTlsP7Lb44QHvpN7cqD
-         OnhnTYGbrWOl4yk5ohk9xPo1tb3NC3LvkUPv5GtMt8iXlbsBFATXp0mBCRJXAMk5pZ/9
-         geP6a/8USzAYTrGbsxAkR5CdS3BZZ/RRp+o6tJkRX0ROQyM4pHz3DtMbkiArJ09/OXvj
-         qoDXxlHzw+tYrk+oJ2j00DRcjvA1U8UA+C3NtRXRLlhz6ppi5IKKVDatON2I6r00xb4B
-         tl8yrB3NWDcx7Iu/MpBIvpEAoyOdYaYJZFNiMGZAWp/+ZJykBzwwx2db7eICghuNxy01
-         uhNA==
-X-Forwarded-Encrypted: i=1; AJvYcCUfOEwldebUvgy2uIOQT79c1awgKCcn7p4Q1+rUz3fInonpNrhcGhN0CHVCrYWIMO/Lip3ay74vGTDTStGeYMVYAl6SJ8tF
-X-Gm-Message-State: AOJu0YyV14yLevodPP0fxhf4o4gZIDAUb5SAHEzEGIjUeVh8vu5k8KdN
-	Nt99ORic8em5iubZ5o78JTziQOmy9BvslsFW7p+onUEWxG40mPwM
-X-Google-Smtp-Source: AGHT+IHHY6oQkfj7cS40/nMFy8dmn+cnev+QAfDEZvMivZegBDYLCJY/T4JefaOaFvFcw7ouQIw/PA==
-X-Received: by 2002:a17:903:2284:b0:1d5:c0d9:31c1 with SMTP id b4-20020a170903228400b001d5c0d931c1mr2794103plh.7.1708030093995;
-        Thu, 15 Feb 2024 12:48:13 -0800 (PST)
-Received: from bvanassche-linux.mtv.corp.google.com ([2620:0:1000:8411:3612:25f8:d146:bb56])
-        by smtp.gmail.com with ESMTPSA id v22-20020a170902e8d600b001db5e807cd2sm1677703plg.82.2024.02.15.12.48.13
+        bh=r7KeUmQ5rtQIKjg5bbnS3xkReICqYXg+NK0gShllzn0=;
+        b=ex6hmhtN9VItBU7/i/z2gOxbJaOnKXX9pOZjAl4xkhr7+uzRy8zKPKtPgszDHG8Hl7
+         +kyKvGOlZKMAFf00bbvHYduGl4ZjbM2X+7wp+9wNEcHtrxX+f9bJBO1pLIQCjCryb7gt
+         F8CYp8yk8DSGBdj5q8dRUHeWag8VQo4anscYNcTBx1JdDrolLBe4BTmTeeCLHS9Jw+Nb
+         ciT2feyuVOQVLlmRKJmpgz+EXdcdCqJ/Ng9jtj8RYmEID4GFXOz6ryVss/x+x0H8lSm4
+         e+KuONewq8JY/iKdv+KQXlS7QjOhtOshrmVFxnF9GzOofrgzBHB6MC46MER9jofaQSgQ
+         1fzQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWLtgHCAFKsMercILbrOjNCoOLRLKHO0dKVW3ck6erSNf4+XycaPSt5ReYD8Ns3Lzd8UR7GQbyTr/9P3IFHM1LcsuOzFRmTKPDcLwQRPfFonykvkd0NsVY2pf2E1E+r9BoSiYCL
+X-Gm-Message-State: AOJu0YwK6oXof1NNG7Nk6WZig3pCXParU237DjeGqvcM8gGLKuP0ExK4
+	0ZHOCTEcvJWNsKLBqeJZKXUPtEAZ6HrBOmJUSSpVwOVzv8VOVYnY
+X-Google-Smtp-Source: AGHT+IF7vFLlsC6PM38G1zfNCpMrYhgcMQQS0vF9cRox0azJFhgKB3VSOd4zEVDtNy7j0rmcWMxpwg==
+X-Received: by 2002:a17:902:7c01:b0:1d9:f495:cfa4 with SMTP id x1-20020a1709027c0100b001d9f495cfa4mr2658373pll.62.1708030514195;
+        Thu, 15 Feb 2024 12:55:14 -0800 (PST)
+Received: from google.com ([2620:0:1000:8411:9dc5:487d:7c08:30bb])
+        by smtp.gmail.com with ESMTPSA id x9-20020a170902e04900b001db561fa164sm1671380plx.25.2024.02.15.12.55.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Feb 2024 12:48:13 -0800 (PST)
-From: Bart Van Assche <bvanassche@acm.org>
-To: Christian Brauner <brauner@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>
-Cc: linux-fsdevel@vger.kernel.org,
-	Christoph Hellwig <hch@lst.de>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Avi Kivity <avi@scylladb.com>,
-	Sandeep Dhavale <dhavale@google.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	stable@vger.kernel.org
-Subject: [PATCH v4 2/2] fs/aio: Make io_cancel() generate completions again
-Date: Thu, 15 Feb 2024 12:47:39 -0800
-Message-ID: <20240215204739.2677806-3-bvanassche@acm.org>
-X-Mailer: git-send-email 2.44.0.rc0.258.g7320e95886-goog
-In-Reply-To: <20240215204739.2677806-1-bvanassche@acm.org>
-References: <20240215204739.2677806-1-bvanassche@acm.org>
+        Thu, 15 Feb 2024 12:55:13 -0800 (PST)
+Sender: Minchan Kim <minchan.kim@gmail.com>
+Date: Thu, 15 Feb 2024 12:55:11 -0800
+From: Minchan Kim <minchan@kernel.org>
+To: David Hildenbrand <david@redhat.com>
+Cc: Kairui Song <ryncsn@gmail.com>, linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Huang, Ying" <ying.huang@intel.com>, Chris Li <chrisl@kernel.org>,
+	Yu Zhao <yuzhao@google.com>, Barry Song <v-songbaohua@oppo.com>,
+	SeongJae Park <sj@kernel.org>, Hugh Dickins <hughd@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Michal Hocko <mhocko@suse.com>, Yosry Ahmed <yosryahmed@google.com>,
+	stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mm/swap: fix race when skipping swapcache
+Message-ID: <Zc56L6oL4JmxqaFN@google.com>
+References: <20240206182559.32264-1-ryncsn@gmail.com>
+ <1d259a51-46e6-4d3b-9455-38dbcc17b168@redhat.com>
+ <CAMgjq7Cy3njsQzGi5Wa_JaM4NaO4eDGO5D8cY+KEB0ERd_JrGw@mail.gmail.com>
+ <4c651673-132f-4cd8-997e-175f586fd2e6@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4c651673-132f-4cd8-997e-175f586fd2e6@redhat.com>
 
-The following patch accidentally removed the code for delivering
-completions for cancelled reads and writes to user space: "[PATCH 04/33]
-aio: remove retry-based AIO"
-(https://lore.kernel.org/all/1363883754-27966-5-git-send-email-koverstreet@google.com/)
-From that patch:
+Hi David,
 
--	if (kiocbIsCancelled(iocb)) {
--		ret = -EINTR;
--		aio_complete(iocb, ret, 0);
--		/* must not access the iocb after this */
--		goto out;
--	}
+On Thu, Feb 15, 2024 at 09:03:28PM +0100, David Hildenbrand wrote:
 
-This leads to a leak in user space of a struct iocb. Hence this patch
-that restores the code that reports to user space that a read or write
-has been cancelled successfully.
+< snip >
 
-Fixes: 41003a7bcfed ("aio: remove retry-based AIO")
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Avi Kivity <avi@scylladb.com>
-Cc: Sandeep Dhavale <dhavale@google.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
----
- fs/aio.c | 27 +++++++++++----------------
- 1 file changed, 11 insertions(+), 16 deletions(-)
+> > > 
+> > > We would detect later, that the PTE changed, but we would temporarily
+> > > mess with that swap slot that we might no longer "own".
+> > > 
+> > > I was thinking about alternatives, it's tricky because of the concurrent
+> > > MADV_DONTNEED possibility. Something with another fake-swap entry type
+> > > (similar to migration entries) might work, but would require more changes.
+> > 
+> > Yeah, in the long term I also think more work is needed for the swap subsystem.
+> > 
+> > In my opinion, for this particular issue, or, for cache bypassed
+> > swapin, a new swap map value similar to SWAP_MAP_BAD/SWAP_MAP_SHMEM
+> > might be needed, that may even help to simplify the swap count release
+> > routine for cache bypassed swapin, and improve the performance.
+> 
+> The question is if we really want to track that in the swapcache and not
+> rather in the page table.
+> 
+> Imagine the following:
+> 
+> (1) allocate the folio and lock it (we do that already)
+> 
+> (2) take the page table lock. If the PTE is still the same, insert a new
+> "swapin_in_process" fake swp entry that references the locked folio.
+> 
+> (3) read the folio from swap. This will unlock the folio IIUC. (we do that
+> already)
+> 
+> (4) relock the folio. (we do that already, might not want to fail)
+> 
+> (4) take the PTE lock. If the PTE did not change, turn it into a present PTE
+> entry. Otherwise, cleanup.
+> 
+> 
+> Any concurrent swap-in users would spot the new "swapin_in_process" fake swp
+> entry and wait for the page lock (just like we do with migration entries).
+> 
+> Zap code would mostly only clear the "swapin_in_process" fake swp entry and
+> leave the cleanup to (4) above. Fortunately, concurrent fork() is impossible
+> as that cannot race with page faults.
+> 
+> There might be one minor thing to optimize with the folio lock above. But in
+> essence, it would work just like migration entries, just that they are
+> installed only while we actually do read the content from disk etc.
 
-diff --git a/fs/aio.c b/fs/aio.c
-index da18dbcfcb22..28223f511931 100644
---- a/fs/aio.c
-+++ b/fs/aio.c
-@@ -2165,14 +2165,11 @@ COMPAT_SYSCALL_DEFINE3(io_submit, compat_aio_context_t, ctx_id,
- #endif
- 
- /* sys_io_cancel:
-- *	Attempts to cancel an iocb previously passed to io_submit.  If
-- *	the operation is successfully cancelled, the resulting event is
-- *	copied into the memory pointed to by result without being placed
-- *	into the completion queue and 0 is returned.  May fail with
-- *	-EFAULT if any of the data structures pointed to are invalid.
-- *	May fail with -EINVAL if aio_context specified by ctx_id is
-- *	invalid.  May fail with -EAGAIN if the iocb specified was not
-- *	cancelled.  Will fail with -ENOSYS if not implemented.
-+ *	Attempts to cancel an iocb previously passed to io_submit(). If the
-+ *	operation is successfully cancelled 0 is returned. May fail with
-+ *	-EFAULT if any of the data structures pointed to are invalid. May
-+ *	fail with -EINVAL if aio_context specified by ctx_id is invalid. Will
-+ *	fail with -ENOSYS if not implemented.
-  */
- SYSCALL_DEFINE3(io_cancel, aio_context_t, ctx_id, struct iocb __user *, iocb,
- 		struct io_event __user *, result)
-@@ -2203,14 +2200,12 @@ SYSCALL_DEFINE3(io_cancel, aio_context_t, ctx_id, struct iocb __user *, iocb,
- 	}
- 	spin_unlock_irq(&ctx->ctx_lock);
- 
--	if (!ret) {
--		/*
--		 * The result argument is no longer used - the io_event is
--		 * always delivered via the ring buffer. -EINPROGRESS indicates
--		 * cancellation is progress:
--		 */
--		ret = -EINPROGRESS;
--	}
-+	/*
-+	 * The result argument is no longer used - the io_event is always
-+	 * delivered via the ring buffer.
-+	 */
-+	if (ret == 0 && kiocb->rw.ki_flags & IOCB_AIO_RW)
-+		aio_complete_rw(&kiocb->rw, -EINTR);
- 
- 	percpu_ref_put(&ctx->users);
- 
+That's a great idea. I was thinking to have the synchronization in the
+page table but couldn't reach to the other non_swap_entry idea.
+
+Only concern of the approach is that it would be harder to have the fix
+in the stable tree. If there isn't strong objection, I prefer the
+Kairui's orginal solution(with some tweak of scheduler if it's
+necessary) first and then pursue your idea on latest tree.
 
