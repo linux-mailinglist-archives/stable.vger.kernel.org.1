@@ -1,159 +1,171 @@
-Return-Path: <stable+bounces-20236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCBA7855AB6
-	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 07:52:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BCFE855B75
+	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 08:16:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFEAD1C2A431
-	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 06:52:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26B55B22D4F
+	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 07:16:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12F9BBA5E;
-	Thu, 15 Feb 2024 06:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6424D527;
+	Thu, 15 Feb 2024 07:16:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MhBDojdl"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC3B3610E;
-	Thu, 15 Feb 2024 06:52:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E2BB33C5;
+	Thu, 15 Feb 2024 07:16:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707979967; cv=none; b=mmT72zro99T9H25BEsQffnKZsxaLbKeOzNAZPbBfZbsqhRNM8FURxcLID/I3kwRUCPRy6VxLgtZhBjsdqhA5YDsNYyR9jteH8XYEDSw7rBbsY6AmnivCUnmGt9mCoImMjhzLVtgPszeMyQcBHXIGIUwHZtYhHexdqrzUPD+JwHw=
+	t=1707981383; cv=none; b=nRpfNzLahTsMmUaeN2iqA9e3RgqibcRYEa5cEV0lpnrxR7FzUMY7pWgHo2MJgXRV6IQB3UxyiXzJcqinPpFy+hW/9x2K7Gl8akJ7KtK4/XHzQ66Pz3Po7PfcHLCWmwhSfv7jKfp7IX+u2fA9OCpAWk+I/ibWF7V+8JT+xXuTkTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707979967; c=relaxed/simple;
-	bh=lqq0taqmcNIuQaq8UADhDYoMCTBiSEprBakyBLG4bBE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Sm7oLHZQnAMrX/t+/DQCvSGj44YCBw24SvCjlwhsCXXlplKuw9ws8uKEDtjndNOy/7DvfQVLX5DbCmEVvMFZ4HG9NgbJ4y2K51lYvhSfQSONYkwatv3D/4yzqY+3Ft9BuAqcw4ex9lnWagoAD68BPDMWcx+0p6jvcPoH+s4N8a4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AA6DD1FB;
-	Wed, 14 Feb 2024 22:53:23 -0800 (PST)
-Received: from [10.163.45.45] (unknown [10.163.45.45])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8DDA23F766;
-	Wed, 14 Feb 2024 22:52:38 -0800 (PST)
-Message-ID: <32e59978-fbf3-4612-bfd0-03807ef2abb0@arm.com>
-Date: Thu, 15 Feb 2024 12:22:36 +0530
+	s=arc-20240116; t=1707981383; c=relaxed/simple;
+	bh=zwf/v9ehW4cFJdu8wIHwRPfcAJT+SRSX3JvxeAL8Fqg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MnddSgFxhOC2yCxEV85eGXYC2YN7UfpvZEGBpfjo6I55h7mEX/ukSveNAL2xKk/TSRQcIiTe1aSPRcxSU2776iRWVSX2qBC0+ITJR/205c0xlhi43bp4aVgb2/XhMYvPUfs9swXjhb/GrF83duhCjNxsB3ZLnBGVYj89+6z7krU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MhBDojdl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B0ADC433F1;
+	Thu, 15 Feb 2024 07:16:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707981382;
+	bh=zwf/v9ehW4cFJdu8wIHwRPfcAJT+SRSX3JvxeAL8Fqg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MhBDojdlLk13ZLeX/38gxdo8+tFWxfrLbHZzfVmPs6ZfvxlNA29dSN0FGj/Bk9hdH
+	 /0vlXfph4rwspX0Hj9F18zPgJVCp7kXWO1dSwJMaUcsS8eZw/pWTyX2XBP8HLb3EMY
+	 Tp0e/BO218uvTJABLZnKFYPyGpBYBQnu8AswWeP3/V35xm3EP4MfJIfOb8gqdouJCY
+	 K9zp9d63Fiu90s2vFCmboJ52ujsfVuxSgWMyLBH7xBSiKIOtIoRP07RQlNmxpryu3+
+	 mU8s7Oz3AxHQJaO5EVJcPM9OLURPFRsZ+f9zzaszI8UdG0yU2XwE8piIp61CAXXzyo
+	 f4K7av7rH+hpg==
+Date: Thu, 15 Feb 2024 15:16:13 +0800
+From: Peter Chen <peter.chen@kernel.org>
+To: Pawel Laszczak <pawell@cadence.com>
+Cc: gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, peter.chen@cixtech.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] usb: cdnsp: fixed issue with incorrect detecting CDNSP
+ family controllers
+Message-ID: <20240215071613.GA1256251@nchen-desktop>
+References: <20240206104325.55456-1-pawell@cadence.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] arm64: Subscribe Microsoft Azure Cobalt 100 to ARM
- Neoverse N2 errata
-Content-Language: en-US
-To: Easwar Hariharan <eahariha@linux.microsoft.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, Marc Zyngier <maz@kernel.org>,
- Rob Herring <robh@kernel.org>, Andre Przywara <andre.przywara@arm.com>,
- Mark Rutland <mark.rutland@arm.com>, Oliver Upton <oliver.upton@linux.dev>,
- "moderated list:ARM64 PORT (AARCH64 ARCHITECTURE)"
- <linux-arm-kernel@lists.infradead.org>,
- "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
- open list <linux-kernel@vger.kernel.org>
-Cc: stable@vger.kernel.org
-References: <20240214175522.2457857-1-eahariha@linux.microsoft.com>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <20240214175522.2457857-1-eahariha@linux.microsoft.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240206104325.55456-1-pawell@cadence.com>
 
+On 24-02-06 11:43:25, Pawel Laszczak wrote:
+> Cadence have several controllers from 0x000403xx family but current
+> driver suuport detecting only one with DID equal 0x0004034E.
+> It causes that if someone use different CDNSP controller then driver
 
+%s/use/uses
 
-On 2/14/24 23:25, Easwar Hariharan wrote:
-> Add the MIDR value of Microsoft Azure Cobalt 100, which is a Microsoft
-> implemented CPU based on r0p0 of the ARM Neoverse N2 CPU, and therefore
-> suffers from all the same errata.
+> will use incorrect version and register space.
+> Patch fix this issue.
 > 
-> CC: stable@vger.kernel.org # 5.15+
-> Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-
+> cc: <stable@vger.kernel.org>
+> Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
+> Signed-off-by: Pawel Laszczak <pawell@cadence.com>
 > ---
-> changelog:
-> v1->v2:
-> * v1: https://lore.kernel.org/linux-arm-kernel/20240212232909.2276378-1-eahariha@linux.microsoft.com/T/#u
-> * Consistently use MICROSOFT throughout
-> ---
->  Documentation/arch/arm64/silicon-errata.rst | 7 +++++++
->  arch/arm64/include/asm/cputype.h            | 4 ++++
->  arch/arm64/kernel/cpu_errata.c              | 3 +++
->  3 files changed, 14 insertions(+)
+>  drivers/usb/cdns3/core.c |  1 -
+>  drivers/usb/cdns3/drd.c  | 13 +++++++++----
+>  drivers/usb/cdns3/drd.h  |  6 +++++-
+>  3 files changed, 14 insertions(+), 6 deletions(-)
 > 
-> diff --git a/Documentation/arch/arm64/silicon-errata.rst b/Documentation/arch/arm64/silicon-errata.rst
-> index e8c2ce1f9df6..45a7f4932fe0 100644
-> --- a/Documentation/arch/arm64/silicon-errata.rst
-> +++ b/Documentation/arch/arm64/silicon-errata.rst
-> @@ -243,3 +243,10 @@ stable kernels.
->  +----------------+-----------------+-----------------+-----------------------------+
->  | ASR            | ASR8601         | #8601001        | N/A                         |
->  +----------------+-----------------+-----------------+-----------------------------+
-> ++----------------+-----------------+-----------------+-----------------------------+
-> +| Microsoft      | Azure Cobalt 100| #2139208        | ARM64_ERRATUM_2139208       |
-> ++----------------+-----------------+-----------------+-----------------------------+
-> +| Microsoft      | Azure Cobalt 100| #2067961        | ARM64_ERRATUM_2067961       |
-> ++----------------+-----------------+-----------------+-----------------------------+
-> +| Microsoft      | Azure Cobalt 100| #2253138        | ARM64_ERRATUM_2253138       |
-> ++----------------+-----------------+-----------------+-----------------------------+
-> diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
-> index 7c7493cb571f..52f076afeb96 100644
-> --- a/arch/arm64/include/asm/cputype.h
-> +++ b/arch/arm64/include/asm/cputype.h
-> @@ -61,6 +61,7 @@
->  #define ARM_CPU_IMP_HISI		0x48
->  #define ARM_CPU_IMP_APPLE		0x61
->  #define ARM_CPU_IMP_AMPERE		0xC0
-> +#define ARM_CPU_IMP_MICROSOFT		0x6D
+> diff --git a/drivers/usb/cdns3/core.c b/drivers/usb/cdns3/core.c
+> index 33548771a0d3..465e9267b49c 100644
+> --- a/drivers/usb/cdns3/core.c
+> +++ b/drivers/usb/cdns3/core.c
+> @@ -395,7 +395,6 @@ static int cdns_role_set(struct usb_role_switch *sw, enum usb_role role)
+>  	return ret;
+>  }
 >  
->  #define ARM_CPU_PART_AEM_V8		0xD0F
->  #define ARM_CPU_PART_FOUNDATION		0xD00
-> @@ -135,6 +136,8 @@
+> -
+>  /**
+>   * cdns_wakeup_irq - interrupt handler for wakeup events
+>   * @irq: irq number for cdns3/cdnsp core device
+> diff --git a/drivers/usb/cdns3/drd.c b/drivers/usb/cdns3/drd.c
+> index 04b6d12f2b9a..ee917f1b091c 100644
+> --- a/drivers/usb/cdns3/drd.c
+> +++ b/drivers/usb/cdns3/drd.c
+> @@ -156,7 +156,8 @@ bool cdns_is_device(struct cdns *cdns)
+>   */
+>  static void cdns_otg_disable_irq(struct cdns *cdns)
+>  {
+> -	writel(0, &cdns->otg_irq_regs->ien);
+> +	if (cdns->version)
+> +		writel(0, &cdns->otg_irq_regs->ien);
+>  }
 >  
->  #define AMPERE_CPU_PART_AMPERE1		0xAC3
+>  /**
+> @@ -422,15 +423,20 @@ int cdns_drd_init(struct cdns *cdns)
 >  
-> +#define MICROSOFT_CPU_PART_AZURE_COBALT_100	0xD49 /* Based on r0p0 of ARM Neoverse N2 */
+>  		cdns->otg_regs = (void __iomem *)&cdns->otg_v1_regs->cmd;
+>  
+> -		if (readl(&cdns->otg_cdnsp_regs->did) == OTG_CDNSP_DID) {
+> +		state = readl(&cdns->otg_cdnsp_regs->did);
+
+Use a meaningful variable.
+
 > +
->  #define MIDR_CORTEX_A53 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A53)
->  #define MIDR_CORTEX_A57 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A57)
->  #define MIDR_CORTEX_A72 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A72)
-> @@ -193,6 +196,7 @@
->  #define MIDR_APPLE_M2_BLIZZARD_MAX MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M2_BLIZZARD_MAX)
->  #define MIDR_APPLE_M2_AVALANCHE_MAX MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M2_AVALANCHE_MAX)
->  #define MIDR_AMPERE1 MIDR_CPU_MODEL(ARM_CPU_IMP_AMPERE, AMPERE_CPU_PART_AMPERE1)
-> +#define MIDR_MICROSOFT_AZURE_COBALT_100 MIDR_CPU_MODEL(ARM_CPU_IMP_MICROSOFT, MICROSOFT_CPU_PART_AZURE_COBALT_100)
+> +		if (OTG_CDNSP_CHECK_DID(state)) {
+>  			cdns->otg_irq_regs = (struct cdns_otg_irq_regs __iomem *)
+>  					      &cdns->otg_cdnsp_regs->ien;
+>  			cdns->version  = CDNSP_CONTROLLER_V2;
+> -		} else {
+> +		} else if (OTG_CDNS3_CHECK_DID(state)) {
+>  			cdns->otg_irq_regs = (struct cdns_otg_irq_regs __iomem *)
+>  					      &cdns->otg_v1_regs->ien;
+>  			writel(1, &cdns->otg_v1_regs->simulate);
+>  			cdns->version  = CDNS3_CONTROLLER_V1;
+> +		} else {
+> +			dev_err(cdns->dev, "not supporte DID=0x%08x\n", state);
+> +			return -EINVAL;
+>  		}
 >  
->  /* Fujitsu Erratum 010001 affects A64FX 1.0 and 1.1, (v0r0 and v1r0) */
->  #define MIDR_FUJITSU_ERRATUM_010001		MIDR_FUJITSU_A64FX
-> diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
-> index 967c7c7a4e7d..76b8dd37092a 100644
-> --- a/arch/arm64/kernel/cpu_errata.c
-> +++ b/arch/arm64/kernel/cpu_errata.c
-> @@ -374,6 +374,7 @@ static const struct midr_range erratum_1463225[] = {
->  static const struct midr_range trbe_overwrite_fill_mode_cpus[] = {
->  #ifdef CONFIG_ARM64_ERRATUM_2139208
->  	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
-> +	MIDR_ALL_VERSIONS(MIDR_MICROSOFT_AZURE_COBALT_100),
->  #endif
->  #ifdef CONFIG_ARM64_ERRATUM_2119858
->  	MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
-> @@ -387,6 +388,7 @@ static const struct midr_range trbe_overwrite_fill_mode_cpus[] = {
->  static const struct midr_range tsb_flush_fail_cpus[] = {
->  #ifdef CONFIG_ARM64_ERRATUM_2067961
->  	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
-> +	MIDR_ALL_VERSIONS(MIDR_MICROSOFT_AZURE_COBALT_100),
->  #endif
->  #ifdef CONFIG_ARM64_ERRATUM_2054223
->  	MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
-> @@ -399,6 +401,7 @@ static const struct midr_range tsb_flush_fail_cpus[] = {
->  static struct midr_range trbe_write_out_of_range_cpus[] = {
->  #ifdef CONFIG_ARM64_ERRATUM_2253138
->  	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
-> +	MIDR_ALL_VERSIONS(MIDR_MICROSOFT_AZURE_COBALT_100),
->  #endif
->  #ifdef CONFIG_ARM64_ERRATUM_2224489
->  	MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
+>  		dev_dbg(cdns->dev, "DRD version v1 (ID: %08x, rev: %08x)\n",
+> @@ -483,7 +489,6 @@ int cdns_drd_exit(struct cdns *cdns)
+>  	return 0;
+>  }
+>  
+> -
+>  /* Indicate the cdns3 core was power lost before */
+>  bool cdns_power_is_lost(struct cdns *cdns)
+>  {
+> diff --git a/drivers/usb/cdns3/drd.h b/drivers/usb/cdns3/drd.h
+> index cbdf94f73ed9..d72370c321d3 100644
+> --- a/drivers/usb/cdns3/drd.h
+> +++ b/drivers/usb/cdns3/drd.h
+> @@ -79,7 +79,11 @@ struct cdnsp_otg_regs {
+>  	__le32 susp_timing_ctrl;
+>  };
+>  
+> -#define OTG_CDNSP_DID	0x0004034E
+> +/* CDNSP driver supports 0x000403xx Cadence USB controller family. */
+> +#define OTG_CDNSP_CHECK_DID(did) (((did) & GENMASK(31, 8)) == 0x00040300)
+
+GENMASK(19, 8)?
+
+> +
+> +/* CDNS3 driver supports 0x000402xx Cadence USB controller family. */
+> +#define OTG_CDNS3_CHECK_DID(did) (((did) & GENMASK(31, 8)) == 0x00040200)
+>  
+>  /*
+>   * Common registers interface for both CDNS3 and CDNSP version of DRD.
+> -- 
+> 2.37.2
+> 
+
+-- 
+
+Thanks,
+Peter Chen
 
