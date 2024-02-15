@@ -1,301 +1,185 @@
-Return-Path: <stable+bounces-20330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AD3B8570D8
-	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 23:58:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E107385717C
+	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 00:21:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF9531C20CB1
-	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 22:58:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 852F72829AD
+	for <lists+stable@lfdr.de>; Thu, 15 Feb 2024 23:21:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80F7E13B2BF;
-	Thu, 15 Feb 2024 22:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E42B145322;
+	Thu, 15 Feb 2024 23:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="OwAgFTCP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PKZRg9Yl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3265D13AA23;
-	Thu, 15 Feb 2024 22:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11D4213AA4F;
+	Thu, 15 Feb 2024 23:21:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708037918; cv=none; b=oM416ZYmt4FrtDA3YFyzvAGB2iOloiTTfqnhyiLoWLksLxGOzcs8j1RDzvOAOJ6diG3kWW5pzASlSvUGwZmrAEpI7B55oDrCMajDodpIwd05idG+2KxkMvuQ9PUuPSk/vjmwP5rw1ro+NbU3SMilF7s4Ib9oDj6w7OETMemPBzs=
+	t=1708039288; cv=none; b=HgKmw8Lj82Tgxmc2bV6Am28DPOn6ySe1GnLHIpdXWOiU/e6YOk476POgaffkq6AGOuyrxVyj3u4ASewPgdCA+3Y/Tz1PK9gmlKHI0vi24TlQTRWnSFyPP9IaKZf9VK7tsikClIwR4B2GFYGqqa0D44Kgrgue28XmRJUxAI8CtUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708037918; c=relaxed/simple;
-	bh=LKA/ClUmTfQI6DQT0IR/p+d0WUTkStXM03s4oe6WFx8=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=kutmmM/pdwoW60A3+I+Bul0C5pzTnuBdQWXKMWCCxHkcnWZ72I87c/4NOjSpOnq0xLtQt2VtcPtXrFKBdVUnNIqdo5W19l2ZTVLgYfbWM5ZVcYr5MPlLRPnTHyX0+uiTLRwUsvoUfVnYLLr5snKBYKhHBCnWuI+sq3krxfEDE20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=OwAgFTCP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 400E9C433C7;
-	Thu, 15 Feb 2024 22:58:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1708037917;
-	bh=LKA/ClUmTfQI6DQT0IR/p+d0WUTkStXM03s4oe6WFx8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=OwAgFTCPc6Uk64NzZ6GhG8EtJnwxDjnbWjnDV6G447crYs2YFfsyzmavZQXar+sOn
-	 CNknwea6X9YcvX/hNfVLJ//0OohAladfqIWc/EWQan6yTyeaNZNoWzLMtw6O/+L+Wm
-	 XL4YGf3f8J++vDDGzp0OFjeJcDMSHP4Ba4pG/KcI=
-Date: Thu, 15 Feb 2024 14:58:36 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Minchan Kim <minchan@kernel.org>
-Cc: David Hildenbrand <david@redhat.com>, Kairui Song <ryncsn@gmail.com>,
- linux-mm@kvack.org, "Huang, Ying" <ying.huang@intel.com>, Chris Li
- <chrisl@kernel.org>, Yu Zhao <yuzhao@google.com>, Barry Song
- <v-songbaohua@oppo.com>, SeongJae Park <sj@kernel.org>, Hugh Dickins
- <hughd@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox
- <willy@infradead.org>, Michal Hocko <mhocko@suse.com>, Yosry Ahmed
- <yosryahmed@google.com>, stable@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm/swap: fix race when skipping swapcache
-Message-Id: <20240215145836.6db8f62824e1547f0608591c@linux-foundation.org>
-In-Reply-To: <Zc56L6oL4JmxqaFN@google.com>
-References: <20240206182559.32264-1-ryncsn@gmail.com>
-	<1d259a51-46e6-4d3b-9455-38dbcc17b168@redhat.com>
-	<CAMgjq7Cy3njsQzGi5Wa_JaM4NaO4eDGO5D8cY+KEB0ERd_JrGw@mail.gmail.com>
-	<4c651673-132f-4cd8-997e-175f586fd2e6@redhat.com>
-	<Zc56L6oL4JmxqaFN@google.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1708039288; c=relaxed/simple;
+	bh=7iJLw/6LPcevINvsicUat4ZsHVJ3XTY7Nx+EesDtbdc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=g0xzXXiqH8eCFnGn3zmxWBUVuB2oVr8BreMCGeKpAYHbrFIuWXkvhuiQ/3gu1e0NbwPYq5NhMaR3fnUTfgFDHlLss6OoeNb58a5rT3/0Vj0cTCaxE+iBOdJ3GH4YxbrwwKwjCh8uDtOlJvGMnrHpLHzzwk4J9l4YMk33e1gHMpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PKZRg9Yl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EAE5C433F1;
+	Thu, 15 Feb 2024 23:21:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708039287;
+	bh=7iJLw/6LPcevINvsicUat4ZsHVJ3XTY7Nx+EesDtbdc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=PKZRg9YlGF5yDV0vr9GDUjfS5j8SkYJfRBBInWE4tDM1CTtSYl1gFXShydBbVI7bY
+	 7YmtI/Il56ECCrfR7yarirDv3ZEMhRdUQRaYwX7QSPNA9zaB9B+KMzSadLFA/TRpNG
+	 9E6vT79qBLhN8LzeNvObmjPlopfyLooqyax6qz1GVP3QsBiDh+SxH/F9SH2elcjQ9k
+	 sTRnHQrMDIqAioVM1eVcWZcppzlbVdzFaVflE+xyl8q8L9xIeYt8EgsR+OoOmWOEXW
+	 ylHXGshIVK5PpmCY9Ow2Dr6/X6M8j2UWaNf8AaO38NwazJftHCKaSD9tv7DAG6ieZj
+	 uZsNhe3jUkZHg==
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-51182f8590bso1854648e87.0;
+        Thu, 15 Feb 2024 15:21:27 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWQ4zEsi7Qjo0XoJ/glC+mD+set9Drx8SIVlo3/rwkiWvUmou9bAOQ6wNEmLJSVXDOxuLGT85pJ+F3wYXdVpWHrE73a8RmN9zTbICf3a2a3Dlq5sIB2syFG5O8g02aLDsQJzwnVC2TrkKN5rcroYYwhSYOAUlCHus6g6Snx7+L/
+X-Gm-Message-State: AOJu0YwHq+s3BexQBSPR1Phzq5LnRp6ZeeIfKpjGEvSuOTtI8JJiAphN
+	MqB0Z9OQlkLxlnVGv4Ok+yQDJSzfrssu7A/IF290ILa4IoQxsfWMbER44aDeJPZH8PETUOG3Nzs
+	TKWjJfG/8pwywrnqSHHYgIjH5FLA=
+X-Google-Smtp-Source: AGHT+IGy+ro0gLdOQgR6w/ffrsZf/Qm7wt3zjX123wUPreRbqJOD3J6hNqRBaxU2o1QoV3B2+471el4akJoaXzGnsso=
+X-Received: by 2002:a19:e04c:0:b0:511:8691:62d4 with SMTP id
+ g12-20020a19e04c000000b00511869162d4mr2289262lfj.41.1708039285682; Thu, 15
+ Feb 2024 15:21:25 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+References: <20240215225116.3435953-1-boqun.feng@gmail.com>
+In-Reply-To: <20240215225116.3435953-1-boqun.feng@gmail.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Fri, 16 Feb 2024 00:21:14 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXF3L5SdeXDfd3uYSOz-oG7+J31pd3WtZJ+g9eGDHDdOxg@mail.gmail.com>
+Message-ID: <CAMj1kXF3L5SdeXDfd3uYSOz-oG7+J31pd3WtZJ+g9eGDHDdOxg@mail.gmail.com>
+Subject: Re: [RFC] efi: Add ACPI_MEMORY_NVS into the linear map
+To: Boqun Feng <boqun.feng@gmail.com>, Oliver Smith-Denny <osde@linux.microsoft.com>
+Cc: linux-arm-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 15 Feb 2024 12:55:11 -0800 Minchan Kim <minchan@kernel.org> wrote:
+(cc Oliver)
 
-> Only concern of the approach is that it would be harder to have the fix
-> in the stable tree. If there isn't strong objection, I prefer the
-> Kairui's orginal solution(with some tweak of scheduler if it's
-> necessary) first and then pursue your idea on latest tree.
+On Thu, 15 Feb 2024 at 23:51, Boqun Feng <boqun.feng@gmail.com> wrote:
+>
+> Currently ACPI_MEMORY_NVS is omitted from the linear map, which causes
+> a trouble with the following firmware memory region setup:
+>
+>         [..] efi:   0x0000dfd62000-0x0000dfd83fff [ACPI Reclaim|...]
+>         [..] efi:   0x0000dfd84000-0x0000dfd87fff [ACPI Mem NVS|...]
+>
 
-Do we agree that this fix is needed in -stable?  For some reason I
-don't have a cc:stable in the changelog.
+Which memory types were listed here?
 
-I'd like to move this patch into mm-hotfixes-stable in order to get it
-upstream very soon.  Are we all agreeable with that?  I don't have an
-Acked-by: David?
+> , on ARM64 with 64k page size, the whole 0x0000dfd80000-0x0000dfd8ffff
+> range will be omitted from the the linear map due to 64k round-up. And
+> a page fault happens when trying to access the ACPI_RECLAIM_MEMORY:
+>
+>         [...] Unable to handle kernel paging request at virtual address f=
+fff0000dfd80000
+>
 
-I have a note (which dates back to an earlier version) that Barry would
-be performing runtime testing.  Has that occurred?
+You trimmed all the useful information here. ACPI reclaim memory is
+reclaimable, but we don't actually do so in Linux. So this is not
+general purpose memory, it is used for a specific purpose, and the
+code that accesses it is assuming that it is accessible via the linear
+map. There are reason why this may not be the case, so the fix might
+be to use memremap() in the access instead.
 
-Thanks.
+> To fix this, add ACPI_MEMORY_NVS into the linear map.
+>
 
+There is a requirement in the arm64 bindings in the UEFI spec that
+says that mixed attribute mappings within a 64k page are not allowed.
 
-Here's what is presently in mm-hotfixes-unstable:
+This is not a very clear description of the requirement or the issue
+it is intended to work around. In short, the following memory types
+are special
 
+=E2=80=93 EfiRuntimeServicesCode =E2=80=93 EfiRuntimeServicesData =E2=80=93=
+ EfiReserved =E2=80=93
+EfiACPIMemoryNVS
 
+and care must be taken to ensure that allocations of these types are
+never mapped with mismatched attributes, which might happen on a 64k
+page size OS if a mapping is rounded outwards and ends up covering the
+adjacent region.
 
-From: Kairui Song <kasong@tencent.com>
-Subject: mm/swap: fix race when skipping swapcache
-Date: Wed, 7 Feb 2024 02:25:59 +0800
+The Tianocore reference implementation of UEFI achieves this by simply
+aligning all allocations of these types to 64k, so that the OS never
+has to reason about whether or not region A and region B sharing a 64k
+page frame could have mappings or aliases that are incompatible.
+(I.e., all mappings of A are compatible with all mappings of B)
 
-When skipping swapcache for SWP_SYNCHRONOUS_IO, if two or more threads
-swapin the same entry at the same time, they get different pages (A, B). 
-Before one thread (T0) finishes the swapin and installs page (A) to the
-PTE, another thread (T1) could finish swapin of page (B), swap_free the
-entry, then swap out the possibly modified page reusing the same entry. 
-It breaks the pte_same check in (T0) because PTE value is unchanged,
-causing ABA problem.  Thread (T0) will install a stalled page (A) into the
-PTE and cause data corruption.
+ACPI reclaim is just memory, EfiACPIMemoryNVS could have special
+semantics that the OS knows nothing about. That makes it unsafe to
+assume that we can simply create a cacheable and writable mapping for
+this memory.
 
-One possible callstack is like this:
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> Cc: stable@vger.kernel.org # 5.15+
+> ---
+> We hit this in an ARM64 Hyper-V VM when using 64k page size, although
+> this issue may also be fixed if the efi memory regions are all 64k
+> aligned, but I don't find this memory region setup is invalid per UEFI
+> spec, also I don't find that spec disallows ACPI_MEMORY_NVS to be mapped
+> in the OS linear map, but if there is any better way or I'm reading the
+> spec incorrectly, please let me know.
+>
 
-CPU0                                 CPU1
-----                                 ----
-do_swap_page()                       do_swap_page() with same entry
-<direct swapin path>                 <direct swapin path>
-<alloc page A>                       <alloc page B>
-swap_read_folio() <- read to page A  swap_read_folio() <- read to page B
-<slow on later locks or interrupt>   <finished swapin first>
-...                                  set_pte_at()
-                                     swap_free() <- entry is free
-                                     <write to page B, now page A stalled>
-                                     <swap out page B to same swap entry>
-pte_same() <- Check pass, PTE seems
-              unchanged, but page A
-              is stalled!
-swap_free() <- page B content lost!
-set_pte_at() <- staled page A installed!
+I'd prefer fixing this in the firmware.
 
-And besides, for ZRAM, swap_free() allows the swap device to discard the
-entry content, so even if page (B) is not modified, if swap_read_folio()
-on CPU0 happens later than swap_free() on CPU1, it may also cause data
-loss.
-
-To fix this, reuse swapcache_prepare which will pin the swap entry using
-the cache flag, and allow only one thread to pin it.  Release the pin
-after PT unlocked.  Racers will simply busy wait since it's a rare and
-very short event.
-
-Other methods like increasing the swap count don't seem to be a good idea
-after some tests, that will cause racers to fall back to use the swap
-cache again.  Parallel swapin using different methods leads to a much more
-complex scenario.
-
-Reproducer:
-
-This race issue can be triggered easily using a well constructed
-reproducer and patched brd (with a delay in read path) [1]:
-
-With latest 6.8 mainline, race caused data loss can be observed easily:
-$ gcc -g -lpthread test-thread-swap-race.c && ./a.out
-  Polulating 32MB of memory region...
-  Keep swapping out...
-  Starting round 0...
-  Spawning 65536 workers...
-  32746 workers spawned, wait for done...
-  Round 0: Error on 0x5aa00, expected 32746, got 32743, 3 data loss!
-  Round 0: Error on 0x395200, expected 32746, got 32743, 3 data loss!
-  Round 0: Error on 0x3fd000, expected 32746, got 32737, 9 data loss!
-  Round 0 Failed, 15 data loss!
-
-This reproducer spawns multiple threads sharing the same memory region
-using a small swap device. Every two threads updates mapped pages one by
-one in opposite direction trying to create a race, with one dedicated
-thread keep swapping out the data out using madvise.
-
-The reproducer created a reproduce rate of about once every 5 minutes,
-so the race should be totally possible in production.
-
-After this patch, I ran the reproducer for over a few hundred rounds
-and no data loss observed.
-
-Performance overhead is minimal, microbenchmark swapin 10G from 32G
-zram:
-
-Before:     10934698 us
-After:      11157121 us
-Non-direct: 13155355 us (Dropping SWP_SYNCHRONOUS_IO flag)
-
-Link: https://lkml.kernel.org/r/20240206182559.32264-1-ryncsn@gmail.com
-Fixes: 0bcac06f27d7 ("mm, swap: skip swapcache for swapin of synchronous device")
-Reported-by: "Huang, Ying" <ying.huang@intel.com>
-Closes: https://lore.kernel.org/lkml/87bk92gqpx.fsf_-_@yhuang6-desk2.ccr.corp.intel.com/
-Link: https://github.com/ryncsn/emm-test-project/tree/master/swap-stress-race [1]
-Signed-off-by: Kairui Song <kasong@tencent.com>
-Reviewed-by: "Huang, Ying" <ying.huang@intel.com>
-Acked-by: Yu Zhao <yuzhao@google.com>
-Cc: Chris Li <chrisl@kernel.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Yosry Ahmed <yosryahmed@google.com>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: Barry Song <21cnbao@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- include/linux/swap.h |    5 +++++
- mm/memory.c          |   15 +++++++++++++++
- mm/swap.h            |    5 +++++
- mm/swapfile.c        |   13 +++++++++++++
- 4 files changed, 38 insertions(+)
-
---- a/include/linux/swap.h~mm-swap-fix-race-when-skipping-swapcache
-+++ a/include/linux/swap.h
-@@ -549,6 +549,11 @@ static inline int swap_duplicate(swp_ent
- 	return 0;
- }
- 
-+static inline int swapcache_prepare(swp_entry_t swp)
-+{
-+	return 0;
-+}
-+
- static inline void swap_free(swp_entry_t swp)
- {
- }
---- a/mm/memory.c~mm-swap-fix-race-when-skipping-swapcache
-+++ a/mm/memory.c
-@@ -3867,6 +3867,16 @@ vm_fault_t do_swap_page(struct vm_fault
- 	if (!folio) {
- 		if (data_race(si->flags & SWP_SYNCHRONOUS_IO) &&
- 		    __swap_count(entry) == 1) {
-+			/*
-+			 * Prevent parallel swapin from proceeding with
-+			 * the cache flag. Otherwise, another thread may
-+			 * finish swapin first, free the entry, and swapout
-+			 * reusing the same entry. It's undetectable as
-+			 * pte_same() returns true due to entry reuse.
-+			 */
-+			if (swapcache_prepare(entry))
-+				goto out;
-+
- 			/* skip swapcache */
- 			folio = vma_alloc_folio(GFP_HIGHUSER_MOVABLE, 0,
- 						vma, vmf->address, false);
-@@ -4116,6 +4126,9 @@ vm_fault_t do_swap_page(struct vm_fault
- unlock:
- 	if (vmf->pte)
- 		pte_unmap_unlock(vmf->pte, vmf->ptl);
-+	/* Clear the swap cache pin for direct swapin after PTL unlock */
-+	if (folio && !swapcache)
-+		swapcache_clear(si, entry);
- out:
- 	if (si)
- 		put_swap_device(si);
-@@ -4124,6 +4137,8 @@ out_nomap:
- 	if (vmf->pte)
- 		pte_unmap_unlock(vmf->pte, vmf->ptl);
- out_page:
-+	if (!swapcache)
-+		swapcache_clear(si, entry);
- 	folio_unlock(folio);
- out_release:
- 	folio_put(folio);
---- a/mm/swapfile.c~mm-swap-fix-race-when-skipping-swapcache
-+++ a/mm/swapfile.c
-@@ -3365,6 +3365,19 @@ int swapcache_prepare(swp_entry_t entry)
- 	return __swap_duplicate(entry, SWAP_HAS_CACHE);
- }
- 
-+void swapcache_clear(struct swap_info_struct *si, swp_entry_t entry)
-+{
-+	struct swap_cluster_info *ci;
-+	unsigned long offset = swp_offset(entry);
-+	unsigned char usage;
-+
-+	ci = lock_cluster_or_swap_info(si, offset);
-+	usage = __swap_entry_free_locked(si, offset, SWAP_HAS_CACHE);
-+	unlock_cluster_or_swap_info(si, ci);
-+	if (!usage)
-+		free_swap_slot(entry);
-+}
-+
- struct swap_info_struct *swp_swap_info(swp_entry_t entry)
- {
- 	return swap_type_to_swap_info(swp_type(entry));
---- a/mm/swap.h~mm-swap-fix-race-when-skipping-swapcache
-+++ a/mm/swap.h
-@@ -41,6 +41,7 @@ void __delete_from_swap_cache(struct fol
- void delete_from_swap_cache(struct folio *folio);
- void clear_shadow_from_swap_cache(int type, unsigned long begin,
- 				  unsigned long end);
-+void swapcache_clear(struct swap_info_struct *si, swp_entry_t entry);
- struct folio *swap_cache_get_folio(swp_entry_t entry,
- 		struct vm_area_struct *vma, unsigned long addr);
- struct folio *filemap_get_incore_folio(struct address_space *mapping,
-@@ -97,6 +98,10 @@ static inline int swap_writepage(struct
- 	return 0;
- }
- 
-+static inline void swapcache_clear(struct swap_info_struct *si, swp_entry_t entry)
-+{
-+}
-+
- static inline struct folio *swap_cache_get_folio(swp_entry_t entry,
- 		struct vm_area_struct *vma, unsigned long addr)
- {
-_
-
+> It's Cced stable since 5.15 because that's when Hyper-V ARM64 support is
+> added, and Hyper-V is the only one that hits the problem so far.
+>
+>  drivers/firmware/efi/efi-init.c | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/firmware/efi/efi-init.c b/drivers/firmware/efi/efi-i=
+nit.c
+> index a00e07b853f2..9a1b9bc66d50 100644
+> --- a/drivers/firmware/efi/efi-init.c
+> +++ b/drivers/firmware/efi/efi-init.c
+> @@ -139,6 +139,7 @@ static __init int is_usable_memory(efi_memory_desc_t =
+*md)
+>         case EFI_LOADER_CODE:
+>         case EFI_LOADER_DATA:
+>         case EFI_ACPI_RECLAIM_MEMORY:
+> +       case EFI_ACPI_MEMORY_NVS:
+>         case EFI_BOOT_SERVICES_CODE:
+>         case EFI_BOOT_SERVICES_DATA:
+>         case EFI_CONVENTIONAL_MEMORY:
+> @@ -202,8 +203,12 @@ static __init void reserve_regions(void)
+>                         if (!is_usable_memory(md))
+>                                 memblock_mark_nomap(paddr, size);
+>
+> -                       /* keep ACPI reclaim memory intact for kexec etc.=
+ */
+> -                       if (md->type =3D=3D EFI_ACPI_RECLAIM_MEMORY)
+> +                       /*
+> +                        * keep ACPI reclaim and NVS memory and intact fo=
+r kexec
+> +                        * etc.
+> +                        */
+> +                       if (md->type =3D=3D EFI_ACPI_RECLAIM_MEMORY ||
+> +                           md->type =3D=3D EFI_ACPI_MEMORY_NVS)
+>                                 memblock_reserve(paddr, size);
+>                 }
+>         }
+> --
+> 2.43.0
+>
+>
 
