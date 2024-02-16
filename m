@@ -1,148 +1,287 @@
-Return-Path: <stable+bounces-20345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E1F8857A5A
-	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 11:33:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D964857AC3
+	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 11:56:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9036288CA4
-	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 10:33:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D86D2286148
+	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 10:56:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59A864F20B;
-	Fri, 16 Feb 2024 10:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20CA654FA0;
+	Fri, 16 Feb 2024 10:56:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wIHSeC1b"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lnvZh1Av"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492974E1BE
-	for <stable@vger.kernel.org>; Fri, 16 Feb 2024 10:33:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E2E54F8F;
+	Fri, 16 Feb 2024 10:56:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708079583; cv=none; b=XAvrVIx4MfkeMueh5170v01jhy7LjGSHP9RQv8RhlmMVNA7YXrXhdQzeQZIlOuySDwPoXUv2WtzCri36D9xcvxPrgUvdfd9XqXVemNmVgg/DGGaDCc5WbHAS1VQ6ORGOYuUwwQAYzrvEaBxb8evv8F4jAaEPprTCzni/p2XS4DQ=
+	t=1708080980; cv=none; b=smk//aRrFUDjp01gnn3CPiEOdAaZwv10h5DDYcz+JRFpM57VPM0g7377ZlRaDg8suLWPw+RzN+uQ8AJnIGJqSQC3HxmnekOUHq4UXvAjRxQD1KCTcQMAwc1gzLl43Dn1v86mTGdPPiQTGdWp693/3+5XYMwG21EsLAo1FCfO25c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708079583; c=relaxed/simple;
-	bh=pxwzx5kB80QMEodtNWjHHfr73oHpaRhGMMqhZkUTBn4=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=fKPCNvG/oXAeaU/JSY+uo/pKwXsVlWGR4kO6FG66iYFyK7cYRq+nS525D2OCZHGrerT1/X6BoDzWtzCuJ8b7xRsQGSt9lqV2xVlU9+WiWLdERbCWlRbdH7yaNInpaq+FJVxTfHTL08C6Bs1F4SgqqKvAwDBLppJelHc58Xj9dWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wIHSeC1b; arc=none smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5114b2b3b73so2207560e87.0
-        for <stable@vger.kernel.org>; Fri, 16 Feb 2024 02:33:01 -0800 (PST)
+	s=arc-20240116; t=1708080980; c=relaxed/simple;
+	bh=NjE8nGi7wiZ2fybvEv4aR2xVZcoDtwme8fnDnaNKmQI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=M7OOF/CMn7qQyy3GEGCyj8yr46daKjDjq8ET+1qRDaBtP3NzgwtKaMqtD5ByVVuyhzcyT8emxDNsH58+yU1prR9j3COzMHVwYmvIR+euVw+FxfsVLeTMjUqr6HzLtQ45rugOoNEECyZmz+LBy7MKbuAqF7RtfFZn63B2kfMR7Pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lnvZh1Av; arc=none smtp.client-ip=209.85.208.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2d0d799b55cso22271921fa.0;
+        Fri, 16 Feb 2024 02:56:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1708079579; x=1708684379; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :references:cc:to:content-language:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IMbxU1cj4AlsYwIsgCEwPs2BixckI2B8kxHIhwU7JYI=;
-        b=wIHSeC1bbRabp+VMxr9eFiH5XZPqTbwU+uJqEAlkDns5Aazq4UhH2hTAcKyp+BEEBY
-         eHK2BTs0rIXjgtWtQtdrcnaCUMMBHYzhVvmgjB4qf49LQvpVfzHsVpS2fqi4Qq2xgD6B
-         yJwU76eFkPj6pF51kS6ehTwl3kzSQVnq2Fu94H5gm7w1yVpsaqf/hWlXANoRyHr3CQFJ
-         dQ0YdtqHpZzbVtM+KU1CYwwbOF6GM/gYiaE5V3i8L5CIofSZihcvzGpDyEvmCCyiizww
-         Tvf1F66gey2xWjuJ2KM0VGrjdq0ZacOKLSUPQG7/Ds5NDiBzKm2x4XwSaRS1n83dykcd
-         oQbA==
+        d=gmail.com; s=20230601; t=1708080977; x=1708685777; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NGg08ojxntkhhDsQku4futyKqz14l8R5h9U6BLyyIe4=;
+        b=lnvZh1Avab8bnWW3C59xqfspOph65w4YqJVKlx/cjF3jzV3uQPgSfUc5h/5xavTiEi
+         WNrZtKtaRLwnNOtPrt6G0i/HqRaPYE1XaZI9ns1ME0i8HWlm1ephofqExHLM/AsNyvgx
+         YfsXoRbaoN46CVB1ZPPzZLF9hBCfe1GilLrbHLgWYvEp747E+z8G99GMfyy/VB0u67Wr
+         f0ACUZpwI7tf7zbGY/AV7bxkvc4bBjYvsiPU8rhCSh+jdCWkLiwdY6/hRqZSTmdfVOuU
+         Hvp9HIKhYjnyUrEcTJ8IuFf/5Oa8fQXFGfnITRmWiriSEC5GJnXKdDdEW2XdA4vw/lUx
+         vV7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708079579; x=1708684379;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :references:cc:to:content-language:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=IMbxU1cj4AlsYwIsgCEwPs2BixckI2B8kxHIhwU7JYI=;
-        b=O6Sl8AI5RhfSLE/ak5R1Dka2vxlJwlyqwlhhgF4Xfsz4PsQ6//xJ6VW/2Xvx423cvW
-         /BlZaVhzcHTmKkLhOOjZbnf3vjvI3kcgT/IWJv3aFPczgz7Jmb2DfwdL66oKrxPGtIZ8
-         HL/2ve07EmcZ2bHhdw/kmOEK23jP8OtlYz3kLXMm/dbssWRHAW/Y3gFJ8CKE2hTm6u6N
-         NLhhboVQV8Bc9mOF4baiCCfMOwruo2pKdM25+nTzZf8apn0HTEgX+eLzHSIhHBXn1XTD
-         sBbv9BM8IuXlKrzUchoMZDfwsHa8SrpfXf/qj7y2THh9YnI+7SiFB1HnUp3zA39XpXQC
-         ubTA==
-X-Gm-Message-State: AOJu0YxJrnuMwFMymjuL9Y+KvPmYt5eQkau2doyoY7xyc6oudhIYurWK
-	xmUAG0qZvNtC3Lytx54auU/rfopLZyAjVNBf1rsaLbQQZT/MydTcI7yWUfAVTr0=
-X-Google-Smtp-Source: AGHT+IGFZtxqLSA6putEUMAD7EpOHwwqh+2loxvsmeMfH50OhCntOMdEH0XOC2b7X+b4r0cxo+Bq2Q==
-X-Received: by 2002:ac2:4c8a:0:b0:511:2f76:e093 with SMTP id d10-20020ac24c8a000000b005112f76e093mr3125845lfl.58.1708079579184;
-        Fri, 16 Feb 2024 02:32:59 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:982:cbb0:814e:29c1:3729:78fa? ([2a01:e0a:982:cbb0:814e:29c1:3729:78fa])
-        by smtp.gmail.com with ESMTPSA id j11-20020adff54b000000b0033b43a5f53csm1786281wrp.103.2024.02.16.02.32.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 16 Feb 2024 02:32:58 -0800 (PST)
-Message-ID: <f60d5399-79f3-4b3c-833f-4b7131929355@linaro.org>
-Date: Fri, 16 Feb 2024 11:32:57 +0100
+        d=1e100.net; s=20230601; t=1708080977; x=1708685777;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NGg08ojxntkhhDsQku4futyKqz14l8R5h9U6BLyyIe4=;
+        b=VpCxdC+k9mCK0WKO7DM41wueoOPp069d55gyV12DzD01TAy61yodzH+bdnWz0scZWT
+         X9+CFMxGzEc0wxPvmdBYZbqIpAJuLsU4k113r5B3s3wG6CUX3JOUaRZPOkBRnLWebzRM
+         Mo7JNGXuF9l43S7uYnOTYNRoVNWU+jpYcnEMJmGw/YqlZlOA/Xo/AtDmhvA+CHjlsxDD
+         rrG/H5M5BupMuzpSc6tps3t65iGZd9xnYrQdGlbtqB3r49K1jgUYIWOpYaJpZEg4K0Sk
+         V7tCk9t84qc+iH2AcCIfO2oWCD15T18wOGXGnwlWYxMCKC7Ti0mIdOM7x2gVN5MSq0Db
+         1gvw==
+X-Forwarded-Encrypted: i=1; AJvYcCXpaCPr6qawekjugW0tUvV2p5SaiG9RtAxbIDvdxUxMzt5vGSvvrUx91D44fT/QOnI5QH4BhzRPOFYCqx21t/xPpdsW2L+55xHNPc1e2qKzq+fYjOVLZMh0bP5qGFDsnnDNftYl
+X-Gm-Message-State: AOJu0YxZ3yjAhoJhPq2WP/rbi09pnL9a33XhCNBYeCIWX9jYbEWRxeEM
+	BTOMNviVpC59ACUF2BH9p6SCRBS1jCM+MqnpOaEot8FrzHoxWXAoEuguNMGTTEjfGRh0MoIKov5
+	++P9htzENojbP8ppKihBTyOEdBzs=
+X-Google-Smtp-Source: AGHT+IFpyDTFOcMj3ClvLTCcN93JDJCcX10HC9mbHDXDYofQLci0+t4Z1bna18u/N5ucidk4kUMlTl/kQyAFjQeYLhU=
+X-Received: by 2002:a2e:3a07:0:b0:2d2:1d51:333e with SMTP id
+ h7-20020a2e3a07000000b002d21d51333emr475538lja.49.1708080976588; Fri, 16 Feb
+ 2024 02:56:16 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: neil.armstrong@linaro.org
-Reply-To: neil.armstrong@linaro.org
-Subject: Re: [PATCH] pinctrl: qcom: sm8650-lpass-lpi: correct Kconfig name
-Content-Language: en-US, fr
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>,
- Linus Walleij <linus.walleij@linaro.org>, linux-arm-msm@vger.kernel.org,
- linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-References: <20240216102435.89867-1-krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=neil.armstrong@linaro.org; keydata=
- xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
- GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
- BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
- qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
- 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
- AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
- OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
- Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
- YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
- GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
- UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
- GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
- yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
- QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
- SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
- 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
- Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
- oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
- M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
- 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
- KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
- 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
- QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
-Organization: Linaro Developer Services
-In-Reply-To: <20240216102435.89867-1-krzysztof.kozlowski@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20240216095105.14502-1-ryncsn@gmail.com> <CAGsJ_4yJFtPdJapjboOxnmg=jdvatTGvTN50r_LKCRNoB0P0fA@mail.gmail.com>
+In-Reply-To: <CAGsJ_4yJFtPdJapjboOxnmg=jdvatTGvTN50r_LKCRNoB0P0fA@mail.gmail.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Fri, 16 Feb 2024 18:55:58 +0800
+Message-ID: <CAMgjq7CjOUbX0ihFwryd=E7eX+=QVOQWpNavtSW-YznYfvzY-g@mail.gmail.com>
+Subject: Re: [PATCH v3] mm/swap: fix race when skipping swapcache
+To: Barry Song <21cnbao@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	"Huang, Ying" <ying.huang@intel.com>, Chris Li <chrisl@kernel.org>, 
+	Minchan Kim <minchan@kernel.org>, Yu Zhao <yuzhao@google.com>, 
+	Barry Song <v-songbaohua@oppo.com>, SeongJae Park <sj@kernel.org>, Hugh Dickins <hughd@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox <willy@infradead.org>, Michal Hocko <mhocko@suse.com>, 
+	Yosry Ahmed <yosryahmed@google.com>, David Hildenbrand <david@redhat.com>, stable@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 16/02/2024 11:24, Krzysztof Kozlowski wrote:
-> Use proper model name in SM8650 LPASS pin controller Kconfig entry.
-> 
-> Cc: <stable@vger.kernel.org>
-> Fixes: c4e47673853f ("pinctrl: qcom: sm8650-lpass-lpi: add SM8650 LPASS")
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> ---
->   drivers/pinctrl/qcom/Kconfig | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/pinctrl/qcom/Kconfig b/drivers/pinctrl/qcom/Kconfig
-> index e0f2829c15d6..24619e80b2cc 100644
-> --- a/drivers/pinctrl/qcom/Kconfig
-> +++ b/drivers/pinctrl/qcom/Kconfig
-> @@ -125,7 +125,7 @@ config PINCTRL_SM8550_LPASS_LPI
->   	  platform.
->   
->   config PINCTRL_SM8650_LPASS_LPI
-> -	tristate "Qualcomm Technologies Inc SM8550 LPASS LPI pin controller driver"
-> +	tristate "Qualcomm Technologies Inc SM8650 LPASS LPI pin controller driver"
->   	depends on ARM64 || COMPILE_TEST
->   	depends on PINCTRL_LPASS_LPI
->   	help
+On Fri, Feb 16, 2024 at 6:15=E2=80=AFPM Barry Song <21cnbao@gmail.com> wrot=
+e:
+>
+> On Fri, Feb 16, 2024 at 10:53=E2=80=AFPM Kairui Song <ryncsn@gmail.com> w=
+rote:
+> >
+> > From: Kairui Song <kasong@tencent.com>
+> >
+> > When skipping swapcache for SWP_SYNCHRONOUS_IO, if two or more threads
+> > swapin the same entry at the same time, they get different pages (A, B)=
+.
+> > Before one thread (T0) finishes the swapin and installs page (A)
+> > to the PTE, another thread (T1) could finish swapin of page (B),
+> > swap_free the entry, then swap out the possibly modified page
+> > reusing the same entry. It breaks the pte_same check in (T0) because
+> > PTE value is unchanged, causing ABA problem. Thread (T0) will
+> > install a stalled page (A) into the PTE and cause data corruption.
+> >
+> > One possible callstack is like this:
+> >
+> > CPU0                                 CPU1
+> > ----                                 ----
+> > do_swap_page()                       do_swap_page() with same entry
+> > <direct swapin path>                 <direct swapin path>
+> > <alloc page A>                       <alloc page B>
+> > swap_read_folio() <- read to page A  swap_read_folio() <- read to page =
+B
+> > <slow on later locks or interrupt>   <finished swapin first>
+> > ..                                  set_pte_at()
+> >                                      swap_free() <- entry is free
+> >                                      <write to page B, now page A stall=
+ed>
+> >                                      <swap out page B to same swap entr=
+y>
+> > pte_same() <- Check pass, PTE seems
+> >               unchanged, but page A
+> >               is stalled!
+> > swap_free() <- page B content lost!
+> > set_pte_at() <- staled page A installed!
+> >
+> > And besides, for ZRAM, swap_free() allows the swap device to discard
+> > the entry content, so even if page (B) is not modified, if
+> > swap_read_folio() on CPU0 happens later than swap_free() on CPU1,
+> > it may also cause data loss.
+> >
+> > To fix this, reuse swapcache_prepare which will pin the swap entry usin=
+g
+> > the cache flag, and allow only one thread to pin it. Release the pin
+> > after PT unlocked. Racers will simply wait since it's a rare and very
+> > short event. A schedule() call is added to avoid wasting too much CPU
+> > or adding too much noise to perf statistics
+> >
+> > Other methods like increasing the swap count don't seem to be a good
+> > idea after some tests, that will cause racers to fall back to use the
+> > swap cache again. Parallel swapin using different methods leads to
+> > a much more complex scenario.
+> >
+> > Reproducer:
+> >
+> > This race issue can be triggered easily using a well constructed
+> > reproducer and patched brd (with a delay in read path) [1]:
+> >
+> > With latest 6.8 mainline, race caused data loss can be observed easily:
+> > $ gcc -g -lpthread test-thread-swap-race.c && ./a.out
+> >   Polulating 32MB of memory region...
+> >   Keep swapping out...
+> >   Starting round 0...
+> >   Spawning 65536 workers...
+> >   32746 workers spawned, wait for done...
+> >   Round 0: Error on 0x5aa00, expected 32746, got 32743, 3 data loss!
+> >   Round 0: Error on 0x395200, expected 32746, got 32743, 3 data loss!
+> >   Round 0: Error on 0x3fd000, expected 32746, got 32737, 9 data loss!
+> >   Round 0 Failed, 15 data loss!
+> >
+> > This reproducer spawns multiple threads sharing the same memory region
+> > using a small swap device. Every two threads updates mapped pages one b=
+y
+> > one in opposite direction trying to create a race, with one dedicated
+> > thread keep swapping out the data out using madvise.
+> >
+> > The reproducer created a reproduce rate of about once every 5 minutes,
+> > so the race should be totally possible in production.
+> >
+> > After this patch, I ran the reproducer for over a few hundred rounds
+> > and no data loss observed.
+> >
+> > Performance overhead is minimal, microbenchmark swapin 10G from 32G
+> > zram:
+> >
+> > Before:     10934698 us
+> > After:      11157121 us
+> > Non-direct: 13155355 us (Dropping SWP_SYNCHRONOUS_IO flag)
+> >
+> > Fixes: 0bcac06f27d7 ("mm, swap: skip swapcache for swapin of synchronou=
+s device")
+> > Link: https://github.com/ryncsn/emm-test-project/tree/master/swap-stres=
+s-race [1]
+> > Reported-by: "Huang, Ying" <ying.huang@intel.com>
+> > Closes: https://lore.kernel.org/lkml/87bk92gqpx.fsf_-_@yhuang6-desk2.cc=
+r.corp.intel.com/
+> > Signed-off-by: Kairui Song <kasong@tencent.com>
+> > Cc: stable@vger.kernel.org
+> >
+> > ---
+> > Update from V2:
+> > - Add a schedule() if raced to prevent repeated page faults wasting CPU
+> >   and add noise to perf statistics.
+> > - Use a bool to state the special case instead of reusing existing
+> >   variables fixing error handling [Minchan Kim].
+> >
+> > V2: https://lore.kernel.org/all/20240206182559.32264-1-ryncsn@gmail.com=
+/
+> >
+> > Update from V1:
+> > - Add some words on ZRAM case, it will discard swap content on swap_fre=
+e so the race window is a bit different but cure is the same. [Barry Song]
+> > - Update comments make it cleaner [Huang, Ying]
+> > - Add a function place holder to fix CONFIG_SWAP=3Dn built [SeongJae Pa=
+rk]
+> > - Update the commit message and summary, refer to SWP_SYNCHRONOUS_IO in=
+stead of "direct swapin path" [Yu Zhao]
+> > - Update commit message.
+> > - Collect Review and Acks.
+> >
+> > V1: https://lore.kernel.org/all/20240205110959.4021-1-ryncsn@gmail.com/
+> >
+> >  include/linux/swap.h |  5 +++++
+> >  mm/memory.c          | 20 ++++++++++++++++++++
+> >  mm/swap.h            |  5 +++++
+> >  mm/swapfile.c        | 13 +++++++++++++
+> >  4 files changed, 43 insertions(+)
+> >
+> > diff --git a/include/linux/swap.h b/include/linux/swap.h
+> > index 4db00ddad261..8d28f6091a32 100644
+> > --- a/include/linux/swap.h
+> > +++ b/include/linux/swap.h
+> > @@ -549,6 +549,11 @@ static inline int swap_duplicate(swp_entry_t swp)
+> >         return 0;
+> >  }
+> >
+> > +static inline int swapcache_prepare(swp_entry_t swp)
+> > +{
+> > +       return 0;
+> > +}
+> > +
+> >  static inline void swap_free(swp_entry_t swp)
+> >  {
+> >  }
+> > diff --git a/mm/memory.c b/mm/memory.c
+> > index 7e1f4849463a..7059230d0a54 100644
+> > --- a/mm/memory.c
+> > +++ b/mm/memory.c
+> > @@ -3799,6 +3799,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+> >         struct page *page;
+> >         struct swap_info_struct *si =3D NULL;
+> >         rmap_t rmap_flags =3D RMAP_NONE;
+> > +       bool need_clear_cache =3D false;
+> >         bool exclusive =3D false;
+> >         swp_entry_t entry;
+> >         pte_t pte;
+> > @@ -3867,6 +3868,20 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+> >         if (!folio) {
+> >                 if (data_race(si->flags & SWP_SYNCHRONOUS_IO) &&
+> >                     __swap_count(entry) =3D=3D 1) {
+> > +                       /*
+> > +                        * Prevent parallel swapin from proceeding with
+> > +                        * the cache flag. Otherwise, another thread ma=
+y
+> > +                        * finish swapin first, free the entry, and swa=
+pout
+> > +                        * reusing the same entry. It's undetectable as
+> > +                        * pte_same() returns true due to entry reuse.
+> > +                        */
+> > +                       if (swapcache_prepare(entry)) {
+> > +                               /* Relax a bit to prevent rapid repeate=
+d page faults */
+> > +                               schedule();
+> > +                               goto out;
+> > +                       }
+> > +                       need_clear_cache =3D true;
+>
+> Hi Kairui,
+> i remember Ying had a suggestion to move swapcache_prepare after
+> swap_read_folio() to decrease race window. does that one even help
+> more to somehow "fix" the counting issue?
+>
 
-Thx for noticing
+Hi Barry,
 
+Thanks for the comments!
 
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Yes, that's one of the suggestions, I found the result already looks
+good enough in test scenario I've posted after adding scheduler()
+change. After moving swapcache_prepare actually waste more CPU as it
+need to alloc/free extra folios now, and test result for the counting
+issue barely changed, so I kept the original code.
 
