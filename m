@@ -1,116 +1,189 @@
-Return-Path: <stable+bounces-20349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BA33857B73
-	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 12:20:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4C3B857BFE
+	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 12:46:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C366228201E
-	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 11:20:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8C461C20BD3
+	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 11:46:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 879DD612D7;
-	Fri, 16 Feb 2024 11:20:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9000677F23;
+	Fri, 16 Feb 2024 11:46:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gZ60BuJG"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="EVRJB5si"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2047.outbound.protection.outlook.com [40.107.223.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 442B460BAD;
-	Fri, 16 Feb 2024 11:20:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708082419; cv=none; b=TDZKYUSaaFyxo9xHPlfI46gMSK8Zo+2Te4WUFRjsBjzpuuFjbwNY5pCZpOeDs9DJbizMhfpq20xoncaXsxG/HC10xsaY6gA8IE+bVEB5aV5hbvd87Ys+QLGDdlpKiOHlncVfmlx26pYl7nTHnxFqQcPA7bepn6qeXgSFNYVG8HU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708082419; c=relaxed/simple;
-	bh=VHv3IYjlHR6MUnfBc57C98lM3wMHgx0zJpPwl1b5C0Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WQG4U0vsdgOsYvv3nFQH/g1znJCui0LrlMLF/LHJ4KFnUP56pcNN8JR1KOJb444GS/qEqtqrXtritHvl/0APIkHTkFGS2fuvbiYs54n0VVM2QmPevnuZcrYpKnlpJNcQO9VyywyD15x7NehQq2frnnjA5vBAtMUOo8xOk7DN0c8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gZ60BuJG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 080C5C433F1;
-	Fri, 16 Feb 2024 11:20:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708082418;
-	bh=VHv3IYjlHR6MUnfBc57C98lM3wMHgx0zJpPwl1b5C0Q=;
-	h=From:To:Cc:Subject:Date:From;
-	b=gZ60BuJG169m3E1IZ7ML64F+uRom6HmsZtlRer3uqK7WqWJ2+dVoPcUpbFjCFFfGl
-	 mMuYVxSELFmwv0Lg2QMgcqvdl0JOansiVbg69U349nkxaUzUQLiz+CPgIk1VuQ0xd4
-	 u8LYksz9+KfqwLN95UiLuXjekq7xDyIsbdhaH06Y4m5UzIcgUlLVYzb9LL+EbjI3XA
-	 hstuFIzojYR6SZEYg1tyKhLPsdo//eKxVHpoKZ1N5/QdnjqJBcOElcToe0pouqjaYh
-	 Mk6ERg5jACqPfSCFVATKzDTmW59upV5ZKfVjaFSxD/mn3THiOJ5oRujYQr7/tFWScA
-	 k/bK96BOid4nw==
-From: Niklas Cassel <cassel@kernel.org>
-To: Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>
-Cc: stable@vger.kernel.org,
-	Niklas Cassel <niklas.cassel@wdc.com>,
-	linux-ide@vger.kernel.org
-Subject: [PATCH] ata: libata-core: Do not call ata_dev_power_set_standby() twice
-Date: Fri, 16 Feb 2024 12:20:07 +0100
-Message-ID: <20240216112008.1112538-1-cassel@kernel.org>
-X-Mailer: git-send-email 2.43.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7456C12E7E
+	for <stable@vger.kernel.org>; Fri, 16 Feb 2024 11:46:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708084002; cv=fail; b=TcRcyi4TvY9aJQMYk/yW8hiIQZqxhPRaftYzvZSCVBtw/7x1ak6ApYdzsZeDDPvrTtFFuUP+awLFccnvP/QCIZZhIWA+G8Z5jRBXirbGyqPR5LJB+FGKbVill4h23OYE+ganBH0QwTQWmSlO2QyBMHMCWKWcWs/obw9uylNjyhc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708084002; c=relaxed/simple;
+	bh=gDZh4VsPBIDRdhmcgpBsZvgfZQwOMqLMHeEX9HKWxfA=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=FzUOmC3ggvQJFFK6sGSLHOPXlraSfjVjj/bAftzal+IRQtMX3NgDgiBSsQe5sU/Ng5sXk2z8UGQH50ijZjNJ1B+5WWj4MzpvpRWrRxkFIaviEnEw3WpQ+/m0W7RRa7QuQ9Z39DuBRU2tDkl99ToF3bpBWNg0T2olSu4dAFhyuJg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=EVRJB5si; arc=fail smtp.client-ip=40.107.223.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=gHmkFKQ89PeHHVazKJFE1F9ekLqg06M9EMKUZnX184XxGnpGN7NiDlORtDQkd+XEBYwkDp0tWPVgPxY1CP6aa/+K8ht+AeozgfgcFhJ4U0r/ziDwgQMhiMr28cy1RLwlxHdV4oYr6XWI3tNJZP25gAfnDkERJQsTn/qZPzzpyTmX6ePYN2F8Y4Y78NuG58bv6eGWBhrt1X4c9aMBd9Ue3wKT5IjeRoJlyMEoYJAuW8g1AjdYh4tb2geE8vV//kxWI5uUrqkpxSVswscu+na3YTk6/aWy/I0/qgh1mjiSrBbP7VJrzpFJ/h3FYnb2ZX9bGfsVCVWT6vCXdOGvatKdzw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EWj2WzzwWwc3d2qt4i/klhuPY/eQCUQgcy6jjl//AJc=;
+ b=NRYOWdOw80gwfheC7uSmtLRafgf8FQBUFuDv+ByoWweyECj6QOb4E4KC1GJMJnnFZjkqlNikCYLuojRq+NIIQbfxJGjhcxQt9HhJmBhUSEjMqwaf16eXgQ6lRtfQZVx6KjPzwUQ+qQdjd7EEpDb76bP6Gj6colKHekqaLXGU+15oKOqm2ThKjEiucKi3Hz/9L7Ll9kapBo9Jg3StbWh0m3WX9o0F3Ko02Xiw94D//GV+S/czrp2H+HNcUVgY6IxOOByBA/iHOKiBBHYh0qEolGtNFk5DbQTciTLHs/e918xCNeOoBiXmA1jfD9Z3Z2yEbuetyNxqY1EMPhhmN/WZcQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EWj2WzzwWwc3d2qt4i/klhuPY/eQCUQgcy6jjl//AJc=;
+ b=EVRJB5siRH/UOI4QKYRTJrwqcP5b4xqEmXztBoWtEESFWTzTPhHPDvKQsZj7BUxOhYghM6tCSYZ2kqiOr11qzIYNs20Y4DtDHvAA3JiNLh+qFNmt3H0l4lN8xbxxOmf5vnfY2ucrXnT0Z3MrmMrF+mR/wMMEQYAKPEbs35EsCMM=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MN2PR12MB4342.namprd12.prod.outlook.com (2603:10b6:208:264::7)
+ by MN0PR12MB6293.namprd12.prod.outlook.com (2603:10b6:208:3c2::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.26; Fri, 16 Feb
+ 2024 11:46:38 +0000
+Received: from MN2PR12MB4342.namprd12.prod.outlook.com
+ ([fe80::e3ee:6c2c:4e87:a6d6]) by MN2PR12MB4342.namprd12.prod.outlook.com
+ ([fe80::e3ee:6c2c:4e87:a6d6%5]) with mapi id 15.20.7316.012; Fri, 16 Feb 2024
+ 11:46:38 +0000
+Message-ID: <210c7dbe-7357-47f0-a40a-0c82c3cd96d9@amd.com>
+Date: Fri, 16 Feb 2024 17:16:30 +0530
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH] drm/buddy: Modify duplicate list_splice_tail call
+Content-Language: en-US
+To: Matthew Auld <matthew.auld@intel.com>, dri-devel@lists.freedesktop.org,
+ amd-gfx@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
+Cc: christian.koenig@amd.com, alexander.deucher@amd.com,
+ mario.limonciello@amd.com, spasswolf@web.de, stable@vger.kernel.org
+References: <20240216100048.4101-1-Arunpravin.PaneerSelvam@amd.com>
+ <bb158180-c354-458b-8aab-bb224bcb3fbc@intel.com>
+From: Arunpravin Paneer Selvam <arunpravin.paneerselvam@amd.com>
+In-Reply-To: <bb158180-c354-458b-8aab-bb224bcb3fbc@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: PN3PR01CA0063.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:99::23) To MN2PR12MB4342.namprd12.prod.outlook.com
+ (2603:10b6:208:264::7)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN2PR12MB4342:EE_|MN0PR12MB6293:EE_
+X-MS-Office365-Filtering-Correlation-Id: 92337b0b-6ae6-4373-b37e-08dc2ee4ef46
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	i4CgoMbvfgvHk4JB3m2+a6OYCHb82MDbuEFV+BZfUiB59JBI9nGGEhPKpaCB093iUUb7Yy8Lw/2CM5abXLT+PcrR9BKP3Kq7JYeuy39R6/43vcKNLpjCnn8a9/f/6Ckdr18d8vLvGG4YoBrxnBMzxzv8fz4DcEP42Ubvsm4F3a6hKPodNpJwFRbxWt/fXjQpbMvjGwyA4/qShYva3+cPO3CMnSURMj0pXa+B2rU4fw9u/5ffg9lq1FJXzbZmoU2F4Ry0MUh8LkshLnmBLjy2xG/HNfKCxsuW1qfsMk//0FfCk2g/39WMZ8r5q8FEBF0qCPSxwKxovT22YGluU9yDXjlyU00V8DtOhtWsCUL2cpzbv9aSx14DzbO7PqlzT2Zt4UNEDY7CoPZ/P69M44R1WzDIJSHvG6oZ5hcX9edqHsOauNbkRWkNge3p7/ituz/qxajI0O+u5ZvOhs/koZwxCmgh0f/qTFgXEbxsYMUkEaZC5Kemy1RcMq4qEB0/HpFTAFwnBWUnETBjZ7uECkhnAmpBbnBzSViq2/X5I7SzrGuiAm0j2p+H7F5pr6vKzx0r
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR12MB4342.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(376002)(346002)(136003)(366004)(39860400002)(230922051799003)(64100799003)(1800799012)(451199024)(186009)(31686004)(6512007)(478600001)(53546011)(2616005)(41300700001)(2906002)(66556008)(5660300002)(8676002)(8936002)(66476007)(66946007)(4326008)(6666004)(6506007)(6486002)(26005)(316002)(31696002)(83380400001)(38100700002)(36756003)(86362001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SDJUaFhLK3RGbjhGS09pak5wQ1U2Tm9JV1orTUtqUmdFd3l2V0Q2eG9TdzZO?=
+ =?utf-8?B?aCttUlBqejg5KzlzRXh5YS9QUUV0T3ZxK3VlSG11TVFzZ05DY0VjWkNFanUy?=
+ =?utf-8?B?a0c5bHYreDREdE9lNkJUSWlKdlh0UXQyUXJ3T1p0REVCOGxOQzBNZExBaU5T?=
+ =?utf-8?B?RHB0MGZ6MHRwUTEwaXMvWGVXcDRvQ0w0WmluVjZJRzgyNWhCTFNIZzMvYnBS?=
+ =?utf-8?B?MlZPMHgxenZndHB5SFd4VTV2b0lnTVBvRGNFdkNmWjB4MDZXS1o1K2VCd0pw?=
+ =?utf-8?B?ZjJWd1M4bFM0eUtLd3AvMFJpQlZtSXFNTDFHNzB2RmtHNThvcDlMNlJaYmEr?=
+ =?utf-8?B?UE14TGZjL1poaHVMNWxYNTlwc2NjR1dZZFBBVjZLdmR3L3BnbThudXRvbTQv?=
+ =?utf-8?B?dkNvNkhuWm56aXdMdE9vWGdhRU4vNmFmQ0lETnlQVzBmTXpYN2tSTmJZNGho?=
+ =?utf-8?B?MS9jTjNFQWtCaDBSalBXbzdoYXcvSCtWL25RZmlIcTRVVjdxOXo4NWJ3UWdW?=
+ =?utf-8?B?OGN1L1FsOG1RdEhJdnJvZ0xGMTBuNjVMUDd1ZWdIMCs5Q2ZlaVJaT0ZQUzM1?=
+ =?utf-8?B?ZWIwWnNKb1VuUzVBNkE3b2d4cnZGaHJ6RER6cUtoWEkzQXcvMkorWU5wQ3E3?=
+ =?utf-8?B?b081cHR1R3Q0SzdJaDFmcFo1ajEwVGY5T1k5YkZUbWZTc09UdHhGSlFQYnNS?=
+ =?utf-8?B?aTVXVDkrTFJ6QjZxV1JrQzAyN0E3a2U4NWJzOEpCbGZ0dVliWk53QVJqWWxy?=
+ =?utf-8?B?eEhsaVp1UzdQNjZySmk0Uks4M1crZnJ1ZTNLQmNIcEVrSnI0eTRuS3daZ2NN?=
+ =?utf-8?B?eWN2TlVSaFdwTDJEZFlGc2NWRlNUNjE0RTBQdWM5Rkd6SlJwaFZpc3Z0MlNF?=
+ =?utf-8?B?M2RFbU9PdGZ2c1N1L2lWZUpheHpVTTJpdElINll2WlhVNlJOYUo3QVhpUFc4?=
+ =?utf-8?B?UWVaSklwVHE3L29KOVZaWklIK0RucHcvZkF6MUF0cm5pVnNFNlZ4RFBxSnNm?=
+ =?utf-8?B?QitDRjRvMENjUlpKMXdIQzY2WElqelRhblRaQUZqVlE4L3U0M1VlRGZnbzBB?=
+ =?utf-8?B?VjNWSTFvenlKSDN3cG5zdGYrWjZvMXJDam5vekdjN2hMa250UDJZSXBsUmk3?=
+ =?utf-8?B?eksxM0dlVUdLazZQNnJwR3ljaVpIWlA2Z0toazVoZzFjTldGSU5KN3E3Z05D?=
+ =?utf-8?B?NUNjd1JEWWpLUVdNNlU2dmNldnFiMHZZRi9IYVh2NDdsUE1GcW5sSjVOay9D?=
+ =?utf-8?B?T2RtMzYwKzhzSVZSQjJPYlY2WFdSSzY2RXJOU1JhSU1WdDBtK3JuVWdkMW02?=
+ =?utf-8?B?ZGVWZlVpUHJKOXV1ZUIwUVEzMlRDeWY3VEJDSzFFeTd4blJHQnFXcUN2Wk9K?=
+ =?utf-8?B?SFBLTGdCcmNscm1lOFd2YTg0VExRTTlLakpWUDY0d2prMEExV2hLZHFodWZx?=
+ =?utf-8?B?dEdzN1JxV0N4WkNIdThvcHNIeHpXTjJOZjhSTDlORFFDbmVnSTFJMDJLNnI3?=
+ =?utf-8?B?TlZydjRsUElYcEV1WjlDOEQ4V2NEMnNtVVdvRk5ibnVWU0MrTCtaMm5LdE5w?=
+ =?utf-8?B?M1RYZ1NEZ1NJQS9ETnBIOFBOTm1zbnlLeE56d210eFFRcTJLYnVtOHF5ZW05?=
+ =?utf-8?B?UCtIR1piV3BZWThkRXN1U1RzbjBLUWxMVXF2U040cXZkV1ZqOXE2N2FjNHlF?=
+ =?utf-8?B?bWxKQTIwMjM1WVl3RG9ScUh4Tkc5MTN6U1ZtMys5UzlBcTg5WEl4QjVReGEy?=
+ =?utf-8?B?Q2szbjlKWisrbWNsOVhDRGZ5MFhYbEZXWjN0SENsWWxybGtjRi8vN0hrNnhJ?=
+ =?utf-8?B?bGxSME01UVdtU09KR3N4dWtycU9kZTVBLzZKUWdGWmJKZVI1WWlhTXZjZjVG?=
+ =?utf-8?B?Wm1qTHBZdVd1NzlLYklHYTA5KzNZYml4b0xhWmVhNlBNYko2SWFBb1EyM3NN?=
+ =?utf-8?B?ZERDUUNtMnJOam1EWG0xTTB0d1lmL3NIN09NWDF3QjVPZHA2aHhocWNVcXFY?=
+ =?utf-8?B?WlhQcU5DcUl6K2VrSG1ZbTBtSThTcFVybUw3R0tTYnJwcWR5Z1ZaL2hWb1ZV?=
+ =?utf-8?B?WEJhY0hUaXV6d3M5ZFZhcm1XRmtzY2ZNR1hqaStUWi9oNUtLaWdxZFFQVjdv?=
+ =?utf-8?Q?Bjnj9tR+/jmZMOV1Nk9L1Vdkn?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 92337b0b-6ae6-4373-b37e-08dc2ee4ef46
+X-MS-Exchange-CrossTenant-AuthSource: MN2PR12MB4342.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Feb 2024 11:46:38.4568
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: K9fuSh4HQlQxvxuvxzQa+DHHMt3m8No5udoGj8PYP75/z5zxOVAsZMino0qQs785DkNdFaUZdqmy0MAY2vRlsw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6293
 
-From: Damien Le Moal <dlemoal@kernel.org>
 
-For regular system shutdown, ata_dev_power_set_standby() will be
-executed twice: once the scsi device is removed and another when
-ata_pci_shutdown_one() executes and EH completes unloading the devices.
 
-Make the second call to ata_dev_power_set_standby() do nothing by using
-ata_dev_power_is_active() and return if the device is already in
-standby.
+On 2/16/2024 4:41 PM, Matthew Auld wrote:
+> On 16/02/2024 10:00, Arunpravin Paneer Selvam wrote:
+>> Remove the duplicate list_splice_tail call when the
+>> total_allocated < size condition is true.
+>>
+>> Cc: <stable@vger.kernel.org> # 6.7+
+>> Fixes: 8746c6c9dfa3 ("drm/buddy: Fix alloc_range() error handling code")
+>> Reported-by: Bert Karwatzki <spasswolf@web.de>
+>> Signed-off-by: Arunpravin Paneer Selvam 
+>> <Arunpravin.PaneerSelvam@amd.com>
+>> ---
+>>   drivers/gpu/drm/drm_buddy.c | 4 ++--
+>>   1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/gpu/drm/drm_buddy.c b/drivers/gpu/drm/drm_buddy.c
+>> index c1a99bf4dffd..c4222b886db7 100644
+>> --- a/drivers/gpu/drm/drm_buddy.c
+>> +++ b/drivers/gpu/drm/drm_buddy.c
+>> @@ -538,13 +538,13 @@ static int __alloc_range(struct drm_buddy *mm,
+>>           list_add(&block->left->tmp_link, dfs);
+>>       } while (1);
+>>   -    list_splice_tail(&allocated, blocks);
+>> -
+>>       if (total_allocated < size) {
+>>           err = -ENOSPC;
+>>           goto err_free;
+>>       }
+>>   +    list_splice_tail(&allocated, blocks);
+>
+> Sigh. Can we extend the unit test(s) to catch this?
+Sure, Let me check.
 
-Fixes: 2da4c5e24e86 ("ata: libata-core: Improve ata_dev_power_set_active()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
----
-This fix was originally part of patch that contained both a fix and
-a revert in a single patch:
-https://lore.kernel.org/linux-ide/20240111115123.1258422-3-dlemoal@kernel.org/
-
-This patch contains the only the fix (as it is valid even without the
-revert), without the revert.
-
-Updated the Fixes tag to point to a more appropriate commit, since we
-no longer revert any code.
-
- drivers/ata/libata-core.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index d9f80f4f70f5..af2334bc806d 100644
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -85,6 +85,7 @@ static unsigned int ata_dev_init_params(struct ata_device *dev,
- static unsigned int ata_dev_set_xfermode(struct ata_device *dev);
- static void ata_dev_xfermask(struct ata_device *dev);
- static unsigned long ata_dev_blacklisted(const struct ata_device *dev);
-+static bool ata_dev_power_is_active(struct ata_device *dev);
- 
- atomic_t ata_print_id = ATOMIC_INIT(0);
- 
-@@ -2017,8 +2018,9 @@ void ata_dev_power_set_standby(struct ata_device *dev)
- 	struct ata_taskfile tf;
- 	unsigned int err_mask;
- 
--	/* If the device is already sleeping, do nothing. */
--	if (dev->flags & ATA_DFLAG_SLEEPING)
-+	/* If the device is already sleeping or in standby, do nothing. */
-+	if ((dev->flags & ATA_DFLAG_SLEEPING) ||
-+	    !ata_dev_power_is_active(dev))
- 		return;
- 
- 	/*
--- 
-2.43.1
+Regards,
+Arun.
+>
+> Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+>
+>> +
+>>       return 0;
+>>     err_undo:
+>>
+>> base-commit: a64056bb5a3215bd31c8ce17d609ba0f4d5c55ea
 
 
