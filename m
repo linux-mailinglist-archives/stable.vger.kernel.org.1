@@ -1,189 +1,186 @@
-Return-Path: <stable+bounces-20350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4C3B857BFE
-	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 12:46:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE90B857C1B
+	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 12:51:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8C461C20BD3
-	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 11:46:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70575B227A5
+	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 11:51:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9000677F23;
-	Fri, 16 Feb 2024 11:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A19E78664;
+	Fri, 16 Feb 2024 11:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="EVRJB5si"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AiIJUBbx"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2047.outbound.protection.outlook.com [40.107.223.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7456C12E7E
-	for <stable@vger.kernel.org>; Fri, 16 Feb 2024 11:46:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708084002; cv=fail; b=TcRcyi4TvY9aJQMYk/yW8hiIQZqxhPRaftYzvZSCVBtw/7x1ak6ApYdzsZeDDPvrTtFFuUP+awLFccnvP/QCIZZhIWA+G8Z5jRBXirbGyqPR5LJB+FGKbVill4h23OYE+ganBH0QwTQWmSlO2QyBMHMCWKWcWs/obw9uylNjyhc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708084002; c=relaxed/simple;
-	bh=gDZh4VsPBIDRdhmcgpBsZvgfZQwOMqLMHeEX9HKWxfA=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=FzUOmC3ggvQJFFK6sGSLHOPXlraSfjVjj/bAftzal+IRQtMX3NgDgiBSsQe5sU/Ng5sXk2z8UGQH50ijZjNJ1B+5WWj4MzpvpRWrRxkFIaviEnEw3WpQ+/m0W7RRa7QuQ9Z39DuBRU2tDkl99ToF3bpBWNg0T2olSu4dAFhyuJg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=EVRJB5si; arc=fail smtp.client-ip=40.107.223.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gHmkFKQ89PeHHVazKJFE1F9ekLqg06M9EMKUZnX184XxGnpGN7NiDlORtDQkd+XEBYwkDp0tWPVgPxY1CP6aa/+K8ht+AeozgfgcFhJ4U0r/ziDwgQMhiMr28cy1RLwlxHdV4oYr6XWI3tNJZP25gAfnDkERJQsTn/qZPzzpyTmX6ePYN2F8Y4Y78NuG58bv6eGWBhrt1X4c9aMBd9Ue3wKT5IjeRoJlyMEoYJAuW8g1AjdYh4tb2geE8vV//kxWI5uUrqkpxSVswscu+na3YTk6/aWy/I0/qgh1mjiSrBbP7VJrzpFJ/h3FYnb2ZX9bGfsVCVWT6vCXdOGvatKdzw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EWj2WzzwWwc3d2qt4i/klhuPY/eQCUQgcy6jjl//AJc=;
- b=NRYOWdOw80gwfheC7uSmtLRafgf8FQBUFuDv+ByoWweyECj6QOb4E4KC1GJMJnnFZjkqlNikCYLuojRq+NIIQbfxJGjhcxQt9HhJmBhUSEjMqwaf16eXgQ6lRtfQZVx6KjPzwUQ+qQdjd7EEpDb76bP6Gj6colKHekqaLXGU+15oKOqm2ThKjEiucKi3Hz/9L7Ll9kapBo9Jg3StbWh0m3WX9o0F3Ko02Xiw94D//GV+S/czrp2H+HNcUVgY6IxOOByBA/iHOKiBBHYh0qEolGtNFk5DbQTciTLHs/e918xCNeOoBiXmA1jfD9Z3Z2yEbuetyNxqY1EMPhhmN/WZcQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EWj2WzzwWwc3d2qt4i/klhuPY/eQCUQgcy6jjl//AJc=;
- b=EVRJB5siRH/UOI4QKYRTJrwqcP5b4xqEmXztBoWtEESFWTzTPhHPDvKQsZj7BUxOhYghM6tCSYZ2kqiOr11qzIYNs20Y4DtDHvAA3JiNLh+qFNmt3H0l4lN8xbxxOmf5vnfY2ucrXnT0Z3MrmMrF+mR/wMMEQYAKPEbs35EsCMM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN2PR12MB4342.namprd12.prod.outlook.com (2603:10b6:208:264::7)
- by MN0PR12MB6293.namprd12.prod.outlook.com (2603:10b6:208:3c2::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.26; Fri, 16 Feb
- 2024 11:46:38 +0000
-Received: from MN2PR12MB4342.namprd12.prod.outlook.com
- ([fe80::e3ee:6c2c:4e87:a6d6]) by MN2PR12MB4342.namprd12.prod.outlook.com
- ([fe80::e3ee:6c2c:4e87:a6d6%5]) with mapi id 15.20.7316.012; Fri, 16 Feb 2024
- 11:46:38 +0000
-Message-ID: <210c7dbe-7357-47f0-a40a-0c82c3cd96d9@amd.com>
-Date: Fri, 16 Feb 2024 17:16:30 +0530
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH] drm/buddy: Modify duplicate list_splice_tail call
-Content-Language: en-US
-To: Matthew Auld <matthew.auld@intel.com>, dri-devel@lists.freedesktop.org,
- amd-gfx@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
-Cc: christian.koenig@amd.com, alexander.deucher@amd.com,
- mario.limonciello@amd.com, spasswolf@web.de, stable@vger.kernel.org
-References: <20240216100048.4101-1-Arunpravin.PaneerSelvam@amd.com>
- <bb158180-c354-458b-8aab-bb224bcb3fbc@intel.com>
-From: Arunpravin Paneer Selvam <arunpravin.paneerselvam@amd.com>
-In-Reply-To: <bb158180-c354-458b-8aab-bb224bcb3fbc@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: PN3PR01CA0063.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:99::23) To MN2PR12MB4342.namprd12.prod.outlook.com
- (2603:10b6:208:264::7)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB7477F32;
+	Fri, 16 Feb 2024 11:51:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708084312; cv=none; b=eN0vvnOoTVNEw3/WkwmQ+OCzAlwCkLGzTfpGAn3mWt0YEs4nokmzMW/huXiWGylhAvmtEU3cvDpqUiTr6Whs4kr4vUjFmTGyQegV4gb4u2xPREWvDrWWtqbGFE85CmXi0g0PiA+vZ0h/PRHAMncs9/X3HZKKKcqf90RYLQZtPEM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708084312; c=relaxed/simple;
+	bh=8c8z7IrXnQ8qHY9q5B6SwDk99cpEbxY5gPfy3wS60u0=;
+	h=Message-ID:Date:MIME-Version:To:From:Cc:Subject:Content-Type; b=AhNXSwIzUiwwbpRnCIvZWKMuw7ZUnO9SuKeIOxg5c3dXLMOzET0Hw5oJ+RzXzefdFOwuFapbjzli6Pb+SsZHzln04nEaG1fJRzGaRFjqj5UGGDXCn6CNemi2j3jYprduDeMKC/eE/iiUtITAx+IbcM9jWykcKNcXt7Tt/ypGPPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AiIJUBbx; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-51167e470f7so781889e87.2;
+        Fri, 16 Feb 2024 03:51:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708084308; x=1708689108; darn=vger.kernel.org;
+        h=content-transfer-encoding:autocrypt:subject:cc:from:to
+         :content-language:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Smi+XemBG3ZogtSdkPCilQ1a7PgwI71wggR8N7UK79I=;
+        b=AiIJUBbxqMC7/tGkf9fgJHdJFmYbKEYT2Brm6vR/o2UDJYre03FoiBfD4ohRX91HHs
+         Nc4xRCcGMxlB0CMre6JxWWIxAs513GDylWDWkqSoeCqhHRGDb+EOvTVYnaKr9D/XvIEQ
+         1J1JYXnkVmwZJeiK9a5PMEt9FBnfR9KHTZC9LmxvAfz8eA08Rm9nNPkM6E6c2csDXU1X
+         HbU6/5FQlBtheeebKbp/eR8H/qEMPBvj4cW8La+blrNhh1F4ByScTVTbhcrZP8UM5QYl
+         lG24TwA2+WuNY9Bo4nekqPJdPm5d0DeAOPf5icEeZia/PNgwOIUxeVMQsrVA3SXMk6FG
+         YdIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708084308; x=1708689108;
+        h=content-transfer-encoding:autocrypt:subject:cc:from:to
+         :content-language:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Smi+XemBG3ZogtSdkPCilQ1a7PgwI71wggR8N7UK79I=;
+        b=qjrYZn6yQE5pB3x0/V/n6vpzWdc1ANLem4xJJZZLUYDh7Es6cz8AKuMMkmXiNvf7mb
+         zM4iXMoTLzjJ0/yXRsh47BfSoEmxXHiU8dA4TXVoqTELnROx/+fK91u8YPsK+RMwPO2A
+         PcFM+CSQe61gx+mM7SW+seMT8h96yXBtM9TWbwWFDmPiK0L8GX3f5wb8jqHpdBsWlfwP
+         3+A/F7oJAPq515BSkbum8OoHtmdsbCR7OElnlfFrFZDb9HOiYtDmyzyk7UDygNS70kxD
+         iZxONqEpWDFhlZCYOJU0Shi6tmx7d6yci2BzdeApouSVYucBtEo0Py2hfQpy/SA+16oI
+         tmVg==
+X-Forwarded-Encrypted: i=1; AJvYcCXM4Vz9cVXwPlClEdMGrpfy+sLrid+JBxebA0I1ydkbu3jl3dBJeQrQS7MqG2RCY86MBA/3bQ/IztBLA75s5VFO4MhsoIcEN9EutLc=
+X-Gm-Message-State: AOJu0Yzv/xAfZ4OQyuQRiZFnT1d4/mvc5tuzqqvqUVEdcjKHoEaOQrUZ
+	joNsEAcEiP8i/NkINLKR0icaiWQboHBLvfY5iaqFeq/1jTEZ4XNj/FPhWhueTB0=
+X-Google-Smtp-Source: AGHT+IFMtn99C75IesMt3iYhbPCYI8c5GZvGp5FMz/36kPmrZYm+qVBychNQaYtOK+DT37/dO5wtAA==
+X-Received: by 2002:ac2:59c1:0:b0:511:a088:faf4 with SMTP id x1-20020ac259c1000000b00511a088faf4mr3431515lfn.4.1708084307902;
+        Fri, 16 Feb 2024 03:51:47 -0800 (PST)
+Received: from ?IPV6:2a01:e34:ec5f:c111:cff2:caac:f1f6:c049? ([2a01:e34:ec5f:c111:cff2:caac:f1f6:c049])
+        by smtp.gmail.com with ESMTPSA id n14-20020a05600c3b8e00b00410709fa0d3sm2130605wms.33.2024.02.16.03.51.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 16 Feb 2024 03:51:47 -0800 (PST)
+Message-ID: <a29d56d2-c440-4a26-a9ac-014595d2ae8c@gmail.com>
+Date: Fri, 16 Feb 2024 12:51:46 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN2PR12MB4342:EE_|MN0PR12MB6293:EE_
-X-MS-Office365-Filtering-Correlation-Id: 92337b0b-6ae6-4373-b37e-08dc2ee4ef46
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	i4CgoMbvfgvHk4JB3m2+a6OYCHb82MDbuEFV+BZfUiB59JBI9nGGEhPKpaCB093iUUb7Yy8Lw/2CM5abXLT+PcrR9BKP3Kq7JYeuy39R6/43vcKNLpjCnn8a9/f/6Ckdr18d8vLvGG4YoBrxnBMzxzv8fz4DcEP42Ubvsm4F3a6hKPodNpJwFRbxWt/fXjQpbMvjGwyA4/qShYva3+cPO3CMnSURMj0pXa+B2rU4fw9u/5ffg9lq1FJXzbZmoU2F4Ry0MUh8LkshLnmBLjy2xG/HNfKCxsuW1qfsMk//0FfCk2g/39WMZ8r5q8FEBF0qCPSxwKxovT22YGluU9yDXjlyU00V8DtOhtWsCUL2cpzbv9aSx14DzbO7PqlzT2Zt4UNEDY7CoPZ/P69M44R1WzDIJSHvG6oZ5hcX9edqHsOauNbkRWkNge3p7/ituz/qxajI0O+u5ZvOhs/koZwxCmgh0f/qTFgXEbxsYMUkEaZC5Kemy1RcMq4qEB0/HpFTAFwnBWUnETBjZ7uECkhnAmpBbnBzSViq2/X5I7SzrGuiAm0j2p+H7F5pr6vKzx0r
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR12MB4342.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(376002)(346002)(136003)(366004)(39860400002)(230922051799003)(64100799003)(1800799012)(451199024)(186009)(31686004)(6512007)(478600001)(53546011)(2616005)(41300700001)(2906002)(66556008)(5660300002)(8676002)(8936002)(66476007)(66946007)(4326008)(6666004)(6506007)(6486002)(26005)(316002)(31696002)(83380400001)(38100700002)(36756003)(86362001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SDJUaFhLK3RGbjhGS09pak5wQ1U2Tm9JV1orTUtqUmdFd3l2V0Q2eG9TdzZO?=
- =?utf-8?B?aCttUlBqejg5KzlzRXh5YS9QUUV0T3ZxK3VlSG11TVFzZ05DY0VjWkNFanUy?=
- =?utf-8?B?a0c5bHYreDREdE9lNkJUSWlKdlh0UXQyUXJ3T1p0REVCOGxOQzBNZExBaU5T?=
- =?utf-8?B?RHB0MGZ6MHRwUTEwaXMvWGVXcDRvQ0w0WmluVjZJRzgyNWhCTFNIZzMvYnBS?=
- =?utf-8?B?MlZPMHgxenZndHB5SFd4VTV2b0lnTVBvRGNFdkNmWjB4MDZXS1o1K2VCd0pw?=
- =?utf-8?B?ZjJWd1M4bFM0eUtLd3AvMFJpQlZtSXFNTDFHNzB2RmtHNThvcDlMNlJaYmEr?=
- =?utf-8?B?UE14TGZjL1poaHVMNWxYNTlwc2NjR1dZZFBBVjZLdmR3L3BnbThudXRvbTQv?=
- =?utf-8?B?dkNvNkhuWm56aXdMdE9vWGdhRU4vNmFmQ0lETnlQVzBmTXpYN2tSTmJZNGho?=
- =?utf-8?B?MS9jTjNFQWtCaDBSalBXbzdoYXcvSCtWL25RZmlIcTRVVjdxOXo4NWJ3UWdW?=
- =?utf-8?B?OGN1L1FsOG1RdEhJdnJvZ0xGMTBuNjVMUDd1ZWdIMCs5Q2ZlaVJaT0ZQUzM1?=
- =?utf-8?B?ZWIwWnNKb1VuUzVBNkE3b2d4cnZGaHJ6RER6cUtoWEkzQXcvMkorWU5wQ3E3?=
- =?utf-8?B?b081cHR1R3Q0SzdJaDFmcFo1ajEwVGY5T1k5YkZUbWZTc09UdHhGSlFQYnNS?=
- =?utf-8?B?aTVXVDkrTFJ6QjZxV1JrQzAyN0E3a2U4NWJzOEpCbGZ0dVliWk53QVJqWWxy?=
- =?utf-8?B?eEhsaVp1UzdQNjZySmk0Uks4M1crZnJ1ZTNLQmNIcEVrSnI0eTRuS3daZ2NN?=
- =?utf-8?B?eWN2TlVSaFdwTDJEZFlGc2NWRlNUNjE0RTBQdWM5Rkd6SlJwaFZpc3Z0MlNF?=
- =?utf-8?B?M2RFbU9PdGZ2c1N1L2lWZUpheHpVTTJpdElINll2WlhVNlJOYUo3QVhpUFc4?=
- =?utf-8?B?UWVaSklwVHE3L29KOVZaWklIK0RucHcvZkF6MUF0cm5pVnNFNlZ4RFBxSnNm?=
- =?utf-8?B?QitDRjRvMENjUlpKMXdIQzY2WElqelRhblRaQUZqVlE4L3U0M1VlRGZnbzBB?=
- =?utf-8?B?VjNWSTFvenlKSDN3cG5zdGYrWjZvMXJDam5vekdjN2hMa250UDJZSXBsUmk3?=
- =?utf-8?B?eksxM0dlVUdLazZQNnJwR3ljaVpIWlA2Z0toazVoZzFjTldGSU5KN3E3Z05D?=
- =?utf-8?B?NUNjd1JEWWpLUVdNNlU2dmNldnFiMHZZRi9IYVh2NDdsUE1GcW5sSjVOay9D?=
- =?utf-8?B?T2RtMzYwKzhzSVZSQjJPYlY2WFdSSzY2RXJOU1JhSU1WdDBtK3JuVWdkMW02?=
- =?utf-8?B?ZGVWZlVpUHJKOXV1ZUIwUVEzMlRDeWY3VEJDSzFFeTd4blJHQnFXcUN2Wk9K?=
- =?utf-8?B?SFBLTGdCcmNscm1lOFd2YTg0VExRTTlLakpWUDY0d2prMEExV2hLZHFodWZx?=
- =?utf-8?B?dEdzN1JxV0N4WkNIdThvcHNIeHpXTjJOZjhSTDlORFFDbmVnSTFJMDJLNnI3?=
- =?utf-8?B?TlZydjRsUElYcEV1WjlDOEQ4V2NEMnNtVVdvRk5ibnVWU0MrTCtaMm5LdE5w?=
- =?utf-8?B?M1RYZ1NEZ1NJQS9ETnBIOFBOTm1zbnlLeE56d210eFFRcTJLYnVtOHF5ZW05?=
- =?utf-8?B?UCtIR1piV3BZWThkRXN1U1RzbjBLUWxMVXF2U040cXZkV1ZqOXE2N2FjNHlF?=
- =?utf-8?B?bWxKQTIwMjM1WVl3RG9ScUh4Tkc5MTN6U1ZtMys5UzlBcTg5WEl4QjVReGEy?=
- =?utf-8?B?Q2szbjlKWisrbWNsOVhDRGZ5MFhYbEZXWjN0SENsWWxybGtjRi8vN0hrNnhJ?=
- =?utf-8?B?bGxSME01UVdtU09KR3N4dWtycU9kZTVBLzZKUWdGWmJKZVI1WWlhTXZjZjVG?=
- =?utf-8?B?Wm1qTHBZdVd1NzlLYklHYTA5KzNZYml4b0xhWmVhNlBNYko2SWFBb1EyM3NN?=
- =?utf-8?B?ZERDUUNtMnJOam1EWG0xTTB0d1lmL3NIN09NWDF3QjVPZHA2aHhocWNVcXFY?=
- =?utf-8?B?WlhQcU5DcUl6K2VrSG1ZbTBtSThTcFVybUw3R0tTYnJwcWR5Z1ZaL2hWb1ZV?=
- =?utf-8?B?WEJhY0hUaXV6d3M5ZFZhcm1XRmtzY2ZNR1hqaStUWi9oNUtLaWdxZFFQVjdv?=
- =?utf-8?Q?Bjnj9tR+/jmZMOV1Nk9L1Vdkn?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 92337b0b-6ae6-4373-b37e-08dc2ee4ef46
-X-MS-Exchange-CrossTenant-AuthSource: MN2PR12MB4342.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Feb 2024 11:46:38.4568
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: K9fuSh4HQlQxvxuvxzQa+DHHMt3m8No5udoGj8PYP75/z5zxOVAsZMino0qQs785DkNdFaUZdqmy0MAY2vRlsw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6293
+User-Agent: Mozilla Thunderbird
+Content-Language: fr-FR, en-US
+To: Linux Stable Mailing List <stable@vger.kernel.org>
+From: =?UTF-8?Q?Rapha=C3=ABl_Halimi?= <raphael.halimi@gmail.com>
+Cc: Linux Regressions Mailing List <regressions@lists.linux.dev>,
+ Linux Input Mailing List <linux-input@vger.kernel.org>,
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>, Jiri Kosina <jikos@jikos.cz>,
+ Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+ Mikhail Khvainitski <me@khvoinitsky.org>
+Subject: Regression with Lenovo ThinkPad Compact USB Keyboard
+Autocrypt: addr=raphael.halimi@gmail.com; keydata=
+ xsFNBFHHpQ0BEACk0BWTsWRBSZEB0UKcmchP5//yAHIp1qWR9ctmDjlOSFtLAIJaak/onkbd
+ WB2X/0sfUOl78OSuLxoL2aNE9EH+pKMquIZFNfcmUIkbnRGlBXPe1fUwLweXl5Jv88F92+pN
+ 4ERbYUi9CltA1r0Cu0XpyLyqJAExzAscwaaAq8crA6eUj6nijt882WJogYv5V1Is9BpuyQTv
+ r8o4oqyhTseLZwHnqijmXqfviZMmbZx07gbUhsvYrP9A386DOFHzXZbVbSwxtGsxszvsPOsh
+ m8Zgsb9hptgP4Si7y11pbCiYW15/LjqP1EnnDHbZLll9tfGpyZw6ybJbfg78s2u4xjQAJxfl
+ JD92VKCIQzmSNoIZO66OohPkqeamnKdS3T6/W1HgWF/bnBNCbXp3gyWQVojhmyIMgKtZ0vl6
+ KlQPlYycMIhD8/wnqwcfxf6ZtLc+Of7TurpUhNuUUTv2+10TxSDVfE2ATr7RPJrXYMpzQEbD
+ DIbkTzH3ikNKhHWvt48ria03jAc19VjNLFYDr5QWl4+fSHXhmFH5y//1h6Ks6et0wFO5uyRa
+ KD0AKXCTyW9Th024Xvt2Fs94WSR1yiOZ+JtBJoQSWd/SoOmu//S57xayIFjnbR0oXbYseIuN
+ K8gcaWdLRGmYgLcA1ggBiNH2g4uRrDJXxx0MPRP/nc+4q9K2UwARAQABzSpSYXBoYcOrbCBI
+ YWxpbWkgPHJhcGhhZWwuaGFsaW1pQGdtYWlsLmNvbT7CwZQEEwEKAD4CGwMFCwkIBwMFFQoJ
+ CAsFFgMCAQACHgECF4AWIQRvqU7F0oyNaL55Ku9NmfZmClmCewUCZWnaKAUJFa2YmwAKCRBN
+ mfZmClmCe4WkEACDpb3/tmwFQm1Vut/VlaEh6JUZW+72bKBScfaIo1wKu3LPG5cXYpS+FWU4
+ PFMrj8VXdq8JXHgFNQU8fr35lJ7W8lgW6uyb98bV3U4kcMakyV2rCNFZ2ID4RzNL/ZbIH8kp
+ MF48007k72n0+TRMrzz6gAX49AnokSu2R1F9k6kDG2v/s2k/cXcF3l8nEt3W30xegCeBIIV5
+ Hwsj0mGVrakqNYxX17ZQ09lfaluLO64C/kYzinRVVBlZ4fhcF0tBRwNsWHc0RK9yplq3TRHw
+ +yLffp5I8WlqJWFi+kOQ8X+NF4NrxpKC5fGjUwvDZPMxQvrtlP9MDPO7vQjd2LkF8CGZz+qh
+ RdOff9nFt5dRlKIuGxcseXEHAQR6IOx1o+jPnlZTUoeXwHIDrQnTNZfAyhNbvZaowMbIdQrN
+ qiy3lZ0OXqbrexKGXBJ7dQP2mMCsfnj/imIbgQrIhaQ5Ma4s59a/C/ZDyF2T8Zs4zNCSeCIf
+ oT674KqotlFZrUIu1FHQa3Hzk/c3B1ipJvNaGb4F/VrmSemg+FWkfQ/LCql8AE3yReVmQ0rH
+ /a7zb/6V+cNZkDJsPIOUu9/0K6qrPl+MPzloGUIi1Ft9byGHzbFZpMwgB6tPnScLUVukTrX+
+ 8s/RCZ5A9aYeWyNWB1zeWGlhesBvUxol3EE1noJgwjnyg6NU2M7BTQRRx6UNARAAzATj1uJt
+ dEH7pt3B4Xt2sd5OF81pFwBZBfPXVadNAAqpgsY8cRpkoPdt4qNBbsQ5EwzEYozCmPY5msrg
+ wceNUwngeKtqSCira1SwAMtgddhj4kxAR+8ll8//+vLNluP4nQxn0aTaPGLpg1EozEvO+lQT
+ BPDySGf5Ek0fA+EQn8FWLBbruKobCr3ocETEi523F1h3GqmxrSdy55ayebl8WVibelDZfXQD
+ wgYQFOrUX+Efun9HtVS4FCNztIqUYbaIvJ3o5ppL42x2teZHN2417IthUzgGnCDfAHmqiSbc
+ R+2FZ9OMu8e6/HmZoSTGHX9NtazXqcpN5sG7/lKX718Z3qikgTCwjMoCnvIxGIePS2J+cYyT
+ n/uGJTB/k0oKLHoFpGINKRFc7LHdykakQuOGpyyWGVOeezJh0MOe4+c6IE16b2c4/d7XSBPY
+ uEizGpfun0Kja4/hTgV2+Y3x6+D7uyzNUZLIvjPyt7zsx59ciToK0eKGZBLmI18K9QuiI4Dl
+ LYv0lfzzH/fvyeHOzhvPOQY7kGWFa71/M2omhnwMwalcguAh9T5ZDH36q8QN1OQgDLLIxEMl
+ 1Zt7u3Sd55czaU0jxyyseL8VqK6VrTfV6lr0jIb6fyEwOZIoYejBJqYb51Q23an11wZcJ0M+
+ 5d6WGPqou7ZETOQ1hbfjKNDQP3UAEQEAAcLBfAQYAQoAJgIbDBYhBG+pTsXSjI1ovnkq702Z
+ 9mYKWYJ7BQJladpIBQkVrZi7AAoJEE2Z9mYKWYJ72I4P/iY+kAgcLq9B9lW2zOpnIwfPYGV0
+ I3AlfUiFICjTzz7u6Tfehj9DvzFRkk6rYgPfULlzGjoO2B9i1iHZOgZWV6jBNl85x5hsNy9M
+ u8XWnicutmWsyVOo1rDY9l7LmqlhzW4l4261rwFeJhjt01RB907lFhxdr/5RT0EI/60mD9m2
+ gFs3D9EDQYUBvqiSLTeD/JvwKFEQjttpVog4xvYJeF9WWukdZs5XfZAMv31OG4sEibceO1Sc
+ GXauUy/waRSrgLzzMD/w32aItQlP1eaSFrdFZhXr7Gl9T1pjbhwAAcyTCZ9DXtsAeagpm0Yg
+ 2uVKAPF6pmz6Z6UV8fqIGGtZsS4nGHYL5Wm79bXwURfqbAs1SVXgdnvj9xMAugU1CX3ajAsQ
+ olaM+qCHPqlNv5TxCFJngvtRJ+WPvco+FPmRZBgRd3H7VEf3pAVtvvrP18OyHHBJCebcb6rb
+ QfHp2aqz6Zs+vl6WmemK1I3mL9wKFlahYsj6HTu0sI1MQogU4w63e1KFUHJ1WBJ/wb4FwjyW
+ Kv7Z6lI3hQvsHu0NoqU8lmwJDQD60AnUTaZd8jXDRR8yMrEToVSwOzKj7nBB/6kcmhxQ06x5
+ 8b7QRZ5EBDl7xs/qibIcXW3g/pKGrxuG7JFs9z0xQHswf0OW7YsLNV0v3IS8Pm4lRRUMdFto
+ Wxcwwn0N
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
+Dear developers,
 
+(sorry for the long CC list, it looks quite long to me, but I tried to 
+follow the issue reporting guide as closely as possible)
 
-On 2/16/2024 4:41 PM, Matthew Auld wrote:
-> On 16/02/2024 10:00, Arunpravin Paneer Selvam wrote:
->> Remove the duplicate list_splice_tail call when the
->> total_allocated < size condition is true.
->>
->> Cc: <stable@vger.kernel.org> # 6.7+
->> Fixes: 8746c6c9dfa3 ("drm/buddy: Fix alloc_range() error handling code")
->> Reported-by: Bert Karwatzki <spasswolf@web.de>
->> Signed-off-by: Arunpravin Paneer Selvam 
->> <Arunpravin.PaneerSelvam@amd.com>
->> ---
->>   drivers/gpu/drm/drm_buddy.c | 4 ++--
->>   1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/drm_buddy.c b/drivers/gpu/drm/drm_buddy.c
->> index c1a99bf4dffd..c4222b886db7 100644
->> --- a/drivers/gpu/drm/drm_buddy.c
->> +++ b/drivers/gpu/drm/drm_buddy.c
->> @@ -538,13 +538,13 @@ static int __alloc_range(struct drm_buddy *mm,
->>           list_add(&block->left->tmp_link, dfs);
->>       } while (1);
->>   -    list_splice_tail(&allocated, blocks);
->> -
->>       if (total_allocated < size) {
->>           err = -ENOSPC;
->>           goto err_free;
->>       }
->>   +    list_splice_tail(&allocated, blocks);
->
-> Sigh. Can we extend the unit test(s) to catch this?
-Sure, Let me check.
+Since patches [1], [2] and [3] were applied to the kernel, there is a 
+regression with Lenovo ThinkPad Compact USB Keyboard (old model, not II).
+
+[1] 
+https://github.com/torvalds/linux/commit/46a0a2c96f0f47628190f122c2e3d879e590bcbe
+[2] 
+https://github.com/torvalds/linux/commit/2f2bd7cbd1d1548137b351040dc4e037d18cdfdc
+[3] 
+https://github.com/torvalds/linux/commit/43527a0094c10dfbf0d5a2e7979395a38de3ff65
+
+The regression is that a middle click is performed when releasing middle 
+button after wheel emulation.
+
+The bug appears randomly, it can be after 5 minutes or 1 hour of 
+keyboard usage, and can only be worked around by unplugging/re-plugging 
+the keyboard. (I ended up resorting to simulate an unplug/replug, with a 
+script which echoes 0 then 1 to /sys/bus/usb/devices/<id>/authorized, 
+since I was afraid to damage the Micro-USB outlet by physically 
+unplugging/re-plugging too much).
+
+Those spurious clicks are very annoying, since they can open links in
+new tabs when scrolling in Firefox, or pasting text when scrolling in
+terminals, or other unwanted stuff.
+
+I witnessed it with latest kernels (Debian unstable) as well as stable 
+kernels (Debian 12 Bookworm, stable).
+
+On Debian Stable, the last working kernel was 5.10.127, the regression 
+appeared in 5.10.136 (i read all changelogs on kernel.org between those 
+two releases but couldn't find anything about hid-lenovo, so I can't 
+tell exactly in which release the regression appeared, Debian upgraded 
+directly from .127 to .136).
+
+I reported it in Debian [4], and apparently I'm not the only person 
+suffering from it [5].
+
+[4] https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1058758#32
+[5] https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1058758#42
+
+I would understand that such bugs would end up in a development kernel 
+like the ones provided by Debian Unstable, but not with stable kernels 
+like the ones provided by Debian Stable.
 
 Regards,
-Arun.
->
-> Reviewed-by: Matthew Auld <matthew.auld@intel.com>
->
->> +
->>       return 0;
->>     err_undo:
->>
->> base-commit: a64056bb5a3215bd31c8ce17d609ba0f4d5c55ea
 
+-- 
+Raphaël Halimi
 
