@@ -1,114 +1,95 @@
-Return-Path: <stable+bounces-20356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34B50857FDB
-	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 15:57:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18941857FF0
+	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 16:00:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E33F928A733
-	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 14:57:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C796E283441
+	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 15:00:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 123C412F367;
-	Fri, 16 Feb 2024 14:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F098A12F36E;
+	Fri, 16 Feb 2024 15:00:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LEs10Isc"
 X-Original-To: stable@vger.kernel.org
-Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D2085465D;
-	Fri, 16 Feb 2024 14:57:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.57
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADCEE12C7FB;
+	Fri, 16 Feb 2024 15:00:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708095442; cv=none; b=LH6JB/Dh1O+BFtL9UzeP37GEyy+PjTHSsigkHsBO6Kd9yd2GJsqWsAnhVbeygJ8EptrIO2BRwlsI1sOaUXxdpVieuDGKZEI/PiMJpQeSpc7XFOlcnPEp2y1IONVYw1KvqzSd7qt+LmBv7EngbQv3tv1D3mGXH3WQr0z+kFMXguM=
+	t=1708095612; cv=none; b=htJqSqYSKKzxOlmDgLMbKfvHnVgPTtPvUfbrTw6K5yNez9J6lhphGvVPjdG0Hh9R8ABFEHG4wqUjlVBUwkzFV4vv2H8FKRTM3/z7vkxmQiFTU9IcHk757FVy0PCh4kscqk5Xqpruwihnq4Vc5s/ymQhtZ+pQZExripLJF1HSy1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708095442; c=relaxed/simple;
-	bh=wAY3ufdEMmUjsCvCBHBuq0Zl1K89KI9vKD7ZUjkReI8=;
+	s=arc-20240116; t=1708095612; c=relaxed/simple;
+	bh=+cWAZxpSFep8B0Wq/lAPfRCDdbxlm6btFXbzrYKlamo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lNxfgsmcmQX6gRHB6DVRovdwliKcqgZvzb5DlUJ4Znmus8yLdeukDWgw2f0cpOILW5eM51Xo3UwKvejpqlYWMWMjoXt02Z3mEmvDgs6E/v+UGmKUC/VOqoOXPtNXSggMCXvMSnWX3nRrSX5HUBeCRqRlWg1LmytjAKR7m88YBds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: from imap.altlinux.org (imap.altlinux.org [194.107.17.38])
-	by vmicros1.altlinux.org (Postfix) with ESMTP id 036EA72C8F5;
-	Fri, 16 Feb 2024 17:57:18 +0300 (MSK)
-Received: from altlinux.org (sole.flsd.net [185.75.180.6])
-	by imap.altlinux.org (Postfix) with ESMTPSA id EC2A236D016B;
-	Fri, 16 Feb 2024 17:57:17 +0300 (MSK)
-Date: Fri, 16 Feb 2024 17:57:17 +0300
-From: Vitaly Chikunov <vt@altlinux.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=J3QRGQ0pDgB4YLRnC9k5oqupEl57F8kROB8uLtkEesJ1MD+IujdXlPulIzuLj+5rWJW+CJMTB3z2OZUxKBf+urfPO1+rEj5kIPNIXoezWvJZkRDlNLtxamwmM+T04jR8cI3uLuDKMEER3B25kQe5Tn9N8HBTqQbm6blMxuKAjG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LEs10Isc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 893B7C433F1;
+	Fri, 16 Feb 2024 15:00:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708095611;
+	bh=+cWAZxpSFep8B0Wq/lAPfRCDdbxlm6btFXbzrYKlamo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LEs10IscE+qqcyyAOYVPf1zSxqC1p2TIrXSjp8KSLvDBO3izQM4fFDzLbtcIEfCCt
+	 3IjDH3QoZqxR6FfNz5IG6juAOKW2xcpaaFpJayXo8L5vGK9oAXNGqLTZbfr+jg7jB1
+	 lIhDO74RBjBrdX521CTB0ytOWZ3t79PjKrEk2Pjh8vfMXJxiXGvdAa/0jwk6y9yFwD
+	 itmE5kW0GDu2r1hsvWw7HlGSI5LB3uM7RnmJl3uhC4P6NxOnh1SuEliUW7FLoC3hoi
+	 tJJf61lIB7EkTjCD64N872x5LBTf7T7fNV0zRPBRqpPzSjzQe5zg/lkw79ds5yq+kp
+	 5U2/p+o7TJalw==
+Date: Fri, 16 Feb 2024 16:00:05 +0100
+From: Christian Brauner <brauner@kernel.org>
 To: Bart Van Assche <bvanassche@acm.org>
-Cc: "Martin K. Petersen" <martin.petersen@oracle.com>,
-	linux-scsi@vger.kernel.org, linux-usb@vger.kernel.org,
-	belegdol@gmail.com, stable@vger.kernel.org
-Subject: Re: [PATCH v2] scsi: core: Consult supported VPD page list prior to
- fetching page
-Message-ID: <20240216145717.bywcwpx5m7ymyzyp@altlinux.org>
-References: <20240214221411.2888112-1-martin.petersen@oracle.com>
- <883d670c-3ae1-4f44-bcb1-45e1428c9c3b@acm.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Jens Axboe <axboe@kernel.dk>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	linux-fsdevel@vger.kernel.org, Christoph Hellwig <hch@lst.de>, Avi Kivity <avi@scylladb.com>, 
+	Sandeep Dhavale <dhavale@google.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v2] fs, USB gadget: Rework kiocb cancellation
+Message-ID: <20240216-kannen-spanplatten-e08999ebb884@brauner>
+References: <20240208215518.1361570-1-bvanassche@acm.org>
+ <9e83c34a-63ab-47ea-9c06-14303dbbeaa9@kernel.dk>
+ <20240209-katapultieren-lastkraftwagen-d28bbc0a92b2@brauner>
+ <9a7294ef-6812-43bb-af50-a2b4659f2d15@kernel.dk>
+ <4e47c7d4-ece3-4b8e-a4df-80d212f673fb@acm.org>
+ <3304d956-9273-4701-91ce-08248ffd5007@acm.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=koi8-r
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <883d670c-3ae1-4f44-bcb1-45e1428c9c3b@acm.org>
+In-Reply-To: <3304d956-9273-4701-91ce-08248ffd5007@acm.org>
 
-Bart,
-
-On Thu, Feb 15, 2024 at 10:28:06AM -0800, Bart Van Assche wrote:
-> On 2/14/24 14:14, Martin K. Petersen wrote:
-> > Commit c92a6b5d6335 ("scsi: core: Query VPD size before getting full
-> > page") removed the logic which checks whether a VPD page is present on
-> > the supported pages list before asking for the page itself. That was
-> > done because SPC helpfully states "The Supported VPD Pages VPD page
-> > list may or may not include all the VPD pages that are able to be
-> > returned by the device server". Testing had revealed a few devices
-> > that supported some of the 0xBn pages but didn't actually list them in
-> > page 0.
+On Tue, Feb 13, 2024 at 01:01:51PM -0800, Bart Van Assche wrote:
+> On 2/12/24 11:28, Bart Van Assche wrote:
+> > On 2/9/24 10:12, Jens Axboe wrote:
+> > > Greg, can you elaborate on how useful cancel is for gadgets? Is it one
+> > > of those things that was wired up "just because", or does it have
+> > > actually useful cases?
 > > 
-> > Julian Sikorski bisected a problem with his drive resetting during
-> > discovery to the commit above. As it turns out, this particular drive
-> > firmware will crash if we attempt to fetch page 0xB9.
-> > 
-> > Various approaches were attempted to work around this. In the end,
-> > reinstating the logic that consults VPD page 0 before fetching any
-> > other page was the path of least resistance. A firmware update for the
-> > devices which originally compelled us to remove the check has since
-> > been released.
-> > 
-> > Cc: stable@vger.kernel.org
-> > Cc: Bart Van Assche <bvanassche@acm.org>
-> > Fixes: c92a6b5d6335 ("scsi: core: Query VPD size before getting full page")
-> > Reported-by: Julian Sikorski <belegdol@gmail.com>
-> > Tested-by: Julian Sikorski <belegdol@gmail.com>
-> > Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+> > I found two use cases in the Android Open Source Project and have submitted
+> > CLs that request to remove the io_cancel() calls from that code. Although I
+> > think I understand why these calls were added, the race conditions that
+> > these io_cancel() calls try to address cannot be addressed completely by
+> > calling io_cancel().
 > 
-> Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-> 
-> BTW, here is another report related to this patch:
-> https://lore.kernel.org/linux-scsi/64phxapjp742qob7gr74o2tnnkaic6wmxgfa3uxn33ukrwumbi@cfd6kmix3bbm/
-> 
-> Vitaly, can you help with testing this patch? See also:
-> https://lore.kernel.org/linux-scsi/20240214221411.2888112-1-martin.petersen@oracle.com/
+> (replying to my own e-mail) The adb daemon (adbd) maintainers asked me to
+> preserve the I/O cancellation code in adbd because it was introduced recently
+> in that code to fix an important bug. Does everyone agree with the approach of
+> the untested patches below?
 
-With this patch applied over 6.6.16 problem still persists.
+But I mean, the cancellation code has seemingly been broken since
+forever according to your patch description. So their fix which relies
+on it actually fixes nothing? And they seemingly didn't notice until you
+told them that it's broken. Can we get a link to that stuff, please?
 
-Also reading page 0x89 (mentioned in patch description) does not show any signs
-of crash (any errors in dmesg with it of with the following reads):
-
-  [root@host-226 ~]# sg_vpd -p 0x89 /dev/sdc
-  ATA information VPD page:
-    SAT Vendor identification: LSI     
-    SAT Product identification: LSI SATL        
-    SAT Product revision level: 0008
-    Device signature indicates SATA transport
-    Command code: 0xec
-    ATA command IDENTIFY DEVICE response summary:
-      model: WDC WD2005FBYZ-01YCBB2                  
-      serial number:      WD-WMC6N0J5VKLH
-      firmware revision: RR07    
-
-Thanks,
-
+Btw, you should probably provide that context in your patch series you
+sent that Christoph and I responded too. Because I just stumbled upon
+this here and it provided context I was missing.
 
