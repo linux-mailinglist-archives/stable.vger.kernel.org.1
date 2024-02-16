@@ -1,90 +1,145 @@
-Return-Path: <stable+bounces-20373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C9E08585A9
-	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 19:48:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 960338585E3
+	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 20:01:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 523011F24984
-	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 18:48:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC3B4B2239B
+	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 19:01:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAE1C136678;
-	Fri, 16 Feb 2024 18:46:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE531135403;
+	Fri, 16 Feb 2024 19:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vT/cqhPP"
+	dkim=pass (2048-bit key) header.d=iokpp.de header.i=@iokpp.de header.b="BA7o0hbZ";
+	dkim=permerror (0-bit key) header.d=iokpp.de header.i=@iokpp.de header.b="n8l7omRy"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.164])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9895314691F;
-	Fri, 16 Feb 2024 18:46:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708109181; cv=none; b=mCJbu/lj+zAp8D+Bn8kkwydUABal+rSugUJTjtPsh4KGOMEBu/lOQywSPmV+gsMzD+jMyc8ojE6VNqJei8voZkCUbdA5S0u/W5y01/yDGzQz9BErlyuzXm/H6Lpi1Hh9d5QeM2h5T8yi3MCarKcGQntZPyCu82S4kKD9AaNSBsY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708109181; c=relaxed/simple;
-	bh=LcjvOvjEXzkOCTEy61gj08EIdshAwDu7VquV5xvMt3M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BrCOm21PtZqjiR9qdBghbzLaymCUAvYB+14IXppAanDGq/qEsbSUcL4FVv1W3mVyRfyGTwWKu764uENTDsoPbeYprn/x39pZjX4YECQ4rSIGqHqECk5kah6lQdhZvrruo8/IeU4NVxr6ITAIvLexqVjmjGQZG6oBu7uTPxcaopU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vT/cqhPP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3CDFC433F1;
-	Fri, 16 Feb 2024 18:46:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708109181;
-	bh=LcjvOvjEXzkOCTEy61gj08EIdshAwDu7VquV5xvMt3M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vT/cqhPPHJetmA9NSdmrixhGoLhlczK07b3nwyV9cKR/N3/Q7XLV0aRnZ5ohLJ2uY
-	 4uOXy9JlUyMXbHv/+xqfSLJfnidJyBRABC1O6uecPHJwlu1/ji/lxhO7tM2/uAwXOi
-	 NdoLhK8KgjBd9NQ/48YALhsv4X4MvZL0hKNsaRqQ=
-Date: Fri, 16 Feb 2024 19:46:13 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Thorsten Leemhuis <regressions@leemhuis.info>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Frank Wang <frank.wang@rock-chips.com>,
-	Badhri Jagan Sridharan <badhri@google.com>,
-	Guenter Roeck <linux@roeck-us.net>, Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 6.7 093/124] Revert "usb: typec: tcpm: fix cc role at
- port reset"
-Message-ID: <2024021630-unfold-landmine-5999@gregkh>
-References: <20240213171853.722912593@linuxfoundation.org>
- <20240213171856.446249309@linuxfoundation.org>
- <571afc70-dd77-4678-bdd0-673e15cdd5ad@leemhuis.info>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 105D51353EF;
+	Fri, 16 Feb 2024 19:01:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=81.169.146.164
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708110096; cv=pass; b=Okbpg/WM7P/9+vZkEx9jwtxlvs4u0DRAWRCC5r0Z/xyhxmoJzdepyzU5efTWU+b/vHCQqkcnDkgA8P+X4IGCXk8b2DxW1DGm1L+FEngj8uhTKTIQkpTqpLgatHaqH6SoHe76aAKWjGAKCW+S+CtYlbKcbk5ZUspUgfOOfVw3S+A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708110096; c=relaxed/simple;
+	bh=CH2FDE3cYHYzxEu50JesEpNhdv0xF7mLVe/XBnyauJs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=CpjESvKHj5WLEKoE3fELK6IT6hZWdtOcqyv30I9oEYvRCwiqR9/t3yoorkxLOqh6vEoLLhz3+/2m0Rwq7h3jWl6XEDMHmhzmYh8g02rdA5FEG/go3vYRlgIkEW4Q4fVUHfAz/Yjz+sQ+VoXR+vRH4PI5pjROYBT0vy5oHi4z3ik=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iokpp.de; spf=none smtp.mailfrom=iokpp.de; dkim=pass (2048-bit key) header.d=iokpp.de header.i=@iokpp.de header.b=BA7o0hbZ; dkim=permerror (0-bit key) header.d=iokpp.de header.i=@iokpp.de header.b=n8l7omRy; arc=pass smtp.client-ip=81.169.146.164
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iokpp.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=iokpp.de
+ARC-Seal: i=1; a=rsa-sha256; t=1708110083; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=Y9fxoYfpM8UjXJsHtoSed8CsgJZBCUmbq2OwRinIfC90wUyT/EjbvvaucYsjPbvUfJ
+    WaVCvXbXY785rTPx1A/cq7043uQvyDBvYWGawzKDGmNx0Jhwp1lDxT3DXubzZtsnHKpg
+    mCr5syC79mOukC+zSHzPyMT73xIdQmvFTtbKAiTJJ98REytpL+QljCImrsN/Ana08kdt
+    9R7t1/0WQhBeb2tLtEjexmJOod2dELo4Wg+U+eYusJeqixJBJnL7hOu+qxaL/LiwIPaS
+    UjkYYABWslMaY0gsJWlXII9okJFqh5FCu8N3rB+lR4OtNTnxAqM82aUoPnXpPvJ/p5mu
+    cqaA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1708110083;
+    s=strato-dkim-0002; d=strato.com;
+    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=ulgL/REy0b8uw3Xwq8lpdyFjXWw2k4rZkOpC9L+y7y4=;
+    b=Q515GNoPcgbJ16u9MwHLI2t8mIidDd7yzgtF0pN1dRMYpYbAg+96aikQOfd97fL7po
+    0REFBzX0endps7mOoZbsRuXylHmGRrh5qYS0MGVTTUkKgHHtUwli1CuSYnnXW05I7ZX6
+    eo6sIHHP/JFw7EE6tLQxgPA/Dqj1wZ/w87qtHkwBaL7z3a5J6X0eyLBXT457+YPSCV0g
+    lHkATv1oaod1MbpGuiJDXLmR4OraeIR6y7HDBn3d/c8f7vvkuDos/iClVMsXDJPlWKQ7
+    rBTfLGlIY+AaCSFHY1mUvEJ7s8LasB/825s6XERziyW0P+HDyiuSoWv2SM1IzRHCsa1R
+    CvdA==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1708110082;
+    s=strato-dkim-0002; d=iokpp.de;
+    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=ulgL/REy0b8uw3Xwq8lpdyFjXWw2k4rZkOpC9L+y7y4=;
+    b=BA7o0hbZHqrE8/4oJWHqYjHckQFIVJkH6b8yDJjJk+ZoiDIjXeZgVBL+Hlygol0sw7
+    ZC3bFpff/FRgEjLLGnlMF103Oq/AKKA+cZMt7Ckx2bIuOWXvNeoXpRmeSOf2APv5sjkG
+    0IaZgOeyQFj++UgTJAtU6Bu9KkwB4gl46d4c+7rFXJQS+0TU3ro6exZjD29PnEoeSR+h
+    5eLYERmDn5bfw3z/czbGCeV1ho8iyHOPG++90qeyn4TIso7Pd6AIwVevOKXdxeMxCwwm
+    XgEsRWgmNFcVahc+MVBB2fClMx6OSfuj0BwG13kcU7bclStMfg+sbKYf0db+rUeCSBtX
+    8W8w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1708110082;
+    s=strato-dkim-0003; d=iokpp.de;
+    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=ulgL/REy0b8uw3Xwq8lpdyFjXWw2k4rZkOpC9L+y7y4=;
+    b=n8l7omRyOQ2jDSD/hAG4Aw0wM+MpGxa3SWFXkpDTNhxWvIE1zZ5pvZKyftK9cEfNVq
+    JeWNEUREtm+6HOHwvaBg==
+X-RZG-AUTH: ":LmkFe0i9dN8c2t4QQyGBB/NDXvjDB6pBSedrgBzPc9DUyubU4DD2QzemV2tdlNlNRZBXiUw="
+Received: from Munilab01-lab.micron.com
+    by smtp.strato.de (RZmta 49.11.2 AUTH)
+    with ESMTPSA id z34ed901GJ1MAwO
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Fri, 16 Feb 2024 20:01:22 +0100 (CET)
+From: Bean Huo <beanhuo@iokpp.de>
+To: bhelgaas@google.com,
+	schnelle@linux.ibm.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com
+Cc: linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Bean Huo <beanhuo@micron.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] PCI: Increase maximum PCIe physical function number to 7 for non-ARI devices
+Date: Fri, 16 Feb 2024 20:01:13 +0100
+Message-Id: <20240216190113.20341-1-beanhuo@iokpp.de>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <571afc70-dd77-4678-bdd0-673e15cdd5ad@leemhuis.info>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
 
-On Fri, Feb 16, 2024 at 07:54:42AM +0100, Thorsten Leemhuis wrote:
-> On 13.02.24 18:21, Greg Kroah-Hartman wrote:
-> > 6.7-stable review patch.  If anyone has any objections, please let me know.
-> > 
-> > ------------------
-> > 
-> > From: Badhri Jagan Sridharan <badhri@google.com>
-> > 
-> > commit b717dfbf73e842d15174699fe2c6ee4fdde8aa1f upstream.
-> > 
-> > This reverts commit 1e35f074399dece73d5df11847d4a0d7a6f49434.
-> 
-> TWIMC, that patch (which is also queued for the next 6.6.y-rc) afaics is
-> causing boot issues on rk3399-roc-pc for Mark [now CCed] with mainline.
-> For details see:
-> 
-> https://lore.kernel.org/lkml/ZcVPHtPt2Dppe_9q@finisterre.sirena.org.uk/https://lore.kernel.org/all/20240212-usb-fix-renegade-v1-1-22c43c88d635@kernel.org/
+From: Bean Huo <beanhuo@micron.com>
 
-Yeah, this is tough, this is a revert to fix a previous regression, so I
-think we need to stay here, at the "we fixed a regression, but the
-original problem is back" stage until people can figure it out and
-provide a working change for everyone.
+The PCIe specification allows up to 8 Physical Functions (PFs) per endpoint
+when ARI (Alternative Routing-ID Interpretation) is not supported. Previously,
+our implementation erroneously limited the maximum number of PFs to 7 for
+endpoints without ARI support.
 
-thanks,
+This patch corrects the maximum PF count to adhere to the PCIe specification
+by allowing up to 8 PFs on non-ARI endpoints. This change ensures better
+compliance with the standard and improves compatibility with devices relying
+on this specification.
 
-greg k-h
+The necessity for this adjustment was verified by a thorough review of the
+"Alternative Routing-ID Interpretation (ARI)" section in the PCIe 3.0 Spec,
+which first introduced ARI.
+
+Fixes: c3df83e01a96 ("PCI: Clean up pci_scan_slot()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bean Huo <beanhuo@micron.com>
+---
+Changelog:
+	v1--v2:
+		1. Add Fixes tag
+		2. Modify commit message
+---
+ drivers/pci/probe.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index ed6b7f48736a..8c3d0f63bc13 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -2630,7 +2630,8 @@ static int next_fn(struct pci_bus *bus, struct pci_dev *dev, int fn)
+ 	if (pci_ari_enabled(bus))
+ 		return next_ari_fn(bus, dev, fn);
+ 
+-	if (fn >= 7)
++	/* If EP does not support ARI, the maximum number of functions should be 7 */
++	if (fn > 7)
+ 		return -ENODEV;
+ 	/* only multifunction devices may have more functions */
+ 	if (dev && !dev->multifunction)
+-- 
+2.34.1
+
 
