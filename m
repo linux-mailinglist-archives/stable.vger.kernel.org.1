@@ -1,129 +1,114 @@
-Return-Path: <stable+bounces-20355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8CF7857CA5
-	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 13:33:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34B50857FDB
+	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 15:57:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC21D1C22F6A
-	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 12:33:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E33F928A733
+	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 14:57:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49EF312881C;
-	Fri, 16 Feb 2024 12:33:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NALNiGxt"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 123C412F367;
+	Fri, 16 Feb 2024 14:57:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06B9E78B66;
-	Fri, 16 Feb 2024 12:33:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D2085465D;
+	Fri, 16 Feb 2024 14:57:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.57
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708086827; cv=none; b=Ls1EQi5yjtbmZdCqHvSugD6lpCSbIszXwaBeZUzarvP0pVdsVdLJ+hHDlQOf0abssUoQ1VtYVGs1wm0XtF/HtvhPxtFQSZGKRpEd0IsBcQtHDKcHIPYUVbcjqGlePTTKFXxTH/+VwLPqejC9Duonx5n0QcmnsclpenuTWNLgQkI=
+	t=1708095442; cv=none; b=LH6JB/Dh1O+BFtL9UzeP37GEyy+PjTHSsigkHsBO6Kd9yd2GJsqWsAnhVbeygJ8EptrIO2BRwlsI1sOaUXxdpVieuDGKZEI/PiMJpQeSpc7XFOlcnPEp2y1IONVYw1KvqzSd7qt+LmBv7EngbQv3tv1D3mGXH3WQr0z+kFMXguM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708086827; c=relaxed/simple;
-	bh=HaKdZfSG22E2FVRd9BdX5eYZM5R1eXCBvV0m5VvAyjE=;
+	s=arc-20240116; t=1708095442; c=relaxed/simple;
+	bh=wAY3ufdEMmUjsCvCBHBuq0Zl1K89KI9vKD7ZUjkReI8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TWon8gSCOE09V7+9n5XcY62HYg12bJjnrkSRyuzfi0zyvxHPbjlckpYOmjKu22gDoGNW0d9CiSqgcV9W2opInAJWeWOcP9jHEXIxRdz25GKAzDneyiR+bnh5IElLcm5UBpFKacn4PaK96yKBnCELE2Ozfo5CNiY2kHJTY0+r11s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NALNiGxt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41D40C433C7;
-	Fri, 16 Feb 2024 12:33:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708086826;
-	bh=HaKdZfSG22E2FVRd9BdX5eYZM5R1eXCBvV0m5VvAyjE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NALNiGxtkmJu7aNTBydFJY1gCjgA4G3VnycsTKjtuDTr8JNdZo+ee1fql8BqnuvBR
-	 tOuKCoylbo4B+xrBTSJ9IbYOdsxHURA3U9BOU4G62GN5TvaT9/N6461R2V3q3M1/SX
-	 oLY9iguRc8VRoFG8o+AQGNdYZb6cT0Q5GHKW7QUPIZIydLJp97UMuvoFT+2Ca0nFo+
-	 rM0hKWdy/c2TUMWgxyVyjJxAPyFx+QIza90LhOGYvnZJ8R6F8AY4iExpM7l1BaQK6K
-	 7xn2/7ieVuZxb0tOUndH8zp00HOXPyD6t7CnIdMJEzAo3VhgpFKByFziBzI9FFQ+rp
-	 0U8EaMUQmISyQ==
-Date: Fri, 16 Feb 2024 13:33:41 +0100
-From: Niklas Cassel <cassel@kernel.org>
-To: Damien Le Moal <dlemoal@kernel.org>
-Cc: stable@vger.kernel.org, Niklas Cassel <niklas.cassel@wdc.com>,
-	linux-ide@vger.kernel.org
-Subject: Re: [PATCH] ata: libata-core: Do not call
- ata_dev_power_set_standby() twice
-Message-ID: <Zc9WJcBRrf5kr/pi@x1-carbon>
-References: <20240216112008.1112538-1-cassel@kernel.org>
- <c2054321-401d-4b16-9c20-20ea11929f49@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=lNxfgsmcmQX6gRHB6DVRovdwliKcqgZvzb5DlUJ4Znmus8yLdeukDWgw2f0cpOILW5eM51Xo3UwKvejpqlYWMWMjoXt02Z3mEmvDgs6E/v+UGmKUC/VOqoOXPtNXSggMCXvMSnWX3nRrSX5HUBeCRqRlWg1LmytjAKR7m88YBds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
+Received: from imap.altlinux.org (imap.altlinux.org [194.107.17.38])
+	by vmicros1.altlinux.org (Postfix) with ESMTP id 036EA72C8F5;
+	Fri, 16 Feb 2024 17:57:18 +0300 (MSK)
+Received: from altlinux.org (sole.flsd.net [185.75.180.6])
+	by imap.altlinux.org (Postfix) with ESMTPSA id EC2A236D016B;
+	Fri, 16 Feb 2024 17:57:17 +0300 (MSK)
+Date: Fri, 16 Feb 2024 17:57:17 +0300
+From: Vitaly Chikunov <vt@altlinux.org>
+To: Bart Van Assche <bvanassche@acm.org>
+Cc: "Martin K. Petersen" <martin.petersen@oracle.com>,
+	linux-scsi@vger.kernel.org, linux-usb@vger.kernel.org,
+	belegdol@gmail.com, stable@vger.kernel.org
+Subject: Re: [PATCH v2] scsi: core: Consult supported VPD page list prior to
+ fetching page
+Message-ID: <20240216145717.bywcwpx5m7ymyzyp@altlinux.org>
+References: <20240214221411.2888112-1-martin.petersen@oracle.com>
+ <883d670c-3ae1-4f44-bcb1-45e1428c9c3b@acm.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=koi8-r
 Content-Disposition: inline
-In-Reply-To: <c2054321-401d-4b16-9c20-20ea11929f49@kernel.org>
+In-Reply-To: <883d670c-3ae1-4f44-bcb1-45e1428c9c3b@acm.org>
 
-On Fri, Feb 16, 2024 at 09:16:23PM +0900, Damien Le Moal wrote:
-> On 2/16/24 20:20, Niklas Cassel wrote:
-> > From: Damien Le Moal <dlemoal@kernel.org>
+Bart,
+
+On Thu, Feb 15, 2024 at 10:28:06AM -0800, Bart Van Assche wrote:
+> On 2/14/24 14:14, Martin K. Petersen wrote:
+> > Commit c92a6b5d6335 ("scsi: core: Query VPD size before getting full
+> > page") removed the logic which checks whether a VPD page is present on
+> > the supported pages list before asking for the page itself. That was
+> > done because SPC helpfully states "The Supported VPD Pages VPD page
+> > list may or may not include all the VPD pages that are able to be
+> > returned by the device server". Testing had revealed a few devices
+> > that supported some of the 0xBn pages but didn't actually list them in
+> > page 0.
 > > 
-> > For regular system shutdown, ata_dev_power_set_standby() will be
-> > executed twice: once the scsi device is removed and another when
-> > ata_pci_shutdown_one() executes and EH completes unloading the devices.
+> > Julian Sikorski bisected a problem with his drive resetting during
+> > discovery to the commit above. As it turns out, this particular drive
+> > firmware will crash if we attempt to fetch page 0xB9.
 > > 
-> > Make the second call to ata_dev_power_set_standby() do nothing by using
-> > ata_dev_power_is_active() and return if the device is already in
-> > standby.
+> > Various approaches were attempted to work around this. In the end,
+> > reinstating the logic that consults VPD page 0 before fetching any
+> > other page was the path of least resistance. A firmware update for the
+> > devices which originally compelled us to remove the check has since
+> > been released.
 > > 
-> > Fixes: 2da4c5e24e86 ("ata: libata-core: Improve ata_dev_power_set_active()")
 > > Cc: stable@vger.kernel.org
-> > Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-> > Signed-off-by: Niklas Cassel <cassel@kernel.org>
-> > ---
-> > This fix was originally part of patch that contained both a fix and
-> > a revert in a single patch:
-> > https://lore.kernel.org/linux-ide/20240111115123.1258422-3-dlemoal@kernel.org/
-> > 
-> > This patch contains the only the fix (as it is valid even without the
-> > revert), without the revert.
-> > 
-> > Updated the Fixes tag to point to a more appropriate commit, since we
-> > no longer revert any code.
-> > 
-> >  drivers/ata/libata-core.c | 6 ++++--
-> >  1 file changed, 4 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-> > index d9f80f4f70f5..af2334bc806d 100644
-> > --- a/drivers/ata/libata-core.c
-> > +++ b/drivers/ata/libata-core.c
-> > @@ -85,6 +85,7 @@ static unsigned int ata_dev_init_params(struct ata_device *dev,
-> >  static unsigned int ata_dev_set_xfermode(struct ata_device *dev);
-> >  static void ata_dev_xfermask(struct ata_device *dev);
-> >  static unsigned long ata_dev_blacklisted(const struct ata_device *dev);
-> > +static bool ata_dev_power_is_active(struct ata_device *dev);
+> > Cc: Bart Van Assche <bvanassche@acm.org>
+> > Fixes: c92a6b5d6335 ("scsi: core: Query VPD size before getting full page")
+> > Reported-by: Julian Sikorski <belegdol@gmail.com>
+> > Tested-by: Julian Sikorski <belegdol@gmail.com>
+> > Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 > 
-> I forgot what I did originally but didn't I move the code of
-> ata_dev_power_is_active() before ata_dev_power_set_standby() to avoid this
-> forward declaration ?
+> Reviewed-by: Bart Van Assche <bvanassche@acm.org>
 > 
-> With that, the code is a little odd as ata_dev_power_is_active() is defined
-> between ata_dev_power_set_standby() and ata_dev_power_set_active() but both
-> functions use it...
+> BTW, here is another report related to this patch:
+> https://lore.kernel.org/linux-scsi/64phxapjp742qob7gr74o2tnnkaic6wmxgfa3uxn33ukrwumbi@cfd6kmix3bbm/
+> 
+> Vitaly, can you help with testing this patch? See also:
+> https://lore.kernel.org/linux-scsi/20240214221411.2888112-1-martin.petersen@oracle.com/
 
-Yes, you moved the function instead of forward declaring it.
+With this patch applied over 6.6.16 problem still persists.
 
-But then there was a discussion of why ATA_TFLAG_ISADDR is set in
-ata_dev_power_is_active():
-https://lore.kernel.org/linux-ide/d63a7b93-d1a3-726e-355c-b4a4608626f4@gmail.com/
+Also reading page 0x89 (mentioned in patch description) does not show any signs
+of crash (any errors in dmesg with it of with the following reads):
 
-And you said that you were going to look in to it:
-https://lore.kernel.org/linux-ide/0563322c-4093-4e7d-bb48-61712238494e@kernel.org/
+  [root@host-226 ~]# sg_vpd -p 0x89 /dev/sdc
+  ATA information VPD page:
+    SAT Vendor identification: LSI     
+    SAT Product identification: LSI SATL        
+    SAT Product revision level: 0008
+    Device signature indicates SATA transport
+    Command code: 0xec
+    ATA command IDENTIFY DEVICE response summary:
+      model: WDC WD2005FBYZ-01YCBB2                  
+      serial number:      WD-WMC6N0J5VKLH
+      firmware revision: RR07    
 
-Since this fix does not strictly require any changes to
-ata_dev_power_is_active(), and since we already have a bunch of
-forward declared functions, I think that forward declaring it is a
-good way to avoid this actual fix from falling through the cracks.
+Thanks,
 
-
-Kind regards,
-Niklas
 
