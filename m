@@ -1,84 +1,144 @@
-Return-Path: <stable+bounces-20382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E8B785891D
-	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 23:48:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3445858913
+	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 23:44:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D97BBB22F40
-	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 22:43:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C5F42813C5
+	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 22:44:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED7141487EF;
-	Fri, 16 Feb 2024 22:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 988C1148307;
+	Fri, 16 Feb 2024 22:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H/S0GOyv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TWQJ5HdU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46C512E74;
-	Fri, 16 Feb 2024 22:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53606146904;
+	Fri, 16 Feb 2024 22:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708123271; cv=none; b=lw1yNDX6zb7+XlrSpeHVS83/LkPq5WFN1NQjThzk+xTQtGpo5okHf2dg71TlmIkW9tjn3/IsVwFDtPLbZRC678Shrc0voy5xr+RiRbuxNLdbGzg4ZIDV4ZBfibjMNOz86aiSlByW+iioMApdc8KSXhyd5eXMFfw9ImsMNDbSP8o=
+	t=1708123467; cv=none; b=peznSupJ4aCup6Onfm7NWk7chfKhhcbv+INR+YP+0CTbf5g982e6NA0gDToFvEha5YOvB+KV0Q68buVpM/kGZ/5J2JIMencPYVF/8+UsJNH2lyRv8ccyjpQB4ErlkmzBU4pw+KIu2Gnu6ouTVbp3ksEH9k+iaCjn4q+Bh0bm/IE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708123271; c=relaxed/simple;
-	bh=e292qJjQFhsZInQ0eRF1VBAbrsLKErhBvqmnPaxMUtg=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=ahZgJY34EUzYFzOgK6AfdLedAHyInuA41/0PCM21ZvHDfwoiVhM37dY6xxoaLcaiBWUeE2IX3cm3Jzx2Uzw9vJ40iXitxhK7ZfgwgnwJtsGtjbQFMA+hukeOrHYn1TndQYHjdwzFtuthJygV41tutTQb8cjC2UhnRuZ+cYQA3bI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H/S0GOyv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9DE0C433F1;
-	Fri, 16 Feb 2024 22:41:10 +0000 (UTC)
+	s=arc-20240116; t=1708123467; c=relaxed/simple;
+	bh=QhvjulcGGdTo0awHmk06tL4KcLd6DFGTyFIORcQ/GX0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YZ7TtYH+8v3AEdljuYBVXSZlLRR0DpiYuPglKwOK+YO2YWZ0GQdkLNEeeEuh2a+3QJMDFSrCO9wwTP+ZBtscjM2dDWLs5l841t6VQI2seXlh+hS+XGy7wQ0VttWEujrPzUWXanDsHW4tkpbtko15zCBFWjwVTG6yHJ+FcMR67J8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TWQJ5HdU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11435C433F1;
+	Fri, 16 Feb 2024 22:44:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708123271;
-	bh=e292qJjQFhsZInQ0eRF1VBAbrsLKErhBvqmnPaxMUtg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=H/S0GOyvcwX5ymu0NXTl3ebsLPbUjjiTMAAyQeu/Dn8pOffXw+BwP+/1QCBjEje2H
-	 WHL5UEhomle+NebgM8RW0wAsfVDcoj40ej6Dvy14fAKRxEhZ3d2tbuS8Y9dCJ/Mtsd
-	 SXyPod30Dsbi80cdARV+OjxnYJnnf0DaNajdehIBSERAtXx4pjMxWjeOY49u4SmI2W
-	 rJflmHMljPoeufDIw7SlAPdVKMAEfEoe6qouiW2WVWiyyKbtcJ8B9rFmC8WPgO7NXS
-	 74W3kO7g/c+63IfY3rxCjrOkTTlu8D+vuPaPGmRvLDVFTd5B90Ljk+ipAC5n5NCkWt
-	 uGD4ilsbSjL2A==
-Date: Fri, 16 Feb 2024 16:41:09 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Cc: Bean Huo <beanhuo@iokpp.de>, bhelgaas@google.com,
-	schnelle@linux.ibm.com, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Bean Huo <beanhuo@micron.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] PCI: Increase maximum PCIe physical function number
- to 7 for non-ARI devices
-Message-ID: <20240216224109.GA1359930@bhelgaas>
+	s=k20201202; t=1708123466;
+	bh=QhvjulcGGdTo0awHmk06tL4KcLd6DFGTyFIORcQ/GX0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=TWQJ5HdUVH1Cx6IP8MeG0/H9b/7XPnogvBErwtsfRYpbuK9VasF0zTxwwm8HnbBKS
+	 88hAdJg33e6OPs+CM40gbDDIPfR5W+NGFOQO0+AUDG6GrroaDZNtjWeWMP89LLkpS5
+	 dPTLa/uL69/8KIN6CQeguGD6mXl5dtyhpVeIbasw9W5jteJkIWpwn9hSXa8nofCpt/
+	 QTUBQXxwraT/bo/i8QIC58Jf/eCXwMv4mbkS9ZOMuAVbL1FGg/yBqaIA0toOMdvRCp
+	 Vuv2ZT7BSNvyNtZyboA3xNUmG7J//iZc+Lf2rqbuEnxqSJnLpgdhg9Ndf69JA885Kn
+	 flX9XOp3V9FEw==
+Message-ID: <c06d7d31-0510-46eb-9c3a-96a86edb32cf@kernel.org>
+Date: Sat, 17 Feb 2024 07:44:24 +0900
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4858e202-6097-493a-8405-86d3e8e17c83@linux.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ata: libata-core: Do not call ata_dev_power_set_standby()
+ twice
+To: Niklas Cassel <cassel@kernel.org>
+Cc: stable@vger.kernel.org, Niklas Cassel <niklas.cassel@wdc.com>,
+ linux-ide@vger.kernel.org
+References: <20240216112008.1112538-1-cassel@kernel.org>
+ <c2054321-401d-4b16-9c20-20ea11929f49@kernel.org>
+ <Zc9WJcBRrf5kr/pi@x1-carbon>
+Content-Language: en-US
+From: Damien Le Moal <dlemoal@kernel.org>
+Organization: Western Digital Research
+In-Reply-To: <Zc9WJcBRrf5kr/pi@x1-carbon>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Feb 16, 2024 at 02:26:47PM -0800, Kuppuswamy Sathyanarayanan wrote:
+On 2/16/24 21:33, Niklas Cassel wrote:
+> On Fri, Feb 16, 2024 at 09:16:23PM +0900, Damien Le Moal wrote:
+>> On 2/16/24 20:20, Niklas Cassel wrote:
+>>> From: Damien Le Moal <dlemoal@kernel.org>
+>>>
+>>> For regular system shutdown, ata_dev_power_set_standby() will be
+>>> executed twice: once the scsi device is removed and another when
+>>> ata_pci_shutdown_one() executes and EH completes unloading the devices.
+>>>
+>>> Make the second call to ata_dev_power_set_standby() do nothing by using
+>>> ata_dev_power_is_active() and return if the device is already in
+>>> standby.
+>>>
+>>> Fixes: 2da4c5e24e86 ("ata: libata-core: Improve ata_dev_power_set_active()")
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+>>> Signed-off-by: Niklas Cassel <cassel@kernel.org>
+>>> ---
+>>> This fix was originally part of patch that contained both a fix and
+>>> a revert in a single patch:
+>>> https://lore.kernel.org/linux-ide/20240111115123.1258422-3-dlemoal@kernel.org/
+>>>
+>>> This patch contains the only the fix (as it is valid even without the
+>>> revert), without the revert.
+>>>
+>>> Updated the Fixes tag to point to a more appropriate commit, since we
+>>> no longer revert any code.
+>>>
+>>>  drivers/ata/libata-core.c | 6 ++++--
+>>>  1 file changed, 4 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
+>>> index d9f80f4f70f5..af2334bc806d 100644
+>>> --- a/drivers/ata/libata-core.c
+>>> +++ b/drivers/ata/libata-core.c
+>>> @@ -85,6 +85,7 @@ static unsigned int ata_dev_init_params(struct ata_device *dev,
+>>>  static unsigned int ata_dev_set_xfermode(struct ata_device *dev);
+>>>  static void ata_dev_xfermask(struct ata_device *dev);
+>>>  static unsigned long ata_dev_blacklisted(const struct ata_device *dev);
+>>> +static bool ata_dev_power_is_active(struct ata_device *dev);
+>>
+>> I forgot what I did originally but didn't I move the code of
+>> ata_dev_power_is_active() before ata_dev_power_set_standby() to avoid this
+>> forward declaration ?
+>>
+>> With that, the code is a little odd as ata_dev_power_is_active() is defined
+>> between ata_dev_power_set_standby() and ata_dev_power_set_active() but both
+>> functions use it...
 > 
-> On 2/16/24 11:01 AM, Bean Huo wrote:
-> > From: Bean Huo <beanhuo@micron.com>
-> >
-> > The PCIe specification allows up to 8 Physical Functions (PFs) per endpoint
-> > when ARI (Alternative Routing-ID Interpretation) is not supported. Previously,
-> > our implementation erroneously limited the maximum number of PFs to 7 for
-> > endpoints without ARI support.
-> I would quote specification reference here, like below:
+> Yes, you moved the function instead of forward declaring it.
 > 
-> As per PCIe specification r6.2, sec titled "Alternative Routing-ID
-> Interpretation (ARI)", up to 8 [fn # 0..7] functions are allowed in
-> an non ARI capable device.
+> But then there was a discussion of why ATA_TFLAG_ISADDR is set in
+> ata_dev_power_is_active():
+> https://lore.kernel.org/linux-ide/d63a7b93-d1a3-726e-355c-b4a4608626f4@gmail.com/
+> 
+> And you said that you were going to look in to it:
+> https://lore.kernel.org/linux-ide/0563322c-4093-4e7d-bb48-61712238494e@kernel.org/
+> 
 
-That's fine, just know that I silently convert citations like that
-to "PCIe r6.2, sec 6.13" because I don't like having to grep for the
-text ;)
+Ah, yes, I remember now. Let me have a look at this and resend a proper patch, +
+another one for the ISADDR cleanup. I really don't want to fix this with that
+forward declaration if we can avoid it (and we clearly can here).
 
-Bjorn
+> Since this fix does not strictly require any changes to
+> ata_dev_power_is_active(), and since we already have a bunch of
+> forward declared functions, I think that forward declaring it is a
+> good way to avoid this actual fix from falling through the cracks.
+> 
+> 
+> Kind regards,
+> Niklas
+
+-- 
+Damien Le Moal
+Western Digital Research
+
 
