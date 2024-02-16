@@ -1,153 +1,116 @@
-Return-Path: <stable+bounces-20348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 925A5857B56
-	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 12:16:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BA33857B73
+	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 12:20:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3536B2851BF
-	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 11:16:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C366228201E
+	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 11:20:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67FC259B52;
-	Fri, 16 Feb 2024 11:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 879DD612D7;
+	Fri, 16 Feb 2024 11:20:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gZ60BuJG"
 X-Original-To: stable@vger.kernel.org
-Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FA7A59B47;
-	Fri, 16 Feb 2024 11:16:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 442B460BAD;
+	Fri, 16 Feb 2024 11:20:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708082170; cv=none; b=pZOBSZ4gcWlE5LOVtjGtxa/ZHD0InsBDvjT2UHaKXt2pEIir/U82Lz4aqdTTN87dMjmIcD1aDuGJX9/82MPjV4s61lqyObBpQZV2Z0b0Dakf4/N3Aj25HC7b1/517IVf45nkkg5tGOCx2H/7vN0FiCyD/Wclv5vzE6GUY6NzKTg=
+	t=1708082419; cv=none; b=TDZKYUSaaFyxo9xHPlfI46gMSK8Zo+2Te4WUFRjsBjzpuuFjbwNY5pCZpOeDs9DJbizMhfpq20xoncaXsxG/HC10xsaY6gA8IE+bVEB5aV5hbvd87Ys+QLGDdlpKiOHlncVfmlx26pYl7nTHnxFqQcPA7bepn6qeXgSFNYVG8HU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708082170; c=relaxed/simple;
-	bh=9cQF1rIO8RSJzsP9my6CHgiO2RH8oNNFSgPkEebj1tw=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=CFoPGVN0hRn/lCQ+mEuG8k8zWQLZVfTqoyxOvloJoTl63xsT1KjZ4F3tcwhvOOUxjZW5Zl8vANe2hPUEa7pyO51dOOKLBGOhEJBglOb7VCzlfT6n9yFp+aTmUsjGux6f21oERyWwQV3PIGIp3yFlpEL8Hyy1fBtYXaNmdVlaSaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-d85ff70000001748-14-65cf43f15fe6
-From: Byungchul Park <byungchul@sk.com>
-To: akpm@linux-foundation.org,
-	ying.huang@intel.com,
-	osalvador@suse.de,
-	baolin.wang@linux.alibaba.com,
-	hannes@cmpxchg.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	kernel_team@skhynix.com,
-	stable@vger.kernel.org
-Subject: [PATCH] mm/vmscan: Fix a bug calling wakeup_kswapd() with a wrong zone index
-Date: Fri, 16 Feb 2024 20:15:02 +0900
-Message-Id: <20240216111502.79759-1-byungchul@sk.com>
-X-Mailer: git-send-email 2.17.1
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmpiluLIzCtJLcpLzFFi42LhesuzUPej8/lUgxcLBSzmrF/DZvF/7zFG
-	i9WbfC0u75rDZnFvzX9WizPTiiwWbHzEaHFy1mQWBw6Pw2/eM3ss3vOSyWPTp0nsHidm/Gbx
-	2PnQ0mPz6WqPz5vkAtijuGxSUnMyy1KL9O0SuDJ+zr/OVNAsUbF+gXADY7NIFyMnh4SAicS0
-	u+vYYewVP3+xgNhsAuoSN278ZO5i5OIQEWhklPj0bAdYEbNAtsS9Gf1MILawQKhE59s7jCA2
-	i4CqRPfaJlYQm1fAVGLxtEWsEEPlJVZvOMAMYX9klZg22xHClpQ4uOIGywRG7gWMDKsYhTLz
-	ynITM3NM9DIq8zIr9JLzczcxAkNmWe2f6B2Mny4EH2IU4GBU4uE98OdsqhBrYllxZe4hRgkO
-	ZiUR3km9Z1KFeFMSK6tSi/Lji0pzUosPMUpzsCiJ8xp9K08REkhPLEnNTk0tSC2CyTJxcEo1
-	MLJ3soR4FXO1zmN0ldR+J61Tzt8TnHTyKOvCtJ+dbx6FurFneNj0sjBNPXnqQYb5FbuW1mtR
-	b1I3PKrw+PhgvUJ5nUyshNWpj7NvSvzPZ3r5oI5v7gPBD6cMKvIKIu5JX52d8l5t86J5xo/y
-	LtyW415Y7WF0Y5/rXD3T7PeG2YtC5N58mKlWqMRSnJFoqMVcVJwIAJhkPsgVAgAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrFJMWRmVeSWpSXmKPExsXC5WfdrPvR+XyqwaurTBZz1q9hs/i/9xij
-	xepNvhaH555ktbi8aw6bxb01/1ktzkwrsliw8RGjxclZk1kcOD0Ov3nP7LF4z0smj02fJrF7
-	nJjxm8Vj50NLj8UvPjB5bD5d7fF5k1wARxSXTUpqTmZZapG+XQJXxs/515kKmiUq1i8QbmBs
-	Fuli5OSQEDCRWPHzFwuIzSagLnHjxk/mLkYuDhGBRkaJT892sIMkmAWyJe7N6GcCsYUFQiU6
-	395hBLFZBFQlutc2sYLYvAKmEounLWKFGCovsXrDAeYJjBwLGBlWMYpk5pXlJmbmmOoVZ2dU
-	5mVW6CXn525iBIbAsto/E3cwfrnsfohRgINRiYf3wJ+zqUKsiWXFlbmHGCU4mJVEeCf1nkkV
-	4k1JrKxKLcqPLyrNSS0+xCjNwaIkzusVnpogJJCeWJKanZpakFoEk2Xi4JRqYNxk0mHso510
-	I6HTz3nvcqFHMw26q07Uuh6/cGuvkdee8CNHHwbfrnwn2nyRqfTvIxnm/7fcncK/zjGpvn8g
-	8OHE829eT353KSbeLu+r0CmJtLC2lvmfCrVk2VU5eqKn2J8Nm7a7dP8umRiFZMn1Knc3/9Or
-	PVHJtodl9jmfSxuFJ9mZLboTcE+JpTgj0VCLuag4EQCvUs+P/QEAAA==
-X-CFilter-Loop: Reflected
+	s=arc-20240116; t=1708082419; c=relaxed/simple;
+	bh=VHv3IYjlHR6MUnfBc57C98lM3wMHgx0zJpPwl1b5C0Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WQG4U0vsdgOsYvv3nFQH/g1znJCui0LrlMLF/LHJ4KFnUP56pcNN8JR1KOJb444GS/qEqtqrXtritHvl/0APIkHTkFGS2fuvbiYs54n0VVM2QmPevnuZcrYpKnlpJNcQO9VyywyD15x7NehQq2frnnjA5vBAtMUOo8xOk7DN0c8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gZ60BuJG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 080C5C433F1;
+	Fri, 16 Feb 2024 11:20:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708082418;
+	bh=VHv3IYjlHR6MUnfBc57C98lM3wMHgx0zJpPwl1b5C0Q=;
+	h=From:To:Cc:Subject:Date:From;
+	b=gZ60BuJG169m3E1IZ7ML64F+uRom6HmsZtlRer3uqK7WqWJ2+dVoPcUpbFjCFFfGl
+	 mMuYVxSELFmwv0Lg2QMgcqvdl0JOansiVbg69U349nkxaUzUQLiz+CPgIk1VuQ0xd4
+	 u8LYksz9+KfqwLN95UiLuXjekq7xDyIsbdhaH06Y4m5UzIcgUlLVYzb9LL+EbjI3XA
+	 hstuFIzojYR6SZEYg1tyKhLPsdo//eKxVHpoKZ1N5/QdnjqJBcOElcToe0pouqjaYh
+	 Mk6ERg5jACqPfSCFVATKzDTmW59upV5ZKfVjaFSxD/mn3THiOJ5oRujYQr7/tFWScA
+	 k/bK96BOid4nw==
+From: Niklas Cassel <cassel@kernel.org>
+To: Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>
+Cc: stable@vger.kernel.org,
+	Niklas Cassel <niklas.cassel@wdc.com>,
+	linux-ide@vger.kernel.org
+Subject: [PATCH] ata: libata-core: Do not call ata_dev_power_set_standby() twice
+Date: Fri, 16 Feb 2024 12:20:07 +0100
+Message-ID: <20240216112008.1112538-1-cassel@kernel.org>
+X-Mailer: git-send-email 2.43.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-With numa balancing on, when a numa system is running where a numa node
-doesn't have its local memory so it has no managed zones, the following
-oops has been observed. It's because wakeup_kswapd() is called with a
-wrong zone index, -1. Fixed it by checking the index before calling
-wakeup_kswapd().
+From: Damien Le Moal <dlemoal@kernel.org>
 
-> BUG: unable to handle page fault for address: 00000000000033f3
-> #PF: supervisor read access in kernel mode
-> #PF: error_code(0x0000) - not-present page
-> PGD 0 P4D 0
-> Oops: 0000 [#1] PREEMPT SMP NOPTI
-> CPU: 2 PID: 895 Comm: masim Not tainted 6.6.0-dirty #255
-> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
->    rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-> RIP: 0010:wakeup_kswapd (./linux/mm/vmscan.c:7812)
-> Code: (omitted)
-> RSP: 0000:ffffc90004257d58 EFLAGS: 00010286
-> RAX: ffffffffffffffff RBX: ffff88883fff0480 RCX: 0000000000000003
-> RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff88883fff0480
-> RBP: ffffffffffffffff R08: ff0003ffffffffff R09: ffffffffffffffff
-> R10: ffff888106c95540 R11: 0000000055555554 R12: 0000000000000003
-> R13: 0000000000000000 R14: 0000000000000000 R15: ffff88883fff0940
-> FS:  00007fc4b8124740(0000) GS:ffff888827c00000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 00000000000033f3 CR3: 000000026cc08004 CR4: 0000000000770ee0
-> DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-> DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-> PKRU: 55555554
-> Call Trace:
->  <TASK>
-> ? __die
-> ? page_fault_oops
-> ? __pte_offset_map_lock
-> ? exc_page_fault
-> ? asm_exc_page_fault
-> ? wakeup_kswapd
-> migrate_misplaced_page
-> __handle_mm_fault
-> handle_mm_fault
-> do_user_addr_fault
-> exc_page_fault
-> asm_exc_page_fault
-> RIP: 0033:0x55b897ba0808
-> Code: (omitted)
-> RSP: 002b:00007ffeefa821a0 EFLAGS: 00010287
-> RAX: 000055b89983acd0 RBX: 00007ffeefa823f8 RCX: 000055b89983acd0
-> RDX: 00007fc2f8122010 RSI: 0000000000020000 RDI: 000055b89983acd0
-> RBP: 00007ffeefa821a0 R08: 0000000000000037 R09: 0000000000000075
-> R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000000
-> R13: 00007ffeefa82410 R14: 000055b897ba5dd8 R15: 00007fc4b8340000
->  </TASK>
+For regular system shutdown, ata_dev_power_set_standby() will be
+executed twice: once the scsi device is removed and another when
+ata_pci_shutdown_one() executes and EH completes unloading the devices.
 
-Signed-off-by: Byungchul Park <byungchul@sk.com>
-Reported-by: Hyeongtak Ji <hyeongtak.ji@sk.com>
+Make the second call to ata_dev_power_set_standby() do nothing by using
+ata_dev_power_is_active() and return if the device is already in
+standby.
+
+Fixes: 2da4c5e24e86 ("ata: libata-core: Improve ata_dev_power_set_active()")
 Cc: stable@vger.kernel.org
-Fixes: c574bbe917036 ("NUMA balancing: optimize page placement for memory tiering system")
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 ---
- mm/migrate.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+This fix was originally part of patch that contained both a fix and
+a revert in a single patch:
+https://lore.kernel.org/linux-ide/20240111115123.1258422-3-dlemoal@kernel.org/
 
-diff --git a/mm/migrate.c b/mm/migrate.c
-index fbc8586ed735..51ee6865b0f6 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -2825,6 +2825,14 @@ static int numamigrate_isolate_folio(pg_data_t *pgdat, struct folio *folio)
- 			if (managed_zone(pgdat->node_zones + z))
- 				break;
- 		}
-+
-+		/*
-+		 * If there are no managed zones, it should not proceed
-+		 * further.
-+		 */
-+		if (z < 0)
-+			return 0;
-+
- 		wakeup_kswapd(pgdat->node_zones + z, 0,
- 			      folio_order(folio), ZONE_MOVABLE);
- 		return 0;
+This patch contains the only the fix (as it is valid even without the
+revert), without the revert.
+
+Updated the Fixes tag to point to a more appropriate commit, since we
+no longer revert any code.
+
+ drivers/ata/libata-core.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
+index d9f80f4f70f5..af2334bc806d 100644
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -85,6 +85,7 @@ static unsigned int ata_dev_init_params(struct ata_device *dev,
+ static unsigned int ata_dev_set_xfermode(struct ata_device *dev);
+ static void ata_dev_xfermask(struct ata_device *dev);
+ static unsigned long ata_dev_blacklisted(const struct ata_device *dev);
++static bool ata_dev_power_is_active(struct ata_device *dev);
+ 
+ atomic_t ata_print_id = ATOMIC_INIT(0);
+ 
+@@ -2017,8 +2018,9 @@ void ata_dev_power_set_standby(struct ata_device *dev)
+ 	struct ata_taskfile tf;
+ 	unsigned int err_mask;
+ 
+-	/* If the device is already sleeping, do nothing. */
+-	if (dev->flags & ATA_DFLAG_SLEEPING)
++	/* If the device is already sleeping or in standby, do nothing. */
++	if ((dev->flags & ATA_DFLAG_SLEEPING) ||
++	    !ata_dev_power_is_active(dev))
+ 		return;
+ 
+ 	/*
 -- 
-2.17.1
+2.43.1
 
 
