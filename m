@@ -1,152 +1,120 @@
-Return-Path: <stable+bounces-20342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C98A8579D3
-	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 11:04:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A87008579D1
+	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 11:04:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AAB7285495
-	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 10:04:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDFE01C2122B
+	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 10:04:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9580B1C292;
-	Fri, 16 Feb 2024 10:02:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 286571BF27;
+	Fri, 16 Feb 2024 10:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="p9owmrwI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KeIvPRj/"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2076.outbound.protection.outlook.com [40.107.220.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3BD23757
-	for <stable@vger.kernel.org>; Fri, 16 Feb 2024 10:02:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.76
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708077747; cv=fail; b=clt12syv6zu9rcNgAk0z/PS/r0BA8fvssImaDkllTM6P2AhCorMZnFAutuqoITnNBYd89g+dCzZkTgz4U8UU4aGhwfxAqh5ECU2bYtQX956674MmJMM3xtqL5o2TFVfgSyip/RxhE9EUkUh3hsCVeTJSdbjoS+8zZnfwvdY2mkU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708077747; c=relaxed/simple;
-	bh=dgPSlO06gNW7yl9dE6bDaE83h6aa+I1VIqYy3r1nV5M=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UbpadNijZKt9fRbXAu3l99JfB1ggsu7PkPO6HTgk4qdR9jq7nO1EdPjSg1BIbCqeHBNQNPlQ6XWw1HchpVPUvWiFsfu6aYgwBA8q/shnj9BDMf4AM/QjbuoxqPDqQArgrvNasb/snl4LYF4wZqVY+Vdwp+W+NJUqUIUEJ3uyVcE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=p9owmrwI; arc=fail smtp.client-ip=40.107.220.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SuIsCsGdIK3H3CwNfRdUrm5jDqw4J4DGm9F4Kv97uNwaLPKFcD91KvSchz/gXcPyIe+iSRe+xc1OV9yiOxAV6EIVgsX5qVEXT4vEZ2j2XBY4pzORn7vqEiphFmJk2GtvynkqhppzB8CHE8yWc/QHrBIifOuCpvOyaL2V6XjOcAQRZe+g5wn1kJgXjtGO5JNWL1cMmCxlWGxzSuvl7ucVwWbl+TtnEz5L1cLXlLRK1z7ezmOcj78kUVWiD4eTVTtE1EIwf0kmTc488SMQV/CramaFt75GunqzCwZlmHJMZTQXcor01qFzXqutKQtSZHUK/PpiCLhILVB6UFdK5l+7zw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Z/xcixKgnLNo5NyGN37eGiMo+OVvkM+2G77a5CFkEes=;
- b=NB9pho5Zk6SSUBSbwzi42IDZow/d7RW+PIgRnTYpmdZPiqr3fY3A21bTC+s04hZ2OBAdU0ZfX4H++M/Th6qAs1tWRrYkcrA0I+C0w9EY6x0M3wY1hhDov17l2kTp7xehJjRSwp27va17+Lj3+Raoif18nfzCDm71zhILINHZ9q6q0flI0y5dwTZWPVsVXinLiAQktrippYIc+JOUn6RNRAtAICQYfVK3f0M8YFqtKR5eRXTZJTqOQu7m2UuigFBS6jvQzSpi9Kaa09XKu+x9N9NuRp1JbhnxPu1pcenYJgAPCdMOqhtAxkafpujNTRrM+Sryd4XfdO4Ir1hUl0vqwg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Z/xcixKgnLNo5NyGN37eGiMo+OVvkM+2G77a5CFkEes=;
- b=p9owmrwIqHr4kmbtjpoDIKZf0M/z74+mOHXK+NVfUbv22gtONw16xlor1CEtZOgiyfRChEwXmfkesUUCJae/sljNl02Miw34B5aZr/9BiISKz2GRGb3ZuF7O/VLWIVmYNyxHGsdaoZo4wlsX9I53dOS/vbYUjYQULHlx/ldo+u8=
-Received: from BY3PR10CA0001.namprd10.prod.outlook.com (2603:10b6:a03:255::6)
- by BL3PR12MB6570.namprd12.prod.outlook.com (2603:10b6:208:38d::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.31; Fri, 16 Feb
- 2024 10:02:23 +0000
-Received: from SJ1PEPF00001CE7.namprd03.prod.outlook.com
- (2603:10b6:a03:255:cafe::56) by BY3PR10CA0001.outlook.office365.com
- (2603:10b6:a03:255::6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.26 via Frontend
- Transport; Fri, 16 Feb 2024 10:02:23 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SJ1PEPF00001CE7.mail.protection.outlook.com (10.167.242.23) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7292.25 via Frontend Transport; Fri, 16 Feb 2024 10:02:22 +0000
-Received: from amd-X570-AORUS-ELITE.amd.com (10.180.168.240) by
- SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Fri, 16 Feb 2024 04:02:19 -0600
-From: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
-To: <dri-devel@lists.freedesktop.org>, <amd-gfx@lists.freedesktop.org>,
-	<intel-gfx@lists.freedesktop.org>
-CC: <christian.koenig@amd.com>, <alexander.deucher@amd.com>,
-	<matthew.auld@intel.com>, <mario.limonciello@amd.com>, <spasswolf@web.de>,
-	Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>,
-	<stable@vger.kernel.org>
-Subject: [PATCH] drm/buddy: Modify duplicate list_splice_tail call
-Date: Fri, 16 Feb 2024 15:30:48 +0530
-Message-ID: <20240216100048.4101-1-Arunpravin.PaneerSelvam@amd.com>
-X-Mailer: git-send-email 2.25.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 376BE23750;
+	Fri, 16 Feb 2024 10:02:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708077735; cv=none; b=T/gI8yY3rTB2MshOEnu4GFlH0UEM8fLo89nAiQkmz7qkUrMvmf7XBpklckNXms/vP6ZKl+dBsYPKY/lQiNz8wG7rWlkZwXyo6ICz+VD5AJJIQKLKmLpVOJQyX2nNa7PrO7kA8awWk9+4mwatanJ42VL2UEal0TiHiAqaq1qZWGg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708077735; c=relaxed/simple;
+	bh=O+93pBFgZM/jk9pzYDTtxeiT8dZVqTKFySwAmt2XakA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=az27yt9PfFwrF6qe8Lpxi5wwO2M4PTnZtZ7okYmQWzoNa/oE+/E53Eu/ISg25DkSIyQR3cXSfUs7PiePncYEKR7YltLPvCRXZmirqJy5ZxRq6F5bP84pN0jkjf1/+akKvhcJJ/IS3VlFVO+Y2eePEV0MXE/qauV/AX6TAj1wAOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KeIvPRj/; arc=none smtp.client-ip=209.85.208.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2d21cdbc85bso2699361fa.2;
+        Fri, 16 Feb 2024 02:02:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708077732; x=1708682532; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9+r76o2JwpW191mB0cdSBI4QA1SjwNLwOUYY+I3l0fo=;
+        b=KeIvPRj/WY1h4bnALycH99ZKoFW1FVdoMvbQC/yJ78v3UMQg+fRS5D2t0Jk4NOAAp0
+         8YgmvLR3HQwG273oqu1/DqwildpKEJ7k5rGp/pnNctlNCCnE8ZMCZJnDQWNLxIXYi99s
+         SUfqLHQm/gf+oopZaHGCXrcU4XpMxFuLSsSjtYzTgc1bGu4BggEV4InE3aowD9ZgIJAN
+         Z7kAtF+PVKmSUy3ZE2lKT/Xu4Iq6Rq3PQib/ckqoFHmVmmDpzrbJXNhI6hUs7UVhPi6U
+         qjsYtvfKa+fJDu66MBf7ct/kDssETgB3S/f2AoKLqPw8f6k8/zRiqEAPzNo3PfVOvo2Y
+         XQCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708077732; x=1708682532;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9+r76o2JwpW191mB0cdSBI4QA1SjwNLwOUYY+I3l0fo=;
+        b=UWdAFo/M8cJHKumaBZn90BvsahwF5qhWZr6a2qFn6H/ELpdGV7MXLcMpZOZGbEFprk
+         JVvqM4mpeh/1rDoBgeMO0zN8b79bhd4NhPT4Dz5VN8HaVxNN4ROH995RcBePbi5pTBZ8
+         rZdXbsV8TwSMahNeQIv7m6VLqBENtS7FqdYiDT+VbeSnxpBK5ABx0bHOXAAT2BOPP55C
+         BOdch+w5Sg+qDaK3XqjOicc5iLvEQwO4BWZkE9fgyoKz2QL1WFOIoG/zxDANxSiCmR/M
+         TjBXtoM8yxIAoYRozKP+CegpasHPjc5lmQIC59zNfKyZ2W+Ud2gxW31VyEN+GmgBg+vz
+         QGiQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVC4OrNQ2HUy5/4QZ3QA1Q54G1+rPgLAHDE/zpoS7hvOenPDfrIYsZFl4OJ1WX4CpR9CMwCibq99MUlxSKy/pnwqVyl+DNkBDEJ4TU6nK7aK6BYfH9GA9B6LxG8cdsOxygyMRQa
+X-Gm-Message-State: AOJu0YweeoxSYuZYu/aT34L91D456fTceKHjksilk+09VWegmdsNG97w
+	5Pj3IkYsKUA2G1a5ZQq4iZKi041HEgKxwm/uvusvcTSSYQ23eckIGWwn/7HPHUIatypYiY4mLNT
+	NATzrd8kYbH8SvRPLgyyHVVLkP20=
+X-Google-Smtp-Source: AGHT+IHbTtXkIU6FJpAiPx0y7F1gaeijHLB/wVYaW/EFpk1Pev9GaYTryS4GHL+6L4Bo1aidj5Jo/x2kQwQI6uW0YvE=
+X-Received: by 2002:a2e:9214:0:b0:2d2:a27:200f with SMTP id
+ k20-20020a2e9214000000b002d20a27200fmr2584021ljg.46.1708077731548; Fri, 16
+ Feb 2024 02:02:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CE7:EE_|BL3PR12MB6570:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5b46a83d-cea3-4a8b-5381-08dc2ed65ec4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	OOvDl0mSWU0RAsUe2ySFo2cp8dau3RoiDp5jcDTmpxVP2riUJA0CT1oDvZ4wX0RhlpxKiwZhJmcVBZKq/mwo1qmlwYEZJvjKMW62pBGckfJQ8oo7GiNcIVl9vIsMR5c4GEz1V6XqnMS0LN90crSLJU/+HSaiH8lPeMZI6uv+NH7A6MN6lri6a8ynofd8nNdSfoCdxDpCgucdj3HpFC+HtcRxXQtnD3EY7QUyAeRJYHXIhjCMVFQpFbMcsTOI9Mf2GfUnmUO/BLqOCnsD+aYNW7Ad1v4aGnRma1vLtsMKPlFw1CxUNqm0ybNkS13q8/lK0jHX+d3gy6PdDYH575aVvLrpmJ1D4X24wRrkDghdsQJ1Ykbpqlmu61HeKtgGBhVvNKERlalI/Bo66PGI+EGEYi9oP+wWbpwhgYdRQZC6Qubq9rJC2LJiyX5fyqqt2qgm2fsviUBzgMkdrTnc99mE90kWIvrFTCkdSjDxq11SJfJN4UcEXvgRPz7xvAcFwzdz3EBjqjxI/8ZuT4nZIqPTp0gAkzQIfRNzysNkaij3lVkIpsR29lXmutXWQ/BdKM4DbjhZQur0F+Bcx5q8+vAz6z163AtErnmSODYjqweBz8zPvXn6uE/QnCf5K8Fq6XwnxkR6nD5NGzzIuBnmjAYqlgwGqelST+4NYuFMlV2g63I=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(376002)(136003)(396003)(39860400002)(346002)(230922051799003)(451199024)(82310400011)(1800799012)(36860700004)(186009)(64100799003)(40470700004)(46966006)(2906002)(83380400001)(6666004)(316002)(426003)(2616005)(478600001)(7696005)(4326008)(8936002)(110136005)(8676002)(336012)(4744005)(41300700001)(70206006)(5660300002)(26005)(70586007)(54906003)(1076003)(16526019)(82740400003)(356005)(81166007)(86362001)(36756003);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Feb 2024 10:02:22.6321
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5b46a83d-cea3-4a8b-5381-08dc2ed65ec4
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00001CE7.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6570
+References: <20240206182559.32264-1-ryncsn@gmail.com> <1d259a51-46e6-4d3b-9455-38dbcc17b168@redhat.com>
+ <CAMgjq7Cy3njsQzGi5Wa_JaM4NaO4eDGO5D8cY+KEB0ERd_JrGw@mail.gmail.com>
+ <4c651673-132f-4cd8-997e-175f586fd2e6@redhat.com> <Zc56L6oL4JmxqaFN@google.com>
+ <20240215145836.6db8f62824e1547f0608591c@linux-foundation.org>
+In-Reply-To: <20240215145836.6db8f62824e1547f0608591c@linux-foundation.org>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Fri, 16 Feb 2024 18:01:53 +0800
+Message-ID: <CAMgjq7DhRu0qAgLY_cw-WuWmx9vchOAN0MeumRtCLFtoD3Kz8Q@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/swap: fix race when skipping swapcache
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Minchan Kim <minchan@kernel.org>, David Hildenbrand <david@redhat.com>, linux-mm@kvack.org, 
+	"Huang, Ying" <ying.huang@intel.com>, Chris Li <chrisl@kernel.org>, Yu Zhao <yuzhao@google.com>, 
+	Barry Song <v-songbaohua@oppo.com>, SeongJae Park <sj@kernel.org>, Hugh Dickins <hughd@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox <willy@infradead.org>, Michal Hocko <mhocko@suse.com>, 
+	Yosry Ahmed <yosryahmed@google.com>, stable@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Remove the duplicate list_splice_tail call when the
-total_allocated < size condition is true.
+On Fri, Feb 16, 2024 at 6:58=E2=80=AFAM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
+> On Thu, 15 Feb 2024 12:55:11 -0800 Minchan Kim <minchan@kernel.org> wrote=
+:
+> > Only concern of the approach is that it would be harder to have the fix
+> > in the stable tree. If there isn't strong objection, I prefer the
+> > Kairui's orginal solution(with some tweak of scheduler if it's
+> > necessary) first and then pursue your idea on latest tree.
+>
+> Do we agree that this fix is needed in -stable?  For some reason I
+> don't have a cc:stable in the changelog.
+>
+> I'd like to move this patch into mm-hotfixes-stable in order to get it
+> upstream very soon.  Are we all agreeable with that?  I don't have an
+> Acked-by: David?
+>
+> I have a note (which dates back to an earlier version) that Barry would
+> be performing runtime testing.  Has that occurred?
+>
+> Thanks.
+>
 
-Cc: <stable@vger.kernel.org> # 6.7+
-Fixes: 8746c6c9dfa3 ("drm/buddy: Fix alloc_range() error handling code")
-Reported-by: Bert Karwatzki <spasswolf@web.de>
-Signed-off-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
----
- drivers/gpu/drm/drm_buddy.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Hi Andrew,
 
-diff --git a/drivers/gpu/drm/drm_buddy.c b/drivers/gpu/drm/drm_buddy.c
-index c1a99bf4dffd..c4222b886db7 100644
---- a/drivers/gpu/drm/drm_buddy.c
-+++ b/drivers/gpu/drm/drm_buddy.c
-@@ -538,13 +538,13 @@ static int __alloc_range(struct drm_buddy *mm,
- 		list_add(&block->left->tmp_link, dfs);
- 	} while (1);
- 
--	list_splice_tail(&allocated, blocks);
--
- 	if (total_allocated < size) {
- 		err = -ENOSPC;
- 		goto err_free;
- 	}
- 
-+	list_splice_tail(&allocated, blocks);
-+
- 	return 0;
- 
- err_undo:
-
-base-commit: a64056bb5a3215bd31c8ce17d609ba0f4d5c55ea
--- 
-2.25.1
-
+I think this fix is needed for stable, I've sent V3, if we agree on
+that, please consider V3 which includes changes we have discussed so
+far, thanks!
 
