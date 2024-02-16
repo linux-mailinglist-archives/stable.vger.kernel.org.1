@@ -1,118 +1,153 @@
-Return-Path: <stable+bounces-20347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 191C2857B3D
-	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 12:11:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 925A5857B56
+	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 12:16:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB0162820B6
-	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 11:11:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3536B2851BF
+	for <lists+stable@lfdr.de>; Fri, 16 Feb 2024 11:16:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DF975813A;
-	Fri, 16 Feb 2024 11:11:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U/5BDUtK"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67FC259B52;
+	Fri, 16 Feb 2024 11:16:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEDB8208BE
-	for <stable@vger.kernel.org>; Fri, 16 Feb 2024 11:11:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FA7A59B47;
+	Fri, 16 Feb 2024 11:16:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708081893; cv=none; b=XStfQT05js1mOhyCBVKks97KNcKzvHv3pDA2/bbOhB3phgbFgZBpnjBn/fMGoKasYybYPOtWf4f1wsvyn7jTN13agUkCMpRL6pNDDvhDiMB5tWB7NHVEkuaG+fAQNJlYTQC0FFMnl/dBAWloMUlD3ZovEt2/fhMEkeVLaPQgsGQ=
+	t=1708082170; cv=none; b=pZOBSZ4gcWlE5LOVtjGtxa/ZHD0InsBDvjT2UHaKXt2pEIir/U82Lz4aqdTTN87dMjmIcD1aDuGJX9/82MPjV4s61lqyObBpQZV2Z0b0Dakf4/N3Aj25HC7b1/517IVf45nkkg5tGOCx2H/7vN0FiCyD/Wclv5vzE6GUY6NzKTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708081893; c=relaxed/simple;
-	bh=fuakVQ+w5J5dRCD3xndm2lf2GT+CZM+1xiGreXTQAl4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sNtPAmW1Mp6EZK0+/Z6FcvNK0AnAYO5pl8wlEq7o4pvXaino+2CgeBsTt12MizZBOBWOL2gOM7IY6ELPg9dxchspxY6vROQiLGh8bhGXO1hKVrGaBDglRim8EZpmVuJOHpXXURkBLjxfi+3l17DG/8idiTM1U7KmsxklAizi76s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U/5BDUtK; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708081891; x=1739617891;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=fuakVQ+w5J5dRCD3xndm2lf2GT+CZM+1xiGreXTQAl4=;
-  b=U/5BDUtKM7JEDGFvAHzefuYTGn/LIuHdS+6wSBOxdhNXTfUWO3H8Xo1R
-   sPNZuBStk6X+weAj5Yi8ar6qb0778dINpYsy85l7V5r4pcwckZ1yTJf6b
-   /RmDs5h5n7wB8bMhECjbeUgEPU8WKM7pRLojAhf8aaYCoLs6o7WODoVyy
-   uxjjd1zetLevKXryjAHv4fplHGWKKWTTM9We4qNC0MenxopBHC3ahJWU+
-   pM6XNuoo/16sT3btxKzXEk+2rdugc4fvwCAbbREYrONpIBmNsTIKHK+Am
-   nf9QsdtfRkbW5k6L1YsNDDF8DiD2snK0/i7DozmkGI91p1KzVAyXD7su3
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10985"; a="13310598"
-X-IronPort-AV: E=Sophos;i="6.06,164,1705392000"; 
-   d="scan'208";a="13310598"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2024 03:11:30 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,164,1705392000"; 
-   d="scan'208";a="4105486"
-Received: from fcrowe-mobl2.ger.corp.intel.com (HELO [10.252.21.243]) ([10.252.21.243])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2024 03:11:28 -0800
-Message-ID: <bb158180-c354-458b-8aab-bb224bcb3fbc@intel.com>
-Date: Fri, 16 Feb 2024 11:11:26 +0000
+	s=arc-20240116; t=1708082170; c=relaxed/simple;
+	bh=9cQF1rIO8RSJzsP9my6CHgiO2RH8oNNFSgPkEebj1tw=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=CFoPGVN0hRn/lCQ+mEuG8k8zWQLZVfTqoyxOvloJoTl63xsT1KjZ4F3tcwhvOOUxjZW5Zl8vANe2hPUEa7pyO51dOOKLBGOhEJBglOb7VCzlfT6n9yFp+aTmUsjGux6f21oERyWwQV3PIGIp3yFlpEL8Hyy1fBtYXaNmdVlaSaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
+X-AuditID: a67dfc5b-d85ff70000001748-14-65cf43f15fe6
+From: Byungchul Park <byungchul@sk.com>
+To: akpm@linux-foundation.org,
+	ying.huang@intel.com,
+	osalvador@suse.de,
+	baolin.wang@linux.alibaba.com,
+	hannes@cmpxchg.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	kernel_team@skhynix.com,
+	stable@vger.kernel.org
+Subject: [PATCH] mm/vmscan: Fix a bug calling wakeup_kswapd() with a wrong zone index
+Date: Fri, 16 Feb 2024 20:15:02 +0900
+Message-Id: <20240216111502.79759-1-byungchul@sk.com>
+X-Mailer: git-send-email 2.17.1
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmpiluLIzCtJLcpLzFFi42LhesuzUPej8/lUgxcLBSzmrF/DZvF/7zFG
+	i9WbfC0u75rDZnFvzX9WizPTiiwWbHzEaHFy1mQWBw6Pw2/eM3ss3vOSyWPTp0nsHidm/Gbx
+	2PnQ0mPz6WqPz5vkAtijuGxSUnMyy1KL9O0SuDJ+zr/OVNAsUbF+gXADY7NIFyMnh4SAicS0
+	u+vYYewVP3+xgNhsAuoSN278ZO5i5OIQEWhklPj0bAdYEbNAtsS9Gf1MILawQKhE59s7jCA2
+	i4CqRPfaJlYQm1fAVGLxtEWsEEPlJVZvOMAMYX9klZg22xHClpQ4uOIGywRG7gWMDKsYhTLz
+	ynITM3NM9DIq8zIr9JLzczcxAkNmWe2f6B2Mny4EH2IU4GBU4uE98OdsqhBrYllxZe4hRgkO
+	ZiUR3km9Z1KFeFMSK6tSi/Lji0pzUosPMUpzsCiJ8xp9K08REkhPLEnNTk0tSC2CyTJxcEo1
+	MLJ3soR4FXO1zmN0ldR+J61Tzt8TnHTyKOvCtJ+dbx6FurFneNj0sjBNPXnqQYb5FbuW1mtR
+	b1I3PKrw+PhgvUJ5nUyshNWpj7NvSvzPZ3r5oI5v7gPBD6cMKvIKIu5JX52d8l5t86J5xo/y
+	LtyW415Y7WF0Y5/rXD3T7PeG2YtC5N58mKlWqMRSnJFoqMVcVJwIAJhkPsgVAgAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrFJMWRmVeSWpSXmKPExsXC5WfdrPvR+XyqwaurTBZz1q9hs/i/9xij
+	xepNvhaH555ktbi8aw6bxb01/1ktzkwrsliw8RGjxclZk1kcOD0Ov3nP7LF4z0smj02fJrF7
+	nJjxm8Vj50NLj8UvPjB5bD5d7fF5k1wARxSXTUpqTmZZapG+XQJXxs/515kKmiUq1i8QbmBs
+	Fuli5OSQEDCRWPHzFwuIzSagLnHjxk/mLkYuDhGBRkaJT892sIMkmAWyJe7N6GcCsYUFQiU6
+	395hBLFZBFQlutc2sYLYvAKmEounLWKFGCovsXrDAeYJjBwLGBlWMYpk5pXlJmbmmOoVZ2dU
+	5mVW6CXn525iBIbAsto/E3cwfrnsfohRgINRiYf3wJ+zqUKsiWXFlbmHGCU4mJVEeCf1nkkV
+	4k1JrKxKLcqPLyrNSS0+xCjNwaIkzusVnpogJJCeWJKanZpakFoEk2Xi4JRqYNxk0mHso510
+	I6HTz3nvcqFHMw26q07Uuh6/cGuvkdee8CNHHwbfrnwn2nyRqfTvIxnm/7fcncK/zjGpvn8g
+	8OHE829eT353KSbeLu+r0CmJtLC2lvmfCrVk2VU5eqKn2J8Nm7a7dP8umRiFZMn1Knc3/9Or
+	PVHJtodl9jmfSxuFJ9mZLboTcE+JpTgj0VCLuag4EQCvUs+P/QEAAA==
+X-CFilter-Loop: Reflected
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/buddy: Modify duplicate list_splice_tail call
-Content-Language: en-GB
-To: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>,
- dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
- intel-gfx@lists.freedesktop.org
-Cc: christian.koenig@amd.com, alexander.deucher@amd.com,
- mario.limonciello@amd.com, spasswolf@web.de, stable@vger.kernel.org
-References: <20240216100048.4101-1-Arunpravin.PaneerSelvam@amd.com>
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <20240216100048.4101-1-Arunpravin.PaneerSelvam@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 16/02/2024 10:00, Arunpravin Paneer Selvam wrote:
-> Remove the duplicate list_splice_tail call when the
-> total_allocated < size condition is true.
-> 
-> Cc: <stable@vger.kernel.org> # 6.7+
-> Fixes: 8746c6c9dfa3 ("drm/buddy: Fix alloc_range() error handling code")
-> Reported-by: Bert Karwatzki <spasswolf@web.de>
-> Signed-off-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
-> ---
->   drivers/gpu/drm/drm_buddy.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/drm_buddy.c b/drivers/gpu/drm/drm_buddy.c
-> index c1a99bf4dffd..c4222b886db7 100644
-> --- a/drivers/gpu/drm/drm_buddy.c
-> +++ b/drivers/gpu/drm/drm_buddy.c
-> @@ -538,13 +538,13 @@ static int __alloc_range(struct drm_buddy *mm,
->   		list_add(&block->left->tmp_link, dfs);
->   	} while (1);
->   
-> -	list_splice_tail(&allocated, blocks);
-> -
->   	if (total_allocated < size) {
->   		err = -ENOSPC;
->   		goto err_free;
->   	}
->   
-> +	list_splice_tail(&allocated, blocks);
+With numa balancing on, when a numa system is running where a numa node
+doesn't have its local memory so it has no managed zones, the following
+oops has been observed. It's because wakeup_kswapd() is called with a
+wrong zone index, -1. Fixed it by checking the index before calling
+wakeup_kswapd().
 
-Sigh. Can we extend the unit test(s) to catch this?
+> BUG: unable to handle page fault for address: 00000000000033f3
+> #PF: supervisor read access in kernel mode
+> #PF: error_code(0x0000) - not-present page
+> PGD 0 P4D 0
+> Oops: 0000 [#1] PREEMPT SMP NOPTI
+> CPU: 2 PID: 895 Comm: masim Not tainted 6.6.0-dirty #255
+> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
+>    rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+> RIP: 0010:wakeup_kswapd (./linux/mm/vmscan.c:7812)
+> Code: (omitted)
+> RSP: 0000:ffffc90004257d58 EFLAGS: 00010286
+> RAX: ffffffffffffffff RBX: ffff88883fff0480 RCX: 0000000000000003
+> RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff88883fff0480
+> RBP: ffffffffffffffff R08: ff0003ffffffffff R09: ffffffffffffffff
+> R10: ffff888106c95540 R11: 0000000055555554 R12: 0000000000000003
+> R13: 0000000000000000 R14: 0000000000000000 R15: ffff88883fff0940
+> FS:  00007fc4b8124740(0000) GS:ffff888827c00000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 00000000000033f3 CR3: 000000026cc08004 CR4: 0000000000770ee0
+> DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+> DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+> PKRU: 55555554
+> Call Trace:
+>  <TASK>
+> ? __die
+> ? page_fault_oops
+> ? __pte_offset_map_lock
+> ? exc_page_fault
+> ? asm_exc_page_fault
+> ? wakeup_kswapd
+> migrate_misplaced_page
+> __handle_mm_fault
+> handle_mm_fault
+> do_user_addr_fault
+> exc_page_fault
+> asm_exc_page_fault
+> RIP: 0033:0x55b897ba0808
+> Code: (omitted)
+> RSP: 002b:00007ffeefa821a0 EFLAGS: 00010287
+> RAX: 000055b89983acd0 RBX: 00007ffeefa823f8 RCX: 000055b89983acd0
+> RDX: 00007fc2f8122010 RSI: 0000000000020000 RDI: 000055b89983acd0
+> RBP: 00007ffeefa821a0 R08: 0000000000000037 R09: 0000000000000075
+> R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000000
+> R13: 00007ffeefa82410 R14: 000055b897ba5dd8 R15: 00007fc4b8340000
+>  </TASK>
 
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Signed-off-by: Byungchul Park <byungchul@sk.com>
+Reported-by: Hyeongtak Ji <hyeongtak.ji@sk.com>
+Cc: stable@vger.kernel.org
+Fixes: c574bbe917036 ("NUMA balancing: optimize page placement for memory tiering system")
+---
+ mm/migrate.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-> +
->   	return 0;
->   
->   err_undo:
-> 
-> base-commit: a64056bb5a3215bd31c8ce17d609ba0f4d5c55ea
+diff --git a/mm/migrate.c b/mm/migrate.c
+index fbc8586ed735..51ee6865b0f6 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -2825,6 +2825,14 @@ static int numamigrate_isolate_folio(pg_data_t *pgdat, struct folio *folio)
+ 			if (managed_zone(pgdat->node_zones + z))
+ 				break;
+ 		}
++
++		/*
++		 * If there are no managed zones, it should not proceed
++		 * further.
++		 */
++		if (z < 0)
++			return 0;
++
+ 		wakeup_kswapd(pgdat->node_zones + z, 0,
+ 			      folio_order(folio), ZONE_MOVABLE);
+ 		return 0;
+-- 
+2.17.1
+
 
