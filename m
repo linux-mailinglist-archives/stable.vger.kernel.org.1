@@ -1,78 +1,197 @@
-Return-Path: <stable+bounces-20405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89109858FC7
-	for <lists+stable@lfdr.de>; Sat, 17 Feb 2024 14:45:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 385DB85904B
+	for <lists+stable@lfdr.de>; Sat, 17 Feb 2024 16:03:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F1AE1F21CAC
-	for <lists+stable@lfdr.de>; Sat, 17 Feb 2024 13:45:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E47612830AA
+	for <lists+stable@lfdr.de>; Sat, 17 Feb 2024 15:03:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B797AE58;
-	Sat, 17 Feb 2024 13:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1A477C6CD;
+	Sat, 17 Feb 2024 15:03:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bsxF0O0z"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8045B657B6;
-	Sat, 17 Feb 2024 13:44:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C63F7C09F;
+	Sat, 17 Feb 2024 15:03:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708177497; cv=none; b=uC2S7DyMuoWXF4zcvVG4l3pX8ZY47Qqe/69igyzUNrcXCn6EsipqnESGnMEm19P+7YiQi+e1+pfypbHd3NsgtTjWzMF/sxgZvm2YlnLya5PV2/I7vpqhyEN9+XTvF8VEPAOW7KEdP7J9DKk5LI88uuMDUUO9xsTnvnFyXs/xiOg=
+	t=1708182183; cv=none; b=GIwflB0TdwKhk8yOoNo2SLNTT10b67AwxUaaL+NJFDWzvMuGu7ZdY8mTpWFRhxmnUlN4sZsAg3LIkbv2GzoE/2zVl2BfVDRDJ1ifWBTp4nAXkqlpycZJ8dyzwq8lZf9TkOVpmqxIKNJnqHn6EfvUIO0XU7WCKG6w9LNpD+p6Szg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708177497; c=relaxed/simple;
-	bh=wt2LLaYXCk03zm2XSKQGJSBwd6IfnznINPWT5GRSu7A=;
-	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=P3NNXOcfKEyBN1z8usankLysjskq6hsvhlqUFaW8spPEKXiMYnz6pQQwqcSNUuHGo1exLf6VAJshcEHrsJhiAZSF7pZwcYkowcKSIsNIHCWTmI7eJVT7z3LOmsZw/R5r79+eLNHkyNQ1SyDksJ9YpiWJawKEyWhNC9ZzDNA3JtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1rbKzr-0002oJ-VV; Sat, 17 Feb 2024 14:44:52 +0100
-Message-ID: <307eb8d1-2fde-4e12-b48f-9632510b469e@leemhuis.info>
-Date: Sat, 17 Feb 2024 14:44:51 +0100
+	s=arc-20240116; t=1708182183; c=relaxed/simple;
+	bh=7qfwQMTk/6XmuQTgWrrAU6QDNKvMnI+7NUmGueoQmuc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DirQYFZe/HgTvG1zN55Dn0aNfUArbFbZN5FNSaedW3BzdD8n+KwgeDxURF23KsFJSs+KcLje4+Lr9eoUxYF0Hx1I05jRtlNsBsI3AZ9trD/5DzXbAT4XF1tCNK5cMoygTIOYq5z7DlVqsyKWPspmZCFZIFLFSD/AsKn30QQ05rA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bsxF0O0z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02076C433C7;
+	Sat, 17 Feb 2024 15:03:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708182183;
+	bh=7qfwQMTk/6XmuQTgWrrAU6QDNKvMnI+7NUmGueoQmuc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=bsxF0O0zWvPp505t1lswvS1c07/vMyEj6NoWQGyVmOanlWHTgZy+BXheaA1LpqFsK
+	 0EOGVlB6+Di9XgzmDKXGhgICuKHjiyS6StSQM/iKM/sGiYqjrPqy58nroPER5ekRMJ
+	 ukkP8NVixapjyuC4ugenR6sCoqfLLmhTDNOMMn9M1VDKUa4mcZi8ihmX+5Y1opV6Ik
+	 cAlY6KX71aBxy8Juy5Al0MNjz9km7CAkvJjYa8BHjMsEVAAPe66JRSkhhApIMwI48C
+	 RfvbdwgLwUXJfb++tbEMIfG0AHo6XVwD7DgIkjQTI9ERYmkSr4oXtVy7IP2V8shnfc
+	 yxVs5lHpLMx5Q==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan+linaro@kernel.org>)
+	id 1rbMDW-000000001Vs-35SB;
+	Sat, 17 Feb 2024 16:03:02 +0100
+From: Johan Hovold <johan+linaro@kernel.org>
+To: Bjorn Andersson <andersson@kernel.org>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Vinod Koul <vkoul@kernel.org>
+Cc: Jonas Karlman <jonas@kwiboo.se>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Rob Clark <robdclark@gmail.com>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Kuogee Hsieh <quic_khsieh@quicinc.com>,
+	freedreno@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-phy@lists.infradead.org,
+	Johan Hovold <johan+linaro@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH 3/6] soc: qcom: pmic_glink_altmode: fix drm bridge use-after-free
+Date: Sat, 17 Feb 2024 16:02:25 +0100
+Message-ID: <20240217150228.5788-4-johan+linaro@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240217150228.5788-1-johan+linaro@kernel.org>
+References: <20240217150228.5788-1-johan+linaro@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US, de-DE
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
- Sasha Levin <sashal@kernel.org>,
- Linux kernel regressions list <regressions@lists.linux.dev>,
- LKML <linux-kernel@vger.kernel.org>, Linux-MM <linux-mm@kvack.org>,
- Yang Shi <shy828301@gmail.com>, Andrew Morton <akpm@linux-foundation.org>
-Subject: please pick up 4ef9ad19e17676 ("mm: huge_memory: don't force huge
- page alignment on 32 bit") in linux-6.7.y
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1708177495;a602e319;
-X-HE-SMSGID: 1rbKzr-0002oJ-VV
+Content-Transfer-Encoding: 8bit
 
-Hi Greg! It seems to me that two of my mails to you[1] fell through the
-cracks during the last two weeks, so I'm trying again with this main
-that is not a reply to the earlier thread:
+A recent DRM series purporting to simplify support for "transparent
+bridges" and handling of probe deferrals ironically exposed a
+use-after-free issue on pmic_glink_altmode probe deferral.
 
-Could you please pick up 4ef9ad19e17676 ("mm: huge_memory: don't force
-huge page alignment on 32 bit") in linux-6.7.y? The author ACKed that[2].
+This has manifested itself as the display subsystem occasionally failing
+to initialise and NULL-pointer dereferences during boot of machines like
+the Lenovo ThinkPad X13s.
 
-And btw: you might also want to pick up c4608d1bf7c653 ("mm: mmap:
-map MAP_STACK to VM_NOHUGEPAGE") as well. Its stable tag contains a
-typo, hence I guess your scripts have missed it (I only noticed that by
-chance).
+Specifically, the dp-hpd bridge is currently registered before all
+resources have been acquired which means that it can also be
+deregistered on probe deferrals.
 
-Ciao, Thorsten
+In the meantime there is a race window where the new aux bridge driver
+(or PHY driver previously) may have looked up the dp-hpd bridge and
+stored a (non-reference-counted) pointer to the bridge which is about to
+be deallocated.
 
-[1]
-https://lore.kernel.org/all/dc9f8eab-ec5c-46f1-a168-c510650d1cac@leemhuis.info/
-https://lore.kernel.org/all/1354c5d5-99b7-4178-bcf5-9ddb776de946@leemhuis.info/
+When the display controller is later initialised, this triggers a
+use-after-free when attaching the bridges:
 
-[2]
-https://lore.kernel.org/all/CAHbLzkp7s1CcSE0rc-CpfcCrNtMdepAA5-K+0P4wz11x4SK6=g@mail.gmail.com/
+	dp -> aux -> dp-hpd (freed)
+
+which may, for example, result in the freed bridge failing to attach:
+
+	[drm:drm_bridge_attach [drm]] *ERROR* failed to attach bridge /soc@0/phy@88eb000 to encoder TMDS-31: -16
+
+or a NULL-pointer dereference:
+
+	Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+	...
+	Call trace:
+	  drm_bridge_attach+0x70/0x1a8 [drm]
+	  drm_aux_bridge_attach+0x24/0x38 [aux_bridge]
+	  drm_bridge_attach+0x80/0x1a8 [drm]
+	  dp_bridge_init+0xa8/0x15c [msm]
+	  msm_dp_modeset_init+0x28/0xc4 [msm]
+
+The DRM bridge implementation is clearly fragile and implicitly built on
+the assumption that bridges may never go away. In this case, the fix is
+to move the bridge registration in the pmic_glink_altmode driver to
+after all resources have been looked up.
+
+Incidentally, with the new dp-hpd bridge implementation, which registers
+child devices, this is also a requirement due to a long-standing issue
+in driver core that can otherwise lead to a probe deferral loop (see
+fbc35b45f9f6 ("Add documentation on meaning of -EPROBE_DEFER")).
+
+Fixes: 080b4e24852b ("soc: qcom: pmic_glink: Introduce altmode support")
+Fixes: 2bcca96abfbf ("soc: qcom: pmic-glink: switch to DRM_AUX_HPD_BRIDGE")
+Cc: stable@vger.kernel.org      # 6.3
+Cc: Bjorn Andersson <andersson@kernel.org>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+---
+ drivers/soc/qcom/pmic_glink_altmode.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/soc/qcom/pmic_glink_altmode.c b/drivers/soc/qcom/pmic_glink_altmode.c
+index 5fcd0fdd2faa..b3808fc24c69 100644
+--- a/drivers/soc/qcom/pmic_glink_altmode.c
++++ b/drivers/soc/qcom/pmic_glink_altmode.c
+@@ -76,7 +76,7 @@ struct pmic_glink_altmode_port {
+ 
+ 	struct work_struct work;
+ 
+-	struct device *bridge;
++	struct auxiliary_device *bridge;
+ 
+ 	enum typec_orientation orientation;
+ 	u16 svid;
+@@ -230,7 +230,7 @@ static void pmic_glink_altmode_worker(struct work_struct *work)
+ 	else
+ 		pmic_glink_altmode_enable_usb(altmode, alt_port);
+ 
+-	drm_aux_hpd_bridge_notify(alt_port->bridge,
++	drm_aux_hpd_bridge_notify(&alt_port->bridge->dev,
+ 				  alt_port->hpd_state ?
+ 				  connector_status_connected :
+ 				  connector_status_disconnected);
+@@ -454,7 +454,7 @@ static int pmic_glink_altmode_probe(struct auxiliary_device *adev,
+ 		alt_port->index = port;
+ 		INIT_WORK(&alt_port->work, pmic_glink_altmode_worker);
+ 
+-		alt_port->bridge = drm_dp_hpd_bridge_register(dev, to_of_node(fwnode));
++		alt_port->bridge = devm_drm_dp_hpd_bridge_alloc(dev, to_of_node(fwnode));
+ 		if (IS_ERR(alt_port->bridge)) {
+ 			fwnode_handle_put(fwnode);
+ 			return PTR_ERR(alt_port->bridge);
+@@ -510,6 +510,16 @@ static int pmic_glink_altmode_probe(struct auxiliary_device *adev,
+ 		}
+ 	}
+ 
++	for (port = 0; port < ARRAY_SIZE(altmode->ports); port++) {
++		alt_port = &altmode->ports[port];
++		if (!alt_port->bridge)
++			continue;
++
++		ret = devm_drm_dp_hpd_bridge_add(dev, alt_port->bridge);
++		if (ret)
++			return ret;
++	}
++
+ 	altmode->client = devm_pmic_glink_register_client(dev,
+ 							  altmode->owner_id,
+ 							  pmic_glink_altmode_callback,
+-- 
+2.43.0
+
 
