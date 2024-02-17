@@ -1,140 +1,86 @@
-Return-Path: <stable+bounces-20388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D14E2858BE8
-	for <lists+stable@lfdr.de>; Sat, 17 Feb 2024 01:31:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BD3E858CA8
+	for <lists+stable@lfdr.de>; Sat, 17 Feb 2024 02:14:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 106001C23542
-	for <lists+stable@lfdr.de>; Sat, 17 Feb 2024 00:31:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4634A282F48
+	for <lists+stable@lfdr.de>; Sat, 17 Feb 2024 01:14:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70B863233;
-	Sat, 17 Feb 2024 00:31:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KG2n4k1A"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B09D814273;
+	Sat, 17 Feb 2024 01:14:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26DD94C8F;
-	Sat, 17 Feb 2024 00:31:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D7E911CAB;
+	Sat, 17 Feb 2024 01:14:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708129905; cv=none; b=eGX7k76LuvgMR16OTPFQkIWAkU1+y38Zw2rctbRR0Jx3vsC0nuKp68Xul6jzsqvXKFvSeEbNaK1liwLCnny84GcB/naU+iOCD+H+rJPahIYu7SY/UX2hytTW2cLZP3uDwbkLl5uiFWmT2uANtXPYlt5NYUVyF8Poz1sf4Rx9GuU=
+	t=1708132483; cv=none; b=kkLtZoTAH4QReUFZnWAuoxOx2mWerr+GDRcP+fUWpWLUHPT5mijMTrbwbsRuoDCjoGtg0be7egGf6T+hjO23PJoACvg+amg99Rz0FZpnjAqidzn+0kA76FBsbFr8XWePWBm4JDXYp7sI9wENU9yBMDLG33SU6v5zk2oZyvYDdNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708129905; c=relaxed/simple;
-	bh=J0wf0BwhyChpIzZH00msGosof2qX1pIKtcd0rpw6oGU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qSbUzBTNBD0+EzmIu51vIfiOAcNEoWXqKFNLc3I4qKZ2zrs2228TnglZ0Q0ntINSxSVu7nGsicgP7kJTfh8omToyzY+5owhzMlqYXwuScrFWSHUIfNcAOvwIiQExlFJSEfqToEGd6ntWAw3YBt1yBimK+6f85xKeO7HJRci6G+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KG2n4k1A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7941C433C7;
-	Sat, 17 Feb 2024 00:31:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708129904;
-	bh=J0wf0BwhyChpIzZH00msGosof2qX1pIKtcd0rpw6oGU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KG2n4k1A9ocUdjbNIyx8ykEEvtCUYwyCAVplGH6C8TEfjTNsksN7YNZscUbmYQHBr
-	 H2owTBWAI76L+Pd1HnsIytrljiADjoJqKkWijP90HEc9mfBT6hm+wH9YryyfF5r145
-	 Q9n9w6C6XVrCPdIHCfSV+zvwIyRh5b8U3PEY4HTdjjJsd6wZsaAENoXgAw+/vEqcm1
-	 l07ex6a9P3JR8Y0OX1G/W2CZlA/5MmpH3WtWhbQkSUMhxGW6XZvMPZWeT1EKRQ/6oV
-	 LFRwoi5GNOWkztebJiVthMpAuJZ1h5r0XppmRepmItT9E1kx2z3dAIiHGJqm+HF2q0
-	 i+5epM5IYJyOg==
-From: SeongJae Park <sj@kernel.org>
-To: Kees Cook <keescook@chromium.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	shuah@kernel.org,
-	"Mohamed Abuelfotoh, Hazem" <abuehaze@amazon.com>,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1708132483; c=relaxed/simple;
+	bh=bjKF+MX7imkZSRBTn7UO1ZD4OI6rSpKz7bnLRBYvFaE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MzKpwG/k9UV36yx9b7qPwhNYCG4/B9pRugbROjOBGFcubQRvv/x0Xz+/1jJyd6j54Y76o1zjFOz2flh1yt4NSc5Krhs6tP5d8GPvsEV2tntYRt0M42iRrsfMnmx7qQYnfaGkuHwrMK9SgtB6ntWlvrJGTswwqg8OAtruagPSPNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; arc=none smtp.client-ip=144.6.53.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
+	id 1rb9Ho-00EeSm-KY; Sat, 17 Feb 2024 09:14:37 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Sat, 17 Feb 2024 09:14:50 +0800
+Date: Sat, 17 Feb 2024 09:14:50 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Damian Muszynski <damian.muszynski@intel.com>
+Cc: linux-crypto@vger.kernel.org, qat-linux@intel.com,
 	stable@vger.kernel.org,
-	Vijaikumar_Kanagarajan@mentor.com,
-	brauner@kernel.org,
-	jlayton@kernel.org,
-	jack@suse.cz
-Subject: Re: [PATCH] selftests/mqueue: Set timeout to 100 seconds
-Date: Fri, 16 Feb 2024 16:31:42 -0800
-Message-Id: <20240217003142.86297-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <202402161600.BF1D110BB@keescook>
-References: 
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Subject: Re: [PATCH] crypto: qat - change SLAs cleanup flow at shutdown
+Message-ID: <ZdAIiqCPJ4nhkepw@gondor.apana.org.au>
+References: <20240209124237.44530-1-damian.muszynski@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240209124237.44530-1-damian.muszynski@intel.com>
 
-On Fri, 16 Feb 2024 16:01:20 -0800 Kees Cook <keescook@chromium.org> wrote:
-
-> On Wed, Feb 14, 2024 at 05:13:09PM -0800, SeongJae Park wrote:
-> > A gentle reminder.
-> > 
-> > 
-> > Thanks,
-> > SJ
-> > 
-> > On Fri, 9 Feb 2024 09:42:43 -0800 SeongJae Park <sj@kernel.org> wrote:
-> > 
-> > > On Fri, 9 Feb 2024 10:30:38 +0000 "Mohamed Abuelfotoh, Hazem" <abuehaze@amazon.com> wrote:
-> > > 
-> > > > On 08/02/2024 21:29, SeongJae Park wrote:
-> > > > > CAUTION: This email originated from outside of the organization. Do not click links or open attachments unless you can confirm the sender and know the content is safe.
-> > > > > 
-> > > > > 
-> > > > > 
-> > > > > While mq_perf_tests runs with the default kselftest timeout limit, which
-> > > > > is 45 seconds, the test takes about 60 seconds to complete on i3.metal
-> > > > > AWS instances.  Hence, the test always times out.  Increase the timeout
-> > > > > to 100 seconds.
-> > > > > 
-> > > > > Fixes: 852c8cbf34d3 ("selftests/kselftest/runner.sh: Add 45 second timeout per test")
-> > > > > Cc: <stable@vger.kernel.org> # 5.4.x
-> > > > > Signed-off-by: SeongJae Park <sj@kernel.org>
-> > > > > ---
-> > > > >   tools/testing/selftests/mqueue/setting | 1 +
-> > > > >   1 file changed, 1 insertion(+)
-> > > > >   create mode 100644 tools/testing/selftests/mqueue/setting
-> > > > > 
-> > > > > diff --git a/tools/testing/selftests/mqueue/setting b/tools/testing/selftests/mqueue/setting
-> > > > > new file mode 100644
-> > > > > index 000000000000..54dc12287839
-> > > > > --- /dev/null
-> > > > > +++ b/tools/testing/selftests/mqueue/setting
-> > > > > @@ -0,0 +1 @@
-> > > > > +timeout=100
-> > > > > --
-> > > > > 2.39.2
-> > > > > 
-> > > > >
-> > > > 
-> > > > Added Vijai Kumar to CC
-> > > > 
-> > > > This looks similar to [PATCH] kselftest: mqueue: increase timeout 
-> > > > https://lore.kernel.org/lkml/20220622085911.2292509-1-Vijaikumar_Kanagarajan@mentor.com/T/#r12820aede6bba015b70ae33323e29ae27d5b69c7 
-> > > > which was increasing the timeout to 180 however it's not clear why this 
-> > > > hasn't been merged yet.
+On Fri, Feb 09, 2024 at 01:42:07PM +0100, Damian Muszynski wrote:
+> The implementation of the Rate Limiting (RL) feature includes the cleanup
+> of all SLAs during device shutdown. For each SLA, the firmware is notified
+> of the removal through an admin message, the data structures that take
+> into account the budgets are updated and the memory is freed.
+> However, this explicit cleanup is not necessary as (1) the device is
+> reset, and the firmware state is lost and (2) all RL data structures
+> are freed anyway.
 > 
-> Should it be 100 or 180?
-
-As mentioned on the previous mail[1], either values are good to me :)
-
-[1] https://lore.kernel.org/r/20240215011309.73168-1-sj@kernel.org
-
-> Either way:
+> In addition, if the device is unresponsive, for example after a PCI
+> AER error is detected, the admin interface might not be available.
+> This might slow down the shutdown sequence and cause a timeout in
+> the recovery flows which in turn makes the driver believe that the
+> device is not recoverable.
 > 
-> Reviewed-by: Kees Cook <keescook@chromium.org>
-
-Thank you!
-
-
-Thanks,
-SJ
-
+> Fix by replacing the explicit SLAs removal with just a free of the
+> SLA data structures.
 > 
-> -- 
-> Kees Cook
-> 
+> Fixes: d9fb8408376e ("crypto: qat - add rate limiting feature to qat_4xxx")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Damian Muszynski <damian.muszynski@intel.com>
+> Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+> ---
+>  drivers/crypto/intel/qat/qat_common/adf_rl.c | 20 +++++++++++++++++++-
+>  1 file changed, 19 insertions(+), 1 deletion(-)
+
+Patch applied.  Thanks.
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
