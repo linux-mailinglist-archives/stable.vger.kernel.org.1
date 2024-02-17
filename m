@@ -1,90 +1,88 @@
-Return-Path: <stable+bounces-20390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E96E8858CAA
-	for <lists+stable@lfdr.de>; Sat, 17 Feb 2024 02:15:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F648858DB5
+	for <lists+stable@lfdr.de>; Sat, 17 Feb 2024 08:37:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1F6B2834B2
-	for <lists+stable@lfdr.de>; Sat, 17 Feb 2024 01:15:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD4621C20FAD
+	for <lists+stable@lfdr.de>; Sat, 17 Feb 2024 07:37:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9302514A98;
-	Sat, 17 Feb 2024 01:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37AB31CAB5;
+	Sat, 17 Feb 2024 07:37:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBF55EAE5;
-	Sat, 17 Feb 2024 01:14:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDE8333CA;
+	Sat, 17 Feb 2024 07:37:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708132496; cv=none; b=iuBmVM4jophgkVujNHfzPq2vit6KgAxJcj/wVt7DLMjAujaPm2OWXRBPYt38yLvjZARxE+8q+kURlm8j8VtM0SnABwzynvmX6MkLzIafYOxz+mhngBDrnWenPKTJSkP3znd09nJNGhrRehgAKN2kSxSQgwTTbGcrkURfXb4j42c=
+	t=1708155456; cv=none; b=nnTHBYn0Tj+et8bMiwnRAKMqbaXTmNW5xfnIPDGp0f3vzHX21Q3oYlHuRUIFpGpSgkbw/l6aHfIi971LZ40PbE/m+uCKbdOChLq4bVpK8lOUMuSsofjwBHhNzPshdiOG05NKgjCA/Fl18oXjzW7iroQg1cG+EvE9S/M03JKQ09g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708132496; c=relaxed/simple;
-	bh=JPF+RFjKw6dUIB7ZZ0FoadsX3htbekSZ0TJYsyYTNRg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QyQzm2u+yFtpXdlEkHQ+vT9QHam9mCX6yjfUALLh5n1iusI/b8IdG+6tVpLGdMFKZLlByFQY1+CzqPFCVRFsKwbEtajx33ykBXdJxoU97nvjkIRYVoAYjUoqaNCbjPa87sEbrE33l2Pbo640zHWyonE6rVprFswA0FtZXE63sGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; arc=none smtp.client-ip=144.6.53.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
-	id 1rb9I1-00EeTG-M9; Sat, 17 Feb 2024 09:14:50 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Sat, 17 Feb 2024 09:15:03 +0800
-Date: Sat, 17 Feb 2024 09:15:03 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Damian Muszynski <damian.muszynski@intel.com>
-Cc: linux-crypto@vger.kernel.org, qat-linux@intel.com,
-	stable@vger.kernel.org,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Subject: Re: [PATCH] crypto: qat - resolve race condition during AER recovery
-Message-ID: <ZdAIl2MfFDYVgQg8@gondor.apana.org.au>
-References: <20240209124403.44781-1-damian.muszynski@intel.com>
+	s=arc-20240116; t=1708155456; c=relaxed/simple;
+	bh=MJdfwLJ95a3nZBDSIHpCrHfmc00uODSlZOcxh2GfoVY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pMjtieFYxixvc3oJ7/jiLTo+g8yrkUEqQDm8vgFE0u8gWgp6oGaW8dhesFMQLmTqwOtjLutH5Md5qcgDlhhFrCg+IOsTlOyymgWhuPy6UOwqzELNdWvZtbozH0E4Pf4otEnDaA02IbriKBmPM/6aHZZhwPuvsSeWQzL1SDX5cuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1rbFGG-0003f4-D7; Sat, 17 Feb 2024 08:37:24 +0100
+Message-ID: <00c2be58-b4f2-4d77-8c47-189e7d9ecf54@leemhuis.info>
+Date: Sat, 17 Feb 2024 08:37:23 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240209124403.44781-1-damian.muszynski@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.7 093/124] Revert "usb: typec: tcpm: fix cc role at port
+ reset"
+Content-Language: en-US, de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+ Frank Wang <frank.wang@rock-chips.com>,
+ Badhri Jagan Sridharan <badhri@google.com>,
+ Guenter Roeck <linux@roeck-us.net>, Mark Brown <broonie@kernel.org>
+References: <20240213171853.722912593@linuxfoundation.org>
+ <20240213171856.446249309@linuxfoundation.org>
+ <571afc70-dd77-4678-bdd0-673e15cdd5ad@leemhuis.info>
+ <2024021630-unfold-landmine-5999@gregkh>
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+In-Reply-To: <2024021630-unfold-landmine-5999@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1708155454;c124645e;
+X-HE-SMSGID: 1rbFGG-0003f4-D7
 
-On Fri, Feb 09, 2024 at 01:43:42PM +0100, Damian Muszynski wrote:
-> During the PCI AER system's error recovery process, the kernel driver
-> may encounter a race condition with freeing the reset_data structure's
-> memory. If the device restart will take more than 10 seconds the function
-> scheduling that restart will exit due to a timeout, and the reset_data
-> structure will be freed. However, this data structure is used for
-> completion notification after the restart is completed, which leads
-> to a UAF bug.
+On 16.02.24 19:46, Greg Kroah-Hartman wrote:
+> On Fri, Feb 16, 2024 at 07:54:42AM +0100, Thorsten Leemhuis wrote:
+>> On 13.02.24 18:21, Greg Kroah-Hartman wrote:
+>>>
+>>> From: Badhri Jagan Sridharan <badhri@google.com>
+>>>
+>>> commit b717dfbf73e842d15174699fe2c6ee4fdde8aa1f upstream.
+>>>
+>>> This reverts commit 1e35f074399dece73d5df11847d4a0d7a6f49434.
+>>
+>> TWIMC, that patch (which is also queued for the next 6.6.y-rc) afaics is
+>> causing boot issues on rk3399-roc-pc for Mark [now CCed] with mainline.
+>> For details see:
+>>
+>> https://lore.kernel.org/lkml/ZcVPHtPt2Dppe_9q@finisterre.sirena.org.uk/https://lore.kernel.org/all/20240212-usb-fix-renegade-v1-1-22c43c88d635@kernel.org/
 > 
-> This results in a KFENCE bug notice.
-> 
->   BUG: KFENCE: use-after-free read in adf_device_reset_worker+0x38/0xa0 [intel_qat]
->   Use-after-free read at 0x00000000bc56fddf (in kfence-#142):
->   adf_device_reset_worker+0x38/0xa0 [intel_qat]
->   process_one_work+0x173/0x340
-> 
-> To resolve this race condition, the memory associated to the container
-> of the work_struct is freed on the worker if the timeout expired,
-> otherwise on the function that schedules the worker.
-> The timeout detection can be done by checking if the caller is
-> still waiting for completion or not by using completion_done() function.
-> 
-> Fixes: d8cba25d2c68 ("crypto: qat - Intel(R) QAT driver framework")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Damian Muszynski <damian.muszynski@intel.com>
-> Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-> ---
->  drivers/crypto/intel/qat/qat_common/adf_aer.c | 22 ++++++++++++++-----
->  1 file changed, 16 insertions(+), 6 deletions(-)
+> Yeah, this is tough, this is a revert to fix a previous regression, so I
+> think we need to stay here, at the "we fixed a regression, but the
+> original problem is back" stage until people can figure it out and
+> provide a working change for everyone.
 
-Patch applied.  Thanks.
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+Thx for the feedback. Yeah, no worries, that's how it is sometimes. Just
+wanted to make sure you were aware of the latest report. :-D
+
+Ciao, Thorsten
 
