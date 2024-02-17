@@ -1,83 +1,122 @@
-Return-Path: <stable+bounces-20393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34D74858DC8
-	for <lists+stable@lfdr.de>; Sat, 17 Feb 2024 08:49:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20518858DE1
+	for <lists+stable@lfdr.de>; Sat, 17 Feb 2024 09:12:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67C091C21069
-	for <lists+stable@lfdr.de>; Sat, 17 Feb 2024 07:49:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF93E282EBF
+	for <lists+stable@lfdr.de>; Sat, 17 Feb 2024 08:12:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98EF31CD18;
-	Sat, 17 Feb 2024 07:49:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R7aAMdwT"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1639E1CD1F;
+	Sat, 17 Feb 2024 08:12:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3227B149E08;
-	Sat, 17 Feb 2024 07:49:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318041CF8A;
+	Sat, 17 Feb 2024 08:12:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708156176; cv=none; b=rCvkLKHafH6KPi/gwu7S1UB7brsHLfSN2N9CLKTGpENnSWG7T6k46+N4Y3UofCCv7BQPAG0lgPEFc0A8x3S0t5ZyR9SkS1F97Hd9CI9++jyckmDlZl3HDf+5hnSvP9v8ffEf1g2TGEvyI15r6Sc0R6WoHExzYOAD//eFGVg9y7Y=
+	t=1708157559; cv=none; b=aK2pPwTyGgVez/Loi3ngkpdrrv1QKzADH/QdQ++nlka5EtkpWi6YBr/FRu3uSJqjOQmoWaAFxZMYCkSnwTfDCwANCiKZN/1BpQb8S4JrJV3kGGFFlK+xC/7IjuS3OnfBmYeF2rseMZz9MpNIEWHhD9YofpB8ya2xIjYobe2j5RM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708156176; c=relaxed/simple;
-	bh=xA0BMgVgYSGSfjkjE5RXNiB5SaRQ7Z5mUofy+cyyg20=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=p6O8H2H+ToaOMkie1HwxSzJKpQy4/UV3aSmkxZ65yZ5YzyQV/QRUbG4nRWG+GBuirvGpcfvKZuk15GgH5oSOomlfxYstdmAO/e3Clr9EbwcvEGhQGOrT7dfLvho0sX4NueDCDvprBxqJdw9jgm3E2kXm0JzLgE/Tq2oU3vfb13w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R7aAMdwT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07E30C433F1;
-	Sat, 17 Feb 2024 07:49:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708156175;
-	bh=xA0BMgVgYSGSfjkjE5RXNiB5SaRQ7Z5mUofy+cyyg20=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=R7aAMdwTrTwek3wpcqcU9S4FFPWfRV3+2dl07WzErYgBUGoLhYewEoBPC5sowjZ1M
-	 uv0XSoycpOCGmdpT6ukdeJmrNiPnDNLVHcOjsI9pIYQqe01blTcr9CA49nflxEmRIO
-	 oYsjKJkqeUhfU5fQ00NZ2XCTLlV155Q7UXNkoZno=
-Date: Sat, 17 Feb 2024 08:49:32 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: linux-arm-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC] efi: Add ACPI_MEMORY_NVS into the linear map
-Message-ID: <2024021718-dwindling-oval-8183@gregkh>
-References: <20240215225116.3435953-1-boqun.feng@gmail.com>
+	s=arc-20240116; t=1708157559; c=relaxed/simple;
+	bh=76RXlR/msdWs4e9OX1WpKtSooLAmtPygvVwdSqDyayY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HN0JeeQaKl3Osrv43WiGyRW/9NNbuofw+SSsbMpqQbpqPTUNGSUnEdsuDGgGBO2TokqPtX5FWjFlVci827zGKfOiVtDe6TRB/LaS77kHxuDE5RhYpMKYaLIHnq53fO6vRBuLSZg8JBN8D12sUOVMuuw3QkfNgLG/Gu8Qv+U/VbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.163])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4TcM2D44glz1xnkR;
+	Sat, 17 Feb 2024 16:11:16 +0800 (CST)
+Received: from dggpeml500021.china.huawei.com (unknown [7.185.36.21])
+	by mail.maildlp.com (Postfix) with ESMTPS id BC3AA18001B;
+	Sat, 17 Feb 2024 16:12:34 +0800 (CST)
+Received: from huawei.com (10.175.127.227) by dggpeml500021.china.huawei.com
+ (7.185.36.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Sat, 17 Feb
+ 2024 16:12:34 +0800
+From: Baokun Li <libaokun1@huawei.com>
+To: <netfs@lists.linux.dev>
+CC: <dhowells@redhat.com>, <jlayton@kernel.org>, <linux-cachefs@redhat.com>,
+	<linux-erofs@lists.ozlabs.org>, <linux-fsdevel@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <libaokun1@huawei.com>,
+	<stable@vger.kernel.org>
+Subject: [PATCH RESEND] cachefiles: fix memory leak in cachefiles_add_cache()
+Date: Sat, 17 Feb 2024 16:14:31 +0800
+Message-ID: <20240217081431.796809-1-libaokun1@huawei.com>
+X-Mailer: git-send-email 2.31.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240215225116.3435953-1-boqun.feng@gmail.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ dggpeml500021.china.huawei.com (7.185.36.21)
 
-On Thu, Feb 15, 2024 at 02:51:06PM -0800, Boqun Feng wrote:
-> Currently ACPI_MEMORY_NVS is omitted from the linear map, which causes
-> a trouble with the following firmware memory region setup:
-> 
-> 	[..] efi:   0x0000dfd62000-0x0000dfd83fff [ACPI Reclaim|...]
-> 	[..] efi:   0x0000dfd84000-0x0000dfd87fff [ACPI Mem NVS|...]
-> 
-> , on ARM64 with 64k page size, the whole 0x0000dfd80000-0x0000dfd8ffff
-> range will be omitted from the the linear map due to 64k round-up. And
-> a page fault happens when trying to access the ACPI_RECLAIM_MEMORY:
-> 
-> 	[...] Unable to handle kernel paging request at virtual address ffff0000dfd80000
-> 
-> To fix this, add ACPI_MEMORY_NVS into the linear map.
-> 
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> Cc: stable@vger.kernel.org # 5.15+
+The following memory leak was reported after unbinding /dev/cachefiles:
 
-What commit id does this fix?  Can you include that as well?
+==================================================================
+unreferenced object 0xffff9b674176e3c0 (size 192):
+  comm "cachefilesd2", pid 680, jiffies 4294881224
+  hex dump (first 32 bytes):
+    01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace (crc ea38a44b):
+    [<ffffffff8eb8a1a5>] kmem_cache_alloc+0x2d5/0x370
+    [<ffffffff8e917f86>] prepare_creds+0x26/0x2e0
+    [<ffffffffc002eeef>] cachefiles_determine_cache_security+0x1f/0x120
+    [<ffffffffc00243ec>] cachefiles_add_cache+0x13c/0x3a0
+    [<ffffffffc0025216>] cachefiles_daemon_write+0x146/0x1c0
+    [<ffffffff8ebc4a3b>] vfs_write+0xcb/0x520
+    [<ffffffff8ebc5069>] ksys_write+0x69/0xf0
+    [<ffffffff8f6d4662>] do_syscall_64+0x72/0x140
+    [<ffffffff8f8000aa>] entry_SYSCALL_64_after_hwframe+0x6e/0x76
+==================================================================
 
-thanks,
+Put the reference count of cache_cred in cachefiles_daemon_unbind() to
+fix the problem. And also put cache_cred in cachefiles_add_cache() error
+branch to avoid memory leaks.
 
-greg k-h
+Fixes: 9ae326a69004 ("CacheFiles: A cache that backs onto a mounted filesystem")
+CC: stable@vger.kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+---
+ fs/cachefiles/cache.c  | 2 ++
+ fs/cachefiles/daemon.c | 1 +
+ 2 files changed, 3 insertions(+)
+
+diff --git a/fs/cachefiles/cache.c b/fs/cachefiles/cache.c
+index 7077f72e6f47..f449f7340aad 100644
+--- a/fs/cachefiles/cache.c
++++ b/fs/cachefiles/cache.c
+@@ -168,6 +168,8 @@ int cachefiles_add_cache(struct cachefiles_cache *cache)
+ 	dput(root);
+ error_open_root:
+ 	cachefiles_end_secure(cache, saved_cred);
++	put_cred(cache->cache_cred);
++	cache->cache_cred = NULL;
+ error_getsec:
+ 	fscache_relinquish_cache(cache_cookie);
+ 	cache->cache = NULL;
+diff --git a/fs/cachefiles/daemon.c b/fs/cachefiles/daemon.c
+index 3f24905f4066..6465e2574230 100644
+--- a/fs/cachefiles/daemon.c
++++ b/fs/cachefiles/daemon.c
+@@ -816,6 +816,7 @@ static void cachefiles_daemon_unbind(struct cachefiles_cache *cache)
+ 	cachefiles_put_directory(cache->graveyard);
+ 	cachefiles_put_directory(cache->store);
+ 	mntput(cache->mnt);
++	put_cred(cache->cache_cred);
+ 
+ 	kfree(cache->rootdirname);
+ 	kfree(cache->secctx);
+-- 
+2.31.1
+
 
