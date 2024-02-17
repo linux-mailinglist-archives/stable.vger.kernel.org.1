@@ -1,140 +1,124 @@
-Return-Path: <stable+bounces-20406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B92F8859045
-	for <lists+stable@lfdr.de>; Sat, 17 Feb 2024 16:03:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85BB285908B
+	for <lists+stable@lfdr.de>; Sat, 17 Feb 2024 16:38:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 508CA1F2174A
-	for <lists+stable@lfdr.de>; Sat, 17 Feb 2024 15:03:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 80366B215F7
+	for <lists+stable@lfdr.de>; Sat, 17 Feb 2024 15:38:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1E027C6C5;
-	Sat, 17 Feb 2024 15:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFC197C6CB;
+	Sat, 17 Feb 2024 15:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dk3HLJ7y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gm/mp4pO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C57C69DE6;
-	Sat, 17 Feb 2024 15:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 675B87C0B0;
+	Sat, 17 Feb 2024 15:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708182183; cv=none; b=gM8RWOfn6NNZ68WQz7UT9hMzZiVHcW74gbNNYuDeKHdjkd/PYw9Rywoh+gtcGnMV1ZmWWD7/Yz8l4kEbWNhf/+g/ophwB7727sKrS97XgUSaTZAMHQsK5lKrI/vDyZKbw8t7tPQV5/ws1WOpWhjzoGTg3qPGcPHtDirAVjC/l3c=
+	t=1708184293; cv=none; b=L/qYWofahpNA9QXmHgV/7eWWC+9K3jJ0xms0jdpSwnmjw7P0X+qg1GW4ws4+cHGBkzlkAcJeuMwKJO9d2DwBFui4nPOcv1cQkfMD+4H/AGeJIrLt+zPAcuVmEBLL8L54ZTxPYY6Xwuu7/N+Qbe9wrMvH9c4J5uqQyyVjS5ylKYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708182183; c=relaxed/simple;
-	bh=E7peNP5XvxWfotZQJXcvlEV4QrXxAGb8fVXnSMSgPFc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oZJzgc/FrqRSoY0oAUvFEBcCrK/VV+eip2dXuU9tCmAr5v+yJVWZ3fQkACnriFgWrvatSTDRvai2ghIRGlbUzNPu36QDWg8tfEM7QLUJMPwohxMF6XOKzKCFuq6lFctGy9KtvFuasoTxfnOKm1HeeRgd+7ZTtVQR9C+2d4YMJRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dk3HLJ7y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05E98C433F1;
-	Sat, 17 Feb 2024 15:03:02 +0000 (UTC)
+	s=arc-20240116; t=1708184293; c=relaxed/simple;
+	bh=kjuTWgsUB+jDmBnO5TlgZsfyV7jcweZ7L3sfJJQE9LM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AEkztK2K6Yi3AzqifjwjcxHAx/xfvJVHPEj3PwF0YjkMh7V07LdkSy1BIdkf0rnj5IjAKKuE5RxcdTRM1obbekL3a5h+GJN+t4Z8IhTeQvgjoncfjJ4WRpUEnxKi6A2/tDtZTYUtDIFPeMXVZ2bMSQ782mylrCvNLxpOE+7veRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gm/mp4pO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79B68C433F1;
+	Sat, 17 Feb 2024 15:38:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708182183;
-	bh=E7peNP5XvxWfotZQJXcvlEV4QrXxAGb8fVXnSMSgPFc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dk3HLJ7yF2q4ypNSoZdXkmm0aPgQCR7FYvJT9iw+lGINaaGvc2xX2ebCULvFlg36z
-	 kg3r/qLyz+ERxutx4KEI5MbR/7iNf/Lpm/fYTcaE+tSB7UCJwcQKuJhvet4uGTQvbj
-	 rof9weCUaGRieOlItOAbq7is6pzcG8M8db3wJjwnOFJ/7zE/wgx/Qr+R0/0bmWe4xC
-	 tgkDLMNz3/jO7oNW6ZrSxB6yKgxga37TRMVA5DSDXRnjIws81+QskGbPRszwbtPE/b
-	 NUhdJgV3ly89vY/6IBys0iGEqVscmwG5scY0CA2Nod9ifVSTAzeYdt0OSDnzlv+eyP
-	 5eDMgBOxAdAvA==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan+linaro@kernel.org>)
-	id 1rbMDW-000000001Vy-47Zd;
-	Sat, 17 Feb 2024 16:03:03 +0100
-From: Johan Hovold <johan+linaro@kernel.org>
-To: Bjorn Andersson <andersson@kernel.org>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Vinod Koul <vkoul@kernel.org>
-Cc: Jonas Karlman <jonas@kwiboo.se>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Rob Clark <robdclark@gmail.com>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Kuogee Hsieh <quic_khsieh@quicinc.com>,
-	freedreno@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-phy@lists.infradead.org,
-	Johan Hovold <johan+linaro@kernel.org>,
-	stable@vger.kernel.org,
-	Bjorn Andersson <quic_bjorande@quicinc.com>
-Subject: [PATCH 6/6] phy: qcom-qmp-combo: fix type-c switch registration
-Date: Sat, 17 Feb 2024 16:02:28 +0100
-Message-ID: <20240217150228.5788-7-johan+linaro@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240217150228.5788-1-johan+linaro@kernel.org>
-References: <20240217150228.5788-1-johan+linaro@kernel.org>
+	s=k20201202; t=1708184292;
+	bh=kjuTWgsUB+jDmBnO5TlgZsfyV7jcweZ7L3sfJJQE9LM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gm/mp4pOcXR5OizoA29lalqSU0Eg4EA5ys92ezPqT9Gb6tSRRO0KpaZej0V6I5Z0r
+	 O5E1kuMAWnmo5l7axO0N7Xg2uLB0zYMDlRz46UEgK23v7YIu5r9GRyc4tsmwJI6fcY
+	 XYyuj0ABdGhjhpxAjpued3XdK/5oqCjs6yjWgd7KHEzAlHro/1BA7aZCWaacm+xEf0
+	 mGuVSlTjlTQ0MkoB0Ku/7nF8W01eTmNGgxdkMbWR88Pl1sfZQEIaRF2rzyR3yHdGiz
+	 fX65nH0aM8EkxZ8i/Qk89JW7UgbGBD46HhN0Jz735UPMzzycqzSBtuoeBPXBeOOgc4
+	 6P3LCbqvWm25Q==
+Date: Sat, 17 Feb 2024 15:38:09 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Thorsten Leemhuis <regressions@leemhuis.info>, stable@vger.kernel.org,
+	patches@lists.linux.dev, Frank Wang <frank.wang@rock-chips.com>,
+	Badhri Jagan Sridharan <badhri@google.com>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH 6.7 093/124] Revert "usb: typec: tcpm: fix cc role at
+ port reset"
+Message-ID: <ZdDS4drripFkFqJp@finisterre.sirena.org.uk>
+References: <20240213171853.722912593@linuxfoundation.org>
+ <20240213171856.446249309@linuxfoundation.org>
+ <571afc70-dd77-4678-bdd0-673e15cdd5ad@leemhuis.info>
+ <2024021630-unfold-landmine-5999@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="bMoKNK6S/Hd/5cfl"
+Content-Disposition: inline
+In-Reply-To: <2024021630-unfold-landmine-5999@gregkh>
+X-Cookie: You might have mail.
 
-Due to a long-standing issue in driver core, drivers may not probe defer
-after having registered child devices to avoid triggering a probe
-deferral loop (see fbc35b45f9f6 ("Add documentation on meaning of
--EPROBE_DEFER")).
 
-Move registration of the typec switch to after looking up clocks and
-other resources.
+--bMoKNK6S/Hd/5cfl
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Note that PHY creation can in theory also trigger a probe deferral when
-a 'phy' supply is used. This does not seem to affect the QMP PHY driver
-but the PHY subsystem should be reworked to address this (i.e. by
-separating initialisation and registration of the PHY).
+On Fri, Feb 16, 2024 at 07:46:13PM +0100, Greg Kroah-Hartman wrote:
+> On Fri, Feb 16, 2024 at 07:54:42AM +0100, Thorsten Leemhuis wrote:
 
-Fixes: 2851117f8f42 ("phy: qcom-qmp-combo: Introduce orientation switching")
-Cc: stable@vger.kernel.org      # 6.5
-Cc: Bjorn Andersson <quic_bjorande@quicinc.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
----
- drivers/phy/qualcomm/phy-qcom-qmp-combo.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+> > TWIMC, that patch (which is also queued for the next 6.6.y-rc) afaics is
+> > causing boot issues on rk3399-roc-pc for Mark [now CCed] with mainline.
+> > For details see:
 
-diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
-index e19d6a084f10..17c4ad7553a5 100644
---- a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
-+++ b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
-@@ -3562,10 +3562,6 @@ static int qmp_combo_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
--	ret = qmp_combo_typec_switch_register(qmp);
--	if (ret)
--		return ret;
--
- 	/* Check for legacy binding with child nodes. */
- 	usb_np = of_get_child_by_name(dev->of_node, "usb3-phy");
- 	if (usb_np) {
-@@ -3585,6 +3581,10 @@ static int qmp_combo_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto err_node_put;
- 
-+	ret = qmp_combo_typec_switch_register(qmp);
-+	if (ret)
-+		goto err_node_put;
-+
- 	ret = drm_aux_bridge_register(dev);
- 	if (ret)
- 		goto err_node_put;
--- 
-2.43.0
+> > https://lore.kernel.org/lkml/ZcVPHtPt2Dppe_9q@finisterre.sirena.org.uk/https://lore.kernel.org/all/20240212-usb-fix-renegade-v1-1-22c43c88d635@kernel.org/
 
+> Yeah, this is tough, this is a revert to fix a previous regression, so I
+> think we need to stay here, at the "we fixed a regression, but the
+> original problem is back" stage until people can figure it out and
+> provide a working change for everyone.
+
+Given that nobody from the USB side seems to have shown much interest in
+fixing this since I reported the regression should we not just be
+reverting whatever it was that triggered the need for the original
+revert (it's really not clear from the changelog...)?  I got no response
+other than an "I said that would happen" to my initial report, then the
+revert triggered a half done patch which I can't really judge given my
+lack of familiarity with the code here but that's not been submitted as
+an actual patch.
+
+The board has been working for years (at least three prior to the
+initial revert of "usb: typec: tcpm: fix cc role at port reset" which
+was only applied last June), presumably whatever the original revert was
+intended to fix has been there for a while?
+
+This getting backported to older stables is breaking at least this board
+in those stables, and I would tend to rate a "remove all power from the
+system" bug at the very high end of the severity scale while the
+reverted patch was there for six months and several kernel releases.
+
+--bMoKNK6S/Hd/5cfl
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmXQ0uAACgkQJNaLcl1U
+h9AHQQf+JNK7CNRe2r4vzoKpsDxOwXAm4mYEqhxn7/SeTopx2o+ZSskNu+3TgUXQ
+EyvvZhtxZuL2NzaLgW/GsEv/7jtm0n5JPztqCQg2IZuN4OYp5HXRiT9rMC97tJ/N
+/BmWc8zOpOTvh+MzC2FEQdrR8YLTgEA8z/7tFBpMrr69VmCnASfVH9lLsBJKDh2+
+CENLlU8DZ1ShKoj5eXadcY6lxJCJGs/6e9G0/BEtl6DxVp9QJwLXmInkwRvoppAw
++CZWek1fi+dyXomPEoBnpMU27aQ4yM7tmqIesgPbAhy2GSFgR4u2i1dHy18CQ7fK
+Cqjq1ttEh+FiyYgcmhZrRGTcZ42GBw==
+=fTqS
+-----END PGP SIGNATURE-----
+
+--bMoKNK6S/Hd/5cfl--
 
