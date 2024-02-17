@@ -1,206 +1,201 @@
-Return-Path: <stable+bounces-20417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1EF58592B4
-	for <lists+stable@lfdr.de>; Sat, 17 Feb 2024 21:29:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 874858592FF
+	for <lists+stable@lfdr.de>; Sat, 17 Feb 2024 22:33:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 799BA281057
-	for <lists+stable@lfdr.de>; Sat, 17 Feb 2024 20:29:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F045E1F21862
+	for <lists+stable@lfdr.de>; Sat, 17 Feb 2024 21:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 101DF7F493;
-	Sat, 17 Feb 2024 20:29:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 380787F7F6;
+	Sat, 17 Feb 2024 21:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aFvRVGFQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TzfNmUxy"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AE417F49D;
-	Sat, 17 Feb 2024 20:29:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76E79657BE;
+	Sat, 17 Feb 2024 21:33:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708201776; cv=none; b=P3ZBnfz9VVQJDaCRGjti5E7UDuWOHCimMd0MXOs+L4E+FTRUGhF5PHiuDbWdGWgxznt8apR6ujcUiwM5TVmTcO3pTj0N0rBLSHYy5Hxgo2ThrqGewr3m2MOy9+S9yzyiEnaphJnsQ6A8AdCCJwlB+2nMOeaYBLaDk/7/gv5FcEs=
+	t=1708205611; cv=none; b=XuiBpSQ4p9djO9uI1XTlAfBXdJSkPoENHmH5YCzh8pp1q+DraLrbfIhAkYzmRGqHGIWhoF6OJwiuAmWXOXa+s7RDl00PTxG3FHPgGCQeQ/fkM3jNNo9XPyQM3Ytbg4WrwL7fLfpJEOMrzadG/lzGi7+fpRt8YQoakf8mCzb038Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708201776; c=relaxed/simple;
-	bh=4T66unsvJn3PcUSKKf9muh02buFk97P7ecnXtMuBpvg=;
-	h=Subject:From:To:Cc:Date:Message-ID:MIME-Version:Content-Type; b=GCsktPHt7deCjU18+O6gHz29A4qsVynDVUbjKVjWIljsRQWU9jicTXH7zBTmlcS7rKGKMEIOIYQpd3uH46NlErbuQkBeLBSo22r3OJ18uFOsRd5N71oKlgAs+JVGrQXy7ZBH2x469/pDpRu/hdGaqIUilzFFABGzt+BZMLVzJoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aFvRVGFQ; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708201774; x=1739737774;
-  h=subject:from:to:cc:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=4T66unsvJn3PcUSKKf9muh02buFk97P7ecnXtMuBpvg=;
-  b=aFvRVGFQPqJVBPNen4JFfyuI5QWP+xoXNT2su1GFM2amGofV3daynOhG
-   s1cLg3+COUq2/PsqeYZzdYP7JpcZuGe8jEYGsCFoYzqbJf+VQifUEWXI7
-   fuxNpTfGhNUNACdD+oO/PyuvZxamMbaxU7q0qjw1DW5LyoXrGmmJPqBAP
-   wyS4Da+MY/3+7xAybLGBGJn9mQla2bI1NwF9hirKivBXrIG2/gDCr6SGD
-   sgQn9LMTlHa3eG/sBmeVbelwH1V0pK8G8EWTwtwK9O15Aj6Kx/l8IRxiZ
-   MlNqxRZWnEGa9L7m6P8ge/cmZPWNotNHEO9eg/ogeLO/LCMlIGU9Yywcf
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10987"; a="27764455"
-X-IronPort-AV: E=Sophos;i="6.06,167,1705392000"; 
-   d="scan'208";a="27764455"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2024 12:29:33 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,167,1705392000"; 
-   d="scan'208";a="8746315"
-Received: from pyuvaraj-mobl1.amr.corp.intel.com (HELO dwillia2-xfh.jf.intel.com) ([10.255.230.205])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2024 12:29:33 -0800
-Subject: [PATCH] cxl/acpi: Fix load failures due to single window creation
- failure
-From: Dan Williams <dan.j.williams@intel.com>
-To: linux-cxl@vger.kernel.org
-Cc: stable@vger.kernel.org, Breno Leitao <leitao@debian.org>,
- Alison Schofield <alison.schofield@intel.com>,
- Vishal Verma <vishal.l.verma@intel.com>, linux-acpi@vger.kernel.org
-Date: Sat, 17 Feb 2024 12:29:32 -0800
-Message-ID: <170820177238.631006.1012639681618409284.stgit@dwillia2-xfh.jf.intel.com>
-User-Agent: StGit/0.18-3-g996c
+	s=arc-20240116; t=1708205611; c=relaxed/simple;
+	bh=W7WDBdpI0W1SD+DUh8i2uivgdmTI+eJzbEwcUhLeIDg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YVxBmgxmSuonIOZl2OBDKuCMB3wecqrfKoKdlDlapV7JxIHOUdITjzJVMrw0O9g+0c8KNyJ2yubWhB4hHv2vYVKQQq9HsZim/07Vj74v2tuEDX9KHMvWM/4wa5IdJbOLf0uv7cTu7Yov9YH7mQqTw0HKofp4GzioLCqPvdgEwGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TzfNmUxy; arc=none smtp.client-ip=209.85.210.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-6e2edb28554so630327a34.2;
+        Sat, 17 Feb 2024 13:33:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708205608; x=1708810408; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=x6OdQvfZWPkCPP6IxZ3j0oYw7gQEDMaRU3Htku/TCcA=;
+        b=TzfNmUxyFhDH8l9Ad7OnWf2sv7jyWE6BJs9sfTFbK950j8KFTC6kyF49ANEp9/9JU1
+         LqIZrGDqRqCOpmD/TaE2usn1IBJHnskxlCbiKKbrPp3mjal0M56fpCgUS3LnNvqNuW6f
+         xph3poz43yvM6vo56wZEBHTksFcwbDWfSAK0OoqRtVJl4cObYOFCj7FRxCsN6Tig0Nzr
+         M2N4Hd4jQq0CPiEZBIJu9NKMK1R2Inn4TrIDF99ONYLLe4MD0IKQSF2tCxFWA0EY7/Yu
+         JDbzs3nZTx4M2xRI/nlkfFVK6PFzL9684jZe2FuSj/r5NY3PqppyQsWv8cWDHNl1oznD
+         E/PA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708205608; x=1708810408;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=x6OdQvfZWPkCPP6IxZ3j0oYw7gQEDMaRU3Htku/TCcA=;
+        b=jTcyhYrCTLcANKXoP24skGCeJu7Iug/Q9L63RRSdCJYhQ8U+HTXXyqRsF+zgtqYtdC
+         LT/g0GwqeC00SIXgjHE1w7gSp5t7bS26WDoUKBwMk3/DrONPQE/yKQ265WbV/jZSejBS
+         DC21fwVtm+E0+33B8Dhk12dsovTwiuyuXdo8qo3lvi4cDgQgHy2pGgjhpmO43ywrInFJ
+         zxm1sf89hSTaJ0oev47Lkk7TfyuuNfANmEZiMPZzFmd6ohG3oHIvGzhuTQcBUCBOMSuq
+         gzRp1CvUW+iSZH93igFi+odbe6MTgCHZkvmd5yrZSmVs9VDP3FyFYc2XV23IZiGpbAel
+         N/rg==
+X-Forwarded-Encrypted: i=1; AJvYcCX6QknI81FTcNlVyMTRxC58AVrJhDBEnm9K7OMdNY8P3P37s6VYu08TvRQbESIamdTrbpWwanlHYT0oGVXU974QHcN4Su5f
+X-Gm-Message-State: AOJu0Yzs7miu5ZajCCPBIJebIEeRp9HdfsROhX2aR3ScMPKGdIsjLtab
+	hZCEYxuWUkbE8OAh1zopDIz7F0OMhKIpJu890Y8ff0Zw2s94ToKKD8Frz6pG
+X-Google-Smtp-Source: AGHT+IGaiBV3UvQI3znupXLC5ZscoeRUTtm7pifKkLtuHGEth2LvY30khil6qI/QSWNaHQADisx+Ng==
+X-Received: by 2002:a05:6830:104e:b0:6e2:f115:7d9e with SMTP id b14-20020a056830104e00b006e2f1157d9emr8042491otp.15.1708205608099;
+        Sat, 17 Feb 2024 13:33:28 -0800 (PST)
+Received: from octofox.hsd1.ca.comcast.net ([2601:646:a200:bbd0:b4db:67e4:beea:e21e])
+        by smtp.gmail.com with ESMTPSA id b26-20020aa78eda000000b006e06b8548c3sm2034261pfr.139.2024.02.17.13.33.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 17 Feb 2024 13:33:27 -0800 (PST)
+From: Max Filippov <jcmvbkbc@gmail.com>
+To: linux-kernel@vger.kernel.org
+Cc: Chris Zankel <chris@zankel.net>,
+	Max Filippov <jcmvbkbc@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] xtensa: fix MAKE_PC_FROM_RA second argument
+Date: Sat, 17 Feb 2024 13:33:18 -0800
+Message-Id: <20240217213318.2122047-1-jcmvbkbc@gmail.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-The expectation is that cxl_parse_cfwms() continues in the face the of
-failure as evidenced by code like:
+Xtensa has two-argument MAKE_PC_FROM_RA macro to convert a0 to an actual
+return address because when windowed ABI is used call{,x}{4,8,12}
+opcodes stuff encoded window size into the top 2 bits of the register
+that becomes a return address in the called function. Second argument of
+that macro is supposed to be an address having these 2 topmost bits set
+correctly, but the comment suggested that that could be the stack
+address. However the stack doesn't have to be in the same 1GByte region
+as the code, especially in noMMU XIP configurations.
 
-    cxlrd = cxl_root_decoder_alloc(root_port, ways, cxl_calc_hb);
-    if (IS_ERR(cxlrd))
-    	return 0;
+Fix the comment and use either _text or regs->pc as the second argument
+for the MAKE_PC_FROM_RA macro.
 
-There are other error paths in that function which mistakenly follow
-idiomatic expectations and return an error when they should not. Most of
-those mistakes are innocuous checks that hardly ever fail in practice.
-However, a recent change succeed in making the implementation more
-fragile by applying an idiomatic, but still wrong "fix" [1]. In this
-failure case the kernel reports:
-
-    cxl root0: Failed to populate active decoder targets
-    cxl_acpi ACPI0017:00: Failed to add decode range: [mem 0x00000000-0x7fffffff flags 0x200]
-
-...which is a real issue with that one window (to be fixed separately),
-but ends up failing the entirety of cxl_acpi_probe().
-
-Undo that recent breakage while also removing the confusion about
-ignoring errors. Update all exits paths to return an error per typical
-expectations and let an outer wrapper function handle dropping the
-error.
-
-Fixes: 91019b5bc7c2 ("cxl/acpi: Return 'rc' instead of '0' in cxl_parse_cfmws()") [1]
-Cc: <stable@vger.kernel.org>
-Cc: Breno Leitao <leitao@debian.org>
-Cc: Alison Schofield <alison.schofield@intel.com>
-Cc: Vishal Verma <vishal.l.verma@intel.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
 ---
- drivers/cxl/acpi.c |   45 +++++++++++++++++++++++++++------------------
- 1 file changed, 27 insertions(+), 18 deletions(-)
+ arch/xtensa/include/asm/processor.h | 8 ++++----
+ arch/xtensa/include/asm/ptrace.h    | 2 +-
+ arch/xtensa/kernel/process.c        | 5 +++--
+ arch/xtensa/kernel/stacktrace.c     | 3 ++-
+ 4 files changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/cxl/acpi.c b/drivers/cxl/acpi.c
-index dcf2b39e1048..53d2dff0c7a3 100644
---- a/drivers/cxl/acpi.c
-+++ b/drivers/cxl/acpi.c
-@@ -316,31 +316,27 @@ static const struct cxl_root_ops acpi_root_ops = {
- 	.qos_class = cxl_acpi_qos_class,
- };
+diff --git a/arch/xtensa/include/asm/processor.h b/arch/xtensa/include/asm/processor.h
+index d008a153a2b9..7ed1a2085bd7 100644
+--- a/arch/xtensa/include/asm/processor.h
++++ b/arch/xtensa/include/asm/processor.h
+@@ -115,9 +115,9 @@
+ #define MAKE_RA_FOR_CALL(ra,ws)   (((ra) & 0x3fffffff) | (ws) << 30)
  
--static int cxl_parse_cfmws(union acpi_subtable_headers *header, void *arg,
--			   const unsigned long end)
-+static int __cxl_parse_cfmws(struct acpi_cedt_cfmws *cfmws,
-+			     struct cxl_cfmws_context *ctx)
- {
- 	int target_map[CXL_DECODER_MAX_INTERLEAVE];
--	struct cxl_cfmws_context *ctx = arg;
- 	struct cxl_port *root_port = ctx->root_port;
- 	struct resource *cxl_res = ctx->cxl_res;
- 	struct cxl_cxims_context cxims_ctx;
- 	struct cxl_root_decoder *cxlrd;
- 	struct device *dev = ctx->dev;
--	struct acpi_cedt_cfmws *cfmws;
- 	cxl_calc_hb_fn cxl_calc_hb;
- 	struct cxl_decoder *cxld;
- 	unsigned int ways, i, ig;
- 	struct resource *res;
- 	int rc;
+ /* Convert return address to a valid pc
+- * Note: We assume that the stack pointer is in the same 1GB ranges as the ra
++ * Note: 'text' is the address within the same 1GB range as the ra
+  */
+-#define MAKE_PC_FROM_RA(ra,sp)    (((ra) & 0x3fffffff) | ((sp) & 0xc0000000))
++#define MAKE_PC_FROM_RA(ra, text) (((ra) & 0x3fffffff) | ((unsigned long)(text) & 0xc0000000))
  
--	cfmws = (struct acpi_cedt_cfmws *) header;
--
- 	rc = cxl_acpi_cfmws_verify(dev, cfmws);
- 	if (rc) {
- 		dev_err(dev, "CFMWS range %#llx-%#llx not registered\n",
- 			cfmws->base_hpa,
- 			cfmws->base_hpa + cfmws->window_size - 1);
--		return 0;
-+		return rc;
- 	}
+ #elif defined(__XTENSA_CALL0_ABI__)
  
- 	rc = eiw_to_ways(cfmws->interleave_ways, &ways);
-@@ -376,7 +372,7 @@ static int cxl_parse_cfmws(union acpi_subtable_headers *header, void *arg,
+@@ -127,9 +127,9 @@
+ #define MAKE_RA_FOR_CALL(ra, ws)   (ra)
  
- 	cxlrd = cxl_root_decoder_alloc(root_port, ways, cxl_calc_hb);
- 	if (IS_ERR(cxlrd))
--		return 0;
-+		return PTR_ERR(cxlrd);
+ /* Convert return address to a valid pc
+- * Note: We assume that the stack pointer is in the same 1GB ranges as the ra
++ * Note: 'text' is not used as 'ra' is always the full address
+  */
+-#define MAKE_PC_FROM_RA(ra, sp)    (ra)
++#define MAKE_PC_FROM_RA(ra, text)  (ra)
  
- 	cxld = &cxlrd->cxlsd.cxld;
- 	cxld->flags = cfmws_to_decoder_flags(cfmws->restrictions);
-@@ -420,16 +416,7 @@ static int cxl_parse_cfmws(union acpi_subtable_headers *header, void *arg,
- 		put_device(&cxld->dev);
- 	else
- 		rc = cxl_decoder_autoremove(dev, cxld);
--	if (rc) {
--		dev_err(dev, "Failed to add decode range: %pr", res);
--		return rc;
--	}
--	dev_dbg(dev, "add: %s node: %d range [%#llx - %#llx]\n",
--		dev_name(&cxld->dev),
--		phys_to_target_node(cxld->hpa_range.start),
--		cxld->hpa_range.start, cxld->hpa_range.end);
--
--	return 0;
-+	return rc;
+ #else
+ #error Unsupported Xtensa ABI
+diff --git a/arch/xtensa/include/asm/ptrace.h b/arch/xtensa/include/asm/ptrace.h
+index a270467556dc..86c70117371b 100644
+--- a/arch/xtensa/include/asm/ptrace.h
++++ b/arch/xtensa/include/asm/ptrace.h
+@@ -87,7 +87,7 @@ struct pt_regs {
+ # define user_mode(regs) (((regs)->ps & 0x00000020)!=0)
+ # define instruction_pointer(regs) ((regs)->pc)
+ # define return_pointer(regs) (MAKE_PC_FROM_RA((regs)->areg[0], \
+-					       (regs)->areg[1]))
++					       (regs)->pc))
  
- err_insert:
- 	kfree(res->name);
-@@ -438,6 +425,28 @@ static int cxl_parse_cfmws(union acpi_subtable_headers *header, void *arg,
- 	return -ENOMEM;
- }
+ # ifndef CONFIG_SMP
+ #  define profile_pc(regs) instruction_pointer(regs)
+diff --git a/arch/xtensa/kernel/process.c b/arch/xtensa/kernel/process.c
+index a815577d25fd..7bd66677f7b6 100644
+--- a/arch/xtensa/kernel/process.c
++++ b/arch/xtensa/kernel/process.c
+@@ -47,6 +47,7 @@
+ #include <asm/asm-offsets.h>
+ #include <asm/regs.h>
+ #include <asm/hw_breakpoint.h>
++#include <asm/sections.h>
+ #include <asm/traps.h>
  
-+static int cxl_parse_cfmws(union acpi_subtable_headers *header, void *arg,
-+			   const unsigned long end)
-+{
-+	struct acpi_cedt_cfmws *cfmws = (struct acpi_cedt_cfmws *)header;
-+	struct cxl_cfmws_context *ctx = arg;
-+	struct device *dev = ctx->dev;
-+	int rc;
-+
-+	dev_dbg(dev, "decode range: node: %d range [%#llx - %#llx]\n",
-+		phys_to_target_node(cfmws->base_hpa), cfmws->base_hpa,
-+		cfmws->base_hpa + cfmws->window_size - 1);
-+	rc = __cxl_parse_cfmws(cfmws, ctx);
-+	if (rc)
-+		dev_err(dev,
-+			"Failed to add decode range: [%#llx - %#llx] (%d)\n",
-+			cfmws->base_hpa,
-+			cfmws->base_hpa + cfmws->window_size - 1, rc);
-+
-+	/* never fail cxl_acpi load for a single window failure */
-+	return 0;
-+}
-+
- __mock struct acpi_device *to_cxl_host_bridge(struct device *host,
- 					      struct device *dev)
- {
+ extern void ret_from_fork(void);
+@@ -380,7 +381,7 @@ unsigned long __get_wchan(struct task_struct *p)
+ 	int count = 0;
+ 
+ 	sp = p->thread.sp;
+-	pc = MAKE_PC_FROM_RA(p->thread.ra, p->thread.sp);
++	pc = MAKE_PC_FROM_RA(p->thread.ra, _text);
+ 
+ 	do {
+ 		if (sp < stack_page + sizeof(struct task_struct) ||
+@@ -392,7 +393,7 @@ unsigned long __get_wchan(struct task_struct *p)
+ 
+ 		/* Stack layout: sp-4: ra, sp-3: sp' */
+ 
+-		pc = MAKE_PC_FROM_RA(SPILL_SLOT(sp, 0), sp);
++		pc = MAKE_PC_FROM_RA(SPILL_SLOT(sp, 0), _text);
+ 		sp = SPILL_SLOT(sp, 1);
+ 	} while (count++ < 16);
+ 	return 0;
+diff --git a/arch/xtensa/kernel/stacktrace.c b/arch/xtensa/kernel/stacktrace.c
+index 831ffb648bda..ed324fdf2a2f 100644
+--- a/arch/xtensa/kernel/stacktrace.c
++++ b/arch/xtensa/kernel/stacktrace.c
+@@ -13,6 +13,7 @@
+ #include <linux/stacktrace.h>
+ 
+ #include <asm/ftrace.h>
++#include <asm/sections.h>
+ #include <asm/stacktrace.h>
+ #include <asm/traps.h>
+ #include <linux/uaccess.h>
+@@ -189,7 +190,7 @@ void walk_stackframe(unsigned long *sp,
+ 		if (a1 <= (unsigned long)sp)
+ 			break;
+ 
+-		frame.pc = MAKE_PC_FROM_RA(a0, a1);
++		frame.pc = MAKE_PC_FROM_RA(a0, _text);
+ 		frame.sp = a1;
+ 
+ 		if (fn(&frame, data))
+-- 
+2.39.2
 
 
