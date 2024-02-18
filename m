@@ -1,147 +1,131 @@
-Return-Path: <stable+bounces-20472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37E478598B5
-	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 19:56:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E82B8598F4
+	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 20:09:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C35EA1F21A24
-	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 18:56:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 514A11C210C3
+	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 19:09:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 731EC6F084;
-	Sun, 18 Feb 2024 18:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF9D66F50A;
+	Sun, 18 Feb 2024 19:08:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZAglBIVN"
+	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="YpIsDUMi"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B131D696
-	for <stable@vger.kernel.org>; Sun, 18 Feb 2024 18:56:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4FD2B9A7;
+	Sun, 18 Feb 2024 19:08:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708282589; cv=none; b=tGTsAMLJzw7JPooMyYGnNHkuMfkIQYerwvhucss8ZsMn75ROIAqzUBbwxSTUZC1h7DkXx76hfcWGx0iOuHz0porLYJRETAcNJYs+n/1g0mfHvPAA5dckMxvurZRAFSqpbgnvz2Zbjbp0O5ztZsXDs6ZLbuFlWFU7gxVt1089W90=
+	t=1708283337; cv=none; b=lTX3sdsZAi7d/sgkElT0GlfDxE7gQZFw1GDdjiSDlhlYjxMJS7Djr6WsB/eJgT6XbMUnuOBusIUzp7oYbHrIiqkWxi1uM2wREwk9bU5Al+UkBXyvwY9gmlLQZEtT/WQ2mIc8oJ1acDzG2hDJd92Dakj2GAI9WCdRaS5329wyGZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708282589; c=relaxed/simple;
-	bh=tgmb4cWY2lx+SGho9UlfLyWIXR0ets2/tslkVtCdB6Q=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ZQWO/FNhncoD3EEbkKe+pQxy1BaeOQoVeqMrVxQjbpMeMcmG1p9KuUJj6O5MdbFqpnsA35mKHu9UrvN/JZSArMh1PyLBS26/eBNfFnByLi4QFM/OfsBsTVdTFRx231ykwRanQrygTBgIA9yQXEZ/Bfz1o8WE1enFzTrgTm186pI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZAglBIVN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44664C433F1;
-	Sun, 18 Feb 2024 18:56:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708282588;
-	bh=tgmb4cWY2lx+SGho9UlfLyWIXR0ets2/tslkVtCdB6Q=;
-	h=Subject:To:Cc:From:Date:From;
-	b=ZAglBIVNqAHllW9gpY106B/fdQbJwpOIzfmi/BsCFAnM5b5ofzRJwKLUg/Mlxigqq
-	 LJn4JXUdQx/5gSVX4tHaO10dUABjMnBlJi6ayCE3WEyr+ikx1yuMDsMrnaXFbPgbzu
-	 4Wbpkb/ju8YLmS2KLppSlMdVPwhAW2dMEdjIc4ko=
-Subject: FAILED: patch "[PATCH] usb: dwc3: gadget: Fix NULL pointer dereference in" failed to apply to 4.19-stable tree
-To: quic_uaggarwa@quicinc.com,Thinh.Nguyen@synopsys.com,gregkh@linuxfoundation.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Sun, 18 Feb 2024 19:56:15 +0100
-Message-ID: <2024021815-crate-unsettled-85a8@gregkh>
+	s=arc-20240116; t=1708283337; c=relaxed/simple;
+	bh=PpSH5hvi4dsg4c550Qq2foXlIH3ewfO00DQgws+5isQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WjNzQSH5Ktc2jNf/Gl+OvGwsaG3SaWl7hveZDh5RLTklrCOx5UmfxVLZKxnvL8ly0sDMB7BIbad6o0OqdfMjEXxtVIsl+sJqhu3HAm5ZH2AYrRcx90R5KriCyASJKsaT/C7Ew9PL609salNe0utISRW/IyjVr42kuP6O/Iainbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=YpIsDUMi; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id E76781C006B; Sun, 18 Feb 2024 20:08:51 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
+	t=1708283331;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UO6BHw1ihzgpeRBQ0bvNxub7e+paexcL1WHjA8wQRHk=;
+	b=YpIsDUMiPL4NwLKKvg8ynwih9EeW2hmqUwxY3yApkx7HD5+0Ednpy2C4PYQUg4pQPNTkeO
+	OrcaPIMchZzi/DHlWy3C4Wz88zm8nDqO3jaEllihLV2wCWv+obWxOY8k8SgD2p80dqZTkE
+	o7aBdrMJ572NzHvOJ7P+mLKlDs1otD8=
+Date: Sun, 18 Feb 2024 20:08:51 +0100
+From: Pavel Machek <pavel@ucw.cz>
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Daniel Wagner <dwagner@suse.de>, Hannes Reinecke <hare@suse.de>,
+	Christoph Hellwig <hch@lst.de>, Keith Busch <kbusch@kernel.org>,
+	james.smart@broadcom.com, sagi@grimberg.me, kch@nvidia.com,
+	linux-nvme@lists.infradead.org
+Subject: Re: [PATCH AUTOSEL 5.10 13/16] nvmet-fc: do not tack refs on
+ tgtports from assoc
+Message-ID: <ZdJVw8PbwTDngATQ@duo.ucw.cz>
+References: <20240207212700.4287-1-sashal@kernel.org>
+ <20240207212700.4287-13-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="LfSJrMDKQ4jMO3dD"
+Content-Disposition: inline
+In-Reply-To: <20240207212700.4287-13-sashal@kernel.org>
 
 
-The patch below does not apply to the 4.19-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+--LfSJrMDKQ4jMO3dD
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Hi!
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
-git checkout FETCH_HEAD
-git cherry-pick -x 61a348857e869432e6a920ad8ea9132e8d44c316
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021815-crate-unsettled-85a8@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+> From: Daniel Wagner <dwagner@suse.de>
+>=20
+> [ Upstream commit 1c110588dd95d21782397ff3cbaa55820b4e1fad ]
+>=20
+> The association life time is tied to the life time of the target port.
+> That means we should not take extra a refcount when creating a
+> association.
 
-Possible dependencies:
+I don't see this one queued for 6.1 or 6.6. What went wrong here?
 
-61a348857e86 ("usb: dwc3: gadget: Fix NULL pointer dereference in dwc3_gadget_suspend")
-c8540870af4c ("usb: dwc3: gadget: Improve dwc3_gadget_suspend() and dwc3_gadget_resume()")
-bdb19d01026a ("USB: dwc3: gadget: drop dead hibernation code")
-af870d93c706 ("usb: dwc3: Fix typos in gadget.c")
-5265397f9442 ("usb: dwc3: Remove DWC3 locking during gadget suspend/resume")
-9711c67de748 ("usb: dwc3: gadget: Synchronize IRQ between soft connect/disconnect")
-8f8034f493b5 ("usb: dwc3: gadget: Don't modify GEVNTCOUNT in pullup()")
-861c010a2ee1 ("usb: dwc3: gadget: Refactor pullup()")
-0066472de157 ("usb: dwc3: Issue core soft reset before enabling run/stop")
-8217f07a5023 ("usb: dwc3: gadget: Avoid starting DWC3 gadget during UDC unbind")
-8212937305f8 ("usb: dwc3: gadget: Disable gadget IRQ during pullup disable")
-f09ddcfcb8c5 ("usb: dwc3: gadget: Prevent EP queuing while stopping transfers")
-a66a7d48f34a ("Merge 5.11-rc3 into usb-next")
+Best regards,
+								Pavel
 
-thanks,
+> +++ b/drivers/nvme/target/fc.c
+> @@ -1110,12 +1110,9 @@ nvmet_fc_alloc_target_assoc(struct nvmet_fc_tgtpor=
+t *tgtport, void *hosthandle)
+>  	if (idx < 0)
+>  		goto out_free_assoc;
+> =20
+> -	if (!nvmet_fc_tgtport_get(tgtport))
+> -		goto out_ida;
+> -
+>  	assoc->hostport =3D nvmet_fc_alloc_hostport(tgtport, hosthandle);
+>  	if (IS_ERR(assoc->hostport))
+> -		goto out_put;
+> +		goto out_ida;
+> =20
+>  	assoc->tgtport =3D tgtport;
+>  	assoc->a_id =3D idx;
+> @@ -1145,8 +1142,6 @@ nvmet_fc_alloc_target_assoc(struct nvmet_fc_tgtport=
+ *tgtport, void *hosthandle)
+> =20
+>  	return assoc;
+> =20
+> -out_put:
+> -	nvmet_fc_tgtport_put(tgtport);
+>  out_ida:
+>  	ida_simple_remove(&tgtport->assoc_cnt, idx);
+>  out_free_assoc:
 
-greg k-h
+--=20
+People of Russia, stop Putin before his war on Ukraine escalates.
 
------------------- original commit in Linus's tree ------------------
+--LfSJrMDKQ4jMO3dD
+Content-Type: application/pgp-signature; name="signature.asc"
 
-From 61a348857e869432e6a920ad8ea9132e8d44c316 Mon Sep 17 00:00:00 2001
-From: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
-Date: Fri, 19 Jan 2024 15:18:25 +0530
-Subject: [PATCH] usb: dwc3: gadget: Fix NULL pointer dereference in
- dwc3_gadget_suspend
+-----BEGIN PGP SIGNATURE-----
 
-In current scenario if Plug-out and Plug-In performed continuously
-there could be a chance while checking for dwc->gadget_driver in
-dwc3_gadget_suspend, a NULL pointer dereference may occur.
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZdJVwwAKCRAw5/Bqldv6
+8gWHAJ48kG4XWYE4gvOKhhrCrFwKENwUXwCfdMTyE10BLyKcPXjjH72pOsUk44U=
+=ByLx
+-----END PGP SIGNATURE-----
 
-Call Stack:
-
-	CPU1:                           CPU2:
-	gadget_unbind_driver            dwc3_suspend_common
-	dwc3_gadget_stop                dwc3_gadget_suspend
-                                        dwc3_disconnect_gadget
-
-CPU1 basically clears the variable and CPU2 checks the variable.
-Consider CPU1 is running and right before gadget_driver is cleared
-and in parallel CPU2 executes dwc3_gadget_suspend where it finds
-dwc->gadget_driver which is not NULL and resumes execution and then
-CPU1 completes execution. CPU2 executes dwc3_disconnect_gadget where
-it checks dwc->gadget_driver is already NULL because of which the
-NULL pointer deference occur.
-
-Cc: stable@vger.kernel.org
-Fixes: 9772b47a4c29 ("usb: dwc3: gadget: Fix suspend/resume during device mode")
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Signed-off-by: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
-Link: https://lore.kernel.org/r/20240119094825.26530-1-quic_uaggarwa@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index 019368f8e9c4..564976b3e2b9 100644
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -4709,15 +4709,13 @@ int dwc3_gadget_suspend(struct dwc3 *dwc)
- 	unsigned long flags;
- 	int ret;
- 
--	if (!dwc->gadget_driver)
--		return 0;
--
- 	ret = dwc3_gadget_soft_disconnect(dwc);
- 	if (ret)
- 		goto err;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
--	dwc3_disconnect_gadget(dwc);
-+	if (dwc->gadget_driver)
-+		dwc3_disconnect_gadget(dwc);
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
- 	return 0;
-
+--LfSJrMDKQ4jMO3dD--
 
