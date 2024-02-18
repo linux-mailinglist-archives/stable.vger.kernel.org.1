@@ -1,44 +1,44 @@
-Return-Path: <stable+bounces-20423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B692859414
-	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 03:33:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32F2385942A
+	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 03:49:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BCA21C20C6B
-	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 02:33:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64CF91C20C0B
+	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 02:49:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 774A015D4;
-	Sun, 18 Feb 2024 02:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 292A615C0;
+	Sun, 18 Feb 2024 02:49:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29384A2D
-	for <stable@vger.kernel.org>; Sun, 18 Feb 2024 02:33:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2AF7F6
+	for <stable@vger.kernel.org>; Sun, 18 Feb 2024 02:49:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.255
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708223592; cv=none; b=A9cVDcaKsqwmc3Po7in59BT3lbcIIgrNGCoX6NSNzX1I6F7GZ/nPqPjDGVNA04NPreE/3+ySxWrpvfOzttC+rkxHIaxYovfP3zEVOX0kDCiQsKns9N3hxoW53xhefDSGLJls+rMqB+JA/Z+fyYTpxJP9fwx2ZnZJFSfdZj/gtRM=
+	t=1708224557; cv=none; b=aZk6xeVgugQ2o/5mhwQ4Px5IUOqMOfcf3qEE6Vi9IpmQ+Fn/FknKe4hFQZ4dHzXIdix/Plc5z78BJ/TMHI97RwFDYuOnc/cD/l1vdJ5Htad4A2LcbRss8bgO0pCUrpL8ZvdesBQaqlyBdCAmKzlYD4QG8JZpk1Etr/pIKn0PYqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708223592; c=relaxed/simple;
-	bh=YQQNB2Se+JMqbyH6hOmS3O7EH3ynvCKwV09k4gcTQek=;
+	s=arc-20240116; t=1708224557; c=relaxed/simple;
+	bh=Ch+KPMAfZbjpeoHV2JqF6Lj0VTFv4h0rsOlzB6XoXJI=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ki1trZJkvgB/XQoQ7y+YESvw31/vE7UAqa/XVs5pdxFX+zcthyvku2vwGn3m5t3D5EJn94EfSq2eTGHaD/foJfBTR8//fLnQPNFrGvzzLJ5+ba/yg22Ehlso0W32DqWd6bpiJQN8XqBxvlU9qN4vXoEpMsvDIg2OKhzMlRcAITI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.35
+	 MIME-Version:Content-Type; b=Qvk5Qu7Q94iE2V1zJCbL2RrQXom9xR9pMkIb5tgt4GDN80TIVhbqNWtoLF2hMz1LYEAVVDsCjdN/8HO62WGHKyKp6NiaMwGtYorEm4kTNB+rV8VbSJWuOaHXa66cZGuhIMpoaFRNxId+cmcN4M5rLSAP84khyoM9b0kdUTLxO1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.255
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.112])
-	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4TcqR95GMGz1Q98N;
-	Sun, 18 Feb 2024 10:31:01 +0800 (CST)
-Received: from canpemm500006.china.huawei.com (unknown [7.192.105.130])
-	by mail.maildlp.com (Postfix) with ESMTPS id F39481404DB;
-	Sun, 18 Feb 2024 10:33:07 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4TcqRn1FLTz1Q8p8;
+	Sun, 18 Feb 2024 10:31:33 +0800 (CST)
+Received: from canpemm500005.china.huawei.com (unknown [7.192.104.229])
+	by mail.maildlp.com (Postfix) with ESMTPS id 32B9914011B;
+	Sun, 18 Feb 2024 10:33:08 +0800 (CST)
 Received: from canpemm500004.china.huawei.com (7.192.104.92) by
- canpemm500006.china.huawei.com (7.192.105.130) with Microsoft SMTP Server
+ canpemm500005.china.huawei.com (7.192.104.229) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Sun, 18 Feb 2024 10:33:07 +0800
+ 15.1.2507.35; Sun, 18 Feb 2024 10:33:08 +0800
 Received: from huawei.com (10.67.174.111) by canpemm500004.china.huawei.com
  (7.192.104.92) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Sun, 18 Feb
@@ -49,9 +49,9 @@ To: <ardb@kernel.org>, <mark.rutland@arm.com>, <catalin.marinas@arm.com>,
 CC: <keescook@chromium.org>, <linux-arm-kernel@lists.infradead.org>,
 	<stable@vger.kernel.org>, <gregkh@linuxfoundation.org>,
 	<xiangyang3@huawei.com>, <xiujianfeng@huawei.com>, <liaochang1@huawei.com>
-Subject: [PATCH 5.10.y 4/5] arm64: entry: convert IRQ+FIQ handlers to C
-Date: Sun, 18 Feb 2024 10:30:54 +0800
-Message-ID: <20240218023055.145519-5-xiangyang3@huawei.com>
+Subject: [PATCH 5.10.y 5/5] arm64: Stash shadow stack pointer in the task struct on interrupt
+Date: Sun, 18 Feb 2024 10:30:55 +0800
+Message-ID: <20240218023055.145519-6-xiangyang3@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240218023055.145519-1-xiangyang3@huawei.com>
 References: <20240218023055.145519-1-xiangyang3@huawei.com>
@@ -66,246 +66,75 @@ Content-Type: text/plain
 X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
  canpemm500004.china.huawei.com (7.192.104.92)
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit 064dbfb4169141943ec7d9dbfd02974dd008f2ce upstream.
+commit 59b37fe52f49955791a460752c37145f1afdcad1 upstream.
 
-For various reasons we'd like to convert the bulk of arm64's exception
-triage logic to C. As a step towards that, this patch converts the EL1
-and EL0 IRQ+FIQ triage logic to C.
+Instead of reloading the shadow call stack pointer from the ordinary
+stack, which may be vulnerable to the kind of gadget based attacks
+shadow call stacks were designed to prevent, let's store a task's shadow
+call stack pointer in the task struct when switching to the shadow IRQ
+stack.
 
-Separate C functions are added for the native and compat cases so that
-in subsequent patches we can handle native/compat differences in C.
+Given that currently, the task_struct::scs_sp field is only used to
+preserve the shadow call stack pointer while a task is scheduled out or
+running in user space, reusing this field to preserve and restore it
+while running off the IRQ stack must be safe, as those occurrences are
+guaranteed to never overlap. (The stack switching logic only switches
+stacks when running from the task stack, and so the value being saved
+here always corresponds to the task mode shadow stack)
 
-Since the triage functions can now call arm64_apply_bp_hardening()
-directly, the do_el0_irq_bp_hardening() wrapper function is removed.
+While at it, fold a mov/add/mov sequence into a single add.
 
-Since the user_exit_irqoff macro is now unused, it is removed. The
-user_enter_irqoff macro is still used by the ret_to_user code, and
-cannot be removed at this time.
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Acked-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Joey Gouly <joey.gouly@arm.com>
-Cc: James Morse <james.morse@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20210607094624.34689-8-mark.rutland@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://lore.kernel.org/r/20230109174800.3286265-3-ardb@kernel.org
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Xiang Yang <xiangyang3@huawei.com>
 ---
- arch/arm64/include/asm/exception.h |  3 ++
- arch/arm64/kernel/entry-common.c   | 68 +++++++++++++++++++++++++++++-
- arch/arm64/kernel/entry.S          | 54 +++---------------------
- 3 files changed, 77 insertions(+), 48 deletions(-)
+ arch/arm64/kernel/entry.S | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm64/include/asm/exception.h b/arch/arm64/include/asm/exception.h
-index def53267f4a2..846ca8132f76 100644
---- a/arch/arm64/include/asm/exception.h
-+++ b/arch/arm64/include/asm/exception.h
-@@ -26,6 +26,9 @@ static inline u32 disr_to_esr(u64 disr)
- 	return esr;
- }
- 
-+asmlinkage void el1_irq_handler(struct pt_regs *regs);
-+asmlinkage void el0_irq_handler(struct pt_regs *regs);
-+asmlinkage void el0_irq_compat_handler(struct pt_regs *regs);
- asmlinkage void noinstr enter_el1_irq_or_nmi(struct pt_regs *regs);
- asmlinkage void noinstr exit_el1_irq_or_nmi(struct pt_regs *regs);
- asmlinkage void call_on_irq_stack(struct pt_regs *regs,
-diff --git a/arch/arm64/kernel/entry-common.c b/arch/arm64/kernel/entry-common.c
-index a533f4827253..340249c65007 100644
---- a/arch/arm64/kernel/entry-common.c
-+++ b/arch/arm64/kernel/entry-common.c
-@@ -19,6 +19,8 @@
- #include <asm/exception.h>
- #include <asm/kprobes.h>
- #include <asm/mmu.h>
-+#include <asm/processor.h>
-+#include <asm/stacktrace.h>
- #include <asm/sysreg.h>
- 
- /*
-@@ -113,7 +115,7 @@ asmlinkage void noinstr exit_el1_irq_or_nmi(struct pt_regs *regs)
- 		exit_to_kernel_mode(regs);
- }
- 
--asmlinkage void __sched arm64_preempt_schedule_irq(void)
-+static void __sched arm64_preempt_schedule_irq(void)
- {
- 	lockdep_assert_irqs_disabled();
- 
-@@ -141,6 +143,42 @@ static void noinstr el1_abort(struct pt_regs *regs, unsigned long esr)
- 	exit_to_kernel_mode(regs);
- }
- 
-+static void do_interrupt_handler(struct pt_regs *regs,
-+                                void (*handler)(struct pt_regs *))
-+{
-+	if (on_thread_stack())
-+		call_on_irq_stack(regs, handler);
-+	else
-+		handler(regs);
-+}
-+
-+extern void (*handle_arch_irq)(struct pt_regs *);
-+
-+static void noinstr el1_interrupt(struct pt_regs *regs,
-+				  void (*handler)(struct pt_regs *))
-+{
-+	write_sysreg(DAIF_PROCCTX_NOIRQ, daif);
-+
-+	enter_el1_irq_or_nmi(regs);
-+	do_interrupt_handler(regs, handler);
-+
-+	/*
-+	 * Note: thread_info::preempt_count includes both thread_info::count
-+	 * and thread_info::need_resched, and is not equivalent to
-+	 * preempt_count().
-+	 */
-+	if (IS_ENABLED(CONFIG_PREEMPTION) &&
-+	    READ_ONCE(current_thread_info()->preempt_count) == 0)
-+		arm64_preempt_schedule_irq();
-+
-+	exit_el1_irq_or_nmi(regs);
-+}
-+
-+asmlinkage void noinstr el1_irq_handler(struct pt_regs *regs)
-+{
-+	el1_interrupt(regs, handle_arch_irq);
-+}
-+
- static void noinstr el1_pc(struct pt_regs *regs, unsigned long esr)
- {
- 	unsigned long far = read_sysreg(far_el1);
-@@ -445,6 +483,29 @@ asmlinkage void noinstr el0_sync_handler(struct pt_regs *regs)
- 	}
- }
- 
-+static void noinstr el0_interrupt(struct pt_regs *regs,
-+				  void (*handler)(struct pt_regs *))
-+{
-+	enter_from_user_mode();
-+
-+	write_sysreg(DAIF_PROCCTX_NOIRQ, daif);
-+
-+	if (regs->pc & BIT(55))
-+		arm64_apply_bp_hardening();
-+
-+	do_interrupt_handler(regs, handler);
-+}
-+
-+static void noinstr __el0_irq_handler_common(struct pt_regs *regs)
-+{
-+	el0_interrupt(regs, handle_arch_irq);
-+}
-+
-+asmlinkage void noinstr el0_irq_handler(struct pt_regs *regs)
-+{
-+	__el0_irq_handler_common(regs);
-+}
-+
- #ifdef CONFIG_COMPAT
- static void noinstr el0_cp15(struct pt_regs *regs, unsigned long esr)
- {
-@@ -453,6 +514,11 @@ static void noinstr el0_cp15(struct pt_regs *regs, unsigned long esr)
- 	do_el0_cp15(esr, regs);
- }
- 
-+asmlinkage void noinstr el0_irq_compat_handler(struct pt_regs *regs)
-+{
-+	__el0_irq_handler_common(regs);
-+}
-+
- static void noinstr el0_svc_compat(struct pt_regs *regs)
- {
- 	enter_from_user_mode();
 diff --git a/arch/arm64/kernel/entry.S b/arch/arm64/kernel/entry.S
-index 8b17d83e8c87..b0d102669dde 100644
+index b0d102669dde..e35f3cec74d9 100644
 --- a/arch/arm64/kernel/entry.S
 +++ b/arch/arm64/kernel/entry.S
-@@ -429,49 +429,6 @@ SYM_CODE_START_LOCAL(__swpan_exit_el0)
- SYM_CODE_END(__swpan_exit_el0)
+@@ -1011,19 +1011,19 @@ NOKPROBE(ret_from_fork)
+  */
+ SYM_FUNC_START(call_on_irq_stack)
+ #ifdef CONFIG_SHADOW_CALL_STACK
+-	stp	scs_sp, xzr, [sp, #-16]!
++	get_current_task x16
++	scs_save x16
+ 	adr_this_cpu scs_sp, irq_shadow_call_stack, x17
  #endif
++
+ 	/* Create a frame record to save our LR and SP (implicit in FP) */
+ 	stp	x29, x30, [sp, #-16]!
+ 	mov	x29, sp
  
--	.macro	irq_stack_entry
--	mov	x19, sp			// preserve the original sp
+ 	ldr_this_cpu x16, irq_stack_ptr, x17
+-	mov	x15, #IRQ_STACK_SIZE
+-	add	x16, x16, x15
+ 
+ 	/* Move to the new stack and call the function there */
+-	mov	sp, x16
++	add	sp, x16, #IRQ_STACK_SIZE
+ 	blr	x1
+ 
+ 	/*
+@@ -1032,9 +1032,7 @@ SYM_FUNC_START(call_on_irq_stack)
+ 	 */
+ 	mov	sp, x29
+ 	ldp	x29, x30, [sp], #16
 -#ifdef CONFIG_SHADOW_CALL_STACK
--	mov	x24, scs_sp		// preserve the original shadow stack
+-	ldp	scs_sp, xzr, [sp], #16
 -#endif
--
--	/*
--	 * Compare sp with the base of the task stack.
--	 * If the top ~(THREAD_SIZE - 1) bits match, we are on a task stack,
--	 * and should switch to the irq stack.
--	 */
--	ldr	x25, [tsk, TSK_STACK]
--	eor	x25, x25, x19
--	and	x25, x25, #~(THREAD_SIZE - 1)
--	cbnz	x25, 9998f
--
--	ldr_this_cpu x25, irq_stack_ptr, x26
--	mov	x26, #IRQ_STACK_SIZE
--	add	x26, x25, x26
--
--	/* switch to the irq stack */
--	mov	sp, x26
--
--#ifdef CONFIG_SHADOW_CALL_STACK
--	/* also switch to the irq shadow stack */
--	adr_this_cpu scs_sp, irq_shadow_call_stack, x26
--#endif
--
--9998:
--	.endm
--
--	/*
--	 * The callee-saved regs (x19-x29) should be preserved between
--	 * irq_stack_entry and irq_stack_exit, but note that kernel_entry
--	 * uses x20-x23 to store data for later use.
--	 */
--	.macro	irq_stack_exit
--	mov	sp, x19
--#ifdef CONFIG_SHADOW_CALL_STACK
--	mov	scs_sp, x24
--#endif
--	.endm
--
- /* GPRs used by entry code */
- tsk	.req	x28		// current thread_info
- 
-@@ -675,7 +632,8 @@ SYM_CODE_END(el1_sync)
- 	.align	6
- SYM_CODE_START_LOCAL_NOALIGN(el1_irq)
- 	kernel_entry 1
--	el1_interrupt_handler handle_arch_irq
-+	mov	x0, sp
-+	bl	el1_irq_handler
- 	kernel_exit 1
- SYM_CODE_END(el1_irq)
- 
-@@ -702,7 +660,9 @@ SYM_CODE_END(el0_sync_compat)
- 	.align	6
- SYM_CODE_START_LOCAL_NOALIGN(el0_irq_compat)
- 	kernel_entry 0, 32
--	b	el0_irq_naked
-+	mov	x0, sp
-+	bl	el0_irq_compat_handler
-+	b	ret_to_user
- SYM_CODE_END(el0_irq_compat)
- 
- SYM_CODE_START_LOCAL_NOALIGN(el0_error_compat)
-@@ -714,8 +674,8 @@ SYM_CODE_END(el0_error_compat)
- 	.align	6
- SYM_CODE_START_LOCAL_NOALIGN(el0_irq)
- 	kernel_entry 0
--el0_irq_naked:
--	el0_interrupt_handler handle_arch_irq
-+	mov	x0, sp
-+	bl	el0_irq_handler
- 	b	ret_to_user
- SYM_CODE_END(el0_irq)
- 
++	scs_load_current
+ 	ret
+ SYM_FUNC_END(call_on_irq_stack)
+ NOKPROBE(call_on_irq_stack)
 -- 
 2.34.1
 
