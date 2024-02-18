@@ -1,412 +1,176 @@
-Return-Path: <stable+bounces-20457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8435A859781
-	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 16:00:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C63B78597EA
+	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 18:02:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2939F281A4F
-	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 15:00:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F23928159C
+	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 17:02:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E634B6BFBB;
-	Sun, 18 Feb 2024 15:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8B8D6EB4D;
+	Sun, 18 Feb 2024 17:02:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="CHGqBHM6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qC+7Iss1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8F96BB42
-	for <stable@vger.kernel.org>; Sun, 18 Feb 2024 15:00:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 940AF6DCEA;
+	Sun, 18 Feb 2024 17:02:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708268420; cv=none; b=jbnkrdiNDxH5QQq/b6zU+3VzRLIlXeFs2JO1dZfsoLH6rhi+jOIXAADw8HBGPr4t+5sWUXXWFS8BJk4km5pkJ6u5J9+KuBHSDHehqCUBb/jPEVO0U6bh2rGltWh67AgZ24e8qBQwe/ecW2wjaV0PD25+aTCsQPLrB9nvQ4cqhc0=
+	t=1708275771; cv=none; b=W/8ZSninMuriS/pfhGEQD80y9ok1GHDX32qemSL8Ne9DIquiTgY/4mg5bnlP+roCoR7Uez1q1aFK7uZdMTGKEdGy+o6576+IX+00ZcSuzgFanFy6LWAhE2PX7+Xr7QjD67I5SfWpNuFQo2QqKxZblALxGIUvkutu3eNN/IhIPG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708268420; c=relaxed/simple;
-	bh=osQUHtBwtBRheFzZo4xkNmo8cCfrMkRjejuzkGYonU0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=A3c0011s9GdqxD4WnW+RR7oKiNpy1kybbgmzEDgEYXmZf/2289WNqEl1YlsDiPUmn8sqJEtjL7WG5uxgxjlyWCBdGFEzfx8kHLhDmyvpmd2vTBzeGDvqqd5VNPTBLVVxtEl5bmxEmePx5aRmxZMdIx++RvT2YIuH+03SX4qLrFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=CHGqBHM6; arc=none smtp.client-ip=209.85.167.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
-Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-3c031a077d5so1919053b6e.0
-        for <stable@vger.kernel.org>; Sun, 18 Feb 2024 07:00:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sifive.com; s=google; t=1708268417; x=1708873217; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YYnBOQzEOcAAi3/k4Sm826rCOnB3o3IMwXvp4z4B03c=;
-        b=CHGqBHM6BY1SSAY/QvM9vWjzj+EAuWj5DDM4oLKoRtLbQ85COnSnXyAox9nNGEQjyZ
-         91ejFqe0gdamsxkDa9MNwwGaQFf9sMvh9CA1yW/5mHh8EHQH6p5YT/mnwMpS51QgHLpF
-         TlZSJpqYzyIkR5JWNOxkAPvmc1Aqh2jsZpho9OMvhAxxNMTXeXQo0gwY84vPlNbmgSGj
-         Sx7Y6E8ztxPcdPSzcVFH+aJXzKn41nUyh3Y77TkJ/J1tMKwbkbvcYWUgcgiJ3j4U8BRN
-         HwjxCr7epO+g/Lesk4rZ6qKM134/NYUCfEDCj5CDQEK+SU5aG6C8ltSbzvdArQZY1MFo
-         IoNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708268417; x=1708873217;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YYnBOQzEOcAAi3/k4Sm826rCOnB3o3IMwXvp4z4B03c=;
-        b=Y8bpmtaJgF1rAHP9aCsZLHVJmNQTneHHpsF8ZjT7DCWLhG8P41ii0pK4BGWEDDXpNv
-         KFV0RoiVUVYc5h2AROFylUoXQxhtBUS83PBRagIliRBd0fCaTMEtlaFO/mx1anbgiLVa
-         X5n2WyRbqITIqMvuTm0/R8UGBxpnWiNgyvV0j7ARpMc7HzKDJ6t2soYvtxVqeFII5rSe
-         dQVlEhVwjhiBUGAnXFbqOjxa/icOktFNEYSHC2JnVflQAGFVtPsWx6bAT8jVKsjBbqTn
-         HPlEWTnFtOlrUj68/BMxyR8B3VvShvaIHQqsgjNW2W6mPaGgd2l0gUHzzwT/S/fIE6l2
-         NRDg==
-X-Forwarded-Encrypted: i=1; AJvYcCVDU4lxiWXH359UEPgLGMobqNpqEiQ/dsqkB/Jgkyy20hKhV6ZYxqEbL+LwOGg3HMR3GRWgwmFcP3aW2apfhHU/pq/mzpNQ
-X-Gm-Message-State: AOJu0YyK3AGZjsZZR0/PniSwt3FYktvYKr3HG3IanX7U6OiDcvuqhe7e
-	COoSrT0+q38Clnt0M1a3BxORt4+FupF+pdOM9A+D7LM2wMfbNqA3P1bBO/jGCqM=
-X-Google-Smtp-Source: AGHT+IGRp3AEp9PX2ocswnFBxtOEGeqzjtdyzUlJ4Nf2rGtKqFzy/FpVtaXefQuS72e/ExoLl/XhgA==
-X-Received: by 2002:a05:6358:5389:b0:178:dac3:2b99 with SMTP id z9-20020a056358538900b00178dac32b99mr10932785rwe.1.1708268417100;
-        Sun, 18 Feb 2024 07:00:17 -0800 (PST)
-Received: from [100.64.0.1] ([170.85.8.176])
-        by smtp.gmail.com with ESMTPSA id d5-20020ac84e25000000b0042de98f38f3sm1706235qtw.63.2024.02.18.07.00.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 18 Feb 2024 07:00:16 -0800 (PST)
-Message-ID: <90a7443c-feca-4fbb-8c2e-fa050c0e6141@sifive.com>
-Date: Sun, 18 Feb 2024 09:00:14 -0600
-Precedence: bulk
-X-Mailing-List: stable@vger.kernel.org
-List-Id: <stable.vger.kernel.org>
-List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
-List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH -fixes v2 3/4] riscv: Add ISA extension parsing for Sm and
- Ss
-Content-Language: en-US
-To: Conor Dooley <conor@kernel.org>, Stefan O'Rear <sorear@fastmail.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>,
- Andrew Jones <ajones@ventanamicro.com>, linux-riscv@lists.infradead.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
+	s=arc-20240116; t=1708275771; c=relaxed/simple;
+	bh=qWyNRiG421dAjYKLRLROwxCibjuXvtznm1WgYeNyacQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Cjd8GE0/CnxFVEZLlyq0w1bQ6oZXAC4IpzYIvRxUmTf4aUBAuDfFtQjWXzAfFuBUNGaTRSbnPyVGCscmbFDY7JuE1d/ur7oyZhQR/VmqNPV8tK5JN5n7ZMDYFgDEv7qmGNd+CruuMqgIc7mOmRhZj/gdqxQozeGUXZurfc45u3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qC+7Iss1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5215FC433F1;
+	Sun, 18 Feb 2024 17:02:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708275771;
+	bh=qWyNRiG421dAjYKLRLROwxCibjuXvtznm1WgYeNyacQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qC+7Iss1WVr/u4uGeMhyAxUJ47KbW7ZzWrqCCepfOj9Oo2GRarYn0G9V1CHzoRrOT
+	 XxJuCN7blczYmeYaDnkSsEN8s82n5GW4SGQ9gXzvKfG6rYbRtbwYZCv+2QJyheSWLl
+	 IPdlv2Ck3ZRFplhYfoJeDPihp5wrJ6c6JUg3v0IRw0eyAC6+z/uFrybRN221zg6vob
+	 Thmylje/yFGHCWDHZ47cFrmJNj3ByHz9ssbkkgiMGDGaPNKAPWtTFn6jt/rxd08YB8
+	 sVvQRhT7whg+lB0DOeMOHwXtXDQbMxxW+7pM6mxIVSjA546WBKuxMN0BwdTGdEd/4d
+	 7o0IDykUZ0g7g==
+Date: Sun, 18 Feb 2024 17:02:46 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Samuel Holland <samuel.holland@sifive.com>
+Cc: Stefan O'Rear <sorear@fastmail.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH -fixes v2 3/4] riscv: Add ISA extension parsing for Sm
+ and Ss
+Message-ID: <20240218-rotunda-discover-d6d84709807e@spud>
 References: <20240213033744.4069020-1-samuel.holland@sifive.com>
  <20240213033744.4069020-4-samuel.holland@sifive.com>
  <20240213-dangle-taco-2742f6087a3e@spud>
  <ff3bd436-12f8-4cde-881d-89a005ad85c0@sifive.com>
  <b7ad2bd4-a19e-486e-8be2-3b56f288d5d0@app.fastmail.com>
  <20240213-earflap-easing-370492840507@spud>
-From: Samuel Holland <samuel.holland@sifive.com>
-In-Reply-To: <20240213-earflap-easing-370492840507@spud>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <90a7443c-feca-4fbb-8c2e-fa050c0e6141@sifive.com>
+Precedence: bulk
+X-Mailing-List: stable@vger.kernel.org
+List-Id: <stable.vger.kernel.org>
+List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="r0a/WySfeyXRLwE+"
+Content-Disposition: inline
+In-Reply-To: <90a7443c-feca-4fbb-8c2e-fa050c0e6141@sifive.com>
 
-Hi Conor, Stefan,
 
-Thanks for the discussion!
+--r0a/WySfeyXRLwE+
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 2024-02-13 5:15 PM, Conor Dooley wrote:
-> On Tue, Feb 13, 2024 at 03:43:27PM -0500, Stefan O'Rear wrote:
->> On Tue, Feb 13, 2024, at 3:22 PM, Samuel Holland wrote:
->>> On 2024-02-13 12:07 PM, Conor Dooley wrote:
->>>> On Mon, Feb 12, 2024 at 07:37:34PM -0800, Samuel Holland wrote:
->>>>> Previously, all extension version numbers were ignored. However, the
->>>>> version number is important for these two extensions. The simplest way
->>>>> to implement this is to use a separate bitmap bit for each supported
->>>>> version, with each successive version implying all of the previous ones.
->>>>> This allows alternatives and riscv_has_extension_[un]likely() to work
->>>>> naturally.
->>>>>
->>>>> To avoid duplicate extensions in /proc/cpuinfo, the new successor_id
->>>>> field allows hiding all but the newest implemented version of an
->>>>> extension.
->>>>>
->>>>> Cc: <stable@vger.kernel.org> # v6.7+
->>>>> Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
->>>>> ---
->>>>>
->>>>> Changes in v2:
->>>>>  - New patch for v2
->>>>>
->>>>>  arch/riscv/include/asm/cpufeature.h |  1 +
->>>>>  arch/riscv/include/asm/hwcap.h      |  8 ++++++
->>>>>  arch/riscv/kernel/cpu.c             |  5 ++++
->>>>>  arch/riscv/kernel/cpufeature.c      | 42 +++++++++++++++++++++++++----
->>>>>  4 files changed, 51 insertions(+), 5 deletions(-)
->>>>>
->>>>> diff --git a/arch/riscv/include/asm/cpufeature.h b/arch/riscv/include/asm/cpufeature.h
->>>>> index 0bd11862b760..ac71384e7bc4 100644
->>>>> --- a/arch/riscv/include/asm/cpufeature.h
->>>>> +++ b/arch/riscv/include/asm/cpufeature.h
->>>>> @@ -61,6 +61,7 @@ struct riscv_isa_ext_data {
->>>>>  	const char *property;
->>>>>  	const unsigned int *subset_ext_ids;
->>>>>  	const unsigned int subset_ext_size;
->>>>> +	const unsigned int successor_id;
->>>>>  };
->>>>>  
->>>>>  extern const struct riscv_isa_ext_data riscv_isa_ext[];
->>>>> diff --git a/arch/riscv/include/asm/hwcap.h b/arch/riscv/include/asm/hwcap.h
->>>>> index 5340f818746b..5b51aa1db15b 100644
->>>>> --- a/arch/riscv/include/asm/hwcap.h
->>>>> +++ b/arch/riscv/include/asm/hwcap.h
->>>>> @@ -80,13 +80,21 @@
->>>>>  #define RISCV_ISA_EXT_ZFA		71
->>>>>  #define RISCV_ISA_EXT_ZTSO		72
->>>>>  #define RISCV_ISA_EXT_ZACAS		73
->>>>> +#define RISCV_ISA_EXT_SM1p11		74
->>>>> +#define RISCV_ISA_EXT_SM1p12		75
->>>>> +#define RISCV_ISA_EXT_SS1p11		76
->>>>> +#define RISCV_ISA_EXT_SS1p12		77
->>>>>  
->>>>>  #define RISCV_ISA_EXT_MAX		128
->>>>>  #define RISCV_ISA_EXT_INVALID		U32_MAX
->>>>>  
->>>>>  #ifdef CONFIG_RISCV_M_MODE
->>>>> +#define RISCV_ISA_EXT_Sx1p11		RISCV_ISA_EXT_SM1p11
->>>>> +#define RISCV_ISA_EXT_Sx1p12		RISCV_ISA_EXT_SM1p12
->>>>>  #define RISCV_ISA_EXT_SxAIA		RISCV_ISA_EXT_SMAIA
->>>>>  #else
->>>>> +#define RISCV_ISA_EXT_Sx1p11		RISCV_ISA_EXT_SS1p11
->>>>> +#define RISCV_ISA_EXT_Sx1p12		RISCV_ISA_EXT_SS1p12
->>>>>  #define RISCV_ISA_EXT_SxAIA		RISCV_ISA_EXT_SSAIA
->>>>>  #endif
->>>>>  
->>>>> diff --git a/arch/riscv/kernel/cpu.c b/arch/riscv/kernel/cpu.c
->>>>> index d11d6320fb0d..2e6b90ed0d51 100644
->>>>> --- a/arch/riscv/kernel/cpu.c
->>>>> +++ b/arch/riscv/kernel/cpu.c
->>>>> @@ -215,6 +215,11 @@ static void print_isa(struct seq_file *f, const unsigned long *isa_bitmap)
->>>>>  		if (!__riscv_isa_extension_available(isa_bitmap, riscv_isa_ext[i].id))
->>>>>  			continue;
->>>>>  
->>>>> +		/* Only show the newest implemented version of an extension */
->>>>> +		if (riscv_isa_ext[i].successor_id != RISCV_ISA_EXT_INVALID &&
->>>>> +		    __riscv_isa_extension_available(isa_bitmap, riscv_isa_ext[i].successor_id))
->>>>> +			continue;
->>>>> +
->>>>>  		/* Only multi-letter extensions are split by underscores */
->>>>>  		if (strnlen(riscv_isa_ext[i].name, 2) != 1)
->>>>>  			seq_puts(f, "_");
->>>>> diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
->>>>> index c5b13f7dd482..8e10b50120e9 100644
->>>>> --- a/arch/riscv/kernel/cpufeature.c
->>>>> +++ b/arch/riscv/kernel/cpufeature.c
->>>>> @@ -113,23 +113,29 @@ static bool riscv_isa_extension_check(int id)
->>>>>  	return true;
->>>>>  }
->>>>>  
->>>>> -#define _RISCV_ISA_EXT_DATA(_name, _id, _subset_exts, _subset_exts_size) {	\
->>>>> +#define _RISCV_ISA_EXT_DATA(_name, _id, _subset_exts, _subset_exts_size, _successor) {	\
->>>>>  	.name = #_name,								\
->>>>>  	.property = #_name,							\
->>>>>  	.id = _id,								\
->>>>>  	.subset_ext_ids = _subset_exts,						\
->>>>> -	.subset_ext_size = _subset_exts_size					\
->>>>> +	.subset_ext_size = _subset_exts_size,					\
->>>>> +	.successor_id = _successor,						\
->>>>>  }
->>>>>  
->>>>> -#define __RISCV_ISA_EXT_DATA(_name, _id) _RISCV_ISA_EXT_DATA(_name, _id, NULL, 0)
->>>>> +#define __RISCV_ISA_EXT_DATA(_name, _id) \
->>>>> +	_RISCV_ISA_EXT_DATA(_name, _id, NULL, 0, RISCV_ISA_EXT_INVALID)
->>>>>  
->>>>>  /* Used to declare pure "lasso" extension (Zk for instance) */
->>>>>  #define __RISCV_ISA_EXT_BUNDLE(_name, _bundled_exts) \
->>>>> -	_RISCV_ISA_EXT_DATA(_name, RISCV_ISA_EXT_INVALID, _bundled_exts, ARRAY_SIZE(_bundled_exts))
->>>>> +	_RISCV_ISA_EXT_DATA(_name, RISCV_ISA_EXT_INVALID, \
->>>>> +			    _bundled_exts, ARRAY_SIZE(_bundled_exts), RISCV_ISA_EXT_INVALID)
->>>>>  
->>>>>  /* Used to declare extensions that are a superset of other extensions (Zvbb for instance) */
->>>>>  #define __RISCV_ISA_EXT_SUPERSET(_name, _id, _sub_exts) \
->>>>> -	_RISCV_ISA_EXT_DATA(_name, _id, _sub_exts, ARRAY_SIZE(_sub_exts))
->>>>> +	_RISCV_ISA_EXT_DATA(_name, _id, _sub_exts, ARRAY_SIZE(_sub_exts), RISCV_ISA_EXT_INVALID)
->>>>> +
->>>>> +#define __RISCV_ISA_EXT_VERSION(_name, _id, _preds, _preds_size, _successor) \
->>>>> +	_RISCV_ISA_EXT_DATA(_name, _id, _preds, _preds_size, _successor)
->>>>>  
->>>>>  static const unsigned int riscv_zk_bundled_exts[] = {
->>>>>  	RISCV_ISA_EXT_ZBKB,
->>>>> @@ -201,6 +207,16 @@ static const unsigned int riscv_zvbb_exts[] = {
->>>>>  	RISCV_ISA_EXT_ZVKB
->>>>>  };
->>>>>  
->>>>> +static const unsigned int riscv_sm_ext_versions[] = {
->>>>> +	RISCV_ISA_EXT_SM1p11,
->>>>> +	RISCV_ISA_EXT_SM1p12,
->>>>> +};
->>>>> +
->>>>> +static const unsigned int riscv_ss_ext_versions[] = {
->>>>> +	RISCV_ISA_EXT_SS1p11,
->>>>> +	RISCV_ISA_EXT_SS1p12,
->>>>> +};
->>>>> +
->>>>>  /*
->>>>>   * The canonical order of ISA extension names in the ISA string is defined in
->>>>>   * chapter 27 of the unprivileged specification.
->>>>> @@ -299,8 +315,16 @@ const struct riscv_isa_ext_data riscv_isa_ext[] = {
->>>>>  	__RISCV_ISA_EXT_DATA(zvksh, RISCV_ISA_EXT_ZVKSH),
->>>>>  	__RISCV_ISA_EXT_BUNDLE(zvksg, riscv_zvksg_bundled_exts),
->>>>>  	__RISCV_ISA_EXT_DATA(zvkt, RISCV_ISA_EXT_ZVKT),
->>>>> +	__RISCV_ISA_EXT_VERSION(sm1p11, RISCV_ISA_EXT_SM1p11, riscv_sm_ext_versions, 0,
->>>>> +				RISCV_ISA_EXT_SM1p12),
->>>>> +	__RISCV_ISA_EXT_VERSION(sm1p12, RISCV_ISA_EXT_SM1p12, riscv_sm_ext_versions, 1,
->>>>> +				RISCV_ISA_EXT_INVALID),
->>>>>  	__RISCV_ISA_EXT_DATA(smaia, RISCV_ISA_EXT_SMAIA),
->>>>>  	__RISCV_ISA_EXT_DATA(smstateen, RISCV_ISA_EXT_SMSTATEEN),
->>>>> +	__RISCV_ISA_EXT_VERSION(ss1p11, RISCV_ISA_EXT_SS1p11, riscv_ss_ext_versions, 0,
->>>>> +				RISCV_ISA_EXT_SS1p12),
->>>>> +	__RISCV_ISA_EXT_VERSION(ss1p12, RISCV_ISA_EXT_SS1p12, riscv_ss_ext_versions, 1,
->>>>> +				RISCV_ISA_EXT_INVALID),
->>>>>  	__RISCV_ISA_EXT_DATA(ssaia, RISCV_ISA_EXT_SSAIA),
->>>>>  	__RISCV_ISA_EXT_DATA(sscofpmf, RISCV_ISA_EXT_SSCOFPMF),
->>>>>  	__RISCV_ISA_EXT_DATA(sstc, RISCV_ISA_EXT_SSTC),
->>>>> @@ -414,6 +438,14 @@ static void __init riscv_parse_isa_string(unsigned long *this_hwcap, struct risc
->>>>>  				;
->>>>>  
->>>>>  			++ext_end;
->>>>> +
->>>>> +			/*
->>>>> +			 * As a special case for the Sm and Ss extensions, where the version
->>>>> +			 * number is important, include it in the extension name.
->>>>> +			 */
->>>>> +			if (ext_end - ext == 2 && tolower(ext[0]) == 's' &&
->>>>> +			    (tolower(ext[1]) == 'm' || tolower(ext[1]) == 's'))
->>>>> +				ext_end = isa;
->>>>>  			break;
->>>>>  		default:
->>>>>  			/*
->>>>
->>>>
->>>> Hmm, looking at all of this (especially this hack to the "old" parser),
->>>> I feel more like these should be promoted to a property of their own.
->>>> The "old" parser was designed to handle numbers, and here when you're
->>>> interested in the values behind the numbers (which is a first iirc), you
->>>> don't make any use of that. I don't really want to see a world where
->>>
->>> I had a version of this code that parsed the numbers and stored them as integers
->>> in `struct riscv_isainfo`. It didn't work with of_property_match_string() as
->>> used for riscv,isa-extensions, since that function expects the extension name to
->>> be the full string.
-> 
-> I don't think I actually want what I am about to say, but it's not as if we
-> are forced to parse it in that way for all properties. It's handy AF to be
-> able to reuse reuse that function, and that was part of my goal originally
-> with the property, but we are not locked into using
-> of_property_match_string() if there's some specific property where that's
-> getting in our way. That's kinda an aside though..
-> 
->>> Either we would need to change the code to parse a version
->>> number out of each string in the riscv,isa-extensions list (and make the binding
->>> a bunch of regexes), or we need a separate "extension" entry (and DT binding
->>> entry) for each supported version.
->>
->> Version numbers aren't real, there's no compatibility promise that we can
->> consistently rely on so we treat riscv,isa-extensions as simply containing
->> alphanumeric extensions.  This was an intentional part of simplifying riscv,isa
->> into riscv,isa-extensions.
-> 
-> You seem to recall my motivations better than I do!
-> 
->>> I chose the second option, and as a consequence I didn't actually need to parse
->>> the integer value in the ISA string code path either.
->>>
->>>> we have every single iteration of smNpM under the sun in the property,
->>>> because there's a fair bit of churn in the isa. Granted, this applies to
->>>> all the various, the difference for me is the level of churn.
->>>
->>> Indeed. In fact, one thought I had while looking at this code is that we should
->>> be ignoring any extension in the ISA string with a version < 1.0 or >= 2.0,
->>> since those won't be compatible with what we expect.
->>
->> I might go further and say that we should only accept specific exact versions of
->> extensions other than Ss/Sm.
-> 
-> This is what we do, right? Every property is supposed to match to
-> exactly the frozen or ratified spec, so they do have exactly one version
-> at present. The property descriptions should contain that information.
-> 
->> This could be revisited after the recent "semver
->> for ISA extensions" policy is tested at least once under real-world conditions.
->>
->> Right now we have two ratified versions of Ss/Sm, soon to be three, and one
+On Sun, Feb 18, 2024 at 09:00:14AM -0600, Samuel Holland wrote:
+> >>>> Or maybe we can still with the properties you have, but instead of
+> >>>> treating them like any other extension, handle these separately,
+> >>>> focusing on the numbering, so that only having the exact version
+> >>>> supported by a cpu is possible.
+> >>>
+> >>> Maybe I'm misunderstanding what you're saying here, but it is already=
+ the case
+> >>> that the DT for a CPU would only contain the exact version of the pri=
+vileged ISA
+> >>> supported by that CPU.
+> >>
+> >> If privileged spec versions are boolean extensions, then you would say=
+ "ss1p11",
+> >> "ss1p12", "ss1p13" as separate/simultaneous extensions.
+> >=20
+> >> This is needed in order
+> >> to allow simple support checks as described in the riscv,isa-extension=
+s cover
+> >> letter.
+> >=20
+> > Yes, it is explicitly a goal of riscv,isa-extensions that you can look
+> > for a specific extension in the list if that is all you care about. If
+> > you go and drop ss1p11 because you support ss1p12 it defeats that.
+>=20
+> Okay, that makes sense, but that is not how the parsing code works right =
+now,
+> which is probably what led me down the wrong path. :)
+>=20
+> To have the intended semantics, we cannot parse _anything_ in
+> riscv,isa-extensions as a "bundled" or "superset" extension.
 
-My understanding (from hwprobe.rst and various ML comments) is that Linux
-assumes Ss1p10. That's why I started counting with Ss1p11. It looks like Ss1p10
-was never ratified, but that doesn't prevent us from referencing it in the
-binding, if needed. Should we start enumerating extensions at Ss1p11 or
-something else?
+That's not true I don't think. You can parse as a "bundle" but...
 
->> ratified version of all other extensions.  I hardly think this is an excessive
->> amount of churn.
-> 
-> Yeah, maybe it's fine. I'm just overthinking it and there isn't a
-> problem.
+> Because to
+> accomplish your goal, each extension in the bundle must be listed explici=
+tly, in
+> case the consumer only cares about that one extension.
 
-My interpretation of this and the above comments is that we do actually want to
-enumerate every supported "version" of the privileged ISA in the binding, and
-parse them as entirely independent extensions that just happen to have
-similar-looking names. Is that correct?
+=2E..as you note here, the extensions also have to be listed explicitly so
+that they can be detected in isolation if that is all that a consumer
+does.
 
->>>> Or maybe we can still with the properties you have, but instead of
->>>> treating them like any other extension, handle these separately,
->>>> focusing on the numbering, so that only having the exact version
->>>> supported by a cpu is possible.
->>>
->>> Maybe I'm misunderstanding what you're saying here, but it is already the case
->>> that the DT for a CPU would only contain the exact version of the privileged ISA
->>> supported by that CPU.
->>
->> If privileged spec versions are boolean extensions, then you would say "ss1p11",
->> "ss1p12", "ss1p13" as separate/simultaneous extensions.
-> 
->> This is needed in order
->> to allow simple support checks as described in the riscv,isa-extensions cover
->> letter.
-> 
-> Yes, it is explicitly a goal of riscv,isa-extensions that you can look
-> for a specific extension in the list if that is all you care about. If
-> you go and drop ss1p11 because you support ss1p12 it defeats that.
+> So it sounds like
+> riscv_fill_hwcap_from_ext_list() needs to ignore subset_ext_size/subset_e=
+xt_ids.
 
-Okay, that makes sense, but that is not how the parsing code works right now,
-which is probably what led me down the wrong path. :)
+Do you mean this:
+if (ext->subset_ext_size) {
+	for (int j =3D 0; j < ext->subset_ext_size; j++) {
+		if (riscv_isa_extension_check(ext->subset_ext_ids[i]))
+			set_bit(ext->subset_ext_ids[j], isainfo->isa);
+	}
+}
 
-To have the intended semantics, we cannot parse _anything_ in
-riscv,isa-extensions as a "bundled" or "superset" extension. Because to
-accomplish your goal, each extension in the bundle must be listed explicitly, in
-case the consumer only cares about that one extension. So it sounds like
-riscv_fill_hwcap_from_ext_list() needs to ignore subset_ext_size/subset_ext_ids.
+I think that is fine? If you find the "superset" you can enable the
+individual elements. The problem would just be if someone put only the
+superset in a DT (or ACPI tables) and the software looked for the
+individual element only, but IIRC the kernel currently checks both the
+superset and individual elements.
+It would be possible to check a bundle and then skip looking for the
+individual elements if the bundle was already found if the parsing is
+wont to be sped up.
 
-> I don't know off the top of my head how to enforce ss1p12 requiring ss1p11
-> in json schema, but I do have an idea of where to start...
+I think all we need to do is enforce that all individual elements are
+present on a schema validation level (I have no clue what we can do
+for ACPI) and no change is required in the kernel.
 
-Yeah, this is different from normal "dependencies:" because it is a string list.
+Am I misunderstanding what you think is the problem here?
 
-I think we need to add dependencies in the binding for the bundled extensions as
-well, and maybe even between extensions like "d" and "f".
+> > I don't know off the top of my head how to enforce ss1p12 requiring ss1=
+p11
+> > in json schema, but I do have an idea of where to start...
+>=20
+> Yeah, this is different from normal "dependencies:" because it is a strin=
+g list.
 
->>> With this implementation, the fact that the integer version gets expanded to a
->>> series of flags is supposed to be invisible in the DT and to userspace. I
->>> realize I don't quite succeed there: putting "ss1p13" in the ISA string should
->>> work, but does not.
->>>
->>>> I'm still pretty undecided, I'd like to think about this a little bit,
->>>> but I think we can do better here.
->>>
->>> Sure, no problem. I'm happy to implement whatever we agree on. Though one
->>> consideration I had is that this is all in support of fixing a bug in v6.7, so I
->>> wanted the changes to be backportable.
->>>
->>> I suppose the easy way out for backporting is to check for RISCV_ISA_EXT_ZICBOZ
->>> for now, and then solve the larger problem once there is some other user of the
->>> envcfg CSR (or another Ss1p12 feature).
->>
->> I support that course of action.
-> 
-> I saw another mail suggesting that Zicbom implied Ss1p12, I think that
-> should be reasonable position to take for now.
+I think it is actually doable, just will look sorta clunky. I meant to
+go and do it this weekend, but I've been rather sick unfortunately.
+Something similar is definitely doable for compatibles, so either it'll
+"just work" or I may have to extend the validation tooling.
 
-Like I mentioned in my other email, I don't think Zicboz is sufficient to imply
-Ss1p12. So I'd prefer to either stay with checking Zicboz (like v3 does); or add
-a bit for specifically the existence of the the envcfg CSR, that doesn't map to
-anything in the ISA string (i.e. is not listed in riscv_isa_ext). Of course, if
-we start ignoring subset_ext_ids, I'll have to reconsider how to actually
-implement that.
+Cheers,
+Conor.
 
-Regards,
-Samuel
+--r0a/WySfeyXRLwE+
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZdI3+gAKCRB4tDGHoIJi
+0op+AQD+yswfcNC39kGvy+5LlZblpT5uVA4VMEPH51eOdf6opgEA64Aq9nCRWaUY
+XrJa2JzMMscuYkn0xKBnFl5H5ed3sAs=
+=oPKw
+-----END PGP SIGNATURE-----
+
+--r0a/WySfeyXRLwE+--
 
