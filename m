@@ -1,50 +1,49 @@
-Return-Path: <stable+bounces-20448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1642859645
-	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 11:30:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6FDF85969E
+	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 12:15:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8685D28487D
-	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 10:30:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 582352828D5
+	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 11:15:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F96E3D56C;
-	Sun, 18 Feb 2024 10:30:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EC9TbaFt"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82C495BAC3;
+	Sun, 18 Feb 2024 11:15:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCA7F383B0;
-	Sun, 18 Feb 2024 10:30:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B74B5B5DE;
+	Sun, 18 Feb 2024 11:15:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.57
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708252226; cv=none; b=U9vtFT8DtMj3XFymEm/SgaTCX7ivVZwOtF9Jjg9SmnqT1wHPLZAeiWqPwdE1A1tOxoSNNfSYSNTwM/IoPKMiu9V3AhToY/+wUj81j8Cr+mhnUW4ui0KFn0TflEfn3s4GEvkGNyDDGcHAa+zJBStIjP6gcqcqpTeHT/PQ1+eG/Uw=
+	t=1708254953; cv=none; b=qV3of2w6i2ZB7okH/17y19tnUnK4pQjB/ndBiJWJChteYT0J7qU6t9ZD3tWP8q81lhCvTfnyBLPDoyx51PUvMsR1AkHgFdtSzJRFK9egn+68yEqVrd6RH0l44IVgSPolCJL+BbSceGLC8/nvklPqgvgVi9D5wkQlCTM51pV0TH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708252226; c=relaxed/simple;
-	bh=3+SCX68+BR4ikcTOVUJ8dLGXtBO7YBQJrQoEZ0s5SlQ=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=mNvW/yQb+DI2R7RKJjfVGe8sLp9j8l6jCP+4QqG7BPS1KHedZsQG3ZrfszREQkAHH30kveAWyM6ixnFX/wFMsMq+hXCNJkaIcxgLO+82Xyhk+lqyzgMWaAlpZzt7ug1eH2nRQRDoQ97OSkjYoSXqrBdq9PANSju3jj5aWL8TGqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EC9TbaFt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 606EBC43390;
-	Sun, 18 Feb 2024 10:30:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708252226;
-	bh=3+SCX68+BR4ikcTOVUJ8dLGXtBO7YBQJrQoEZ0s5SlQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=EC9TbaFtKL2cffq/Tnbi117BoptMRJgSL3M6ne1V4ew7Yk7Xo+gE5//ta/TYWCA8N
-	 I5gyesn/3Dq+YL1+Z20nFZXVwqI2FlC8I3+7tJMb9DKjMAYrdCfdCkgRFAhtBzvMk+
-	 85IDAWpXGd+lRqHSpFj8uiwA7yXutCFyHLJarla05FN6+dzMGNKsEEgTDE9uwEKC8E
-	 KH3pCYQzJosIkkiEQnpWi/tWWHByUXJYtxkSsHhbPokC2gDwG3ZzvBoQuJSmPhlgHi
-	 DIYEQAa5QKskn+DzQcawpP+S94RJJXmpBlOdNDORJf17Bezgb2Z90h9TjHbQpvmw2V
-	 MctjWI6PLI44w==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 45BD5DC99F1;
-	Sun, 18 Feb 2024 10:30:26 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1708254953; c=relaxed/simple;
+	bh=3RCAC2tGPp94QxUIfOSNRlkwK8c+7r6xMMR+D5gQG6M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Gmdhp2+/T9KjCiv069Lo9kIwMeqcMdHiwhG9k9bTKoATVkHfHJiena//FiVbzevhB3SdIu6wiZD1o5cCDdTdR182ZxfHo3Pymh/esIbndxus/S/SVUaoUyA4KNOv3y7TitOp02XOQlh7pD9fuj9l1H//oDp3yV+kChNq3Hmome8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
+Received: from imap.altlinux.org (imap.altlinux.org [194.107.17.38])
+	by vmicros1.altlinux.org (Postfix) with ESMTP id B1E4C72C90D;
+	Sun, 18 Feb 2024 14:15:47 +0300 (MSK)
+Received: from beacon.altlinux.org (unknown [193.43.10.9])
+	by imap.altlinux.org (Postfix) with ESMTPSA id A290936D016F;
+	Sun, 18 Feb 2024 14:15:47 +0300 (MSK)
+From: Vitaly Chikunov <vt@altlinux.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	stable@vger.kernel.org
+Cc: Vitaly Chikunov <vt@altlinux.org>,
+	Kees Cook <keescook@chromium.org>,
+	linux-cifs@vger.kernel.org,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1.y] cifs: Convert struct fealist away from 1-element array
+Date: Sun, 18 Feb 2024 14:15:38 +0300
+Message-ID: <20240218111538.2592901-1-vt@altlinux.org>
+X-Mailer: git-send-email 2.42.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,68 +51,123 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 00/13] mptcp: misc. fixes for v6.8
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <170825222628.22893.6012598424482602231.git-patchwork-notify@kernel.org>
-Date: Sun, 18 Feb 2024 10:30:26 +0000
-References: <20240215-upstream-net-20240215-misc-fixes-v1-0-8c01a55d8f6a@kernel.org>
-In-Reply-To: <20240215-upstream-net-20240215-misc-fixes-v1-0-8c01a55d8f6a@kernel.org>
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: mptcp@lists.linux.dev, martineau@kernel.org, geliang@kernel.org,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- dcaratti@redhat.com, shuah@kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- tanggeliang@kylinos.cn, stable@vger.kernel.org, borisp@nvidia.com,
- john.fastabend@gmail.com
 
-Hello:
+From: Kees Cook <keescook@chromium.org>
 
-This series was applied to netdev/net.git (main)
-by David S. Miller <davem@davemloft.net>:
+commit 398d5843c03261a2b68730f2f00643826bcec6ba upstream.
 
-On Thu, 15 Feb 2024 19:25:27 +0100 you wrote:
-> This series includes 4 types of fixes:
-> 
-> Patches 1 and 2 force the path-managers not to allocate a new address
-> entry when dealing with the "special" ID 0, reserved to the address of
-> the initial subflow. These patches can be backported up to v5.19 and
-> v5.12 respectively.
-> 
-> [...]
+The kernel is globally removing the ambiguous 0-length and 1-element
+arrays in favor of flexible arrays, so that we can gain both compile-time
+and run-time array bounds checking[1].
 
-Here is the summary with links:
-  - [net,01/13] mptcp: add needs_id for userspace appending addr
-    https://git.kernel.org/netdev/net/c/6c347be62ae9
-  - [net,02/13] mptcp: add needs_id for netlink appending addr
-    https://git.kernel.org/netdev/net/c/584f38942626
-  - [net,03/13] mptcp: fix lockless access in subflow ULP diag
-    https://git.kernel.org/netdev/net/c/b8adb69a7d29
-  - [net,04/13] mptcp: fix data races on local_id
-    https://git.kernel.org/netdev/net/c/a7cfe7766370
-  - [net,05/13] mptcp: fix data races on remote_id
-    https://git.kernel.org/netdev/net/c/967d3c27127e
-  - [net,06/13] mptcp: fix duplicate subflow creation
-    https://git.kernel.org/netdev/net/c/045e9d812868
-  - [net,07/13] selftests: mptcp: pm nl: also list skipped tests
-    https://git.kernel.org/netdev/net/c/d2a2547565a9
-  - [net,08/13] selftests: mptcp: pm nl: avoid error msg on older kernels
-    https://git.kernel.org/netdev/net/c/662f084f3396
-  - [net,09/13] selftests: mptcp: diag: fix bash warnings on older kernels
-    https://git.kernel.org/netdev/net/c/694bd45980a6
-  - [net,10/13] selftests: mptcp: simult flows: fix some subtest names
-    https://git.kernel.org/netdev/net/c/4d8e0dde0403
-  - [net,11/13] selftests: mptcp: userspace_pm: unique subtest names
-    https://git.kernel.org/netdev/net/c/2ef0d804c090
-  - [net,12/13] selftests: mptcp: diag: unique 'in use' subtest names
-    https://git.kernel.org/netdev/net/c/645c1dc965ef
-  - [net,13/13] selftests: mptcp: diag: unique 'cestab' subtest names
-    https://git.kernel.org/netdev/net/c/4103d8480866
+While struct fealist is defined as a "fake" flexible array (via a
+1-element array), it is only used for examination of the first array
+element. Walking the list is performed separately, so there is no reason
+to treat the "list" member of struct fealist as anything other than a
+single entry. Adjust the struct and code to match.
 
-You are awesome, thank you!
+Additionally, struct fea uses the "name" member either as a dynamic
+string, or is manually calculated from the start of the struct. Redefine
+the member as a flexible array.
+
+No machine code output differences are produced after these changes.
+
+[1] For lots of details, see both:
+    https://docs.kernel.org/process/deprecated.html#zero-length-and-one-element-arrays
+    https://people.kernel.org/kees/bounded-flexible-arrays-in-c
+
+Cc: Steve French <sfrench@samba.org>
+Cc: Paulo Alcantara <pc@cjr.nz>
+Cc: Ronnie Sahlberg <lsahlber@redhat.com>
+Cc: Shyam Prasad N <sprasad@microsoft.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ vt: Tested to not break build on x86_64 over v6.1.78. Bug report at [1]. ]
+Link: https://lore.kernel.org/all/qjyfz2xftsbch6aozgplxyjfyqnuhn7j44udrucls4pqa5ey35@adxvvrdtagqf/
+Cc: stable@vger.kernel.org # 6.1
+Signed-off-by: Vitaly Chikunov <vt@altlinux.org>
+---
+ fs/smb/client/cifspdu.h |  4 ++--
+ fs/smb/client/cifssmb.c | 16 ++++++++--------
+ 2 files changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/fs/smb/client/cifspdu.h b/fs/smb/client/cifspdu.h
+index 97bb1838555b..96ed0a4a2ce2 100644
+--- a/fs/smb/client/cifspdu.h
++++ b/fs/smb/client/cifspdu.h
+@@ -2593,7 +2593,7 @@ struct fea {
+ 	unsigned char EA_flags;
+ 	__u8 name_len;
+ 	__le16 value_len;
+-	char name[1];
++	char name[];
+ 	/* optionally followed by value */
+ } __attribute__((packed));
+ /* flags for _FEA.fEA */
+@@ -2601,7 +2601,7 @@ struct fea {
+ 
+ struct fealist {
+ 	__le32 list_len;
+-	struct fea list[1];
++	struct fea list;
+ } __attribute__((packed));
+ 
+ /* used to hold an arbitrary blob of data */
+diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
+index 67c5fc2b2db9..784fc5ba2c44 100644
+--- a/fs/smb/client/cifssmb.c
++++ b/fs/smb/client/cifssmb.c
+@@ -5697,7 +5697,7 @@ CIFSSMBQAllEAs(const unsigned int xid, struct cifs_tcon *tcon,
+ 
+ 	/* account for ea list len */
+ 	list_len -= 4;
+-	temp_fea = ea_response_data->list;
++	temp_fea = &ea_response_data->list;
+ 	temp_ptr = (char *)temp_fea;
+ 	while (list_len > 0) {
+ 		unsigned int name_len;
+@@ -5812,7 +5812,7 @@ CIFSSMBSetEA(const unsigned int xid, struct cifs_tcon *tcon,
+ 	else
+ 		name_len = strnlen(ea_name, 255);
+ 
+-	count = sizeof(*parm_data) + ea_value_len + name_len;
++	count = sizeof(*parm_data) + 1 + ea_value_len + name_len;
+ 	pSMB->MaxParameterCount = cpu_to_le16(2);
+ 	/* BB find max SMB PDU from sess */
+ 	pSMB->MaxDataCount = cpu_to_le16(1000);
+@@ -5836,14 +5836,14 @@ CIFSSMBSetEA(const unsigned int xid, struct cifs_tcon *tcon,
+ 	byte_count = 3 /* pad */  + params + count;
+ 	pSMB->DataCount = cpu_to_le16(count);
+ 	parm_data->list_len = cpu_to_le32(count);
+-	parm_data->list[0].EA_flags = 0;
++	parm_data->list.EA_flags = 0;
+ 	/* we checked above that name len is less than 255 */
+-	parm_data->list[0].name_len = (__u8)name_len;
++	parm_data->list.name_len = (__u8)name_len;
+ 	/* EA names are always ASCII */
+ 	if (ea_name)
+-		strncpy(parm_data->list[0].name, ea_name, name_len);
+-	parm_data->list[0].name[name_len] = 0;
+-	parm_data->list[0].value_len = cpu_to_le16(ea_value_len);
++		strncpy(parm_data->list.name, ea_name, name_len);
++	parm_data->list.name[name_len] = '\0';
++	parm_data->list.value_len = cpu_to_le16(ea_value_len);
+ 	/* caller ensures that ea_value_len is less than 64K but
+ 	we need to ensure that it fits within the smb */
+ 
+@@ -5851,7 +5851,7 @@ CIFSSMBSetEA(const unsigned int xid, struct cifs_tcon *tcon,
+ 	     negotiated SMB buffer size BB */
+ 	/* if (ea_value_len > buffer_size - 512 (enough for header)) */
+ 	if (ea_value_len)
+-		memcpy(parm_data->list[0].name+name_len+1,
++		memcpy(parm_data->list.name + name_len + 1,
+ 		       ea_value, ea_value_len);
+ 
+ 	pSMB->TotalDataCount = pSMB->DataCount;
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.42.1
 
 
