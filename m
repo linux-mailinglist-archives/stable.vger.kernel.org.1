@@ -1,42 +1,42 @@
-Return-Path: <stable+bounces-20424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0CB3859415
-	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 03:33:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEB82859413
+	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 03:33:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D50821C20CA2
-	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 02:33:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27B761C20CB9
+	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 02:33:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 601F217FF;
-	Sun, 18 Feb 2024 02:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 735BA15D0;
+	Sun, 18 Feb 2024 02:33:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C2A4A39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C584C61
 	for <stable@vger.kernel.org>; Sun, 18 Feb 2024 02:33:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708223593; cv=none; b=pjgnnsL19FDdcxTmFnKEFgs7RBOTelhhF4hY3Xv1s4qM+ViYxhdpU5lm1T+KLcj+sCHQtcUd3PwoCPdVQHZOZZgd7YMt5S/zUoMLsCUra4DduxvKeZeGz59Sav4mhEF8WfYuPr5RQkyHsPLDUBo7ctTWqGCKHtNMdqqQ42mraCg=
+	t=1708223592; cv=none; b=HF6mJZ0oNgPanAQEfBQFMoDz35uAoGEVnv2x775/dN8Ebdv+KtIoMTzRF0bK4C03vFC0QwaOmqXBkguT4+zaj+eLSrneReyr8rg2q3V9eWz0uwB748H8jLniweCucTiJWM1qzEY0oGAIpThqtX3S7PnubVJq6kXXZPlwsV+kwEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708223593; c=relaxed/simple;
-	bh=u6zdfIrB3TTZ9OodSD8zCTjZtYmMElWZReB0gQyO8/U=;
+	s=arc-20240116; t=1708223592; c=relaxed/simple;
+	bh=X9YzacXbIe9hORCs5ZLTezqCNPMFTIAu+rPi6ooHsZE=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fkydH1yA7GxjdSzkzNCGNo5prea5rn0Fmp5Xa/ONggOqOBCfj7MRbulWNyAB+IdBYKATzeb2tLV1d+8sui7QkcZ2b5nsbhj7Mnb/96RRwlIZa92cCHRF7HATX+wH2fSp+EzhfnViTWPa7WFaoZV/5TDXggMZpayAfHfoMlkv5ws=
+	 MIME-Version:Content-Type; b=rLN6uu/5iZpXoon+S34kFu2ZTtVzRwmEG2AjfKqep7Le8YkiVnGug4mbGqLTX6hM3qKZgFhvNPW4PrDVGO3Q1U8Qlucg2bx+7IRovIFMaDzDP2fK7xEQIykCmtZ326n65//N9N1I/AYUAh0lp1k5kikaovexJtF2lF7NtOH+fJ8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.44])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4TcqN33Xp9z1FKWR;
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4TcqN34yK9z1FKYK;
 	Sun, 18 Feb 2024 10:28:19 +0800 (CST)
-Received: from canpemm500007.china.huawei.com (unknown [7.192.104.62])
-	by mail.maildlp.com (Postfix) with ESMTPS id 95D23140157;
+Received: from canpemm500002.china.huawei.com (unknown [7.192.104.244])
+	by mail.maildlp.com (Postfix) with ESMTPS id CA4AA1A016B;
 	Sun, 18 Feb 2024 10:33:07 +0800 (CST)
 Received: from canpemm500004.china.huawei.com (7.192.104.92) by
- canpemm500007.china.huawei.com (7.192.104.62) with Microsoft SMTP Server
+ canpemm500002.china.huawei.com (7.192.104.244) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
  15.1.2507.35; Sun, 18 Feb 2024 10:33:07 +0800
 Received: from huawei.com (10.67.174.111) by canpemm500004.china.huawei.com
@@ -49,9 +49,9 @@ To: <ardb@kernel.org>, <mark.rutland@arm.com>, <catalin.marinas@arm.com>,
 CC: <keescook@chromium.org>, <linux-arm-kernel@lists.infradead.org>,
 	<stable@vger.kernel.org>, <gregkh@linuxfoundation.org>,
 	<xiangyang3@huawei.com>, <xiujianfeng@huawei.com>, <liaochang1@huawei.com>
-Subject: [PATCH 5.10.y 2/5] arm64: entry: move arm64_preempt_schedule_irq to entry-common.c
-Date: Sun, 18 Feb 2024 10:30:52 +0800
-Message-ID: <20240218023055.145519-3-xiangyang3@huawei.com>
+Subject: [PATCH 5.10.y 3/5] arm64: entry: add a call_on_irq_stack helper
+Date: Sun, 18 Feb 2024 10:30:53 +0800
+Message-ID: <20240218023055.145519-4-xiangyang3@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240218023055.145519-1-xiangyang3@huawei.com>
 References: <20240218023055.145519-1-xiangyang3@huawei.com>
@@ -68,106 +68,92 @@ X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
 
 From: Mark Rutland <mark.rutland@arm.com>
 
-commit 33a3581a76f3a36c7dcc9864120ce681bcfbcff1 upstream.
+commit f8049488e7d37b0a0e438ee449e83b3e46958743 upstream.
 
-Subsequent patches will pull more of the IRQ entry handling into C. To
-keep this in one place, let's move arm64_preempt_schedule_irq() into
-entry-common.c along with the other entry management functions.
+When handling IRQ/FIQ exceptions the entry assembly may transition from
+a task's stack to a CPU's IRQ stack (and IRQ shadow call stack).
 
-We no longer need to include <linux/lockdep.h> in process.c, so the
-include directive is removed.
+In subsequent patches we want to migrate the IRQ/FIQ triage logic to C,
+and as we want to perform some actions on the task stack (e.g. EL1
+preemption), we need to switch stacks within the C handler. So that we
+can do so, this patch adds a helper to call a function on a CPU's IRQ
+stack (and shadow stack as appropriate).
 
-There should be no functional change as a result of this patch.
-
-Reviewed-by Joey Gouly <joey.gouly@arm.com>
+Subsequent patches will make use of the new helper function.
 
 Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Acked-by: Catalin Marinas <catalin.marinas@arm.com>
 Acked-by: Marc Zyngier <maz@kernel.org>
 Cc: James Morse <james.morse@arm.com>
 Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20210607094624.34689-5-mark.rutland@arm.com
+Link: https://lore.kernel.org/r/20210607094624.34689-7-mark.rutland@arm.com
 Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Xiang Yang <xiangyang3@huawei.com>
 ---
- arch/arm64/kernel/entry-common.c | 20 ++++++++++++++++++++
- arch/arm64/kernel/process.c      | 17 -----------------
- 2 files changed, 20 insertions(+), 17 deletions(-)
+ arch/arm64/include/asm/exception.h |  2 ++
+ arch/arm64/kernel/entry.S          | 36 ++++++++++++++++++++++++++++++
+ 2 files changed, 38 insertions(+)
 
-diff --git a/arch/arm64/kernel/entry-common.c b/arch/arm64/kernel/entry-common.c
-index 7a8cd856ee85..a533f4827253 100644
---- a/arch/arm64/kernel/entry-common.c
-+++ b/arch/arm64/kernel/entry-common.c
-@@ -6,7 +6,11 @@
-  */
+diff --git a/arch/arm64/include/asm/exception.h b/arch/arm64/include/asm/exception.h
+index cc5b2203d876..def53267f4a2 100644
+--- a/arch/arm64/include/asm/exception.h
++++ b/arch/arm64/include/asm/exception.h
+@@ -28,6 +28,8 @@ static inline u32 disr_to_esr(u64 disr)
  
- #include <linux/context_tracking.h>
-+#include <linux/linkage.h>
-+#include <linux/lockdep.h>
- #include <linux/ptrace.h>
-+#include <linux/sched.h>
-+#include <linux/sched/debug.h>
- #include <linux/thread_info.h>
+ asmlinkage void noinstr enter_el1_irq_or_nmi(struct pt_regs *regs);
+ asmlinkage void noinstr exit_el1_irq_or_nmi(struct pt_regs *regs);
++asmlinkage void call_on_irq_stack(struct pt_regs *regs,
++				  void (*func)(struct pt_regs *));
+ asmlinkage void enter_from_user_mode(void);
+ asmlinkage void exit_to_user_mode(void);
+ void arm64_enter_nmi(struct pt_regs *regs);
+diff --git a/arch/arm64/kernel/entry.S b/arch/arm64/kernel/entry.S
+index 020a455824be..8b17d83e8c87 100644
+--- a/arch/arm64/kernel/entry.S
++++ b/arch/arm64/kernel/entry.S
+@@ -1043,6 +1043,42 @@ SYM_CODE_START(ret_from_fork)
+ SYM_CODE_END(ret_from_fork)
+ NOKPROBE(ret_from_fork)
  
- #include <asm/cpufeature.h>
-@@ -109,6 +113,22 @@ asmlinkage void noinstr exit_el1_irq_or_nmi(struct pt_regs *regs)
- 		exit_to_kernel_mode(regs);
- }
- 
-+asmlinkage void __sched arm64_preempt_schedule_irq(void)
-+{
-+	lockdep_assert_irqs_disabled();
++/*
++ * void call_on_irq_stack(struct pt_regs *regs,
++ * 		          void (*func)(struct pt_regs *));
++ *
++ * Calls func(regs) using this CPU's irq stack and shadow irq stack.
++ */
++SYM_FUNC_START(call_on_irq_stack)
++#ifdef CONFIG_SHADOW_CALL_STACK
++	stp	scs_sp, xzr, [sp, #-16]!
++	adr_this_cpu scs_sp, irq_shadow_call_stack, x17
++#endif
++	/* Create a frame record to save our LR and SP (implicit in FP) */
++	stp	x29, x30, [sp, #-16]!
++	mov	x29, sp
++
++	ldr_this_cpu x16, irq_stack_ptr, x17
++	mov	x15, #IRQ_STACK_SIZE
++	add	x16, x16, x15
++
++	/* Move to the new stack and call the function there */
++	mov	sp, x16
++	blr	x1
 +
 +	/*
-+	 * Preempting a task from an IRQ means we leave copies of PSTATE
-+	 * on the stack. cpufeature's enable calls may modify PSTATE, but
-+	 * resuming one of these preempted tasks would undo those changes.
-+	 *
-+	 * Only allow a task to be preempted once cpufeatures have been
-+	 * enabled.
++	 * Restore the SP from the FP, and restore the FP and LR from the frame
++	 * record.
 +	 */
-+	if (system_capabilities_finalized())
-+		preempt_schedule_irq();
-+}
++	mov	sp, x29
++	ldp	x29, x30, [sp], #16
++#ifdef CONFIG_SHADOW_CALL_STACK
++	ldp	scs_sp, xzr, [sp], #16
++#endif
++	ret
++SYM_FUNC_END(call_on_irq_stack)
++NOKPROBE(call_on_irq_stack)
 +
- static void noinstr el1_abort(struct pt_regs *regs, unsigned long esr)
- {
- 	unsigned long far = read_sysreg(far_el1);
-diff --git a/arch/arm64/kernel/process.c b/arch/arm64/kernel/process.c
-index 3696dbcbfa80..a04b152696cf 100644
---- a/arch/arm64/kernel/process.c
-+++ b/arch/arm64/kernel/process.c
-@@ -18,7 +18,6 @@
- #include <linux/sched/task.h>
- #include <linux/sched/task_stack.h>
- #include <linux/kernel.h>
--#include <linux/lockdep.h>
- #include <linux/mman.h>
- #include <linux/mm.h>
- #include <linux/nospec.h>
-@@ -702,22 +701,6 @@ static int __init tagged_addr_init(void)
- core_initcall(tagged_addr_init);
- #endif	/* CONFIG_ARM64_TAGGED_ADDR_ABI */
+ #ifdef CONFIG_ARM_SDE_INTERFACE
  
--asmlinkage void __sched arm64_preempt_schedule_irq(void)
--{
--	lockdep_assert_irqs_disabled();
--
--	/*
--	 * Preempting a task from an IRQ means we leave copies of PSTATE
--	 * on the stack. cpufeature's enable calls may modify PSTATE, but
--	 * resuming one of these preempted tasks would undo those changes.
--	 *
--	 * Only allow a task to be preempted once cpufeatures have been
--	 * enabled.
--	 */
--	if (system_capabilities_finalized())
--		preempt_schedule_irq();
--}
--
- #ifdef CONFIG_BINFMT_ELF
- int arch_elf_adjust_prot(int prot, const struct arch_elf_state *state,
- 			 bool has_interp, bool is_interp)
+ #include <asm/sdei.h>
 -- 
 2.34.1
 
