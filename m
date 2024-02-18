@@ -1,83 +1,189 @@
-Return-Path: <stable+bounces-20441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FEB9859603
-	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 10:34:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44843859608
+	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 10:38:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5270E1C20A13
-	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 09:34:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6989A1C211F5
+	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 09:38:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 601DB8836;
-	Sun, 18 Feb 2024 09:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D16A012B79;
+	Sun, 18 Feb 2024 09:38:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iNhzhRzH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cy3wdBwB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20E453FC8
-	for <stable@vger.kernel.org>; Sun, 18 Feb 2024 09:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93BCB3FC8
+	for <stable@vger.kernel.org>; Sun, 18 Feb 2024 09:38:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708248875; cv=none; b=KX2NiOLHk92ks2+bvp0tKO2PtKcJZIP8lGEUo+fuVXr9VZBb7M1WIq2tDBbdfsk3pIRx57h+qTiYMz6Lfi/hc350z9PDMwb2LewyTOwEsJkfjeqEBMmTrYuSF+bLgECBZjwmLCHJvPbKPpng8rYu6sS3KeH9XEKng0TvK37Nd34=
+	t=1708249080; cv=none; b=ctZ2lyxvGALoqSTMsN4uVDAkKg9KHLXvF0Vc8PV0iW5IEff6Ix0RFU9Kh52KQSRpZGkUT9aV9GOBnqmYnKoUZSlWN2XrsDuK4nvqyG+OSP7EHTjjZpO+A3yPkN5m+QeVkNI6hXNz3w2Cro72y47sFndywcGBPTNM40e1F8RrT70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708248875; c=relaxed/simple;
-	bh=DPiAV3iqoIoJ3RDBnSgdMnEStWmhfZYC+8bhlhTlKWM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BOfqrHM2R4jyVVo5GBkozXGJedMeNyVOq8+OSW+N8z9lH8ekAQXnlA3ntzISeHVFUTbH2xP2kobvNwXheR9SdfqH7+ofWv6tItL6hC0OTseKFUiP+gkHlgDgZIUzLcfPLaNmd+3naQ/uqhzNiWUtwlrYMri8XxitvVOljubFsGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iNhzhRzH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81493C433F1;
-	Sun, 18 Feb 2024 09:34:34 +0000 (UTC)
+	s=arc-20240116; t=1708249080; c=relaxed/simple;
+	bh=vUhIcaeKXYguyIfC0FgCJk+aR7Ax8s/RnZHXsmp9Oz4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Pqdf5lza1DFivh6rzxG/YcFOOh9LjGOsIAYJdHVEDr4DuWTKZgHWa4hg5UfXMD1Xqh4WIiS3CLp1jD92lyiw5SFTza5LAz1HJvFEIUli7NI4zPIW5Ih3xf35DFTbNXxDnxaC+xt2WhxuGzwUp3VtDtG5mDNgF7QvR80Y+jhlLRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cy3wdBwB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB7EDC433F1;
+	Sun, 18 Feb 2024 09:37:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708248874;
-	bh=DPiAV3iqoIoJ3RDBnSgdMnEStWmhfZYC+8bhlhTlKWM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iNhzhRzHBf8clbrho1hnBE7FE1WKx5jJJjtwuX7f4DIYkZWQ6uo1vsED/GpShlrqR
-	 q9lzIV+cOFS0j9RSgfyjXphNoUCdZrzrpwTkJMs/VsRhwPL64NeRccG4xLK0e6qUao
-	 lIJviTiAhLAjgD2l6KIBjv6b5BlVMlC/Pt+gE9l0=
-Date: Sun, 18 Feb 2024 10:34:31 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: David Sterba <dsterba@suse.com>
-Cc: stable@vger.kernel.org
-Subject: Re: Btrfs fixes for 6.7.x
-Message-ID: <2024021824-green-syndrome-70cd@gregkh>
-References: <20240215133633.25420-1-dsterba@suse.com>
+	s=korg; t=1708249080;
+	bh=vUhIcaeKXYguyIfC0FgCJk+aR7Ax8s/RnZHXsmp9Oz4=;
+	h=Subject:To:Cc:From:Date:From;
+	b=cy3wdBwBEPymTH4k91cJCubevdbmuk4ps5doJYTFbCEQ7AF4uuvUiZDiomh4YXvMv
+	 MvxN1HrA1zeFFohISUgABZSI9ZzAJMqub3CS2akJmi1Xp3wCpZhsOdMX57cNYIQ7Im
+	 tgNkG7Jc4kLpSztC5IbjqBZMNafC4aMbXHjcdMvs=
+Subject: FAILED: patch "[PATCH] btrfs: don't drop extent_map for free space inode on write" failed to apply to 5.15-stable tree
+To: josef@toxicpanda.com,dsterba@suse.com,fdmanana@suse.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Sun, 18 Feb 2024 10:37:57 +0100
+Message-ID: <2024021856-vigorous-supper-1ca1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240215133633.25420-1-dsterba@suse.com>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Thu, Feb 15, 2024 at 02:36:31PM +0100, David Sterba wrote:
-> Hi,
-> 
-> there's been a bug in btrfs space reservation since 6.7 that is now affecting
-> quite some users. I'd like to ask to add the fix right after it got merged to
-> Linus' tree so it can possibly be released in 6.7.5.
-> 
-> All apply cleanly on top of current 6.7.x tree. Thanks.
-> 
-> 1693d5442c458ae8d5b0d58463b873cd879569ed
-> f4a9f219411f318ae60d6ff7f129082a75686c6c
-> 12c5128f101bfa47a08e4c0e1a75cfa2d0872bcd
-> 2f6397e448e689adf57e6788c90f913abd7e1af8
-> 
-> Short ids with subjects:
-> 
-> 1693d5442c45 btrfs: add and use helper to check if block group is used
-> f4a9f219411f btrfs: do not delete unused block group if it may be used soon
-> 12c5128f101b btrfs: add new unused block groups to the list of unused block groups
-> 2f6397e448e6 btrfs: don't refill whole delayed refs block reserve when starting transaction
-> 
 
-All now queued up, thanks.
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x 5571e41ec6e56e35f34ae9f5b3a335ef510e0ade
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021856-vigorous-supper-1ca1@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+
+Possible dependencies:
+
+5571e41ec6e5 ("btrfs: don't drop extent_map for free space inode on write error")
+4c0c8cfc8433 ("btrfs: move btrfs_drop_extent_cache() to extent_map.c")
+cef7820d6abf ("btrfs: fix missed extent on fsync after dropping extent maps")
+570eb97bace8 ("btrfs: unify the lock/unlock extent variants")
+dbbf49928f2e ("btrfs: remove the wake argument from clear_extent_bits")
+e3974c669472 ("btrfs: move core extent_io_tree functions to extent-io-tree.c")
+38830018387e ("btrfs: move a few exported extent_io_tree helpers to extent-io-tree.c")
+04eba8932392 ("btrfs: temporarily export and then move extent state helpers")
+91af24e48474 ("btrfs: temporarily export and move core extent_io_tree tree functions")
+6962541e964f ("btrfs: move btrfs_debug_check_extent_io_range into extent-io-tree.c")
+ec39e39bbf97 ("btrfs: export wait_extent_bit")
+a66318872c41 ("btrfs: move simple extent bit helpers out of extent_io.c")
+ad795329574c ("btrfs: convert BUG_ON(EXTENT_BIT_LOCKED) checks to ASSERT's")
+83cf709a89fb ("btrfs: move extent state init and alloc functions to their own file")
+c45379a20fbc ("btrfs: temporarily export alloc_extent_state helpers")
+a40246e8afc0 ("btrfs: separate out the eb and extent state leak helpers")
+a62a3bd9546b ("btrfs: separate out the extent state and extent buffer init code")
+87c11705cc94 ("btrfs: convert the io_failure_tree to a plain rb_tree")
+a2061748052c ("btrfs: unexport internal failrec functions")
+0d0a762c419a ("btrfs: rename clean_io_failure and remove extraneous args")
+
+thanks,
 
 greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 5571e41ec6e56e35f34ae9f5b3a335ef510e0ade Mon Sep 17 00:00:00 2001
+From: Josef Bacik <josef@toxicpanda.com>
+Date: Wed, 31 Jan 2024 14:27:25 -0500
+Subject: [PATCH] btrfs: don't drop extent_map for free space inode on write
+ error
+
+While running the CI for an unrelated change I hit the following panic
+with generic/648 on btrfs_holes_spacecache.
+
+assertion failed: block_start != EXTENT_MAP_HOLE, in fs/btrfs/extent_io.c:1385
+------------[ cut here ]------------
+kernel BUG at fs/btrfs/extent_io.c:1385!
+invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+CPU: 1 PID: 2695096 Comm: fsstress Kdump: loaded Tainted: G        W          6.8.0-rc2+ #1
+RIP: 0010:__extent_writepage_io.constprop.0+0x4c1/0x5c0
+Call Trace:
+ <TASK>
+ extent_write_cache_pages+0x2ac/0x8f0
+ extent_writepages+0x87/0x110
+ do_writepages+0xd5/0x1f0
+ filemap_fdatawrite_wbc+0x63/0x90
+ __filemap_fdatawrite_range+0x5c/0x80
+ btrfs_fdatawrite_range+0x1f/0x50
+ btrfs_write_out_cache+0x507/0x560
+ btrfs_write_dirty_block_groups+0x32a/0x420
+ commit_cowonly_roots+0x21b/0x290
+ btrfs_commit_transaction+0x813/0x1360
+ btrfs_sync_file+0x51a/0x640
+ __x64_sys_fdatasync+0x52/0x90
+ do_syscall_64+0x9c/0x190
+ entry_SYSCALL_64_after_hwframe+0x6e/0x76
+
+This happens because we fail to write out the free space cache in one
+instance, come back around and attempt to write it again.  However on
+the second pass through we go to call btrfs_get_extent() on the inode to
+get the extent mapping.  Because this is a new block group, and with the
+free space inode we always search the commit root to avoid deadlocking
+with the tree, we find nothing and return a EXTENT_MAP_HOLE for the
+requested range.
+
+This happens because the first time we try to write the space cache out
+we hit an error, and on an error we drop the extent mapping.  This is
+normal for normal files, but the free space cache inode is special.  We
+always expect the extent map to be correct.  Thus the second time
+through we end up with a bogus extent map.
+
+Since we're deprecating this feature, the most straightforward way to
+fix this is to simply skip dropping the extent map range for this failed
+range.
+
+I shortened the test by using error injection to stress the area to make
+it easier to reproduce.  With this patch in place we no longer panic
+with my error injection test.
+
+CC: stable@vger.kernel.org # 4.14+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 7bcc1c03437a..d232eca1bbee 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -3184,8 +3184,23 @@ int btrfs_finish_one_ordered(struct btrfs_ordered_extent *ordered_extent)
+ 			unwritten_start += logical_len;
+ 		clear_extent_uptodate(io_tree, unwritten_start, end, NULL);
+ 
+-		/* Drop extent maps for the part of the extent we didn't write. */
+-		btrfs_drop_extent_map_range(inode, unwritten_start, end, false);
++		/*
++		 * Drop extent maps for the part of the extent we didn't write.
++		 *
++		 * We have an exception here for the free_space_inode, this is
++		 * because when we do btrfs_get_extent() on the free space inode
++		 * we will search the commit root.  If this is a new block group
++		 * we won't find anything, and we will trip over the assert in
++		 * writepage where we do ASSERT(em->block_start !=
++		 * EXTENT_MAP_HOLE).
++		 *
++		 * Theoretically we could also skip this for any NOCOW extent as
++		 * we don't mess with the extent map tree in the NOCOW case, but
++		 * for now simply skip this if we are the free space inode.
++		 */
++		if (!btrfs_is_free_space_inode(inode))
++			btrfs_drop_extent_map_range(inode, unwritten_start,
++						    end, false);
+ 
+ 		/*
+ 		 * If the ordered extent had an IOERR or something else went
+
 
