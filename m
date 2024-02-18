@@ -1,143 +1,412 @@
-Return-Path: <stable+bounces-20456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AA5F85976D
-	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 15:42:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8435A859781
+	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 16:00:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3269F1C20AC8
-	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 14:42:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2939F281A4F
+	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 15:00:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8485C65BC4;
-	Sun, 18 Feb 2024 14:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E634B6BFBB;
+	Sun, 18 Feb 2024 15:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JXJoGa4E"
+	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="CHGqBHM6"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354D1FBEA;
-	Sun, 18 Feb 2024 14:42:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8F96BB42
+	for <stable@vger.kernel.org>; Sun, 18 Feb 2024 15:00:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708267344; cv=none; b=P4FAFpB/zCrqfndvhXIGl9R3c2eLAaPa18SmmZORp0r4teZubYnJ9d9+WL71zuANLyi45dwFga3LLllEV6zn2N8XbTZqqD9Wqv88oXRlSX+/Y13aBIr2UXfJVq/tuKYmqCe5yC584Ov9lMi6/I9+wNzQcxkfmJwdm3Ci9rZsc6Y=
+	t=1708268420; cv=none; b=jbnkrdiNDxH5QQq/b6zU+3VzRLIlXeFs2JO1dZfsoLH6rhi+jOIXAADw8HBGPr4t+5sWUXXWFS8BJk4km5pkJ6u5J9+KuBHSDHehqCUBb/jPEVO0U6bh2rGltWh67AgZ24e8qBQwe/ecW2wjaV0PD25+aTCsQPLrB9nvQ4cqhc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708267344; c=relaxed/simple;
-	bh=5EbzQFMW4sVmTcgoGAQ/yWKNoqO7+H13wKgnyM+OF9c=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=G2KyYKnIU8ym9iC9qW2GpeFID/c6MnTI9sjA/dtDqgwbBBt1eOz+TRT9w9M2q3wQqJ5WCY/X3qu4TlMMTuC1eszR+Ykj+u6avabguArplYY8n/TvDw9RLPjl7OF4OgvSoIXajfWoYvWpjeC6Of1ZP9wpPfemf4Hw5Ul9gde0JbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JXJoGa4E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF97FC433F1;
-	Sun, 18 Feb 2024 14:42:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708267343;
-	bh=5EbzQFMW4sVmTcgoGAQ/yWKNoqO7+H13wKgnyM+OF9c=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=JXJoGa4E6wblSR8UyLMDaCUilC4O2gYf3VUXXjsfdpldk4qcVBQu1uf7l0nrV0SXX
-	 vKeflTXiqhTqCAddwmyYnnZGhw+wIOc/L2UiBrbvinwo6QRZXT9SLDX+jo79e9bmz6
-	 5MoKvm8+8bpiM3bOwPCs3xUcgLrTfM/EvwjvuuTA6I9NsDxhj6AmcOoyDwkPxEP5gR
-	 u9AELLDK3QDkKPPE6WBlV1eI6xeIHxXOYzrz+2tt24/qn6OtGdD9v7e1TE0cEIBQJr
-	 ok/O529j6/uSidf/QVex9P8LWqyF66hdDQnPtOje1mRXMbea5BZXAN8p//S7IXxD28
-	 hUYd9Da7PbkPg==
-Message-ID: <2fefdff8ab40a377558ecc22067c1a79fd9872aa.camel@kernel.org>
-Subject: Re: [PATCH RESEND] cachefiles: fix memory leak in
- cachefiles_add_cache()
-From: Jeff Layton <jlayton@kernel.org>
-To: Baokun Li <libaokun1@huawei.com>, netfs@lists.linux.dev
-Cc: dhowells@redhat.com, linux-cachefs@redhat.com,
- linux-erofs@lists.ozlabs.org,  linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org,  stable@vger.kernel.org
-Date: Sun, 18 Feb 2024 09:42:21 -0500
-In-Reply-To: <20240217081431.796809-1-libaokun1@huawei.com>
-References: <20240217081431.796809-1-libaokun1@huawei.com>
-Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
- keydata=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
-	kZWuOsJdJQdmwlWC5L5ln9xgfr/4mOY38B0U=
-Content-Type: text/plain; charset="ISO-8859-15"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
+	s=arc-20240116; t=1708268420; c=relaxed/simple;
+	bh=osQUHtBwtBRheFzZo4xkNmo8cCfrMkRjejuzkGYonU0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=A3c0011s9GdqxD4WnW+RR7oKiNpy1kybbgmzEDgEYXmZf/2289WNqEl1YlsDiPUmn8sqJEtjL7WG5uxgxjlyWCBdGFEzfx8kHLhDmyvpmd2vTBzeGDvqqd5VNPTBLVVxtEl5bmxEmePx5aRmxZMdIx++RvT2YIuH+03SX4qLrFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=CHGqBHM6; arc=none smtp.client-ip=209.85.167.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
+Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-3c031a077d5so1919053b6e.0
+        for <stable@vger.kernel.org>; Sun, 18 Feb 2024 07:00:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sifive.com; s=google; t=1708268417; x=1708873217; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YYnBOQzEOcAAi3/k4Sm826rCOnB3o3IMwXvp4z4B03c=;
+        b=CHGqBHM6BY1SSAY/QvM9vWjzj+EAuWj5DDM4oLKoRtLbQ85COnSnXyAox9nNGEQjyZ
+         91ejFqe0gdamsxkDa9MNwwGaQFf9sMvh9CA1yW/5mHh8EHQH6p5YT/mnwMpS51QgHLpF
+         TlZSJpqYzyIkR5JWNOxkAPvmc1Aqh2jsZpho9OMvhAxxNMTXeXQo0gwY84vPlNbmgSGj
+         Sx7Y6E8ztxPcdPSzcVFH+aJXzKn41nUyh3Y77TkJ/J1tMKwbkbvcYWUgcgiJ3j4U8BRN
+         HwjxCr7epO+g/Lesk4rZ6qKM134/NYUCfEDCj5CDQEK+SU5aG6C8ltSbzvdArQZY1MFo
+         IoNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708268417; x=1708873217;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YYnBOQzEOcAAi3/k4Sm826rCOnB3o3IMwXvp4z4B03c=;
+        b=Y8bpmtaJgF1rAHP9aCsZLHVJmNQTneHHpsF8ZjT7DCWLhG8P41ii0pK4BGWEDDXpNv
+         KFV0RoiVUVYc5h2AROFylUoXQxhtBUS83PBRagIliRBd0fCaTMEtlaFO/mx1anbgiLVa
+         X5n2WyRbqITIqMvuTm0/R8UGBxpnWiNgyvV0j7ARpMc7HzKDJ6t2soYvtxVqeFII5rSe
+         dQVlEhVwjhiBUGAnXFbqOjxa/icOktFNEYSHC2JnVflQAGFVtPsWx6bAT8jVKsjBbqTn
+         HPlEWTnFtOlrUj68/BMxyR8B3VvShvaIHQqsgjNW2W6mPaGgd2l0gUHzzwT/S/fIE6l2
+         NRDg==
+X-Forwarded-Encrypted: i=1; AJvYcCVDU4lxiWXH359UEPgLGMobqNpqEiQ/dsqkB/Jgkyy20hKhV6ZYxqEbL+LwOGg3HMR3GRWgwmFcP3aW2apfhHU/pq/mzpNQ
+X-Gm-Message-State: AOJu0YyK3AGZjsZZR0/PniSwt3FYktvYKr3HG3IanX7U6OiDcvuqhe7e
+	COoSrT0+q38Clnt0M1a3BxORt4+FupF+pdOM9A+D7LM2wMfbNqA3P1bBO/jGCqM=
+X-Google-Smtp-Source: AGHT+IGRp3AEp9PX2ocswnFBxtOEGeqzjtdyzUlJ4Nf2rGtKqFzy/FpVtaXefQuS72e/ExoLl/XhgA==
+X-Received: by 2002:a05:6358:5389:b0:178:dac3:2b99 with SMTP id z9-20020a056358538900b00178dac32b99mr10932785rwe.1.1708268417100;
+        Sun, 18 Feb 2024 07:00:17 -0800 (PST)
+Received: from [100.64.0.1] ([170.85.8.176])
+        by smtp.gmail.com with ESMTPSA id d5-20020ac84e25000000b0042de98f38f3sm1706235qtw.63.2024.02.18.07.00.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 18 Feb 2024 07:00:16 -0800 (PST)
+Message-ID: <90a7443c-feca-4fbb-8c2e-fa050c0e6141@sifive.com>
+Date: Sun, 18 Feb 2024 09:00:14 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH -fixes v2 3/4] riscv: Add ISA extension parsing for Sm and
+ Ss
+Content-Language: en-US
+To: Conor Dooley <conor@kernel.org>, Stefan O'Rear <sorear@fastmail.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Andrew Jones <ajones@ventanamicro.com>, linux-riscv@lists.infradead.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20240213033744.4069020-1-samuel.holland@sifive.com>
+ <20240213033744.4069020-4-samuel.holland@sifive.com>
+ <20240213-dangle-taco-2742f6087a3e@spud>
+ <ff3bd436-12f8-4cde-881d-89a005ad85c0@sifive.com>
+ <b7ad2bd4-a19e-486e-8be2-3b56f288d5d0@app.fastmail.com>
+ <20240213-earflap-easing-370492840507@spud>
+From: Samuel Holland <samuel.holland@sifive.com>
+In-Reply-To: <20240213-earflap-easing-370492840507@spud>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, 2024-02-17 at 16:14 +0800, Baokun Li wrote:
-> The following memory leak was reported after unbinding /dev/cachefiles:
->=20
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> unreferenced object 0xffff9b674176e3c0 (size 192):
->   comm "cachefilesd2", pid 680, jiffies 4294881224
->   hex dump (first 32 bytes):
->     01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
->     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
->   backtrace (crc ea38a44b):
->     [<ffffffff8eb8a1a5>] kmem_cache_alloc+0x2d5/0x370
->     [<ffffffff8e917f86>] prepare_creds+0x26/0x2e0
->     [<ffffffffc002eeef>] cachefiles_determine_cache_security+0x1f/0x120
->     [<ffffffffc00243ec>] cachefiles_add_cache+0x13c/0x3a0
->     [<ffffffffc0025216>] cachefiles_daemon_write+0x146/0x1c0
->     [<ffffffff8ebc4a3b>] vfs_write+0xcb/0x520
->     [<ffffffff8ebc5069>] ksys_write+0x69/0xf0
->     [<ffffffff8f6d4662>] do_syscall_64+0x72/0x140
->     [<ffffffff8f8000aa>] entry_SYSCALL_64_after_hwframe+0x6e/0x76
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->=20
-> Put the reference count of cache_cred in cachefiles_daemon_unbind() to
-> fix the problem. And also put cache_cred in cachefiles_add_cache() error
-> branch to avoid memory leaks.
->=20
-> Fixes: 9ae326a69004 ("CacheFiles: A cache that backs onto a mounted files=
-ystem")
-> CC: stable@vger.kernel.org
-> Signed-off-by: Baokun Li <libaokun1@huawei.com>
-> ---
->  fs/cachefiles/cache.c  | 2 ++
->  fs/cachefiles/daemon.c | 1 +
->  2 files changed, 3 insertions(+)
->=20
-> diff --git a/fs/cachefiles/cache.c b/fs/cachefiles/cache.c
-> index 7077f72e6f47..f449f7340aad 100644
-> --- a/fs/cachefiles/cache.c
-> +++ b/fs/cachefiles/cache.c
-> @@ -168,6 +168,8 @@ int cachefiles_add_cache(struct cachefiles_cache *cac=
-he)
->  	dput(root);
->  error_open_root:
->  	cachefiles_end_secure(cache, saved_cred);
-> +	put_cred(cache->cache_cred);
-> +	cache->cache_cred =3D NULL;
->  error_getsec:
->  	fscache_relinquish_cache(cache_cookie);
->  	cache->cache =3D NULL;
-> diff --git a/fs/cachefiles/daemon.c b/fs/cachefiles/daemon.c
-> index 3f24905f4066..6465e2574230 100644
-> --- a/fs/cachefiles/daemon.c
-> +++ b/fs/cachefiles/daemon.c
-> @@ -816,6 +816,7 @@ static void cachefiles_daemon_unbind(struct cachefile=
-s_cache *cache)
->  	cachefiles_put_directory(cache->graveyard);
->  	cachefiles_put_directory(cache->store);
->  	mntput(cache->mnt);
-> +	put_cred(cache->cache_cred);
-> =20
->  	kfree(cache->rootdirname);
->  	kfree(cache->secctx);
+Hi Conor, Stefan,
 
-Looks reasonable to me too. Nice catch:
+Thanks for the discussion!
 
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
+On 2024-02-13 5:15 PM, Conor Dooley wrote:
+> On Tue, Feb 13, 2024 at 03:43:27PM -0500, Stefan O'Rear wrote:
+>> On Tue, Feb 13, 2024, at 3:22 PM, Samuel Holland wrote:
+>>> On 2024-02-13 12:07 PM, Conor Dooley wrote:
+>>>> On Mon, Feb 12, 2024 at 07:37:34PM -0800, Samuel Holland wrote:
+>>>>> Previously, all extension version numbers were ignored. However, the
+>>>>> version number is important for these two extensions. The simplest way
+>>>>> to implement this is to use a separate bitmap bit for each supported
+>>>>> version, with each successive version implying all of the previous ones.
+>>>>> This allows alternatives and riscv_has_extension_[un]likely() to work
+>>>>> naturally.
+>>>>>
+>>>>> To avoid duplicate extensions in /proc/cpuinfo, the new successor_id
+>>>>> field allows hiding all but the newest implemented version of an
+>>>>> extension.
+>>>>>
+>>>>> Cc: <stable@vger.kernel.org> # v6.7+
+>>>>> Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+>>>>> ---
+>>>>>
+>>>>> Changes in v2:
+>>>>>  - New patch for v2
+>>>>>
+>>>>>  arch/riscv/include/asm/cpufeature.h |  1 +
+>>>>>  arch/riscv/include/asm/hwcap.h      |  8 ++++++
+>>>>>  arch/riscv/kernel/cpu.c             |  5 ++++
+>>>>>  arch/riscv/kernel/cpufeature.c      | 42 +++++++++++++++++++++++++----
+>>>>>  4 files changed, 51 insertions(+), 5 deletions(-)
+>>>>>
+>>>>> diff --git a/arch/riscv/include/asm/cpufeature.h b/arch/riscv/include/asm/cpufeature.h
+>>>>> index 0bd11862b760..ac71384e7bc4 100644
+>>>>> --- a/arch/riscv/include/asm/cpufeature.h
+>>>>> +++ b/arch/riscv/include/asm/cpufeature.h
+>>>>> @@ -61,6 +61,7 @@ struct riscv_isa_ext_data {
+>>>>>  	const char *property;
+>>>>>  	const unsigned int *subset_ext_ids;
+>>>>>  	const unsigned int subset_ext_size;
+>>>>> +	const unsigned int successor_id;
+>>>>>  };
+>>>>>  
+>>>>>  extern const struct riscv_isa_ext_data riscv_isa_ext[];
+>>>>> diff --git a/arch/riscv/include/asm/hwcap.h b/arch/riscv/include/asm/hwcap.h
+>>>>> index 5340f818746b..5b51aa1db15b 100644
+>>>>> --- a/arch/riscv/include/asm/hwcap.h
+>>>>> +++ b/arch/riscv/include/asm/hwcap.h
+>>>>> @@ -80,13 +80,21 @@
+>>>>>  #define RISCV_ISA_EXT_ZFA		71
+>>>>>  #define RISCV_ISA_EXT_ZTSO		72
+>>>>>  #define RISCV_ISA_EXT_ZACAS		73
+>>>>> +#define RISCV_ISA_EXT_SM1p11		74
+>>>>> +#define RISCV_ISA_EXT_SM1p12		75
+>>>>> +#define RISCV_ISA_EXT_SS1p11		76
+>>>>> +#define RISCV_ISA_EXT_SS1p12		77
+>>>>>  
+>>>>>  #define RISCV_ISA_EXT_MAX		128
+>>>>>  #define RISCV_ISA_EXT_INVALID		U32_MAX
+>>>>>  
+>>>>>  #ifdef CONFIG_RISCV_M_MODE
+>>>>> +#define RISCV_ISA_EXT_Sx1p11		RISCV_ISA_EXT_SM1p11
+>>>>> +#define RISCV_ISA_EXT_Sx1p12		RISCV_ISA_EXT_SM1p12
+>>>>>  #define RISCV_ISA_EXT_SxAIA		RISCV_ISA_EXT_SMAIA
+>>>>>  #else
+>>>>> +#define RISCV_ISA_EXT_Sx1p11		RISCV_ISA_EXT_SS1p11
+>>>>> +#define RISCV_ISA_EXT_Sx1p12		RISCV_ISA_EXT_SS1p12
+>>>>>  #define RISCV_ISA_EXT_SxAIA		RISCV_ISA_EXT_SSAIA
+>>>>>  #endif
+>>>>>  
+>>>>> diff --git a/arch/riscv/kernel/cpu.c b/arch/riscv/kernel/cpu.c
+>>>>> index d11d6320fb0d..2e6b90ed0d51 100644
+>>>>> --- a/arch/riscv/kernel/cpu.c
+>>>>> +++ b/arch/riscv/kernel/cpu.c
+>>>>> @@ -215,6 +215,11 @@ static void print_isa(struct seq_file *f, const unsigned long *isa_bitmap)
+>>>>>  		if (!__riscv_isa_extension_available(isa_bitmap, riscv_isa_ext[i].id))
+>>>>>  			continue;
+>>>>>  
+>>>>> +		/* Only show the newest implemented version of an extension */
+>>>>> +		if (riscv_isa_ext[i].successor_id != RISCV_ISA_EXT_INVALID &&
+>>>>> +		    __riscv_isa_extension_available(isa_bitmap, riscv_isa_ext[i].successor_id))
+>>>>> +			continue;
+>>>>> +
+>>>>>  		/* Only multi-letter extensions are split by underscores */
+>>>>>  		if (strnlen(riscv_isa_ext[i].name, 2) != 1)
+>>>>>  			seq_puts(f, "_");
+>>>>> diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
+>>>>> index c5b13f7dd482..8e10b50120e9 100644
+>>>>> --- a/arch/riscv/kernel/cpufeature.c
+>>>>> +++ b/arch/riscv/kernel/cpufeature.c
+>>>>> @@ -113,23 +113,29 @@ static bool riscv_isa_extension_check(int id)
+>>>>>  	return true;
+>>>>>  }
+>>>>>  
+>>>>> -#define _RISCV_ISA_EXT_DATA(_name, _id, _subset_exts, _subset_exts_size) {	\
+>>>>> +#define _RISCV_ISA_EXT_DATA(_name, _id, _subset_exts, _subset_exts_size, _successor) {	\
+>>>>>  	.name = #_name,								\
+>>>>>  	.property = #_name,							\
+>>>>>  	.id = _id,								\
+>>>>>  	.subset_ext_ids = _subset_exts,						\
+>>>>> -	.subset_ext_size = _subset_exts_size					\
+>>>>> +	.subset_ext_size = _subset_exts_size,					\
+>>>>> +	.successor_id = _successor,						\
+>>>>>  }
+>>>>>  
+>>>>> -#define __RISCV_ISA_EXT_DATA(_name, _id) _RISCV_ISA_EXT_DATA(_name, _id, NULL, 0)
+>>>>> +#define __RISCV_ISA_EXT_DATA(_name, _id) \
+>>>>> +	_RISCV_ISA_EXT_DATA(_name, _id, NULL, 0, RISCV_ISA_EXT_INVALID)
+>>>>>  
+>>>>>  /* Used to declare pure "lasso" extension (Zk for instance) */
+>>>>>  #define __RISCV_ISA_EXT_BUNDLE(_name, _bundled_exts) \
+>>>>> -	_RISCV_ISA_EXT_DATA(_name, RISCV_ISA_EXT_INVALID, _bundled_exts, ARRAY_SIZE(_bundled_exts))
+>>>>> +	_RISCV_ISA_EXT_DATA(_name, RISCV_ISA_EXT_INVALID, \
+>>>>> +			    _bundled_exts, ARRAY_SIZE(_bundled_exts), RISCV_ISA_EXT_INVALID)
+>>>>>  
+>>>>>  /* Used to declare extensions that are a superset of other extensions (Zvbb for instance) */
+>>>>>  #define __RISCV_ISA_EXT_SUPERSET(_name, _id, _sub_exts) \
+>>>>> -	_RISCV_ISA_EXT_DATA(_name, _id, _sub_exts, ARRAY_SIZE(_sub_exts))
+>>>>> +	_RISCV_ISA_EXT_DATA(_name, _id, _sub_exts, ARRAY_SIZE(_sub_exts), RISCV_ISA_EXT_INVALID)
+>>>>> +
+>>>>> +#define __RISCV_ISA_EXT_VERSION(_name, _id, _preds, _preds_size, _successor) \
+>>>>> +	_RISCV_ISA_EXT_DATA(_name, _id, _preds, _preds_size, _successor)
+>>>>>  
+>>>>>  static const unsigned int riscv_zk_bundled_exts[] = {
+>>>>>  	RISCV_ISA_EXT_ZBKB,
+>>>>> @@ -201,6 +207,16 @@ static const unsigned int riscv_zvbb_exts[] = {
+>>>>>  	RISCV_ISA_EXT_ZVKB
+>>>>>  };
+>>>>>  
+>>>>> +static const unsigned int riscv_sm_ext_versions[] = {
+>>>>> +	RISCV_ISA_EXT_SM1p11,
+>>>>> +	RISCV_ISA_EXT_SM1p12,
+>>>>> +};
+>>>>> +
+>>>>> +static const unsigned int riscv_ss_ext_versions[] = {
+>>>>> +	RISCV_ISA_EXT_SS1p11,
+>>>>> +	RISCV_ISA_EXT_SS1p12,
+>>>>> +};
+>>>>> +
+>>>>>  /*
+>>>>>   * The canonical order of ISA extension names in the ISA string is defined in
+>>>>>   * chapter 27 of the unprivileged specification.
+>>>>> @@ -299,8 +315,16 @@ const struct riscv_isa_ext_data riscv_isa_ext[] = {
+>>>>>  	__RISCV_ISA_EXT_DATA(zvksh, RISCV_ISA_EXT_ZVKSH),
+>>>>>  	__RISCV_ISA_EXT_BUNDLE(zvksg, riscv_zvksg_bundled_exts),
+>>>>>  	__RISCV_ISA_EXT_DATA(zvkt, RISCV_ISA_EXT_ZVKT),
+>>>>> +	__RISCV_ISA_EXT_VERSION(sm1p11, RISCV_ISA_EXT_SM1p11, riscv_sm_ext_versions, 0,
+>>>>> +				RISCV_ISA_EXT_SM1p12),
+>>>>> +	__RISCV_ISA_EXT_VERSION(sm1p12, RISCV_ISA_EXT_SM1p12, riscv_sm_ext_versions, 1,
+>>>>> +				RISCV_ISA_EXT_INVALID),
+>>>>>  	__RISCV_ISA_EXT_DATA(smaia, RISCV_ISA_EXT_SMAIA),
+>>>>>  	__RISCV_ISA_EXT_DATA(smstateen, RISCV_ISA_EXT_SMSTATEEN),
+>>>>> +	__RISCV_ISA_EXT_VERSION(ss1p11, RISCV_ISA_EXT_SS1p11, riscv_ss_ext_versions, 0,
+>>>>> +				RISCV_ISA_EXT_SS1p12),
+>>>>> +	__RISCV_ISA_EXT_VERSION(ss1p12, RISCV_ISA_EXT_SS1p12, riscv_ss_ext_versions, 1,
+>>>>> +				RISCV_ISA_EXT_INVALID),
+>>>>>  	__RISCV_ISA_EXT_DATA(ssaia, RISCV_ISA_EXT_SSAIA),
+>>>>>  	__RISCV_ISA_EXT_DATA(sscofpmf, RISCV_ISA_EXT_SSCOFPMF),
+>>>>>  	__RISCV_ISA_EXT_DATA(sstc, RISCV_ISA_EXT_SSTC),
+>>>>> @@ -414,6 +438,14 @@ static void __init riscv_parse_isa_string(unsigned long *this_hwcap, struct risc
+>>>>>  				;
+>>>>>  
+>>>>>  			++ext_end;
+>>>>> +
+>>>>> +			/*
+>>>>> +			 * As a special case for the Sm and Ss extensions, where the version
+>>>>> +			 * number is important, include it in the extension name.
+>>>>> +			 */
+>>>>> +			if (ext_end - ext == 2 && tolower(ext[0]) == 's' &&
+>>>>> +			    (tolower(ext[1]) == 'm' || tolower(ext[1]) == 's'))
+>>>>> +				ext_end = isa;
+>>>>>  			break;
+>>>>>  		default:
+>>>>>  			/*
+>>>>
+>>>>
+>>>> Hmm, looking at all of this (especially this hack to the "old" parser),
+>>>> I feel more like these should be promoted to a property of their own.
+>>>> The "old" parser was designed to handle numbers, and here when you're
+>>>> interested in the values behind the numbers (which is a first iirc), you
+>>>> don't make any use of that. I don't really want to see a world where
+>>>
+>>> I had a version of this code that parsed the numbers and stored them as integers
+>>> in `struct riscv_isainfo`. It didn't work with of_property_match_string() as
+>>> used for riscv,isa-extensions, since that function expects the extension name to
+>>> be the full string.
+> 
+> I don't think I actually want what I am about to say, but it's not as if we
+> are forced to parse it in that way for all properties. It's handy AF to be
+> able to reuse reuse that function, and that was part of my goal originally
+> with the property, but we are not locked into using
+> of_property_match_string() if there's some specific property where that's
+> getting in our way. That's kinda an aside though..
+> 
+>>> Either we would need to change the code to parse a version
+>>> number out of each string in the riscv,isa-extensions list (and make the binding
+>>> a bunch of regexes), or we need a separate "extension" entry (and DT binding
+>>> entry) for each supported version.
+>>
+>> Version numbers aren't real, there's no compatibility promise that we can
+>> consistently rely on so we treat riscv,isa-extensions as simply containing
+>> alphanumeric extensions.  This was an intentional part of simplifying riscv,isa
+>> into riscv,isa-extensions.
+> 
+> You seem to recall my motivations better than I do!
+> 
+>>> I chose the second option, and as a consequence I didn't actually need to parse
+>>> the integer value in the ISA string code path either.
+>>>
+>>>> we have every single iteration of smNpM under the sun in the property,
+>>>> because there's a fair bit of churn in the isa. Granted, this applies to
+>>>> all the various, the difference for me is the level of churn.
+>>>
+>>> Indeed. In fact, one thought I had while looking at this code is that we should
+>>> be ignoring any extension in the ISA string with a version < 1.0 or >= 2.0,
+>>> since those won't be compatible with what we expect.
+>>
+>> I might go further and say that we should only accept specific exact versions of
+>> extensions other than Ss/Sm.
+> 
+> This is what we do, right? Every property is supposed to match to
+> exactly the frozen or ratified spec, so they do have exactly one version
+> at present. The property descriptions should contain that information.
+> 
+>> This could be revisited after the recent "semver
+>> for ISA extensions" policy is tested at least once under real-world conditions.
+>>
+>> Right now we have two ratified versions of Ss/Sm, soon to be three, and one
+
+My understanding (from hwprobe.rst and various ML comments) is that Linux
+assumes Ss1p10. That's why I started counting with Ss1p11. It looks like Ss1p10
+was never ratified, but that doesn't prevent us from referencing it in the
+binding, if needed. Should we start enumerating extensions at Ss1p11 or
+something else?
+
+>> ratified version of all other extensions.  I hardly think this is an excessive
+>> amount of churn.
+> 
+> Yeah, maybe it's fine. I'm just overthinking it and there isn't a
+> problem.
+
+My interpretation of this and the above comments is that we do actually want to
+enumerate every supported "version" of the privileged ISA in the binding, and
+parse them as entirely independent extensions that just happen to have
+similar-looking names. Is that correct?
+
+>>>> Or maybe we can still with the properties you have, but instead of
+>>>> treating them like any other extension, handle these separately,
+>>>> focusing on the numbering, so that only having the exact version
+>>>> supported by a cpu is possible.
+>>>
+>>> Maybe I'm misunderstanding what you're saying here, but it is already the case
+>>> that the DT for a CPU would only contain the exact version of the privileged ISA
+>>> supported by that CPU.
+>>
+>> If privileged spec versions are boolean extensions, then you would say "ss1p11",
+>> "ss1p12", "ss1p13" as separate/simultaneous extensions.
+> 
+>> This is needed in order
+>> to allow simple support checks as described in the riscv,isa-extensions cover
+>> letter.
+> 
+> Yes, it is explicitly a goal of riscv,isa-extensions that you can look
+> for a specific extension in the list if that is all you care about. If
+> you go and drop ss1p11 because you support ss1p12 it defeats that.
+
+Okay, that makes sense, but that is not how the parsing code works right now,
+which is probably what led me down the wrong path. :)
+
+To have the intended semantics, we cannot parse _anything_ in
+riscv,isa-extensions as a "bundled" or "superset" extension. Because to
+accomplish your goal, each extension in the bundle must be listed explicitly, in
+case the consumer only cares about that one extension. So it sounds like
+riscv_fill_hwcap_from_ext_list() needs to ignore subset_ext_size/subset_ext_ids.
+
+> I don't know off the top of my head how to enforce ss1p12 requiring ss1p11
+> in json schema, but I do have an idea of where to start...
+
+Yeah, this is different from normal "dependencies:" because it is a string list.
+
+I think we need to add dependencies in the binding for the bundled extensions as
+well, and maybe even between extensions like "d" and "f".
+
+>>> With this implementation, the fact that the integer version gets expanded to a
+>>> series of flags is supposed to be invisible in the DT and to userspace. I
+>>> realize I don't quite succeed there: putting "ss1p13" in the ISA string should
+>>> work, but does not.
+>>>
+>>>> I'm still pretty undecided, I'd like to think about this a little bit,
+>>>> but I think we can do better here.
+>>>
+>>> Sure, no problem. I'm happy to implement whatever we agree on. Though one
+>>> consideration I had is that this is all in support of fixing a bug in v6.7, so I
+>>> wanted the changes to be backportable.
+>>>
+>>> I suppose the easy way out for backporting is to check for RISCV_ISA_EXT_ZICBOZ
+>>> for now, and then solve the larger problem once there is some other user of the
+>>> envcfg CSR (or another Ss1p12 feature).
+>>
+>> I support that course of action.
+> 
+> I saw another mail suggesting that Zicbom implied Ss1p12, I think that
+> should be reasonable position to take for now.
+
+Like I mentioned in my other email, I don't think Zicboz is sufficient to imply
+Ss1p12. So I'd prefer to either stay with checking Zicboz (like v3 does); or add
+a bit for specifically the existence of the the envcfg CSR, that doesn't map to
+anything in the ISA string (i.e. is not listed in riscv_isa_ext). Of course, if
+we start ignoring subset_ext_ids, I'll have to reconsider how to actually
+implement that.
+
+Regards,
+Samuel
+
 
