@@ -1,57 +1,50 @@
-Return-Path: <stable+bounces-20440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B845859600
-	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 10:31:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FEB9859603
+	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 10:34:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27579283819
-	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 09:31:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5270E1C20A13
+	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 09:34:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07E4112E4C;
-	Sun, 18 Feb 2024 09:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 601DB8836;
+	Sun, 18 Feb 2024 09:34:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FZwWs7JH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iNhzhRzH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2875CA6B;
-	Sun, 18 Feb 2024 09:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20E453FC8
+	for <stable@vger.kernel.org>; Sun, 18 Feb 2024 09:34:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708248692; cv=none; b=bsTqSX6+DPinPqYSLQUnU5ShFyDtN7kVvf/VfxbwRsQwznQrKZTI5pxB9PFXPGhtPr4CTJD2RpZpAMHArq7MTANJzgaJAonk15OcHDYXMOZHTXYH9lHgsDd5F+BTJiFpkKRLLcIgplgXnxr/OZZFsAQ6vuDLipc5ntYcxUlp2yA=
+	t=1708248875; cv=none; b=KX2NiOLHk92ks2+bvp0tKO2PtKcJZIP8lGEUo+fuVXr9VZBb7M1WIq2tDBbdfsk3pIRx57h+qTiYMz6Lfi/hc350z9PDMwb2LewyTOwEsJkfjeqEBMmTrYuSF+bLgECBZjwmLCHJvPbKPpng8rYu6sS3KeH9XEKng0TvK37Nd34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708248692; c=relaxed/simple;
-	bh=bSFPBB1lkAFDYtbdb4l4xmYjc9oVNmeuIY8fCtgzv94=;
+	s=arc-20240116; t=1708248875; c=relaxed/simple;
+	bh=DPiAV3iqoIoJ3RDBnSgdMnEStWmhfZYC+8bhlhTlKWM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D4FR1F8taaoYktPP9CDmUcfM7ElR6qkoGizrDQ0ME2jdOK2YD2huH9T5ANZbv6T6bBSx6Lsrxu5aD5Vnbc6D7ME1CWaQ+uXKDwTZMqQcRIYHdHtev2KwZ3GqpXZpmyYP9TcfQ14TNlDWyX80DalzmK7wOYSRy138+OW5+qB5yxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FZwWs7JH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1B7FC43394;
-	Sun, 18 Feb 2024 09:31:31 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=BOfqrHM2R4jyVVo5GBkozXGJedMeNyVOq8+OSW+N8z9lH8ekAQXnlA3ntzISeHVFUTbH2xP2kobvNwXheR9SdfqH7+ofWv6tItL6hC0OTseKFUiP+gkHlgDgZIUzLcfPLaNmd+3naQ/uqhzNiWUtwlrYMri8XxitvVOljubFsGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iNhzhRzH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81493C433F1;
+	Sun, 18 Feb 2024 09:34:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708248692;
-	bh=bSFPBB1lkAFDYtbdb4l4xmYjc9oVNmeuIY8fCtgzv94=;
+	s=korg; t=1708248874;
+	bh=DPiAV3iqoIoJ3RDBnSgdMnEStWmhfZYC+8bhlhTlKWM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FZwWs7JHDsC80RMCNLqi897BnTy7qFAwkpcVLGniwBnG/15p7RUV5x/H6iwA+F/Zx
-	 F3ootulNovmgdC8KF/oU1iH/4oyMlGkPQoNJci2Vd4H59YAiuCWIoW4y53wat4iJxY
-	 3S4Wzk4uT0Cy2KgAZifhyEe5fuoa7qYTPAWy8qxI=
-Date: Sun, 18 Feb 2024 10:31:29 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Vitaly Chikunov <vt@altlinux.org>
-Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
-	Kees Cook <keescook@chromium.org>, linux-cifs@vger.kernel.org
-Subject: Re: [PATCH] cifs: Convert struct fealist away from 1-element array
-Message-ID: <2024021808-coach-wired-41cb@gregkh>
-References: <20230215000832.never.591-kees@kernel.org>
- <qjyfz2xftsbch6aozgplxyjfyqnuhn7j44udrucls4pqa5ey35@adxvvrdtagqf>
- <202402091559.52D7C2AC@keescook>
- <20240210003314.jyrvg57z6ox3is5u@altlinux.org>
- <2024021034-populace-aerospace-03f3@gregkh>
- <20240210102145.p4diskhnevicn6am@altlinux.org>
- <20240217215016.emqr3stdm3yrh4dq@altlinux.org>
+	b=iNhzhRzHBf8clbrho1hnBE7FE1WKx5jJJjtwuX7f4DIYkZWQ6uo1vsED/GpShlrqR
+	 q9lzIV+cOFS0j9RSgfyjXphNoUCdZrzrpwTkJMs/VsRhwPL64NeRccG4xLK0e6qUao
+	 lIJviTiAhLAjgD2l6KIBjv6b5BlVMlC/Pt+gE9l0=
+Date: Sun, 18 Feb 2024 10:34:31 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: David Sterba <dsterba@suse.com>
+Cc: stable@vger.kernel.org
+Subject: Re: Btrfs fixes for 6.7.x
+Message-ID: <2024021824-green-syndrome-70cd@gregkh>
+References: <20240215133633.25420-1-dsterba@suse.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,50 +53,31 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240217215016.emqr3stdm3yrh4dq@altlinux.org>
+In-Reply-To: <20240215133633.25420-1-dsterba@suse.com>
 
-On Sun, Feb 18, 2024 at 12:50:16AM +0300, Vitaly Chikunov wrote:
-> Greg, Sasha,
+On Thu, Feb 15, 2024 at 02:36:31PM +0100, David Sterba wrote:
+> Hi,
 > 
-> On Sat, Feb 10, 2024 at 01:21:45PM +0300, Vitaly Chikunov wrote:
-> > On Sat, Feb 10, 2024 at 10:19:46AM +0000, Greg Kroah-Hartman wrote:
-> > > On Sat, Feb 10, 2024 at 03:33:14AM +0300, Vitaly Chikunov wrote:
-> > > > 
-> > > > Can you please backport this commit (below) to a stable 6.1.y tree, it's
-> > > > confirmed be Kees this could cause kernel panic due to false positive
-> > > > strncpy fortify, and this is already happened for some users.
-> > > 
-> > > What is the git commit id?
-> > 
-> > 398d5843c03261a2b68730f2f00643826bcec6ba
+> there's been a bug in btrfs space reservation since 6.7 that is now affecting
+> quite some users. I'd like to ask to add the fix right after it got merged to
+> Linus' tree so it can possibly be released in 6.7.5.
 > 
-> Can you please apply this to the next 6.1.y release?
+> All apply cleanly on top of current 6.7.x tree. Thanks.
 > 
-> There is still non-theoretical crash as reported in
->   https://lore.kernel.org/all/qjyfz2xftsbch6aozgplxyjfyqnuhn7j44udrucls4pqa5ey35@adxvvrdtagqf/
+> 1693d5442c458ae8d5b0d58463b873cd879569ed
+> f4a9f219411f318ae60d6ff7f129082a75686c6c
+> 12c5128f101bfa47a08e4c0e1a75cfa2d0872bcd
+> 2f6397e448e689adf57e6788c90f913abd7e1af8
 > 
-> If commit hash was not enough:
+> Short ids with subjects:
 > 
->   commit 398d5843c03261a2b68730f2f00643826bcec6ba
->   Author:     Kees Cook <keescook@chromium.org>
->   AuthorDate: Tue Feb 14 16:08:39 2023 -0800
+> 1693d5442c45 btrfs: add and use helper to check if block group is used
+> f4a9f219411f btrfs: do not delete unused block group if it may be used soon
+> 12c5128f101b btrfs: add new unused block groups to the list of unused block groups
+> 2f6397e448e6 btrfs: don't refill whole delayed refs block reserve when starting transaction
 > 
->       cifs: Convert struct fealist away from 1-element array
-> 
-> The commit is in mainline and is applying well to linux-6.1.y:
-> 
->   (linux-6.1.y)$ git cherry-pick 398d5843c03261a2b68730f2f00643826bcec6ba
->   Auto-merging fs/smb/client/cifspdu.h
->   Auto-merging fs/smb/client/cifssmb.c
->   [linux-6.1.y 4a80b516f202] cifs: Convert struct fealist away from 1-element array
->    Author: Kees Cook <keescook@chromium.org>
->    Date: Tue Feb 14 16:08:39 2023 -0800
->    2 files changed, 10 insertions(+), 10 deletions(-)
 
-It does not apply cleanly due to renames, can you provide a backported,
-and tested, patch please?
-
-thanks,
+All now queued up, thanks.
 
 greg k-h
 
