@@ -1,141 +1,135 @@
-Return-Path: <stable+bounces-20425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32F2385942A
-	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 03:49:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 866E9859459
+	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 04:21:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64CF91C20C0B
-	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 02:49:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DCB62833EC
+	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 03:21:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 292A615C0;
-	Sun, 18 Feb 2024 02:49:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D36BB17F8;
+	Sun, 18 Feb 2024 03:20:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="sZvhASvT"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+Received: from out199-10.us.a.mail.aliyun.com (out199-10.us.a.mail.aliyun.com [47.90.199.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2AF7F6
-	for <stable@vger.kernel.org>; Sun, 18 Feb 2024 02:49:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.255
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2FAC15C0;
+	Sun, 18 Feb 2024 03:20:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.199.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708224557; cv=none; b=aZk6xeVgugQ2o/5mhwQ4Px5IUOqMOfcf3qEE6Vi9IpmQ+Fn/FknKe4hFQZ4dHzXIdix/Plc5z78BJ/TMHI97RwFDYuOnc/cD/l1vdJ5Htad4A2LcbRss8bgO0pCUrpL8ZvdesBQaqlyBdCAmKzlYD4QG8JZpk1Etr/pIKn0PYqk=
+	t=1708226457; cv=none; b=CnvO8MuqdpEoo5v0cRwR70pVAwFrQiu04sGBBtly/5/QSNr9X7AXMpthAnN9rp6rXi2wdercs0ulctwhgG/l0PUkHKa8Uxqm1L1rvky75D+yJMjm7+wiRdZN9fIASg+lCTniSvqsdmAkyYbi5PKHK/Rh6SxXdBvn9pBn+Lh6X8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708224557; c=relaxed/simple;
-	bh=Ch+KPMAfZbjpeoHV2JqF6Lj0VTFv4h0rsOlzB6XoXJI=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Qvk5Qu7Q94iE2V1zJCbL2RrQXom9xR9pMkIb5tgt4GDN80TIVhbqNWtoLF2hMz1LYEAVVDsCjdN/8HO62WGHKyKp6NiaMwGtYorEm4kTNB+rV8VbSJWuOaHXa66cZGuhIMpoaFRNxId+cmcN4M5rLSAP84khyoM9b0kdUTLxO1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.255
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4TcqRn1FLTz1Q8p8;
-	Sun, 18 Feb 2024 10:31:33 +0800 (CST)
-Received: from canpemm500005.china.huawei.com (unknown [7.192.104.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id 32B9914011B;
-	Sun, 18 Feb 2024 10:33:08 +0800 (CST)
-Received: from canpemm500004.china.huawei.com (7.192.104.92) by
- canpemm500005.china.huawei.com (7.192.104.229) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Sun, 18 Feb 2024 10:33:08 +0800
-Received: from huawei.com (10.67.174.111) by canpemm500004.china.huawei.com
- (7.192.104.92) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Sun, 18 Feb
- 2024 10:33:07 +0800
-From: Xiang Yang <xiangyang3@huawei.com>
-To: <ardb@kernel.org>, <mark.rutland@arm.com>, <catalin.marinas@arm.com>,
-	<will@kernel.org>
-CC: <keescook@chromium.org>, <linux-arm-kernel@lists.infradead.org>,
-	<stable@vger.kernel.org>, <gregkh@linuxfoundation.org>,
-	<xiangyang3@huawei.com>, <xiujianfeng@huawei.com>, <liaochang1@huawei.com>
-Subject: [PATCH 5.10.y 5/5] arm64: Stash shadow stack pointer in the task struct on interrupt
-Date: Sun, 18 Feb 2024 10:30:55 +0800
-Message-ID: <20240218023055.145519-6-xiangyang3@huawei.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240218023055.145519-1-xiangyang3@huawei.com>
-References: <20240218023055.145519-1-xiangyang3@huawei.com>
+	s=arc-20240116; t=1708226457; c=relaxed/simple;
+	bh=XfZHq5PLl/gGIAJY4T+e1XbJYYy90SoHG1cHEE8y4og=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MW+wEaIc6NZbY5xwmVxSukT8ojTOME1W0Ii5UtCAsK3vGDXuvdPtEwTsI0UspdTHFWr73AKo1jbK/iSGbh6ZgjQ4mGF5gDTkhxXxNG3a0uEjjfppunQgYJ6J7FYexWNHmyVQ3BuUqNLiyBb/vLuX2LQ1wU2WQ9DUuZ28byCx1NY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=sZvhASvT; arc=none smtp.client-ip=47.90.199.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1708226435; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=cqOsry37fOCW6Y3ou1nZ7EHlwm2eSJbNTtcAmfAvy8w=;
+	b=sZvhASvTaT1ZXVmRBexej/rFkeiSqwgKJhwU1CPYYXxwc2q7ZVDJTp2zLEiulOQ0Y18Bci8pELb2fYWQ4YGjqfZg8Eh/YoaYbX4ZP/0JG/qRIG/ec0suw5t4WF+G/DTKqPqaLF11G4qrWTbzERdaM7E0dJHiEnWfvt/iRIgo8xs=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045176;MF=jefflexu@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0W0kSJnS_1708226113;
+Received: from 30.221.145.138(mailfrom:jefflexu@linux.alibaba.com fp:SMTPD_---0W0kSJnS_1708226113)
+          by smtp.aliyun-inc.com;
+          Sun, 18 Feb 2024 11:15:13 +0800
+Message-ID: <cee45d07-b885-4b4b-b9b5-d7aeedc2b2e7@linux.alibaba.com>
+Date: Sun, 18 Feb 2024 11:15:12 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- canpemm500004.china.huawei.com (7.192.104.92)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND] cachefiles: fix memory leak in
+ cachefiles_add_cache()
+To: Baokun Li <libaokun1@huawei.com>, netfs@lists.linux.dev
+Cc: dhowells@redhat.com, jlayton@kernel.org, linux-cachefs@redhat.com,
+ linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20240217081431.796809-1-libaokun1@huawei.com>
+Content-Language: en-US
+From: Jingbo Xu <jefflexu@linux.alibaba.com>
+In-Reply-To: <20240217081431.796809-1-libaokun1@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Ard Biesheuvel <ardb@kernel.org>
 
-commit 59b37fe52f49955791a460752c37145f1afdcad1 upstream.
 
-Instead of reloading the shadow call stack pointer from the ordinary
-stack, which may be vulnerable to the kind of gadget based attacks
-shadow call stacks were designed to prevent, let's store a task's shadow
-call stack pointer in the task struct when switching to the shadow IRQ
-stack.
+On 2/17/24 4:14 PM, Baokun Li wrote:
+> The following memory leak was reported after unbinding /dev/cachefiles:
+> 
+> ==================================================================
+> unreferenced object 0xffff9b674176e3c0 (size 192):
+>   comm "cachefilesd2", pid 680, jiffies 4294881224
+>   hex dump (first 32 bytes):
+>     01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+>     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+>   backtrace (crc ea38a44b):
+>     [<ffffffff8eb8a1a5>] kmem_cache_alloc+0x2d5/0x370
+>     [<ffffffff8e917f86>] prepare_creds+0x26/0x2e0
+>     [<ffffffffc002eeef>] cachefiles_determine_cache_security+0x1f/0x120
+>     [<ffffffffc00243ec>] cachefiles_add_cache+0x13c/0x3a0
+>     [<ffffffffc0025216>] cachefiles_daemon_write+0x146/0x1c0
+>     [<ffffffff8ebc4a3b>] vfs_write+0xcb/0x520
+>     [<ffffffff8ebc5069>] ksys_write+0x69/0xf0
+>     [<ffffffff8f6d4662>] do_syscall_64+0x72/0x140
+>     [<ffffffff8f8000aa>] entry_SYSCALL_64_after_hwframe+0x6e/0x76
+> ==================================================================
+> 
+> Put the reference count of cache_cred in cachefiles_daemon_unbind() to
+> fix the problem. And also put cache_cred in cachefiles_add_cache() error
+> branch to avoid memory leaks.
+> 
+> Fixes: 9ae326a69004 ("CacheFiles: A cache that backs onto a mounted filesystem")
+> CC: stable@vger.kernel.org
+> Signed-off-by: Baokun Li <libaokun1@huawei.com>
 
-Given that currently, the task_struct::scs_sp field is only used to
-preserve the shadow call stack pointer while a task is scheduled out or
-running in user space, reusing this field to preserve and restore it
-while running off the IRQ stack must be safe, as those occurrences are
-guaranteed to never overlap. (The stack switching logic only switches
-stacks when running from the task stack, and so the value being saved
-here always corresponds to the task mode shadow stack)
+LGTM.
 
-While at it, fold a mov/add/mov sequence into a single add.
+Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/r/20230109174800.3286265-3-ardb@kernel.org
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Xiang Yang <xiangyang3@huawei.com>
----
- arch/arm64/kernel/entry.S | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm64/kernel/entry.S b/arch/arm64/kernel/entry.S
-index b0d102669dde..e35f3cec74d9 100644
---- a/arch/arm64/kernel/entry.S
-+++ b/arch/arm64/kernel/entry.S
-@@ -1011,19 +1011,19 @@ NOKPROBE(ret_from_fork)
-  */
- SYM_FUNC_START(call_on_irq_stack)
- #ifdef CONFIG_SHADOW_CALL_STACK
--	stp	scs_sp, xzr, [sp, #-16]!
-+	get_current_task x16
-+	scs_save x16
- 	adr_this_cpu scs_sp, irq_shadow_call_stack, x17
- #endif
-+
- 	/* Create a frame record to save our LR and SP (implicit in FP) */
- 	stp	x29, x30, [sp, #-16]!
- 	mov	x29, sp
- 
- 	ldr_this_cpu x16, irq_stack_ptr, x17
--	mov	x15, #IRQ_STACK_SIZE
--	add	x16, x16, x15
- 
- 	/* Move to the new stack and call the function there */
--	mov	sp, x16
-+	add	sp, x16, #IRQ_STACK_SIZE
- 	blr	x1
- 
- 	/*
-@@ -1032,9 +1032,7 @@ SYM_FUNC_START(call_on_irq_stack)
- 	 */
- 	mov	sp, x29
- 	ldp	x29, x30, [sp], #16
--#ifdef CONFIG_SHADOW_CALL_STACK
--	ldp	scs_sp, xzr, [sp], #16
--#endif
-+	scs_load_current
- 	ret
- SYM_FUNC_END(call_on_irq_stack)
- NOKPROBE(call_on_irq_stack)
+> ---
+>  fs/cachefiles/cache.c  | 2 ++
+>  fs/cachefiles/daemon.c | 1 +
+>  2 files changed, 3 insertions(+)
+> 
+> diff --git a/fs/cachefiles/cache.c b/fs/cachefiles/cache.c
+> index 7077f72e6f47..f449f7340aad 100644
+> --- a/fs/cachefiles/cache.c
+> +++ b/fs/cachefiles/cache.c
+> @@ -168,6 +168,8 @@ int cachefiles_add_cache(struct cachefiles_cache *cache)
+>  	dput(root);
+>  error_open_root:
+>  	cachefiles_end_secure(cache, saved_cred);
+> +	put_cred(cache->cache_cred);
+> +	cache->cache_cred = NULL;
+>  error_getsec:
+>  	fscache_relinquish_cache(cache_cookie);
+>  	cache->cache = NULL;
+> diff --git a/fs/cachefiles/daemon.c b/fs/cachefiles/daemon.c
+> index 3f24905f4066..6465e2574230 100644
+> --- a/fs/cachefiles/daemon.c
+> +++ b/fs/cachefiles/daemon.c
+> @@ -816,6 +816,7 @@ static void cachefiles_daemon_unbind(struct cachefiles_cache *cache)
+>  	cachefiles_put_directory(cache->graveyard);
+>  	cachefiles_put_directory(cache->store);
+>  	mntput(cache->mnt);
+> +	put_cred(cache->cache_cred);
+>  
+>  	kfree(cache->rootdirname);
+>  	kfree(cache->secctx);
+
 -- 
-2.34.1
-
+Thanks,
+Jingbo
 
