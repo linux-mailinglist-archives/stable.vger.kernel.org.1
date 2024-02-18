@@ -1,119 +1,109 @@
-Return-Path: <stable+bounces-20446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C5B8859620
-	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 10:59:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2DCE859621
+	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 11:07:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0595B1F2126D
-	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 09:59:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF9C8282EFC
+	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 10:07:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DB8D1B7F2;
-	Sun, 18 Feb 2024 09:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C48014A86;
+	Sun, 18 Feb 2024 10:07:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bl7UlZrJ"
 X-Original-To: stable@vger.kernel.org
-Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A0701B944;
-	Sun, 18 Feb 2024 09:59:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.57
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A51FBE1
+	for <stable@vger.kernel.org>; Sun, 18 Feb 2024 10:07:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708250348; cv=none; b=mn/1fPohnZDBCL50BYIN0I10JWiPfuUrqlDJZ0Kww6tNirT/yotAjnm5iUhL0WO2CyFtWm9XffqOPauMC4IAGmTT4YFcD2PhGbiL90UBm7PEQssA5Q7VHoMx9AoUh/l9kyRmoPtDlJu8EVECO5gZrxk7ZemVRZb0EohrS2AqyO8=
+	t=1708250824; cv=none; b=ReCuUQwa531X+0eVoKsQ1A9GHdlzNEzeAZpn5TYyiI/gJ/tEKGp+M/8Rfka9GPWPupZusOKuZqRtFbROWpBZEp/7cf/WygmXw+dusycEn+kJsqmKkNOP+Gu7p+0UTUjuIl1TCZa7DvUrMJGcHoGtFsKqOwBbzphkh0Y2Xns+mL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708250348; c=relaxed/simple;
-	bh=IGCnPy2SRJuc9eaAUbdC20XKH7Zdj+g2ydOyooARQwI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hxyaKnzx2aGC7HTMZ2zvKzZOoW9AlQF22XV+l/hl8FqJrKYDNpxb2/zP58fErNrJ8Pcq7QIfVdxAOiGP7O/4ho9lLVpeynRz585BoEsCZpSYpPVRxPE6e+BatnsDSkRKAbev0Q69RyP6CHAL4uikxApiIvnDQGDiAfnMYc3eQ3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: from imap.altlinux.org (imap.altlinux.org [194.107.17.38])
-	by vmicros1.altlinux.org (Postfix) with ESMTP id 934A672C90D;
-	Sun, 18 Feb 2024 12:59:03 +0300 (MSK)
-Received: from altlinux.org (sole.flsd.net [185.75.180.6])
-	by imap.altlinux.org (Postfix) with ESMTPSA id 81D7336D016F;
-	Sun, 18 Feb 2024 12:59:03 +0300 (MSK)
-Date: Sun, 18 Feb 2024 12:59:03 +0300
-From: Vitaly Chikunov <vt@altlinux.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
-	Kees Cook <keescook@chromium.org>, linux-cifs@vger.kernel.org
-Subject: Re: [PATCH] cifs: Convert struct fealist away from 1-element array
-Message-ID: <20240218095903.5tg6wo3jvnguyzf6@altlinux.org>
-References: <20230215000832.never.591-kees@kernel.org>
- <qjyfz2xftsbch6aozgplxyjfyqnuhn7j44udrucls4pqa5ey35@adxvvrdtagqf>
- <202402091559.52D7C2AC@keescook>
- <20240210003314.jyrvg57z6ox3is5u@altlinux.org>
- <2024021034-populace-aerospace-03f3@gregkh>
- <20240210102145.p4diskhnevicn6am@altlinux.org>
- <20240217215016.emqr3stdm3yrh4dq@altlinux.org>
- <2024021808-coach-wired-41cb@gregkh>
+	s=arc-20240116; t=1708250824; c=relaxed/simple;
+	bh=7S6R3xnRVPhUzIOuy5OM9zirAK9yA/RevlLMlD3sEx8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dSO3i5NVHPlAXZ4JJ6dhb86FQDK1CnU+GuJ6k0bLm9jDYFe5Wx6KagYKOGGJ79jVK+gGj0Q3lMjDE2ynQQca2aPPo7Ga/EcOQR/fKt15uX1gWxXigeISattIoGaH1fUNIPCIkpycaXJi1qXrX9NM6bPQbm8QqT9DWdbtahmwvzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bl7UlZrJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 377DCC43399
+	for <stable@vger.kernel.org>; Sun, 18 Feb 2024 10:07:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708250824;
+	bh=7S6R3xnRVPhUzIOuy5OM9zirAK9yA/RevlLMlD3sEx8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=bl7UlZrJ3B+dfoIKOpIkMAd6cRBi6I0g/BD1l9cDgWhuMjQugaXKt3Z4L4pKPocA5
+	 mvalOS8YJmQWGBMQgKlmYcuL86BRBqK0yXIKdm+aSXyVedMp7QsczSQtsoQ+i8rDZI
+	 EPK9TGVm1gFfV93YUk4ZYqfTwVOebnzDcFBSNpU41DhWIEML8y/HJs7QRUJcIhcN/b
+	 3C0/HrLyGl7T7BNsQj5SbW6Dc4YI/wEsBPCJemn0IXW3t1DjbS0eV9U+c+Rn0voVw+
+	 4MNWITkmGtlOsYKnzjaYoLmqSLCylLB9mlOqHLEXLlW3WH3W+CkPx7OPm0E4nsBU02
+	 NS2hjj7D271sA==
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2d23114b19dso6062301fa.3
+        for <stable@vger.kernel.org>; Sun, 18 Feb 2024 02:07:04 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXdrw5++iXu6jbyfLz4YRV61KxpgIiSLhsDGhXD6KXdKG9+ZeCR4C63M1KDFU5D1/7VunGCAH04RqO5tSfCXjXzMwhsaJ6D
+X-Gm-Message-State: AOJu0Yz04H/TyQDafNnhO3urluHZThXzqo3rZm/EtoKjvsjWcEEyk1aa
+	/DbB26hSrfVHVnbUJezaVW4qcPUHsdT28GMZUb+xjozI5Ar6a5sNZsN0wAyqbAw9rRL1YxC0ZJb
+	MMFvXdhCRZ4rh5HmOxOMreFrYgGo=
+X-Google-Smtp-Source: AGHT+IGSBVfv2g47+kEjUkP+8d4FtM3o9G2Fy80YiP86wcj1CjqVYKynzMXjTqbFk9X7kU9KFtANFmM6TkygS0JvvCA=
+X-Received: by 2002:a2e:80d2:0:b0:2d2:318e:788d with SMTP id
+ r18-20020a2e80d2000000b002d2318e788dmr1476573ljg.25.1708250822358; Sun, 18
+ Feb 2024 02:07:02 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=koi8-r
-Content-Disposition: inline
-In-Reply-To: <2024021808-coach-wired-41cb@gregkh>
+References: <20240218023055.145519-1-xiangyang3@huawei.com>
+In-Reply-To: <20240218023055.145519-1-xiangyang3@huawei.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Sun, 18 Feb 2024 11:06:50 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXFbveXgHvk1jEs1Q4kE=Tak08cDYpebwEgKehhwYf9j4A@mail.gmail.com>
+Message-ID: <CAMj1kXFbveXgHvk1jEs1Q4kE=Tak08cDYpebwEgKehhwYf9j4A@mail.gmail.com>
+Subject: Re: [PATCH 5.10.y 0/5] Backport call_on_irq_stack to fix scs
+ overwritten in irq_stack_entry
+To: Xiang Yang <xiangyang3@huawei.com>
+Cc: mark.rutland@arm.com, catalin.marinas@arm.com, will@kernel.org, 
+	keescook@chromium.org, linux-arm-kernel@lists.infradead.org, 
+	stable@vger.kernel.org, gregkh@linuxfoundation.org, xiujianfeng@huawei.com, 
+	liaochang1@huawei.com
+Content-Type: text/plain; charset="UTF-8"
 
-Greg,
+On Sun, 18 Feb 2024 at 03:33, Xiang Yang <xiangyang3@huawei.com> wrote:
+>
+> The shadow call stack for irq now stored in current task's thread info
+> may restored incorrectly, so backport call_on_irq_stack from mainline to
+> fix it.
+>
+> Ard Biesheuvel (1):
+>   arm64: Stash shadow stack pointer in the task struct on interrupt
+>
+> Mark Rutland (3):
+>   arm64: entry: move arm64_preempt_schedule_irq to entry-common.c
+>   arm64: entry: add a call_on_irq_stack helper
+>   arm64: entry: convert IRQ+FIQ handlers to C
+>
+> Xiang Yang (1):
+>   Revert "arm64: Stash shadow stack pointer in the task struct on
+>     interrupt"
+>
 
-On Sun, Feb 18, 2024 at 10:31:29AM +0100, Greg Kroah-Hartman wrote:
-> On Sun, Feb 18, 2024 at 12:50:16AM +0300, Vitaly Chikunov wrote:
-> > 
-> > On Sat, Feb 10, 2024 at 01:21:45PM +0300, Vitaly Chikunov wrote:
-> > > On Sat, Feb 10, 2024 at 10:19:46AM +0000, Greg Kroah-Hartman wrote:
-> > > > On Sat, Feb 10, 2024 at 03:33:14AM +0300, Vitaly Chikunov wrote:
-> > > > > 
-> > > > > Can you please backport this commit (below) to a stable 6.1.y tree, it's
-> > > > > confirmed be Kees this could cause kernel panic due to false positive
-> > > > > strncpy fortify, and this is already happened for some users.
-> > > > 
-> > > > What is the git commit id?
-> > > 
-> > > 398d5843c03261a2b68730f2f00643826bcec6ba
-> > 
-> > Can you please apply this to the next 6.1.y release?
-> > 
-> > There is still non-theoretical crash as reported in
-> >   https://lore.kernel.org/all/qjyfz2xftsbch6aozgplxyjfyqnuhn7j44udrucls4pqa5ey35@adxvvrdtagqf/
-> > 
-> > If commit hash was not enough:
-> > 
-> >   commit 398d5843c03261a2b68730f2f00643826bcec6ba
-> >   Author:     Kees Cook <keescook@chromium.org>
-> >   AuthorDate: Tue Feb 14 16:08:39 2023 -0800
-> > 
-> >       cifs: Convert struct fealist away from 1-element array
-> > 
-> > The commit is in mainline and is applying well to linux-6.1.y:
-> > 
-> >   (linux-6.1.y)$ git cherry-pick 398d5843c03261a2b68730f2f00643826bcec6ba
-> >   Auto-merging fs/smb/client/cifspdu.h
-> >   Auto-merging fs/smb/client/cifssmb.c
-> >   [linux-6.1.y 4a80b516f202] cifs: Convert struct fealist away from 1-element array
-> >    Author: Kees Cook <keescook@chromium.org>
-> >    Date: Tue Feb 14 16:08:39 2023 -0800
-> >    2 files changed, 10 insertions(+), 10 deletions(-)
-> 
-> It does not apply cleanly due to renames, can you provide a backported,
-> and tested, patch please?
+Backporting this was a mistake. Not only was the backport flawed, the
+original issue (stashing the shadow call stack pointer onto the normal
+stack) was not even present, at least not to the same extent.
 
-I cannot test it solves the bug since I don't use software that triggers
-the crash. But crash logic is obvious - sizeof of first element of char
-array is 1 byte and fortify code for strncpy issues panic. The patch is
-obviously missed.
+Stashing the shadow call stack pointer in register X24 works around
+the original issue, except for the case where a hardirq is taken while
+softirqs are being processed. In this case, X24 will be preserved on
+the stack by the hardirq handling logic, and restored after.
+Theoretically, that creates a window where the shadow call stack
+pointer could be corrupted deliberately, but it seems unlikely to me
+that this is exploitable in practice.
 
-I can send that patch that is result of my git applying cleanly 398d5843c03261a2b68730f2f00643826bcec6ba.
-And I will try to build kernel and ensure it compiles well.
-Will this be enough?
-
-Thanks,
-
-> 
-> thanks,
-> 
-> greg k-h
+So in the light of this, I think doing only the revert here should be
+sufficient, and there is no need for the other backports in this
+series.
 
