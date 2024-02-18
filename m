@@ -1,120 +1,119 @@
-Return-Path: <stable+bounces-20449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 640C4859647
-	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 11:32:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1642859645
+	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 11:30:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92CD21C216D3
-	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 10:32:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8685D28487D
+	for <lists+stable@lfdr.de>; Sun, 18 Feb 2024 10:30:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DF3D26AEC;
-	Sun, 18 Feb 2024 10:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F96E3D56C;
+	Sun, 18 Feb 2024 10:30:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EC9TbaFt"
 X-Original-To: stable@vger.kernel.org
-Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F07DEAF1;
-	Sun, 18 Feb 2024 10:32:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.201.40.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCA7F383B0;
+	Sun, 18 Feb 2024 10:30:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708252359; cv=none; b=eSkFK10hNH/axxRa9I7CtVnNDg0O2v/mHEAZ1jVhyyuLiRq/9Ja3rBEUXfjuQ+YzPo2oi/MKL2ER7vJ5S0P9jUa2O0MuTocboNb5cuJ3njvQWA2Nm4fEJ/D4aM/SlmhmYOTmRjBkEA3P5+OQMqfOGn7Un7bH+Apkp+emppErl0I=
+	t=1708252226; cv=none; b=U9vtFT8DtMj3XFymEm/SgaTCX7ivVZwOtF9Jjg9SmnqT1wHPLZAeiWqPwdE1A1tOxoSNNfSYSNTwM/IoPKMiu9V3AhToY/+wUj81j8Cr+mhnUW4ui0KFn0TflEfn3s4GEvkGNyDDGcHAa+zJBStIjP6gcqcqpTeHT/PQ1+eG/Uw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708252359; c=relaxed/simple;
-	bh=QQ40rigSvgbbHgAfJv6HyWAMqrbMRDPMJB7xB30mk9g=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=ls6isx/aJsICqkYLi+9ys3cMo5JAREPKYi4rwHRoUPqGWDCmdsD+VREFE8voIgUNWWY0yyH9IisIejUHMVLe5ph70h4Yke3+SUkOsnb6SvQViS1DnQ+uDDKB0zhgh3xvJZLKxGnTjsNIDmdQPg2fy/uVu0Cq53Go1Pg6Q5M/rIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nod.at; spf=fail smtp.mailfrom=nod.at; arc=none smtp.client-ip=195.201.40.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nod.at
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nod.at
-Received: from localhost (localhost [127.0.0.1])
-	by lithops.sigma-star.at (Postfix) with ESMTP id D2C2D626FB03;
-	Sun, 18 Feb 2024 11:25:56 +0100 (CET)
-Received: from lithops.sigma-star.at ([127.0.0.1])
-	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id zTwMf50YHRo2; Sun, 18 Feb 2024 11:25:56 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by lithops.sigma-star.at (Postfix) with ESMTP id 34C4362348B6;
-	Sun, 18 Feb 2024 11:25:56 +0100 (CET)
-Received: from lithops.sigma-star.at ([127.0.0.1])
-	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id BNvjYnE6md31; Sun, 18 Feb 2024 11:25:56 +0100 (CET)
-Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
-	by lithops.sigma-star.at (Postfix) with ESMTP id ECFFF64507D7;
-	Sun, 18 Feb 2024 11:25:55 +0100 (CET)
-Date: Sun, 18 Feb 2024 11:25:55 +0100 (CET)
-From: Richard Weinberger <richard@nod.at>
-To: chengzhihao1 <chengzhihao1@huawei.com>
-Cc: Martin Kepplinger-Novakovic <martink@posteo.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	stable <stable@vger.kernel.org>, patches@lists.linux.dev, 
-	ZhaoLong Wang <wangzhaolong1@huawei.com>, 
-	Miquel Raynal <miquel.raynal@bootlin.com>, 
-	Sasha Levin <sashal@kernel.org>, 
-	linux-mtd <linux-mtd@lists.infradead.org>, 
-	Vignesh Raghavendra <vigneshr@ti.com>, 
-	dpervushin <dpervushin@embeddedalley.com>, 
-	Artem Bityutskiy <Artem.Bityutskiy@nokia.com>, 
-	linux-kernel <linux-kernel@vger.kernel.org>, 
-	yi zhang <yi.zhang@huawei.com>, yangerkun <yangerkun@huawei.com>, 
-	Henri Roosen <Henri.Roosen@ginzinger.com>, 
-	Melchior Franz <Melchior.Franz@ginzinger.com>
-Message-ID: <1171523562.70108.1708251955853.JavaMail.zimbra@nod.at>
-In-Reply-To: <a53aacd3-4270-2d80-f14c-8cfd763e4404@huawei.com>
-References: <20240122235719.206965081@linuxfoundation.org> <20240122235721.687806578@linuxfoundation.org> <fdfcc3b6e1a884bb986acf072bcc13611eae8bdd.camel@posteo.de> <a53aacd3-4270-2d80-f14c-8cfd763e4404@huawei.com>
-Subject: Re: [PATCH 5.4 058/194] mtd: Fix gluebi NULL pointer dereference
- caused by ftl notifier
+	s=arc-20240116; t=1708252226; c=relaxed/simple;
+	bh=3+SCX68+BR4ikcTOVUJ8dLGXtBO7YBQJrQoEZ0s5SlQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=mNvW/yQb+DI2R7RKJjfVGe8sLp9j8l6jCP+4QqG7BPS1KHedZsQG3ZrfszREQkAHH30kveAWyM6ixnFX/wFMsMq+hXCNJkaIcxgLO+82Xyhk+lqyzgMWaAlpZzt7ug1eH2nRQRDoQ97OSkjYoSXqrBdq9PANSju3jj5aWL8TGqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EC9TbaFt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 606EBC43390;
+	Sun, 18 Feb 2024 10:30:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708252226;
+	bh=3+SCX68+BR4ikcTOVUJ8dLGXtBO7YBQJrQoEZ0s5SlQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=EC9TbaFtKL2cffq/Tnbi117BoptMRJgSL3M6ne1V4ew7Yk7Xo+gE5//ta/TYWCA8N
+	 I5gyesn/3Dq+YL1+Z20nFZXVwqI2FlC8I3+7tJMb9DKjMAYrdCfdCkgRFAhtBzvMk+
+	 85IDAWpXGd+lRqHSpFj8uiwA7yXutCFyHLJarla05FN6+dzMGNKsEEgTDE9uwEKC8E
+	 KH3pCYQzJosIkkiEQnpWi/tWWHByUXJYtxkSsHhbPokC2gDwG3ZzvBoQuJSmPhlgHi
+	 DIYEQAa5QKskn+DzQcawpP+S94RJJXmpBlOdNDORJf17Bezgb2Z90h9TjHbQpvmw2V
+	 MctjWI6PLI44w==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 45BD5DC99F1;
+	Sun, 18 Feb 2024 10:30:26 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Zimbra 8.8.12_GA_3807 (ZimbraWebClient - FF97 (Linux)/8.8.12_GA_3809)
-Thread-Topic: Fix gluebi NULL pointer dereference caused by ftl notifier
-Thread-Index: qlWIfU/4hKJxU5rpLtwP8PpFM4piaQ==
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 00/13] mptcp: misc. fixes for v6.8
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <170825222628.22893.6012598424482602231.git-patchwork-notify@kernel.org>
+Date: Sun, 18 Feb 2024 10:30:26 +0000
+References: <20240215-upstream-net-20240215-misc-fixes-v1-0-8c01a55d8f6a@kernel.org>
+In-Reply-To: <20240215-upstream-net-20240215-misc-fixes-v1-0-8c01a55d8f6a@kernel.org>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: mptcp@lists.linux.dev, martineau@kernel.org, geliang@kernel.org,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ dcaratti@redhat.com, shuah@kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ tanggeliang@kylinos.cn, stable@vger.kernel.org, borisp@nvidia.com,
+ john.fastabend@gmail.com
 
------ Urspr=C3=BCngliche Mail -----
-> Von: "chengzhihao1" <chengzhihao1@huawei.com>
->> Hi Greg, hi patch-developers,
->>=20
->> wait a second. this already went into v5.4.268 but still: Doesn't this
->> break userspace?
->>=20
->> According to
->> https://lore.kernel.org/lkml/441107100.23734.1697904580252.JavaMail.zimb=
-ra@nod.at/
->> where this solution seems to come from, the behaviour changes: "no
->> mtdblock (hence, also no FTLs) on top of gluebi."
->>=20
->> I fell accross this because of an out-of-tree module that does
->> sys_mount() an mtdblock, so I won't complain about my code specifically
->> :) But doesn't it break mounting, say, jffs2 inside an ubi via
->> mtdblock? If so, is this really something that you want to see
->> backported to old kernels?
->>=20
->> Or differently put: Has this patch been picked up for old stable
->> kernels by scripts or by a human?
->>=20
->> I just want to make sure, and who knows, it might help others too, who
->> would just do a (possibly dangerous?) revert in their trees.
->>=20
->=20
-> This change does affect the mounting(mtdblock based on gluebi) behavior
-> in userspace. It was picked into stable versions because the fixed
-> problem is serious and easy to be reproduced, I guess.
-> A temporary solution is that modify mounting source target in userspace,
-> just replace mtdblock with mtd char device. For example, mount -t jffs2
-> mtd0 /mnt
+Hello:
 
-I don't think this needs backporting to stable. It's not serious because yo=
-u
-still need to be root to setup and trigger such a scenario.
+This series was applied to netdev/net.git (main)
+by David S. Miller <davem@davemloft.net>:
 
-Thanks,
-//richard
+On Thu, 15 Feb 2024 19:25:27 +0100 you wrote:
+> This series includes 4 types of fixes:
+> 
+> Patches 1 and 2 force the path-managers not to allocate a new address
+> entry when dealing with the "special" ID 0, reserved to the address of
+> the initial subflow. These patches can be backported up to v5.19 and
+> v5.12 respectively.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,01/13] mptcp: add needs_id for userspace appending addr
+    https://git.kernel.org/netdev/net/c/6c347be62ae9
+  - [net,02/13] mptcp: add needs_id for netlink appending addr
+    https://git.kernel.org/netdev/net/c/584f38942626
+  - [net,03/13] mptcp: fix lockless access in subflow ULP diag
+    https://git.kernel.org/netdev/net/c/b8adb69a7d29
+  - [net,04/13] mptcp: fix data races on local_id
+    https://git.kernel.org/netdev/net/c/a7cfe7766370
+  - [net,05/13] mptcp: fix data races on remote_id
+    https://git.kernel.org/netdev/net/c/967d3c27127e
+  - [net,06/13] mptcp: fix duplicate subflow creation
+    https://git.kernel.org/netdev/net/c/045e9d812868
+  - [net,07/13] selftests: mptcp: pm nl: also list skipped tests
+    https://git.kernel.org/netdev/net/c/d2a2547565a9
+  - [net,08/13] selftests: mptcp: pm nl: avoid error msg on older kernels
+    https://git.kernel.org/netdev/net/c/662f084f3396
+  - [net,09/13] selftests: mptcp: diag: fix bash warnings on older kernels
+    https://git.kernel.org/netdev/net/c/694bd45980a6
+  - [net,10/13] selftests: mptcp: simult flows: fix some subtest names
+    https://git.kernel.org/netdev/net/c/4d8e0dde0403
+  - [net,11/13] selftests: mptcp: userspace_pm: unique subtest names
+    https://git.kernel.org/netdev/net/c/2ef0d804c090
+  - [net,12/13] selftests: mptcp: diag: unique 'in use' subtest names
+    https://git.kernel.org/netdev/net/c/645c1dc965ef
+  - [net,13/13] selftests: mptcp: diag: unique 'cestab' subtest names
+    https://git.kernel.org/netdev/net/c/4103d8480866
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
 
