@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-20690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63C1585AB47
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:43:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E77C85AB49
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:43:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DFC6BB23656
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:43:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B375CB237DE
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:43:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77D924D58C;
-	Mon, 19 Feb 2024 18:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 324E24F1F3;
+	Mon, 19 Feb 2024 18:42:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w5caCtPB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pQv/OzZa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A5F482F6
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E32754F1EA
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708368151; cv=none; b=qxzDM6yBat+JTBO0ie2lWl05mJNIDqiC8wanmDELLGuJKCNwTBhaIr8jMaPrMBB/7hwZsjxa11Mg2gRy1y0zY1aMR65R9+kpRGoqOc3CQbDyg6dvnqDSykH0rLtf7tQJtiYPtMU36cBK+/p4Wlr7342hyh6Y0usA9UOyUAKXNY4=
+	t=1708368160; cv=none; b=g9hEGP/yRoqm6JOtq2yAiGCNflpRQB4f8OPT7KdsZVIkm1obvEgZNQsGJ1fO5J+v0hmfg62o48l4OLOrQ/BnWStsJwJu2gWPmHv6KWCyuBlSNWe0d5moDmZ224YIPPVrpDKWgo5SwJ5E+sZG1NFEuKxKHOf8qby1QJ5AtrV9owc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708368151; c=relaxed/simple;
-	bh=TMzGgDqWaULr/Hw7kRsZ7l4fSBGhS64VxkiOVRRtmFQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=J9NIhkA4uTDaBN8xPh1MS4qLBvgglNNoKs1Uq1HGpNb5n2iQfsQYTcNixb3JTiqqSEHEvkzxxMDXoySb7nO5XYv3hWt+gWTWlWwtSvaGDEptr0/T6VRHrL5wxwsWW67dU2WyomTsKqcmN2ge2o8F7Rq2izwx0lo2KAKN6kiCrWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w5caCtPB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C5F4C433C7;
-	Mon, 19 Feb 2024 18:42:30 +0000 (UTC)
+	s=arc-20240116; t=1708368160; c=relaxed/simple;
+	bh=ujOtIYiZVf7qyw0FSFUmW8vc5I+OZiMhOlshviOJSKU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=D+eTt9P1fK2aKxXAqH4MbEviZBX6LZ/4fGBkyn4UNRUFjA+GzmJPijaeEjNHG+kb1RFCxXrKtzRn3ezJ3BTkhoGhW9MojC7mDdn85GQtWQANDVcF8QSdAx1E+hOaMhEgDEKPhUUXeUTKcP/Qvm2GXBGXu+J3XTVOM3fSyygcaKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pQv/OzZa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5335CC433C7;
+	Mon, 19 Feb 2024 18:42:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708368151;
-	bh=TMzGgDqWaULr/Hw7kRsZ7l4fSBGhS64VxkiOVRRtmFQ=;
+	s=korg; t=1708368159;
+	bh=ujOtIYiZVf7qyw0FSFUmW8vc5I+OZiMhOlshviOJSKU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=w5caCtPBA8TIjq8y/G4EQUVdVWdPfYlxItB1ru3iSSF11yrGtPVWpli3osz7i3Mp+
-	 1GEOQPh7qSdF2/JYd7/sQR8Q95+jCksKeiU3/Y2vP7qiDB3nnvJ02ZChLDdfaoUAXf
-	 /eVZAZaX+1/AMHzSU+058DusPidxCfFprCdrD4cs=
-Subject: FAILED: patch "[PATCH] smb: client: set correct id, uid and cruid for multiuser" failed to apply to 6.1-stable tree
+	b=pQv/OzZaILMX/h659fJ+oJJG/mzI2UNco8hOg9F/7rKAH0rkVnel9TsuPXX612eAC
+	 857alBlnP5MKPBSs13J5Jblia5pG5ZqMlpBH93tMd3vG3xbtwS/xFmyr60GkGhs631
+	 RBXzMU2x4/xLZablJEQ5rlIgvIetPd7cJ5I1j6cw=
+Subject: FAILED: patch "[PATCH] smb: client: set correct id, uid and cruid for multiuser" failed to apply to 5.15-stable tree
 To: pc@manguebit.com,snehring@iastate.edu,stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Feb 2024 19:42:28 +0100
-Message-ID: <2024021928-dragster-release-24a1@gregkh>
+Date: Mon, 19 Feb 2024 19:42:29 +0100
+Message-ID: <2024021928-granite-partake-3387@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 4508ec17357094e2075f334948393ddedbb75157
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021928-dragster-release-24a1@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021928-granite-partake-3387@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -79,6 +79,10 @@ a73a26d97eca ("cifs: split out ses and tcon retrieval from mount_get_conns()")
 2301bc103ac4 ("cifs: remove unused smb3_fs_context::mount_options")
 abdb1742a312 ("cifs: get rid of mount options string parsing")
 9fd29a5bae6e ("cifs: use fs_context for automounts")
+68e14569d7e5 ("smb3: add dynamic trace points for tree disconnect")
+13609a8b3ac6 ("cifs: move from strlcpy with unused retval to strscpy")
+5dd8ce24667a ("cifs: missing directory in MAINTAINERS file")
+332019e23a51 ("Merge tag '5.20-rc-smb3-client-fixes-part2' of git://git.samba.org/sfrench/cifs-2.6")
 
 thanks,
 
