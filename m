@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-20688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B4B785AB44
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:43:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1A8985AB45
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:43:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 556A8283C22
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:43:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D7E8283A43
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:43:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14CEE482E5;
-	Mon, 19 Feb 2024 18:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 394B74D109;
+	Mon, 19 Feb 2024 18:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nu6cs4ki"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SG/r6kO8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4033482EC
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF452482EA
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708368132; cv=none; b=pLPUOosFRkcJqjbhvIPcI4kICkODU81dLFhrdiT7GECixT8QSIcOPXelifnBf2AtiWiyeCRhRgL3He7DLHY/MIOSZ+5fOmc3ioi1/g3Wgd793Hj+iRKFxsB75M6usitMufnLyaQCM1xFZBpfcMYWUWvkFk7Dp+eSGMItuIm5Mz8=
+	t=1708368136; cv=none; b=TQePjM2LlPS7j+qMkcFhpHIvYQCDxFEyCkEpaAktUmHuFoIuRpXkKph2PjKn+5PUbj1hItEBsrGVu4Nr0Bo91zZgxVc/Jxc+/MeSMrRpX20/WqYS4by1lVhFEISQqmO0wBBCaWV9612V6tA3PoP2Gtc4NRWBEndXOArpT+JVAtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708368132; c=relaxed/simple;
-	bh=rTdhU5lbWB5Sv1Y/CDnynLlV7qBOyJkGwbbdA50VK7I=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=s8CL9oERSvW+NjQFJrHPgu9v/p1XKws+OjTcIKTi9btMxK+zoBFg3nzq4U1Wefldzh5SV75ERKOS0BzL7WfI16O/glUarp6/AcVn81rIKBGq+4eQLMZ7/ZI6F0DTPw9Rl0s+DIC4lYtLt6zxcJ68uOiKdF18/Az8hC/9hTiWXjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nu6cs4ki; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 421A9C433F1;
-	Mon, 19 Feb 2024 18:42:12 +0000 (UTC)
+	s=arc-20240116; t=1708368136; c=relaxed/simple;
+	bh=hMG1ouDl21wNjuy+++YxQka2bOgSfAmAtzmAV7/SQbQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Aq5quwQNpxky3pRMLf4b2Y7XXxQyag4cZ3qITICevyC/G2yA2dCnN6tgcncOdsCtLbB1wMIvQYsE+sH8R3544Y4AocPqCOsXrQly3Trqlxto4Ttjc8Og/59gOyvNW0FV1f6uYi1daJcwmTgAF2fDIxGUsstyS/AYj/FLUG/A0tQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SG/r6kO8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DDB1C433C7;
+	Mon, 19 Feb 2024 18:42:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708368132;
-	bh=rTdhU5lbWB5Sv1Y/CDnynLlV7qBOyJkGwbbdA50VK7I=;
+	s=korg; t=1708368135;
+	bh=hMG1ouDl21wNjuy+++YxQka2bOgSfAmAtzmAV7/SQbQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=nu6cs4kiCb/Mw6Rt0bYeQUrj+ulVH9Jsk2Jz4Q4jLD6OyViCgeu6P4uEqShiZlp5f
-	 /uQxGf+iieBjBeR29gX41xPZRto0ibvEGhBbsK25/q1pWvCf1YuG0K1ekR4mpH6tp3
-	 px0w9lyrzxMjMKzJgIZ2+0p1aTJgSoErLP5JPiRI=
-Subject: FAILED: patch "[PATCH] thunderbolt: Fix setting the CNS bit in ROUTER_CS_5" failed to apply to 5.15-stable tree
+	b=SG/r6kO8UrqFYwczMHA6i40r7oVwLdPByeWp5t8wmdys7FISOjNFktWppJ0VQPgIm
+	 weU8DwzIEB9lVwuS7MvY8vW3J9d4VsxwEAMDZaqOkig5yqHg2Ba0d9xltbKDs8MtuL
+	 p8/m8bCh3YXCM3/oJUKEoTLJPo5SF5j5igfKclXU=
+Subject: FAILED: patch "[PATCH] thunderbolt: Fix setting the CNS bit in ROUTER_CS_5" failed to apply to 5.10-stable tree
 To: rahimi.mhmmd@gmail.com,mika.westerberg@linux.intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Feb 2024 19:42:01 +0100
-Message-ID: <2024021901-java-rejoice-9b51@gregkh>
+Date: Mon, 19 Feb 2024 19:42:02 +0100
+Message-ID: <2024021902-gecko-caloric-cd8b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x ec4d82f855ce332de26fe080892483de98cc1a19
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021901-java-rejoice-9b51@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021902-gecko-caloric-cd8b@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
