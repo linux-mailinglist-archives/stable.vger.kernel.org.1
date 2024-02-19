@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-20584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D9C085A878
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 17:14:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C81B85A879
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 17:14:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 155771F21374
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 16:14:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B0C4BB26A31
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 16:14:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 447243CF67;
-	Mon, 19 Feb 2024 16:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37A803B786;
+	Mon, 19 Feb 2024 16:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O5AQyJ/P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q83fUC/Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 058903D392
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 16:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB69B3A29A
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 16:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708359223; cv=none; b=ZFuHlQEIROuzwlTVoRCyfHe7ve+qkU/ehmSc4MGDD3+En8o6J0dO76+vxU8yYuxdR1GKnw/h8VNZMOY7jdy82xSkmsEvxbK70kfa4VCcXiuLywh57VsLNbqaLPvt/8PMpyWs9v8nF8BFMTJuNwqfutvTo2/UpGDQIJ5Pet+5Ses=
+	t=1708359233; cv=none; b=IxiYEeggPQ6fpPcotPHIoyGzVoSespzXmXlDeAvNMs1J1+2yndM1prlCquToVWMpQt3gN+M2EMJ3OvMzE6m3yAbtjin7tLYDq0dImM9jInMnQTlLkJCdkUyH+yzd82C0apdACufNaemdYwuIjmlHtcUWyLj6RPiheWUclM1zCjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708359223; c=relaxed/simple;
-	bh=aOU761ghNmMhItNpAGayneIf43J8gRHb7cFlp+La0OY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ErPZXLwRzmDjHAYk2tvNAGF7or4BKxB6fpprRpMFHAY7mUq0CAmOzJzNNf6gVuc9Z3eNs4kMQsV87qDGxO3OOmQtj8EPnVX/Qk5J1KwsPy6Dv8MHSxqdEbALMHrBaAeAdng0xF+r4ub0WSmnlInXzqHvYOtMrSoMOA1oHLkeoFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O5AQyJ/P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFD8FC433C7;
-	Mon, 19 Feb 2024 16:13:41 +0000 (UTC)
+	s=arc-20240116; t=1708359233; c=relaxed/simple;
+	bh=7HC63jGdxQFJIXykiH9GcjV6nUB5JU1U7RnPBTwKEik=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=O4g67rd8CI/ZNLdNSTylxSHxSvAXZ4tyXz1t6PooYcZPJ/E2AtXqTi2sqzeVeeZh6oaFblUUhRvkFLccoDJ/3TqNfmPTiRLj4xrPYWFD6eTgo3DwcQmXK4F/cW2AAPxkwjZOO0OtcUyZFOAmhe7Fk63uTH19n7h5YpnAVYAGNQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q83fUC/Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94C26C433F1;
+	Mon, 19 Feb 2024 16:13:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708359222;
-	bh=aOU761ghNmMhItNpAGayneIf43J8gRHb7cFlp+La0OY=;
+	s=korg; t=1708359232;
+	bh=7HC63jGdxQFJIXykiH9GcjV6nUB5JU1U7RnPBTwKEik=;
 	h=Subject:To:Cc:From:Date:From;
-	b=O5AQyJ/P7R9K2wtZ7dZ/it1spTfAb3BL2bl0i8C8hjvotEg7koQ+vcDud9gCd10q8
-	 OvNoA94OCipmL0PVpWXjNGLrkhghxsdNlrhfONXLFYNJV4V4zMTLsmp4pQ3R05h/tv
-	 NAN+Ifr6z+73IzAvNDOzuhALZBke4WshsFpDsObQ=
-Subject: FAILED: patch "[PATCH] parisc: Fix random data corruption from exception handler" failed to apply to 6.6-stable tree
+	b=q83fUC/Zn8t7lK4N+MWi4iy9GmuB6dMXd4yl2sf/ONLV6rVxoR3TwdDDrO0Vo+XZd
+	 BaVp4qKvqPTqARGhVKlTG5z9klGUzo4fSvxZwMN/fk4SrYSjBVOJTt7hkVzpchhvos
+	 NGS965N8piN6EnqepULNozJtOos4GU1a9rzRsejE=
+Subject: FAILED: patch "[PATCH] parisc: Fix random data corruption from exception handler" failed to apply to 6.1-stable tree
 To: deller@gmx.de,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Feb 2024 17:13:39 +0100
-Message-ID: <2024021939-unreached-bacon-95e0@gregkh>
+Date: Mon, 19 Feb 2024 17:13:41 +0100
+Message-ID: <2024021940-bulgur-flagpole-0aa6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,26 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 8b1d72395635af45410b66cc4c4ab37a12c4a831
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021939-unreached-bacon-95e0@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021940-bulgur-flagpole-0aa6@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 8b1d72395635 ("parisc: Fix random data corruption from exception handler")
 a80aeb86542a ("parisc: Mark ex_table entries 32-bit aligned in uaccess.h")
 01fef8267390 ("parisc: Allow building uncompressed Linux kernel")
+c6d96328fecd ("parisc: Add cacheflush() syscall")
 
 thanks,
 
