@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-20544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9522085A754
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 16:26:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C37D485A758
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 16:28:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 449FC284354
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 15:26:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69BBE284319
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 15:28:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6260338396;
-	Mon, 19 Feb 2024 15:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A2A383A3;
+	Mon, 19 Feb 2024 15:28:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QXJZbplE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gaa2RDA7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0486438F83
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 15:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0FA139FF8
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 15:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708356413; cv=none; b=cr/E+UEyuJYtPmTtG9zcs3tkmS5wkA72aApwAGfTC+mNCapyzlvjtHOjdDV3mlVAIfJnSgXo1fHI8sF7tg6HT89JSkekGJkFskoU0XBpPHIyLmTUqrvY2RGl+VSz2xiBgnjnl/lfJj+iYFfoVI5V947yJEwywIE7w76HG7Q3BMg=
+	t=1708356496; cv=none; b=C8BVP01UfPX7CFRio9GLCXwT0KkLz/ul1RJLq61Vk7nbzEpN88mLBfoZVam6Hs2sv6qlJw3YUCLZYqzjXgaw58M8+SywYauNB4VR3pGblmK3UBwp1KuAhT+Tlrok8Oj3ZZoTjJwVcaybXQNrSrM078fEVSfRfHWoTBhEhjRAcGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708356413; c=relaxed/simple;
-	bh=GzK4rvGIwJaFGb7zEtuOlD5CBkrXJFkm9HIvcD0Katg=;
+	s=arc-20240116; t=1708356496; c=relaxed/simple;
+	bh=pL3E7InpGvGpfwpJ3VmC0F5xokOAzwxW74bTS3/77v0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=auAcD0KzPbgBldi7UCJNqubRVer5OXchTFtoC3Ajtn7hA4nS30XX5EhAkd740astTBecRczLrCu/GLd1K1YZ7+wBqXhhloWxsB95fA04DM+xHztFYwlv2VHdiVGO7OcnleFFdHU13Fa8FtJAAEUFpeZQsbu4BR2K2roBN8OGBKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QXJZbplE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C935C433F1;
-	Mon, 19 Feb 2024 15:26:48 +0000 (UTC)
+	 MIME-Version; b=KptqdLYvwTMkaPGRZe+8DrYf115UufYjer0UEXWyug4IYjiNDepFID8D5d5teu+MJUrj4K9dXopWyhwcwBLdH2oHuynXpgboEX5+hyyIt4zHa91VWZIcasNaGCK/0zR+9hDGJSD4LGyWpQ/l7p4+TP1bAEWrutAfDnm3YWqIwcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gaa2RDA7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF584C433C7;
+	Mon, 19 Feb 2024 15:28:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708356412;
-	bh=GzK4rvGIwJaFGb7zEtuOlD5CBkrXJFkm9HIvcD0Katg=;
+	s=k20201202; t=1708356496;
+	bh=pL3E7InpGvGpfwpJ3VmC0F5xokOAzwxW74bTS3/77v0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QXJZbplEiPpSTxxd3waKRZYdaldyo/iv9q1Wr1Pr3MzRANIzbqkwwxqlbMM9uXsa8
-	 HuRqHkw5DZXXltmynXBhWzErBsrRI1cmWUtMT1KIlruA8YQoT91y1qiC0KP0rBgxF9
-	 PCHRBxwjM68vNOm/JlN35WBxXzfARfziftTCAm81/c66VZeG64zqdqJr5zVBhLqrfk
-	 xnDSfObMLmkVAApucU/YKvJMJCG6SRDoKFviRxSN/g3d2IHDS4O9ICc+dV3MBOWUFF
-	 cWKr+IOT7UmDj0Bq1hZs7Dtgq5XtY1Gj5UbiKq0TtdqNECg7RXW2JeykJMGR8OYt6H
-	 xcWwQVorHELgw==
+	b=Gaa2RDA7NOiizGldOwGaO0py+5J9vPs6bHdUbp4Xz18TfnPUVclSFmABgvu0GjjRq
+	 1fMXBmebmMwH4Pg/PNRIqU43syQ+zq2xnlusV/8BgjJRqTUNwf3AqfBMYFafzb4NlN
+	 ql8WID4ekegqg0mA1EjGEEnap+3dNOUZwI2VjetlLssI6DeB1D2IP05odMs0pFGG2X
+	 0W+ZuioycZrGs8z3f9nrfP8BrWZH01iC3QE3LO49hNGna96LHxfdN7IhwYZxpxrr1x
+	 cl9/ZbrDCRMXGpztzvL8Y1nrzbAPyvtFvzBwiYdpO7mVaEqmytq2HND1HZoGgBJr47
+	 bpY8BYRUYbO9w==
 From: Mike Rapoport <rppt@kernel.org>
 To: stable@vger.kernel.org
 Cc: Lokesh Gidra <lokeshgidra@google.com>,
@@ -56,12 +56,12 @@ Cc: Lokesh Gidra <lokeshgidra@google.com>,
 	Peter Xu <peterx@redhat.com>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: ["PATCH 5.10.y"] userfaultfd: fix mmap_changing checking in mfill_atomic_hugetlb
-Date: Mon, 19 Feb 2024 17:26:37 +0200
-Message-ID: <20240219152637.394821-1-rppt@kernel.org>
+Subject: ["PATCH 5.4.y"] userfaultfd: fix mmap_changing checking in mfill_atomic_hugetlb
+Date: Mon, 19 Feb 2024 17:28:02 +0200
+Message-ID: <20240219152802.394860-1-rppt@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <2024021849-backboned-clump-6dd4@gregkh>
-References: <2024021849-backboned-clump-6dd4@gregkh>
+In-Reply-To: <2024021850-vaseline-mongrel-489e@gregkh>
+References: <2024021850-vaseline-mongrel-489e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -100,10 +100,10 @@ Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
  1 file changed, 13 insertions(+), 1 deletion(-)
 
 diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 078d95cd32c5..c28ff36f5b31 100644
+index 6fa66e2111ea..e8758304a9f3 100644
 --- a/mm/userfaultfd.c
 +++ b/mm/userfaultfd.c
-@@ -209,6 +209,7 @@ static __always_inline ssize_t __mcopy_atomic_hugetlb(struct mm_struct *dst_mm,
+@@ -177,6 +177,7 @@ static __always_inline ssize_t __mcopy_atomic_hugetlb(struct mm_struct *dst_mm,
  					      unsigned long dst_start,
  					      unsigned long src_start,
  					      unsigned long len,
@@ -111,10 +111,10 @@ index 078d95cd32c5..c28ff36f5b31 100644
  					      bool zeropage)
  {
  	int vm_alloc_shared = dst_vma->vm_flags & VM_SHARED;
-@@ -329,6 +330,15 @@ static __always_inline ssize_t __mcopy_atomic_hugetlb(struct mm_struct *dst_mm,
+@@ -308,6 +309,15 @@ static __always_inline ssize_t __mcopy_atomic_hugetlb(struct mm_struct *dst_mm,
  				goto out;
  			}
- 			mmap_read_lock(dst_mm);
+ 			down_read(&dst_mm->mmap_sem);
 +			/*
 +			 * If memory mappings are changing because of non-cooperative
 +			 * operation (e.g. mremap) running in parallel, bail out and
@@ -127,7 +127,7 @@ index 078d95cd32c5..c28ff36f5b31 100644
  
  			dst_vma = NULL;
  			goto retry;
-@@ -410,6 +420,7 @@ extern ssize_t __mcopy_atomic_hugetlb(struct mm_struct *dst_mm,
+@@ -389,6 +399,7 @@ extern ssize_t __mcopy_atomic_hugetlb(struct mm_struct *dst_mm,
  				      unsigned long dst_start,
  				      unsigned long src_start,
  				      unsigned long len,
@@ -135,7 +135,7 @@ index 078d95cd32c5..c28ff36f5b31 100644
  				      bool zeropage);
  #endif /* CONFIG_HUGETLB_PAGE */
  
-@@ -529,7 +540,8 @@ static __always_inline ssize_t __mcopy_atomic(struct mm_struct *dst_mm,
+@@ -506,7 +517,8 @@ static __always_inline ssize_t __mcopy_atomic(struct mm_struct *dst_mm,
  	 */
  	if (is_vm_hugetlb_page(dst_vma))
  		return  __mcopy_atomic_hugetlb(dst_mm, dst_vma, dst_start,
