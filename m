@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-20718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8BF985AB80
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:50:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5156D85AB81
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:51:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 609992837A0
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:50:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 844571C21B62
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:51:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF6AE433BD;
-	Mon, 19 Feb 2024 18:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8CE241C7F;
+	Mon, 19 Feb 2024 18:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="utkjp1A6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uz7Dq1Yy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7DAB376F5
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAC33376F5
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:51:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708368644; cv=none; b=uYr9gw+suDEopdg6vAEZ55rChtLwL4eDQ+VKQc8Sgyu7TyPxgEASduYWPQtJyaNncfG3tnxIdORVkJmz7qcIVuRkSmJ99Ql8QwHmxqqWIkWV62YS/zwltWeH22ECTml6KK8AwPV8/BJSooGZTekfL7hXWGb8YFWGez1/M5HdTgA=
+	t=1708368684; cv=none; b=Kyt+RuFVPVoRRdGKwRczww/4L0HP3uR8TnMg+iZkHKbDo+FxxYy3qzubtf7sYt52VyD6oJ9uydIF20qo4LgSuT8OpnrzonZZ0v+8mTbPzSEqQSWPKRfyY9z9FA3Wavzq9JztHnBdOUgofewujbH9o4088xsg9cLvloZnF4EtIvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708368644; c=relaxed/simple;
-	bh=fSQANK66jRrRvg2d+cNlVX4Ms+q8x3IYlav7EcWJouE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ip2qNm9ZjaCf3rlQqQUzpzkg1rQEBWr0dCcsO2crA248KaY0+Ru00uoRuJm6mKR0PLzVPm3gpXgIpA0cbssE0nOFbHcQqPlcwtrqDk0yRfIdusc3Qdt9BvJwpLl/3pojFOEk3nOM0M2IEqRMoWeFiuIhnqGyf/FgozUXju4imoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=utkjp1A6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBFBFC433C7;
-	Mon, 19 Feb 2024 18:50:43 +0000 (UTC)
+	s=arc-20240116; t=1708368684; c=relaxed/simple;
+	bh=wwcIofGcUylRkTY7ZpwZeu/FGiMsG+/QjqJ4stfobJ4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=rmpRV1piVfYoIbVhCIREG87+1UzCvntOpsGXhvF8wn+N6CG/SKagU7LP5qWipcF/BwAYkwbKNjkZ0jLHyvVdevOCnYrGXdiLOeSID2aylgHQz9EThyuZotAWS0VzraS9Gd0upORLP9RJ4UopH5SOcEgLpLuuOabExJCKEdESzZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uz7Dq1Yy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38876C433F1;
+	Mon, 19 Feb 2024 18:51:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708368644;
-	bh=fSQANK66jRrRvg2d+cNlVX4Ms+q8x3IYlav7EcWJouE=;
+	s=korg; t=1708368683;
+	bh=wwcIofGcUylRkTY7ZpwZeu/FGiMsG+/QjqJ4stfobJ4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=utkjp1A6FJa8vQe3+58GKBdx9nHFkQQJuDxO839U0rI3ZaG2t7mqG2lc8NjbJ//yB
-	 iwhhPNnxJx7IsuBd/iRbqeGuJ0HgYUlKGZs9n3waRPog0EJ6dCc91qb7575ZW8NRlH
-	 TkZZTVj6e27gsShMWBTWPLFGJfEspSLmLf2tATZY=
-Subject: FAILED: patch "[PATCH] fs,hugetlb: fix NULL pointer dereference in" failed to apply to 5.4-stable tree
-To: osalvador@suse.de,akpm@linux-foundation.org,mhocko@suse.com,muchun.song@linux.dev,stable@vger.kernel.org
+	b=Uz7Dq1Yy6Dx4qhplk3lSW1872xFevYcoBHm4dSEigkVw4SlLWbT4QCeMxCgjS3BX1
+	 WDVo6K3y3jSzw5f3/hbKJ9oNaTSxBgtShvItJAUV/h7w9il+4q8xscw1tKGNcEEkwE
+	 6ceZm+4aqf49kjpHnOYZjB+KLmJaVT3g+4eO9gPQ=
+Subject: FAILED: patch "[PATCH] blk-wbt: Fix detection of dirty-throttled tasks" failed to apply to 6.1-stable tree
+To: jack@suse.cz,axboe@kernel.dk
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Feb 2024 19:50:41 +0100
-Message-ID: <2024021940-estranged-reopen-bc6e@gregkh>
+Date: Mon, 19 Feb 2024 19:51:20 +0100
+Message-ID: <2024021920-latitude-quilt-dfa8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,27 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 79d72c68c58784a3e1cd2378669d51bfd0cb7498
+git cherry-pick -x f814bdda774c183b0cc15ec8f3b6e7c6f4527ba5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021940-estranged-reopen-bc6e@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021920-latitude-quilt-dfa8@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-79d72c68c587 ("fs,hugetlb: fix NULL pointer dereference in hugetlbs_fill_super")
-d00365175e09 ("hugetlbfs: use helper macro SZ_1{K,M}")
-a25fddced835 ("hugetlbfs: make hugepage size conversion more readable")
+f814bdda774c ("blk-wbt: Fix detection of dirty-throttled tasks")
+ba91c849fa50 ("blk-rq-qos: store a gendisk instead of request_queue in struct rq_qos")
+3963d84df797 ("blk-rq-qos: constify rq_qos_ops")
+ce57b558604e ("blk-rq-qos: make rq_qos_add and rq_qos_del more useful")
+b494f9c566ba ("blk-rq-qos: move rq_qos_add and rq_qos_del out of line")
 
 thanks,
 
@@ -79,157 +81,106 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 79d72c68c58784a3e1cd2378669d51bfd0cb7498 Mon Sep 17 00:00:00 2001
-From: Oscar Salvador <osalvador@suse.de>
-Date: Tue, 30 Jan 2024 22:04:18 +0100
-Subject: [PATCH] fs,hugetlb: fix NULL pointer dereference in
- hugetlbs_fill_super
+From f814bdda774c183b0cc15ec8f3b6e7c6f4527ba5 Mon Sep 17 00:00:00 2001
+From: Jan Kara <jack@suse.cz>
+Date: Tue, 23 Jan 2024 18:58:26 +0100
+Subject: [PATCH] blk-wbt: Fix detection of dirty-throttled tasks
 
-When configuring a hugetlb filesystem via the fsconfig() syscall, there is
-a possible NULL dereference in hugetlbfs_fill_super() caused by assigning
-NULL to ctx->hstate in hugetlbfs_parse_param() when the requested pagesize
-is non valid.
+The detection of dirty-throttled tasks in blk-wbt has been subtly broken
+since its beginning in 2016. Namely if we are doing cgroup writeback and
+the throttled task is not in the root cgroup, balance_dirty_pages() will
+set dirty_sleep for the non-root bdi_writeback structure. However
+blk-wbt checks dirty_sleep only in the root cgroup bdi_writeback
+structure. Thus detection of recently throttled tasks is not working in
+this case (we noticed this when we switched to cgroup v2 and suddently
+writeback was slow).
 
-E.g: Taking the following steps:
+Since blk-wbt has no easy way to get to proper bdi_writeback and
+furthermore its intention has always been to work on the whole device
+rather than on individual cgroups, just move the dirty_sleep timestamp
+from bdi_writeback to backing_dev_info. That fixes the checking for
+recently throttled task and saves memory for everybody as a bonus.
 
-     fd = fsopen("hugetlbfs", FSOPEN_CLOEXEC);
-     fsconfig(fd, FSCONFIG_SET_STRING, "pagesize", "1024", 0);
-     fsconfig(fd, FSCONFIG_CMD_CREATE, NULL, NULL, 0);
+CC: stable@vger.kernel.org
+Fixes: b57d74aff9ab ("writeback: track if we're sleeping on progress in balance_dirty_pages()")
+Signed-off-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20240123175826.21452-1-jack@suse.cz
+[axboe: fixup indentation errors]
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 
-Given that the requested "pagesize" is invalid, ctxt->hstate will be replaced
-with NULL, losing its previous value, and we will print an error:
-
- ...
- ...
- case Opt_pagesize:
- ps = memparse(param->string, &rest);
- ctx->hstate = h;
- if (!ctx->hstate) {
-         pr_err("Unsupported page size %lu MB\n", ps / SZ_1M);
-         return -EINVAL;
- }
- return 0;
- ...
- ...
-
-This is a problem because later on, we will dereference ctxt->hstate in
-hugetlbfs_fill_super()
-
- ...
- ...
- sb->s_blocksize = huge_page_size(ctx->hstate);
- ...
- ...
-
-Causing below Oops.
-
-Fix this by replacing cxt->hstate value only when then pagesize is known
-to be valid.
-
- kernel: hugetlbfs: Unsupported page size 0 MB
- kernel: BUG: kernel NULL pointer dereference, address: 0000000000000028
- kernel: #PF: supervisor read access in kernel mode
- kernel: #PF: error_code(0x0000) - not-present page
- kernel: PGD 800000010f66c067 P4D 800000010f66c067 PUD 1b22f8067 PMD 0
- kernel: Oops: 0000 [#1] PREEMPT SMP PTI
- kernel: CPU: 4 PID: 5659 Comm: syscall Tainted: G            E      6.8.0-rc2-default+ #22 5a47c3fef76212addcc6eb71344aabc35190ae8f
- kernel: Hardware name: Intel Corp. GROVEPORT/GROVEPORT, BIOS GVPRCRB1.86B.0016.D04.1705030402 05/03/2017
- kernel: RIP: 0010:hugetlbfs_fill_super+0xb4/0x1a0
- kernel: Code: 48 8b 3b e8 3e c6 ed ff 48 85 c0 48 89 45 20 0f 84 d6 00 00 00 48 b8 ff ff ff ff ff ff ff 7f 4c 89 e7 49 89 44 24 20 48 8b 03 <8b> 48 28 b8 00 10 00 00 48 d3 e0 49 89 44 24 18 48 8b 03 8b 40 28
- kernel: RSP: 0018:ffffbe9960fcbd48 EFLAGS: 00010246
- kernel: RAX: 0000000000000000 RBX: ffff9af5272ae780 RCX: 0000000000372004
- kernel: RDX: ffffffffffffffff RSI: ffffffffffffffff RDI: ffff9af555e9b000
- kernel: RBP: ffff9af52ee66b00 R08: 0000000000000040 R09: 0000000000370004
- kernel: R10: ffffbe9960fcbd48 R11: 0000000000000040 R12: ffff9af555e9b000
- kernel: R13: ffffffffa66b86c0 R14: ffff9af507d2f400 R15: ffff9af507d2f400
- kernel: FS:  00007ffbc0ba4740(0000) GS:ffff9b0bd7000000(0000) knlGS:0000000000000000
- kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- kernel: CR2: 0000000000000028 CR3: 00000001b1ee0000 CR4: 00000000001506f0
- kernel: Call Trace:
- kernel:  <TASK>
- kernel:  ? __die_body+0x1a/0x60
- kernel:  ? page_fault_oops+0x16f/0x4a0
- kernel:  ? search_bpf_extables+0x65/0x70
- kernel:  ? fixup_exception+0x22/0x310
- kernel:  ? exc_page_fault+0x69/0x150
- kernel:  ? asm_exc_page_fault+0x22/0x30
- kernel:  ? __pfx_hugetlbfs_fill_super+0x10/0x10
- kernel:  ? hugetlbfs_fill_super+0xb4/0x1a0
- kernel:  ? hugetlbfs_fill_super+0x28/0x1a0
- kernel:  ? __pfx_hugetlbfs_fill_super+0x10/0x10
- kernel:  vfs_get_super+0x40/0xa0
- kernel:  ? __pfx_bpf_lsm_capable+0x10/0x10
- kernel:  vfs_get_tree+0x25/0xd0
- kernel:  vfs_cmd_create+0x64/0xe0
- kernel:  __x64_sys_fsconfig+0x395/0x410
- kernel:  do_syscall_64+0x80/0x160
- kernel:  ? syscall_exit_to_user_mode+0x82/0x240
- kernel:  ? do_syscall_64+0x8d/0x160
- kernel:  ? syscall_exit_to_user_mode+0x82/0x240
- kernel:  ? do_syscall_64+0x8d/0x160
- kernel:  ? exc_page_fault+0x69/0x150
- kernel:  entry_SYSCALL_64_after_hwframe+0x6e/0x76
- kernel: RIP: 0033:0x7ffbc0cb87c9
- kernel: Code: 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 66 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 97 96 0d 00 f7 d8 64 89 01 48
- kernel: RSP: 002b:00007ffc29d2f388 EFLAGS: 00000206 ORIG_RAX: 00000000000001af
- kernel: RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007ffbc0cb87c9
- kernel: RDX: 0000000000000000 RSI: 0000000000000006 RDI: 0000000000000003
- kernel: RBP: 00007ffc29d2f3b0 R08: 0000000000000000 R09: 0000000000000000
- kernel: R10: 0000000000000000 R11: 0000000000000206 R12: 0000000000000000
- kernel: R13: 00007ffc29d2f4c0 R14: 0000000000000000 R15: 0000000000000000
- kernel:  </TASK>
- kernel: Modules linked in: rpcsec_gss_krb5(E) auth_rpcgss(E) nfsv4(E) dns_resolver(E) nfs(E) lockd(E) grace(E) sunrpc(E) netfs(E) af_packet(E) bridge(E) stp(E) llc(E) iscsi_ibft(E) iscsi_boot_sysfs(E) intel_rapl_msr(E) intel_rapl_common(E) iTCO_wdt(E) intel_pmc_bxt(E) sb_edac(E) iTCO_vendor_support(E) x86_pkg_temp_thermal(E) intel_powerclamp(E) coretemp(E) kvm_intel(E) rfkill(E) ipmi_ssif(E) kvm(E) acpi_ipmi(E) irqbypass(E) pcspkr(E) igb(E) ipmi_si(E) mei_me(E) i2c_i801(E) joydev(E) intel_pch_thermal(E) i2c_smbus(E) dca(E) lpc_ich(E) mei(E) ipmi_devintf(E) ipmi_msghandler(E) acpi_pad(E) tiny_power_button(E) button(E) fuse(E) efi_pstore(E) configfs(E) ip_tables(E) x_tables(E) ext4(E) mbcache(E) jbd2(E) hid_generic(E) usbhid(E) sd_mod(E) t10_pi(E) crct10dif_pclmul(E) crc32_pclmul(E) crc32c_intel(E) polyval_clmulni(E) ahci(E) xhci_pci(E) polyval_generic(E) gf128mul(E) ghash_clmulni_intel(E) sha512_ssse3(E) sha256_ssse3(E) xhci_pci_renesas(E) libahci(E) ehci_pci(E) sha1_ssse3(E) xhci_hc
- d(E) ehci_hcd(E) libata(E)
- kernel:  mgag200(E) i2c_algo_bit(E) usbcore(E) wmi(E) sg(E) dm_multipath(E) dm_mod(E) scsi_dh_rdac(E) scsi_dh_emc(E) scsi_dh_alua(E) scsi_mod(E) scsi_common(E) aesni_intel(E) crypto_simd(E) cryptd(E)
- kernel: Unloaded tainted modules: acpi_cpufreq(E):1 fjes(E):1
- kernel: CR2: 0000000000000028
- kernel: ---[ end trace 0000000000000000 ]---
- kernel: RIP: 0010:hugetlbfs_fill_super+0xb4/0x1a0
- kernel: Code: 48 8b 3b e8 3e c6 ed ff 48 85 c0 48 89 45 20 0f 84 d6 00 00 00 48 b8 ff ff ff ff ff ff ff 7f 4c 89 e7 49 89 44 24 20 48 8b 03 <8b> 48 28 b8 00 10 00 00 48 d3 e0 49 89 44 24 18 48 8b 03 8b 40 28
- kernel: RSP: 0018:ffffbe9960fcbd48 EFLAGS: 00010246
- kernel: RAX: 0000000000000000 RBX: ffff9af5272ae780 RCX: 0000000000372004
- kernel: RDX: ffffffffffffffff RSI: ffffffffffffffff RDI: ffff9af555e9b000
- kernel: RBP: ffff9af52ee66b00 R08: 0000000000000040 R09: 0000000000370004
- kernel: R10: ffffbe9960fcbd48 R11: 0000000000000040 R12: ffff9af555e9b000
- kernel: R13: ffffffffa66b86c0 R14: ffff9af507d2f400 R15: ffff9af507d2f400
- kernel: FS:  00007ffbc0ba4740(0000) GS:ffff9b0bd7000000(0000) knlGS:0000000000000000
- kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- kernel: CR2: 0000000000000028 CR3: 00000001b1ee0000 CR4: 00000000001506f0
-
-Link: https://lkml.kernel.org/r/20240130210418.3771-1-osalvador@suse.de
-Fixes: 32021982a324 ("hugetlbfs: Convert to fs_context")
-Signed-off-by: Michal Hocko <mhocko@suse.com>
-Signed-off-by: Oscar Salvador <osalvador@suse.de>
-Acked-by: Muchun Song <muchun.song@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-index ee13c2ca8ad2..d746866ae3b6 100644
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -1365,6 +1365,7 @@ static int hugetlbfs_parse_param(struct fs_context *fc, struct fs_parameter *par
+diff --git a/block/blk-wbt.c b/block/blk-wbt.c
+index 5ba3cd574eac..0c0e270a8265 100644
+--- a/block/blk-wbt.c
++++ b/block/blk-wbt.c
+@@ -163,9 +163,9 @@ static void wb_timestamp(struct rq_wb *rwb, unsigned long *var)
+  */
+ static bool wb_recent_wait(struct rq_wb *rwb)
  {
- 	struct hugetlbfs_fs_context *ctx = fc->fs_private;
- 	struct fs_parse_result result;
-+	struct hstate *h;
- 	char *rest;
- 	unsigned long ps;
- 	int opt;
-@@ -1409,11 +1410,12 @@ static int hugetlbfs_parse_param(struct fs_context *fc, struct fs_parameter *par
+-	struct bdi_writeback *wb = &rwb->rqos.disk->bdi->wb;
++	struct backing_dev_info *bdi = rwb->rqos.disk->bdi;
  
- 	case Opt_pagesize:
- 		ps = memparse(param->string, &rest);
--		ctx->hstate = size_to_hstate(ps);
--		if (!ctx->hstate) {
-+		h = size_to_hstate(ps);
-+		if (!h) {
- 			pr_err("Unsupported page size %lu MB\n", ps / SZ_1M);
- 			return -EINVAL;
+-	return time_before(jiffies, wb->dirty_sleep + HZ);
++	return time_before(jiffies, bdi->last_bdp_sleep + HZ);
+ }
+ 
+ static inline struct rq_wait *get_rq_wait(struct rq_wb *rwb,
+diff --git a/include/linux/backing-dev-defs.h b/include/linux/backing-dev-defs.h
+index ae12696ec492..2ad261082bba 100644
+--- a/include/linux/backing-dev-defs.h
++++ b/include/linux/backing-dev-defs.h
+@@ -141,8 +141,6 @@ struct bdi_writeback {
+ 	struct delayed_work dwork;	/* work item used for writeback */
+ 	struct delayed_work bw_dwork;	/* work item used for bandwidth estimate */
+ 
+-	unsigned long dirty_sleep;	/* last wait */
+-
+ 	struct list_head bdi_node;	/* anchored at bdi->wb_list */
+ 
+ #ifdef CONFIG_CGROUP_WRITEBACK
+@@ -179,6 +177,11 @@ struct backing_dev_info {
+ 	 * any dirty wbs, which is depended upon by bdi_has_dirty().
+ 	 */
+ 	atomic_long_t tot_write_bandwidth;
++	/*
++	 * Jiffies when last process was dirty throttled on this bdi. Used by
++	 * blk-wbt.
++	 */
++	unsigned long last_bdp_sleep;
+ 
+ 	struct bdi_writeback wb;  /* the root writeback info for this bdi */
+ 	struct list_head wb_list; /* list of all wbs */
+diff --git a/mm/backing-dev.c b/mm/backing-dev.c
+index 1e3447bccdb1..e039d05304dd 100644
+--- a/mm/backing-dev.c
++++ b/mm/backing-dev.c
+@@ -436,7 +436,6 @@ static int wb_init(struct bdi_writeback *wb, struct backing_dev_info *bdi,
+ 	INIT_LIST_HEAD(&wb->work_list);
+ 	INIT_DELAYED_WORK(&wb->dwork, wb_workfn);
+ 	INIT_DELAYED_WORK(&wb->bw_dwork, wb_update_bandwidth_workfn);
+-	wb->dirty_sleep = jiffies;
+ 
+ 	err = fprop_local_init_percpu(&wb->completions, gfp);
+ 	if (err)
+@@ -921,6 +920,7 @@ int bdi_init(struct backing_dev_info *bdi)
+ 	INIT_LIST_HEAD(&bdi->bdi_list);
+ 	INIT_LIST_HEAD(&bdi->wb_list);
+ 	init_waitqueue_head(&bdi->wb_waitq);
++	bdi->last_bdp_sleep = jiffies;
+ 
+ 	return cgwb_bdi_init(bdi);
+ }
+diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+index cd4e4ae77c40..cc37fa7f3364 100644
+--- a/mm/page-writeback.c
++++ b/mm/page-writeback.c
+@@ -1921,7 +1921,7 @@ static int balance_dirty_pages(struct bdi_writeback *wb,
+ 			break;
  		}
-+		ctx->hstate = h;
- 		return 0;
+ 		__set_current_state(TASK_KILLABLE);
+-		wb->dirty_sleep = now;
++		bdi->last_bdp_sleep = jiffies;
+ 		io_schedule_timeout(pause);
  
- 	case Opt_min_size:
+ 		current->dirty_paused_when = now + pause;
 
 
