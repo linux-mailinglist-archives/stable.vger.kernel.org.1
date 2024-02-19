@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-20560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07D5A85A81B
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 17:04:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1598685A81D
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 17:05:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 635D82828CB
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 16:04:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81E2C1F2161D
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 16:05:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05F5B3B190;
-	Mon, 19 Feb 2024 16:04:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C47A3C498;
+	Mon, 19 Feb 2024 16:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vV8qKAzr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bFE8FGjv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95A43B18D
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 16:04:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FE63C482
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 16:05:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708358658; cv=none; b=VMuy2jziePaJtOCJSU/ZmAY84mEcRQjw7glZ+o5BnAN+HUgHSYfCHVhL9a8fJ5H/IsJy7aY86CXW/canYgA4AWigXdRoFSHjHKSC+LmGHKBwTeQF1O2L6vOqc7rnUheIlhTZfCK8U/YHpmnKfPoqvOG0nuSp+zg2oyT7q7tr9g4=
+	t=1708358705; cv=none; b=PxgXynO59uSjfxtBzF4QhV0AZ+tDUfqlUqklavlgRa860lVIjqd9+3zQ4C/cJstUs61X5j7dqCdQ9ZjI8nHbhHgmQAgpQ9sum4rJqPI26hKfNXRVFNLU9eVQcy9Nk0izyLb8b8AXQCD+/G6siuNu/RnrZYGfwe9Q2mVcrwg72d0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708358658; c=relaxed/simple;
-	bh=qKwHNgizoYlZuTm3svtllV/BXdvnJktI/0bUen6w9YE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=lb+1WzPbiRT/ojmKDZKSKOGwtx9iScVcKZbApht4G/LTaRmm/hc97Bge4YIKtoWKJwllS98M0x79F/7OseazZUPt35xKwi0RKA+PKnikOmeU7Ilg2KOHTM29gQn/4Ik4u3IrrCsQtB+Rz0Q/omGd39KgXlFhntUX5+dX7/A+6ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vV8qKAzr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0882C433C7;
-	Mon, 19 Feb 2024 16:04:17 +0000 (UTC)
+	s=arc-20240116; t=1708358705; c=relaxed/simple;
+	bh=RO8XKRZDnkOYeXSdRjzimtHZ+Q0OgHAdQ0Sm55pgFCk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=SeUI4JyKuoR4UZra84Ikg6x/4QAUZjJI7Lsh7zPFGeVxB9xdzUe1b3tgyjbBQebAbjOugxoXE7p9kEQd8U8vdIzsVtZ4wgzYY3veHjqRN014bbvlJkOI0mzo8tYCe4d+qbj0U+zaNEaVpbGRCXkoyHKJpKjCmUtWqw/361pWvPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bFE8FGjv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEAFEC43394;
+	Mon, 19 Feb 2024 16:05:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708358658;
-	bh=qKwHNgizoYlZuTm3svtllV/BXdvnJktI/0bUen6w9YE=;
+	s=korg; t=1708358705;
+	bh=RO8XKRZDnkOYeXSdRjzimtHZ+Q0OgHAdQ0Sm55pgFCk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=vV8qKAzr16Rgm4/gNVcj56FxZ5HvKcNJH9IHTbTSSmQjrh4hJowk/yEOEIerHVetm
-	 +9hh7E52HrPyizGNoiNYKYMJNFbkfhjMaDnLohtsYiT2S2yPJ2N2j5usL2schWr8ae
-	 3mP8FIg5g1OIqHM3qQWMZuORpUbSNLrMjanQlEdo=
-Subject: FAILED: patch "[PATCH] mptcp: fix rcv space initialization" failed to apply to 5.10-stable tree
+	b=bFE8FGjvDIe/FHUKxY3qaGYT9D8sxUUHUqC0c11HMhnPB0skE7adVbZ2yIE73jAqh
+	 IurjsDxZiVpHek6rYtQYJJNyYjlhQOlezk68kcxOe0RJaJnAmeXb4A534Namz47Um5
+	 h/m+LsS4t9y5WQlUbdfuedJihYT4nYzvmSzGIWek=
+Subject: FAILED: patch "[PATCH] mptcp: corner case locking for rx path fields initialization" failed to apply to 6.7-stable tree
 To: pabeni@redhat.com,davem@davemloft.net,martineau@kernel.org,matttbe@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Feb 2024 17:04:05 +0100
-Message-ID: <2024021904-undertook-crushing-1de6@gregkh>
+Date: Mon, 19 Feb 2024 17:05:02 +0100
+Message-ID: <2024021902-askew-amnesty-5bca@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,34 +53,26 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.7-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.7.y
 git checkout FETCH_HEAD
-git cherry-pick -x 013e3179dbd2bc756ce1dd90354abac62f65b739
+git cherry-pick -x e4a0fa47e816e186f6b4c0055d07eeec42d11871
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021904-undertook-crushing-1de6@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021902-askew-amnesty-5bca@gregkh' --subject-prefix 'PATCH 6.7.y' HEAD^..
 
 Possible dependencies:
 
+e4a0fa47e816 ("mptcp: corner case locking for rx path fields initialization")
+3f83d8a77eee ("mptcp: fix more tx path fields initialization")
 013e3179dbd2 ("mptcp: fix rcv space initialization")
-4fd19a307016 ("mptcp: fix inconsistent state on fastopen race")
-d109a7767273 ("mptcp: fix possible NULL pointer dereference on close")
-8005184fd1ca ("mptcp: refactor sndbuf auto-tuning")
-a5efdbcece83 ("mptcp: fix delegated action races")
-27e5ccc2d5a5 ("mptcp: fix dangling connection hang-up")
-f6909dc1c1f4 ("mptcp: rename timer related helper to less confusing names")
-ebc1e08f01eb ("mptcp: drop last_snd and MPTCP_RESET_SCHEDULER")
-e263691773cd ("mptcp: Remove unnecessary test for __mptcp_init_sock()")
-39880bd808ad ("mptcp: get rid of msk->subflow")
-17ebf8a4c38b ("mptcp: fix the incorrect judgment for msk->cb_flags")
-a7384f391875 ("Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net")
+c693a8516429 ("mptcp: use mptcp_set_state")
 
 thanks,
 
@@ -88,125 +80,270 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 013e3179dbd2bc756ce1dd90354abac62f65b739 Mon Sep 17 00:00:00 2001
+From e4a0fa47e816e186f6b4c0055d07eeec42d11871 Mon Sep 17 00:00:00 2001
 From: Paolo Abeni <pabeni@redhat.com>
-Date: Thu, 8 Feb 2024 19:03:50 +0100
-Subject: [PATCH] mptcp: fix rcv space initialization
+Date: Thu, 8 Feb 2024 19:03:52 +0100
+Subject: [PATCH] mptcp: corner case locking for rx path fields initialization
 
-mptcp_rcv_space_init() is supposed to happen under the msk socket
-lock, but active msk socket does that without such protection.
+Most MPTCP-level related fields are under the mptcp data lock
+protection, but are written one-off without such lock at MPC
+complete time, both for the client and the server
 
-Leverage the existing mptcp_propagate_state() helper to that extent.
-We need to ensure mptcp_rcv_space_init will happen before
-mptcp_rcv_space_adjust(), and the release_cb does not assure that:
-explicitly check for such condition.
+Leverage the mptcp_propagate_state() infrastructure to move such
+initialization under the proper lock client-wise.
 
-While at it, move the wnd_end initialization out of mptcp_rcv_space_init(),
-it never belonged there.
+The server side critical init steps are done by
+mptcp_subflow_fully_established(): ensure the caller properly held the
+relevant lock, and avoid acquiring the same lock in the nested scopes.
 
-Note that the race does not produce ill effect in practice, but
-change allows cleaning-up and defying better the locking model.
+There are no real potential races, as write access to such fields
+is implicitly serialized by the MPTCP state machine; the primary
+goal is consistency.
 
-Fixes: a6b118febbab ("mptcp: add receive buffer auto-tuning")
+Fixes: d22f4988ffec ("mptcp: process MP_CAPABLE data option")
 Cc: stable@vger.kernel.org
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Reviewed-by: Mat Martineau <martineau@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 
+diff --git a/net/mptcp/fastopen.c b/net/mptcp/fastopen.c
+index 74698582a285..ad28da655f8b 100644
+--- a/net/mptcp/fastopen.c
++++ b/net/mptcp/fastopen.c
+@@ -59,13 +59,12 @@ void mptcp_fastopen_subflow_synack_set_params(struct mptcp_subflow_context *subf
+ 	mptcp_data_unlock(sk);
+ }
+ 
+-void mptcp_fastopen_gen_msk_ackseq(struct mptcp_sock *msk, struct mptcp_subflow_context *subflow,
+-				   const struct mptcp_options_received *mp_opt)
++void __mptcp_fastopen_gen_msk_ackseq(struct mptcp_sock *msk, struct mptcp_subflow_context *subflow,
++				     const struct mptcp_options_received *mp_opt)
+ {
+ 	struct sock *sk = (struct sock *)msk;
+ 	struct sk_buff *skb;
+ 
+-	mptcp_data_lock(sk);
+ 	skb = skb_peek_tail(&sk->sk_receive_queue);
+ 	if (skb) {
+ 		WARN_ON_ONCE(MPTCP_SKB_CB(skb)->end_seq);
+@@ -77,5 +76,4 @@ void mptcp_fastopen_gen_msk_ackseq(struct mptcp_sock *msk, struct mptcp_subflow_
+ 	}
+ 
+ 	pr_debug("msk=%p ack_seq=%llx", msk, msk->ack_seq);
+-	mptcp_data_unlock(sk);
+ }
+diff --git a/net/mptcp/options.c b/net/mptcp/options.c
+index d2527d189a79..e3e96a49f922 100644
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -962,9 +962,7 @@ static bool check_fully_established(struct mptcp_sock *msk, struct sock *ssk,
+ 		/* subflows are fully established as soon as we get any
+ 		 * additional ack, including ADD_ADDR.
+ 		 */
+-		subflow->fully_established = 1;
+-		WRITE_ONCE(msk->fully_established, true);
+-		goto check_notify;
++		goto set_fully_established;
+ 	}
+ 
+ 	/* If the first established packet does not contain MP_CAPABLE + data
+@@ -986,7 +984,10 @@ static bool check_fully_established(struct mptcp_sock *msk, struct sock *ssk,
+ set_fully_established:
+ 	if (unlikely(!READ_ONCE(msk->pm.server_side)))
+ 		pr_warn_once("bogus mpc option on established client sk");
+-	mptcp_subflow_fully_established(subflow, mp_opt);
++
++	mptcp_data_lock((struct sock *)msk);
++	__mptcp_subflow_fully_established(msk, subflow, mp_opt);
++	mptcp_data_unlock((struct sock *)msk);
+ 
+ check_notify:
+ 	/* if the subflow is not already linked into the conn_list, we can't
 diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 2111819016af..7632eafb683b 100644
+index 8cb6a873dae9..8ef2927ebca2 100644
 --- a/net/mptcp/protocol.c
 +++ b/net/mptcp/protocol.c
-@@ -1963,6 +1963,9 @@ static void mptcp_rcv_space_adjust(struct mptcp_sock *msk, int copied)
- 	if (copied <= 0)
- 		return;
- 
-+	if (!msk->rcvspace_init)
-+		mptcp_rcv_space_init(msk, msk->first);
-+
- 	msk->rcvq_space.copied += copied;
- 
- 	mstamp = div_u64(tcp_clock_ns(), NSEC_PER_USEC);
-@@ -3160,6 +3163,7 @@ static int mptcp_disconnect(struct sock *sk, int flags)
- 	msk->bytes_received = 0;
- 	msk->bytes_sent = 0;
- 	msk->bytes_retrans = 0;
-+	msk->rcvspace_init = 0;
- 
- 	WRITE_ONCE(sk->sk_shutdown, 0);
- 	sk_error_report(sk);
-@@ -3247,6 +3251,7 @@ void mptcp_rcv_space_init(struct mptcp_sock *msk, const struct sock *ssk)
+@@ -3186,6 +3186,7 @@ struct sock *mptcp_sk_clone_init(const struct sock *sk,
  {
- 	const struct tcp_sock *tp = tcp_sk(ssk);
+ 	struct mptcp_subflow_request_sock *subflow_req = mptcp_subflow_rsk(req);
+ 	struct sock *nsk = sk_clone_lock(sk, GFP_ATOMIC);
++	struct mptcp_subflow_context *subflow;
+ 	struct mptcp_sock *msk;
  
-+	msk->rcvspace_init = 1;
- 	msk->rcvq_space.copied = 0;
- 	msk->rcvq_space.rtt_us = 0;
+ 	if (!nsk)
+@@ -3226,7 +3227,8 @@ struct sock *mptcp_sk_clone_init(const struct sock *sk,
  
-@@ -3257,8 +3262,6 @@ void mptcp_rcv_space_init(struct mptcp_sock *msk, const struct sock *ssk)
- 				      TCP_INIT_CWND * tp->advmss);
- 	if (msk->rcvq_space.space == 0)
- 		msk->rcvq_space.space = TCP_INIT_CWND * TCP_MSS_DEFAULT;
--
--	WRITE_ONCE(msk->wnd_end, msk->snd_nxt + tcp_sk(ssk)->snd_wnd);
- }
+ 	/* The msk maintain a ref to each subflow in the connections list */
+ 	WRITE_ONCE(msk->first, ssk);
+-	list_add(&mptcp_subflow_ctx(ssk)->node, &msk->conn_list);
++	subflow = mptcp_subflow_ctx(ssk);
++	list_add(&subflow->node, &msk->conn_list);
+ 	sock_hold(ssk);
  
- void mptcp_destroy_common(struct mptcp_sock *msk, unsigned int flags)
-@@ -3478,10 +3481,9 @@ void mptcp_finish_connect(struct sock *ssk)
- 	WRITE_ONCE(msk->write_seq, subflow->idsn + 1);
- 	WRITE_ONCE(msk->snd_nxt, msk->write_seq);
- 	WRITE_ONCE(msk->snd_una, msk->write_seq);
-+	WRITE_ONCE(msk->wnd_end, msk->snd_nxt + tcp_sk(ssk)->snd_wnd);
+ 	/* new mpc subflow takes ownership of the newly
+@@ -3241,6 +3243,9 @@ struct sock *mptcp_sk_clone_init(const struct sock *sk,
+ 	__mptcp_propagate_sndbuf(nsk, ssk);
+ 
+ 	mptcp_rcv_space_init(msk, ssk);
++
++	if (mp_opt->suboptions & OPTION_MPTCP_MPC_ACK)
++		__mptcp_subflow_fully_established(msk, subflow, mp_opt);
+ 	bh_unlock_sock(nsk);
+ 
+ 	/* note: the newly allocated socket refcount is 2 now */
+@@ -3478,8 +3483,6 @@ void mptcp_finish_connect(struct sock *ssk)
+ 	 * accessing the field below
+ 	 */
+ 	WRITE_ONCE(msk->local_key, subflow->local_key);
+-	WRITE_ONCE(msk->snd_una, subflow->idsn + 1);
+-	WRITE_ONCE(msk->wnd_end, subflow->idsn + 1 + tcp_sk(ssk)->snd_wnd);
  
  	mptcp_pm_new_connection(msk, ssk, 0);
--
--	mptcp_rcv_space_init(msk, ssk);
  }
- 
- void mptcp_sock_graft(struct sock *sk, struct socket *parent)
 diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
-index b905f1868298..9f5ee82e3473 100644
+index 9f5ee82e3473..fefcbf585411 100644
 --- a/net/mptcp/protocol.h
 +++ b/net/mptcp/protocol.h
-@@ -304,7 +304,8 @@ struct mptcp_sock {
- 			nodelay:1,
- 			fastopening:1,
- 			in_accept_queue:1,
--			free_first:1;
-+			free_first:1,
-+			rcvspace_init:1;
- 	struct work_struct work;
- 	struct sk_buff  *ooo_last_skb;
- 	struct rb_root  out_of_order_queue;
+@@ -622,8 +622,9 @@ unsigned int mptcp_stale_loss_cnt(const struct net *net);
+ unsigned int mptcp_close_timeout(const struct sock *sk);
+ int mptcp_get_pm_type(const struct net *net);
+ const char *mptcp_get_scheduler(const struct net *net);
+-void mptcp_subflow_fully_established(struct mptcp_subflow_context *subflow,
+-				     const struct mptcp_options_received *mp_opt);
++void __mptcp_subflow_fully_established(struct mptcp_sock *msk,
++				       struct mptcp_subflow_context *subflow,
++				       const struct mptcp_options_received *mp_opt);
+ bool __mptcp_retransmit_pending_data(struct sock *sk);
+ void mptcp_check_and_set_pending(struct sock *sk);
+ void __mptcp_push_pending(struct sock *sk, unsigned int flags);
+@@ -952,8 +953,8 @@ void mptcp_event_pm_listener(const struct sock *ssk,
+ 			     enum mptcp_event_type event);
+ bool mptcp_userspace_pm_active(const struct mptcp_sock *msk);
+ 
+-void mptcp_fastopen_gen_msk_ackseq(struct mptcp_sock *msk, struct mptcp_subflow_context *subflow,
+-				   const struct mptcp_options_received *mp_opt);
++void __mptcp_fastopen_gen_msk_ackseq(struct mptcp_sock *msk, struct mptcp_subflow_context *subflow,
++				     const struct mptcp_options_received *mp_opt);
+ void mptcp_fastopen_subflow_synack_set_params(struct mptcp_subflow_context *subflow,
+ 					      struct request_sock *req);
+ 
 diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index 0dcb721c89d1..56b2ac2f2f22 100644
+index c2df34ebcf28..c34ecadee120 100644
 --- a/net/mptcp/subflow.c
 +++ b/net/mptcp/subflow.c
-@@ -424,6 +424,8 @@ void __mptcp_sync_state(struct sock *sk, int state)
- 	struct mptcp_sock *msk = mptcp_sk(sk);
+@@ -441,20 +441,6 @@ void __mptcp_sync_state(struct sock *sk, int state)
+ 	}
+ }
  
- 	__mptcp_propagate_sndbuf(sk, msk->first);
-+	if (!msk->rcvspace_init)
-+		mptcp_rcv_space_init(msk, msk->first);
- 	if (sk->sk_state == TCP_SYN_SENT) {
- 		mptcp_set_state(sk, state);
- 		sk->sk_state_change(sk);
-@@ -545,7 +547,6 @@ static void subflow_finish_connect(struct sock *sk, const struct sk_buff *skb)
+-static void mptcp_propagate_state(struct sock *sk, struct sock *ssk)
+-{
+-	struct mptcp_sock *msk = mptcp_sk(sk);
+-
+-	mptcp_data_lock(sk);
+-	if (!sock_owned_by_user(sk)) {
+-		__mptcp_sync_state(sk, ssk->sk_state);
+-	} else {
+-		msk->pending_state = ssk->sk_state;
+-		__set_bit(MPTCP_SYNC_STATE, &msk->cb_flags);
+-	}
+-	mptcp_data_unlock(sk);
+-}
+-
+ static void subflow_set_remote_key(struct mptcp_sock *msk,
+ 				   struct mptcp_subflow_context *subflow,
+ 				   const struct mptcp_options_received *mp_opt)
+@@ -476,6 +462,31 @@ static void subflow_set_remote_key(struct mptcp_sock *msk,
+ 	atomic64_set(&msk->rcv_wnd_sent, subflow->iasn);
+ }
+ 
++static void mptcp_propagate_state(struct sock *sk, struct sock *ssk,
++				  struct mptcp_subflow_context *subflow,
++				  const struct mptcp_options_received *mp_opt)
++{
++	struct mptcp_sock *msk = mptcp_sk(sk);
++
++	mptcp_data_lock(sk);
++	if (mp_opt) {
++		/* Options are available only in the non fallback cases
++		 * avoid updating rx path fields otherwise
++		 */
++		WRITE_ONCE(msk->snd_una, subflow->idsn + 1);
++		WRITE_ONCE(msk->wnd_end, subflow->idsn + 1 + tcp_sk(ssk)->snd_wnd);
++		subflow_set_remote_key(msk, subflow, mp_opt);
++	}
++
++	if (!sock_owned_by_user(sk)) {
++		__mptcp_sync_state(sk, ssk->sk_state);
++	} else {
++		msk->pending_state = ssk->sk_state;
++		__set_bit(MPTCP_SYNC_STATE, &msk->cb_flags);
++	}
++	mptcp_data_unlock(sk);
++}
++
+ static void subflow_finish_connect(struct sock *sk, const struct sk_buff *skb)
+ {
+ 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(sk);
+@@ -510,10 +521,9 @@ static void subflow_finish_connect(struct sock *sk, const struct sk_buff *skb)
+ 		if (mp_opt.deny_join_id0)
+ 			WRITE_ONCE(msk->pm.remote_deny_join_id0, true);
+ 		subflow->mp_capable = 1;
+-		subflow_set_remote_key(msk, subflow, &mp_opt);
+ 		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_MPCAPABLEACTIVEACK);
+ 		mptcp_finish_connect(sk);
+-		mptcp_propagate_state(parent, sk);
++		mptcp_propagate_state(parent, sk, subflow, &mp_opt);
+ 	} else if (subflow->request_join) {
+ 		u8 hmac[SHA256_DIGEST_SIZE];
+ 
+@@ -556,7 +566,7 @@ static void subflow_finish_connect(struct sock *sk, const struct sk_buff *skb)
  		}
  	} else if (mptcp_check_fallback(sk)) {
  fallback:
--		mptcp_rcv_space_init(msk, sk);
- 		mptcp_propagate_state(parent, sk);
+-		mptcp_propagate_state(parent, sk);
++		mptcp_propagate_state(parent, sk, subflow, NULL);
  	}
  	return;
-@@ -1744,7 +1745,6 @@ static void subflow_state_change(struct sock *sk)
- 	msk = mptcp_sk(parent);
- 	if (subflow_simultaneous_connect(sk)) {
+ 
+@@ -741,17 +751,16 @@ void mptcp_subflow_drop_ctx(struct sock *ssk)
+ 	kfree_rcu(ctx, rcu);
+ }
+ 
+-void mptcp_subflow_fully_established(struct mptcp_subflow_context *subflow,
+-				     const struct mptcp_options_received *mp_opt)
++void __mptcp_subflow_fully_established(struct mptcp_sock *msk,
++				       struct mptcp_subflow_context *subflow,
++				       const struct mptcp_options_received *mp_opt)
+ {
+-	struct mptcp_sock *msk = mptcp_sk(subflow->conn);
+-
+ 	subflow_set_remote_key(msk, subflow, mp_opt);
+ 	subflow->fully_established = 1;
+ 	WRITE_ONCE(msk->fully_established, true);
+ 
+ 	if (subflow->is_mptfo)
+-		mptcp_fastopen_gen_msk_ackseq(msk, subflow, mp_opt);
++		__mptcp_fastopen_gen_msk_ackseq(msk, subflow, mp_opt);
+ }
+ 
+ static struct sock *subflow_syn_recv_sock(const struct sock *sk,
+@@ -844,7 +853,6 @@ static struct sock *subflow_syn_recv_sock(const struct sock *sk,
+ 			 * mpc option
+ 			 */
+ 			if (mp_opt.suboptions & OPTION_MPTCP_MPC_ACK) {
+-				mptcp_subflow_fully_established(ctx, &mp_opt);
+ 				mptcp_pm_fully_established(owner, child);
+ 				ctx->pm_notified = 1;
+ 			}
+@@ -1756,7 +1764,7 @@ static void subflow_state_change(struct sock *sk)
  		mptcp_do_fallback(sk);
--		mptcp_rcv_space_init(msk, sk);
  		pr_fallback(msk);
  		subflow->conn_finished = 1;
- 		mptcp_propagate_state(parent, sk);
+-		mptcp_propagate_state(parent, sk);
++		mptcp_propagate_state(parent, sk, subflow, NULL);
+ 	}
+ 
+ 	/* as recvmsg() does not acquire the subflow socket for ssk selection
 
 
