@@ -1,165 +1,158 @@
-Return-Path: <stable+bounces-20530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45D2185A53F
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 15:01:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E25BE85A579
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 15:08:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C9C5B213EE
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 14:01:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9FE90288041
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 14:08:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5268B36B00;
-	Mon, 19 Feb 2024 14:01:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D0E437155;
+	Mon, 19 Feb 2024 14:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="Jcr4shji"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="FZfwf83y";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="FLn437Wb"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-52003.amazon.com (smtp-fw-52003.amazon.com [52.119.213.152])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699FF36136;
-	Mon, 19 Feb 2024 14:01:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29117360BA;
+	Mon, 19 Feb 2024 14:08:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708351275; cv=none; b=DtkRQV/7VbWjqa1pbyBBTm9ug3d2iWoI7vRRdg588ys8yF1zRyEEfMVr7/z2qZINPXgd8fGQZ3GIJ5jCz+2fxJgqFQunGwVGrwccKjAIfCnCuik5lBcBeZOgYTqNXBnfCOkmlzX9Cgxsabjt8U3TwQjKjOVmJfGhiO4wJ0++MCA=
+	t=1708351702; cv=none; b=Zed1I12rCJHiVO2+rFEix9pydc/rgTF95Y6z2OM4YvOixFeUnnAoNxl4w6hXrtxJErh/8XFi/0TZrdqQdTHjXrYwy9ANPkZdTbacqHvouGPSS9duN9uvI/sjdXw+iG3tC9t5RPNFXwHKsLQ35Qlo2g8vaxSq5yXHXuOypaMEgN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708351275; c=relaxed/simple;
-	bh=ikzcV1URla2GgnY93GwPS2bZ/HFf3YKKWO17DlHhvWg=;
-	h=Subject:Message-ID:Date:MIME-Version:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Dsca40eu3gZhArzZEy1UWyFEr1Z+N19C6VA+rKu+HWEBmdR7wOuI1kPsDI3kpwtGQw8z3mM3xp9fv3/QrUSRj2J2spIsTRxusHJ+YEb2O19ev1og9zie6u1HsLewBz3jqWqmsfqQSbNuVuwMlz3LZYPLzticiSeDn1YFW2Mp2KA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=Jcr4shji; arc=none smtp.client-ip=52.119.213.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1708351274; x=1739887274;
-  h=message-id:date:mime-version:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:subject;
-  bh=W7gVIamMoMUxGHZcPfOMCqRDKpC788b33nadGhFmXO8=;
-  b=Jcr4shjiy6STwx3+Y74P3FZ78VW6hSiz98kFe9s6f5D7O8VIqhN944n4
-   i9FOxc2I8khzf4e6EU6nm18Igrszai1QWoSO1IlMIYmO4kIAQiOYh7bRh
-   fM2T00HeOj4yAi/P8nmbPa7SotPw+ATfGTZkfQGsMnqQKIEyZruPF2IlJ
-   o=;
-X-IronPort-AV: E=Sophos;i="6.06,170,1705363200"; 
-   d="scan'208";a="638842739"
-Subject: Re: [PATCH] selftests/mqueue: Set timeout to 100 seconds
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-52003.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2024 14:01:11 +0000
-Received: from EX19MTAEUA001.ant.amazon.com [10.0.17.79:5692]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.35.15:2525] with esmtp (Farcaster)
- id c94ac43a-ba01-480a-b5f1-b87cfce8f244; Mon, 19 Feb 2024 14:01:09 +0000 (UTC)
-X-Farcaster-Flow-ID: c94ac43a-ba01-480a-b5f1-b87cfce8f244
-Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
- EX19MTAEUA001.ant.amazon.com (10.252.50.50) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Mon, 19 Feb 2024 14:01:08 +0000
-Received: from [192.168.11.164] (10.106.83.24) by
- EX19D018EUA004.ant.amazon.com (10.252.50.85) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Mon, 19 Feb 2024 14:01:08 +0000
-Message-ID: <ee8b746b-aee9-43d8-949b-62017fe0bca0@amazon.com>
-Date: Mon, 19 Feb 2024 14:01:06 +0000
+	s=arc-20240116; t=1708351702; c=relaxed/simple;
+	bh=O2I250bObo2NNSE+4ut1WpJK2Pce7ig8kJIKAPvMElQ=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=sc1HYt1730ja6Jz8yHwmEOOSJ1/BCwCEjCEhw7uiaZLtRIf68RmSmDRERxI22HQb+1p81CYaxu2hQqLwzmBJJLWZ/qL1h3BEU7AxxA3HqoiJ2h34WgimjRjei21SRZj+0kGGIE028+3BjDuBOB9dZMBFDlVN9dxTxEE4Apy64pY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=FZfwf83y; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=FLn437Wb; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Mon, 19 Feb 2024 14:08:17 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1708351698;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LJ15QQb5lo2AdR2SG9y6GMsXz1qi6IFa/UGCYP+exNg=;
+	b=FZfwf83ypHWycWhnl4ZxH7XYiUmcCenQUZR9KawYT32E8UjI+XWSlkK8pKC72dN2w5EJQq
+	Mt9G0rQueYHfNnh4ZXHCHRXihwkq0sH9lJNLnGXCdf6NH4Jgta84ZI4RICFR3Fzct3ex9M
+	F8uKn9K9V0sK/rJi6ZpnStCScTzfrEWZRmHU+26OCbZ/MVqaHANMacx2GMWB0JfLjs3DJz
+	M6U2boMSWtVD/EKeT11hryFWEjdMxc/pQClA4eY3xeq83e1lSajp2/2mLYRZig16bOlHrx
+	DnFIBnznLFiC+GyCi6VT3PoypMzqk6si1MdssFko7IRIK57gPxLxEHZ85FvQWw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1708351698;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LJ15QQb5lo2AdR2SG9y6GMsXz1qi6IFa/UGCYP+exNg=;
+	b=FLn437WbpgpmXhCwoGJ3NCl1iPy98mW0NLwsqiJPr3q79WUfGDT4avqYpn95+XXhQLNimV
+	eT1nOG6ukxTkekBg==
+From: "tip-bot2 for Nam Cao" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject:
+ [tip: irq/urgent] irqchip/sifive-plic: Enable interrupt if needed before EOI
+Cc: Nam Cao <namcao@linutronix.de>, Thomas Gleixner <tglx@linutronix.de>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Samuel Holland <samuel@sholland.org>, Marc Zyngier <maz@kernel.org>,
+ Guo Ren <guoren@kernel.org>, linux-riscv@lists.infradead.org,
+  <stable@vger.kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240131081933.144512-1-namcao@linutronix.de>
+References: <20240131081933.144512-1-namcao@linutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: SeongJae Park <sj@kernel.org>, Kees Cook <keescook@chromium.org>
-CC: <shuah@kernel.org>, <linux-kselftest@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
-	<Vijaikumar_Kanagarajan@mentor.com>, <brauner@kernel.org>,
-	<jlayton@kernel.org>, <jack@suse.cz>
-References: <20240217003142.86297-1-sj@kernel.org>
-From: "Mohamed Abuelfotoh, Hazem" <abuehaze@amazon.com>
-In-Reply-To: <20240217003142.86297-1-sj@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Message-ID: <170835169709.398.11515115809265577283.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: EX19D001EUB003.ant.amazon.com (10.252.51.38) To
- EX19D018EUA004.ant.amazon.com (10.252.50.85)
 
-On 17/02/2024 00:31, SeongJae Park wrote:
-> CAUTION: This email originated from outside of the organization. Do not click links or open attachments unless you can confirm the sender and know the content is safe.
-> 
-> 
-> 
-> On Fri, 16 Feb 2024 16:01:20 -0800 Kees Cook <keescook@chromium.org> wrote:
-> 
->> On Wed, Feb 14, 2024 at 05:13:09PM -0800, SeongJae Park wrote:
->>> A gentle reminder.
->>>
->>>
->>> Thanks,
->>> SJ
->>>
->>> On Fri, 9 Feb 2024 09:42:43 -0800 SeongJae Park <sj@kernel.org> wrote:
->>>
->>>> On Fri, 9 Feb 2024 10:30:38 +0000 "Mohamed Abuelfotoh, Hazem" <abuehaze@amazon.com> wrote:
->>>>
->>>>> On 08/02/2024 21:29, SeongJae Park wrote:
->>>>>> CAUTION: This email originated from outside of the organization. Do not click links or open attachments unless you can confirm the sender and know the content is safe.
->>>>>>
->>>>>>
->>>>>>
->>>>>> While mq_perf_tests runs with the default kselftest timeout limit, which
->>>>>> is 45 seconds, the test takes about 60 seconds to complete on i3.metal
->>>>>> AWS instances.  Hence, the test always times out.  Increase the timeout
->>>>>> to 100 seconds.
->>>>>>
->>>>>> Fixes: 852c8cbf34d3 ("selftests/kselftest/runner.sh: Add 45 second timeout per test")
->>>>>> Cc: <stable@vger.kernel.org> # 5.4.x
->>>>>> Signed-off-by: SeongJae Park <sj@kernel.org>
->>>>>> ---
->>>>>>    tools/testing/selftests/mqueue/setting | 1 +
->>>>>>    1 file changed, 1 insertion(+)
->>>>>>    create mode 100644 tools/testing/selftests/mqueue/setting
->>>>>>
->>>>>> diff --git a/tools/testing/selftests/mqueue/setting b/tools/testing/selftests/mqueue/setting
->>>>>> new file mode 100644
->>>>>> index 000000000000..54dc12287839
->>>>>> --- /dev/null
->>>>>> +++ b/tools/testing/selftests/mqueue/setting
->>>>>> @@ -0,0 +1 @@
->>>>>> +timeout=100
->>>>>> --
->>>>>> 2.39.2
->>>>>>
->>>>>>
->>>>>
->>>>> Added Vijai Kumar to CC
->>>>>
->>>>> This looks similar to [PATCH] kselftest: mqueue: increase timeout
->>>>> https://lore.kernel.org/lkml/20220622085911.2292509-1-Vijaikumar_Kanagarajan@mentor.com/T/#r12820aede6bba015b70ae33323e29ae27d5b69c7
->>>>> which was increasing the timeout to 180 however it's not clear why this
->>>>> hasn't been merged yet.
->>
->> Should it be 100 or 180?
-Both options may work, I am more inclined to have this as 180 seconds by 
-giving more time for the test to finish, this can be reduced later to 
-100 or something else if we start hearing complains about the new timeout.
+The following commit has been merged into the irq/urgent branch of tip:
 
-Hazem
-> 
-> As mentioned on the previous mail[1], either values are good to me :)
-> 
-> [1] https://lore.kernel.org/r/20240215011309.73168-1-sj@kernel.org
-> 
->> Either way:
->>
->> Reviewed-by: Kees Cook <keescook@chromium.org>
-> 
-> Thank you!
-> 
-> 
-> Thanks,
-> SJ
-> 
->>
->> --
->> Kees Cook
->>
+Commit-ID:     9c92006b896c767218aabe8947b62026a571cfd0
+Gitweb:        https://git.kernel.org/tip/9c92006b896c767218aabe8947b62026a571cfd0
+Author:        Nam Cao <namcao@linutronix.de>
+AuthorDate:    Wed, 31 Jan 2024 09:19:33 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 19 Feb 2024 15:05:18 +01:00
 
+irqchip/sifive-plic: Enable interrupt if needed before EOI
+
+RISC-V PLIC cannot "end-of-interrupt" (EOI) disabled interrupts, as
+explained in the description of Interrupt Completion in the PLIC spec:
+
+"The PLIC signals it has completed executing an interrupt handler by
+writing the interrupt ID it received from the claim to the claim/complete
+register. The PLIC does not check whether the completion ID is the same
+as the last claim ID for that target. If the completion ID does not match
+an interrupt source that *is currently enabled* for the target, the
+completion is silently ignored."
+
+Commit 69ea463021be ("irqchip/sifive-plic: Fixup EOI failed when masked")
+ensured that EOI is successful by enabling interrupt first, before EOI.
+
+Commit a1706a1c5062 ("irqchip/sifive-plic: Separate the enable and mask
+operations") removed the interrupt enabling code from the previous
+commit, because it assumes that interrupt should already be enabled at the
+point of EOI.
+
+However, this is incorrect: there is a window after a hart claiming an
+interrupt and before irq_desc->lock getting acquired, interrupt can be
+disabled during this window. Thus, EOI can be invoked while the interrupt
+is disabled, effectively nullify this EOI. This results in the interrupt
+never gets asserted again, and the device who uses this interrupt appears
+frozen.
+
+Make sure that interrupt is really enabled before EOI.
+
+Fixes: a1706a1c5062 ("irqchip/sifive-plic: Separate the enable and mask operations")
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Samuel Holland <samuel@sholland.org>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Guo Ren <guoren@kernel.org>
+Cc: linux-riscv@lists.infradead.org
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240131081933.144512-1-namcao@linutronix.de
+---
+ drivers/irqchip/irq-sifive-plic.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/irqchip/irq-sifive-plic.c b/drivers/irqchip/irq-sifive-plic.c
+index 5b7bc4f..bf0b40b 100644
+--- a/drivers/irqchip/irq-sifive-plic.c
++++ b/drivers/irqchip/irq-sifive-plic.c
+@@ -148,7 +148,13 @@ static void plic_irq_eoi(struct irq_data *d)
+ {
+ 	struct plic_handler *handler = this_cpu_ptr(&plic_handlers);
+ 
+-	writel(d->hwirq, handler->hart_base + CONTEXT_CLAIM);
++	if (unlikely(irqd_irq_disabled(d))) {
++		plic_toggle(handler, d->hwirq, 1);
++		writel(d->hwirq, handler->hart_base + CONTEXT_CLAIM);
++		plic_toggle(handler, d->hwirq, 0);
++	} else {
++		writel(d->hwirq, handler->hart_base + CONTEXT_CLAIM);
++	}
+ }
+ 
+ #ifdef CONFIG_SMP
 
