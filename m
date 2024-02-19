@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-20594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5765585A88F
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 17:18:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6E2185A893
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 17:18:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D81091F24D1A
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 16:18:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 480B5B2416E
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 16:18:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD7163C49C;
-	Mon, 19 Feb 2024 16:17:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 593FB3CF67;
+	Mon, 19 Feb 2024 16:17:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WDGoiCut"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rX+8N8ie"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F32339FC5
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 16:17:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A0DC3CF56
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 16:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708359463; cv=none; b=DIdOuIPH5AzefjBpV5Jc8THJtXre6f2ZI/AQZjMdhcpc6SfEzyaq5Cry/NqtT4pWJIiQLzrpaBRDh7yIedYf9Lbe2uHgvMpwq7XpEoFEYIZkOVFh6F8NMj0hOX++kXzrzB5GrzGlo1UjPHG6IXY74cc7rC90xDOMqn3dl0iY0C4=
+	t=1708359467; cv=none; b=NGYWMea1ruFjiG1mfLavClMS4bfov5QMkZnMXB9iXcg0/lc6wxNWN6Uqk0ycchz+2Uik+uIQLPMSPE1MH8As1OtIp7pjavEVEmlTifthjSZRFYAnpwG4Jk0PSoj1Y5QTJZKs2UFRHGm4Gysn/3p6ePyfIluMtV/eTT8sGKM3nTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708359463; c=relaxed/simple;
-	bh=iGpFoFuinX0RYMkAPC7qSnqYCGpESKCVSe750Sx+gI4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Bm49CsIeuLo0pxUwJdY+9qEpN9lWVKYRxxhA3/Il9NelDfRk6jcvJgvXB2zJHuQl3hPGXzLqH/1ywkABuTVygXw8y0Yhc7UbPLNSiJE5bKna5UrTBa0dtTNcCyP+j8RHVJva1dIMjlzX/r0EYS0zy+cLrKsFnLqRSnoSi/wp+JY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WDGoiCut; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98AE9C433C7;
-	Mon, 19 Feb 2024 16:17:42 +0000 (UTC)
+	s=arc-20240116; t=1708359467; c=relaxed/simple;
+	bh=B6a+/I5aPAMlHjfJ6LcxVfgLGDoVcqUOyVAxZ2hjTvk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=H3LYNaq/KIcbmZA8EbS7n0Gyzxdy1J+/Cl29k/Kz1P4BHHpMh3oNFlOAVoKaZgIcnvKtx3KnUP85dGh0TeiIuM/cFdOrdrOOoOAbyckZhJkXIM+L9tfkgOxb6YPjXf39ME8tHRb5roG1h2BuMxBn7HNWnSXuTLDRDZwaHRgr548=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rX+8N8ie; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34F92C433F1;
+	Mon, 19 Feb 2024 16:17:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708359463;
-	bh=iGpFoFuinX0RYMkAPC7qSnqYCGpESKCVSe750Sx+gI4=;
+	s=korg; t=1708359466;
+	bh=B6a+/I5aPAMlHjfJ6LcxVfgLGDoVcqUOyVAxZ2hjTvk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=WDGoiCutfrJe0XxYejOpMyy6eFeoYkoctQ81oCvn+Qp1EW9zgC/X4Ro60V+XCvABK
-	 RjKdCwAUOYw7LAeo4yYChNw+RBhMGdEyVyI/B+U/FvyJlXd13KIf2662ibMAolsLiI
-	 HJWgWPpmRwPpz0kCrOMCvySE8K2asaiUI1jLqUf8=
-Subject: FAILED: patch "[PATCH] ext4: convert to exclusive lock while inserting delalloc" failed to apply to 5.10-stable tree
+	b=rX+8N8ie9nJ5ZE71uDj611l2VGouZZMxAAqzovR4XH+Ma2P0IwZ7OTe6Yf0yXKUEp
+	 7Y+GTyreINDeCKCJnj/mZmAu+owR6mP8uMAPlyTyMLimGx5Ujj9INY/PvCLqDaOHr/
+	 igrcGIF9gjjiLiMsFaa2XN1cb8ZRi9WgcM0O9MZI=
+Subject: FAILED: patch "[PATCH] ext4: convert to exclusive lock while inserting delalloc" failed to apply to 5.4-stable tree
 To: yi.zhang@huawei.com,jack@suse.cz,tytso@mit.edu
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Feb 2024 17:17:27 +0100
-Message-ID: <2024021927-encrypt-tipping-e3ec@gregkh>
+Date: Mon, 19 Feb 2024 17:17:28 +0100
+Message-ID: <2024021928-heftiness-neutron-2774@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x acf795dc161f3cf481db20f05db4250714e375e5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021927-encrypt-tipping-e3ec@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021928-heftiness-neutron-2774@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,6 +77,18 @@ bda3efaf774f ("ext4: use pre-allocated es in __es_remove_extent()")
 95f0b320339a ("ext4: use pre-allocated es in __es_insert_extent()")
 73a2f033656b ("ext4: factor out __es_alloc_extent() and __es_free_extent()")
 9649eb18c628 ("ext4: add a new helper to check if es must be kept")
+8016e29f4362 ("ext4: fast commit recovery path")
+5b849b5f96b4 ("jbd2: fast commit recovery path")
+aa75f4d3daae ("ext4: main fast-commit commit path")
+ff780b91efe9 ("jbd2: add fast commit machinery")
+6866d7b3f2bb ("ext4 / jbd2: add fast commit initialization")
+995a3ed67fc8 ("ext4: add fast_commit feature and handling for extended mount options")
+2d069c0889ef ("ext4: use common helpers in all places reading metadata buffers")
+d9befedaafcf ("ext4: clear buffer verified flag if read meta block from disk")
+15ed2851b0f4 ("ext4: remove unused argument from ext4_(inc|dec)_count")
+3d392b2676bf ("ext4: add prefetch_block_bitmaps mount option")
+ab74c7b23f37 ("ext4: indicate via a block bitmap read is prefetched via a tracepoint")
+bc71726c7257 ("ext4: abort the filesystem if failed to async write metadata buffer")
 
 thanks,
 
