@@ -1,129 +1,160 @@
-Return-Path: <stable+bounces-20506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DD0485A097
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 11:11:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A39685A0CD
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 11:17:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D970F283347
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 10:11:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EED191F2383D
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 10:17:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AF6025574;
-	Mon, 19 Feb 2024 10:11:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D528F25616;
+	Mon, 19 Feb 2024 10:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="b5IP8oB0"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MQBrq7jh"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB0EB22F1E;
-	Mon, 19 Feb 2024 10:11:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3262A2562C
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 10:17:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708337478; cv=none; b=DsjkIssor0774jyx+xJ93e1u3QzSJtl/f+MBAJ985So+Omf6us5CRFp5fi+9wHxi68jiERG9FIkfDY3g6EShjyGWDcQse6/vt4Giq2QcPlZddftNPigVjZAIvoAC76brIjCMaapz7axbJfEllbgmkeywnmA4qaW4lO+VnXcF38A=
+	t=1708337855; cv=none; b=nRCD/c2J7YP+HTUUKEpYbDmwTMoYNWi/LUUSoJlJcvhbHbcjeFKf1zTw+hHFWLQE5dFKZaHT8HORDDmdFudcIje8Rohhd6XcZPv5hpNTmqV8bUJOHUo/UCp96GABQ6XWbJCv/u7baDG218LvPmNClsWmafj7zLI26mJPJ+zBSNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708337478; c=relaxed/simple;
-	bh=nKglCQxaIL9KhzTcv2EpJnB3vJNsx8B6s925upveKuo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=RBRBBapwgBUdsh8Pm3gb5cs6LMWr2b2V+AXkaF1mgs3Y/Zm3Eb7bCVpqi7kcsz5ZqI+8Y4JZ5en6ZyEkKTZLiY6u6WgGgg+0Wuvd3dE7RWIKg5GnBNHKmIefG+hBt9P+oQWZ4xaATlPXWePKmWfxgGWPyHsC+dsfmyfa4PU11Gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=b5IP8oB0; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 34ead050cf0f11ee9e680517dc993faa-20240219
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:CC:To:Subject:MIME-Version:Date:Message-ID; bh=FrRtn58nRdzgiHjxO5LEX/AMpFVMDY48qkJZG+hrISI=;
-	b=b5IP8oB0Z4PMPQbZStwzEWt/qKj8D2T6SxgxjuASMPY4nSOqRE5FqCyp4Biip4wM6Q5KI7hjwNiuSnhNn1LIHgSf976iWemmwoAZjUJzBvkonR4MiQIGC6gHNyJxGf2/aUcsmyQaEJu9at+E4YKhY8uIb/OOSaHCX1KciVVBOPM=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.37,REQID:d6fa4c11-acf9-4f1c-ae0e-dcbd7dee9419,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:6f543d0,CLOUDID:95978e80-4f93-4875-95e7-8c66ea833d57,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-	RL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,
-	SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 34ead050cf0f11ee9e680517dc993faa-20240219
-Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw01.mediatek.com
-	(envelope-from <macpaul.lin@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1620944991; Mon, 19 Feb 2024 18:11:11 +0800
-Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
- mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Mon, 19 Feb 2024 18:11:10 +0800
-Received: from [172.21.84.99] (172.21.84.99) by mtkmbs13n1.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.2.1118.26 via Frontend
- Transport; Mon, 19 Feb 2024 18:11:04 +0800
-Message-ID: <91b2109d-1bf7-1fa7-ac16-ec1d9aba2f5b@mediatek.com>
-Date: Mon, 19 Feb 2024 18:11:03 +0800
+	s=arc-20240116; t=1708337855; c=relaxed/simple;
+	bh=Wo/cNfnRrJVS7u+9kX0Gzt5RyUK2/nq8mBV3ntj6ZzU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rpuYZJ3vdki+pMtu+GSEelH2PrveiiJNG5low5Svx7Err2AqqBrNlkvTo1DXwwKyq1GH7yr9CKSRO9Yg0VpQTlANYJSuR9MhdxwRLVF1G2ZQRnb60ti0VjHaVEbPXuahzmabrDnkmAvc78t2y79jebk8H5yKt07H79B+OSpqWdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MQBrq7jh; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708337854; x=1739873854;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Wo/cNfnRrJVS7u+9kX0Gzt5RyUK2/nq8mBV3ntj6ZzU=;
+  b=MQBrq7jhFydFjm2Y8ZzWNlzYfu+kqzf0BcQ5bYEzRPd7jFAv8LkPfo9h
+   g6rsAZxaDdsjnzHjaipe9V0LkmRvLhAjzY2brdEp+5A+ubBkdhByByVn4
+   caS8NbKI5Ro9I2ma9exufT/3Xp0iKViA0uToLMnYRliUqQ6VM5FJlSaUJ
+   nzNCwCqeDrwunYA9LzXD1APpmrFaLGoEv7LDRRvHtx54t1ZB8nCscfTXG
+   LJGhTgO2vyeeUF3V3FYLUkaJ+SVpa37cRiaVcoH9fNqWXbJb3w2UW+3RP
+   Xhc1F4yUqr9yHLBuNCiEfRebvom3ImHtKZidsVhHF47LqyLIHXnaZ+UAu
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10988"; a="2533692"
+X-IronPort-AV: E=Sophos;i="6.06,170,1705392000"; 
+   d="scan'208";a="2533692"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2024 02:17:33 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,170,1705392000"; 
+   d="scan'208";a="4609644"
+Received: from samathah-mobl1.ger.corp.intel.com (HELO intel.com) ([10.246.48.149])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2024 02:17:31 -0800
+Date: Mon, 19 Feb 2024 11:17:28 +0100
+From: Andi Shyti <andi.shyti@linux.intel.com>
+To: Matt Roper <matthew.d.roper@intel.com>
+Cc: Andi Shyti <andi.shyti@linux.intel.com>,
+	intel-gfx <intel-gfx@lists.freedesktop.org>,
+	dri-devel <dri-devel@lists.freedesktop.org>,
+	Chris Wilson <chris.p.wilson@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	stable@vger.kernel.org, Andi Shyti <andi.shyti@kernel.org>
+Subject: Re: [PATCH 1/2] drm/i915/gt: Disable HW load balancing for CCS
+Message-ID: <ZdMquCAXtNdbJHbW@ashyti-mobl2.lan>
+References: <20240215135924.51705-1-andi.shyti@linux.intel.com>
+ <20240215135924.51705-2-andi.shyti@linux.intel.com>
+ <20240215165541.GJ718896@mdroper-desk1.amr.corp.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH v2 1/2] dt-bindings: phy: mediatek: tphy: add a property
- for force-mode switch
-Content-Language: en-US
-To: Vinod Koul <vkoul@kernel.org>, Rob Herring <robh+dt@kernel.org>, Chunfeng
- Yun <chunfeng.yun@mediatek.com>
-CC: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
-	<conor+dt@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-mediatek@lists.infradead.org>,
-	<linux-phy@lists.infradead.org>, <devicetree@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
-	<gregkh@linuxfoundation.org>
-References: <20231211025624.28991-1-chunfeng.yun@mediatek.com>
- <170317895962.712473.102387666807925662.b4-ty@kernel.org>
-From: Macpaul Lin <macpaul.lin@mediatek.com>
-In-Reply-To: <170317895962.712473.102387666807925662.b4-ty@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240215165541.GJ718896@mdroper-desk1.amr.corp.intel.com>
 
-On 12/22/23 01:15, Vinod Koul wrote:
-> 	
+Hi Matt,
+
+On Thu, Feb 15, 2024 at 08:55:41AM -0800, Matt Roper wrote:
+> On Thu, Feb 15, 2024 at 02:59:23PM +0100, Andi Shyti wrote:
+> > The hardware should not dynamically balance the load between CCS
+> > engines. Wa_16016805146 recommends disabling it across all
 > 
-> External email : Please do not click links or open attachments until you 
-> have verified the sender or the content.
+> Is this the right workaround number?  When I check the database, this
+> workaround was rejected on both DG2-G10 and DG2-G11, and doesn't even
+> have an entry for DG2-G12.
 > 
-> On Mon, 11 Dec 2023 10:56:23 +0800, Chunfeng Yun wrote:
->> Due to some old SoCs with shared t-phy between usb3 and pcie only support
->> force-mode switch, and shared and non-shared t-phy may exist at the same
->> time on a SoC, can't use compatible to distinguish between shared and
->> non-shared t-phy, add a property to supported it.
->> Currently, only support switch from default pcie mode to usb3 mode.
->> But now prefer to use "mediatek,syscon-type" on new SoC as far as possible.
->> 
->> [...]
+> There are other workarounds that sound somewhat related to load
+> balancing (e.g., part 3 of Wa_14019159160), but what's asked there is
+> more involved than just setting one register bit and conflicts a bit
+> with the second patch of this series.
+
+thanks for checking it. Indeed the WA I mentioned is limited to
+a specific platform. This recommendation comes in different WA,
+e.g. this one: Wa_14019186972 (3rd point). Will start using that
+as a reference.
+
+Thank you.
+Andi
+
 > 
-> Applied, thanks!
 > 
-> [1/2] dt-bindings: phy: mediatek: tphy: add a property for force-mode switch
->        commit: cc230a4cd8e91f64c90b5494dfd76848197418ed
-> [2/2] phy: mediatek: tphy: add support force phy mode switch
->        commit: 9b27303003f5af0d378f29ccccea57c7d65cc642
+> Matt
 > 
-> Best regards,
+> > platforms.
+> > 
+> > Fixes: d2eae8e98d59 ("drm/i915/dg2: Drop force_probe requirement")
+> > Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+> > Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
+> > Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+> > Cc: Matt Roper <matthew.d.roper@intel.com>
+> > Cc: <stable@vger.kernel.org> # v6.2+
+> > ---
+> >  drivers/gpu/drm/i915/gt/intel_gt_regs.h     | 1 +
+> >  drivers/gpu/drm/i915/gt/intel_workarounds.c | 6 ++++++
+> >  2 files changed, 7 insertions(+)
+> > 
+> > diff --git a/drivers/gpu/drm/i915/gt/intel_gt_regs.h b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
+> > index 50962cfd1353..cf709f6c05ae 100644
+> > --- a/drivers/gpu/drm/i915/gt/intel_gt_regs.h
+> > +++ b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
+> > @@ -1478,6 +1478,7 @@
+> >  
+> >  #define GEN12_RCU_MODE				_MMIO(0x14800)
+> >  #define   GEN12_RCU_MODE_CCS_ENABLE		REG_BIT(0)
+> > +#define   XEHP_RCU_MODE_FIXED_SLICE_CCS_MODE	REG_BIT(1)
+> >  
+> >  #define CHV_FUSE_GT				_MMIO(VLV_GUNIT_BASE + 0x2168)
+> >  #define   CHV_FGT_DISABLE_SS0			(1 << 10)
+> > diff --git a/drivers/gpu/drm/i915/gt/intel_workarounds.c b/drivers/gpu/drm/i915/gt/intel_workarounds.c
+> > index d67d44611c28..7f42c8015f71 100644
+> > --- a/drivers/gpu/drm/i915/gt/intel_workarounds.c
+> > +++ b/drivers/gpu/drm/i915/gt/intel_workarounds.c
+> > @@ -2988,6 +2988,12 @@ general_render_compute_wa_init(struct intel_engine_cs *engine, struct i915_wa_li
+> >  		wa_mcr_masked_en(wal, GEN8_HALF_SLICE_CHICKEN1,
+> >  				 GEN7_PSD_SINGLE_PORT_DISPATCH_ENABLE);
+> >  	}
+> > +
+> > +	/*
+> > +	 * Wa_16016805146: disable the CCS load balancing
+> > +	 * indiscriminately for all the platforms
+> > +	 */
+> > +	wa_masked_en(wal, GEN12_RCU_MODE, XEHP_RCU_MODE_FIXED_SLICE_CCS_MODE);
+> >  }
+> >  
+> >  static void
+> > -- 
+> > 2.43.0
+> > 
+> 
 > -- 
-> ~Vinod
-> 
-> 
-
-Is it possible to cherry-pick these 2 patches to stable branches?
-These 2 patches help fix USB port 1 (xhci1) for board mt8395-genio-1200-evb.
-The following branch has been tested.
-  - linux-6.7.y (6.7.5): apply test, build pass, function tested OK 
-(with corresponded dtb change).
-  - linux-6.6.y (6.6.17): apply test, build pass.
-  - linux-6.1.y (6.1.78): apply test, build pass.
-
-Thanks.
-Macpaul Lin
+> Matt Roper
+> Graphics Software Engineer
+> Linux GPU Platform Enablement
+> Intel Corporation
 
