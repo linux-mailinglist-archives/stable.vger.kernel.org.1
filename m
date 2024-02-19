@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-20675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 205D685AAF7
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:29:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6A3185AAF9
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:29:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B3CAB21722
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:29:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67D381F21DF6
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:29:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2989482CB;
-	Mon, 19 Feb 2024 18:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6129F482C6;
+	Mon, 19 Feb 2024 18:29:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LFPlk322"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A0utG7Vs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D7A481B3
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2065A481B3
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:29:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708367389; cv=none; b=NyL4R/TuPK2Mj36rejqOCBKeKEMzLL9cbLec6hZctuzXeyAH3BRiUbnqArnOTEv+VY4EuEs/toF26NV1wfh4+wxGblidD0M2VYah0FK7dQ2gPWQhkzJ9yLMbb/3mhTqqYPoSLndi21BJgIbPYHAb47gU6DPolRcrCkuo3pcNxyQ=
+	t=1708367392; cv=none; b=FxC368sxLjSO4/9bhf27oTFOGx/ulm19kLlfKO41n6VrTR/V6g1SwdpWZxratAuArpojSPUJrF3miBzDWRo/fPJFYMSRVDYxHYVb9lAW99I+WX54R9vHKnG6EKW7TO13tpitEJV4kpPHK8fsUbXd3w6wBebz801e28FzQ6I0ib8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708367389; c=relaxed/simple;
-	bh=MDTuDVOjwTnLmvyfKufIEeveWz4r2fyfxJMiidZ9wug=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=EiMMQoCqoWbS1NdsFv6U0RCAwB8CtQMA9JzgdUtSt670LPUGt3nf+FJPUy6frnphmWZCHwnq8UHNLij2UGy3QG7clFn5+K83IJIjG4Uw5w6Wa4tnfzylWGgbZrAdHDVFDUOUfvOA8vYQwKUL+h1dqQ9zVuzzYjpxpi1RhJnWT2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LFPlk322; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 726FDC433F1;
-	Mon, 19 Feb 2024 18:29:48 +0000 (UTC)
+	s=arc-20240116; t=1708367392; c=relaxed/simple;
+	bh=i1fRFjgJzVjlKmxMnHOgnzP4O1Q1Kcx1aF9p5LKTutI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Ld8+LQNhYmvZtt9cRbJ/9FQQhXo17mcRKiz+FnfT4LWV/ioqkrJJKvjecYxyZMYPUqJW9J9bMHmwz4PpLRqkf6ibSZHMZgBhj6TzlkZq2jhuH0NiTpIOkyUDECsXec/PWz97Uextc3LmYoALbuT+QvAldJm9TlW7chjieYsu7lM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A0utG7Vs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 830D2C433C7;
+	Mon, 19 Feb 2024 18:29:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708367388;
-	bh=MDTuDVOjwTnLmvyfKufIEeveWz4r2fyfxJMiidZ9wug=;
+	s=korg; t=1708367392;
+	bh=i1fRFjgJzVjlKmxMnHOgnzP4O1Q1Kcx1aF9p5LKTutI=;
 	h=Subject:To:Cc:From:Date:From;
-	b=LFPlk322VqM00b/gI3wXr5bFBydKuGPVjBbTZVMCVYj4wD0yJQd++/La/qvupjT7U
-	 o0Fnpyq3cy8pNsG9OOo1+DhLXIMXgJVKlnXC0GiEb1ejEYcIvfyYYU71UYryKb2qss
-	 vDcm2FfkS9py3Adv9nMuk6sfADZw4hcAFfZXBRbM=
-Subject: FAILED: patch "[PATCH] nilfs2: fix potential bug in end_buffer_async_write" failed to apply to 6.6-stable tree
+	b=A0utG7Vst0RKlg7Gxf5uWYtiKGS9nAZYRTR6WVlG6vs8BeX1GRCLjSZa0Mx5nIWT9
+	 1pkVohGh+lojay6bdjkSUS2uxVbaH5pYR5ZOvMT8NIlN15wSbmhVmoYZF2R6dTt+0w
+	 G717t6+US37HRBbiIr+oIvhNFfLlF873kvDhdmrg=
+Subject: FAILED: patch "[PATCH] nilfs2: fix potential bug in end_buffer_async_write" failed to apply to 6.1-stable tree
 To: konishi.ryusuke@gmail.com,akpm@linux-foundation.org,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Feb 2024 19:29:43 +0100
-Message-ID: <2024021942-tabloid-clarinet-50d2@gregkh>
+Date: Mon, 19 Feb 2024 19:29:44 +0100
+Message-ID: <2024021944-impolite-substance-4bc0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 5bc09b397cbf1221f8a8aacb1152650c9195b02b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021942-tabloid-clarinet-50d2@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021944-impolite-substance-4bc0@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -74,6 +74,7 @@ ff5710c3f3c2 ("nilfs2: convert nilfs_segctor_prepare_write to use folios")
 3cd36212bf75 ("nilfs2: convert nilfs_segctor_complete_write to use folios")
 50196f0081ca ("nilfs2: convert nilfs_abort_logs to use folios")
 8f46eaf6fd84 ("nilfs2: add nilfs_end_folio_io()")
+679bd7ebdd31 ("nilfs2: fix buffer corruption due to concurrent device reads")
 
 thanks,
 
