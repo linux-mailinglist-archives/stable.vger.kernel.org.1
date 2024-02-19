@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-20668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E008585AADD
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:22:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAD7F85AADF
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:22:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BC761F21238
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:22:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6273D1F20F1F
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:22:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB858481AF;
-	Mon, 19 Feb 2024 18:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55FF5482E4;
+	Mon, 19 Feb 2024 18:22:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iqhHDJG1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T1pnUEf/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D591446A1
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15CB647F79
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:22:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708366933; cv=none; b=QI9lzO7HB59c+EIuXrNTl037Dlli3x3dv4rfDhJrHBUIR/GCcOR0uC89meCUhFWPQHHq4XBF2NqjcHI/Z3nKeXx4LTuUmYzCgerVIUsNzE1VSbJvQQce38384RbW3SaOIdEyYX7U0ofDOp5T+v8QrkojlzzwOknvG5GnFe45+NE=
+	t=1708366955; cv=none; b=RceRbuY6Z4bH3i8mTQkIMSYhsbgFWBdv674EbnL1bkWlo1xAaWeaAdKgeOmbpX7obDnbLQ6nOO5KtkN5VdTV1ZknTmzOq1Hh4KoFT+d6yrSbehwpuaR35W05jOB02MmfzGtAH7I2XDnGpJqi2v6eMjq2LRz5VsAIveXRkZP99NA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708366933; c=relaxed/simple;
-	bh=eC7oSLW/b98Q559/EPTUyzSun0e1XSbJ56UwnV9LS94=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=WhUW/HLhyIF60F9AsZ2LXnOXVZm93P8VIPjX3wAMyTevDdiHqcp7Nxw7azdXZ5EhzqbAH63kv8uZXnYqo713/Ws8tfJ1MDi7CpBRHCBDS3xdFwU73fO2a2fyELnEk8LpQg6CqxJ9mdDRZmr55pQhTJzvg0Y8GjPpf6qESfUd9p0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iqhHDJG1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92DE8C433F1;
-	Mon, 19 Feb 2024 18:22:12 +0000 (UTC)
+	s=arc-20240116; t=1708366955; c=relaxed/simple;
+	bh=w9bMeHfV5G0uelB87E6wvLUUrf6iT8R38rN8CzYlxc0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kFIBqyN8D1+BGHFu1FLaeb4RzC2GmHW1Vdi9eEVyGCmSF82/I7FfyGDmxZW11RmNDjyBWoCECDpgfIsGAFhYGhcHa2LoqITpzng9nOLx7Fu9Bv5xCMWviVJATKGr9FrErjeuu4T7rovU15oZs8Io36JXAbV1sMhCt3/Ei25iZzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T1pnUEf/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 780BAC433C7;
+	Mon, 19 Feb 2024 18:22:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708366933;
-	bh=eC7oSLW/b98Q559/EPTUyzSun0e1XSbJ56UwnV9LS94=;
+	s=korg; t=1708366954;
+	bh=w9bMeHfV5G0uelB87E6wvLUUrf6iT8R38rN8CzYlxc0=;
 	h=Subject:To:Cc:From:Date:From;
-	b=iqhHDJG1xBnf9NmNNfRX0PiCxOhNnn2Rqheb5NsQDDx4aWg1Sym5Fp4YIbAAnZrOc
-	 zo+2jBeJEMl/HZ/WwvJFd5yzFVs3pdzmF6fNQiS5XbOTA1VbfksrWJBqn0N35H732l
-	 u/q3LUiEEqryHDM6Fd4d/tuWDGCyah1dVhalMGgU=
-Subject: FAILED: patch "[PATCH] powerpc/ftrace: Ignore ftrace locations in exit text sections" failed to apply to 6.6-stable tree
-To: naveen@kernel.org,bgray@linux.ibm.com,mpe@ellerman.id.au
+	b=T1pnUEf/3E6j/qnMxDhIB+BNdjR3vELsZB1WX2BbL4dIzJ0BM9sAjeaM8oCsWD7qj
+	 4EZj4NYetk64Zm81XLsLSUgVBU0ExfyjMlBLD3eRywlZGBmdWlCXcc6wyro1yTKIvi
+	 Hkv6AEHvzwYzJEkCHbTThtc9hv865C5pizScoTNI=
+Subject: FAILED: patch "[PATCH] powerpc/64: Set task pt_regs->link to the LR value on scv" failed to apply to 5.10-stable tree
+To: naveen@kernel.org,mpe@ellerman.id.au,nysal@linux.ibm.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Feb 2024 19:22:02 +0100
-Message-ID: <2024021901-stallion-swaddling-5833@gregkh>
+Date: Mon, 19 Feb 2024 19:22:31 +0100
+Message-ID: <2024021931-venue-await-dbc3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x ea73179e64131bcd29ba6defd33732abdf8ca14b
+git cherry-pick -x aad98efd0b121f63a2e1c221dcb4d4850128c697
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021901-stallion-swaddling-5833@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021931-venue-await-dbc3@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
-ea73179e6413 ("powerpc/ftrace: Ignore ftrace locations in exit text sections")
-2ec36570c358 ("powerpc/ftrace: Fix indentation in ftrace.h")
+aad98efd0b12 ("powerpc/64: Set task pt_regs->link to the LR value on scv entry")
+e754f4d13e39 ("powerpc/64: move interrupt return asm to interrupt_64.S")
+59dc5bfca0cb ("powerpc/64s: avoid reloading (H)SRR registers if they are still valid")
+1df7d5e4baea ("powerpc/64s: introduce different functions to return from SRR vs HSRR interrupts")
+ac3d085368b3 ("powerpc/signal32: Remove impossible #ifdef combinations")
+69d4d6e5fd9f ("powerpc: Don't use 'struct ppc_inst' to reference instruction location")
+e90a21ea801d ("powerpc/lib/code-patching: Don't use struct 'ppc_inst' for runnable code in tests.")
+6c0d181daabc ("powerpc/lib/code-patching: Make instr_is_branch_to_addr() static")
+18c85964b10b ("powerpc: Do not dereference code as 'struct ppc_inst' (uprobe, code-patching, feature-fixups)")
+f30becb5e9ec ("powerpc: Replace PPC_INST_NOP by PPC_RAW_NOP()")
+ef909ba95414 ("powerpc/lib/feature-fixups: Use PPC_RAW_xxx() macros")
+5a03e1e9728e ("powerpc/ftrace: Use PPC_RAW_MFLR() and PPC_RAW_NOP()")
+e73045975601 ("powerpc/security: Use PPC_RAW_BLR() and PPC_RAW_NOP()")
+47b04699d070 ("powerpc/modules: Use PPC_RAW_xx() macros")
+1c9debbc2eb5 ("powerpc/signal: Use PPC_RAW_xx() macros")
+82123a3d1d5a ("powerpc/kprobes: Fix validation of prefixed instructions across page boundary")
+d72500f99284 ("powerpc/64s/syscall: Fix ptrace syscall info with scv syscalls")
+5b48ba2fbd77 ("powerpc/64s: Fix stf mitigation patching w/strict RWX & hash")
+49b39ec248af ("powerpc/64s: Fix entry flush patching w/strict RWX & hash")
+2c8c89b95831 ("powerpc/pseries: Fix hcall tracing recursion in pv queued spinlocks")
 
 thanks,
 
@@ -78,160 +96,163 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From ea73179e64131bcd29ba6defd33732abdf8ca14b Mon Sep 17 00:00:00 2001
+From aad98efd0b121f63a2e1c221dcb4d4850128c697 Mon Sep 17 00:00:00 2001
 From: Naveen N Rao <naveen@kernel.org>
-Date: Tue, 13 Feb 2024 23:24:10 +0530
-Subject: [PATCH] powerpc/ftrace: Ignore ftrace locations in exit text sections
+Date: Fri, 2 Feb 2024 21:13:16 +0530
+Subject: [PATCH] powerpc/64: Set task pt_regs->link to the LR value on scv
+ entry
 
-Michael reported that we are seeing an ftrace bug on bootup when KASAN
-is enabled and we are using -fpatchable-function-entry:
+Nysal reported that userspace backtraces are missing in offcputime bcc
+tool. As an example:
+    $ sudo ./bcc/tools/offcputime.py -uU
+    Tracing off-CPU time (us) of user threads by user stack... Hit Ctrl-C to end.
 
-  ftrace: allocating 47780 entries in 18 pages
-  ftrace-powerpc: 0xc0000000020b3d5c: No module provided for non-kernel address
-  ------------[ ftrace bug ]------------
-  ftrace faulted on modifying
-  [<c0000000020b3d5c>] 0xc0000000020b3d5c
-  Initializing ftrace call sites
-  ftrace record flags: 0
-   (0)
-   expected tramp: c00000000008cef4
-  ------------[ cut here ]------------
-  WARNING: CPU: 0 PID: 0 at kernel/trace/ftrace.c:2180 ftrace_bug+0x3c0/0x424
-  Modules linked in:
-  CPU: 0 PID: 0 Comm: swapper Not tainted 6.5.0-rc3-00120-g0f71dcfb4aef #860
-  Hardware name: IBM pSeries (emulated by qemu) POWER9 (raw) 0x4e1202 0xf000005 of:SLOF,HEAD hv:linux,kvm pSeries
-  NIP:  c0000000003aa81c LR: c0000000003aa818 CTR: 0000000000000000
-  REGS: c0000000033cfab0 TRAP: 0700   Not tainted  (6.5.0-rc3-00120-g0f71dcfb4aef)
-  MSR:  8000000002021033 <SF,VEC,ME,IR,DR,RI,LE>  CR: 28028240  XER: 00000000
-  CFAR: c0000000002781a8 IRQMASK: 3
-  ...
-  NIP [c0000000003aa81c] ftrace_bug+0x3c0/0x424
-  LR [c0000000003aa818] ftrace_bug+0x3bc/0x424
-  Call Trace:
-   ftrace_bug+0x3bc/0x424 (unreliable)
-   ftrace_process_locs+0x5f4/0x8a0
-   ftrace_init+0xc0/0x1d0
-   start_kernel+0x1d8/0x484
+    ^C
+	write
+	-                python (9107)
+	    8
 
-With CONFIG_FTRACE_MCOUNT_USE_PATCHABLE_FUNCTION_ENTRY=y and
-CONFIG_KASAN=y, compiler emits nops in functions that it generates for
-registering and unregistering global variables (unlike with -pg and
--mprofile-kernel where calls to _mcount() are not generated in those
-functions). Those functions then end up in INIT_TEXT and EXIT_TEXT
-respectively. We don't expect to see any profiled functions in
-EXIT_TEXT, so ftrace_init_nop() assumes that all addresses that aren't
-in the core kernel text belongs to a module. Since these functions do
-not match that criteria, we see the above bug.
+	write
+	-                sudo (9105)
+	    9
 
-Address this by having ftrace ignore all locations in the text exit
-sections of vmlinux.
+	mmap
+	-                python (9107)
+	    16
 
-Fixes: 0f71dcfb4aef ("powerpc/ftrace: Add support for -fpatchable-function-entry")
-Cc: stable@vger.kernel.org # v6.6+
-Reported-by: Michael Ellerman <mpe@ellerman.id.au>
+	clock_nanosleep
+	-                multipathd (697)
+	    3001604
+
+The offcputime bcc tool attaches a bpf program to a kprobe on
+finish_task_switch(), which is usually hit on a syscall from userspace.
+With the switch to system call vectored, we started setting
+pt_regs->link to zero. This is because system call vectored behaves like
+a function call with LR pointing to the system call return address, and
+with no modification to SRR0/SRR1. The LR value does indicate our next
+instruction, so it is being saved as pt_regs->nip, and pt_regs->link is
+being set to zero. This is not a problem by itself, but BPF uses perf
+callchain infrastructure for capturing stack traces, and that stores LR
+as the second entry in the stack trace. perf has code to cope with the
+second entry being zero, and skips over it. However, generic userspace
+unwinders assume that a zero entry indicates end of the stack trace,
+resulting in a truncated userspace stack trace.
+
+Rather than fixing all userspace unwinders to ignore/skip past the
+second entry, store the real LR value in pt_regs->link so that there
+continues to be a valid, though duplicate entry in the stack trace.
+
+With this change:
+    $ sudo ./bcc/tools/offcputime.py -uU
+    Tracing off-CPU time (us) of user threads by user stack... Hit Ctrl-C to end.
+
+    ^C
+	write
+	write
+	[unknown]
+	[unknown]
+	[unknown]
+	[unknown]
+	[unknown]
+	PyObject_VectorcallMethod
+	[unknown]
+	[unknown]
+	PyObject_CallOneArg
+	PyFile_WriteObject
+	PyFile_WriteString
+	[unknown]
+	[unknown]
+	PyObject_Vectorcall
+	_PyEval_EvalFrameDefault
+	PyEval_EvalCode
+	[unknown]
+	[unknown]
+	[unknown]
+	_PyRun_SimpleFileObject
+	_PyRun_AnyFileObject
+	Py_RunMain
+	[unknown]
+	Py_BytesMain
+	[unknown]
+	__libc_start_main
+	-                python (1293)
+	    7
+
+	write
+	write
+	[unknown]
+	sudo_ev_loop_v1
+	sudo_ev_dispatch_v1
+	[unknown]
+	[unknown]
+	[unknown]
+	[unknown]
+	__libc_start_main
+	-                sudo (1291)
+	    7
+
+	syscall
+	syscall
+	bpf_open_perf_buffer_opts
+	[unknown]
+	[unknown]
+	[unknown]
+	[unknown]
+	_PyObject_MakeTpCall
+	PyObject_Vectorcall
+	_PyEval_EvalFrameDefault
+	PyEval_EvalCode
+	[unknown]
+	[unknown]
+	[unknown]
+	_PyRun_SimpleFileObject
+	_PyRun_AnyFileObject
+	Py_RunMain
+	[unknown]
+	Py_BytesMain
+	[unknown]
+	__libc_start_main
+	-                python (1293)
+	    11
+
+	clock_nanosleep
+	clock_nanosleep
+	nanosleep
+	sleep
+	[unknown]
+	[unknown]
+	__clone
+	-                multipathd (698)
+	    3001661
+
+Fixes: 7fa95f9adaee ("powerpc/64s: system call support for scv/rfscv instructions")
+Cc: stable@vger.kernel.org
+Reported-by: "Nysal Jan K.A" <nysal@linux.ibm.com>
 Signed-off-by: Naveen N Rao <naveen@kernel.org>
-Reviewed-by: Benjamin Gray <bgray@linux.ibm.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240213175410.1091313-1-naveen@kernel.org
+Link: https://msgid.link/20240202154316.395276-1-naveen@kernel.org
 
-diff --git a/arch/powerpc/include/asm/ftrace.h b/arch/powerpc/include/asm/ftrace.h
-index 1ebd2ca97f12..107fc5a48456 100644
---- a/arch/powerpc/include/asm/ftrace.h
-+++ b/arch/powerpc/include/asm/ftrace.h
-@@ -20,14 +20,6 @@
- #ifndef __ASSEMBLY__
- extern void _mcount(void);
+diff --git a/arch/powerpc/kernel/interrupt_64.S b/arch/powerpc/kernel/interrupt_64.S
+index bd863702d812..1ad059a9e2fe 100644
+--- a/arch/powerpc/kernel/interrupt_64.S
++++ b/arch/powerpc/kernel/interrupt_64.S
+@@ -52,7 +52,8 @@ _ASM_NOKPROBE_SYMBOL(system_call_vectored_\name)
+ 	mr	r10,r1
+ 	ld	r1,PACAKSAVE(r13)
+ 	std	r10,0(r1)
+-	std	r11,_NIP(r1)
++	std	r11,_LINK(r1)
++	std	r11,_NIP(r1)	/* Saved LR is also the next instruction */
+ 	std	r12,_MSR(r1)
+ 	std	r0,GPR0(r1)
+ 	std	r10,GPR1(r1)
+@@ -70,7 +71,6 @@ _ASM_NOKPROBE_SYMBOL(system_call_vectored_\name)
+ 	std	r9,GPR13(r1)
+ 	SAVE_NVGPRS(r1)
+ 	std	r11,_XER(r1)
+-	std	r11,_LINK(r1)
+ 	std	r11,_CTR(r1)
  
--static inline unsigned long ftrace_call_adjust(unsigned long addr)
--{
--	if (IS_ENABLED(CONFIG_ARCH_USING_PATCHABLE_FUNCTION_ENTRY))
--		addr += MCOUNT_INSN_SIZE;
--
--	return addr;
--}
--
- unsigned long prepare_ftrace_return(unsigned long parent, unsigned long ip,
- 				    unsigned long sp);
- 
-@@ -142,8 +134,10 @@ static inline u8 this_cpu_get_ftrace_enabled(void) { return 1; }
- #ifdef CONFIG_FUNCTION_TRACER
- extern unsigned int ftrace_tramp_text[], ftrace_tramp_init[];
- void ftrace_free_init_tramp(void);
-+unsigned long ftrace_call_adjust(unsigned long addr);
- #else
- static inline void ftrace_free_init_tramp(void) { }
-+static inline unsigned long ftrace_call_adjust(unsigned long addr) { return addr; }
- #endif
- #endif /* !__ASSEMBLY__ */
- 
-diff --git a/arch/powerpc/include/asm/sections.h b/arch/powerpc/include/asm/sections.h
-index ea26665f82cf..f43f3a6b0051 100644
---- a/arch/powerpc/include/asm/sections.h
-+++ b/arch/powerpc/include/asm/sections.h
-@@ -14,6 +14,7 @@ typedef struct func_desc func_desc_t;
- 
- extern char __head_end[];
- extern char __srwx_boundary[];
-+extern char __exittext_begin[], __exittext_end[];
- 
- /* Patch sites */
- extern s32 patch__call_flush_branch_caches1;
-diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
-index 82010629cf88..d8d6b4fd9a14 100644
---- a/arch/powerpc/kernel/trace/ftrace.c
-+++ b/arch/powerpc/kernel/trace/ftrace.c
-@@ -27,10 +27,22 @@
- #include <asm/ftrace.h>
- #include <asm/syscall.h>
- #include <asm/inst.h>
-+#include <asm/sections.h>
- 
- #define	NUM_FTRACE_TRAMPS	2
- static unsigned long ftrace_tramps[NUM_FTRACE_TRAMPS];
- 
-+unsigned long ftrace_call_adjust(unsigned long addr)
-+{
-+	if (addr >= (unsigned long)__exittext_begin && addr < (unsigned long)__exittext_end)
-+		return 0;
-+
-+	if (IS_ENABLED(CONFIG_ARCH_USING_PATCHABLE_FUNCTION_ENTRY))
-+		addr += MCOUNT_INSN_SIZE;
-+
-+	return addr;
-+}
-+
- static ppc_inst_t ftrace_create_branch_inst(unsigned long ip, unsigned long addr, int link)
- {
- 	ppc_inst_t op;
-diff --git a/arch/powerpc/kernel/trace/ftrace_64_pg.c b/arch/powerpc/kernel/trace/ftrace_64_pg.c
-index 7b85c3b460a3..12fab1803bcf 100644
---- a/arch/powerpc/kernel/trace/ftrace_64_pg.c
-+++ b/arch/powerpc/kernel/trace/ftrace_64_pg.c
-@@ -37,6 +37,11 @@
- #define	NUM_FTRACE_TRAMPS	8
- static unsigned long ftrace_tramps[NUM_FTRACE_TRAMPS];
- 
-+unsigned long ftrace_call_adjust(unsigned long addr)
-+{
-+	return addr;
-+}
-+
- static ppc_inst_t
- ftrace_call_replace(unsigned long ip, unsigned long addr, int link)
- {
-diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
-index 1c5970df3233..f420df7888a7 100644
---- a/arch/powerpc/kernel/vmlinux.lds.S
-+++ b/arch/powerpc/kernel/vmlinux.lds.S
-@@ -281,7 +281,9 @@ SECTIONS
- 	 * to deal with references from __bug_table
- 	 */
- 	.exit.text : AT(ADDR(.exit.text) - LOAD_OFFSET) {
-+		__exittext_begin = .;
- 		EXIT_TEXT
-+		__exittext_end = .;
- 	}
- 
- 	. = ALIGN(PAGE_SIZE);
+ 	li	r11,\trapnr
 
 
