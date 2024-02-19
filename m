@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-20701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AF2885AB59
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:44:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADF4985AB5B
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:45:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDAD51C221E8
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:44:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0A3B1C21B1C
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:45:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42B421D53C;
-	Mon, 19 Feb 2024 18:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6C8E41C78;
+	Mon, 19 Feb 2024 18:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W8gALzlJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DXJembwV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 020735697
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 877BF1F952
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708368291; cv=none; b=CLkKg8cDB0KKnp6I2b2ARI6eFbKef8oWXcZ/ZuQs15HQ7Gniwp1OdlFNaDoGPEfABwNIF5gH0TuuRWbGS1z0u/OEV0TvpmoxJZwvdZdGjSkgYHHah/pDoasm2l/P6KsJCvOOAqLi8S8E2adwc4T30dceFLTmK/x0EwMGyctf0Q0=
+	t=1708368316; cv=none; b=IywrjAIoa9bSj+yhRZmN+KUItioZzsWZ/OlU5uefqKmOMhUlQcaCURTOw9fP2UJfIle+M6o4Dhzi7NspoLo/XA2p/7RaxUvDPFMmitqThuCKGKZayQtm9qPzbgKP9+G0BW3JNgLEJBLjRkGBLM85V13IUxGSR5bEbXkHQQjwDV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708368291; c=relaxed/simple;
-	bh=QYX3ul0rYPykpgM7N0s43lpM78d+ha3itwY8/AVS1gM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jUnRFp0gEw/CsevkbrSxvUxZirJuNeQQ3ys3/Zs7f7KVHtafd0B0QhiABxuw0L/+bvljy75nU9QpoEOH8+SFUUnyvgqn3DrasOBUCedLWWIljFcs6jL/lCFajjLDGgSPKINZSRf6+Wwp37f8jiHe0aiN3cke0vrybo9CLMMJURM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W8gALzlJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C2E4C433C7;
-	Mon, 19 Feb 2024 18:44:50 +0000 (UTC)
+	s=arc-20240116; t=1708368316; c=relaxed/simple;
+	bh=t/dSVCK9Cv7i2noCSvJUCZLtUJoFmhTMQ+yB1sP56kY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=X+8x+c5RRw4RShpaILVzvt39RQFceIs1JRJFNrsbq/tLBj3AAk0/g69/YKObIeORBeblRmOjFOOr0JAwx3MMMWzFaoShhZdCYILmXDNlwaat1jt0usyFFEhfJ3hpOPqx6eDxOmvK2DrgJFYNh6Aqqa62swfwPZsuKDMumtI4tfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DXJembwV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93C08C433C7;
+	Mon, 19 Feb 2024 18:45:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708368290;
-	bh=QYX3ul0rYPykpgM7N0s43lpM78d+ha3itwY8/AVS1gM=;
+	s=korg; t=1708368316;
+	bh=t/dSVCK9Cv7i2noCSvJUCZLtUJoFmhTMQ+yB1sP56kY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=W8gALzlJUs3GPcErgDzId896VpfdXrARrAubN8z8d9kCp3n7zI+uTfAObtQ3Egb+V
-	 gSC/2W12yIwtkNH96i1tYwCLT1Bzh1Xezids/OEEIXjL8gA1TECkDKIoIQUbjL/Aqg
-	 AtcJU+sxbunZk+hWv8w3/2jQwbzNu3ucPUKr/hKs=
-Subject: FAILED: patch "[PATCH] arm64: Subscribe Microsoft Azure Cobalt 100 to ARM Neoverse" failed to apply to 6.1-stable tree
-To: eahariha@linux.microsoft.com,anshuman.khandual@arm.com,mark.rutland@arm.com,maz@kernel.org,oliver.upton@linux.dev,will@kernel.org
+	b=DXJembwVNFSCA+0ZuC79nAZOQDCY0Ql2rwpNL51SO61/YAljEDh9GbTpJyPEJ4uqj
+	 Fz60B36eunHS9M8xUgZiKEDiT79N0EDM9DQF/fGFosKBwBxG8NDDMzb/LiJGw/tTo1
+	 ZQ0Ikz1tOik9aauptaDd3ypc4MA3gK3Oi7VsH/AA=
+Subject: FAILED: patch "[PATCH] ASoC: SOF: IPC3: fix message bounds on ipc ops" failed to apply to 6.1-stable tree
+To: cujomalainey@chromium.org,broonie@kernel.org,daniel.baluta@nxp.com,peter.ujfalusi@linux.intel.com,pierre-louis.bossart@linux.intel.com,timvp@google.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Feb 2024 19:44:48 +0100
-Message-ID: <2024021947-naturist-unlovely-367a@gregkh>
+Date: Mon, 19 Feb 2024 19:45:13 +0100
+Message-ID: <2024021912-plastic-bannister-f6dc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
@@ -62,15 +62,16 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x fb091ff394792c018527b3211bbdfae93ea4ac02
+git cherry-pick -x fcbe4873089c84da641df75cda9cac2e9addbb4b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021947-naturist-unlovely-367a@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021912-plastic-bannister-f6dc@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-fb091ff39479 ("arm64: Subscribe Microsoft Azure Cobalt 100 to ARM Neoverse N2 errata")
-6aeadf7896bf ("Merge tag 'docs-arm64-move' of git://git.lwn.net/linux")
+fcbe4873089c ("ASoC: SOF: IPC3: fix message bounds on ipc ops")
+12c41c779fad ("ASoC: SOF: Refactor rx function for fuzzing")
+989a3e447917 ("ASoC: SOF: ipc3: Check for upper size limit for the received message")
 
 thanks,
 
@@ -78,96 +79,42 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From fb091ff394792c018527b3211bbdfae93ea4ac02 Mon Sep 17 00:00:00 2001
-From: Easwar Hariharan <eahariha@linux.microsoft.com>
-Date: Wed, 14 Feb 2024 17:55:18 +0000
-Subject: [PATCH] arm64: Subscribe Microsoft Azure Cobalt 100 to ARM Neoverse
- N2 errata
+From fcbe4873089c84da641df75cda9cac2e9addbb4b Mon Sep 17 00:00:00 2001
+From: Curtis Malainey <cujomalainey@chromium.org>
+Date: Tue, 13 Feb 2024 14:38:34 +0200
+Subject: [PATCH] ASoC: SOF: IPC3: fix message bounds on ipc ops
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Add the MIDR value of Microsoft Azure Cobalt 100, which is a Microsoft
-implemented CPU based on r0p0 of the ARM Neoverse N2 CPU, and therefore
-suffers from all the same errata.
+commit 74ad8ed65121 ("ASoC: SOF: ipc3: Implement rx_msg IPC ops")
+introduced a new allocation before the upper bounds check in
+do_rx_work. As a result A DSP can cause bad allocations if spewing
+garbage.
 
-CC: stable@vger.kernel.org # 5.15+
-Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Acked-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
-Link: https://lore.kernel.org/r/20240214175522.2457857-1-eahariha@linux.microsoft.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: 74ad8ed65121 ("ASoC: SOF: ipc3: Implement rx_msg IPC ops")
+Reported-by: Tim Van Patten <timvp@google.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Curtis Malainey <cujomalainey@chromium.org>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Link: https://msgid.link/r/20240213123834.4827-1-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 
-diff --git a/Documentation/arch/arm64/silicon-errata.rst b/Documentation/arch/arm64/silicon-errata.rst
-index e8c2ce1f9df6..45a7f4932fe0 100644
---- a/Documentation/arch/arm64/silicon-errata.rst
-+++ b/Documentation/arch/arm64/silicon-errata.rst
-@@ -243,3 +243,10 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | ASR            | ASR8601         | #8601001        | N/A                         |
- +----------------+-----------------+-----------------+-----------------------------+
-++----------------+-----------------+-----------------+-----------------------------+
-+| Microsoft      | Azure Cobalt 100| #2139208        | ARM64_ERRATUM_2139208       |
-++----------------+-----------------+-----------------+-----------------------------+
-+| Microsoft      | Azure Cobalt 100| #2067961        | ARM64_ERRATUM_2067961       |
-++----------------+-----------------+-----------------+-----------------------------+
-+| Microsoft      | Azure Cobalt 100| #2253138        | ARM64_ERRATUM_2253138       |
-++----------------+-----------------+-----------------+-----------------------------+
-diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
-index 7c7493cb571f..52f076afeb96 100644
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -61,6 +61,7 @@
- #define ARM_CPU_IMP_HISI		0x48
- #define ARM_CPU_IMP_APPLE		0x61
- #define ARM_CPU_IMP_AMPERE		0xC0
-+#define ARM_CPU_IMP_MICROSOFT		0x6D
+diff --git a/sound/soc/sof/ipc3.c b/sound/soc/sof/ipc3.c
+index fb40378ad084..c03dd513fbff 100644
+--- a/sound/soc/sof/ipc3.c
++++ b/sound/soc/sof/ipc3.c
+@@ -1067,7 +1067,7 @@ static void sof_ipc3_rx_msg(struct snd_sof_dev *sdev)
+ 		return;
+ 	}
  
- #define ARM_CPU_PART_AEM_V8		0xD0F
- #define ARM_CPU_PART_FOUNDATION		0xD00
-@@ -135,6 +136,8 @@
- 
- #define AMPERE_CPU_PART_AMPERE1		0xAC3
- 
-+#define MICROSOFT_CPU_PART_AZURE_COBALT_100	0xD49 /* Based on r0p0 of ARM Neoverse N2 */
-+
- #define MIDR_CORTEX_A53 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A53)
- #define MIDR_CORTEX_A57 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A57)
- #define MIDR_CORTEX_A72 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A72)
-@@ -193,6 +196,7 @@
- #define MIDR_APPLE_M2_BLIZZARD_MAX MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M2_BLIZZARD_MAX)
- #define MIDR_APPLE_M2_AVALANCHE_MAX MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M2_AVALANCHE_MAX)
- #define MIDR_AMPERE1 MIDR_CPU_MODEL(ARM_CPU_IMP_AMPERE, AMPERE_CPU_PART_AMPERE1)
-+#define MIDR_MICROSOFT_AZURE_COBALT_100 MIDR_CPU_MODEL(ARM_CPU_IMP_MICROSOFT, MICROSOFT_CPU_PART_AZURE_COBALT_100)
- 
- /* Fujitsu Erratum 010001 affects A64FX 1.0 and 1.1, (v0r0 and v1r0) */
- #define MIDR_FUJITSU_ERRATUM_010001		MIDR_FUJITSU_A64FX
-diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
-index 967c7c7a4e7d..76b8dd37092a 100644
---- a/arch/arm64/kernel/cpu_errata.c
-+++ b/arch/arm64/kernel/cpu_errata.c
-@@ -374,6 +374,7 @@ static const struct midr_range erratum_1463225[] = {
- static const struct midr_range trbe_overwrite_fill_mode_cpus[] = {
- #ifdef CONFIG_ARM64_ERRATUM_2139208
- 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
-+	MIDR_ALL_VERSIONS(MIDR_MICROSOFT_AZURE_COBALT_100),
- #endif
- #ifdef CONFIG_ARM64_ERRATUM_2119858
- 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
-@@ -387,6 +388,7 @@ static const struct midr_range trbe_overwrite_fill_mode_cpus[] = {
- static const struct midr_range tsb_flush_fail_cpus[] = {
- #ifdef CONFIG_ARM64_ERRATUM_2067961
- 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
-+	MIDR_ALL_VERSIONS(MIDR_MICROSOFT_AZURE_COBALT_100),
- #endif
- #ifdef CONFIG_ARM64_ERRATUM_2054223
- 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
-@@ -399,6 +401,7 @@ static const struct midr_range tsb_flush_fail_cpus[] = {
- static struct midr_range trbe_write_out_of_range_cpus[] = {
- #ifdef CONFIG_ARM64_ERRATUM_2253138
- 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
-+	MIDR_ALL_VERSIONS(MIDR_MICROSOFT_AZURE_COBALT_100),
- #endif
- #ifdef CONFIG_ARM64_ERRATUM_2224489
- 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
+-	if (hdr.size < sizeof(hdr)) {
++	if (hdr.size < sizeof(hdr) || hdr.size > SOF_IPC_MSG_MAX_SIZE) {
+ 		dev_err(sdev->dev, "The received message size is invalid\n");
+ 		return;
+ 	}
 
 
