@@ -1,159 +1,128 @@
-Return-Path: <stable+bounces-20742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A4BB85AC86
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 20:55:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF09B85ACCD
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 21:11:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26E76286753
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:55:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BAAB3B22FED
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 20:11:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DA9A51C2B;
-	Mon, 19 Feb 2024 19:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A348351037;
+	Mon, 19 Feb 2024 20:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="irBcg8XW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lMGug0Hz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 572E047F7D;
-	Mon, 19 Feb 2024 19:54:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D676D2C18E;
+	Mon, 19 Feb 2024 20:11:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708372469; cv=none; b=T8T2FIY6LZWGfvPMMjAA5S5cWZqRYwr5PxGYidGD4XUDv9Q7eSehID/wj7JD3hs+tGtu23//gIq8jKZCrWv2/oXU+cKqSc0mjNbxdnrLhxSg3IYRzEPGqDtpE3rHgbJHUJizZUQ79UYlyPMdSV9l/Ma4ZK/IwUqFtK/hYpn7ZU0=
+	t=1708373489; cv=none; b=VgbNDgzgSvRgUPyVc+6GRjeToBGdx+OHEYMKad5Lw9Nwqsb/zsewmFbeGEpjvcvX9fzbl5bfgM8ugjDQbpMy94yYic7CN325gYk82ty2IMNKKgiF97OLlv0Ybod4SnzFBcu05cDNRQ8CWTwhP3gJatJVyO9Zo1sMH4tQYBsxrGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708372469; c=relaxed/simple;
-	bh=ahdS3Zn+QIu0uhv09EiJ8/j1ihnNP5swBR9x0i0/BHw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fa+mExaJt3VEbBwxO9VGDRr4AyLPHaWr8exYEAkHLBXZyZaQVuEDlG0i9EBb0/QTYE0yw76jtKLKV512Vu3HQIHIlFF/Ex9vxi9oltp2O2jZLNavkPpe3utmgO+8Bw8HERf3K4aNyE0AdI8YIBBnLRHT95KRaMraxkw503VoYCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=irBcg8XW; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+	s=arc-20240116; t=1708373489; c=relaxed/simple;
+	bh=UPuL2QESr83aEWzdYjyYKl86iEbA72Vji5sZ/hiS5qY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=b7LLUZC54kkyr1sov11TitJTEAOFibnSgiLqA00/LWGaYqq82T9cVJlMTBoxaGHwaZDp/MYR9tVv62wUS5ZICf6VqX+j2jTgoSo1TssX/X0nYKYxaDqqjwzvKdt3lhuPt6qbo5Oa+JAT+EuIiFG2Ssiwoc8RtQbPXvWbmmerLOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lMGug0Hz; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-561587ce966so9570508a12.1;
-        Mon, 19 Feb 2024 11:54:27 -0800 (PST)
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-563d56ee65cso4294242a12.2;
+        Mon, 19 Feb 2024 12:11:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708372466; x=1708977266; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YPYlqKudaClcKbNFamdeE7+QrC6+8XojTMUekGJ9pw4=;
-        b=irBcg8XW029KjWz2g+AR3OYWDTZzbxfWmVqydfZt5f7oMVLjHwsQFF0Piz1PpLps92
-         eGMXUq2wEy3gDkDoaVtp18EvlvfHPydaWTKTYg4Q8VvdxhjAdtw02GVoiFTdbTLECak1
-         U8fQb21g2Oqug5CkaczFR4PhsZM7YKldEZjyxFiUrIkFQNNGVglzPVe6Cw8hyuIvCecK
-         iHnxBSM5W8oHssG+1EtcbUlHgjyW6hSWifN5H93YD6UZOw3PcfCN8ltrPDHk9zibOyev
-         HWu3OEE/RZyUJqlm4LgWxQpTV1gcKNWDv9zfTs96+IQ3NC7C0ob0b8t0bCuPB3Jggeu3
-         oTtA==
+        d=gmail.com; s=20230601; t=1708373486; x=1708978286; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=t7gdCVLWEkFBnciuG4iD/OFCGUG6GObGE+T3szY+0f0=;
+        b=lMGug0HzhLPLm0sm8/v566CWc/7ZG00sbgeYtYBAKsl2zYWgE6cS0ZpTDnyQux5IeW
+         j9/cWIEYFG/u+XMJ++EZHRUBEiz2pjmgMAmJEJR3CJOxANrm1Dwa5iAnLICOKBtZfFLX
+         7/rGz2Bqg1UNq57FJxtnU8l9dILSBuD68E0fYbMOkzpuyw3RPQuKk03JTJ9CHmmTtlWa
+         tDjDmOEzyiquY5aljJIlsWXv13sxDWyrocrdq+Hk1wzHqTM48veO/4+K8UH3HYE96sTf
+         pjKze5ngH6/ajHLRpvmPkmYiBmHVXNh9DGvL4k+7Ub7imOkEdacrb56kWP/R5fvPgMi0
+         V4uA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708372466; x=1708977266;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1708373486; x=1708978286;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=YPYlqKudaClcKbNFamdeE7+QrC6+8XojTMUekGJ9pw4=;
-        b=qbAPXJ0mgAwzV4XJED1g8WDqf5BXH7pnqarIFR5u40QkkC1Oc6kD0Y6HEynGaVI+qD
-         n+fUw1VUfJ2UyS87m+eh0SmF78p8VB0XcJ94cV8TLUHZPO6oCm9rGE3zqBbHb/sLeTBB
-         hxBZTe3gIhZ6ZKlxr261blihqlh4jlLtrnsE3zix3GATD8kfBDPNuNQgXVSQLbqHb24b
-         i2kyamD+L1Ink09I9rBu+pIJ8rM4BkZIGro9HhoAaQO5kV3e6WNOKUrZrBuLKrATl7IL
-         ff5RgDMzjA+JMeOt19jNHfW1GkGvpxrJdaOk3sKu4rArKLZDTjCXKFfAzqp7DRFM71vN
-         FUFA==
-X-Forwarded-Encrypted: i=1; AJvYcCU/ANNcwSWC4eQv13V7rajucpjh79t22YpDbfjVf0FI9KqoiDV6T/LxzDLdyf7CgZW3ERMLMPH2KNYwvqApLfsq1xgM43KeKAlZH6JmYYmqFuuEJUxNwBfaOruaw4/V4ft8EMCU
-X-Gm-Message-State: AOJu0YwHZyAjyrfZywAJgnZCtqeHENAS7X4M4L+ILWPazSb7AbTjlE95
-	Wx8T9a6Fa4kdzC5ecfhyOf6UBpUPN0W4NwdAtUAkYmaQEb595BsUNCR3zTZjCvY=
-X-Google-Smtp-Source: AGHT+IGy17EHv3w5kRGCvBk4IxezGA5nNXlG3sjHaPpclSP5gUQDDuET4mul61ghYdEBQQf2Q15JQQ==
-X-Received: by 2002:a05:6402:5207:b0:564:4211:faa3 with SMTP id s7-20020a056402520700b005644211faa3mr5547391edd.1.1708372465382;
-        Mon, 19 Feb 2024 11:54:25 -0800 (PST)
-Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
-        by smtp.gmail.com with ESMTPSA id fi17-20020a056402551100b005612025465asm2964948edb.74.2024.02.19.11.54.24
+        bh=t7gdCVLWEkFBnciuG4iD/OFCGUG6GObGE+T3szY+0f0=;
+        b=CRsH0wrmIbAT5etyEcMH1c2Zf9SxF9ouyuVoH5T6LKOfaOWLWlYdPpMS4ngtCTKNmt
+         Y1MoUp6kKknXcMsn76Iv4tqjFmW7tICtl4HE205Let+vHc8m68QPzX1qSYXtjOPvTFl+
+         sYGRDhOo3uS1a2BcnMvncVxyJXO+SDKvl6QDVNUyzvcLVzdziqmsRwIPjVykEKOvSh65
+         TkqPrCM3eXOeTA3CtrB18rYj2XLcCBRJSOssLwdU/sMxSOlDdKATp6mC5e6HlKdGi2dN
+         EA28+SbCCyr9xYs8MXS0wv9oCOMz9lJbxAZ/DEi8ETwvWAEB60eZnSs5eoe7TxmkUtZL
+         H/5A==
+X-Forwarded-Encrypted: i=1; AJvYcCUcwoECHASUsP8WKCyx1fXbr/ofPIokN1gqgLS73V/QOCLHqTNiHJC+jicLJzsmCeAy/WqBsnBqwJ/BB5BNwjXS5HnV7cqzgG9w3uwkBv5h4+R66Gq36A1OgI2dp/YH4mFk
+X-Gm-Message-State: AOJu0Yw9LysXPaclCsjcQpuNgqGmjHFMXlvB8B13bMRG2Y6NHVvAKhkq
+	MS68YjPmGPHoHqeqAtGboTH/68DqvSD11sgOkdReE5E5t/Z67+jZ8O8moESei9o=
+X-Google-Smtp-Source: AGHT+IE1VqWTIcjJn85XPVwAx+DtYi+mXKUMWde2gnI/dsi4C9XaRw9Y8U56hj3sGFM3CqEIYpI+9w==
+X-Received: by 2002:a17:906:d0c5:b0:a3e:b952:3571 with SMTP id bq5-20020a170906d0c500b00a3eb9523571mr1918085ejb.68.1708373485911;
+        Mon, 19 Feb 2024 12:11:25 -0800 (PST)
+Received: from desktop.gigaio.com ([46.151.20.23])
+        by smtp.gmail.com with ESMTPSA id q19-20020a170906a09300b00a3daa068f76sm3266001ejy.65.2024.02.19.12.11.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Feb 2024 11:54:24 -0800 (PST)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id EF00EBE2EE8; Mon, 19 Feb 2024 20:54:23 +0100 (CET)
-Date: Mon, 19 Feb 2024 20:54:23 +0100
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Chao Yu <chao@kernel.org>
-Cc: Dhya <dhya@picorealm.net>, 1063422@bugs.debian.org,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	linux-f2fs-devel@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	regressions@lists.linux.dev
-Subject: Re: [regression 6.1.y] f2fs: invalid zstd compress level: 6
-Message-ID: <ZdOx73kckFXADcol@eldamar.lan>
-References: <170736382774.1975.1861975122613668970.reportbug@tsuga.picorealm.net>
- <ZcU3VCrt9VOpuFUq@eldamar.lan>
- <6d14ea70-ac1c-46f2-af1d-ba34ea0165aa@kernel.org>
+        Mon, 19 Feb 2024 12:11:25 -0800 (PST)
+From: Tadeusz Struk <tstruk@gmail.com>
+X-Google-Original-From: Tadeusz Struk <tstruk@gigaio.com>
+To: Vinod Koul <vkoul@kernel.org>
+Cc: Raju Rangoju <Raju.Rangoju@amd.com>,
+	Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Sanjay R Mehta <sanju.mehta@amd.com>,
+	Eric Pilmore <epilmore@gigaio.com>,
+	dmaengine@vger.kernel.org,
+	Tadeusz Struk <tstruk@gigaio.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] dmaengine: ptdma: use consistent DMA masks
+Date: Mon, 19 Feb 2024 21:10:39 +0100
+Message-ID: <20240219201039.40379-1-tstruk@gigaio.com>
+X-Mailer: git-send-email 2.43.2
+In-Reply-To: <6a447bd4-f6f1-fc1f-9a0d-2810357fb1b5@amd.com>
+References: <6a447bd4-f6f1-fc1f-9a0d-2810357fb1b5@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6d14ea70-ac1c-46f2-af1d-ba34ea0165aa@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-Hi,
+The PTDMA driver sets DMA masks in two different places for the same
+device inconsistently. First call is in pt_pci_probe(), where it uses
+48bit mask. The second call is in pt_dmaengine_register(), where it
+uses a 64bit mask. Using 64bit dma mask causes IO_PAGE_FAULT errors
+on DMA transfers between main memory and other devices.
+Without the extra call it works fine. Additionally the second call
+doesn't check the return value so it can silently fail.
+Remove the superfluous dma_set_mask() call and only use 48bit mask.
 
-On Mon, Feb 19, 2024 at 10:35:13AM +0800, Chao Yu wrote:
-> On 2024/2/9 4:19, Salvatore Bonaccorso wrote:
-> > Hi Jaegeuk Kim, Chao Yu,
-> > 
-> > In Debian the following regression was reported after a Dhya updated
-> > to 6.1.76:
-> > 
-> > On Wed, Feb 07, 2024 at 10:43:47PM -0500, Dhya wrote:
-> > > Package: src:linux
-> > > Version: 6.1.76-1
-> > > Severity: critical
-> > > Justification: breaks the whole system
-> > > 
-> > > Dear Maintainer,
-> > > 
-> > > After upgrade to linux-image-6.1.0-18-amd64 6.1.76-1 F2FS filesystem
-> > > fails to mount rw.  Message in the boot journal:
-> > > 
-> > >    kernel: F2FS-fs (nvme0n1p6): invalid zstd compress level: 6
-> > > 
-> > > There was recently an f2fs patch to the 6.1 kernel tree which might be
-> > > related: https://www.spinics.net/lists/stable-commits/msg329957.html
-> > > 
-> > > Was able to recover the system by doing:
-> > > 
-> > > sudo mount -o remount,rw,relatime,lazytime,background_gc=on,discard,no_heap,user_xattr,inline_xattr,acl,inline_data,inline_dentry,extent_cache,mode=adaptive,active_logs=6,alloc_mode=default,checkpoint_merge,fsync_mode=posix,compress_algorithm=lz4,compress_log_size=2,compress_mode=fs,atgc,discard_unit=block,memory=normal /dev/nvme0n1p6 /
-> > > 
-> > > under the running bad 6.1.0-18-amd64 kernel, then editing
-> > > /etc/default/grub:
-> > > 
-> > >    GRUB_DEFAULT="Advanced options for Debian GNU/Linux>Debian GNU/Linux, with Linux 6.1.0-17-amd64"
-> > > 
-> > > and running 'update-grub' and rebooting to boot the 6.1.0-17-amd64
-> > > kernel.
-> > 
-> > The issue is easily reproducible by:
-> > 
-> > # dd if=/dev/zero of=test.img count=100 bs=1M
-> > # mkfs.f2fs -f -O compression,extra_attr ./test.img
-> > # mount -t f2fs -o compress_algorithm=zstd:6,compress_chksum,atgc,gc_merge,lazytime ./test.img /mnt
-> > 
-> > resulting in
-> > 
-> > [   60.789982] F2FS-fs (loop0): invalid zstd compress level: 6
-> 
-> Hi Salvatore,
-> 
-> Can you please try below fixes:
-> 
-> [PATCH 6.1] f2fs: add helper to check compression level
-> https://lore.kernel.org/linux-f2fs-devel/20240212160530.1017205-1-chao@kernel.org
+Cc: stable@vger.kernel.org
+Fixes: b0b4a6b10577 ("dmaengine: ptdma: register PTDMA controller as a DMA resource")
 
-Confirmed that this fixes the reported issue as it was reported to us
-in Debian in https://bugs.debian.org/1063422 . Thanks a lot!
-(note just tested with the first commit as it landed in 6.1.78 to
-confirm the immediate regression).
+Signed-off-by: Tadeusz Struk <tstruk@gigaio.com>
+---
+ drivers/dma/ptdma/ptdma-dmaengine.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-#regzbot fixed-by: cf3d57ad6ff8b566deba3544b9ad3384781fb604
+diff --git a/drivers/dma/ptdma/ptdma-dmaengine.c b/drivers/dma/ptdma/ptdma-dmaengine.c
+index 1aa65e5de0f3..f79240734807 100644
+--- a/drivers/dma/ptdma/ptdma-dmaengine.c
++++ b/drivers/dma/ptdma/ptdma-dmaengine.c
+@@ -385,8 +385,6 @@ int pt_dmaengine_register(struct pt_device *pt)
+ 	chan->vc.desc_free = pt_do_cleanup;
+ 	vchan_init(&chan->vc, dma_dev);
+ 
+-	dma_set_mask_and_coherent(pt->dev, DMA_BIT_MASK(64));
+-
+ 	ret = dma_async_device_register(dma_dev);
+ 	if (ret)
+ 		goto err_reg;
+-- 
+2.43.2
 
-Regards,
-Salvatore
 
