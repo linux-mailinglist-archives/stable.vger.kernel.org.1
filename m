@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-20553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB69B85A80E
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 17:02:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F37EF85A812
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 17:03:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 63244B2570B
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 16:02:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 84283B2109F
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 16:03:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D740338F98;
-	Mon, 19 Feb 2024 16:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13A343A29A;
+	Mon, 19 Feb 2024 16:03:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iWH9dCWe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ExfG7PZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92A2B3D55C
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 16:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68433A267
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 16:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708358507; cv=none; b=AxYV4GwACl0qowLrKApZ6E27A8NO0mkHdzwzBOFGZDwpSEyjl+eKe5sEHgqipdcTVxvtplr3Vy+P51CDEHVnNqPUDzRNCNd90TmWaxXLwd7Cphqro3dAGH7MRDRVnxsFLb2LBCrUWPhisVWmPHzMSpjiSGWBgSvMB50Bvi+c0Fw=
+	t=1708358599; cv=none; b=VOYIwIG15q7fvTZZ7w0yFNFY/s/lf23J1cbZFYZIf0chPQ1rkPL83I2sYXf3J1t3e5//nm1TR9toPYyKe8w9S6VDNBuwHWgrl9qzyeafrQ0BhjAUKwQtjYF3lN7U+TcD66rEuuHAqNgxq46kexrEQCuyLbKmgKcGhSW9LtTtmlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708358507; c=relaxed/simple;
-	bh=58N0F71vhgHE3OCFz0s6fw6OfHohZl/d6SWmBSvL1+k=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RvbL2Bb598hjZsvyyHcWMt8De5uLhswawoNDTHY7/X4kvxovNvtInlznNSFXfTgQJA6HJJyx5u8ZnlbWvVRMg/Kl/q6Mrf6OQu755xKCh9fiAzdrDkyKTePmSEslZjiVwPifQfh6AIpuj5//bOhj91dHCvfG9wZNrCcEbTMOTTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iWH9dCWe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95080C433C7;
-	Mon, 19 Feb 2024 16:01:46 +0000 (UTC)
+	s=arc-20240116; t=1708358599; c=relaxed/simple;
+	bh=4nhWxMDcUxLMoj3CDGhPsVIQHMJrWf2aWrLC1kdahPg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=SjchGA9PexwEN1ZdED3uJOpO12nzks+Oh52Vr1FyIZkx8nyLNwyKj+zy2IZSfboh+t/JDSrzmjmtR8a2n0g9nCBfQGFhJXQSnMz+vGqHCD2qt8dCw//qnnsEQNNn1rBqunKxbNgY64S2OqOVjDh2FksHDgqzatnafM733E4vYwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ExfG7PZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06410C433C7;
+	Mon, 19 Feb 2024 16:03:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708358507;
-	bh=58N0F71vhgHE3OCFz0s6fw6OfHohZl/d6SWmBSvL1+k=;
+	s=korg; t=1708358599;
+	bh=4nhWxMDcUxLMoj3CDGhPsVIQHMJrWf2aWrLC1kdahPg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=iWH9dCWeXXKpEjUnYzsVYYozVxRQreEribRvvle0Ta7XWQXFyBlWWRuq5MQCWuxHt
-	 h3rDpjTBXkaM2luzwIpvli4Tc972X90qS4Lsu6zXLJMeQLDiVsKaaE5sYOknF+Z/Dt
-	 sd2pImgyXS46cn9thVHZ/tq/ho31B2whiejci85A=
-Subject: FAILED: patch "[PATCH] selftests: mptcp: add missing kconfig for NF Filter in v6" failed to apply to 5.15-stable tree
+	b=0ExfG7PZG52ODi7zR13UbioUhVlx406V1CHuFu27KqOQdmbdku0w6yxLfj38MySP9
+	 iDz8MXYoge9Gbmd1t/8vPv25np7DGKhRyRaYsOmh3tIfs5fgqlQkkSpkdXPzkVb8fQ
+	 lHEMDkmjAv+hcHpouYHO0enxTWV1LzUTJN1ss1Q4=
+Subject: FAILED: patch "[PATCH] selftests: mptcp: join: stop transfer when check is done" failed to apply to 6.7-stable tree
 To: matttbe@kernel.org,geliang@kernel.org,kuba@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Feb 2024 17:01:43 +0100
-Message-ID: <2024021943-wriggle-repair-49dd@gregkh>
+Date: Mon, 19 Feb 2024 17:03:16 +0100
+Message-ID: <2024021916-striking-evoke-4847@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.7-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.7.y
 git checkout FETCH_HEAD
-git cherry-pick -x 8c86fad2cecdc6bf7283ecd298b4d0555bd8b8aa
+git cherry-pick -x 31ee4ad86afd6ed6f4bb1b38c43011216080c42a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021943-wriggle-repair-49dd@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021916-striking-evoke-4847@gregkh' --subject-prefix 'PATCH 6.7.y' HEAD^..
 
 Possible dependencies:
 
-8c86fad2cecd ("selftests: mptcp: add missing kconfig for NF Filter in v6")
-b6e074e171bc ("selftests: mptcp: add infinite map testcase")
-39aab88242a8 ("selftests: mptcp: join: list failure at the end")
-c7d49c033de0 ("selftests: mptcp: join: alt. to exec specific tests")
-ae7bd9ccecc3 ("selftests: mptcp: join: option to execute specific tests")
-e59300ce3ff8 ("selftests: mptcp: join: reset failing links")
-3afd0280e7d3 ("selftests: mptcp: join: define tests groups once")
-3c082695e78b ("selftests: mptcp: drop msg argument of chk_csum_nr")
-69c6ce7b6eca ("selftests: mptcp: add implicit endpoint test case")
-d045b9eb95a9 ("mptcp: introduce implicit endpoints")
-6fa0174a7c86 ("mptcp: more careful RM_ADDR generation")
-f98c2bca7b2b ("selftests: mptcp: Rename wait function")
-826d7bdca833 ("selftests: mptcp: join: allow running -cCi")
-7d9bf018f907 ("selftests: mptcp: update output info of chk_rm_nr")
-26516e10c433 ("selftests: mptcp: add more arguments for chk_join_nr")
-8117dac3e7c3 ("selftests: mptcp: add invert check in check_transfer")
-01542c9bf9ab ("selftests: mptcp: add fastclose testcase")
-cbfafac4cf8f ("selftests: mptcp: add extra_args in do_transfer")
-922fd2b39e5a ("selftests: mptcp: add the MP_RST mibs check")
-e8e947ef50f6 ("selftests: mptcp: add the MP_FASTCLOSE mibs check")
+31ee4ad86afd ("selftests: mptcp: join: stop transfer when check is done (part 1)")
+80775412882e ("selftests: mptcp: add chk_subflows_total helper")
 
 thanks,
 
@@ -96,38 +78,53 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 8c86fad2cecdc6bf7283ecd298b4d0555bd8b8aa Mon Sep 17 00:00:00 2001
+From 31ee4ad86afd6ed6f4bb1b38c43011216080c42a Mon Sep 17 00:00:00 2001
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Wed, 31 Jan 2024 22:49:48 +0100
-Subject: [PATCH] selftests: mptcp: add missing kconfig for NF Filter in v6
+Date: Wed, 31 Jan 2024 22:49:53 +0100
+Subject: [PATCH] selftests: mptcp: join: stop transfer when check is done
+ (part 1)
 
-Since the commit mentioned below, 'mptcp_join' selftests is using
-IPTables to add rules to the Filter table for IPv6.
+Since the "Fixes" commit mentioned below, "userspace pm" subtests of
+mptcp_join selftests introduced in v6.5 are launching the whole transfer
+in the background, do the required checks, then wait for the end of
+transfer.
 
-It is then required to have IP6_NF_FILTER KConfig.
+There is no need to wait longer, especially because the checks at the
+end of the transfer are ignored (which is fine). This saves quite a few
+seconds in slow environments.
 
-This KConfig is usually enabled by default in many defconfig, but we
-recently noticed that some CI were running our selftests without them
-enabled.
+Note that old versions will need commit bdbef0a6ff10 ("selftests: mptcp:
+add mptcp_lib_kill_wait") as well to get 'mptcp_lib_kill_wait()' helper.
 
-Fixes: 523514ed0a99 ("selftests: mptcp: add ADD_ADDR IPv6 test cases")
-Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
+Fixes: 4369c198e599 ("selftests: mptcp: test userspace pm out of transfer")
+Cc: stable@vger.kernel.org # 6.5.x: bdbef0a6ff10: selftests: mptcp: add mptcp_lib_kill_wait
+Cc: stable@vger.kernel.org # 6.5.x
+Reviewed-and-tested-by: Geliang Tang <geliang@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240131-upstream-net-20240131-mptcp-ci-issues-v1-3-4c1c11e571ff@kernel.org
+Link: https://lore.kernel.org/r/20240131-upstream-net-20240131-mptcp-ci-issues-v1-8-4c1c11e571ff@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-diff --git a/tools/testing/selftests/net/mptcp/config b/tools/testing/selftests/net/mptcp/config
-index 2a00bf4acdfa..26fe466f803d 100644
---- a/tools/testing/selftests/net/mptcp/config
-+++ b/tools/testing/selftests/net/mptcp/config
-@@ -25,6 +25,7 @@ CONFIG_IP_MULTIPLE_TABLES=y
- CONFIG_IP_NF_FILTER=m
- CONFIG_IP_NF_TARGET_REJECT=m
- CONFIG_IPV6_MULTIPLE_TABLES=y
-+CONFIG_IP6_NF_FILTER=m
- CONFIG_NET_ACT_CSUM=m
- CONFIG_NET_ACT_PEDIT=m
- CONFIG_NET_CLS_ACT=y
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+index 3a5b63026191..85bcc95f4ede 100755
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3453,7 +3453,7 @@ userspace_tests()
+ 		chk_mptcp_info subflows 0 subflows 0
+ 		chk_subflows_total 1 1
+ 		kill_events_pids
+-		wait $tests_pid
++		mptcp_lib_kill_wait $tests_pid
+ 	fi
+ 
+ 	# userspace pm create destroy subflow
+@@ -3475,7 +3475,7 @@ userspace_tests()
+ 		chk_mptcp_info subflows 0 subflows 0
+ 		chk_subflows_total 1 1
+ 		kill_events_pids
+-		wait $tests_pid
++		mptcp_lib_kill_wait $tests_pid
+ 	fi
+ 
+ 	# userspace pm create id 0 subflow
 
 
