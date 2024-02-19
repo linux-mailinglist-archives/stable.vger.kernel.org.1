@@ -1,169 +1,359 @@
-Return-Path: <stable+bounces-20489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EDC5859CC4
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 08:24:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84FE2859CDC
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 08:30:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44CF8282A14
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 07:24:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9FD91C21ADE
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 07:30:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 811B1208C6;
-	Mon, 19 Feb 2024 07:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF8818F5A;
+	Mon, 19 Feb 2024 07:29:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Fefuimac"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VbAwplfO"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2073.outbound.protection.outlook.com [40.107.94.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A4920334
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 07:24:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.73
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708327465; cv=fail; b=OlnxNQ2ptyOHQgjehVri9a7Z4GzrZGxUaZPtUxV17F1/s/fWzDZQohPNhzB/w55E82BcP7euES5RvMSLPf8W2+HGorlTre8CzUiQldNFqhXX+dJgzLaC1+gyIodQ48TvVPXkHsUES4s9SC/pILyT5WBNOb+OjW5Z4fXGH3NfOKY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708327465; c=relaxed/simple;
-	bh=CFCq6DSDkWDvVidQxhmHFSnOmWhaBtr4jVf8Er/wE/w=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Hplv1ZvVJruCWHoZl63MT4+v8NugZPoLTtc32NUMmBkW5YMddtLiLXdY6a59ca9gfazNhfDdvKYR4Uo5P86qA0Xo8T07ivDMh0tKQSD1eZvtFtwyPc/utX2FRHGsabuMJOMkPWlxr7eYwxg7kNQGLVPdhVFI9t+Ba84ydeD6OaQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Fefuimac; arc=fail smtp.client-ip=40.107.94.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=cOrBT8ttgunp+rb7sba04LL0u9KpdZOcM7OgnYAXGe7FhZPhQBOtV/xlk2aydohVZwFtGCC52gopZwaKsuUdMAJ4pbN275hD1OLFZEFEdFuiVMoyPoJPVaJpuEPI3+Fg2UomBP0I3BFN/vFaMXe0CSNajNAeEn251z5/tv0wbD9bLRXZyLE5SSgBnOtawlFZpHpXvnICPBv95yEqervF6bXcwEZJCKCLuKmC89YnUvp7GayKxyAZwqKDTj3KjQImd9K4EcV8bXnlZI4Sz8VdKVUgiYH9Ue48sTjep3NJTS5DqdIrux8K9XH3864EUVQxco5sGfNy+IEMKspUdZbEjw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CFCq6DSDkWDvVidQxhmHFSnOmWhaBtr4jVf8Er/wE/w=;
- b=K77fssngIlQaK/PvC2F12/4Sae4FiYSi7t+8wDXR7RSaHqb1OZ0DAoCcFRA/g6FWy8XMWG4R/mdblIqq0DScSG9UxuSbzyhsySTAnH9mrHD5lM9NLZ5OilD/XY1/cAbTyBlZLS+32EYqMimPJ3X/7Lt2e6G4vylXpa9rdZxkzuhJSJSGwQBMimdoHcEszfa3Kt7tHa9QsoJXRg3dqyMjwb8A2C4QFmGfngOlxkg/642BzILOncSZSQdqta7u9p2Ounx2H/jrTt75gHqb1uHcbfuMOYWTC2AhfcDVyK/tulU8a13rO3fuBFvyfETTfmqc2xWCmFtocKOwMubgiJgImg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CFCq6DSDkWDvVidQxhmHFSnOmWhaBtr4jVf8Er/wE/w=;
- b=FefuimacQGMvMkUBWXhZnWcKCmCIYNtW9wVlOJWAcd3UYk82hLGf/+LJO5Zx1sSS77s/qGk46+bH3Sh9+P39MtPAEvO/9OKVALsEFgI5QLQn2yacE7rdMKzusnDACoGC3/R5yQ3JLLdshTgK8XGTZNpxJjcMbohPrVNra8YBx9Y=
-Received: from CO6PR12MB5489.namprd12.prod.outlook.com (2603:10b6:303:139::18)
- by SA1PR12MB7318.namprd12.prod.outlook.com (2603:10b6:806:2b3::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.17; Mon, 19 Feb
- 2024 07:24:21 +0000
-Received: from CO6PR12MB5489.namprd12.prod.outlook.com
- ([fe80::7a06:2a38:4667:d5a7]) by CO6PR12MB5489.namprd12.prod.outlook.com
- ([fe80::7a06:2a38:4667:d5a7%4]) with mapi id 15.20.7316.016; Mon, 19 Feb 2024
- 07:24:21 +0000
-From: "Lin, Wayne" <Wayne.Lin@amd.com>
-To: =?iso-8859-1?Q?Leon_Wei=DF?= <leon.weiss@ruhr-uni-bochum.de>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-CC: "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
-	"lyude@redhat.com" <lyude@redhat.com>
-Subject: Re: [REGRESSION] NULL pointer dereference drm_dp_add_payload_part2
-Thread-Topic: [REGRESSION] NULL pointer dereference drm_dp_add_payload_part2
-Thread-Index: AQHaWaIV/cd6X4DkAkCWcz17/q/UZ7ERVUXP
-Date: Mon, 19 Feb 2024 07:24:21 +0000
-Message-ID:
- <CO6PR12MB548918C8F66468B947A06885FC512@CO6PR12MB5489.namprd12.prod.outlook.com>
-References:
- <38c253ea42072cc825dc969ac4e6b9b600371cc8.camel@ruhr-uni-bochum.de>
-In-Reply-To:
- <38c253ea42072cc825dc969ac4e6b9b600371cc8.camel@ruhr-uni-bochum.de>
-Accept-Language: en-US, zh-TW
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_Enabled=True;MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_SetDate=2024-02-19T07:24:20.550Z;MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_Name=Public;MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_ContentBits=0;MSIP_Label_d4243a53-6221-4f75-8154-e4b33a5707a1_Method=Privileged;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CO6PR12MB5489:EE_|SA1PR12MB7318:EE_
-x-ms-office365-filtering-correlation-id: 39b580af-6d5e-4d08-5f69-08dc311bca7a
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- PBS5jWmjaESTxbuFsrFNhncUYAThFtuI53hxno9SA7ZHHMsv9f1VGG3hB14ehyG/3WU+MVBLrYzYOiDbnBrS/xfW4sKmDThRTv1TYt1+/MQd8em7NJzDthPVSeNWkXmAIjkpdc4SXAi8Pwl98o0xu8R0xTO50DpJAyF51TBZvEPnAzQ5bHgPo79cjJygzQeESrdcPUyG/bc9462IaZ7m0TUaJCZLD4LvZlwFd8mmnWY0X6VDIQc+jgmPVjs7KwlY4AkaVubgUDLn4pc4aX6mmeNLLawbdLKfGWaJZMrQfrQspLQMRDgpgM4TPsDEv66M2O5GrHZroeZoMwdsO6gLrMr5xeOMNVWsICwhs+Fvj4U7WOmIQk1I+z6uXsMHlD7IRNiECTfUkYcMX6LNLDIBcoBcWuMdDovVEO+/kj3hfNL39gVNHnqSzIq2qz7wJsAbwrPGnCCqXxq5gocz4SWw9HhqrPW0NN7hShsNuja8qyWog88sHKXKQtjJ7bJnvhAxWcMhuD6qzNkQDfUE3GKq1IHXIth7oe5a0f5KS4Gy3oFNU47VegWfMwabhIiK4gzMy5XK/nJ6cLYGiJufRk6jqV9uH6e48h89nbKXYC19x8E16hw8v+Cfolf85BwSjuk1
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO6PR12MB5489.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(376002)(396003)(136003)(346002)(39860400002)(230922051799003)(186009)(64100799003)(1800799012)(451199024)(110136005)(316002)(71200400001)(54906003)(55016003)(4744005)(5660300002)(2906002)(8676002)(4326008)(8936002)(86362001)(6506007)(53546011)(7696005)(66556008)(9686003)(64756008)(66446008)(66476007)(52536014)(76116006)(66946007)(91956017)(478600001)(38070700009)(26005)(41300700001)(122000001)(38100700002)(33656002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?AnvcthlPReNyPIJ095a3l0wWC9IsWsidm6VsbJ5zCNCZebFarAuN62zUC6?=
- =?iso-8859-1?Q?i9ar8rn8te4d+1SSs8wRDJyHiP6wwB29fAvL5j1/O1WJoeXLilFxiRxJ5l?=
- =?iso-8859-1?Q?EEEQM/uInjJzuGQuMS8u3wsOZhu3/RHZqNC8/YFvEfgoJgB0qSpLaobjK1?=
- =?iso-8859-1?Q?m0z+YQxqQcjyuAh3KlxpauMgEuXYkfsAtyLQ6cLZnH1YnnoQ3N1C58b9Mw?=
- =?iso-8859-1?Q?61vJuqo+GGYFG5OJj8JE+bsBQOR+RTUqFTMK/9vHPHEl8dSOzpxDsIGAxu?=
- =?iso-8859-1?Q?XLkrSisvVBUp3hIUIB3aJIz+SE6kUIuvgSIlGGzzDAsf8G/U9bMiniQfl0?=
- =?iso-8859-1?Q?ne/FsritRFfdN0BJVRLJZ6n8dGOaFuHLu2m8XAHkqMDSRSC3I0OxfnGZMF?=
- =?iso-8859-1?Q?8vAsincNnErdB6bQRiTlFzQgnC5/Qbd/JUzjP8okac5NzUWxkjS47KYBps?=
- =?iso-8859-1?Q?BYEcVkPa+HlntqzG1iddjZa6djCoRoth5/U/OIAVNX0LEjRARwJ2rGfROi?=
- =?iso-8859-1?Q?wmQgTs04AcDl6H4MgwANq5xFA8yG60eSc7Jr11p+Coe2ydy9h5ijxC5ciW?=
- =?iso-8859-1?Q?fEyPIDV5Y4r4Vi4y9qU1C47JQkvJZ3Tl6TSWXJCnRBQ+F9xWp1mNgv97IG?=
- =?iso-8859-1?Q?dD94DjAEWCfRTHbCODE0PL0hzg4ybTkKnGxx6Pssxcr9XYWDUyHZL7IYSE?=
- =?iso-8859-1?Q?Eug+7OzR2/F1/DkY9lrEC7co0mvxShqQ+L99daoV3U0sCSicQdUA6y1btc?=
- =?iso-8859-1?Q?DOYG2Q67StwWTjx1/btC2u3p7nxDaga1/vZWU5eMpmJ/q+lkbwPrGapNlk?=
- =?iso-8859-1?Q?Xqi17JsDOqdJTE1rHc3MX1ueEnReKYmcp5U2f5E8Kt3tVuIT2sQq9dQoew?=
- =?iso-8859-1?Q?0IKGzJdWwTm84NlRtlfEJPyCZjCpaqO7vZivCGO5ajrClk9LK/lyqp28Kg?=
- =?iso-8859-1?Q?1/Kjekkcqzqh6CyuiOgluXZ10Ow6LyTL5zP1tmP6HsqIq8mjRCrcGG9urA?=
- =?iso-8859-1?Q?7XxAU2ErVIb+T4lJyyyJ5Ppknbb0GaoctOHWr+jNLTS62gf1XwlGuZIn14?=
- =?iso-8859-1?Q?xzbpHfHpK7u51E76y5KyYymH3HNCDm1nKoQL02Uh5SmUKBm0Pl/eivON0i?=
- =?iso-8859-1?Q?2ZU60lFTb9xAuBT/4rDQkV8aYIo84vxbW2RcgTem9mcd+ACXQMz39NWBCP?=
- =?iso-8859-1?Q?6MfKPUsvtFxfsCCXRFXF/L25se4arf8hFTP7F+uJvlRNsShfj76FK9BNMW?=
- =?iso-8859-1?Q?V0kaHdnlUwCLh9tX5WmdW5qVpjGJI2lnGx+xOfn3cmghHdJkKCTHfCAeZy?=
- =?iso-8859-1?Q?jpZCJeRunU7pr8zrCeLYRDA7NzXzPoBGfv5ABeIHWchOpLeDMf+FIHcuOx?=
- =?iso-8859-1?Q?V/OFhMLsG7PSLqKnjCUkNHpxlSmDf16cZTXLyhY1TVWmmD1WXOQ/ehjVrx?=
- =?iso-8859-1?Q?+RTV4zXRIp+xGqmU85IHH8AScLN2vczP1+7XMTTjW6GLC7/fzqhP/Hpge8?=
- =?iso-8859-1?Q?bu1s8uuLt3VumJJN6l7OCD4ly51K/VMFDHVTXnCexa3yYN63L9rkpi3uSt?=
- =?iso-8859-1?Q?w2+xL/fCf1VZnOti/CnXRHi3VSl8PbGayzhWgnRyhzBYRnNopO0hKmuBYV?=
- =?iso-8859-1?Q?dwspWqyZIdWLU=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD15820DCB;
+	Mon, 19 Feb 2024 07:29:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708327792; cv=none; b=M1ZSTPSBU2rQBWRGPTyVXbFgy5eTwDgLfczo3fj/H26UgUf0As9qwgR+iu6D4B39RE+RKpx7kBPEYlOjo7//WXjJzQsPLYRdrNP52GkS+/8zSCpenMjkuHRV64wH0nnPKEIMmEMRbyYiB9T5CyskSgsYgeNET44/UT7cA5hmEkk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708327792; c=relaxed/simple;
+	bh=CcguIBEyUZfrIQCJT2cSGh1qgMmycC5HEpnODrXHg5M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lDvlcIRqh33kjwn47MNOROT8jYoqs3ktM/eUU2fEm0iJ7syKwf+EhXooyF7Sr2rnUFjEqF5Io92B2tWE7vKf2PEYXKJybLTy1wsFDQrPgzy0aPoyGUgpNo1nvugT87qsDdn2UPetlv78kzKnmTb0ayK2p1UW7LdvrVyqeu/ME1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VbAwplfO; arc=none smtp.client-ip=209.85.208.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2d220e39907so32529101fa.1;
+        Sun, 18 Feb 2024 23:29:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708327789; x=1708932589; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=X4jRpIVVFkwHJggu+vIwvnZ/bia4Q4PW4RNzbM25CuI=;
+        b=VbAwplfO33T0wYoNpUjH299iTjwDQrfkTUHJqm8I6ust79mIXHPzdD937s1XDnpJLV
+         9UZRfGF8yhV17v+G3a4i8Tod3eNfBEj9ZGaCBM1F6H9FXS8hQPeyl4UwnWcXImw3tRQg
+         Vx5Y/UXnmsXWrQtfdDTNE0RrP+LhFec5D6TeiLwU+O1sMNeFsi3LN2BoDELqVVa4QuwP
+         SlVExVhwJ592Cp6DZnJbD6jOkurxCn+RNfTZ5+skeZnz+6g9NAaU/bJH4lggSzilN+UL
+         EAZK732jeYPLnaA/AZTuCQY+DsUnQaGzj4Rfh1GmcN6Z9y08/64kRSCm5bhB1vF9//Ed
+         afGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708327789; x=1708932589;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=X4jRpIVVFkwHJggu+vIwvnZ/bia4Q4PW4RNzbM25CuI=;
+        b=gmhA1ImytX4h7+lpTjeE3tJQqg/kPRMjFli/6xdX+Nq9mDj0uiyHR35LshfPR8upSq
+         SPyqhcXuzGy3eowNeBwDhuaw0VkKBPNtyBMW5DWOPt8LIrZ7CW9zVhpozLXZyn5ch/H9
+         jQWMb+wY5FZe9LLf4YTtT+LRGiU+ThGsO6uJQTfSM3VjR9nRlnpi05l35IPusY+dYTzs
+         BDQuR6XB0mAw7I62SdW2LDiVzBH/fOnTL3zIotUENs9Wn2Zhp9Q1iPQXDx2OhutyvL4t
+         YO6lFa4vonXnOXhUItl+xo/xhJQKKt+Zfb8TLt87FdE7DsqNNWnQ8BvBtYyqxJNQJLNi
+         z4Ng==
+X-Forwarded-Encrypted: i=1; AJvYcCX/4Ujnszevw7TtNumGYeZSNbxB98YzMLsVij8YdK/6juZMMoWSpOeuu/hJK/q5j8Wy7rkzz3GsoSwf7ES+yHMWaJmXVmLqugm72GKxXgtlelse35S4OiZjFhGwhrDMdRi20053
+X-Gm-Message-State: AOJu0YwInLqiZarjNBsvKHKZu7dUcSWhqc/MOxlYYFdHQiNboLVeLVq6
+	00yks7kzoZ+Lb/Swkp3ybBk4ERB1Fj9m7yIJiaHQVbegLa8SVNYTmuxVHI8fv23lZWMmXd5sEHJ
+	vUHkPftaQlIcescxi6OYjrS26d8c=
+X-Google-Smtp-Source: AGHT+IEbNABZCLhbmvv2aI0SPEB1mHThVrIE6LTbEDZETMMxMcJH7KU150K/Nlpe3ibR+BNbbG2Etsnvg8qpouaTfX4=
+X-Received: by 2002:a2e:3318:0:b0:2d2:426b:455c with SMTP id
+ d24-20020a2e3318000000b002d2426b455cmr185931ljc.0.1708327788596; Sun, 18 Feb
+ 2024 23:29:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CO6PR12MB5489.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 39b580af-6d5e-4d08-5f69-08dc311bca7a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Feb 2024 07:24:21.0317
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: vxsBAZHYqW7NBUos3ul63pmK24YN8tMzwtOCwHa6JoSoJ2zBHjkAmXFIGLEImMtPyPPl5ifJakhqldqQtmmKAw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7318
+References: <20240216095105.14502-1-ryncsn@gmail.com> <87wmr2rx4a.fsf@yhuang6-desk2.ccr.corp.intel.com>
+ <CAMgjq7CArJDbEev3YR2OB4aZjE9n6PzuzC6WLmsxCKhwq-jb3Q@mail.gmail.com>
+ <87jzn1s2xe.fsf@yhuang6-desk2.ccr.corp.intel.com> <87frxprxm8.fsf@yhuang6-desk2.ccr.corp.intel.com>
+ <CAMgjq7C4UmRgrqycrM=Na18+ONeFT57_Nr6b2jhbKb=7f10YMA@mail.gmail.com>
+In-Reply-To: <CAMgjq7C4UmRgrqycrM=Na18+ONeFT57_Nr6b2jhbKb=7f10YMA@mail.gmail.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Mon, 19 Feb 2024 15:29:31 +0800
+Message-ID: <CAMgjq7ATVuaGk3tRh6pk4ttV574fk5aYC7SvR4ggFAgpbmzNxg@mail.gmail.com>
+Subject: Re: [PATCH v3] mm/swap: fix race when skipping swapcache
+To: "Huang, Ying" <ying.huang@intel.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Minchan Kim <minchan@kernel.org>, Yu Zhao <yuzhao@google.com>, 
+	Barry Song <v-songbaohua@oppo.com>, SeongJae Park <sj@kernel.org>, Hugh Dickins <hughd@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox <willy@infradead.org>, Michal Hocko <mhocko@suse.com>, 
+	Yosry Ahmed <yosryahmed@google.com>, David Hildenbrand <david@redhat.com>, stable@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Aaron Lu <aaron.lu@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-[Public]
+On Mon, Feb 19, 2024 at 11:09=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wro=
+te:
+>
+> On Mon, Feb 19, 2024 at 10:35=E2=80=AFAM Huang, Ying <ying.huang@intel.co=
+m> wrote:
+> > "Huang, Ying" <ying.huang@intel.com> writes:
+> > > Kairui Song <ryncsn@gmail.com> writes:
+> > >
+> > >> On Sun, Feb 18, 2024 at 4:34=E2=80=AFPM Huang, Ying <ying.huang@inte=
+l.com> wrote:
+> > >>>
+> > >>> Kairui Song <ryncsn@gmail.com> writes:
+> > >>>
+> > >>> > From: Kairui Song <kasong@tencent.com>
+> > >>> >
+> > >>> > When skipping swapcache for SWP_SYNCHRONOUS_IO, if two or more th=
+reads
+> > >>> > swapin the same entry at the same time, they get different pages =
+(A, B).
+> > >>> > Before one thread (T0) finishes the swapin and installs page (A)
+> > >>> > to the PTE, another thread (T1) could finish swapin of page (B),
+> > >>> > swap_free the entry, then swap out the possibly modified page
+> > >>> > reusing the same entry. It breaks the pte_same check in (T0) beca=
+use
+> > >>> > PTE value is unchanged, causing ABA problem. Thread (T0) will
+> > >>> > install a stalled page (A) into the PTE and cause data corruption=
+.
+> > >>> >
+> > >>> > One possible callstack is like this:
+> > >>> >
+> > >>> > CPU0                                 CPU1
+> > >>> > ----                                 ----
+> > >>> > do_swap_page()                       do_swap_page() with same ent=
+ry
+> > >>> > <direct swapin path>                 <direct swapin path>
+> > >>> > <alloc page A>                       <alloc page B>
+> > >>> > swap_read_folio() <- read to page A  swap_read_folio() <- read to=
+ page B
+> > >>> > <slow on later locks or interrupt>   <finished swapin first>
+> > >>> > ...                                  set_pte_at()
+> > >>> >                                      swap_free() <- entry is free
+> > >>> >                                      <write to page B, now page A=
+ stalled>
+> > >>> >                                      <swap out page B to same swa=
+p entry>
+> > >>> > pte_same() <- Check pass, PTE seems
+> > >>> >               unchanged, but page A
+> > >>> >               is stalled!
+> > >>> > swap_free() <- page B content lost!
+> > >>> > set_pte_at() <- staled page A installed!
+> > >>> >
+> > >>> > And besides, for ZRAM, swap_free() allows the swap device to disc=
+ard
+> > >>> > the entry content, so even if page (B) is not modified, if
+> > >>> > swap_read_folio() on CPU0 happens later than swap_free() on CPU1,
+> > >>> > it may also cause data loss.
+> > >>> >
+> > >>> > To fix this, reuse swapcache_prepare which will pin the swap entr=
+y using
+> > >>> > the cache flag, and allow only one thread to pin it. Release the =
+pin
+> > >>> > after PT unlocked. Racers will simply wait since it's a rare and =
+very
+> > >>> > short event. A schedule() call is added to avoid wasting too much=
+ CPU
+> > >>> > or adding too much noise to perf statistics
+> > >>> >
+> > >>> > Other methods like increasing the swap count don't seem to be a g=
+ood
+> > >>> > idea after some tests, that will cause racers to fall back to use=
+ the
+> > >>> > swap cache again. Parallel swapin using different methods leads t=
+o
+> > >>> > a much more complex scenario.
+> > >>>
+> > >>> The swap entry may be put in swap cache by some parallel code path
+> > >>> anyway.  So, we always need to consider that when reasoning the cod=
+e.
+> > >>>
+> > >>> > Reproducer:
+> > >>> >
+> > >>> > This race issue can be triggered easily using a well constructed
+> > >>> > reproducer and patched brd (with a delay in read path) [1]:
+> > >>> >
+> > >>> > With latest 6.8 mainline, race caused data loss can be observed e=
+asily:
+> > >>> > $ gcc -g -lpthread test-thread-swap-race.c && ./a.out
+> > >>> >   Polulating 32MB of memory region...
+> > >>> >   Keep swapping out...
+> > >>> >   Starting round 0...
+> > >>> >   Spawning 65536 workers...
+> > >>> >   32746 workers spawned, wait for done...
+> > >>> >   Round 0: Error on 0x5aa00, expected 32746, got 32743, 3 data lo=
+ss!
+> > >>> >   Round 0: Error on 0x395200, expected 32746, got 32743, 3 data l=
+oss!
+> > >>> >   Round 0: Error on 0x3fd000, expected 32746, got 32737, 9 data l=
+oss!
+> > >>> >   Round 0 Failed, 15 data loss!
+> > >>> >
+> > >>> > This reproducer spawns multiple threads sharing the same memory r=
+egion
+> > >>> > using a small swap device. Every two threads updates mapped pages=
+ one by
+> > >>> > one in opposite direction trying to create a race, with one dedic=
+ated
+> > >>> > thread keep swapping out the data out using madvise.
+> > >>> >
+> > >>> > The reproducer created a reproduce rate of about once every 5 min=
+utes,
+> > >>> > so the race should be totally possible in production.
+> > >>> >
+> > >>> > After this patch, I ran the reproducer for over a few hundred rou=
+nds
+> > >>> > and no data loss observed.
+> > >>> >
+> > >>> > Performance overhead is minimal, microbenchmark swapin 10G from 3=
+2G
+> > >>> > zram:
+> > >>> >
+> > >>> > Before:     10934698 us
+> > >>> > After:      11157121 us
+> > >>> > Non-direct: 13155355 us (Dropping SWP_SYNCHRONOUS_IO flag)
+> > >>> >
+> > >>> > Fixes: 0bcac06f27d7 ("mm, swap: skip swapcache for swapin of sync=
+hronous device")
+> > >>> > Link: https://github.com/ryncsn/emm-test-project/tree/master/swap=
+-stress-race [1]
+> > >>> > Reported-by: "Huang, Ying" <ying.huang@intel.com>
+> > >>> > Closes: https://lore.kernel.org/lkml/87bk92gqpx.fsf_-_@yhuang6-de=
+sk2.ccr.corp.intel.com/
+> > >>> > Signed-off-by: Kairui Song <kasong@tencent.com>
+> > >>> > Cc: stable@vger.kernel.org
+> > >>> >
+> > >>> > ---
+> > >>> > Update from V2:
+> > >>> > - Add a schedule() if raced to prevent repeated page faults wasti=
+ng CPU
+> > >>> >   and add noise to perf statistics.
+> > >>> > - Use a bool to state the special case instead of reusing existin=
+g
+> > >>> >   variables fixing error handling [Minchan Kim].
+> > >>> >
+> > >>> > V2: https://lore.kernel.org/all/20240206182559.32264-1-ryncsn@gma=
+il.com/
+> > >>> >
+> > >>> > Update from V1:
+> > >>> > - Add some words on ZRAM case, it will discard swap content on sw=
+ap_free so the race window is a bit different but cure is the same. [Barry =
+Song]
+> > >>> > - Update comments make it cleaner [Huang, Ying]
+> > >>> > - Add a function place holder to fix CONFIG_SWAP=3Dn built [Seong=
+Jae Park]
+> > >>> > - Update the commit message and summary, refer to SWP_SYNCHRONOUS=
+_IO instead of "direct swapin path" [Yu Zhao]
+> > >>> > - Update commit message.
+> > >>> > - Collect Review and Acks.
+> > >>> >
+> > >>> > V1: https://lore.kernel.org/all/20240205110959.4021-1-ryncsn@gmai=
+l.com/
+> > >>> >
+> > >>> >  include/linux/swap.h |  5 +++++
+> > >>> >  mm/memory.c          | 20 ++++++++++++++++++++
+> > >>> >  mm/swap.h            |  5 +++++
+> > >>> >  mm/swapfile.c        | 13 +++++++++++++
+> > >>> >  4 files changed, 43 insertions(+)
+> > >>> >
+> > >>> > diff --git a/include/linux/swap.h b/include/linux/swap.h
+> > >>> > index 4db00ddad261..8d28f6091a32 100644
+> > >>> > --- a/include/linux/swap.h
+> > >>> > +++ b/include/linux/swap.h
+> > >>> > @@ -549,6 +549,11 @@ static inline int swap_duplicate(swp_entry_t=
+ swp)
+> > >>> >       return 0;
+> > >>> >  }
+> > >>> >
+> > >>> > +static inline int swapcache_prepare(swp_entry_t swp)
+> > >>> > +{
+> > >>> > +     return 0;
+> > >>> > +}
+> > >>> > +
+> > >>> >  static inline void swap_free(swp_entry_t swp)
+> > >>> >  {
+> > >>> >  }
+> > >>> > diff --git a/mm/memory.c b/mm/memory.c
+> > >>> > index 7e1f4849463a..7059230d0a54 100644
+> > >>> > --- a/mm/memory.c
+> > >>> > +++ b/mm/memory.c
+> > >>> > @@ -3799,6 +3799,7 @@ vm_fault_t do_swap_page(struct vm_fault *vm=
+f)
+> > >>> >       struct page *page;
+> > >>> >       struct swap_info_struct *si =3D NULL;
+> > >>> >       rmap_t rmap_flags =3D RMAP_NONE;
+> > >>> > +     bool need_clear_cache =3D false;
+> > >>> >       bool exclusive =3D false;
+> > >>> >       swp_entry_t entry;
+> > >>> >       pte_t pte;
+> > >>> > @@ -3867,6 +3868,20 @@ vm_fault_t do_swap_page(struct vm_fault *v=
+mf)
+> > >>> >       if (!folio) {
+> > >>> >               if (data_race(si->flags & SWP_SYNCHRONOUS_IO) &&
+> > >>> >                   __swap_count(entry) =3D=3D 1) {
+> > >>> > +                     /*
+> > >>> > +                      * Prevent parallel swapin from proceeding =
+with
+> > >>> > +                      * the cache flag. Otherwise, another threa=
+d may
+> > >>> > +                      * finish swapin first, free the entry, and=
+ swapout
+> > >>> > +                      * reusing the same entry. It's undetectabl=
+e as
+> > >>> > +                      * pte_same() returns true due to entry reu=
+se.
+> > >>> > +                      */
+> > >>> > +                     if (swapcache_prepare(entry)) {
+> > >>> > +                             /* Relax a bit to prevent rapid rep=
+eated page faults */
+> > >>> > +                             schedule();
+> > >>>
+> > >>> The current task may be chosen in schedule().  So, I think that we
+> > >>> should use cond_resched() here.
+> > >>>
+> > >>
+> > >> I think if we are worried about current task got chosen again we can
+> > >> use schedule_timeout_uninterruptible(1) here. Isn't cond_resched sti=
+ll
+> > >> __schedule() and and it can even get omitted, so it should be "weake=
+r"
+> > >> IIUC.
+> > >
+> > > schedule_timeout_uninterruptible(1) will introduce 1ms latency for th=
+e
+> > > second task.  That may kill performance of some workloads.
+>
+> It actually calls schedule_timeout so it should be a 1 jiffy latency,
+> not 1ms, right?
+>
+> /**
+>  * schedule_timeout - sleep until timeout
+>  * @timeout: timeout value in jiffies
+> ...
+>
+> But I think what we really want here is actually the set_current_state
+> to force yield CPU for a short period. The latency should be mild.
 
-Hi,
+I just forgot 1 jiffy >=3D 1 ms here, and uninterruptible should make it
+unable to wakeup until timeout...
 
-Thanks for the catch! Will prepare a patch to fix it.
+> > Just found that the cond_sched() in __read_swap_cache_async() has been
+> > changed to schedule_timeout_uninterruptible(1) to fix some live lock.
+> > Details are in the description of commit 029c4628b2eb ("mm: swap: get
+> > rid of livelock in swapin readahead").  I think the similar issue may
+> > happen here too.  So, we must use schedule_timeout_uninterruptible(1)
+> > here until some other better idea becomes available.
+>
+> Indeed, I'll switch to schedule_timeout_uninterruptible(1). I've
+> tested and posted the result with schedule_timeout_uninterruptible(1)
+> before, it looked fine, or even better.
 
-Thanks,
-Wayne Lin
+But this should be still the same though, the minor/major fault ratio
+in previous test result [1] shows the race on ZRAM even with threads
+set to race on purpose, the chance is low, and thanks for the info on
+mentioning another commit!
 
-________________________________________
-From: Leon Wei=DF <leon.weiss@ruhr-uni-bochum.de>
-Sent: Wednesday, February 7, 2024 16:45
-To: stable@vger.kernel.org
-Cc: regressions@lists.linux.dev; Lin, Wayne; lyude@redhat.com
-Subject: [REGRESSION] NULL pointer dereference drm_dp_add_payload_part2
-
-Hello,
-
-54d217406afe250d7a768783baaa79a035f21d38 fixed an issue in
-drm_dp_add_payload_part2 that lead to a NULL pointer dereference in
-case state is NULL.
-
-The change was (accidentally?) reverted in
-5aa1dfcdf0a429e4941e2eef75b006a8c7a8ac49 and the problem reappeared.
-
-The issue is rather spurious, but I've had it appear when unplugging a
-thunderbolt dock.
-
-#regzbot introduced 5aa1dfcdf0a429e4941e2eef75b006a8c7a8ac49
+[1] https://lore.kernel.org/all/CAMgjq7BvTJmxrWQOJvkLt4g_jnvmx07NdU63sGeRMG=
+de4Ov=3DgA@mail.gmail.com/
 
