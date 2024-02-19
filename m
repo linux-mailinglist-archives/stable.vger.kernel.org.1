@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-20687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1883885AB43
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:43:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B4B785AB44
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:43:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BD331C221BC
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:43:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 556A8283C22
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:43:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A4B448782;
-	Mon, 19 Feb 2024 18:42:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14CEE482E5;
+	Mon, 19 Feb 2024 18:42:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="URtbiraS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nu6cs4ki"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF781482E5
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4033482EC
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708368124; cv=none; b=jGeZ3mWPlbnb3urLeQehrp8no6Fh6dFY53J7EyDz0zoRVUVRgEssNGapka/JazpiOG8l/CsLFRh75jRwVk79BIWx7jJ/qH1lCIalZPLprVgXeXsHzHOJdrLcXm13+fEfZ3sy3q5f4F7/5ZHF8s2JrlATgCJarEyZE9dvFYKvSKE=
+	t=1708368132; cv=none; b=pLPUOosFRkcJqjbhvIPcI4kICkODU81dLFhrdiT7GECixT8QSIcOPXelifnBf2AtiWiyeCRhRgL3He7DLHY/MIOSZ+5fOmc3ioi1/g3Wgd793Hj+iRKFxsB75M6usitMufnLyaQCM1xFZBpfcMYWUWvkFk7Dp+eSGMItuIm5Mz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708368124; c=relaxed/simple;
-	bh=h33sSx/r6qsgx7/tQWLlE/OJ3P4HP3H7WcwWHiTe08Q=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=aNorhUh2/kiAoFIBGu7zmKHZ6GIcV/SdLcvK0xUWuVH3OvRGw1RqzrCUO8qrHPPB5GUjEBbgZ+lGjMYxKAgCMEtFVYY0yza3vWx16pLM4dQuJ//RlMRdUdlFl4P1ZXvisj8N+QaKqJo2P+wvFYMY0HTeRcu/qPGcEAvjhyEekG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=URtbiraS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6148FC433F1;
-	Mon, 19 Feb 2024 18:42:03 +0000 (UTC)
+	s=arc-20240116; t=1708368132; c=relaxed/simple;
+	bh=rTdhU5lbWB5Sv1Y/CDnynLlV7qBOyJkGwbbdA50VK7I=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=s8CL9oERSvW+NjQFJrHPgu9v/p1XKws+OjTcIKTi9btMxK+zoBFg3nzq4U1Wefldzh5SV75ERKOS0BzL7WfI16O/glUarp6/AcVn81rIKBGq+4eQLMZ7/ZI6F0DTPw9Rl0s+DIC4lYtLt6zxcJ68uOiKdF18/Az8hC/9hTiWXjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nu6cs4ki; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 421A9C433F1;
+	Mon, 19 Feb 2024 18:42:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708368123;
-	bh=h33sSx/r6qsgx7/tQWLlE/OJ3P4HP3H7WcwWHiTe08Q=;
+	s=korg; t=1708368132;
+	bh=rTdhU5lbWB5Sv1Y/CDnynLlV7qBOyJkGwbbdA50VK7I=;
 	h=Subject:To:Cc:From:Date:From;
-	b=URtbiraSN5qpksbL3ak+sdF8S5SKc4JJ87o/You3rWNxt4REoOa1Jx81NK1Y94dGV
-	 +ydSWe0zzJvYPm8Vr23j3oopzAf3mdpziIhzoEYCYYYo5zP/4uT2CEK7ulmlqsVoGg
-	 qIUvUg134TKd6ggaiVljo666P69gVYleidvtSU+M=
-Subject: FAILED: patch "[PATCH] thunderbolt: Fix setting the CNS bit in ROUTER_CS_5" failed to apply to 6.1-stable tree
+	b=nu6cs4kiCb/Mw6Rt0bYeQUrj+ulVH9Jsk2Jz4Q4jLD6OyViCgeu6P4uEqShiZlp5f
+	 /uQxGf+iieBjBeR29gX41xPZRto0ibvEGhBbsK25/q1pWvCf1YuG0K1ekR4mpH6tp3
+	 px0w9lyrzxMjMKzJgIZ2+0p1aTJgSoErLP5JPiRI=
+Subject: FAILED: patch "[PATCH] thunderbolt: Fix setting the CNS bit in ROUTER_CS_5" failed to apply to 5.15-stable tree
 To: rahimi.mhmmd@gmail.com,mika.westerberg@linux.intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Mon, 19 Feb 2024 19:42:01 +0100
-Message-ID: <2024021900-paprika-revisit-a716@gregkh>
+Message-ID: <2024021901-java-rejoice-9b51@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x ec4d82f855ce332de26fe080892483de98cc1a19
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021900-paprika-revisit-a716@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021901-java-rejoice-9b51@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -83,6 +83,12 @@ c437dcb18310 ("thunderbolt: Fix a couple of style issues in TMU code")
 7ce542219b63 ("thunderbolt: Introduce tb_switch_downstream_port()")
 3fe95742af29 ("thunderbolt: Do not touch CL state configuration during discovery")
 d31137619776 ("thunderbolt: Use correct type in tb_port_is_clx_enabled() prototype")
+d0f1e0c2a699 ("thunderbolt: Add support for receiver lane margining")
+b12d2955e732 ("thunderbolt: Add helper to check if CL states are enabled on port")
+3846d011403b ("thunderbolt: Pass CL state bitmask to tb_port_clx_supported()")
+95f8f1cbc87b ("thunderbolt: Move port CL state functions into correct place in switch.c")
+b60e31bf18a7 ("thunderbolt: Add DP OUT resource when DP tunnel is discovered")
+9e2e5ea3b28f ("Merge tag 'usb-6.0-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb")
 
 thanks,
 
