@@ -1,335 +1,245 @@
-Return-Path: <stable+bounces-20480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D22D859AE8
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 04:10:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65CCD859AEE
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 04:15:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8FDF1C2107F
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 03:10:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E94871F2165C
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 03:15:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30CD32114;
-	Mon, 19 Feb 2024 03:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C8103C30;
+	Mon, 19 Feb 2024 03:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bzLQpkpL"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="L43vAIZq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2060.outbound.protection.outlook.com [40.107.100.60])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098DB2103;
-	Mon, 19 Feb 2024 03:10:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708312220; cv=none; b=UKwTtqigHg2AAMsZFGeEuvChOxb2ob7GZuKyxoKXTekuri8i0W45if8MjoV9pu8k/AWJ9wJRVBRCT3DdW0KELysQc+GF7y6BxvhMFbV2fF8oB3PESKAioq1uUgxck1rd3/hPcYOz4SviIyn5H+wmi+uemHVPs4bbx0r+EtD5x28=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708312220; c=relaxed/simple;
-	bh=vHGy/5iizTblx9c71wOca8ydjyG2ycIVofaO4XacMGw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cq91eO/HUv7RVSGv6bbYOuUeZOo2/xM+dZ41RI5psGDj1p/h+KGS2WmoqdxZSFFYg42GLeqlQRnCgZiDYDZYH8B3yhMM7PgnOUelGgEp4ariaYHSBgyGcRV+6UyUVQjf5njbxSPJWxABe4Vlw3mJPNJ5eGbv0kynGEYOU9xkCJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bzLQpkpL; arc=none smtp.client-ip=209.85.208.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2d1094b549cso57691271fa.3;
-        Sun, 18 Feb 2024 19:10:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708312216; x=1708917016; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xeqhTfKf3+27PA2TjmaJvKhx4MTodoOtzntu6kefSAY=;
-        b=bzLQpkpLZZXyf+8w6UhwRbmYeOztrK68yVpxGNfAe1SnKRZnj5BwQceJfIsHcy7+Y2
-         ABhzw1zxyv2b2QWbmIm2L9wTb5mBmpTtuxcMTlFlt/n/9DgYjmEDvST5CBrWN/xoz9VC
-         ECQ6AcafxxZGnZhLmWrzxwqxkBwJ6vJs9EQ+zugC8VkFLrFXQcm/ASCcOfxLxgIL7Qkm
-         lSyvakp4jIeTJ+qjOoaj55NIdrMLLhd1QcuvzqE/pEJ1ajWnhLpNIVnOelQjXWXIhRdz
-         g9lXlk2WmcvKsiQRcMedywebnJxXZYuGWnZDMFm3Xwlt1q4WP+sG6ae/PR+hVDnpvBL/
-         kauw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708312216; x=1708917016;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xeqhTfKf3+27PA2TjmaJvKhx4MTodoOtzntu6kefSAY=;
-        b=MA71WDtze9S5UF+r5EI+qASJ/vI+sB1imd4Gd6WjTfndftYn1ARwS5z9oo2OsgaM5E
-         fpglwyTh7l/PUAoOBB4GG8tXzgUhgD6KsslumxtV9/ftH8PBjpDJFJux7LeMaLYpHkOW
-         mDnrxp8SsVqYZWrqvp9p57caKsjrZMszVUDu9x4E0sClT7k1Gnv7CWWYUYH9m3FWCYN9
-         xVCvHdDssE/egxSvMMuwYrXLp0b77wB2gYWiCFmSOl1dUo35mEwZ6D6NDfTCF1GKERx7
-         svW37KxbCeNcrzH1qAm5Z8XrO3aRS2Qyn61CUWE6AbxmR7WiWJsA7SSb5tnb7MNa4+1C
-         nLLw==
-X-Forwarded-Encrypted: i=1; AJvYcCUDYncSMK0y3nUgSTB0NaMbxr0PVLwEx7D8hCgImRdGO0F9fzm5Wa4/eB5/+teIxFKGvEVb8xWJMcWDIy9CnoeY/6Gpm/DjJKQOh/DNPDMUf7//8DjWTJEd0/OUYLg+BntHlOyl
-X-Gm-Message-State: AOJu0Yy0Uw7lho2LKOnUraw6dXBTjkIeUDlWiZ62eHMrYdSKoxY70UnX
-	5iZqLjeIEJMNvPev0/itPbJcIWTgZHHeoaSw5fWHCzMuLGoJn1XkkpMFHgvoVe8DdOq4tNvyeux
-	7ZX80CkDkNQmRQ+0HR9AGnrMzF4g=
-X-Google-Smtp-Source: AGHT+IFMri5xaTNIC9eRRWGfpO+Cn0mEcLRlM4XjhbWHOrUI/sR7GMROAiiCw1Cu3ajRUW/b8KUK+VnS4MMasI10aQo=
-X-Received: by 2002:a2e:8699:0:b0:2d2:20eb:dad8 with SMTP id
- l25-20020a2e8699000000b002d220ebdad8mr3910630lji.33.1708312215948; Sun, 18
- Feb 2024 19:10:15 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A222103;
+	Mon, 19 Feb 2024 03:14:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.100.60
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708312500; cv=fail; b=QvbZ+rcup7XFSbXWGv9CmqqB7h4T7o/GYOiv5pV/Qv+sXwEeDin3Ewy+A43ULdaun3sI5f3duYNKx3DHLUfzZPJqerlpPyC7WnaXGgVvSxfIMtWbnaV6+whOGnWAzKysrkkw9OLz2I3EYc00JmAzPwPmNHmrmdzn7HiRLwU1Ml0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708312500; c=relaxed/simple;
+	bh=EL13OiB+NYNU1ruf0QI+AGo34/fMOufoZxjalAWs7Ok=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=RkJPLCTtcdkhIiowBWQgMddDVFtYkh7+ehrGD8AyPV/y+SjcdsIjn8BpsMfAt4SJtfiYTaKyO923UnLVVIf3QcyIyMqIvxRMHH90zITl9ZAAoa6r+Z5dlkqWpyWFV5ARwR5lxoikydYGLgwH5pYSliqcsa8X9KZuDQOAo995I10=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=L43vAIZq; arc=fail smtp.client-ip=40.107.100.60
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=M5rMQWr0iL7/8opKbx4ZRhxwwiWCybRRIPBg9G37kIS3TZRa5k7ZpdX1JJXlIjEyeCqPlU+PXF0iXIOHx288IM8H3hdDbCv+JYCm2SxCy5S+rw5Fbw2v/FkmsxvDRWRvIJArEXjVwdemiF81NQno5kROxIcS1jPDgZU9djUa6B5ezFfNoWPZCrJih8y+b2F67UJTbO/T1MH7A7KDpFv83bdGy6tMLn4VxBALyrOFLtvLDhnVk/g9+BxcNpdam6EcPgxbPE3uNZnH01xsLPzeO+Rk5pOlkexs+x/rpMXtX6lKD1Nv6U0YV/sOzTv/QiOD5Lj34cvyeoFEZf8nmbu7aQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=I8H/CHWgq2Ah0vxvrBC/etkmeh63YuvGW3dh7CcHN7A=;
+ b=NvR4M32k9ivCI9RfAsBodLFgua3zkGPeEk5Z7oCOG8YTM7PvL1K2xHoLFh3jIdUhoNjmEPWGLk8n9j+ZO1Q3tipPrPDQZwRl1UwkU3QZdgKmz3W5a3Zd7DtSLtN1Jh/XUGSCQAX9UivELWZQxjRfkLVMhWSZZIt5/1PgBwrrlwf+fEyt50VDrYi4xtxvTcYl4wqLsCZbp+0qSgHoX11/k8yCciBCIM4jNHumFAg1+D1zc1rOhH1VCXuU5S0d2UXWgDdy7eJU5sU3qA4AvSpGNVHItJ/vZUEPjOu1BObCa+I0JwkJNYQWAn4gy+p8C5+7SnvB4E3Az2EgFlhOy7Z/Zg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=I8H/CHWgq2Ah0vxvrBC/etkmeh63YuvGW3dh7CcHN7A=;
+ b=L43vAIZqX8871c/JdWReX9WlyyMDrYdcjwoYLDpRSnM9ZIm7z7xVgKYsiqBHzahbVt2Pi7vr3VpPeaEKzxC4yDcolWW5eEC7iH1RByo708UmnOVOLh1Mi6iDUZhBK/W6J1ughwwF3xz4iq7W+389iH+HgX0FlIdaYaexQFbPtrddDATffCZ4FCj6Hm/8iIaUF+tGhrCfVvQ50HlILkID/ZpjJljMA1mLkfVZB6xxQuM5Tq7qZebffxXzu84uxj4abvtTHmvXkLsicgK2o/0reaPsXQrMGdN96d88eCdZBwbnVEp3X0t1PNa309WUNyXx1YkuCtVdsgcTyLwA6gWtsw==
+Received: from PH0PR12MB5481.namprd12.prod.outlook.com (2603:10b6:510:d4::15)
+ by SA1PR12MB8161.namprd12.prod.outlook.com (2603:10b6:806:330::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.19; Mon, 19 Feb
+ 2024 03:14:54 +0000
+Received: from PH0PR12MB5481.namprd12.prod.outlook.com
+ ([fe80::5b85:d575:fac1:71c0]) by PH0PR12MB5481.namprd12.prod.outlook.com
+ ([fe80::5b85:d575:fac1:71c0%4]) with mapi id 15.20.7316.016; Mon, 19 Feb 2024
+ 03:14:54 +0000
+From: Parav Pandit <parav@nvidia.com>
+To: Ming Lei <ming.lei@redhat.com>
+CC: "mst@redhat.com" <mst@redhat.com>, "jasowang@redhat.com"
+	<jasowang@redhat.com>, "xuanzhuo@linux.alibaba.com"
+	<xuanzhuo@linux.alibaba.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
+	"stefanha@redhat.com" <stefanha@redhat.com>, "axboe@kernel.dk"
+	<axboe@kernel.dk>, "virtualization@lists.linux.dev"
+	<virtualization@lists.linux.dev>, "linux-block@vger.kernel.org"
+	<linux-block@vger.kernel.org>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>, "NBU-Contact-Li Rongqing (EXTERNAL)"
+	<lirongqing@baidu.com>, Chaitanya Kulkarni <chaitanyak@nvidia.com>
+Subject: RE: [PATCH] virtio_blk: Fix device surprise removal
+Thread-Topic: [PATCH] virtio_blk: Fix device surprise removal
+Thread-Index: AQHaYcxqVM2rFvg5t0SfQayLG6csArEQGLcAgADkkjA=
+Date: Mon, 19 Feb 2024 03:14:54 +0000
+Message-ID:
+ <PH0PR12MB5481DCCE8127FB12C24EF74DDC512@PH0PR12MB5481.namprd12.prod.outlook.com>
+References: <20240217180848.241068-1-parav@nvidia.com>
+ <ZdIFpqa23YHwJACh@fedora>
+In-Reply-To: <ZdIFpqa23YHwJACh@fedora>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH0PR12MB5481:EE_|SA1PR12MB8161:EE_
+x-ms-office365-filtering-correlation-id: 02ee078c-1bba-44c8-125d-08dc30f8f1d3
+x-ld-processed: 43083d15-7273-40c1-b7db-39efd9ccc17a,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ 24VyClpD8+bTLb0cYU0/d7ftBEg5xLJTe6cgFvh2GH/X2x6i/Tnh2XChNYLac6NEIeB+bdPILpqQmnGmZxgnyaNmWN8EPQ0i4cKV6XKDsKj12F1FLgW4YbR1Y04BQJ1EadZvijNXkNS16ySPMeTEKU7OzXPm8oWnv1ntfUxoX3TUMFlgkDgRXHPOihJ1jsc7Yc3u4HDVcfYUYakeNSInchrXDZTtI2DIxYSzFpGVmEZGeGMXQVrsn2PmwLkbTu9sB6fzwS9M7uMyRyv9dwYesc/VXTFwpOVarqIaJR0pU4W9clcXBJ5PsdRvuEOCSrtAK0GIvOsirf0r03F1rmor7W+wAR1OBVTuyhWw8uvDUvwB1OXEKCvZBUmBnJNWLG4Qgc/I5253XnA1Klkr3j0w8yASGfpWKm8ariFGCcMiK21YFJ90pHLngHOD/lY8FPqZR4RcDtbN4+Yl1ezeofQKzM/qDaf5CNhe0vElosF+edo1tc55J/zr54hqhxEO/C7z3rFcOgnAcCCP8uUREA5/OWP98505vdigYgR1vczfwgdVBfc+/QXna60VYKg91gYIyEC+LYm4swUHAOrkps45/032grHkeCJ4ecstnJvxezCdzc//a23MvAzJfIsxJaXFMloI4wFwO6XUKZrnKeNaqZigjzSwj/90FnGo8LhWWK4=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB5481.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(396003)(366004)(136003)(346002)(39860400002)(230922051799003)(186009)(1800799012)(451199024)(64100799003)(122000001)(26005)(83380400001)(55016003)(8676002)(7416002)(66946007)(8936002)(76116006)(64756008)(66446008)(66476007)(66556008)(2906002)(4326008)(6916009)(52536014)(6506007)(9686003)(7696005)(316002)(966005)(478600001)(71200400001)(54906003)(33656002)(38070700009)(107886003)(41300700001)(5660300002)(38100700002)(86362001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?I/zsoDPnPjDmjuY6Jbsxf/UyIzYRmBqQeUz3kBDbwZa/YQL1hgv4hJiLEwSs?=
+ =?us-ascii?Q?cyNSFOOtzhtkYH1XnhismxpWCX8ZQXBEx8Td0qw73ZIwQrLV43n23HHfvniV?=
+ =?us-ascii?Q?pyyrMjhyGHklaOEty0mRmD/gSAUXiRqSeXbzLYgMeCNKYebzQFa3VBvRQNk7?=
+ =?us-ascii?Q?wzALPCBwghVDW40gfDPUNZF9EF24hE+asK2As64ME9JVVuLCU1nyciIBM5hc?=
+ =?us-ascii?Q?WjCSXEMCfG3/z2p4spRejUY50S7b4mAhCI2blp5W/uGuUZPJav8St4VaDgkx?=
+ =?us-ascii?Q?fKyr6xwviDRFDjVdRTJZeN8NaID4r5nOxtIq0chX5WD2X6Ty54UH3Nv4y0HQ?=
+ =?us-ascii?Q?m/ZURAFUWKrhda3uIQIyq8XpXmau5jkKsZuEKoffyLe+YJj83CDdBMwUHSNU?=
+ =?us-ascii?Q?G3yEFc8DHJrafm7dNkhhNULSlRAPGJ8nYQU73Yv9LExLCxf0yp7eev0aftvi?=
+ =?us-ascii?Q?UoMdglU1Ndl2QOWwbN3RR2bj8wyoACyBiunf4mlRYojJ9YPCtl4aJtp5nkXm?=
+ =?us-ascii?Q?ALWzT1UGz36XsdafUfFVFD/ANhgDv6zW6F2kjgGEnnaGmnWASVvbNK189hdF?=
+ =?us-ascii?Q?6L+l+QalHQXo2+l56Iy1ENshPzNO0V0Cu7iKsE46Lu1s4l1SzktL79JKL752?=
+ =?us-ascii?Q?BNzepzqLlaLuSge/eZ6oO8eKKEaznmJPgeOblgnvqRCtbVTo1alMI6bhKpMd?=
+ =?us-ascii?Q?3FHM89McpamVbo4M++hMekTZLcQxUuDWv0mtdKl68vVQTbf/gjnE5HY7PorA?=
+ =?us-ascii?Q?ke5Mw2Mt7fDivFN/3TZVNKVUB9BgWDfpzUMuvp/GSSW3/HSs1J1zdwKKm7cm?=
+ =?us-ascii?Q?wRemLANkCLo4L4CCnDNc+sCVlE+BSbpIJjrtgy/R3E3GjXrOTkmA50ExPUuP?=
+ =?us-ascii?Q?iuaA5gcLVmZdyH8of+2kj6BipmWF1ANRl7u7AMzWzWyav/5nv+s6z4PpRu+b?=
+ =?us-ascii?Q?7CdCoSAyCxynkYNg81JWHVYco4JN32VkNpz0x+UFkCpjEWaabY6gDKHU6ar/?=
+ =?us-ascii?Q?7QAxHyYveXQZtXU46tRdj4KWEdAlz/n+LspOetxP/tOdF6bYqRStc+ZSE7Jd?=
+ =?us-ascii?Q?4Oz5DOGD/RCcwKaccBMWrxu+eEeaS3wOIi8vgqYbGD4QlQ6eZIOy6rglutEK?=
+ =?us-ascii?Q?q9jjVpSwnr6rfY/vTJRtbcGAnbj8RD6Q61RY3cHc0clmTPCECCvSnw2oV0Cy?=
+ =?us-ascii?Q?kvCiM1jiH454lU2NzcrMu0M4E8eBylR6hvxS5VnO6O7yFN727ijTUwf9IxUN?=
+ =?us-ascii?Q?oL7q94IygvySAqnakKM0ZdgUJSCBIesktY+9zq5r9TCmrJmZHwNtbBMvM9PR?=
+ =?us-ascii?Q?zmCX/GPrjX4ARFW8NFeWO8XxNt3yXjN5hm/X5bXEop4oZE+1WyAlwcGQefmQ?=
+ =?us-ascii?Q?ePnWYSJx/8AR1Z2e74CY0Z4xsYrP2Gyk5HwuNbANXmxkvTGt4fJmCroEaSPe?=
+ =?us-ascii?Q?b/IXf1IZ5LdECuhnzUHjN6OnGCY4LWlBPH8uhj5gmNYb/vsDyFAFlTR5sFWj?=
+ =?us-ascii?Q?W4it0Iu+GFTeY8QeNP7S9eU3J7GH1fmJDNP+hdBB1Iixw6xJzBQh1kC3xppD?=
+ =?us-ascii?Q?fKX098DoY8darP9AYUU=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240216095105.14502-1-ryncsn@gmail.com> <87wmr2rx4a.fsf@yhuang6-desk2.ccr.corp.intel.com>
- <CAMgjq7CArJDbEev3YR2OB4aZjE9n6PzuzC6WLmsxCKhwq-jb3Q@mail.gmail.com>
- <87jzn1s2xe.fsf@yhuang6-desk2.ccr.corp.intel.com> <87frxprxm8.fsf@yhuang6-desk2.ccr.corp.intel.com>
-In-Reply-To: <87frxprxm8.fsf@yhuang6-desk2.ccr.corp.intel.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Mon, 19 Feb 2024 11:09:58 +0800
-Message-ID: <CAMgjq7C4UmRgrqycrM=Na18+ONeFT57_Nr6b2jhbKb=7f10YMA@mail.gmail.com>
-Subject: Re: [PATCH v3] mm/swap: fix race when skipping swapcache
-To: "Huang, Ying" <ying.huang@intel.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, Minchan Kim <minchan@kernel.org>, Yu Zhao <yuzhao@google.com>, 
-	Barry Song <v-songbaohua@oppo.com>, SeongJae Park <sj@kernel.org>, Hugh Dickins <hughd@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox <willy@infradead.org>, Michal Hocko <mhocko@suse.com>, 
-	Yosry Ahmed <yosryahmed@google.com>, David Hildenbrand <david@redhat.com>, stable@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Aaron Lu <aaron.lu@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB5481.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 02ee078c-1bba-44c8-125d-08dc30f8f1d3
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Feb 2024 03:14:54.6693
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: QD1KvY/j0UC6goqSISUHV/obpcVd6m4Qe82IGzdL5AdMvp3xORMjUWEuQoPT4jpkGt/SpUP64aw5d8DL04t4Rw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8161
 
-On Mon, Feb 19, 2024 at 10:35=E2=80=AFAM Huang, Ying <ying.huang@intel.com>=
- wrote:
-> "Huang, Ying" <ying.huang@intel.com> writes:
-> > Kairui Song <ryncsn@gmail.com> writes:
+Hi Ming,
+
+> From: Ming Lei <ming.lei@redhat.com>
+> Sent: Sunday, February 18, 2024 6:57 PM
+>=20
+> On Sat, Feb 17, 2024 at 08:08:48PM +0200, Parav Pandit wrote:
+> > When the PCI device is surprise removed, requests won't complete from
+> > the device. These IOs are never completed and disk deletion hangs
+> > indefinitely.
 > >
-> >> On Sun, Feb 18, 2024 at 4:34=E2=80=AFPM Huang, Ying <ying.huang@intel.=
-com> wrote:
-> >>>
-> >>> Kairui Song <ryncsn@gmail.com> writes:
-> >>>
-> >>> > From: Kairui Song <kasong@tencent.com>
-> >>> >
-> >>> > When skipping swapcache for SWP_SYNCHRONOUS_IO, if two or more thre=
-ads
-> >>> > swapin the same entry at the same time, they get different pages (A=
-, B).
-> >>> > Before one thread (T0) finishes the swapin and installs page (A)
-> >>> > to the PTE, another thread (T1) could finish swapin of page (B),
-> >>> > swap_free the entry, then swap out the possibly modified page
-> >>> > reusing the same entry. It breaks the pte_same check in (T0) becaus=
-e
-> >>> > PTE value is unchanged, causing ABA problem. Thread (T0) will
-> >>> > install a stalled page (A) into the PTE and cause data corruption.
-> >>> >
-> >>> > One possible callstack is like this:
-> >>> >
-> >>> > CPU0                                 CPU1
-> >>> > ----                                 ----
-> >>> > do_swap_page()                       do_swap_page() with same entry
-> >>> > <direct swapin path>                 <direct swapin path>
-> >>> > <alloc page A>                       <alloc page B>
-> >>> > swap_read_folio() <- read to page A  swap_read_folio() <- read to p=
-age B
-> >>> > <slow on later locks or interrupt>   <finished swapin first>
-> >>> > ...                                  set_pte_at()
-> >>> >                                      swap_free() <- entry is free
-> >>> >                                      <write to page B, now page A s=
-talled>
-> >>> >                                      <swap out page B to same swap =
-entry>
-> >>> > pte_same() <- Check pass, PTE seems
-> >>> >               unchanged, but page A
-> >>> >               is stalled!
-> >>> > swap_free() <- page B content lost!
-> >>> > set_pte_at() <- staled page A installed!
-> >>> >
-> >>> > And besides, for ZRAM, swap_free() allows the swap device to discar=
-d
-> >>> > the entry content, so even if page (B) is not modified, if
-> >>> > swap_read_folio() on CPU0 happens later than swap_free() on CPU1,
-> >>> > it may also cause data loss.
-> >>> >
-> >>> > To fix this, reuse swapcache_prepare which will pin the swap entry =
-using
-> >>> > the cache flag, and allow only one thread to pin it. Release the pi=
-n
-> >>> > after PT unlocked. Racers will simply wait since it's a rare and ve=
-ry
-> >>> > short event. A schedule() call is added to avoid wasting too much C=
-PU
-> >>> > or adding too much noise to perf statistics
-> >>> >
-> >>> > Other methods like increasing the swap count don't seem to be a goo=
-d
-> >>> > idea after some tests, that will cause racers to fall back to use t=
-he
-> >>> > swap cache again. Parallel swapin using different methods leads to
-> >>> > a much more complex scenario.
-> >>>
-> >>> The swap entry may be put in swap cache by some parallel code path
-> >>> anyway.  So, we always need to consider that when reasoning the code.
-> >>>
-> >>> > Reproducer:
-> >>> >
-> >>> > This race issue can be triggered easily using a well constructed
-> >>> > reproducer and patched brd (with a delay in read path) [1]:
-> >>> >
-> >>> > With latest 6.8 mainline, race caused data loss can be observed eas=
-ily:
-> >>> > $ gcc -g -lpthread test-thread-swap-race.c && ./a.out
-> >>> >   Polulating 32MB of memory region...
-> >>> >   Keep swapping out...
-> >>> >   Starting round 0...
-> >>> >   Spawning 65536 workers...
-> >>> >   32746 workers spawned, wait for done...
-> >>> >   Round 0: Error on 0x5aa00, expected 32746, got 32743, 3 data loss=
-!
-> >>> >   Round 0: Error on 0x395200, expected 32746, got 32743, 3 data los=
-s!
-> >>> >   Round 0: Error on 0x3fd000, expected 32746, got 32737, 9 data los=
-s!
-> >>> >   Round 0 Failed, 15 data loss!
-> >>> >
-> >>> > This reproducer spawns multiple threads sharing the same memory reg=
-ion
-> >>> > using a small swap device. Every two threads updates mapped pages o=
-ne by
-> >>> > one in opposite direction trying to create a race, with one dedicat=
-ed
-> >>> > thread keep swapping out the data out using madvise.
-> >>> >
-> >>> > The reproducer created a reproduce rate of about once every 5 minut=
-es,
-> >>> > so the race should be totally possible in production.
-> >>> >
-> >>> > After this patch, I ran the reproducer for over a few hundred round=
-s
-> >>> > and no data loss observed.
-> >>> >
-> >>> > Performance overhead is minimal, microbenchmark swapin 10G from 32G
-> >>> > zram:
-> >>> >
-> >>> > Before:     10934698 us
-> >>> > After:      11157121 us
-> >>> > Non-direct: 13155355 us (Dropping SWP_SYNCHRONOUS_IO flag)
-> >>> >
-> >>> > Fixes: 0bcac06f27d7 ("mm, swap: skip swapcache for swapin of synchr=
-onous device")
-> >>> > Link: https://github.com/ryncsn/emm-test-project/tree/master/swap-s=
-tress-race [1]
-> >>> > Reported-by: "Huang, Ying" <ying.huang@intel.com>
-> >>> > Closes: https://lore.kernel.org/lkml/87bk92gqpx.fsf_-_@yhuang6-desk=
-2.ccr.corp.intel.com/
-> >>> > Signed-off-by: Kairui Song <kasong@tencent.com>
-> >>> > Cc: stable@vger.kernel.org
-> >>> >
-> >>> > ---
-> >>> > Update from V2:
-> >>> > - Add a schedule() if raced to prevent repeated page faults wasting=
- CPU
-> >>> >   and add noise to perf statistics.
-> >>> > - Use a bool to state the special case instead of reusing existing
-> >>> >   variables fixing error handling [Minchan Kim].
-> >>> >
-> >>> > V2: https://lore.kernel.org/all/20240206182559.32264-1-ryncsn@gmail=
-.com/
-> >>> >
-> >>> > Update from V1:
-> >>> > - Add some words on ZRAM case, it will discard swap content on swap=
-_free so the race window is a bit different but cure is the same. [Barry So=
-ng]
-> >>> > - Update comments make it cleaner [Huang, Ying]
-> >>> > - Add a function place holder to fix CONFIG_SWAP=3Dn built [SeongJa=
-e Park]
-> >>> > - Update the commit message and summary, refer to SWP_SYNCHRONOUS_I=
-O instead of "direct swapin path" [Yu Zhao]
-> >>> > - Update commit message.
-> >>> > - Collect Review and Acks.
-> >>> >
-> >>> > V1: https://lore.kernel.org/all/20240205110959.4021-1-ryncsn@gmail.=
-com/
-> >>> >
-> >>> >  include/linux/swap.h |  5 +++++
-> >>> >  mm/memory.c          | 20 ++++++++++++++++++++
-> >>> >  mm/swap.h            |  5 +++++
-> >>> >  mm/swapfile.c        | 13 +++++++++++++
-> >>> >  4 files changed, 43 insertions(+)
-> >>> >
-> >>> > diff --git a/include/linux/swap.h b/include/linux/swap.h
-> >>> > index 4db00ddad261..8d28f6091a32 100644
-> >>> > --- a/include/linux/swap.h
-> >>> > +++ b/include/linux/swap.h
-> >>> > @@ -549,6 +549,11 @@ static inline int swap_duplicate(swp_entry_t s=
-wp)
-> >>> >       return 0;
-> >>> >  }
-> >>> >
-> >>> > +static inline int swapcache_prepare(swp_entry_t swp)
-> >>> > +{
-> >>> > +     return 0;
-> >>> > +}
-> >>> > +
-> >>> >  static inline void swap_free(swp_entry_t swp)
-> >>> >  {
-> >>> >  }
-> >>> > diff --git a/mm/memory.c b/mm/memory.c
-> >>> > index 7e1f4849463a..7059230d0a54 100644
-> >>> > --- a/mm/memory.c
-> >>> > +++ b/mm/memory.c
-> >>> > @@ -3799,6 +3799,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> >>> >       struct page *page;
-> >>> >       struct swap_info_struct *si =3D NULL;
-> >>> >       rmap_t rmap_flags =3D RMAP_NONE;
-> >>> > +     bool need_clear_cache =3D false;
-> >>> >       bool exclusive =3D false;
-> >>> >       swp_entry_t entry;
-> >>> >       pte_t pte;
-> >>> > @@ -3867,6 +3868,20 @@ vm_fault_t do_swap_page(struct vm_fault *vmf=
-)
-> >>> >       if (!folio) {
-> >>> >               if (data_race(si->flags & SWP_SYNCHRONOUS_IO) &&
-> >>> >                   __swap_count(entry) =3D=3D 1) {
-> >>> > +                     /*
-> >>> > +                      * Prevent parallel swapin from proceeding wi=
-th
-> >>> > +                      * the cache flag. Otherwise, another thread =
-may
-> >>> > +                      * finish swapin first, free the entry, and s=
-wapout
-> >>> > +                      * reusing the same entry. It's undetectable =
-as
-> >>> > +                      * pte_same() returns true due to entry reuse=
-.
-> >>> > +                      */
-> >>> > +                     if (swapcache_prepare(entry)) {
-> >>> > +                             /* Relax a bit to prevent rapid repea=
-ted page faults */
-> >>> > +                             schedule();
-> >>>
-> >>> The current task may be chosen in schedule().  So, I think that we
-> >>> should use cond_resched() here.
-> >>>
-> >>
-> >> I think if we are worried about current task got chosen again we can
-> >> use schedule_timeout_uninterruptible(1) here. Isn't cond_resched still
-> >> __schedule() and and it can even get omitted, so it should be "weaker"
-> >> IIUC.
+> > Fix it by aborting the IOs which the device will never complete when
+> > the VQ is broken.
 > >
-> > schedule_timeout_uninterruptible(1) will introduce 1ms latency for the
-> > second task.  That may kill performance of some workloads.
+> > With this fix now fio completes swiftly.
+> > An alternative of IO timeout has been considered, however when the
+> > driver knows about unresponsive block device, swiftly clearing them
+> > enables users and upper layers to react quickly.
+> >
+> > Verified with multiple device unplug cycles with pending IOs in virtio
+> > used ring and some pending with device.
+> >
+> > In future instead of VQ broken, a more elegant method can be used. At
+> > the moment the patch is kept to its minimal changes given its urgency
+> > to fix broken kernels.
+> >
+> > Fixes: 43bb40c5b926 ("virtio_pci: Support surprise removal of virtio
+> > pci device")
+> > Cc: stable@vger.kernel.org
+> > Reported-by: lirongqing@baidu.com
+> > Closes:
+> > https://lore.kernel.org/virtualization/c45dd68698cd47238c55fb73ca9b474
+> > 1@baidu.com/
+> > Co-developed-by: Chaitanya Kulkarni <kch@nvidia.com>
+> > Signed-off-by: Chaitanya Kulkarni <kch@nvidia.com>
+> > Signed-off-by: Parav Pandit <parav@nvidia.com>
+> > ---
+> >  drivers/block/virtio_blk.c | 54
+> > ++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 54 insertions(+)
+> >
+> > diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
+> > index 2bf14a0e2815..59b49899b229 100644
+> > --- a/drivers/block/virtio_blk.c
+> > +++ b/drivers/block/virtio_blk.c
+> > @@ -1562,10 +1562,64 @@ static int virtblk_probe(struct virtio_device
+> *vdev)
+> >  	return err;
+> >  }
+> >
+> > +static bool virtblk_cancel_request(struct request *rq, void *data) {
+> > +	struct virtblk_req *vbr =3D blk_mq_rq_to_pdu(rq);
+> > +
+> > +	vbr->in_hdr.status =3D VIRTIO_BLK_S_IOERR;
+> > +	if (blk_mq_request_started(rq) && !blk_mq_request_completed(rq))
+> > +		blk_mq_complete_request(rq);
+> > +
+> > +	return true;
+> > +}
+> > +
+> > +static void virtblk_cleanup_reqs(struct virtio_blk *vblk) {
+> > +	struct virtio_blk_vq *blk_vq;
+> > +	struct request_queue *q;
+> > +	struct virtqueue *vq;
+> > +	unsigned long flags;
+> > +	int i;
+> > +
+> > +	vq =3D vblk->vqs[0].vq;
+> > +	if (!virtqueue_is_broken(vq))
+> > +		return;
+> > +
+>=20
+> What if the surprise happens after the above check?
+>=20
+>=20
+In that small timing window, the race still exists.
 
-It actually calls schedule_timeout so it should be a 1 jiffy latency,
-not 1ms, right?
+I think, blk_mq_quiesce_queue(q); should move up before cleanup_reqs() rega=
+rdless of surprise case along with other below changes.
 
-/**
- * schedule_timeout - sleep until timeout
- * @timeout: timeout value in jiffies
-...
+Additionally, for non-surprise case, better to have a graceful timeout to c=
+omplete already queued requests.
+In absence of timeout scheme for this regression, shall we only complete th=
+e requests which the device has already completed (instead of waiting for t=
+he grace time)?
+There was past work from Chaitanaya, for the graceful timeout.
 
-But I think what we really want here is actually the set_current_state
-to force yield CPU for a short period. The latency should be mild.
+The sequence for the fix I have in mind is:
+1. quiesce the queue
+2. complete all requests which has completed, with its status
+3. stop the transport (queues)
+4. complete remaining pending requests with error status
 
->
-> Just found that the cond_sched() in __read_swap_cache_async() has been
-> changed to schedule_timeout_uninterruptible(1) to fix some live lock.
-> Details are in the description of commit 029c4628b2eb ("mm: swap: get
-> rid of livelock in swapin readahead").  I think the similar issue may
-> happen here too.  So, we must use schedule_timeout_uninterruptible(1)
-> here until some other better idea becomes available.
+This should work regardless of surprise case.
+An additional/optional graceful timeout on non-surprise case can be helpful=
+ for #2.
 
-Indeed, I'll switch to schedule_timeout_uninterruptible(1). I've
-tested and posted the result with schedule_timeout_uninterruptible(1)
-before, it looked fine, or even better.
+WDYT?
+
+> Thanks,
+> Ming
+
 
