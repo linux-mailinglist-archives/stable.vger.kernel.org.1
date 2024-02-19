@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-20716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C775085AB7E
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:50:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 894F485AB7F
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:50:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC3FC1C217A8
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:50:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 006D1B23948
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:50:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A66B944C93;
-	Mon, 19 Feb 2024 18:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FB8841C7F;
+	Mon, 19 Feb 2024 18:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QX5RP/be"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VLVmzdLc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6598C41A82
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E617C376F5
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708368636; cv=none; b=L7wcEOBd4zE/kSOQu0l/K2seJR8sxkkNq1jlU/mkZa3GmMh9fHk0yiUppFOgjXSgyEzW2Fwn0Oa+E5/ZSrQrbd6hs3ZWXGjdhA2HsXKf1jmM69HZvroa+szvNtU04jcjicZNNXQd4LuwMJYxQ0PdsOq4noh5yO0xrjb5B8NOBjg=
+	t=1708368641; cv=none; b=lvuZK1Kwo7hi6bJx1QOTd89qjF56s9ZeV4XlRRs7zHDrI6atFedXmGRgJdtLLDKbF1YyWCb8pSwiBGpNvURQZE3CH2E78AFGUGNY5p2PRgI2Y3c9ma8uQYDHZdbVKtTV7ew9CFjE4GUfe+rloz3tem49U7lLjAdvnPYLWpt8IE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708368636; c=relaxed/simple;
-	bh=2gqo5D9S6b5LYxkmHj8BD2eQqnqHFWIBU/AGU3a15U0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=IOR7SmbEvXb1nsQDfXpzrJlGpOrNnsN8WaGCJE+QXfmZn39bX2E2qHBkBZcgew//HubrfVMN834WAioiTy1RfYRYLWJR/aXk/++O30ZSyr+3nPB6sq9/vkjS/5IbBF9gOY3kxOX+fJ8cyVQ+ASZxUi0lY01JJlpcT09s0FxAT+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QX5RP/be; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6B96C433F1;
-	Mon, 19 Feb 2024 18:50:35 +0000 (UTC)
+	s=arc-20240116; t=1708368641; c=relaxed/simple;
+	bh=VMCHQzmWdJINIow8tH9fFHsWED4wjuEC5xNsAXnRjQ8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=lNKo11eJdyZcIkxyd5BX82Cngbo3M7l9l3A+BRmQlAKiFo2XqEWGnMDg0ejOhgIYKzGBkD3q4KD++Mvhd8BwfvGkAN0uOq9m1UjYryjzIr8relp6xR9RUwA1+bqODJpOc838XE8rKACailXPA3OOp9LI/yLK2Tg2HJjTHDmI96U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VLVmzdLc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03034C43390;
+	Mon, 19 Feb 2024 18:50:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708368636;
-	bh=2gqo5D9S6b5LYxkmHj8BD2eQqnqHFWIBU/AGU3a15U0=;
+	s=korg; t=1708368640;
+	bh=VMCHQzmWdJINIow8tH9fFHsWED4wjuEC5xNsAXnRjQ8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=QX5RP/beNt/RPmFUSxJaDLAfVkhDIMmAqUcDxbMokJ7Y8caOtB0BfX5vdQ84CN7BA
-	 8qbtjC3XvLRdyLO5Uzrp/TWDm3xcxYGvJ3nlwETbW3Gg1VOoWYhMmXYkTnkJMfN0ou
-	 Po4VVnnahD62VYvhia3xNtmhR0olQdUNkybqUgAI=
-Subject: FAILED: patch "[PATCH] fs,hugetlb: fix NULL pointer dereference in" failed to apply to 5.15-stable tree
+	b=VLVmzdLcU8AS2CYOWOPO6rsCAPwm5jZ1FehhuWwo6M+b9B5IuGqXblhNzT7xTb9lu
+	 acX3bmcJSqsdGRzCAuiS7oNlThUUc1qhWh28PY0oA17PCJYmyl8fUY1LCGc/7cGEb0
+	 YxZtm8WWck9LzwJ7yxaN71xRhrM4rD72pYNhpjVQ=
+Subject: FAILED: patch "[PATCH] fs,hugetlb: fix NULL pointer dereference in" failed to apply to 5.10-stable tree
 To: osalvador@suse.de,akpm@linux-foundation.org,mhocko@suse.com,muchun.song@linux.dev,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Feb 2024 19:50:33 +0100
-Message-ID: <2024021932-embody-commodore-0dec@gregkh>
+Date: Mon, 19 Feb 2024 19:50:37 +0100
+Message-ID: <2024021936-oblivion-cloud-41d4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 79d72c68c58784a3e1cd2378669d51bfd0cb7498
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021932-embody-commodore-0dec@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021936-oblivion-cloud-41d4@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
 79d72c68c587 ("fs,hugetlb: fix NULL pointer dereference in hugetlbs_fill_super")
 d00365175e09 ("hugetlbfs: use helper macro SZ_1{K,M}")
+a25fddced835 ("hugetlbfs: make hugepage size conversion more readable")
 
 thanks,
 
