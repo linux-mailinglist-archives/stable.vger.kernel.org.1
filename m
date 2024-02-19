@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-20601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BBF385A8A1
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 17:19:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37ECD85A8B8
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 17:21:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0A011F250A7
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 16:19:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53DB51C23784
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 16:21:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 759E83D543;
-	Mon, 19 Feb 2024 16:18:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86B4E3CF56;
+	Mon, 19 Feb 2024 16:19:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rhTxUg6d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nEiA+QyU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3403A3D3A3
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 16:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47BF441C85
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 16:19:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708359532; cv=none; b=G/bf5Qav5HmFqAcBopQT9j/b2UKevkFYNaqm0T+MNHo7PXaAcyws+G0PC7oRT5hlNKj8SNHaUY5XRGooRByHAqIE9AJsmYsXs3OenxZSKkX9WZuP4AFoAhLKPD+MPYoJ2c5zMjSB5LMuRKlrE0hGS9gGls/yUbILVTINupkzyo4=
+	t=1708359586; cv=none; b=hhnxRvKjc4ighoVFQ3BkevM2gOUbhQ0tmz9JF7OUVonNyEA/l2JSgk5yX8h+i1QiTObVfrWm0ycsy62pmhY6CzO24GGnSyeD2P2T34DZFeSEy8YzlsC+5ntQ8sfWZvsF3tUVSGLyEFfiiqMlEdCLPVnIdxutOwqReN5wqTQVdLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708359532; c=relaxed/simple;
-	bh=ITXqtI2yjAJI6MVAvXNQ41L6qG6E+m36mK0Z9lUdwSs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pQKlYPp5Er9rls+lQYPC1Ikp/RvuRX0MGrjc7QDe1wNhMvVuB3hNe8DMM1r2UWT4Z+SyeDMd0H0q6hK16Pp9lwbHfJQVRfCrubeOlZWwaBiE1c7CC+yiyzKMCey1W9OetZjPLmO0gydc9OyJRIS1DkX9vXuYaMjRCOsGpuANWRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rhTxUg6d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E5B2C433F1;
-	Mon, 19 Feb 2024 16:18:51 +0000 (UTC)
+	s=arc-20240116; t=1708359586; c=relaxed/simple;
+	bh=1dycVF/uJZAMMkIv3d/eS8YWB48UmzaQMa3zDFG5zOY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=L6QeTAppmRW9N21R6fU4FkZvvrDVM+zG9CD44aJXVGfbqmLuf6G1+XvQtbI4JNNzElDtWugPUTYh70EaBAHGwbd/7/gkz2Jvbchv4A6aIKB18o/pAWdmLo38Ikexz3avtyuTURSZINXUt4TyZ70/PX64QXhySZEb8To0ufTn0lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nEiA+QyU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD64DC43394;
+	Mon, 19 Feb 2024 16:19:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708359531;
-	bh=ITXqtI2yjAJI6MVAvXNQ41L6qG6E+m36mK0Z9lUdwSs=;
+	s=korg; t=1708359586;
+	bh=1dycVF/uJZAMMkIv3d/eS8YWB48UmzaQMa3zDFG5zOY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=rhTxUg6djpzgkvvO2OaTRKGUFfilS9pOKfhAR/8JjY1g2QNgvemk/yCghMHB6GjND
-	 J0GAoBbOAsbEZ1r8tkp1lI6ekGjUF2/U8ED7ncOlLskUQsgBtsUDQUT5HGFhcqLchF
-	 4ovl83tE4LcFCsu4FM+4K0hivsUVYZhk6siOmrPs=
-Subject: FAILED: patch "[PATCH] tracing/probes: Fix to show a parse error for bad type for" failed to apply to 5.4-stable tree
-To: mhiramat@kernel.org
+	b=nEiA+QyUp8zzaVr4ZQoAd1kDG71N8+bCxQ637TXr9IuuQjLRKKe6vsfEyx8OX1iR7
+	 zBAFzobun8RPH30nBTv3+iWgR4Fx3ajoBgRYWzOvMCobJrV51LsFv7D8H9pDgd9OFk
+	 IZ6Zvo+P0Nuyxd3XF5lTJRe3BC48xEtWgsFX2yTU=
+Subject: FAILED: patch "[PATCH] Revert "drm/amd/display: increased min_dcfclk_mhz and" failed to apply to 6.7-stable tree
+To: sohaib.nadeem@amd.com,alexander.deucher@amd.com,alvin.lee2@amd.com,aurabindo.pillai@amd.com,daniel.wheeler@amd.com,mario.limonciello@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Feb 2024 17:18:42 +0100
-Message-ID: <2024021942-pursuit-privacy-b2c3@gregkh>
+Date: Mon, 19 Feb 2024 17:19:43 +0100
+Message-ID: <2024021942-sherry-overstock-5857@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.7-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.7.y
 git checkout FETCH_HEAD
-git cherry-pick -x 8c427cc2fa73684ea140999e121b7b6c1c717632
+git cherry-pick -x a538dabf772c169641e151834e161e241802ab33
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021942-pursuit-privacy-b2c3@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021942-sherry-overstock-5857@gregkh' --subject-prefix 'PATCH 6.7.y' HEAD^..
 
 Possible dependencies:
 
-8c427cc2fa73 ("tracing/probes: Fix to show a parse error for bad type for $comm")
-27973e5c64b9 ("tracing/probes: Add string type check with BTF")
-d157d7694460 ("tracing/probes: Support BTF field access from $retval")
-c440adfbe302 ("tracing/probes: Support BTF based data structure field access")
-ebeed8d4a555 ("tracing/probes: Move finding func-proto API and getting func-param API to trace_btf")
-b1d1e90490b6 ("tracing/probes: Support BTF argument on module functions")
-1f9f4f4777e7 ("tracing/probes: Fix to add NULL check for BTF APIs")
-53431798f4bb ("tracing/probes: Fix tracepoint event with $arg* to fetch correct argument")
-fd26290ec89d ("tracing/probes: Add BTF retval type support")
-18b1e870a496 ("tracing/probes: Add $arg* meta argument for all function args")
-b576e09701c7 ("tracing/probes: Support function parameters if BTF is available")
-1b8b0cd754cd ("tracing/probes: Move event parameter fetching code to common parser")
-e2d0d7b2f42d ("tracing/probes: Add tracepoint support on fprobe_events")
-334e5519c375 ("tracing/probes: Add fprobe events for tracing function entry and exit.")
-30460c21ed40 ("tracing/probes: Avoid setting TPARG_FL_FENTRY and TPARG_FL_RETURN")
-d4505aa6afae ("tracing/probes: Reject symbol/symstr type for uprobe")
-b26a124cbfa8 ("tracing/probes: Add symstr type for dynamic events")
-61b304b73ab4 ("tracing/fprobe: Fix to check whether fprobe is registered correctly")
-752be5c5c910 ("tracing/eprobe: Add eprobe filter support")
-ab8384442ee5 ("tracing/probes: Have kprobes and uprobes use $COMM too")
+a538dabf772c ("Revert "drm/amd/display: increased min_dcfclk_mhz and min_fclk_mhz"")
+2ff33c759a42 ("drm/amd/display: increased min_dcfclk_mhz and min_fclk_mhz")
 
 thanks,
 
@@ -96,66 +78,38 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 8c427cc2fa73684ea140999e121b7b6c1c717632 Mon Sep 17 00:00:00 2001
-From: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Date: Wed, 24 Jan 2024 00:02:34 +0900
-Subject: [PATCH] tracing/probes: Fix to show a parse error for bad type for
- $comm
+From a538dabf772c169641e151834e161e241802ab33 Mon Sep 17 00:00:00 2001
+From: Sohaib Nadeem <sohaib.nadeem@amd.com>
+Date: Mon, 29 Jan 2024 17:33:40 -0500
+Subject: [PATCH] Revert "drm/amd/display: increased min_dcfclk_mhz and
+ min_fclk_mhz"
 
-Fix to show a parse error for bad type (non-string) for $comm/$COMM and
-immediate-string. With this fix, error_log file shows appropriate error
-message as below.
+[why]:
+This reverts commit 2ff33c759a4247c84ec0b7815f1f223e155ba82a.
 
- /sys/kernel/tracing # echo 'p vfs_read $comm:u32' >> kprobe_events
-sh: write error: Invalid argument
- /sys/kernel/tracing # echo 'p vfs_read \"hoge":u32' >> kprobe_events
-sh: write error: Invalid argument
- /sys/kernel/tracing # cat error_log
+The commit caused corruption when running some applications in fullscreen
 
-[   30.144183] trace_kprobe: error: $comm and immediate-string only accepts string type
-  Command: p vfs_read $comm:u32
-                            ^
-[   62.618500] trace_kprobe: error: $comm and immediate-string only accepts string type
-  Command: p vfs_read \"hoge":u32
-                              ^
-Link: https://lore.kernel.org/all/170602215411.215583.2238016352271091852.stgit@devnote2/
-
-Fixes: 3dd1f7f24f8c ("tracing: probeevent: Fix to make the type of $comm string")
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
+Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Sohaib Nadeem <sohaib.nadeem@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 
-diff --git a/kernel/trace/trace_probe.c b/kernel/trace/trace_probe.c
-index 4dc74d73fc1d..c6da5923e5b9 100644
---- a/kernel/trace/trace_probe.c
-+++ b/kernel/trace/trace_probe.c
-@@ -1159,9 +1159,12 @@ static int traceprobe_parse_probe_arg_body(const char *argv, ssize_t *size,
- 	if (!(ctx->flags & TPARG_FL_TEVENT) &&
- 	    (strcmp(arg, "$comm") == 0 || strcmp(arg, "$COMM") == 0 ||
- 	     strncmp(arg, "\\\"", 2) == 0)) {
--		/* The type of $comm must be "string", and not an array. */
--		if (parg->count || (t && strcmp(t, "string")))
-+		/* The type of $comm must be "string", and not an array type. */
-+		if (parg->count || (t && strcmp(t, "string"))) {
-+			trace_probe_log_err(ctx->offset + (t ? (t - arg) : 0),
-+					NEED_STRING_TYPE);
- 			goto out;
-+		}
- 		parg->type = find_fetch_type("string", ctx->flags);
- 	} else
- 		parg->type = find_fetch_type(t, ctx->flags);
-diff --git a/kernel/trace/trace_probe.h b/kernel/trace/trace_probe.h
-index 850d9ecb6765..c1877d018269 100644
---- a/kernel/trace/trace_probe.h
-+++ b/kernel/trace/trace_probe.h
-@@ -515,7 +515,8 @@ extern int traceprobe_define_arg_fields(struct trace_event_call *event_call,
- 	C(BAD_HYPHEN,		"Failed to parse single hyphen. Forgot '>'?"),	\
- 	C(NO_BTF_FIELD,		"This field is not found."),	\
- 	C(BAD_BTF_TID,		"Failed to get BTF type info."),\
--	C(BAD_TYPE4STR,		"This type does not fit for string."),
-+	C(BAD_TYPE4STR,		"This type does not fit for string."),\
-+	C(NEED_STRING_TYPE,	"$comm and immediate-string only accepts string type"),
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
+index ba76dd4a2ce2..a0a65e099104 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
+@@ -2760,7 +2760,7 @@ static int build_synthetic_soc_states(bool disable_dc_mode_overwrite, struct clk
+ 	struct _vcs_dpi_voltage_scaling_st entry = {0};
+ 	struct clk_limit_table_entry max_clk_data = {0};
  
- #undef C
- #define C(a, b)		TP_ERR_##a
+-	unsigned int min_dcfclk_mhz = 399, min_fclk_mhz = 599;
++	unsigned int min_dcfclk_mhz = 199, min_fclk_mhz = 299;
+ 
+ 	static const unsigned int num_dcfclk_stas = 5;
+ 	unsigned int dcfclk_sta_targets[DC__VOLTAGE_STATES] = {199, 615, 906, 1324, 1564};
 
 
