@@ -1,89 +1,143 @@
-Return-Path: <stable+bounces-20516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6882285A1CE
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 12:21:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A656085A1E5
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 12:25:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED030281822
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 11:21:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A3FC1F2400D
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 11:25:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 998632C195;
-	Mon, 19 Feb 2024 11:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 322602C1AC;
+	Mon, 19 Feb 2024 11:24:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="b13SKENs";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="OlFO0d6U"
+	dkim=pass (2048-bit key) header.d=iokpp.de header.i=@iokpp.de header.b="CHUZ/QSl";
+	dkim=permerror (0-bit key) header.d=iokpp.de header.i=@iokpp.de header.b="y2jCVXIe"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.166])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5E62577C
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 11:21:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708341668; cv=none; b=Ja/V5r9wgKilJImw1gCG4G0T1zMFWtw0rLcudLiYvE4p7d2bqSnd0uDPD4SUQSKB1hGAmrOYbFThUq20pb4qRIRgR6MTaIi88gNwRG8+Yea0fn/hRzZY31tNKtYSC36baOiHXtBF3Zf/b2wI1fgoT0uubVIT5erIhfIy0KsA2yY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708341668; c=relaxed/simple;
-	bh=yo/ZvKzViqjvGMWdGdo3x3uekMZOwz9bQ0ZXVLTJDes=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=YwuyMgkpqBGqlnHx5OjLt8++syIjKDRTyDY/TVYBCdldCUNuEw1pVNLe4IsFYOQdwdn35cgk4fCpArLzf81sE2kHr2oQw+YsaDDDEBqsG9qbcsbRoGIVD+6/5dDYHLjzbVF1JGunxDuxPKTznbdFMpSP108lnocO/pKytXYejEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=b13SKENs; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=OlFO0d6U; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1708341663;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yo/ZvKzViqjvGMWdGdo3x3uekMZOwz9bQ0ZXVLTJDes=;
-	b=b13SKENsz2b2T1uBEPVPwbOu3Nu7NwHmO5zhIcMAkoasXeXgtrTt23rIVzrZIYgEE9ikQx
-	rY/HlC2jrSyWZ/j1BjyM12zeZ5kfNMNcH8/H5UovsrX8aaD6o2klixk4ASFC748GxoSu4x
-	uX9RlVqFasK4/j9tAG6ban+G8dxihUco3Owwa0P3eldLoMNROVK4Ozya9AvrIQzYqTCMMe
-	+SW0XbwowneXwvnfnMCpsdmXfk5UtV989bmpcJieR++9LdHoX6C7B4mwBUMxcE0Dvc085t
-	cAcR0T9aoJnJqlgS4R21XLL+0WvDAIu/XY2IPZmP9D2pmIzthwKn0B3ghRsurA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1708341663;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yo/ZvKzViqjvGMWdGdo3x3uekMZOwz9bQ0ZXVLTJDes=;
-	b=OlFO0d6Uwg6+UkoBUbUmVjUFoAiQYoTU3Nkc0lFM3MRXZ2EN8xlgobHHVV0KTVs/Oa34GW
-	iTjUTgbJGibT1aAg==
-To: Felix Moessbauer <felix.moessbauer@siemens.com>, stable@vger.kernel.org
-Cc: dave@stgolabs.net, bigeasy@linutronix.de, petr.ivanov@siemens.com,
- jan.kiszka@siemens.com
-Subject: Re: [PATCH][5.10, 5.15, 6.1][1/1] hrtimer: Ignore slack time for RT
- tasks in schedule_hrtimeout_range()
-In-Reply-To: <20240219080851.27386-2-felix.moessbauer@siemens.com>
-References: <20240219080851.27386-1-felix.moessbauer@siemens.com>
- <20240219080851.27386-2-felix.moessbauer@siemens.com>
-Date: Mon, 19 Feb 2024 12:21:03 +0100
-Message-ID: <87sf1oaee8.ffs@tglx>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97FE2C1A8;
+	Mon, 19 Feb 2024 11:24:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=81.169.146.166
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708341887; cv=pass; b=cCB7fM/vr0hPaefWpVkMdLOoIlOXOOq8/pIYOIsdL6cllTb2ivYfoJ9OD80gi8nIGFo3557C5lfyQKRlmttg+Oqlnq4Goh1UlHQCZVsaPu49EDmJvOgSBCIDC8ki7oj3GAEFtatGHQ0zWwG4xGQ88GmroQ1/WeBgGjJIqbl/osE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708341887; c=relaxed/simple;
+	bh=CECuXd/sAjuMl8S3hYucJLp7m080yOv2QH0Zc6Te/CE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=AwGPNrNAJto61aFcEFL2iPs8Xg/8X5EAi9AmCnXa0LKF00/J7nHkCEWPeyR2p4WM/OAhk6KzWn6cmNRYSSiPiYOehT9Gpidh7cvSpU9DEuDza60wEhtmgU3Rh169pdrvQP+OkiHy9KlCAnd3NuwNK8t5gkpIAMjodGRbVOR6N88=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iokpp.de; spf=none smtp.mailfrom=iokpp.de; dkim=pass (2048-bit key) header.d=iokpp.de header.i=@iokpp.de header.b=CHUZ/QSl; dkim=permerror (0-bit key) header.d=iokpp.de header.i=@iokpp.de header.b=y2jCVXIe; arc=pass smtp.client-ip=81.169.146.166
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iokpp.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=iokpp.de
+ARC-Seal: i=1; a=rsa-sha256; t=1708341874; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=jn6KI7Y+2bQKmHtzMpZ38jQcvIwTANNdQB4gmsojPYn0qOkXeQPhu2NxP4/9/P3RQt
+    4U7r7Aaqx88rm0wCTkwYCW8v3pNTkfEBZj+YQrUVpGTvurnrnouqBbihgwFc89LpphDn
+    k31Cg1RvKzs2/ZlCy9mA2AlLDsupt3UiT55WEOo+W5bXP+XztJ9+ZaFirPnecaXPjWYY
+    Xx5F3a7u+YuGFhpu4/+YLWQWZDJu57u/sCQLrHAjoBWhgIgUqMVQB84dg1hNwyCFKbY/
+    JOpH9HQ8aqIq0JxDt0FMhAdyrnFi9q2DEz7//14qulIjHkEQE2wWxkQ5UDAcv5nGw25k
+    YZiQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1708341874;
+    s=strato-dkim-0002; d=strato.com;
+    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=c2BOxqJDmwafqSoi14gmFtIw7xEH8uiVYYguCeROLgM=;
+    b=tQSoTO42PyGFWtzDApFtdiKGQQSVQ4rnwXzLIDTuXY99vdTIwYoc32RYMixP6uKHhM
+    QoENrizvpI/glEspsfhaRxolt5gJGlruvGOBgGmI5cwDaeGHvoD4xMF5g7Tm6NzP8+R6
+    7kHEnYScoS4CtbheJmliYd8YvLZppDvzuRjJr1NaaAxGxYFAVhWu1exG71ENUsFNMSMJ
+    wbVVJEdfrzYubWwsXgbuY/5dvcJoFEe6J4Dl44LpUT9MPpFmjJHKhD62+MhbUXvyQZoX
+    sbCxCWRWGuveYRnP+v8M7LokTet4ktqlPj011ILvWCMg6dyZgCzHbY4cPSmFyysWP/vU
+    UhLA==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1708341874;
+    s=strato-dkim-0002; d=iokpp.de;
+    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=c2BOxqJDmwafqSoi14gmFtIw7xEH8uiVYYguCeROLgM=;
+    b=CHUZ/QSliIpXr6X4GsuWL7JBHA8muK0btQIqLqV4yTeuWhaZzoyLBuIPGv/0KMtOQ8
+    VT4HbGmkpFsw8JUrLmx/V806U0iXn/GPr13Tcf3gjAilSUTkARAgWXh+fVoeQw9nLcSH
+    JxJvKnJAlVrGrZiG+OivpZKT7XWMzjyuLz89C9WNOOXJ+177YwJ0DRPWRazgB5U27kNA
+    QjNXJ/EKql6IULECONxYistwuGYswr7Jyjm81MUe3ecM2h2ucoNvZlKMQb7hWL2OQRr1
+    i3c0FPipWZTH+Ovrm4wFuLuWG3Uy0Oj2Dq7k5nTuEpvuS+FQP85Yei43QrxmqgIslWQV
+    Wwzw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1708341874;
+    s=strato-dkim-0003; d=iokpp.de;
+    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=c2BOxqJDmwafqSoi14gmFtIw7xEH8uiVYYguCeROLgM=;
+    b=y2jCVXIeaacOIfsN+IEXyu7hnpx20lwahwAAcoju47Oz5dTbSge4oWaHHrLYEOXlsJ
+    NXg1XP1wD1aW6dewwsDw==
+X-RZG-AUTH: ":LmkFe0i9dN8c2t4QQyGBB/NDXvjDB6pBSedrgBzPc9DUyubU4DD2QzemV2tdlNlNRZBXiUw="
+Received: from Munilab01-lab.micron.com
+    by smtp.strato.de (RZmta 49.11.2 AUTH)
+    with ESMTPSA id z34ed901JBOWFh1
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Mon, 19 Feb 2024 12:24:32 +0100 (CET)
+From: Bean Huo <beanhuo@iokpp.de>
+To: bhelgaas@google.com,
+	helgaas@kernel.org,
+	sathyanarayanan.kuppuswamy@linux.intel.com
+Cc: linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Bean Huo <beanhuo@micron.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v3] PCI: Increase maximum PCIe physical function number to 7 for non-ARI devices
+Date: Mon, 19 Feb 2024 12:24:22 +0100
+Message-Id: <20240219112422.54657-1-beanhuo@iokpp.de>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
 
-On Mon, Feb 19 2024 at 09:08, Felix Moessbauer wrote:
-> From: Davidlohr Bueso <dave@stgolabs.net>
+From: Bean Huo <beanhuo@micron.com>
 
-This lacks a reference to the upstream commit.
+As per PCIe r6.2, sec 6.13 titled "Alternative Routing-ID Interpretation
+(ARI)", up to 8 [fn # 0..7] Physical Functions(PFs) are allowed in an
+non-ARI capable device. Previously, our implementation erroneously limited
+the maximum number of PFs to 7 for endpoints without ARI support.
 
-Commit 0c52310f260014d95c1310364379772cb74cf82d upstream.
+This patch corrects the maximum PF count to adhere to the PCIe specification
+by allowing up to 8 PFs on non-ARI capable devices. This change ensures better
+compliance with the standard and improves compatibility with devices relying
+on this specification.
 
-> While in theory the timer can be triggered before expires + delta, for the
-> cases of RT tasks they really have no business giving any lenience for
-> extra slack time, so override any passed value by the user and always use
-> zero for schedule_hrtimeout_range() calls. Furthermore, this is similar to
-> what the nanosleep(2) family already does with current->timer_slack_ns.
->
-> Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> Link: https://lore.kernel.org/r/20230123173206.6764-3-dave@stgolabs.net
+Fixes: c3df83e01a96 ("PCI: Clean up pci_scan_slot()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bean Huo <beanhuo@micron.com>
+---
+Changelog:
+	v2--v3:
+		1. Update commit messag 
+	v1--v2:
+		1. Add Fixes tag
+		2. Modify commit message
+---
+ drivers/pci/probe.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index ed6b7f48736a..8c3d0f63bc13 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -2630,7 +2630,8 @@ static int next_fn(struct pci_bus *bus, struct pci_dev *dev, int fn)
+ 	if (pci_ari_enabled(bus))
+ 		return next_ari_fn(bus, dev, fn);
+ 
+-	if (fn >= 7)
++	/* If EP does not support ARI, the maximum number of functions should be 7 */
++	if (fn > 7)
+ 		return -ENODEV;
+ 	/* only multifunction devices may have more functions */
+ 	if (dev && !dev->multifunction)
+-- 
+2.34.1
+
 
