@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-20700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A1F885AB56
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:44:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB79B85AB5A
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:45:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 116B71F23EA4
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:44:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31847B21702
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:45:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37EE4F9E0;
-	Mon, 19 Feb 2024 18:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93A9F1D53C;
+	Mon, 19 Feb 2024 18:45:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FXWo0BNv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qTZGhvj9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED5C84878A
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:44:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5454A5697
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:45:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708368265; cv=none; b=AGrHJ7AkeXPB1WoGasWd7eeQU+p/xyq5EQJHz2mAW2TwZ5q20EFzRADoe8dQVcRbywIz1pVjtss3jwz8TwkAINB7a8q6LmJhjvWToKIy42CbFpvpRXyiqxBl32RqGAgtEM9ZPUrb1ctlnLnP6teTN8V6nk4TDThXx3JtxIybKiA=
+	t=1708368300; cv=none; b=uEBheLKoenz0oAUqN6j4ZZ6AaNU9LglW7fEtetOJvl2PTlwPAojHOAePIt3GXFkq8Xxl9zJSU4sHmkRDcsxiRGVx6/+roFeiHuwSQRV0xV2zARSpGbiedeFFkIpMjzvgpv40bPMSQShfvFQiWkYDzmbbJ4hQy1zAKsxBbaKgv1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708368265; c=relaxed/simple;
-	bh=+r/Rhlm93M5FhjDKOX/aTcgz5A7sdqyP/1TXmfCrX/g=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=F4EvIS1jgHEBA3o7msi6rqoF8P4408My8JViQeOchwMewmmhWhK+AnHg3qg66WodfDdvEeQSs1R2ADTURAeXG+7T/77Psw9uUUGLnh2ez3P6vyFaCF/noY0ai4cmE7ANzBhHEjeHE3Ezp2hrlI4VUzA/5fTWXSlLUsJADJZz7+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FXWo0BNv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C60C433C7;
-	Mon, 19 Feb 2024 18:44:23 +0000 (UTC)
+	s=arc-20240116; t=1708368300; c=relaxed/simple;
+	bh=dEMkfzBc7hcnMNZ+KVbRCKkJVZD3750ZqSRae/IGX2M=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jDRwifZOVjYIs7qMOqaePTacf7F2lX6/rC1iQg7gxCvZMA5uGkMw8vfnYBxzn5Q1EfNu8k5HsddBUJy+yGbwztf8A+dBFuasGXDbFtN9FFPXGdodcAplIcfgiGQP2L0u6k9w4dqQRrXjHrzG1jDMtuX92VAk3hbJJsMWWowryiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qTZGhvj9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EDC5C433C7;
+	Mon, 19 Feb 2024 18:44:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708368264;
-	bh=+r/Rhlm93M5FhjDKOX/aTcgz5A7sdqyP/1TXmfCrX/g=;
+	s=korg; t=1708368300;
+	bh=dEMkfzBc7hcnMNZ+KVbRCKkJVZD3750ZqSRae/IGX2M=;
 	h=Subject:To:Cc:From:Date:From;
-	b=FXWo0BNvWJgtEtlDsFAebFyYS11Pb5OZRsKJAGl1ROWFBxDDe8W5QT3NYQOiXBmOd
-	 t8Od1bDulo3s62hMxFrlXnWQBR+uuLr38zKRndpHE8rERFcqjsp12ELQGSNYT94Q3l
-	 DIOSxhEeNYVEtWAZNsw7a7toypOpS1dNeSjsIbtQ=
-Subject: FAILED: patch "[PATCH] arch/arm/mm: fix major fault accounting when retrying under" failed to apply to 6.7-stable tree
-To: surenb@google.com,agordeev@linux.ibm.com,akpm@linux-foundation.org,catalin.marinas@arm.com,christophe.leroy@csgroup.eu,dave.hansen@linux.intel.com,gerald.schaefer@linux.ibm.com,luto@kernel.org,mpe@ellerman.id.au,palmer@dabbelt.com,peterz@infradead.org,rmk+kernel@armlinux.org.uk,stable@vger.kernel.org,will@kernel.org,willy@infradead.org
+	b=qTZGhvj9OTiWht7Gs48GCAWqdp4bHscIQNbPbhMRDBDLzkhSW3L2WfCXepoFB3ZoZ
+	 /l2gGlgQm119ZxzTIzLADZabyUcuBL6sVxV64l5ug6bd6wHKshUD8gPr+rr75IDR+G
+	 23RcJhILE9xoYwCZbQEdDhaHvIDGmV1NrvkZ3tuI=
+Subject: FAILED: patch "[PATCH] arm64: Subscribe Microsoft Azure Cobalt 100 to ARM Neoverse" failed to apply to 5.15-stable tree
+To: eahariha@linux.microsoft.com,anshuman.khandual@arm.com,mark.rutland@arm.com,maz@kernel.org,oliver.upton@linux.dev,will@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Feb 2024 19:44:21 +0100
-Message-ID: <2024021921-bleak-sputter-5ecf@gregkh>
+Date: Mon, 19 Feb 2024 19:44:48 +0100
+Message-ID: <2024021948-flashing-prescribe-3dcf@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.7-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.7.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x e870920bbe68e52335a4c31a059e6af6a9a59dbb
+git cherry-pick -x fb091ff394792c018527b3211bbdfae93ea4ac02
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021921-bleak-sputter-5ecf@gregkh' --subject-prefix 'PATCH 6.7.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021948-flashing-prescribe-3dcf@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-e870920bbe68 ("arch/arm/mm: fix major fault accounting when retrying under per-VMA lock")
-c16af1212479 ("ARM: 9328/1: mm: try VMA lock-based page fault handling first")
+fb091ff39479 ("arm64: Subscribe Microsoft Azure Cobalt 100 to ARM Neoverse N2 errata")
+6aeadf7896bf ("Merge tag 'docs-arm64-move' of git://git.lwn.net/linux")
 
 thanks,
 
@@ -78,56 +78,96 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From e870920bbe68e52335a4c31a059e6af6a9a59dbb Mon Sep 17 00:00:00 2001
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Mon, 22 Jan 2024 22:43:05 -0800
-Subject: [PATCH] arch/arm/mm: fix major fault accounting when retrying under
- per-VMA lock
+From fb091ff394792c018527b3211bbdfae93ea4ac02 Mon Sep 17 00:00:00 2001
+From: Easwar Hariharan <eahariha@linux.microsoft.com>
+Date: Wed, 14 Feb 2024 17:55:18 +0000
+Subject: [PATCH] arm64: Subscribe Microsoft Azure Cobalt 100 to ARM Neoverse
+ N2 errata
 
-The change [1] missed ARM architecture when fixing major fault accounting
-for page fault retry under per-VMA lock.
+Add the MIDR value of Microsoft Azure Cobalt 100, which is a Microsoft
+implemented CPU based on r0p0 of the ARM Neoverse N2 CPU, and therefore
+suffers from all the same errata.
 
-The user-visible effects is that it restores correct major fault
-accounting that was broken after [2] was merged in 6.7 kernel. The
-more detailed description is in [3] and this patch simply adds the
-same fix to ARM architecture which I missed in [3].
+CC: stable@vger.kernel.org # 5.15+
+Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Acked-by: Marc Zyngier <maz@kernel.org>
+Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
+Link: https://lore.kernel.org/r/20240214175522.2457857-1-eahariha@linux.microsoft.com
+Signed-off-by: Will Deacon <will@kernel.org>
 
-Add missing code to fix ARM architecture fault accounting.
-
-[1] 46e714c729c8 ("arch/mm/fault: fix major fault accounting when retrying under per-VMA lock")
-[2] https://lore.kernel.org/all/20231006195318.4087158-6-willy@infradead.org/
-[3] https://lore.kernel.org/all/20231226214610.109282-1-surenb@google.com/
-
-Link: https://lkml.kernel.org/r/20240123064305.2829244-1-surenb@google.com
-Fixes: 12214eba1992 ("mm: handle read faults under the VMA lock")
-Reported-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Will Deacon <will@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/arch/arm/mm/fault.c b/arch/arm/mm/fault.c
-index e96fb40b9cc3..07565b593ed6 100644
---- a/arch/arm/mm/fault.c
-+++ b/arch/arm/mm/fault.c
-@@ -298,6 +298,8 @@ do_page_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
- 		goto done;
- 	}
- 	count_vm_vma_lock_event(VMA_LOCK_RETRY);
-+	if (fault & VM_FAULT_MAJOR)
-+		flags |= FAULT_FLAG_TRIED;
+diff --git a/Documentation/arch/arm64/silicon-errata.rst b/Documentation/arch/arm64/silicon-errata.rst
+index e8c2ce1f9df6..45a7f4932fe0 100644
+--- a/Documentation/arch/arm64/silicon-errata.rst
++++ b/Documentation/arch/arm64/silicon-errata.rst
+@@ -243,3 +243,10 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ASR            | ASR8601         | #8601001        | N/A                         |
+ +----------------+-----------------+-----------------+-----------------------------+
+++----------------+-----------------+-----------------+-----------------------------+
++| Microsoft      | Azure Cobalt 100| #2139208        | ARM64_ERRATUM_2139208       |
+++----------------+-----------------+-----------------+-----------------------------+
++| Microsoft      | Azure Cobalt 100| #2067961        | ARM64_ERRATUM_2067961       |
+++----------------+-----------------+-----------------+-----------------------------+
++| Microsoft      | Azure Cobalt 100| #2253138        | ARM64_ERRATUM_2253138       |
+++----------------+-----------------+-----------------+-----------------------------+
+diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
+index 7c7493cb571f..52f076afeb96 100644
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -61,6 +61,7 @@
+ #define ARM_CPU_IMP_HISI		0x48
+ #define ARM_CPU_IMP_APPLE		0x61
+ #define ARM_CPU_IMP_AMPERE		0xC0
++#define ARM_CPU_IMP_MICROSOFT		0x6D
  
- 	/* Quick path to respond to signals */
- 	if (fault_signal_pending(fault, regs)) {
+ #define ARM_CPU_PART_AEM_V8		0xD0F
+ #define ARM_CPU_PART_FOUNDATION		0xD00
+@@ -135,6 +136,8 @@
+ 
+ #define AMPERE_CPU_PART_AMPERE1		0xAC3
+ 
++#define MICROSOFT_CPU_PART_AZURE_COBALT_100	0xD49 /* Based on r0p0 of ARM Neoverse N2 */
++
+ #define MIDR_CORTEX_A53 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A53)
+ #define MIDR_CORTEX_A57 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A57)
+ #define MIDR_CORTEX_A72 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A72)
+@@ -193,6 +196,7 @@
+ #define MIDR_APPLE_M2_BLIZZARD_MAX MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M2_BLIZZARD_MAX)
+ #define MIDR_APPLE_M2_AVALANCHE_MAX MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M2_AVALANCHE_MAX)
+ #define MIDR_AMPERE1 MIDR_CPU_MODEL(ARM_CPU_IMP_AMPERE, AMPERE_CPU_PART_AMPERE1)
++#define MIDR_MICROSOFT_AZURE_COBALT_100 MIDR_CPU_MODEL(ARM_CPU_IMP_MICROSOFT, MICROSOFT_CPU_PART_AZURE_COBALT_100)
+ 
+ /* Fujitsu Erratum 010001 affects A64FX 1.0 and 1.1, (v0r0 and v1r0) */
+ #define MIDR_FUJITSU_ERRATUM_010001		MIDR_FUJITSU_A64FX
+diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
+index 967c7c7a4e7d..76b8dd37092a 100644
+--- a/arch/arm64/kernel/cpu_errata.c
++++ b/arch/arm64/kernel/cpu_errata.c
+@@ -374,6 +374,7 @@ static const struct midr_range erratum_1463225[] = {
+ static const struct midr_range trbe_overwrite_fill_mode_cpus[] = {
+ #ifdef CONFIG_ARM64_ERRATUM_2139208
+ 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
++	MIDR_ALL_VERSIONS(MIDR_MICROSOFT_AZURE_COBALT_100),
+ #endif
+ #ifdef CONFIG_ARM64_ERRATUM_2119858
+ 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
+@@ -387,6 +388,7 @@ static const struct midr_range trbe_overwrite_fill_mode_cpus[] = {
+ static const struct midr_range tsb_flush_fail_cpus[] = {
+ #ifdef CONFIG_ARM64_ERRATUM_2067961
+ 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
++	MIDR_ALL_VERSIONS(MIDR_MICROSOFT_AZURE_COBALT_100),
+ #endif
+ #ifdef CONFIG_ARM64_ERRATUM_2054223
+ 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
+@@ -399,6 +401,7 @@ static const struct midr_range tsb_flush_fail_cpus[] = {
+ static struct midr_range trbe_write_out_of_range_cpus[] = {
+ #ifdef CONFIG_ARM64_ERRATUM_2253138
+ 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
++	MIDR_ALL_VERSIONS(MIDR_MICROSOFT_AZURE_COBALT_100),
+ #endif
+ #ifdef CONFIG_ARM64_ERRATUM_2224489
+ 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
 
 
