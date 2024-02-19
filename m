@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-20638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2091785AAA7
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:12:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C95C385AAA8
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:12:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A1941F21C21
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:12:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4DD91B2101F
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:12:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 239C747F7E;
-	Mon, 19 Feb 2024 18:12:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBCC447F63;
+	Mon, 19 Feb 2024 18:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tpiey5UM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N4M38huV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7A323B19D
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B778446A1
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708366324; cv=none; b=rYIGCawNmHXrMvrnW1yeT/3xYpGU6nTRTVHP3jli7mSnCuuqqvGAvZbdaabCa9QVXj8OfadMqXNDlZebnlq3uVEya8J13bnoWJWjOuJTFhTmwqOowCSClGi4ICno1+nlW4VPm4lHl9PUN42bModblG58smtzqM3IVHCcO/OTONk=
+	t=1708366327; cv=none; b=a0QA9ijuUhUufKTcdSQpXOcGjiy6yhmmAXC3LYnYnYqByV+WZhYQJwGI8qCaaYN3sBe4wxKzgqKjgC98nT8QErflgoeMRBcCIHjMMhRj8xrxyCugnSd4ztCv0OkXxekftFI6Ezt83Rlp9sbqegg0LOxRCxfOw/afAUXCCPZzvEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708366324; c=relaxed/simple;
-	bh=LL9g41H6meElB5yfhSZ2d/rWOPc5j3sCe9YdsUzN05g=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=PJZ0YasrN7CBnkoRKLQDyiuITS0VRYZezM0FwSJJfsH/UeQwtpiFvil/+s8qkZXBVTsqJKHntLFsvEo7mLHf3l3wuQQtUBeUHhYqwWCl0zupg/VM/87FcMHR+xBp6owmxT4SaJeaFJluTcimBYZYtsmz9y0d4N9nly5yxPb+P0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tpiey5UM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1465FC433F1;
-	Mon, 19 Feb 2024 18:12:03 +0000 (UTC)
+	s=arc-20240116; t=1708366327; c=relaxed/simple;
+	bh=jRJBuG+l5OlkSSDs0gkA5lp+Df5sL+jcb9DsTtdP0Sg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ckCUwKE5IKHEWcV2CvyaB5UskwLSuzbG4KDF25jZ8gEMCcQQsTLfJYXf4YUyRjq5hShk1qf7diYQL1CmN6dGxmfjsI42psQlR49QD21XLtcOTypAkg+ebPDk1oYIJTA4Prt52o72YScO6/Dh1jsaATYkZhM2LrXJsioLLzfXQKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N4M38huV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C5FDC43390;
+	Mon, 19 Feb 2024 18:12:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708366324;
-	bh=LL9g41H6meElB5yfhSZ2d/rWOPc5j3sCe9YdsUzN05g=;
+	s=korg; t=1708366327;
+	bh=jRJBuG+l5OlkSSDs0gkA5lp+Df5sL+jcb9DsTtdP0Sg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Tpiey5UMypNx5CLe1DJcHrKLz1YJWm8Cyf8GxFG5gHBiN45zBSTwW6nOwyU2zC+XU
-	 Zo6JWG4l8gmr9CoK3/rRhKsFjS9FUBGZ70FEXU6/MSdCEHvv6XjDWou5HZbR4wYzWl
-	 jDwRnFYHAyO5jRksJKTJZcmoRQPsMOt2YlWPDTgk=
-Subject: FAILED: patch "[PATCH] getrusage: use sig->stats_lock rather than" failed to apply to 4.19-stable tree
-To: oleg@redhat.com,akpm@linux-foundation.org,dylanbhatch@google.com,ebiederm@xmission.com,stable@vger.kernel.org
+	b=N4M38huVYcJ89z2iKvOYcFoBSd4exxjEP88L5RaqSEPWTUVVFAzb/XrLdcE2JtId8
+	 7mqHwUK20dZaZH7cpM/udtBdCTtjbhbOUcO3VtY1V5/DF1W+TrfR77z43f1HlpIXPT
+	 t5y14KlH2TC4K1WdWbcjbAwCSg9nllkp6ElDq+5s=
+Subject: FAILED: patch "[PATCH] ksmbd: free aux buffer if ksmbd_iov_pin_rsp_read fails" failed to apply to 5.15-stable tree
+To: pchelkin@ispras.ru,linkinjeon@kernel.org,stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Feb 2024 19:11:42 +0100
-Message-ID: <2024021941-showman-diaper-6105@gregkh>
+Date: Mon, 19 Feb 2024 19:11:54 +0100
+Message-ID: <2024021954-gallows-product-204d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,27 +53,36 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x f7ec1cd5cc7ef3ad964b677ba82b8b77f1c93009
+git cherry-pick -x 108a020c64434fed4b69762879d78cd24088b4c7
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021941-showman-diaper-6105@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021954-gallows-product-204d@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-f7ec1cd5cc7e ("getrusage: use sig->stats_lock rather than lock_task_sighand()")
-daa694e41375 ("getrusage: move thread_group_cputime_adjusted() outside of lock_task_sighand()")
-13b7bc60b535 ("getrusage: use __for_each_thread()")
-c7ac8231ace9 ("getrusage: add the "signal_struct *sig" local variable")
-bdd565f817a7 ("y2038: rusage: use __kernel_old_timeval")
+108a020c6443 ("ksmbd: free aux buffer if ksmbd_iov_pin_rsp_read fails")
+1903e6d05781 ("ksmbd: fix potential double free on smb2_read_pipe() error path")
+e2b76ab8b5c9 ("ksmbd: add support for read compound")
+e202a1e8634b ("ksmbd: no response from compound read")
+7b7d709ef7cf ("ksmbd: add missing compound request handing in some commands")
+81a94b27847f ("ksmbd: use kvzalloc instead of kvmalloc")
+38c8a9a52082 ("smb: move client and server files to common directory fs/smb")
+30210947a343 ("ksmbd: fix racy issue under cocurrent smb2 tree disconnect")
+abcc506a9a71 ("ksmbd: fix racy issue from smb2 close and logoff with multichannel")
+ea174a918939 ("ksmbd: destroy expired sessions")
+f5c779b7ddbd ("ksmbd: fix racy issue from session setup and logoff")
+74d7970febf7 ("ksmbd: fix racy issue from using ->d_parent and ->d_name")
+34e8ccf9ce24 ("ksmbd: set NegotiateContextCount once instead of every inc")
+42bc6793e452 ("Merge tag 'pull-lock_rename_child' of git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs into ksmbd-for-next")
 
 thanks,
 
@@ -81,87 +90,50 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From f7ec1cd5cc7ef3ad964b677ba82b8b77f1c93009 Mon Sep 17 00:00:00 2001
-From: Oleg Nesterov <oleg@redhat.com>
-Date: Mon, 22 Jan 2024 16:50:53 +0100
-Subject: [PATCH] getrusage: use sig->stats_lock rather than
- lock_task_sighand()
+From 108a020c64434fed4b69762879d78cd24088b4c7 Mon Sep 17 00:00:00 2001
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+Date: Mon, 5 Feb 2024 14:19:16 +0300
+Subject: [PATCH] ksmbd: free aux buffer if ksmbd_iov_pin_rsp_read fails
 
-lock_task_sighand() can trigger a hard lockup. If NR_CPUS threads call
-getrusage() at the same time and the process has NR_THREADS, spin_lock_irq
-will spin with irqs disabled O(NR_CPUS * NR_THREADS) time.
+ksmbd_iov_pin_rsp_read() doesn't free the provided aux buffer if it
+fails. Seems to be the caller's responsibility to clear the buffer in
+error case.
 
-Change getrusage() to use sig->stats_lock, it was specifically designed
-for this type of use. This way it runs lockless in the likely case.
+Found by Linux Verification Center (linuxtesting.org).
 
-TODO:
-	- Change do_task_stat() to use sig->stats_lock too, then we can
-	  remove spin_lock_irq(siglock) in wait_task_zombie().
+Fixes: e2b76ab8b5c9 ("ksmbd: add support for read compound")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 
-	- Turn sig->stats_lock into seqcount_rwlock_t, this way the
-	  readers in the slow mode won't exclude each other. See
-	  https://lore.kernel.org/all/20230913154907.GA26210@redhat.com/
-
-	- stats_lock has to disable irqs because ->siglock can be taken
-	  in irq context, it would be very nice to change __exit_signal()
-	  to avoid the siglock->stats_lock dependency.
-
-Link: https://lkml.kernel.org/r/20240122155053.GA26214@redhat.com
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Reported-by: Dylan Hatch <dylanbhatch@google.com>
-Tested-by: Dylan Hatch <dylanbhatch@google.com>
-Cc: Eric W. Biederman <ebiederm@xmission.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/kernel/sys.c b/kernel/sys.c
-index 70ad06ad852e..f8e543f1e38a 100644
---- a/kernel/sys.c
-+++ b/kernel/sys.c
-@@ -1788,7 +1788,9 @@ void getrusage(struct task_struct *p, int who, struct rusage *r)
- 	unsigned long maxrss;
- 	struct mm_struct *mm;
- 	struct signal_struct *sig = p->signal;
-+	unsigned int seq = 0;
- 
-+retry:
- 	memset(r, 0, sizeof(*r));
- 	utime = stime = 0;
- 	maxrss = 0;
-@@ -1800,8 +1802,7 @@ void getrusage(struct task_struct *p, int who, struct rusage *r)
- 		goto out_thread;
- 	}
- 
--	if (!lock_task_sighand(p, &flags))
--		return;
-+	flags = read_seqbegin_or_lock_irqsave(&sig->stats_lock, &seq);
- 
- 	switch (who) {
- 	case RUSAGE_BOTH:
-@@ -1829,14 +1830,23 @@ void getrusage(struct task_struct *p, int who, struct rusage *r)
- 		r->ru_oublock += sig->oublock;
- 		if (maxrss < sig->maxrss)
- 			maxrss = sig->maxrss;
-+
-+		rcu_read_lock();
- 		__for_each_thread(sig, t)
- 			accumulate_thread_rusage(t, r);
-+		rcu_read_unlock();
-+
- 		break;
- 
- 	default:
- 		BUG();
- 	}
--	unlock_task_sighand(p, &flags);
-+
-+	if (need_seqretry(&sig->stats_lock, seq)) {
-+		seq = 1;
-+		goto retry;
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index ba7a72a6a4f4..0c97d3c86072 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -6173,8 +6173,10 @@ static noinline int smb2_read_pipe(struct ksmbd_work *work)
+ 		err = ksmbd_iov_pin_rsp_read(work, (void *)rsp,
+ 					     offsetof(struct smb2_read_rsp, Buffer),
+ 					     aux_payload_buf, nbytes);
+-		if (err)
++		if (err) {
++			kvfree(aux_payload_buf);
+ 			goto out;
++		}
+ 		kvfree(rpc_resp);
+ 	} else {
+ 		err = ksmbd_iov_pin_rsp(work, (void *)rsp,
+@@ -6384,8 +6386,10 @@ int smb2_read(struct ksmbd_work *work)
+ 	err = ksmbd_iov_pin_rsp_read(work, (void *)rsp,
+ 				     offsetof(struct smb2_read_rsp, Buffer),
+ 				     aux_payload_buf, nbytes);
+-	if (err)
++	if (err) {
++		kvfree(aux_payload_buf);
+ 		goto out;
 +	}
-+	done_seqretry_irqrestore(&sig->stats_lock, seq, flags);
+ 	ksmbd_fd_put(work, fp);
+ 	return 0;
  
- 	if (who == RUSAGE_CHILDREN)
- 		goto out_children;
 
 
