@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-20724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 505C085AB86
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:52:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FFFC85AB89
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:52:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06C4F283979
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:52:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 501A828111F
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:52:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19FC141C7F;
-	Mon, 19 Feb 2024 18:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEBD948789;
+	Mon, 19 Feb 2024 18:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hCRd/DhC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eh33AHjp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD6B4A3B
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF88B41C7F
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708368728; cv=none; b=CvyjS8G0IdUCeJwLuAINyUfJ08JCXqIsr7duFKOzQgxookXcqvsT8NwTbceRIGBFU3t4LckskidbqQM4u9KBJv79SN8/M06lDVpj/lf7A4OFgwDqBqX/6dSF9THeM9gsI8B/rQYyeQYrvlBk+ejK4owtwnkDT9EOn3w0oqrr/+g=
+	t=1708368734; cv=none; b=q+GWINcjlJ7UfyeoKPMsmz4VMMMpa6eFwrHMJmoewlnELoEu6sb/qrS3rbz+bkrVPtmbAH067cbXdq7wTN2c34hL6eecmGvb4gTEVVqBK/IpGD3vX1CiOzlDLd545zXwmBSWdUbMPoeFsjpPM4MTUrn8WOE3zJQcUL9JET80EjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708368728; c=relaxed/simple;
-	bh=hFFYoOAnrNlkmRndsCzC7LFIrOWduRJTtaoA4QOSRKQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=sjL7JqTbe20uIiBUClLb1uJ7+9/67u9q46rC4VaFG+Ea7kPp40EEJISB8vlF+gYky9vVHsXVaYqPjFHtt8mAidyU/6PGwRgDaxj7mOwtuvQRB0MkvK4/9bfLp4EWWJZBAlE7+y6xvOmEChroG7WCZpu5ad/pdF8A1xi4KqfbWVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hCRd/DhC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5D34C433C7;
-	Mon, 19 Feb 2024 18:52:07 +0000 (UTC)
+	s=arc-20240116; t=1708368734; c=relaxed/simple;
+	bh=UidZPw3apBNFX/GVBfH1wlucoGVcvxznF41y26oDDd8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=LNSQK1U+F4675lS+rR7mVhsUXhspZxrMUTCakTHPoEBLQAZqFne4zOAz9NwEsOANdg9zakRyE+yuGZygm0dEuy+AKXrWsi+yCnKWxBDWuO7yGN1va8xVgMnhEd6IiejGHIqFxCNw+IDeBN5MrsZCdmMrlsms3vH0tanOuoRoI40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eh33AHjp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DED7C433C7;
+	Mon, 19 Feb 2024 18:52:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708368728;
-	bh=hFFYoOAnrNlkmRndsCzC7LFIrOWduRJTtaoA4QOSRKQ=;
+	s=korg; t=1708368734;
+	bh=UidZPw3apBNFX/GVBfH1wlucoGVcvxznF41y26oDDd8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=hCRd/DhCwXchMZ/QMzNZcdjMmMXa4rg7kQfZNYjTytf5s5gkXb8t/bdLINOPL2yzi
-	 aG9JpUE7a7KpltiJ120L9dPLWkUet3MD5oz4iTBTroVg5czRnui7DdcDULIILsuH5R
-	 RADyhfeTEPIqV7GZuat7hRhGn0t3TPU0YFgXCJ2c=
-Subject: FAILED: patch "[PATCH] xen/events: close evtchn after mapping cleanup" failed to apply to 6.6-stable tree
+	b=eh33AHjpYf1d11vhEpU2JjPCUCAGgONu18KWVhvgHLlJJ3bwLg/dGI/eqTqr3lRCq
+	 RBDTlkzdqO5MaUcgj0Z3pBOgFmFGvuXp2EfcXUPGfZtHfGPjjtN8KM1Lz5CFTlR/BI
+	 kwypd0MPHyXZm06/+oRM10az3SSuDFI4AVotw0+E=
+Subject: FAILED: patch "[PATCH] xen/events: close evtchn after mapping cleanup" failed to apply to 6.1-stable tree
 To: mheyne@amazon.de,apanyaki@amazon.com,jgross@suse.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Feb 2024 19:52:05 +0100
-Message-ID: <2024021905-anger-exclusion-a2ae@gregkh>
+Date: Mon, 19 Feb 2024 19:52:08 +0100
+Message-ID: <2024021908-polymer-backyard-ce35@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x fa765c4b4aed2d64266b694520ecb025c862c5a9
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021905-anger-exclusion-a2ae@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021908-polymer-backyard-ce35@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -76,6 +76,9 @@ fa765c4b4aed ("xen/events: close evtchn after mapping cleanup")
 686464514fbe ("xen/events: reduce externally visible helper functions")
 e64e7c74b99e ("xen/events: avoid using info_for_irq() in xen_send_IPI_one()")
 9e90e58c11b7 ("xen: evtchn: Allow shared registration of IRQ handers")
+87797fad6cce ("xen/events: replace evtchn_rwlock with RCU")
+58f6259b7a08 ("xen/evtchn: Introduce new IOCTL to bind static evtchn")
+04d684875b30 ("xen: xen_debug_interrupt prototype to global header")
 
 thanks,
 
