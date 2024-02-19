@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-20712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28C2D85AB74
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:49:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23E7785AB75
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:49:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4D43284B7F
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:49:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF829284CA1
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:49:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C783F433BD;
-	Mon, 19 Feb 2024 18:49:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB2754779F;
+	Mon, 19 Feb 2024 18:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yC+kJ6NO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="12zxLPAI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8930E41C78
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:49:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB58841A81
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708368580; cv=none; b=LTEkvphl67rcPvTItUKUAGzHuCzs9P/7M50SN6DnFgSLujps8WBb3GevBZG0fV6kZwrR7S2RzDQ9nSnPYBRM3Ga9+Z1lPy+yS8Hoj5ffyMUxJOnZEf/dpP5RWA77wgavf3SZbLNoZXhPrT0JANh8TRnfXTwbtltbi7GVIY5RtXk=
+	t=1708368583; cv=none; b=RdSlKwERDI3OQsiL1Jg69JFzWCAjh2a+P/FBDxBxTf83qHaXThiVgR+NoFQ+3OTWpAwINzN96t1APChBW5b30bnD8TbHVkpZDZuVwF9YnlHtcl/3mlMLJkSPEkdDWcXqFqyGfPazds6Qo2gq7mQE4pKOvtfvRoJw2wDBCGpv1eA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708368580; c=relaxed/simple;
-	bh=91SkSUPIUMYiuLFwyUj/WK7DJ1jxB469ciKMoAj9RD4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=oeEvbe+XHZrtlnoYh/ya+y7xORfDtcjvtbdI96/PUBAfpNK5A4Mdvh5OWrQYHcpRcdrj6wq+4EFsr9rUEfxmUjxuL0MSVXvbvhUd1HTK+iHMC34hoSp3cBFgKkuECdl8PT8Gz619D+edmTKMHSTNpRUDkdR4ysdLpm64ZquDGxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yC+kJ6NO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9811AC433C7;
-	Mon, 19 Feb 2024 18:49:39 +0000 (UTC)
+	s=arc-20240116; t=1708368583; c=relaxed/simple;
+	bh=+FojZdXcMvjn5oDEeQ1OJMIYz2BiSCp8A0nh6WeI1/A=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=a3fpuffLpACpqkPSBItxjoprymULA0TBGvemgWtFALAw7ClOmgeVB3pPfoWzzbuSWmpWmehiL/WH1VEnQYxgPGK5d59KUZCUm2Qvq6L8LZjB8Votkry1hWL3S7mm372dG8F5cnAWw/xrvJz4PIkaqCI3mueihWn10EbQ3YLau/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=12zxLPAI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 134FBC43390;
+	Mon, 19 Feb 2024 18:49:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708368580;
-	bh=91SkSUPIUMYiuLFwyUj/WK7DJ1jxB469ciKMoAj9RD4=;
+	s=korg; t=1708368583;
+	bh=+FojZdXcMvjn5oDEeQ1OJMIYz2BiSCp8A0nh6WeI1/A=;
 	h=Subject:To:Cc:From:Date:From;
-	b=yC+kJ6NOg+B5OL6k86tKjgy5aYz6XDaBZTs7GdOjVh0tFU5mlKopkHNApfu4aTFpl
-	 PAw4VANnZDizF7WDCzhUP7vhZxYn3itgwJLbIL9i4+7EnSE+rfyfma/xRfHHG978HO
-	 GplhWS0ZdRd92VngiS5/a9DzVno2Bx808oqTvmwg=
-Subject: FAILED: patch "[PATCH] hv_netvsc: Register VF in netvsc_probe if NET_DEVICE_REGISTER" failed to apply to 5.15-stable tree
+	b=12zxLPAIhYBtKihQwXJWMGPSIOH/SBdgvFWAnA4qh9zH2ysAVfmaLNZtMmO7AIN/1
+	 le8/QvdsnTsXxEURli3IOgs7cyo1TRufq9oNvzVk268x3B/aYxNRTfbuXe1rV4i8nk
+	 S+3k5dk7qPyM0hpBCaGStTS8HEe9oa0kUMJ03f2Y=
+Subject: FAILED: patch "[PATCH] hv_netvsc: Register VF in netvsc_probe if NET_DEVICE_REGISTER" failed to apply to 5.10-stable tree
 To: shradhagupta@linux.microsoft.com,davem@davemloft.net,decui@microsoft.com,haiyangz@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Feb 2024 19:49:37 +0100
-Message-ID: <2024021937-trace-hardly-10d8@gregkh>
+Date: Mon, 19 Feb 2024 19:49:38 +0100
+Message-ID: <2024021938-legislate-polygon-4765@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 9cae43da9867412f8bd09aee5c8a8dc5e8dc3dc2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021937-trace-hardly-10d8@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021938-legislate-polygon-4765@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -73,6 +73,11 @@ Possible dependencies:
 c807d6cd089d ("hv_netvsc: Mark VF as slave before exposing it to user-mode")
 365e1ececb29 ("hv_netvsc: Fix race between VF offering and VF association message from host")
 c60882a4566a ("hv_netvsc: use netif_is_bond_master() instead of open code")
+d0922bf79817 ("hv_netvsc: Add error handling while switching data path")
+34b06a2eee44 ("hv_netvsc: Process NETDEV_GOING_DOWN on VF hot remove")
+8b31f8c982b7 ("hv_netvsc: Wait for completion on request SWITCH_DATA_PATH")
+4d18fcc95f50 ("hv_netvsc: Use vmbus_requestor to generate transaction IDs for VMBus hardening")
+e8b7db38449a ("Drivers: hv: vmbus: Add vmbus_requestor data structure for VMBus hardening")
 
 thanks,
 
