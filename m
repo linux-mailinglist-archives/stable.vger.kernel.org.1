@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-20634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62E6F85AAA3
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:11:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B60AA85AAA5
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:12:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03C041F253EA
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:11:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 221DAB245BC
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:12:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E489481AB;
-	Mon, 19 Feb 2024 18:11:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3866481A7;
+	Mon, 19 Feb 2024 18:11:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kpv64+Vb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xPN8Ayyv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DDF0481A6
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:11:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59D7F3B19D
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:11:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708366311; cv=none; b=ZmEqBVj9y/AXPob50qGML8U6K6MTXJPIVLoZTcCZYuNnZCEwJbwRyECMzvxlmVlUqRMMgKucl1Kfvb0sf5L86XVHzmQ0f/mT/k1ZkRzoxQJM8rJQZi+2aZpdbGXjov38m6yW2jyyBX5y202zs7FmTw0OMsfC86tu6mkf15bTRM8=
+	t=1708366314; cv=none; b=M2zP+3NKg0tiV4ThIirMbSwlOlpBPzSkqZy9tqGLIiQ/WZkY100ysWOrUBqbjbxEmySyTFSOryQtM0LZebsM2Bu8DXdVB2G07p5hPCQ3cHYzqAoM0OhtnVXUm29ZG6N2UT4GAJuqcvfVnN1mJ2IS1bmNtJopTA+HQ/jzbAeGFR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708366311; c=relaxed/simple;
-	bh=NcgbRnBk5yvuwFEm49lZr76WW/lfS1TDY6vTh7vgMJ0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=YWZG95j3wdaQd5YAH7Ab96KIXeeABUT0O7aZrWceRZz5OgkGrWqE2QVSQTNswzdqMTo1r/3qKmj9D7gVIC11dxL7eAAjCEjUdiNtYHCWtKuIVAc3dMg+d5AD2YCvVIl9r5oNm3/X4aDe9MECxY5zLhLAfFPJ7YxGw8YFVycNgzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kpv64+Vb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA2B7C433C7;
-	Mon, 19 Feb 2024 18:11:50 +0000 (UTC)
+	s=arc-20240116; t=1708366314; c=relaxed/simple;
+	bh=+IhP2VMLhrNBu/xcdXk2+EjQpz3zqpoTt/q2LybMEp4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=q340iuS+1/4fTl1bXGlCa/5ZclxxKn8t0QMCQX1WTJRyyFGYZmtFdfnzQ+91zPQ4JHQxMdkrTisE2yOTyiNTOwRirVEjIJ6MVHLJ5/cvE/tUDMWx/DrGCiQDy5w2DYD1/a0SjZkyrQFVaik+c4ERdWpvdXoivM1826GaTQi6VSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xPN8Ayyv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3EB3C433F1;
+	Mon, 19 Feb 2024 18:11:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708366311;
-	bh=NcgbRnBk5yvuwFEm49lZr76WW/lfS1TDY6vTh7vgMJ0=;
+	s=korg; t=1708366314;
+	bh=+IhP2VMLhrNBu/xcdXk2+EjQpz3zqpoTt/q2LybMEp4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Kpv64+Vbo9Tot1d3cD0oN4L/hrO1EwHt1KFpLLRVCiah4u7TiQVw/dRcT8I7gFOcn
-	 NQdsfDSDcTJ4c/V4wozjThTaxFXAVoXO6nO+Jq/O3gy7a6dK1jGUDpH8AOPUYmIzWb
-	 4r86A54e5mq5cjk1Yba0syN+ELMBnvwUI6FJ9lTY=
-Subject: FAILED: patch "[PATCH] getrusage: use sig->stats_lock rather than" failed to apply to 6.1-stable tree
+	b=xPN8Ayyv18LFSAmOW8G5ipnVOXiycskD5o/zKLxCFmQVPLM8C33RfkQmO3lRPKiUr
+	 jPMELK9dvsu9B0HZxYzf/xbf3/7YdnOuNufZaF+4ipdZbOh6TNXPiBGHreIJVJVf/U
+	 +DaUdZDaybprw6uVwMVKQnzgurf41oA6TbbTldiU=
+Subject: FAILED: patch "[PATCH] getrusage: use sig->stats_lock rather than" failed to apply to 5.15-stable tree
 To: oleg@redhat.com,akpm@linux-foundation.org,dylanbhatch@google.com,ebiederm@xmission.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Feb 2024 19:11:35 +0100
-Message-ID: <2024021934-version-stamp-e8f4@gregkh>
+Date: Mon, 19 Feb 2024 19:11:36 +0100
+Message-ID: <2024021936-joystick-decrease-def2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x f7ec1cd5cc7ef3ad964b677ba82b8b77f1c93009
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021934-version-stamp-e8f4@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021936-joystick-decrease-def2@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
