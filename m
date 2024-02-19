@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-20643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A442385AAB8
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:16:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86E1E85AABF
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:18:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3216B2500F
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:16:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B55951C213DD
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:18:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7513A481A3;
-	Mon, 19 Feb 2024 18:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C4AB481A6;
+	Mon, 19 Feb 2024 18:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sse1FjMl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GxxlwZWB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35279481A7
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 240F147F79
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:18:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708366587; cv=none; b=TxReD9e+RwkJh/Ov6AooMX5KkHcnKEyY9tPc+WPiVZvEvSDAAEuUsTKqkb7cbmO8PhPcdtPfTe8tpLtGyJaE26lG8gslCX9apdrilZQDTD++DpCGMRRCqrGj8Jn6qEwczf2E65v9PKWbQySOVq+CzMIQKRtUOxu4ImpedcpOJPs=
+	t=1708366681; cv=none; b=ONcszfVGfADQlErtWVUuOV495Ya+0nY3B/rIJgVPYd9tf7UIoJ0YHOeZbDNlZjTmZZMT8SsJl/kW4e2/vTfizXqPrIn8bHb+hrdisA1wYet0lW8kbYu+gYayr7lM62qTHcdB1PigZocj3sDFyqKY2eFqn31bHloI8ZOL9CSOlLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708366587; c=relaxed/simple;
-	bh=KW9BFA5WAU7Xwc8lSvHsSmuM3rU/nO4v5y0sdTKzeMM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=HUSz4W3NXxEAmL/wLmz5T1/2r7fRsM6wbUk/w75r2Vfrvp5njRxpr05AKy5dsda0DCR4k/CxEu/zIGSafuXIDL5lIO5eFxa4R/WFyS7VezuZm6nyKQpyR3vQZzS/FvH0G6rsuGN6lEM//3sMc0oa569U2L7PU1gL4q58h4hgztc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sse1FjMl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FEF7C433C7;
-	Mon, 19 Feb 2024 18:16:26 +0000 (UTC)
+	s=arc-20240116; t=1708366681; c=relaxed/simple;
+	bh=ffNKFD/MrXJiawlzsr2eahwgk3HQqRIek1GHnAFu1BM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=dFp0uYu3HMBuKVii1krTfZfvRxkUBHHoexUYLDJfEZOScjIn94XXXtpqSwsK56FK/rErOCos7AKo5pKe1X3k/lQref9C9kAFoXb96Eotizlax3FVw5w3su3PdREaILGkJ2IRPhMp4cYQu7zAS3N68vTAO35Ff92jOQkFq73NQ2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GxxlwZWB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2659CC433C7;
+	Mon, 19 Feb 2024 18:17:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708366586;
-	bh=KW9BFA5WAU7Xwc8lSvHsSmuM3rU/nO4v5y0sdTKzeMM=;
+	s=korg; t=1708366680;
+	bh=ffNKFD/MrXJiawlzsr2eahwgk3HQqRIek1GHnAFu1BM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=sse1FjMl8q9NzktX5dkfOGy2GDia/n/0bLU7PlQJmPWJy12a/0QisRw2tZpq8G7hb
-	 axs8+ozq7G5zahnRcWdg/u8U5DBGVgvf0B61JFhQVZs6i0asjH82o6AKoY2KUVfEy1
-	 bQlv846BuQw7hCT8sZpsM2JggGBxFxw+gLoZWsb0=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Fix MST Null Ptr for RV" failed to apply to 6.1-stable tree
-To: jerry.zuo@amd.com,alexander.deucher@amd.com,hamza.mahfooz@amd.com,wayne.lin@amd.com
+	b=GxxlwZWBz+Nkj+PfqiTnWPR8386fiIY5V7XU40pTdwUzrRlxlGPLGo7Qt9/xes0H3
+	 YjraXdwc1GDYB+iyLmMO8pN0Zup837BvlItTYgRGk30W+OS/PFEdxi4CuMYPWKgtJ6
+	 1mYcGxhJelejEQz7IhH1d8DCAWfQ6Wg6tye6J5PE=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Update phantom pipe enable / disable" failed to apply to 6.7-stable tree
+To: alvin.lee2@amd.com,alexander.deucher@amd.com,hamza.mahfooz@amd.com,samson.tam@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Feb 2024 19:16:24 +0100
-Message-ID: <2024021923-repose-genre-7137@gregkh>
+Date: Mon, 19 Feb 2024 19:17:57 +0100
+Message-ID: <2024021957-doormat-outreach-e779@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,30 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.7-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.7.y
 git checkout FETCH_HEAD
-git cherry-pick -x e6a7df96facdcf5b1f71eb3ec26f2f9f6ad61e57
+git cherry-pick -x ca8179ba11f211cdcb6c12ddd83814eaec999738
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021923-repose-genre-7137@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021957-doormat-outreach-e779@gregkh' --subject-prefix 'PATCH 6.7.y' HEAD^..
 
 Possible dependencies:
 
-e6a7df96facd ("drm/amd/display: Fix MST Null Ptr for RV")
-c18842a2e81a ("drm/amd/display: Return error code on DSC atomic check failure")
-bf77fda02411 ("drm/amd/display: Drop unnecessary DCN guards")
-cdf657fc1f4c ("amdgpu: fix build on non-DCN platforms.")
-c689e1e362ea ("drm/amdgpu/display/mst: Fix mst_state->pbn_div and slot count assignments")
-028c4ccfb812 ("drm/amd/display: force connector state when bpc changes during compliance")
-7cce4cd628be ("drm/amdgpu/mst: Stop ignoring error codes and deadlocking")
-b1a98cf89a69 ("drm/amd/display: Wrong colorimetry workaround")
+ca8179ba11f2 ("drm/amd/display: Update phantom pipe enable / disable sequence")
+09a4ec5da92c ("drm/amd/display: Refactor dc_state interface")
+abd26a3252cb ("drm/amd/display: Add dml2 copy functions")
 
 thanks,
 
@@ -84,120 +79,275 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From e6a7df96facdcf5b1f71eb3ec26f2f9f6ad61e57 Mon Sep 17 00:00:00 2001
-From: Fangzhi Zuo <jerry.zuo@amd.com>
-Date: Mon, 22 Jan 2024 13:43:46 -0500
-Subject: [PATCH] drm/amd/display: Fix MST Null Ptr for RV
+From ca8179ba11f211cdcb6c12ddd83814eaec999738 Mon Sep 17 00:00:00 2001
+From: Alvin Lee <alvin.lee2@amd.com>
+Date: Fri, 26 Jan 2024 16:47:20 -0500
+Subject: [PATCH] drm/amd/display: Update phantom pipe enable / disable
+ sequence
 
-The change try to fix below error specific to RV platform:
+Previously we would call apply_ctx_to_hw to enable and disable
+phantom pipes. However, apply_ctx_to_hw can potentially update
+non-phantom pipes as well which is undesired. Instead of calling
+apply_ctx_to_hw as a whole, call the relevant helpers for each
+phantom pipe when enabling / disabling which will avoid us modifying
+hardware state for non-phantom pipes unknowingly.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000008
-PGD 0 P4D 0
-Oops: 0000 [#1] PREEMPT SMP NOPTI
-CPU: 4 PID: 917 Comm: sway Not tainted 6.3.9-arch1-1 #1 124dc55df4f5272ccb409f39ef4872fc2b3376a2
-Hardware name: LENOVO 20NKS01Y00/20NKS01Y00, BIOS R12ET61W(1.31 ) 07/28/2022
-RIP: 0010:drm_dp_atomic_find_time_slots+0x5e/0x260 [drm_display_helper]
-Code: 01 00 00 48 8b 85 60 05 00 00 48 63 80 88 00 00 00 3b 43 28 0f 8d 2e 01 00 00 48 8b 53 30 48 8d 04 80 48 8d 04 c2 48 8b 40 18 <48> 8>
-RSP: 0018:ffff960cc2df77d8 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: ffff8afb87e81280 RCX: 0000000000000224
-RDX: ffff8afb9ee37c00 RSI: ffff8afb8da1a578 RDI: ffff8afb87e81280
-RBP: ffff8afb83d67000 R08: 0000000000000001 R09: ffff8afb9652f850
-R10: ffff960cc2df7908 R11: 0000000000000002 R12: 0000000000000000
-R13: ffff8afb8d7688a0 R14: ffff8afb8da1a578 R15: 0000000000000224
-FS:  00007f4dac35ce00(0000) GS:ffff8afe30b00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000008 CR3: 000000010ddc6000 CR4: 00000000003506e0
-Call Trace:
- <TASK>
- ? __die+0x23/0x70
- ? page_fault_oops+0x171/0x4e0
- ? plist_add+0xbe/0x100
- ? exc_page_fault+0x7c/0x180
- ? asm_exc_page_fault+0x26/0x30
- ? drm_dp_atomic_find_time_slots+0x5e/0x260 [drm_display_helper 0e67723696438d8e02b741593dd50d80b44c2026]
- ? drm_dp_atomic_find_time_slots+0x28/0x260 [drm_display_helper 0e67723696438d8e02b741593dd50d80b44c2026]
- compute_mst_dsc_configs_for_link+0x2ff/0xa40 [amdgpu 62e600d2a75e9158e1cd0a243bdc8e6da040c054]
- ? fill_plane_buffer_attributes+0x419/0x510 [amdgpu 62e600d2a75e9158e1cd0a243bdc8e6da040c054]
- compute_mst_dsc_configs_for_state+0x1e1/0x250 [amdgpu 62e600d2a75e9158e1cd0a243bdc8e6da040c054]
- amdgpu_dm_atomic_check+0xecd/0x1190 [amdgpu 62e600d2a75e9158e1cd0a243bdc8e6da040c054]
- drm_atomic_check_only+0x5c5/0xa40
- drm_mode_atomic_ioctl+0x76e/0xbc0
- ? _copy_to_user+0x25/0x30
- ? drm_ioctl+0x296/0x4b0
- ? __pfx_drm_mode_atomic_ioctl+0x10/0x10
- drm_ioctl_kernel+0xcd/0x170
- drm_ioctl+0x26d/0x4b0
- ? __pfx_drm_mode_atomic_ioctl+0x10/0x10
- amdgpu_drm_ioctl+0x4e/0x90 [amdgpu 62e600d2a75e9158e1cd0a243bdc8e6da040c054]
- __x64_sys_ioctl+0x94/0xd0
- do_syscall_64+0x60/0x90
- ? do_syscall_64+0x6c/0x90
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
-RIP: 0033:0x7f4dad17f76f
-Code: 00 48 89 44 24 18 31 c0 48 8d 44 24 60 c7 04 24 10 00 00 00 48 89 44 24 08 48 8d 44 24 20 48 89 44 24 10 b8 10 00 00 00 0f 05 <89> c>
-RSP: 002b:00007ffd9ae859f0 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 000055e255a55900 RCX: 00007f4dad17f76f
-RDX: 00007ffd9ae85a90 RSI: 00000000c03864bc RDI: 000000000000000b
-RBP: 00007ffd9ae85a90 R08: 0000000000000003 R09: 0000000000000003
-R10: 0000000000000000 R11: 0000000000000246 R12: 00000000c03864bc
-R13: 000000000000000b R14: 000055e255a7fc60 R15: 000055e255a01eb0
- </TASK>
-Modules linked in: rfcomm snd_seq_dummy snd_hrtimer snd_seq snd_seq_device ccm cmac algif_hash algif_skcipher af_alg joydev mousedev bnep >
- typec libphy k10temp ipmi_msghandler roles i2c_scmi acpi_cpufreq mac_hid nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_mas>
-CR2: 0000000000000008
----[ end trace 0000000000000000 ]---
-RIP: 0010:drm_dp_atomic_find_time_slots+0x5e/0x260 [drm_display_helper]
-Code: 01 00 00 48 8b 85 60 05 00 00 48 63 80 88 00 00 00 3b 43 28 0f 8d 2e 01 00 00 48 8b 53 30 48 8d 04 80 48 8d 04 c2 48 8b 40 18 <48> 8>
-RSP: 0018:ffff960cc2df77d8 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: ffff8afb87e81280 RCX: 0000000000000224
-RDX: ffff8afb9ee37c00 RSI: ffff8afb8da1a578 RDI: ffff8afb87e81280
-RBP: ffff8afb83d67000 R08: 0000000000000001 R09: ffff8afb9652f850
-R10: ffff960cc2df7908 R11: 0000000000000002 R12: 0000000000000000
-R13: ffff8afb8d7688a0 R14: ffff8afb8da1a578 R15: 0000000000000224
-FS:  00007f4dac35ce00(0000) GS:ffff8afe30b00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000008 CR3: 000000010ddc6000 CR4: 00000000003506e0
+The use case is for an FRL display where FRL_Update is requested
+by the display. In this case link_state_valid flag is cleared in
+a passive callback thread and should be handled in the next stream /
+link update. However, due to the call to apply_ctx_to_hw for the
+phantom pipes during a flip, the main pipes were modified outside
+of the desired sequence (driver does not handle link_state_valid = 0
+on flips).
 
-With a second DP monitor connected, drm_atomic_state in dm atomic check
-sequence does not include the connector state for the old/existing/first
-DP monitor. In such case, dsc determination policy would hit a null ptr
-when it tries to iterate the old/existing stream that does not have a
-valid connector state attached to it. When that happens, dm atomic check
-should call drm_atomic_get_connector_state for a new connector state.
-Existing dm has already done that, except for RV due to it does not have
-official support of dsc where .num_dsc is not defined in dcn10 resource
-cap, that prevent from getting drm_atomic_get_connector_state called.
-So, skip dsc determination policy for ASICs that don't have DSC support.
-
-Cc: stable@vger.kernel.org # 6.1+
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2314
-Reviewed-by: Wayne Lin <wayne.lin@amd.com>
+Cc: stable@vger.kernel.org # 6.6+
+Reviewed-by: Samson Tam <samson.tam@amd.com>
 Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Fangzhi Zuo <jerry.zuo@amd.com>
+Signed-off-by: Alvin Lee <alvin.lee2@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index d292f290cd6e..59d2eee72a32 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -10731,11 +10731,13 @@ static int amdgpu_dm_atomic_check(struct drm_device *dev,
- 			goto fail;
- 		}
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+index aa7c02ba948e..2c424e435962 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -3817,7 +3817,9 @@ static void commit_planes_for_stream(struct dc *dc,
+ 		 * programming has completed (we turn on phantom OTG in order
+ 		 * to complete the plane disable for phantom pipes).
+ 		 */
+-		dc->hwss.apply_ctx_to_hw(dc, context);
++
++		if (dc->hwss.disable_phantom_streams)
++			dc->hwss.disable_phantom_streams(dc, context);
+ 	}
  
--		ret = compute_mst_dsc_configs_for_state(state, dm_state->context, vars);
--		if (ret) {
--			DRM_DEBUG_DRIVER("compute_mst_dsc_configs_for_state() failed\n");
--			ret = -EINVAL;
--			goto fail;
-+		if (dc_resource_is_dsc_encoding_supported(dc)) {
-+			ret = compute_mst_dsc_configs_for_state(state, dm_state->context, vars);
-+			if (ret) {
-+				DRM_DEBUG_DRIVER("compute_mst_dsc_configs_for_state() failed\n");
-+				ret = -EINVAL;
-+				goto fail;
-+			}
- 		}
+ 	if (update_type != UPDATE_TYPE_FAST)
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
+index 2352428bcea3..01493c49bd7a 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
+@@ -1476,7 +1476,7 @@ static enum dc_status dce110_enable_stream_timing(
+ 	return DC_OK;
+ }
  
- 		ret = dm_update_mst_vcpi_slots_for_dsc(state, dm_state->context, vars);
+-static enum dc_status apply_single_controller_ctx_to_hw(
++enum dc_status dce110_apply_single_controller_ctx_to_hw(
+ 		struct pipe_ctx *pipe_ctx,
+ 		struct dc_state *context,
+ 		struct dc *dc)
+@@ -2302,7 +2302,7 @@ enum dc_status dce110_apply_ctx_to_hw(
+ 		if (pipe_ctx->top_pipe || pipe_ctx->prev_odm_pipe)
+ 			continue;
+ 
+-		status = apply_single_controller_ctx_to_hw(
++		status = dce110_apply_single_controller_ctx_to_hw(
+ 				pipe_ctx,
+ 				context,
+ 				dc);
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.h b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.h
+index 08028a1779ae..ed3cc3648e8e 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.h
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.h
+@@ -39,6 +39,10 @@ enum dc_status dce110_apply_ctx_to_hw(
+ 		struct dc *dc,
+ 		struct dc_state *context);
+ 
++enum dc_status dce110_apply_single_controller_ctx_to_hw(
++		struct pipe_ctx *pipe_ctx,
++		struct dc_state *context,
++		struct dc *dc);
+ 
+ void dce110_enable_stream(struct pipe_ctx *pipe_ctx);
+ 
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
+index 4853ecac53f9..931ac8ed7069 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
+@@ -2561,7 +2561,7 @@ void dcn20_setup_vupdate_interrupt(struct dc *dc, struct pipe_ctx *pipe_ctx)
+ 		tg->funcs->setup_vertical_interrupt2(tg, start_line);
+ }
+ 
+-static void dcn20_reset_back_end_for_pipe(
++void dcn20_reset_back_end_for_pipe(
+ 		struct dc *dc,
+ 		struct pipe_ctx *pipe_ctx,
+ 		struct dc_state *context)
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.h b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.h
+index b94c85340abf..d950b3e54ec2 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.h
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.h
+@@ -84,6 +84,10 @@ enum dc_status dcn20_enable_stream_timing(
+ void dcn20_disable_stream_gating(struct dc *dc, struct pipe_ctx *pipe_ctx);
+ void dcn20_enable_stream_gating(struct dc *dc, struct pipe_ctx *pipe_ctx);
+ void dcn20_setup_vupdate_interrupt(struct dc *dc, struct pipe_ctx *pipe_ctx);
++void dcn20_reset_back_end_for_pipe(
++		struct dc *dc,
++		struct pipe_ctx *pipe_ctx,
++		struct dc_state *context);
+ void dcn20_init_blank(
+ 		struct dc *dc,
+ 		struct timing_generator *tg);
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c
+index 6c9299c7683d..aa36d7a56ca8 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c
+@@ -1474,9 +1474,44 @@ void dcn32_update_dsc_pg(struct dc *dc,
+ 	}
+ }
+ 
++void dcn32_disable_phantom_streams(struct dc *dc, struct dc_state *context)
++{
++	struct dce_hwseq *hws = dc->hwseq;
++	int i;
++
++	for (i = dc->res_pool->pipe_count - 1; i >= 0 ; i--) {
++		struct pipe_ctx *pipe_ctx_old =
++			&dc->current_state->res_ctx.pipe_ctx[i];
++		struct pipe_ctx *pipe_ctx = &context->res_ctx.pipe_ctx[i];
++
++		if (!pipe_ctx_old->stream)
++			continue;
++
++		if (dc_state_get_pipe_subvp_type(dc->current_state, pipe_ctx_old) != SUBVP_PHANTOM)
++			continue;
++
++		if (pipe_ctx_old->top_pipe || pipe_ctx_old->prev_odm_pipe)
++			continue;
++
++		if (!pipe_ctx->stream || pipe_need_reprogram(pipe_ctx_old, pipe_ctx) ||
++				(pipe_ctx->stream && dc_state_get_pipe_subvp_type(context, pipe_ctx) != SUBVP_PHANTOM)) {
++			struct clock_source *old_clk = pipe_ctx_old->clock_source;
++
++			if (hws->funcs.reset_back_end_for_pipe)
++				hws->funcs.reset_back_end_for_pipe(dc, pipe_ctx_old, dc->current_state);
++			if (hws->funcs.enable_stream_gating)
++				hws->funcs.enable_stream_gating(dc, pipe_ctx_old);
++			if (old_clk)
++				old_clk->funcs->cs_power_down(old_clk);
++		}
++	}
++}
++
+ void dcn32_enable_phantom_streams(struct dc *dc, struct dc_state *context)
+ {
+ 	unsigned int i;
++	enum dc_status status = DC_OK;
++	struct dce_hwseq *hws = dc->hwseq;
+ 
+ 	for (i = 0; i < dc->res_pool->pipe_count; i++) {
+ 		struct pipe_ctx *pipe = &context->res_ctx.pipe_ctx[i];
+@@ -1497,16 +1532,39 @@ void dcn32_enable_phantom_streams(struct dc *dc, struct dc_state *context)
+ 		}
+ 	}
+ 	for (i = 0; i < dc->res_pool->pipe_count; i++) {
+-		struct pipe_ctx *new_pipe = &context->res_ctx.pipe_ctx[i];
++		struct pipe_ctx *pipe_ctx_old =
++					&dc->current_state->res_ctx.pipe_ctx[i];
++		struct pipe_ctx *pipe_ctx = &context->res_ctx.pipe_ctx[i];
+ 
+-		if (new_pipe->stream && dc_state_get_pipe_subvp_type(context, new_pipe) == SUBVP_PHANTOM) {
+-			// If old context or new context has phantom pipes, apply
+-			// the phantom timings now. We can't change the phantom
+-			// pipe configuration safely without driver acquiring
+-			// the DMCUB lock first.
+-			dc->hwss.apply_ctx_to_hw(dc, context);
+-			break;
++		if (pipe_ctx->stream == NULL)
++			continue;
++
++		if (dc_state_get_pipe_subvp_type(context, pipe_ctx) != SUBVP_PHANTOM)
++			continue;
++
++		if (pipe_ctx->stream == pipe_ctx_old->stream &&
++			pipe_ctx->stream->link->link_state_valid) {
++			continue;
+ 		}
++
++		if (pipe_ctx_old->stream && !pipe_need_reprogram(pipe_ctx_old, pipe_ctx))
++			continue;
++
++		if (pipe_ctx->top_pipe || pipe_ctx->prev_odm_pipe)
++			continue;
++
++		if (hws->funcs.apply_single_controller_ctx_to_hw)
++			status = hws->funcs.apply_single_controller_ctx_to_hw(
++					pipe_ctx,
++					context,
++					dc);
++
++		ASSERT(status == DC_OK);
++
++#ifdef CONFIG_DRM_AMD_DC_FP
++		if (hws->funcs.resync_fifo_dccg_dio)
++			hws->funcs.resync_fifo_dccg_dio(hws, dc, context);
++#endif
+ 	}
+ }
+ 
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.h b/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.h
+index cecf7f0f5671..069e20bc87c0 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.h
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.h
+@@ -111,6 +111,8 @@ void dcn32_update_dsc_pg(struct dc *dc,
+ 
+ void dcn32_enable_phantom_streams(struct dc *dc, struct dc_state *context);
+ 
++void dcn32_disable_phantom_streams(struct dc *dc, struct dc_state *context);
++
+ void dcn32_init_blank(
+ 		struct dc *dc,
+ 		struct timing_generator *tg);
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_init.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_init.c
+index 427cfc8c24a4..e8ac94a005b8 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_init.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_init.c
+@@ -109,6 +109,7 @@ static const struct hw_sequencer_funcs dcn32_funcs = {
+ 	.get_dcc_en_bits = dcn10_get_dcc_en_bits,
+ 	.commit_subvp_config = dcn32_commit_subvp_config,
+ 	.enable_phantom_streams = dcn32_enable_phantom_streams,
++	.disable_phantom_streams = dcn32_disable_phantom_streams,
+ 	.subvp_pipe_control_lock = dcn32_subvp_pipe_control_lock,
+ 	.update_visual_confirm_color = dcn10_update_visual_confirm_color,
+ 	.subvp_pipe_control_lock_fast = dcn32_subvp_pipe_control_lock_fast,
+@@ -159,6 +160,8 @@ static const struct hwseq_private_funcs dcn32_private_funcs = {
+ 	.set_pixels_per_cycle = dcn32_set_pixels_per_cycle,
+ 	.resync_fifo_dccg_dio = dcn32_resync_fifo_dccg_dio,
+ 	.is_dp_dig_pixel_rate_div_policy = dcn32_is_dp_dig_pixel_rate_div_policy,
++	.apply_single_controller_ctx_to_hw = dce110_apply_single_controller_ctx_to_hw,
++	.reset_back_end_for_pipe = dcn20_reset_back_end_for_pipe,
+ };
+ 
+ void dcn32_hw_sequencer_init_functions(struct dc *dc)
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/hw_sequencer.h b/drivers/gpu/drm/amd/display/dc/hwss/hw_sequencer.h
+index a54399383318..64ca7c66509b 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/hw_sequencer.h
++++ b/drivers/gpu/drm/amd/display/dc/hwss/hw_sequencer.h
+@@ -379,6 +379,7 @@ struct hw_sequencer_funcs {
+ 			struct dc_cursor_attributes *cursor_attr);
+ 	void (*commit_subvp_config)(struct dc *dc, struct dc_state *context);
+ 	void (*enable_phantom_streams)(struct dc *dc, struct dc_state *context);
++	void (*disable_phantom_streams)(struct dc *dc, struct dc_state *context);
+ 	void (*subvp_pipe_control_lock)(struct dc *dc,
+ 			struct dc_state *context,
+ 			bool lock,
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/hw_sequencer_private.h b/drivers/gpu/drm/amd/display/dc/hwss/hw_sequencer_private.h
+index 6137cf09aa54..b3c62a82cb1c 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/hw_sequencer_private.h
++++ b/drivers/gpu/drm/amd/display/dc/hwss/hw_sequencer_private.h
+@@ -165,8 +165,15 @@ struct hwseq_private_funcs {
+ 	void (*set_pixels_per_cycle)(struct pipe_ctx *pipe_ctx);
+ 	void (*resync_fifo_dccg_dio)(struct dce_hwseq *hws, struct dc *dc,
+ 			struct dc_state *context);
++	enum dc_status (*apply_single_controller_ctx_to_hw)(
++			struct pipe_ctx *pipe_ctx,
++			struct dc_state *context,
++			struct dc *dc);
+ 	bool (*is_dp_dig_pixel_rate_div_policy)(struct pipe_ctx *pipe_ctx);
+ #endif
++	void (*reset_back_end_for_pipe)(struct dc *dc,
++			struct pipe_ctx *pipe_ctx,
++			struct dc_state *context);
+ };
+ 
+ struct dce_hwseq {
 
 
