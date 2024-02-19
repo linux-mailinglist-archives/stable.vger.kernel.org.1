@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-20723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8B1985AB84
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:51:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 505C085AB86
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:52:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5698E1F22C18
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:51:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06C4F283979
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:52:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6EFE44C93;
-	Mon, 19 Feb 2024 18:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19FC141C7F;
+	Mon, 19 Feb 2024 18:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RUO6iQuv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hCRd/DhC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 777BE34545
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD6B4A3B
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708368697; cv=none; b=qor0PzTQ8RfRKd137SgEKRhFc7t8MaWV2UFTsJ1rkwdJNyOidUO+zMK5tF1BWFafpEW+TxZuYud9BJyfEQS+Gb9J3WV0HbNrHfvegXLgmhV8Dx0d+2NB0xUoZIWQW2GxQ+fxzJ0inm1gonT9Zwpf8F/4aFrsFEeFfCOF7RFLa8A=
+	t=1708368728; cv=none; b=CvyjS8G0IdUCeJwLuAINyUfJ08JCXqIsr7duFKOzQgxookXcqvsT8NwTbceRIGBFU3t4LckskidbqQM4u9KBJv79SN8/M06lDVpj/lf7A4OFgwDqBqX/6dSF9THeM9gsI8B/rQYyeQYrvlBk+ejK4owtwnkDT9EOn3w0oqrr/+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708368697; c=relaxed/simple;
-	bh=LPVT1kiBYWM7/CofTtADOMo1h1Z+Y07vcLZDO3iBbRM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mdjL2JaJaVw12QY1qEYBMzjOm7bdlhuG2EgAzUPag8tR+e4vch/iJTdsd1M8WzdIxtD/twqqEl7ynItuSL5VgqdC3lTfPrp2SGX1Y0eBumQ5F6OF4y//t0ma3ceUGipxUBrh+DFf4lnafX5Mx6rp2ZBLZ2XP16TTFJ2LZFSICPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RUO6iQuv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D1FEC433F1;
-	Mon, 19 Feb 2024 18:51:36 +0000 (UTC)
+	s=arc-20240116; t=1708368728; c=relaxed/simple;
+	bh=hFFYoOAnrNlkmRndsCzC7LFIrOWduRJTtaoA4QOSRKQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=sjL7JqTbe20uIiBUClLb1uJ7+9/67u9q46rC4VaFG+Ea7kPp40EEJISB8vlF+gYky9vVHsXVaYqPjFHtt8mAidyU/6PGwRgDaxj7mOwtuvQRB0MkvK4/9bfLp4EWWJZBAlE7+y6xvOmEChroG7WCZpu5ad/pdF8A1xi4KqfbWVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hCRd/DhC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5D34C433C7;
+	Mon, 19 Feb 2024 18:52:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708368697;
-	bh=LPVT1kiBYWM7/CofTtADOMo1h1Z+Y07vcLZDO3iBbRM=;
+	s=korg; t=1708368728;
+	bh=hFFYoOAnrNlkmRndsCzC7LFIrOWduRJTtaoA4QOSRKQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=RUO6iQuvKwon8hphIC3cVXoQhbxJSX+9SHYilRCA0JlNtrsA3ITDYVkKWIBvXZWVe
-	 +OhM18PzxmpitmFSf5P8nvo9z/4ZBFyAM/XeBYz8T5Lw5toDEGkFQ/U2zzoDej5kJ7
-	 BDg5OySKQIr42taQdOnnMbW4YyL0GYJqvs4nMAgM=
-Subject: FAILED: patch "[PATCH] blk-wbt: Fix detection of dirty-throttled tasks" failed to apply to 4.19-stable tree
-To: jack@suse.cz,axboe@kernel.dk
+	b=hCRd/DhCwXchMZ/QMzNZcdjMmMXa4rg7kQfZNYjTytf5s5gkXb8t/bdLINOPL2yzi
+	 aG9JpUE7a7KpltiJ120L9dPLWkUet3MD5oz4iTBTroVg5czRnui7DdcDULIILsuH5R
+	 RADyhfeTEPIqV7GZuat7hRhGn0t3TPU0YFgXCJ2c=
+Subject: FAILED: patch "[PATCH] xen/events: close evtchn after mapping cleanup" failed to apply to 6.6-stable tree
+To: mheyne@amazon.de,apanyaki@amazon.com,jgross@suse.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Feb 2024 19:51:25 +0100
-Message-ID: <2024021925-onscreen-cancel-9be1@gregkh>
+Date: Mon, 19 Feb 2024 19:52:05 +0100
+Message-ID: <2024021905-anger-exclusion-a2ae@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,39 +53,29 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x f814bdda774c183b0cc15ec8f3b6e7c6f4527ba5
+git cherry-pick -x fa765c4b4aed2d64266b694520ecb025c862c5a9
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021925-onscreen-cancel-9be1@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021905-anger-exclusion-a2ae@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-f814bdda774c ("blk-wbt: Fix detection of dirty-throttled tasks")
-ba91c849fa50 ("blk-rq-qos: store a gendisk instead of request_queue in struct rq_qos")
-3963d84df797 ("blk-rq-qos: constify rq_qos_ops")
-ce57b558604e ("blk-rq-qos: make rq_qos_add and rq_qos_del more useful")
-b494f9c566ba ("blk-rq-qos: move rq_qos_add and rq_qos_del out of line")
-de185b56e8a6 ("blk-cgroup: pass a gendisk to blkcg_schedule_throttle")
-9df3e65139b9 ("blk-iocost: simplify ioc_name")
-14a6e2eb7df5 ("block: don't allow the same type rq_qos add more than once")
-5cf9c91ba927 ("block: serialize all debugfs operations using q->debugfs_mutex")
-8a177a36da6c ("blk-iolatency: Fix inflight count imbalances and IO hangs on offline")
-c97ab271576d ("blk-cgroup: remove unneeded includes from <linux/blk-cgroup.h>")
-7f20ba7c42fd ("blk-cgroup: remove pointless CONFIG_BLOCK ifdefs")
-bbb1ebe7a909 ("blk-cgroup: replace bio_blkcg with bio_blkcg_css")
-dec223c92a46 ("blk-cgroup: move struct blkcg to block/blk-cgroup.h")
-397c9f46ee4d ("blk-cgroup: move blkcg_{pin,unpin}_online out of line")
-216889aad362 ("blk-cgroup: move blk_cgroup_congested out line")
-d589ae0d4460 ("Merge tag 'for-5.18/block-2022-04-01' of git://git.kernel.dk/linux-block")
+fa765c4b4aed ("xen/events: close evtchn after mapping cleanup")
+3fcdaf3d7634 ("xen/events: modify internal [un]bind interfaces")
+5dd9ad32d775 ("xen/events: drop xen_allocate_irqs_dynamic()")
+3bdb0ac350fe ("xen/events: remove some simple helpers from events_base.c")
+686464514fbe ("xen/events: reduce externally visible helper functions")
+e64e7c74b99e ("xen/events: avoid using info_for_irq() in xen_send_IPI_one()")
+9e90e58c11b7 ("xen: evtchn: Allow shared registration of IRQ handers")
 
 thanks,
 
@@ -93,106 +83,165 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From f814bdda774c183b0cc15ec8f3b6e7c6f4527ba5 Mon Sep 17 00:00:00 2001
-From: Jan Kara <jack@suse.cz>
-Date: Tue, 23 Jan 2024 18:58:26 +0100
-Subject: [PATCH] blk-wbt: Fix detection of dirty-throttled tasks
+From fa765c4b4aed2d64266b694520ecb025c862c5a9 Mon Sep 17 00:00:00 2001
+From: Maximilian Heyne <mheyne@amazon.de>
+Date: Wed, 24 Jan 2024 16:31:28 +0000
+Subject: [PATCH] xen/events: close evtchn after mapping cleanup
 
-The detection of dirty-throttled tasks in blk-wbt has been subtly broken
-since its beginning in 2016. Namely if we are doing cgroup writeback and
-the throttled task is not in the root cgroup, balance_dirty_pages() will
-set dirty_sleep for the non-root bdi_writeback structure. However
-blk-wbt checks dirty_sleep only in the root cgroup bdi_writeback
-structure. Thus detection of recently throttled tasks is not working in
-this case (we noticed this when we switched to cgroup v2 and suddently
-writeback was slow).
+shutdown_pirq and startup_pirq are not taking the
+irq_mapping_update_lock because they can't due to lock inversion. Both
+are called with the irq_desc->lock being taking. The lock order,
+however, is first irq_mapping_update_lock and then irq_desc->lock.
 
-Since blk-wbt has no easy way to get to proper bdi_writeback and
-furthermore its intention has always been to work on the whole device
-rather than on individual cgroups, just move the dirty_sleep timestamp
-from bdi_writeback to backing_dev_info. That fixes the checking for
-recently throttled task and saves memory for everybody as a bonus.
+This opens multiple races:
+- shutdown_pirq can be interrupted by a function that allocates an event
+  channel:
 
-CC: stable@vger.kernel.org
-Fixes: b57d74aff9ab ("writeback: track if we're sleeping on progress in balance_dirty_pages()")
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240123175826.21452-1-jack@suse.cz
-[axboe: fixup indentation errors]
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+  CPU0                        CPU1
+  shutdown_pirq {
+    xen_evtchn_close(e)
+                              __startup_pirq {
+                                EVTCHNOP_bind_pirq
+                                  -> returns just freed evtchn e
+                                set_evtchn_to_irq(e, irq)
+                              }
+    xen_irq_info_cleanup() {
+      set_evtchn_to_irq(e, -1)
+    }
+  }
 
-diff --git a/block/blk-wbt.c b/block/blk-wbt.c
-index 5ba3cd574eac..0c0e270a8265 100644
---- a/block/blk-wbt.c
-+++ b/block/blk-wbt.c
-@@ -163,9 +163,9 @@ static void wb_timestamp(struct rq_wb *rwb, unsigned long *var)
-  */
- static bool wb_recent_wait(struct rq_wb *rwb)
+  Assume here event channel e refers here to the same event channel
+  number.
+  After this race the evtchn_to_irq mapping for e is invalid (-1).
+
+- __startup_pirq races with __unbind_from_irq in a similar way. Because
+  __startup_pirq doesn't take irq_mapping_update_lock it can grab the
+  evtchn that __unbind_from_irq is currently freeing and cleaning up. In
+  this case even though the event channel is allocated, its mapping can
+  be unset in evtchn_to_irq.
+
+The fix is to first cleanup the mappings and then close the event
+channel. In this way, when an event channel gets allocated it's
+potential previous evtchn_to_irq mappings are guaranteed to be unset already.
+This is also the reverse order of the allocation where first the event
+channel is allocated and then the mappings are setup.
+
+On a 5.10 kernel prior to commit 3fcdaf3d7634 ("xen/events: modify internal
+[un]bind interfaces"), we hit a BUG like the following during probing of NVMe
+devices. The issue is that during nvme_setup_io_queues, pci_free_irq
+is called for every device which results in a call to shutdown_pirq.
+With many nvme devices it's therefore likely to hit this race during
+boot because there will be multiple calls to shutdown_pirq and
+startup_pirq are running potentially in parallel.
+
+  ------------[ cut here ]------------
+  blkfront: xvda: barrier or flush: disabled; persistent grants: enabled; indirect descriptors: enabled; bounce buffer: enabled
+  kernel BUG at drivers/xen/events/events_base.c:499!
+  invalid opcode: 0000 [#1] SMP PTI
+  CPU: 44 PID: 375 Comm: kworker/u257:23 Not tainted 5.10.201-191.748.amzn2.x86_64 #1
+  Hardware name: Xen HVM domU, BIOS 4.11.amazon 08/24/2006
+  Workqueue: nvme-reset-wq nvme_reset_work
+  RIP: 0010:bind_evtchn_to_cpu+0xdf/0xf0
+  Code: 5d 41 5e c3 cc cc cc cc 44 89 f7 e8 2b 55 ad ff 49 89 c5 48 85 c0 0f 84 64 ff ff ff 4c 8b 68 30 41 83 fe ff 0f 85 60 ff ff ff <0f> 0b 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 0f 1f 44 00 00
+  RSP: 0000:ffffc9000d533b08 EFLAGS: 00010046
+  RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000006
+  RDX: 0000000000000028 RSI: 00000000ffffffff RDI: 00000000ffffffff
+  RBP: ffff888107419680 R08: 0000000000000000 R09: ffffffff82d72b00
+  R10: 0000000000000000 R11: 0000000000000000 R12: 00000000000001ed
+  R13: 0000000000000000 R14: 00000000ffffffff R15: 0000000000000002
+  FS:  0000000000000000(0000) GS:ffff88bc8b500000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 0000000000000000 CR3: 0000000002610001 CR4: 00000000001706e0
+  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+  Call Trace:
+   ? show_trace_log_lvl+0x1c1/0x2d9
+   ? show_trace_log_lvl+0x1c1/0x2d9
+   ? set_affinity_irq+0xdc/0x1c0
+   ? __die_body.cold+0x8/0xd
+   ? die+0x2b/0x50
+   ? do_trap+0x90/0x110
+   ? bind_evtchn_to_cpu+0xdf/0xf0
+   ? do_error_trap+0x65/0x80
+   ? bind_evtchn_to_cpu+0xdf/0xf0
+   ? exc_invalid_op+0x4e/0x70
+   ? bind_evtchn_to_cpu+0xdf/0xf0
+   ? asm_exc_invalid_op+0x12/0x20
+   ? bind_evtchn_to_cpu+0xdf/0xf0
+   ? bind_evtchn_to_cpu+0xc5/0xf0
+   set_affinity_irq+0xdc/0x1c0
+   irq_do_set_affinity+0x1d7/0x1f0
+   irq_setup_affinity+0xd6/0x1a0
+   irq_startup+0x8a/0xf0
+   __setup_irq+0x639/0x6d0
+   ? nvme_suspend+0x150/0x150
+   request_threaded_irq+0x10c/0x180
+   ? nvme_suspend+0x150/0x150
+   pci_request_irq+0xa8/0xf0
+   ? __blk_mq_free_request+0x74/0xa0
+   queue_request_irq+0x6f/0x80
+   nvme_create_queue+0x1af/0x200
+   nvme_create_io_queues+0xbd/0xf0
+   nvme_setup_io_queues+0x246/0x320
+   ? nvme_irq_check+0x30/0x30
+   nvme_reset_work+0x1c8/0x400
+   process_one_work+0x1b0/0x350
+   worker_thread+0x49/0x310
+   ? process_one_work+0x350/0x350
+   kthread+0x11b/0x140
+   ? __kthread_bind_mask+0x60/0x60
+   ret_from_fork+0x22/0x30
+  Modules linked in:
+  ---[ end trace a11715de1eee1873 ]---
+
+Fixes: d46a78b05c0e ("xen: implement pirq type event channels")
+Cc: stable@vger.kernel.org
+Co-debugged-by: Andrew Panyakin <apanyaki@amazon.com>
+Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Link: https://lore.kernel.org/r/20240124163130.31324-1-mheyne@amazon.de
+Signed-off-by: Juergen Gross <jgross@suse.com>
+
+diff --git a/drivers/xen/events/events_base.c b/drivers/xen/events/events_base.c
+index b8cfea7812d6..3b9f080109d7 100644
+--- a/drivers/xen/events/events_base.c
++++ b/drivers/xen/events/events_base.c
+@@ -923,8 +923,8 @@ static void shutdown_pirq(struct irq_data *data)
+ 		return;
+ 
+ 	do_mask(info, EVT_MASK_REASON_EXPLICIT);
+-	xen_evtchn_close(evtchn);
+ 	xen_irq_info_cleanup(info);
++	xen_evtchn_close(evtchn);
+ }
+ 
+ static void enable_pirq(struct irq_data *data)
+@@ -956,6 +956,7 @@ EXPORT_SYMBOL_GPL(xen_irq_from_gsi);
+ static void __unbind_from_irq(struct irq_info *info, unsigned int irq)
  {
--	struct bdi_writeback *wb = &rwb->rqos.disk->bdi->wb;
-+	struct backing_dev_info *bdi = rwb->rqos.disk->bdi;
+ 	evtchn_port_t evtchn;
++	bool close_evtchn = false;
  
--	return time_before(jiffies, wb->dirty_sleep + HZ);
-+	return time_before(jiffies, bdi->last_bdp_sleep + HZ);
- }
+ 	if (!info) {
+ 		xen_irq_free_desc(irq);
+@@ -975,7 +976,7 @@ static void __unbind_from_irq(struct irq_info *info, unsigned int irq)
+ 		struct xenbus_device *dev;
  
- static inline struct rq_wait *get_rq_wait(struct rq_wb *rwb,
-diff --git a/include/linux/backing-dev-defs.h b/include/linux/backing-dev-defs.h
-index ae12696ec492..2ad261082bba 100644
---- a/include/linux/backing-dev-defs.h
-+++ b/include/linux/backing-dev-defs.h
-@@ -141,8 +141,6 @@ struct bdi_writeback {
- 	struct delayed_work dwork;	/* work item used for writeback */
- 	struct delayed_work bw_dwork;	/* work item used for bandwidth estimate */
+ 		if (!info->is_static)
+-			xen_evtchn_close(evtchn);
++			close_evtchn = true;
  
--	unsigned long dirty_sleep;	/* last wait */
--
- 	struct list_head bdi_node;	/* anchored at bdi->wb_list */
- 
- #ifdef CONFIG_CGROUP_WRITEBACK
-@@ -179,6 +177,11 @@ struct backing_dev_info {
- 	 * any dirty wbs, which is depended upon by bdi_has_dirty().
- 	 */
- 	atomic_long_t tot_write_bandwidth;
-+	/*
-+	 * Jiffies when last process was dirty throttled on this bdi. Used by
-+	 * blk-wbt.
-+	 */
-+	unsigned long last_bdp_sleep;
- 
- 	struct bdi_writeback wb;  /* the root writeback info for this bdi */
- 	struct list_head wb_list; /* list of all wbs */
-diff --git a/mm/backing-dev.c b/mm/backing-dev.c
-index 1e3447bccdb1..e039d05304dd 100644
---- a/mm/backing-dev.c
-+++ b/mm/backing-dev.c
-@@ -436,7 +436,6 @@ static int wb_init(struct bdi_writeback *wb, struct backing_dev_info *bdi,
- 	INIT_LIST_HEAD(&wb->work_list);
- 	INIT_DELAYED_WORK(&wb->dwork, wb_workfn);
- 	INIT_DELAYED_WORK(&wb->bw_dwork, wb_update_bandwidth_workfn);
--	wb->dirty_sleep = jiffies;
- 
- 	err = fprop_local_init_percpu(&wb->completions, gfp);
- 	if (err)
-@@ -921,6 +920,7 @@ int bdi_init(struct backing_dev_info *bdi)
- 	INIT_LIST_HEAD(&bdi->bdi_list);
- 	INIT_LIST_HEAD(&bdi->wb_list);
- 	init_waitqueue_head(&bdi->wb_waitq);
-+	bdi->last_bdp_sleep = jiffies;
- 
- 	return cgwb_bdi_init(bdi);
- }
-diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-index cd4e4ae77c40..cc37fa7f3364 100644
---- a/mm/page-writeback.c
-+++ b/mm/page-writeback.c
-@@ -1921,7 +1921,7 @@ static int balance_dirty_pages(struct bdi_writeback *wb,
- 			break;
+ 		switch (info->type) {
+ 		case IRQT_VIRQ:
+@@ -995,6 +996,9 @@ static void __unbind_from_irq(struct irq_info *info, unsigned int irq)
  		}
- 		__set_current_state(TASK_KILLABLE);
--		wb->dirty_sleep = now;
-+		bdi->last_bdp_sleep = jiffies;
- 		io_schedule_timeout(pause);
  
- 		current->dirty_paused_when = now + pause;
+ 		xen_irq_info_cleanup(info);
++
++		if (close_evtchn)
++			xen_evtchn_close(evtchn);
+ 	}
+ 
+ 	xen_free_irq(info);
 
 
