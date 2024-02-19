@@ -1,181 +1,196 @@
-Return-Path: <stable+bounces-20520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D64085A294
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 12:56:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 928AC85A19C
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 12:07:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 904361C20D5B
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 11:56:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BE081C2142D
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 11:07:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71D542C848;
-	Mon, 19 Feb 2024 11:56:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAFA829424;
+	Mon, 19 Feb 2024 11:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b="j2Icz4g6"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="s86i5twg";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="UBGlvilk";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="s86i5twg";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="UBGlvilk"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00549402.pphosted.com (mx0b-00549402.pphosted.com [205.220.178.134])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015AD2C6BB;
-	Mon, 19 Feb 2024 11:56:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.178.134
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708343814; cv=fail; b=uqO/X32VKuF1w0rushvsfvmcAJEKi2yWpXCHl6OmDYRHG+wCONPNwhnGRulPj9pp6eB7tV21qvfLSo+iRXtqnwcB9P50ZwRTGK1+ep9TO9T+OOFjfK4HDLI4uH+rUrO115AhQ0wfThjgfCZhnegcOwbw3PUlepshJf/ozBYvHJo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708343814; c=relaxed/simple;
-	bh=E1hdI2xGPCRYRTFZR8q2CbgwomkZb0vPHe5M4Okj0K4=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=oGax+IhkwG/ZAnWPkkUA02mgttHqsjSLViizqbyC0+PgcdxBNkAIiqsokunyKhwQGRZy/yVoFuWHZYbKdWfRrpHSCHiR59u604+zw5U4CL2b2aibhCURBYAtPtPgO4B/zEHhvoAb5ThCaB1S7B7C2jXL5DK5RNKrLJUtGYXQK3Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com; spf=pass smtp.mailfrom=tdk.com; dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b=j2Icz4g6; arc=fail smtp.client-ip=205.220.178.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tdk.com
-Received: from pps.filterd (m0233779.ppops.net [127.0.0.1])
-	by mx0b-00549402.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41J97RxB013389;
-	Mon, 19 Feb 2024 10:49:49 GMT
-Received: from jpn01-os0-obe.outbound.protection.outlook.com (mail-os0jpn01lp2104.outbound.protection.outlook.com [104.47.23.104])
-	by mx0b-00549402.pphosted.com (PPS) with ESMTPS id 3wap5js63v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 Feb 2024 10:49:48 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=EkGNmIKVWu8zfubq3my5mm18gXgfERPRtk7rdrOwo92MFlbhPD1o4C6LrR3gk+f7EDY6z9HAfogi7bcxZ7vYT7r8hA9HezxeUrKOKVSVCvTR5eBAhvjy2QUydZRUhBcak4zQpx4MtiVi4y5l9ybu9CjnMiEWhtoRkdJRegJEzZWZYwcxJd7x0wIgd+NNHpuD9VL0BNtQcVSSSv2hLe6CpKS9V703TKOg3FqQFPCT8eABZXFk3FtaUvOJcIYyY47NwX3CN4inUh8aA9Z+lEVdSLgDHaH9MZGed8R4/9X2ZUyFpPJOqaNlt5iEKVPmwHcgB+3PRVtOhlKzlSLuThMJNA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CaxQNkDNaNL1RiPdygUwndOb9UcqeQue+ML+yZG84cE=;
- b=XIEuac+FNzL7FZfRdTPvTlxRMDdxdiCs+pvnvqytxJnQ4hcFPKBPC9BkAzBzJyYXBBpUIvvXbcnnifsIzbRH0YWFkU7IZU3PCkNaMWYdGLSA/mYxyoru8NtI8+GycNs7Rbp6N70xf1sSCA0eziPUmrzMsrvLR4Yia7N2Exxdwq6v+OYOoMDTByePzVG/CzR3fM/TI2T/UvAGnrmWqUh8m7l6fQJisGIt4wPYu/XzYYjyAwGo2EPkmmomxt4pKPfPOpg1AxmBHGEO4DrHtD4mYuwfzuYgBjsrlISQz3/AgTFK9vnxBHVqexfsH5xk0MDEbeT9GdnqJQ0Qp9GvaZa9Jw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=tdk.com; dmarc=pass action=none header.from=tdk.com; dkim=pass
- header.d=tdk.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tdk.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CaxQNkDNaNL1RiPdygUwndOb9UcqeQue+ML+yZG84cE=;
- b=j2Icz4g6RcZbW5dk3lStp6A3Xsg9NMQftQTAhjD1EnlRMbQrxZ2E98PIegSK80PAU8gK9dkcBJ2gj+eqRidhRmVjAS8gSy9oen2TRewyc3eDybUMh+rZValMJhjoSpB9cK3ZVZg08RX17/wS7/qxl8Xb/7M1z4NrColfiRXows+5oSlse0YKoNCoILeHXS2A0LoMVWXwcdUXL9ysOzZrKAO5/FOYVXeMfMyYoMfMUlwkbscNYe2URUIJxZQkH22FisRwH/IspHByg3GvItOHI5UhH+zHFoolFcdEP4QeRa8IPsXn6WXIej8taT1cRqBHbNYS4+DnFQ86bvd6iRvaeQ==
-Received: from OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:1a7::13)
- by TY1P286MB3106.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:321::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7270.39; Mon, 19 Feb
- 2024 10:49:36 +0000
-Received: from OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM
- ([fe80::cb8d:ccc6:f2:ff8f]) by OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM
- ([fe80::cb8d:ccc6:f2:ff8f%4]) with mapi id 15.20.7292.036; Mon, 19 Feb 2024
- 10:49:36 +0000
-From: inv.git-commit@tdk.com
-To: jic23@kernel.org
-Cc: lars@metafoo.de, linux-iio@vger.kernel.org, stable@vger.kernel.org,
-        Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Subject: [PATCH] iio: imu: inv_mpu6050: fix frequency setting when chip is off
-Date: Mon, 19 Feb 2024 10:49:01 +0000
-Message-Id: <20240219104901.88743-1-inv.git-commit@tdk.com>
-X-Mailer: git-send-email 2.25.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: LO4P123CA0581.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:276::11) To OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:604:1a7::13)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0379ABA4D;
+	Mon, 19 Feb 2024 11:06:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708340821; cv=none; b=hoh2TWy8zMhlOxkvsw5HHqFvYgAZJJnF8Umg+kiE2w0NrUiweeCON+S9K98zz7FCBRgn25kD+TT11sABEZ+llUm3LNM98vzO9T++lGNeYa8SqBeFJpwAwYlrO0ajQ6WeGX7CpPlmzpLWMTRD4W8ZA1/YvDnd54DfDFpO3Ynhtho=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708340821; c=relaxed/simple;
+	bh=mH/z9hy5y1/jEvD4un/BSTP6zQ3aR1t42CU+6SFkCKk=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JHTaqNrWrHuIU1u9A0pa2mKsIXPE6RzLjzcrHOHFXQHtM5iHwE2mh3nvvSYErvPzWLE75dWL5ixqS1CIOx1I5j33qBsz9HXhlSuQrMHo8xswi3NKCPxjmFEudE1dALbI5kF3FmG6x8I7iM6Oq1qFCbjRiDb+UcsjjbYGIB/XU74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=s86i5twg; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=UBGlvilk; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=s86i5twg; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=UBGlvilk; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 2A8D1222F9;
+	Mon, 19 Feb 2024 11:06:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1708340818; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2VkQEWzEnd6uPTyGy38QQbhsmDl2BuN3OJaCFvojlto=;
+	b=s86i5twgn2MtfLizWr3v+vuGVLzcvSg2Peyh1FBKe0C46J9WSpVN57M0vvk7PW1Xoq/QEl
+	z9bbhf99Z0nt85d3UbQULxdp7NbnGWm52kd4LnJWMWcajaxRuVvn4Q/qmFtoMRk8uEdmPp
+	uvljSRR5m862OU6OV9k0hmj+TTxigaY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1708340818;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2VkQEWzEnd6uPTyGy38QQbhsmDl2BuN3OJaCFvojlto=;
+	b=UBGlvilkdOxexvJtL8JZ/pQLZ4r0X/oeFfep7ABRM5KKeSHlczaUTfG3OyLuq5COBK6Nne
+	EmDpEGzvDifdsfBw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1708340818; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2VkQEWzEnd6uPTyGy38QQbhsmDl2BuN3OJaCFvojlto=;
+	b=s86i5twgn2MtfLizWr3v+vuGVLzcvSg2Peyh1FBKe0C46J9WSpVN57M0vvk7PW1Xoq/QEl
+	z9bbhf99Z0nt85d3UbQULxdp7NbnGWm52kd4LnJWMWcajaxRuVvn4Q/qmFtoMRk8uEdmPp
+	uvljSRR5m862OU6OV9k0hmj+TTxigaY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1708340818;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2VkQEWzEnd6uPTyGy38QQbhsmDl2BuN3OJaCFvojlto=;
+	b=UBGlvilkdOxexvJtL8JZ/pQLZ4r0X/oeFfep7ABRM5KKeSHlczaUTfG3OyLuq5COBK6Nne
+	EmDpEGzvDifdsfBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B50FF13647;
+	Mon, 19 Feb 2024 11:06:57 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id viCtKlE202XtLgAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Mon, 19 Feb 2024 11:06:57 +0000
+Date: Mon, 19 Feb 2024 12:06:57 +0100
+Message-ID: <87o7ccogq6.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
+Cc: Mark Brown <broonie@kernel.org>,
+	stable@vger.kernel.org,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	linux-sound@vger.kernel.org,
+	alsa-devel@alsa-project.org,
+	LKML <linux-kernel@vger.kernel.org>,
+	"Mukunda, Vijendar" <Vijendar.Mukunda@amd.com>,
+	"Dommati, Sunil-kumar" <Sunil-kumar.Dommati@amd.com>,
+	"Hiregoudar, Basavaraj" <Basavaraj.Hiregoudar@amd.com>,
+	Ethan Geller <ethang@valvesoftware.com>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Subject: Re: [REGRESSION] Acp5x probing regression introduced between kernel 6.7.2 -> 6.7.4
+In-Reply-To: <3e364929-807e-477c-8530-f23db4ae7caf@amd.com>
+References: <CAD_nV8BG0t7US=+C28kQOR==712MPfZ9m-fuKksgoZCgrEByCw@mail.gmail.com>
+	<7a0cd63f-8a83-4dc5-8763-63dcdae8d68a@leemhuis.info>
+	<878r3qxcyr.wl-tiwai@suse.de>
+	<871q9hwz2w.wl-tiwai@suse.de>
+	<ZdDXJyXiZ++KiNqW@finisterre.sirena.org.uk>
+	<87msrzos6m.wl-tiwai@suse.de>
+	<3e364929-807e-477c-8530-f23db4ae7caf@amd.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: OSZP286MB1942:EE_|TY1P286MB3106:EE_
-X-MS-Office365-Filtering-Correlation-Id: 963cafc6-0bc0-406f-189e-08dc313876ae
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 
-	dHhuIdwhJTsBdxwG0RLqyIJcKQX3csLT4mC+6DmXnivh64awb94zpMfSEYNsI+lOM9/KXyIRUfnhZnfPHfi3Rb4FGuLPZNKFrCrqiD1zxaHp7quUatPMoA9e0S1dVQzX9pCtB2IvR3ivt7qg8z1ZogWgIf05aDqFcn1hrIvgE6X9h94eIUTdegr4x/LtVbKEAwAw8Cb3La+nAjrI+9muEYqLg8nUIXWuB3p1JrNsb1RMdFTkw5rYFO4MEIy6gON4eHAH7Aso5vb6g6aAn+oZaJImlpvWetn7uCopQXeJpJTNjfyp2UHIO5YSl2KvTvQWhfsZ5egXG3mW7QKWfb30fw/KqFp3JEUzaZNI0khdBFxeWdjuvAJMZDAbYv6+6c+81XwwfftzqNXhfBdeTcN3mVhDQshNgg357SU6v/judsclJT4/de9C4/Ai0/ZwMzeBT4kNywpMLgYpxUQIcBvG5lL5xMSu4X8v9nyzelQ+/k0i3NcMJY7xnuLTsK4u1dNNgij71EqLap/1ig+D8Z9Cwmyw6btEhPKlVjbVSUtebVw7jUVf94cvJUjLqr1gmI0yJFw4kp5XCfOTkhI27fiEEpPXKl3zr/4c7EzPjA0xOjbK1jS4NUcy9Vs5WaZ3oun1aYDtkkvig+5mn7ovkt8rbg==
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(38350700005)(3613699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?us-ascii?Q?PjDKgZJCnhZEGe82f8D+2P1PwSpg5dUI5uHVNqkgJ+avt5sXx3q4Hg0dh5q6?=
- =?us-ascii?Q?75ijdYguR/XSTq7ptum61dlwyuC7WsaNXc8qS6Dvibt5W05XcYn9ffkq2jQh?=
- =?us-ascii?Q?EgAzjjDT46VhIP3XDY6AUdBQaUiB7DaiLZ4yKJsew0c+WMi572NSdfFBdec3?=
- =?us-ascii?Q?QQZy/i7LssVg+3xEQLrtVcfKh5ofV7Aivqp7K8j+KDeZ5wU4cS/UiDt/wITx?=
- =?us-ascii?Q?z5UYlTv9cSfGfgq7vAKcu1E5pucJtALVGmAxQaRCXvxOoJ4hE8nJr/htD4fM?=
- =?us-ascii?Q?z/LsCdL14Qe+c8F2ku2xvkKs2RNsuoV9RarZUU2WnULDxX8zP3x/kXMxcNga?=
- =?us-ascii?Q?Xv8h+9WOxB0O2C9VE5y+21h3WMxv04LM7if0fm4S905z5Wo+Y9dJR+tAjGUG?=
- =?us-ascii?Q?/Isln2oMnUZHGu3F9DwPIQxvkv7yvn9SwjONzxsdZIQxZmRYX4rFRC8Bwi20?=
- =?us-ascii?Q?k/NvAwgaSHAUDc7WRtqwpAaCgRLa8vsRIFu4+QrCYXsVLQzl5kb4BJ684B8k?=
- =?us-ascii?Q?evUf3F5PzWEtW59e7RFe5/fJq85hKBsu1YfXvbq2HNYgGuG0raYclZAmqa7C?=
- =?us-ascii?Q?iSiPzQFPFohZQAQq7FB62J5iHpROnaErPWrq3/++FsOXXZDgINf4h5JjPYVU?=
- =?us-ascii?Q?Psh/FH3htwHSOHXKjqK+dBG3wPWFKdDaJlymja0ffisPAVGmAcrfwlnamLri?=
- =?us-ascii?Q?NTnn54OZhUq+x8py5D3tVhulh0GksMhy7sV3Ee83oiGbi3fe1RIlLajO4DAA?=
- =?us-ascii?Q?nE42fYujD3C2GDmKnZdFbaFFq3cnpkq/jvaLT2GRAuZC6MtsgILt6pBOaKzY?=
- =?us-ascii?Q?YG7ZIFpQa+znoblc3v0dVGEtB1p3OJFCg7PS4Z7/EbjUbxBKbV1PSOGhfV9S?=
- =?us-ascii?Q?7uKEp/iO1LdQF1xy4qs424D7sm/0Mcarhf5lTakIbNCKrxnFYp2OvQ+phCuK?=
- =?us-ascii?Q?N5XjYCIgTIF/IRHMZonHeDqq6/KoX4I0FN8WAUpKDX+T3r15AuYONlrnrl7g?=
- =?us-ascii?Q?l5OIy5YOCwseLkU+h8zi4S19gd+ll5No+yjkbA6RihWM2JBuRKjALyeYktif?=
- =?us-ascii?Q?Ii37SKrzIbzEL15Ce4T+Ddj6dwZaW7I12pn7NAcPlojK3S4MbXv0n041RZZb?=
- =?us-ascii?Q?cFFaTw2p9Lt4FZbsiHxM1a1HbLLDl8eiDi7HLdvVu3fJXDHat6JAWP3RxHkg?=
- =?us-ascii?Q?XPKUGfxO+HwP8KUmNlF8qXtkNxIX/OWmSD/lizvyJJ415NkpmYt/Ycj7F3+5?=
- =?us-ascii?Q?RvlhJYHE3R6qX+Vp7AWUoEfUGMDOa5SOBURJ7fEnMTC10P1W5p2sQJJqvnDV?=
- =?us-ascii?Q?L1u/SlCtFKP4X72ipweUUFUO5+uDBfZqLDgIotsM1w/q+rhN3fJ+N4iy/7Xk?=
- =?us-ascii?Q?C7YF+IJYpYbuSyOoSZKitpZ/x0H4RwEYT1gdfVrfCVNbLs/DUKq4lM60lNR2?=
- =?us-ascii?Q?bGLFmtEgTZ+N86F8FYfCB3HjGpg97VpTJa6ygpbh/qNgMwdrqVyr1LudkmmS?=
- =?us-ascii?Q?pDpgORrRpMhQ7kqCUcLrez1DcWqaGLnzWuSqStu08sVbe400mRuareMVTRD7?=
- =?us-ascii?Q?wCOcRsH/SuDUyCcEXKJ6w9rTcED4rabCHdqPhhkf?=
-X-OriginatorOrg: tdk.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 963cafc6-0bc0-406f-189e-08dc313876ae
-X-MS-Exchange-CrossTenant-AuthSource: OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Feb 2024 10:49:36.0747
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 7e452255-946f-4f17-800a-a0fb6835dc6c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wwV5sXbju6VfQlSKUbYpbMzOfCCLy17iyUod5ybfE28ej45+BKeNqTwqdN84btzoWYFWieniKID0MdU0nVyAGA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY1P286MB3106
-X-Proofpoint-ORIG-GUID: 4iMIaxTpFkYuF1EmpcfR429Gd2XhfkFe
-X-Proofpoint-GUID: 4iMIaxTpFkYuF1EmpcfR429Gd2XhfkFe
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-19_08,2024-02-16_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 phishscore=0
- malwarescore=0 impostorscore=0 spamscore=0 clxscore=1011 adultscore=0
- priorityscore=1501 lowpriorityscore=0 mlxscore=0 mlxlogscore=999
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2401310000 definitions=main-2402190081
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Level: 
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=s86i5twg;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=UBGlvilk
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-3.51 / 50.00];
+	 ARC_NA(0.00)[];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	 FROM_HAS_DN(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 MIME_GOOD(-0.10)[text/plain];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 DKIM_TRACE(0.00)[suse.de:+];
+	 MX_GOOD(-0.01)[];
+	 RCPT_COUNT_TWELVE(0.00)[13];
+	 MID_CONTAINS_FROM(1.00)[];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 NEURAL_HAM_SHORT(-0.20)[-1.000];
+	 RCVD_TLS_ALL(0.00)[];
+	 BAYES_HAM(-3.00)[100.00%]
+X-Spam-Score: -3.51
+X-Rspamd-Queue-Id: 2A8D1222F9
+X-Spam-Flag: NO
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+On Mon, 19 Feb 2024 11:50:46 +0100,
+Venkata Prasad Potturu wrote:
+> 
+> 
+> On 2/18/24 00:04, Takashi Iwai wrote:
+> > On Sat, 17 Feb 2024 16:56:23 +0100,
+> > Mark Brown wrote:
+> >> On Mon, Feb 12, 2024 at 03:12:55PM +0100, Takashi Iwai wrote:
+> >>> Takashi Iwai wrote:
+> >>>> Interestingly, the system seems working with 6.8-rc3, so some piece
+> >>>> might be missing.  Or simply reverting this patch should fix.
+> >>> In the bugzilla entry, the reporter confirmed that the revert of the
+> >>> commit 4b6986b170f2f2 fixed the problem.
+> >> Any news on a patch for this?  Venkata?
+> Hi Mark & Takashi,
+> Sorry for the late reply.
+> 
+> 4b6986b170f2f2 ASoC: amd: Add new dmi entries for acp5x platform
+> 
+> There is no relation with the below error and this reverted patch, this patch is to
+> define is to load Legacy driver for Jupiter Steam deck variant.
+> 
+> We will check on this.
+> 
+> Error logs.
+> [    8.755614] cs35l41 spi-VLV1776:00: supply VA not found, using dummy regulator
+> [    8.760506] cs35l41 spi-VLV1776:00: supply VP not found, using dummy regulator
+> [    8.777148] cs35l41 spi-VLV1776:00: Cirrus Logic CS35L41 (35a40), Revision: B2
+> [    8.777471] cs35l41 spi-VLV1776:01: supply VA not found, using dummy regulator
+> [    8.777532] cs35l41 spi-VLV1776:01: supply VP not found, using dummy regulator
+> [    8.777709] cs35l41 spi-VLV1776:01: Reset line busy, assuming shared reset
+> [    8.788465] cs35l41 spi-VLV1776:01: Cirrus Logic CS35L41 (35a40), Revision: B2
+> [    8.877280] snd_hda_intel 0000:04:00.1: enabling device (0000 -> 0002)
+> [    8.877595] snd_hda_intel 0000:04:00.1: Handle vga_switcheroo audio client
+> [    8.889913] snd_acp_pci 0000:04:00.5: enabling device (0000 -> 0002)
+> [    8.890063] snd_acp_pci 0000:04:00.5: Unsupported device revision:0x50
+> [    8.890129] snd_acp_pci: probe of 0000:04:00.5 failed with error -22
 
-Track correctly FIFO state and apply ODR change before starting
-the chip. Without the fix, you cannot change ODR more than 1 time
-when data buffering is off.
+My understanding is that the fact that snd_acp_pci matches caused the
+problem (without backports of other relevant changes).
+In the working case, it's probed with snd_pci_acp5x driver.
 
-Fixes: 111e1abd0045 ("iio: imu: inv_mpu6050: use the common inv_sensors timestamp module")
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
----
- drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c | 5 +++++
- 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
-index 676704f9151f..e6e6e94452a3 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
-@@ -111,6 +111,7 @@ int inv_mpu6050_prepare_fifo(struct inv_mpu6050_state *st, bool enable)
- 	if (enable) {
- 		/* reset timestamping */
- 		inv_sensors_timestamp_reset(&st->timestamp);
-+		inv_sensors_timestamp_apply_odr(&st->timestamp, 0, 0, 0);
- 		/* reset FIFO */
- 		d = st->chip_config.user_ctrl | INV_MPU6050_BIT_FIFO_RST;
- 		ret = regmap_write(st->map, st->reg->user_ctrl, d);
-@@ -184,6 +185,10 @@ static int inv_mpu6050_set_enable(struct iio_dev *indio_dev, bool enable)
- 		if (result)
- 			goto error_power_off;
- 	} else {
-+		st->chip_config.gyro_fifo_enable = 0;
-+		st->chip_config.accl_fifo_enable = 0;
-+		st->chip_config.temp_fifo_enable = 0;
-+		st->chip_config.magn_fifo_enable = 0;
- 		result = inv_mpu6050_prepare_fifo(st, false);
- 		if (result)
- 			goto error_power_off;
---
-2.34.1
+thanks,
 
+Takashi
 
