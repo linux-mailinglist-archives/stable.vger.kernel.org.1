@@ -1,103 +1,129 @@
-Return-Path: <stable+bounces-20505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E11D85A053
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 10:55:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DD0485A097
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 11:11:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61AA41C2107D
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 09:55:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D970F283347
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 10:11:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5170425615;
-	Mon, 19 Feb 2024 09:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AF6025574;
+	Mon, 19 Feb 2024 10:11:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="cJVJhjkM"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="b5IP8oB0"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38DB525614;
-	Mon, 19 Feb 2024 09:54:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB0EB22F1E;
+	Mon, 19 Feb 2024 10:11:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708336484; cv=none; b=WKOekneIpiJUa8zEFif7A6VZj2IHyejE62RyivaLbSYStWD28Bfo74y9+s5oFjqCm9cFZ/ShZHz0StNLbWzxnF1xhdkfyJ5pnv6RPKxc/PX/Qz5N0aoxBOTxnRmTmbCTckG8CjBAT5snwjd8Gyb0lgqqSa37ofFQC6PqCLZ9ps4=
+	t=1708337478; cv=none; b=DsjkIssor0774jyx+xJ93e1u3QzSJtl/f+MBAJ985So+Omf6us5CRFp5fi+9wHxi68jiERG9FIkfDY3g6EShjyGWDcQse6/vt4Giq2QcPlZddftNPigVjZAIvoAC76brIjCMaapz7axbJfEllbgmkeywnmA4qaW4lO+VnXcF38A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708336484; c=relaxed/simple;
-	bh=2PGHb0YK6zNzLpgmDozQJqP4grk2DdHx3T5vOsHWuqg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dN5DFuCH+2SPV2Wm9VFXzTDfT6AVzoCLyAL9LrOWC6iB/XELCSzSUMY/LPqpuDhHJj2TFvjK0ZV2LSFrONzFGLNsU0LvMr38lRAVW98Rknj+QLFc+iGdNH0Pv28I1/Z5mMOajwZshsKZzopNUnQGULbGa78yuurAdvvL/JZtyIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=cJVJhjkM; arc=none smtp.client-ip=115.124.30.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1708336479; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=HjH7v7MwvWWsSPBnkhGSwPRvi6ZG5EixZmbA5olhbF8=;
-	b=cJVJhjkMFc3/SgYQ5niz4Vqd0l0S7c6Bt+wDTOKDZ80IP5Yn0WA0Cg5q6YgfscolA3eCof5yPsHqECoqSxmUDOoNm5Edc9Vaax3M32e8ZCcN8e63ARlxPnsJfieIIgSDH6x04NNsK/PtPaRZ5i9mjafUA6esGWagQW5jaqg/45c=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045192;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0W0sB01V_1708336477;
-Received: from 30.97.56.48(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0W0sB01V_1708336477)
-          by smtp.aliyun-inc.com;
-          Mon, 19 Feb 2024 17:54:38 +0800
-Message-ID: <f9ca3b97-002d-46b0-904b-c9b1859ee236@linux.alibaba.com>
-Date: Mon, 19 Feb 2024 17:54:36 +0800
+	s=arc-20240116; t=1708337478; c=relaxed/simple;
+	bh=nKglCQxaIL9KhzTcv2EpJnB3vJNsx8B6s925upveKuo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=RBRBBapwgBUdsh8Pm3gb5cs6LMWr2b2V+AXkaF1mgs3Y/Zm3Eb7bCVpqi7kcsz5ZqI+8Y4JZ5en6ZyEkKTZLiY6u6WgGgg+0Wuvd3dE7RWIKg5GnBNHKmIefG+hBt9P+oQWZ4xaATlPXWePKmWfxgGWPyHsC+dsfmyfa4PU11Gw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=b5IP8oB0; arc=none smtp.client-ip=60.244.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 34ead050cf0f11ee9e680517dc993faa-20240219
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:CC:To:Subject:MIME-Version:Date:Message-ID; bh=FrRtn58nRdzgiHjxO5LEX/AMpFVMDY48qkJZG+hrISI=;
+	b=b5IP8oB0Z4PMPQbZStwzEWt/qKj8D2T6SxgxjuASMPY4nSOqRE5FqCyp4Biip4wM6Q5KI7hjwNiuSnhNn1LIHgSf976iWemmwoAZjUJzBvkonR4MiQIGC6gHNyJxGf2/aUcsmyQaEJu9at+E4YKhY8uIb/OOSaHCX1KciVVBOPM=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.37,REQID:d6fa4c11-acf9-4f1c-ae0e-dcbd7dee9419,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6f543d0,CLOUDID:95978e80-4f93-4875-95e7-8c66ea833d57,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+	RL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,
+	SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 34ead050cf0f11ee9e680517dc993faa-20240219
+Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw01.mediatek.com
+	(envelope-from <macpaul.lin@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1620944991; Mon, 19 Feb 2024 18:11:11 +0800
+Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
+ mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Mon, 19 Feb 2024 18:11:10 +0800
+Received: from [172.21.84.99] (172.21.84.99) by mtkmbs13n1.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.2.1118.26 via Frontend
+ Transport; Mon, 19 Feb 2024 18:11:04 +0800
+Message-ID: <91b2109d-1bf7-1fa7-ac16-ec1d9aba2f5b@mediatek.com>
+Date: Mon, 19 Feb 2024 18:11:03 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/vmscan: Fix a bug calling wakeup_kswapd() with a wrong
- zone index
-To: Oscar Salvador <osalvador@suse.de>
-Cc: Byungchul Park <byungchul@sk.com>, akpm@linux-foundation.org,
- ying.huang@intel.com, hannes@cmpxchg.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, kernel_team@skhynix.com, stable@vger.kernel.org
-References: <20240216111502.79759-1-byungchul@sk.com>
- <517e58d4-7537-4d9f-8893-0130c65c3fdb@linux.alibaba.com>
- <ZdMNGvUOWnNn9zDh@localhost.localdomain>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <ZdMNGvUOWnNn9zDh@localhost.localdomain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH v2 1/2] dt-bindings: phy: mediatek: tphy: add a property
+ for force-mode switch
+Content-Language: en-US
+To: Vinod Koul <vkoul@kernel.org>, Rob Herring <robh+dt@kernel.org>, Chunfeng
+ Yun <chunfeng.yun@mediatek.com>
+CC: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+	<conor+dt@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-mediatek@lists.infradead.org>,
+	<linux-phy@lists.infradead.org>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
+	<gregkh@linuxfoundation.org>
+References: <20231211025624.28991-1-chunfeng.yun@mediatek.com>
+ <170317895962.712473.102387666807925662.b4-ty@kernel.org>
+From: Macpaul Lin <macpaul.lin@mediatek.com>
+In-Reply-To: <170317895962.712473.102387666807925662.b4-ty@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 12/22/23 01:15, Vinod Koul wrote:
+> 	
+> 
+> External email : Please do not click links or open attachments until you 
+> have verified the sender or the content.
+> 
+> On Mon, 11 Dec 2023 10:56:23 +0800, Chunfeng Yun wrote:
+>> Due to some old SoCs with shared t-phy between usb3 and pcie only support
+>> force-mode switch, and shared and non-shared t-phy may exist at the same
+>> time on a SoC, can't use compatible to distinguish between shared and
+>> non-shared t-phy, add a property to supported it.
+>> Currently, only support switch from default pcie mode to usb3 mode.
+>> But now prefer to use "mediatek,syscon-type" on new SoC as far as possible.
+>> 
+>> [...]
+> 
+> Applied, thanks!
+> 
+> [1/2] dt-bindings: phy: mediatek: tphy: add a property for force-mode switch
+>        commit: cc230a4cd8e91f64c90b5494dfd76848197418ed
+> [2/2] phy: mediatek: tphy: add support force phy mode switch
+>        commit: 9b27303003f5af0d378f29ccccea57c7d65cc642
+> 
+> Best regards,
+> -- 
+> ~Vinod
+> 
+> 
 
+Is it possible to cherry-pick these 2 patches to stable branches?
+These 2 patches help fix USB port 1 (xhci1) for board mt8395-genio-1200-evb.
+The following branch has been tested.
+  - linux-6.7.y (6.7.5): apply test, build pass, function tested OK 
+(with corresponded dtb change).
+  - linux-6.6.y (6.6.17): apply test, build pass.
+  - linux-6.1.y (6.1.78): apply test, build pass.
 
-On 2024/2/19 16:11, Oscar Salvador wrote:
-> On Mon, Feb 19, 2024 at 02:25:11PM +0800, Baolin Wang wrote:
->> This means that there is no memory on the target node？ if so, we can add a
->> check at the beginning to avoid calling unnecessary
->> migrate_misplaced_folio().
->>
->> diff --git a/mm/memory.c b/mm/memory.c
->> index e95503d7544e..a64a1aac463f 100644
->> --- a/mm/memory.c
->> +++ b/mm/memory.c
->> @@ -5182,7 +5182,7 @@ static vm_fault_t do_numa_page(struct vm_fault *vmf)
->>          else
->>                  last_cpupid = folio_last_cpupid(folio);
->>          target_nid = numa_migrate_prep(folio, vma, vmf->address, nid,
->> &flags);
->> -       if (target_nid == NUMA_NO_NODE) {
->> +       if (target_nid == NUMA_NO_NODE || !node_state(target_nid, N_MEMORY))
->> {
->>                  folio_put(folio);
->>                  goto out_map;
->>          }
->>
->> (similar changes for do_huge_pmd_numa_page())
-> 
-> With the check in place from [1], numa_migrate_prep() will also return
-> NUMA_NO_NODE, so no need for this one here.
-> 
-> And I did not check, but I assume that do_huge_pmd_numa_page() also ends
-> up calling numa_migrate_prep().
-> 
-> [1] https://lore.kernel.org/lkml/20240219041920.1183-1-byungchul@sk.com/
-Right. I missed this patch before. So with checking in 
-should_numa_migrate_memory(), I guess current changes in 
-numamigrate_isolate_folio() can also be dropped, it will never hit a 
-memoryless node after the patch [1], no?
+Thanks.
+Macpaul Lin
 
