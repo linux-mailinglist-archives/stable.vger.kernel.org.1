@@ -1,106 +1,178 @@
-Return-Path: <stable+bounces-20673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDDAC85AAF5
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:29:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EED085AAF6
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:29:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C9E81C21085
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:29:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A287B21588
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:29:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D3C2481B3;
-	Mon, 19 Feb 2024 18:29:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E0EE482C3;
+	Mon, 19 Feb 2024 18:29:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rZJ6ntiL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gg74YMC6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C652482C6
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F77481AA
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:29:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708367368; cv=none; b=agZ1biF22z/bF/8kXgRsAAi9Zr9Q03TPWsC2h7RtDPxa5YMRpqKehbMmzDcS6Ww7RnqQrDxpvTIPf821PbHmIpgSfpLzjidR/9C0A9byhAWaV0nnSTNuxe/KftxMtTjZWKBLChJDB7YpRT1uDVhpopjFA5A877bhDDh4Wf+iDC0=
+	t=1708367384; cv=none; b=RxMUTGygIhcfXwowQ3IiNM128I30v/dH5rlSp/IJedwIo9uVcpJggKJYPmUnSZHrk33JEIHfa7sXeC0J7Qw31cA0JIP5Nab8XWhbo4qRHnhz1uB4/5wtSSwVmGQLzj4LmFbz4scSACLNY2H0BK/kfvmHEi6YpHokWH5tRq9bRUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708367368; c=relaxed/simple;
-	bh=VFjcCGau1HXqBUcYBXF5zIRc/ZFrGI+E9kDjZkPkzgg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gZ3J4DRKWRWnQySEs8MEMAY4rLhsDJ2r3UK1TeSbdRbpAOl4gpZrS7L8odl+rJLhH0D8ElXgtcF+7XbmV6egoRrehYrB0AgfLnrpLpi4QCnl8PyyTxAfaqBIrZfrqa45AculAvJSQ1+OIOUSDZtBouIB5ExJN4nxo0LYrBXYsHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rZJ6ntiL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 417D9C433C7;
-	Mon, 19 Feb 2024 18:29:27 +0000 (UTC)
+	s=arc-20240116; t=1708367384; c=relaxed/simple;
+	bh=+GrH9FUNYlqCcru4Qm0IvOThfZ/S6isEMtC5W3e0pV0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=AIOinkYqsXSd3ASR7fBjdHjhiLwzMjp7+WuEpZL2SvcXYsIuumnp39f5iyTbYBZO0vwyaJf7e1pi7pAjSeZ92XjYjzT4A2SCZBIEt5wg+Nmg+OrNkiItIRgz95dzjs5RJJ3T903fTAwUaEuWHBGj7WlOff6IRAWUTc15/wM4O74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gg74YMC6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2919DC433C7;
+	Mon, 19 Feb 2024 18:29:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708367367;
-	bh=VFjcCGau1HXqBUcYBXF5zIRc/ZFrGI+E9kDjZkPkzgg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rZJ6ntiL1Utl6HnALV1rjtT9nlJXL022Rl+opVuyaw39+GB1AhrghprZcCZpM9GVW
-	 aRtx0okBDIG5nUg9U7XEkNOLiGXu2OJVzV70Apc7TnAn48lRc1WLsyU+mvFgUet+5N
-	 h8JtB6FmH3ccr2++5zBP22HG6NAYJPkoOIT/b1QM=
-Date: Mon, 19 Feb 2024 19:29:24 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: stable@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 6.6 6.7] nilfs2: fix hang in
- nilfs_lookup_dirty_data_buffers()
-Message-ID: <2024021917-lash-scowling-1692@gregkh>
-References: <20240214110110.6331-1-konishi.ryusuke@gmail.com>
+	s=korg; t=1708367384;
+	bh=+GrH9FUNYlqCcru4Qm0IvOThfZ/S6isEMtC5W3e0pV0=;
+	h=Subject:To:Cc:From:Date:From;
+	b=gg74YMC6qTzZlHRrxrJ44KKZUwLHIRgk3RfcNzAG8swelF0IVxXxnoneXNabXmH0D
+	 sCfZHUMWszSFbFIqHc39M4t9SHxo+U+PY2rWLOMX5QAenFafyG3sqgmLGP3OIbNQot
+	 dLHs8jPCEdKdIGFP+gwoyK864AgJq7H69+6bYD3M=
+Subject: FAILED: patch "[PATCH] nilfs2: fix potential bug in end_buffer_async_write" failed to apply to 6.7-stable tree
+To: konishi.ryusuke@gmail.com,akpm@linux-foundation.org,stable@vger.kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 19 Feb 2024 19:29:41 +0100
+Message-ID: <2024021941-aerobics-disliking-5751@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240214110110.6331-1-konishi.ryusuke@gmail.com>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Wed, Feb 14, 2024 at 08:01:10PM +0900, Ryusuke Konishi wrote:
-> commit 38296afe3c6ee07319e01bb249aa4bb47c07b534 upstream.
-> 
-> Syzbot reported a hang issue in migrate_pages_batch() called by mbind()
-> and nilfs_lookup_dirty_data_buffers() called in the log writer of nilfs2.
-> 
-> While migrate_pages_batch() locks a folio and waits for the writeback to
-> complete, the log writer thread that should bring the writeback to
-> completion picks up the folio being written back in
-> nilfs_lookup_dirty_data_buffers() that it calls for subsequent log
-> creation and was trying to lock the folio.  Thus causing a deadlock.
-> 
-> In the first place, it is unexpected that folios/pages in the middle of
-> writeback will be updated and become dirty.  Nilfs2 adds a checksum to
-> verify the validity of the log being written and uses it for recovery at
-> mount, so data changes during writeback are suppressed.  Since this is
-> broken, an unclean shutdown could potentially cause recovery to fail.
-> 
-> Investigation revealed that the root cause is that the wait for writeback
-> completion in nilfs_page_mkwrite() is conditional, and if the backing
-> device does not require stable writes, data may be modified without
-> waiting.
-> 
-> Fix these issues by making nilfs_page_mkwrite() wait for writeback to
-> finish regardless of the stable write requirement of the backing device.
-> 
-> Link: https://lkml.kernel.org/r/20240131145657.4209-1-konishi.ryusuke@gmail.com
-> Fixes: 1d1d1a767206 ("mm: only enforce stable page writes if the backing device requires it")
-> Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-> Reported-by: syzbot+ee2ae68da3b22d04cd8d@syzkaller.appspotmail.com
-> Closes: https://lkml.kernel.org/r/00000000000047d819061004ad6c@google.com
-> Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> ---
-> Please apply this patch to the stable trees indicated by the subject line
-> prefix.
-> 
-> These versions do not yet have page-to-folio conversion applied to the
-> target function, so page-based "wait_on_page_writeback()" is used instead
-> of "folio_wait_writeback()" in this patch.  This did not apply as-is to
-> v6.5 and earlier versions due to an fs-wide change.  So I would like to
-> post a separate patch for earlier stable trees.
 
-All now queued up, thanks!
+The patch below does not apply to the 6.7-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.7.y
+git checkout FETCH_HEAD
+git cherry-pick -x 5bc09b397cbf1221f8a8aacb1152650c9195b02b
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021941-aerobics-disliking-5751@gregkh' --subject-prefix 'PATCH 6.7.y' HEAD^..
+
+Possible dependencies:
+
+5bc09b397cbf ("nilfs2: fix potential bug in end_buffer_async_write")
+ff5710c3f3c2 ("nilfs2: convert nilfs_segctor_prepare_write to use folios")
+3cd36212bf75 ("nilfs2: convert nilfs_segctor_complete_write to use folios")
+50196f0081ca ("nilfs2: convert nilfs_abort_logs to use folios")
+8f46eaf6fd84 ("nilfs2: add nilfs_end_folio_io()")
+
+thanks,
 
 greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 5bc09b397cbf1221f8a8aacb1152650c9195b02b Mon Sep 17 00:00:00 2001
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Date: Sun, 4 Feb 2024 01:16:45 +0900
+Subject: [PATCH] nilfs2: fix potential bug in end_buffer_async_write
+
+According to a syzbot report, end_buffer_async_write(), which handles the
+completion of block device writes, may detect abnormal condition of the
+buffer async_write flag and cause a BUG_ON failure when using nilfs2.
+
+Nilfs2 itself does not use end_buffer_async_write().  But, the async_write
+flag is now used as a marker by commit 7f42ec394156 ("nilfs2: fix issue
+with race condition of competition between segments for dirty blocks") as
+a means of resolving double list insertion of dirty blocks in
+nilfs_lookup_dirty_data_buffers() and nilfs_lookup_node_buffers() and the
+resulting crash.
+
+This modification is safe as long as it is used for file data and b-tree
+node blocks where the page caches are independent.  However, it was
+irrelevant and redundant to also introduce async_write for segment summary
+and super root blocks that share buffers with the backing device.  This
+led to the possibility that the BUG_ON check in end_buffer_async_write
+would fail as described above, if independent writebacks of the backing
+device occurred in parallel.
+
+The use of async_write for segment summary buffers has already been
+removed in a previous change.
+
+Fix this issue by removing the manipulation of the async_write flag for
+the remaining super root block buffer.
+
+Link: https://lkml.kernel.org/r/20240203161645.4992-1-konishi.ryusuke@gmail.com
+Fixes: 7f42ec394156 ("nilfs2: fix issue with race condition of competition between segments for dirty blocks")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+5c04210f7c7f897c1e7f@syzkaller.appspotmail.com
+Closes: https://lkml.kernel.org/r/00000000000019a97c05fd42f8c8@google.com
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+diff --git a/fs/nilfs2/segment.c b/fs/nilfs2/segment.c
+index 2590a0860eab..2bfb08052d39 100644
+--- a/fs/nilfs2/segment.c
++++ b/fs/nilfs2/segment.c
+@@ -1703,7 +1703,6 @@ static void nilfs_segctor_prepare_write(struct nilfs_sc_info *sci)
+ 
+ 		list_for_each_entry(bh, &segbuf->sb_payload_buffers,
+ 				    b_assoc_buffers) {
+-			set_buffer_async_write(bh);
+ 			if (bh == segbuf->sb_super_root) {
+ 				if (bh->b_folio != bd_folio) {
+ 					folio_lock(bd_folio);
+@@ -1714,6 +1713,7 @@ static void nilfs_segctor_prepare_write(struct nilfs_sc_info *sci)
+ 				}
+ 				break;
+ 			}
++			set_buffer_async_write(bh);
+ 			if (bh->b_folio != fs_folio) {
+ 				nilfs_begin_folio_io(fs_folio);
+ 				fs_folio = bh->b_folio;
+@@ -1800,7 +1800,6 @@ static void nilfs_abort_logs(struct list_head *logs, int err)
+ 
+ 		list_for_each_entry(bh, &segbuf->sb_payload_buffers,
+ 				    b_assoc_buffers) {
+-			clear_buffer_async_write(bh);
+ 			if (bh == segbuf->sb_super_root) {
+ 				clear_buffer_uptodate(bh);
+ 				if (bh->b_folio != bd_folio) {
+@@ -1809,6 +1808,7 @@ static void nilfs_abort_logs(struct list_head *logs, int err)
+ 				}
+ 				break;
+ 			}
++			clear_buffer_async_write(bh);
+ 			if (bh->b_folio != fs_folio) {
+ 				nilfs_end_folio_io(fs_folio, err);
+ 				fs_folio = bh->b_folio;
+@@ -1896,8 +1896,9 @@ static void nilfs_segctor_complete_write(struct nilfs_sc_info *sci)
+ 				 BIT(BH_Delay) | BIT(BH_NILFS_Volatile) |
+ 				 BIT(BH_NILFS_Redirected));
+ 
+-			set_mask_bits(&bh->b_state, clear_bits, set_bits);
+ 			if (bh == segbuf->sb_super_root) {
++				set_buffer_uptodate(bh);
++				clear_buffer_dirty(bh);
+ 				if (bh->b_folio != bd_folio) {
+ 					folio_end_writeback(bd_folio);
+ 					bd_folio = bh->b_folio;
+@@ -1905,6 +1906,7 @@ static void nilfs_segctor_complete_write(struct nilfs_sc_info *sci)
+ 				update_sr = true;
+ 				break;
+ 			}
++			set_mask_bits(&bh->b_state, clear_bits, set_bits);
+ 			if (bh->b_folio != fs_folio) {
+ 				nilfs_end_folio_io(fs_folio, 0);
+ 				fs_folio = bh->b_folio;
+
 
