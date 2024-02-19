@@ -1,129 +1,165 @@
-Return-Path: <stable+bounces-20528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50A4285A492
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 14:24:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45D2185A53F
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 15:01:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77D681C23072
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 13:24:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C9C5B213EE
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 14:01:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 503FF3612D;
-	Mon, 19 Feb 2024 13:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5268B36B00;
+	Mon, 19 Feb 2024 14:01:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="Jcr4shji"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+Received: from smtp-fw-52003.amazon.com (smtp-fw-52003.amazon.com [52.119.213.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E9432182
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 13:24:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699FF36136;
+	Mon, 19 Feb 2024 14:01:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708349051; cv=none; b=SpXlaMqiHOUkW3h1+NCTm+Md5uHGPgfDDX0RnrntosNYvEiuTx8nteooFDiM0xDePIKl4R2yIYNTcnKPiygWHQWk6aof8LLt7o6bXhFH0f4Sp82eY1JAzSkP02LFwww3WWfRuhZZZPv7Cz0QH3yovD2YGIAwW+dwayklTk6q+HQ=
+	t=1708351275; cv=none; b=DtkRQV/7VbWjqa1pbyBBTm9ug3d2iWoI7vRRdg588ys8yF1zRyEEfMVr7/z2qZINPXgd8fGQZ3GIJ5jCz+2fxJgqFQunGwVGrwccKjAIfCnCuik5lBcBeZOgYTqNXBnfCOkmlzX9Cgxsabjt8U3TwQjKjOVmJfGhiO4wJ0++MCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708349051; c=relaxed/simple;
-	bh=AajlHF4Swl8ovOgGqJh90HWbwfQ1me6Enr9BSHDWiCw=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VLki8jPwl2Hgcdxa5GJoSnSl9RYkJ3MAyoTOlFIjFhtcNob9O57NcI7Q+64FfWgEG3HKHi1hqPt6L2NZFj6Ti1zcx5twa4xlEOB+ZI9sE6H9o0Z4KXcmoso26ceQb7lwxN8YD+mIfiF9NN56mNk143KvtJr4PxLh5exaBsoVk8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.163])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Tdjmf5yCBz1FKhS;
-	Mon, 19 Feb 2024 21:19:14 +0800 (CST)
-Received: from canpemm500006.china.huawei.com (unknown [7.192.105.130])
-	by mail.maildlp.com (Postfix) with ESMTPS id 825F218005F;
-	Mon, 19 Feb 2024 21:24:04 +0800 (CST)
-Received: from canpemm500004.china.huawei.com (7.192.104.92) by
- canpemm500006.china.huawei.com (7.192.105.130) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Mon, 19 Feb 2024 21:24:04 +0800
-Received: from huawei.com (10.67.174.111) by canpemm500004.china.huawei.com
- (7.192.104.92) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 19 Feb
- 2024 21:24:04 +0800
-From: Xiang Yang <xiangyang3@huawei.com>
-To: <ardb@kernel.org>, <mark.rutland@arm.com>, <catalin.marinas@arm.com>,
-	<will@kernel.org>
-CC: <keescook@chromium.org>, <linux-arm-kernel@lists.infradead.org>,
-	<stable@vger.kernel.org>, <gregkh@linuxfoundation.org>,
-	<xiangyang3@huawei.com>, <xiujianfeng@huawei.com>, <liaochang1@huawei.com>
-Subject: [PATCH 5.10.y v2] Revert "arm64: Stash shadow stack pointer in the task struct on interrupt"
-Date: Mon, 19 Feb 2024 21:21:53 +0800
-Message-ID: <20240219132153.378265-1-xiangyang3@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1708351275; c=relaxed/simple;
+	bh=ikzcV1URla2GgnY93GwPS2bZ/HFf3YKKWO17DlHhvWg=;
+	h=Subject:Message-ID:Date:MIME-Version:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Dsca40eu3gZhArzZEy1UWyFEr1Z+N19C6VA+rKu+HWEBmdR7wOuI1kPsDI3kpwtGQw8z3mM3xp9fv3/QrUSRj2J2spIsTRxusHJ+YEb2O19ev1og9zie6u1HsLewBz3jqWqmsfqQSbNuVuwMlz3LZYPLzticiSeDn1YFW2Mp2KA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=Jcr4shji; arc=none smtp.client-ip=52.119.213.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1708351274; x=1739887274;
+  h=message-id:date:mime-version:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:subject;
+  bh=W7gVIamMoMUxGHZcPfOMCqRDKpC788b33nadGhFmXO8=;
+  b=Jcr4shjiy6STwx3+Y74P3FZ78VW6hSiz98kFe9s6f5D7O8VIqhN944n4
+   i9FOxc2I8khzf4e6EU6nm18Igrszai1QWoSO1IlMIYmO4kIAQiOYh7bRh
+   fM2T00HeOj4yAi/P8nmbPa7SotPw+ATfGTZkfQGsMnqQKIEyZruPF2IlJ
+   o=;
+X-IronPort-AV: E=Sophos;i="6.06,170,1705363200"; 
+   d="scan'208";a="638842739"
+Subject: Re: [PATCH] selftests/mqueue: Set timeout to 100 seconds
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-52003.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2024 14:01:11 +0000
+Received: from EX19MTAEUA001.ant.amazon.com [10.0.17.79:5692]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.35.15:2525] with esmtp (Farcaster)
+ id c94ac43a-ba01-480a-b5f1-b87cfce8f244; Mon, 19 Feb 2024 14:01:09 +0000 (UTC)
+X-Farcaster-Flow-ID: c94ac43a-ba01-480a-b5f1-b87cfce8f244
+Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
+ EX19MTAEUA001.ant.amazon.com (10.252.50.50) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Mon, 19 Feb 2024 14:01:08 +0000
+Received: from [192.168.11.164] (10.106.83.24) by
+ EX19D018EUA004.ant.amazon.com (10.252.50.85) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Mon, 19 Feb 2024 14:01:08 +0000
+Message-ID: <ee8b746b-aee9-43d8-949b-62017fe0bca0@amazon.com>
+Date: Mon, 19 Feb 2024 14:01:06 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- canpemm500004.china.huawei.com (7.192.104.92)
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: SeongJae Park <sj@kernel.org>, Kees Cook <keescook@chromium.org>
+CC: <shuah@kernel.org>, <linux-kselftest@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
+	<Vijaikumar_Kanagarajan@mentor.com>, <brauner@kernel.org>,
+	<jlayton@kernel.org>, <jack@suse.cz>
+References: <20240217003142.86297-1-sj@kernel.org>
+From: "Mohamed Abuelfotoh, Hazem" <abuehaze@amazon.com>
+In-Reply-To: <20240217003142.86297-1-sj@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: EX19D001EUB003.ant.amazon.com (10.252.51.38) To
+ EX19D018EUA004.ant.amazon.com (10.252.50.85)
 
-This reverts commit 3f225f29c69c13ce1cbdb1d607a42efeef080056.
+On 17/02/2024 00:31, SeongJae Park wrote:
+> CAUTION: This email originated from outside of the organization. Do not click links or open attachments unless you can confirm the sender and know the content is safe.
+> 
+> 
+> 
+> On Fri, 16 Feb 2024 16:01:20 -0800 Kees Cook <keescook@chromium.org> wrote:
+> 
+>> On Wed, Feb 14, 2024 at 05:13:09PM -0800, SeongJae Park wrote:
+>>> A gentle reminder.
+>>>
+>>>
+>>> Thanks,
+>>> SJ
+>>>
+>>> On Fri, 9 Feb 2024 09:42:43 -0800 SeongJae Park <sj@kernel.org> wrote:
+>>>
+>>>> On Fri, 9 Feb 2024 10:30:38 +0000 "Mohamed Abuelfotoh, Hazem" <abuehaze@amazon.com> wrote:
+>>>>
+>>>>> On 08/02/2024 21:29, SeongJae Park wrote:
+>>>>>> CAUTION: This email originated from outside of the organization. Do not click links or open attachments unless you can confirm the sender and know the content is safe.
+>>>>>>
+>>>>>>
+>>>>>>
+>>>>>> While mq_perf_tests runs with the default kselftest timeout limit, which
+>>>>>> is 45 seconds, the test takes about 60 seconds to complete on i3.metal
+>>>>>> AWS instances.  Hence, the test always times out.  Increase the timeout
+>>>>>> to 100 seconds.
+>>>>>>
+>>>>>> Fixes: 852c8cbf34d3 ("selftests/kselftest/runner.sh: Add 45 second timeout per test")
+>>>>>> Cc: <stable@vger.kernel.org> # 5.4.x
+>>>>>> Signed-off-by: SeongJae Park <sj@kernel.org>
+>>>>>> ---
+>>>>>>    tools/testing/selftests/mqueue/setting | 1 +
+>>>>>>    1 file changed, 1 insertion(+)
+>>>>>>    create mode 100644 tools/testing/selftests/mqueue/setting
+>>>>>>
+>>>>>> diff --git a/tools/testing/selftests/mqueue/setting b/tools/testing/selftests/mqueue/setting
+>>>>>> new file mode 100644
+>>>>>> index 000000000000..54dc12287839
+>>>>>> --- /dev/null
+>>>>>> +++ b/tools/testing/selftests/mqueue/setting
+>>>>>> @@ -0,0 +1 @@
+>>>>>> +timeout=100
+>>>>>> --
+>>>>>> 2.39.2
+>>>>>>
+>>>>>>
+>>>>>
+>>>>> Added Vijai Kumar to CC
+>>>>>
+>>>>> This looks similar to [PATCH] kselftest: mqueue: increase timeout
+>>>>> https://lore.kernel.org/lkml/20220622085911.2292509-1-Vijaikumar_Kanagarajan@mentor.com/T/#r12820aede6bba015b70ae33323e29ae27d5b69c7
+>>>>> which was increasing the timeout to 180 however it's not clear why this
+>>>>> hasn't been merged yet.
+>>
+>> Should it be 100 or 180?
+Both options may work, I am more inclined to have this as 180 seconds by 
+giving more time for the test to finish, this can be reduced later to 
+100 or something else if we start hearing complains about the new timeout.
 
-The shadow call stack for irq now is stored in current task's thread info
-in irq_stack_entry. There is a possibility that we have some soft irqs
-pending at the end of hard irq, and when we process softirq with the irq
-enabled, irq_stack_entry will enter again and overwrite the shadow call
-stack whitch stored in current task's thread info, leading to the
-incorrect shadow call stack restoration for the first entry of the hard
-IRQ, then the system end up with a panic.
-
-task A                               |  task A
--------------------------------------+------------------------------------
-el1_irq        //irq1 enter          |
-  irq_handler  //save scs_sp1        |
-    gic_handle_irq                   |
-    irq_exit                         |
-      __do_softirq                   |
-                                     | el1_irq         //irq2 enter
-                                     |   irq_handler   //save scs_sp2
-                                     |                 //overwrite scs_sp1
-                                     |   ...
-                                     |   irq_stack_exit //restore scs_sp2
-  irq_stack_exit //restore wrong     |
-                 //scs_sp2           |
-
-So revert this commit to fix it.
-
-Fixes: 3f225f29c69c ("arm64: Stash shadow stack pointer in the task struct on interrupt")
-
-Signed-off-by: Xiang Yang <xiangyang3@huawei.com>
----
- arch/arm64/kernel/entry.S | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm64/kernel/entry.S b/arch/arm64/kernel/entry.S
-index a94acea770c7..020a455824be 100644
---- a/arch/arm64/kernel/entry.S
-+++ b/arch/arm64/kernel/entry.S
-@@ -431,7 +431,9 @@ SYM_CODE_END(__swpan_exit_el0)
- 
- 	.macro	irq_stack_entry
- 	mov	x19, sp			// preserve the original sp
--	scs_save tsk			// preserve the original shadow stack
-+#ifdef CONFIG_SHADOW_CALL_STACK
-+	mov	x24, scs_sp		// preserve the original shadow stack
-+#endif
- 
- 	/*
- 	 * Compare sp with the base of the task stack.
-@@ -465,7 +467,9 @@ SYM_CODE_END(__swpan_exit_el0)
- 	 */
- 	.macro	irq_stack_exit
- 	mov	sp, x19
--	scs_load_current
-+#ifdef CONFIG_SHADOW_CALL_STACK
-+	mov	scs_sp, x24
-+#endif
- 	.endm
- 
- /* GPRs used by entry code */
--- 
-2.34.1
+Hazem
+> 
+> As mentioned on the previous mail[1], either values are good to me :)
+> 
+> [1] https://lore.kernel.org/r/20240215011309.73168-1-sj@kernel.org
+> 
+>> Either way:
+>>
+>> Reviewed-by: Kees Cook <keescook@chromium.org>
+> 
+> Thank you!
+> 
+> 
+> Thanks,
+> SJ
+> 
+>>
+>> --
+>> Kees Cook
+>>
 
 
