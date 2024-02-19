@@ -1,190 +1,173 @@
-Return-Path: <stable+bounces-20502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5DAF859F13
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 10:04:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6F60859FBE
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 10:33:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 162601C21517
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 09:04:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC6E328144E
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 09:33:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6978B224DD;
-	Mon, 19 Feb 2024 09:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3BFD23772;
+	Mon, 19 Feb 2024 09:32:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dJvJw+MD"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Mau9Ebr7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E8D4224CC
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 09:03:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB7A22EEA;
+	Mon, 19 Feb 2024 09:32:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708333422; cv=none; b=Kk7a+OkTfefnbk8VCUsFrkHNCFAcCL+TqVRp2HfwBIkPXF6Qz5QyLOT8UsIwtWJSzqmKviVEJaA+2fQ8adB+Yt78Z+CP+THOPPi6MmoUqgSJRkhZfe3EUprcvyn0Dlf8ggli54Usw0RB4O7MHLpfc8lkoBHVvLOGK6IKFrPx+TY=
+	t=1708335177; cv=none; b=C+RlJKWYt8LxqA16OpyR88rQDig/SkKFWzkrAh+023UrPO+vnK5b3TKRHRKVc5eczzBHGqwAl8iJJQDDsnmILPiBCAg7jF95jc9t8i31wsg45GXFhBtW8EQ769zuaaUGgiPFa5FRNyBXlB6RZ6QrLWuJnyNJ7ZCWjWcw+QKQQXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708333422; c=relaxed/simple;
-	bh=zpTa+qfeGV2k5NtVzTVITl85Yym3NlMeyy53MZ3h8nI=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=h7r3FU/RFAoeFWUVuH0gWqV3zvdD7IuKpYJAdR7qbyx2x9UPtq2mzYIay6cGSA+lF8WQJxQc+U/vQPtVVmuoJVBmXX85XKG1de9Po2L6Y4Un4ahqJmPsRdMkGjONUIK1RM6nrXbBHtY6g/mCLVm1LOXz8NCITg3gCCKBWyeRTBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dJvJw+MD; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4125e435b38so13904395e9.0
-        for <stable@vger.kernel.org>; Mon, 19 Feb 2024 01:03:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1708333419; x=1708938219; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :references:cc:to:content-language:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gF7sGDk1x24G6RZbBVHNrWjV9qvXDZGdRDsrtRvQq9E=;
-        b=dJvJw+MDFW//kuh8SimerpT4lecUfksPHfHT6jJhmDGnFYP7GG75Znf6PY0WtePuPO
-         Ni/9Bh81gdIUFBZBM7qeWQsej+Sywka6qqbHC3Ttt1EB9cp+ePRtS8puZwKbb6vzdR/0
-         v/qFDPqjggI8aFCHjIrfpQPyPWR1kk2WH3g3YiOycklOxlV/jmIN+Sl/kJ9F1Y086NcH
-         z62hwKFLtGz6p/AUyMW3mEwphoPW/rQhaRBjcHyP+7Y54HoqqXOTxhKiVDbATV9DJa4d
-         tjWN+gS8ZSxHxw6l+a+7Q5El5YLvl41STdcKVL0Qk7XQiomDQ5eVfCAk/5JcCszBNhh0
-         nz0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708333419; x=1708938219;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :references:cc:to:content-language:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=gF7sGDk1x24G6RZbBVHNrWjV9qvXDZGdRDsrtRvQq9E=;
-        b=Wr0NwneBZdRAKG+pVur12Y12UwrwFxHu2s5Tjta8gcdwbBfkkPutzFawbv8BVF9/x4
-         F1HSs6Ld88at6oewUtmY+UdJmuhCK8n48vzLfaqknhBChEKvJoh8eMPXLzSrZ2+kPYnR
-         Io5YPITIw8PFkC46GRo4SbF7WmKeWq2Qe54ObO1eybre93Vc2OBt87avfdTizHjUW8bq
-         6Hm8dFVl8ynDEyGEVOyIn2bQxo2FMGe/XbRfCrxRKs/kUzyh2k2wzKhZNQ9lhTPT+pQ7
-         FJNslTDGrPeplgPrGk+bv9/gzQTdgLiKyTJ9BbpCPtzNOYM0ot5HtnNwGYWaps9s84LJ
-         YJog==
-X-Forwarded-Encrypted: i=1; AJvYcCX3UkxBoecqxajkDHGWQeapUvV8Q+3j15ZrkADr1U2N3R0QkefRYPzxrxv7SCXxCr7M1J7K3/9QcCl8sVLDvjgTd7LVdMpv
-X-Gm-Message-State: AOJu0YyLx5MXwVlLhL8QWKL2fpA+zT6JfwqRnFJce7b+eUiFHKvqfttO
-	l0iktw9i/RHBcupibRKOnqsRF5vEcLWU3drlbpTyeWSRAIgj9hx0iB1bqHmMV+s=
-X-Google-Smtp-Source: AGHT+IHeW4FAyqvBoHaZHyX8ohtq5iNNLDp8u7VcW4ZWJqvxtsgUI3BYpUKh1ifXeE1GS2yUvTjqBg==
-X-Received: by 2002:a5d:588f:0:b0:33d:2b3d:b598 with SMTP id n15-20020a5d588f000000b0033d2b3db598mr4141771wrf.70.1708333418779;
-        Mon, 19 Feb 2024 01:03:38 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:982:cbb0:9470:c6e0:c87a:fa9f? ([2a01:e0a:982:cbb0:9470:c6e0:c87a:fa9f])
-        by smtp.gmail.com with ESMTPSA id s1-20020adff801000000b0033d01fe1f04sm9722957wrp.55.2024.02.19.01.03.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Feb 2024 01:03:38 -0800 (PST)
-Message-ID: <c86594cd-f32d-4b66-8459-9045640aa928@linaro.org>
-Date: Mon, 19 Feb 2024 10:03:36 +0100
+	s=arc-20240116; t=1708335177; c=relaxed/simple;
+	bh=ZS3Y1QYf06xxLXuHZlX8GeM8mB1EJdbog4XFx5iwF3g=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=uu3N0hJAoHytJzHEa03NJZaVKPf1aICOPVXjkEw4LOwAJrVtPGzanAlusup83nAG1HrBbTuKdL9+S3S4IIg1yVKBrCjH/pDqcfTj0tQW3goZnAlkj+Ubyzq9fgnRWeyR4G/nRbTKeJzHiDhOJQAmn4a4iKPyr85T0+IcNsWYMlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Mau9Ebr7; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41J4gbeG026075;
+	Mon, 19 Feb 2024 09:32:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:date:subject:mime-version:content-type
+	:content-transfer-encoding:message-id:to:cc; s=qcppdkim1; bh=Y5M
+	BezfMip5ZI2S3AI3GTn3PBt+P0Aqqgw6e36T45K0=; b=Mau9Ebr73NxinaOQ8N1
+	2uefx3ATph67wMo1f25ggcshmoiMFkK1imrZPbJHijPWQd09xmfHoPFnIte/gHsm
+	ejOkIYr+8QkIEU6nyb4ZgoM0lzec1zmVZfnk+hMXwSOC26RjMBt+5XQPrdF+/FPW
+	mhj/hTQ1QFK5DIcUdlJkE1C8R8WTYIAlhrW5ehUtEDfDB00bYejM4bEiH3EqzsQm
+	WEsrPliZRTcl5T5dfz+iY1ggRl1erTYg443n6lo5Q1PAXL5Ulx5mcqw4k/Ev3A6f
+	seUr5HfV5pW8e9t2JPUZ0/rSqw5KmfJBOXfTgKdd4YBk53KTMQn8RlCEvHcTuO5x
+	DWA==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3waqmdu7s0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 Feb 2024 09:32:36 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41J9WAId011806
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 Feb 2024 09:32:10 GMT
+Received: from hu-mkshah-hyd.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Mon, 19 Feb 2024 01:32:07 -0800
+From: Maulik Shah <quic_mkshah@quicinc.com>
+Date: Mon, 19 Feb 2024 15:02:04 +0530
+Subject: [PATCH] firmware/psci: Move psci_init_system_suspend() to
+ late_initcall()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Neil Armstrong <neil.armstrong@linaro.org>
-Reply-To: neil.armstrong@linaro.org
-Subject: Re: [PATCH 5/6] phy: qcom-qmp-combo: fix drm bridge registration
-Content-Language: en-US, fr
-To: Johan Hovold <johan+linaro@kernel.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Andrzej Hajda <andrzej.hajda@intel.com>, Robert Foss <rfoss@kernel.org>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
- Vinod Koul <vkoul@kernel.org>
-Cc: Jonas Karlman <jonas@kwiboo.se>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Jernej Skrabec <jernej.skrabec@gmail.com>,
- Konrad Dybcio <konrad.dybcio@linaro.org>,
- Kishon Vijay Abraham I <kishon@kernel.org>,
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
- Rob Clark <robdclark@gmail.com>, Abhinav Kumar <quic_abhinavk@quicinc.com>,
- Kuogee Hsieh <quic_khsieh@quicinc.com>, freedreno@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org,
- stable@vger.kernel.org, Bjorn Andersson <quic_bjorande@quicinc.com>
-References: <20240217150228.5788-1-johan+linaro@kernel.org>
- <20240217150228.5788-6-johan+linaro@kernel.org>
-Autocrypt: addr=neil.armstrong@linaro.org; keydata=
- xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
- GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
- BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
- qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
- 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
- AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
- OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
- Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
- YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
- GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
- UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
- GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
- yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
- QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
- SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
- 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
- Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
- oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
- M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
- 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
- KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
- 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
- QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
-Organization: Linaro Developer Services
-In-Reply-To: <20240217150228.5788-6-johan+linaro@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-ID: <20240219-suspend_ops_late_init-v1-1-6330ca9597fa@quicinc.com>
+X-B4-Tracking: v=1; b=H4sIABMg02UC/x3MwQqEIBRG4VeJu05QmSHqVSJEp7+6ECbeiiB69
+ 2SW3+KcmwSZIdRVN2WcLLzFAlNX9Ft8nKF4LCar7Udb0yo5JCGObkviVr/DceRd2WYKOphv8AC
+ VNmVMfP2//fA8L5xC05FnAAAA
+To: Mark Rutland <mark.rutland@arm.com>,
+        Lorenzo Pieralisi
+	<lpieralisi@kernel.org>, <andersson@kernel.org>,
+        <ulf.hansson@linaro.org>
+CC: <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-pm@vger.kernel.org>,
+        <quic_lsrao@quicinc.com>, <stable@vger.kernel.org>,
+        Maulik Shah
+	<quic_mkshah@quicinc.com>
+X-Mailer: b4 0.12.5-dev-2aabd
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1708335127; l=2024;
+ i=quic_mkshah@quicinc.com; s=20240109; h=from:subject:message-id;
+ bh=ZS3Y1QYf06xxLXuHZlX8GeM8mB1EJdbog4XFx5iwF3g=;
+ b=ga9/v4Ml0Cu9Xh1RUQQdciRkpaIi/1DATfwfjVDzR+/4zC9kR1Plx0cyEDQJz44vnh64RK2K6
+ dlNLUFFW8FWBRm2UkuqCIyCb+xGdR1xhYYqJi8BHZkDsynjlxyp3kpO
+X-Developer-Key: i=quic_mkshah@quicinc.com; a=ed25519;
+ pk=bd9h5FIIliUddIk8p3BlQWBlzKEQ/YW5V+fe759hTWQ=
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: CWUXajokXSM3DAXfGqs0J8xUoo4revAs
+X-Proofpoint-ORIG-GUID: CWUXajokXSM3DAXfGqs0J8xUoo4revAs
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-19_06,2024-02-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ lowpriorityscore=0 suspectscore=0 mlxscore=0 phishscore=0 adultscore=0
+ spamscore=0 impostorscore=0 bulkscore=0 clxscore=1011 mlxlogscore=999
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401310000 definitions=main-2402190071
 
-On 17/02/2024 16:02, Johan Hovold wrote:
-> Due to a long-standing issue in driver core, drivers may not probe defer
-> after having registered child devices to avoid triggering a probe
-> deferral loop (see fbc35b45f9f6 ("Add documentation on meaning of
-> -EPROBE_DEFER")).
-> 
-> This could potentially also trigger a bug in the DRM bridge
-> implementation which does not expect bridges to go away even if device
-> links may avoid triggering this (when enabled).
-> 
-> Move registration of the DRM aux bridge to after looking up clocks and
-> other resources.
-> 
-> Note that PHY creation can in theory also trigger a probe deferral when
-> a 'phy' supply is used. This does not seem to affect the QMP PHY driver
-> but the PHY subsystem should be reworked to address this (i.e. by
-> separating initialisation and registration of the PHY).
-> 
-> Fixes: 35921910bbd0 ("phy: qcom: qmp-combo: switch to DRM_AUX_BRIDGE")
-> Fixes: 1904c3f578dc ("phy: qcom-qmp-combo: Introduce drm_bridge")
-> Cc: stable@vger.kernel.org      # 6.5
-> Cc: Bjorn Andersson <quic_bjorande@quicinc.com>
-> Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-> ---
->   drivers/phy/qualcomm/phy-qcom-qmp-combo.c | 8 ++++----
->   1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
-> index 1ad10110dd25..e19d6a084f10 100644
-> --- a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
-> +++ b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
-> @@ -3566,10 +3566,6 @@ static int qmp_combo_probe(struct platform_device *pdev)
->   	if (ret)
->   		return ret;
->   
-> -	ret = drm_aux_bridge_register(dev);
-> -	if (ret)
-> -		return ret;
-> -
->   	/* Check for legacy binding with child nodes. */
->   	usb_np = of_get_child_by_name(dev->of_node, "usb3-phy");
->   	if (usb_np) {
-> @@ -3589,6 +3585,10 @@ static int qmp_combo_probe(struct platform_device *pdev)
->   	if (ret)
->   		goto err_node_put;
->   
-> +	ret = drm_aux_bridge_register(dev);
-> +	if (ret)
-> +		goto err_node_put;
-> +
->   	pm_runtime_set_active(dev);
->   	ret = devm_pm_runtime_enable(dev);
->   	if (ret)
+psci_init_system_suspend() invokes suspend_set_ops() very early during
+bootup even before kernel command line for mem_sleep_default is setup.
+This leads to kernel command line mem_sleep_default=s2idle not working
+as mem_sleep_current gets changed to deep via suspend_set_ops() and never
+changes back to s2idle.
 
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Move psci_init_system_suspend() to late_initcall() to make sure kernel
+command line mem_sleep_default=s2idle sets up s2idle as default suspend
+mode.
+
+Fixes: faf7ec4a92c0 ("drivers: firmware: psci: add system suspend support")
+CC: stable@vger.kernel.org # 5.15+
+Signed-off-by: Maulik Shah <quic_mkshah@quicinc.com>
+---
+ drivers/firmware/psci/psci.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/firmware/psci/psci.c b/drivers/firmware/psci/psci.c
+index d9629ff87861..655a2db70a67 100644
+--- a/drivers/firmware/psci/psci.c
++++ b/drivers/firmware/psci/psci.c
+@@ -523,18 +523,26 @@ static void __init psci_init_system_reset2(void)
+ 		psci_system_reset2_supported = true;
+ }
+ 
+-static void __init psci_init_system_suspend(void)
++static int __init psci_init_system_suspend(void)
+ {
+ 	int ret;
++	u32 ver;
+ 
+ 	if (!IS_ENABLED(CONFIG_SUSPEND))
+-		return;
++		return 0;
++
++	ver = psci_0_2_get_version();
++	if (PSCI_VERSION_MAJOR(ver) < 1)
++		return 0;
+ 
+ 	ret = psci_features(PSCI_FN_NATIVE(1_0, SYSTEM_SUSPEND));
+ 
+ 	if (ret != PSCI_RET_NOT_SUPPORTED)
+ 		suspend_set_ops(&psci_suspend_ops);
++
++	return ret;
+ }
++late_initcall(psci_init_system_suspend)
+ 
+ static void __init psci_init_cpu_suspend(void)
+ {
+@@ -651,7 +659,6 @@ static int __init psci_probe(void)
+ 	if (PSCI_VERSION_MAJOR(ver) >= 1) {
+ 		psci_init_smccc();
+ 		psci_init_cpu_suspend();
+-		psci_init_system_suspend();
+ 		psci_init_system_reset2();
+ 		kvm_init_hyp_services();
+ 	}
+
+---
+base-commit: d37e1e4c52bc60578969f391fb81f947c3e83118
+change-id: 20240219-suspend_ops_late_init-27fb0b15baee
+
+Best regards,
+-- 
+Maulik Shah <quic_mkshah@quicinc.com>
+
 
