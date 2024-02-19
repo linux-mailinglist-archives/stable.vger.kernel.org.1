@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-20666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D331E85AADB
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:21:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0151785AADC
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:22:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C863B219D9
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:21:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E8AC1C20EA5
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:22:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3360481AF;
-	Mon, 19 Feb 2024 18:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B48D4481AF;
+	Mon, 19 Feb 2024 18:22:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vCraqmDe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u3agsUL1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73741446A1
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76773446A1
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:22:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708366907; cv=none; b=ghDzVXo1gIDtCTTEMQj0g2jrQhkcjDAvZNzuLJdYVzTsdKkBhTW2yvfo+mpEpchGk5cZXvdUVYfF318aMvkMnbW7ZzDj15BR1hr6fnMaWxHV90+9HGm/4bFLPycPyXr5YhFY/U24t1WN5arDD3oz+HkHC/53f8MtMz8zD/EcIvQ=
+	t=1708366923; cv=none; b=RUMag2pAMOkb8gmvTCj9S2uEJ6mUbRD42MmXpL/SMoKhuB30ubpuXqzDQGUPGT8QakKI0oiIUGlF+SsOWHvvDaz4cDElF60itofmSK5bUMdc+z2hYXvvBKKusw7NpDIfxbTGpMPG1vab+kFIGo25Avq5aPpi+1Dwvz9huJXDSOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708366907; c=relaxed/simple;
-	bh=gKwXljfVk1hvgFiatrSq9tf11KMtWNZ5Kge5FLb3rFQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=DsE1tIaDrQQH7jhPMcpQN4mPql/+/5A1e2grA7BG/GPsuiNQJwY/S2XDQbh7hz77K9IRnZzKJOrThpH4R3r2dhyvUq+3tzB8Ned6E+Siqhrb/INzVLz9X+BJkd2T1YdPE6Y86lcSHE6pPSoC/i+WwFT/1amO5NfDTWKuuBukm6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vCraqmDe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4C3CC433F1;
-	Mon, 19 Feb 2024 18:21:46 +0000 (UTC)
+	s=arc-20240116; t=1708366923; c=relaxed/simple;
+	bh=k8lhhYv4i5+12U/j3CdhfnLKCaxA2CRasco118foWGI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=fMjNhz3Hpz2Ubn/xOCuu4M0+hzKSuk5qY3lqfiWXUPe5y5yCbqzV62e+basba/C5p98q3hflVX1I8IeChQuLbpfRPZTf6Dz2EiYRAztnRjGmf64GQEAc49qw+2bFNiwOTD5H4c+N0E+H13KsH6wC4zFsljRH4vP6oeOvsZU/TSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u3agsUL1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2707C433C7;
+	Mon, 19 Feb 2024 18:22:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708366907;
-	bh=gKwXljfVk1hvgFiatrSq9tf11KMtWNZ5Kge5FLb3rFQ=;
+	s=korg; t=1708366923;
+	bh=k8lhhYv4i5+12U/j3CdhfnLKCaxA2CRasco118foWGI=;
 	h=Subject:To:Cc:From:Date:From;
-	b=vCraqmDeOHGcJWuWVKjOgCJl4np34hg1yl5pzK79tuUaTzh5HxflWCER52N7ckCMu
-	 4TERu8XBSk8I34Ccj1X6Epyfo1bNJgk18Su+Jo/kOEDjmwE7XYVkQ2Ghrg+Rnx0oQW
-	 rdOXtAW8NRnH3EhE+RGZAMqL28jeFaasZiRjKFyQ=
-Subject: FAILED: patch "[PATCH] serial: max310x: prevent infinite while() loop in port" failed to apply to 4.19-stable tree
-To: hvilleneuve@dimonoff.com,gregkh@linuxfoundation.org
+	b=u3agsUL1mUivk6+ZH5xcQA4SGbp95X41N0kBKhWb2ZArtOH8ONVQ7vMKBgGuQ154c
+	 UNT00h29xQHM/0COSMH8yT0KmXvzXVrthdr/Y4bnEZwupcSFZx6h3FQ00f2NtXtbiz
+	 whE4xZo2D2kOd7eZ4APzJrFtYhRskzPyGpsUk1Lk=
+Subject: FAILED: patch "[PATCH] powerpc/ftrace: Ignore ftrace locations in exit text sections" failed to apply to 6.7-stable tree
+To: naveen@kernel.org,bgray@linux.ibm.com,mpe@ellerman.id.au
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Feb 2024 19:21:31 +0100
-Message-ID: <2024021931-frisbee-commence-08ec@gregkh>
+Date: Mon, 19 Feb 2024 19:22:00 +0100
+Message-ID: <2024021900-amusement-national-c29f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,31 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.7-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.7.y
 git checkout FETCH_HEAD
-git cherry-pick -x b35f8dbbce818b02c730dc85133dc7754266e084
+git cherry-pick -x ea73179e64131bcd29ba6defd33732abdf8ca14b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021931-frisbee-commence-08ec@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021900-amusement-national-c29f@gregkh' --subject-prefix 'PATCH 6.7.y' HEAD^..
 
 Possible dependencies:
 
-b35f8dbbce81 ("serial: max310x: prevent infinite while() loop in port startup")
-93cd256ab224 ("serial: max310x: improve crystal stable clock detection")
-0419373333c2 ("serial: max310x: set default value when reading clock ready bit")
-6ef281daf020 ("serial: max310x: use a separate regmap for each port")
-285e76fc049c ("serial: max310x: use regmap methods for SPI batch operations")
-c808fab604ca ("serial: max310x: Make use of device properties")
-b7382c73b2d7 ("tty: max310x: Don't pass stacked buffers to SPI")
-3a10e3dd52e8 ("serial: max310x: Fix to avoid potential NULL pointer dereference")
-f233ea4327d7 ("serial: max310x: Correction of the initial setting of the MODE1 bits for various supported ICs.")
+ea73179e6413 ("powerpc/ftrace: Ignore ftrace locations in exit text sections")
+2ec36570c358 ("powerpc/ftrace: Fix indentation in ftrace.h")
 
 thanks,
 
@@ -85,71 +78,160 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From b35f8dbbce818b02c730dc85133dc7754266e084 Mon Sep 17 00:00:00 2001
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Date: Tue, 16 Jan 2024 16:30:01 -0500
-Subject: [PATCH] serial: max310x: prevent infinite while() loop in port
- startup
+From ea73179e64131bcd29ba6defd33732abdf8ca14b Mon Sep 17 00:00:00 2001
+From: Naveen N Rao <naveen@kernel.org>
+Date: Tue, 13 Feb 2024 23:24:10 +0530
+Subject: [PATCH] powerpc/ftrace: Ignore ftrace locations in exit text sections
 
-If there is a problem after resetting a port, the do/while() loop that
-checks the default value of DIVLSB register may run forever and spam the
-I2C bus.
+Michael reported that we are seeing an ftrace bug on bootup when KASAN
+is enabled and we are using -fpatchable-function-entry:
 
-Add a delay before each read of DIVLSB, and a maximum number of tries to
-prevent that situation from happening.
+  ftrace: allocating 47780 entries in 18 pages
+  ftrace-powerpc: 0xc0000000020b3d5c: No module provided for non-kernel address
+  ------------[ ftrace bug ]------------
+  ftrace faulted on modifying
+  [<c0000000020b3d5c>] 0xc0000000020b3d5c
+  Initializing ftrace call sites
+  ftrace record flags: 0
+   (0)
+   expected tramp: c00000000008cef4
+  ------------[ cut here ]------------
+  WARNING: CPU: 0 PID: 0 at kernel/trace/ftrace.c:2180 ftrace_bug+0x3c0/0x424
+  Modules linked in:
+  CPU: 0 PID: 0 Comm: swapper Not tainted 6.5.0-rc3-00120-g0f71dcfb4aef #860
+  Hardware name: IBM pSeries (emulated by qemu) POWER9 (raw) 0x4e1202 0xf000005 of:SLOF,HEAD hv:linux,kvm pSeries
+  NIP:  c0000000003aa81c LR: c0000000003aa818 CTR: 0000000000000000
+  REGS: c0000000033cfab0 TRAP: 0700   Not tainted  (6.5.0-rc3-00120-g0f71dcfb4aef)
+  MSR:  8000000002021033 <SF,VEC,ME,IR,DR,RI,LE>  CR: 28028240  XER: 00000000
+  CFAR: c0000000002781a8 IRQMASK: 3
+  ...
+  NIP [c0000000003aa81c] ftrace_bug+0x3c0/0x424
+  LR [c0000000003aa818] ftrace_bug+0x3bc/0x424
+  Call Trace:
+   ftrace_bug+0x3bc/0x424 (unreliable)
+   ftrace_process_locs+0x5f4/0x8a0
+   ftrace_init+0xc0/0x1d0
+   start_kernel+0x1d8/0x484
 
-Also fail probe if port reset is unsuccessful.
+With CONFIG_FTRACE_MCOUNT_USE_PATCHABLE_FUNCTION_ENTRY=y and
+CONFIG_KASAN=y, compiler emits nops in functions that it generates for
+registering and unregistering global variables (unlike with -pg and
+-mprofile-kernel where calls to _mcount() are not generated in those
+functions). Those functions then end up in INIT_TEXT and EXIT_TEXT
+respectively. We don't expect to see any profiled functions in
+EXIT_TEXT, so ftrace_init_nop() assumes that all addresses that aren't
+in the core kernel text belongs to a module. Since these functions do
+not match that criteria, we see the above bug.
 
-Fixes: 10d8b34a4217 ("serial: max310x: Driver rework")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20240116213001.3691629-5-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Address this by having ftrace ignore all locations in the text exit
+sections of vmlinux.
 
-diff --git a/drivers/tty/serial/max310x.c b/drivers/tty/serial/max310x.c
-index 552e153a24e0..10bf6d75bf9e 100644
---- a/drivers/tty/serial/max310x.c
-+++ b/drivers/tty/serial/max310x.c
-@@ -237,6 +237,10 @@
- #define MAX310x_REV_MASK		(0xf8)
- #define MAX310X_WRITE_BIT		0x80
+Fixes: 0f71dcfb4aef ("powerpc/ftrace: Add support for -fpatchable-function-entry")
+Cc: stable@vger.kernel.org # v6.6+
+Reported-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Naveen N Rao <naveen@kernel.org>
+Reviewed-by: Benjamin Gray <bgray@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240213175410.1091313-1-naveen@kernel.org
+
+diff --git a/arch/powerpc/include/asm/ftrace.h b/arch/powerpc/include/asm/ftrace.h
+index 1ebd2ca97f12..107fc5a48456 100644
+--- a/arch/powerpc/include/asm/ftrace.h
++++ b/arch/powerpc/include/asm/ftrace.h
+@@ -20,14 +20,6 @@
+ #ifndef __ASSEMBLY__
+ extern void _mcount(void);
  
-+/* Port startup definitions */
-+#define MAX310X_PORT_STARTUP_WAIT_RETRIES	20 /* Number of retries */
-+#define MAX310X_PORT_STARTUP_WAIT_DELAY_MS	10 /* Delay between retries */
-+
- /* Crystal-related definitions */
- #define MAX310X_XTAL_WAIT_RETRIES	20 /* Number of retries */
- #define MAX310X_XTAL_WAIT_DELAY_MS	10 /* Delay between retries */
-@@ -1346,6 +1350,9 @@ static int max310x_probe(struct device *dev, const struct max310x_devtype *devty
- 		goto out_clk;
+-static inline unsigned long ftrace_call_adjust(unsigned long addr)
+-{
+-	if (IS_ENABLED(CONFIG_ARCH_USING_PATCHABLE_FUNCTION_ENTRY))
+-		addr += MCOUNT_INSN_SIZE;
+-
+-	return addr;
+-}
+-
+ unsigned long prepare_ftrace_return(unsigned long parent, unsigned long ip,
+ 				    unsigned long sp);
  
- 	for (i = 0; i < devtype->nr; i++) {
-+		bool started = false;
-+		unsigned int try = 0, val = 0;
-+
- 		/* Reset port */
- 		regmap_write(regmaps[i], MAX310X_MODE2_REG,
- 			     MAX310X_MODE2_RST_BIT);
-@@ -1354,8 +1361,17 @@ static int max310x_probe(struct device *dev, const struct max310x_devtype *devty
+@@ -142,8 +134,10 @@ static inline u8 this_cpu_get_ftrace_enabled(void) { return 1; }
+ #ifdef CONFIG_FUNCTION_TRACER
+ extern unsigned int ftrace_tramp_text[], ftrace_tramp_init[];
+ void ftrace_free_init_tramp(void);
++unsigned long ftrace_call_adjust(unsigned long addr);
+ #else
+ static inline void ftrace_free_init_tramp(void) { }
++static inline unsigned long ftrace_call_adjust(unsigned long addr) { return addr; }
+ #endif
+ #endif /* !__ASSEMBLY__ */
  
- 		/* Wait for port startup */
- 		do {
--			regmap_read(regmaps[i], MAX310X_BRGDIVLSB_REG, &ret);
--		} while (ret != 0x01);
-+			msleep(MAX310X_PORT_STARTUP_WAIT_DELAY_MS);
-+			regmap_read(regmaps[i], MAX310X_BRGDIVLSB_REG, &val);
-+
-+			if (val == 0x01)
-+				started = true;
-+		} while (!started && (++try < MAX310X_PORT_STARTUP_WAIT_RETRIES));
-+
-+		if (!started) {
-+			ret = dev_err_probe(dev, -EAGAIN, "port reset failed\n");
-+			goto out_uart;
-+		}
+diff --git a/arch/powerpc/include/asm/sections.h b/arch/powerpc/include/asm/sections.h
+index ea26665f82cf..f43f3a6b0051 100644
+--- a/arch/powerpc/include/asm/sections.h
++++ b/arch/powerpc/include/asm/sections.h
+@@ -14,6 +14,7 @@ typedef struct func_desc func_desc_t;
  
- 		regmap_write(regmaps[i], MAX310X_MODE1_REG, devtype->mode1);
+ extern char __head_end[];
+ extern char __srwx_boundary[];
++extern char __exittext_begin[], __exittext_end[];
+ 
+ /* Patch sites */
+ extern s32 patch__call_flush_branch_caches1;
+diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
+index 82010629cf88..d8d6b4fd9a14 100644
+--- a/arch/powerpc/kernel/trace/ftrace.c
++++ b/arch/powerpc/kernel/trace/ftrace.c
+@@ -27,10 +27,22 @@
+ #include <asm/ftrace.h>
+ #include <asm/syscall.h>
+ #include <asm/inst.h>
++#include <asm/sections.h>
+ 
+ #define	NUM_FTRACE_TRAMPS	2
+ static unsigned long ftrace_tramps[NUM_FTRACE_TRAMPS];
+ 
++unsigned long ftrace_call_adjust(unsigned long addr)
++{
++	if (addr >= (unsigned long)__exittext_begin && addr < (unsigned long)__exittext_end)
++		return 0;
++
++	if (IS_ENABLED(CONFIG_ARCH_USING_PATCHABLE_FUNCTION_ENTRY))
++		addr += MCOUNT_INSN_SIZE;
++
++	return addr;
++}
++
+ static ppc_inst_t ftrace_create_branch_inst(unsigned long ip, unsigned long addr, int link)
+ {
+ 	ppc_inst_t op;
+diff --git a/arch/powerpc/kernel/trace/ftrace_64_pg.c b/arch/powerpc/kernel/trace/ftrace_64_pg.c
+index 7b85c3b460a3..12fab1803bcf 100644
+--- a/arch/powerpc/kernel/trace/ftrace_64_pg.c
++++ b/arch/powerpc/kernel/trace/ftrace_64_pg.c
+@@ -37,6 +37,11 @@
+ #define	NUM_FTRACE_TRAMPS	8
+ static unsigned long ftrace_tramps[NUM_FTRACE_TRAMPS];
+ 
++unsigned long ftrace_call_adjust(unsigned long addr)
++{
++	return addr;
++}
++
+ static ppc_inst_t
+ ftrace_call_replace(unsigned long ip, unsigned long addr, int link)
+ {
+diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
+index 1c5970df3233..f420df7888a7 100644
+--- a/arch/powerpc/kernel/vmlinux.lds.S
++++ b/arch/powerpc/kernel/vmlinux.lds.S
+@@ -281,7 +281,9 @@ SECTIONS
+ 	 * to deal with references from __bug_table
+ 	 */
+ 	.exit.text : AT(ADDR(.exit.text) - LOAD_OFFSET) {
++		__exittext_begin = .;
+ 		EXIT_TEXT
++		__exittext_end = .;
  	}
+ 
+ 	. = ALIGN(PAGE_SIZE);
 
 
