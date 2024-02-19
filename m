@@ -1,482 +1,146 @@
-Return-Path: <stable+bounces-20745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B66D85AD6A
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 21:44:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 050A685AD86
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 22:07:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F8B81C241A9
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 20:44:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 995141F239AD
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 21:07:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72FD55339E;
-	Mon, 19 Feb 2024 20:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64B0053805;
+	Mon, 19 Feb 2024 21:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qxkep6So"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="FqGzwUhi"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B7351C47
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 20:44:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE31537E4
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 21:07:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708375447; cv=none; b=d+zUadm7GsY543GQjLOSJI55GxuZy+R1cg5kyQBnpnk1vDXNQoLf2U6EJYH7ps7F8BEMo8AqnBC/Dml5Ic/4aY6xYHD0XGfJ9PF0ouXYFHsp1ltl+3mexZ7+UxqptkEeRwk9mCT0LXYFzl70EYAG9ea7PJUPjsHFomCN9rXHYGU=
+	t=1708376871; cv=none; b=ANNs0FLCGBycIXszCdP9L9ggS/WgDD+XXSPOrcHypglCK7XWMyiisNrAGLI/++SBn5TwJtNJfnuZSHp5v8goHac4byU3jQrDA7O1HmuQ2VMbiuiOpwN5a5LAyiAq+e2VtfNXBrOqt34QTStr8SX7U4n9sT5/xryw3bZEcxf01dI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708375447; c=relaxed/simple;
-	bh=qrsEbwkHV0cdFLxbtxzYgy1pqkYBtsHxZjeEf9lcnqo=;
+	s=arc-20240116; t=1708376871; c=relaxed/simple;
+	bh=Wb1EsAOdRQ+TypSlFyHwyJrlgDHcSksuMbbbXKbQxA8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LeBU4k6PpH26HNry/gO9y8jv3V5F/prXJueBFoYoZdYC8LQZI4lBuLPc1K+jls6OGV80XE0LRLGSYleREu29+S2t5eM3X+ffKhSpzCcI8eCvniq0WL3L+mOY/gtvcZU0l0RmqgkkDmTo7pCXNRrILU0R/En4Jo95OxjwYNu8gjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qxkep6So; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB52AC433C7;
-	Mon, 19 Feb 2024 20:44:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708375446;
-	bh=qrsEbwkHV0cdFLxbtxzYgy1pqkYBtsHxZjeEf9lcnqo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qxkep6So82tU6UfbbwaAzpMlTAp5D6mXJZH3q30ef9uz7tjD30A8FHpWid1SQbajf
-	 /oyk1znxpPJ/DRWYQZ/NDyu0hAredKrvE0NBDPSrnPmnv0tNZkWFfDUDQc7hNrfqDU
-	 7b1X4wAm4ZNTgDVPxk5xCHVt5Wx/dexxdlvPn9wCgHEgbDzdCE4Qq97+qm9J0sLkxE
-	 yUCzEx892nHv+jZjGUcrMQwdZzIpnJMWTVxeeJ0ZmiRriTbU9t/w06En/gYzuolWun
-	 cDGu7bWIvHx1u3fPRbEc5qzk68pdtZKOZR5t9L3fALna1Qp+0o5RbfZsE2oyw11O15
-	 DEZfcojC5qqPA==
-Date: Mon, 19 Feb 2024 21:44:02 +0100
-From: Helge Deller <deller@kernel.org>
-To: gregkh@linuxfoundation.org
-Cc: deller@gmx.de, stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] parisc: Fix random data corruption from
- exception handler" failed to apply to 6.6-stable tree
-Message-ID: <ZdO9knwyE513vgYl@p100>
-References: <2024021939-unreached-bacon-95e0@gregkh>
+	 Content-Type:Content-Disposition:In-Reply-To; b=OOyGfnDzLaiY5+DdnHOaF0wu0ET6WPfhCu86Yu1VtXFuQOOgyczr0jc7cFP01foe+VSEQ4Sh/ERaZTm6RK12QmHbdoaitemn2iuQ0urrdsJusTmL97JiFJI5fStDouYlN2ky5MICdXB34CHRdVDvix/DCP2osWtzn4na6yLbJJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=FqGzwUhi; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-6e0a37751cbso3542046b3a.2
+        for <stable@vger.kernel.org>; Mon, 19 Feb 2024 13:07:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1708376869; x=1708981669; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=0v4aGJ9LU9dBSomS+ec3dUGjJlpnKfj3hq8T5zymb8w=;
+        b=FqGzwUhij7LMdv6aCDTBzNyV/FOCGQFfjP95A8FhobdSv6sKeSPPDCLt0EpOP+5A7v
+         he2QN+7Cja4kaqwis/BvHSrH1rogQMeJiqOTF2obTVHYwvSjT36FYNYczo9B6v5jW9u6
+         mUiXAUqczrccMdjUkpIa2XerW3AWNebPy4dEk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708376869; x=1708981669;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0v4aGJ9LU9dBSomS+ec3dUGjJlpnKfj3hq8T5zymb8w=;
+        b=h9P1JeE4Id0DnAHJ24LoHH9Kgbo5EJCY/A4C6nThneCVDU84tURD+5vMnY+R8+BE4e
+         dxPhmRKU41Zg6WR/EhbAJ5RLAUxM7F95/C5EvtyDE8qFciNX07oRbpkYB+HJeyz5Mp/r
+         0BXnZTGdnh6wr6XXLJhx9Ctih4bMJIiydodC2e07FpNX3nQ5AGvHkjsvQNI/Z7n46CcQ
+         fSPCqRfSYeFjNyIt+sAulliS6kMMl+UlmBWG+7bRuzVpNXbS82WVjxT80Dj9HIoEf/mC
+         Y9Zr3rPKEh0mEQjEwDvirRNTNW3gL3/gRPHY4lmf8O9IBsxMT+K68/00c0c9jWOc2H57
+         kgYA==
+X-Forwarded-Encrypted: i=1; AJvYcCV0r1LJgqpj3nQK49KCfVjXS5yxmbmhynrj74XmRYV021QxmWmMCmDGWeRheOn2zw2ugLRdcg8YGRKk8J8vT/hDxpTTjW8t
+X-Gm-Message-State: AOJu0YyCAkgNUWAV25iMr2p6a6mjDHwWGXjKQi283t5DrJ4rrJYfzRhz
+	f68XrPmvoafo3ji5zOKz06FfDFUgS8XD2/WjUJRSaAp8Rvu1kJvxmijbEpab4Q==
+X-Google-Smtp-Source: AGHT+IHbLBW3EDVvJdonxYBkFDS1KzBBkz2Oq6mObdvWo4OQ4squ6PL/TXRDYA61vIonSEErhJiQtw==
+X-Received: by 2002:a05:6a00:812:b0:6e4:6047:fdf3 with SMTP id m18-20020a056a00081200b006e46047fdf3mr4974895pfk.14.1708376869048;
+        Mon, 19 Feb 2024 13:07:49 -0800 (PST)
+Received: from www.outflux.net ([198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id h9-20020a62b409000000b006e448fa3d93sm3401025pfn.174.2024.02.19.13.07.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Feb 2024 13:07:48 -0800 (PST)
+Date: Mon, 19 Feb 2024 13:07:48 -0800
+From: Kees Cook <keescook@chromium.org>
+To: =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>
+Cc: =?iso-8859-1?Q?G=FCnther?= Noack <gnoack@google.com>,
+	Paul Moore <paul@paul-moore.com>,
+	"Serge E . Hallyn" <serge@hallyn.com>,
+	Konstantin Meskhidze <konstantin.meskhidze@huawei.com>,
+	Shervin Oloumi <enlightened@chromium.org>,
+	linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-security-module@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] landlock: Warn once if a Landlock action is requested
+ while disabled
+Message-ID: <202402191304.ED03339B@keescook>
+References: <20240219191804.2978911-1-mic@digikod.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <2024021939-unreached-bacon-95e0@gregkh>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240219191804.2978911-1-mic@digikod.net>
 
-* gregkh@linuxfoundation.org <gregkh@linuxfoundation.org>:
+On Mon, Feb 19, 2024 at 08:18:04PM +0100, Mickaël Salaün wrote:
+> Because sandboxing can be used as an opportunistic security measure,
+> user space may not log unsupported features.  Let the system
+> administrator know if an application tries to use Landlock but failed
+> because it isn't enabled at boot time.  This may be caused by bootloader
+> configurations with outdated "lsm" kernel's command-line parameter.
 > 
-> The patch below does not apply to the 6.6-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
+> Cc: Günther Noack <gnoack@google.com>
+> Cc: stable@vger.kernel.org
+> Fixes: 265885daf3e5 ("landlock: Add syscall implementations")
+> Signed-off-by: Mickaël Salaün <mic@digikod.net>
+> ---
+>  security/landlock/syscalls.c | 18 +++++++++++++++---
+>  1 file changed, 15 insertions(+), 3 deletions(-)
+> 
+> diff --git a/security/landlock/syscalls.c b/security/landlock/syscalls.c
+> index f0bc50003b46..b5b424819dee 100644
+> --- a/security/landlock/syscalls.c
+> +++ b/security/landlock/syscalls.c
+> @@ -33,6 +33,18 @@
+>  #include "ruleset.h"
+>  #include "setup.h"
+>  
+> +static bool is_not_initialized(void)
+> +{
+> +	if (likely(landlock_initialized))
+> +		return false;
+> +
+> +	pr_warn_once(
+> +		"Disabled but requested by user space. "
+> +		"You should enable Landlock at boot time: "
+> +		"https://docs.kernel.org/userspace-api/landlock.html#kernel-support\n");
 
-Greg, below is the patch adjusted for stable kernel 6.6.
-Please apply.
-Thanks!
-Helge
+Perhaps update this docs to be really explicit with a example, maybe...
+
+If `landlock` is not present in `CONFIG_LSM`, you can add it. For
+example, if this was the current config::
+
+  $ zgrep -h ^CONFIG_LSM= /boot/config-$(uname -r) /proc/config.gz 2>/dev/null
+  CONFIG_LSM="lockdown,yama,integrity,apparmor"
+
+You can boot with::
+
+  lsm=landlock,lockdown,yama,integrity,apparmor
 
 
-From 887c1dfae4042324cba3b3e3a4b5bb390c586a1a Mon Sep 17 00:00:00 2001
-From: Helge Deller <deller@gmx.de>
-Date: Sat, 20 Jan 2024 15:29:27 +0100
-Subject: [PATCH] parisc: Fix random data corruption from exception handler
+I *still* wish we had the "+" operator for lsm=. It would be SO much
+easier to say "boot with lsm=+landlock". *shrug*
 
-The current exception handler implementation, which assists when accessing
-user space memory, may exhibit random data corruption if the compiler decides
-to use a different register than the specified register %r29 (defined in
-ASM_EXCEPTIONTABLE_REG) for the error code. If the compiler choose another
-register, the fault handler will nevertheless store -EFAULT into %r29 and thus
-trash whatever this register is used for.
-Looking at the assembly I found that this happens sometimes in emulate_ldd().
 
-To solve the issue, the easiest solution would be if it somehow is
-possible to tell the fault handler which register is used to hold the error
-code. Using %0 or %1 in the inline assembly is not posssible as it will show
-up as e.g. %r29 (with the "%r" prefix), which the GNU assembler can not
-convert to an integer.
+Reviewed-by: Kees Cook <keescook@chromium.org>
 
-This patch takes another, better and more flexible approach:
-We extend the __ex_table (which is out of the execution path) by one 32-word.
-In this word we tell the compiler to insert the assembler instruction
-"or %r0,%r0,%reg", where %reg references the register which the compiler
-choosed for the error return code.
-In case of an access failure, the fault handler finds the __ex_table entry and
-can examine the opcode. The used register is encoded in the lowest 5 bits, and
-the fault handler can then store -EFAULT into this register.
-
-Since we extend the __ex_table to 3 words we can't use the BUILDTIME_TABLE_SORT
-config option any longer.
-
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: <stable@vger.kernel.org> # v6.0+
-
-diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-index 8c45b98dfe0e..4adeb73d5885 100644
---- a/arch/parisc/Kconfig
-+++ b/arch/parisc/Kconfig
-@@ -24,7 +24,6 @@ config PARISC
- 	select RTC_DRV_GENERIC
- 	select INIT_ALL_POSSIBLE
- 	select BUG
--	select BUILDTIME_TABLE_SORT
- 	select HAVE_PCI
- 	select HAVE_PERF_EVENTS
- 	select HAVE_KERNEL_BZIP2
-diff --git a/arch/parisc/include/asm/assembly.h b/arch/parisc/include/asm/assembly.h
-index 74d17d7e759d..5937d5edaba1 100644
---- a/arch/parisc/include/asm/assembly.h
-+++ b/arch/parisc/include/asm/assembly.h
-@@ -576,6 +576,7 @@
- 	.section __ex_table,"aw"			!	\
- 	.align 4					!	\
- 	.word (fault_addr - .), (except_addr - .)	!	\
-+	or %r0,%r0,%r0					!	\
- 	.previous
- 
- 
-diff --git a/arch/parisc/include/asm/extable.h b/arch/parisc/include/asm/extable.h
-new file mode 100644
-index 000000000000..4ea23e3d79dc
---- /dev/null
-+++ b/arch/parisc/include/asm/extable.h
-@@ -0,0 +1,64 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __PARISC_EXTABLE_H
-+#define __PARISC_EXTABLE_H
-+
-+#include <asm/ptrace.h>
-+#include <linux/compiler.h>
-+
-+/*
-+ * The exception table consists of three addresses:
-+ *
-+ * - A relative address to the instruction that is allowed to fault.
-+ * - A relative address at which the program should continue (fixup routine)
-+ * - An asm statement which specifies which CPU register will
-+ *   receive -EFAULT when an exception happens if the lowest bit in
-+ *   the fixup address is set.
-+ *
-+ * Note: The register specified in the err_opcode instruction will be
-+ * modified at runtime if a fault happens. Register %r0 will be ignored.
-+ *
-+ * Since relative addresses are used, 32bit values are sufficient even on
-+ * 64bit kernel.
-+ */
-+
-+struct pt_regs;
-+int fixup_exception(struct pt_regs *regs);
-+
-+#define ARCH_HAS_RELATIVE_EXTABLE
-+struct exception_table_entry {
-+	int insn;	/* relative address of insn that is allowed to fault. */
-+	int fixup;	/* relative address of fixup routine */
-+	int err_opcode; /* sample opcode with register which holds error code */
-+};
-+
-+#define ASM_EXCEPTIONTABLE_ENTRY( fault_addr, except_addr, opcode )\
-+	".section __ex_table,\"aw\"\n"			   \
-+	".align 4\n"					   \
-+	".word (" #fault_addr " - .), (" #except_addr " - .)\n" \
-+	opcode "\n"					   \
-+	".previous\n"
-+
-+/*
-+ * ASM_EXCEPTIONTABLE_ENTRY_EFAULT() creates a special exception table entry
-+ * (with lowest bit set) for which the fault handler in fixup_exception() will
-+ * load -EFAULT on fault into the register specified by the err_opcode instruction,
-+ * and zeroes the target register in case of a read fault in get_user().
-+ */
-+#define ASM_EXCEPTIONTABLE_VAR(__err_var)		\
-+	int __err_var = 0
-+#define ASM_EXCEPTIONTABLE_ENTRY_EFAULT( fault_addr, except_addr, register )\
-+	ASM_EXCEPTIONTABLE_ENTRY( fault_addr, except_addr + 1, "or %%r0,%%r0," register)
-+
-+static inline void swap_ex_entry_fixup(struct exception_table_entry *a,
-+				       struct exception_table_entry *b,
-+				       struct exception_table_entry tmp,
-+				       int delta)
-+{
-+	a->fixup = b->fixup + delta;
-+	b->fixup = tmp.fixup - delta;
-+	a->err_opcode = b->err_opcode;
-+	b->err_opcode = tmp.err_opcode;
-+}
-+#define swap_ex_entry_fixup swap_ex_entry_fixup
-+
-+#endif
-diff --git a/arch/parisc/include/asm/special_insns.h b/arch/parisc/include/asm/special_insns.h
-index c822bd0c0e3c..51f40eaf7780 100644
---- a/arch/parisc/include/asm/special_insns.h
-+++ b/arch/parisc/include/asm/special_insns.h
-@@ -8,7 +8,8 @@
- 		"copy %%r0,%0\n"			\
- 		"8:\tlpa %%r0(%1),%0\n"			\
- 		"9:\n"					\
--		ASM_EXCEPTIONTABLE_ENTRY(8b, 9b)	\
-+		ASM_EXCEPTIONTABLE_ENTRY(8b, 9b,	\
-+				"or %%r0,%%r0,%%r0")	\
- 		: "=&r" (pa)				\
- 		: "r" (va)				\
- 		: "memory"				\
-@@ -22,7 +23,8 @@
- 		"copy %%r0,%0\n"			\
- 		"8:\tlpa %%r0(%%sr3,%1),%0\n"		\
- 		"9:\n"					\
--		ASM_EXCEPTIONTABLE_ENTRY(8b, 9b)	\
-+		ASM_EXCEPTIONTABLE_ENTRY(8b, 9b,	\
-+				"or %%r0,%%r0,%%r0")	\
- 		: "=&r" (pa)				\
- 		: "r" (va)				\
- 		: "memory"				\
-diff --git a/arch/parisc/include/asm/uaccess.h b/arch/parisc/include/asm/uaccess.h
-index 4165079898d9..88d0ae5769dd 100644
---- a/arch/parisc/include/asm/uaccess.h
-+++ b/arch/parisc/include/asm/uaccess.h
-@@ -7,6 +7,7 @@
-  */
- #include <asm/page.h>
- #include <asm/cache.h>
-+#include <asm/extable.h>
- 
- #include <linux/bug.h>
- #include <linux/string.h>
-@@ -26,37 +27,6 @@
- #define STD_USER(sr, x, ptr)	__put_user_asm(sr, "std", x, ptr)
- #endif
- 
--/*
-- * The exception table contains two values: the first is the relative offset to
-- * the address of the instruction that is allowed to fault, and the second is
-- * the relative offset to the address of the fixup routine. Since relative
-- * addresses are used, 32bit values are sufficient even on 64bit kernel.
-- */
--
--#define ARCH_HAS_RELATIVE_EXTABLE
--struct exception_table_entry {
--	int insn;	/* relative address of insn that is allowed to fault. */
--	int fixup;	/* relative address of fixup routine */
--};
--
--#define ASM_EXCEPTIONTABLE_ENTRY( fault_addr, except_addr )\
--	".section __ex_table,\"aw\"\n"			   \
--	".align 4\n"					   \
--	".word (" #fault_addr " - .), (" #except_addr " - .)\n\t" \
--	".previous\n"
--
--/*
-- * ASM_EXCEPTIONTABLE_ENTRY_EFAULT() creates a special exception table entry
-- * (with lowest bit set) for which the fault handler in fixup_exception() will
-- * load -EFAULT into %r29 for a read or write fault, and zeroes the target
-- * register in case of a read fault in get_user().
-- */
--#define ASM_EXCEPTIONTABLE_REG	29
--#define ASM_EXCEPTIONTABLE_VAR(__variable)		\
--	register long __variable __asm__ ("r29") = 0
--#define ASM_EXCEPTIONTABLE_ENTRY_EFAULT( fault_addr, except_addr )\
--	ASM_EXCEPTIONTABLE_ENTRY( fault_addr, except_addr + 1)
--
- #define __get_user_internal(sr, val, ptr)		\
- ({							\
- 	ASM_EXCEPTIONTABLE_VAR(__gu_err);		\
-@@ -83,7 +53,7 @@ struct exception_table_entry {
- 							\
- 	__asm__("1: " ldx " 0(%%sr%2,%3),%0\n"		\
- 		"9:\n"					\
--		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 9b)	\
-+		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 9b, "%1")	\
- 		: "=r"(__gu_val), "+r"(__gu_err)        \
- 		: "i"(sr), "r"(ptr));			\
- 							\
-@@ -115,8 +85,8 @@ struct exception_table_entry {
- 		"1: ldw 0(%%sr%2,%3),%0\n"		\
- 		"2: ldw 4(%%sr%2,%3),%R0\n"		\
- 		"9:\n"					\
--		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 9b)	\
--		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 9b)	\
-+		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 9b, "%1")	\
-+		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 9b, "%1")	\
- 		: "=&r"(__gu_tmp.l), "+r"(__gu_err)	\
- 		: "i"(sr), "r"(ptr));			\
- 							\
-@@ -174,7 +144,7 @@ struct exception_table_entry {
- 	__asm__ __volatile__ (					\
- 		"1: " stx " %1,0(%%sr%2,%3)\n"			\
- 		"9:\n"						\
--		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 9b)		\
-+		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 9b, "%0")	\
- 		: "+r"(__pu_err)				\
- 		: "r"(x), "i"(sr), "r"(ptr))
- 
-@@ -186,15 +156,14 @@ struct exception_table_entry {
- 		"1: stw %1,0(%%sr%2,%3)\n"			\
- 		"2: stw %R1,4(%%sr%2,%3)\n"			\
- 		"9:\n"						\
--		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 9b)		\
--		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 9b)		\
-+		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 9b, "%0")	\
-+		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 9b, "%0")	\
- 		: "+r"(__pu_err)				\
- 		: "r"(__val), "i"(sr), "r"(ptr));		\
- } while (0)
- 
- #endif /* !defined(CONFIG_64BIT) */
- 
--
- /*
-  * Complex access routines -- external declarations
-  */
-@@ -216,7 +185,4 @@ unsigned long __must_check raw_copy_from_user(void *dst, const void __user *src,
- #define INLINE_COPY_TO_USER
- #define INLINE_COPY_FROM_USER
- 
--struct pt_regs;
--int fixup_exception(struct pt_regs *regs);
--
- #endif /* __PARISC_UACCESS_H */
-diff --git a/arch/parisc/kernel/cache.c b/arch/parisc/kernel/cache.c
-index 268d90a9325b..17704c1cdc69 100644
---- a/arch/parisc/kernel/cache.c
-+++ b/arch/parisc/kernel/cache.c
-@@ -850,7 +850,7 @@ SYSCALL_DEFINE3(cacheflush, unsigned long, addr, unsigned long, bytes,
- #endif
- 			"   fic,m	%3(%4,%0)\n"
- 			"2: sync\n"
--			ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 2b)
-+			ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 2b, "%1")
- 			: "+r" (start), "+r" (error)
- 			: "r" (end), "r" (dcache_stride), "i" (SR_USER));
- 	}
-@@ -865,7 +865,7 @@ SYSCALL_DEFINE3(cacheflush, unsigned long, addr, unsigned long, bytes,
- #endif
- 			"   fdc,m	%3(%4,%0)\n"
- 			"2: sync\n"
--			ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 2b)
-+			ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 2b, "%1")
- 			: "+r" (start), "+r" (error)
- 			: "r" (end), "r" (icache_stride), "i" (SR_USER));
- 	}
-diff --git a/arch/parisc/kernel/unaligned.c b/arch/parisc/kernel/unaligned.c
-index ce25acfe4889..c520e551a165 100644
---- a/arch/parisc/kernel/unaligned.c
-+++ b/arch/parisc/kernel/unaligned.c
-@@ -120,8 +120,8 @@ static int emulate_ldh(struct pt_regs *regs, int toreg)
- "2:	ldbs	1(%%sr1,%3), %0\n"
- "	depw	%2, 23, 24, %0\n"
- "3:	\n"
--	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 3b)
--	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 3b)
-+	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 3b, "%1")
-+	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 3b, "%1")
- 	: "+r" (val), "+r" (ret), "=&r" (temp1)
- 	: "r" (saddr), "r" (regs->isr) );
- 
-@@ -152,8 +152,8 @@ static int emulate_ldw(struct pt_regs *regs, int toreg, int flop)
- "	mtctl	%2,11\n"
- "	vshd	%0,%3,%0\n"
- "3:	\n"
--	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 3b)
--	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 3b)
-+	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 3b, "%1")
-+	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 3b, "%1")
- 	: "+r" (val), "+r" (ret), "=&r" (temp1), "=&r" (temp2)
- 	: "r" (saddr), "r" (regs->isr) );
- 
-@@ -189,8 +189,8 @@ static int emulate_ldd(struct pt_regs *regs, int toreg, int flop)
- "	mtsar	%%r19\n"
- "	shrpd	%0,%%r20,%%sar,%0\n"
- "3:	\n"
--	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 3b)
--	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 3b)
-+	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 3b, "%1")
-+	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 3b, "%1")
- 	: "=r" (val), "+r" (ret)
- 	: "0" (val), "r" (saddr), "r" (regs->isr)
- 	: "r19", "r20" );
-@@ -209,9 +209,9 @@ static int emulate_ldd(struct pt_regs *regs, int toreg, int flop)
- "	vshd	%0,%R0,%0\n"
- "	vshd	%R0,%4,%R0\n"
- "4:	\n"
--	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 4b)
--	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 4b)
--	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(3b, 4b)
-+	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 4b, "%1")
-+	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 4b, "%1")
-+	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(3b, 4b, "%1")
- 	: "+r" (val), "+r" (ret), "+r" (saddr), "=&r" (shift), "=&r" (temp1)
- 	: "r" (regs->isr) );
-     }
-@@ -244,8 +244,8 @@ static int emulate_sth(struct pt_regs *regs, int frreg)
- "1:	stb %1, 0(%%sr1, %3)\n"
- "2:	stb %2, 1(%%sr1, %3)\n"
- "3:	\n"
--	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 3b)
--	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 3b)
-+	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 3b, "%0")
-+	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 3b, "%0")
- 	: "+r" (ret), "=&r" (temp1)
- 	: "r" (val), "r" (regs->ior), "r" (regs->isr) );
- 
-@@ -285,8 +285,8 @@ static int emulate_stw(struct pt_regs *regs, int frreg, int flop)
- "	stw	%%r20,0(%%sr1,%2)\n"
- "	stw	%%r21,4(%%sr1,%2)\n"
- "3:	\n"
--	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 3b)
--	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 3b)
-+	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 3b, "%0")
-+	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 3b, "%0")
- 	: "+r" (ret)
- 	: "r" (val), "r" (regs->ior), "r" (regs->isr)
- 	: "r19", "r20", "r21", "r22", "r1" );
-@@ -329,10 +329,10 @@ static int emulate_std(struct pt_regs *regs, int frreg, int flop)
- "3:	std	%%r20,0(%%sr1,%2)\n"
- "4:	std	%%r21,8(%%sr1,%2)\n"
- "5:	\n"
--	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 5b)
--	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 5b)
--	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(3b, 5b)
--	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(4b, 5b)
-+	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 5b, "%0")
-+	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 5b, "%0")
-+	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(3b, 5b, "%0")
-+	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(4b, 5b, "%0")
- 	: "+r" (ret)
- 	: "r" (val), "r" (regs->ior), "r" (regs->isr)
- 	: "r19", "r20", "r21", "r22", "r1" );
-@@ -357,11 +357,11 @@ static int emulate_std(struct pt_regs *regs, int frreg, int flop)
- "4:	stw	%%r1,4(%%sr1,%2)\n"
- "5:	stw	%R1,8(%%sr1,%2)\n"
- "6:	\n"
--	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 6b)
--	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 6b)
--	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(3b, 6b)
--	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(4b, 6b)
--	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(5b, 6b)
-+	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 6b, "%0")
-+	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 6b, "%0")
-+	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(3b, 6b, "%0")
-+	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(4b, 6b, "%0")
-+	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(5b, 6b, "%0")
- 	: "+r" (ret)
- 	: "r" (val), "r" (regs->ior), "r" (regs->isr)
- 	: "r19", "r20", "r21", "r1" );
-diff --git a/arch/parisc/mm/fault.c b/arch/parisc/mm/fault.c
-index 2fe5b44986e0..c39de84e98b0 100644
---- a/arch/parisc/mm/fault.c
-+++ b/arch/parisc/mm/fault.c
-@@ -150,11 +150,16 @@ int fixup_exception(struct pt_regs *regs)
- 		 * Fix up get_user() and put_user().
- 		 * ASM_EXCEPTIONTABLE_ENTRY_EFAULT() sets the least-significant
- 		 * bit in the relative address of the fixup routine to indicate
--		 * that gr[ASM_EXCEPTIONTABLE_REG] should be loaded with
--		 * -EFAULT to report a userspace access error.
-+		 * that the register encoded in the "or %r0,%r0,register"
-+		 * opcode should be loaded with -EFAULT to report a userspace
-+		 * access error.
- 		 */
- 		if (fix->fixup & 1) {
--			regs->gr[ASM_EXCEPTIONTABLE_REG] = -EFAULT;
-+			int fault_error_reg = fix->err_opcode & 0x1f;
-+			if (!WARN_ON(!fault_error_reg))
-+				regs->gr[fault_error_reg] = -EFAULT;
-+			pr_debug("Unalignment fixup of register %d at %pS\n",
-+				fault_error_reg, (void*)regs->iaoq[0]);
- 
- 			/* zero target register for get_user() */
- 			if (parisc_acctyp(0, regs->iir) == VM_READ) {
+-- 
+Kees Cook
 
