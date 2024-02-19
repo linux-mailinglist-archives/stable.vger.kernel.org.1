@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-20596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE85985A890
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 17:18:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2797F85A896
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 17:18:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66A131F24E6D
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 16:18:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C8D81C234EE
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 16:18:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 857453D0CB;
-	Mon, 19 Feb 2024 16:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 536C53B1B2;
+	Mon, 19 Feb 2024 16:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TZGK9Jj4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rmphYveL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4302F3CF6B
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 16:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 126D33D98E
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 16:18:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708359470; cv=none; b=h0RMjGyHfnqGbw872hipHksIseH3pu4X6vcMWIDHqqebH8k6njZaa/5ib2KxtXgBTCh7kJdMlxsIDEqD51hj9IwM6qJoexeglCHgPffh3JY5KFI1qZkf2SJqlh8Rgah/Hpq1k5aaGuI/QQDJlrZ0Gst/AGgOyzXMK4keQzFPI6s=
+	t=1708359493; cv=none; b=Y4VFUMHUM7DBiyoZwear1GaLPzdNGJ2eklU7lUKggtxCYTV8O7GRh1Sk4O6RZzO55JOxrAckIBQYRTHujgFj+tTgMNtbJFyEE4bHVEI9oqor6yyud3TQbLUHL+0HihNPUQArJLCRcxN16XN9fS5V7Uci1TXyci/uEaCBGh02Py4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708359470; c=relaxed/simple;
-	bh=G/ns5C7K3bBCOAlbDWhNb+xiauThocRsL4xE9QwimKI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=iJZVPsKmuN5d/FwrwYPKUDZGYePA2ujBHs8gsSBGwBNfpnc5Xvfjl7p5e/+8rqJnr7RLgHxLw7ppsj4SAdr2JRQXJrQ5autbLN6WgzLcj04mCDDQusz9d1R7DkH/eG2HAi1nZZ8IWSnkyLyg1j5VX9b2WkuQKjxKqe3fIY2VzFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TZGK9Jj4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43DB1C433F1;
-	Mon, 19 Feb 2024 16:17:49 +0000 (UTC)
+	s=arc-20240116; t=1708359493; c=relaxed/simple;
+	bh=piXqkKgR4xNX5PqPCzTKBsNhPgcwUPX1FaC22rAenVo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RI+L+jWTBOhb9ixDreXKv4QT4lTDSqnNaZ0W7ehkjzZvc5+F0DYIJpduppOYr6YudekWC4/0RZV9RW39tUQ/Fapkj1mQXX7ayX+QRxiecSJlVzjjpP9kbypoYy5Ei+jf62gGZZQKACe6a5N0h5yHvdt1IpEeNYGSqM3ZHYqlWFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rmphYveL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35B10C433F1;
+	Mon, 19 Feb 2024 16:18:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708359469;
-	bh=G/ns5C7K3bBCOAlbDWhNb+xiauThocRsL4xE9QwimKI=;
+	s=korg; t=1708359492;
+	bh=piXqkKgR4xNX5PqPCzTKBsNhPgcwUPX1FaC22rAenVo=;
 	h=Subject:To:Cc:From:Date:From;
-	b=TZGK9Jj4NGp5K4VdUqkAxSLc2uvR5JFjv2e5O3t3aZZgfSupUXqXqanj0UZFcuQ4X
-	 78e3v/QUgq/T+d4tBOYzqa5/2IEsxBBIrVnDReXsRAvlual5NIxpcIr/yPg7VDOr5t
-	 NrkoPwzECAp8BTG4wofw7FNYuc82lX0S3EhrMm2g=
-Subject: FAILED: patch "[PATCH] ext4: convert to exclusive lock while inserting delalloc" failed to apply to 4.19-stable tree
-To: yi.zhang@huawei.com,jack@suse.cz,tytso@mit.edu
+	b=rmphYveLgb6A9eBBgdqkQMk9Y4M52/4q9djK8o+c1SCCXcZZW2otI7KPe9obcCkSf
+	 oDmZdBwpFOHfjklwA1kMxhV56biPshubbYtH1nlmItaH/WTX6dqAGLSAdSETwFZ4Qs
+	 dyL7cgVauwS/rDiIgDx4VTJeDlrXrfkv+m1wFyP0=
+Subject: FAILED: patch "[PATCH] tracing: Fix wasted memory in saved_cmdlines logic" failed to apply to 4.19-stable tree
+To: rostedt@goodmis.org,mathieu.desnoyers@efficios.com,meted@linux.ibm.com,mhiramat@kernel.org,svens@linux.ibm.com,vdonnefort@google.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Feb 2024 17:17:30 +0100
-Message-ID: <2024021929-surreal-snippet-dc79@gregkh>
+Date: Mon, 19 Feb 2024 17:18:09 +0100
+Message-ID: <2024021909-compacted-account-af9d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,33 +62,16 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
-git cherry-pick -x acf795dc161f3cf481db20f05db4250714e375e5
+git cherry-pick -x 44dc5c41b5b1267d4dd037d26afc0c4d3a568acb
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021929-surreal-snippet-dc79@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021909-compacted-account-af9d@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
-acf795dc161f ("ext4: convert to exclusive lock while inserting delalloc extents")
-3fcc2b887a1b ("ext4: refactor ext4_da_map_blocks()")
-6c120399cde6 ("ext4: make ext4_es_insert_extent() return void")
-2a69c450083d ("ext4: using nofail preallocation in ext4_es_insert_extent()")
-bda3efaf774f ("ext4: use pre-allocated es in __es_remove_extent()")
-95f0b320339a ("ext4: use pre-allocated es in __es_insert_extent()")
-73a2f033656b ("ext4: factor out __es_alloc_extent() and __es_free_extent()")
-9649eb18c628 ("ext4: add a new helper to check if es must be kept")
-8016e29f4362 ("ext4: fast commit recovery path")
-5b849b5f96b4 ("jbd2: fast commit recovery path")
-aa75f4d3daae ("ext4: main fast-commit commit path")
-ff780b91efe9 ("jbd2: add fast commit machinery")
-6866d7b3f2bb ("ext4 / jbd2: add fast commit initialization")
-995a3ed67fc8 ("ext4: add fast_commit feature and handling for extended mount options")
-2d069c0889ef ("ext4: use common helpers in all places reading metadata buffers")
-d9befedaafcf ("ext4: clear buffer verified flag if read meta block from disk")
-15ed2851b0f4 ("ext4: remove unused argument from ext4_(inc|dec)_count")
-3d392b2676bf ("ext4: add prefetch_block_bitmaps mount option")
-ab74c7b23f37 ("ext4: indicate via a block bitmap read is prefetched via a tracepoint")
-bc71726c7257 ("ext4: abort the filesystem if failed to async write metadata buffer")
+44dc5c41b5b1 ("tracing: Fix wasted memory in saved_cmdlines logic")
+c0a581d7126c ("tracing: Disable interrupt or preemption before acquiring arch_spinlock_t")
+a35873a0993b ("tracing: Add conditional snapshot")
 
 thanks,
 
@@ -96,108 +79,180 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From acf795dc161f3cf481db20f05db4250714e375e5 Mon Sep 17 00:00:00 2001
-From: Zhang Yi <yi.zhang@huawei.com>
-Date: Sat, 27 Jan 2024 09:58:01 +0800
-Subject: [PATCH] ext4: convert to exclusive lock while inserting delalloc
- extents
+From 44dc5c41b5b1267d4dd037d26afc0c4d3a568acb Mon Sep 17 00:00:00 2001
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Date: Fri, 9 Feb 2024 06:36:22 -0500
+Subject: [PATCH] tracing: Fix wasted memory in saved_cmdlines logic
 
-ext4_da_map_blocks() only hold i_data_sem in shared mode and i_rwsem
-when inserting delalloc extents, it could be raced by another querying
-path of ext4_map_blocks() without i_rwsem, .e.g buffered read path.
-Suppose we buffered read a file containing just a hole, and without any
-cached extents tree, then it is raced by another delayed buffered write
-to the same area or the near area belongs to the same hole, and the new
-delalloc extent could be overwritten to a hole extent.
+While looking at improving the saved_cmdlines cache I found a huge amount
+of wasted memory that should be used for the cmdlines.
 
- pread()                           pwrite()
-  filemap_read_folio()
-   ext4_mpage_readpages()
-    ext4_map_blocks()
-     down_read(i_data_sem)
-     ext4_ext_determine_hole()
-     //find hole
-     ext4_ext_put_gap_in_cache()
-      ext4_es_find_extent_range()
-      //no delalloc extent
-                                    ext4_da_map_blocks()
-                                     down_read(i_data_sem)
-                                     ext4_insert_delayed_block()
-                                     //insert delalloc extent
-      ext4_es_insert_extent()
-      //overwrite delalloc extent to hole
+The tracing data saves pids during the trace. At sched switch, if a trace
+occurred, it will save the comm of the task that did the trace. This is
+saved in a "cache" that maps pids to comms and exposed to user space via
+the /sys/kernel/tracing/saved_cmdlines file. Currently it only caches by
+default 128 comms.
 
-This race could lead to inconsistent delalloc extents tree and
-incorrect reserved space counter. Fix this by converting to hold
-i_data_sem in exclusive mode when adding a new delalloc extent in
-ext4_da_map_blocks().
+The structure that uses this creates an array to store the pids using
+PID_MAX_DEFAULT (which is usually set to 32768). This causes the structure
+to be of the size of 131104 bytes on 64 bit machines.
+
+In hex: 131104 = 0x20020, and since the kernel allocates generic memory in
+powers of two, the kernel would allocate 0x40000 or 262144 bytes to store
+this structure. That leaves 131040 bytes of wasted space.
+
+Worse, the structure points to an allocated array to store the comm names,
+which is 16 bytes times the amount of names to save (currently 128), which
+is 2048 bytes. Instead of allocating a separate array, make the structure
+end with a variable length string and use the extra space for that.
+
+This is similar to a recommendation that Linus had made about eventfs_inode names:
+
+  https://lore.kernel.org/all/20240130190355.11486-5-torvalds@linux-foundation.org/
+
+Instead of allocating a separate string array to hold the saved comms,
+have the structure end with: char saved_cmdlines[]; and round up to the
+next power of two over sizeof(struct saved_cmdline_buffers) + num_cmdlines * TASK_COMM_LEN
+It will use this extra space for the saved_cmdline portion.
+
+Now, instead of saving only 128 comms by default, by using this wasted
+space at the end of the structure it can save over 8000 comms and even
+saves space by removing the need for allocating the other array.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20240209063622.1f7b6d5f@rorschach.local.home
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Suggested-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240127015825.1608160-3-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Vincent Donnefort <vdonnefort@google.com>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Mete Durlu <meted@linux.ibm.com>
+Fixes: 939c7a4f04fcd ("tracing: Introduce saved_cmdlines_size file")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index bbd5ee6dd3f3..b040337501e3 100644
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -1703,10 +1703,8 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index 2a7c6fd934e9..9ff8a439d674 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -2320,7 +2320,7 @@ struct saved_cmdlines_buffer {
+ 	unsigned *map_cmdline_to_pid;
+ 	unsigned cmdline_num;
+ 	int cmdline_idx;
+-	char *saved_cmdlines;
++	char saved_cmdlines[];
+ };
+ static struct saved_cmdlines_buffer *savedcmd;
  
- 	/* Lookup extent status tree firstly */
- 	if (ext4_es_lookup_extent(inode, iblock, NULL, &es)) {
--		if (ext4_es_is_hole(&es)) {
--			down_read(&EXT4_I(inode)->i_data_sem);
-+		if (ext4_es_is_hole(&es))
- 			goto add_delayed;
--		}
- 
- 		/*
- 		 * Delayed extent could be allocated by fallocate.
-@@ -1748,8 +1746,10 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
- 		retval = ext4_ext_map_blocks(NULL, inode, map, 0);
- 	else
- 		retval = ext4_ind_map_blocks(NULL, inode, map, 0);
--	if (retval < 0)
--		goto out_unlock;
-+	if (retval < 0) {
-+		up_read(&EXT4_I(inode)->i_data_sem);
-+		return retval;
-+	}
- 	if (retval > 0) {
- 		unsigned int status;
- 
-@@ -1765,24 +1765,21 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
- 				EXTENT_STATUS_UNWRITTEN : EXTENT_STATUS_WRITTEN;
- 		ext4_es_insert_extent(inode, map->m_lblk, map->m_len,
- 				      map->m_pblk, status);
--		goto out_unlock;
-+		up_read(&EXT4_I(inode)->i_data_sem);
-+		return retval;
- 	}
-+	up_read(&EXT4_I(inode)->i_data_sem);
- 
- add_delayed:
--	/*
--	 * XXX: __block_prepare_write() unmaps passed block,
--	 * is it OK?
--	 */
-+	down_write(&EXT4_I(inode)->i_data_sem);
- 	retval = ext4_insert_delayed_block(inode, map->m_lblk);
-+	up_write(&EXT4_I(inode)->i_data_sem);
- 	if (retval)
--		goto out_unlock;
-+		return retval;
- 
- 	map_bh(bh, inode->i_sb, invalid_block);
- 	set_buffer_new(bh);
- 	set_buffer_delay(bh);
--
--out_unlock:
--	up_read((&EXT4_I(inode)->i_data_sem));
- 	return retval;
+@@ -2334,47 +2334,58 @@ static inline void set_cmdline(int idx, const char *cmdline)
+ 	strncpy(get_saved_cmdlines(idx), cmdline, TASK_COMM_LEN);
  }
  
+-static int allocate_cmdlines_buffer(unsigned int val,
+-				    struct saved_cmdlines_buffer *s)
++static void free_saved_cmdlines_buffer(struct saved_cmdlines_buffer *s)
+ {
++	int order = get_order(sizeof(*s) + s->cmdline_num * TASK_COMM_LEN);
++
++	kfree(s->map_cmdline_to_pid);
++	free_pages((unsigned long)s, order);
++}
++
++static struct saved_cmdlines_buffer *allocate_cmdlines_buffer(unsigned int val)
++{
++	struct saved_cmdlines_buffer *s;
++	struct page *page;
++	int orig_size, size;
++	int order;
++
++	/* Figure out how much is needed to hold the given number of cmdlines */
++	orig_size = sizeof(*s) + val * TASK_COMM_LEN;
++	order = get_order(orig_size);
++	size = 1 << (order + PAGE_SHIFT);
++	page = alloc_pages(GFP_KERNEL, order);
++	if (!page)
++		return NULL;
++
++	s = page_address(page);
++	memset(s, 0, sizeof(*s));
++
++	/* Round up to actual allocation */
++	val = (size - sizeof(*s)) / TASK_COMM_LEN;
++	s->cmdline_num = val;
++
+ 	s->map_cmdline_to_pid = kmalloc_array(val,
+ 					      sizeof(*s->map_cmdline_to_pid),
+ 					      GFP_KERNEL);
+-	if (!s->map_cmdline_to_pid)
+-		return -ENOMEM;
+-
+-	s->saved_cmdlines = kmalloc_array(TASK_COMM_LEN, val, GFP_KERNEL);
+-	if (!s->saved_cmdlines) {
+-		kfree(s->map_cmdline_to_pid);
+-		return -ENOMEM;
++	if (!s->map_cmdline_to_pid) {
++		free_saved_cmdlines_buffer(s);
++		return NULL;
+ 	}
+ 
+ 	s->cmdline_idx = 0;
+-	s->cmdline_num = val;
+ 	memset(&s->map_pid_to_cmdline, NO_CMDLINE_MAP,
+ 	       sizeof(s->map_pid_to_cmdline));
+ 	memset(s->map_cmdline_to_pid, NO_CMDLINE_MAP,
+ 	       val * sizeof(*s->map_cmdline_to_pid));
+ 
+-	return 0;
++	return s;
+ }
+ 
+ static int trace_create_savedcmd(void)
+ {
+-	int ret;
++	savedcmd = allocate_cmdlines_buffer(SAVED_CMDLINES_DEFAULT);
+ 
+-	savedcmd = kmalloc(sizeof(*savedcmd), GFP_KERNEL);
+-	if (!savedcmd)
+-		return -ENOMEM;
+-
+-	ret = allocate_cmdlines_buffer(SAVED_CMDLINES_DEFAULT, savedcmd);
+-	if (ret < 0) {
+-		kfree(savedcmd);
+-		savedcmd = NULL;
+-		return -ENOMEM;
+-	}
+-
+-	return 0;
++	return savedcmd ? 0 : -ENOMEM;
+ }
+ 
+ int is_tracing_stopped(void)
+@@ -6056,26 +6067,14 @@ tracing_saved_cmdlines_size_read(struct file *filp, char __user *ubuf,
+ 	return simple_read_from_buffer(ubuf, cnt, ppos, buf, r);
+ }
+ 
+-static void free_saved_cmdlines_buffer(struct saved_cmdlines_buffer *s)
+-{
+-	kfree(s->saved_cmdlines);
+-	kfree(s->map_cmdline_to_pid);
+-	kfree(s);
+-}
+-
+ static int tracing_resize_saved_cmdlines(unsigned int val)
+ {
+ 	struct saved_cmdlines_buffer *s, *savedcmd_temp;
+ 
+-	s = kmalloc(sizeof(*s), GFP_KERNEL);
++	s = allocate_cmdlines_buffer(val);
+ 	if (!s)
+ 		return -ENOMEM;
+ 
+-	if (allocate_cmdlines_buffer(val, s) < 0) {
+-		kfree(s);
+-		return -ENOMEM;
+-	}
+-
+ 	preempt_disable();
+ 	arch_spin_lock(&trace_cmdline_lock);
+ 	savedcmd_temp = savedcmd;
 
 
