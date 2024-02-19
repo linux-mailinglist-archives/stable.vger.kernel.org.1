@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-20574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BA5A85A857
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 17:11:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CB2385A859
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 17:11:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D92E91F215E3
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 16:11:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2EB421F24907
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 16:11:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8F6B3CF77;
-	Mon, 19 Feb 2024 16:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD1A83D3AE;
+	Mon, 19 Feb 2024 16:11:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ulOvFS2h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F7nnwo1s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F1A3A1DE
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 16:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D79A3D3A6
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 16:11:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708359069; cv=none; b=VOYv1D928YGoOUp5pX8J+va8GggODDWlSn/q6eWoQfsb0TDE6qgVgZujYgKsL3ivQ3afpES/dD9uWr0UONn3V4ws3oGsUgVg7MfHEB9QOtmudgSaWYl+iattHUKBtMWmrCfLQ/2IUMeoyq48mIlLnvzT5Tp+yJJOJese9PghJlI=
+	t=1708359072; cv=none; b=oNcv00h/AuUky7JIoJPOT0EZGcR2LaJ2rEOsSZ4WfoVdUuKkJmga0q6lhhT3sbgcR+7+Fhb02IoI8F3xxxUWV+qg6DUiYbi8dwskb6TV+nOdufxza81rIofDZtvIbTciLC7JHlJFvoUavZ0H0pFsbiKrjO6/sbdw4/vNi+l7/xs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708359069; c=relaxed/simple;
-	bh=K68VFVjbwh63CIeMSgBRPUWkMWJi4KeXbMbA991LrRs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=QCDMTcJwtSFVG+rF4r7VNADu9yb9sfhts/5SDDoPz+iwG0X+Q0LkgLpBL0UnVEDjgNTcb8IbIbx8ruxO0Cn9lZdroa/PJXZlkCtsrxxwn0MoJy7bRpmXuJUwMJWQwLzbV4JbVF7orGcOgS5pRAUbxemz+165LebvfWmSHeEn5KQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ulOvFS2h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75269C433C7;
-	Mon, 19 Feb 2024 16:11:08 +0000 (UTC)
+	s=arc-20240116; t=1708359072; c=relaxed/simple;
+	bh=bweNU3cjaK6odkRQ/SIEypa8KMw7oRZ0zEm/jt1Kfac=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=hNpIAV2DUSc9c+DxWKfXYYHmzxR0YFXDqXcvokmrZNF7c97RMgK338PSx2qVXOKdLBtpLZN9eh63rvvqDxnfdrS0PD4hhv3XWUbCyiNXuEzAm88I8II/I0KaFKF1GtpAMQTwhSJAJipsKqibXCf7U9iV6Tdt9q7rW7bzKe/dygk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F7nnwo1s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F4C3C433C7;
+	Mon, 19 Feb 2024 16:11:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708359068;
-	bh=K68VFVjbwh63CIeMSgBRPUWkMWJi4KeXbMbA991LrRs=;
+	s=korg; t=1708359072;
+	bh=bweNU3cjaK6odkRQ/SIEypa8KMw7oRZ0zEm/jt1Kfac=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ulOvFS2hNTLhJK0CIH30qPvOY4yQUilVWiniqs7e8Y0tWyXfO2mhsdhASu5XWSkNI
-	 5JhJEHYl6dHDLYI5Aae+RVQ3+6aVIvavMMI9s/XGToWaoCbVxQs/Mlta8OcYVYsHt/
-	 q2TnSRG6fwdAx6sHjLz30EIaqD5zZolGCt0rIIJw=
-Subject: FAILED: patch "[PATCH] lsm: fix default return value of the socket_getpeersec_*()" failed to apply to 5.15-stable tree
+	b=F7nnwo1sNM6BqJzGUNecHJlF1He+f57npC+FeukvFvSvKLijIeOH+y58OoNZfkR6H
+	 acghUKXErbvpyXv1GibTLi6NJQUf9U2kiH5anlj2ZSSmUPMJTRQWlet/lQuEdIPkXv
+	 tgVEQvEdhnu7q6by0UJzK5goOgEJBNzEpIrPvasM=
+Subject: FAILED: patch "[PATCH] lsm: fix default return value of the socket_getpeersec_*()" failed to apply to 5.10-stable tree
 To: omosnace@redhat.com,paul@paul-moore.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Feb 2024 17:10:57 +0100
-Message-ID: <2024021957-substance-saloon-27a3@gregkh>
+Date: Mon, 19 Feb 2024 17:10:58 +0100
+Message-ID: <2024021958-zealous-pug-0442@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 5a287d3d2b9de2b3e747132c615599907ba5c3c1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021957-substance-saloon-27a3@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021958-zealous-pug-0442@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -73,6 +73,8 @@ Possible dependencies:
 b10b9c342f75 ("lsm: make security_socket_getpeersec_stream() sockptr_t safe")
 4ff09db1b79b ("bpf: net: Change sk_getsockopt() to take the sockptr_t argument")
 ba74a7608dc1 ("net: Change sock_getsockopt() to take the sk ptr instead of the sock ptr")
+35306eb23814 ("af_unix: fix races in sk_peer_pid and sk_peer_cred accesses")
+7fd3253a7de6 ("net: Introduce preferred busy-polling")
 
 thanks,
 
