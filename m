@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-20648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFD1185AAC3
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:18:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8E8E85AAC5
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:18:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E35DB22699
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:18:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A18BF282E6A
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:18:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92E90481AF;
-	Mon, 19 Feb 2024 18:18:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFD04481B3;
+	Mon, 19 Feb 2024 18:18:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZF3/GT3Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B2pMEYQ6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5581C47F79
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:18:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC1647F79
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:18:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708366698; cv=none; b=NL/3xfb3me3UgMcVUGOsc5dsDruSlavZ57YykUprOMT3QYtgCe4AI8iP8htArTvSECIjx+ckkoOoFeHLcg5NWC4x4TK04DSvjJnPVvvyeVRK/OXRAGb8Yj8fUB9qNiDzmiAR9kcrxTrmHvmZSc9shwY7yDTjofHXnJp3fqxHv5s=
+	t=1708366706; cv=none; b=beXNNXnRBy/IMJP1hu1sH7+7hbnyj8RHxESZVFLxe28w3zJJ0fpiAqWTCaKgdNeaF0i0WFILUgtuYACRj8I8arAw2v2dySgdhPWNCjkCG2G+QCYLOJiTK3arnnzVPh3t7PuxZypI5ZQwYDqFqZ+LhOnDU0duH1ierFkqtJ4aHAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708366698; c=relaxed/simple;
-	bh=l9vhCUDoQCqMJ1Qh0X/FWfw/LTEmape19R7/ejRfPEE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=XXgDyj5NXMkoNLFKRLyrCi+A9deAO/D3YcESFUrtyRMgrcbtl/D1cdGaCrOwy680m/KLDB7tw8+V3Bf3C0DMUQEs4A7fb+lsM/Syrory8l8n1Wpm2YN2UEOHwkRLPt0QP+BRd/A2A+aiUDLydaEH18y9sOaZ4AAWDjUqAhwoAiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZF3/GT3Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77AC0C433F1;
-	Mon, 19 Feb 2024 18:18:17 +0000 (UTC)
+	s=arc-20240116; t=1708366706; c=relaxed/simple;
+	bh=p0lnwmh6wwyIRyOc3A4gCKsV2gU4AeLMT2bnEqOeC6o=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=O5Jjsu9hyf5WZW+eELg4etwoPXVFsDsLyqxGnMxRcpwQXfvDrB8cMlWMxNnxjYCJwUBfJN09Dbh78Urx7KoKnRxVmjkbqtAJqgv+zJjCUIZoagOoxGm1Ikyar8wvYantz/QLCVpston6ZVKDqr8U1Y2T/A64QMQVNO6XPYEL4W4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B2pMEYQ6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55B1DC433F1;
+	Mon, 19 Feb 2024 18:18:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708366697;
-	bh=l9vhCUDoQCqMJ1Qh0X/FWfw/LTEmape19R7/ejRfPEE=;
+	s=korg; t=1708366706;
+	bh=p0lnwmh6wwyIRyOc3A4gCKsV2gU4AeLMT2bnEqOeC6o=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ZF3/GT3YCm3qN4uZlC+GUTaQ2Zk7d6+8vHNge1qcZKuDXl2uQVDPSGwRNzpWPulx1
-	 x/+giZZSRQ0M88FAHg8j7YoVxWuDGlNhecdJgbb2cc5M/oQJuw19lZNKK7aaY369Be
-	 UWc55sKs3B2ipx0uP7IhLpxpJl9V6bBsf5kiqxNk=
-Subject: FAILED: patch "[PATCH] drm/amd/display: fixed integer types and null check locations" failed to apply to 6.7-stable tree
-To: sohaib.nadeem@amd.com,alexander.deucher@amd.com,aurabindo.pillai@amd.com,daniel.wheeler@amd.com,josip.pavic@amd.com,mario.limonciello@amd.com
+	b=B2pMEYQ6C36CjYQD+RSatqkrryXmSLITdnvLsxgkWn7gnUKAmkVx2XaGqm5v1IXtt
+	 xS6EHbttA4W0jo7xqaMM+6bHfALVFDObkFUg2xblzIdxBe4Hqz1S1AuxM3hihTn9Y4
+	 O/OgKwlA11Pb7RcUSs+jfpskFmbjUnYL/cl1DSHE=
+Subject: FAILED: patch "[PATCH] drm/amdgpu: make damage clips support configurable" failed to apply to 6.6-stable tree
+To: hamza.mahfooz@amd.com,alexander.deucher@amd.com,mario.limonciello@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Feb 2024 19:18:11 +0100
-Message-ID: <2024021911-deceptive-voter-f030@gregkh>
+Date: Mon, 19 Feb 2024 19:18:17 +0100
+Message-ID: <2024021917-swarm-federal-1cdf@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,26 +53,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.7-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.7.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 0484e05d048b66d01d1f3c1d2306010bb57d8738
+git cherry-pick -x d16df040c8dad25c962b4404d2d534bfea327c6a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021911-deceptive-voter-f030@gregkh' --subject-prefix 'PATCH 6.7.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021917-swarm-federal-1cdf@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-0484e05d048b ("drm/amd/display: fixed integer types and null check locations")
-5f3bce13266e ("drm/amd/display: Request usb4 bw for mst streams")
-59f1622a5f05 ("drm/amd/display: Add dpia display mode validation logic")
-aa5dc05340eb ("drm/amd/display: Fix minor issues in BW Allocation Phase2")
+d16df040c8da ("drm/amdgpu: make damage clips support configurable")
+b8b39de64627 ("drm/amd/pm: setup the framework to support Wifi RFI mitigation feature")
+2e9b152325f6 ("drm/amdgpu: optimize RLC powerdown notification on Vangogh")
+6ba5b613837c ("drm/amdgpu: add a module parameter to control the AGP aperture")
+564ca1b53ece ("drm/amdgpu/gmc11: fix logic typo in AGP check")
+56d3de7da67a ("drm/amdgpu: add power up/down UMSCH ppt callback")
+fe6cd9152464 ("drm/amd/swsmu: add smu14 ip support")
+67318cb84341 ("drm/amdgpu/gmc11: set gart placement GC11")
+917f91d8d8e8 ("drm/amdgpu/gmc: add a way to force a particular placement for GART")
+d07f1c20dd7c ("drm/amd/pm: add xgmi plpd mode selecting interface for smu v13.0.6")
+10d9ee96ce05 ("drm/amd/pm: add plpd_mode in smu_context to indicate current mode")
+b2e1cbe6281f ("drm/amdgpu/gmc11: disable AGP on GC 11.5")
+de59b69932e6 ("drm/amdgpu/gmc: set a default disable value for AGP")
+29495d81457a ("drm/amdgpu/gmc6-8: properly disable the AGP aperture")
+25396684b57f ("drm/amd/pm: add smu_13_0_6 mca dump support")
+bcd8dc49c0b9 ("drm/amd/pm: update smu_v13_0_6 ppsmc header")
+cad2fb19bbfa ("drm/amd/pm: Fix clock reporting for SMUv13.0.6")
+4e8303cf2c4d ("drm/amdgpu: Use function for IP version check")
+887db1e49a73 ("drm/amdgpu: Merge debug module parameters")
+df38fe12a22c ("drm/amd/pm: enable smu_v13_0_6 mca debug mode when UMC RAS feature is enabled")
 
 thanks,
 
@@ -80,107 +96,95 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 0484e05d048b66d01d1f3c1d2306010bb57d8738 Mon Sep 17 00:00:00 2001
-From: Sohaib Nadeem <sohaib.nadeem@amd.com>
-Date: Wed, 31 Jan 2024 16:40:37 -0500
-Subject: [PATCH] drm/amd/display: fixed integer types and null check locations
+From d16df040c8dad25c962b4404d2d534bfea327c6a Mon Sep 17 00:00:00 2001
+From: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Date: Thu, 8 Feb 2024 16:23:29 -0500
+Subject: [PATCH] drm/amdgpu: make damage clips support configurable
 
-[why]:
-issues fixed:
-- comparison with wider integer type in loop condition which can cause
-infinite loops
-- pointer dereference before null check
+We have observed that there are quite a number of PSR-SU panels on the
+market that are unable to keep up with what user space throws at them,
+resulting in hangs and random black screens. So, make damage clips
+support configurable and disable it by default for PSR-SU displays.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Josip Pavic <josip.pavic@amd.com>
-Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Sohaib Nadeem <sohaib.nadeem@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 
-diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-index 960c4b4f6ddf..05f392501c0a 100644
---- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-@@ -1850,19 +1850,21 @@ static enum bp_result get_firmware_info_v3_2(
- 		/* Vega12 */
- 		smu_info_v3_2 = GET_IMAGE(struct atom_smu_info_v3_2,
- 							DATA_TABLES(smu_info));
--		DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", smu_info_v3_2->gpuclk_ss_percentage);
- 		if (!smu_info_v3_2)
- 			return BP_RESULT_BADBIOSTABLE;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu.h b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+index 6dce81a061ab..517117a0796f 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+@@ -200,6 +200,7 @@ extern uint amdgpu_dc_debug_mask;
+ extern uint amdgpu_dc_visual_confirm;
+ extern uint amdgpu_dm_abm_level;
+ extern int amdgpu_backlight;
++extern int amdgpu_damage_clips;
+ extern struct amdgpu_mgpu_info mgpu_info;
+ extern int amdgpu_ras_enable;
+ extern uint amdgpu_ras_mask;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+index 211501ea9169..586f4d03039d 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -211,6 +211,7 @@ int amdgpu_seamless = -1; /* auto */
+ uint amdgpu_debug_mask;
+ int amdgpu_agp = -1; /* auto */
+ int amdgpu_wbrf = -1;
++int amdgpu_damage_clips = -1; /* auto */
  
-+		DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", smu_info_v3_2->gpuclk_ss_percentage);
+ static void amdgpu_drv_delayed_reset_work_handler(struct work_struct *work);
+ 
+@@ -859,6 +860,18 @@ int amdgpu_backlight = -1;
+ MODULE_PARM_DESC(backlight, "Backlight control (0 = pwm, 1 = aux, -1 auto (default))");
+ module_param_named(backlight, amdgpu_backlight, bint, 0444);
+ 
++/**
++ * DOC: damageclips (int)
++ * Enable or disable damage clips support. If damage clips support is disabled,
++ * we will force full frame updates, irrespective of what user space sends to
++ * us.
++ *
++ * Defaults to -1 (where it is enabled unless a PSR-SU display is detected).
++ */
++MODULE_PARM_DESC(damageclips,
++		 "Damage clips support (0 = disable, 1 = enable, -1 auto (default))");
++module_param_named(damageclips, amdgpu_damage_clips, int, 0444);
 +
- 		info->default_engine_clk = smu_info_v3_2->bootup_dcefclk_10khz * 10;
- 	} else if (revision.minor == 3) {
- 		/* Vega20 */
- 		smu_info_v3_3 = GET_IMAGE(struct atom_smu_info_v3_3,
- 							DATA_TABLES(smu_info));
--		DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", smu_info_v3_3->gpuclk_ss_percentage);
- 		if (!smu_info_v3_3)
- 			return BP_RESULT_BADBIOSTABLE;
+ /**
+  * DOC: tmz (int)
+  * Trusted Memory Zone (TMZ) is a method to protect data being written
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 59d2eee72a32..d5ef07af9906 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -5219,6 +5219,7 @@ static void fill_dc_dirty_rects(struct drm_plane *plane,
+ 				struct drm_plane_state *new_plane_state,
+ 				struct drm_crtc_state *crtc_state,
+ 				struct dc_flip_addrs *flip_addrs,
++				bool is_psr_su,
+ 				bool *dirty_regions_changed)
+ {
+ 	struct dm_crtc_state *dm_crtc_state = to_dm_crtc_state(crtc_state);
+@@ -5243,6 +5244,10 @@ static void fill_dc_dirty_rects(struct drm_plane *plane,
+ 	num_clips = drm_plane_get_damage_clips_count(new_plane_state);
+ 	clips = drm_plane_get_damage_clips(new_plane_state);
  
-+		DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", smu_info_v3_3->gpuclk_ss_percentage);
++	if (num_clips && (!amdgpu_damage_clips || (amdgpu_damage_clips < 0 &&
++						   is_psr_su)))
++		goto ffu;
 +
- 		info->default_engine_clk = smu_info_v3_3->bootup_dcefclk_10khz * 10;
- 	}
+ 	if (!dm_crtc_state->mpo_requested) {
+ 		if (!num_clips || num_clips > DC_MAX_DIRTY_RECTS)
+ 			goto ffu;
+@@ -8298,6 +8303,8 @@ static void amdgpu_dm_commit_planes(struct drm_atomic_state *state,
+ 			fill_dc_dirty_rects(plane, old_plane_state,
+ 					    new_plane_state, new_crtc_state,
+ 					    &bundle->flip_addrs[planes_count],
++					    acrtc_state->stream->link->psr_settings.psr_version ==
++					    DC_PSR_VERSION_SU_1,
+ 					    &dirty_rects_changed);
  
-@@ -2422,10 +2424,11 @@ static enum bp_result get_integrated_info_v11(
- 	info_v11 = GET_IMAGE(struct atom_integrated_system_info_v1_11,
- 					DATA_TABLES(integratedsysteminfo));
- 
--	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v11->gpuclk_ss_percentage);
- 	if (info_v11 == NULL)
- 		return BP_RESULT_BADBIOSTABLE;
- 
-+	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v11->gpuclk_ss_percentage);
-+
- 	info->gpu_cap_info =
- 	le32_to_cpu(info_v11->gpucapinfo);
- 	/*
-@@ -2637,11 +2640,12 @@ static enum bp_result get_integrated_info_v2_1(
- 
- 	info_v2_1 = GET_IMAGE(struct atom_integrated_system_info_v2_1,
- 					DATA_TABLES(integratedsysteminfo));
--	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v2_1->gpuclk_ss_percentage);
- 
- 	if (info_v2_1 == NULL)
- 		return BP_RESULT_BADBIOSTABLE;
- 
-+	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v2_1->gpuclk_ss_percentage);
-+
- 	info->gpu_cap_info =
- 	le32_to_cpu(info_v2_1->gpucapinfo);
- 	/*
-@@ -2799,11 +2803,11 @@ static enum bp_result get_integrated_info_v2_2(
- 	info_v2_2 = GET_IMAGE(struct atom_integrated_system_info_v2_2,
- 					DATA_TABLES(integratedsysteminfo));
- 
--	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v2_2->gpuclk_ss_percentage);
--
- 	if (info_v2_2 == NULL)
- 		return BP_RESULT_BADBIOSTABLE;
- 
-+	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v2_2->gpuclk_ss_percentage);
-+
- 	info->gpu_cap_info =
- 	le32_to_cpu(info_v2_2->gpucapinfo);
- 	/*
-diff --git a/drivers/gpu/drm/amd/display/dc/link/link_validation.c b/drivers/gpu/drm/amd/display/dc/link/link_validation.c
-index 8fe66c367850..5b0bc7f6a188 100644
---- a/drivers/gpu/drm/amd/display/dc/link/link_validation.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/link_validation.c
-@@ -361,7 +361,7 @@ bool link_validate_dpia_bandwidth(const struct dc_stream_state *stream, const un
- 	struct dc_link *dpia_link[MAX_DPIA_NUM] = {0};
- 	int num_dpias = 0;
- 
--	for (uint8_t i = 0; i < num_streams; ++i) {
-+	for (unsigned int i = 0; i < num_streams; ++i) {
- 		if (stream[i].signal == SIGNAL_TYPE_DISPLAY_PORT) {
- 			/* new dpia sst stream, check whether it exceeds max dpia */
- 			if (num_dpias >= MAX_DPIA_NUM)
+ 			/*
 
 
