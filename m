@@ -1,219 +1,89 @@
-Return-Path: <stable+bounces-20515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6053F85A1BF
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 12:16:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6882285A1CE
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 12:21:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD7F41F22ECB
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 11:16:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED030281822
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 11:21:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3F5A28DD5;
-	Mon, 19 Feb 2024 11:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 998632C195;
+	Mon, 19 Feb 2024 11:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lmRszKxJ"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="b13SKENs";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="OlFO0d6U"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D13423775
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 11:16:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5E62577C
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 11:21:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708341396; cv=none; b=JttSSqVzd4tYa54lVb/c2Vpnr0uKvbpBHIyak15vNFx+Bj+nkN5qtI3+MlMuHsAohTXdKRzQHoyfQyShbemKbVvCGW9nIpumGTvzB+3NRIpRYywA1nfjknGaft+n4t708TV5yNyF+37Swv1WjYGRRN8A6zXZoejWpMdzjgQSqZI=
+	t=1708341668; cv=none; b=Ja/V5r9wgKilJImw1gCG4G0T1zMFWtw0rLcudLiYvE4p7d2bqSnd0uDPD4SUQSKB1hGAmrOYbFThUq20pb4qRIRgR6MTaIi88gNwRG8+Yea0fn/hRzZY31tNKtYSC36baOiHXtBF3Zf/b2wI1fgoT0uubVIT5erIhfIy0KsA2yY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708341396; c=relaxed/simple;
-	bh=fI/xuoTrzJOxWvDHx/Gdn2cdzI4ltJbKPX1loVrgIvw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CMCT1olERvnja2uxzaKAMKHF66f/DPII7r31cNNIuri51PDnERdQ2eT4Poufs32yVUyU+2qjm8TwXwQnpzjWbi5SP/PXBNxQ+bC6x/EA43OfufPOCJLb4OKfIhFiL2i+IGiuXOrOd/7CvdR5URe6+hEnx8HqmuQ0jCVleL3uG7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lmRszKxJ; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708341395; x=1739877395;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=fI/xuoTrzJOxWvDHx/Gdn2cdzI4ltJbKPX1loVrgIvw=;
-  b=lmRszKxJKFZx3zzpc+N87TJjqmMfjVVwGcQUFT2eqZH9Q/nIoVKOLMb2
-   7LaSbB6dIiyGAad/da16jkbFQhAYhO4WP4RtXjQgY8GYo++F34HjYPriQ
-   WLheVeZiuW56SSUdvXowZNwRDj7pg/8JA+P4PgGGMK8UcTQUPJXnaJ7NF
-   0ZhXBMUOuJXU5zHB6LEGrKLPCXYIJbY4WDngPBJi0CTNZD0Fny2jAzX/r
-   NwluWmESyR1MrceW6Zs6rgGRBhjcUKSi7l8jO+WraBhzOPLyU8C2RqPQg
-   bC4Ic6NIv+qgbxFyUFN4kBDMZj0wLaSZahpRSMGrsKd+lysWteG3JpbuV
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10988"; a="2279450"
-X-IronPort-AV: E=Sophos;i="6.06,170,1705392000"; 
-   d="scan'208";a="2279450"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2024 03:16:34 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,170,1705392000"; 
-   d="scan'208";a="35238332"
-Received: from coldacre-mobl1.ger.corp.intel.com (HELO [10.213.215.68]) ([10.213.215.68])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2024 03:16:31 -0800
-Message-ID: <d61391f6-ff1d-4241-bd9e-2a3bee53c860@linux.intel.com>
-Date: Mon, 19 Feb 2024 11:16:29 +0000
+	s=arc-20240116; t=1708341668; c=relaxed/simple;
+	bh=yo/ZvKzViqjvGMWdGdo3x3uekMZOwz9bQ0ZXVLTJDes=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=YwuyMgkpqBGqlnHx5OjLt8++syIjKDRTyDY/TVYBCdldCUNuEw1pVNLe4IsFYOQdwdn35cgk4fCpArLzf81sE2kHr2oQw+YsaDDDEBqsG9qbcsbRoGIVD+6/5dDYHLjzbVF1JGunxDuxPKTznbdFMpSP108lnocO/pKytXYejEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=b13SKENs; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=OlFO0d6U; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1708341663;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yo/ZvKzViqjvGMWdGdo3x3uekMZOwz9bQ0ZXVLTJDes=;
+	b=b13SKENsz2b2T1uBEPVPwbOu3Nu7NwHmO5zhIcMAkoasXeXgtrTt23rIVzrZIYgEE9ikQx
+	rY/HlC2jrSyWZ/j1BjyM12zeZ5kfNMNcH8/H5UovsrX8aaD6o2klixk4ASFC748GxoSu4x
+	uX9RlVqFasK4/j9tAG6ban+G8dxihUco3Owwa0P3eldLoMNROVK4Ozya9AvrIQzYqTCMMe
+	+SW0XbwowneXwvnfnMCpsdmXfk5UtV989bmpcJieR++9LdHoX6C7B4mwBUMxcE0Dvc085t
+	cAcR0T9aoJnJqlgS4R21XLL+0WvDAIu/XY2IPZmP9D2pmIzthwKn0B3ghRsurA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1708341663;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yo/ZvKzViqjvGMWdGdo3x3uekMZOwz9bQ0ZXVLTJDes=;
+	b=OlFO0d6Uwg6+UkoBUbUmVjUFoAiQYoTU3Nkc0lFM3MRXZ2EN8xlgobHHVV0KTVs/Oa34GW
+	iTjUTgbJGibT1aAg==
+To: Felix Moessbauer <felix.moessbauer@siemens.com>, stable@vger.kernel.org
+Cc: dave@stgolabs.net, bigeasy@linutronix.de, petr.ivanov@siemens.com,
+ jan.kiszka@siemens.com
+Subject: Re: [PATCH][5.10, 5.15, 6.1][1/1] hrtimer: Ignore slack time for RT
+ tasks in schedule_hrtimeout_range()
+In-Reply-To: <20240219080851.27386-2-felix.moessbauer@siemens.com>
+References: <20240219080851.27386-1-felix.moessbauer@siemens.com>
+ <20240219080851.27386-2-felix.moessbauer@siemens.com>
+Date: Mon, 19 Feb 2024 12:21:03 +0100
+Message-ID: <87sf1oaee8.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] drm/i915/gt: Set default CCS mode '1'
-Content-Language: en-US
-To: Andi Shyti <andi.shyti@linux.intel.com>,
- intel-gfx <intel-gfx@lists.freedesktop.org>,
- dri-devel <dri-devel@lists.freedesktop.org>
-Cc: Chris Wilson <chris.p.wilson@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Matt Roper <matthew.d.roper@intel.com>, stable@vger.kernel.org,
- Andi Shyti <andi.shyti@kernel.org>
-References: <20240215135924.51705-1-andi.shyti@linux.intel.com>
- <20240215135924.51705-3-andi.shyti@linux.intel.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Organization: Intel Corporation UK Plc
-In-Reply-To: <20240215135924.51705-3-andi.shyti@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
+On Mon, Feb 19 2024 at 09:08, Felix Moessbauer wrote:
+> From: Davidlohr Bueso <dave@stgolabs.net>
 
-On 15/02/2024 13:59, Andi Shyti wrote:
-> Since CCS automatic load balancing is disabled, we will impose a
-> fixed balancing policy that involves setting all the CCS engines
-> to work together on the same load.
-> 
-> Simultaneously, the user will see only 1 CCS rather than the
-> actual number. As of now, this change affects only DG2.
-> 
-> Fixes: d2eae8e98d59 ("drm/i915/dg2: Drop force_probe requirement")
-> Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-> Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
-> Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-> Cc: Matt Roper <matthew.d.roper@intel.com>
-> Cc: <stable@vger.kernel.org> # v6.2+
-> ---
->   drivers/gpu/drm/i915/gt/intel_gt.c      | 11 +++++++++++
->   drivers/gpu/drm/i915/gt/intel_gt_regs.h |  2 ++
->   drivers/gpu/drm/i915/i915_drv.h         | 17 +++++++++++++++++
->   drivers/gpu/drm/i915/i915_query.c       |  5 +++--
->   4 files changed, 33 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/i915/gt/intel_gt.c b/drivers/gpu/drm/i915/gt/intel_gt.c
-> index a425db5ed3a2..e19df4ef47f6 100644
-> --- a/drivers/gpu/drm/i915/gt/intel_gt.c
-> +++ b/drivers/gpu/drm/i915/gt/intel_gt.c
-> @@ -168,6 +168,14 @@ static void init_unused_rings(struct intel_gt *gt)
->   	}
->   }
->   
-> +static void intel_gt_apply_ccs_mode(struct intel_gt *gt)
-> +{
-> +	if (!IS_DG2(gt->i915))
-> +		return;
-> +
-> +	intel_uncore_write(gt->uncore, XEHP_CCS_MODE, 0);
-> +}
-> +
->   int intel_gt_init_hw(struct intel_gt *gt)
->   {
->   	struct drm_i915_private *i915 = gt->i915;
-> @@ -195,6 +203,9 @@ int intel_gt_init_hw(struct intel_gt *gt)
->   
->   	intel_gt_init_swizzling(gt);
->   
-> +	/* Configure CCS mode */
-> +	intel_gt_apply_ccs_mode(gt);
-> +
->   	/*
->   	 * At least 830 can leave some of the unused rings
->   	 * "active" (ie. head != tail) after resume which
-> diff --git a/drivers/gpu/drm/i915/gt/intel_gt_regs.h b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-> index cf709f6c05ae..c148113770ea 100644
-> --- a/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-> +++ b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-> @@ -1605,6 +1605,8 @@
->   #define   GEN12_VOLTAGE_MASK			REG_GENMASK(10, 0)
->   #define   GEN12_CAGF_MASK			REG_GENMASK(19, 11)
->   
-> +#define XEHP_CCS_MODE                          _MMIO(0x14804)
-> +
->   #define GEN11_GT_INTR_DW(x)			_MMIO(0x190018 + ((x) * 4))
->   #define   GEN11_CSME				(31)
->   #define   GEN12_HECI_2				(30)
-> diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/i915_drv.h
-> index e81b3b2858ac..0853ffd3cb8d 100644
-> --- a/drivers/gpu/drm/i915/i915_drv.h
-> +++ b/drivers/gpu/drm/i915/i915_drv.h
-> @@ -396,6 +396,23 @@ static inline struct intel_gt *to_gt(const struct drm_i915_private *i915)
->   	     (engine__); \
->   	     (engine__) = rb_to_uabi_engine(rb_next(&(engine__)->uabi_node)))
->   
-> +/*
-> + * Exclude unavailable engines.
-> + *
-> + * Only the first CCS engine is utilized due to the disabling of CCS auto load
-> + * balancing. As a result, all CCS engines operate collectively, functioning
-> + * essentially as a single CCS engine, hence the count of active CCS engines is
-> + * considered '1'.
-> + * Currently, this applies to platforms with more than one CCS engine,
-> + * specifically DG2.
-> + */
-> +#define for_each_available_uabi_engine(engine__, i915__) \
-> +	for_each_uabi_engine(engine__, i915__) \
-> +		if ((IS_DG2(i915__)) && \
-> +		    ((engine__)->uabi_class == I915_ENGINE_CLASS_COMPUTE) && \
-> +		    ((engine__)->uabi_instance)) { } \
-> +		else
-> +
+This lacks a reference to the upstream commit.
 
-If you don't want userspace to see some engines, just don't add them to 
-the uabi list in intel_engines_driver_register or thereabouts?
+Commit 0c52310f260014d95c1310364379772cb74cf82d upstream.
 
-Similar as we do for gsc which uses I915_NO_UABI_CLASS, although for ccs 
-you can choose a different approach, whatever is more elegant.
-
-That is also needed for i915->engine_uabi_class_count to be right, so 
-userspace stats which rely on it are correct.
-
-Regards,
-
-Tvrtko
-
->   #define INTEL_INFO(i915)	((i915)->__info)
->   #define RUNTIME_INFO(i915)	(&(i915)->__runtime)
->   #define DRIVER_CAPS(i915)	(&(i915)->caps)
-> diff --git a/drivers/gpu/drm/i915/i915_query.c b/drivers/gpu/drm/i915/i915_query.c
-> index fa3e937ed3f5..2d41bda626a6 100644
-> --- a/drivers/gpu/drm/i915/i915_query.c
-> +++ b/drivers/gpu/drm/i915/i915_query.c
-> @@ -124,6 +124,7 @@ static int query_geometry_subslices(struct drm_i915_private *i915,
->   	return fill_topology_info(sseu, query_item, sseu->geometry_subslice_mask);
->   }
->   
-> +
->   static int
->   query_engine_info(struct drm_i915_private *i915,
->   		  struct drm_i915_query_item *query_item)
-> @@ -140,7 +141,7 @@ query_engine_info(struct drm_i915_private *i915,
->   	if (query_item->flags)
->   		return -EINVAL;
->   
-> -	for_each_uabi_engine(engine, i915)
-> +	for_each_available_uabi_engine(engine, i915)
->   		num_uabi_engines++;
->   
->   	len = struct_size(query_ptr, engines, num_uabi_engines);
-> @@ -155,7 +156,7 @@ query_engine_info(struct drm_i915_private *i915,
->   
->   	info_ptr = &query_ptr->engines[0];
->   
-> -	for_each_uabi_engine(engine, i915) {
-> +	for_each_available_uabi_engine(engine, i915) {
->   		info.engine.engine_class = engine->uabi_class;
->   		info.engine.engine_instance = engine->uabi_instance;
->   		info.flags = I915_ENGINE_INFO_HAS_LOGICAL_INSTANCE;
+> While in theory the timer can be triggered before expires + delta, for the
+> cases of RT tasks they really have no business giving any lenience for
+> extra slack time, so override any passed value by the user and always use
+> zero for schedule_hrtimeout_range() calls. Furthermore, this is similar to
+> what the nanosleep(2) family already does with current->timer_slack_ns.
+>
+> Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Link: https://lore.kernel.org/r/20230123173206.6764-3-dave@stgolabs.net
 
