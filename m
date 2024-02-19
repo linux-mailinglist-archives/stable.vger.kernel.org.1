@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-20557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 147FD85A815
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 17:03:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A743F85A819
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 17:04:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C461E2824D0
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 16:03:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC1CC1C222DC
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 16:04:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83B973A8CC;
-	Mon, 19 Feb 2024 16:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE1863399C;
+	Mon, 19 Feb 2024 16:04:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2nZNmfiO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZYribmCM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41FAA3399C
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 16:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB953CF67
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 16:04:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708358617; cv=none; b=XMIt90GHCetX6mUXH6iaslNp91qDYD/JfN0R36Wf0J0BgXVbxG9LQlvxnR7HRUvmoammKbUg2mq0kJTREQHAi/6sgFnZnOFukP3NaZflqneWuuYXP320VrnyIHMs3JcLVRUwyUdJrnUT1UZnmKizhBaPdQBTGS5/evqBLlVQYyc=
+	t=1708358645; cv=none; b=Ack9NvzH+X4KO4Y8l5Cv4O7opruXVG4Iah/41mnOLuoR8xj+L/oKB3sQUsQGCNATpKm22yxVZa6lP+xMYLDSR1huppYFBKjkidyFExO58opuOqJlwa6Yrzx6XS2LhEheFIhngD+EkZrRhhBFGVSbisE787RLbBdP1dK3/HEgl/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708358617; c=relaxed/simple;
-	bh=Q1e7c67p5HoZ4nOwe44oKQFi8ZZUk73F3wX/s497bSU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=aTyQik6+H9BPNc6c2oLagDpWGsBLJUUUWmnWTjpMGhZzzIhdx0F0PyVDJWpMTe8dfRdragpLyvo80oPlRFMZyhhrDA/obCvyhl9ozJz2KXrk1WgCfJa6l6eiIvqjZQZxSrU6R/ARSHuVMdrv1DaQZftqfumau2BouBRaor6IWNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2nZNmfiO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3265BC433F1;
-	Mon, 19 Feb 2024 16:03:35 +0000 (UTC)
+	s=arc-20240116; t=1708358645; c=relaxed/simple;
+	bh=0xA2yhHa9RDlyz8LVX7se3aitP9QwVYCXpd6U9+ofts=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=YjEPT6Mncd85c+gHgX8WD+PnA8M/i+iEWkl4H3ms0DAgTnGYUVO72wGeaIk3mEUfPmmrdc93/NJAnz0N63/Abpl8sJOTrpucWFNlsUynpkeQxMUcfZp4CoBEHgoXZjr4/hqwZSCn1yqJMzgG5GWhA9Qg7QS+j/ShsJJNeyk0Xgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZYribmCM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35154C433C7;
+	Mon, 19 Feb 2024 16:04:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708358616;
-	bh=Q1e7c67p5HoZ4nOwe44oKQFi8ZZUk73F3wX/s497bSU=;
+	s=korg; t=1708358645;
+	bh=0xA2yhHa9RDlyz8LVX7se3aitP9QwVYCXpd6U9+ofts=;
 	h=Subject:To:Cc:From:Date:From;
-	b=2nZNmfiOfE09QePpxObKSpV5gY9i42i7C0Glqsu8+/3yJhSNJ+/fPYPyQ7ylbsW44
-	 5FU4k1q2ZLXfBxr8+78rsH9TOWQe8rYBYomTZii+iSaUKO3vfke9ircLL0ZTfdEPdq
-	 geU717Io97H096cqHB4vUZcgRsFMVkSU5nRVY6lI=
-Subject: FAILED: patch "[PATCH] selftests: mptcp: join: stop transfer when check is done" failed to apply to 6.7-stable tree
-To: matttbe@kernel.org,geliang@kernel.org,kuba@kernel.org
+	b=ZYribmCMw9eND7OIOxPnL/7IsrpnECGUt379RxBsAUMr5llxictpskR05Duswwo4j
+	 SJr1CyZgI1/TUZgo6N97GFbtrNU3iQthgzsRDNLifs0hEdF3QkafJNlAfkcruAzaNN
+	 gYUkLzK89SWNIvSfh6Rj9kfw8J6P6g7gBv3e0syY=
+Subject: FAILED: patch "[PATCH] mptcp: fix rcv space initialization" failed to apply to 6.1-stable tree
+To: pabeni@redhat.com,davem@davemloft.net,martineau@kernel.org,matttbe@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Feb 2024 17:03:25 +0100
-Message-ID: <2024021925-saloon-pursuit-2736@gregkh>
+Date: Mon, 19 Feb 2024 17:04:02 +0100
+Message-ID: <2024021902-cleft-esquire-a9ae@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,34 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.7-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.7.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 04b57c9e096a9479fe0ad31e3956e336fa589cb2
+git cherry-pick -x 013e3179dbd2bc756ce1dd90354abac62f65b739
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021925-saloon-pursuit-2736@gregkh' --subject-prefix 'PATCH 6.7.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021902-cleft-esquire-a9ae@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-04b57c9e096a ("selftests: mptcp: join: stop transfer when check is done (part 2)")
-b9fb176081fb ("selftests: mptcp: userspace pm send RM_ADDR for ID 0")
-e3b47e460b4b ("selftests: mptcp: userspace pm remove initial subflow")
+013e3179dbd2 ("mptcp: fix rcv space initialization")
+4fd19a307016 ("mptcp: fix inconsistent state on fastopen race")
+d109a7767273 ("mptcp: fix possible NULL pointer dereference on close")
+8005184fd1ca ("mptcp: refactor sndbuf auto-tuning")
+a5efdbcece83 ("mptcp: fix delegated action races")
+27e5ccc2d5a5 ("mptcp: fix dangling connection hang-up")
+f6909dc1c1f4 ("mptcp: rename timer related helper to less confusing names")
+ebc1e08f01eb ("mptcp: drop last_snd and MPTCP_RESET_SCHEDULER")
+e263691773cd ("mptcp: Remove unnecessary test for __mptcp_init_sock()")
+39880bd808ad ("mptcp: get rid of msk->subflow")
+17ebf8a4c38b ("mptcp: fix the incorrect judgment for msk->cb_flags")
+a7384f391875 ("Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net")
 
 thanks,
 
@@ -79,115 +88,125 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 04b57c9e096a9479fe0ad31e3956e336fa589cb2 Mon Sep 17 00:00:00 2001
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Wed, 31 Jan 2024 22:49:54 +0100
-Subject: [PATCH] selftests: mptcp: join: stop transfer when check is done
- (part 2)
+From 013e3179dbd2bc756ce1dd90354abac62f65b739 Mon Sep 17 00:00:00 2001
+From: Paolo Abeni <pabeni@redhat.com>
+Date: Thu, 8 Feb 2024 19:03:50 +0100
+Subject: [PATCH] mptcp: fix rcv space initialization
 
-Since the "Fixes" commits mentioned below, the newly added "userspace
-pm" subtests of mptcp_join selftests are launching the whole transfer in
-the background, do the required checks, then wait for the end of
-transfer.
+mptcp_rcv_space_init() is supposed to happen under the msk socket
+lock, but active msk socket does that without such protection.
 
-There is no need to wait longer, especially because the checks at the
-end of the transfer are ignored (which is fine). This saves quite a few
-seconds on slow environments.
+Leverage the existing mptcp_propagate_state() helper to that extent.
+We need to ensure mptcp_rcv_space_init will happen before
+mptcp_rcv_space_adjust(), and the release_cb does not assure that:
+explicitly check for such condition.
 
-While at it, use 'mptcp_lib_kill_wait()' helper everywhere, instead of
-on a specific one with 'kill_tests_wait()'.
+While at it, move the wnd_end initialization out of mptcp_rcv_space_init(),
+it never belonged there.
 
-Fixes: b2e2248f365a ("selftests: mptcp: userspace pm create id 0 subflow")
-Fixes: e3b47e460b4b ("selftests: mptcp: userspace pm remove initial subflow")
-Fixes: b9fb176081fb ("selftests: mptcp: userspace pm send RM_ADDR for ID 0")
+Note that the race does not produce ill effect in practice, but
+change allows cleaning-up and defying better the locking model.
+
+Fixes: a6b118febbab ("mptcp: add receive buffer auto-tuning")
 Cc: stable@vger.kernel.org
-Reviewed-and-tested-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240131-upstream-net-20240131-mptcp-ci-issues-v1-9-4c1c11e571ff@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-index 85bcc95f4ede..c07386e21e0a 100755
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -643,13 +643,6 @@ kill_events_pids()
- 	mptcp_lib_kill_wait $evts_ns2_pid
- }
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index 2111819016af..7632eafb683b 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -1963,6 +1963,9 @@ static void mptcp_rcv_space_adjust(struct mptcp_sock *msk, int copied)
+ 	if (copied <= 0)
+ 		return;
  
--kill_tests_wait()
--{
--	#shellcheck disable=SC2046
--	kill -SIGUSR1 $(ip netns pids $ns2) $(ip netns pids $ns1)
--	wait
--}
--
- pm_nl_set_limits()
++	if (!msk->rcvspace_init)
++		mptcp_rcv_space_init(msk, msk->first);
++
+ 	msk->rcvq_space.copied += copied;
+ 
+ 	mstamp = div_u64(tcp_clock_ns(), NSEC_PER_USEC);
+@@ -3160,6 +3163,7 @@ static int mptcp_disconnect(struct sock *sk, int flags)
+ 	msk->bytes_received = 0;
+ 	msk->bytes_sent = 0;
+ 	msk->bytes_retrans = 0;
++	msk->rcvspace_init = 0;
+ 
+ 	WRITE_ONCE(sk->sk_shutdown, 0);
+ 	sk_error_report(sk);
+@@ -3247,6 +3251,7 @@ void mptcp_rcv_space_init(struct mptcp_sock *msk, const struct sock *ssk)
  {
- 	local ns=$1
-@@ -3494,7 +3487,7 @@ userspace_tests()
- 		chk_mptcp_info subflows 1 subflows 1
- 		chk_subflows_total 2 2
- 		kill_events_pids
--		wait $tests_pid
-+		mptcp_lib_kill_wait $tests_pid
- 	fi
+ 	const struct tcp_sock *tp = tcp_sk(ssk);
  
- 	# userspace pm remove initial subflow
-@@ -3518,7 +3511,7 @@ userspace_tests()
- 		chk_mptcp_info subflows 1 subflows 1
- 		chk_subflows_total 1 1
- 		kill_events_pids
--		wait $tests_pid
-+		mptcp_lib_kill_wait $tests_pid
- 	fi
++	msk->rcvspace_init = 1;
+ 	msk->rcvq_space.copied = 0;
+ 	msk->rcvq_space.rtt_us = 0;
  
- 	# userspace pm send RM_ADDR for ID 0
-@@ -3544,7 +3537,7 @@ userspace_tests()
- 		chk_mptcp_info subflows 1 subflows 1
- 		chk_subflows_total 1 1
- 		kill_events_pids
--		wait $tests_pid
-+		mptcp_lib_kill_wait $tests_pid
- 	fi
+@@ -3257,8 +3262,6 @@ void mptcp_rcv_space_init(struct mptcp_sock *msk, const struct sock *ssk)
+ 				      TCP_INIT_CWND * tp->advmss);
+ 	if (msk->rcvq_space.space == 0)
+ 		msk->rcvq_space.space = TCP_INIT_CWND * TCP_MSS_DEFAULT;
+-
+-	WRITE_ONCE(msk->wnd_end, msk->snd_nxt + tcp_sk(ssk)->snd_wnd);
  }
  
-@@ -3558,7 +3551,8 @@ endpoint_tests()
- 		pm_nl_set_limits $ns2 2 2
- 		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
- 		speed=slow \
--			run_tests $ns1 $ns2 10.0.1.1 2>/dev/null &
-+			run_tests $ns1 $ns2 10.0.1.1 &
-+		local tests_pid=$!
+ void mptcp_destroy_common(struct mptcp_sock *msk, unsigned int flags)
+@@ -3478,10 +3481,9 @@ void mptcp_finish_connect(struct sock *ssk)
+ 	WRITE_ONCE(msk->write_seq, subflow->idsn + 1);
+ 	WRITE_ONCE(msk->snd_nxt, msk->write_seq);
+ 	WRITE_ONCE(msk->snd_una, msk->write_seq);
++	WRITE_ONCE(msk->wnd_end, msk->snd_nxt + tcp_sk(ssk)->snd_wnd);
  
- 		wait_mpj $ns1
- 		pm_nl_check_endpoint "creation" \
-@@ -3573,7 +3567,7 @@ endpoint_tests()
- 		pm_nl_add_endpoint $ns2 10.0.2.2 flags signal
- 		pm_nl_check_endpoint "modif is allowed" \
- 			$ns2 10.0.2.2 id 1 flags signal
--		kill_tests_wait
-+		mptcp_lib_kill_wait $tests_pid
- 	fi
- 
- 	if reset "delete and re-add" &&
-@@ -3582,7 +3576,8 @@ endpoint_tests()
- 		pm_nl_set_limits $ns2 1 1
- 		pm_nl_add_endpoint $ns2 10.0.2.2 id 2 dev ns2eth2 flags subflow
- 		test_linkfail=4 speed=20 \
--			run_tests $ns1 $ns2 10.0.1.1 2>/dev/null &
-+			run_tests $ns1 $ns2 10.0.1.1 &
-+		local tests_pid=$!
- 
- 		wait_mpj $ns2
- 		chk_subflow_nr "before delete" 2
-@@ -3597,7 +3592,7 @@ endpoint_tests()
- 		wait_mpj $ns2
- 		chk_subflow_nr "after re-add" 2
- 		chk_mptcp_info subflows 1 subflows 1
--		kill_tests_wait
-+		mptcp_lib_kill_wait $tests_pid
- 	fi
+ 	mptcp_pm_new_connection(msk, ssk, 0);
+-
+-	mptcp_rcv_space_init(msk, ssk);
  }
  
+ void mptcp_sock_graft(struct sock *sk, struct socket *parent)
+diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
+index b905f1868298..9f5ee82e3473 100644
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -304,7 +304,8 @@ struct mptcp_sock {
+ 			nodelay:1,
+ 			fastopening:1,
+ 			in_accept_queue:1,
+-			free_first:1;
++			free_first:1,
++			rcvspace_init:1;
+ 	struct work_struct work;
+ 	struct sk_buff  *ooo_last_skb;
+ 	struct rb_root  out_of_order_queue;
+diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
+index 0dcb721c89d1..56b2ac2f2f22 100644
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -424,6 +424,8 @@ void __mptcp_sync_state(struct sock *sk, int state)
+ 	struct mptcp_sock *msk = mptcp_sk(sk);
+ 
+ 	__mptcp_propagate_sndbuf(sk, msk->first);
++	if (!msk->rcvspace_init)
++		mptcp_rcv_space_init(msk, msk->first);
+ 	if (sk->sk_state == TCP_SYN_SENT) {
+ 		mptcp_set_state(sk, state);
+ 		sk->sk_state_change(sk);
+@@ -545,7 +547,6 @@ static void subflow_finish_connect(struct sock *sk, const struct sk_buff *skb)
+ 		}
+ 	} else if (mptcp_check_fallback(sk)) {
+ fallback:
+-		mptcp_rcv_space_init(msk, sk);
+ 		mptcp_propagate_state(parent, sk);
+ 	}
+ 	return;
+@@ -1744,7 +1745,6 @@ static void subflow_state_change(struct sock *sk)
+ 	msk = mptcp_sk(parent);
+ 	if (subflow_simultaneous_connect(sk)) {
+ 		mptcp_do_fallback(sk);
+-		mptcp_rcv_space_init(msk, sk);
+ 		pr_fallback(msk);
+ 		subflow->conn_finished = 1;
+ 		mptcp_propagate_state(parent, sk);
 
 
