@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-20589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B71A85A884
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 17:17:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8EA185A886
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 17:17:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E70912886EC
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 16:17:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 799D51F24CA7
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 16:17:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A299D3D3AE;
-	Mon, 19 Feb 2024 16:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 656BC3CF63;
+	Mon, 19 Feb 2024 16:17:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v3zqVgGj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uTc6C4aJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0843B7A8
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 16:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB67F3D54F
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 16:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708359448; cv=none; b=alNnDQFWgIN7g5RpB921jllMzz8WRC6zvizZmOQuGZfQAs/iPj1xQl3gST78+KIp+JVKqPWHo7+bzxZuvIzn+D1k2hQjmJo4Ws4DIibmzW+7B6a3eCgWYvKku9Wc4dQNxzQOw875nBRZbEx5FnMNQECePEvFqOlnX+3V5aON6Uo=
+	t=1708359452; cv=none; b=sZZcE3PzD8Q+pbZc5hRjHzk1uweCJzdsLWPEV1J4YTdO3onuV9SScBQwSxcNlBQ+HruYyzEFnuIfdvqqVEFfxs6YpboIWQbzcaRtud/YRk35T7Y1mxYKbs1ZqMkieEMqSsc43vjuFtCws54r/kk6Awr6LyjpnnjckKsGyJSv4xY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708359448; c=relaxed/simple;
-	bh=SJam3LpBYdK4PvRl9WsBCdS0uTCjk5zhbPah5/ufMzY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=IxDfB5oyTRAjPyq0JOfNxO34OoEU57JtbmlV/LRntlMqvRKqBgI482mjXxFKUF9XjZ8AS3lM2DopTMg8r9udAPWoIWUhPmujxJQ3cjnd+/VjjYg8I9FEGXYu2t9H76czkmWPoXoMYTEROQVt0RRdTe4C+vYm5SYlJ+MmTWLP2ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v3zqVgGj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F111C433C7;
-	Mon, 19 Feb 2024 16:17:26 +0000 (UTC)
+	s=arc-20240116; t=1708359452; c=relaxed/simple;
+	bh=s/ESvC5qLZMOKKVabas7jrNyDdtlTmYQFHg/cX/4Q4o=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=VgRr4EQdjG6xcAbnuM0DHSOMsPTiyBQDpLhOK4e8aAdZ+BQb4Y/qtBeSWNsF8yjLOSMV4r7B5r24DiXjhcMaTJxjcOsYHGF3ja4NONsqcYuOdZXYdVWhSYkNOxbPqGn31c+bwARJtvjKQWadK8LnvMSlWxwX/nQ7iFjAyDS95qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uTc6C4aJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F34DAC433C7;
+	Mon, 19 Feb 2024 16:17:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708359447;
-	bh=SJam3LpBYdK4PvRl9WsBCdS0uTCjk5zhbPah5/ufMzY=;
+	s=korg; t=1708359450;
+	bh=s/ESvC5qLZMOKKVabas7jrNyDdtlTmYQFHg/cX/4Q4o=;
 	h=Subject:To:Cc:From:Date:From;
-	b=v3zqVgGjEoblqx5KHj6RcjpwAdl9hSq2ddFopLA3LY5pprOZD/w88BwmxzXfKiiL8
-	 Mx8UcV90hJYp8i0aTKJVR5kc8Q+djlrP3eZSM2pXKKq7rBmEt7uj4OSDvG2ENnnq9U
-	 3OYVLoqIaPZ2MelhJcZTETZUu5RKaJ6GwPl/pgIs=
-Subject: FAILED: patch "[PATCH] ext4: avoid bb_free and bb_fragments inconsistency in" failed to apply to 4.19-stable tree
-To: libaokun1@huawei.com,jack@suse.cz,stable@vger.kernel.org,tytso@mit.edu
+	b=uTc6C4aJyMBzmhp4W8a1K1uevoQwKy9L9tfCKqKTvP5kW6x4vwBPphirXXNZUNlEX
+	 cm89+qPZOHF1xTyvpzuD5lbFFZRFOIKvTyDiTypwVqg8GfaEhfMpsNQdN/pNJabxZ5
+	 lXFTb5wjzTE7zsqbQebkeW0N4VTcvd44xXwZDMBg=
+Subject: FAILED: patch "[PATCH] ext4: convert to exclusive lock while inserting delalloc" failed to apply to 6.7-stable tree
+To: yi.zhang@huawei.com,jack@suse.cz,tytso@mit.edu
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Feb 2024 17:17:11 +0100
-Message-ID: <2024021911-vibes-blitz-7944@gregkh>
+Date: Mon, 19 Feb 2024 17:17:22 +0100
+Message-ID: <2024021921-radar-dormitory-3b49@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.7-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.7.y
 git checkout FETCH_HEAD
-git cherry-pick -x 2331fd4a49864e1571b4f50aa3aa1536ed6220d0
+git cherry-pick -x acf795dc161f3cf481db20f05db4250714e375e5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021911-vibes-blitz-7944@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021921-radar-dormitory-3b49@gregkh' --subject-prefix 'PATCH 6.7.y' HEAD^..
 
 Possible dependencies:
 
-2331fd4a4986 ("ext4: avoid bb_free and bb_fragments inconsistency in mb_free_blocks()")
-c9b528c35795 ("ext4: regenerate buddy after block freeing failed if under fc replay")
-196e402adf2e ("ext4: improve cr 0 / cr 1 group scanning")
-4b68f6df1059 ("ext4: add MB_NUM_ORDERS macro")
-a6c75eaf1103 ("ext4: add mballoc stats proc file")
-b237e3044450 ("ext4: add ability to return parsed options from parse_options")
-67d251860461 ("ext4: drop s_mb_bal_lock and convert protected fields to atomic")
-6bd97bf273bd ("ext4: remove redundant mb_regenerate_buddy()")
-a72b38eebea4 ("ext4: handle dax mount option collision")
-99c880decf27 ("ext4: cleanup fast commit mount options")
-0f0672ffb61a ("ext4: add a mount opt to forcefully turn fast commits on")
-8016e29f4362 ("ext4: fast commit recovery path")
-5b849b5f96b4 ("jbd2: fast commit recovery path")
-aa75f4d3daae ("ext4: main fast-commit commit path")
-ff780b91efe9 ("jbd2: add fast commit machinery")
-6866d7b3f2bb ("ext4 / jbd2: add fast commit initialization")
-995a3ed67fc8 ("ext4: add fast_commit feature and handling for extended mount options")
-2d069c0889ef ("ext4: use common helpers in all places reading metadata buffers")
-d9befedaafcf ("ext4: clear buffer verified flag if read meta block from disk")
-15ed2851b0f4 ("ext4: remove unused argument from ext4_(inc|dec)_count")
+acf795dc161f ("ext4: convert to exclusive lock while inserting delalloc extents")
+3fcc2b887a1b ("ext4: refactor ext4_da_map_blocks()")
 
 thanks,
 
@@ -96,100 +78,107 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 2331fd4a49864e1571b4f50aa3aa1536ed6220d0 Mon Sep 17 00:00:00 2001
-From: Baokun Li <libaokun1@huawei.com>
-Date: Thu, 4 Jan 2024 22:20:36 +0800
-Subject: [PATCH] ext4: avoid bb_free and bb_fragments inconsistency in
- mb_free_blocks()
+From acf795dc161f3cf481db20f05db4250714e375e5 Mon Sep 17 00:00:00 2001
+From: Zhang Yi <yi.zhang@huawei.com>
+Date: Sat, 27 Jan 2024 09:58:01 +0800
+Subject: [PATCH] ext4: convert to exclusive lock while inserting delalloc
+ extents
 
-After updating bb_free in mb_free_blocks, it is possible to return without
-updating bb_fragments because the block being freed is found to have
-already been freed, which leads to inconsistency between bb_free and
-bb_fragments.
+ext4_da_map_blocks() only hold i_data_sem in shared mode and i_rwsem
+when inserting delalloc extents, it could be raced by another querying
+path of ext4_map_blocks() without i_rwsem, .e.g buffered read path.
+Suppose we buffered read a file containing just a hole, and without any
+cached extents tree, then it is raced by another delayed buffered write
+to the same area or the near area belongs to the same hole, and the new
+delalloc extent could be overwritten to a hole extent.
 
-Since the group may be unlocked in ext4_grp_locked_error(), this can lead
-to problems such as dividing by zero when calculating the average fragment
-length. Hence move the update of bb_free to after the block double-free
-check guarantees that the corresponding statistics are updated only after
-the core block bitmap is modified.
+ pread()                           pwrite()
+  filemap_read_folio()
+   ext4_mpage_readpages()
+    ext4_map_blocks()
+     down_read(i_data_sem)
+     ext4_ext_determine_hole()
+     //find hole
+     ext4_ext_put_gap_in_cache()
+      ext4_es_find_extent_range()
+      //no delalloc extent
+                                    ext4_da_map_blocks()
+                                     down_read(i_data_sem)
+                                     ext4_insert_delayed_block()
+                                     //insert delalloc extent
+      ext4_es_insert_extent()
+      //overwrite delalloc extent to hole
 
-Fixes: eabe0444df90 ("ext4: speed-up releasing blocks on commit")
-CC:  <stable@vger.kernel.org> # 3.10
+This race could lead to inconsistent delalloc extents tree and
+incorrect reserved space counter. Fix this by converting to hold
+i_data_sem in exclusive mode when adding a new delalloc extent in
+ext4_da_map_blocks().
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
 Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
 Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240104142040.2835097-5-libaokun1@huawei.com
+Link: https://lore.kernel.org/r/20240127015825.1608160-3-yi.zhang@huaweicloud.com
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index c97ad0e77831..fa351aa323dc 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -1909,11 +1909,6 @@ static void mb_free_blocks(struct inode *inode, struct ext4_buddy *e4b,
- 	mb_check_buddy(e4b);
- 	mb_free_blocks_double(inode, e4b, first, count);
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index bbd5ee6dd3f3..b040337501e3 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -1703,10 +1703,8 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
  
--	this_cpu_inc(discard_pa_seq);
--	e4b->bd_info->bb_free += count;
--	if (first < e4b->bd_info->bb_first_free)
--		e4b->bd_info->bb_first_free = first;
--
- 	/* access memory sequentially: check left neighbour,
- 	 * clear range and then check right neighbour
- 	 */
-@@ -1927,23 +1922,31 @@ static void mb_free_blocks(struct inode *inode, struct ext4_buddy *e4b,
- 		struct ext4_sb_info *sbi = EXT4_SB(sb);
- 		ext4_fsblk_t blocknr;
- 
-+		/*
-+		 * Fastcommit replay can free already freed blocks which
-+		 * corrupts allocation info. Regenerate it.
-+		 */
-+		if (sbi->s_mount_state & EXT4_FC_REPLAY) {
-+			mb_regenerate_buddy(e4b);
-+			goto check;
-+		}
-+
- 		blocknr = ext4_group_first_block_no(sb, e4b->bd_group);
- 		blocknr += EXT4_C2B(sbi, block);
--		if (!(sbi->s_mount_state & EXT4_FC_REPLAY)) {
--			ext4_grp_locked_error(sb, e4b->bd_group,
--					      inode ? inode->i_ino : 0,
--					      blocknr,
--					      "freeing already freed block (bit %u); block bitmap corrupt.",
--					      block);
--			ext4_mark_group_bitmap_corrupted(
--				sb, e4b->bd_group,
-+		ext4_grp_locked_error(sb, e4b->bd_group,
-+				      inode ? inode->i_ino : 0, blocknr,
-+				      "freeing already freed block (bit %u); block bitmap corrupt.",
-+				      block);
-+		ext4_mark_group_bitmap_corrupted(sb, e4b->bd_group,
- 				EXT4_GROUP_INFO_BBITMAP_CORRUPT);
--		} else {
--			mb_regenerate_buddy(e4b);
+ 	/* Lookup extent status tree firstly */
+ 	if (ext4_es_lookup_extent(inode, iblock, NULL, &es)) {
+-		if (ext4_es_is_hole(&es)) {
+-			down_read(&EXT4_I(inode)->i_data_sem);
++		if (ext4_es_is_hole(&es))
+ 			goto add_delayed;
 -		}
--		goto done;
-+		return;
+ 
+ 		/*
+ 		 * Delayed extent could be allocated by fallocate.
+@@ -1748,8 +1746,10 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
+ 		retval = ext4_ext_map_blocks(NULL, inode, map, 0);
+ 	else
+ 		retval = ext4_ind_map_blocks(NULL, inode, map, 0);
+-	if (retval < 0)
+-		goto out_unlock;
++	if (retval < 0) {
++		up_read(&EXT4_I(inode)->i_data_sem);
++		return retval;
++	}
+ 	if (retval > 0) {
+ 		unsigned int status;
+ 
+@@ -1765,24 +1765,21 @@ static int ext4_da_map_blocks(struct inode *inode, sector_t iblock,
+ 				EXTENT_STATUS_UNWRITTEN : EXTENT_STATUS_WRITTEN;
+ 		ext4_es_insert_extent(inode, map->m_lblk, map->m_len,
+ 				      map->m_pblk, status);
+-		goto out_unlock;
++		up_read(&EXT4_I(inode)->i_data_sem);
++		return retval;
  	}
++	up_read(&EXT4_I(inode)->i_data_sem);
  
-+	this_cpu_inc(discard_pa_seq);
-+	e4b->bd_info->bb_free += count;
-+	if (first < e4b->bd_info->bb_first_free)
-+		e4b->bd_info->bb_first_free = first;
-+
- 	/* let's maintain fragments counter */
- 	if (left_is_free && right_is_free)
- 		e4b->bd_info->bb_fragments--;
-@@ -1968,9 +1971,9 @@ static void mb_free_blocks(struct inode *inode, struct ext4_buddy *e4b,
- 	if (first <= last)
- 		mb_buddy_mark_free(e4b, first >> 1, last >> 1);
+ add_delayed:
+-	/*
+-	 * XXX: __block_prepare_write() unmaps passed block,
+-	 * is it OK?
+-	 */
++	down_write(&EXT4_I(inode)->i_data_sem);
+ 	retval = ext4_insert_delayed_block(inode, map->m_lblk);
++	up_write(&EXT4_I(inode)->i_data_sem);
+ 	if (retval)
+-		goto out_unlock;
++		return retval;
  
--done:
- 	mb_set_largest_free_order(sb, e4b->bd_info);
- 	mb_update_avg_fragment_size(sb, e4b->bd_info);
-+check:
- 	mb_check_buddy(e4b);
+ 	map_bh(bh, inode->i_sb, invalid_block);
+ 	set_buffer_new(bh);
+ 	set_buffer_delay(bh);
+-
+-out_unlock:
+-	up_read((&EXT4_I(inode)->i_data_sem));
+ 	return retval;
  }
  
 
