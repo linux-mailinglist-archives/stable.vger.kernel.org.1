@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-20736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A538685AB95
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:54:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E87285AB96
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:54:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 461ED1F23507
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:54:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0EC3A1F226A7
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:54:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49E5C433BD;
-	Mon, 19 Feb 2024 18:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83157433BD;
+	Mon, 19 Feb 2024 18:54:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L1xoFb00"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2r1JCAlA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B857566B
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4517F566B
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:54:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708368841; cv=none; b=JGAK6T5r1Nsh9u0NXZAdASrjxmc2p7LV5zS1tS2U7Rkd6T476a2eUWef3Iix/MOv3aa9zhQ8e0xF3V89+nJBBHs75qojwsUQYRrKQ2DAxLhte9Iw8xDaTcyoi1JP6Qp4B7lXrqgwoUhbOfpTX4fCcVeYiZAd4O/RqiYcKNokudw=
+	t=1708368861; cv=none; b=BSHu/2i/chJQFyYNvSUUMsyBquUuVfnzv4LkVHHnJFFjY7uACWu/+NbYivJ1Zp9tLGBcqXf91Vxn4ymLi+t3Yk2DJTfAOQ/0KhdRLpMU9BXuw+B7GdaPGkBd4VF9pkRzvcsDWIMZXFN6VX4DGEfyg2G+9R1DBjo3/fb0GDjhUlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708368841; c=relaxed/simple;
-	bh=IyFeGRC9FCg23DwpEoJry4Wez6TMECEJA7GDCtR2BlU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=LH8oLAyo8HcAa8OGvMdTZkn2Ab2Kf8D4aunCf3BE2I52ynzejPOR7kRvnAWRhh3A8Nzfcgr4IXxcOkM9RejlbPIZhB6ItVeTFz6DhBQ69pVYwuNSj0D7eocJEIXeq6H4hI5C6f4dwCplCa40phaSR+nvyriCFpcHG/vMxorRXts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L1xoFb00; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A168C433F1;
-	Mon, 19 Feb 2024 18:53:59 +0000 (UTC)
+	s=arc-20240116; t=1708368861; c=relaxed/simple;
+	bh=unYcFYrTDwz/RfWqSjVj//lvj8VvJl+kcwKjntoV52A=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=UleT2F7fMQjegP/F8YGbu4bUWsIuITu32ogq2B5Rb/0Qn00cOCIvp7eHRcIlCPnEZTV2yArq0+hFmLPio2q3t9gYLMExsZb6F6S7/4APL7NaEoq4KrX20tEL1yxVDiHD5ob9xFp/YAtxN3hbV/BOAiBLJ2tMqK+XXi3Up+TH3u0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2r1JCAlA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A773CC433F1;
+	Mon, 19 Feb 2024 18:54:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708368840;
-	bh=IyFeGRC9FCg23DwpEoJry4Wez6TMECEJA7GDCtR2BlU=;
+	s=korg; t=1708368861;
+	bh=unYcFYrTDwz/RfWqSjVj//lvj8VvJl+kcwKjntoV52A=;
 	h=Subject:To:Cc:From:Date:From;
-	b=L1xoFb00Yb1lPsvytu8Frjj0t70I1svfYVO37rp9S4Kk5ZznUn04FAIBEQXPWVdhf
-	 NwDi0SWduH9IoCXSrKq7i/VMKN/mbZQvRc3ZYy5Dmy4KW0pd/t9dvMsDaa59v4Shto
-	 cdqgK265GgJtul0I9fKxenodXVxheQrGgTQ+ehfw=
-Subject: FAILED: patch "[PATCH] hwmon: (coretemp) Fix out-of-bounds memory access" failed to apply to 4.19-stable tree
-To: rui.zhang@intel.com,linux@roeck-us.net,stable@vger.kernel.org
+	b=2r1JCAlA4CEanbtbzIDkp68t9SfTu7pK02+bjGVCpfrN3AhQwhaKhZjlm4TtyXgtg
+	 4Pv0F/hpg0QEcbNEv4zqOWkT/8SrW4RHLqjXpmlLzUWyCpqEn+qO6pzJwcBhOi4BSM
+	 6sWZLcLOOkA3qrRFWPvOXn3cAhTZQBNg6c3pyAHI=
+Subject: FAILED: patch "[PATCH] fs/proc: do_task_stat: use sig->stats_lock to gather the" failed to apply to 6.6-stable tree
+To: oleg@redhat.com,akpm@linux-foundation.org,dylanbhatch@google.com,ebiederm@xmission.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Feb 2024 19:53:41 +0100
-Message-ID: <2024021941-jelly-tubular-7919@gregkh>
+Date: Mon, 19 Feb 2024 19:54:18 +0100
+Message-ID: <2024021918-unmanaged-rarity-ec6e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 4e440abc894585a34c2904a32cd54af1742311b3
+git cherry-pick -x 7601df8031fd67310af891897ef6cc0df4209305
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021941-jelly-tubular-7919@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021918-unmanaged-rarity-ec6e@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-4e440abc8945 ("hwmon: (coretemp) Fix out-of-bounds memory access")
-7108b80a542b ("hwmon/coretemp: Handle large core ID value")
+7601df8031fd ("fs/proc: do_task_stat: use sig->stats_lock to gather the threads/children stats")
+60f92acb60a9 ("fs/proc: do_task_stat: move thread_group_cputime_adjusted() outside of lock_task_sighand()")
+7904e53ed5a2 ("fs/proc: do_task_stat: use __for_each_thread()")
 
 thanks,
 
@@ -78,45 +79,124 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 4e440abc894585a34c2904a32cd54af1742311b3 Mon Sep 17 00:00:00 2001
-From: Zhang Rui <rui.zhang@intel.com>
-Date: Fri, 2 Feb 2024 17:21:34 +0800
-Subject: [PATCH] hwmon: (coretemp) Fix out-of-bounds memory access
+From 7601df8031fd67310af891897ef6cc0df4209305 Mon Sep 17 00:00:00 2001
+From: Oleg Nesterov <oleg@redhat.com>
+Date: Tue, 23 Jan 2024 16:33:57 +0100
+Subject: [PATCH] fs/proc: do_task_stat: use sig->stats_lock to gather the
+ threads/children stats
 
-Fix a bug that pdata->cpu_map[] is set before out-of-bounds check.
-The problem might be triggered on systems with more than 128 cores per
-package.
+lock_task_sighand() can trigger a hard lockup.  If NR_CPUS threads call
+do_task_stat() at the same time and the process has NR_THREADS, it will
+spin with irqs disabled O(NR_CPUS * NR_THREADS) time.
 
-Fixes: 7108b80a542b ("hwmon/coretemp: Handle large core ID value")
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Change do_task_stat() to use sig->stats_lock to gather the statistics
+outside of ->siglock protected section, in the likely case this code will
+run lockless.
+
+Link: https://lkml.kernel.org/r/20240123153357.GA21857@redhat.com
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Dylan Hatch <dylanbhatch@google.com>
+Cc: Eric W. Biederman <ebiederm@xmission.com>
 Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240202092144.71180-2-rui.zhang@intel.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/drivers/hwmon/coretemp.c b/drivers/hwmon/coretemp.c
-index ba82d1e79c13..e78c76919111 100644
---- a/drivers/hwmon/coretemp.c
-+++ b/drivers/hwmon/coretemp.c
-@@ -509,18 +509,14 @@ static int create_core_data(struct platform_device *pdev, unsigned int cpu,
- 	if (pkg_flag) {
- 		attr_no = PKG_SYSFS_ATTR_NO;
- 	} else {
--		index = ida_alloc(&pdata->ida, GFP_KERNEL);
-+		index = ida_alloc_max(&pdata->ida, NUM_REAL_CORES - 1, GFP_KERNEL);
- 		if (index < 0)
- 			return index;
-+
- 		pdata->cpu_map[index] = topology_core_id(cpu);
- 		attr_no = index + BASE_SYSFS_ATTR_NO;
- 	}
+diff --git a/fs/proc/array.c b/fs/proc/array.c
+index 45ba91863808..34a47fb0c57f 100644
+--- a/fs/proc/array.c
++++ b/fs/proc/array.c
+@@ -477,13 +477,13 @@ static int do_task_stat(struct seq_file *m, struct pid_namespace *ns,
+ 	int permitted;
+ 	struct mm_struct *mm;
+ 	unsigned long long start_time;
+-	unsigned long cmin_flt = 0, cmaj_flt = 0;
+-	unsigned long  min_flt = 0,  maj_flt = 0;
+-	u64 cutime, cstime, utime, stime;
+-	u64 cgtime, gtime;
++	unsigned long cmin_flt, cmaj_flt, min_flt, maj_flt;
++	u64 cutime, cstime, cgtime, utime, stime, gtime;
+ 	unsigned long rsslim = 0;
+ 	unsigned long flags;
+ 	int exit_code = task->exit_code;
++	struct signal_struct *sig = task->signal;
++	unsigned int seq = 1;
  
--	if (attr_no > MAX_CORE_DATA - 1) {
--		err = -ERANGE;
--		goto ida_free;
--	}
+ 	state = *get_task_state(task);
+ 	vsize = eip = esp = 0;
+@@ -511,12 +511,8 @@ static int do_task_stat(struct seq_file *m, struct pid_namespace *ns,
+ 
+ 	sigemptyset(&sigign);
+ 	sigemptyset(&sigcatch);
+-	cutime = cstime = 0;
+-	cgtime = gtime = 0;
+ 
+ 	if (lock_task_sighand(task, &flags)) {
+-		struct signal_struct *sig = task->signal;
 -
- 	tdata = init_temp_data(cpu, pkg_flag);
- 	if (!tdata) {
- 		err = -ENOMEM;
+ 		if (sig->tty) {
+ 			struct pid *pgrp = tty_get_pgrp(sig->tty);
+ 			tty_pgrp = pid_nr_ns(pgrp, ns);
+@@ -527,27 +523,9 @@ static int do_task_stat(struct seq_file *m, struct pid_namespace *ns,
+ 		num_threads = get_nr_threads(task);
+ 		collect_sigign_sigcatch(task, &sigign, &sigcatch);
+ 
+-		cmin_flt = sig->cmin_flt;
+-		cmaj_flt = sig->cmaj_flt;
+-		cutime = sig->cutime;
+-		cstime = sig->cstime;
+-		cgtime = sig->cgtime;
+ 		rsslim = READ_ONCE(sig->rlim[RLIMIT_RSS].rlim_cur);
+ 
+-		/* add up live thread stats at the group level */
+ 		if (whole) {
+-			struct task_struct *t;
+-
+-			__for_each_thread(sig, t) {
+-				min_flt += t->min_flt;
+-				maj_flt += t->maj_flt;
+-				gtime += task_gtime(t);
+-			}
+-
+-			min_flt += sig->min_flt;
+-			maj_flt += sig->maj_flt;
+-			gtime += sig->gtime;
+-
+ 			if (sig->flags & (SIGNAL_GROUP_EXIT | SIGNAL_STOP_STOPPED))
+ 				exit_code = sig->group_exit_code;
+ 		}
+@@ -562,6 +540,34 @@ static int do_task_stat(struct seq_file *m, struct pid_namespace *ns,
+ 	if (permitted && (!whole || num_threads < 2))
+ 		wchan = !task_is_running(task);
+ 
++	do {
++		seq++; /* 2 on the 1st/lockless path, otherwise odd */
++		flags = read_seqbegin_or_lock_irqsave(&sig->stats_lock, &seq);
++
++		cmin_flt = sig->cmin_flt;
++		cmaj_flt = sig->cmaj_flt;
++		cutime = sig->cutime;
++		cstime = sig->cstime;
++		cgtime = sig->cgtime;
++
++		if (whole) {
++			struct task_struct *t;
++
++			min_flt = sig->min_flt;
++			maj_flt = sig->maj_flt;
++			gtime = sig->gtime;
++
++			rcu_read_lock();
++			__for_each_thread(sig, t) {
++				min_flt += t->min_flt;
++				maj_flt += t->maj_flt;
++				gtime += task_gtime(t);
++			}
++			rcu_read_unlock();
++		}
++	} while (need_seqretry(&sig->stats_lock, seq));
++	done_seqretry_irqrestore(&sig->stats_lock, seq, flags);
++
+ 	if (whole) {
+ 		thread_group_cputime_adjusted(task, &utime, &stime);
+ 	} else {
 
 
