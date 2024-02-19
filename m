@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-20646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B22EA85AAC2
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:18:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2548B85AAC1
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:18:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C4711B2222A
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:18:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 456871C218BE
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:18:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AAEE481B2;
-	Mon, 19 Feb 2024 18:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85472481B5;
+	Mon, 19 Feb 2024 18:18:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nM0/8t2J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xtf2iRTQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29C9247F79
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 451A047F79
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:18:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708366692; cv=none; b=mYcV9Jj80M5LR12ns9JJQPvTQeNEfiFixSeyECcKdVswf9JC3HifWQVZ811Ap7j6nByXGatAW/ZfxNVDgSfk1zg0rmg5L/KvKWdG0Ft9TbRqSBWTMjw+DCFNO1Tnoia3AGFPe/8sSN6e73AyauraGsKL6uoE91Y4gjkoQtAq5z4=
+	t=1708366695; cv=none; b=t8SgVcb39F168cc0OninYely/a9ZzRqcXWnVSOxcOPWWU+ZE6aq/jLh2lCEISybs4xLJgf3TNcMSD/4Alz4o4MGDfkckq03AeVaQPE/X/vgLweEYQHZ5XzPPgxA5LrJD2Gc37YQx+ua5BuwQLGsTq1816PqnhSW0/hILf1xb0Cg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708366692; c=relaxed/simple;
-	bh=1zST9+VkVHybu7w/+4UBThjFt0PL7LisD4vRK2CU0JI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=dCaI8a/HrVnMkdRTvWXegV3dlDym1ttj3GcDSI1BPM/hXKifSgktNY5oBIP1mx9qFoDGg2wrWwR6Bq3XfDM53jJVuGBbKYrK/2GJOqG4DRdTBpzz9JIELUysjWF+un2VOb8ntGRoRDkhrB65dW/FNWgyzOHqpmCanorG4OQvTB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nM0/8t2J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44661C433C7;
-	Mon, 19 Feb 2024 18:18:11 +0000 (UTC)
+	s=arc-20240116; t=1708366695; c=relaxed/simple;
+	bh=QIGDMTmwha8R14ggWhj/WE6lSPxJYGn4ApxgPfY+6iE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=QxTQDCCXgOQ3gH0RrsC//y4nz+rlIljDlg5/3hS2Fsh9WH1AdTYp9K3RvjkruhndkDU++FQ2bT808LsX3DAro0UzfuCb0qvd8hyMtWZhxZW1nABsviggIF0ULcmMiP7YbKzo/U7gwVh1W42kQfoFC50101/uwrXt0PSjTRTuDQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xtf2iRTQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F786C433C7;
+	Mon, 19 Feb 2024 18:18:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708366691;
-	bh=1zST9+VkVHybu7w/+4UBThjFt0PL7LisD4vRK2CU0JI=;
+	s=korg; t=1708366694;
+	bh=QIGDMTmwha8R14ggWhj/WE6lSPxJYGn4ApxgPfY+6iE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=nM0/8t2JbRBACchButqZGlP50ZtRkKueweWKgbNMaRggw/X00RWg7n2V4MFWMDlTA
-	 QUmomFiO3/a85oWyg+pYb8y9oaXC/zx+iKyPnoQidh/qtwTA4yDI2vhtZL5zD5QEcB
-	 WHydRLrmx64yL0XYsU4TQ5q7Xblw/3nUTd9/Escw=
-Subject: FAILED: patch "[PATCH] drm/amd/display: set odm_combine_policy based on context in" failed to apply to 6.7-stable tree
+	b=Xtf2iRTQ406MoB4xXTKPZX5wgTmGBG2QIN7AtqdYghOMDe6T9funxf9d6IPrCzOFo
+	 Inp7/ATCPZL+N6xxX1emeO7UX0zLHvE78XD3RGaHRl0QV+dvEJCCK/R24fKFsfeHPq
+	 Z4z1TCsFqL9bmOWLPK8C9v+a2sqs1vlZP82ccl9g=
+Subject: FAILED: patch "[PATCH] drm/amd/display: set odm_combine_policy based on context in" failed to apply to 6.6-stable tree
 To: wenjing.liu@amd.com,alexander.deucher@amd.com,alvin.lee2@amd.com,chaitanya.dhere@amd.com,hamza.mahfooz@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Feb 2024 19:18:05 +0100
-Message-ID: <2024021905-conceded-surfacing-5652@gregkh>
+Date: Mon, 19 Feb 2024 19:18:07 +0100
+Message-ID: <2024021906-dreamy-reverse-84ae@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,35 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.7-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.7.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 2103370afba74dda39ff5d2d69163c86644ce528
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021905-conceded-surfacing-5652@gregkh' --subject-prefix 'PATCH 6.7.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021906-dreamy-reverse-84ae@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
 2103370afba7 ("drm/amd/display: set odm_combine_policy based on context in dcn32 resource")
 dd2c5fac91d4 ("drm/amd/display: Add ODM check during pipe split/merge validation")
+3a2c0eccab9a ("drm/amd/display: move odm power optimization decision after subvp optimization")
+c51d87202d1f ("drm/amd/display: do not attempt ODM power optimization if minimal transition doesn't exist")
+39d39a019657 ("drm/amd/display: switch to new ODM policy for windowed MPO ODM support")
+2174181019e4 ("drm/amd/display: add more pipe resource interfaces")
+7b0c688d4db2 ("drm/amd/display: add new resource interfaces to update odm mpc slice count")
+6b8333a5b929 ("drm/amd/display: add new resource interface for acquiring sec opp heads and release pipe")
+9ba46183eb90 ("drm/amd/display: rename function to add otg master for stream")
+9e0530257e2b ("drm/amd/display: add comments to add plane functions")
+b03b44b622de ("Partially revert "drm/amd/display: update add plane to context logic with a new algorithm"")
+0b9dc439f404 ("drm/amd/display: Write flip addr to scratch reg for subvp")
+96182df99dad ("drm/amd/display: Enable runtime register offset init for DCN32 DMUB")
 
 thanks,
 
