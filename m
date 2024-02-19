@@ -1,182 +1,100 @@
-Return-Path: <stable+bounces-20536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45AEF85A703
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 16:09:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B42E285A6FA
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 16:09:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EECFF282798
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 15:09:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A5841F24789
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 15:09:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 160D3446C4;
-	Mon, 19 Feb 2024 15:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E75D5383A4;
+	Mon, 19 Feb 2024 15:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dGIJ8r5v"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="Qpz1bX9X"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp-fw-80007.amazon.com (smtp-fw-80007.amazon.com [99.78.197.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD6E0446B2;
-	Mon, 19 Feb 2024 15:07:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F714438E;
+	Mon, 19 Feb 2024 15:06:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708355221; cv=none; b=C3cs2VcNHRqppddP15jW9UREtMFGuJ/QF37skPv+8vKQMX+TO6FfTlciKodp7IbgjP16oSlrMhrzGn51BUKfY5H89r5jJZ7WQOWeFXz7gMQYBdJxyXKW5HBiMlYcs7AakKZZN9QuR+nGLreZi/BNYy/Ct852KFaRgJs7tgavw14=
+	t=1708355212; cv=none; b=OGiFqJL1iuaGE0SQTiOC4AMulURVSt9VM+nNE1PSM0rSlR4FV/SJ88rg+sKVYujKUUDQri64BctCt5/GjIdqXBzvKjSYnPX3ZQFNMkIUFyr0XGf0yXchYBiFrGv2H+QJs6FB0EVJf2U6TYilppN06rrCsMnFoWEptAlMhj6h1Tg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708355221; c=relaxed/simple;
-	bh=ZMHx0vXY3BCnqeeGRXitQ/9VWNOaOqi09FTpVeOGZiU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=T+8Ykdt+PrVvUSyNxsEXRO2Tb5ZVwhPvYe8yaTkKKUT1DSiqEh2VylAxYdqnrG62nzox2wwhFlMmhKsfRwSCfYhakO27Ruj7NNqEP2ajRzQolixr+q0Ah+f8/JogWkK4RJcz866x53DgiRGYzyYhd3FgazEzpL/ecso6I4PEo3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dGIJ8r5v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5E83BC433B1;
-	Mon, 19 Feb 2024 15:07:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708355221;
-	bh=ZMHx0vXY3BCnqeeGRXitQ/9VWNOaOqi09FTpVeOGZiU=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=dGIJ8r5vC/Wom7KdLtQbklUS/MgZliqOr/U2dp4sUTRNlGJnsukNQJpAtFMWtab2P
-	 54jojOTACU+x7Tzi+fU92Lj/pgKXs29YflQ4N0nNeiyoKC6/2sIOwin/xvHsg56UUO
-	 uNZ+IjhqhZCcqEucwoAIBwH0zJs0sZqMu8jZtc8IQCTmfPySsOibgCo92Qcy0v8k9X
-	 V/cMqJNIsUp0UjtsOSV1vdDnkwKsso+ab1rN3gPctQEyFxyYNVPLnoTskMZkRGAfhS
-	 kUDgEkbRiHRs7Edceu/bcRulUtxNEMGD70NeqXD4ZPIDJBskMY/oN6mxSViG78VrH8
-	 fUu8PiHdqM+fQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 41B41C54788;
-	Mon, 19 Feb 2024 15:07:01 +0000 (UTC)
-From: Yang Xiwen via B4 Relay <devnull+forbidden405.outlook.com@kernel.org>
-Date: Mon, 19 Feb 2024 23:05:28 +0800
-Subject: [PATCH v3 3/3] arm64: dts: hi3798cv200: add cache info
+	s=arc-20240116; t=1708355212; c=relaxed/simple;
+	bh=wqP+GHbXy5y2dWwKO+f4tx8tvMyIzJowEbRtXjlanIk=;
+	h=Subject:Message-ID:Date:MIME-Version:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=EiJPF2m/ClkDi551lLlXH1KZLTdO6w+8QeIdfcyyqGGLemdEouC0ZPzh2K/1XEgHpUNIBMp2aNfEcVxIuUZcHnWlPkdzuGfDuTxOJxmQbPpGNHnEiqZRrZ1BEUtOhCPYUZIaxdm6MC/zsQUnhYPRsDsxMFsoKJ8SlYELtcf4GcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=Qpz1bX9X; arc=none smtp.client-ip=99.78.197.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1708355211; x=1739891211;
+  h=message-id:date:mime-version:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:subject;
+  bh=7cweU86/OrAPAkRsQreyys1w+cw8bobHEMbIMZ1Hpos=;
+  b=Qpz1bX9Xl4aUbr0p5akTMO7hEsz5LitMy1eeQl6h6we6dZz/v+ufkk+n
+   70mZHBhmDwsjJEmNJtzvI94LI8lpjhZh2X4XVv3h43DZXsCobo3esjmzE
+   OQK4UlimmA+pYhB5ATL0T+FVBy2wJpi4yNo2UhuHI4jPNwNh3YiWTDH2d
+   g=;
+X-IronPort-AV: E=Sophos;i="6.06,170,1705363200"; 
+   d="scan'208";a="275092583"
+Subject: Re: [PATCH] selftests/mqueue: Set timeout to 100 seconds
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-80007.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2024 15:06:47 +0000
+Received: from EX19MTAEUC002.ant.amazon.com [10.0.10.100:5821]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.5.250:2525] with esmtp (Farcaster)
+ id 210590fd-6fcd-4877-98d1-b8d96ef4e607; Mon, 19 Feb 2024 15:06:45 +0000 (UTC)
+X-Farcaster-Flow-ID: 210590fd-6fcd-4877-98d1-b8d96ef4e607
+Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
+ EX19MTAEUC002.ant.amazon.com (10.252.51.181) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Mon, 19 Feb 2024 15:06:44 +0000
+Received: from [192.168.11.164] (10.106.83.24) by
+ EX19D018EUA004.ant.amazon.com (10.252.50.85) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Mon, 19 Feb 2024 15:06:43 +0000
+Message-ID: <f7db39bd-d11e-4854-8b6e-2543aeec1d70@amazon.com>
+Date: Mon, 19 Feb 2024 15:06:42 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: Kees Cook <keescook@chromium.org>, SeongJae Park <sj@kernel.org>
+CC: <shuah@kernel.org>, <linux-kselftest@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
+	<Vijaikumar_Kanagarajan@mentor.com>, <brauner@kernel.org>,
+	<jlayton@kernel.org>, <jack@suse.cz>
+References: <20240209174243.74220-1-sj@kernel.org>
+ <20240215011309.73168-1-sj@kernel.org> <202402161600.BF1D110BB@keescook>
+From: "Mohamed Abuelfotoh, Hazem" <abuehaze@amazon.com>
+In-Reply-To: <202402161600.BF1D110BB@keescook>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240219-cache-v3-3-a33c57534ae9@outlook.com>
-References: <20240219-cache-v3-0-a33c57534ae9@outlook.com>
-In-Reply-To: <20240219-cache-v3-0-a33c57534ae9@outlook.com>
-To: Wei Xu <xuwei5@hisilicon.com>, Rob Herring <robh+dt@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Jiancheng Xue <xuejiancheng@hisilicon.com>, Alex Elder <elder@linaro.org>, 
- Peter Griffin <peter.griffin@linaro.org>
-Cc: linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Yang Xiwen <forbidden405@outlook.com>
-X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1708355220; l=2828;
- i=forbidden405@outlook.com; s=20230724; h=from:subject:message-id;
- bh=JCsSJLmRtX8xpTr7tVRxOMtB1SM8sQgXyZwjBU7p06U=;
- b=xqgpLfoVrqGs2VoZ+PuH1dOy0Z9Fq4MUu+Y3kHKp1cEtduRNLeydUq8AxTXjj8so/JunkHLKW
- Q8mtsMytX5+DXoRi5eQY8ceAPKRU3PIgKKnWzdSWoZKfDdtYhrLPDqF
-X-Developer-Key: i=forbidden405@outlook.com; a=ed25519;
- pk=qOD5jhp891/Xzc+H/PZ8LWVSWE3O/XCQnAg+5vdU2IU=
-X-Endpoint-Received:
- by B4 Relay for forbidden405@outlook.com/20230724 with auth_id=67
-X-Original-From: Yang Xiwen <forbidden405@outlook.com>
-Reply-To: <forbidden405@outlook.com>
+X-ClientProxiedBy: EX19D006EUC001.ant.amazon.com (10.252.51.203) To
+ EX19D018EUA004.ant.amazon.com (10.252.50.85)
 
-From: Yang Xiwen <forbidden405@outlook.com>
+On 17/02/2024 00:01, Kees Cook wrote:
 
-During boot, the kernel complains:
+> 
+> Should it be 100 or 180? Either way:
+> 
+> Reviewed-by: Kees Cook <keescook@chromium.org>
+> 
+> --
+> Kees Cook
 
-[    0.044029] cacheinfo: Unable to detect cache hierarchy for CPU 0
+Both options may work, I am more inclined to have this as 180 seconds by 
+giving more time for the test to finish, this can be reduced later to 
+100 or something else if we start hearing complains about the new timeout.
 
-So add L1/L2 cache info to the dts according to the datasheet. (32KiB L1
-i-cache + 32 KiB L1 d-cache + 512 KiB L2 unified cache)
-
-With this patch, the line above is gone and the following info is added
-to the output of `lscpu`:
-
-Caches (sum of all):
-  L1d:                   128 KiB (4 instances)
-  L1i:                   128 KiB (4 instances)
-  L2:                    512 KiB (1 instance)
-
-Fixes: 2f20182ed670 ("arm64: dts: hisilicon: add dts files for hi3798cv200-poplar board")
-Signed-off-by: Yang Xiwen <forbidden405@outlook.com>
-Cc: stable@vger.kernel.org
----
- arch/arm64/boot/dts/hisilicon/hi3798cv200.dtsi | 37 ++++++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/hisilicon/hi3798cv200.dtsi b/arch/arm64/boot/dts/hisilicon/hi3798cv200.dtsi
-index fc64d2fa99eb..f6bc001c3832 100644
---- a/arch/arm64/boot/dts/hisilicon/hi3798cv200.dtsi
-+++ b/arch/arm64/boot/dts/hisilicon/hi3798cv200.dtsi
-@@ -31,6 +31,13 @@ cpu@0 {
- 			device_type = "cpu";
- 			reg = <0x0 0x0>;
- 			enable-method = "psci";
-+			d-cache-size = <0x8000>; /* 32 KiB */
-+			d-cache-line-size = <64>;
-+			d-cache-sets = <128>;
-+			i-cache-size = <0x8000>; /* 32 KiB */
-+			i-cache-line-size = <64>;
-+			i-cache-sets = <256>;
-+			next-level-cache = <&L2>;
- 		};
- 
- 		cpu@1 {
-@@ -38,6 +45,13 @@ cpu@1 {
- 			device_type = "cpu";
- 			reg = <0x0 0x1>;
- 			enable-method = "psci";
-+			d-cache-size = <0x8000>; /* 32 KiB */
-+			d-cache-line-size = <64>;
-+			d-cache-sets = <128>;
-+			i-cache-size = <0x8000>; /* 32 KiB */
-+			i-cache-line-size = <64>;
-+			i-cache-sets = <256>;
-+			next-level-cache = <&L2>;
- 		};
- 
- 		cpu@2 {
-@@ -45,6 +59,13 @@ cpu@2 {
- 			device_type = "cpu";
- 			reg = <0x0 0x2>;
- 			enable-method = "psci";
-+			d-cache-size = <0x8000>; /* 32 KiB */
-+			d-cache-line-size = <64>;
-+			d-cache-sets = <128>;
-+			i-cache-size = <0x8000>; /* 32 KiB */
-+			i-cache-line-size = <64>;
-+			i-cache-sets = <256>;
-+			next-level-cache = <&L2>;
- 		};
- 
- 		cpu@3 {
-@@ -52,9 +73,25 @@ cpu@3 {
- 			device_type = "cpu";
- 			reg = <0x0 0x3>;
- 			enable-method = "psci";
-+			d-cache-size = <0x8000>; /* 32 KiB */
-+			d-cache-line-size = <64>;
-+			d-cache-sets = <128>;
-+			i-cache-size = <0x8000>; /* 32 KiB */
-+			i-cache-line-size = <64>;
-+			i-cache-sets = <256>;
-+			next-level-cache = <&L2>;
- 		};
- 	};
- 
-+	L2: l2-cache {
-+		compatible = "cache";
-+		cache-unified;
-+		cache-size = <0x80000>; /* 512 KiB */
-+		cache-line-size = <64>;
-+		cache-sets = <512>;
-+		cache-level = <2>;
-+	};
-+
- 	gic: interrupt-controller@f1001000 {
- 		compatible = "arm,gic-400";
- 		reg = <0x0 0xf1001000 0x0 0x1000>,  /* GICD */
-
--- 
-2.43.0
-
+Hazem
 
