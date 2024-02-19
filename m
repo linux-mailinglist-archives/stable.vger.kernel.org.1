@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-20579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF19D85A86C
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 17:13:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A08EB85A86D
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 17:13:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 730812877F6
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 16:13:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2D0C1C221E4
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 16:13:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C148B3C467;
-	Mon, 19 Feb 2024 16:12:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 932D23C697;
+	Mon, 19 Feb 2024 16:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="smq3fpnW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q1rXomIp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F6C73B7A1
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 16:12:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5597938F96
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 16:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708359168; cv=none; b=rSaDsn9AYnN9BugjXAvB7sZtmwGdVaAnj+NaVQbA04Oi232c1eyKQxx7XyhY1T9r/rn1Q+f4Bkiw2COSuvWOBY+bwhJVWhYFWMGHkNgoZBPxvJRpKnJkgVK/XmjPgS/EP7oY+luZtPlDKKK1xKqIyRLNam0vnUg/TEuliHibjQQ=
+	t=1708359171; cv=none; b=lbFog4MB8sd9bWLOhYBt86h02C1LqJXmX62lKUEhX8rIWGqo1XIUzO35JTbFinlmrJdvZW3LNG51h9DjTWtbU7KRFkqi/jDrFHcTVND1T3V7/XU6hFUCO9HqQR2yd6xd94Yz948p6KHwdyiozpI6TBd5U26gfJWkynctj9tyDRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708359168; c=relaxed/simple;
-	bh=sFVSlGOrupLNSU+MlxkQc0aeQ7Uxfo8Jz5dcS/nCuyk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=h8ue6ojm08kbCo/y5LtJecrQ63cjn7C43t1QjSnxS5MBOIYAny/ASjZ0LeS18/s8yPWHOjBWYsk8728vyxlbJdRg64OclOc9h8xdlVrTjcTwlSFYemmZ7oHSEW7J+Fl1FOwKAtevz5t6v0drixz4xgejhwuZlr41fYZH9kPkdMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=smq3fpnW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC42EC433F1;
-	Mon, 19 Feb 2024 16:12:47 +0000 (UTC)
+	s=arc-20240116; t=1708359171; c=relaxed/simple;
+	bh=ct+AmqOKej1cI4kgrQmvH/k3lzdqiDWa6CVggZd52/Q=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qrMu0o89xHJKtbyJXn41tauwbQn6ktTg3Sk0VeEXdSbTFN+OwLKOdjs9KtQ3rIHVkAybGVXe00vIXf0UtKs9VGhRoU2HkEfkIedpUi8bZSmIwwmbI7C5U0i5HJhVfu4YqKwmqNiLDUTvt4XCBWN4PEoivzlvXUinE8CE4PnD95w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q1rXomIp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5188C433F1;
+	Mon, 19 Feb 2024 16:12:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708359168;
-	bh=sFVSlGOrupLNSU+MlxkQc0aeQ7Uxfo8Jz5dcS/nCuyk=;
+	s=korg; t=1708359171;
+	bh=ct+AmqOKej1cI4kgrQmvH/k3lzdqiDWa6CVggZd52/Q=;
 	h=Subject:To:Cc:From:Date:From;
-	b=smq3fpnWeReEpPGaW9mnjsp7PECJS9Co0w4wYxoy2arS+3qV2c+R3JQumDGQqbZT+
-	 Lqdg5zEgdm7lKJkXY0jbA7RYrgV6hOO6ORNMMJJrGw+pF3io84NCJZSmlfXMmd35S2
-	 EzCBoxcr8fDtobmPsj6PrhE0Hp2Y+x8iPRO1AaU0=
-Subject: FAILED: patch "[PATCH] ahci: Extend ASM1061 43-bit DMA address quirk to other" failed to apply to 6.7-stable tree
+	b=q1rXomIpEXMnHvQfQ7uH2ZqHquFplkpr/J2U7316qWzZ7OP3tCcJDPiJfXjul98LR
+	 RjPCEJyEX4kAQSBT0aKD2YVGcxsD+aIjqevzUk8G0ocINbFwE+jhBaFzmnubnIq+rM
+	 rsBo7SeYveXCBhIVRnSN2U98lIK+rh5IAeJFSiYM=
+Subject: FAILED: patch "[PATCH] ahci: Extend ASM1061 43-bit DMA address quirk to other" failed to apply to 6.1-stable tree
 To: kernel@wantstofly.org,cassel@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Feb 2024 17:12:45 +0100
-Message-ID: <2024021945-jockey-spending-9e68@gregkh>
+Date: Mon, 19 Feb 2024 17:12:46 +0100
+Message-ID: <2024021946-unwoven-backshift-d81f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,26 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.7-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.7.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 51af8f255bdaca6d501afc0d085b808f67b44d91
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021945-jockey-spending-9e68@gregkh' --subject-prefix 'PATCH 6.7.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021946-unwoven-backshift-d81f@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 51af8f255bda ("ahci: Extend ASM1061 43-bit DMA address quirk to other ASM106x parts")
 20730e9b2778 ("ahci: add 43-bit DMA address quirk for ASMedia ASM1061 controllers")
+3bf614106094 ("ata: ahci: add identifiers for ASM2116 series adapters")
+f07788079f51 ("ata: ahci: fix enum constants for gcc-13")
 
 thanks,
 
