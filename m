@@ -1,326 +1,361 @@
-Return-Path: <stable+bounces-20499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC4BA859EC4
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 09:50:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F713859F00
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 10:01:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94B67281A82
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 08:50:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53C5C281973
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 09:01:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F0B12231F;
-	Mon, 19 Feb 2024 08:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF8EC2232C;
+	Mon, 19 Feb 2024 09:01:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IJSJSigq"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gcvPVqrT"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E67681CD23;
-	Mon, 19 Feb 2024 08:49:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC84522063
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 09:01:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708332579; cv=none; b=Y0xegNhI7oSUNZNiMfYs1obvqCIpSFNwHF/H6tzMS0HAu7Ehbt4VqAz6lYmmMNDF0nHUWUyJWmCvkGkt01yS07i0snNgVD4UTytze3zRn/zUUiELkA2IojXBaBj6et+XU3VMTh5esTkkqJ/gbv/Xhar5w2LTzN4srosycbPB5AI=
+	t=1708333286; cv=none; b=bYhizrBUEXQdqg5+T9mvj+iDBxwhxeIVEYWikO+HNf8Y1c0AplaxpW7rJr0kounw9Fiw4k4G/OlQJYKUoeeVeisGGc4+PPDvDvhdiJc4txN2mmupBaSrtHtceICHIZ3db94+b8gdHKdXqCkAooZxzFUZCLE2EDzkTJmPY785Jck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708332579; c=relaxed/simple;
-	bh=FcRHzvRPt3aS0VIczYLbcEEj+dOEcDM6e7/L4CONTRs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Q+adtNFw5uxClLuniFVA80DWjOsZhl+rDxhnpyPGry8Q1A3Yx9ypbO2VOOAPiJaMcTRYhlCD8A55DW36icAJKcJWrkLOPUbzU+DFE9gS2gym7wKpb+uOz5+CMlKrFgHyLjyfdqQ1KJTl90WGSiqcAdR46ewH7JrI7k6a0tkjHW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IJSJSigq; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708332578; x=1739868578;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=FcRHzvRPt3aS0VIczYLbcEEj+dOEcDM6e7/L4CONTRs=;
-  b=IJSJSigq5G5NW5+/1FuTtLl2lm8TnYHMicm5WBPk3H4axfnBhYS9qjAP
-   3eycR8YpITxB0Um1OYAz7bGc1YC4MzUuek4kGEXGsWGJIdfJBf0p9pbgV
-   Klmk8hCpN73HdtuSiNNG3xl5rbcPDoTe2gG3L5pMvYCoJaeMc4guyiNoe
-   caKJlymh5eJsibUiX0Wea5ca6nP/btbUgcAsCUhNJyJdP0NpwJ87AHD8L
-   YThHSNRkepP936UIhIaWrchlwjj42KgNWFeT0l5h2G+/Mhhf27/Q+k5kZ
-   VEtQyVztQsAjySZ1SlSXuQAg445RQdv3ZrBPNetEm5b+XERjSgBFYjevf
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10988"; a="2264249"
-X-IronPort-AV: E=Sophos;i="6.06,170,1705392000"; 
-   d="scan'208";a="2264249"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2024 00:49:37 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,170,1705392000"; 
-   d="scan'208";a="9083091"
-Received: from yhuang6-desk2.sh.intel.com (HELO yhuang6-desk2.ccr.corp.intel.com) ([10.238.208.55])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2024 00:49:32 -0800
-From: "Huang, Ying" <ying.huang@intel.com>
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org,  Kairui Song <kasong@tencent.com>,  Andrew Morton
- <akpm@linux-foundation.org>,  Chris Li <chrisl@kernel.org>,  Minchan Kim
- <minchan@kernel.org>,  Barry Song <v-songbaohua@oppo.com>,  Yu Zhao
- <yuzhao@google.com>,  SeongJae Park <sj@kernel.org>,  David Hildenbrand
- <david@redhat.com>,  Hugh Dickins <hughd@google.com>,  Johannes Weiner
- <hannes@cmpxchg.org>,  Matthew Wilcox <willy@infradead.org>,  Michal Hocko
- <mhocko@suse.com>,  Yosry Ahmed <yosryahmed@google.com>,  Aaron Lu
- <aaron.lu@intel.com>,  stable@vger.kernel.org,
-  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4] mm/swap: fix race when skipping swapcache
-In-Reply-To: <20240219082040.7495-1-ryncsn@gmail.com> (Kairui Song's message
-	of "Mon, 19 Feb 2024 16:20:40 +0800")
-References: <20240219082040.7495-1-ryncsn@gmail.com>
-Date: Mon, 19 Feb 2024 16:47:36 +0800
-Message-ID: <87jzn0rgbb.fsf@yhuang6-desk2.ccr.corp.intel.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=arc-20240116; t=1708333286; c=relaxed/simple;
+	bh=Qx/ly5SaDjGc9q6kHVgqelbArL59OTkoLPoeg8J5wi4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=otx69VG844S774PsnrE+Q7GEoLdwmFQfC8eMtRUB+5YqxOpSqFmRhv86vS7BteWNlo3BFyxUCl6FcaxQeEw/DE8f+3YYJ0SE0RqZpQJx2x5gGaGuLEI9Ic2JexYjmKc7a3R500H0YloRVPjVNY1oyJEcMl4ZUEOJMImOIU0xZPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gcvPVqrT; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1708333283;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=jluwWOTlkHle+7tEQx830n7N9r9EKidLwTohIxeHs78=;
+	b=gcvPVqrTRR1Z/AkLGPJRJeUW3fb9hpDxM6qAhcxVjMh6CYCO+6D2R/QIC29J6sbzk2akxF
+	ZZr+d9j/Z9kNLGf3oxhW9HeUzyM1eHGAAK+zA1d49pggWF5Ex0hMoEVkyBlRWMNhOBk1fi
+	7mHmVCVIirHfeZIoXTK0VGn2HFoXoKQ=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-170-i1XCMlQyO4GZ5DTBTEa0yQ-1; Mon, 19 Feb 2024 04:01:21 -0500
+X-MC-Unique: i1XCMlQyO4GZ5DTBTEa0yQ-1
+Received: by mail-lf1-f69.google.com with SMTP id 2adb3069b0e04-51162d43c64so3725713e87.1
+        for <stable@vger.kernel.org>; Mon, 19 Feb 2024 01:01:21 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708333280; x=1708938080;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jluwWOTlkHle+7tEQx830n7N9r9EKidLwTohIxeHs78=;
+        b=lLQ0rPEwQD6LHvD7XoI9W0qRtWhknmxq7fjjmjIzUq7jEINcZD9urHfFQGjq9G34Te
+         elatGLHT2sr6cYLA9k6LJ8hH6cUt+fOhpKrRLk3Z2H4xLC8kLYme7Ql7vEZBzzSblIle
+         8gQ/BmbVZ3RI0qK5x4JWM4Q7rY7co3R9Beu3aITXA9oieDd0+bF3SwOSw33mEXyKVh7Y
+         tNhp+9dKzyu5UzMfEdfUGkfPoWVv2/sQ5UpzCT/ELPxo6QOeQ2V2kGpxswL0+sydGQmc
+         oksoYfRv9XLjt9bcK5rS34mMrG5TAP3hvxDsSIHZ/uFpL4clBPM4VN4E5iZiLjHfuBDm
+         Yq1w==
+X-Forwarded-Encrypted: i=1; AJvYcCU7nL7FdUnY8W80/spvJFvhZ7FjPyAzN2irfL8th1jPeCAvISYE/Y1mL6NZ77Nb+yPP+AObVdiPrzOxyQBuakXYVg5C7DVe
+X-Gm-Message-State: AOJu0YxQeAvxhG0DWN2x8mjev5q7zyvSJA35BvEtj6mez2NS948ZqDHl
+	ovIvMipJD+OgnEA96mfNLmc7c41wGBfjtmKvCcZc2VWQN6MWsd5Gnf2yAyTrus0BAThHjlx5oC9
+	3O7YXagVtlor8BcpL2eapc4d81s/7zJ/S1Cp5fnRhPnIBgJmGfn4Ttg==
+X-Received: by 2002:a05:6512:31d1:b0:512:8d6d:4804 with SMTP id j17-20020a05651231d100b005128d6d4804mr9848456lfe.15.1708333279698;
+        Mon, 19 Feb 2024 01:01:19 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF3ye5iBZ5wV4dHS7rteYk1dfb2UaMLYWRJwYCKSUCu4BByxAzn6tMYJnoKm8Evf4a0rfUlLQ==
+X-Received: by 2002:a05:6512:31d1:b0:512:8d6d:4804 with SMTP id j17-20020a05651231d100b005128d6d4804mr9848419lfe.15.1708333279218;
+        Mon, 19 Feb 2024 01:01:19 -0800 (PST)
+Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7? ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
+        by smtp.gmail.com with ESMTPSA id o20-20020a05600c4fd400b00412590eee7csm7505288wmq.10.2024.02.19.01.01.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Feb 2024 01:01:18 -0800 (PST)
+Message-ID: <726f3658-a5d2-4c14-a584-312883846303@redhat.com>
+Date: Mon, 19 Feb 2024 10:01:17 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm/swap: fix race when skipping swapcache
+To: "Huang, Ying" <ying.huang@intel.com>
+Cc: Kairui Song <kasong@tencent.com>, linux-mm@kvack.org,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Minchan Kim <minchan@kernel.org>, Yu Zhao <yuzhao@google.com>,
+ Barry Song <v-songbaohua@oppo.com>, SeongJae Park <sj@kernel.org>,
+ Hugh Dickins <hughd@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Matthew Wilcox <willy@infradead.org>, Michal Hocko <mhocko@suse.com>,
+ Yosry Ahmed <yosryahmed@google.com>, stable@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240216095105.14502-1-ryncsn@gmail.com>
+ <c2f3a1d0-30cf-4680-83bd-08f5d8a54deb@redhat.com>
+ <871q9atd6o.fsf@yhuang6-desk2.ccr.corp.intel.com>
+Content-Language: en-US
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <871q9atd6o.fsf@yhuang6-desk2.ccr.corp.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Kairui Song <ryncsn@gmail.com> writes:
+On 18.02.24 08:59, Huang, Ying wrote:
+> David Hildenbrand <david@redhat.com> writes:
+> 
+>> On 16.02.24 10:51, Kairui Song wrote:
+>>> From: Kairui Song <kasong@tencent.com>
+>>> When skipping swapcache for SWP_SYNCHRONOUS_IO, if two or more
+>>> threads
+>>> swapin the same entry at the same time, they get different pages (A, B).
+>>> Before one thread (T0) finishes the swapin and installs page (A)
+>>> to the PTE, another thread (T1) could finish swapin of page (B),
+>>> swap_free the entry, then swap out the possibly modified page
+>>> reusing the same entry. It breaks the pte_same check in (T0) because
+>>> PTE value is unchanged, causing ABA problem. Thread (T0) will
+>>> install a stalled page (A) into the PTE and cause data corruption.
+>>> One possible callstack is like this:
+>>> CPU0                                 CPU1
+>>> ----                                 ----
+>>> do_swap_page()                       do_swap_page() with same entry
+>>> <direct swapin path>                 <direct swapin path>
+>>> <alloc page A>                       <alloc page B>
+>>> swap_read_folio() <- read to page A  swap_read_folio() <- read to page B
+>>> <slow on later locks or interrupt>   <finished swapin first>
+>>> ...                                  set_pte_at()
+>>>                                        swap_free() <- entry is free
+>>>                                        <write to page B, now page A stalled>
+>>>                                        <swap out page B to same swap entry>
+>>> pte_same() <- Check pass, PTE seems
+>>>                 unchanged, but page A
+>>>                 is stalled!
+>>> swap_free() <- page B content lost!
+>>> set_pte_at() <- staled page A installed!
+>>> And besides, for ZRAM, swap_free() allows the swap device to discard
+>>> the entry content, so even if page (B) is not modified, if
+>>> swap_read_folio() on CPU0 happens later than swap_free() on CPU1,
+>>> it may also cause data loss.
+>>> To fix this, reuse swapcache_prepare which will pin the swap entry
+>>> using
+>>> the cache flag, and allow only one thread to pin it. Release the pin
+>>> after PT unlocked. Racers will simply wait since it's a rare and very
+>>> short event. A schedule() call is added to avoid wasting too much CPU
+>>> or adding too much noise to perf statistics
+>>> Other methods like increasing the swap count don't seem to be a good
+>>> idea after some tests, that will cause racers to fall back to use the
+>>> swap cache again. Parallel swapin using different methods leads to
+>>> a much more complex scenario.
+>>> Reproducer:
+>>> This race issue can be triggered easily using a well constructed
+>>> reproducer and patched brd (with a delay in read path) [1]:
+>>> With latest 6.8 mainline, race caused data loss can be observed
+>>> easily:
+>>> $ gcc -g -lpthread test-thread-swap-race.c && ./a.out
+>>>     Polulating 32MB of memory region...
+>>>     Keep swapping out...
+>>>     Starting round 0...
+>>>     Spawning 65536 workers...
+>>>     32746 workers spawned, wait for done...
+>>>     Round 0: Error on 0x5aa00, expected 32746, got 32743, 3 data loss!
+>>>     Round 0: Error on 0x395200, expected 32746, got 32743, 3 data loss!
+>>>     Round 0: Error on 0x3fd000, expected 32746, got 32737, 9 data loss!
+>>>     Round 0 Failed, 15 data loss!
+>>> This reproducer spawns multiple threads sharing the same memory
+>>> region
+>>> using a small swap device. Every two threads updates mapped pages one by
+>>> one in opposite direction trying to create a race, with one dedicated
+>>> thread keep swapping out the data out using madvise.
+>>> The reproducer created a reproduce rate of about once every 5
+>>> minutes,
+>>> so the race should be totally possible in production.
+>>> After this patch, I ran the reproducer for over a few hundred rounds
+>>> and no data loss observed.
+>>> Performance overhead is minimal, microbenchmark swapin 10G from 32G
+>>> zram:
+>>> Before:     10934698 us
+>>> After:      11157121 us
+>>> Non-direct: 13155355 us (Dropping SWP_SYNCHRONOUS_IO flag)
+>>> Fixes: 0bcac06f27d7 ("mm, swap: skip swapcache for swapin of
+>>> synchronous device")
+>>> Link: https://github.com/ryncsn/emm-test-project/tree/master/swap-stress-race [1]
+>>> Reported-by: "Huang, Ying" <ying.huang@intel.com>
+>>> Closes: https://lore.kernel.org/lkml/87bk92gqpx.fsf_-_@yhuang6-desk2.ccr.corp.intel.com/
+>>> Signed-off-by: Kairui Song <kasong@tencent.com>
+>>> Cc: stable@vger.kernel.org
+>>> ---
+>>> Update from V2:
+>>> - Add a schedule() if raced to prevent repeated page faults wasting CPU
+>>>     and add noise to perf statistics.
+>>> - Use a bool to state the special case instead of reusing existing
+>>>     variables fixing error handling [Minchan Kim].
+>>> V2:
+>>> https://lore.kernel.org/all/20240206182559.32264-1-ryncsn@gmail.com/
+>>> Update from V1:
+>>> - Add some words on ZRAM case, it will discard swap content on swap_free so the race window is a bit different but cure is the same. [Barry Song]
+>>> - Update comments make it cleaner [Huang, Ying]
+>>> - Add a function place holder to fix CONFIG_SWAP=n built [SeongJae Park]
+>>> - Update the commit message and summary, refer to SWP_SYNCHRONOUS_IO instead of "direct swapin path" [Yu Zhao]
+>>> - Update commit message.
+>>> - Collect Review and Acks.
+>>> V1:
+>>> https://lore.kernel.org/all/20240205110959.4021-1-ryncsn@gmail.com/
+>>>    include/linux/swap.h |  5 +++++
+>>>    mm/memory.c          | 20 ++++++++++++++++++++
+>>>    mm/swap.h            |  5 +++++
+>>>    mm/swapfile.c        | 13 +++++++++++++
+>>>    4 files changed, 43 insertions(+)
+>>> diff --git a/include/linux/swap.h b/include/linux/swap.h
+>>> index 4db00ddad261..8d28f6091a32 100644
+>>> --- a/include/linux/swap.h
+>>> +++ b/include/linux/swap.h
+>>> @@ -549,6 +549,11 @@ static inline int swap_duplicate(swp_entry_t swp)
+>>>    	return 0;
+>>>    }
+>>>    +static inline int swapcache_prepare(swp_entry_t swp)
+>>> +{
+>>> +	return 0;
+>>> +}
+>>> +
+>>>    static inline void swap_free(swp_entry_t swp)
+>>>    {
+>>>    }
+>>> diff --git a/mm/memory.c b/mm/memory.c
+>>> index 7e1f4849463a..7059230d0a54 100644
+>>> --- a/mm/memory.c
+>>> +++ b/mm/memory.c
+>>> @@ -3799,6 +3799,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>>>    	struct page *page;
+>>>    	struct swap_info_struct *si = NULL;
+>>>    	rmap_t rmap_flags = RMAP_NONE;
+>>> +	bool need_clear_cache = false;
+>>>    	bool exclusive = false;
+>>>    	swp_entry_t entry;
+>>>    	pte_t pte;
+>>> @@ -3867,6 +3868,20 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>>>    	if (!folio) {
+>>>    		if (data_race(si->flags & SWP_SYNCHRONOUS_IO) &&
+>>>    		    __swap_count(entry) == 1) {
+>>> +			/*
+>>> +			 * Prevent parallel swapin from proceeding with
+>>> +			 * the cache flag. Otherwise, another thread may
+>>> +			 * finish swapin first, free the entry, and swapout
+>>> +			 * reusing the same entry. It's undetectable as
+>>> +			 * pte_same() returns true due to entry reuse.
+>>> +			 */
+>>> +			if (swapcache_prepare(entry)) {
+>>> +				/* Relax a bit to prevent rapid repeated page faults */
+>>> +				schedule();
+>>> +				goto out;
+>>> +			}
+>>> +			need_clear_cache = true;
+>>> +
+>>
+>> I took a closer look at __read_swap_cache_async() and it essentially
+>> does something similar.
+>>
+>> Instead of returning, it keeps retrying until it finds that
+>> swapcache_prepare() fails for another reason than -EEXISTS (e.g.,
+>> freed concurrently) or it finds the entry in the swapcache.
+>>
+>> So if you would succeed here on a freed+reused swap entry,
+>> __read_swap_cache_async() would simply retry.
+>>
+>> It spells that out:
+>>
+>> 		/*
+>> 		 * We might race against __delete_from_swap_cache(), and
+>> 		 * stumble across a swap_map entry whose SWAP_HAS_CACHE
+>> 		 * has not yet been cleared.  Or race against another
+>> 		 * __read_swap_cache_async(), which has set SWAP_HAS_CACHE
+>> 		 * in swap_map, but not yet added its folio to swap cache.
+>> 		 */
+>>
+>> Whereby we could not race against this code here as well where we
+>> speculatively set SWAP_HAS_CACHE and might never add something to the swap
+>> cache.
+>>
+>>
+>> I'd probably avoid the wrong returns and do something even closer to
+>> __read_swap_cache_async().
+>>
+>> while (true) {
+>> 	/*
+>> 	 * Fake that we are trying to insert a page into the swapcache, to
+>> 	 * serialize against concurrent threads wanting to do the same.
+>> 	 * [more from your description]
+>> 	 */
+>> 	ret = swapcache_prepare(entry);
+>> 	if (likely(!ret)
+>> 		/*
+>> 		 * Move forward with swapin, we'll recheck if the PTE hasn't
+>> 		 * changed later.
+>> 		 */
+>> 		break;
+>> 	else if (ret != -EEXIST)
+>> 		goto out;
+> 
+> The swap entry may be kept in swap cache for long time.  For example, it
+> may be read into swap cache via MADV_WILLNEED.
 
-> From: Kairui Song <kasong@tencent.com>
->
-> When skipping swapcache for SWP_SYNCHRONOUS_IO, if two or more threads
-> swapin the same entry at the same time, they get different pages (A, B).
-> Before one thread (T0) finishes the swapin and installs page (A)
-> to the PTE, another thread (T1) could finish swapin of page (B),
-> swap_free the entry, then swap out the possibly modified page
-> reusing the same entry. It breaks the pte_same check in (T0) because
-> PTE value is unchanged, causing ABA problem. Thread (T0) will
-> install a stalled page (A) into the PTE and cause data corruption.
->
-> One possible callstack is like this:
->
-> CPU0                                 CPU1
-> ----                                 ----
-> do_swap_page()                       do_swap_page() with same entry
-> <direct swapin path>                 <direct swapin path>
-> <alloc page A>                       <alloc page B>
-> swap_read_folio() <- read to page A  swap_read_folio() <- read to page B
-> <slow on later locks or interrupt>   <finished swapin first>
-> ...                                  set_pte_at()
->                                      swap_free() <- entry is free
->                                      <write to page B, now page A stalled>
->                                      <swap out page B to same swap entry>
-> pte_same() <- Check pass, PTE seems
->               unchanged, but page A
->               is stalled!
-> swap_free() <- page B content lost!
-> set_pte_at() <- staled page A installed!
->
-> And besides, for ZRAM, swap_free() allows the swap device to discard
-> the entry content, so even if page (B) is not modified, if
-> swap_read_folio() on CPU0 happens later than swap_free() on CPU1,
-> it may also cause data loss.
->
-> To fix this, reuse swapcache_prepare which will pin the swap entry using
-> the cache flag, and allow only one thread to swap it in, also prevent
-> any parallel code from putting the entry in the cache. Release the pin
-> after PT unlocked.
->
-> Racers just loop and wait since it's a rare and very short event.
-> A schedule_timeout_uninterruptible(1) call is added to avoid repeated
-> page faults wasting too much CPU, causing livelock or adding too much
-> noise to perf statistics. A similar livelock issue was described in
-> commit 029c4628b2eb ("mm: swap: get rid of livelock in swapin readahead")
->
-> Reproducer:
->
-> This race issue can be triggered easily using a well constructed
-> reproducer and patched brd (with a delay in read path) [1]:
->
-> With latest 6.8 mainline, race caused data loss can be observed easily:
-> $ gcc -g -lpthread test-thread-swap-race.c && ./a.out
->   Polulating 32MB of memory region...
->   Keep swapping out...
->   Starting round 0...
->   Spawning 65536 workers...
->   32746 workers spawned, wait for done...
->   Round 0: Error on 0x5aa00, expected 32746, got 32743, 3 data loss!
->   Round 0: Error on 0x395200, expected 32746, got 32743, 3 data loss!
->   Round 0: Error on 0x3fd000, expected 32746, got 32737, 9 data loss!
->   Round 0 Failed, 15 data loss!
->
-> This reproducer spawns multiple threads sharing the same memory region
-> using a small swap device. Every two threads updates mapped pages one by
-> one in opposite direction trying to create a race, with one dedicated
-> thread keep swapping out the data out using madvise.
->
-> The reproducer created a reproduce rate of about once every 5 minutes,
-> so the race should be totally possible in production.
->
-> After this patch, I ran the reproducer for over a few hundred rounds
-> and no data loss observed.
->
-> Performance overhead is minimal, microbenchmark swapin 10G from 32G
-> zram:
->
-> Before:     10934698 us
-> After:      11157121 us
-> Cached:     13155355 us (Dropping SWP_SYNCHRONOUS_IO flag)
->
-> Fixes: 0bcac06f27d7 ("mm, swap: skip swapcache for swapin of synchronous device")
-> Link: https://github.com/ryncsn/emm-test-project/tree/master/swap-stress-race [1]
-> Reported-by: "Huang, Ying" <ying.huang@intel.com>
-> Closes: https://lore.kernel.org/lkml/87bk92gqpx.fsf_-_@yhuang6-desk2.ccr.corp.intel.com/
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> Cc: stable@vger.kernel.org
+Right, we'd have to check for the swapcache.
 
-LGTM. Feel free to add,
+I briefly thought about just factoring out what we have in 
+__read_swap_cache_async() and reusing here. Similar problem to solve, 
+and quite a lot of duplicate code.
 
-Reviewed-by: "Huang, Ying" <ying.huang@intel.com>
+But not worth the churn in a simple fix. We could explore that option
+as a cleanup on top.
 
---
-Best Regards,
-Huang, Ying
+-- 
+Cheers,
 
-> ---
-> V3: https://lore.kernel.org/all/20240216095105.14502-1-ryncsn@gmail.com/
-> Update from V3:
-> - Use schedule_timeout_uninterruptible(1) for now instead of schedule() to
->   prevent the busy faulting task holds CPU and livelocks [Huang, Ying]
->
-> V2: https://lore.kernel.org/all/20240206182559.32264-1-ryncsn@gmail.com/
-> Update from V2:
-> - Add a schedule() if raced to prevent repeated page faults wasting CPU
->   and add noise to perf statistics.
-> - Use a bool to state the special case instead of reusing existing
->   variables fixing error handling [Minchan Kim].
->
-> V1: https://lore.kernel.org/all/20240205110959.4021-1-ryncsn@gmail.com/
-> Update from V1:
-> - Add some words on ZRAM case, it will discard swap content on swap_free
->   so the race window is a bit different but cure is the same. [Barry Song]
-> - Update comments make it cleaner [Huang, Ying]
-> - Add a function place holder to fix CONFIG_SWAP=n built [SeongJae Park]
-> - Update the commit message and summary, refer to SWP_SYNCHRONOUS_IO
->   instead of "direct swapin path" [Yu Zhao]
-> - Update commit message.
-> - Collect Review and Acks.
->
->  include/linux/swap.h |  5 +++++
->  mm/memory.c          | 20 ++++++++++++++++++++
->  mm/swap.h            |  5 +++++
->  mm/swapfile.c        | 13 +++++++++++++
->  4 files changed, 43 insertions(+)
->
-> diff --git a/include/linux/swap.h b/include/linux/swap.h
-> index 4db00ddad261..8d28f6091a32 100644
-> --- a/include/linux/swap.h
-> +++ b/include/linux/swap.h
-> @@ -549,6 +549,11 @@ static inline int swap_duplicate(swp_entry_t swp)
->  	return 0;
->  }
->  
-> +static inline int swapcache_prepare(swp_entry_t swp)
-> +{
-> +	return 0;
-> +}
-> +
->  static inline void swap_free(swp_entry_t swp)
->  {
->  }
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 7e1f4849463a..a99f5e7be9a5 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -3799,6 +3799,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->  	struct page *page;
->  	struct swap_info_struct *si = NULL;
->  	rmap_t rmap_flags = RMAP_NONE;
-> +	bool need_clear_cache = false;
->  	bool exclusive = false;
->  	swp_entry_t entry;
->  	pte_t pte;
-> @@ -3867,6 +3868,20 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->  	if (!folio) {
->  		if (data_race(si->flags & SWP_SYNCHRONOUS_IO) &&
->  		    __swap_count(entry) == 1) {
-> +			/*
-> +			 * Prevent parallel swapin from proceeding with
-> +			 * the cache flag. Otherwise, another thread may
-> +			 * finish swapin first, free the entry, and swapout
-> +			 * reusing the same entry. It's undetectable as
-> +			 * pte_same() returns true due to entry reuse.
-> +			 */
-> +			if (swapcache_prepare(entry)) {
-> +				/* Relax a bit to prevent rapid repeated page faults */
-> +				schedule_timeout_uninterruptible(1);
-> +				goto out;
-> +			}
-> +			need_clear_cache = true;
-> +
->  			/* skip swapcache */
->  			folio = vma_alloc_folio(GFP_HIGHUSER_MOVABLE, 0,
->  						vma, vmf->address, false);
-> @@ -4117,6 +4132,9 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->  	if (vmf->pte)
->  		pte_unmap_unlock(vmf->pte, vmf->ptl);
->  out:
-> +	/* Clear the swap cache pin for direct swapin after PTL unlock */
-> +	if (need_clear_cache)
-> +		swapcache_clear(si, entry);
->  	if (si)
->  		put_swap_device(si);
->  	return ret;
-> @@ -4131,6 +4149,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->  		folio_unlock(swapcache);
->  		folio_put(swapcache);
->  	}
-> +	if (need_clear_cache)
-> +		swapcache_clear(si, entry);
->  	if (si)
->  		put_swap_device(si);
->  	return ret;
-> diff --git a/mm/swap.h b/mm/swap.h
-> index 758c46ca671e..fc2f6ade7f80 100644
-> --- a/mm/swap.h
-> +++ b/mm/swap.h
-> @@ -41,6 +41,7 @@ void __delete_from_swap_cache(struct folio *folio,
->  void delete_from_swap_cache(struct folio *folio);
->  void clear_shadow_from_swap_cache(int type, unsigned long begin,
->  				  unsigned long end);
-> +void swapcache_clear(struct swap_info_struct *si, swp_entry_t entry);
->  struct folio *swap_cache_get_folio(swp_entry_t entry,
->  		struct vm_area_struct *vma, unsigned long addr);
->  struct folio *filemap_get_incore_folio(struct address_space *mapping,
-> @@ -97,6 +98,10 @@ static inline int swap_writepage(struct page *p, struct writeback_control *wbc)
->  	return 0;
->  }
->  
-> +static inline void swapcache_clear(struct swap_info_struct *si, swp_entry_t entry)
-> +{
-> +}
-> +
->  static inline struct folio *swap_cache_get_folio(swp_entry_t entry,
->  		struct vm_area_struct *vma, unsigned long addr)
->  {
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 556ff7347d5f..746aa9da5302 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -3365,6 +3365,19 @@ int swapcache_prepare(swp_entry_t entry)
->  	return __swap_duplicate(entry, SWAP_HAS_CACHE);
->  }
->  
-> +void swapcache_clear(struct swap_info_struct *si, swp_entry_t entry)
-> +{
-> +	struct swap_cluster_info *ci;
-> +	unsigned long offset = swp_offset(entry);
-> +	unsigned char usage;
-> +
-> +	ci = lock_cluster_or_swap_info(si, offset);
-> +	usage = __swap_entry_free_locked(si, offset, SWAP_HAS_CACHE);
-> +	unlock_cluster_or_swap_info(si, ci);
-> +	if (!usage)
-> +		free_swap_slot(entry);
-> +}
-> +
->  struct swap_info_struct *swp_swap_info(swp_entry_t entry)
->  {
->  	return swap_type_to_swap_info(swp_type(entry));
+David / dhildenb
+
 
