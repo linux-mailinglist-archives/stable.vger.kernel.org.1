@@ -1,238 +1,141 @@
-Return-Path: <stable+bounces-20519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BA5285A22F
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 12:40:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC03285A2BA
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 13:01:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6181B255CC
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 11:40:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67729285057
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 12:01:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2911E2C69E;
-	Mon, 19 Feb 2024 11:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D3892D610;
+	Mon, 19 Feb 2024 12:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="qyxDsVl2";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="nTDEHiH1";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="qyxDsVl2";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="nTDEHiH1"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="jgGZxJ2d"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F4972D052;
-	Mon, 19 Feb 2024 11:40:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BD4B2C842;
+	Mon, 19 Feb 2024 12:00:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708342805; cv=none; b=BiU2N8GmYbU4O9bIsxVjJpDz56GbTkgxoY5ipuYo6qYl7ixPcfUeHZi4iKKWMUhxVrU04eJwUrc4yG+fC2IXCWR/PDdbDpOQggn/fjJarNfFPLtRReJyReDkvkj9WdXT5PgcHQp+mM3S9rMmh4gQN+se2VCpCvVp0cvKE3/oj4Q=
+	t=1708344021; cv=none; b=PY1XPn0wR6WHA5NP0bcwHA5uXkiYAtqbD86/pWnvDj50jSDL0GBIbldzs5XbpGsj4GZ++R7p+vhoG5eTVhElLWo/osMUlcuP9aYunp1UN41XvNXMkHnfJ7xpZDSRuQRuE33tEAL788j24mtNwd8Zy2URCwB9N3ACh8FiVPwlZdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708342805; c=relaxed/simple;
-	bh=8w5CP+AO5f8hWR39DOrpl6lIQYcmtAL6hnFbGEfxNH4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Mv85GfyCA1hyXgYwKi3jUMTFsz3zNk3vzePSas6QbUdoV7tDTLmWq+XaKfANtXKh2KGZh/VJhlWjmEKiZXZ9cstPlHM1Rd/QVWipr2FPk+mQZVUQC8CeDkrLVBsKTDDhTtFU4EHy+fxWIE0mCEEh+Tj6vdUZlAb5/+IFSB5Fn7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=qyxDsVl2; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=nTDEHiH1; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=qyxDsVl2; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=nTDEHiH1; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 3741E1FD12;
-	Mon, 19 Feb 2024 11:40:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1708342802; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VpNd7pScMzcCua32coUiV3InuIJm0wwq2wM8HmpeqA4=;
-	b=qyxDsVl2nUf/elcWaG06ru0iwhkV3yDVeyszL4wtreYDPp2GliqZBCGCJhtrrsqr8j4cEU
-	9FUpM5nyW3uDaGDQjC/F6gz9D5YSQxsqvFmC+YQYo1LfuB+MLTRJY38d3wm5txQIO3+R+H
-	QjokKUPFJ/HyFhVFStL/1SucI/1Wt4g=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1708342802;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VpNd7pScMzcCua32coUiV3InuIJm0wwq2wM8HmpeqA4=;
-	b=nTDEHiH188LXGOCghi9RFOmdhpIEfrthQIl/Ne7U4pmnEm8boyJrpa2vN4ckwPYguaGbcV
-	6V1jV3BEUoIdpbCw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1708342802; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VpNd7pScMzcCua32coUiV3InuIJm0wwq2wM8HmpeqA4=;
-	b=qyxDsVl2nUf/elcWaG06ru0iwhkV3yDVeyszL4wtreYDPp2GliqZBCGCJhtrrsqr8j4cEU
-	9FUpM5nyW3uDaGDQjC/F6gz9D5YSQxsqvFmC+YQYo1LfuB+MLTRJY38d3wm5txQIO3+R+H
-	QjokKUPFJ/HyFhVFStL/1SucI/1Wt4g=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1708342802;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VpNd7pScMzcCua32coUiV3InuIJm0wwq2wM8HmpeqA4=;
-	b=nTDEHiH188LXGOCghi9RFOmdhpIEfrthQIl/Ne7U4pmnEm8boyJrpa2vN4ckwPYguaGbcV
-	6V1jV3BEUoIdpbCw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1EF9D139D0;
-	Mon, 19 Feb 2024 11:40:02 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id bBw4BxI+02W+NgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 19 Feb 2024 11:40:02 +0000
-Message-ID: <235ab5aa-90a4-4dd7-b2c6-70469605bcfb@suse.cz>
-Date: Mon, 19 Feb 2024 12:40:01 +0100
+	s=arc-20240116; t=1708344021; c=relaxed/simple;
+	bh=KPJGEyp+8mjgucHi5TVoshHn75rjK/8wWiERVy3coCI=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=owRRda4q+n8R86P+JKDrenU0Kz2WhDY+AvMbRVQp6o43ASoXiWctslArS/1Mle6K2mjzXHLeAOylRTLP6ydZaTmeB/jIZDdNQ4nX1XHUiwuFFTPq93Y4ISK1qMruivmuSI7RipU2n23otSnvAbrcno7AGSH9RLZ/YN97yNWfzEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=jgGZxJ2d; arc=none smtp.client-ip=198.47.19.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+	by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 41JC07U3118394;
+	Mon, 19 Feb 2024 06:00:07 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1708344007;
+	bh=cU8f6d3RpKc/TTtGEPnr+Al9HkYAPF1QNsCxZf4C8gA=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To;
+	b=jgGZxJ2dvkrIPjoRF3Q46cnAErwClWjeY2my0tjcjVC/ZsRl+jI2rh5UG+biWmsz+
+	 UNrDYzW/6HExJ1h3V3rmjI/kkkN6ux41SmEJ17wywxqk/VvJ+5RUSbIMDjcUKv3XQD
+	 zPXpDdCTfFonqmyX6xOPRiqfzhgxPF8yBXpw64tQ=
+Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
+	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 41JC029x003366
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Mon, 19 Feb 2024 06:00:06 -0600
+Received: from DLEE104.ent.ti.com (157.170.170.34) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 19
+ Feb 2024 06:00:03 -0600
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE104.ent.ti.com
+ (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Mon, 19 Feb 2024 06:00:03 -0600
+Received: from localhost (uda0492258.dhcp.ti.com [172.24.227.9])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 41JC021g003913;
+	Mon, 19 Feb 2024 06:00:03 -0600
+Date: Mon, 19 Feb 2024 17:30:02 +0530
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
+To: Bean Huo <beanhuo@iokpp.de>
+CC: <bhelgaas@google.com>, <helgaas@kernel.org>,
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Bean Huo <beanhuo@micron.com>, <stable@vger.kernel.org>,
+        <s-vadapalli@ti.com>
+Subject: Re: [PATCH v3] PCI: Increase maximum PCIe physical function number
+ to 7 for non-ARI devices
+Message-ID: <37d21806-d964-40e0-a5a5-3173996e601f@ti.com>
+References: <20240219112422.54657-1-beanhuo@iokpp.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Stall at page allocations with __GFP_RETRY_MAYFAIL (Re: [PATCH
- v1] ALSA: memalloc: Fix indefinite hang in non-iommu case)
-Content-Language: en-US
-To: Takashi Iwai <tiwai@suse.de>,
- Karthikeyan Ramasubramanian <kramasub@chromium.org>
-Cc: LKML <linux-kernel@vger.kernel.org>,
- Sven van Ashbrook <svenva@chromium.org>, Brian Geffon <bgeffon@google.com>,
- stable@vger.kernel.org, Curtis Malainey <cujomalainey@chromium.org>,
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
- linux-sound@vger.kernel.org, linux-mm@kvack.org
-References: <20240214170720.v1.1.Ic3de2566a7fd3de8501b2f18afa9f94eadb2df0a@changeid>
- <87jzn0ofdb.wl-tiwai@suse.de>
-From: Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <87jzn0ofdb.wl-tiwai@suse.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spam-Level: 
-X-Spam-Score: -4.29
-X-Spamd-Result: default: False [-4.29 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 XM_UA_NO_VERSION(0.01)[];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 BAYES_HAM(-3.00)[100.00%];
-	 MIME_GOOD(-0.10)[text/plain];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	 NEURAL_HAM_SHORT(-0.20)[-1.000];
-	 RCPT_COUNT_SEVEN(0.00)[11];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:email];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 RCVD_TLS_ALL(0.00)[];
-	 MID_RHS_MATCH_FROM(0.00)[]
-X-Spam-Flag: NO
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20240219112422.54657-1-beanhuo@iokpp.de>
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-On 2/19/24 12:36, Takashi Iwai wrote:
-> On Thu, 15 Feb 2024 01:07:25 +0100,
-> Karthikeyan Ramasubramanian wrote:
->> 
->> Before 9d8e536 ("ALSA: memalloc: Try dma_alloc_noncontiguous() at first")
->> the alsa non-contiguous allocator always called the alsa fallback
->> allocator in the non-iommu case. This allocated non-contig memory
->> consisting of progressively smaller contiguous chunks. Allocation was
->> fast due to the OR-ing in of __GFP_NORETRY.
->> 
->> After 9d8e536 ("ALSA: memalloc: Try dma_alloc_noncontiguous() at first")
->> the code tries the dma non-contig allocator first, then falls back to
->> the alsa fallback allocator. In the non-iommu case, the former supports
->> only a single contiguous chunk.
->> 
->> We have observed experimentally that under heavy memory fragmentation,
->> allocating a large-ish contiguous chunk with __GFP_RETRY_MAYFAIL
->> triggers an indefinite hang in the dma non-contig allocator. This has
->> high-impact, as an occurrence will trigger a device reboot, resulting in
->> loss of user state.
->> 
->> Fix the non-iommu path by letting dma_alloc_noncontiguous() fail quickly
->> so it does not get stuck looking for that elusive large contiguous chunk,
->> in which case we will fall back to the alsa fallback allocator.
->> 
->> Note that the iommu dma non-contiguous allocator is not affected. While
->> assembling an array of pages, it tries consecutively smaller contiguous
->> allocations, and lets higher-order chunk allocations fail quickly.
->> 
->> Suggested-by: Sven van Ashbrook <svenva@chromium.org>
->> Suggested-by: Brian Geffon <bgeffon@google.com>
->> Fixes: 9d8e536d36e7 ("ALSA: memalloc: Try dma_alloc_noncontiguous() at first")
->> Cc: stable@vger.kernel.org
->> Cc: Sven van Ashbrook <svenva@chromium.org>
->> Cc: Brian Geffon <bgeffon@google.com>
->> Cc: Curtis Malainey <cujomalainey@chromium.org>
->> Signed-off-by: Karthikeyan Ramasubramanian <kramasub@chromium.org>
+On 24/02/19 12:24PM, Bean Huo wrote:
+> From: Bean Huo <beanhuo@micron.com>
 > 
-> After chatting with Vlastimil, he recommended to get linux-mm people
-> involved, as basically such a problem shouldn't happen in the page
-> allocator side.  So let's widen the audience.
+> As per PCIe r6.2, sec 6.13 titled "Alternative Routing-ID Interpretation
+> (ARI)", up to 8 [fn # 0..7] Physical Functions(PFs) are allowed in an
+> non-ARI capable device. Previously, our implementation erroneously limited
+> the maximum number of PFs to 7 for endpoints without ARI support.
 > 
-> To recap the thread: the problem is that dma_alloc_contiguous() call
-> with high order pages and __GFP_FAIL_MAYRETRY leads to indefinite
-> stall.  (It was __GFP_NORETRY beforehand.)  This looks like the code
-> path with the direct page allocation where no IOMMU is involved.
-> 
-> Karthikeyan, Sven, and co: could you guys show the stack trace at the
-> stall?  This may give us more clear light.
+> This patch corrects the maximum PF count to adhere to the PCIe specification
+> by allowing up to 8 PFs on non-ARI capable devices. This change ensures better
+> compliance with the standard and improves compatibility with devices relying
+> on this specification.
 
-Yeah, if the inifinite loop with __GFP_RETRY_MAYFAIL happens in a call to
-__alloc_pages and not in some retry loop around it in an upper layer (I
-tried to check the dma functions but got lost quickly so the exact call
-stack would be useful), we definitely want to know the details. It shouldn't
-happen for costly orders (>3) because the retries are hard limited for those
-despite apparent progress or reclaim or compaction.
+The function "next_fn()" seems to provide the next valid function.
+Therefore, if the current function is 0 (fn = 0), then the next valid
+function will be 1 which is returned by next_fn(). It extends similarly
+until the case where current function is 6 (fn = 6) which shall return
+the next valid function as 7. So all 8 PFs are still treated as valid
+and there doesn't seem to be any limitation. Only in the case where the
+EP doesn't support ARI (there is no function 8 (fn = 8)), the call to
+next_fn() with the fn parameter set to 7, will return -ENODEV which
+seems to be the expected behavior.
 
-> Also, Vlastimil suggested that tracepoints would be helpful if that's
-> really in the page allocator, too.
-> 
-> 
-> Thanks!
-> 
-> Takashi
-> 
->> ---
->> 
->>  sound/core/memalloc.c | 7 ++++++-
->>  1 file changed, 6 insertions(+), 1 deletion(-)
->> 
->> diff --git a/sound/core/memalloc.c b/sound/core/memalloc.c
->> index f901504b5afc1..5f6526a0d731c 100644
->> --- a/sound/core/memalloc.c
->> +++ b/sound/core/memalloc.c
->> @@ -540,13 +540,18 @@ static void *snd_dma_noncontig_alloc(struct snd_dma_buffer *dmab, size_t size)
->>  {
->>  	struct sg_table *sgt;
->>  	void *p;
->> +	gfp_t gfp_flags = DEFAULT_GFP;
->>  
->>  #ifdef CONFIG_SND_DMA_SGBUF
->>  	if (cpu_feature_enabled(X86_FEATURE_XENPV))
->>  		return snd_dma_sg_fallback_alloc(dmab, size);
->> +
->> +	/* Non-IOMMU case: prevent allocator from searching forever */
->> +	if (!get_dma_ops(dmab->dev.dev))
->> +		gfp_flags |= __GFP_NORETRY;
->>  #endif
->>  	sgt = dma_alloc_noncontiguous(dmab->dev.dev, size, dmab->dev.dir,
->> -				      DEFAULT_GFP, 0);
->> +				      gfp_flags, 0);
->>  #ifdef CONFIG_SND_DMA_SGBUF
->>  	if (!sgt && !get_dma_ops(dmab->dev.dev))
->>  		return snd_dma_sg_fallback_alloc(dmab, size);
->> -- 
->> 2.43.0.687.g38aa6559b0-goog
->> 
+Regards,
+Siddharth.
 
+> 
+> Fixes: c3df83e01a96 ("PCI: Clean up pci_scan_slot()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Bean Huo <beanhuo@micron.com>
+> ---
+> Changelog:
+> 	v2--v3:
+> 		1. Update commit messag 
+> 	v1--v2:
+> 		1. Add Fixes tag
+> 		2. Modify commit message
+> ---
+>  drivers/pci/probe.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+> index ed6b7f48736a..8c3d0f63bc13 100644
+> --- a/drivers/pci/probe.c
+> +++ b/drivers/pci/probe.c
+> @@ -2630,7 +2630,8 @@ static int next_fn(struct pci_bus *bus, struct pci_dev *dev, int fn)
+>  	if (pci_ari_enabled(bus))
+>  		return next_ari_fn(bus, dev, fn);
+>  
+> -	if (fn >= 7)
+> +	/* If EP does not support ARI, the maximum number of functions should be 7 */
+> +	if (fn > 7)
+>  		return -ENODEV;
+>  	/* only multifunction devices may have more functions */
+>  	if (dev && !dev->multifunction)
+> -- 
+> 2.34.1
+> 
+> 
 
