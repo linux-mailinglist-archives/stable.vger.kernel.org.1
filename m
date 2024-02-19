@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-20575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CB2385A859
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 17:11:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B32B85A869
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 17:13:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2EB421F24907
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 16:11:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4E2A287561
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 16:13:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD1A83D3AE;
-	Mon, 19 Feb 2024 16:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23E7F3C498;
+	Mon, 19 Feb 2024 16:12:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F7nnwo1s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GlnOfbgt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D79A3D3A6
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 16:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA533C46F
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 16:12:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708359072; cv=none; b=oNcv00h/AuUky7JIoJPOT0EZGcR2LaJ2rEOsSZ4WfoVdUuKkJmga0q6lhhT3sbgcR+7+Fhb02IoI8F3xxxUWV+qg6DUiYbi8dwskb6TV+nOdufxza81rIofDZtvIbTciLC7JHlJFvoUavZ0H0pFsbiKrjO6/sbdw4/vNi+l7/xs=
+	t=1708359153; cv=none; b=hucmtKGSc1ZFIsG+jI43PnCCbQR65r6DR/EQuo612vZPBZ889tFViIbS4LABUhgLhZaT+DNpAd/pyExQ0WipNqQMene1PxG/tmbMsiL0H2K6Wf6N4VxwCrcmshgC/Yf9GKkuKsZN8b05vCQdST2Nn4lCkjhaa74FQDMjUTy2e1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708359072; c=relaxed/simple;
-	bh=bweNU3cjaK6odkRQ/SIEypa8KMw7oRZ0zEm/jt1Kfac=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=hNpIAV2DUSc9c+DxWKfXYYHmzxR0YFXDqXcvokmrZNF7c97RMgK338PSx2qVXOKdLBtpLZN9eh63rvvqDxnfdrS0PD4hhv3XWUbCyiNXuEzAm88I8II/I0KaFKF1GtpAMQTwhSJAJipsKqibXCf7U9iV6Tdt9q7rW7bzKe/dygk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F7nnwo1s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F4C3C433C7;
-	Mon, 19 Feb 2024 16:11:11 +0000 (UTC)
+	s=arc-20240116; t=1708359153; c=relaxed/simple;
+	bh=4QVhHs/dvaPVAgoATeC30hAH7COSukkotjOugSA2RCw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=lrSitLSSARLuZJvXMh5mzh9+yKmPZbBDSu2OHMcc0m0aGeHvzKJdDukqJu27bxEO29/1t39fLfhQpdR8vy23u788jBpWDHuZsVnVEVPIwIDweOZiakP1NbhsO/nooWSRTA0VMglcDRAuMegw9DmGad8xIpVi596Pb8xpT4QoA8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GlnOfbgt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB253C43394;
+	Mon, 19 Feb 2024 16:12:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708359072;
-	bh=bweNU3cjaK6odkRQ/SIEypa8KMw7oRZ0zEm/jt1Kfac=;
+	s=korg; t=1708359153;
+	bh=4QVhHs/dvaPVAgoATeC30hAH7COSukkotjOugSA2RCw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=F7nnwo1sNM6BqJzGUNecHJlF1He+f57npC+FeukvFvSvKLijIeOH+y58OoNZfkR6H
-	 acghUKXErbvpyXv1GibTLi6NJQUf9U2kiH5anlj2ZSSmUPMJTRQWlet/lQuEdIPkXv
-	 tgVEQvEdhnu7q6by0UJzK5goOgEJBNzEpIrPvasM=
-Subject: FAILED: patch "[PATCH] lsm: fix default return value of the socket_getpeersec_*()" failed to apply to 5.10-stable tree
-To: omosnace@redhat.com,paul@paul-moore.com
+	b=GlnOfbgtTdmjf5y0tSotRiaUh1VoJo/NOAHHXHJIC8C+WYMIMN7mISRTNAYNU4nry
+	 2yHn/bNO4VBYJMpe81bzmu05Fn5ISLazUfVK7f6RrMIzWrBZAIucJsOaWIVzGnNQbC
+	 2J1cyT4Sn/yp8vTkiPbPA3w8fjxWUFF3vdTyPY64=
+Subject: FAILED: patch "[PATCH] kbuild: rpm-pkg: simplify installkernel %post" failed to apply to 6.7-stable tree
+To: jtornosm@redhat.com,dcavalca@meta.com,masahiroy@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Feb 2024 17:10:58 +0100
-Message-ID: <2024021958-zealous-pug-0442@gregkh>
+Date: Mon, 19 Feb 2024 17:12:30 +0100
+Message-ID: <2024021930-prozac-outfield-8653@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,28 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.7-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.7.y
 git checkout FETCH_HEAD
-git cherry-pick -x 5a287d3d2b9de2b3e747132c615599907ba5c3c1
+git cherry-pick -x 358de8b4f201bc05712484b15f0109b1ae3516a8
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021958-zealous-pug-0442@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021930-prozac-outfield-8653@gregkh' --subject-prefix 'PATCH 6.7.y' HEAD^..
 
 Possible dependencies:
 
-5a287d3d2b9d ("lsm: fix default return value of the socket_getpeersec_*() hooks")
-b10b9c342f75 ("lsm: make security_socket_getpeersec_stream() sockptr_t safe")
-4ff09db1b79b ("bpf: net: Change sk_getsockopt() to take the sockptr_t argument")
-ba74a7608dc1 ("net: Change sock_getsockopt() to take the sk ptr instead of the sock ptr")
-35306eb23814 ("af_unix: fix races in sk_peer_pid and sk_peer_cred accesses")
-7fd3253a7de6 ("net: Introduce preferred busy-polling")
+358de8b4f201 ("kbuild: rpm-pkg: simplify installkernel %post")
+0df8e9708594 ("scripts: clean up IA-64 code")
 
 thanks,
 
@@ -82,88 +78,104 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 5a287d3d2b9de2b3e747132c615599907ba5c3c1 Mon Sep 17 00:00:00 2001
-From: Ondrej Mosnacek <omosnace@redhat.com>
-Date: Fri, 26 Jan 2024 19:45:31 +0100
-Subject: [PATCH] lsm: fix default return value of the socket_getpeersec_*()
- hooks
+From 358de8b4f201bc05712484b15f0109b1ae3516a8 Mon Sep 17 00:00:00 2001
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Date: Mon, 29 Jan 2024 10:28:19 +0100
+Subject: [PATCH] kbuild: rpm-pkg: simplify installkernel %post
 
-For these hooks the true "neutral" value is -EOPNOTSUPP, which is
-currently what is returned when no LSM provides this hook and what LSMs
-return when there is no security context set on the socket. Correct the
-value in <linux/lsm_hooks.h> and adjust the dispatch functions in
-security/security.c to avoid issues when the BPF LSM is enabled.
+The new installkernel application that is now included in systemd-udev
+package allows installation although destination files are already present
+in the boot directory of the kernel package, but is failing with the
+implemented workaround for the old installkernel application from grubby
+package.
 
-Cc: stable@vger.kernel.org
-Fixes: 98e828a0650f ("security: Refactor declaration of LSM hooks")
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
-[PM: subject line tweak]
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+For the new installkernel application, as Davide says:
+<<The %post currently does a shuffling dance before calling installkernel.
+This isn't actually necessary afaict, and the current implementation
+ends up triggering downstream issues such as
+https://github.com/systemd/systemd/issues/29568
+This commit simplifies the logic to remove the shuffling. For reference,
+the original logic was added in commit 3c9c7a14b627("rpm-pkg: add %post
+section to create initramfs and grub hooks").>>
 
-diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
-index 185924c56378..76458b6d53da 100644
---- a/include/linux/lsm_hook_defs.h
-+++ b/include/linux/lsm_hook_defs.h
-@@ -315,9 +315,9 @@ LSM_HOOK(int, 0, socket_getsockopt, struct socket *sock, int level, int optname)
- LSM_HOOK(int, 0, socket_setsockopt, struct socket *sock, int level, int optname)
- LSM_HOOK(int, 0, socket_shutdown, struct socket *sock, int how)
- LSM_HOOK(int, 0, socket_sock_rcv_skb, struct sock *sk, struct sk_buff *skb)
--LSM_HOOK(int, 0, socket_getpeersec_stream, struct socket *sock,
-+LSM_HOOK(int, -ENOPROTOOPT, socket_getpeersec_stream, struct socket *sock,
- 	 sockptr_t optval, sockptr_t optlen, unsigned int len)
--LSM_HOOK(int, 0, socket_getpeersec_dgram, struct socket *sock,
-+LSM_HOOK(int, -ENOPROTOOPT, socket_getpeersec_dgram, struct socket *sock,
- 	 struct sk_buff *skb, u32 *secid)
- LSM_HOOK(int, 0, sk_alloc_security, struct sock *sk, int family, gfp_t priority)
- LSM_HOOK(void, LSM_RET_VOID, sk_free_security, struct sock *sk)
-diff --git a/security/security.c b/security/security.c
-index 6196ccaba433..3aaad75c9ce8 100644
---- a/security/security.c
-+++ b/security/security.c
-@@ -4624,8 +4624,20 @@ EXPORT_SYMBOL(security_sock_rcv_skb);
- int security_socket_getpeersec_stream(struct socket *sock, sockptr_t optval,
- 				      sockptr_t optlen, unsigned int len)
- {
--	return call_int_hook(socket_getpeersec_stream, -ENOPROTOOPT, sock,
--			     optval, optlen, len);
-+	struct security_hook_list *hp;
-+	int rc;
-+
-+	/*
-+	 * Only one module will provide a security context.
-+	 */
-+	hlist_for_each_entry(hp, &security_hook_heads.socket_getpeersec_stream,
-+			     list) {
-+		rc = hp->hook.socket_getpeersec_stream(sock, optval, optlen,
-+						       len);
-+		if (rc != LSM_RET_DEFAULT(socket_getpeersec_stream))
-+			return rc;
-+	}
-+	return LSM_RET_DEFAULT(socket_getpeersec_stream);
- }
+But we need to keep the old behavior as well, because the old installkernel
+application from grubby package, does not allow this simplification and
+we need to be backward compatible to avoid issues with the different
+packages.
+
+Mimic Fedora shipping process and store vmlinuz, config amd System.map
+in the module directory instead of the boot directory. In this way, we will
+avoid the commented problem for all the cases, because the new destination
+files are not going to exist in the boot directory of the kernel package.
+
+Replace installkernel tool with kernel-install tool, because the latter is
+more complete.
+
+Besides, after installkernel tool execution, check to complete if the
+correct package files vmlinuz, System.map and config files are present
+in /boot directory, and if necessary, copy manually for install operation.
+In this way, take into account if  files were not previously copied from
+/usr/lib/kernel/install.d/* scripts and if the suitable files for the
+requested package are present (it could be others if the rpm files were
+replace with a new pacakge with the same release and a different build).
+
+Tested with Fedora 38, Fedora 39, RHEL 9, Oracle Linux 9.3,
+openSUSE Tumbleweed and openMandrive ROME, using dnf/zypper and rpm tools.
+
+cc: stable@vger.kernel.org
+Co-Developed-by: Davide Cavalca <dcavalca@meta.com>
+Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+
+diff --git a/scripts/package/kernel.spec b/scripts/package/kernel.spec
+index 89298983a169..f58726671fb3 100644
+--- a/scripts/package/kernel.spec
++++ b/scripts/package/kernel.spec
+@@ -55,12 +55,12 @@ patch -p1 < %{SOURCE2}
+ %{make} %{makeflags} KERNELRELEASE=%{KERNELRELEASE} KBUILD_BUILD_VERSION=%{release}
  
- /**
-@@ -4645,8 +4657,19 @@ int security_socket_getpeersec_stream(struct socket *sock, sockptr_t optval,
- int security_socket_getpeersec_dgram(struct socket *sock,
- 				     struct sk_buff *skb, u32 *secid)
- {
--	return call_int_hook(socket_getpeersec_dgram, -ENOPROTOOPT, sock,
--			     skb, secid);
-+	struct security_hook_list *hp;
-+	int rc;
-+
-+	/*
-+	 * Only one module will provide a security context.
-+	 */
-+	hlist_for_each_entry(hp, &security_hook_heads.socket_getpeersec_dgram,
-+			     list) {
-+		rc = hp->hook.socket_getpeersec_dgram(sock, skb, secid);
-+		if (rc != LSM_RET_DEFAULT(socket_getpeersec_dgram))
-+			return rc;
-+	}
-+	return LSM_RET_DEFAULT(socket_getpeersec_dgram);
- }
- EXPORT_SYMBOL(security_socket_getpeersec_dgram);
+ %install
+-mkdir -p %{buildroot}/boot
+-cp $(%{make} %{makeflags} -s image_name) %{buildroot}/boot/vmlinuz-%{KERNELRELEASE}
++mkdir -p %{buildroot}/lib/modules/%{KERNELRELEASE}
++cp $(%{make} %{makeflags} -s image_name) %{buildroot}/lib/modules/%{KERNELRELEASE}/vmlinuz
+ %{make} %{makeflags} INSTALL_MOD_PATH=%{buildroot} modules_install
+ %{make} %{makeflags} INSTALL_HDR_PATH=%{buildroot}/usr headers_install
+-cp System.map %{buildroot}/boot/System.map-%{KERNELRELEASE}
+-cp .config %{buildroot}/boot/config-%{KERNELRELEASE}
++cp System.map %{buildroot}/lib/modules/%{KERNELRELEASE}
++cp .config %{buildroot}/lib/modules/%{KERNELRELEASE}/config
+ ln -fns /usr/src/kernels/%{KERNELRELEASE} %{buildroot}/lib/modules/%{KERNELRELEASE}/build
+ %if %{with_devel}
+ %{make} %{makeflags} run-command KBUILD_RUN_COMMAND='${srctree}/scripts/package/install-extmod-build %{buildroot}/usr/src/kernels/%{KERNELRELEASE}'
+@@ -70,13 +70,14 @@ ln -fns /usr/src/kernels/%{KERNELRELEASE} %{buildroot}/lib/modules/%{KERNELRELEA
+ rm -rf %{buildroot}
  
+ %post
+-if [ -x /sbin/installkernel -a -r /boot/vmlinuz-%{KERNELRELEASE} -a -r /boot/System.map-%{KERNELRELEASE} ]; then
+-cp /boot/vmlinuz-%{KERNELRELEASE} /boot/.vmlinuz-%{KERNELRELEASE}-rpm
+-cp /boot/System.map-%{KERNELRELEASE} /boot/.System.map-%{KERNELRELEASE}-rpm
+-rm -f /boot/vmlinuz-%{KERNELRELEASE} /boot/System.map-%{KERNELRELEASE}
+-/sbin/installkernel %{KERNELRELEASE} /boot/.vmlinuz-%{KERNELRELEASE}-rpm /boot/.System.map-%{KERNELRELEASE}-rpm
+-rm -f /boot/.vmlinuz-%{KERNELRELEASE}-rpm /boot/.System.map-%{KERNELRELEASE}-rpm
++if [ -x /usr/bin/kernel-install ]; then
++	/usr/bin/kernel-install add %{KERNELRELEASE} /lib/modules/%{KERNELRELEASE}/vmlinuz
+ fi
++for file in vmlinuz System.map config; do
++	if ! cmp --silent "/lib/modules/%{KERNELRELEASE}/${file}" "/boot/${file}-%{KERNELRELEASE}"; then
++		cp "/lib/modules/%{KERNELRELEASE}/${file}" "/boot/${file}-%{KERNELRELEASE}"
++	fi
++done
+ 
+ %preun
+ if [ -x /sbin/new-kernel-pkg ]; then
+@@ -94,7 +95,6 @@ fi
+ %defattr (-, root, root)
+ /lib/modules/%{KERNELRELEASE}
+ %exclude /lib/modules/%{KERNELRELEASE}/build
+-/boot/*
+ 
+ %files headers
+ %defattr (-, root, root)
 
 
