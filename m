@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-20586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47E7185A881
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 17:17:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA8A885A883
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 17:17:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83E9A1C22CFC
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 16:17:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89BADB22BEA
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 16:17:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B805B3B7A9;
-	Mon, 19 Feb 2024 16:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF923CF56;
+	Mon, 19 Feb 2024 16:17:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IAX25bUz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zke7Awqy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2493737704
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 16:17:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A77E63A29A
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 16:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708359432; cv=none; b=rdxTkIbOubiXEShwGszp90YJTBbWm5enc/n7LGrXvuvqnyRH5PFLj3QidWIQphiLzhShjjv4totfjoeqcgdfPyTacrNJafS/6Th42vPVCOxzTjxQMndXhxr/504mfYjitE+y9NgEGHALCx00qUqIeOrw0BEFu2r+eDHkrGIpgtI=
+	t=1708359441; cv=none; b=rn60iGlgb8mxdCNfq5HX+Vn+pQaJ54Gb5mOaTaMfJz6ZwlbOrtLVT2dASfJxgPXt9zFkYAnuiAdO6tiqf2epOP7GmRRsmbvuvIiP03Pa+1UeQaBYeBIYBJHN3eMKNw8V1Z/ZOOoiPzykYxeX9QO6koceO5i5qrynVB6b1xpBWNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708359432; c=relaxed/simple;
-	bh=zUWOt+OPWTY2eIUSI3xWKIU5X0EtvP+ZaMD3OQRLFw4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kR2EJ7lk6rS+qlrpmGcX4WIBcVxnooA5w1Yu4iGxtRM0f9xKjkx/7gD6r2BE+oVh7gu7lhclZaRvNBvASbEReqASEtP0BIAtqM5gEbVw9jJ3sMS8C0YT6YTRVv1qaEDSXi89OuQPN9pDKgTQO+65jwTEEDj+H0dFjGgOPv/3jw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IAX25bUz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E8F0C433F1;
-	Mon, 19 Feb 2024 16:17:10 +0000 (UTC)
+	s=arc-20240116; t=1708359441; c=relaxed/simple;
+	bh=XHeDviC1jUNOG/WmcsND7dL5kFdlviJZi56I6RVT3rw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kG17jpOB7dsILQ5pwNcTv5gUkH8b9fBjYDB5roidqyjRYww4VFIn3ZAnJZyWG6d1X3+YGe5kB7A+vpsLz3JEiXpPD4/vGSazZjSmwGv6SjAQH9sRgKx1Th4cS6BCgXwjsFFT1IuyBNTi4Le+1kVGJzljwWoo0yaBdaxg8brJ4lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zke7Awqy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 174ADC433F1;
+	Mon, 19 Feb 2024 16:17:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708359431;
-	bh=zUWOt+OPWTY2eIUSI3xWKIU5X0EtvP+ZaMD3OQRLFw4=;
+	s=korg; t=1708359440;
+	bh=XHeDviC1jUNOG/WmcsND7dL5kFdlviJZi56I6RVT3rw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=IAX25bUzgM8xWYpDz7prwBSgwzPmFEr94ra1Ew1kdMhbisj4OozHGAF9sGvCItM7q
-	 omNxg4KLYGoQ3MFkoYpjc6fLUH3KDZpSLI8eWeAZD7JGJYOL6OnTuzqAb+yWehVm97
-	 jJBaocS+TjF7qctG0CL9lLaNthzNv3VZUWMlKnQc=
-Subject: FAILED: patch "[PATCH] ext4: avoid bb_free and bb_fragments inconsistency in" failed to apply to 5.15-stable tree
+	b=Zke7Awqyd2azWSfMyDXtyu/8LxkbOdjdzcI+9kcSBI1iYhNQFN6x22ZrkHRk+0tCZ
+	 v2QruxkfliD5+UeINPnNldV6xe1Y8OAeJKvvg/gOmAmSY+yX6jWk2xzghghV2fOWsQ
+	 5t0kx6e8tHxc9x30IHFV613fgr+ZcfEqLl1oP4kw=
+Subject: FAILED: patch "[PATCH] ext4: avoid bb_free and bb_fragments inconsistency in" failed to apply to 5.10-stable tree
 To: libaokun1@huawei.com,jack@suse.cz,stable@vger.kernel.org,tytso@mit.edu
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Feb 2024 17:17:08 +0100
-Message-ID: <2024021908-deferred-oppose-2c8f@gregkh>
+Date: Mon, 19 Feb 2024 17:17:09 +0100
+Message-ID: <2024021909-marmalade-causal-dfed@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,30 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 2331fd4a49864e1571b4f50aa3aa1536ed6220d0
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021908-deferred-oppose-2c8f@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021909-marmalade-causal-dfed@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
 2331fd4a4986 ("ext4: avoid bb_free and bb_fragments inconsistency in mb_free_blocks()")
 c9b528c35795 ("ext4: regenerate buddy after block freeing failed if under fc replay")
+196e402adf2e ("ext4: improve cr 0 / cr 1 group scanning")
+4b68f6df1059 ("ext4: add MB_NUM_ORDERS macro")
+a6c75eaf1103 ("ext4: add mballoc stats proc file")
+b237e3044450 ("ext4: add ability to return parsed options from parse_options")
+67d251860461 ("ext4: drop s_mb_bal_lock and convert protected fields to atomic")
+6bd97bf273bd ("ext4: remove redundant mb_regenerate_buddy()")
 
 thanks,
 
