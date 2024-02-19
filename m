@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-20572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D6E385A853
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 17:11:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B9C485A858
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 17:11:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28BBC28643C
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 16:11:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0AFFAB260C6
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 16:11:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E0913B7A8;
-	Mon, 19 Feb 2024 16:10:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA5413C697;
+	Mon, 19 Feb 2024 16:11:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y07bobX9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rN4ohlcQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DDC23B181
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 16:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A1F83A1DE
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 16:11:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708359015; cv=none; b=skpirr7fY3ymtq1Uk0FKtLUIxLDHzaRFQxdMy6/6oI/SNVloF3xPoBs0WnzD/vGS1w49T6E0B+MRYwd5k6BOYwWvjnyAYPLL14Q5AYyVpA8VkSrYbhXg7QL1TWEaA8y88c9nd3qdu3zgJAQZ4lCcSjPUA9vHFhPYYMNXeUdWeGY=
+	t=1708359060; cv=none; b=Uyn1Ue1/HNKW3R5C6oFsaP9hxSngtS8jkgSZwHXJzYgjLD8cyzYTnfFFjLLgarThPsUe1xqrF7lAIFgQirihpAcN4oFI2BzTuHHKTt3MAwoO6brsup5Hed+J4aiMi6B0kkdnNuCj79enYcESP+CxnY265NOTCytqBKhGAOv5KlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708359015; c=relaxed/simple;
-	bh=y/WfKmPvlmMzxa3QyMB2NHDNCGTi7rPkBDKNsBeAsp0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pEE1KG+PAwyDkmlAAQ5iUpqD79i9V1rR3+tvf6hs53po+12qvFq0qI62ZsXtKwBVMRU5+e1HlugCr1cRddm0iwIPKFlnQhsBsZ0zktNTMR9QPLrEs+MkvOHNFDDdBtABWM7HNTeK882vHCz+gHKXWco32k4YQEFtWcrue9zUcPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y07bobX9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DE61C433F1;
-	Mon, 19 Feb 2024 16:10:14 +0000 (UTC)
+	s=arc-20240116; t=1708359060; c=relaxed/simple;
+	bh=nh/navufMien7FziRSvK/N5+eI7uUEBodbvc/kNznss=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=o+kNokfgz2+Qwcmup2EdSgm/UMEMugcfb22by7eaYR5BghLI96G3+8CvbyqyfxCCSAazjkds/zYeKXLPU6G0WvFay/bM+vRuq9QJ8UMmMuvCKwiKs8CSpLx6D9svPp4lA4cBltkbODKOU2h1F+mRvZ3dnxUP20Jmk6L2UMw4bKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rN4ohlcQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 735C1C433F1;
+	Mon, 19 Feb 2024 16:10:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708359014;
-	bh=y/WfKmPvlmMzxa3QyMB2NHDNCGTi7rPkBDKNsBeAsp0=;
+	s=korg; t=1708359059;
+	bh=nh/navufMien7FziRSvK/N5+eI7uUEBodbvc/kNznss=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Y07bobX9I8dfqhz0JqmCDYRr2s+C/h5Lg4e2ABphb5Z3AfMD71FmxWUGz0HfDJDY3
-	 gQs41MZvX4BYJ1CKxvseDFblUY2c3CjUyj0kTinyH+YtXc9HmHiCsb6COaCL4w3g4g
-	 tpa5Ywg5P3nt2F9WJ38K5FK5KKVDGklBzVjZs/jY=
-Subject: FAILED: patch "[PATCH] drm/amdgpu/pm: Use inline function for IP version check" failed to apply to 6.7-stable tree
-To: Jun.Ma2@amd.com,alexander.deucher@amd.com,kevinyang.wang@amd.com
+	b=rN4ohlcQ5fWiMwAH38iQ6AqtkPsRgs4L1tZWUfJScsr6/tr0vKwjaumm6Nb1n2ucK
+	 9VhM8h28ZDpsRVXUsWxzPNmMsHGsdSky7rXKVmljowlugT+nJVW0lnPpiGnUpJXxmk
+	 x3MV5oLl0b/USTURMvRnl95x3dj4DBwAdAZoQ6uU=
+Subject: FAILED: patch "[PATCH] lsm: fix default return value of the socket_getpeersec_*()" failed to apply to 6.1-stable tree
+To: omosnace@redhat.com,paul@paul-moore.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Feb 2024 17:10:11 +0100
-Message-ID: <2024021911-upstate-pavestone-eed5@gregkh>
+Date: Mon, 19 Feb 2024 17:10:57 +0100
+Message-ID: <2024021956-lumpiness-massive-2dd8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,27 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.7-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.7.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 6813cdca4ab94a238f8eb0cef3d3f3fcbdfb0ee0
+git cherry-pick -x 5a287d3d2b9de2b3e747132c615599907ba5c3c1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021911-upstate-pavestone-eed5@gregkh' --subject-prefix 'PATCH 6.7.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021956-lumpiness-massive-2dd8@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-6813cdca4ab9 ("drm/amdgpu/pm: Use inline function for IP version check")
-18df969b44a0 ("drm/amd/pm: enable Wifi RFI mitigation feature support for SMU13.0.0")
-b8b39de64627 ("drm/amd/pm: setup the framework to support Wifi RFI mitigation feature")
-2e9b152325f6 ("drm/amdgpu: optimize RLC powerdown notification on Vangogh")
-12c2d3b5f5bc ("drm/amd/pm: Add support to fetch pm metrics sample")
+5a287d3d2b9d ("lsm: fix default return value of the socket_getpeersec_*() hooks")
+b10b9c342f75 ("lsm: make security_socket_getpeersec_stream() sockptr_t safe")
 
 thanks,
 
@@ -81,30 +78,88 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 6813cdca4ab94a238f8eb0cef3d3f3fcbdfb0ee0 Mon Sep 17 00:00:00 2001
-From: Ma Jun <Jun.Ma2@amd.com>
-Date: Wed, 31 Jan 2024 10:19:20 +0800
-Subject: [PATCH] drm/amdgpu/pm: Use inline function for IP version check
+From 5a287d3d2b9de2b3e747132c615599907ba5c3c1 Mon Sep 17 00:00:00 2001
+From: Ondrej Mosnacek <omosnace@redhat.com>
+Date: Fri, 26 Jan 2024 19:45:31 +0100
+Subject: [PATCH] lsm: fix default return value of the socket_getpeersec_*()
+ hooks
 
-Use existing inline function for IP version check.
+For these hooks the true "neutral" value is -EOPNOTSUPP, which is
+currently what is returned when no LSM provides this hook and what LSMs
+return when there is no security context set on the socket. Correct the
+value in <linux/lsm_hooks.h> and adjust the dispatch functions in
+security/security.c to avoid issues when the BPF LSM is enabled.
 
-Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
-Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
+Fixes: 98e828a0650f ("security: Refactor declaration of LSM hooks")
+Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+[PM: subject line tweak]
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-index 3230701d0d38..a9954ffc02c5 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-@@ -2944,7 +2944,7 @@ static bool smu_v13_0_0_wbrf_support_check(struct smu_context *smu)
+diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
+index 185924c56378..76458b6d53da 100644
+--- a/include/linux/lsm_hook_defs.h
++++ b/include/linux/lsm_hook_defs.h
+@@ -315,9 +315,9 @@ LSM_HOOK(int, 0, socket_getsockopt, struct socket *sock, int level, int optname)
+ LSM_HOOK(int, 0, socket_setsockopt, struct socket *sock, int level, int optname)
+ LSM_HOOK(int, 0, socket_shutdown, struct socket *sock, int how)
+ LSM_HOOK(int, 0, socket_sock_rcv_skb, struct sock *sk, struct sk_buff *skb)
+-LSM_HOOK(int, 0, socket_getpeersec_stream, struct socket *sock,
++LSM_HOOK(int, -ENOPROTOOPT, socket_getpeersec_stream, struct socket *sock,
+ 	 sockptr_t optval, sockptr_t optlen, unsigned int len)
+-LSM_HOOK(int, 0, socket_getpeersec_dgram, struct socket *sock,
++LSM_HOOK(int, -ENOPROTOOPT, socket_getpeersec_dgram, struct socket *sock,
+ 	 struct sk_buff *skb, u32 *secid)
+ LSM_HOOK(int, 0, sk_alloc_security, struct sock *sk, int family, gfp_t priority)
+ LSM_HOOK(void, LSM_RET_VOID, sk_free_security, struct sock *sk)
+diff --git a/security/security.c b/security/security.c
+index 6196ccaba433..3aaad75c9ce8 100644
+--- a/security/security.c
++++ b/security/security.c
+@@ -4624,8 +4624,20 @@ EXPORT_SYMBOL(security_sock_rcv_skb);
+ int security_socket_getpeersec_stream(struct socket *sock, sockptr_t optval,
+ 				      sockptr_t optlen, unsigned int len)
  {
- 	struct amdgpu_device *adev = smu->adev;
+-	return call_int_hook(socket_getpeersec_stream, -ENOPROTOOPT, sock,
+-			     optval, optlen, len);
++	struct security_hook_list *hp;
++	int rc;
++
++	/*
++	 * Only one module will provide a security context.
++	 */
++	hlist_for_each_entry(hp, &security_hook_heads.socket_getpeersec_stream,
++			     list) {
++		rc = hp->hook.socket_getpeersec_stream(sock, optval, optlen,
++						       len);
++		if (rc != LSM_RET_DEFAULT(socket_getpeersec_stream))
++			return rc;
++	}
++	return LSM_RET_DEFAULT(socket_getpeersec_stream);
+ }
  
--	switch (adev->ip_versions[MP1_HWIP][0]) {
-+	switch (amdgpu_ip_version(adev, MP1_HWIP, 0)) {
- 	case IP_VERSION(13, 0, 0):
- 		return smu->smc_fw_version >= 0x004e6300;
- 	case IP_VERSION(13, 0, 10):
+ /**
+@@ -4645,8 +4657,19 @@ int security_socket_getpeersec_stream(struct socket *sock, sockptr_t optval,
+ int security_socket_getpeersec_dgram(struct socket *sock,
+ 				     struct sk_buff *skb, u32 *secid)
+ {
+-	return call_int_hook(socket_getpeersec_dgram, -ENOPROTOOPT, sock,
+-			     skb, secid);
++	struct security_hook_list *hp;
++	int rc;
++
++	/*
++	 * Only one module will provide a security context.
++	 */
++	hlist_for_each_entry(hp, &security_hook_heads.socket_getpeersec_dgram,
++			     list) {
++		rc = hp->hook.socket_getpeersec_dgram(sock, skb, secid);
++		if (rc != LSM_RET_DEFAULT(socket_getpeersec_dgram))
++			return rc;
++	}
++	return LSM_RET_DEFAULT(socket_getpeersec_dgram);
+ }
+ EXPORT_SYMBOL(security_socket_getpeersec_dgram);
+ 
 
 
