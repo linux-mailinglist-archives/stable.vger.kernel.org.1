@@ -1,164 +1,144 @@
-Return-Path: <stable+bounces-20622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE5DE85A9D3
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:22:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4A0A85AA0C
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:29:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E58E2883C8
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 17:22:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2451D1C229FC
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 17:29:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D24C44C8C;
-	Mon, 19 Feb 2024 17:22:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B421E45956;
+	Mon, 19 Feb 2024 17:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sL45fs6s"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GE770cYs"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 858A6446A5
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 17:22:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66DA425566;
+	Mon, 19 Feb 2024 17:29:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708363328; cv=none; b=OHwn1/SgkZmRnDRcCGXKrp8lYBbNy4BobBKdwLUfIC4xp+3Z83p2Of3sl8u22OEYm3Bk89NvEMXRjeSQLppY57l/xaIrXuajbB/aKriwrY6P1w+QtcFelWJ1xQ5gcWdwDsVsyQ+Gl5F2Qdg6E0myaMDRuG5nulIYx39m2uhFKp8=
+	t=1708363756; cv=none; b=cYh3KQkt6BD31rHmATOQSnIfbIju7FT21qR4ryRjN+1NO6qKvtYXkqZEnH+chAZMYoOx1smr+Mryg3oVamwR9iaNmws4nCne4uPKlbPTgW0UOMlqi+bHHc8y3lQDL4tT/6Y5N/ngmOeY1mChGMm3A9JYAk8h/dORuHL/lqwGFHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708363328; c=relaxed/simple;
-	bh=D4hbJX7uGV8vohd/O7pYTtYq3FdJW6tASIcFVTSogHk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dGYzngy6JhxlfvY8bE+2xJ5dY44aJhfIZ7ZMDQy5f56k67qnxGO4NIARmzb1yXRDNQCPXhwLBh1xyAiABTJyN5XbAmwrmoLnJB4zGLI7n+p3sxJ37TM7x2eAkswPjzX9JGGNQXpU/+mHhNzvTAGXI1/rNdG30G5aKcGJWeqpudA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sL45fs6s; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-411d9e901dcso108575e9.1
-        for <stable@vger.kernel.org>; Mon, 19 Feb 2024 09:22:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1708363324; x=1708968124; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TzE2ImKo71OrGpPwUdYL/4pHbPBLfbVgHi0cr9m3U8k=;
-        b=sL45fs6sLPjwI75d4uFu8XxABRB/V521bZaKwne7qpuU6wrVTEUIA4UD0hzj9EP1O8
-         B1KKCZt+3VgGoF7Eo2IK+Ni47YoRntvhkFlPY+A30st5Hr1LZsE870leOriwliLFM4QA
-         31E+8KBHTjFLEA+KJaLBmftERuQMO0lMH4rO1dbFlAFgXkw+cHn0FrNw8SCEU0nZGulC
-         SwhH+okvFFFS5sgOktS/IHc3YZD6XDQ/hCp7YNUskEC815Xaf5V69Ae0BrsidNm/K/am
-         V2+XY8s87cXVXfMS1wl6/JChlHQIJQT+srZdiZQmJw+uP/TycvNIHtGv37Skm41h4kit
-         Ly3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708363324; x=1708968124;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TzE2ImKo71OrGpPwUdYL/4pHbPBLfbVgHi0cr9m3U8k=;
-        b=AGtW7cfL4qSg/bVf9PYk645UmwkIeLZMh/j9HCbThaolGwtP6NHx2Biwg1Sk6VL08s
-         gJJFIM05H2EqSqsTZM2BQ4JX5mZ09Danls7v6HT0ssN7CEmpT749311Z4odJUp+t2fBq
-         0XDF6hUMBjjYKkMFUJCAIOgGJFsPPd8bvvLE2EUZ+c51VMWQyjfQrsdNW4FELemmrrFh
-         YIFUQFTI6Ea0aLf6Jtm2vRaJZL+aiOghJIjFU88b9UhGtiv4Dl4aaV9ISCo2hZJ2+Nwr
-         H3s0kxNMuVrpXXieXRmc9VLRz6VhvagsY2MQTfFAh5AuweF0KSJv9nFRj5/i2DxcS4q6
-         CMsA==
-X-Forwarded-Encrypted: i=1; AJvYcCUrC7jQssRVuP4JtzTqVUU3+9UW4ZbY2jDygZ07dxYFDALlWy80Up1OKRsVDZOgo6p0TR3f+cKvMKCAap5Mvqb/cy+HXXz4
-X-Gm-Message-State: AOJu0Yxb2hf6PMCb6F12Hwxia6OueD2mMdvEV4vW4Vq4k3/M7avLXf86
-	BEGHpni+Zy9p0x6vZhFuex7ww40uYKBtXMnpFoyuO1Xsr8U3tbArFozbGFy0QpJW1HNAwf5mUz6
-	+ciKdsMUFttcPgO9Go/BR0QEwSa0/OU7JdxxO
-X-Google-Smtp-Source: AGHT+IFtUO3gJmAv9pg3NVlt8jW79fOGFR/YkJjU3AyGWJK7/hjLBpWxiTYoMfGOwmlNssRqFlRN3PKW2DohJYoHKeM=
-X-Received: by 2002:a05:600c:c08:b0:412:68a7:913a with SMTP id
- fm8-20020a05600c0c0800b0041268a7913amr116160wmb.4.1708363323800; Mon, 19 Feb
- 2024 09:22:03 -0800 (PST)
+	s=arc-20240116; t=1708363756; c=relaxed/simple;
+	bh=HDOUgL6Y0nc7IvKBPLbbUpZK2qQlAnpDmaaG/SLeRF0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=L1iPQzRqBxKR8sx11JYoJR7cScv7h4eJC+a3VZDey26upiybbYNXewKyll/ZgEADvpixsQZvCc49BwAUrLs/kS3HM5bngsDb/MFIRS3bD34zVTKfMAYPl8VdDy6WCOmrZhOSMA40GlXlyzAH/0jTWVr+HiZgFrDNAULfnslSvZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GE770cYs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D434C433F1;
+	Mon, 19 Feb 2024 17:29:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708363756;
+	bh=HDOUgL6Y0nc7IvKBPLbbUpZK2qQlAnpDmaaG/SLeRF0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GE770cYsLQOhGWHmeW4Wg45pDEMxw26SbCB7J9GSGeTl7xQsE9XqhdyPsSDWl1Zx3
+	 GkLul7ypkIJvVGKOnIDIlmwNi8Q+VnTopWh448gGGS5T4pP9gJuH89xqr118L7d1l+
+	 obyKh8WkVuV6gjlzFMVRklxXAY53JPCpTT8xRRQlccCm2IQW+xOklWfRPJqQsSsPKl
+	 jX+pEMjurC+jfEYSlBBVtis0nu2adzeOz5r3PlYClT5iggsaVZ/Iw8rNmvz8fOtJv2
+	 /KGOTaFj8QTc8l5D2mo7mpGYFBC2DwW7mT6IMbPFGcR+H8eiJ7B64HfaZCJtDbhn8w
+	 dXFebOuUKJu9A==
+Date: Mon, 19 Feb 2024 18:29:10 +0100
+From: Lorenzo Pieralisi <lpieralisi@kernel.org>
+To: Maulik Shah <quic_mkshah@quicinc.com>
+Cc: Mark Rutland <mark.rutland@arm.com>, andersson@kernel.org,
+	ulf.hansson@linaro.org, linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-pm@vger.kernel.org, quic_lsrao@quicinc.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] firmware/psci: Move psci_init_system_suspend() to
+ late_initcall()
+Message-ID: <ZdOP5oAwZvEhNAsn@lpieralisi>
+References: <20240219-suspend_ops_late_init-v1-1-6330ca9597fa@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240215-upstream-net-20240215-misc-fixes-v1-0-8c01a55d8f6a@kernel.org>
- <20240215-upstream-net-20240215-misc-fixes-v1-3-8c01a55d8f6a@kernel.org>
-In-Reply-To: <20240215-upstream-net-20240215-misc-fixes-v1-3-8c01a55d8f6a@kernel.org>
-From: Eric Dumazet <edumazet@google.com>
-Date: Mon, 19 Feb 2024 18:21:52 +0100
-Message-ID: <CANn89iJ=Oecw6OZDwmSYc9HJKQ_G32uN11L+oUcMu+TOD5Xiaw@mail.gmail.com>
-Subject: Re: [PATCH net 03/13] mptcp: fix lockless access in subflow ULP diag
-To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Cc: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
-	Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Davide Caratti <dcaratti@redhat.com>, Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	stable@vger.kernel.org, Boris Pismenny <borisp@nvidia.com>, 
-	John Fastabend <john.fastabend@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240219-suspend_ops_late_init-v1-1-6330ca9597fa@quicinc.com>
 
-On Thu, Feb 15, 2024 at 7:25=E2=80=AFPM Matthieu Baerts (NGI0)
-<matttbe@kernel.org> wrote:
->
-> From: Paolo Abeni <pabeni@redhat.com>
->
-> Since the introduction of the subflow ULP diag interface, the
-> dump callback accessed all the subflow data with lockless.
->
-> We need either to annotate all the read and write operation accordingly,
-> or acquire the subflow socket lock. Let's do latter, even if slower, to
-> avoid a diffstat havoc.
->
-> Fixes: 5147dfb50832 ("mptcp: allow dumping subflow context to userspace")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-> Reviewed-by: Mat Martineau <martineau@kernel.org>
-> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+On Mon, Feb 19, 2024 at 03:02:04PM +0530, Maulik Shah wrote:
+> psci_init_system_suspend() invokes suspend_set_ops() very early during
+> bootup even before kernel command line for mem_sleep_default is setup.
+> This leads to kernel command line mem_sleep_default=s2idle not working
+> as mem_sleep_current gets changed to deep via suspend_set_ops() and never
+> changes back to s2idle.
+> 
+> Move psci_init_system_suspend() to late_initcall() to make sure kernel
+> command line mem_sleep_default=s2idle sets up s2idle as default suspend
+> mode.
+
+Why can't we fix it the other way around, namely enforce
+mem_sleep_current according to the mem_sleep_default command line
+even if suspend_set_ops() was already called ?
+
+Just asking, I am not super keen on using initcalls ordering, it
+looks fragile to me.
+
+Thanks,
+Lorenzo
+
+> Fixes: faf7ec4a92c0 ("drivers: firmware: psci: add system suspend support")
+> CC: stable@vger.kernel.org # 5.15+
+> Signed-off-by: Maulik Shah <quic_mkshah@quicinc.com>
 > ---
-> Notes:
->   - This patch modifies the existing ULP API. No better solutions have
->     been found for -net, and there is some similar prior art, see
->     commit 0df48c26d841 ("tcp: add tcpi_bytes_acked to tcp_info").
->
->     Please also note that TLS ULP Diag has likely the same issue.
-> To: Boris Pismenny <borisp@nvidia.com>
-> To: John Fastabend <john.fastabend@gmail.com>
-> ---
->  include/net/tcp.h  | 2 +-
->  net/mptcp/diag.c   | 6 +++++-
->  net/tls/tls_main.c | 2 +-
->  3 files changed, 7 insertions(+), 3 deletions(-)
->
-> diff --git a/include/net/tcp.h b/include/net/tcp.h
-> index dd78a1181031..f6eba9652d01 100644
-> --- a/include/net/tcp.h
-> +++ b/include/net/tcp.h
-> @@ -2506,7 +2506,7 @@ struct tcp_ulp_ops {
->         /* cleanup ulp */
->         void (*release)(struct sock *sk);
->         /* diagnostic */
-> -       int (*get_info)(const struct sock *sk, struct sk_buff *skb);
-> +       int (*get_info)(struct sock *sk, struct sk_buff *skb);
->         size_t (*get_info_size)(const struct sock *sk);
->         /* clone ulp */
->         void (*clone)(const struct request_sock *req, struct sock *newsk,
-> diff --git a/net/mptcp/diag.c b/net/mptcp/diag.c
-> index a536586742f2..e57c5f47f035 100644
-> --- a/net/mptcp/diag.c
-> +++ b/net/mptcp/diag.c
-> @@ -13,17 +13,19 @@
->  #include <uapi/linux/mptcp.h>
->  #include "protocol.h"
->
-> -static int subflow_get_info(const struct sock *sk, struct sk_buff *skb)
-> +static int subflow_get_info(struct sock *sk, struct sk_buff *skb)
+>  drivers/firmware/psci/psci.c | 13 ++++++++++---
+>  1 file changed, 10 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/firmware/psci/psci.c b/drivers/firmware/psci/psci.c
+> index d9629ff87861..655a2db70a67 100644
+> --- a/drivers/firmware/psci/psci.c
+> +++ b/drivers/firmware/psci/psci.c
+> @@ -523,18 +523,26 @@ static void __init psci_init_system_reset2(void)
+>  		psci_system_reset2_supported = true;
+>  }
+>  
+> -static void __init psci_init_system_suspend(void)
+> +static int __init psci_init_system_suspend(void)
 >  {
->         struct mptcp_subflow_context *sf;
->         struct nlattr *start;
->         u32 flags =3D 0;
-> +       bool slow;
->         int err;
->
->         start =3D nla_nest_start_noflag(skb, INET_ULP_INFO_MPTCP);
->         if (!start)
->                 return -EMSGSIZE;
->
-> +       slow =3D lock_sock_fast(sk);
->         rcu_read_lock();
-
-I am afraid lockdep is not happy with this change.
-
-Paolo, we probably need the READ_ONCE() annotations after all.
+>  	int ret;
+> +	u32 ver;
+>  
+>  	if (!IS_ENABLED(CONFIG_SUSPEND))
+> -		return;
+> +		return 0;
+> +
+> +	ver = psci_0_2_get_version();
+> +	if (PSCI_VERSION_MAJOR(ver) < 1)
+> +		return 0;
+>  
+>  	ret = psci_features(PSCI_FN_NATIVE(1_0, SYSTEM_SUSPEND));
+>  
+>  	if (ret != PSCI_RET_NOT_SUPPORTED)
+>  		suspend_set_ops(&psci_suspend_ops);
+> +
+> +	return ret;
+>  }
+> +late_initcall(psci_init_system_suspend)
+>  
+>  static void __init psci_init_cpu_suspend(void)
+>  {
+> @@ -651,7 +659,6 @@ static int __init psci_probe(void)
+>  	if (PSCI_VERSION_MAJOR(ver) >= 1) {
+>  		psci_init_smccc();
+>  		psci_init_cpu_suspend();
+> -		psci_init_system_suspend();
+>  		psci_init_system_reset2();
+>  		kvm_init_hyp_services();
+>  	}
+> 
+> ---
+> base-commit: d37e1e4c52bc60578969f391fb81f947c3e83118
+> change-id: 20240219-suspend_ops_late_init-27fb0b15baee
+> 
+> Best regards,
+> -- 
+> Maulik Shah <quic_mkshah@quicinc.com>
+> 
 
