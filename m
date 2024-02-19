@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-20598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE29485A89C
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 17:19:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC10585A89D
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 17:19:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CAE01C233DE
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 16:19:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C1621C23557
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 16:19:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E5273C46F;
-	Mon, 19 Feb 2024 16:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1924B3BB3B;
+	Mon, 19 Feb 2024 16:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lxDUUN6c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aU7XE61S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3A823B7A1
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 16:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95223B7A1
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 16:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708359522; cv=none; b=Dec96AsunTV7JOat+CPt29vTM6nB32JLO4rh0XNZZ0frQTj2J0N2X0/n5FrwzaU3jDKiUGzrTZfZ/ej3BRhWTp/Im14bmptLzGaNJVPfbQN2JeSyGAVqt3gca3uaE/MH0B3siNVSWUiYrvFjY1De9Tja2StnD+crqy5z5myHgrI=
+	t=1708359525; cv=none; b=QjJj3s04I8cwXRlInv4Q7frpH5T9NR1aZSKH6esQRrCHH5ZEyquUyKcB0mhDhcovmFiOGXSWeEH2tBoflBs872iGrcGO3kbZ04I8jguXX7UQJOcuY3gHXlKqQu3A3pOgoBpOIgls2JDs7hd9s8x/1amG3wx/3y/FWlj04T4J9dM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708359522; c=relaxed/simple;
-	bh=Ycr+rkwAX4HS2a1IUZ5HvJX2GWHtvI9ypj8HMGVKfPs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=W12DViBqXrGz5kzhSpW0uTjhcAxy9Q/Y2/ZPRt3MxN2mSk/JGJNgv+HpnVRv+QWDKqZX9/tJOyymo/vq9JucIThB8LBo1FFV2vuKQOXMK4kBKCLFXkXQu0khrBPir8ds75kbLk3Nh0gXQ/tQ3aGnV4Nlj6dtQeKE21RxYhvO1d4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lxDUUN6c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4B4EC433F1;
-	Mon, 19 Feb 2024 16:18:41 +0000 (UTC)
+	s=arc-20240116; t=1708359525; c=relaxed/simple;
+	bh=ZUAAM2XSHYSHqVx/usknJcDXU0Ta3YyVtVsNyWXL4JU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=tMXhUomFDY0vBgboBzGFP0XbOnqoOIWiH0gSqcueCCaSAdyPyOy3zpcpXajj7EdkB5i6z8tEnz5EmhpjhittIbkjo62uXQfL6muzsjAjmi+OHTzeMnSlupJQZCsiICAxxMb+EbLmHze0VhtRv3B9Cx9AoUuSTebgU+d198okJBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aU7XE61S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19744C433F1;
+	Mon, 19 Feb 2024 16:18:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708359522;
-	bh=Ycr+rkwAX4HS2a1IUZ5HvJX2GWHtvI9ypj8HMGVKfPs=;
+	s=korg; t=1708359525;
+	bh=ZUAAM2XSHYSHqVx/usknJcDXU0Ta3YyVtVsNyWXL4JU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=lxDUUN6cwLKdse1vMdx7SXjRUu62hSsM90cI+FUQNmXss7aQCStJt7HkxzPCWHGDK
-	 KqKI5z51bcxZWXHHW8Q7NICFq9F0/G58P3TJpXqRJ/fGH9UovrZJIVoCNyDD7ALLD6
-	 Mu+FzP81zGEw1zDhWF/HpnAYO+cHHfuPdV17Wo/Y=
-Subject: FAILED: patch "[PATCH] tracing/probes: Fix to show a parse error for bad type for" failed to apply to 6.1-stable tree
+	b=aU7XE61SKg9WsXchpE/4s3QEF0YeEEL7cXngZc4o3o4wE8ETWXKfapbDG+uvF4I4T
+	 k7I49seBowr7xskj4hvCN2A7ikcjT5s5PW/31odgftIFhV4dwinnLwZYU9lGaAfzr/
+	 clYcPa92JwWH30u8Ij12i7U3cw9D5lzmiAKpFfQg=
+Subject: FAILED: patch "[PATCH] tracing/probes: Fix to show a parse error for bad type for" failed to apply to 5.15-stable tree
 To: mhiramat@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Feb 2024 17:18:39 +0100
-Message-ID: <2024021939-unproven-observer-095f@gregkh>
+Date: Mon, 19 Feb 2024 17:18:40 +0100
+Message-ID: <2024021940-shrewdly-lumpish-1928@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 8c427cc2fa73684ea140999e121b7b6c1c717632
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021939-unproven-observer-095f@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021940-shrewdly-lumpish-1928@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -86,6 +86,9 @@ e2d0d7b2f42d ("tracing/probes: Add tracepoint support on fprobe_events")
 30460c21ed40 ("tracing/probes: Avoid setting TPARG_FL_FENTRY and TPARG_FL_RETURN")
 d4505aa6afae ("tracing/probes: Reject symbol/symstr type for uprobe")
 b26a124cbfa8 ("tracing/probes: Add symstr type for dynamic events")
+61b304b73ab4 ("tracing/fprobe: Fix to check whether fprobe is registered correctly")
+752be5c5c910 ("tracing/eprobe: Add eprobe filter support")
+ab8384442ee5 ("tracing/probes: Have kprobes and uprobes use $COMM too")
 
 thanks,
 
