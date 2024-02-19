@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-20709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36D6685AB6F
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E619185AB70
 	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:49:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECF4E284DCF
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:49:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 239C71C22B0D
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:49:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D961482EC;
-	Mon, 19 Feb 2024 18:48:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5C0D482F0;
+	Mon, 19 Feb 2024 18:48:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wutGkIBf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yxkavTDS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BDEC482F0
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:48:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68208376F5
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:48:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708368535; cv=none; b=OfJbAnH+g4NnboUnj7CzpatZUTh9nMs3jFvj61E4zvwwigdR3Yl8BzKOvDas7s/q1f6inTd8FzN4Db7JWArFqpgc4srlznGBzZqqoaiQfXxZNOpeBAiTYD0W9vZmBoukQar+Di9GZSh2KfO7N+VefGTV2G+jTHU1O3zJEjnZcA8=
+	t=1708368538; cv=none; b=MlA/IhewOw0duGEtFLfT2vnmNwkYmCmXiWWzDsdJR90RW0Xv3RODiFZfeTf5PXOPUc4tvNGAXVB4jDBe5CFsDuSS+BntYGEn9n9xpNfoo0pejA6TILj4jIH87bFRIPhgY2GUyNAxyJBxJgDuCawKCgQIT47f5nKsRGgVk3faFT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708368535; c=relaxed/simple;
-	bh=Ji9y/xQ2HhSEh4Xg8XUo68lUs068DvNPBkK9cDP/KPk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pTHPv4lYpSOGw1yiAsAbaMgfdOS25z7WgWITDTg0TW4TeLInXsaERl7bIJx3LqinKUyLGaej4ZqfIDOAPNuHre9f96VTnUxRizq35Q7M6n2QtBLYsl+7vizAxSm7rZFhNeRst4oRIqy2WcHAMquT/UkWqSUxiDaRMUv0b/fPp8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wutGkIBf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5680C433C7;
-	Mon, 19 Feb 2024 18:48:54 +0000 (UTC)
+	s=arc-20240116; t=1708368538; c=relaxed/simple;
+	bh=X6Ww1wPb2569lz16pvt3E6tC5mauxaUHlmbDLdTiNEI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=PDDr/K4r6zVeN73w1+OcbQy3RWKqyUivWcrCiF6dGgkqUZD816cFovsRVOnidnANAnFVX58BiMk18eccW3lCWghNdFowvFhAqcMuhWF0CbM4eCiNm59ga5FHFJ552RLaJ6Q8oBIbXR5k6M3xnbK6Fq1l6jg1btX+8h46Tl7yrPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yxkavTDS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8104C433C7;
+	Mon, 19 Feb 2024 18:48:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708368535;
-	bh=Ji9y/xQ2HhSEh4Xg8XUo68lUs068DvNPBkK9cDP/KPk=;
+	s=korg; t=1708368538;
+	bh=X6Ww1wPb2569lz16pvt3E6tC5mauxaUHlmbDLdTiNEI=;
 	h=Subject:To:Cc:From:Date:From;
-	b=wutGkIBfPCpUlnF0UlJx4S0GGK/2j47IJbRTMmog1IsriztmyJJA5jmQbeY3nuv15
-	 LU2gioixiAuIrFClkVro7ZP8ders5LnAwQWUEtf4E9uRnrxqooyu7a9MCcUQSKS0T0
-	 /YTt8l582CX6WTNs01zvX8frnETSY4zmP1Z25XQk=
-Subject: FAILED: patch "[PATCH] pmdomain: renesas: r8a77980-sysc: CR7 must be always on" failed to apply to 5.10-stable tree
+	b=yxkavTDS6fe4qNYHHjhXIH6TK/QvLEmbm5H1N3TADcxMKvanHchq730p317E02ZZc
+	 4bBJgTfoDh3CHoUPuTJO9fZe9i0UTXTcKreC4yIxD/Ra1TgnfywCMS2QPetIg+EmRj
+	 CGtIsjtjgGjXZp9SmlkP6DvLaWnM9YPmf+JvWch0=
+Subject: FAILED: patch "[PATCH] pmdomain: renesas: r8a77980-sysc: CR7 must be always on" failed to apply to 5.4-stable tree
 To: geert+renesas@glider.be,ulf.hansson@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Feb 2024 19:48:46 +0100
-Message-ID: <2024021946-unfitting-schnapps-e6e2@gregkh>
+Date: Mon, 19 Feb 2024 19:48:47 +0100
+Message-ID: <2024021947-dividers-resize-9476@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x f0e4a1356466ec1858ae8e5c70bea2ce5e55008b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021946-unfitting-schnapps-e6e2@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021947-dividers-resize-9476@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
