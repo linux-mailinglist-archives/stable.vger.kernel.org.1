@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-20542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A959085A750
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 16:25:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C2BC85A751
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 16:26:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 492761F2142F
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 15:25:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 423DE1F2159B
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 15:26:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80ED5383A1;
-	Mon, 19 Feb 2024 15:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BFE138396;
+	Mon, 19 Feb 2024 15:26:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bM8mFs/c"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NhmJL0Zp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4013D3839B
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 15:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B9BD1EA80
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 15:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708356315; cv=none; b=Sh5zhAqI7CdjQV+qvDu249kkMJIB6F5xBF1bDeGElNcOmOhev93TuZBSrSC1KKe+IzA7ogecTPUV+IbSXT2JEoDmaeUkRuSDmsIOn0wju4Tj8BQn7UzLEGRy9mJzbUyQvhifA9hTqrAEWk3WDaKpYANEpLnQ2FTrUFr+jbVQLS0=
+	t=1708356366; cv=none; b=NEF17fmRXDl11lXbTDBEgMFZvZu9xz+SxLid/EMFPXHO4NOfQMEE5YBcN7H36kJrRgZq5HXYT66N6RSF9Nzlqh4wlDI2FeVXJy74aImO5M0mJmzl+T3XnvPt2GtblcveFgh9wLJ4Pv4f4NFMy5pus2rwDzihTJD7RwRFMeFuIOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708356315; c=relaxed/simple;
-	bh=XMAwhd513OzrWbhqYszqwzRJS4HKcTdTYX2ZXufpADo=;
+	s=arc-20240116; t=1708356366; c=relaxed/simple;
+	bh=zL3299zTVnK2hz7DI4UAzlgM3bvr4vtxM8b4CuPIUkg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h5U37ziQ7vqYXQDZCY8mLs1e0pzQ2fx1VTCJVI/jhtCEamnRiScGYZa0nK8X7CeM8kh2Btg4YMp6+OAdEJFojVMr8NMJwvMCc/IJw3UTvhRaCenrA1TlG4NVrlgq/Fr7v4OZGw4AzF7zp0VJmTj8UmSCY5QgL6NcXRP9RizWatE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bM8mFs/c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70C30C433C7;
-	Mon, 19 Feb 2024 15:25:11 +0000 (UTC)
+	 MIME-Version; b=f1WBgpuzsp2RvY7t324FRXGvgtAi6dw06/2+YrSgw2MYKKv0RefdcE3iutgbmy+jOHT39AV+19to0vaHGx8npMH++a7k7De8MfR4AMkRi3zXG23X4cZK7Xp7g9+GoaXpOjC0ZfEzdYzq74YZ7YVRdr9S+ldLBaw1IZG93YOO4tQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NhmJL0Zp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E04D2C433F1;
+	Mon, 19 Feb 2024 15:26:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708356315;
-	bh=XMAwhd513OzrWbhqYszqwzRJS4HKcTdTYX2ZXufpADo=;
+	s=k20201202; t=1708356365;
+	bh=zL3299zTVnK2hz7DI4UAzlgM3bvr4vtxM8b4CuPIUkg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bM8mFs/chvnd/DZJrVp4awMxRtTndENIQ/NB5+9l2mW5+j6jHY95dfPoQftccX+rF
-	 9Qu/MkuWXBjcqvDvIb41qqEz/jKZeVfAzKkJrUPGnOpygLg0diFneq3Aejx68PBAmy
-	 BylNhrc2igJwbfyuq2JLQBiFkMjgabtB47h+AF9o/pFCruaNXNBnVsYpSAqie4G6Fs
-	 Y97oxEuLkQO0QO8Evm+6uiIH2th0bdl40jL6kock58yEfqF8VqIZSrUJeRDF8ibUxY
-	 JL8P6ZX7fnVK6Ga9ccl87vV8GkfX5PdPJ7iedbv9TUIzQ8kiBCHVLlvf0UQADZqbCM
-	 W6h2KtINucuCQ==
+	b=NhmJL0ZpnEXRq4Y+5Xt03bum30eQxASc+T+VIzy8ynZm/119grXYyf4JYJtsRh58W
+	 xGkTZOSi1BJaIE96UWMcf+H0pubgWsIkXFPefn9X6eV9JUtgTsKCmvDfnsivCqyXWj
+	 HPtzYsUBdU9B0On88OAkH0Uc7/4GNIWbjSqbMIfn9WcjVLsHp/HdiabnxMJbZD6sEe
+	 2dFOZpKsIqb0QW65WCLELtUXo+dvrbkxzW9+ZxzZKAf8/kM/l0K4WRvosQRhkb75h+
+	 0KTdp6IQCJzou50bscBGfisjeiFqRXkp0JHC9fhWBUGTNyXoil3um0A5XUtaI3Kxed
+	 LYmqWwxKqOXEg==
 From: Mike Rapoport <rppt@kernel.org>
 To: stable@vger.kernel.org
 Cc: Lokesh Gidra <lokeshgidra@google.com>,
@@ -56,12 +56,12 @@ Cc: Lokesh Gidra <lokeshgidra@google.com>,
 	Peter Xu <peterx@redhat.com>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: ["PATCH 6.1.y"] userfaultfd: fix mmap_changing checking in mfill_atomic_hugetlb
-Date: Mon, 19 Feb 2024 17:24:52 +0200
-Message-ID: <20240219152452.394767-1-rppt@kernel.org>
+Subject: ["PATCH 5.15.y"] userfaultfd: fix mmap_changing checking in mfill_atomic_hugetlb
+Date: Mon, 19 Feb 2024 17:25:51 +0200
+Message-ID: <20240219152551.394793-1-rppt@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <2024021847-glandular-distant-2033@gregkh>
-References: <2024021847-glandular-distant-2033@gregkh>
+In-Reply-To: <2024021848-spiny-glitzy-711f@gregkh>
+References: <2024021848-spiny-glitzy-711f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -96,22 +96,22 @@ Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 (cherry picked from commit 67695f18d55924b2013534ef3bdc363bc9e14605)
 Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
 ---
- mm/userfaultfd.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ mm/userfaultfd.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
 diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 650ab6cfd5f4..992a0a16846f 100644
+index caa13abe0c56..98a9d0ef2d91 100644
 --- a/mm/userfaultfd.c
 +++ b/mm/userfaultfd.c
-@@ -327,6 +327,7 @@ static __always_inline ssize_t __mcopy_atomic_hugetlb(struct mm_struct *dst_mm,
+@@ -289,6 +289,7 @@ static __always_inline ssize_t __mcopy_atomic_hugetlb(struct mm_struct *dst_mm,
  					      unsigned long dst_start,
  					      unsigned long src_start,
  					      unsigned long len,
 +					      atomic_t *mmap_changing,
- 					      enum mcopy_atomic_mode mode,
- 					      bool wp_copy)
+ 					      enum mcopy_atomic_mode mode)
  {
-@@ -445,6 +446,15 @@ static __always_inline ssize_t __mcopy_atomic_hugetlb(struct mm_struct *dst_mm,
+ 	int vm_shared = dst_vma->vm_flags & VM_SHARED;
+@@ -405,6 +406,15 @@ static __always_inline ssize_t __mcopy_atomic_hugetlb(struct mm_struct *dst_mm,
  				goto out;
  			}
  			mmap_read_lock(dst_mm);
@@ -127,22 +127,21 @@ index 650ab6cfd5f4..992a0a16846f 100644
  
  			dst_vma = NULL;
  			goto retry;
-@@ -480,6 +490,7 @@ extern ssize_t __mcopy_atomic_hugetlb(struct mm_struct *dst_mm,
+@@ -440,6 +450,7 @@ extern ssize_t __mcopy_atomic_hugetlb(struct mm_struct *dst_mm,
  				      unsigned long dst_start,
  				      unsigned long src_start,
  				      unsigned long len,
 +				      atomic_t *mmap_changing,
- 				      enum mcopy_atomic_mode mode,
- 				      bool wp_copy);
+ 				      enum mcopy_atomic_mode mode);
  #endif /* CONFIG_HUGETLB_PAGE */
-@@ -601,8 +612,8 @@ static __always_inline ssize_t __mcopy_atomic(struct mm_struct *dst_mm,
+ 
+@@ -561,7 +572,8 @@ static __always_inline ssize_t __mcopy_atomic(struct mm_struct *dst_mm,
  	 */
  	if (is_vm_hugetlb_page(dst_vma))
  		return  __mcopy_atomic_hugetlb(dst_mm, dst_vma, dst_start,
--					       src_start, len, mcopy_mode,
--					       wp_copy);
+-						src_start, len, mcopy_mode);
 +					       src_start, len, mmap_changing,
-+					       mcopy_mode, wp_copy);
++					       mcopy_mode);
  
  	if (!vma_is_anonymous(dst_vma) && !vma_is_shmem(dst_vma))
  		goto out_unlock;
