@@ -1,336 +1,154 @@
-Return-Path: <stable+bounces-20495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C1E9859E14
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 09:21:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE327859E2F
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 09:26:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7E22DB2089B
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 08:21:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1B2F1C217CB
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 08:26:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C538F20DFA;
-	Mon, 19 Feb 2024 08:21:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 080FB2110B;
+	Mon, 19 Feb 2024 08:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OgmNZOLZ"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="e+nlVF1a";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="lLQF3Clv";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="e+nlVF1a";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="lLQF3Clv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88FD2134A;
-	Mon, 19 Feb 2024 08:21:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 306D320320
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 08:26:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708330862; cv=none; b=bupwl58xqQeJAYG42ejOJyKQyXfKNwEZTUc068+6UcLCSMi9BcHB9ROrfmwCGQvN/2quiJxRgAHdIILbzkl00BlNN+2J+yV6X2z3MYjXE5wLqYyWyCNncFGTxka2a4PZ5nCFSgSOWrP7/E6t7CEC2q3kgQgEC6EgZIOzt6rgjtg=
+	t=1708331174; cv=none; b=a9OiHXIdkIb+jJfNtxR2n4a3lz6Mb/aDbziWf/HpOXzLP2M+FdlYTLjuxpxYpfozThu0gkW/ID6kFUe61Ap6XNKGPVqM/Z0EzAkukYejlSeFTsSPRinxr3zOLpHCwsJ6IM+e9mF7O/sEvnFZ18oraiG7SJKwXIHtbaQJYO3Wrys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708330862; c=relaxed/simple;
-	bh=KK0U6nGCFbFXpgilN2iSD6ZS/ljysbOqEN5GyyU41kI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YcVYHm5rd0nMalPTTD0gb9atZIRtxC3juALZ2Xquplz6gvmlBQfF5SF45t2FB0LUoXfqcLGWHRxttHW0NhGYOG3efFwNgxKMlmM1DD06tly87D3eO0C7/zfOsNXk7tD2/oDD9y6WNZBIPd7XrRJIzEZs/CD2N2QDAv457tmLyw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OgmNZOLZ; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-5cddc5455aeso2305700a12.1;
-        Mon, 19 Feb 2024 00:21:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708330860; x=1708935660; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:reply-to:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=JChNLde82L5m9AVzKziuQHuDxbxpj+2i5hnJOoXu0tI=;
-        b=OgmNZOLZjqJ/AoUx4FEK3PTypOjubxWPLT21QSyMtDYwfw8hTeqjsPtTvGZVg2139K
-         Nf5Iz7/hRxWZIsn7iAY6HjYR9j5tUVoMJMaENpgkcEJnXplrt5QXk/7UAVd+0H1O33LD
-         bvGcrBTsOd1tOWTh9Ok4S15cz8bz8axBEdH47yefVtDjOM5BiuSPAj/dVenWMvikOe6Y
-         x8k1RQHiMhRyKBJLldzaEBWxxGOfd5cpjHIPK7VOIHqiCwOtpj21jMMiC7B6D5OIJXa0
-         HSEB8AUA2M6Adgya3RqKRF/cBccCsRbPih345/jkW+bQZo6JMyL5luyr7iiN64ypWrJL
-         Gdmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708330860; x=1708935660;
-        h=content-transfer-encoding:mime-version:reply-to:message-id:date
-         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JChNLde82L5m9AVzKziuQHuDxbxpj+2i5hnJOoXu0tI=;
-        b=TbrmO2dNebYFUhYNuF6qu4AFCTerq1GkcpJcQmM7JkVNcdhKmpy7ljV7Pw35c6UlUt
-         T2Q0wJEp09fADoZnlZQp6N4ZCtZ3S5iLsoy48BdjdCc/rELd2aWvzyqimeCLB5OlkGJT
-         6px9qXkUkbFsitgIAPX6Xg53N6W2n2m079j0RQWRnqwxqeALrcUQmmMSEcumwvk/jR65
-         19pXv9S+vYDN0QhGYawqalNhrbbjlD2RJJI70H2AJERHi3GcmNYFdWZnqTNVy/vqVCHL
-         TOshmPtgQHR6oBsKHzgOxSEhpxyd0eN+huZNx+iR11zxskasb/ZRICshnwi4gF27NeXz
-         EjJw==
-X-Forwarded-Encrypted: i=1; AJvYcCVHPPVMclbRU0aUkjOY1kMqW+RRYBdg1HCegRB1uRH7iXpCi/zy2qyJxyGAKYUuXqiUPGhEYNPZIl9IpDQshN7MGRGps7m7bWoXpoZLZinDE/HZPZqYpUESA104xKKfCq5tiIpG
-X-Gm-Message-State: AOJu0YzGAiZFF7IJLNLf6GTH4ktsB2qaMNlk7qipYhEWBS9eWfBZeM63
-	EetjCWu3k0OICc+4hXaTCOWt6xAAqu862MG1bGoTRf+KB8Qg/pvb
-X-Google-Smtp-Source: AGHT+IFUzxl7M6z2ToajWeg4ujLZ5c7nVGQiaEFJostNyF9dytQWaQsSchxz4PUlEMzJihWTpC6nRg==
-X-Received: by 2002:a05:6a20:49b0:b0:19e:c34a:6fb2 with SMTP id fs48-20020a056a2049b000b0019ec34a6fb2mr7443677pzb.20.1708330860040;
-        Mon, 19 Feb 2024 00:21:00 -0800 (PST)
-Received: from KASONG-MB2.tencent.com ([43.132.141.24])
-        by smtp.gmail.com with ESMTPSA id cp15-20020a17090afb8f00b0029929839db8sm4674849pjb.14.2024.02.19.00.20.55
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 19 Feb 2024 00:20:59 -0800 (PST)
-From: Kairui Song <ryncsn@gmail.com>
-To: linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	"Huang, Ying" <ying.huang@intel.com>,
-	Chris Li <chrisl@kernel.org>,
-	Minchan Kim <minchan@kernel.org>,
-	Barry Song <v-songbaohua@oppo.com>,
-	Yu Zhao <yuzhao@google.com>,
-	SeongJae Park <sj@kernel.org>,
-	David Hildenbrand <david@redhat.com>,
-	Hugh Dickins <hughd@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Yosry Ahmed <yosryahmed@google.com>,
-	Aaron Lu <aaron.lu@intel.com>,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Kairui Song <kasong@tencent.com>
-Subject: [PATCH v4] mm/swap: fix race when skipping swapcache
-Date: Mon, 19 Feb 2024 16:20:40 +0800
-Message-ID: <20240219082040.7495-1-ryncsn@gmail.com>
-X-Mailer: git-send-email 2.43.0
-Reply-To: Kairui Song <kasong@tencent.com>
+	s=arc-20240116; t=1708331174; c=relaxed/simple;
+	bh=erH4/v2CKMxgJZ8lHD4k+yf1CAwK7bi6Lj8v/IlFaJM=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Y/wcCnlopPDow/rBYSvcUvegc7u3m5V2nBc/rNXMLHGBo2bzue5rXUmMSl2Dpjsy0DH8dSQ2WXU50sxHCr14yYEreebW+Kw8ew8R/1XVkAB1d7iqnGA6Rf3f0hV1X2CmoUi81VYOC2LcrqSOgZ8a0wmyDkasWNhdLtx0Zj//YDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=e+nlVF1a; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=lLQF3Clv; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=e+nlVF1a; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=lLQF3Clv; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 4B53921C14;
+	Mon, 19 Feb 2024 08:26:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1708331171; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=L1oTvsJEC0RW4pZVI6O3To2ANPqP0P6uuo0vISwSHEE=;
+	b=e+nlVF1aepKag0Vwi9L/ims0suRJs/Wu45zHcyeztTbsp1qJy/Yr4+yzX3FKXFRqDcqFug
+	baQaITMFbkXebvyYBniaVW6kO9G+My7nTT8oIhRkuVrCegZbM6ob5sqjldmwmHz/L0m22E
+	1HlKJqFHbGHV7SKcXxUT2oxTU5WE5EA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1708331171;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=L1oTvsJEC0RW4pZVI6O3To2ANPqP0P6uuo0vISwSHEE=;
+	b=lLQF3ClvkZaINHpfiqbOlDeZDJzJQ1UIEofXsSxt8glJKBIQ+3Y40aGieF0XiXEHILWfCR
+	Dx91VHYno1TDFZBQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1708331171; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=L1oTvsJEC0RW4pZVI6O3To2ANPqP0P6uuo0vISwSHEE=;
+	b=e+nlVF1aepKag0Vwi9L/ims0suRJs/Wu45zHcyeztTbsp1qJy/Yr4+yzX3FKXFRqDcqFug
+	baQaITMFbkXebvyYBniaVW6kO9G+My7nTT8oIhRkuVrCegZbM6ob5sqjldmwmHz/L0m22E
+	1HlKJqFHbGHV7SKcXxUT2oxTU5WE5EA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1708331171;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=L1oTvsJEC0RW4pZVI6O3To2ANPqP0P6uuo0vISwSHEE=;
+	b=lLQF3ClvkZaINHpfiqbOlDeZDJzJQ1UIEofXsSxt8glJKBIQ+3Y40aGieF0XiXEHILWfCR
+	Dx91VHYno1TDFZBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2752D13647;
+	Mon, 19 Feb 2024 08:26:11 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id jfwMCKMQ02U1BQAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Mon, 19 Feb 2024 08:26:11 +0000
+Date: Mon, 19 Feb 2024 09:26:10 +0100
+Message-ID: <877cj0q2ql.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Cc: alsa-devel@alsa-project.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] ALSA: firewire-lib: fix to check cycle continuity
+In-Reply-To: <20240218033026.72577-1-o-takashi@sakamocchi.jp>
+References: <20240218033026.72577-1-o-takashi@sakamocchi.jp>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Level: 
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=e+nlVF1a;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=lLQF3Clv
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-3.09 / 50.00];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	 TO_DN_SOME(0.00)[];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_TRACE(0.00)[suse.de:+];
+	 MX_GOOD(-0.01)[];
+	 NEURAL_HAM_SHORT(-0.20)[-1.000];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 BAYES_HAM(-2.58)[98.15%];
+	 ARC_NA(0.00)[];
+	 R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 FROM_HAS_DN(0.00)[];
+	 RCPT_COUNT_THREE(0.00)[3];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 MIME_GOOD(-0.10)[text/plain];
+	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 MID_CONTAINS_FROM(1.00)[];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 RCVD_TLS_ALL(0.00)[]
+X-Spam-Score: -3.09
+X-Rspamd-Queue-Id: 4B53921C14
+X-Spam-Flag: NO
 
-From: Kairui Song <kasong@tencent.com>
+On Sun, 18 Feb 2024 04:30:26 +0100,
+Takashi Sakamoto wrote:
+> 
+> The local helper function to compare the given pair of cycle count
+> evaluates them. If the left value is less than the right value, the
+> function returns negative value.
+> 
+> If the safe cycle is less than the current cycle, it is the case of
+> cycle lost. However, it is not currently handled properly.
+> 
+> This commit fixes the bug.
+> 
+> Cc: <stable@vger.kernel.org>
+> Fixes: 705794c53b00 ("ALSA: firewire-lib: check cycle continuity")
+> Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
 
-When skipping swapcache for SWP_SYNCHRONOUS_IO, if two or more threads
-swapin the same entry at the same time, they get different pages (A, B).
-Before one thread (T0) finishes the swapin and installs page (A)
-to the PTE, another thread (T1) could finish swapin of page (B),
-swap_free the entry, then swap out the possibly modified page
-reusing the same entry. It breaks the pte_same check in (T0) because
-PTE value is unchanged, causing ABA problem. Thread (T0) will
-install a stalled page (A) into the PTE and cause data corruption.
+Thanks, applied.
 
-One possible callstack is like this:
 
-CPU0                                 CPU1
-----                                 ----
-do_swap_page()                       do_swap_page() with same entry
-<direct swapin path>                 <direct swapin path>
-<alloc page A>                       <alloc page B>
-swap_read_folio() <- read to page A  swap_read_folio() <- read to page B
-<slow on later locks or interrupt>   <finished swapin first>
-...                                  set_pte_at()
-                                     swap_free() <- entry is free
-                                     <write to page B, now page A stalled>
-                                     <swap out page B to same swap entry>
-pte_same() <- Check pass, PTE seems
-              unchanged, but page A
-              is stalled!
-swap_free() <- page B content lost!
-set_pte_at() <- staled page A installed!
-
-And besides, for ZRAM, swap_free() allows the swap device to discard
-the entry content, so even if page (B) is not modified, if
-swap_read_folio() on CPU0 happens later than swap_free() on CPU1,
-it may also cause data loss.
-
-To fix this, reuse swapcache_prepare which will pin the swap entry using
-the cache flag, and allow only one thread to swap it in, also prevent
-any parallel code from putting the entry in the cache. Release the pin
-after PT unlocked.
-
-Racers just loop and wait since it's a rare and very short event.
-A schedule_timeout_uninterruptible(1) call is added to avoid repeated
-page faults wasting too much CPU, causing livelock or adding too much
-noise to perf statistics. A similar livelock issue was described in
-commit 029c4628b2eb ("mm: swap: get rid of livelock in swapin readahead")
-
-Reproducer:
-
-This race issue can be triggered easily using a well constructed
-reproducer and patched brd (with a delay in read path) [1]:
-
-With latest 6.8 mainline, race caused data loss can be observed easily:
-$ gcc -g -lpthread test-thread-swap-race.c && ./a.out
-  Polulating 32MB of memory region...
-  Keep swapping out...
-  Starting round 0...
-  Spawning 65536 workers...
-  32746 workers spawned, wait for done...
-  Round 0: Error on 0x5aa00, expected 32746, got 32743, 3 data loss!
-  Round 0: Error on 0x395200, expected 32746, got 32743, 3 data loss!
-  Round 0: Error on 0x3fd000, expected 32746, got 32737, 9 data loss!
-  Round 0 Failed, 15 data loss!
-
-This reproducer spawns multiple threads sharing the same memory region
-using a small swap device. Every two threads updates mapped pages one by
-one in opposite direction trying to create a race, with one dedicated
-thread keep swapping out the data out using madvise.
-
-The reproducer created a reproduce rate of about once every 5 minutes,
-so the race should be totally possible in production.
-
-After this patch, I ran the reproducer for over a few hundred rounds
-and no data loss observed.
-
-Performance overhead is minimal, microbenchmark swapin 10G from 32G
-zram:
-
-Before:     10934698 us
-After:      11157121 us
-Cached:     13155355 us (Dropping SWP_SYNCHRONOUS_IO flag)
-
-Fixes: 0bcac06f27d7 ("mm, swap: skip swapcache for swapin of synchronous device")
-Link: https://github.com/ryncsn/emm-test-project/tree/master/swap-stress-race [1]
-Reported-by: "Huang, Ying" <ying.huang@intel.com>
-Closes: https://lore.kernel.org/lkml/87bk92gqpx.fsf_-_@yhuang6-desk2.ccr.corp.intel.com/
-Signed-off-by: Kairui Song <kasong@tencent.com>
-Cc: stable@vger.kernel.org
-
----
-V3: https://lore.kernel.org/all/20240216095105.14502-1-ryncsn@gmail.com/
-Update from V3:
-- Use schedule_timeout_uninterruptible(1) for now instead of schedule() to
-  prevent the busy faulting task holds CPU and livelocks [Huang, Ying]
-
-V2: https://lore.kernel.org/all/20240206182559.32264-1-ryncsn@gmail.com/
-Update from V2:
-- Add a schedule() if raced to prevent repeated page faults wasting CPU
-  and add noise to perf statistics.
-- Use a bool to state the special case instead of reusing existing
-  variables fixing error handling [Minchan Kim].
-
-V1: https://lore.kernel.org/all/20240205110959.4021-1-ryncsn@gmail.com/
-Update from V1:
-- Add some words on ZRAM case, it will discard swap content on swap_free
-  so the race window is a bit different but cure is the same. [Barry Song]
-- Update comments make it cleaner [Huang, Ying]
-- Add a function place holder to fix CONFIG_SWAP=n built [SeongJae Park]
-- Update the commit message and summary, refer to SWP_SYNCHRONOUS_IO
-  instead of "direct swapin path" [Yu Zhao]
-- Update commit message.
-- Collect Review and Acks.
-
- include/linux/swap.h |  5 +++++
- mm/memory.c          | 20 ++++++++++++++++++++
- mm/swap.h            |  5 +++++
- mm/swapfile.c        | 13 +++++++++++++
- 4 files changed, 43 insertions(+)
-
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index 4db00ddad261..8d28f6091a32 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -549,6 +549,11 @@ static inline int swap_duplicate(swp_entry_t swp)
- 	return 0;
- }
- 
-+static inline int swapcache_prepare(swp_entry_t swp)
-+{
-+	return 0;
-+}
-+
- static inline void swap_free(swp_entry_t swp)
- {
- }
-diff --git a/mm/memory.c b/mm/memory.c
-index 7e1f4849463a..a99f5e7be9a5 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -3799,6 +3799,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
- 	struct page *page;
- 	struct swap_info_struct *si = NULL;
- 	rmap_t rmap_flags = RMAP_NONE;
-+	bool need_clear_cache = false;
- 	bool exclusive = false;
- 	swp_entry_t entry;
- 	pte_t pte;
-@@ -3867,6 +3868,20 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
- 	if (!folio) {
- 		if (data_race(si->flags & SWP_SYNCHRONOUS_IO) &&
- 		    __swap_count(entry) == 1) {
-+			/*
-+			 * Prevent parallel swapin from proceeding with
-+			 * the cache flag. Otherwise, another thread may
-+			 * finish swapin first, free the entry, and swapout
-+			 * reusing the same entry. It's undetectable as
-+			 * pte_same() returns true due to entry reuse.
-+			 */
-+			if (swapcache_prepare(entry)) {
-+				/* Relax a bit to prevent rapid repeated page faults */
-+				schedule_timeout_uninterruptible(1);
-+				goto out;
-+			}
-+			need_clear_cache = true;
-+
- 			/* skip swapcache */
- 			folio = vma_alloc_folio(GFP_HIGHUSER_MOVABLE, 0,
- 						vma, vmf->address, false);
-@@ -4117,6 +4132,9 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
- 	if (vmf->pte)
- 		pte_unmap_unlock(vmf->pte, vmf->ptl);
- out:
-+	/* Clear the swap cache pin for direct swapin after PTL unlock */
-+	if (need_clear_cache)
-+		swapcache_clear(si, entry);
- 	if (si)
- 		put_swap_device(si);
- 	return ret;
-@@ -4131,6 +4149,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
- 		folio_unlock(swapcache);
- 		folio_put(swapcache);
- 	}
-+	if (need_clear_cache)
-+		swapcache_clear(si, entry);
- 	if (si)
- 		put_swap_device(si);
- 	return ret;
-diff --git a/mm/swap.h b/mm/swap.h
-index 758c46ca671e..fc2f6ade7f80 100644
---- a/mm/swap.h
-+++ b/mm/swap.h
-@@ -41,6 +41,7 @@ void __delete_from_swap_cache(struct folio *folio,
- void delete_from_swap_cache(struct folio *folio);
- void clear_shadow_from_swap_cache(int type, unsigned long begin,
- 				  unsigned long end);
-+void swapcache_clear(struct swap_info_struct *si, swp_entry_t entry);
- struct folio *swap_cache_get_folio(swp_entry_t entry,
- 		struct vm_area_struct *vma, unsigned long addr);
- struct folio *filemap_get_incore_folio(struct address_space *mapping,
-@@ -97,6 +98,10 @@ static inline int swap_writepage(struct page *p, struct writeback_control *wbc)
- 	return 0;
- }
- 
-+static inline void swapcache_clear(struct swap_info_struct *si, swp_entry_t entry)
-+{
-+}
-+
- static inline struct folio *swap_cache_get_folio(swp_entry_t entry,
- 		struct vm_area_struct *vma, unsigned long addr)
- {
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 556ff7347d5f..746aa9da5302 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -3365,6 +3365,19 @@ int swapcache_prepare(swp_entry_t entry)
- 	return __swap_duplicate(entry, SWAP_HAS_CACHE);
- }
- 
-+void swapcache_clear(struct swap_info_struct *si, swp_entry_t entry)
-+{
-+	struct swap_cluster_info *ci;
-+	unsigned long offset = swp_offset(entry);
-+	unsigned char usage;
-+
-+	ci = lock_cluster_or_swap_info(si, offset);
-+	usage = __swap_entry_free_locked(si, offset, SWAP_HAS_CACHE);
-+	unlock_cluster_or_swap_info(si, ci);
-+	if (!usage)
-+		free_swap_slot(entry);
-+}
-+
- struct swap_info_struct *swp_swap_info(swp_entry_t entry)
- {
- 	return swap_type_to_swap_info(swp_type(entry));
--- 
-2.43.0
-
+Takashi
 
