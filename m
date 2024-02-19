@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-20665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A4B485AADA
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:21:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D331E85AADB
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:21:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B9061F22D24
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:21:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C863B219D9
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:21:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89CCB481CC;
-	Mon, 19 Feb 2024 18:21:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3360481AF;
+	Mon, 19 Feb 2024 18:21:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d98thUT7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vCraqmDe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49339446A1
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:21:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73741446A1
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:21:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708366904; cv=none; b=uMn+P07Q7XScD3WEAvUoj+xwuL8DRnAsY7t2HrKdB07jPW9zl283zQBgSy+wRigYiRuVui3soDd/6+LE8Wm48AAIB+YG6y3Unu0foTMcPtJ4TgXKYKQ9pQbCykszm0V2GkUZbQWKYOckkRK90sIa0NA8bRYT6Uqr6OmPMKs4Y60=
+	t=1708366907; cv=none; b=ghDzVXo1gIDtCTTEMQj0g2jrQhkcjDAvZNzuLJdYVzTsdKkBhTW2yvfo+mpEpchGk5cZXvdUVYfF318aMvkMnbW7ZzDj15BR1hr6fnMaWxHV90+9HGm/4bFLPycPyXr5YhFY/U24t1WN5arDD3oz+HkHC/53f8MtMz8zD/EcIvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708366904; c=relaxed/simple;
-	bh=mWkL54OZLMuNYNH9FEVcrVo84b4REs3yoS6aRVGOqtw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=bruW2oYoV7TYqw8rXXqpi/vG37BCxSxD1YVGfNZqn407GLV4WmPMuIDlFbQcWD8GEDJ+zQyq1rwIXVmNaOnaQ8d087xCmf8LJM2uRhwHo9dchPuOIYw1xeZ4Nsgz2oc7w7w6k1FoggixdXJBCc73jMF82fhFdChz/ZEtJ4oCq4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d98thUT7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA7A5C433C7;
-	Mon, 19 Feb 2024 18:21:43 +0000 (UTC)
+	s=arc-20240116; t=1708366907; c=relaxed/simple;
+	bh=gKwXljfVk1hvgFiatrSq9tf11KMtWNZ5Kge5FLb3rFQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=DsE1tIaDrQQH7jhPMcpQN4mPql/+/5A1e2grA7BG/GPsuiNQJwY/S2XDQbh7hz77K9IRnZzKJOrThpH4R3r2dhyvUq+3tzB8Ned6E+Siqhrb/INzVLz9X+BJkd2T1YdPE6Y86lcSHE6pPSoC/i+WwFT/1amO5NfDTWKuuBukm6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vCraqmDe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4C3CC433F1;
+	Mon, 19 Feb 2024 18:21:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708366904;
-	bh=mWkL54OZLMuNYNH9FEVcrVo84b4REs3yoS6aRVGOqtw=;
+	s=korg; t=1708366907;
+	bh=gKwXljfVk1hvgFiatrSq9tf11KMtWNZ5Kge5FLb3rFQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=d98thUT7K0Sobof4Z/gbizdfqTKMfhv3vk1uNF4o7nfPW5PersrgFcrEoPYGb0Dsf
-	 PM6tMqUxsrB0MqYLfcYSJ4RzWp+wRl4CpC3qgRs7CQRtTfRxISjAwrlaAHtxzbH4M+
-	 bHQQuKvceE4ibNbk9uAadCUVVNnEV3Uky+YN7uC8=
-Subject: FAILED: patch "[PATCH] serial: max310x: prevent infinite while() loop in port" failed to apply to 5.4-stable tree
+	b=vCraqmDeOHGcJWuWVKjOgCJl4np34hg1yl5pzK79tuUaTzh5HxflWCER52N7ckCMu
+	 4TERu8XBSk8I34Ccj1X6Epyfo1bNJgk18Su+Jo/kOEDjmwE7XYVkQ2Ghrg+Rnx0oQW
+	 rdOXtAW8NRnH3EhE+RGZAMqL28jeFaasZiRjKFyQ=
+Subject: FAILED: patch "[PATCH] serial: max310x: prevent infinite while() loop in port" failed to apply to 4.19-stable tree
 To: hvilleneuve@dimonoff.com,gregkh@linuxfoundation.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Feb 2024 19:21:30 +0100
-Message-ID: <2024021930-subprime-fondue-f8d3@gregkh>
+Date: Mon, 19 Feb 2024 19:21:31 +0100
+Message-ID: <2024021931-frisbee-commence-08ec@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x b35f8dbbce818b02c730dc85133dc7754266e084
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021930-subprime-fondue-f8d3@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021931-frisbee-commence-08ec@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,6 +75,9 @@ b35f8dbbce81 ("serial: max310x: prevent infinite while() loop in port startup")
 6ef281daf020 ("serial: max310x: use a separate regmap for each port")
 285e76fc049c ("serial: max310x: use regmap methods for SPI batch operations")
 c808fab604ca ("serial: max310x: Make use of device properties")
+b7382c73b2d7 ("tty: max310x: Don't pass stacked buffers to SPI")
+3a10e3dd52e8 ("serial: max310x: Fix to avoid potential NULL pointer dereference")
+f233ea4327d7 ("serial: max310x: Correction of the initial setting of the MODE1 bits for various supported ICs.")
 
 thanks,
 
