@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-20744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75AC685AD69
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 21:44:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B66D85AD6A
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 21:44:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A54D1C23D02
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 20:44:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F8B81C241A9
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 20:44:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1993153E0A;
-	Mon, 19 Feb 2024 20:43:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72FD55339E;
+	Mon, 19 Feb 2024 20:44:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nEmOBCbR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qxkep6So"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC2F9535D8
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 20:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B7351C47
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 20:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708375389; cv=none; b=tmWoiHyLZDW8JNxEAy3iIUzzsu5GCJf/tbgHQ3qnaZJh7l7aeDEPPwkGiI0lSvdIRBWmw8K9JbcYic2sldmzutEZBDebN0iPRIMakerwnI6dVe8xCrZc2j2NQz/XLLb0bfxo+K8TyCFtGSv2QM8yJIBnDOUP7k7Nrrihub+2a7Y=
+	t=1708375447; cv=none; b=d+zUadm7GsY543GQjLOSJI55GxuZy+R1cg5kyQBnpnk1vDXNQoLf2U6EJYH7ps7F8BEMo8AqnBC/Dml5Ic/4aY6xYHD0XGfJ9PF0ouXYFHsp1ltl+3mexZ7+UxqptkEeRwk9mCT0LXYFzl70EYAG9ea7PJUPjsHFomCN9rXHYGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708375389; c=relaxed/simple;
-	bh=xiV2HmyX4QJUx7IF3DkL4xblyOgF4A5Ls2rkppnOF4c=;
+	s=arc-20240116; t=1708375447; c=relaxed/simple;
+	bh=qrsEbwkHV0cdFLxbtxzYgy1pqkYBtsHxZjeEf9lcnqo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r46xGh6xbKt2Dh8Y94kY25bkZvTCXgw/3zv8kY7YiiG56LHoWvj33VVEjuccZWBIiTvIr5SS+8Yv51pwbd4xgZKcjwd0qG6+GTjAPqUZFGf7bV3MVczVd+X1zF0YuJeNmsiN6iBgjP6+oaqNQlEbVLUGgh0daSB08RQtKTTULJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nEmOBCbR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9927EC433C7;
-	Mon, 19 Feb 2024 20:43:08 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=LeBU4k6PpH26HNry/gO9y8jv3V5F/prXJueBFoYoZdYC8LQZI4lBuLPc1K+jls6OGV80XE0LRLGSYleREu29+S2t5eM3X+ffKhSpzCcI8eCvniq0WL3L+mOY/gtvcZU0l0RmqgkkDmTo7pCXNRrILU0R/En4Jo95OxjwYNu8gjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qxkep6So; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB52AC433C7;
+	Mon, 19 Feb 2024 20:44:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708375389;
-	bh=xiV2HmyX4QJUx7IF3DkL4xblyOgF4A5Ls2rkppnOF4c=;
+	s=k20201202; t=1708375446;
+	bh=qrsEbwkHV0cdFLxbtxzYgy1pqkYBtsHxZjeEf9lcnqo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nEmOBCbRaf7ldbGjx4eVmBHcTICc509zunPGT87c8fP/QiEN+sCNQ/icrw6MY3L28
-	 jcVPDmsAHC1nTMj3zM9ktOp0fR6gENLAMVhvWYO1Hfs07nkj3jVqUrqDL4v2rWZ+Zx
-	 IzCxSvhUZ5ezG02fslPzA+4vJ7coYtdlBZQDGzyvyzurgsj56BvMM6tKMNUH29yBJA
-	 zhvbMRXGCCXiqzi/SWWDLbVZ1lBsjBpH7PXDNFLZyIetqwrdDBUQhzWU9VBrzA6sXe
-	 qR1lxlW297eVhcr/en8iKZ2FddKr08gIU516tWmyjccoVqLAD7uRPmv7JMjmfojDEG
-	 aeXmBg4MlbApQ==
-Date: Mon, 19 Feb 2024 21:43:05 +0100
+	b=qxkep6So82tU6UfbbwaAzpMlTAp5D6mXJZH3q30ef9uz7tjD30A8FHpWid1SQbajf
+	 /oyk1znxpPJ/DRWYQZ/NDyu0hAredKrvE0NBDPSrnPmnv0tNZkWFfDUDQc7hNrfqDU
+	 7b1X4wAm4ZNTgDVPxk5xCHVt5Wx/dexxdlvPn9wCgHEgbDzdCE4Qq97+qm9J0sLkxE
+	 yUCzEx892nHv+jZjGUcrMQwdZzIpnJMWTVxeeJ0ZmiRriTbU9t/w06En/gYzuolWun
+	 cDGu7bWIvHx1u3fPRbEc5qzk68pdtZKOZR5t9L3fALna1Qp+0o5RbfZsE2oyw11O15
+	 DEZfcojC5qqPA==
+Date: Mon, 19 Feb 2024 21:44:02 +0100
 From: Helge Deller <deller@kernel.org>
 To: gregkh@linuxfoundation.org
 Cc: deller@gmx.de, stable@vger.kernel.org
 Subject: Re: FAILED: patch "[PATCH] parisc: Fix random data corruption from
- exception handler" failed to apply to 6.1-stable tree
-Message-ID: <ZdO9Wcwxgdr-7Vbp@p100>
-References: <2024021940-bulgur-flagpole-0aa6@gregkh>
+ exception handler" failed to apply to 6.6-stable tree
+Message-ID: <ZdO9knwyE513vgYl@p100>
+References: <2024021939-unreached-bacon-95e0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,22 +57,22 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2024021940-bulgur-flagpole-0aa6@gregkh>
+In-Reply-To: <2024021939-unreached-bacon-95e0@gregkh>
 
 * gregkh@linuxfoundation.org <gregkh@linuxfoundation.org>:
 > 
-> The patch below does not apply to the 6.1-stable tree.
+> The patch below does not apply to the 6.6-stable tree.
 > If someone wants it applied there, or to any other stable or longterm
 > tree, then please email the backport, including the original git commit
 > id to <stable@vger.kernel.org>.
 
-Greg, below is the patch adjusted for stable kernel 6.1.
+Greg, below is the patch adjusted for stable kernel 6.6.
 Please apply.
 Thanks!
 Helge
 
 
-From 80ec4f83a723a6869a7523c2e64758b5fe4fd235 Mon Sep 17 00:00:00 2001
+From 887c1dfae4042324cba3b3e3a4b5bb390c586a1a Mon Sep 17 00:00:00 2001
 From: Helge Deller <deller@gmx.de>
 Date: Sat, 20 Jan 2024 15:29:27 +0100
 Subject: [PATCH] parisc: Fix random data corruption from exception handler
@@ -107,7 +107,7 @@ Signed-off-by: Helge Deller <deller@gmx.de>
 Cc: <stable@vger.kernel.org> # v6.0+
 
 diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-index 345d5e021484..abf39ecda6fb 100644
+index 8c45b98dfe0e..4adeb73d5885 100644
 --- a/arch/parisc/Kconfig
 +++ b/arch/parisc/Kconfig
 @@ -24,7 +24,6 @@ config PARISC
@@ -329,11 +329,33 @@ index 4165079898d9..88d0ae5769dd 100644
 -int fixup_exception(struct pt_regs *regs);
 -
  #endif /* __PARISC_UACCESS_H */
+diff --git a/arch/parisc/kernel/cache.c b/arch/parisc/kernel/cache.c
+index 268d90a9325b..17704c1cdc69 100644
+--- a/arch/parisc/kernel/cache.c
++++ b/arch/parisc/kernel/cache.c
+@@ -850,7 +850,7 @@ SYSCALL_DEFINE3(cacheflush, unsigned long, addr, unsigned long, bytes,
+ #endif
+ 			"   fic,m	%3(%4,%0)\n"
+ 			"2: sync\n"
+-			ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 2b)
++			ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 2b, "%1")
+ 			: "+r" (start), "+r" (error)
+ 			: "r" (end), "r" (dcache_stride), "i" (SR_USER));
+ 	}
+@@ -865,7 +865,7 @@ SYSCALL_DEFINE3(cacheflush, unsigned long, addr, unsigned long, bytes,
+ #endif
+ 			"   fdc,m	%3(%4,%0)\n"
+ 			"2: sync\n"
+-			ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 2b)
++			ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 2b, "%1")
+ 			: "+r" (start), "+r" (error)
+ 			: "r" (end), "r" (icache_stride), "i" (SR_USER));
+ 	}
 diff --git a/arch/parisc/kernel/unaligned.c b/arch/parisc/kernel/unaligned.c
-index e8a4d77cff53..8a8e7d7224a2 100644
+index ce25acfe4889..c520e551a165 100644
 --- a/arch/parisc/kernel/unaligned.c
 +++ b/arch/parisc/kernel/unaligned.c
-@@ -118,8 +118,8 @@ static int emulate_ldh(struct pt_regs *regs, int toreg)
+@@ -120,8 +120,8 @@ static int emulate_ldh(struct pt_regs *regs, int toreg)
  "2:	ldbs	1(%%sr1,%3), %0\n"
  "	depw	%2, 23, 24, %0\n"
  "3:	\n"
@@ -344,7 +366,7 @@ index e8a4d77cff53..8a8e7d7224a2 100644
  	: "+r" (val), "+r" (ret), "=&r" (temp1)
  	: "r" (saddr), "r" (regs->isr) );
  
-@@ -150,8 +150,8 @@ static int emulate_ldw(struct pt_regs *regs, int toreg, int flop)
+@@ -152,8 +152,8 @@ static int emulate_ldw(struct pt_regs *regs, int toreg, int flop)
  "	mtctl	%2,11\n"
  "	vshd	%0,%3,%0\n"
  "3:	\n"
@@ -355,7 +377,7 @@ index e8a4d77cff53..8a8e7d7224a2 100644
  	: "+r" (val), "+r" (ret), "=&r" (temp1), "=&r" (temp2)
  	: "r" (saddr), "r" (regs->isr) );
  
-@@ -187,8 +187,8 @@ static int emulate_ldd(struct pt_regs *regs, int toreg, int flop)
+@@ -189,8 +189,8 @@ static int emulate_ldd(struct pt_regs *regs, int toreg, int flop)
  "	mtsar	%%r19\n"
  "	shrpd	%0,%%r20,%%sar,%0\n"
  "3:	\n"
@@ -366,7 +388,7 @@ index e8a4d77cff53..8a8e7d7224a2 100644
  	: "=r" (val), "+r" (ret)
  	: "0" (val), "r" (saddr), "r" (regs->isr)
  	: "r19", "r20" );
-@@ -207,9 +207,9 @@ static int emulate_ldd(struct pt_regs *regs, int toreg, int flop)
+@@ -209,9 +209,9 @@ static int emulate_ldd(struct pt_regs *regs, int toreg, int flop)
  "	vshd	%0,%R0,%0\n"
  "	vshd	%R0,%4,%R0\n"
  "4:	\n"
@@ -379,7 +401,7 @@ index e8a4d77cff53..8a8e7d7224a2 100644
  	: "+r" (val), "+r" (ret), "+r" (saddr), "=&r" (shift), "=&r" (temp1)
  	: "r" (regs->isr) );
      }
-@@ -242,8 +242,8 @@ static int emulate_sth(struct pt_regs *regs, int frreg)
+@@ -244,8 +244,8 @@ static int emulate_sth(struct pt_regs *regs, int frreg)
  "1:	stb %1, 0(%%sr1, %3)\n"
  "2:	stb %2, 1(%%sr1, %3)\n"
  "3:	\n"
@@ -390,7 +412,7 @@ index e8a4d77cff53..8a8e7d7224a2 100644
  	: "+r" (ret), "=&r" (temp1)
  	: "r" (val), "r" (regs->ior), "r" (regs->isr) );
  
-@@ -283,8 +283,8 @@ static int emulate_stw(struct pt_regs *regs, int frreg, int flop)
+@@ -285,8 +285,8 @@ static int emulate_stw(struct pt_regs *regs, int frreg, int flop)
  "	stw	%%r20,0(%%sr1,%2)\n"
  "	stw	%%r21,4(%%sr1,%2)\n"
  "3:	\n"
@@ -401,7 +423,7 @@ index e8a4d77cff53..8a8e7d7224a2 100644
  	: "+r" (ret)
  	: "r" (val), "r" (regs->ior), "r" (regs->isr)
  	: "r19", "r20", "r21", "r22", "r1" );
-@@ -327,10 +327,10 @@ static int emulate_std(struct pt_regs *regs, int frreg, int flop)
+@@ -329,10 +329,10 @@ static int emulate_std(struct pt_regs *regs, int frreg, int flop)
  "3:	std	%%r20,0(%%sr1,%2)\n"
  "4:	std	%%r21,8(%%sr1,%2)\n"
  "5:	\n"
@@ -416,9 +438,9 @@ index e8a4d77cff53..8a8e7d7224a2 100644
  	: "+r" (ret)
  	: "r" (val), "r" (regs->ior), "r" (regs->isr)
  	: "r19", "r20", "r21", "r22", "r1" );
-@@ -356,11 +356,11 @@ static int emulate_std(struct pt_regs *regs, int frreg, int flop)
- "4:	stw	%%r1,4(%%sr1,%3)\n"
- "5:	stw	%2,8(%%sr1,%3)\n"
+@@ -357,11 +357,11 @@ static int emulate_std(struct pt_regs *regs, int frreg, int flop)
+ "4:	stw	%%r1,4(%%sr1,%2)\n"
+ "5:	stw	%R1,8(%%sr1,%2)\n"
  "6:	\n"
 -	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 6b)
 -	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 6b)
@@ -431,10 +453,10 @@ index e8a4d77cff53..8a8e7d7224a2 100644
 +	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(4b, 6b, "%0")
 +	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(5b, 6b, "%0")
  	: "+r" (ret)
- 	: "r" (valh), "r" (vall), "r" (regs->ior), "r" (regs->isr)
+ 	: "r" (val), "r" (regs->ior), "r" (regs->isr)
  	: "r19", "r20", "r21", "r1" );
 diff --git a/arch/parisc/mm/fault.c b/arch/parisc/mm/fault.c
-index b00aa98b582c..fbd9ada5e527 100644
+index 2fe5b44986e0..c39de84e98b0 100644
 --- a/arch/parisc/mm/fault.c
 +++ b/arch/parisc/mm/fault.c
 @@ -150,11 +150,16 @@ int fixup_exception(struct pt_regs *regs)
