@@ -1,235 +1,130 @@
-Return-Path: <stable+bounces-20526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B9D185A3D5
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 13:52:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15D8D85A403
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 14:01:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A6B88B20B80
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 12:52:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 65482B24B35
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 13:00:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA51F2E834;
-	Mon, 19 Feb 2024 12:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6406E34CDE;
+	Mon, 19 Feb 2024 13:00:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="V5l0OmPN"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OuvfRbrH"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B7732C8C
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 12:52:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72A0232182
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 13:00:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708347148; cv=none; b=QZjo+Zg6vjwsm3/AwM0JYiYAnNVZfPISncfaZxVW2ilcdbmFJqrdxfzN9qpKOqyM7k7yYIs0EiqWc25+iMh3k4lCXVJL6wjdDGbQT43xdDnFPEdm/7mXKpWG9V/FgzEwgMdt94z4lOV4Ki3zmGOh0DABSBSpP+mTrTaORSpJ7sw=
+	t=1708347654; cv=none; b=WNXGACG8ffdGwOMjZU/7AzUNIqR4T+248SPoP5cnvNNCeuULQgyRV1heX6inyMRBkC+NApuWUrMLkrNqseKXRnvupkW7wNg1Y+w2xk9iO6vtXQMaccD29ODhh0CJ7B+8v6OhxQt4G8kbpiDO+kqvMiz6H0HFO7ycKJdmrHdwo+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708347148; c=relaxed/simple;
-	bh=FIPs4cSCU7UDVxAsSC27DXIevk1DU8cnIgqbECTLFhc=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=hquZdqXTOn0VljTuqnAaVeNNos4kLh7Zi7wm/+eatpK/l2auBle8I7IL4LDnd2DRQBQZb4nspYPpibu0f72gkCFU49dz6bGhp8T6d1lummMZIYXj4ZKqAVJLWNwMCBm4+XM9m4wrqQr0hOE76XmkewUiAhjfDCwVs2YD1hXaAFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=V5l0OmPN; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708347146; x=1739883146;
-  h=message-id:date:mime-version:subject:from:to:cc:
-   references:in-reply-to:content-transfer-encoding;
-  bh=FIPs4cSCU7UDVxAsSC27DXIevk1DU8cnIgqbECTLFhc=;
-  b=V5l0OmPNnkX1WrhlKNjnDAvEy5q6KvrKAtYYrz5fM3/qjpGVV3uCx/CX
-   EbF/8Q1m+HMh77/K5imuZoKRS4qaPGcd5VSp8cm6zmSvVoMs++DHEVu7S
-   x2cIT//TKzWX+p2MJZmh6vemFgH4DWPr6WPyrH7hAWBaBnljOvOl/Cu+d
-   /dycwfS+MY2bzonju764Sr0oGXvUYTilbGVQQBtGwzHdssgfTXBiIOaf9
-   JNCKo1IVfbrKCYof3ZnXP5jq1YNm5YkFpYA3j9ilICPvP1aKfrkGQ1EFD
-   mOC4KgMld49ph2UDs/HwiyYKuavg73gYonNW/Ui7H5c6J9tWxhQQiZKWh
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10988"; a="2547454"
-X-IronPort-AV: E=Sophos;i="6.06,170,1705392000"; 
-   d="scan'208";a="2547454"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2024 04:52:26 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10988"; a="936288318"
-X-IronPort-AV: E=Sophos;i="6.06,170,1705392000"; 
-   d="scan'208";a="936288318"
-Received: from coldacre-mobl1.ger.corp.intel.com (HELO [10.213.215.68]) ([10.213.215.68])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2024 04:51:46 -0800
-Message-ID: <c63a2d0e-fc57-4252-ad3d-2aa7615e062d@linux.intel.com>
-Date: Mon, 19 Feb 2024 12:51:44 +0000
+	s=arc-20240116; t=1708347654; c=relaxed/simple;
+	bh=dHWiwi/4MsahdbBRvdAXd0W5GApiDgwNTSRWlu2vpSE=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=f718pyHTBgjD+Am98SKwxdl7u4iC1iP/xmdYP7DLZeex/2Kjx2xhJF0TrF53/3SZpCLcXCzkASMplO0rQ0DQYiuUWT/GN5UOi6Wnci69MVzf3m68MiKhqPiDUXshK/p0WxUEw8tbPHiVkGYABfq1NoEmSrZohMFrJNj75HHFxiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OuvfRbrH; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1708347651;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TwNcCYcnKDEqL3qwv8hEJSNKkkqFQa2yy0ZaFvuYG/I=;
+	b=OuvfRbrHRIdy8y6FDimP4Rc1VVoQzQwXOTxxZ3zUO2TpCQjXjiJK9N10BPpTqS51YSzMOj
+	CyK7ez2c6O4jJLn9IjPenk6/d05FfnDTKSHvfJrhhw91oFcxSXQ/C+LauppWSv/REILrsr
+	rQo2jIzZC/KGkxtysO3+kzFu+vm3Xvg=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-401-EKdDHX6EOFScijXKBRs-bg-1; Mon,
+ 19 Feb 2024 08:00:48 -0500
+X-MC-Unique: EKdDHX6EOFScijXKBRs-bg-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 937BD1C05AA6;
+	Mon, 19 Feb 2024 13:00:47 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.15])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 14603AC0C;
+	Mon, 19 Feb 2024 13:00:45 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <20240217081431.796809-1-libaokun1@huawei.com>
+References: <20240217081431.796809-1-libaokun1@huawei.com>
+To: Christian Brauner <christian@brauner.io>
+Cc: dhowells@redhat.com, netfs@lists.linux.dev, jlayton@kernel.org,
+    Baokun Li <libaokun1@huawei.com>, linux-cachefs@redhat.com,
+    linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
+    linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH RESEND] cachefiles: fix memory leak in cachefiles_add_cache()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] drm/i915/gt: Set default CCS mode '1'
-Content-Language: en-US
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-To: Andi Shyti <andi.shyti@linux.intel.com>,
- intel-gfx <intel-gfx@lists.freedesktop.org>,
- dri-devel <dri-devel@lists.freedesktop.org>
-Cc: Chris Wilson <chris.p.wilson@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Matt Roper <matthew.d.roper@intel.com>, stable@vger.kernel.org,
- Andi Shyti <andi.shyti@kernel.org>
-References: <20240215135924.51705-1-andi.shyti@linux.intel.com>
- <20240215135924.51705-3-andi.shyti@linux.intel.com>
- <d61391f6-ff1d-4241-bd9e-2a3bee53c860@linux.intel.com>
-Organization: Intel Corporation UK Plc
-In-Reply-To: <d61391f6-ff1d-4241-bd9e-2a3bee53c860@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <131232.1708347645.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 19 Feb 2024 13:00:45 +0000
+Message-ID: <131233.1708347645@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
 
+Hi Christian,
 
-On 19/02/2024 11:16, Tvrtko Ursulin wrote:
-> 
-> On 15/02/2024 13:59, Andi Shyti wrote:
->> Since CCS automatic load balancing is disabled, we will impose a
->> fixed balancing policy that involves setting all the CCS engines
->> to work together on the same load.
->>
->> Simultaneously, the user will see only 1 CCS rather than the
->> actual number. As of now, this change affects only DG2.
->>
->> Fixes: d2eae8e98d59 ("drm/i915/dg2: Drop force_probe requirement")
->> Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
->> Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
->> Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
->> Cc: Matt Roper <matthew.d.roper@intel.com>
->> Cc: <stable@vger.kernel.org> # v6.2+
->> ---
->>   drivers/gpu/drm/i915/gt/intel_gt.c      | 11 +++++++++++
->>   drivers/gpu/drm/i915/gt/intel_gt_regs.h |  2 ++
->>   drivers/gpu/drm/i915/i915_drv.h         | 17 +++++++++++++++++
->>   drivers/gpu/drm/i915/i915_query.c       |  5 +++--
->>   4 files changed, 33 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/i915/gt/intel_gt.c 
->> b/drivers/gpu/drm/i915/gt/intel_gt.c
->> index a425db5ed3a2..e19df4ef47f6 100644
->> --- a/drivers/gpu/drm/i915/gt/intel_gt.c
->> +++ b/drivers/gpu/drm/i915/gt/intel_gt.c
->> @@ -168,6 +168,14 @@ static void init_unused_rings(struct intel_gt *gt)
->>       }
->>   }
->> +static void intel_gt_apply_ccs_mode(struct intel_gt *gt)
->> +{
->> +    if (!IS_DG2(gt->i915))
->> +        return;
->> +
->> +    intel_uncore_write(gt->uncore, XEHP_CCS_MODE, 0);
->> +}
->> +
->>   int intel_gt_init_hw(struct intel_gt *gt)
->>   {
->>       struct drm_i915_private *i915 = gt->i915;
->> @@ -195,6 +203,9 @@ int intel_gt_init_hw(struct intel_gt *gt)
->>       intel_gt_init_swizzling(gt);
->> +    /* Configure CCS mode */
->> +    intel_gt_apply_ccs_mode(gt);
->> +
->>       /*
->>        * At least 830 can leave some of the unused rings
->>        * "active" (ie. head != tail) after resume which
->> diff --git a/drivers/gpu/drm/i915/gt/intel_gt_regs.h 
->> b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
->> index cf709f6c05ae..c148113770ea 100644
->> --- a/drivers/gpu/drm/i915/gt/intel_gt_regs.h
->> +++ b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
->> @@ -1605,6 +1605,8 @@
->>   #define   GEN12_VOLTAGE_MASK            REG_GENMASK(10, 0)
->>   #define   GEN12_CAGF_MASK            REG_GENMASK(19, 11)
->> +#define XEHP_CCS_MODE                          _MMIO(0x14804)
->> +
->>   #define GEN11_GT_INTR_DW(x)            _MMIO(0x190018 + ((x) * 4))
->>   #define   GEN11_CSME                (31)
->>   #define   GEN12_HECI_2                (30)
->> diff --git a/drivers/gpu/drm/i915/i915_drv.h 
->> b/drivers/gpu/drm/i915/i915_drv.h
->> index e81b3b2858ac..0853ffd3cb8d 100644
->> --- a/drivers/gpu/drm/i915/i915_drv.h
->> +++ b/drivers/gpu/drm/i915/i915_drv.h
->> @@ -396,6 +396,23 @@ static inline struct intel_gt *to_gt(const struct 
->> drm_i915_private *i915)
->>            (engine__); \
->>            (engine__) = 
->> rb_to_uabi_engine(rb_next(&(engine__)->uabi_node)))
->> +/*
->> + * Exclude unavailable engines.
->> + *
->> + * Only the first CCS engine is utilized due to the disabling of CCS 
->> auto load
->> + * balancing. As a result, all CCS engines operate collectively, 
->> functioning
->> + * essentially as a single CCS engine, hence the count of active CCS 
->> engines is
->> + * considered '1'.
->> + * Currently, this applies to platforms with more than one CCS engine,
->> + * specifically DG2.
->> + */
->> +#define for_each_available_uabi_engine(engine__, i915__) \
->> +    for_each_uabi_engine(engine__, i915__) \
->> +        if ((IS_DG2(i915__)) && \
->> +            ((engine__)->uabi_class == I915_ENGINE_CLASS_COMPUTE) && \
->> +            ((engine__)->uabi_instance)) { } \
->> +        else
->> +
-> 
-> If you don't want userspace to see some engines, just don't add them to 
-> the uabi list in intel_engines_driver_register or thereabouts?
-> 
-> Similar as we do for gsc which uses I915_NO_UABI_CLASS, although for ccs 
-> you can choose a different approach, whatever is more elegant.
-> 
-> That is also needed for i915->engine_uabi_class_count to be right, so 
-> userspace stats which rely on it are correct.
+Could you take this through your VFS tree please?
 
-I later realized it is more than that - everything that uses 
-intel_engine_lookup_user to look up class instance passed in from 
-userspace relies on the engine not being on the user list otherwise 
-userspace could bypass the fact engine query does not list it. Like PMU, 
-Perf/POA, context engine map and SSEU context query.
+> The following memory leak was reported after unbinding /dev/cachefiles:
+> =
 
-Regards,
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> unreferenced object 0xffff9b674176e3c0 (size 192):
+>   comm "cachefilesd2", pid 680, jiffies 4294881224
+>   hex dump (first 32 bytes):
+>     01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+>     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+>   backtrace (crc ea38a44b):
+>     [<ffffffff8eb8a1a5>] kmem_cache_alloc+0x2d5/0x370
+>     [<ffffffff8e917f86>] prepare_creds+0x26/0x2e0
+>     [<ffffffffc002eeef>] cachefiles_determine_cache_security+0x1f/0x120
+>     [<ffffffffc00243ec>] cachefiles_add_cache+0x13c/0x3a0
+>     [<ffffffffc0025216>] cachefiles_daemon_write+0x146/0x1c0
+>     [<ffffffff8ebc4a3b>] vfs_write+0xcb/0x520
+>     [<ffffffff8ebc5069>] ksys_write+0x69/0xf0
+>     [<ffffffff8f6d4662>] do_syscall_64+0x72/0x140
+>     [<ffffffff8f8000aa>] entry_SYSCALL_64_after_hwframe+0x6e/0x76
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> =
 
-Tvrtko
+> Put the reference count of cache_cred in cachefiles_daemon_unbind() to
+> fix the problem. And also put cache_cred in cachefiles_add_cache() error
+> branch to avoid memory leaks.
+> =
 
-> 
-> Regards,
-> 
-> Tvrtko
-> 
->>   #define INTEL_INFO(i915)    ((i915)->__info)
->>   #define RUNTIME_INFO(i915)    (&(i915)->__runtime)
->>   #define DRIVER_CAPS(i915)    (&(i915)->caps)
->> diff --git a/drivers/gpu/drm/i915/i915_query.c 
->> b/drivers/gpu/drm/i915/i915_query.c
->> index fa3e937ed3f5..2d41bda626a6 100644
->> --- a/drivers/gpu/drm/i915/i915_query.c
->> +++ b/drivers/gpu/drm/i915/i915_query.c
->> @@ -124,6 +124,7 @@ static int query_geometry_subslices(struct 
->> drm_i915_private *i915,
->>       return fill_topology_info(sseu, query_item, 
->> sseu->geometry_subslice_mask);
->>   }
->> +
->>   static int
->>   query_engine_info(struct drm_i915_private *i915,
->>             struct drm_i915_query_item *query_item)
->> @@ -140,7 +141,7 @@ query_engine_info(struct drm_i915_private *i915,
->>       if (query_item->flags)
->>           return -EINVAL;
->> -    for_each_uabi_engine(engine, i915)
->> +    for_each_available_uabi_engine(engine, i915)
->>           num_uabi_engines++;
->>       len = struct_size(query_ptr, engines, num_uabi_engines);
->> @@ -155,7 +156,7 @@ query_engine_info(struct drm_i915_private *i915,
->>       info_ptr = &query_ptr->engines[0];
->> -    for_each_uabi_engine(engine, i915) {
->> +    for_each_available_uabi_engine(engine, i915) {
->>           info.engine.engine_class = engine->uabi_class;
->>           info.engine.engine_instance = engine->uabi_instance;
->>           info.flags = I915_ENGINE_INFO_HAS_LOGICAL_INSTANCE;
+> Fixes: 9ae326a69004 ("CacheFiles: A cache that backs onto a mounted file=
+system")
+> CC: stable@vger.kernel.org
+> Signed-off-by: Baokun Li <libaokun1@huawei.com>
+
+and add:
+
+Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Acked-by: David Howells <dhowells@redhat.com>
+
 
