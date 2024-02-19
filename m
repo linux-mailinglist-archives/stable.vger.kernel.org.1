@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-20632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33F9185AAA1
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:11:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17B8E85AAA2
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 19:11:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAF1A283792
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:11:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A7F51C217C1
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 18:11:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7036F481C7;
-	Mon, 19 Feb 2024 18:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1496481AF;
+	Mon, 19 Feb 2024 18:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qtLHiQRn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="113i2+v9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F0AC481A6
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F9E0481A7
+	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 18:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708366305; cv=none; b=K0Wb3DU86V5mf2yeM1d3dTKNrQtIdPThmeFIIjbIJleZKgvCZ+PQy9AwTn9GEIGRVwoIkygea9QxxkO3rJ4xY+4aJ2Yv0YFZgBuC3qwJ++Vx7InQHHMDYVOEfQW/GR8LAMM4vtxbn54o4KJIGqBbOFGbM3sYN1FdZ3W6ggI3OA8=
+	t=1708366308; cv=none; b=UXt5anzSW42Md4v4bpAa707z5y1lNfeONq68eD5pEcCqOAT7hrfVM5B+sLZSrMC1q3UlvqjuZvUcoxNHylNTZeF+LUmJX0UYTF+wNFtMqw4YRFNV0vX2/fx8K0MWyGdcUf0QU1T7fPiVhMbSDDeEiaRVsZbjVWT4bmtGuPptLeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708366305; c=relaxed/simple;
-	bh=b1Fyge75aUFtR6Sg/3IhEFUXeOpecKNdoE5z4cnduLk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=L91WremQMiiv5WFKVLi7FJ17WlNnN/4r/ium/pfrqiAaN3JcPYhZ4QUL4keq52y+TzcNjv9zX3ciQ81vze+OwV9u9i/2bbhG8ODNyObo+afdPMlBhAzgzumBX9q33+rjgpwIalg2UM42+T5sKWbjWH1UmWi80OcOsZH/BBVMecI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qtLHiQRn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 404BEC433C7;
-	Mon, 19 Feb 2024 18:11:44 +0000 (UTC)
+	s=arc-20240116; t=1708366308; c=relaxed/simple;
+	bh=IXmKvGV6vTOi32DzQNf2ca09SeFFbSseMoaR4V26AgI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=QcLJesiqGN78S9f3fK5bLr/ab2pw4HoMdjY0clCLIJBLEelpWDyIwQIus7i4uD10oQOBHM2Qf5A2xyNaBOuKtQtb1WsxzCft4uc29qLlgKWl32l3gBu3YjaClIhiJUECgu9psKnpnFpSbeDKWYXp4YfvL3p8fHp/BX2c7g8eaM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=113i2+v9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F7DDC433F1;
+	Mon, 19 Feb 2024 18:11:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708366304;
-	bh=b1Fyge75aUFtR6Sg/3IhEFUXeOpecKNdoE5z4cnduLk=;
+	s=korg; t=1708366308;
+	bh=IXmKvGV6vTOi32DzQNf2ca09SeFFbSseMoaR4V26AgI=;
 	h=Subject:To:Cc:From:Date:From;
-	b=qtLHiQRnmxAe9Rtym/10C1hi4mS/qTmmOp1aonRQmlKvfEwSKEoxVA//NYP+klykq
-	 SMMoURa4kawo9qT2PCweCI+kvIScVgwViCXg1ByjYuro8q3UMe6OIWwIRaU+HkSz3x
-	 V67V827BM9VBGToWKBgSpybyJYshdh51E9mBc9s0=
-Subject: FAILED: patch "[PATCH] getrusage: move thread_group_cputime_adjusted() outside of" failed to apply to 4.19-stable tree
+	b=113i2+v9BRsgL63+rLp2LOgFIds9WP8fSel3PLSGoBUBsydzal/fDGXGoARbwjSKW
+	 Fvv3H5GBhsm+1OA4otr/RcdOSlWSUdpvSFfhAFci5UtEy7U1Z8VP7ZL5kOdTbMfSh6
+	 JiPXbPxnRdQpdoU9H1pQ1N5r7w9tpNtSxLWHncp8=
+Subject: FAILED: patch "[PATCH] getrusage: use sig->stats_lock rather than" failed to apply to 6.6-stable tree
 To: oleg@redhat.com,akpm@linux-foundation.org,dylanbhatch@google.com,ebiederm@xmission.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Feb 2024 19:11:26 +0100
-Message-ID: <2024021926-fretted-situation-ed0b@gregkh>
+Date: Mon, 19 Feb 2024 19:11:33 +0100
+Message-ID: <2024021933-passion-crucial-7362@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,26 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x daa694e4137571b4ebec330f9a9b4d54aa8b8089
+git cherry-pick -x f7ec1cd5cc7ef3ad964b677ba82b8b77f1c93009
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021926-fretted-situation-ed0b@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021933-passion-crucial-7362@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
+f7ec1cd5cc7e ("getrusage: use sig->stats_lock rather than lock_task_sighand()")
 daa694e41375 ("getrusage: move thread_group_cputime_adjusted() outside of lock_task_sighand()")
+13b7bc60b535 ("getrusage: use __for_each_thread()")
 c7ac8231ace9 ("getrusage: add the "signal_struct *sig" local variable")
-bdd565f817a7 ("y2038: rusage: use __kernel_old_timeval")
 
 thanks,
 
@@ -79,29 +80,32 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From daa694e4137571b4ebec330f9a9b4d54aa8b8089 Mon Sep 17 00:00:00 2001
+From f7ec1cd5cc7ef3ad964b677ba82b8b77f1c93009 Mon Sep 17 00:00:00 2001
 From: Oleg Nesterov <oleg@redhat.com>
-Date: Mon, 22 Jan 2024 16:50:50 +0100
-Subject: [PATCH] getrusage: move thread_group_cputime_adjusted() outside of
+Date: Mon, 22 Jan 2024 16:50:53 +0100
+Subject: [PATCH] getrusage: use sig->stats_lock rather than
  lock_task_sighand()
 
-Patch series "getrusage: use sig->stats_lock", v2.
+lock_task_sighand() can trigger a hard lockup. If NR_CPUS threads call
+getrusage() at the same time and the process has NR_THREADS, spin_lock_irq
+will spin with irqs disabled O(NR_CPUS * NR_THREADS) time.
 
+Change getrusage() to use sig->stats_lock, it was specifically designed
+for this type of use. This way it runs lockless in the likely case.
 
-This patch (of 2):
+TODO:
+	- Change do_task_stat() to use sig->stats_lock too, then we can
+	  remove spin_lock_irq(siglock) in wait_task_zombie().
 
-thread_group_cputime() does its own locking, we can safely shift
-thread_group_cputime_adjusted() which does another for_each_thread loop
-outside of ->siglock protected section.
+	- Turn sig->stats_lock into seqcount_rwlock_t, this way the
+	  readers in the slow mode won't exclude each other. See
+	  https://lore.kernel.org/all/20230913154907.GA26210@redhat.com/
 
-This is also preparation for the next patch which changes getrusage() to
-use stats_lock instead of siglock, thread_group_cputime() takes the same
-lock.  With the current implementation recursive read_seqbegin_or_lock()
-is fine, thread_group_cputime() can't enter the slow mode if the caller
-holds stats_lock, yet this looks more safe and better performance-wise.
+	- stats_lock has to disable irqs because ->siglock can be taken
+	  in irq context, it would be very nice to change __exit_signal()
+	  to avoid the siglock->stats_lock dependency.
 
-Link: https://lkml.kernel.org/r/20240122155023.GA26169@redhat.com
-Link: https://lkml.kernel.org/r/20240122155050.GA26205@redhat.com
+Link: https://lkml.kernel.org/r/20240122155053.GA26214@redhat.com
 Signed-off-by: Oleg Nesterov <oleg@redhat.com>
 Reported-by: Dylan Hatch <dylanbhatch@google.com>
 Tested-by: Dylan Hatch <dylanbhatch@google.com>
@@ -110,77 +114,53 @@ Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
 diff --git a/kernel/sys.c b/kernel/sys.c
-index e219fcfa112d..70ad06ad852e 100644
+index 70ad06ad852e..f8e543f1e38a 100644
 --- a/kernel/sys.c
 +++ b/kernel/sys.c
-@@ -1785,17 +1785,19 @@ void getrusage(struct task_struct *p, int who, struct rusage *r)
- 	struct task_struct *t;
- 	unsigned long flags;
- 	u64 tgutime, tgstime, utime, stime;
--	unsigned long maxrss = 0;
-+	unsigned long maxrss;
-+	struct mm_struct *mm;
+@@ -1788,7 +1788,9 @@ void getrusage(struct task_struct *p, int who, struct rusage *r)
+ 	unsigned long maxrss;
+ 	struct mm_struct *mm;
  	struct signal_struct *sig = p->signal;
++	unsigned int seq = 0;
  
--	memset((char *)r, 0, sizeof (*r));
-+	memset(r, 0, sizeof(*r));
++retry:
+ 	memset(r, 0, sizeof(*r));
  	utime = stime = 0;
-+	maxrss = 0;
- 
- 	if (who == RUSAGE_THREAD) {
- 		task_cputime_adjusted(current, &utime, &stime);
- 		accumulate_thread_rusage(p, r);
- 		maxrss = sig->maxrss;
--		goto out;
-+		goto out_thread;
+ 	maxrss = 0;
+@@ -1800,8 +1802,7 @@ void getrusage(struct task_struct *p, int who, struct rusage *r)
+ 		goto out_thread;
  	}
  
- 	if (!lock_task_sighand(p, &flags))
-@@ -1819,9 +1821,6 @@ void getrusage(struct task_struct *p, int who, struct rusage *r)
- 		fallthrough;
+-	if (!lock_task_sighand(p, &flags))
+-		return;
++	flags = read_seqbegin_or_lock_irqsave(&sig->stats_lock, &seq);
  
- 	case RUSAGE_SELF:
--		thread_group_cputime_adjusted(p, &tgutime, &tgstime);
--		utime += tgutime;
--		stime += tgstime;
- 		r->ru_nvcsw += sig->nvcsw;
- 		r->ru_nivcsw += sig->nivcsw;
- 		r->ru_minflt += sig->min_flt;
-@@ -1839,19 +1838,24 @@ void getrusage(struct task_struct *p, int who, struct rusage *r)
+ 	switch (who) {
+ 	case RUSAGE_BOTH:
+@@ -1829,14 +1830,23 @@ void getrusage(struct task_struct *p, int who, struct rusage *r)
+ 		r->ru_oublock += sig->oublock;
+ 		if (maxrss < sig->maxrss)
+ 			maxrss = sig->maxrss;
++
++		rcu_read_lock();
+ 		__for_each_thread(sig, t)
+ 			accumulate_thread_rusage(t, r);
++		rcu_read_unlock();
++
+ 		break;
+ 
+ 	default:
+ 		BUG();
  	}
- 	unlock_task_sighand(p, &flags);
- 
--out:
-+	if (who == RUSAGE_CHILDREN)
-+		goto out_children;
+-	unlock_task_sighand(p, &flags);
 +
-+	thread_group_cputime_adjusted(p, &tgutime, &tgstime);
-+	utime += tgutime;
-+	stime += tgstime;
-+
-+out_thread:
-+	mm = get_task_mm(p);
-+	if (mm) {
-+		setmax_mm_hiwater_rss(&maxrss, mm);
-+		mmput(mm);
++	if (need_seqretry(&sig->stats_lock, seq)) {
++		seq = 1;
++		goto retry;
 +	}
-+
-+out_children:
-+	r->ru_maxrss = maxrss * (PAGE_SIZE / 1024); /* convert pages to KBs */
- 	r->ru_utime = ns_to_kernel_old_timeval(utime);
- 	r->ru_stime = ns_to_kernel_old_timeval(stime);
--
--	if (who != RUSAGE_CHILDREN) {
--		struct mm_struct *mm = get_task_mm(p);
--
--		if (mm) {
--			setmax_mm_hiwater_rss(&maxrss, mm);
--			mmput(mm);
--		}
--	}
--	r->ru_maxrss = maxrss * (PAGE_SIZE / 1024); /* convert pages to KBs */
- }
++	done_seqretry_irqrestore(&sig->stats_lock, seq, flags);
  
- SYSCALL_DEFINE2(getrusage, int, who, struct rusage __user *, ru)
+ 	if (who == RUSAGE_CHILDREN)
+ 		goto out_children;
 
 
