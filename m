@@ -1,130 +1,176 @@
-Return-Path: <stable+bounces-20492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64E31859DD4
-	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 09:10:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF934859DD5
+	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 09:10:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04D7D1F236EE
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B3B9281F49
 	for <lists+stable@lfdr.de>; Mon, 19 Feb 2024 08:10:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7454E20DD5;
-	Mon, 19 Feb 2024 08:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57F6320DEB;
+	Mon, 19 Feb 2024 08:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=siemens.com header.i=felix.moessbauer@siemens.com header.b="GMi2gc68"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Sb4MAF9D";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="IlB1cgVw";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Sb4MAF9D";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="IlB1cgVw"
 X-Original-To: stable@vger.kernel.org
-Received: from mta-64-225.siemens.flowmailer.net (mta-64-225.siemens.flowmailer.net [185.136.64.225])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C985210FA
-	for <stable@vger.kernel.org>; Mon, 19 Feb 2024 08:09:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.64.225
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59E3A20DD9;
+	Mon, 19 Feb 2024 08:09:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708330174; cv=none; b=AmBXd5nDpytlwdGUeczU5lZhWzpc878JsO40FABfhYtYnLTZdoezdNHSSEPDpBCea1NzT9xFcoPcFDkiF6gE67ycbovGmsDGqVRpJrBq3iWn07f3+biA1/vXbA6Pi9aZcLhCXOT1vnW9Cuyknm+di9OoO1TC9asufmRWZ7oRVwg=
+	t=1708330199; cv=none; b=Daqabe78D2S/aSn8cz4vx4gHUaX2x2FzZ4Z0rzenHUhrkeiix7o2cxX2g4V1qvoq0wadbMBY/sJ03VZu9kpgI6cZQ4m1+KqIx1kphsCpPChMJJH0RDoCQ0ruscAoovm/5cLloNlKf26l8GIjunlY/tk7+Xf7AB+9y2IxxST/wmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708330174; c=relaxed/simple;
-	bh=S/+yemvHZgVdz8mxKtnq9ho60IBky1Q7ZHlY/toMv5E=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=NxuPFvslbQKDFc4xjfbFszW4asBvQE8pz4INfILNebsvx8myvVS1T4nFQLxF9gBoRQoAuBMZWn/vDdSzvc18qoL/s31Vp0JFXFc8mdJV0rbNJ7d/V7GXt/etF7eG4JOX968KlxK1JX3OO5AqPtWUwjV688YJNZtf60nofkvlLgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (1024-bit key) header.d=siemens.com header.i=felix.moessbauer@siemens.com header.b=GMi2gc68; arc=none smtp.client-ip=185.136.64.225
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
-Received: by mta-64-225.siemens.flowmailer.net with ESMTPSA id 20240219080928c30aab50a9bf8eb5a6
-        for <stable@vger.kernel.org>;
-        Mon, 19 Feb 2024 09:09:28 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
- d=siemens.com; i=felix.moessbauer@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc:References:In-Reply-To;
- bh=Aogezgsootqf6Y+vTCDLAqgmqqzcNfdcg3Nqq5gQ8Sc=;
- b=GMi2gc68GKZyZ6SGEcA2YNsGWj9BcIMVYZEaTotMLRMFwKEjMO0D0L2JgrnqiipimS/scr
- 72n9X3wXXcZ8oC5SCbR+2/qhBjzxw311tAse8V3059JFcRKHWxRm/8mlEJKvewXkFdBbrwXm
- VxxcTGfQyO48etTQpi/9ETYA8UMJc=;
-From: Felix Moessbauer <felix.moessbauer@siemens.com>
-To: stable@vger.kernel.org
-Cc: dave@stgolabs.net,
-	tglx@linutronix.de,
-	bigeasy@linutronix.de,
-	petr.ivanov@siemens.com,
-	jan.kiszka@siemens.com
-Subject: [PATCH][5.10, 5.15, 6.1][1/1] hrtimer: Ignore slack time for RT tasks in schedule_hrtimeout_range()
-Date: Mon, 19 Feb 2024 09:08:51 +0100
-Message-Id: <20240219080851.27386-2-felix.moessbauer@siemens.com>
-In-Reply-To: <20240219080851.27386-1-felix.moessbauer@siemens.com>
-References: <20240219080851.27386-1-felix.moessbauer@siemens.com>
+	s=arc-20240116; t=1708330199; c=relaxed/simple;
+	bh=kYA5wdHtwjrn8oLeN1C1LqpgvH68DRjLShJ/XuooKMg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=L9sosR7d/45krp3pJfjRuMIxfFdoohSrI/4X+g46M/9pag0Rqb9fLp/I/ZJ3aTVpaoYv/nDuaUMhPFZADfj4NSf430q6LnCulm2w7JGKOpzpzILxweMW9VGEFz1bjR8y+UfAB+Yu9JnSuqpfe5IXIxT+/xFtzwqKmgP37BzluJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Sb4MAF9D; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=IlB1cgVw; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Sb4MAF9D; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=IlB1cgVw; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:98])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 860141F7DD;
+	Mon, 19 Feb 2024 08:09:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1708330195; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+W/bpv2D3c0ZM1YOskN3/VvP+1dFlkBTARg3DDHNZV4=;
+	b=Sb4MAF9DroERnRVpTUQKSc6xiAwy9itXQnqmCAmWldYwnhwba3C+m7puLCqejqZeK9V/GQ
+	+d+RqD0PG7AabQv9q52OZ4AYm2i+YsJEwgNMQM5Re5L4LYDp9o106dGDcvOv/kgnvy7o5Q
+	8QEe9R8B9CpTaNiiHG0WuRdO+I7wON4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1708330195;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+W/bpv2D3c0ZM1YOskN3/VvP+1dFlkBTARg3DDHNZV4=;
+	b=IlB1cgVwV2qR4MEjkpQRMz+jGRbWHpkHwHhdjiKwhJG6aoLRcvrsbGqsdn0VRZ56EIGyeP
+	SK5KuG8f2+U1dKDg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1708330195; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+W/bpv2D3c0ZM1YOskN3/VvP+1dFlkBTARg3DDHNZV4=;
+	b=Sb4MAF9DroERnRVpTUQKSc6xiAwy9itXQnqmCAmWldYwnhwba3C+m7puLCqejqZeK9V/GQ
+	+d+RqD0PG7AabQv9q52OZ4AYm2i+YsJEwgNMQM5Re5L4LYDp9o106dGDcvOv/kgnvy7o5Q
+	8QEe9R8B9CpTaNiiHG0WuRdO+I7wON4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1708330195;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+W/bpv2D3c0ZM1YOskN3/VvP+1dFlkBTARg3DDHNZV4=;
+	b=IlB1cgVwV2qR4MEjkpQRMz+jGRbWHpkHwHhdjiKwhJG6aoLRcvrsbGqsdn0VRZ56EIGyeP
+	SK5KuG8f2+U1dKDg==
+Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id F22F213585;
+	Mon, 19 Feb 2024 08:09:54 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+	by imap2.dmz-prg2.suse.org with ESMTPSA
+	id 3gZiONIM02U6PAAAn2gu4w
+	(envelope-from <osalvador@suse.de>); Mon, 19 Feb 2024 08:09:54 +0000
+Date: Mon, 19 Feb 2024 09:11:06 +0100
+From: Oscar Salvador <osalvador@suse.de>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Byungchul Park <byungchul@sk.com>, akpm@linux-foundation.org,
+	ying.huang@intel.com, hannes@cmpxchg.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	kernel_team@skhynix.com, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/vmscan: Fix a bug calling wakeup_kswapd() with a
+ wrong zone index
+Message-ID: <ZdMNGvUOWnNn9zDh@localhost.localdomain>
+References: <20240216111502.79759-1-byungchul@sk.com>
+ <517e58d4-7537-4d9f-8893-0130c65c3fdb@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Flowmailer-Platform: Siemens
-Feedback-ID: 519:519-1321639:519-21489:flowmailer
+In-Reply-To: <517e58d4-7537-4d9f-8893-0130c65c3fdb@linux.alibaba.com>
+X-Spam-Level: 
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Sb4MAF9D;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=IlB1cgVw
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-2.41 / 50.00];
+	 ARC_NA(0.00)[];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:98:from];
+	 FROM_HAS_DN(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 MIME_GOOD(-0.10)[text/plain];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 DKIM_TRACE(0.00)[suse.de:+];
+	 MX_GOOD(-0.01)[];
+	 RCPT_COUNT_SEVEN(0.00)[9];
+	 NEURAL_HAM_SHORT(-0.20)[-1.000];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 RCVD_TLS_ALL(0.00)[];
+	 BAYES_HAM(-0.90)[86.08%]
+X-Spam-Score: -2.41
+X-Rspamd-Queue-Id: 860141F7DD
+X-Spam-Flag: NO
 
-From: Davidlohr Bueso <dave@stgolabs.net>
+On Mon, Feb 19, 2024 at 02:25:11PM +0800, Baolin Wang wrote:
+> This means that there is no memory on the target node？ if so, we can add a
+> check at the beginning to avoid calling unnecessary
+> migrate_misplaced_folio().
+> 
+> diff --git a/mm/memory.c b/mm/memory.c
+> index e95503d7544e..a64a1aac463f 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -5182,7 +5182,7 @@ static vm_fault_t do_numa_page(struct vm_fault *vmf)
+>         else
+>                 last_cpupid = folio_last_cpupid(folio);
+>         target_nid = numa_migrate_prep(folio, vma, vmf->address, nid,
+> &flags);
+> -       if (target_nid == NUMA_NO_NODE) {
+> +       if (target_nid == NUMA_NO_NODE || !node_state(target_nid, N_MEMORY))
+> {
+>                 folio_put(folio);
+>                 goto out_map;
+>         }
+> 
+> (similar changes for do_huge_pmd_numa_page())
 
-While in theory the timer can be triggered before expires + delta, for the
-cases of RT tasks they really have no business giving any lenience for
-extra slack time, so override any passed value by the user and always use
-zero for schedule_hrtimeout_range() calls. Furthermore, this is similar to
-what the nanosleep(2) family already does with current->timer_slack_ns.
+With the check in place from [1], numa_migrate_prep() will also return
+NUMA_NO_NODE, so no need for this one here.
 
-Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20230123173206.6764-3-dave@stgolabs.net
----
- kernel/time/hrtimer.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+And I did not check, but I assume that do_huge_pmd_numa_page() also ends
+up calling numa_migrate_prep().
 
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index ede09dda36e9..0aebb88f1c11 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -2161,7 +2161,7 @@ void __init hrtimers_init(void)
- /**
-  * schedule_hrtimeout_range_clock - sleep until timeout
-  * @expires:	timeout value (ktime_t)
-- * @delta:	slack in expires timeout (ktime_t)
-+ * @delta:	slack in expires timeout (ktime_t) for SCHED_OTHER tasks
-  * @mode:	timer mode
-  * @clock_id:	timer clock to be used
-  */
-@@ -2188,6 +2188,13 @@ schedule_hrtimeout_range_clock(ktime_t *expires, u64 delta,
- 		return -EINTR;
- 	}
+[1] https://lore.kernel.org/lkml/20240219041920.1183-1-byungchul@sk.com/
  
-+	/*
-+	 * Override any slack passed by the user if under
-+	 * rt contraints.
-+	 */
-+	if (rt_task(current))
-+		delta = 0;
-+
- 	hrtimer_init_sleeper_on_stack(&t, clock_id, mode);
- 	hrtimer_set_expires_range_ns(&t.timer, *expires, delta);
- 	hrtimer_sleeper_start_expires(&t, mode);
-@@ -2207,7 +2214,7 @@ EXPORT_SYMBOL_GPL(schedule_hrtimeout_range_clock);
- /**
-  * schedule_hrtimeout_range - sleep until timeout
-  * @expires:	timeout value (ktime_t)
-- * @delta:	slack in expires timeout (ktime_t)
-+ * @delta:	slack in expires timeout (ktime_t) for SCHED_OTHER tasks
-  * @mode:	timer mode
-  *
-  * Make the current task sleep until the given expiry time has
-@@ -2215,7 +2222,8 @@ EXPORT_SYMBOL_GPL(schedule_hrtimeout_range_clock);
-  * the current task state has been set (see set_current_state()).
-  *
-  * The @delta argument gives the kernel the freedom to schedule the
-- * actual wakeup to a time that is both power and performance friendly.
-+ * actual wakeup to a time that is both power and performance friendly
-+ * for regular (non RT/DL) tasks.
-  * The kernel give the normal best effort behavior for "@expires+@delta",
-  * but may decide to fire the timer earlier, but no earlier than @expires.
-  *
--- 
-2.39.2
 
+-- 
+Oscar Salvador
+SUSE Labs
 
