@@ -1,155 +1,163 @@
-Return-Path: <stable+bounces-20860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D71C285C375
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 19:13:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B3BD85C3E6
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 19:47:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75FB01F2226A
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 18:13:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEB9C1F236A0
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 18:47:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C3A477655;
-	Tue, 20 Feb 2024 18:13:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26CD214A0B9;
+	Tue, 20 Feb 2024 18:45:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="UQMCGWag";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="x7UEVYjO";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="UQMCGWag";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="x7UEVYjO"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="AViV7+7K";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="yZeIB15l";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="AViV7+7K";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="yZeIB15l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48AD57764C;
-	Tue, 20 Feb 2024 18:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8D912FB38;
+	Tue, 20 Feb 2024 18:45:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708452797; cv=none; b=tFrFHgY5WMcoyIIU7SWg8z9AFmKtcY/EQpFjfBRbbJQkqzozBY+IPLGleikif9G4/XkEHiWS8k4he1vm3Q75cbTgJTEmaQLLgf1QtP4TWaD0Qhjhql4bMiDA786l1RPWpTiWDpy9A1Hl2Jc29/plWnkilJGjEKWGajZLHEqJRgk=
+	t=1708454714; cv=none; b=EBBQYnJaLCTd7nbxixhlQw8KhzcKtIYwLH7zhHhEqmoj3c8vIJCNV8r4jmbB881LdkS6cgzkYkA1ql+WiaVNSMnC+6y0lwJxXFk137Me4GDbO7zaRYt1fqacMKpqkBDpwY0P8IKQruOBsaRcMDHNUfAoEbLvOfwWcd29JIwi/yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708452797; c=relaxed/simple;
-	bh=EqcKyO3P7dppHSuzNcw0smmf/DhyVg96kMAjvjcqGTo=;
+	s=arc-20240116; t=1708454714; c=relaxed/simple;
+	bh=HgfWxLr/9+EO2ZQL5YW8e8ugaLpMnYTtWU0gl55uFkw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CAhXBS7svoVMwdPgc2YtiBoRRjryc3zo0oSbnAQfsLviA+vPfjevBDw8S5T+6SRdwOqwDmLVfbp9z8hjypgBtYE7f4K+y0i6KAXZlEU3+CvNpXjqhxJjUVkRX4SCASQrmFQoGHQnesQcdOesAXKrNzxMDgW+1rYn+rd4RtQPt1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=UQMCGWag; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=x7UEVYjO; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=UQMCGWag; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=x7UEVYjO; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	 Content-Type:Content-Disposition:In-Reply-To; b=gWDjvM2BAGEAKAH4EYzYFyFNt+vPKM60D0DhxR+AdsuiudoEF8zJtWJNBuRkOP7g6o559VlHvpPE61DFn5XPfHeIFV0AJzhIRBDDTkAgiazcKM6Eo8DxxB5YywFKYKMWy6M0fuZ0RuylcnKBuLgnhAIUGis4ZGHLt+pbCu4krfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=AViV7+7K; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=yZeIB15l; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=AViV7+7K; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=yZeIB15l; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [10.150.64.98])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 605EA21DBD;
-	Tue, 20 Feb 2024 18:13:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1708452793;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	by smtp-out1.suse.de (Postfix) with ESMTPS id CBA89210F0;
+	Tue, 20 Feb 2024 18:45:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1708454710; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UOCOp+pOd/LrYT1vXNYbEllONUwin50q8/G6oCcTLxE=;
-	b=UQMCGWagPB137wK/YpauccnrD3ApbBzw975mAPxhMIJghA4fLOjm5yy1m+6di1pHcG6KV2
-	H1hl/AXFVpqYpMR+ofKH4zJYC4PvEeB1rmAT7O/btHYD7Sywi0KAl5Aib3DZ0rAZ/0hoJF
-	/kLKBcOfTMo7Th00k9fdW7f48EK2P6Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1708452793;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	bh=5iWM41Q1rNjgHeEwYFmqtyc05mmicuDXwypkINyJYR8=;
+	b=AViV7+7KWcPKNHDSOTCdnESYam89zGeUMYn1VJrjotWJsz7tab/LcBCK69AqO5WFXQFp2R
+	daSzt8p5qwbMFM/v+Szowaof3uWTqbjgdqQb6S2EdvsQlF5sh1jS2cpOZY1xO1zXOdrXeD
+	NQH63eEjXftnucxiGXFePsdSaGxWquA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1708454710;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UOCOp+pOd/LrYT1vXNYbEllONUwin50q8/G6oCcTLxE=;
-	b=x7UEVYjO4SsRB3Q6K5h0OWWbmg234tA0+vMQei9FAFy7XbpmdIxlvANPVOD7iprd3FacZz
-	uROFOqIQLpdCG+CQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1708452793;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	bh=5iWM41Q1rNjgHeEwYFmqtyc05mmicuDXwypkINyJYR8=;
+	b=yZeIB15lTAQMV1Y/OjErpx2RzzuJkgzrVSok+edPVQIG6YoMO8sHNOvr1iDdthH7gRK80Z
+	eTWTYVe4z8MiCkAQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1708454710; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UOCOp+pOd/LrYT1vXNYbEllONUwin50q8/G6oCcTLxE=;
-	b=UQMCGWagPB137wK/YpauccnrD3ApbBzw975mAPxhMIJghA4fLOjm5yy1m+6di1pHcG6KV2
-	H1hl/AXFVpqYpMR+ofKH4zJYC4PvEeB1rmAT7O/btHYD7Sywi0KAl5Aib3DZ0rAZ/0hoJF
-	/kLKBcOfTMo7Th00k9fdW7f48EK2P6Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1708452793;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	bh=5iWM41Q1rNjgHeEwYFmqtyc05mmicuDXwypkINyJYR8=;
+	b=AViV7+7KWcPKNHDSOTCdnESYam89zGeUMYn1VJrjotWJsz7tab/LcBCK69AqO5WFXQFp2R
+	daSzt8p5qwbMFM/v+Szowaof3uWTqbjgdqQb6S2EdvsQlF5sh1jS2cpOZY1xO1zXOdrXeD
+	NQH63eEjXftnucxiGXFePsdSaGxWquA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1708454710;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UOCOp+pOd/LrYT1vXNYbEllONUwin50q8/G6oCcTLxE=;
-	b=x7UEVYjO4SsRB3Q6K5h0OWWbmg234tA0+vMQei9FAFy7XbpmdIxlvANPVOD7iprd3FacZz
-	uROFOqIQLpdCG+CQ==
+	bh=5iWM41Q1rNjgHeEwYFmqtyc05mmicuDXwypkINyJYR8=;
+	b=yZeIB15lTAQMV1Y/OjErpx2RzzuJkgzrVSok+edPVQIG6YoMO8sHNOvr1iDdthH7gRK80Z
+	eTWTYVe4z8MiCkAQ==
 Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 445681358A;
-	Tue, 20 Feb 2024 18:13:13 +0000 (UTC)
+	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 518D21358A;
+	Tue, 20 Feb 2024 18:45:10 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([10.150.64.162])
 	by imap2.dmz-prg2.suse.org with ESMTPSA
-	id zoh5ELnr1GWoXwAAn2gu4w
-	(envelope-from <dsterba@suse.cz>); Tue, 20 Feb 2024 18:13:13 +0000
-Date: Tue, 20 Feb 2024 19:12:36 +0100
-From: David Sterba <dsterba@suse.cz>
-To: Filipe Manana <fdmanana@kernel.org>
-Cc: Anand Jain <anand.jain@oracle.com>, linux-btrfs@vger.kernel.org,
-	dsterba@suse.com, aromosan@gmail.com, bernd.feige@gmx.net,
-	CHECK_1234543212345@protonmail.com, stable@vger.kernel.org
-Subject: Re: [PATCH v2] btrfs: do not skip re-registration for the mounted
- device
-Message-ID: <20240220181236.GF355@suse.cz>
-Reply-To: dsterba@suse.cz
-References: <88673c60b1d866c289ef019945647adfc8ab51d0.1707781507.git.anand.jain@oracle.com>
- <20240214071620.GL355@twin.jikos.cz>
- <CAL3q7H5wx5rKmSzGWP7mRqaSfAY88g=35N4OBrbJB61rK0mt2w@mail.gmail.com>
+	id 3jUrETbz1GXRZQAAn2gu4w
+	(envelope-from <osalvador@suse.de>); Tue, 20 Feb 2024 18:45:10 +0000
+Date: Tue, 20 Feb 2024 19:46:14 +0100
+From: Oscar Salvador <osalvador@suse.de>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: mm-commits@vger.kernel.org, ying.huang@intel.com,
+	stable@vger.kernel.org, hyeongtak.ji@sk.com, hannes@cmpxchg.org,
+	baolin.wang@linux.alibaba.com, byungchul@sk.com
+Subject: Re: +
+ mm-vmscan-fix-a-bug-calling-wakeup_kswapd-with-a-wrong-zone-index.patch
+ added to mm-hotfixes-unstable branch
+Message-ID: <ZdTzdnYeyK4nXfGo@localhost.localdomain>
+References: <20240220032539.63C25C433F1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAL3q7H5wx5rKmSzGWP7mRqaSfAY88g=35N4OBrbJB61rK0mt2w@mail.gmail.com>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
+In-Reply-To: <20240220032539.63C25C433F1@smtp.kernel.org>
 Authentication-Results: smtp-out1.suse.de;
 	none
 X-Spam-Level: 
-X-Spam-Score: -2.19
-X-Spamd-Result: default: False [-2.19 / 50.00];
-	 ARC_NA(0.00)[];
-	 HAS_REPLYTO(0.30)[dsterba@suse.cz];
+X-Spam-Score: -3.29
+X-Spamd-Result: default: False [-3.29 / 50.00];
 	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 FROM_HAS_DN(0.00)[];
 	 TO_DN_SOME(0.00)[];
-	 FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.net,protonmail.com];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 REPLYTO_ADDR_EQ_FROM(0.00)[];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 BAYES_HAM(-1.19)[89.06%];
 	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
 	 NEURAL_HAM_SHORT(-0.20)[-1.000];
 	 RCPT_COUNT_SEVEN(0.00)[8];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
 	 FROM_EQ_ENVFROM(0.00)[];
 	 MIME_TRACE(0.00)[0:+];
-	 FREEMAIL_CC(0.00)[oracle.com,vger.kernel.org,suse.com,gmail.com,gmx.net,protonmail.com];
-	 RCVD_TLS_ALL(0.00)[];
-	 MID_RHS_MATCH_FROM(0.00)[]
+	 BAYES_HAM(-1.99)[95.00%];
+	 ARC_NA(0.00)[];
+	 FROM_HAS_DN(0.00)[];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 MIME_GOOD(-0.10)[text/plain];
+	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linux-foundation.org:email];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 RCVD_TLS_ALL(0.00)[]
 X-Spam-Flag: NO
 
-On Tue, Feb 20, 2024 at 02:08:00PM +0000, Filipe Manana wrote:
-> On Wed, Feb 14, 2024 at 7:17 AM David Sterba <dsterba@suse.cz> wrote:
-> > On Tue, Feb 13, 2024 at 09:13:56AM +0800, Anand Jain wrote:
-> > https://btrfs.readthedocs.io/en/latest/dev/Developer-s-FAQ.html#ordering
+On Mon, Feb 19, 2024 at 07:25:38PM -0800, Andrew Morton wrote:
+> From: Byungchul Park <byungchul@sk.com>
+> Subject: mm/vmscan: fix a bug calling wakeup_kswapd() with a wrong zone index
+> Date: Fri, 16 Feb 2024 20:15:02 +0900
 > 
-> So this introduces a regression.
-> 
-> $ ./check btrfs/14[6-9] btrfs/15[8-9]
+> With numa balancing on, when a numa system is running where a numa node
+> doesn't have its local memory so it has no managed zones, the following
+> oops has been observed.  It's because wakeup_kswapd() is called with a
+> wrong zone index, -1.  Fixed it by checking the index before calling
+> wakeup_kswapd().
+...
+...
 
-Thanks, with this I can reproduce it and have some ideas what could go
-wrong.
+> 
+> Link: https://lkml.kernel.org/r/20240216111502.79759-1-byungchul@sk.com
+> Signed-off-by: Byungchul Park <byungchul@sk.com>
+> Reported-by: Hyeongtak Ji <hyeongtak.ji@sk.com>
+> Fixes: c574bbe917036 ("NUMA balancing: optimize page placement for memory tiering system")
+> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Cc: "Huang, Ying" <ying.huang@intel.com>
+> Cc: Johannes Weiner <hannes@cmpxchg.org>
+> Cc: Oscar Salvador <osalvador@suse.de>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+It's a shame that N_MEMORY can actually have no memory (e.g: memmap
+consuming all zone's memory), but here we are:
+
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+
+
+-- 
+Oscar Salvador
+SUSE Labs
 
