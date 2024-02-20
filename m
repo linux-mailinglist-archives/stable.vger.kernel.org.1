@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-21434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B77B85C8E1
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:26:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDAA285C776
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:13:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 034B928478F
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:26:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A5521C21D08
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:13:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4F80151CCC;
-	Tue, 20 Feb 2024 21:26:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF13F151CC3;
+	Tue, 20 Feb 2024 21:13:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p2ka0I5C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aQTakN6+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6326B14A4E6;
-	Tue, 20 Feb 2024 21:26:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E1DB612D7;
+	Tue, 20 Feb 2024 21:13:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464408; cv=none; b=LD58BNT4DyzWWc4ukeE71pwehziotqXuG/BpTm3cVQ7EH37ZiYhcns6Ps89oKTyY6e85k7Cmw6ZcbQgZEf437LYEZEswvf/M1uh8QVLMYzaK/eLXTM2bY/4Hu8VHUUQoU3Woi/LGFp4jV83ajGW9uK/MuPNQbwgUsnu3/ksn3S8=
+	t=1708463580; cv=none; b=BF/OQEMwkonY9P3rY4SIp9UIxxiOowgiz0ejjLWZ6ac1xfjuZAmvsXHCLlIe4EoYIi5vVCFhSsZUMO38H4pPF/q9VyVGVJuZZsCTCqjIl32e35to1MIsDKXc1aDf2xklH/blBYfnoJEFCqpymLQn8hWH3vnC6X4uSjAOfjeI8zk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464408; c=relaxed/simple;
-	bh=XONXdUZ8ixJjp8Xz+hcekftA14xAgF1QIqfQmCKx7/s=;
+	s=arc-20240116; t=1708463580; c=relaxed/simple;
+	bh=Gf+PXDv/glCN2r6YuCThsHY5oQTQvwnWlGxQFmYII0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jfE2XrL5wLVCz1UM9AnfRSEXlnT9Ol8e30Of5MM0sjTk5TwbruXXZ1jcNSf2FJS8MdhWSNm3LrSRWHTdvVa+t8kaBR2yufq9NRnWqT8NbCwYFk40xTCDBu1RF7dJEbbUvZ7YJSaG6yb57/pKfV3FqAT5nm3iCFw7/Zc35HBAXiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p2ka0I5C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B553C433F1;
-	Tue, 20 Feb 2024 21:26:47 +0000 (UTC)
+	 MIME-Version; b=E4X1vWRRA70rLXS/qnrmxK+aIWl52N9Y4kskP5v51xiSxj4CiUP7haZmnD4+WPRpN4x7RRfM0Y2OCxB6VNklqjInW5JRLpkApzIiFvoQHRGEnCfuojktsEW/trKdP6sK72YNJnA046sAy951Ewvnh0Oz/zxDn+gxsrGVfDsQR/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aQTakN6+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D37E6C433C7;
+	Tue, 20 Feb 2024 21:12:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464407;
-	bh=XONXdUZ8ixJjp8Xz+hcekftA14xAgF1QIqfQmCKx7/s=;
+	s=korg; t=1708463580;
+	bh=Gf+PXDv/glCN2r6YuCThsHY5oQTQvwnWlGxQFmYII0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p2ka0I5CIlgAAb0UbJvC7FQIa8Luj3qvUEPLJhe2R9TBpE/nYFhw+iRFOmsC9Qbus
-	 wD5s55zvrfzK4bjjEceJq1Vb9sKlh/5N1/oYGq3yDo4GfLXMy6bSy2a2Ukp7iDQ/72
-	 UKt0nSq3NH9nA/+9cft0Y9QOd4tpvjTGP9w/EXgc=
+	b=aQTakN6+IrrXN1vQTVtt7jqmjOLUidxJTzVQ6QMu5DXXVYWHw7lgEJBtswZe/T5+d
+	 iO1DdizyLgYvhE9EMxmpAhoreCk1BC49BSYeIWfuaG2OAO/TSe7u95xgZUPmb53ao1
+	 8UvAY8CrZ4eL9ex87atDN4zMt7hvXRIj71KPrQow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saravana Kannan <saravanak@google.com>,
-	Xu Yang <xu.yang_2@nxp.com>
-Subject: [PATCH 6.7 016/309] driver core: Fix device_link_flag_is_sync_state_only()
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Shuah Khan <shuah@kernel.org>,
+	David Laight <David.Laight@ACULAB.COM>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 059/331] selftests/mm: switch to bash from sh
 Date: Tue, 20 Feb 2024 21:52:55 +0100
-Message-ID: <20240220205633.667621166@linuxfoundation.org>
+Message-ID: <20240220205639.454006459@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saravana Kannan <saravanak@google.com>
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
 
-commit 7fddac12c38237252431d5b8af7b6d5771b6d125 upstream.
+commit bc29036e1da1cf66e5f8312649aeec2d51ea3d86 upstream.
 
-device_link_flag_is_sync_state_only() correctly returns true on the flags
-of an existing device link that only implements sync_state() functionality.
-However, it incorrectly and confusingly returns false if it's called with
-DL_FLAG_SYNC_STATE_ONLY.
+Running charge_reserved_hugetlb.sh generates errors if sh is set to
+dash:
 
-This bug doesn't manifest in any of the existing calls to this function,
-but fix this confusing behavior to avoid future bugs.
+./charge_reserved_hugetlb.sh: 9: [[: not found
+./charge_reserved_hugetlb.sh: 19: [[: not found
+./charge_reserved_hugetlb.sh: 27: [[: not found
+./charge_reserved_hugetlb.sh: 37: [[: not found
+./charge_reserved_hugetlb.sh: 45: Syntax error: "(" unexpected
 
-Fixes: 67cad5c67019 ("driver core: fw_devlink: Add DL_FLAG_CYCLE support to device links")
-Signed-off-by: Saravana Kannan <saravanak@google.com>
-Tested-by: Xu Yang <xu.yang_2@nxp.com>
-Link: https://lore.kernel.org/r/20240202095636.868578-2-saravanak@google.com
+Switch to using /bin/bash instead of /bin/sh.  Make the switch for
+write_hugetlb_memory.sh as well which is called from
+charge_reserved_hugetlb.sh.
+
+Link: https://lkml.kernel.org/r/20240116090455.3407378-1-usama.anjum@collabora.com
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: David Laight <David.Laight@ACULAB.COM>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/core.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ tools/testing/selftests/mm/charge_reserved_hugetlb.sh |    2 +-
+ tools/testing/selftests/mm/write_hugetlb_memory.sh    |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -284,10 +284,12 @@ static bool device_is_ancestor(struct de
- 	return false;
- }
+--- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
++++ b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/bin/bash
+ # SPDX-License-Identifier: GPL-2.0
  
-+#define DL_MARKER_FLAGS		(DL_FLAG_INFERRED | \
-+				 DL_FLAG_CYCLE | \
-+				 DL_FLAG_MANAGED)
- static inline bool device_link_flag_is_sync_state_only(u32 flags)
- {
--	return (flags & ~(DL_FLAG_INFERRED | DL_FLAG_CYCLE)) ==
--		(DL_FLAG_SYNC_STATE_ONLY | DL_FLAG_MANAGED);
-+	return (flags & ~DL_MARKER_FLAGS) == DL_FLAG_SYNC_STATE_ONLY;
- }
+ # Kselftest framework requirement - SKIP code is 4.
+--- a/tools/testing/selftests/mm/write_hugetlb_memory.sh
++++ b/tools/testing/selftests/mm/write_hugetlb_memory.sh
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/bin/bash
+ # SPDX-License-Identifier: GPL-2.0
  
- /**
+ set -e
 
 
 
