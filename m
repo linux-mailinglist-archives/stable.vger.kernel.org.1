@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-21188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3454B85C78A
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:14:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C95385C91F
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:29:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 665591C21FDF
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:14:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE2B51C22659
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:29:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3ED6151CE8;
-	Tue, 20 Feb 2024 21:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C25E9151CE1;
+	Tue, 20 Feb 2024 21:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxByPILj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MSou6wVz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F3711509BC;
-	Tue, 20 Feb 2024 21:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FAC314A4E6;
+	Tue, 20 Feb 2024 21:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463631; cv=none; b=P9JYrL9ADWv2ZG7ik761ZS7npjdCmJppNSYfYVbPeb6/FP6//DEs4NfgjuY+KNfFPZvHwmlejBIsmNc1g/tIZFfKJQ4gMfJiJWHtO1rsvT8VnBhcINlxjc6qCUutyZTXmdtSUjto1OvqNXC1X3J0RIKxaVcQ2c5EXqH5+OSyr38=
+	t=1708464572; cv=none; b=dk3V0Se/Iewzk953hRj5LumlW7Pr+4btEEFdkEoV5oVxwHPR2dxb/YDsix5tzdDChpJtkSCY9TgOGm9VdR9pc0j91lAJ2CGxAkZ51mpXLV9qSMhJ9y6Xk2QiGUKIiEBNhgX1RqK4we6T6Pc/57Nm1zR0CDMxVcW+pAVHiG3+lw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463631; c=relaxed/simple;
-	bh=SjnmeDitgHieh70h2t0LtYL36s6U/JwiUZKCA2W3UF8=;
+	s=arc-20240116; t=1708464572; c=relaxed/simple;
+	bh=Utarpf+uy9noqZJ3UVosVulBLLZeYso2TezqF11FBeg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vmvp1m1lwsH5/P6sPQ1fPX64g4C3o/jsJBGXraR21B/Qr/Zp0eW76diDbk5rEP2QaAkID40SFXaTz6aNLvtN/TyfpRYxYXMXnnPPhF4ibUo4FwgJfbjSSEGRUZmZejLYBAyQaoZSBdbmd1JB6pLurPZrK/4CMlWahnm69oG1czs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxByPILj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54ED3C433C7;
-	Tue, 20 Feb 2024 21:13:50 +0000 (UTC)
+	 MIME-Version; b=nWrTBJjGEFPtJnhSgdhOhA/mPxo/nOXYb8FadZjJTSagDRk15CCEw+JMJvUUDpZmi+DZZcTJ42lcP0lFHaqJWFDe62AIKTaFjiGHuvtfcbBzxFmNSunYFC30CWumbJWnjsfL4TRn9r8y4Vl7Hy65UGHjvG60+51v+ZAl+zRdw/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MSou6wVz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7FEEC433C7;
+	Tue, 20 Feb 2024 21:29:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463630;
-	bh=SjnmeDitgHieh70h2t0LtYL36s6U/JwiUZKCA2W3UF8=;
+	s=korg; t=1708464572;
+	bh=Utarpf+uy9noqZJ3UVosVulBLLZeYso2TezqF11FBeg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fxByPILjE3WQXzAng2+aUsQMi3y15ymk7Uv44V2UVR85mJmAclFR3moqvVSKNlNCa
-	 tvY6v0DOhypnfgZOkSH1T8ISsTFKwvFe3P+c4pP2lTgVVJyXoHCEqrEUFQOVuYafiD
-	 JJsg0pKMoX9THBIk3hAhNdz39cYtoGPTnlYRASVw=
+	b=MSou6wVzcc/f401aZn2N27wHO8ayvxIRGK8BnhO3ielmlZnjoFyXcK+TKADJstJ6Z
+	 zU28FdsVxDWL7tRxGCSjRj1fVkclQyLvSO4iox/SU6kEgWX0POmtHjZgscBoa9CWRx
+	 AbvSxLM7YLw65NZsCyAlzySKT3Y2cpJ/RYWxY5eg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Radek Krejci <radek.krejci@oracle.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	Xi Ruoyao <xry111@xry111.site>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 103/331] modpost: trim leading spaces when processing source files list
+Subject: [PATCH 6.7 060/309] mm/memory: Use exception ip to search exception tables
 Date: Tue, 20 Feb 2024 21:53:39 +0100
-Message-ID: <20240220205640.830423521@linuxfoundation.org>
+Message-ID: <20240220205635.103258941@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Radek Krejci <radek.krejci@oracle.com>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-[ Upstream commit 5d9a16b2a4d9e8fa028892ded43f6501bc2969e5 ]
+[ Upstream commit 8fa5070833886268e4fb646daaca99f725b378e9 ]
 
-get_line() does not trim the leading spaces, but the
-parse_source_files() expects to get lines with source files paths where
-the first space occurs after the file path.
+On architectures with delay slot, instruction_pointer() may differ
+from where exception was triggered.
 
-Fixes: 70f30cfe5b89 ("modpost: use read_text_file() and get_line() for reading text files")
-Signed-off-by: Radek Krejci <radek.krejci@oracle.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Use exception_ip we just introduced to search exception tables to
+get rid of the problem.
+
+Fixes: 4bce37a68ff8 ("mips/mm: Convert to using lock_mm_and_find_vma()")
+Reported-by: Xi Ruoyao <xry111@xry111.site>
+Link: https://lore.kernel.org/r/75e9fd7b08562ad9b456a5bdaacb7cc220311cc9.camel@xry111.site/
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/mod/sumversion.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ mm/memory.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/mod/sumversion.c b/scripts/mod/sumversion.c
-index 31066bfdba04..dc4878502276 100644
---- a/scripts/mod/sumversion.c
-+++ b/scripts/mod/sumversion.c
-@@ -326,7 +326,12 @@ static int parse_source_files(const char *objfile, struct md4_ctx *md)
+diff --git a/mm/memory.c b/mm/memory.c
+index 6e0712d06cd4..f941489d6041 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -5373,7 +5373,7 @@ static inline bool get_mmap_lock_carefully(struct mm_struct *mm, struct pt_regs
+ 		return true;
  
- 	/* Sum all files in the same dir or subdirs. */
- 	while ((line = get_line(&pos))) {
--		char* p = line;
-+		char* p;
-+
-+		/* trim the leading spaces away */
-+		while (isspace(*line))
-+			line++;
-+		p = line;
- 
- 		if (strncmp(line, "source_", sizeof("source_")-1) == 0) {
- 			p = strrchr(line, ' ');
+ 	if (regs && !user_mode(regs)) {
+-		unsigned long ip = instruction_pointer(regs);
++		unsigned long ip = exception_ip(regs);
+ 		if (!search_exception_tables(ip))
+ 			return false;
+ 	}
+@@ -5398,7 +5398,7 @@ static inline bool upgrade_mmap_lock_carefully(struct mm_struct *mm, struct pt_r
+ {
+ 	mmap_read_unlock(mm);
+ 	if (regs && !user_mode(regs)) {
+-		unsigned long ip = instruction_pointer(regs);
++		unsigned long ip = exception_ip(regs);
+ 		if (!search_exception_tables(ip))
+ 			return false;
+ 	}
 -- 
 2.43.0
 
