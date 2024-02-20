@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-21111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 288E885C72C
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:09:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7171885C70D
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:08:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2FED1F22897
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:09:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BE7B2839C5
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:08:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 763DA1509AC;
-	Tue, 20 Feb 2024 21:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA571509AC;
+	Tue, 20 Feb 2024 21:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zRv+j4Ie"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WFA7jgEw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3352A76C9C;
-	Tue, 20 Feb 2024 21:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29F9B14AD15;
+	Tue, 20 Feb 2024 21:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463386; cv=none; b=T8d7/KcxOpNh5IyGzyyM7j//L8JqG3HYpEEPtn2bDp7eupgAXl91B6OLTv8cwSQ6JL3XwXjitavcyUD8kKjcxS1DO3mlO2AbarNfb4O8uu0cNd7xQPk4fkpk5K73bDlHMnd2BYHnrIAy3YCI1hwoduuNTX2wUOFW8qefpD7FyQs=
+	t=1708463287; cv=none; b=mA2uSr7jUlRTD9pJNVblKRHYy33KoH+2s7iVSzgVVmCGUkdQmfFJj7QgkJTJBFR2Srnr6R4czMsmR/PQC5NqGMSvjUtXKWdMGjRPjjfF93svTNKaw2WrhMnrHKtNidyuM8E9N+4vgujiahc29nBy5kevSiJNDpihOIVxkpVpZ9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463386; c=relaxed/simple;
-	bh=HIrqtkhJg91AXscFMJYMuXT4SLj37Y3RSbaa9s4qpc8=;
+	s=arc-20240116; t=1708463287; c=relaxed/simple;
+	bh=daPKbMhaGqnwPC+Rg3mROiv26YQyqZCNfsDXzjdd0pU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c10ooUciRD3EioGgC3k5AB+EOIhpVFG3R5YD3d18nli710AeIPVIPbEYYe2vd6sBvp23wctdO0/byQGnXLVKOdILyBpxMtK2HhvRc+pLuG6fGi5VQ/dpOlBM2RrHBv7tmbaGyEV834b3oClXrODkwx1+c/EDQZsm8qTpjlhpptU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zRv+j4Ie; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A76CDC433F1;
-	Tue, 20 Feb 2024 21:09:45 +0000 (UTC)
+	 MIME-Version; b=EIazGQXD794n0v8Rnd9OnT7mRipupf5/LwAcMKBLUv7tOP4gHL/h/oe5pFdlpHiPXcRzCA1xIiPRahEdqWlP3ZdwORF727LmtFMFvAQR05M614RNWTJI/TM0eVSdqhVqd32Bhlc60y3EH0jryjwsm+OjBY74nxZdHLmx5byVA5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WFA7jgEw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F4D0C433C7;
+	Tue, 20 Feb 2024 21:08:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463386;
-	bh=HIrqtkhJg91AXscFMJYMuXT4SLj37Y3RSbaa9s4qpc8=;
+	s=korg; t=1708463287;
+	bh=daPKbMhaGqnwPC+Rg3mROiv26YQyqZCNfsDXzjdd0pU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zRv+j4IeLohbhFWHk2ntwr+/y5JU6XuOPebpXwaicrH13yY5ar37NrPb0Q91IBkgV
-	 ec8bU60UnjHKfYokj46cQrZUL1Timg2foKrzdPwd2P5MrfP+rr07cjj0257LhvFIzh
-	 ohzAg7YgXulHn6Rh0JZuBvtbiZgNdZtJOn6R7mXA=
+	b=WFA7jgEwLGNYG7TRLIIqDLs3bsva0as9GZl9YuTbGQ9/VoXpr1shHW+JR+uEdtkkf
+	 tRzXaXrAz9SRQpao2gZt7aHzPHFZ8KE+Y946jelBgYCtgRaR3Zc0unzARb363SXp+p
+	 GoJ5LY8KElxR3ucXP7VYnxSr8ncoJ92nimAsXzvQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6 009/331] btrfs: dont reserve space for checksums when writing to nocow files
-Date: Tue, 20 Feb 2024 21:52:05 +0100
-Message-ID: <20240220205637.878423249@linuxfoundation.org>
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.1 167/197] xfrm: Use xfrm_state selector for BEET input
+Date: Tue, 20 Feb 2024 21:52:06 +0100
+Message-ID: <20240220204846.070565693@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
+References: <20240220204841.073267068@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,114 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-commit feefe1f49d26bad9d8997096e3a200280fa7b1c5 upstream.
+commit 842665a9008a53ff13ac22a4e4b8ae2f10e92aca upstream.
 
-Currently when doing a write to a file we always reserve metadata space
-for inserting data checksums. However we don't need to do it if we have
-a nodatacow file (-o nodatacow mount option or chattr +C) or if checksums
-are disabled (-o nodatasum mount option), as in that case we are only
-adding unnecessary pressure to metadata reservations.
+For BEET the inner address and therefore family is stored in the
+xfrm_state selector.  Use that when decapsulating an input packet
+instead of incorrectly relying on a non-existent tunnel protocol.
 
-For example on x86_64, with the default node size of 16K, a 4K buffered
-write into a nodatacow file is reserving 655360 bytes of metadata space,
-as it's accounting for checksums. After this change, which stops reserving
-space for checksums if we have a nodatacow file or checksums are disabled,
-we only need to reserve 393216 bytes of metadata.
-
-CC: stable@vger.kernel.org # 6.1+
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 5f24f41e8ea6 ("xfrm: Remove inner/outer modes from input path")
+Reported-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/delalloc-space.c |   29 +++++++++++++++++++----------
- 1 file changed, 19 insertions(+), 10 deletions(-)
+ net/xfrm/xfrm_input.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/fs/btrfs/delalloc-space.c
-+++ b/fs/btrfs/delalloc-space.c
-@@ -245,7 +245,6 @@ static void btrfs_calculate_inode_block_
- 	struct btrfs_block_rsv *block_rsv = &inode->block_rsv;
- 	u64 reserve_size = 0;
- 	u64 qgroup_rsv_size = 0;
--	u64 csum_leaves;
- 	unsigned outstanding_extents;
- 
- 	lockdep_assert_held(&inode->lock);
-@@ -260,10 +259,12 @@ static void btrfs_calculate_inode_block_
- 						outstanding_extents);
- 		reserve_size += btrfs_calc_metadata_size(fs_info, 1);
- 	}
--	csum_leaves = btrfs_csum_bytes_to_leaves(fs_info,
--						 inode->csum_bytes);
--	reserve_size += btrfs_calc_insert_metadata_size(fs_info,
--							csum_leaves);
-+	if (!(inode->flags & BTRFS_INODE_NODATASUM)) {
-+		u64 csum_leaves;
-+
-+		csum_leaves = btrfs_csum_bytes_to_leaves(fs_info, inode->csum_bytes);
-+		reserve_size += btrfs_calc_insert_metadata_size(fs_info, csum_leaves);
-+	}
- 	/*
- 	 * For qgroup rsv, the calculation is very simple:
- 	 * account one nodesize for each outstanding extent
-@@ -278,14 +279,20 @@ static void btrfs_calculate_inode_block_
- 	spin_unlock(&block_rsv->lock);
- }
- 
--static void calc_inode_reservations(struct btrfs_fs_info *fs_info,
-+static void calc_inode_reservations(struct btrfs_inode *inode,
- 				    u64 num_bytes, u64 disk_num_bytes,
- 				    u64 *meta_reserve, u64 *qgroup_reserve)
+--- a/net/xfrm/xfrm_input.c
++++ b/net/xfrm/xfrm_input.c
+@@ -331,11 +331,10 @@ xfrm_inner_mode_encap_remove(struct xfrm
  {
-+	struct btrfs_fs_info *fs_info = inode->root->fs_info;
- 	u64 nr_extents = count_max_extents(fs_info, num_bytes);
--	u64 csum_leaves = btrfs_csum_bytes_to_leaves(fs_info, disk_num_bytes);
-+	u64 csum_leaves;
- 	u64 inode_update = btrfs_calc_metadata_size(fs_info, 1);
- 
-+	if (inode->flags & BTRFS_INODE_NODATASUM)
-+		csum_leaves = 0;
-+	else
-+		csum_leaves = btrfs_csum_bytes_to_leaves(fs_info, disk_num_bytes);
-+
- 	*meta_reserve = btrfs_calc_insert_metadata_size(fs_info,
- 						nr_extents + csum_leaves);
- 
-@@ -337,7 +344,7 @@ int btrfs_delalloc_reserve_metadata(stru
- 	 * everything out and try again, which is bad.  This way we just
- 	 * over-reserve slightly, and clean up the mess when we are done.
- 	 */
--	calc_inode_reservations(fs_info, num_bytes, disk_num_bytes,
-+	calc_inode_reservations(inode, num_bytes, disk_num_bytes,
- 				&meta_reserve, &qgroup_reserve);
- 	ret = btrfs_qgroup_reserve_meta_prealloc(root, qgroup_reserve, true,
- 						 noflush);
-@@ -358,7 +365,8 @@ int btrfs_delalloc_reserve_metadata(stru
- 	nr_extents = count_max_extents(fs_info, num_bytes);
- 	spin_lock(&inode->lock);
- 	btrfs_mod_outstanding_extents(inode, nr_extents);
--	inode->csum_bytes += disk_num_bytes;
-+	if (!(inode->flags & BTRFS_INODE_NODATASUM))
-+		inode->csum_bytes += disk_num_bytes;
- 	btrfs_calculate_inode_block_rsv_size(fs_info, inode);
- 	spin_unlock(&inode->lock);
- 
-@@ -392,7 +400,8 @@ void btrfs_delalloc_release_metadata(str
- 
- 	num_bytes = ALIGN(num_bytes, fs_info->sectorsize);
- 	spin_lock(&inode->lock);
--	inode->csum_bytes -= num_bytes;
-+	if (!(inode->flags & BTRFS_INODE_NODATASUM))
-+		inode->csum_bytes -= num_bytes;
- 	btrfs_calculate_inode_block_rsv_size(fs_info, inode);
- 	spin_unlock(&inode->lock);
- 
+ 	switch (x->props.mode) {
+ 	case XFRM_MODE_BEET:
+-		switch (XFRM_MODE_SKB_CB(skb)->protocol) {
+-		case IPPROTO_IPIP:
+-		case IPPROTO_BEETPH:
++		switch (x->sel.family) {
++		case AF_INET:
+ 			return xfrm4_remove_beet_encap(x, skb);
+-		case IPPROTO_IPV6:
++		case AF_INET6:
+ 			return xfrm6_remove_beet_encap(x, skb);
+ 		}
+ 		break;
 
 
 
