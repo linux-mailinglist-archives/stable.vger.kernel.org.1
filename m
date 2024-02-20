@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-21413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2655E85C8CB
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:25:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2965385C9FD
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:40:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 903141F21ABA
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:25:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2F031F21125
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:40:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 228B4151CD9;
-	Tue, 20 Feb 2024 21:25:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3641E151CE9;
+	Tue, 20 Feb 2024 21:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1avrOnCn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v2bxrk0c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D35A21509AC;
-	Tue, 20 Feb 2024 21:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDE50612D7;
+	Tue, 20 Feb 2024 21:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464339; cv=none; b=LZeiLRUoYiCsNg9wsV21IcvQT6VDs7DrT7sWdCZ1HngAbsAkSFRgiWt2nMZTYkonL9CeIPqHBeTuddGRjQqTciY/KqRkyzZzaiB/Ln/9FngIelDq1ELfv+1uSAHP+YSquovvkK+2V0mQ2N8oLU4ynYgObOPwbGaxb6YvUEtmk3k=
+	t=1708465250; cv=none; b=K7cJox9RaCl2lSGR+0iWNxROeEZn1qDSMjDN0pPTD679o4crAzJss0AIlIQwdlPMmfCu9L6sXqgUQpdz7ELz9eCzADCSrlbay9LiOw3+TDzJXmIBKr31u7pLf+2JrP25Sc5VD5oaLJWddbQmkfOQQc8ZxZNeBYSQPHFV/Bxpp2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464339; c=relaxed/simple;
-	bh=uYo8l419CXHJ34IzWJRNMeBglbY532iYk7F3lAolwJo=;
+	s=arc-20240116; t=1708465250; c=relaxed/simple;
+	bh=7Ms3Q/UPNWrOSOv0H5ENkiwffBFC57UYFXpbG0aMu40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c+kXr7RbtmOZ4lAuDj7bRuXEIg/0U/524dGegO/kxvBedTYV3XdxOLaoOyvEouwjrIcB13NuDy0aGKLmndf/fKPlVQvzAbYVXEVoMcuRlqpaYQ4VWICqWiMqQ5TFTeSn7B5exdCeULAMHLgW4973HI76dAEe6QKOgiPvr9vMqEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1avrOnCn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AF48C433C7;
-	Tue, 20 Feb 2024 21:25:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GTK7GjyFnZoh04ejnqF7YCPs+fz+8QHLPZSjOU4bqwDq3MKf98XL5fWGMhHvYtR+tcoELSN3dn02pO9CmwWyr6k8hAznsg9sT3AMgUlsgNDGtGpAQAgd/QoV5h8GRlxV26hyVJCHkdrWhX02XK0ohYF4Ybj2ICLq68nPwCB6rlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v2bxrk0c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B349C433F1;
+	Tue, 20 Feb 2024 21:40:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464339;
-	bh=uYo8l419CXHJ34IzWJRNMeBglbY532iYk7F3lAolwJo=;
+	s=korg; t=1708465249;
+	bh=7Ms3Q/UPNWrOSOv0H5ENkiwffBFC57UYFXpbG0aMu40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1avrOnCn+sFa8M7qnHP6n8CoO83Xu8aoVT6jYYOccLVDXk8WqkW1h1y4VZjOAr2z7
-	 uTJHOfgd3QeTY/Lkpfa5CN1Vof4ZLRnwZsBusyFcmly5pshCmcUX0JeEMij65PfDBD
-	 ExDR0wwdyL80eRfqsB474E5P5mPUeslJTu1DSMuo=
+	b=v2bxrk0c8EUgQqYCqmX1poKIlzrTF2Uhvw0JYx7dbhpROorBIc7BU8I6hkz7euHzW
+	 KJKXa0Qcm0NtPN9xCAPGct1JZCoVxfcJpS9sENwa0gjynofqqTWDE2o8G5pqfd/xv+
+	 XGntEajocxebx7AEPgFtojg3Hwmc5rNyxJXf1LiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 6.6 326/331] x86/boot: Derive file size from _edata symbol
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.7 283/309] pmdomain: renesas: r8a77980-sysc: CR7 must be always on
 Date: Tue, 20 Feb 2024 21:57:22 +0100
-Message-ID: <20240220205648.457947029@linuxfoundation.org>
+Message-ID: <20240220205641.975530428@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,143 +59,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-commit aeb92067f6ae994b541d7f9752fe54ed3d108bcc upstream.
+commit f0e4a1356466ec1858ae8e5c70bea2ce5e55008b upstream.
 
-Tweak the linker script so that the value of _edata represents the
-decompressor binary's file size rounded up to the appropriate alignment.
-This removes the need to calculate it in the build tool, and will make
-it easier to refer to the file size from the header directly in
-subsequent changes to the PE header layout.
+The power domain containing the Cortex-R7 CPU core on the R-Car V3H SoC
+must always be in power-on state, unlike on other SoCs in the R-Car Gen3
+family.  See Table 9.4 "Power domains" in the R-Car Series, 3rd
+Generation Hardware User’s Manual Rev.1.00 and later.
 
-While adding _edata to the sed regex that parses the compressed
-vmlinux's symbol list, tweak the regex a bit for conciseness.
+Fix this by marking the domain as a CPU domain without control
+registers, so the driver will not touch it.
 
-This change has no impact on the resulting bzImage binary when
-configured with CONFIG_EFI_STUB=y.
-
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230915171623.655440-14-ardb@google.com
+Fixes: 41d6d8bd8ae9 ("soc: renesas: rcar-sysc: add R8A77980 support")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/fdad9a86132d53ecddf72b734dac406915c4edc0.1705076735.git.geert+renesas@glider.be
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/boot/Makefile                 |    2 +-
- arch/x86/boot/compressed/vmlinux.lds.S |    3 +++
- arch/x86/boot/header.S                 |    2 +-
- arch/x86/boot/tools/build.c            |   30 +++++++-----------------------
- 4 files changed, 12 insertions(+), 25 deletions(-)
+ drivers/pmdomain/renesas/r8a77980-sysc.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/x86/boot/Makefile
-+++ b/arch/x86/boot/Makefile
-@@ -89,7 +89,7 @@ $(obj)/vmlinux.bin: $(obj)/compressed/vm
- 
- SETUP_OBJS = $(addprefix $(obj)/,$(setup-y))
- 
--sed-zoffset := -e 's/^\([0-9a-fA-F]*\) [a-zA-Z] \(startup_32\|efi32_stub_entry\|efi64_stub_entry\|efi_pe_entry\|efi32_pe_entry\|input_data\|kernel_info\|_end\|_ehead\|_text\|z_.*\)$$/\#define ZO_\2 0x\1/p'
-+sed-zoffset := -e 's/^\([0-9a-fA-F]*\) [a-zA-Z] \(startup_32\|efi.._stub_entry\|efi\(32\)\?_pe_entry\|input_data\|kernel_info\|_end\|_ehead\|_text\|_edata\|z_.*\)$$/\#define ZO_\2 0x\1/p'
- 
- quiet_cmd_zoffset = ZOFFSET $@
-       cmd_zoffset = $(NM) $< | sed -n $(sed-zoffset) > $@
---- a/arch/x86/boot/compressed/vmlinux.lds.S
-+++ b/arch/x86/boot/compressed/vmlinux.lds.S
-@@ -47,6 +47,9 @@ SECTIONS
- 		_data = . ;
- 		*(.data)
- 		*(.data.*)
-+
-+		/* Add 4 bytes of extra space for a CRC-32 checksum */
-+		. = ALIGN(. + 4, 0x20);
- 		_edata = . ;
- 	}
- 	. = ALIGN(L1_CACHE_BYTES);
---- a/arch/x86/boot/header.S
-+++ b/arch/x86/boot/header.S
-@@ -233,7 +233,7 @@ sentinel:	.byte 0xff, 0xff        /* Use
- hdr:
- 		.byte setup_sects - 1
- root_flags:	.word ROOT_RDONLY
--syssize:	.long 0			/* Filled in by build.c */
-+syssize:	.long ZO__edata / 16
- ram_size:	.word 0			/* Obsolete */
- vid_mode:	.word SVGA_MODE
- root_dev:	.word 0			/* Default to major/minor 0/0 */
---- a/arch/x86/boot/tools/build.c
-+++ b/arch/x86/boot/tools/build.c
-@@ -52,6 +52,7 @@ u8 buf[SETUP_SECT_MAX*512];
- 
- static unsigned long efi_pe_entry;
- static unsigned long efi32_pe_entry;
-+static unsigned long _edata;
- static unsigned long _end;
- 
- /*----------------------------------------------------------------------*/
-@@ -308,6 +309,7 @@ static void parse_zoffset(char *fname)
- 	while (p && *p) {
- 		PARSE_ZOFS(p, efi_pe_entry);
- 		PARSE_ZOFS(p, efi32_pe_entry);
-+		PARSE_ZOFS(p, _edata);
- 		PARSE_ZOFS(p, _end);
- 
- 		p = strchr(p, '\n');
-@@ -320,7 +322,6 @@ int main(int argc, char ** argv)
- {
- 	unsigned int i, sz, setup_sectors;
- 	int c;
--	u32 sys_size;
- 	struct stat sb;
- 	FILE *file, *dest;
- 	int fd;
-@@ -368,24 +369,14 @@ int main(int argc, char ** argv)
- 		die("Unable to open `%s': %m", argv[2]);
- 	if (fstat(fd, &sb))
- 		die("Unable to stat `%s': %m", argv[2]);
--	sz = sb.st_size;
-+	if (_edata != sb.st_size)
-+		die("Unexpected file size `%s': %u != %u", argv[2], _edata,
-+		    sb.st_size);
-+	sz = _edata - 4;
- 	kernel = mmap(NULL, sz, PROT_READ, MAP_SHARED, fd, 0);
- 	if (kernel == MAP_FAILED)
- 		die("Unable to mmap '%s': %m", argv[2]);
--	/* Number of 16-byte paragraphs, including space for a 4-byte CRC */
--	sys_size = (sz + 15 + 4) / 16;
--#ifdef CONFIG_EFI_STUB
--	/*
--	 * COFF requires minimum 32-byte alignment of sections, and
--	 * adding a signature is problematic without that alignment.
--	 */
--	sys_size = (sys_size + 1) & ~1;
--#endif
--
--	/* Patch the setup code with the appropriate size parameters */
--	put_unaligned_le32(sys_size, &buf[0x1f4]);
--
--	update_pecoff_text(setup_sectors * 512, i + (sys_size * 16));
-+	update_pecoff_text(setup_sectors * 512, i + _edata);
- 
- 
- 	crc = partial_crc32(buf, i, crc);
-@@ -397,13 +388,6 @@ int main(int argc, char ** argv)
- 	if (fwrite(kernel, 1, sz, dest) != sz)
- 		die("Writing kernel failed");
- 
--	/* Add padding leaving 4 bytes for the checksum */
--	while (sz++ < (sys_size*16) - 4) {
--		crc = partial_crc32_one('\0', crc);
--		if (fwrite("\0", 1, 1, dest) != 1)
--			die("Writing padding failed");
--	}
--
- 	/* Write the CRC */
- 	put_unaligned_le32(crc, buf);
- 	if (fwrite(buf, 1, 4, dest) != 4)
+--- a/drivers/pmdomain/renesas/r8a77980-sysc.c
++++ b/drivers/pmdomain/renesas/r8a77980-sysc.c
+@@ -25,7 +25,8 @@ static const struct rcar_sysc_area r8a77
+ 	  PD_CPU_NOCR },
+ 	{ "ca53-cpu3",	0x200, 3, R8A77980_PD_CA53_CPU3, R8A77980_PD_CA53_SCU,
+ 	  PD_CPU_NOCR },
+-	{ "cr7",	0x240, 0, R8A77980_PD_CR7,	R8A77980_PD_ALWAYS_ON },
++	{ "cr7",	0x240, 0, R8A77980_PD_CR7,	R8A77980_PD_ALWAYS_ON,
++	  PD_CPU_NOCR },
+ 	{ "a3ir",	0x180, 0, R8A77980_PD_A3IR,	R8A77980_PD_ALWAYS_ON },
+ 	{ "a2ir0",	0x400, 0, R8A77980_PD_A2IR0,	R8A77980_PD_A3IR },
+ 	{ "a2ir1",	0x400, 1, R8A77980_PD_A2IR1,	R8A77980_PD_A3IR },
 
 
 
