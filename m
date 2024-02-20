@@ -1,184 +1,370 @@
-Return-Path: <stable+bounces-20831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F1ED85BF22
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 15:51:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC8B785BF23
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 15:51:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07003284F8E
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 14:51:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 386E32851FC
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 14:51:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53CEC6BFD1;
-	Tue, 20 Feb 2024 14:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A03C6BFB2;
+	Tue, 20 Feb 2024 14:51:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="Sb1l+yMF";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="Gej3i/Lb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yXR2Erhi"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33C26BFC6;
-	Tue, 20 Feb 2024 14:51:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708440671; cv=fail; b=G/RQZGr4CLomUTuR5dMq/vuTttzb+Xcp/W5trp3eWCw5vwT8aJBxc5fzz7OY2PqpwNga8KKh3uhIIEXTJusMnvwDfXRyYweh0Z5cHKHJsYP+77nKaY6YXZgONnHPhBNzFYdtDXbssgDErEchqTzesJRkwdUC0dvEyOA2LowbaPg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708440671; c=relaxed/simple;
-	bh=D9oPQ/46S1qHigwgjRybx0CYMQEepjj3iyI3kFuMElo=;
-	h=Date:From:To:Cc:Subject:Message-ID:Content-Type:
-	 Content-Disposition:MIME-Version; b=qe40XlAbSHpLOi1XECMp7HljQXYxd0/hJvES4lMA/ulsrr1yw6sHEAwGDrg01OdPLZPXherWgKjPm5luy5C0EmE3vVggvexpgGKUHbWyVl/qynnQoYxtsXck2fPH2oeteeBRX+7UvjDo0Kp41f0QuKNfC7+6GnNTV8dpcjfavfM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=Sb1l+yMF; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=Gej3i/Lb; arc=fail smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 41KEe8Ld001786;
-	Tue, 20 Feb 2024 14:51:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : content-type : mime-version; s=corp-2023-11-20;
- bh=7WeTJLj/ftQsoUsczKGTyXUA2EmME1MYViATS9dV1OU=;
- b=Sb1l+yMFU28ouDzLQEltlRoeVBbPCWU/D9ZGGhMlEx9G649FAcXiLJ7be+ywGPPjbiKA
- rYyku87nZF34P8zU7SfL/FLOHRRIQ6UtHfTsU3gVL34TiaPIRrT6FB4RikYfSHsuBbEc
- LH3PHhElpkU81mKXMMoZmRw+qnFfvUuozi+rretqEKO7UJuoRMBkojAmosNkeqGm5f+Z
- CW8jV4uIw37J1tbHo1P9swpftBW84uN7maKidCZxW6/lcELy4vzK+emyceDWrBuNk3zw
- QMoVZcXVgXliky89beK/DNeybRnwuz2JIZfZTy8y693WLtVSLeAU1p+KsifWCGloSVvA 4w== 
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3wakk3y0am-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 20 Feb 2024 14:51:00 +0000
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 41KDU9aq006609;
-	Tue, 20 Feb 2024 14:51:00 GMT
-Received: from nam04-mw2-obe.outbound.protection.outlook.com (mail-mw2nam04lp2168.outbound.protection.outlook.com [104.47.73.168])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3wak87k421-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 20 Feb 2024 14:51:00 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NLqVWJ9yYPgQcPmhqxkkWoP3fR9+xczNkbvnTMoXbRtl3DSB7/3Lr5/7m2WXpQ506RfMd7HZ7YaaqgRfD/VPSgxck039IvF9Fur8tcE3wODAzjhhcF9i5Ek46thtRmtBG7ncncr3Oph2eOHcw39R4v7GFXYsA1HG2LG7uqqdqLTzz7UY0u9/nFZamUr+Oa3PkgO4OHkT+CJeYVvVGpqdcdGEjkXzqLn/PsHhobcINfNcQLJJuz872PaWxRGCv75+lQA5mzTSJrhjj1+bC6b3IFk89TTapDRJNF4K1tmJiGsVrKoJAPZQ0gS0PBbmEYpQz2rWokyWGBVvxcRlfe1cRw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7WeTJLj/ftQsoUsczKGTyXUA2EmME1MYViATS9dV1OU=;
- b=l0urJfzfe7gubV4vQbcBw83VriYbJgsTcSQ3pIdKh4Y6eauLiPrR+RVM0bACsYB4YRzex+AQgKJquGzkEBueRa58INJElizB+iLZyKszzFXJIFx5i5b1mq2TAklL6t1umsA+eazvg+GAawMuD0LsCyamwu27m/tKmtC9hSWhP5sZhYPhg8CpkLDXnoMBbZB7G7SvC0tWdwgenvZVlrPEq7Omk2QHLLgU8gLm6dfbF1VrzCAa0LCo0dP0EwNp6uBmHhG/Jwn/RP3GNydNDxytKRI/D69nuZAIHoRV8psfTzQ4gIiqhKoESVavc9E/KxOK7rEaHOsXzOWBf9TxrSMWyQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7WeTJLj/ftQsoUsczKGTyXUA2EmME1MYViATS9dV1OU=;
- b=Gej3i/LbUDBSL3YfuPpd9VbSFrVqMjAbKE+fOAfCR64NoYwYzXWg8RNb//+UKYFHBotw2Z169ak9U+ZL+S6hy0roiUrKMyP4aTftT31i+ZZU+gUOt8KOHRMDLxSa4LdUIRV91FOTC059QHXOeaKwAsNZidae2ymLFbls6mWQY9o=
-Received: from BN0PR10MB5128.namprd10.prod.outlook.com (2603:10b6:408:117::24)
- by LV3PR10MB7818.namprd10.prod.outlook.com (2603:10b6:408:1bb::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.39; Tue, 20 Feb
- 2024 14:50:56 +0000
-Received: from BN0PR10MB5128.namprd10.prod.outlook.com
- ([fe80::ad12:a809:d789:a25b]) by BN0PR10MB5128.namprd10.prod.outlook.com
- ([fe80::ad12:a809:d789:a25b%4]) with mapi id 15.20.7292.036; Tue, 20 Feb 2024
- 14:50:56 +0000
-Date: Tue, 20 Feb 2024 09:50:53 -0500
-From: Chuck Lever <chuck.lever@oracle.com>
-To: stable@vger.kernel.org
-Cc: linux-nfs@vger.kernel.org, Jeff Layton <jlayton@redhat.com>
-Subject: [GIT PULL] NFSD fixes for v6.1.y
-Message-ID: <ZdS8TXWl3QKf0qdk@manet.1015granger.net>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-ClientProxiedBy: CH2PR20CA0016.namprd20.prod.outlook.com
- (2603:10b6:610:58::26) To BN0PR10MB5128.namprd10.prod.outlook.com
- (2603:10b6:408:117::24)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AA246BB50
+	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 14:51:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708440675; cv=none; b=rxRxuTKkaBUpBwumc7yFoX2+vctxC3lS13csFujxkpE8AGUUw1JMcQx4CnGTTeadYajts7bleX7DaTUMWd8ADZrCvLp/UuD2dGdeCJItKkW6l2L136Q8II9CnU5uMuXnfQveebWvg8+ho3pK71B/10r/08leC3TueUHZBcrdq54=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708440675; c=relaxed/simple;
+	bh=Aqz3MJca4xIvph9G3uJcox0DNRAty+7nlAxEcwh5K2E=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Sv6Oc2UCdKdNW0s5eJzwCzPKeXozhxcTkJsOCBqp72jNlVlEMkn92Y91jTpPj6seGgtxqzRxJahiOoLuSSBUEQeZZh6Dp0yUB8LTDlcVFMQzKY9joHfLetbCDYbB/WfmGiM1vxL2f94Mf4w5/QDlDjhMhtCs9tRME9mNDsctvKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yXR2Erhi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45830C433F1;
+	Tue, 20 Feb 2024 14:51:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1708440674;
+	bh=Aqz3MJca4xIvph9G3uJcox0DNRAty+7nlAxEcwh5K2E=;
+	h=Subject:To:Cc:From:Date:From;
+	b=yXR2ErhiZmzR9FUfYXmdFRXm/+SoQH96hQrqTYhTSmhcokSVWhbFttY1Htm1iyt7l
+	 VYpppybKSE3wyLg9qJsERhPgI7FUFnKgSK6YA2VtfgYLmgDe/f9JpWg8MrF/90dlmO
+	 w4hYjDKc0mRd2eicafYRqfJfO6937eKb/8fmFbfw=
+Subject: FAILED: patch "[PATCH] netfilter: ipset: fix performance regression in swap" failed to apply to 4.19-stable tree
+To: kadlec@netfilter.org,00107082@163.com,ale.crismani@automattic.com,pablo@netfilter.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 20 Feb 2024 15:51:11 +0100
+Message-ID: <2024022011-amber-awning-698f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN0PR10MB5128:EE_|LV3PR10MB7818:EE_
-X-MS-Office365-Filtering-Correlation-Id: d0f91739-f8b9-43f7-e49b-08dc32235839
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 
-	7jl6mxXwtSIgltPvDdF4pePySd2f+/vRDtqtM5CObmcVP31Ik2sW2T1p7kO3q+Ta41j+EZsZxyfOUvrloMr0smrac1d/gevx3W+Y/6KzadxKZUg21ib3rOYWQNgpl7Pdum+sAsLWXmBeXBJd/a5DNk4DnTZHVNqHqttfv5MEQAoCqp4Vqf1oNpep9yhL9Eif36yPyKpOhDhRGqCJl84nAibXFUYArHq+PUn3eENOh9f7bu+OrhUnHn8gBRRZhB0Te/l7wVh7Hy8Wzd4LNOlvf8wq6/AVLNXdcWVJ4gXELUdZzU9TDOYS7L5EglG6CjlBMAAGfw+2Uzjq8FY2LgWH8tGh/5lBIZo8QsMDuZXR2ZhiSQ2kzo2BkxFGFiifDpMI16K0slpKYrNzc3Ibk6okNWEIqxKbuWT3wdt2D5hW+NkI12BUIkUQeFQyFVkzLDbbWRC7twLEgPSvwGtb88LwWRCqvFPlhyTTgAFQ2LF16QWwWrQ3I8sWaMIj02CXGfKKTrHY387Z1NFcJrpB9NKzug==
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN0PR10MB5128.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?us-ascii?Q?pm1ufkYZBFXsCeQVT98pO+2hPsJJuALF3t9uAyu25w/Uxi5aGeI1eQ1voLeB?=
- =?us-ascii?Q?hYBGSYscWFpE6D+sQ9IHuvo9Dywx7tHE2payt4v3vZIpB7r3fswFGD1K6vHR?=
- =?us-ascii?Q?+oZuqgjJggnCEL/b6e2Z6bo2aGuRc9tsYZCoKr6e1lPdO71qU8pAJTdMVFZn?=
- =?us-ascii?Q?b/ICF4mAh6JM1GxLkmxq0jr9gARrBtZuNrgLe9x3njmd5tbGEJR1L0gPb7ZF?=
- =?us-ascii?Q?LKOaNUal77KR9+/GcePlH+ae5gp3/4pZgw7+vMJ6uoIeAL/8jfYPC4Y5E1nr?=
- =?us-ascii?Q?tjZg84TppSypqWNpqhCyZbV1+sVNW1X2VqP/LNx/r2xbCaHzCzd2QciwzP2r?=
- =?us-ascii?Q?A8sI9TdxTtvCx93jbweP8NJAYp8oUTyUr8wugBfLGqE9pY7Ai4J6hkqnAAeK?=
- =?us-ascii?Q?lSBaxDCPeOs8IESB8KxdEXSLbQ9NBo4X9mcEh6CIDlkEmptcTo2wLMsW2WyL?=
- =?us-ascii?Q?12K3mdxDFDTYH5Z0+jCct9QSkezXFEOkgnP9Q/oGWVz/Eq55A/aFA8j3Fy+H?=
- =?us-ascii?Q?s2udZ5t4NnQckFqaMUR+feuJ2c4jjHyojZqBAN31uK4KFzLuLAWKa14dc5LY?=
- =?us-ascii?Q?jUdBcYC0X4qf5VuYEdmS4b6oIROnDT+bKEnsJ5ZBqH636ekdQg9LmuG4rRZf?=
- =?us-ascii?Q?Wr4rctqNN2eVITpW9D92EwjspfPxb2Il4TfyiHNfh/Lc70pB/7dTkI28DLEG?=
- =?us-ascii?Q?zvvFka9D2cWRTXvtZBL1sFAaPWXpjSCpf9PsFWBOdLKtml3KwUvI9qj9N1o6?=
- =?us-ascii?Q?NCBZRNXHNZJ4yhCIZluhoNyo4Kln4bWiMLGOzU4Tl3B9igZE8i7dLBJkFUxP?=
- =?us-ascii?Q?bMb6ZEybzggwGr4946dhTCWYhm/FoKhAMVk8+0eA4FlwlxVEXQEktoM8md4G?=
- =?us-ascii?Q?BtaHnhqD51JoO0L9hCH1t3UZI8VJckREDpvAzR8kQh0gIajaC9szp2VlSaAL?=
- =?us-ascii?Q?WxswqVKpFmbSE3qf4znA908OMV4qq/BTZY8kyVam6TJYoabtPKw+q0KnsH65?=
- =?us-ascii?Q?EFEr7XJ+2HxPD6lfkNOX00yaz+hScrXK8uLUlZhjB6BcmIh+MN0wcme1K0hL?=
- =?us-ascii?Q?1ixzDBGhUEJ5L74h46z4X19VwUayzr5OPId+QH6OgRjVbkarPuER+ezNiGEA?=
- =?us-ascii?Q?XtPMxOj5inBBL0p+laBRr6DAwDodDxJo5+kF6Px/WNit6xtIuuqWrfXfDvwV?=
- =?us-ascii?Q?unKLrPecOaD7fLwe6npa/EvGi2X3DXnAUvz5Av3WOTdYJHTgkiiTE5uMWOAV?=
- =?us-ascii?Q?duAZGZOF3O46EG9bIlnnU4vPwC0haDZrP1Pk7tH+pLL3rDe6knDuCvyySjQE?=
- =?us-ascii?Q?Hz0edfXnBLF40v6kMf+6+aVTlx/nk+/B7s0U3/iZDDdLYshinF0lxA99csjy?=
- =?us-ascii?Q?HccfItq7lNY/desB8htAKGd88mrjkqs/iF6SpuHWLx4pguP3wc8S7ZmFoicd?=
- =?us-ascii?Q?7krWca1Da8b4S50zglWvrJ3XRMIIsDzJEejgIwqQ8gJ5roMVE1RZKCujvCGV?=
- =?us-ascii?Q?mAGkmDt3rEpUIrAzXRwxPQ1GmP6kEYwY/+lutEPFXZAD5Upex0YY0b73IgkW?=
- =?us-ascii?Q?9WmDhqqHjJxI32Da5z3hmi/0CvrcETvjQrzt+/Vwch3a6iacMqSnJRwProGq?=
- =?us-ascii?Q?4w=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
-	79oCTxFFIyv4Qr4yTl0vw56vU0jetXSKv2spCaXbMgl8RvtT/RMKguv91G87p4sH2z81YcPh0TzOxOy/1iPntzpMv0YWF7ap/wEn/2BNKZ7JRcOOblUYKFDPGuo/PI/qWKRccM/xg9yBQ3weXlm78Vb20y10wAZQRDusyPvpvB9rMCnnGomNzHCgbZvBC0hj/hGe0xiNusd+eMT6sAbHSFMVfpDEusBXLBTu1nnIDOm3IAXKNmvVHgFWq6PZhenSILO4Btg3DDqGcuiXksb5qYEzn2u3DE9Rv2gBzjtUKsau1vp5xnWOwfzkj5q1oCKHnuwBBDxOjrYX2UunAiJPoOhLvDAGfM3gtllUzpFPsugztXDF+gDwRfHlJ0V/In6f8ORgXoLPrSc0jb3TB5tQNrifZ1lXWJkjizpIDZWLrjhI/PaOFcxncAyiBG4wLAsCpiyCLAreWAAkY0jTJ9SK2iqwEdkHqfDZyT61fw1zpvhozUBxOuBcCt3ZY8YZanSLOmpr5N+puGwZB2xEbS2EQ3THSDR5X3OCGaSjgJuJcUlnuuehNjdJqQWcNUg5shojSt43ex6N9Qt0DbBKEqkW15mw747QYXlCFqPNhMRMiX0=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d0f91739-f8b9-43f7-e49b-08dc32235839
-X-MS-Exchange-CrossTenant-AuthSource: BN0PR10MB5128.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Feb 2024 14:50:56.5979
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dJh/h96zUINsQcTnWVdvYFPJ8UA2T9/br9VHSw9ms1N9nHHGb/zm891tBYc/IQMZEhfkMDZJpn3AApV9nrZNsg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR10MB7818
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-20_06,2024-02-20_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 suspectscore=0
- mlxscore=0 spamscore=0 mlxlogscore=826 phishscore=0 bulkscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2402200106
-X-Proofpoint-ORIG-GUID: 9wYgQ8TJWQxfs1iBowxq7ohPPIkGEKk7
-X-Proofpoint-GUID: 9wYgQ8TJWQxfs1iBowxq7ohPPIkGEKk7
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-The following changes since commit 8b4118fabd6eb75fed19483b04dab3a036886489:
 
-  Linux 6.1.78 (2024-02-16 19:06:32 +0100)
+The patch below does not apply to the 4.19-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-are available in the Git repository at:
+To reproduce the conflict and resubmit, you may use the following commands:
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/cel/linux.git nfsd-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git checkout FETCH_HEAD
+git cherry-pick -x 97f7cf1cd80eeed3b7c808b7c12463295c751001
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024022011-amber-awning-698f@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
-for you to fetch changes up to d432d1006b60bd6b5c38974727bdce78f449eeea:
+Possible dependencies:
 
-  nfsd: don't take fi_lock in nfsd_break_deleg_cb() (2024-02-16 13:58:29 -0500)
+97f7cf1cd80e ("netfilter: ipset: fix performance regression in swap operation")
+292a089d78d3 ("treewide: Convert del_timer*() to timer_shutdown*()")
+0a1d4434db5f ("Merge tag 'timers-core-2022-12-10' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip")
 
-----------------------------------------------------------------
-NeilBrown (2):
-      nfsd: fix RELEASE_LOCKOWNER
-      nfsd: don't take fi_lock in nfsd_break_deleg_cb()
+thanks,
 
- fs/nfsd/nfs4state.c | 37 ++++++++++++++++++++-----------------
- 1 file changed, 20 insertions(+), 17 deletions(-)
+greg k-h
 
--- 
-Chuck Lever
+------------------ original commit in Linus's tree ------------------
+
+From 97f7cf1cd80eeed3b7c808b7c12463295c751001 Mon Sep 17 00:00:00 2001
+From: Jozsef Kadlecsik <kadlec@netfilter.org>
+Date: Mon, 29 Jan 2024 10:57:01 +0100
+Subject: [PATCH] netfilter: ipset: fix performance regression in swap
+ operation
+
+The patch "netfilter: ipset: fix race condition between swap/destroy
+and kernel side add/del/test", commit 28628fa9 fixes a race condition.
+But the synchronize_rcu() added to the swap function unnecessarily slows
+it down: it can safely be moved to destroy and use call_rcu() instead.
+
+Eric Dumazet pointed out that simply calling the destroy functions as
+rcu callback does not work: sets with timeout use garbage collectors
+which need cancelling at destroy which can wait. Therefore the destroy
+functions are split into two: cancelling garbage collectors safely at
+executing the command received by netlink and moving the remaining
+part only into the rcu callback.
+
+Link: https://lore.kernel.org/lkml/C0829B10-EAA6-4809-874E-E1E9C05A8D84@automattic.com/
+Fixes: 28628fa952fe ("netfilter: ipset: fix race condition between swap/destroy and kernel side add/del/test")
+Reported-by: Ale Crismani <ale.crismani@automattic.com>
+Reported-by: David Wang <00107082@163.com>
+Tested-by: David Wang <00107082@163.com>
+Signed-off-by: Jozsef Kadlecsik <kadlec@netfilter.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+
+diff --git a/include/linux/netfilter/ipset/ip_set.h b/include/linux/netfilter/ipset/ip_set.h
+index e8c350a3ade1..e9f4f845d760 100644
+--- a/include/linux/netfilter/ipset/ip_set.h
++++ b/include/linux/netfilter/ipset/ip_set.h
+@@ -186,6 +186,8 @@ struct ip_set_type_variant {
+ 	/* Return true if "b" set is the same as "a"
+ 	 * according to the create set parameters */
+ 	bool (*same_set)(const struct ip_set *a, const struct ip_set *b);
++	/* Cancel ongoing garbage collectors before destroying the set*/
++	void (*cancel_gc)(struct ip_set *set);
+ 	/* Region-locking is used */
+ 	bool region_lock;
+ };
+@@ -242,6 +244,8 @@ extern void ip_set_type_unregister(struct ip_set_type *set_type);
+ 
+ /* A generic IP set */
+ struct ip_set {
++	/* For call_cru in destroy */
++	struct rcu_head rcu;
+ 	/* The name of the set */
+ 	char name[IPSET_MAXNAMELEN];
+ 	/* Lock protecting the set data */
+diff --git a/net/netfilter/ipset/ip_set_bitmap_gen.h b/net/netfilter/ipset/ip_set_bitmap_gen.h
+index 21f7860e8fa1..cb48a2b9cb9f 100644
+--- a/net/netfilter/ipset/ip_set_bitmap_gen.h
++++ b/net/netfilter/ipset/ip_set_bitmap_gen.h
+@@ -30,6 +30,7 @@
+ #define mtype_del		IPSET_TOKEN(MTYPE, _del)
+ #define mtype_list		IPSET_TOKEN(MTYPE, _list)
+ #define mtype_gc		IPSET_TOKEN(MTYPE, _gc)
++#define mtype_cancel_gc		IPSET_TOKEN(MTYPE, _cancel_gc)
+ #define mtype			MTYPE
+ 
+ #define get_ext(set, map, id)	((map)->extensions + ((set)->dsize * (id)))
+@@ -59,9 +60,6 @@ mtype_destroy(struct ip_set *set)
+ {
+ 	struct mtype *map = set->data;
+ 
+-	if (SET_WITH_TIMEOUT(set))
+-		del_timer_sync(&map->gc);
+-
+ 	if (set->dsize && set->extensions & IPSET_EXT_DESTROY)
+ 		mtype_ext_cleanup(set);
+ 	ip_set_free(map->members);
+@@ -290,6 +288,15 @@ mtype_gc(struct timer_list *t)
+ 	add_timer(&map->gc);
+ }
+ 
++static void
++mtype_cancel_gc(struct ip_set *set)
++{
++	struct mtype *map = set->data;
++
++	if (SET_WITH_TIMEOUT(set))
++		del_timer_sync(&map->gc);
++}
++
+ static const struct ip_set_type_variant mtype = {
+ 	.kadt	= mtype_kadt,
+ 	.uadt	= mtype_uadt,
+@@ -303,6 +310,7 @@ static const struct ip_set_type_variant mtype = {
+ 	.head	= mtype_head,
+ 	.list	= mtype_list,
+ 	.same_set = mtype_same_set,
++	.cancel_gc = mtype_cancel_gc,
+ };
+ 
+ #endif /* __IP_SET_BITMAP_IP_GEN_H */
+diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
+index 4c133e06be1d..bcaad9c009fe 100644
+--- a/net/netfilter/ipset/ip_set_core.c
++++ b/net/netfilter/ipset/ip_set_core.c
+@@ -1182,6 +1182,14 @@ ip_set_destroy_set(struct ip_set *set)
+ 	kfree(set);
+ }
+ 
++static void
++ip_set_destroy_set_rcu(struct rcu_head *head)
++{
++	struct ip_set *set = container_of(head, struct ip_set, rcu);
++
++	ip_set_destroy_set(set);
++}
++
+ static int ip_set_destroy(struct sk_buff *skb, const struct nfnl_info *info,
+ 			  const struct nlattr * const attr[])
+ {
+@@ -1193,8 +1201,6 @@ static int ip_set_destroy(struct sk_buff *skb, const struct nfnl_info *info,
+ 	if (unlikely(protocol_min_failed(attr)))
+ 		return -IPSET_ERR_PROTOCOL;
+ 
+-	/* Must wait for flush to be really finished in list:set */
+-	rcu_barrier();
+ 
+ 	/* Commands are serialized and references are
+ 	 * protected by the ip_set_ref_lock.
+@@ -1206,8 +1212,10 @@ static int ip_set_destroy(struct sk_buff *skb, const struct nfnl_info *info,
+ 	 * counter, so if it's already zero, we can proceed
+ 	 * without holding the lock.
+ 	 */
+-	read_lock_bh(&ip_set_ref_lock);
+ 	if (!attr[IPSET_ATTR_SETNAME]) {
++		/* Must wait for flush to be really finished in list:set */
++		rcu_barrier();
++		read_lock_bh(&ip_set_ref_lock);
+ 		for (i = 0; i < inst->ip_set_max; i++) {
+ 			s = ip_set(inst, i);
+ 			if (s && (s->ref || s->ref_netlink)) {
+@@ -1221,6 +1229,8 @@ static int ip_set_destroy(struct sk_buff *skb, const struct nfnl_info *info,
+ 			s = ip_set(inst, i);
+ 			if (s) {
+ 				ip_set(inst, i) = NULL;
++				/* Must cancel garbage collectors */
++				s->variant->cancel_gc(s);
+ 				ip_set_destroy_set(s);
+ 			}
+ 		}
+@@ -1228,6 +1238,9 @@ static int ip_set_destroy(struct sk_buff *skb, const struct nfnl_info *info,
+ 		inst->is_destroyed = false;
+ 	} else {
+ 		u32 flags = flag_exist(info->nlh);
++		u16 features = 0;
++
++		read_lock_bh(&ip_set_ref_lock);
+ 		s = find_set_and_id(inst, nla_data(attr[IPSET_ATTR_SETNAME]),
+ 				    &i);
+ 		if (!s) {
+@@ -1238,10 +1251,16 @@ static int ip_set_destroy(struct sk_buff *skb, const struct nfnl_info *info,
+ 			ret = -IPSET_ERR_BUSY;
+ 			goto out;
+ 		}
++		features = s->type->features;
+ 		ip_set(inst, i) = NULL;
+ 		read_unlock_bh(&ip_set_ref_lock);
+-
+-		ip_set_destroy_set(s);
++		if (features & IPSET_TYPE_NAME) {
++			/* Must wait for flush to be really finished  */
++			rcu_barrier();
++		}
++		/* Must cancel garbage collectors */
++		s->variant->cancel_gc(s);
++		call_rcu(&s->rcu, ip_set_destroy_set_rcu);
+ 	}
+ 	return 0;
+ out:
+@@ -1394,9 +1413,6 @@ static int ip_set_swap(struct sk_buff *skb, const struct nfnl_info *info,
+ 	ip_set(inst, to_id) = from;
+ 	write_unlock_bh(&ip_set_ref_lock);
+ 
+-	/* Make sure all readers of the old set pointers are completed. */
+-	synchronize_rcu();
+-
+ 	return 0;
+ }
+ 
+@@ -2409,8 +2425,11 @@ ip_set_fini(void)
+ {
+ 	nf_unregister_sockopt(&so_set);
+ 	nfnetlink_subsys_unregister(&ip_set_netlink_subsys);
+-
+ 	unregister_pernet_subsys(&ip_set_net_ops);
++
++	/* Wait for call_rcu() in destroy */
++	rcu_barrier();
++
+ 	pr_debug("these are the famous last words\n");
+ }
+ 
+diff --git a/net/netfilter/ipset/ip_set_hash_gen.h b/net/netfilter/ipset/ip_set_hash_gen.h
+index cbf80da9a01c..1136510521a8 100644
+--- a/net/netfilter/ipset/ip_set_hash_gen.h
++++ b/net/netfilter/ipset/ip_set_hash_gen.h
+@@ -222,6 +222,7 @@ static const union nf_inet_addr zeromask = {};
+ #undef mtype_gc_do
+ #undef mtype_gc
+ #undef mtype_gc_init
++#undef mtype_cancel_gc
+ #undef mtype_variant
+ #undef mtype_data_match
+ 
+@@ -266,6 +267,7 @@ static const union nf_inet_addr zeromask = {};
+ #define mtype_gc_do		IPSET_TOKEN(MTYPE, _gc_do)
+ #define mtype_gc		IPSET_TOKEN(MTYPE, _gc)
+ #define mtype_gc_init		IPSET_TOKEN(MTYPE, _gc_init)
++#define mtype_cancel_gc		IPSET_TOKEN(MTYPE, _cancel_gc)
+ #define mtype_variant		IPSET_TOKEN(MTYPE, _variant)
+ #define mtype_data_match	IPSET_TOKEN(MTYPE, _data_match)
+ 
+@@ -450,9 +452,6 @@ mtype_destroy(struct ip_set *set)
+ 	struct htype *h = set->data;
+ 	struct list_head *l, *lt;
+ 
+-	if (SET_WITH_TIMEOUT(set))
+-		cancel_delayed_work_sync(&h->gc.dwork);
+-
+ 	mtype_ahash_destroy(set, ipset_dereference_nfnl(h->table), true);
+ 	list_for_each_safe(l, lt, &h->ad) {
+ 		list_del(l);
+@@ -599,6 +598,15 @@ mtype_gc_init(struct htable_gc *gc)
+ 	queue_delayed_work(system_power_efficient_wq, &gc->dwork, HZ);
+ }
+ 
++static void
++mtype_cancel_gc(struct ip_set *set)
++{
++	struct htype *h = set->data;
++
++	if (SET_WITH_TIMEOUT(set))
++		cancel_delayed_work_sync(&h->gc.dwork);
++}
++
+ static int
+ mtype_add(struct ip_set *set, void *value, const struct ip_set_ext *ext,
+ 	  struct ip_set_ext *mext, u32 flags);
+@@ -1441,6 +1449,7 @@ static const struct ip_set_type_variant mtype_variant = {
+ 	.uref	= mtype_uref,
+ 	.resize	= mtype_resize,
+ 	.same_set = mtype_same_set,
++	.cancel_gc = mtype_cancel_gc,
+ 	.region_lock = true,
+ };
+ 
+diff --git a/net/netfilter/ipset/ip_set_list_set.c b/net/netfilter/ipset/ip_set_list_set.c
+index e162636525cf..6c3f28bc59b3 100644
+--- a/net/netfilter/ipset/ip_set_list_set.c
++++ b/net/netfilter/ipset/ip_set_list_set.c
+@@ -426,9 +426,6 @@ list_set_destroy(struct ip_set *set)
+ 	struct list_set *map = set->data;
+ 	struct set_elem *e, *n;
+ 
+-	if (SET_WITH_TIMEOUT(set))
+-		timer_shutdown_sync(&map->gc);
+-
+ 	list_for_each_entry_safe(e, n, &map->members, list) {
+ 		list_del(&e->list);
+ 		ip_set_put_byindex(map->net, e->id);
+@@ -545,6 +542,15 @@ list_set_same_set(const struct ip_set *a, const struct ip_set *b)
+ 	       a->extensions == b->extensions;
+ }
+ 
++static void
++list_set_cancel_gc(struct ip_set *set)
++{
++	struct list_set *map = set->data;
++
++	if (SET_WITH_TIMEOUT(set))
++		timer_shutdown_sync(&map->gc);
++}
++
+ static const struct ip_set_type_variant set_variant = {
+ 	.kadt	= list_set_kadt,
+ 	.uadt	= list_set_uadt,
+@@ -558,6 +564,7 @@ static const struct ip_set_type_variant set_variant = {
+ 	.head	= list_set_head,
+ 	.list	= list_set_list,
+ 	.same_set = list_set_same_set,
++	.cancel_gc = list_set_cancel_gc,
+ };
+ 
+ static void
+
 
