@@ -1,160 +1,148 @@
-Return-Path: <stable+bounces-20849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7783285C163
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 17:29:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A26185C179
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 17:32:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C4471C23749
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 16:29:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D2B65B21E6D
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 16:32:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B28257640D;
-	Tue, 20 Feb 2024 16:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A3C7640D;
+	Tue, 20 Feb 2024 16:32:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="atQRrkJm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CmnP2qmD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECEDE763E8;
-	Tue, 20 Feb 2024 16:28:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077F667C69
+	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 16:32:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708446520; cv=none; b=VIb3zkPmXvqInDAThcGBxILKLrR7k5z2KPF6Ch+UOsk/uCYKuwurUveH29qg00Vjlyxo2hYcZw3+SlfxwLLd1wZGu7/XxWpdLAqYLFt7AmzUqfDxbWuphbJkyK0XpoGB3SLk9TpmHNyZMItjsrqx++KIqbP5nx9XLVDm+CLawTM=
+	t=1708446751; cv=none; b=M3THblnygskUJT3MbtEZr2VHlyHKBflYF2MT2oSnfcB0WbVFKD50P8JclAT/pNvm2nf/b35AodXKav1YECcdx76kowmH71Gj4X6pTCFWCBg6VH8d+poLyntx6DlX/EvMq+Ibp8UQiPhf8nNWiJc3WvWCG84BTzh/ciyGQ5oyIqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708446520; c=relaxed/simple;
-	bh=W6ryAcfwZgU2CW0jw3zDgVkH2c4/1d2q8S8A2qPS9gI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=seOJCXVorBoiYM530/g2lfppuEcwKZu7YHlA5tIHLU+U6J9iXzA02fasI+WDSmG5G5qWGeYTHTj7mBG1T3Y2VzguDqJgThv1BRVZvkKR1l5iisAQOvOxZVFdYlw3FlX9yrXHfstDNoTPOJ5nqmG/iBKNURQsl38JW3K+NGPlkl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=atQRrkJm; arc=none smtp.client-ip=209.85.219.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-68f9218e777so3727056d6.2;
-        Tue, 20 Feb 2024 08:28:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708446518; x=1709051318; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RjGTnWRy8wicbi/6hD5b+oySTHtfpKaKjEocn8v4DOI=;
-        b=atQRrkJmRc7jYPKAzMA7E+DJ9j6aS9yEC2u3h4NiQPALlk2uYmcFoy9p9tMy/fcWNN
-         qj5PUa+AMbQzt8WBz583kibo1hmx2uOWSsSnnZcKKGYhKIyuyP1/elg0fhdPHmYZyxzE
-         Lp+C4r13JLO/FC20q8jIJ2osenflmPR7C8nkTvBl72wOrMhVGFJKl3LK6SewTc9rdtqr
-         SP9IVKZeP1Qow/Lss7djMd9mYT1qMlzmvNzwCrfVnj9wBiZz+7Xi44Ezn/5v4rla64U7
-         61DdOslFNCLftwz4d4a0tewSxvJiXiHZDsaNL2i7RLv2dfeXMrer+v9t3mm/HySgWuWb
-         d8uA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708446518; x=1709051318;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RjGTnWRy8wicbi/6hD5b+oySTHtfpKaKjEocn8v4DOI=;
-        b=MOVnrwfTHSigGYPLGoQgpaGaq8JAzBUdFMi0Z6kk9POtm1QqyU4cf1CIqVUH9WPKcl
-         knQ2lVMxHfuiJKmVrLhxAz5DZkfPnl6oFpekv69CC1wiG1zA8FgJXrVs/qpsmMWo77Ue
-         62S8CmmwGi2hKHADxJOjtO06uis433sbldzTbeVsE2LB7OhCfSRtxEny0Gju22PMqc+K
-         78H9gCr0pZYpkM/RfeTDKsfW28AvU8dw0hiCofXtzLkiLWGDVHXPmPdujM0Lw/t0cv4Y
-         dEIe1GJx1r9vuzl5PYIz6+2qZezLkPamRsZSnUvX1O1OtJNpxDhgB662C8tKWpA3+ZJY
-         8d+A==
-X-Forwarded-Encrypted: i=1; AJvYcCXIkr3Vt7XOxzRcErM0JkAQ/pMU4r5SQ6OTArdm6/FVtzREJwaFtYHUiX6HGSX7K++0y0dcgWnalkR0M5CtFc1iDOmuKGo+47aPLboz1pTxwrK99QPTUdBBZgsfvtHMo7sfjt6fBwTtdAmK4fvn2XQNwM+l/NHap6K836Q3uiKr
-X-Gm-Message-State: AOJu0Yx0W2KszmWA87cKj78inj12GFsXkFAHvvoKqEqlBqv30N9P1LZQ
-	AbMz5UQhGOWOvdfq2bmqodBkF3jzThSzOamUdlRmIqQhB5DR78ED
-X-Google-Smtp-Source: AGHT+IE6O4Z0wvE9uz+3RViiYkDjcP1LoY+8Nhv9n+YsyZzQC3zJkZQoeaXnHlgX6VmjrbV9VP4UeQ==
-X-Received: by 2002:ad4:5aa7:0:b0:68f:52a9:3b24 with SMTP id u7-20020ad45aa7000000b0068f52a93b24mr9074867qvg.29.1708446517828;
-        Tue, 20 Feb 2024 08:28:37 -0800 (PST)
-Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
-        by smtp.gmail.com with ESMTPSA id oh8-20020a056214438800b0068f5a422773sm3382230qvb.14.2024.02.20.08.28.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Feb 2024 08:28:37 -0800 (PST)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-	by mailauth.nyi.internal (Postfix) with ESMTP id C7DBA27C005B;
-	Tue, 20 Feb 2024 11:28:36 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute6.internal (MEProxy); Tue, 20 Feb 2024 11:28:36 -0500
-X-ME-Sender: <xms:NNPUZYVOp_2WAKCu9iT1fzWiLDzjhbTOVhiJZcWYSKt-FNPUyMBjpA>
-    <xme:NNPUZckIWlEWDbE3vxShV11YGKn8XiRdywYJOq-Tzs4k2pkzeBeVtKGAvhgzemlKA
-    golRhlKc1RYXDkz9A>
-X-ME-Received: <xmr:NNPUZcar5uWo_lQYHifGbz9xrE6poPVPp_CW43CJkuLZ1MfpkGXPYz7C6GY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfedtgdeklecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhn
-    ucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrth
-    htvghrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudff
-    iedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsg
-    hoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieeg
-    qddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigi
-    hmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:NNPUZXVz9nQ1IMrvEwbsqtqT7NZqFUWVtuxz4Exg6RcTSPzuyHvARA>
-    <xmx:NNPUZSkLylpVwuQnrirN7tq8yXJ5muZzixR5ZGuev8CwRCA70ZRazA>
-    <xmx:NNPUZccywIbZSmaYszzCNb5C0CluCDlxkppz31Gb6V_7hHiTJMwNwA>
-    <xmx:NNPUZUVXa6n-WbCbIF3qy5p3wyRj9Pc1ELdDkg6PAd1nPjQLmAo9hA>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 20 Feb 2024 11:28:36 -0500 (EST)
-Date: Tue, 20 Feb 2024 08:28:18 -0800
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: Greg KH <gregkh@linuxfoundation.org>,
-	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org,
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Oliver Smith-Denny <osde@linux.microsoft.com>
-Subject: Re: [RFC] efi: Add ACPI_MEMORY_NVS into the linear map
-Message-ID: <ZdTTIo6g8kklEryd@boqun-archlinux>
-References: <20240215225116.3435953-1-boqun.feng@gmail.com>
- <2024021718-dwindling-oval-8183@gregkh>
- <ZdQmCEepdOE2R7gS@boqun-archlinux>
- <CAMj1kXGzaUsgn0DGfy15c+Z5ECNqosjWbci-YZyUTsMWXte21A@mail.gmail.com>
+	s=arc-20240116; t=1708446751; c=relaxed/simple;
+	bh=N355tVdPSOKMObJsCfJAPqCnsKJxMxvzjEgXaDCSUXw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PfbCNS6puPW6Tqtpa9fvh2fvB2bb5rfoa8uS23cC6+U4hPiNgrJsepOyTT2lnG2bagO5h5b9SqD5BiKU3pNSFR6JnXwc7Vwr1j1npyBDv5RCV3jwrlEL4aUhB4B/+BQgfHroo0Z6uoTwlPJHwBMsUNc2ceIC4hSqFnYQ1UfNn4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CmnP2qmD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DAE1C4166A
+	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 16:32:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708446750;
+	bh=N355tVdPSOKMObJsCfJAPqCnsKJxMxvzjEgXaDCSUXw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=CmnP2qmD/M9yEkgydZZU3v+WxaSDjI+CJo+RQ5FVKERrUziDft1RI0x52ykfTUBOn
+	 WSKpPyDCsVtJ4RiDG9sYGTUb8v6FNZmHEyn1rJX0pdBb4CD2jw6FfgrlutN5qA+lVu
+	 qXInCRbgKUGGj+d3hCrgIfBUEuSg3v2lDHaUoOeMhy5/LmjUWLzAbe4SOFl2WLJh4u
+	 oiUTKmm4IXeGIJYzlz1SoOuPdibZTVLSCXlk8rMgfBAl/EwjmrNRoe/JLlozAUA+hK
+	 l7y/yX86cPsCdoqgJLiGkFnLhk7Dczd/HAz7uBQ8/UMdTcgt6d1ok905KlP+M7TE0z
+	 Z51worHqqkYdg==
+Received: by mail-il1-f177.google.com with SMTP id e9e14a558f8ab-364f794f237so24127675ab.1
+        for <stable@vger.kernel.org>; Tue, 20 Feb 2024 08:32:30 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUBHJnehIFyqayEeN8TIukvQKkbRa8e+LirpK/tCgVHxBlCEkhJxl1Vi5jG82qTwyg/oYJ2DRi07iS0sWUvVNFqkF38ypaS
+X-Gm-Message-State: AOJu0YztLc+FILsM/Mpqm5g9A9IQ9X2xV3h/s+BLxZg12PqtmuLjItVP
+	YF57ayDiGTbsCEj5JvB2Y40052/GgI6Bu8ow5FbBf3lekZ0HWCRUbEJwtYTBYjCE5cnFwU4f35x
+	Sj3Z7Pe23vj0KDCBWBmO06jIuS2xY02+wUU5a
+X-Google-Smtp-Source: AGHT+IHoX5iSsVEGfeRD4cVDodXDxIVSA1k9wV22OCHIw4jn0j9xiCArJfC2r0sinIV6wprQrsUc1IoQGOjKhC7E+Mc=
+X-Received: by 2002:a05:6e02:154c:b0:364:216e:d1dc with SMTP id
+ j12-20020a056e02154c00b00364216ed1dcmr17350823ilu.22.1708446745860; Tue, 20
+ Feb 2024 08:32:25 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXGzaUsgn0DGfy15c+Z5ECNqosjWbci-YZyUTsMWXte21A@mail.gmail.com>
+References: <20240219082040.7495-1-ryncsn@gmail.com> <20240219173147.3f4b50b7c9ae554008f50b66@linux-foundation.org>
+ <CAMgjq7DgBOJhDJStwGuD+C6-FNYZBp-cu6M_HAgRry3gBSf7GA@mail.gmail.com>
+ <CAGsJ_4zyf5OOq_WA7VjsDKp1ciaDwzM23Ef95_O-24oLtr_5AQ@mail.gmail.com> <CAMgjq7AnZJSseC2BB_nF+s533YybyP_WU8HijEKFA=OXE1x41Q@mail.gmail.com>
+In-Reply-To: <CAMgjq7AnZJSseC2BB_nF+s533YybyP_WU8HijEKFA=OXE1x41Q@mail.gmail.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Tue, 20 Feb 2024 08:32:13 -0800
+X-Gmail-Original-Message-ID: <CAF8kJuMbocSa06MSeg5HOofWisc0BxVnCFBLdKErmV8_7pKhUA@mail.gmail.com>
+Message-ID: <CAF8kJuMbocSa06MSeg5HOofWisc0BxVnCFBLdKErmV8_7pKhUA@mail.gmail.com>
+Subject: Re: [PATCH v4] mm/swap: fix race when skipping swapcache
+To: Kairui Song <ryncsn@gmail.com>
+Cc: Barry Song <21cnbao@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	"Huang, Ying" <ying.huang@intel.com>, Minchan Kim <minchan@kernel.org>, 
+	Barry Song <v-songbaohua@oppo.com>, Yu Zhao <yuzhao@google.com>, SeongJae Park <sj@kernel.org>, 
+	David Hildenbrand <david@redhat.com>, Hugh Dickins <hughd@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox <willy@infradead.org>, Michal Hocko <mhocko@suse.com>, 
+	Yosry Ahmed <yosryahmed@google.com>, Aaron Lu <aaron.lu@intel.com>, stable@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 20, 2024 at 09:27:54AM +0100, Ard Biesheuvel wrote:
-> On Tue, 20 Feb 2024 at 05:10, Boqun Feng <boqun.feng@gmail.com> wrote:
-> >
-> > On Sat, Feb 17, 2024 at 08:49:32AM +0100, Greg KH wrote:
-> > > On Thu, Feb 15, 2024 at 02:51:06PM -0800, Boqun Feng wrote:
-> > > > Currently ACPI_MEMORY_NVS is omitted from the linear map, which causes
-> > > > a trouble with the following firmware memory region setup:
-> > > >
-> > > >     [..] efi:   0x0000dfd62000-0x0000dfd83fff [ACPI Reclaim|...]
-> > > >     [..] efi:   0x0000dfd84000-0x0000dfd87fff [ACPI Mem NVS|...]
-> > > >
-> > > > , on ARM64 with 64k page size, the whole 0x0000dfd80000-0x0000dfd8ffff
-> > > > range will be omitted from the the linear map due to 64k round-up. And
-> > > > a page fault happens when trying to access the ACPI_RECLAIM_MEMORY:
-> > > >
-> > > >     [...] Unable to handle kernel paging request at virtual address ffff0000dfd80000
-> > > >
-> > > > To fix this, add ACPI_MEMORY_NVS into the linear map.
-> > > >
-> > > > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> > > > Cc: stable@vger.kernel.org # 5.15+
-> > >
-> > > What commit id does this fix?  Can you include that as well?
-> > >
-> >
-> > It should be 7aff79e297ee ("Drivers: hv: Enable Hyper-V code to be built
-> > on ARM64"), but as Ard mentioned earlier, this could be fixed at the VM
-> > firmware, and Oliver is working on that. Should the situation change, I
-> > will send a V2 with more information and include the commit id.
-> >
-> 
-> The patch as-is is not acceptable to me, so no need to send a v2 just
-> to add more information.
-> 
-> Please consider the fix I proposed for arch_memremap_can_ram_remap()
-> if fixing this in the firmware is not feasible.
+On Mon, Feb 19, 2024 at 8:56=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
+e:
 
-Got it. Would do if necessary, thanks!
+>
+> Hi Barry,
+>
+> > it might not be a problem for throughput. but for real-time and tail la=
+tency,
+> > this hurts. For example, this might increase dropping frames of UI whic=
+h
+> > is an important parameter to evaluate performance :-)
+> >
+>
+> That's a true issue, as Chris mentioned before I think we need to
+> think of some clever data struct to solve this more naturally in the
+> future, similar issue exists for cached swapin as well and it has been
+> there for a while. On the other hand I think maybe applications that
+> are extremely latency sensitive should try to avoid swap on fault? A
+> swapin could cause other issues like reclaim, throttled or contention
+> with many other things, these seem to have a higher chance than this
+> race.
 
-Regards,
-Boqun
+
+Yes, I do think the best long term solution is to have some clever
+data structure to solve the synchronization issue and allow racing
+threads to make forward progress at the same time.
+
+I have also explored some (failed) synchronization ideas, for example
+having the run time swap entry refcount separate from swap_map count.
+BTW, zswap entry->refcount behaves like that, it is separate from swap
+entry and manages the temporary run time usage count held by the
+function. However that idea has its own problem as well, it needs to
+have an xarray to track the swap entry run time refcount (only stored
+in the xarray when CPU fails to get SWAP_HAS_CACHE bit.) When we are
+done with page faults, we still need to look up the xarray to make
+sure there is no racing CPU and put the refcount into the xarray. That
+ kind of defeats the purpose of avoiding the swap cache in the first
+place. We still need to do the xarray lookup in the normal path.
+
+I came to realize that, while this current fix is not perfect, (I
+still wish we had a better solution not pausing the racing CPU). This
+patch stands better than not fixing this data corruption issue and the
+patch remains relatively simple. Yes it has latency issues but still
+better than data corruption.  It also doesn't stop us from coming up
+with better solutions later on. If we want to address the
+synchronization in a way not blocking other CPUs, it will likely
+require a much bigger change.
+
+Unless we have a better suggestion. It seems the better one among the
+alternatives so far.
+
+Chris
+
+>
+> > BTW, I wonder if ying's previous proposal - moving swapcache_prepare()
+> > after swap_read_folio() will further help decrease the number?
+>
+> We can move the swapcache_prepare after folio alloc or cgroup charge,
+> but I didn't see an observable change from statistics, for some
+> workload the reading is even worse. I think that's mostly due to
+> noise, or higher swap out rate since all raced threads will alloc an
+> extra folio now. Applications that have many pages swapped out due to
+> memory limit are already on the edge of triggering another reclaim, so
+> a dozen more folio alloc could just trigger that...
+>
+> And we can't move it after swap_read_folio()... That's exactly what we
+> want to protect.
+>
 
