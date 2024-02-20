@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-21283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21578-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2434285C813
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:18:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E33785C97A
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:34:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2F982848F0
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:18:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 442DE1F22D7B
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:34:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87321151CDC;
-	Tue, 20 Feb 2024 21:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC8C2151CE3;
+	Tue, 20 Feb 2024 21:34:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xNXAdDk4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jFm/Czoc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454B1612D7;
-	Tue, 20 Feb 2024 21:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B62E446C9;
+	Tue, 20 Feb 2024 21:34:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463931; cv=none; b=MM+wHkVhD+UV+RlqxDIFv4kJEEnXQgu/QLxJgvuBQC+PJZt+Kq8TI4VmXGrgPKAac8U+agcAjRMFVEvalESv+qNxDxOaGICqbMptCTpw/7N0ppAtJ+1eX9kRfEtXG3fIzu/++Jpwuq+Yuzis6J5aAyXbkfN/rZwKv1tswqA7Q7Q=
+	t=1708464851; cv=none; b=M9cmOsyeXYR7Kmj8XsrXSj5QUxhApHCE6wy+ikhKGso5ShA0JLijSfoFh27uK4C8Gqb2l5vg8zMgYzyvTN6Twwt+KulfmTamKPyGZz41s/l0RYSBWhcMY2WoOCf1Rq8IxABZVoV07TYH+lYSvf6WrPGzqw3YNbW7gxJTFKBeFMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463931; c=relaxed/simple;
-	bh=jZ4Ax3Pl9ugaSs/RAzHT6WElsCRDKRUaIc4x7ylHJWA=;
+	s=arc-20240116; t=1708464851; c=relaxed/simple;
+	bh=ffMZf8Fhx8/YUMXh3yAvI+ILXAEHZ2cit50aNRu402Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m2kxtnRBqy7HeM+AtbX2ctuEV5KvE08xE3ggNbqr2L0qs7MMleUg+f18sjdkp6uNVRzAeOTjjMSgJGJmnl69d0CH3hbAT2mC/X0DNwX4i2kA6WoBGWBtlAHtSXFjjUf0jH9JpCG6Vy+ZQVogNWWu0+IdA2fOKHvu5YlTSmmIOag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xNXAdDk4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA16BC433F1;
-	Tue, 20 Feb 2024 21:18:50 +0000 (UTC)
+	 MIME-Version; b=nbLmlZMvjrW7xA73PN5spPuQeZd+k2uWqMzlOBDSJwP0Nnuk3MawifmVjSO0zoq3KHIKEcxLF9nbZB1VtR0GUlshCZeb6ipSVO4aAUwCLwKBmaP1CgEtykvDbgmwJcOKO8ahSoMd0NiYFyIRNjGH1/z0Mz75Mi5NNHPrAYomfy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jFm/Czoc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC8DAC433C7;
+	Tue, 20 Feb 2024 21:34:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463931;
-	bh=jZ4Ax3Pl9ugaSs/RAzHT6WElsCRDKRUaIc4x7ylHJWA=;
+	s=korg; t=1708464851;
+	bh=ffMZf8Fhx8/YUMXh3yAvI+ILXAEHZ2cit50aNRu402Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xNXAdDk4LJk7Xq4H9pyEngQuL5HCHQpxZqN/H1mO1iNBiBOPMNJk0G722FmU8LLcM
-	 oWsWnzH4ql7t9dq50g0X2Aw2sTCgytUViRAU2R9S16/YQTTr8ng8RJFNW0i8YAd5ee
-	 pjxYRd+ZbV6uyIl6VYGy7N1kBSR2YmmulwB4+X7s=
+	b=jFm/CzocFWQZCGsOMyz+0lGpD44JGbAxILdExkSXhGrUVjFaepEIIBrnBRUq8HrjL
+	 xkMbYxVxlti9qMx8x914VCMX1GHM6rtRLVb2CarSyjTb9cU/EmWLFsdQZVsvPIKSLr
+	 IB9ZGiaN+FYcf7FENX5geACR4TRd3ofKn4ObfdwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuming Fan <shumingf@realtek.com>,
+	Andy Chi <andy.chi@canonical.com>,
 	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 198/331] ALSA: hda/realtek: add IDs for Dell dual spk platform
-Date: Tue, 20 Feb 2024 21:55:14 +0100
-Message-ID: <20240220205643.851607369@linuxfoundation.org>
+Subject: [PATCH 6.7 156/309] ALSA: hda/realtek: fix mute/micmute LEDs for HP ZBook Power
+Date: Tue, 20 Feb 2024 21:55:15 +0100
+Message-ID: <20240220205638.041953238@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,19 +61,21 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuming Fan <shumingf@realtek.com>
+From: Andy Chi <andy.chi@canonical.com>
 
-commit fddab35fd064414c677e9488c4fb3a1f67725d37 upstream.
+commit 1513664f340289cf10402753110f3cff12a738aa upstream.
 
-This patch adds another two IDs for the Dell dual speaker platform.
+The HP ZBook Power using ALC236 codec which using 0x02 to
+control mute LED and 0x01 to control micmute LED.
+Therefore, add a quirk to make it works.
 
-Signed-off-by: Shuming Fan <shumingf@realtek.com>
+Signed-off-by: Andy Chi <andy.chi@canonical.com>
 Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240205072252.3791500-1-shumingf@realtek.com
+Link: https://lore.kernel.org/r/20240122074826.1020964-1-andy.chi@canonical.com
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
@@ -82,16 +84,15 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/sound/pci/hda/patch_realtek.c
 +++ b/sound/pci/hda/patch_realtek.c
-@@ -9631,7 +9631,9 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x1028, 0x0b71, "Dell Inspiron 16 Plus 7620", ALC295_FIXUP_DELL_INSPIRON_TOP_SPEAKERS),
- 	SND_PCI_QUIRK(0x1028, 0x0beb, "Dell XPS 15 9530 (2023)", ALC289_FIXUP_DELL_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1028, 0x0c03, "Dell Precision 5340", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE),
-+	SND_PCI_QUIRK(0x1028, 0x0c0b, "Dell Oasis 14 RPL-P", ALC289_FIXUP_RTK_AMP_DUAL_SPK),
- 	SND_PCI_QUIRK(0x1028, 0x0c0d, "Dell Oasis", ALC289_FIXUP_RTK_AMP_DUAL_SPK),
-+	SND_PCI_QUIRK(0x1028, 0x0c0e, "Dell Oasis 16", ALC289_FIXUP_RTK_AMP_DUAL_SPK),
- 	SND_PCI_QUIRK(0x1028, 0x0c19, "Dell Precision 3340", ALC236_FIXUP_DELL_DUAL_CODECS),
- 	SND_PCI_QUIRK(0x1028, 0x0c1a, "Dell Precision 3340", ALC236_FIXUP_DELL_DUAL_CODECS),
- 	SND_PCI_QUIRK(0x1028, 0x0c1b, "Dell Precision 3440", ALC236_FIXUP_DELL_DUAL_CODECS),
+@@ -9951,6 +9951,8 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x8c72, "HP EliteBook 865 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8c96, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ 	SND_PCI_QUIRK(0x103c, 0x8c97, "HP ZBook", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
++	SND_PCI_QUIRK(0x103c, 0x8ca1, "HP ZBook Power", ALC236_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8ca2, "HP ZBook Power", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8ca4, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8ca7, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8cf5, "HP ZBook Studio 16", ALC245_FIXUP_CS35L41_SPI_4_HP_GPIO_LED),
 
 
 
