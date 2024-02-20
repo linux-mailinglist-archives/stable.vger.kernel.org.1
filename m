@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-21279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D22AA85C802
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:18:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A24F85C974
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:33:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D3CD284A60
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:18:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B84D2284CF4
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:33:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E1E6151CD6;
-	Tue, 20 Feb 2024 21:18:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4384B151CDC;
+	Tue, 20 Feb 2024 21:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2hVtRN2R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u2GuCH2K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E096F612D7;
-	Tue, 20 Feb 2024 21:18:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C5B446C9;
+	Tue, 20 Feb 2024 21:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463919; cv=none; b=oznB+fZRe9tg+/EgvwE93ELD4Xlpe1pjk4qIjKgHm1T3ytxqPmlqk371mnTFb1f/80ixieKVbqmdfqFY+TMCmEqaMPRuLMYlZvIN2qAFj2ShYzoWdHo/NvwDU41CHgwZLnPcclEI41EW41vAXwInf3STZTFCT/U43ClH5YhdM7I=
+	t=1708464836; cv=none; b=Z0cN0Uchr8Il9PrlFdfKqX9GSEhZeci9+eXyJTSP9p+jag5rNaWJRoqR/Wjzi38neCDvD6DzL9yObhZ+kYtvEZFifVBh0wLz6n6T0GuddXS8IYSFEm1bJ5X7A58dyE0+bpbm2xVEAyegYHTBzRiTVhPXe1f/eYGXZs+7GoIfhRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463919; c=relaxed/simple;
-	bh=lKmZMQrY96zjNcBPLHh2rEh4FraAVqu7qSeyVc9T2fY=;
+	s=arc-20240116; t=1708464836; c=relaxed/simple;
+	bh=H+jUv4belu5s7kDQ0ezq6z/U5SBojhsJlRcGiwBa/kE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C51co0DQVc7G+yRce6Z5IWAFySmz7ndeneZgX7Ongj+PSaIzj1UNEdLVeYXTWrBgOJfiasDXFCSH6EvMOi2hkeapK1J8PPDEJdS1J4KgZd6fHz7mRi88dV1rUR069M0TegYDcrbiW4Xte9LPYza6oSxAomghaY7sxvLTzu3uIgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2hVtRN2R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48186C43390;
-	Tue, 20 Feb 2024 21:18:38 +0000 (UTC)
+	 MIME-Version; b=kktlCQw0VKqmOG52b4Dym7Uwi2f66MQ85n58lL+0q3o605bIj5GjAI16frZ8F4wz1xIa/4p9PkOREd+HzVADGdjHWP9VkKJdoniSCm4w134vFoBCZYUYPPlWy00274R7Y7wV/rc/R6q6KtBw6KSFZwung84PP72WSmn4CiQ+TQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u2GuCH2K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B535C433C7;
+	Tue, 20 Feb 2024 21:33:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463918;
-	bh=lKmZMQrY96zjNcBPLHh2rEh4FraAVqu7qSeyVc9T2fY=;
+	s=korg; t=1708464835;
+	bh=H+jUv4belu5s7kDQ0ezq6z/U5SBojhsJlRcGiwBa/kE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2hVtRN2RNkAmBnrTa+iZI83W/GzmR+VWlEjHS3qb38sVoK3hRmlf5otlzj1EagraZ
-	 l72wHuethv1Dl8Hmk5etOBlGLDbVcquhR5yUKsvrHfnxiVDKNIjfC3qcYxV1/3rqZp
-	 Dez/1wtFCR/KzQIwZAB60tMkcGJi8mkJD8CUBwaU=
+	b=u2GuCH2Kk2EYPArlEC773XETzGTBXRNXzQdA9eFttt0yFY8fp+CMOhcZ256kr9N8G
+	 t6WwhX0xgspFUArR3Z+7xHZxOWLLN22bhFUtFt/jpjPiNm/On5e5TdWUURJWA9LaeR
+	 lllxG73XZZ3sdWdtcC4TyhD6bFR0++pZ5UfPYDjY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 195/331] mmc: slot-gpio: Allow non-sleeping GPIO ro
+	Edson Juliano Drosdeck <edson.drosdeck@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.7 152/309] ALSA: hda/realtek: Enable headset mic on Vaio VJFE-ADL
 Date: Tue, 20 Feb 2024 21:55:11 +0100
-Message-ID: <20240220205643.721149934@linuxfoundation.org>
+Message-ID: <20240220205637.927228291@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
 
-commit cc9432c4fb159a3913e0ce3173b8218cd5bad2e0 upstream.
+commit c7de2d9bb68a5fc71c25ff96705a80a76c8436eb upstream.
 
-This change uses the appropriate _cansleep or non-sleeping API for
-reading GPIO read-only state. This allows users with GPIOs that
-never sleepbeing called in atomic context.
+Vaio VJFE-ADL is equipped with ALC269VC, and it needs
+ALC298_FIXUP_SPK_VOLUME quirk to make its headset mic work.
 
-Implement the same mechanism as in commit 52af318c93e97 ("mmc: Allow
-non-sleeping GPIO cd").
-
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240206083912.2543142-1-alexander.stein@ew.tq-group.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240201122114.30080-1-edson.drosdeck@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/core/slot-gpio.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/mmc/core/slot-gpio.c
-+++ b/drivers/mmc/core/slot-gpio.c
-@@ -75,11 +75,15 @@ EXPORT_SYMBOL(mmc_gpio_set_cd_irq);
- int mmc_gpio_get_ro(struct mmc_host *host)
- {
- 	struct mmc_gpio *ctx = host->slot.handler_priv;
-+	int cansleep;
- 
- 	if (!ctx || !ctx->ro_gpio)
- 		return -ENOSYS;
- 
--	return gpiod_get_value_cansleep(ctx->ro_gpio);
-+	cansleep = gpiod_cansleep(ctx->ro_gpio);
-+	return cansleep ?
-+		gpiod_get_value_cansleep(ctx->ro_gpio) :
-+		gpiod_get_value(ctx->ro_gpio);
- }
- EXPORT_SYMBOL(mmc_gpio_get_ro);
- 
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10312,6 +10312,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1d72, 0x1945, "Redmi G", ALC256_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d72, 0x1947, "RedmiBook Air", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
++	SND_PCI_QUIRK(0x2782, 0x1707, "Vaio VJFE-ADL", ALC298_FIXUP_SPK_VOLUME),
+ 	SND_PCI_QUIRK(0x8086, 0x2074, "Intel NUC 8", ALC233_FIXUP_INTEL_NUC8_DMIC),
+ 	SND_PCI_QUIRK(0x8086, 0x2080, "Intel NUC 8 Rugged", ALC256_FIXUP_INTEL_NUC8_RUGGED),
+ 	SND_PCI_QUIRK(0x8086, 0x2081, "Intel NUC 10", ALC256_FIXUP_INTEL_NUC10),
 
 
 
