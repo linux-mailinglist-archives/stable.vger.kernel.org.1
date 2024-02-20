@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-21549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 557F985C95D
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:32:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8605385C7C4
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:16:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A6575B21275
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:32:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4122728285D
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:16:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05DC1151CD9;
-	Tue, 20 Feb 2024 21:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D29A2152E01;
+	Tue, 20 Feb 2024 21:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QpICuH/w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="riR1u9N+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59D6446C9;
-	Tue, 20 Feb 2024 21:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F55376C9C;
+	Tue, 20 Feb 2024 21:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464761; cv=none; b=ZpMrPoXhUBXIIkqMKhfU3OizAD0+X8mpB/aUqcIF/QpryQhQB4MlT+S6iEgcwldrVZ+LXQ4PjoxVAmBq5kG/8kMOYYr/q5/8sPJQKCLyWHPhZwPBay0X17PK4cnseQDFjzs9XE7jgP0MALSgTvVxtGVNk0ImvVvqncPpYFkqsP4=
+	t=1708463758; cv=none; b=jyS51wsQFukluOvF8KFA+yBAdbZTFNupTHeY9/1GWUq5xvvszdFXRdovZWsGFIdvsQxJjBvefjLIKb2TrpsIzlsBgb0vgfxsQo3RWtzCX77QJRoCFZgjcXvACH4cF/w8qGll16uQ6qWwDjBRIbuxT+4hHJMCWKEs14HYUDsHfDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464761; c=relaxed/simple;
-	bh=PShA+O/1OnNuQA+tm6BLsevW61vgyw+yU/6IJ/iA72o=;
+	s=arc-20240116; t=1708463758; c=relaxed/simple;
+	bh=DXcDd0QMrK2tpe1WzA+Bau22BA6769TdPn1zSwSBVzU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T1F4fQSXwV14S3fBkN+yfEoCtxoU2IG18bj/Czh3Z3hA6xi+hCMq5C0PttqAJfOgLv3aJNOL/mhbzNiHROx0gVLZFo54NEtVZQbNQgw7z7r7HRIlEPu5/w+lZ9FhSphVMoqhooUgVXcRrc89yxMX2UyPDN+7m89e+fD8pgfPg5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QpICuH/w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26EC9C433C7;
-	Tue, 20 Feb 2024 21:32:40 +0000 (UTC)
+	 MIME-Version; b=bmu2h8i4MXXZSJSs7klk9x+ACmVY4saNyYa2ycDNetmM5ut7gSLYvniES38JYrblyajERR37Gk97AecNUYAUbQ0Mp8pMRByLbSZc9VdNH1mCtAK+OfivpXhg4tR0R8mV5+C/C+f45BhNICOjWDsc+02IJ6gezB4g5WxSGWPQLl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=riR1u9N+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4F2BC433F1;
+	Tue, 20 Feb 2024 21:15:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464761;
-	bh=PShA+O/1OnNuQA+tm6BLsevW61vgyw+yU/6IJ/iA72o=;
+	s=korg; t=1708463758;
+	bh=DXcDd0QMrK2tpe1WzA+Bau22BA6769TdPn1zSwSBVzU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QpICuH/wrGmOrSOp5RXmDVDKQYwjJA8qPQ3NcdYOO5o0vNIg2NovG5WcB6dcsdBUZ
-	 j+hWEpcp81auxCmjscAkgdbhSI2fDz30aQijOIUnx8GE8aovTlyTbTDJb/DPDX4LsV
-	 BZQLvnOWXn7Iy0jbFFkg03wzl1IptkqqgKkaTIWs=
+	b=riR1u9N+A16OeqnBUk6x/vOgDiQ+ZFeTSdaL5UCF7ftLmiVvU2AZLW6TfL71lQ4c6
+	 zBk3ULkZWZr+MuzuBpO2/DfkzA/toH5jpbRaKLTSCU2dlNzw1A8ybwP8gUt8xCrYpq
+	 Eb9VpvGELgL/V3m6OCi6GY/R5vWJbnbI9DjqAyM0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gaurav Batra <gbatra@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 099/309] powerpc/pseries/iommu: Fix iommu initialisation during DLPAR add
-Date: Tue, 20 Feb 2024 21:54:18 +0100
-Message-ID: <20240220205636.281588904@linuxfoundation.org>
+	Andy Chi <andy.chi@canonical.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 143/331] ALSA: hda/realtek: fix mute/micmute LEDs for HP ZBook Power
+Date: Tue, 20 Feb 2024 21:54:19 +0100
+Message-ID: <20240220205642.044179332@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,160 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gaurav Batra <gbatra@linux.ibm.com>
+From: Andy Chi <andy.chi@canonical.com>
 
-[ Upstream commit ed8b94f6e0acd652ce69bd69d678a0c769172df8 ]
+commit 1513664f340289cf10402753110f3cff12a738aa upstream.
 
-When a PCI device is dynamically added, the kernel oopses with a NULL
-pointer dereference:
+The HP ZBook Power using ALC236 codec which using 0x02 to
+control mute LED and 0x01 to control micmute LED.
+Therefore, add a quirk to make it works.
 
-  BUG: Kernel NULL pointer dereference on read at 0x00000030
-  Faulting instruction address: 0xc0000000006bbe5c
-  Oops: Kernel access of bad area, sig: 11 [#1]
-  LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
-  Modules linked in: rpadlpar_io rpaphp rpcsec_gss_krb5 auth_rpcgss nfsv4 dns_resolver nfs lockd grace fscache netfs xsk_diag bonding nft_compat nf_tables nfnetlink rfkill binfmt_misc dm_multipath rpcrdma sunrpc rdma_ucm ib_srpt ib_isert iscsi_target_mod target_core_mod ib_umad ib_iser libiscsi scsi_transport_iscsi ib_ipoib rdma_cm iw_cm ib_cm mlx5_ib ib_uverbs ib_core pseries_rng drm drm_panel_orientation_quirks xfs libcrc32c mlx5_core mlxfw sd_mod t10_pi sg tls ibmvscsi ibmveth scsi_transport_srp vmx_crypto pseries_wdt psample dm_mirror dm_region_hash dm_log dm_mod fuse
-  CPU: 17 PID: 2685 Comm: drmgr Not tainted 6.7.0-203405+ #66
-  Hardware name: IBM,9080-HEX POWER10 (raw) 0x800200 0xf000006 of:IBM,FW1060.00 (NH1060_008) hv:phyp pSeries
-  NIP:  c0000000006bbe5c LR: c000000000a13e68 CTR: c0000000000579f8
-  REGS: c00000009924f240 TRAP: 0300   Not tainted  (6.7.0-203405+)
-  MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 24002220  XER: 20040006
-  CFAR: c000000000a13e64 DAR: 0000000000000030 DSISR: 40000000 IRQMASK: 0
-  ...
-  NIP sysfs_add_link_to_group+0x34/0x94
-  LR  iommu_device_link+0x5c/0x118
-  Call Trace:
-   iommu_init_device+0x26c/0x318 (unreliable)
-   iommu_device_link+0x5c/0x118
-   iommu_init_device+0xa8/0x318
-   iommu_probe_device+0xc0/0x134
-   iommu_bus_notifier+0x44/0x104
-   notifier_call_chain+0xb8/0x19c
-   blocking_notifier_call_chain+0x64/0x98
-   bus_notify+0x50/0x7c
-   device_add+0x640/0x918
-   pci_device_add+0x23c/0x298
-   of_create_pci_dev+0x400/0x884
-   of_scan_pci_dev+0x124/0x1b0
-   __of_scan_bus+0x78/0x18c
-   pcibios_scan_phb+0x2a4/0x3b0
-   init_phb_dynamic+0xb8/0x110
-   dlpar_add_slot+0x170/0x3b8 [rpadlpar_io]
-   add_slot_store.part.0+0xb4/0x130 [rpadlpar_io]
-   kobj_attr_store+0x2c/0x48
-   sysfs_kf_write+0x64/0x78
-   kernfs_fop_write_iter+0x1b0/0x290
-   vfs_write+0x350/0x4a0
-   ksys_write+0x84/0x140
-   system_call_exception+0x124/0x330
-   system_call_vectored_common+0x15c/0x2ec
-
-Commit a940904443e4 ("powerpc/iommu: Add iommu_ops to report capabilities
-and allow blocking domains") broke DLPAR add of PCI devices.
-
-The above added iommu_device structure to pci_controller. During
-system boot, PCI devices are discovered and this newly added iommu_device
-structure is initialized by a call to iommu_device_register().
-
-During DLPAR add of a PCI device, a new pci_controller structure is
-allocated but there are no calls made to iommu_device_register()
-interface.
-
-Fix is to register the iommu device during DLPAR add as well.
-
-Fixes: a940904443e4 ("powerpc/iommu: Add iommu_ops to report capabilities and allow blocking domains")
-Signed-off-by: Gaurav Batra <gbatra@linux.ibm.com>
-[mpe: Trim oops and tweak some change log wording]
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240122222407.39603-1-gbatra@linux.ibm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Andy Chi <andy.chi@canonical.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240122074826.1020964-1-andy.chi@canonical.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/include/asm/ppc-pci.h         |  3 +++
- arch/powerpc/kernel/iommu.c                | 21 ++++++++++++++++-----
- arch/powerpc/platforms/pseries/pci_dlpar.c |  4 ++++
- 3 files changed, 23 insertions(+), 5 deletions(-)
+ sound/pci/hda/patch_realtek.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/ppc-pci.h b/arch/powerpc/include/asm/ppc-pci.h
-index d9fcff575027..e500a7b9d1b5 100644
---- a/arch/powerpc/include/asm/ppc-pci.h
-+++ b/arch/powerpc/include/asm/ppc-pci.h
-@@ -29,6 +29,9 @@ void *pci_traverse_device_nodes(struct device_node *start,
- 				void *(*fn)(struct device_node *, void *),
- 				void *data);
- extern void pci_devs_phb_init_dynamic(struct pci_controller *phb);
-+extern void ppc_iommu_register_device(struct pci_controller *phb);
-+extern void ppc_iommu_unregister_device(struct pci_controller *phb);
-+
- 
- /* From rtas_pci.h */
- extern void init_pci_config_tokens (void);
-diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
-index ebe259bdd462..c6f62e130d55 100644
---- a/arch/powerpc/kernel/iommu.c
-+++ b/arch/powerpc/kernel/iommu.c
-@@ -1388,6 +1388,21 @@ static const struct attribute_group *spapr_tce_iommu_groups[] = {
- 	NULL,
- };
- 
-+void ppc_iommu_register_device(struct pci_controller *phb)
-+{
-+	iommu_device_sysfs_add(&phb->iommu, phb->parent,
-+				spapr_tce_iommu_groups, "iommu-phb%04x",
-+				phb->global_number);
-+	iommu_device_register(&phb->iommu, &spapr_tce_iommu_ops,
-+				phb->parent);
-+}
-+
-+void ppc_iommu_unregister_device(struct pci_controller *phb)
-+{
-+	iommu_device_unregister(&phb->iommu);
-+	iommu_device_sysfs_remove(&phb->iommu);
-+}
-+
- /*
-  * This registers IOMMU devices of PHBs. This needs to happen
-  * after core_initcall(iommu_init) + postcore_initcall(pci_driver_init) and
-@@ -1398,11 +1413,7 @@ static int __init spapr_tce_setup_phb_iommus_initcall(void)
- 	struct pci_controller *hose;
- 
- 	list_for_each_entry(hose, &hose_list, list_node) {
--		iommu_device_sysfs_add(&hose->iommu, hose->parent,
--				       spapr_tce_iommu_groups, "iommu-phb%04x",
--				       hose->global_number);
--		iommu_device_register(&hose->iommu, &spapr_tce_iommu_ops,
--				      hose->parent);
-+		ppc_iommu_register_device(hose);
- 	}
- 	return 0;
- }
-diff --git a/arch/powerpc/platforms/pseries/pci_dlpar.c b/arch/powerpc/platforms/pseries/pci_dlpar.c
-index 4ba824568119..4448386268d9 100644
---- a/arch/powerpc/platforms/pseries/pci_dlpar.c
-+++ b/arch/powerpc/platforms/pseries/pci_dlpar.c
-@@ -35,6 +35,8 @@ struct pci_controller *init_phb_dynamic(struct device_node *dn)
- 
- 	pseries_msi_allocate_domains(phb);
- 
-+	ppc_iommu_register_device(phb);
-+
- 	/* Create EEH devices for the PHB */
- 	eeh_phb_pe_create(phb);
- 
-@@ -76,6 +78,8 @@ int remove_phb_dynamic(struct pci_controller *phb)
- 		}
- 	}
- 
-+	ppc_iommu_unregister_device(phb);
-+
- 	pseries_msi_free_domains(phb);
- 
- 	/* Keep a reference so phb isn't freed yet */
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9857,6 +9857,8 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x8c72, "HP EliteBook 865 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8c96, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ 	SND_PCI_QUIRK(0x103c, 0x8c97, "HP ZBook", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
++	SND_PCI_QUIRK(0x103c, 0x8ca1, "HP ZBook Power", ALC236_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8ca2, "HP ZBook Power", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8ca4, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8ca7, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8cf5, "HP ZBook Studio 16", ALC245_FIXUP_CS35L41_SPI_4_HP_GPIO_LED),
 
 
 
