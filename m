@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-21712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2929D85CA05
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:41:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A9EA85C8D2
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:26:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8D20283524
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:41:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 510541F21E9A
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:26:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7265F151CDC;
-	Tue, 20 Feb 2024 21:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EA7C151CE1;
+	Tue, 20 Feb 2024 21:26:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uVq/XH7Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LuUqZbtW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 304F12DF9F;
-	Tue, 20 Feb 2024 21:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6E91509BC;
+	Tue, 20 Feb 2024 21:26:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708465275; cv=none; b=HFeEXxE0EuZ9akdunt5qz/SGZSZVZGLkmhsVt4k2AAvn/eytb+wzsEIRWGaDcCJwpiAVX8gPzYK9Fppz+6prGz8zokreZVhgsbIfruqyDf1+nTq2ll9u2uoIN7DtBdXS7UnYAEvYF2cXrXWOJ/2rWFQVJgR59bQuA/cOldHKT5c=
+	t=1708464360; cv=none; b=UXuA/C1P02xWbyyKlZ4DgioxHFH97f6p3cTs2cU4PfM6fsv8Kt4JLDeD80HWALgAH42Uj9MdtYLcvsHwyehJMdj4Ky2KxcRcRK91ysZwxmQ3EVvur8UsD7oLBNgHXs+cBU6IdTo9z7fQLHytsnH5n5rH9bAZYifWTndTdLoF4eU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708465275; c=relaxed/simple;
-	bh=a4kdoG0Waco/NrTZgVg13Ikox54AHSGJvy//EckxP1o=;
+	s=arc-20240116; t=1708464360; c=relaxed/simple;
+	bh=mZrZv5hElNnZQvoDdJqU2qKw+4mxVPX/y5KcRa3tsHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XNmfz5PcPMLZrzZnBpPadBi/8/rdMH9JlxxyUfJMqI3VVNfhZ9dvQHiXJjuX/oDuulZdvH+gF6NGACvKKGElmpDMpBUecXHqfw+u0jQN3la8LUlqcOGA+gdTft2x3Ru5LZjzjIgKVZYk/l4cbrikh59juadNiPfEwAkEjs5fiuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uVq/XH7Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E0BAC433C7;
-	Tue, 20 Feb 2024 21:41:14 +0000 (UTC)
+	 MIME-Version; b=D8SUexgy+VyOXDp3bRQy81nSxweMYySOfF9pvqq4yyJZw5P6iHjmjP7EkPpMLlODRXbpfmt87y2RaBH+nAnaRnmeKmBleeiKRbcUvv6EDfqbi1nRYr7YhRVlsMpcPXiNWXLNx66ahKD4fMVsf77NXuMDZIC+0DYVJ0fHpyDBKJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LuUqZbtW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8713CC433F1;
+	Tue, 20 Feb 2024 21:25:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708465275;
-	bh=a4kdoG0Waco/NrTZgVg13Ikox54AHSGJvy//EckxP1o=;
+	s=korg; t=1708464359;
+	bh=mZrZv5hElNnZQvoDdJqU2qKw+4mxVPX/y5KcRa3tsHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uVq/XH7Zg+xwFApYRgHTrRU17wqP7u+Jvs2ssf0Ps+ZArk7N92kTn0LOS/pbhvMPU
-	 iWp58KWNiNiSEO8+2o6Gi2meqRUnRmRHCmGWw4mGXnjU2GxEIUok/VqPODCoz/LSL2
-	 Mvl3l9hiOOEwdnE25YJcUrDyhz8vvX5JMRaevA4Q=
+	b=LuUqZbtWAkoqC4XVO4PSzW8x6nVeJLebgiFCpPUeJ05ea18ao6c5nuWczl9oCCpG+
+	 h3kVOHZS24TYbaloxSLVMd0jZLuvbVDuaxxyqeeGa/c4+7IaoS/uZPhrgEHNWLNKLA
+	 KqQOdyEJkJkEFSvR5I0JfPuvFwqBfBYtzkIE7TVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Ene <sebastianene@google.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.7 262/309] KVM: arm64: Fix circular locking dependency
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@ZenIV.linux.org.uk>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	kernel test robot <oliver.sang@intel.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 305/331] eventfs: Initialize the tracefs inode properly
 Date: Tue, 20 Feb 2024 21:57:01 +0100
-Message-ID: <20240220205641.352173277@linuxfoundation.org>
+Message-ID: <20240220205647.719531665@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +68,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Ene <sebastianene@google.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-commit 10c02aad111df02088d1a81792a709f6a7eca6cc upstream.
+commit 4fa4b010b83fb2f837b5ef79e38072a79e96e4f1 upstream.
 
-The rule inside kvm enforces that the vcpu->mutex is taken *inside*
-kvm->lock. The rule is violated by the pkvm_create_hyp_vm() which acquires
-the kvm->lock while already holding the vcpu->mutex lock from
-kvm_vcpu_ioctl(). Avoid the circular locking dependency altogether by
-protecting the hyp vm handle with the config_lock, much like we already
-do for other forms of VM-scoped data.
+The tracefs-specific fields in the inode were not initialized before the
+inode was exposed to others through the dentry with 'd_instantiate()'.
 
-Signed-off-by: Sebastian Ene <sebastianene@google.com>
+Move the field initializations up to before the d_instantiate.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20240131185512.478449628@goodmis.org
+
 Cc: stable@vger.kernel.org
-Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20240124091027.1477174-2-sebastianene@google.com
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Al Viro <viro@ZenIV.linux.org.uk>
+Cc: Ajay Kaher <ajay.kaher@broadcom.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5790b1fb3d672 ("eventfs: Remove eventfs_file and just use eventfs_inode")
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202401291043.e62e89dc-oliver.sang@intel.com
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/pkvm.c |   27 +++++++++++++++++----------
- 1 file changed, 17 insertions(+), 10 deletions(-)
+ fs/tracefs/event_inode.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/arch/arm64/kvm/pkvm.c
-+++ b/arch/arm64/kvm/pkvm.c
-@@ -101,6 +101,17 @@ void __init kvm_hyp_reserve(void)
- 		 hyp_mem_base);
- }
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -370,6 +370,8 @@ static struct dentry *create_dir(struct
  
-+static void __pkvm_destroy_hyp_vm(struct kvm *host_kvm)
-+{
-+	if (host_kvm->arch.pkvm.handle) {
-+		WARN_ON(kvm_call_hyp_nvhe(__pkvm_teardown_vm,
-+					  host_kvm->arch.pkvm.handle));
-+	}
-+
-+	host_kvm->arch.pkvm.handle = 0;
-+	free_hyp_memcache(&host_kvm->arch.pkvm.teardown_mc);
-+}
-+
- /*
-  * Allocates and donates memory for hypervisor VM structs at EL2.
-  *
-@@ -181,7 +192,7 @@ static int __pkvm_create_hyp_vm(struct k
- 	return 0;
+ 	ti = get_tracefs(inode);
+ 	ti->flags |= TRACEFS_EVENT_INODE;
++	/* Only directories have ti->private set to an ei, not files */
++	ti->private = ei;
  
- destroy_vm:
--	pkvm_destroy_hyp_vm(host_kvm);
-+	__pkvm_destroy_hyp_vm(host_kvm);
- 	return ret;
- free_vm:
- 	free_pages_exact(hyp_vm, hyp_vm_sz);
-@@ -194,23 +205,19 @@ int pkvm_create_hyp_vm(struct kvm *host_
+ 	inc_nlink(inode);
+ 	d_instantiate(dentry, inode);
+@@ -515,7 +517,6 @@ create_file_dentry(struct eventfs_inode
+ static void eventfs_post_create_dir(struct eventfs_inode *ei)
  {
- 	int ret = 0;
+ 	struct eventfs_inode *ei_child;
+-	struct tracefs_inode *ti;
  
--	mutex_lock(&host_kvm->lock);
-+	mutex_lock(&host_kvm->arch.config_lock);
- 	if (!host_kvm->arch.pkvm.handle)
- 		ret = __pkvm_create_hyp_vm(host_kvm);
--	mutex_unlock(&host_kvm->lock);
-+	mutex_unlock(&host_kvm->arch.config_lock);
+ 	lockdep_assert_held(&eventfs_mutex);
  
- 	return ret;
- }
- 
- void pkvm_destroy_hyp_vm(struct kvm *host_kvm)
- {
--	if (host_kvm->arch.pkvm.handle) {
--		WARN_ON(kvm_call_hyp_nvhe(__pkvm_teardown_vm,
--					  host_kvm->arch.pkvm.handle));
--	}
+@@ -525,9 +526,6 @@ static void eventfs_post_create_dir(stru
+ 				 srcu_read_lock_held(&eventfs_srcu)) {
+ 		ei_child->d_parent = ei->dentry;
+ 	}
 -
--	host_kvm->arch.pkvm.handle = 0;
--	free_hyp_memcache(&host_kvm->arch.pkvm.teardown_mc);
-+	mutex_lock(&host_kvm->arch.config_lock);
-+	__pkvm_destroy_hyp_vm(host_kvm);
-+	mutex_unlock(&host_kvm->arch.config_lock);
+-	ti = get_tracefs(ei->dentry->d_inode);
+-	ti->private = ei;
  }
  
- int pkvm_init_host_vm(struct kvm *host_kvm)
+ /**
 
 
 
