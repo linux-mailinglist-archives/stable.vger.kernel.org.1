@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-20983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E19885C696
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:03:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2989785C699
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:03:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE8061C20AA0
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:03:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D84EB28358B
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:03:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E720B151CC3;
-	Tue, 20 Feb 2024 21:03:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E5C9151CD2;
+	Tue, 20 Feb 2024 21:03:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Avq56qBz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lwZKzgyz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5DEC14F9C8;
-	Tue, 20 Feb 2024 21:03:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD00314F9C8;
+	Tue, 20 Feb 2024 21:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708462984; cv=none; b=odaPtd7yFmCdK/qn1AvAOxXNE6k3tjy/OmhEiyxA4RHqBimKTtbaQwUD4UUe5eANMjHKFI/Udh6OHjjmEft3gF7hIQp6NUklE23gWUBFdAiHPIR/WkAl8ng2kdTL93odp0nuTCArAAk68Hy0aRA2xInPcYxabS6d4xZwuFxgQJc=
+	t=1708462994; cv=none; b=cD8fWrGvlRkLz/w0mu2sko5u9WlLyytxAQ3CCciSYi3HwPugktON1XvDqt9owIUTOCw3K8rwpfBdWcHWffZH0My774bG/5Dew+PYLsQ2UJIyqM6DA7d535TTHBfTe6fIv+rWLgB2vjakyaLN13ORfjJsOBHllFAFPBmKsOL9/+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708462984; c=relaxed/simple;
-	bh=R30G304cvSxKGLcOLKRDssqmkPq5mlvvwyPZCUVHLiI=;
+	s=arc-20240116; t=1708462994; c=relaxed/simple;
+	bh=lMYqUAU0H8s5Upai86W7/h4o1qfUzQMIpoQiFBArtV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e9BrnBHUrchPkGXQlvNOgOtaqY3z0Vwsbu1zqvAODQrHjmO0bo+NMBSrjr6i2CdAH6z/+9XToo1Uqav+2VkC5BrcCusbeTDQ7dpwuz4pz+bYKJ7+QGZ02pGXJ6P7aR9jJ34akMy6JjG6IFvrT8AILEQ69P/99cMVd+soLV8y468=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Avq56qBz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15DEBC433C7;
-	Tue, 20 Feb 2024 21:03:03 +0000 (UTC)
+	 MIME-Version; b=cPwrydyh99/ZuWKubBifyicJLrizoltnMzoRyglPB1RYPt/LX2QhZibKyJV7h8UfS09hQzG1DFyV4cpH3HOKIpnQBFVa5cS5ZWx+2V/6Cul0x1YQOfoGcWY2qaBt1xyO6UVryJGDwbDpAW43hVSTCCDX5QvvP7E+ikWnYaVr6rQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lwZKzgyz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50FB4C433F1;
+	Tue, 20 Feb 2024 21:03:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708462984;
-	bh=R30G304cvSxKGLcOLKRDssqmkPq5mlvvwyPZCUVHLiI=;
+	s=korg; t=1708462993;
+	bh=lMYqUAU0H8s5Upai86W7/h4o1qfUzQMIpoQiFBArtV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Avq56qBzTf1ADN6rM1Lo4FSrm4Dc5f+Gg63/MjgklX+eGyC/nS4sMlyTQWEpSHPlX
-	 ROISyerGI/OpGHHgZ18Tm8sk/UZGXMYUEhUb+94+j59hnTKPbBT4O7EJeP87x3ZFFt
-	 dI6lI4FNAQ+0IM6IZUan9j+HGp/N2zovXw7hKUcE=
+	b=lwZKzgyzHN5lD692JeS2o4qEixN8YEQTBFLfRrU3f0ZL650gEVt/75TXrxtVVBmAy
+	 bABlxaxkRlIN1l89dIA4WU/967EVyMboDONJb+KZx52qQGVdhmMKiH61fXNflLZxHI
+	 VNbr6DxVH4WVSdk/KaBKAnjOYq3Q2s3Ul9Dza5F4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
 	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 071/197] selftests: mptcp: increase timeout to 30 min
-Date: Tue, 20 Feb 2024 21:50:30 +0100
-Message-ID: <20240220204843.205024977@linuxfoundation.org>
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.1 072/197] mptcp: drop the push_pending field
+Date: Tue, 20 Feb 2024 21:50:31 +0100
+Message-ID: <20240220204843.235269672@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
 References: <20240220204841.073267068@linuxfoundation.org>
@@ -66,44 +67,85 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit 4d4dfb2019d7010efb65926d9d1c1793f9a367c6 upstream.
+commit bdd70eb68913c960acb895b00a8c62eb64715b1f upstream.
 
-On very slow environments -- e.g. when QEmu is used without KVM --,
-mptcp_join.sh selftest can take a bit more than 20 minutes. Bump the
-default timeout by 50% as it seems normal to take that long on some
-environments.
+Such field is there to avoid acquiring the data lock in a few spots,
+but it adds complexity to the already non trivial locking schema.
 
-When a debug kernel config is used, this selftest will take even longer,
-but that's certainly not a common test env to consider for the timeout.
+All the relevant call sites (mptcp-level re-injection, set socket
+options), are slow-path, drop such field in favor of 'cb_flags', adding
+the relevant locking.
 
-The Fixes tag that has been picked here is there simply to help having
-this patch backported to older stable versions. It is difficult to point
-to the exact commit that made some env reaching the timeout from time to
-time.
+This patch could be seen as an improvement, instead of a fix. But it
+simplifies the next patch. The 'Fixes' tag has been added to help having
+this series backported to stable.
 
-Fixes: d17b968b9876 ("selftests: mptcp: increase timeout to 20 minutes")
+Fixes: e9d09baca676 ("mptcp: avoid atomic bit manipulation when possible")
 Cc: stable@vger.kernel.org
-Acked-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240131-upstream-net-20240131-mptcp-ci-issues-v1-5-4c1c11e571ff@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/settings | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mptcp/protocol.c |   12 ++++++------
+ net/mptcp/protocol.h |    1 -
+ 2 files changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/tools/testing/selftests/net/mptcp/settings b/tools/testing/selftests/net/mptcp/settings
-index 79b65bdf05db..abc5648b59ab 100644
---- a/tools/testing/selftests/net/mptcp/settings
-+++ b/tools/testing/selftests/net/mptcp/settings
-@@ -1 +1 @@
--timeout=1200
-+timeout=1800
--- 
-2.43.2
-
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -1582,8 +1582,11 @@ static void mptcp_update_post_push(struc
+ 
+ void mptcp_check_and_set_pending(struct sock *sk)
+ {
+-	if (mptcp_send_head(sk))
+-		mptcp_sk(sk)->push_pending |= BIT(MPTCP_PUSH_PENDING);
++	if (mptcp_send_head(sk)) {
++		mptcp_data_lock(sk);
++		mptcp_sk(sk)->cb_flags |= BIT(MPTCP_PUSH_PENDING);
++		mptcp_data_unlock(sk);
++	}
+ }
+ 
+ void __mptcp_push_pending(struct sock *sk, unsigned int flags)
+@@ -3140,7 +3143,6 @@ static int mptcp_disconnect(struct sock
+ 	msk->last_snd = NULL;
+ 	WRITE_ONCE(msk->flags, 0);
+ 	msk->cb_flags = 0;
+-	msk->push_pending = 0;
+ 	msk->recovery = false;
+ 	msk->can_ack = false;
+ 	msk->fully_established = false;
+@@ -3384,8 +3386,7 @@ static void mptcp_release_cb(struct sock
+ 	struct mptcp_sock *msk = mptcp_sk(sk);
+ 
+ 	for (;;) {
+-		unsigned long flags = (msk->cb_flags & MPTCP_FLAGS_PROCESS_CTX_NEED) |
+-				      msk->push_pending;
++		unsigned long flags = (msk->cb_flags & MPTCP_FLAGS_PROCESS_CTX_NEED);
+ 		struct list_head join_list;
+ 
+ 		if (!flags)
+@@ -3401,7 +3402,6 @@ static void mptcp_release_cb(struct sock
+ 		 *    datapath acquires the msk socket spinlock while helding
+ 		 *    the subflow socket lock
+ 		 */
+-		msk->push_pending = 0;
+ 		msk->cb_flags &= ~flags;
+ 		spin_unlock_bh(&sk->sk_lock.slock);
+ 
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -272,7 +272,6 @@ struct mptcp_sock {
+ 	int		rmem_released;
+ 	unsigned long	flags;
+ 	unsigned long	cb_flags;
+-	unsigned long	push_pending;
+ 	bool		recovery;		/* closing subflow write queue reinjected */
+ 	bool		can_ack;
+ 	bool		fully_established;
 
 
 
