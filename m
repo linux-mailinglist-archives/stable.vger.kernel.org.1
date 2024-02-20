@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-21074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2666D85C707
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:07:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED8C885C730
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:10:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB2161F2109F
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:07:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75A1E282999
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:10:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AE1D1509AC;
-	Tue, 20 Feb 2024 21:07:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FA06151CF3;
+	Tue, 20 Feb 2024 21:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yTN7kg9M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GZkpiir9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB68614AD15;
-	Tue, 20 Feb 2024 21:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B341151CED;
+	Tue, 20 Feb 2024 21:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463267; cv=none; b=aF+TakY5QGU/pLTMTIEPP+wVBWxHrbkELWc6LQJQ4WmO2apgLmxN21kp0NWFbpUHFASXNBiBqmdDbZsxQApuMKCmv6MB9BRd4ddcfWrHb5jNu1Ue0HFJ14MTrIYQj626cjFsLzHeuFG74QBfQACVFqXtaFUDIWC9bs/rher8oTE=
+	t=1708463396; cv=none; b=fmyDYiCtur1TxKzxK0JCQEd9q24RmXglz9Ce7RNYKroDaRATElUoI0t0+NKnxL+F5wW5RnShwC1sLsSIAoaBw6nUYoBg1U5F6Lvmul4R27ynvzXPOtMe2v61H4e813GxqHJRvLAaF4jeBtTQX3edA3eon2qgrfZenDdQG11Fgbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463267; c=relaxed/simple;
-	bh=DXb1UFFo0V/PZ9YtIgGwxANh4d8QQhfUh6xIgf+pD6M=;
+	s=arc-20240116; t=1708463396; c=relaxed/simple;
+	bh=O1udH8h27BedeQ8P2CVqEBGsb+hCVrrSMQJn8jtmmiE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o0YD635UXxvMRGxMvcw56eWfPhnZVmSCOQrAs+bwvwQMcR1qn6GkayoDfmDge3PhsDHZg7egYDjegp1WfJZ3auu5GwaoyiLnvrd8H2/qCVLobPxXc+2EqUp2s4ulFTBlAhwJPF8rOJxkaoktd4iAPcXcS8QSmRmxB8OnZGzm0f0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yTN7kg9M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38EBDC433C7;
-	Tue, 20 Feb 2024 21:07:47 +0000 (UTC)
+	 MIME-Version; b=ZS4yGyDwxzdFVArLeRK/aiKtp3fzkU+jNki6GXy9StZRaNN3H9Jl6+Ge3AGdntr4Umb3btcyo+OZc61dZ8BfxCRWJpecnnWtIDUR0eTKb8tiuZXVDdnAxpNtzRt+zABAx58ZeAh7uIyXCodQkfafasW+uymqueHyPaTLSBiPF9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GZkpiir9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A537C433F1;
+	Tue, 20 Feb 2024 21:09:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463267;
-	bh=DXb1UFFo0V/PZ9YtIgGwxANh4d8QQhfUh6xIgf+pD6M=;
+	s=korg; t=1708463395;
+	bh=O1udH8h27BedeQ8P2CVqEBGsb+hCVrrSMQJn8jtmmiE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yTN7kg9MifM/gm4DhZyi4MO3wj52KASzN6Z1ZnEzDqHVZW0BBJmI/LgAOjDCEotVD
-	 /b3Pkqs4Y60i9m+t/6k3d1aW3EpDajH+ULBT1gV1h4fw4W5YIgcVuFq5soXK5vags1
-	 ZSpz+poxCJP79U1BfhjS7Y31jFBpZqtQPAIy/MN8=
+	b=GZkpiir9Jbjx2nKAgFUwTt1MJXNdSRA1gwTVot2osv1Tyc0FqZxCLfOd59wgNdLAf
+	 o7nlP6C/JB4uNoexQ0EYBg1p/tlz9q5Yos7dABeEuXxRmmf3xQciCOOobBdEpJnUFB
+	 4/w2vPjokjhUlYXG/oKrXEss1wQsU4MvGEeEmXUs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 188/197] nfsd: dont take fi_lock in nfsd_break_deleg_cb()
+	Ido Schimmel <idosch@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 031/331] selftests: net: Fix bridge backup port test flakiness
 Date: Tue, 20 Feb 2024 21:52:27 +0100
-Message-ID: <20240220204846.706681173@linuxfoundation.org>
+Message-ID: <20240220205638.568521586@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
-References: <20240220204841.073267068@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,97 +65,167 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 5ea9a7c5fe4149f165f0e3b624fe08df02b6c301 ]
+[ Upstream commit 38ee0cb2a2e2ade077442085638eb181b0562971 ]
 
-A recent change to check_for_locks() changed it to take ->flc_lock while
-holding ->fi_lock.  This creates a lock inversion (reported by lockdep)
-because there is a case where ->fi_lock is taken while holding
-->flc_lock.
+The test toggles the carrier of a bridge port in order to test the
+bridge backup port feature.
 
-->flc_lock is held across ->fl_lmops callbacks, and
-nfsd_break_deleg_cb() is one of those and does take ->fi_lock.  However
-it doesn't need to.
+Due to the linkwatch delayed work the carrier change is not always
+reflected fast enough to the bridge driver and packets are not forwarded
+as the test expects, resulting in failures [1].
 
-Prior to v4.17-rc1~110^2~22 ("nfsd: create a separate lease for each
-delegation") nfsd_break_deleg_cb() would walk the ->fi_delegations list
-and so needed the lock.  Since then it doesn't walk the list and doesn't
-need the lock.
+Fix by busy waiting on the bridge port state until it changes to the
+desired state following the carrier change.
 
-Two actions are performed under the lock.  One is to call
-nfsd_break_one_deleg which calls nfsd4_run_cb().  These doesn't act on
-the nfs4_file at all, so don't need the lock.
+[1]
+ # Backup port
+ # -----------
+ [...]
+ # TEST: swp1 carrier off                                              [ OK ]
+ # TEST: No forwarding out of swp1                                     [FAIL]
+ [  641.995910] br0: port 1(swp1) entered disabled state
+ # TEST: No forwarding out of vx0                                      [ OK ]
 
-The other is to set ->fi_had_conflict which is in the nfs4_file.
-This field is only ever set here (except when initialised to false)
-so there is no possible problem will multiple threads racing when
-setting it.
-
-The field is tested twice in nfs4_set_delegation().  The first test does
-not hold a lock and is documented as an opportunistic optimisation, so
-it doesn't impose any need to hold ->fi_lock while setting
-->fi_had_conflict.
-
-The second test in nfs4_set_delegation() *is* make under ->fi_lock, so
-removing the locking when ->fi_had_conflict is set could make a change.
-The change could only be interesting if ->fi_had_conflict tested as
-false even though nfsd_break_one_deleg() ran before ->fi_lock was
-unlocked.  i.e. while hash_delegation_locked() was running.
-As hash_delegation_lock() doesn't interact in any way with nfs4_run_cb()
-there can be no importance to this interaction.
-
-So this patch removes the locking from nfsd_break_one_deleg() and moves
-the final test on ->fi_had_conflict out of the locked region to make it
-clear that locking isn't important to the test.  It is still tested
-*after* vfs_setlease() has succeeded.  This might be significant and as
-vfs_setlease() takes ->flc_lock, and nfsd_break_one_deleg() is called
-under ->flc_lock this "after" is a true ordering provided by a spinlock.
-
-Fixes: edcf9725150e ("nfsd: fix RELEASE_LOCKOWNER")
-Signed-off-by: NeilBrown <neilb@suse.de>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b408453053fb ("selftests: net: Add bridge backup port and backup nexthop ID test")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://lore.kernel.org/r/20240208123110.1063930-1-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c |   11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ .../selftests/net/test_bridge_backup_port.sh  | 23 +++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -4908,10 +4908,8 @@ nfsd_break_deleg_cb(struct file_lock *fl
- 	 */
- 	fl->fl_break_time = 0;
- 
--	spin_lock(&fp->fi_lock);
- 	fp->fi_had_conflict = true;
- 	nfsd_break_one_deleg(dp);
--	spin_unlock(&fp->fi_lock);
- 	return false;
+diff --git a/tools/testing/selftests/net/test_bridge_backup_port.sh b/tools/testing/selftests/net/test_bridge_backup_port.sh
+index 70a7d87ba2d2..1b3f89e2b86e 100755
+--- a/tools/testing/selftests/net/test_bridge_backup_port.sh
++++ b/tools/testing/selftests/net/test_bridge_backup_port.sh
+@@ -124,6 +124,16 @@ tc_check_packets()
+ 	[[ $pkts == $count ]]
  }
  
-@@ -5499,12 +5497,13 @@ nfs4_set_delegation(struct nfsd4_open *o
- 	if (status)
- 		goto out_unlock;
- 
-+	status = -EAGAIN;
-+	if (fp->fi_had_conflict)
-+		goto out_unlock;
++bridge_link_check()
++{
++	local ns=$1; shift
++	local dev=$1; shift
++	local state=$1; shift
 +
- 	spin_lock(&state_lock);
- 	spin_lock(&fp->fi_lock);
--	if (fp->fi_had_conflict)
--		status = -EAGAIN;
--	else
--		status = hash_delegation_locked(dp, fp);
-+	status = hash_delegation_locked(dp, fp);
- 	spin_unlock(&fp->fi_lock);
- 	spin_unlock(&state_lock);
++	bridge -n $ns -d -j link show dev $dev | \
++		jq -e ".[][\"state\"] == \"$state\"" &> /dev/null
++}
++
+ ################################################################################
+ # Setup
  
+@@ -259,6 +269,7 @@ backup_port()
+ 	log_test $? 0 "No forwarding out of vx0"
+ 
+ 	run_cmd "ip -n $sw1 link set dev swp1 carrier off"
++	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw1 swp1 disabled
+ 	log_test $? 0 "swp1 carrier off"
+ 
+ 	run_cmd "ip netns exec $sw1 mausezahn br0.10 -a $smac -b $dmac -A 198.51.100.1 -B 198.51.100.2 -t ip -p 100 -q -c 1"
+@@ -268,6 +279,7 @@ backup_port()
+ 	log_test $? 0 "No forwarding out of vx0"
+ 
+ 	run_cmd "ip -n $sw1 link set dev swp1 carrier on"
++	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw1 swp1 forwarding
+ 	log_test $? 0 "swp1 carrier on"
+ 
+ 	# Configure vx0 as the backup port of swp1 and check that packets are
+@@ -284,6 +296,7 @@ backup_port()
+ 	log_test $? 0 "No forwarding out of vx0"
+ 
+ 	run_cmd "ip -n $sw1 link set dev swp1 carrier off"
++	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw1 swp1 disabled
+ 	log_test $? 0 "swp1 carrier off"
+ 
+ 	run_cmd "ip netns exec $sw1 mausezahn br0.10 -a $smac -b $dmac -A 198.51.100.1 -B 198.51.100.2 -t ip -p 100 -q -c 1"
+@@ -293,6 +306,7 @@ backup_port()
+ 	log_test $? 0 "Forwarding out of vx0"
+ 
+ 	run_cmd "ip -n $sw1 link set dev swp1 carrier on"
++	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw1 swp1 forwarding
+ 	log_test $? 0 "swp1 carrier on"
+ 
+ 	run_cmd "ip netns exec $sw1 mausezahn br0.10 -a $smac -b $dmac -A 198.51.100.1 -B 198.51.100.2 -t ip -p 100 -q -c 1"
+@@ -314,6 +328,7 @@ backup_port()
+ 	log_test $? 0 "No forwarding out of vx0"
+ 
+ 	run_cmd "ip -n $sw1 link set dev swp1 carrier off"
++	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw1 swp1 disabled
+ 	log_test $? 0 "swp1 carrier off"
+ 
+ 	run_cmd "ip netns exec $sw1 mausezahn br0.10 -a $smac -b $dmac -A 198.51.100.1 -B 198.51.100.2 -t ip -p 100 -q -c 1"
+@@ -369,6 +384,7 @@ backup_nhid()
+ 	log_test $? 0 "No forwarding out of vx0"
+ 
+ 	run_cmd "ip -n $sw1 link set dev swp1 carrier off"
++	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw1 swp1 disabled
+ 	log_test $? 0 "swp1 carrier off"
+ 
+ 	run_cmd "ip netns exec $sw1 mausezahn br0.10 -a $smac -b $dmac -A 198.51.100.1 -B 198.51.100.2 -t ip -p 100 -q -c 1"
+@@ -382,6 +398,7 @@ backup_nhid()
+ 	log_test $? 0 "Forwarding using VXLAN FDB entry"
+ 
+ 	run_cmd "ip -n $sw1 link set dev swp1 carrier on"
++	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw1 swp1 forwarding
+ 	log_test $? 0 "swp1 carrier on"
+ 
+ 	# Configure nexthop ID 10 as the backup nexthop ID of swp1 and check
+@@ -398,6 +415,7 @@ backup_nhid()
+ 	log_test $? 0 "No forwarding out of vx0"
+ 
+ 	run_cmd "ip -n $sw1 link set dev swp1 carrier off"
++	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw1 swp1 disabled
+ 	log_test $? 0 "swp1 carrier off"
+ 
+ 	run_cmd "ip netns exec $sw1 mausezahn br0.10 -a $smac -b $dmac -A 198.51.100.1 -B 198.51.100.2 -t ip -p 100 -q -c 1"
+@@ -411,6 +429,7 @@ backup_nhid()
+ 	log_test $? 0 "No forwarding using VXLAN FDB entry"
+ 
+ 	run_cmd "ip -n $sw1 link set dev swp1 carrier on"
++	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw1 swp1 forwarding
+ 	log_test $? 0 "swp1 carrier on"
+ 
+ 	run_cmd "ip netns exec $sw1 mausezahn br0.10 -a $smac -b $dmac -A 198.51.100.1 -B 198.51.100.2 -t ip -p 100 -q -c 1"
+@@ -441,6 +460,7 @@ backup_nhid()
+ 	log_test $? 0 "No forwarding using VXLAN FDB entry"
+ 
+ 	run_cmd "ip -n $sw1 link set dev swp1 carrier off"
++	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw1 swp1 disabled
+ 	log_test $? 0 "swp1 carrier off"
+ 
+ 	run_cmd "ip netns exec $sw1 mausezahn br0.10 -a $smac -b $dmac -A 198.51.100.1 -B 198.51.100.2 -t ip -p 100 -q -c 1"
+@@ -497,6 +517,7 @@ backup_nhid_invalid()
+ 	log_test $? 0 "Valid nexthop as backup nexthop"
+ 
+ 	run_cmd "ip -n $sw1 link set dev swp1 carrier off"
++	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw1 swp1 disabled
+ 	log_test $? 0 "swp1 carrier off"
+ 
+ 	run_cmd "ip netns exec $sw1 mausezahn br0.10 -a $smac -b $dmac -A 198.51.100.1 -B 198.51.100.2 -t ip -p 100 -q -c 1"
+@@ -604,7 +625,9 @@ backup_nhid_ping()
+ 	run_cmd "bridge -n $sw2 link set dev swp1 backup_nhid 10"
+ 
+ 	run_cmd "ip -n $sw1 link set dev swp1 carrier off"
++	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw1 swp1 disabled
+ 	run_cmd "ip -n $sw2 link set dev swp1 carrier off"
++	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw2 swp1 disabled
+ 
+ 	run_cmd "ip netns exec $sw1 ping -i 0.1 -c 10 -w $PING_TIMEOUT 192.0.2.66"
+ 	log_test $? 0 "Ping with backup nexthop ID"
+-- 
+2.43.0
+
 
 
 
