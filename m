@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-21088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4027785C715
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:08:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 431DF85C720
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:09:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71C0E1C218F6
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:08:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6C841F2291C
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:09:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D51F11509BF;
-	Tue, 20 Feb 2024 21:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7407214AD12;
+	Tue, 20 Feb 2024 21:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0bVGW13M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oBEqPVwk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93F5876C9C;
-	Tue, 20 Feb 2024 21:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E89614C585;
+	Tue, 20 Feb 2024 21:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463312; cv=none; b=ZUjFM1muI1wXNOlDlhFcNwLDRxddhlRfU7moTlnJyB7mgK0s0UqAMOQbKwDhPbx0De26Ujy2+fTenI5P7oSRE38mUmsLPBDYmvwChwBFpZ8RnIWpaS5ld1coP64kia1GwDP/+qqDpF+rXYfU9NcgvOwNWBkvMAN3hlNRbXgecy0=
+	t=1708463351; cv=none; b=C6mlH2taXaiqLIPh9rWhEBhTU2NZH8yhCvdMgvX2VNUJNh39rahqqkbluLeMk/RC5XsD5dlcq2P3sCpwgVScqPHuLq+CQHOHv7aZKt4/NPyUXorqldjZbAUfSzJUW/ukoPR5JtSjLL0m0dFrQVNEt9SkmumZhDQus7KNxY0+vHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463312; c=relaxed/simple;
-	bh=HU3I2c5hEJUjCZDYuiSBnJl2z4HXDD+6rXALPs+vapw=;
+	s=arc-20240116; t=1708463351; c=relaxed/simple;
+	bh=Bhidpc859a3lPHBADZc40P2wji5msKS36NMhUhejWLE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lcd+5OWhNgQwr2ZlDarqIf5vb1P9rKkneShj5d/sJ4PA5licmqGRzFJOYfeR03qnGsHNR31E47mzCEne1WuWEP1/BQ6v2k+h0R9LGFDyil50U3vJy7wyj4uCMhJ0KPVRe9Ik58yk6tDp+aqPv9jVLXIQBUBkTujHtldCxzXToNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0bVGW13M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFEAEC433C7;
-	Tue, 20 Feb 2024 21:08:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DYrgalKet4k9yzKGb7Qy4wmo3oGx6ux/Lu7mZ66UYGb+MgSLCJ7FXXrQ3A7NUGi3nZaDlOl1Glshak2Eby/wD8neZ5oI2RJmkCVSa+grjTNs0JIwLA+tn6GQxDfkAT9wY6TCb9mMZ+4mHyUR9OOdfvGXs3pBf+SnzvhzqhrAAJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oBEqPVwk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F434C433C7;
+	Tue, 20 Feb 2024 21:09:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463312;
-	bh=HU3I2c5hEJUjCZDYuiSBnJl2z4HXDD+6rXALPs+vapw=;
+	s=korg; t=1708463351;
+	bh=Bhidpc859a3lPHBADZc40P2wji5msKS36NMhUhejWLE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0bVGW13M6RfWVWyr9BWpRCGeSivx8mmHWCYWgrvWcE1akyDVSf20uEssoNW1o3WKC
-	 VLlZ+7pljt34mpMOXm5mNFsaa7BMP7urzDi4PAUgNvRsezCR9dmjrUX2E18Uk3Vlu8
-	 E4IfeLj9G3T9S0djn+9gPH9sAB8MZbulJHy4Fpf8=
+	b=oBEqPVwk3FzqJZFiR1Rfd96o94Q29+n+QjL1LKjm5RCbWLh4ojVRZ/+vpV264ZaGu
+	 y2WVQQSj2CnEdHuid0n1OYQMvIagXvZPNiqUt1qe/s7rbYLZ7WtmRKbpX2mWU8BvQu
+	 AGMkkFOe7Otu7gLNba6nctenBfXpDgexzbOBGvAo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrejs Cainikovs <andrejs.cainikovs@toradex.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Rob Clark <robdclark@chromium.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 173/197] ARM: dts: imx6q-apalis: add can power-up delay on ixora board
-Date: Tue, 20 Feb 2024 21:52:12 +0100
-Message-ID: <20240220204846.250352157@linuxfoundation.org>
+Subject: [PATCH 6.6 017/331] drm/msm/gem: Fix double resv lock aquire
+Date: Tue, 20 Feb 2024 21:52:13 +0100
+Message-ID: <20240220205638.124418938@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
-References: <20240220204841.073267068@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrejs Cainikovs <andrejs.cainikovs@toradex.com>
+From: Rob Clark <robdclark@chromium.org>
 
-[ Upstream commit b76bbf835d8945080b22b52fc1e6f41cde06865d ]
+[ Upstream commit 03facb39d6c6433a78d0f79c7a146b1e6a61943e ]
 
-Newer variants of Ixora boards require a power-up delay when powering up
-the CAN transceiver of up to 1ms.
+Since commit 79e2cf2e7a19 ("drm/gem: Take reservation lock for vmap/vunmap
+operations"), the resv lock is already held in the prime vmap path, so
+don't try to grab it again.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Andrejs Cainikovs <andrejs.cainikovs@toradex.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+v2: This applies to vunmap path as well
+v3: Fix fixes commit
+
+Fixes: 79e2cf2e7a19 ("drm/gem: Take reservation lock for vmap/vunmap operations")
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Acked-by: Christian König <christian.koenig@amd.com>
+Patchwork: https://patchwork.freedesktop.org/patch/576642/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/imx6q-apalis-ixora-v1.2.dts | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/msm/msm_gem_prime.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/imx6q-apalis-ixora-v1.2.dts b/arch/arm/boot/dts/imx6q-apalis-ixora-v1.2.dts
-index f9f7d99bd4db..76f3e07bc882 100644
---- a/arch/arm/boot/dts/imx6q-apalis-ixora-v1.2.dts
-+++ b/arch/arm/boot/dts/imx6q-apalis-ixora-v1.2.dts
-@@ -76,6 +76,7 @@ reg_can1_supply: regulator-can1-supply {
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&pinctrl_enable_can1_power>;
- 		regulator-name = "can1_supply";
-+		startup-delay-us = <1000>;
- 	};
+diff --git a/drivers/gpu/drm/msm/msm_gem_prime.c b/drivers/gpu/drm/msm/msm_gem_prime.c
+index 5f68e31a3e4e..0915f3b68752 100644
+--- a/drivers/gpu/drm/msm/msm_gem_prime.c
++++ b/drivers/gpu/drm/msm/msm_gem_prime.c
+@@ -26,7 +26,7 @@ int msm_gem_prime_vmap(struct drm_gem_object *obj, struct iosys_map *map)
+ {
+ 	void *vaddr;
  
- 	reg_can2_supply: regulator-can2-supply {
-@@ -85,6 +86,7 @@ reg_can2_supply: regulator-can2-supply {
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&pinctrl_enable_can2_power>;
- 		regulator-name = "can2_supply";
-+		startup-delay-us = <1000>;
- 	};
- };
+-	vaddr = msm_gem_get_vaddr(obj);
++	vaddr = msm_gem_get_vaddr_locked(obj);
+ 	if (IS_ERR(vaddr))
+ 		return PTR_ERR(vaddr);
+ 	iosys_map_set_vaddr(map, vaddr);
+@@ -36,7 +36,7 @@ int msm_gem_prime_vmap(struct drm_gem_object *obj, struct iosys_map *map)
  
+ void msm_gem_prime_vunmap(struct drm_gem_object *obj, struct iosys_map *map)
+ {
+-	msm_gem_put_vaddr(obj);
++	msm_gem_put_vaddr_locked(obj);
+ }
+ 
+ struct drm_gem_object *msm_gem_prime_import_sg_table(struct drm_device *dev,
 -- 
 2.43.0
 
