@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-21206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD14885C7A0
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:14:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F11085C900
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:28:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C0CA1F25D6C
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:14:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D92B1284AEE
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:28:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1A3A151CE1;
-	Tue, 20 Feb 2024 21:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EF1F152DE3;
+	Tue, 20 Feb 2024 21:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XAUMd9SM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/i55eVE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F6C6151CCC;
-	Tue, 20 Feb 2024 21:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C86214F9C8;
+	Tue, 20 Feb 2024 21:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463688; cv=none; b=OgqpAQmF6Pv7CdWd19+DJ9VwxeQ71Ry1f/HbX+joRuBBj86a/qRcpkWxnHeHc1NfHWPfMyVvGLFblAZXwwkNvUuicNiUMPcA7dl5F7rdB1M1rLFjkwUEbzRvxyHF813w5K3ivqZUDzoQnACKRx2WsagODrP+iuTXk8qBEv4k67g=
+	t=1708464484; cv=none; b=akENDXCSTP1uoi/6wMZ8O68EDmXEIM3jcL+7Lk6uaw/BSQIO487y1C7bEJJj1k3SRzXNCLgvL5zb9Iqgt6/3+744bY7V+v48jKKbox9qSWRY/yBN/14uj6LPog8WyAKYl4vTNRy+kaHBGxcD7vPpKWxkJDMU2c/NmgzPO5QfmwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463688; c=relaxed/simple;
-	bh=LYYkLzsn/uye/7BccpT5nBCrxVh2k6BRgvHsMIwzjt8=;
+	s=arc-20240116; t=1708464484; c=relaxed/simple;
+	bh=EqIeyNxZ+FFWHaDuxRaY6bVFYoQygZFFnAtq+Xt4jME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PTYTxLSO7b0xtpnqWYmPQ0GEYSozlQ/lwYq0pOSxXxFdcMa04c6Sp30lj5/sdUb8JGYUE2IJ0MoB3aPF8zwqWO45O6TTQfuv9QoTqCIsCq4/Iv/iIQxonrdYWLIzhSjhAhLetSG+29knqKPsG3fPM75xFhQNP+hfMFuuaCZt+V8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XAUMd9SM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00D82C433F1;
-	Tue, 20 Feb 2024 21:14:47 +0000 (UTC)
+	 MIME-Version; b=PTvJTqybT1vBD+g+ZFa/9qlJtkV+y7KDJbFz/oR7TofEoqtGEMhvtC0qDC4aOo82Qfb9oktHjveCYCeYD/0L8KVd4FivN6TUaBuqsgZPO6gC0+E5V0qH/fusyxm/p9hOyVL2FIw8GgbkfaG3LdtRthpjx1sEeRBAxYzFyV5rXQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/i55eVE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FC1BC433F1;
+	Tue, 20 Feb 2024 21:28:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463688;
-	bh=LYYkLzsn/uye/7BccpT5nBCrxVh2k6BRgvHsMIwzjt8=;
+	s=korg; t=1708464484;
+	bh=EqIeyNxZ+FFWHaDuxRaY6bVFYoQygZFFnAtq+Xt4jME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XAUMd9SMQdJZZSJfnLaIkliHoLU9uHOUvye0RMkq3C9y0hyF9ZMfD/dQiriAwZrvI
-	 VaHeK3lQw6/BMU9SKJeCmJ1SIvx/aD5++dwisyVdgsurg+XtsuBf7sgzI7s3vhcOdB
-	 DaH5LNmxxb5kGjZ/mRv4CO1qtdZS202n3AsGOKJI=
+	b=S/i55eVEXcRuzaFleJhxb/SBorVwvmvOazH1N/f440Xk50JF8N++VedQaWmYCG3bL
+	 Gcv379Tq3tAATEga9XrBQHP8z9rvmcgz3w4p97IqaoFg3UdOdkj6Ihj2bcqQAWlM53
+	 krMSdZDheN1bvOIWLFoq0r3hUwmceQNSFz7czM+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Udipto Goswami <quic_ugoswami@quicinc.com>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 6.6 083/331] usb: core: Prevent null pointer dereference in update_port_device_state
+	Ido Schimmel <idosch@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 040/309] selftests: net: Fix bridge backup port test flakiness
 Date: Tue, 20 Feb 2024 21:53:19 +0100
-Message-ID: <20240220205640.204957672@linuxfoundation.org>
+Message-ID: <20240220205634.444813164@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +65,167 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Udipto Goswami <quic_ugoswami@quicinc.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 12783c0b9e2c7915a50d5ec829630ff2da50472c upstream.
+[ Upstream commit 38ee0cb2a2e2ade077442085638eb181b0562971 ]
 
-Currently, the function update_port_device_state gets the usb_hub from
-udev->parent by calling usb_hub_to_struct_hub.
-However, in case the actconfig or the maxchild is 0, the usb_hub would
-be NULL and upon further accessing to get port_dev would result in null
-pointer dereference.
+The test toggles the carrier of a bridge port in order to test the
+bridge backup port feature.
 
-Fix this by introducing an if check after the usb_hub is populated.
+Due to the linkwatch delayed work the carrier change is not always
+reflected fast enough to the bridge driver and packets are not forwarded
+as the test expects, resulting in failures [1].
 
-Fixes: 83cb2604f641 ("usb: core: add sysfs entry for usb device state")
-Cc: stable@vger.kernel.org
-Signed-off-by: Udipto Goswami <quic_ugoswami@quicinc.com>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20240110095814.7626-1-quic_ugoswami@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix by busy waiting on the bridge port state until it changes to the
+desired state following the carrier change.
+
+[1]
+ # Backup port
+ # -----------
+ [...]
+ # TEST: swp1 carrier off                                              [ OK ]
+ # TEST: No forwarding out of swp1                                     [FAIL]
+ [  641.995910] br0: port 1(swp1) entered disabled state
+ # TEST: No forwarding out of vx0                                      [ OK ]
+
+Fixes: b408453053fb ("selftests: net: Add bridge backup port and backup nexthop ID test")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://lore.kernel.org/r/20240208123110.1063930-1-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/hub.c |   16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ .../selftests/net/test_bridge_backup_port.sh  | 23 +++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -2047,9 +2047,19 @@ static void update_port_device_state(str
- 
- 	if (udev->parent) {
- 		hub = usb_hub_to_struct_hub(udev->parent);
--		port_dev = hub->ports[udev->portnum - 1];
--		WRITE_ONCE(port_dev->state, udev->state);
--		sysfs_notify_dirent(port_dev->state_kn);
-+
-+		/*
-+		 * The Link Layer Validation System Driver (lvstest)
-+		 * has a test step to unbind the hub before running the
-+		 * rest of the procedure. This triggers hub_disconnect
-+		 * which will set the hub's maxchild to 0, further
-+		 * resulting in usb_hub_to_struct_hub returning NULL.
-+		 */
-+		if (hub) {
-+			port_dev = hub->ports[udev->portnum - 1];
-+			WRITE_ONCE(port_dev->state, udev->state);
-+			sysfs_notify_dirent(port_dev->state_kn);
-+		}
- 	}
+diff --git a/tools/testing/selftests/net/test_bridge_backup_port.sh b/tools/testing/selftests/net/test_bridge_backup_port.sh
+index 70a7d87ba2d2..1b3f89e2b86e 100755
+--- a/tools/testing/selftests/net/test_bridge_backup_port.sh
++++ b/tools/testing/selftests/net/test_bridge_backup_port.sh
+@@ -124,6 +124,16 @@ tc_check_packets()
+ 	[[ $pkts == $count ]]
  }
  
++bridge_link_check()
++{
++	local ns=$1; shift
++	local dev=$1; shift
++	local state=$1; shift
++
++	bridge -n $ns -d -j link show dev $dev | \
++		jq -e ".[][\"state\"] == \"$state\"" &> /dev/null
++}
++
+ ################################################################################
+ # Setup
+ 
+@@ -259,6 +269,7 @@ backup_port()
+ 	log_test $? 0 "No forwarding out of vx0"
+ 
+ 	run_cmd "ip -n $sw1 link set dev swp1 carrier off"
++	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw1 swp1 disabled
+ 	log_test $? 0 "swp1 carrier off"
+ 
+ 	run_cmd "ip netns exec $sw1 mausezahn br0.10 -a $smac -b $dmac -A 198.51.100.1 -B 198.51.100.2 -t ip -p 100 -q -c 1"
+@@ -268,6 +279,7 @@ backup_port()
+ 	log_test $? 0 "No forwarding out of vx0"
+ 
+ 	run_cmd "ip -n $sw1 link set dev swp1 carrier on"
++	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw1 swp1 forwarding
+ 	log_test $? 0 "swp1 carrier on"
+ 
+ 	# Configure vx0 as the backup port of swp1 and check that packets are
+@@ -284,6 +296,7 @@ backup_port()
+ 	log_test $? 0 "No forwarding out of vx0"
+ 
+ 	run_cmd "ip -n $sw1 link set dev swp1 carrier off"
++	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw1 swp1 disabled
+ 	log_test $? 0 "swp1 carrier off"
+ 
+ 	run_cmd "ip netns exec $sw1 mausezahn br0.10 -a $smac -b $dmac -A 198.51.100.1 -B 198.51.100.2 -t ip -p 100 -q -c 1"
+@@ -293,6 +306,7 @@ backup_port()
+ 	log_test $? 0 "Forwarding out of vx0"
+ 
+ 	run_cmd "ip -n $sw1 link set dev swp1 carrier on"
++	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw1 swp1 forwarding
+ 	log_test $? 0 "swp1 carrier on"
+ 
+ 	run_cmd "ip netns exec $sw1 mausezahn br0.10 -a $smac -b $dmac -A 198.51.100.1 -B 198.51.100.2 -t ip -p 100 -q -c 1"
+@@ -314,6 +328,7 @@ backup_port()
+ 	log_test $? 0 "No forwarding out of vx0"
+ 
+ 	run_cmd "ip -n $sw1 link set dev swp1 carrier off"
++	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw1 swp1 disabled
+ 	log_test $? 0 "swp1 carrier off"
+ 
+ 	run_cmd "ip netns exec $sw1 mausezahn br0.10 -a $smac -b $dmac -A 198.51.100.1 -B 198.51.100.2 -t ip -p 100 -q -c 1"
+@@ -369,6 +384,7 @@ backup_nhid()
+ 	log_test $? 0 "No forwarding out of vx0"
+ 
+ 	run_cmd "ip -n $sw1 link set dev swp1 carrier off"
++	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw1 swp1 disabled
+ 	log_test $? 0 "swp1 carrier off"
+ 
+ 	run_cmd "ip netns exec $sw1 mausezahn br0.10 -a $smac -b $dmac -A 198.51.100.1 -B 198.51.100.2 -t ip -p 100 -q -c 1"
+@@ -382,6 +398,7 @@ backup_nhid()
+ 	log_test $? 0 "Forwarding using VXLAN FDB entry"
+ 
+ 	run_cmd "ip -n $sw1 link set dev swp1 carrier on"
++	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw1 swp1 forwarding
+ 	log_test $? 0 "swp1 carrier on"
+ 
+ 	# Configure nexthop ID 10 as the backup nexthop ID of swp1 and check
+@@ -398,6 +415,7 @@ backup_nhid()
+ 	log_test $? 0 "No forwarding out of vx0"
+ 
+ 	run_cmd "ip -n $sw1 link set dev swp1 carrier off"
++	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw1 swp1 disabled
+ 	log_test $? 0 "swp1 carrier off"
+ 
+ 	run_cmd "ip netns exec $sw1 mausezahn br0.10 -a $smac -b $dmac -A 198.51.100.1 -B 198.51.100.2 -t ip -p 100 -q -c 1"
+@@ -411,6 +429,7 @@ backup_nhid()
+ 	log_test $? 0 "No forwarding using VXLAN FDB entry"
+ 
+ 	run_cmd "ip -n $sw1 link set dev swp1 carrier on"
++	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw1 swp1 forwarding
+ 	log_test $? 0 "swp1 carrier on"
+ 
+ 	run_cmd "ip netns exec $sw1 mausezahn br0.10 -a $smac -b $dmac -A 198.51.100.1 -B 198.51.100.2 -t ip -p 100 -q -c 1"
+@@ -441,6 +460,7 @@ backup_nhid()
+ 	log_test $? 0 "No forwarding using VXLAN FDB entry"
+ 
+ 	run_cmd "ip -n $sw1 link set dev swp1 carrier off"
++	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw1 swp1 disabled
+ 	log_test $? 0 "swp1 carrier off"
+ 
+ 	run_cmd "ip netns exec $sw1 mausezahn br0.10 -a $smac -b $dmac -A 198.51.100.1 -B 198.51.100.2 -t ip -p 100 -q -c 1"
+@@ -497,6 +517,7 @@ backup_nhid_invalid()
+ 	log_test $? 0 "Valid nexthop as backup nexthop"
+ 
+ 	run_cmd "ip -n $sw1 link set dev swp1 carrier off"
++	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw1 swp1 disabled
+ 	log_test $? 0 "swp1 carrier off"
+ 
+ 	run_cmd "ip netns exec $sw1 mausezahn br0.10 -a $smac -b $dmac -A 198.51.100.1 -B 198.51.100.2 -t ip -p 100 -q -c 1"
+@@ -604,7 +625,9 @@ backup_nhid_ping()
+ 	run_cmd "bridge -n $sw2 link set dev swp1 backup_nhid 10"
+ 
+ 	run_cmd "ip -n $sw1 link set dev swp1 carrier off"
++	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw1 swp1 disabled
+ 	run_cmd "ip -n $sw2 link set dev swp1 carrier off"
++	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw2 swp1 disabled
+ 
+ 	run_cmd "ip netns exec $sw1 ping -i 0.1 -c 10 -w $PING_TIMEOUT 192.0.2.66"
+ 	log_test $? 0 "Ping with backup nexthop ID"
+-- 
+2.43.0
+
 
 
 
