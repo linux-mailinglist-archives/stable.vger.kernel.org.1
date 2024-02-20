@@ -1,559 +1,140 @@
-Return-Path: <stable+bounces-20793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3161F85B903
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 11:28:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0FB985B9FE
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 12:11:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A84481F2721B
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 10:28:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEE5F28475F
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 11:11:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19DF9612CB;
-	Tue, 20 Feb 2024 10:27:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F37664A6;
+	Tue, 20 Feb 2024 11:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="neV1pn/Q"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="BLdU6PEu"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [212.227.17.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D96DA612C6;
-	Tue, 20 Feb 2024 10:27:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE6E165BD9;
+	Tue, 20 Feb 2024 11:10:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708424832; cv=none; b=MjLr4pJdPa7mW4SKDra6Mymt1KKQ8AbOBmowEpkvyeg5qaGpAN+Fv4LQy7ohgbrX8Wq541dTrzZP23CPxp+unBKXtv5RGRlUTUIm9YUkVZnPV0bCQ6W6PIfex+KR1xNQDR3OwkNIQy9eSo1pROrIl8+7Q+C6NDtYsvxbEtbuZt0=
+	t=1708427448; cv=none; b=NC20K2+LOAkvQA4956UXuvDUepetV0srKbQYauKXLNyJC9B39+S7dchpwBjoIbXAci/712k0BDg8JXXZMq1DgV+aX8Y8lBKM10Ikg10ARq/32VnZXRuiXFBECzk5K9q1LN3Yef9/57NOEv2Tdx7pdj6BLEte6tnzQpw2KaWxkoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708424832; c=relaxed/simple;
-	bh=3EueJ2zBmWvzfSaLZAnLQdxbaKULwjHWEYDSXiEtZq8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HMHv7B6SoF+tL5islB9UAIpGIeiVWxW/XqfjQ/wR0MOR7CU7xzhW3nednq6Yh9RPUIciFPeETgqOWWud145VKP5fM8S5s24jqGJ7Y89HYBRrc4ges98HPFSmk2GxtzSZESPr6iisWqLDoEgCbX9PQ66QsICJoTetQWQqwKf7+ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=neV1pn/Q; arc=none smtp.client-ip=209.85.217.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f43.google.com with SMTP id ada2fe7eead31-47047e7b068so203334137.2;
-        Tue, 20 Feb 2024 02:27:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708424830; x=1709029630; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EZn98CE/Oe+cVNVy+tmJNozH4/KB14kaXBjDwNFXGpA=;
-        b=neV1pn/QI8BxFqSWmJ5SNNXZ28duUraTNNZ8+TIBN7LS/hpu+Z0V8UvAA8CV4wCQhc
-         gWPRLCW6lMY1UYlyvhpIbVOQL5CwaKdwZ+RiER+bY778HWyP6icw0JzwrhGQlui0Jdih
-         I4LTdzaxzdmbVKPLc2W5fBXnJUwLHkg/DIGPPKTxUjvPiQj0Wn9ve00+pgA/ZdMqYn/I
-         vZhKJw4OOP4Sx8drExb56MG6Yfp2eWa04rpMHXkln4N3Uaom8TGkssJx+/8XKHSQzmfy
-         MZPB+m814jmvY0dE+hv5Tr2KAr2fvm/lKFs6cyDvuPiJxnfaKNmfGhSoeaAPWoHYzdCm
-         UsAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708424830; x=1709029630;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EZn98CE/Oe+cVNVy+tmJNozH4/KB14kaXBjDwNFXGpA=;
-        b=aW/0f1sdQ4OXvckQBIa5wU9WdZiDS3rHB041yRl5hRQ/0vl4aDFNW7lV+rY2RCp1/S
-         1ulBouL3FuWRhmpPEenuCXTV4gXG83lFOHH7i9Nj+wxr4Ij/3dfYmMTrFVsxK0KyLrXv
-         OC7YkCprzV2KSzNk/9F7KK1opZxCAWPns18zWDDc50fleJ0RM/q1JNTXnAQs1RNtSlfR
-         2abEOu31QDViIEnuv0Nc99YMGAdpIULlpGP3YNJhVbYkBARMEy8Pgh2s82tAZR+6XY+Z
-         MzQcUVKfDYloBsegcnrK3tY0mVBzDcRdpWbY9OutF7zVNmCyigHH242QXNSBBBV1hJWK
-         W7Xg==
-X-Forwarded-Encrypted: i=1; AJvYcCU6kEt82wE4MvP0M+SQRaddtOcDaPizc+saJFrc21Y98NwkZA/tkEkZfcu4pQTmicOdG0MhNh0DWaO5blr/muJc6tgjGU8qisLU2dUesSjIEcKstXZ+AY0zgLbvWdoypboULf+/
-X-Gm-Message-State: AOJu0YwsZ9J3bSD1uFHVCPOBkFpgFkps+qGB07XS8a8/CS9DRmXUDiBY
-	3JzhGOpcYuRgkRfR0MFiVYUvS0QK7onkmJLM/MUkAj9zRGde0f/FESwOJkeZNq4v5ga7502kD4I
-	GFo1vfK2VYSvkcZE80C2so3XWjkY=
-X-Google-Smtp-Source: AGHT+IE8IvKXeZAJNP8t3fFfQv7tnDCcvxm21TuRtRSHVBB6O9q7Kr4DiLzNMEangcb7uxvQPiWUzBnzRCH6HIjJnys=
-X-Received: by 2002:a05:6102:3189:b0:470:5080:451 with SMTP id
- c9-20020a056102318900b0047050800451mr3585185vsh.16.1708424829609; Tue, 20 Feb
- 2024 02:27:09 -0800 (PST)
+	s=arc-20240116; t=1708427448; c=relaxed/simple;
+	bh=MpJcVGRKO8AWBDMnssLpCilOGC18nfaO9n9RoVZq7VQ=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=cgEql6SejxSuarVPtVUuOgkRufbQN6a507YkaeJ8lXezjFlr7svcFkBdBz3qWTzuqaGVWbWS7+/v+feZy8pk/2hnT6DIs/yvNk3HUroEPA0MBPOYXe8NKG8J/7b30wcrbVLqjpvlyeZXhW0eOemNnDS+gZ7gv2b5s4DMRaV3QQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=BLdU6PEu; arc=none smtp.client-ip=212.227.17.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de; s=s29768273;
+	t=1708427438; x=1709032238; i=markus.elfring@web.de;
+	bh=MpJcVGRKO8AWBDMnssLpCilOGC18nfaO9n9RoVZq7VQ=;
+	h=X-UI-Sender-Class:Date:To:Cc:References:Subject:From:
+	 In-Reply-To;
+	b=BLdU6PEuy96My08QHX+sfAMRWW4IK1X4d0T4z7p4DxV7MRkglWrcZf/j/tZKdw52
+	 YPMAa2l6FxXjQdxzj85XS/JNEH9oDG/yKaghQ2vCY2NfS1Kb49HmyUj+GrUD85WqQ
+	 8RNDEIiRbmSjIwPbGf/sSU2rQRZhM51J48MM7HybPKuk1Wofxj67i5sJb8fCQZu0v
+	 W/79FPqhyfb5sz0FQ05r+Usub8KlNKiZYpi0CoK3MsPsiy0LZ+Q9NgLIEq6arb5/3
+	 gu86okYONMl5QBxcn6SytaLQHWAyDAtkOmAFfD5zc4XMnhGSw7Qy4gsQb/CGAeWec
+	 m/95GOLhnMPpFIYZBQ==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.80.95]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1M7Nig-1rZ6Xk3SFY-007pjU; Tue, 20
+ Feb 2024 11:56:00 +0100
+Message-ID: <9ff4221a-7083-4cb1-abde-1690f655da8d@web.de>
+Date: Tue, 20 Feb 2024 11:55:57 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240219082040.7495-1-ryncsn@gmail.com> <20240219173147.3f4b50b7c9ae554008f50b66@linux-foundation.org>
- <CAMgjq7DgBOJhDJStwGuD+C6-FNYZBp-cu6M_HAgRry3gBSf7GA@mail.gmail.com>
- <CAGsJ_4zyf5OOq_WA7VjsDKp1ciaDwzM23Ef95_O-24oLtr_5AQ@mail.gmail.com> <CAMgjq7AnZJSseC2BB_nF+s533YybyP_WU8HijEKFA=OXE1x41Q@mail.gmail.com>
-In-Reply-To: <CAMgjq7AnZJSseC2BB_nF+s533YybyP_WU8HijEKFA=OXE1x41Q@mail.gmail.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Tue, 20 Feb 2024 23:26:57 +1300
-Message-ID: <CAGsJ_4xEM5od8Ebs4Kaejqw6DU8cu=YX+mfXejLoTuDySxjTOA@mail.gmail.com>
-Subject: Re: [PATCH v4] mm/swap: fix race when skipping swapcache
-To: Kairui Song <ryncsn@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	"Huang, Ying" <ying.huang@intel.com>, Chris Li <chrisl@kernel.org>, 
-	Minchan Kim <minchan@kernel.org>, Barry Song <v-songbaohua@oppo.com>, Yu Zhao <yuzhao@google.com>, 
-	SeongJae Park <sj@kernel.org>, David Hildenbrand <david@redhat.com>, Hugh Dickins <hughd@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox <willy@infradead.org>, Michal Hocko <mhocko@suse.com>, 
-	Yosry Ahmed <yosryahmed@google.com>, Aaron Lu <aaron.lu@intel.com>, stable@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+To: Johan Hovold <johan+linaro@kernel.org>, freedreno@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, linux-phy@lists.infradead.org,
+ linux-arm-msm@vger.kernel.org, kernel-janitors@vger.kernel.org,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ Bjorn Andersson <andersson@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
+ David Airlie <airlied@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>, Vinod Koul <vkoul@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ Abhinav Kumar <quic_abhinavk@quicinc.com>,
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>, Jonas Karlman <jonas@kwiboo.se>,
+ Kishon Vijay Abraham I <kishon@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>,
+ Kuogee Hsieh <quic_khsieh@quicinc.com>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Rob Clark <robdclark@gmail.com>, stable@vger.kernel.org
+References: <20240217150228.5788-4-johan+linaro@kernel.org>
+Subject: Re: [PATCH 3/6] soc: qcom: pmic_glink_altmode: fix drm bridge
+ use-after-free
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20240217150228.5788-4-johan+linaro@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:+nHgQKTeGuYog2KEpVvwroQxHKbVWgy4x84LyT/hTMOvc2YQpn3
+ JDDJBBZ8e8iXt3Iuyj6UFT2vAkr8MqMibV6zXbFxjjJ4NonyB3VINxG4cgtMo5Xs7xuC6zv
+ xHHA+wCH+zFVfPWvJKoIfdB4zOgAfy83sRz8V39oAy7aiZgIKyhsi1FhkeElCu/itLaX0BA
+ SMxSEIL5gaOlUNFNP274g==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:aOKHz1US+0c=;Y7LOb2uGXWAxALKRNeJNoMXdSED
+ 6mThPuSgax6MusWH8Ux/RV+9w1zP98fwHF/F/EFha/52Eso2NCDEZICzFoaqBbjVZwC8X9iXj
+ imqXDHI+XMO0+ZsKtOfqx24v88gE5o5vzibabRrgXDJNXGYIMVRv0FhA3zBLzLImf+0yKA0w3
+ JipXGp3SXIfH7L7HV9OeJp/lRlCX0T2dcB4emjiyAhry5gg7pglw5q81w+eBAmMASEC7p3QFl
+ fNJMxuiOt8h2Rezr4SEiSyEQA6eYjV9YL2u7jd2D7a/Z782fqk3AH3QRs5XYKldiKIQ/ET21w
+ kQy5vQRVco7VAXTQBMM4nu+jjOcrp7VwntKu1Lv8lSUeYMgoPk+03t1Jfd7Wq+v0DumL+b69s
+ EFpggdlfcwjmUZiY1H5L0aypyi1fqDno1dcoD3BThjr7HInZntawd5DklobDax+czHsflIRKo
+ EEald0kztZeVc20C//rszyjaE0lRLHAnbS1xEbuUhgIY6wQNfjOWsKpTlwmKkxJhg+G8V87Hw
+ CsGHwCQpWo8JUQ2u8u13to8icfvbIURNZ/+0TOfimg6fk1e3Xp6tk5ZST+n0FupyGgbuzh8Xk
+ /ckHy9ppsFBiMNkezud3jl9lRX5YB1WBEQYzDYOCWdxsFvo3mw715qMWQEMJjar3JQR4i/NFh
+ wpz15f441+KtAxdh9D+nYKtO57bx/KSH6YPyS0OgfVYWQnCwWw9/FSkWuNj+8E9Xouf+xnsSV
+ 7i9vSiZZCGaVCFmj7xKEWlGyBccfvDxkylTO9r0FdjfgxCZQFBHfYnKaMD47c7kVBC5lznyEq
+ 1ZP+jYKEtNDnFoMJvSTvMXP1v6aJ26Z0pgxbocw6whsgI=
 
-On Tue, Feb 20, 2024 at 5:56=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
-e:
+=E2=80=A6
+> Specifically, the dp-hpd bridge is currently registered before all
+> resources have been acquired which means that it can also be
+> deregistered on probe deferrals.
 >
-> On Tue, Feb 20, 2024 at 12:01=E2=80=AFPM Barry Song <21cnbao@gmail.com> w=
-rote:
-> >
-> > On Tue, Feb 20, 2024 at 4:42=E2=80=AFPM Kairui Song <ryncsn@gmail.com> =
-wrote:
-> > >
-> > > On Tue, Feb 20, 2024 at 9:31=E2=80=AFAM Andrew Morton <akpm@linux-fou=
-ndation.org> wrote:
-> > > >
-> > > > On Mon, 19 Feb 2024 16:20:40 +0800 Kairui Song <ryncsn@gmail.com> w=
-rote:
-> > > >
-> > > > > From: Kairui Song <kasong@tencent.com>
-> > > > >
-> > > > > When skipping swapcache for SWP_SYNCHRONOUS_IO, if two or more th=
-reads
-> > > > > swapin the same entry at the same time, they get different pages =
-(A, B).
-> > > > > Before one thread (T0) finishes the swapin and installs page (A)
-> > > > > to the PTE, another thread (T1) could finish swapin of page (B),
-> > > > > swap_free the entry, then swap out the possibly modified page
-> > > > > reusing the same entry. It breaks the pte_same check in (T0) beca=
-use
-> > > > > PTE value is unchanged, causing ABA problem. Thread (T0) will
-> > > > > install a stalled page (A) into the PTE and cause data corruption=
-.
-> > > > >
-> > > > > @@ -3867,6 +3868,20 @@ vm_fault_t do_swap_page(struct vm_fault *v=
-mf)
-> > > > >       if (!folio) {
-> > > > >               if (data_race(si->flags & SWP_SYNCHRONOUS_IO) &&
-> > > > >                   __swap_count(entry) =3D=3D 1) {
-> > > > > +                     /*
-> > > > > +                      * Prevent parallel swapin from proceeding =
-with
-> > > > > +                      * the cache flag. Otherwise, another threa=
-d may
-> > > > > +                      * finish swapin first, free the entry, and=
- swapout
-> > > > > +                      * reusing the same entry. It's undetectabl=
-e as
-> > > > > +                      * pte_same() returns true due to entry reu=
-se.
-> > > > > +                      */
-> > > > > +                     if (swapcache_prepare(entry)) {
-> > > > > +                             /* Relax a bit to prevent rapid rep=
-eated page faults */
-> > > > > +                             schedule_timeout_uninterruptible(1)=
-;
-> > > >
-> > > > Well this is unpleasant.  How often can we expect this to occur?
-> > > >
-> > >
-> > > The chance is very low, using the current mainline kernel and ZRAM,
-> > > even with threads set to race on purpose using the reproducer I
-> > > provides, for 647132 page faults it occured 1528 times (~0.2%).
-> > >
-> > > If I run MySQL and sysbench with 128 threads and 16G buffer pool, wit=
-h
-> > > 6G cgroup limit and 32G ZRAM, it occured 1372 times for 40 min,
-> > > 109930201 page faults in total (~0.001%).
-> >
+> In the meantime there is a race window where the new aux bridge driver
+> (or PHY driver previously) may have looked up the dp-hpd bridge and
+> stored a (non-reference-counted) pointer to the bridge which is about to
+> be deallocated.
+=E2=80=A6
+> +++ b/drivers/soc/qcom/pmic_glink_altmode.c
+=E2=80=A6
+> @@ -454,7 +454,7 @@ static int pmic_glink_altmode_probe(struct auxiliary=
+_device *adev,
+>  		alt_port->index =3D port;
+>  		INIT_WORK(&alt_port->work, pmic_glink_altmode_worker);
 >
-> Hi Barry,
->
-> > it might not be a problem for throughput. but for real-time and tail la=
-tency,
-> > this hurts. For example, this might increase dropping frames of UI whic=
-h
-> > is an important parameter to evaluate performance :-)
-> >
->
+> -		alt_port->bridge =3D drm_dp_hpd_bridge_register(dev, to_of_node(fwnod=
+e));
+> +		alt_port->bridge =3D devm_drm_dp_hpd_bridge_alloc(dev, to_of_node(fwn=
+ode));
+>  		if (IS_ERR(alt_port->bridge)) {
+>  			fwnode_handle_put(fwnode);
+>  			return PTR_ERR(alt_port->bridge);
+=E2=80=A6
 
-Hi Kairui,
+The function call =E2=80=9Cfwnode_handle_put(fwnode)=E2=80=9D is used in m=
+ultiple if branches.
+https://elixir.bootlin.com/linux/v6.8-rc5/source/drivers/soc/qcom/pmic_gli=
+nk_altmode.c#L435
 
-> That's a true issue, as Chris mentioned before I think we need to
-> think of some clever data struct to solve this more naturally in the
-> future, similar issue exists for cached swapin as well and it has been
-> there for a while. On the other hand I think maybe applications that
-> are extremely latency sensitive should try to avoid swap on fault? A
-> swapin could cause other issues like reclaim, throttled or contention
-> with many other things, these seem to have a higher chance than this
-> race.
+I suggest to add a jump target so that a bit of exception handling
+can be better reused at the end of this function implementation.
 
-ideally, if memory is very very large, we can avoid swap or mlock a
-lot of things. In Android phones, most anon memory is actually in
-swap as a system with limited memory.
-For example, users might switch between a couple of applications.
-some cold app could be entirely swapped. but those applications
-can be re-activated by users all of a sudden.
-We do mlock some limited memories. but we don't abuse mlock()
-everywhere :-)
-For a soft-real time system, a lot of other optimization is involved
-to make sure RT/UI tasks can get priority on getting locks, memory
-etc.
-Overall we live together with swap but still try our best to make
-important tasks have low latency.
-
-The current patch, to me, seems to add a new place which makes
-high priority tasks have no way to be done faster. But I do understand
-the percentage is not high. And I have no doubt you have done your
-best work on this.
-
-I'm just curious if the number will increase a lot of times for large folio=
-s
-swap-in as the conflicting memory range is enlarged. and also its
-impact on UI and RT tasks.
-
-Thus, I have followed up your work and made it support large folios
-swap-in[1] as below. I will get phones to run it and update you with
-the result after a couple of days(could be 3-4 weeks later).
-
-Subject: [PATCH] mm: swap: introduce swapcache_prepare_nr and
- swapcache_clear_nr for large folios swap-in
-
-Apply Kairui's work on large folios swap-in
-
-Signed-off-by: Barry Song <v-songbaohua@oppo.com>
----
-
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index a293ef17c2b6..f1cf64c9ccb5 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -483,6 +483,7 @@ extern int add_swap_count_continuation(swp_entry_t, gfp=
-_t);
- extern void swap_shmem_alloc(swp_entry_t);
- extern int swap_duplicate(swp_entry_t);
- extern int swapcache_prepare(swp_entry_t);
-+extern int swapcache_prepare_nr(swp_entry_t, int nr);
- extern void swap_free(swp_entry_t);
- extern void swap_nr_free(swp_entry_t entry, int nr_pages);
- extern void swapcache_free_entries(swp_entry_t *entries, int n);
-diff --git a/mm/memory.c b/mm/memory.c
-index 2d27c087a39e..9cfd806a8236 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -3905,7 +3905,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-                                 * reusing the same entry. It's undetectabl=
-e as
-                                 * pte_same() returns true due to entry reu=
-se.
-                                 */
--                               if (swapcache_prepare(entry)) {
-+                               if (swapcache_prepare_nr(entry, nr_pages)) =
-{
-                                        /* Relax a bit to prevent
-rapid repeated page faults */
-                                        schedule_timeout_uninterruptible(1)=
-;
-                                        goto out;
-@@ -4194,7 +4194,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
- out:
-        /* Clear the swap cache pin for direct swapin after PTL unlock */
-        if (need_clear_cache)
--               swapcache_clear(si, entry);
-+               swapcache_clear_nr(si, entry, nr_pages);
-        if (si)
-                put_swap_device(si);
-        return ret;
-@@ -4210,7 +4210,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-                folio_put(swapcache);
-        }
-        if (need_clear_cache)
--               swapcache_clear(si, entry);
-+               swapcache_clear_nr(si, entry, nr_pages);
-        if (si)
-                put_swap_device(si);
-        return ret;
-diff --git a/mm/swap.h b/mm/swap.h
-index 693d1b281559..a457496bd669 100644
---- a/mm/swap.h
-+++ b/mm/swap.h
-@@ -39,6 +39,7 @@ void delete_from_swap_cache(struct folio *folio);
- void clear_shadow_from_swap_cache(int type, unsigned long begin,
-                                  unsigned long end);
- void swapcache_clear(struct swap_info_struct *si, swp_entry_t entry);
-+void swapcache_clear_nr(struct swap_info_struct *si, swp_entry_t
-entry, int nr);
- struct folio *swap_cache_get_folio(swp_entry_t entry,
-                struct vm_area_struct *vma, unsigned long addr);
- struct folio *filemap_get_incore_folio(struct address_space *mapping,
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 6ecee63cf678..8c9d53f9f068 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -3322,65 +3322,76 @@ void si_swapinfo(struct sysinfo *val)
-  * - swap-cache reference is requested but the entry is not used. -> ENOEN=
-T
-  * - swap-mapped reference requested but needs continued swap count. -> EN=
-OMEM
-  */
--static int __swap_duplicate(swp_entry_t entry, unsigned char usage)
-+
-+static int __swap_duplicate_nr(swp_entry_t entry, int nr, unsigned char us=
-age)
- {
-        struct swap_info_struct *p;
-        struct swap_cluster_info *ci;
-        unsigned long offset;
--       unsigned char count;
--       unsigned char has_cache;
--       int err;
-+       unsigned char count[SWAPFILE_CLUSTER];
-+       unsigned char has_cache[SWAPFILE_CLUSTER];
-+       int err, i;
-
-        p =3D swp_swap_info(entry);
-
-        offset =3D swp_offset(entry);
-        ci =3D lock_cluster_or_swap_info(p, offset);
-
--       count =3D p->swap_map[offset];
-+       for (i =3D 0; i < nr; i++) {
-+               count[i] =3D p->swap_map[offset + i];
-
--       /*
--        * swapin_readahead() doesn't check if a swap entry is valid, so th=
-e
--        * swap entry could be SWAP_MAP_BAD. Check here with lock held.
--        */
--       if (unlikely(swap_count(count) =3D=3D SWAP_MAP_BAD)) {
--               err =3D -ENOENT;
--               goto unlock_out;
-+               /*
-+                * swapin_readahead() doesn't check if a swap entry is
-valid, so the
-+                * swap entry could be SWAP_MAP_BAD. Check here with lock h=
-eld.
-+                */
-+               if (unlikely(swap_count(count[i]) =3D=3D SWAP_MAP_BAD)) {
-+                       err =3D -ENOENT;
-+                       goto unlock_out;
-+               }
-+
-+               has_cache[i] =3D count[i] & SWAP_HAS_CACHE;
-+               count[i] &=3D ~SWAP_HAS_CACHE;
-+               err =3D 0;
-+
-+               if (usage =3D=3D SWAP_HAS_CACHE) {
-+
-+                       /* set SWAP_HAS_CACHE if there is no cache and
-entry is used */
-+                       if (!has_cache[i] && count[i])
-+                               has_cache[i] =3D SWAP_HAS_CACHE;
-+                       else if (has_cache[i])          /* someone
-else added cache */
-+                               err =3D -EEXIST;
-+                       else                            /* no users remaini=
-ng */
-+                               err =3D -ENOENT;
-+               } else if (count[i] || has_cache[i]) {
-+
-+                       if ((count[i] & ~COUNT_CONTINUED) < SWAP_MAP_MAX)
-+                               count[i] +=3D usage;
-+                       else if ((count[i] & ~COUNT_CONTINUED) > SWAP_MAP_M=
-AX)
-+                               err =3D -EINVAL;
-+                       else if (swap_count_continued(p, offset + i, count[=
-i]))
-+                               count[i] =3D COUNT_CONTINUED;
-+                       else
-+                               err =3D -ENOMEM;
-+               } else
-+                       err =3D -ENOENT;                  /* unused swap en=
-try */
-+
-+               if (err)
-+                       goto unlock_out;
-        }
-
--       has_cache =3D count & SWAP_HAS_CACHE;
--       count &=3D ~SWAP_HAS_CACHE;
--       err =3D 0;
--
--       if (usage =3D=3D SWAP_HAS_CACHE) {
--
--               /* set SWAP_HAS_CACHE if there is no cache and entry is use=
-d */
--               if (!has_cache && count)
--                       has_cache =3D SWAP_HAS_CACHE;
--               else if (has_cache)             /* someone else added cache=
- */
--                       err =3D -EEXIST;
--               else                            /* no users remaining */
--                       err =3D -ENOENT;
--
--       } else if (count || has_cache) {
--
--               if ((count & ~COUNT_CONTINUED) < SWAP_MAP_MAX)
--                       count +=3D usage;
--               else if ((count & ~COUNT_CONTINUED) > SWAP_MAP_MAX)
--                       err =3D -EINVAL;
--               else if (swap_count_continued(p, offset, count))
--                       count =3D COUNT_CONTINUED;
--               else
--                       err =3D -ENOMEM;
--       } else
--               err =3D -ENOENT;                  /* unused swap entry */
--
--       WRITE_ONCE(p->swap_map[offset], count | has_cache);
--
-+       for (i =3D 0; i < nr; i++)
-+               WRITE_ONCE(p->swap_map[offset + i], count[i] | has_cache[i]=
-);
- unlock_out:
-        unlock_cluster_or_swap_info(p, ci);
-        return err;
- }
-
-+
-+static int __swap_duplicate(swp_entry_t entry, unsigned char usage)
-+{
-+       return __swap_duplicate_nr(entry, 1, usage);
-+}
-+
- /*
-  * Help swapoff by noting that swap entry belongs to shmem/tmpfs
-  * (in which case its reference count is never incremented).
-@@ -3419,17 +3430,33 @@ int swapcache_prepare(swp_entry_t entry)
-        return __swap_duplicate(entry, SWAP_HAS_CACHE);
- }
-
--void swapcache_clear(struct swap_info_struct *si, swp_entry_t entry)
-+int swapcache_prepare_nr(swp_entry_t entry, int nr)
-+{
-+       return __swap_duplicate_nr(entry, nr, SWAP_HAS_CACHE);
-+}
-+
-+void swapcache_clear_nr(struct swap_info_struct *si, swp_entry_t entry, in=
-t nr)
- {
-        struct swap_cluster_info *ci;
-        unsigned long offset =3D swp_offset(entry);
--       unsigned char usage;
-+       unsigned char usage[SWAPFILE_CLUSTER];
-+       int i;
-
-        ci =3D lock_cluster_or_swap_info(si, offset);
--       usage =3D __swap_entry_free_locked(si, offset, SWAP_HAS_CACHE);
-+       for (i =3D 0; i < nr; i++)
-+               usage[i] =3D __swap_entry_free_locked(si, offset + i,
-SWAP_HAS_CACHE);
-        unlock_cluster_or_swap_info(si, ci);
--       if (!usage)
--               free_swap_slot(entry);
-+       for (i =3D 0; i < nr; i++) {
-+               if (!usage[i]) {
-+                       free_swap_slot(entry);
-+                       entry.val++;
-+               }
--
--       if (usage =3D=3D SWAP_HAS_CACHE) {
--
--               /* set SWAP_HAS_CACHE if there is no cache and entry is use=
-d */
--               if (!has_cache && count)
--                       has_cache =3D SWAP_HAS_CACHE;
--               else if (has_cache)             /* someone else added cache=
- */
--                       err =3D -EEXIST;
--               else                            /* no users remaining */
--                       err =3D -ENOENT;
--
--       } else if (count || has_cache) {
--
--               if ((count & ~COUNT_CONTINUED) < SWAP_MAP_MAX)
--                       count +=3D usage;
--               else if ((count & ~COUNT_CONTINUED) > SWAP_MAP_MAX)
--                       err =3D -EINVAL;
--               else if (swap_count_continued(p, offset, count))
--                       count =3D COUNT_CONTINUED;
--               else
--                       err =3D -ENOMEM;
--       } else
--               err =3D -ENOENT;                  /* unused swap entry */
--
--       WRITE_ONCE(p->swap_map[offset], count | has_cache);
--
-+       for (i =3D 0; i < nr; i++)
-+               WRITE_ONCE(p->swap_map[offset + i], count[i] | has_cache[i]=
-);
- unlock_out:
-        unlock_cluster_or_swap_info(p, ci);
-        return err;
- }
-
-+
-+static int __swap_duplicate(swp_entry_t entry, unsigned char usage)
-+{
-+       return __swap_duplicate_nr(entry, 1, usage);
-+}
-+
- /*
-  * Help swapoff by noting that swap entry belongs to shmem/tmpfs
-  * (in which case its reference count is never incremented).
-@@ -3419,17 +3430,33 @@ int swapcache_prepare(swp_entry_t entry)
-        return __swap_duplicate(entry, SWAP_HAS_CACHE);
- }
-
--void swapcache_clear(struct swap_info_struct *si, swp_entry_t entry)
-+int swapcache_prepare_nr(swp_entry_t entry, int nr)
-+{
-+       return __swap_duplicate_nr(entry, nr, SWAP_HAS_CACHE);
-+}
-+
-+void swapcache_clear_nr(struct swap_info_struct *si, swp_entry_t entry, in=
-t nr)
- {
-        struct swap_cluster_info *ci;
-        unsigned long offset =3D swp_offset(entry);
--       unsigned char usage;
-+       unsigned char usage[SWAPFILE_CLUSTER];
-+       int i;
-
-        ci =3D lock_cluster_or_swap_info(si, offset);
--       usage =3D __swap_entry_free_locked(si, offset, SWAP_HAS_CACHE);
-+       for (i =3D 0; i < nr; i++)
-+               usage[i] =3D __swap_entry_free_locked(si, offset + i,
-SWAP_HAS_CACHE);
-        unlock_cluster_or_swap_info(si, ci);
--       if (!usage)
--               free_swap_slot(entry);
-+       for (i =3D 0; i < nr; i++) {
-+               if (!usage[i]) {
-+                       free_swap_slot(entry);
-+                       entry.val++;
-+               }
-+       }
-+}
-+
-+void swapcache_clear(struct swap_info_struct *si, swp_entry_t entry)
-+{
-+       swapcache_clear_nr(si, entry, 1);
- }
-
- struct swap_info_struct *swp_swap_info(swp_entry_t entry)
-
-[1] https://lore.kernel.org/linux-mm/20240118111036.72641-1-21cnbao@gmail.c=
-om/
-
->
-> > BTW, I wonder if ying's previous proposal - moving swapcache_prepare()
-> > after swap_read_folio() will further help decrease the number?
->
-> We can move the swapcache_prepare after folio alloc or cgroup charge,
-> but I didn't see an observable change from statistics, for some
-> workload the reading is even worse. I think that's mostly due to
-> noise, or higher swap out rate since all raced threads will alloc an
-> extra folio now. Applications that have many pages swapped out due to
-> memory limit are already on the edge of triggering another reclaim, so
-> a dozen more folio alloc could just trigger that...
-
-sometimes. might not be edged because of this app, but because users
-launch another app as foreground and this one becomes background.
-
->
-> And we can't move it after swap_read_folio()... That's exactly what we
-> want to protect.
-
-understood, thanks!
-
-Barry
+Regards,
+Markus
 
