@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-21554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B684085C962
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:32:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF6DE85C83E
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:19:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71E30284C82
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:32:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0BA31C221A1
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:19:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C01B0151CE1;
-	Tue, 20 Feb 2024 21:32:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DED5151CD9;
+	Tue, 20 Feb 2024 21:19:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D/jfLev9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RaiLsLS4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F3141509BC;
-	Tue, 20 Feb 2024 21:32:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AC3C612D7;
+	Tue, 20 Feb 2024 21:19:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464777; cv=none; b=GggpOk6I6C9P4fsgDLxsH7UHxEfiu3KcXIODsWJHphBA731En0K1IDKdFJdcMkeHALB/BTL0b2+WuGPb/gVyBY9NixIb5+SXQzDc+0MtopfrTw0rGZjtIsYdBRidbqB7Gl8wRVYOwSa6jIYXdJbYuMQUA+j0CRGJ/Y0W8h2851I=
+	t=1708463989; cv=none; b=a/KEOJ0V6/h8nkSOVSZI6Ek8gYwzSiiRl6uggqbLuDH+zG7PwyUSIM82/Yi9285Z/ahrRX5PbPuEZtPTHrYx39iQ3V1xKmbk6zYkqdJi/nUwZrMsGy0KMUIZQk02krweLyV+hb7A+GI/3nXOirFq2ztY+IwAECU1r58mpUs0ONo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464777; c=relaxed/simple;
-	bh=QM3qE/cRLtwWse3Lj3dGiWoMenGnW5AlitFLXrqbRNI=;
+	s=arc-20240116; t=1708463989; c=relaxed/simple;
+	bh=fPN3dCNE5XZa4p2nRb4FQ19eA5qAJviBbstl9/8yrdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fTgFpEribttqdVV83fo35tlIaLkpYvloHhlSTLQG6PihZncvjo2F6rDjd2QvXqN8biTSGiJDrGcogYkBiiAonBqwV+Ennw4NWb1GOj1qI2P4/3yXmd+YGr1OoRMegGqIH3lp+p0lxUdBIvvPAr0eKIRP7iiZEZBWt3sLJymdtK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D/jfLev9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3FB4C433F1;
-	Tue, 20 Feb 2024 21:32:56 +0000 (UTC)
+	 MIME-Version; b=ozTu23sKlflxuxvkL51PbtKWzjM88i/W8vyQITestN+FU3++RtB7fK8X5bIseyecUfy06efLoRiJ/6+MS8KQK+0Pw5lP3SAb8tVrLP9/wH99F/JCeULhXqMffvSXMckg0RCwhyA/RHbeU90l5gK/wHdeDxVKGmMOOvjA4mvXNqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RaiLsLS4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4914FC433C7;
+	Tue, 20 Feb 2024 21:19:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464777;
-	bh=QM3qE/cRLtwWse3Lj3dGiWoMenGnW5AlitFLXrqbRNI=;
+	s=korg; t=1708463988;
+	bh=fPN3dCNE5XZa4p2nRb4FQ19eA5qAJviBbstl9/8yrdo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D/jfLev9/e/HLSPDjpJK7UaWarvuDNMi8C7V4pa5P6qdrLNmY1QDJ3hJ4YPTlw6sj
-	 V0IKSeRIRUDqmAnw5yGnK3xnxbuZitxg2Vf5e5+dCfdxGvXD4PDLd3XmP9I0reLX00
-	 Ms6BClHi8FxsjAuOFX2Y3yS+Kq26qsROamWoVQ7w=
+	b=RaiLsLS4n2WC73IVGT0gOlpj9wmyisfbp2mw44y52/zaP1F4iPjWbcgz9T8K7WIDF
+	 HGY0yQL1Lb4A1/J9ABjOqLDcnss2WIgxOx+U8EiuVo6+mzTxPE+YJvBar/gmiEaTs5
+	 gz4/+oz8jli2YFNMKaQnODJmQ0+4YztYuEyMRsGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhenyu Zhang <zhenyzha@redhat.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	Sebastian Ott <sebott@redhat.com>,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Subject: [PATCH 6.7 134/309] drm/virtio: Set segment size for virtio_gpu device
+	Hui Zhou <hui.zhou@corigine.com>,
+	Louis Peens <louis.peens@corigine.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 177/331] nfp: flower: add hardware offload check for post ct entry
 Date: Tue, 20 Feb 2024 21:54:53 +0100
-Message-ID: <20240220205637.334502108@linuxfoundation.org>
+Message-ID: <20240220205643.076418376@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Ott <sebott@redhat.com>
+From: Hui Zhou <hui.zhou@corigine.com>
 
-commit 9c64e749cebd9c2d3d55261530a98bcccb83b950 upstream.
+commit cefa98e806fd4e2a5e2047457a11ae5f17b8f621 upstream.
 
-Set the segment size of the virtio_gpu device to the value
-used by the drm helpers when allocating sg lists to fix the
-following complaint from DMA_API debug code:
+The nfp offload flow pay will not allocate a mask id when the out port
+is openvswitch internal port. This is because these flows are used to
+configure the pre_tun table and are never actually send to the firmware
+as an add-flow message. When a tc rule which action contains ct and
+the post ct entry's out port is openvswitch internal port, the merge
+offload flow pay with the wrong mask id of 0 will be send to the
+firmware. Actually, the nfp can not support hardware offload for this
+situation, so return EOPNOTSUPP.
 
-DMA-API: virtio-pci 0000:07:00.0: mapping sg segment longer than
-device claims to support [len=262144] [max=65536]
-
-Cc: stable@vger.kernel.org
-Tested-by: Zhenyu Zhang <zhenyzha@redhat.com>
-Acked-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Signed-off-by: Sebastian Ott <sebott@redhat.com>
-Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/7258a4cc-da16-5c34-a042-2a23ee396d56@redhat.com
+Fixes: bd0fe7f96a3c ("nfp: flower-ct: add zone table entry when handling pre/post_ct flows")
+CC: stable@vger.kernel.org # 5.14+
+Signed-off-by: Hui Zhou <hui.zhou@corigine.com>
+Signed-off-by: Louis Peens <louis.peens@corigine.com>
+Link: https://lore.kernel.org/r/20240124151909.31603-2-louis.peens@corigine.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/virtio/virtgpu_drv.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/netronome/nfp/flower/conntrack.c |   22 +++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/virtio/virtgpu_drv.c
-+++ b/drivers/gpu/drm/virtio/virtgpu_drv.c
-@@ -94,6 +94,7 @@ static int virtio_gpu_probe(struct virti
- 			goto err_free;
- 	}
+--- a/drivers/net/ethernet/netronome/nfp/flower/conntrack.c
++++ b/drivers/net/ethernet/netronome/nfp/flower/conntrack.c
+@@ -1864,10 +1864,30 @@ int nfp_fl_ct_handle_post_ct(struct nfp_
+ {
+ 	struct flow_rule *rule = flow_cls_offload_flow_rule(flow);
+ 	struct nfp_fl_ct_flow_entry *ct_entry;
++	struct flow_action_entry *ct_goto;
+ 	struct nfp_fl_ct_zone_entry *zt;
++	struct flow_action_entry *act;
+ 	bool wildcarded = false;
+ 	struct flow_match_ct ct;
+-	struct flow_action_entry *ct_goto;
++	int i;
++
++	flow_action_for_each(i, act, &rule->action) {
++		switch (act->id) {
++		case FLOW_ACTION_REDIRECT:
++		case FLOW_ACTION_REDIRECT_INGRESS:
++		case FLOW_ACTION_MIRRED:
++		case FLOW_ACTION_MIRRED_INGRESS:
++			if (act->dev->rtnl_link_ops &&
++			    !strcmp(act->dev->rtnl_link_ops->kind, "openvswitch")) {
++				NL_SET_ERR_MSG_MOD(extack,
++						   "unsupported offload: out port is openvswitch internal port");
++				return -EOPNOTSUPP;
++			}
++			break;
++		default:
++			break;
++		}
++	}
  
-+	dma_set_max_seg_size(dev->dev, dma_max_mapping_size(dev->dev) ?: UINT_MAX);
- 	ret = virtio_gpu_init(vdev, dev);
- 	if (ret)
- 		goto err_free;
+ 	flow_rule_match_ct(rule, &ct);
+ 	if (!ct.mask->ct_zone) {
 
 
 
