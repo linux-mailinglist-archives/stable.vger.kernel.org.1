@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-20917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9834385C648
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:59:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C37E85C651
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:00:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 548882840A1
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 20:59:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8A10283EE1
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:00:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED267151CE1;
-	Tue, 20 Feb 2024 20:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3470F151CFB;
+	Tue, 20 Feb 2024 20:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mtdCSxlg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kpie/LUJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72492151CDE;
-	Tue, 20 Feb 2024 20:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5183151CD0;
+	Tue, 20 Feb 2024 20:59:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708462778; cv=none; b=RB/FBK5dBfWnxTeWgv+LzYGJFX+JYIjBkCWxb1DRyugM5niBEzOFJmoHrPfR6RJwRsk+bleWysXLoLrj/pS0CoAJev6KQn/quUMWkkp2E9QNS6O/YnH3JzaQbRJ6PYgC4+itsHh5mKitmGXa/GzJe/BybKikosKAjrmiudDesv8=
+	t=1708462785; cv=none; b=aV+VgFRhE5ZIC7g40Vp5j9WMGz3uOSJa6LpGobrU1tGVl1iBqv2pOesnEYARZSVzO/5gw//+E+bU7NQLu5hryGZRX1bPSTP8w4G+D+znLT7XFoXxI+TSj2kP6ob6/bM29CIXZR9WLj7/6q70FQW3Uu3fh8FRRJMBPbObkveptGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708462778; c=relaxed/simple;
-	bh=XuZ6G3GqekGmAT0f1I0Ec/zSshL3zOwNscNnaepgDyM=;
+	s=arc-20240116; t=1708462785; c=relaxed/simple;
+	bh=74lC50DPYRGJOQJfK5t8c5SbkjIl76+4GKU03NveRYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vl/kNkkNcXcfMH55w7Wk6mK6V40y+gYsMlQj+L57nb1kTzajYNU8BrQdoMat4OZvlL3NnWI3PoT3nZvkmiCIXnkUSXXVZ5J1yg3bUmdzPwaHzzHMJ1I/0neILIwu5orKWL4m4u8R4E/oz/eIk2bZZbWvgMVOnP6xvRlbwtGpja4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mtdCSxlg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 868E0C433C7;
-	Tue, 20 Feb 2024 20:59:37 +0000 (UTC)
+	 MIME-Version; b=DSkfPkXpdEa5EPaWwY9axlKWD/OIUa28fRQ5+t5csgd2BDbWmvglcpMW24apoy8VV0l2WO6oZTKE7ZnXMrqJddr7kOL3NKC24802+iZcYEV+rrLl7B2ZpWj21opilfkeEqqKhxZmfGJjCsAr6TyeyfW1KNzPn8r+0hegHd+fYIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kpie/LUJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33089C43609;
+	Tue, 20 Feb 2024 20:59:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708462778;
-	bh=XuZ6G3GqekGmAT0f1I0Ec/zSshL3zOwNscNnaepgDyM=;
+	s=korg; t=1708462784;
+	bh=74lC50DPYRGJOQJfK5t8c5SbkjIl76+4GKU03NveRYE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mtdCSxlg0ydlKInVZ4nTygc0s/1kgU2KGlvwSkNXvbjLkF5GMNPsb3KuhXPpCkWDm
-	 V5lTbCXsoM+ACuxzqQkeZNue1UH4tDA6Fz25yGD+PnGf/q90so/ngYFqF80fmwJOd5
-	 vX8oVu6+oSnFAe0CzQoKncpzDQNHr+meDPLiYUBQ=
+	b=Kpie/LUJrQCjFORAtm/jcZHSNQBSm6ThNEh9YsXNEteeW4njOnW5wzcXugMxhKtHM
+	 Jw5iRHS+B6cQrHzzAm4A2T7L/Ix1JvJn7Wt61tILM1ACUkQ/aTbjozUrMU1ggO0Vhd
+	 EYmcy/04Isjm9DWw3adcN1rBdecwdpmEnqkWRCe4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Vecera <ivecera@redhat.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 6.1 033/197] i40e: Fix waiting for queues of all VSIs to be disabled
-Date: Tue, 20 Feb 2024 21:49:52 +0100
-Message-ID: <20240220204842.070366108@linuxfoundation.org>
+	Samuel Holland <samuel.holland@sifive.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Will Deacon <will@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 034/197] scs: add CONFIG_MMU dependency for vfree_atomic()
+Date: Tue, 20 Feb 2024 21:49:53 +0100
+Message-ID: <20240220204842.101083922@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
 References: <20240220204841.073267068@linuxfoundation.org>
@@ -69,42 +67,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ivan Vecera <ivecera@redhat.com>
+From: Samuel Holland <samuel.holland@sifive.com>
 
-[ Upstream commit c73729b64bb692186da080602cd13612783f52ac ]
+commit 6f9dc684cae638dda0570154509884ee78d0f75c upstream.
 
-The function i40e_pf_wait_queues_disabled() iterates all PF's VSIs
-up to 'pf->hw.func_caps.num_vsis' but this is incorrect because
-the real number of VSIs can be up to 'pf->num_alloc_vsi' that
-can be higher. Fix this loop.
+The shadow call stack implementation fails to build without CONFIG_MMU:
 
-Fixes: 69129dc39fac ("i40e: Modify Tx disable wait flow in case of DCB reconfiguration")
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  ld.lld: error: undefined symbol: vfree_atomic
+  >>> referenced by scs.c
+  >>>               kernel/scs.o:(scs_free) in archive vmlinux.a
+
+Link: https://lkml.kernel.org/r/20240122175204.2371009-1-samuel.holland@sifive.com
+Fixes: a2abe7cbd8fe ("scs: switch to vmapped shadow stacks")
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index 63d43ef86f9b..76455405a6d8 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -5333,7 +5333,7 @@ static int i40e_pf_wait_queues_disabled(struct i40e_pf *pf)
- {
- 	int v, ret = 0;
- 
--	for (v = 0; v < pf->hw.func_caps.num_vsis; v++) {
-+	for (v = 0; v < pf->num_alloc_vsi; v++) {
- 		if (pf->vsi[v]) {
- 			ret = i40e_vsi_wait_queues_disabled(pf->vsi[v]);
- 			if (ret)
--- 
-2.43.0
-
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -642,6 +642,7 @@ config SHADOW_CALL_STACK
+ 	bool "Shadow Call Stack"
+ 	depends on ARCH_SUPPORTS_SHADOW_CALL_STACK
+ 	depends on DYNAMIC_FTRACE_WITH_ARGS || DYNAMIC_FTRACE_WITH_REGS || !FUNCTION_GRAPH_TRACER
++	depends on MMU
+ 	help
+ 	  This option enables the compiler's Shadow Call Stack, which
+ 	  uses a shadow stack to protect function return addresses from
 
 
 
