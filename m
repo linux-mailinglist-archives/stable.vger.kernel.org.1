@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-21287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF67785C82C
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:19:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAA2085C98E
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:35:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89A98284B81
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:19:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75995284050
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:35:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FD14151CD9;
-	Tue, 20 Feb 2024 21:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58CCC151CEC;
+	Tue, 20 Feb 2024 21:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NFTcqjK5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D77drdcz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0FEF612D7;
-	Tue, 20 Feb 2024 21:19:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14664151CCC;
+	Tue, 20 Feb 2024 21:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463943; cv=none; b=AJYI+GGMHguZY14cwf0T2zA+IdgArhO9bI8FPnIhLIaAUwNBT/bPl1imN05p5Ti/wRVJwLIw9tvQhoMktsgqvfyxqRIYY+3SQr1IQ+I+swFBNxwAW5FpGU4nGd20mzVgJRShI78Qc2Gtflk3WCxu10y9v/aK/WDH1oO7ZpGutMU=
+	t=1708464913; cv=none; b=hWPJtvz4heWt9bJ3PFOq4XfHbCwa7LP3e5IDRILd3Cq8sc8IaZKdm+1z9lZvETRXHWVc/gyMJd04PBbXvDkeZgL0IkxkB93iJpyhqmPBU9NJqNSBjGE1oGonCfPgb12XEQ6aVeVMfXb82XxFLt/7fjmGXrYLgcEZLjRk8jZS0ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463943; c=relaxed/simple;
-	bh=b9xL94zkT98y9LgNjMbUuTyGg1HFlk+0LzdL9IBsEx4=;
+	s=arc-20240116; t=1708464913; c=relaxed/simple;
+	bh=gjVvIM056Yzhh/sprcngxjU57s0gL2mYOo3YtpaQj4U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pvyPDnpYrW/+3/XlQZkfOlS/nhMEDL8YFGtePyNVdjusm3c4Mb7n/07QZKw2mJpj36De9nyfZa56lWgF44sJMQ0CbY9iTyEbZLkNiLofaU2JQMsApCajhe95Qdh/9jrCq+fPOFsirNS/9LQLZVf5zDmVK7fGLHVJaf0ou7GZMyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NFTcqjK5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44E92C433C7;
-	Tue, 20 Feb 2024 21:19:03 +0000 (UTC)
+	 MIME-Version; b=JO9LSpvlVAW5HS0tNvbKXA5brbXZ35THDf4bIJvsfXei2/y5CxOuCg9GJEh+e3qCI1EpHVeBOzfEb9MPIUjVg7K3W4XPEk+4mRpX183GVT6a5N3KZL9WRbikc28EpP6y2OQbQyqWw9UD9C8KoMpJ8HDEGVTVtkMX91Ufv1F3sEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D77drdcz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9319EC433F1;
+	Tue, 20 Feb 2024 21:35:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463943;
-	bh=b9xL94zkT98y9LgNjMbUuTyGg1HFlk+0LzdL9IBsEx4=;
+	s=korg; t=1708464912;
+	bh=gjVvIM056Yzhh/sprcngxjU57s0gL2mYOo3YtpaQj4U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NFTcqjK5KU/gPyshjV0T4JIw6MNmXepxub+t2ZcQxOx1gqc/MEWZs+O5ERceOx8/V
-	 KTGQhBxUtuJH9cCNhyPN7sB1cBzJ9r14ggX+kL9viT5KVN8D71EBsQvcqmzagSOwH7
-	 nMxJRMmPbBzkML1eBFk9qab5ntppfh8pIzcXiat0=
+	b=D77drdczQJAiK5IxEJIDslqzY0lnM+/FAN6v+z06hQR0WlA//839GCPQdJIpHbAcQ
+	 xtJ9vqP6igcT5tyhrHj2v9vFqiP5gnOsNe3jKP85GM3cH2TyhNc+yb4wXWTA59p8dz
+	 gl28Q777wo23BRuXHdXNmvwuFVExwNoqj3h5cMXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shigeru Yoshida <syoshida@redhat.com>,
+	Wei Chen <harperchen1110@gmail.com>,
 	xingwei lee <xrivendell7@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	syzbot+3266db0c26d1fbbe3abb@syzkaller.appspotmail.com
-Subject: [PATCH 6.6 202/331] crypto: algif_hash - Remove bogus SGL free on zero-length error path
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.7 159/309] ext4: fix double-free of blocks due to wrong extents moved_len
 Date: Tue, 20 Feb 2024 21:55:18 +0100
-Message-ID: <20240220205643.988201992@linuxfoundation.org>
+Message-ID: <20240220205638.139859610@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +64,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit 24c890dd712f6345e382256cae8c97abb0406b70 upstream.
+commit 55583e899a5357308274601364741a83e78d6ac4 upstream.
 
-When a zero-length message is hashed by algif_hash, and an error
-is triggered, it tries to free an SG list that was never allocated
-in the first place.  Fix this by not freeing the SG list on the
-zero-length error path.
+In ext4_move_extents(), moved_len is only updated when all moves are
+successfully executed, and only discards orig_inode and donor_inode
+preallocations when moved_len is not zero. When the loop fails to exit
+after successfully moving some extents, moved_len is not updated and
+remains at 0, so it does not discard the preallocations.
 
-Reported-by: Shigeru Yoshida <syoshida@redhat.com>
+If the moved extents overlap with the preallocated extents, the
+overlapped extents are freed twice in ext4_mb_release_inode_pa() and
+ext4_process_freed_data() (as described in commit 94d7c16cbbbd ("ext4:
+Fix double-free of blocks with EXT4_IOC_MOVE_EXT")), and bb_free is
+incremented twice. Hence when trim is executed, a zero-division bug is
+triggered in mb_update_avg_fragment_size() because bb_free is not zero
+and bb_fragments is zero.
+
+Therefore, update move_len after each extent move to avoid the issue.
+
+Reported-by: Wei Chen <harperchen1110@gmail.com>
 Reported-by: xingwei lee <xrivendell7@gmail.com>
-Fixes: b6d972f68983 ("crypto: af_alg/hash: Fix recvmsg() after sendmsg(MSG_MORE)")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Reported-by: syzbot+3266db0c26d1fbbe3abb@syzkaller.appspotmail.com
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Closes: https://lore.kernel.org/r/CAO4mrferzqBUnCag8R3m2zf897ts9UEuhjFQGPtODT92rYyR2Q@mail.gmail.com
+Fixes: fcf6b1b729bc ("ext4: refactor ext4_move_extents code base")
+CC:  <stable@vger.kernel.org> # 3.18
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20240104142040.2835097-2-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/algif_hash.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/ext4/move_extent.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/crypto/algif_hash.c b/crypto/algif_hash.c
-index 82c44d4899b9..e24c829d7a01 100644
---- a/crypto/algif_hash.c
-+++ b/crypto/algif_hash.c
-@@ -91,13 +91,13 @@ static int hash_sendmsg(struct socket *sock, struct msghdr *msg,
- 		if (!(msg->msg_flags & MSG_MORE)) {
- 			err = hash_alloc_result(sk, ctx);
- 			if (err)
--				goto unlock_free;
-+				goto unlock_free_result;
- 			ahash_request_set_crypt(&ctx->req, NULL,
- 						ctx->result, 0);
- 			err = crypto_wait_req(crypto_ahash_final(&ctx->req),
- 					      &ctx->wait);
- 			if (err)
--				goto unlock_free;
-+				goto unlock_free_result;
- 		}
- 		goto done_more;
- 	}
-@@ -170,6 +170,7 @@ static int hash_sendmsg(struct socket *sock, struct msghdr *msg,
+--- a/fs/ext4/move_extent.c
++++ b/fs/ext4/move_extent.c
+@@ -618,6 +618,7 @@ ext4_move_extents(struct file *o_filp, s
+ 		goto out;
+ 	o_end = o_start + len;
  
- unlock_free:
- 	af_alg_free_sg(&ctx->sgl);
-+unlock_free_result:
- 	hash_free_result(sk, ctx);
- 	ctx->more = false;
- 	goto unlock;
--- 
-2.43.2
-
++	*moved_len = 0;
+ 	while (o_start < o_end) {
+ 		struct ext4_extent *ex;
+ 		ext4_lblk_t cur_blk, next_blk;
+@@ -672,7 +673,7 @@ ext4_move_extents(struct file *o_filp, s
+ 		 */
+ 		ext4_double_up_write_data_sem(orig_inode, donor_inode);
+ 		/* Swap original branches with new branches */
+-		move_extent_per_page(o_filp, donor_inode,
++		*moved_len += move_extent_per_page(o_filp, donor_inode,
+ 				     orig_page_index, donor_page_index,
+ 				     offset_in_page, cur_len,
+ 				     unwritten, &ret);
+@@ -682,9 +683,6 @@ ext4_move_extents(struct file *o_filp, s
+ 		o_start += cur_len;
+ 		d_start += cur_len;
+ 	}
+-	*moved_len = o_start - orig_blk;
+-	if (*moved_len > len)
+-		*moved_len = len;
+ 
+ out:
+ 	if (*moved_len) {
 
 
 
