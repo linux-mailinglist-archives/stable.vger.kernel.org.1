@@ -1,268 +1,128 @@
-Return-Path: <stable+bounces-20813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70BF285BE39
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 15:10:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03A9085BE42
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 15:11:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25DC32858F0
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 14:10:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88DDA28363B
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 14:11:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4302745CA;
-	Tue, 20 Feb 2024 14:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6F636BB29;
+	Tue, 20 Feb 2024 14:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eGNnMTc8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ry3Zr4Ap"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7090F6FBB7;
-	Tue, 20 Feb 2024 14:08:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1BF76A8B7;
+	Tue, 20 Feb 2024 14:09:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708438119; cv=none; b=MVRb7reNtJdeVqGwG+TW+mShIUFCJsuG3HWyeox4gAGbd0M63F5llyodE12b4kCpsJAKhQ5NeRa+ERsgJqDPMRzsgshALO3QK8gKIKSBs9Z3lWRM7pR/Uegydj3RheVmjFVRJJLsuUW+ma9BcMOV6un2FJf931mJrjn5FZNNaQo=
+	t=1708438191; cv=none; b=bliZazsGZ7wM//FslOPH6kFVdtm2DaflvGWY9ezABz1ALTwbVCmjY0fGFMdzSg7EUE2zPbRrBZi2s8gbDhGyaBCh3pqxyS5ZJfMR3ZBBFgFDx0+o8RTbX2vT6y//dsCj+8VjIOlWj9iX/5R4ONXlXg17l9WXc8FVd0Qa+zFYfNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708438119; c=relaxed/simple;
-	bh=iryEdB8KKt72kqwSR8MKw1iHOdULvo5hMcSIaQj7SRg=;
+	s=arc-20240116; t=1708438191; c=relaxed/simple;
+	bh=UZr5OabjzFWqGwIW7vStjE8DV5p1pvPSmY1ncmhIDTo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=N5qS/pbX1vHnd7+Sn+HL6j1XQXclzcBPnDnszRcFjA+TtJxAYo4oiiTdpZAfIISHXPhsyWnbbu0n86PaSAmMjgrpbS7giMzZuk9vNvnfZDaeQcPgGKV7sghfJr0eHtDyROaqvJaTXAxpa1lfARV0QKiH5NImrwyGLHyKfXBum+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eGNnMTc8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FD68C43399;
-	Tue, 20 Feb 2024 14:08:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708438119;
-	bh=iryEdB8KKt72kqwSR8MKw1iHOdULvo5hMcSIaQj7SRg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=eGNnMTc8JBW0aWAx5Yc6gcV2jJZfCpbbbq0WHjBb34bm2aayaofRtIV7DAJwX2LBg
-	 ispeUEZzkswZPoMVYspX/YW+pYkyldPAMCgiWMfNQpEurz/1S70vUsJy3+11WHVzWX
-	 G17Be7wjQOEhIYOACIpfZk4FPacxN53Ut6txGVVsS/nrNDqsKfKMqW1KrlgrxV63cb
-	 n+VOaa6ZPOY9625FQQobgOWyODEBbt1K4Kk6WgcJX7E6bU84LIwvQK1EUcbZ5GQH4G
-	 EoQMUw/gOUKoX0AfZq8rB45AGJpUXlANR4dLzuetGHPOd0fUqACjLxZ3qBU6+uCXy0
-	 92WTuXnmxueig==
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a3d01a9a9a2so526170366b.1;
-        Tue, 20 Feb 2024 06:08:39 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCW4jDlkPdy4aFc0KUm6sVGreahy3qpLC2wj1QrOw4Vrd0o2LHUCGCWHoeUffcILsC4Gu2WxdhPsKSASpKyATx343Msr5gBVO9g4PSL5Hqaair9eCUPfMawQRrZ9W90A/Xa5iN0=
-X-Gm-Message-State: AOJu0YxRFQrT+5qEOcpG9VoBGuH2ISrSCfTw+969+3nZLe0IbBpAqbGq
-	2np2ZgckuS2fbrmdB6JCYwumemkF89t5mX1crbXLFGPNnYPEISrsVczrLC20QBRRhYt39Gt6bWt
-	aU0GSWAevNwkBcW3pZGQRZ8uPMg8=
-X-Google-Smtp-Source: AGHT+IFh1S5EGj/RmTSdYzKlQnt4pu9mCF7R/WBVcJY0yfBhPCFuPMidE2cW4xtRkuephpeXwqxUaRg+pI0QTi6/KhY=
-X-Received: by 2002:a17:906:2e8b:b0:a38:8575:2333 with SMTP id
- o11-20020a1709062e8b00b00a3885752333mr10650939eji.46.1708438117556; Tue, 20
- Feb 2024 06:08:37 -0800 (PST)
+	 To:Cc:Content-Type; b=fq0qnfNM4cxqJ+dlWFjz+VHirKswLfcPHghaJL3hiY+vMiD7hsOfz4HPgcRXQL6R9LAYzUWapNWoKrZyP4Dkga6GK/4X6jyq+4fyhQIT0LnVmuaAu6o+ZkEuZPENQbe7ZwH5OrPsLpi+uQMOpvIJRZMxwedb8qp1HqKXouNMeiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ry3Zr4Ap; arc=none smtp.client-ip=209.85.208.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2d23d301452so25489291fa.1;
+        Tue, 20 Feb 2024 06:09:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708438187; x=1709042987; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=W5ygzhg0Sp16WJIhUiXNrHEdpZ3tx3asQbWo9oNNCcI=;
+        b=Ry3Zr4ApBaRKfQGBz8hP/yEg2SQ0n3+1vUNszruT65mpoZfM5ajyrMnTp4nIPWPiEK
+         +uPKSU7yPGP+onLwd6R6F+FmblVtt4Sb3AGeABaMiW1fpf/1xbcNcDyEpEU+QnInjZ7Q
+         STRwT/GfquxGth8rduF8bPkH8FzKYxrMefLzk/8B7/tq7fgRjWNQSp1fKTO9JLTHRWcc
+         KBYlxyrkAASfzVRqcJvDQJbWSwjNOeNNTr6oHvAaFZv7dpdd3j0ibUua3DJ9/YNBJZBA
+         Ox9+8ujNdYysWZ+kTC7tDRUOpp+Enp78rCzMbOOJLq9lJ7XzcCIH/6MNslWaMdWqQFAW
+         pfqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708438187; x=1709042987;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=W5ygzhg0Sp16WJIhUiXNrHEdpZ3tx3asQbWo9oNNCcI=;
+        b=hTbNjvqXZc/J79SwXw6svF7eWPxEpKens/0NXIj0gME62BoDfpyMmwuuqzDJgh3SOw
+         offbcWF3vNnkze6Yy8Ix3/H7ipAU68kdRNEPIXGp4HpZ80lPVSlM1Cap7rgg4BSYJuLu
+         x0bsqv0vkX/g8eVoP8ecTeUhi3czaIBf6gK0y9tQFJ+NdY3l+pFLx7Q30RVH6IehsGZF
+         TWpq6KeF38J2/pnFpT4EYgVVY8uoyiKaGBF0y7xOXnK3wF3s6zY/sptREGD7Sr9EdvwV
+         FJ1iIaUTRwQIChiDnxCcXtHuEoM93Ar1V7Y+7f9nMc/1YI52gIgzLZZkk8uvMwX17sbo
+         pBYw==
+X-Forwarded-Encrypted: i=1; AJvYcCV8870AU7toJCo+MS3kevHTreY25e2uEbieQOWyhdcDJ/qlrsPxhUUD2hbnkCSaQ5DiucQ+jbjkdr5b39aK4RL6dWH2uUi018F3kPWg7TpfYd6u3azJjAGUuXeCM4UtHhrAUqBuchu0qjo=
+X-Gm-Message-State: AOJu0YzKAiWx8EnSjO9jsLqgAto7IwKmEMjDjhtC1N+tx1xaHukV3CkQ
+	eMKlqbq83pHdmJjWBeUDyyP9D6vXC+ggNWTbv52FzgzLfKTowXD3W7yRnzZZn+sXZ+qPFRisaNI
+	dweO/96HQWAtJUnjFLOrTQwZgTCeG0DIOxq8kCA==
+X-Google-Smtp-Source: AGHT+IEJNfoUUiWQ+3bprvylADBP1/jWjR+Wzkz/4OBZl7mhVSDLu56YSan4b9juc2tTL65lxLIu/LJM13ARjFgq/p0=
+X-Received: by 2002:a05:651c:545:b0:2d2:25bf:d80a with SMTP id
+ q5-20020a05651c054500b002d225bfd80amr7687442ljp.5.1708438187387; Tue, 20 Feb
+ 2024 06:09:47 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <88673c60b1d866c289ef019945647adfc8ab51d0.1707781507.git.anand.jain@oracle.com>
- <20240214071620.GL355@twin.jikos.cz>
-In-Reply-To: <20240214071620.GL355@twin.jikos.cz>
-From: Filipe Manana <fdmanana@kernel.org>
-Date: Tue, 20 Feb 2024 14:08:00 +0000
-X-Gmail-Original-Message-ID: <CAL3q7H5wx5rKmSzGWP7mRqaSfAY88g=35N4OBrbJB61rK0mt2w@mail.gmail.com>
-Message-ID: <CAL3q7H5wx5rKmSzGWP7mRqaSfAY88g=35N4OBrbJB61rK0mt2w@mail.gmail.com>
-Subject: Re: [PATCH v2] btrfs: do not skip re-registration for the mounted device
-To: dsterba@suse.cz
-Cc: Anand Jain <anand.jain@oracle.com>, linux-btrfs@vger.kernel.org, dsterba@suse.com, 
-	aromosan@gmail.com, bernd.feige@gmx.net, CHECK_1234543212345@protonmail.com, 
-	stable@vger.kernel.org
+References: <20240208144224.438146-1-r.smirnov@omp.ru> <5abcb44deb604258aff4cd02c3ca90a3@omp.ru>
+In-Reply-To: <5abcb44deb604258aff4cd02c3ca90a3@omp.ru>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Date: Tue, 20 Feb 2024 23:09:30 +0900
+Message-ID: <CAKFNMomWkZeK+CzX6R0S+9UB0tCN2WBd9A0iiUcqJcji+LFsvg@mail.gmail.com>
+Subject: Re: [PATCH 5.10/5.15/6.1 0/1] nilfs2: fix WARNING in nilfs_dat_prepare_end()
+To: "stable@vger.kernel.org" <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Roman Smirnov <r.smirnov@omp.ru>, 
+	"linux-nilfs@vger.kernel.org" <linux-nilfs@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Alexey Khoroshilov <khoroshilov@ispras.ru>, 
+	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>, Sergey Shtylyov <s.shtylyov@omp.ru>, 
+	Karina Yankevich <k.yankevich@omp.ru>, Andrey Rusalin <a.rusalin@omp.ru>, Sergey Yudin <s.yudin@omp.ru>, 
+	Valentin Perevozchikov <v.perevozchikov@omp.ru>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 14, 2024 at 7:17=E2=80=AFAM David Sterba <dsterba@suse.cz> wrot=
-e:
+On Tue, Feb 20, 2024 at 5:44=E2=80=AFPM Roman Smirnov wrote:
 >
-> On Tue, Feb 13, 2024 at 09:13:56AM +0800, Anand Jain wrote:
-> > There are reports that since version 6.7 update-grub fails to find the
-> > device of the root on systems without initrd and on a single device.
+> On Thu, 8 Feb 2024 17:42:41 +0300, Roman Smirnov wrote:
+> > Syzkaller reports WARNING in nilfs_dat_prepare_end() in 5.10, 5.15 and =
+6.1
+> > stable releases. The problem has been fixed in upstream:
+> > https://syzkaller.appspot.com/bug?extid=3D5d5d25f90f195a3cfcb4
 > >
-> > This looks like the device name changed in the output of
-> > /proc/self/mountinfo:
+> > The problem can also be fixed in versions 5.10, 5.15 and 6.1 by the
+> > following patch.
 > >
-> > 6.5-rc5 working
+> > Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 > >
-> >   18 1 0:16 / / rw,noatime - btrfs /dev/sda8 ...
+> > Link: https://syzkaller.appspot.com/bug?extid=3D325e6b0a1e7cf9035cc0
+> > Link: https://syzkaller.appspot.com/bug?extid=3Dbebf30d67ea2569f0fd3
 > >
-> > 6.7 not working:
+> > Ryusuke Konishi (1):
+> >  nilfs2: replace WARN_ONs for invalid DAT metadata block requests
 > >
-> >   17 1 0:15 / / rw,noatime - btrfs /dev/root ...
-> >
-> > and "update-grub" shows this error:
-> >
-> >   /usr/sbin/grub-probe: error: cannot find a device for / (is /dev moun=
-ted?)
-> >
-> > This looks like it's related to the device name, but grub-probe
-> > recognizes the "/dev/root" path and tries to find the underlying device=
-.
-> > However there's a special case for some filesystems, for btrfs in
-> > particular.
-> >
-> > The generic root device detection heuristic is not done and it all
-> > relies on reading the device infos by a btrfs specific ioctl. This ioct=
-l
-> > returns the device name as it was saved at the time of device scan (in
-> > this case it's /dev/root).
-> >
-> > The change in 6.7 for temp_fsid to allow several single device
-> > filesystem to exist with the same fsid (and transparently generate a ne=
-w
-> > UUID at mount time) was to skip caching/registering such devices.
-> >
-> > This also skipped mounted device. One step of scanning is to check if
-> > the device name hasn't changed, and if yes then update the cached value=
-.
-> >
-> > This broke the grub-probe as it always read the device /dev/root and
-> > couldn't find it in the system. A temporary workaround is to create a
-> > symlink but this does not survive reboot.
-> >
-> > The right fix is to allow updating the device path of a mounted
-> > filesystem even if this is a single device one.
-> >
-> > In the fix, check if the device's major:minor number matches with the
-> > cached device. If they do, then we can allow the scan to happen so that
-> > device_list_add() can take care of updating the device path. The file
-> > descriptor remains unchanged.
-> >
-> > This does not affect the temp_fsid feature, the UUID of the mounted
-> > filesystem remains the same and the matching is based on device major:m=
-inor
-> > which is unique per mounted filesystem.
-> >
-> > This covers the path when the device (that exists for all mounted
-> > devices) name changes, updating /dev/root to /dev/sdx. Any other single
-> > device with filesystem and is not mounted is still skipped.
-> >
-> > Note that if a system is booted and initial mount is done on the
-> > /dev/root device, this will be the cached name of the device. Only afte=
-r
-> > the command "btrfs device scan" it will change as it triggers the
-> > rename.
-> >
-> > The fix was verified by users whose systems were affected.
-> >
-> > CC: stable@vger.kernel.org # 6.7+
-> > Fixes: bc27d6f0aa0e ("btrfs: scan but don't register device on single d=
-evice filesystem")
-> > Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=3D218353
-> > Link: https://lore.kernel.org/lkml/CAKLYgeJ1tUuqLcsquwuFqjDXPSJpEiokrWK=
-2gisPKDZLs8Y2TQ@mail.gmail.com/
-> > Signed-off-by: Anand Jain <anand.jain@oracle.com>
-> > Tested-by: Alex Romosan <aromosan@gmail.com>
-> > Tested-by: CHECK_1234543212345@protonmail.com
+> >  fs/nilfs2/dat.c | 27 +++++++++++++++++----------
+> >  1 file changed, 17 insertions(+), 10 deletions(-)
 >
-> Reviewed-by: David Sterba <dsterba@suse.com>
->
-> When you commit the patch, please reorder the tags according to
-> https://btrfs.readthedocs.io/en/latest/dev/Developer-s-FAQ.html#ordering
+> Sorry to bother you, do you have any comments on the patch?
 
-So this introduces a regression.
+Hi Greg,
 
-Running fstests:
+As a side note, this commit handles certain metadata corruptions
+better if they are detected, rather than just killing WARN_ONs, and
+prevents an internal error code (ENOENT) from propagating
+inappropriately to userland.
 
-(...)
-btrfs/156 11s ...  16s
-btrfs/157 3s ...  0s
-btrfs/158 0s ...  2s
-btrfs/159 16s ... - output mismatch (see
-/home/fdmanana/git/hub/xfstests/results//btrfs/159.out.bad)
-    --- tests/btrfs/159.out     2020-10-26 15:31:57.061207266 +0000
-    +++ /home/fdmanana/git/hub/xfstests/results//btrfs/159.out.bad
- 2024-02-20 12:54:43.386131546 +0000
-    @@ -1,8 +1,11 @@
-     QA output created by 159
-    +mount: /home/fdmanana/btrfs-tests/scratch_1: wrong fs type, bad
-option, bad superblock on /dev/mapper/flakey-test, missing codepage or
-helper program, or other error.
-    +       dmesg(1) may have more information after failed mount system ca=
-ll.
-     File digest before power failure:
-    -f049865ed45b1991dc9a299b47d51dbf  SCRATCH_MNT/foobar
-    +b2e8facfb4795185fadd85707fe78973  SCRATCH_MNT/foobar
-    +umount: /home/fdmanana/btrfs-tests/scratch_1: not mounted.
-    ...
-    (Run 'diff -u /home/fdmanana/git/hub/xfstests/tests/btrfs/159.out
-/home/fdmanana/git/hub/xfstests/results//btrfs/159.out.bad'  to see
-the entire diff)
-btrfs/160 4s ...  4s
-(...)
+So, in retrospect, I think it was worth backporting to stable trees.
 
-The weird thing is it doesn't happen when running btrfs/159 standalone
-(even if doing a rmmod btrfs before).
+I have checked the source code of each of the target stable trees, and
+they are safe to apply.
 
-Instead of running all tests, I managed to reproduce it with only:
-
-$ ./check btrfs/14[6-9] btrfs/15[8-9]
-FSTYP         -- btrfs
-PLATFORM      -- Linux/x86_64 debian0 6.8.0-rc5-btrfs-next-151+ #1 SMP
-PREEMPT_DYNAMIC Mon Feb 19 13:38:37 WET 2024
-MKFS_OPTIONS  -- /dev/sdc
-MOUNT_OPTIONS -- /dev/sdc /home/fdmanana/btrfs-tests/scratch_1
-
-btrfs/146 1s ...  2s
-btrfs/147 0s ...  1s
-btrfs/148 2s ...  2s
-btrfs/149 1s ...  1s
-btrfs/158 1s ...  0s
-btrfs/159 20s ... - output mismatch (see
-/home/fdmanana/git/hub/xfstests/results//btrfs/159.out.bad)
-    --- tests/btrfs/159.out 2020-10-26 15:31:57.061207266 +0000
-    +++ /home/fdmanana/git/hub/xfstests/results//btrfs/159.out.bad
-2024-02-20 13:51:25.707220763 +0000
-    @@ -1,8 +1,11 @@
-     QA output created by 159
-    +mount: /home/fdmanana/btrfs-tests/scratch_1: wrong fs type, bad
-option, bad superblock on /dev/mapper/flakey-test, missing codepage or
-helper program, or other error.
-    +       dmesg(1) may have more information after failed mount system ca=
-ll.
-     File digest before power failure:
-    -f049865ed45b1991dc9a299b47d51dbf  SCRATCH_MNT/foobar
-    +b2e8facfb4795185fadd85707fe78973  SCRATCH_MNT/foobar
-    +umount: /home/fdmanana/btrfs-tests/scratch_1: not mounted.
-    ...
-    (Run 'diff -u /home/fdmanana/git/hub/xfstests/tests/btrfs/159.out
-/home/fdmanana/git/hub/xfstests/results//btrfs/159.out.bad'  to see
-the entire diff)
-Ran: btrfs/146 btrfs/147 btrfs/148 btrfs/149 btrfs/158 btrfs/159
-
-dmesg shows:
-
-[79195.239769] run fstests btrfs/159 at 2024-02-20 14:06:02
-[79195.418917] BTRFS: device fsid 45ac9151-7e2d-4dd7-bf75-99967f869f2a
-devid 1 transid 3747 /dev/sdb scanned by mount (3413231)
-[79195.419515] BTRFS info (device sdb): first mount of filesystem
-45ac9151-7e2d-4dd7-bf75-99967f869f2a
-[79195.419525] BTRFS info (device sdb): using crc32c (crc32c-intel)
-checksum algorithm
-[79195.419529] BTRFS info (device sdb): using free-space-tree
-[79195.612719] BTRFS: device fsid 10184d7d-3ca9-43c1-a6f8-70b134cff828
-devid 1 transid 6 /dev/sdc scanned by mkfs.btrfs (3413318)
-[79195.666279] BTRFS: device fsid 10184d7d-3ca9-43c1-a6f8-70b134cff828
-devid 1 transid 6 /dev/dm-0 scanned by systemd-udevd (3410982)
-[79195.695774] BTRFS info (device dm-0): first mount of filesystem
-10184d7d-3ca9-43c1-a6f8-70b134cff828
-[79195.695786] BTRFS info (device dm-0): using crc32c (crc32c-intel)
-checksum algorithm
-[79195.695789] BTRFS error (device dm-0): superblock fsid doesn't
-match fsid of fs_devices: 10184d7d-3ca9-43c1-a6f8-70b134cff828 !=3D
-628aff33-4122-4d77-b2a9-2e9a90f27520
-[79195.696098] BTRFS error (device dm-0): superblock metadata_uuid
-doesn't match metadata uuid of fs_devices:
-10184d7d-3ca9-43c1-a6f8-70b134cff828 !=3D
-628aff33-4122-4d77-b2a9-2e9a90f27520
-[79195.696419] BTRFS error (device dm-0): dev_item UUID does not match
-metadata fsid: 628aff33-4122-4d77-b2a9-2e9a90f27520 !=3D
-10184d7d-3ca9-43c1-a6f8-70b134cff828
-[79195.696765] BTRFS error (device dm-0): superblock contains fatal errors
-[79195.697447] BTRFS error (device dm-0): open_ctree failed
-
-It always happens with this patch applied in for-next, and never
-happens with it reverted.
-
->
+Thanks,
+Ryusuke Konishi
 
