@@ -1,199 +1,181 @@
-Return-Path: <stable+bounces-20829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 118A585BF17
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 15:48:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC13385BF1A
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 15:49:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA914283F14
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 14:48:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D1681C23161
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 14:49:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B79E66BB50;
-	Tue, 20 Feb 2024 14:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC1F66BB38;
+	Tue, 20 Feb 2024 14:49:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e7JmXccd"
+	dkim=pass (2048-bit key) header.d=siemens.com header.i=@siemens.com header.b="KT5kDyBF"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2089.outbound.protection.outlook.com [40.107.6.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED5516BB38
-	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 14:48:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708440517; cv=none; b=Wbuqc75+lWEdACqt63ymREjrBdpIrBAm5JqwRrWOAly/fKEFLMzIHl/B2Rs/iO4NMRiBSkU5ju7GhV10g3HxL5KbdvAfChfTmsocL/+W2E7ENPhc5ViE6+JKHcQ7HeYLHhyWB57b+NfXlGkVAoTXukt7ijSiJs2uwWF3moftsbE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708440517; c=relaxed/simple;
-	bh=meXKs4nthnLwRqIeR9ozUCdxnOa2stibML1LIR1Xa/w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=URC9yUxmEY0wftjIq5suK/ty9GxWFIKjpbbqjzLGHWHZWHF7U+J9YhCbrYU6vy6NHrDCPAwkzDuvyukeiNrgNghqmYhElnuZndppm5oaaHnperMCnpUWrjpGL2XYb3/jhyHdeA+qtmx9MKGBhjgvveAgdDqmjbVJl3kZGOI/fxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e7JmXccd; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708440516; x=1739976516;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=meXKs4nthnLwRqIeR9ozUCdxnOa2stibML1LIR1Xa/w=;
-  b=e7JmXccdIjItq3uo0p8woG4FL8IIQsgB5QyjNWcm4uEnL/8UiG+w6CXQ
-   SUQDOS0jTFlNPVxmLa2XXON27jvNG2Fcg+sU27bRByekJSBvVQWSrl1Up
-   RySPjL4bOVx+geIQBYgC2P65VhAtsIptSysWAjl03gITFzUo1hB7eUhWA
-   K2GmKWSugdXoaXIXlhQ2ZwB1wDyiu+gDwGZRlno40H9PjlVkTgbVS8STN
-   rAiB33ty8vY4t3+0VDqp2GgUTebia2aMr3diO6qgAei203FbPTTIFuZad
-   V+Vpg7Yb7niCytOScCIHxnPw+S3U0aPYdkw3YOBoWwt4M4aZNvSRTko+G
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="13252908"
-X-IronPort-AV: E=Sophos;i="6.06,174,1705392000"; 
-   d="scan'208";a="13252908"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 06:48:35 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,174,1705392000"; 
-   d="scan'208";a="9369243"
-Received: from dunnejor-mobl2.ger.corp.intel.com (HELO [10.213.231.185]) ([10.213.231.185])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 06:48:33 -0800
-Message-ID: <af007641-9705-4259-b29c-3cb78f67fc64@linux.intel.com>
-Date: Tue, 20 Feb 2024 14:48:31 +0000
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB1B74C60
+	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 14:49:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.6.89
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708440546; cv=fail; b=iLBC41ROyelhrSKposqeQUrtZ/yE2USBGERG43oTggxuLKhixY82xNrUmYxyDZTMd7CcvDmTtK2FXvvzUluoLJZpYSaG2FEcmKIdc9CAf8QNsVvFONNxtNBL37Kehq+KIw00KY1H2fjsieJeXICEW8+X3MnfrjpApL/sdBpQo7o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708440546; c=relaxed/simple;
+	bh=8CQ5XwJXKTLQweQax85QKXx9o+ZeyUeu6jdv+QfRkNw=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=VNlHOdVvy8uzFTQ7DpvXqrAaBO/SWbxv1jjjM1wXVJ22IDjSE1s+NUcbyHV8meRDbom4nWC1X8SWf8EYV2d/Y8FjCfcxzGAg1jpAirdJFiTqZdaz/cD+pMn1JF8V1p5Fb/DxQoJgDWVj34c6CAK11cHd+VWRwG3qQIPy9obR+kY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=@siemens.com header.b=KT5kDyBF; arc=fail smtp.client-ip=40.107.6.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=siemens.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=YeCI8w3sdhs1EWRDdIiz18yueOui96ptQysmT+LQbs3kckCrikjzzzsIkg7t82BteEguorMxYyrZrDVEnCTgW0xhGvv2yQS62wbjs8RTWHUt4wtmXVoA76AumjEnz/BK29QELU0Q5jBo5ZXUI/J9NHjTZUTgxmjXxY6aHGfMRF+gs1ykfhA+8y0t7Hs1p6fHFcXvZrwKHfY9r4TlItzCU0h5cv7UwAUv84v08K2AnWCGq61oB1QyRHcu4Mk3w9iUmg9vemUKjHclth1zCyHr82dWQNhPpx8mIW6XQrxji6K068yvecDMX9YVDXuBfr3an2SU2QKwpgd5+Yd7+9XiHg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8CQ5XwJXKTLQweQax85QKXx9o+ZeyUeu6jdv+QfRkNw=;
+ b=a/9CLqzT5PR4YScJF7maHiI8wRe1jC6pbCB0hxoGTxYnsTfahepNGYXDoqtgV1d0j3dovTCQ4H0OhTX9iGQF5G/hCGPR3dKx4QOQXLxsbk469NufsZTuxzFrIngYEnDJOgN5+iGdJwDAk4Mbt1rrJOt5rUkkp6E648EHUn1Q9MqcdRzyRPLz71mbFyFvzi6/GF7Zx3U3ogKtSSbj2q7ZYxjKarWWxehhpO+eU2EuLPYydByEOkHLXkeiG30fmHS1wEhE1yGOQWh/kk47WMryfMY8LPiYVuscGBehAOUPX+FCZnF6CFcSUvZK8Q2d9g5tDIQzpVPeZ09DeAXEs5JYUA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=siemens.com; dmarc=pass action=none header.from=siemens.com;
+ dkim=pass header.d=siemens.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=siemens.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8CQ5XwJXKTLQweQax85QKXx9o+ZeyUeu6jdv+QfRkNw=;
+ b=KT5kDyBFArOZL96KiBqowbuh6UG2mXe+Ytra2vlGuSsoDDW9T3RQA6iwlV1fZn7+cWHSt+gvyETHvi/Ezo7dLq9nlHk4jcCYs4r4sUVY1gCIgR0fnNOpILtwrSqOv+4MCxSk3XDV3S6dohG4rvmfRDzF+Q9dwe2KVbd6FqSKd1Lgp+QUr0xHxqkWbGYeAPZYXTfOZ3nvuU5OfNss328JY9zGulKTysjmlnzqYsVqojs0tjtE9cAs3ubzhZ73djY2NKtio/+clUIJaXJzCRP1SozNramcxYScAi17Wjx1pe3M2Nk6p4wL+VlmuAbEsbcAUrKl4X9YH5q3XqvozA38NA==
+Received: from DU0PR10MB6828.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:47f::13)
+ by DU0PR10MB7286.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:446::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.34; Tue, 20 Feb
+ 2024 14:49:01 +0000
+Received: from DU0PR10MB6828.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::c123:2b7e:a12a:d53c]) by DU0PR10MB6828.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::c123:2b7e:a12a:d53c%7]) with mapi id 15.20.7292.036; Tue, 20 Feb 2024
+ 14:49:01 +0000
+From: "MOESSBAUER, Felix" <felix.moessbauer@siemens.com>
+To: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+CC: "tglx@linutronix.de" <tglx@linutronix.de>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>, "dave@stgolabs.net" <dave@stgolabs.net>, "Kiszka,
+ Jan" <jan.kiszka@siemens.com>, "bigeasy@linutronix.de"
+	<bigeasy@linutronix.de>, "Ivanov, Petr" <petr.ivanov@siemens.com>
+Subject: Re: [PATCH v2][5.10, 5.15, 6.1][1/1] hrtimer: Ignore slack time for
+ RT tasks in schedule_hrtimeout_range()
+Thread-Topic: [PATCH v2][5.10, 5.15, 6.1][1/1] hrtimer: Ignore slack time for
+ RT tasks in schedule_hrtimeout_range()
+Thread-Index: AQHaZAmlLW9vfp4W80eK9ACR2FEOurETT8yA
+Date: Tue, 20 Feb 2024 14:49:00 +0000
+Message-ID: <89eef284bd0fb1f60dbfc62decd2a0438d436c6e.camel@siemens.com>
+References: <20240220123403.85403-1-felix.moessbauer@siemens.com>
+	 <20240220123403.85403-2-felix.moessbauer@siemens.com>
+	 <2024022057-slit-herself-a4d8@gregkh>
+In-Reply-To: <2024022057-slit-herself-a4d8@gregkh>
+Accept-Language: de-DE, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.46.4-2 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=siemens.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DU0PR10MB6828:EE_|DU0PR10MB7286:EE_
+x-ms-office365-filtering-correlation-id: f9044054-7ab9-4bcd-ea7a-08dc3223132d
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ JxbAqstd1ncad5GmWt1H31LgKDEDD+fYmTqG5KsfGfHG3peNSMXB+xLBFaeckJ1mjYgjFUGSnRwSfaL95JGKKPyihTqFgw20nPF5N2A6Dcg8/seZP/Yll3AgDmi9g/pPxYZvq3ow0sp7OGFcua9HNthL/6lE/w4pEk3pC3Gfjl4C6eVRrNM1S4NioysgvwUtWo1VWzym+32ll27XYuQN6T/n8IDHrV/WmqfKpxHrHimoqgKVykJ7XJZVb1u+vae5a73uG4hAq7pfbi0ZLPPVOkYuLYXg1mu6YH9+/RxwED1Jc46ibS1Toi+jg9cA/nCENFLlObncKqyYnS22LprxQpkM5tSkd5c1ChAYUXqqBsTi07vzrkL4pxVbsiTkYJK96jqB5wbEgwlIqhBLRWO8VQj4/4Cmjnm4LNxXoAT/mAaatSAly9I6flk2zp+baYfKzn8c8j56I8tnitMb3S1B/1CmJqGG3/kEU/iaxcJOf3rgR6axGuyJM69lmJZYLCJ5uS+9S0hBnZaWGJWqjv5D2yGoHAEpDWrqS1fpw/LWRB7OMLwz7gydZ6Y71B8sck7v5OsZMo+wN9Wx4BWANfRv7194XeE1OmDQ75Ckdz0yWeY=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR10MB6828.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(38070700009);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?LzVMYWFRVm9pYU1NOTVCZTJWeEVYMStMSjJsODZMVERURXAvVFdzQ25qN1J4?=
+ =?utf-8?B?TUI2alplUk83WTZka1JmYkxoMkZLV3BueUFWZXI4R1FGY2dELzA0ZFh4dlp6?=
+ =?utf-8?B?Mk9QMGwvUGF6dzF3YkwwMW9SY2lHNWpBUWUrWG9YMDl3eXE0cTZxbDVWbVQv?=
+ =?utf-8?B?Z2hNc1gyMTNoUUpkaHRNUGMydGExcHRDdW1ucTN6bFk2Z1didU00ZHVqZUll?=
+ =?utf-8?B?YmpsWEdYNHViUmh4VnZ4MTlvbncrait6bEYrTDhGQ05PK0VPVGdHb21Mc1JQ?=
+ =?utf-8?B?UFdocTBOb3BNVzJrNDQvTEpid0RRNVJuVFQvSlVBZTVobFhLdERGZzBoTm9B?=
+ =?utf-8?B?bnM0VFVsVWFyRHhTdzJjdjQ3THZab0FhKzk5ODE3Qm9jbzRadU1kcWdYb0l0?=
+ =?utf-8?B?SlFNSzhlaGFnb2RYZ0d1WU9uZ3JtcmhidTlQa0lWTmU5a05aQnZLdkFQRnJN?=
+ =?utf-8?B?UGlGUHBHZnU1UnZCMnU3enNpSExLbTZIQVNGS2RCWDZwY2kzc3VieFpJdmpJ?=
+ =?utf-8?B?WWxsSGo5NitvanVwaU8wS2ViQlE3K0ZGQm1namFFaSt1ZjQ4V1pxMlFSazFx?=
+ =?utf-8?B?dnUwSTFkeWhYaU9vN1BWbm13RHhKZjBzSVNUeCt0U3lrcU1tNW8wczRUVStW?=
+ =?utf-8?B?UnRDcHU3TVd4a2x2SnVGellKWkhNWWxKOFlzejc4dEhFU043d3U5a3BIcDNl?=
+ =?utf-8?B?dVFPODVsVmpFNlgzSDdUazJqMWNoS1JzWWJHNmhqQXROK25pVmU5TlA0QWlQ?=
+ =?utf-8?B?a21CQUZuS1F1dERDUklzYS9VakVyVnJ3cUJyK2VXQUpmbWVtZUF3aC93MTly?=
+ =?utf-8?B?Mkw1RTd2TDFXYXhkNmZOUUlLbU5udDE0Um91SmF2NmYrVTRjWUZ4Y2RiVWZN?=
+ =?utf-8?B?VFNNZlNHMlM5a0hQdDlaSGQyVGs4YUtuZnFYWHd3dTIzQXgzNWtOREo0NzNm?=
+ =?utf-8?B?UmdHNlVUZGNVWUJya3Rhb0FQRzFqWitkNjE3QnpoVDlVZlAyQjljclQ5TDIz?=
+ =?utf-8?B?em1MblNsdFE1aHV5d25HeVVIWXpCRkFKUk5oSk1YRWd2Y1VzR1VrQWFIdVpz?=
+ =?utf-8?B?TDhxeFJyR3oxaDA3Z3VRdWJkYzN4S2lZeE9RcGh4d2dKU3FyeGRTWitwMy9F?=
+ =?utf-8?B?N0RYb3lndHZONnhId21rMVRDQ0FuKzNXcWdqSDFWeW9mREYyRVA2OU5pNC9x?=
+ =?utf-8?B?Tm1nM3hRZGhHajhpY1VhOHZQTElqcXRIdDFEOGZaNzlZV21iWSswc1hlVTFt?=
+ =?utf-8?B?UjdqS0JFamFrNUY5N0NQSVNDcmt5NDJRcThpeUpFNXF1SElvVWlIcUo5aVpS?=
+ =?utf-8?B?L1B5WktZZ2hLUFp1UjdkeGYvdEZEajVMRlZJOXhGVWxsS043OUJFR0tmR0E4?=
+ =?utf-8?B?TURkR1hZU0hMZ1I2SmoyNVFiWEFNNEpKdVdyTG9TOVc4NDU5UHNZWnBEZU5Q?=
+ =?utf-8?B?QTlHR2hDU3hWNVo0aGpxQTNleGNlT2NUU1BIYjV5NVAxQjR2L3h4VVQwSi93?=
+ =?utf-8?B?cks1TU0xNTg2UFNUM0dKbE9WejVwOWQrVWhIOFdzR3BlbzRqUS9EQnEvbnYv?=
+ =?utf-8?B?TkFJSXJ2bnhyNFlYbzJLek5rbWRrZ0xCSVJQTGpXaForS0Via0s2SHNqUksv?=
+ =?utf-8?B?dWxuaGlQUFhWTzBpWDNwenhsY1dNaFZPamw1WHVlcXFBU0laUW5jSEoycUNN?=
+ =?utf-8?B?ZWZGUVZYQ0RzZlppQWNnODNOKzFWSGdRd2ZPM2lEaVdUbVhMVGMzenQzUDFE?=
+ =?utf-8?B?bnMxYkkyQnlScmIvWHNLRFZxYXlPaGpuVUwyZVk0aGNIN0pwcXcyank0S05m?=
+ =?utf-8?B?NlEvQkJLSmtJUWJEYVNrYlNqWVBPVVBzcnBkQWFEcU9jaHVnR0RuL0pha0hm?=
+ =?utf-8?B?L0F5bFBvSEFtWllCdDI4RjFYSFpRTmV5aDMreEszWjQyb3BnTStqVWlxM1lE?=
+ =?utf-8?B?eHdoVlVwaHVkVjArYW5zMGxPUWVvdDg3Y3liQVIvZU9EWXZmcDVBSnRQczRn?=
+ =?utf-8?B?c04vdHd0TDZBeHpzVXpsdytWZVJNWG11RUllUkJMTDY3Lzl0NHdhS0pPK3ZG?=
+ =?utf-8?B?VVE0K3VSNmRWc3Fhd3RUcGJZSVRHU1EyNzNuaVNJZFltRFZSWm5iakFPQi9B?=
+ =?utf-8?B?WkcxZG84WlVxTXZlakVuRmNMZFZyYnlqa2N3a0prT1Q5YnhMMzAwSjRudkxQ?=
+ =?utf-8?B?bjhJdlNBMmUrSXpaQVZTRGRPZVJ4d2Q4UFhOUHlJcUszTkl6cDYrV2Z2Z3Zp?=
+ =?utf-8?B?K3plZHdNc0NScWxSMU1mbGpnV0RnPT0=?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <E3F5B9C58D478F448E44D7F8ACF1C88B@EURPRD10.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] drm/i915/gt: Enable only one CCS for compute
- workload
-Content-Language: en-US
-To: Andi Shyti <andi.shyti@linux.intel.com>,
- intel-gfx <intel-gfx@lists.freedesktop.org>,
- dri-devel <dri-devel@lists.freedesktop.org>
-Cc: Chris Wilson <chris.p.wilson@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Matt Roper <matthew.d.roper@intel.com>,
- John Harrison <John.C.Harrison@Intel.com>, stable@vger.kernel.org,
- Andi Shyti <andi.shyti@kernel.org>
-References: <20240220143526.259109-1-andi.shyti@linux.intel.com>
- <20240220143526.259109-3-andi.shyti@linux.intel.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Organization: Intel Corporation UK Plc
-In-Reply-To: <20240220143526.259109-3-andi.shyti@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-OriginatorOrg: siemens.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR10MB6828.EURPRD10.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: f9044054-7ab9-4bcd-ea7a-08dc3223132d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Feb 2024 14:49:00.6544
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 38ae3bcd-9579-4fd4-adda-b42e1495d55a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 9hSx3FkbIrNo4LG3REJaHhbC+DSJ09BoYVWZL1k5pNcJXNRLw0Sbp5skXTwv01N4G3kKF1qWn7yT/jMULo6VGPi89YAXGdgiFx3M3Pn8xOM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR10MB7286
 
-
-On 20/02/2024 14:35, Andi Shyti wrote:
-> Enable only one CCS engine by default with all the compute sices
-
-slices
-
-> allocated to it.
-> 
-> While generating the list of UABI engines to be exposed to the
-> user, exclude any additional CCS engines beyond the first
-> instance.
-> 
-> This change can be tested with igt i915_query.
-> 
-> Fixes: d2eae8e98d59 ("drm/i915/dg2: Drop force_probe requirement")
-> Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-> Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
-> Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-> Cc: Matt Roper <matthew.d.roper@intel.com>
-> Cc: <stable@vger.kernel.org> # v6.2+
-> ---
->   drivers/gpu/drm/i915/gt/intel_engine_user.c |  9 +++++++++
->   drivers/gpu/drm/i915/gt/intel_gt.c          | 11 +++++++++++
->   drivers/gpu/drm/i915/gt/intel_gt_regs.h     |  2 ++
->   drivers/gpu/drm/i915/i915_query.c           |  1 +
->   4 files changed, 23 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/i915/gt/intel_engine_user.c b/drivers/gpu/drm/i915/gt/intel_engine_user.c
-> index 833987015b8b..7041acc77810 100644
-> --- a/drivers/gpu/drm/i915/gt/intel_engine_user.c
-> +++ b/drivers/gpu/drm/i915/gt/intel_engine_user.c
-> @@ -243,6 +243,15 @@ void intel_engines_driver_register(struct drm_i915_private *i915)
->   		if (engine->uabi_class == I915_NO_UABI_CLASS)
->   			continue;
->   
-> +		/*
-> +		 * Do not list and do not count CCS engines other than the first
-> +		 */
-> +		if (engine->uabi_class == I915_ENGINE_CLASS_COMPUTE &&
-> +		    engine->uabi_instance > 0) {
-> +			i915->engine_uabi_class_count[engine->uabi_class]--;
-> +			continue;
-> +		}
-
-It's a bit ugly to decrement after increment, instead of somehow 
-restructuring the loop to satisfy both cases more elegantly. And I 
-wonder if internally (in dmesg when engine name is logged) we don't end 
-up with ccs0 ccs0 ccs0 ccs0.. for all instances.
-
-> +
->   		rb_link_node(&engine->uabi_node, prev, p);
->   		rb_insert_color(&engine->uabi_node, &i915->uabi_engines);
->   
-> diff --git a/drivers/gpu/drm/i915/gt/intel_gt.c b/drivers/gpu/drm/i915/gt/intel_gt.c
-> index a425db5ed3a2..e19df4ef47f6 100644
-> --- a/drivers/gpu/drm/i915/gt/intel_gt.c
-> +++ b/drivers/gpu/drm/i915/gt/intel_gt.c
-> @@ -168,6 +168,14 @@ static void init_unused_rings(struct intel_gt *gt)
->   	}
->   }
->   
-> +static void intel_gt_apply_ccs_mode(struct intel_gt *gt)
-> +{
-> +	if (!IS_DG2(gt->i915))
-> +		return;
-> +
-> +	intel_uncore_write(gt->uncore, XEHP_CCS_MODE, 0);
-> +}
-> +
->   int intel_gt_init_hw(struct intel_gt *gt)
->   {
->   	struct drm_i915_private *i915 = gt->i915;
-> @@ -195,6 +203,9 @@ int intel_gt_init_hw(struct intel_gt *gt)
->   
->   	intel_gt_init_swizzling(gt);
->   
-> +	/* Configure CCS mode */
-> +	intel_gt_apply_ccs_mode(gt);
-> +
->   	/*
->   	 * At least 830 can leave some of the unused rings
->   	 * "active" (ie. head != tail) after resume which
-> diff --git a/drivers/gpu/drm/i915/gt/intel_gt_regs.h b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-> index cf709f6c05ae..c148113770ea 100644
-> --- a/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-> +++ b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-> @@ -1605,6 +1605,8 @@
->   #define   GEN12_VOLTAGE_MASK			REG_GENMASK(10, 0)
->   #define   GEN12_CAGF_MASK			REG_GENMASK(19, 11)
->   
-> +#define XEHP_CCS_MODE                          _MMIO(0x14804)
-> +
->   #define GEN11_GT_INTR_DW(x)			_MMIO(0x190018 + ((x) * 4))
->   #define   GEN11_CSME				(31)
->   #define   GEN12_HECI_2				(30)
-> diff --git a/drivers/gpu/drm/i915/i915_query.c b/drivers/gpu/drm/i915/i915_query.c
-> index 3baa2f54a86e..d5a5143971f5 100644
-> --- a/drivers/gpu/drm/i915/i915_query.c
-> +++ b/drivers/gpu/drm/i915/i915_query.c
-> @@ -124,6 +124,7 @@ static int query_geometry_subslices(struct drm_i915_private *i915,
->   	return fill_topology_info(sseu, query_item, sseu->geometry_subslice_mask);
->   }
->   
-> +
-
-Zap please.
-
->   static int
->   query_engine_info(struct drm_i915_private *i915,
->   		  struct drm_i915_query_item *query_item)
-
-Regards,
-
-Tvrtko
+T24gVHVlLCAyMDI0LTAyLTIwIGF0IDE1OjMyICswMTAwLCBHcmVnIEtIIHdyb3RlOg0KPiBPbiBU
+dWUsIEZlYiAyMCwgMjAyNCBhdCAwMTozNDowM1BNICswMTAwLCBGZWxpeCBNb2Vzc2JhdWVyIHdy
+b3RlOg0KPiA+IEZyb206IERhdmlkbG9ociBCdWVzbyA8ZGF2ZUBzdGdvbGFicy5uZXQ+DQo+ID4g
+DQo+ID4gY29tbWl0IDBjNTIzMTBmMjYwMDE0ZDk1YzEzMTAzNjQzNzk3NzJjYjc0Y2Y4MmQgdXBz
+dHJlYW0uDQo+ID4gDQo+ID4gV2hpbGUgaW4gdGhlb3J5IHRoZSB0aW1lciBjYW4gYmUgdHJpZ2dl
+cmVkIGJlZm9yZSBleHBpcmVzICsgZGVsdGEsDQo+ID4gZm9yIHRoZQ0KPiA+IGNhc2VzIG9mIFJU
+IHRhc2tzIHRoZXkgcmVhbGx5IGhhdmUgbm8gYnVzaW5lc3MgZ2l2aW5nIGFueSBsZW5pZW5jZQ0K
+PiA+IGZvcg0KPiA+IGV4dHJhIHNsYWNrIHRpbWUsIHNvIG92ZXJyaWRlIGFueSBwYXNzZWQgdmFs
+dWUgYnkgdGhlIHVzZXIgYW5kDQo+ID4gYWx3YXlzIHVzZQ0KPiA+IHplcm8gZm9yIHNjaGVkdWxl
+X2hydGltZW91dF9yYW5nZSgpIGNhbGxzLiBGdXJ0aGVybW9yZSwgdGhpcyBpcw0KPiA+IHNpbWls
+YXIgdG8NCj4gPiB3aGF0IHRoZSBuYW5vc2xlZXAoMikgZmFtaWx5IGFscmVhZHkgZG9lcyB3aXRo
+IGN1cnJlbnQtDQo+ID4gPnRpbWVyX3NsYWNrX25zLg0KPiA+IA0KPiA+IFNpZ25lZC1vZmYtYnk6
+IERhdmlkbG9ociBCdWVzbyA8ZGF2ZUBzdGdvbGFicy5uZXQ+DQo+ID4gU2lnbmVkLW9mZi1ieTog
+VGhvbWFzIEdsZWl4bmVyIDx0Z2x4QGxpbnV0cm9uaXguZGU+DQo+ID4gTGluazoNCj4gPiBodHRw
+czovL2xvcmUua2VybmVsLm9yZy9yLzIwMjMwMTIzMTczMjA2LjY3NjQtMy1kYXZlQHN0Z29sYWJz
+Lm5ldA0KPiANCj4gWW91IGNhbid0IGZvcndhcmQgb24gYSBwYXRjaCB3aXRob3V0IHNpZ25pbmcg
+b2ZmIG9uIGl0IGFzIHdlbGwgOigNCg0KT2ssIHRoYW5rcyBmb3IgdGhlIGluZm8uIEknbGwgYWRk
+IHRoZSBzaWdub2ZmIGFuZCBzZW5kIGEgdjMuDQoNCj4gDQo+IEFuZCB0aGlzIGlzIGFscmVhZHkg
+aW4gdGhlIDYuMS41MyByZWxlYXNlLCB3aHkgYXBwbHkgaXQgYWdhaW4/DQoNCkkgY2FuJ3QgZmlu
+ZCBpdCB0aGVyZSBhbmQgYWxzbyB0aGUgY2hhbmdlIGlzIG5vdCBpbmNsdWRlZCBpbiBsaW51eC0N
+CjYuMS55IG9yIDYuMS41My4gVGhlcmUgaXMgYW5vdGhlciBjb21taXQgcmVmZXJlbmNpbmcgdGhp
+cyBwYXRjaCAobGludXgtDQo2LjEueSwgZmQ0ZDYxZjg1ZTc2MjVjYjIxYTdlZmY0ZWZhMWRlNDY1
+MDNlZDJjMyksIGJ1dCB0aGUgImhydGltZXI6DQpJZ25vcmUgc2xhY2sgdGltZSAuLi4iIHBhdGNo
+IGRpZCBub3QgZ2V0IGJhY2twb3J0ZWQgc28gZmFyLg0KSSBhbHNvIGNoZWNrZWQgdGhlIHNvdXJj
+ZSBvZiB2Ni4xLnkgYW5kIGNvdWxkIG5vdCBmaW5kIHRoZSByZWxhdGVkDQpjaGFuZ2UuIFdoaWNo
+IGNvbW1pdCBleGFjdGx5IGFyZSB5b3UgcmVmZXJyaW5nIHRvPw0KDQpGZWxpeA0KDQo+IA0KPiBj
+b25mdXNlZCwNCj4gDQo+IGdyZWcgay1oDQoNCi0tIA0KU2llbWVucyBBRywgVGVjaG5vbG9neQ0K
+TGludXggRXhwZXJ0IENlbnRlcg0KDQoNCg==
 
