@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-21338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA0EA85C870
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:21:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE26485C9B1
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:37:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F9EF1F23F71
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:21:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 637941F2207C
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:37:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DD03151CF1;
-	Tue, 20 Feb 2024 21:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3CBF151CEA;
+	Tue, 20 Feb 2024 21:37:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pmcpfV+W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aVA+SF3B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B7322DF9F;
-	Tue, 20 Feb 2024 21:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8234D14F9C8;
+	Tue, 20 Feb 2024 21:37:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464107; cv=none; b=SDqESkO3hrZ9n/NAMqUgt5G7jdoK6joWD98TpuSyUIZHq757GoDGSwCZj1jmMSka9UVoly9QdQ0fTVoYhdyVHYv383fVzqki6bBGZ2NETfqxhOhZ+ArooYuIfjGasIr2clT4grdC3+vn5OFZ3dNMG7grrP+AVJ0okoCvQx7u9eU=
+	t=1708465022; cv=none; b=SZrVSgbnbk+rw1fo3D9KselDUHz8Hu4GE2LK7P1GtZv799VlXRYbjyiAoZlAkr1vv8pvJQkzK9orGX3tRlJasfl/e9SL2xbs7SkGApREaXPdY2rTbS+IDc1oONMuN6t5MKTzAPZGUx8kShMfoVCPad3ZHqERBPKDl0WqGUIG8xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464107; c=relaxed/simple;
-	bh=BDbTMsGW10G6GMNLVRr6lbkrVzPPZEJbaTlydkhEFyI=;
+	s=arc-20240116; t=1708465022; c=relaxed/simple;
+	bh=tqbTgfU+wH+TvzRB0EhskSJJfLIq50DffNoXqW9c9SQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bmJjhYfUNpeF8Ylkl6h/DmLlncJieAKqRpLviH8zfx5zLMTFZK40xeWAq+v0wO0QqGXSnPTPdd+aY//NHoHmef1361OPJZOHQR0om1BWUFamLH+NRWPeXfohfxWvLg+Kq6vVXxTI3IloKpGaK8PSp8Mg67Xn9cUdaU++/Mv+A88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pmcpfV+W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7109C433F1;
-	Tue, 20 Feb 2024 21:21:46 +0000 (UTC)
+	 MIME-Version; b=iQjfVARMYSqcBZztvCPpGPwDemY/a9AYZmukUk0+ed9JSl3qb0o+J+Yss/HR/MazpzPjEe3jztrDG2nbFgVLYZayCwTaoBk4y6DGWtg4UxvAc/hwpxZ3ohAefMzg32Ftc1ZNI3iN1uGlWdroZyuDpMUNRlnxOZX9RunvA8CLFDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aVA+SF3B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DE86C43390;
+	Tue, 20 Feb 2024 21:37:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464107;
-	bh=BDbTMsGW10G6GMNLVRr6lbkrVzPPZEJbaTlydkhEFyI=;
+	s=korg; t=1708465022;
+	bh=tqbTgfU+wH+TvzRB0EhskSJJfLIq50DffNoXqW9c9SQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pmcpfV+W3GcJfRBxR5chSaXnBndAn9lcqkeKusRrcHuSxUcjz8/pgq8QUL1IrPV2C
-	 nHqKpsrt6zdjCfFn9U61XtKVxpwsgY2rFnyQV6VilChZqt7+E0P3xYjidMfWIQyyo8
-	 mdMtFprH5eK6ESWwpHbMnUkfQlh9z6lfZxDdpTfw=
+	b=aVA+SF3Bw7VnWh6DlvXrSa2WkRVfI3EZFDykC/7uzG+LEhsQou0+R61TENJDYyQtG
+	 XIg/oQs97RTLKMfSzNH+mOxEL467vahPrj10FzYw7vWq7MN3IeKsOH+WcYKN8/JXbs
+	 5sPy77yRR/olQZtLR8cW/dZTEfD1RqPDBRSWI9A0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.vger.org,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Hannes Reinecke <hare@suse.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 254/331] block: fix partial zone append completion handling in req_bio_endio()
+	Nathan Chancellor <nathan@kernel.org>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.7 211/309] drm/amd/display: Increase frame-larger-than for all display_mode_vba files
 Date: Tue, 20 Feb 2024 21:56:10 +0100
-Message-ID: <20240220205645.834026777@linuxfoundation.org>
+Message-ID: <20240220205639.779030340@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,63 +61,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 748dc0b65ec2b4b7b3dbd7befcc4a54fdcac7988 ]
+commit e63e35f0164c43fbc1adb481d6604f253b9f9667 upstream.
 
-Partial completions of zone append request is not allowed but if a zone
-append completion indicates a number of completed bytes different from
-the original BIO size, only the BIO status is set to error. This leads
-to bio_advance() not setting the BIO size to 0 and thus to not call
-bio_endio() at the end of req_bio_endio().
+After a recent change in LLVM, allmodconfig (which has CONFIG_KCSAN=y
+and CONFIG_WERROR=y enabled) has a few new instances of
+-Wframe-larger-than for the mode support and system configuration
+functions:
 
-Make sure a partially completed zone append is failed and completed
-immediately by forcing the completed number of bytes (nbytes) to be
-equal to the BIO size, thus ensuring that bio_endio() is called.
+  drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn20/display_mode_vba_20v2.c:3393:6: error: stack frame size (2144) exceeds limit (2048) in 'dml20v2_ModeSupportAndSystemConfigurationFull' [-Werror,-Wframe-larger-than]
+   3393 | void dml20v2_ModeSupportAndSystemConfigurationFull(struct display_mode_lib *mode_lib)
+        |      ^
+  1 error generated.
 
-Fixes: 297db731847e ("block: fix req_bio_endio append error handling")
-Cc: stable@kernel.vger.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Link: https://lore.kernel.org/r/20240110092942.442334-1-dlemoal@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn21/display_mode_vba_21.c:3520:6: error: stack frame size (2192) exceeds limit (2048) in 'dml21_ModeSupportAndSystemConfigurationFull' [-Werror,-Wframe-larger-than]
+   3520 | void dml21_ModeSupportAndSystemConfigurationFull(struct display_mode_lib *mode_lib)
+        |      ^
+  1 error generated.
+
+  drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn20/display_mode_vba_20.c:3286:6: error: stack frame size (2128) exceeds limit (2048) in 'dml20_ModeSupportAndSystemConfigurationFull' [-Werror,-Wframe-larger-than]
+   3286 | void dml20_ModeSupportAndSystemConfigurationFull(struct display_mode_lib *mode_lib)
+        |      ^
+  1 error generated.
+
+Without the sanitizers enabled, there are no warnings.
+
+This was the catalyst for commit 6740ec97bcdb ("drm/amd/display:
+Increase frame warning limit with KASAN or KCSAN in dml2") and that same
+change was made to dml in commit 5b750b22530f ("drm/amd/display:
+Increase frame warning limit with KASAN or KCSAN in dml") but the
+frame_warn_flag variable was not applied to all files. Do so now to
+clear up the warnings and make all these files consistent.
+
+Cc: stable@vger.kernel.org
+Closes: https://github.com/ClangBuiltLinux/linux/issue/1990
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-mq.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dml/Makefile |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index 257b0addd47e..d8b47f534df9 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -767,11 +767,16 @@ static void req_bio_endio(struct request *rq, struct bio *bio,
- 		/*
- 		 * Partial zone append completions cannot be supported as the
- 		 * BIO fragments may end up not being written sequentially.
-+		 * For such case, force the completed nbytes to be equal to
-+		 * the BIO size so that bio_advance() sets the BIO remaining
-+		 * size to 0 and we end up calling bio_endio() before returning.
- 		 */
--		if (bio->bi_iter.bi_size != nbytes)
-+		if (bio->bi_iter.bi_size != nbytes) {
- 			bio->bi_status = BLK_STS_IOERR;
--		else
-+			nbytes = bio->bi_iter.bi_size;
-+		} else {
- 			bio->bi_iter.bi_sector = rq->__sector;
-+		}
- 	}
- 
- 	bio_advance(bio, nbytes);
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/amd/display/dc/dml/Makefile
++++ b/drivers/gpu/drm/amd/display/dc/dml/Makefile
+@@ -72,11 +72,11 @@ CFLAGS_$(AMDDALPATH)/dc/dml/display_mode
+ CFLAGS_$(AMDDALPATH)/dc/dml/display_mode_vba.o := $(dml_ccflags)
+ CFLAGS_$(AMDDALPATH)/dc/dml/dcn10/dcn10_fpu.o := $(dml_ccflags)
+ CFLAGS_$(AMDDALPATH)/dc/dml/dcn20/dcn20_fpu.o := $(dml_ccflags)
+-CFLAGS_$(AMDDALPATH)/dc/dml/dcn20/display_mode_vba_20.o := $(dml_ccflags)
++CFLAGS_$(AMDDALPATH)/dc/dml/dcn20/display_mode_vba_20.o := $(dml_ccflags) $(frame_warn_flag)
+ CFLAGS_$(AMDDALPATH)/dc/dml/dcn20/display_rq_dlg_calc_20.o := $(dml_ccflags)
+-CFLAGS_$(AMDDALPATH)/dc/dml/dcn20/display_mode_vba_20v2.o := $(dml_ccflags)
++CFLAGS_$(AMDDALPATH)/dc/dml/dcn20/display_mode_vba_20v2.o := $(dml_ccflags) $(frame_warn_flag)
+ CFLAGS_$(AMDDALPATH)/dc/dml/dcn20/display_rq_dlg_calc_20v2.o := $(dml_ccflags)
+-CFLAGS_$(AMDDALPATH)/dc/dml/dcn21/display_mode_vba_21.o := $(dml_ccflags)
++CFLAGS_$(AMDDALPATH)/dc/dml/dcn21/display_mode_vba_21.o := $(dml_ccflags) $(frame_warn_flag)
+ CFLAGS_$(AMDDALPATH)/dc/dml/dcn21/display_rq_dlg_calc_21.o := $(dml_ccflags)
+ CFLAGS_$(AMDDALPATH)/dc/dml/dcn30/display_mode_vba_30.o := $(dml_ccflags) $(frame_warn_flag)
+ CFLAGS_$(AMDDALPATH)/dc/dml/dcn30/display_rq_dlg_calc_30.o := $(dml_ccflags)
 
 
 
