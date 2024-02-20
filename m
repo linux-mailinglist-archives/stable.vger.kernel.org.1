@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-21439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9B2C85C8E6
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:27:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECAF685C750
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:11:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FB8E1F21CC2
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:27:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8DFA1B20C28
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:11:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9C9E151CDC;
-	Tue, 20 Feb 2024 21:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B860A1509A5;
+	Tue, 20 Feb 2024 21:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mazhhzbR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lA5UG2je"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997D014A4E6;
-	Tue, 20 Feb 2024 21:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778D0612D7;
+	Tue, 20 Feb 2024 21:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464423; cv=none; b=A/9KO6ZflTg2eNxemmUGl5qbXDmwlXO56+8CDNAhjJIOyhVK27mA3/DHhcgIT92T06Q9Z9yobcz5Dd6JvgSzYfMhwtfIsdxvaxKozGofVysbq3Q3rnbN34Dv+eVzzu1NwKY6E5miHhIQZF9Kxa3BWuglPWetYjGsnnZvCPOR9v8=
+	t=1708463501; cv=none; b=TsEc9gi77Q9AB0qXnCL41k2PRlbSRcWFt/1hOoBNVB1+1piIJ1cb2glwZBLu6jaYOJCjTNXVuQAqvAWCFtiY9BGcpUrN021VgIKBmCL+6QPadqc4ZXOFGTL8QphPbbAJSb1/pc+M7BXX/TXWJQryAvRuxoD5v9h56OcsAEEmC5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464423; c=relaxed/simple;
-	bh=gwb/3TEoin7bbCeiW2+G0EInn+/dB9wsRekf9GC4o5g=;
+	s=arc-20240116; t=1708463501; c=relaxed/simple;
+	bh=wxPOCCz22+O+OQtkVW/dv9u9vHzZUucRlDbgjEvS+kE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tbX38o5OnmnaZisE2jdMzygzpKqPlQXcah1cMfI/rQBlZogHYQ2rqvYj+Gr74Ft7M3/d4Lr1cc3lojq49qxv4vLU5649kwcyj/1Ym6kMrH54ToZrYgxu1z0GQ6/CPO137XR59uGrcEHTjn/hXcgGvSyZCwtKWRLfimZjor0Hmbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mazhhzbR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07344C433F1;
-	Tue, 20 Feb 2024 21:27:02 +0000 (UTC)
+	 MIME-Version; b=Ieqnm2tHeFg4vyjz/eEjPBUK+0SBqV2PsY37HlkpqucdAB9Rut0dIXZSNy73h8Re/qpKvhXZlou09SgbsibeBdCvKCPl7e/LxHqV/plaeAQ3Lhi8V+69zHxoW24JulRkgwFYwRFLsrg8aPWpg8vy7/n8JwxRGd+NVaqu0LjNEek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lA5UG2je; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B611FC433F1;
+	Tue, 20 Feb 2024 21:11:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464423;
-	bh=gwb/3TEoin7bbCeiW2+G0EInn+/dB9wsRekf9GC4o5g=;
+	s=korg; t=1708463501;
+	bh=wxPOCCz22+O+OQtkVW/dv9u9vHzZUucRlDbgjEvS+kE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mazhhzbRe/tm5Igs5BcKceh9qxv86zy1JqvXyaRvBzV5OMgulQ9/P7cD/db+7FpZK
-	 tq6fqslIqwvDHhfJljz2hMnxJrlDTLSCaYrQihT4sAMpTNyUfTGCCpFKVz93cN30RK
-	 +T8DhAIXrm5F6/YKEWqoX0HOsT7nz4UkZ8cdaA7U=
+	b=lA5UG2jeunhna0YEjTFwt/AqzCpw55NtaYKiiZhxqrlbHdXF5DuXoQag0xIUhFXOk
+	 BYG5xLATN+121sgtrNc9ugOMJ24/1OOaBcULP8OQAkoZbnT78yAsliR9SSWimEXgnm
+	 BQZjgsOQ/FvacOQdK8KNLfjqezVCDMUzm7ZGEBG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
-	Rob Herring <robh@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 020/309] of: unittest: Fix compile in the non-dynamic case
+	Nico Pache <npache@redhat.com>,
+	Donet Tom <donettom@linux.vnet.ibm.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Christophe Leroy <christophe.leroy@c-s.fr>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 063/331] selftests: mm: fix map_hugetlb failure on 64K page size systems
 Date: Tue, 20 Feb 2024 21:52:59 +0100
-Message-ID: <20240220205633.808679583@linuxfoundation.org>
+Message-ID: <20240220205639.567760062@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +65,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian A. Ehrhardt <lk@c--e.de>
+From: Nico Pache <npache@redhat.com>
 
-[ Upstream commit 607aad1e4356c210dbef9022955a3089377909b2 ]
+commit 91b80cc5b39f00399e8e2d17527cad2c7fa535e2 upstream.
 
-If CONFIG_OF_KOBJ is not set, a device_node does not contain a
-kobj and attempts to access the embedded kobj via kref_read break
-the compile.
+On systems with 64k page size and 512M huge page sizes, the allocation and
+test succeeds but errors out at the munmap.  As the comment states, munmap
+will failure if its not HUGEPAGE aligned.  This is due to the length of
+the mapping being 1/2 the size of the hugepage causing the munmap to not
+be hugepage aligned.  Fix this by making the mapping length the full
+hugepage if the hugepage is larger than the length of the mapping.
 
-Replace affected kref_read calls with a macro that reads the
-refcount if it exists and returns 1 if there is no embedded kobj.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202401291740.VP219WIz-lkp@intel.com/
-Fixes: 4dde83569832 ("of: Fix double free in of_parse_phandle_with_args_map")
-Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
-Link: https://lore.kernel.org/r/20240129192556.403271-1-lk@c--e.de
-Signed-off-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20240119131429.172448-1-npache@redhat.com
+Signed-off-by: Nico Pache <npache@redhat.com>
+Cc: Donet Tom <donettom@linux.vnet.ibm.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/unittest.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ tools/testing/selftests/mm/map_hugetlb.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
-index cfd60e35a899..d7593bde2d02 100644
---- a/drivers/of/unittest.c
-+++ b/drivers/of/unittest.c
-@@ -50,6 +50,12 @@ static struct unittest_results {
- 	failed; \
- })
+--- a/tools/testing/selftests/mm/map_hugetlb.c
++++ b/tools/testing/selftests/mm/map_hugetlb.c
+@@ -15,6 +15,7 @@
+ #include <unistd.h>
+ #include <sys/mman.h>
+ #include <fcntl.h>
++#include "vm_util.h"
  
-+#ifdef CONFIG_OF_KOBJ
-+#define OF_KREF_READ(NODE) kref_read(&(NODE)->kobj.kref)
-+#else
-+#define OF_KREF_READ(NODE) 1
-+#endif
+ #define LENGTH (256UL*1024*1024)
+ #define PROTECTION (PROT_READ | PROT_WRITE)
+@@ -58,10 +59,16 @@ int main(int argc, char **argv)
+ {
+ 	void *addr;
+ 	int ret;
++	size_t hugepage_size;
+ 	size_t length = LENGTH;
+ 	int flags = FLAGS;
+ 	int shift = 0;
+ 
++	hugepage_size = default_huge_page_size();
++	/* munmap with fail if the length is not page aligned */
++	if (hugepage_size > length)
++		length = hugepage_size;
 +
- /*
-  * Expected message may have a message level other than KERN_INFO.
-  * Print the expected message only if the current loglevel will allow
-@@ -570,7 +576,7 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
- 			pr_err("missing testcase data\n");
- 			return;
- 		}
--		prefs[i] = kref_read(&p[i]->kobj.kref);
-+		prefs[i] = OF_KREF_READ(p[i]);
- 	}
- 
- 	rc = of_count_phandle_with_args(np, "phandle-list", "#phandle-cells");
-@@ -693,9 +699,9 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
- 	unittest(rc == -EINVAL, "expected:%i got:%i\n", -EINVAL, rc);
- 
- 	for (i = 0; i < ARRAY_SIZE(p); ++i) {
--		unittest(prefs[i] == kref_read(&p[i]->kobj.kref),
-+		unittest(prefs[i] == OF_KREF_READ(p[i]),
- 			 "provider%d: expected:%d got:%d\n",
--			 i, prefs[i], kref_read(&p[i]->kobj.kref));
-+			 i, prefs[i], OF_KREF_READ(p[i]));
- 		of_node_put(p[i]);
- 	}
- }
--- 
-2.43.0
-
+ 	if (argc > 1)
+ 		length = atol(argv[1]) << 20;
+ 	if (argc > 2) {
 
 
 
