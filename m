@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-21485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 323CF85C91D
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:29:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38A0685C76D
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:12:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCC261F22AA5
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:29:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E87F3282E66
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:12:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 025CC151CE9;
-	Tue, 20 Feb 2024 21:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48120151CD8;
+	Tue, 20 Feb 2024 21:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SEwe+abJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mVX2Ztz8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B296E14A4E6;
-	Tue, 20 Feb 2024 21:29:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 038B014AD12;
+	Tue, 20 Feb 2024 21:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464566; cv=none; b=R7Dt8v9ggg/vbJhCh7dXifJvN7B1DWUVFp1Olg4km3fRn3u9XUUfhE5RiTS4z1qWpFTk0XTfW9MqdrhsNX5y9DCrgHl+v39cyPKBVteAj8Lujl/6tnEMNJa1iZFU39kBu0teCOXlKABgUpW1ja0inFHYenEK22n4QXyCpHEYI8k=
+	t=1708463549; cv=none; b=oHHKiSFoxqRuEb9AWBhiXBkTysp+rRbLH6gDGO6aWIwWayRIizn1duUi7HqHNFTQITolT2Uwy3A+7voHdQdlakqiPRsdJcLna4snbIi5CLkHmMgubwI33VGBo/U138PyDb5T4VWSfa5dYhpgBqFCg+qWTvP1xfrQCjxGHhbDDqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464566; c=relaxed/simple;
-	bh=jzJ/WF4DInPYUpCW2yEJnDb9ZgjTci9F3wP0Ev0KVZk=;
+	s=arc-20240116; t=1708463549; c=relaxed/simple;
+	bh=4qGCWFGY7hoRfdoLiOTexrXHeTBLvR1husl6tSC2gF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dtzOB++hJzKj+EIGZMgeDVeayp6XnOSNaPzJUXxRESjk+1iMeTSHEBqk79U/g7H53uLRTdbW0wIBM/QfvdboymbUQdRvlBxviZdAGNeCigjb0jmS2o9bmUtqLSdldmjjWq/iA/JcdoHH865DEiOVw7ZlQO6HWFIzbnHPNeoDfso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SEwe+abJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDAE6C433C7;
-	Tue, 20 Feb 2024 21:29:25 +0000 (UTC)
+	 MIME-Version; b=SYPWrWTjgw6840bJniF4rBYRwYgBedeHKGFszQcw4tEpkvvkBnkigU9BAe9NyhXvPbw7W5k9OtnckyrPHk3N55b0f4iHmdN5SmkFhbqTtXrmnCtlFkDzToTDV6Gw/3KYMUlIpZe3LZbgWfFJqofuBUnIJdEH9IQFX7rohIXXiCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mVX2Ztz8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67C1CC433F1;
+	Tue, 20 Feb 2024 21:12:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464566;
-	bh=jzJ/WF4DInPYUpCW2yEJnDb9ZgjTci9F3wP0Ev0KVZk=;
+	s=korg; t=1708463548;
+	bh=4qGCWFGY7hoRfdoLiOTexrXHeTBLvR1husl6tSC2gF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SEwe+abJrtRShxrI+1EAdEtEm5aO9bfCHLp68PF0Y+KYFcwmwGM6JvFEjmVOF+ABX
-	 jkMrtIXY92WWXsokr5tqvItjI2W1LqOop1VUjMVYHEcLJ4HbwCpwtyGFBjS0ubUsBX
-	 7ASXbxXEw2RGQLvf4JnQIa6BdAnTpew2Qx8jP28E=
+	b=mVX2Ztz8Hj4RXliv/f7csSjK/kjPkeWz1bElYpsTwaflOkpeSu7M5cuB6MaCwPFRQ
+	 C9g/2iyuMcKr7ZqLGYDtBBpCYHjK1dxJ2OVN2VbqT7SwDGiLwnDTmNs2Bv6Peq16k5
+	 O65lfRXar5BXF107ni3Z6gcd63JUA3A6bQWJo4jk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Parav Pandit <parav@nvidia.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 034/309] devlink: Fix command annotation documentation
+	"Christian A. Ehrhardt" <lk@c--e.de>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.6 077/331] usb: ucsi: Add missing ppm_lock
 Date: Tue, 20 Feb 2024 21:53:13 +0100
-Message-ID: <20240220205634.252198404@linuxfoundation.org>
+Message-ID: <20240220205640.000139260@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Parav Pandit <parav@nvidia.com>
+From: Christian A. Ehrhardt <lk@c--e.de>
 
-[ Upstream commit 4ab18af47a2c2a80ac11674122935700caf80cc6 ]
+commit c9aed03a0a683fd1600ea92f2ad32232d4736272 upstream.
 
-Command example string is not read as command.
-Fix command annotation.
+Calling ->sync_write must be done while holding the PPM lock as
+the mailbox logic does not support concurrent commands.
 
-Fixes: a8ce7b26a51e ("devlink: Expose port function commands to control migratable")
-Signed-off-by: Parav Pandit <parav@nvidia.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240206161717.466653-1-parav@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+At least since the addition of partner task this means that
+ucsi_acknowledge_connector_change should be called with the
+PPM lock held as it calls ->sync_write.
+
+Thus protect the only call to ucsi_acknowledge_connector_change
+with the PPM. All other calls to ->sync_write already happen
+under the PPM lock.
+
+Fixes: b9aa02ca39a4 ("usb: typec: ucsi: Add polling mechanism for partner tasks like alt mode checking")
+Cc: stable@vger.kernel.org
+Signed-off-by: "Christian A. Ehrhardt" <lk@c--e.de>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240121204123.275441-2-lk@c--e.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/networking/devlink/devlink-port.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/typec/ucsi/ucsi.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/Documentation/networking/devlink/devlink-port.rst b/Documentation/networking/devlink/devlink-port.rst
-index e33ad2401ad7..562f46b41274 100644
---- a/Documentation/networking/devlink/devlink-port.rst
-+++ b/Documentation/networking/devlink/devlink-port.rst
-@@ -126,7 +126,7 @@ Users may also set the RoCE capability of the function using
- `devlink port function set roce` command.
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -935,7 +935,9 @@ static void ucsi_handle_connector_change
  
- Users may also set the function as migratable using
--'devlink port function set migratable' command.
-+`devlink port function set migratable` command.
+ 	clear_bit(EVENT_PENDING, &con->ucsi->flags);
  
- Users may also set the IPsec crypto capability of the function using
- `devlink port function set ipsec_crypto` command.
--- 
-2.43.0
-
++	mutex_lock(&ucsi->ppm_lock);
+ 	ret = ucsi_acknowledge_connector_change(ucsi);
++	mutex_unlock(&ucsi->ppm_lock);
+ 	if (ret)
+ 		dev_err(ucsi->dev, "%s: ACK failed (%d)", __func__, ret);
+ 
 
 
 
