@@ -1,98 +1,116 @@
-Return-Path: <stable+bounces-20787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DC8385B5B1
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 09:44:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEE0085B5BC
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 09:47:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C065A1C2292C
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 08:44:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E2111C21235
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 08:47:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC4105D751;
-	Tue, 20 Feb 2024 08:44:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BC105D75D;
+	Tue, 20 Feb 2024 08:47:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XcBcYY5I"
 X-Original-To: stable@vger.kernel.org
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A61A35D743;
-	Tue, 20 Feb 2024 08:44:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1C7C2E3E5;
+	Tue, 20 Feb 2024 08:47:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708418656; cv=none; b=g2aP9hRJG9F1kipbSPitVfCI7buZt11hWRJnSPzCONJ5JH9xCglIllHucJBcAO5Vn91JaT92qC5iwBN+7oe1uEz+TDqq6DvBtUD2nUzsjX+mQzzIGfaCk27dLFqrY+XpwbdWYYjWAROt/n+fyoAmuAKYqcuT+Q+jc3N/22QE7Nk=
+	t=1708418821; cv=none; b=m7zbDyGuUUOK8VlgG4v6tDyq1A8Ebdrzu4fUjVK6bSDdWHJk/FtYZelBMfBTwSIeFjBA1mbR0uLuJsgunD0ut7u32cRyCbvYQk4CWeoCcMT9y7TyJ3Q5kaFQAxSeTFDY054vWCJU8+hF3izpbAPi8YweU8MVQFqJjaozVUntQYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708418656; c=relaxed/simple;
-	bh=IxVU2SCDQRM0JjhXwZUQggrxGpJLFlrsAUrWea6VEMc=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=RSVchrfMuDfA5C1sq2nhnNj+PAw9YxYSNPpraaFmd04cjYEvqLbvTBchhmj+vv220qhLBumsBp5VcyTb6y9+o1CLdcY6BY4Jlbs8O4+8kFqMlU6eLQbiFs65Sx1R41x/h1rRxEI20bBFgikno1ZVuplcloQQZSE4BmVl/tLuk5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
-Received: from msexch01.omp.ru (10.188.4.12) by msexch02.omp.ru (10.188.4.13)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Tue, 20 Feb
- 2024 11:44:02 +0300
-Received: from msexch01.omp.ru ([fe80::485b:1c4a:fb7f:c753]) by
- msexch01.omp.ru ([fe80::485b:1c4a:fb7f:c753%5]) with mapi id 15.02.1258.012;
- Tue, 20 Feb 2024 11:44:02 +0300
-From: Roman Smirnov <r.smirnov@omp.ru>
-To: "stable@vger.kernel.org" <stable@vger.kernel.org>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>
-CC: Ryusuke Konishi <konishi.ryusuke@gmail.com>, "linux-nilfs@vger.kernel.org"
-	<linux-nilfs@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, Alexey Khoroshilov <khoroshilov@ispras.ru>,
-	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>, "Sergey
- Shtylyov" <s.shtylyov@omp.ru>, Karina Yankevich <k.yankevich@omp.ru>, "Andrey
- Rusalin" <a.rusalin@omp.ru>, Sergey Yudin <s.yudin@omp.ru>, "Valentin
- Perevozchikov" <v.perevozchikov@omp.ru>
-Subject: Re: [PATCH 5.10/5.15/6.1 0/1] nilfs2: fix WARNING in
- nilfs_dat_prepare_end()
-Thread-Topic: [PATCH 5.10/5.15/6.1 0/1] nilfs2: fix WARNING in
- nilfs_dat_prepare_end()
-Thread-Index: AQHaWp0R4KNZ2UzvN0KJYOohjPpIcLES/EMy
-Date: Tue, 20 Feb 2024 08:44:02 +0000
-Message-ID: <5abcb44deb604258aff4cd02c3ca90a3@omp.ru>
-References: <20240208144224.438146-1-r.smirnov@omp.ru>
-In-Reply-To: <20240208144224.438146-1-r.smirnov@omp.ru>
-Accept-Language: ru-RU, en-US
-Content-Language: ru-RU
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-kse-serverinfo: msexch02.omp.ru, 9
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: Clean, bases: 2/20/2024 6:44:00 AM
-x-kse-attachment-filter-triggered-rules: Clean
-x-kse-attachment-filter-triggered-filters: Clean
-x-kse-bulkmessagesfiltering-scan-result: InTheLimit
-Content-Type: text/plain; charset="koi8-r"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1708418821; c=relaxed/simple;
+	bh=GZ+HcFFNIzj0fwynEx3VW22XthB/JF29Bnq/DjlKiCM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DJcZs4n7sIGvTrDyB3knPo4CkM9XIMqkLEDTcRQr7VYa9mTd9a94SjyqaWxutSE2ePo5gRcLOPQTIggTOKnuf9W26htBKL/MXYYINFomYtZYqx9DxMdush3YPQW7zAROOxFgP9knHrq+h5DMgf+4+maghA5NaiVeeMOfuTuj8k8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XcBcYY5I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2086BC433C7;
+	Tue, 20 Feb 2024 08:46:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708418820;
+	bh=GZ+HcFFNIzj0fwynEx3VW22XthB/JF29Bnq/DjlKiCM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=XcBcYY5IgpVk3q4imoW0XKzb7mrMtt9TcenPFnl0dHvFc+JSDIGyIshkMRYvW9ryP
+	 HSbgN7UYyJbzpRFj0hytz83QXfN3DWERvWR9B1/I0LHn8VxD+lcr/HrF1B0GdnV9GJ
+	 dUEwe2bWRpegbYDqjrLCRls6A/p/VWNE65OoGtc49j1/WJAad3PaVW0ACAeyUTSckJ
+	 lwsO4+cU7Ggp6ht3N37JN/OzXvqJEjEu67RVrgofo+6yrDvYI35tW19+uI6GRyhqt/
+	 aJWUTjVcmqB20VE9u6o6VV9KbjS6WEyeNaO37cLjkRFkaU88HrDxSkVvltc1vYRR9L
+	 MawQCvi5G96cA==
+From: Christian Brauner <brauner@kernel.org>
+To: netfs@lists.linux.dev,
+	Baokun Li <libaokun1@huawei.com>,
+	dhowells@redhat.com
+Cc: Christian Brauner <brauner@kernel.org>,
+	jlayton@kernel.org,
+	linux-cachefs@redhat.com,
+	linux-erofs@lists.ozlabs.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH RESEND] cachefiles: fix memory leak in cachefiles_add_cache()
+Date: Tue, 20 Feb 2024 09:46:28 +0100
+Message-ID: <20240220-lasst-hemden-8ab6d7d2e9ee@brauner>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240217081431.796809-1-libaokun1@huawei.com>
+References: <20240217081431.796809-1-libaokun1@huawei.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1939; i=brauner@kernel.org; h=from:subject:message-id; bh=GZ+HcFFNIzj0fwynEx3VW22XthB/JF29Bnq/DjlKiCM=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaReSftzfxlfFb/gguUSEwRX+NxMdpaN2+MmY367w4WDf xKfl+n9jlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgIko7GRkuOhnJjtRN+W609ft Z2amV0QXZfxvVEst8RZ8G/f6lmCbOiPDs00/RMO7///JEuPMfFB8t/4Kn3zquytd/AGxd/RfKP7 hBgA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-On Thu, 8 Feb 2024 17:42:41 +0300, Roman Smirnov wrote:
-> Syzkaller reports WARNING in nilfs_dat_prepare_end() in 5.10, 5.15 and 6.=
-1
-> stable releases. The problem has been fixed in upstream:
-> https://syzkaller.appspot.com/bug?extid=3D5d5d25f90f195a3cfcb4
->
-> The problem can also be fixed in versions 5.10, 5.15 and 6.1 by the
-> following patch.
->
-> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
->=20
-> Link: https://syzkaller.appspot.com/bug?extid=3D325e6b0a1e7cf9035cc0
-> Link: https://syzkaller.appspot.com/bug?extid=3Dbebf30d67ea2569f0fd3
->=20
-> Ryusuke Konishi (1):
->  nilfs2: replace WARN_ONs for invalid DAT metadata block requests
->
->  fs/nilfs2/dat.c | 27 +++++++++++++++++----------
->  1 file changed, 17 insertions(+), 10 deletions(-)
+On Sat, 17 Feb 2024 16:14:31 +0800, Baokun Li wrote:
+> The following memory leak was reported after unbinding /dev/cachefiles:
+> 
+> ==================================================================
+> unreferenced object 0xffff9b674176e3c0 (size 192):
+>   comm "cachefilesd2", pid 680, jiffies 4294881224
+>   hex dump (first 32 bytes):
+>     01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+>     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+>   backtrace (crc ea38a44b):
+>     [<ffffffff8eb8a1a5>] kmem_cache_alloc+0x2d5/0x370
+>     [<ffffffff8e917f86>] prepare_creds+0x26/0x2e0
+>     [<ffffffffc002eeef>] cachefiles_determine_cache_security+0x1f/0x120
+>     [<ffffffffc00243ec>] cachefiles_add_cache+0x13c/0x3a0
+>     [<ffffffffc0025216>] cachefiles_daemon_write+0x146/0x1c0
+>     [<ffffffff8ebc4a3b>] vfs_write+0xcb/0x520
+>     [<ffffffff8ebc5069>] ksys_write+0x69/0xf0
+>     [<ffffffff8f6d4662>] do_syscall_64+0x72/0x140
+>     [<ffffffff8f8000aa>] entry_SYSCALL_64_after_hwframe+0x6e/0x76
+> ==================================================================
+> 
+> [...]
 
-Sorry to bother you, do you have any comments on the patch?
+Sorry for the delay, David.
+
+---
+
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
+
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
+
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
+
+[1/1] cachefiles: fix memory leak in cachefiles_add_cache()
+      https://git.kernel.org/vfs/vfs/c/e21a2f17566c
 
