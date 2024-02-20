@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-21266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA08C85C7EF
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:18:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69DA185C94A
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:31:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26C83B2159C
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:18:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 240AE28362E
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:31:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D759151CD8;
-	Tue, 20 Feb 2024 21:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B273D151CE1;
+	Tue, 20 Feb 2024 21:31:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mRSPLjfn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HynQZzAd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D384612D7;
-	Tue, 20 Feb 2024 21:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7265E14A4D2;
+	Tue, 20 Feb 2024 21:31:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463878; cv=none; b=pw3/IeArZARrA30NFPpn5fQ0io8FTNS7TGf2NHc7dA90FC16RDcQ15ndWvbqwKLhfCXayTOwUhusXXqojTVNEn10Xb28DMPifIW54urtwe3lVgwmRTkKBtDq4zZNvH/3BRkVEYLmI8Y4X4+WHTjHiSo4jsYXWzdFvH45FJQxH3c=
+	t=1708464702; cv=none; b=CXnYPAoOrjXwe5MjEYk+vLCJ262kgCWJV2a4mHhBMetZ/EwyULYzHszxomcqz2ILT+MuUI48lwnydnL8xX+YkKkC0nFINw2WlrhiIO0mCCVHMtjLZ4lngZQFfWjxwz1/A8pycPKqp1zWdUxQ0W97DXcMY7b4QlS/6p7j0/JgU8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463878; c=relaxed/simple;
-	bh=HigfHR0jQassX0HDtula1rqqSmQ3DBUAMUnnGjTLwJY=;
+	s=arc-20240116; t=1708464702; c=relaxed/simple;
+	bh=phzSDeuGiN1Uc6I1Iq7Jh6aVjgsAKLKuzeuEc0y5la4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CvNw/M5n+ZxxRtRREB5jJqw/KtOjwCA9tStv5+n+hNxPuxl+K/TZ/JgOgUxPokN+YoXbvA6YFxW/Rk5S5Sy6Kjl6vIQILniG1ocEXJ839WGP1ATkaOVqCv273kxpa45787m453P0khNYgTNxTh1TN4BF/YfdZgRKg8lM3/Aj0Is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mRSPLjfn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA07FC433C7;
-	Tue, 20 Feb 2024 21:17:57 +0000 (UTC)
+	 MIME-Version; b=IVuzReDetwS8uv6BjsKlHOd5V10GtvG7gjeXxlLE2vQBhZjthgnAkdzIlx65IhGNJJX7AVmTtzqXQgUj6maN+/o8Kjv013nK4v5OdkcLk2u+sk+U7JzvJ6KsXIPDfNZAVOMTg2BO/M3wVemydGhQ6EAk9trkELcAYONMicFuZOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HynQZzAd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3D3EC43390;
+	Tue, 20 Feb 2024 21:31:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463878;
-	bh=HigfHR0jQassX0HDtula1rqqSmQ3DBUAMUnnGjTLwJY=;
+	s=korg; t=1708464702;
+	bh=phzSDeuGiN1Uc6I1Iq7Jh6aVjgsAKLKuzeuEc0y5la4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mRSPLjfn45iwwaZQL/upT9oF+aiLTDKEhKY+sb4yFJNKLX3WUh8JGYyjxBuqAxOHM
-	 5KtrDFpFCp5QwxDPYUxTisPV7kIn3U2AKEoAwfwMG7iEmphJXJbHeAsYdH0n+ddgrL
-	 RiC/QTDAwuo1XUDBpUDIDhpHjHYk6B+Ipt7U7vLo=
+	b=HynQZzAd8HCYRHtfGbtsQBh+sq4K3XwOIpmqzHl4wcMaaEhNjDMzUUIwvftexz/uu
+	 ekWe9QxkKN8+1jrDPR67/QGcb7m83zp6OjZ22ZwzUDB2O2kpvd6EMOzKNb3oUd1prS
+	 3qlCGNiPt4TDurlvnUKH6L15rQ2ae9PrkjY2UIWw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.6 153/331] tracing/probes: Fix to search structure fields correctly
+	Spoorthy <spoorthy@linux.ibm.com>,
+	Benjamin Gray <bgray@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 110/309] powerpc/kasan: Limit KASAN thread size increase to 32KB
 Date: Tue, 20 Feb 2024 21:54:29 +0100
-Message-ID: <20240220205642.343875764@linuxfoundation.org>
+Message-ID: <20240220205636.636857919@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit 9704669c386f9bbfef2e002e7e690c56b7dcf5de upstream.
+[ Upstream commit f1acb109505d983779bbb7e20a1ee6244d2b5736 ]
 
-Fix to search a field from the structure which has anonymous union
-correctly.
-Since the reference `type` pointer was updated in the loop, the search
-loop suddenly aborted where it hits an anonymous union. Thus it can not
-find the field after the anonymous union. This avoids updating the
-cursor `type` pointer in the loop.
+KASAN is seen to increase stack usage, to the point that it was reported
+to lead to stack overflow on some 32-bit machines (see link).
 
-Link: https://lore.kernel.org/all/170791694361.389532.10047514554799419688.stgit@devnote2/
+To avoid overflows the stack size was doubled for KASAN builds in
+commit 3e8635fb2e07 ("powerpc/kasan: Force thread size increase with
+KASAN").
 
-Fixes: 302db0f5b3d8 ("tracing/probes: Add a function to search a member of a struct/union")
-Cc: stable@vger.kernel.org
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However with a 32KB stack size to begin with, the doubling leads to a
+64KB stack, which causes build errors:
+  arch/powerpc/kernel/switch.S:249: Error: operand out of range (0x000000000000fe50 is not between 0xffffffffffff8000 and 0x0000000000007fff)
+
+Although the asm could be reworked, in practice a 32KB stack seems
+sufficient even for KASAN builds - the additional usage seems to be in
+the 2-3KB range for a 64-bit KASAN build.
+
+So only increase the stack for KASAN if the stack size is < 32KB.
+
+Fixes: 18f14afe2816 ("powerpc/64s: Increase default stack size to 32KB")
+Reported-by: Spoorthy <spoorthy@linux.ibm.com>
+Reported-by: Benjamin Gray <bgray@linux.ibm.com>
+Reviewed-by: Benjamin Gray <bgray@linux.ibm.com>
+Link: https://lore.kernel.org/linuxppc-dev/bug-207129-206035@https.bugzilla.kernel.org%2F/
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240212064244.3924505-1-mpe@ellerman.id.au
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_btf.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/include/asm/thread_info.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/trace/trace_btf.c b/kernel/trace/trace_btf.c
-index ca224d53bfdc..5bbdbcbbde3c 100644
---- a/kernel/trace/trace_btf.c
-+++ b/kernel/trace/trace_btf.c
-@@ -91,8 +91,8 @@ const struct btf_member *btf_find_struct_member(struct btf *btf,
- 	for_each_member(i, type, member) {
- 		if (!member->name_off) {
- 			/* Anonymous union/struct: push it for later use */
--			type = btf_type_skip_modifiers(btf, member->type, &tid);
--			if (type && top < BTF_ANON_STACK_MAX) {
-+			if (btf_type_skip_modifiers(btf, member->type, &tid) &&
-+			    top < BTF_ANON_STACK_MAX) {
- 				anon_stack[top].tid = tid;
- 				anon_stack[top++].offset =
- 					cur_offset + member->offset;
+diff --git a/arch/powerpc/include/asm/thread_info.h b/arch/powerpc/include/asm/thread_info.h
+index bf5dde1a4114..15c5691dd218 100644
+--- a/arch/powerpc/include/asm/thread_info.h
++++ b/arch/powerpc/include/asm/thread_info.h
+@@ -14,7 +14,7 @@
+ 
+ #ifdef __KERNEL__
+ 
+-#ifdef CONFIG_KASAN
++#if defined(CONFIG_KASAN) && CONFIG_THREAD_SHIFT < 15
+ #define MIN_THREAD_SHIFT	(CONFIG_THREAD_SHIFT + 1)
+ #else
+ #define MIN_THREAD_SHIFT	CONFIG_THREAD_SHIFT
 -- 
-2.43.2
+2.43.0
 
 
 
