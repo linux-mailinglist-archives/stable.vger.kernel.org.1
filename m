@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-21318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0938185C853
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:20:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BDAC85C9AE
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:36:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2C9C1F27053
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:20:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BCFD1F224C8
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:36:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91DD4152DE2;
-	Tue, 20 Feb 2024 21:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92B05151CDC;
+	Tue, 20 Feb 2024 21:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FkMKmVOi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JHLt6Eq2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D719E151CFC;
-	Tue, 20 Feb 2024 21:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD3314F9C8;
+	Tue, 20 Feb 2024 21:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464043; cv=none; b=hLBksnURPSN0DMCNZi35aflmXyNNUsTd4GXLKVdgsr5xWJIS/AO0LW9EVk4OI4QohpKpuTSPEP/jieLmUMSfFrDhaU+mGiqoFvJ5GfOyrBsOguCAVuxgSD+fRYasFD2Z16gvTuZyYNGaI/M4tXFogAvccakSNKhzi4jGdo2IMGA=
+	t=1708465013; cv=none; b=dpWdHVODVDsT7Ph+RsIfunQhCXCtm9/TJRkkPuWkxP3uGMtdPFTp2z3edKCcB22FBFfQ4SSSrVPO6cLkZ+zIVjbkPKO5hbLwFFBuXuABgsb03aCcoaGSWHNnSaHg83Ljc5TbRtYyEBsxyFfmCeJq4rpPAZ90XU8zYgED2lZU/mQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464043; c=relaxed/simple;
-	bh=7WUG1ZgCylwxTtJkhZ/Lx5O5h+dS1tFLGbxpNPqN4q8=;
+	s=arc-20240116; t=1708465013; c=relaxed/simple;
+	bh=VARBnrxZk/TVV+NqILhQmSBtBs9aZyI4NmTlZ/ynKBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q1cbBwJ7Kfa2sUNDMovhDyQ9HvTZnLyCMKNbK3A4APn607Xkt3TF2ur4AS2WKLWw7rDMtgqjAl+ScPxINpwqFXnQbLX+caY0dDI781kF94CVqVSiV09mK0E2od7GYzdje2Zy3D3fQEv6fBg2sBZpYqqmnLiakVBayOOYOCpJHLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FkMKmVOi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91686C433C7;
-	Tue, 20 Feb 2024 21:20:41 +0000 (UTC)
+	 MIME-Version; b=XBbmRAovwvuO6EGAuSmc+5dwuIJVj39AWREFvhqlmVw/JSCcWMDOk7GLVelQDfYRgi5O1t643m3XUHpmeF31W5kqzf8xtW7Lee7E1qi4FceRC0Qo4aw7v+8TWeDAomgtccMJkYKsQJt1brXU6o8gotmD9YiZBOv2i9JWIuuMWB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JHLt6Eq2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2302C433C7;
+	Tue, 20 Feb 2024 21:36:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464042;
-	bh=7WUG1ZgCylwxTtJkhZ/Lx5O5h+dS1tFLGbxpNPqN4q8=;
+	s=korg; t=1708465013;
+	bh=VARBnrxZk/TVV+NqILhQmSBtBs9aZyI4NmTlZ/ynKBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FkMKmVOiwZk0ia1oIKQLE4Q9ZslDF7xgtsJ2a93kVbvjLEHJmn9fCs4hZn8gsUJGK
-	 5Sg9UNqDjbVYOO3ufnKUHIIkXzJISsSDiBOG9vh3BJh8TLPBjskQlxe93AxuKqGFLq
-	 x07enMRCemPlSq3/sU1R4F2D9so2MqCZUiBrRuEk=
+	b=JHLt6Eq2tT9a3/z+mHllarlbRN74HbRDD+LTCDl8W7WVRIytliGSlmRybrK5Bf9rZ
+	 ModLk5MOFbV6xTvnm/ICuE7CPBRDnjcLjy1jzixsl1TMC3CIgfSozB6qQIHHCVq/c+
+	 7rNU6G4kCHbLoOOH3i9MqGNFD/WaBWJjJF6Kz56U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sinthu Raja <sinthu.raja@ti.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 233/331] net: ethernet: ti: cpsw: enable mac_managed_pm to fix mdio
-Date: Tue, 20 Feb 2024 21:55:49 +0100
-Message-ID: <20240220205645.112129080@linuxfoundation.org>
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@ZenIV.linux.org.uk>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.7 191/309] tracefs: Avoid using the ei->dentry pointer unnecessarily
+Date: Tue, 20 Feb 2024 21:55:50 +0100
+Message-ID: <20240220205639.139922603@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +67,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sinthu Raja <sinthu.raja@ti.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-commit bc4ce46b1e3d1da4309405cd4afc7c0fcddd0b90 upstream.
+commit 99c001cb617df409dac275a059d6c3f187a2da7a upstream.
 
-The below commit  introduced a WARN when phy state is not in the states:
-PHY_HALTED, PHY_READY and PHY_UP.
-commit 744d23c71af3 ("net: phy: Warn about incorrect mdio_bus_phy_resume() state")
+The eventfs_find_events() code tries to walk up the tree to find the
+event directory that a dentry belongs to, in order to then find the
+eventfs inode that is associated with that event directory.
 
-When cpsw resumes, there have port in PHY_NOLINK state, so the below
-warning comes out. Set mac_managed_pm be true to tell mdio that the phy
-resume/suspend is managed by the mac, to fix the following warning:
+However, it uses an odd combination of walking the dentry parent,
+looking up the eventfs inode associated with that, and then looking up
+the dentry from there.  Repeat.
 
-WARNING: CPU: 0 PID: 965 at drivers/net/phy/phy_device.c:326 mdio_bus_phy_resume+0x140/0x144
-CPU: 0 PID: 965 Comm: sh Tainted: G           O       6.1.46-g247b2535b2 #1
-Hardware name: Generic AM33XX (Flattened Device Tree)
- unwind_backtrace from show_stack+0x18/0x1c
- show_stack from dump_stack_lvl+0x24/0x2c
- dump_stack_lvl from __warn+0x84/0x15c
- __warn from warn_slowpath_fmt+0x1a8/0x1c8
- warn_slowpath_fmt from mdio_bus_phy_resume+0x140/0x144
- mdio_bus_phy_resume from dpm_run_callback+0x3c/0x140
- dpm_run_callback from device_resume+0xb8/0x2b8
- device_resume from dpm_resume+0x144/0x314
- dpm_resume from dpm_resume_end+0x14/0x20
- dpm_resume_end from suspend_devices_and_enter+0xd0/0x924
- suspend_devices_and_enter from pm_suspend+0x2e0/0x33c
- pm_suspend from state_store+0x74/0xd0
- state_store from kernfs_fop_write_iter+0x104/0x1ec
- kernfs_fop_write_iter from vfs_write+0x1b8/0x358
- vfs_write from ksys_write+0x78/0xf8
- ksys_write from ret_fast_syscall+0x0/0x54
-Exception stack(0xe094dfa8 to 0xe094dff0)
-dfa0:                   00000004 005c3fb8 00000001 005c3fb8 00000004 00000001
-dfc0: 00000004 005c3fb8 b6f6bba0 00000004 00000004 0059edb8 00000000 00000000
-dfe0: 00000004 bed918f0 b6f09bd3 b6e89a66
+But the code shouldn't have back-pointers to dentries in the first
+place, and it should just walk the dentry parenthood chain directly.
 
-Cc: <stable@vger.kernel.org> # v6.0+
-Fixes: 744d23c71af3 ("net: phy: Warn about incorrect mdio_bus_phy_resume() state")
-Fixes: fba863b81604 ("net: phy: make PHY PM ops a no-op if MAC driver manages PHY PM")
-Signed-off-by: Sinthu Raja <sinthu.raja@ti.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Similarly, 'set_top_events_ownership()' looks up the dentry from the
+eventfs inode, but the only reason it wants a dentry is to look up the
+superblock in order to look up the root dentry.
+
+But it already has the real filesystem inode, which has that same
+superblock pointer.  So just pass in the superblock pointer using the
+information that's already there, instead of looking up extraneous data
+that is irrelevant.
+
+Link: https://lore.kernel.org/linux-trace-kernel/202401291043.e62e89dc-oliver.sang@intel.com/
+Link: https://lore.kernel.org/linux-trace-kernel/20240131185512.638645365@goodmis.org
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Al Viro <viro@ZenIV.linux.org.uk>
+Cc: Ajay Kaher <ajay.kaher@broadcom.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c1504e510238 ("eventfs: Implement eventfs dir creation functions")
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ti/cpsw.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/tracefs/event_inode.c |   26 ++++++++++++--------------
+ 1 file changed, 12 insertions(+), 14 deletions(-)
 
---- a/drivers/net/ethernet/ti/cpsw.c
-+++ b/drivers/net/ethernet/ti/cpsw.c
-@@ -631,6 +631,8 @@ static void cpsw_slave_open(struct cpsw_
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -156,33 +156,30 @@ static int eventfs_set_attr(struct mnt_i
+ 	return ret;
+ }
+ 
+-static void update_top_events_attr(struct eventfs_inode *ei, struct dentry *dentry)
++static void update_top_events_attr(struct eventfs_inode *ei, struct super_block *sb)
+ {
+-	struct inode *inode;
++	struct inode *root;
+ 
+ 	/* Only update if the "events" was on the top level */
+ 	if (!ei || !(ei->attr.mode & EVENTFS_TOPLEVEL))
+ 		return;
+ 
+ 	/* Get the tracefs root inode. */
+-	inode = d_inode(dentry->d_sb->s_root);
+-	ei->attr.uid = inode->i_uid;
+-	ei->attr.gid = inode->i_gid;
++	root = d_inode(sb->s_root);
++	ei->attr.uid = root->i_uid;
++	ei->attr.gid = root->i_gid;
+ }
+ 
+ static void set_top_events_ownership(struct inode *inode)
+ {
+ 	struct tracefs_inode *ti = get_tracefs(inode);
+ 	struct eventfs_inode *ei = ti->private;
+-	struct dentry *dentry;
+ 
+ 	/* The top events directory doesn't get automatically updated */
+ 	if (!ei || !ei->is_events || !(ei->attr.mode & EVENTFS_TOPLEVEL))
+ 		return;
+ 
+-	dentry = ei->dentry;
+-
+-	update_top_events_attr(ei, dentry);
++	update_top_events_attr(ei, inode->i_sb);
+ 
+ 	if (!(ei->attr.mode & EVENTFS_SAVE_UID))
+ 		inode->i_uid = ei->attr.uid;
+@@ -235,8 +232,10 @@ static struct eventfs_inode *eventfs_fin
+ 
+ 	mutex_lock(&eventfs_mutex);
+ 	do {
+-		/* The parent always has an ei, except for events itself */
+-		ei = dentry->d_parent->d_fsdata;
++		// The parent is stable because we do not do renames
++		dentry = dentry->d_parent;
++		// ... and directories always have d_fsdata
++		ei = dentry->d_fsdata;
+ 
+ 		/*
+ 		 * If the ei is being freed, the ownership of the children
+@@ -246,12 +245,11 @@ static struct eventfs_inode *eventfs_fin
+ 			ei = NULL;
+ 			break;
  		}
- 	}
+-
+-		dentry = ei->dentry;
++		// Walk upwards until you find the events inode
+ 	} while (!ei->is_events);
+ 	mutex_unlock(&eventfs_mutex);
  
-+	phy->mac_managed_pm = true;
-+
- 	slave->phy = phy;
+-	update_top_events_attr(ei, dentry);
++	update_top_events_attr(ei, dentry->d_sb);
  
- 	phy_attached_info(slave->phy);
+ 	return ei;
+ }
 
 
 
