@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-21264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 832C185C7ED
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:17:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74EC685C949
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:31:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D6C02834E3
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:17:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AF981F22C88
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:31:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CEAC151CDC;
-	Tue, 20 Feb 2024 21:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1DE0151CD6;
+	Tue, 20 Feb 2024 21:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XUItbYob"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yFf6QaE7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC4A612D7;
-	Tue, 20 Feb 2024 21:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60CF714A4D2;
+	Tue, 20 Feb 2024 21:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463872; cv=none; b=h+fdr3Xc8VPCFwjuh0Q97O8+FQZFFeGz8hzMq1/gZZ8e0oKF/K9oMgiGpuwUj962UxvVaVU8x1pfzAO12KQNAwJ+fLGNHCZIeOIc6tzeVs8Ysl38hBpIvJeRz5MN24MDG1i1ebMkeVJG3cj1lgp0TFuo27Q08RqcQe3htu/cELU=
+	t=1708464699; cv=none; b=YIrHPYXVu4H9y/RD6EK/wPkfLqsnS7qwOyeyYr4SyI36id9LrcQ4LMrBjj+/xnFzpmAZ+/GpUiEWmh498AIE2Hur6Ah0/j959JHueC/Ymd4xL8W8yybgKI10ypE6T4gSIcMIDDcCQCFYM87oGOge4RiapJx+f+zAeIB1eLWNZWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463872; c=relaxed/simple;
-	bh=PPZFln0CZL1SdS7OpZT846ps0/1gmJQXo+l7ke+ujoU=;
+	s=arc-20240116; t=1708464699; c=relaxed/simple;
+	bh=DGEz/SGG9dkBe00dTYmzsL1JYAPvdndc0L4SmBa/95Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UTA1lho9ZwrlJN8BRB4tZIcomrrdqUB4LTl1giMvzMAeXKp5TNme6skdHgMp46hibH4KKYXTTyjdiZ/jrgka1R50AR5mehM3hWr3/vjc2HW+JkgYIueSwQUYSayU1UGG1NbfJF8VDDK8Lb8f/lCfwjrhgs/obGF1xNjfxJVdVBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XUItbYob; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A8CBC433C7;
-	Tue, 20 Feb 2024 21:17:51 +0000 (UTC)
+	 MIME-Version; b=LPqVPtRn2haqHKo1dyRYquYlrWgCWmf07Y7bgjbQoaP2g+CIphXU6ZUH0+5SSXwLIn06NrJeAqVkZY6qiciIvaof/Y0RmyOzJS9mqCCo94Vn795uYLVpdsrkiT91QoXmRYnzasLWGolkQVX+RsMNQxdKwE+0qCggCAykvM8bErY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yFf6QaE7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB3BFC433F1;
+	Tue, 20 Feb 2024 21:31:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463871;
-	bh=PPZFln0CZL1SdS7OpZT846ps0/1gmJQXo+l7ke+ujoU=;
+	s=korg; t=1708464699;
+	bh=DGEz/SGG9dkBe00dTYmzsL1JYAPvdndc0L4SmBa/95Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XUItbYobtEGW5GYBawQZZtiDtgeQZec976yJsp1uHjZAInmrDNBD0hiXCdfjoHA8a
-	 KmgEoogJUq1YczYISIcfS59SoPyrXzDnfzwXhJjtKr+e7UUa4wpDXpKOQLGYhufZce
-	 RzaNf5pYS1sEgA7iNxtKscP2/pyvq4TmQpcwopqk=
+	b=yFf6QaE7wcOOLB0XigQEpkAWUoREli8Js3GN3gVqphBMATaXYWZyLmpQe95WRwhhB
+	 DyuNrOeI8m4ytuXGuk8L5IcDs+Nf9i+x9Ufz7EGs4+F8jx9giXfnLT2nHbzh283NiN
+	 KkWp3S5XOgCTbq5S4ycMgtwm9dPYXtLuhJf5GXAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.6 151/331] tracing/probes: Fix to show a parse error for bad type for $comm
-Date: Tue, 20 Feb 2024 21:54:27 +0100
-Message-ID: <20240220205642.286514762@linuxfoundation.org>
+	Marc Zyngier <maz@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 109/309] irqchip/gic-v3-its: Handle non-coherent GICv4 redistributors
+Date: Tue, 20 Feb 2024 21:54:28 +0100
+Message-ID: <20240220205636.602971303@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,70 +63,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
 
-commit 8c427cc2fa73684ea140999e121b7b6c1c717632 upstream.
+[ Upstream commit 846297e11e8ae428f8b00156a0cfe2db58100702 ]
 
-Fix to show a parse error for bad type (non-string) for $comm/$COMM and
-immediate-string. With this fix, error_log file shows appropriate error
-message as below.
+Although the GICv3 code base has gained some handling of systems failing to
+handle the shareability attributes, the GICv4 side of things has been
+firmly ignored.
 
- /sys/kernel/tracing # echo 'p vfs_read $comm:u32' >> kprobe_events
-sh: write error: Invalid argument
- /sys/kernel/tracing # echo 'p vfs_read \"hoge":u32' >> kprobe_events
-sh: write error: Invalid argument
- /sys/kernel/tracing # cat error_log
+This is unfortunate, as the new recent addition of the "dma-noncoherent" is
+supposed to apply to all of the GICR tables, and not just the ones that are
+common to v3 and v4.
 
-[   30.144183] trace_kprobe: error: $comm and immediate-string only accepts string type
-  Command: p vfs_read $comm:u32
-                            ^
-[   62.618500] trace_kprobe: error: $comm and immediate-string only accepts string type
-  Command: p vfs_read \"hoge":u32
-                              ^
-Link: https://lore.kernel.org/all/170602215411.215583.2238016352271091852.stgit@devnote2/
+Add some checks to handle the VPROPBASE/VPENDBASE shareability and
+cacheability attributes in the same way we deal with the other GICR_BASE
+registers, wrapping the flag check in a helper for improved readability.
 
-Fixes: 3dd1f7f24f8c ("tracing: probeevent: Fix to make the type of $comm string")
-Cc: stable@vger.kernel.org
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Note that this has been found by inspection only, as I don't have access to
+HW that suffers from this particular issue.
+
+Fixes: 3a0fff0fb6a3 ("irqchip/gic-v3: Enable non-coherent redistributors/ITSes DT probing")
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Link: https://lore.kernel.org/r/20240213101206.2137483-2-maz@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_probe.c |    7 +++++--
- kernel/trace/trace_probe.h |    3 ++-
- 2 files changed, 7 insertions(+), 3 deletions(-)
+ drivers/irqchip/irq-gic-v3-its.c | 37 +++++++++++++++++++++-----------
+ 1 file changed, 25 insertions(+), 12 deletions(-)
 
---- a/kernel/trace/trace_probe.c
-+++ b/kernel/trace/trace_probe.c
-@@ -1159,9 +1159,12 @@ static int traceprobe_parse_probe_arg_bo
- 	if (!(ctx->flags & TPARG_FL_TEVENT) &&
- 	    (strcmp(arg, "$comm") == 0 || strcmp(arg, "$COMM") == 0 ||
- 	     strncmp(arg, "\\\"", 2) == 0)) {
--		/* The type of $comm must be "string", and not an array. */
--		if (parg->count || (t && strcmp(t, "string")))
-+		/* The type of $comm must be "string", and not an array type. */
-+		if (parg->count || (t && strcmp(t, "string"))) {
-+			trace_probe_log_err(ctx->offset + (t ? (t - arg) : 0),
-+					NEED_STRING_TYPE);
- 			goto out;
-+		}
- 		parg->type = find_fetch_type("string", ctx->flags);
- 	} else
- 		parg->type = find_fetch_type(t, ctx->flags);
---- a/kernel/trace/trace_probe.h
-+++ b/kernel/trace/trace_probe.h
-@@ -515,7 +515,8 @@ extern int traceprobe_define_arg_fields(
- 	C(BAD_HYPHEN,		"Failed to parse single hyphen. Forgot '>'?"),	\
- 	C(NO_BTF_FIELD,		"This field is not found."),	\
- 	C(BAD_BTF_TID,		"Failed to get BTF type info."),\
--	C(BAD_TYPE4STR,		"This type does not fit for string."),
-+	C(BAD_TYPE4STR,		"This type does not fit for string."),\
-+	C(NEED_STRING_TYPE,	"$comm and immediate-string only accepts string type"),
+diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
+index 9a7a74239eab..bdc2c8330479 100644
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -207,6 +207,11 @@ static bool require_its_list_vmovp(struct its_vm *vm, struct its_node *its)
+ 	return (gic_rdists->has_rvpeid || vm->vlpi_count[its->list_nr]);
+ }
  
- #undef C
- #define C(a, b)		TP_ERR_##a
++static bool rdists_support_shareable(void)
++{
++	return !(gic_rdists->flags & RDIST_FLAGS_FORCE_NON_SHAREABLE);
++}
++
+ static u16 get_its_list(struct its_vm *vm)
+ {
+ 	struct its_node *its;
+@@ -2710,10 +2715,12 @@ static u64 inherit_vpe_l1_table_from_its(void)
+ 			break;
+ 		}
+ 		val |= FIELD_PREP(GICR_VPROPBASER_4_1_ADDR, addr >> 12);
+-		val |= FIELD_PREP(GICR_VPROPBASER_SHAREABILITY_MASK,
+-				  FIELD_GET(GITS_BASER_SHAREABILITY_MASK, baser));
+-		val |= FIELD_PREP(GICR_VPROPBASER_INNER_CACHEABILITY_MASK,
+-				  FIELD_GET(GITS_BASER_INNER_CACHEABILITY_MASK, baser));
++		if (rdists_support_shareable()) {
++			val |= FIELD_PREP(GICR_VPROPBASER_SHAREABILITY_MASK,
++					  FIELD_GET(GITS_BASER_SHAREABILITY_MASK, baser));
++			val |= FIELD_PREP(GICR_VPROPBASER_INNER_CACHEABILITY_MASK,
++					  FIELD_GET(GITS_BASER_INNER_CACHEABILITY_MASK, baser));
++		}
+ 		val |= FIELD_PREP(GICR_VPROPBASER_4_1_SIZE, GITS_BASER_NR_PAGES(baser) - 1);
+ 
+ 		return val;
+@@ -2936,8 +2943,10 @@ static int allocate_vpe_l1_table(void)
+ 	WARN_ON(!IS_ALIGNED(pa, psz));
+ 
+ 	val |= FIELD_PREP(GICR_VPROPBASER_4_1_ADDR, pa >> 12);
+-	val |= GICR_VPROPBASER_RaWb;
+-	val |= GICR_VPROPBASER_InnerShareable;
++	if (rdists_support_shareable()) {
++		val |= GICR_VPROPBASER_RaWb;
++		val |= GICR_VPROPBASER_InnerShareable;
++	}
+ 	val |= GICR_VPROPBASER_4_1_Z;
+ 	val |= GICR_VPROPBASER_4_1_VALID;
+ 
+@@ -3126,7 +3135,7 @@ static void its_cpu_init_lpis(void)
+ 	gicr_write_propbaser(val, rbase + GICR_PROPBASER);
+ 	tmp = gicr_read_propbaser(rbase + GICR_PROPBASER);
+ 
+-	if (gic_rdists->flags & RDIST_FLAGS_FORCE_NON_SHAREABLE)
++	if (!rdists_support_shareable())
+ 		tmp &= ~GICR_PROPBASER_SHAREABILITY_MASK;
+ 
+ 	if ((tmp ^ val) & GICR_PROPBASER_SHAREABILITY_MASK) {
+@@ -3153,7 +3162,7 @@ static void its_cpu_init_lpis(void)
+ 	gicr_write_pendbaser(val, rbase + GICR_PENDBASER);
+ 	tmp = gicr_read_pendbaser(rbase + GICR_PENDBASER);
+ 
+-	if (gic_rdists->flags & RDIST_FLAGS_FORCE_NON_SHAREABLE)
++	if (!rdists_support_shareable())
+ 		tmp &= ~GICR_PENDBASER_SHAREABILITY_MASK;
+ 
+ 	if (!(tmp & GICR_PENDBASER_SHAREABILITY_MASK)) {
+@@ -3880,14 +3889,18 @@ static void its_vpe_schedule(struct its_vpe *vpe)
+ 	val  = virt_to_phys(page_address(vpe->its_vm->vprop_page)) &
+ 		GENMASK_ULL(51, 12);
+ 	val |= (LPI_NRBITS - 1) & GICR_VPROPBASER_IDBITS_MASK;
+-	val |= GICR_VPROPBASER_RaWb;
+-	val |= GICR_VPROPBASER_InnerShareable;
++	if (rdists_support_shareable()) {
++		val |= GICR_VPROPBASER_RaWb;
++		val |= GICR_VPROPBASER_InnerShareable;
++	}
+ 	gicr_write_vpropbaser(val, vlpi_base + GICR_VPROPBASER);
+ 
+ 	val  = virt_to_phys(page_address(vpe->vpt_page)) &
+ 		GENMASK_ULL(51, 16);
+-	val |= GICR_VPENDBASER_RaWaWb;
+-	val |= GICR_VPENDBASER_InnerShareable;
++	if (rdists_support_shareable()) {
++		val |= GICR_VPENDBASER_RaWaWb;
++		val |= GICR_VPENDBASER_InnerShareable;
++	}
+ 	/*
+ 	 * There is no good way of finding out if the pending table is
+ 	 * empty as we can race against the doorbell interrupt very
+-- 
+2.43.0
+
 
 
 
