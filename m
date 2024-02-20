@@ -1,158 +1,172 @@
-Return-Path: <stable+bounces-21730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C00785CA18
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:42:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0339885C6E5
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:06:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D5F31C2229E
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:42:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3AD5EB23EFB
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:06:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E462DF9F;
-	Tue, 20 Feb 2024 21:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5858151CE3;
+	Tue, 20 Feb 2024 21:06:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MBN4u1op"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Knq6D+XR"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 909F8151CED;
-	Tue, 20 Feb 2024 21:42:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B509133987;
+	Tue, 20 Feb 2024 21:05:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708465330; cv=none; b=QJOxWCe1yselBxFujjmPkJt5na6OGCwLWuvD4EluHQaVGmrs/U85kmVZrL+6C89Nnbss8UjIf8lSBlrHAXw31bwbO14pouRfdmVL8nrJ6xNjjjdAL8NnbSCIi4csx6Ae/3eBcCfSxzuz3vtLXFYrZWNzYqWDLoX+e2Yes7lGf9g=
+	t=1708463160; cv=none; b=YAhAxWOgWcaP05nIg9fIjzYNxrfZ5rH3QDF5tfD64XdoRsdSkzsWvfwIVY2p7mXSYwnoAE+2laCKAlSSWrCJAwmvUCmwxHy2sD1RjbcfJTUyGHEtwM3NFu80hjhnyd9wOsUQ2WlxFmwwdNXycq6KhhW4GBBptoRe6/YpaEMLOqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708465330; c=relaxed/simple;
-	bh=IyrkN4z7daQYV095EC64rBWUYcRRhXsrxLusFKGrtFo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SrpIjwqtu2cNzu9lEzmbCRVZwgs3N29Kh3cYxrOqepl/hqVS6Q+56HuDYTDotHSefvi6cNtJYhZZ5EmovP+4iBLdYOeBDEe7wj96p03Ni3bw53wemqNRE+cvt+GJ6kLc4N9nkzHv1RtaQAbZkwV+cMg9zXR4w4owXIaRyzz1k9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MBN4u1op; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 034B1C433F1;
-	Tue, 20 Feb 2024 21:42:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708465330;
-	bh=IyrkN4z7daQYV095EC64rBWUYcRRhXsrxLusFKGrtFo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MBN4u1opyaA59I++kYJfIvq+MyzElVRfC2ayMu1gkp2g95nsShrfN6pMSaY/ntm76
-	 9O1q/GA5baKLyJzM68F2fjhXT3hN3EN39N8sWhn3ZL+5iZolGc2Ndr7nEyMPfnAJCZ
-	 H8hx27mNDG2Tf2wAZ7ahV4PQN9b2vR+6Mjh3rSps=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.7 309/309] nfsd: dont take fi_lock in nfsd_break_deleg_cb()
-Date: Tue, 20 Feb 2024 21:57:48 +0100
-Message-ID: <20240220205642.773771304@linuxfoundation.org>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1708463160; c=relaxed/simple;
+	bh=3PEnCicm7d7FJerC2Sg9l9EcEk6FCpxF0h6pYwk7t+E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qS/nOMMGS/jxhrBc7WJYRKo0HYmF02WvjLxi8V+z3cONaZpH1EEQFg8bvCwkRNiTfk6by2IbvhaC326iaSkMtmpbl9WZqCg84CkDBYNvS8RlsD6T40i78aTNrHFLWrTeptuBDudBLF0pmvaM61CaJJyDdpy332tiQXdu6xTJ8f4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Knq6D+XR; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=b1oaZ4uPiDGpYZmU+3jdrqrbCDfnpJTHzkrQ6aiwH5o=; b=Knq6D+XRs7VpPpG/F1RiBblhWt
+	duwbEZfSwWDZ77y/IVlyyoLq3CWl8N0ofIgfjAlTjcfrra308BB72QdyR5IfhcR4An01KCd1DizzL
+	7W08mg6LdEYCVwCmpPzOtg48CIbG8xocwspBZvJHjDYyDhD7jX1J/u5gz4Zjjad6GwPe4wkKBEirC
+	Ttkvhqdf640cOz9gudwX5y8XjHY9UTyWnBzxAaCu1OzqNuV1lwMlbw+eRkvmakP9Hj2Sq0t1GDREG
+	R3RgrwK2QXayeH2uvRgdBZuIkSoreBSHKl4KNUSqgXmGBlsvx3mUqkM1xbcbHx2A3W6Adlbfxge8P
+	Q31nNdjQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rcXJJ-0000000GZBe-2EW1;
+	Tue, 20 Feb 2024 21:05:53 +0000
+Date: Tue, 20 Feb 2024 21:05:53 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Jan Kara <jack@suse.cz>, Guo Xuenan <guoxuenan@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 6.1 036/197] readahead: avoid multiple marked readahead
+ pages
+Message-ID: <ZdUUMQOoGtZkyYVO@casper.infradead.org>
+References: <20240220204841.073267068@linuxfoundation.org>
+ <20240220204842.159580701@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240220204842.159580701@linuxfoundation.org>
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+On Tue, Feb 20, 2024 at 09:49:55PM +0100, Greg Kroah-Hartman wrote:
+> 6.1-stable review patch.  If anyone has any objections, please let me know.
 
-------------------
+Maybe hold off on this one?
 
-From: NeilBrown <neilb@suse.de>
+kernel test robot noticed a -21.4% regression of vm-scalability.throughput on:
+commit: ab4443fe3ca6298663a55c4a70efc6c3ce913ca6 ("readahead: avoid multiple marked readahead pages")
 
-commit 5ea9a7c5fe4149f165f0e3b624fe08df02b6c301 upstream.
+https://lore.kernel.org/linux-fsdevel/202402201642.c8d6bbc3-oliver.sang@intel.com/
 
-A recent change to check_for_locks() changed it to take ->flc_lock while
-holding ->fi_lock.  This creates a lock inversion (reported by lockdep)
-because there is a case where ->fi_lock is taken while holding
-->flc_lock.
+Not a definite no just yet; nobody's dug into it, but some caution
+seems warranted.
 
-->flc_lock is held across ->fl_lmops callbacks, and
-nfsd_break_deleg_cb() is one of those and does take ->fi_lock.  However
-it doesn't need to.
-
-Prior to v4.17-rc1~110^2~22 ("nfsd: create a separate lease for each
-delegation") nfsd_break_deleg_cb() would walk the ->fi_delegations list
-and so needed the lock.  Since then it doesn't walk the list and doesn't
-need the lock.
-
-Two actions are performed under the lock.  One is to call
-nfsd_break_one_deleg which calls nfsd4_run_cb().  These doesn't act on
-the nfs4_file at all, so don't need the lock.
-
-The other is to set ->fi_had_conflict which is in the nfs4_file.
-This field is only ever set here (except when initialised to false)
-so there is no possible problem will multiple threads racing when
-setting it.
-
-The field is tested twice in nfs4_set_delegation().  The first test does
-not hold a lock and is documented as an opportunistic optimisation, so
-it doesn't impose any need to hold ->fi_lock while setting
-->fi_had_conflict.
-
-The second test in nfs4_set_delegation() *is* make under ->fi_lock, so
-removing the locking when ->fi_had_conflict is set could make a change.
-The change could only be interesting if ->fi_had_conflict tested as
-false even though nfsd_break_one_deleg() ran before ->fi_lock was
-unlocked.  i.e. while hash_delegation_locked() was running.
-As hash_delegation_lock() doesn't interact in any way with nfs4_run_cb()
-there can be no importance to this interaction.
-
-So this patch removes the locking from nfsd_break_one_deleg() and moves
-the final test on ->fi_had_conflict out of the locked region to make it
-clear that locking isn't important to the test.  It is still tested
-*after* vfs_setlease() has succeeded.  This might be significant and as
-vfs_setlease() takes ->flc_lock, and nfsd_break_one_deleg() is called
-under ->flc_lock this "after" is a true ordering provided by a spinlock.
-
-Fixes: edcf9725150e ("nfsd: fix RELEASE_LOCKOWNER")
-Signed-off-by: NeilBrown <neilb@suse.de>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- fs/nfsd/nfs4state.c |   11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
-
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -4945,10 +4945,8 @@ nfsd_break_deleg_cb(struct file_lock *fl
- 	 */
- 	fl->fl_break_time = 0;
- 
--	spin_lock(&fp->fi_lock);
- 	fp->fi_had_conflict = true;
- 	nfsd_break_one_deleg(dp);
--	spin_unlock(&fp->fi_lock);
- 	return false;
- }
- 
-@@ -5557,12 +5555,13 @@ nfs4_set_delegation(struct nfsd4_open *o
- 	if (status)
- 		goto out_unlock;
- 
-+	status = -EAGAIN;
-+	if (fp->fi_had_conflict)
-+		goto out_unlock;
-+
- 	spin_lock(&state_lock);
- 	spin_lock(&fp->fi_lock);
--	if (fp->fi_had_conflict)
--		status = -EAGAIN;
--	else
--		status = hash_delegation_locked(dp, fp);
-+	status = hash_delegation_locked(dp, fp);
- 	spin_unlock(&fp->fi_lock);
- 	spin_unlock(&state_lock);
- 
-
-
+> ------------------
+> 
+> From: Jan Kara <jack@suse.cz>
+> 
+> commit ab4443fe3ca6298663a55c4a70efc6c3ce913ca6 upstream.
+> 
+> ra_alloc_folio() marks a page that should trigger next round of async
+> readahead.  However it rounds up computed index to the order of page being
+> allocated.  This can however lead to multiple consecutive pages being
+> marked with readahead flag.  Consider situation with index == 1, mark ==
+> 1, order == 0.  We insert order 0 page at index 1 and mark it.  Then we
+> bump order to 1, index to 2, mark (still == 1) is rounded up to 2 so page
+> at index 2 is marked as well.  Then we bump order to 2, index is
+> incremented to 4, mark gets rounded to 4 so page at index 4 is marked as
+> well.  The fact that multiple pages get marked within a single readahead
+> window confuses the readahead logic and results in readahead window being
+> trimmed back to 1.  This situation is triggered in particular when maximum
+> readahead window size is not a power of two (in the observed case it was
+> 768 KB) and as a result sequential read throughput suffers.
+> 
+> Fix the problem by rounding 'mark' down instead of up.  Because the index
+> is naturally aligned to 'order', we are guaranteed 'rounded mark' == index
+> iff 'mark' is within the page we are allocating at 'index' and thus
+> exactly one page is marked with readahead flag as required by the
+> readahead code and sequential read performance is restored.
+> 
+> This effectively reverts part of commit b9ff43dd2743 ("mm/readahead: Fix
+> readahead with large folios").  The commit changed the rounding with the
+> rationale:
+> 
+> "...  we were setting the readahead flag on the folio which contains the
+> last byte read from the block.  This is wrong because we will trigger
+> readahead at the end of the read without waiting to see if a subsequent
+> read is going to use the pages we just read."
+> 
+> Although this is true, the fact is this was always the case with read
+> sizes not aligned to folio boundaries and large folios in the page cache
+> just make the situation more obvious (and frequent).  Also for sequential
+> read workloads it is better to trigger the readahead earlier rather than
+> later.  It is true that the difference in the rounding and thus earlier
+> triggering of the readahead can result in reading more for semi-random
+> workloads.  However workloads really suffering from this seem to be rare.
+> In particular I have verified that the workload described in commit
+> b9ff43dd2743 ("mm/readahead: Fix readahead with large folios") of reading
+> random 100k blocks from a file like:
+> 
+> [reader]
+> bs=100k
+> rw=randread
+> numjobs=1
+> size=64g
+> runtime=60s
+> 
+> is not impacted by the rounding change and achieves ~70MB/s in both cases.
+> 
+> [jack@suse.cz: fix one more place where mark rounding was done as well]
+>   Link: https://lkml.kernel.org/r/20240123153254.5206-1-jack@suse.cz
+> Link: https://lkml.kernel.org/r/20240104085839.21029-1-jack@suse.cz
+> Fixes: b9ff43dd2743 ("mm/readahead: Fix readahead with large folios")
+> Signed-off-by: Jan Kara <jack@suse.cz>
+> Cc: Matthew Wilcox <willy@infradead.org>
+> Cc: Guo Xuenan <guoxuenan@huawei.com>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>  mm/readahead.c |    4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> --- a/mm/readahead.c
+> +++ b/mm/readahead.c
+> @@ -483,7 +483,7 @@ static inline int ra_alloc_folio(struct
+>  
+>  	if (!folio)
+>  		return -ENOMEM;
+> -	mark = round_up(mark, 1UL << order);
+> +	mark = round_down(mark, 1UL << order);
+>  	if (index == mark)
+>  		folio_set_readahead(folio);
+>  	err = filemap_add_folio(ractl->mapping, folio, index, gfp);
+> @@ -591,7 +591,7 @@ static void ondemand_readahead(struct re
+>  	 * It's the expected callback index, assume sequential access.
+>  	 * Ramp up sizes, and push forward the readahead window.
+>  	 */
+> -	expected = round_up(ra->start + ra->size - ra->async_size,
+> +	expected = round_down(ra->start + ra->size - ra->async_size,
+>  			1UL << order);
+>  	if (index == expected || index == (ra->start + ra->size)) {
+>  		ra->start += ra->size;
+> 
+> 
 
