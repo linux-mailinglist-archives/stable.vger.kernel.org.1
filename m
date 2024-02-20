@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-21350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0C8A85C87D
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:22:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E84385C9C4
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:38:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B726284CB1
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:22:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F8CF1C21CF4
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:38:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2BA8151CD8;
-	Tue, 20 Feb 2024 21:22:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B58D2151CE1;
+	Tue, 20 Feb 2024 21:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZdEI9TXV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ReDPLocw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23982DF9F;
-	Tue, 20 Feb 2024 21:22:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 748AD446C9;
+	Tue, 20 Feb 2024 21:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464146; cv=none; b=GJqxdDbDg/UIYfhGARfSRUWv3lLW4Asi9YEMJlxX5NudKovQ8eYvE5gNPJ7EqKx5YwgLDnvH+x24GbcSHoTJWgJ9c8h+vpvsSFC38zu0omUZPnW33mcelVe0KBSfzA4qlrBUd3jq0IKs0vDcmpPAEDookFHRJX9Vwck9vSmVGAg=
+	t=1708465082; cv=none; b=fOT7J/GQ3p5Zd21BmNgbJTPDLYKxzEwwGzdtYvGh/Td5SvjmCKg/p/ArAx6WBRBOtg56pPFjvgCQgEkFIytUkISDEcYwGDIUl32w+hTNg6u/Gfhg/lJpc0ARladjI6HHP2l0xKaI6pltDTTVBsRRjaGh4/9RU6IaSsCN7Lg9Ng8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464146; c=relaxed/simple;
-	bh=4HCcs6ZyiBNQBIzzTjNBV1I11u0JEmc8MmkFcc1M7+0=;
+	s=arc-20240116; t=1708465082; c=relaxed/simple;
+	bh=aUqR0GQniyR9R+yUA9ZogmAM7BUpfTZ2wJaYwh2us0I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hks565zYRfO1chgHw32H3W2vYJH6X3HJRvzcDhRgM3ocldMuwB4vplWd8wAZAopdM2V4FPe+YpKpOpSMQdypcQOw/+8U4iNqBawUc/AO8izSFAqzwVLkv/a3X4QdJjDJnVgSsoxWhIZpuYuj2n/WUgGpVNao2kMjSSIVgWwETcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZdEI9TXV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2288DC43390;
-	Tue, 20 Feb 2024 21:22:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=u5P2eD10zeD/WdlBXcZO6qkP/UkgPYyu0G5bzp02rld/iGfJdppL0T6JeA14IlMG/8ihzXaqx32qdaGJMEBlh9N5TlS794jfG7D6If/59NDBb2MPEqx0E4hzB6fY15fpGTxMNg/2gw5vUtSsiKNbRszNpL/byidJvih9t7A4Wds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ReDPLocw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6912C433C7;
+	Tue, 20 Feb 2024 21:38:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464146;
-	bh=4HCcs6ZyiBNQBIzzTjNBV1I11u0JEmc8MmkFcc1M7+0=;
+	s=korg; t=1708465082;
+	bh=aUqR0GQniyR9R+yUA9ZogmAM7BUpfTZ2wJaYwh2us0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZdEI9TXV8Ydx3KG+cJPiol4duAk7P0x85VfnGlr3BR4kNbe22wAojxEWRSEc5tX3x
-	 AlrvB+yWCKVSpvHt8N4LJHII3/FlvOQ7eS2b8pvL5aj2IUIQuryiV7enIFW/2skNkv
-	 dz6jADMCRnFU1e3mL8qgJmuF/21qJbu8zKeHuMro=
+	b=ReDPLocw2obKOJWA+luGSFDy2h9v6zZgs25snxKpoXxIJSqXKUMX1lO2k4aZEJoVm
+	 TDtEURdAbkBNkk0/mMiVxxJStdn7/NINg5a2X/6klD0ccExVKoVfYTvhBx+8Y3pcne
+	 wzf19uHsNg3GtzmHNk2wj+bQuGC2Jp9T4/59YTlk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 265/331] eventfs: Use eventfs_remove_events_dir()
-Date: Tue, 20 Feb 2024 21:56:21 +0100
-Message-ID: <20240220205646.205664386@linuxfoundation.org>
+	=?UTF-8?q?Jan=20Kundr=C3=A1t?= <jan.kundrat@cesnet.cz>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Subject: [PATCH 6.7 223/309] serial: max310x: fail probe if clock crystal is unstable
+Date: Tue, 20 Feb 2024 21:56:22 +0100
+Message-ID: <20240220205640.138526392@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,93 +59,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-commit 2819f23ac12ce93ff79ca7a54597df9a4a1f6331 upstream.
+commit 8afa6c6decea37e7cb473d2c60473f37f46cea35 upstream.
 
-The update to removing the eventfs_file changed the way the events top
-level directory was handled. Instead of returning a dentry, it now returns
-the eventfs_inode. In this changed, the removing of the events top level
-directory is not much different than removing any of the other
-directories. Because of this, the removal just called eventfs_remove_dir()
-instead of eventfs_remove_events_dir().
+A stable clock is really required in order to use this UART, so log an
+error message and bail out if the chip reports that the clock is not
+stable.
 
-Although eventfs_remove_dir() does the clean up, it misses out on the
-dget() of the ei->dentry done in eventfs_create_events_dir(). It makes
-more sense to match eventfs_create_events_dir() with a specific function
-eventfs_remove_events_dir() and this specific function can then perform
-the dput() to the dentry that had the dget() when it was created.
-
-Fixes: 5790b1fb3d67 ("eventfs: Remove eventfs_file and just use eventfs_inode")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202310051743.y9EobbUr-lkp@intel.com/
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 4cf9a888fd3c ("serial: max310x: Check the clock readiness")
+Cc: stable@vger.kernel.org
+Suggested-by: Jan Kundrát <jan.kundrat@cesnet.cz>
+Link: https://www.spinics.net/lists/linux-serial/msg35773.html
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20240116213001.3691629-4-hugo@hugovil.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/tracefs/event_inode.c    |   19 +++++++------------
- include/linux/tracefs.h     |    1 +
- kernel/trace/trace_events.c |    2 +-
- 3 files changed, 9 insertions(+), 13 deletions(-)
+ drivers/tty/serial/max310x.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -901,22 +901,17 @@ void eventfs_remove_dir(struct eventfs_i
+--- a/drivers/tty/serial/max310x.c
++++ b/drivers/tty/serial/max310x.c
+@@ -587,7 +587,7 @@ static int max310x_update_best_err(unsig
+ 	return 1;
  }
  
- /**
-- * eventfs_remove_events_dir - remove eventfs dir or file from list
-- * @dentry: events's dentry to be removed.
-+ * eventfs_remove_events_dir - remove the top level eventfs directory
-+ * @ei: the event_inode returned by eventfs_create_events_dir().
-  *
-- * This function remove events main directory
-+ * This function removes the events main directory
-  */
--void eventfs_remove_events_dir(struct dentry *dentry)
-+void eventfs_remove_events_dir(struct eventfs_inode *ei)
+-static u32 max310x_set_ref_clk(struct device *dev, struct max310x_port *s,
++static s32 max310x_set_ref_clk(struct device *dev, struct max310x_port *s,
+ 			       unsigned long freq, bool xtal)
  {
--	struct tracefs_inode *ti;
-+	struct dentry *dentry = ei->dentry;
+ 	unsigned int div, clksrc, pllcfg = 0;
+@@ -657,7 +657,8 @@ static u32 max310x_set_ref_clk(struct de
+ 		} while (!stable && (++try < MAX310X_XTAL_WAIT_RETRIES));
  
--	if (!dentry || !dentry->d_inode)
--		return;
-+	eventfs_remove_dir(ei);
+ 		if (!stable)
+-			dev_warn(dev, "clock is not stable yet\n");
++			return dev_err_probe(dev, -EAGAIN,
++					     "clock is not stable\n");
+ 	}
  
--	ti = get_tracefs(dentry->d_inode);
--	if (!ti || !(ti->flags & TRACEFS_EVENT_INODE))
--		return;
--
--	d_invalidate(dentry);
-+	/* Matches the dget() from eventfs_create_events_dir() */
- 	dput(dentry);
- }
---- a/include/linux/tracefs.h
-+++ b/include/linux/tracefs.h
-@@ -41,6 +41,7 @@ struct eventfs_inode *eventfs_create_dir
- 					 const struct eventfs_entry *entries,
- 					 int size, void *data);
+ 	return bestfreq;
+@@ -1282,7 +1283,7 @@ static int max310x_probe(struct device *
+ {
+ 	int i, ret, fmin, fmax, freq;
+ 	struct max310x_port *s;
+-	u32 uartclk = 0;
++	s32 uartclk = 0;
+ 	bool xtal;
  
-+void eventfs_remove_events_dir(struct eventfs_inode *ei);
- void eventfs_remove_dir(struct eventfs_inode *ei);
+ 	for (i = 0; i < devtype->nr; i++)
+@@ -1360,6 +1361,11 @@ static int max310x_probe(struct device *
+ 	}
  
- struct dentry *tracefs_create_file(const char *name, umode_t mode,
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -3893,7 +3893,7 @@ int event_trace_del_tracer(struct trace_
+ 	uartclk = max310x_set_ref_clk(dev, s, freq, xtal);
++	if (uartclk < 0) {
++		ret = uartclk;
++		goto out_uart;
++	}
++
+ 	dev_dbg(dev, "Reference clock set to %i Hz\n", uartclk);
  
- 	down_write(&trace_event_sem);
- 	__trace_remove_event_dirs(tr);
--	eventfs_remove_dir(tr->event_dir);
-+	eventfs_remove_events_dir(tr->event_dir);
- 	up_write(&trace_event_sem);
- 
- 	tr->event_dir = NULL;
+ 	for (i = 0; i < devtype->nr; i++) {
 
 
 
