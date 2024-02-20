@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-21710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2296685CA03
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:41:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 517C285C8C5
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:25:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFDED282E72
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:41:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0AFD8282A20
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:25:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81B8D151CD6;
-	Tue, 20 Feb 2024 21:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28801151CCC;
+	Tue, 20 Feb 2024 21:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QLfQdEJ9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wD4YqUXq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EBE0612D7;
-	Tue, 20 Feb 2024 21:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBEB514F9CE;
+	Tue, 20 Feb 2024 21:25:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708465269; cv=none; b=V3GCa8Xkry5sCgS22qa8SO07TxPGX6z1KXrhQxWxpT0O2RFSSJ8C8lKIDyAn2qmyBuQXf20MGy2qY9xSSJ9+prnKVxcNhaU9zwdqr1KV0wxFAhgg1G6p/X9dpxD9Q0qlvWlbu0Q3ehijPelnon6EHT6CHo6oaaCa+84MTDwk8Ms=
+	t=1708464323; cv=none; b=JR+rP2+wkMj+VnAefUPzmwUcGzwUgqX2naotHT8ildbFaR1EXsWadvs9njEQh1o7SxvYyp+PL33sc/OvsIYtTJLQxu7hnJUg39bpySjc/XmFZ/x2MKA1JRbThbALOP0BdZ886UbT9tmzmfQ65IEP3/j19BFi3O/WES+LmWFS0xQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708465269; c=relaxed/simple;
-	bh=7FDFFMVf0L6ei5X6UVZxm/r3W+nC2wLvf0NyOBcLbdo=;
+	s=arc-20240116; t=1708464323; c=relaxed/simple;
+	bh=u2+NXNRVbQoGk57FtB085oAE22bAo+A635ag+NJ4HB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u6ffFXLousZ68Wve2RrOlzZA5VyUV4gviW+Gd2WYxVru07HepmkrlFaPOmPfqshNw7WcEYtsRO8wKFWeJI33NSLAvPw0RnSGws1MPoBapZlADVdDLCfSJg0iIYHabcHQnVcsiFdMCrN4RlZ6G9n8HMDx1A/MXDo/BXdN7LPkhc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QLfQdEJ9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1597FC433C7;
-	Tue, 20 Feb 2024 21:41:07 +0000 (UTC)
+	 MIME-Version; b=oAFWXpPUQDv0975MFr2fmzpNzb18ikpUdoJBAajJT7/nV5IVY7MAnSXCU2cxsWN1Yzc4OCGcbjYvvhimKyV4qftQfCFzwp5iOrOD+N9oGoM1Tl3Et8oAEQupZkxorx7UfvombJJw8b6QaGnvQ/7egLu55JgeP+TTaEs9+sqaM58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wD4YqUXq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48C01C433C7;
+	Tue, 20 Feb 2024 21:25:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708465269;
-	bh=7FDFFMVf0L6ei5X6UVZxm/r3W+nC2wLvf0NyOBcLbdo=;
+	s=korg; t=1708464323;
+	bh=u2+NXNRVbQoGk57FtB085oAE22bAo+A635ag+NJ4HB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QLfQdEJ9uK8MxlTp1Uuw1ZaMi+S3ddvA3TPj6TkFsP9jRiw0HXm7CAIvdEAyRSFDI
-	 /FmpyyijeqyWgH+iJkEGfyMNE+zVnlqK4bpE76Z21uPMXca8EODbUfQQYfnogfTXii
-	 fqUhrmDwEmgvPaOHc7NInJrrSwC2lJ+QmHy53+O8=
+	b=wD4YqUXq6U30WyfCmGSSC8z99fARETV5iscLZTuqYOQM/cmWyz6dTZOggepDd1PZy
+	 TdNpVl7bIq57ywTbD8MvyqEqGwv25tdEDLoov63v/8HAuEp1wJUDRcZn1E+CwhvHL0
+	 /PRYQHrjPdhX1ZACRuBor0RjlncY7hdcGZHTFMtI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"R. Diez" <rdiez-2006@rd10.de>,
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
-	Matthew Ruffell <matthew.ruffell@canonical.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	David Howells <dhowells@redhat.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.7 260/309] smb: Fix regression in writes when non-standard maximum write size negotiated
-Date: Tue, 20 Feb 2024 21:56:59 +0100
-Message-ID: <20240220205641.284394696@linuxfoundation.org>
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@ZenIV.linux.org.uk>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	kernel test robot <oliver.sang@intel.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 304/331] tracefs: Zero out the tracefs_inode when allocating it
+Date: Tue, 20 Feb 2024 21:57:00 +0100
+Message-ID: <20240220205647.679693492@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,90 +68,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-commit 4860abb91f3d7fbaf8147d54782149bb1fc45892 upstream.
+commit d81786f53aec14fd4d56263145a0635afbc64617 upstream.
 
-The conversion to netfs in the 6.3 kernel caused a regression when
-maximum write size is set by the server to an unexpected value which is
-not a multiple of 4096 (similarly if the user overrides the maximum
-write size by setting mount parm "wsize", but sets it to a value that
-is not a multiple of 4096).  When negotiated write size is not a
-multiple of 4096 the netfs code can skip the end of the final
-page when doing large sequential writes, causing data corruption.
+eventfs uses the tracefs_inode and assumes that it's already initialized
+to zero. That is, it doesn't set fields to zero (like ti->private) after
+getting its tracefs_inode. This causes bugs due to stale values.
 
-This section of code is being rewritten/removed due to a large
-netfs change, but until that point (ie for the 6.3 kernel until now)
-we can not support non-standard maximum write sizes.
+Just initialize the entire structure to zero on allocation so there isn't
+any more surprises.
 
-Add a warning if a user specifies a wsize on mount that is not
-a multiple of 4096 (and round down), also add a change where we
-round down the maximum write size if the server negotiates a value
-that is not a multiple of 4096 (we also have to check to make sure that
-we do not round it down to zero).
+This is a partial fix to access to ti->private. The assignment still needs
+to be made before the dentry is instantiated.
 
-Reported-by: "R. Diez" <rdiez-2006@rd10.de>
-Fixes: d08089f649a0 ("cifs: Change the I/O paths to use an iterator rather than a page list")
-Suggested-by: Ronnie Sahlberg <ronniesahlberg@gmail.com>
-Acked-by: Ronnie Sahlberg <ronniesahlberg@gmail.com>
-Tested-by: Matthew Ruffell <matthew.ruffell@canonical.com>
-Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
-Cc: stable@vger.kernel.org # v6.3+
-Cc: David Howells <dhowells@redhat.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Link: https://lore.kernel.org/linux-trace-kernel/20240131185512.315825944@goodmis.org
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Al Viro <viro@ZenIV.linux.org.uk>
+Cc: Ajay Kaher <ajay.kaher@broadcom.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5790b1fb3d672 ("eventfs: Remove eventfs_file and just use eventfs_inode")
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202401291043.e62e89dc-oliver.sang@intel.com
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/connect.c    |   14 ++++++++++++--
- fs/smb/client/fs_context.c |   11 +++++++++++
- 2 files changed, 23 insertions(+), 2 deletions(-)
+ fs/tracefs/inode.c    |    6 ++++--
+ fs/tracefs/internal.h |    3 ++-
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -3425,8 +3425,18 @@ int cifs_mount_get_tcon(struct cifs_moun
- 	 * the user on mount
- 	 */
- 	if ((cifs_sb->ctx->wsize == 0) ||
--	    (cifs_sb->ctx->wsize > server->ops->negotiate_wsize(tcon, ctx)))
--		cifs_sb->ctx->wsize = server->ops->negotiate_wsize(tcon, ctx);
-+	    (cifs_sb->ctx->wsize > server->ops->negotiate_wsize(tcon, ctx))) {
-+		cifs_sb->ctx->wsize =
-+			round_down(server->ops->negotiate_wsize(tcon, ctx), PAGE_SIZE);
-+		/*
-+		 * in the very unlikely event that the server sent a max write size under PAGE_SIZE,
-+		 * (which would get rounded down to 0) then reset wsize to absolute minimum eg 4096
-+		 */
-+		if (cifs_sb->ctx->wsize == 0) {
-+			cifs_sb->ctx->wsize = PAGE_SIZE;
-+			cifs_dbg(VFS, "wsize too small, reset to minimum ie PAGE_SIZE, usually 4096\n");
-+		}
-+	}
- 	if ((cifs_sb->ctx->rsize == 0) ||
- 	    (cifs_sb->ctx->rsize > server->ops->negotiate_rsize(tcon, ctx)))
- 		cifs_sb->ctx->rsize = server->ops->negotiate_rsize(tcon, ctx);
---- a/fs/smb/client/fs_context.c
-+++ b/fs/smb/client/fs_context.c
-@@ -1107,6 +1107,17 @@ static int smb3_fs_context_parse_param(s
- 	case Opt_wsize:
- 		ctx->wsize = result.uint_32;
- 		ctx->got_wsize = true;
-+		if (ctx->wsize % PAGE_SIZE != 0) {
-+			ctx->wsize = round_down(ctx->wsize, PAGE_SIZE);
-+			if (ctx->wsize == 0) {
-+				ctx->wsize = PAGE_SIZE;
-+				cifs_dbg(VFS, "wsize too small, reset to minimum %ld\n", PAGE_SIZE);
-+			} else {
-+				cifs_dbg(VFS,
-+					 "wsize rounded down to %d to multiple of PAGE_SIZE %ld\n",
-+					 ctx->wsize, PAGE_SIZE);
-+			}
-+		}
- 		break;
- 	case Opt_acregmax:
- 		ctx->acregmax = HZ * result.uint_32;
+--- a/fs/tracefs/inode.c
++++ b/fs/tracefs/inode.c
+@@ -38,8 +38,6 @@ static struct inode *tracefs_alloc_inode
+ 	if (!ti)
+ 		return NULL;
+ 
+-	ti->flags = 0;
+-
+ 	return &ti->vfs_inode;
+ }
+ 
+@@ -779,7 +777,11 @@ static void init_once(void *foo)
+ {
+ 	struct tracefs_inode *ti = (struct tracefs_inode *) foo;
+ 
++	/* inode_init_once() calls memset() on the vfs_inode portion */
+ 	inode_init_once(&ti->vfs_inode);
++
++	/* Zero out the rest */
++	memset_after(ti, 0, vfs_inode);
+ }
+ 
+ static int __init tracefs_init(void)
+--- a/fs/tracefs/internal.h
++++ b/fs/tracefs/internal.h
+@@ -11,9 +11,10 @@ enum {
+ };
+ 
+ struct tracefs_inode {
++	struct inode            vfs_inode;
++	/* The below gets initialized with memset_after(ti, 0, vfs_inode) */
+ 	unsigned long           flags;
+ 	void                    *private;
+-	struct inode            vfs_inode;
+ };
+ 
+ /*
 
 
 
