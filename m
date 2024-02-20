@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-21382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB33185C8A7
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:24:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6407C85C9E7
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:39:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A99CB209F0
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:24:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 189E51F22E16
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:39:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CA20151CED;
-	Tue, 20 Feb 2024 21:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E48D2151CED;
+	Tue, 20 Feb 2024 21:39:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ik5Wx3is"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sIkRr3S3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF6C151CD8;
-	Tue, 20 Feb 2024 21:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A246C151CCD;
+	Tue, 20 Feb 2024 21:39:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464248; cv=none; b=fEFmiYHoMjwGi7BhCbLBAGPmse6/v25F35cHkjtPlMf6Cb7zcXFFCCS9PLYbrdIi2tvDyj6nxZXlAma3sSICzeVXmvGelkWtq0tVZD70rN78EyIp4n30PtmK+6o2p4okFiB7Dzn6FTEh8VYiHDALpQ0Ji0GBJwvbsKTY+tPuv9w=
+	t=1708465183; cv=none; b=SDx9FjuZl3U1Ax5LfdBvFW0yHDsmEDc3YdpUx8f6N7GmWWmZ83Z9etlOh29XA/GQlVwxJCvcJQvyRoYrt83CNlc1kEZ4ANkm+elmT2A0MYuGJrBUsaF+ZS6x2cX76i1CIYM8H2RtMDK5oTz4ly+pH17DAbhT++slFxy8dd7hGow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464248; c=relaxed/simple;
-	bh=+eMblBrEDHw5gWozKPMLVeu4eFcYV+e37JR0k4w3rmk=;
+	s=arc-20240116; t=1708465183; c=relaxed/simple;
+	bh=uvC3dGDYoDgGYeMbwRcudvbfhXo8dgE1X64ZSo6bw1Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KvJDWvsPGB+mY9ijcaR7L5vnb1NHOej/37804dcjPq3MJkPCJRAoz5P+EDvtQJDe5JcGK5T93lzBjMt9Mno8Xf/IHwTo71ordbkvPldZwqigV1U1KlarRmlh+A1KsLSJqBvIwBA3NQJfaF/7Lhp0nQyNdmQfsojtfKm/7EhIyqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ik5Wx3is; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9218FC43390;
-	Tue, 20 Feb 2024 21:24:07 +0000 (UTC)
+	 MIME-Version; b=clq7HuEgd6mJx3jVe0qzSfHN1wu6UIyPo+wxmRO0sDCKiWs/alG9P78yW1jeOl9Yt9d/Ed/9gVvLb78Yep+CqzVXOC23QA1StG2a1n4/OiEZuY1u+7YVu+KcljoEVctKugFIdxYFjoqfvzQxgJMTYp7Ef8a6zLMkBXCjEazqSfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sIkRr3S3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2685AC43394;
+	Tue, 20 Feb 2024 21:39:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464248;
-	bh=+eMblBrEDHw5gWozKPMLVeu4eFcYV+e37JR0k4w3rmk=;
+	s=korg; t=1708465183;
+	bh=uvC3dGDYoDgGYeMbwRcudvbfhXo8dgE1X64ZSo6bw1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ik5Wx3isLjeBxWkGb9+L8dHrR5iDpxHSO/Yot6uSMM/FdhVtwa3sKQSfG3P74/dcX
-	 BAbOp1s7zpuNKQKpuYw94/6zd2OLjLclr5Js7Do/em0RCqDL+kq1bUBebRDqqTUcpt
-	 idMM2ekevZCbt8oUlmyd5iA+8N8pMYr06lSPcQBI=
+	b=sIkRr3S3YKQ127hgSHK+rSqNukx0lcpxJeHi0E2lJ54EuJeAUCZZaKgNlkiITEdTg
+	 tz2dvv0sVAWPQUlEP4+JW+rkJlXzrW7aP1hU8jxHdA5OdK7KbPOH2PXKiHlxMqcMzf
+	 3YY6zuz6I1N1sIQAX+uvPkAeee7FJbIaiZtwZ2G4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 297/331] eventfs: Read ei->entries before ei->children in eventfs_iterate()
-Date: Tue, 20 Feb 2024 21:56:53 +0100
-Message-ID: <20240220205647.398371997@linuxfoundation.org>
+	Doug Berger <opendmb@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.7 255/309] irqchip/irq-brcmstb-l2: Add write memory barrier before exit
+Date: Tue, 20 Feb 2024 21:56:54 +0100
+Message-ID: <20240220205641.141436146@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,122 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+From: Doug Berger <opendmb@gmail.com>
 
-commit 704f960dbee2f1634f4b4e16f208cb16eaf41c1e upstream.
+commit b0344d6854d25a8b3b901c778b1728885dd99007 upstream.
 
-In order to apply a shortcut to skip over the current ctx->pos
-immediately, by using the ei->entries array, the reading of that array
-should be first. Moving the array reading before the linked list reading
-will make the shortcut change diff nicer to read.
+It was observed on Broadcom devices that use GIC v3 architecture L1
+interrupt controllers as the parent of brcmstb-l2 interrupt controllers
+that the deactivation of the parent interrupt could happen before the
+brcmstb-l2 deasserted its output. This would lead the GIC to reactivate the
+interrupt only to find that no L2 interrupt was pending. The result was a
+spurious interrupt invoking handle_bad_irq() with its associated
+messaging. While this did not create a functional problem it is a waste of
+cycles.
 
-Link: https://lore.kernel.org/all/CAHk-=wiKwDUDv3+jCsv-uacDcHDVTYsXtBR9=6sGM5mqX+DhOg@mail.gmail.com/
-Link: https://lore.kernel.org/linux-trace-kernel/20240104220048.333115095@goodmis.org
+The hazard exists because the memory mapped bus writes to the brcmstb-l2
+registers are buffered and the GIC v3 architecture uses a very efficient
+system register write to deactivate the interrupt.
 
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Add a write memory barrier prior to invoking chained_irq_exit() to
+introduce a dsb(st) on those systems to ensure the system register write
+cannot be executed until the memory mapped writes are visible to the
+system.
+
+[ florian: Added Fixes tag ]
+
+Fixes: 7f646e92766e ("irqchip: brcmstb-l2: Add Broadcom Set Top Box  Level-2 interrupt controller")
+Signed-off-by: Doug Berger <opendmb@gmail.com>
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Acked-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240210012449.3009125-1-florian.fainelli@broadcom.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/tracefs/event_inode.c |   46 +++++++++++++++++++++++-----------------------
- 1 file changed, 23 insertions(+), 23 deletions(-)
+ drivers/irqchip/irq-brcmstb-l2.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -752,8 +752,8 @@ static int eventfs_iterate(struct file *
- 	 * Need to create the dentries and inodes to have a consistent
- 	 * inode number.
- 	 */
--	list_for_each_entry_srcu(ei_child, &ei->children, list,
--				 srcu_read_lock_held(&eventfs_srcu)) {
-+	for (i = 0; i < ei->nr_entries; i++) {
-+		void *cdata = ei->data;
+--- a/drivers/irqchip/irq-brcmstb-l2.c
++++ b/drivers/irqchip/irq-brcmstb-l2.c
+@@ -2,7 +2,7 @@
+ /*
+  * Generic Broadcom Set Top Box Level 2 Interrupt controller driver
+  *
+- * Copyright (C) 2014-2017 Broadcom
++ * Copyright (C) 2014-2024 Broadcom
+  */
  
- 		if (c > 0) {
- 			c--;
-@@ -762,23 +762,32 @@ static int eventfs_iterate(struct file *
- 
- 		ctx->pos++;
- 
--		if (ei_child->is_freed)
--			continue;
-+		entry = &ei->entries[i];
-+		name = entry->name;
- 
--		name = ei_child->name;
-+		mutex_lock(&eventfs_mutex);
-+		/* If ei->is_freed then just bail here, nothing more to do */
-+		if (ei->is_freed) {
-+			mutex_unlock(&eventfs_mutex);
-+			goto out_dec;
-+		}
-+		r = entry->callback(name, &mode, &cdata, &fops);
-+		mutex_unlock(&eventfs_mutex);
-+		if (r <= 0)
-+			continue;
- 
--		dentry = create_dir_dentry(ei, ei_child, ei_dentry);
-+		dentry = create_file_dentry(ei, i, ei_dentry, name, mode, cdata, fops);
- 		if (!dentry)
- 			goto out_dec;
- 		ino = dentry->d_inode->i_ino;
- 		dput(dentry);
- 
--		if (!dir_emit(ctx, name, strlen(name), ino, DT_DIR))
-+		if (!dir_emit(ctx, name, strlen(name), ino, DT_REG))
- 			goto out_dec;
- 	}
- 
--	for (i = 0; i < ei->nr_entries; i++) {
--		void *cdata = ei->data;
-+	list_for_each_entry_srcu(ei_child, &ei->children, list,
-+				 srcu_read_lock_held(&eventfs_srcu)) {
- 
- 		if (c > 0) {
- 			c--;
-@@ -787,27 +796,18 @@ static int eventfs_iterate(struct file *
- 
- 		ctx->pos++;
- 
--		entry = &ei->entries[i];
--		name = entry->name;
--
--		mutex_lock(&eventfs_mutex);
--		/* If ei->is_freed then just bail here, nothing more to do */
--		if (ei->is_freed) {
--			mutex_unlock(&eventfs_mutex);
--			goto out_dec;
--		}
--		r = entry->callback(name, &mode, &cdata, &fops);
--		mutex_unlock(&eventfs_mutex);
--		if (r <= 0)
-+		if (ei_child->is_freed)
- 			continue;
- 
--		dentry = create_file_dentry(ei, i, ei_dentry, name, mode, cdata, fops);
-+		name = ei_child->name;
+ #define pr_fmt(fmt)	KBUILD_MODNAME	": " fmt
+@@ -112,6 +112,9 @@ static void brcmstb_l2_intc_irq_handle(s
+ 		generic_handle_domain_irq(b->domain, irq);
+ 	} while (status);
+ out:
++	/* Don't ack parent before all device writes are done */
++	wmb();
 +
-+		dentry = create_dir_dentry(ei, ei_child, ei_dentry);
- 		if (!dentry)
- 			goto out_dec;
- 		ino = dentry->d_inode->i_ino;
- 		dput(dentry);
+ 	chained_irq_exit(chip, desc);
+ }
  
--		if (!dir_emit(ctx, name, strlen(name), ino, DT_REG))
-+		if (!dir_emit(ctx, name, strlen(name), ino, DT_DIR))
- 			goto out_dec;
- 	}
- 	ret = 1;
 
 
 
