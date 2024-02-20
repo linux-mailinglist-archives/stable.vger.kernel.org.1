@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-21257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B94A685C7E6
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:17:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 538CA85C97C
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:34:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9FA01C220E8
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:17:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08E791F22279
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:34:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 572D4151CD9;
-	Tue, 20 Feb 2024 21:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D6B151CDC;
+	Tue, 20 Feb 2024 21:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r6U6ccFq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dYaz2nA+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128BE612D7;
-	Tue, 20 Feb 2024 21:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5366C446C9;
+	Tue, 20 Feb 2024 21:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463850; cv=none; b=rQItsnvHdfsp/SM8zk9O1morgYKuueKO9sssHjBZMywWJx765edZKMlBCr03s8N4qhpyr5pJnRPsB7Z26a9t+UJ2BXrFemgtFGMdLpRvlNCaBbJUhshJKYDIqwr9HJ1V8Hf7RDRSRkOcz94o4wRANFSaZNjXTlAAk0mabo1lPls=
+	t=1708464859; cv=none; b=bXzC75BjxiuPHmjaeBM46A59BxkOPbOHTt1d3S6V4G1s/QRoG/yRULarg3n7D8qW3pn6739k5kpL8X7cZnaaNdcS4SNk2xrzs9S9mOnKXH1lXC6Zm3lM7B47GK0Y0LhhIfhfp4++I062qU8Ovsc8vJO4QbeeNPjb04APvWCj8cE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463850; c=relaxed/simple;
-	bh=mLBa8l715fWxw/NABFGdxdjT2F2tZSNelHmW2ca2rqA=;
+	s=arc-20240116; t=1708464859; c=relaxed/simple;
+	bh=KaloyAWi1ouenLVcZS1mmi/QRWExbmeqBAiUIu6Xo18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iUj/GrC0p6RWDZMp1iv2hPgLcxkI1CnEE4Amw8e7pfJOwVIJPfMx2MOPc4Uu56UPs8Pa+rrEAlpL8eM9HSv4LrEI7lRBBLfz1R9DIc4GBTALDYog8CU2fVx2el98Uvi6tqeF8owvXs1Dx1wZAv9peT+EilrAzdd9tRyrO6Uhsio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r6U6ccFq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 756ABC433C7;
-	Tue, 20 Feb 2024 21:17:29 +0000 (UTC)
+	 MIME-Version; b=gtuyn1vyjI5XnrQ9KSQbokeD+T1rbEyjfvLzAEFI7K2DomCrWdW2gRaYI3k1fBdL3xnLLFeS8a5qCXBHjvsm3Xae4X39qQVVSC5lBZB4MnODg040/fFI9FXDrkoguwrHhamg/QsBchU6p3VRs344CWFKyOF3DRtasKsf6oBwAUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dYaz2nA+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7867C433C7;
+	Tue, 20 Feb 2024 21:34:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463849;
-	bh=mLBa8l715fWxw/NABFGdxdjT2F2tZSNelHmW2ca2rqA=;
+	s=korg; t=1708464859;
+	bh=KaloyAWi1ouenLVcZS1mmi/QRWExbmeqBAiUIu6Xo18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r6U6ccFq+tal7mVfJW9gDGpvuxjchIic3Ba5jLrTjl2pI0Ekeu5voxgA/GF+hq9Qb
-	 676kkZd6YJn7mekHEjQMQ5S7F9QPBk9C/ugkkaYCTStAxBSsQV5tPy2zYp05ZMZ8No
-	 Q8wPEtHF+iqkZC7UZzh93g+WENU78tnBhL7m3k64=
+	b=dYaz2nA+P/8qBzIwbBdC5SfoX+6DzY5LUHnwG3zWBI50c3r9vjAs30qbN+rTnDaja
+	 55+uIXu1fpp/zg2KqANn9OJQOzwKOU8K9nZWwk98jxk3Czy6u2DpRKLNz+sSSVlnr7
+	 hPp/j87xLhk1xNnem0Z40U3gReRbCwMqsOaXTUsk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 172/331] drm/amd/display: Increase frame-larger-than for all display_mode_vba files
+	Lee Duncan <lduncan@suse.com>,
+	Hannes Reinecke <hare@suse.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.7 129/309] scsi: Revert "scsi: fcoe: Fix potential deadlock on &fip->ctlr_lock"
 Date: Tue, 20 Feb 2024 21:54:48 +0100
-Message-ID: <20240220205642.927091681@linuxfoundation.org>
+Message-ID: <20240220205637.190464394@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,69 +62,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Lee Duncan <lduncan@suse.com>
 
-commit e63e35f0164c43fbc1adb481d6604f253b9f9667 upstream.
+commit 977fe773dcc7098d8eaf4ee6382cb51e13e784cb upstream.
 
-After a recent change in LLVM, allmodconfig (which has CONFIG_KCSAN=y
-and CONFIG_WERROR=y enabled) has a few new instances of
--Wframe-larger-than for the mode support and system configuration
-functions:
+This reverts commit 1a1975551943f681772720f639ff42fbaa746212.
 
-  drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn20/display_mode_vba_20v2.c:3393:6: error: stack frame size (2144) exceeds limit (2048) in 'dml20v2_ModeSupportAndSystemConfigurationFull' [-Werror,-Wframe-larger-than]
-   3393 | void dml20v2_ModeSupportAndSystemConfigurationFull(struct display_mode_lib *mode_lib)
-        |      ^
-  1 error generated.
+This commit causes interrupts to be lost for FCoE devices, since it changed
+sping locks from "bh" to "irqsave".
 
-  drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn21/display_mode_vba_21.c:3520:6: error: stack frame size (2192) exceeds limit (2048) in 'dml21_ModeSupportAndSystemConfigurationFull' [-Werror,-Wframe-larger-than]
-   3520 | void dml21_ModeSupportAndSystemConfigurationFull(struct display_mode_lib *mode_lib)
-        |      ^
-  1 error generated.
+Instead, a work queue should be used, and will be addressed in a separate
+commit.
 
-  drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn20/display_mode_vba_20.c:3286:6: error: stack frame size (2128) exceeds limit (2048) in 'dml20_ModeSupportAndSystemConfigurationFull' [-Werror,-Wframe-larger-than]
-   3286 | void dml20_ModeSupportAndSystemConfigurationFull(struct display_mode_lib *mode_lib)
-        |      ^
-  1 error generated.
-
-Without the sanitizers enabled, there are no warnings.
-
-This was the catalyst for commit 6740ec97bcdb ("drm/amd/display:
-Increase frame warning limit with KASAN or KCSAN in dml2") and that same
-change was made to dml in commit 5b750b22530f ("drm/amd/display:
-Increase frame warning limit with KASAN or KCSAN in dml") but the
-frame_warn_flag variable was not applied to all files. Do so now to
-clear up the warnings and make all these files consistent.
-
-Cc: stable@vger.kernel.org
-Closes: https://github.com/ClangBuiltLinux/linux/issue/1990
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 1a1975551943 ("scsi: fcoe: Fix potential deadlock on &fip->ctlr_lock")
+Signed-off-by: Lee Duncan <lduncan@suse.com>
+Link: https://lore.kernel.org/r/c578cdcd46b60470535c4c4a953e6a1feca0dffd.1707500786.git.lduncan@suse.com
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml/Makefile |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/scsi/fcoe/fcoe_ctlr.c |   20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dml/Makefile
-+++ b/drivers/gpu/drm/amd/display/dc/dml/Makefile
-@@ -72,11 +72,11 @@ CFLAGS_$(AMDDALPATH)/dc/dml/display_mode
- CFLAGS_$(AMDDALPATH)/dc/dml/display_mode_vba.o := $(dml_ccflags)
- CFLAGS_$(AMDDALPATH)/dc/dml/dcn10/dcn10_fpu.o := $(dml_ccflags)
- CFLAGS_$(AMDDALPATH)/dc/dml/dcn20/dcn20_fpu.o := $(dml_ccflags)
--CFLAGS_$(AMDDALPATH)/dc/dml/dcn20/display_mode_vba_20.o := $(dml_ccflags)
-+CFLAGS_$(AMDDALPATH)/dc/dml/dcn20/display_mode_vba_20.o := $(dml_ccflags) $(frame_warn_flag)
- CFLAGS_$(AMDDALPATH)/dc/dml/dcn20/display_rq_dlg_calc_20.o := $(dml_ccflags)
--CFLAGS_$(AMDDALPATH)/dc/dml/dcn20/display_mode_vba_20v2.o := $(dml_ccflags)
-+CFLAGS_$(AMDDALPATH)/dc/dml/dcn20/display_mode_vba_20v2.o := $(dml_ccflags) $(frame_warn_flag)
- CFLAGS_$(AMDDALPATH)/dc/dml/dcn20/display_rq_dlg_calc_20v2.o := $(dml_ccflags)
--CFLAGS_$(AMDDALPATH)/dc/dml/dcn21/display_mode_vba_21.o := $(dml_ccflags)
-+CFLAGS_$(AMDDALPATH)/dc/dml/dcn21/display_mode_vba_21.o := $(dml_ccflags) $(frame_warn_flag)
- CFLAGS_$(AMDDALPATH)/dc/dml/dcn21/display_rq_dlg_calc_21.o := $(dml_ccflags)
- CFLAGS_$(AMDDALPATH)/dc/dml/dcn30/display_mode_vba_30.o := $(dml_ccflags) $(frame_warn_flag)
- CFLAGS_$(AMDDALPATH)/dc/dml/dcn30/display_rq_dlg_calc_30.o := $(dml_ccflags)
+--- a/drivers/scsi/fcoe/fcoe_ctlr.c
++++ b/drivers/scsi/fcoe/fcoe_ctlr.c
+@@ -319,17 +319,16 @@ static void fcoe_ctlr_announce(struct fc
+ {
+ 	struct fcoe_fcf *sel;
+ 	struct fcoe_fcf *fcf;
+-	unsigned long flags;
+ 
+ 	mutex_lock(&fip->ctlr_mutex);
+-	spin_lock_irqsave(&fip->ctlr_lock, flags);
++	spin_lock_bh(&fip->ctlr_lock);
+ 
+ 	kfree_skb(fip->flogi_req);
+ 	fip->flogi_req = NULL;
+ 	list_for_each_entry(fcf, &fip->fcfs, list)
+ 		fcf->flogi_sent = 0;
+ 
+-	spin_unlock_irqrestore(&fip->ctlr_lock, flags);
++	spin_unlock_bh(&fip->ctlr_lock);
+ 	sel = fip->sel_fcf;
+ 
+ 	if (sel && ether_addr_equal(sel->fcf_mac, fip->dest_addr))
+@@ -700,7 +699,6 @@ int fcoe_ctlr_els_send(struct fcoe_ctlr
+ {
+ 	struct fc_frame *fp;
+ 	struct fc_frame_header *fh;
+-	unsigned long flags;
+ 	u16 old_xid;
+ 	u8 op;
+ 	u8 mac[ETH_ALEN];
+@@ -734,11 +732,11 @@ int fcoe_ctlr_els_send(struct fcoe_ctlr
+ 		op = FIP_DT_FLOGI;
+ 		if (fip->mode == FIP_MODE_VN2VN)
+ 			break;
+-		spin_lock_irqsave(&fip->ctlr_lock, flags);
++		spin_lock_bh(&fip->ctlr_lock);
+ 		kfree_skb(fip->flogi_req);
+ 		fip->flogi_req = skb;
+ 		fip->flogi_req_send = 1;
+-		spin_unlock_irqrestore(&fip->ctlr_lock, flags);
++		spin_unlock_bh(&fip->ctlr_lock);
+ 		schedule_work(&fip->timer_work);
+ 		return -EINPROGRESS;
+ 	case ELS_FDISC:
+@@ -1707,11 +1705,10 @@ static int fcoe_ctlr_flogi_send_locked(s
+ static int fcoe_ctlr_flogi_retry(struct fcoe_ctlr *fip)
+ {
+ 	struct fcoe_fcf *fcf;
+-	unsigned long flags;
+ 	int error;
+ 
+ 	mutex_lock(&fip->ctlr_mutex);
+-	spin_lock_irqsave(&fip->ctlr_lock, flags);
++	spin_lock_bh(&fip->ctlr_lock);
+ 	LIBFCOE_FIP_DBG(fip, "re-sending FLOGI - reselect\n");
+ 	fcf = fcoe_ctlr_select(fip);
+ 	if (!fcf || fcf->flogi_sent) {
+@@ -1722,7 +1719,7 @@ static int fcoe_ctlr_flogi_retry(struct
+ 		fcoe_ctlr_solicit(fip, NULL);
+ 		error = fcoe_ctlr_flogi_send_locked(fip);
+ 	}
+-	spin_unlock_irqrestore(&fip->ctlr_lock, flags);
++	spin_unlock_bh(&fip->ctlr_lock);
+ 	mutex_unlock(&fip->ctlr_mutex);
+ 	return error;
+ }
+@@ -1739,9 +1736,8 @@ static int fcoe_ctlr_flogi_retry(struct
+ static void fcoe_ctlr_flogi_send(struct fcoe_ctlr *fip)
+ {
+ 	struct fcoe_fcf *fcf;
+-	unsigned long flags;
+ 
+-	spin_lock_irqsave(&fip->ctlr_lock, flags);
++	spin_lock_bh(&fip->ctlr_lock);
+ 	fcf = fip->sel_fcf;
+ 	if (!fcf || !fip->flogi_req_send)
+ 		goto unlock;
+@@ -1768,7 +1764,7 @@ static void fcoe_ctlr_flogi_send(struct
+ 	} else /* XXX */
+ 		LIBFCOE_FIP_DBG(fip, "No FCF selected - defer send\n");
+ unlock:
+-	spin_unlock_irqrestore(&fip->ctlr_lock, flags);
++	spin_unlock_bh(&fip->ctlr_lock);
+ }
+ 
+ /**
 
 
 
