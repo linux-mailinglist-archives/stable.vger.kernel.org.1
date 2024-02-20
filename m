@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-21681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B58A485C9E4
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:39:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 065EF85C8AB
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:24:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71123284EC1
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:39:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0D221F215C6
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:24:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A35B151CEA;
-	Tue, 20 Feb 2024 21:39:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD88E151CED;
+	Tue, 20 Feb 2024 21:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VV2qxDc8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yd/poIiY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47BBD612D7;
-	Tue, 20 Feb 2024 21:39:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B314151CD9;
+	Tue, 20 Feb 2024 21:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708465177; cv=none; b=VSPZXawxQFaeFxgqWP8/My+YzrrJNHSZChPDrjJ9VjWgEBWQ3dxPRQyiV3h1fmCfNx+huolZ453cUbLyFyLd7WlpfDZ/BGjP6zwH8QNczyWumDEQVaVUwmlNJxDOK/vCl6m3eDXqgGkXE/9lTfCWtsO/hKcnsDgRQMDcXl7HX0I=
+	t=1708464260; cv=none; b=I/vccXjWAQBPk/ROZwYF6rE8N7JYueuzmZfkKVYL86Q2iuOalfuCCYny1uaP9uxzGV4ExC9Q4MM52poJoBuJ2CwcjIOfVA0GjADmXgnHRjSfUK1oAw9moMYNvvp/gRPyBPCef6uSLyMfGC/uxk3bY9oQq6P+tEqEY0DDFoVHg8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708465177; c=relaxed/simple;
-	bh=CMN8HoYUcQBwl+GnxLR/pB987VkzcGNjmkVokmOoVS0=;
+	s=arc-20240116; t=1708464260; c=relaxed/simple;
+	bh=l4/YLMlZbzGF47oiSs+7p4m4jBEzCiuZLvUqUo51qm0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AWEe4FrDF/KBGl+JIYWvpd9Yd0pMVghnzbPJVMsgC3XUqgYp4KfSutz8Dgbe2AJXdC9pjUcb+gLihZDTYTGqZii/H++gyBstk2T1k/SqUfKEMc9EzbI8iKdBpZW2tu6nN/TFZS58h1G9JJh38BHblTCwjjrrDjhflzCusHh94F4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VV2qxDc8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACF2DC433C7;
-	Tue, 20 Feb 2024 21:39:36 +0000 (UTC)
+	 MIME-Version; b=QPefwnZGh1A+0v3sJXmQfELR7H9PSQtgUPVgBiwUzeaQbmOQniKSCP4KvdMaUlzp1Jjo/diB1WacjlFjSaUgdUWp1LmmIKqVHzAqEqKkLNDrEKn26FjJKeeCbyFSd0HSEaBeZe+hMs4SbBwEPH5KFHe4pISmaiQ0Fr7wtmr5qrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yd/poIiY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F19D1C433F1;
+	Tue, 20 Feb 2024 21:24:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708465177;
-	bh=CMN8HoYUcQBwl+GnxLR/pB987VkzcGNjmkVokmOoVS0=;
+	s=korg; t=1708464260;
+	bh=l4/YLMlZbzGF47oiSs+7p4m4jBEzCiuZLvUqUo51qm0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VV2qxDc8Cl8yrsAjzfi3zkz4LQ665ZXg/ymb31zBC4PLcNab6JUMxxWEX8IRkwEoI
-	 R86Lg4IQoN7qr6MNDkwoZrbsUJ81IWoRAtHt+pL03UEK4w48rJOqto9Lh9TsE2xR+C
-	 jwDbQInvXfMJXE2ZD/75SByJEptYn9pEj8E25KQY=
+	b=yd/poIiYVA4FF46t73riQC2lDz0BOnq+dSTGM7XyGjw+1lJNvLO/FW4WfhXDSU7CA
+	 +MQ1+k+hrFg5Qryl7D++q6AcuJ9Lb3k+3xJZTiylClmma3IZ2cTHmPLGciEkB0V773
+	 L9WjytL04Agy3SMzRsUH1SuLRi4L0W15u4xTWiu0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksander Mazur <deweloper@wp.pl>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	stable@kernel.org
-Subject: [PATCH 6.7 231/309] x86/Kconfig: Transmeta Crusoe is CPU family 5, not 6
+	Ajay Kaher <akaher@vmware.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 274/331] eventfs: Have a free_ei() that just frees the eventfs_inode
 Date: Tue, 20 Feb 2024 21:56:30 +0100
-Message-ID: <20240220205640.381817437@linuxfoundation.org>
+Message-ID: <20240220205646.494228991@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +64,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksander Mazur <deweloper@wp.pl>
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-commit f6a1892585cd19e63c4ef2334e26cd536d5b678d upstream.
+commit db3a397209b00d2e4e0a068608e5c546fc064b82 upstream.
 
-The kernel built with MCRUSOE is unbootable on Transmeta Crusoe.  It shows
-the following error message:
+As the eventfs_inode is freed in two different locations, make a helper
+function free_ei() to make sure all the allocated fields of the
+eventfs_inode is freed.
 
-  This kernel requires an i686 CPU, but only detected an i586 CPU.
-  Unable to boot - please use a kernel appropriate for your CPU.
+This requires renaming the existing free_ei() which is called by the srcu
+handler to free_rcu_ei() and have free_ei() just do the freeing, where
+free_rcu_ei() will call it.
 
-Remove MCRUSOE from the condition introduced in commit in Fixes, effectively
-changing X86_MINIMUM_CPU_FAMILY back to 5 on that machine, which matches the
-CPU family given by CPUID.
+Link: https://lkml.kernel.org/r/20231101172649.265214087@goodmis.org
 
-  [ bp: Massage commit message. ]
-
-Fixes: 25d76ac88821 ("x86/Kconfig: Explicitly enumerate i686-class CPUs in Kconfig")
-Signed-off-by: Aleksander Mazur <deweloper@wp.pl>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: H. Peter Anvin <hpa@zytor.com>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/r/20240123134309.1117782-1-deweloper@wp.pl
+Cc: Ajay Kaher <akaher@vmware.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/Kconfig.cpu |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/tracefs/event_inode.c |   19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
---- a/arch/x86/Kconfig.cpu
-+++ b/arch/x86/Kconfig.cpu
-@@ -375,7 +375,7 @@ config X86_CMOV
- config X86_MINIMUM_CPU_FAMILY
- 	int
- 	default "64" if X86_64
--	default "6" if X86_32 && (MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M686 || MVIAC3_2 || MVIAC7 || MEFFICEON || MATOM || MCRUSOE || MCORE2 || MK7 || MK8)
-+	default "6" if X86_32 && (MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M686 || MVIAC3_2 || MVIAC7 || MEFFICEON || MATOM || MCORE2 || MK7 || MK8)
- 	default "5" if X86_32 && X86_CMPXCHG64
- 	default "4"
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -129,6 +129,13 @@ static struct dentry *create_dir(const c
+ 	return eventfs_end_creating(dentry);
+ }
+ 
++static void free_ei(struct eventfs_inode *ei)
++{
++	kfree_const(ei->name);
++	kfree(ei->d_children);
++	kfree(ei);
++}
++
+ /**
+  * eventfs_set_ei_status_free - remove the dentry reference from an eventfs_inode
+  * @ti: the tracefs_inode of the dentry
+@@ -168,9 +175,7 @@ void eventfs_set_ei_status_free(struct t
+ 			eventfs_remove_dir(ei_child);
+ 		}
+ 
+-		kfree_const(ei->name);
+-		kfree(ei->d_children);
+-		kfree(ei);
++		free_ei(ei);
+ 		return;
+ 	}
+ 
+@@ -784,13 +789,11 @@ struct eventfs_inode *eventfs_create_eve
+ 	return ERR_PTR(-ENOMEM);
+ }
+ 
+-static void free_ei(struct rcu_head *head)
++static void free_rcu_ei(struct rcu_head *head)
+ {
+ 	struct eventfs_inode *ei = container_of(head, struct eventfs_inode, rcu);
+ 
+-	kfree_const(ei->name);
+-	kfree(ei->d_children);
+-	kfree(ei);
++	free_ei(ei);
+ }
+ 
+ /**
+@@ -881,7 +884,7 @@ void eventfs_remove_dir(struct eventfs_i
+ 		for (i = 0; i < ei->nr_entries; i++)
+ 			unhook_dentry(&ei->d_children[i], &dentry_list);
+ 		unhook_dentry(&ei->dentry, &dentry_list);
+-		call_srcu(&eventfs_srcu, &ei->rcu, free_ei);
++		call_srcu(&eventfs_srcu, &ei->rcu, free_rcu_ei);
+ 	}
+ 	mutex_unlock(&eventfs_mutex);
  
 
 
