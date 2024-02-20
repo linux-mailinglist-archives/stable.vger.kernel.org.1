@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-21560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30FDA85C968
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:33:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51C5C85C839
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:19:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B61F5B21D3F
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:33:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82F6E1C2232D
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:19:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03DDE151CD9;
-	Tue, 20 Feb 2024 21:33:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC605151CD9;
+	Tue, 20 Feb 2024 21:19:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UKHRNAkl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RUynwHmk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6934446C9;
-	Tue, 20 Feb 2024 21:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9919B1509BF;
+	Tue, 20 Feb 2024 21:19:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464795; cv=none; b=n2u6OiGmC1dnXIux/TfGTmBp4Op1gflzx3YvF9bZ46uAR2QTOQ50JLLfrD+KlFEEaYV8/MywLW811qiKlvfSHX95FxDicq/YQSJCYwFf47eM+cgDntaQTlqfkTfahd0rcjO1D7JK2sL/zrQQchQ8VCtBILpmprFDsFW814SV5B0=
+	t=1708463975; cv=none; b=RoxMHjZGUR9jBKIShkVQoqmykLHn4ZUrcDqeGvIUKqwxtG3YP4VdXd2aR3zSzECsb/8OieRSANFTaHiQnVpOPA2cikx0zOe8doZz30rsEoVR3mQr0ZEHLbJjL/9XcKalCJLq7MhGHzYbE0q7UT235nM2m8AGNM8IDRUkSSWHrX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464795; c=relaxed/simple;
-	bh=gLuNkKqu5DIeh9cDGGpSfJRD7bmFJZ3EtTjp5lCd2jE=;
+	s=arc-20240116; t=1708463975; c=relaxed/simple;
+	bh=qBhTX//NVvP0Lr+nT5SBsayxM78l3ZXh5cNhDRUwWpk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TD/72U7j/L0zTX2sqhp8zJeJIU5BmmA6cGKBhzr0nqvdcwaHXJTrCWW28cZEqqS+CDEkZs1qiKUlMJ+uztoQs19b0knYQYgmbmpR9yiRcgFvIvtUv+Qw/iMTZOpkSogEbsRaIxpDFKcm/6ZIIQBH3Tx6Cdgx8wtApn3e+GNLKsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UKHRNAkl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31991C433C7;
-	Tue, 20 Feb 2024 21:33:15 +0000 (UTC)
+	 MIME-Version; b=D0kw+bs3HiCQJs98JWvEIh0MAov9uqQpIIXxydiMJfE/nt2S1Rih0MlvWT4wYCMh8ZTLZSRUcCa4kbMfe/Vcmmq/5OlbmQnUpesBB2hnsMGmGPkhg5xNPXHdIwdpCpYx8LiS4N7fwTtrKlr8f1WUVHM6CPCbBUHXoT1JsfClWnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RUynwHmk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06479C433C7;
+	Tue, 20 Feb 2024 21:19:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464795;
-	bh=gLuNkKqu5DIeh9cDGGpSfJRD7bmFJZ3EtTjp5lCd2jE=;
+	s=korg; t=1708463975;
+	bh=qBhTX//NVvP0Lr+nT5SBsayxM78l3ZXh5cNhDRUwWpk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UKHRNAklep0aoOeL/2JrMKyi4TivD41tgfGM9CT/+I1h9FWTzMUif1kQzFRX5DNey
-	 PO96YC3IdiBKJfzUbh8OKaXrcnDNMmKtRo5xnboxpA1CVPYJ6mCuvuwnEdi7cUMnne
-	 ks8TJa26Q9Z1cRo3FezpA4LNxHXUOR9W1QWgcjAA=
+	b=RUynwHmkQzFSgroM4ATuP+VQN8k8yunPJiFbb4glyFxuqenR+aQFwgOKQkL3N7Jhu
+	 YR3HAngFYM5FfU98bt8KVwfaAIu2tXHfd/CLWMrz8AZHV1tbuhRijBDCm4ev+HhM91
+	 wf0MWsfIj4AZXM01AeusGYZkFU0WHjMQziIW0kTs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Smalley <stephen.smalley.work@gmail.com>,
-	Ondrej Mosnacek <omosnace@redhat.com>,
-	Casey Schaufler <casey@schaufler-ca.com>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 6.7 140/309] lsm: fix the logic in security_inode_getsecctx()
+	Florent Revest <revest@chromium.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 183/331] ftrace: Fix DIRECT_CALLS to use SAVE_REGS by default
 Date: Tue, 20 Feb 2024 21:54:59 +0100
-Message-ID: <20240220205637.530892501@linuxfoundation.org>
+Message-ID: <20240220205643.288391905@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +64,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ondrej Mosnacek <omosnace@redhat.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-commit 99b817c173cd213671daecd25ca27f56b0c7c4ec upstream.
+commit a8b9cf62ade1bf17261a979fc97e40c2d7842353 upstream.
 
-The inode_getsecctx LSM hook has previously been corrected to have
--EOPNOTSUPP instead of 0 as the default return value to fix BPF LSM
-behavior. However, the call_int_hook()-generated loop in
-security_inode_getsecctx() was left treating 0 as the neutral value, so
-after an LSM returns 0, the loop continues to try other LSMs, and if one
-of them returns a non-zero value, the function immediately returns with
-said value. So in a situation where SELinux and the BPF LSMs registered
-this hook, -EOPNOTSUPP would be incorrectly returned whenever SELinux
-returned 0.
+The commit 60c8971899f3 ("ftrace: Make DIRECT_CALLS work WITH_ARGS
+and !WITH_REGS") changed DIRECT_CALLS to use SAVE_ARGS when there
+are multiple ftrace_ops at the same function, but since the x86 only
+support to jump to direct_call from ftrace_regs_caller, when we set
+the function tracer on the same target function on x86, ftrace-direct
+does not work as below (this actually works on arm64.)
 
-Fix this by open-coding the call_int_hook() loop and making it use the
-correct LSM_RET_DEFAULT() value as the neutral one, similar to what
-other hooks do.
+At first, insmod ftrace-direct.ko to put a direct_call on
+'wake_up_process()'.
 
+ # insmod kernel/samples/ftrace/ftrace-direct.ko
+ # less trace
+...
+          <idle>-0       [006] ..s1.   564.686958: my_direct_func: waking up rcu_preempt-17
+          <idle>-0       [007] ..s1.   564.687836: my_direct_func: waking up kcompactd0-63
+          <idle>-0       [006] ..s1.   564.690926: my_direct_func: waking up rcu_preempt-17
+          <idle>-0       [006] ..s1.   564.696872: my_direct_func: waking up rcu_preempt-17
+          <idle>-0       [007] ..s1.   565.191982: my_direct_func: waking up kcompactd0-63
+
+Setup a function filter to the 'wake_up_process' too, and enable it.
+
+ # cd /sys/kernel/tracing/
+ # echo wake_up_process > set_ftrace_filter
+ # echo function > current_tracer
+ # less trace
+...
+          <idle>-0       [006] ..s3.   686.180972: wake_up_process <-call_timer_fn
+          <idle>-0       [006] ..s3.   686.186919: wake_up_process <-call_timer_fn
+          <idle>-0       [002] ..s3.   686.264049: wake_up_process <-call_timer_fn
+          <idle>-0       [002] d.h6.   686.515216: wake_up_process <-kick_pool
+          <idle>-0       [002] d.h6.   686.691386: wake_up_process <-kick_pool
+
+Then, only function tracer is shown on x86.
+But if you enable 'kprobe on ftrace' event (which uses SAVE_REGS flag)
+on the same function, it is shown again.
+
+ # echo 'p wake_up_process' >> dynamic_events
+ # echo 1 > events/kprobes/p_wake_up_process_0/enable
+ # echo > trace
+ # less trace
+...
+          <idle>-0       [006] ..s2.  2710.345919: p_wake_up_process_0: (wake_up_process+0x4/0x20)
+          <idle>-0       [006] ..s3.  2710.345923: wake_up_process <-call_timer_fn
+          <idle>-0       [006] ..s1.  2710.345928: my_direct_func: waking up rcu_preempt-17
+          <idle>-0       [006] ..s2.  2710.349931: p_wake_up_process_0: (wake_up_process+0x4/0x20)
+          <idle>-0       [006] ..s3.  2710.349934: wake_up_process <-call_timer_fn
+          <idle>-0       [006] ..s1.  2710.349937: my_direct_func: waking up rcu_preempt-17
+
+To fix this issue, use SAVE_REGS flag for multiple ftrace_ops flag of
+direct_call by default.
+
+Link: https://lore.kernel.org/linux-trace-kernel/170484558617.178953.1590516949390270842.stgit@devnote2
+
+Fixes: 60c8971899f3 ("ftrace: Make DIRECT_CALLS work WITH_ARGS and !WITH_REGS")
 Cc: stable@vger.kernel.org
-Reported-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-Link: https://lore.kernel.org/selinux/CAEjxPJ4ev-pasUwGx48fDhnmjBnq_Wh90jYPwRQRAqXxmOKD4Q@mail.gmail.com/
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2257983
-Fixes: b36995b8609a ("lsm: fix default return value for inode_getsecctx")
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
-Reviewed-by: Casey Schaufler <casey@schaufler-ca.com>
-[PM: subject line tweak]
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+Cc: Florent Revest <revest@chromium.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reviewed-by: Mark Rutland <mark.rutland@arm.com>
+Tested-by: Mark Rutland <mark.rutland@arm.com> [arm64]
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/security.c |   14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ kernel/trace/ftrace.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/security/security.c
-+++ b/security/security.c
-@@ -4030,7 +4030,19 @@ EXPORT_SYMBOL(security_inode_setsecctx);
-  */
- int security_inode_getsecctx(struct inode *inode, void **ctx, u32 *ctxlen)
- {
--	return call_int_hook(inode_getsecctx, -EOPNOTSUPP, inode, ctx, ctxlen);
-+	struct security_hook_list *hp;
-+	int rc;
-+
-+	/*
-+	 * Only one module will provide a security context.
-+	 */
-+	hlist_for_each_entry(hp, &security_hook_heads.inode_getsecctx, list) {
-+		rc = hp->hook.inode_getsecctx(inode, ctx, ctxlen);
-+		if (rc != LSM_RET_DEFAULT(inode_getsecctx))
-+			return rc;
-+	}
-+
-+	return LSM_RET_DEFAULT(inode_getsecctx);
- }
- EXPORT_SYMBOL(security_inode_getsecctx);
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -5325,7 +5325,17 @@ static LIST_HEAD(ftrace_direct_funcs);
  
+ static int register_ftrace_function_nolock(struct ftrace_ops *ops);
+ 
++/*
++ * If there are multiple ftrace_ops, use SAVE_REGS by default, so that direct
++ * call will be jumped from ftrace_regs_caller. Only if the architecture does
++ * not support ftrace_regs_caller but direct_call, use SAVE_ARGS so that it
++ * jumps from ftrace_caller for multiple ftrace_ops.
++ */
++#ifndef HAVE_DYNAMIC_FTRACE_WITH_REGS
+ #define MULTI_FLAGS (FTRACE_OPS_FL_DIRECT | FTRACE_OPS_FL_SAVE_ARGS)
++#else
++#define MULTI_FLAGS (FTRACE_OPS_FL_DIRECT | FTRACE_OPS_FL_SAVE_REGS)
++#endif
+ 
+ static int check_direct_multi(struct ftrace_ops *ops)
+ {
 
 
 
