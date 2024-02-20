@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-20991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32C3F85C69E
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:03:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 151DC85C680
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:01:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8033B2148F
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:03:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C35A7283178
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:01:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14C86151CCF;
-	Tue, 20 Feb 2024 21:03:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75238151CC3;
+	Tue, 20 Feb 2024 21:01:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ysQCkatz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WFIWDZM+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68A314A4E2;
-	Tue, 20 Feb 2024 21:03:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F0C14F9DA;
+	Tue, 20 Feb 2024 21:01:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463009; cv=none; b=WIC0vBeWcrzBTD2NFXHViyMnz3GOcoA4uBuxMK1kgUYpjd76Gv8AEXU7I4zW5JTFt+82SXYtHIlqYr8uAW6s4gbiPO2KjUj3vWnpz70G3z3L4SRGRzxijZSfXdzuUEOTaYoCLoEdjm4TdZkDMO7bfdvqKQTAEysZ9LHcq/sZwUo=
+	t=1708462917; cv=none; b=KsKbwckbIykASeEHgurdqy5eIH2RPUa+diVDOKdyw4+D8LnesrL7g/j8SLyBVPYcMdt+QK1n58E9sEt2HQMPLStCucM0H4GyFX53e2nIFa3Aseue3EYdbm+MmQ6LeAHrwUqBT3u9M8ENe12ssL7dkH3VOkH1CywY4od3sZ+jQzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463009; c=relaxed/simple;
-	bh=RZLSzSXH7wwaIaZ7k2glIyaCWgpmWuLGpsKAQLIk3mY=;
+	s=arc-20240116; t=1708462917; c=relaxed/simple;
+	bh=m0qa78mr00hkzX7Ga+PuAyWN6UOuowEdJf8lrEzTmZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G1//CZZFRumdgsVghqwMnBRAb+CrxhLVnW+jpdTw0Hyf7DM8YXqgzoBnjVCPS2IiLPGF4imFe3IktDoz/4LcTHW1vrzqlTI22w4VrthLxnTJpbjNetDUGAjaoQVcX1DA/nNubPN0Wluw7zMSwM1fOZgbc7AtA/qhIr0GwkBbQwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ysQCkatz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5D04C433C7;
-	Tue, 20 Feb 2024 21:03:28 +0000 (UTC)
+	 MIME-Version; b=k7VMLfku4e3ItUlicUYwqAOAO8L0Qua62KBuG8uRwK4X/3uYVf454UU6dNerV2kooVCcZLCWpuIzmNCCazsFBgKT+6OhcAIAhNi6zpytBmMkTcvhra0Q/6IWpbB6xLmPKGooBPIcQ0KU3E7dB8JIsML9JVBMeqGVfMv048tFgys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WFIWDZM+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96529C433F1;
+	Tue, 20 Feb 2024 21:01:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463009;
-	bh=RZLSzSXH7wwaIaZ7k2glIyaCWgpmWuLGpsKAQLIk3mY=;
+	s=korg; t=1708462917;
+	bh=m0qa78mr00hkzX7Ga+PuAyWN6UOuowEdJf8lrEzTmZ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ysQCkatzcbLBjkfKjwq58N3aygMpJDCIHHOgCFl+MMsfeYO7Gvtx52YjOqyW0S2av
-	 typc2uclgoB9Zl6HCIXaUXKhgrujzQcIat2G4eqR/Y49H1n8TN7DYXpFVcDWs7xBk3
-	 JtAmOmHSL6uIH2JZP54Tfiw2qbP+nhE3XUUuluG0=
+	b=WFIWDZM+A1pkTonEgd3hq7w3PjC61vmQHEfLWWVEndpw9Zt+CBVtARZ1vXRj67nW0
+	 7CIxYbBcUvp+NvbpWZQUilP9uy1jRjOkGi4ILDSBc2Cs16MT/9t/jG+f6U2knYzJDU
+	 UWaDzS3RXfg8tRd8eJ8aoYlwK+XbYAYTEsGl7+dk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhenyu Zhang <zhenyzha@redhat.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	Sebastian Ott <sebott@redhat.com>,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Subject: [PATCH 6.1 077/197] drm/virtio: Set segment size for virtio_gpu device
-Date: Tue, 20 Feb 2024 21:50:36 +0100
-Message-ID: <20240220204843.384116808@linuxfoundation.org>
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	Casey Schaufler <casey@schaufler-ca.com>,
+	Paul Moore <paul@paul-moore.com>
+Subject: [PATCH 6.1 078/197] lsm: fix the logic in security_inode_getsecctx()
+Date: Tue, 20 Feb 2024 21:50:37 +0100
+Message-ID: <20240220204843.414506813@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
 References: <20240220204841.073267068@linuxfoundation.org>
@@ -67,38 +67,61 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sebastian Ott <sebott@redhat.com>
+From: Ondrej Mosnacek <omosnace@redhat.com>
 
-commit 9c64e749cebd9c2d3d55261530a98bcccb83b950 upstream.
+commit 99b817c173cd213671daecd25ca27f56b0c7c4ec upstream.
 
-Set the segment size of the virtio_gpu device to the value
-used by the drm helpers when allocating sg lists to fix the
-following complaint from DMA_API debug code:
+The inode_getsecctx LSM hook has previously been corrected to have
+-EOPNOTSUPP instead of 0 as the default return value to fix BPF LSM
+behavior. However, the call_int_hook()-generated loop in
+security_inode_getsecctx() was left treating 0 as the neutral value, so
+after an LSM returns 0, the loop continues to try other LSMs, and if one
+of them returns a non-zero value, the function immediately returns with
+said value. So in a situation where SELinux and the BPF LSMs registered
+this hook, -EOPNOTSUPP would be incorrectly returned whenever SELinux
+returned 0.
 
-DMA-API: virtio-pci 0000:07:00.0: mapping sg segment longer than
-device claims to support [len=262144] [max=65536]
+Fix this by open-coding the call_int_hook() loop and making it use the
+correct LSM_RET_DEFAULT() value as the neutral one, similar to what
+other hooks do.
 
 Cc: stable@vger.kernel.org
-Tested-by: Zhenyu Zhang <zhenyzha@redhat.com>
-Acked-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Signed-off-by: Sebastian Ott <sebott@redhat.com>
-Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/7258a4cc-da16-5c34-a042-2a23ee396d56@redhat.com
+Reported-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+Link: https://lore.kernel.org/selinux/CAEjxPJ4ev-pasUwGx48fDhnmjBnq_Wh90jYPwRQRAqXxmOKD4Q@mail.gmail.com/
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2257983
+Fixes: b36995b8609a ("lsm: fix default return value for inode_getsecctx")
+Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+Reviewed-by: Casey Schaufler <casey@schaufler-ca.com>
+[PM: subject line tweak]
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/virtio/virtgpu_drv.c |    1 +
- 1 file changed, 1 insertion(+)
+ security/security.c |   14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/virtio/virtgpu_drv.c
-+++ b/drivers/gpu/drm/virtio/virtgpu_drv.c
-@@ -93,6 +93,7 @@ static int virtio_gpu_probe(struct virti
- 			goto err_free;
- 	}
+--- a/security/security.c
++++ b/security/security.c
+@@ -2186,7 +2186,19 @@ EXPORT_SYMBOL(security_inode_setsecctx);
  
-+	dma_set_max_seg_size(dev->dev, dma_max_mapping_size(dev->dev) ?: UINT_MAX);
- 	ret = virtio_gpu_init(vdev, dev);
- 	if (ret)
- 		goto err_free;
+ int security_inode_getsecctx(struct inode *inode, void **ctx, u32 *ctxlen)
+ {
+-	return call_int_hook(inode_getsecctx, -EOPNOTSUPP, inode, ctx, ctxlen);
++	struct security_hook_list *hp;
++	int rc;
++
++	/*
++	 * Only one module will provide a security context.
++	 */
++	hlist_for_each_entry(hp, &security_hook_heads.inode_getsecctx, list) {
++		rc = hp->hook.inode_getsecctx(inode, ctx, ctxlen);
++		if (rc != LSM_RET_DEFAULT(inode_getsecctx))
++			return rc;
++	}
++
++	return LSM_RET_DEFAULT(inode_getsecctx);
+ }
+ EXPORT_SYMBOL(security_inode_getsecctx);
+ 
 
 
 
