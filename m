@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-21583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8DFE85C97F
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:34:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B730585C7E9
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:17:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3898FB2251E
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:34:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CDFE1F26F6B
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:17:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0941E151CCC;
-	Tue, 20 Feb 2024 21:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0134151CD9;
+	Tue, 20 Feb 2024 21:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nLOJEc9D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VOxEOZIN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAE43446C9;
-	Tue, 20 Feb 2024 21:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F6DF612D7;
+	Tue, 20 Feb 2024 21:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464868; cv=none; b=fM+xRYHL4flPaYkheNDyB6xvEMeP5yfu6O1V83ZOELzsFFHoITr2r874YAGHpy2VnIFlCJfrXppBm4wZPsGGXbXznY0WnAKhX+AxXFn7VIEJPCdoKjrQN8MPQyRPYiRmj0pmuFFLaYLkJaMvmuMaDxOKAhZMFCNoP3gis6GwPxE=
+	t=1708463859; cv=none; b=MSYXcpx49s3pYvFJpnyxQJoqTcrEHS3M0zArNuSVL7ntM1KQb21YQInQGo0fTT2QtVSAUplqrFzP+LKZBdl6wd85FkLoX2iOtKvukCVL22W7k3vQB5NcGn+Gm+rMrlz2UNh1TPD06WXwTUBHHa+0QMpfN6HkKLXGhnTuCxY3IWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464868; c=relaxed/simple;
-	bh=FBPTwYJSI02jqHQw3KamrTfux2F8/vre2eMK0xWVLh8=;
+	s=arc-20240116; t=1708463859; c=relaxed/simple;
+	bh=yTRgeRgK2XJJRZ408wFyY/S6H2NG/33bn62mfhbrXIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ppmUhNOQ0qqPGyuLum9q6Tf45VvzglKPk/GtMjVxP6uymxCoSHj2Tmhujj45oPeaLfv3vXxTzWSzVxKMqxSyNwd8nlkqsMrdLfBeFN2ZoCk6N85pSWdklNR6nhkKat1qCd6Gbby7N7c7zH9KzhxcOcqs4ETuS3az9SzxWmYPaRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nLOJEc9D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A10FC433C7;
-	Tue, 20 Feb 2024 21:34:27 +0000 (UTC)
+	 MIME-Version; b=U846zKWNE4uyR+zJXh0OcjoOmI3iK8aYHoTiAyyW8HFDs2xN6wpokM39l6Si37NWCAUTPo0S8MRIBHrz1vnQ4+duT5W1RzJnutJuhhNWXy/rkqWrd5QUjUE3xYsjI2MGl7C4wTP5cF6YHJntDwKfPuvXB8t7bzoOZC2BQnHJpgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VOxEOZIN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4C7DC433F1;
+	Tue, 20 Feb 2024 21:17:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464868;
-	bh=FBPTwYJSI02jqHQw3KamrTfux2F8/vre2eMK0xWVLh8=;
+	s=korg; t=1708463859;
+	bh=yTRgeRgK2XJJRZ408wFyY/S6H2NG/33bn62mfhbrXIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nLOJEc9DvbvEvOaF9xQj3IxCi71GdNt9xRiu0KKJ7Hm2Y1dVxwPrjn/oViigWI0EC
-	 efUEi5h5QQt9xwduORqswCYzCq1gL8RW6mK7+L1hHj4EHlqGHsUfF/m27e2qT7ChVr
-	 fTy4LaqO/zNzc1AdQkjUxf94/JDTENW5Fa8QkLS8=
+	b=VOxEOZINFuyD5tfYf5jah8S4r5bQdSUt2BVbWap936QSq7g7QVDAnbC3Is/oS06cu
+	 e3kq2JzZ9HBNPJnlFqNwyRLpoFIgeKMqBzfN5l7xRll6cUSoQUp8hepQzycAxEe9k6
+	 jJLglqR2/k1NOWrIWn4Oo77l5BMM+y/XWMZp/3GE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	Keqi Wang <wangkeqi_chris@163.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.7 132/309] connector/cn_proc: revert "connector: Fix proc_event_num_listeners count not cleared"
+	Vincent Donnefort <vdonnefort@google.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 175/331] ring-buffer: Clean ring_buffer_poll_wait() error return
 Date: Tue, 20 Feb 2024 21:54:51 +0100
-Message-ID: <20240220205637.277173975@linuxfoundation.org>
+Message-ID: <20240220205643.014436056@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keqi Wang <wangkeqi_chris@163.com>
+From: Vincent Donnefort <vdonnefort@google.com>
 
-commit 8929f95b2b587791a7dcd04cc91520194a76d3a6 upstream.
+commit 66bbea9ed6446b8471d365a22734dc00556c4785 upstream.
 
-This reverts commit c46bfba1337d ("connector: Fix proc_event_num_listeners
-count not cleared").
+The return type for ring_buffer_poll_wait() is __poll_t. This is behind
+the scenes an unsigned where we can set event bits. In case of a
+non-allocated CPU, we do return instead -EINVAL (0xffffffea). Lucky us,
+this ends up setting few error bits (EPOLLERR | EPOLLHUP | EPOLLNVAL), so
+user-space at least is aware something went wrong.
 
-It is not accurate to reset proc_event_num_listeners according to
-cn_netlink_send_mult() return value -ESRCH.
+Nonetheless, this is an incorrect code. Replace that -EINVAL with a
+proper EPOLLERR to clean that output. As this doesn't change the
+behaviour, there's no need to treat this change as a bug fix.
 
-In the case of stress-ng netlink-proc, -ESRCH will always be returned,
-because netlink_broadcast_filtered will return -ESRCH,
-which may cause stress-ng netlink-proc performance degradation.
+Link: https://lore.kernel.org/linux-trace-kernel/20240131140955.3322792-1-vdonnefort@google.com
 
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202401112259.b23a1567-oliver.sang@intel.com
-Fixes: c46bfba1337d ("connector: Fix proc_event_num_listeners count not cleared")
-Signed-off-by: Keqi Wang <wangkeqi_chris@163.com>
-Link: https://lore.kernel.org/r/20240209091659.68723-1-wangkeqi_chris@163.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Cc: stable@vger.kernel.org
+Fixes: 6721cb6002262 ("ring-buffer: Do not poll non allocated cpu buffers")
+Signed-off-by: Vincent Donnefort <vdonnefort@google.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/connector/cn_proc.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ kernel/trace/ring_buffer.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/connector/cn_proc.c
-+++ b/drivers/connector/cn_proc.c
-@@ -108,9 +108,8 @@ static inline void send_msg(struct cn_ms
- 		filter_data[1] = 0;
- 	}
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -1091,7 +1091,7 @@ __poll_t ring_buffer_poll_wait(struct tr
+ 		full = 0;
+ 	} else {
+ 		if (!cpumask_test_cpu(cpu, buffer->cpumask))
+-			return -EINVAL;
++			return EPOLLERR;
  
--	if (cn_netlink_send_mult(msg, msg->len, 0, CN_IDX_PROC, GFP_NOWAIT,
--			     cn_filter, (void *)filter_data) == -ESRCH)
--		atomic_set(&proc_event_num_listeners, 0);
-+	cn_netlink_send_mult(msg, msg->len, 0, CN_IDX_PROC, GFP_NOWAIT,
-+			     cn_filter, (void *)filter_data);
- 
- 	local_unlock(&local_event.lock);
- }
+ 		cpu_buffer = buffer->buffers[cpu];
+ 		work = &cpu_buffer->irq_work;
 
 
 
