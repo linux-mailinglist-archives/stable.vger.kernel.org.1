@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-21348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9798285C87B
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:22:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BD0C85C9BB
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:37:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52F3D284BD9
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:22:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD8DA1C21EB7
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:37:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09A9F151CCC;
-	Tue, 20 Feb 2024 21:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29095151CE1;
+	Tue, 20 Feb 2024 21:37:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dw1uQ4kt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R47n4Knk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9FC76C9C;
-	Tue, 20 Feb 2024 21:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC168446C9;
+	Tue, 20 Feb 2024 21:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464139; cv=none; b=Xfyay3C/gEl3V0EVXaTdak+KA9kTpsh4AEqYKSUHEvgafPkD+3o6vC2+fpQ61soovS4K0XX6REUmQI6i+VpJrlfFQyetNkQCQJtg6odqyH6ISokyl7FY/o0gWubUg/9LPMzQbLFjj0ceLqlm2EVmqBmsA6/9ZNiZ3UQfw4VFmKU=
+	t=1708465053; cv=none; b=p5/8vuirr7vM1GFQjnqgvTTlKDK4DKeZjra7VwhCtuhQ8w7COBRJhbL38wmUKKCBc27JgW1g7rEnXejKt91Ne/3uS2iFDqce/W1jyo5DR4MlxbFglRULdsf+KwrKiu6WPr50F05Epzlrh3LnpD4crtIfIsNVa/XqyV+FTRJPn7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464139; c=relaxed/simple;
-	bh=4wr4veVWbJu0qg1hmzJz9zGkDjUdobuqfPI/NBH/Mlw=;
+	s=arc-20240116; t=1708465053; c=relaxed/simple;
+	bh=s3OjQNZaxooQAf3uAajXY8/xdUNb7MHgK3CjzSc0Ahc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eZoxNWeMr4n6nhD0wNeUORE2tZJAUQh/rEPbClqvoGXGFkr8ES9edG68vMD0ZIQfbI5HztG9D3Ft6Lqo9fplQCAQpSgA+teXyk/5gcFVTt7n4bojZjmpVQB2g3xGmDYby+W0LiYmFXlBzj3fU1LoRu9lwttsvBUDxMF9R/aj+ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dw1uQ4kt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A2A2C433C7;
-	Tue, 20 Feb 2024 21:22:18 +0000 (UTC)
+	 MIME-Version; b=ZyMO14+VzCgb6lnJH6jHBKEj0MhEaT99ssQPU6e1djEoUvuvLe9w3MKuIIthDGWXtkZgGlCBlszQ/Z+nYk+T+AFALzxFILmGFk8hJWHZjoA1qFrJmm7oQVkKUpa76kxx8LOiLv6cuPYJ22vjD0avCT+cmUfnW50NJycaHAT8oms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R47n4Knk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B502C433F1;
+	Tue, 20 Feb 2024 21:37:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464139;
-	bh=4wr4veVWbJu0qg1hmzJz9zGkDjUdobuqfPI/NBH/Mlw=;
+	s=korg; t=1708465053;
+	bh=s3OjQNZaxooQAf3uAajXY8/xdUNb7MHgK3CjzSc0Ahc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dw1uQ4ktXe5hlMOQqQe6B5OoP/NBRobYJNx99kQHBi5TtY/jnAjrYGqcBauvjibz5
-	 wIpLFBvVcpU+h9RmdspYTw4+3VfGacM2n9XnXF8/ZnsrDLJzbPhtVG4q5C9VKkIsuT
-	 Oie8PN2ZNE8DtvGeO74QR+cj+bQISH9yJ/L7nEKg=
+	b=R47n4Knkt7rm7XjAQOF0dbGSRxTihehLcbdySWAyVCSqS2oZLkCRCHpR85KzBSh60
+	 NdhXepKAGp3t0BslboKhQaIUwxlfUEEk2QmNg/MVJBZMTkYhMruTSQ3hZpBqVQs0Ib
+	 V19d8KmlhnuC9tLd4mDauY0ENGdVByfVPaJGBYlQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 263/331] Revert "eventfs: Remove "is_freed" union with rcu head"
+	Gui-Dong Han <2045gemini@gmail.com>
+Subject: [PATCH 6.7 220/309] serial: core: Fix atomicity violation in uart_tiocmget
 Date: Tue, 20 Feb 2024 21:56:19 +0100
-Message-ID: <20240220205646.138174685@linuxfoundation.org>
+Message-ID: <20240220205640.043786638@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +60,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+From: Gui-Dong Han <2045gemini@gmail.com>
 
-This reverts commit fa18a8a0539b02cc621938091691f0b73f0b1288.
+commit 30926783a46841c2d1bbf3f74067ba85d304fd0d upstream.
 
-The eventfs was not designed properly and may have some hidden bugs in it.
-Linus rewrote it properly and I trust his version more than this one. Revert
-the backported patches for 6.6 and re-apply all the changes to make it
-equivalent to Linus's version.
+In uart_tiocmget():
+    result = uport->mctrl;
+    uart_port_lock_irq(uport);
+    result |= uport->ops->get_mctrl(uport);
+    uart_port_unlock_irq(uport);
+    ...
+    return result;
 
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+In uart_update_mctrl():
+    uart_port_lock_irqsave(port, &flags);
+    ...
+    port->mctrl = (old & ~clear) | set;
+    ...
+    port->ops->set_mctrl(port, port->mctrl);
+    ...
+    uart_port_unlock_irqrestore(port, flags);
+
+An atomicity violation is identified due to the concurrent execution of
+uart_tiocmget() and uart_update_mctrl(). After assigning
+result = uport->mctrl, the mctrl value may change in uart_update_mctrl(),
+leading to a mismatch between the value returned by
+uport->ops->get_mctrl(uport) and the mctrl value previously read.
+This can result in uart_tiocmget() returning an incorrect value.
+
+This possible bug is found by an experimental static analysis tool
+developed by our team, BassCheck[1]. This tool analyzes the locking APIs
+to extract function pairs that can be concurrently executed, and then
+analyzes the instructions in the paired functions to identify possible
+concurrency bugs including data races and atomicity violations. The above
+possible bug is reported when our tool analyzes the source code of
+Linux 5.17.
+
+To address this issue, it is suggested to move the line
+result = uport->mctrl inside the uart_port_lock block to ensure atomicity
+and prevent the mctrl value from being altered during the execution of
+uart_tiocmget(). With this patch applied, our tool no longer reports the
+bug, with the kernel configuration allyesconfig for x86_64. Due to the
+absence of the requisite hardware, we are unable to conduct runtime
+testing of the patch. Therefore, our verification is solely based on code
+logic analysis.
+
+[1] https://sites.google.com/view/basscheck/
+
+Fixes: c5f4644e6c8b ("[PATCH] Serial: Adjust serial locking")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
+Link: https://lore.kernel.org/r/20240112113624.17048-1-2045gemini@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/tracefs/event_inode.c |    8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/tty/serial/serial_core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -38,7 +38,6 @@ struct eventfs_inode {
-  * @fop:	file_operations for file or directory
-  * @iop:	inode_operations for file or directory
-  * @data:	something that the caller will want to get to later on
-- * @is_freed:	Flag set if the eventfs is on its way to be freed
-  * @mode:	the permission that the file or directory should have
-  */
- struct eventfs_file {
-@@ -53,14 +52,15 @@ struct eventfs_file {
- 	 * Union - used for deletion
- 	 * @del_list:	list of eventfs_file to delete
- 	 * @rcu:	eventfs_file to delete in RCU
-+	 * @is_freed:	node is freed if one of the above is set
- 	 */
- 	union {
- 		struct list_head	del_list;
- 		struct rcu_head		rcu;
-+		unsigned long		is_freed;
- 	};
- 	void				*data;
--	unsigned int			is_freed:1;
--	unsigned int			mode:31;
-+	umode_t				mode;
- };
+--- a/drivers/tty/serial/serial_core.c
++++ b/drivers/tty/serial/serial_core.c
+@@ -1085,8 +1085,8 @@ static int uart_tiocmget(struct tty_stru
+ 		goto out;
  
- static DEFINE_MUTEX(eventfs_mutex);
-@@ -814,8 +814,6 @@ static void eventfs_remove_rec(struct ev
- 		}
+ 	if (!tty_io_error(tty)) {
+-		result = uport->mctrl;
+ 		uart_port_lock_irq(uport);
++		result = uport->mctrl;
+ 		result |= uport->ops->get_mctrl(uport);
+ 		uart_port_unlock_irq(uport);
  	}
- 
--	ef->is_freed = 1;
--
- 	list_del_rcu(&ef->list);
- 	list_add_tail(&ef->del_list, head);
- }
 
 
 
