@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-21570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E27C85C972
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:33:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88FAD85C7FC
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:18:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C70751F21927
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:33:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4348E28494B
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:18:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B9D5151CE9;
-	Tue, 20 Feb 2024 21:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEF9F151CDC;
+	Tue, 20 Feb 2024 21:18:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pv420WOC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BQ46EyqI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE03F1509AC;
-	Tue, 20 Feb 2024 21:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE17F612D7;
+	Tue, 20 Feb 2024 21:18:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464826; cv=none; b=mOhYlrJsSZmgzPi2Y0zgNzKcuaxcQb2lH/DHdeBWlZSO+wlXBRo0qRgEbNmGSIm46ZY9LNjjTckBEN3SD7BuJtDwOAOe4fP/rIBiO5ouD48ef9poEQhCUuERtT9xGy3Cx0zEGz4FP4Lda/pac27uSwaRhWxImHLUKRTQ/Kp9xcw=
+	t=1708463912; cv=none; b=snax5KOUZ1t+Smxr3rt7NnoSGO13UX0nP1Y8lHy3mM3aPad3vG6A+RgvoqQKmj9ZIe9XOeaubEuUkEIFmisKDD7570NPgfh9tWBzKuUkWT5brFyMm8UBjLt/At7GAeZQdjTQsWHn6E7rHw0CDUJ/u7MtwENMxbwZyJeXyRMbA/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464826; c=relaxed/simple;
-	bh=XIJG7E6yJObXZuk2S2MqxM9AP7jOxZm4Ei2NrU+LMzU=;
+	s=arc-20240116; t=1708463912; c=relaxed/simple;
+	bh=e0IzLTEZfX5FVvtJYCzPKbNogEt/u0rbfs5/gL8tX54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qjd/CtBmOtFs4D0xprIbbnkJwSuOh0G0q/UqJEkjDckkIZcpIb+0ElzgixytgNK9e4gcwWSdivfr451LvTfm8FL/Pez24TZE32TgVouXKIlwL5njF4kQNxFRocfabd+lDPPNrEv2Wu8dYwqcC98w+NlyU+TFWExXDTNw8U6Gf9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pv420WOC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4723DC433C7;
-	Tue, 20 Feb 2024 21:33:46 +0000 (UTC)
+	 MIME-Version; b=GQng8mb8Vu0aA8aHUCkC7gpi3FG9asfPvbbSJVwD5KNf8K2wtl/oPaq/xC1B4HSBTnlVBeha+KIyPnOHtX5UYIf2/ANEWwMjxaSuxrHaCow37ropLy++Z9XoFo9986wUl9x0vZhHyj+757q5N/keGwskvHU8qa+7nwm9lvzgfYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BQ46EyqI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 254DAC433F1;
+	Tue, 20 Feb 2024 21:18:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464826;
-	bh=XIJG7E6yJObXZuk2S2MqxM9AP7jOxZm4Ei2NrU+LMzU=;
+	s=korg; t=1708463912;
+	bh=e0IzLTEZfX5FVvtJYCzPKbNogEt/u0rbfs5/gL8tX54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pv420WOCkdhqldiJY9tEdx4MdaswTgJHCyAJesNnOenANdO+8sFpHj11JOAGGd3Es
-	 IsQ3c0zVsJnZDA1G2tM72IMSng7t/jLAdWbrXxPdj63fMpJ5Ib0HPmCojFkk/FS1w9
-	 4zuep/Pkug9n/tMaBzdph0UvM34mmGQ0YvJ9PNYo=
+	b=BQ46EyqIc/6EW9Stor+caO9liJ3RvKYOBbmaRZ2NMJQIiPHUMA+396EdsFKbWUxZl
+	 0DK3VyUXWaRxFO8KatXGAf2jERfqB8UxKTeP9rQnfNDWqzfxGxb7izhPK2wt93xD+i
+	 D7nyeMdXAgg+erhm8H03vwAuCr9kyh4naE6WiTWU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Beulich <jbeulich@suse.com>,
-	Paul Durrant <paul@xen.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.7 149/309] xen-netback: properly sync TX responses
-Date: Tue, 20 Feb 2024 21:55:08 +0100
-Message-ID: <20240220205637.841533743@linuxfoundation.org>
+	Steve Wahl <steve.wahl@hpe.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>
+Subject: [PATCH 6.6 193/331] x86/mm/ident_map: Use gbpages only where full GB page should be mapped.
+Date: Tue, 20 Feb 2024 21:55:09 +0100
+Message-ID: <20240220205643.652592059@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,210 +61,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Beulich <jbeulich@suse.com>
+From: Steve Wahl <steve.wahl@hpe.com>
 
-commit 7b55984c96ffe9e236eb9c82a2196e0b1f84990d upstream.
+commit d794734c9bbfe22f86686dc2909c25f5ffe1a572 upstream.
 
-Invoking the make_tx_response() / push_tx_responses() pair with no lock
-held would be acceptable only if all such invocations happened from the
-same context (NAPI instance or dealloc thread). Since this isn't the
-case, and since the interface "spec" also doesn't demand that multicast
-operations may only be performed with no in-flight transmits,
-MCAST_{ADD,DEL} processing also needs to acquire the response lock
-around the invocations.
+When ident_pud_init() uses only gbpages to create identity maps, large
+ranges of addresses not actually requested can be included in the
+resulting table; a 4K request will map a full GB.  On UV systems, this
+ends up including regions that will cause hardware to halt the system
+if accessed (these are marked "reserved" by BIOS).  Even processor
+speculation into these regions is enough to trigger the system halt.
 
-To prevent similar mistakes going forward, "downgrade" the present
-functions to private helpers of just the two remaining ones using them
-directly, with no forward declarations anymore. This involves renaming
-what so far was make_tx_response(), for the new function of that name
-to serve the new (wrapper) purpose.
+Only use gbpages when map creation requests include the full GB page
+of space.  Fall back to using smaller 2M pages when only portions of a
+GB page are included in the request.
 
-While there,
-- constify the txp parameters,
-- correct xenvif_idx_release()'s status parameter's type,
-- rename {,_}make_tx_response()'s status parameters for consistency with
-  xenvif_idx_release()'s.
+No attempt is made to coalesce mapping requests. If a request requires
+a map entry at the 2M (pmd) level, subsequent mapping requests within
+the same 1G region will also be at the pmd level, even if adjacent or
+overlapping such requests could have been combined to map a full
+gbpage.  Existing usage starts with larger regions and then adds
+smaller regions, so this should not have any great consequence.
 
-Fixes: 210c34dcd8d9 ("xen-netback: add support for multicast control")
+[ dhansen: fix up comment formatting, simplifty changelog ]
+
+Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Jan Beulich <jbeulich@suse.com>
-Reviewed-by: Paul Durrant <paul@xen.org>
-Link: https://lore.kernel.org/r/980c6c3d-e10e-4459-8565-e8fbde122f00@suse.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/all/20240126164841.170866-1-steve.wahl%40hpe.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/xen-netback/netback.c |   84 ++++++++++++++++++--------------------
- 1 file changed, 40 insertions(+), 44 deletions(-)
+ arch/x86/mm/ident_map.c |   23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
---- a/drivers/net/xen-netback/netback.c
-+++ b/drivers/net/xen-netback/netback.c
-@@ -104,13 +104,12 @@ bool provides_xdp_headroom = true;
- module_param(provides_xdp_headroom, bool, 0644);
+--- a/arch/x86/mm/ident_map.c
++++ b/arch/x86/mm/ident_map.c
+@@ -26,18 +26,31 @@ static int ident_pud_init(struct x86_map
+ 	for (; addr < end; addr = next) {
+ 		pud_t *pud = pud_page + pud_index(addr);
+ 		pmd_t *pmd;
++		bool use_gbpage;
  
- static void xenvif_idx_release(struct xenvif_queue *queue, u16 pending_idx,
--			       u8 status);
-+			       s8 status);
+ 		next = (addr & PUD_MASK) + PUD_SIZE;
+ 		if (next > end)
+ 			next = end;
  
- static void make_tx_response(struct xenvif_queue *queue,
--			     struct xen_netif_tx_request *txp,
-+			     const struct xen_netif_tx_request *txp,
- 			     unsigned int extra_count,
--			     s8       st);
--static void push_tx_responses(struct xenvif_queue *queue);
-+			     s8 status);
+-		if (info->direct_gbpages) {
+-			pud_t pudval;
++		/* if this is already a gbpage, this portion is already mapped */
++		if (pud_large(*pud))
++			continue;
++
++		/* Is using a gbpage allowed? */
++		use_gbpage = info->direct_gbpages;
  
- static void xenvif_idx_unmap(struct xenvif_queue *queue, u16 pending_idx);
+-			if (pud_present(*pud))
+-				continue;
++		/* Don't use gbpage if it maps more than the requested region. */
++		/* at the begining: */
++		use_gbpage &= ((addr & ~PUD_MASK) == 0);
++		/* ... or at the end: */
++		use_gbpage &= ((next & ~PUD_MASK) == 0);
++
++		/* Never overwrite existing mappings */
++		use_gbpage &= !pud_present(*pud);
++
++		if (use_gbpage) {
++			pud_t pudval;
  
-@@ -208,13 +207,9 @@ static void xenvif_tx_err(struct xenvif_
- 			  unsigned int extra_count, RING_IDX end)
- {
- 	RING_IDX cons = queue->tx.req_cons;
--	unsigned long flags;
- 
- 	do {
--		spin_lock_irqsave(&queue->response_lock, flags);
- 		make_tx_response(queue, txp, extra_count, XEN_NETIF_RSP_ERROR);
--		push_tx_responses(queue);
--		spin_unlock_irqrestore(&queue->response_lock, flags);
- 		if (cons == end)
- 			break;
- 		RING_COPY_REQUEST(&queue->tx, cons++, txp);
-@@ -465,12 +460,7 @@ static void xenvif_get_requests(struct x
- 	for (shinfo->nr_frags = 0; nr_slots > 0 && shinfo->nr_frags < MAX_SKB_FRAGS;
- 	     nr_slots--) {
- 		if (unlikely(!txp->size)) {
--			unsigned long flags;
--
--			spin_lock_irqsave(&queue->response_lock, flags);
- 			make_tx_response(queue, txp, 0, XEN_NETIF_RSP_OKAY);
--			push_tx_responses(queue);
--			spin_unlock_irqrestore(&queue->response_lock, flags);
- 			++txp;
+-			addr &= PUD_MASK;
+ 			pudval = __pud((addr - info->offset) | info->page_flag);
+ 			set_pud(pud, pudval);
  			continue;
- 		}
-@@ -496,14 +486,8 @@ static void xenvif_get_requests(struct x
- 
- 		for (shinfo->nr_frags = 0; shinfo->nr_frags < nr_slots; ++txp) {
- 			if (unlikely(!txp->size)) {
--				unsigned long flags;
--
--				spin_lock_irqsave(&queue->response_lock, flags);
- 				make_tx_response(queue, txp, 0,
- 						 XEN_NETIF_RSP_OKAY);
--				push_tx_responses(queue);
--				spin_unlock_irqrestore(&queue->response_lock,
--						       flags);
- 				continue;
- 			}
- 
-@@ -995,7 +979,6 @@ static void xenvif_tx_build_gops(struct
- 					 (ret == 0) ?
- 					 XEN_NETIF_RSP_OKAY :
- 					 XEN_NETIF_RSP_ERROR);
--			push_tx_responses(queue);
- 			continue;
- 		}
- 
-@@ -1007,7 +990,6 @@ static void xenvif_tx_build_gops(struct
- 
- 			make_tx_response(queue, &txreq, extra_count,
- 					 XEN_NETIF_RSP_OKAY);
--			push_tx_responses(queue);
- 			continue;
- 		}
- 
-@@ -1433,8 +1415,35 @@ int xenvif_tx_action(struct xenvif_queue
- 	return work_done;
- }
- 
-+static void _make_tx_response(struct xenvif_queue *queue,
-+			     const struct xen_netif_tx_request *txp,
-+			     unsigned int extra_count,
-+			     s8 status)
-+{
-+	RING_IDX i = queue->tx.rsp_prod_pvt;
-+	struct xen_netif_tx_response *resp;
-+
-+	resp = RING_GET_RESPONSE(&queue->tx, i);
-+	resp->id     = txp->id;
-+	resp->status = status;
-+
-+	while (extra_count-- != 0)
-+		RING_GET_RESPONSE(&queue->tx, ++i)->status = XEN_NETIF_RSP_NULL;
-+
-+	queue->tx.rsp_prod_pvt = ++i;
-+}
-+
-+static void push_tx_responses(struct xenvif_queue *queue)
-+{
-+	int notify;
-+
-+	RING_PUSH_RESPONSES_AND_CHECK_NOTIFY(&queue->tx, notify);
-+	if (notify)
-+		notify_remote_via_irq(queue->tx_irq);
-+}
-+
- static void xenvif_idx_release(struct xenvif_queue *queue, u16 pending_idx,
--			       u8 status)
-+			       s8 status)
- {
- 	struct pending_tx_info *pending_tx_info;
- 	pending_ring_idx_t index;
-@@ -1444,8 +1453,8 @@ static void xenvif_idx_release(struct xe
- 
- 	spin_lock_irqsave(&queue->response_lock, flags);
- 
--	make_tx_response(queue, &pending_tx_info->req,
--			 pending_tx_info->extra_count, status);
-+	_make_tx_response(queue, &pending_tx_info->req,
-+			  pending_tx_info->extra_count, status);
- 
- 	/* Release the pending index before pusing the Tx response so
- 	 * its available before a new Tx request is pushed by the
-@@ -1459,32 +1468,19 @@ static void xenvif_idx_release(struct xe
- 	spin_unlock_irqrestore(&queue->response_lock, flags);
- }
- 
--
- static void make_tx_response(struct xenvif_queue *queue,
--			     struct xen_netif_tx_request *txp,
-+			     const struct xen_netif_tx_request *txp,
- 			     unsigned int extra_count,
--			     s8       st)
-+			     s8 status)
- {
--	RING_IDX i = queue->tx.rsp_prod_pvt;
--	struct xen_netif_tx_response *resp;
--
--	resp = RING_GET_RESPONSE(&queue->tx, i);
--	resp->id     = txp->id;
--	resp->status = st;
--
--	while (extra_count-- != 0)
--		RING_GET_RESPONSE(&queue->tx, ++i)->status = XEN_NETIF_RSP_NULL;
-+	unsigned long flags;
- 
--	queue->tx.rsp_prod_pvt = ++i;
--}
-+	spin_lock_irqsave(&queue->response_lock, flags);
- 
--static void push_tx_responses(struct xenvif_queue *queue)
--{
--	int notify;
-+	_make_tx_response(queue, txp, extra_count, status);
-+	push_tx_responses(queue);
- 
--	RING_PUSH_RESPONSES_AND_CHECK_NOTIFY(&queue->tx, notify);
--	if (notify)
--		notify_remote_via_irq(queue->tx_irq);
-+	spin_unlock_irqrestore(&queue->response_lock, flags);
- }
- 
- static void xenvif_idx_unmap(struct xenvif_queue *queue, u16 pending_idx)
 
 
 
