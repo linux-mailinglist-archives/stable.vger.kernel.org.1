@@ -1,205 +1,86 @@
-Return-Path: <stable+bounces-21749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ABC385CAA3
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 23:22:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0004E85CBBD
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 00:07:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3926283FB9
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:22:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77227284E26
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 23:07:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CB7A1534F4;
-	Tue, 20 Feb 2024 22:22:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6705115443C;
+	Tue, 20 Feb 2024 23:07:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="uzESttOK"
+	dkim=pass (2048-bit key) header.d=danm.net header.i=@danm.net header.b="O5tSmIzw"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mr85p00im-zteg06021901.me.com (mr85p00im-zteg06021901.me.com [17.58.23.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D5E152DE9;
-	Tue, 20 Feb 2024 22:22:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3806154425
+	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 23:07:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.23.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708467757; cv=none; b=rrin5udGL/UcQWjfpenuCnvRDASjE5uyoM8+wf10R77dpkuqph/8+XcfwLIXLkv9DU9GiSqxrFV5EdvpC+i5S8EBSDyBRMcEtIuMgxdP7CYYIkMXAc1BKxIaiR8qUccwuhybNEfUF62xJYUYC99XI6SSRpIXFXhZ6EvUGQFWFzo=
+	t=1708470423; cv=none; b=om7N7HsAlw6M8MdVYxlGCM2CDeOvfglIFDRGEy0o/f4Pkf0L+VaidT+1mOgoNeQw82O358VkQBqQ0NhXRPhdvzuTW+IvItaqa43jrK5+eOyUvlmMOyRl8jS6Gr8ZX1pZKwFmU59rZDIVqcmZkcqwmuuy5gyiQBNG1dx/0gPiAIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708467757; c=relaxed/simple;
-	bh=mosDoT5jLgm3aM6PR+3/toCQ8fPiIYaNWrK1wZM9QCw=;
-	h=Date:To:From:Subject:Message-Id; b=WMlcaLy0WIVR5Pgdm4yFGbXfoSPk5rRYgr573JOJVMbW4KGV1D2W7caH2GSLHNxAkmzf0xZj7NpvsjB1OR/Llro4PCdvKBhHY+Qo1nvZj4KZi8rXXQA4DHEiHGTs8caIxN8qbHp4zBS9gi8bpzF8BufH76TMtO2/cgl5A9uOCrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=uzESttOK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B69C7C433B1;
-	Tue, 20 Feb 2024 22:22:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1708467756;
-	bh=mosDoT5jLgm3aM6PR+3/toCQ8fPiIYaNWrK1wZM9QCw=;
-	h=Date:To:From:Subject:From;
-	b=uzESttOKw3v+Cm2ClSKxR3kpPKetfCMK63Je/fOg7fPxYUqqHg+BE7TFr7tlurxnV
-	 uRpiBeSR+vHSrAH/oFZTjMXJ0gQZ/YuUTo2Nt0lysZESt7P9pax5TIN2yK+iq0ms8a
-	 xz3NSkaKgpogZ3avSkUSB/w2tmFFyvBjj1bZVMp4=
-Date: Tue, 20 Feb 2024 14:22:36 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-damon-lru_sort-fix-quota-status-loss-due-to-online-tunings.patch removed from -mm tree
-Message-Id: <20240220222236.B69C7C433B1@smtp.kernel.org>
+	s=arc-20240116; t=1708470423; c=relaxed/simple;
+	bh=cx5Sp2rzq605sbkwS0QAmMyCZpMew4wZqnM5dGM4UJI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=S2j06dBztbXBoPzL3+RzWRzS//sPok1YQ0NwolIWPQV3Wnv6YZY5u0K4F7UZUIMTBusFlvxf9pNg1rr08NFMER/UF2gPuwAFCKUGTjd3ogR3cFf6KmRHQ4cR+urIwXDK3t5ttAvMPov068ZIORlJIAW4IcMMKgMV/E4TnFSYxbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=danm.net; spf=pass smtp.mailfrom=danm.net; dkim=pass (2048-bit key) header.d=danm.net header.i=@danm.net header.b=O5tSmIzw; arc=none smtp.client-ip=17.58.23.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=danm.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=danm.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=danm.net; s=sig1;
+	t=1708470421; bh=cx5Sp2rzq605sbkwS0QAmMyCZpMew4wZqnM5dGM4UJI=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=O5tSmIzwKRREKtHEUcm3gR8skmnkjDKRgoT1VGqc6XxiKLtzF3qgu6SorRLydGmDi
+	 5MC71Z5wSOJvSD3iL/6d3Fsdhe4TQlhbYYiyR7CyMXVvYRGsOPzU0oYVvxsVF9L8+Q
+	 lmgCRkwnRcpheZ6WwiHB9grbi+jlq1qMMhAxPd1ovGcRCTaahrb2ycamBG5dbcc0mp
+	 e5O71bN9BHE0ES1TpsBqY+mKqLN5ipYltBQBZiFkhZX5e7cAdot4PM7zm3bil1prtv
+	 nvm48DBV6V1mD8Ryi0rhh3Y17q8ikWEfC7pkBmgb30j1QdYhWSLMGD2oZOPGx1vH5m
+	 O1jKHfqn1fGWA==
+Received: from hitch.danm.net (mr38p00im-dlb-asmtp-mailmevip.me.com [17.57.152.18])
+	by mr85p00im-zteg06021901.me.com (Postfix) with ESMTPSA id 3DA0674035C;
+	Tue, 20 Feb 2024 23:07:00 +0000 (UTC)
+From: Dan Moulding <dan@danm.net>
+To: dan@danm.net
+Cc: gregkh@linuxfoundation.org,
+	junxiao.bi@oracle.com,
+	linux-kernel@vger.kernel.org,
+	linux-raid@vger.kernel.org,
+	regressions@lists.linux.dev,
+	song@kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [REGRESSION] 6.7.1: md: raid5 hang and unresponsive system; successfully bisected
+Date: Tue, 20 Feb 2024 16:06:58 -0700
+Message-ID: <20240220230658.11069-1-dan@danm.net>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240123005700.9302-1-dan@danm.net>
+References: <20240123005700.9302-1-dan@danm.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-ORIG-GUID: sySGESD_014rY6xbZq2xHo3R1DaQWchd
+X-Proofpoint-GUID: sySGESD_014rY6xbZq2xHo3R1DaQWchd
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-20_06,2024-02-20_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=3 adultscore=0 mlxscore=3 spamscore=3
+ suspectscore=0 clxscore=1030 bulkscore=0 malwarescore=0 phishscore=0
+ mlxlogscore=156 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2402200166
 
+Just a friendly reminder that this regression still exists on the
+mainline. It has been reverted in 6.7 stable. But I upgraded a
+development system to 6.8-rc5 today and immediately hit this issue
+again. Then I saw that it hasn't yet been reverted in Linus' tree.
 
-The quilt patch titled
-     Subject: mm/damon/lru_sort: fix quota status loss due to online tunings
-has been removed from the -mm tree.  Its filename was
-     mm-damon-lru_sort-fix-quota-status-loss-due-to-online-tunings.patch
+Cheers,
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-------------------------------------------------------
-From: SeongJae Park <sj@kernel.org>
-Subject: mm/damon/lru_sort: fix quota status loss due to online tunings
-Date: Fri, 16 Feb 2024 11:40:25 -0800
-
-For online parameters change, DAMON_LRU_SORT creates new schemes based on
-latest values of the parameters and replaces the old schemes with the new
-one.  When creating it, the internal status of the quotas of the old
-schemes is not preserved.  As a result, charging of the quota starts from
-zero after the online tuning.  The data that collected to estimate the
-throughput of the scheme's action is also reset, and therefore the
-estimation should start from the scratch again.  Because the throughput
-estimation is being used to convert the time quota to the effective size
-quota, this could result in temporal time quota inaccuracy.  It would be
-recovered over time, though.  In short, the quota accuracy could be
-temporarily degraded after online parameters update.
-
-Fix the problem by checking the case and copying the internal fields for
-the status.
-
-Link: https://lkml.kernel.org/r/20240216194025.9207-3-sj@kernel.org
-Fixes: 40e983cca927 ("mm/damon: introduce DAMON-based LRU-lists Sorting")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[6.0+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/damon/lru_sort.c |   43 +++++++++++++++++++++++++++++++++++-------
- 1 file changed, 36 insertions(+), 7 deletions(-)
-
---- a/mm/damon/lru_sort.c~mm-damon-lru_sort-fix-quota-status-loss-due-to-online-tunings
-+++ a/mm/damon/lru_sort.c
-@@ -185,9 +185,21 @@ static struct damos *damon_lru_sort_new_
- 	return damon_lru_sort_new_scheme(&pattern, DAMOS_LRU_DEPRIO);
- }
- 
-+static void damon_lru_sort_copy_quota_status(struct damos_quota *dst,
-+		struct damos_quota *src)
-+{
-+	dst->total_charged_sz = src->total_charged_sz;
-+	dst->total_charged_ns = src->total_charged_ns;
-+	dst->charged_sz = src->charged_sz;
-+	dst->charged_from = src->charged_from;
-+	dst->charge_target_from = src->charge_target_from;
-+	dst->charge_addr_from = src->charge_addr_from;
-+}
-+
- static int damon_lru_sort_apply_parameters(void)
- {
--	struct damos *scheme;
-+	struct damos *scheme, *hot_scheme, *cold_scheme;
-+	struct damos *old_hot_scheme = NULL, *old_cold_scheme = NULL;
- 	unsigned int hot_thres, cold_thres;
- 	int err = 0;
- 
-@@ -195,18 +207,35 @@ static int damon_lru_sort_apply_paramete
- 	if (err)
- 		return err;
- 
-+	damon_for_each_scheme(scheme, ctx) {
-+		if (!old_hot_scheme) {
-+			old_hot_scheme = scheme;
-+			continue;
-+		}
-+		old_cold_scheme = scheme;
-+	}
-+
- 	hot_thres = damon_max_nr_accesses(&damon_lru_sort_mon_attrs) *
- 		hot_thres_access_freq / 1000;
--	scheme = damon_lru_sort_new_hot_scheme(hot_thres);
--	if (!scheme)
-+	hot_scheme = damon_lru_sort_new_hot_scheme(hot_thres);
-+	if (!hot_scheme)
- 		return -ENOMEM;
--	damon_set_schemes(ctx, &scheme, 1);
-+	if (old_hot_scheme)
-+		damon_lru_sort_copy_quota_status(&hot_scheme->quota,
-+				&old_hot_scheme->quota);
- 
- 	cold_thres = cold_min_age / damon_lru_sort_mon_attrs.aggr_interval;
--	scheme = damon_lru_sort_new_cold_scheme(cold_thres);
--	if (!scheme)
-+	cold_scheme = damon_lru_sort_new_cold_scheme(cold_thres);
-+	if (!cold_scheme) {
-+		damon_destroy_scheme(hot_scheme);
- 		return -ENOMEM;
--	damon_add_scheme(ctx, scheme);
-+	}
-+	if (old_cold_scheme)
-+		damon_lru_sort_copy_quota_status(&cold_scheme->quota,
-+				&old_cold_scheme->quota);
-+
-+	damon_set_schemes(ctx, &hot_scheme, 1);
-+	damon_add_scheme(ctx, cold_scheme);
- 
- 	return damon_set_region_biggest_system_ram_default(target,
- 					&monitor_region_start,
-_
-
-Patches currently in -mm which might be from sj@kernel.org are
-
-docs-admin-guide-mm-damon-usage-use-sysfs-interface-for-tracepoints-example.patch
-mm-damon-rename-config_damon_dbgfs-to-damon_dbgfs_deprecated.patch
-mm-damon-dbgfs-implement-deprecation-notice-file.patch
-mm-damon-dbgfs-make-debugfs-interface-deprecation-message-a-macro.patch
-docs-admin-guide-mm-damon-usage-document-deprecated-file-of-damon-debugfs-interface.patch
-selftets-damon-prepare-for-monitor_on-file-renaming.patch
-mm-damon-dbgfs-rename-monitor_on-file-to-monitor_on_deprecated.patch
-docs-admin-guide-mm-damon-usage-update-for-monitor_on-renaming.patch
-docs-translations-damon-usage-update-for-monitor_on-renaming.patch
-mm-damon-sysfs-handle-state-file-inputs-for-every-sampling-interval-if-possible.patch
-selftests-damon-_damon_sysfs-support-damos-quota.patch
-selftests-damon-_damon_sysfs-support-damos-stats.patch
-selftests-damon-_damon_sysfs-support-damos-apply-interval.patch
-selftests-damon-add-a-test-for-damos-quota.patch
-selftests-damon-add-a-test-for-damos-apply-intervals.patch
-selftests-damon-add-a-test-for-a-race-between-target_ids_read-and-dbgfs_before_terminate.patch
-selftests-damon-add-a-test-for-the-pid-leak-of-dbgfs_target_ids_write.patch
-selftests-damon-_chk_dependency-get-debugfs-mount-point-from-proc-mounts.patch
-docs-mm-damon-maintainer-profile-fix-reference-links-for-mm-stable-tree.patch
-docs-mm-damon-move-the-list-of-damos-actions-to-design-doc.patch
-docs-mm-damon-move-damon-operation-sets-list-from-the-usage-to-the-design-document.patch
-docs-mm-damon-move-monitoring-target-regions-setup-detail-from-the-usage-to-the-design-document.patch
-docs-admin-guide-mm-damon-usage-fix-wrong-quotas-diabling-condition.patch
-mm-damon-core-set-damos_quota-esz-as-public-field-and-document.patch
-mm-damon-sysfs-schemes-implement-quota-effective_bytes-file.patch
-mm-damon-sysfs-implement-a-kdamond-command-for-updating-schemes-effective-quotas.patch
-docs-abi-damon-document-effective_bytes-sysfs-file.patch
-docs-admin-guide-mm-damon-usage-document-effective_bytes-file.patch
-mm-damon-move-comments-and-fields-for-damos-quota-prioritization-to-the-end.patch
-mm-damon-core-split-out-quota-goal-related-fields-to-a-struct.patch
-mm-damon-core-add-multiple-goals-per-damos_quota-and-helpers-for-those.patch
-mm-damon-sysfs-use-only-quota-goals.patch
-mm-damon-core-remove-goal-field-of-damos_quota.patch
-mm-damon-core-let-goal-specified-with-only-target-and-current-values.patch
-mm-damon-core-support-multiple-metrics-for-quota-goal.patch
-mm-damon-core-implement-psi-metric-damos-quota-goal.patch
-mm-damon-sysfs-schemes-support-psi-based-quota-auto-tune.patch
-docs-mm-damon-design-document-quota-goal-self-tuning.patch
-docs-abi-damon-document-quota-goal-metric-file.patch
-docs-admin-guide-mm-damon-usage-document-quota-goal-metric-file.patch
-mm-damon-reclaim-implement-user-feedback-driven-quota-auto-tuning.patch
-mm-damon-reclaim-implement-memory-psi-driven-quota-self-tuning.patch
-docs-admin-guide-mm-damon-reclaim-document-auto-tuning-parameters.patch
-
+-- Dan
 
