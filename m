@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-21747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A91AE85CAA1
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 23:22:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53A0A85CAA2
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 23:22:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20F261F21F99
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:22:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 773651C216EA
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:22:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE3FC152E1A;
-	Tue, 20 Feb 2024 22:22:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B1FF14F9CE;
+	Tue, 20 Feb 2024 22:22:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="xdlN40Yz"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="QcHGmJcs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3970152E05;
-	Tue, 20 Feb 2024 22:22:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01F40152DF6;
+	Tue, 20 Feb 2024 22:22:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708467752; cv=none; b=M84XeHh1eZWGjq8X2j2JqjL5Mexvpxn4vBT2obpKSTfXEvey676c0gJ8BI504pOMLw3MVboibBRkGtgw1gi7nC17JKLVW0cfpilZ+82Gal7RFk3OJ/BijwXiDK4q4gRSMVsY31dWt6316fXuHuKcTAv0eBPD6xhyLEt3bZP4STA=
+	t=1708467756; cv=none; b=SJlYuLpFDCNaczDFnHjVUM3EZLATKi1CZyq/XhP2c8iqJnGNtAHuh6QHIAZzo9lidYLCqTbiCfPzn8vqgzmXweqsUgbn7r8avfYg0F2CdIF5/ZRCTExflE1OcY283fixPkBP29x6hgK+Xd3tWcl40xhwDaI13z3FIjscTVXzLfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708467752; c=relaxed/simple;
-	bh=wjNqv5S/iGUc/LrczozFrHBiGvj7yLbN0AuOjH3lWOk=;
-	h=Date:To:From:Subject:Message-Id; b=dwGCruoH9BN9g+naVB9I8nMgYrrx8mNuvUpTF8LcEm2lLxRhRNEifUNAFLpdOKLgw9yljT/dMnejGllQxjNAJCLiU/oGEjauz1M1Joz0woWuoIl6g8UOwKuPnMmy3wafZ3/58i1+DwAFU12jnvqYDIPIaoabKWt/c7qiOTsLhs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=xdlN40Yz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ACC2C433F1;
-	Tue, 20 Feb 2024 22:22:32 +0000 (UTC)
+	s=arc-20240116; t=1708467756; c=relaxed/simple;
+	bh=6Q7KKcZBlIEn96wL6vr9T5WboIpbAx5YV9LJ65Lkiaw=;
+	h=Date:To:From:Subject:Message-Id; b=fUn8+l/vJNmmSwKnQEM3d3UXlbsQyDRXWIdDela6y7aLjvJtp9FnL9qXevt9PqQWRqdgnB75Qk/vSAJqh+8QkZiuwm2YCPosLVi7KaZhaZ8tmkTd01cP+Bmwceqy2SUpc8gL5o5F1DzMeiYHD8Iivo8+Q6sCTcDQzRRCgOMhDx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=QcHGmJcs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C02FAC43399;
+	Tue, 20 Feb 2024 22:22:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1708467752;
-	bh=wjNqv5S/iGUc/LrczozFrHBiGvj7yLbN0AuOjH3lWOk=;
+	s=korg; t=1708467755;
+	bh=6Q7KKcZBlIEn96wL6vr9T5WboIpbAx5YV9LJ65Lkiaw=;
 	h=Date:To:From:Subject:From;
-	b=xdlN40Yz0FPXnlKMV/TTY57sIMd3Hjgm2nzA4XKNNybZRug5y3vIs4dPmfSclVVE/
-	 Sy28Qm/9HjSxqzBQ7IfOKLjRDqnObLJYVoluEg8Bp0Y/sM+0FdKYpiDCwX1fSqchRx
-	 fthrPKaQGqi6ZMPh2LVQrv4F+gaYhl6yL3jJY/Pc=
-Date: Tue, 20 Feb 2024 14:22:31 -0800
-To: mm-commits@vger.kernel.org,yosryahmed@google.com,stable@vger.kernel.org,shakeelb@google.com,roman.gushchin@linux.dev,mhocko@suse.com,jonas@wielicki.name,debianlists@actiu.net,colin.i.king@gmail.com,hannes@cmpxchg.org,akpm@linux-foundation.org
+	b=QcHGmJcsinY744kpNadgT1AgLQkoMT2VIsYASbANvDF9m9OCB6bKTSVMJ/pgzGHMr
+	 icfpIvGLzeUuQl6hdDS0KNprhYRZSfC/BEJYLWrCejzXBj1l+Q64yYilFxDaQ0M+bR
+	 WHBN+Uq8SaUSVkqPuW7xEQ4Z9GDDoZX/Hun3Skwo=
+Date: Tue, 20 Feb 2024 14:22:35 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-memcontrol-clarify-swapaccount=0-deprecation-warning.patch removed from -mm tree
-Message-Id: <20240220222232.2ACC2C433F1@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-damon-reclaim-fix-quota-stauts-loss-due-to-online-tunings.patch removed from -mm tree
+Message-Id: <20240220222235.C02FAC43399@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,88 +50,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm: memcontrol: clarify swapaccount=0 deprecation warning
+     Subject: mm/damon/reclaim: fix quota stauts loss due to online tunings
 has been removed from the -mm tree.  Its filename was
-     mm-memcontrol-clarify-swapaccount=0-deprecation-warning.patch
+     mm-damon-reclaim-fix-quota-stauts-loss-due-to-online-tunings.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Johannes Weiner <hannes@cmpxchg.org>
-Subject: mm: memcontrol: clarify swapaccount=0 deprecation warning
-Date: Tue, 13 Feb 2024 03:16:34 -0500
+From: SeongJae Park <sj@kernel.org>
+Subject: mm/damon/reclaim: fix quota stauts loss due to online tunings
+Date: Fri, 16 Feb 2024 11:40:24 -0800
 
-The swapaccount deprecation warning is throwing false positives.  Since we
-deprecated the knob and defaulted to enabling, the only reports we've been
-getting are from folks that set swapaccount=1.  While this is a nice
-affirmation that always-enabling was the right choice, we certainly don't
-want to warn when users request the supported mode.
+Patch series "mm/damon: fix quota status loss due to online tunings".
 
-Only warn when disabling is requested, and clarify the warning.
+DAMON_RECLAIM and DAMON_LRU_SORT is not preserving internal quota status
+when applying new user parameters, and hence could cause temporal quota
+accuracy degradation.  Fix it by preserving the status.
 
-[colin.i.king@gmail.com: spelling: "commdandline" -> "commandline"]
-  Link: https://lkml.kernel.org/r/20240215090544.1649201-1-colin.i.king@gmail.com
-Link: https://lkml.kernel.org/r/20240213081634.3652326-1-hannes@cmpxchg.org
-Fixes: b25806dcd3d5 ("mm: memcontrol: deprecate swapaccounting=0 mode")
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Reported-by: "Jonas Schäfer" <jonas@wielicki.name>
-Reported-by: Narcis Garcia <debianlists@actiu.net>
-Suggested-by: Yosry Ahmed <yosryahmed@google.com>
-Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-Reviewed-by: Yosry Ahmed <yosryahmed@google.com>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Acked-by: Shakeel Butt <shakeelb@google.com>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: <stable@vger.kernel.org>
+
+This patch (of 2):
+
+For online parameters change, DAMON_RECLAIM creates new scheme based on
+latest values of the parameters and replaces the old scheme with the new
+one.  When creating it, the internal status of the quota of the old
+scheme is not preserved.  As a result, charging of the quota starts from
+zero after the online tuning.  The data that collected to estimate the
+throughput of the scheme's action is also reset, and therefore the
+estimation should start from the scratch again.  Because the throughput
+estimation is being used to convert the time quota to the effective size
+quota, this could result in temporal time quota inaccuracy.  It would be
+recovered over time, though.  In short, the quota accuracy could be
+temporarily degraded after online parameters update.
+
+Fix the problem by checking the case and copying the internal fields for
+the status.
+
+Link: https://lkml.kernel.org/r/20240216194025.9207-1-sj@kernel.org
+Link: https://lkml.kernel.org/r/20240216194025.9207-2-sj@kernel.org
+Fixes: e035c280f6df ("mm/damon/reclaim: support online inputs update")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>	[5.19+]
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/memcontrol.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ mm/damon/reclaim.c |   18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
---- a/mm/memcontrol.c~mm-memcontrol-clarify-swapaccount=0-deprecation-warning
-+++ a/mm/memcontrol.c
-@@ -7971,9 +7971,13 @@ bool mem_cgroup_swap_full(struct folio *
- 
- static int __init setup_swap_account(char *s)
- {
--	pr_warn_once("The swapaccount= commandline option is deprecated. "
--		     "Please report your usecase to linux-mm@kvack.org if you "
--		     "depend on this functionality.\n");
-+	bool res;
-+
-+	if (!kstrtobool(s, &res) && !res)
-+		pr_warn_once("The swapaccount=0 commandline option is deprecated "
-+			     "in favor of configuring swap control via cgroupfs. "
-+			     "Please report your usecase to linux-mm@kvack.org if you "
-+			     "depend on this functionality.\n");
- 	return 1;
+--- a/mm/damon/reclaim.c~mm-damon-reclaim-fix-quota-stauts-loss-due-to-online-tunings
++++ a/mm/damon/reclaim.c
+@@ -150,9 +150,20 @@ static struct damos *damon_reclaim_new_s
+ 			&damon_reclaim_wmarks);
  }
- __setup("swapaccount=", setup_swap_account);
+ 
++static void damon_reclaim_copy_quota_status(struct damos_quota *dst,
++		struct damos_quota *src)
++{
++	dst->total_charged_sz = src->total_charged_sz;
++	dst->total_charged_ns = src->total_charged_ns;
++	dst->charged_sz = src->charged_sz;
++	dst->charged_from = src->charged_from;
++	dst->charge_target_from = src->charge_target_from;
++	dst->charge_addr_from = src->charge_addr_from;
++}
++
+ static int damon_reclaim_apply_parameters(void)
+ {
+-	struct damos *scheme;
++	struct damos *scheme, *old_scheme;
+ 	struct damos_filter *filter;
+ 	int err = 0;
+ 
+@@ -164,6 +175,11 @@ static int damon_reclaim_apply_parameter
+ 	scheme = damon_reclaim_new_scheme();
+ 	if (!scheme)
+ 		return -ENOMEM;
++	if (!list_empty(&ctx->schemes)) {
++		damon_for_each_scheme(old_scheme, ctx)
++			damon_reclaim_copy_quota_status(&scheme->quota,
++					&old_scheme->quota);
++	}
+ 	if (skip_anon) {
+ 		filter = damos_new_filter(DAMOS_FILTER_TYPE_ANON, true);
+ 		if (!filter) {
 _
 
-Patches currently in -mm which might be from hannes@cmpxchg.org are
+Patches currently in -mm which might be from sj@kernel.org are
 
-mm-zswap-rename-zswap_free_entry-to-zswap_entry_free.patch
-mm-zswap-inline-and-remove-zswap_entry_find_get.patch
-mm-zswap-move-zswap_invalidate_entry-to-related-functions.patch
-mm-zswap-warn-when-referencing-a-dead-entry.patch
-mm-zswap-clean-up-zswap_entry_put.patch
-mm-zswap-rename-__zswap_load-to-zswap_decompress.patch
-mm-zswap-break-out-zwap_compress.patch
-mm-zswap-further-cleanup-zswap_store.patch
-mm-zswap-simplify-zswap_invalidate.patch
-mm-zswap-function-ordering-pool-alloc-free.patch
-mm-zswap-function-ordering-pool-refcounting.patch
-mm-zswap-function-ordering-zswap_pools.patch
-mm-zswap-function-ordering-pool-params.patch
-mm-zswap-function-ordering-public-lru-api.patch
-mm-zswap-function-ordering-move-entry-sections-out-of-lru-section.patch
-mm-zswap-function-ordering-move-entry-section-out-of-tree-section.patch
-mm-zswap-function-ordering-compress-decompress-functions.patch
-mm-zswap-function-ordering-per-cpu-compression-infra.patch
-mm-zswap-function-ordering-writeback.patch
-mm-zswap-function-ordering-shrink_memcg_cb.patch
+docs-admin-guide-mm-damon-usage-use-sysfs-interface-for-tracepoints-example.patch
+mm-damon-rename-config_damon_dbgfs-to-damon_dbgfs_deprecated.patch
+mm-damon-dbgfs-implement-deprecation-notice-file.patch
+mm-damon-dbgfs-make-debugfs-interface-deprecation-message-a-macro.patch
+docs-admin-guide-mm-damon-usage-document-deprecated-file-of-damon-debugfs-interface.patch
+selftets-damon-prepare-for-monitor_on-file-renaming.patch
+mm-damon-dbgfs-rename-monitor_on-file-to-monitor_on_deprecated.patch
+docs-admin-guide-mm-damon-usage-update-for-monitor_on-renaming.patch
+docs-translations-damon-usage-update-for-monitor_on-renaming.patch
+mm-damon-sysfs-handle-state-file-inputs-for-every-sampling-interval-if-possible.patch
+selftests-damon-_damon_sysfs-support-damos-quota.patch
+selftests-damon-_damon_sysfs-support-damos-stats.patch
+selftests-damon-_damon_sysfs-support-damos-apply-interval.patch
+selftests-damon-add-a-test-for-damos-quota.patch
+selftests-damon-add-a-test-for-damos-apply-intervals.patch
+selftests-damon-add-a-test-for-a-race-between-target_ids_read-and-dbgfs_before_terminate.patch
+selftests-damon-add-a-test-for-the-pid-leak-of-dbgfs_target_ids_write.patch
+selftests-damon-_chk_dependency-get-debugfs-mount-point-from-proc-mounts.patch
+docs-mm-damon-maintainer-profile-fix-reference-links-for-mm-stable-tree.patch
+docs-mm-damon-move-the-list-of-damos-actions-to-design-doc.patch
+docs-mm-damon-move-damon-operation-sets-list-from-the-usage-to-the-design-document.patch
+docs-mm-damon-move-monitoring-target-regions-setup-detail-from-the-usage-to-the-design-document.patch
+docs-admin-guide-mm-damon-usage-fix-wrong-quotas-diabling-condition.patch
+mm-damon-core-set-damos_quota-esz-as-public-field-and-document.patch
+mm-damon-sysfs-schemes-implement-quota-effective_bytes-file.patch
+mm-damon-sysfs-implement-a-kdamond-command-for-updating-schemes-effective-quotas.patch
+docs-abi-damon-document-effective_bytes-sysfs-file.patch
+docs-admin-guide-mm-damon-usage-document-effective_bytes-file.patch
+mm-damon-move-comments-and-fields-for-damos-quota-prioritization-to-the-end.patch
+mm-damon-core-split-out-quota-goal-related-fields-to-a-struct.patch
+mm-damon-core-add-multiple-goals-per-damos_quota-and-helpers-for-those.patch
+mm-damon-sysfs-use-only-quota-goals.patch
+mm-damon-core-remove-goal-field-of-damos_quota.patch
+mm-damon-core-let-goal-specified-with-only-target-and-current-values.patch
+mm-damon-core-support-multiple-metrics-for-quota-goal.patch
+mm-damon-core-implement-psi-metric-damos-quota-goal.patch
+mm-damon-sysfs-schemes-support-psi-based-quota-auto-tune.patch
+docs-mm-damon-design-document-quota-goal-self-tuning.patch
+docs-abi-damon-document-quota-goal-metric-file.patch
+docs-admin-guide-mm-damon-usage-document-quota-goal-metric-file.patch
+mm-damon-reclaim-implement-user-feedback-driven-quota-auto-tuning.patch
+mm-damon-reclaim-implement-memory-psi-driven-quota-self-tuning.patch
+docs-admin-guide-mm-damon-reclaim-document-auto-tuning-parameters.patch
 
 
