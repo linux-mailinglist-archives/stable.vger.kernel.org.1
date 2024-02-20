@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-21534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1A1085C94E
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:31:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4586E85C7D1
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:16:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABB0A284CB7
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:31:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D22F11F26E70
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:16:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D47B151CE9;
-	Tue, 20 Feb 2024 21:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D52D4151CE1;
+	Tue, 20 Feb 2024 21:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kr/yN4B/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h2AYHXzW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AA8414AD0F;
-	Tue, 20 Feb 2024 21:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F6E1509AC;
+	Tue, 20 Feb 2024 21:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464715; cv=none; b=hozcTzW9IUrRuXgEB8gHSURz1l7w/rImaInNhijGN7w/Twsj7+p09v0vRDf2rO2HoeZd3uXOzc0/tTNKZNEqDTiyUC/laBcMUAf3zq0LjG39fXM/yZC/oiloKzjn0zEAeTmVp33OOozc5QdeamUJX+cDTmQxyf1C8fvmtlqGZe8=
+	t=1708463796; cv=none; b=ixa4dWO5RTTimyzqVFaSf3tztMfg95i1W1rfigMvmD8IX9Znp/btCJNEHxx0aq6p+RBEEgJwxIMp3cjRR7HdIPqqHC4IG9Le4OrrFt7EMgrV1tHTRC9hlaCvUV6tF3vikdu6jeie9G3X7tKMJ0PXaulDL9ow5oapA5f1GxFuyGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464715; c=relaxed/simple;
-	bh=05rDaWPbkhJ1OPnViRast9VU/pnkoXttk46gdWDgBUo=;
+	s=arc-20240116; t=1708463796; c=relaxed/simple;
+	bh=D8CPT5vbhPdLTnb5fxSTkUdIAjVAhWKY3VlVvsr63MU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bBN8j6eMgxqMHmrtW4PA1gRyABbU6Ulyc+yXh/p2M+ZG9j7gH4Cd0E+r2JJGgONf+a+y8Tn9j6U5eua1PVaP9TVzhoQ9cXFTkT2Ry7k57qmXx7clzn6H69pXzG6kEfZvyLvN1ezAH9e8zrMKoAw1VBTIchHiGGJmQJCGRIJBusA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kr/yN4B/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71DF5C433F1;
-	Tue, 20 Feb 2024 21:31:54 +0000 (UTC)
+	 MIME-Version; b=fDDNnrgR0JkzmgB/3B1CS8aCjU0mpzo6SEWbDKUv6P+s7GoQiAcDyEpD1dRVAHeCJHebKubusRnZKipOCITGBBywBn80C00W5aNTSGq8for3KszIP6oNjK+swjYku/lk2mP0LN7RlBJaLb8pwOEbYBMwkOavIjJJqqq0t+XGs1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h2AYHXzW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22C26C433F1;
+	Tue, 20 Feb 2024 21:16:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464714;
-	bh=05rDaWPbkhJ1OPnViRast9VU/pnkoXttk46gdWDgBUo=;
+	s=korg; t=1708463796;
+	bh=D8CPT5vbhPdLTnb5fxSTkUdIAjVAhWKY3VlVvsr63MU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kr/yN4B/aUn3tWU/kIlaRD+vJ5kujIoWRs2GMfhF8bIn07FmFHxuO+Bxq4E9ugCnG
-	 vPOiznO9r72I9sa2uHx9BWdEgBPK+SmI8/oXzJn2n+LwgikVbzulW32D9ZBAY1O21M
-	 Zk+3V5MXmpE14VbNZdUwukj9LJDaTci5hOloOwRo=
+	b=h2AYHXzWc41s1cU2ombZDDrwsy7eiJwKAKqVJ8mmidBQYW4RvqPSiX9hJI0QvgJ/Y
+	 nf2RD1AmW+daVdB42DEGNRm9K5n5VuioUlj0Fz6ASj9Kz2pvuiHgVf74ztNDUqxI40
+	 YlWwdfMKraBN2ZZmqfAS44+k+m0VtRDgehf52lOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean Delvare <jdelvare@suse.de>,
-	Piotr Zakowski <piotr.zakowski@intel.com>,
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 113/309] i2c: i801: Fix block process call transactions
+	Zhouyi Zhou <zhouzhouyi@gmail.com>,
+	"zhili.liu" <zhili.liu@ucas.com.cn>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 156/331] iio: magnetometer: rm3100: add boundary check for the value read from RM3100_REG_TMRC
 Date: Tue, 20 Feb 2024 21:54:32 +0100
-Message-ID: <20240220205636.725779095@linuxfoundation.org>
+Message-ID: <20240220205642.429517600@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jean Delvare <jdelvare@suse.de>
+From: zhili.liu <zhili.liu@ucas.com.cn>
 
-[ Upstream commit c1c9d0f6f7f1dbf29db996bd8e166242843a5f21 ]
+commit 792595bab4925aa06532a14dd256db523eb4fa5e upstream.
 
-According to the Intel datasheets, software must reset the block
-buffer index twice for block process call transactions: once before
-writing the outgoing data to the buffer, and once again before
-reading the incoming data from the buffer.
+Recently, we encounter kernel crash in function rm3100_common_probe
+caused by out of bound access of array rm3100_samp_rates (because of
+underlying hardware failures). Add boundary check to prevent out of
+bound access.
 
-The driver is currently missing the second reset, causing the wrong
-portion of the block buffer to be read.
-
-Signed-off-by: Jean Delvare <jdelvare@suse.de>
-Reported-by: Piotr Zakowski <piotr.zakowski@intel.com>
-Closes: https://lore.kernel.org/linux-i2c/20240213120553.7b0ab120@endymion.delvare/
-Fixes: 315cd67c9453 ("i2c: i801: Add Block Write-Block Read Process Call support")
-Reviewed-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 121354b2eceb ("iio: magnetometer: Add driver support for PNI RM3100")
+Suggested-by: Zhouyi Zhou <zhouzhouyi@gmail.com>
+Signed-off-by: zhili.liu <zhili.liu@ucas.com.cn>
+Link: https://lore.kernel.org/r/1704157631-3814-1-git-send-email-zhouzhouyi@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-i801.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/magnetometer/rm3100-core.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-i801.c b/drivers/i2c/busses/i2c-i801.c
-index 070999139c6d..6a5a93cf4ecc 100644
---- a/drivers/i2c/busses/i2c-i801.c
-+++ b/drivers/i2c/busses/i2c-i801.c
-@@ -498,11 +498,10 @@ static int i801_block_transaction_by_block(struct i801_priv *priv,
- 	/* Set block buffer mode */
- 	outb_p(inb_p(SMBAUXCTL(priv)) | SMBAUXCTL_E32B, SMBAUXCTL(priv));
+--- a/drivers/iio/magnetometer/rm3100-core.c
++++ b/drivers/iio/magnetometer/rm3100-core.c
+@@ -530,6 +530,7 @@ int rm3100_common_probe(struct device *d
+ 	struct rm3100_data *data;
+ 	unsigned int tmp;
+ 	int ret;
++	int samp_rate_index;
  
--	inb_p(SMBHSTCNT(priv)); /* reset the data buffer index */
--
- 	if (read_write == I2C_SMBUS_WRITE) {
- 		len = data->block[0];
- 		outb_p(len, SMBHSTDAT0(priv));
-+		inb_p(SMBHSTCNT(priv));	/* reset the data buffer index */
- 		for (i = 0; i < len; i++)
- 			outb_p(data->block[i+1], SMBBLKDAT(priv));
- 	}
-@@ -520,6 +519,7 @@ static int i801_block_transaction_by_block(struct i801_priv *priv,
- 		}
+ 	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
+ 	if (!indio_dev)
+@@ -586,9 +587,14 @@ int rm3100_common_probe(struct device *d
+ 	ret = regmap_read(regmap, RM3100_REG_TMRC, &tmp);
+ 	if (ret < 0)
+ 		return ret;
++
++	samp_rate_index = tmp - RM3100_TMRC_OFFSET;
++	if (samp_rate_index < 0 || samp_rate_index >=  RM3100_SAMP_NUM) {
++		dev_err(dev, "The value read from RM3100_REG_TMRC is invalid!\n");
++		return -EINVAL;
++	}
+ 	/* Initializing max wait time, which is double conversion time. */
+-	data->conversion_time = rm3100_samp_rates[tmp - RM3100_TMRC_OFFSET][2]
+-				* 2;
++	data->conversion_time = rm3100_samp_rates[samp_rate_index][2] * 2;
  
- 		data->block[0] = len;
-+		inb_p(SMBHSTCNT(priv));	/* reset the data buffer index */
- 		for (i = 0; i < len; i++)
- 			data->block[i + 1] = inb_p(SMBBLKDAT(priv));
- 	}
--- 
-2.43.0
-
+ 	/* Cycle count values may not be what we want. */
+ 	if ((tmp - RM3100_TMRC_OFFSET) == 0)
 
 
 
