@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-20960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECF4985C67E
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:01:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08DE585C65A
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:00:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6E66282E51
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:01:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B715B2838E7
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:00:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57EB4151CCF;
-	Tue, 20 Feb 2024 21:01:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19270151CD8;
+	Tue, 20 Feb 2024 21:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MzYnseuj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cUzRGBki"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 170AA14F9DA;
-	Tue, 20 Feb 2024 21:01:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC52F151CC4;
+	Tue, 20 Feb 2024 21:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708462911; cv=none; b=ZsCyyLsC3pG7/E1rBE8l1Zl5QnvdUlhMy/LhfLo5ineFHMZdMAkf/1i7kYj+WfmGxfXMb4qmUdPPUjMLMHEy3jcIWAqMNazYCj9EBwfFjAyc1RwMFSP4PuzsO4L3n/JB/Zk3l2kEVIh85gsx3FJjQ71ETF/nahRnrMIZQMEVVo4=
+	t=1708462813; cv=none; b=mKsxQ1VkqlPyJR/LfGHcwNGbaqk2Mpc50VWSJLfYvmqK9AYqN/TAsqE683w5B9ALr+AQ3N5UdDjzEzZMtPBWWYLNQS5FslvVSNmzPxRowcGKVCHVM24rX9ljWZsq2VVSDx8q23Ue3GLxxFcmsiVN7nJ30bpIBVtpigiFoG1Kc60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708462911; c=relaxed/simple;
-	bh=j+2t/CZCEeMvp/SEhrjNyBSPsgVf2t+9EddDaVfzdko=;
+	s=arc-20240116; t=1708462813; c=relaxed/simple;
+	bh=V+64sU6BFCb7hY5FKwGlt16KMRuYqOoUjBbEHlne6AM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ogYpD/QfMg/YSsSO5lRVyVHWss9Z2eNb9Sp+DVgGFJIWlqqdOoMFSHsv0+koBRCfqXF7Dn5Boky4HI1YARnMTkeGIU4fuo/QySkRPGfPxT3ISYEiMh2XivAev08y7VAUY1gsKfGLzkVD7dHTblyQJ7ba4jVcZHw/x4gTvTk9NmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MzYnseuj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 268CFC433C7;
-	Tue, 20 Feb 2024 21:01:49 +0000 (UTC)
+	 MIME-Version; b=r8iatzD7R2KFgOpC1HKfC14uk8wfZ1DOIZXnL6Z3jS7cNqH8F+bzPVJeWewo3NzcitEna9ofKqRZdIE6z6/UDjzRgle87UnoFA3RlBQq12UMzSJ0TEfRUHo7Zqvv02EtZOjL3eoGj3+Jx/X70/rzMQIGgQ1XE2k+AhA/YAY8NTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cUzRGBki; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF998C433F1;
+	Tue, 20 Feb 2024 21:00:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708462910;
-	bh=j+2t/CZCEeMvp/SEhrjNyBSPsgVf2t+9EddDaVfzdko=;
+	s=korg; t=1708462813;
+	bh=V+64sU6BFCb7hY5FKwGlt16KMRuYqOoUjBbEHlne6AM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MzYnseujJNwLQof5HhV6jdne5GwhWZKYN6m4ubPS5rrnUaQz2RJIuvdLQqtpVjOGG
-	 Htj2eKLjd+sonhLDndHJCvNCU9PannvIHx4H1SitlrqGIKo5vSKLaePl9cZOx7fWhU
-	 RtPyoI9DngZ3s9+sexKQaobZrdsAecwvtsqY2SIE=
+	b=cUzRGBkiu/cgr03JHkrQfP8kUwXdAt/UZ1ZItR51URBKXf7dcjLQfV0+ndgyENSFi
+	 WxjRK/nxl5VlB3cZHvEtztWs8YdsNxPXvh/rIqZL6+bCq1mOBLuF821bzlY3aN2/XR
+	 o1t9lwDt38kiGH5k2od+61HdmBKCirWBGvkzsyrg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Matthew Wilcox <willy@infradead.org>,
-	Guo Xuenan <guoxuenan@huawei.com>,
+	Zach OKeefe <zokeefe@google.com>,
+	Maxim Patlasov <MPatlasov@parallels.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 036/197] readahead: avoid multiple marked readahead pages
-Date: Tue, 20 Feb 2024 21:49:55 +0100
-Message-ID: <20240220204842.159580701@linuxfoundation.org>
+Subject: [PATCH 6.1 037/197] mm/writeback: fix possible divide-by-zero in wb_dirty_limits(), again
+Date: Tue, 20 Feb 2024 21:49:56 +0100
+Message-ID: <20240220204842.189076119@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
 References: <20240220204841.073267068@linuxfoundation.org>
@@ -67,93 +66,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Zach O'Keefe <zokeefe@google.com>
 
-commit ab4443fe3ca6298663a55c4a70efc6c3ce913ca6 upstream.
+commit 9319b647902cbd5cc884ac08a8a6d54ce111fc78 upstream.
 
-ra_alloc_folio() marks a page that should trigger next round of async
-readahead.  However it rounds up computed index to the order of page being
-allocated.  This can however lead to multiple consecutive pages being
-marked with readahead flag.  Consider situation with index == 1, mark ==
-1, order == 0.  We insert order 0 page at index 1 and mark it.  Then we
-bump order to 1, index to 2, mark (still == 1) is rounded up to 2 so page
-at index 2 is marked as well.  Then we bump order to 2, index is
-incremented to 4, mark gets rounded to 4 so page at index 4 is marked as
-well.  The fact that multiple pages get marked within a single readahead
-window confuses the readahead logic and results in readahead window being
-trimmed back to 1.  This situation is triggered in particular when maximum
-readahead window size is not a power of two (in the observed case it was
-768 KB) and as a result sequential read throughput suffers.
+(struct dirty_throttle_control *)->thresh is an unsigned long, but is
+passed as the u32 divisor argument to div_u64().  On architectures where
+unsigned long is 64 bytes, the argument will be implicitly truncated.
 
-Fix the problem by rounding 'mark' down instead of up.  Because the index
-is naturally aligned to 'order', we are guaranteed 'rounded mark' == index
-iff 'mark' is within the page we are allocating at 'index' and thus
-exactly one page is marked with readahead flag as required by the
-readahead code and sequential read performance is restored.
+Use div64_u64() instead of div_u64() so that the value used in the "is
+this a safe division" check is the same as the divisor.
 
-This effectively reverts part of commit b9ff43dd2743 ("mm/readahead: Fix
-readahead with large folios").  The commit changed the rounding with the
-rationale:
+Also, remove redundant cast of the numerator to u64, as that should happen
+implicitly.
 
-"...  we were setting the readahead flag on the folio which contains the
-last byte read from the block.  This is wrong because we will trigger
-readahead at the end of the read without waiting to see if a subsequent
-read is going to use the pages we just read."
+This would be difficult to exploit in memcg domain, given the ratio-based
+arithmetic domain_drity_limits() uses, but is much easier in global
+writeback domain with a BDI_CAP_STRICTLIMIT-backing device, using e.g.
+vm.dirty_bytes=(1<<32)*PAGE_SIZE so that dtc->thresh == (1<<32)
 
-Although this is true, the fact is this was always the case with read
-sizes not aligned to folio boundaries and large folios in the page cache
-just make the situation more obvious (and frequent).  Also for sequential
-read workloads it is better to trigger the readahead earlier rather than
-later.  It is true that the difference in the rounding and thus earlier
-triggering of the readahead can result in reading more for semi-random
-workloads.  However workloads really suffering from this seem to be rare.
-In particular I have verified that the workload described in commit
-b9ff43dd2743 ("mm/readahead: Fix readahead with large folios") of reading
-random 100k blocks from a file like:
-
-[reader]
-bs=100k
-rw=randread
-numjobs=1
-size=64g
-runtime=60s
-
-is not impacted by the rounding change and achieves ~70MB/s in both cases.
-
-[jack@suse.cz: fix one more place where mark rounding was done as well]
-  Link: https://lkml.kernel.org/r/20240123153254.5206-1-jack@suse.cz
-Link: https://lkml.kernel.org/r/20240104085839.21029-1-jack@suse.cz
-Fixes: b9ff43dd2743 ("mm/readahead: Fix readahead with large folios")
-Signed-off-by: Jan Kara <jack@suse.cz>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Guo Xuenan <guoxuenan@huawei.com>
+Link: https://lkml.kernel.org/r/20240118181954.1415197-1-zokeefe@google.com
+Fixes: f6789593d5ce ("mm/page-writeback.c: fix divide by zero in bdi_dirty_limits()")
+Signed-off-by: Zach O'Keefe <zokeefe@google.com>
+Cc: Maxim Patlasov <MPatlasov@parallels.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/readahead.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/page-writeback.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/readahead.c
-+++ b/mm/readahead.c
-@@ -483,7 +483,7 @@ static inline int ra_alloc_folio(struct
- 
- 	if (!folio)
- 		return -ENOMEM;
--	mark = round_up(mark, 1UL << order);
-+	mark = round_down(mark, 1UL << order);
- 	if (index == mark)
- 		folio_set_readahead(folio);
- 	err = filemap_add_folio(ractl->mapping, folio, index, gfp);
-@@ -591,7 +591,7 @@ static void ondemand_readahead(struct re
- 	 * It's the expected callback index, assume sequential access.
- 	 * Ramp up sizes, and push forward the readahead window.
+--- a/mm/page-writeback.c
++++ b/mm/page-writeback.c
+@@ -1526,7 +1526,7 @@ static inline void wb_dirty_limits(struc
  	 */
--	expected = round_up(ra->start + ra->size - ra->async_size,
-+	expected = round_down(ra->start + ra->size - ra->async_size,
- 			1UL << order);
- 	if (index == expected || index == (ra->start + ra->size)) {
- 		ra->start += ra->size;
+ 	dtc->wb_thresh = __wb_calc_thresh(dtc);
+ 	dtc->wb_bg_thresh = dtc->thresh ?
+-		div_u64((u64)dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0;
++		div64_u64(dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0;
+ 
+ 	/*
+ 	 * In order to avoid the stacked BDI deadlock we need
 
 
 
