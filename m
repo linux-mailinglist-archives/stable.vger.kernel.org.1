@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-21396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE55885C8B8
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:24:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17D1385C9ED
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:40:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B1031C223D2
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:24:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACD561F22E16
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:40:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C4FA14F9C8;
-	Tue, 20 Feb 2024 21:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53C1E151CE9;
+	Tue, 20 Feb 2024 21:40:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U3ZSHD8H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z5aiSuSE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E0514F9DA;
-	Tue, 20 Feb 2024 21:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EBB3612D7;
+	Tue, 20 Feb 2024 21:40:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464292; cv=none; b=G5L8u+jZ2dOx8sMzjiwv1t2LkyIyGl4O9md6to9kD3/OdJJ3Jdc/bJTOFly6j+B7TkDeqekliotv02RQ2ZgwNKanN1WJeU2uMh+9Rjm1cNnYgthfps+VsMx+CQEMrmXVezE7iT8mD9JkT2yUIRaQESdjMP5ByIQXUF6lzu/Z5yY=
+	t=1708465202; cv=none; b=iPT4XHI5gCZ9xe0ebxwkV7UTfe8tZH15uAuqGDWm8/3MpkWbyzsHTmaIlsMv1POLpQ9ZnQBlZA+J15lkGFo1dV5nR5eOaLIT4+1PBANDrUYuz+j83sIukZcNEoIZUYCYeETRY4YLTHLdlQfRlMDo88DKmzhxWtu2zKHGjifh7/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464292; c=relaxed/simple;
-	bh=JrhxLuRwM5/GWRHF5JOp0tf8BllDagVmc+eMX78YSqw=;
+	s=arc-20240116; t=1708465202; c=relaxed/simple;
+	bh=crtkNcit4fmCawRauSrupCG/3T0uxhC4Sp/qjSuWW40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TWSS1++R0Tj5yWVckoDP1IM1AZPD7p8+zzkRpMGGVp8M/YZ0ChIQQpIg134rMLyIwLxglapKSjwNTgRruDWE5Wftqi0ueYymAgL4KLEHuTwNCk4nD9tWquZOyTs+EIgMPae2crU6050Tavw1RR2eQHXOtXlzd8oCMiByz0JLwXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U3ZSHD8H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7B61C433C7;
-	Tue, 20 Feb 2024 21:24:51 +0000 (UTC)
+	 MIME-Version; b=EtKG9Q3TBoQDIY1thdG1vMdzJPFWr6Rrua6mBrFYok5dUBMDxVbSMSK/Ao1WrXvxHyaIVdyr0lHwNYehQ1SSKvMRCA3wvmF7miHDwkoVtqV4GOyj29wt/o2mupDpx5ub2odfIu3/QAivf5lezst6DRJknLe3esbm8F859N2Tm3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z5aiSuSE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77647C433C7;
+	Tue, 20 Feb 2024 21:40:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464292;
-	bh=JrhxLuRwM5/GWRHF5JOp0tf8BllDagVmc+eMX78YSqw=;
+	s=korg; t=1708465201;
+	bh=crtkNcit4fmCawRauSrupCG/3T0uxhC4Sp/qjSuWW40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U3ZSHD8HlHy3JOHDW4eOfT2QM7BcO4KnLGPpWmJ0+JrMSvUGc4kbo7ik94DtuT7qH
-	 GXBqOyOqc229pi0GmH5NSs0hsaje5JtD5MzzlcNDsj1OyT8UkxKDAz1ZoD8Jnk+OEr
-	 vKSxIIX/+tEkrvoPD+sdlYRHmVR/4UuLcirEDG3Q=
+	b=z5aiSuSEQgL52HnTli2is2eOfe9pMVg1sG6LfNIaLy5kZ0GMHjbvZ2jsyptE2/MVj
+	 +g53k4QE2m84NJRX0CZpfE4nsL8dOxDwNj6fZgjEJsqgBz/W9PXpA3moNgUIV8KuJn
+	 lBTS83q92HBEBLmAYmWPM1PvFmdjZNdm1Y0od2Xo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@ZenIV.linux.org.uk>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 312/331] eventfs: Restructure eventfs_inode structure to be more condensed
+	Stanislav Petrov <stanislav.i.petrov@gmail.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.7 269/309] ASoC: amd: yc: Add DMI quirk for Lenovo Ideapad Pro 5 16ARP8
 Date: Tue, 20 Feb 2024 21:57:08 +0100
-Message-ID: <20240220205647.997228454@linuxfoundation.org>
+Message-ID: <20240220205641.560028057@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,88 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 264424dfdd5cbd92bc5b5ddf93944929fc877fac upstream.
+commit 610010737f74482a61896596a0116876ecf9e65c upstream.
 
-Some of the eventfs_inode structure has holes in it. Rework the structure
-to be a bit more condensed, and also remove the no longer used llist
-field.
+The laptop requires a quirk ID to enable its internal microphone. Add
+it to the DMI quirk table.
 
-Link: https://lore.kernel.org/linux-trace-kernel/20240201161617.002321438@goodmis.org
-
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Al Viro <viro@ZenIV.linux.org.uk>
-Cc: Ajay Kaher <ajay.kaher@broadcom.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Reported-by: Stanislav Petrov <stanislav.i.petrov@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=216925
+Cc: stable@vger.kernel.org
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20240205214853.2689-1-mario.limonciello@amd.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/tracefs/internal.h |   27 ++++++++++++---------------
- 1 file changed, 12 insertions(+), 15 deletions(-)
+ sound/soc/amd/yc/acp6x-mach.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/fs/tracefs/internal.h
-+++ b/fs/tracefs/internal.h
-@@ -32,40 +32,37 @@ struct eventfs_attr {
- /*
-  * struct eventfs_inode - hold the properties of the eventfs directories.
-  * @list:	link list into the parent directory
-+ * @rcu:	Union with @list for freeing
-+ * @children:	link list into the child eventfs_inode
-  * @entries:	the array of entries representing the files in the directory
-  * @name:	the name of the directory to create
-- * @children:	link list into the child eventfs_inode
-  * @events_dir: the dentry of the events directory
-  * @entry_attrs: Saved mode and ownership of the @d_children
-- * @attr:	Saved mode and ownership of eventfs_inode itself
-  * @data:	The private data to pass to the callbacks
-+ * @attr:	Saved mode and ownership of eventfs_inode itself
-  * @is_freed:	Flag set if the eventfs is on its way to be freed
-  *                Note if is_freed is set, then dentry is corrupted.
-+ * @is_events:	Flag set for only the top level "events" directory
-  * @nr_entries: The number of items in @entries
-+ * @ino:	The saved inode number
-  */
- struct eventfs_inode {
--	struct kref			kref;
--	struct list_head		list;
-+	union {
-+		struct list_head	list;
-+		struct rcu_head		rcu;
-+	};
-+	struct list_head		children;
- 	const struct eventfs_entry	*entries;
- 	const char			*name;
--	struct list_head		children;
- 	struct dentry			*events_dir;
- 	struct eventfs_attr		*entry_attrs;
--	struct eventfs_attr		attr;
- 	void				*data;
-+	struct eventfs_attr		attr;
-+	struct kref			kref;
- 	unsigned int			is_freed:1;
- 	unsigned int			is_events:1;
- 	unsigned int			nr_entries:30;
- 	unsigned int			ino;
--	/*
--	 * Union - used for deletion
--	 * @llist:	for calling dput() if needed after RCU
--	 * @rcu:	eventfs_inode to delete in RCU
--	 */
--	union {
--		struct llist_node	llist;
--		struct rcu_head		rcu;
--	};
- };
- 
- static inline struct tracefs_inode *get_tracefs(const struct inode *inode)
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -251,6 +251,13 @@ static const struct dmi_system_id yc_acp
+ 	{
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "83AS"),
++		}
++	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "UM5302TA"),
+ 		}
 
 
 
