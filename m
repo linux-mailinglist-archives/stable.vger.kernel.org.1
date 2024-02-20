@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-21358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BE9C85C88A
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:23:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37D1685C9A7
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:36:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5BD9B210B3
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:23:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E68A8283CFA
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:36:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCA0F151CE8;
-	Tue, 20 Feb 2024 21:22:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92392151CE9;
+	Tue, 20 Feb 2024 21:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZnJpZh28"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="14hqI0oD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AAD32DF9F;
-	Tue, 20 Feb 2024 21:22:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5010A151CCC;
+	Tue, 20 Feb 2024 21:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464172; cv=none; b=e9DLktt7VmGBTBnrEmzBVRJUCq+rVG8a+Z2rgMnwbLCCWgLe+gtlGzS9HCNO5xLhrjIekA6C6tYB3SbQveniUKWCbbg9e0Z7WadN5pLeTQaU5eOyqVPJHu2ZeICrhb6H4Km2TAUudoLbwtqgV6y8aDU42ZfugyumtGJVwUu3yQs=
+	t=1708464992; cv=none; b=ZaI1/xt53AfHQpeafPRLsxgzBHT1Ucw9QPHPuA1Ng22EfOjB20zfGW42hlrX/YDgt8sCvuqCCZ8q2WwnNa52sFuxkgzoMiJzf8iwihFphgd+ihpuzstiRh9kCLsABMfPlcWHd4djKFUXm4p+kFw19lt5jG085EJuGDG1iSbsDIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464172; c=relaxed/simple;
-	bh=wVxNILlFQ1cSMSHooifCFv4MPAhNYEBBgec6F9X82yk=;
+	s=arc-20240116; t=1708464992; c=relaxed/simple;
+	bh=DCtFTVrKil1hvM0E+ZWtwyhf6cWlvKKmRjHBZZ1wrms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CDTrC9v2ApdSuWmgtPFopJAVa8K0AHrMbzhI7kiIPBEdS4GYd8AcBsJz+7iySjiMAfWOSmOFAmaKWxo/ts4y3B7kb5AbIQ9xJoKsYHrq9kcEsUILjNLSWzFRcmEJ+CDhRV/D4WKmfJpJilz474nxPOkpUy3hTRdVEOb7figWkb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZnJpZh28; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6F7BC433C7;
-	Tue, 20 Feb 2024 21:22:51 +0000 (UTC)
+	 MIME-Version; b=SpykpAddDnN0coOEsx/GJLZwtL72yG+t9+ZVzNXHGtV31S894YxaRZE1+zcDp2GEK6y1HlUShhdGNm8DltH93Nvk9y24o1yIrrLtY1xZkYlpecRheqpZVhpuyioWERAsiw0viWHwvgCBeusUuPiftS1Opyj2pIjmb62BAvArObM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=14hqI0oD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB663C433C7;
+	Tue, 20 Feb 2024 21:36:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464172;
-	bh=wVxNILlFQ1cSMSHooifCFv4MPAhNYEBBgec6F9X82yk=;
+	s=korg; t=1708464992;
+	bh=DCtFTVrKil1hvM0E+ZWtwyhf6cWlvKKmRjHBZZ1wrms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZnJpZh28T0TfYM4ixBH9vHUym0/J9qFvzmvK++W9Eu+4jQ49ksWhfikxSM5+XqVP8
-	 IfQOiCEpZKtACLM1P1uLtuuoyZhqI7YwWxyCbqe2Sf3qe+hGMpwFU/F8Q2LIODx2jP
-	 d8HXnBIA+ElWGlVJB0neE5GaVAC4p3ZtX+QNN18Y=
+	b=14hqI0oD1fseHj+i8d4uBTLyA4yx+XDkSrjbyKySFsFNFBGaiRNU/mqu60BGX5N5K
+	 tIbhcBFDuy2vyzTHYd3GxefFj9a82cvLpGjvV6Qre2cQWU/eSj5erX/fdV12xJjsAj
+	 bGad/dNGbNo7Mi69ZK0KrrExAmG/Xjz9/g9MUUdc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nuno Sa <nuno.sa@analog.com>,
-	Saravana Kannan <saravanak@google.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Rob Herring <robh@kernel.org>
-Subject: [PATCH 6.6 245/331] of: property: fix typo in io-channels
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.7 202/309] ksmbd: free aux buffer if ksmbd_iov_pin_rsp_read fails
 Date: Tue, 20 Feb 2024 21:56:01 +0100
-Message-ID: <20240220205645.514548426@linuxfoundation.org>
+Message-ID: <20240220205639.512354966@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sa <nuno.sa@analog.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-commit 8f7e917907385e112a845d668ae2832f41e64bf5 upstream.
+commit 108a020c64434fed4b69762879d78cd24088b4c7 upstream.
 
-The property is io-channels and not io-channel. This was effectively
-preventing the devlink creation.
+ksmbd_iov_pin_rsp_read() doesn't free the provided aux buffer if it
+fails. Seems to be the caller's responsibility to clear the buffer in
+error case.
 
-Fixes: 8e12257dead7 ("of: property: Add device link support for iommus, mboxes and io-channels")
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: e2b76ab8b5c9 ("ksmbd: add support for read compound")
 Cc: stable@vger.kernel.org
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Reviewed-by: Saravana Kannan <saravanak@google.com>
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Link: https://lore.kernel.org/r/20240123-iio-backend-v7-1-1bff236b8693@analog.com
-Signed-off-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/property.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/smb2pdu.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/of/property.c
-+++ b/drivers/of/property.c
-@@ -1213,7 +1213,7 @@ DEFINE_SIMPLE_PROP(clocks, "clocks", "#c
- DEFINE_SIMPLE_PROP(interconnects, "interconnects", "#interconnect-cells")
- DEFINE_SIMPLE_PROP(iommus, "iommus", "#iommu-cells")
- DEFINE_SIMPLE_PROP(mboxes, "mboxes", "#mbox-cells")
--DEFINE_SIMPLE_PROP(io_channels, "io-channel", "#io-channel-cells")
-+DEFINE_SIMPLE_PROP(io_channels, "io-channels", "#io-channel-cells")
- DEFINE_SIMPLE_PROP(interrupt_parent, "interrupt-parent", NULL)
- DEFINE_SIMPLE_PROP(dmas, "dmas", "#dma-cells")
- DEFINE_SIMPLE_PROP(power_domains, "power-domains", "#power-domain-cells")
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -6173,8 +6173,10 @@ static noinline int smb2_read_pipe(struc
+ 		err = ksmbd_iov_pin_rsp_read(work, (void *)rsp,
+ 					     offsetof(struct smb2_read_rsp, Buffer),
+ 					     aux_payload_buf, nbytes);
+-		if (err)
++		if (err) {
++			kvfree(aux_payload_buf);
+ 			goto out;
++		}
+ 		kvfree(rpc_resp);
+ 	} else {
+ 		err = ksmbd_iov_pin_rsp(work, (void *)rsp,
+@@ -6384,8 +6386,10 @@ int smb2_read(struct ksmbd_work *work)
+ 	err = ksmbd_iov_pin_rsp_read(work, (void *)rsp,
+ 				     offsetof(struct smb2_read_rsp, Buffer),
+ 				     aux_payload_buf, nbytes);
+-	if (err)
++	if (err) {
++		kvfree(aux_payload_buf);
+ 		goto out;
++	}
+ 	ksmbd_fd_put(work, fp);
+ 	return 0;
+ 
 
 
 
