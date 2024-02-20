@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-21527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C44BF85C947
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:31:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A277F85C7EC
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:17:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5CE3BB20D62
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:31:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D028283EC3
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:17:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F359151CD9;
-	Tue, 20 Feb 2024 21:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F14D0151CD6;
+	Tue, 20 Feb 2024 21:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nCVW3oBO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B4pQpXQL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CEA514A4D2;
-	Tue, 20 Feb 2024 21:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE71A612D7;
+	Tue, 20 Feb 2024 21:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464693; cv=none; b=VqO6e5NQfu/AXGOblJkILgBuzDoUZzz18PwZUAitCJXBerZGFshUDF3y6grBv3v4iPvHHnPh8QPv3LBmEPjZ7HEoI58XYjj6cgpvjtn3fsEkbcEJhLnKas0d4Tu3+AA8C5C+fwnSPDbAAVMfgD62eV74juOOYZkF2IfacItdwQQ=
+	t=1708463868; cv=none; b=DqZ/MoKGFWHfPOUUR8QBvqCWNEJ+7Y4LfXsFfBmjr+9ArIBBPAw3kOEyJU5eR5Ux75WjZF3ZgHK9qYvEhyKkEtPGzU+rYJVpkhws/kfMtwcu5WkO2nOF/RRMspxAiqrxM1EE4sZHF50K73XhzdbKTuaPLYVqNvxcrvCntWXisws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464693; c=relaxed/simple;
-	bh=h2n5YIqErq21qwWFFUKJYwsyo1+XvLeV56bLTN7m8tk=;
+	s=arc-20240116; t=1708463868; c=relaxed/simple;
+	bh=MOgZcc9hXpRFsc6kxkf01iMRx4PSJ+qp/wslJ6m0RRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lx/5VIpP9uMabRJTPCm7is3Vh2HSETV2h/CeoWCSUIAsR2s/BHnL83aA2WSjBQVV/WanBPLRbR6ZDzRVK69ReOV+qyUfUry3rIQyl7LJ1TGHQaoQCL3e3/BWxWnPmIzh+LP+8sxSctjZ7A3VLHOauN3CSLfwJcKq6aC/WH9ZcLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nCVW3oBO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7016C433F1;
-	Tue, 20 Feb 2024 21:31:32 +0000 (UTC)
+	 MIME-Version; b=F5RxhjfaZoldLGkYfizPnp+2NRPYRJRwFi2LmnCLQ4cCdPgtLJUdDh3eXtMMJCdh38BRHM6A4QCATzOMG1cUYopmHBJ/0GkKYTrpdoQJ4CsLO16ONI4LTX7WrJXble1zHh1qf1466WBD4U7naBBvBW62DUxZj9hfh0iCCSKo8hY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B4pQpXQL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E574C433F1;
+	Tue, 20 Feb 2024 21:17:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464693;
-	bh=h2n5YIqErq21qwWFFUKJYwsyo1+XvLeV56bLTN7m8tk=;
+	s=korg; t=1708463868;
+	bh=MOgZcc9hXpRFsc6kxkf01iMRx4PSJ+qp/wslJ6m0RRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nCVW3oBOhQvOk7OZZlYAVMtxoxbRpzJ7Dv8INdL0thdd2vIswL5BlWO85gqWYtFlL
-	 esqoEIA9C0lC/TW3lPF2Gv3dkXxBOePhW+4vLZSoofNZkHLFt/wDjaGtBCwVZAxZmI
-	 3FEA9M9a707RKraXOwoIvcT6bLGZsvHqMSUwC6lQ=
+	b=B4pQpXQLGdVyajkknkalKCKqUjJmiN2iEgip/b4jAOXCfS/bq6geYHrb+pr73ozVr
+	 GTIJVVsnjvHvipFOCa1dTv5ghGCyfReAyXrroEM9mZlC0wUw7jI6tiZxyi37B3Q2TM
+	 2QhTpyukKAVmgOQLgxfOV45vg0APDoVZjkn4nVc8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>,
-	Viken Dadhaniya <quic_vdadhani@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 107/309] i2c: qcom-geni: Correct I2C TRE sequence
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Thorsten Blum <thorsten.blum@toblux.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 150/331] tracing/synthetic: Fix trace_string() return value
 Date: Tue, 20 Feb 2024 21:54:26 +0100
-Message-ID: <20240220205636.538935425@linuxfoundation.org>
+Message-ID: <20240220205642.258357367@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,100 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viken Dadhaniya <quic_vdadhani@quicinc.com>
+From: Thorsten Blum <thorsten.blum@toblux.com>
 
-[ Upstream commit 83ef106fa732aea8558253641cd98e8a895604d7 ]
+commit 9b6326354cf9a41521b79287da3bfab022ae0b6d upstream.
 
-For i2c read operation in GSI mode, we are getting timeout
-due to malformed TRE basically incorrect TRE sequence
-in gpi(drivers/dma/qcom/gpi.c) driver.
+Fix trace_string() by assigning the string length to the return variable
+which got lost in commit ddeea494a16f ("tracing/synthetic: Use union
+instead of casts") and caused trace_string() to always return 0.
 
-I2C driver has geni_i2c_gpi(I2C_WRITE) function which generates GO TRE and
-geni_i2c_gpi(I2C_READ)generates DMA TRE. Hence to generate GO TRE before
-DMA TRE, we should move geni_i2c_gpi(I2C_WRITE) before
-geni_i2c_gpi(I2C_READ) inside the I2C GSI mode transfer function
-i.e. geni_i2c_gpi_xfer().
+Link: https://lore.kernel.org/linux-trace-kernel/20240214220555.711598-1-thorsten.blum@toblux.com
 
-TRE stands for Transfer Ring Element - which is basically an element with
-size of 4 words. It contains all information like slave address,
-clk divider, dma address value data size etc).
-
-Mainly we have 3 TREs(Config, GO and DMA tre).
-- CONFIG TRE : consists of internal register configuration which is
-               required before start of the transfer.
-- DMA TRE :    contains DDR/Memory address, called as DMA descriptor.
-- GO TRE :     contains Transfer directions, slave ID, Delay flags, Length
-               of the transfer.
-
-I2c driver calls GPI driver API to config each TRE depending on the
-protocol.
-
-For read operation tre sequence will be as below which is not aligned
-to hardware programming guide.
-
-- CONFIG tre
-- DMA tre
-- GO tre
-
-As per Qualcomm's internal Hardware Programming Guide, we should configure
-TREs in below sequence for any RX only transfer.
-
-- CONFIG tre
-- GO tre
-- DMA tre
-
-Fixes: d8703554f4de ("i2c: qcom-geni: Add support for GPI DMA")
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org> # qrb5165-rb5
-Co-developed-by: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
-Signed-off-by: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
-Signed-off-by: Viken Dadhaniya <quic_vdadhani@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Fixes: ddeea494a16f ("tracing/synthetic: Use union instead of casts")
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Thorsten Blum <thorsten.blum@toblux.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-qcom-geni.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ kernel/trace/trace_events_synth.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/busses/i2c-qcom-geni.c b/drivers/i2c/busses/i2c-qcom-geni.c
-index 0d2e7171e3a6..da94df466e83 100644
---- a/drivers/i2c/busses/i2c-qcom-geni.c
-+++ b/drivers/i2c/busses/i2c-qcom-geni.c
-@@ -613,20 +613,20 @@ static int geni_i2c_gpi_xfer(struct geni_i2c_dev *gi2c, struct i2c_msg msgs[], i
+diff --git a/kernel/trace/trace_events_synth.c b/kernel/trace/trace_events_synth.c
+index e7af286af4f1..c82b401a294d 100644
+--- a/kernel/trace/trace_events_synth.c
++++ b/kernel/trace/trace_events_synth.c
+@@ -441,8 +441,9 @@ static unsigned int trace_string(struct synth_trace_event *entry,
+ 	if (is_dynamic) {
+ 		union trace_synth_field *data = &entry->fields[*n_u64];
  
- 		peripheral.addr = msgs[i].addr;
++		len = fetch_store_strlen((unsigned long)str_val);
+ 		data->as_dynamic.offset = struct_size(entry, fields, event->n_u64) + data_size;
+-		data->as_dynamic.len = fetch_store_strlen((unsigned long)str_val);
++		data->as_dynamic.len = len;
  
-+		ret =  geni_i2c_gpi(gi2c, &msgs[i], &config,
-+				    &tx_addr, &tx_buf, I2C_WRITE, gi2c->tx_c);
-+		if (ret)
-+			goto err;
-+
- 		if (msgs[i].flags & I2C_M_RD) {
- 			ret =  geni_i2c_gpi(gi2c, &msgs[i], &config,
- 					    &rx_addr, &rx_buf, I2C_READ, gi2c->rx_c);
- 			if (ret)
- 				goto err;
--		}
--
--		ret =  geni_i2c_gpi(gi2c, &msgs[i], &config,
--				    &tx_addr, &tx_buf, I2C_WRITE, gi2c->tx_c);
--		if (ret)
--			goto err;
+ 		ret = fetch_store_string((unsigned long)str_val, &entry->fields[*n_u64], entry);
  
--		if (msgs[i].flags & I2C_M_RD)
- 			dma_async_issue_pending(gi2c->rx_c);
-+		}
-+
- 		dma_async_issue_pending(gi2c->tx_c);
- 
- 		timeout = wait_for_completion_timeout(&gi2c->done, XFER_TIMEOUT);
 -- 
-2.43.0
+2.43.2
 
 
 
