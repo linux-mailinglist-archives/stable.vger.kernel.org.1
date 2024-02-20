@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-21503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A21885C92F
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:30:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2152885C7AD
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:15:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B9E01C20C33
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:30:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D09752824C2
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:15:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09C51151CE1;
-	Tue, 20 Feb 2024 21:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22F13151CF1;
+	Tue, 20 Feb 2024 21:15:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HOqEZo4N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dtI/sw/t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCB7614A4D2;
-	Tue, 20 Feb 2024 21:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D597F152DF4;
+	Tue, 20 Feb 2024 21:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464622; cv=none; b=eKeKTslKnOasjKYeCx8ztNlCsMWMIQfe+KMdsXFS/kRd0MF4Tp5+7UJdstVD/Frmc6NU/lGhb3XXAkuNy6PL0uYgQbCiWj19zLsqBwVxsxmUgz8q9ApLIM7+D/jL0tPWTRg2ttTSHu5sMRGLlMzbCM3kDrrByyl5Ksw/dXhiVsc=
+	t=1708463704; cv=none; b=pvhrtLIfr9zSrgvNmrgbw3h2wed7vkunQ+AaDkqsqGEtDlcdval6QBsr/KZCzyqbbEZTH5tUW9yCVak6Zu/YDhcAWRZa82tjWUXlDwDdt4QjIBsONLsXsNdnLypAN2dLZ7Y0WtG3xGiG1ulhdJ+uJCVhC2p/8Rz0G1jnFyLWrrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464622; c=relaxed/simple;
-	bh=V4zkgwg0DB0L529IYPfTWNMFqlDS+3m6tG59uED/DQE=;
+	s=arc-20240116; t=1708463704; c=relaxed/simple;
+	bh=Wk/vea82LoD1TToJfYXtnX3HTy+8flk17rlBskL/W/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dhVuUx07Q1R0dLDaIUhu67R1MSFoDTJ4K5psdTMx/4pkEBzWsGgc3D8W8uZmmLJxqoLK+f+5RO5RkhQLlMRQOMk0z5/KVEiNJDO41xgVKDbvoLaR//fOHReFE6Ozw9Dl1N1HwvCUcSVJL0rJXfvTjmBFVOLdLz3GXVdNXEGfFtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HOqEZo4N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32323C433F1;
-	Tue, 20 Feb 2024 21:30:21 +0000 (UTC)
+	 MIME-Version; b=WBV/cEOIrz4aV6pgS8DhVicKSswCZOgQEw19G8G6vC12dDxFTWwEOVGO0RGc5+OJhkyy4vmPGLhhS3h6atdMyEDvuvHEk+0obVVwjhj2HZ8R9yj1N86ObYaVFTMr/moNzNwyYdrA1HK/nQ+gTMzA6KHVq/lLa6+sN2Gl0NYmPTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dtI/sw/t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44C98C43399;
+	Tue, 20 Feb 2024 21:15:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464622;
-	bh=V4zkgwg0DB0L529IYPfTWNMFqlDS+3m6tG59uED/DQE=;
+	s=korg; t=1708463704;
+	bh=Wk/vea82LoD1TToJfYXtnX3HTy+8flk17rlBskL/W/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HOqEZo4NVP+DfhTSmJubjSO511yCpYPG7dHLc0b04srAhdhV20I10/7EkGENdEabT
-	 kF8V7DQHG4fQRYWA5GpfxBXcjNNa5EaPqutMO3ZUjBLfDVgv7cUHtAZqzIDPPTN2AZ
-	 bx8QH8z/YgydpZLNF9qK+/rOiPuKpfqlLqs9s7PU=
+	b=dtI/sw/tjtTb/oNK1h8CB+T6FIsclO5+a1rBg5cSi9f9Z4D3NHOHXQSsJW37Rhozf
+	 IYpp1UQfRTEk8LWtv1izU8Cey3Ag5L4+VICfBWVVWZU+G0fnR95gSBXVIJA1SdGi+u
+	 u/lRvgTyPrL++OcIUfZfXP44anUO3snU+qwgYoJ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.7 083/309] HID: i2c-hid-of: fix NULL-deref on failed power up
-Date: Tue, 20 Feb 2024 21:54:02 +0100
-Message-ID: <20240220205635.789454553@linuxfoundation.org>
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Subject: [PATCH 6.6 127/331] firewire: core: correct documentation of fw_csr_string() kernel API
+Date: Tue, 20 Feb 2024 21:54:03 +0100
+Message-ID: <20240220205641.579449131@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
 
-commit 00aab7dcb2267f2aef59447602f34501efe1a07f upstream.
+commit 5f9ab17394f831cb7986ec50900fa37507a127f1 upstream.
 
-A while back the I2C HID implementation was split in an ACPI and OF
-part, but the new OF driver never initialises the client pointer which
-is dereferenced on power-up failures.
+Against its current description, the kernel API can accepts all types of
+directory entries.
 
-Fixes: b33752c30023 ("HID: i2c-hid: Reorganize so ACPI and OF are separate modules")
-Cc: stable@vger.kernel.org      # 5.12
-Cc: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+This commit corrects the documentation.
+
+Cc: stable@vger.kernel.org
+Fixes: 3c2c58cb33b3 ("firewire: core: fw_csr_string addendum")
+Link: https://lore.kernel.org/r/20240130100409.30128-2-o-takashi@sakamocchi.jp
+Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/i2c-hid/i2c-hid-of.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/firewire/core-device.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/drivers/hid/i2c-hid/i2c-hid-of.c
-+++ b/drivers/hid/i2c-hid/i2c-hid-of.c
-@@ -87,6 +87,7 @@ static int i2c_hid_of_probe(struct i2c_c
- 	if (!ihid_of)
- 		return -ENOMEM;
- 
-+	ihid_of->client = client;
- 	ihid_of->ops.power_up = i2c_hid_of_power_up;
- 	ihid_of->ops.power_down = i2c_hid_of_power_down;
- 
+--- a/drivers/firewire/core-device.c
++++ b/drivers/firewire/core-device.c
+@@ -100,10 +100,9 @@ static int textual_leaf_to_string(const
+  * @buf:	where to put the string
+  * @size:	size of @buf, in bytes
+  *
+- * The string is taken from a minimal ASCII text descriptor leaf after
+- * the immediate entry with @key.  The string is zero-terminated.
+- * An overlong string is silently truncated such that it and the
+- * zero byte fit into @size.
++ * The string is taken from a minimal ASCII text descriptor leaf just after the entry with the
++ * @key. The string is zero-terminated. An overlong string is silently truncated such that it
++ * and the zero byte fit into @size.
+  *
+  * Returns strlen(buf) or a negative error code.
+  */
 
 
 
