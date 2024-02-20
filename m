@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-21445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D3F485C8EC
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:27:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C90985C741
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:10:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DC491C2251E
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:27:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E0181C21426
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:10:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE3C61509BC;
-	Tue, 20 Feb 2024 21:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0B99151CC3;
+	Tue, 20 Feb 2024 21:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s0Vsy6YE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gy5CwMoS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D5E814A4E6;
-	Tue, 20 Feb 2024 21:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE71076C9C;
+	Tue, 20 Feb 2024 21:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464442; cv=none; b=HEZhQvYvRtiTiLX+EcMdTESfaYOgZKHjQ6Ns0aKA4UGcTgFbn7Yxq7ifu1PIjDQi7S0U5W3BpuNP8JQymwRfT7zOHlTj6St2h5nmh2H5BiUYcPPi0L0uXKRT7WlKdTPpYE+sAyWorfJOwkfoAKYiaUodHEWYazYJZHkzM9d0yCE=
+	t=1708463450; cv=none; b=be8LrqwD9x5aDGKadWggH3MfG9dPqjVL2X3BLXnz4pYlG89dVs2ufsJELH1r8WLjTrK4dyQmZV914bTFGRhh7/rLFlcnq5bmrburhfUqWzqn2gtIQZWKiM4qYiP7HPOxIONK4FhDgqZFEtXnFBnuZTlKItmNe85plbHOqyYTe/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464442; c=relaxed/simple;
-	bh=PmrXVdgrpxkmYfof8n9HaKtqX0tIllbaULK0axRHWEQ=;
+	s=arc-20240116; t=1708463450; c=relaxed/simple;
+	bh=iWOiZyHWS/MgVqxzbzF7ASgOG0AftG4R2axkZw4JFGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nH3lo5r7TzoBWozvkUtV82V4gb7HFNIKtNjjnTnEpp/PaoY3eAjY1CpoToLPl7q9yFhJps2C7Ci5/o064JwUyK0oejCxxGp2+22GvXLTDzph8o5jACgc7YyhFWp3C+17618cqQ80cpa53wgmfPvHnREojdJBK3GKa391H6035lU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s0Vsy6YE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEFB2C433F1;
-	Tue, 20 Feb 2024 21:27:21 +0000 (UTC)
+	 MIME-Version; b=N5+DvISVUIcix6syMKA5zl9Nk9DBmpJdCTeNYd4AlfMhuyLmUjIu1AAWckjix/abRD0YI9kpYrUvLIOs3UNI/E/mohvSfX+CtsIGL6gqlzvC7jzg73BvElpe4yZ/IeftvFi6MvGTRaykuTCveFY6/A+pq1WdQy+p6VxzzUCYa80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gy5CwMoS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C99FC433F1;
+	Tue, 20 Feb 2024 21:10:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464442;
-	bh=PmrXVdgrpxkmYfof8n9HaKtqX0tIllbaULK0axRHWEQ=;
+	s=korg; t=1708463450;
+	bh=iWOiZyHWS/MgVqxzbzF7ASgOG0AftG4R2axkZw4JFGI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s0Vsy6YEV4jHKv+cJqJfq+BEQX1oXiOVCFu8xa6NdVD5BOD9QTmrAVrIYkdvLom3V
-	 kCydUYy0Rg0TJ0esucNoacySAU9xrgXDD9+Qf73oV9GouOUCEEK5XcwJRaeigxw7PO
-	 fRRCww6HImhYNAu+uiOOG5YLvZsN9owsSzIpNwmU=
+	b=gy5CwMoSnGSZNgoKnPHTixKrZet7YTGzs01/F6AmCSKq8EjbeisylILdZ48zL2XCa
+	 hiWpgfsCxdcqien/UkO90iic848kC+MpfVGAUgGY9E+FIeipi/WZIP3o8IVB6/9qFQ
+	 5TisFUEcLU6iwn81xwO+Tlha2t9csOPVscWaJLBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev, Yang Shi <yang@os.amperecomputing.com>,
-	kernel test robot <oliver.sang@intel.com>,
-	Yin Fengwei <fengwei.yin@intel.com>, Rik van Riel <riel@surriel.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Christopher Lameter <cl@linux.com>,
-	"Huang, Ying" <ying.huang@intel.com>, stable@vger.kerenl.org,
-	Andrew Morton <akpm@linux-foundation.org>, Huang@web.codeaurora.org
-Subject: [PATCH 6.7 004/309] mm: mmap: map MAP_STACK to VM_NOHUGEPAGE
+	patches@lists.linux.dev,
+	Alexey Khoroshilov <khoroshilov@ispras.ru>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 047/331] ASoC: rt5645: Fix deadlock in rt5645_jack_detect_work()
 Date: Tue, 20 Feb 2024 21:52:43 +0100
-Message-ID: <20240220205633.254129878@linuxfoundation.org>
+Message-ID: <20240220205639.080646203@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,84 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Shi <yang@os.amperecomputing.com>
+From: Alexey Khoroshilov <khoroshilov@ispras.ru>
 
-commit c4608d1bf7c6536d1a3d233eb21e50678681564e upstream.
+[ Upstream commit 6ef5d5b92f7117b324efaac72b3db27ae8bb3082 ]
 
-commit efa7df3e3bb5 ("mm: align larger anonymous mappings on THP
-boundaries") incured regression for stress-ng pthread benchmark [1].  It
-is because THP get allocated to pthread's stack area much more possible
-than before.  Pthread's stack area is allocated by mmap without
-VM_GROWSDOWN or VM_GROWSUP flag, so kernel can't tell whether it is a
-stack area or not.
+There is a path in rt5645_jack_detect_work(), where rt5645->jd_mutex
+is left locked forever. That may lead to deadlock
+when rt5645_jack_detect_work() is called for the second time.
 
-The MAP_STACK flag is used to mark the stack area, but it is a no-op on
-Linux.  Mapping MAP_STACK to VM_NOHUGEPAGE to prevent from allocating THP
-for such stack area.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-With this change the stack area looks like:
-
-fffd18e10000-fffd19610000 rw-p 00000000 00:00 0
-Size:               8192 kB
-KernelPageSize:        4 kB
-MMUPageSize:           4 kB
-Rss:                  12 kB
-Pss:                  12 kB
-Pss_Dirty:            12 kB
-Shared_Clean:          0 kB
-Shared_Dirty:          0 kB
-Private_Clean:         0 kB
-Private_Dirty:        12 kB
-Referenced:           12 kB
-Anonymous:            12 kB
-KSM:                   0 kB
-LazyFree:              0 kB
-AnonHugePages:         0 kB
-ShmemPmdMapped:        0 kB
-FilePmdMapped:         0 kB
-Shared_Hugetlb:        0 kB
-Private_Hugetlb:       0 kB
-Swap:                  0 kB
-SwapPss:               0 kB
-Locked:                0 kB
-THPeligible:           0
-VmFlags: rd wr mr mw me ac nh
-
-The "nh" flag is set.
-
-[1] https://lore.kernel.org/linux-mm/202312192310.56367035-oliver.sang@intel.com/
-
-Link: https://lkml.kernel.org/r/20231221065943.2803551-2-shy828301@gmail.com
-Fixes: efa7df3e3bb5 ("mm: align larger anonymous mappings on THP boundaries")
-Signed-off-by: Yang Shi <yang@os.amperecomputing.com>
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Tested-by: Oliver Sang <oliver.sang@intel.com>
-Reviewed-by: Yin Fengwei <fengwei.yin@intel.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Christopher Lameter <cl@linux.com>
-Cc: Huang, Ying <ying.huang@intel.com>
-Cc: <stable@vger.kerenl.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: cdba4301adda ("ASoC: rt5650: add mutex to avoid the jack detection failure")
+Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
+Link: https://lore.kernel.org/r/1707645514-21196-1-git-send-email-khoroshilov@ispras.ru
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/mman.h |    1 +
+ sound/soc/codecs/rt5645.c | 1 +
  1 file changed, 1 insertion(+)
 
---- a/include/linux/mman.h
-+++ b/include/linux/mman.h
-@@ -156,6 +156,7 @@ calc_vm_flag_bits(unsigned long flags)
- 	return _calc_vm_trans(flags, MAP_GROWSDOWN,  VM_GROWSDOWN ) |
- 	       _calc_vm_trans(flags, MAP_LOCKED,     VM_LOCKED    ) |
- 	       _calc_vm_trans(flags, MAP_SYNC,	     VM_SYNC      ) |
-+	       _calc_vm_trans(flags, MAP_STACK,	     VM_NOHUGEPAGE) |
- 	       arch_calc_vm_flag_bits(flags);
- }
- 
+diff --git a/sound/soc/codecs/rt5645.c b/sound/soc/codecs/rt5645.c
+index edcb85bd8ea7..ea08b7cfc31d 100644
+--- a/sound/soc/codecs/rt5645.c
++++ b/sound/soc/codecs/rt5645.c
+@@ -3314,6 +3314,7 @@ static void rt5645_jack_detect_work(struct work_struct *work)
+ 				    report, SND_JACK_HEADPHONE);
+ 		snd_soc_jack_report(rt5645->mic_jack,
+ 				    report, SND_JACK_MICROPHONE);
++		mutex_unlock(&rt5645->jd_mutex);
+ 		return;
+ 	case 4:
+ 		val = snd_soc_component_read(rt5645->component, RT5645_A_JD_CTRL1) & 0x0020;
+-- 
+2.43.0
+
 
 
 
