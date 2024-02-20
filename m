@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-20961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E100485C67F
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:01:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5795085C68A
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:02:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AAF6283241
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:01:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1057328357B
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:02:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35BDD151CD0;
-	Tue, 20 Feb 2024 21:01:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5CDF151CC4;
+	Tue, 20 Feb 2024 21:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kqyb81jg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GtLXPbg0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E46271509BF;
-	Tue, 20 Feb 2024 21:01:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C2A14F9DA;
+	Tue, 20 Feb 2024 21:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708462914; cv=none; b=DnuWTUZJPLgdfWcimrw0tfgKGnXOEecKcKJ6Y4a5/3F2vAfLi71v3ZBK/Kl6pcHIgJLpZoUHyHvrHFVplD6/xGZxXvsSgR2tyAl1yu6o8DMLMCK40mlNTVawzxJEqvAL4Kf/bFgXcq49OqnHlpCfJukiCGGY9GmATcRik/nM1hU=
+	t=1708462949; cv=none; b=VblY3W02xt89uUwo7ESpQ8PaQmi+Xm75Iwa0lD2UgHZTx8Tuuv54LbXSGHzqR4XjUUXzgBox1aT7vUshEGOTQscb5fwxIROzUp6FU7wZhHhrAykXZrmu0HXu9hxyRbx2QCAYofzORQLX7/jvz9FypfOZ5dv+rb5JP2yLu2jGVjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708462914; c=relaxed/simple;
-	bh=Tl05ZGhgeTha+MItdRo1KgDDdbo+JUfA/W2g2NxSTeo=;
+	s=arc-20240116; t=1708462949; c=relaxed/simple;
+	bh=Jh0xuAgkkwKcEVjw2KB7wGSSBnuoM/AimcLlNCY5II4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SJYhEjRmho5OkDMgz1gOfdL4zXDONT0ZpNLlLeWSVaeucSv6hz6JOvl6aarP6ZM3ByzlNjSzr8Xy40dDLnqd1niEOi3q4fq73f7yVppdfOJSL94R9nno2zXw5Kj9ByQvy4HTQQUNyX9Bz7XkJK3VdWoDHPG7HUb19FCji05+E5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kqyb81jg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51CB6C433F1;
-	Tue, 20 Feb 2024 21:01:53 +0000 (UTC)
+	 MIME-Version; b=G98Gc2E3Tfg7FIwPVvCg1eED0BnAIVIkjxMSzHceFXVQOuVXQgjywFARUCYGKW9t7wfXETHhOmgJykioAmP9yFDWyDr+BB1pYiO/CXjxfzkMIqXunJ+YT2B1mF8jpw6izzhWTkjycj0HmZDD5AuYdv1ldNupoN9w8xToFdX4mJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GtLXPbg0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D662BC433C7;
+	Tue, 20 Feb 2024 21:02:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708462913;
-	bh=Tl05ZGhgeTha+MItdRo1KgDDdbo+JUfA/W2g2NxSTeo=;
+	s=korg; t=1708462949;
+	bh=Jh0xuAgkkwKcEVjw2KB7wGSSBnuoM/AimcLlNCY5II4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kqyb81jg6zi6oP7zuxfaJ5wmdTuT2URuE8ZPYS7fJP1WiJE0PC6GHSJN1/8zAg9nb
-	 D8m8tQJpgPnPjQTphbpYm9OpX/9+mist2WJChQNu6wPPzLGRI3jh+KZauPyhX9e+YK
-	 mkkBIxBO7q9mVBu1MYyymHbdKvxk1x5vYj9VTfmM=
+	b=GtLXPbg0Qy9QpRRcPtmCQAI8Eip65ptCYCubghyqowcBud3OAmUi6uNcmnPIHW9ep
+	 qyTaWDSM3pCsbXJ4fR4Kh5ma0QTGUpcZqZZX6/rcHTq4WRxQwpzFBxy2PCZ+bz1gLv
+	 9d0C26cSsYjvSNBO40eRRdzQFC0iEndLNM2MmRlU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Geliang Tang <geliang@kernel.org>,
 	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 069/197] selftests: mptcp: add missing kconfig for NF Filter in v6
-Date: Tue, 20 Feb 2024 21:50:28 +0100
-Message-ID: <20240220204843.145554012@linuxfoundation.org>
+Subject: [PATCH 6.1 070/197] selftests: mptcp: add missing kconfig for NF Mangle
+Date: Tue, 20 Feb 2024 21:50:29 +0100
+Message-ID: <20240220204843.175560228@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
 References: <20240220204841.073267068@linuxfoundation.org>
@@ -68,22 +68,20 @@ Content-Transfer-Encoding: 8bit
 
 From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit 8c86fad2cecdc6bf7283ecd298b4d0555bd8b8aa upstream.
+commit 2d41f10fa497182df9012d3e95d9cea24eb42e61 upstream.
 
 Since the commit mentioned below, 'mptcp_join' selftests is using
-IPTables to add rules to the Filter table for IPv6.
-
-It is then required to have IP6_NF_FILTER KConfig.
+IPTables to add rules to the Mangle table, only in IPv4.
 
 This KConfig is usually enabled by default in many defconfig, but we
 recently noticed that some CI were running our selftests without them
 enabled.
 
-Fixes: 523514ed0a99 ("selftests: mptcp: add ADD_ADDR IPv6 test cases")
+Fixes: b6e074e171bc ("selftests: mptcp: add infinite map testcase")
 Cc: stable@vger.kernel.org
 Reviewed-by: Geliang Tang <geliang@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240131-upstream-net-20240131-mptcp-ci-issues-v1-3-4c1c11e571ff@kernel.org
+Link: https://lore.kernel.org/r/20240131-upstream-net-20240131-mptcp-ci-issues-v1-4-4c1c11e571ff@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
@@ -92,14 +90,14 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/tools/testing/selftests/net/mptcp/config
 +++ b/tools/testing/selftests/net/mptcp/config
-@@ -25,6 +25,7 @@ CONFIG_IP_MULTIPLE_TABLES=y
+@@ -23,6 +23,7 @@ CONFIG_NFT_SOCKET=m
+ CONFIG_IP_ADVANCED_ROUTER=y
+ CONFIG_IP_MULTIPLE_TABLES=y
  CONFIG_IP_NF_FILTER=m
++CONFIG_IP_NF_MANGLE=m
  CONFIG_IP_NF_TARGET_REJECT=m
  CONFIG_IPV6_MULTIPLE_TABLES=y
-+CONFIG_IP6_NF_FILTER=m
- CONFIG_NET_ACT_CSUM=m
- CONFIG_NET_ACT_PEDIT=m
- CONFIG_NET_CLS_ACT=y
+ CONFIG_IP6_NF_FILTER=m
 
 
 
