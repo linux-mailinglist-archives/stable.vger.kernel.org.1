@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-21563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 379DC85C96B
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:33:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A8B485C83C
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:19:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CCFC7B21176
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:33:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8C69284AB6
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:19:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38BD6151CDC;
-	Tue, 20 Feb 2024 21:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 685B9151CE3;
+	Tue, 20 Feb 2024 21:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ixKr6/Fi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tncYlkUu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE48446C9;
-	Tue, 20 Feb 2024 21:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24D9914A4E6;
+	Tue, 20 Feb 2024 21:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464805; cv=none; b=rTcedKsHKhxW9wkyf11mx7RbKXZT1NeBUCMlGkr9wmYjYQ5c418mWjpVDWcR3TOjqjecNl9TRnMRYiWVxsusKE8jQ+nzRfgHk1/CtJ0swGsB45mnrEMmFyV8BVLvbk6ljv3Bf1RSFzBP5o5/K5YlqR0hRDD6wWv8kFZoF3m9f10=
+	t=1708463985; cv=none; b=qdLVoJxajwfxxdbJHNhnmX0mfcSWr3iRe/G1ASEdokX+COUoh+8cOYG0QzmIXgM7ajn0Am0cOIpwfiOpYgrT/lcPpYu5CJbvdUUoVVucOE88wka18EQOoVM6usI6wAfGAXGDsvGxOIUYcgsKeiyKCgJociiFVeJEfhEo7qkCNCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464805; c=relaxed/simple;
-	bh=rzYTLZNaNXAD2UJRJUaUJSm4XbKJ9oxmoFIUOi5UFCg=;
+	s=arc-20240116; t=1708463985; c=relaxed/simple;
+	bh=Q0PUCLU9/eP2Pzh2VK7MYSeI70vbATZw3h2GNMyTTOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iPiUg2kZzNWlqmmrrPIp71Haj07saZjhAgtwL+wuBGwMh2iYl302njfELlx7RvkhDAPgrowBfq97ZQyrEvFsLgYvWcnGaM6C6FxMexcFkCLU3VVXfmCEm552Cf2pSCSBrgn045ncRf/RrPrkOGsKym0FC8XEb2EtP8YQ+bX3QUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ixKr6/Fi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B84AC433C7;
-	Tue, 20 Feb 2024 21:33:24 +0000 (UTC)
+	 MIME-Version; b=rYmMFUZEf+Gcx98w63tdviDHK17JgeswZzJ8I1cfJMiGkcs1AEAGxRoPuQfI4EAEBZgbVlStwYeA0lyaG4mYZYYAcWZXoO5lkfOTQWV2sL8L2Bez4GN1mFj+F+4dFj0i0m0EMek2oZffhiKHuEqdJqTF/OO6ata54q+/TbAfQJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tncYlkUu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86E5CC433F1;
+	Tue, 20 Feb 2024 21:19:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464804;
-	bh=rzYTLZNaNXAD2UJRJUaUJSm4XbKJ9oxmoFIUOi5UFCg=;
+	s=korg; t=1708463985;
+	bh=Q0PUCLU9/eP2Pzh2VK7MYSeI70vbATZw3h2GNMyTTOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ixKr6/FiJOK27AtjI8id09tNTXQo5i+iOQClLaLPZTdY3p+g+Fs1mZu9sgBXEAOx/
-	 UgE1Sm4TgkX4ZcoVUGIpiYiT+z/0HgWiADRAc8VrZaIWvDhVP4a02tcUN4DL40B3Ry
-	 i8sRzYlv+pkOoFIifG4QFCyhWyI2nXyShkBmn4p0=
+	b=tncYlkUuBUAaWXjhWDlQn61j/Tm44Ro9ti3brCeVrm5wgW2uCc7LqoPIWRCpLaf9f
+	 k8noMZ19bV4/IteOeM3JwSh2elH7n4ggr2kLIfhoWEddwm0DZQPRVDMQmjS0ogd1D7
+	 smtEsDBdE80O6HXIxPyAnlXA9+nJ9JgoIQ8Motyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Fangrui Song <maskray@google.com>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Kees Cook <keescook@chromium.org>,
-	Justin Stitt <justinstitt@google.com>
-Subject: [PATCH 6.7 143/309] kbuild: Fix changing ELF file type for output of gen_btf for big endian
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 6.6 186/331] powerpc/pseries: fix accuracy of stolen time
 Date: Tue, 20 Feb 2024 21:55:02 +0100
-Message-ID: <20240220205637.638242279@linuxfoundation.org>
+Message-ID: <20240220205643.395898289@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,80 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
 
-commit e3a9ee963ad8ba677ca925149812c5932b49af69 upstream.
+commit cbecc9fcbbec60136b0180ba0609c829afed5c81 upstream.
 
-Commit 90ceddcb4950 ("bpf: Support llvm-objcopy for vmlinux BTF")
-changed the ELF type of .btf.vmlinux.bin.o to ET_REL via dd, which works
-fine for little endian platforms:
+powerVM hypervisor updates the VPA fields with stolen time data.
+It currently reports enqueue_dispatch_tb and ready_enqueue_tb for
+this purpose. In linux these two fields are used to report the stolen time.
 
-   00000000  7f 45 4c 46 02 01 01 00  00 00 00 00 00 00 00 00  |.ELF............|
-  -00000010  03 00 b7 00 01 00 00 00  00 00 00 80 00 80 ff ff  |................|
-  +00000010  01 00 b7 00 01 00 00 00  00 00 00 80 00 80 ff ff  |................|
+The VPA fields are updated at the TB frequency. On powerPC its mostly
+set at 512Mhz. Hence this needs a conversion to ns when reporting it
+back as rest of the kernel timings are in ns. This conversion is already
+handled in tb_to_ns function. So use that function to report accurate
+stolen time.
 
-However, for big endian platforms, it changes the wrong byte, resulting
-in an invalid ELF file type, which ld.lld rejects:
+Observed this issue and used an Capped Shared Processor LPAR(SPLPAR) to
+simplify the experiments. In all these cases, 100% VP Load is run using
+stress-ng workload. Values of stolen time is in percentages as reported
+by mpstat. With the patch values are close to expected.
 
-   00000000  7f 45 4c 46 02 02 01 00  00 00 00 00 00 00 00 00  |.ELF............|
-  -00000010  00 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |................|
-  +00000010  01 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |................|
+		6.8.rc1		+Patch
+12EC/12VP	   0.0		   0.0
+12EC/24VP	  25.7		  50.2
+12EC/36VP	  37.3		  69.2
+12EC/48VP	  38.5		  78.3
 
-  Type:                              <unknown>: 103
-
-  ld.lld: error: .btf.vmlinux.bin.o: unknown file type
-
-Fix this by updating the entire 16-bit e_type field rather than just a
-single byte, so that everything works correctly for all platforms and
-linkers.
-
-   00000000  7f 45 4c 46 02 02 01 00  00 00 00 00 00 00 00 00  |.ELF............|
-  -00000010  00 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |................|
-  +00000010  00 01 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |................|
-
-  Type:                              REL (Relocatable file)
-
-While in the area, update the comment to mention that binutils 2.35+
-matches LLD's behavior of rejecting an ET_EXEC input, which occurred
-after the comment was added.
-
-Cc: stable@vger.kernel.org
-Fixes: 90ceddcb4950 ("bpf: Support llvm-objcopy for vmlinux BTF")
-Link: https://github.com/llvm/llvm-project/pull/75643
-Suggested-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Fangrui Song <maskray@google.com>
-Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Justin Stitt <justinstitt@google.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Fixes: 0e8a63132800 ("powerpc/pseries: Implement CONFIG_PARAVIRT_TIME_ACCOUNTING")
+Cc: stable@vger.kernel.org # v6.1+
+Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Reviewed-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240213052635.231597-1-sshegde@linux.ibm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/link-vmlinux.sh |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ arch/powerpc/platforms/pseries/lpar.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/scripts/link-vmlinux.sh
-+++ b/scripts/link-vmlinux.sh
-@@ -135,8 +135,13 @@ gen_btf()
- 	${OBJCOPY} --only-section=.BTF --set-section-flags .BTF=alloc,readonly \
- 		--strip-all ${1} ${2} 2>/dev/null
- 	# Change e_type to ET_REL so that it can be used to link final vmlinux.
--	# Unlike GNU ld, lld does not allow an ET_EXEC input.
--	printf '\1' | dd of=${2} conv=notrunc bs=1 seek=16 status=none
-+	# GNU ld 2.35+ and lld do not allow an ET_EXEC input.
-+	if is_enabled CONFIG_CPU_BIG_ENDIAN; then
-+		et_rel='\0\1'
-+	else
-+		et_rel='\1\0'
-+	fi
-+	printf "${et_rel}" | dd of=${2} conv=notrunc bs=1 seek=16 status=none
- }
+--- a/arch/powerpc/platforms/pseries/lpar.c
++++ b/arch/powerpc/platforms/pseries/lpar.c
+@@ -662,8 +662,12 @@ u64 pseries_paravirt_steal_clock(int cpu
+ {
+ 	struct lppaca *lppaca = &lppaca_of(cpu);
  
- # Create ${2} .S file with all symbols from the ${1} object file
+-	return be64_to_cpu(READ_ONCE(lppaca->enqueue_dispatch_tb)) +
+-		be64_to_cpu(READ_ONCE(lppaca->ready_enqueue_tb));
++	/*
++	 * VPA steal time counters are reported at TB frequency. Hence do a
++	 * conversion to ns before returning
++	 */
++	return tb_to_ns(be64_to_cpu(READ_ONCE(lppaca->enqueue_dispatch_tb)) +
++			be64_to_cpu(READ_ONCE(lppaca->ready_enqueue_tb)));
+ }
+ #endif
+ 
 
 
 
