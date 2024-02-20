@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-21347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84FFB85C87A
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:22:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67CB185C9BA
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:37:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F22701F23ED9
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:22:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 08C9AB222C1
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:37:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83939151CD6;
-	Tue, 20 Feb 2024 21:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D2E414F9C8;
+	Tue, 20 Feb 2024 21:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oP+3GPyy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mSX70QhT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 412C476C9C;
-	Tue, 20 Feb 2024 21:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD69C151CE1;
+	Tue, 20 Feb 2024 21:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464135; cv=none; b=ENL1BPa4D6VVVq6l34+FHsn3d4HqEXyUEVIhlesd59sE0x3TvAHDFGVC4yul/k6kwnluj7miCmjIeg9O/BtNyfy/2qVL0ZXIFHm9I0Rklc+v1N/PqXxgkEEzYl3or+nkgR2SUkq5f7uO2i8rxW9SZVyv+6q7tWqJ+Fe/Iymtvp0=
+	t=1708465050; cv=none; b=Ou6SOVZFF/2DU47EEbNnRg06iMgwtjHddQmEjGTPefB2mSJfoMDDSbBQs0Gf466tnwAFuyQ129QKF1K/Snd9QTl5emXEUbcoBGoUHeyMRH4JogmSnZ5Y83RwZTt2izGad6gMY4u+hmF2qzd/PoT3L3MCbAD0PSF1CW47u2n9+Os=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464135; c=relaxed/simple;
-	bh=TZZ1AVjPatXjr9V6Cn4xjsWPz4K/0wCfOHWDSEP1Oo8=;
+	s=arc-20240116; t=1708465050; c=relaxed/simple;
+	bh=cRbpoDzF5blI5aWZ449Pactjmkkvs/1tnkrgf8mQeFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ab8jFARq5K42Z18MXEDuROaKZ9/21sgvKpyVeY11WUFI9mxNuohr2auN7pyihdbKfmdTw3QR2dbBfxgv9s/46ZV/FzBf0kSieHlrg8dyL97Vse0wHF0axQrIDh53tX9B/TiWwoGL/YWbNc6bCJsP2cdVf6/jNWe9gxKkB58NxYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oP+3GPyy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A50BAC433C7;
-	Tue, 20 Feb 2024 21:22:14 +0000 (UTC)
+	 MIME-Version; b=iPmjKzRHEhs+m3qO8S2ia9Bz0iIcsJqI4aDoaEL8uz9XqLqL73XCxJqGnfLFT/aUwez9p2q2CXOwNXpAenudEpMvAIKqn/Oqwrbl19kQQs1i9JXNmzQB3mFpOWk+CLtNKB9iBAIL1ZzAtOBLUSgleeNK/gyvRM75SCSts82WMGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mSX70QhT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53010C433C7;
+	Tue, 20 Feb 2024 21:37:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464135;
-	bh=TZZ1AVjPatXjr9V6Cn4xjsWPz4K/0wCfOHWDSEP1Oo8=;
+	s=korg; t=1708465050;
+	bh=cRbpoDzF5blI5aWZ449Pactjmkkvs/1tnkrgf8mQeFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oP+3GPyyqbp4XE8CjP82ej5okLrjOe2RdGFAvf6zOiAa97xW+jdER4dsgOVCBklYA
-	 ciKWCq0mUB0fhlkztzIXTY5ClSUb8l9BmxcIRLSf7Cq+EGaGYY6YLfktPCwqzil7X2
-	 3vnr4UObz7WsuQq/8FgX7daX/FEQGxzMJaqSx3m0=
+	b=mSX70QhTBwvXnlwOUGfBWMGSDJh0SCHmZj/8Ph31AAX5Ycj8gdf9wMzIr5KvVHLmr
+	 d8SRfLIdXtXXyfpM3xCTfFml2ZccLBMrKL0GRtQd9Pz4rs4cGAwUVrD7INLstW3s1l
+	 Kq5s+GIqgvJ6Wi4rEUa0TmZIMksgDqiZFvso6p5Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 262/331] Revert "eventfs: Save ownership and mode"
+	Hui Zhou <hui.zhou@corigine.com>,
+	Louis Peens <louis.peens@corigine.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.7 219/309] nfp: flower: fix hardware offload for the transfer layer port
 Date: Tue, 20 Feb 2024 21:56:18 +0100
-Message-ID: <20240220205646.100552556@linuxfoundation.org>
+Message-ID: <20240220205640.014560360@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,249 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+From: Hui Zhou <hui.zhou@corigine.com>
 
-This reverts commit 9aaee3eebc91dd9ccebf6b6bc8a5f59d04ef718b.
+commit 3a007b8009b5f8af021021b7a590a6da0dc4c6e0 upstream.
 
-The eventfs was not designed properly and may have some hidden bugs in it.
-Linus rewrote it properly and I trust his version more than this one. Revert
-the backported patches for 6.6 and re-apply all the changes to make it
-equivalent to Linus's version.
+The nfp driver will merge the tp source port and tp destination port
+into one dword which the offset must be zero to do hardware offload.
+However, the mangle action for the tp source port and tp destination
+port is separated for tc ct action. Modify the mangle action for the
+FLOW_ACT_MANGLE_HDR_TYPE_TCP and FLOW_ACT_MANGLE_HDR_TYPE_UDP to
+satisfy the nfp driver offload check for the tp port.
 
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+The mangle action provides a 4B value for source, and a 4B value for
+the destination, but only 2B of each contains the useful information.
+For offload the 2B of each is combined into a single 4B word. Since the
+incoming mask for the source is '0xFFFF<mask>' the shift-left will
+throw away the 0xFFFF part. When this gets combined together in the
+offload it will clear the destination field. Fix this by setting the
+lower bits back to 0xFFFF, effectively doing a rotate-left operation on
+the mask.
+
+Fixes: 5cee92c6f57a ("nfp: flower: support hw offload for ct nat action")
+CC: stable@vger.kernel.org # 6.1+
+Signed-off-by: Hui Zhou <hui.zhou@corigine.com>
+Signed-off-by: Louis Peens <louis.peens@corigine.com>
+Link: https://lore.kernel.org/r/20240124151909.31603-3-louis.peens@corigine.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/tracefs/event_inode.c |  107 +++++++----------------------------------------
- 1 file changed, 16 insertions(+), 91 deletions(-)
+ drivers/net/ethernet/netronome/nfp/flower/conntrack.c |   24 ++++++++++++++++--
+ 1 file changed, 22 insertions(+), 2 deletions(-)
 
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -40,8 +40,6 @@ struct eventfs_inode {
-  * @data:	something that the caller will want to get to later on
-  * @is_freed:	Flag set if the eventfs is on its way to be freed
-  * @mode:	the permission that the file or directory should have
-- * @uid:	saved uid if changed
-- * @gid:	saved gid if changed
-  */
- struct eventfs_file {
- 	const char			*name;
-@@ -63,22 +61,11 @@ struct eventfs_file {
- 	void				*data;
- 	unsigned int			is_freed:1;
- 	unsigned int			mode:31;
--	kuid_t				uid;
--	kgid_t				gid;
- };
+--- a/drivers/net/ethernet/netronome/nfp/flower/conntrack.c
++++ b/drivers/net/ethernet/netronome/nfp/flower/conntrack.c
+@@ -1424,10 +1424,30 @@ static void nfp_nft_ct_translate_mangle_
+ 		mangle_action->mangle.mask = (__force u32)cpu_to_be32(mangle_action->mangle.mask);
+ 		return;
  
- static DEFINE_MUTEX(eventfs_mutex);
- DEFINE_STATIC_SRCU(eventfs_srcu);
++	/* Both struct tcphdr and struct udphdr start with
++	 *	__be16 source;
++	 *	__be16 dest;
++	 * so we can use the same code for both.
++	 */
+ 	case FLOW_ACT_MANGLE_HDR_TYPE_TCP:
+ 	case FLOW_ACT_MANGLE_HDR_TYPE_UDP:
+-		mangle_action->mangle.val = (__force u16)cpu_to_be16(mangle_action->mangle.val);
+-		mangle_action->mangle.mask = (__force u16)cpu_to_be16(mangle_action->mangle.mask);
++		if (mangle_action->mangle.offset == offsetof(struct tcphdr, source)) {
++			mangle_action->mangle.val =
++				(__force u32)cpu_to_be32(mangle_action->mangle.val << 16);
++			/* The mask of mangle action is inverse mask,
++			 * so clear the dest tp port with 0xFFFF to
++			 * instead of rotate-left operation.
++			 */
++			mangle_action->mangle.mask =
++				(__force u32)cpu_to_be32(mangle_action->mangle.mask << 16 | 0xFFFF);
++		}
++		if (mangle_action->mangle.offset == offsetof(struct tcphdr, dest)) {
++			mangle_action->mangle.offset = 0;
++			mangle_action->mangle.val =
++				(__force u32)cpu_to_be32(mangle_action->mangle.val);
++			mangle_action->mangle.mask =
++				(__force u32)cpu_to_be32(mangle_action->mangle.mask);
++		}
+ 		return;
  
--/* Mode is unsigned short, use the upper bits for flags */
--enum {
--	EVENTFS_SAVE_MODE	= BIT(16),
--	EVENTFS_SAVE_UID	= BIT(17),
--	EVENTFS_SAVE_GID	= BIT(18),
--};
--
--#define EVENTFS_MODE_MASK	(EVENTFS_SAVE_MODE - 1)
--
- static struct dentry *eventfs_root_lookup(struct inode *dir,
- 					  struct dentry *dentry,
- 					  unsigned int flags);
-@@ -86,54 +73,8 @@ static int dcache_dir_open_wrapper(struc
- static int dcache_readdir_wrapper(struct file *file, struct dir_context *ctx);
- static int eventfs_release(struct inode *inode, struct file *file);
- 
--static void update_attr(struct eventfs_file *ef, struct iattr *iattr)
--{
--	unsigned int ia_valid = iattr->ia_valid;
--
--	if (ia_valid & ATTR_MODE) {
--		ef->mode = (ef->mode & ~EVENTFS_MODE_MASK) |
--			(iattr->ia_mode & EVENTFS_MODE_MASK) |
--			EVENTFS_SAVE_MODE;
--	}
--	if (ia_valid & ATTR_UID) {
--		ef->mode |= EVENTFS_SAVE_UID;
--		ef->uid = iattr->ia_uid;
--	}
--	if (ia_valid & ATTR_GID) {
--		ef->mode |= EVENTFS_SAVE_GID;
--		ef->gid = iattr->ia_gid;
--	}
--}
--
--static int eventfs_set_attr(struct mnt_idmap *idmap, struct dentry *dentry,
--			     struct iattr *iattr)
--{
--	struct eventfs_file *ef;
--	int ret;
--
--	mutex_lock(&eventfs_mutex);
--	ef = dentry->d_fsdata;
--	/* The LSB is set when the eventfs_inode is being freed */
--	if (((unsigned long)ef & 1UL) || ef->is_freed) {
--		/* Do not allow changes if the event is about to be removed. */
--		mutex_unlock(&eventfs_mutex);
--		return -ENODEV;
--	}
--
--	ret = simple_setattr(idmap, dentry, iattr);
--	if (!ret)
--		update_attr(ef, iattr);
--	mutex_unlock(&eventfs_mutex);
--	return ret;
--}
--
- static const struct inode_operations eventfs_root_dir_inode_operations = {
- 	.lookup		= eventfs_root_lookup,
--	.setattr	= eventfs_set_attr,
--};
--
--static const struct inode_operations eventfs_file_inode_operations = {
--	.setattr	= eventfs_set_attr,
- };
- 
- static const struct file_operations eventfs_file_operations = {
-@@ -144,20 +85,10 @@ static const struct file_operations even
- 	.release	= eventfs_release,
- };
- 
--static void update_inode_attr(struct inode *inode, struct eventfs_file *ef)
--{
--	inode->i_mode = ef->mode & EVENTFS_MODE_MASK;
--
--	if (ef->mode & EVENTFS_SAVE_UID)
--		inode->i_uid = ef->uid;
--
--	if (ef->mode & EVENTFS_SAVE_GID)
--		inode->i_gid = ef->gid;
--}
--
- /**
-  * create_file - create a file in the tracefs filesystem
-- * @ef: the eventfs_file
-+ * @name: the name of the file to create.
-+ * @mode: the permission that the file should have.
-  * @parent: parent dentry for this file.
-  * @data: something that the caller will want to get to later on.
-  * @fop: struct file_operations that should be used for this file.
-@@ -173,7 +104,7 @@ static void update_inode_attr(struct ino
-  * If tracefs is not enabled in the kernel, the value -%ENODEV will be
-  * returned.
-  */
--static struct dentry *create_file(struct eventfs_file *ef,
-+static struct dentry *create_file(const char *name, umode_t mode,
- 				  struct dentry *parent, void *data,
- 				  const struct file_operations *fop)
- {
-@@ -181,13 +112,13 @@ static struct dentry *create_file(struct
- 	struct dentry *dentry;
- 	struct inode *inode;
- 
--	if (!(ef->mode & S_IFMT))
--		ef->mode |= S_IFREG;
-+	if (!(mode & S_IFMT))
-+		mode |= S_IFREG;
- 
--	if (WARN_ON_ONCE(!S_ISREG(ef->mode)))
-+	if (WARN_ON_ONCE(!S_ISREG(mode)))
- 		return NULL;
- 
--	dentry = eventfs_start_creating(ef->name, parent);
-+	dentry = eventfs_start_creating(name, parent);
- 
- 	if (IS_ERR(dentry))
- 		return dentry;
-@@ -196,10 +127,7 @@ static struct dentry *create_file(struct
- 	if (unlikely(!inode))
- 		return eventfs_failed_creating(dentry);
- 
--	/* If the user updated the directory's attributes, use them */
--	update_inode_attr(inode, ef);
--
--	inode->i_op = &eventfs_file_inode_operations;
-+	inode->i_mode = mode;
- 	inode->i_fop = fop;
- 	inode->i_private = data;
- 
-@@ -212,7 +140,7 @@ static struct dentry *create_file(struct
- 
- /**
-  * create_dir - create a dir in the tracefs filesystem
-- * @ei: the eventfs_inode that represents the directory to create
-+ * @name: the name of the file to create.
-  * @parent: parent dentry for this file.
-  * @data: something that the caller will want to get to later on.
-  *
-@@ -227,14 +155,13 @@ static struct dentry *create_file(struct
-  * If tracefs is not enabled in the kernel, the value -%ENODEV will be
-  * returned.
-  */
--static struct dentry *create_dir(struct eventfs_file *ef,
--				 struct dentry *parent, void *data)
-+static struct dentry *create_dir(const char *name, struct dentry *parent, void *data)
- {
- 	struct tracefs_inode *ti;
- 	struct dentry *dentry;
- 	struct inode *inode;
- 
--	dentry = eventfs_start_creating(ef->name, parent);
-+	dentry = eventfs_start_creating(name, parent);
- 	if (IS_ERR(dentry))
- 		return dentry;
- 
-@@ -242,8 +169,7 @@ static struct dentry *create_dir(struct
- 	if (unlikely(!inode))
- 		return eventfs_failed_creating(dentry);
- 
--	update_inode_attr(inode, ef);
--
-+	inode->i_mode = S_IFDIR | S_IRWXU | S_IRUGO | S_IXUGO;
- 	inode->i_op = &eventfs_root_dir_inode_operations;
- 	inode->i_fop = &eventfs_file_operations;
- 	inode->i_private = data;
-@@ -380,9 +306,10 @@ create_dentry(struct eventfs_file *ef, s
- 		inode_lock(parent->d_inode);
- 
- 	if (ef->ei)
--		dentry = create_dir(ef, parent, ef->data);
-+		dentry = create_dir(ef->name, parent, ef->data);
- 	else
--		dentry = create_file(ef, parent, ef->data, ef->fop);
-+		dentry = create_file(ef->name, ef->mode, parent,
-+				     ef->data, ef->fop);
- 
- 	if (!lookup)
- 		inode_unlock(parent->d_inode);
-@@ -548,7 +475,6 @@ static int dcache_dir_open_wrapper(struc
- 		if (d) {
- 			struct dentry **tmp;
- 
--
- 			tmp = krealloc(dentries, sizeof(d) * (cnt + 2), GFP_KERNEL);
- 			if (!tmp)
- 				break;
-@@ -623,14 +549,13 @@ static struct eventfs_file *eventfs_prep
- 			return ERR_PTR(-ENOMEM);
- 		}
- 		INIT_LIST_HEAD(&ef->ei->e_top_files);
--		ef->mode = S_IFDIR | S_IRWXU | S_IRUGO | S_IXUGO;
- 	} else {
- 		ef->ei = NULL;
--		ef->mode = mode;
- 	}
- 
- 	ef->iop = iop;
- 	ef->fop = fop;
-+	ef->mode = mode;
- 	ef->data = data;
- 	return ef;
- }
+ 	default:
 
 
 
