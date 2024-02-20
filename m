@@ -1,53 +1,51 @@
-Return-Path: <stable+bounces-21333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 672E285C86C
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:21:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 004B785C877
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:22:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98C621C22258
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:21:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 947041F22DBA
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:22:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63ABB151CEA;
-	Tue, 20 Feb 2024 21:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32187151CD6;
+	Tue, 20 Feb 2024 21:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pG4RpRC7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BdLXE5Gx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211A41509AC;
-	Tue, 20 Feb 2024 21:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5FF476C9C;
+	Tue, 20 Feb 2024 21:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464091; cv=none; b=omLdjVwitxjjcMMX/+I57s4qmLg2mBEEwohMlJeBjjdqV1CKuY5VNxgSY8MkbTCvY0wBT44R9IJC6/bEcinSlvDQygKk/AmzTu1+ylk86fOwlLNiqsl33ZbjvXT0IfRHvO37OiuqhLZHl5gulB4vFDTMrnkG9tQU0IJX+SX7xlk=
+	t=1708464126; cv=none; b=k8+wUffKAE7PRwRdZkpimi+aU+X56zHF/dQ4PX4DNyeWmyNtP5Qdi39EqIH/LxjToN7bbb56SvYvQ9/soS4hC4DXo2kHTdNO1+q4t6tEkCiOlEwbEZ82ju2tuSQ9zcaGW+ZdmZUP/wwVRqKxT0AG7rNnrCq65A2hz7gMyPBdEck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464091; c=relaxed/simple;
-	bh=wjqhyiOX/5i6wGpJkHJoRP6TXuuy77qt55w7QDuzO18=;
+	s=arc-20240116; t=1708464126; c=relaxed/simple;
+	bh=2nGN83HAGOmyYvggYgsDTSRnb9E7tidHIwhUAkRMWak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N8w6lv/vsK/UeDlIHSCW+VFfO3Yq88dvRSIcQiwJtW7AiXjg+0LAC+N9BrNysMiqizPspBoniZHK9efw//pz36vW5gIsm4hY3WZbGjBoXTEmpYF/X0LpJyuNFCkB1SjfRxxSy3dQcVeAA1Kzz0so0Xux2URvBzGj+oyxHdIKiNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pG4RpRC7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 622A5C433F1;
-	Tue, 20 Feb 2024 21:21:29 +0000 (UTC)
+	 MIME-Version; b=UWkZI5X6p2Eo76ejoHTirviCkgIcKONZXx64CDZyzaBhV1Q51b8Li9NTjeUjx1dmurShu83VFg9dcySDZYVK7okw/ndWQCUVae6YtuVKAkXST/tjf9+Fr/N3IktMyxo5pfV+ELcdAgYs1wjBEQdTVozpEJWp7jKER826Xl/wx04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BdLXE5Gx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A878C433C7;
+	Tue, 20 Feb 2024 21:22:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464091;
-	bh=wjqhyiOX/5i6wGpJkHJoRP6TXuuy77qt55w7QDuzO18=;
+	s=korg; t=1708464125;
+	bh=2nGN83HAGOmyYvggYgsDTSRnb9E7tidHIwhUAkRMWak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pG4RpRC7bOG9UpXEowZKozQS1TdimkL03UQ0DfRvBOVv7cKPnN4hTdBcU87UW1gOY
-	 bgxO1vOjAN64LZIHt1Vxg1wOMTBCwnyTjjAjQB9r8zDTYDve9YaTN0o/eKpOxziHA2
-	 r9iAig6OGvtf4NmUQeasm+E0LKIpztcFZy8dJ8LY=
+	b=BdLXE5Gx2VvRdMeEY8R8nu9PgWipeT1NDrlO/Ey3rddzApo9eGH2FY9D1M3L1L7X0
+	 qD5gsO/Zn7gPFPjfrIY4rxQl+LrwpT3wMJC4aBGSP+FTuwUDEiGR51MsMGdOAjN/uF
+	 DlMb8pTQiETOqFkbcDtHwnV82E/HgAcmKdWWAbWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prakash Sangappa <prakash.sangappa@oracle.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 241/331] mm: hugetlb pages should not be reserved by shmat() if SHM_NORESERVE
-Date: Tue, 20 Feb 2024 21:55:57 +0100
-Message-ID: <20240220205645.362019356@linuxfoundation.org>
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.6 242/331] LoongArch: Fix earlycon parameter if KASAN enabled
+Date: Tue, 20 Feb 2024 21:55:58 +0100
+Message-ID: <20240220205645.403103350@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
 References: <20240220205637.572693592@linuxfoundation.org>
@@ -66,104 +64,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Prakash Sangappa <prakash.sangappa@oracle.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit e656c7a9e59607d1672d85ffa9a89031876ffe67 upstream.
+commit 639420e9f6cd9ca074732b17ac450d2518d5937f upstream.
 
-For shared memory of type SHM_HUGETLB, hugetlb pages are reserved in
-shmget() call.  If SHM_NORESERVE flags is specified then the hugetlb pages
-are not reserved.  However when the shared memory is attached with the
-shmat() call the hugetlb pages are getting reserved incorrectly for
-SHM_HUGETLB shared memory created with SHM_NORESERVE which is a bug.
+The earlycon parameter is based on fixmap, and fixmap addresses are not
+supposed to be shadowed by KASAN. So return the kasan_early_shadow_page
+in kasan_mem_to_shadow() if the input address is above FIXADDR_START.
+Otherwise earlycon cannot work after kasan_init().
 
--------------------------------
-Following test shows the issue.
-
-$cat shmhtb.c
-
-int main()
-{
-	int shmflags = 0660 | IPC_CREAT | SHM_HUGETLB | SHM_NORESERVE;
-	int shmid;
-
-	shmid = shmget(SKEY, SHMSZ, shmflags);
-	if (shmid < 0)
-	{
-		printf("shmat: shmget() failed, %d\n", errno);
-		return 1;
-	}
-	printf("After shmget()\n");
-	system("cat /proc/meminfo | grep -i hugepages_");
-
-	shmat(shmid, NULL, 0);
-	printf("\nAfter shmat()\n");
-	system("cat /proc/meminfo | grep -i hugepages_");
-
-	shmctl(shmid, IPC_RMID, NULL);
-	return 0;
-}
-
- #sysctl -w vm.nr_hugepages=20
- #./shmhtb
-
-After shmget()
-HugePages_Total:      20
-HugePages_Free:       20
-HugePages_Rsvd:        0
-HugePages_Surp:        0
-
-After shmat()
-HugePages_Total:      20
-HugePages_Free:       20
-HugePages_Rsvd:        5 <--
-HugePages_Surp:        0
---------------------------------
-
-Fix is to ensure that hugetlb pages are not reserved for SHM_HUGETLB shared
-memory in the shmat() call.
-
-Link: https://lkml.kernel.org/r/1706040282-12388-1-git-send-email-prakash.sangappa@oracle.com
-Signed-off-by: Prakash Sangappa <prakash.sangappa@oracle.com>
-Acked-by: Muchun Song <muchun.song@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 5aa4ac64e6add3e ("LoongArch: Add KASAN (Kernel Address Sanitizer) support")
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/hugetlbfs/inode.c |   13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ arch/loongarch/mm/kasan_init.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -123,6 +123,7 @@ static int hugetlbfs_file_mmap(struct fi
- 	loff_t len, vma_len;
- 	int ret;
- 	struct hstate *h = hstate_file(file);
-+	vm_flags_t vm_flags;
+diff --git a/arch/loongarch/mm/kasan_init.c b/arch/loongarch/mm/kasan_init.c
+index cc3e81fe0186..c608adc99845 100644
+--- a/arch/loongarch/mm/kasan_init.c
++++ b/arch/loongarch/mm/kasan_init.c
+@@ -44,6 +44,9 @@ void *kasan_mem_to_shadow(const void *addr)
+ 		unsigned long xrange = (maddr >> XRANGE_SHIFT) & 0xffff;
+ 		unsigned long offset = 0;
  
- 	/*
- 	 * vma address alignment (but not the pgoff alignment) has
-@@ -164,10 +165,20 @@ static int hugetlbfs_file_mmap(struct fi
- 	file_accessed(file);
- 
- 	ret = -ENOMEM;
++		if (maddr >= FIXADDR_START)
++			return (void *)(kasan_early_shadow_page);
 +
-+	vm_flags = vma->vm_flags;
-+	/*
-+	 * for SHM_HUGETLB, the pages are reserved in the shmget() call so skip
-+	 * reserving here. Note: only for SHM hugetlbfs file, the inode
-+	 * flag S_PRIVATE is set.
-+	 */
-+	if (inode->i_flags & S_PRIVATE)
-+		vm_flags |= VM_NORESERVE;
-+
- 	if (!hugetlb_reserve_pages(inode,
- 				vma->vm_pgoff >> huge_page_order(h),
- 				len >> huge_page_shift(h), vma,
--				vma->vm_flags))
-+				vm_flags))
- 		goto out;
- 
- 	ret = 0;
+ 		maddr &= XRANGE_SHADOW_MASK;
+ 		switch (xrange) {
+ 		case XKPRANGE_CC_SEG:
+-- 
+2.43.2
+
 
 
 
