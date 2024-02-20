@@ -1,54 +1,75 @@
-Return-Path: <stable+bounces-20820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6C1585BED1
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 15:32:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DCCF85BED6
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 15:34:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74B411F215E0
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 14:32:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0A191F2170F
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 14:34:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 611272C1B4;
-	Tue, 20 Feb 2024 14:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99C2D41E4E;
+	Tue, 20 Feb 2024 14:34:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n69LUBz3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="icyj/Gml"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 237BC1C2E
-	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 14:32:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0132F2C
+	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 14:34:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708439552; cv=none; b=AcsSdtzQcpOSxzPAtZJbbB3KaAPZoeRb2Z+RZIiHpelJD+DOgzWgQkDOLWCSjmxTN+CTxRDOfZq5f7rlWd6UtiMvKTJZkpF+eHzcaYdoqibbM4EggBKU38q0PlAVlA35ARbD29QtYpxhGXLNIYOZm0XnO4+kcEURP+UvaWRJZcs=
+	t=1708439643; cv=none; b=KZpIjfRubswV+MT09WZT7t/WglIXF0WJ1440sPYOzdS1no2beaSxkX3fVc1PSTI3ntxSV8agsjt9RvQkFZmGxapj8Gl8I+ozVd4ikJWowp7tNysQX7KRKoHEo2/Ndkc5y92EGdGVwbLMjrXL63k1n4dd9QWM+KusgmY3Yp3V948=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708439552; c=relaxed/simple;
-	bh=5p3O8/Aha7ANumD1ttHL7zqmZAuoWGJOsL11EFr4UYc=;
+	s=arc-20240116; t=1708439643; c=relaxed/simple;
+	bh=XhoJMIIiZEXk/cs2SQkZGuVZr+98sbrPT6T+HBM3uLc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pPlRKzP9OfFdW3/I8C072IVYJ8PSKbJqfnCUHgeYM/SwFRWQ4PxMqg3LZvevMfiMa/T4TPHHSCfW6KPYlcxQrYGOyV8XksmmGqg1Lz312FH78xpJIUk+jI1UW1JmfmgQyXfBb5LqvsNcwDsB8yIoY9TgYlEOCO1xU4Gj7MF8pAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n69LUBz3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39837C433F1;
-	Tue, 20 Feb 2024 14:32:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708439550;
-	bh=5p3O8/Aha7ANumD1ttHL7zqmZAuoWGJOsL11EFr4UYc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=n69LUBz3zmVlXn+PHHXOmHVdT9u1XC+UGORQPkcSuKAc+rhmF2MRwEuYpEPsI76ts
-	 ZqTmHs8nD6iN+CPaxfyfga3EEldDPi7b0rhWZbHH+7z2LmCJOmztXpfZQbZvRFRhEg
-	 rAwsL0WfFmX6rBG915sw6zT76eZm54jQluiRqzZk=
-Date: Tue, 20 Feb 2024 15:32:27 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Felix Moessbauer <felix.moessbauer@siemens.com>
-Cc: stable@vger.kernel.org, dave@stgolabs.net, tglx@linutronix.de,
-	bigeasy@linutronix.de, petr.ivanov@siemens.com,
-	jan.kiszka@siemens.com
-Subject: Re: [PATCH v2][5.10, 5.15, 6.1][1/1] hrtimer: Ignore slack time for
- RT tasks in schedule_hrtimeout_range()
-Message-ID: <2024022057-slit-herself-a4d8@gregkh>
-References: <20240220123403.85403-1-felix.moessbauer@siemens.com>
- <20240220123403.85403-2-felix.moessbauer@siemens.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ugokj4igZrYgem+twiySGptp3TlguDlM2PxWHmM7Iho/okrqZt4GJHlks8nY+uOHnsn8aZGSsAbX7JU5FyPxw4/9u57eTVLv46lj//IRtdkdTplEuQYHBcQCoFDCfaRkKwYcjxuMisUmm8LsWHXIBDsG+BFBpuUfojyauM/u1tE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=icyj/Gml; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708439642; x=1739975642;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=XhoJMIIiZEXk/cs2SQkZGuVZr+98sbrPT6T+HBM3uLc=;
+  b=icyj/GmlACC0d6ms8NYOxrCoSmt+KJTSjeTiZvxCr1iNn4LkorizltrJ
+   Z0LkF5xjMJRIN/x/IvzWOr8GnhTDg44XmRNjTQu2gyvfxwjwcSS+WzjBI
+   FMsZVpDoiYDdRrapUcuYNIS0bFR/ykjAzCxZnJgq5VqLDqa3rt6dsaI3H
+   E+glxdH32x6ygBWhyATp34Bvb+zMav/4+R3eyjacuq8lOjGxbw7xnvpCS
+   XwOIDYxdi2+R0JnBdc+GAb66Ec5+3dCd1v2JvyYhye0Gt3EAoN27u1Oja
+   10b2h/suTi/6NSpJE+8tSxMUTysGBTojaWS/drJJ4Jxh4/YjzjI5C3Y3t
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10989"; a="2684568"
+X-IronPort-AV: E=Sophos;i="6.06,172,1705392000"; 
+   d="scan'208";a="2684568"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 06:34:01 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,172,1705392000"; 
+   d="scan'208";a="4756178"
+Received: from alichtma-mobl.ger.corp.intel.com (HELO intel.com) ([10.246.34.74])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 06:33:58 -0800
+Date: Tue, 20 Feb 2024 15:33:56 +0100
+From: Andi Shyti <andi.shyti@linux.intel.com>
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Cc: Andi Shyti <andi.shyti@linux.intel.com>,
+	intel-gfx <intel-gfx@lists.freedesktop.org>,
+	dri-devel <dri-devel@lists.freedesktop.org>,
+	Chris Wilson <chris.p.wilson@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	John Harrison <John.C.Harrison@intel.com>, stable@vger.kernel.org,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: Re: [PATCH 2/2] drm/i915/gt: Set default CCS mode '1'
+Message-ID: <ZdS4VH6AmFc5E8vE@ashyti-mobl2.lan>
+References: <20240220142034.257370-1-andi.shyti@linux.intel.com>
+ <20240220142034.257370-3-andi.shyti@linux.intel.com>
+ <62a1a0d1-0972-41fb-b14f-0513f6691baf@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,28 +78,27 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240220123403.85403-2-felix.moessbauer@siemens.com>
+In-Reply-To: <62a1a0d1-0972-41fb-b14f-0513f6691baf@linux.intel.com>
 
-On Tue, Feb 20, 2024 at 01:34:03PM +0100, Felix Moessbauer wrote:
-> From: Davidlohr Bueso <dave@stgolabs.net>
+On Tue, Feb 20, 2024 at 02:27:07PM +0000, Tvrtko Ursulin wrote:
 > 
-> commit 0c52310f260014d95c1310364379772cb74cf82d upstream.
+> On 20/02/2024 14:20, Andi Shyti wrote:
+> > Since CCS automatic load balancing is disabled, we will impose a
+> > fixed balancing policy that involves setting all the CCS engines
+> > to work together on the same load.
 > 
-> While in theory the timer can be triggered before expires + delta, for the
-> cases of RT tasks they really have no business giving any lenience for
-> extra slack time, so override any passed value by the user and always use
-> zero for schedule_hrtimeout_range() calls. Furthermore, this is similar to
-> what the nanosleep(2) family already does with current->timer_slack_ns.
+> Erm *all* CSS engines work together..
 > 
-> Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> Link: https://lore.kernel.org/r/20230123173206.6764-3-dave@stgolabs.net
+> > Simultaneously, the user will see only 1 CCS rather than the
+> > actual number. As of now, this change affects only DG2.
+> 
+> ... *one* CCS engine.
 
-You can't forward on a patch without signing off on it as well :(
+ops... I sent V1 again!
 
-And this is already in the 6.1.53 release, why apply it again?
+Sorry, I will send v2 now
 
-confused,
+Thanks!
 
-greg k-h
+Andi
 
