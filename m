@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-21294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1637A85C837
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:19:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42C7B85C9A1
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:36:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4717F1C220B8
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:19:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F002C283112
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:36:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A015151CDC;
-	Tue, 20 Feb 2024 21:19:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61CB3151CEC;
+	Tue, 20 Feb 2024 21:36:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VV3k3Mba"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XW2et0Sz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38152612D7;
-	Tue, 20 Feb 2024 21:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C2E151CCC;
+	Tue, 20 Feb 2024 21:36:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463966; cv=none; b=YxPkrdHzUnf5MAYDL/OFohqlKm2UYc74Bz/WZzNOH1oQutSw16RM24nM5uwzrZIujyhurBDwsr+OKJp8XEDMRc2AIPcwcuDx+asHKQOKm35guAqQOFM6j/uZO38jS9zlPA4rAwhg/9rqVDPVx+rb0+DPQ3I/CEvDVSlWQrzwvxQ=
+	t=1708464973; cv=none; b=bWoya6TrQ9p0rDRUguoK5Licvyvg0vnWoKqdh5Sqk/rYPOk07cvrTbLtBbi9aqtlZhBUgOiqTS8pqns2ZXOl/zSAlawV6Ny375sJ8+M9IJeYzimCwighNqQds8nhG+2EWQfsxoUj3dnfattGYW+SXVDYTHCs1yPBp2m/VpcS3+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463966; c=relaxed/simple;
-	bh=3sZ85q8uZBvXkGez5ACT1nIXyyCsawPi7+XBwLbv98I=;
+	s=arc-20240116; t=1708464973; c=relaxed/simple;
+	bh=rcPNBkYriL0PhTcbhMRR/msXztP76/PtrIcX+WQKH/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OgFBRAUNbfGFxrjipWMZ2H7nMVHVXjTsQgwkjcX7SJ1WvFDAWqPeJV0gpm5rxL6sTu2vb3qhimC3+CUmE/Gg4zuU4qYlKI56cXegB833oU2EAZ+MPiEBvIVc8BJeTNIqLt10X32YZyMNL1mmjMSeTslkMoVmnCd+HMENz/Cyk/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VV3k3Mba; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49884C433C7;
-	Tue, 20 Feb 2024 21:19:25 +0000 (UTC)
+	 MIME-Version; b=Jlw7KCV9KP9ac2hyhiMjayeqIC6ftSZHUcadIOeLIw1C2kCPf0AhkWmK7KHHHH/xC1Gzs04tcK/T476w6GzKqz37Orhj7qA0ywyuIPKmLOY8Jd9HcfFJkv3oikSQAupUDILLJGSXxKIlL9KNaX25u+KSw+PKHWBgFUxdM4Z4mc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XW2et0Sz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37B11C433F1;
+	Tue, 20 Feb 2024 21:36:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463965;
-	bh=3sZ85q8uZBvXkGez5ACT1nIXyyCsawPi7+XBwLbv98I=;
+	s=korg; t=1708464972;
+	bh=rcPNBkYriL0PhTcbhMRR/msXztP76/PtrIcX+WQKH/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VV3k3MbaxNvqXEfQtbROONrFuvb/+bHNLelgpKXEjXi85amFUd0LPgEAc57B2yluH
-	 LDU3qcWDQcEbijV1EZiXTJXayBu9EZR6l7tnVISAIAV9WE4KnQLgO+s7deBR34QscA
-	 k7IZYjcTTzb+VbB+B6mXA5m1saU4ouSlb67HfGFY=
+	b=XW2et0SzFOjee2/PbY4CKvOm9+DPNIHvAsOg+Jwl04pOvHn11NMh7r6S77TF2/c+S
+	 y1FjL36eMfctp6LoeW7Ez8mKmEhau/4NvTaD9Tb2h4dI680w2hymiR2EQWKs5WtYTI
+	 Own73p76S8TS2QFy7zfgZz2ltM/8ES6xbGiw9kxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.6 208/331] wifi: mac80211: reload info pointer in ieee80211_tx_dequeue()
-Date: Tue, 20 Feb 2024 21:55:24 +0100
-Message-ID: <20240220205644.232049330@linuxfoundation.org>
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Subject: [PATCH 6.7 166/309] tracing/probes: Fix to search structure fields correctly
+Date: Tue, 20 Feb 2024 21:55:25 +0100
+Message-ID: <20240220205638.347135627@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +60,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-commit c98d8836b817d11fdff4ca7749cbbe04ff7f0c64 upstream.
+commit 9704669c386f9bbfef2e002e7e690c56b7dcf5de upstream.
 
-This pointer can change here since the SKB can change, so we
-actually later open-coded IEEE80211_SKB_CB() again. Reload
-the pointer where needed, so the monitor-mode case using it
-gets fixed, and then use info-> later as well.
+Fix to search a field from the structure which has anonymous union
+correctly.
+Since the reference `type` pointer was updated in the loop, the search
+loop suddenly aborted where it hits an anonymous union. Thus it can not
+find the field after the anonymous union. This avoids updating the
+cursor `type` pointer in the loop.
 
+Link: https://lore.kernel.org/all/170791694361.389532.10047514554799419688.stgit@devnote2/
+
+Fixes: 302db0f5b3d8 ("tracing/probes: Add a function to search a member of a struct/union")
 Cc: stable@vger.kernel.org
-Fixes: 531682159092 ("mac80211: fix VLAN handling with TXQs")
-Link: https://msgid.link/20240131164910.b54c28d583bc.I29450cec84ea6773cff5d9c16ff92b836c331471@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/tx.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ kernel/trace/trace_btf.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -5,7 +5,7 @@
-  * Copyright 2006-2007	Jiri Benc <jbenc@suse.cz>
-  * Copyright 2007	Johannes Berg <johannes@sipsolutions.net>
-  * Copyright 2013-2014  Intel Mobile Communications GmbH
-- * Copyright (C) 2018-2022 Intel Corporation
-+ * Copyright (C) 2018-2024 Intel Corporation
-  *
-  * Transmit and frame generation functions.
-  */
-@@ -3913,6 +3913,7 @@ begin:
- 			goto begin;
- 
- 		skb = __skb_dequeue(&tx.skbs);
-+		info = IEEE80211_SKB_CB(skb);
- 
- 		if (!skb_queue_empty(&tx.skbs)) {
- 			spin_lock_bh(&fq->lock);
-@@ -3957,7 +3958,7 @@ begin:
- 	}
- 
- encap_out:
--	IEEE80211_SKB_CB(skb)->control.vif = vif;
-+	info->control.vif = vif;
- 
- 	if (tx.sta &&
- 	    wiphy_ext_feature_isset(local->hw.wiphy, NL80211_EXT_FEATURE_AQL)) {
+diff --git a/kernel/trace/trace_btf.c b/kernel/trace/trace_btf.c
+index ca224d53bfdc..5bbdbcbbde3c 100644
+--- a/kernel/trace/trace_btf.c
++++ b/kernel/trace/trace_btf.c
+@@ -91,8 +91,8 @@ const struct btf_member *btf_find_struct_member(struct btf *btf,
+ 	for_each_member(i, type, member) {
+ 		if (!member->name_off) {
+ 			/* Anonymous union/struct: push it for later use */
+-			type = btf_type_skip_modifiers(btf, member->type, &tid);
+-			if (type && top < BTF_ANON_STACK_MAX) {
++			if (btf_type_skip_modifiers(btf, member->type, &tid) &&
++			    top < BTF_ANON_STACK_MAX) {
+ 				anon_stack[top].tid = tid;
+ 				anon_stack[top++].offset =
+ 					cur_offset + member->offset;
+-- 
+2.43.2
+
 
 
 
