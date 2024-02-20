@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-21531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11CFD85C94B
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:31:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6273885C7F0
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:18:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7760CB207AB
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:31:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BC132848F0
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:18:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6AC1151CD9;
-	Tue, 20 Feb 2024 21:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFF55151CD9;
+	Tue, 20 Feb 2024 21:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gfSJDylX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s58wtgx2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8456C1509BC;
-	Tue, 20 Feb 2024 21:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CFC3151CCC;
+	Tue, 20 Feb 2024 21:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464705; cv=none; b=AP8MRmSLLJ0Ui60uBJpkSEbkBScqFZz9hxA9cfgWp/MC1g+zLYPz8QXCH2jittjZDE8NA1DtzzC5LDBk2UB21BpqLkbpFAFcxOhS5izvsvDX2XsPxRV4dZ5SpJaT1ZqXuuwH/ENUgE+Q8MEn5g4V0Fjbj1aPUSAeTdecAsu+acA=
+	t=1708463881; cv=none; b=Kp6qHCqVyy8jIRbrmCe3F50x37T5uDXm0EXa8ce8I25cXDb+V1LxSr6Sk1OxEUvLOhHiMzYXzVj/1dGLZPJ71yFBhiNDoFYmGTbbzCkDmP3pVXcxV47mJy/Oz+nsZFgE6XhOE/11031KdJ9Styzwutve3YCTEySAzsovrTCdIcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464705; c=relaxed/simple;
-	bh=xcL9f0hMFHa2rruGsnehYS6fUAQ4npjQ7dlZft1MMyQ=;
+	s=arc-20240116; t=1708463881; c=relaxed/simple;
+	bh=opo3C22fOqG/id70eR4gekTl9/VnSPnGnGvNnnSHgrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QQt2ZiLL1lwDUOhUtOKhTq/GzOMc6QOXp2xPeWJyJsWoEhqH9/3dhrW8M2vZ6NAMTg3QMMYdfR1HWxMuurFzAa2nY0adqAO/S7OvwW+WJc2UbSKeLVLvlx5ucq9oiwxhBylRQZ399ilBbN08tgsnqe60H83a5jHk8UlYRWZuLtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gfSJDylX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3644C433F1;
-	Tue, 20 Feb 2024 21:31:44 +0000 (UTC)
+	 MIME-Version; b=KHrL9D7m+7q5DAhf2r2BYEiV7NoYNfTK2ZlRUbhrmVxY236rdzOyxfUBX+wQIBrW4D1oBryClh2m2huZfamXJhLEuhXQGO26ns2e4B3tYb1RCSJsW4iiyHujD1JBbVlE7J1fbnRLqexsPPzClQfPrevp16y18JnnDc4Hi7u0gT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s58wtgx2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1881C433F1;
+	Tue, 20 Feb 2024 21:18:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464705;
-	bh=xcL9f0hMFHa2rruGsnehYS6fUAQ4npjQ7dlZft1MMyQ=;
+	s=korg; t=1708463881;
+	bh=opo3C22fOqG/id70eR4gekTl9/VnSPnGnGvNnnSHgrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gfSJDylX77lQmpeETY3k6fUzeDExzg6zRAsZ4r+5RzxBQ4RmhJrYWw250lU2D9o1K
-	 1mUx11PexMqU50V7ZKUZeQ7d/tyKBbE/ofB9X59CTkGo5WqKmTViLjD/HbOdkUgt/H
-	 Vwi084fj8145ZSMQMyDLp2JJLGq14xvG7scbQkwQ=
+	b=s58wtgx2GPYc8uy69/+HcRa5hWw/J5gBKIj08+gBRGUHl9jl3lI2G3eFekTlMmHXx
+	 0k9AN97c22Is9oz1jyE1LJhL/J/BoIlZ0O4ofWcqIIsS6tWdLYZY7H4QJtvDK9Q4BS
+	 SoekpAelLdWA26+4l2B4DbXZsPvWgu+t8xlYlrXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>,
-	Shivaprasad G Bhat <sbhat@linux.ibm.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 111/309] powerpc/iommu: Fix the missing iommu_group_put() during platform domain attach
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCH 6.6 154/331] Revert "workqueue: Override implicit ordered attribute in workqueue_apply_unbound_cpumask()"
 Date: Tue, 20 Feb 2024 21:54:30 +0100
-Message-ID: <20240220205636.665848358@linuxfoundation.org>
+Message-ID: <20240220205642.372336868@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +60,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+From: Tejun Heo <tj@kernel.org>
 
-[ Upstream commit 0846dd77c8349ec92ca0079c9c71d130f34cb192 ]
+commit aac8a59537dfc704ff344f1aacfd143c089ee20f upstream.
 
-The function spapr_tce_platform_iommu_attach_dev() is missing to call
-iommu_group_put() when the domain is already set. This refcount leak
-shows up with BUG_ON() during DLPAR remove operation as:
+This reverts commit ca10d851b9ad0338c19e8e3089e24d565ebfffd7.
 
-  KernelBug: Kernel bug in state 'None': kernel BUG at arch/powerpc/platforms/pseries/iommu.c:100!
-  Oops: Exception in kernel mode, sig: 5 [#1]
-  LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=8192 NUMA pSeries
-  <snip>
-  Hardware name: IBM,9080-HEX POWER10 (raw) 0x800200 0xf000006 of:IBM,FW1060.00 (NH1060_016) hv:phyp pSeries
-  NIP:  c0000000000ff4d4 LR: c0000000000ff4cc CTR: 0000000000000000
-  REGS: c0000013aed5f840 TRAP: 0700   Tainted: G          I         (6.8.0-rc3-autotest-g99bd3cb0d12e)
-  MSR:  8000000000029033 <SF,EE,ME,IR,DR,RI,LE>  CR: 44002402  XER: 20040000
-  CFAR: c000000000a0d170 IRQMASK: 0
-  ...
-  NIP iommu_reconfig_notifier+0x94/0x200
-  LR  iommu_reconfig_notifier+0x8c/0x200
-  Call Trace:
-    iommu_reconfig_notifier+0x8c/0x200 (unreliable)
-    notifier_call_chain+0xb8/0x19c
-    blocking_notifier_call_chain+0x64/0x98
-    of_reconfig_notify+0x44/0xdc
-    of_detach_node+0x78/0xb0
-    ofdt_write.part.0+0x86c/0xbb8
-    proc_reg_write+0xf4/0x150
-    vfs_write+0xf8/0x488
-    ksys_write+0x84/0x140
-    system_call_exception+0x138/0x330
-    system_call_vectored_common+0x15c/0x2ec
+The commit allowed workqueue_apply_unbound_cpumask() to clear __WQ_ORDERED
+on now removed implicitly ordered workqueues. This was incorrect in that
+system-wide config change shouldn't break ordering properties of all
+workqueues. The reason why apply_workqueue_attrs() path was allowed to do so
+was because it was targeting the specific workqueue - either the workqueue
+had WQ_SYSFS set or the workqueue user specifically tried to change
+max_active, both of which indicate that the workqueue doesn't need to be
+ordered.
 
-The patch adds the missing iommu_group_put() call.
+The implicitly ordered workqueue promotion was removed by the previous
+commit 3bc1e711c26b ("workqueue: Don't implicitly make UNBOUND workqueues w/
+@max_active==1 ordered"). However, it didn't update this path and broke
+build. Let's revert the commit which was incorrect in the first place which
+also fixes build.
 
-Fixes: a8ca9fc9134c ("powerpc/iommu: Do not do platform domain attach atctions after probe")
-Reported-by: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
-Closes: https://lore.kernel.org/all/274e0d2b-b5cc-475e-94e6-8427e88e271d@linux.vnet.ibm.com/
-Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/170784021983.6249.10039296655906636112.stgit@linux.ibm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: 3bc1e711c26b ("workqueue: Don't implicitly make UNBOUND workqueues w/ @max_active==1 ordered")
+Fixes: ca10d851b9ad ("workqueue: Override implicit ordered attribute in workqueue_apply_unbound_cpumask()")
+Cc: stable@vger.kernel.org # v6.6+
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kernel/iommu.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ kernel/workqueue.c |    8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
-index c6f62e130d55..4393d447cb56 100644
---- a/arch/powerpc/kernel/iommu.c
-+++ b/arch/powerpc/kernel/iommu.c
-@@ -1290,8 +1290,10 @@ spapr_tce_platform_iommu_attach_dev(struct iommu_domain *platform_domain,
- 	int ret = -EINVAL;
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -5793,13 +5793,9 @@ static int workqueue_apply_unbound_cpuma
+ 	list_for_each_entry(wq, &workqueues, list) {
+ 		if (!(wq->flags & WQ_UNBOUND))
+ 			continue;
+-
+ 		/* creating multiple pwqs breaks ordering guarantee */
+-		if (!list_empty(&wq->pwqs)) {
+-			if (wq->flags & __WQ_ORDERED_EXPLICIT)
+-				continue;
+-			wq->flags &= ~__WQ_ORDERED;
+-		}
++		if (wq->flags & __WQ_ORDERED)
++			continue;
  
- 	/* At first attach the ownership is already set */
--	if (!domain)
-+	if (!domain) {
-+		iommu_group_put(grp);
- 		return 0;
-+	}
- 
- 	if (!grp)
- 		return -ENODEV;
--- 
-2.43.0
-
+ 		ctx = apply_wqattrs_prepare(wq, wq->unbound_attrs, unbound_cpumask);
+ 		if (IS_ERR(ctx)) {
 
 
 
