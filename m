@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-21714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD33585CA07
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:41:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB33185C8A7
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:24:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE2571C21DB5
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:41:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A99CB209F0
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:24:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A528151CEC;
-	Tue, 20 Feb 2024 21:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CA20151CED;
+	Tue, 20 Feb 2024 21:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0MD2C14i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ik5Wx3is"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07BDC2DF9F;
-	Tue, 20 Feb 2024 21:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF6C151CD8;
+	Tue, 20 Feb 2024 21:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708465281; cv=none; b=r98JTc+7CjJ7WQe8OkkOhfAUBfUVgfcs47TMamRQU/ONGXVETJwAC9zwAesbxhTSF0WDMKwU+6jkwlkGmEnRiJ9/xeAkv2vFjmQVjo51A+zfk26qX55nRuDbLLHSYpJld4auFY63I5aBJG9AC9SfH372FscIt/1F+IkTskp/Rxs=
+	t=1708464248; cv=none; b=fEFmiYHoMjwGi7BhCbLBAGPmse6/v25F35cHkjtPlMf6Cb7zcXFFCCS9PLYbrdIi2tvDyj6nxZXlAma3sSICzeVXmvGelkWtq0tVZD70rN78EyIp4n30PtmK+6o2p4okFiB7Dzn6FTEh8VYiHDALpQ0Ji0GBJwvbsKTY+tPuv9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708465281; c=relaxed/simple;
-	bh=1g4LJKWg380MFQVmR7uXcSthdALF9l3OsdMGwseqfMc=;
+	s=arc-20240116; t=1708464248; c=relaxed/simple;
+	bh=+eMblBrEDHw5gWozKPMLVeu4eFcYV+e37JR0k4w3rmk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KKX1KrHSlCrkmKkiqS+jJGlJqq/km1PSWcYz5KHW1DaysflogeNO9oxGBneH/EEcNKXr5CQ5pzNUaygH/KZOV8wdXf0ghOyEEHH/g7Zsb54lczx7QkRCoIuHCivBEZ2rTKiuNv5Jkfzp6ip8k7z/yfPoh+8WPnXqiocNsLPtu08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0MD2C14i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 775DCC433C7;
-	Tue, 20 Feb 2024 21:41:20 +0000 (UTC)
+	 MIME-Version; b=KvJDWvsPGB+mY9ijcaR7L5vnb1NHOej/37804dcjPq3MJkPCJRAoz5P+EDvtQJDe5JcGK5T93lzBjMt9Mno8Xf/IHwTo71ordbkvPldZwqigV1U1KlarRmlh+A1KsLSJqBvIwBA3NQJfaF/7Lhp0nQyNdmQfsojtfKm/7EhIyqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ik5Wx3is; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9218FC43390;
+	Tue, 20 Feb 2024 21:24:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708465280;
-	bh=1g4LJKWg380MFQVmR7uXcSthdALF9l3OsdMGwseqfMc=;
+	s=korg; t=1708464248;
+	bh=+eMblBrEDHw5gWozKPMLVeu4eFcYV+e37JR0k4w3rmk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0MD2C14ikd3dCOVkz8BnRPntQ61RdEIf2fYCl2G0jOW4FjVEHSH+VKiyEl0Kh1poY
-	 O+m/aBTIHL75PCezuLkcCCDfP7Sk3YbN8ZyYyokHJSyyzQ4QroU6d7p7ScP9gC9BFB
-	 bbEcdF3zHsTmhu72hNhIAJEfFwmUojglbthJep6Q=
+	b=ik5Wx3isLjeBxWkGb9+L8dHrR5iDpxHSO/Yot6uSMM/FdhVtwa3sKQSfG3P74/dcX
+	 BAbOp1s7zpuNKQKpuYw94/6zd2OLjLclr5Js7Do/em0RCqDL+kq1bUBebRDqqTUcpt
+	 idMM2ekevZCbt8oUlmyd5iA+8N8pMYr06lSPcQBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Niklas Cassel <cassel@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH 6.7 254/309] PCI: dwc: Fix a 64bit bug in dw_pcie_ep_raise_msix_irq()
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 297/331] eventfs: Read ei->entries before ei->children in eventfs_iterate()
 Date: Tue, 20 Feb 2024 21:56:53 +0100
-Message-ID: <20240220205641.113048343@linuxfoundation.org>
+Message-ID: <20240220205647.398371997@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +65,124 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-commit b5d1b4b46f856da1473c7ba9a5cdfcb55c9b2478 upstream.
+commit 704f960dbee2f1634f4b4e16f208cb16eaf41c1e upstream.
 
-The "msg_addr" variable is u64.  However, the "aligned_offset" is an
-unsigned int.  This means that when the code does:
+In order to apply a shortcut to skip over the current ctx->pos
+immediately, by using the ei->entries array, the reading of that array
+should be first. Moving the array reading before the linked list reading
+will make the shortcut change diff nicer to read.
 
-  msg_addr &= ~aligned_offset;
+Link: https://lore.kernel.org/all/CAHk-=wiKwDUDv3+jCsv-uacDcHDVTYsXtBR9=6sGM5mqX+DhOg@mail.gmail.com/
+Link: https://lore.kernel.org/linux-trace-kernel/20240104220048.333115095@goodmis.org
 
-it will unintentionally zero out the high 32 bits.  Use ALIGN_DOWN() to do
-the alignment instead.
-
-Fixes: 2217fffcd63f ("PCI: dwc: endpoint: Fix dw_pcie_ep_raise_msix_irq() alignment support")
-Link: https://lore.kernel.org/r/af59c7ad-ab93-40f7-ad4a-7ac0b14d37f5@moroto.mountain
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: <stable@vger.kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pcie-designware-ep.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/tracefs/event_inode.c |   46 +++++++++++++++++++++++-----------------------
+ 1 file changed, 23 insertions(+), 23 deletions(-)
 
---- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-@@ -6,6 +6,7 @@
-  * Author: Kishon Vijay Abraham I <kishon@ti.com>
-  */
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -752,8 +752,8 @@ static int eventfs_iterate(struct file *
+ 	 * Need to create the dentries and inodes to have a consistent
+ 	 * inode number.
+ 	 */
+-	list_for_each_entry_srcu(ei_child, &ei->children, list,
+-				 srcu_read_lock_held(&eventfs_srcu)) {
++	for (i = 0; i < ei->nr_entries; i++) {
++		void *cdata = ei->data;
  
-+#include <linux/align.h>
- #include <linux/bitfield.h>
- #include <linux/of.h>
- #include <linux/platform_device.h>
-@@ -615,7 +616,7 @@ int dw_pcie_ep_raise_msix_irq(struct dw_
+ 		if (c > 0) {
+ 			c--;
+@@ -762,23 +762,32 @@ static int eventfs_iterate(struct file *
+ 
+ 		ctx->pos++;
+ 
+-		if (ei_child->is_freed)
+-			continue;
++		entry = &ei->entries[i];
++		name = entry->name;
+ 
+-		name = ei_child->name;
++		mutex_lock(&eventfs_mutex);
++		/* If ei->is_freed then just bail here, nothing more to do */
++		if (ei->is_freed) {
++			mutex_unlock(&eventfs_mutex);
++			goto out_dec;
++		}
++		r = entry->callback(name, &mode, &cdata, &fops);
++		mutex_unlock(&eventfs_mutex);
++		if (r <= 0)
++			continue;
+ 
+-		dentry = create_dir_dentry(ei, ei_child, ei_dentry);
++		dentry = create_file_dentry(ei, i, ei_dentry, name, mode, cdata, fops);
+ 		if (!dentry)
+ 			goto out_dec;
+ 		ino = dentry->d_inode->i_ino;
+ 		dput(dentry);
+ 
+-		if (!dir_emit(ctx, name, strlen(name), ino, DT_DIR))
++		if (!dir_emit(ctx, name, strlen(name), ino, DT_REG))
+ 			goto out_dec;
  	}
  
- 	aligned_offset = msg_addr & (epc->mem->window.page_size - 1);
--	msg_addr &= ~aligned_offset;
-+	msg_addr = ALIGN_DOWN(msg_addr, epc->mem->window.page_size);
- 	ret = dw_pcie_ep_map_addr(epc, func_no, 0, ep->msi_mem_phys, msg_addr,
- 				  epc->mem->window.page_size);
- 	if (ret)
+-	for (i = 0; i < ei->nr_entries; i++) {
+-		void *cdata = ei->data;
++	list_for_each_entry_srcu(ei_child, &ei->children, list,
++				 srcu_read_lock_held(&eventfs_srcu)) {
+ 
+ 		if (c > 0) {
+ 			c--;
+@@ -787,27 +796,18 @@ static int eventfs_iterate(struct file *
+ 
+ 		ctx->pos++;
+ 
+-		entry = &ei->entries[i];
+-		name = entry->name;
+-
+-		mutex_lock(&eventfs_mutex);
+-		/* If ei->is_freed then just bail here, nothing more to do */
+-		if (ei->is_freed) {
+-			mutex_unlock(&eventfs_mutex);
+-			goto out_dec;
+-		}
+-		r = entry->callback(name, &mode, &cdata, &fops);
+-		mutex_unlock(&eventfs_mutex);
+-		if (r <= 0)
++		if (ei_child->is_freed)
+ 			continue;
+ 
+-		dentry = create_file_dentry(ei, i, ei_dentry, name, mode, cdata, fops);
++		name = ei_child->name;
++
++		dentry = create_dir_dentry(ei, ei_child, ei_dentry);
+ 		if (!dentry)
+ 			goto out_dec;
+ 		ino = dentry->d_inode->i_ino;
+ 		dput(dentry);
+ 
+-		if (!dir_emit(ctx, name, strlen(name), ino, DT_REG))
++		if (!dir_emit(ctx, name, strlen(name), ino, DT_DIR))
+ 			goto out_dec;
+ 	}
+ 	ret = 1;
 
 
 
