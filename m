@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-21678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A90E485C9E3
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:39:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D65885C8B7
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:24:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 322E4B22601
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:39:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EA221C2224C
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:24:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B42D9152DE3;
-	Tue, 20 Feb 2024 21:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 203E3151CE5;
+	Tue, 20 Feb 2024 21:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="epG2JWKM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wOzySVGl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71AB4151CCC;
-	Tue, 20 Feb 2024 21:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D200514F9CE;
+	Tue, 20 Feb 2024 21:24:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708465167; cv=none; b=X8lyCuiY0mtFY98L3D66mjbaHoEI3l4IcVg0IjDQZHCO5wtjzVXHyRYNTy8sXR1h2qwm3bpgJzavmL6FQovSsplYWlYOxJX1GxaWw5uxSrnw5so8sYJH3JuzAex/J1IU5B8ZjmRxl8ZMX2FonXTYrqul3u/V9JFIyeQpoHTzopY=
+	t=1708464285; cv=none; b=VMdl0u4otzOVLeI0OdQnj0of1n/r08+wrIezMztHWJCo+imkTQ/P0n/zVCbo3v15gaRq9TRvUHKMKZkOqmc686GQndBh1j8yVlIgta4F/F7/UR33W77k1Hw+VZEhys2J2nxXW/PnZu4w47wKuumn+p/lRRa9hKeyNX/JI1rZbcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708465167; c=relaxed/simple;
-	bh=U0hj9ll/acNXeIFTSOFCpuhCsx2fa3Xs2QqL9zDOf8w=;
+	s=arc-20240116; t=1708464285; c=relaxed/simple;
+	bh=ClyEEoRstEsLyDiprOb+MiyoAgB3MtQytR40HQLkl08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bb7f9OAafb3G9IBK98WaYpNztv0+2+IGqInRr1nO/FV4mn8/IPne9OACBIqXVslp7PaTMTfhsGFfrTG+Ik5vzODc6EwuX02Z/le4mRPdWF7k/OHoBwzrV7zBMXHCtHywOWO7dfeB2xoz5YbffPjKRqoejnlwC6e38kIloHJeTLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=epG2JWKM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5344C433C7;
-	Tue, 20 Feb 2024 21:39:26 +0000 (UTC)
+	 MIME-Version; b=XsPoSB2AQiE3caX1hY2bIzRr8wqPbvhIGPog1feiEcwhviETCCfB0NeUpdU5hnXaeOMgwUv8z8ufIXYeIBTxgt+muApwS8EHln1dToP4V43HL8f+mpfNnMmFFdZBBVIYLaSjdlCveEX2SQRp35eLXW+5DKiUREZja2Tup3vsawY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wOzySVGl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3EEDC433C7;
+	Tue, 20 Feb 2024 21:24:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708465167;
-	bh=U0hj9ll/acNXeIFTSOFCpuhCsx2fa3Xs2QqL9zDOf8w=;
+	s=korg; t=1708464285;
+	bh=ClyEEoRstEsLyDiprOb+MiyoAgB3MtQytR40HQLkl08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=epG2JWKM7puU4rGTxWlKfXGS94j0isAq0kmkOhdGasWWTIl9zSuHADhXEMsaOE8k3
-	 3mWhTm65gtGOGxXq0acLPqNhlfyf2RyqUZUO6bDb69XSfvxckgYhppXFg3AsC1wSxb
-	 aniyvh4W2QFPFv9dvm4LCtAVG3nfSzUVv//CjWGw=
+	b=wOzySVGl1oGBPLbbyEeL42rCEkRTtSoAYFKK2Y+rQxYHYOtYfoET5KooMzY828Uys
+	 XOJ+6I0yv/Wr44ITfvjg/tWcwqi+eq/gtab2uij9F35R8uUVocq2uMVspUJ4CB3zK2
+	 PIDQn+nsyXIxCG8e9lOkd32iFfRpivw+GN16itWo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 6.7 228/309] powerpc/pseries: fix accuracy of stolen time
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 271/331] eventfs: Remove extra dget() in eventfs_create_events_dir()
 Date: Tue, 20 Feb 2024 21:56:27 +0100
-Message-ID: <20240220205640.289435546@linuxfoundation.org>
+Message-ID: <20240220205646.404132617@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-commit cbecc9fcbbec60136b0180ba0609c829afed5c81 upstream.
+commit 77bc4d4921bd3497678ba8e7f4e480de35692f05 upstream.
 
-powerVM hypervisor updates the VPA fields with stolen time data.
-It currently reports enqueue_dispatch_tb and ready_enqueue_tb for
-this purpose. In linux these two fields are used to report the stolen time.
+The creation of the top events directory does a dget() at the end of the
+creation in eventfs_create_events_dir() with a comment saying the final
+dput() will happen when it is removed. The problem is that a dget() is
+already done on the dentry when it was created with tracefs_start_creating()!
+The dget() now just causes a memory leak of that dentry.
 
-The VPA fields are updated at the TB frequency. On powerPC its mostly
-set at 512Mhz. Hence this needs a conversion to ns when reporting it
-back as rest of the kernel timings are in ns. This conversion is already
-handled in tb_to_ns function. So use that function to report accurate
-stolen time.
+Remove the extra dget() as the final dput() in the deletion of the events
+directory actually matches the one in tracefs_start_creating().
 
-Observed this issue and used an Capped Shared Processor LPAR(SPLPAR) to
-simplify the experiments. In all these cases, 100% VP Load is run using
-stress-ng workload. Values of stolen time is in percentages as reported
-by mpstat. With the patch values are close to expected.
+Link: https://lore.kernel.org/linux-trace-kernel/20231031124229.4f2e3fa1@gandalf.local.home
 
-		6.8.rc1		+Patch
-12EC/12VP	   0.0		   0.0
-12EC/24VP	  25.7		  50.2
-12EC/36VP	  37.3		  69.2
-12EC/48VP	  38.5		  78.3
-
-Fixes: 0e8a63132800 ("powerpc/pseries: Implement CONFIG_PARAVIRT_TIME_ACCOUNTING")
-Cc: stable@vger.kernel.org # v6.1+
-Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-Reviewed-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240213052635.231597-1-sshegde@linux.ibm.com
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Fixes: 5790b1fb3d672 ("eventfs: Remove eventfs_file and just use eventfs_inode")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/platforms/pseries/lpar.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/tracefs/event_inode.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/arch/powerpc/platforms/pseries/lpar.c
-+++ b/arch/powerpc/platforms/pseries/lpar.c
-@@ -662,8 +662,12 @@ u64 pseries_paravirt_steal_clock(int cpu
- {
- 	struct lppaca *lppaca = &lppaca_of(cpu);
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -774,9 +774,6 @@ struct eventfs_inode *eventfs_create_eve
+ 	fsnotify_mkdir(dentry->d_parent->d_inode, dentry);
+ 	tracefs_end_creating(dentry);
  
--	return be64_to_cpu(READ_ONCE(lppaca->enqueue_dispatch_tb)) +
--		be64_to_cpu(READ_ONCE(lppaca->ready_enqueue_tb));
-+	/*
-+	 * VPA steal time counters are reported at TB frequency. Hence do a
-+	 * conversion to ns before returning
-+	 */
-+	return tb_to_ns(be64_to_cpu(READ_ONCE(lppaca->enqueue_dispatch_tb)) +
-+			be64_to_cpu(READ_ONCE(lppaca->ready_enqueue_tb)));
- }
- #endif
+-	/* Will call dput when the directory is removed */
+-	dget(dentry);
+-
+ 	return ei;
  
+  fail:
 
 
 
