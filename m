@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-21274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7BAD85C7F8
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:18:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B35085C971
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:33:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58A8DB20F2E
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:18:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D1951C20F83
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:33:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8D64151CDC;
-	Tue, 20 Feb 2024 21:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1324151CCC;
+	Tue, 20 Feb 2024 21:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a1ya0EvA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UTQ3V7nj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E5B612D7;
-	Tue, 20 Feb 2024 21:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A8D446C9;
+	Tue, 20 Feb 2024 21:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463903; cv=none; b=SiWdZxTcL47LyZUOApCKGZp5eG+y4gV539rALndk704zzlvENXTY+aVcXdVX/8Tb8Z38eJk+equSE2F5onb5Jm7nDR15pjT+WRal8B7GYrjJH9imk7Np36iJtn+OEdbHv0/srFfeXOYl7tIs/gnk1R1cW88S+QdgA2By3JPEJSs=
+	t=1708464823; cv=none; b=NJOIyneiZ35YZx/GEFFtj0arI+6fRxjKAg3L3Eq8cC8c+6qjE2zPOQ7PCD9840oB+PiCPv7iuwotDI9FR97/Ku2izM7jMI6P/8X6rIt6C/Wrlporav/uD9Y12AsIipfRELDDSEISOZqw93m9zj28xbMSfisBUfdP9pB1xBojqAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463903; c=relaxed/simple;
-	bh=tDgqNZKehYE/uL+A3jcwLfnrb7TINTytfv58ZdCAymQ=;
+	s=arc-20240116; t=1708464823; c=relaxed/simple;
+	bh=LPPbjdammpKnjaSuLLwOZwN7jmR90/ky+pROkXPr/vI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ka7tFe3kJgctbtyltpI4KkjQHRRcmapR3bzj6WR2UhjtJ6x6nIBVseXB7b3hjMm6gfnww/XPtoMtjqVWDZnKQ0FTJXuvFekxgKaoKlSQ8sRI5HUXkoCb6WsYPgCcTG42lRHBKKRuI7jP33laDvX+WvHeL9PvggugM69giDlQWkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a1ya0EvA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D069FC433F1;
-	Tue, 20 Feb 2024 21:18:22 +0000 (UTC)
+	 MIME-Version; b=AAi1eE8ph+gxIEPp8cfO7hTvcZnwOgsZ8LC1D1c+U9djIcSWfzeHidthASfoOhViG+BO+GgXORzZBlD7pnHO8aIPuMuh7iWiUJUQnKBsf65vA6sdbLr0sXLr1QhObpsK4wfQZkkNvEMjWnh3hUozU79+FkF80fhhPIiS5MIFx9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UTQ3V7nj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E9DC433F1;
+	Tue, 20 Feb 2024 21:33:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463903;
-	bh=tDgqNZKehYE/uL+A3jcwLfnrb7TINTytfv58ZdCAymQ=;
+	s=korg; t=1708464823;
+	bh=LPPbjdammpKnjaSuLLwOZwN7jmR90/ky+pROkXPr/vI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a1ya0EvAJ5NlzaScQSFRqvAxFB1AtOp4By7ytTJlA77iwm5CRKm67hmbsuoL2Uvpy
-	 Kj1RfPEYz0lMtHFAs233laxiEyI/N0bXff0DlRV6spM5wBOOYvEDoUU5rPamQNf55M
-	 yUprJhzoxI76D/pHHJcg+SQiAwMP1tRFYnH20jkw=
+	b=UTQ3V7njizZptY/CbxxOjgHvWhN9pI4Us/V0VHzdEcTALe8nMCnAZIFt802a3Bhe2
+	 1waci5llKvw4LomzmhNLlyoZMFw9R/eKICdYqK4tsnUNQT/WLhhLYTMdIJCQAbMf9O
+	 Rawvng9eHlvVovzCmPBsB8shrfYwMnmEvt2XtZoM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Bogomolov <bogomolov@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Andrei Vagin <avagin@google.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH 6.6 190/331] x86/fpu: Stop relying on userspace for info to fault in xsave buffer
-Date: Tue, 20 Feb 2024 21:55:06 +0100
-Message-ID: <20240220205643.533359326@linuxfoundation.org>
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.7 148/309] parisc: BTLB: Fix crash when setting up BTLB at CPU bringup
+Date: Tue, 20 Feb 2024 21:55:07 +0100
+Message-ID: <20240220205637.807667437@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrei Vagin <avagin@google.com>
+From: Helge Deller <deller@gmx.de>
 
-commit d877550eaf2dc9090d782864c96939397a3c6835 upstream.
+commit 913b9d443a0180cf0de3548f1ab3149378998486 upstream.
 
-Before this change, the expected size of the user space buffer was
-taken from fx_sw->xstate_size. fx_sw->xstate_size can be changed
-from user-space, so it is possible construct a sigreturn frame where:
+When using hotplug and bringing up a 32-bit CPU, ask the firmware about the
+BTLB information to set up the static (block) TLB entries.
 
- * fx_sw->xstate_size is smaller than the size required by valid bits in
-   fx_sw->xfeatures.
- * user-space unmaps parts of the sigrame fpu buffer so that not all of
-   the buffer required by xrstor is accessible.
+For that write access to the static btlb_info struct is needed, but
+since it is marked __ro_after_init the kernel segfaults with missing
+write permissions.
 
-In this case, xrstor tries to restore and accesses the unmapped area
-which results in a fault. But fault_in_readable succeeds because buf +
-fx_sw->xstate_size is within the still mapped area, so it goes back and
-tries xrstor again. It will spin in this loop forever.
+Fix the crash by dropping the __ro_after_init annotation.
 
-Instead, fault in the maximum size which can be touched by XRSTOR (taken
-from fpstate->user_size).
-
-[ dhansen: tweak subject / changelog ]
-
-Fixes: fcb3635f5018 ("x86/fpu/signal: Handle #PF in the direct restore path")
-Reported-by: Konstantin Bogomolov <bogomolov@google.com>
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Andrei Vagin <avagin@google.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Cc:stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20240130063603.3392627-1-avagin%40google.com
+Fixes: e5ef93d02d6c ("parisc: BTLB: Initialize BTLB tables at CPU startup")
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: <stable@vger.kernel.org> # v6.6+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/fpu/signal.c |   13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+ arch/parisc/kernel/cache.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kernel/fpu/signal.c
-+++ b/arch/x86/kernel/fpu/signal.c
-@@ -274,12 +274,13 @@ static int __restore_fpregs_from_user(vo
-  * Attempt to restore the FPU registers directly from user memory.
-  * Pagefaults are handled and any errors returned are fatal.
-  */
--static bool restore_fpregs_from_user(void __user *buf, u64 xrestore,
--				     bool fx_only, unsigned int size)
-+static bool restore_fpregs_from_user(void __user *buf, u64 xrestore, bool fx_only)
- {
- 	struct fpu *fpu = &current->thread.fpu;
- 	int ret;
+--- a/arch/parisc/kernel/cache.c
++++ b/arch/parisc/kernel/cache.c
+@@ -58,7 +58,7 @@ int pa_serialize_tlb_flushes __ro_after_
  
-+	/* Restore enabled features only. */
-+	xrestore &= fpu->fpstate->user_xfeatures;
- retry:
- 	fpregs_lock();
- 	/* Ensure that XFD is up to date */
-@@ -309,7 +310,7 @@ retry:
- 		if (ret != X86_TRAP_PF)
- 			return false;
+ struct pdc_cache_info cache_info __ro_after_init;
+ #ifndef CONFIG_PA20
+-struct pdc_btlb_info btlb_info __ro_after_init;
++struct pdc_btlb_info btlb_info;
+ #endif
  
--		if (!fault_in_readable(buf, size))
-+		if (!fault_in_readable(buf, fpu->fpstate->user_size))
- 			goto retry;
- 		return false;
- 	}
-@@ -339,7 +340,6 @@ static bool __fpu_restore_sig(void __use
- 	struct user_i387_ia32_struct env;
- 	bool success, fx_only = false;
- 	union fpregs_state *fpregs;
--	unsigned int state_size;
- 	u64 user_xfeatures = 0;
- 
- 	if (use_xsave()) {
-@@ -349,17 +349,14 @@ static bool __fpu_restore_sig(void __use
- 			return false;
- 
- 		fx_only = !fx_sw_user.magic1;
--		state_size = fx_sw_user.xstate_size;
- 		user_xfeatures = fx_sw_user.xfeatures;
- 	} else {
- 		user_xfeatures = XFEATURE_MASK_FPSSE;
--		state_size = fpu->fpstate->user_size;
- 	}
- 
- 	if (likely(!ia32_fxstate)) {
- 		/* Restore the FPU registers directly from user memory. */
--		return restore_fpregs_from_user(buf_fx, user_xfeatures, fx_only,
--						state_size);
-+		return restore_fpregs_from_user(buf_fx, user_xfeatures, fx_only);
- 	}
- 
- 	/*
+ DEFINE_STATIC_KEY_TRUE(parisc_has_cache);
 
 
 
