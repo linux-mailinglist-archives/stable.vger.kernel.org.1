@@ -1,61 +1,55 @@
-Return-Path: <stable+bounces-21629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BDAC85C9AE
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:36:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68AE885C854
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:20:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BCFD1F224C8
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:36:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D68231F27033
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:20:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92B05151CDC;
-	Tue, 20 Feb 2024 21:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C483B151CF3;
+	Tue, 20 Feb 2024 21:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JHLt6Eq2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jKcv/7YT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD3314F9C8;
-	Tue, 20 Feb 2024 21:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 810DE151CDC;
+	Tue, 20 Feb 2024 21:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708465013; cv=none; b=dpWdHVODVDsT7Ph+RsIfunQhCXCtm9/TJRkkPuWkxP3uGMtdPFTp2z3edKCcB22FBFfQ4SSSrVPO6cLkZ+zIVjbkPKO5hbLwFFBuXuABgsb03aCcoaGSWHNnSaHg83Ljc5TbRtYyEBsxyFfmCeJq4rpPAZ90XU8zYgED2lZU/mQ=
+	t=1708464045; cv=none; b=IS8AgFN+AdQJdfQIw2Tw6evWcWpDEPEGDFuxNXcLp0wXNVF1XRS1IJF76O+XmIqihQKQ7rNU338Q3V6Z/pkqHEMI50Ngj29Sl54r03iU1VxktrvN6yiFl/W7ChVLRwibJcImZac9Z+z5/S5WogIKa+6vhes3gWHN3jPR7ALfKjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708465013; c=relaxed/simple;
-	bh=VARBnrxZk/TVV+NqILhQmSBtBs9aZyI4NmTlZ/ynKBA=;
+	s=arc-20240116; t=1708464045; c=relaxed/simple;
+	bh=v8WPpqGBDSY3hXm8GFiD6MO1qUjQCPxvy6A4y6AMytI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XBbmRAovwvuO6EGAuSmc+5dwuIJVj39AWREFvhqlmVw/JSCcWMDOk7GLVelQDfYRgi5O1t643m3XUHpmeF31W5kqzf8xtW7Lee7E1qi4FceRC0Qo4aw7v+8TWeDAomgtccMJkYKsQJt1brXU6o8gotmD9YiZBOv2i9JWIuuMWB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JHLt6Eq2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2302C433C7;
-	Tue, 20 Feb 2024 21:36:52 +0000 (UTC)
+	 MIME-Version; b=rPqrmv6LHnjkc28whf8Dj3y/nHWeSz+lSYJMKh0zqBBsauD6Kp0TXflej4ZFJs7hDrQ/ROvOrI7artENV8HMGvo8vvGBF0OrXenFXu2h8CaEtkLs+kMDlLdY8J6S+Cqwiqz2/ak3XDBcTrbbI5277usyF7bMUL/1PQU+OFNlLSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jKcv/7YT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1438C43394;
+	Tue, 20 Feb 2024 21:20:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708465013;
-	bh=VARBnrxZk/TVV+NqILhQmSBtBs9aZyI4NmTlZ/ynKBA=;
+	s=korg; t=1708464045;
+	bh=v8WPpqGBDSY3hXm8GFiD6MO1qUjQCPxvy6A4y6AMytI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JHLt6Eq2tT9a3/z+mHllarlbRN74HbRDD+LTCDl8W7WVRIytliGSlmRybrK5Bf9rZ
-	 ModLk5MOFbV6xTvnm/ICuE7CPBRDnjcLjy1jzixsl1TMC3CIgfSozB6qQIHHCVq/c+
-	 7rNU6G4kCHbLoOOH3i9MqGNFD/WaBWJjJF6Kz56U=
+	b=jKcv/7YTiKwt5b8UtGtlcKrnUif5OjiH/OFZqjvoVonC467OZSTQxVv7YgkklQbOs
+	 9edIWwht2svOtBKnf3EWTuhQD2qM6wJRQYrLfAugkBI4LnhM34+aLv+DYZ1CesehDe
+	 gdOjGvmHXhjObFjMLHdc4LlcW8ttIUwouhVULFt4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@ZenIV.linux.org.uk>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.7 191/309] tracefs: Avoid using the ei->dentry pointer unnecessarily
+	Alexandra Winter <wintera@linux.ibm.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 234/331] s390/qeth: Fix potential loss of L3-IP@ in case of network issues
 Date: Tue, 20 Feb 2024 21:55:50 +0100
-Message-ID: <20240220205639.139922603@linuxfoundation.org>
+Message-ID: <20240220205645.141536537@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,123 +61,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Alexandra Winter <wintera@linux.ibm.com>
 
-commit 99c001cb617df409dac275a059d6c3f187a2da7a upstream.
+commit 2fe8a236436fe40d8d26a1af8d150fc80f04ee1a upstream.
 
-The eventfs_find_events() code tries to walk up the tree to find the
-event directory that a dentry belongs to, in order to then find the
-eventfs inode that is associated with that event directory.
+Symptom:
+In case of a bad cable connection (e.g. dirty optics) a fast sequence of
+network DOWN-UP-DOWN-UP could happen. UP triggers recovery of the qeth
+interface. In case of a second DOWN while recovery is still ongoing, it
+can happen that the IP@ of a Layer3 qeth interface is lost and will not
+be recovered by the second UP.
 
-However, it uses an odd combination of walking the dentry parent,
-looking up the eventfs inode associated with that, and then looking up
-the dentry from there.  Repeat.
+Problem:
+When registration of IP addresses with Layer 3 qeth devices fails, (e.g.
+because of bad address format) the respective IP address is deleted from
+its hash-table in the driver. If registration fails because of a ENETDOWN
+condition, the address should stay in the hashtable, so a subsequent
+recovery can restore it.
 
-But the code shouldn't have back-pointers to dentries in the first
-place, and it should just walk the dentry parenthood chain directly.
+3caa4af834df ("qeth: keep ip-address after LAN_OFFLINE failure")
+fixes this for registration failures during normal operation, but not
+during recovery.
 
-Similarly, 'set_top_events_ownership()' looks up the dentry from the
-eventfs inode, but the only reason it wants a dentry is to look up the
-superblock in order to look up the root dentry.
+Solution:
+Keep L3-IP address in case of ENETDOWN in qeth_l3_recover_ip(). For
+consistency with qeth_l3_add_ip() we also keep it in case of EADDRINUSE,
+i.e. for some reason the card already/still has this address registered.
 
-But it already has the real filesystem inode, which has that same
-superblock pointer.  So just pass in the superblock pointer using the
-information that's already there, instead of looking up extraneous data
-that is irrelevant.
-
-Link: https://lore.kernel.org/linux-trace-kernel/202401291043.e62e89dc-oliver.sang@intel.com/
-Link: https://lore.kernel.org/linux-trace-kernel/20240131185512.638645365@goodmis.org
-
+Fixes: 4a71df50047f ("qeth: new qeth device driver")
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Al Viro <viro@ZenIV.linux.org.uk>
-Cc: Ajay Kaher <ajay.kaher@broadcom.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Fixes: c1504e510238 ("eventfs: Implement eventfs dir creation functions")
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240206085849.2902775-1-wintera@linux.ibm.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/tracefs/event_inode.c |   26 ++++++++++++--------------
- 1 file changed, 12 insertions(+), 14 deletions(-)
+ drivers/s390/net/qeth_l3_main.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -156,33 +156,30 @@ static int eventfs_set_attr(struct mnt_i
- 	return ret;
- }
- 
--static void update_top_events_attr(struct eventfs_inode *ei, struct dentry *dentry)
-+static void update_top_events_attr(struct eventfs_inode *ei, struct super_block *sb)
- {
--	struct inode *inode;
-+	struct inode *root;
- 
- 	/* Only update if the "events" was on the top level */
- 	if (!ei || !(ei->attr.mode & EVENTFS_TOPLEVEL))
- 		return;
- 
- 	/* Get the tracefs root inode. */
--	inode = d_inode(dentry->d_sb->s_root);
--	ei->attr.uid = inode->i_uid;
--	ei->attr.gid = inode->i_gid;
-+	root = d_inode(sb->s_root);
-+	ei->attr.uid = root->i_uid;
-+	ei->attr.gid = root->i_gid;
- }
- 
- static void set_top_events_ownership(struct inode *inode)
- {
- 	struct tracefs_inode *ti = get_tracefs(inode);
- 	struct eventfs_inode *ei = ti->private;
--	struct dentry *dentry;
- 
- 	/* The top events directory doesn't get automatically updated */
- 	if (!ei || !ei->is_events || !(ei->attr.mode & EVENTFS_TOPLEVEL))
- 		return;
- 
--	dentry = ei->dentry;
--
--	update_top_events_attr(ei, dentry);
-+	update_top_events_attr(ei, inode->i_sb);
- 
- 	if (!(ei->attr.mode & EVENTFS_SAVE_UID))
- 		inode->i_uid = ei->attr.uid;
-@@ -235,8 +232,10 @@ static struct eventfs_inode *eventfs_fin
- 
- 	mutex_lock(&eventfs_mutex);
- 	do {
--		/* The parent always has an ei, except for events itself */
--		ei = dentry->d_parent->d_fsdata;
-+		// The parent is stable because we do not do renames
-+		dentry = dentry->d_parent;
-+		// ... and directories always have d_fsdata
-+		ei = dentry->d_fsdata;
- 
- 		/*
- 		 * If the ei is being freed, the ownership of the children
-@@ -246,12 +245,11 @@ static struct eventfs_inode *eventfs_fin
- 			ei = NULL;
- 			break;
+--- a/drivers/s390/net/qeth_l3_main.c
++++ b/drivers/s390/net/qeth_l3_main.c
+@@ -255,9 +255,10 @@ static void qeth_l3_clear_ip_htable(stru
+ 		if (!recover) {
+ 			hash_del(&addr->hnode);
+ 			kfree(addr);
+-			continue;
++		} else {
++			/* prepare for recovery */
++			addr->disp_flag = QETH_DISP_ADDR_ADD;
  		}
--
--		dentry = ei->dentry;
-+		// Walk upwards until you find the events inode
- 	} while (!ei->is_events);
- 	mutex_unlock(&eventfs_mutex);
+-		addr->disp_flag = QETH_DISP_ADDR_ADD;
+ 	}
  
--	update_top_events_attr(ei, dentry);
-+	update_top_events_attr(ei, dentry->d_sb);
+ 	mutex_unlock(&card->ip_lock);
+@@ -278,9 +279,11 @@ static void qeth_l3_recover_ip(struct qe
+ 		if (addr->disp_flag == QETH_DISP_ADDR_ADD) {
+ 			rc = qeth_l3_register_addr_entry(card, addr);
  
- 	return ei;
- }
+-			if (!rc) {
++			if (!rc || rc == -EADDRINUSE || rc == -ENETDOWN) {
++				/* keep it in the records */
+ 				addr->disp_flag = QETH_DISP_ADDR_DO_NOTHING;
+ 			} else {
++				/* bad address */
+ 				hash_del(&addr->hnode);
+ 				kfree(addr);
+ 			}
 
 
 
