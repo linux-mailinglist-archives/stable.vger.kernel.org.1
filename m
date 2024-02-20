@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-21456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E722185C8FE
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:28:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6436285C771
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:12:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2465D1C225BC
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:28:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1AE551F243B6
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:12:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 289DB1534E1;
-	Tue, 20 Feb 2024 21:27:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2497F1509BF;
+	Tue, 20 Feb 2024 21:12:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T1ZpKSr8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hmo9Cic8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBFD1152E1C;
-	Tue, 20 Feb 2024 21:27:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6652151CED;
+	Tue, 20 Feb 2024 21:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464477; cv=none; b=i9YokXhQeUh8TcCOSNctORH+qXpqctgB/vIIAsGTi8CRXa1DkFeNEgsfNL6A5DgsAo+VvJN/lDqxUucVL3cfyn0uHLm80JXJpPJA9OfTduB2GPXTbLIKfY8P+zcz1A7vyFst98GhZ4drovm0wh/o3cU+ZGBL+g8FeITh4ES7ObI=
+	t=1708463561; cv=none; b=tv9FEtdEuAIyhRe2yLGVPerz3rVzOXLMXZFmxZzlCqe32z7Ru1c5gBkJz+XvuUXCbSQYA+cgOhgUiEpAIb5QmAWKMd+UuWM/z4aANNyEM6UBi2x3E7xbvBBiz0wUfZiPrpFRhyqpFU7m3ymybBn6U5GFiaU8BPdjIZPkRDUzZ7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464477; c=relaxed/simple;
-	bh=hdQsFzSQPk/Jc6Adi5kb1s7Jp8uyhLgeg4rTIjaQ+FE=;
+	s=arc-20240116; t=1708463561; c=relaxed/simple;
+	bh=uKF7yFsWW+mfRk1/kmeDdhxM0KwLdx9YzySkUDYCBTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bFM8QempkW4wrKlFi5HAMJ4A2Yj2EzW/GxRpBX9YidAY8ZXPZsKEjxYloeMfCkz4iY/n3wvmXiP0ddfcmN6/thpjtwhL38KXdjKRQ34rnfaA2rKpUFZ5ILfxYOz0kaQ2ZGi4OIOCJMiqjio7uieoT9Egq7JevqN9whWN4ZqrrEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T1ZpKSr8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6316EC433C7;
-	Tue, 20 Feb 2024 21:27:57 +0000 (UTC)
+	 MIME-Version; b=sGnxYNHESSU0xZ6/ULPoNbzLrW72kyNAPHAPJ56QrDemly0ZvmIotqy/9nnWQ3ocz+z8y+FvpD5HZR8IpRfxAR1j77uFPXtvnpLraqNLfbKMVWipDliOXMZXrTZlFOaN0SVeYhABxHPcZ6sNRKfmyDfAO7iMZtE3xqmhUBIlw0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hmo9Cic8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 046F4C433F1;
+	Tue, 20 Feb 2024 21:12:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464477;
-	bh=hdQsFzSQPk/Jc6Adi5kb1s7Jp8uyhLgeg4rTIjaQ+FE=;
+	s=korg; t=1708463561;
+	bh=uKF7yFsWW+mfRk1/kmeDdhxM0KwLdx9YzySkUDYCBTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T1ZpKSr8bCSav+B5qCkZ5qHMJoE5XEVv+LYRB1l1DQ3g5DA5IDDZDLPGoJ6/o2PRH
-	 VfI1VAdwKk3OWyZkE699y+KcqhAkXM1mkf5pKzRg1mwBMMCHIjgK3VIbUnCp40wi9o
-	 7lJlpE1AmbnZC0YhP6bvM+wLl653QxqYiLR0J1pM=
+	b=hmo9Cic88A32NJX/DeiY8MFlzL7aptN8YvqDEnosVNXWRcpxJ3FeAXbnO4TkpdIB6
+	 FVqUjS1utjT27eGNFTah6e6REYlfWA3BaQMfXdy13bHSAlX8bb+jDT4PBovPGmmRxZ
+	 6YInn65+lDHOF0waJ93bUEWN6KfhN9d11gwiBi9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hojin Nam <hj96.nam@samsung.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Will Deacon <will@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 038/309] perf: CXL: fix mismatched cpmu event opcode
+	stable <stable@kernel.org>,
+	yuan linyu <yuanlinyu@hihonor.com>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 6.6 081/331] usb: f_mass_storage: forbid async queue when shutdown happen
 Date: Tue, 20 Feb 2024 21:53:17 +0100
-Message-ID: <20240220205634.385209165@linuxfoundation.org>
+Message-ID: <20240220205640.138429492@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hojin Nam <hj96.nam@samsung.com>
+From: yuan linyu <yuanlinyu@hihonor.com>
 
-[ Upstream commit 719da04f2d1285922abca72b074fb6fa75d464ea ]
+commit b2d2d7ea0dd09802cf5a0545bf54d8ad8987d20c upstream.
 
-S2M NDR BI-ConflictAck opcode is described as 4 in the CXL
-r3.0 3.3.9 Table 3.43. However, it is defined as 3 in macro definition.
+When write UDC to empty and unbind gadget driver from gadget device, it is
+possible that there are many queue failures for mass storage function.
 
-Fixes: 5d7107c72796 ("perf: CXL Performance Monitoring Unit driver")
-Signed-off-by: Hojin Nam <hj96.nam@samsung.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Link: https://lore.kernel.org/r/20240208013415epcms2p2904187c8a863f4d0d2adc980fb91a2dc@epcms2p2
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The root cause is mass storage main thread alaways try to queue request to
+receive a command from host if running flag is on, on platform like dwc3,
+if pull down called, it will not queue request again and return
+-ESHUTDOWN, but it not affect running flag of mass storage function.
+
+Check return code from mass storage function and clear running flag if it
+is -ESHUTDOWN, also indicate start in/out transfer failure to break loops.
+
+Cc: stable <stable@kernel.org>
+Signed-off-by: yuan linyu <yuanlinyu@hihonor.com>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20240123034829.3848409-1-yuanlinyu@hihonor.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/perf/cxl_pmu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/gadget/function/f_mass_storage.c |   20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/perf/cxl_pmu.c b/drivers/perf/cxl_pmu.c
-index 365d964b0f6a..bc0d414a6aff 100644
---- a/drivers/perf/cxl_pmu.c
-+++ b/drivers/perf/cxl_pmu.c
-@@ -419,7 +419,7 @@ static struct attribute *cxl_pmu_event_attrs[] = {
- 	CXL_PMU_EVENT_CXL_ATTR(s2m_ndr_cmp,			CXL_PMU_GID_S2M_NDR, BIT(0)),
- 	CXL_PMU_EVENT_CXL_ATTR(s2m_ndr_cmps,			CXL_PMU_GID_S2M_NDR, BIT(1)),
- 	CXL_PMU_EVENT_CXL_ATTR(s2m_ndr_cmpe,			CXL_PMU_GID_S2M_NDR, BIT(2)),
--	CXL_PMU_EVENT_CXL_ATTR(s2m_ndr_biconflictack,		CXL_PMU_GID_S2M_NDR, BIT(3)),
-+	CXL_PMU_EVENT_CXL_ATTR(s2m_ndr_biconflictack,		CXL_PMU_GID_S2M_NDR, BIT(4)),
- 	/* CXL rev 3.0 Table 3-46 S2M DRS opcodes */
- 	CXL_PMU_EVENT_CXL_ATTR(s2m_drs_memdata,			CXL_PMU_GID_S2M_DRS, BIT(0)),
- 	CXL_PMU_EVENT_CXL_ATTR(s2m_drs_memdatanxm,		CXL_PMU_GID_S2M_DRS, BIT(1)),
--- 
-2.43.0
-
+--- a/drivers/usb/gadget/function/f_mass_storage.c
++++ b/drivers/usb/gadget/function/f_mass_storage.c
+@@ -545,21 +545,37 @@ static int start_transfer(struct fsg_dev
+ 
+ static bool start_in_transfer(struct fsg_common *common, struct fsg_buffhd *bh)
+ {
++	int rc;
++
+ 	if (!fsg_is_set(common))
+ 		return false;
+ 	bh->state = BUF_STATE_SENDING;
+-	if (start_transfer(common->fsg, common->fsg->bulk_in, bh->inreq))
++	rc = start_transfer(common->fsg, common->fsg->bulk_in, bh->inreq);
++	if (rc) {
+ 		bh->state = BUF_STATE_EMPTY;
++		if (rc == -ESHUTDOWN) {
++			common->running = 0;
++			return false;
++		}
++	}
+ 	return true;
+ }
+ 
+ static bool start_out_transfer(struct fsg_common *common, struct fsg_buffhd *bh)
+ {
++	int rc;
++
+ 	if (!fsg_is_set(common))
+ 		return false;
+ 	bh->state = BUF_STATE_RECEIVING;
+-	if (start_transfer(common->fsg, common->fsg->bulk_out, bh->outreq))
++	rc = start_transfer(common->fsg, common->fsg->bulk_out, bh->outreq);
++	if (rc) {
+ 		bh->state = BUF_STATE_FULL;
++		if (rc == -ESHUTDOWN) {
++			common->running = 0;
++			return false;
++		}
++	}
+ 	return true;
+ }
+ 
 
 
 
