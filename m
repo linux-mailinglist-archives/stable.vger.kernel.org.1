@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-21263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A277F85C7EC
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:17:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DCB785C948
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:31:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D028283EC3
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:17:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8DD71F22A96
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:31:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F14D0151CD6;
-	Tue, 20 Feb 2024 21:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E06C151CD9;
+	Tue, 20 Feb 2024 21:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B4pQpXQL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wb4rS3rT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE71A612D7;
-	Tue, 20 Feb 2024 21:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D41C14A4D2;
+	Tue, 20 Feb 2024 21:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463868; cv=none; b=DqZ/MoKGFWHfPOUUR8QBvqCWNEJ+7Y4LfXsFfBmjr+9ArIBBPAw3kOEyJU5eR5Ux75WjZF3ZgHK9qYvEhyKkEtPGzU+rYJVpkhws/kfMtwcu5WkO2nOF/RRMspxAiqrxM1EE4sZHF50K73XhzdbKTuaPLYVqNvxcrvCntWXisws=
+	t=1708464696; cv=none; b=YsTpiegzTpfkJh+JBkFb4A1MuhZsNJo6v916OhsfcxBozzLGQ4xi0e9xSJYdyyH6yeR97GixrdIRP/ZtzRHxDGFE6lNjiKJJEg5ZqvxldaG72dojzDx6OZWsZ8hBIMrY3zVW1QQpYfrpjkm0rbuoWSnmR8XLhTxeEOhP8YS/220=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463868; c=relaxed/simple;
-	bh=MOgZcc9hXpRFsc6kxkf01iMRx4PSJ+qp/wslJ6m0RRM=;
+	s=arc-20240116; t=1708464696; c=relaxed/simple;
+	bh=vyrSEROG5t7LG/g4GhNfeY8yODIJtpbu8j3pu4056PQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F5RxhjfaZoldLGkYfizPnp+2NRPYRJRwFi2LmnCLQ4cCdPgtLJUdDh3eXtMMJCdh38BRHM6A4QCATzOMG1cUYopmHBJ/0GkKYTrpdoQJ4CsLO16ONI4LTX7WrJXble1zHh1qf1466WBD4U7naBBvBW62DUxZj9hfh0iCCSKo8hY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B4pQpXQL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E574C433F1;
-	Tue, 20 Feb 2024 21:17:47 +0000 (UTC)
+	 MIME-Version; b=Rb8oBJxA6nDEE8zpBOWNcEK496/T9fXN1ZYthy5Ut+F1qfm9sLO+B6xt6wF+CDhJn/EZZcrBZ0MLeemfJjiPQawhnjY1DfgDzNkkvPj2f7tfVnXGgjQOyPctimWwD/ozRnE1tIMCUzSxGElqyNeoLGeIP1ZD4Jei3IiGTa7OH/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wb4rS3rT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9E46C433C7;
+	Tue, 20 Feb 2024 21:31:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463868;
-	bh=MOgZcc9hXpRFsc6kxkf01iMRx4PSJ+qp/wslJ6m0RRM=;
+	s=korg; t=1708464696;
+	bh=vyrSEROG5t7LG/g4GhNfeY8yODIJtpbu8j3pu4056PQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B4pQpXQLGdVyajkknkalKCKqUjJmiN2iEgip/b4jAOXCfS/bq6geYHrb+pr73ozVr
-	 GTIJVVsnjvHvipFOCa1dTv5ghGCyfReAyXrroEM9mZlC0wUw7jI6tiZxyi37B3Q2TM
-	 2QhTpyukKAVmgOQLgxfOV45vg0APDoVZjkn4nVc8=
+	b=wb4rS3rTwANlJ4DmrqfR7hiFkoePsLwui1QtLfLkrRtc+dC0gtBtDg3+KcaAwYYti
+	 Qmtif/QfMcorfGvzTTsn4BOcD6am24hmvrzRRlltvNxaunDY0i7cUDFKpWY/64/ZGe
+	 jFJV7fWxuCzf5yyBELNHlG84inGnlA2JtyKFD1hI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Thorsten Blum <thorsten.blum@toblux.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 150/331] tracing/synthetic: Fix trace_string() return value
-Date: Tue, 20 Feb 2024 21:54:26 +0100
-Message-ID: <20240220205642.258357367@linuxfoundation.org>
+	Bibo Mao <maobibo@loongson.cn>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 108/309] irqchip/loongson-eiointc: Use correct struct type in eiointc_domain_alloc()
+Date: Tue, 20 Feb 2024 21:54:27 +0100
+Message-ID: <20240220205636.569228826@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@toblux.com>
+From: Bibo Mao <maobibo@loongson.cn>
 
-commit 9b6326354cf9a41521b79287da3bfab022ae0b6d upstream.
+[ Upstream commit f1c2765c6afcd1f71f76ed8c9bf94acedab4cecb ]
 
-Fix trace_string() by assigning the string length to the return variable
-which got lost in commit ddeea494a16f ("tracing/synthetic: Use union
-instead of casts") and caused trace_string() to always return 0.
+eiointc_domain_alloc() uses struct eiointc, which is not defined, for a
+pointer. Older compilers treat that as a forward declaration and due to
+assignment of a void pointer there is no warning emitted. As the variable
+is then handed in as a void pointer argument to irq_domain_set_info() the
+code is functional.
 
-Link: https://lore.kernel.org/linux-trace-kernel/20240214220555.711598-1-thorsten.blum@toblux.com
+Use struct eiointc_priv instead.
 
-Cc: stable@vger.kernel.org
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Fixes: ddeea494a16f ("tracing/synthetic: Use union instead of casts")
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Thorsten Blum <thorsten.blum@toblux.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ tglx: Rewrote changelog ]
+
+Fixes: dd281e1a1a93 ("irqchip: Add Loongson Extended I/O interrupt controller support")
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Huacai Chen <chenhuacai@loongson.cn>
+Link: https://lore.kernel.org/r/20240130082722.2912576-2-maobibo@loongson.cn
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events_synth.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/irqchip/irq-loongson-eiointc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/trace/trace_events_synth.c b/kernel/trace/trace_events_synth.c
-index e7af286af4f1..c82b401a294d 100644
---- a/kernel/trace/trace_events_synth.c
-+++ b/kernel/trace/trace_events_synth.c
-@@ -441,8 +441,9 @@ static unsigned int trace_string(struct synth_trace_event *entry,
- 	if (is_dynamic) {
- 		union trace_synth_field *data = &entry->fields[*n_u64];
+diff --git a/drivers/irqchip/irq-loongson-eiointc.c b/drivers/irqchip/irq-loongson-eiointc.c
+index 1623cd779175..b3736bdd4b9f 100644
+--- a/drivers/irqchip/irq-loongson-eiointc.c
++++ b/drivers/irqchip/irq-loongson-eiointc.c
+@@ -241,7 +241,7 @@ static int eiointc_domain_alloc(struct irq_domain *domain, unsigned int virq,
+ 	int ret;
+ 	unsigned int i, type;
+ 	unsigned long hwirq = 0;
+-	struct eiointc *priv = domain->host_data;
++	struct eiointc_priv *priv = domain->host_data;
  
-+		len = fetch_store_strlen((unsigned long)str_val);
- 		data->as_dynamic.offset = struct_size(entry, fields, event->n_u64) + data_size;
--		data->as_dynamic.len = fetch_store_strlen((unsigned long)str_val);
-+		data->as_dynamic.len = len;
- 
- 		ret = fetch_store_string((unsigned long)str_val, &entry->fields[*n_u64], entry);
- 
+ 	ret = irq_domain_translate_onecell(domain, arg, &hwirq, &type);
+ 	if (ret)
 -- 
-2.43.2
+2.43.0
 
 
 
