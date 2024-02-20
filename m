@@ -1,62 +1,55 @@
-Return-Path: <stable+bounces-21619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACD0685C9A4
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:36:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F89785C883
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:22:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68CA2283C8A
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:36:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC8BEB20CAB
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:22:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C079151CE9;
-	Tue, 20 Feb 2024 21:36:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D798151CD9;
+	Tue, 20 Feb 2024 21:22:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RhKsd320"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gFKOaelv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B136151CCC;
-	Tue, 20 Feb 2024 21:36:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0BF22DF9F;
+	Tue, 20 Feb 2024 21:22:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464982; cv=none; b=XJDHFHX/FXoITbzHLLChSTMvrpEgGwOOnsAz0jfW1nnzBRd3JxXL4jPfrG8INGNfkwsB/rtvAdkcB2M8OZBV7PCU7TGasmskhylQCGD464O+Uybltys3eodO6F6eLeIO4q1BlwnbjWj/bP1MKupm/6wlBzemDOTUXnNrB8Cmg9s=
+	t=1708464162; cv=none; b=I8RGpuptYsyZPKAODvWhLJ0s+8K9UMZvxc1YxmBM6rIn7a3tdEkX9i2umf8ktmWllgY+a8tr7ODztmIh4PhFgWDdtfKRiCmg3XmaTJlX0DdkB4KZdcPgfWmT9g4XxH3cZSnf6sYa6Trzdq84M0zzhH54VBpUC+2gvJrgiWnBZiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464982; c=relaxed/simple;
-	bh=wOUZ/MS+j43zbpTOXwSAjCHriJQ8M3VZ5hEQYPAT+D8=;
+	s=arc-20240116; t=1708464162; c=relaxed/simple;
+	bh=F5A9KnQqu0t2QMKvdXR/mHSZUP3Y2t3ly0YslMK2YnM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FTWFrdRa6bJLAsgLR5wz2AcAL7iMRN+6B+HLxE/wsZO2wk6nkaJDzGpBfcbh+izZQa6FHmF967g29Qmd+XUbQ8vWGXqTcvLO4ByyBqY5/kd5GtGYu9JT7iqG7+PFsVXGZBMtBq0puYs8R0RTHeYUCV+p+hS8nNCQmnpKbWnBVko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RhKsd320; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC659C433F1;
-	Tue, 20 Feb 2024 21:36:21 +0000 (UTC)
+	 MIME-Version; b=tGu7HW+anczO42uRRUOBCIDzdpZvsHqBF+sb5J10wTA/Q36tqt2iaRAlSjo/o5cdIAwEXdjeTayKvkLygOt1jaVMfgAqKTfUduNHa3MhaqACkwygn7MIMa/4ZXXEG4VBh20rtFwKclI3MWs3ecezAZjCUOlx23jHdToHW+f9uho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gFKOaelv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EE78C433C7;
+	Tue, 20 Feb 2024 21:22:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464982;
-	bh=wOUZ/MS+j43zbpTOXwSAjCHriJQ8M3VZ5hEQYPAT+D8=;
+	s=korg; t=1708464162;
+	bh=F5A9KnQqu0t2QMKvdXR/mHSZUP3Y2t3ly0YslMK2YnM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RhKsd320wvqyFAaRFy00CmKq3rJMT0f94KA/D/fMalL5rf/dZl4qK4ohNYWEtji73
-	 sjQrTMQk12/s6OgyAFevFrgzkqoDMiUwE3jSzeL5n4Rbjsi5EbyJzkqGPxuVpR7OFs
-	 4G+5+DnIzP4XF0rI+FDlwSvtcFf6k3FZ0htMvES8=
+	b=gFKOaelvBasMiaKVjdgaTPTWQQ7XDPifnofngsCmGu1eDly8VD9EOr3IJUATz+Fhi
+	 ZpZKalUcAZzO7W2foInxy9uBtd7CXOi92nB28HghI0p+PgzGFF2tESVklg6hdj5stn
+	 v3vk/gFRf2zHsyL0JLLXRUgEJd83CeJOm8+FgKKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@ZenIV.linux.org.uk>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.7 199/309] eventfs: Keep all directory links at 1
-Date: Tue, 20 Feb 2024 21:55:58 +0100
-Message-ID: <20240220205639.409923645@linuxfoundation.org>
+	Jan Kara <jack@suse.cz>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 243/331] blk-wbt: Fix detection of dirty-throttled tasks
+Date: Tue, 20 Feb 2024 21:55:59 +0100
+Message-ID: <20240220205645.440266432@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,80 +61,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+From: Jan Kara <jack@suse.cz>
 
-commit ca185770db914869ff9fe773bac5e0e5e4165b83 upstream.
+commit f814bdda774c183b0cc15ec8f3b6e7c6f4527ba5 upstream.
 
-The directory link count in eventfs was somewhat bogus. It was only being
-updated when a directory child was being looked up and not on creation.
+The detection of dirty-throttled tasks in blk-wbt has been subtly broken
+since its beginning in 2016. Namely if we are doing cgroup writeback and
+the throttled task is not in the root cgroup, balance_dirty_pages() will
+set dirty_sleep for the non-root bdi_writeback structure. However
+blk-wbt checks dirty_sleep only in the root cgroup bdi_writeback
+structure. Thus detection of recently throttled tasks is not working in
+this case (we noticed this when we switched to cgroup v2 and suddently
+writeback was slow).
 
-One solution would be to update in get_attr() the link count by iterating
-the ei->children list and then adding 2. But that could slow down simple
-stat() calls, especially if it's done on all directories in eventfs.
+Since blk-wbt has no easy way to get to proper bdi_writeback and
+furthermore its intention has always been to work on the whole device
+rather than on individual cgroups, just move the dirty_sleep timestamp
+from bdi_writeback to backing_dev_info. That fixes the checking for
+recently throttled task and saves memory for everybody as a bonus.
 
-Another solution would be to add a parent pointer to the eventfs_inode
-and keep track of the number of sub directories it has on creation. But
-this adds overhead for something not really worthwhile.
-
-The solution decided upon is to keep all directory links in eventfs as 1.
-This tells user space not to rely on the hard links of directories. Which
-in this case it shouldn't.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240201002719.GS2087318@ZenIV/
-Link: https://lore.kernel.org/linux-trace-kernel/20240201161617.339968298@goodmis.org
-
-Cc: stable@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Al Viro <viro@ZenIV.linux.org.uk>
-Cc: Ajay Kaher <ajay.kaher@broadcom.com>
-Fixes: c1504e510238 ("eventfs: Implement eventfs dir creation functions")
-Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+CC: stable@vger.kernel.org
+Fixes: b57d74aff9ab ("writeback: track if we're sleeping on progress in balance_dirty_pages()")
+Signed-off-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20240123175826.21452-1-jack@suse.cz
+[axboe: fixup indentation errors]
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/tracefs/event_inode.c |   14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ block/blk-wbt.c                  |    4 ++--
+ include/linux/backing-dev-defs.h |    7 +++++--
+ mm/backing-dev.c                 |    2 +-
+ mm/page-writeback.c              |    2 +-
+ 4 files changed, 9 insertions(+), 6 deletions(-)
 
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -404,9 +404,7 @@ static struct dentry *lookup_dir_entry(s
+--- a/block/blk-wbt.c
++++ b/block/blk-wbt.c
+@@ -165,9 +165,9 @@ static void wb_timestamp(struct rq_wb *r
+  */
+ static bool wb_recent_wait(struct rq_wb *rwb)
+ {
+-	struct bdi_writeback *wb = &rwb->rqos.disk->bdi->wb;
++	struct backing_dev_info *bdi = rwb->rqos.disk->bdi;
  
- 	dentry->d_fsdata = get_ei(ei);
- 
--	inc_nlink(inode);
- 	d_add(dentry, inode);
--	inc_nlink(dentry->d_parent->d_inode);
- 	return NULL;
+-	return time_before(jiffies, wb->dirty_sleep + HZ);
++	return time_before(jiffies, bdi->last_bdp_sleep + HZ);
  }
  
-@@ -769,9 +767,17 @@ struct eventfs_inode *eventfs_create_eve
+ static inline struct rq_wait *get_rq_wait(struct rq_wb *rwb,
+--- a/include/linux/backing-dev-defs.h
++++ b/include/linux/backing-dev-defs.h
+@@ -141,8 +141,6 @@ struct bdi_writeback {
+ 	struct delayed_work dwork;	/* work item used for writeback */
+ 	struct delayed_work bw_dwork;	/* work item used for bandwidth estimate */
  
- 	dentry->d_fsdata = get_ei(ei);
+-	unsigned long dirty_sleep;	/* last wait */
+-
+ 	struct list_head bdi_node;	/* anchored at bdi->wb_list */
  
--	/* directory inodes start off with i_nlink == 2 (for "." entry) */
--	inc_nlink(inode);
+ #ifdef CONFIG_CGROUP_WRITEBACK
+@@ -179,6 +177,11 @@ struct backing_dev_info {
+ 	 * any dirty wbs, which is depended upon by bdi_has_dirty().
+ 	 */
+ 	atomic_long_t tot_write_bandwidth;
 +	/*
-+	 * Keep all eventfs directories with i_nlink == 1.
-+	 * Due to the dynamic nature of the dentry creations and not
-+	 * wanting to add a pointer to the parent eventfs_inode in the
-+	 * eventfs_inode structure, keeping the i_nlink in sync with the
-+	 * number of directories would cause too much complexity for
-+	 * something not worth much. Keeping directory links at 1
-+	 * tells userspace not to trust the link number.
++	 * Jiffies when last process was dirty throttled on this bdi. Used by
++	 * blk-wbt.
 +	 */
- 	d_instantiate(dentry, inode);
-+	/* The dentry of the "events" parent does keep track though */
- 	inc_nlink(dentry->d_parent->d_inode);
- 	fsnotify_mkdir(dentry->d_parent->d_inode, dentry);
- 	tracefs_end_creating(dentry);
++	unsigned long last_bdp_sleep;
+ 
+ 	struct bdi_writeback wb;  /* the root writeback info for this bdi */
+ 	struct list_head wb_list; /* list of all wbs */
+--- a/mm/backing-dev.c
++++ b/mm/backing-dev.c
+@@ -436,7 +436,6 @@ static int wb_init(struct bdi_writeback
+ 	INIT_LIST_HEAD(&wb->work_list);
+ 	INIT_DELAYED_WORK(&wb->dwork, wb_workfn);
+ 	INIT_DELAYED_WORK(&wb->bw_dwork, wb_update_bandwidth_workfn);
+-	wb->dirty_sleep = jiffies;
+ 
+ 	err = fprop_local_init_percpu(&wb->completions, gfp);
+ 	if (err)
+@@ -921,6 +920,7 @@ int bdi_init(struct backing_dev_info *bd
+ 	INIT_LIST_HEAD(&bdi->bdi_list);
+ 	INIT_LIST_HEAD(&bdi->wb_list);
+ 	init_waitqueue_head(&bdi->wb_waitq);
++	bdi->last_bdp_sleep = jiffies;
+ 
+ 	return cgwb_bdi_init(bdi);
+ }
+--- a/mm/page-writeback.c
++++ b/mm/page-writeback.c
+@@ -1921,7 +1921,7 @@ pause:
+ 			break;
+ 		}
+ 		__set_current_state(TASK_KILLABLE);
+-		wb->dirty_sleep = now;
++		bdi->last_bdp_sleep = jiffies;
+ 		io_schedule_timeout(pause);
+ 
+ 		current->dirty_paused_when = now + pause;
 
 
 
