@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-21250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04FBA85C7DF
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:17:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D68BD85C946
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:31:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFAE5284833
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:17:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 144461C20FB1
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:31:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F46E151CE1;
-	Tue, 20 Feb 2024 21:17:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FF2E151CD6;
+	Tue, 20 Feb 2024 21:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BrwGanHP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sDHuN6Qw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EEE91509AC;
-	Tue, 20 Feb 2024 21:17:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F3C614A4E6;
+	Tue, 20 Feb 2024 21:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463828; cv=none; b=OE4GK5K1SqJs25kyuQP4RbYift4IN0DGUIemvmzfhs37EhV6teku8RBIL9GoSTfckP8Gei8SvC+CkUI3NtFgLqEqmjJu3sMhoBq1xnXA+00TczsKQuFkZl20cLoeNQm5u4byWPJA4DBEyOPRk62N8P6Hk15XSsn5RKCbLPLze6E=
+	t=1708464690; cv=none; b=Pqb/LrihUmjiCf2vQIug799+rauSrqLwbiOrqzAymx2njjbmsGeqkNyX6VaSEKwHOHz0I6MHoY8h3vGQIqIJABAfEL9AL0cAIz8IkghpfGUnJDzuB5MHvF6rhvC6wet34F6+Cer+eL24K3FX+Y5huYUq62gpTta2NZyfS/MFIlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463828; c=relaxed/simple;
-	bh=LGCQAPF2WwPd2R1OHGbm07kTMMMHvgdhocjHmsyKqfw=;
+	s=arc-20240116; t=1708464690; c=relaxed/simple;
+	bh=u60FYOrTpNTefYjE2uguqjOHwgHSi4FUuyzikXQwN+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hb7w1N+gvPoVVTuTSaYxKavj6n7+E2PuYptcZXydr0SfZjXwhqm9+a04MI4bCmQuTk/PtsvDfdj5ZP/5IWAI5hZe8Ehae4CY5nFc1Q8SYluTEbwWRkm8nBoMYFF0iYnCUBU//KvqG/FKYnnbJusMQ4M8YKGjLl9g3iT1d9LiYy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BrwGanHP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B9F0C433F1;
-	Tue, 20 Feb 2024 21:17:07 +0000 (UTC)
+	 MIME-Version; b=aDUfz/feA/EsofEqMwKcATJPWV8NBz1RNuh3PtyL8Dit0U3cCEqEVP5CS9HUs+xiHvaofZQNHuT6JJGldbAGIlVVBE/n1je2wMc40PuaRwLHyCWL8GIYiPGNKLisWm/F2Rv/CuVPiQz/nC+vEULv+Ji/PLWKzR8EGMCCzVjDlwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sDHuN6Qw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D400C433F1;
+	Tue, 20 Feb 2024 21:31:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463827;
-	bh=LGCQAPF2WwPd2R1OHGbm07kTMMMHvgdhocjHmsyKqfw=;
+	s=korg; t=1708464690;
+	bh=u60FYOrTpNTefYjE2uguqjOHwgHSi4FUuyzikXQwN+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BrwGanHPThymKo/WL1nMPTCNEIhcNFK2JWxdi0qR67c1pcJmEnFFX8qjBEOqCATL0
-	 MO01CKv44qUkhv0G8biMz4VX0FhVwTv/xLEtDLtD5cUZcbfDkPSpFmo90u/6wNXEJm
-	 xNXaWodRYrmFONjQR6cz1Tz3wtXPQvkMZOs0n7Yo=
+	b=sDHuN6QwL+vJKtGvMnwmwNZITxp+94T645+YAqQnvAuiMrZWYpfvzIGst+gxoqGM2
+	 xRSe7eybSYF0b8oyY8XQQTJoP1AFl5H5vS3XUc+E4uXEWmxsyb5IYj+s4s78s1bcsf
+	 4f4STUURm3CMjL4gASTH8/J68rDxUMF1eJn2zKxM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Daniel Bristot de Oliveira <bristot@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 148/331] tracing/timerlat: Move hrtimer_init to timerlat_fd open()
-Date: Tue, 20 Feb 2024 21:54:24 +0100
-Message-ID: <20240220205642.200669067@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 106/309] cifs: fix underflow in parse_server_interfaces()
+Date: Tue, 20 Feb 2024 21:54:25 +0100
+Message-ID: <20240220205636.509004352@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,132 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Bristot de Oliveira <bristot@kernel.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 1389358bb008e7625942846e9f03554319b7fecc upstream.
+[ Upstream commit cffe487026be13eaf37ea28b783d9638ab147204 ]
 
-Currently, the timerlat's hrtimer is initialized at the first read of
-timerlat_fd, and destroyed at close(). It works, but it causes an error
-if the user program open() and close() the file without reading.
+In this loop, we step through the buffer and after each item we check
+if the size_left is greater than the minimum size we need.  However,
+the problem is that "bytes_left" is type ssize_t while sizeof() is type
+size_t.  That means that because of type promotion, the comparison is
+done as an unsigned and if we have negative bytes left the loop
+continues instead of ending.
 
-Here's an example:
-
- # echo NO_OSNOISE_WORKLOAD > /sys/kernel/debug/tracing/osnoise/options
- # echo timerlat > /sys/kernel/debug/tracing/current_tracer
-
- # cat <<EOF > ./timerlat_load.py
- # !/usr/bin/env python3
-
- timerlat_fd = open("/sys/kernel/tracing/osnoise/per_cpu/cpu0/timerlat_fd", 'r')
- timerlat_fd.close();
- EOF
-
- # ./taskset -c 0 ./timerlat_load.py
-<BOOM>
-
- BUG: kernel NULL pointer dereference, address: 0000000000000010
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 0 P4D 0
- Oops: 0000 [#1] PREEMPT SMP NOPTI
- CPU: 1 PID: 2673 Comm: python3 Not tainted 6.6.13-200.fc39.x86_64 #1
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-1.fc39 04/01/2014
- RIP: 0010:hrtimer_active+0xd/0x50
- Code: 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 0f 1f 44 00 00 48 8b 57 30 <8b> 42 10 a8 01 74 09 f3 90 8b 42 10 a8 01 75 f7 80 7f 38 00 75 1d
- RSP: 0018:ffffb031009b7e10 EFLAGS: 00010286
- RAX: 000000000002db00 RBX: ffff9118f786db08 RCX: 0000000000000000
- RDX: 0000000000000000 RSI: ffff9117a0e64400 RDI: ffff9118f786db08
- RBP: ffff9118f786db80 R08: ffff9117a0ddd420 R09: ffff9117804d4f70
- R10: 0000000000000000 R11: 0000000000000000 R12: ffff9118f786db08
- R13: ffff91178fdd5e20 R14: ffff9117840978c0 R15: 0000000000000000
- FS:  00007f2ffbab1740(0000) GS:ffff9118f7840000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000000000000010 CR3: 00000001b402e000 CR4: 0000000000750ee0
- PKRU: 55555554
- Call Trace:
-  <TASK>
-  ? __die+0x23/0x70
-  ? page_fault_oops+0x171/0x4e0
-  ? srso_alias_return_thunk+0x5/0x7f
-  ? avc_has_extended_perms+0x237/0x520
-  ? exc_page_fault+0x7f/0x180
-  ? asm_exc_page_fault+0x26/0x30
-  ? hrtimer_active+0xd/0x50
-  hrtimer_cancel+0x15/0x40
-  timerlat_fd_release+0x48/0xe0
-  __fput+0xf5/0x290
-  __x64_sys_close+0x3d/0x80
-  do_syscall_64+0x60/0x90
-  ? srso_alias_return_thunk+0x5/0x7f
-  ? __x64_sys_ioctl+0x72/0xd0
-  ? srso_alias_return_thunk+0x5/0x7f
-  ? syscall_exit_to_user_mode+0x2b/0x40
-  ? srso_alias_return_thunk+0x5/0x7f
-  ? do_syscall_64+0x6c/0x90
-  ? srso_alias_return_thunk+0x5/0x7f
-  ? exit_to_user_mode_prepare+0x142/0x1f0
-  ? srso_alias_return_thunk+0x5/0x7f
-  ? syscall_exit_to_user_mode+0x2b/0x40
-  ? srso_alias_return_thunk+0x5/0x7f
-  ? do_syscall_64+0x6c/0x90
-  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
- RIP: 0033:0x7f2ffb321594
- Code: 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 80 3d d5 cd 0d 00 00 74 13 b8 03 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 3c c3 0f 1f 00 55 48 89 e5 48 83 ec 10 89 7d
- RSP: 002b:00007ffe8d8eef18 EFLAGS: 00000202 ORIG_RAX: 0000000000000003
- RAX: ffffffffffffffda RBX: 00007f2ffba4e668 RCX: 00007f2ffb321594
- RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000003
- RBP: 00007ffe8d8eef40 R08: 0000000000000000 R09: 0000000000000000
- R10: 55c926e3167eae79 R11: 0000000000000202 R12: 0000000000000003
- R13: 00007ffe8d8ef030 R14: 0000000000000000 R15: 00007f2ffba4e668
-  </TASK>
- CR2: 0000000000000010
- ---[ end trace 0000000000000000 ]---
-
-Move hrtimer_init to timerlat_fd open() to avoid this problem.
-
-Link: https://lore.kernel.org/linux-trace-kernel/7324dd3fc0035658c99b825204a66049389c56e3.1706798888.git.bristot@kernel.org
-
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: stable@vger.kernel.org
-Fixes: e88ed227f639 ("tracing/timerlat: Add user-space interface")
-Signed-off-by: Daniel Bristot de Oliveira <bristot@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fe856be475f7 ("CIFS: parse and store info on iface queries")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_osnoise.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/smb/client/smb2ops.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/trace/trace_osnoise.c b/kernel/trace/trace_osnoise.c
-index bd0d01d00fb9..a8e28f9b9271 100644
---- a/kernel/trace/trace_osnoise.c
-+++ b/kernel/trace/trace_osnoise.c
-@@ -2444,6 +2444,9 @@ static int timerlat_fd_open(struct inode *inode, struct file *file)
- 	tlat = this_cpu_tmr_var();
- 	tlat->count = 0;
+diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
+index beb81fa00cff..ba734395b036 100644
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -619,7 +619,7 @@ parse_server_interfaces(struct network_interface_info_ioctl_rsp *buf,
+ 		goto out;
+ 	}
  
-+	hrtimer_init(&tlat->timer, CLOCK_MONOTONIC, HRTIMER_MODE_ABS_PINNED_HARD);
-+	tlat->timer.function = timerlat_irq;
-+
- 	migrate_enable();
- 	return 0;
- };
-@@ -2526,9 +2529,6 @@ timerlat_fd_read(struct file *file, char __user *ubuf, size_t count,
- 		tlat->tracing_thread = false;
- 		tlat->kthread = current;
- 
--		hrtimer_init(&tlat->timer, CLOCK_MONOTONIC, HRTIMER_MODE_ABS_PINNED_HARD);
--		tlat->timer.function = timerlat_irq;
--
- 		/* Annotate now to drift new period */
- 		tlat->abs_period = hrtimer_cb_get_time(&tlat->timer);
- 
+-	while (bytes_left >= sizeof(*p)) {
++	while (bytes_left >= (ssize_t)sizeof(*p)) {
+ 		memset(&tmp_iface, 0, sizeof(tmp_iface));
+ 		tmp_iface.speed = le64_to_cpu(p->LinkSpeed);
+ 		tmp_iface.rdma_capable = le32_to_cpu(p->Capability & RDMA_CAPABLE) ? 1 : 0;
 -- 
-2.43.2
+2.43.0
 
 
 
