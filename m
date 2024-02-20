@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-21688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA31885C9EC
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:40:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E1B885C8D8
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:26:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73C612817CA
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:39:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BC711C212A3
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:26:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2881F151CDC;
-	Tue, 20 Feb 2024 21:39:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C200E1509BC;
+	Tue, 20 Feb 2024 21:26:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vVhr8vRo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BkDXEvln"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D99FB151CD6;
-	Tue, 20 Feb 2024 21:39:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8124E14A4D2;
+	Tue, 20 Feb 2024 21:26:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708465198; cv=none; b=juY3pox92HlRWrNG+4azhOByai9pDvQEHEeJKuxWH7xQYk3z+ZQ2s+n0K993OtLWhI+bik4epylmwNjGj9ImQPZcB/EDjgNr7/YR1j5DZMqnsWGJTORE59Agpt2LYCo3rcYgE/1q3d1ak5411YXEfo1VDmz/3PBXFs3pgj6hRZg=
+	t=1708464380; cv=none; b=sO3HdX01zR0hY/EIpyW37Izou4sgNGro9iDMdSICDNTAZZmHcpSf+5rwhZ9a3ezoe308f+bZpYce4MipOKaIcYvlMYsi7pk2y2T8T+J60fA9RWutDWS1W5vbKsPqaCHvMnGiuVpMOqECklvYNSj1Ux67CNVQy0ZmG/TflAm9a8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708465198; c=relaxed/simple;
-	bh=SzI5XTPKao8549rgdWu7qjz9zLLpEl13d0qlqOFREZk=;
+	s=arc-20240116; t=1708464380; c=relaxed/simple;
+	bh=KtN01jwVKcuuk1OxIFPEvA3Nc+YJkOnkBU3RHEb51P8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GKJMAG2kfwy9JIzHehLqccfGE0nJ0gmUhfCL7Yn49EiQjJoSBlEFF6U2q+7x6kQoZxWsPUufFhxHhb+Dv177FgdKjXfZzcDZbRuTbYrQWDcTwudyHp7vPp8xo/RhOsBgnS4+B2of9u2JMHGOMuLRbqcPCh4PNllILna88kg4vDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vVhr8vRo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64F2DC433F1;
-	Tue, 20 Feb 2024 21:39:58 +0000 (UTC)
+	 MIME-Version; b=u2B7ulOk57UL7zvd/hGsr4pe6wo/w+Z975j0V5nt8V+vWIh8fSZGOrpzCCvOFi58qrTZs3XrCY7bCNorkM7dlyu7j1vOhaTH5HPqbLy55crQh0AskozjVzdEuCFkIO7E6K89R1Zby0jmI7wdQvadwscuESZZinngzu4bWgA646o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BkDXEvln; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06540C433F1;
+	Tue, 20 Feb 2024 21:26:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708465198;
-	bh=SzI5XTPKao8549rgdWu7qjz9zLLpEl13d0qlqOFREZk=;
+	s=korg; t=1708464380;
+	bh=KtN01jwVKcuuk1OxIFPEvA3Nc+YJkOnkBU3RHEb51P8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vVhr8vRomq3MuFdR/hB9flM4Wz6vnouHUIBmNEhAIS4UBJLZ32G2lTltFIkuWH8Qu
-	 USMyWs4DHTA0CrzoD5GlRmeSezYbqAcMUsSqGJD1MVAwpfaUujtWH3lCbmHQbwIbV6
-	 axCuR6mvtghzIQ2pNsFz1vHPzZOT64jrYNcI+jT4=
+	b=BkDXEvln8TdsdvviwdJT28ObhVKu9kmbgpHI0EWxKNhKS4nkOcnP27zhfQu9swQTa
+	 xDUjbo9l+tDIOykVu2ep4ZGFTlVj+NIMyG480p+C1+CAUhGM8VSw+8fKN3LFnSGg/C
+	 YITl70ivGzh81OELHChwxEQAnNFzCVlbGDsWr+l0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gergo Koteles <soyer@irl.hu>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.7 268/309] ASoC: tas2781: add module parameter to tascodec_init()
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@ZenIV.linux.org.uk>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 311/331] eventfs: Warn if an eventfs_inode is freed without is_freed being set
 Date: Tue, 20 Feb 2024 21:57:07 +0100
-Message-ID: <20240220205641.531491034@linuxfoundation.org>
+Message-ID: <20240220205647.966911745@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,89 +67,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gergo Koteles <soyer@irl.hu>
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-commit 34a1066981a967eab619938e7b35a9be6b4c34e1 upstream.
+commit 5a49f996046ba947466bc7461e4b19c4d1daf978 upstream.
 
-The tascodec_init() of the snd-soc-tas2781-comlib module is called from
-snd-soc-tas2781-i2c and snd-hda-scodec-tas2781-i2c modules. It calls
-request_firmware_nowait() with parameter THIS_MODULE and a cont/callback
-from the latter modules.
+There should never be a case where an evenfs_inode is being freed without
+is_freed being set. Add a WARN_ON_ONCE() if it ever happens. That would
+mean there was one too many put_ei()s.
 
-The latter modules can be removed while their callbacks are running,
-resulting in a general protection failure.
+Link: https://lore.kernel.org/linux-trace-kernel/20240201161616.843551963@goodmis.org
 
-Add module parameter to tascodec_init() so request_firmware_nowait() can
-be called with the module of the callback.
-
-Fixes: ef3bcde75d06 ("ASoC: tas2781: Add tas2781 driver")
-CC: stable@vger.kernel.org
-Signed-off-by: Gergo Koteles <soyer@irl.hu>
-Link: https://lore.kernel.org/r/118dad922cef50525e5aab09badef2fa0eb796e5.1707076603.git.soyer@irl.hu
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Al Viro <viro@ZenIV.linux.org.uk>
+Cc: Ajay Kaher <ajay.kaher@broadcom.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/sound/tas2781.h           |    1 +
- sound/pci/hda/tas2781_hda_i2c.c   |    2 +-
- sound/soc/codecs/tas2781-comlib.c |    3 ++-
- sound/soc/codecs/tas2781-i2c.c    |    2 +-
- 4 files changed, 5 insertions(+), 3 deletions(-)
+ fs/tracefs/event_inode.c |   18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
---- a/include/sound/tas2781.h
-+++ b/include/sound/tas2781.h
-@@ -135,6 +135,7 @@ struct tasdevice_priv {
- 
- void tas2781_reset(struct tasdevice_priv *tas_dev);
- int tascodec_init(struct tasdevice_priv *tas_priv, void *codec,
-+	struct module *module,
- 	void (*cont)(const struct firmware *fw, void *context));
- struct tasdevice_priv *tasdevice_kzalloc(struct i2c_client *i2c);
- int tasdevice_init(struct tasdevice_priv *tas_priv);
---- a/sound/pci/hda/tas2781_hda_i2c.c
-+++ b/sound/pci/hda/tas2781_hda_i2c.c
-@@ -627,7 +627,7 @@ static int tas2781_hda_bind(struct devic
- 
- 	strscpy(comps->name, dev_name(dev), sizeof(comps->name));
- 
--	ret = tascodec_init(tas_hda->priv, codec, tasdev_fw_ready);
-+	ret = tascodec_init(tas_hda->priv, codec, THIS_MODULE, tasdev_fw_ready);
- 	if (!ret)
- 		comps->playback_hook = tas2781_hda_playback_hook;
- 
---- a/sound/soc/codecs/tas2781-comlib.c
-+++ b/sound/soc/codecs/tas2781-comlib.c
-@@ -267,6 +267,7 @@ void tas2781_reset(struct tasdevice_priv
- EXPORT_SYMBOL_GPL(tas2781_reset);
- 
- int tascodec_init(struct tasdevice_priv *tas_priv, void *codec,
-+	struct module *module,
- 	void (*cont)(const struct firmware *fw, void *context))
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -73,6 +73,9 @@ enum {
+ static void release_ei(struct kref *ref)
  {
- 	int ret = 0;
-@@ -280,7 +281,7 @@ int tascodec_init(struct tasdevice_priv
- 		tas_priv->dev_name, tas_priv->ndev);
- 	crc8_populate_msb(tas_priv->crc8_lkp_tbl, TASDEVICE_CRC8_POLYNOMIAL);
- 	tas_priv->codec = codec;
--	ret = request_firmware_nowait(THIS_MODULE, FW_ACTION_UEVENT,
-+	ret = request_firmware_nowait(module, FW_ACTION_UEVENT,
- 		tas_priv->rca_binaryname, tas_priv->dev, GFP_KERNEL, tas_priv,
- 		cont);
- 	if (ret)
---- a/sound/soc/codecs/tas2781-i2c.c
-+++ b/sound/soc/codecs/tas2781-i2c.c
-@@ -564,7 +564,7 @@ static int tasdevice_codec_probe(struct
- {
- 	struct tasdevice_priv *tas_priv = snd_soc_component_get_drvdata(codec);
- 
--	return tascodec_init(tas_priv, codec, tasdevice_fw_ready);
-+	return tascodec_init(tas_priv, codec, THIS_MODULE, tasdevice_fw_ready);
+ 	struct eventfs_inode *ei = container_of(ref, struct eventfs_inode, kref);
++
++	WARN_ON_ONCE(!ei->is_freed);
++
+ 	kfree(ei->entry_attrs);
+ 	kfree_const(ei->name);
+ 	kfree_rcu(ei, rcu);
+@@ -84,6 +87,14 @@ static inline void put_ei(struct eventfs
+ 		kref_put(&ei->kref, release_ei);
  }
  
- static void tasdevice_deinit(void *context)
++static inline void free_ei(struct eventfs_inode *ei)
++{
++	if (ei) {
++		ei->is_freed = 1;
++		put_ei(ei);
++	}
++}
++
+ static inline struct eventfs_inode *get_ei(struct eventfs_inode *ei)
+ {
+ 	if (ei)
+@@ -679,7 +690,7 @@ struct eventfs_inode *eventfs_create_dir
+ 
+ 	/* Was the parent freed? */
+ 	if (list_empty(&ei->list)) {
+-		put_ei(ei);
++		free_ei(ei);
+ 		ei = NULL;
+ 	}
+ 	return ei;
+@@ -770,7 +781,7 @@ struct eventfs_inode *eventfs_create_eve
+ 	return ei;
+ 
+  fail:
+-	put_ei(ei);
++	free_ei(ei);
+ 	tracefs_failed_creating(dentry);
+ 	return ERR_PTR(-ENOMEM);
+ }
+@@ -801,9 +812,8 @@ static void eventfs_remove_rec(struct ev
+ 	list_for_each_entry(ei_child, &ei->children, list)
+ 		eventfs_remove_rec(ei_child, level + 1);
+ 
+-	ei->is_freed = 1;
+ 	list_del(&ei->list);
+-	put_ei(ei);
++	free_ei(ei);
+ }
+ 
+ /**
 
 
 
