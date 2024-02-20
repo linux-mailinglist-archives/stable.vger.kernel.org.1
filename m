@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-21315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75F7385C850
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:20:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BA6F85C99A
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:35:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C524283845
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:20:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBE5BB22C47
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:35:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D187152E10;
-	Tue, 20 Feb 2024 21:20:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74121151CE1;
+	Tue, 20 Feb 2024 21:35:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vhc0Jjoz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PKeDgbGD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 873BF152E11;
-	Tue, 20 Feb 2024 21:20:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A2C2DF9F;
+	Tue, 20 Feb 2024 21:35:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464034; cv=none; b=lkGJLCH5Q+emtXfphNLg6sYDHZh3KJ53eb8jNFEUqQ0TyvHX8mOb7V4k4NLO8KQPk13iNqkQjKDydTnCed234TqrFPhD6kRdSqpqVWBTR+MVo2vUlUiiXF890sOZfN89qVOJ1w6Bqn+xQmFnsiHxFxdHLfUnYjzAnmD9Be2sOj4=
+	t=1708464951; cv=none; b=KShotPg+67ZK71+GDQAsWtrFO1/fezDuSaqcnxTTjzc6Ajkz8vo4AwLhh9YpK1gGlfcKsRIcX3wF2+uTf/BAHRcuu/Rn32V6/iDDBJRmyH30tJbkzf+0LMgKFgjrukzULz3SE5MbDCB105BbVMo0EJV29nl440GORwKJfClMzZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464034; c=relaxed/simple;
-	bh=8MvRY5buUueUKFjmGGmq0512sd3Qw7HBBx8mPXul0y4=;
+	s=arc-20240116; t=1708464951; c=relaxed/simple;
+	bh=+wgeC6gxUne5iIsZrHBLIzco0LQLai8B363XM+FhUI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b1fh84pSTkHvVmcuF22lkn0TVKYPOoftk/hzo0ynpX7vww3LCESl3sXnUxYwn017HwC+iQ3P1S02CIEWUYtYB7rX295L/93aIQUHD8dAZkTp3gzNFiWLPI9vswGhEWUnUaU0kqy5Z8mZFVuglKMcMtgdCicX1SP3L4NHLltPutA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vhc0Jjoz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2192CC433C7;
-	Tue, 20 Feb 2024 21:20:31 +0000 (UTC)
+	 MIME-Version; b=XEsOL3c/5h8wWJ7Z8xYkoi3Ef0zc2qKoreHDnpweigtZSx1S6vgoFWyGTEAnTR+slFwLUyotqgA7eXOgFJDxmfsyyhmeC1XNrakwNFaJ/JyORakpYfaxc46tlGAMEEVgkyi67Oe7vikgT1efo4ISQ+BvxaaWDMabZRqoZAWxCbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PKeDgbGD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C355C433C7;
+	Tue, 20 Feb 2024 21:35:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464032;
-	bh=8MvRY5buUueUKFjmGGmq0512sd3Qw7HBBx8mPXul0y4=;
+	s=korg; t=1708464951;
+	bh=+wgeC6gxUne5iIsZrHBLIzco0LQLai8B363XM+FhUI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vhc0JjozngKk+Y0poIwK+tOSLKpvxG3wpVpLrZBTr0tqqC49BaPxBoyuDTiXLIX0V
-	 YiIfdRbnH29yvFa7/m30hvWyaD/ZyKsgV5nwEORtj6XPJCIcfecaSw3NKfBH2iVLEo
-	 bd9Lw2wkjg4/qDbBXYPdFtJ3FYEP9kVcd+U4hd3E=
+	b=PKeDgbGDyGXo3FeRAJA3uVQJ4rN6IjHcsKdPRyYTyXoqKB1ze2DjRfTOfr5+/Hchf
+	 lyTpNpGkjW1kD2uvHEi3kjwiJhvFIein4DFTmlai1BlJC6bcHUCtqpkkudoi4/Y2JQ
+	 wUZFSpxzW4+W0S3WiS61K8XuxPvLHQdhuGxQgvEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Masami Hiramatsu <mhiramat@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Donald Zickus <dzickus@redhat.com>,
-	Daniel Bristot de Oliveira <bristot@kernel.org>
-Subject: [PATCH 6.6 230/331] tools/rtla: Fix uninitialized bucket/data->bucket_size warning
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Erick Archer <erick.archer@gmx.com>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.7 187/309] eventfs: Use kcalloc() instead of kzalloc()
 Date: Tue, 20 Feb 2024 21:55:46 +0100
-Message-ID: <20240220205645.010064239@linuxfoundation.org>
+Message-ID: <20240220205639.005826212@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,112 +65,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Bristot de Oliveira <bristot@kernel.org>
+From: Erick Archer <erick.archer@gmx.com>
 
-commit 64dc40f7523369912d7adb22c8cb655f71610505 upstream.
+commit 1057066009c4325bb1d8430c9274894d0860e7c3 upstream.
 
-When compiling rtla with clang, I am getting the following warnings:
+As noted in the "Deprecated Interfaces, Language Features, Attributes,
+and Conventions" documentation [1], size calculations (especially
+multiplication) should not be performed in memory allocator (or similar)
+function arguments due to the risk of them overflowing. This could lead
+to values wrapping around and a smaller allocation being made than the
+caller was expecting. Using those allocations could lead to linear
+overflows of heap memory and other misbehaviors.
 
-$ make HOSTCC=clang CC=clang LLVM_IAS=1
+So, use the purpose specific kcalloc() function instead of the argument
+size * count in the kzalloc() function.
 
-[..]
-clang -O -g -DVERSION=\"6.8.0-rc3\" -flto=auto -fexceptions
-	-fstack-protector-strong -fasynchronous-unwind-tables
-	-fstack-clash-protection  -Wall -Werror=format-security
-	-Wp,-D_FORTIFY_SOURCE=2 -Wp,-D_GLIBCXX_ASSERTIONS
-	$(pkg-config --cflags libtracefs)
-	-c -o src/osnoise_hist.o src/osnoise_hist.c
-src/osnoise_hist.c:138:6: warning: variable 'bucket' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
-  138 |         if (data->bucket_size)
-      |             ^~~~~~~~~~~~~~~~~
-src/osnoise_hist.c:149:6: note: uninitialized use occurs here
-  149 |         if (bucket < entries)
-      |             ^~~~~~
-src/osnoise_hist.c:138:2: note: remove the 'if' if its condition is always true
-  138 |         if (data->bucket_size)
-      |         ^~~~~~~~~~~~~~~~~~~~~~
-  139 |                 bucket = duration / data->bucket_size;
-src/osnoise_hist.c:132:12: note: initialize the variable 'bucket' to silence this warning
-  132 |         int bucket;
-      |                   ^
-      |                    = 0
-1 warning generated.
+[1] https://www.kernel.org/doc/html/next/process/deprecated.html#open-coded-arithmetic-in-allocator-arguments
 
-[...]
+Link: https://lore.kernel.org/linux-trace-kernel/20240115181658.4562-1-erick.archer@gmx.com
 
-clang -O -g -DVERSION=\"6.8.0-rc3\" -flto=auto -fexceptions
-	-fstack-protector-strong -fasynchronous-unwind-tables
-	-fstack-clash-protection  -Wall -Werror=format-security
-	-Wp,-D_FORTIFY_SOURCE=2 -Wp,-D_GLIBCXX_ASSERTIONS
-	$(pkg-config --cflags libtracefs)
-	-c -o src/timerlat_hist.o src/timerlat_hist.c
-src/timerlat_hist.c:181:6: warning: variable 'bucket' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
-  181 |         if (data->bucket_size)
-      |             ^~~~~~~~~~~~~~~~~
-src/timerlat_hist.c:204:6: note: uninitialized use occurs here
-  204 |         if (bucket < entries)
-      |             ^~~~~~
-src/timerlat_hist.c:181:2: note: remove the 'if' if its condition is always true
-  181 |         if (data->bucket_size)
-      |         ^~~~~~~~~~~~~~~~~~~~~~
-  182 |                 bucket = latency / data->bucket_size;
-src/timerlat_hist.c:175:12: note: initialize the variable 'bucket' to silence this warning
-  175 |         int bucket;
-      |                   ^
-      |                    = 0
-1 warning generated.
-
-This is a legit warning, but data->bucket_size is always > 0 (see
-timerlat_hist_parse_args()), so the if is not necessary.
-
-Remove the unneeded if (data->bucket_size) to avoid the warning.
-
-Link: https://lkml.kernel.org/r/6e1b1665cd99042ae705b3e0fc410858c4c42346.1707217097.git.bristot@kernel.org
-
-Cc: stable@vger.kernel.org
 Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Bill Wendling <morbo@google.com>
-Cc: Justin Stitt <justinstitt@google.com>
-Cc: Donald Zickus <dzickus@redhat.com>
-Fixes: 1eeb6328e8b3 ("rtla/timerlat: Add timerlat hist mode")
-Fixes: 829a6c0b5698 ("rtla/osnoise: Add the hist mode")
-Signed-off-by: Daniel Bristot de Oliveira <bristot@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Link: https://github.com/KSPP/linux/issues/162
+Signed-off-by: Erick Archer <erick.archer@gmx.com>
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/tracing/rtla/src/osnoise_hist.c  |    3 +--
- tools/tracing/rtla/src/timerlat_hist.c |    3 +--
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ fs/tracefs/event_inode.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/tools/tracing/rtla/src/osnoise_hist.c
-+++ b/tools/tracing/rtla/src/osnoise_hist.c
-@@ -135,8 +135,7 @@ static void osnoise_hist_update_multiple
- 	if (params->output_divisor)
- 		duration = duration / params->output_divisor;
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -97,7 +97,7 @@ static int eventfs_set_attr(struct mnt_i
+ 	/* Preallocate the children mode array if necessary */
+ 	if (!(dentry->d_inode->i_mode & S_IFDIR)) {
+ 		if (!ei->entry_attrs) {
+-			ei->entry_attrs = kzalloc(sizeof(*ei->entry_attrs) * ei->nr_entries,
++			ei->entry_attrs = kcalloc(ei->nr_entries, sizeof(*ei->entry_attrs),
+ 						  GFP_NOFS);
+ 			if (!ei->entry_attrs) {
+ 				ret = -ENOMEM;
+@@ -836,7 +836,7 @@ struct eventfs_inode *eventfs_create_dir
+ 	}
  
--	if (data->bucket_size)
--		bucket = duration / data->bucket_size;
-+	bucket = duration / data->bucket_size;
+ 	if (size) {
+-		ei->d_children = kzalloc(sizeof(*ei->d_children) * size, GFP_KERNEL);
++		ei->d_children = kcalloc(size, sizeof(*ei->d_children), GFP_KERNEL);
+ 		if (!ei->d_children) {
+ 			kfree_const(ei->name);
+ 			kfree(ei);
+@@ -903,7 +903,7 @@ struct eventfs_inode *eventfs_create_eve
+ 		goto fail;
  
- 	total_duration = duration * count;
- 
---- a/tools/tracing/rtla/src/timerlat_hist.c
-+++ b/tools/tracing/rtla/src/timerlat_hist.c
-@@ -178,8 +178,7 @@ timerlat_hist_update(struct osnoise_tool
- 	if (params->output_divisor)
- 		latency = latency / params->output_divisor;
- 
--	if (data->bucket_size)
--		bucket = latency / data->bucket_size;
-+	bucket = latency / data->bucket_size;
- 
- 	if (!context) {
- 		hist = data->hist[cpu].irq;
+ 	if (size) {
+-		ei->d_children = kzalloc(sizeof(*ei->d_children) * size, GFP_KERNEL);
++		ei->d_children = kcalloc(size, sizeof(*ei->d_children), GFP_KERNEL);
+ 		if (!ei->d_children)
+ 			goto fail;
+ 	}
 
 
 
