@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-21285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACFC485C81F
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:18:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45C6E85C9A2
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:36:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4AE151F26FF9
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:18:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8EADB20DE1
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:36:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFA20151CE5;
-	Tue, 20 Feb 2024 21:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E2AE151CED;
+	Tue, 20 Feb 2024 21:36:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HOVMigYo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d5hsBC+x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E702612D7;
-	Tue, 20 Feb 2024 21:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481B1151CCD;
+	Tue, 20 Feb 2024 21:36:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463937; cv=none; b=XOekHNYMZ3d2rlu636nYtk2Gx7xSUpNCB73dIftZeZm9A1zam5JOl+GRlt7E1ODmCH85iBWF3igWau2y+WHfoJmGSCQpnT8Gz6tT/nL5yriRzdPThN5QRRn8EdbEI6B0anHCy9PEdoWWS4h9amm/sjFM5KgSWthJHt885kz+FOg=
+	t=1708464976; cv=none; b=uTEph0j7EIN13o8SyQ2Q8GgHHIWttJgt1KIA6BloRH3UzvRYGInUGDE1kykbWILanoxFN8fn8J3+SbHJ0di7MZna7e9KM98vq6w4Q9A8pmxj8kqKYPuZUL3g1IUJgEaP/chcUSdnuqk6yBM4u3P88hDGmAecXoVIDESPY2BFJIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463937; c=relaxed/simple;
-	bh=dwIQDumpPe6u1bVlRLq+WH+9EJV1bEMplb14g7zf0Bc=;
+	s=arc-20240116; t=1708464976; c=relaxed/simple;
+	bh=ps/OCqGPomAvtZ3ZVdVsgcGcLGMp5zbFJ/eWVVo3Zw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L9fUTbxaokLi9hBdH20o2lfC6nQjJ74GprKpzCKih5j73l7SyOJij2xdoN2TO/o6VnE178tcz6olTkbmkME2K/m4As9RIojZbMUSEp2o4c3Z280mQ9bVam4tU6J4A7UdOkUOjF7uyAF6c5v7Am05LhB9dL1DHenujtZacIjEGPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HOVMigYo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4F60C43394;
-	Tue, 20 Feb 2024 21:18:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fwnXPhzaaBds0AGmRxzT8/9dj+7nRGc5POu78CZNKhfgQ0mqV9ZCUGWgIHJ+urpiuQAK5BqZ7qfWCYqsdTXy5WV/0+CuiurlXEOq28mkmNPQFw5NU0GRoWq2XtXzzElV3FAx/JKmi/QnebQVy2AUMA5cNrR6EBg90S8DUeKgQfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d5hsBC+x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B81A8C433F1;
+	Tue, 20 Feb 2024 21:36:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463937;
-	bh=dwIQDumpPe6u1bVlRLq+WH+9EJV1bEMplb14g7zf0Bc=;
+	s=korg; t=1708464976;
+	bh=ps/OCqGPomAvtZ3ZVdVsgcGcLGMp5zbFJ/eWVVo3Zw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HOVMigYo9RCZI2E+EyQ5/2T4QHX3/ytCLZFl3vgTypxLrXdA+AEIkDsl3OC7taBCA
-	 bf/ZteghkL/o8vuGUEbnaX08uKgzLHhAfWSR4OX+Q8G0XiHxc3wus2ITt5AltpGedc
-	 9WppzuShZyHPLMqzYTMjoyXtKekTqe+bvvo5mKJ8=
+	b=d5hsBC+xg1xIpfiqw/4PnqfMJN965d8PLZQX3zsT47l4a5Mc21ObdrPW8VIGqvrco
+	 rDyygHbqb8d6CzRKJo3daFxjwVzJMoz3BccG/cgVTS8ObpbS+ulrDBsyhbH4j4w2lm
+	 Dzrls6idoy8OYK7mVTQb9XY9YAVxCxhsxB/UoZ2w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+ee2ae68da3b22d04cd8d@syzkaller.appspotmail.com,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 200/331] nilfs2: fix hang in nilfs_lookup_dirty_data_buffers()
+	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+	Martijn Coenen <maco@android.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Steven Moreland <smoreland@google.com>,
+	Carlos Llamas <cmllamas@google.com>
+Subject: [PATCH 6.7 157/309] binder: signal epoll threads of self-work
 Date: Tue, 20 Feb 2024 21:55:16 +0100
-Message-ID: <20240220205643.912304418@linuxfoundation.org>
+Message-ID: <20240220205638.070801548@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,69 +62,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Carlos Llamas <cmllamas@google.com>
 
-commit 38296afe3c6ee07319e01bb249aa4bb47c07b534 upstream.
+commit 97830f3c3088638ff90b20dfba2eb4d487bf14d7 upstream.
 
-Syzbot reported a hang issue in migrate_pages_batch() called by mbind()
-and nilfs_lookup_dirty_data_buffers() called in the log writer of nilfs2.
+In (e)poll mode, threads often depend on I/O events to determine when
+data is ready for consumption. Within binder, a thread may initiate a
+command via BINDER_WRITE_READ without a read buffer and then make use
+of epoll_wait() or similar to consume any responses afterwards.
 
-While migrate_pages_batch() locks a folio and waits for the writeback to
-complete, the log writer thread that should bring the writeback to
-completion picks up the folio being written back in
-nilfs_lookup_dirty_data_buffers() that it calls for subsequent log
-creation and was trying to lock the folio.  Thus causing a deadlock.
+It is then crucial that epoll threads are signaled via wakeup when they
+queue their own work. Otherwise, they risk waiting indefinitely for an
+event leaving their work unhandled. What is worse, subsequent commands
+won't trigger a wakeup either as the thread has pending work.
 
-In the first place, it is unexpected that folios/pages in the middle of
-writeback will be updated and become dirty.  Nilfs2 adds a checksum to
-verify the validity of the log being written and uses it for recovery at
-mount, so data changes during writeback are suppressed.  Since this is
-broken, an unclean shutdown could potentially cause recovery to fail.
-
-Investigation revealed that the root cause is that the wait for writeback
-completion in nilfs_page_mkwrite() is conditional, and if the backing
-device does not require stable writes, data may be modified without
-waiting.
-
-Fix these issues by making nilfs_page_mkwrite() wait for writeback to
-finish regardless of the stable write requirement of the backing device.
-
-Link: https://lkml.kernel.org/r/20240131145657.4209-1-konishi.ryusuke@gmail.com
-Fixes: 1d1d1a767206 ("mm: only enforce stable page writes if the backing device requires it")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+ee2ae68da3b22d04cd8d@syzkaller.appspotmail.com
-Closes: https://lkml.kernel.org/r/00000000000047d819061004ad6c@google.com
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 457b9a6f09f0 ("Staging: android: add binder driver")
+Cc: Arve Hjønnevåg <arve@android.com>
+Cc: Martijn Coenen <maco@android.com>
+Cc: Alice Ryhl <aliceryhl@google.com>
+Cc: Steven Moreland <smoreland@google.com>
+Cc: stable@vger.kernel.org # v4.19+
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Link: https://lore.kernel.org/r/20240131215347.1808751-1-cmllamas@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/file.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/android/binder.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/fs/nilfs2/file.c
-+++ b/fs/nilfs2/file.c
-@@ -105,7 +105,13 @@ static vm_fault_t nilfs_page_mkwrite(str
- 	nilfs_transaction_commit(inode->i_sb);
- 
-  mapped:
--	wait_for_stable_page(page);
-+	/*
-+	 * Since checksumming including data blocks is performed to determine
-+	 * the validity of the log to be written and used for recovery, it is
-+	 * necessary to wait for writeback to finish here, regardless of the
-+	 * stable write requirement of the backing device.
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -478,6 +478,16 @@ binder_enqueue_thread_work_ilocked(struc
+ {
+ 	WARN_ON(!list_empty(&thread->waiting_thread_node));
+ 	binder_enqueue_work_ilocked(work, &thread->todo);
++
++	/* (e)poll-based threads require an explicit wakeup signal when
++	 * queuing their own work; they rely on these events to consume
++	 * messages without I/O block. Without it, threads risk waiting
++	 * indefinitely without handling the work.
 +	 */
-+	wait_on_page_writeback(page);
-  out:
- 	sb_end_pagefault(inode->i_sb);
- 	return vmf_fs_error(ret);
++	if (thread->looper & BINDER_LOOPER_STATE_POLL &&
++	    thread->pid == current->pid && !thread->process_todo)
++		wake_up_interruptible_sync(&thread->wait);
++
+ 	thread->process_todo = true;
+ }
+ 
 
 
 
