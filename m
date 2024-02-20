@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-21564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19C6385C96C
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:33:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6772485C7E4
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:17:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C88D3284D70
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:33:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 05EE8B20F2E
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:17:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64FEF151CE3;
-	Tue, 20 Feb 2024 21:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33940151CD6;
+	Tue, 20 Feb 2024 21:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dr0Ya1Yr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VWuSbYwd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 252FD446C9;
-	Tue, 20 Feb 2024 21:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E40B3612D7;
+	Tue, 20 Feb 2024 21:17:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464808; cv=none; b=QHD2IBTxLntORRyCklnRFBLfIfKcCM7IkQl8IZTwfeOJuDAkiWBJVDvA/z/lk495JSgCeld7MSb5QIqIqZOoXhnUZ02/H6dOAIiYVDhhDNQDG8FX+fq0mzitjksDvxvkMsT2OSybbEskjm3PKDXo6Bfk16V/R0yrhfRFXU6aWR8=
+	t=1708463844; cv=none; b=apSqNFNcWUyRzpAxkYXjWXUr2jldJFpfrw0yyGcxmj6xa+rrx+kvK+1arLhF8APAUqMtheUo6cvuKLiEnrLHz3dg2v+g8nLCn/4/9XVdRKxM0rGA+32+0a2P79vjpA/XxewFIl6C4k8fMTqqP9LEeAIirLAFiTSglkQQ2KNIMOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464808; c=relaxed/simple;
-	bh=qtQddbWrt94ZSeSRRzJhhOO8cnjd2UFPHnMp5YodOVQ=;
+	s=arc-20240116; t=1708463844; c=relaxed/simple;
+	bh=G+z8Drw4Bw9RJJSmOIFn+glbmIWSpIRL+4nD3t20jeU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qIOaUOZTrZ6kWGyZV88yZAZuWQo7bnl4IQjfSJ3YClrYCGR1D6Ew/XrpC0byO9OGVUG34Mq5Oghygto4JQgDCoTpSBntyzrjctbKvbH2XzdHpbsEYNDiNxTEz2JsgKij0c1tVYngGoZTo5n49tsp+qzh564SWNmYlMug2e2WjSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dr0Ya1Yr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86A77C433F1;
-	Tue, 20 Feb 2024 21:33:27 +0000 (UTC)
+	 MIME-Version; b=sZERx7kh5Hu0Y0qqtjw0QYXVsgcvzxz/1T4KYbDrQgLIclWf3g53/nlaulF8o/x/I8+sWBBzh6pUYQM2HclwW65X3dXRBFDCuv1uDpkWg76UgJ92gEOcNraiLoRksU8EWFiBcGNyDcYF8nThyXyDyfTXhTn74KwXXdXg61HXwzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VWuSbYwd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52505C433F1;
+	Tue, 20 Feb 2024 21:17:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464808;
-	bh=qtQddbWrt94ZSeSRRzJhhOO8cnjd2UFPHnMp5YodOVQ=;
+	s=korg; t=1708463843;
+	bh=G+z8Drw4Bw9RJJSmOIFn+glbmIWSpIRL+4nD3t20jeU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dr0Ya1Yrov82UlEm15o5rlTB1g4kq97aA7WGw5Pus+vjhum62yrg7cyM16PYsgqFd
-	 q0DEARU7tMId9ljbtZ08IAZ+pfp+3d25xlIcmedSGnf7AZkFNFJt90nnsLWMYEG9id
-	 vRoZaAQK4z5jEX3WFQZhh5/72BUONWmciY+XSAOk=
+	b=VWuSbYwdccR2VIWps+2duJlsZsUGyTGAJWCwjPRvunT5elMegu6+NVHvRoVDO7aLi
+	 ZBsRck0QD30HMBs0W+UdJW7SGSKTlHWimLqty+r4+VPdSA5QiPgRyCWjdmPhS5Egrh
+	 JO95xNKkI4tYNipnNQkedbG5gnWqQ9/KW9TPyg/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c53d4d3ddb327e80bc51@syzkaller.appspotmail.com,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.7 126/309] mptcp: really cope with fastopen race
-Date: Tue, 20 Feb 2024 21:54:45 +0100
-Message-ID: <20240220205637.103416125@linuxfoundation.org>
+	Thong <thong.thai@amd.com>,
+	Ruijing Dong <ruijing.dong@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 170/331] drm/amdgpu/soc21: update VCN 4 max HEVC encoding resolution
+Date: Tue, 20 Feb 2024 21:54:46 +0100
+Message-ID: <20240220205642.859767948@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Thong <thong.thai@amd.com>
 
-commit 337cebbd850f94147cee05252778f8f78b8c337f upstream.
+commit 2f542421a47e8246e9b7d2c6508fe3a6e6c63078 upstream.
 
-Fastopen and PM-trigger subflow shutdown can race, as reported by
-syzkaller.
+Update the maximum resolution reported for HEVC encoding on VCN 4
+devices to reflect its 8K encoding capability.
 
-In my first attempt to close such race, I missed the fact that
-the subflow status can change again before the subflow_state_change
-callback is invoked.
-
-Address the issue additionally copying with all the states directly
-reachable from TCP_FIN_WAIT1.
-
-Fixes: 1e777f39b4d7 ("mptcp: add MSG_FASTOPEN sendmsg flag support")
-Fixes: 4fd19a307016 ("mptcp: fix inconsistent state on fastopen race")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3159
+Signed-off-by: Thong <thong.thai@amd.com>
+Reviewed-by: Ruijing Dong <ruijing.dong@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Reported-by: syzbot+c53d4d3ddb327e80bc51@syzkaller.appspotmail.com
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/458
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.h |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/soc21.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -1118,7 +1118,8 @@ static inline bool subflow_simultaneous_
- {
- 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(sk);
+--- a/drivers/gpu/drm/amd/amdgpu/soc21.c
++++ b/drivers/gpu/drm/amd/amdgpu/soc21.c
+@@ -50,13 +50,13 @@ static const struct amd_ip_funcs soc21_c
+ /* SOC21 */
+ static const struct amdgpu_video_codec_info vcn_4_0_0_video_codecs_encode_array_vcn0[] = {
+ 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 2304, 0)},
+-	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 4096, 2304, 0)},
++	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 8192, 4352, 0)},
+ 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_AV1, 8192, 4352, 0)},
+ };
  
--	return (1 << sk->sk_state) & (TCPF_ESTABLISHED | TCPF_FIN_WAIT1) &&
-+	return (1 << sk->sk_state) &
-+	       (TCPF_ESTABLISHED | TCPF_FIN_WAIT1 | TCPF_FIN_WAIT2 | TCPF_CLOSING) &&
- 	       is_active_ssk(subflow) &&
- 	       !subflow->conn_finished;
- }
+ static const struct amdgpu_video_codec_info vcn_4_0_0_video_codecs_encode_array_vcn1[] = {
+ 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 2304, 0)},
+-	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 4096, 2304, 0)},
++	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 8192, 4352, 0)},
+ };
+ 
+ static const struct amdgpu_video_codecs vcn_4_0_0_video_codecs_encode_vcn0 = {
 
 
 
