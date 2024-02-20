@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-20985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0150785C698
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:03:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9F2085C6A5
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:03:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0BF7283690
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:03:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73806283790
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:03:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F836151CC4;
-	Tue, 20 Feb 2024 21:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F18F2151CDC;
+	Tue, 20 Feb 2024 21:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kaTUbRFf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RcyUVc/P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E20AC14F9C8;
-	Tue, 20 Feb 2024 21:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE1CF151CC3;
+	Tue, 20 Feb 2024 21:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708462991; cv=none; b=gguSxro+IxtcbyAA+1qeYF7BBOhgBfGjkjQEv/HbIHao9TihqgroWHqF1WG5xHgi37QR28oXsn7VAW/1fi8AxOS224iEDWJWWCHr9c0g6ZtQU0wf2N2x7IA7F1w8KXtI3JVkWmDfw58Z6ppKKfCA7EFlzFEy2XU1c9sfvCJhbrY=
+	t=1708463015; cv=none; b=P2SO7tVfKkz6tck1aksLWRVN4X3GC/e9NFLWn0lFlzef0dJfeGtxtxrOuvmlAzieKAevGuA3pVRB5f9dxEwQJfs7Gy/mfemdPX03uO2dHkaOHE4t0ltqeeNV4KEWo9qa4qRcGZ4/NKJqI8O3IfoRfi6o+4vxPYm2XySB2tuZNis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708462991; c=relaxed/simple;
-	bh=6DshoUcMWnTOOG96+c6rk7GLGNfKgVlIWHXkg2vHR48=;
+	s=arc-20240116; t=1708463015; c=relaxed/simple;
+	bh=ot3qonQTdBqiucTYYEgHISSl4PtnJd3ql7rXAyOBxDc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IyJYzSy3RwbB2yrTv6s+yvCKPb2+BgD2d7sxT9++TIIWtGUtw6hXWWzgPzKADTYNAKK2yN6pdw2UQ9MrBRsGkaCa34nQCisTOFXmbWIIcmEK9/rnKzlqonowCmAEaLFOiUNvPbsgzVSPl09ALoB5ZbZ5EHvQLJl5ma8ciIPxI9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kaTUbRFf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C295C433F1;
-	Tue, 20 Feb 2024 21:03:10 +0000 (UTC)
+	 MIME-Version; b=DrJGkLX7g16jszXSk9AsCDJbQ6UgiUSQXn+gRWZHdm9S0uXNPv0OdosFR+c6xxKi1F/QvoOXXBhTjNy/nK9QLNSUxg0V5iNFVZ4kwvU2HO6XoApoLsK+WZAXdUcee4NTgLRe8pJsK7dhLrUG1WgTIJET4m+t52sMuDMYnM8qfvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RcyUVc/P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C891C433F1;
+	Tue, 20 Feb 2024 21:03:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708462990;
-	bh=6DshoUcMWnTOOG96+c6rk7GLGNfKgVlIWHXkg2vHR48=;
+	s=korg; t=1708463015;
+	bh=ot3qonQTdBqiucTYYEgHISSl4PtnJd3ql7rXAyOBxDc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kaTUbRFfMp0ETaf6u6EPZ5xj/ys2L+50x7WKR6IFGML84MM20gsr3TccBnC+C0LqI
-	 mbGoymnOeOFTYe6cZ0KyGLYa7hNuP4pBnSyMQE9hq8vT2EsO2ESAVk2EiQasZjEQg7
-	 yqoxi8ig66wCYO7paol0g7ITEq2l2Y1Te7Y7ldWk=
+	b=RcyUVc/PURzNkHVLiwP4MmD7Khraga4v+kN7WOufUf26c4AzLnoDkKN5yyiuaqJ7k
+	 /2UHs9DNgF6RPGwv9kBlhjiJVfYeRcmQSKN8XCPziNDINefUY4ztWDjfOpdOdJkgKR
+	 Akv0H0EySyTQ+8cdVXwKByEu93pgLxKX262e0KU8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Baokun Li <libaokun1@huawei.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.1 099/197] ext4: avoid bb_free and bb_fragments inconsistency in mb_free_blocks()
-Date: Tue, 20 Feb 2024 21:50:58 +0100
-Message-ID: <20240220204844.046968316@linuxfoundation.org>
+	David Schiller <david.schiller@jku.at>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 101/197] staging: iio: ad5933: fix type mismatch regression
+Date: Tue, 20 Feb 2024 21:51:00 +0100
+Message-ID: <20240220204844.106861968@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
 References: <20240220204841.073267068@linuxfoundation.org>
@@ -66,101 +66,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: David Schiller <david.schiller@jku.at>
 
-commit 2331fd4a49864e1571b4f50aa3aa1536ed6220d0 upstream.
+commit 6db053cd949fcd6254cea9f2cd5d39f7bd64379c upstream.
 
-After updating bb_free in mb_free_blocks, it is possible to return without
-updating bb_fragments because the block being freed is found to have
-already been freed, which leads to inconsistency between bb_free and
-bb_fragments.
+Commit 4c3577db3e4f ("Staging: iio: impedance-analyzer: Fix sparse
+warning") fixed a compiler warning, but introduced a bug that resulted
+in one of the two 16 bit IIO channels always being zero (when both are
+enabled).
 
-Since the group may be unlocked in ext4_grp_locked_error(), this can lead
-to problems such as dividing by zero when calculating the average fragment
-length. Hence move the update of bb_free to after the block double-free
-check guarantees that the corresponding statistics are updated only after
-the core block bitmap is modified.
+This is because int is 32 bits wide on most architectures and in the
+case of a little-endian machine the two most significant bytes would
+occupy the buffer for the second channel as 'val' is being passed as a
+void pointer to 'iio_push_to_buffers()'.
 
-Fixes: eabe0444df90 ("ext4: speed-up releasing blocks on commit")
-CC:  <stable@vger.kernel.org> # 3.10
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240104142040.2835097-5-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fix by defining 'val' as u16. Tested working on ARM64.
+
+Fixes: 4c3577db3e4f ("Staging: iio: impedance-analyzer: Fix sparse warning")
+Signed-off-by: David Schiller <david.schiller@jku.at>
+Link: https://lore.kernel.org/r/20240122134916.2137957-1-david.schiller@jku.at
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/mballoc.c |   39 +++++++++++++++++++++------------------
- 1 file changed, 21 insertions(+), 18 deletions(-)
+ drivers/staging/iio/impedance-analyzer/ad5933.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -1785,11 +1785,6 @@ static void mb_free_blocks(struct inode
- 	mb_check_buddy(e4b);
- 	mb_free_blocks_double(inode, e4b, first, count);
- 
--	this_cpu_inc(discard_pa_seq);
--	e4b->bd_info->bb_free += count;
--	if (first < e4b->bd_info->bb_first_free)
--		e4b->bd_info->bb_first_free = first;
--
- 	/* access memory sequentially: check left neighbour,
- 	 * clear range and then check right neighbour
- 	 */
-@@ -1803,23 +1798,31 @@ static void mb_free_blocks(struct inode
- 		struct ext4_sb_info *sbi = EXT4_SB(sb);
- 		ext4_fsblk_t blocknr;
- 
-+		/*
-+		 * Fastcommit replay can free already freed blocks which
-+		 * corrupts allocation info. Regenerate it.
-+		 */
-+		if (sbi->s_mount_state & EXT4_FC_REPLAY) {
-+			mb_regenerate_buddy(e4b);
-+			goto check;
-+		}
-+
- 		blocknr = ext4_group_first_block_no(sb, e4b->bd_group);
- 		blocknr += EXT4_C2B(sbi, block);
--		if (!(sbi->s_mount_state & EXT4_FC_REPLAY)) {
--			ext4_grp_locked_error(sb, e4b->bd_group,
--					      inode ? inode->i_ino : 0,
--					      blocknr,
--					      "freeing already freed block (bit %u); block bitmap corrupt.",
--					      block);
--			ext4_mark_group_bitmap_corrupted(
--				sb, e4b->bd_group,
-+		ext4_grp_locked_error(sb, e4b->bd_group,
-+				      inode ? inode->i_ino : 0, blocknr,
-+				      "freeing already freed block (bit %u); block bitmap corrupt.",
-+				      block);
-+		ext4_mark_group_bitmap_corrupted(sb, e4b->bd_group,
- 				EXT4_GROUP_INFO_BBITMAP_CORRUPT);
--		} else {
--			mb_regenerate_buddy(e4b);
--		}
--		goto done;
-+		return;
- 	}
- 
-+	this_cpu_inc(discard_pa_seq);
-+	e4b->bd_info->bb_free += count;
-+	if (first < e4b->bd_info->bb_first_free)
-+		e4b->bd_info->bb_first_free = first;
-+
- 	/* let's maintain fragments counter */
- 	if (left_is_free && right_is_free)
- 		e4b->bd_info->bb_fragments--;
-@@ -1844,9 +1847,9 @@ static void mb_free_blocks(struct inode
- 	if (first <= last)
- 		mb_buddy_mark_free(e4b, first >> 1, last >> 1);
- 
--done:
- 	mb_set_largest_free_order(sb, e4b->bd_info);
- 	mb_update_avg_fragment_size(sb, e4b->bd_info);
-+check:
- 	mb_check_buddy(e4b);
- }
+--- a/drivers/staging/iio/impedance-analyzer/ad5933.c
++++ b/drivers/staging/iio/impedance-analyzer/ad5933.c
+@@ -608,7 +608,7 @@ static void ad5933_work(struct work_stru
+ 		struct ad5933_state, work.work);
+ 	struct iio_dev *indio_dev = i2c_get_clientdata(st->client);
+ 	__be16 buf[2];
+-	int val[2];
++	u16 val[2];
+ 	unsigned char status;
+ 	int ret;
  
 
 
