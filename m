@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-21633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0703D85C9B2
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:37:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D751885C873
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:21:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9ADC11F2141D
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:37:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91A9D284D3A
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:21:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7BC7151CDC;
-	Tue, 20 Feb 2024 21:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6A28152DE1;
+	Tue, 20 Feb 2024 21:21:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tlSE9y8M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xhZoD6YY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9606614F9C8;
-	Tue, 20 Feb 2024 21:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7019E151CEC;
+	Tue, 20 Feb 2024 21:21:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708465025; cv=none; b=g7o5FwheAwC2tS2Z2cS2vhmODD5WhKuPQ60jmRjXyySWivpGKywUr+nVmRx7Xxin7nqVHQOzzivqyMwh/40FQaZ4NwpgHziyfM2hxHHhkCig0rA1kcT5Y+u7DeUKOb/OLH2tsGLxVR3mPwdaovKTQjK4wuEc1Szcpj6y+PnJqjA=
+	t=1708464113; cv=none; b=arx6CZBO5TZ4c0FtqEWhf4TFGH1aUfOPoh02zGnkkCsM0CV2FwlH20CmLOZiZmkc7WcpcgPSk7Y3tA2GV52JCdZQhHXCafokPDo8TZY4hf1ge4Zp23OxgEcjWCZ1gI3v119voGvKI3docbttTIcOU4cqPSq7S03KXj3Iaw4wJ/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708465025; c=relaxed/simple;
-	bh=TAzzRICaSCZvezukh9yD13X2sSWaxLbh85SiDMF2iCk=;
+	s=arc-20240116; t=1708464113; c=relaxed/simple;
+	bh=M3PwGVP5gpBKm4AoHCI4imKn5ITxrimW24WIHKFKK78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zw0JuVtcsfP5Iwlz9N6usJFkeV18RFyHoVJSzWyuXu+qDHp4vUDe+QD6NDxkBFXLJmGc09E7sbj5VWa5bhJnX8esLYSjhZ6tHHwOkqnVUMrIBTEBI3uRARg1IHnTcgB5cEo2ihO8omZwDavkno4DMNH0i/j/w+sudsdsBRc8+5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tlSE9y8M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D340C433F1;
-	Tue, 20 Feb 2024 21:37:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=V42AyHDivmESY732zZczqIu1Sc8jb7MSuC3qvfAu2DyigCi7WiApYYky89rqeWJa5GgzhczrZpFnlmcZH5ytRtZzZCbJWbNajpPg/SHTsrXwlBqdwweC+whPL6bM4iDGH+kTJynd7ZAZ1pLSqgXX1pIbyRp3/3PmXu2vSKbRrpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xhZoD6YY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D30F3C433F1;
+	Tue, 20 Feb 2024 21:21:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708465025;
-	bh=TAzzRICaSCZvezukh9yD13X2sSWaxLbh85SiDMF2iCk=;
+	s=korg; t=1708464113;
+	bh=M3PwGVP5gpBKm4AoHCI4imKn5ITxrimW24WIHKFKK78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tlSE9y8Mr1FICvw2vBO+4hSSwlUGub0RKWBVBg62TW6t19wG69sFuXko1hGcqz+az
-	 Azk2OL69Ko/C0F15wJBTTjjRatt4A+ssrdr/DxPcVB5IFkNggyewO29t88jeZtfT5Y
-	 SU+bFskV3D9MVoS/bE87Z3Q7tMg1OWRTKGvqo/fI=
+	b=xhZoD6YYFwqGlEe6Z3UCMVjlwZ7jFeFcBt91JOf0yxnaVu/6yVkG9E4HduXWnpRp/
+	 IBZ7zwiKQIdTWWayx3hJtk+VXzggXqFbIlNMFt+rQZVYZ6kwzV8NYDQXlTel6ccA/s
+	 8WGvqx0wH9GpgiSdoKsGenXMqL+dV76f+9oyl0yY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.7 212/309] drm/amd/display: Fix array-index-out-of-bounds in dcn35_clkmgr
-Date: Tue, 20 Feb 2024 21:56:11 +0100
-Message-ID: <20240220205639.808401527@linuxfoundation.org>
+	syzbot+52bbc0ad036f6f0d4a25@syzkaller.appspotmail.com,
+	Brad Spengler <spender@grsecurity.net>,
+	=?UTF-8?q?=D0=A1=D1=82=D0=B0=D1=81=20=D0=9D=D0=B8=D1=87=D0=B8=D0=BF=D0=BE=D1=80=D0=BE=D0=B2=D0=B8=D1=87?= <stasn77@gmail.com>,
+	Jozsef Kadlecsik <kadlec@netfilter.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 6.6 256/331] netfilter: ipset: Missing gc cancellations fixed
+Date: Tue, 20 Feb 2024 21:56:12 +0100
+Message-ID: <20240220205645.898282331@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +62,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roman Li <roman.li@amd.com>
+From: Jozsef Kadlecsik <kadlec@netfilter.org>
 
-commit 46806e59a87790760870d216f54951a5b4d545bc upstream.
+commit 27c5a095e2518975e20a10102908ae8231699879 upstream.
 
-[Why]
-There is a potential memory access violation while
-iterating through array of dcn35 clks.
+The patch fdb8e12cc2cc ("netfilter: ipset: fix performance regression
+in swap operation") missed to add the calls to gc cancellations
+at the error path of create operations and at module unload. Also,
+because the half of the destroy operations now executed by a
+function registered by call_rcu(), neither NFNL_SUBSYS_IPSET mutex
+or rcu read lock is held and therefore the checking of them results
+false warnings.
 
-[How]
-Limit iteration per array size.
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Roman Li <roman.li@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 97f7cf1cd80e ("netfilter: ipset: fix performance regression in swap operation")
+Reported-by: syzbot+52bbc0ad036f6f0d4a25@syzkaller.appspotmail.com
+Reported-by: Brad Spengler <spender@grsecurity.net>
+Reported-by: Стас Ничипорович <stasn77@gmail.com>
+Tested-by: Brad Spengler <spender@grsecurity.net>
+Tested-by: Стас Ничипорович <stasn77@gmail.com>
+Signed-off-by: Jozsef Kadlecsik <kadlec@netfilter.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c |   17 +++++++----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ net/netfilter/ipset/ip_set_core.c     |    2 ++
+ net/netfilter/ipset/ip_set_hash_gen.h |    4 ++--
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-@@ -654,10 +654,13 @@ static void dcn35_clk_mgr_helper_populat
- 	struct clk_limit_table_entry def_max = bw_params->clk_table.entries[bw_params->clk_table.num_entries - 1];
- 	uint32_t max_fclk = 0, min_pstate = 0, max_dispclk = 0, max_dppclk = 0;
- 	uint32_t max_pstate = 0, max_dram_speed_mts = 0, min_dram_speed_mts = 0;
-+	uint32_t num_memps, num_fclk, num_dcfclk;
- 	int i;
+--- a/net/netfilter/ipset/ip_set_core.c
++++ b/net/netfilter/ipset/ip_set_core.c
+@@ -1154,6 +1154,7 @@ static int ip_set_create(struct sk_buff
+ 	return ret;
  
- 	/* Determine min/max p-state values. */
--	for (i = 0; i < clock_table->NumMemPstatesEnabled; i++) {
-+	num_memps = (clock_table->NumMemPstatesEnabled > NUM_MEM_PSTATE_LEVELS) ? NUM_MEM_PSTATE_LEVELS :
-+		clock_table->NumMemPstatesEnabled;
-+	for (i = 0; i < num_memps; i++) {
- 		uint32_t dram_speed_mts = calc_dram_speed_mts(&clock_table->MemPstateTable[i]);
+ cleanup:
++	set->variant->cancel_gc(set);
+ 	set->variant->destroy(set);
+ put_out:
+ 	module_put(set->type->me);
+@@ -2378,6 +2379,7 @@ ip_set_net_exit(struct net *net)
+ 		set = ip_set(inst, i);
+ 		if (set) {
+ 			ip_set(inst, i) = NULL;
++			set->variant->cancel_gc(set);
+ 			ip_set_destroy_set(set);
+ 		}
+ 	}
+--- a/net/netfilter/ipset/ip_set_hash_gen.h
++++ b/net/netfilter/ipset/ip_set_hash_gen.h
+@@ -431,7 +431,7 @@ mtype_ahash_destroy(struct ip_set *set,
+ 	u32 i;
  
- 		if (is_valid_clock_value(dram_speed_mts) && dram_speed_mts > max_dram_speed_mts) {
-@@ -669,7 +672,7 @@ static void dcn35_clk_mgr_helper_populat
- 	min_dram_speed_mts = max_dram_speed_mts;
- 	min_pstate = max_pstate;
+ 	for (i = 0; i < jhash_size(t->htable_bits); i++) {
+-		n = __ipset_dereference(hbucket(t, i));
++		n = (__force struct hbucket *)hbucket(t, i);
+ 		if (!n)
+ 			continue;
+ 		if (set->extensions & IPSET_EXT_DESTROY && ext_destroy)
+@@ -451,7 +451,7 @@ mtype_destroy(struct ip_set *set)
+ 	struct htype *h = set->data;
+ 	struct list_head *l, *lt;
  
--	for (i = 0; i < clock_table->NumMemPstatesEnabled; i++) {
-+	for (i = 0; i < num_memps; i++) {
- 		uint32_t dram_speed_mts = calc_dram_speed_mts(&clock_table->MemPstateTable[i]);
- 
- 		if (is_valid_clock_value(dram_speed_mts) && dram_speed_mts < min_dram_speed_mts) {
-@@ -698,9 +701,13 @@ static void dcn35_clk_mgr_helper_populat
- 	/* Base the clock table on dcfclk, need at least one entry regardless of pmfw table */
- 	ASSERT(clock_table->NumDcfClkLevelsEnabled > 0);
- 
--	max_fclk = find_max_clk_value(clock_table->FclkClocks_Freq, clock_table->NumFclkLevelsEnabled);
--
--	for (i = 0; i < clock_table->NumDcfClkLevelsEnabled; i++) {
-+	num_fclk = (clock_table->NumFclkLevelsEnabled > NUM_FCLK_DPM_LEVELS) ? NUM_FCLK_DPM_LEVELS :
-+		clock_table->NumFclkLevelsEnabled;
-+	max_fclk = find_max_clk_value(clock_table->FclkClocks_Freq, num_fclk);
-+
-+	num_dcfclk = (clock_table->NumFclkLevelsEnabled > NUM_DCFCLK_DPM_LEVELS) ? NUM_DCFCLK_DPM_LEVELS :
-+		clock_table->NumDcfClkLevelsEnabled;
-+	for (i = 0; i < num_dcfclk; i++) {
- 		int j;
- 
- 		/* First search defaults for the clocks we don't read using closest lower or equal default dcfclk */
+-	mtype_ahash_destroy(set, ipset_dereference_nfnl(h->table), true);
++	mtype_ahash_destroy(set, (__force struct htable *)h->table, true);
+ 	list_for_each_safe(l, lt, &h->ad) {
+ 		list_del(l);
+ 		kfree(l);
 
 
 
