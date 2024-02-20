@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-21134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECAF085C744
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:11:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E44F185C8F4
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:27:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DAC71F2291C
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:11:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 129131C22530
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:27:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C59A21509A5;
-	Tue, 20 Feb 2024 21:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3450B151CE1;
+	Tue, 20 Feb 2024 21:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kmpbtXTY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AReNLZ+n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85017612D7;
-	Tue, 20 Feb 2024 21:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E95E114A4E6;
+	Tue, 20 Feb 2024 21:27:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463460; cv=none; b=YgPLVHzShBY2lBKQOJVQwqoOQEVV30KqIQqxQP2cfMaWKIR81O3yUT1hym4E1wnROTCya59PnQ5IKO/PRZjfEktNGvypCzrW0FoiuuMV0KAbnVjZtZLlcmrjdCw/nqPbcuFdS9KF12872FeiHXI35c/zkLoKrB3Om9XR/bkk4Qs=
+	t=1708464455; cv=none; b=WGTamHASR19u48+QU0JfaUoHoH5vH6mn6AiYyF0cZtvZR3q2O4YaVCId7RPGE8kLIVPPPuoRCdg43jFn9Np0jC2b+JNV8YowGSpCGcvaNlGIKSZt9mmSAmOmFtGUGZs53oD4BIuYdBBEy59aBYT3kezttaqBnbtkLZksWg7zJz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463460; c=relaxed/simple;
-	bh=xhM5anRfP7dD521WvHA99qrumrDCIuZ9pGcV8enRO5g=;
+	s=arc-20240116; t=1708464455; c=relaxed/simple;
+	bh=SlVUg3tRu4R8AniT3ivfLxRQKOF0qGMBvwnz7kSbbrQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sFRyxvWM510SsxW6JyCSg05C6OwCeh1dBWrYFVaPBHBs7i3g/OmwCqfhjc3UiVmkv3EUvadw927fGpsyurUdhbcY/LdF2rGRy73Ec/2iyEIu1iTja8XCfXfL9m0Nym4p06dlxzmBAHVD5fuYlPLK6jhJA5nVRkh7kPwE4VKyA6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kmpbtXTY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E386C433F1;
-	Tue, 20 Feb 2024 21:10:59 +0000 (UTC)
+	 MIME-Version; b=f38ATuSNqWDLEUn1sF8ibMhfYwXNw8z+uSyfkQEgv9GB9PaCQlPnxOP8to/duH5jbx9uO684O1W1otKNNN2O1TV3dLBFZNjAOFh/WDbpDS+bLW5orPqC+fy9pxrKxcgMN35gkJ6PHB+2sKwH/Mu3cCzxSHq7ebwVVVdbkCZtc5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AReNLZ+n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73A88C433F1;
+	Tue, 20 Feb 2024 21:27:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463460;
-	bh=xhM5anRfP7dD521WvHA99qrumrDCIuZ9pGcV8enRO5g=;
+	s=korg; t=1708464454;
+	bh=SlVUg3tRu4R8AniT3ivfLxRQKOF0qGMBvwnz7kSbbrQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kmpbtXTYn5zcFYAqHu2FE78b35zlrAlAp+yEBpTgf+MTPIYRXzBxLg/3CtZPaGfVT
-	 qeZKebk3XWYE08XAlJaCDnBYd7BSpmFjEMPr3Zvj/zztK3iXs2HtQLlcExn5/pTpy8
-	 uYH2VitI6VDL41JyceRgJP/qQxhyjhkRg6RwY7gc=
+	b=AReNLZ+nm7LGWYcwF6Cm6Uj3uhdeNQWbeujm+XTy+xIBAfYHecNkUkcnfgV0nwE85
+	 5noQVLxkFxmz8XSuDh+ivncnsMGrtyQiBfn/eUzgfwol7VW88DrsmOPpgCCOi4BYZj
+	 taJCSk49rH4zTyQZy1rFaYA6IqZWWutUBLmwWJ0o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 050/331] MIPS: Add memory clobber to csum_ipv6_magic() inline assembler
-Date: Tue, 20 Feb 2024 21:52:46 +0100
-Message-ID: <20240220205639.170426302@linuxfoundation.org>
+	Ivan Shapovalov <intelfx@intelfx.name>,
+	Heddxh <g311571057@gmail.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.7 008/309] btrfs: dont refill whole delayed refs block reserve when starting transaction
+Date: Tue, 20 Feb 2024 21:52:47 +0100
+Message-ID: <20240220205633.395727292@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +64,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit d55347bfe4e66dce2e1e7501e5492f4af3e315f8 ]
+commit 2f6397e448e689adf57e6788c90f913abd7e1af8 upstream.
 
-After 'lib: checksum: Use aligned accesses for ip_fast_csum and
-csum_ipv6_magic tests' was applied, the test_csum_ipv6_magic unit test
-started failing for all mips platforms, both little and bit endian.
-Oddly enough, adding debug code into test_csum_ipv6_magic() made the
-problem disappear.
+Since commit 28270e25c69a ("btrfs: always reserve space for delayed refs
+when starting transaction") we started not only to reserve metadata space
+for the delayed refs a caller of btrfs_start_transaction() might generate
+but also to try to fully refill the delayed refs block reserve, because
+there are several case where we generate delayed refs and haven't reserved
+space for them, relying on the global block reserve. Relying too much on
+the global block reserve is not always safe, and can result in hitting
+-ENOSPC during transaction commits or worst, in rare cases, being unable
+to mount a filesystem that needs to do orphan cleanup or anything that
+requires modifying the filesystem during mount, and has no more
+unallocated space and the metadata space is nearly full. This was
+explained in detail in that commit's change log.
 
-The gcc manual says:
+However the gap between the reserved amount and the size of the delayed
+refs block reserve can be huge, so attempting to reserve space for such
+a gap can result in allocating many metadata block groups that end up
+not being used. After a recent patch, with the subject:
 
-"The "memory" clobber tells the compiler that the assembly code performs
- memory reads or writes to items other than those listed in the input
- and output operands (for example, accessing the memory pointed to by one
- of the input parameters)
-"
+  "btrfs: add new unused block groups to the list of unused block groups"
 
-This is definitely the case for csum_ipv6_magic(). Indeed, adding the
-'memory' clobber fixes the problem.
+We started to add new block groups that are unused to the list of unused
+block groups, to avoid having them around for a very long time in case
+they are never used, because a block group is only added to the list of
+unused block groups when we deallocate the last extent or when mounting
+the filesystem and the block group has 0 bytes used. This is not a problem
+introduced by the commit mentioned earlier, it always existed as our
+metadata space reservations are, most of the time, pessimistic and end up
+not using all the space they reserved, so we can occasionally end up with
+one or two unused metadata block groups for a long period. However after
+that commit mentioned earlier, we are just more pessimistic in the
+metadata space reservations when starting a transaction and therefore the
+issue is more likely to happen.
 
-Cc: Charlie Jenkins <charlie@rivosinc.com>
-Cc: Palmer Dabbelt <palmer@rivosinc.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This however is not always enough because we might create unused metadata
+block groups when reserving metadata space at a high rate if there's
+always a gap in the delayed refs block reserve and the cleaner kthread
+isn't triggered often enough or is busy with other work (running delayed
+iputs, cleaning deleted roots, etc), not to mention the block group's
+allocated space is only usable for a new block group after the transaction
+used to remove it is committed.
+
+A user reported that he's getting a lot of allocated metadata block groups
+but the usage percentage of metadata space was very low compared to the
+total allocated space, specially after running a series of block group
+relocations.
+
+So for now stop trying to refill the gap in the delayed refs block reserve
+and reserve space only for the delayed refs we are expected to generate
+when starting a transaction.
+
+CC: stable@vger.kernel.org # 6.7+
+Reported-by: Ivan Shapovalov <intelfx@intelfx.name>
+Link: https://lore.kernel.org/linux-btrfs/9cdbf0ca9cdda1b4c84e15e548af7d7f9f926382.camel@intelfx.name/
+Link: https://lore.kernel.org/linux-btrfs/CAL3q7H6802ayLHUJFztzZAVzBLJAGdFx=6FHNNy87+obZXXZpQ@mail.gmail.com/
+Tested-by: Ivan Shapovalov <intelfx@intelfx.name>
+Reported-by: Heddxh <g311571057@gmail.com>
+Link: https://lore.kernel.org/linux-btrfs/CAE93xANEby6RezOD=zcofENYZOT-wpYygJyauyUAZkLv6XVFOA@mail.gmail.com/
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/include/asm/checksum.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/btrfs/transaction.c |   38 ++------------------------------------
+ 1 file changed, 2 insertions(+), 36 deletions(-)
 
-diff --git a/arch/mips/include/asm/checksum.h b/arch/mips/include/asm/checksum.h
-index 4044eaf989ac..0921ddda11a4 100644
---- a/arch/mips/include/asm/checksum.h
-+++ b/arch/mips/include/asm/checksum.h
-@@ -241,7 +241,8 @@ static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
- 	"	.set	pop"
- 	: "=&r" (sum), "=&r" (tmp)
- 	: "r" (saddr), "r" (daddr),
--	  "0" (htonl(len)), "r" (htonl(proto)), "r" (sum));
-+	  "0" (htonl(len)), "r" (htonl(proto)), "r" (sum)
-+	: "memory");
+--- a/fs/btrfs/transaction.c
++++ b/fs/btrfs/transaction.c
+@@ -564,56 +564,22 @@ static int btrfs_reserve_trans_metadata(
+ 					u64 num_bytes,
+ 					u64 *delayed_refs_bytes)
+ {
+-	struct btrfs_block_rsv *delayed_refs_rsv = &fs_info->delayed_refs_rsv;
+ 	struct btrfs_space_info *si = fs_info->trans_block_rsv.space_info;
+-	u64 extra_delayed_refs_bytes = 0;
+-	u64 bytes;
++	u64 bytes = num_bytes + *delayed_refs_bytes;
+ 	int ret;
  
- 	return csum_fold(sum);
- }
--- 
-2.43.0
-
+ 	/*
+-	 * If there's a gap between the size of the delayed refs reserve and
+-	 * its reserved space, than some tasks have added delayed refs or bumped
+-	 * its size otherwise (due to block group creation or removal, or block
+-	 * group item update). Also try to allocate that gap in order to prevent
+-	 * using (and possibly abusing) the global reserve when committing the
+-	 * transaction.
+-	 */
+-	if (flush == BTRFS_RESERVE_FLUSH_ALL &&
+-	    !btrfs_block_rsv_full(delayed_refs_rsv)) {
+-		spin_lock(&delayed_refs_rsv->lock);
+-		if (delayed_refs_rsv->size > delayed_refs_rsv->reserved)
+-			extra_delayed_refs_bytes = delayed_refs_rsv->size -
+-				delayed_refs_rsv->reserved;
+-		spin_unlock(&delayed_refs_rsv->lock);
+-	}
+-
+-	bytes = num_bytes + *delayed_refs_bytes + extra_delayed_refs_bytes;
+-
+-	/*
+ 	 * We want to reserve all the bytes we may need all at once, so we only
+ 	 * do 1 enospc flushing cycle per transaction start.
+ 	 */
+ 	ret = btrfs_reserve_metadata_bytes(fs_info, si, bytes, flush);
+-	if (ret == 0) {
+-		if (extra_delayed_refs_bytes > 0)
+-			btrfs_migrate_to_delayed_refs_rsv(fs_info,
+-							  extra_delayed_refs_bytes);
+-		return 0;
+-	}
+-
+-	if (extra_delayed_refs_bytes > 0) {
+-		bytes -= extra_delayed_refs_bytes;
+-		ret = btrfs_reserve_metadata_bytes(fs_info, si, bytes, flush);
+-		if (ret == 0)
+-			return 0;
+-	}
+ 
+ 	/*
+ 	 * If we are an emergency flush, which can steal from the global block
+ 	 * reserve, then attempt to not reserve space for the delayed refs, as
+ 	 * we will consume space for them from the global block reserve.
+ 	 */
+-	if (flush == BTRFS_RESERVE_FLUSH_ALL_STEAL) {
++	if (ret && flush == BTRFS_RESERVE_FLUSH_ALL_STEAL) {
+ 		bytes -= *delayed_refs_bytes;
+ 		*delayed_refs_bytes = 0;
+ 		ret = btrfs_reserve_metadata_bytes(fs_info, si, bytes, flush);
 
 
 
