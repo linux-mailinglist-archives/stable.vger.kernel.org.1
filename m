@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-21487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C95385C91F
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:29:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8586D85C78B
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:14:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE2B51C22659
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:29:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6C0A1C21FA6
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:14:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C25E9151CE1;
-	Tue, 20 Feb 2024 21:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92BCE151CED;
+	Tue, 20 Feb 2024 21:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MSou6wVz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HTbWZAx/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FAC314A4E6;
-	Tue, 20 Feb 2024 21:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD711509BC;
+	Tue, 20 Feb 2024 21:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464572; cv=none; b=dk3V0Se/Iewzk953hRj5LumlW7Pr+4btEEFdkEoV5oVxwHPR2dxb/YDsix5tzdDChpJtkSCY9TgOGm9VdR9pc0j91lAJ2CGxAkZ51mpXLV9qSMhJ9y6Xk2QiGUKIiEBNhgX1RqK4we6T6Pc/57Nm1zR0CDMxVcW+pAVHiG3+lw0=
+	t=1708463634; cv=none; b=mODXzxfdcKsAkSf1nJnEU+9w/gXU3KKelKhWkTxqP2/LOqret/1n0yjwGR0FYgiwpBoPf36lyEcCjFlRhPRnnowEy604JaTtDtydEE2mvhQp4ocR9CFou6j3zoO6zELfak2p6f200HTqN5J76pxyvRx6CGl4mxhzbNooAUW4edM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464572; c=relaxed/simple;
-	bh=Utarpf+uy9noqZJ3UVosVulBLLZeYso2TezqF11FBeg=;
+	s=arc-20240116; t=1708463634; c=relaxed/simple;
+	bh=Wd/1WhjFpQtO3GsgCkYw207kQYhDGrbM7nOi8hiiMnQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nWrTBJjGEFPtJnhSgdhOhA/mPxo/nOXYb8FadZjJTSagDRk15CCEw+JMJvUUDpZmi+DZZcTJ42lcP0lFHaqJWFDe62AIKTaFjiGHuvtfcbBzxFmNSunYFC30CWumbJWnjsfL4TRn9r8y4Vl7Hy65UGHjvG60+51v+ZAl+zRdw/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MSou6wVz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7FEEC433C7;
-	Tue, 20 Feb 2024 21:29:31 +0000 (UTC)
+	 MIME-Version; b=sSBuY4HE30zuF/zKW7kFE5bwA5lCrWJf73CDv7WLqPIDJVEvnwT7/+R69/rd5vwvtdGdxSqoJzMH0UtKjjikm+t00UVuztaCpzLVUMykkHXTAuNZljiajB1P4ReAl+RLFcR6H8XCsJGiQzk4vo2eyTNsFUuOtMhtl9cbb1uNeYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HTbWZAx/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1624C433F1;
+	Tue, 20 Feb 2024 21:13:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464572;
-	bh=Utarpf+uy9noqZJ3UVosVulBLLZeYso2TezqF11FBeg=;
+	s=korg; t=1708463634;
+	bh=Wd/1WhjFpQtO3GsgCkYw207kQYhDGrbM7nOi8hiiMnQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MSou6wVzcc/f401aZn2N27wHO8ayvxIRGK8BnhO3ielmlZnjoFyXcK+TKADJstJ6Z
-	 zU28FdsVxDWL7tRxGCSjRj1fVkclQyLvSO4iox/SU6kEgWX0POmtHjZgscBoa9CWRx
-	 AbvSxLM7YLw65NZsCyAlzySKT3Y2cpJ/RYWxY5eg=
+	b=HTbWZAx/cuAYeDjqlqh/Qk25njuUsrURLEYUIlGiYYEFwBr+PKAA5hTFXcq48WZVz
+	 Wpa2A1KgXlEz4F0p6T5wW4hYILrRrkm/yty5ZKuDFKxms1WTOQ3wVTQ8iGJwRvw/Gh
+	 1yO10o1G1ymaznwjt5RVUfAmWHPiokhDH224v3FQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xi Ruoyao <xry111@xry111.site>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 060/309] mm/memory: Use exception ip to search exception tables
-Date: Tue, 20 Feb 2024 21:53:39 +0100
-Message-ID: <20240220205635.103258941@linuxfoundation.org>
+Subject: [PATCH 6.6 104/331] kallsyms: ignore ARMv4 thunks along with others
+Date: Tue, 20 Feb 2024 21:53:40 +0100
+Message-ID: <20240220205640.860230015@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 8fa5070833886268e4fb646daaca99f725b378e9 ]
+[ Upstream commit a951884d82886d8453d489f84f20ac168d062b38 ]
 
-On architectures with delay slot, instruction_pointer() may differ
-from where exception was triggered.
+lld is now able to build ARMv4 and ARMv4T kernels, which means it can
+generate thunks for those (__ARMv4PILongThunk_*, __ARMv4PILongBXThunk_*)
+that can interfere with kallsyms table generation since they do not get
+ignore like the corresponding ARMv5+ ones are:
 
-Use exception_ip we just introduced to search exception tables to
-get rid of the problem.
+Inconsistent kallsyms data
+Try "make KALLSYMS_EXTRA_PASS=1" as a workaround
 
-Fixes: 4bce37a68ff8 ("mips/mm: Convert to using lock_mm_and_find_vma()")
-Reported-by: Xi Ruoyao <xry111@xry111.site>
-Link: https://lore.kernel.org/r/75e9fd7b08562ad9b456a5bdaacb7cc220311cc9.camel@xry111.site/
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Replace the hardcoded list of thunk symbols with a more general regex that
+covers this one along with future symbols that follow the same pattern.
+
+Fixes: 5eb6e280432d ("ARM: 9289/1: Allow pre-ARMv5 builds with ld.lld 16.0.0 and newer")
+Fixes: efe6e3068067 ("kallsyms: fix nonconverging kallsyms table with lld")
+Suggested-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/memory.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ scripts/mksysmap | 13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/mm/memory.c b/mm/memory.c
-index 6e0712d06cd4..f941489d6041 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5373,7 +5373,7 @@ static inline bool get_mmap_lock_carefully(struct mm_struct *mm, struct pt_regs
- 		return true;
+diff --git a/scripts/mksysmap b/scripts/mksysmap
+index 9ba1c9da0a40..57ff5656d566 100755
+--- a/scripts/mksysmap
++++ b/scripts/mksysmap
+@@ -48,17 +48,8 @@ ${NM} -n ${1} | sed >${2} -e "
+ / __kvm_nvhe_\\$/d
+ / __kvm_nvhe_\.L/d
  
- 	if (regs && !user_mode(regs)) {
--		unsigned long ip = instruction_pointer(regs);
-+		unsigned long ip = exception_ip(regs);
- 		if (!search_exception_tables(ip))
- 			return false;
- 	}
-@@ -5398,7 +5398,7 @@ static inline bool upgrade_mmap_lock_carefully(struct mm_struct *mm, struct pt_r
- {
- 	mmap_read_unlock(mm);
- 	if (regs && !user_mode(regs)) {
--		unsigned long ip = instruction_pointer(regs);
-+		unsigned long ip = exception_ip(regs);
- 		if (!search_exception_tables(ip))
- 			return false;
- 	}
+-# arm64 lld
+-/ __AArch64ADRPThunk_/d
+-
+-# arm lld
+-/ __ARMV5PILongThunk_/d
+-/ __ARMV7PILongThunk_/d
+-/ __ThumbV7PILongThunk_/d
+-
+-# mips lld
+-/ __LA25Thunk_/d
+-/ __microLA25Thunk_/d
++# lld arm/aarch64/mips thunks
++/ __[[:alnum:]]*Thunk_/d
+ 
+ # CFI type identifiers
+ / __kcfi_typeid_/d
 -- 
 2.43.0
 
