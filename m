@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-21606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7016785C997
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:35:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A652885C84C
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:20:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 943B71C20BBA
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:35:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A8681F27027
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:20:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F5CC151CEC;
-	Tue, 20 Feb 2024 21:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B337151CF1;
+	Tue, 20 Feb 2024 21:20:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yKLqWpI4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G9bjpAXB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0AB62DF9F;
-	Tue, 20 Feb 2024 21:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9BB151CF3;
+	Tue, 20 Feb 2024 21:20:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464941; cv=none; b=S/R8xuGnu/fZcPjK9P7Ta45HuKxt9xgJV++IT91Qt+dtVF/M+IecBblRoEW4aP3qRG9FbWd2hERcTTLsRd2gC9SsaGjn2dK34knYr4demWxtmS4E2kUT1nyfHjS0D8W2VAYMh7GaMrQw5R6uI6H6VMvXFdI9WHKjDj+8lu9tpQo=
+	t=1708464024; cv=none; b=nKCXhQTsi8JuHQYx7n1PaHxSjUqn+kRBk49iYn8h8ZW409ypmUhq4SR4w3tOuf2P2D6LRfEs0Md4Ok+F5Dtbc55Np+oQ6fWUdIcI9UH1hczR8eQTwLzwBs/waqLhQA+WqWQNYRKdRbn+I7facoV6IUQvptIV2eCPSkYIl2wKYeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464941; c=relaxed/simple;
-	bh=W6rmOA917gY/cZqlGrIecFA+p5fTAvI13zBDh3NX83w=;
+	s=arc-20240116; t=1708464024; c=relaxed/simple;
+	bh=jFOgIOiXeoZOkk5c55rDOCKq1JSRrt/ofjFjl5hCFnM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gdj++0qddvI8jGkj8WpCSsOiBU110albZGP+59ZUb5O4rkTeObV6BQeX58n2hOKs3nbF8QiNZy7qaX1GLxf1V+zD5LQqC5bqNeiLz0gU5eQE7Y3rv7w5E1vWQYXz0AqbWwzmel0bxRwBLgE45GOIfdIKfdzOVPGoZ4GvL7dNj58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yKLqWpI4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45AF5C433F1;
-	Tue, 20 Feb 2024 21:35:41 +0000 (UTC)
+	 MIME-Version; b=VJp7pCnEfIYT1yWtJo9VhLH0kqgtGTYgDFc0Sfa2F4DXDuBWBW6iUwgfYoHzEqH67FUMdA5Ty7sJ5VAkEqwZC31h3cMhI6ohHpruHFcBWgdbgI3BGWOwkJ2VzL2Z737pv3a0MmKE1wwLXmZlxHd/gNmI/8CTPNXFUykMkyGcfzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G9bjpAXB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B67F9C433F1;
+	Tue, 20 Feb 2024 21:20:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464941;
-	bh=W6rmOA917gY/cZqlGrIecFA+p5fTAvI13zBDh3NX83w=;
+	s=korg; t=1708464023;
+	bh=jFOgIOiXeoZOkk5c55rDOCKq1JSRrt/ofjFjl5hCFnM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yKLqWpI4xKArm3Zvbe5YIJdYQjY78TbVlfpUQcrKiTSuFaHpQ0EDKhepcyK096fZ0
-	 6gKssfODnSw3ig2w9kzO4/OFVKnvirp/8Fr1oQ9PULWdH07HzxeyjznkCekmO7T3ym
-	 xSSWcg/nNDIY/tkLdHYBKA5R21hd0mQ7GLvR1bJU=
+	b=G9bjpAXBgtLxJJW6gYcKtN2TKJ/atHxTC+cVM42OQokH4WDvgnf7lVVyKER1R3MAk
+	 g/Rul30knH4IGEpNAHIK7C9mplVPib8dDoLGS6gHMiVvkv2eBS3bK7/dEM2ygws93y
+	 sgvi3nkp2bsPLqeMitSqXYzavt9iQ2DshKxndTn0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@ZenIV.linux.org.uk>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.7 185/309] eventfs: Have the inodes all for files and directories all be the same
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Donald Zickus <dzickus@redhat.com>,
+	Daniel Bristot de Oliveira <bristot@kernel.org>
+Subject: [PATCH 6.6 228/331] tools/rtla: Fix clang warning about mount_point var size
 Date: Tue, 20 Feb 2024 21:55:44 +0100
-Message-ID: <20240220205638.941333667@linuxfoundation.org>
+Message-ID: <20240220205644.928528895@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,71 +66,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+From: Daniel Bristot de Oliveira <bristot@kernel.org>
 
-commit 53c41052ba3121761e6f62a813961164532a214f upstream.
+commit 30369084ac6e27479a347899e74f523e6ca29b89 upstream.
 
-The dentries and inodes are created in the readdir for the sole purpose of
-getting a consistent inode number. Linus stated that is unnecessary, and
-that all inodes can have the same inode number. For a virtual file system
-they are pretty meaningless.
+clang is reporting this warning:
 
-Instead use a single unique inode number for all files and one for all
-directories.
+$ make HOSTCC=clang CC=clang LLVM_IAS=1
+[...]
+clang -O -g -DVERSION=\"6.8.0-rc3\" -flto=auto -fexceptions
+	-fstack-protector-strong -fasynchronous-unwind-tables
+	-fstack-clash-protection  -Wall -Werror=format-security
+	-Wp,-D_FORTIFY_SOURCE=2 -Wp,-D_GLIBCXX_ASSERTIONS
+	$(pkg-config --cflags libtracefs)    -c -o src/utils.o src/utils.c
 
-Link: https://lore.kernel.org/all/20240116133753.2808d45e@gandalf.local.home/
-Link: https://lore.kernel.org/linux-trace-kernel/20240116211353.412180363@goodmis.org
+src/utils.c:548:66: warning: 'fscanf' may overflow; destination buffer in argument 3 has size 1024, but the corresponding specifier may require size 1025 [-Wfortify-source]
+  548 |         while (fscanf(fp, "%*s %" STR(MAX_PATH) "s %99s %*s %*d %*d\n", mount_point, type) == 2) {
+      |                                                                         ^
 
+Increase mount_point variable size to MAX_PATH+1 to avoid the overflow.
+
+Link: https://lkml.kernel.org/r/1b46712e93a2f4153909514a36016959dcc4021c.1707217097.git.bristot@kernel.org
+
+Cc: stable@vger.kernel.org
 Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Al  Viro <viro@ZenIV.linux.org.uk>
-Cc: Ajay Kaher <ajay.kaher@broadcom.com>
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Bill Wendling <morbo@google.com>
+Cc: Justin Stitt <justinstitt@google.com>
+Cc: Donald Zickus <dzickus@redhat.com>
+Fixes: a957cbc02531 ("rtla: Add -C cgroup support")
+Signed-off-by: Daniel Bristot de Oliveira <bristot@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/tracefs/event_inode.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ tools/tracing/rtla/src/utils.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -32,6 +32,10 @@
+--- a/tools/tracing/rtla/src/utils.c
++++ b/tools/tracing/rtla/src/utils.c
+@@ -530,7 +530,7 @@ int set_cpu_dma_latency(int32_t latency)
   */
- static DEFINE_MUTEX(eventfs_mutex);
- 
-+/* Choose something "unique" ;-) */
-+#define EVENTFS_FILE_INODE_INO		0x12c4e37
-+#define EVENTFS_DIR_INODE_INO		0x134b2f5
-+
- /*
-  * The eventfs_inode (ei) itself is protected by SRCU. It is released from
-  * its parent's list and will have is_freed set (under eventfs_mutex).
-@@ -314,6 +318,9 @@ static struct dentry *create_file(const
- 	inode->i_fop = fop;
- 	inode->i_private = data;
- 
-+	/* All files will have the same inode number */
-+	inode->i_ino = EVENTFS_FILE_INODE_INO;
-+
- 	ti = get_tracefs(inode);
- 	ti->flags |= TRACEFS_EVENT_INODE;
- 	d_instantiate(dentry, inode);
-@@ -350,6 +357,9 @@ static struct dentry *create_dir(struct
- 	inode->i_op = &eventfs_root_dir_inode_operations;
- 	inode->i_fop = &eventfs_file_operations;
- 
-+	/* All directories will have the same inode number */
-+	inode->i_ino = EVENTFS_DIR_INODE_INO;
-+
- 	ti = get_tracefs(inode);
- 	ti->flags |= TRACEFS_EVENT_INODE;
- 
+ static const int find_mount(const char *fs, char *mp, int sizeof_mp)
+ {
+-	char mount_point[MAX_PATH];
++	char mount_point[MAX_PATH+1];
+ 	char type[100];
+ 	int found = 0;
+ 	FILE *fp;
 
 
 
