@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-21477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63AE285C915
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:29:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3566485C786
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:13:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F084284AB8
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:29:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E20D02833DE
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:13:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA4C5152DF0;
-	Tue, 20 Feb 2024 21:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 667FC151CEE;
+	Tue, 20 Feb 2024 21:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tdR6J6KJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lS+ZyOZJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4127152DE8;
-	Tue, 20 Feb 2024 21:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2437E151CE8;
+	Tue, 20 Feb 2024 21:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464544; cv=none; b=Z3Ecm37EwrrwoALCYW1YCmZMObvIzZGZBZ7JbGMsQ3M/9arKyr8RkyBNbZe5AUBwZ/Yz6bYIhjJ58ekht16ZYSzXgRWdnDvvKcU4ngohdKcPE7PzMbyA0G1nwVMs+G4qbtV3r2EOhfHXeK/hRJYhcJ7Yxok4WXNA4IlE8TWz1oA=
+	t=1708463618; cv=none; b=hIF3mdNnIbqDloDf1ytfkB09CVYqqcTGsbAmjM6WoSbxZcE21Z98xzfl1QCSagcrBn9Sxr0TLZv7vjHVrYD5ZoZQAve35UdJiaCgtGBRmb0Bi0aQ2yIn3F2TOKjUFSzjKMDtgjLmN/Up4APDDH1firQ63N7TBG4jf+4gaUusvu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464544; c=relaxed/simple;
-	bh=pJjeckggueP3kLDdf6wt7Wb3IUt1wML8GR4P/S1UvXo=;
+	s=arc-20240116; t=1708463618; c=relaxed/simple;
+	bh=FNJmbmkZABeentB1LMuka0sAUC6kJtUeR38Sk/SwGr8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rRGTOUiu/SyJ2Glf5SJ7L8dNeWy776PKvDnw10cBH/ox5aIh7DBn2v0nG+knLivFCWeFiyJxvw7KRE1XHuYrETjRGzvAJjkURbci52r3DZexWiDTwbug4GK92lD2dk7ZcEdxSLEe84SLDS7gQLnlxDcLYn48hF1rfXyfWHwSd5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tdR6J6KJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11CA9C433C7;
-	Tue, 20 Feb 2024 21:29:03 +0000 (UTC)
+	 MIME-Version; b=SeGO9p1x8zA+0Auc9uURsmRDb6s8A/tZEKu1/Mn6VJuctsHfwmfrHS+/BKHJ8hF6AWfMD9VKsV6iNImrLhzyyLyBHI1TfSMRdEj+D0p8JIzwJWRtjbAO566FhwDtfxc0SZyTcrWYdvRUxbHquiHc9J/F8AFzPuRo7ExaQHZCSDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lS+ZyOZJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98183C433C7;
+	Tue, 20 Feb 2024 21:13:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464544;
-	bh=pJjeckggueP3kLDdf6wt7Wb3IUt1wML8GR4P/S1UvXo=;
+	s=korg; t=1708463618;
+	bh=FNJmbmkZABeentB1LMuka0sAUC6kJtUeR38Sk/SwGr8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tdR6J6KJwhnMUqphtU2+WR9FD6zvBO6xymwj9yR7KeGL/PP9Sv05yC6k6Ve+BTULU
-	 bkvDvAoyZhUrY8CrosDhvbqNOtLp79b8BjmODpRVv8c2aVXLHLS+cd7HI3NLudLWWr
-	 gUuMOd4q4zLhnThBJzshqVw/gE8fWesslyrf40MI=
+	b=lS+ZyOZJVKUkEwgdhBQHZNURc/LPwfk+gdtWHDqRbEqg0BvMxOu02vpv1Hcp815QO
+	 cWz4DlQfwyu1JuTFbajcFmgnKTwOjxnlivhjOea6ZA/DFbnaZAOQAk1IAvJnNW+Wu9
+	 0AnNxBbXVdrZoHWNpzQwi2ME7Ck3ROD96BozQcgc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Danilo Krummrich <dakr@redhat.com>,
+	Spoorthy <spoorthy@linux.ibm.com>,
+	Benjamin Gray <bgray@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 057/309] nouveau/svm: fix kvcalloc() argument order
+Subject: [PATCH 6.6 100/331] powerpc/kasan: Limit KASAN thread size increase to 32KB
 Date: Tue, 20 Feb 2024 21:53:36 +0100
-Message-ID: <20240220205635.000882377@linuxfoundation.org>
+Message-ID: <20240220205640.725006471@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 2c80a2b715df75881359d07dbaacff8ad411f40e ]
+[ Upstream commit f1acb109505d983779bbb7e20a1ee6244d2b5736 ]
 
-The conversion to kvcalloc() mixed up the object size and count
-arguments, causing a warning:
+KASAN is seen to increase stack usage, to the point that it was reported
+to lead to stack overflow on some 32-bit machines (see link).
 
-drivers/gpu/drm/nouveau/nouveau_svm.c: In function 'nouveau_svm_fault_buffer_ctor':
-drivers/gpu/drm/nouveau/nouveau_svm.c:1010:40: error: 'kvcalloc' sizes specified with 'sizeof' in the earlier argument and not in the later argument [-Werror=calloc-transposed-args]
- 1010 |         buffer->fault = kvcalloc(sizeof(*buffer->fault), buffer->entries, GFP_KERNEL);
-      |                                        ^
-drivers/gpu/drm/nouveau/nouveau_svm.c:1010:40: note: earlier argument should specify number of elements, later size of each element
+To avoid overflows the stack size was doubled for KASAN builds in
+commit 3e8635fb2e07 ("powerpc/kasan: Force thread size increase with
+KASAN").
 
-The behavior is still correct aside from the warning, but fixing it avoids
-the warnings and can help the compiler track the individual objects better.
+However with a 32KB stack size to begin with, the doubling leads to a
+64KB stack, which causes build errors:
+  arch/powerpc/kernel/switch.S:249: Error: operand out of range (0x000000000000fe50 is not between 0xffffffffffff8000 and 0x0000000000007fff)
 
-Fixes: 71e4bbca070e ("nouveau/svm: Use kvcalloc() instead of kvzalloc()")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Danilo Krummrich <dakr@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240212112230.1117284-1-arnd@kernel.org
+Although the asm could be reworked, in practice a 32KB stack seems
+sufficient even for KASAN builds - the additional usage seems to be in
+the 2-3KB range for a 64-bit KASAN build.
+
+So only increase the stack for KASAN if the stack size is < 32KB.
+
+Fixes: 18f14afe2816 ("powerpc/64s: Increase default stack size to 32KB")
+Reported-by: Spoorthy <spoorthy@linux.ibm.com>
+Reported-by: Benjamin Gray <bgray@linux.ibm.com>
+Reviewed-by: Benjamin Gray <bgray@linux.ibm.com>
+Link: https://lore.kernel.org/linuxppc-dev/bug-207129-206035@https.bugzilla.kernel.org%2F/
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240212064244.3924505-1-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_svm.c | 2 +-
+ arch/powerpc/include/asm/thread_info.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_svm.c b/drivers/gpu/drm/nouveau/nouveau_svm.c
-index cc03e0c22ff3..5e4565c5011a 100644
---- a/drivers/gpu/drm/nouveau/nouveau_svm.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_svm.c
-@@ -1011,7 +1011,7 @@ nouveau_svm_fault_buffer_ctor(struct nouveau_svm *svm, s32 oclass, int id)
- 	if (ret)
- 		return ret;
+diff --git a/arch/powerpc/include/asm/thread_info.h b/arch/powerpc/include/asm/thread_info.h
+index bf5dde1a4114..15c5691dd218 100644
+--- a/arch/powerpc/include/asm/thread_info.h
++++ b/arch/powerpc/include/asm/thread_info.h
+@@ -14,7 +14,7 @@
  
--	buffer->fault = kvcalloc(sizeof(*buffer->fault), buffer->entries, GFP_KERNEL);
-+	buffer->fault = kvcalloc(buffer->entries, sizeof(*buffer->fault), GFP_KERNEL);
- 	if (!buffer->fault)
- 		return -ENOMEM;
+ #ifdef __KERNEL__
  
+-#ifdef CONFIG_KASAN
++#if defined(CONFIG_KASAN) && CONFIG_THREAD_SHIFT < 15
+ #define MIN_THREAD_SHIFT	(CONFIG_THREAD_SHIFT + 1)
+ #else
+ #define MIN_THREAD_SHIFT	CONFIG_THREAD_SHIFT
 -- 
 2.43.0
 
