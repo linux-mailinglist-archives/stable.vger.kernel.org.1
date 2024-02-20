@@ -1,45 +1,109 @@
-Return-Path: <stable+bounces-20765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E175785B1CB
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 05:03:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A532D85B1D8
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 05:10:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E3F7282BFE
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 04:03:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8C871C2181B
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 04:10:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54829535C4;
-	Tue, 20 Feb 2024 04:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1509E53E3B;
+	Tue, 20 Feb 2024 04:10:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TBZYbQva"
 X-Original-To: stable@vger.kernel.org
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B7DC52F68;
-	Tue, 20 Feb 2024 04:03:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63024535D0;
+	Tue, 20 Feb 2024 04:10:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708401800; cv=none; b=KTzHjWIQw6IZInMT7+tf3pxozRsi6wOwGipaYOMY4TDclEiCyy/bj3zlgg6gCWa76NxF/3w0If2rq5gPxV29ulhVzNiQpArcqTe1+CeXCt1PEBW461RRoeXyK6+Uyb6rheFiP/UptescPdIGKSBaUKufOxwpAlC0zWztVICL1l4=
+	t=1708402204; cv=none; b=pYGwrV7tdbTWNUCJAJhR0mnteWAVCJwZCdrXIZcD8lXopEmwhu+PTwfVzDdcvo2YJYx39eQ5irslLqewR9NjSldbj7H85qReWotzNXcQpSTcBCSpZwuyS7RIsBV/7OeySDJJ0Li1YpNmeJWcK60Kgrhr7puAdb0RggIBL+rHEbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708401800; c=relaxed/simple;
-	bh=8Q8ga5qF52jke2YKkP3E6vPsby0Wz8W15NX8pjBlS/4=;
+	s=arc-20240116; t=1708402204; c=relaxed/simple;
+	bh=woxjKC7WFFEoqeaxhQsKmXCBIwq3jzFBV0fzqaCLZYU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GjwsLXZR0qGDMvlRlPykO/9kxcyf7pvOFXbHn9or/O4J3vJMz532EslTo7L7dfEJP8KpPGL1JDPi1MeFejeLsmJk/+w/zVOZwtkAC9BZsa1E8R6FQjdB4EM50ZhOJ4mob/qb5HgjGiIKikSrMuD5tiTzsaLuNWrZ3EXYX700gl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
-X-AuditID: a67dfc5b-d85ff70000001748-c0-65d4247f8241
-Date: Tue, 20 Feb 2024 13:03:06 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: "Huang, Ying" <ying.huang@intel.com>
-Cc: akpm@linux-foundation.org, osalvador@suse.de,
-	baolin.wang@linux.alibaba.com, hannes@cmpxchg.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	kernel_team@skhynix.com, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/vmscan: Fix a bug calling wakeup_kswapd() with a
- wrong zone index
-Message-ID: <20240220040306.GI65758@system.software.com>
-References: <20240216111502.79759-1-byungchul@sk.com>
- <871q97rec8.fsf@yhuang6-desk2.ccr.corp.intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=B80OVMIXbtFRpNKaYvxgmoFISaEjPkhrBzVo6a9E2hvtVNId4xS2Rqi3vkDPnrLTLa5Ts/rPvtv7LmWJDZyeVRm+gmjIDHIzSnfR2oHjim/z9omqI53XkFqWlBC/84m+NTRICtL9lQwqcWe247/+Cb6S8XqkI1iFnIzCkOwSRGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TBZYbQva; arc=none smtp.client-ip=209.85.222.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-78726494b46so310225885a.1;
+        Mon, 19 Feb 2024 20:10:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708402202; x=1709007002; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8kHuAqO5ZD/hbBfrYMNHXsD8jQOPncxvEGQ69fY7+c8=;
+        b=TBZYbQva6dItkpiAD1+wGs52fR0yBHdd5KxgNAsmBLu4fp2LhxkCT1O1n2Uk/nI99K
+         jkGK0Q2n9VTH7/wE8EAHv7CHkgnbfq7uQmssfYr5S4Zo72EGABwmP22bFY4zRCnJJYn4
+         qgJLJSdYVYNSsfvAFDy1d6ilpdyOULDSUghG6yAGSFrShm4/85SxEuG+5Wat+82zvR16
+         fR2jLThsa2XuQwZTTSUZ1YzTY6aHtC/wspRiGGpdRGLyBX56EbL67QxANU3wbiGxcvE/
+         eD05wIkbF3LDt5/RYtu49/veLsxK4LHHSOrn5hYQe/9DftAkCW5VkBp1WNKTotEmytQj
+         0XAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708402202; x=1709007002;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8kHuAqO5ZD/hbBfrYMNHXsD8jQOPncxvEGQ69fY7+c8=;
+        b=O0OPVOr6Zbc/zSlR4bv4p7rgGfzUY99ldG/irLDxzXYdgT+FPgspNMaNyRDf5f03EJ
+         XpmVJ+XvLRA/AOpqv9drP1Q3CltrK7QYwRueM1z/viPYxEW+8z7xIt7TGqfUbkOUda45
+         jp1gjlpovbB/F0JNvuB0DclleTPDLVF791Wihp+fdyd3Yt8suWx1TfJx67oG90O87wLs
+         OtP8Qy9TKAPBHo8r4D/ki+UM4BgUl7RHVUFOyogfhuE2WWFEC3EVEmmYsFSRIw3bhhLc
+         EV8+sWIzE640/7vRxhNwXFIUtHmrQzC418a4x7N4BJ3ncke7Q+NOEMPhZ27F2pb3MaTZ
+         3BsA==
+X-Forwarded-Encrypted: i=1; AJvYcCWXJtlhHJ2PssMAkX7qa3F5c7PGgp1PqRzwzACYIouJihRt4HUThUbastDNItQTyNt6/Ge178BDP1/l9oPpf0eEi4OkEADW2nTO5M+ZCHCMNMb4yBVEPyFXF6s6t0UeaV4duX1xnbSOkhCKo2FG4pzW620KQ3OBju3YUy2Io5ZG
+X-Gm-Message-State: AOJu0YxRDymx/3xTAmhFKUBn0RcxGt+MwVEsBDRT0u7I1kxVHAxuQ+8o
+	qokmv645y2PbPe9/WwMrdPdXrGF7wh+mCtv3N8DJusH+gMfJGojL
+X-Google-Smtp-Source: AGHT+IERdjvmhxqnhucMie6TcjrVdkmnqQIy27KFcGREGVCQ4OzGqN6ssTZl9j+rNHEZmsGfz1treA==
+X-Received: by 2002:a05:620a:219d:b0:787:5c2d:2b88 with SMTP id g29-20020a05620a219d00b007875c2d2b88mr7047376qka.59.1708402202133;
+        Mon, 19 Feb 2024 20:10:02 -0800 (PST)
+Received: from auth2-smtp.messagingengine.com (auth2-smtp.messagingengine.com. [66.111.4.228])
+        by smtp.gmail.com with ESMTPSA id y11-20020a05620a0e0b00b00785d538aebdsm3043906qkm.95.2024.02.19.20.10.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Feb 2024 20:10:01 -0800 (PST)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+	by mailauth.nyi.internal (Postfix) with ESMTP id 356B327C005B;
+	Mon, 19 Feb 2024 23:10:01 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute2.internal (MEProxy); Mon, 19 Feb 2024 23:10:01 -0500
+X-ME-Sender: <xms:GCbUZdv9w8YYxuqFlNjzaCXABcgUSNxtBtyot25QKNl3ZzdIKjlHXQ>
+    <xme:GCbUZWf0X--Wr04TafEfPCjR9UYeOxsgxKrFAVwx9x76i0pmZOhEQyPE2L1UuGc67
+    NawBl1yQwhU0GZlCw>
+X-ME-Received: <xmr:GCbUZQzyw7k1d8SDJykTqnB-R0cBXUX1EQ3-N9o0lIPLndSGLsU-sxkZlRd0GQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdelgdeikecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhn
+    ucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrth
+    htvghrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudff
+    iedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsg
+    hoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieeg
+    qddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigi
+    hmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:GSbUZUND2PO12M7hLsbU3pw_bniUk5wsm8Scnaj4EwireH4i1GnkNQ>
+    <xmx:GSbUZd-ZincE3FfTIyT0q72gjCyCqFK7xywKbxrHlRHEyXKL58LBlA>
+    <xmx:GSbUZUV6vChuXxaiTOpGLDdj9Ir6KkyZA8ScOckvM4YffRb3fH96Yg>
+    <xmx:GSbUZWNmW9iHCqr0cs9juiXhhF_F7K3vk3Lr8_1QFlzD6pdI3JWwUQ>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 19 Feb 2024 23:10:00 -0500 (EST)
+Date: Mon, 19 Feb 2024 20:09:44 -0800
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: linux-arm-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Oliver Smith-Denny <osde@linux.microsoft.com>
+Subject: Re: [RFC] efi: Add ACPI_MEMORY_NVS into the linear map
+Message-ID: <ZdQmCEepdOE2R7gS@boqun-archlinux>
+References: <20240215225116.3435953-1-boqun.feng@gmail.com>
+ <2024021718-dwindling-oval-8183@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -48,126 +112,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <871q97rec8.fsf@yhuang6-desk2.ccr.corp.intel.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrELMWRmVeSWpSXmKPExsXC9ZZnkW69ypVUg4k9ZhZz1q9hs/i/9xij
-	xepNvhaXd81hs7i35j+rxZlpRRYLNj5itDg5azKLA4fH4TfvmT0W73nJ5LHp0yR2jxMzfrN4
-	7Hxo6bH5dLXH501yAexRXDYpqTmZZalF+nYJXBnd0+YxFqyTrdjzexd7A+MT8S5GTg4JAROJ
-	jnX72GHsm/3zmEBsFgFViZ5/i9lAbDYBdYkbN34yg9giAhoSnxYuB6rn4mAWOMMosWr2elaQ
-	hLBAtMTjd3PBBvEKWEg8n9nDAmILCWRKdE7tYIOIC0qcnPkELM4soCVx499LoGUcQLa0xPJ/
-	HCBhTgE7iWPfnoPtEhVQljiw7TgTyC4JgQNsEve+LmCEOFRS4uCKGywTGAVmIRk7C8nYWQhj
-	FzAyr2IUyswry03MzDHRy6jMy6zQS87P3cQIDPlltX+idzB+uhB8iFGAg1GJh/dB3OVUIdbE
-	suLK3EOMEhzMSiK87k0XUoV4UxIrq1KL8uOLSnNSiw8xSnOwKInzGn0rTxESSE8sSc1OTS1I
-	LYLJMnFwSjUwrniUetTU7fEdrjiprdVHPH5J1O5omTKFy3Ri5l8Vl3UfexeWaJrv2nrpnmTM
-	5Xth823rwrJ1jwgy2QSLHD3UVnUo+sOp+8t8ZO17qxLsXJNO8yh/3ySds6a1+JuB2beK96re
-	hz79Y7U8NbuEW0qZ7e57NYF7gnMFkl6LGx1TePuq8Ft2V0iJEktxRqKhFnNRcSIATAjaAXUC
-	AAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrJLMWRmVeSWpSXmKPExsXC5WfdrFuvciXVYOtbNYs569ewWfzfe4zR
-	YvUmX4vDc0+yWlzeNYfN4t6a/6wWZ6YVWSzY+IjR4uSsySwOnB6H37xn9li85yWTx6ZPk9g9
-	Tsz4zeKx86Glx+IXH5g8Np+u9vi8SS6AI4rLJiU1J7MstUjfLoEro3vaPMaCdbIVe37vYm9g
-	fCLexcjJISFgInGzfx4TiM0ioCrR828xG4jNJqAucePGT2YQW0RAQ+LTwuXsXYxcHMwCZxgl
-	Vs1ezwqSEBaIlnj8bi47iM0rYCHxfGYPC4gtJJAp0Tm1gw0iLihxcuYTsDizgJbEjX8vgZZx
-	ANnSEsv/cYCEOQXsJI59ew62S1RAWeLAtuNMExh5ZyHpnoWkexZC9wJG5lWMIpl5ZbmJmTmm
-	esXZGZV5mRV6yfm5mxiBAbys9s/EHYxfLrsfYhTgYFTi4X0QdzlViDWxrLgy9xCjBAezkgiv
-	e9OFVCHelMTKqtSi/Pii0pzU4kOM0hwsSuK8XuGpCUIC6YklqdmpqQWpRTBZJg5OqQbG+0+d
-	L/44dC2sbstlg89Np1ZVlSoe2lrHbWS3aX3qX+64TKE54ivL702rk3mzrkqml0NXymy+Zbvp
-	DL/TTlqbL0umhK9p+3g1+74Xp5v1GQ+euTYT1/+u/DTVYtvKc1f3+Qc2xd+55mW7TMzu1+yA
-	grraeRcb6iN5dT2Szp6LP6xaVq2itTpViaU4I9FQi7moOBEAq2C0/1wCAAA=
-X-CFilter-Loop: Reflected
+In-Reply-To: <2024021718-dwindling-oval-8183@gregkh>
 
-On Tue, Feb 20, 2024 at 11:42:31AM +0800, Huang, Ying wrote:
-> Byungchul Park <byungchul@sk.com> writes:
+On Sat, Feb 17, 2024 at 08:49:32AM +0100, Greg KH wrote:
+> On Thu, Feb 15, 2024 at 02:51:06PM -0800, Boqun Feng wrote:
+> > Currently ACPI_MEMORY_NVS is omitted from the linear map, which causes
+> > a trouble with the following firmware memory region setup:
+> > 
+> > 	[..] efi:   0x0000dfd62000-0x0000dfd83fff [ACPI Reclaim|...]
+> > 	[..] efi:   0x0000dfd84000-0x0000dfd87fff [ACPI Mem NVS|...]
+> > 
+> > , on ARM64 with 64k page size, the whole 0x0000dfd80000-0x0000dfd8ffff
+> > range will be omitted from the the linear map due to 64k round-up. And
+> > a page fault happens when trying to access the ACPI_RECLAIM_MEMORY:
+> > 
+> > 	[...] Unable to handle kernel paging request at virtual address ffff0000dfd80000
+> > 
+> > To fix this, add ACPI_MEMORY_NVS into the linear map.
+> > 
+> > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> > Cc: stable@vger.kernel.org # 5.15+
 > 
-> > With numa balancing on, when a numa system is running where a numa node
-> > doesn't have its local memory so it has no managed zones, the following
-> > oops has been observed. It's because wakeup_kswapd() is called with a
-> > wrong zone index, -1. Fixed it by checking the index before calling
-> > wakeup_kswapd().
-> >
-> >> BUG: unable to handle page fault for address: 00000000000033f3
-> >> #PF: supervisor read access in kernel mode
-> >> #PF: error_code(0x0000) - not-present page
-> >> PGD 0 P4D 0
-> >> Oops: 0000 [#1] PREEMPT SMP NOPTI
-> >> CPU: 2 PID: 895 Comm: masim Not tainted 6.6.0-dirty #255
-> >> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
-> >>    rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-> >> RIP: 0010:wakeup_kswapd (./linux/mm/vmscan.c:7812)
-> >> Code: (omitted)
-> >> RSP: 0000:ffffc90004257d58 EFLAGS: 00010286
-> >> RAX: ffffffffffffffff RBX: ffff88883fff0480 RCX: 0000000000000003
-> >> RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff88883fff0480
-> >> RBP: ffffffffffffffff R08: ff0003ffffffffff R09: ffffffffffffffff
-> >> R10: ffff888106c95540 R11: 0000000055555554 R12: 0000000000000003
-> >> R13: 0000000000000000 R14: 0000000000000000 R15: ffff88883fff0940
-> >> FS:  00007fc4b8124740(0000) GS:ffff888827c00000(0000) knlGS:0000000000000000
-> >> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> >> CR2: 00000000000033f3 CR3: 000000026cc08004 CR4: 0000000000770ee0
-> >> DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-> >> DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-> >> PKRU: 55555554
-> >> Call Trace:
-> >>  <TASK>
-> >> ? __die
-> >> ? page_fault_oops
-> >> ? __pte_offset_map_lock
-> >> ? exc_page_fault
-> >> ? asm_exc_page_fault
-> >> ? wakeup_kswapd
-> >> migrate_misplaced_page
-> >> __handle_mm_fault
-> >> handle_mm_fault
-> >> do_user_addr_fault
-> >> exc_page_fault
-> >> asm_exc_page_fault
-> >> RIP: 0033:0x55b897ba0808
-> >> Code: (omitted)
-> >> RSP: 002b:00007ffeefa821a0 EFLAGS: 00010287
-> >> RAX: 000055b89983acd0 RBX: 00007ffeefa823f8 RCX: 000055b89983acd0
-> >> RDX: 00007fc2f8122010 RSI: 0000000000020000 RDI: 000055b89983acd0
-> >> RBP: 00007ffeefa821a0 R08: 0000000000000037 R09: 0000000000000075
-> >> R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000000
-> >> R13: 00007ffeefa82410 R14: 000055b897ba5dd8 R15: 00007fc4b8340000
-> >>  </TASK>
-> >
-> > Signed-off-by: Byungchul Park <byungchul@sk.com>
-> > Reported-by: Hyeongtak Ji <hyeongtak.ji@sk.com>
-> > Cc: stable@vger.kernel.org
-> > Fixes: c574bbe917036 ("NUMA balancing: optimize page placement for memory tiering system")
-> > ---
-> >  mm/migrate.c | 8 ++++++++
-> >  1 file changed, 8 insertions(+)
-> >
-> > diff --git a/mm/migrate.c b/mm/migrate.c
-> > index fbc8586ed735..51ee6865b0f6 100644
-> > --- a/mm/migrate.c
-> > +++ b/mm/migrate.c
-> > @@ -2825,6 +2825,14 @@ static int numamigrate_isolate_folio(pg_data_t *pgdat, struct folio *folio)
-> >  			if (managed_zone(pgdat->node_zones + z))
-> >  				break;
-> >  		}
-> > +
-> > +		/*
-> > +		 * If there are no managed zones, it should not proceed
-> > +		 * further.
-> > +		 */
-> > +		if (z < 0)
-> > +			return 0;
-> > +
+> What commit id does this fix?  Can you include that as well?
 > 
-> I think that it's better to check pgdat->nr_zones directly earlier in
-> the function.  That is a little easier to be understood.
 
-No. No matter what the value of ->nr_zones is, the oops is going to
-happen if there are no managed zones by any reason.
+It should be 7aff79e297ee ("Drivers: hv: Enable Hyper-V code to be built
+on ARM64"), but as Ard mentioned earlier, this could be fixed at the VM
+firmware, and Oliver is working on that. Should the situation change, I
+will send a V2 with more information and include the commit id.
 
-	Byungchul
+Regards,
+Boqun
 
-> >  		wakeup_kswapd(pgdat->node_zones + z, 0,
-> >  			      folio_order(folio), ZONE_MOVABLE);
-> >  		return 0;
+> thanks,
 > 
-> --
-> Best Regards,
-> Huang, Ying
+> greg k-h
 
