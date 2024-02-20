@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-21299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E85285C83D
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:19:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 379DC85C96B
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:33:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBD05284BB1
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:19:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CCFC7B21176
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:33:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DA7A151CCC;
-	Tue, 20 Feb 2024 21:19:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38BD6151CDC;
+	Tue, 20 Feb 2024 21:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X9OM8DUk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ixKr6/Fi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4863E151CE9;
-	Tue, 20 Feb 2024 21:19:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE48446C9;
+	Tue, 20 Feb 2024 21:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463982; cv=none; b=giqmfSf16gJx8Ti2nIXlqqdg2IyTHqIAwZNoAvdLdjqw3hqz/2Fd7DaN8FXDHevA0Y2jdZf06f2ab5luozmT8pwdoQx26fLcGdS8IFGtyUG5TywUsdEnmpvslVuUcETyXBKrvBuiTIX+7ylL5RTmGEobxuR9v9WbCwulxx9XP5E=
+	t=1708464805; cv=none; b=rTcedKsHKhxW9wkyf11mx7RbKXZT1NeBUCMlGkr9wmYjYQ5c418mWjpVDWcR3TOjqjecNl9TRnMRYiWVxsusKE8jQ+nzRfgHk1/CtJ0swGsB45mnrEMmFyV8BVLvbk6ljv3Bf1RSFzBP5o5/K5YlqR0hRDD6wWv8kFZoF3m9f10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463982; c=relaxed/simple;
-	bh=4dwTk5xDCm7fZ+nZ2TFu7K3y4JcuB+kjPej8v+F5V/A=;
+	s=arc-20240116; t=1708464805; c=relaxed/simple;
+	bh=rzYTLZNaNXAD2UJRJUaUJSm4XbKJ9oxmoFIUOi5UFCg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=khe/WIAKBDkwvTp+54f2X3weoZNXunXExCZx9kt367MNeZ+KmtOHEkoLBfR8Owtpyu/9PqNdzLUFkcNCKUxciKgT/YTmdHEbRKXyxfdJl69W0GRj0/5+69mJblZz4Stta18SK+w6Nfo8+h8B5JbVm2wQ0ELC+v9LVdirT1mg9jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X9OM8DUk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CB45C433C7;
-	Tue, 20 Feb 2024 21:19:41 +0000 (UTC)
+	 MIME-Version; b=iPiUg2kZzNWlqmmrrPIp71Haj07saZjhAgtwL+wuBGwMh2iYl302njfELlx7RvkhDAPgrowBfq97ZQyrEvFsLgYvWcnGaM6C6FxMexcFkCLU3VVXfmCEm552Cf2pSCSBrgn045ncRf/RrPrkOGsKym0FC8XEb2EtP8YQ+bX3QUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ixKr6/Fi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B84AC433C7;
+	Tue, 20 Feb 2024 21:33:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463981;
-	bh=4dwTk5xDCm7fZ+nZ2TFu7K3y4JcuB+kjPej8v+F5V/A=;
+	s=korg; t=1708464804;
+	bh=rzYTLZNaNXAD2UJRJUaUJSm4XbKJ9oxmoFIUOi5UFCg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X9OM8DUkhXmVq4tGeqvvjEw/Y5Kn1yStB1Kjk1k/iRj6kar9YebPGznTKefLgLAJd
-	 3eOUS7fUO+2AmmzCjpppsk/YjwVW6x3NBB/K+ywrigOQ4qOC6OJcCWbYV1LAAZ6ejq
-	 mtV3kW2tslLgXmjNO4Wfyc7ErqKDQE/5TK0+w7FI=
+	b=ixKr6/FiJOK27AtjI8id09tNTXQo5i+iOQClLaLPZTdY3p+g+Fs1mZu9sgBXEAOx/
+	 UgE1Sm4TgkX4ZcoVUGIpiYiT+z/0HgWiADRAc8VrZaIWvDhVP4a02tcUN4DL40B3Ry
+	 i8sRzYlv+pkOoFIifG4QFCyhWyI2nXyShkBmn4p0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Engraf <david.engraf@sysgo.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 6.6 185/331] powerpc/cputable: Add missing PPC_FEATURE_BOOKE on PPC64 Book-E
-Date: Tue, 20 Feb 2024 21:55:01 +0100
-Message-ID: <20240220205643.366588863@linuxfoundation.org>
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Fangrui Song <maskray@google.com>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Kees Cook <keescook@chromium.org>,
+	Justin Stitt <justinstitt@google.com>
+Subject: [PATCH 6.7 143/309] kbuild: Fix changing ELF file type for output of gen_btf for big endian
+Date: Tue, 20 Feb 2024 21:55:02 +0100
+Message-ID: <20240220205637.638242279@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +65,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Engraf <david.engraf@sysgo.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit eb6d871f4ba49ac8d0537e051fe983a3a4027f61 upstream.
+commit e3a9ee963ad8ba677ca925149812c5932b49af69 upstream.
 
-Commit e320a76db4b0 ("powerpc/cputable: Split cpu_specs[] out of
-cputable.h") moved the cpu_specs to separate header files. Previously
-PPC_FEATURE_BOOKE was enabled by CONFIG_PPC_BOOK3E_64. The definition in
-cpu_specs_e500mc.h for PPC64 no longer enables PPC_FEATURE_BOOKE.
+Commit 90ceddcb4950 ("bpf: Support llvm-objcopy for vmlinux BTF")
+changed the ELF type of .btf.vmlinux.bin.o to ET_REL via dd, which works
+fine for little endian platforms:
 
-This breaks user space reading the ELF hwcaps and expect
-PPC_FEATURE_BOOKE. Debugging an application with gdb is no longer
-working on e5500/e6500 because the 64-bit detection relies on
-PPC_FEATURE_BOOKE for Book-E.
+   00000000  7f 45 4c 46 02 01 01 00  00 00 00 00 00 00 00 00  |.ELF............|
+  -00000010  03 00 b7 00 01 00 00 00  00 00 00 80 00 80 ff ff  |................|
+  +00000010  01 00 b7 00 01 00 00 00  00 00 00 80 00 80 ff ff  |................|
 
-Fixes: e320a76db4b0 ("powerpc/cputable: Split cpu_specs[] out of cputable.h")
-Cc: stable@vger.kernel.org # v6.1+
-Signed-off-by: David Engraf <david.engraf@sysgo.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240207092758.1058893-1-david.engraf@sysgo.com
+However, for big endian platforms, it changes the wrong byte, resulting
+in an invalid ELF file type, which ld.lld rejects:
+
+   00000000  7f 45 4c 46 02 02 01 00  00 00 00 00 00 00 00 00  |.ELF............|
+  -00000010  00 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |................|
+  +00000010  01 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |................|
+
+  Type:                              <unknown>: 103
+
+  ld.lld: error: .btf.vmlinux.bin.o: unknown file type
+
+Fix this by updating the entire 16-bit e_type field rather than just a
+single byte, so that everything works correctly for all platforms and
+linkers.
+
+   00000000  7f 45 4c 46 02 02 01 00  00 00 00 00 00 00 00 00  |.ELF............|
+  -00000010  00 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |................|
+  +00000010  00 01 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |................|
+
+  Type:                              REL (Relocatable file)
+
+While in the area, update the comment to mention that binutils 2.35+
+matches LLD's behavior of rejecting an ET_EXEC input, which occurred
+after the comment was added.
+
+Cc: stable@vger.kernel.org
+Fixes: 90ceddcb4950 ("bpf: Support llvm-objcopy for vmlinux BTF")
+Link: https://github.com/llvm/llvm-project/pull/75643
+Suggested-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Fangrui Song <maskray@google.com>
+Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Justin Stitt <justinstitt@google.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kernel/cpu_specs_e500mc.h |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ scripts/link-vmlinux.sh |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/arch/powerpc/kernel/cpu_specs_e500mc.h
-+++ b/arch/powerpc/kernel/cpu_specs_e500mc.h
-@@ -8,7 +8,8 @@
+--- a/scripts/link-vmlinux.sh
++++ b/scripts/link-vmlinux.sh
+@@ -135,8 +135,13 @@ gen_btf()
+ 	${OBJCOPY} --only-section=.BTF --set-section-flags .BTF=alloc,readonly \
+ 		--strip-all ${1} ${2} 2>/dev/null
+ 	# Change e_type to ET_REL so that it can be used to link final vmlinux.
+-	# Unlike GNU ld, lld does not allow an ET_EXEC input.
+-	printf '\1' | dd of=${2} conv=notrunc bs=1 seek=16 status=none
++	# GNU ld 2.35+ and lld do not allow an ET_EXEC input.
++	if is_enabled CONFIG_CPU_BIG_ENDIAN; then
++		et_rel='\0\1'
++	else
++		et_rel='\1\0'
++	fi
++	printf "${et_rel}" | dd of=${2} conv=notrunc bs=1 seek=16 status=none
+ }
  
- #ifdef CONFIG_PPC64
- #define COMMON_USER_BOOKE	(PPC_FEATURE_32 | PPC_FEATURE_HAS_MMU | \
--				 PPC_FEATURE_HAS_FPU | PPC_FEATURE_64)
-+				 PPC_FEATURE_HAS_FPU | PPC_FEATURE_64 | \
-+				 PPC_FEATURE_BOOKE)
- #else
- #define COMMON_USER_BOOKE	(PPC_FEATURE_32 | PPC_FEATURE_HAS_MMU | \
- 				 PPC_FEATURE_BOOKE)
+ # Create ${2} .S file with all symbols from the ${1} object file
 
 
 
