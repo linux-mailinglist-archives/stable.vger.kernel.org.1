@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-21689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17D1385C9ED
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:40:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E48A85C8B9
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:25:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACD561F22E16
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:40:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EB2F1F215C3
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:25:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53C1E151CE9;
-	Tue, 20 Feb 2024 21:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3317151CE1;
+	Tue, 20 Feb 2024 21:24:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z5aiSuSE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Btfveso7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EBB3612D7;
-	Tue, 20 Feb 2024 21:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 803AB14F9DA;
+	Tue, 20 Feb 2024 21:24:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708465202; cv=none; b=iPT4XHI5gCZ9xe0ebxwkV7UTfe8tZH15uAuqGDWm8/3MpkWbyzsHTmaIlsMv1POLpQ9ZnQBlZA+J15lkGFo1dV5nR5eOaLIT4+1PBANDrUYuz+j83sIukZcNEoIZUYCYeETRY4YLTHLdlQfRlMDo88DKmzhxWtu2zKHGjifh7/w=
+	t=1708464295; cv=none; b=DpCaC+T6VFZ6VHIQTJtGceUWuRkqeqaMvwakSRpD0zfnqaSWiGQGq6FlIGdUrpB7wp46VTqJ/pxZ8e13Ie0uIIwT5AxDEpOJQh4XMtXNpV2hSnzhLaMBF4nd8GkcY6codPd8iWLFswYhGk2MUrRwZSoRAM3cLPd6Hc7Qol3q330=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708465202; c=relaxed/simple;
-	bh=crtkNcit4fmCawRauSrupCG/3T0uxhC4Sp/qjSuWW40=;
+	s=arc-20240116; t=1708464295; c=relaxed/simple;
+	bh=l0T+lY4ulc4x7nPSqTq7GiV0roy+PCaZm3+HYBUCOxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EtKG9Q3TBoQDIY1thdG1vMdzJPFWr6Rrua6mBrFYok5dUBMDxVbSMSK/Ao1WrXvxHyaIVdyr0lHwNYehQ1SSKvMRCA3wvmF7miHDwkoVtqV4GOyj29wt/o2mupDpx5ub2odfIu3/QAivf5lezst6DRJknLe3esbm8F859N2Tm3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z5aiSuSE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77647C433C7;
-	Tue, 20 Feb 2024 21:40:01 +0000 (UTC)
+	 MIME-Version; b=HZHL/GJQXKy7ps+83R7wDtjwmHwYJxLZYnUkSmkPGWCl+oe6zCRgzPwsBTBsH1XxrlEm8bTgHOYA6BgDkUc2ZQuSJVrltNd6imS3yXwnbooOG+V1y6v5ebqDaY+UghEtJDv3RJgT/madu+B7MAszcMSE9qVEcGxgBOV5wczYQ2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Btfveso7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E35A9C433C7;
+	Tue, 20 Feb 2024 21:24:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708465201;
-	bh=crtkNcit4fmCawRauSrupCG/3T0uxhC4Sp/qjSuWW40=;
+	s=korg; t=1708464295;
+	bh=l0T+lY4ulc4x7nPSqTq7GiV0roy+PCaZm3+HYBUCOxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z5aiSuSEQgL52HnTli2is2eOfe9pMVg1sG6LfNIaLy5kZ0GMHjbvZ2jsyptE2/MVj
-	 +g53k4QE2m84NJRX0CZpfE4nsL8dOxDwNj6fZgjEJsqgBz/W9PXpA3moNgUIV8KuJn
-	 lBTS83q92HBEBLmAYmWPM1PvFmdjZNdm1Y0od2Xo=
+	b=Btfveso7/KKVsVbcG2an+HWBA7caoDrNuNPhn2a6vp4kqYsf0kmkXP3uW7KCoG924
+	 GJETE6XDQ19BOtliREfUOs41fnlwGqdMDlVqNOAa9J2dVR+nJ9k/ztHgSztYc9Jf5Z
+	 M0D4PsRNxyrb9m2thKT3572X8BPMlCBLygyDMlZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanislav Petrov <stanislav.i.petrov@gmail.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.7 269/309] ASoC: amd: yc: Add DMI quirk for Lenovo Ideapad Pro 5 16ARP8
-Date: Tue, 20 Feb 2024 21:57:08 +0100
-Message-ID: <20240220205641.560028057@linuxfoundation.org>
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@ZenIV.linux.org.uk>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 313/331] eventfs: Remove fsnotify*() functions from lookup()
+Date: Tue, 20 Feb 2024 21:57:09 +0100
+Message-ID: <20240220205648.036774059@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +68,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-commit 610010737f74482a61896596a0116876ecf9e65c upstream.
+commit 12d823b31fadf47c8f36ecada7abac5f903cac33 upstream.
 
-The laptop requires a quirk ID to enable its internal microphone. Add
-it to the DMI quirk table.
+The dentries and inodes are created when referenced in the lookup code.
+There's no reason to call fsnotify_*() functions when they are created by
+a reference. It doesn't make any sense.
 
-Reported-by: Stanislav Petrov <stanislav.i.petrov@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=216925
+Link: https://lore.kernel.org/linux-trace-kernel/20240201002719.GS2087318@ZenIV/
+Link: https://lore.kernel.org/linux-trace-kernel/20240201161617.166973329@goodmis.org
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20240205214853.2689-1-mario.limonciello@amd.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Al Viro <viro@ZenIV.linux.org.uk>
+Cc: Ajay Kaher <ajay.kaher@broadcom.com>
+Fixes: a376007917776 ("eventfs: Implement functions to create files and dirs when accessed");
+Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/tracefs/event_inode.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -251,6 +251,13 @@ static const struct dmi_system_id yc_acp
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83AS"),
-+		}
-+	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "UM5302TA"),
- 		}
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -366,7 +366,6 @@ static struct dentry *lookup_file(struct
+ 	dentry->d_fsdata = get_ei(parent_ei);
+ 
+ 	d_add(dentry, inode);
+-	fsnotify_create(dentry->d_parent->d_inode, dentry);
+ 	return NULL;
+ };
+ 
+@@ -408,7 +407,6 @@ static struct dentry *lookup_dir_entry(s
+ 	inc_nlink(inode);
+ 	d_add(dentry, inode);
+ 	inc_nlink(dentry->d_parent->d_inode);
+-	fsnotify_mkdir(dentry->d_parent->d_inode, dentry);
+ 	return NULL;
+ }
+ 
 
 
 
