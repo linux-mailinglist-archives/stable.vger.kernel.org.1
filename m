@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-21404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E30A85C8C1
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:25:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8333B85C9F7
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:40:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5E6BB2196A
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:25:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09A69B216FF
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:40:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD1B3151CCC;
-	Tue, 20 Feb 2024 21:25:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 021CB151CE9;
+	Tue, 20 Feb 2024 21:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qKKAxA3i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pvUQ4aof"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2D714A4E6;
-	Tue, 20 Feb 2024 21:25:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3496612D7;
+	Tue, 20 Feb 2024 21:40:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464314; cv=none; b=ixrBqkcrZ83PCtKHRQ4W9ErQFXYMAxRFoxL2I+K6RUIKyDTZ4P/VIK1X2rIzGHxFmdjNnlAXvqUcm5Ky2E6LJTqlHV9RDzQBhl5WLOAytk79Lq66UYmE8XtZT64T0rUieVM5o10TztdSiU64y9H9446YkZzI180E+K/7jtJ4iCs=
+	t=1708465230; cv=none; b=lKqM8lIFd4l6Pduk4/+3bc9fTmLRHJxiQFwfbsl7KG+w/7r1KibDEDSmp/kZSgNXZndn9kWxxUHdtGrXW3REqBUjEV+qqKVMui9kVeum5x8+BgYA9MSTggE68QrNr08wx8BfLKFYby2usj2hth4el9W9fHtyL5unOz/bUZR5z2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464314; c=relaxed/simple;
-	bh=NmfOsQ/IJncxfuSu2p2W1//S753amNl+Qzdcwgze/5A=;
+	s=arc-20240116; t=1708465230; c=relaxed/simple;
+	bh=IVjcthMK0DiLPZ2PZZG+Rc6Dl+rq7tOisruH/fHrYUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s5XU0lRJ5z2/LDZlXM6QJ5dT8IA8ddcX422cwDi+++X7BJb+gh9PPkRVazDhpveNwk9zoueIYqlzJ4NRL/HmidpUimb/tz37+w++PXxXYFpvuIvCaRLV23/TABTeGSp4yLBq4hY5G8zyunciCkZvaZiiHRcdviLs/zfyCLYNxmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qKKAxA3i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE527C433C7;
-	Tue, 20 Feb 2024 21:25:13 +0000 (UTC)
+	 MIME-Version; b=VZUDHpuZa0lHAs4iubEurS/t+xXd771mSg1PYp5azZuXgQeHLnhEr1quiP5N9Tm90dsdXxjKezH1mS5k75uP6VjEUwJP9G8ZQk06KZZLNrbgO1AehFzQUu6FyQQ6FUSaukA1vt/bS/oUY0450aU5i/uHOLuMDi0rZD4OUSrKJ0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pvUQ4aof; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2758FC433F1;
+	Tue, 20 Feb 2024 21:40:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464314;
-	bh=NmfOsQ/IJncxfuSu2p2W1//S753amNl+Qzdcwgze/5A=;
+	s=korg; t=1708465230;
+	bh=IVjcthMK0DiLPZ2PZZG+Rc6Dl+rq7tOisruH/fHrYUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qKKAxA3ij3xu1XB6e7ltMNyoED9jKIRsY8mMJF4XnVPzc4cI+deznKXSgq6Uw/wzV
-	 wbsXl+T2bkoShyK/MxYPZq+MeaTXFKx+9bTydAHrSxmQiWSoQXr9XvSRu6wIFnhm96
-	 9djPu11sQOnIeAoI8AMTtzTP3BbJI0cYh/K6oV1A=
+	b=pvUQ4aofH2/zmtZv1r8pD1jzKzSLeYuKLutXFKyefOf+xe7muRI8Ynw7WEvYgUtOB
+	 WVSDkVoo7rV2XM4AedZCWuMo70I3+5vJG07jo3K2wXlqpgzR33JjtS4AnBnelsSWoa
+	 jU7Vho5EARfXL4NiVrfo1uuCmZGV/WrfwSU+HUhM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	"H. Peter Anvin (Intel)" <hpa@zytor.com>
-Subject: [PATCH 6.6 319/331] x86/boot: Remove the bugger off message
-Date: Tue, 20 Feb 2024 21:57:15 +0100
-Message-ID: <20240220205648.242683257@linuxfoundation.org>
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Donald Zickus <dzickus@redhat.com>,
+	Daniel Bristot de Oliveira <bristot@kernel.org>
+Subject: [PATCH 6.7 277/309] tools/rtla: Fix Makefile compiler options for clang
+Date: Tue, 20 Feb 2024 21:57:16 +0100
+Message-ID: <20240220205641.787437751@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,128 +66,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Daniel Bristot de Oliveira <bristot@kernel.org>
 
-commit 768171d7ebbce005210e1cf8456f043304805c15 upstream.
+commit bc4cbc9d260ba8358ca63662919f4bb223cb603b upstream.
 
-Ancient (pre-2003) x86 kernels could boot from a floppy disk straight from
-the BIOS, using a small real mode boot stub at the start of the image
-where the BIOS would expect the boot record (or boot block) to appear.
+The following errors are showing up when compiling rtla with clang:
 
-Due to its limitations (kernel size < 1 MiB, no support for IDE, USB or
-El Torito floppy emulation), this support was dropped, and a Linux aware
-bootloader is now always required to boot the kernel from a legacy BIOS.
+ $ make HOSTCC=clang CC=clang LLVM_IAS=1
+ [...]
 
-To smoothen this transition, the boot stub was not removed entirely, but
-replaced with one that just prints an error message telling the user to
-install a bootloader.
+  clang -O -g -DVERSION=\"6.8.0-rc1\" -flto=auto -ffat-lto-objects
+	-fexceptions -fstack-protector-strong
+	-fasynchronous-unwind-tables -fstack-clash-protection  -Wall
+	-Werror=format-security -Wp,-D_FORTIFY_SOURCE=2
+	-Wp,-D_GLIBCXX_ASSERTIONS -Wno-maybe-uninitialized
+	$(pkg-config --cflags libtracefs)    -c -o src/utils.o src/utils.c
 
-As it is unlikely that anyone doing direct floppy boot with such an
-ancient kernel is going to upgrade to v6.5+ and expect that this boot
-method still works, printing this message is kind of pointless, and so
-it should be possible to remove the logic that emits it.
+  clang: warning: optimization flag '-ffat-lto-objects' is not supported [-Wignored-optimization-argument]
+  warning: unknown warning option '-Wno-maybe-uninitialized'; did you mean '-Wno-uninitialized'? [-Wunknown-warning-option]
+  1 warning generated.
 
-Let's free up this space so it can be used to expand the PE header in a
-subsequent patch.
+  clang -o rtla -ggdb  src/osnoise.o src/osnoise_hist.o src/osnoise_top.o
+  src/rtla.o src/timerlat_aa.o src/timerlat.o src/timerlat_hist.o
+  src/timerlat_top.o src/timerlat_u.o src/trace.o src/utils.o $(pkg-config --libs libtracefs)
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: H. Peter Anvin (Intel) <hpa@zytor.com>
-Link: https://lore.kernel.org/r/20230912090051.4014114-21-ardb@google.com
+  src/osnoise.o: file not recognized: file format not recognized
+  clang: error: linker command failed with exit code 1 (use -v to see invocation)
+  make: *** [Makefile:110: rtla] Error 1
+
+Solve these issues by:
+  - removing -ffat-lto-objects and -Wno-maybe-uninitialized if using clang
+  - informing the linker about -flto=auto
+
+Link: https://lore.kernel.org/linux-trace-kernel/567ac1b94effc228ce9a0225b9df7232a9b35b55.1707217097.git.bristot@kernel.org
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Bill Wendling <morbo@google.com>
+Cc: Justin Stitt <justinstitt@google.com>
+Fixes: 1a7b22ab15eb ("tools/rtla: Build with EXTRA_{C,LD}FLAGS")
+Suggested-by: Donald Zickus <dzickus@redhat.com>
+Signed-off-by: Daniel Bristot de Oliveira <bristot@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/boot/header.S |   49 -------------------------------------------------
- arch/x86/boot/setup.ld |    7 ++++---
- 2 files changed, 4 insertions(+), 52 deletions(-)
+ tools/tracing/rtla/Makefile |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/arch/x86/boot/header.S
-+++ b/arch/x86/boot/header.S
-@@ -38,64 +38,15 @@ SYSSEG		= 0x1000		/* historical load add
+--- a/tools/tracing/rtla/Makefile
++++ b/tools/tracing/rtla/Makefile
+@@ -28,10 +28,15 @@ FOPTS	:=	-flto=auto -ffat-lto-objects -f
+ 		-fasynchronous-unwind-tables -fstack-clash-protection
+ WOPTS	:= 	-Wall -Werror=format-security -Wp,-D_FORTIFY_SOURCE=2 -Wp,-D_GLIBCXX_ASSERTIONS -Wno-maybe-uninitialized
  
- 	.code16
- 	.section ".bstext", "ax"
--
--	.global bootsect_start
--bootsect_start:
- #ifdef CONFIG_EFI_STUB
- 	# "MZ", MS-DOS header
- 	.word	MZ_MAGIC
--#endif
--
--	# Normalize the start address
--	ljmp	$BOOTSEG, $start2
--
--start2:
--	movw	%cs, %ax
--	movw	%ax, %ds
--	movw	%ax, %es
--	movw	%ax, %ss
--	xorw	%sp, %sp
--	sti
--	cld
--
--	movw	$bugger_off_msg, %si
--
--msg_loop:
--	lodsb
--	andb	%al, %al
--	jz	bs_die
--	movb	$0xe, %ah
--	movw	$7, %bx
--	int	$0x10
--	jmp	msg_loop
--
--bs_die:
--	# Allow the user to press a key, then reboot
--	xorw	%ax, %ax
--	int	$0x16
--	int	$0x19
--
--	# int 0x19 should never return.  In case it does anyway,
--	# invoke the BIOS reset code...
--	ljmp	$0xf000,$0xfff0
--
--#ifdef CONFIG_EFI_STUB
- 	.org	0x38
- 	#
- 	# Offset to the PE header.
- 	#
- 	.long	LINUX_PE_MAGIC
- 	.long	pe_header
--#endif /* CONFIG_EFI_STUB */
--
--	.section ".bsdata", "a"
--bugger_off_msg:
--	.ascii	"Use a boot loader.\r\n"
--	.ascii	"\n"
--	.ascii	"Remove disk and press any key to reboot...\r\n"
--	.byte	0
--
--#ifdef CONFIG_EFI_STUB
- pe_header:
- 	.long	PE_MAGIC
++ifeq ($(CC),clang)
++  FOPTS := $(filter-out -ffat-lto-objects, $(FOPTS))
++  WOPTS := $(filter-out -Wno-maybe-uninitialized, $(WOPTS))
++endif
++
+ TRACEFS_HEADERS	:= $$($(PKG_CONFIG) --cflags libtracefs)
  
---- a/arch/x86/boot/setup.ld
-+++ b/arch/x86/boot/setup.ld
-@@ -10,10 +10,11 @@ ENTRY(_start)
- SECTIONS
- {
- 	. = 0;
--	.bstext		: { *(.bstext) }
--	.bsdata		: { *(.bsdata) }
-+	.bstext	: {
-+		*(.bstext)
-+		. = 495;
-+	} =0xffffffff
+ CFLAGS	:=	-O -g -DVERSION=\"$(VERSION)\" $(FOPTS) $(MOPTS) $(WOPTS) $(TRACEFS_HEADERS) $(EXTRA_CFLAGS)
+-LDFLAGS	:=	-ggdb $(EXTRA_LDFLAGS)
++LDFLAGS	:=	-flto=auto -ggdb $(EXTRA_LDFLAGS)
+ LIBS	:=	$$($(PKG_CONFIG) --libs libtracefs)
  
--	. = 495;
- 	.header		: { *(.header) }
- 	.entrytext	: { *(.entrytext) }
- 	.inittext	: { *(.inittext) }
+ SRC	:=	$(wildcard src/*.c)
 
 
 
