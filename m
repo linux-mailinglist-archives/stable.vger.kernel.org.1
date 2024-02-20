@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-21015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47C4485C6C8
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:05:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 073C485C6CC
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:05:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F25CE1F21EC6
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:05:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1ACF1F22A14
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:05:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68849152DF0;
-	Tue, 20 Feb 2024 21:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD4A6151CEC;
+	Tue, 20 Feb 2024 21:04:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zfqi8Zu3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E0Zqsn3E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 258C1151CDD;
-	Tue, 20 Feb 2024 21:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C8DB1509BC;
+	Tue, 20 Feb 2024 21:04:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463085; cv=none; b=F4mQyrDUw3iHRLIuH2X3JirDB7omJbnze4BvwMyX3JxWKlPDZp0OL1zqglaEZfexXMDzljj7PabfhlMos0fB/t5brijxcP4gWXQjgbKoZRHUumNKpeYXuVVIHgGiOxjDbr0JI5ThlcvGxYNUqlGuZWDwsf5cYF282jya9pE57R4=
+	t=1708463097; cv=none; b=atROixFfjnGHGbgmCkmZvLYrABmCRzsUvCJtFheY5WjS636ItfXFmHVEBrMOiHCtUdMBxtJ2CmU3CmnIN2ap5bDn/vfj7V8vdCILRTJFjZIlqwigwxFt7BdJj78ju+lB4hNfU4sF9fNo5OAVs+/asE8/l4Ns1VBG1jqRJGJyLYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463085; c=relaxed/simple;
-	bh=Th2y/2gnK8/j1D84DdIcQO7CZ19hMqosc3aupLPgb44=;
+	s=arc-20240116; t=1708463097; c=relaxed/simple;
+	bh=6ETZHzPvsFtSXyX7uWwJIGnGDXqc9GYy70R6fJ65O0I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uMKW98tDYLP4X2eRp5ep4Al2XaYyHdZBij8EpCNnBUlpvwvyyf3eDlYiru+s8CMUQrMNV7Fb920WWqvdyuNIAP7b1qhmf4BrE4ZhSGCq5VBG4sz8SF+gCyKCEcEEJY5XkZmnkyg9YrA1p5lpXIRwiCWpQF6bQaHACwvwCx64O5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zfqi8Zu3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8545DC433F1;
-	Tue, 20 Feb 2024 21:04:44 +0000 (UTC)
+	 MIME-Version; b=AtFGpMwbHhaqXUdz7CNT3u7M2yQPORdU6euQ26DtB1lakPXKy3TOHiigDf+X/QbwpXDQy2nMUVxA1YLbEIResPQf67aKUJ4DDid8bIYDbXGPU3srtTTfXOQatm+tdHJyPmIyeLExzi7zBQ2AVgQ0az1EXZgNG74Ds8ytUzMc1B4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E0Zqsn3E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A134C433F1;
+	Tue, 20 Feb 2024 21:04:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463085;
-	bh=Th2y/2gnK8/j1D84DdIcQO7CZ19hMqosc3aupLPgb44=;
+	s=korg; t=1708463097;
+	bh=6ETZHzPvsFtSXyX7uWwJIGnGDXqc9GYy70R6fJ65O0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zfqi8Zu3ZIBLI0iFDBb2Fx+y12qmLMCKVcXAAUdsoXrFTEGll1qaeGfKO6WuuygcA
-	 G+vrRWrv0V3EGDWKkOa8B+ylWRQ+SvjLTAktTNuQGa3yaGjcG5j17TZr01pUvFIKoD
-	 fh1x406fahXN28IHvBlbqQ4AXdU4g18s0XEjRp+s=
+	b=E0Zqsn3EKHjym4JjoCs6t4CEk//7brTAhsw9t+LjnsT2R5dYUtctB7O5i6dT7U+Eq
+	 m+7EmdTyvedAAVIMwLXrmGI1kARjl6ODBRLVqly4G1ICWN2ejFDBJJV4UoVAWebT2f
+	 /NJ4RGIxn07yEa6NjisqG7O7prw+SqZbvUS2VvSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dinghao Liu <dinghao.liu@zju.edu.cn>,
+	Nuno Sa <nuno.sa@analog.com>,
 	Stable@vger.kernel.org,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 103/197] iio: core: fix memleak in iio_device_register_sysfs
-Date: Tue, 20 Feb 2024 21:51:02 +0100
-Message-ID: <20240220204844.166123682@linuxfoundation.org>
+Subject: [PATCH 6.1 104/197] iio: commom: st_sensors: ensure proper DMA alignment
+Date: Tue, 20 Feb 2024 21:51:03 +0100
+Message-ID: <20240220204844.195662850@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
 References: <20240220204841.073267068@linuxfoundation.org>
@@ -66,41 +66,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dinghao Liu <dinghao.liu@zju.edu.cn>
+From: Nuno Sa <nuno.sa@analog.com>
 
-commit 95a0d596bbd0552a78e13ced43f2be1038883c81 upstream.
+commit 862cf85fef85becc55a173387527adb4f076fab0 upstream.
 
-When iio_device_register_sysfs_group() fails, we should
-free iio_dev_opaque->chan_attr_group.attrs to prevent
-potential memleak.
+Aligning the buffer to the L1 cache is not sufficient in some platforms
+as they might have larger cacheline sizes for caches after L1 and thus,
+we can't guarantee DMA safety.
 
-Fixes: 32f171724e5c ("iio: core: rework iio device group creation")
-Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
-Link: https://lore.kernel.org/r/20231208073119.29283-1-dinghao.liu@zju.edu.cn
+That was the whole reason to introduce IIO_DMA_MINALIGN in [1]. Do the same
+for st_sensors common buffer.
+
+While at it, moved the odr_lock before buffer_data as we definitely
+don't want any other data to share a cacheline with the buffer.
+
+[1]: https://lore.kernel.org/linux-iio/20220508175712.647246-2-jic23@kernel.org/
+
+Fixes: e031d5f558f1 ("iio:st_sensors: remove buffer allocation at each buffer enable")
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 Cc: <Stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240131-dev_dma_safety_stm-v2-1-580c07fae51b@analog.com
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/industrialio-core.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ include/linux/iio/common/st_sensors.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -1601,10 +1601,13 @@ static int iio_device_register_sysfs(str
- 	ret = iio_device_register_sysfs_group(indio_dev,
- 					      &iio_dev_opaque->chan_attr_group);
- 	if (ret)
--		goto error_clear_attrs;
-+		goto error_free_chan_attrs;
+--- a/include/linux/iio/common/st_sensors.h
++++ b/include/linux/iio/common/st_sensors.h
+@@ -261,9 +261,9 @@ struct st_sensor_data {
+ 	bool hw_irq_trigger;
+ 	s64 hw_timestamp;
  
- 	return 0;
+-	char buffer_data[ST_SENSORS_MAX_BUFFER_SIZE] ____cacheline_aligned;
+-
+ 	struct mutex odr_lock;
++
++	char buffer_data[ST_SENSORS_MAX_BUFFER_SIZE] __aligned(IIO_DMA_MINALIGN);
+ };
  
-+error_free_chan_attrs:
-+	kfree(iio_dev_opaque->chan_attr_group.attrs);
-+	iio_dev_opaque->chan_attr_group.attrs = NULL;
- error_clear_attrs:
- 	iio_free_chan_devattr_list(&iio_dev_opaque->channel_attr_list);
- 
+ #ifdef CONFIG_IIO_BUFFER
 
 
 
