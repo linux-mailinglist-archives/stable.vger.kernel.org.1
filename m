@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-21725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C17985CA14
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:42:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A35385CA15
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:42:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 953381C2203E
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:42:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F9D91F22590
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:42:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56BEF151CF4;
-	Tue, 20 Feb 2024 21:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 844FD151CF9;
+	Tue, 20 Feb 2024 21:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GmftaE2r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mHtgkLhI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 164462DF9F;
-	Tue, 20 Feb 2024 21:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F1E2DF9F;
+	Tue, 20 Feb 2024 21:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708465315; cv=none; b=cjgcGT8BSBTGkx56FzrdJKrkEj3lHr0XsYY5q5+L9n5TbAM0Q4gpY50npA/+B9dUNwAsd2RHtwtNKBTKp7IDX110O8SMLOVTl3VtelJgw8Hd/LJusQ0ysCz0sCE8HqEeD6d4/mG9wJPp7k0QoEl98Sv5z29oT+czakM05+4ro7o=
+	t=1708465321; cv=none; b=KFIrMMRxfmeaAmJSP2cfO4CdIk0d3BPTRbj9Y2Xv/VqzXKCON/QN6wdp0Em47PDB8FtgFUwy+VlQLCc7t1if+Tm0z6laAeGk97lkCt9CUGoJKpRhXo2WGj7ljzd+/n8g6n4PDGV0eWt2NWuvQ8Z93oKm+fja21Gck3Iqu12iBmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708465315; c=relaxed/simple;
-	bh=CNMgyYBCZZWdC2bRjRv3xGlc+U4Y12u1yXcn4gqCPRI=;
+	s=arc-20240116; t=1708465321; c=relaxed/simple;
+	bh=6aYNKFsXpFucHQcKRB68ce9DtgF5GUyfzqqJmOCYTKg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AiMbf2m3121S0ASNSAgftDnBNLcMgg5k6wRcyFUVvCwPupfO/DDhBbMI5+a4Yevej7xDQVNegl77RXoRNhnypapoY0xfXaCvdBy3xvsur3tbJxOCy54iQOkDtVIlo4b9q0eZiiMGnu73BVAuD8fVoWpKFp6Rixs0pn0j1+V08xo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GmftaE2r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C1FC433F1;
-	Tue, 20 Feb 2024 21:41:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eFbZf7/hxUC1MynJQ4Zpfr/oiG9mW6NV9qULmgJRI5WDDrrOoisUyYMk5SAxRNLUhiq//MJ6DkTqk20lYrt2giolCJxROyP10kgyLyUuqbxd/LPlSALg+U7CeFWBmToLo1Tnb5Zod3lChpkkhZU9CXQUlqYWPe03n8him0Vz8Tg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mHtgkLhI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A552EC433C7;
+	Tue, 20 Feb 2024 21:42:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708465315;
-	bh=CNMgyYBCZZWdC2bRjRv3xGlc+U4Y12u1yXcn4gqCPRI=;
+	s=korg; t=1708465321;
+	bh=6aYNKFsXpFucHQcKRB68ce9DtgF5GUyfzqqJmOCYTKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GmftaE2rbsVU3uypTuTtduXuMjennzypw4108cb7YbM6S3kCc/9d5Cqknd9C05wiC
-	 fEuTvWh73hmmDXdxLh5SIAj1b03qq4t+Jh8eO7vu94aZnP4Dc7bXX9wSwN52cjRcfc
-	 qRIk0AwzwONOvlSBLgyZL+1xtWZQtIgee+W7E7As=
+	b=mHtgkLhIeTgx+HlhrRXgedB1BLXR+vBnqPzGo7YhlSjWFxuyg5tmGAjHItzwGrhc4
+	 kz89chANdw4ABssIpJiMXbBmQQQ7jLJo5CTJsQZkvKhZN80u5DymYZrUat3aQgdhKX
+	 iub8X6ghE0n9zwNcH9bD4Mr6LeeoVAdsZzRLrOTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.vger.org,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Hannes Reinecke <hare@suse.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 305/309] block: fix partial zone append completion handling in req_bio_endio()
-Date: Tue, 20 Feb 2024 21:57:44 +0100
-Message-ID: <20240220205642.637663438@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Badhri Jagan Sridharan <badhri@google.com>,
+	Mark Brown <broonie@kernel.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.7 306/309] usb: typec: tpcm: Fix issues with power being removed during reset
+Date: Tue, 20 Feb 2024 21:57:45 +0100
+Message-ID: <20240220205642.671214015@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
 References: <20240220205633.096363225@linuxfoundation.org>
@@ -64,65 +62,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit 748dc0b65ec2b4b7b3dbd7befcc4a54fdcac7988 ]
+commit 69f89168b310878be82d7d97bc0d22068ad858c0 upstream.
 
-Partial completions of zone append request is not allowed but if a zone
-append completion indicates a number of completed bytes different from
-the original BIO size, only the BIO status is set to error. This leads
-to bio_advance() not setting the BIO size to 0 and thus to not call
-bio_endio() at the end of req_bio_endio().
+Since the merge of b717dfbf73e8 ("Revert "usb: typec: tcpm: fix
+cc role at port reset"") into mainline the LibreTech Renegade
+Elite/Firefly has died during boot, the main symptom observed in testing
+is a sudden stop in console output.  Gábor Stefanik identified in review
+that the patch would cause power to be removed from devices without
+batteries (like this board), observing that while the patch is correct
+according to the spec this appears to be an oversight in the spec.
 
-Make sure a partially completed zone append is failed and completed
-immediately by forcing the completed number of bytes (nbytes) to be
-equal to the BIO size, thus ensuring that bio_endio() is called.
+Given that the change makes previously working systems unusable let's
+revert it, there was some discussion of identifying systems that have
+alternative power and implementing the standards conforming behaviour in
+only that case.
 
-Fixes: 297db731847e ("block: fix req_bio_endio append error handling")
-Cc: stable@kernel.vger.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Link: https://lore.kernel.org/r/20240110092942.442334-1-dlemoal@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b717dfbf73e8 ("Revert "usb: typec: tcpm: fix cc role at port reset"")
+Cc: stable <stable@kernel.org>
+Cc: Badhri Jagan Sridharan <badhri@google.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20240212-usb-fix-renegade-v1-1-22c43c88d635@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-mq.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/usb/typec/tcpm/tcpm.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index a71974a5e57c..a02d3d922c58 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -772,11 +772,16 @@ static void req_bio_endio(struct request *rq, struct bio *bio,
- 		/*
- 		 * Partial zone append completions cannot be supported as the
- 		 * BIO fragments may end up not being written sequentially.
-+		 * For such case, force the completed nbytes to be equal to
-+		 * the BIO size so that bio_advance() sets the BIO remaining
-+		 * size to 0 and we end up calling bio_endio() before returning.
- 		 */
--		if (bio->bi_iter.bi_size != nbytes)
-+		if (bio->bi_iter.bi_size != nbytes) {
- 			bio->bi_status = BLK_STS_IOERR;
--		else
-+			nbytes = bio->bi_iter.bi_size;
-+		} else {
- 			bio->bi_iter.bi_sector = rq->__sector;
-+		}
- 	}
- 
- 	bio_advance(bio, nbytes);
--- 
-2.43.0
-
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -4862,7 +4862,8 @@ static void run_state_machine(struct tcp
+ 		break;
+ 	case PORT_RESET:
+ 		tcpm_reset_port(port);
+-		tcpm_set_cc(port, TYPEC_CC_OPEN);
++		tcpm_set_cc(port, tcpm_default_state(port) == SNK_UNATTACHED ?
++			    TYPEC_CC_RD : tcpm_rp_cc(port));
+ 		tcpm_set_state(port, PORT_RESET_WAIT_OFF,
+ 			       PD_T_ERROR_RECOVERY);
+ 		break;
 
 
 
