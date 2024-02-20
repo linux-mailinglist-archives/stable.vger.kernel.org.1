@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-21326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25C5385C85C
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:21:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33E2C85C987
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:34:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55EB11C20CE5
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:21:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E30AF284DCA
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:34:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB38C151CE1;
-	Tue, 20 Feb 2024 21:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6738E151CF0;
+	Tue, 20 Feb 2024 21:34:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ilTHs0tZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yUNhy+To"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7617D14A4E6;
-	Tue, 20 Feb 2024 21:21:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13809151CEA;
+	Tue, 20 Feb 2024 21:34:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464068; cv=none; b=bXlNAElHavUynK07nJCGrKwVExzL6mMxuPLo6d8ydscqked561b3wRdSyLh2cQPVHBKcO4gHW9f0RHWsSeiaC02ZZ+WHv50XE7Npk/0sIiggWH0gYqh7FNbMAb9oso+uCBC5tdP0x0CBArWMAOXKTBFX61NIu3h2D2313TMWqJM=
+	t=1708464894; cv=none; b=NfXBpFdGRdh0OyCnQeceV9AHSIbx4yN9uNzNfU/rKw+i4Cl2K1utqV3QJYYjZXgYF69/zWPFouv8cHD83Z8QOlcTOpyY8gqA9TKtIFeJ3DV4wM6aAzma90uaYMj/xWi7XDFFk5UsJVNRWjJD9nuuueSJ/PHoCwvtNIVqiOlnI8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464068; c=relaxed/simple;
-	bh=g+p9gCrNOOFgKdXdNGzveW4cszUt/oDH1ndoyW0spG8=;
+	s=arc-20240116; t=1708464894; c=relaxed/simple;
+	bh=9efFdhyQoYQ8EO8yR3EGBO/sV6f26UoMEbF0i1B2/Xw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H4dsIGp9YlAScvUwinl+VLl+1Chxb9i7b8oIjl+MB9kdCPdl1hZheJbpvXEQceMGZPcWLCmCYNL0gdh+Z8sFSqvGXxgBaygpKDexPT7G77yRQWq860xmxY3+6iZyN+S8yCG07EfVlJ+w5qE+brursh4hhS5KB3hzeXmQXZfSTj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ilTHs0tZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F56EC433F1;
-	Tue, 20 Feb 2024 21:21:07 +0000 (UTC)
+	 MIME-Version; b=E9o56NXJajHC5clx9cvujQaXbv90pJywGmQPe2DAaQQwvP0OzSVjt7JXgsIMAZeKWAd+Ftjf116Bhb/CZyJCx3BZCaD3p4XsW2197OWX18pQOZUFghRy1sZu6qfEezTXWNH7giKfSFUOdy9Q2Tjogcaj2ygpGsMJ7q6XjffJFqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yUNhy+To; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89688C433F1;
+	Tue, 20 Feb 2024 21:34:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464067;
-	bh=g+p9gCrNOOFgKdXdNGzveW4cszUt/oDH1ndoyW0spG8=;
+	s=korg; t=1708464893;
+	bh=9efFdhyQoYQ8EO8yR3EGBO/sV6f26UoMEbF0i1B2/Xw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ilTHs0tZQDObIRXeV3pekJeYYTB1vKmrkDClj1CYJIBQW4ibh26XOMBvS8Oct5F6g
-	 6B/01l47JHr8UngL/YsYr79rAVpFVPHC+0ZvXuMEnQPBPyljLrcyNqjQKd7LH4mHy0
-	 lBKiV3qxXr+AA9DWQHT0+ji7UZFvIewfzgfxCcdA=
+	b=yUNhy+Toh3JqHnkrVbYSf0xNU1Uh9Rj+h0yVndcsK8NUPMPhogLyZ+uDyS2AyXsOd
+	 6kORB/Vz6wiRwKtU0J7GkuUm7uBQMyqlGnY4dHM6JA6FvdDBYlRBBGFPj87TlX7y6N
+	 CzOHc1WJkCZa2T6iyHx0GGo4+widkU/pNKZpyDLo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mohammad Rahimi <rahimi.mhmmd@gmail.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.6 213/331] thunderbolt: Fix setting the CNS bit in ROUTER_CS_5
-Date: Tue, 20 Feb 2024 21:55:29 +0100
-Message-ID: <20240220205644.411914971@linuxfoundation.org>
+	Nuno Sa <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.7 171/309] iio: commom: st_sensors: ensure proper DMA alignment
+Date: Tue, 20 Feb 2024 21:55:30 +0100
+Message-ID: <20240220205638.496043837@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mohammad Rahimi <rahimi.mhmmd@gmail.com>
+From: Nuno Sa <nuno.sa@analog.com>
 
-commit ec4d82f855ce332de26fe080892483de98cc1a19 upstream.
+commit 862cf85fef85becc55a173387527adb4f076fab0 upstream.
 
-The bit 23, CM TBT3 Not Supported (CNS), in ROUTER_CS_5 indicates
-whether a USB4 Connection Manager is TBT3-Compatible and should be:
-    0b for TBT3-Compatible
-    1b for Not TBT3-Compatible
+Aligning the buffer to the L1 cache is not sufficient in some platforms
+as they might have larger cacheline sizes for caches after L1 and thus,
+we can't guarantee DMA safety.
 
-Fixes: b04079837b20 ("thunderbolt: Add initial support for USB4")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mohammad Rahimi <rahimi.mhmmd@gmail.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+That was the whole reason to introduce IIO_DMA_MINALIGN in [1]. Do the same
+for st_sensors common buffer.
+
+While at it, moved the odr_lock before buffer_data as we definitely
+don't want any other data to share a cacheline with the buffer.
+
+[1]: https://lore.kernel.org/linux-iio/20220508175712.647246-2-jic23@kernel.org/
+
+Fixes: e031d5f558f1 ("iio:st_sensors: remove buffer allocation at each buffer enable")
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Cc: <Stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240131-dev_dma_safety_stm-v2-1-580c07fae51b@analog.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/tb_regs.h |    2 +-
- drivers/thunderbolt/usb4.c    |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ include/linux/iio/common/st_sensors.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/thunderbolt/tb_regs.h
-+++ b/drivers/thunderbolt/tb_regs.h
-@@ -203,7 +203,7 @@ struct tb_regs_switch_header {
- #define ROUTER_CS_5_WOP				BIT(1)
- #define ROUTER_CS_5_WOU				BIT(2)
- #define ROUTER_CS_5_WOD				BIT(3)
--#define ROUTER_CS_5_C3S				BIT(23)
-+#define ROUTER_CS_5_CNS				BIT(23)
- #define ROUTER_CS_5_PTO				BIT(24)
- #define ROUTER_CS_5_UTO				BIT(25)
- #define ROUTER_CS_5_HCO				BIT(26)
---- a/drivers/thunderbolt/usb4.c
-+++ b/drivers/thunderbolt/usb4.c
-@@ -290,7 +290,7 @@ int usb4_switch_setup(struct tb_switch *
- 	}
+--- a/include/linux/iio/common/st_sensors.h
++++ b/include/linux/iio/common/st_sensors.h
+@@ -258,9 +258,9 @@ struct st_sensor_data {
+ 	bool hw_irq_trigger;
+ 	s64 hw_timestamp;
  
- 	/* TBT3 supported by the CM */
--	val |= ROUTER_CS_5_C3S;
-+	val &= ~ROUTER_CS_5_CNS;
+-	char buffer_data[ST_SENSORS_MAX_BUFFER_SIZE] ____cacheline_aligned;
+-
+ 	struct mutex odr_lock;
++
++	char buffer_data[ST_SENSORS_MAX_BUFFER_SIZE] __aligned(IIO_DMA_MINALIGN);
+ };
  
- 	return tb_sw_write(sw, &val, TB_CFG_SWITCH, ROUTER_CS_5, 1);
- }
+ #ifdef CONFIG_IIO_BUFFER
 
 
 
