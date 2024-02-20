@@ -1,54 +1,61 @@
-Return-Path: <stable+bounces-21674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE12F85C9DD
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:39:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F167785C8A3
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:24:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 894A7284E3B
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:39:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB625284DCC
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:24:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A6DF151CF4;
-	Tue, 20 Feb 2024 21:39:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 290F6151CE1;
+	Tue, 20 Feb 2024 21:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oMWJ5Fre"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l9u2N+sJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B309C151CCC;
-	Tue, 20 Feb 2024 21:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2922DF9F;
+	Tue, 20 Feb 2024 21:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708465154; cv=none; b=CipeiKOL00zOMtIViJDTNIoyuqYun20ZqNs9Mtce23i54/mFBdZ/7jDrVoDbKejdoKDdvSWiUvIAlD4nQqp9LgwNDBHSh+N2+MegSbR3TOCFTsYeoWgG1tjSmYjJPkEg4K67VwcKnNJc6D4ifSL2wv0S5PWsPBhjDun6hTASZec=
+	t=1708464241; cv=none; b=W482vr5oJVCbk+G24jRZrqGXyF6CN54RbY0eDxNkCd52DUnG6cHGGXeCZTJWPTeZf3DeLk7F8J8Zxv3KUDBSKXnRBd5IskahL2Tl57VdtpfYD5UteJtSV4wAEc7kr4qyCNPst5mfYuJ/Na0diJeHydH8Ht4dEwZFtrcEegJk1GQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708465154; c=relaxed/simple;
-	bh=H5h437pAjYZaJmXkBgXsk8DRuz+/XWGavXaL2uNB9dE=;
+	s=arc-20240116; t=1708464241; c=relaxed/simple;
+	bh=Vm6DO8sGIBgNJ+dHzQeSaCmPGdGYjWXcNcgk/2NhU48=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=An6DzCcl5FASitWJZtrbS67LVxOdQfCjDpOAmwUvXHAdbehUfm+S09+6DgxQIgncqdMmn9bGGytQP1UPzEnoy5brxBn7iWb5pIaLE7PU53V9KKFqDYwS5+ymRmkK6LWzPbn3WcLt9LznzZb4CgGfm86bZTmcwq5zqp9LkNtvDLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oMWJ5Fre; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43BF4C433F1;
-	Tue, 20 Feb 2024 21:39:14 +0000 (UTC)
+	 MIME-Version; b=bYjZgGn9d3+Wykluj+Qeohex/tOMKtzKacNmBUKAUcPswC6Y6dEzkKdTvMrjQ7+gFmkP7rdb77CmV+jzscKYx+piej5zV+7NpLSSNm7FEaCwJcleZWPlATbyVt9kPM03Psp2s6sBjPtprsdTV+qG4vAzvwgv9CcmnLIDQKUymh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l9u2N+sJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA5A0C433C7;
+	Tue, 20 Feb 2024 21:24:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708465154;
-	bh=H5h437pAjYZaJmXkBgXsk8DRuz+/XWGavXaL2uNB9dE=;
+	s=korg; t=1708464241;
+	bh=Vm6DO8sGIBgNJ+dHzQeSaCmPGdGYjWXcNcgk/2NhU48=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oMWJ5Fre8BgkUeKW17eqaJ0EgbXh9fPDaIoc8LHwfS/WuQJ47CEtrgePNi8icEtZr
-	 8X+ZOfZvOlmwTYR0MvPuhewjFRyR9OPn9SZPcU83g9aT7fJ9S3kqTqCG65OsE9yehc
-	 PjYNpXkBicOhcj4XALNksUoaHiwHcooeieW+kmvg=
+	b=l9u2N+sJ0y2jSxLUBoiYqiRbCX/9dHI+aAHEUoNY42c0Z28/zNgpzLsiHdZC069JO
+	 y4r0WmTyEbmN5szTfIJ/BJZy/sj689SeKqqaB8tXmoKP/XTlfeH2dioiDw9RZIlMCW
+	 JSVDY7zkJLx7y+xmLSmGD4RB81m8syAPSuEM04kQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.7 252/309] wifi: mac80211: reload info pointer in ieee80211_tx_dequeue()
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 295/331] eventfs: Have eventfs_iterate() stop immediately if ei->is_freed is set
 Date: Tue, 20 Feb 2024 21:56:51 +0100
-Message-ID: <20240220205641.052020987@linuxfoundation.org>
+Message-ID: <20240220205647.317532939@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +67,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-commit c98d8836b817d11fdff4ca7749cbbe04ff7f0c64 upstream.
+commit e109deadb73318cf4a3bd61287d969f705df278f upstream.
 
-This pointer can change here since the SKB can change, so we
-actually later open-coded IEEE80211_SKB_CB() again. Reload
-the pointer where needed, so the monitor-mode case using it
-gets fixed, and then use info-> later as well.
+If ei->is_freed is set in eventfs_iterate(), it means that the directory
+that is being iterated on is in the process of being freed. Just exit the
+loop immediately when that is ever detected, and separate out the return
+of the entry->callback() from ei->is_freed.
 
-Cc: stable@vger.kernel.org
-Fixes: 531682159092 ("mac80211: fix VLAN handling with TXQs")
-Link: https://msgid.link/20240131164910.b54c28d583bc.I29450cec84ea6773cff5d9c16ff92b836c331471@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://lore.kernel.org/linux-trace-kernel/20240104220048.016261289@goodmis.org
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/tx.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/tracefs/event_inode.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -5,7 +5,7 @@
-  * Copyright 2006-2007	Jiri Benc <jbenc@suse.cz>
-  * Copyright 2007	Johannes Berg <johannes@sipsolutions.net>
-  * Copyright 2013-2014  Intel Mobile Communications GmbH
-- * Copyright (C) 2018-2022 Intel Corporation
-+ * Copyright (C) 2018-2024 Intel Corporation
-  *
-  * Transmit and frame generation functions.
-  */
-@@ -3927,6 +3927,7 @@ begin:
- 			goto begin;
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -788,11 +788,12 @@ static int eventfs_iterate(struct file *
+ 		name = entry->name;
  
- 		skb = __skb_dequeue(&tx.skbs);
-+		info = IEEE80211_SKB_CB(skb);
- 
- 		if (!skb_queue_empty(&tx.skbs)) {
- 			spin_lock_bh(&fq->lock);
-@@ -3971,7 +3972,7 @@ begin:
- 	}
- 
- encap_out:
--	IEEE80211_SKB_CB(skb)->control.vif = vif;
-+	info->control.vif = vif;
- 
- 	if (tx.sta &&
- 	    wiphy_ext_feature_isset(local->hw.wiphy, NL80211_EXT_FEATURE_AQL)) {
+ 		mutex_lock(&eventfs_mutex);
+-		/* If ei->is_freed, then the event itself may be too */
+-		if (!ei->is_freed)
+-			r = entry->callback(name, &mode, &cdata, &fops);
+-		else
+-			r = -1;
++		/* If ei->is_freed then just bail here, nothing more to do */
++		if (ei->is_freed) {
++			mutex_unlock(&eventfs_mutex);
++			goto out;
++		}
++		r = entry->callback(name, &mode, &cdata, &fops);
+ 		mutex_unlock(&eventfs_mutex);
+ 		if (r <= 0)
+ 			continue;
 
 
 
