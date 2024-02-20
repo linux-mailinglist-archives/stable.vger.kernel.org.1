@@ -1,172 +1,134 @@
-Return-Path: <stable+bounces-20759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C9AF85B151
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 04:26:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A687185B191
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 04:42:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43D3A1F245A6
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 03:26:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FC12281E2D
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 03:42:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 548DD56B86;
-	Tue, 20 Feb 2024 03:25:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A87547F62;
+	Tue, 20 Feb 2024 03:42:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="SQYcJSb7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Bv35xI68"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F925336A;
-	Tue, 20 Feb 2024 03:25:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79CF94A3F;
+	Tue, 20 Feb 2024 03:42:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708399540; cv=none; b=useY+VVeQT47U9C9q24I1MqAdTWwUex3ea9opQ2F4E8RyYj0O6AD4RrBG9Btv4yLAVuncUxZNDF0icxq++phtLJ/AfGF1R5t+orYEg27IydB8E9RYZMdM0FRm9KJf/0w9xNRBojg61WHHxZRdyX8oELe6oPmnxDBQ7g5YPLws44=
+	t=1708400548; cv=none; b=OwcvChHxJmHePZVK5kCZjUaA6W1Sh/eKR4nZHTQ/6Lcpvw2gUBT7GinKoIT9/xHZ7bdbOIIcCqZkuYJzcA9Zv65kLWcQVMJEeFnxpoNl7h4Dly05SshlJ1piquHN47IO7KQExkS7bWp7oGUQ0WI5YKu2N6JTVpxj0HML9fXKhyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708399540; c=relaxed/simple;
-	bh=Qdoy+M+xlKi0GsrOb4w3F9SIeYLgcxmc4mCg+YDeB9U=;
-	h=Date:To:From:Subject:Message-Id; b=nLXIE5oobNcXECubIdqavb5XkEFa0Q5sq8weHLqBIuymY2ykrYUTpmnxue2vYf5l8ZS6OWQZSswN5dxMRQQ2GdnSDCYj6ma18YAQjFgkvWOVuosCpspF4KJg4TCOADSQSdbqdo4udBkDq0ieQU0P7GXLS1mdcEaXdg7om9vXg4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=SQYcJSb7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C25C433F1;
-	Tue, 20 Feb 2024 03:25:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1708399539;
-	bh=Qdoy+M+xlKi0GsrOb4w3F9SIeYLgcxmc4mCg+YDeB9U=;
-	h=Date:To:From:Subject:From;
-	b=SQYcJSb70pONVDOWTsgjo0geLI+2xpSSZ7aGVvvwRfuHmEsZyBUPqg0Fvj3B0DAAu
-	 MVuhdrkzzupgYWqd6lTwSteHEcu90mDBuBHdsqmHwLc6Boif8MiKVDXwvv4gQuB4bE
-	 +P+iU3FrxeLRi3RIucbZKaMtEaxu1F4BPbRzivZ4=
-Date: Mon, 19 Feb 2024 19:25:38 -0800
-To: mm-commits@vger.kernel.org,ying.huang@intel.com,stable@vger.kernel.org,osalvador@suse.de,hyeongtak.ji@sk.com,hannes@cmpxchg.org,baolin.wang@linux.alibaba.com,byungchul@sk.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-vmscan-fix-a-bug-calling-wakeup_kswapd-with-a-wrong-zone-index.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240220032539.63C25C433F1@smtp.kernel.org>
+	s=arc-20240116; t=1708400548; c=relaxed/simple;
+	bh=fbYtNy7kXIiPTIQYAblSw6Gig2Ph+K8EsXx9oUctBO4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rdDnTV5DXl5Fk4UZSTFLLxo4mRyOukCnvp0VW7QtFrHF8VX8ZwhUruHmO324vtqHbs3T7pZ2PlpYFpPAm73LnAbvsAgh1JAf26/gB55ZJxtkvyikekgSPOHhrHXF626sLJMaSWGCg6JGyRX4FCro9AfZ9umeNOC49EAV9CymPlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Bv35xI68; arc=none smtp.client-ip=209.85.208.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2d220e39907so48363891fa.1;
+        Mon, 19 Feb 2024 19:42:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708400544; x=1709005344; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6YBW0iFVBOwdaYNTEi3AnGx7giAdQn2LsYMgaIrZ6FM=;
+        b=Bv35xI68MHxt8KmvwMX/obWTv+LgmqmubsK4R1Ng4FJaK+3SmZHdvQIAYTTDYfQXe1
+         vSN6JEgfbqmSl1aJfrsONiIJn6w8nW5K95OdJhmPunPYnvwLQ7N21OQLuCo4irfUxDi5
+         n1wfZ1Pl3/RZuQWt7Yx93Ix6shfty7+psKMk2BaSZYsVk0HUjwhrn/v3qqvnG0hZcDXW
+         NwtXmLfPEn/aeEGjeaCZu1IwGjhFuvbzOutLsMunJywpnAWBk6zw+elRtf/9qoexBkAG
+         UOEL9JPfpU9+Ra0PE8pum/CJ6CHkp07xrw1+vr01Wvj3Ff8OGjTRIC0+3hQbYnFtwjsp
+         5XxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708400544; x=1709005344;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6YBW0iFVBOwdaYNTEi3AnGx7giAdQn2LsYMgaIrZ6FM=;
+        b=wMubXbKK+YiBvCugirp82EpyT3YN2HCPMRB3RHGVUpr5Zc3cKPtPDA6QuZSSGiUm/4
+         sJ5dNRo9pELuWPo1ElzB3oZvjYcSE0rrLziCOb+f19uBXdWfbBeEVqr062SNU0z6e4Yy
+         xxVxTCuBBG/LrHj0f/v2qOaVlOuYONq898WVq3jfnPIWTtfYhi8xDmRckoNqQDl5QDEY
+         9C88qmgL2KzhJYg99sGpyWYGZxqPJ2NEb9iefggIexlhmN/hQckX1iUzG8uPpyFZPGei
+         cOGlsI63H3e+0zmTvyEpMslwKXE4v7HyUZlYivoeiGLcE4qOQUVcr+i5WWaM5sXNN3R0
+         ylug==
+X-Forwarded-Encrypted: i=1; AJvYcCXBas6E1Dk/KD09YHo1xcbo3E2Q8wPJS0elRmq31B2C37JBdYvkU5asWrAink9WETiJySqOIfpvXG5/6f4XzgHud/dG54D/bg36SUGscj1DWH0hkeZBTIB0iJM44i+Lp4enC5T5
+X-Gm-Message-State: AOJu0YyrB4dEwQRetGxDG2pyb7bCehbEfJcoqnBDhnZwyt5Nvj62yCb+
+	GMAjk7WfRRgfnEOxtaFitHY9bRir5Pm9FOkllJPirZQgACNbefK7D+AkppD/SQCFloSnfZ2Usb1
+	AZSh3zedgJvakPjBbkdFQlSxGOCM=
+X-Google-Smtp-Source: AGHT+IFUdqhJ1ck10sT6eDa/vnx33reMzjJD6WE2mtMnQZK5BEREIDmnyv1I2drdG4Do2HdBONDamROPOk/Xcek4N0c=
+X-Received: by 2002:a2e:9816:0:b0:2d2:42ce:3e5b with SMTP id
+ a22-20020a2e9816000000b002d242ce3e5bmr2429934ljj.8.1708400544242; Mon, 19 Feb
+ 2024 19:42:24 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20240219082040.7495-1-ryncsn@gmail.com> <20240219173147.3f4b50b7c9ae554008f50b66@linux-foundation.org>
+In-Reply-To: <20240219173147.3f4b50b7c9ae554008f50b66@linux-foundation.org>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Tue, 20 Feb 2024 11:42:07 +0800
+Message-ID: <CAMgjq7DgBOJhDJStwGuD+C6-FNYZBp-cu6M_HAgRry3gBSf7GA@mail.gmail.com>
+Subject: Re: [PATCH v4] mm/swap: fix race when skipping swapcache
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, "Huang, Ying" <ying.huang@intel.com>, Chris Li <chrisl@kernel.org>, 
+	Minchan Kim <minchan@kernel.org>, Barry Song <v-songbaohua@oppo.com>, Yu Zhao <yuzhao@google.com>, 
+	SeongJae Park <sj@kernel.org>, David Hildenbrand <david@redhat.com>, Hugh Dickins <hughd@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox <willy@infradead.org>, Michal Hocko <mhocko@suse.com>, 
+	Yosry Ahmed <yosryahmed@google.com>, Aaron Lu <aaron.lu@intel.com>, stable@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Tue, Feb 20, 2024 at 9:31=E2=80=AFAM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
+>
+> On Mon, 19 Feb 2024 16:20:40 +0800 Kairui Song <ryncsn@gmail.com> wrote:
+>
+> > From: Kairui Song <kasong@tencent.com>
+> >
+> > When skipping swapcache for SWP_SYNCHRONOUS_IO, if two or more threads
+> > swapin the same entry at the same time, they get different pages (A, B)=
+.
+> > Before one thread (T0) finishes the swapin and installs page (A)
+> > to the PTE, another thread (T1) could finish swapin of page (B),
+> > swap_free the entry, then swap out the possibly modified page
+> > reusing the same entry. It breaks the pte_same check in (T0) because
+> > PTE value is unchanged, causing ABA problem. Thread (T0) will
+> > install a stalled page (A) into the PTE and cause data corruption.
+> >
+> > @@ -3867,6 +3868,20 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+> >       if (!folio) {
+> >               if (data_race(si->flags & SWP_SYNCHRONOUS_IO) &&
+> >                   __swap_count(entry) =3D=3D 1) {
+> > +                     /*
+> > +                      * Prevent parallel swapin from proceeding with
+> > +                      * the cache flag. Otherwise, another thread may
+> > +                      * finish swapin first, free the entry, and swapo=
+ut
+> > +                      * reusing the same entry. It's undetectable as
+> > +                      * pte_same() returns true due to entry reuse.
+> > +                      */
+> > +                     if (swapcache_prepare(entry)) {
+> > +                             /* Relax a bit to prevent rapid repeated =
+page faults */
+> > +                             schedule_timeout_uninterruptible(1);
+>
+> Well this is unpleasant.  How often can we expect this to occur?
+>
 
-The patch titled
-     Subject: mm/vmscan: fix a bug calling wakeup_kswapd() with a wrong zone index
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-vmscan-fix-a-bug-calling-wakeup_kswapd-with-a-wrong-zone-index.patch
+The chance is very low, using the current mainline kernel and ZRAM,
+even with threads set to race on purpose using the reproducer I
+provides, for 647132 page faults it occured 1528 times (~0.2%).
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-vmscan-fix-a-bug-calling-wakeup_kswapd-with-a-wrong-zone-index.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Byungchul Park <byungchul@sk.com>
-Subject: mm/vmscan: fix a bug calling wakeup_kswapd() with a wrong zone index
-Date: Fri, 16 Feb 2024 20:15:02 +0900
-
-With numa balancing on, when a numa system is running where a numa node
-doesn't have its local memory so it has no managed zones, the following
-oops has been observed.  It's because wakeup_kswapd() is called with a
-wrong zone index, -1.  Fixed it by checking the index before calling
-wakeup_kswapd().
-
-> BUG: unable to handle page fault for address: 00000000000033f3
-> #PF: supervisor read access in kernel mode
-> #PF: error_code(0x0000) - not-present page
-> PGD 0 P4D 0
-> Oops: 0000 [#1] PREEMPT SMP NOPTI
-> CPU: 2 PID: 895 Comm: masim Not tainted 6.6.0-dirty #255
-> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
->    rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-> RIP: 0010:wakeup_kswapd (./linux/mm/vmscan.c:7812)
-> Code: (omitted)
-> RSP: 0000:ffffc90004257d58 EFLAGS: 00010286
-> RAX: ffffffffffffffff RBX: ffff88883fff0480 RCX: 0000000000000003
-> RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff88883fff0480
-> RBP: ffffffffffffffff R08: ff0003ffffffffff R09: ffffffffffffffff
-> R10: ffff888106c95540 R11: 0000000055555554 R12: 0000000000000003
-> R13: 0000000000000000 R14: 0000000000000000 R15: ffff88883fff0940
-> FS:  00007fc4b8124740(0000) GS:ffff888827c00000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 00000000000033f3 CR3: 000000026cc08004 CR4: 0000000000770ee0
-> DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-> DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-> PKRU: 55555554
-> Call Trace:
->  <TASK>
-> ? __die
-> ? page_fault_oops
-> ? __pte_offset_map_lock
-> ? exc_page_fault
-> ? asm_exc_page_fault
-> ? wakeup_kswapd
-> migrate_misplaced_page
-> __handle_mm_fault
-> handle_mm_fault
-> do_user_addr_fault
-> exc_page_fault
-> asm_exc_page_fault
-> RIP: 0033:0x55b897ba0808
-> Code: (omitted)
-> RSP: 002b:00007ffeefa821a0 EFLAGS: 00010287
-> RAX: 000055b89983acd0 RBX: 00007ffeefa823f8 RCX: 000055b89983acd0
-> RDX: 00007fc2f8122010 RSI: 0000000000020000 RDI: 000055b89983acd0
-> RBP: 00007ffeefa821a0 R08: 0000000000000037 R09: 0000000000000075
-> R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000000
-> R13: 00007ffeefa82410 R14: 000055b897ba5dd8 R15: 00007fc4b8340000
->  </TASK>
-
-Link: https://lkml.kernel.org/r/20240216111502.79759-1-byungchul@sk.com
-Signed-off-by: Byungchul Park <byungchul@sk.com>
-Reported-by: Hyeongtak Ji <hyeongtak.ji@sk.com>
-Fixes: c574bbe917036 ("NUMA balancing: optimize page placement for memory tiering system")
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: "Huang, Ying" <ying.huang@intel.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/migrate.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
-
---- a/mm/migrate.c~mm-vmscan-fix-a-bug-calling-wakeup_kswapd-with-a-wrong-zone-index
-+++ a/mm/migrate.c
-@@ -2519,6 +2519,14 @@ static int numamigrate_isolate_folio(pg_
- 			if (managed_zone(pgdat->node_zones + z))
- 				break;
- 		}
-+
-+		/*
-+		 * If there are no managed zones, it should not proceed
-+		 * further.
-+		 */
-+		if (z < 0)
-+			return 0;
-+
- 		wakeup_kswapd(pgdat->node_zones + z, 0,
- 			      folio_order(folio), ZONE_MOVABLE);
- 		return 0;
-_
-
-Patches currently in -mm which might be from byungchul@sk.com are
-
-mm-vmscan-fix-a-bug-calling-wakeup_kswapd-with-a-wrong-zone-index.patch
-mm-vmscan-dont-turn-on-cache_trim_mode-at-the-highest-scan-priority.patch
-sched-numa-mm-do-not-try-to-migrate-memory-to-memoryless-nodes.patch
-
+If I run MySQL and sysbench with 128 threads and 16G buffer pool, with
+6G cgroup limit and 32G ZRAM, it occured 1372 times for 40 min,
+109930201 page faults in total (~0.001%).
 
