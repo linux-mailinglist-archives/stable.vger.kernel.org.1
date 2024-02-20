@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-21139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38EC685C749
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:11:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E9CD85C704
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:07:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCB341F22F15
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:11:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5286B1C2142A
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:07:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C2541509A5;
-	Tue, 20 Feb 2024 21:11:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82AD1151CCC;
+	Tue, 20 Feb 2024 21:07:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uUQ5AoB4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Krh0XV00"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 280C3612D7;
-	Tue, 20 Feb 2024 21:11:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FFB0612D7;
+	Tue, 20 Feb 2024 21:07:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463478; cv=none; b=YncQLXar13ft9xNR1ENj1kY1l4Ud06Mjklar6goTsZGID9ivYf27YaHE6mPFsTsjQ7XT+IDIWY39RYQfZ+qL3Ao2OM7WkCQq+zBUhmQ4zouA+f8wizCSgiGMWIhgNgxWqpPox6sv6eh/I37d55ne73y4QNbxE6XvZFu8yK8Du5g=
+	t=1708463258; cv=none; b=FM8OjA3hXgqavohvTsay88mJwCorOajLIn3jTSA+BAO21GdE7Go48ZvH8INJPyunc0rSoh+GSUNOtdGU+B5w9OF0AwtxQVZyySQcTVX/6FyS5iKavcCjwTr0/uFY3SEW12dY0+8aT69Q8LYpar3iYmABuBUgveEuayb3FtbZClM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463478; c=relaxed/simple;
-	bh=jwHdQHk774/S2KrJUza3r/lHKk9RiVNPJ9wzUunrFec=;
+	s=arc-20240116; t=1708463258; c=relaxed/simple;
+	bh=+BGqk7qGvLtnjJAUe1wi8C53/4dzgjvMYV6GVTxv2qc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iRufh5yU5BmgPn/BINyhar4o2b4XfebXyzXW+PbC3dUACyPwAdVx5iO7QXg9CB8stkCGBxk26iCZUpn/lpQvG5p2Xqzh2+eCRj40i/JHvWRFhzZxB5PdivdY1xbx3DApZfFJdzL6xyMQ3GwB4fFFpTG3kvajZVD61CxHeWftbac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uUQ5AoB4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1515C433F1;
-	Tue, 20 Feb 2024 21:11:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fM0JayDO3mbVSUCQXF7fSgpLKRkIz+mUnXj1s1i6WFEYcJUFD+RQifzMMDX1YGf+xgefjSF5vBrWvAw4zBKBOKw+TMCpm3gQwMwVSSAuIuu2SBHVxPAQlJ6QDGDllSAIKFx5/nKDClsKAxvMuus7GyTpCpASOMvupnTDxoQlHg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Krh0XV00; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEDC6C433F1;
+	Tue, 20 Feb 2024 21:07:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463478;
-	bh=jwHdQHk774/S2KrJUza3r/lHKk9RiVNPJ9wzUunrFec=;
+	s=korg; t=1708463258;
+	bh=+BGqk7qGvLtnjJAUe1wi8C53/4dzgjvMYV6GVTxv2qc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uUQ5AoB4t7+c0axainfsI6LwywrhO8wreuTtvgaHuMJ3xhHfmStUYej5Yg1LrNDr2
-	 +kzkA/6S+8MxsX9hJH7zZrgKl+4NEn2BN1KPe1jE1ZAMjvGIAwjYwDM0jIlNjVTM+x
-	 V/ZF+SMziTqMzruZiU3zLtXuqpUFhdliUU8/4Www=
+	b=Krh0XV00+8rcsM0cEFnC/efjR4esbH8/XmXkK8hz+ZnAl0DcggPm/9xuKl+d0XDyF
+	 1hHCpGhtmaJ9qtWqG32v4pvXGwKb8K1AnaIsEb/gP0qw3oiI1AZdUhZr6yOlEjUDLw
+	 WK89v2BktQnepOGnjJ8tX1PAuCt30cypA7S+oHBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saravana Kannan <saravanak@google.com>,
-	Rob Herring <robh@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 027/331] of: property: Improve finding the supplier of a remote-endpoint property
-Date: Tue, 20 Feb 2024 21:52:23 +0100
-Message-ID: <20240220205638.438517075@linuxfoundation.org>
+	syzbot+52bbc0ad036f6f0d4a25@syzkaller.appspotmail.com,
+	Brad Spengler <spender@grsecurity.net>,
+	=?UTF-8?q?=D0=A1=D1=82=D0=B0=D1=81=20=D0=9D=D0=B8=D1=87=D0=B8=D0=BF=D0=BE=D1=80=D0=BE=D0=B2=D0=B8=D1=87?= <stasn77@gmail.com>,
+	Jozsef Kadlecsik <kadlec@netfilter.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 6.1 185/197] netfilter: ipset: Missing gc cancellations fixed
+Date: Tue, 20 Feb 2024 21:52:24 +0100
+Message-ID: <20240220204846.611852296@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
+References: <20240220204841.073267068@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +62,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saravana Kannan <saravanak@google.com>
+From: Jozsef Kadlecsik <kadlec@netfilter.org>
 
-[ Upstream commit 782bfd03c3ae2c0e6e01b661b8e18f1de50357be ]
+commit 27c5a095e2518975e20a10102908ae8231699879 upstream.
 
-After commit 4a032827daa8 ("of: property: Simplify of_link_to_phandle()"),
-remote-endpoint properties created a fwnode link from the consumer device
-to the supplier endpoint. This is a tiny bit inefficient (not buggy) when
-trying to create device links or detecting cycles. So, improve this the
-same way we improved finding the consumer of a remote-endpoint property.
+The patch fdb8e12cc2cc ("netfilter: ipset: fix performance regression
+in swap operation") missed to add the calls to gc cancellations
+at the error path of create operations and at module unload. Also,
+because the half of the destroy operations now executed by a
+function registered by call_rcu(), neither NFNL_SUBSYS_IPSET mutex
+or rcu read lock is held and therefore the checking of them results
+false warnings.
 
-Fixes: 4a032827daa8 ("of: property: Simplify of_link_to_phandle()")
-Signed-off-by: Saravana Kannan <saravanak@google.com>
-Link: https://lore.kernel.org/r/20240207011803.2637531-3-saravanak@google.com
-Signed-off-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 97f7cf1cd80e ("netfilter: ipset: fix performance regression in swap operation")
+Reported-by: syzbot+52bbc0ad036f6f0d4a25@syzkaller.appspotmail.com
+Reported-by: Brad Spengler <spender@grsecurity.net>
+Reported-by: Стас Ничипорович <stasn77@gmail.com>
+Tested-by: Brad Spengler <spender@grsecurity.net>
+Tested-by: Стас Ничипорович <stasn77@gmail.com>
+Signed-off-by: Jozsef Kadlecsik <kadlec@netfilter.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/property.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ net/netfilter/ipset/ip_set_core.c     |    2 ++
+ net/netfilter/ipset/ip_set_hash_gen.h |    4 ++--
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/of/property.c b/drivers/of/property.c
-index 4411a08fccb3..d9b3c8769fa7 100644
---- a/drivers/of/property.c
-+++ b/drivers/of/property.c
-@@ -1231,7 +1231,6 @@ DEFINE_SIMPLE_PROP(pinctrl5, "pinctrl-5", NULL)
- DEFINE_SIMPLE_PROP(pinctrl6, "pinctrl-6", NULL)
- DEFINE_SIMPLE_PROP(pinctrl7, "pinctrl-7", NULL)
- DEFINE_SIMPLE_PROP(pinctrl8, "pinctrl-8", NULL)
--DEFINE_SIMPLE_PROP(remote_endpoint, "remote-endpoint", NULL)
- DEFINE_SIMPLE_PROP(pwms, "pwms", "#pwm-cells")
- DEFINE_SIMPLE_PROP(resets, "resets", "#reset-cells")
- DEFINE_SIMPLE_PROP(leds, "leds", NULL)
-@@ -1296,6 +1295,17 @@ static struct device_node *parse_interrupts(struct device_node *np,
- 	return of_irq_parse_one(np, index, &sup_args) ? NULL : sup_args.np;
- }
+--- a/net/netfilter/ipset/ip_set_core.c
++++ b/net/netfilter/ipset/ip_set_core.c
+@@ -1156,6 +1156,7 @@ static int ip_set_create(struct sk_buff
+ 	return ret;
  
-+static struct device_node *parse_remote_endpoint(struct device_node *np,
-+						 const char *prop_name,
-+						 int index)
-+{
-+	/* Return NULL for index > 0 to signify end of remote-endpoints. */
-+	if (!index || strcmp(prop_name, "remote-endpoint"))
-+		return NULL;
-+
-+	return of_graph_get_remote_port_parent(np);
-+}
-+
- static const struct supplier_bindings of_supplier_bindings[] = {
- 	{ .parse_prop = parse_clocks, },
- 	{ .parse_prop = parse_interconnects, },
--- 
-2.43.0
-
+ cleanup:
++	set->variant->cancel_gc(set);
+ 	set->variant->destroy(set);
+ put_out:
+ 	module_put(set->type->me);
+@@ -2380,6 +2381,7 @@ ip_set_net_exit(struct net *net)
+ 		set = ip_set(inst, i);
+ 		if (set) {
+ 			ip_set(inst, i) = NULL;
++			set->variant->cancel_gc(set);
+ 			ip_set_destroy_set(set);
+ 		}
+ 	}
+--- a/net/netfilter/ipset/ip_set_hash_gen.h
++++ b/net/netfilter/ipset/ip_set_hash_gen.h
+@@ -419,7 +419,7 @@ mtype_ahash_destroy(struct ip_set *set,
+ 	u32 i;
+ 
+ 	for (i = 0; i < jhash_size(t->htable_bits); i++) {
+-		n = __ipset_dereference(hbucket(t, i));
++		n = (__force struct hbucket *)hbucket(t, i);
+ 		if (!n)
+ 			continue;
+ 		if (set->extensions & IPSET_EXT_DESTROY && ext_destroy)
+@@ -439,7 +439,7 @@ mtype_destroy(struct ip_set *set)
+ 	struct htype *h = set->data;
+ 	struct list_head *l, *lt;
+ 
+-	mtype_ahash_destroy(set, ipset_dereference_nfnl(h->table), true);
++	mtype_ahash_destroy(set, (__force struct htable *)h->table, true);
+ 	list_for_each_safe(l, lt, &h->ad) {
+ 		list_del(l);
+ 		kfree(l);
 
 
 
