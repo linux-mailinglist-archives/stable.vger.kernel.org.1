@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-21351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DBC185C87E
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:22:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3974785C9D0
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:38:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 229E71F22D44
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:22:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E25711F22F6A
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:38:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B153A151CDC;
-	Tue, 20 Feb 2024 21:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 473A7151CED;
+	Tue, 20 Feb 2024 21:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="otwrn/tT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lT0WgZ5x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D3172DF9F;
-	Tue, 20 Feb 2024 21:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03AFC151CDC;
+	Tue, 20 Feb 2024 21:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464150; cv=none; b=PP7P4L2VRTEVuLiziFn70rmAT/q8xkZCr8igx++kKEsuFPBt2QN74wethDowT9ln2tV521iGqmwmNe/2g5vGEmecsnEXLFUG1EmkFGYCUY02/3TyQwbz3ZZcEa+dDCTbaH9rkarUSIDLwzhC/GD2CMA0/7Gnj1L95pbpnbNeS+U=
+	t=1708465117; cv=none; b=fD5YTIKNZ6qQLZX2F1yGq+2n0L2+AYhfigMePpsAFF4EMvyUR8eCkDip8JUFN5SPXg/+X9tAp9+9qx8kHZBQQQ0TszCZPJjuEQpQIiKwbaJu0hMC4Dd/WT+0lnWtw9tMyMaDMpJ7g1nCMsyoLeliJDs0zE56LPibdZUTmzBw98o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464150; c=relaxed/simple;
-	bh=dZMmch3aWK04y+Ew/LOH/zW1TIyelJi8O09KTAI8Mr4=;
+	s=arc-20240116; t=1708465117; c=relaxed/simple;
+	bh=wwyg8qD+K7IfnslEZZuDR4lAR2Fw0/0B6pp5rZoz3UE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DRElwAy7CwpENoZyFn0SEYR2tJp2yPkoCS/w5wo9x7UxIUmJB92RZaJQGx+PEA9U4OcamSwi45txhyJWPFPcEkRHIy524WcKbw2XQySGoY4hpMvFLMcdFQqXPAuuWCf6IDwILICVRM0Kcobh2hfYDaSI7TPdNrH1lIiumTKez24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=otwrn/tT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66A57C433F1;
-	Tue, 20 Feb 2024 21:22:29 +0000 (UTC)
+	 MIME-Version; b=H6kBoEE/ByUr2jwmSTh/JAFFozp5yo+Uo/TxZnwszoHV2wecPnH+vwpTmukb8XK42cP+IY4YHpNgOqACXutHvyYGqlygnZTKW+WEHP2EABKzDdnW4OprsyAVNXReRoyeYH1ZFLE4aK1NRgKSqf0QD8D4LfCCltyr0BPe0+njRZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lT0WgZ5x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EB89C433F1;
+	Tue, 20 Feb 2024 21:38:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464150;
-	bh=dZMmch3aWK04y+Ew/LOH/zW1TIyelJi8O09KTAI8Mr4=;
+	s=korg; t=1708465116;
+	bh=wwyg8qD+K7IfnslEZZuDR4lAR2Fw0/0B6pp5rZoz3UE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=otwrn/tTKbhq7QwS8/ymp65/DDV9D7wRT+xIMCtDQ9wTPYzbzxyivi0eOrgVw7WR5
-	 wG+vm429ZOXk1F0HwhhX2EWHI0lYtMs3ivmc9KY9hL7OYYRgBQ1nd1CzWjrF9xm3d1
-	 HiorOI/7Fw9cixew8viT5wk8yZxYJY/7S/CmUZmQ=
+	b=lT0WgZ5xkuLJQy0KLqnhteWKZtPCcUnD55OOaVnLNb/ByiDasNJQWwf+HaeqUlGCy
+	 9tx2Ij/qKD9gfTu/HebraBJzaYA7PDw2NO5bfinOMh7ABFUoBei+WvmVU/cc4x+VgH
+	 0LR/Tg0wHztsnyLHJ6i2R3CCEE7X5XNEMMD5cS9k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <keescook@chromium.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 266/331] eventfs: Use ERR_CAST() in eventfs_create_events_dir()
-Date: Tue, 20 Feb 2024 21:56:22 +0100
-Message-ID: <20240220205646.247345117@linuxfoundation.org>
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Subject: [PATCH 6.7 224/309] serial: max310x: prevent infinite while() loop in port startup
+Date: Tue, 20 Feb 2024 21:56:23 +0100
+Message-ID: <20240220205640.166971715@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +60,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-commit b8a555dc31e5aa18d976de0bc228006e398a2e7d upstream.
+commit b35f8dbbce818b02c730dc85133dc7754266e084 upstream.
 
-When building with clang and CONFIG_RANDSTRUCT_FULL=y, there is an error
-due to a cast in eventfs_create_events_dir():
+If there is a problem after resetting a port, the do/while() loop that
+checks the default value of DIVLSB register may run forever and spam the
+I2C bus.
 
-  fs/tracefs/event_inode.c:734:10: error: casting from randomized structure pointer type 'struct dentry *' to 'struct eventfs_inode *'
-    734 |                 return (struct eventfs_inode *)dentry;
-        |                        ^
-  1 error generated.
+Add a delay before each read of DIVLSB, and a maximum number of tries to
+prevent that situation from happening.
 
-Use the ERR_CAST() function to resolve the error, as it was designed for
-this exact situation (casting an error pointer to another type).
+Also fail probe if port reset is unsuccessful.
 
-Link: https://lore.kernel.org/linux-trace-kernel/20231018-ftrace-fix-clang-randstruct-v1-1-338cb214abfb@kernel.org
-
-Closes: https://github.com/ClangBuiltLinux/linux/issues/1947
-Fixes: 5790b1fb3d67 ("eventfs: Remove eventfs_file and just use eventfs_inode")
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 10d8b34a4217 ("serial: max310x: Driver rework")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20240116213001.3691629-5-hugo@hugovil.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/tracefs/event_inode.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/max310x.c |   20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -731,7 +731,7 @@ struct eventfs_inode *eventfs_create_eve
- 		return NULL;
+--- a/drivers/tty/serial/max310x.c
++++ b/drivers/tty/serial/max310x.c
+@@ -237,6 +237,10 @@
+ #define MAX310x_REV_MASK		(0xf8)
+ #define MAX310X_WRITE_BIT		0x80
  
- 	if (IS_ERR(dentry))
--		return (struct eventfs_inode *)dentry;
-+		return ERR_CAST(dentry);
++/* Port startup definitions */
++#define MAX310X_PORT_STARTUP_WAIT_RETRIES	20 /* Number of retries */
++#define MAX310X_PORT_STARTUP_WAIT_DELAY_MS	10 /* Delay between retries */
++
+ /* Crystal-related definitions */
+ #define MAX310X_XTAL_WAIT_RETRIES	20 /* Number of retries */
+ #define MAX310X_XTAL_WAIT_DELAY_MS	10 /* Delay between retries */
+@@ -1346,6 +1350,9 @@ static int max310x_probe(struct device *
+ 		goto out_clk;
  
- 	ei = kzalloc(sizeof(*ei), GFP_KERNEL);
- 	if (!ei)
+ 	for (i = 0; i < devtype->nr; i++) {
++		bool started = false;
++		unsigned int try = 0, val = 0;
++
+ 		/* Reset port */
+ 		regmap_write(regmaps[i], MAX310X_MODE2_REG,
+ 			     MAX310X_MODE2_RST_BIT);
+@@ -1354,8 +1361,17 @@ static int max310x_probe(struct device *
+ 
+ 		/* Wait for port startup */
+ 		do {
+-			regmap_read(regmaps[i], MAX310X_BRGDIVLSB_REG, &ret);
+-		} while (ret != 0x01);
++			msleep(MAX310X_PORT_STARTUP_WAIT_DELAY_MS);
++			regmap_read(regmaps[i], MAX310X_BRGDIVLSB_REG, &val);
++
++			if (val == 0x01)
++				started = true;
++		} while (!started && (++try < MAX310X_PORT_STARTUP_WAIT_RETRIES));
++
++		if (!started) {
++			ret = dev_err_probe(dev, -EAGAIN, "port reset failed\n");
++			goto out_uart;
++		}
+ 
+ 		regmap_write(regmaps[i], MAX310X_MODE1_REG, devtype->mode1);
+ 	}
 
 
 
