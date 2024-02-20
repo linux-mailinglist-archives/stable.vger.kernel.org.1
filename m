@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-21607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9893185C998
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:35:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75F7385C850
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:20:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F4E51F227CD
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:35:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C524283845
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:20:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BB76151CE1;
-	Tue, 20 Feb 2024 21:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D187152E10;
+	Tue, 20 Feb 2024 21:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hrTm3tYr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vhc0Jjoz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C02A2DF9F;
-	Tue, 20 Feb 2024 21:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 873BF152E11;
+	Tue, 20 Feb 2024 21:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464945; cv=none; b=sTuBXPpv2jGKWyC1/xnA3849oERbSZypQXE5wkfg0KK+wlpVAD+XcEfpjKdle/SzXbGzTIN8O5s838TPBmUIDGC02NNcpjh0fyGS2tEe9m1hctsH7vnD8ehwWnIUjKSs8Fl1gaQUkqzgAXyBqIU5cfzUZai6YRsOxDab3pl6pCM=
+	t=1708464034; cv=none; b=lkGJLCH5Q+emtXfphNLg6sYDHZh3KJ53eb8jNFEUqQ0TyvHX8mOb7V4k4NLO8KQPk13iNqkQjKDydTnCed234TqrFPhD6kRdSqpqVWBTR+MVo2vUlUiiXF890sOZfN89qVOJ1w6Bqn+xQmFnsiHxFxdHLfUnYjzAnmD9Be2sOj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464945; c=relaxed/simple;
-	bh=VNPDchLnRM7AqruTl2/NEDBrkkx1bpKtv+VTa1CxXcc=;
+	s=arc-20240116; t=1708464034; c=relaxed/simple;
+	bh=8MvRY5buUueUKFjmGGmq0512sd3Qw7HBBx8mPXul0y4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IacHZlbx5Wp7lQ2jzUDpDUa66aIiy5rkty9BDZ0BjpCz6Ta4ZuqdbbXSaW9fs7G1qKGzYw/F2V2w0lVlg1LMMClrKUsGxo/l+4b+J7GFk9ShpaD9thrJP6Zxx5sg549KbTEyIxzbgBLB6tvrUxFg6Mc19DMSz0ag4/HrQexleOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hrTm3tYr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FC56C433F1;
-	Tue, 20 Feb 2024 21:35:44 +0000 (UTC)
+	 MIME-Version; b=b1fh84pSTkHvVmcuF22lkn0TVKYPOoftk/hzo0ynpX7vww3LCESl3sXnUxYwn017HwC+iQ3P1S02CIEWUYtYB7rX295L/93aIQUHD8dAZkTp3gzNFiWLPI9vswGhEWUnUaU0kqy5Z8mZFVuglKMcMtgdCicX1SP3L4NHLltPutA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vhc0Jjoz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2192CC433C7;
+	Tue, 20 Feb 2024 21:20:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464944;
-	bh=VNPDchLnRM7AqruTl2/NEDBrkkx1bpKtv+VTa1CxXcc=;
+	s=korg; t=1708464032;
+	bh=8MvRY5buUueUKFjmGGmq0512sd3Qw7HBBx8mPXul0y4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hrTm3tYrQHFIWBnMCzvcc2Ed6WSPmuE9nn1Agnec5RYHOgYSYWCVln1S3ovLRqP8I
-	 USmrN+DKwSloytou5ehh3eX/x/6iwTFgIQpBfvJtbV6yEZA5vScvi6k+BhJr1EsgTg
-	 H7bjDdCZdsNl9+H8T6RfA1q1rub2dJaTxYtJt4Cs=
+	b=Vhc0JjozngKk+Y0poIwK+tOSLKpvxG3wpVpLrZBTr0tqqC49BaPxBoyuDTiXLIX0V
+	 YiIfdRbnH29yvFa7/m30hvWyaD/ZyKsgV5nwEORtj6XPJCIcfecaSw3NKfBH2iVLEo
+	 bd9Lw2wkjg4/qDbBXYPdFtJ3FYEP9kVcd+U4hd3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@ZenIV.linux.org.uk>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	kernel test robot <oliver.sang@intel.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.7 186/309] eventfs: Do not create dentries nor inodes in iterate_shared
-Date: Tue, 20 Feb 2024 21:55:45 +0100
-Message-ID: <20240220205638.976283606@linuxfoundation.org>
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Donald Zickus <dzickus@redhat.com>,
+	Daniel Bristot de Oliveira <bristot@kernel.org>
+Subject: [PATCH 6.6 230/331] tools/rtla: Fix uninitialized bucket/data->bucket_size warning
+Date: Tue, 20 Feb 2024 21:55:46 +0100
+Message-ID: <20240220205645.010064239@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,146 +66,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+From: Daniel Bristot de Oliveira <bristot@kernel.org>
 
-commit 852e46e239ee6db3cd220614cf8bce96e79227c2 upstream.
+commit 64dc40f7523369912d7adb22c8cb655f71610505 upstream.
 
-The original eventfs code added a wrapper around the dcache_readdir open
-callback and created all the dentries and inodes at open, and increment
-their ref count. A wrapper was added around the dcache_readdir release
-function to decrement all the ref counts of those created inodes and
-dentries. But this proved to be buggy[1] for when a kprobe was created
-during a dir read, it would create a dentry between the open and the
-release, and because the release would decrement all ref counts of all
-files and directories, that would include the kprobe directory that was
-not there to have its ref count incremented in open. This would cause the
-ref count to go to negative and later crash the kernel.
+When compiling rtla with clang, I am getting the following warnings:
 
-To solve this, the dentries and inodes that were created and had their ref
-count upped in open needed to be saved. That list needed to be passed from
-the open to the release, so that the release would only decrement the ref
-counts of the entries that were incremented in the open.
+$ make HOSTCC=clang CC=clang LLVM_IAS=1
 
-Unfortunately, the dcache_readdir logic was already using the
-file->private_data, which is the only field that can be used to pass
-information from the open to the release. What was done was the eventfs
-created another descriptor that had a void pointer to save the
-dcache_readdir pointer, and it wrapped all the callbacks, so that it could
-save the list of entries that had their ref counts incremented in the
-open, and pass it to the release. The wrapped callbacks would just put
-back the dcache_readdir pointer and call the functions it used so it could
-still use its data[2].
+[..]
+clang -O -g -DVERSION=\"6.8.0-rc3\" -flto=auto -fexceptions
+	-fstack-protector-strong -fasynchronous-unwind-tables
+	-fstack-clash-protection  -Wall -Werror=format-security
+	-Wp,-D_FORTIFY_SOURCE=2 -Wp,-D_GLIBCXX_ASSERTIONS
+	$(pkg-config --cflags libtracefs)
+	-c -o src/osnoise_hist.o src/osnoise_hist.c
+src/osnoise_hist.c:138:6: warning: variable 'bucket' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  138 |         if (data->bucket_size)
+      |             ^~~~~~~~~~~~~~~~~
+src/osnoise_hist.c:149:6: note: uninitialized use occurs here
+  149 |         if (bucket < entries)
+      |             ^~~~~~
+src/osnoise_hist.c:138:2: note: remove the 'if' if its condition is always true
+  138 |         if (data->bucket_size)
+      |         ^~~~~~~~~~~~~~~~~~~~~~
+  139 |                 bucket = duration / data->bucket_size;
+src/osnoise_hist.c:132:12: note: initialize the variable 'bucket' to silence this warning
+  132 |         int bucket;
+      |                   ^
+      |                    = 0
+1 warning generated.
 
-But Linus had an issue with the "hijacking" of the file->private_data
-(unfortunately this discussion was on a security list, so no public link).
-Which we finally agreed on doing everything within the iterate_shared
-callback and leave the dcache_readdir out of it[3]. All the information
-needed for the getents() could be created then.
+[...]
 
-But this ended up being buggy too[4]. The iterate_shared callback was not
-the right place to create the dentries and inodes. Even Christian Brauner
-had issues with that[5].
+clang -O -g -DVERSION=\"6.8.0-rc3\" -flto=auto -fexceptions
+	-fstack-protector-strong -fasynchronous-unwind-tables
+	-fstack-clash-protection  -Wall -Werror=format-security
+	-Wp,-D_FORTIFY_SOURCE=2 -Wp,-D_GLIBCXX_ASSERTIONS
+	$(pkg-config --cflags libtracefs)
+	-c -o src/timerlat_hist.o src/timerlat_hist.c
+src/timerlat_hist.c:181:6: warning: variable 'bucket' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  181 |         if (data->bucket_size)
+      |             ^~~~~~~~~~~~~~~~~
+src/timerlat_hist.c:204:6: note: uninitialized use occurs here
+  204 |         if (bucket < entries)
+      |             ^~~~~~
+src/timerlat_hist.c:181:2: note: remove the 'if' if its condition is always true
+  181 |         if (data->bucket_size)
+      |         ^~~~~~~~~~~~~~~~~~~~~~
+  182 |                 bucket = latency / data->bucket_size;
+src/timerlat_hist.c:175:12: note: initialize the variable 'bucket' to silence this warning
+  175 |         int bucket;
+      |                   ^
+      |                    = 0
+1 warning generated.
 
-An attempt was to go back to creating the inodes and dentries at
-the open, create an array to store the information in the
-file->private_data, and pass that information to the other callbacks.[6]
+This is a legit warning, but data->bucket_size is always > 0 (see
+timerlat_hist_parse_args()), so the if is not necessary.
 
-The difference between that and the original method, is that it does not
-use dcache_readdir. It also does not up the ref counts of the dentries and
-pass them. Instead, it creates an array of a structure that saves the
-dentry's name and inode number. That information is used in the
-iterate_shared callback, and the array is freed in the dir release. The
-dentries and inodes created in the open are not used for the iterate_share
-or release callbacks. Just their names and inode numbers.
+Remove the unneeded if (data->bucket_size) to avoid the warning.
 
-Linus did not like that either[7] and just wanted to remove the dentries
-being created in iterate_shared and use the hard coded inode numbers.
+Link: https://lkml.kernel.org/r/6e1b1665cd99042ae705b3e0fc410858c4c42346.1707217097.git.bristot@kernel.org
 
-[ All this while Linus enjoyed an unexpected vacation during the merge
-  window due to lack of power. ]
-
-[1] https://lore.kernel.org/linux-trace-kernel/20230919211804.230edf1e@gandalf.local.home/
-[2] https://lore.kernel.org/linux-trace-kernel/20230922163446.1431d4fa@gandalf.local.home/
-[3] https://lore.kernel.org/linux-trace-kernel/20240104015435.682218477@goodmis.org/
-[4] https://lore.kernel.org/all/202401152142.bfc28861-oliver.sang@intel.com/
-[5] https://lore.kernel.org/all/20240111-unzahl-gefegt-433acb8a841d@brauner/
-[6] https://lore.kernel.org/all/20240116114711.7e8637be@gandalf.local.home/
-[7] https://lore.kernel.org/all/20240116170154.5bf0a250@gandalf.local.home/
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240116211353.573784051@goodmis.org
-
+Cc: stable@vger.kernel.org
 Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Al  Viro <viro@ZenIV.linux.org.uk>
-Cc: Ajay Kaher <ajay.kaher@broadcom.com>
-Fixes: 493ec81a8fb8 ("eventfs: Stop using dcache_readdir() for getdents()")
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202401152142.bfc28861-oliver.sang@intel.com
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Bill Wendling <morbo@google.com>
+Cc: Justin Stitt <justinstitt@google.com>
+Cc: Donald Zickus <dzickus@redhat.com>
+Fixes: 1eeb6328e8b3 ("rtla/timerlat: Add timerlat hist mode")
+Fixes: 829a6c0b5698 ("rtla/osnoise: Add the hist mode")
+Signed-off-by: Daniel Bristot de Oliveira <bristot@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/tracefs/event_inode.c |   20 +++++---------------
- 1 file changed, 5 insertions(+), 15 deletions(-)
+ tools/tracing/rtla/src/osnoise_hist.c  |    3 +--
+ tools/tracing/rtla/src/timerlat_hist.c |    3 +--
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -689,8 +689,6 @@ static int eventfs_iterate(struct file *
- 	struct eventfs_inode *ei_child;
- 	struct tracefs_inode *ti;
- 	struct eventfs_inode *ei;
--	struct dentry *ei_dentry = NULL;
--	struct dentry *dentry;
- 	const char *name;
- 	umode_t mode;
- 	int idx;
-@@ -711,11 +709,11 @@ static int eventfs_iterate(struct file *
+--- a/tools/tracing/rtla/src/osnoise_hist.c
++++ b/tools/tracing/rtla/src/osnoise_hist.c
+@@ -135,8 +135,7 @@ static void osnoise_hist_update_multiple
+ 	if (params->output_divisor)
+ 		duration = duration / params->output_divisor;
  
- 	mutex_lock(&eventfs_mutex);
- 	ei = READ_ONCE(ti->private);
--	if (ei && !ei->is_freed)
--		ei_dentry = READ_ONCE(ei->dentry);
-+	if (ei && ei->is_freed)
-+		ei = NULL;
- 	mutex_unlock(&eventfs_mutex);
+-	if (data->bucket_size)
+-		bucket = duration / data->bucket_size;
++	bucket = duration / data->bucket_size;
  
--	if (!ei || !ei_dentry)
-+	if (!ei)
- 		goto out;
+ 	total_duration = duration * count;
  
- 	/*
-@@ -742,11 +740,7 @@ static int eventfs_iterate(struct file *
- 		if (r <= 0)
- 			continue;
+--- a/tools/tracing/rtla/src/timerlat_hist.c
++++ b/tools/tracing/rtla/src/timerlat_hist.c
+@@ -178,8 +178,7 @@ timerlat_hist_update(struct osnoise_tool
+ 	if (params->output_divisor)
+ 		latency = latency / params->output_divisor;
  
--		dentry = create_file_dentry(ei, i, ei_dentry, name, mode, cdata, fops);
--		if (!dentry)
--			goto out;
--		ino = dentry->d_inode->i_ino;
--		dput(dentry);
-+		ino = EVENTFS_FILE_INODE_INO;
+-	if (data->bucket_size)
+-		bucket = latency / data->bucket_size;
++	bucket = latency / data->bucket_size;
  
- 		if (!dir_emit(ctx, name, strlen(name), ino, DT_REG))
- 			goto out;
-@@ -770,11 +764,7 @@ static int eventfs_iterate(struct file *
- 
- 		name = ei_child->name;
- 
--		dentry = create_dir_dentry(ei, ei_child, ei_dentry);
--		if (!dentry)
--			goto out_dec;
--		ino = dentry->d_inode->i_ino;
--		dput(dentry);
-+		ino = EVENTFS_DIR_INODE_INO;
- 
- 		if (!dir_emit(ctx, name, strlen(name), ino, DT_DIR))
- 			goto out_dec;
+ 	if (!context) {
+ 		hist = data->hist[cpu].irq;
 
 
 
