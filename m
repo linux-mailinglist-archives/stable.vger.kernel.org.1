@@ -1,57 +1,52 @@
-Return-Path: <stable+bounces-21312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A652885C84C
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:20:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 587B185C84F
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:20:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A8681F27027
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:20:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89CC21C222FE
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:20:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B337151CF1;
-	Tue, 20 Feb 2024 21:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26EB7151CF9;
+	Tue, 20 Feb 2024 21:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G9bjpAXB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2jAbac2t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9BB151CF3;
-	Tue, 20 Feb 2024 21:20:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28C44152E10;
+	Tue, 20 Feb 2024 21:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464024; cv=none; b=nKCXhQTsi8JuHQYx7n1PaHxSjUqn+kRBk49iYn8h8ZW409ypmUhq4SR4w3tOuf2P2D6LRfEs0Md4Ok+F5Dtbc55Np+oQ6fWUdIcI9UH1hczR8eQTwLzwBs/waqLhQA+WqWQNYRKdRbn+I7facoV6IUQvptIV2eCPSkYIl2wKYeo=
+	t=1708464030; cv=none; b=HRIqs3AnMn41RwRq1QsuyTcQntKpNAVnxQm8hziM7wIJ2Ibgpf3uJnJKiztqZpHVlzbXROwPlay3zGJ4GjNCQN6gtIt7QZ53MjYdv5OcQbiVXSJoNVX7isb2ZZSGWPgl4v2s+IO4xTqIqpPlVATsJTPZ17J41zPfMBe7uao5OqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464024; c=relaxed/simple;
-	bh=jFOgIOiXeoZOkk5c55rDOCKq1JSRrt/ofjFjl5hCFnM=;
+	s=arc-20240116; t=1708464030; c=relaxed/simple;
+	bh=IFg4GXo17ByyPpgfU1TILx7b89IXDY3eVHRGMwRZCo0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VJp7pCnEfIYT1yWtJo9VhLH0kqgtGTYgDFc0Sfa2F4DXDuBWBW6iUwgfYoHzEqH67FUMdA5Ty7sJ5VAkEqwZC31h3cMhI6ohHpruHFcBWgdbgI3BGWOwkJ2VzL2Z737pv3a0MmKE1wwLXmZlxHd/gNmI/8CTPNXFUykMkyGcfzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G9bjpAXB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B67F9C433F1;
-	Tue, 20 Feb 2024 21:20:22 +0000 (UTC)
+	 MIME-Version; b=LzRNQuY3ZLtfwFwqZQyPL/+KM7kKUv+Qmy73j+JzL+toaORqufojj+QDtzEJgYyDemIizZeDxTovt8khujtQ7rsUivHOVG0BCM5zC6SdvA536o15eCerM9IM2zSq7nZJFu4KvecwP6uRePCT1cwt8i0LfKmLw0JFBcedStLJPxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2jAbac2t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2E39C433C7;
+	Tue, 20 Feb 2024 21:20:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464023;
-	bh=jFOgIOiXeoZOkk5c55rDOCKq1JSRrt/ofjFjl5hCFnM=;
+	s=korg; t=1708464029;
+	bh=IFg4GXo17ByyPpgfU1TILx7b89IXDY3eVHRGMwRZCo0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G9bjpAXBgtLxJJW6gYcKtN2TKJ/atHxTC+cVM42OQokH4WDvgnf7lVVyKER1R3MAk
-	 g/Rul30knH4IGEpNAHIK7C9mplVPib8dDoLGS6gHMiVvkv2eBS3bK7/dEM2ygws93y
-	 sgvi3nkp2bsPLqeMitSqXYzavt9iQ2DshKxndTn0=
+	b=2jAbac2tHslM1aNlDek6zy/Iymy+aDDR4lHe5tNnQKTGnKOTkwb0S7mZMUo+BC8SS
+	 t1psXjfO+0DfzRhIBiyru9dd2BprVg1BkRZAyrd3rjIhJ0kWYIomoytsEFcXGmLaEG
+	 XwdeXV8YA84vDvYgqmtpnEiPKwZQgE+4Eq4pTNcI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Donald Zickus <dzickus@redhat.com>,
+	John Kacur <jkacur@redhat.com>,
 	Daniel Bristot de Oliveira <bristot@kernel.org>
-Subject: [PATCH 6.6 228/331] tools/rtla: Fix clang warning about mount_point var size
-Date: Tue, 20 Feb 2024 21:55:44 +0100
-Message-ID: <20240220205644.928528895@linuxfoundation.org>
+Subject: [PATCH 6.6 229/331] tools/rtla: Exit with EXIT_SUCCESS when help is invoked
+Date: Tue, 20 Feb 2024 21:55:45 +0100
+Message-ID: <20240220205644.963906070@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
 References: <20240220205637.572693592@linuxfoundation.org>
@@ -70,53 +65,91 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Daniel Bristot de Oliveira <bristot@kernel.org>
+From: John Kacur <jkacur@redhat.com>
 
-commit 30369084ac6e27479a347899e74f523e6ca29b89 upstream.
+commit b5f319360371087d52070d8f3fc7789e80ce69a6 upstream.
 
-clang is reporting this warning:
+Fix rtla so that the following commands exit with 0 when help is invoked
 
-$ make HOSTCC=clang CC=clang LLVM_IAS=1
-[...]
-clang -O -g -DVERSION=\"6.8.0-rc3\" -flto=auto -fexceptions
-	-fstack-protector-strong -fasynchronous-unwind-tables
-	-fstack-clash-protection  -Wall -Werror=format-security
-	-Wp,-D_FORTIFY_SOURCE=2 -Wp,-D_GLIBCXX_ASSERTIONS
-	$(pkg-config --cflags libtracefs)    -c -o src/utils.o src/utils.c
+rtla osnoise top -h
+rtla osnoise hist -h
+rtla timerlat top -h
+rtla timerlat hist -h
 
-src/utils.c:548:66: warning: 'fscanf' may overflow; destination buffer in argument 3 has size 1024, but the corresponding specifier may require size 1025 [-Wfortify-source]
-  548 |         while (fscanf(fp, "%*s %" STR(MAX_PATH) "s %99s %*s %*d %*d\n", mount_point, type) == 2) {
-      |                                                                         ^
-
-Increase mount_point variable size to MAX_PATH+1 to avoid the overflow.
-
-Link: https://lkml.kernel.org/r/1b46712e93a2f4153909514a36016959dcc4021c.1707217097.git.bristot@kernel.org
+Link: https://lore.kernel.org/linux-trace-devel/20240203001607.69703-1-jkacur@redhat.com
 
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Bill Wendling <morbo@google.com>
-Cc: Justin Stitt <justinstitt@google.com>
-Cc: Donald Zickus <dzickus@redhat.com>
-Fixes: a957cbc02531 ("rtla: Add -C cgroup support")
+Fixes: 1eeb6328e8b3 ("rtla/timerlat: Add timerlat hist mode")
+Signed-off-by: John Kacur <jkacur@redhat.com>
 Signed-off-by: Daniel Bristot de Oliveira <bristot@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/tracing/rtla/src/utils.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/tracing/rtla/src/osnoise_hist.c  |    6 +++++-
+ tools/tracing/rtla/src/osnoise_top.c   |    6 +++++-
+ tools/tracing/rtla/src/timerlat_hist.c |    6 +++++-
+ tools/tracing/rtla/src/timerlat_top.c  |    6 +++++-
+ 4 files changed, 20 insertions(+), 4 deletions(-)
 
---- a/tools/tracing/rtla/src/utils.c
-+++ b/tools/tracing/rtla/src/utils.c
-@@ -530,7 +530,7 @@ int set_cpu_dma_latency(int32_t latency)
-  */
- static const int find_mount(const char *fs, char *mp, int sizeof_mp)
- {
--	char mount_point[MAX_PATH];
-+	char mount_point[MAX_PATH+1];
- 	char type[100];
- 	int found = 0;
- 	FILE *fp;
+--- a/tools/tracing/rtla/src/osnoise_hist.c
++++ b/tools/tracing/rtla/src/osnoise_hist.c
+@@ -480,7 +480,11 @@ static void osnoise_hist_usage(char *usa
+ 
+ 	for (i = 0; msg[i]; i++)
+ 		fprintf(stderr, "%s\n", msg[i]);
+-	exit(1);
++
++	if (usage)
++		exit(EXIT_FAILURE);
++
++	exit(EXIT_SUCCESS);
+ }
+ 
+ /*
+--- a/tools/tracing/rtla/src/osnoise_top.c
++++ b/tools/tracing/rtla/src/osnoise_top.c
+@@ -331,7 +331,11 @@ static void osnoise_top_usage(struct osn
+ 
+ 	for (i = 0; msg[i]; i++)
+ 		fprintf(stderr, "%s\n", msg[i]);
+-	exit(1);
++
++	if (usage)
++		exit(EXIT_FAILURE);
++
++	exit(EXIT_SUCCESS);
+ }
+ 
+ /*
+--- a/tools/tracing/rtla/src/timerlat_hist.c
++++ b/tools/tracing/rtla/src/timerlat_hist.c
+@@ -546,7 +546,11 @@ static void timerlat_hist_usage(char *us
+ 
+ 	for (i = 0; msg[i]; i++)
+ 		fprintf(stderr, "%s\n", msg[i]);
+-	exit(1);
++
++	if (usage)
++		exit(EXIT_FAILURE);
++
++	exit(EXIT_SUCCESS);
+ }
+ 
+ /*
+--- a/tools/tracing/rtla/src/timerlat_top.c
++++ b/tools/tracing/rtla/src/timerlat_top.c
+@@ -375,7 +375,11 @@ static void timerlat_top_usage(char *usa
+ 
+ 	for (i = 0; msg[i]; i++)
+ 		fprintf(stderr, "%s\n", msg[i]);
+-	exit(1);
++
++	if (usage)
++		exit(EXIT_FAILURE);
++
++	exit(EXIT_SUCCESS);
+ }
+ 
+ /*
 
 
 
