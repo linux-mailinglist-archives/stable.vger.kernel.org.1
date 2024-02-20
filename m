@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-21238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F068D85C7CE
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:16:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7767985C922
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:29:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4CE4284A36
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:16:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0878CB21EB6
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:29:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8778151CCC;
-	Tue, 20 Feb 2024 21:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 487A9151CE1;
+	Tue, 20 Feb 2024 21:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VmAtoA0q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pstMqc+D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 765571509BF;
-	Tue, 20 Feb 2024 21:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04D1D14A4E6;
+	Tue, 20 Feb 2024 21:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463790; cv=none; b=vAEjQbNyrahVOdSXC+L3tlpUU0Khm03DLhEWqVAZQbI+wE6itdli6PPepHcZkzhjDlgqgLrCXRJE4kshc3zKsBd0wt2oflKtjzR5e2hLLMCZPyoYfxvmPGgkhbUz24FnkJD9sOJaIQii1NX7CxLhAQDBOMzoPxplHt9sR5KbjvI=
+	t=1708464582; cv=none; b=n2EJpIM1lyIXddTG7x1HDPMM1rPA7bm2xGoz22K0d1LkNaWW5jSq/zGRaEfS7+kSUkqor095+8GkllJwpIiJqzpqvqe8TJM3s3IP4VbQS3Z+w0HJypyszhTaY15n1N0CaOwKN6wTD8gS8QEOt86k0LaynM959dWF3FjwhSk2abs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463790; c=relaxed/simple;
-	bh=w5wC6cZSzMLLRDqKsjEDA8aXdNc5P6Dm/lXlbBYCP5c=;
+	s=arc-20240116; t=1708464582; c=relaxed/simple;
+	bh=H1tDeuMP7Te7UoyqgcSugf5xZuga/iFtv+Ivkll4ZQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Skmr9iet4S5sbqnDzmHgUxS/E/GPfDT7GGFv9jJABt93ODiGpoL7vw9LOAROYv9w0BPui1geHHRVvA3DerQAOFgikwrZQwRz9lW/u47fJg4/AEnYsocCHK2CmJtkjFUMPFnjvbrIcSl5J0auGNOFuLPvKkKSVp/aARemRJ7i/JE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VmAtoA0q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7970C433F1;
-	Tue, 20 Feb 2024 21:16:29 +0000 (UTC)
+	 MIME-Version; b=c1HQXiBiB8EUY9mOWF3d6a597EpC23D22eR4/Ckpaf/YfBhAaf7CBwwoSG5W4OzxpffT3foewAI3p3gaqPIj94gkDvbIRY9FsAtI1Pgr+PZd3xhUNozreVdvxsOyAy1+crcch+SxT9woESXF4IoR7mYUbl7NLGs+ikazaXBZx5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pstMqc+D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8584EC433C7;
+	Tue, 20 Feb 2024 21:29:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463790;
-	bh=w5wC6cZSzMLLRDqKsjEDA8aXdNc5P6Dm/lXlbBYCP5c=;
+	s=korg; t=1708464581;
+	bh=H1tDeuMP7Te7UoyqgcSugf5xZuga/iFtv+Ivkll4ZQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VmAtoA0q2SCd7LrN8yRAbulymNVnMJ0SLNvfOt2W1yDgrDadmM4o1pwridu98Zsr7
-	 +cyAXgknaQtkvD7/cpWI3Z3Gsk8LtZ5KFD8RM0a5h0jIS/MWVN8026FIiLMcYlollt
-	 cZcTwUhvnIpkj1FkvgnAfre9lRhuL6YLG9NU4tQs=
+	b=pstMqc+DapiZDJx8fxocg/flEK43UwaAmsuSwPMK2sF8xwXis2V7Zc+2/6OXZOy+1
+	 ewZoHmV5Njq+dp4AeL+nj14K4THNEsgQsOUocsjdWrDxKkh3JNq24YkES15Vr6imFQ
+	 +/0mOnJjzvSF5RrYfKngbLgaAfJAO61dxUh8efSE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang.tang@linux.dev>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.6 114/331] mptcp: check addrs list in userspace_pm_get_local_id
+	Zach OKeefe <zokeefe@google.com>,
+	Maxim Patlasov <MPatlasov@parallels.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.7 071/309] mm/writeback: fix possible divide-by-zero in wb_dirty_limits(), again
 Date: Tue, 20 Feb 2024 21:53:50 +0100
-Message-ID: <20240220205641.202746482@linuxfoundation.org>
+Message-ID: <20240220205635.430981157@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <geliang@kernel.org>
+From: Zach O'Keefe <zokeefe@google.com>
 
-commit f012d796a6de662692159c539689e47e662853a8 upstream.
+commit 9319b647902cbd5cc884ac08a8a6d54ce111fc78 upstream.
 
-Before adding a new entry in mptcp_userspace_pm_get_local_id(), it's
-better to check whether this address is already in userspace pm local
-address list. If it's in the list, no need to add a new entry, just
-return it's address ID and use this address.
+(struct dirty_throttle_control *)->thresh is an unsigned long, but is
+passed as the u32 divisor argument to div_u64().  On architectures where
+unsigned long is 64 bytes, the argument will be implicitly truncated.
 
-Fixes: 8b20137012d9 ("mptcp: read attributes of addr entries managed by userspace PMs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Geliang Tang <geliang.tang@linux.dev>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Use div64_u64() instead of div_u64() so that the value used in the "is
+this a safe division" check is the same as the divisor.
+
+Also, remove redundant cast of the numerator to u64, as that should happen
+implicitly.
+
+This would be difficult to exploit in memcg domain, given the ratio-based
+arithmetic domain_drity_limits() uses, but is much easier in global
+writeback domain with a BDI_CAP_STRICTLIMIT-backing device, using e.g.
+vm.dirty_bytes=(1<<32)*PAGE_SIZE so that dtc->thresh == (1<<32)
+
+Link: https://lkml.kernel.org/r/20240118181954.1415197-1-zokeefe@google.com
+Fixes: f6789593d5ce ("mm/page-writeback.c: fix divide by zero in bdi_dirty_limits()")
+Signed-off-by: Zach O'Keefe <zokeefe@google.com>
+Cc: Maxim Patlasov <MPatlasov@parallels.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_userspace.c |   13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ mm/page-writeback.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mptcp/pm_userspace.c
-+++ b/net/mptcp/pm_userspace.c
-@@ -130,10 +130,21 @@ int mptcp_userspace_pm_get_flags_and_ifi
- int mptcp_userspace_pm_get_local_id(struct mptcp_sock *msk,
- 				    struct mptcp_addr_info *skc)
- {
--	struct mptcp_pm_addr_entry new_entry;
-+	struct mptcp_pm_addr_entry *entry = NULL, *e, new_entry;
- 	__be16 msk_sport =  ((struct inet_sock *)
- 			     inet_sk((struct sock *)msk))->inet_sport;
+--- a/mm/page-writeback.c
++++ b/mm/page-writeback.c
+@@ -1638,7 +1638,7 @@ static inline void wb_dirty_limits(struc
+ 	 */
+ 	dtc->wb_thresh = __wb_calc_thresh(dtc);
+ 	dtc->wb_bg_thresh = dtc->thresh ?
+-		div_u64((u64)dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0;
++		div64_u64(dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0;
  
-+	spin_lock_bh(&msk->pm.lock);
-+	list_for_each_entry(e, &msk->pm.userspace_pm_local_addr_list, list) {
-+		if (mptcp_addresses_equal(&e->addr, skc, false)) {
-+			entry = e;
-+			break;
-+		}
-+	}
-+	spin_unlock_bh(&msk->pm.lock);
-+	if (entry)
-+		return entry->addr.id;
-+
- 	memset(&new_entry, 0, sizeof(struct mptcp_pm_addr_entry));
- 	new_entry.addr = *skc;
- 	new_entry.addr.id = 0;
+ 	/*
+ 	 * In order to avoid the stacked BDI deadlock we need
 
 
 
