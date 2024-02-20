@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-21550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E545585C95E
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:32:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9333B85C7C6
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:16:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21F431C22401
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:32:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CAD5283EC3
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:16:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65224151CE9;
-	Tue, 20 Feb 2024 21:32:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 120AE152E07;
+	Tue, 20 Feb 2024 21:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QuoshnRj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BkYcEdLP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220181509BC;
-	Tue, 20 Feb 2024 21:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C37661509BF;
+	Tue, 20 Feb 2024 21:16:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464765; cv=none; b=ljnRtq7pdGm8GEmBTkvj0RhfxZ7nFKF7VLMewFknLBA35C7aiBhweHs4ejIsSA9bzDxI0Zm19h4AFVc90tz5Ht9zZuW3HRay3HAylMyZenxLMDH1Ml8ud+Dw2m6x6znexaMHC7lvNZBB3gmtOXHM90nbl/NjJeIjRZJsRkWU0uc=
+	t=1708463765; cv=none; b=RJpmjeGMh4cjuRjXgslRIfKq3n19poO3LRafTE3HeC7RjkBcqeI+vyn7GOQQziERL8KhccsUNxfFwu4qyYx/818JcvnlvwtzwE1OArm4pVC00ZegeYHOzJgwCB63rGnHjV5h+NHgKI7p01KfkDk2XDPTk/FTKqG8VqKFxEr3fN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464765; c=relaxed/simple;
-	bh=JYIHhkt4WElNLXnm3h6I+62dKCugo4CGAYRI+suBCeY=;
+	s=arc-20240116; t=1708463765; c=relaxed/simple;
+	bh=HXCHAWJuXJ22WnlTAydPXPEp03QrjyCZM7vfVHRsUu0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OroV7uaWcS6x0coHIb/NOh13WoQwNGuGNiDVchni4zTjxa1yNkmU2xY2yCybnFyc/X8hedaQA6Vvwo1bc/cMP5CFtGdjjCLsQs2gAH1nlZI0yxbZtXhdO4n3Du8dbfgnrF0tJ8QMzyQwUgJm5XrN5EALWq/TezvVh+epSUKNHTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QuoshnRj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 511F3C433C7;
-	Tue, 20 Feb 2024 21:32:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ruAJGnE5yV/wMbMkk6n7Dy3HX2aKmEYYaQplpHarR8CJkmq7YOjk2w8e/KAkMHhGjX+mljhZ2Fph3iapa8bCGf/LUQMqRtEmADf9Bf+il/zNSPIimDEMd/JKp9gcf5Xfr2YeZFjTZtn8zeDGT7NWlD6RJInBBQ0Jz0WdsG+Affg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BkYcEdLP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33C95C433C7;
+	Tue, 20 Feb 2024 21:16:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464764;
-	bh=JYIHhkt4WElNLXnm3h6I+62dKCugo4CGAYRI+suBCeY=;
+	s=korg; t=1708463765;
+	bh=HXCHAWJuXJ22WnlTAydPXPEp03QrjyCZM7vfVHRsUu0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QuoshnRjoGkq3FagTLsmFWEj+e8y64rtnBO5fK0B5958Kxkqpw2vaVRM2FWlgPfXf
-	 3wTk4u18egGZCPuyOO3B8a0Ud0NxWRVhKswOg4Xu4SVK0a4bpyROlMOnWAu1yhH/lw
-	 hSMrd/kAZeFoV+bGsQ63btAtVmbYyisZjWSLBCxM=
+	b=BkYcEdLPMPV7jm3/anuwgIpW2xiXOEBvZWuE7d7CfJXyKYXtkiP55VJO4aF37RApw
+	 SgfATmgIFXujI1hrx2oDtG034LFHDaVn31bpOBdhy2LdnoFF9IjeqkYAQayCNw0mxF
+	 xcgYlxBpqXtOO5DBAg/yPrkyRAHM6VCDGG6IJHpw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 100/309] powerpc/6xx: set High BAT Enable flag on G2_LE cores
-Date: Tue, 20 Feb 2024 21:54:19 +0100
-Message-ID: <20240220205636.310775182@linuxfoundation.org>
+	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+	Martijn Coenen <maco@android.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Steven Moreland <smoreland@google.com>,
+	Carlos Llamas <cmllamas@google.com>
+Subject: [PATCH 6.6 144/331] binder: signal epoll threads of self-work
+Date: Tue, 20 Feb 2024 21:54:20 +0100
+Message-ID: <20240220205642.072532865@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,92 +62,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+From: Carlos Llamas <cmllamas@google.com>
 
-[ Upstream commit a038a3ff8c6582404834852c043dadc73a5b68b4 ]
+commit 97830f3c3088638ff90b20dfba2eb4d487bf14d7 upstream.
 
-MMU_FTR_USE_HIGH_BATS is set for G2_LE cores and derivatives like e300cX,
-but the high BATs need to be enabled in HID2 to work. Add register
-definitions and add the needed setup to __setup_cpu_603.
+In (e)poll mode, threads often depend on I/O events to determine when
+data is ready for consumption. Within binder, a thread may initiate a
+command via BINDER_WRITE_READ without a read buffer and then make use
+of epoll_wait() or similar to consume any responses afterwards.
 
-This fixes boot on CPUs like the MPC5200B with STRICT_KERNEL_RWX enabled
-on systems where the flag has not been set by the bootloader already.
+It is then crucial that epoll threads are signaled via wakeup when they
+queue their own work. Otherwise, they risk waiting indefinitely for an
+event leaving their work unhandled. What is worse, subsequent commands
+won't trigger a wakeup either as the thread has pending work.
 
-Fixes: e4d6654ebe6e ("powerpc/mm/32s: rework mmu_mapin_ram()")
-Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240124103838.43675-1-matthias.schiffer@ew.tq-group.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 457b9a6f09f0 ("Staging: android: add binder driver")
+Cc: Arve Hjønnevåg <arve@android.com>
+Cc: Martijn Coenen <maco@android.com>
+Cc: Alice Ryhl <aliceryhl@google.com>
+Cc: Steven Moreland <smoreland@google.com>
+Cc: stable@vger.kernel.org # v4.19+
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Link: https://lore.kernel.org/r/20240131215347.1808751-1-cmllamas@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/include/asm/reg.h      |  2 ++
- arch/powerpc/kernel/cpu_setup_6xx.S | 20 +++++++++++++++++++-
- 2 files changed, 21 insertions(+), 1 deletion(-)
+ drivers/android/binder.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
-index 4ae4ab9090a2..ade5f094dbd2 100644
---- a/arch/powerpc/include/asm/reg.h
-+++ b/arch/powerpc/include/asm/reg.h
-@@ -617,6 +617,8 @@
- #endif
- #define SPRN_HID2	0x3F8		/* Hardware Implementation Register 2 */
- #define SPRN_HID2_GEKKO	0x398		/* Gekko HID2 Register */
-+#define SPRN_HID2_G2_LE	0x3F3		/* G2_LE HID2 Register */
-+#define  HID2_G2_LE_HBE	(1<<18)		/* High BAT Enable (G2_LE) */
- #define SPRN_IABR	0x3F2	/* Instruction Address Breakpoint Register */
- #define SPRN_IABR2	0x3FA		/* 83xx */
- #define SPRN_IBCR	0x135		/* 83xx Insn Breakpoint Control Reg */
-diff --git a/arch/powerpc/kernel/cpu_setup_6xx.S b/arch/powerpc/kernel/cpu_setup_6xx.S
-index f29ce3dd6140..bfd3f442e5eb 100644
---- a/arch/powerpc/kernel/cpu_setup_6xx.S
-+++ b/arch/powerpc/kernel/cpu_setup_6xx.S
-@@ -26,6 +26,15 @@ BEGIN_FTR_SECTION
- 	bl	__init_fpu_registers
- END_FTR_SECTION_IFCLR(CPU_FTR_FPU_UNAVAILABLE)
- 	bl	setup_common_caches
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -478,6 +478,16 @@ binder_enqueue_thread_work_ilocked(struc
+ {
+ 	WARN_ON(!list_empty(&thread->waiting_thread_node));
+ 	binder_enqueue_work_ilocked(work, &thread->todo);
 +
-+	/*
-+	 * This assumes that all cores using __setup_cpu_603 with
-+	 * MMU_FTR_USE_HIGH_BATS are G2_LE compatible
++	/* (e)poll-based threads require an explicit wakeup signal when
++	 * queuing their own work; they rely on these events to consume
++	 * messages without I/O block. Without it, threads risk waiting
++	 * indefinitely without handling the work.
 +	 */
-+BEGIN_MMU_FTR_SECTION
-+	bl      setup_g2_le_hid2
-+END_MMU_FTR_SECTION_IFSET(MMU_FTR_USE_HIGH_BATS)
++	if (thread->looper & BINDER_LOOPER_STATE_POLL &&
++	    thread->pid == current->pid && !thread->process_todo)
++		wake_up_interruptible_sync(&thread->wait);
 +
- 	mtlr	r5
- 	blr
- _GLOBAL(__setup_cpu_604)
-@@ -115,6 +124,16 @@ SYM_FUNC_START_LOCAL(setup_604_hid0)
- 	blr
- SYM_FUNC_END(setup_604_hid0)
+ 	thread->process_todo = true;
+ }
  
-+/* Enable high BATs for G2_LE and derivatives like e300cX */
-+SYM_FUNC_START_LOCAL(setup_g2_le_hid2)
-+	mfspr	r11,SPRN_HID2_G2_LE
-+	oris	r11,r11,HID2_G2_LE_HBE@h
-+	mtspr	SPRN_HID2_G2_LE,r11
-+	sync
-+	isync
-+	blr
-+SYM_FUNC_END(setup_g2_le_hid2)
-+
- /* 7400 <= rev 2.7 and 7410 rev = 1.0 suffer from some
-  * erratas we work around here.
-  * Moto MPC710CE.pdf describes them, those are errata
-@@ -495,4 +514,3 @@ _GLOBAL(__restore_cpu_setup)
- 	mtcr	r7
- 	blr
- _ASM_NOKPROBE_SYMBOL(__restore_cpu_setup)
--
--- 
-2.43.0
-
 
 
 
