@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-21195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66D4685C792
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:14:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B1A385C93E
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:31:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D0F01F255F8
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:14:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E1B31F228CA
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:31:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 651B7151CC8;
-	Tue, 20 Feb 2024 21:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C949151CD6;
+	Tue, 20 Feb 2024 21:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F2DzSVry"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RgZ97n4t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21AA11509BF;
-	Tue, 20 Feb 2024 21:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8D614A4D2;
+	Tue, 20 Feb 2024 21:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463653; cv=none; b=qrYSYjImsv7MLTGS05lSkUAH68asemKgk8m8yi9t+spLRYqVRTR2ah5KE5bfnEo6UaDsr/dhp1TCwQL8RZuPLeqG+drOSzeyeYznC1l6yuwef70dm944PRXeiLHdpuFkO8eMuCUTTHzR/wqG8K0i32u6P4kmcmrIpojMT1FOD5c=
+	t=1708464666; cv=none; b=H5iHiEzzCOAYkB6djbPHvGK4h44evIgepmJKpFxEj5IJGV9J+ukYS+Y6lUeH3xCgRVtlQHgKDM4U7LH1OhcRpILuZ9ITLyVFK7ocictkDh7hEZugfVFg7e5F7rMNatrEStkLTzabf1ypU1GZLmH6pcxvViBnPP8SvWTl2Eb0XDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463653; c=relaxed/simple;
-	bh=dQv3HFFhibXVd14DEHU2lPiYW50+Q53LcsECNqKXZAw=;
+	s=arc-20240116; t=1708464666; c=relaxed/simple;
+	bh=7lyZoq3SGNBGAfYnKCQcNo7o8bQuFXV04mv5uSTpOeg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gdS4vDHGbZ3PCGuhx6o475JVC7jJc3y3Z0Ukvj+53pXoBvBc2gcH4oIF3XxWt0a7UIOP93kMPL62wq90rKnOFPSMjoh1liKPqhMRqxz0b/gV3a3iwBHMgIfLRF5OlIHObWbc8MDUW+Pfd1p430PLLZ1yS1eyf0BUgosfEkC2eQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F2DzSVry; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89ED8C433C7;
-	Tue, 20 Feb 2024 21:14:12 +0000 (UTC)
+	 MIME-Version; b=rKbIv/mR4rd2B66Kp9qVULTiQ9aH3tKySqsXTkyaUwivAj3EAckUjM6/w8bK4G5tvq4uYYYC1vA+Umj270gZs5RaflM/QFfWvkvHBv8YYFWMwq9LdYb8LpenrvOr7zK2pamL5drSMQKQB82pMTN9xsQjYeazkA81bGYVeQSN4sQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RgZ97n4t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F86AC433C7;
+	Tue, 20 Feb 2024 21:31:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463653;
-	bh=dQv3HFFhibXVd14DEHU2lPiYW50+Q53LcsECNqKXZAw=;
+	s=korg; t=1708464666;
+	bh=7lyZoq3SGNBGAfYnKCQcNo7o8bQuFXV04mv5uSTpOeg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F2DzSVry5GQsQWBoh59iwlMfP+J/4Zy19eINuN/CTOZc4WOWcFYLsoWTIUE7tzJCR
-	 CJjJXhXGUqSBP/KxXJPZZ4r4WarX5fiuxtQr8saESfmcSjZMF1zAc3IodZbhpAYUH/
-	 r40jEMI5SlHMIkX5FBkoW1pCQaii3DTg8JA8LVbU=
+	b=RgZ97n4tl2Bdr1WSfHsgB5Ubq20XhUVGhucJpiF06A8CRQH9wukmeDoJPaKT6A3Yx
+	 vD0nWFt5RUElGlZbkahlD2Y0tMLTuhmE6z4FN4sSMAjMYii9jhJMzJr0v1wy3ba39Z
+	 BJEJ61Q2M28ObMA6dx1f9WSVPT6m3INjTfJobVuw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 110/331] selftests: mptcp: allow changing subtests prefix
+	Vincent Donnefort <vdonnefort@google.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.7 067/309] tracing/trigger: Fix to return error if failed to alloc snapshot
 Date: Tue, 20 Feb 2024 21:53:46 +0100
-Message-ID: <20240220205641.069200737@linuxfoundation.org>
+Message-ID: <20240220205635.308464683@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-commit de46d138e7735eded9756906747fd3a8c3a42225 upstream.
+commit 0958b33ef5a04ed91f61cef4760ac412080c4e08 upstream.
 
-If a CI executes the same selftest multiple times with different
-options, all results from the same subtests will have the same title,
-which confuse the CI. With the same title printed in TAP, the tests are
-considered as the same ones.
+Fix register_snapshot_trigger() to return error code if it failed to
+allocate a snapshot instead of 0 (success). Unless that, it will register
+snapshot trigger without an error.
 
-Now, it is possible to override this prefix by using MPTCP_LIB_KSFT_TEST
-env var, and have a different title.
+Link: https://lore.kernel.org/linux-trace-kernel/170622977792.270660.2789298642759362200.stgit@devnote2
 
-While at it, use 'basename' to remove the suffix as well instead of
-using an extra 'sed'.
-
-Fixes: c4192967e62f ("selftests: mptcp: lib: format subtests results in TAP")
+Fixes: 0bbe7f719985 ("tracing: Fix the race between registering 'snapshot' event trigger and triggering 'snapshot' operation")
 Cc: stable@vger.kernel.org
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240131-upstream-net-20240131-mptcp-ci-issues-v1-7-4c1c11e571ff@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: Vincent Donnefort <vdonnefort@google.com>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_lib.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/trace_events_trigger.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_lib.sh b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
-index 022262a2cfe0..3a2abae5993e 100644
---- a/tools/testing/selftests/net/mptcp/mptcp_lib.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
-@@ -6,7 +6,7 @@ readonly KSFT_FAIL=1
- readonly KSFT_SKIP=4
+--- a/kernel/trace/trace_events_trigger.c
++++ b/kernel/trace/trace_events_trigger.c
+@@ -1470,8 +1470,10 @@ register_snapshot_trigger(char *glob,
+ 			  struct event_trigger_data *data,
+ 			  struct trace_event_file *file)
+ {
+-	if (tracing_alloc_snapshot_instance(file->tr) != 0)
+-		return 0;
++	int ret = tracing_alloc_snapshot_instance(file->tr);
++
++	if (ret < 0)
++		return ret;
  
- # shellcheck disable=SC2155 # declare and assign separately
--readonly KSFT_TEST=$(basename "${0}" | sed 's/\.sh$//g')
-+readonly KSFT_TEST="${MPTCP_LIB_KSFT_TEST:-$(basename "${0}" .sh)}"
- 
- MPTCP_LIB_SUBTESTS=()
- 
--- 
-2.43.2
-
+ 	return register_trigger(glob, data, file);
+ }
 
 
 
