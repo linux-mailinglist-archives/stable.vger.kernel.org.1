@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-21696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3307585C9F5
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:40:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5152685C8C0
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:25:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A260EB23BDA
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:40:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E651F1F21306
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:25:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3149151CDC;
-	Tue, 20 Feb 2024 21:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88CA21509AC;
+	Tue, 20 Feb 2024 21:25:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ulFSXda4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sLtmbICN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6109C612D7;
-	Tue, 20 Feb 2024 21:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 483A114A4E6;
+	Tue, 20 Feb 2024 21:25:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708465224; cv=none; b=kl0H0bclhjRhAUW+YXjPd2UW7O/RjpgQAR416+INsZh81fScXTGJ4byCn2W40D0hJjLzZdv9fu6mw2acgMFv3ZzJ0YwUQT6qfiaWD663SkFJHxcn6hXTYZC+3iCibeA9oC+FHEO5z16O5F2sI8lTGrh5o+3leQW/nXR1tg6+1Bo=
+	t=1708464311; cv=none; b=AjY4nAsnoVKWfXkmBny2ynShKFIm4I/2YiGb/QBW3LUY1i8lbCxHTIAsF3rgVicvePhz5HYKG2LDziS7AwVhC7G7SAdYSErw74DVV72cWWsGn+QJBwyM4iBxmUOVk/vutqvG8FFiVKZHfbzcikylNM6CFrFtnm9bN7G3GjwLFRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708465224; c=relaxed/simple;
-	bh=rd8yQ7wnmfvmb6yA1wdmyzKvUG8/JPwkLSVyyel92hI=;
+	s=arc-20240116; t=1708464311; c=relaxed/simple;
+	bh=N0wGQ+hUoPg3hDPvePFDE1nZh5GSQG+ulI2Yw6oROjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HYUYEMRRab8iHkeeufWegspUv7vtN/dqozCXr/bVXkTZ6GXuynAhvOwDxp/HR4f9LU4kj/j1TD3XhFNQblRijOJOZ+3ksyJOf7xSxhlA96VlnnYCtw0YW4cp5MW7Y3QMRBzVEV9Ls/kCAESOZoS8fOKDROg8aZ9x8zX8YDwQTFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ulFSXda4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4FB7C433F1;
-	Tue, 20 Feb 2024 21:40:23 +0000 (UTC)
+	 MIME-Version; b=fRZsMjIZlIqvrM3e5oyCH+TqSzS9imusv3/mvr19O9uBKHI+b01rEpXsbMVoPoHkpPDgmso8GFn9vXb2En9zFuKvIjDB27DRLUbKzu4qadnMtNT47b0gistKYSPeOXR3pk/b5aYgnX314V9CYf7HYToCggGnTShVSXzilxB8MzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sLtmbICN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA93C433C7;
+	Tue, 20 Feb 2024 21:25:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708465224;
-	bh=rd8yQ7wnmfvmb6yA1wdmyzKvUG8/JPwkLSVyyel92hI=;
+	s=korg; t=1708464311;
+	bh=N0wGQ+hUoPg3hDPvePFDE1nZh5GSQG+ulI2Yw6oROjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ulFSXda41+VNrGEZtMweGOyYUzDneR9fFai7P4dwVGxGBPSQjQHFA9Jy0JnJzmHRB
-	 8fH7zrUYqp0M6E0vYt0TqwDkAz/0Y/e1jopCryJKqzrrW3l8c0UFnVitvvP+faTdks
-	 mgQjTB9aeiFBuRbsHJk0afm1//uECrqyHFNYOyU8=
+	b=sLtmbICNA3qHUJ9+DIsCHb2LMutcnegoKr1+0NN+rqBD2ANykFGD5tsEOqgwkyxBq
+	 4UfUBVGk0CtJMxgUG1/o8N31TCNOdx1UQ4zi18xo0J0NDpHdu7Js0HkNXG94TKkrNM
+	 0N/RYg7rLTvqRCxzvmBQeIl4ES69ztIojNVEPU2U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Kacur <jkacur@redhat.com>,
-	Daniel Bristot de Oliveira <bristot@kernel.org>
-Subject: [PATCH 6.7 275/309] tools/rtla: Exit with EXIT_SUCCESS when help is invoked
+	Ard Biesheuvel <ardb@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>
+Subject: [PATCH 6.6 318/331] x86/efi: Drop alignment flags from PE section headers
 Date: Tue, 20 Feb 2024 21:57:14 +0100
-Message-ID: <20240220205641.730965462@linuxfoundation.org>
+Message-ID: <20240220205648.214789171@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,95 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Kacur <jkacur@redhat.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit b5f319360371087d52070d8f3fc7789e80ce69a6 upstream.
+commit bfab35f552ab3dd6d017165bf9de1d1d20f198cc upstream.
 
-Fix rtla so that the following commands exit with 0 when help is invoked
+The section header flags for alignment are documented in the PE/COFF
+spec as being applicable to PE object files only, not to PE executables
+such as the Linux bzImage, so let's drop them from the PE header.
 
-rtla osnoise top -h
-rtla osnoise hist -h
-rtla timerlat top -h
-rtla timerlat hist -h
-
-Link: https://lore.kernel.org/linux-trace-devel/20240203001607.69703-1-jkacur@redhat.com
-
-Cc: stable@vger.kernel.org
-Fixes: 1eeb6328e8b3 ("rtla/timerlat: Add timerlat hist mode")
-Signed-off-by: John Kacur <jkacur@redhat.com>
-Signed-off-by: Daniel Bristot de Oliveira <bristot@kernel.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20230912090051.4014114-20-ardb@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/tracing/rtla/src/osnoise_hist.c  |    6 +++++-
- tools/tracing/rtla/src/osnoise_top.c   |    6 +++++-
- tools/tracing/rtla/src/timerlat_hist.c |    6 +++++-
- tools/tracing/rtla/src/timerlat_top.c  |    6 +++++-
- 4 files changed, 20 insertions(+), 4 deletions(-)
+ arch/x86/boot/header.S |   12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
---- a/tools/tracing/rtla/src/osnoise_hist.c
-+++ b/tools/tracing/rtla/src/osnoise_hist.c
-@@ -480,7 +480,11 @@ static void osnoise_hist_usage(char *usa
+--- a/arch/x86/boot/header.S
++++ b/arch/x86/boot/header.S
+@@ -209,8 +209,7 @@ section_table:
+ 	.word	0				# NumberOfLineNumbers
+ 	.long	IMAGE_SCN_CNT_CODE		| \
+ 		IMAGE_SCN_MEM_READ		| \
+-		IMAGE_SCN_MEM_EXECUTE		| \
+-		IMAGE_SCN_ALIGN_16BYTES		# Characteristics
++		IMAGE_SCN_MEM_EXECUTE		# Characteristics
  
- 	for (i = 0; msg[i]; i++)
- 		fprintf(stderr, "%s\n", msg[i]);
--	exit(1);
-+
-+	if (usage)
-+		exit(EXIT_FAILURE);
-+
-+	exit(EXIT_SUCCESS);
- }
+ 	#
+ 	# The EFI application loader requires a relocation section
+@@ -230,8 +229,7 @@ section_table:
+ 	.word	0				# NumberOfLineNumbers
+ 	.long	IMAGE_SCN_CNT_INITIALIZED_DATA	| \
+ 		IMAGE_SCN_MEM_READ		| \
+-		IMAGE_SCN_MEM_DISCARDABLE	| \
+-		IMAGE_SCN_ALIGN_1BYTES		# Characteristics
++		IMAGE_SCN_MEM_DISCARDABLE	# Characteristics
  
- /*
---- a/tools/tracing/rtla/src/osnoise_top.c
-+++ b/tools/tracing/rtla/src/osnoise_top.c
-@@ -331,7 +331,11 @@ static void osnoise_top_usage(struct osn
+ #ifdef CONFIG_EFI_MIXED
+ 	#
+@@ -249,8 +247,7 @@ section_table:
+ 	.word	0				# NumberOfLineNumbers
+ 	.long	IMAGE_SCN_CNT_INITIALIZED_DATA	| \
+ 		IMAGE_SCN_MEM_READ		| \
+-		IMAGE_SCN_MEM_DISCARDABLE	| \
+-		IMAGE_SCN_ALIGN_1BYTES		# Characteristics
++		IMAGE_SCN_MEM_DISCARDABLE	# Characteristics
+ #endif
  
- 	for (i = 0; msg[i]; i++)
- 		fprintf(stderr, "%s\n", msg[i]);
--	exit(1);
-+
-+	if (usage)
-+		exit(EXIT_FAILURE);
-+
-+	exit(EXIT_SUCCESS);
- }
+ 	#
+@@ -271,8 +268,7 @@ section_table:
+ 	.word	0				# NumberOfLineNumbers
+ 	.long	IMAGE_SCN_CNT_CODE		| \
+ 		IMAGE_SCN_MEM_READ		| \
+-		IMAGE_SCN_MEM_EXECUTE		| \
+-		IMAGE_SCN_ALIGN_16BYTES		# Characteristics
++		IMAGE_SCN_MEM_EXECUTE		# Characteristics
  
- /*
---- a/tools/tracing/rtla/src/timerlat_hist.c
-+++ b/tools/tracing/rtla/src/timerlat_hist.c
-@@ -546,7 +546,11 @@ static void timerlat_hist_usage(char *us
- 
- 	for (i = 0; msg[i]; i++)
- 		fprintf(stderr, "%s\n", msg[i]);
--	exit(1);
-+
-+	if (usage)
-+		exit(EXIT_FAILURE);
-+
-+	exit(EXIT_SUCCESS);
- }
- 
- /*
---- a/tools/tracing/rtla/src/timerlat_top.c
-+++ b/tools/tracing/rtla/src/timerlat_top.c
-@@ -375,7 +375,11 @@ static void timerlat_top_usage(char *usa
- 
- 	for (i = 0; msg[i]; i++)
- 		fprintf(stderr, "%s\n", msg[i]);
--	exit(1);
-+
-+	if (usage)
-+		exit(EXIT_FAILURE);
-+
-+	exit(EXIT_SUCCESS);
- }
- 
- /*
+ 	.set	section_count, (. - section_table) / 40
+ #endif /* CONFIG_EFI_STUB */
 
 
 
