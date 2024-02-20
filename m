@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-21546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41BB685C95A
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:32:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 850D385C7C1
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:16:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0B4F284D4D
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:32:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3EF74283EEE
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:16:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 927E2151CDC;
-	Tue, 20 Feb 2024 21:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AE02152DFA;
+	Tue, 20 Feb 2024 21:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SkijK/Sq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZUFDMkQ5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5286F446C9;
-	Tue, 20 Feb 2024 21:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B370676C9C;
+	Tue, 20 Feb 2024 21:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464752; cv=none; b=VB8pZtEev/WPm46/Gi/Y4PalvSGxDKDBjDOVAyPkASFylwXIGL+sfxkeaS2fQyhGjNEfq/Fxc104EoYTqy9LloyABveNvaShB7gexN3Do61poTyfU2n5abpd0QxuIlvZujWrTHUG9FwdLipMIho1wpWykHuxaJyo561KWGL9dwM=
+	t=1708463745; cv=none; b=lEB0fPZjlf9xZ3vW99EgYXWT6rWjJcYECgZlDNExab7cORe+r1fWspaF0T2Z0oYwOYrzRZFU9787LvtogEY7D0C3RsFYC2zxqvZZmhclFqmTRbdYecKjhMrqf+ILApA5tFlooXoFZcmnlhQtgP9kxrox0xdElpDvTiQd2YuayJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464752; c=relaxed/simple;
-	bh=0P+94enaeX/iVczTClIv1G0uJt1HT6J0ePcQ8EUIsgA=;
+	s=arc-20240116; t=1708463745; c=relaxed/simple;
+	bh=Yu0DqaOSpNHwGWKPN3psq0NaeF9EM/8Cl3wKasK2wuE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uKxNiJyKGNN+kW5jmg0zHz6HUbkO7aC/7MRtJGJ5rycGvTWbdCfhxZ2MWJZBSFnwIWVPvdJNRnBW7O3qw11/kHpUGen+QmZoxMdrEFOyVQfOd1Y8LvosLqom5DD0ZgenMHKp5GpGrOElipU1Is8ph2KzEjcNUdga8y3qaRFqDVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SkijK/Sq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D404EC433C7;
-	Tue, 20 Feb 2024 21:32:31 +0000 (UTC)
+	 MIME-Version; b=H6wWYsMkBsk87fD0CNvfjCLFrHU2D2JOtdtXWWi2r0P74iioajh6TvsjGQZuzjksQ8yHeZUvHzvQCLKqLiP+6/cSBq3KQvin8b0XanQ8k4dWLy1dm5CgAfzQpvIOtThKpLtBROjvvrZGRbU+xGjcoKfhe4XqQdYYBK68kezJtng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZUFDMkQ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21E1FC433F1;
+	Tue, 20 Feb 2024 21:15:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464752;
-	bh=0P+94enaeX/iVczTClIv1G0uJt1HT6J0ePcQ8EUIsgA=;
+	s=korg; t=1708463745;
+	bh=Yu0DqaOSpNHwGWKPN3psq0NaeF9EM/8Cl3wKasK2wuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SkijK/SqboFmEYtUnRmYSEZqO3aMz7vMNqmycN/OFehY4pvoFm+GvZ4KI0qm6HPLv
-	 +NlzvgUK7gGBOy9sDN+Aoa8L3sNvTgiz21JWWzoyPuggTQudC5xqIJ8vnoR+LXV5aD
-	 9d8hP2FH7hBiBVjPFKSl73PVwKk7h2UMTVxI2vLA=
+	b=ZUFDMkQ56de+WKcy4GJaaAlSoq7PTq7lRbYj+Ql9kfmPk0i0GzG0judEDyKGm1oyI
+	 Ktqay2BO+LUUj7Npaj+IIOK7PlDfgN9o1paKK19KHsqvvlQJlRk3+R+pJX2ajwxK/0
+	 YaddPFFzcrLA7k25w4J27ELq1+/vOikMElRFlGnw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Georgi Djakov <djakov@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 096/309] interconnect: qcom: sm8550: Enable sync_state
+	Edson Juliano Drosdeck <edson.drosdeck@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 139/331] ALSA: hda/realtek: Enable headset mic on Vaio VJFE-ADL
 Date: Tue, 20 Feb 2024 21:54:15 +0100
-Message-ID: <20240220205636.193895040@linuxfoundation.org>
+Message-ID: <20240220205641.930362321@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
 
-[ Upstream commit 24406f6794aa631516241deb9e19de333d6a0600 ]
+commit c7de2d9bb68a5fc71c25ff96705a80a76c8436eb upstream.
 
-To ensure the interconnect votes are actually meaningful and in order to
-prevent holding all buses at FMAX, introduce the sync state callback.
+Vaio VJFE-ADL is equipped with ALC269VC, and it needs
+ALC298_FIXUP_SPK_VOLUME quirk to make its headset mic work.
 
-Fixes: e6f0d6a30f73 ("interconnect: qcom: Add SM8550 interconnect provider driver")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20231218-topic-8550_fixes-v1-2-ce1272d77540@linaro.org
-Signed-off-by: Georgi Djakov <djakov@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240201122114.30080-1-edson.drosdeck@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/interconnect/qcom/sm8550.c | 1 +
+ sound/pci/hda/patch_realtek.c |    1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/interconnect/qcom/sm8550.c b/drivers/interconnect/qcom/sm8550.c
-index 629faa4c9aae..fc22cecf650f 100644
---- a/drivers/interconnect/qcom/sm8550.c
-+++ b/drivers/interconnect/qcom/sm8550.c
-@@ -2223,6 +2223,7 @@ static struct platform_driver qnoc_driver = {
- 	.driver = {
- 		.name = "qnoc-sm8550",
- 		.of_match_table = qnoc_of_match,
-+		.sync_state = icc_sync_state,
- 	},
- };
- 
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10204,6 +10204,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1d72, 0x1945, "Redmi G", ALC256_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d72, 0x1947, "RedmiBook Air", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
++	SND_PCI_QUIRK(0x2782, 0x1707, "Vaio VJFE-ADL", ALC298_FIXUP_SPK_VOLUME),
+ 	SND_PCI_QUIRK(0x8086, 0x2074, "Intel NUC 8", ALC233_FIXUP_INTEL_NUC8_DMIC),
+ 	SND_PCI_QUIRK(0x8086, 0x2080, "Intel NUC 8 Rugged", ALC256_FIXUP_INTEL_NUC8_RUGGED),
+ 	SND_PCI_QUIRK(0x8086, 0x2081, "Intel NUC 10", ALC256_FIXUP_INTEL_NUC10),
 
 
 
