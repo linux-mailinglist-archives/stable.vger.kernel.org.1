@@ -1,161 +1,142 @@
-Return-Path: <stable+bounces-20866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56E3485C438
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 20:04:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C777F85C439
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 20:04:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 867831C22DE2
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 19:04:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66E6C1F246C7
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 19:04:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2322C12E1D8;
-	Tue, 20 Feb 2024 19:03:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 160B112F5AC;
+	Tue, 20 Feb 2024 19:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0ceOovhg"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vTUuN9zK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
+Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E31478B51
-	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 19:03:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DEDA12EBEC
+	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 19:03:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708455837; cv=none; b=lSlXFjacUyc8++F+tij4VWZW/e0Yzwdc1EtZGoIS1DkwJXy/Zn6OcR1zF+iwiyOVo5k+876zAMXMEyho9Kc8Ppy7AR9T/YWUq0tCm7t9g6lZQWS5EwWQIbqt2605LRnLOuKQjV630SiInLSEQey7c/1dX/1FyLbl7HSU+ZgrmjI=
+	t=1708455839; cv=none; b=KNslJhCa6xBsHKaN1Qg31RnXgzpQV3hQgHLObTQ3Rz69edAp7PNQgC8nTLrmzos+YcpuQ10F0AQfro2oLbl8puwyit7tbroWzDQ3qrSgQ6HutfNtnBqMvNsBxg0/o5t1/96FYKy6jAnZsUM4zpudRzXLpuAfeNLchIoBfKzhCMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708455837; c=relaxed/simple;
-	bh=7IjtTn4XG8QYAyLq2UhjyqSoyurV4DwQIJeexOoQYnk=;
+	s=arc-20240116; t=1708455839; c=relaxed/simple;
+	bh=Qoze/htoU2x15hkrAN8co6ZkISYxGbqr1cbpqXI8PsE=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=gH6WNTC0lzXo4lkQFGtss+BKv3H7BIXxLqd2hrhI8/AmuYbsMPQ21ufRI1Cz9y5LSKsx1NcPjsnSrpBTm9v8v7+NXNy0jLN/1wPAG3e3mK+77f4pKIz21Z0wcc60Ul5YFYFWqdgHYBtc1a3mDUQJICFFehGlhIAhiu9TNbGxQoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0ceOovhg; arc=none smtp.client-ip=209.85.128.202
+	 To:Cc:Content-Type; b=Puuxqfup1VQbHWmhnQw6LnlR2VpqNODdNattwkwqJOjmdjowz+IlNqgOUcfl+SBDXwhaEdg5i6Yq1w65Y6lThjRIBd1T+xIYTyvyLJU/Ur6YOt8VZOp6pZAt87ayLgDma+zBr7YsLhqnEHsUsFEewnxvUwphtCQ5kpP0Vn2TLCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vTUuN9zK; arc=none smtp.client-ip=209.85.219.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com
-Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-60810219282so37216197b3.0
-        for <stable@vger.kernel.org>; Tue, 20 Feb 2024 11:03:55 -0800 (PST)
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-dbf216080f5so9181991276.1
+        for <stable@vger.kernel.org>; Tue, 20 Feb 2024 11:03:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1708455835; x=1709060635; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1708455837; x=1709060637; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9jKZ4KiC4kkq1KhbZI20dsIsyhfJ696TE/LFJygR6/Y=;
-        b=0ceOovhgexVLBloVmmWqw5LN5XlmETJP+DohSEHv5erJgghU+MDSvYUrjy9NX1gU0V
-         YQbTtb4xz3LEFX0ELvYWGvcJ3STc7VZkZHmXITiAuqwQ+WcDevBy7ys4rpZZ83LfYl75
-         ey5w7Nomuw+wGedbJlpHV/v4OJYhNWNamAKMSHCYksbtbT6ChRbDcRUdZuTBoMoOkoA0
-         nItBylfcYi/cXcnsIZtlVXBcg0XiRXEfCvjQ99yDmlBz+L7HwIS/+gmxBiTvkJdreR1o
-         vyEGgsOp2kyQDcZDUXJ6qbH3j/mYNQ9rP+xYmaf3uddyQRJj/LT6a/TKhPG2MaDw5YmH
-         JRug==
+        bh=xP1p0RfYLtRuLGmIaGupO+z+5mHJPnCzMHQ7XKfhV30=;
+        b=vTUuN9zKxgbKMCFeRyMIcB+gtj/H5A+GVy6vKCP/GRzD3I5Mx/eVSqMBtn0D0Zkq8I
+         Mu3/J3yUVrROkLMsb15ldU8FvdpOH4OhPb6kxk55tzTDLZJ0QSxmyPX8ekoObh5JrA2I
+         c8fAyV73eZ2Ek8bif969JkKt0svBh/aggOiCUNC83pg5IOEd0OZb1/PNXbwsFCaKouvq
+         sWMPYuegIuEone07DRS3cIaV1zSMNiJsLEqw11lNWDK50Es9vlEXFaC2079f/MK33TTv
+         r2nEbvxbNTC8AW3zRm+iFh6MCZxaLpAuQ08ieQ+GHd9L8guWsDk8ciLXYquPe2m2+bMy
+         jGLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708455835; x=1709060635;
+        d=1e100.net; s=20230601; t=1708455837; x=1709060637;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9jKZ4KiC4kkq1KhbZI20dsIsyhfJ696TE/LFJygR6/Y=;
-        b=V+XsgJEWbhkOGv2U+qBjO2gLER6cSv1lnVeqUN+rEK5v1VyRgbxXsSrMG1zmJ60S53
-         /30wn186/ZCiS/RsfOaxW6RuRMsDfduglKfIYC1pFdmdR5NONuYyKBhOPk7kNWvXTAoi
-         WEXTKHYhY6nGSWwoGFlcP1MYznWCik8lNO321O6SAm3tUaEQt/9s746lRnsyGQmP1LDz
-         iPNz04lwYGgwoNQ9Eb4042BYmcPc5mPj9A3SGaB4lwCvBIIcEoxXX1cTERXDG8WO0s1b
-         oPWKv8NyHUFuaRx/ja/8N3iHhENlz5niSdBziy5Eqr686KIJkvLLTdwKIi3WCOwjNp3i
-         /i+Q==
-X-Gm-Message-State: AOJu0Yy4L6gJFADAOB2xN7kN4BBrxdQvfEI03bi+Zu6dgc5iDdU3ccDQ
-	IcHhA/Mtxs0stv23DuRKGWpcUbkI6VFJafAgqOhCtQ+1oHtYBf1DJW8FhUYQ1eFA4WAmwn2C4i3
-	04zTUh6JkoK1nr0MUQP9ZfAybA7E7VfZq8/BnENpzsaRyyQCRKwjW4lh8db+2W0NbxOGT/NarIm
-	ATtJo06qQP5jyl8j1J9jhlNJMmQsiLlrnx
-X-Google-Smtp-Source: AGHT+IE9t4losynPcFuoQRAx6OTSJ4m2hNeD5nlbqMJoOTLRdumVaAAcYh3Wh1+QwIOoSk0kZs5/nznLVV4=
+        bh=xP1p0RfYLtRuLGmIaGupO+z+5mHJPnCzMHQ7XKfhV30=;
+        b=gIs3wxirqw2a29/hsyjG1eIkFoYII2RwrXiI5zmYOf7rVBq3wVvfysOmpRrn2nk0K+
+         F5sph2psv61K5qKhhv/EeAMd/QfoZkGPsY32C4T8lN01bFTcFTpF1GNhpOW4Eh29z9Ji
+         0/L2uPg2gPVIOmWGctaWP5ciiERoaXEYBTrvg2kE230/I6E4kVTt3f+ULlmx95t1z88u
+         bPBfYnFpXnpAT2FeHXhbtO359MP5WasdB+W4o7uF1VvT9vIeRFqvta4dY63M7NTPyGuK
+         kTL8IDNzgJGYx5349B6vpRcBpokQQrHQRjZf1UgAYzcmUbqDuF0UqdbbosM+atSOr+r5
+         FF8A==
+X-Gm-Message-State: AOJu0Yyo+zfMYI/vhJ/7bqYZ48CGrjvt4cdL4DAfZGfAS0bBruLTJ6VU
+	9Rs9vbLJckpfmXr68TVbu8cP7XNSxun9t4wLzmicxnZ7G7/jYa2VDVGvNoyyPdxbfa/veSKlsPF
+	Yb7jYNgCpBlPn1s11QV7aAM3GmyHmfjyvHj+20wTdQPZuFqDgq6a7FxkD8H+lct6+puigk+I/ez
+	jpLIH3YRsQNM2nj7rUVJorEOsN02xklbhp
+X-Google-Smtp-Source: AGHT+IFtRzodtvJvMqN0BApE7mLjnn7Ru7vZ2HxMrxe2HRYw3wo6XhKSB1iIa/ogcWm8sa91IxMDIS3ammA=
 X-Received: from surenb-desktop.mtv.corp.google.com ([2620:15c:211:201:ca94:87c9:6cd2:68a0])
- (user=surenb job=sendgmr) by 2002:a0d:c946:0:b0:602:b7ce:f382 with SMTP id
- l67-20020a0dc946000000b00602b7cef382mr2997437ywd.7.1708455835242; Tue, 20 Feb
- 2024 11:03:55 -0800 (PST)
-Date: Tue, 20 Feb 2024 11:03:50 -0800
-In-Reply-To: <2024021921-bleak-sputter-5ecf@gregkh>
+ (user=surenb job=sendgmr) by 2002:a05:6902:110a:b0:dc2:398d:a671 with SMTP id
+ o10-20020a056902110a00b00dc2398da671mr4028003ybu.10.1708455837287; Tue, 20
+ Feb 2024 11:03:57 -0800 (PST)
+Date: Tue, 20 Feb 2024 11:03:51 -0800
+In-Reply-To: <20240220190351.39815-1-surenb@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <2024021921-bleak-sputter-5ecf@gregkh>
+References: <2024021921-bleak-sputter-5ecf@gregkh> <20240220190351.39815-1-surenb@google.com>
 X-Mailer: git-send-email 2.44.0.rc0.258.g7320e95886-goog
-Message-ID: <20240220190351.39815-1-surenb@google.com>
-Subject: [PATCH 1/2] ARM: 9328/1: mm: try VMA lock-based page fault handling first
+Message-ID: <20240220190351.39815-2-surenb@google.com>
+Subject: [PATCH 2/2] arch/arm/mm: fix major fault accounting when retrying
+ under per-VMA lock
 From: Suren Baghdasaryan <surenb@google.com>
 To: stable@vger.kernel.org
-Cc: Wang Kefeng <wangkefeng.wang@huawei.com>, Russell King <rmk+kernel@armlinux.org.uk>, 
-	Suren Baghdasaryan <surenb@google.com>
+Cc: Suren Baghdasaryan <surenb@google.com>, Russell King <rmk+kernel@armlinux.org.uk>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Andy Lutomirski <luto@kernel.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, 
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Matthew Wilcox <willy@infradead.org>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Will Deacon <will@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>
 Content-Type: text/plain; charset="UTF-8"
 
-From: Wang Kefeng <wangkefeng.wang@huawei.com>
+The change [1] missed ARM architecture when fixing major fault accounting
+for page fault retry under per-VMA lock.
 
-Attempt VMA lock-based page fault handling first, and fall back to the
-existing mmap_lock-based handling if that fails, the ebizzy benchmark
-shows 25% improvement on qemu with 2 cpus.
+The user-visible effects is that it restores correct major fault
+accounting that was broken after [2] was merged in 6.7 kernel. The
+more detailed description is in [3] and this patch simply adds the
+same fix to ARM architecture which I missed in [3].
 
-Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Add missing code to fix ARM architecture fault accounting.
+
+[1] 46e714c729c8 ("arch/mm/fault: fix major fault accounting when retrying under per-VMA lock")
+[2] https://lore.kernel.org/all/20231006195318.4087158-6-willy@infradead.org/
+[3] https://lore.kernel.org/all/20231226214610.109282-1-surenb@google.com/
+
+Link: https://lkml.kernel.org/r/20240123064305.2829244-1-surenb@google.com
+Fixes: 12214eba1992 ("mm: handle read faults under the VMA lock")
+Reported-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Will Deacon <will@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- arch/arm/Kconfig    |  1 +
- arch/arm/mm/fault.c | 30 ++++++++++++++++++++++++++++++
- 2 files changed, 31 insertions(+)
+ arch/arm/mm/fault.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index f8567e95f98b..8f47d6762ea4 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -35,6 +35,7 @@ config ARM
- 	select ARCH_OPTIONAL_KERNEL_RWX_DEFAULT if CPU_V7
- 	select ARCH_SUPPORTS_ATOMIC_RMW
- 	select ARCH_SUPPORTS_HUGETLBFS if ARM_LPAE
-+	select ARCH_SUPPORTS_PER_VMA_LOCK
- 	select ARCH_USE_BUILTIN_BSWAP
- 	select ARCH_USE_CMPXCHG_LOCKREF
- 	select ARCH_USE_MEMTEST
 diff --git a/arch/arm/mm/fault.c b/arch/arm/mm/fault.c
-index fef62e4a9edd..e96fb40b9cc3 100644
+index e96fb40b9cc3..07565b593ed6 100644
 --- a/arch/arm/mm/fault.c
 +++ b/arch/arm/mm/fault.c
-@@ -278,6 +278,35 @@ do_page_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
- 
- 	perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, addr);
- 
-+	if (!(flags & FAULT_FLAG_USER))
-+		goto lock_mmap;
-+
-+	vma = lock_vma_under_rcu(mm, addr);
-+	if (!vma)
-+		goto lock_mmap;
-+
-+	if (!(vma->vm_flags & vm_flags)) {
-+		vma_end_read(vma);
-+		goto lock_mmap;
-+	}
-+	fault = handle_mm_fault(vma, addr, flags | FAULT_FLAG_VMA_LOCK, regs);
-+	if (!(fault & (VM_FAULT_RETRY | VM_FAULT_COMPLETED)))
-+		vma_end_read(vma);
-+
-+	if (!(fault & VM_FAULT_RETRY)) {
-+		count_vm_vma_lock_event(VMA_LOCK_SUCCESS);
-+		goto done;
-+	}
-+	count_vm_vma_lock_event(VMA_LOCK_RETRY);
-+
-+	/* Quick path to respond to signals */
-+	if (fault_signal_pending(fault, regs)) {
-+		if (!user_mode(regs))
-+			goto no_context;
-+		return 0;
-+	}
-+lock_mmap:
-+
- retry:
- 	vma = lock_mm_and_find_vma(mm, addr, regs);
- 	if (unlikely(!vma)) {
-@@ -316,6 +345,7 @@ do_page_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
+@@ -298,6 +298,8 @@ do_page_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
+ 		goto done;
  	}
+ 	count_vm_vma_lock_event(VMA_LOCK_RETRY);
++	if (fault & VM_FAULT_MAJOR)
++		flags |= FAULT_FLAG_TRIED;
  
- 	mmap_read_unlock(mm);
-+done:
- 
- 	/*
- 	 * Handle the "normal" case first - VM_FAULT_MAJOR
+ 	/* Quick path to respond to signals */
+ 	if (fault_signal_pending(fault, regs)) {
 -- 
 2.44.0.rc0.258.g7320e95886-goog
 
