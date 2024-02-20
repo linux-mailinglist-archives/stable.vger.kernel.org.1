@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-21591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33E2C85C987
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:34:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA60785C85D
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:21:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E30AF284DCA
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:34:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6429D282B93
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:21:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6738E151CF0;
-	Tue, 20 Feb 2024 21:34:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 068DB151CE8;
+	Tue, 20 Feb 2024 21:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yUNhy+To"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RTPF9yv0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13809151CEA;
-	Tue, 20 Feb 2024 21:34:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4DCF2DF9F;
+	Tue, 20 Feb 2024 21:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464894; cv=none; b=NfXBpFdGRdh0OyCnQeceV9AHSIbx4yN9uNzNfU/rKw+i4Cl2K1utqV3QJYYjZXgYF69/zWPFouv8cHD83Z8QOlcTOpyY8gqA9TKtIFeJ3DV4wM6aAzma90uaYMj/xWi7XDFFk5UsJVNRWjJD9nuuueSJ/PHoCwvtNIVqiOlnI8o=
+	t=1708464071; cv=none; b=byd6DDzc3nZd9tqJp03g4Weqq3phL3xcF2UQMsDiOJAHI/LCmzt++FR0TovHEl45sc4wF9JVvoWE420GWAE1yS8QD2K1hqKyJSlanKA3R6OIKbi1Bq87K0sqgCfAaO1K74C9GolqqhA0kVirT33/uVSTOQCZsb7h1UCBOUJNdjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464894; c=relaxed/simple;
-	bh=9efFdhyQoYQ8EO8yR3EGBO/sV6f26UoMEbF0i1B2/Xw=;
+	s=arc-20240116; t=1708464071; c=relaxed/simple;
+	bh=fG9PqUHKfm2lV0LqR2AtpQ71jgkNTmZRqZxuZl3mLAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E9o56NXJajHC5clx9cvujQaXbv90pJywGmQPe2DAaQQwvP0OzSVjt7JXgsIMAZeKWAd+Ftjf116Bhb/CZyJCx3BZCaD3p4XsW2197OWX18pQOZUFghRy1sZu6qfEezTXWNH7giKfSFUOdy9Q2Tjogcaj2ygpGsMJ7q6XjffJFqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yUNhy+To; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89688C433F1;
-	Tue, 20 Feb 2024 21:34:53 +0000 (UTC)
+	 MIME-Version; b=CZ15GZB+XMvMcfMH+CFRxQO0uTGnum/Rfja4bSH/XNmxtRNwOvWREAn9KPRJr44URKbEsGz88vqPxP6yOjbyWDn+YAxJvnX4lt1TUaUAtFo+oRlKdlw2NyWtAXj5HSEqzPOf6stoA9pXdTbvayq+fEIU9sGto+B29SM3qWEhfOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RTPF9yv0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D579C433F1;
+	Tue, 20 Feb 2024 21:21:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464893;
-	bh=9efFdhyQoYQ8EO8yR3EGBO/sV6f26UoMEbF0i1B2/Xw=;
+	s=korg; t=1708464071;
+	bh=fG9PqUHKfm2lV0LqR2AtpQ71jgkNTmZRqZxuZl3mLAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yUNhy+Toh3JqHnkrVbYSf0xNU1Uh9Rj+h0yVndcsK8NUPMPhogLyZ+uDyS2AyXsOd
-	 6kORB/Vz6wiRwKtU0J7GkuUm7uBQMyqlGnY4dHM6JA6FvdDBYlRBBGFPj87TlX7y6N
-	 CzOHc1WJkCZa2T6iyHx0GGo4+widkU/pNKZpyDLo=
+	b=RTPF9yv0avxgq5fzapqM2xEckSgcQDziv2h+AT6bW9uVeuZc4XI25gOpO4XwzhDiH
+	 tn3y8UWH5lwm4wcVXnNw9a0A6Ke8eb/+315n/oA/rLe1COi1fi7tJk0cgiVVzDLx45
+	 nJyZo9uyb3NmLMgmqVmaNFfNOuh92dRzJn5TMxAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nuno Sa <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.7 171/309] iio: commom: st_sensors: ensure proper DMA alignment
+	Shane Nehring <snehring@iastate.edu>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 214/331] smb: client: set correct id, uid and cruid for multiuser automounts
 Date: Tue, 20 Feb 2024 21:55:30 +0100
-Message-ID: <20240220205638.496043837@linuxfoundation.org>
+Message-ID: <20240220205644.447297545@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sa <nuno.sa@analog.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-commit 862cf85fef85becc55a173387527adb4f076fab0 upstream.
+commit 4508ec17357094e2075f334948393ddedbb75157 upstream.
 
-Aligning the buffer to the L1 cache is not sufficient in some platforms
-as they might have larger cacheline sizes for caches after L1 and thus,
-we can't guarantee DMA safety.
+When uid, gid and cruid are not specified, we need to dynamically
+set them into the filesystem context used for automounting otherwise
+they'll end up reusing the values from the parent mount.
 
-That was the whole reason to introduce IIO_DMA_MINALIGN in [1]. Do the same
-for st_sensors common buffer.
-
-While at it, moved the odr_lock before buffer_data as we definitely
-don't want any other data to share a cacheline with the buffer.
-
-[1]: https://lore.kernel.org/linux-iio/20220508175712.647246-2-jic23@kernel.org/
-
-Fixes: e031d5f558f1 ("iio:st_sensors: remove buffer allocation at each buffer enable")
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Cc: <Stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240131-dev_dma_safety_stm-v2-1-580c07fae51b@analog.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 9fd29a5bae6e ("cifs: use fs_context for automounts")
+Reported-by: Shane Nehring <snehring@iastate.edu>
+Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2259257
+Cc: stable@vger.kernel.org # 6.2+
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/iio/common/st_sensors.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/client/namespace.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/include/linux/iio/common/st_sensors.h
-+++ b/include/linux/iio/common/st_sensors.h
-@@ -258,9 +258,9 @@ struct st_sensor_data {
- 	bool hw_irq_trigger;
- 	s64 hw_timestamp;
+--- a/fs/smb/client/namespace.c
++++ b/fs/smb/client/namespace.c
+@@ -168,6 +168,21 @@ static char *automount_fullpath(struct d
+ 	return s;
+ }
  
--	char buffer_data[ST_SENSORS_MAX_BUFFER_SIZE] ____cacheline_aligned;
--
- 	struct mutex odr_lock;
++static void fs_context_set_ids(struct smb3_fs_context *ctx)
++{
++	kuid_t uid = current_fsuid();
++	kgid_t gid = current_fsgid();
 +
-+	char buffer_data[ST_SENSORS_MAX_BUFFER_SIZE] __aligned(IIO_DMA_MINALIGN);
- };
++	if (ctx->multiuser) {
++		if (!ctx->uid_specified)
++			ctx->linux_uid = uid;
++		if (!ctx->gid_specified)
++			ctx->linux_gid = gid;
++	}
++	if (!ctx->cruid_specified)
++		ctx->cred_uid = uid;
++}
++
+ /*
+  * Create a vfsmount that we can automount
+  */
+@@ -205,6 +220,7 @@ static struct vfsmount *cifs_do_automoun
+ 	tmp.leaf_fullpath = NULL;
+ 	tmp.UNC = tmp.prepath = NULL;
+ 	tmp.dfs_root_ses = NULL;
++	fs_context_set_ids(&tmp);
  
- #ifdef CONFIG_IIO_BUFFER
+ 	rc = smb3_fs_context_dup(ctx, &tmp);
+ 	if (rc) {
 
 
 
