@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-21161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38A0685C76D
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:12:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2668385C8F9
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:28:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E87F3282E66
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:12:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA92F1F225B2
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:28:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48120151CD8;
-	Tue, 20 Feb 2024 21:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AABFC152DF0;
+	Tue, 20 Feb 2024 21:27:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mVX2Ztz8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lonoI3te"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 038B014AD12;
-	Tue, 20 Feb 2024 21:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 598FB152DED;
+	Tue, 20 Feb 2024 21:27:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463549; cv=none; b=oHHKiSFoxqRuEb9AWBhiXBkTysp+rRbLH6gDGO6aWIwWayRIizn1duUi7HqHNFTQITolT2Uwy3A+7voHdQdlakqiPRsdJcLna4snbIi5CLkHmMgubwI33VGBo/U138PyDb5T4VWSfa5dYhpgBqFCg+qWTvP1xfrQCjxGHhbDDqw=
+	t=1708464468; cv=none; b=ZYDRe/ZZZ1516BMtchH8bl4ACi8bVXu1ETAyCR+TAYlpKNzDWf6KCA/t1mWQgwqLqA9fMg91zMTsN1fjcr+QOsGc673bndapc5p7Oe043qSz5hAsGmLjiW01VDS2vTFFizp9MRNTWuAzlQEhUOlK2D/i9H26gFqx25p59px24Tw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463549; c=relaxed/simple;
-	bh=4qGCWFGY7hoRfdoLiOTexrXHeTBLvR1husl6tSC2gF0=;
+	s=arc-20240116; t=1708464468; c=relaxed/simple;
+	bh=bnU+ya6pCbyORJHTXvfVPbaJVoKRABs3NKOOWlot77s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SYPWrWTjgw6840bJniF4rBYRwYgBedeHKGFszQcw4tEpkvvkBnkigU9BAe9NyhXvPbw7W5k9OtnckyrPHk3N55b0f4iHmdN5SmkFhbqTtXrmnCtlFkDzToTDV6Gw/3KYMUlIpZe3LZbgWfFJqofuBUnIJdEH9IQFX7rohIXXiCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mVX2Ztz8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67C1CC433F1;
-	Tue, 20 Feb 2024 21:12:28 +0000 (UTC)
+	 MIME-Version; b=HcnyaEwnyTaiEWrsQW6CMh/shRbNkO1QGzudghepzEwuI40nLcWGXkA/IsASAifhbxzQBOOLUPYorvwgmO3kptiPDJtX/HEKq0rlc8D5fxv3V73y4Mmbfu9vOxndwJw3Thq8dCWX9qgJLC40j0U3+EN7hYaYRccHmt+m4boa1LY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lonoI3te; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE873C433F1;
+	Tue, 20 Feb 2024 21:27:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463548;
-	bh=4qGCWFGY7hoRfdoLiOTexrXHeTBLvR1husl6tSC2gF0=;
+	s=korg; t=1708464468;
+	bh=bnU+ya6pCbyORJHTXvfVPbaJVoKRABs3NKOOWlot77s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mVX2Ztz8Hj4RXliv/f7csSjK/kjPkeWz1bElYpsTwaflOkpeSu7M5cuB6MaCwPFRQ
-	 C9g/2iyuMcKr7ZqLGYDtBBpCYHjK1dxJ2OVN2VbqT7SwDGiLwnDTmNs2Bv6Peq16k5
-	 O65lfRXar5BXF107ni3Z6gcd63JUA3A6bQWJo4jk=
+	b=lonoI3te6kh2ZUTJy3mEaKFuZI3Eb/01BZZFtX7tACIIbG4pNHuwIHp5LaWai8pJs
+	 dczIJbXd5ar4KQEqG6W1uf78JtrWKAG8IAdd339OEbD+ZydCyKeF0GUkLDDfWf6QlP
+	 X+2V+BJN8xYTivenfUZTP8aL2fObvi35xryKK6pA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.6 077/331] usb: ucsi: Add missing ppm_lock
-Date: Tue, 20 Feb 2024 21:53:13 +0100
-Message-ID: <20240220205640.000139260@linuxfoundation.org>
+	Saravana Kannan <saravanak@google.com>,
+	Rob Herring <robh@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 035/309] of: property: Improve finding the consumer of a remote-endpoint property
+Date: Tue, 20 Feb 2024 21:53:14 +0100
+Message-ID: <20240220205634.281431582@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +62,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian A. Ehrhardt <lk@c--e.de>
+From: Saravana Kannan <saravanak@google.com>
 
-commit c9aed03a0a683fd1600ea92f2ad32232d4736272 upstream.
+[ Upstream commit f4653ec9861cd96a1a6a3258c4a807898ee8cf3c ]
 
-Calling ->sync_write must be done while holding the PPM lock as
-the mailbox logic does not support concurrent commands.
+We have a more accurate function to find the right consumer of a
+remote-endpoint property instead of searching for a parent with
+compatible string property. So, use that instead. While at it, make the
+code to find the consumer a bit more flexible and based on the property
+being parsed.
 
-At least since the addition of partner task this means that
-ucsi_acknowledge_connector_change should be called with the
-PPM lock held as it calls ->sync_write.
-
-Thus protect the only call to ucsi_acknowledge_connector_change
-with the PPM. All other calls to ->sync_write already happen
-under the PPM lock.
-
-Fixes: b9aa02ca39a4 ("usb: typec: ucsi: Add polling mechanism for partner tasks like alt mode checking")
-Cc: stable@vger.kernel.org
-Signed-off-by: "Christian A. Ehrhardt" <lk@c--e.de>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240121204123.275441-2-lk@c--e.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f7514a663016 ("of: property: fw_devlink: Add support for remote-endpoint")
+Signed-off-by: Saravana Kannan <saravanak@google.com>
+Link: https://lore.kernel.org/r/20240207011803.2637531-2-saravanak@google.com
+Signed-off-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/of/property.c | 47 +++++++++----------------------------------
+ 1 file changed, 10 insertions(+), 37 deletions(-)
 
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -935,7 +935,9 @@ static void ucsi_handle_connector_change
+diff --git a/drivers/of/property.c b/drivers/of/property.c
+index afdaefbd03f6..41c3da8a54b6 100644
+--- a/drivers/of/property.c
++++ b/drivers/of/property.c
+@@ -1062,36 +1062,6 @@ of_fwnode_device_get_match_data(const struct fwnode_handle *fwnode,
+ 	return of_device_get_match_data(dev);
+ }
  
- 	clear_bit(EVENT_PENDING, &con->ucsi->flags);
+-static struct device_node *of_get_compat_node(struct device_node *np)
+-{
+-	of_node_get(np);
+-
+-	while (np) {
+-		if (!of_device_is_available(np)) {
+-			of_node_put(np);
+-			np = NULL;
+-		}
+-
+-		if (of_property_present(np, "compatible"))
+-			break;
+-
+-		np = of_get_next_parent(np);
+-	}
+-
+-	return np;
+-}
+-
+-static struct device_node *of_get_compat_node_parent(struct device_node *np)
+-{
+-	struct device_node *parent, *node;
+-
+-	parent = of_get_parent(np);
+-	node = of_get_compat_node(parent);
+-	of_node_put(parent);
+-
+-	return node;
+-}
+-
+ static void of_link_to_phandle(struct device_node *con_np,
+ 			      struct device_node *sup_np)
+ {
+@@ -1221,10 +1191,10 @@ static struct device_node *parse_##fname(struct device_node *np,	     \
+  * @parse_prop.prop_name: Name of property holding a phandle value
+  * @parse_prop.index: For properties holding a list of phandles, this is the
+  *		      index into the list
++ * @get_con_dev: If the consumer node containing the property is never converted
++ *		 to a struct device, implement this ops so fw_devlink can use it
++ *		 to find the true consumer.
+  * @optional: Describes whether a supplier is mandatory or not
+- * @node_not_dev: The consumer node containing the property is never converted
+- *		  to a struct device. Instead, parse ancestor nodes for the
+- *		  compatible property to find a node corresponding to a device.
+  *
+  * Returns:
+  * parse_prop() return values are
+@@ -1235,8 +1205,8 @@ static struct device_node *parse_##fname(struct device_node *np,	     \
+ struct supplier_bindings {
+ 	struct device_node *(*parse_prop)(struct device_node *np,
+ 					  const char *prop_name, int index);
++	struct device_node *(*get_con_dev)(struct device_node *np);
+ 	bool optional;
+-	bool node_not_dev;
+ };
  
-+	mutex_lock(&ucsi->ppm_lock);
- 	ret = ucsi_acknowledge_connector_change(ucsi);
-+	mutex_unlock(&ucsi->ppm_lock);
- 	if (ret)
- 		dev_err(ucsi->dev, "%s: ACK failed (%d)", __func__, ret);
+ DEFINE_SIMPLE_PROP(clocks, "clocks", "#clock-cells")
+@@ -1351,7 +1321,10 @@ static const struct supplier_bindings of_supplier_bindings[] = {
+ 	{ .parse_prop = parse_pinctrl6, },
+ 	{ .parse_prop = parse_pinctrl7, },
+ 	{ .parse_prop = parse_pinctrl8, },
+-	{ .parse_prop = parse_remote_endpoint, .node_not_dev = true, },
++	{
++		.parse_prop = parse_remote_endpoint,
++		.get_con_dev = of_graph_get_port_parent,
++	},
+ 	{ .parse_prop = parse_pwms, },
+ 	{ .parse_prop = parse_resets, },
+ 	{ .parse_prop = parse_leds, },
+@@ -1402,8 +1375,8 @@ static int of_link_property(struct device_node *con_np, const char *prop_name)
+ 		while ((phandle = s->parse_prop(con_np, prop_name, i))) {
+ 			struct device_node *con_dev_np;
  
+-			con_dev_np = s->node_not_dev
+-					? of_get_compat_node_parent(con_np)
++			con_dev_np = s->get_con_dev
++					? s->get_con_dev(con_np)
+ 					: of_node_get(con_np);
+ 			matched = true;
+ 			i++;
+-- 
+2.43.0
+
 
 
 
