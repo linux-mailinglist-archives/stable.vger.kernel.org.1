@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-21014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 207D385C6C7
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:05:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C745C85C6CB
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:05:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB25D1F22508
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:05:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6897EB240C7
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:05:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CA971509BF;
-	Tue, 20 Feb 2024 21:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7838D152DF5;
+	Tue, 20 Feb 2024 21:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D+h7nt+o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H1KBTW55"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE464151CDD;
-	Tue, 20 Feb 2024 21:04:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 353F5151CEC;
+	Tue, 20 Feb 2024 21:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463082; cv=none; b=F2duqrerOT9IX57kgn17Z9sEk9qeMcT1hG+gHsrToLyXuRIRh7MyzfNsrdPT67OuVIB/00n46WUyHZfB3yfQPBeguakgrjttzOD2MXSX54617Twfuh0Hvu8HCxUD1a5vI5lF16TiPEyYRPToWspjEn3Kao7pdBlK9qZzZS418z0=
+	t=1708463088; cv=none; b=GTyuODtofkt6r80YJROp6K91X1ZLOiJ/wZ9Q9Ci9nhkaASidoj06mbQDLzmRGMih2XtLqpwPkYtei9vqdxOpKUrjFEbm5lNbVVCburPYxYxjCjbBlsMFu/UpdqmrMwQem8dGo2z/cu68KahvlXjLdc2TXEpMba/HL6femIgivHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463082; c=relaxed/simple;
-	bh=clyBH0icWTkTKJc5jUCFnyN0OBl6CdPGVEjdswt6fxc=;
+	s=arc-20240116; t=1708463088; c=relaxed/simple;
+	bh=2Ofq5yrVPOoTx7sJLwGLKkeWHPkxZJJQEPw/I+JaNNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j6yi/hOxPsPv3zMWsWalbmwwfFg0/Mjbq1XX7zai84kSyzjZ7VLAdjJkwASg791/9cR55qeNW9VqnEmD+9YzDLPfyfdeccQaxEY5rjP+DXWPGit1W6AGmROAflTIb3oDCIAvB2J/RoHVyMx6ks6n12S2Jleum59yQD4HhaEhXpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D+h7nt+o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BFF8C433F1;
-	Tue, 20 Feb 2024 21:04:41 +0000 (UTC)
+	 MIME-Version; b=UOEJfu9hoF2a/dhsN+aO+ZrNmZ6wAA0Y6yeJWMlr5EdDO8yApIcDmqVLTHDNsMaDn/KYZRh5p2Zx5RWTOrb0FzYa3oG7z0VZZ6bDBiEOtTwywHASusEq61pUgudqnh4ZYqWr4hZvXNjIESK8xZmPnA0f9E2irTpPnXza8S5jsB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H1KBTW55; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA235C433F1;
+	Tue, 20 Feb 2024 21:04:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463081;
-	bh=clyBH0icWTkTKJc5jUCFnyN0OBl6CdPGVEjdswt6fxc=;
+	s=korg; t=1708463088;
+	bh=2Ofq5yrVPOoTx7sJLwGLKkeWHPkxZJJQEPw/I+JaNNU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D+h7nt+o3C9vDhm142tqn5vH036R6kzZAiMH77GfD0gPelgnr6L8b7VCqytXt2lJK
-	 6S3i/lgtU0xSjfJcPhgtGwPBK+/lUJHcht8g6qWnUO0QiW2vKlzilG7UKOmLXFHPRk
-	 FvGxnwIAUVdAdMonV7RvLp21qUXYyc4nSvorJQJw=
+	b=H1KBTW55njP8g6AYDW1owjRN2P4jbr7Wc4Cn9Me6y+xtg/mlb6nkttsXPBYiHdiNZ
+	 U/eUfqn23x9aP8PK47Fxa1m5o1dV/2e3wh2zzsknyeljfQujw5jpilSFmEf19UfF2A
+	 J3t8F1hxASXH4CUuzTA4zqVpSb1RvUwAtRRPbJkE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingwei Zhang <mizhang@google.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.1 129/197] KVM: x86/pmu: Fix type length error when reading pmu->fixed_ctr_ctrl
-Date: Tue, 20 Feb 2024 21:51:28 +0100
-Message-ID: <20240220204844.933540146@linuxfoundation.org>
+	Steve Wahl <steve.wahl@hpe.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>
+Subject: [PATCH 6.1 130/197] x86/mm/ident_map: Use gbpages only where full GB page should be mapped.
+Date: Tue, 20 Feb 2024 21:51:29 +0100
+Message-ID: <20240220204844.963238423@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
 References: <20240220204841.073267068@linuxfoundation.org>
@@ -65,40 +65,78 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mingwei Zhang <mizhang@google.com>
+From: Steve Wahl <steve.wahl@hpe.com>
 
-commit 05519c86d6997cfb9bb6c82ce1595d1015b718dc upstream.
+commit d794734c9bbfe22f86686dc2909c25f5ffe1a572 upstream.
 
-Use a u64 instead of a u8 when taking a snapshot of pmu->fixed_ctr_ctrl
-when reprogramming fixed counters, as truncating the value results in KVM
-thinking fixed counter 2 is already disabled (the bug also affects fixed
-counters 3+, but KVM doesn't yet support those).  As a result, if the
-guest disables fixed counter 2, KVM will get a false negative and fail to
-reprogram/disable emulation of the counter, which can leads to incorrect
-counts and spurious PMIs in the guest.
+When ident_pud_init() uses only gbpages to create identity maps, large
+ranges of addresses not actually requested can be included in the
+resulting table; a 4K request will map a full GB.  On UV systems, this
+ends up including regions that will cause hardware to halt the system
+if accessed (these are marked "reserved" by BIOS).  Even processor
+speculation into these regions is enough to trigger the system halt.
 
-Fixes: 76d287b2342e ("KVM: x86/pmu: Drop "u8 ctrl, int idx" for reprogram_fixed_counter()")
+Only use gbpages when map creation requests include the full GB page
+of space.  Fall back to using smaller 2M pages when only portions of a
+GB page are included in the request.
+
+No attempt is made to coalesce mapping requests. If a request requires
+a map entry at the 2M (pmd) level, subsequent mapping requests within
+the same 1G region will also be at the pmd level, even if adjacent or
+overlapping such requests could have been combined to map a full
+gbpage.  Existing usage starts with larger regions and then adds
+smaller regions, so this should not have any great consequence.
+
+[ dhansen: fix up comment formatting, simplifty changelog ]
+
+Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Mingwei Zhang <mizhang@google.com>
-Link: https://lore.kernel.org/r/20240123221220.3911317-1-mizhang@google.com
-[sean: rewrite changelog to call out the effects of the bug]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Link: https://lore.kernel.org/all/20240126164841.170866-1-steve.wahl%40hpe.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/vmx/pmu_intel.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/mm/ident_map.c |   23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
---- a/arch/x86/kvm/vmx/pmu_intel.c
-+++ b/arch/x86/kvm/vmx/pmu_intel.c
-@@ -38,7 +38,7 @@ static int fixed_pmc_events[] = {1, 0, 7
- static void reprogram_fixed_counters(struct kvm_pmu *pmu, u64 data)
- {
- 	struct kvm_pmc *pmc;
--	u8 old_fixed_ctr_ctrl = pmu->fixed_ctr_ctrl;
-+	u64 old_fixed_ctr_ctrl = pmu->fixed_ctr_ctrl;
- 	int i;
+--- a/arch/x86/mm/ident_map.c
++++ b/arch/x86/mm/ident_map.c
+@@ -26,18 +26,31 @@ static int ident_pud_init(struct x86_map
+ 	for (; addr < end; addr = next) {
+ 		pud_t *pud = pud_page + pud_index(addr);
+ 		pmd_t *pmd;
++		bool use_gbpage;
  
- 	pmu->fixed_ctr_ctrl = data;
+ 		next = (addr & PUD_MASK) + PUD_SIZE;
+ 		if (next > end)
+ 			next = end;
+ 
+-		if (info->direct_gbpages) {
+-			pud_t pudval;
++		/* if this is already a gbpage, this portion is already mapped */
++		if (pud_large(*pud))
++			continue;
++
++		/* Is using a gbpage allowed? */
++		use_gbpage = info->direct_gbpages;
+ 
+-			if (pud_present(*pud))
+-				continue;
++		/* Don't use gbpage if it maps more than the requested region. */
++		/* at the begining: */
++		use_gbpage &= ((addr & ~PUD_MASK) == 0);
++		/* ... or at the end: */
++		use_gbpage &= ((next & ~PUD_MASK) == 0);
++
++		/* Never overwrite existing mappings */
++		use_gbpage &= !pud_present(*pud);
++
++		if (use_gbpage) {
++			pud_t pudval;
+ 
+-			addr &= PUD_MASK;
+ 			pudval = __pud((addr - info->offset) | info->page_flag);
+ 			set_pud(pud, pudval);
+ 			continue;
 
 
 
