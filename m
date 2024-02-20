@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-21230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9333B85C7C6
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:16:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DEC085C95F
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:32:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CAD5283EC3
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:16:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F15BA1F21F7D
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:32:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 120AE152E07;
-	Tue, 20 Feb 2024 21:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C737151CE1;
+	Tue, 20 Feb 2024 21:32:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BkYcEdLP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="brnaxwfW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C37661509BF;
-	Tue, 20 Feb 2024 21:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19D51446C9;
+	Tue, 20 Feb 2024 21:32:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463765; cv=none; b=RJpmjeGMh4cjuRjXgslRIfKq3n19poO3LRafTE3HeC7RjkBcqeI+vyn7GOQQziERL8KhccsUNxfFwu4qyYx/818JcvnlvwtzwE1OArm4pVC00ZegeYHOzJgwCB63rGnHjV5h+NHgKI7p01KfkDk2XDPTk/FTKqG8VqKFxEr3fN4=
+	t=1708464768; cv=none; b=CHYAJcrnxS52J66YeIGLTONK4dEYHZDPnfAohvHh+zZZji/4n8M6du156UUQ+Mokfq3HC6tt+isaxWxUmL72BuqiJ2yn27hudanEnUQxUJVxie/YrXpgzozF7yPt1EazHscpzzXM+Fs+Bifxo3Luwa59f2Tf5sLU70EltFNgS4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463765; c=relaxed/simple;
-	bh=HXCHAWJuXJ22WnlTAydPXPEp03QrjyCZM7vfVHRsUu0=;
+	s=arc-20240116; t=1708464768; c=relaxed/simple;
+	bh=S/hWyW67xJ1ZKreq58ceLu+nx0vbF30js0dFPiD/9fg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ruAJGnE5yV/wMbMkk6n7Dy3HX2aKmEYYaQplpHarR8CJkmq7YOjk2w8e/KAkMHhGjX+mljhZ2Fph3iapa8bCGf/LUQMqRtEmADf9Bf+il/zNSPIimDEMd/JKp9gcf5Xfr2YeZFjTZtn8zeDGT7NWlD6RJInBBQ0Jz0WdsG+Affg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BkYcEdLP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33C95C433C7;
-	Tue, 20 Feb 2024 21:16:05 +0000 (UTC)
+	 MIME-Version; b=Yy7I99yWMp+EN7eofKLz7N9kTkZlK2hpw600AxljCarwKj5BaUc4IJ3yXMXF0xhrJjzYGA63Ot1h2I6V0vkV2pApURYan/h2D8UBL/DshV07tbLQi0CCdvWKdPNyhEB9hK+m5lWAWCdAta1K1cG45pMYvnSmiHA3s4tMzJIQV/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=brnaxwfW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D206C433F1;
+	Tue, 20 Feb 2024 21:32:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463765;
-	bh=HXCHAWJuXJ22WnlTAydPXPEp03QrjyCZM7vfVHRsUu0=;
+	s=korg; t=1708464768;
+	bh=S/hWyW67xJ1ZKreq58ceLu+nx0vbF30js0dFPiD/9fg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BkYcEdLPMPV7jm3/anuwgIpW2xiXOEBvZWuE7d7CfJXyKYXtkiP55VJO4aF37RApw
-	 SgfATmgIFXujI1hrx2oDtG034LFHDaVn31bpOBdhy2LdnoFF9IjeqkYAQayCNw0mxF
-	 xcgYlxBpqXtOO5DBAg/yPrkyRAHM6VCDGG6IJHpw=
+	b=brnaxwfWxYKuRm966TmNupjm8Cb4YAd1ReI08mPp9tko/QUfx5I2fGQaBJLFNC2qS
+	 JTzZxH2pzTwFkmR+mTmWDd5zML49Z2ISxhSjIuyI3XpcIBnxO2qaAliIhpbX79jt76
+	 3u5ZHB1rJydDFtsRbPkyqFZU1eKrpJrOPgUqXFoY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
-	Martijn Coenen <maco@android.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Steven Moreland <smoreland@google.com>,
-	Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH 6.6 144/331] binder: signal epoll threads of self-work
+	Jiangfeng Xiao <xiaojiangfeng@huawei.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 101/309] powerpc/kasan: Fix addr error caused by page alignment
 Date: Tue, 20 Feb 2024 21:54:20 +0100
-Message-ID: <20240220205642.072532865@linuxfoundation.org>
+Message-ID: <20240220205636.340668646@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +60,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Jiangfeng Xiao <xiaojiangfeng@huawei.com>
 
-commit 97830f3c3088638ff90b20dfba2eb4d487bf14d7 upstream.
+[ Upstream commit 4a7aee96200ad281a5cc4cf5c7a2e2a49d2b97b0 ]
 
-In (e)poll mode, threads often depend on I/O events to determine when
-data is ready for consumption. Within binder, a thread may initiate a
-command via BINDER_WRITE_READ without a read buffer and then make use
-of epoll_wait() or similar to consume any responses afterwards.
+In kasan_init_region, when k_start is not page aligned, at the begin of
+for loop, k_cur = k_start & PAGE_MASK is less than k_start, and then
+`va = block + k_cur - k_start` is less than block, the addr va is invalid,
+because the memory address space from va to block is not alloced by
+memblock_alloc, which will not be reserved by memblock_reserve later, it
+will be used by other places.
 
-It is then crucial that epoll threads are signaled via wakeup when they
-queue their own work. Otherwise, they risk waiting indefinitely for an
-event leaving their work unhandled. What is worse, subsequent commands
-won't trigger a wakeup either as the thread has pending work.
+As a result, memory overwriting occurs.
 
-Fixes: 457b9a6f09f0 ("Staging: android: add binder driver")
-Cc: Arve Hjønnevåg <arve@android.com>
-Cc: Martijn Coenen <maco@android.com>
-Cc: Alice Ryhl <aliceryhl@google.com>
-Cc: Steven Moreland <smoreland@google.com>
-Cc: stable@vger.kernel.org # v4.19+
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Link: https://lore.kernel.org/r/20240131215347.1808751-1-cmllamas@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+for example:
+int __init __weak kasan_init_region(void *start, size_t size)
+{
+[...]
+	/* if say block(dcd97000) k_start(feef7400) k_end(feeff3fe) */
+	block = memblock_alloc(k_end - k_start, PAGE_SIZE);
+	[...]
+	for (k_cur = k_start & PAGE_MASK; k_cur < k_end; k_cur += PAGE_SIZE) {
+		/* at the begin of for loop
+		 * block(dcd97000) va(dcd96c00) k_cur(feef7000) k_start(feef7400)
+		 * va(dcd96c00) is less than block(dcd97000), va is invalid
+		 */
+		void *va = block + k_cur - k_start;
+		[...]
+	}
+[...]
+}
+
+Therefore, page alignment is performed on k_start before
+memblock_alloc() to ensure the validity of the VA address.
+
+Fixes: 663c0c9496a6 ("powerpc/kasan: Fix shadow area set up for modules.")
+Signed-off-by: Jiangfeng Xiao <xiaojiangfeng@huawei.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/1705974359-43790-1-git-send-email-xiaojiangfeng@huawei.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/powerpc/mm/kasan/init_32.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -478,6 +478,16 @@ binder_enqueue_thread_work_ilocked(struc
- {
- 	WARN_ON(!list_empty(&thread->waiting_thread_node));
- 	binder_enqueue_work_ilocked(work, &thread->todo);
-+
-+	/* (e)poll-based threads require an explicit wakeup signal when
-+	 * queuing their own work; they rely on these events to consume
-+	 * messages without I/O block. Without it, threads risk waiting
-+	 * indefinitely without handling the work.
-+	 */
-+	if (thread->looper & BINDER_LOOPER_STATE_POLL &&
-+	    thread->pid == current->pid && !thread->process_todo)
-+		wake_up_interruptible_sync(&thread->wait);
-+
- 	thread->process_todo = true;
- }
+diff --git a/arch/powerpc/mm/kasan/init_32.c b/arch/powerpc/mm/kasan/init_32.c
+index a70828a6d935..aa9aa11927b2 100644
+--- a/arch/powerpc/mm/kasan/init_32.c
++++ b/arch/powerpc/mm/kasan/init_32.c
+@@ -64,6 +64,7 @@ int __init __weak kasan_init_region(void *start, size_t size)
+ 	if (ret)
+ 		return ret;
  
++	k_start = k_start & PAGE_MASK;
+ 	block = memblock_alloc(k_end - k_start, PAGE_SIZE);
+ 	if (!block)
+ 		return -ENOMEM;
+-- 
+2.43.0
+
 
 
 
