@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-21024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E20085C6D1
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:05:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAE7785C6B4
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:04:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF4091C219DC
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:05:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B4ACDB22151
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:04:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6493151CD8;
-	Tue, 20 Feb 2024 21:05:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 578CA152DF7;
+	Tue, 20 Feb 2024 21:03:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s13/fZ4F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QTYBmiE3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6598314AD12;
-	Tue, 20 Feb 2024 21:05:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 153DC151CE2;
+	Tue, 20 Feb 2024 21:03:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463113; cv=none; b=jpgkfwFl8E0g916CSii6AF2lB2SMl1v5jQFuVUyjmVPiBTwRb50MrbUB2lkwpy/xvAr6pKUVPEEHxiszRXS2H5sl4RjB3UPbySQzYPGqTPwoF9LPGA2VVutTOE2zY96RJll6tYE3U1hAiOOBTHdd54gEbDQLx0GjZFXkGA4aHT8=
+	t=1708463035; cv=none; b=SqEF2877AizJmaPb0YcYBfQvC7pW8jPHutvJ0adJETpQqwvFWi0FcACFQpLZjyl2GXdDCcdBbifvMv0pwtCnd8eq5Q9Rxmxkxs9vZ8lPFcyYV0SAnZttmIbdbi8/YoNHMPB+OKsOsO/jbKlIqGQB1PwWx+mIKeCj2fymMGWOlkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463113; c=relaxed/simple;
-	bh=WN/Y2hoCRBymcMuCvjJJvTETlYgblTiIQimjaEyckrE=;
+	s=arc-20240116; t=1708463035; c=relaxed/simple;
+	bh=F+0bKeQFLI3C0ZVqvX8SUEj/wIe03i2kVsuiNXRkLro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cto/9z8B9dj6MGcEOLWVjXpLhK8ysJiuiImVqLfoaZ8/37NKvDtGuNpnByqydct1lo7LXWuv7nEXIiyG7mXnxM0vCwvoKyrbRyaFZDy1MgXZ0FoiUJAtVGd0V3BlMix/5tiCyYOIPgBC6OuT7am9kJgFT12/i8M0J+o44ffORlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s13/fZ4F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E742C433F1;
-	Tue, 20 Feb 2024 21:05:12 +0000 (UTC)
+	 MIME-Version; b=HvMo6dbxtVPbHjV8ahshuROfRGLRZ2hDdu64ezzSS4S+5byBsDuI3OLQ+sRlUdBbadCoq3ytS72FXyqwFLSAVujWeuIh2YMVPTS7mD5cRRa4r64dG/qfuxaKWCqYzDCijS13e+uXU2lawYqXKVXI2Pd/9jppF843S7Ur09uYX74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QTYBmiE3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73E63C43141;
+	Tue, 20 Feb 2024 21:03:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463113;
-	bh=WN/Y2hoCRBymcMuCvjJJvTETlYgblTiIQimjaEyckrE=;
+	s=korg; t=1708463034;
+	bh=F+0bKeQFLI3C0ZVqvX8SUEj/wIe03i2kVsuiNXRkLro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s13/fZ4FwukFJD5DSPU+YyEWttArRDTlJLi35XWZ3agRjL9XS+9N3mf/gI/uGnVHf
-	 gIewebL/g7WxHPVn4Hx1DFKE0qRbuooHBHhcsdcg0e0VOiK6shAWsGtrQa6EzGqwRn
-	 K2UDTjgSc5PTzeBRCNufgcY6c5/RGGalh5FATVmI=
+	b=QTYBmiE36B9LpX48BdR0574EWB5d4gfWSS5Li2i4S4iOCM/Yn3BtfTNjg8kZe4H21
+	 b+BJu07Rnu+YAt+/QZMiMRTUuta9NcEh6CF0TSZagxBgd7hduBEK13SpEnSkS2v2nV
+	 z589jfebHwMV+AZfxorJGQMrP587Xf4awazOGj8E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Young <sean@mess.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>
-Subject: [PATCH 6.1 109/197] media: rc: bpf attach/detach requires write permission
-Date: Tue, 20 Feb 2024 21:51:08 +0100
-Message-ID: <20240220204844.343817657@linuxfoundation.org>
+	Nathan Chancellor <nathan@kernel.org>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 115/197] drm/amd/display: Increase frame-larger-than for all display_mode_vba files
+Date: Tue, 20 Feb 2024 21:51:14 +0100
+Message-ID: <20240220204844.517862066@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
 References: <20240220204841.073267068@linuxfoundation.org>
@@ -65,83 +65,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sean Young <sean@mess.org>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 6a9d552483d50953320b9d3b57abdee8d436f23f upstream.
+commit e63e35f0164c43fbc1adb481d6604f253b9f9667 upstream.
 
-Note that bpf attach/detach also requires CAP_NET_ADMIN.
+After a recent change in LLVM, allmodconfig (which has CONFIG_KCSAN=y
+and CONFIG_WERROR=y enabled) has a few new instances of
+-Wframe-larger-than for the mode support and system configuration
+functions:
+
+  drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn20/display_mode_vba_20v2.c:3393:6: error: stack frame size (2144) exceeds limit (2048) in 'dml20v2_ModeSupportAndSystemConfigurationFull' [-Werror,-Wframe-larger-than]
+   3393 | void dml20v2_ModeSupportAndSystemConfigurationFull(struct display_mode_lib *mode_lib)
+        |      ^
+  1 error generated.
+
+  drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn21/display_mode_vba_21.c:3520:6: error: stack frame size (2192) exceeds limit (2048) in 'dml21_ModeSupportAndSystemConfigurationFull' [-Werror,-Wframe-larger-than]
+   3520 | void dml21_ModeSupportAndSystemConfigurationFull(struct display_mode_lib *mode_lib)
+        |      ^
+  1 error generated.
+
+  drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn20/display_mode_vba_20.c:3286:6: error: stack frame size (2128) exceeds limit (2048) in 'dml20_ModeSupportAndSystemConfigurationFull' [-Werror,-Wframe-larger-than]
+   3286 | void dml20_ModeSupportAndSystemConfigurationFull(struct display_mode_lib *mode_lib)
+        |      ^
+  1 error generated.
+
+Without the sanitizers enabled, there are no warnings.
+
+This was the catalyst for commit 6740ec97bcdb ("drm/amd/display:
+Increase frame warning limit with KASAN or KCSAN in dml2") and that same
+change was made to dml in commit 5b750b22530f ("drm/amd/display:
+Increase frame warning limit with KASAN or KCSAN in dml") but the
+frame_warn_flag variable was not applied to all files. Do so now to
+clear up the warnings and make all these files consistent.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Closes: https://github.com/ClangBuiltLinux/linux/issue/1990
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/rc/bpf-lirc.c     |    6 +++---
- drivers/media/rc/lirc_dev.c     |    5 ++++-
- drivers/media/rc/rc-core-priv.h |    2 +-
- 3 files changed, 8 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dml/Makefile |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/media/rc/bpf-lirc.c
-+++ b/drivers/media/rc/bpf-lirc.c
-@@ -253,7 +253,7 @@ int lirc_prog_attach(const union bpf_att
- 	if (attr->attach_flags)
- 		return -EINVAL;
- 
--	rcdev = rc_dev_get_from_fd(attr->target_fd);
-+	rcdev = rc_dev_get_from_fd(attr->target_fd, true);
- 	if (IS_ERR(rcdev))
- 		return PTR_ERR(rcdev);
- 
-@@ -278,7 +278,7 @@ int lirc_prog_detach(const union bpf_att
- 	if (IS_ERR(prog))
- 		return PTR_ERR(prog);
- 
--	rcdev = rc_dev_get_from_fd(attr->target_fd);
-+	rcdev = rc_dev_get_from_fd(attr->target_fd, true);
- 	if (IS_ERR(rcdev)) {
- 		bpf_prog_put(prog);
- 		return PTR_ERR(rcdev);
-@@ -303,7 +303,7 @@ int lirc_prog_query(const union bpf_attr
- 	if (attr->query.query_flags)
- 		return -EINVAL;
- 
--	rcdev = rc_dev_get_from_fd(attr->query.target_fd);
-+	rcdev = rc_dev_get_from_fd(attr->query.target_fd, false);
- 	if (IS_ERR(rcdev))
- 		return PTR_ERR(rcdev);
- 
---- a/drivers/media/rc/lirc_dev.c
-+++ b/drivers/media/rc/lirc_dev.c
-@@ -814,7 +814,7 @@ void __exit lirc_dev_exit(void)
- 	unregister_chrdev_region(lirc_base_dev, RC_DEV_MAX);
- }
- 
--struct rc_dev *rc_dev_get_from_fd(int fd)
-+struct rc_dev *rc_dev_get_from_fd(int fd, bool write)
- {
- 	struct fd f = fdget(fd);
- 	struct lirc_fh *fh;
-@@ -828,6 +828,9 @@ struct rc_dev *rc_dev_get_from_fd(int fd
- 		return ERR_PTR(-EINVAL);
- 	}
- 
-+	if (write && !(f.file->f_mode & FMODE_WRITE))
-+		return ERR_PTR(-EPERM);
-+
- 	fh = f.file->private_data;
- 	dev = fh->rc;
- 
---- a/drivers/media/rc/rc-core-priv.h
-+++ b/drivers/media/rc/rc-core-priv.h
-@@ -325,7 +325,7 @@ void lirc_raw_event(struct rc_dev *dev,
- void lirc_scancode_event(struct rc_dev *dev, struct lirc_scancode *lsc);
- int lirc_register(struct rc_dev *dev);
- void lirc_unregister(struct rc_dev *dev);
--struct rc_dev *rc_dev_get_from_fd(int fd);
-+struct rc_dev *rc_dev_get_from_fd(int fd, bool write);
- #else
- static inline int lirc_dev_init(void) { return 0; }
- static inline void lirc_dev_exit(void) {}
+--- a/drivers/gpu/drm/amd/display/dc/dml/Makefile
++++ b/drivers/gpu/drm/amd/display/dc/dml/Makefile
+@@ -60,11 +60,11 @@ ifdef CONFIG_DRM_AMD_DC_DCN
+ CFLAGS_$(AMDDALPATH)/dc/dml/display_mode_vba.o := $(dml_ccflags)
+ CFLAGS_$(AMDDALPATH)/dc/dml/dcn10/dcn10_fpu.o := $(dml_ccflags)
+ CFLAGS_$(AMDDALPATH)/dc/dml/dcn20/dcn20_fpu.o := $(dml_ccflags)
+-CFLAGS_$(AMDDALPATH)/dc/dml/dcn20/display_mode_vba_20.o := $(dml_ccflags)
++CFLAGS_$(AMDDALPATH)/dc/dml/dcn20/display_mode_vba_20.o := $(dml_ccflags) $(frame_warn_flag)
+ CFLAGS_$(AMDDALPATH)/dc/dml/dcn20/display_rq_dlg_calc_20.o := $(dml_ccflags)
+-CFLAGS_$(AMDDALPATH)/dc/dml/dcn20/display_mode_vba_20v2.o := $(dml_ccflags)
++CFLAGS_$(AMDDALPATH)/dc/dml/dcn20/display_mode_vba_20v2.o := $(dml_ccflags) $(frame_warn_flag)
+ CFLAGS_$(AMDDALPATH)/dc/dml/dcn20/display_rq_dlg_calc_20v2.o := $(dml_ccflags)
+-CFLAGS_$(AMDDALPATH)/dc/dml/dcn21/display_mode_vba_21.o := $(dml_ccflags)
++CFLAGS_$(AMDDALPATH)/dc/dml/dcn21/display_mode_vba_21.o := $(dml_ccflags) $(frame_warn_flag)
+ CFLAGS_$(AMDDALPATH)/dc/dml/dcn21/display_rq_dlg_calc_21.o := $(dml_ccflags)
+ CFLAGS_$(AMDDALPATH)/dc/dml/dcn30/display_mode_vba_30.o := $(dml_ccflags) $(frame_warn_flag)
+ CFLAGS_$(AMDDALPATH)/dc/dml/dcn30/display_rq_dlg_calc_30.o := $(dml_ccflags)
 
 
 
