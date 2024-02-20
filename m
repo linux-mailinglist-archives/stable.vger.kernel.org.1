@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-21641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67CB185C9BA
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:37:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9798285C87B
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:22:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 08C9AB222C1
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:37:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52F3D284BD9
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:22:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D2E414F9C8;
-	Tue, 20 Feb 2024 21:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09A9F151CCC;
+	Tue, 20 Feb 2024 21:22:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mSX70QhT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dw1uQ4kt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD69C151CE1;
-	Tue, 20 Feb 2024 21:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9FC76C9C;
+	Tue, 20 Feb 2024 21:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708465050; cv=none; b=Ou6SOVZFF/2DU47EEbNnRg06iMgwtjHddQmEjGTPefB2mSJfoMDDSbBQs0Gf466tnwAFuyQ129QKF1K/Snd9QTl5emXEUbcoBGoUHeyMRH4JogmSnZ5Y83RwZTt2izGad6gMY4u+hmF2qzd/PoT3L3MCbAD0PSF1CW47u2n9+Os=
+	t=1708464139; cv=none; b=Xfyay3C/gEl3V0EVXaTdak+KA9kTpsh4AEqYKSUHEvgafPkD+3o6vC2+fpQ61soovS4K0XX6REUmQI6i+VpJrlfFQyetNkQCQJtg6odqyH6ISokyl7FY/o0gWubUg/9LPMzQbLFjj0ceLqlm2EVmqBmsA6/9ZNiZ3UQfw4VFmKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708465050; c=relaxed/simple;
-	bh=cRbpoDzF5blI5aWZ449Pactjmkkvs/1tnkrgf8mQeFE=;
+	s=arc-20240116; t=1708464139; c=relaxed/simple;
+	bh=4wr4veVWbJu0qg1hmzJz9zGkDjUdobuqfPI/NBH/Mlw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iPmjKzRHEhs+m3qO8S2ia9Bz0iIcsJqI4aDoaEL8uz9XqLqL73XCxJqGnfLFT/aUwez9p2q2CXOwNXpAenudEpMvAIKqn/Oqwrbl19kQQs1i9JXNmzQB3mFpOWk+CLtNKB9iBAIL1ZzAtOBLUSgleeNK/gyvRM75SCSts82WMGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mSX70QhT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53010C433C7;
-	Tue, 20 Feb 2024 21:37:30 +0000 (UTC)
+	 MIME-Version; b=eZoxNWeMr4n6nhD0wNeUORE2tZJAUQh/rEPbClqvoGXGFkr8ES9edG68vMD0ZIQfbI5HztG9D3Ft6Lqo9fplQCAQpSgA+teXyk/5gcFVTt7n4bojZjmpVQB2g3xGmDYby+W0LiYmFXlBzj3fU1LoRu9lwttsvBUDxMF9R/aj+ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dw1uQ4kt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A2A2C433C7;
+	Tue, 20 Feb 2024 21:22:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708465050;
-	bh=cRbpoDzF5blI5aWZ449Pactjmkkvs/1tnkrgf8mQeFE=;
+	s=korg; t=1708464139;
+	bh=4wr4veVWbJu0qg1hmzJz9zGkDjUdobuqfPI/NBH/Mlw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mSX70QhTBwvXnlwOUGfBWMGSDJh0SCHmZj/8Ph31AAX5Ycj8gdf9wMzIr5KvVHLmr
-	 d8SRfLIdXtXXyfpM3xCTfFml2ZccLBMrKL0GRtQd9Pz4rs4cGAwUVrD7INLstW3s1l
-	 Kq5s+GIqgvJ6Wi4rEUa0TmZIMksgDqiZFvso6p5Q=
+	b=Dw1uQ4ktXe5hlMOQqQe6B5OoP/NBRobYJNx99kQHBi5TtY/jnAjrYGqcBauvjibz5
+	 wIpLFBvVcpU+h9RmdspYTw4+3VfGacM2n9XnXF8/ZnsrDLJzbPhtVG4q5C9VKkIsuT
+	 Oie8PN2ZNE8DtvGeO74QR+cj+bQISH9yJ/L7nEKg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hui Zhou <hui.zhou@corigine.com>,
-	Louis Peens <louis.peens@corigine.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.7 219/309] nfp: flower: fix hardware offload for the transfer layer port
-Date: Tue, 20 Feb 2024 21:56:18 +0100
-Message-ID: <20240220205640.014560360@linuxfoundation.org>
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 263/331] Revert "eventfs: Remove "is_freed" union with rcu head"
+Date: Tue, 20 Feb 2024 21:56:19 +0100
+Message-ID: <20240220205646.138174685@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +60,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hui Zhou <hui.zhou@corigine.com>
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-commit 3a007b8009b5f8af021021b7a590a6da0dc4c6e0 upstream.
+This reverts commit fa18a8a0539b02cc621938091691f0b73f0b1288.
 
-The nfp driver will merge the tp source port and tp destination port
-into one dword which the offset must be zero to do hardware offload.
-However, the mangle action for the tp source port and tp destination
-port is separated for tc ct action. Modify the mangle action for the
-FLOW_ACT_MANGLE_HDR_TYPE_TCP and FLOW_ACT_MANGLE_HDR_TYPE_UDP to
-satisfy the nfp driver offload check for the tp port.
+The eventfs was not designed properly and may have some hidden bugs in it.
+Linus rewrote it properly and I trust his version more than this one. Revert
+the backported patches for 6.6 and re-apply all the changes to make it
+equivalent to Linus's version.
 
-The mangle action provides a 4B value for source, and a 4B value for
-the destination, but only 2B of each contains the useful information.
-For offload the 2B of each is combined into a single 4B word. Since the
-incoming mask for the source is '0xFFFF<mask>' the shift-left will
-throw away the 0xFFFF part. When this gets combined together in the
-offload it will clear the destination field. Fix this by setting the
-lower bits back to 0xFFFF, effectively doing a rotate-left operation on
-the mask.
-
-Fixes: 5cee92c6f57a ("nfp: flower: support hw offload for ct nat action")
-CC: stable@vger.kernel.org # 6.1+
-Signed-off-by: Hui Zhou <hui.zhou@corigine.com>
-Signed-off-by: Louis Peens <louis.peens@corigine.com>
-Link: https://lore.kernel.org/r/20240124151909.31603-3-louis.peens@corigine.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/netronome/nfp/flower/conntrack.c |   24 ++++++++++++++++--
- 1 file changed, 22 insertions(+), 2 deletions(-)
+ fs/tracefs/event_inode.c |    8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
---- a/drivers/net/ethernet/netronome/nfp/flower/conntrack.c
-+++ b/drivers/net/ethernet/netronome/nfp/flower/conntrack.c
-@@ -1424,10 +1424,30 @@ static void nfp_nft_ct_translate_mangle_
- 		mangle_action->mangle.mask = (__force u32)cpu_to_be32(mangle_action->mangle.mask);
- 		return;
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -38,7 +38,6 @@ struct eventfs_inode {
+  * @fop:	file_operations for file or directory
+  * @iop:	inode_operations for file or directory
+  * @data:	something that the caller will want to get to later on
+- * @is_freed:	Flag set if the eventfs is on its way to be freed
+  * @mode:	the permission that the file or directory should have
+  */
+ struct eventfs_file {
+@@ -53,14 +52,15 @@ struct eventfs_file {
+ 	 * Union - used for deletion
+ 	 * @del_list:	list of eventfs_file to delete
+ 	 * @rcu:	eventfs_file to delete in RCU
++	 * @is_freed:	node is freed if one of the above is set
+ 	 */
+ 	union {
+ 		struct list_head	del_list;
+ 		struct rcu_head		rcu;
++		unsigned long		is_freed;
+ 	};
+ 	void				*data;
+-	unsigned int			is_freed:1;
+-	unsigned int			mode:31;
++	umode_t				mode;
+ };
  
-+	/* Both struct tcphdr and struct udphdr start with
-+	 *	__be16 source;
-+	 *	__be16 dest;
-+	 * so we can use the same code for both.
-+	 */
- 	case FLOW_ACT_MANGLE_HDR_TYPE_TCP:
- 	case FLOW_ACT_MANGLE_HDR_TYPE_UDP:
--		mangle_action->mangle.val = (__force u16)cpu_to_be16(mangle_action->mangle.val);
--		mangle_action->mangle.mask = (__force u16)cpu_to_be16(mangle_action->mangle.mask);
-+		if (mangle_action->mangle.offset == offsetof(struct tcphdr, source)) {
-+			mangle_action->mangle.val =
-+				(__force u32)cpu_to_be32(mangle_action->mangle.val << 16);
-+			/* The mask of mangle action is inverse mask,
-+			 * so clear the dest tp port with 0xFFFF to
-+			 * instead of rotate-left operation.
-+			 */
-+			mangle_action->mangle.mask =
-+				(__force u32)cpu_to_be32(mangle_action->mangle.mask << 16 | 0xFFFF);
-+		}
-+		if (mangle_action->mangle.offset == offsetof(struct tcphdr, dest)) {
-+			mangle_action->mangle.offset = 0;
-+			mangle_action->mangle.val =
-+				(__force u32)cpu_to_be32(mangle_action->mangle.val);
-+			mangle_action->mangle.mask =
-+				(__force u32)cpu_to_be32(mangle_action->mangle.mask);
-+		}
- 		return;
+ static DEFINE_MUTEX(eventfs_mutex);
+@@ -814,8 +814,6 @@ static void eventfs_remove_rec(struct ev
+ 		}
+ 	}
  
- 	default:
+-	ef->is_freed = 1;
+-
+ 	list_del_rcu(&ef->list);
+ 	list_add_tail(&ef->del_list, head);
+ }
 
 
 
