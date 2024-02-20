@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-21565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8B9F85C96D
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:33:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C84785C7F5
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:18:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70639B20DFE
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:33:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E17381F26E6B
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:18:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 757A3151CEA;
-	Tue, 20 Feb 2024 21:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80DE4151CDC;
+	Tue, 20 Feb 2024 21:18:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="de60NzGt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J0yEIkTw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32FEB446C9;
-	Tue, 20 Feb 2024 21:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E69F612D7;
+	Tue, 20 Feb 2024 21:18:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464811; cv=none; b=EMCxs6RWCcplJ9/AwrNpH8vQch/An/qDdDYvSj0/trObSas74jOvkNQqRLtvVEzK09WEPF59tzrhNCoiQC53qEOcxtBKcQaGxFGkimT9gNeIiko4syasM2sXD81aoZMw2IhE6jEmXUG81qgJkGXsw834hsZbkiJYVf2xdPV/M/Q=
+	t=1708463897; cv=none; b=QNlb8FfdM7PT4IU04ilILK6AMVVYEFpIo9kSUvdc9vTn6bh12mDbl2Vxss6s1JAVmvLhVZBeZ0VNjvGSTSCnwyIn/RvIQctP+bKzgdhbzGhUOvsXJLZGKg2Hjj0dbLDCmSQKP25se6+xja9MWkWCvHy/x98UJysOh5eM82QZYEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464811; c=relaxed/simple;
-	bh=ci14LgtGFxmJAGwRxPjgDf/dA2wrLTG3IRo4LmJ1coI=;
+	s=arc-20240116; t=1708463897; c=relaxed/simple;
+	bh=Lf7ljG+JVyslXUvBda8cdY2Z4WxgG7ie3JIdyw9ioj4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MG2J1BEldZraPIsldVBDlHx3ZSkhsehzEWNI1OTfMnoQ2q0v8dCaVpOB+YKS2vswfT6pvrPPMO8UkgUil6SdVXmxYJURkkyuasUVUpjSF6ojP1lq6i2MlnHWhn61zCcHWX65HnGuR6ditb5WgcwZ5JEcSeMP6JfUG5OfkOvLgJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=de60NzGt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96B19C433F1;
-	Tue, 20 Feb 2024 21:33:30 +0000 (UTC)
+	 MIME-Version; b=XrrWTREYkEXkP8AcbCJwhH/yrrt2y6LzPcfxklEs3Wah3QaQ9d9fa0XkwoV3Nc/DKMJ8L3vmFwfoFgO4sXWCrfrzE7c3bbEAuVrrcWCQ1INZYef1u67aj/bC9AketBgshxAfoy0Jt07F2K9T7uFTs56+CsT8R9wfUNg46xXur5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J0yEIkTw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8FC3C43399;
+	Tue, 20 Feb 2024 21:18:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464811;
-	bh=ci14LgtGFxmJAGwRxPjgDf/dA2wrLTG3IRo4LmJ1coI=;
+	s=korg; t=1708463897;
+	bh=Lf7ljG+JVyslXUvBda8cdY2Z4WxgG7ie3JIdyw9ioj4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=de60NzGtdrnwBx2e65hDZ2s12a1slM4jixT5c8wmVXGzj76ga1jbPCpRYQH/98QmZ
-	 g5PU9FL1hswH204Eu5Ol6rBQHuySGzNGnxWyQZtH0sbLyp5ygPB/Kdo0PARgiqFBjZ
-	 /x5CG/mtzx93SpRiIXLVHO4roVRewgxb8Aekzn4E=
+	b=J0yEIkTw3mgn9aENwrGRWgYBB7K3F4pSQsPuzmd5rVm3sHX1Vfw6wQplzLPTzVWCM
+	 5JtrYP0iloIBQ7HpWHWChFAbECW5WpEk1cbn+16VT+n7qYiTbsHF4ZzCCLosYSpuAw
+	 GQ8YwDyf5psjgRR5LY3nTdxBkZW/EoEJ4zNrvZ/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6b7c68d9c21e4ee4251b@syzkaller.appspotmail.com,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.7 144/309] nfc: nci: free rx_data_reassembly skb on NCI device cleanup
-Date: Tue, 20 Feb 2024 21:55:03 +0100
-Message-ID: <20240220205637.672845930@linuxfoundation.org>
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Emil Kronborg <emil.kronborg@protonmail.com>,
+	stable <stable@kernel.org>,
+	Stefan Wahren <wahrenst@gmx.net>
+Subject: [PATCH 6.6 188/331] serial: mxs-auart: fix tx
+Date: Tue, 20 Feb 2024 21:55:04 +0100
+Message-ID: <20240220205643.466743448@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-commit bfb007aebe6bff451f7f3a4be19f4f286d0d5d9c upstream.
+commit 7be50f2e8f20fc2299069b28dea59a28e3abe20a upstream.
 
-rx_data_reassembly skb is stored during NCI data exchange for processing
-fragmented packets. It is dropped only when the last fragment is processed
-or when an NTF packet with NCI_OP_RF_DEACTIVATE_NTF opcode is received.
-However, the NCI device may be deallocated before that which leads to skb
-leak.
+Emil reports:
+  After updating Linux on an i.MX28 board, serial communication over
+  AUART broke. When I TX from the board and measure on the TX pin, it
+  seems like the HW fifo is not emptied before the transmission is
+  stopped.
 
-As by design the rx_data_reassembly skb is bound to the NCI device and
-nothing prevents the device to be freed before the skb is processed in
-some way and cleaned, free it on the NCI device cleanup.
+MXS performs weird things with stop_tx(). The driver makes it
+conditional on uart_tx_stopped().
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+So the driver needs special handling. Pass the brand new UART_TX_NOSTOP
+to uart_port_tx_flags() and handle the stop on its own.
 
-Fixes: 6a2968aaf50c ("NFC: basic NCI protocol implementation")
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+6b7c68d9c21e4ee4251b@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/lkml/000000000000f43987060043da7b@google.com/
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+Reported-by: Emil Kronborg <emil.kronborg@protonmail.com>
+Cc: stable <stable@kernel.org>
+Fixes: 2d141e683e9a ("tty: serial: use uart_port_tx() helper")
+Closes: https://lore.kernel.org/all/miwgbnvy3hjpnricubg76ytpn7xoceehwahupy25bubbduu23s@om2lptpa26xw/
+Tested-by: Stefan Wahren <wahrenst@gmx.net>
+Tested-by: Emil Kronborg <emil.kronborg@protonmail.com>
+Link: https://lore.kernel.org/r/20240201105557.28043-2-jirislaby@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/nfc/nci/core.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/tty/serial/mxs-auart.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/net/nfc/nci/core.c
-+++ b/net/nfc/nci/core.c
-@@ -1208,6 +1208,10 @@ void nci_free_device(struct nci_dev *nde
- {
- 	nfc_free_device(ndev->nfc_dev);
- 	nci_hci_deallocate(ndev);
+--- a/drivers/tty/serial/mxs-auart.c
++++ b/drivers/tty/serial/mxs-auart.c
+@@ -605,13 +605,16 @@ static void mxs_auart_tx_chars(struct mx
+ 		return;
+ 	}
+ 
+-	pending = uart_port_tx(&s->port, ch,
++	pending = uart_port_tx_flags(&s->port, ch, UART_TX_NOSTOP,
+ 		!(mxs_read(s, REG_STAT) & AUART_STAT_TXFF),
+ 		mxs_write(ch, s, REG_DATA));
+ 	if (pending)
+ 		mxs_set(AUART_INTR_TXIEN, s, REG_INTR);
+ 	else
+ 		mxs_clr(AUART_INTR_TXIEN, s, REG_INTR);
 +
-+	/* drop partial rx data packet if present */
-+	if (ndev->rx_data_reassembly)
-+		kfree_skb(ndev->rx_data_reassembly);
- 	kfree(ndev);
++	if (uart_tx_stopped(&s->port))
++               mxs_auart_stop_tx(&s->port);
  }
- EXPORT_SYMBOL(nci_free_device);
+ 
+ static void mxs_auart_rx_char(struct mxs_auart_port *s)
 
 
 
