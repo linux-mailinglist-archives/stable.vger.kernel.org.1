@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-21295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B0B485C838
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:19:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 437BE85C966
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:33:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FD491F26FF5
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:19:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D92B1B22272
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:33:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AE12151CD8;
-	Tue, 20 Feb 2024 21:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31931151CD9;
+	Tue, 20 Feb 2024 21:33:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sZ4Fm+6B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eXVI8+yS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCF45612D7;
-	Tue, 20 Feb 2024 21:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E22F4446C9;
+	Tue, 20 Feb 2024 21:33:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463969; cv=none; b=gT4CkbVXPO9phiZUxpagd6P12jGoWD1gZ97ang+IAd0THanR8+PygiYQ+eTrQJqBAg12mIbh+FeWdjVzkgnhaT0lhhuuXzG44d+kOwemzgHxbQYAjz+3Kr5hLRMyAEBtLa8nitVqRC+ed7Z92sf2KVw/q8eebnTY66NOrKqHi/A=
+	t=1708464790; cv=none; b=QI0NRpnbbHYKhbqxi7Dg8D3vK8/lCXVpyNQXix9WEZHpcC+c/NqTZMqlDt8k51tBlkwtKdX9HbuBEkPM6wV2dic9/EXDVf7NhnI/62tp6XVvyq4T/GlonaGKzHG6HCgOTfhI4S1ZnPc+dL5EB5maWXtTl9G8rhNDAfK/saOHFnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463969; c=relaxed/simple;
-	bh=1isNohZ30zvJ9w03heUyf4z+W4XwNqdcYo7OL9/0DEc=;
+	s=arc-20240116; t=1708464790; c=relaxed/simple;
+	bh=BDN50w5vj4HVCgcF/yjLIPODWo0ILq4JLriI5nl6rHY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cugN/7TZzhoxm30XrYX9kfl11xYYAXpKWEeovNGjtKli2+VazqHVRBxag4dhsxiO4K3Repw2eIA7WeWOWiyrpDDu3TF0imhlDbG5ZIXSt4v6dDdY0fb0IDhPXlYyHg1t3ca5g5L5pTqhcO4TYgwQ9srNhqGMCqL+f04gE6ez+Zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sZ4Fm+6B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41324C433F1;
-	Tue, 20 Feb 2024 21:19:28 +0000 (UTC)
+	 MIME-Version; b=hQ2qGz1sYtTPw7gH7TdpUHOYbGqfOXfGMElj3+OjYV4Zw7vBe7ESPjWq67kJhQbKna3eKBeeLc9kgR1wqcxd08fKNQxb5uTrcFCqLzGBo8EJraOKuwk2RkuSbnBv8KSF3lP/Ui4k/3hoD9lNLTbR5Emd9XaWCd4U2odEji7tohQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eXVI8+yS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F1FAC433C7;
+	Tue, 20 Feb 2024 21:33:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463968;
-	bh=1isNohZ30zvJ9w03heUyf4z+W4XwNqdcYo7OL9/0DEc=;
+	s=korg; t=1708464789;
+	bh=BDN50w5vj4HVCgcF/yjLIPODWo0ILq4JLriI5nl6rHY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sZ4Fm+6BAzk62GOtJI5G86LB/Bw5alliKfZ3ruzC9xvxOSyksH3IRZWnjoYE+9DD6
-	 mJ58k03haqvHsv77kV/U/6EFd1xeM3jGtdqcfwHHFlfQPGFhhJhDwWWuK2C2Vn+kJR
-	 noEhJE0bmqrEX3VJ6uLVch5ICCPAOGfe3gIN+iNE=
+	b=eXVI8+yS+cFX/Nm2gLZ5ofjTsRF6XifLwG0i8mH5gRXA9VfswgpE/Eq5+O1M7Ib/+
+	 gpFubZ5p1qCu0pHFXgcvUJwR9x9Qsg2Icw877tekGTddP4cEAiz9ENhauVfs1ee0P8
+	 bVqGg92dVmXK5vZDSy5CEXNIqzKna0Ish7QKwVZM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jan=20Kundr=C3=A1t?= <jan.kundrat@cesnet.cz>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Subject: [PATCH 6.6 181/331] serial: max310x: fail probe if clock crystal is unstable
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Charlene Liu <charlene.liu@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Fangzhi Zuo <jerry.zuo@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.7 138/309] drm/amd/display: Fix dcn35 8k30 Underflow/Corruption Issue
 Date: Tue, 20 Feb 2024 21:54:57 +0100
-Message-ID: <20240220205643.217645686@linuxfoundation.org>
+Message-ID: <20240220205637.459670873@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,74 +63,104 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Fangzhi Zuo <jerry.zuo@amd.com>
 
-commit 8afa6c6decea37e7cb473d2c60473f37f46cea35 upstream.
+commit faf51b201bc42adf500945732abb6220c707d6f3 upstream.
 
-A stable clock is really required in order to use this UART, so log an
-error message and bail out if the chip reports that the clock is not
-stable.
+[why]
+odm calculation is missing for pipe split policy determination
+and cause Underflow/Corruption issue.
 
-Fixes: 4cf9a888fd3c ("serial: max310x: Check the clock readiness")
+[how]
+Add the odm calculation.
+
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Suggested-by: Jan Kundrát <jan.kundrat@cesnet.cz>
-Link: https://www.spinics.net/lists/linux-serial/msg35773.html
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20240116213001.3691629-4-hugo@hugovil.com
+Reviewed-by: Charlene Liu <charlene.liu@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Fangzhi Zuo <jerry.zuo@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/max310x.c |   12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c |   27 +++-------
+ drivers/gpu/drm/amd/display/dc/inc/core_types.h               |    2 
+ 2 files changed, 12 insertions(+), 17 deletions(-)
 
---- a/drivers/tty/serial/max310x.c
-+++ b/drivers/tty/serial/max310x.c
-@@ -587,7 +587,7 @@ static int max310x_update_best_err(unsig
- 	return 1;
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
+@@ -791,35 +791,28 @@ static void populate_dml_surface_cfg_fro
+ 	}
  }
  
--static u32 max310x_set_ref_clk(struct device *dev, struct max310x_port *s,
-+static s32 max310x_set_ref_clk(struct device *dev, struct max310x_port *s,
- 			       unsigned long freq, bool xtal)
+-/*TODO no support for mpc combine, need rework - should calculate scaling params based on plane+stream*/
+-static struct scaler_data get_scaler_data_for_plane(const struct dc_plane_state *in, const struct dc_state *context)
++static struct scaler_data get_scaler_data_for_plane(const struct dc_plane_state *in, struct dc_state *context)
  {
- 	unsigned int div, clksrc, pllcfg = 0;
-@@ -657,7 +657,8 @@ static u32 max310x_set_ref_clk(struct de
- 		} while (!stable && (++try < MAX310X_XTAL_WAIT_RETRIES));
- 
- 		if (!stable)
--			dev_warn(dev, "clock is not stable yet\n");
-+			return dev_err_probe(dev, -EAGAIN,
-+					     "clock is not stable\n");
- 	}
- 
- 	return bestfreq;
-@@ -1282,7 +1283,7 @@ static int max310x_probe(struct device *
- {
- 	int i, ret, fmin, fmax, freq;
- 	struct max310x_port *s;
--	u32 uartclk = 0;
-+	s32 uartclk = 0;
- 	bool xtal;
- 
- 	for (i = 0; i < devtype->nr; i++)
-@@ -1360,6 +1361,11 @@ static int max310x_probe(struct device *
- 	}
- 
- 	uartclk = max310x_set_ref_clk(dev, s, freq, xtal);
-+	if (uartclk < 0) {
-+		ret = uartclk;
-+		goto out_uart;
-+	}
+ 	int i;
+-	struct scaler_data data = { 0 };
++	struct pipe_ctx *temp_pipe = &context->res_ctx.temp_pipe;
 +
- 	dev_dbg(dev, "Reference clock set to %i Hz\n", uartclk);
++	memset(temp_pipe, 0, sizeof(struct pipe_ctx));
  
- 	for (i = 0; i < devtype->nr; i++) {
+ 	for (i = 0; i < MAX_PIPES; i++)	{
+ 		const struct pipe_ctx *pipe = &context->res_ctx.pipe_ctx[i];
+ 
+ 		if (pipe->plane_state == in && !pipe->prev_odm_pipe) {
+-			const struct pipe_ctx *next_pipe = pipe->next_odm_pipe;
++			temp_pipe->stream = pipe->stream;
++			temp_pipe->plane_state = pipe->plane_state;
++			temp_pipe->plane_res.scl_data.taps = pipe->plane_res.scl_data.taps;
+ 
+-			data = context->res_ctx.pipe_ctx[i].plane_res.scl_data;
+-			while (next_pipe) {
+-				data.h_active += next_pipe->plane_res.scl_data.h_active;
+-				data.recout.width += next_pipe->plane_res.scl_data.recout.width;
+-				if (in->rotation == ROTATION_ANGLE_0 || in->rotation == ROTATION_ANGLE_180) {
+-					data.viewport.width += next_pipe->plane_res.scl_data.viewport.width;
+-				} else {
+-					data.viewport.height += next_pipe->plane_res.scl_data.viewport.height;
+-				}
+-				next_pipe = next_pipe->next_odm_pipe;
+-			}
++			resource_build_scaling_params(temp_pipe);
+ 			break;
+ 		}
+ 	}
+ 
+ 	ASSERT(i < MAX_PIPES);
+-	return data;
++	return temp_pipe->plane_res.scl_data;
+ }
+ 
+ static void populate_dummy_dml_plane_cfg(struct dml_plane_cfg_st *out, unsigned int location, const struct dc_stream_state *in)
+@@ -864,7 +857,7 @@ static void populate_dummy_dml_plane_cfg
+ 	out->ScalerEnabled[location] = false;
+ }
+ 
+-static void populate_dml_plane_cfg_from_plane_state(struct dml_plane_cfg_st *out, unsigned int location, const struct dc_plane_state *in, const struct dc_state *context)
++static void populate_dml_plane_cfg_from_plane_state(struct dml_plane_cfg_st *out, unsigned int location, const struct dc_plane_state *in, struct dc_state *context)
+ {
+ 	const struct scaler_data scaler_data = get_scaler_data_for_plane(in, context);
+ 
+--- a/drivers/gpu/drm/amd/display/dc/inc/core_types.h
++++ b/drivers/gpu/drm/amd/display/dc/inc/core_types.h
+@@ -462,6 +462,8 @@ struct resource_context {
+ 	unsigned int hpo_dp_link_enc_to_link_idx[MAX_HPO_DP2_LINK_ENCODERS];
+ 	int hpo_dp_link_enc_ref_cnts[MAX_HPO_DP2_LINK_ENCODERS];
+ 	bool is_mpc_3dlut_acquired[MAX_PIPES];
++	/* solely used for build scalar data in dml2 */
++	struct pipe_ctx temp_pipe;
+ };
+ 
+ struct dce_bw_output {
 
 
 
