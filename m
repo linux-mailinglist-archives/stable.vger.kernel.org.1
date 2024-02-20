@@ -1,132 +1,135 @@
-Return-Path: <stable+bounces-20809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02AFC85BC4B
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 13:34:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7562F85BC61
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 13:41:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFEEE2845D3
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 12:34:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A66721C226C9
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 12:41:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 475F95B674;
-	Tue, 20 Feb 2024 12:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3FC469310;
+	Tue, 20 Feb 2024 12:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=siemens.com header.i=felix.moessbauer@siemens.com header.b="Vnhr7zI8"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="JOd+OAw0"
 X-Original-To: stable@vger.kernel.org
-Received: from mta-65-226.siemens.flowmailer.net (mta-65-226.siemens.flowmailer.net [185.136.65.226])
+Received: from mout.web.de (mout.web.de [212.227.17.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A57DE69302
-	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 12:34:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.65.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F2975674E;
+	Tue, 20 Feb 2024 12:40:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708432468; cv=none; b=WSb+bNfP5tKMWrh7uxF51QF5FJuHRY642giKS6TjI+AYSsSXUgNlXG66ga2MTWRZSLeRGpuGfMvKDUBZMOBUPfZzUm0dKInJoXTPdmyPJP6E+5M4lRRfTGHFNMxBA3fPteAM6WZi6tQayKvPQYuVssG//RdnNu2rJM+4++PSS9Q=
+	t=1708432856; cv=none; b=FqVCoARg5mFLJZfSNxOc8Remv/vQNlmHsq6WnB9fPJbKJLMaPDNy6Z8v6rUoDYhG22M1MTSt5IK5/PIt89mnKfQhv+dvo+oy2AnBRqi8ydrFZ+h/GcQKJLqEC8+QSVUN1SQdRQ32rpzcYipRVlwld/HkMuAA5bP82tT1o8I+LRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708432468; c=relaxed/simple;
-	bh=5suu3NeJM1QAhlhicPW1UrNUJtq+PHxX0j6yeqix0dY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Niv9L6ICKrk+4Gvb2ur2CuPGHOaICrlS+8Ladf1FKPUtsZER4yhOyhM2z39zm1F+HSKuLLE+RcDLrHcWzx3kgn3pcCPZZKTIQ5AV5cq5dcFmDfrtqNR1iO5ALgUOz00NDFt8RouSyjF97MVdjB+C1T6TiNVOoSJcNGSoWShHkYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (1024-bit key) header.d=siemens.com header.i=felix.moessbauer@siemens.com header.b=Vnhr7zI8; arc=none smtp.client-ip=185.136.65.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
-Received: by mta-65-226.siemens.flowmailer.net with ESMTPSA id 20240220123416f57b24c6ab85b40b7f
-        for <stable@vger.kernel.org>;
-        Tue, 20 Feb 2024 13:34:16 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
- d=siemens.com; i=felix.moessbauer@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc:References:In-Reply-To;
- bh=EbAsUr1k0k3arOlzefFRyBsFoAvQnkLzm61xmERx1cc=;
- b=Vnhr7zI8av9ckBdu40BFEKvLiK8WI1bKNoMmGk+GPw3OcFt62HukmKDakDCJuT3swpsvj5
- /knR7iqYK/8mIvf/zJC1moNz22ph2YO5kP5tOpp2XharWZ0MjBmuT7klskNK/P/Dr/aXp9NA
- i/UbIPgBFV/1t0WfdfhnnT4BcBvP0=;
-From: Felix Moessbauer <felix.moessbauer@siemens.com>
-To: stable@vger.kernel.org
-Cc: dave@stgolabs.net,
-	tglx@linutronix.de,
-	bigeasy@linutronix.de,
-	petr.ivanov@siemens.com,
-	jan.kiszka@siemens.com
-Subject: [PATCH v2][5.10, 5.15, 6.1][1/1] hrtimer: Ignore slack time for RT tasks in schedule_hrtimeout_range()
-Date: Tue, 20 Feb 2024 13:34:03 +0100
-Message-Id: <20240220123403.85403-2-felix.moessbauer@siemens.com>
-In-Reply-To: <20240220123403.85403-1-felix.moessbauer@siemens.com>
-References: <20240220123403.85403-1-felix.moessbauer@siemens.com>
+	s=arc-20240116; t=1708432856; c=relaxed/simple;
+	bh=ackbCV81XyEbD7DZSK1QNJr1u7ZHUTQZH151yHDIdOU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pL7tv+nSwTqIg7zqWQr5kiyO41X6tvqCjXSPoS5D2KlKyWBAUGiLSlJgXfJVsa1h3I3kCdnxP6TrKaWdB24UwM8BEjXCYMZep5P7xAUohLG6iEMeMv3xT1I8QdZk7TidroNGP7K+X2zOfPKzttbZSSoBJy5OkGv/wXMQujxBqtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=JOd+OAw0; arc=none smtp.client-ip=212.227.17.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de; s=s29768273;
+	t=1708432825; x=1709037625; i=markus.elfring@web.de;
+	bh=ackbCV81XyEbD7DZSK1QNJr1u7ZHUTQZH151yHDIdOU=;
+	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
+	 In-Reply-To;
+	b=JOd+OAw0np9qZK8WoR7hHNlYpGDTcxGvCWObU9SA4t2cVmL7AI2TrdyjeBf6lDzR
+	 WJN1gDbnHjaKOZu6G21ZbmSAan/w8kUcPkx/eC5Si65Q/RH06xYJLdrKVh3/3Ddr1
+	 BL2SyMc3/Qsnm6PZz0mInnCFyavQgiUmeuvmbi11Dm+WJVt42OxOXrc2aG7v56lUn
+	 bkvBlexEk7gYMuiirEpHIfemcqLFLLs7GES60iTe/HDkxO5L4A+TxXJZXLfJb/kds
+	 AiWpCb15g+6yIGc1gRJKVbRmXqmUIafWYiQgBNH8I9N9Mr6o4/GT3mX4lxJ7RS/A6
+	 Q4ZGYuz57TBtyxdZcQ==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.80.95]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MHmm4-1rgH1i3TOA-00EwPI; Tue, 20
+ Feb 2024 13:40:24 +0100
+Message-ID: <1bb22d53-2bfb-4fa7-9c4a-f49d979207ab@web.de>
+Date: Tue, 20 Feb 2024 13:40:20 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Flowmailer-Platform: Siemens
-Feedback-ID: 519:519-1321639:519-21489:flowmailer
+User-Agent: Mozilla Thunderbird
+Subject: Re: [3/6] soc: qcom: pmic_glink_altmode: fix drm bridge
+ use-after-free
+Content-Language: en-GB
+To: Johan Hovold <johan@kernel.org>, freedreno@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, linux-phy@lists.infradead.org,
+ linux-arm-msm@vger.kernel.org, kernel-janitors@vger.kernel.org
+Cc: Johan Hovold <johan+linaro@kernel.org>,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ Bjorn Andersson <andersson@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
+ David Airlie <airlied@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>, Vinod Koul <vkoul@kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>,
+ Abhinav Kumar <quic_abhinavk@quicinc.com>,
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>, Jonas Karlman <jonas@kwiboo.se>,
+ Kishon Vijay Abraham I <kishon@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>,
+ Kuogee Hsieh <quic_khsieh@quicinc.com>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Rob Clark <robdclark@gmail.com>, stable@vger.kernel.org
+References: <20240217150228.5788-4-johan+linaro@kernel.org>
+ <9ff4221a-7083-4cb1-abde-1690f655da8d@web.de>
+ <ZdSMg63b4ZGYhUXO@hovoldconsulting.com>
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <ZdSMg63b4ZGYhUXO@hovoldconsulting.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:r+CHavyKhh73xuHY9wsEjvvyvp2FPjpfnjTyBrrjxbHa+zRr3E/
+ RiJIddQORueuMddXYwNvCYF5KhgIjz1im8dJ4PZG7yiEWHxHhVtMSsEPFLOnMsRTEeoGsKi
+ jCIVsHUoJPtUqrgmgi5k4whlTBRlG5mnoagRQKtuA6NqjfX8pOXeBLTy6jSgfZogRNfRX/k
+ cg/xF0tVkCFkH1W1ooyhg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:KtuAdgiy1ik=;y4ys3n9cM6RoSSuIK93yPw73zol
+ pSyhNa3wJKuiPsj75tLL00VnROfe+KzG2al6/Rhvs4lZPTcXW6jz+ErDf4UVuWVC0sA5Y6nz+
+ pzN07m7oQsgW+/FxGSD6px1OGNBQKMfFxFdq8z+/Eol/LzEDM3VHAqr0j6ViiL2IQpcODdflP
+ On0tDmCes0Ju0RLWrvsKwaNXmbiZgnFu6N3LuqAXxbd6JGOzYuv/HJxLN97eiGUxcHXqaTpOb
+ VulkDO0u7Vh9Z2ShIImU02TNC/nIhZOJaNGjQtTCB74eH+JVb13UPhGePUZnLUWKv7UWySMIK
+ 7mwMSVZDpl2cR4mKbcZ0Njhe8hk+fxsArS2guI5gL2aYT6bvY1fLdX62jl16+aXiJyzNphrh3
+ zkRkPuTCfDcG0ZBAyL/MWkB08q0TijBJK/zmjUd0der0ZEO0thUrakZYQHeWbKnePiHqlyTEy
+ tDDw9+w26IDa1M7uR8NVNK6BmjcMX5bMs0GEhvAcwQTQY8d5q/ieLyS6PjBDl4R8vX1opftl9
+ 8RoBXj5YonoO7WuTe6XP+j1EIkEec4VoFDGcCNtaAofjPIF563IIp6irkdWRRhU5LVNcacEdc
+ yDt+lLKGdozKR5BG1JOdo32sSwYgPkSCvzvaYw2TiOP/NhID60aI10TcHXqGSw+XgAs9WLXlR
+ t/NwYz6uDXRjrVQFBecPp0omdQzV+gtMSJv64VIWfqp+5tIkMv/5ipi90aOSyF9jlQDpZiH1U
+ Emzes10uty02+3WM4bTqj5Hr9rJ/pskEz6Nb2j+B3uazjL7FdD9BIt+eD4HBJLOz9n+NStUvs
+ sSiU89ntkAXEjBi6FraSIxizVT96J8+lcnHZdWbg+W4fM=
 
-From: Davidlohr Bueso <dave@stgolabs.net>
+>> The function call =E2=80=9Cfwnode_handle_put(fwnode)=E2=80=9D is used i=
+n multiple if branches.
+>> https://elixir.bootlin.com/linux/v6.8-rc5/source/drivers/soc/qcom/pmic_=
+glink_altmode.c#L435
+>>
+>> I suggest to add a jump target so that a bit of exception handling
+>> can be better reused at the end of this function implementation.
+>
+> Markus, as people have told you repeatedly, just stop with these comment=
+s.
 
-commit 0c52310f260014d95c1310364379772cb74cf82d upstream.
+How does such a response fit to advices from another known information sou=
+rces?
 
-While in theory the timer can be triggered before expires + delta, for the
-cases of RT tasks they really have no business giving any lenience for
-extra slack time, so override any passed value by the user and always use
-zero for schedule_hrtimeout_range() calls. Furthermore, this is similar to
-what the nanosleep(2) family already does with current->timer_slack_ns.
+Section =E2=80=9C7) Centralized exiting of functions=E2=80=9D
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/coding-style.rst?h=3Dv6.8-rc5#n526
 
-Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20230123173206.6764-3-dave@stgolabs.net
----
- kernel/time/hrtimer.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index ede09dda36e9..0aebb88f1c11 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -2161,7 +2161,7 @@ void __init hrtimers_init(void)
- /**
-  * schedule_hrtimeout_range_clock - sleep until timeout
-  * @expires:	timeout value (ktime_t)
-- * @delta:	slack in expires timeout (ktime_t)
-+ * @delta:	slack in expires timeout (ktime_t) for SCHED_OTHER tasks
-  * @mode:	timer mode
-  * @clock_id:	timer clock to be used
-  */
-@@ -2188,6 +2188,13 @@ schedule_hrtimeout_range_clock(ktime_t *expires, u64 delta,
- 		return -EINTR;
- 	}
- 
-+	/*
-+	 * Override any slack passed by the user if under
-+	 * rt contraints.
-+	 */
-+	if (rt_task(current))
-+		delta = 0;
-+
- 	hrtimer_init_sleeper_on_stack(&t, clock_id, mode);
- 	hrtimer_set_expires_range_ns(&t.timer, *expires, delta);
- 	hrtimer_sleeper_start_expires(&t, mode);
-@@ -2207,7 +2214,7 @@ EXPORT_SYMBOL_GPL(schedule_hrtimeout_range_clock);
- /**
-  * schedule_hrtimeout_range - sleep until timeout
-  * @expires:	timeout value (ktime_t)
-- * @delta:	slack in expires timeout (ktime_t)
-+ * @delta:	slack in expires timeout (ktime_t) for SCHED_OTHER tasks
-  * @mode:	timer mode
-  *
-  * Make the current task sleep until the given expiry time has
-@@ -2215,7 +2222,8 @@ EXPORT_SYMBOL_GPL(schedule_hrtimeout_range_clock);
-  * the current task state has been set (see set_current_state()).
-  *
-  * The @delta argument gives the kernel the freedom to schedule the
-- * actual wakeup to a time that is both power and performance friendly.
-+ * actual wakeup to a time that is both power and performance friendly
-+ * for regular (non RT/DL) tasks.
-  * The kernel give the normal best effort behavior for "@expires+@delta",
-  * but may decide to fire the timer earlier, but no earlier than @expires.
-  *
--- 
-2.39.2
+> You're not helping, in fact, you are actively harmful to the
+> kernel community as you are wasting people's time.
 
+The proposed source code transformation can eventually be (automatically) =
+achieved
+also with help of improved development tools.
+
+Regards,
+Markus
 
