@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-21484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D947485C91C
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:29:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 709EE85C768
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:12:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F4E81F22A0D
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:29:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A2B2282638
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:12:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73964151CFE;
-	Tue, 20 Feb 2024 21:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20637151CF6;
+	Tue, 20 Feb 2024 21:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G+ks8V9p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FjydxKdh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3198C14F9C8;
-	Tue, 20 Feb 2024 21:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1408151CEB;
+	Tue, 20 Feb 2024 21:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464563; cv=none; b=e7RRV8ayMDv8yzC6Qg0Z2XX0OtbuDqRys+Y8zVlAuqZWU0EGMG5as5jkA4aheFLZwgw1y5d6ib69I/O2kAKdBibUIuIeBE6ta9QEvBSdt0znigf5+yendsdmbvkjsBSEySIXeiiCBGfqfn6UW8TOyQRdJdsUouKVckQUrckycYY=
+	t=1708463545; cv=none; b=irKgiI+9RdR/f6ID9tHLsqCnhFWqYPwz7DNw1327jjpoCkS80Q4TbhLmXoEZk3j3M8lbQr5qxq/6/2rbHeL2COcehbRkDwSVSyX0zMLP02SaH8AS4Gj5s2rbcsXfECzOh7zfnRIjpRMwTl7X9eICGpioqS5jgb3shqHt/OJMETc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464563; c=relaxed/simple;
-	bh=a6KueRRi9IwNHnCU1fJ9OxEu4NmRgRXJCr2FROHOeW0=;
+	s=arc-20240116; t=1708463545; c=relaxed/simple;
+	bh=yNVrIhcoXyGKnfYhglWKyDFHcDSffh75CA2j7rXmWvw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sqhp/8d+QZkhtHVKHfOmpsvRpXbU1SvRfvx7jRI7ql/SRH9RAZj6bHqk9eoRtDLDav/2l1aQxIBbX9A9zcawDtR77Z+UJNBqcJhs9/6d7U1tuqBw9NONzzVZoGZK+UDnLh8T2TAD56x+JWJKmWWK9b2ypo2K1OLFH/5XFm0fTU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G+ks8V9p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A566FC433F1;
-	Tue, 20 Feb 2024 21:29:22 +0000 (UTC)
+	 MIME-Version; b=amfHI94lwfUV9hnitZ3nsHaYHYpWHrLsFAN3N2NJwioiw6uP291RtvE1VXVXePtp6koMiSyDYexj8HUvCXCThvdhujv+Y3kiuCftiCJrhobvPIOMiuL6JyEe5GpHMyaw7LNIVBPCN8KCZSiSpFSkWY+fDp3kic/cEBzyTNXqOAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FjydxKdh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55C8EC433F1;
+	Tue, 20 Feb 2024 21:12:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464563;
-	bh=a6KueRRi9IwNHnCU1fJ9OxEu4NmRgRXJCr2FROHOeW0=;
+	s=korg; t=1708463545;
+	bh=yNVrIhcoXyGKnfYhglWKyDFHcDSffh75CA2j7rXmWvw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G+ks8V9pIEHtie89ZVyAKYyw3Ofk9JQ6dntAyuTHhrNAmQxRKWtShdEq+xZG4kOWr
-	 3s4ldkBVz7DrbGYke74YrmjwAlxo1IRfTMSKOO5XotOQdRLQCNBPfES0MwK10ciNAP
-	 XhwF5AQQqyWyHovP3ft7JB9R/wFqXAWXlh9HmwwY=
+	b=FjydxKdhuVCrHrZJ4wOHAC7blNwlpPC7qMX2j/AhQGdcZEC4MC4VEkUCbFA6JeRIS
+	 j+bZA2uMNygraw2UBL4zlzm1gevFsyZWHOMxoRZ2McTQQnvwoCsqG+giPyubiDQ8pK
+	 g12asrCGVnHf7dtsWjUvxekKwzT67WwEGR0XrDTs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prashant Batra <prbatra.mail@gmail.com>,
-	Magnus Karlsson <magnus.karlsson@intel.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 033/309] bonding: do not report NETDEV_XDP_ACT_XSK_ZEROCOPY
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 076/331] iio: hid-sensor-als: Return 0 for HID_USAGE_SENSOR_TIME_TIMESTAMP
 Date: Tue, 20 Feb 2024 21:53:12 +0100
-Message-ID: <20240220205634.222938326@linuxfoundation.org>
+Message-ID: <20240220205639.971956645@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +60,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Magnus Karlsson <magnus.karlsson@intel.com>
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-[ Upstream commit 9b0ed890ac2ae233efd8b27d11aee28a19437bb8 ]
+commit 621c6257128149e45b36ffb973a01c3f3461b893 upstream.
 
-Do not report the XDP capability NETDEV_XDP_ACT_XSK_ZEROCOPY as the
-bonding driver does not support XDP and AF_XDP in zero-copy mode even
-if the real NIC drivers do.
+When als_capture_sample() is called with usage ID
+HID_USAGE_SENSOR_TIME_TIMESTAMP, return 0. The HID sensor core ignores
+the return value for capture_sample() callback, so return value doesn't
+make difference. But correct the return value to return success instead
+of -EINVAL.
 
-Note that the driver used to report everything as supported before a
-device was bonded. Instead of just masking out the zero-copy support
-from this, have the driver report that no XDP feature is supported
-until a real device is bonded. This seems to be more truthful as it is
-the real drivers that decide what XDP features are supported.
-
-Fixes: cb9e6e584d58 ("bonding: add xdp_features support")
-Reported-by: Prashant Batra <prbatra.mail@gmail.com>
-Link: https://lore.kernel.org/all/CAJ8uoz2ieZCopgqTvQ9ZY6xQgTbujmC6XkMTamhp68O-h_-rLg@mail.gmail.com/T/
-Signed-off-by: Magnus Karlsson <magnus.karlsson@intel.com>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Link: https://lore.kernel.org/r/20240207084737.20890-1-magnus.karlsson@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Link: https://lore.kernel.org/r/20240204125617.2635574-1-srinivas.pandruvada@linux.intel.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/bonding/bond_main.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/iio/light/hid-sensor-als.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 8e6cc0e133b7..6cf7f364704e 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -1819,6 +1819,8 @@ void bond_xdp_set_features(struct net_device *bond_dev)
- 	bond_for_each_slave(bond, slave, iter)
- 		val &= slave->dev->xdp_features;
- 
-+	val &= ~NETDEV_XDP_ACT_XSK_ZEROCOPY;
-+
- 	xdp_set_features_flag(bond_dev, val);
- }
- 
-@@ -5934,9 +5936,6 @@ void bond_setup(struct net_device *bond_dev)
- 	if (BOND_MODE(bond) == BOND_MODE_ACTIVEBACKUP)
- 		bond_dev->features |= BOND_XFRM_FEATURES;
- #endif /* CONFIG_XFRM_OFFLOAD */
--
--	if (bond_xdp_check(bond))
--		bond_dev->xdp_features = NETDEV_XDP_ACT_MASK;
- }
- 
- /* Destroy a bonding device.
--- 
-2.43.0
-
+--- a/drivers/iio/light/hid-sensor-als.c
++++ b/drivers/iio/light/hid-sensor-als.c
+@@ -226,6 +226,7 @@ static int als_capture_sample(struct hid
+ 	case HID_USAGE_SENSOR_TIME_TIMESTAMP:
+ 		als_state->timestamp = hid_sensor_convert_timestamp(&als_state->common_attributes,
+ 								    *(s64 *)raw_data);
++		ret = 0;
+ 		break;
+ 	default:
+ 		break;
 
 
 
