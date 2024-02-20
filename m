@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-21697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBE0785C9F6
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:40:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E30A85C8C1
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:25:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 469651F215C7
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:40:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5E6BB2196A
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:25:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDCF4151CDC;
-	Tue, 20 Feb 2024 21:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD1B3151CCC;
+	Tue, 20 Feb 2024 21:25:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="12hKZdSh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qKKAxA3i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D084612D7;
-	Tue, 20 Feb 2024 21:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2D714A4E6;
+	Tue, 20 Feb 2024 21:25:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708465227; cv=none; b=l61azpdvinbgIAtHQ7D9TASTGOaRhJk6BkKxrM3ngtc110mDbvyT6lHaR2oII9OZvZbzWBOuX41eGZ0xNFeTKSt+7Qla4FRghpr7zq+NQNoGFG3+43bNHe2f6f6uNRjYU56sEzSrRRQ8Gx9B1z9EHjkct2sTn1uHH/Pqm8rXrSg=
+	t=1708464314; cv=none; b=ixrBqkcrZ83PCtKHRQ4W9ErQFXYMAxRFoxL2I+K6RUIKyDTZ4P/VIK1X2rIzGHxFmdjNnlAXvqUcm5Ky2E6LJTqlHV9RDzQBhl5WLOAytk79Lq66UYmE8XtZT64T0rUieVM5o10TztdSiU64y9H9446YkZzI180E+K/7jtJ4iCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708465227; c=relaxed/simple;
-	bh=eEXrEmb6MGlyxmk4MOOpaaMb1ol5UQmNrrbKXWEq1YM=;
+	s=arc-20240116; t=1708464314; c=relaxed/simple;
+	bh=NmfOsQ/IJncxfuSu2p2W1//S753amNl+Qzdcwgze/5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s95QRZaQC/p2JujE6VniLJyTGeu3jvYGAWECNVY7KC+2roFZo7qDSaaiE8iD/yiCBgwPJclInt0Beufj+000M4j166NVNC3qMkDGGz7goPId3pjepDgy3wpdrTxavHJ25z5ZOUpPP8B6Sn6rE5Hy3YvEjoOnd+g1N1hm/HwVdPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=12hKZdSh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0325C433C7;
-	Tue, 20 Feb 2024 21:40:26 +0000 (UTC)
+	 MIME-Version; b=s5XU0lRJ5z2/LDZlXM6QJ5dT8IA8ddcX422cwDi+++X7BJb+gh9PPkRVazDhpveNwk9zoueIYqlzJ4NRL/HmidpUimb/tz37+w++PXxXYFpvuIvCaRLV23/TABTeGSp4yLBq4hY5G8zyunciCkZvaZiiHRcdviLs/zfyCLYNxmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qKKAxA3i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE527C433C7;
+	Tue, 20 Feb 2024 21:25:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708465227;
-	bh=eEXrEmb6MGlyxmk4MOOpaaMb1ol5UQmNrrbKXWEq1YM=;
+	s=korg; t=1708464314;
+	bh=NmfOsQ/IJncxfuSu2p2W1//S753amNl+Qzdcwgze/5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=12hKZdShyhkZNeGEWLIkt/ghWf/EjiZ15yKpkP2iecUJb7NuYhNl+lq2ASAJmFmYt
-	 AGxRqwFrVTc8S7roemrVIWfwVIj9lfkVNJoDJGch6fVMo9TlWsGm57UXyVJ2zTGmB5
-	 D4gaUHb4AcOGiXNGnladxeVsEtpGmTqNd8sAYDCI=
+	b=qKKAxA3ij3xu1XB6e7ltMNyoED9jKIRsY8mMJF4XnVPzc4cI+deznKXSgq6Uw/wzV
+	 wbsXl+T2bkoShyK/MxYPZq+MeaTXFKx+9bTydAHrSxmQiWSoQXr9XvSRu6wIFnhm96
+	 9djPu11sQOnIeAoI8AMTtzTP3BbJI0cYh/K6oV1A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Donald Zickus <dzickus@redhat.com>,
-	Daniel Bristot de Oliveira <bristot@kernel.org>
-Subject: [PATCH 6.7 276/309] tools/rtla: Fix uninitialized bucket/data->bucket_size warning
+	Ard Biesheuvel <ardb@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	"H. Peter Anvin (Intel)" <hpa@zytor.com>
+Subject: [PATCH 6.6 319/331] x86/boot: Remove the bugger off message
 Date: Tue, 20 Feb 2024 21:57:15 +0100
-Message-ID: <20240220205641.759093747@linuxfoundation.org>
+Message-ID: <20240220205648.242683257@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,112 +62,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Bristot de Oliveira <bristot@kernel.org>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit 64dc40f7523369912d7adb22c8cb655f71610505 upstream.
+commit 768171d7ebbce005210e1cf8456f043304805c15 upstream.
 
-When compiling rtla with clang, I am getting the following warnings:
+Ancient (pre-2003) x86 kernels could boot from a floppy disk straight from
+the BIOS, using a small real mode boot stub at the start of the image
+where the BIOS would expect the boot record (or boot block) to appear.
 
-$ make HOSTCC=clang CC=clang LLVM_IAS=1
+Due to its limitations (kernel size < 1 MiB, no support for IDE, USB or
+El Torito floppy emulation), this support was dropped, and a Linux aware
+bootloader is now always required to boot the kernel from a legacy BIOS.
 
-[..]
-clang -O -g -DVERSION=\"6.8.0-rc3\" -flto=auto -fexceptions
-	-fstack-protector-strong -fasynchronous-unwind-tables
-	-fstack-clash-protection  -Wall -Werror=format-security
-	-Wp,-D_FORTIFY_SOURCE=2 -Wp,-D_GLIBCXX_ASSERTIONS
-	$(pkg-config --cflags libtracefs)
-	-c -o src/osnoise_hist.o src/osnoise_hist.c
-src/osnoise_hist.c:138:6: warning: variable 'bucket' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
-  138 |         if (data->bucket_size)
-      |             ^~~~~~~~~~~~~~~~~
-src/osnoise_hist.c:149:6: note: uninitialized use occurs here
-  149 |         if (bucket < entries)
-      |             ^~~~~~
-src/osnoise_hist.c:138:2: note: remove the 'if' if its condition is always true
-  138 |         if (data->bucket_size)
-      |         ^~~~~~~~~~~~~~~~~~~~~~
-  139 |                 bucket = duration / data->bucket_size;
-src/osnoise_hist.c:132:12: note: initialize the variable 'bucket' to silence this warning
-  132 |         int bucket;
-      |                   ^
-      |                    = 0
-1 warning generated.
+To smoothen this transition, the boot stub was not removed entirely, but
+replaced with one that just prints an error message telling the user to
+install a bootloader.
 
-[...]
+As it is unlikely that anyone doing direct floppy boot with such an
+ancient kernel is going to upgrade to v6.5+ and expect that this boot
+method still works, printing this message is kind of pointless, and so
+it should be possible to remove the logic that emits it.
 
-clang -O -g -DVERSION=\"6.8.0-rc3\" -flto=auto -fexceptions
-	-fstack-protector-strong -fasynchronous-unwind-tables
-	-fstack-clash-protection  -Wall -Werror=format-security
-	-Wp,-D_FORTIFY_SOURCE=2 -Wp,-D_GLIBCXX_ASSERTIONS
-	$(pkg-config --cflags libtracefs)
-	-c -o src/timerlat_hist.o src/timerlat_hist.c
-src/timerlat_hist.c:181:6: warning: variable 'bucket' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
-  181 |         if (data->bucket_size)
-      |             ^~~~~~~~~~~~~~~~~
-src/timerlat_hist.c:204:6: note: uninitialized use occurs here
-  204 |         if (bucket < entries)
-      |             ^~~~~~
-src/timerlat_hist.c:181:2: note: remove the 'if' if its condition is always true
-  181 |         if (data->bucket_size)
-      |         ^~~~~~~~~~~~~~~~~~~~~~
-  182 |                 bucket = latency / data->bucket_size;
-src/timerlat_hist.c:175:12: note: initialize the variable 'bucket' to silence this warning
-  175 |         int bucket;
-      |                   ^
-      |                    = 0
-1 warning generated.
+Let's free up this space so it can be used to expand the PE header in a
+subsequent patch.
 
-This is a legit warning, but data->bucket_size is always > 0 (see
-timerlat_hist_parse_args()), so the if is not necessary.
-
-Remove the unneeded if (data->bucket_size) to avoid the warning.
-
-Link: https://lkml.kernel.org/r/6e1b1665cd99042ae705b3e0fc410858c4c42346.1707217097.git.bristot@kernel.org
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Bill Wendling <morbo@google.com>
-Cc: Justin Stitt <justinstitt@google.com>
-Cc: Donald Zickus <dzickus@redhat.com>
-Fixes: 1eeb6328e8b3 ("rtla/timerlat: Add timerlat hist mode")
-Fixes: 829a6c0b5698 ("rtla/osnoise: Add the hist mode")
-Signed-off-by: Daniel Bristot de Oliveira <bristot@kernel.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+Link: https://lore.kernel.org/r/20230912090051.4014114-21-ardb@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/tracing/rtla/src/osnoise_hist.c  |    3 +--
- tools/tracing/rtla/src/timerlat_hist.c |    3 +--
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ arch/x86/boot/header.S |   49 -------------------------------------------------
+ arch/x86/boot/setup.ld |    7 ++++---
+ 2 files changed, 4 insertions(+), 52 deletions(-)
 
---- a/tools/tracing/rtla/src/osnoise_hist.c
-+++ b/tools/tracing/rtla/src/osnoise_hist.c
-@@ -135,8 +135,7 @@ static void osnoise_hist_update_multiple
- 	if (params->output_divisor)
- 		duration = duration / params->output_divisor;
+--- a/arch/x86/boot/header.S
++++ b/arch/x86/boot/header.S
+@@ -38,64 +38,15 @@ SYSSEG		= 0x1000		/* historical load add
  
--	if (data->bucket_size)
--		bucket = duration / data->bucket_size;
-+	bucket = duration / data->bucket_size;
+ 	.code16
+ 	.section ".bstext", "ax"
+-
+-	.global bootsect_start
+-bootsect_start:
+ #ifdef CONFIG_EFI_STUB
+ 	# "MZ", MS-DOS header
+ 	.word	MZ_MAGIC
+-#endif
+-
+-	# Normalize the start address
+-	ljmp	$BOOTSEG, $start2
+-
+-start2:
+-	movw	%cs, %ax
+-	movw	%ax, %ds
+-	movw	%ax, %es
+-	movw	%ax, %ss
+-	xorw	%sp, %sp
+-	sti
+-	cld
+-
+-	movw	$bugger_off_msg, %si
+-
+-msg_loop:
+-	lodsb
+-	andb	%al, %al
+-	jz	bs_die
+-	movb	$0xe, %ah
+-	movw	$7, %bx
+-	int	$0x10
+-	jmp	msg_loop
+-
+-bs_die:
+-	# Allow the user to press a key, then reboot
+-	xorw	%ax, %ax
+-	int	$0x16
+-	int	$0x19
+-
+-	# int 0x19 should never return.  In case it does anyway,
+-	# invoke the BIOS reset code...
+-	ljmp	$0xf000,$0xfff0
+-
+-#ifdef CONFIG_EFI_STUB
+ 	.org	0x38
+ 	#
+ 	# Offset to the PE header.
+ 	#
+ 	.long	LINUX_PE_MAGIC
+ 	.long	pe_header
+-#endif /* CONFIG_EFI_STUB */
+-
+-	.section ".bsdata", "a"
+-bugger_off_msg:
+-	.ascii	"Use a boot loader.\r\n"
+-	.ascii	"\n"
+-	.ascii	"Remove disk and press any key to reboot...\r\n"
+-	.byte	0
+-
+-#ifdef CONFIG_EFI_STUB
+ pe_header:
+ 	.long	PE_MAGIC
  
- 	total_duration = duration * count;
+--- a/arch/x86/boot/setup.ld
++++ b/arch/x86/boot/setup.ld
+@@ -10,10 +10,11 @@ ENTRY(_start)
+ SECTIONS
+ {
+ 	. = 0;
+-	.bstext		: { *(.bstext) }
+-	.bsdata		: { *(.bsdata) }
++	.bstext	: {
++		*(.bstext)
++		. = 495;
++	} =0xffffffff
  
---- a/tools/tracing/rtla/src/timerlat_hist.c
-+++ b/tools/tracing/rtla/src/timerlat_hist.c
-@@ -178,8 +178,7 @@ timerlat_hist_update(struct osnoise_tool
- 	if (params->output_divisor)
- 		latency = latency / params->output_divisor;
- 
--	if (data->bucket_size)
--		bucket = latency / data->bucket_size;
-+	bucket = latency / data->bucket_size;
- 
- 	if (!context) {
- 		hist = data->hist[cpu].irq;
+-	. = 495;
+ 	.header		: { *(.header) }
+ 	.entrytext	: { *(.entrytext) }
+ 	.inittext	: { *(.inittext) }
 
 
 
