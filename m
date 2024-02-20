@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-21368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA09585C893
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:23:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AC3985C9CF
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:38:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2D71284D3A
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:23:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF607B22B97
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:38:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55FF6151CD9;
-	Tue, 20 Feb 2024 21:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F3FE152DE7;
+	Tue, 20 Feb 2024 21:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z3FeGCkf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e2xrha5W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 127992DF9F;
-	Tue, 20 Feb 2024 21:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0923151CFF;
+	Tue, 20 Feb 2024 21:38:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464204; cv=none; b=t1/her1aswR92v52aMjwbwTRKKAqzNyMQmf3VLtYUwNFyjAUF4gM/1v209NbwdQ2KAYvKzmSobnrY6TmTLZrelUHTy+/0pxvMFCn5rwxNR58pSzidmqLbf5JVbd6rrf0vkWJQUtRQQ0yzrMBbkaxxj8FIj7lnFH3SwUdAIYHSXc=
+	t=1708465113; cv=none; b=tEIozFNN6TGBLLsJirUIFBmv/lJKjik3+pX32yBYyFB+yDtehBmXzCFJ/TSnkGU5LLI7QfMC5YZvGn1Mtcv6eCt0Ux9A9bwgFTuW1ssTjA6nq8gZ1TRbtEqgx3xCWD3UPxlcCM5Ai1oJCYRAh5UKi6JSnVvB0p+7EEZnWVQAjdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464204; c=relaxed/simple;
-	bh=G/Mw08yD+sPd0HO6SHkgSHDPfMieG3qUvb1dO01sZSE=;
+	s=arc-20240116; t=1708465113; c=relaxed/simple;
+	bh=UIv+i5L7zkHUGcvLUPwrOGQYjwOXByTXbVeXeLUFE6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JTiSx+IkQqhbXIbTmsNs+kv1Zyu4S+5Gwn9kFpchV2K5gpf68i4uAqIoQ22Z4aghBZeGzXz/pxJKsTZc4o1VFilf5JwezPD30Ucd6LWLDMwfn7spD/Fqcm6oPuXV5Q7qvOUXAlHUNPpAWFuhkkk6ABJtebvyH3F6DfVuODtfBWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z3FeGCkf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 871A3C433C7;
-	Tue, 20 Feb 2024 21:23:23 +0000 (UTC)
+	 MIME-Version; b=l/hXNLDajCBlialU5GDSyn60n3ijw3akqaT3SsNd69bmfZs+EJZVCad9Ka2xccuY3rsSOhNw88d4k35fYijfb5M9ICjpFxZTd10D1iuCZi/p18N1zHD/cTbz/vaJUUr5MXcYbVgxpF1QOeXH2gxrii90uAbXcjM1z+wMNjmFO7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e2xrha5W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44AB3C433C7;
+	Tue, 20 Feb 2024 21:38:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464203;
-	bh=G/Mw08yD+sPd0HO6SHkgSHDPfMieG3qUvb1dO01sZSE=;
+	s=korg; t=1708465113;
+	bh=UIv+i5L7zkHUGcvLUPwrOGQYjwOXByTXbVeXeLUFE6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z3FeGCkfPYb0IJ0sLVPk73gVV46A6M/W9lz0bTJRjW5Df8rrFwyObzwxww1rabPOQ
-	 yqBwQmaOeYG1+kvis++wkRwx3nmtyanESoCt6BZAyiTcmapqN8PqCUD0aKtSVCCp1z
-	 CNaGgTRuSfSV6eV6bdYLY0D8xvw38qEwZuJsgdew=
+	b=e2xrha5WkUBTY09UoQzrYc8cT1SE7HOaAX8MbVgmwAVTLCa+KgytT28Apthc8gBem
+	 n4jIE9xRxX3mvVx9adIqh73rGoL7xBbRoYBuJ0lzxvLNsjAxdDaXeLpSBlSDIVu3Jh
+	 6ox6IIuV2bnaEXrtfkdv9KBF4jKCjiXEvyVWpbwk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Josef Bacik <josef@toxicpanda.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 284/331] eventfs: Move taking of inode_lock into dcache_dir_open_wrapper()
+	bo liu <bo.liu@senarytech.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.7 241/309] ALSA: hda/conexant: Add quirk for SWS JS201D
 Date: Tue, 20 Feb 2024 21:56:40 +0100
-Message-ID: <20240220205646.895397324@linuxfoundation.org>
+Message-ID: <20240220205640.706922886@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +61,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+From: bo liu <bo.liu@senarytech.com>
 
-commit bcae32c5632fc0a0dbce46fa731cd23403117e66 upstream.
+commit 4639c5021029d49fd2f97fa8d74731f167f98919 upstream.
 
-The both create_file_dentry() and create_dir_dentry() takes a boolean
-parameter "lookup", as on lookup the inode_lock should already be taken,
-but for dcache_dir_open_wrapper() it is not taken.
+The SWS JS201D need a different pinconfig from windows driver.
+Add a quirk to use a specific pinconfig to SWS JS201D.
 
-There's no reason that the dcache_dir_open_wrapper() can't take the
-inode_lock before calling these functions. In fact, it's better if it
-does, as the lock can be held throughout both directory and file
-creations.
-
-This also simplifies the code, and possibly prevents unexpected race
-conditions when the lock is released.
-
-Link: https://lkml.kernel.org/r/20231121231112.528544825@goodmis.org
-
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Fixes: 5790b1fb3d672 ("eventfs: Remove eventfs_file and just use eventfs_inode")
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: bo liu <bo.liu@senarytech.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240205013802.51907-1-bo.liu@senarytech.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/tracefs/event_inode.c |   16 ++--------------
- 1 file changed, 2 insertions(+), 14 deletions(-)
+ sound/pci/hda/patch_conexant.c |   18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -347,15 +347,8 @@ create_file_dentry(struct eventfs_inode
+--- a/sound/pci/hda/patch_conexant.c
++++ b/sound/pci/hda/patch_conexant.c
+@@ -344,6 +344,7 @@ enum {
+ 	CXT_FIXUP_HP_ZBOOK_MUTE_LED,
+ 	CXT_FIXUP_HEADSET_MIC,
+ 	CXT_FIXUP_HP_MIC_NO_PRESENCE,
++	CXT_PINCFG_SWS_JS201D,
+ };
  
- 	mutex_unlock(&eventfs_mutex);
+ /* for hda_fixup_thinkpad_acpi() */
+@@ -841,6 +842,17 @@ static const struct hda_pintbl cxt_pincf
+ 	{}
+ };
  
--	/* The lookup already has the parent->d_inode locked */
--	if (!lookup)
--		inode_lock(parent->d_inode);
--
- 	dentry = create_file(name, mode, attr, parent, data, fops);
++/* SuoWoSi/South-holding JS201D with sn6140 */
++static const struct hda_pintbl cxt_pincfg_sws_js201d[] = {
++	{ 0x16, 0x03211040 }, /* hp out */
++	{ 0x17, 0x91170110 }, /* SPK/Class_D */
++	{ 0x18, 0x95a70130 }, /* Internal mic */
++	{ 0x19, 0x03a11020 }, /* Headset Mic */
++	{ 0x1a, 0x40f001f0 }, /* Not used */
++	{ 0x21, 0x40f001f0 }, /* Not used */
++	{}
++};
++
+ static const struct hda_fixup cxt_fixups[] = {
+ 	[CXT_PINCFG_LENOVO_X200] = {
+ 		.type = HDA_FIXUP_PINS,
+@@ -996,6 +1008,10 @@ static const struct hda_fixup cxt_fixups
+ 		.chained = true,
+ 		.chain_id = CXT_FIXUP_HEADSET_MIC,
+ 	},
++	[CXT_PINCFG_SWS_JS201D] = {
++		.type = HDA_FIXUP_PINS,
++		.v.pins = cxt_pincfg_sws_js201d,
++	},
+ };
  
--	if (!lookup)
--		inode_unlock(parent->d_inode);
--
- 	mutex_lock(&eventfs_mutex);
- 
- 	if (IS_ERR_OR_NULL(dentry)) {
-@@ -453,15 +446,8 @@ create_dir_dentry(struct eventfs_inode *
- 	}
- 	mutex_unlock(&eventfs_mutex);
- 
--	/* The lookup already has the parent->d_inode locked */
--	if (!lookup)
--		inode_lock(parent->d_inode);
--
- 	dentry = create_dir(ei, parent);
- 
--	if (!lookup)
--		inode_unlock(parent->d_inode);
--
- 	mutex_lock(&eventfs_mutex);
- 
- 	if (IS_ERR_OR_NULL(dentry) && !ei->is_freed) {
-@@ -693,6 +679,7 @@ static int dcache_dir_open_wrapper(struc
- 		return -ENOMEM;
- 	}
- 
-+	inode_lock(parent->d_inode);
- 	list_for_each_entry_srcu(ei_child, &ei->children, list,
- 				 srcu_read_lock_held(&eventfs_srcu)) {
- 		d = create_dir_dentry(ei, ei_child, parent, false);
-@@ -725,6 +712,7 @@ static int dcache_dir_open_wrapper(struc
- 			cnt++;
- 		}
- 	}
-+	inode_unlock(parent->d_inode);
- 	srcu_read_unlock(&eventfs_srcu, idx);
- 	ret = dcache_dir_open(inode, file);
+ static const struct snd_pci_quirk cxt5045_fixups[] = {
+@@ -1069,6 +1085,7 @@ static const struct snd_pci_quirk cxt506
+ 	SND_PCI_QUIRK(0x103c, 0x8457, "HP Z2 G4 mini", CXT_FIXUP_HP_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x103c, 0x8458, "HP Z2 G4 mini premium", CXT_FIXUP_HP_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x138d, "Asus", CXT_FIXUP_HEADPHONE_MIC_PIN),
++	SND_PCI_QUIRK(0x14f1, 0x0265, "SWS JS201D", CXT_PINCFG_SWS_JS201D),
+ 	SND_PCI_QUIRK(0x152d, 0x0833, "OLPC XO-1.5", CXT_FIXUP_OLPC_XO),
+ 	SND_PCI_QUIRK(0x17aa, 0x20f2, "Lenovo T400", CXT_PINCFG_LENOVO_TP410),
+ 	SND_PCI_QUIRK(0x17aa, 0x215e, "Lenovo T410", CXT_PINCFG_LENOVO_TP410),
+@@ -1109,6 +1126,7 @@ static const struct hda_model_fixup cxt5
+ 	{ .id = CXT_FIXUP_HP_ZBOOK_MUTE_LED, .name = "hp-zbook-mute-led" },
+ 	{ .id = CXT_FIXUP_HP_MIC_NO_PRESENCE, .name = "hp-mic-fix" },
+ 	{ .id = CXT_PINCFG_LENOVO_NOTEBOOK, .name = "lenovo-20149" },
++	{ .id = CXT_PINCFG_SWS_JS201D, .name = "sws-js201d" },
+ 	{}
+ };
  
 
 
