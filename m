@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-21316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E923B85C851
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:20:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F77C85C9C3
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:38:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25F861C20D87
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:20:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29E34282C2B
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:38:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49101152DF9;
-	Tue, 20 Feb 2024 21:20:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BE65151CD6;
+	Tue, 20 Feb 2024 21:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2KdmSiYP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jenzZK4j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D25F9152DE1;
-	Tue, 20 Feb 2024 21:20:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A989446C9;
+	Tue, 20 Feb 2024 21:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464035; cv=none; b=ZqksBUyerQcrw3cfUEVPvoetqQlC6jS8PTvJeNzVsQDtjckQDIGh+yqqVAaMXyoGZRnXi/UIOQzSH8IbFkPA8wwnUy48Tj+ptvppNIgIRthoyJQoeZ+ANyNFRWts4sZHzCBUdQn6dtzZlqBoha4WWEEeqkgwaCIQndoE53nYHAU=
+	t=1708465079; cv=none; b=oIPXYD75uQjjZlJg7CYwU1+s9jFwUoW6/zZG0rxc0qxKb5t0cJC7bw69w82hjlBgUHuvl92vY+0P4UJhLTWQsmQ+emKZXVgv7aICAPQHrcd5qU+cJ0b3LvhqesvZBxqmSD9zTvZIN4C68uIwcWNan+J4ypAhcEUEo4NQfxlIMKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464035; c=relaxed/simple;
-	bh=EU0wdndUq+HxedSwTYcOt8bMxXhWuyCRxAsOxJUmCWk=;
+	s=arc-20240116; t=1708465079; c=relaxed/simple;
+	bh=W7if0nXnOl/5NOnh++qKE81RTV7T9Vf2GWJP/VvShk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l5KlTwITxG6WES+PFt62QncQmcglhVTBT3gOdb1PuV/UNAnXDyrOTJn66FA64/P3mGrAqQlLtIoXAYmhg4hHLlo6RdzEUU4JcFOUhvd7DEsTeVbh2Im+8mKQmNNAzJJAAenXVojrFv20b6xVFGcsCboPTCBxxIWSeAoIiq8+FBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2KdmSiYP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B04EC433C7;
-	Tue, 20 Feb 2024 21:20:35 +0000 (UTC)
+	 MIME-Version; b=Y/FieWBT102G+Obu6DW7YYm2ZLhnyaiA9B9SpR0Likl400bI83/i84KASUijajeYq4JExUmvLP6aabciRNuAQ1/Vvrc2VF/ULwOBMvkLJIDX0LaZgl/ZylM36xJuAhjEQpwuQTNWIAsOLheos4XeIKa88dnMUTiJfXVP9wnRJMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jenzZK4j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD5A7C433C7;
+	Tue, 20 Feb 2024 21:37:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464035;
-	bh=EU0wdndUq+HxedSwTYcOt8bMxXhWuyCRxAsOxJUmCWk=;
+	s=korg; t=1708465079;
+	bh=W7if0nXnOl/5NOnh++qKE81RTV7T9Vf2GWJP/VvShk0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2KdmSiYP6tZWrWEcZkFzf62sxdCYvrbCyRLUbA1GgKKHHxCTR7tOr8gBbhHwNfKu0
-	 mOtO6HwW/W5Pyh0eRVzDs0hhhmI4j/AQ7mP0FudTXn2JLTxYwQG+GFfiIu2lUkcXEy
-	 ut5MAqmDraYBXF++DBmwmne6aw7c39jLA16CF0iU=
+	b=jenzZK4jViJkCSMNSsMkxrVlfX8Q7VRKAouXmqZ2lvUJzH8V9jykbTP7me8chNQ/C
+	 IjxrfN7vI2rz/fIIV9UeesGByCLQ+KvNtvD1NbE+3ivFBPukugkEHb9aHvH+sN8u/T
+	 MyZWsmlYpJjRWO4sQB9RsxxrA74YMeSlkE9fZ5zQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Masami Hiramatsu <mhiramat@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Donald Zickus <dzickus@redhat.com>,
-	Daniel Bristot de Oliveira <bristot@kernel.org>
-Subject: [PATCH 6.6 231/331] tools/rtla: Fix Makefile compiler options for clang
-Date: Tue, 20 Feb 2024 21:55:47 +0100
-Message-ID: <20240220205645.044041263@linuxfoundation.org>
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@ZenIV.linux.org.uk>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	kernel test robot <oliver.sang@intel.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.7 189/309] tracefs: Zero out the tracefs_inode when allocating it
+Date: Tue, 20 Feb 2024 21:55:48 +0100
+Message-ID: <20240220205639.069420681@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,77 +68,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Bristot de Oliveira <bristot@kernel.org>
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-commit bc4cbc9d260ba8358ca63662919f4bb223cb603b upstream.
+commit d81786f53aec14fd4d56263145a0635afbc64617 upstream.
 
-The following errors are showing up when compiling rtla with clang:
+eventfs uses the tracefs_inode and assumes that it's already initialized
+to zero. That is, it doesn't set fields to zero (like ti->private) after
+getting its tracefs_inode. This causes bugs due to stale values.
 
- $ make HOSTCC=clang CC=clang LLVM_IAS=1
- [...]
+Just initialize the entire structure to zero on allocation so there isn't
+any more surprises.
 
-  clang -O -g -DVERSION=\"6.8.0-rc1\" -flto=auto -ffat-lto-objects
-	-fexceptions -fstack-protector-strong
-	-fasynchronous-unwind-tables -fstack-clash-protection  -Wall
-	-Werror=format-security -Wp,-D_FORTIFY_SOURCE=2
-	-Wp,-D_GLIBCXX_ASSERTIONS -Wno-maybe-uninitialized
-	$(pkg-config --cflags libtracefs)    -c -o src/utils.o src/utils.c
+This is a partial fix to access to ti->private. The assignment still needs
+to be made before the dentry is instantiated.
 
-  clang: warning: optimization flag '-ffat-lto-objects' is not supported [-Wignored-optimization-argument]
-  warning: unknown warning option '-Wno-maybe-uninitialized'; did you mean '-Wno-uninitialized'? [-Wunknown-warning-option]
-  1 warning generated.
-
-  clang -o rtla -ggdb  src/osnoise.o src/osnoise_hist.o src/osnoise_top.o
-  src/rtla.o src/timerlat_aa.o src/timerlat.o src/timerlat_hist.o
-  src/timerlat_top.o src/timerlat_u.o src/trace.o src/utils.o $(pkg-config --libs libtracefs)
-
-  src/osnoise.o: file not recognized: file format not recognized
-  clang: error: linker command failed with exit code 1 (use -v to see invocation)
-  make: *** [Makefile:110: rtla] Error 1
-
-Solve these issues by:
-  - removing -ffat-lto-objects and -Wno-maybe-uninitialized if using clang
-  - informing the linker about -flto=auto
-
-Link: https://lore.kernel.org/linux-trace-kernel/567ac1b94effc228ce9a0225b9df7232a9b35b55.1707217097.git.bristot@kernel.org
+Link: https://lore.kernel.org/linux-trace-kernel/20240131185512.315825944@goodmis.org
 
 Cc: stable@vger.kernel.org
 Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Bill Wendling <morbo@google.com>
-Cc: Justin Stitt <justinstitt@google.com>
-Fixes: 1a7b22ab15eb ("tools/rtla: Build with EXTRA_{C,LD}FLAGS")
-Suggested-by: Donald Zickus <dzickus@redhat.com>
-Signed-off-by: Daniel Bristot de Oliveira <bristot@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Al Viro <viro@ZenIV.linux.org.uk>
+Cc: Ajay Kaher <ajay.kaher@broadcom.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5790b1fb3d672 ("eventfs: Remove eventfs_file and just use eventfs_inode")
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202401291043.e62e89dc-oliver.sang@intel.com
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/tracing/rtla/Makefile |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ fs/tracefs/inode.c    |    6 ++++--
+ fs/tracefs/internal.h |    3 ++-
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
---- a/tools/tracing/rtla/Makefile
-+++ b/tools/tracing/rtla/Makefile
-@@ -28,10 +28,15 @@ FOPTS	:=	-flto=auto -ffat-lto-objects -f
- 		-fasynchronous-unwind-tables -fstack-clash-protection
- WOPTS	:= 	-Wall -Werror=format-security -Wp,-D_FORTIFY_SOURCE=2 -Wp,-D_GLIBCXX_ASSERTIONS -Wno-maybe-uninitialized
+--- a/fs/tracefs/inode.c
++++ b/fs/tracefs/inode.c
+@@ -38,8 +38,6 @@ static struct inode *tracefs_alloc_inode
+ 	if (!ti)
+ 		return NULL;
  
-+ifeq ($(CC),clang)
-+  FOPTS := $(filter-out -ffat-lto-objects, $(FOPTS))
-+  WOPTS := $(filter-out -Wno-maybe-uninitialized, $(WOPTS))
-+endif
+-	ti->flags = 0;
+-
+ 	return &ti->vfs_inode;
+ }
+ 
+@@ -779,7 +777,11 @@ static void init_once(void *foo)
+ {
+ 	struct tracefs_inode *ti = (struct tracefs_inode *) foo;
+ 
++	/* inode_init_once() calls memset() on the vfs_inode portion */
+ 	inode_init_once(&ti->vfs_inode);
 +
- TRACEFS_HEADERS	:= $$($(PKG_CONFIG) --cflags libtracefs)
++	/* Zero out the rest */
++	memset_after(ti, 0, vfs_inode);
+ }
  
- CFLAGS	:=	-O -g -DVERSION=\"$(VERSION)\" $(FOPTS) $(MOPTS) $(WOPTS) $(TRACEFS_HEADERS) $(EXTRA_CFLAGS)
--LDFLAGS	:=	-ggdb $(EXTRA_LDFLAGS)
-+LDFLAGS	:=	-flto=auto -ggdb $(EXTRA_LDFLAGS)
- LIBS	:=	$$($(PKG_CONFIG) --libs libtracefs)
+ static int __init tracefs_init(void)
+--- a/fs/tracefs/internal.h
++++ b/fs/tracefs/internal.h
+@@ -11,9 +11,10 @@ enum {
+ };
  
- SRC	:=	$(wildcard src/*.c)
+ struct tracefs_inode {
++	struct inode            vfs_inode;
++	/* The below gets initialized with memset_after(ti, 0, vfs_inode) */
+ 	unsigned long           flags;
+ 	void                    *private;
+-	struct inode            vfs_inode;
+ };
+ 
+ /*
 
 
 
