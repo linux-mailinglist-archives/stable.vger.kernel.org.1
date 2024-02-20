@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-21140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D722585C74A
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:11:26 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D15085C705
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:07:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6EA5DB20D3F
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:11:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8026B20ABA
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:07:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7608B1509BF;
-	Tue, 20 Feb 2024 21:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C73511509A5;
+	Tue, 20 Feb 2024 21:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wXFlP2cB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VmtUPiVN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 349F5612D7;
-	Tue, 20 Feb 2024 21:11:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87084612D7;
+	Tue, 20 Feb 2024 21:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463482; cv=none; b=GJPW5RP8WTD8fRi6YnaV8ctr5sfT0aBRZdg7aWgDoWae4/NlwyLx2LZi9L4+KKnHgWb9aVAiivaRMnLAOL/0TlfLhQQZNRVV+exGO2qkE1bswf4rtggxJiwooK28jQMfp9DPt3VEosouIh3AjKL6GLeJgSdGfNlOaFHc6G7Ovns=
+	t=1708463261; cv=none; b=HDkOfR25Oss3WesjUDV7AZBDDowsgEo/D0PaMVxBmfeGzZPGp4UbBu64pkG+eZIB092RS0kmYpQb5SUV4FlVGgDJixlOiyhv62c/+KbLfWU/zw48E+Ji5qxlwPKNBhC54HavvGhRMMfTogLv0NSGHBjQxulMVWMPtTK93TzW53M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463482; c=relaxed/simple;
-	bh=pN83oCIdkf7TCptRIAuv4HfcPbo+FPbLkbl0pcYnsKw=;
+	s=arc-20240116; t=1708463261; c=relaxed/simple;
+	bh=t1qQw1VdEO+AY8JA11MCm4RDvjEOAvkp5PGX56R+vFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=clRrC5J7bTGqw5wHE2m5rDoiWXqm8S5q36wfG6FzubhMzkKUFCIgreyKw5GrlrywLUgx/VjMQz6j3XyK8HwOqAXvv0hj7qSlAODdYLAHP4FWlpr5v2HTNU87x91ikNtHzdlpViURmpRhb87H79pIc4vJCZ35acva9arK0gmw8Zc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wXFlP2cB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E6DAC433C7;
-	Tue, 20 Feb 2024 21:11:21 +0000 (UTC)
+	 MIME-Version; b=Q/le9+vNvwnAmwCdt4ZbKOkF/U4+N+miwOku7FDuQCWaGSVkxDSCzPIgFlJWZOydT/YXP/XZyhF3J6yMsAG9zscLhSfR07nQ7mQk2wdqESNBOiaic0ul0W5C5RqN56bxuIEHa2Yk+orb2bq3l/xutih3gX/E62CQDnr/htorwcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VmtUPiVN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F01F9C433C7;
+	Tue, 20 Feb 2024 21:07:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463481;
-	bh=pN83oCIdkf7TCptRIAuv4HfcPbo+FPbLkbl0pcYnsKw=;
+	s=korg; t=1708463261;
+	bh=t1qQw1VdEO+AY8JA11MCm4RDvjEOAvkp5PGX56R+vFI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wXFlP2cBLuO24Qj3bz9qE/7r51K6vFYcyGG5bIc8C2eApcZeru+1KUeeMOsF+4zyw
-	 yHW9CtnW1zg5ideRanIADG0ORtE1ZvZqJ+Jkx4wSZZdLYPsvh8vldNgNNCQdML1XeS
-	 VpSpqOgYxM78++qKDxFhw+AXocp1TghEm7y5AAKk=
+	b=VmtUPiVNKkT54ADvrKIybtrcQHaispYzE5kGpBfSgnRpKzM1PasrMvb65mi4Yg2NT
+	 /aBr7v1sisTM1gAtOCa6Ig+CZlQaLtnBFdPLcMt9jVmTlrQSHkx2gk//caZRtf0mnN
+	 a8V4km9PM6nCoVrL0NIr8OsrPWy/pGfXYZQtc93M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-	Simon Trimmer <simont@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 028/331] ALSA: hda/cs35l56: select intended config FW_CS_DSP
-Date: Tue, 20 Feb 2024 21:52:24 +0100
-Message-ID: <20240220205638.472939877@linuxfoundation.org>
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.1 186/197] parisc: Fix random data corruption from exception handler
+Date: Tue, 20 Feb 2024 21:52:25 +0100
+Message-ID: <20240220204846.641850701@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
+References: <20240220204841.073267068@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +60,391 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit e5aa6d51a2ef8c7ef7e3fe76bebe530fb68e7f08 ]
+commit 8b1d72395635af45410b66cc4c4ab37a12c4a831 upstream.
 
-Commit 73cfbfa9caea ("ALSA: hda/cs35l56: Add driver for Cirrus Logic
-CS35L56 amplifier") adds configs SND_HDA_SCODEC_CS35L56_{I2C,SPI},
-which selects the non-existing config CS_DSP. Note the renaming in
-commit d7cfdf17cb9d ("firmware: cs_dsp: Rename KConfig symbol CS_DSP ->
-FW_CS_DSP"), though.
+The current exception handler implementation, which assists when accessing
+user space memory, may exhibit random data corruption if the compiler decides
+to use a different register than the specified register %r29 (defined in
+ASM_EXCEPTIONTABLE_REG) for the error code. If the compiler choose another
+register, the fault handler will nevertheless store -EFAULT into %r29 and thus
+trash whatever this register is used for.
+Looking at the assembly I found that this happens sometimes in emulate_ldd().
 
-Select the intended config FW_CS_DSP.
+To solve the issue, the easiest solution would be if it somehow is
+possible to tell the fault handler which register is used to hold the error
+code. Using %0 or %1 in the inline assembly is not posssible as it will show
+up as e.g. %r29 (with the "%r" prefix), which the GNU assembler can not
+convert to an integer.
 
-This broken select command probably was not noticed as the configs also
-select SND_HDA_CS_DSP_CONTROLS and this then selects FW_CS_DSP. So, the
-select FW_CS_DSP could actually be dropped, but we will keep this
-redundancy in place as the author originally also intended to have this
-redundancy of selects in place.
+This patch takes another, better and more flexible approach:
+We extend the __ex_table (which is out of the execution path) by one 32-word.
+In this word we tell the compiler to insert the assembler instruction
+"or %r0,%r0,%reg", where %reg references the register which the compiler
+choosed for the error return code.
+In case of an access failure, the fault handler finds the __ex_table entry and
+can examine the opcode. The used register is encoded in the lowest 5 bits, and
+the fault handler can then store -EFAULT into this register.
 
-Fixes: 73cfbfa9caea ("ALSA: hda/cs35l56: Add driver for Cirrus Logic CS35L56 amplifier")
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Reviewed-by: Simon Trimmer <simont@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20240209082044.3981-1-lukas.bulwahn@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Since we extend the __ex_table to 3 words we can't use the BUILDTIME_TABLE_SORT
+config option any longer.
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: <stable@vger.kernel.org> # v6.0+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/pci/hda/Kconfig b/sound/pci/hda/Kconfig
-index 0d7502d6e060..21046f72cdca 100644
---- a/sound/pci/hda/Kconfig
-+++ b/sound/pci/hda/Kconfig
-@@ -140,7 +140,7 @@ config SND_HDA_SCODEC_CS35L56_I2C
- 	depends on I2C
- 	depends on ACPI || COMPILE_TEST
- 	depends on SND_SOC
--	select CS_DSP
-+	select FW_CS_DSP
- 	select SND_HDA_GENERIC
- 	select SND_SOC_CS35L56_SHARED
- 	select SND_HDA_SCODEC_CS35L56
-@@ -154,7 +154,7 @@ config SND_HDA_SCODEC_CS35L56_SPI
- 	depends on SPI_MASTER
- 	depends on ACPI || COMPILE_TEST
- 	depends on SND_SOC
--	select CS_DSP
-+	select FW_CS_DSP
- 	select SND_HDA_GENERIC
- 	select SND_SOC_CS35L56_SHARED
- 	select SND_HDA_SCODEC_CS35L56
--- 
-2.43.0
+---
+ arch/parisc/Kconfig                     |    1 
+ arch/parisc/include/asm/assembly.h      |    1 
+ arch/parisc/include/asm/extable.h       |   64 ++++++++++++++++++++++++++++++++
+ arch/parisc/include/asm/special_insns.h |    6 ++-
+ arch/parisc/include/asm/uaccess.h       |   48 +++---------------------
+ arch/parisc/kernel/unaligned.c          |   44 +++++++++++-----------
+ arch/parisc/mm/fault.c                  |   11 ++++-
+ 7 files changed, 106 insertions(+), 69 deletions(-)
 
+--- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -24,7 +24,6 @@ config PARISC
+ 	select RTC_DRV_GENERIC
+ 	select INIT_ALL_POSSIBLE
+ 	select BUG
+-	select BUILDTIME_TABLE_SORT
+ 	select HAVE_PCI
+ 	select HAVE_PERF_EVENTS
+ 	select HAVE_KERNEL_BZIP2
+--- a/arch/parisc/include/asm/assembly.h
++++ b/arch/parisc/include/asm/assembly.h
+@@ -576,6 +576,7 @@
+ 	.section __ex_table,"aw"			!	\
+ 	.align 4					!	\
+ 	.word (fault_addr - .), (except_addr - .)	!	\
++	or %r0,%r0,%r0					!	\
+ 	.previous
+ 
+ 
+--- /dev/null
++++ b/arch/parisc/include/asm/extable.h
+@@ -0,0 +1,64 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __PARISC_EXTABLE_H
++#define __PARISC_EXTABLE_H
++
++#include <asm/ptrace.h>
++#include <linux/compiler.h>
++
++/*
++ * The exception table consists of three addresses:
++ *
++ * - A relative address to the instruction that is allowed to fault.
++ * - A relative address at which the program should continue (fixup routine)
++ * - An asm statement which specifies which CPU register will
++ *   receive -EFAULT when an exception happens if the lowest bit in
++ *   the fixup address is set.
++ *
++ * Note: The register specified in the err_opcode instruction will be
++ * modified at runtime if a fault happens. Register %r0 will be ignored.
++ *
++ * Since relative addresses are used, 32bit values are sufficient even on
++ * 64bit kernel.
++ */
++
++struct pt_regs;
++int fixup_exception(struct pt_regs *regs);
++
++#define ARCH_HAS_RELATIVE_EXTABLE
++struct exception_table_entry {
++	int insn;	/* relative address of insn that is allowed to fault. */
++	int fixup;	/* relative address of fixup routine */
++	int err_opcode; /* sample opcode with register which holds error code */
++};
++
++#define ASM_EXCEPTIONTABLE_ENTRY( fault_addr, except_addr, opcode )\
++	".section __ex_table,\"aw\"\n"			   \
++	".align 4\n"					   \
++	".word (" #fault_addr " - .), (" #except_addr " - .)\n" \
++	opcode "\n"					   \
++	".previous\n"
++
++/*
++ * ASM_EXCEPTIONTABLE_ENTRY_EFAULT() creates a special exception table entry
++ * (with lowest bit set) for which the fault handler in fixup_exception() will
++ * load -EFAULT on fault into the register specified by the err_opcode instruction,
++ * and zeroes the target register in case of a read fault in get_user().
++ */
++#define ASM_EXCEPTIONTABLE_VAR(__err_var)		\
++	int __err_var = 0
++#define ASM_EXCEPTIONTABLE_ENTRY_EFAULT( fault_addr, except_addr, register )\
++	ASM_EXCEPTIONTABLE_ENTRY( fault_addr, except_addr + 1, "or %%r0,%%r0," register)
++
++static inline void swap_ex_entry_fixup(struct exception_table_entry *a,
++				       struct exception_table_entry *b,
++				       struct exception_table_entry tmp,
++				       int delta)
++{
++	a->fixup = b->fixup + delta;
++	b->fixup = tmp.fixup - delta;
++	a->err_opcode = b->err_opcode;
++	b->err_opcode = tmp.err_opcode;
++}
++#define swap_ex_entry_fixup swap_ex_entry_fixup
++
++#endif
+--- a/arch/parisc/include/asm/special_insns.h
++++ b/arch/parisc/include/asm/special_insns.h
+@@ -8,7 +8,8 @@
+ 		"copy %%r0,%0\n"			\
+ 		"8:\tlpa %%r0(%1),%0\n"			\
+ 		"9:\n"					\
+-		ASM_EXCEPTIONTABLE_ENTRY(8b, 9b)	\
++		ASM_EXCEPTIONTABLE_ENTRY(8b, 9b,	\
++				"or %%r0,%%r0,%%r0")	\
+ 		: "=&r" (pa)				\
+ 		: "r" (va)				\
+ 		: "memory"				\
+@@ -22,7 +23,8 @@
+ 		"copy %%r0,%0\n"			\
+ 		"8:\tlpa %%r0(%%sr3,%1),%0\n"		\
+ 		"9:\n"					\
+-		ASM_EXCEPTIONTABLE_ENTRY(8b, 9b)	\
++		ASM_EXCEPTIONTABLE_ENTRY(8b, 9b,	\
++				"or %%r0,%%r0,%%r0")	\
+ 		: "=&r" (pa)				\
+ 		: "r" (va)				\
+ 		: "memory"				\
+--- a/arch/parisc/include/asm/uaccess.h
++++ b/arch/parisc/include/asm/uaccess.h
+@@ -7,6 +7,7 @@
+  */
+ #include <asm/page.h>
+ #include <asm/cache.h>
++#include <asm/extable.h>
+ 
+ #include <linux/bug.h>
+ #include <linux/string.h>
+@@ -26,37 +27,6 @@
+ #define STD_USER(sr, x, ptr)	__put_user_asm(sr, "std", x, ptr)
+ #endif
+ 
+-/*
+- * The exception table contains two values: the first is the relative offset to
+- * the address of the instruction that is allowed to fault, and the second is
+- * the relative offset to the address of the fixup routine. Since relative
+- * addresses are used, 32bit values are sufficient even on 64bit kernel.
+- */
+-
+-#define ARCH_HAS_RELATIVE_EXTABLE
+-struct exception_table_entry {
+-	int insn;	/* relative address of insn that is allowed to fault. */
+-	int fixup;	/* relative address of fixup routine */
+-};
+-
+-#define ASM_EXCEPTIONTABLE_ENTRY( fault_addr, except_addr )\
+-	".section __ex_table,\"aw\"\n"			   \
+-	".align 4\n"					   \
+-	".word (" #fault_addr " - .), (" #except_addr " - .)\n\t" \
+-	".previous\n"
+-
+-/*
+- * ASM_EXCEPTIONTABLE_ENTRY_EFAULT() creates a special exception table entry
+- * (with lowest bit set) for which the fault handler in fixup_exception() will
+- * load -EFAULT into %r29 for a read or write fault, and zeroes the target
+- * register in case of a read fault in get_user().
+- */
+-#define ASM_EXCEPTIONTABLE_REG	29
+-#define ASM_EXCEPTIONTABLE_VAR(__variable)		\
+-	register long __variable __asm__ ("r29") = 0
+-#define ASM_EXCEPTIONTABLE_ENTRY_EFAULT( fault_addr, except_addr )\
+-	ASM_EXCEPTIONTABLE_ENTRY( fault_addr, except_addr + 1)
+-
+ #define __get_user_internal(sr, val, ptr)		\
+ ({							\
+ 	ASM_EXCEPTIONTABLE_VAR(__gu_err);		\
+@@ -83,7 +53,7 @@ struct exception_table_entry {
+ 							\
+ 	__asm__("1: " ldx " 0(%%sr%2,%3),%0\n"		\
+ 		"9:\n"					\
+-		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 9b)	\
++		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 9b, "%1")	\
+ 		: "=r"(__gu_val), "+r"(__gu_err)        \
+ 		: "i"(sr), "r"(ptr));			\
+ 							\
+@@ -115,8 +85,8 @@ struct exception_table_entry {
+ 		"1: ldw 0(%%sr%2,%3),%0\n"		\
+ 		"2: ldw 4(%%sr%2,%3),%R0\n"		\
+ 		"9:\n"					\
+-		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 9b)	\
+-		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 9b)	\
++		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 9b, "%1")	\
++		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 9b, "%1")	\
+ 		: "=&r"(__gu_tmp.l), "+r"(__gu_err)	\
+ 		: "i"(sr), "r"(ptr));			\
+ 							\
+@@ -174,7 +144,7 @@ struct exception_table_entry {
+ 	__asm__ __volatile__ (					\
+ 		"1: " stx " %1,0(%%sr%2,%3)\n"			\
+ 		"9:\n"						\
+-		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 9b)		\
++		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 9b, "%0")	\
+ 		: "+r"(__pu_err)				\
+ 		: "r"(x), "i"(sr), "r"(ptr))
+ 
+@@ -186,15 +156,14 @@ struct exception_table_entry {
+ 		"1: stw %1,0(%%sr%2,%3)\n"			\
+ 		"2: stw %R1,4(%%sr%2,%3)\n"			\
+ 		"9:\n"						\
+-		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 9b)		\
+-		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 9b)		\
++		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 9b, "%0")	\
++		ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 9b, "%0")	\
+ 		: "+r"(__pu_err)				\
+ 		: "r"(__val), "i"(sr), "r"(ptr));		\
+ } while (0)
+ 
+ #endif /* !defined(CONFIG_64BIT) */
+ 
+-
+ /*
+  * Complex access routines -- external declarations
+  */
+@@ -216,7 +185,4 @@ unsigned long __must_check raw_copy_from
+ #define INLINE_COPY_TO_USER
+ #define INLINE_COPY_FROM_USER
+ 
+-struct pt_regs;
+-int fixup_exception(struct pt_regs *regs);
+-
+ #endif /* __PARISC_UACCESS_H */
+--- a/arch/parisc/kernel/unaligned.c
++++ b/arch/parisc/kernel/unaligned.c
+@@ -118,8 +118,8 @@ static int emulate_ldh(struct pt_regs *r
+ "2:	ldbs	1(%%sr1,%3), %0\n"
+ "	depw	%2, 23, 24, %0\n"
+ "3:	\n"
+-	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 3b)
+-	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 3b)
++	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 3b, "%1")
++	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 3b, "%1")
+ 	: "+r" (val), "+r" (ret), "=&r" (temp1)
+ 	: "r" (saddr), "r" (regs->isr) );
+ 
+@@ -150,8 +150,8 @@ static int emulate_ldw(struct pt_regs *r
+ "	mtctl	%2,11\n"
+ "	vshd	%0,%3,%0\n"
+ "3:	\n"
+-	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 3b)
+-	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 3b)
++	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 3b, "%1")
++	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 3b, "%1")
+ 	: "+r" (val), "+r" (ret), "=&r" (temp1), "=&r" (temp2)
+ 	: "r" (saddr), "r" (regs->isr) );
+ 
+@@ -187,8 +187,8 @@ static int emulate_ldd(struct pt_regs *r
+ "	mtsar	%%r19\n"
+ "	shrpd	%0,%%r20,%%sar,%0\n"
+ "3:	\n"
+-	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 3b)
+-	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 3b)
++	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 3b, "%1")
++	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 3b, "%1")
+ 	: "=r" (val), "+r" (ret)
+ 	: "0" (val), "r" (saddr), "r" (regs->isr)
+ 	: "r19", "r20" );
+@@ -207,9 +207,9 @@ static int emulate_ldd(struct pt_regs *r
+ "	vshd	%0,%R0,%0\n"
+ "	vshd	%R0,%4,%R0\n"
+ "4:	\n"
+-	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 4b)
+-	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 4b)
+-	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(3b, 4b)
++	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 4b, "%1")
++	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 4b, "%1")
++	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(3b, 4b, "%1")
+ 	: "+r" (val), "+r" (ret), "+r" (saddr), "=&r" (shift), "=&r" (temp1)
+ 	: "r" (regs->isr) );
+     }
+@@ -242,8 +242,8 @@ static int emulate_sth(struct pt_regs *r
+ "1:	stb %1, 0(%%sr1, %3)\n"
+ "2:	stb %2, 1(%%sr1, %3)\n"
+ "3:	\n"
+-	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 3b)
+-	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 3b)
++	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 3b, "%0")
++	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 3b, "%0")
+ 	: "+r" (ret), "=&r" (temp1)
+ 	: "r" (val), "r" (regs->ior), "r" (regs->isr) );
+ 
+@@ -283,8 +283,8 @@ static int emulate_stw(struct pt_regs *r
+ "	stw	%%r20,0(%%sr1,%2)\n"
+ "	stw	%%r21,4(%%sr1,%2)\n"
+ "3:	\n"
+-	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 3b)
+-	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 3b)
++	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 3b, "%0")
++	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 3b, "%0")
+ 	: "+r" (ret)
+ 	: "r" (val), "r" (regs->ior), "r" (regs->isr)
+ 	: "r19", "r20", "r21", "r22", "r1" );
+@@ -327,10 +327,10 @@ static int emulate_std(struct pt_regs *r
+ "3:	std	%%r20,0(%%sr1,%2)\n"
+ "4:	std	%%r21,8(%%sr1,%2)\n"
+ "5:	\n"
+-	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 5b)
+-	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 5b)
+-	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(3b, 5b)
+-	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(4b, 5b)
++	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 5b, "%0")
++	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 5b, "%0")
++	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(3b, 5b, "%0")
++	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(4b, 5b, "%0")
+ 	: "+r" (ret)
+ 	: "r" (val), "r" (regs->ior), "r" (regs->isr)
+ 	: "r19", "r20", "r21", "r22", "r1" );
+@@ -356,11 +356,11 @@ static int emulate_std(struct pt_regs *r
+ "4:	stw	%%r1,4(%%sr1,%3)\n"
+ "5:	stw	%2,8(%%sr1,%3)\n"
+ "6:	\n"
+-	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 6b)
+-	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 6b)
+-	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(3b, 6b)
+-	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(4b, 6b)
+-	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(5b, 6b)
++	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 6b, "%0")
++	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 6b, "%0")
++	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(3b, 6b, "%0")
++	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(4b, 6b, "%0")
++	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(5b, 6b, "%0")
+ 	: "+r" (ret)
+ 	: "r" (valh), "r" (vall), "r" (regs->ior), "r" (regs->isr)
+ 	: "r19", "r20", "r21", "r1" );
+--- a/arch/parisc/mm/fault.c
++++ b/arch/parisc/mm/fault.c
+@@ -150,11 +150,16 @@ int fixup_exception(struct pt_regs *regs
+ 		 * Fix up get_user() and put_user().
+ 		 * ASM_EXCEPTIONTABLE_ENTRY_EFAULT() sets the least-significant
+ 		 * bit in the relative address of the fixup routine to indicate
+-		 * that gr[ASM_EXCEPTIONTABLE_REG] should be loaded with
+-		 * -EFAULT to report a userspace access error.
++		 * that the register encoded in the "or %r0,%r0,register"
++		 * opcode should be loaded with -EFAULT to report a userspace
++		 * access error.
+ 		 */
+ 		if (fix->fixup & 1) {
+-			regs->gr[ASM_EXCEPTIONTABLE_REG] = -EFAULT;
++			int fault_error_reg = fix->err_opcode & 0x1f;
++			if (!WARN_ON(!fault_error_reg))
++				regs->gr[fault_error_reg] = -EFAULT;
++			pr_debug("Unalignment fixup of register %d at %pS\n",
++				fault_error_reg, (void*)regs->iaoq[0]);
+ 
+ 			/* zero target register for get_user() */
+ 			if (parisc_acctyp(0, regs->iir) == VM_READ) {
 
 
 
