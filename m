@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-21153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72DBB85C75C
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:12:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F1C485C912
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:29:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3CA41C21A87
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:12:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20D2D1F227E7
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:29:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2C5614AD12;
-	Tue, 20 Feb 2024 21:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF21D152E04;
+	Tue, 20 Feb 2024 21:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iwojsf9y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F+qSrjDt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1658612D7;
-	Tue, 20 Feb 2024 21:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96901152DE7;
+	Tue, 20 Feb 2024 21:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463523; cv=none; b=TvfLXKGvteXc+qUUWcssSShaLOgQY2s8Eed6xiaxAKMqu97B5/I6SOHvVZt81vu8ZuMHpDVMsaWUYKTLZPc4DrINqihUbrmXRwiYdZOIvPmcaouK8KBlKIsdEpU67czuK6W31ICQKq+u9Yj8YVAy7SVL1Q2sjVc4La3/pymlXHM=
+	t=1708464535; cv=none; b=e6nIzl8R2GYrLUzO0vZrGJ6HRuQbp3N/ysKrXn0GYg2If2i91MU/4V2cvEGJvCC+hywhD/8yo4ZYoScnNkDCQNNjj05ta7AwaM6jUPjplcdTo9bsSrznWtVRegmvpUq524pa1U4QStFqsiVh7V8GxZH6YKQWrA3JhLebTyHzXCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463523; c=relaxed/simple;
-	bh=PAnHzYpUVOiAY5Ow3Ju0MikOgeuvmjXAnGK5F6Pb7TY=;
+	s=arc-20240116; t=1708464535; c=relaxed/simple;
+	bh=Ak+rjnf96buxx4581viUNEdvVDvPzK/WMMTNS7JyyTc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ILdXwzN79Igzeurd83DbNZUQdQyXdoeOloUb0aColQndRJ0jrh67QHsr96iR6ejQ0NoBGJYYsp64VVqTV1EEf/fXIZEtCA6rNheSzAIlvnUNa5IJjjIj4vsgDfcsqlJmzcQagQRumJAUGCwZ4aRR00zjwe8XDr1M2md63EDLav8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iwojsf9y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2076FC433F1;
-	Tue, 20 Feb 2024 21:12:02 +0000 (UTC)
+	 MIME-Version; b=eQFnUPceRACV/UBpEiKnykVRvUrLot0ZUsvtm0er83ANKpmYlZlmAjGPtJtXhUKvR1ygx61r3zo8lWpjKmDcwUTk7dfmWqz6N0Sdv7AiKURHlqUI9TYgqz7GQAeSOb7SjfU+91y29x7ytyaW9+fp46MV+2TpV/EPqDZHAdSKqqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F+qSrjDt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EC63C433C7;
+	Tue, 20 Feb 2024 21:28:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463523;
-	bh=PAnHzYpUVOiAY5Ow3Ju0MikOgeuvmjXAnGK5F6Pb7TY=;
+	s=korg; t=1708464535;
+	bh=Ak+rjnf96buxx4581viUNEdvVDvPzK/WMMTNS7JyyTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iwojsf9yvchiEEKPC3Fw8s66Hlzlj9TCTZ6oFJTLBv7Ur/hhoGt0hA6L1BJM+ilUT
-	 T1goUav7yJpd4AnzdJGi2BogC2nz8eOGtea++x1XMwcXWOYtsxXkd4aERgp0bu4dV4
-	 vZG5kwlUc9DkZ9sW0vK3zLQ0QvaO2jAc2nEyJINo=
+	b=F+qSrjDt6HkmlX4qHN+MhROc5kGMKPtLvndyFQh3ujSAXvXiMMFGHIjKS9MGag6/i
+	 TpBxevXccGJ1b+mAoG9T2NVlnN3Ctsr9vNkP9++XSDLEur8yariuxBCEZJs/gP84Of
+	 t8mVQELMerfQVXjAUdZvuS+E7xFU15X8GpIfqOAs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luka Guzenko <l.guzenko@web.de>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 070/331] ALSA: hda/realtek: Enable Mute LED on HP Laptop 14-fq0xxx
-Date: Tue, 20 Feb 2024 21:53:06 +0100
-Message-ID: <20240220205639.775897031@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 028/309] wifi: iwlwifi: uninitialized variable in iwl_acpi_get_ppag_table()
+Date: Tue, 20 Feb 2024 21:53:07 +0100
+Message-ID: <20240220205634.061424180@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luka Guzenko <l.guzenko@web.de>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit f0d78972f27dc1d1d51fbace2713ad3cdc60a877 upstream.
+[ Upstream commit 65c6ee90455053cfd3067c17aaa4a42b0c766543 ]
 
-This HP Laptop uses ALC236 codec with COEF 0x07 controlling the
-mute LED. Enable existing quirk for this device.
+This is an error path and Smatch complains that "tbl_rev" is uninitialized
+on this path.  All the other functions follow this same patter where they
+set the error code and goto out_free so that's probably what was intended
+here as well.
 
-Signed-off-by: Luka Guzenko <l.guzenko@web.de>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240128155704.2333812-1-l.guzenko@web.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e8e10a37c51c ("iwlwifi: acpi: move ppag code from mvm to fw/acpi")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://msgid.link/09900c01-6540-4a32-9451-563da0029cb6@moroto.mountain
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9746,6 +9746,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x8786, "HP OMEN 15", ALC285_FIXUP_HP_MUTE_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8787, "HP OMEN 15", ALC285_FIXUP_HP_MUTE_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8788, "HP OMEN 15", ALC285_FIXUP_HP_MUTE_LED),
-+	SND_PCI_QUIRK(0x103c, 0x87b7, "HP Laptop 14-fq0xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x87c8, "HP", ALC287_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x87e5, "HP ProBook 440 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x87e7, "HP ProBook 450 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+index d73d561709d3..dcc4810cb324 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+@@ -1116,6 +1116,9 @@ int iwl_acpi_get_ppag_table(struct iwl_fw_runtime *fwrt)
+ 		goto read_table;
+ 	}
+ 
++	ret = PTR_ERR(wifi_pkg);
++	goto out_free;
++
+ read_table:
+ 	fwrt->ppag_ver = tbl_rev;
+ 	flags = &wifi_pkg->package.elements[1];
+-- 
+2.43.0
+
 
 
 
