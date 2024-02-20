@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-21334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6838F85C86D
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:21:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C3B585C9AC
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:36:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9999B1C21826
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:21:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CEAA1C213E6
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:36:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5DDF152DE3;
-	Tue, 20 Feb 2024 21:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C0B1151CD6;
+	Tue, 20 Feb 2024 21:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0OWwCwxZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mGo7rVAS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 952EB152DE0;
-	Tue, 20 Feb 2024 21:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5821A14F9C8;
+	Tue, 20 Feb 2024 21:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464094; cv=none; b=W2oix8R8tAjAxeIUF/RJp3M/3i6nmJIoga55eKRefvtGV+u9QoKMHeLPtWtqW1nXGmyiFIosYL4Cu/gPjXTMHT5Ns/4B0Lx9D4boDkMkpIbfL9zbrDy2I75Q4sAayMzmxZRJSjlZmaga9bnRx1BEsFMA2CqNRVYPBnkW1+JWRms=
+	t=1708465007; cv=none; b=HxtsTUitZiHv9nnfptKNyezO5bRrFTy8kCwSnGExs6lK+9/DmhBEIQryWyRvt6Ma5amEhCM8bcZyOUNIOmjoG/4XsKchTxkhOOta8wuf4eQdvYoCotOtzj0M9lyU/a3SuSWVQN/Yh3cV47byX0mqaL/2YJzJQ+SKjSjd3xkLsjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464094; c=relaxed/simple;
-	bh=Je3p7mVddS6eShJQtm69I1uAZdB37jx6OLX3FFjGZtU=;
+	s=arc-20240116; t=1708465007; c=relaxed/simple;
+	bh=3+F91Ou1iSjZ/EbrPY4SrMyEXFG6QGzJ65/srlQ3eYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J/QytAN/twNNEhvNPA8rjAoLvcrC5Hf093OVpK2Uzpp2resSRJLPsuHPxBrybqEDtf7tIPMFXZGvh7Sl1ADT+G4Ihka0wanfM5zD/nIs2IwRtS+MkSOZsuzr4OShx9WcwkcLfdB/eHsdiOrzpbTq9ZxIGx2KO/dYqs+adgUgV8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0OWwCwxZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 115BCC433F1;
-	Tue, 20 Feb 2024 21:21:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EL9mmZciWB06DgfJiqEAl2g5zOKUqcqOuNw+xJ52zQ+EdaUdcED2Y6VZ2RQw1cUy/OwW6JA46+undl9nMNqDPm/g/HTGTCctzC/hk9+gehdLQU+xz2C46KIPpd+UR5tTGJQPswTRQRjlfNEeffwNHyIKbawPWsxqOsCmoj+fcyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mGo7rVAS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB684C433C7;
+	Tue, 20 Feb 2024 21:36:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464094;
-	bh=Je3p7mVddS6eShJQtm69I1uAZdB37jx6OLX3FFjGZtU=;
+	s=korg; t=1708465007;
+	bh=3+F91Ou1iSjZ/EbrPY4SrMyEXFG6QGzJ65/srlQ3eYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0OWwCwxZPePSqGPuk2WOJgdym1K/wP2vSpFYz4yW7Nbl+JY0Y1xf54Qs/Jady8ZP5
-	 3SIJJgDyTp4aoJnmF2U16/Ay9IHg1rzd/ismTMVO5j2ZSDSRZ9WnEtNKEnIyWcEzr/
-	 sIfThytiNhm9Zs/FJHjyo5u0aeH69x3wZp0EvV8o=
+	b=mGo7rVASCcKKjTn6HFApJwMb66COUZ+8rGUkomb1uLm54g23rWOlhdyiCtCV6UJ5A
+	 lL/vd57/cPkwa/7vsh65fozq6b1qSWRGdzUfutT9Kqisnizzl4AftDAzQr54gZn3rC
+	 XknUTt+p/s0MTk6YBFmBLJRFkjnuMtp8uxwvVmRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleg Nesterov <oleg@redhat.com>,
-	Dylan Hatch <dylanbhatch@google.com>,
-	"Eric W. Biederman" <ebiederm@xmission.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 250/331] fs/proc: do_task_stat: move thread_group_cputime_adjusted() outside of lock_task_sighand()
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Subject: [PATCH 6.7 207/309] drm/i915/dp: Limit SST link rate to <=8.1Gbps
 Date: Tue, 20 Feb 2024 21:56:06 +0100
-Message-ID: <20240220205645.690069437@linuxfoundation.org>
+Message-ID: <20240220205639.663588010@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit 60f92acb60a989b14e4b744501a0df0f82ef30a3 upstream.
+commit ad26d56d080780bbfcc1696ca0c0cce3e2124ef6 upstream.
 
-Patch series "fs/proc: do_task_stat: use sig->stats_".
+Limit the link rate to HBR3 or below (<=8.1Gbps) in SST mode.
+UHBR (10Gbps+) link rates require 128b/132b channel encoding
+which we have not yet hooked up into the SST/no-sideband codepaths.
 
-do_task_stat() has the same problem as getrusage() had before "getrusage:
-use sig->stats_lock rather than lock_task_sighand()": a hard lockup.  If
-NR_CPUS threads call lock_task_sighand() at the same time and the process
-has NR_THREADS, spin_lock_irq will spin with irqs disabled O(NR_CPUS *
-NR_THREADS) time.
-
-
-This patch (of 3):
-
-thread_group_cputime() does its own locking, we can safely shift
-thread_group_cputime_adjusted() which does another for_each_thread loop
-outside of ->siglock protected section.
-
-Not only this removes for_each_thread() from the critical section with
-irqs disabled, this removes another case when stats_lock is taken with
-siglock held.  We want to remove this dependency, then we can change the
-users of stats_lock to not disable irqs.
-
-Link: https://lkml.kernel.org/r/20240123153313.GA21832@redhat.com
-Link: https://lkml.kernel.org/r/20240123153355.GA21854@redhat.com
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Dylan Hatch <dylanbhatch@google.com>
-Cc: Eric W. Biederman <ebiederm@xmission.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240208154552.14545-1-ville.syrjala@linux.intel.com
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit 6061811d72e14f41f71b6a025510920b187bfcca)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/array.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/i915/display/intel_dp.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/proc/array.c
-+++ b/fs/proc/array.c
-@@ -511,7 +511,7 @@ static int do_task_stat(struct seq_file
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -2275,6 +2275,9 @@ intel_dp_compute_config_limits(struct in
+ 	limits->min_rate = intel_dp_common_rate(intel_dp, 0);
+ 	limits->max_rate = intel_dp_max_link_rate(intel_dp);
  
- 	sigemptyset(&sigign);
- 	sigemptyset(&sigcatch);
--	cutime = cstime = utime = stime = 0;
-+	cutime = cstime = 0;
- 	cgtime = gtime = 0;
- 
- 	if (lock_task_sighand(task, &flags)) {
-@@ -545,7 +545,6 @@ static int do_task_stat(struct seq_file
- 
- 			min_flt += sig->min_flt;
- 			maj_flt += sig->maj_flt;
--			thread_group_cputime_adjusted(task, &utime, &stime);
- 			gtime += sig->gtime;
- 
- 			if (sig->flags & (SIGNAL_GROUP_EXIT | SIGNAL_STOP_STOPPED))
-@@ -561,10 +560,13 @@ static int do_task_stat(struct seq_file
- 
- 	if (permitted && (!whole || num_threads < 2))
- 		wchan = !task_is_running(task);
--	if (!whole) {
++	/* FIXME 128b/132b SST support missing */
++	limits->max_rate = min(limits->max_rate, 810000);
 +
-+	if (whole) {
-+		thread_group_cputime_adjusted(task, &utime, &stime);
-+	} else {
-+		task_cputime_adjusted(task, &utime, &stime);
- 		min_flt = task->min_flt;
- 		maj_flt = task->maj_flt;
--		task_cputime_adjusted(task, &utime, &stime);
- 		gtime = task_gtime(task);
- 	}
+ 	limits->min_lane_count = 1;
+ 	limits->max_lane_count = intel_dp_max_lane_count(intel_dp);
  
 
 
