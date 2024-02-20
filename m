@@ -1,161 +1,100 @@
-Return-Path: <stable+bounces-20872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8C5685C4D0
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 20:29:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E51F85C4F0
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 20:36:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41EC61F256CA
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 19:29:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDCA528651D
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 19:36:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC9001350F9;
-	Tue, 20 Feb 2024 19:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA4CE135A7F;
+	Tue, 20 Feb 2024 19:36:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="q3vNfqTF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NwC0RuYv"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54FEA14A0AB
-	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 19:28:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6869527459
+	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 19:36:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708457331; cv=none; b=jEG4Mx5RBVkf6z3swSPIun59Smjrt5ACRNfq6OIxe8wBYvLrceLOS1eP5P3Ji4cGTRaOSOwFGYOC1+EZEYzKbPP6DwcC68w3uqFNndQ6IL8V72EKQcN01LrRSbZNgv9sDRSfxMW6pNG9pm9kdp7OUQpUrwFfiMrXO9ayXiAWaLI=
+	t=1708457808; cv=none; b=J9qFVIO0KQn2p3gg4PtY9H2da8wPoFWu95A3yAhDj01HnZZOwKCub2sV+azXkjjgky6PffKDfzQbh6IiwzuLLZN7Au+hi6txfaLPqJvEosJYYj20TYcHzfhzB8oD3FxvSoaTEC8Q2mljymue0IlDPpOhTR7w7gfmc72w7DyTU9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708457331; c=relaxed/simple;
-	bh=5sZWDALrpUsLrUG8zCA6NDC+XG7QiF4C28g0NDWG0OQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=M55ik2uWgCxOzFwpDXARno2aki6poFMRMoH1Jev4rpsE+FCOZaJYGxYFOAL9o6Ju1VzlwHYrAuwjkYbWZwmhPo1gaR3VQ54WX7pU6cjyMpAjwUgB6Agxq2cblwTqoSn7Nvodsd1Mio/oa9Rm25TwAnt2xwyx8IH3wdwAQ/ioDF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=q3vNfqTF; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from rrs24-12-35.corp.microsoft.com (unknown [131.107.147.51])
-	by linux.microsoft.com (Postfix) with ESMTPSA id E971E20B2000;
-	Tue, 20 Feb 2024 11:28:49 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com E971E20B2000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1708457330;
-	bh=1AcPb4JPfiU2ali82LG8ii5yCNloOb1rFpZHKWmuMTI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q3vNfqTFSyPlJvq1BtBcQm3LIPl9Ku0Qzvytnfi+gk4gYLIzcSfd096sOGsNlxoKY
-	 8fwMJYlARyfi1cdFSM9qiPvdnQbVIMVgKaY2Jr0rLjUOuOApHx6iMB9E+TqXOcY/r2
-	 Z5rXzmHHK/GpL9TSmRjOTwG3cxwfbkEibgoh2WP4=
-From: Easwar Hariharan <eahariha@linux.microsoft.com>
-To: stable@vger.kernel.org
-Cc: Easwar Hariharan <eahariha@linux.microsoft.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 5.15.y] arm64: Subscribe Microsoft Azure Cobalt 100 to ARM Neoverse N2 errata
-Date: Tue, 20 Feb 2024 19:28:16 +0000
-Message-Id: <20240220192816.2842423-1-eahariha@linux.microsoft.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <2024021948-flashing-prescribe-3dcf@gregkh>
-References: <2024021948-flashing-prescribe-3dcf@gregkh>
+	s=arc-20240116; t=1708457808; c=relaxed/simple;
+	bh=WTRdxJFis5pr/voDuEX09ymslR0dbI8T8B2LTg4ldA4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GsrREJJXnPlENgSSGZBNVXsZ5KwsWxyPgBooNyY4hC9Wj02mmyrwcKa2KXt/H8VJSpSg8xNDrkPKViK5IXrB5VNLIPijwaejloi+918EQD7xb1QRuAq45iLVQqlQYRyGq+nq3cF/yZjzjN06peJkK6xum0fxfmtVvZT94gMcGKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NwC0RuYv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2C04C433C7;
+	Tue, 20 Feb 2024 19:36:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708457807;
+	bh=WTRdxJFis5pr/voDuEX09ymslR0dbI8T8B2LTg4ldA4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NwC0RuYvIlSipUZfCH+g3S1T6HNfBrdq7Q0zzQAvYvziWBVbQbe8k135GUfhGbmpU
+	 OFulA16eW4lg53CuFb4eGTTC1n45j83GqQPi2RqweTaGHEgyEdfgLv3Bh8i4ZZfA6A
+	 LlCY+DxCEQUWAfUA62Fhkv0i3uWxmPa6N7WbU6wI4vUW2bi1l8ttVpwlZAlDFYR6JE
+	 Wrl281tCVNXA2e97ZA5dRqXUrc/hMsQg9VGDyECmn/Jr2opoC1ULQtauIkMvCYX6fJ
+	 mVT7wN2TSAi9KqW6Hlet8HVVMF0KvpGylV6dulamVGmiz9ygnPt4NXvI79flYihtl9
+	 z6q5wFlfUu4dQ==
+Date: Tue, 20 Feb 2024 14:36:46 -0500
+From: Sasha Levin <sashal@kernel.org>
+To: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: stable@vger.kernel.org
+Subject: Re: fs/bcachefs/
+Message-ID: <ZdT_Tmd6NF_NjIdl@sashalap>
+References: <g6el7eghhdk2v5osukhobvi4pige5bsfu5koqtmoyeknat36t7@irmmk7zo7edh>
+ <ZaW5r5kRbOcKveVn@sashalap>
+ <dlxqudswz64v6xn3fg2i6ob2msnytaatmnyhq4ivi7notzs6jf@itt42d42zmsw>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <dlxqudswz64v6xn3fg2i6ob2msnytaatmnyhq4ivi7notzs6jf@itt42d42zmsw>
 
-commit fb091ff394792c018527b3211bbdfae93ea4ac02 upstream
+On Tue, Feb 20, 2024 at 12:23:33PM -0500, Kent Overstreet wrote:
+>On Mon, Jan 15, 2024 at 06:03:11PM -0500, Sasha Levin wrote:
+>> On Mon, Jan 15, 2024 at 05:12:17PM -0500, Kent Overstreet wrote:
+>> > Hi stable team - please don't take patches for fs/bcachefs/ except from
+>> > myself; I'll be doing backports and sending pull requests after stuff
+>> > has been tested by my CI.
+>> >
+>> > Thanks, and let me know if there's any other workflow things I should
+>> > know about
+>>
+>> Sure, we can ignore fs/bcachefs/ patches.
+>
+>I see that you even acked this.
+>
+>What the fuck?
 
-Add the MIDR value of Microsoft Azure Cobalt 100, which is a Microsoft
-implemented CPU based on r0p0 of the ARM Neoverse N2 CPU, and therefore
-suffers from all the same errata.
+Is this really how you communicate with other humans?
 
-CC: stable@vger.kernel.org # 5.15+
-Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Acked-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
-Link: https://lore.kernel.org/r/20240214175522.2457857-1-eahariha@linux.microsoft.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
----
- Documentation/arm64/silicon-errata.rst | 7 +++++++
- arch/arm64/include/asm/cputype.h       | 4 ++++
- arch/arm64/kernel/cpu_errata.c         | 3 +++
- 3 files changed, 14 insertions(+)
 
-diff --git a/Documentation/arm64/silicon-errata.rst b/Documentation/arm64/silicon-errata.rst
-index d9fce65b2f04..27135b9c07ac 100644
---- a/Documentation/arm64/silicon-errata.rst
-+++ b/Documentation/arm64/silicon-errata.rst
-@@ -221,3 +221,10 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | Fujitsu        | A64FX           | E#010001        | FUJITSU_ERRATUM_010001      |
- +----------------+-----------------+-----------------+-----------------------------+
-++----------------+-----------------+-----------------+-----------------------------+
-+| Microsoft      | Azure Cobalt 100| #2139208        | ARM64_ERRATUM_2139208       |
-++----------------+-----------------+-----------------+-----------------------------+
-+| Microsoft      | Azure Cobalt 100| #2067961        | ARM64_ERRATUM_2067961       |
-++----------------+-----------------+-----------------+-----------------------------+
-+| Microsoft      | Azure Cobalt 100| #2253138        | ARM64_ERRATUM_2253138       |
-++----------------+-----------------+-----------------+-----------------------------+
-diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
-index 7dce9c0aa783..af3a678a76b3 100644
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -61,6 +61,7 @@
- #define ARM_CPU_IMP_HISI		0x48
- #define ARM_CPU_IMP_APPLE		0x61
- #define ARM_CPU_IMP_AMPERE		0xC0
-+#define ARM_CPU_IMP_MICROSOFT		0x6D
- 
- #define ARM_CPU_PART_AEM_V8		0xD0F
- #define ARM_CPU_PART_FOUNDATION		0xD00
-@@ -128,6 +129,8 @@
- 
- #define AMPERE_CPU_PART_AMPERE1		0xAC3
- 
-+#define MICROSOFT_CPU_PART_AZURE_COBALT_100	0xD49 /* Based on r0p0 of ARM Neoverse N2 */
-+
- #define MIDR_CORTEX_A53 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A53)
- #define MIDR_CORTEX_A57 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A57)
- #define MIDR_CORTEX_A72 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A72)
-@@ -179,6 +182,7 @@
- #define MIDR_APPLE_M1_ICESTORM_MAX MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M1_ICESTORM_MAX)
- #define MIDR_APPLE_M1_FIRESTORM_MAX MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M1_FIRESTORM_MAX)
- #define MIDR_AMPERE1 MIDR_CPU_MODEL(ARM_CPU_IMP_AMPERE, AMPERE_CPU_PART_AMPERE1)
-+#define MIDR_MICROSOFT_AZURE_COBALT_100 MIDR_CPU_MODEL(ARM_CPU_IMP_MICROSOFT, MICROSOFT_CPU_PART_AZURE_COBALT_100)
- 
- /* Fujitsu Erratum 010001 affects A64FX 1.0 and 1.1, (v0r0 and v1r0) */
- #define MIDR_FUJITSU_ERRATUM_010001		MIDR_FUJITSU_A64FX
-diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
-index 61f22e9c92b4..74584597bfb8 100644
---- a/arch/arm64/kernel/cpu_errata.c
-+++ b/arch/arm64/kernel/cpu_errata.c
-@@ -390,6 +390,7 @@ static const struct midr_range erratum_1463225[] = {
- static const struct midr_range trbe_overwrite_fill_mode_cpus[] = {
- #ifdef CONFIG_ARM64_ERRATUM_2139208
- 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
-+	MIDR_ALL_VERSIONS(MIDR_MICROSOFT_AZURE_COBALT_100),
- #endif
- #ifdef CONFIG_ARM64_ERRATUM_2119858
- 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
-@@ -403,6 +404,7 @@ static const struct midr_range trbe_overwrite_fill_mode_cpus[] = {
- static const struct midr_range tsb_flush_fail_cpus[] = {
- #ifdef CONFIG_ARM64_ERRATUM_2067961
- 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
-+	MIDR_ALL_VERSIONS(MIDR_MICROSOFT_AZURE_COBALT_100),
- #endif
- #ifdef CONFIG_ARM64_ERRATUM_2054223
- 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
-@@ -415,6 +417,7 @@ static const struct midr_range tsb_flush_fail_cpus[] = {
- static struct midr_range trbe_write_out_of_range_cpus[] = {
- #ifdef CONFIG_ARM64_ERRATUM_2253138
- 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
-+	MIDR_ALL_VERSIONS(MIDR_MICROSOFT_AZURE_COBALT_100),
- #endif
- #ifdef CONFIG_ARM64_ERRATUM_2224489
- 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
+So what happened here is that my script apparently crashes on empty
+"Fixes:" annotations (it can deal with invalid commits, various
+combinations of sha1 and description, but apparently not with just
+nothing at all).
+
+And so I've fixed my scripts, so hopefully this shouldn't happen again,
+but I'd ask for 2 things:
+
+1. Next time you should mail me, could you try and be more civil?
+
+2. Consider fixing your scripts
+.https://docs.kernel.org/process/submitting-patches.html#using-reported-by-tested-by-reviewed-by-suggested-by-and-fixes
+is pretty explicit as to how "Fixes:" tags are supposed to look like.
+
+
 -- 
-2.34.1
-
+Thanks,
+Sasha
 
