@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-21302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AA1785C83F
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:19:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E956D85C983
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:34:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0460A284BDF
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:19:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A511B229F2
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:34:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABF24151CE3;
-	Tue, 20 Feb 2024 21:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1865151CE3;
+	Tue, 20 Feb 2024 21:34:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jEfQ477/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xbezh/FI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F0614A4E6;
-	Tue, 20 Feb 2024 21:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7117B14A4D2;
+	Tue, 20 Feb 2024 21:34:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463992; cv=none; b=C1WzWaecETykTaX0kqN+CIE6BzwncXZUH3SzQOhjQ525GAcTUDOuRNtOzJsAY80MX68gfQAOijmM4y6Y0r/EWms2yYr544TY/FwCYYSRLUdDd2tn+QL2gRlHrlur9cEt4mkP8/bn7o/9oC2LurL8idaFW8cy66Ypqeom6d32zCM=
+	t=1708464881; cv=none; b=aSMahcHuFf7ZslyuASQ2AQoMW/mYm54HfNEVMnB3zcbrsxHtA99Kg4ZbpWkwq98/5JieOdiPvOnjAZ65uiTzC0Xcu3HOvMNA7Hz7st6HY2VJMKKBBsUopgqDjJyQCytymge9mKjWObNWF55XSrFe9CaYHeZ2llFJHPeXa9Wy7t8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463992; c=relaxed/simple;
-	bh=t1QTe/2lFs5SjpP2V9SD62UDiHV++vM+1HJNGpQqVgQ=;
+	s=arc-20240116; t=1708464881; c=relaxed/simple;
+	bh=O9Eqxok6z/xtkL8/Faveoi1Q5xhkiK/W6sNiuTxb4Fk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p+dqEHmDmOdgvXM2GwFsNUc4/maGB4AmQgijv0W2HYcQpKcHCY5dSD4wuMHwjHfpQu1C7PdjMEm/9+FFwaSZAmqcE7W7w5s5uqTCbwXE7rcM+3gxk1VvVHUK6xMMR/04Tg3732U4IPBrKuwykfNZm7sK/b2FBItOcwHx0+CdK6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jEfQ477/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7E62C433F1;
-	Tue, 20 Feb 2024 21:19:51 +0000 (UTC)
+	 MIME-Version; b=H5Og1Nxg8ibLo3U/Ivq3v71imYjE8ta1brCB21Bilhd5RIJD0iIpJIL6U6wv9lba1ul+t3przerG5DfLq/xitvnKR+B02AJWwhXb7hBLCYLG/acM9aB8ybpwV8/T8Uorixxjfp1seucmMt8WNBXNnEUnJxcK6JizKVfj/F8SlsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xbezh/FI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D461FC433C7;
+	Tue, 20 Feb 2024 21:34:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463992;
-	bh=t1QTe/2lFs5SjpP2V9SD62UDiHV++vM+1HJNGpQqVgQ=;
+	s=korg; t=1708464881;
+	bh=O9Eqxok6z/xtkL8/Faveoi1Q5xhkiK/W6sNiuTxb4Fk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jEfQ477/zVauwJoQ/zp2hgumceJdq6e9qRdSPi1wFo/bXiQQbnAWbHfpY4AtTnE5t
-	 ll4Wjo27Rtm0wNORoCiYSNNRNlHHKnsoV39KrRag/8cPUnMcEdwtk6fli9bJeDTTaX
-	 8BmXQBRJWWsiTrgyssIJT/ur+IkF+aAKe8Y+TQlE=
+	b=Xbezh/FI2FW04eA8HhcpXBaRnV5EJmmw7BQp6Y43b7T4rwuJ5etH5QDFIRi36LgpP
+	 kVdyE5cWJqLJr4MztTbUrlyDw0WGRsWVmQu06/XAL/BroArpuIIxIA9cPxJlossmN4
+	 TzzWfxtgJhkwYnoWauxcgd4UhaORqnn66ctyiIVw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.6 210/331] irqchip/irq-brcmstb-l2: Add write memory barrier before exit
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCH 6.7 167/309] Revert "workqueue: Override implicit ordered attribute in workqueue_apply_unbound_cpumask()"
 Date: Tue, 20 Feb 2024 21:55:26 +0100
-Message-ID: <20240220205644.304600456@linuxfoundation.org>
+Message-ID: <20240220205638.376726013@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +60,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Doug Berger <opendmb@gmail.com>
+From: Tejun Heo <tj@kernel.org>
 
-commit b0344d6854d25a8b3b901c778b1728885dd99007 upstream.
+commit aac8a59537dfc704ff344f1aacfd143c089ee20f upstream.
 
-It was observed on Broadcom devices that use GIC v3 architecture L1
-interrupt controllers as the parent of brcmstb-l2 interrupt controllers
-that the deactivation of the parent interrupt could happen before the
-brcmstb-l2 deasserted its output. This would lead the GIC to reactivate the
-interrupt only to find that no L2 interrupt was pending. The result was a
-spurious interrupt invoking handle_bad_irq() with its associated
-messaging. While this did not create a functional problem it is a waste of
-cycles.
+This reverts commit ca10d851b9ad0338c19e8e3089e24d565ebfffd7.
 
-The hazard exists because the memory mapped bus writes to the brcmstb-l2
-registers are buffered and the GIC v3 architecture uses a very efficient
-system register write to deactivate the interrupt.
+The commit allowed workqueue_apply_unbound_cpumask() to clear __WQ_ORDERED
+on now removed implicitly ordered workqueues. This was incorrect in that
+system-wide config change shouldn't break ordering properties of all
+workqueues. The reason why apply_workqueue_attrs() path was allowed to do so
+was because it was targeting the specific workqueue - either the workqueue
+had WQ_SYSFS set or the workqueue user specifically tried to change
+max_active, both of which indicate that the workqueue doesn't need to be
+ordered.
 
-Add a write memory barrier prior to invoking chained_irq_exit() to
-introduce a dsb(st) on those systems to ensure the system register write
-cannot be executed until the memory mapped writes are visible to the
-system.
+The implicitly ordered workqueue promotion was removed by the previous
+commit 3bc1e711c26b ("workqueue: Don't implicitly make UNBOUND workqueues w/
+@max_active==1 ordered"). However, it didn't update this path and broke
+build. Let's revert the commit which was incorrect in the first place which
+also fixes build.
 
-[ florian: Added Fixes tag ]
-
-Fixes: 7f646e92766e ("irqchip: brcmstb-l2: Add Broadcom Set Top Box  Level-2 interrupt controller")
-Signed-off-by: Doug Berger <opendmb@gmail.com>
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Acked-by: Marc Zyngier <maz@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240210012449.3009125-1-florian.fainelli@broadcom.com
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: 3bc1e711c26b ("workqueue: Don't implicitly make UNBOUND workqueues w/ @max_active==1 ordered")
+Fixes: ca10d851b9ad ("workqueue: Override implicit ordered attribute in workqueue_apply_unbound_cpumask()")
+Cc: stable@vger.kernel.org # v6.6+
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-brcmstb-l2.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ kernel/workqueue.c |    8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
---- a/drivers/irqchip/irq-brcmstb-l2.c
-+++ b/drivers/irqchip/irq-brcmstb-l2.c
-@@ -2,7 +2,7 @@
- /*
-  * Generic Broadcom Set Top Box Level 2 Interrupt controller driver
-  *
-- * Copyright (C) 2014-2017 Broadcom
-+ * Copyright (C) 2014-2024 Broadcom
-  */
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -5793,13 +5793,9 @@ static int workqueue_apply_unbound_cpuma
+ 	list_for_each_entry(wq, &workqueues, list) {
+ 		if (!(wq->flags & WQ_UNBOUND))
+ 			continue;
+-
+ 		/* creating multiple pwqs breaks ordering guarantee */
+-		if (!list_empty(&wq->pwqs)) {
+-			if (wq->flags & __WQ_ORDERED_EXPLICIT)
+-				continue;
+-			wq->flags &= ~__WQ_ORDERED;
+-		}
++		if (wq->flags & __WQ_ORDERED)
++			continue;
  
- #define pr_fmt(fmt)	KBUILD_MODNAME	": " fmt
-@@ -112,6 +112,9 @@ static void brcmstb_l2_intc_irq_handle(s
- 		generic_handle_domain_irq(b->domain, irq);
- 	} while (status);
- out:
-+	/* Don't ack parent before all device writes are done */
-+	wmb();
-+
- 	chained_irq_exit(chip, desc);
- }
- 
+ 		ctx = apply_wqattrs_prepare(wq, wq->unbound_attrs, unbound_cpumask);
+ 		if (IS_ERR(ctx)) {
 
 
 
