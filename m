@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-21078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B29D85C70B
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:08:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D49085C734
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:10:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3C991F2249C
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:08:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32D171F227CF
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:10:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B5F31509AC;
-	Tue, 20 Feb 2024 21:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34428152E02;
+	Tue, 20 Feb 2024 21:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NSzfRqXl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ERwy2sjG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF3114C585;
-	Tue, 20 Feb 2024 21:08:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8B71152DF9;
+	Tue, 20 Feb 2024 21:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463280; cv=none; b=VLe5cnbxERzXndRtQVYG88WtPuW5T+hFFFcJzw5cPTU3yvePA+ViXoczZHjjAUktWHc8aMAyV8OELl/f9TsnwG1KqLXBM1ir3SwmjPrWdbXa5bNWR6PckugTl65yQwNbCU2dabqBg7DObWM7C/mswORz3ihWs6XBJ31o8+XvPsU=
+	t=1708463410; cv=none; b=k7lNciXxEkvpSqzLfLtGIK4t+OK/4UptJwqwNaSykZ9L+DhBl7j/UekC920TH03HMIIs9x3zNtMVm/MPIDtegmNbFnfsymUXFHT8Nm8igwB47xNdw6zgXPyIU8GRlTLXb+MoEADlViCSST+fNW1WnYBACqKB7ME3ER9ymVGHrBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463280; c=relaxed/simple;
-	bh=PVkZjKjxyhYP2ucsabGrFtaiWrDK/J6L7XG3pySUJDk=;
+	s=arc-20240116; t=1708463410; c=relaxed/simple;
+	bh=Fm5nyNiQhAHEoqroFUFCfugFa6IubF/aLZ0+sIskEdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=awBgU7gPweZ0l0YxteVyeflpsk/lrZQoMe2biSerbBaxSlefxr/rUnGBTy535c2g2GeuHFZhJEfKQKVgx+LxWcPu+J01HF98XJ9GduLOjcnJjZ7ik/y//EbJHI1be83V8LOWiJ1KcbKQvCgn8lb8Tc1Tn7XuAuvQq3JUqCWcedg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NSzfRqXl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39439C433F1;
-	Tue, 20 Feb 2024 21:08:00 +0000 (UTC)
+	 MIME-Version; b=UCrkn1FB+fwjSUeGNcrFx7EAn7AYUXljLyfpPvKbMSrciZeo4ZP7U3rL5fPkIMMVZc82ZPHtsrW6m2PDXC7/tQ3khZAKjBsqPq6qvyw+4WUM524sBhMubXrnuUynrL6Fbt1mgtKm/0m4C5lkKALz2iKiZtrGVmE2DQBE9Z3/VaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ERwy2sjG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2237AC433F1;
+	Tue, 20 Feb 2024 21:10:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463280;
-	bh=PVkZjKjxyhYP2ucsabGrFtaiWrDK/J6L7XG3pySUJDk=;
+	s=korg; t=1708463408;
+	bh=Fm5nyNiQhAHEoqroFUFCfugFa6IubF/aLZ0+sIskEdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NSzfRqXlhGe51ivFlVEai4ngXxrH1AAJ9bjf/CSnYmxi8Lmofohigre7PAqSmQg3k
-	 MUgnLJ8SxtPicDQfouJS4tGOMQkx0Mc67xdmPaDKqRucFvZqExA2kMMJwDDpqiZmyy
-	 6Sm+kt9Y4Ny6FFA6fe07gkELZAENMBzshcZmrepw=
+	b=ERwy2sjGYXXNg2sKX+1d/Dr8XMlijlWqtJHgUNY1HkV7EsmSmnzt4rnsCFpZi4dxo
+	 IXlCM+AXZWUpT3rsTU8E0dJpuZjvNphhO/F2jhmDWyusVr1rajG0VwphfBYP+VmvJX
+	 VCj+/2rx2/5TfI3Q3fM7ceY6L2WY0a237gEzeues=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paulo Alcantara <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
-	Guruswamy Basavaiah <guruswamy.basavaiah@broadcom.com>
-Subject: [PATCH 6.1 192/197] smb: client: fix parsing of SMB3.1.1 POSIX create context
+	Ido Schimmel <idosch@nvidia.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 035/331] selftests: forwarding: Suppress grep warnings
 Date: Tue, 20 Feb 2024 21:52:31 +0100
-Message-ID: <20240220204846.827230793@linuxfoundation.org>
+Message-ID: <20240220205638.699618769@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
-References: <20240220204841.073267068@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +64,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 76025cc2285d9ede3d717fe4305d66f8be2d9346 upstream.
+[ Upstream commit dd6b34589441f2ad4698dd88a664811550148b41 ]
 
-The data offset for the SMB3.1.1 POSIX create context will always be
-8-byte aligned so having the check 'noff + nlen >= doff' in
-smb2_parse_contexts() is wrong as it will lead to -EINVAL because noff
-+ nlen == doff.
+Suppress the following grep warnings:
 
-Fix the sanity check to correctly handle aligned create context data.
+[...]
+INFO: # Port group entries configuration tests - (*, G)
+TEST: Common port group entries configuration tests (IPv4 (*, G))   [ OK ]
+TEST: Common port group entries configuration tests (IPv6 (*, G))   [ OK ]
+grep: warning: stray \ before /
+grep: warning: stray \ before /
+grep: warning: stray \ before /
+TEST: IPv4 (*, G) port group entries configuration tests            [ OK ]
+grep: warning: stray \ before /
+grep: warning: stray \ before /
+grep: warning: stray \ before /
+TEST: IPv6 (*, G) port group entries configuration tests            [ OK ]
+[...]
 
-Fixes: af1689a9b770 ("smb: client: fix potential OOBs in smb2_parse_contexts()")
-Signed-off-by: Paulo Alcantara <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Guruswamy Basavaiah <guruswamy.basavaiah@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+They do not fail the test, but do clutter the output.
+
+Fixes: b6d00da08610 ("selftests: forwarding: Add bridge MDB test")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://lore.kernel.org/r/20240208155529.1199729-4-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2pdu.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/net/forwarding/bridge_mdb.sh | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -2184,7 +2184,7 @@ int smb2_parse_contexts(struct TCP_Serve
+diff --git a/tools/testing/selftests/net/forwarding/bridge_mdb.sh b/tools/testing/selftests/net/forwarding/bridge_mdb.sh
+index ebeb43f6606c..a3678dfe5848 100755
+--- a/tools/testing/selftests/net/forwarding/bridge_mdb.sh
++++ b/tools/testing/selftests/net/forwarding/bridge_mdb.sh
+@@ -329,7 +329,7 @@ __cfg_test_port_ip_star_g()
  
- 		noff = le16_to_cpu(cc->NameOffset);
- 		nlen = le16_to_cpu(cc->NameLength);
--		if (noff + nlen >= doff)
-+		if (noff + nlen > doff)
- 			return -EINVAL;
+ 	bridge -d -s mdb get dev br0 grp $grp vid 10 | grep -q " 0.00"
+ 	check_err $? "(*, G) \"permanent\" entry has a pending group timer"
+-	bridge -d -s mdb get dev br0 grp $grp vid 10 | grep -q "\/0.00"
++	bridge -d -s mdb get dev br0 grp $grp vid 10 | grep -q "/0.00"
+ 	check_err $? "\"permanent\" source entry has a pending source timer"
  
- 		name = (char *)cc + noff;
+ 	bridge mdb del dev br0 port $swp1 grp $grp vid 10
+@@ -346,7 +346,7 @@ __cfg_test_port_ip_star_g()
+ 
+ 	bridge -d -s mdb get dev br0 grp $grp vid 10 | grep -q " 0.00"
+ 	check_fail $? "(*, G) EXCLUDE entry does not have a pending group timer"
+-	bridge -d -s mdb get dev br0 grp $grp vid 10 | grep -q "\/0.00"
++	bridge -d -s mdb get dev br0 grp $grp vid 10 | grep -q "/0.00"
+ 	check_err $? "\"blocked\" source entry has a pending source timer"
+ 
+ 	bridge mdb del dev br0 port $swp1 grp $grp vid 10
+@@ -363,7 +363,7 @@ __cfg_test_port_ip_star_g()
+ 
+ 	bridge -d -s mdb get dev br0 grp $grp vid 10 | grep -q " 0.00"
+ 	check_err $? "(*, G) INCLUDE entry has a pending group timer"
+-	bridge -d -s mdb get dev br0 grp $grp vid 10 | grep -q "\/0.00"
++	bridge -d -s mdb get dev br0 grp $grp vid 10 | grep -q "/0.00"
+ 	check_fail $? "Source entry does not have a pending source timer"
+ 
+ 	bridge mdb del dev br0 port $swp1 grp $grp vid 10
+-- 
+2.43.0
+
 
 
 
