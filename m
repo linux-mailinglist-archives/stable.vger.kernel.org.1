@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-21517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EF6285C93D
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:31:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66D4685C792
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:14:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19D16284C4A
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:31:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D0F01F255F8
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:14:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E781151CD6;
-	Tue, 20 Feb 2024 21:31:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 651B7151CC8;
+	Tue, 20 Feb 2024 21:14:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nyh3f4tF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F2DzSVry"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B8EE14A4D2;
-	Tue, 20 Feb 2024 21:31:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21AA11509BF;
+	Tue, 20 Feb 2024 21:14:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464663; cv=none; b=rk5LsiI1ehLmy8mkI64GCjn1zUxG/eOHX4zjvh6EaznclUL1i9DhrPgNTbsrX7qtVSbML5/v6VDibyeuCjWqxqDrvfbwBpF5eVUds0D+5pFOBCu4ZbMgt1T5wwch27wto04MqihXSO8kt1DG4+uVJpMkmw0ud3ux37hwxN49Ks0=
+	t=1708463653; cv=none; b=qrYSYjImsv7MLTGS05lSkUAH68asemKgk8m8yi9t+spLRYqVRTR2ah5KE5bfnEo6UaDsr/dhp1TCwQL8RZuPLeqG+drOSzeyeYznC1l6yuwef70dm944PRXeiLHdpuFkO8eMuCUTTHzR/wqG8K0i32u6P4kmcmrIpojMT1FOD5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464663; c=relaxed/simple;
-	bh=Nq+Uj/U1ljAz3yf4UR6PHEku2LfmD6S1Pxi8tc4ccPc=;
+	s=arc-20240116; t=1708463653; c=relaxed/simple;
+	bh=dQv3HFFhibXVd14DEHU2lPiYW50+Q53LcsECNqKXZAw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U8HLJrs9LZsh0BJIvS8lu2m8Mw96vzP87y5bwaKwQCKY5oFVh+8lXxkGkdMbDUsrxMz/BsbULWSDSw4ofNL+ZMI8WhqJjGX1vnsFkeOUg8G7fofSlOkJ30l9RCdavXxb3rTsQ/rlq2I0jt92c8lZSn+Tv3j++LrCGhV/O0p3bTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nyh3f4tF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9902AC433C7;
-	Tue, 20 Feb 2024 21:31:02 +0000 (UTC)
+	 MIME-Version; b=gdS4vDHGbZ3PCGuhx6o475JVC7jJc3y3Z0Ukvj+53pXoBvBc2gcH4oIF3XxWt0a7UIOP93kMPL62wq90rKnOFPSMjoh1liKPqhMRqxz0b/gV3a3iwBHMgIfLRF5OlIHObWbc8MDUW+Pfd1p430PLLZ1yS1eyf0BUgosfEkC2eQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F2DzSVry; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89ED8C433C7;
+	Tue, 20 Feb 2024 21:14:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464663;
-	bh=Nq+Uj/U1ljAz3yf4UR6PHEku2LfmD6S1Pxi8tc4ccPc=;
+	s=korg; t=1708463653;
+	bh=dQv3HFFhibXVd14DEHU2lPiYW50+Q53LcsECNqKXZAw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nyh3f4tF5iK93bCD0Gs3EqGUd268gl71g3vZLaQQNMiquO85oEDJESYrm3+Moo86H
-	 HAEaKQqW0Rj5B/nBeum6ve+k0BzXDm0bnt9PeHQy97zuwwg5UZXcnZcom9uGaV0X+g
-	 J9zL4jlElmC17pa2rQYgCK0FrR1fhKPupKRLBQuo=
+	b=F2DzSVry5GQsQWBoh59iwlMfP+J/4Zy19eINuN/CTOZc4WOWcFYLsoWTIUE7tzJCR
+	 CJjJXhXGUqSBP/KxXJPZZ4r4WarX5fiuxtQr8saESfmcSjZMF1zAc3IodZbhpAYUH/
+	 r40jEMI5SlHMIkX5FBkoW1pCQaii3DTg8JA8LVbU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Will Deacon <will@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.7 066/309] scs: add CONFIG_MMU dependency for vfree_atomic()
-Date: Tue, 20 Feb 2024 21:53:45 +0100
-Message-ID: <20240220205635.279208766@linuxfoundation.org>
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 110/331] selftests: mptcp: allow changing subtests prefix
+Date: Tue, 20 Feb 2024 21:53:46 +0100
+Message-ID: <20240220205641.069200737@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samuel Holland <samuel.holland@sifive.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit 6f9dc684cae638dda0570154509884ee78d0f75c upstream.
+commit de46d138e7735eded9756906747fd3a8c3a42225 upstream.
 
-The shadow call stack implementation fails to build without CONFIG_MMU:
+If a CI executes the same selftest multiple times with different
+options, all results from the same subtests will have the same title,
+which confuse the CI. With the same title printed in TAP, the tests are
+considered as the same ones.
 
-  ld.lld: error: undefined symbol: vfree_atomic
-  >>> referenced by scs.c
-  >>>               kernel/scs.o:(scs_free) in archive vmlinux.a
+Now, it is possible to override this prefix by using MPTCP_LIB_KSFT_TEST
+env var, and have a different title.
 
-Link: https://lkml.kernel.org/r/20240122175204.2371009-1-samuel.holland@sifive.com
-Fixes: a2abe7cbd8fe ("scs: switch to vmapped shadow stacks")
-Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+While at it, use 'basename' to remove the suffix as well instead of
+using an extra 'sed'.
+
+Fixes: c4192967e62f ("selftests: mptcp: lib: format subtests results in TAP")
+Cc: stable@vger.kernel.org
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/20240131-upstream-net-20240131-mptcp-ci-issues-v1-7-4c1c11e571ff@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/net/mptcp/mptcp_lib.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -681,6 +681,7 @@ config SHADOW_CALL_STACK
- 	bool "Shadow Call Stack"
- 	depends on ARCH_SUPPORTS_SHADOW_CALL_STACK
- 	depends on DYNAMIC_FTRACE_WITH_ARGS || DYNAMIC_FTRACE_WITH_REGS || !FUNCTION_GRAPH_TRACER
-+	depends on MMU
- 	help
- 	  This option enables the compiler's Shadow Call Stack, which
- 	  uses a shadow stack to protect function return addresses from
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_lib.sh b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
+index 022262a2cfe0..3a2abae5993e 100644
+--- a/tools/testing/selftests/net/mptcp/mptcp_lib.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
+@@ -6,7 +6,7 @@ readonly KSFT_FAIL=1
+ readonly KSFT_SKIP=4
+ 
+ # shellcheck disable=SC2155 # declare and assign separately
+-readonly KSFT_TEST=$(basename "${0}" | sed 's/\.sh$//g')
++readonly KSFT_TEST="${MPTCP_LIB_KSFT_TEST:-$(basename "${0}" .sh)}"
+ 
+ MPTCP_LIB_SUBTESTS=()
+ 
+-- 
+2.43.2
+
 
 
 
