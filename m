@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-21663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8512185C9D1
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:38:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B2FD85C895
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:23:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 249811F22E2C
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:38:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1C39EB20C8E
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:23:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 674F8151CF0;
-	Tue, 20 Feb 2024 21:38:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C6F151CD9;
+	Tue, 20 Feb 2024 21:23:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bZ5X3mYZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q4kbsvWv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 256F4446C9;
-	Tue, 20 Feb 2024 21:38:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 202002DF9F;
+	Tue, 20 Feb 2024 21:23:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708465120; cv=none; b=Su9lF0lFp/XsNy78pD1nFKpXvMteFzJUr/aDXhYsHCGzvJlJrAVPFNKeBbUDqiJRYfmoUv60nJ/4GYI9JjZB15VUycIJPA10wICqQvOqROD7h1prnrtiwms4jLXsVWSCZWuVf6iWy9r3P0+ji9RJaQ3WEjStVbc+GQ61Kz7B3pA=
+	t=1708464210; cv=none; b=SJFmIRItrT/DtuAjy9qg7UneFoBaAUuzLbCbZCrQF6mrEfyrG33xnI+jR3Av1iAHOEUrBDNAC7PH6e9ZHFTSQ2L72U9/bP5cl0eY1PyIzOOraf7x3qrlm+j1ucqMWsQjqrvCkeSpLZS9opUNxljwV6PuNpep85W2s5CkwyVwTB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708465120; c=relaxed/simple;
-	bh=u0395+UQfa+IoEgioWe7wbQ2v/QUBspVjH8V/mi3Rl4=;
+	s=arc-20240116; t=1708464210; c=relaxed/simple;
+	bh=mcJ/FuwyIno3oVxQql+450MGuNKDSpHWOBcr47a91Lw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YKF192PFOfRlbxNCPW1m3li5rBKkH3YXPlLDMZGrWm0T91neKS/+80OFYOM3OXEwESAeliGxGSwf4yqcz/s8qaPn2hTWygCp5D1KSB+sTMvaINpGmnyLi4mxcTCNRe0g6T5wmfzt228iH5LegJ6dC+cIaItexob6ubvUFi7G+VU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bZ5X3mYZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8969EC433C7;
-	Tue, 20 Feb 2024 21:38:39 +0000 (UTC)
+	 MIME-Version; b=FO9TYlx8SDe5Z13LJv07ga4OpKIHQ07c5ED1Re9Lsz2eqdbtmGp1H8EU/GWx/WmMeyz7W4FxMw+pN2eZwA9YryWmuTXEchnAcyV2/gNfbyH/7qiijUqRAG9cfvggfEfgXfnyzDdoEQaX9EWRZ3KMDUs1oferAj2dYFddChZQWCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q4kbsvWv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92ED2C433F1;
+	Tue, 20 Feb 2024 21:23:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708465120;
-	bh=u0395+UQfa+IoEgioWe7wbQ2v/QUBspVjH8V/mi3Rl4=;
+	s=korg; t=1708464210;
+	bh=mcJ/FuwyIno3oVxQql+450MGuNKDSpHWOBcr47a91Lw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bZ5X3mYZlu4ZrW1/XdOmRuMSl3k1P+NQCcJFSI+V1AMqyDW85XJM4w0YJQaSW1E8Y
-	 P6806bBJM2syxDthO0L9Whi3GpZB5dgaUsvLX/Y7Gi1zF3xC1FsrPVSjCYZD5HaLDp
-	 p89bX2D3vA0AzynjVm8zEFzYy8StC2e014w027TM=
+	b=Q4kbsvWvjqk9G02qIf05znN6QtH7ivUnycou9NCbxxu1TTuPMsiV+eqvelvmpNH6e
+	 AAEHpFBlT3I8mNNotzSZXJQjL51wpKXvm1/C+U4vF8LYoI+WC8NYwZhziR8vCUltwa
+	 MJi+ZDH2RLHTVL+jVNrM3o4SoLiQWeEfnwy8uu5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuming Fan <shumingf@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.7 242/309] ALSA: hda/realtek: add IDs for Dell dual spk platform
-Date: Tue, 20 Feb 2024 21:56:41 +0100
-Message-ID: <20240220205640.735558738@linuxfoundation.org>
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 286/331] eventfs: Make sure that parent->d_inode is locked in creating files/dirs
+Date: Tue, 20 Feb 2024 21:56:42 +0100
+Message-ID: <20240220205646.968906653@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuming Fan <shumingf@realtek.com>
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-commit fddab35fd064414c677e9488c4fb3a1f67725d37 upstream.
+commit f49f950c217bfb40f11662bab39cb388d41e4cfb upstream.
 
-This patch adds another two IDs for the Dell dual speaker platform.
+Since the locking of the parent->d_inode has been moved outside the
+creation of the files and directories (as it use to be locked via a
+conditional), add a WARN_ON_ONCE() to the case that it's not locked.
 
-Signed-off-by: Shuming Fan <shumingf@realtek.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240205072252.3791500-1-shumingf@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lkml.kernel.org/r/20231121231112.853962542@goodmis.org
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/tracefs/event_inode.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9724,7 +9724,9 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x1028, 0x0b71, "Dell Inspiron 16 Plus 7620", ALC295_FIXUP_DELL_INSPIRON_TOP_SPEAKERS),
- 	SND_PCI_QUIRK(0x1028, 0x0beb, "Dell XPS 15 9530 (2023)", ALC289_FIXUP_DELL_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1028, 0x0c03, "Dell Precision 5340", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE),
-+	SND_PCI_QUIRK(0x1028, 0x0c0b, "Dell Oasis 14 RPL-P", ALC289_FIXUP_RTK_AMP_DUAL_SPK),
- 	SND_PCI_QUIRK(0x1028, 0x0c0d, "Dell Oasis", ALC289_FIXUP_RTK_AMP_DUAL_SPK),
-+	SND_PCI_QUIRK(0x1028, 0x0c0e, "Dell Oasis 16", ALC289_FIXUP_RTK_AMP_DUAL_SPK),
- 	SND_PCI_QUIRK(0x1028, 0x0c19, "Dell Precision 3340", ALC236_FIXUP_DELL_DUAL_CODECS),
- 	SND_PCI_QUIRK(0x1028, 0x0c1a, "Dell Precision 3340", ALC236_FIXUP_DELL_DUAL_CODECS),
- 	SND_PCI_QUIRK(0x1028, 0x0c1b, "Dell Precision 3440", ALC236_FIXUP_DELL_DUAL_CODECS),
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -327,6 +327,8 @@ create_file_dentry(struct eventfs_inode
+ 	struct dentry **e_dentry = &ei->d_children[idx];
+ 	struct dentry *dentry;
+ 
++	WARN_ON_ONCE(!inode_is_locked(parent->d_inode));
++
+ 	mutex_lock(&eventfs_mutex);
+ 	if (ei->is_freed) {
+ 		mutex_unlock(&eventfs_mutex);
+@@ -430,6 +432,8 @@ create_dir_dentry(struct eventfs_inode *
+ {
+ 	struct dentry *dentry = NULL;
+ 
++	WARN_ON_ONCE(!inode_is_locked(parent->d_inode));
++
+ 	mutex_lock(&eventfs_mutex);
+ 	if (pei->is_freed || ei->is_freed) {
+ 		mutex_unlock(&eventfs_mutex);
 
 
 
