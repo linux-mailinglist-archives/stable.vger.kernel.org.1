@@ -1,137 +1,97 @@
-Return-Path: <stable+bounces-20875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BB7B85C557
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:00:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13A2C85C57C
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:06:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C4DC1C21AFD
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 20:00:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3C5F283C7E
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 20:06:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2003114A4C7;
-	Tue, 20 Feb 2024 20:00:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 342E614AD00;
+	Tue, 20 Feb 2024 20:06:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nIjbzs4q"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ONNcYMz4"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from out-176.mta0.migadu.com (out-176.mta0.migadu.com [91.218.175.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 882F014A0B7;
-	Tue, 20 Feb 2024 20:00:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692F814A0A4
+	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 20:06:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708459235; cv=none; b=d/IdyTdzuzPPDnCnD1DGrfT/n1BNt61EH2WHUMbsq2u/QdYR4DC+GWVrnd+2szyq+/UVheTnzb72eqp4/COR7Mvj2xUMOeXoqVSNTsAVk3bQP6veyu2TY/kv0A9DMMtyEEljazBfuJMUv4ixQL65+yxty8NwV/4ZrDRdZUryQSk=
+	t=1708459583; cv=none; b=HCkl7Cq9zcSXFVeD9+Qc0SC2jqD/d8c25rX2w+UoDCSaHXRMpqC9O3TPRbjOqgSESwM7SXPJ4K9Tw8HR+P5BUVN8yjanNX2jiwpPe8V5rIFEWN+gK59e6rLtZl3Wr+zvXwG9C+P1QGA80IYSFMBCnMrHzX3EyR62sWGsoYkRQ6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708459235; c=relaxed/simple;
-	bh=URWZUOhNI0sexKyZTlxTZyLbnP+v/ASOl1Dy/F0ps98=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PFn0srJI5M7yAlCtFpMJocUwbAIMO8n04pTgkISH6eDOvnw/E/xsL2bOC25iDyvXIw4VWIfP9AKS6XzC//KcpAWnOdimm5Jsfy+Vw4/KU90FEV29jyoaQZGJXyAt/ziLZnlXMdNK+CvKpERGkK/N5wVy3zDWl0BDfLCwrVOiwxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nIjbzs4q; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708459233; x=1739995233;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=URWZUOhNI0sexKyZTlxTZyLbnP+v/ASOl1Dy/F0ps98=;
-  b=nIjbzs4qRKEyTrWDV/i79ppuwsQBj6dyH5m7j/kDq/EiR10obwBoTmwm
-   Gc7WLn8OW6mCi3Fq5J2rpFU+B4HClue9Xpd2VpGFHp2QomqD2yW1GNmmH
-   htySgMNUKrRTWcBTql89XPdKinlQeyg+IofFxBDnB/IwvIWZc6pCOjWpU
-   nmkvVO2jm39y/dQCsZH2GNdL6oinNPFt7DZ8bOscKQCRDLQHOL4nq8Emk
-   24kiyl70bQkzWo+ej3OGHo8L3Ij38nSiIc/WWbN1KBnIpS7GhaUInQkBN
-   DSeSpbF5qxQx8sR9Gai2rbJw0hEGE2vLv5L6dYKQrus7XngFQkGFXsP9y
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="2449882"
-X-IronPort-AV: E=Sophos;i="6.06,174,1705392000"; 
-   d="scan'208";a="2449882"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 12:00:32 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,174,1705392000"; 
-   d="scan'208";a="5043148"
-Received: from twinkler-lnx.jer.intel.com ([10.12.231.216])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 12:00:30 -0800
-From: Tomas Winkler <tomas.winkler@intel.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Alexander Usyskin <alexander.usyskin@intel.com>,
-	Vitaly Lubart <vitaly.lubart@intel.com>,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Tomas Winkler <tomas.winkler@intel.com>
-Subject: [char-misc-next v2] mei: gsc_proxy: match component when GSC is on different bus
-Date: Tue, 20 Feb 2024 22:00:20 +0200
-Message-ID: <20240220200020.231192-1-tomas.winkler@intel.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1708459583; c=relaxed/simple;
+	bh=pg38rS8S2A1gPabej2HtUmI7TYSVqjZyucQFfNM5+YM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JscE1X66rBgidLudnH60x4EWF1p3gCNEAqiV/tQLw+V1GIQv2DONo4nXJHcA2wfR8cyf7p0TXU8XfVJ9M/giJgRUlebu6Y77F+8x4nlW4gFPKRZjwoKmB1Md+k0KRFv9hswCc2n6mRIGAzalTgbvBet1WiAh7GDMPwQq/4QG53E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ONNcYMz4; arc=none smtp.client-ip=91.218.175.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Tue, 20 Feb 2024 15:06:14 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1708459578;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=r0bDVeRy/B4z5JVPDIUowCP8fteJCwRoaDNyBKO14kc=;
+	b=ONNcYMz4m7w3Xu5m+C4YdqZD3tBy21CuffnM1h+gAutXaQTJeobrp5chKgwBCrggrQzk2Q
+	tC2rNRMNb2KZfQhvnUxceH1ubvKZay3+d55y1uS5TaMhb3mP46aLnJqPi6hO+T2+cxEBHa
+	eVW5TCSfyRx4rM8iObjLc1v92uJNYoQ=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kent Overstreet <kent.overstreet@linux.dev>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
+Subject: Re: fs/bcachefs/
+Message-ID: <g2jlxm6hcpywrezexi3kxrl6nu7bdmkoafa2kh2ptcf7olhofl@ycilgjsqyycq>
+References: <g6el7eghhdk2v5osukhobvi4pige5bsfu5koqtmoyeknat36t7@irmmk7zo7edh>
+ <ZaW5r5kRbOcKveVn@sashalap>
+ <dlxqudswz64v6xn3fg2i6ob2msnytaatmnyhq4ivi7notzs6jf@itt42d42zmsw>
+ <2024022056-monkhood-fossil-ec02@gregkh>
+ <2024022007-buggy-operator-2dc5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2024022007-buggy-operator-2dc5@gregkh>
+X-Migadu-Flow: FLOW_OUT
 
-From: Alexander Usyskin <alexander.usyskin@intel.com>
+On Tue, Feb 20, 2024 at 07:53:04PM +0100, Greg KH wrote:
+> On Tue, Feb 20, 2024 at 07:03:23PM +0100, Greg KH wrote:
+> > On Tue, Feb 20, 2024 at 12:23:33PM -0500, Kent Overstreet wrote:
+> > > On Mon, Jan 15, 2024 at 06:03:11PM -0500, Sasha Levin wrote:
+> > > > On Mon, Jan 15, 2024 at 05:12:17PM -0500, Kent Overstreet wrote:
+> > > > > Hi stable team - please don't take patches for fs/bcachefs/ except from
+> > > > > myself; I'll be doing backports and sending pull requests after stuff
+> > > > > has been tested by my CI.
+> > > > > 
+> > > > > Thanks, and let me know if there's any other workflow things I should
+> > > > > know about
+> > > > 
+> > > > Sure, we can ignore fs/bcachefs/ patches.
+> > > 
+> > > I see that you even acked this.
+> > > 
+> > > What the fuck?
+> > 
+> > Accidents happen, you were copied on those patches.  I'll go drop them
+> > now, not a big deal.
+> 
+> Wait, why are you doing "Fixes:" with an empty tag in your commits like
+> 1a1c93e7f814 ("bcachefs: Fix missing bch2_err_class() calls")?
+> 
+> That's messing with scripts and doesn't make much sense.  Please put a
+> real git id in there as the documentation suggests to.
 
-On Arrow Lake S systems, MEI is no longer strictly connected to bus 0,
-while graphics remain exclusively on bus 0. Adapt the component
-matching logic to accommodate this change:
-
-Original behavior: Required both MEI and graphics to be on the same
-bus 0.
-
-New behavior: Only enforces graphics to be on bus 0 (integrated),
-allowing MEI to reside on any bus.
-This ensures compatibility with Arrow Lake S and maintains functionality
-for the legacy systems.
-
-Fixes: 1dd924f6885b ("mei: gsc_proxy: add gsc proxy driver")
-Cc: <stable@vger.kernel.org> # v6.3+
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
-Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
----
-V2: Add reference to fixed commit
-Requires 'mei: me: add arrow lake point S DID'
-https://lore.kernel.org/lkml/20240211103912.117105-1-tomas.winkler@intel.com/
-
- drivers/misc/mei/gsc_proxy/mei_gsc_proxy.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/misc/mei/gsc_proxy/mei_gsc_proxy.c b/drivers/misc/mei/gsc_proxy/mei_gsc_proxy.c
-index be52b113aea937c7c658e06c..89364bdbb1290f5726a34945 100644
---- a/drivers/misc/mei/gsc_proxy/mei_gsc_proxy.c
-+++ b/drivers/misc/mei/gsc_proxy/mei_gsc_proxy.c
-@@ -96,7 +96,8 @@ static const struct component_master_ops mei_component_master_ops = {
-  *
-  *    The function checks if the device is pci device and
-  *    Intel VGA adapter, the subcomponent is SW Proxy
-- *    and the parent of MEI PCI and the parent of VGA are the same PCH device.
-+ *    and the VGA is on the bus 0 reserved for built-in devices
-+ *    to reject discrete GFX.
-  *
-  * @dev: master device
-  * @subcomponent: subcomponent to match (I915_COMPONENT_SWPROXY)
-@@ -123,7 +124,8 @@ static int mei_gsc_proxy_component_match(struct device *dev, int subcomponent,
- 	if (subcomponent != I915_COMPONENT_GSC_PROXY)
- 		return 0;
- 
--	return component_compare_dev(dev->parent, ((struct device *)data)->parent);
-+	/* Only built-in GFX */
-+	return (pdev->bus->number == 0);
- }
- 
- static int mei_gsc_proxy_probe(struct mei_cl_device *cldev,
-@@ -146,7 +148,7 @@ static int mei_gsc_proxy_probe(struct mei_cl_device *cldev,
- 	}
- 
- 	component_match_add_typed(&cldev->dev, &master_match,
--				  mei_gsc_proxy_component_match, cldev->dev.parent);
-+				  mei_gsc_proxy_component_match, NULL);
- 	if (IS_ERR_OR_NULL(master_match)) {
- 		ret = -ENOMEM;
- 		goto err_exit;
--- 
-2.43.0
-
+There isn't always a clear-cut commit when a regression was introduced
+(it might not have been a regresison at all). I could dig and make
+something up, but that's slowing down your workflow, and I thought I was
+going to be handling all the stable backports for fs/bcachefs/, so - ?
 
