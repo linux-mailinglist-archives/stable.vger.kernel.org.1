@@ -1,121 +1,121 @@
-Return-Path: <stable+bounces-20882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00FCC85C5B5
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:23:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F20FE85C5C1
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:26:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 600A3283BA2
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 20:23:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D69C71C20E1E
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 20:26:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4D1B14A4F5;
-	Tue, 20 Feb 2024 20:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F0F414AD10;
+	Tue, 20 Feb 2024 20:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="W8QXCtdk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sSFSv7VF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3BB014A4F2
-	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 20:23:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0235214AD0E
+	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 20:26:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708460596; cv=none; b=oSkT+3uhzWKUZM0Tu9DwDvQs33CWoK5rATf1P3MS/HMdeuUM1hxywERrcuj/Y+s1l+frdK/vq1OQO6bO3wra3bfQkzJQ2DcNfhX2zHTu7iShT02ipceTasuW9Y69sR8dsCFanoxBkpx0AalHOD5pRoTWQzsVUQQBkd2ELRofhUQ=
+	t=1708460811; cv=none; b=sm3/xK6iUR8JdCXRHlk4BKjyq+4NpSYcSBr4p6eEZr+Bz/b2yBmRNnYdwgibTBWFueSPiDyQ5jNXiYkYqvFeqLnr5XJSY9EIKXGDNvGm8R7ntUGasI3TtlkZIgHPo1wsGu+msrnKuofhAiU9elhmULC7BFVAFrMkYk7kOYbvqsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708460596; c=relaxed/simple;
-	bh=NtAupI7eYtgh3yi1/lcfdhrIrAXohnaOpbdHMhKQZCo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=J38hx4c0ZM6kwy5tV4SfFAJlf3nh6jm9pjFc1YZf297gDOOCFZfEC69vC0YGHcz64U1LyjgCPJgBH2eGrlyQddDP5iz4y2wYIhKUCRr3u7R4neYbGe8tKD9xCRvvvvDASQYckdnuat21Qkdbf4vRkovQRwYl0uzTsM+mogamtqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=W8QXCtdk; arc=none smtp.client-ip=209.85.128.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-607fc3e69adso48632737b3.0
-        for <stable@vger.kernel.org>; Tue, 20 Feb 2024 12:23:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1708460594; x=1709065394; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nAcxoiwswXf0u4UcozWlRje00byaUAVEvvkr0DiyRgc=;
-        b=W8QXCtdkdkG8DUdEi5h38+g8jzJVrt4P4xvuqPDQWDlvikFb3et8/SyVnWFZn0qEaA
-         cLA9Nao4zSqnUwOrzM+XAvpyxptXP9OTJIkckTpMyT3T57bQJGJGYbMobfrGJ6i5xdIk
-         eRld0gMyAC5Qh4SVEr6VlY261MYmMJb4ICq9ML88RWD+DxR1mOTSFvxs4XKxc9+/9lS5
-         cRzfCStM5WI+BJw7nyHyFBsesxYrEwodS2Adg0QXYp66ng2QCAHJIIMqDv3iIcQ+0Nri
-         cSmKtWaepNBZVEO87E5avVrDc5IGFh0t5Ri9+s3gjfeV+AgcI8rN2lB+BVDSAdwvb/Fc
-         UOaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708460594; x=1709065394;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nAcxoiwswXf0u4UcozWlRje00byaUAVEvvkr0DiyRgc=;
-        b=CZs4X5/WgsSO3AF1cDc1TjISkmXGDjiKpLGpMz2BeHxduJqQzEF2EtMCqJ0XYe0e7C
-         4m7Nbhfk3aGlHOtDCIc0oe/x2aL6NvCIMS2YQHeBDruz3DPVvJ/WxQ6vy0wNXmNSJyBT
-         NmGg1FNaci6zsQJrSpiuid1Ffots4TtMgpLaLczBJjLkJ2lM+P8I84y+vuZIi5Ttv89P
-         VylH+VSOjGXDzAFuISz4WCezMPkRrCOfXiPSY3Z7n2AfO6UUBSX4g9L03PGbJBHKf4Fx
-         Mlaz4ayYnEaPjL3qlYyqnuh7e4IT2MeeVwo8spq86unJwkbji/y4jWYYEDNkHXOwfuFe
-         LL1Q==
-X-Gm-Message-State: AOJu0YyILszKOORBO4ul7gySM37rZCU/nOQuZlGUM/MDyGL3IzZ6ORzY
-	Sxppof+TNEaGGeBVGN+S2Yn+P0TqHwMRX0XMD4eKEII1Ll1OwwtYUDcQQtOszJ6D4XWcPn+A1Jf
-	0Ft251Ms5J5a6qn6pzSo1Y/uSNG5B3T3nx84Y
-X-Google-Smtp-Source: AGHT+IGzUgQtgghZbWrK8eYJQEzXHrPL1+7CeQbbFfzgXHAAUnQxJde+shFK2EnUD76tCj1j++WuAGjwwVmLXoPHmBs=
-X-Received: by 2002:a05:690c:368d:b0:608:3785:707a with SMTP id
- fu13-20020a05690c368d00b006083785707amr7238229ywb.52.1708460593452; Tue, 20
- Feb 2024 12:23:13 -0800 (PST)
+	s=arc-20240116; t=1708460811; c=relaxed/simple;
+	bh=axE8KFZLbeL+cybr2uvkDHnE2j3mR+qRrc9vvfIRhpU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CWeqXLTnBIvHprnPgwW661fIB7gqQ9SzmMRdWs2QBe/PiVq9B54VUHXB42KMmBQ9BrYaJuu6WhZO0fphVsBgSSEwy7uorfq68F/uKzGA1ZhzpGUOAZ9qAhWcozdo9Ya7j8AVUVrCKYfSaUVHk8qH/DGsW+ifOnzFhD4MLkgffNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sSFSv7VF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0788DC433C7;
+	Tue, 20 Feb 2024 20:26:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1708460810;
+	bh=axE8KFZLbeL+cybr2uvkDHnE2j3mR+qRrc9vvfIRhpU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sSFSv7VFwbjIFM3BAI2kk1QXuvGoZc8nXi18Kn0K8ju94oIT1DK80aMoL9S0CnWpc
+	 5U7X4kNHI7B53f86GVVIhPrlJgVp5sDKBIV7iveXlaTutftRxNOejzZblMHn3W8y1l
+	 k7kgJxkc1Mhec+BnTgOpn73exEOAWxmQ106PA+2E=
+Date: Tue, 20 Feb 2024 21:26:47 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Salvatore Bonaccorso <carnil@debian.org>
+Cc: ZhaoLong Wang <wangzhaolong1@huawei.com>, stable@vger.kernel.org,
+	sfrench@samba.org, kovalev@altlinux.org,
+	"Mohamed Abuelfotoh, Hazem" <abuehaze@amazon.com>,
+	Darren Kenny <darren.kenny@oracle.com>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Subject: Re: [PATCH 5.10 0/1] cifs: Fix stack-out-of-bounds in
+ smb2_set_next_command()
+Message-ID: <2024022000-serpent-luckiness-5c27@gregkh>
+References: <20240207115251.2209871-1-wangzhaolong1@huawei.com>
+ <ZcOdnBHA0OIB956t@eldamar.lan>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2024021921-bleak-sputter-5ecf@gregkh> <20240220190351.39815-1-surenb@google.com>
- <2024022058-huskiness-previous-c334@gregkh>
-In-Reply-To: <2024022058-huskiness-previous-c334@gregkh>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 20 Feb 2024 12:23:01 -0800
-Message-ID: <CAJuCfpEzRNG-aZWskphrUFCC6wr8nbsbpCxwG9tyfxA=CyWCoQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] ARM: 9328/1: mm: try VMA lock-based page fault
- handling first
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, Wang Kefeng <wangkefeng.wang@huawei.com>, 
-	Russell King <rmk+kernel@armlinux.org.uk>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZcOdnBHA0OIB956t@eldamar.lan>
 
-On Tue, Feb 20, 2024 at 12:20=E2=80=AFPM Greg KH <gregkh@linuxfoundation.or=
-g> wrote:
->
-> On Tue, Feb 20, 2024 at 11:03:50AM -0800, Suren Baghdasaryan wrote:
-> > From: Wang Kefeng <wangkefeng.wang@huawei.com>
-> >
-> > Attempt VMA lock-based page fault handling first, and fall back to the
-> > existing mmap_lock-based handling if that fails, the ebizzy benchmark
-> > shows 25% improvement on qemu with 2 cpus.
-> >
-> > Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-> > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> > ---
-> >  arch/arm/Kconfig    |  1 +
-> >  arch/arm/mm/fault.c | 30 ++++++++++++++++++++++++++++++
-> >  2 files changed, 31 insertions(+)
->
-> No git id?
->
-> What kernel branch(s) does this go to?
->
-> confused,
+On Wed, Feb 07, 2024 at 04:11:24PM +0100, Salvatore Bonaccorso wrote:
+> Hi,
+> 
+> On Wed, Feb 07, 2024 at 07:52:50PM +0800, ZhaoLong Wang wrote:
+> > Hello,
+> > 
+> > I am sending this patch for inclusion in the stable tree, as it fixes
+> > a critical stack-out-of-bounds bug in the cifs module related to the
+> > `smb2_set_next_command()` function.
+> > 
+> > Problem Summary:
+> > A problem was observed in the `statfs` system call for cifs, where it
+> > failed with a "Resource temporarily unavailable" message. Further
+> > investigation with KASAN revealed a stack-out-of-bounds error. The
+> > root cause was a miscalculation of the size of the `smb2_query_info_req`
+> > structure in the `SMB2_query_info_init()` function.
+> > 
+> > This situation arose due to a dependency on a prior commit
+> > (`eb3e28c1e89b`) that replaced a 1-element array with a flexible
+> > array member in the `smb2_query_info_req` structure. This commit was
+> > not backported to the 5.10.y and 5.15.y stable branch, leading to an
+> > incorrect size calculation after the backport of commit `33eae65c6f49`.
+> > 
+> > Fix Details:
+> > The patch corrects the size calculation to ensure the correct length
+> > is used when initializing the `smb2_query_info_req` structure. It has
+> > been tested and confirmed to resolve the issue without introducing
+> > any regressions.
+> > 
+> > Maybe the prior commit eb3e28c1e89b ("smb3: Replace smb2pdu 1-element
+> > arrays with flex-arrays") should be backported to solve this problem
+> > directly. The patch does not seem to conflict.
+> 
+> It looks there are several people working on the very same problem
+> addint patches right now on top.
+> 
+> See as well https://lore.kernel.org/stable/c4c2f990-20cf-4126-95bd-d14c58e85042@oracle.com/
+> 
+> But this is already worked on and the proper solution is to only the
+> eb3e28c1e89b backport included?
+> 
+> See as well
+> https://lore.kernel.org/regressions/Zb5eL-AKcZpmvYSl@eldamar.lan/ and
+> following.
+> 
+> And this needs to be done consistently for the 5.10.y and 5.15.y
+> series.
 
-Sorry, I used the command from your earlier email about the merge conflict:
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to
-'2024021921-bleak-sputter-5ecf@gregkh' --subject-prefix 'PATCH 6.7.y'
-HEAD^..
-but it didn't send both patches, so I formatted the patches I wanted
-to send and sent it with the same command replacing "HEAD^.." with
-"*.patch". What should I have done instead?
+And I'm totally confused here.
 
->
-> greg k-h
+Can someone send me, on top of the patches that are in the current queue
+(I'll push out a -rc series soon), for what needs to be done here?  Or,
+should I just start reverting things?
+
+lost,
+
+greg k-h
 
