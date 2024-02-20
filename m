@@ -1,94 +1,133 @@
-Return-Path: <stable+bounces-20782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96BE785B54F
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 09:34:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E43B885B562
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 09:37:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9772B1C21C6C
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 08:34:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2213D1C21570
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 08:37:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 947185CDF9;
-	Tue, 20 Feb 2024 08:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1C8F5C611;
+	Tue, 20 Feb 2024 08:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s7F8Zg8J"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i50NX79B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B345CDE0;
-	Tue, 20 Feb 2024 08:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE1C05C5F2;
+	Tue, 20 Feb 2024 08:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708418072; cv=none; b=oR/ryAEEuHAXwGWLjQ5FwqcYVb80i2V02ndzfx+hiopbMkSJdqAq3wFukQ7RCYwqsfcpbZycgGi8l6uCGj92OcnEBkMcqbv5FL8Gi2MAjuJABY8j4ZQKBT0ni+7P1Sd+cILHzHaai20RBAVOVOTcxq5fDjdX38Qr0JYhpr8bHsY=
+	t=1708418232; cv=none; b=J/MOZ0UvkN+1CdCBN+O0gcliG6at/lnVE7zCNFsVV+lf6s2MJO4Wxe6X2rMypL/uv4JTo9zfZT+X2WfvaDOyTSnfYn+tWddZm19gXQ5RssDuZO5AQWTNcNVP+0xo1rqF/aE3lECvue8q4dwy9eqz4EhaNWT3+h9gEnxsRBIE9hs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708418072; c=relaxed/simple;
-	bh=s+96Op57oDFXNRMP69sWGVC3Iy4Su0Dddc6jDgQQ+8g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VxWiKcQFalJaxY9Fek+jDZNkd9O5TfF2MA45N7V4Bsd5JsjdRpC6q7wEGLYWKRfVVmhvB/fqN4NViol6Mey2QooivxpBOXOaJ+a9el+DJtnkABJem3HxJnOf3qM91LFIkEV2gH7krS8DDO8scgW0VF3sv09Y+x5ogcRqiSvWGKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s7F8Zg8J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48FC2C433C7;
-	Tue, 20 Feb 2024 08:34:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708418071;
-	bh=s+96Op57oDFXNRMP69sWGVC3Iy4Su0Dddc6jDgQQ+8g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=s7F8Zg8J15g+nMxHZnbVwu87WwqvQq2uCWjNNqbEfUXpeL25cXS9IaH3DzyQ8+mKj
-	 WtXX0FoGhHIzwsiDHgzPYwl8MeFqIUiN0XXF6D+uftUseV3wXLsfBFrslNd/49WCKH
-	 Y2llnEVajr7eyNMrmqkCgq4msNhJadAvA9Lrcb9k=
-Date: Tue, 20 Feb 2024 09:34:28 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Ray Chi <raychi@google.com>
-Cc: Thinh.Nguyen@synopsys.com, quic_uaggarwa@quicinc.com,
-	albertccwang@google.com, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] usb: dwc3: gadget: remove warning during kernel boot
-Message-ID: <2024022024-trout-kennel-6d14@gregkh>
-References: <20240220081205.135063-1-raychi@google.com>
+	s=arc-20240116; t=1708418232; c=relaxed/simple;
+	bh=OBNB0k0FytlPxcnFOclq0NEXCoipePnmZTf+6P5ki+Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=m1Knd/iSil2nf78zrOuNKJUwLggdH6Dfma6/jPsoDr7wo08XU/Z/fYU82pVYo8uUzKtZDWBm6k/CheSPudsG35+qGFt1RkAykmLuPF8Hf0RykaVwm5bEY63y25w9C+7pXQunfCViJSrkN47o4K5TECQaBXOSkyb3wIrWaiJYZ3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i50NX79B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EE92C43399;
+	Tue, 20 Feb 2024 08:37:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708418232;
+	bh=OBNB0k0FytlPxcnFOclq0NEXCoipePnmZTf+6P5ki+Q=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=i50NX79B4MiHC5G0bhTyLsnG5T81WgLR/rEXzybT2Muggw1h7QRUJN9Ea8PIKPNW6
+	 0rCr8r8h4wrHIUoVCDYe3qrFjtCClcrUhZtnJ6iIrhyr/iSkipezXZs6K4rISm0o69
+	 pqFPqYjOvcWub7OS2xKFSNit0Krz6S68le/Ns3hiGEKfzM4VDBmqcE5MzXu3GguOhP
+	 m3WNDCt6Ja31wVE7qwjpl9wGE6K5qCgYUfGiWwqkkucCdN0tl40S96cSOQtiMg6/aM
+	 t2M3Io6tI+QDKll2xvkNTBo9W5P1Mw5ZQBlO7TmzR03f58Ki0FANCmJ0bsT+b6AptV
+	 Ksp5+h3kABmvA==
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2d2305589a2so31738831fa.1;
+        Tue, 20 Feb 2024 00:37:12 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUzAaZbO03ZjndUfwMrIoM3lg6vO5CFWlIRYLOX8Td+YYEQ7O7bXLOuLO+H9J0Dqo1v66wMJPxQPKRxcpulKjlr8o8mSP8Zu7yKTVovL7F3pIUzJOGCC7VweES7tUUDLrxu
+X-Gm-Message-State: AOJu0YxKRQHLmKKzmKUy3VMGQ/h5/pAufjLC0kRY6TD7+z+ZhZbthNB8
+	ocAWgU+m5SgBVubrb6iqJfCmOPBRbUWIoT9eS0p60HHGhZUy1Kuu4T+8nJauZAgqwytN0vLJSOb
+	2UF4dhm+rmC7lQFCWKKRLMH9ktoQ=
+X-Google-Smtp-Source: AGHT+IH5LJ9Na0gc2WmzLAq7A6Kn2wwh72/gbR9JrDlR3Tzd7hZy2DcPQCEiB5dzVcFR5JF1XwUNgCZYyAi8MXq33dk=
+X-Received: by 2002:a2e:870f:0:b0:2d2:4218:6275 with SMTP id
+ m15-20020a2e870f000000b002d242186275mr2186989lji.49.1708418230514; Tue, 20
+ Feb 2024 00:37:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240220081205.135063-1-raychi@google.com>
+References: <CAMj1kXG4HpAHYKwz27_Qy9_Wx+O_QJDmA4CBXcMrvVcrOXhBxw@mail.gmail.com>
+ <87plwsj6ar.fsf@xnox-Inspiron-7400.mail-host-address-is-not-set>
+In-Reply-To: <87plwsj6ar.fsf@xnox-Inspiron-7400.mail-host-address-is-not-set>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Tue, 20 Feb 2024 09:36:59 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXGjxtMnJ6MeeE-W73Jw_seRPnQwVDRyBayDzKvaDLFLjw@mail.gmail.com>
+Message-ID: <CAMj1kXGjxtMnJ6MeeE-W73Jw_seRPnQwVDRyBayDzKvaDLFLjw@mail.gmail.com>
+Subject: Re: x86 efistub stable backports for v6.6
+To: xnox <dimitri.ledkov@canonical.com>
+Cc: gregkh@linuxfoundation.org, stable@vger.kernel.org, 
+	linux-efi@vger.kernel.org, jan.setjeeilers@oracle.com, pjones@redhat.com, 
+	steve@einval.com, julian.klode@canonical.com, bluca@debian.org, 
+	jejb@linux.ibm.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Feb 20, 2024 at 04:12:04PM +0800, Ray Chi wrote:
-> The dwc3->gadget_driver is not initialized during the dwc3 probe
-> process. This leads to a warning when the runtime power management (PM)
-> attempts to suspend the gadget using dwc3_gadget_suspend().
+On Tue, 20 Feb 2024 at 02:03, xnox <dimitri.ledkov@canonical.com> wrote:
+>
+> Ard Biesheuvel <ardb@kernel.org> writes:
+>
+> > On Thu, 15 Feb 2024 at 12:12, Greg KH <gregkh@linuxfoundation.org> wrote:
+> >>
+> >> On Thu, Feb 15, 2024 at 10:41:57AM +0100, Ard Biesheuvel wrote:
+> >> > On Thu, 15 Feb 2024 at 10:27, Greg KH <gregkh@linuxfoundation.org> wrote:
+> >> > >
+> >> > > On Thu, Feb 15, 2024 at 10:17:20AM +0100, Ard Biesheuvel wrote:
+> >> > > > (cc stakeholders from various distros - apologies if I missed anyone)
+> >> > > >
+> >> > > > Please consider the patches below for backporting to the linux-6.6.y
+> >> > > > stable tree.
+> >> > > >
+> >> > > > These are prerequisites for building a signed x86 efistub kernel image
+> >> > > > that complies with the tightened UEFI boot requirements imposed by
+> >> > > > MicroSoft, and this is the condition under which it is willing to sign
+> >> > > > future Linux secure boot shim builds with its 3rd party CA
+> >> > > > certificate. (Such builds must enforce a strict separation between
+> >> > > > executable and writable code, among other things)
+> >> > > >
+> > ...
+> >> > > And is this not an issue for 6.1.y as well?
+> >> > >
+> >> >
+> >> > It is, but there are many more changes that would need to go into v6.1:
+> >> >
+...
+> >> >  32 files changed, 1204 insertions(+), 1448 deletions(-)
+> >> >
+> > ...
+> >> > If you're happy to take these too, I can give you the proper list, but
+> >> > perhaps we should deal with v6.6 first?
+> >>
+> >> Yeah, let's deal with 6.6 first :)
+> >>
+> >> What distros are going to need/want this for 6.1.y?  Will normal users
+> >> care as this is only for a new requirement by Microsoft, not for older
+> >> releases, right?
+> >>
+> >
+> > I will let the distro folks on cc answer this one.
+>
+> Canonical will want to backport this at least as far back as v4.15 for
+> Ubuntu and Ubuntu Pro. So yeah, as far back as possible will be
+> apperiated by everybody involved. Since if/when firmware (VMs or
+> Hardware) starts to require NX compat, it will be desired to have all
+> stable supported kernels with this support built-in.
+>
 
-What type of warning happens?
+Thanks for the data point, and good luck with backporting this to
+v4.15 or earlier. If it helps, I have a branch that backports
+LoadFile2 initrd loading support to v5.4 (below), which you will need
+to backport first. Going further back than v5.4 is going to be very
+messy IMHO.
 
-> This patch adds a check to prevent the warning.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 61a348857e86 ("usb: dwc3: gadget: Fix NULL pointer dereference in dwc3_gadget_suspend")
-> Signed-off-by: Ray Chi <raychi@google.com>
-> ---
->  drivers/usb/dwc3/gadget.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-> index 28f49400f3e8..de987cffe1ec 100644
-> --- a/drivers/usb/dwc3/gadget.c
-> +++ b/drivers/usb/dwc3/gadget.c
-> @@ -4708,6 +4708,9 @@ int dwc3_gadget_suspend(struct dwc3 *dwc)
->  	unsigned long flags;
->  	int ret;
->  
-> +	if (!dwc->gadget_driver)
-> +		return 0;
-> +
-
-This directly reverts part of the commit you say this fixes, are you
-SURE about this?  Why?
-
-thanks,
-
-greg k-h
+https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/log/?h=efi-lf2-backport-x86
 
