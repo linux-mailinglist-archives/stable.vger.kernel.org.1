@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-21289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5DFA85C832
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:19:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47B6985C99C
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:35:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01C8B1C22157
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:19:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0B36281DDC
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:35:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6741C151CD8;
-	Tue, 20 Feb 2024 21:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C9C8151CED;
+	Tue, 20 Feb 2024 21:35:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MwUfPdRq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vvWd3SEJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F046612D7;
-	Tue, 20 Feb 2024 21:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A3352DF9F;
+	Tue, 20 Feb 2024 21:35:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463950; cv=none; b=mqexAxkWMCN1ZMZkT3Nduzxx1WnWpUDyFFs0Vhtr8smKZm4Uz0OusMGoFvuihL22JTfAKwf99SUFOyf7IZBTeScE4jV+q/WGHrofbSQbNGCVN1W+I8u52irtE3itWV8/PEYshT/xoDHcsTiXrRECypRF/3/0SyeRLzFHvxj6IZ8=
+	t=1708464957; cv=none; b=YkIdYLowvsBrHHDdd823MasB6qXq4VRjsfocXO9hScQjjiaAw6n/Y5HU6RlXHRTqETBSfqJpvXQt1SXxsSgB1IBjM9qAoqUDrKb4SpqMndBwisNgN/VuPMg0gsyTy4FLu11s/ZocLwAkMPcf90Ebm8MDLDM92eXEd5l3HXxGT54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463950; c=relaxed/simple;
-	bh=v9hbHlzA3p9okFQve/MDSKKJ0zi1hs3G7qmCNeI7dno=;
+	s=arc-20240116; t=1708464957; c=relaxed/simple;
+	bh=LTK1aB2kfZBuEtr1I9a5gU3NedcjbbCFPV3DXN19mQE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gE6IEAdeRPVbBMlziBpgxop5dURM34UCMehwT1mwefmwyFSyqEu6D+bnWT9Tl+D24Pi6VIsiZv6ayWeCyCquVKUGzHWwD9/QFfpRhr7D0JcAC5zmmSgDLK9UV1vR7yUkx3qrbxNMWWpGC0VM5sfxjhJmDW+Xt6J2Gr3V5LD7rhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MwUfPdRq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8185CC433C7;
-	Tue, 20 Feb 2024 21:19:09 +0000 (UTC)
+	 MIME-Version; b=s/QBtYROjM4XkLWkUzWdU5gaP4pfGmn4/Odad2Y2AnWUWU1RlZ/LWSu/XIPvC2SaL5LWmq4lc/GhHoKcf94hOspEadRTU4q6apNfM+yF5fK0TAsWkJOCtRghG7zJpJ7zgGpuWQFbwEkzi3oRugdyJJYxg1DnTN6Z/VgTSrPLkbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vvWd3SEJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A761FC433C7;
+	Tue, 20 Feb 2024 21:35:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463950;
-	bh=v9hbHlzA3p9okFQve/MDSKKJ0zi1hs3G7qmCNeI7dno=;
+	s=korg; t=1708464957;
+	bh=LTK1aB2kfZBuEtr1I9a5gU3NedcjbbCFPV3DXN19mQE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MwUfPdRq4jVVKHbd+K9/1ZclPjAq2mCq0FHUvhk+fI0+2KQn0kgAh8fC5du7FPR19
-	 dWNXyoUAhvnxk2jcaVsGVj6z5LzuoLpEKnO10FD9f2LTwliM88K5T6LS9Q/Gf03ssR
-	 saK9j4YOpdjz9qJaIUrYYpJWlzi3HlftkvxVooaw=
+	b=vvWd3SEJVfVkjcevcnpQ6OpZ6D711xRTovcldg4NGQak9aj7C0xKxbIP61prCiZ92
+	 H7qX4GEBtscqFEP4f54bk6uG8p65lxOb+090At9+EDAqRYLxbtjVo9MNhDKtgJVJvF
+	 CStWkZdUlBKGFDf8lZ7ew1xk5PplsM9jc7lrBLUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Hershaw <james.hershaw@corigine.com>,
-	Louis Peens <louis.peens@corigine.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.6 204/331] nfp: enable NETDEV_XDP_ACT_REDIRECT feature flag
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Daniel Bristot de Oliveira <bristot@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.7 161/309] tracing/timerlat: Move hrtimer_init to timerlat_fd open()
 Date: Tue, 20 Feb 2024 21:55:20 +0100
-Message-ID: <20240220205644.080284922@linuxfoundation.org>
+Message-ID: <20240220205638.202689676@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Hershaw <james.hershaw@corigine.com>
+From: Daniel Bristot de Oliveira <bristot@kernel.org>
 
-commit 0f4d6f011bca0df2051532b41b596366aa272019 upstream.
+commit 1389358bb008e7625942846e9f03554319b7fecc upstream.
 
-Enable previously excluded xdp feature flag for NFD3 devices. This
-feature flag is required in order to bind nfp interfaces to an xdp
-socket and the nfp driver does in fact support the feature.
+Currently, the timerlat's hrtimer is initialized at the first read of
+timerlat_fd, and destroyed at close(). It works, but it causes an error
+if the user program open() and close() the file without reading.
 
-Fixes: 66c0e13ad236 ("drivers: net: turn on XDP features")
-Cc: stable@vger.kernel.org # 6.3+
-Signed-off-by: James Hershaw <james.hershaw@corigine.com>
-Signed-off-by: Louis Peens <louis.peens@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Here's an example:
+
+ # echo NO_OSNOISE_WORKLOAD > /sys/kernel/debug/tracing/osnoise/options
+ # echo timerlat > /sys/kernel/debug/tracing/current_tracer
+
+ # cat <<EOF > ./timerlat_load.py
+ # !/usr/bin/env python3
+
+ timerlat_fd = open("/sys/kernel/tracing/osnoise/per_cpu/cpu0/timerlat_fd", 'r')
+ timerlat_fd.close();
+ EOF
+
+ # ./taskset -c 0 ./timerlat_load.py
+<BOOM>
+
+ BUG: kernel NULL pointer dereference, address: 0000000000000010
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ PGD 0 P4D 0
+ Oops: 0000 [#1] PREEMPT SMP NOPTI
+ CPU: 1 PID: 2673 Comm: python3 Not tainted 6.6.13-200.fc39.x86_64 #1
+ Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-1.fc39 04/01/2014
+ RIP: 0010:hrtimer_active+0xd/0x50
+ Code: 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 0f 1f 44 00 00 48 8b 57 30 <8b> 42 10 a8 01 74 09 f3 90 8b 42 10 a8 01 75 f7 80 7f 38 00 75 1d
+ RSP: 0018:ffffb031009b7e10 EFLAGS: 00010286
+ RAX: 000000000002db00 RBX: ffff9118f786db08 RCX: 0000000000000000
+ RDX: 0000000000000000 RSI: ffff9117a0e64400 RDI: ffff9118f786db08
+ RBP: ffff9118f786db80 R08: ffff9117a0ddd420 R09: ffff9117804d4f70
+ R10: 0000000000000000 R11: 0000000000000000 R12: ffff9118f786db08
+ R13: ffff91178fdd5e20 R14: ffff9117840978c0 R15: 0000000000000000
+ FS:  00007f2ffbab1740(0000) GS:ffff9118f7840000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 0000000000000010 CR3: 00000001b402e000 CR4: 0000000000750ee0
+ PKRU: 55555554
+ Call Trace:
+  <TASK>
+  ? __die+0x23/0x70
+  ? page_fault_oops+0x171/0x4e0
+  ? srso_alias_return_thunk+0x5/0x7f
+  ? avc_has_extended_perms+0x237/0x520
+  ? exc_page_fault+0x7f/0x180
+  ? asm_exc_page_fault+0x26/0x30
+  ? hrtimer_active+0xd/0x50
+  hrtimer_cancel+0x15/0x40
+  timerlat_fd_release+0x48/0xe0
+  __fput+0xf5/0x290
+  __x64_sys_close+0x3d/0x80
+  do_syscall_64+0x60/0x90
+  ? srso_alias_return_thunk+0x5/0x7f
+  ? __x64_sys_ioctl+0x72/0xd0
+  ? srso_alias_return_thunk+0x5/0x7f
+  ? syscall_exit_to_user_mode+0x2b/0x40
+  ? srso_alias_return_thunk+0x5/0x7f
+  ? do_syscall_64+0x6c/0x90
+  ? srso_alias_return_thunk+0x5/0x7f
+  ? exit_to_user_mode_prepare+0x142/0x1f0
+  ? srso_alias_return_thunk+0x5/0x7f
+  ? syscall_exit_to_user_mode+0x2b/0x40
+  ? srso_alias_return_thunk+0x5/0x7f
+  ? do_syscall_64+0x6c/0x90
+  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+ RIP: 0033:0x7f2ffb321594
+ Code: 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 80 3d d5 cd 0d 00 00 74 13 b8 03 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 3c c3 0f 1f 00 55 48 89 e5 48 83 ec 10 89 7d
+ RSP: 002b:00007ffe8d8eef18 EFLAGS: 00000202 ORIG_RAX: 0000000000000003
+ RAX: ffffffffffffffda RBX: 00007f2ffba4e668 RCX: 00007f2ffb321594
+ RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000003
+ RBP: 00007ffe8d8eef40 R08: 0000000000000000 R09: 0000000000000000
+ R10: 55c926e3167eae79 R11: 0000000000000202 R12: 0000000000000003
+ R13: 00007ffe8d8ef030 R14: 0000000000000000 R15: 00007f2ffba4e668
+  </TASK>
+ CR2: 0000000000000010
+ ---[ end trace 0000000000000000 ]---
+
+Move hrtimer_init to timerlat_fd open() to avoid this problem.
+
+Link: https://lore.kernel.org/linux-trace-kernel/7324dd3fc0035658c99b825204a66049389c56e3.1706798888.git.bristot@kernel.org
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: stable@vger.kernel.org
+Fixes: e88ed227f639 ("tracing/timerlat: Add user-space interface")
+Signed-off-by: Daniel Bristot de Oliveira <bristot@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/netronome/nfp/nfp_net_common.c |    1 +
- 1 file changed, 1 insertion(+)
+ kernel/trace/trace_osnoise.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
-+++ b/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
-@@ -2588,6 +2588,7 @@ static void nfp_net_netdev_init(struct n
- 	case NFP_NFD_VER_NFD3:
- 		netdev->netdev_ops = &nfp_nfd3_netdev_ops;
- 		netdev->xdp_features |= NETDEV_XDP_ACT_XSK_ZEROCOPY;
-+		netdev->xdp_features |= NETDEV_XDP_ACT_REDIRECT;
- 		break;
- 	case NFP_NFD_VER_NFDK:
- 		netdev->netdev_ops = &nfp_nfdk_netdev_ops;
+--- a/kernel/trace/trace_osnoise.c
++++ b/kernel/trace/trace_osnoise.c
+@@ -2444,6 +2444,9 @@ static int timerlat_fd_open(struct inode
+ 	tlat = this_cpu_tmr_var();
+ 	tlat->count = 0;
+ 
++	hrtimer_init(&tlat->timer, CLOCK_MONOTONIC, HRTIMER_MODE_ABS_PINNED_HARD);
++	tlat->timer.function = timerlat_irq;
++
+ 	migrate_enable();
+ 	return 0;
+ };
+@@ -2526,9 +2529,6 @@ timerlat_fd_read(struct file *file, char
+ 		tlat->tracing_thread = false;
+ 		tlat->kthread = current;
+ 
+-		hrtimer_init(&tlat->timer, CLOCK_MONOTONIC, HRTIMER_MODE_ABS_PINNED_HARD);
+-		tlat->timer.function = timerlat_irq;
+-
+ 		/* Annotate now to drift new period */
+ 		tlat->abs_period = hrtimer_cb_get_time(&tlat->timer);
+ 
 
 
 
