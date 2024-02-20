@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-21272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C84785C7F5
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:18:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D00D85C96E
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:33:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E17381F26E6B
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:18:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08790284D07
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80DE4151CDC;
-	Tue, 20 Feb 2024 21:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E6CD151CDC;
+	Tue, 20 Feb 2024 21:33:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J0yEIkTw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hM+kUh6J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E69F612D7;
-	Tue, 20 Feb 2024 21:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC8D446C9;
+	Tue, 20 Feb 2024 21:33:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463897; cv=none; b=QNlb8FfdM7PT4IU04ilILK6AMVVYEFpIo9kSUvdc9vTn6bh12mDbl2Vxss6s1JAVmvLhVZBeZ0VNjvGSTSCnwyIn/RvIQctP+bKzgdhbzGhUOvsXJLZGKg2Hjj0dbLDCmSQKP25se6+xja9MWkWCvHy/x98UJysOh5eM82QZYEY=
+	t=1708464814; cv=none; b=kj2XW1ZoCzeArjiYJubLuuMLhmNxgkqUQ4GoBv4nKQklKRNiG0T7VH68l5VVnNFbw4bH3pVUHzeEy1jOD22M36/0ibiyYWOzh1jPkcAcI5+TwlTsfOccX+5gG2hxX4FlXRgl925CQdi2zX/xdsTVLeVlcPu0omL20KqSqIzpV0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463897; c=relaxed/simple;
-	bh=Lf7ljG+JVyslXUvBda8cdY2Z4WxgG7ie3JIdyw9ioj4=;
+	s=arc-20240116; t=1708464814; c=relaxed/simple;
+	bh=VXhzFmZD1I5aFnTGnZ72TlhQt+aD9iViMirRKcxF+fk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XrrWTREYkEXkP8AcbCJwhH/yrrt2y6LzPcfxklEs3Wah3QaQ9d9fa0XkwoV3Nc/DKMJ8L3vmFwfoFgO4sXWCrfrzE7c3bbEAuVrrcWCQ1INZYef1u67aj/bC9AketBgshxAfoy0Jt07F2K9T7uFTs56+CsT8R9wfUNg46xXur5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J0yEIkTw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8FC3C43399;
-	Tue, 20 Feb 2024 21:18:16 +0000 (UTC)
+	 MIME-Version; b=i2adBSoi9ZhzwXnAzCia8xHVob2T2dLHgwyZfnshehWTQGNQzC4hC5oWDaYDJI3jRX/0rOioqZUlEs59uYK+yQLVAXvJ3TeF6nry+DH0Xv/vd0mJLC1cfoGavcuMAIvJc8opAessvBhwMhIIWpTGhI+S9jI+QO3QAlmW2HwXXl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hM+kUh6J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C16F1C433C7;
+	Tue, 20 Feb 2024 21:33:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463897;
-	bh=Lf7ljG+JVyslXUvBda8cdY2Z4WxgG7ie3JIdyw9ioj4=;
+	s=korg; t=1708464814;
+	bh=VXhzFmZD1I5aFnTGnZ72TlhQt+aD9iViMirRKcxF+fk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J0yEIkTw3mgn9aENwrGRWgYBB7K3F4pSQsPuzmd5rVm3sHX1Vfw6wQplzLPTzVWCM
-	 5JtrYP0iloIBQ7HpWHWChFAbECW5WpEk1cbn+16VT+n7qYiTbsHF4ZzCCLosYSpuAw
-	 GQ8YwDyf5psjgRR5LY3nTdxBkZW/EoEJ4zNrvZ/w=
+	b=hM+kUh6J6eQ0qPFe7CEdIoCe/5XcfsbMrz2wJUfPezHaFa27eCdwIlpcJ8MK4B/Re
+	 liXbEcGjmFkP0LVUhQL4x//To8KszFgest3GrkqM6CYVT06MWkxNWwfb4PXwkq3J0B
+	 lJfS81sc52YwkaGBNf499+jklP4uOMpDMIOng9xg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Emil Kronborg <emil.kronborg@protonmail.com>,
-	stable <stable@kernel.org>,
-	Stefan Wahren <wahrenst@gmx.net>
-Subject: [PATCH 6.6 188/331] serial: mxs-auart: fix tx
+	syzbot+3ae0a3f42c84074b7c8e@syzkaller.appspotmail.com,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.7 145/309] net: hsr: remove WARN_ONCE() in send_hsr_supervision_frame()
 Date: Tue, 20 Feb 2024 21:55:04 +0100
-Message-ID: <20240220205643.466743448@linuxfoundation.org>
+Message-ID: <20240220205637.709549256@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-commit 7be50f2e8f20fc2299069b28dea59a28e3abe20a upstream.
+commit 37e8c97e539015637cb920d3e6f1e404f707a06e upstream.
 
-Emil reports:
-  After updating Linux on an i.MX28 board, serial communication over
-  AUART broke. When I TX from the board and measure on the TX pin, it
-  seems like the HW fifo is not emptied before the transmission is
-  stopped.
+Syzkaller reported [1] hitting a warning after failing to allocate
+resources for skb in hsr_init_skb(). Since a WARN_ONCE() call will
+not help much in this case, it might be prudent to switch to
+netdev_warn_once(). At the very least it will suppress syzkaller
+reports such as [1].
 
-MXS performs weird things with stop_tx(). The driver makes it
-conditional on uart_tx_stopped().
+Just in case, use netdev_warn_once() in send_prp_supervision_frame()
+for similar reasons.
 
-So the driver needs special handling. Pass the brand new UART_TX_NOSTOP
-to uart_port_tx_flags() and handle the stop on its own.
+[1]
+HSR: Could not send supervision frame
+WARNING: CPU: 1 PID: 85 at net/hsr/hsr_device.c:294 send_hsr_supervision_frame+0x60a/0x810 net/hsr/hsr_device.c:294
+RIP: 0010:send_hsr_supervision_frame+0x60a/0x810 net/hsr/hsr_device.c:294
+...
+Call Trace:
+ <IRQ>
+ hsr_announce+0x114/0x370 net/hsr/hsr_device.c:382
+ call_timer_fn+0x193/0x590 kernel/time/timer.c:1700
+ expire_timers kernel/time/timer.c:1751 [inline]
+ __run_timers+0x764/0xb20 kernel/time/timer.c:2022
+ run_timer_softirq+0x58/0xd0 kernel/time/timer.c:2035
+ __do_softirq+0x21a/0x8de kernel/softirq.c:553
+ invoke_softirq kernel/softirq.c:427 [inline]
+ __irq_exit_rcu kernel/softirq.c:632 [inline]
+ irq_exit_rcu+0xb7/0x120 kernel/softirq.c:644
+ sysvec_apic_timer_interrupt+0x95/0xb0 arch/x86/kernel/apic/apic.c:1076
+ </IRQ>
+ <TASK>
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:649
+...
 
-Signed-off-by: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
-Reported-by: Emil Kronborg <emil.kronborg@protonmail.com>
-Cc: stable <stable@kernel.org>
-Fixes: 2d141e683e9a ("tty: serial: use uart_port_tx() helper")
-Closes: https://lore.kernel.org/all/miwgbnvy3hjpnricubg76ytpn7xoceehwahupy25bubbduu23s@om2lptpa26xw/
-Tested-by: Stefan Wahren <wahrenst@gmx.net>
-Tested-by: Emil Kronborg <emil.kronborg@protonmail.com>
-Link: https://lore.kernel.org/r/20240201105557.28043-2-jirislaby@kernel.org
+This issue is also found in older kernels (at least up to 5.10).
+
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+3ae0a3f42c84074b7c8e@syzkaller.appspotmail.com
+Fixes: 121c33b07b31 ("net: hsr: introduce common code for skb initialization")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/mxs-auart.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/hsr/hsr_device.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/tty/serial/mxs-auart.c
-+++ b/drivers/tty/serial/mxs-auart.c
-@@ -605,13 +605,16 @@ static void mxs_auart_tx_chars(struct mx
+--- a/net/hsr/hsr_device.c
++++ b/net/hsr/hsr_device.c
+@@ -291,7 +291,7 @@ static void send_hsr_supervision_frame(s
+ 
+ 	skb = hsr_init_skb(master);
+ 	if (!skb) {
+-		WARN_ONCE(1, "HSR: Could not send supervision frame\n");
++		netdev_warn_once(master->dev, "HSR: Could not send supervision frame\n");
  		return;
  	}
  
--	pending = uart_port_tx(&s->port, ch,
-+	pending = uart_port_tx_flags(&s->port, ch, UART_TX_NOSTOP,
- 		!(mxs_read(s, REG_STAT) & AUART_STAT_TXFF),
- 		mxs_write(ch, s, REG_DATA));
- 	if (pending)
- 		mxs_set(AUART_INTR_TXIEN, s, REG_INTR);
- 	else
- 		mxs_clr(AUART_INTR_TXIEN, s, REG_INTR);
-+
-+	if (uart_tx_stopped(&s->port))
-+               mxs_auart_stop_tx(&s->port);
- }
+@@ -338,7 +338,7 @@ static void send_prp_supervision_frame(s
  
- static void mxs_auart_rx_char(struct mxs_auart_port *s)
+ 	skb = hsr_init_skb(master);
+ 	if (!skb) {
+-		WARN_ONCE(1, "PRP: Could not send supervision frame\n");
++		netdev_warn_once(master->dev, "PRP: Could not send supervision frame\n");
+ 		return;
+ 	}
+ 
 
 
 
