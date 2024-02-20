@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-21298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F43D85C83B
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:19:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CEE385C96A
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:33:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AD6D284A3D
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:19:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD87C1C22520
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:33:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 125CB151CD8;
-	Tue, 20 Feb 2024 21:19:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29609151CE9;
+	Tue, 20 Feb 2024 21:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1EtDjMhp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kMPRgl+E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3943612D7;
-	Tue, 20 Feb 2024 21:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA510446C9;
+	Tue, 20 Feb 2024 21:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463978; cv=none; b=YRcC7q7h2LRBpi5tSM/dr7NVqYiIK8XbubqsBMg5hM2eRPhB+1Z7asBZXtrwnoWGfjISkED8T/VvUpfc65AB8gddcFbhZfy3fJ6XbHY6qKVkB43cDLSJ+PRkDejnUIc5t+Pb00GAPXfEXqKlxe5AkCeZshabwFdja2SbbkXF+MY=
+	t=1708464801; cv=none; b=E6AcJgI8R55VII9f/lRP9z2jRaiCamvReByUvUT1Q+dlApOTn9qpiB2NKhvkkzYcG9cjS1w41m9JpAf1aff08+jR8az+eO4U5h6UuewvwX79u2BY/BBoY710b6AIthSMM2mdxzm/1HdpNhiARbZ4Worr5zHukMeKf2rQ30IIWQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463978; c=relaxed/simple;
-	bh=V/v1L8Kq0xqUd3ANdG1fNESxeQnX9cVCfmIokliek5Q=;
+	s=arc-20240116; t=1708464801; c=relaxed/simple;
+	bh=xLOf4nwwsDkMuAdUz9eHsN10Pz7lZqjIHTX9MZTClZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KQwK9jC+kQqXXaRsLaTXYW/N7iIu+0X7Yj5+SV4xZ/vFyuq9tMEITm16YrrAZm74QoKLVup1ejgIyeA95Ml21eLLGFbRXLZt2XbobkYKuNZJfFfrUulDgnRzIjry2X0q9uvASy+KBty0ugiK7TymInimMCP27iFB9/K5GhmLjn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1EtDjMhp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41A71C433C7;
-	Tue, 20 Feb 2024 21:19:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cUZm/m/up3cNAIe8ettmjyakJS8QYT7NIfsJV7zg5QKavYAqSYT69HAl6VlSBU7slZALwSwJMwWk1g7rXfBpZXjqVEK9ROb2KHjlnhEQwsI4rQT1enxlsvbaPAylf3GvCcBwtbzcrUZ339VMwoTiH1OQ/cDQjkn4k4gJdg2vWss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kMPRgl+E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B65AC433C7;
+	Tue, 20 Feb 2024 21:33:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463978;
-	bh=V/v1L8Kq0xqUd3ANdG1fNESxeQnX9cVCfmIokliek5Q=;
+	s=korg; t=1708464801;
+	bh=xLOf4nwwsDkMuAdUz9eHsN10Pz7lZqjIHTX9MZTClZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1EtDjMhpfQwDcAifc+P8nlzarTn3Igrsr6gJkRFwqR95wfXmxdqZZjYZwzj6ggzSn
-	 FH6UGsAXzO2tlBmTzHE+AlSFFKidL09jPWGlgmHb26UYl1gi/N8CnkiLGYruu3lZ1/
-	 o8MdzkTPDv81Oy2P1RemVw8tGyaXHmorArDnFPtA=
+	b=kMPRgl+Ey6Q347qH0HlgT1VbePpnlFITDc3c9b7eeoUb2Z0Tkrq2b+TGXYhfhAamV
+	 tWRrQH79jHo4I6sDuFNz4aSN05PXrnQgnbhPmJI6InGgtbnVskIlnDJJ45Jy044DV5
+	 z3KFFx/14WPDXUFSVdyN5zsWSxa+tIm9buzq54vI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Nysal Jan K.A" <nysal@linux.ibm.com>,
-	Naveen N Rao <naveen@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 6.6 184/331] powerpc/64: Set task pt_regs->link to the LR value on scv entry
-Date: Tue, 20 Feb 2024 21:55:00 +0100
-Message-ID: <20240220205643.327169877@linuxfoundation.org>
+	=?UTF-8?q?Jos=C3=A9=20Relvas?= <josemonsantorelvas@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.7 142/309] ALSA: hda/realtek: Apply headset jack quirk for non-bass alc287 thinkpads
+Date: Tue, 20 Feb 2024 21:55:01 +0100
+Message-ID: <20240220205637.603736267@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,170 +59,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naveen N Rao <naveen@kernel.org>
+From: José Relvas <josemonsantorelvas@gmail.com>
 
-commit aad98efd0b121f63a2e1c221dcb4d4850128c697 upstream.
+commit 2468e8922d2f6da81a6192b73023eff67e3fefdd upstream.
 
-Nysal reported that userspace backtraces are missing in offcputime bcc
-tool. As an example:
-    $ sudo ./bcc/tools/offcputime.py -uU
-    Tracing off-CPU time (us) of user threads by user stack... Hit Ctrl-C to end.
+There currently exists two thinkpad headset jack fixups:
+ALC285_FIXUP_THINKPAD_NO_BASS_SPK_HEADSET_JACK
+ALC285_FIXUP_THINKPAD_HEADSET_JACK
 
-    ^C
-	write
-	-                python (9107)
-	    8
+The latter is applied to alc285 and alc287 thinkpads which contain
+bass speakers.
+However, the former was only being applied to alc285 thinkpads,
+leaving non-bass alc287 thinkpads with no headset button controls.
+This patch fixes that by adding ALC285_FIXUP_THINKPAD_NO_BASS_SPK_HEADSET_JACK
+to the alc287 chains, allowing the detection of headset buttons.
 
-	write
-	-                sudo (9105)
-	    9
-
-	mmap
-	-                python (9107)
-	    16
-
-	clock_nanosleep
-	-                multipathd (697)
-	    3001604
-
-The offcputime bcc tool attaches a bpf program to a kprobe on
-finish_task_switch(), which is usually hit on a syscall from userspace.
-With the switch to system call vectored, we started setting
-pt_regs->link to zero. This is because system call vectored behaves like
-a function call with LR pointing to the system call return address, and
-with no modification to SRR0/SRR1. The LR value does indicate our next
-instruction, so it is being saved as pt_regs->nip, and pt_regs->link is
-being set to zero. This is not a problem by itself, but BPF uses perf
-callchain infrastructure for capturing stack traces, and that stores LR
-as the second entry in the stack trace. perf has code to cope with the
-second entry being zero, and skips over it. However, generic userspace
-unwinders assume that a zero entry indicates end of the stack trace,
-resulting in a truncated userspace stack trace.
-
-Rather than fixing all userspace unwinders to ignore/skip past the
-second entry, store the real LR value in pt_regs->link so that there
-continues to be a valid, though duplicate entry in the stack trace.
-
-With this change:
-    $ sudo ./bcc/tools/offcputime.py -uU
-    Tracing off-CPU time (us) of user threads by user stack... Hit Ctrl-C to end.
-
-    ^C
-	write
-	write
-	[unknown]
-	[unknown]
-	[unknown]
-	[unknown]
-	[unknown]
-	PyObject_VectorcallMethod
-	[unknown]
-	[unknown]
-	PyObject_CallOneArg
-	PyFile_WriteObject
-	PyFile_WriteString
-	[unknown]
-	[unknown]
-	PyObject_Vectorcall
-	_PyEval_EvalFrameDefault
-	PyEval_EvalCode
-	[unknown]
-	[unknown]
-	[unknown]
-	_PyRun_SimpleFileObject
-	_PyRun_AnyFileObject
-	Py_RunMain
-	[unknown]
-	Py_BytesMain
-	[unknown]
-	__libc_start_main
-	-                python (1293)
-	    7
-
-	write
-	write
-	[unknown]
-	sudo_ev_loop_v1
-	sudo_ev_dispatch_v1
-	[unknown]
-	[unknown]
-	[unknown]
-	[unknown]
-	__libc_start_main
-	-                sudo (1291)
-	    7
-
-	syscall
-	syscall
-	bpf_open_perf_buffer_opts
-	[unknown]
-	[unknown]
-	[unknown]
-	[unknown]
-	_PyObject_MakeTpCall
-	PyObject_Vectorcall
-	_PyEval_EvalFrameDefault
-	PyEval_EvalCode
-	[unknown]
-	[unknown]
-	[unknown]
-	_PyRun_SimpleFileObject
-	_PyRun_AnyFileObject
-	Py_RunMain
-	[unknown]
-	Py_BytesMain
-	[unknown]
-	__libc_start_main
-	-                python (1293)
-	    11
-
-	clock_nanosleep
-	clock_nanosleep
-	nanosleep
-	sleep
-	[unknown]
-	[unknown]
-	__clone
-	-                multipathd (698)
-	    3001661
-
-Fixes: 7fa95f9adaee ("powerpc/64s: system call support for scv/rfscv instructions")
-Cc: stable@vger.kernel.org
-Reported-by: "Nysal Jan K.A" <nysal@linux.ibm.com>
-Signed-off-by: Naveen N Rao <naveen@kernel.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240202154316.395276-1-naveen@kernel.org
+Signed-off-by: José Relvas <josemonsantorelvas@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240131113407.34698-3-josemonsantorelvas@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kernel/interrupt_64.S |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_realtek.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/arch/powerpc/kernel/interrupt_64.S
-+++ b/arch/powerpc/kernel/interrupt_64.S
-@@ -52,7 +52,8 @@ _ASM_NOKPROBE_SYMBOL(system_call_vectore
- 	mr	r10,r1
- 	ld	r1,PACAKSAVE(r13)
- 	std	r10,0(r1)
--	std	r11,_NIP(r1)
-+	std	r11,_LINK(r1)
-+	std	r11,_NIP(r1)	/* Saved LR is also the next instruction */
- 	std	r12,_MSR(r1)
- 	std	r0,GPR0(r1)
- 	std	r10,GPR1(r1)
-@@ -70,7 +71,6 @@ _ASM_NOKPROBE_SYMBOL(system_call_vectore
- 	std	r9,GPR13(r1)
- 	SAVE_NVGPRS(r1)
- 	std	r11,_XER(r1)
--	std	r11,_LINK(r1)
- 	std	r11,_CTR(r1)
- 
- 	li	r11,\trapnr
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9570,7 +9570,7 @@ static const struct hda_fixup alc269_fix
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = cs35l41_fixup_i2c_two,
+ 		.chained = true,
+-		.chain_id = ALC269_FIXUP_THINKPAD_ACPI,
++		.chain_id = ALC285_FIXUP_THINKPAD_NO_BASS_SPK_HEADSET_JACK,
+ 	},
+ 	[ALC287_FIXUP_TAS2781_I2C] = {
+ 		.type = HDA_FIXUP_FUNC,
+@@ -9591,6 +9591,8 @@ static const struct hda_fixup alc269_fix
+ 	[ALC287_FIXUP_THINKPAD_I2S_SPK] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc287_fixup_bind_dacs,
++		.chained = true,
++		.chain_id = ALC285_FIXUP_THINKPAD_NO_BASS_SPK_HEADSET_JACK,
+ 	},
+ 	[ALC287_FIXUP_MG_RTKC_CSAMP_CS35L41_I2C_THINKPAD] = {
+ 		.type = HDA_FIXUP_FUNC,
 
 
 
