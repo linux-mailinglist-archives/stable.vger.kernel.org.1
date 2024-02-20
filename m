@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-21516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 791D185C93C
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:31:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD0F585C791
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:14:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 346A9284CB6
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:31:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED9A91C21E9F
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:14:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871B9151CEC;
-	Tue, 20 Feb 2024 21:31:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3727A151CC3;
+	Tue, 20 Feb 2024 21:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Yg+Ml63"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0TF1vmwM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 444541509BC;
-	Tue, 20 Feb 2024 21:31:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF0276C9C;
+	Tue, 20 Feb 2024 21:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464660; cv=none; b=Ze/+ptTL0yMFw+C4LHNzFfGDVJ9zTA+pEZfrvBA8N/ozBeWpJeYHdaDJcMe3vI6QAaROfE5dTSpknHCzjpRG6aTVHjhEXTHu5r0CQryrWORzsauI5qD4/PbLpuME7fH1DQtJI5lnmW3Q0OGoqeDrchehkBc2GaciJr2JHsk6v6o=
+	t=1708463650; cv=none; b=cZfro7Ow6brLGfBXGYgfUEgB0UCvxy+cYlHShtxxhz7esjYyPI/aK3RYf7olrhCZA9ruMw9xOPkST0Rt6++5WHB7NCZgPLEWuLuprxs92BXt365vP6Nx2+6lL1ON334OHmoHu0CaQUhDrP0Gsq4TzuG2IJznrIJro0DhxD2PF3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464660; c=relaxed/simple;
-	bh=wC2Kh5cnoQWNwit2YU3AcAWJlZyolFjvpX4n24FW3jE=;
+	s=arc-20240116; t=1708463650; c=relaxed/simple;
+	bh=ZSDMeDxA86A82W9h7/gmBBdJzDE7Nec9SEOGDeVMWYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dv/R+BtmYlynUmy4o6as7eI1L1MrZiaTS6pbjGKx7NuWYTZONR4WNqAwU43nFaFlVFen861X+ads5WDqxwtuXRg3axcAsm+Zi0yeLl6AVcnl8wOXCj97ynQ47l7IgnSCshx0d+zeUOZRv5EEFYr5xj22IPPAFeVkHoFMM9pDMs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Yg+Ml63; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B62ABC433C7;
-	Tue, 20 Feb 2024 21:30:59 +0000 (UTC)
+	 MIME-Version; b=Zo2XgAbzoVSzA5IBGsKnqp2NNFZ5JQr5qASflgQ4R1mWdOcMO/uLbjgTXMdwJMVvNjaWI+NLAnJRPxIUi/+qwbVeAIHrYfb0h0OwuyeAOS+bx9ghEwoaOeitY9nRiu19zzUZwswDR/M/SsG7JiMPDpzLw5r9nEylHuHf4O/SM2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0TF1vmwM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 480CCC433F1;
+	Tue, 20 Feb 2024 21:14:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464660;
-	bh=wC2Kh5cnoQWNwit2YU3AcAWJlZyolFjvpX4n24FW3jE=;
+	s=korg; t=1708463649;
+	bh=ZSDMeDxA86A82W9h7/gmBBdJzDE7Nec9SEOGDeVMWYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Yg+Ml639TMg4B1b1kfV2vmlhArnTYTXMvNn2mlDouGvvSL41HKn2ukd/Vq4t5qc1
-	 ut0JtivEF/J8R/sOtYm1SdR5NpjQ8B/9r44PVEwC41cuROMBcsBZfFeu1t3fVZL9Bw
-	 kIAgID0Uo5YKW+S825g1pgADnlK9BPa2U6GYfM8M=
+	b=0TF1vmwM2wtJACj+sPYZqbhFO7QPqQttKepyjSnvGGrlKfWJ9u+g0NZKKO5DwzFVA
+	 jqvSP8WYlZiaRpmra70eV/PfmB6wrJ8P+1baV5PkCuOnytaGJJxxb58KUmi6P0ufMJ
+	 Nv10AymQuoeQewR9djfIR+nPTh+d97mJ1c8TDeeQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Pedro Demarchi Gomes <pedrodemargomes@gmail.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.7 065/309] selftests/mm: ksm_tests should only MADV_HUGEPAGE valid memory
-Date: Tue, 20 Feb 2024 21:53:44 +0100
-Message-ID: <20240220205635.250030237@linuxfoundation.org>
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 109/331] selftests: mptcp: increase timeout to 30 min
+Date: Tue, 20 Feb 2024 21:53:45 +0100
+Message-ID: <20240220205641.034222530@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Roberts <ryan.roberts@arm.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit d021b442cf312664811783e92b3d5e4548e92a53 upstream.
+commit 4d4dfb2019d7010efb65926d9d1c1793f9a367c6 upstream.
 
-ksm_tests was previously mmapping a region of memory, aligning the
-returned pointer to a PMD boundary, then setting MADV_HUGEPAGE, but was
-setting it past the end of the mmapped area due to not taking the pointer
-alignment into consideration.  Fix this behaviour.
+On very slow environments -- e.g. when QEmu is used without KVM --,
+mptcp_join.sh selftest can take a bit more than 20 minutes. Bump the
+default timeout by 50% as it seems normal to take that long on some
+environments.
 
-Up until commit efa7df3e3bb5 ("mm: align larger anonymous mappings on THP
-boundaries"), this buggy behavior was (usually) masked because the
-alignment difference was always less than PMD-size.  But since the
-mentioned commit, `ksm_tests -H -s 100` started failing.
+When a debug kernel config is used, this selftest will take even longer,
+but that's certainly not a common test env to consider for the timeout.
 
-Link: https://lkml.kernel.org/r/20240122120554.3108022-1-ryan.roberts@arm.com
-Fixes: 325254899684 ("selftests: vm: add KSM huge pages merging time test")
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+The Fixes tag that has been picked here is there simply to help having
+this patch backported to older stable versions. It is difficult to point
+to the exact commit that made some env reaching the timeout from time to
+time.
+
+Fixes: d17b968b9876 ("selftests: mptcp: increase timeout to 20 minutes")
+Cc: stable@vger.kernel.org
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/20240131-upstream-net-20240131-mptcp-ci-issues-v1-5-4c1c11e571ff@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/mm/ksm_tests.c |    2 +-
+ tools/testing/selftests/net/mptcp/settings |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/testing/selftests/mm/ksm_tests.c
-+++ b/tools/testing/selftests/mm/ksm_tests.c
-@@ -566,7 +566,7 @@ static int ksm_merge_hugepages_time(int
- 	if (map_ptr_orig == MAP_FAILED)
- 		err(2, "initial mmap");
- 
--	if (madvise(map_ptr, len + HPAGE_SIZE, MADV_HUGEPAGE))
-+	if (madvise(map_ptr, len, MADV_HUGEPAGE))
- 		err(2, "MADV_HUGEPAGE");
- 
- 	pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
+--- a/tools/testing/selftests/net/mptcp/settings
++++ b/tools/testing/selftests/net/mptcp/settings
+@@ -1 +1 @@
+-timeout=1200
++timeout=1800
 
 
 
