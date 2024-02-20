@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-21133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B6C685C743
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:10:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E803B85C8F3
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:27:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCCE91C20AEC
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:10:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75A7F1F223E0
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:27:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8B59151CC3;
-	Tue, 20 Feb 2024 21:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CC80151CED;
+	Tue, 20 Feb 2024 21:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FnCb9Rou"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m2FekAhG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CE6C612D7;
-	Tue, 20 Feb 2024 21:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F019614A4E6;
+	Tue, 20 Feb 2024 21:27:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463457; cv=none; b=XEWHYe1EvQH3pUimfC2kqEezPlsqksVqzLGeUl0j0sQVfH8W+gMQkMdrHkl5MfpDYgh8NViJk6sCP/39rRYGvIZ1u7PQgu75nHGOXrPIAmsrXdZay6+NunHDzlI/qXu70GmFIfK3jh7Z7yYGJjEvOAEiXWJcEJWYlzWlO8QO5XY=
+	t=1708464452; cv=none; b=NJMMONPGZEdi2EKq8ZBF4ogu++tGG28pNN1dG7MLfTH073PteF2ZCyxgSY2Fjf4LKvDfT3AWYsd3YoJuauatmbT1NQYNezRjV655giHnMJ3fZ/RRzBIsFH6DMehipcUhu+mfxULHiPW7w3n47OglWhpHGagv9IpSqk80aodBNRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463457; c=relaxed/simple;
-	bh=Do0e5y9DnPUEvZfrSuP7RTRyvHX3+IePGgvaLUc2rJo=;
+	s=arc-20240116; t=1708464452; c=relaxed/simple;
+	bh=aiESXFjm+RBJTCFCzs/1keE5i8P8oO7/2pZNsmohBIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=if4TJthqhrGCrSGpKE63YepCMy01kjnYTHj03PmTV48uOBakZrJTPf60QuV0PBSLLLRAzqzpwf6YupvgI7WvgkTg4Grd60GpgpCosaXcnrRJIsrogIOYr1kj2rSeWJCAS9tIxeiFo0IDJD+sbHUyhBRCVgWzRv2qG2VvZucfWB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FnCb9Rou; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E49C8C433F1;
-	Tue, 20 Feb 2024 21:10:56 +0000 (UTC)
+	 MIME-Version; b=f75i7KJ2QQ3E+JneefKObOFy386FNsinXSepCQAz7DwKVuAnw1ADNaKbcwvjHCdM3zxy8gNUKGnb2u7yKUNMK4NN95rLfeCHJ8LdKahb76l8uiX9Ie6j+l606SDLPT8ixWtVoQPdVHCxdR8qkSRBRxgX44pMn2EXHU4bgA3ZT9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m2FekAhG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71E6DC433F1;
+	Tue, 20 Feb 2024 21:27:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463457;
-	bh=Do0e5y9DnPUEvZfrSuP7RTRyvHX3+IePGgvaLUc2rJo=;
+	s=korg; t=1708464451;
+	bh=aiESXFjm+RBJTCFCzs/1keE5i8P8oO7/2pZNsmohBIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FnCb9Rouj9yfyVpv8kx4657Hngm4Gbluatwzy/w7uXnk+KEF0WC7Y3tzHgNPxEN5u
-	 YZv7lhxQWGzAdlwW5vndaORKipAcIGINYDFIKfPGhFmcD91XICnSWrUWjIaqWrVQOd
-	 rzWHtQ44Av2311cmCy0K1E9XczP/BBVwjwNDhjv4=
+	b=m2FekAhGvsjvzmZsrBkwdHJMBgECJ+owS9dnouf6fCX/Qm/iNxBl4XHInGQV/ctOf
+	 1E0vmD2yOW09ob5mZKYYCteUSJzRk4UOd0cB5yiezNeEf7FEh1z0thfcheqt/unuQK
+	 tnNTwhYPrN4grwV8NDgje1pHin5AbZcTLe/jnyK8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Danilo Krummrich <dakr@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 049/331] nouveau/svm: fix kvcalloc() argument order
-Date: Tue, 20 Feb 2024 21:52:45 +0100
-Message-ID: <20240220205639.137450910@linuxfoundation.org>
+	Ivan Shapovalov <intelfx@intelfx.name>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Boris Burkov <boris@bur.io>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.7 007/309] btrfs: add new unused block groups to the list of unused block groups
+Date: Tue, 20 Feb 2024 21:52:46 +0100
+Message-ID: <20240220205633.359255553@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +65,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 2c80a2b715df75881359d07dbaacff8ad411f40e ]
+commit 12c5128f101bfa47a08e4c0e1a75cfa2d0872bcd upstream.
 
-The conversion to kvcalloc() mixed up the object size and count
-arguments, causing a warning:
+Space reservations for metadata are, most of the time, pessimistic as we
+reserve space for worst possible cases - where tree heights are at the
+maximum possible height (8), we need to COW every extent buffer in a tree
+path, need to split extent buffers, etc.
 
-drivers/gpu/drm/nouveau/nouveau_svm.c: In function 'nouveau_svm_fault_buffer_ctor':
-drivers/gpu/drm/nouveau/nouveau_svm.c:1010:40: error: 'kvcalloc' sizes specified with 'sizeof' in the earlier argument and not in the later argument [-Werror=calloc-transposed-args]
- 1010 |         buffer->fault = kvcalloc(sizeof(*buffer->fault), buffer->entries, GFP_KERNEL);
-      |                                        ^
-drivers/gpu/drm/nouveau/nouveau_svm.c:1010:40: note: earlier argument should specify number of elements, later size of each element
+For data, we generally reserve the exact amount of space we are going to
+allocate. The exception here is when using compression, in which case we
+reserve space matching the uncompressed size, as the compression only
+happens at writeback time and in the worst possible case we need that
+amount of space in case the data is not compressible.
 
-The behavior is still correct aside from the warning, but fixing it avoids
-the warnings and can help the compiler track the individual objects better.
+This means that when there's not available space in the corresponding
+space_info object, we may need to allocate a new block group, and then
+that block group might not be used after all. In this case the block
+group is never added to the list of unused block groups and ends up
+never being deleted - except if we unmount and mount again the fs, as
+when reading block groups from disk we add unused ones to the list of
+unused block groups (fs_info->unused_bgs). Otherwise a block group is
+only added to the list of unused block groups when we deallocate the
+last extent from it, so if no extent is ever allocated, the block group
+is kept around forever.
 
-Fixes: 71e4bbca070e ("nouveau/svm: Use kvcalloc() instead of kvzalloc()")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Danilo Krummrich <dakr@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240212112230.1117284-1-arnd@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This also means that if we have a bunch of tasks reserving space in
+parallel we can end up allocating many block groups that end up never
+being used or kept around for too long without being used, which has
+the potential to result in ENOSPC failures in case for example we over
+allocate too many metadata block groups and then end up in a state
+without enough unallocated space to allocate a new data block group.
+
+This is more likely to happen with metadata reservations as of kernel
+6.7, namely since commit 28270e25c69a ("btrfs: always reserve space for
+delayed refs when starting transaction"), because we started to always
+reserve space for delayed references when starting a transaction handle
+for a non-zero number of items, and also to try to reserve space to fill
+the gap between the delayed block reserve's reserved space and its size.
+
+So to avoid this, when finishing the creation a new block group, add the
+block group to the list of unused block groups if it's still unused at
+that time. This way the next time the cleaner kthread runs, it will delete
+the block group if it's still unused and not needed to satisfy existing
+space reservations.
+
+Reported-by: Ivan Shapovalov <intelfx@intelfx.name>
+Link: https://lore.kernel.org/linux-btrfs/9cdbf0ca9cdda1b4c84e15e548af7d7f9f926382.camel@intelfx.name/
+CC: stable@vger.kernel.org # 6.7+
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_svm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/block-group.c |   31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_svm.c b/drivers/gpu/drm/nouveau/nouveau_svm.c
-index 186351ecf72f..ec9f307370fa 100644
---- a/drivers/gpu/drm/nouveau/nouveau_svm.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_svm.c
-@@ -1011,7 +1011,7 @@ nouveau_svm_fault_buffer_ctor(struct nouveau_svm *svm, s32 oclass, int id)
- 	if (ret)
- 		return ret;
- 
--	buffer->fault = kvcalloc(sizeof(*buffer->fault), buffer->entries, GFP_KERNEL);
-+	buffer->fault = kvcalloc(buffer->entries, sizeof(*buffer->fault), GFP_KERNEL);
- 	if (!buffer->fault)
- 		return -ENOMEM;
- 
--- 
-2.43.0
-
+--- a/fs/btrfs/block-group.c
++++ b/fs/btrfs/block-group.c
+@@ -2757,6 +2757,37 @@ next:
+ 		btrfs_dec_delayed_refs_rsv_bg_inserts(fs_info);
+ 		list_del_init(&block_group->bg_list);
+ 		clear_bit(BLOCK_GROUP_FLAG_NEW, &block_group->runtime_flags);
++
++		/*
++		 * If the block group is still unused, add it to the list of
++		 * unused block groups. The block group may have been created in
++		 * order to satisfy a space reservation, in which case the
++		 * extent allocation only happens later. But often we don't
++		 * actually need to allocate space that we previously reserved,
++		 * so the block group may become unused for a long time. For
++		 * example for metadata we generally reserve space for a worst
++		 * possible scenario, but then don't end up allocating all that
++		 * space or none at all (due to no need to COW, extent buffers
++		 * were already COWed in the current transaction and still
++		 * unwritten, tree heights lower than the maximum possible
++		 * height, etc). For data we generally reserve the axact amount
++		 * of space we are going to allocate later, the exception is
++		 * when using compression, as we must reserve space based on the
++		 * uncompressed data size, because the compression is only done
++		 * when writeback triggered and we don't know how much space we
++		 * are actually going to need, so we reserve the uncompressed
++		 * size because the data may be uncompressible in the worst case.
++		 */
++		if (ret == 0) {
++			bool used;
++
++			spin_lock(&block_group->lock);
++			used = btrfs_is_block_group_used(block_group);
++			spin_unlock(&block_group->lock);
++
++			if (!used)
++				btrfs_mark_bg_unused(block_group);
++		}
+ 	}
+ 	btrfs_trans_release_chunk_metadata(trans);
+ }
 
 
 
