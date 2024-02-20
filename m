@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-21545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90B7385C959
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:32:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF8E785C981
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:34:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 086661F22966
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:32:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9CF3284D23
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:34:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E427151CE1;
-	Tue, 20 Feb 2024 21:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F02F151CD6;
+	Tue, 20 Feb 2024 21:34:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tWVLXTJo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JjTFDUJ8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF701509BC;
-	Tue, 20 Feb 2024 21:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF3314F9C8;
+	Tue, 20 Feb 2024 21:34:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464749; cv=none; b=OL0jJuACED3huvru14d7iCdj+4Xvoby/hvdZhVQ/MgcYmKXKqbCfL2W3Oacyw1S7KvKNdZ2PpyQBUm2+Ul07ytni5EbqewoUcO6xiIZYJQTDUzXOLP/2UKZhHcFivl+aDUcYI30kS/VYmuLxylgu6AHzyRoyFQA6pZ+PUDQGMX8=
+	t=1708464875; cv=none; b=b/wCtCVXGJEziKVLoSrMDwXnJwpxbkmZcMjru18NUrcheQOFGH4g/PoyLH+43G5VmcR5Ksx5llvDc389sOFKT8EUUTxMi6ItTDbteffxdRjvxEMWpg/ZExYd9gTlBT/YZmjidrzRfEDMdUqA90yrU1YPAVJnGJSyOOuWBIhdN58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464749; c=relaxed/simple;
-	bh=JL74Fza38qAZvmcvzdnoZ7X1YG9eGeick+R27CCt1Ec=;
+	s=arc-20240116; t=1708464875; c=relaxed/simple;
+	bh=bwEEXl8PIEN030VYvXpfD5VTrPthOhBvxEoGvyt+aE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ttAOSdjTytciT3nf4g4rcWVUroQbUVHjmdoYBeEFV6EOxnVLQeJSpCWW9NudcYrIosU0BAR2WZFTlvN8YVbSs++Xh3zBUjrn7DbC1n8gXUwxWPTHFHR54+eOiZ2hur6kCNkavIwJdfKwCpuA7qhce/aOLLLf7y8S8PoO96fWDNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tWVLXTJo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBCD8C433F1;
-	Tue, 20 Feb 2024 21:32:28 +0000 (UTC)
+	 MIME-Version; b=XCuLAF6znPo9FQPTLo2IqaczkQZmakMg02YCC5vlfRIxTIY/jDoueQUbW45QTQysatL0T1IlQ1FMTWyXt5w4C/rwvckrdlZfXiQ71To1OvxBrBjD+Hr1v9WPfS5v51B63OVauPp0TKsKW1WErITiyacWh0ecUQxunStSVT8tNg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JjTFDUJ8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EE88C433F1;
+	Tue, 20 Feb 2024 21:34:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464749;
-	bh=JL74Fza38qAZvmcvzdnoZ7X1YG9eGeick+R27CCt1Ec=;
+	s=korg; t=1708464875;
+	bh=bwEEXl8PIEN030VYvXpfD5VTrPthOhBvxEoGvyt+aE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tWVLXTJosKb83WeF5FNGaHtWKQT5fTdIJfF3rdYcqqYu8QmrFWvLNOmB21npolmRa
-	 0+39f3QVqUyZqRm0TXhzFz6Wj/BYGsURUTNdounpjGpGSWAqAdHL6jxHODKT3ndREq
-	 0FqCq+nMHqOA+8GBnJn2SWSgoQ67hODPZCC31DX8=
+	b=JjTFDUJ8uzterIMzYciL85Dmq7GhpT+mpxwsDL7b0cxCqzIIvn3BMvhQuXI+sPPaj
+	 JwBGeY32oIY1pP2f2gLClBw6QKSWgzbMC+peTsYKW+97t5a5U8cmu8y3REmns4+kpH
+	 ds0BEB28ekMGr7fWvjqKHNWXhHzR+NBDB/4Ylb5s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Mat Martineau <martineau@kernel.org>,
 	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.7 123/309] mptcp: drop the push_pending field
-Date: Tue, 20 Feb 2024 21:54:42 +0100
-Message-ID: <20240220205637.015809612@linuxfoundation.org>
+Subject: [PATCH 6.7 124/309] mptcp: fix rcv space initialization
+Date: Tue, 20 Feb 2024 21:54:43 +0100
+Message-ID: <20240220205637.044426504@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
 References: <20240220205633.096363225@linuxfoundation.org>
@@ -69,20 +69,23 @@ Content-Transfer-Encoding: 8bit
 
 From: Paolo Abeni <pabeni@redhat.com>
 
-commit bdd70eb68913c960acb895b00a8c62eb64715b1f upstream.
+commit 013e3179dbd2bc756ce1dd90354abac62f65b739 upstream.
 
-Such field is there to avoid acquiring the data lock in a few spots,
-but it adds complexity to the already non trivial locking schema.
+mptcp_rcv_space_init() is supposed to happen under the msk socket
+lock, but active msk socket does that without such protection.
 
-All the relevant call sites (mptcp-level re-injection, set socket
-options), are slow-path, drop such field in favor of 'cb_flags', adding
-the relevant locking.
+Leverage the existing mptcp_propagate_state() helper to that extent.
+We need to ensure mptcp_rcv_space_init will happen before
+mptcp_rcv_space_adjust(), and the release_cb does not assure that:
+explicitly check for such condition.
 
-This patch could be seen as an improvement, instead of a fix. But it
-simplifies the next patch. The 'Fixes' tag has been added to help having
-this series backported to stable.
+While at it, move the wnd_end initialization out of mptcp_rcv_space_init(),
+it never belonged there.
 
-Fixes: e9d09baca676 ("mptcp: avoid atomic bit manipulation when possible")
+Note that the race does not produce ill effect in practice, but
+change allows cleaning-up and defying better the locking model.
+
+Fixes: a6b118febbab ("mptcp: add receive buffer auto-tuning")
 Cc: stable@vger.kernel.org
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Reviewed-by: Mat Martineau <martineau@kernel.org>
@@ -90,62 +93,99 @@ Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |   12 ++++++------
- net/mptcp/protocol.h |    1 -
- 2 files changed, 6 insertions(+), 7 deletions(-)
+ net/mptcp/protocol.c |   10 ++++++----
+ net/mptcp/protocol.h |    3 ++-
+ net/mptcp/subflow.c  |    4 ++--
+ 3 files changed, 10 insertions(+), 7 deletions(-)
 
 --- a/net/mptcp/protocol.c
 +++ b/net/mptcp/protocol.c
-@@ -1519,8 +1519,11 @@ static void mptcp_update_post_push(struc
+@@ -1977,6 +1977,9 @@ static void mptcp_rcv_space_adjust(struc
+ 	if (copied <= 0)
+ 		return;
  
- void mptcp_check_and_set_pending(struct sock *sk)
++	if (!msk->rcvspace_init)
++		mptcp_rcv_space_init(msk, msk->first);
++
+ 	msk->rcvq_space.copied += copied;
+ 
+ 	mstamp = div_u64(tcp_clock_ns(), NSEC_PER_USEC);
+@@ -3156,6 +3159,7 @@ static int mptcp_disconnect(struct sock
+ 	msk->bytes_received = 0;
+ 	msk->bytes_sent = 0;
+ 	msk->bytes_retrans = 0;
++	msk->rcvspace_init = 0;
+ 
+ 	WRITE_ONCE(sk->sk_shutdown, 0);
+ 	sk_error_report(sk);
+@@ -3243,6 +3247,7 @@ void mptcp_rcv_space_init(struct mptcp_s
  {
--	if (mptcp_send_head(sk))
--		mptcp_sk(sk)->push_pending |= BIT(MPTCP_PUSH_PENDING);
-+	if (mptcp_send_head(sk)) {
-+		mptcp_data_lock(sk);
-+		mptcp_sk(sk)->cb_flags |= BIT(MPTCP_PUSH_PENDING);
-+		mptcp_data_unlock(sk);
-+	}
+ 	const struct tcp_sock *tp = tcp_sk(ssk);
+ 
++	msk->rcvspace_init = 1;
+ 	msk->rcvq_space.copied = 0;
+ 	msk->rcvq_space.rtt_us = 0;
+ 
+@@ -3253,8 +3258,6 @@ void mptcp_rcv_space_init(struct mptcp_s
+ 				      TCP_INIT_CWND * tp->advmss);
+ 	if (msk->rcvq_space.space == 0)
+ 		msk->rcvq_space.space = TCP_INIT_CWND * TCP_MSS_DEFAULT;
+-
+-	WRITE_ONCE(msk->wnd_end, msk->snd_nxt + tcp_sk(ssk)->snd_wnd);
  }
  
- static int __subflow_push_pending(struct sock *sk, struct sock *ssk,
-@@ -3138,7 +3141,6 @@ static int mptcp_disconnect(struct sock
- 	mptcp_destroy_common(msk, MPTCP_CF_FASTCLOSE);
- 	WRITE_ONCE(msk->flags, 0);
- 	msk->cb_flags = 0;
--	msk->push_pending = 0;
- 	msk->recovery = false;
- 	msk->can_ack = false;
- 	msk->fully_established = false;
-@@ -3364,8 +3366,7 @@ static void mptcp_release_cb(struct sock
- 	struct mptcp_sock *msk = mptcp_sk(sk);
+ static struct sock *mptcp_accept(struct sock *ssk, int flags, int *err,
+@@ -3512,10 +3515,9 @@ void mptcp_finish_connect(struct sock *s
+ 	WRITE_ONCE(msk->write_seq, subflow->idsn + 1);
+ 	WRITE_ONCE(msk->snd_nxt, msk->write_seq);
+ 	WRITE_ONCE(msk->snd_una, msk->write_seq);
++	WRITE_ONCE(msk->wnd_end, msk->snd_nxt + tcp_sk(ssk)->snd_wnd);
  
- 	for (;;) {
--		unsigned long flags = (msk->cb_flags & MPTCP_FLAGS_PROCESS_CTX_NEED) |
--				      msk->push_pending;
-+		unsigned long flags = (msk->cb_flags & MPTCP_FLAGS_PROCESS_CTX_NEED);
- 		struct list_head join_list;
+ 	mptcp_pm_new_connection(msk, ssk, 0);
+-
+-	mptcp_rcv_space_init(msk, ssk);
+ }
  
- 		if (!flags)
-@@ -3381,7 +3382,6 @@ static void mptcp_release_cb(struct sock
- 		 *    datapath acquires the msk socket spinlock while helding
- 		 *    the subflow socket lock
- 		 */
--		msk->push_pending = 0;
- 		msk->cb_flags &= ~flags;
- 		spin_unlock_bh(&sk->sk_lock.slock);
- 
+ void mptcp_sock_graft(struct sock *sk, struct socket *parent)
 --- a/net/mptcp/protocol.h
 +++ b/net/mptcp/protocol.h
-@@ -286,7 +286,6 @@ struct mptcp_sock {
- 	int		rmem_released;
- 	unsigned long	flags;
- 	unsigned long	cb_flags;
--	unsigned long	push_pending;
- 	bool		recovery;		/* closing subflow write queue reinjected */
- 	bool		can_ack;
- 	bool		fully_established;
+@@ -304,7 +304,8 @@ struct mptcp_sock {
+ 			nodelay:1,
+ 			fastopening:1,
+ 			in_accept_queue:1,
+-			free_first:1;
++			free_first:1,
++			rcvspace_init:1;
+ 	struct work_struct work;
+ 	struct sk_buff  *ooo_last_skb;
+ 	struct rb_root  out_of_order_queue;
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -424,6 +424,8 @@ void __mptcp_sync_state(struct sock *sk,
+ 	struct mptcp_sock *msk = mptcp_sk(sk);
+ 
+ 	__mptcp_propagate_sndbuf(sk, msk->first);
++	if (!msk->rcvspace_init)
++		mptcp_rcv_space_init(msk, msk->first);
+ 	if (sk->sk_state == TCP_SYN_SENT) {
+ 		inet_sk_state_store(sk, state);
+ 		sk->sk_state_change(sk);
+@@ -545,7 +547,6 @@ static void subflow_finish_connect(struc
+ 		}
+ 	} else if (mptcp_check_fallback(sk)) {
+ fallback:
+-		mptcp_rcv_space_init(msk, sk);
+ 		mptcp_propagate_state(parent, sk);
+ 	}
+ 	return;
+@@ -1744,7 +1745,6 @@ static void subflow_state_change(struct
+ 	msk = mptcp_sk(parent);
+ 	if (subflow_simultaneous_connect(sk)) {
+ 		mptcp_do_fallback(sk);
+-		mptcp_rcv_space_init(msk, sk);
+ 		pr_fallback(msk);
+ 		subflow->conn_finished = 1;
+ 		mptcp_propagate_state(parent, sk);
 
 
 
