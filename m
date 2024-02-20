@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-21682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B536185C9E6
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:39:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0C8A85C87D
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:22:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6FEE1C2241D
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:39:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B726284CB1
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:22:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D11A8152DEB;
-	Tue, 20 Feb 2024 21:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2BA8151CD8;
+	Tue, 20 Feb 2024 21:22:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JXZ39E62"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZdEI9TXV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FAB1151CF0;
-	Tue, 20 Feb 2024 21:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23982DF9F;
+	Tue, 20 Feb 2024 21:22:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708465180; cv=none; b=Va9IOXEk6DO6jl+MLK0BVYIGzg3fld7qXT5XciIfsUy7E4tnqTrkCLteAndH7FfEm0AXLBqOqtx0tnHGUduBiMqaLrh9v8cjApVsvSagsPK6SUaZ3hfWcsgRcNIfHHMI4GN3Cdi+zzLN/iDmNz1z3Ge8RbtCSRpTlOM7CdRFnvI=
+	t=1708464146; cv=none; b=GJqxdDbDg/UIYfhGARfSRUWv3lLW4Asi9YEMJlxX5NudKovQ8eYvE5gNPJ7EqKx5YwgLDnvH+x24GbcSHoTJWgJ9c8h+vpvsSFC38zu0omUZPnW33mcelVe0KBSfzA4qlrBUd3jq0IKs0vDcmpPAEDookFHRJX9Vwck9vSmVGAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708465180; c=relaxed/simple;
-	bh=9XHe/JqiYehAhhprC7ZuqEH+9Ye+PGdgugmJA7ucGVE=;
+	s=arc-20240116; t=1708464146; c=relaxed/simple;
+	bh=4HCcs6ZyiBNQBIzzTjNBV1I11u0JEmc8MmkFcc1M7+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j6+r07j1z3eX17t8VDNwvoAL8Eks6gT9w9NS9gb0xTAGi7U5j6isOhf/zCG4Sj1j7kp9RIvExXdw40TAAC0KD9HOi9i4IOuKnr8prVRmMIZmnI4OfALR6jJGREnz5FHhQETZ/UEPJ4Thru2LAKUow4Qb83H3+sHTUb5U40tZ1qw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JXZ39E62; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6FFBC433C7;
-	Tue, 20 Feb 2024 21:39:39 +0000 (UTC)
+	 MIME-Version; b=Hks565zYRfO1chgHw32H3W2vYJH6X3HJRvzcDhRgM3ocldMuwB4vplWd8wAZAopdM2V4FPe+YpKpOpSMQdypcQOw/+8U4iNqBawUc/AO8izSFAqzwVLkv/a3X4QdJjDJnVgSsoxWhIZpuYuj2n/WUgGpVNao2kMjSSIVgWwETcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZdEI9TXV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2288DC43390;
+	Tue, 20 Feb 2024 21:22:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708465180;
-	bh=9XHe/JqiYehAhhprC7ZuqEH+9Ye+PGdgugmJA7ucGVE=;
+	s=korg; t=1708464146;
+	bh=4HCcs6ZyiBNQBIzzTjNBV1I11u0JEmc8MmkFcc1M7+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JXZ39E62nYFJ51VS5MYN3IIoQEtnUbaDKl6caVAHD1xCATo2ZJeyhTWHSatOO0drq
-	 oO8lmTrxs/7Lz/tDyfVyhYe7P8vLgsvN8uau8UfwB/Qq5oPtprGfXWpGHrNY3F+WwG
-	 FbtKZBLneV01V6R8GH9Dd1d0yldCPmhQKCFEGssk=
+	b=ZdEI9TXV8Ydx3KG+cJPiol4duAk7P0x85VfnGlr3BR4kNbe22wAojxEWRSEc5tX3x
+	 AlrvB+yWCKVSpvHt8N4LJHII3/FlvOQ7eS2b8pvL5aj2IUIQuryiV7enIFW/2skNkv
+	 dz6jADMCRnFU1e3mL8qgJmuF/21qJbu8zKeHuMro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jan=20Kundr=C3=A1t?= <jan.kundrat@cesnet.cz>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Subject: [PATCH 6.7 222/309] serial: max310x: improve crystal stable clock detection
+	kernel test robot <lkp@intel.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 265/331] eventfs: Use eventfs_remove_events_dir()
 Date: Tue, 20 Feb 2024 21:56:21 +0100
-Message-ID: <20240220205640.104118050@linuxfoundation.org>
+Message-ID: <20240220205646.205664386@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,87 +59,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-commit 93cd256ab224c2519e7c4e5f58bb4f1ac2bf0965 upstream.
+commit 2819f23ac12ce93ff79ca7a54597df9a4a1f6331 upstream.
 
-Some people are seeing a warning similar to this when using a crystal:
+The update to removing the eventfs_file changed the way the events top
+level directory was handled. Instead of returning a dentry, it now returns
+the eventfs_inode. In this changed, the removing of the events top level
+directory is not much different than removing any of the other
+directories. Because of this, the removal just called eventfs_remove_dir()
+instead of eventfs_remove_events_dir().
 
-    max310x 11-006c: clock is not stable yet
+Although eventfs_remove_dir() does the clean up, it misses out on the
+dget() of the ei->dentry done in eventfs_create_events_dir(). It makes
+more sense to match eventfs_create_events_dir() with a specific function
+eventfs_remove_events_dir() and this specific function can then perform
+the dput() to the dentry that had the dget() when it was created.
 
-The datasheet doesn't mention the maximum time to wait for the clock to be
-stable when using a crystal, and it seems that the 10ms delay in the driver
-is not always sufficient.
-
-Jan Kundrát reported that it took three tries (each separated by 10ms) to
-get a stable clock.
-
-Modify behavior to check stable clock ready bit multiple times (20), and
-waiting 10ms between each try.
-
-Note: the first draft of the driver originally used a 50ms delay, without
-checking the clock stable bit.
-Then a loop with 1000 retries was implemented, each time reading the clock
-stable bit.
-
-Fixes: 4cf9a888fd3c ("serial: max310x: Check the clock readiness")
-Cc: stable@vger.kernel.org
-Suggested-by: Jan Kundrát <jan.kundrat@cesnet.cz>
-Link: https://www.spinics.net/lists/linux-serial/msg35773.html
-Link: https://lore.kernel.org/all/20240110174015.6f20195fde08e5c9e64e5675@hugovil.com/raw
-Link: https://github.com/boundarydevices/linux/commit/e5dfe3e4a751392515d78051973190301a37ca9a
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20240116213001.3691629-3-hugo@hugovil.com
+Fixes: 5790b1fb3d67 ("eventfs: Remove eventfs_file and just use eventfs_inode")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202310051743.y9EobbUr-lkp@intel.com/
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/max310x.c |   21 ++++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
+ fs/tracefs/event_inode.c    |   19 +++++++------------
+ include/linux/tracefs.h     |    1 +
+ kernel/trace/trace_events.c |    2 +-
+ 3 files changed, 9 insertions(+), 13 deletions(-)
 
---- a/drivers/tty/serial/max310x.c
-+++ b/drivers/tty/serial/max310x.c
-@@ -237,6 +237,10 @@
- #define MAX310x_REV_MASK		(0xf8)
- #define MAX310X_WRITE_BIT		0x80
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -901,22 +901,17 @@ void eventfs_remove_dir(struct eventfs_i
+ }
  
-+/* Crystal-related definitions */
-+#define MAX310X_XTAL_WAIT_RETRIES	20 /* Number of retries */
-+#define MAX310X_XTAL_WAIT_DELAY_MS	10 /* Delay between retries */
-+
- /* MAX3107 specific */
- #define MAX3107_REV_ID			(0xa0)
+ /**
+- * eventfs_remove_events_dir - remove eventfs dir or file from list
+- * @dentry: events's dentry to be removed.
++ * eventfs_remove_events_dir - remove the top level eventfs directory
++ * @ei: the event_inode returned by eventfs_create_events_dir().
+  *
+- * This function remove events main directory
++ * This function removes the events main directory
+  */
+-void eventfs_remove_events_dir(struct dentry *dentry)
++void eventfs_remove_events_dir(struct eventfs_inode *ei)
+ {
+-	struct tracefs_inode *ti;
++	struct dentry *dentry = ei->dentry;
  
-@@ -641,12 +645,19 @@ static u32 max310x_set_ref_clk(struct de
+-	if (!dentry || !dentry->d_inode)
+-		return;
++	eventfs_remove_dir(ei);
  
- 	/* Wait for crystal */
- 	if (xtal) {
--		unsigned int val = 0;
--		msleep(10);
--		regmap_read(s->regmap, MAX310X_STS_IRQSTS_REG, &val);
--		if (!(val & MAX310X_STS_CLKREADY_BIT)) {
-+		bool stable = false;
-+		unsigned int try = 0, val = 0;
-+
-+		do {
-+			msleep(MAX310X_XTAL_WAIT_DELAY_MS);
-+			regmap_read(s->regmap, MAX310X_STS_IRQSTS_REG, &val);
-+
-+			if (val & MAX310X_STS_CLKREADY_BIT)
-+				stable = true;
-+		} while (!stable && (++try < MAX310X_XTAL_WAIT_RETRIES));
-+
-+		if (!stable)
- 			dev_warn(dev, "clock is not stable yet\n");
--		}
- 	}
+-	ti = get_tracefs(dentry->d_inode);
+-	if (!ti || !(ti->flags & TRACEFS_EVENT_INODE))
+-		return;
+-
+-	d_invalidate(dentry);
++	/* Matches the dget() from eventfs_create_events_dir() */
+ 	dput(dentry);
+ }
+--- a/include/linux/tracefs.h
++++ b/include/linux/tracefs.h
+@@ -41,6 +41,7 @@ struct eventfs_inode *eventfs_create_dir
+ 					 const struct eventfs_entry *entries,
+ 					 int size, void *data);
  
- 	return bestfreq;
++void eventfs_remove_events_dir(struct eventfs_inode *ei);
+ void eventfs_remove_dir(struct eventfs_inode *ei);
+ 
+ struct dentry *tracefs_create_file(const char *name, umode_t mode,
+--- a/kernel/trace/trace_events.c
++++ b/kernel/trace/trace_events.c
+@@ -3893,7 +3893,7 @@ int event_trace_del_tracer(struct trace_
+ 
+ 	down_write(&trace_event_sem);
+ 	__trace_remove_event_dirs(tr);
+-	eventfs_remove_dir(tr->event_dir);
++	eventfs_remove_events_dir(tr->event_dir);
+ 	up_write(&trace_event_sem);
+ 
+ 	tr->event_dir = NULL;
 
 
 
