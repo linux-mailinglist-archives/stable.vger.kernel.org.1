@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-21228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8605385C7C4
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:16:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E545585C95E
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:32:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4122728285D
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:16:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21F431C22401
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:32:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D29A2152E01;
-	Tue, 20 Feb 2024 21:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65224151CE9;
+	Tue, 20 Feb 2024 21:32:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="riR1u9N+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QuoshnRj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F55376C9C;
-	Tue, 20 Feb 2024 21:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220181509BC;
+	Tue, 20 Feb 2024 21:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463758; cv=none; b=jyS51wsQFukluOvF8KFA+yBAdbZTFNupTHeY9/1GWUq5xvvszdFXRdovZWsGFIdvsQxJjBvefjLIKb2TrpsIzlsBgb0vgfxsQo3RWtzCX77QJRoCFZgjcXvACH4cF/w8qGll16uQ6qWwDjBRIbuxT+4hHJMCWKEs14HYUDsHfDE=
+	t=1708464765; cv=none; b=ljnRtq7pdGm8GEmBTkvj0RhfxZ7nFKF7VLMewFknLBA35C7aiBhweHs4ejIsSA9bzDxI0Zm19h4AFVc90tz5Ht9zZuW3HRay3HAylMyZenxLMDH1Ml8ud+Dw2m6x6znexaMHC7lvNZBB3gmtOXHM90nbl/NjJeIjRZJsRkWU0uc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463758; c=relaxed/simple;
-	bh=DXcDd0QMrK2tpe1WzA+Bau22BA6769TdPn1zSwSBVzU=;
+	s=arc-20240116; t=1708464765; c=relaxed/simple;
+	bh=JYIHhkt4WElNLXnm3h6I+62dKCugo4CGAYRI+suBCeY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bmu2h8i4MXXZSJSs7klk9x+ACmVY4saNyYa2ycDNetmM5ut7gSLYvniES38JYrblyajERR37Gk97AecNUYAUbQ0Mp8pMRByLbSZc9VdNH1mCtAK+OfivpXhg4tR0R8mV5+C/C+f45BhNICOjWDsc+02IJ6gezB4g5WxSGWPQLl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=riR1u9N+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4F2BC433F1;
-	Tue, 20 Feb 2024 21:15:57 +0000 (UTC)
+	 MIME-Version; b=OroV7uaWcS6x0coHIb/NOh13WoQwNGuGNiDVchni4zTjxa1yNkmU2xY2yCybnFyc/X8hedaQA6Vvwo1bc/cMP5CFtGdjjCLsQs2gAH1nlZI0yxbZtXhdO4n3Du8dbfgnrF0tJ8QMzyQwUgJm5XrN5EALWq/TezvVh+epSUKNHTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QuoshnRj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 511F3C433C7;
+	Tue, 20 Feb 2024 21:32:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463758;
-	bh=DXcDd0QMrK2tpe1WzA+Bau22BA6769TdPn1zSwSBVzU=;
+	s=korg; t=1708464764;
+	bh=JYIHhkt4WElNLXnm3h6I+62dKCugo4CGAYRI+suBCeY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=riR1u9N+A16OeqnBUk6x/vOgDiQ+ZFeTSdaL5UCF7ftLmiVvU2AZLW6TfL71lQ4c6
-	 zBk3ULkZWZr+MuzuBpO2/DfkzA/toH5jpbRaKLTSCU2dlNzw1A8ybwP8gUt8xCrYpq
-	 Eb9VpvGELgL/V3m6OCi6GY/R5vWJbnbI9DjqAyM0=
+	b=QuoshnRjoGkq3FagTLsmFWEj+e8y64rtnBO5fK0B5958Kxkqpw2vaVRM2FWlgPfXf
+	 3wTk4u18egGZCPuyOO3B8a0Ud0NxWRVhKswOg4Xu4SVK0a4bpyROlMOnWAu1yhH/lw
+	 hSMrd/kAZeFoV+bGsQ63btAtVmbYyisZjWSLBCxM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Chi <andy.chi@canonical.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 143/331] ALSA: hda/realtek: fix mute/micmute LEDs for HP ZBook Power
+	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 100/309] powerpc/6xx: set High BAT Enable flag on G2_LE cores
 Date: Tue, 20 Feb 2024 21:54:19 +0100
-Message-ID: <20240220205642.044179332@linuxfoundation.org>
+Message-ID: <20240220205636.310775182@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Chi <andy.chi@canonical.com>
+From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
 
-commit 1513664f340289cf10402753110f3cff12a738aa upstream.
+[ Upstream commit a038a3ff8c6582404834852c043dadc73a5b68b4 ]
 
-The HP ZBook Power using ALC236 codec which using 0x02 to
-control mute LED and 0x01 to control micmute LED.
-Therefore, add a quirk to make it works.
+MMU_FTR_USE_HIGH_BATS is set for G2_LE cores and derivatives like e300cX,
+but the high BATs need to be enabled in HID2 to work. Add register
+definitions and add the needed setup to __setup_cpu_603.
 
-Signed-off-by: Andy Chi <andy.chi@canonical.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240122074826.1020964-1-andy.chi@canonical.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This fixes boot on CPUs like the MPC5200B with STRICT_KERNEL_RWX enabled
+on systems where the flag has not been set by the bootloader already.
+
+Fixes: e4d6654ebe6e ("powerpc/mm/32s: rework mmu_mapin_ram()")
+Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240124103838.43675-1-matthias.schiffer@ew.tq-group.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/powerpc/include/asm/reg.h      |  2 ++
+ arch/powerpc/kernel/cpu_setup_6xx.S | 20 +++++++++++++++++++-
+ 2 files changed, 21 insertions(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9857,6 +9857,8 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x8c72, "HP EliteBook 865 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8c96, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
- 	SND_PCI_QUIRK(0x103c, 0x8c97, "HP ZBook", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
-+	SND_PCI_QUIRK(0x103c, 0x8ca1, "HP ZBook Power", ALC236_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8ca2, "HP ZBook Power", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8ca4, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8ca7, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8cf5, "HP ZBook Studio 16", ALC245_FIXUP_CS35L41_SPI_4_HP_GPIO_LED),
+diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
+index 4ae4ab9090a2..ade5f094dbd2 100644
+--- a/arch/powerpc/include/asm/reg.h
++++ b/arch/powerpc/include/asm/reg.h
+@@ -617,6 +617,8 @@
+ #endif
+ #define SPRN_HID2	0x3F8		/* Hardware Implementation Register 2 */
+ #define SPRN_HID2_GEKKO	0x398		/* Gekko HID2 Register */
++#define SPRN_HID2_G2_LE	0x3F3		/* G2_LE HID2 Register */
++#define  HID2_G2_LE_HBE	(1<<18)		/* High BAT Enable (G2_LE) */
+ #define SPRN_IABR	0x3F2	/* Instruction Address Breakpoint Register */
+ #define SPRN_IABR2	0x3FA		/* 83xx */
+ #define SPRN_IBCR	0x135		/* 83xx Insn Breakpoint Control Reg */
+diff --git a/arch/powerpc/kernel/cpu_setup_6xx.S b/arch/powerpc/kernel/cpu_setup_6xx.S
+index f29ce3dd6140..bfd3f442e5eb 100644
+--- a/arch/powerpc/kernel/cpu_setup_6xx.S
++++ b/arch/powerpc/kernel/cpu_setup_6xx.S
+@@ -26,6 +26,15 @@ BEGIN_FTR_SECTION
+ 	bl	__init_fpu_registers
+ END_FTR_SECTION_IFCLR(CPU_FTR_FPU_UNAVAILABLE)
+ 	bl	setup_common_caches
++
++	/*
++	 * This assumes that all cores using __setup_cpu_603 with
++	 * MMU_FTR_USE_HIGH_BATS are G2_LE compatible
++	 */
++BEGIN_MMU_FTR_SECTION
++	bl      setup_g2_le_hid2
++END_MMU_FTR_SECTION_IFSET(MMU_FTR_USE_HIGH_BATS)
++
+ 	mtlr	r5
+ 	blr
+ _GLOBAL(__setup_cpu_604)
+@@ -115,6 +124,16 @@ SYM_FUNC_START_LOCAL(setup_604_hid0)
+ 	blr
+ SYM_FUNC_END(setup_604_hid0)
+ 
++/* Enable high BATs for G2_LE and derivatives like e300cX */
++SYM_FUNC_START_LOCAL(setup_g2_le_hid2)
++	mfspr	r11,SPRN_HID2_G2_LE
++	oris	r11,r11,HID2_G2_LE_HBE@h
++	mtspr	SPRN_HID2_G2_LE,r11
++	sync
++	isync
++	blr
++SYM_FUNC_END(setup_g2_le_hid2)
++
+ /* 7400 <= rev 2.7 and 7410 rev = 1.0 suffer from some
+  * erratas we work around here.
+  * Moto MPC710CE.pdf describes them, those are errata
+@@ -495,4 +514,3 @@ _GLOBAL(__restore_cpu_setup)
+ 	mtcr	r7
+ 	blr
+ _ASM_NOKPROBE_SYMBOL(__restore_cpu_setup)
+-
+-- 
+2.43.0
+
 
 
 
