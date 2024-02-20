@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-21519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F34FB85C93F
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:31:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A40F785C794
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:14:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE573284C8F
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:31:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBEE41C21DD2
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:14:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FCE5151CE9;
-	Tue, 20 Feb 2024 21:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D69791509AC;
+	Tue, 20 Feb 2024 21:14:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bdbRmpZo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VDoH6kEg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F131D14A4D2;
-	Tue, 20 Feb 2024 21:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95EA876C9C;
+	Tue, 20 Feb 2024 21:14:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464669; cv=none; b=ZWvEWn3ekue/C+jLwuGBouurf4Xb0o+Pe9SJsICM6/y6XuFIJH8VR2ttqkO9StGQVGvDLbOR5wTM6ifGOagIX4bgE2mHbjDOgDJJV6tb+DSm6DwpXEiOdv0GYwWcAUcRWhixzqp7p7YDCsyqic9efWME0hIIC3HSRaLSHVa4CzQ=
+	t=1708463659; cv=none; b=JaQe82QOGSxIDHwxtsTY1JlgpJUAV3YKhWWVq2nf08/cFQPJeKFG3C9hCNHJsk+GqeCX+SWGsySG3Xl5nw7KSJv4CYGwuLg3fShkCiGhb+p82isjZhaHmOMEoUw0zHrSdDLqbjBuSImxVSzyjeK6/kvpKGqh2zMKnAXtF+gfRCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464669; c=relaxed/simple;
-	bh=ThIChC1wUEhqrxuUZij5up7oeN6PLivza1xdVWMH4I4=;
+	s=arc-20240116; t=1708463659; c=relaxed/simple;
+	bh=S7d+DhSRq0S3ZSTwJ4MyBahdTCJN8MVc3eevDtzj1GM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K7ByPOY/BePDYMYWc4OJEfn8AI8g+FwnXc0Rfa4bihQcKHWYWz44SQ3sxZYCMcDSfr5TTJmhWETY0lPPxWFPneq8VhKkuWPlOOCgq/aUC4oF+muJBodIQ9s5c9hHyny4SXWK2qfdje0Hsc+ORbB4S4jiJ7O5bOfycwWXP/cHh+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bdbRmpZo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7736EC433F1;
-	Tue, 20 Feb 2024 21:31:08 +0000 (UTC)
+	 MIME-Version; b=BBBLnD+CTTFX0SQ9vTRcn5yLD58zkbiTD/KEi9D2u0ARNp3njZWEaG+ipGlJbxxNv/zFBX+nkk9QxImgvz5/c0ZDLUSYuLPQNfnFcZcP+McdZrhOEKNyPtYAcYWeVPsq3wtx2TMLMHMwJXUjrLCCmmB5TqIpWg4JCcpJyvqFN64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VDoH6kEg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03A93C433C7;
+	Tue, 20 Feb 2024 21:14:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464668;
-	bh=ThIChC1wUEhqrxuUZij5up7oeN6PLivza1xdVWMH4I4=;
+	s=korg; t=1708463659;
+	bh=S7d+DhSRq0S3ZSTwJ4MyBahdTCJN8MVc3eevDtzj1GM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bdbRmpZoftH46l8XAEVyuC0K1Dw1L8SUROz0IAdWeBuNyNNn1WrDnPNmE0rErnoRI
-	 i8L8hP/2nYjI0KSJcMvP/Po/qya/pnVqtuamtL/szXV1j0zisVRm8DnukNm46NPwQO
-	 nmHCQ9sUJ5teVofuVduTLi0RatN6bo3pUrrfnZSs=
+	b=VDoH6kEgA6uedeDnW4pWWaYpEktkgRzdS3Wa8R3ZLLLdCcvMSdblK6Hakag2upZVI
+	 BYk7031AKVMojNf3RnjC9rSfxVMxc3HJ3GGh9iTE7wbEQUbF1OXrBv6HdhMkQN6YE3
+	 o6muGg5tzzmFYxKEp87R9w/g4dqRGSMhp3ApRqwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	James Houghton <jthoughton@google.com>,
-	Jiaqi Yan <jiaqiyan@google.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Naoya Horiguchi <naoya.horiguchi@nec.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.7 068/309] fs/hugetlbfs/inode.c: mm/memory-failure.c: fix hugetlbfs hwpoison handling
-Date: Tue, 20 Feb 2024 21:53:47 +0100
-Message-ID: <20240220205635.337345525@linuxfoundation.org>
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.6 112/331] mptcp: drop the push_pending field
+Date: Tue, 20 Feb 2024 21:53:48 +0100
+Message-ID: <20240220205641.132259610@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,71 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit 19d3e221807772f8443e565234a6fdc5a2b09d26 upstream.
+commit bdd70eb68913c960acb895b00a8c62eb64715b1f upstream.
 
-has_extra_refcount() makes the assumption that the page cache adds a ref
-count of 1 and subtracts this in the extra_pins case.  Commit a08c7193e4f1
-(mm/filemap: remove hugetlb special casing in filemap.c) modifies
-__filemap_add_folio() by calling folio_ref_add(folio, nr); for all cases
-(including hugtetlb) where nr is the number of pages in the folio.  We
-should adjust the number of references coming from the page cache by
-subtracing the number of pages rather than 1.
+Such field is there to avoid acquiring the data lock in a few spots,
+but it adds complexity to the already non trivial locking schema.
 
-In hugetlbfs_read_iter(), folio_test_has_hwpoisoned() is testing the wrong
-flag as, in the hugetlb case, memory-failure code calls
-folio_test_set_hwpoison() to indicate poison.  folio_test_hwpoison() is
-the correct function to test for that flag.
+All the relevant call sites (mptcp-level re-injection, set socket
+options), are slow-path, drop such field in favor of 'cb_flags', adding
+the relevant locking.
 
-After these fixes, the hugetlb hwpoison read selftest passes all cases.
+This patch could be seen as an improvement, instead of a fix. But it
+simplifies the next patch. The 'Fixes' tag has been added to help having
+this series backported to stable.
 
-Link: https://lkml.kernel.org/r/20240112180840.367006-1-sidhartha.kumar@oracle.com
-Fixes: a08c7193e4f1 ("mm/filemap: remove hugetlb special casing in filemap.c")
-Signed-off-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-Closes: https://lore.kernel.org/linux-mm/20230713001833.3778937-1-jiaqiyan@google.com/T/#m8e1469119e5b831bbd05d495f96b842e4a1c5519
-Reported-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Acked-by: Miaohe Lin <linmiaohe@huawei.com>
-Acked-by: Muchun Song <muchun.song@linux.dev>
-Cc: James Houghton <jthoughton@google.com>
-Cc: Jiaqi Yan <jiaqiyan@google.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Naoya Horiguchi <naoya.horiguchi@nec.com>
-Cc: <stable@vger.kernel.org>	[6.7+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: e9d09baca676 ("mptcp: avoid atomic bit manipulation when possible")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/hugetlbfs/inode.c |    2 +-
- mm/memory-failure.c  |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ net/mptcp/protocol.c |   12 ++++++------
+ net/mptcp/protocol.h |    1 -
+ 2 files changed, 6 insertions(+), 7 deletions(-)
 
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -340,7 +340,7 @@ static ssize_t hugetlbfs_read_iter(struc
- 		} else {
- 			folio_unlock(folio);
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -1522,8 +1522,11 @@ static void mptcp_update_post_push(struc
  
--			if (!folio_test_has_hwpoisoned(folio))
-+			if (!folio_test_hwpoison(folio))
- 				want = nr;
- 			else {
- 				/*
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -976,7 +976,7 @@ static bool has_extra_refcount(struct pa
- 	int count = page_count(p) - 1;
+ void mptcp_check_and_set_pending(struct sock *sk)
+ {
+-	if (mptcp_send_head(sk))
+-		mptcp_sk(sk)->push_pending |= BIT(MPTCP_PUSH_PENDING);
++	if (mptcp_send_head(sk)) {
++		mptcp_data_lock(sk);
++		mptcp_sk(sk)->cb_flags |= BIT(MPTCP_PUSH_PENDING);
++		mptcp_data_unlock(sk);
++	}
+ }
  
- 	if (extra_pins)
--		count -= 1;
-+		count -= folio_nr_pages(page_folio(p));
+ static int __subflow_push_pending(struct sock *sk, struct sock *ssk,
+@@ -3134,7 +3137,6 @@ static int mptcp_disconnect(struct sock
+ 	mptcp_destroy_common(msk, MPTCP_CF_FASTCLOSE);
+ 	WRITE_ONCE(msk->flags, 0);
+ 	msk->cb_flags = 0;
+-	msk->push_pending = 0;
+ 	msk->recovery = false;
+ 	msk->can_ack = false;
+ 	msk->fully_established = false;
+@@ -3359,8 +3361,7 @@ static void mptcp_release_cb(struct sock
+ 	struct mptcp_sock *msk = mptcp_sk(sk);
  
- 	if (count > 0) {
- 		pr_err("%#lx: %s still referenced by %d users\n",
+ 	for (;;) {
+-		unsigned long flags = (msk->cb_flags & MPTCP_FLAGS_PROCESS_CTX_NEED) |
+-				      msk->push_pending;
++		unsigned long flags = (msk->cb_flags & MPTCP_FLAGS_PROCESS_CTX_NEED);
+ 		struct list_head join_list;
+ 
+ 		if (!flags)
+@@ -3376,7 +3377,6 @@ static void mptcp_release_cb(struct sock
+ 		 *    datapath acquires the msk socket spinlock while helding
+ 		 *    the subflow socket lock
+ 		 */
+-		msk->push_pending = 0;
+ 		msk->cb_flags &= ~flags;
+ 		spin_unlock_bh(&sk->sk_lock.slock);
+ 
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -283,7 +283,6 @@ struct mptcp_sock {
+ 	int		rmem_released;
+ 	unsigned long	flags;
+ 	unsigned long	cb_flags;
+-	unsigned long	push_pending;
+ 	bool		recovery;		/* closing subflow write queue reinjected */
+ 	bool		can_ack;
+ 	bool		fully_established;
 
 
 
