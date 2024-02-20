@@ -1,244 +1,153 @@
-Return-Path: <stable+bounces-20763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36BC385B19E
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 04:48:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B150D85B1C8
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 05:01:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB067281AB4
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 03:48:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9E011C213C4
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 04:01:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A958347A4C;
-	Tue, 20 Feb 2024 03:48:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09AD7535C4;
+	Tue, 20 Feb 2024 04:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pdr9C+X8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JIvYOsQO"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B3B61C2E
-	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 03:48:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359EB52F68;
+	Tue, 20 Feb 2024 04:01:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708400896; cv=none; b=e+oKr1TocwFB0bjgWBI5ox26DiX6Fa8OuZ9MHkH8pG6sFm/yd3Qe7PjjTEA8r+GM4QWotzvVd5OQZ1ho1ZuouNyQEBStd9bSyPo2vaS3LLtq1WtU9dxRPKfo0nw6SuyjyUIIwhGwz9jkyZYqwjb6Y2qZv47gtGILEEBDp+GihQg=
+	t=1708401684; cv=none; b=aONJJ83XOMv3GrrdRIdMzRPC6tRoQTBkzwYweq6KGVb+lb6qHFrReKv5WsQqFSN3xicU4Sp3HzkhIaBFDlF9l9TIfdVu9cHxwCooYHOpMWQ8lub0g+cNCAGfRT/8spvmDHC0ofNsjJYZeFLk6sTaP8WwFKF8Yw+A9BLF6TiKzjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708400896; c=relaxed/simple;
-	bh=OXA16Hpjqvpl285+uhB/KZbd4aN5s4oFsZqUtu8rbTY=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LkOyfEvk+5k+L7WHwvC0lgTakqNlm8cJIYyvEwpxrHinvjFuOL6sy9LOQaYCBKdsqKdiAk3QvkBY75t7uNQ7Em/dIRJM6eaJEg7QT+LJPVK0RQCMmHEv8YuzeS48Wp04EhexPbVa7LJqB34BXfDjTh6MzrcUcXS/CF8arihvzMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pdr9C+X8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC949C433F1
-	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 03:48:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708400895;
-	bh=OXA16Hpjqvpl285+uhB/KZbd4aN5s4oFsZqUtu8rbTY=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=pdr9C+X8YENBihSJAx20oTLYT18X7zNleK7E6z0mNpcEpAJPbLvE+2es9Bce1VFGH
-	 bMUwtW/fTKVtBIbx2TXDOlP9iF5mYltE4Nb7kDXJHFyuFGQhPLhwmsM4/kDXZuvo/W
-	 nfFFxi8Tb/ZzUkKE+ffP+6EwtxSS52ok+RddJ7YEDQLvtX5bvxi+kg7AJ9TAuleFi+
-	 1KNEesLg6TB7PcVi6JUeoDigfAGPoF7VXDgh810WfLi7Zwu8XiqkoHs/HNiqjTjf3g
-	 YQv3T1weLnIXKc5KExFs23x3NPLwQ0C+QGP4SO3O/rX5YTMlXmZcZuHH6WVbRKi/kj
-	 GlHfWPcDjrA+w==
-From: Damien Le Moal <dlemoal@kernel.org>
-To: stable@vger.kernel.org
-Subject: [PATCH 5.10.y] zonefs: Improve error handling
-Date: Tue, 20 Feb 2024 12:48:14 +0900
-Message-ID: <20240220034814.2680699-1-dlemoal@kernel.org>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <2024021944-kettle-upturned-4371@gregkh>
-References: <2024021944-kettle-upturned-4371@gregkh>
+	s=arc-20240116; t=1708401684; c=relaxed/simple;
+	bh=EtqPj06BXSieuMRXGbbN4iVl0m4nh6SEwC95Vkqic9A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Fr2LNauYJZ970lbYu9EPTFrY/xA5oxsMHYwuNXLzuQK2KdX1kW7+VlhnbQNDEeowDMHH3aVyqRHA4TQsEGtBnF2jq3G82C6VflEnUexDOjswzwoo4qt6STJqwQnbl57R9V6ncNjojo6BAuL3AOwCfG+N3HhIttoSnsgPZAK8PXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JIvYOsQO; arc=none smtp.client-ip=209.85.221.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-4cba3807eedso834565e0c.0;
+        Mon, 19 Feb 2024 20:01:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708401682; x=1709006482; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=f+7pW6Td4IjBVEl/B0SbCdXWjl+KiOYugwOPe6kZqWU=;
+        b=JIvYOsQOhWd59oVlmi5NIkerU3zVPTK4Snltoh/FQuJgGP+xGCPIQI2GD5gBRfkFs9
+         0NePSD1eK2hmHFi/JUo6YcCLAUvlNBN4E1kP+8ATMYHCPljP1UZZdYdKkmWuQ5eqH6uS
+         dSDgx6af3HNlQSeXyvR733QucRnUtDOjz0Rb9aUxm3WBPti9cLcZlz4Z/I3oFgV4N3QA
+         isgxSBNZ8LDkDVa1mQyIGXpdgq6K+ZhV4EvG7eAfSbCwPj8dUkiRsFxBFzE1zZkn1h5C
+         3zU2Bo2osjrE9CdusZ/sVSGuMvVVqXJQkCLURzD2J5YcZVznquFD/bRpnyvThHnGRKRH
+         4u7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708401682; x=1709006482;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=f+7pW6Td4IjBVEl/B0SbCdXWjl+KiOYugwOPe6kZqWU=;
+        b=ofUI8rv0Jd6uUdwnj/JXR276eOvEM0Fm3nVovbL2b8ZXC519Yt7QMqrm20jgYzd2O2
+         jeCus0jXqMjZ0FN1hxCPBLy1EckFDlcaWY6u0YgmAQlK1Ux+KDa+C5P003PJEf580AC6
+         820XhNTtUUyVYGR9ETYKcRAiyHmu9h8cNmQ8Vt7skkKoogcJYWF4fVS4s1vr0cXloJgn
+         Iek/69CGUR72a0K8pF9Bw3pDjr3u/AfqLLjhmG7J700+qinPf1H+V8KejUvSooKjKapL
+         cfMZi3ht2nOsnd2NtyrkhJlu9nluSFh+6JED9GVw+BxpQR1OHDijOwBxzX4vBcN4VKT2
+         7yiA==
+X-Forwarded-Encrypted: i=1; AJvYcCXDu/mtmbesFIaTeOqQyzAjXzvx65aarCrg9Z6VAYBvxKXgBLrYMpyxQwvwmA3bpkN4xPibhznllPxek15sO/DFqPpXG+Dafq7RoAU2gnTwtcANgYxuCDzkb1Tr9oPeU309+T7z
+X-Gm-Message-State: AOJu0Yxg5xv0fLJpxEfTmOZwUVMRmVE9Y/97DB+I903L5WeXQp4STyqP
+	Wd86ffGi5h6s5RVsM8VU/LQG3oc5urABxk4YfCK3vlm4jlKFkfsf47+2bu0WYdbAAhFjAfnV9aS
+	X7eh8ochwTksF6vlbHcmCht0DHu4=
+X-Google-Smtp-Source: AGHT+IFUkxASTfr6kUI9b9huZmglHUE9T952Z7XdRzsNguJ3X2T+ZQSSBykmkMWcO8VrT434z3zuJVKd57OPjBZO0jM=
+X-Received: by 2002:a05:6122:4d0f:b0:4c8:df97:139d with SMTP id
+ fi15-20020a0561224d0f00b004c8df97139dmr4748249vkb.2.1708401681914; Mon, 19
+ Feb 2024 20:01:21 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240219082040.7495-1-ryncsn@gmail.com> <20240219173147.3f4b50b7c9ae554008f50b66@linux-foundation.org>
+ <CAMgjq7DgBOJhDJStwGuD+C6-FNYZBp-cu6M_HAgRry3gBSf7GA@mail.gmail.com>
+In-Reply-To: <CAMgjq7DgBOJhDJStwGuD+C6-FNYZBp-cu6M_HAgRry3gBSf7GA@mail.gmail.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Tue, 20 Feb 2024 17:01:10 +1300
+Message-ID: <CAGsJ_4zyf5OOq_WA7VjsDKp1ciaDwzM23Ef95_O-24oLtr_5AQ@mail.gmail.com>
+Subject: Re: [PATCH v4] mm/swap: fix race when skipping swapcache
+To: Kairui Song <ryncsn@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	"Huang, Ying" <ying.huang@intel.com>, Chris Li <chrisl@kernel.org>, 
+	Minchan Kim <minchan@kernel.org>, Barry Song <v-songbaohua@oppo.com>, Yu Zhao <yuzhao@google.com>, 
+	SeongJae Park <sj@kernel.org>, David Hildenbrand <david@redhat.com>, Hugh Dickins <hughd@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox <willy@infradead.org>, Michal Hocko <mhocko@suse.com>, 
+	Yosry Ahmed <yosryahmed@google.com>, Aaron Lu <aaron.lu@intel.com>, stable@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-commit 14db5f64a971fce3d8ea35de4dfc7f443a3efb92 upstream.
+On Tue, Feb 20, 2024 at 4:42=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
+e:
+>
+> On Tue, Feb 20, 2024 at 9:31=E2=80=AFAM Andrew Morton <akpm@linux-foundat=
+ion.org> wrote:
+> >
+> > On Mon, 19 Feb 2024 16:20:40 +0800 Kairui Song <ryncsn@gmail.com> wrote=
+:
+> >
+> > > From: Kairui Song <kasong@tencent.com>
+> > >
+> > > When skipping swapcache for SWP_SYNCHRONOUS_IO, if two or more thread=
+s
+> > > swapin the same entry at the same time, they get different pages (A, =
+B).
+> > > Before one thread (T0) finishes the swapin and installs page (A)
+> > > to the PTE, another thread (T1) could finish swapin of page (B),
+> > > swap_free the entry, then swap out the possibly modified page
+> > > reusing the same entry. It breaks the pte_same check in (T0) because
+> > > PTE value is unchanged, causing ABA problem. Thread (T0) will
+> > > install a stalled page (A) into the PTE and cause data corruption.
+> > >
+> > > @@ -3867,6 +3868,20 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+> > >       if (!folio) {
+> > >               if (data_race(si->flags & SWP_SYNCHRONOUS_IO) &&
+> > >                   __swap_count(entry) =3D=3D 1) {
+> > > +                     /*
+> > > +                      * Prevent parallel swapin from proceeding with
+> > > +                      * the cache flag. Otherwise, another thread ma=
+y
+> > > +                      * finish swapin first, free the entry, and swa=
+pout
+> > > +                      * reusing the same entry. It's undetectable as
+> > > +                      * pte_same() returns true due to entry reuse.
+> > > +                      */
+> > > +                     if (swapcache_prepare(entry)) {
+> > > +                             /* Relax a bit to prevent rapid repeate=
+d page faults */
+> > > +                             schedule_timeout_uninterruptible(1);
+> >
+> > Well this is unpleasant.  How often can we expect this to occur?
+> >
+>
+> The chance is very low, using the current mainline kernel and ZRAM,
+> even with threads set to race on purpose using the reproducer I
+> provides, for 647132 page faults it occured 1528 times (~0.2%).
+>
+> If I run MySQL and sysbench with 128 threads and 16G buffer pool, with
+> 6G cgroup limit and 32G ZRAM, it occured 1372 times for 40 min,
+> 109930201 page faults in total (~0.001%).
 
-Write error handling is racy and can sometime lead to the error recovery
-path wrongly changing the inode size of a sequential zone file to an
-incorrect value  which results in garbage data being readable at the end
-of a file. There are 2 problems:
+it might not be a problem for throughput. but for real-time and tail latenc=
+y,
+this hurts. For example, this might increase dropping frames of UI which
+is an important parameter to evaluate performance :-)
 
-1) zonefs_file_dio_write() updates a zone file write pointer offset
-   after issuing a direct IO with iomap_dio_rw(). This update is done
-   only if the IO succeed for synchronous direct writes. However, for
-   asynchronous direct writes, the update is done without waiting for
-   the IO completion so that the next asynchronous IO can be
-   immediately issued. However, if an asynchronous IO completes with a
-   failure right before the i_truncate_mutex lock protecting the update,
-   the update may change the value of the inode write pointer offset
-   that was corrected by the error path (zonefs_io_error() function).
+BTW, I wonder if ying's previous proposal - moving swapcache_prepare()
+after swap_read_folio() will further help decrease the number?
 
-2) zonefs_io_error() is called when a read or write error occurs. This
-   function executes a report zone operation using the callback function
-   zonefs_io_error_cb(), which does all the error recovery handling
-   based on the current zone condition, write pointer position and
-   according to the mount options being used. However, depending on the
-   zoned device being used, a report zone callback may be executed in a
-   context that is different from the context of __zonefs_io_error(). As
-   a result, zonefs_io_error_cb() may be executed without the inode
-   truncate mutex lock held, which can lead to invalid error processing.
-
-Fix both problems as follows:
-- Problem 1: Perform the inode write pointer offset update before a
-  direct write is issued with iomap_dio_rw(). This is safe to do as
-  partial direct writes are not supported (IOMAP_DIO_PARTIAL is not
-  set) and any failed IO will trigger the execution of zonefs_io_error()
-  which will correct the inode write pointer offset to reflect the
-  current state of the one on the device.
-- Problem 2: Change zonefs_io_error_cb() into zonefs_handle_io_error()
-  and call this function directly from __zonefs_io_error() after
-  obtaining the zone information using blkdev_report_zones() with a
-  simple callback function that copies to a local stack variable the
-  struct blk_zone obtained from the device. This ensures that error
-  handling is performed holding the inode truncate mutex.
-  This change also simplifies error handling for conventional zone files
-  by bypassing the execution of report zones entirely. This is safe to
-  do because the condition of conventional zones cannot be read-only or
-  offline and conventional zone files are always fully mapped with a
-  constant file size.
-
-Reported-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Fixes: 8dcc1a9d90c1 ("fs: New zonefs file system")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Tested-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
----
- fs/zonefs/super.c | 68 +++++++++++++++++++++++++++--------------------
- 1 file changed, 39 insertions(+), 29 deletions(-)
-
-diff --git a/fs/zonefs/super.c b/fs/zonefs/super.c
-index b9522eee1257..f9ecade9ea65 100644
---- a/fs/zonefs/super.c
-+++ b/fs/zonefs/super.c
-@@ -319,16 +319,18 @@ static loff_t zonefs_check_zone_condition(struct inode *inode,
- 	}
- }
- 
--struct zonefs_ioerr_data {
--	struct inode	*inode;
--	bool		write;
--};
--
- static int zonefs_io_error_cb(struct blk_zone *zone, unsigned int idx,
- 			      void *data)
- {
--	struct zonefs_ioerr_data *err = data;
--	struct inode *inode = err->inode;
-+	struct blk_zone *z = data;
-+
-+	*z = *zone;
-+	return 0;
-+}
-+
-+static void zonefs_handle_io_error(struct inode *inode, struct blk_zone *zone,
-+				   bool write)
-+{
- 	struct zonefs_inode_info *zi = ZONEFS_I(inode);
- 	struct super_block *sb = inode->i_sb;
- 	struct zonefs_sb_info *sbi = ZONEFS_SB(sb);
-@@ -344,8 +346,8 @@ static int zonefs_io_error_cb(struct blk_zone *zone, unsigned int idx,
- 	isize = i_size_read(inode);
- 	if (zone->cond != BLK_ZONE_COND_OFFLINE &&
- 	    zone->cond != BLK_ZONE_COND_READONLY &&
--	    !err->write && isize == data_size)
--		return 0;
-+	    !write && isize == data_size)
-+		return;
- 
- 	/*
- 	 * At this point, we detected either a bad zone or an inconsistency
-@@ -366,8 +368,9 @@ static int zonefs_io_error_cb(struct blk_zone *zone, unsigned int idx,
- 	 * In all cases, warn about inode size inconsistency and handle the
- 	 * IO error according to the zone condition and to the mount options.
- 	 */
--	if (zi->i_ztype == ZONEFS_ZTYPE_SEQ && isize != data_size)
--		zonefs_warn(sb, "inode %lu: invalid size %lld (should be %lld)\n",
-+	if (isize != data_size)
-+		zonefs_warn(sb,
-+			    "inode %lu: invalid size %lld (should be %lld)\n",
- 			    inode->i_ino, isize, data_size);
- 
- 	/*
-@@ -427,8 +430,6 @@ static int zonefs_io_error_cb(struct blk_zone *zone, unsigned int idx,
- 	zonefs_update_stats(inode, data_size);
- 	zonefs_i_size_write(inode, data_size);
- 	zi->i_wpoffset = data_size;
--
--	return 0;
- }
- 
- /*
-@@ -442,23 +443,25 @@ static void __zonefs_io_error(struct inode *inode, bool write)
- {
- 	struct zonefs_inode_info *zi = ZONEFS_I(inode);
- 	struct super_block *sb = inode->i_sb;
--	struct zonefs_sb_info *sbi = ZONEFS_SB(sb);
- 	unsigned int noio_flag;
--	unsigned int nr_zones = 1;
--	struct zonefs_ioerr_data err = {
--		.inode = inode,
--		.write = write,
--	};
-+	struct blk_zone zone;
- 	int ret;
- 
- 	/*
--	 * The only files that have more than one zone are conventional zone
--	 * files with aggregated conventional zones, for which the inode zone
--	 * size is always larger than the device zone size.
-+	 * Conventional zone have no write pointer and cannot become read-only
-+	 * or offline. So simply fake a report for a single or aggregated zone
-+	 * and let zonefs_handle_io_error() correct the zone inode information
-+	 * according to the mount options.
- 	 */
--	if (zi->i_zone_size > bdev_zone_sectors(sb->s_bdev))
--		nr_zones = zi->i_zone_size >>
--			(sbi->s_zone_sectors_shift + SECTOR_SHIFT);
-+	if (zi->i_ztype != ZONEFS_ZTYPE_SEQ) {
-+		zone.start = zi->i_zsector;
-+		zone.len = zi->i_max_size >> SECTOR_SHIFT;
-+		zone.wp = zone.start + zone.len;
-+		zone.type = BLK_ZONE_TYPE_CONVENTIONAL;
-+		zone.cond = BLK_ZONE_COND_NOT_WP;
-+		zone.capacity = zone.len;
-+		goto handle_io_error;
-+	}
- 
- 	/*
- 	 * Memory allocations in blkdev_report_zones() can trigger a memory
-@@ -469,12 +472,19 @@ static void __zonefs_io_error(struct inode *inode, bool write)
- 	 * the GFP_NOIO context avoids both problems.
- 	 */
- 	noio_flag = memalloc_noio_save();
--	ret = blkdev_report_zones(sb->s_bdev, zi->i_zsector, nr_zones,
--				  zonefs_io_error_cb, &err);
--	if (ret != nr_zones)
-+	ret = blkdev_report_zones(sb->s_bdev, zi->i_zsector, 1,
-+				  zonefs_io_error_cb, &zone);
-+	memalloc_noio_restore(noio_flag);
-+	if (ret != 1) {
- 		zonefs_err(sb, "Get inode %lu zone information failed %d\n",
- 			   inode->i_ino, ret);
--	memalloc_noio_restore(noio_flag);
-+		zonefs_warn(sb, "remounting filesystem read-only\n");
-+		sb->s_flags |= SB_RDONLY;
-+		return;
-+	}
-+
-+handle_io_error:
-+	zonefs_handle_io_error(inode, &zone, write);
- }
- 
- static void zonefs_io_error(struct inode *inode, bool write)
--- 
-2.43.2
-
+Thanks
+Barry
 
