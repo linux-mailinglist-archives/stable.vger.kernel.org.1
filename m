@@ -1,159 +1,120 @@
-Return-Path: <stable+bounces-20869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CACF585C449
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 20:07:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6805E85C465
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 20:12:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84A31287037
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 19:07:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ECE7DB218C1
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 19:12:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2A0B78B51;
-	Tue, 20 Feb 2024 19:07:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C4F12F5BF;
+	Tue, 20 Feb 2024 19:12:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JpC+9U/7"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lR3tcSEM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 167EC44C94
-	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 19:07:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBBEA44C94
+	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 19:12:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708456054; cv=none; b=eTG7tXxZVKv/FB7XDSXV6HzsfAUr1THwEmvnEF2HEt8SfL5+0Jhn5LI1wqD4zU6/lFvmtVoR+dNZLLVQIPD7ZPBbdtZKdO+4xcj9jyzKOdfPFjfAu859JEN17iVwhnwz1LmRzjH9NKcOwZKV8sPJKYZpw8FcZaCqMOgxAGLWS+g=
+	t=1708456329; cv=none; b=fLbFQRkgeBYwszlOX68s1N2mRWaNpAAgsRZ4hEfIbbjHNbCy6cpVr384ne7/LaP9l9+ByFPoqhLQmA9JxYmErE4Z6AX2C5tldgvvz9txQGCrc3ZNBGLhAr2gx40zZvhlKQkUMrhepxJwJ3m+uS2HttM2NeHbuI4JaeK2J9vjiKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708456054; c=relaxed/simple;
-	bh=nkEIHh/a10xMQFQ0kBEKGDlg5mn/OlAnHeRjgtJTWIk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Fg4eT1BFF/ieChVEK3hCcprTEw4xVYFMAjdyGqvUQRJsfSvtAHNGAIaPNr13W8NZzesDI+5Vq+dv9fe8v2lzgOhquPfuIqJ+vu9rtVUxvGMwV7wkg7xmDpeJbw/440N4NjKVCJWS4P8zIsvoqnQQUoN2uen3wwrgU1XZTEIQRzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JpC+9U/7; arc=none smtp.client-ip=209.85.128.178
+	s=arc-20240116; t=1708456329; c=relaxed/simple;
+	bh=UV5OpmpTeat3ITv1BlNGoqwicB3qNORaSpRz3WR/B0Y=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Qhh7FYEEzJ18mHK0ihxXhvYopjULDN1hgFszFECzoukIIBRa1KrEqDJIo5zw56Kl6DGF1W7liidD+cBysfqWRCxvaD8lM7vcWRu8uLXjSYAzGtvQ3j9DBDpvDJ91JfihAbEeqBVDzyru87tDoMxAndJ5cJHWOot6g0OJu3fjA1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--dhavale.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lR3tcSEM; arc=none smtp.client-ip=209.85.128.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-6080a3eecd4so38149557b3.2
-        for <stable@vger.kernel.org>; Tue, 20 Feb 2024 11:07:32 -0800 (PST)
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--dhavale.bounces.google.com
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-5ffee6fcdc1so76403177b3.2
+        for <stable@vger.kernel.org>; Tue, 20 Feb 2024 11:12:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1708456052; x=1709060852; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zq9cwZVWYbfqQqgOgW6JJVutttQMZgouq4X3pj3iIZQ=;
-        b=JpC+9U/7oBbbgKuNDvRgXocpe4kI77oNw6lHeGFCU6QA7HRs5IhsfbpqLh/Cq+Qi/Z
-         +Ct/aPB9IK9yJvMzbMF0CF3Md5s527lcXX+JI9K1U2f0Vl/D5Mho9v120N8lar95TMgL
-         FW4/CFj/ADkVSrvZzMInV1kpqh2GC+CqdNVOTf/kZ+mTpZG717cWzJZdzoJUjlB9k0qn
-         Nq0x1cXr75FqsFU/qY8xz7ef3Clj3UR+yFZa7Sksg5MmhsUhxzOUcqzxW1jOvfDRRDpg
-         nHJktvEMANyW6tKgjDKurgchxt5cEMlGqBU/Dqdx0cVATKf3z7NbE4KCOucpk7HCDkRM
-         9QPQ==
+        d=google.com; s=20230601; t=1708456327; x=1709061127; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=bU90kCEdhdXywfoVlc2lzAzGm8wFNOTBAuo+9ULMyJM=;
+        b=lR3tcSEM91+atxZwb2pJMWNRJ1q2Lh3XLxNPB+gEXJNZ8Uf9QgW52wmFiQCpYmGRRM
+         ZdOkNcgMxNbn3Z5e9qpuQF4p1oR4Y8crpqBzf+pV5oZFbk3fSefICN+R2YdB0fuYbWOK
+         ZiTNhXP5pNJFfrBMMD6uvPdK/TIEqhplETjk42fF5u4INIE/UPfpf2nBXXUAi23v1as0
+         +zoPJNTnGxojplmoH29ULDdT/MlmVuUs0BEVbt++owflZzkuxV8bVbyb8cGYRW7fqZrG
+         dLpATMY30Xqr7RTl9sLaobjeDdyVSr839KKCl+HVE+ETZA/SuiePB+h9pOrXEyesMDed
+         y0hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708456052; x=1709060852;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zq9cwZVWYbfqQqgOgW6JJVutttQMZgouq4X3pj3iIZQ=;
-        b=GMoWwe7QgFUZL2xvcgA+RALT/isvLrZ4Rcqv93UtZhPULBTrf6UQVGa7WPK9nBH+v/
-         nWzjDsk9rCWI1ofvAoBo/rfehuqEf/kMtUe35+rsGIJUzlomeFbAleK20nbz0n3eGujV
-         bVaybxnujgIqfijA5SuHhLR49GfsYihDzSsdHO4FH7rfjbWh30/R22tOHUlAn1ECiTws
-         vpXELQyqNfsAXZttizevXactIy9ZKdTjgZBfliVRE+Myq93pEsPNb5HN14yIBPy2Z3le
-         SXaVzTdR0zImFQFvcpdaUrR8ec0hkCTA9HcjYlkqvAqnzPgoKxBxFKup4d5jz5kx2NgQ
-         ttMA==
-X-Gm-Message-State: AOJu0Ywtz/4Omfb2Cs6aQEITdAC9HYeqzU0TSjrvi1cZgOtMSrGrHJAM
-	jZh6T7yxTH2eEMSk3uWoekgvjVpAAdz3UE54wSDi2fX9vCgUxc0PYIfOy6gnRnT1r8TFosnqYVZ
-	XoJ+O3LSkUoI9puXTH+38zFP7X6bbZ4EbbJNL2YZAiGtub9vpMuWY
-X-Google-Smtp-Source: AGHT+IGjb2vzN+GfLrnJkTrLFlOe4PMyKwPkwyd9d2gZz3JAup5L7OSArMWF+tRcr+Ssvbk+gDBi8n49ngVyW/R3kd8=
-X-Received: by 2002:a81:8507:0:b0:607:6fe9:f55a with SMTP id
- v7-20020a818507000000b006076fe9f55amr16717395ywf.35.1708456051617; Tue, 20
- Feb 2024 11:07:31 -0800 (PST)
+        d=1e100.net; s=20230601; t=1708456327; x=1709061127;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=bU90kCEdhdXywfoVlc2lzAzGm8wFNOTBAuo+9ULMyJM=;
+        b=WYo/JhdXENRC4kqsM4L0hJN38bHbgL/jmv9wzzjGOZpBNKk9/NkadgzPsJxRNY2W72
+         L8oFelS7Dlb72l/lX0h3qEYJTh1vTjn9uKWCDbwcQWF0Wf6E9tD6tIzLl4TT7svYOgeI
+         wAhZ521IuY1H4MyGR1+ouiaYwNhQtw1grDRR+M5kxRC+JmYdkul+Vexsl1h9PgxLkAal
+         OszwJlxFqDj3WbBl4SNIcxTrRek8pRlY95F/Gw/MyExBNCaJPAwOR8DQFZdfuU1MuVaR
+         m+v+LEqqDLRLKv+YC7zJ346vy2So6EY3N0RZC3qfcLOFYplttE9JCTkVuW8qbv8IE/Ig
+         7ujA==
+X-Forwarded-Encrypted: i=1; AJvYcCVViWT/3dDhJVKWxPEBl4fml0GieRw6x3MyfLm3t6eJLFc1IVOkEfgsPxPjyApBesUiQh36ZVQBTHD71Wd3w7UxSPS1li/9
+X-Gm-Message-State: AOJu0YyYh1Ck9iigKMVbDaEewgrSkGBcTx6PM3musw5VXLxgeI2ftFEE
+	sYkj7qoAP7PL+CeFUDw54i8zlDZeXsXM/HXygQXd/pnBYmPwdt61DvleCXeGz6+gONcxOmnbmck
+	Aa+pSqA==
+X-Google-Smtp-Source: AGHT+IFgWEyzh6gqAlMtSgK/wXXqU4pIoql4Z5IpkPLY2RoDnc1t6RBLCmFcVpYqnlcf+nvulgO8DKFOkeQR
+X-Received: from dhavale-desktop.mtv.corp.google.com ([2620:15c:211:201:e64d:5a86:7ce2:3f59])
+ (user=dhavale job=sendgmr) by 2002:a81:fe07:0:b0:608:22c7:1269 with SMTP id
+ j7-20020a81fe07000000b0060822c71269mr1506123ywn.0.1708456326859; Tue, 20 Feb
+ 2024 11:12:06 -0800 (PST)
+Date: Tue, 20 Feb 2024 11:11:13 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <2024021921-bleak-sputter-5ecf@gregkh> <20240220190250.39021-1-surenb@google.com>
-In-Reply-To: <20240220190250.39021-1-surenb@google.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 20 Feb 2024 11:07:20 -0800
-Message-ID: <CAJuCfpGV0RSw6NTTbfGQo9zU3Ckqq-9GBA=GMWDvMW6Xe96m2Q@mail.gmail.com>
-Subject: Re: [PATCH 6.7.y] arch/arm/mm: fix major fault accounting when
- retrying under per-VMA lock
-To: stable@vger.kernel.org
-Cc: Russell King <rmk+kernel@armlinux.org.uk>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Andy Lutomirski <luto@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Matthew Wilcox <willy@infradead.org>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Will Deacon <will@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.44.0.rc0.258.g7320e95886-goog
+Message-ID: <20240220191114.3272126-1-dhavale@google.com>
+Subject: [PATCH v1] erofs: fix refcount on the metabuf used for inode lookup
+From: Sandeep Dhavale <dhavale@google.com>
+To: Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, Yue Hu <huyue2@coolpad.com>, 
+	Jeffle Xu <jefflexu@linux.alibaba.com>
+Cc: quic_wenjieli@quicinc.com, Sandeep Dhavale <dhavale@google.com>, stable@vger.kernel.org, 
+	kernel-team@android.com, linux-erofs@lists.ozlabs.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 20, 2024 at 11:02=E2=80=AFAM Suren Baghdasaryan <surenb@google.=
-com> wrote:
->
-> The change [1] missed ARM architecture when fixing major fault accounting
-> for page fault retry under per-VMA lock.
->
-> The user-visible effects is that it restores correct major fault
-> accounting that was broken after [2] was merged in 6.7 kernel. The
-> more detailed description is in [3] and this patch simply adds the
-> same fix to ARM architecture which I missed in [3].
->
-> Add missing code to fix ARM architecture fault accounting.
->
-> [1] 46e714c729c8 ("arch/mm/fault: fix major fault accounting when retryin=
-g under per-VMA lock")
-> [2] https://lore.kernel.org/all/20231006195318.4087158-6-willy@infradead.=
-org/
-> [3] https://lore.kernel.org/all/20231226214610.109282-1-surenb@google.com=
-/
->
-> Link: https://lkml.kernel.org/r/20240123064305.2829244-1-surenb@google.co=
-m
-> Fixes: 12214eba1992 ("mm: handle read faults under the VMA lock")
-> Reported-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-> Cc: Andy Lutomirski <luto@kernel.org>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Palmer Dabbelt <palmer@dabbelt.com>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+In erofs_find_target_block() when erofs_dirnamecmp() returns 0,
+we do not assign the target metabuf. This causes the caller
+erofs_namei()'s erofs_put_metabuf() at the end to be not effective
+leaving the refcount on the page.
+As the page from metabuf (buf->page) is never put, such page cannot be
+migrated or reclaimed. Fix it now by putting the metabuf from
+previous loop and assigning the current metabuf to target before
+returning so caller erofs_namei() can do the final put as it was
+intended.
 
-Sorry, missed the prerequisite patch. Please ignore this one and see
-the next patchset I sent with 2 patches in it:
-https://lore.kernel.org/all/20240220190351.39815-1-surenb@google.com/
-https://lore.kernel.org/all/20240220190351.39815-2-surenb@google.com/
+Fixes: 500edd095648 ("erofs: use meta buffers for inode lookup")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sandeep Dhavale <dhavale@google.com>
+---
+ fs/erofs/namei.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-Thanks,
-Suren.
+diff --git a/fs/erofs/namei.c b/fs/erofs/namei.c
+index d4f631d39f0f..bfe1c926436b 100644
+--- a/fs/erofs/namei.c
++++ b/fs/erofs/namei.c
+@@ -132,7 +132,10 @@ static void *erofs_find_target_block(struct erofs_buf *target,
+ 
+ 			if (!diff) {
+ 				*_ndirents = 0;
+-				goto out;
++				if (!IS_ERR(candidate))
++					erofs_put_metabuf(target);
++				*target = buf;
++				return de;
+ 			} else if (diff > 0) {
+ 				head = mid + 1;
+ 				startprfx = matched;
+-- 
+2.44.0.rc0.258.g7320e95886-goog
 
-> ---
->  arch/arm/mm/fault.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/arch/arm/mm/fault.c b/arch/arm/mm/fault.c
-> index e96fb40b9cc3..07565b593ed6 100644
-> --- a/arch/arm/mm/fault.c
-> +++ b/arch/arm/mm/fault.c
-> @@ -298,6 +298,8 @@ do_page_fault(unsigned long addr, unsigned int fsr, s=
-truct pt_regs *regs)
->                 goto done;
->         }
->         count_vm_vma_lock_event(VMA_LOCK_RETRY);
-> +       if (fault & VM_FAULT_MAJOR)
-> +               flags |=3D FAULT_FLAG_TRIED;
->
->         /* Quick path to respond to signals */
->         if (fault_signal_pending(fault, regs)) {
-> --
-> 2.44.0.rc0.258.g7320e95886-goog
->
 
