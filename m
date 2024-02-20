@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-21437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A71A85C8E4
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:26:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3842685C74F
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:11:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05AA7283E99
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:26:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 698601C21D24
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:11:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E640151CD8;
-	Tue, 20 Feb 2024 21:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE82C14C585;
+	Tue, 20 Feb 2024 21:11:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WqpJLOOP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zw7u4Jzn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BCC314A4E6;
-	Tue, 20 Feb 2024 21:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C75F612D7;
+	Tue, 20 Feb 2024 21:11:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464417; cv=none; b=bsSB4tYNenbe7VOvWBP4RuPhLuSuv5JcbhvfOqofUk7LD/bUSi8RblLw3iq56Nx4eZILba2Ex4L/kXxNFnHvDIu9mZ4aRfS+CweRsCLmgSd9ZXmKgC+Oh+xm3C9K7YAiQSmnbI70cz4Dgvwc6i7ZUntZc4zvAIHxP3QClzIJ/h8=
+	t=1708463498; cv=none; b=eNfDCYawOio6xIWpLqJPOh5TcgCoL12/t+8IZYWaPfWTblh7RelvIRwLtZJ8UZKEKaeeQ3frPoizWEabSg98UbZqp0izo7MZAXsVKojhyi/lceotrKfIjJT5s0L6IZRTilFuaZWEswytY2umVaAXeOGh6TLUIyEvCkLY6e7jRCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464417; c=relaxed/simple;
-	bh=bhUu+RgW/vx5HrjHYisNAMRVe0x+icjUuYJ7ZhjwKaE=;
+	s=arc-20240116; t=1708463498; c=relaxed/simple;
+	bh=SbunnUPTzgUC8nNvIWpNuL7TkzTTLTTVmmqaIizI/9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HJUca5Jf2t9/bdM2KpSYUm1KVq0UAn30nyKvxphnMiDlu4mlx2dXKqP6v+ahfNB0YBi98471AVQsSMQk+UrjHB3jUgFVqxfqXe7Kt+eL8wuU4/3Bxcz35so/h1oEMD9gKiuS3CKrpbmd1t+E6WhtBKvNffVywZTunsgPC+GPWho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WqpJLOOP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D899DC433C7;
-	Tue, 20 Feb 2024 21:26:56 +0000 (UTC)
+	 MIME-Version; b=cCMtNeH2HM5sbq5+6DKhucfD50gP1e0IDySsyrIf8uoL73eU63oTImlR09SGw7Xw9bwHqFtuLPEEOrcDJBH+2J4PA7ZUz1lJTxTkKvKUzZmsVCWDZFxK8M2+jKMyKAxwuDiso/xhnH1wXUMjzFQFcP7xa5yc2MRnUbJ8BPijmLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zw7u4Jzn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A52A3C433F1;
+	Tue, 20 Feb 2024 21:11:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464417;
-	bh=bhUu+RgW/vx5HrjHYisNAMRVe0x+icjUuYJ7ZhjwKaE=;
+	s=korg; t=1708463498;
+	bh=SbunnUPTzgUC8nNvIWpNuL7TkzTTLTTVmmqaIizI/9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WqpJLOOPeT30jo5TryjeBN/8uRSARoTbtPM/W6CgUnuqrEDQa2AuCVnWabeDlQGzK
-	 rpQ+UNiBSBEO0gf+fXQqKkSJcUuHQUn4kXU6Kcc7UADg6c86Fknk+H19TC6QyMUjSQ
-	 M2f3AaXyJRdJ5EhtWGy0txIjeQa0OMiWfkJ2NuTc=
+	b=Zw7u4JznIs5qDtmlSPyEqXsA+OZCHdj00wOm77wBQ3p7EHm8aTWL2do9Qi+ZeyU2q
+	 bu0tLub/Bi1kF2uTZqhK9CN0DoaEWfalz+URR5pQRaGPfgW2vQ/KzjDyx1wqEczXOW
+	 Gv+88ykmkGiX/QCZTFEkJ25HllY9U6z+XYSFs2no=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hu Yadi <hu.yadi@h3c.com>,
-	Jiao <jiaoxupo@h3c.com>,
-	Berlin <berlin@h3c.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 019/309] selftests/landlock: Fix fs_test build with old libc
+	Audra Mitchell <audra@redhat.com>,
+	Rafael Aquini <raquini@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Adam Sindelar <adam@wowsignal.io>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 062/331] selftests/mm: Update va_high_addr_switch.sh to check CPU for la57 flag
 Date: Tue, 20 Feb 2024 21:52:58 +0100
-Message-ID: <20240220205633.779425915@linuxfoundation.org>
+Message-ID: <20240220205639.539231689@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +62,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hu Yadi <hu.yadi@h3c.com>
+From: Audra Mitchell <audra@redhat.com>
 
-[ Upstream commit 40b7835e74e0383be308d528c5e0e41b3bf72ade ]
+commit 52e63d67b5bb423b33d7a262ac7f8bd375a90145 upstream.
 
-One issue comes up while building selftest/landlock/fs_test on my side
-(gcc 7.3/glibc-2.28/kernel-4.19).
+In order for the page table level 5 to be in use, the CPU must have the
+setting enabled in addition to the CONFIG option. Check for the flag to be
+set to avoid false test failures on systems that do not have this cpu flag
+set.
 
-gcc -Wall -O2 -isystem   fs_test.c -lcap -o selftests/landlock/fs_test
-fs_test.c:4575:9: error: initializer element is not constant
-  .mnt = mnt_tmp,
-         ^~~~~~~
+The test does a series of mmap calls including three using the
+MAP_FIXED flag and specifying an address that is 1<<47 or 1<<48.  These
+addresses are only available if you are using level 5 page tables,
+which requires both the CPU to have the capabiltiy (la57 flag) and the
+kernel to be configured.  Currently the test only checks for the kernel
+configuration option, so this test can still report a false positive.
+Here are the three failing lines:
 
-Signed-off-by: Hu Yadi <hu.yadi@h3c.com>
-Suggested-by: Jiao <jiaoxupo@h3c.com>
-Reviewed-by: Berlin <berlin@h3c.com>
-Link: https://lore.kernel.org/r/20240124022908.42100-1-hu.yadi@h3c.com
-Fixes: 04f9070e99a4 ("selftests/landlock: Add tests for pseudo filesystems")
-[mic: Factor out mount's data string and make mnt_tmp static]
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+$ ./va_high_addr_switch | grep FAILED
+mmap(ADDR_SWITCH_HINT, 2 * PAGE_SIZE, MAP_FIXED): 0xffffffffffffffff - FAILED
+mmap(HIGH_ADDR, MAP_FIXED): 0xffffffffffffffff - FAILED
+mmap(ADDR_SWITCH_HINT, 2 * PAGE_SIZE, MAP_FIXED): 0xffffffffffffffff - FAILED
+
+I thought (for about a second) refactoring the test so that these three
+mmap calls will only be run on systems with the level 5 page tables
+available, but the whole point of the test is to check the level 5
+feature...
+
+Link: https://lkml.kernel.org/r/20240119205801.62769-1-audra@redhat.com
+Fixes: 4f2930c6718a ("selftests/vm: only run 128TBswitch with 5-level paging")
+Signed-off-by: Audra Mitchell <audra@redhat.com>
+Cc: Rafael Aquini <raquini@redhat.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Adam Sindelar <adam@wowsignal.io>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/landlock/fs_test.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ tools/testing/selftests/mm/va_high_addr_switch.sh |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tools/testing/selftests/landlock/fs_test.c b/tools/testing/selftests/landlock/fs_test.c
-index 18e1f86a6234..fde1a96ef9f4 100644
---- a/tools/testing/selftests/landlock/fs_test.c
-+++ b/tools/testing/selftests/landlock/fs_test.c
-@@ -241,9 +241,11 @@ struct mnt_opt {
- 	const char *const data;
- };
+--- a/tools/testing/selftests/mm/va_high_addr_switch.sh
++++ b/tools/testing/selftests/mm/va_high_addr_switch.sh
+@@ -29,9 +29,15 @@ check_supported_x86_64()
+ 	# See man 1 gzip under '-f'.
+ 	local pg_table_levels=$(gzip -dcfq "${config}" | grep PGTABLE_LEVELS | cut -d'=' -f 2)
  
--const struct mnt_opt mnt_tmp = {
-+#define MNT_TMP_DATA "size=4m,mode=700"
++	local cpu_supports_pl5=$(awk '/^flags/ {if (/la57/) {print 0;}
++		else {print 1}; exit}' /proc/cpuinfo 2>/dev/null)
 +
-+static const struct mnt_opt mnt_tmp = {
- 	.type = "tmpfs",
--	.data = "size=4m,mode=700",
-+	.data = MNT_TMP_DATA,
- };
+ 	if [[ "${pg_table_levels}" -lt 5 ]]; then
+ 		echo "$0: PGTABLE_LEVELS=${pg_table_levels}, must be >= 5 to run this test"
+ 		exit $ksft_skip
++	elif [[ "${cpu_supports_pl5}" -ne 0 ]]; then
++		echo "$0: CPU does not have the necessary la57 flag to support page table level 5"
++		exit $ksft_skip
+ 	fi
+ }
  
- static int mount_opt(const struct mnt_opt *const mnt, const char *const target)
-@@ -4572,7 +4574,10 @@ FIXTURE_VARIANT(layout3_fs)
- /* clang-format off */
- FIXTURE_VARIANT_ADD(layout3_fs, tmpfs) {
- 	/* clang-format on */
--	.mnt = mnt_tmp,
-+	.mnt = {
-+		.type = "tmpfs",
-+		.data = MNT_TMP_DATA,
-+	},
- 	.file_path = file1_s1d1,
- };
- 
--- 
-2.43.0
-
 
 
 
