@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-20918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF36185C64F
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:59:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7FD685C654
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:00:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A3A72840A1
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 20:59:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FD372845DD
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:00:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B981151CF7;
-	Tue, 20 Feb 2024 20:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63C45151CEB;
+	Tue, 20 Feb 2024 20:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H7aE378W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JDq9kV6q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE80151CC8;
-	Tue, 20 Feb 2024 20:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2328E151CD8;
+	Tue, 20 Feb 2024 20:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708462781; cv=none; b=LN+U16hQPizSIPTzZxxTnau1yjbC0VTiRQxYzvEKaeBtPjnJQkejcxDxkJGJPhrb175G7vZ3A7A+svLalDfDL5gZIYZytert/K2FhhbxRSi6biYk4GJdHqhFC1Rw41qPm9viIra+9GA3MCVg2cOUccssbfISqguDtDYIyiFqQVk=
+	t=1708462791; cv=none; b=kRGegKqm9/gmg8aUOLrtT1ag4wtkJhf8p3OcumxLogfRnvBq1bAbUigUMLbepmZio3G0n0CYmvGSKBGDLjXSCsVIApgIm8B4k4NUId5BYkvIa2n94mVL5IygClrgdjisL+swM0pVgKt511cp59sc9OeHG9occn0fEJyeY8YvxHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708462781; c=relaxed/simple;
-	bh=+fIDn93U6cj0Hxk8cK4jTnm7r81solQAYps6IM/hv5I=;
+	s=arc-20240116; t=1708462791; c=relaxed/simple;
+	bh=1+MV5JjB6yy6dOmB3joPeMZDf0EwjsABW1w15z57zHM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WbrYPh8jD7LySt+zDaom3EW6PzCFZaa4qz1m7LwmEfM7yz8Pf0+ScoR15PZy29++DwxzfN9gxlRixo7ldEqXq3PDhZxHjIGVvhaKFBqvTyKtSb4lgCuayMzKFZvw+BSaBFuERT/NQLyEltVRBHYFHg2SRRTKC8sZpOmWZbMHj5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H7aE378W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C97BBC43143;
-	Tue, 20 Feb 2024 20:59:40 +0000 (UTC)
+	 MIME-Version; b=AYTkQ4oiGurtPkFcD9ug2QpDhKIgEVWoJBGXSS7DmSsc1kkrXg1nmc/K+4ps1tTicDzeN6xLhmhgi5tIiBALOv4chvzSnlKtyDFwq7KVdmhJJkSa2l5NWDWzCEV/t2IAZRPmdUYae9etmb2NlrKi1CqWjthJzQcHDUPg8DgFnvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JDq9kV6q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87AAFC433C7;
+	Tue, 20 Feb 2024 20:59:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708462781;
-	bh=+fIDn93U6cj0Hxk8cK4jTnm7r81solQAYps6IM/hv5I=;
+	s=korg; t=1708462791;
+	bh=1+MV5JjB6yy6dOmB3joPeMZDf0EwjsABW1w15z57zHM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H7aE378WxPzwexeairDOS8vTDDm3qArZ6KX8Xv2LB0IVwDkuVbvfmAjUjoIz+DMDp
-	 r/3hrOb/fRNwRnUg34MfruCSpFZJE56uT5YWT7IJquX9g267uST3u8lojQV+khSVKH
-	 KkZ8Qu/qI2kX8cMDmQTb5TSHjqhaGDPvw5sxMX08=
+	b=JDq9kV6qN9fbBcj6jH7/rdWnYmLItqNicTnMJQzKF3axoHwuMCNTAZN1ZaGiDAjZM
+	 fk4+vRkUcb0CdreeBM5ipEMMoWqaNJcVQDap+7UAnWPH6A4rgfikVb+554K4HUypTP
+	 vEhKGvhXIrDziXhYQJCB8Ql81JSNEP0cUcoB/7Rw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Boris Burkov <boris@bur.io>,
+	Filipe Manana <fdmanana@suse.com>,
 	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 007/197] btrfs: forbid deleting live subvol qgroup
-Date: Tue, 20 Feb 2024 21:49:26 +0100
-Message-ID: <20240220204841.298606159@linuxfoundation.org>
+Subject: [PATCH 6.1 008/197] btrfs: send: return EOPNOTSUPP on unknown flags
+Date: Tue, 20 Feb 2024 21:49:27 +0100
+Message-ID: <20240220204841.329982920@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
 References: <20240220204841.073267068@linuxfoundation.org>
@@ -66,55 +65,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: David Sterba <dsterba@suse.com>
 
-commit a8df35619948bd8363d330c20a90c9a7fbff28c0 upstream.
+commit f884a9f9e59206a2d41f265e7e403f080d10b493 upstream.
 
-If a subvolume still exists, forbid deleting its qgroup 0/subvolid.
-This behavior generally leads to incorrect behavior in squotas and
-doesn't have a legitimate purpose.
+When some ioctl flags are checked we return EOPNOTSUPP, like for
+BTRFS_SCRUB_SUPPORTED_FLAGS, BTRFS_SUBVOL_CREATE_ARGS_MASK or fallocate
+modes. The EINVAL is supposed to be for a supported but invalid
+values or combination of options. Fix that when checking send flags so
+it's consistent with the rest.
 
-Fixes: cecbb533b5fc ("btrfs: record simple quota deltas in delayed refs")
-CC: stable@vger.kernel.org # 5.4+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Reviewed-by: David Sterba <dsterba@suse.com>
+CC: stable@vger.kernel.org # 4.14+
+Link: https://lore.kernel.org/linux-btrfs/CAL3q7H5rryOLzp3EKq8RTbjMHMHeaJubfpsVLF6H4qJnKCUR1w@mail.gmail.com/
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/qgroup.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ fs/btrfs/send.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -1635,6 +1635,15 @@ out:
- 	return ret;
- }
+--- a/fs/btrfs/send.c
++++ b/fs/btrfs/send.c
+@@ -7852,7 +7852,7 @@ long btrfs_ioctl_send(struct inode *inod
+ 	}
  
-+static bool qgroup_has_usage(struct btrfs_qgroup *qgroup)
-+{
-+	return (qgroup->rfer > 0 || qgroup->rfer_cmpr > 0 ||
-+		qgroup->excl > 0 || qgroup->excl_cmpr > 0 ||
-+		qgroup->rsv.values[BTRFS_QGROUP_RSV_DATA] > 0 ||
-+		qgroup->rsv.values[BTRFS_QGROUP_RSV_META_PREALLOC] > 0 ||
-+		qgroup->rsv.values[BTRFS_QGROUP_RSV_META_PERTRANS] > 0);
-+}
-+
- int btrfs_remove_qgroup(struct btrfs_trans_handle *trans, u64 qgroupid)
- {
- 	struct btrfs_fs_info *fs_info = trans->fs_info;
-@@ -1654,6 +1663,11 @@ int btrfs_remove_qgroup(struct btrfs_tra
+ 	if (arg->flags & ~BTRFS_SEND_FLAG_MASK) {
+-		ret = -EINVAL;
++		ret = -EOPNOTSUPP;
  		goto out;
  	}
  
-+	if (is_fstree(qgroupid) && qgroup_has_usage(qgroup)) {
-+		ret = -EBUSY;
-+		goto out;
-+	}
-+
- 	/* Check if there are no children of this qgroup */
- 	if (!list_empty(&qgroup->members)) {
- 		ret = -EBUSY;
 
 
 
