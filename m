@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-21369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1417585C894
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:23:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8512185C9D1
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:38:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C15A7284CD5
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:23:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 249811F22E2C
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:38:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E763151CD8;
-	Tue, 20 Feb 2024 21:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 674F8151CF0;
+	Tue, 20 Feb 2024 21:38:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wey1Dc7c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bZ5X3mYZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D78D2DF9F;
-	Tue, 20 Feb 2024 21:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 256F4446C9;
+	Tue, 20 Feb 2024 21:38:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464207; cv=none; b=PgLXiIR4yKIxc6GAcUBA65/6Sx5Tq2hEN+CeNPjpEVMK5lfklcKU/7Qz1eI32U5Bebje6SBz5HjFEr27Sy/xfmcdeJ0OFcCRDictFD9H4k8EUzdU1o0KIFinWmrOLArz+4jx76Hj+d02f9Uyjh75+261br8KsBWWMG2Io5qvbC4=
+	t=1708465120; cv=none; b=Su9lF0lFp/XsNy78pD1nFKpXvMteFzJUr/aDXhYsHCGzvJlJrAVPFNKeBbUDqiJRYfmoUv60nJ/4GYI9JjZB15VUycIJPA10wICqQvOqROD7h1prnrtiwms4jLXsVWSCZWuVf6iWy9r3P0+ji9RJaQ3WEjStVbc+GQ61Kz7B3pA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464207; c=relaxed/simple;
-	bh=hvmYSMgzDwdQvKHA4cpHDramwzHbQ0wUwdq8nH3FWFs=;
+	s=arc-20240116; t=1708465120; c=relaxed/simple;
+	bh=u0395+UQfa+IoEgioWe7wbQ2v/QUBspVjH8V/mi3Rl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X7D/CY0z+LEgupx0Af8xInOWBeBCnMcf2wuU+QAjbploEDkFIaXVAj5XmfLt//QhGaxsf1bKxuKGjwftjVcbftmvHN0Gf2c+mqK76/uHq1Ys+dWzvq4NiO7Ken5YiNb/RNSTwc6uP904hUJVxi0RgiEiBvwRhQOlrTb4XZdjlsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wey1Dc7c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0237C433C7;
-	Tue, 20 Feb 2024 21:23:26 +0000 (UTC)
+	 MIME-Version; b=YKF192PFOfRlbxNCPW1m3li5rBKkH3YXPlLDMZGrWm0T91neKS/+80OFYOM3OXEwESAeliGxGSwf4yqcz/s8qaPn2hTWygCp5D1KSB+sTMvaINpGmnyLi4mxcTCNRe0g6T5wmfzt228iH5LegJ6dC+cIaItexob6ubvUFi7G+VU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bZ5X3mYZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8969EC433C7;
+	Tue, 20 Feb 2024 21:38:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464207;
-	bh=hvmYSMgzDwdQvKHA4cpHDramwzHbQ0wUwdq8nH3FWFs=;
+	s=korg; t=1708465120;
+	bh=u0395+UQfa+IoEgioWe7wbQ2v/QUBspVjH8V/mi3Rl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wey1Dc7c5Es75UWVD4ok4iskwtOiFugt1gc88nlZJZOjTGHegxmndqe168IW/KQRb
-	 FBcqZfOIODvOK5BKr/Wi4U66q+wILr4l51m+PkUo0INq/vNdMZrknIU16aq8I5dTK9
-	 tVuHu4uRjEj820W20YLrGd0ZdklPXs/YrG06jDjU=
+	b=bZ5X3mYZlu4ZrW1/XdOmRuMSl3k1P+NQCcJFSI+V1AMqyDW85XJM4w0YJQaSW1E8Y
+	 P6806bBJM2syxDthO0L9Whi3GpZB5dgaUsvLX/Y7Gi1zF3xC1FsrPVSjCYZD5HaLDp
+	 p89bX2D3vA0AzynjVm8zEFzYy8StC2e014w027TM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Josef Bacik <josef@toxicpanda.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 285/331] eventfs: Do not allow NULL parent to eventfs_start_creating()
+	Shuming Fan <shumingf@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.7 242/309] ALSA: hda/realtek: add IDs for Dell dual spk platform
 Date: Tue, 20 Feb 2024 21:56:41 +0100
-Message-ID: <20240220205646.924696590@linuxfoundation.org>
+Message-ID: <20240220205640.735558738@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+From: Shuming Fan <shumingf@realtek.com>
 
-commit fc4561226feaad5fcdcb55646c348d77b8ee69c5 upstream.
+commit fddab35fd064414c677e9488c4fb3a1f67725d37 upstream.
 
-The eventfs directory is dynamically created via the meta data supplied by
-the existing trace events. All files and directories in eventfs has a
-parent. Do not allow NULL to be passed into eventfs_start_creating() as
-the parent because that should never happen. Warn if it does.
+This patch adds another two IDs for the Dell dual speaker platform.
 
-Link: https://lkml.kernel.org/r/20231121231112.693841807@goodmis.org
-
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Shuming Fan <shumingf@realtek.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240205072252.3791500-1-shumingf@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/tracefs/inode.c |   13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ sound/pci/hda/patch_realtek.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/tracefs/inode.c
-+++ b/fs/tracefs/inode.c
-@@ -509,20 +509,15 @@ struct dentry *eventfs_start_creating(co
- 	struct dentry *dentry;
- 	int error;
- 
-+	/* Must always have a parent. */
-+	if (WARN_ON_ONCE(!parent))
-+		return ERR_PTR(-EINVAL);
-+
- 	error = simple_pin_fs(&trace_fs_type, &tracefs_mount,
- 			      &tracefs_mount_count);
- 	if (error)
- 		return ERR_PTR(error);
- 
--	/*
--	 * If the parent is not specified, we create it in the root.
--	 * We need the root dentry to do this, which is in the super
--	 * block. A pointer to that is in the struct vfsmount that we
--	 * have around.
--	 */
--	if (!parent)
--		parent = tracefs_mount->mnt_root;
--
- 	if (unlikely(IS_DEADDIR(parent->d_inode)))
- 		dentry = ERR_PTR(-ENOENT);
- 	else
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9724,7 +9724,9 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1028, 0x0b71, "Dell Inspiron 16 Plus 7620", ALC295_FIXUP_DELL_INSPIRON_TOP_SPEAKERS),
+ 	SND_PCI_QUIRK(0x1028, 0x0beb, "Dell XPS 15 9530 (2023)", ALC289_FIXUP_DELL_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1028, 0x0c03, "Dell Precision 5340", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE),
++	SND_PCI_QUIRK(0x1028, 0x0c0b, "Dell Oasis 14 RPL-P", ALC289_FIXUP_RTK_AMP_DUAL_SPK),
+ 	SND_PCI_QUIRK(0x1028, 0x0c0d, "Dell Oasis", ALC289_FIXUP_RTK_AMP_DUAL_SPK),
++	SND_PCI_QUIRK(0x1028, 0x0c0e, "Dell Oasis 16", ALC289_FIXUP_RTK_AMP_DUAL_SPK),
+ 	SND_PCI_QUIRK(0x1028, 0x0c19, "Dell Precision 3340", ALC236_FIXUP_DELL_DUAL_CODECS),
+ 	SND_PCI_QUIRK(0x1028, 0x0c1a, "Dell Precision 3340", ALC236_FIXUP_DELL_DUAL_CODECS),
+ 	SND_PCI_QUIRK(0x1028, 0x0c1b, "Dell Precision 3440", ALC236_FIXUP_DELL_DUAL_CODECS),
 
 
 
