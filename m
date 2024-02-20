@@ -1,148 +1,140 @@
-Return-Path: <stable+bounces-20779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EE6B85B4E5
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 09:21:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7970185B513
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 09:27:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71EFA1C212C5
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 08:21:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BE281C20AA3
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 08:27:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 519F85C8F2;
-	Tue, 20 Feb 2024 08:21:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6804F5C918;
+	Tue, 20 Feb 2024 08:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="E8sjxzfE"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="e9uNO9s9"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [212.227.15.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58FAE5D759
-	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 08:21:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0B7D53819;
+	Tue, 20 Feb 2024 08:26:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708417267; cv=none; b=DF++SMIPhlbPfyIY9cs8Surn1jhVc2o1DMNYKloZ2Atx6DvdNd9/lwbV6fi//qUwD2LHwVr6cHbhek2zDbu0xHfXFM+FdU9rDMmpaGp7DU0txyRRIki3VbW6CAs/LZFaib8bdt6scKco9FbVEP6k3WB4cKUfmig4Xl0fp9k1E/0=
+	t=1708417622; cv=none; b=i8p91uWHXVYlI+SRd5azJYLhbKcFiJVTB3iMVMkchWUunOrpLRvoskfA/S3p6Ygf7aV0LpVjW6ZVVYh6KBKJwIRDLUqwo+RSkNmu5+1NFkzlos01pED9ADwTq/aJz34qbz6gnOSBK3WGn78TpJg06k8LTP2pDyjLPTKwpADWm3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708417267; c=relaxed/simple;
-	bh=o54ifFwgPSsxzCggMuxYL9ZhcWftfWMsUn207YwDOZ4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lgc1+opOFK6/uqWJlGB/09K76T1kCQ0YQQqgdJ+Ckb9mEyQBWv6wSmKP17E8yPgejCcmiYUT1yoH5qRAQ0pXLkpGwnLtOYXUsRxp0Ue1ESfvinlPHOCA4qo0uZvfCdVmEbm73Y5wREd7Sl1uLbk9UfxaofDBITo33WfD+ZlLIrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=E8sjxzfE; arc=none smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5648d92919dso2161272a12.1
-        for <stable@vger.kernel.org>; Tue, 20 Feb 2024 00:21:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1708417263; x=1709022063; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/y0ZRcM9AeqXbMHdo/rZFfK9pZ+QAzjI5XqSR9aH7rI=;
-        b=E8sjxzfE2lI6zaVTeZgAeYDNfF5b2uiqr1/kt+/M6nYCX61HS2fCn5D/wrPH6byMTJ
-         +IP0gG1d7EL/hU9ZA6HIHFGc1FqSHGIt7YnAp3TafnzgOZrLHiHLuM867gvyzOniA5GE
-         jrBVJk0niBaSp7ZAsMH2qmhza8ZA9YpteyxxxA7iVOtZ0Bs0unAI3DPozsYBhCOj82aL
-         JftLuuN26Ul6Wnb9KN77IybwvwgQaWu0zUy0iMkBU3NglD9Q7j7HTx5JraQrgSuhTMKZ
-         r1/y5KPFn4fOChsC4RcFVikbya2ici1YQEF27PgRAa4f42UWyUUxOYxCObN85BL7gBC7
-         8p+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708417263; x=1709022063;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/y0ZRcM9AeqXbMHdo/rZFfK9pZ+QAzjI5XqSR9aH7rI=;
-        b=WkUYr+So08uFVWsjt9W/5sx9QA1t9Mj7hzVW9xM6nCAO0PGJubollvGC0sVYrkl5XC
-         XEmmCyfVpqzJBZKFpcsfsL7WJ4OdIzaN2RWp6BvTwwZCktT85kZ0gChOypyN0T4iiBOP
-         5RS4jJNJ2e4KtOliFMYPIHDiDrU7dn2jlnrDdqyEAMJvDUs+a9/7IzOsC8acHAcTXkLK
-         Ud/hFdsrJP8CrqbzP2BUK8DYQJhTwIleaLDvGHogSeSkUA7wIi+bp+/LK0M6dNWUib+B
-         uibvSs20pw7QAm5IAUDDLe70XAwvVuVC39kamNSGHo82RhEaw9ZMs43Dp7fZEqNrtxw3
-         3QIA==
-X-Forwarded-Encrypted: i=1; AJvYcCWpEXYFng7B2A6k3vaRlCVVKwFGIYkk9N7VwF+B/LBQ2AMCp9JiaQplvRG/D9vCgriEDPgbEUaZ8yVhLD/eTXzIkEXwuIL6
-X-Gm-Message-State: AOJu0Yw/FIkXxJzmPlnKXzuo5s0ap1J+rvmO9ga/hjIzBC1zb5v98dy7
-	nZoNvk35uun6TqGCT28briwrHReNV2trC14PuJ8U0wMK4ZwY9qoZBzLksz8sO+c9O1VN+AqxXKP
-	tbMFVlBKP+MRqoNktTrIvTYQ6DWdZb7CoSrwh
-X-Google-Smtp-Source: AGHT+IFJd7ykTaiF5QgxEIxuB8aW3uriUy20BSKF+VODu+o5a9+WR16O88j7rZTp7Zcps7RfwH/iXdALxGGiS0b6mJo=
-X-Received: by 2002:aa7:d685:0:b0:564:67d0:b8c5 with SMTP id
- d5-20020aa7d685000000b0056467d0b8c5mr4053570edr.0.1708417262542; Tue, 20 Feb
- 2024 00:21:02 -0800 (PST)
+	s=arc-20240116; t=1708417622; c=relaxed/simple;
+	bh=FbwtcBufwoXbPOYPnUNJ/O5sjaNC9PrMa+OFLq/9LlE=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=iYG/fUczTpLnQEORFmXF4eV0HQ/cZcMrrZ1khpvNhxKV4kUkhPkmX9dMgbWRfWHR5PMMiFS7uF5bFXf0YGvy4cqpg7EzqqeIjt4JxB7ze6bDJktJSMD4Tq1pLh2fpRf8BgwbBFu8PHOR6eZd+/qce8KEPjtB8LXyYSzzcUOJ7IA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=e9uNO9s9; arc=none smtp.client-ip=212.227.15.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de; s=s29768273;
+	t=1708417584; x=1709022384; i=markus.elfring@web.de;
+	bh=FbwtcBufwoXbPOYPnUNJ/O5sjaNC9PrMa+OFLq/9LlE=;
+	h=X-UI-Sender-Class:Date:To:Cc:References:Subject:From:
+	 In-Reply-To;
+	b=e9uNO9s9BlPlVK+KiQU0PIEORK8P37I2txeksl/zdJew63C90YrlGcWsm6Hu4Hue
+	 6ljrcEcfq9efe8BC4qP7lzSWY4/cJKmXgeh4kh2GA6Ab5pc2t4Cli6eI2aX+/LFxp
+	 eShaxJI1uQRCHSUgE/M3sDjBVhoE1PshpN9ZGPZkHhHvRA/Jh3hTsAAlJXuIIqiou
+	 /ybXYix9AEHJLFZcrGYmM8qwXF0a9IIvlTEwDgoNad3g+4s/ZKjH9MYInmI9bnlVc
+	 LySTN7kZRkolEB7j2W+DWXMcYupogIapYd+ltxsRyKb/3gdFzKFxO54FE+7JBNCSm
+	 er/rX3U/+vMS+IV7JQ==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.80.95]) by smtp.web.de (mrweb006
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1M4bYo-1rbnUP3YVK-001fxX; Tue, 20
+ Feb 2024 09:26:23 +0100
+Message-ID: <41ca529d-ad0c-40e7-b68c-c90297815bbc@web.de>
+Date: Tue, 20 Feb 2024 09:25:44 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240220081205.135063-1-raychi@google.com>
-In-Reply-To: <20240220081205.135063-1-raychi@google.com>
-From: Ray Chi <raychi@google.com>
-Date: Tue, 20 Feb 2024 16:20:50 +0800
-Message-ID: <CAPBYUsAnuyLwek39GJiwin_Pit0waH-2fhQv-G21OYkjoz051w@mail.gmail.com>
-Subject: Re: [PATCH] usb: dwc3: gadget: remove warning during kernel boot
-To: Thinh.Nguyen@synopsys.com, gregkh@linuxfoundation.org, 
-	quic_uaggarwa@quicinc.com
-Cc: albertccwang@google.com, linux-usb@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+To: Johan Hovold <johan+linaro@kernel.org>, freedreno@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, linux-phy@lists.infradead.org,
+ linux-arm-msm@vger.kernel.org, kernel-janitors@vger.kernel.org,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ Bjorn Andersson <andersson@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
+ David Airlie <airlied@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>, Vinod Koul <vkoul@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ Abhinav Kumar <quic_abhinavk@quicinc.com>,
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>, Jonas Karlman <jonas@kwiboo.se>,
+ Kishon Vijay Abraham I <kishon@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>,
+ Kuogee Hsieh <quic_khsieh@quicinc.com>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Rob Clark <robdclark@gmail.com>, stable@vger.kernel.org
+References: <20240217150228.5788-4-johan+linaro@kernel.org>
+Subject: Re: [PATCH 3/6] soc: qcom: pmic_glink_altmode: fix drm bridge
+ use-after-free
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20240217150228.5788-4-johan+linaro@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:oGPEHuM2HIdXgcEMfwBFL/voM7jpNFUkHFQ+0xcJgl7i8MgwK7X
+ JRpaE+mgDDalhXTyU2+1PFOILTsPDZpOepGGIJfCQ/2E3ldh+sgz6VTMBA01/EflCrvIeWY
+ X6YhCNZlgsWrsvUtm8o2z+5W3E7+5Yd2k54efbPAD5SQDEAsv4P7H2BQFpKQnAy0uARDOGK
+ 1wwp3iW69af1k6eyCiBoQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:dgtWsq+B+98=;0ssw8wp6F6jnkVukgPpAy80HpQc
+ B0VMFA61OwPAzcw1oE4HEkJI7Op8/UpgfZD/rlEvXu7wBJAltZnVnEH4QBK3bR6eoqIkHYpQ3
+ a+NQ7/veaLawT/cH0RCDP6lm/j3niZpzb0CUvZiz08gIn478ffjixzszvFQ3nwCu6Uk/2cbZw
+ 1lBdOowsMiRl5XYsrKVcTqXngRFyOQ8SaTtPmk5Ocd6GHZGSPbPWnZhxXYQrACxB3DEfP0zj+
+ OgghtCVE1xS7INrVaqaoFlTWicIfb+TO/All7DwO0jxT5TnGCvyj0xiK13IcPE4yfzG5cXk+4
+ FXCNlG8KENRG+6N/YDVgCl1h5L13SfrSfon9XMCLUbeuC0bPlYx3ESm7tmaXMx+i9vLlnu3Ij
+ cr4ajn/JugewLTyYfpvg3HGWrZDDvY0lgR18LO4Mgh2GkF0TXEwTYk6yeI8ehoClatHTPiMEQ
+ UkriLgw2lJ7hxlS4YiX8OJneDycZUdyFCCs+GHFVgXnKzA8WLTuXBF0xhxkgbnmZaLPs9eOfk
+ ld8pY8kpC0FpG1LcNjEY0PG9eOrGQfv8CNbfcmm5rf8dQiD/LdlXdJE1rbKpOW/YsnSIcGrEG
+ JMfJTj7yCiFrNZJYI+RkVnf+dnQstf10h32TAnwbBfExX/OHZUBI0TH2W5pyXCscDYnThQKHW
+ sLphBvemEcnXdJDIkba0ET40K11L5YTJuIuiZyQdVn+mtYfyfu9oBU610S+X5NC9FU2RlEEGJ
+ XKH6PwGUwmR3NkZinJ70pekoeQfe9t4woQs0KZtNZDTWe0fhh65IQ6qWmSuccCqTsLcGVsImx
+ Eesic4I3yq1Dcu9fB0rDoBFux2rfDY6Ba322mXCTCYqKQ=
 
-On Tue, Feb 20, 2024 at 4:12=E2=80=AFPM Ray Chi <raychi@google.com> wrote:
+=E2=80=A6
+> Specifically, the dp-hpd bridge is currently registered before all
+> resources have been acquired which means that it can also be
+> deregistered on probe deferrals.
 >
-> The dwc3->gadget_driver is not initialized during the dwc3 probe
-> process. This leads to a warning when the runtime power management (PM)
-> attempts to suspend the gadget using dwc3_gadget_suspend().
->
-> This patch adds a check to prevent the warning.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 61a348857e86 ("usb: dwc3: gadget: Fix NULL pointer dereference in =
-dwc3_gadget_suspend")
-> Signed-off-by: Ray Chi <raychi@google.com>
-> ---
->  drivers/usb/dwc3/gadget.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-> index 28f49400f3e8..de987cffe1ec 100644
-> --- a/drivers/usb/dwc3/gadget.c
-> +++ b/drivers/usb/dwc3/gadget.c
-> @@ -4708,6 +4708,9 @@ int dwc3_gadget_suspend(struct dwc3 *dwc)
->         unsigned long flags;
->         int ret;
->
-> +       if (!dwc->gadget_driver)
-> +               return 0;
-> +
->         ret =3D dwc3_gadget_soft_disconnect(dwc);
->         if (ret)
->                 goto err;
-> --
-> 2.44.0.rc0.258.g7320e95886-goog
->
+> In the meantime there is a race window where the new aux bridge driver
+> (or PHY driver previously) may have looked up the dp-hpd bridge and
+> stored a (non-reference-counted) pointer to the bridge which is about to
+> be deallocated.
+=E2=80=A6
 
-Attached the warning message.
+I got the impression that the change description can be improved another b=
+it.
 
-02-20 06:01:24.227725  root    86    86 W Call trace:
-02-20 06:01:24.227730  root    86    86 W         :
-dwc3_ep0_out_start+0xec/0x22c
-02-20 06:01:24.227738  root    86    86 W         :
-dwc3_ep0_stall_and_restart+0xb8/0xd4
-02-20 06:01:24.227747  root    86    86 W         :
-dwc3_gadget_soft_disconnect+0x1a8/0x284
-02-20 06:01:24.227756  root    86    86 W         :
-dwc3_gadget_suspend+0x18/0xe4
-02-20 06:01:24.227764  root    86    86 W         :
-dwc3_suspend_common+0x5c/0x320
-02-20 06:01:24.227774  root    86    86 W         :
-dwc3_runtime_suspend+0x30/0x4c
-02-20 06:01:24.227783  root    86    86 W         :
-pm_generic_runtime_suspend+0x3c/0x54
-02-20 06:01:24.227793  root    86    86 W         : __rpm_callback+0xfc/0x7=
-6c
-02-20 06:01:24.227802  root    86    86 W         : rpm_suspend+0x534/0xd78
-02-20 06:01:24.227811  root    86    86 W         : dwc3_runtime_idle+0xcc/=
-0x104
-02-20 06:01:24.227819  root    86    86 W         : rpm_idle+0x228/0x4e0
-02-20 06:01:24.227827  root    86    86 W         : update_autosuspend+0x50=
-/0xb8
-02-20 06:01:24.227836  root    86    86 W         :
-__pm_runtime_use_autosuspend+0x50/0x6c
+1. Will any additional imperative wordings become helpful?
+   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
+/Documentation/process/submitting-patches.rst?h=3Dv6.8-rc5#n94
+
+
+=E2=80=A6
+> +++ b/drivers/soc/qcom/pmic_glink_altmode.c
+> @@ -76,7 +76,7 @@ struct pmic_glink_altmode_port {
+>
+>  	struct work_struct work;
+>
+> -	struct device *bridge;
+> +	struct auxiliary_device *bridge;
+>
+>  	enum typec_orientation orientation;
+>  	u16 svid;
+=E2=80=A6
+
+2. How do you think about to stress such a data type adjustment?
+
+Regards,
+Markus
 
