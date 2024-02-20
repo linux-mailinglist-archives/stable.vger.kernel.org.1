@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-21383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2E1C85C8A8
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:24:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BAAE85C9F3
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:40:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C5F4B220FD
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:24:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7658281CAB
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:40:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE180152DE9;
-	Tue, 20 Feb 2024 21:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C314151CDC;
+	Tue, 20 Feb 2024 21:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rycl3KQr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vwgMsSQ2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF7E152DE6;
-	Tue, 20 Feb 2024 21:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB0C612D7;
+	Tue, 20 Feb 2024 21:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464251; cv=none; b=SV2wWxSWLXOOANNVR/+0cSDYFDh6YidUw1V/nCR+U2rClIieyLUDYw0pRUJIy6H+PvfPl/iEAOyTqe6FCY1KUeREHmem4hXUJ8I5SRQhYY8OrgwFl7FXvKMecoYPdRvi0HuMWnInbm/mGBcWVSxOlzTyLc00mY+2eZMJBbaXC4o=
+	t=1708465218; cv=none; b=t51TZSqpElEYmqnU5cyWYTlpD5S0Ssr/gd2qMWGnx5L4ypFdkhzU8lV1baNrpOCgR22LO2fFYSkaEv/P9tlg8iMYgU0F6Zaq7MKRDX0ExFFjcqubr/Gp3MG4tiSZY9HLtKnNusvUwQn5vhIJYsnxARqFViCMW0j29gDGNUJ2qrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464251; c=relaxed/simple;
-	bh=aRDTbEk2dwUfCvRhigjbs9pE6a9Jfn1V0SOoSiydBUg=;
+	s=arc-20240116; t=1708465218; c=relaxed/simple;
+	bh=S4SH48UWF0ynNzzGeutNdyxmTZ7JwNGyhaaFauSuQso=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WdRZhFRd8LVoUzDNw/254gbL2Z1mc58Wumb7nbTv5R9vBiDqPi1hR/DEnwY5bxMOs24QL4XTrqMk+U4j7X3/+6n2newsWmltd9eMOQtJ4pmcc8FYHnf71vUmr6xVYkVcSSlTnVpCeAn1p8NThEgRG1wdFH0Par6rcwAEqIvQllA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rycl3KQr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2630C433C7;
-	Tue, 20 Feb 2024 21:24:10 +0000 (UTC)
+	 MIME-Version; b=X2jPhTNoIc5ANx6C2xe6Sz1mv9hLmErJ0yg+BQH2C5XCz4lcng1WdjR+hC7Lb/+vMk2o2n61yimeG0+5EgaLtPjFaPo60/oxOPtImv1x6B3rncGER7LYmtKTrQhHpArxpdtlYYHnoFZryKimO9ZT1ZHRDvOq8+Sag/bp/AavSPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vwgMsSQ2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F79CC433F1;
+	Tue, 20 Feb 2024 21:40:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464251;
-	bh=aRDTbEk2dwUfCvRhigjbs9pE6a9Jfn1V0SOoSiydBUg=;
+	s=korg; t=1708465217;
+	bh=S4SH48UWF0ynNzzGeutNdyxmTZ7JwNGyhaaFauSuQso=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rycl3KQrRSrXhWulQdu/g2fkhu1awF2KCow4daf/5Kahp0TmXAcrcEZjJrCdyJOVx
-	 rJd0Q6nwlAsnGCEn8UNgol/rg6DvRKrfO4W/mN0DK5f9fstaAtqhrJh5h2lIfxFJVQ
-	 uXPUAU42OpGHDaCUYLTQoXJno2z2eP8sLfaEvK1w=
+	b=vwgMsSQ2zxTVw6r9lFPHflfoBltcIg+8yDltBsHglQ7C97dHOhi6bbEjOD3ZEjO+m
+	 RWFpq6I6BCnj8jcYkfZY3MKQRCGlYZ+caSpuORYzEnHbz6hI6qQoPM6ZblLLKDZJ0M
+	 SGtDTlEnpKiQTAvlC5Axki90fBv0fkYsv+M0MlXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 298/331] eventfs: Shortcut eventfs_iterate() by skipping entries already read
-Date: Tue, 20 Feb 2024 21:56:54 +0100
-Message-ID: <20240220205647.435245552@linuxfoundation.org>
+	Marc Zyngier <maz@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>
+Subject: [PATCH 6.7 256/309] irqchip/gic-v3-its: Restore quirk probing for ACPI-based systems
+Date: Tue, 20 Feb 2024 21:56:55 +0100
+Message-ID: <20240220205641.170264507@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,95 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+From: Marc Zyngier <maz@kernel.org>
 
-commit 1de94b52d5e8d8b32f0252f14fad1f1edc2e71f1 upstream.
+commit 8b02da04ad978827e5ccd675acf170198f747a7a upstream.
 
-As the ei->entries array is fixed for the duration of the eventfs_inode,
-it can be used to skip over already read entries in eventfs_iterate().
+While refactoring the way the ITSs are probed, the handling of quirks
+applicable to ACPI-based platforms was lost. As a result, systems such as
+HIP07 lose their GICv4 functionnality, and some other may even fail to
+boot, unless they are configured to boot with DT.
 
-That is, if ctx->pos is greater than zero, there's no reason in doing the
-loop across the ei->entries array for the entries less than ctx->pos.
-Instead, start the lookup of the entries at the current ctx->pos.
+Move the enabling of quirks into its_probe_one(), making it common to all
+firmware implementations.
 
-Link: https://lore.kernel.org/all/CAHk-=wiKwDUDv3+jCsv-uacDcHDVTYsXtBR9=6sGM5mqX+DhOg@mail.gmail.com/
-Link: https://lore.kernel.org/linux-trace-kernel/20240104220048.494956957@goodmis.org
-
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 9585a495ac93 ("irqchip/gic-v3-its: Split allocation from initialisation of its_node")
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240213101206.2137483-3-maz@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/tracefs/event_inode.c |   23 ++++++++++-------------
- 1 file changed, 10 insertions(+), 13 deletions(-)
+ drivers/irqchip/irq-gic-v3-its.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -746,21 +746,15 @@ static int eventfs_iterate(struct file *
- 	if (!ei || !ei_dentry)
- 		goto out;
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -5091,6 +5091,8 @@ static int __init its_probe_one(struct i
+ 	u32 ctlr;
+ 	int err;
  
--	ret = 0;
--
- 	/*
- 	 * Need to create the dentries and inodes to have a consistent
- 	 * inode number.
- 	 */
--	for (i = 0; i < ei->nr_entries; i++) {
--		void *cdata = ei->data;
--
--		if (c > 0) {
--			c--;
--			continue;
--		}
-+	ret = 0;
- 
--		ctx->pos++;
-+	/* Start at 'c' to jump over already read entries */
-+	for (i = c; i < ei->nr_entries; i++, ctx->pos++) {
-+		void *cdata = ei->data;
- 
- 		entry = &ei->entries[i];
- 		name = entry->name;
-@@ -769,7 +763,7 @@ static int eventfs_iterate(struct file *
- 		/* If ei->is_freed then just bail here, nothing more to do */
- 		if (ei->is_freed) {
- 			mutex_unlock(&eventfs_mutex);
--			goto out_dec;
-+			goto out;
- 		}
- 		r = entry->callback(name, &mode, &cdata, &fops);
- 		mutex_unlock(&eventfs_mutex);
-@@ -778,14 +772,17 @@ static int eventfs_iterate(struct file *
- 
- 		dentry = create_file_dentry(ei, i, ei_dentry, name, mode, cdata, fops);
- 		if (!dentry)
--			goto out_dec;
-+			goto out;
- 		ino = dentry->d_inode->i_ino;
- 		dput(dentry);
- 
- 		if (!dir_emit(ctx, name, strlen(name), ino, DT_REG))
--			goto out_dec;
-+			goto out;
- 	}
- 
-+	/* Subtract the skipped entries above */
-+	c -= min((unsigned int)c, (unsigned int)ei->nr_entries);
++	its_enable_quirks(its);
 +
- 	list_for_each_entry_srcu(ei_child, &ei->children, list,
- 				 srcu_read_lock_held(&eventfs_srcu)) {
+ 	if (is_v4(its)) {
+ 		if (!(its->typer & GITS_TYPER_VMOVP)) {
+ 			err = its_compute_its_list_map(its);
+@@ -5442,7 +5444,6 @@ static int __init its_of_probe(struct de
+ 		if (!its)
+ 			return -ENOMEM;
  
+-		its_enable_quirks(its);
+ 		err = its_probe_one(its);
+ 		if (err)  {
+ 			its_node_destroy(its);
 
 
 
