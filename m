@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-21406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C8C585C8C4
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:25:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2888D85C9F8
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:40:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CFBE2B21E43
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:25:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCA3B1F22FB0
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:40:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 168D9151CE9;
-	Tue, 20 Feb 2024 21:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31555151CDC;
+	Tue, 20 Feb 2024 21:40:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wm5l5+MO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G8T5em4i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD0C14F9C8;
-	Tue, 20 Feb 2024 21:25:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E34DB612D7;
+	Tue, 20 Feb 2024 21:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464320; cv=none; b=hEeZI2wNuaGpekp8RUbSoJslcgycmwzjkjItgnbfpD0bhsYuX/+whbxMKuOzxTTnZXmOm6Zo4edKpm36pyZouOu03Y+5QeEy8ceqja/y1boBpGhuwROoM59+WImh5fj4YQB+CPuMk94WZSRGQyMPCe/KQTyry6FbY57ACE+IpXI=
+	t=1708465234; cv=none; b=j3AGhaH1eWD2IEFCcbsCADTJ3oPqUZRTrm0nwW72kZ2BJxKixK1tPlKdKhPlEEfibk0lGSpMbDwvsn/f0UsidZqY4qsDJynaDIaFuqa2zdY+EW/DecrG84+pJn/VolO3qfg3FGGT7cQfzHIBEXYx3RbcS2TTyH3uEFcBxcRJS/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464320; c=relaxed/simple;
-	bh=mzhKRiKAIDQL7KV2RFZ/j17xjMsyNCCBlTqrnHclKp0=;
+	s=arc-20240116; t=1708465234; c=relaxed/simple;
+	bh=OmVqubZoclkRKpx/De1n7JtzAPYDknkbXDxVSI3w0iU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WEQJNuiqJ452BO7z+MH4tsrtQ0IVtfcLd5TscYtJcJ8r34htS7Motcfu84PKy05Kt1QSbC/5lJ6lcJb7OQkuBqw/0nakUfvCh7Ars5FBfHAvTbv8kLYRkl/odUQ+khlzzDMaEC83npwuvTpfFyC9fyxKs4wNvp0BqeGn4fVbkA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wm5l5+MO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37CF9C433F1;
-	Tue, 20 Feb 2024 21:25:20 +0000 (UTC)
+	 MIME-Version; b=IVzo5aEXQy88n1oMEqm8FnHw4sEA5vwDk5JpnyHo5ABz0WbjinebX8LypYjAZcHuGPrdE0EXdFNc1dTmHv3+AbLdLCzDdRZeiMdCg3l2iPiHu3e+SXX0NEi7xDr0sS0D/P0GsiaFABbXlVwSpXtIT7wGA8LxZlfvFPWN11gRWa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G8T5em4i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50CF5C433C7;
+	Tue, 20 Feb 2024 21:40:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464320;
-	bh=mzhKRiKAIDQL7KV2RFZ/j17xjMsyNCCBlTqrnHclKp0=;
+	s=korg; t=1708465233;
+	bh=OmVqubZoclkRKpx/De1n7JtzAPYDknkbXDxVSI3w0iU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wm5l5+MOos1mIuhR0mnBQ+Hr3XgG8JadfjHca/Z71WVkkKtqnBKvV7fweuFgC7Tom
-	 boun6Re067I/0FTytjnlaY8qvvTKSIyGakwbdLEgIeit3VfV1uN5hcHSqwc7Pc2Jl3
-	 FJ7z7zTfubXZcbmB8FV4oaqcciq30HMrOU3IGvYA=
+	b=G8T5em4i8JC7NnDrhjPHa+Uyu+uNZa8VlDUgoalzYo+X2ZtGXK07uhynSLIMKl67l
+	 hc+U9004IqRUQUldr7u0lSkhxv4XERLl1vDIkp6tDPVzHFCSLUYi084ZbDZ0e/MAo6
+	 YZfR8ZgwseFTLUORv1pxM3elm9tZDYI2LiAV5144=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 6.6 321/331] x86/boot: Drop redundant code setting the root device
+	Jan Kara <jack@suse.cz>,
+	Karel Zak <kzak@redhat.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.7 278/309] fs: relax mount_setattr() permission checks
 Date: Tue, 20 Feb 2024 21:57:17 +0100
-Message-ID: <20240220205648.308398459@linuxfoundation.org>
+Message-ID: <20240220205641.817188955@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Christian Brauner <brauner@kernel.org>
 
-commit 7448e8e5d15a3c4df649bf6d6d460f78396f7e1e upstream.
+commit 46f5ab762d048dad224436978315cbc2fa79c630 upstream.
 
-The root device defaults to 0,0 and is no longer configurable at build
-time [0], so there is no need for the build tool to ever write to this
-field.
+When we added mount_setattr() I added additional checks compared to the
+legacy do_reconfigure_mnt() and do_change_type() helpers used by regular
+mount(2). If that mount had a parent then verify that the caller and the
+mount namespace the mount is attached to match and if not make sure that
+it's an anonymous mount.
 
-[0] 079f85e624189292 ("x86, build: Do not set the root_dev field in bzImage")
+The real rootfs falls into neither category. It is neither an anoymous
+mount because it is obviously attached to the initial mount namespace
+but it also obviously doesn't have a parent mount. So that means legacy
+mount(2) allows changing mount properties on the real rootfs but
+mount_setattr(2) blocks this. I never thought much about this but of
+course someone on this planet of earth changes properties on the real
+rootfs as can be seen in [1].
 
-This change has no impact on the resulting bzImage binary.
+Since util-linux finally switched to the new mount api in 2.39 not so
+long ago it also relies on mount_setattr() and that surfaced this issue
+when Fedora 39 finally switched to it. Fix this.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230912090051.4014114-23-ardb@google.com
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2256843
+Link: https://lore.kernel.org/r/20240206-vfs-mount-rootfs-v1-1-19b335eee133@kernel.org
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reported-by: Karel Zak <kzak@redhat.com>
+Cc: stable@vger.kernel.org # v5.12+
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/boot/header.S      |    2 +-
- arch/x86/boot/tools/build.c |    7 -------
- 2 files changed, 1 insertion(+), 8 deletions(-)
+ fs/namespace.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/arch/x86/boot/header.S
-+++ b/arch/x86/boot/header.S
-@@ -236,7 +236,7 @@ root_flags:	.word ROOT_RDONLY
- syssize:	.long 0			/* Filled in by build.c */
- ram_size:	.word 0			/* Obsolete */
- vid_mode:	.word SVGA_MODE
--root_dev:	.word 0			/* Filled in by build.c */
-+root_dev:	.word 0			/* Default to major/minor 0/0 */
- boot_flag:	.word 0xAA55
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -4472,10 +4472,15 @@ static int do_mount_setattr(struct path
+ 	/*
+ 	 * If this is an attached mount make sure it's located in the callers
+ 	 * mount namespace. If it's not don't let the caller interact with it.
+-	 * If this is a detached mount make sure it has an anonymous mount
+-	 * namespace attached to it, i.e. we've created it via OPEN_TREE_CLONE.
++	 *
++	 * If this mount doesn't have a parent it's most often simply a
++	 * detached mount with an anonymous mount namespace. IOW, something
++	 * that's simply not attached yet. But there are apparently also users
++	 * that do change mount properties on the rootfs itself. That obviously
++	 * neither has a parent nor is it a detached mount so we cannot
++	 * unconditionally check for detached mounts.
+ 	 */
+-	if (!(mnt_has_parent(mnt) ? check_mnt(mnt) : is_anon_ns(mnt->mnt_ns)))
++	if ((mnt_has_parent(mnt) || !is_anon_ns(mnt->mnt_ns)) && !check_mnt(mnt))
+ 		goto out;
  
- 	# offset 512, entry point
---- a/arch/x86/boot/tools/build.c
-+++ b/arch/x86/boot/tools/build.c
-@@ -40,10 +40,6 @@ typedef unsigned char  u8;
- typedef unsigned short u16;
- typedef unsigned int   u32;
- 
--#define DEFAULT_MAJOR_ROOT 0
--#define DEFAULT_MINOR_ROOT 0
--#define DEFAULT_ROOT_DEV (DEFAULT_MAJOR_ROOT << 8 | DEFAULT_MINOR_ROOT)
--
- /* Minimal number of setup sectors */
- #define SETUP_SECT_MIN 5
- #define SETUP_SECT_MAX 64
-@@ -399,9 +395,6 @@ int main(int argc, char ** argv)
- 
- 	update_pecoff_setup_and_reloc(i);
- 
--	/* Set the default root device */
--	put_unaligned_le16(DEFAULT_ROOT_DEV, &buf[508]);
--
- 	/* Open and stat the kernel file */
- 	fd = open(argv[2], O_RDONLY);
- 	if (fd < 0)
+ 	/*
 
 
 
