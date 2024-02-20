@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-21198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D933085C795
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:14:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B1DE85C797
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:14:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F5431F2594E
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:14:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B43191F2510C
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:14:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2888C1509BF;
-	Tue, 20 Feb 2024 21:14:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 674F6151CC3;
+	Tue, 20 Feb 2024 21:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sn9EqxFH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KVIc/5qU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA50776C9C;
-	Tue, 20 Feb 2024 21:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F1476C9C;
+	Tue, 20 Feb 2024 21:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463662; cv=none; b=rIAzFvWnp2bu2GU9u6/rfDmV5vTZmFxLmhaTovajAq/vSwEKW4SvTLCax1ydnI8StQ9q27KGWFE9mHcoZsc7RyYxVmscVY4ZThaNeNFGAjOz5bkw7o9ADBjGK6e2L43yY35GjhkcF830A8YnTdDPjShrcu/9n6zUKSloNztHjJ4=
+	t=1708463669; cv=none; b=P+1723CQvNwC7tjfY+p8sJIdS91dMTKtjp90if0M/cIHYhWvi1NeJ2DLASDsNZr05GAOiWoeTP+E97A7qmtousUzwqbPsCvj+YEp8+kHCaIkXGnPIWF9inw6RyCbbY2vEK0K5GWnRUy8k70ljgHOAcm3Knp8ymN2L3Vi/i3ecpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463662; c=relaxed/simple;
-	bh=fNvm29eMgMrs9ceLs03ZSBjUMoI0dPTAN+WYEl4hjiY=;
+	s=arc-20240116; t=1708463669; c=relaxed/simple;
+	bh=pqaELFGf+TdG7Yw+dEbbe0vFcqjn3VzzPOi7GieLD6M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=plS9JXdFINJczoHDlC7mku2BQc8w7UbegVTEEjSc5vN8/ENZYCsnzzWbZFnlWnLm2F1B8ACwMzGJYWV3H/yy5ynzihIalj0ho09C3nvsnQI79fxFYkoqLGb3QB86qvlY3rkXP2rqksi4iPcvfjP6Gd137pKqVcvoI3bThMDReI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sn9EqxFH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03DD7C433F1;
-	Tue, 20 Feb 2024 21:14:21 +0000 (UTC)
+	 MIME-Version; b=IEwKRmHjqrd15L4P0VkXjtuH2IdY3WtreWCmvwhqL4H1NcuDP3lKrZN26TOEve60Xy6xe3OZPOynssjHDje/sdY4ifJDqUouKlftfc8Y6Vd8kGU8lHi7AzuC9qgJIJpZ1Ndx8bqRlN+4dQYfn5EA7GNyOQuQbhEnpdBZT29jHVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KVIc/5qU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84BD8C433F1;
+	Tue, 20 Feb 2024 21:14:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463662;
-	bh=fNvm29eMgMrs9ceLs03ZSBjUMoI0dPTAN+WYEl4hjiY=;
+	s=korg; t=1708463669;
+	bh=pqaELFGf+TdG7Yw+dEbbe0vFcqjn3VzzPOi7GieLD6M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sn9EqxFHbtIpaZTaFvmFVldLoABgVbeUf3pcDPa1Uu9Ey6QM1a4Mm/Xqm7UKP7Q6J
-	 toNC3NB+S2q3dlMzP3gbKCewyplD1sIJpG1PCPuVbilj7Dh62C1mts0GSWeLiYyrZV
-	 txPMDMsYvUN/2hpzFoGcPwzPIbitECf22KZtXcTg=
+	b=KVIc/5qUmCR8e178QY111C47vo4AThsNGelXMVaCVEziCw5bdghhDtdOnl94OfDpK
+	 +JxP/ohZacSMocOQf+vTfyCufv+PuAPkRYIjtDog6DgjACLUpXrXs81tYtQ/XZoO2l
+	 0QxE8KOTcHq/D9pcMcow2p+Y6Xt4LS4l2sw4fDKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Georgi Djakov <djakov@kernel.org>,
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Sean Young <sean@mess.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 086/331] interconnect: qcom: sm8550: Enable sync_state
-Date: Tue, 20 Feb 2024 21:53:22 +0100
-Message-ID: <20240220205640.299819834@linuxfoundation.org>
+Subject: [PATCH 6.6 087/331] media: ir_toy: fix a memleak in irtoy_tx
+Date: Tue, 20 Feb 2024 21:53:23 +0100
+Message-ID: <20240220205640.327644382@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
 References: <20240220205637.572693592@linuxfoundation.org>
@@ -67,34 +67,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-[ Upstream commit 24406f6794aa631516241deb9e19de333d6a0600 ]
+[ Upstream commit dc9ceb90c4b42c6e5c6757df1d6257110433788e ]
 
-To ensure the interconnect votes are actually meaningful and in order to
-prevent holding all buses at FMAX, introduce the sync state callback.
+When irtoy_command fails, buf should be freed since it is allocated by
+irtoy_tx, or there is a memleak.
 
-Fixes: e6f0d6a30f73 ("interconnect: qcom: Add SM8550 interconnect provider driver")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20231218-topic-8550_fixes-v1-2-ce1272d77540@linaro.org
-Signed-off-by: Georgi Djakov <djakov@kernel.org>
+Fixes: 4114978dcd24 ("media: ir_toy: prevent device from hanging during transmit")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/interconnect/qcom/sm8550.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/rc/ir_toy.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/interconnect/qcom/sm8550.c b/drivers/interconnect/qcom/sm8550.c
-index a10c8b6549ee..16b2dfd794b4 100644
---- a/drivers/interconnect/qcom/sm8550.c
-+++ b/drivers/interconnect/qcom/sm8550.c
-@@ -2223,6 +2223,7 @@ static struct platform_driver qnoc_driver = {
- 	.driver = {
- 		.name = "qnoc-sm8550",
- 		.of_match_table = qnoc_of_match,
-+		.sync_state = icc_sync_state,
- 	},
- };
+diff --git a/drivers/media/rc/ir_toy.c b/drivers/media/rc/ir_toy.c
+index 196806709259..69e630d85262 100644
+--- a/drivers/media/rc/ir_toy.c
++++ b/drivers/media/rc/ir_toy.c
+@@ -332,6 +332,7 @@ static int irtoy_tx(struct rc_dev *rc, uint *txbuf, uint count)
+ 			    sizeof(COMMAND_SMODE_EXIT), STATE_COMMAND_NO_RESP);
+ 	if (err) {
+ 		dev_err(irtoy->dev, "exit sample mode: %d\n", err);
++		kfree(buf);
+ 		return err;
+ 	}
+ 
+@@ -339,6 +340,7 @@ static int irtoy_tx(struct rc_dev *rc, uint *txbuf, uint count)
+ 			    sizeof(COMMAND_SMODE_ENTER), STATE_COMMAND);
+ 	if (err) {
+ 		dev_err(irtoy->dev, "enter sample mode: %d\n", err);
++		kfree(buf);
+ 		return err;
+ 	}
  
 -- 
 2.43.0
