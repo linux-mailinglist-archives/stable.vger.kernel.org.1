@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-21145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3842685C74F
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:11:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9B2C85C8E6
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:27:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 698601C21D24
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:11:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FB8E1F21CC2
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:27:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE82C14C585;
-	Tue, 20 Feb 2024 21:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9C9E151CDC;
+	Tue, 20 Feb 2024 21:27:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zw7u4Jzn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mazhhzbR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C75F612D7;
-	Tue, 20 Feb 2024 21:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997D014A4E6;
+	Tue, 20 Feb 2024 21:27:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463498; cv=none; b=eNfDCYawOio6xIWpLqJPOh5TcgCoL12/t+8IZYWaPfWTblh7RelvIRwLtZJ8UZKEKaeeQ3frPoizWEabSg98UbZqp0izo7MZAXsVKojhyi/lceotrKfIjJT5s0L6IZRTilFuaZWEswytY2umVaAXeOGh6TLUIyEvCkLY6e7jRCU=
+	t=1708464423; cv=none; b=A/9KO6ZflTg2eNxemmUGl5qbXDmwlXO56+8CDNAhjJIOyhVK27mA3/DHhcgIT92T06Q9Z9yobcz5Dd6JvgSzYfMhwtfIsdxvaxKozGofVysbq3Q3rnbN34Dv+eVzzu1NwKY6E5miHhIQZF9Kxa3BWuglPWetYjGsnnZvCPOR9v8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463498; c=relaxed/simple;
-	bh=SbunnUPTzgUC8nNvIWpNuL7TkzTTLTTVmmqaIizI/9M=;
+	s=arc-20240116; t=1708464423; c=relaxed/simple;
+	bh=gwb/3TEoin7bbCeiW2+G0EInn+/dB9wsRekf9GC4o5g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cCMtNeH2HM5sbq5+6DKhucfD50gP1e0IDySsyrIf8uoL73eU63oTImlR09SGw7Xw9bwHqFtuLPEEOrcDJBH+2J4PA7ZUz1lJTxTkKvKUzZmsVCWDZFxK8M2+jKMyKAxwuDiso/xhnH1wXUMjzFQFcP7xa5yc2MRnUbJ8BPijmLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zw7u4Jzn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A52A3C433F1;
-	Tue, 20 Feb 2024 21:11:37 +0000 (UTC)
+	 MIME-Version; b=tbX38o5OnmnaZisE2jdMzygzpKqPlQXcah1cMfI/rQBlZogHYQ2rqvYj+Gr74Ft7M3/d4Lr1cc3lojq49qxv4vLU5649kwcyj/1Ym6kMrH54ToZrYgxu1z0GQ6/CPO137XR59uGrcEHTjn/hXcgGvSyZCwtKWRLfimZjor0Hmbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mazhhzbR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07344C433F1;
+	Tue, 20 Feb 2024 21:27:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463498;
-	bh=SbunnUPTzgUC8nNvIWpNuL7TkzTTLTTVmmqaIizI/9M=;
+	s=korg; t=1708464423;
+	bh=gwb/3TEoin7bbCeiW2+G0EInn+/dB9wsRekf9GC4o5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zw7u4JznIs5qDtmlSPyEqXsA+OZCHdj00wOm77wBQ3p7EHm8aTWL2do9Qi+ZeyU2q
-	 bu0tLub/Bi1kF2uTZqhK9CN0DoaEWfalz+URR5pQRaGPfgW2vQ/KzjDyx1wqEczXOW
-	 Gv+88ykmkGiX/QCZTFEkJ25HllY9U6z+XYSFs2no=
+	b=mazhhzbRe/tm5Igs5BcKceh9qxv86zy1JqvXyaRvBzV5OMgulQ9/P7cD/db+7FpZK
+	 tq6fqslIqwvDHhfJljz2hMnxJrlDTLSCaYrQihT4sAMpTNyUfTGCCpFKVz93cN30RK
+	 +T8DhAIXrm5F6/YKEWqoX0HOsT7nz4UkZ8cdaA7U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Audra Mitchell <audra@redhat.com>,
-	Rafael Aquini <raquini@redhat.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Adam Sindelar <adam@wowsignal.io>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 062/331] selftests/mm: Update va_high_addr_switch.sh to check CPU for la57 flag
-Date: Tue, 20 Feb 2024 21:52:58 +0100
-Message-ID: <20240220205639.539231689@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	"Christian A. Ehrhardt" <lk@c--e.de>,
+	Rob Herring <robh@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 020/309] of: unittest: Fix compile in the non-dynamic case
+Date: Tue, 20 Feb 2024 21:52:59 +0100
+Message-ID: <20240220205633.808679583@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Audra Mitchell <audra@redhat.com>
+From: Christian A. Ehrhardt <lk@c--e.de>
 
-commit 52e63d67b5bb423b33d7a262ac7f8bd375a90145 upstream.
+[ Upstream commit 607aad1e4356c210dbef9022955a3089377909b2 ]
 
-In order for the page table level 5 to be in use, the CPU must have the
-setting enabled in addition to the CONFIG option. Check for the flag to be
-set to avoid false test failures on systems that do not have this cpu flag
-set.
+If CONFIG_OF_KOBJ is not set, a device_node does not contain a
+kobj and attempts to access the embedded kobj via kref_read break
+the compile.
 
-The test does a series of mmap calls including three using the
-MAP_FIXED flag and specifying an address that is 1<<47 or 1<<48.  These
-addresses are only available if you are using level 5 page tables,
-which requires both the CPU to have the capabiltiy (la57 flag) and the
-kernel to be configured.  Currently the test only checks for the kernel
-configuration option, so this test can still report a false positive.
-Here are the three failing lines:
+Replace affected kref_read calls with a macro that reads the
+refcount if it exists and returns 1 if there is no embedded kobj.
 
-$ ./va_high_addr_switch | grep FAILED
-mmap(ADDR_SWITCH_HINT, 2 * PAGE_SIZE, MAP_FIXED): 0xffffffffffffffff - FAILED
-mmap(HIGH_ADDR, MAP_FIXED): 0xffffffffffffffff - FAILED
-mmap(ADDR_SWITCH_HINT, 2 * PAGE_SIZE, MAP_FIXED): 0xffffffffffffffff - FAILED
-
-I thought (for about a second) refactoring the test so that these three
-mmap calls will only be run on systems with the level 5 page tables
-available, but the whole point of the test is to check the level 5
-feature...
-
-Link: https://lkml.kernel.org/r/20240119205801.62769-1-audra@redhat.com
-Fixes: 4f2930c6718a ("selftests/vm: only run 128TBswitch with 5-level paging")
-Signed-off-by: Audra Mitchell <audra@redhat.com>
-Cc: Rafael Aquini <raquini@redhat.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Adam Sindelar <adam@wowsignal.io>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202401291740.VP219WIz-lkp@intel.com/
+Fixes: 4dde83569832 ("of: Fix double free in of_parse_phandle_with_args_map")
+Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+Link: https://lore.kernel.org/r/20240129192556.403271-1-lk@c--e.de
+Signed-off-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/mm/va_high_addr_switch.sh |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/of/unittest.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/tools/testing/selftests/mm/va_high_addr_switch.sh
-+++ b/tools/testing/selftests/mm/va_high_addr_switch.sh
-@@ -29,9 +29,15 @@ check_supported_x86_64()
- 	# See man 1 gzip under '-f'.
- 	local pg_table_levels=$(gzip -dcfq "${config}" | grep PGTABLE_LEVELS | cut -d'=' -f 2)
+diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
+index cfd60e35a899..d7593bde2d02 100644
+--- a/drivers/of/unittest.c
++++ b/drivers/of/unittest.c
+@@ -50,6 +50,12 @@ static struct unittest_results {
+ 	failed; \
+ })
  
-+	local cpu_supports_pl5=$(awk '/^flags/ {if (/la57/) {print 0;}
-+		else {print 1}; exit}' /proc/cpuinfo 2>/dev/null)
++#ifdef CONFIG_OF_KOBJ
++#define OF_KREF_READ(NODE) kref_read(&(NODE)->kobj.kref)
++#else
++#define OF_KREF_READ(NODE) 1
++#endif
 +
- 	if [[ "${pg_table_levels}" -lt 5 ]]; then
- 		echo "$0: PGTABLE_LEVELS=${pg_table_levels}, must be >= 5 to run this test"
- 		exit $ksft_skip
-+	elif [[ "${cpu_supports_pl5}" -ne 0 ]]; then
-+		echo "$0: CPU does not have the necessary la57 flag to support page table level 5"
-+		exit $ksft_skip
- 	fi
- }
+ /*
+  * Expected message may have a message level other than KERN_INFO.
+  * Print the expected message only if the current loglevel will allow
+@@ -570,7 +576,7 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
+ 			pr_err("missing testcase data\n");
+ 			return;
+ 		}
+-		prefs[i] = kref_read(&p[i]->kobj.kref);
++		prefs[i] = OF_KREF_READ(p[i]);
+ 	}
  
+ 	rc = of_count_phandle_with_args(np, "phandle-list", "#phandle-cells");
+@@ -693,9 +699,9 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
+ 	unittest(rc == -EINVAL, "expected:%i got:%i\n", -EINVAL, rc);
+ 
+ 	for (i = 0; i < ARRAY_SIZE(p); ++i) {
+-		unittest(prefs[i] == kref_read(&p[i]->kobj.kref),
++		unittest(prefs[i] == OF_KREF_READ(p[i]),
+ 			 "provider%d: expected:%d got:%d\n",
+-			 i, prefs[i], kref_read(&p[i]->kobj.kref));
++			 i, prefs[i], OF_KREF_READ(p[i]));
+ 		of_node_put(p[i]);
+ 	}
+ }
+-- 
+2.43.0
+
 
 
 
