@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-21048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E024485C6ED
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:06:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB02185C729
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:09:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CDB01F236A4
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:06:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39358B21311
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:09:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C44181509AC;
-	Tue, 20 Feb 2024 21:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1151A1509BF;
+	Tue, 20 Feb 2024 21:09:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DogSFEQm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EFtCMMNY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8402014AD12;
-	Tue, 20 Feb 2024 21:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED6C76C9C;
+	Tue, 20 Feb 2024 21:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463186; cv=none; b=VNBbLJr3Ic/kQR1rxtin/0Z4xJcv3nMks5/YeRHIr0optnkqYc50iRg14gIWVRr6UFH+iXU14sza6fbj0o5Xo6pLHrAws2K81bFgKcc3KlKcIyVOq7qeldCk2fPdOgiF8QpNsTUQA226MXUkmSc1p6LD7bTrWxqGDxkxtIT/jF0=
+	t=1708463376; cv=none; b=Hb6ceZYu//HPtcm2VRdNtgScabybpb/dp4bn2h4gLAMJt+LOHCXqxBaFzhL9hndAr7fcPUktGcI/IEqGFChSVWCDTDet+Fr5O5gW570hB7lrjEdAiUMZmSZUkS2mlEDHIrsOB37kXOxS4XNSVLsucHkGXqIFlEpYXwhWpXYJ3W4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463186; c=relaxed/simple;
-	bh=YbyxGy9f8d3o5j0oRf1d+X/27gH/tUINXvpUVkVs1cg=;
+	s=arc-20240116; t=1708463376; c=relaxed/simple;
+	bh=COF0roVymV6h6N2xm8sphshYXpZY4OMcJie/W1ZMpWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oLKmCtfF1nK+OUqDBKorfs7LbwFv3gurdR8pEKbO8cfRU+cgYpRLhcKvbNlOo8XXzaR4ElClAZ2Ub1lHBEOV9qixhnzsec/KZwPBafyFyJOAIfgvcYXPMtoJwxuQMzaaRtUqoxTOJ8mi8VkZ+DI1qkcs3e5zUDhqeC+Y9yHAU2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DogSFEQm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1234CC433F1;
-	Tue, 20 Feb 2024 21:06:25 +0000 (UTC)
+	 MIME-Version; b=fsW3DkG9DzJSMei3FnUp9jisGvySSbKMkujKYHaqjl6mvZw17ALxkZIWrB/k0nGNOKTq3YYPUe6ths3HyIHF5myf/oARVa5TVuqGoqWFjvsOGWw5nAeGv0k92k4+NQhd5MBzZ/hEFnJsAyzitVlwssxuDBjlnr6koeXY2HLo1z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EFtCMMNY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E663C433F1;
+	Tue, 20 Feb 2024 21:09:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463186;
-	bh=YbyxGy9f8d3o5j0oRf1d+X/27gH/tUINXvpUVkVs1cg=;
+	s=korg; t=1708463376;
+	bh=COF0roVymV6h6N2xm8sphshYXpZY4OMcJie/W1ZMpWM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DogSFEQmZ5ksSAt941EUwu5n79aCUmuvOiMe2tPQO8nkP7Va45dW12czY16T5YzAg
-	 Cm0bwcm3y9EBuNGljvE7DC1J17ychibffo61GzdPH20qe/rLo6V6dsx8enwx6sgfZM
-	 IopE0vdM3X+OWVOjILb46f9tkUzRQ+T2mDezsgqc=
+	b=EFtCMMNY92r1/93z0yBipTw7N+PG91unOiVcJiqi+5Yx8jLO8kN57zmAs9JfMwfLC
+	 C+lmB2yjSEC3Re1gW1X+lgFJB5cJTuss6Gtq/EWNHfY50a0R8Nnrd7N8Q2IlP5CmOx
+	 OwuafNlN+We5rd4IxLQaTgLL9lrManp+drq4OXVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1591462f226d9cbf0564@syzkaller.appspotmail.com,
-	Ziqi Zhao <astrajoan@yahoo.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.1 162/197] can: j1939: prevent deadlock by changing j1939_socks_lock to rwlock
-Date: Tue, 20 Feb 2024 21:52:01 +0100
-Message-ID: <20240220204845.922892356@linuxfoundation.org>
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.6 006/331] btrfs: do not ASSERT() if the newly created subvolume already got read
+Date: Tue, 20 Feb 2024 21:52:02 +0100
+Message-ID: <20240220205637.780604984@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
-References: <20240220204841.073267068@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,158 +63,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ziqi Zhao <astrajoan@yahoo.com>
+From: Qu Wenruo <wqu@suse.com>
 
-commit 6cdedc18ba7b9dacc36466e27e3267d201948c8d upstream.
+commit e03ee2fe873eb68c1f9ba5112fee70303ebf9dfb upstream.
 
-The following 3 locks would race against each other, causing the
-deadlock situation in the Syzbot bug report:
+[BUG]
+There is a syzbot crash, triggered by the ASSERT() during subvolume
+creation:
 
-- j1939_socks_lock
-- active_session_list_lock
-- sk_session_queue_lock
+ assertion failed: !anon_dev, in fs/btrfs/disk-io.c:1319
+ ------------[ cut here ]------------
+ kernel BUG at fs/btrfs/disk-io.c:1319!
+ invalid opcode: 0000 [#1] PREEMPT SMP KASAN
+ RIP: 0010:btrfs_get_root_ref.part.0+0x9aa/0xa60
+  <TASK>
+  btrfs_get_new_fs_root+0xd3/0xf0
+  create_subvol+0xd02/0x1650
+  btrfs_mksubvol+0xe95/0x12b0
+  __btrfs_ioctl_snap_create+0x2f9/0x4f0
+  btrfs_ioctl_snap_create+0x16b/0x200
+  btrfs_ioctl+0x35f0/0x5cf0
+  __x64_sys_ioctl+0x19d/0x210
+  do_syscall_64+0x3f/0xe0
+  entry_SYSCALL_64_after_hwframe+0x63/0x6b
+ ---[ end trace 0000000000000000 ]---
 
-A reasonable fix is to change j1939_socks_lock to an rwlock, since in
-the rare situations where a write lock is required for the linked list
-that j1939_socks_lock is protecting, the code does not attempt to
-acquire any more locks. This would break the circular lock dependency,
-where, for example, the current thread already locks j1939_socks_lock
-and attempts to acquire sk_session_queue_lock, and at the same time,
-another thread attempts to acquire j1939_socks_lock while holding
-sk_session_queue_lock.
+[CAUSE]
+During create_subvol(), after inserting root item for the newly created
+subvolume, we would trigger btrfs_get_new_fs_root() to get the
+btrfs_root of that subvolume.
 
-NOTE: This patch along does not fix the unregister_netdevice bug
-reported by Syzbot; instead, it solves a deadlock situation to prepare
-for one or more further patches to actually fix the Syzbot bug, which
-appears to be a reference counting problem within the j1939 codebase.
+The idea here is, we have preallocated an anonymous device number for
+the subvolume, thus we can assign it to the new subvolume.
 
-Reported-by: <syzbot+1591462f226d9cbf0564@syzkaller.appspotmail.com>
-Signed-off-by: Ziqi Zhao <astrajoan@yahoo.com>
-Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://lore.kernel.org/all/20230721162226.8639-1-astrajoan@yahoo.com
-[mkl: remove unrelated newline change]
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+But there is really nothing preventing things like backref walk to read
+the new subvolume.
+If that happens before we call btrfs_get_new_fs_root(), the subvolume
+would be read out, with a new anonymous device number assigned already.
+
+In that case, we would trigger ASSERT(), as we really expect no one to
+read out that subvolume (which is not yet accessible from the fs).
+But things like backref walk is still possible to trigger the read on
+the subvolume.
+
+Thus our assumption on the ASSERT() is not correct in the first place.
+
+[FIX]
+Fix it by removing the ASSERT(), and just free the @anon_dev, reset it
+to 0, and continue.
+
+If the subvolume tree is read out by something else, it should have
+already get a new anon_dev assigned thus we only need to free the
+preallocated one.
+
+Reported-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Fixes: 2dfb1e43f57d ("btrfs: preallocate anon block device at first phase of snapshot creation")
+CC: stable@vger.kernel.org # 5.15+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/can/j1939/j1939-priv.h |    2 +-
- net/can/j1939/main.c       |    2 +-
- net/can/j1939/socket.c     |   24 ++++++++++++------------
- 3 files changed, 14 insertions(+), 14 deletions(-)
+ fs/btrfs/disk-io.c |   13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
---- a/net/can/j1939/j1939-priv.h
-+++ b/net/can/j1939/j1939-priv.h
-@@ -86,7 +86,7 @@ struct j1939_priv {
- 	unsigned int tp_max_packet_size;
- 
- 	/* lock for j1939_socks list */
--	spinlock_t j1939_socks_lock;
-+	rwlock_t j1939_socks_lock;
- 	struct list_head j1939_socks;
- 
- 	struct kref rx_kref;
---- a/net/can/j1939/main.c
-+++ b/net/can/j1939/main.c
-@@ -274,7 +274,7 @@ struct j1939_priv *j1939_netdev_start(st
- 		return ERR_PTR(-ENOMEM);
- 
- 	j1939_tp_init(priv);
--	spin_lock_init(&priv->j1939_socks_lock);
-+	rwlock_init(&priv->j1939_socks_lock);
- 	INIT_LIST_HEAD(&priv->j1939_socks);
- 
- 	mutex_lock(&j1939_netdev_lock);
---- a/net/can/j1939/socket.c
-+++ b/net/can/j1939/socket.c
-@@ -80,16 +80,16 @@ static void j1939_jsk_add(struct j1939_p
- 	jsk->state |= J1939_SOCK_BOUND;
- 	j1939_priv_get(priv);
- 
--	spin_lock_bh(&priv->j1939_socks_lock);
-+	write_lock_bh(&priv->j1939_socks_lock);
- 	list_add_tail(&jsk->list, &priv->j1939_socks);
--	spin_unlock_bh(&priv->j1939_socks_lock);
-+	write_unlock_bh(&priv->j1939_socks_lock);
- }
- 
- static void j1939_jsk_del(struct j1939_priv *priv, struct j1939_sock *jsk)
- {
--	spin_lock_bh(&priv->j1939_socks_lock);
-+	write_lock_bh(&priv->j1939_socks_lock);
- 	list_del_init(&jsk->list);
--	spin_unlock_bh(&priv->j1939_socks_lock);
-+	write_unlock_bh(&priv->j1939_socks_lock);
- 
- 	j1939_priv_put(priv);
- 	jsk->state &= ~J1939_SOCK_BOUND;
-@@ -329,13 +329,13 @@ bool j1939_sk_recv_match(struct j1939_pr
- 	struct j1939_sock *jsk;
- 	bool match = false;
- 
--	spin_lock_bh(&priv->j1939_socks_lock);
-+	read_lock_bh(&priv->j1939_socks_lock);
- 	list_for_each_entry(jsk, &priv->j1939_socks, list) {
- 		match = j1939_sk_recv_match_one(jsk, skcb);
- 		if (match)
- 			break;
- 	}
--	spin_unlock_bh(&priv->j1939_socks_lock);
-+	read_unlock_bh(&priv->j1939_socks_lock);
- 
- 	return match;
- }
-@@ -344,11 +344,11 @@ void j1939_sk_recv(struct j1939_priv *pr
- {
- 	struct j1939_sock *jsk;
- 
--	spin_lock_bh(&priv->j1939_socks_lock);
-+	read_lock_bh(&priv->j1939_socks_lock);
- 	list_for_each_entry(jsk, &priv->j1939_socks, list) {
- 		j1939_sk_recv_one(jsk, skb);
- 	}
--	spin_unlock_bh(&priv->j1939_socks_lock);
-+	read_unlock_bh(&priv->j1939_socks_lock);
- }
- 
- static void j1939_sk_sock_destruct(struct sock *sk)
-@@ -1080,12 +1080,12 @@ void j1939_sk_errqueue(struct j1939_sess
- 	}
- 
- 	/* spread RX notifications to all sockets subscribed to this session */
--	spin_lock_bh(&priv->j1939_socks_lock);
-+	read_lock_bh(&priv->j1939_socks_lock);
- 	list_for_each_entry(jsk, &priv->j1939_socks, list) {
- 		if (j1939_sk_recv_match_one(jsk, &session->skcb))
- 			__j1939_sk_errqueue(session, &jsk->sk, type);
- 	}
--	spin_unlock_bh(&priv->j1939_socks_lock);
-+	read_unlock_bh(&priv->j1939_socks_lock);
- };
- 
- void j1939_sk_send_loop_abort(struct sock *sk, int err)
-@@ -1273,7 +1273,7 @@ void j1939_sk_netdev_event_netdown(struc
- 	struct j1939_sock *jsk;
- 	int error_code = ENETDOWN;
- 
--	spin_lock_bh(&priv->j1939_socks_lock);
-+	read_lock_bh(&priv->j1939_socks_lock);
- 	list_for_each_entry(jsk, &priv->j1939_socks, list) {
- 		jsk->sk.sk_err = error_code;
- 		if (!sock_flag(&jsk->sk, SOCK_DEAD))
-@@ -1281,7 +1281,7 @@ void j1939_sk_netdev_event_netdown(struc
- 
- 		j1939_sk_queue_drop_all(priv, jsk, error_code);
- 	}
--	spin_unlock_bh(&priv->j1939_socks_lock);
-+	read_unlock_bh(&priv->j1939_socks_lock);
- }
- 
- static int j1939_sk_no_ioctlcmd(struct socket *sock, unsigned int cmd,
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -1311,8 +1311,17 @@ static struct btrfs_root *btrfs_get_root
+ again:
+ 	root = btrfs_lookup_fs_root(fs_info, objectid);
+ 	if (root) {
+-		/* Shouldn't get preallocated anon_dev for cached roots */
+-		ASSERT(!anon_dev);
++		/*
++		 * Some other caller may have read out the newly inserted
++		 * subvolume already (for things like backref walk etc).  Not
++		 * that common but still possible.  In that case, we just need
++		 * to free the anon_dev.
++		 */
++		if (unlikely(anon_dev)) {
++			free_anon_bdev(anon_dev);
++			anon_dev = 0;
++		}
++
+ 		if (check_ref && btrfs_root_refs(&root->root_item) == 0) {
+ 			btrfs_put_root(root);
+ 			return ERR_PTR(-ENOENT);
 
 
 
