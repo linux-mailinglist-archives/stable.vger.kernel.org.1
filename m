@@ -1,111 +1,121 @@
-Return-Path: <stable+bounces-20881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 238C985C5B4
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:23:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00FCC85C5B5
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:23:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5B571F2264D
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 20:23:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 600A3283BA2
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 20:23:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 164937867A;
-	Tue, 20 Feb 2024 20:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4D1B14A4F5;
+	Tue, 20 Feb 2024 20:23:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="iehoQtqy"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="W8QXCtdk"
 X-Original-To: stable@vger.kernel.org
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 216FF768F1
-	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 20:23:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3BB014A4F2
+	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 20:23:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708460587; cv=none; b=J2Zb3KET1jnQDTscCE7llIqTxnCf494COlnGhJkpzUsNXKdnyIStipa0DNh0WT49DE/Y4y7LRuBUiA4BxpDDoOay/eBFNMyYs9f/WQDfW3/2owx7m9tiFynaVt8II4EWGbWxy/HrgxaTVXoM6220rObOvtYyXRPCOiCKgJn0asc=
+	t=1708460596; cv=none; b=oSkT+3uhzWKUZM0Tu9DwDvQs33CWoK5rATf1P3MS/HMdeuUM1hxywERrcuj/Y+s1l+frdK/vq1OQO6bO3wra3bfQkzJQ2DcNfhX2zHTu7iShT02ipceTasuW9Y69sR8dsCFanoxBkpx0AalHOD5pRoTWQzsVUQQBkd2ELRofhUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708460587; c=relaxed/simple;
-	bh=vcCeL8a/MgNpmbBIT4uIr4/iLTxABFQ9nePVEjU4LxU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NDreOyJ+AGR8pZawKPWGOvF6SbsilODL2scsx447KI5rZS0BMkRHwRiPB3pDKM3dw5U/kM6HZknxeuUEvtitzAxHWcz8uuxBerCe/BqrBnXWGxyb01pg9IabnrwZ/U86w05bM8JoSVIb9tjyhIt44gZRLO7QKnBUd5NeGpEgm1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=iehoQtqy; arc=none smtp.client-ip=95.215.58.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Tue, 20 Feb 2024 15:22:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1708460583;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JtiuJGUe4cTuWvvZPldkzXAxpcBSPT8p0lAIjoEDolQ=;
-	b=iehoQtqyVmSm6J58GoAA3j6DmvtkYuH0WOh0wxrhUjkGSyZeJBTxEwzE/Z1mgozrzxOuLO
-	1/Zeh0Msa9tzpC8jqeQlCO9BUTKJlxru4+YbZkx7+xJ4UQWeYBDam676zTl6pJfYPtC+dF
-	ONSS1ESrOTkJpsnsYSLap+2YPZj020Q=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
-Subject: Re: fs/bcachefs/
-Message-ID: <3w7o757uc4pvntklwd2lmcpdxca6wcabus5co43ia2cup5qyl5@4c2fcnbh4i7r>
-References: <g6el7eghhdk2v5osukhobvi4pige5bsfu5koqtmoyeknat36t7@irmmk7zo7edh>
- <ZaW5r5kRbOcKveVn@sashalap>
- <dlxqudswz64v6xn3fg2i6ob2msnytaatmnyhq4ivi7notzs6jf@itt42d42zmsw>
- <2024022056-monkhood-fossil-ec02@gregkh>
- <2024022007-buggy-operator-2dc5@gregkh>
- <g2jlxm6hcpywrezexi3kxrl6nu7bdmkoafa2kh2ptcf7olhofl@ycilgjsqyycq>
- <2024022022-viewless-astronaut-ab8c@gregkh>
+	s=arc-20240116; t=1708460596; c=relaxed/simple;
+	bh=NtAupI7eYtgh3yi1/lcfdhrIrAXohnaOpbdHMhKQZCo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=J38hx4c0ZM6kwy5tV4SfFAJlf3nh6jm9pjFc1YZf297gDOOCFZfEC69vC0YGHcz64U1LyjgCPJgBH2eGrlyQddDP5iz4y2wYIhKUCRr3u7R4neYbGe8tKD9xCRvvvvDASQYckdnuat21Qkdbf4vRkovQRwYl0uzTsM+mogamtqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=W8QXCtdk; arc=none smtp.client-ip=209.85.128.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-607fc3e69adso48632737b3.0
+        for <stable@vger.kernel.org>; Tue, 20 Feb 2024 12:23:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1708460594; x=1709065394; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nAcxoiwswXf0u4UcozWlRje00byaUAVEvvkr0DiyRgc=;
+        b=W8QXCtdkdkG8DUdEi5h38+g8jzJVrt4P4xvuqPDQWDlvikFb3et8/SyVnWFZn0qEaA
+         cLA9Nao4zSqnUwOrzM+XAvpyxptXP9OTJIkckTpMyT3T57bQJGJGYbMobfrGJ6i5xdIk
+         eRld0gMyAC5Qh4SVEr6VlY261MYmMJb4ICq9ML88RWD+DxR1mOTSFvxs4XKxc9+/9lS5
+         cRzfCStM5WI+BJw7nyHyFBsesxYrEwodS2Adg0QXYp66ng2QCAHJIIMqDv3iIcQ+0Nri
+         cSmKtWaepNBZVEO87E5avVrDc5IGFh0t5Ri9+s3gjfeV+AgcI8rN2lB+BVDSAdwvb/Fc
+         UOaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708460594; x=1709065394;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nAcxoiwswXf0u4UcozWlRje00byaUAVEvvkr0DiyRgc=;
+        b=CZs4X5/WgsSO3AF1cDc1TjISkmXGDjiKpLGpMz2BeHxduJqQzEF2EtMCqJ0XYe0e7C
+         4m7Nbhfk3aGlHOtDCIc0oe/x2aL6NvCIMS2YQHeBDruz3DPVvJ/WxQ6vy0wNXmNSJyBT
+         NmGg1FNaci6zsQJrSpiuid1Ffots4TtMgpLaLczBJjLkJ2lM+P8I84y+vuZIi5Ttv89P
+         VylH+VSOjGXDzAFuISz4WCezMPkRrCOfXiPSY3Z7n2AfO6UUBSX4g9L03PGbJBHKf4Fx
+         Mlaz4ayYnEaPjL3qlYyqnuh7e4IT2MeeVwo8spq86unJwkbji/y4jWYYEDNkHXOwfuFe
+         LL1Q==
+X-Gm-Message-State: AOJu0YyILszKOORBO4ul7gySM37rZCU/nOQuZlGUM/MDyGL3IzZ6ORzY
+	Sxppof+TNEaGGeBVGN+S2Yn+P0TqHwMRX0XMD4eKEII1Ll1OwwtYUDcQQtOszJ6D4XWcPn+A1Jf
+	0Ft251Ms5J5a6qn6pzSo1Y/uSNG5B3T3nx84Y
+X-Google-Smtp-Source: AGHT+IGzUgQtgghZbWrK8eYJQEzXHrPL1+7CeQbbFfzgXHAAUnQxJde+shFK2EnUD76tCj1j++WuAGjwwVmLXoPHmBs=
+X-Received: by 2002:a05:690c:368d:b0:608:3785:707a with SMTP id
+ fu13-20020a05690c368d00b006083785707amr7238229ywb.52.1708460593452; Tue, 20
+ Feb 2024 12:23:13 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2024022022-viewless-astronaut-ab8c@gregkh>
-X-Migadu-Flow: FLOW_OUT
+References: <2024021921-bleak-sputter-5ecf@gregkh> <20240220190351.39815-1-surenb@google.com>
+ <2024022058-huskiness-previous-c334@gregkh>
+In-Reply-To: <2024022058-huskiness-previous-c334@gregkh>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Tue, 20 Feb 2024 12:23:01 -0800
+Message-ID: <CAJuCfpEzRNG-aZWskphrUFCC6wr8nbsbpCxwG9tyfxA=CyWCoQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] ARM: 9328/1: mm: try VMA lock-based page fault
+ handling first
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, Wang Kefeng <wangkefeng.wang@huawei.com>, 
+	Russell King <rmk+kernel@armlinux.org.uk>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 20, 2024 at 09:19:01PM +0100, Greg KH wrote:
-> On Tue, Feb 20, 2024 at 03:06:14PM -0500, Kent Overstreet wrote:
-> > On Tue, Feb 20, 2024 at 07:53:04PM +0100, Greg KH wrote:
-> > > On Tue, Feb 20, 2024 at 07:03:23PM +0100, Greg KH wrote:
-> > > > On Tue, Feb 20, 2024 at 12:23:33PM -0500, Kent Overstreet wrote:
-> > > > > On Mon, Jan 15, 2024 at 06:03:11PM -0500, Sasha Levin wrote:
-> > > > > > On Mon, Jan 15, 2024 at 05:12:17PM -0500, Kent Overstreet wrote:
-> > > > > > > Hi stable team - please don't take patches for fs/bcachefs/ except from
-> > > > > > > myself; I'll be doing backports and sending pull requests after stuff
-> > > > > > > has been tested by my CI.
-> > > > > > > 
-> > > > > > > Thanks, and let me know if there's any other workflow things I should
-> > > > > > > know about
-> > > > > > 
-> > > > > > Sure, we can ignore fs/bcachefs/ patches.
-> > > > > 
-> > > > > I see that you even acked this.
-> > > > > 
-> > > > > What the fuck?
-> > > > 
-> > > > Accidents happen, you were copied on those patches.  I'll go drop them
-> > > > now, not a big deal.
-> > > 
-> > > Wait, why are you doing "Fixes:" with an empty tag in your commits like
-> > > 1a1c93e7f814 ("bcachefs: Fix missing bch2_err_class() calls")?
-> > > 
-> > > That's messing with scripts and doesn't make much sense.  Please put a
-> > > real git id in there as the documentation suggests to.
-> > 
-> > There isn't always a clear-cut commit when a regression was introduced
-> > (it might not have been a regresison at all). I could dig and make
-> > something up, but that's slowing down your workflow, and I thought I was
-> > going to be handling all the stable backports for fs/bcachefs/, so - ?
-> > 
-> 
-> Doesn't matter, please do not put "fake" tags in commit messages like
-> this.  It hurts all of the people that parse commit logs.  Just don't
-> put a fixes tag at all as the documentation states that after "Fixes:" a
-> commit id belongs.
+On Tue, Feb 20, 2024 at 12:20=E2=80=AFPM Greg KH <gregkh@linuxfoundation.or=
+g> wrote:
+>
+> On Tue, Feb 20, 2024 at 11:03:50AM -0800, Suren Baghdasaryan wrote:
+> > From: Wang Kefeng <wangkefeng.wang@huawei.com>
+> >
+> > Attempt VMA lock-based page fault handling first, and fall back to the
+> > existing mmap_lock-based handling if that fails, the ebizzy benchmark
+> > shows 25% improvement on qemu with 2 cpus.
+> >
+> > Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+> > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> > Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> > ---
+> >  arch/arm/Kconfig    |  1 +
+> >  arch/arm/mm/fault.c | 30 ++++++++++++++++++++++++++++++
+> >  2 files changed, 31 insertions(+)
+>
+> No git id?
+>
+> What kernel branch(s) does this go to?
+>
+> confused,
 
-Then there's a gap, because I need a tag that I can stick in a commit
-message that says "this is a bugfix I need to consider backporting
-later", and the way you want the Fixes: tag used doesn't meet my needs.
+Sorry, I used the command from your earlier email about the merge conflict:
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to
+'2024021921-bleak-sputter-5ecf@gregkh' --subject-prefix 'PATCH 6.7.y'
+HEAD^..
+but it didn't send both patches, so I formatted the patches I wanted
+to send and sent it with the same command replacing "HEAD^.." with
+"*.patch". What should I have done instead?
+
+>
+> greg k-h
 
