@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-21293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0928C85C836
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:19:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68C9985C99F
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:36:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D6BBB215E8
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:19:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 235BC283D45
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:36:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9234151CD9;
-	Tue, 20 Feb 2024 21:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEBE2151CEC;
+	Tue, 20 Feb 2024 21:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="chk5SqJ9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MQECfiVj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D40612D7;
-	Tue, 20 Feb 2024 21:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FDAA151CCC;
+	Tue, 20 Feb 2024 21:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463962; cv=none; b=RRfa3VuKvLp47GqRg4SdCGW/9UPj2Ej429HX4NXdPwEnMiSknllUUeRegbbR81fmLYHnDvxLlgdbybV5WkS55gmggYHanhnpQLbXOQVP6r+FMf2MmlcYNEc26bom20xKYKJAr7mszm3BpEU73GLVwsHjcs2LcsI4Hpl4FrjcvN8=
+	t=1708464966; cv=none; b=C3paK/I6nQWgmVl2GH/sepbXjYt8sEgeZMIXxluTOrIdvXen6ALANRFDFZPkfQEUksv4JfmFEgxIbwflhN/uS4miNa85pqq5YECF5VzAEHnkfh0ry1a7e37dXokfWV/UnEqiTLC5s2Fgi78a5CFz7eaVUnCAU6Lkm7fQHFhqaVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463962; c=relaxed/simple;
-	bh=tgPTSnh/qb/hRJcRO9UPhGiAT0Gh0uMXBy43QX1aESw=;
+	s=arc-20240116; t=1708464966; c=relaxed/simple;
+	bh=eycE76pBycTlbN2Rpb8wixBHc0CV27Dj3XKzxvCN/GU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VBF/TTXeoxO+QidhnX3yyBDeU/4ICdc2Zk6zf/o11Mjw4EilVCy1ieCTULL/YSl66/Oi48430GOHwYpSy1vAU3UphXq9Gl58J9MZNpYja2uhDvO2560lPErEm/RabZIcTH08KaIDThcHze1dsYRF3+/Hj0g29GQLQXsJgCv9wYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=chk5SqJ9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0547EC433F1;
-	Tue, 20 Feb 2024 21:19:21 +0000 (UTC)
+	 MIME-Version; b=HEEUKphZ+uz4qqNMnAghrirQVT4+POYz/KMXel1LRlTreMX8lqedMd0Slfasw5nTTwhb3KMMIFQW8J8BHNugTZLZVnqm8Fo/eCUh6R1MUZYgikH7YNZg+jfocWaWgwycSrWkIiAiXemkOJRWXy87CoZZJWT7UJVvNnXDD7KskC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MQECfiVj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 917A5C433C7;
+	Tue, 20 Feb 2024 21:36:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463962;
-	bh=tgPTSnh/qb/hRJcRO9UPhGiAT0Gh0uMXBy43QX1aESw=;
+	s=korg; t=1708464966;
+	bh=eycE76pBycTlbN2Rpb8wixBHc0CV27Dj3XKzxvCN/GU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=chk5SqJ9ZlkZnWB3z0r1OrbFo9OkFt1qe6aLqtLueN72FqgQ6kBd/IbBmsR3Bp0E6
-	 n34UX8pkz2C32QHfca7nd1Q2F4QzbOt0b4JP8kKbI2LeB8hkjujCY7stZo9XJJQhfo
-	 Kt53PC9Nv7bKgeLLZGaf5Lvblxq/7bBSzQp6pNGs=
+	b=MQECfiVjAGkSvkk5ieQILwcm7xXdTUrVmwjpknLAzUIUJloFhZ4ktMYBx9uICyyI0
+	 LygkwwYrCjt8+wLhT/nAPNMTQgvvLmr1DRYEgzX+GP6bnwcY6aZMZAqy9PXPZXSfg/
+	 h0fA98ENNAsODxNIlX8CZinBzTbeDxNpKnHzGtx0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jouni Malinen <j@w1.fi>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.6 207/331] wifi: cfg80211: fix wiphy delayed work queueing
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Subject: [PATCH 6.7 164/309] tracing/probes: Fix to show a parse error for bad type for $comm
 Date: Tue, 20 Feb 2024 21:55:23 +0100
-Message-ID: <20240220205644.203750556@linuxfoundation.org>
+Message-ID: <20240220205638.289396666@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +60,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-commit b743287d7a0007493f5cada34ed2085d475050b4 upstream.
+commit 8c427cc2fa73684ea140999e121b7b6c1c717632 upstream.
 
-When a wiphy work is queued with timer, and then again
-without a delay, it's started immediately but *also*
-started again after the timer expires. This can lead,
-for example, to warnings in mac80211's offchannel code
-as reported by Jouni. Running the same work twice isn't
-expected, of course. Fix this by deleting the timer at
-this point, when queuing immediately due to delay=0.
+Fix to show a parse error for bad type (non-string) for $comm/$COMM and
+immediate-string. With this fix, error_log file shows appropriate error
+message as below.
 
+ /sys/kernel/tracing # echo 'p vfs_read $comm:u32' >> kprobe_events
+sh: write error: Invalid argument
+ /sys/kernel/tracing # echo 'p vfs_read \"hoge":u32' >> kprobe_events
+sh: write error: Invalid argument
+ /sys/kernel/tracing # cat error_log
+
+[   30.144183] trace_kprobe: error: $comm and immediate-string only accepts string type
+  Command: p vfs_read $comm:u32
+                            ^
+[   62.618500] trace_kprobe: error: $comm and immediate-string only accepts string type
+  Command: p vfs_read \"hoge":u32
+                              ^
+Link: https://lore.kernel.org/all/170602215411.215583.2238016352271091852.stgit@devnote2/
+
+Fixes: 3dd1f7f24f8c ("tracing: probeevent: Fix to make the type of $comm string")
 Cc: stable@vger.kernel.org
-Reported-by: Jouni Malinen <j@w1.fi>
-Fixes: a3ee4dc84c4e ("wifi: cfg80211: add a work abstraction with special semantics")
-Link: https://msgid.link/20240125095108.2feb0eaaa446.I4617f3210ed0e7f252290d5970dac6a876aa595b@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/core.c |    1 +
- 1 file changed, 1 insertion(+)
+ kernel/trace/trace_probe.c |    7 +++++--
+ kernel/trace/trace_probe.h |    3 ++-
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -1675,6 +1675,7 @@ void wiphy_delayed_work_queue(struct wip
- 			      unsigned long delay)
- {
- 	if (!delay) {
-+		del_timer(&dwork->timer);
- 		wiphy_work_queue(wiphy, &dwork->work);
- 		return;
- 	}
+--- a/kernel/trace/trace_probe.c
++++ b/kernel/trace/trace_probe.c
+@@ -1159,9 +1159,12 @@ static int traceprobe_parse_probe_arg_bo
+ 	if (!(ctx->flags & TPARG_FL_TEVENT) &&
+ 	    (strcmp(arg, "$comm") == 0 || strcmp(arg, "$COMM") == 0 ||
+ 	     strncmp(arg, "\\\"", 2) == 0)) {
+-		/* The type of $comm must be "string", and not an array. */
+-		if (parg->count || (t && strcmp(t, "string")))
++		/* The type of $comm must be "string", and not an array type. */
++		if (parg->count || (t && strcmp(t, "string"))) {
++			trace_probe_log_err(ctx->offset + (t ? (t - arg) : 0),
++					NEED_STRING_TYPE);
+ 			goto out;
++		}
+ 		parg->type = find_fetch_type("string", ctx->flags);
+ 	} else
+ 		parg->type = find_fetch_type(t, ctx->flags);
+--- a/kernel/trace/trace_probe.h
++++ b/kernel/trace/trace_probe.h
+@@ -515,7 +515,8 @@ extern int traceprobe_define_arg_fields(
+ 	C(BAD_HYPHEN,		"Failed to parse single hyphen. Forgot '>'?"),	\
+ 	C(NO_BTF_FIELD,		"This field is not found."),	\
+ 	C(BAD_BTF_TID,		"Failed to get BTF type info."),\
+-	C(BAD_TYPE4STR,		"This type does not fit for string."),
++	C(BAD_TYPE4STR,		"This type does not fit for string."),\
++	C(NEED_STRING_TYPE,	"$comm and immediate-string only accepts string type"),
+ 
+ #undef C
+ #define C(a, b)		TP_ERR_##a
 
 
 
