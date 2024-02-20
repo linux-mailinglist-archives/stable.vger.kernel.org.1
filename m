@@ -1,86 +1,99 @@
-Return-Path: <stable+bounces-20840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 361C785BF8A
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 16:11:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE40785BFB4
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 16:19:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B99C0B238C0
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 15:11:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 923DFB20A8C
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 15:19:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D52474E13;
-	Tue, 20 Feb 2024 15:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3BEC76021;
+	Tue, 20 Feb 2024 15:19:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nomaAyFP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zP4l6T+d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF03374E0A;
-	Tue, 20 Feb 2024 15:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1C5E71B57;
+	Tue, 20 Feb 2024 15:19:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708441884; cv=none; b=qG8hhtEogNs46Tg0DFMlijDlyF10sweLv+Tn63qkfoTl9KZT/GW808iZg463xOBK8GTOXjoS4i3fC0DVOx85VKR+cuHQnDA9rUpfvdFmQmvKX2gGcEFW1RC0qwcqZhQt49ypz7mguHJyh49DwcFrcBIlX4qrqDvYjK6tmHK+pAg=
+	t=1708442375; cv=none; b=f5XJULQI5+Ydz9PerseQ0yjK6ar1u/aC/dh/PbCyJLXhpEaEv/sbQLPzt/z7/XeJX0nxPPvb3uUP6s5k9iK3xfuv8cVNAOJseRJ4DPjeg51Ov7+GQe9GXopWSkK2Til9NOvIHbme5xbJ/Vw9Zw93N3dbNT8M/ZeIPQtJCn9d4gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708441884; c=relaxed/simple;
-	bh=jg/XNpG+vxzMN378bRYA6bw5Ca729FovgoyK24j+9eA=;
+	s=arc-20240116; t=1708442375; c=relaxed/simple;
+	bh=ig380aOceuD2bzO6Xmk3XhQKEI2qQoctP69u2/rrHRw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CeUOUx5MyGxVmajCrjovp4k45asaVDCdZiabmqFGz1oEv38MPQ2wleuD280DNqv42AfJwxgkns2iAxBqcJp8xpqTRapOEk4KdQ+sKsd0FA03dwHFmG6bm7qCW5U0cT800ANfuTz0C+PXCedZ5883rrrHDAn94+NNkYpAMEM3+5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nomaAyFP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BA08C433C7;
-	Tue, 20 Feb 2024 15:11:23 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=lRGz7QrUSgr3My1JVnPqgVc3Bds5OxJe4nYY2l7Gpeqnsj/t7L/5lTCb7yFw0vJ4ERso0bCJiHu+gwKW6RIpiwOUWU6IyOc1EchhYmukEkvZRqiaRerzmkeCEqH1bbTH9mOE8tj9B/prQIEWQhsUXKcDIosIcGEUUsc54KO75+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zP4l6T+d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C345C433C7;
+	Tue, 20 Feb 2024 15:19:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708441884;
-	bh=jg/XNpG+vxzMN378bRYA6bw5Ca729FovgoyK24j+9eA=;
+	s=korg; t=1708442375;
+	bh=ig380aOceuD2bzO6Xmk3XhQKEI2qQoctP69u2/rrHRw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nomaAyFPUOvPidgj0jxM+VXZjOF9ar/dO2WY8bHJHmQwRzW02d7sNdAzNmULff0nq
-	 d35C2pgp8d8ymOh7ixzEQVYBrLCyu13CsywdM1GpgOTLJbi/rr1pqeAz64JoIVw05A
-	 3lt2xH3DIk2d+3IbluQd66/p2lZYlltKS6vq0gJY=
-Date: Tue, 20 Feb 2024 16:11:21 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Subject: Re: [v6.6][PATCH 00/57] eventfs: Linus's updates for 6.6
-Message-ID: <2024022012-vocalize-vindicate-3eb3@gregkh>
-References: <20240206120905.570408983@rostedt.homelinux.com>
+	b=zP4l6T+d62EjvRf+JOj6FwBT10PWFre1ro1d4a6CUl8vsGevddOPQYW4LsmHVBrhX
+	 EhG2mkioHOg9wzd66OoO7QUMb/PzDzv+oIAzzU4LeHbjtmZuyf9C2kjpUAupcL3q90
+	 9VIp/C9wWp8CyB7fZUdMiURr504Xb9Ncfgir31is=
+Date: Tue, 20 Feb 2024 16:19:32 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Chuck Lever III <chuck.lever@oracle.com>
+Cc: linux-stable <stable@vger.kernel.org>,
+	Linux NFS Mailing List <linux-nfs@vger.kernel.org>,
+	Jeff Layton <jlayton@redhat.com>
+Subject: Re: [GIT PULL] NFSD fixes for v6.1.y
+Message-ID: <2024022054-cause-suffering-eae8@gregkh>
+References: <ZdS8TXWl3QKf0qdk@manet.1015granger.net>
+ <2024022007-atypical-postnasal-37d3@gregkh>
+ <4F521AD4-665D-45E2-925A-10E276F29F7E@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240206120905.570408983@rostedt.homelinux.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <4F521AD4-665D-45E2-925A-10E276F29F7E@oracle.com>
 
-On Tue, Feb 06, 2024 at 07:09:05AM -0500, Steven Rostedt wrote:
+On Tue, Feb 20, 2024 at 02:59:40PM +0000, Chuck Lever III wrote:
 > 
-> This is a backport of all the work that lead up to the work that Linus made
-> on eventfs. I trust Linus's version more so than the versions in 6.6 and
-> 6.7. There may be plenty of hidden issues due to the design.
 > 
-> This is the update for 6.6. It includes Linus's updates as well as all the
-> patches leading up to them. As the eventfs work went in in two parts, half
-> went in in 6.6 and the other in 6.7, there were 6 backports that were done
-> custom to 6.6 as the bugs found in 6.7 were in 6.6 but implemented
-> differently. This series starts with reverting those 6 backports and then
-> applying the updated patches to get to Linus's simplification.
+> > On Feb 20, 2024, at 9:57 AM, Greg KH <gregkh@linuxfoundation.org> wrote:
+> > 
+> > On Tue, Feb 20, 2024 at 09:50:53AM -0500, Chuck Lever wrote:
+> >> The following changes since commit 8b4118fabd6eb75fed19483b04dab3a036886489:
+> >> 
+> >>  Linux 6.1.78 (2024-02-16 19:06:32 +0100)
+> >> 
+> >> are available in the Git repository at:
+> >> 
+> >>  https://git.kernel.org/pub/scm/linux/kernel/git/cel/linux.git nfsd-6.1.y
+> >> 
+> >> for you to fetch changes up to d432d1006b60bd6b5c38974727bdce78f449eeea:
+> >> 
+> >>  nfsd: don't take fi_lock in nfsd_break_deleg_cb() (2024-02-16 13:58:29 -0500)
+> >> 
+> >> ----------------------------------------------------------------
+> >> NeilBrown (2):
+> >>      nfsd: fix RELEASE_LOCKOWNER
+> >>      nfsd: don't take fi_lock in nfsd_break_deleg_cb()
+> > 
+> > A pull request for just 2 patches?  Ok, I'll go dig them out of here,
+> > but next time, a mbox or just sending them as patches works too, no need
+> > to go through the trouble of this.
 > 
-> I ran these through my full test suite that I use before sending anything to
-> Linus, although I did not run my "bisect" test that walks through the
-> patches. The tests were just run on the end result.
-> 
-> This was created with the following command against v6.6.15, after reverting
-> the 6 patches:
+> Understood. These were already in the repo for our test infrastructure.
 
-All now queued up, thanks!
+Not a problem, if they are easier for you to send this way, that's fine,
+they were trivial for me to import in the end, I shouldn't have
+complained, I just don't want you to have to do any extra work.
+
+thanks,
 
 greg k-h
 
