@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-21119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB1A785C735
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:10:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6CFE85C70E
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:08:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 453711F21EEE
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:10:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 292C0B21213
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:08:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98999151CE9;
-	Tue, 20 Feb 2024 21:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80D311509A5;
+	Tue, 20 Feb 2024 21:08:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vmmOfviV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XWEF2B2K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB70E151CD8;
-	Tue, 20 Feb 2024 21:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F42D14AD15;
+	Tue, 20 Feb 2024 21:08:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463413; cv=none; b=lG3+mV5EI93O0TMmwCiDf+9UpprIl+KR0I41g1MNSwM/jtFKtP9cEQWQBEDYWK4C7+WGBGPav1rHreSOiumG/cyVEjURkHHZHboXYpDf9mX78LcCztAGMr8vkkPoTaNuijAcI9Lei+67e9Yj+U9/bSwcwhh5DpJh9mMIB6hvT9o=
+	t=1708463290; cv=none; b=roI/pzm7e0LbYfEXqpTJMFcXGsKrDZH52i1Swo6KKNL2CAiXmeZsSTNG/SpmfN5z7o2vH68TbvoqI1UsMCVIztCs7e00p2l6ZoD2yQRtIIyKrAjRympIdBviIZbAhjpmliEVUC4W+3q9NuDeheFA3pcE80OrzUjBwsl56CWWrx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463413; c=relaxed/simple;
-	bh=ufmgJoUCVToXjHV6Sf1OJe70CcekDrnD+7Xp8XXdQtQ=;
+	s=arc-20240116; t=1708463290; c=relaxed/simple;
+	bh=Rk+YGKhTixyB/k6KwOFimMhgxLqWyVIUAVzsFsBiWeE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p+3l18oC66dkaHLpTGwmVXw40weaReB2bgNXDHbzFva6/++NqcmMDHhKVpshvvhbTJYMrLGpHePMiNYr+hvQ9hHIACv8PcNNiTPNVpYTtbyrfPFyHvI1UKIL+93xMsDnsrOx35FSLj7ia8jmJWISXi/r+UYyqpWTcqg9bBW2FgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vmmOfviV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64FEFC433C7;
-	Tue, 20 Feb 2024 21:10:11 +0000 (UTC)
+	 MIME-Version; b=Gy6FglZhYuucW3SS+toDWI8IoGGkNHeXD8vTYt/uAUTSSYXT7l7qabJoq9/K8EId410YZWIE5bmfb3ukWrHlNT1tqccbMmFT5dCnDeMUeGgleL7TRkng1kR7pY30ANVu7VQOHhGEAZ+Tyov9mHhJvxdfUgTXv6Ao0WBut2iCfdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XWEF2B2K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3F0CC433F1;
+	Tue, 20 Feb 2024 21:08:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463411;
-	bh=ufmgJoUCVToXjHV6Sf1OJe70CcekDrnD+7Xp8XXdQtQ=;
+	s=korg; t=1708463290;
+	bh=Rk+YGKhTixyB/k6KwOFimMhgxLqWyVIUAVzsFsBiWeE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vmmOfviV23KNCjg2sUAo9CWD5l2ZajbqwwYLYZYyVjk2Nt1w3WGz6etADoQZtH8w9
-	 p++XKp4G5N+9WPDx7HDzRnrx74/KLZbMKoZqUIjBMSkI7lk1iDp49XwmxtLMI+BGLh
-	 nCsANuxfXvewU94n+clTH8kkEFjfaX5YK26Cd/bA=
+	b=XWEF2B2KxDRCOe6SuXGPgFDHXg3WdKHB9GGRasYbpiZpvi0nEb/ftjf3sxRxrCeMT
+	 psz00xm2e5Jo4vYLjnSE5zJ0dfJL5BKOrA0F6lEZfhD9RHgCAdj7UWVTQKzGh0xJoE
+	 V8d9XEiYY2bkpLJ+7pRA7o0Ld8+JSbhFbHOWJeL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 036/331] selftests: forwarding: Fix bridge locked port test flakiness
-Date: Tue, 20 Feb 2024 21:52:32 +0100
-Message-ID: <20240220205638.737175919@linuxfoundation.org>
+	Jiri Olsa <jolsa@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Yonghong Song <yhs@fb.com>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 6.1 194/197] bpf: Add struct for bin_args arg in bpf_bprintf_prepare
+Date: Tue, 20 Feb 2024 21:52:33 +0100
+Message-ID: <20240220204846.885054711@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
+References: <20240220204841.073267068@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +63,229 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Jiri Olsa <jolsa@kernel.org>
 
-[ Upstream commit f97f1fcc96908c97a240ff6cb4474e155abfa0d7 ]
+commit 78aa1cc9404399a15d2a1205329c6a06236f5378 upstream.
 
-The redirection test case fails in the netdev CI on debug kernels
-because an FDB entry is learned despite the presence of a tc filter that
-redirects incoming traffic [1].
+Adding struct bpf_bprintf_data to hold bin_args argument for
+bpf_bprintf_prepare function.
 
-I am unable to reproduce the failure locally, but I can see how it can
-happen given that learning is first enabled and only then the ingress tc
-filter is configured. On debug kernels the time window between these two
-operations is longer compared to regular kernels, allowing random
-packets to be transmitted and trigger learning.
+We will add another return argument to bpf_bprintf_prepare and
+pass the struct to bpf_bprintf_cleanup for proper cleanup in
+following changes.
 
-Fix by reversing the order and configure the ingress tc filter before
-enabling learning.
-
-[1]
-[...]
- # TEST: Locked port MAB redirect                                      [FAIL]
- # Locked entry created for redirected traffic
-
-Fixes: 38c43a1ce758 ("selftests: forwarding: Add test case for traffic redirection from a locked port")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://lore.kernel.org/r/20240208155529.1199729-5-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Yonghong Song <yhs@fb.com>
+Link: https://lore.kernel.org/bpf/20221215214430.1336195-2-jolsa@kernel.org
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/forwarding/bridge_locked_port.sh | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/bpf.h      |    7 ++++++-
+ kernel/bpf/helpers.c     |   24 +++++++++++++-----------
+ kernel/bpf/verifier.c    |    3 ++-
+ kernel/trace/bpf_trace.c |   34 ++++++++++++++++++++--------------
+ 4 files changed, 41 insertions(+), 27 deletions(-)
 
-diff --git a/tools/testing/selftests/net/forwarding/bridge_locked_port.sh b/tools/testing/selftests/net/forwarding/bridge_locked_port.sh
-index 9af9f6964808..c62331b2e006 100755
---- a/tools/testing/selftests/net/forwarding/bridge_locked_port.sh
-+++ b/tools/testing/selftests/net/forwarding/bridge_locked_port.sh
-@@ -327,10 +327,10 @@ locked_port_mab_redirect()
- 	RET=0
- 	check_port_mab_support || return 0
+--- a/include/linux/bpf.h
++++ b/include/linux/bpf.h
+@@ -2740,8 +2740,13 @@ bool btf_id_set_contains(const struct bt
  
--	bridge link set dev $swp1 learning on locked on mab on
- 	tc qdisc add dev $swp1 clsact
- 	tc filter add dev $swp1 ingress protocol all pref 1 handle 101 flower \
- 		action mirred egress redirect dev $swp2
-+	bridge link set dev $swp1 learning on locked on mab on
+ #define MAX_BPRINTF_VARARGS		12
  
- 	ping_do $h1 192.0.2.2
- 	check_err $? "Ping did not work with redirection"
-@@ -349,8 +349,8 @@ locked_port_mab_redirect()
- 	check_err $? "Locked entry not created after deleting filter"
++struct bpf_bprintf_data {
++	u32 *bin_args;
++	bool get_bin_args;
++};
++
+ int bpf_bprintf_prepare(char *fmt, u32 fmt_size, const u64 *raw_args,
+-			u32 **bin_buf, u32 num_args);
++			u32 num_args, struct bpf_bprintf_data *data);
+ void bpf_bprintf_cleanup(void);
  
- 	bridge fdb del `mac_get $h1` vlan 1 dev $swp1 master
--	tc qdisc del dev $swp1 clsact
- 	bridge link set dev $swp1 learning off locked off mab off
-+	tc qdisc del dev $swp1 clsact
+ /* the implementation of the opaque uapi struct bpf_dynptr */
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -795,16 +795,16 @@ void bpf_bprintf_cleanup(void)
+  * Returns a negative value if fmt is an invalid format string or 0 otherwise.
+  *
+  * This can be used in two ways:
+- * - Format string verification only: when bin_args is NULL
++ * - Format string verification only: when data->get_bin_args is false
+  * - Arguments preparation: in addition to the above verification, it writes in
+- *   bin_args a binary representation of arguments usable by bstr_printf where
+- *   pointers from BPF have been sanitized.
++ *   data->bin_args a binary representation of arguments usable by bstr_printf
++ *   where pointers from BPF have been sanitized.
+  *
+  * In argument preparation mode, if 0 is returned, safe temporary buffers are
+  * allocated and bpf_bprintf_cleanup should be called to free them after use.
+  */
+ int bpf_bprintf_prepare(char *fmt, u32 fmt_size, const u64 *raw_args,
+-			u32 **bin_args, u32 num_args)
++			u32 num_args, struct bpf_bprintf_data *data)
+ {
+ 	char *unsafe_ptr = NULL, *tmp_buf = NULL, *tmp_buf_end, *fmt_end;
+ 	size_t sizeof_cur_arg, sizeof_cur_ip;
+@@ -817,12 +817,12 @@ int bpf_bprintf_prepare(char *fmt, u32 f
+ 		return -EINVAL;
+ 	fmt_size = fmt_end - fmt;
  
- 	log_test "Locked port MAB redirect"
+-	if (bin_args) {
++	if (data->get_bin_args) {
+ 		if (num_args && try_get_fmt_tmp_buf(&tmp_buf))
+ 			return -EBUSY;
+ 
+ 		tmp_buf_end = tmp_buf + MAX_BPRINTF_BUF_LEN;
+-		*bin_args = (u32 *)tmp_buf;
++		data->bin_args = (u32 *)tmp_buf;
+ 	}
+ 
+ 	for (i = 0; i < fmt_size; i++) {
+@@ -1023,24 +1023,26 @@ out:
  }
--- 
-2.43.0
-
+ 
+ BPF_CALL_5(bpf_snprintf, char *, str, u32, str_size, char *, fmt,
+-	   const void *, data, u32, data_len)
++	   const void *, args, u32, data_len)
+ {
++	struct bpf_bprintf_data data = {
++		.get_bin_args	= true,
++	};
+ 	int err, num_args;
+-	u32 *bin_args;
+ 
+ 	if (data_len % 8 || data_len > MAX_BPRINTF_VARARGS * 8 ||
+-	    (data_len && !data))
++	    (data_len && !args))
+ 		return -EINVAL;
+ 	num_args = data_len / 8;
+ 
+ 	/* ARG_PTR_TO_CONST_STR guarantees that fmt is zero-terminated so we
+ 	 * can safely give an unbounded size.
+ 	 */
+-	err = bpf_bprintf_prepare(fmt, UINT_MAX, data, &bin_args, num_args);
++	err = bpf_bprintf_prepare(fmt, UINT_MAX, args, num_args, &data);
+ 	if (err < 0)
+ 		return err;
+ 
+-	err = bstr_printf(str, str_size, fmt, bin_args);
++	err = bstr_printf(str, str_size, fmt, data.bin_args);
+ 
+ 	bpf_bprintf_cleanup();
+ 
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -7448,6 +7448,7 @@ static int check_bpf_snprintf_call(struc
+ 	struct bpf_reg_state *fmt_reg = &regs[BPF_REG_3];
+ 	struct bpf_reg_state *data_len_reg = &regs[BPF_REG_5];
+ 	struct bpf_map *fmt_map = fmt_reg->map_ptr;
++	struct bpf_bprintf_data data = {};
+ 	int err, fmt_map_off, num_args;
+ 	u64 fmt_addr;
+ 	char *fmt;
+@@ -7472,7 +7473,7 @@ static int check_bpf_snprintf_call(struc
+ 	/* We are also guaranteed that fmt+fmt_map_off is NULL terminated, we
+ 	 * can focus on validating the format specifiers.
+ 	 */
+-	err = bpf_bprintf_prepare(fmt, UINT_MAX, NULL, NULL, num_args);
++	err = bpf_bprintf_prepare(fmt, UINT_MAX, NULL, num_args, &data);
+ 	if (err < 0)
+ 		verbose(env, "Invalid format string\n");
+ 
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -377,18 +377,20 @@ BPF_CALL_5(bpf_trace_printk, char *, fmt
+ 	   u64, arg2, u64, arg3)
+ {
+ 	u64 args[MAX_TRACE_PRINTK_VARARGS] = { arg1, arg2, arg3 };
+-	u32 *bin_args;
++	struct bpf_bprintf_data data = {
++		.get_bin_args	= true,
++	};
+ 	static char buf[BPF_TRACE_PRINTK_SIZE];
+ 	unsigned long flags;
+ 	int ret;
+ 
+-	ret = bpf_bprintf_prepare(fmt, fmt_size, args, &bin_args,
+-				  MAX_TRACE_PRINTK_VARARGS);
++	ret = bpf_bprintf_prepare(fmt, fmt_size, args,
++				  MAX_TRACE_PRINTK_VARARGS, &data);
+ 	if (ret < 0)
+ 		return ret;
+ 
+ 	raw_spin_lock_irqsave(&trace_printk_lock, flags);
+-	ret = bstr_printf(buf, sizeof(buf), fmt, bin_args);
++	ret = bstr_printf(buf, sizeof(buf), fmt, data.bin_args);
+ 
+ 	trace_bpf_trace_printk(buf);
+ 	raw_spin_unlock_irqrestore(&trace_printk_lock, flags);
+@@ -426,25 +428,27 @@ const struct bpf_func_proto *bpf_get_tra
+ 	return &bpf_trace_printk_proto;
+ }
+ 
+-BPF_CALL_4(bpf_trace_vprintk, char *, fmt, u32, fmt_size, const void *, data,
++BPF_CALL_4(bpf_trace_vprintk, char *, fmt, u32, fmt_size, const void *, args,
+ 	   u32, data_len)
+ {
++	struct bpf_bprintf_data data = {
++		.get_bin_args	= true,
++	};
+ 	static char buf[BPF_TRACE_PRINTK_SIZE];
+ 	unsigned long flags;
+ 	int ret, num_args;
+-	u32 *bin_args;
+ 
+ 	if (data_len & 7 || data_len > MAX_BPRINTF_VARARGS * 8 ||
+-	    (data_len && !data))
++	    (data_len && !args))
+ 		return -EINVAL;
+ 	num_args = data_len / 8;
+ 
+-	ret = bpf_bprintf_prepare(fmt, fmt_size, data, &bin_args, num_args);
++	ret = bpf_bprintf_prepare(fmt, fmt_size, args, num_args, &data);
+ 	if (ret < 0)
+ 		return ret;
+ 
+ 	raw_spin_lock_irqsave(&trace_printk_lock, flags);
+-	ret = bstr_printf(buf, sizeof(buf), fmt, bin_args);
++	ret = bstr_printf(buf, sizeof(buf), fmt, data.bin_args);
+ 
+ 	trace_bpf_trace_printk(buf);
+ 	raw_spin_unlock_irqrestore(&trace_printk_lock, flags);
+@@ -471,21 +475,23 @@ const struct bpf_func_proto *bpf_get_tra
+ }
+ 
+ BPF_CALL_5(bpf_seq_printf, struct seq_file *, m, char *, fmt, u32, fmt_size,
+-	   const void *, data, u32, data_len)
++	   const void *, args, u32, data_len)
+ {
++	struct bpf_bprintf_data data = {
++		.get_bin_args	= true,
++	};
+ 	int err, num_args;
+-	u32 *bin_args;
+ 
+ 	if (data_len & 7 || data_len > MAX_BPRINTF_VARARGS * 8 ||
+-	    (data_len && !data))
++	    (data_len && !args))
+ 		return -EINVAL;
+ 	num_args = data_len / 8;
+ 
+-	err = bpf_bprintf_prepare(fmt, fmt_size, data, &bin_args, num_args);
++	err = bpf_bprintf_prepare(fmt, fmt_size, args, num_args, &data);
+ 	if (err < 0)
+ 		return err;
+ 
+-	seq_bprintf(m, fmt, bin_args);
++	seq_bprintf(m, fmt, data.bin_args);
+ 
+ 	bpf_bprintf_cleanup();
+ 
 
 
 
