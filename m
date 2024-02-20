@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-21469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F2FE85C90E
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:29:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 373CF85C77C
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:13:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3D85B22B8B
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:29:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 681921C20AA0
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:13:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D7C3151CFA;
-	Tue, 20 Feb 2024 21:28:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 732F2151CCC;
+	Tue, 20 Feb 2024 21:13:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CoVabUBI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ySe34f9c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27ECA151CE1;
-	Tue, 20 Feb 2024 21:28:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 326C476C9C;
+	Tue, 20 Feb 2024 21:13:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464519; cv=none; b=pBFWmgnk+NVt181QykUTjo8ZdhHZN9CPx3czusuosHWhlBXOgQw3uSLxcSXNBZCJ6WxbO6PzzlfSI9GMLsxNIdC7plG/vfnd0SPtZuHaum/AmDtejW44WaU8FcVV6GWu+jgtzCIkgMT/+TW4/Y1csRUGxboNkqO6b71voO3OtV8=
+	t=1708463596; cv=none; b=Cz4FnPMF4zrgCu8BDC1QtrbaeQewGehqvEzvxQ6QiwjHmRb7/WRSPKdp7wOJPv0FftP2CTQzOSo05QGByswXTQl9gmBmqdTPvl9TuiwLXOd0Shz1+cDV4Dn4MPyFcQDNTavUw/g4jww6B3AcrERy4DsCVZKyX+HeeWSulO2Mb84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464519; c=relaxed/simple;
-	bh=jbLuwnkkQX2+3Po7WlUCDtomTvV1xGmQWASflhqmoDw=;
+	s=arc-20240116; t=1708463596; c=relaxed/simple;
+	bh=1khHsTbyGZDMT97fjnzh39b8oTcjblOlbj+FVu2IP4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XNJX2rt53ZDIjkua0k549gNhOQlPCVzztFKiopjBxJxtUVy4vSSz0KQb6N/Em7p7acLok93vtj59ZQ0RFWVsqBJWVzXYsK0w3yRpvcBJoawgozbzanxDImigaBDIIw12gWupla2S1Vo5LnvJtqS8ZM7SZ+rkQb8Ny3MkJid2zEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CoVabUBI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89BE0C433F1;
-	Tue, 20 Feb 2024 21:28:38 +0000 (UTC)
+	 MIME-Version; b=KOtZ3w28s8lQs6xzepdxZ4tr/TyPv32aVUXI5XLUhxIxVvre/VDUh5FQxVZ5Ywy+XyO5DC5cHQ+R8xw66l9od2jgZSV6j2Loc32LV3CHZp0FreymBDq9BpZZyHTgeZU1aAtr1y2qttgzbuSwKzrOxGa4x5VHvLgcoTCDQkPo1uU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ySe34f9c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67568C433F1;
+	Tue, 20 Feb 2024 21:13:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464519;
-	bh=jbLuwnkkQX2+3Po7WlUCDtomTvV1xGmQWASflhqmoDw=;
+	s=korg; t=1708463595;
+	bh=1khHsTbyGZDMT97fjnzh39b8oTcjblOlbj+FVu2IP4o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CoVabUBIihN2kZGBhAw5sxoyDJe+RReON+LuSTEvxe5XC8TG7xYRA8yLNLIfiNFB+
-	 KsTXbJOad+tNhzh8qreBPfX/CChR9FwcjSKC4P9vO60mRg7aE2QLziaicMnz+rWNqC
-	 nTkZhPFrjtlIqAYROR3vRAEgYHypOGydv5+++SZM=
+	b=ySe34f9cm8LJFws1aV2zUOPwKD7ZktyenodDdaP/kkj+wG+NqeRZC9fXnxnE+7AJJ
+	 QblkKHE1WSZYJ5Gtx3+zEd7/F7tF1MXZq0P8GriObXbkJEl0mTkwxoxzwrrqy4sUEp
+	 SPy85Uh3g99npMm3zAP+XVNr30ma6ACG3PjyO4T0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Sanath S <sanath.s@amd.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Lukas Wunner <lukas@wunner.de>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 050/309] net: tls: handle backlogging of crypto requests
+Subject: [PATCH 6.6 093/331] PCI: Fix active state requirement in PME polling
 Date: Tue, 20 Feb 2024 21:53:29 +0100
-Message-ID: <20240220205634.758542829@linuxfoundation.org>
+Message-ID: <20240220205640.503420365@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,95 +66,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-[ Upstream commit 8590541473188741055d27b955db0777569438e3 ]
+[ Upstream commit 41044d5360685e78a869d40a168491a70cdb7e73 ]
 
-Since we're setting the CRYPTO_TFM_REQ_MAY_BACKLOG flag on our
-requests to the crypto API, crypto_aead_{encrypt,decrypt} can return
- -EBUSY instead of -EINPROGRESS in valid situations. For example, when
-the cryptd queue for AESNI is full (easy to trigger with an
-artificially low cryptd.cryptd_max_cpu_qlen), requests will be enqueued
-to the backlog but still processed. In that case, the async callback
-will also be called twice: first with err == -EINPROGRESS, which it
-seems we can just ignore, then with err == 0.
+The commit noted in fixes added a bogus requirement that runtime PM managed
+devices need to be in the RPM_ACTIVE state for PME polling.  In fact, only
+devices in low power states should be polled.
 
-Compared to Sabrina's original patch this version uses the new
-tls_*crypt_async_wait() helpers and converts the EBUSY to
-EINPROGRESS to avoid having to modify all the error handling
-paths. The handling is identical.
+However there's still a requirement that the device config space must be
+accessible, which has implications for both the current state of the polled
+device and the parent bridge, when present.  It's not sufficient to assume
+the bridge remains in D0 and cases have been observed where the bridge
+passes the D0 test, but the PM state indicates RPM_SUSPENDING and config
+space of the polled device becomes inaccessible during pci_pme_wakeup().
 
-Fixes: a54667f6728c ("tls: Add support for encryption using async offload accelerator")
-Fixes: 94524d8fc965 ("net/tls: Add support for async decryption of tls records")
-Co-developed-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://lore.kernel.org/netdev/9681d1febfec295449a62300938ed2ae66983f28.1694018970.git.sd@queasysnail.net/
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Therefore, since the bridge is already effectively required to be in the
+RPM_ACTIVE state, formalize this in the code and elevate the PM usage count
+to maintain the state while polling the subordinate device.
+
+This resolves a regression reported in the bugzilla below where a
+Thunderbolt/USB4 hierarchy fails to scan for an attached NVMe endpoint
+downstream of a bridge in a D3hot power state.
+
+Link: https://lore.kernel.org/r/20240123185548.1040096-1-alex.williamson@redhat.com
+Fixes: d3fcd7360338 ("PCI: Fix runtime PM race with PME polling")
+Reported-by: Sanath S <sanath.s@amd.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218360
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Sanath S <sanath.s@amd.com>
+Reviewed-by: Rafael J. Wysocki <rafael@kernel.org>
+Cc: Lukas Wunner <lukas@wunner.de>
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ drivers/pci/pci.c | 37 ++++++++++++++++++++++---------------
+ 1 file changed, 22 insertions(+), 15 deletions(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 9374a61cef00..63bef5666e36 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -196,6 +196,17 @@ static void tls_decrypt_done(void *data, int err)
- 	struct sock *sk;
- 	int aead_size;
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 59d6cb1a3a9d..06fc6f532d6c 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -2434,29 +2434,36 @@ static void pci_pme_list_scan(struct work_struct *work)
+ 		if (pdev->pme_poll) {
+ 			struct pci_dev *bridge = pdev->bus->self;
+ 			struct device *dev = &pdev->dev;
+-			int pm_status;
++			struct device *bdev = bridge ? &bridge->dev : NULL;
++			int bref = 0;
  
-+	/* If requests get too backlogged crypto API returns -EBUSY and calls
-+	 * ->complete(-EINPROGRESS) immediately followed by ->complete(0)
-+	 * to make waiting for backlog to flush with crypto_wait_req() easier.
-+	 * First wait converts -EBUSY -> -EINPROGRESS, and the second one
-+	 * -EINPROGRESS -> 0.
-+	 * We have a single struct crypto_async_request per direction, this
-+	 * scheme doesn't help us, so just ignore the first ->complete().
-+	 */
-+	if (err == -EINPROGRESS)
-+		return;
+ 			/*
+-			 * If bridge is in low power state, the
+-			 * configuration space of subordinate devices
+-			 * may be not accessible
++			 * If we have a bridge, it should be in an active/D0
++			 * state or the configuration space of subordinate
++			 * devices may not be accessible or stable over the
++			 * course of the call.
+ 			 */
+-			if (bridge && bridge->current_state != PCI_D0)
+-				continue;
++			if (bdev) {
++				bref = pm_runtime_get_if_active(bdev, true);
++				if (!bref)
++					continue;
 +
- 	aead_size = sizeof(*aead_req) + crypto_aead_reqsize(aead);
- 	aead_size = ALIGN(aead_size, __alignof__(*dctx));
- 	dctx = (void *)((u8 *)aead_req + aead_size);
-@@ -269,6 +280,10 @@ static int tls_do_decryption(struct sock *sk,
- 	}
++				if (bridge->current_state != PCI_D0)
++					goto put_bridge;
++			}
  
- 	ret = crypto_aead_decrypt(aead_req);
-+	if (ret == -EBUSY) {
-+		ret = tls_decrypt_async_wait(ctx);
-+		ret = ret ?: -EINPROGRESS;
-+	}
- 	if (ret == -EINPROGRESS) {
- 		if (darg->async)
- 			return 0;
-@@ -449,6 +464,9 @@ static void tls_encrypt_done(void *data, int err)
- 	struct sk_msg *msg_en;
- 	struct sock *sk;
+ 			/*
+-			 * If the device is in a low power state it
+-			 * should not be polled either.
++			 * The device itself should be suspended but config
++			 * space must be accessible, therefore it cannot be in
++			 * D3cold.
+ 			 */
+-			pm_status = pm_runtime_get_if_active(dev, true);
+-			if (!pm_status)
+-				continue;
+-
+-			if (pdev->current_state != PCI_D3cold)
++			if (pm_runtime_suspended(dev) &&
++			    pdev->current_state != PCI_D3cold)
+ 				pci_pme_wakeup(pdev, NULL);
  
-+	if (err == -EINPROGRESS) /* see the comment in tls_decrypt_done() */
-+		return;
-+
- 	msg_en = &rec->msg_encrypted;
- 
- 	sk = rec->sk;
-@@ -553,6 +571,10 @@ static int tls_do_encryption(struct sock *sk,
- 	atomic_inc(&ctx->encrypt_pending);
- 
- 	rc = crypto_aead_encrypt(aead_req);
-+	if (rc == -EBUSY) {
-+		rc = tls_encrypt_async_wait(ctx);
-+		rc = rc ?: -EINPROGRESS;
-+	}
- 	if (!rc || rc != -EINPROGRESS) {
- 		atomic_dec(&ctx->encrypt_pending);
- 		sge->offset -= prot->prepend_size;
+-			if (pm_status > 0)
+-				pm_runtime_put(dev);
++put_bridge:
++			if (bref > 0)
++				pm_runtime_put(bdev);
+ 		} else {
+ 			list_del(&pme_dev->list);
+ 			kfree(pme_dev);
 -- 
 2.43.0
 
