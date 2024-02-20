@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-21529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74EC685C949
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:31:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE41485C7EE
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:17:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AF981F22C88
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:31:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AB271C2209C
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:17:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1DE0151CD6;
-	Tue, 20 Feb 2024 21:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A70F151CD6;
+	Tue, 20 Feb 2024 21:17:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yFf6QaE7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2TzBvfhl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60CF714A4D2;
-	Tue, 20 Feb 2024 21:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E56612D7;
+	Tue, 20 Feb 2024 21:17:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464699; cv=none; b=YIrHPYXVu4H9y/RD6EK/wPkfLqsnS7qwOyeyYr4SyI36id9LrcQ4LMrBjj+/xnFzpmAZ+/GpUiEWmh498AIE2Hur6Ah0/j959JHueC/Ymd4xL8W8yybgKI10ypE6T4gSIcMIDDcCQCFYM87oGOge4RiapJx+f+zAeIB1eLWNZWs=
+	t=1708463875; cv=none; b=S7K5pkBs07RK/E9a0RDvOySapFZKhzWpk+/2ojVYcERsJl94A0n+FXb9Y4Z2b5LPTNPRqTrAQSOIoQWa6p7i1hanTXC5VpUCByTaqqxwChAHrwWo2NQOyMxJF7W9GHyu1e/noDqtrtGOEVMCwHU4ocJPggZwuEqPECgUIsiTfLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464699; c=relaxed/simple;
-	bh=DGEz/SGG9dkBe00dTYmzsL1JYAPvdndc0L4SmBa/95Q=;
+	s=arc-20240116; t=1708463875; c=relaxed/simple;
+	bh=e/fJYBdyQ64yV33CfczsvpMXvu8emRMdRYoXn/Z2lGg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LPqVPtRn2haqHKo1dyRYquYlrWgCWmf07Y7bgjbQoaP2g+CIphXU6ZUH0+5SSXwLIn06NrJeAqVkZY6qiciIvaof/Y0RmyOzJS9mqCCo94Vn795uYLVpdsrkiT91QoXmRYnzasLWGolkQVX+RsMNQxdKwE+0qCggCAykvM8bErY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yFf6QaE7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB3BFC433F1;
-	Tue, 20 Feb 2024 21:31:38 +0000 (UTC)
+	 MIME-Version; b=ixxKQ8kt2ALQVseEyHLOixGWaVtA/kLoXuQ/vLrqT1mj2KBAXf01gSb2oCGe0rnGOeLngCDoy/m2D76KZBt5l4qG1pvFZDbXy5/kgevsRZj4s5wiacAP/stGuIHF972ZY6/4v89eQZ+/+HCH01IfHgXx/f2DTWiP44LM6u+bKXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2TzBvfhl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AF13C433F1;
+	Tue, 20 Feb 2024 21:17:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464699;
-	bh=DGEz/SGG9dkBe00dTYmzsL1JYAPvdndc0L4SmBa/95Q=;
+	s=korg; t=1708463875;
+	bh=e/fJYBdyQ64yV33CfczsvpMXvu8emRMdRYoXn/Z2lGg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yFf6QaE7wcOOLB0XigQEpkAWUoREli8Js3GN3gVqphBMATaXYWZyLmpQe95WRwhhB
-	 DyuNrOeI8m4ytuXGuk8L5IcDs+Nf9i+x9Ufz7EGs4+F8jx9giXfnLT2nHbzh283NiN
-	 KkWp3S5XOgCTbq5S4ycMgtwm9dPYXtLuhJf5GXAA=
+	b=2TzBvfhlDvK2lCJPzhNs6Drn9VUeZN4A/EDDF02emmiDZ9dewESW01GkrE0whiTMs
+	 4Mrt2LsYVVGpaMc2aG6pmAg96P5NJ6+17ckViZvWK6ok/fla8c/+Qic2bTa+Rd+dF5
+	 kPdgg0m8zsjscw2YvjdatGiFkhaJWOvDOxhL6AAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Zyngier <maz@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 109/309] irqchip/gic-v3-its: Handle non-coherent GICv4 redistributors
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Subject: [PATCH 6.6 152/331] tracing/probes: Fix to set arg size and fmt after setting type from BTF
 Date: Tue, 20 Feb 2024 21:54:28 +0100
-Message-ID: <20240220205636.602971303@linuxfoundation.org>
+Message-ID: <20240220205642.315102204@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,128 +60,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit 846297e11e8ae428f8b00156a0cfe2db58100702 ]
+commit 9a571c1e275cedacd48c66a6bddd0c23f1dffdbf upstream.
 
-Although the GICv3 code base has gained some handling of systems failing to
-handle the shareability attributes, the GICv4 side of things has been
-firmly ignored.
+Since the BTF type setting updates probe_arg::type, the type size
+calculation and setting print-fmt should be done after that.
+Without this fix, the argument size and print-fmt can be wrong.
 
-This is unfortunate, as the new recent addition of the "dma-noncoherent" is
-supposed to apply to all of the GICR tables, and not just the ones that are
-common to v3 and v4.
+Link: https://lore.kernel.org/all/170602218196.215583.6417859469540955777.stgit@devnote2/
 
-Add some checks to handle the VPROPBASE/VPENDBASE shareability and
-cacheability attributes in the same way we deal with the other GICR_BASE
-registers, wrapping the flag check in a helper for improved readability.
-
-Note that this has been found by inspection only, as I don't have access to
-HW that suffers from this particular issue.
-
-Fixes: 3a0fff0fb6a3 ("irqchip/gic-v3: Enable non-coherent redistributors/ITSes DT probing")
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Link: https://lore.kernel.org/r/20240213101206.2137483-2-maz@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b576e09701c7 ("tracing/probes: Support function parameters if BTF is available")
+Cc: stable@vger.kernel.org
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-gic-v3-its.c | 37 +++++++++++++++++++++-----------
- 1 file changed, 25 insertions(+), 12 deletions(-)
+ kernel/trace/trace_probe.c | 25 +++++++++++++------------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
-index 9a7a74239eab..bdc2c8330479 100644
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -207,6 +207,11 @@ static bool require_its_list_vmovp(struct its_vm *vm, struct its_node *its)
- 	return (gic_rdists->has_rvpeid || vm->vlpi_count[its->list_nr]);
- }
+diff --git a/kernel/trace/trace_probe.c b/kernel/trace/trace_probe.c
+index c6da5923e5b9..34289f9c6707 100644
+--- a/kernel/trace/trace_probe.c
++++ b/kernel/trace/trace_probe.c
+@@ -1172,18 +1172,6 @@ static int traceprobe_parse_probe_arg_body(const char *argv, ssize_t *size,
+ 		trace_probe_log_err(ctx->offset + (t ? (t - arg) : 0), BAD_TYPE);
+ 		goto out;
+ 	}
+-	parg->offset = *size;
+-	*size += parg->type->size * (parg->count ?: 1);
+-
+-	ret = -ENOMEM;
+-	if (parg->count) {
+-		len = strlen(parg->type->fmttype) + 6;
+-		parg->fmt = kmalloc(len, GFP_KERNEL);
+-		if (!parg->fmt)
+-			goto out;
+-		snprintf(parg->fmt, len, "%s[%d]", parg->type->fmttype,
+-			 parg->count);
+-	}
  
-+static bool rdists_support_shareable(void)
-+{
-+	return !(gic_rdists->flags & RDIST_FLAGS_FORCE_NON_SHAREABLE);
-+}
-+
- static u16 get_its_list(struct its_vm *vm)
- {
- 	struct its_node *its;
-@@ -2710,10 +2715,12 @@ static u64 inherit_vpe_l1_table_from_its(void)
- 			break;
+ 	code = tmp = kcalloc(FETCH_INSN_MAX, sizeof(*code), GFP_KERNEL);
+ 	if (!code)
+@@ -1207,6 +1195,19 @@ static int traceprobe_parse_probe_arg_body(const char *argv, ssize_t *size,
+ 				goto fail;
  		}
- 		val |= FIELD_PREP(GICR_VPROPBASER_4_1_ADDR, addr >> 12);
--		val |= FIELD_PREP(GICR_VPROPBASER_SHAREABILITY_MASK,
--				  FIELD_GET(GITS_BASER_SHAREABILITY_MASK, baser));
--		val |= FIELD_PREP(GICR_VPROPBASER_INNER_CACHEABILITY_MASK,
--				  FIELD_GET(GITS_BASER_INNER_CACHEABILITY_MASK, baser));
-+		if (rdists_support_shareable()) {
-+			val |= FIELD_PREP(GICR_VPROPBASER_SHAREABILITY_MASK,
-+					  FIELD_GET(GITS_BASER_SHAREABILITY_MASK, baser));
-+			val |= FIELD_PREP(GICR_VPROPBASER_INNER_CACHEABILITY_MASK,
-+					  FIELD_GET(GITS_BASER_INNER_CACHEABILITY_MASK, baser));
+ 	}
++	parg->offset = *size;
++	*size += parg->type->size * (parg->count ?: 1);
++
++	if (parg->count) {
++		len = strlen(parg->type->fmttype) + 6;
++		parg->fmt = kmalloc(len, GFP_KERNEL);
++		if (!parg->fmt) {
++			ret = -ENOMEM;
++			goto out;
 +		}
- 		val |= FIELD_PREP(GICR_VPROPBASER_4_1_SIZE, GITS_BASER_NR_PAGES(baser) - 1);
- 
- 		return val;
-@@ -2936,8 +2943,10 @@ static int allocate_vpe_l1_table(void)
- 	WARN_ON(!IS_ALIGNED(pa, psz));
- 
- 	val |= FIELD_PREP(GICR_VPROPBASER_4_1_ADDR, pa >> 12);
--	val |= GICR_VPROPBASER_RaWb;
--	val |= GICR_VPROPBASER_InnerShareable;
-+	if (rdists_support_shareable()) {
-+		val |= GICR_VPROPBASER_RaWb;
-+		val |= GICR_VPROPBASER_InnerShareable;
++		snprintf(parg->fmt, len, "%s[%d]", parg->type->fmttype,
++			 parg->count);
 +	}
- 	val |= GICR_VPROPBASER_4_1_Z;
- 	val |= GICR_VPROPBASER_4_1_VALID;
  
-@@ -3126,7 +3135,7 @@ static void its_cpu_init_lpis(void)
- 	gicr_write_propbaser(val, rbase + GICR_PROPBASER);
- 	tmp = gicr_read_propbaser(rbase + GICR_PROPBASER);
- 
--	if (gic_rdists->flags & RDIST_FLAGS_FORCE_NON_SHAREABLE)
-+	if (!rdists_support_shareable())
- 		tmp &= ~GICR_PROPBASER_SHAREABILITY_MASK;
- 
- 	if ((tmp ^ val) & GICR_PROPBASER_SHAREABILITY_MASK) {
-@@ -3153,7 +3162,7 @@ static void its_cpu_init_lpis(void)
- 	gicr_write_pendbaser(val, rbase + GICR_PENDBASER);
- 	tmp = gicr_read_pendbaser(rbase + GICR_PENDBASER);
- 
--	if (gic_rdists->flags & RDIST_FLAGS_FORCE_NON_SHAREABLE)
-+	if (!rdists_support_shareable())
- 		tmp &= ~GICR_PENDBASER_SHAREABILITY_MASK;
- 
- 	if (!(tmp & GICR_PENDBASER_SHAREABILITY_MASK)) {
-@@ -3880,14 +3889,18 @@ static void its_vpe_schedule(struct its_vpe *vpe)
- 	val  = virt_to_phys(page_address(vpe->its_vm->vprop_page)) &
- 		GENMASK_ULL(51, 12);
- 	val |= (LPI_NRBITS - 1) & GICR_VPROPBASER_IDBITS_MASK;
--	val |= GICR_VPROPBASER_RaWb;
--	val |= GICR_VPROPBASER_InnerShareable;
-+	if (rdists_support_shareable()) {
-+		val |= GICR_VPROPBASER_RaWb;
-+		val |= GICR_VPROPBASER_InnerShareable;
-+	}
- 	gicr_write_vpropbaser(val, vlpi_base + GICR_VPROPBASER);
- 
- 	val  = virt_to_phys(page_address(vpe->vpt_page)) &
- 		GENMASK_ULL(51, 16);
--	val |= GICR_VPENDBASER_RaWaWb;
--	val |= GICR_VPENDBASER_InnerShareable;
-+	if (rdists_support_shareable()) {
-+		val |= GICR_VPENDBASER_RaWaWb;
-+		val |= GICR_VPENDBASER_InnerShareable;
-+	}
- 	/*
- 	 * There is no good way of finding out if the pending table is
- 	 * empty as we can race against the doorbell interrupt very
+ 	ret = -EINVAL;
+ 	/* Store operation */
 -- 
-2.43.0
+2.43.2
 
 
 
