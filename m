@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-21459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D31685C903
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:28:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91B9385C77B
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:13:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBF66284D58
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:28:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1730CB20CE8
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:13:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A78501534F5;
-	Tue, 20 Feb 2024 21:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6800C151CC3;
+	Tue, 20 Feb 2024 21:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sI8ek79R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vemrmcQ5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66AFD152DEB;
-	Tue, 20 Feb 2024 21:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 260CC612D7;
+	Tue, 20 Feb 2024 21:13:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464487; cv=none; b=p2YFibi8FDe38Jv0TOWMZebWVPMDoGsjT7kyAhJgQ2ylH2InDR/KTgXmUNH0C1bY+TsC/pa6zxsKuXZFzTLghnNkiIBc5zRD7L992FI21UOztGxbL+aEfXAsEHrxc4oHGiVgrZ2/tDcwYOspGygRO/h33/et2qKijROnhj3Fqho=
+	t=1708463593; cv=none; b=nQf583HZjn82UW1wuyF4GE8MZWWXaU8DcbsHRDKI6Jc2MoCF+1S/+4mxgX7DDVfoVnA+fV3CXzUjwkOsNFmjKreF9mUx9bEkxu1rRRMI3WwbCkISGskhtAm+gIzp3lT4NK2hIr2kXMVLWWzH2BlMy863DcUBjZiTvyg8iLJ56Yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464487; c=relaxed/simple;
-	bh=tLfv8xjr4pUgwsm54Hj5srkx45MUQ4K5JPobYMivpmc=;
+	s=arc-20240116; t=1708463593; c=relaxed/simple;
+	bh=Yp0ObszS2MFMgeyHyRjsX+1gCPWLn9E6h2gzVyAlybk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MxOQY0fzYxTKGGresRJC/v0mWaLkN1NUTTj+YnYch3YSToYdv0YLJTHJC8jYj0/RLNttqPxgrZvuvoOIRPrEeOFmSWbR6JXTNGNm6MmZS95BNYcb85VIDGZ4WovVja4tKTQ1vfhz4oH5Vx+EYrbSCqy01uOZzhwEm5nyhLPQFwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sI8ek79R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA99BC43390;
-	Tue, 20 Feb 2024 21:28:06 +0000 (UTC)
+	 MIME-Version; b=NnugwtSSTE/JJffWfTMeLUXq8Y4BakzMy7ppXpevOFQZdl5+j4J6/PtdYkEPAKk4nvILKIPDP4qzXQQSfvnZPeayMwTTRcgn2uNaq15BAgcpD+1xL1hDLn0c1ue3WgrjBq4l5T38yHxEf+R3M3QRVaWr/e5l5qT1do38GZiH6Os=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vemrmcQ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71F96C433C7;
+	Tue, 20 Feb 2024 21:13:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464487;
-	bh=tLfv8xjr4pUgwsm54Hj5srkx45MUQ4K5JPobYMivpmc=;
+	s=korg; t=1708463592;
+	bh=Yp0ObszS2MFMgeyHyRjsX+1gCPWLn9E6h2gzVyAlybk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sI8ek79RAFIXWqBEwYjpjqEeGNjx6iMQ8nJM84u/u4+X+TxQwz/tNwQQKA37fFQA6
-	 e6g+BOoBFkV8932uBxY18ngr11ksMxXE5q4jfrzMb7Bf/m/e3+RyPkGzzrdH7wGi/n
-	 rKLl4nHsMh/nNe2X/AKh31f9D2en/b8wKz+bEKdM=
+	b=vemrmcQ5+e+NLbcQOQn27EHP/flzAX3KMkGAegTzTb7xsvGro9jqbFjs9sawimoAo
+	 08Jc5Hd85NcsJxaurI9g+7f+/JrUPSFE+PkSvgIYoRng3HJPJOINgLEN+ZRBbcpF1u
+	 UbBC7yY247qeXb9aAxL2BpzTbEwjFkWBiFrIM53g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 041/309] selftests: forwarding: Fix layer 2 miss test flakiness
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
+Subject: [PATCH 6.6 084/331] usb: dwc3: gadget: Fix NULL pointer dereference in dwc3_gadget_suspend
 Date: Tue, 20 Feb 2024 21:53:20 +0100
-Message-ID: <20240220205634.474654948@linuxfoundation.org>
+Message-ID: <20240220205640.233039637@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
 
-[ Upstream commit 93590849a05edffaefa11695fab98f621259ded2 ]
+commit 61a348857e869432e6a920ad8ea9132e8d44c316 upstream.
 
-After enabling a multicast querier on the bridge (like the test is
-doing), the bridge will wait for the Max Response Delay before starting
-to forward according to its MDB in order to let Membership Reports
-enough time to be received and processed.
+In current scenario if Plug-out and Plug-In performed continuously
+there could be a chance while checking for dwc->gadget_driver in
+dwc3_gadget_suspend, a NULL pointer dereference may occur.
 
-Currently, the test is waiting for exactly the default Max Response
-Delay (10 seconds) which is racy and leads to failures [1].
+Call Stack:
 
-Fix by reducing the Max Response Delay to 1 second.
+	CPU1:                           CPU2:
+	gadget_unbind_driver            dwc3_suspend_common
+	dwc3_gadget_stop                dwc3_gadget_suspend
+                                        dwc3_disconnect_gadget
 
-[1]
- [...]
- # TEST: L2 miss - Multicast (IPv4)                                    [FAIL]
- # Unregistered multicast filter was hit after adding MDB entry
+CPU1 basically clears the variable and CPU2 checks the variable.
+Consider CPU1 is running and right before gadget_driver is cleared
+and in parallel CPU2 executes dwc3_gadget_suspend where it finds
+dwc->gadget_driver which is not NULL and resumes execution and then
+CPU1 completes execution. CPU2 executes dwc3_disconnect_gadget where
+it checks dwc->gadget_driver is already NULL because of which the
+NULL pointer deference occur.
 
-Fixes: 8c33266ae26a ("selftests: forwarding: Add layer 2 miss test cases")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://lore.kernel.org/r/20240208155529.1199729-2-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 9772b47a4c29 ("usb: dwc3: gadget: Fix suspend/resume during device mode")
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
+Link: https://lore.kernel.org/r/20240119094825.26530-1-quic_uaggarwa@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../testing/selftests/net/forwarding/tc_flower_l2_miss.sh | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/usb/dwc3/gadget.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/net/forwarding/tc_flower_l2_miss.sh b/tools/testing/selftests/net/forwarding/tc_flower_l2_miss.sh
-index 20a7cb7222b8..c2420bb72c12 100755
---- a/tools/testing/selftests/net/forwarding/tc_flower_l2_miss.sh
-+++ b/tools/testing/selftests/net/forwarding/tc_flower_l2_miss.sh
-@@ -209,14 +209,17 @@ test_l2_miss_multicast()
- 	# both registered and unregistered multicast traffic.
- 	bridge link set dev $swp2 mcast_router 2
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -4703,15 +4703,13 @@ int dwc3_gadget_suspend(struct dwc3 *dwc
+ 	unsigned long flags;
+ 	int ret;
  
-+	# Set the Max Response Delay to 100 centiseconds (1 second) so that the
-+	# bridge will start forwarding according to its MDB soon after a
-+	# multicast querier is enabled.
-+	ip link set dev br1 type bridge mcast_query_response_interval 100
-+
- 	# Forwarding according to MDB entries only takes place when the bridge
- 	# detects that there is a valid querier in the network. Set the bridge
- 	# as the querier and assign it a valid IPv6 link-local address to be
- 	# used as the source address for MLD queries.
- 	ip link set dev br1 type bridge mcast_querier 1
- 	ip -6 address add fe80::1/64 nodad dev br1
--	# Wait the default Query Response Interval (10 seconds) for the bridge
--	# to determine that there are no other queriers in the network.
- 	sleep 10
+-	if (!dwc->gadget_driver)
+-		return 0;
+-
+ 	ret = dwc3_gadget_soft_disconnect(dwc);
+ 	if (ret)
+ 		goto err;
  
- 	test_l2_miss_multicast_ipv4
-@@ -224,6 +227,7 @@ test_l2_miss_multicast()
+ 	spin_lock_irqsave(&dwc->lock, flags);
+-	dwc3_disconnect_gadget(dwc);
++	if (dwc->gadget_driver)
++		dwc3_disconnect_gadget(dwc);
+ 	spin_unlock_irqrestore(&dwc->lock, flags);
  
- 	ip -6 address del fe80::1/64 dev br1
- 	ip link set dev br1 type bridge mcast_querier 0
-+	ip link set dev br1 type bridge mcast_query_response_interval 1000
- 	bridge link set dev $swp2 mcast_router 1
- }
- 
--- 
-2.43.0
-
+ 	return 0;
 
 
 
