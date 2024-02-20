@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-21200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B1DE85C797
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:14:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3522D85C906
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:29:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B43191F2510C
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:14:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC159283F08
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:29:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 674F6151CC3;
-	Tue, 20 Feb 2024 21:14:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33DC2152DF8;
+	Tue, 20 Feb 2024 21:28:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KVIc/5qU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cm4Mw2we"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F1476C9C;
-	Tue, 20 Feb 2024 21:14:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E635F151CE9;
+	Tue, 20 Feb 2024 21:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463669; cv=none; b=P+1723CQvNwC7tjfY+p8sJIdS91dMTKtjp90if0M/cIHYhWvi1NeJ2DLASDsNZr05GAOiWoeTP+E97A7qmtousUzwqbPsCvj+YEp8+kHCaIkXGnPIWF9inw6RyCbbY2vEK0K5GWnRUy8k70ljgHOAcm3Knp8ymN2L3Vi/i3ecpA=
+	t=1708464497; cv=none; b=tjuEOP0sG2CtbEyaIhn1+WUpywg+Dh4Fd/vbqsjFiWpvwe01LMGSWNEUcuqpzb9jbLG11lMbXbMiYye2cf+MPakScP0RzRteWiXi3mRmsMf73glTFzpwyv3quZTSzbUVzQ2RyK4a0G/XyZZ/GEbRs17QlTHf3WPlh19wVqzka+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463669; c=relaxed/simple;
-	bh=pqaELFGf+TdG7Yw+dEbbe0vFcqjn3VzzPOi7GieLD6M=;
+	s=arc-20240116; t=1708464497; c=relaxed/simple;
+	bh=XRJL2hMnxPkhHjb9ChkLNc+Z1aq+oeBKqb+I00lWzG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IEwKRmHjqrd15L4P0VkXjtuH2IdY3WtreWCmvwhqL4H1NcuDP3lKrZN26TOEve60Xy6xe3OZPOynssjHDje/sdY4ifJDqUouKlftfc8Y6Vd8kGU8lHi7AzuC9qgJIJpZ1Ndx8bqRlN+4dQYfn5EA7GNyOQuQbhEnpdBZT29jHVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KVIc/5qU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84BD8C433F1;
-	Tue, 20 Feb 2024 21:14:28 +0000 (UTC)
+	 MIME-Version; b=uInxWjoe4wdUyfUJUWmEdRuibvM26ZzCgJ6GkdwEhG5Sack4qvJTAmxQzGGpOKQaj75iYXGe20eN6HEIg5BcZACk0FobfnqvzPt2Z7cjG8gPlt2BRYBhH39rpLd/tHI5NpzPwHsvtAy7Nj+O6PPf1LqreejJpDMp8r5KMiUvVxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cm4Mw2we; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56334C433C7;
+	Tue, 20 Feb 2024 21:28:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463669;
-	bh=pqaELFGf+TdG7Yw+dEbbe0vFcqjn3VzzPOi7GieLD6M=;
+	s=korg; t=1708464496;
+	bh=XRJL2hMnxPkhHjb9ChkLNc+Z1aq+oeBKqb+I00lWzG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KVIc/5qUmCR8e178QY111C47vo4AThsNGelXMVaCVEziCw5bdghhDtdOnl94OfDpK
-	 +JxP/ohZacSMocOQf+vTfyCufv+PuAPkRYIjtDog6DgjACLUpXrXs81tYtQ/XZoO2l
-	 0QxE8KOTcHq/D9pcMcow2p+Y6Xt4LS4l2sw4fDKQ=
+	b=cm4Mw2weLnupWnFiFC3eH2pS12Xz4Vnb7xdU0sig05h3VlwF01T9zbcH4Yhsw6UJ2
+	 4oLkCdBLoJYMWe2RvKgOgV4KM9VCcVRff+dkV3yG5ateU5AqCxPWCSjqg4gVBZuq9S
+	 NwIwKYW0LcY/p72P4mjQivAp0pXgTe2rYh2nCUPI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Sean Young <sean@mess.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 087/331] media: ir_toy: fix a memleak in irtoy_tx
+Subject: [PATCH 6.7 044/309] selftests: forwarding: Fix bridge locked port test flakiness
 Date: Tue, 20 Feb 2024 21:53:23 +0100
-Message-ID: <20240220205640.327644382@linuxfoundation.org>
+Message-ID: <20240220205634.562784631@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +64,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit dc9ceb90c4b42c6e5c6757df1d6257110433788e ]
+[ Upstream commit f97f1fcc96908c97a240ff6cb4474e155abfa0d7 ]
 
-When irtoy_command fails, buf should be freed since it is allocated by
-irtoy_tx, or there is a memleak.
+The redirection test case fails in the netdev CI on debug kernels
+because an FDB entry is learned despite the presence of a tc filter that
+redirects incoming traffic [1].
 
-Fixes: 4114978dcd24 ("media: ir_toy: prevent device from hanging during transmit")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+I am unable to reproduce the failure locally, but I can see how it can
+happen given that learning is first enabled and only then the ingress tc
+filter is configured. On debug kernels the time window between these two
+operations is longer compared to regular kernels, allowing random
+packets to be transmitted and trigger learning.
+
+Fix by reversing the order and configure the ingress tc filter before
+enabling learning.
+
+[1]
+[...]
+ # TEST: Locked port MAB redirect                                      [FAIL]
+ # Locked entry created for redirected traffic
+
+Fixes: 38c43a1ce758 ("selftests: forwarding: Add test case for traffic redirection from a locked port")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://lore.kernel.org/r/20240208155529.1199729-5-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/rc/ir_toy.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/testing/selftests/net/forwarding/bridge_locked_port.sh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/rc/ir_toy.c b/drivers/media/rc/ir_toy.c
-index 196806709259..69e630d85262 100644
---- a/drivers/media/rc/ir_toy.c
-+++ b/drivers/media/rc/ir_toy.c
-@@ -332,6 +332,7 @@ static int irtoy_tx(struct rc_dev *rc, uint *txbuf, uint count)
- 			    sizeof(COMMAND_SMODE_EXIT), STATE_COMMAND_NO_RESP);
- 	if (err) {
- 		dev_err(irtoy->dev, "exit sample mode: %d\n", err);
-+		kfree(buf);
- 		return err;
- 	}
+diff --git a/tools/testing/selftests/net/forwarding/bridge_locked_port.sh b/tools/testing/selftests/net/forwarding/bridge_locked_port.sh
+index 9af9f6964808..c62331b2e006 100755
+--- a/tools/testing/selftests/net/forwarding/bridge_locked_port.sh
++++ b/tools/testing/selftests/net/forwarding/bridge_locked_port.sh
+@@ -327,10 +327,10 @@ locked_port_mab_redirect()
+ 	RET=0
+ 	check_port_mab_support || return 0
  
-@@ -339,6 +340,7 @@ static int irtoy_tx(struct rc_dev *rc, uint *txbuf, uint count)
- 			    sizeof(COMMAND_SMODE_ENTER), STATE_COMMAND);
- 	if (err) {
- 		dev_err(irtoy->dev, "enter sample mode: %d\n", err);
-+		kfree(buf);
- 		return err;
- 	}
+-	bridge link set dev $swp1 learning on locked on mab on
+ 	tc qdisc add dev $swp1 clsact
+ 	tc filter add dev $swp1 ingress protocol all pref 1 handle 101 flower \
+ 		action mirred egress redirect dev $swp2
++	bridge link set dev $swp1 learning on locked on mab on
  
+ 	ping_do $h1 192.0.2.2
+ 	check_err $? "Ping did not work with redirection"
+@@ -349,8 +349,8 @@ locked_port_mab_redirect()
+ 	check_err $? "Locked entry not created after deleting filter"
+ 
+ 	bridge fdb del `mac_get $h1` vlan 1 dev $swp1 master
+-	tc qdisc del dev $swp1 clsact
+ 	bridge link set dev $swp1 learning off locked off mab off
++	tc qdisc del dev $swp1 clsact
+ 
+ 	log_test "Locked port MAB redirect"
+ }
 -- 
 2.43.0
 
