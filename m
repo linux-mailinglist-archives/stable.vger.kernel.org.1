@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-21532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A43785C94C
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:31:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E9A985C7BE
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:16:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9961A1C22148
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:31:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F9CB1C220AD
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:16:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA844151CE3;
-	Tue, 20 Feb 2024 21:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85757152DF1;
+	Tue, 20 Feb 2024 21:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RY+izOIb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0oelMB7D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B6514A4E6;
-	Tue, 20 Feb 2024 21:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43CCC152DE5;
+	Tue, 20 Feb 2024 21:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464708; cv=none; b=qK7cqcopfTwhC7gDb9vA5OPV36jqjBQrWIGlrnWmBzzV+Bfsn5UxwM175rFs22LPTu/OevHEbyzpPgBYt+GZa/u7U73sj1o6x2g3+vRcoDnx8evKtifuRwFodpYSvFmNKPKxdHg26fyskfK0zoGTi3ItisPlLPsxhEh6rw9advE=
+	t=1708463739; cv=none; b=ix5/AuIo2jh4bTQ+NT6i8jlGtRvrY1GWwJmxzvgFV1NqAmBXTj2Sx1Mq8R9ExlqRKfPi2TNIPngLD/a3lSZWxpDfCjb8qwg5aSmx0/rGrOWwWAqZqbCWolJqEG/0W0DpvTYpmjBovigC2I7w8I0xRT1McPZhScamKxYnBJRWf44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464708; c=relaxed/simple;
-	bh=mFywHBIk/SAD/Ve2PEya7wQOmdGaT2EI1dRtFEOFPMI=;
+	s=arc-20240116; t=1708463739; c=relaxed/simple;
+	bh=k4m8Cqca5O4Edtu7UYbB9gGDnbwzq2d6UflaVhTEQps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uq2Zi5O9A9HK11XFFMYdGpDM7CqrmSypKG+YEsNBAGMaIy6Pin0lrEMiZfnKAiKDwk36ADTurRypYvbpASUA7eYG3VHrKtP4ep3fJg6MoSacZwV64/dsIiPiOlAErulsTk4ZlIrGB/VjC8kNc5WjuGfChpQ3HeqizqINHnlAM74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RY+izOIb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0805BC433C7;
-	Tue, 20 Feb 2024 21:31:47 +0000 (UTC)
+	 MIME-Version; b=UPnZHvScc6ldtDvp5paR2OAV5uzdA5cbPZpj/hLfcLz9RI7EnPn4H7f914emydhMOcTFa1u2M3SwoNY9Zh6q28euoWwAiZAlX8bnlbjW2rO6hFZE97rvHf6ln7nUbDCqUR2MzxyNCkGKoqLj2F4/w/OnLplA6dFKfFMEx4hQKp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0oelMB7D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7EF4C433F1;
+	Tue, 20 Feb 2024 21:15:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464708;
-	bh=mFywHBIk/SAD/Ve2PEya7wQOmdGaT2EI1dRtFEOFPMI=;
+	s=korg; t=1708463739;
+	bh=k4m8Cqca5O4Edtu7UYbB9gGDnbwzq2d6UflaVhTEQps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RY+izOIbBXa0XBHR7eGaioICs8XjKfFBXc/9IU0UVKASRVLaXWNll6uhaFOOAyLBR
-	 4PQBY7mEOSJ/CHsy7g0opYprvnXZrq4MYxR0rB1tZwwbH+2I8xsdSHqvV1aTP005W1
-	 gZDXq2PL8L+NxNk3dPyBn/E0InssKtRGQZdvpuIc=
+	b=0oelMB7Dc8CEqzabkHu3M+C9yKfLWNQHIM33RIk+jdRQVS1eHrrGthjYr4c/MbFOs
+	 vZZ3TE4acBKz75o23Lxg6QvSzGO4iCf7UnQCFoklApwmbAJe4vQa6h7BDpv0LB7B2y
+	 or3UxyGtYp+UhAFXEdv2l9T+2L3qt71b7I4UmtAg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
-Subject: [PATCH 6.7 094/309] usb: dwc3: gadget: Fix NULL pointer dereference in dwc3_gadget_suspend
+	Nathan Chancellor <nathan@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 6.6 137/331] modpost: Add .ltext and .ltext.* to TEXT_SECTIONS
 Date: Tue, 20 Feb 2024 21:54:13 +0100
-Message-ID: <20240220205636.137251571@linuxfoundation.org>
+Message-ID: <20240220205641.868796447@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 61a348857e869432e6a920ad8ea9132e8d44c316 upstream.
+commit 397586506c3da005b9333ce5947ad01e8018a3be upstream.
 
-In current scenario if Plug-out and Plug-In performed continuously
-there could be a chance while checking for dwc->gadget_driver in
-dwc3_gadget_suspend, a NULL pointer dereference may occur.
+After the linked LLVM change, building ARCH=um defconfig results in a
+segmentation fault in modpost. Prior to commit a23e7584ecf3 ("modpost:
+unify 'sym' and 'to' in default_mismatch_handler()"), there was a
+warning:
 
-Call Stack:
+  WARNING: modpost: vmlinux.o(__ex_table+0x88): Section mismatch in reference to the .ltext:(unknown)
+  WARNING: modpost: The relocation at __ex_table+0x88 references
+  section ".ltext" which is not in the list of
+  authorized sections.  If you're adding a new section
+  and/or if this reference is valid, add ".ltext" to the
+  list of authorized sections to jump to on fault.
+  This can be achieved by adding ".ltext" to
+  OTHER_TEXT_SECTIONS in scripts/mod/modpost.c.
 
-	CPU1:                           CPU2:
-	gadget_unbind_driver            dwc3_suspend_common
-	dwc3_gadget_stop                dwc3_gadget_suspend
-                                        dwc3_disconnect_gadget
-
-CPU1 basically clears the variable and CPU2 checks the variable.
-Consider CPU1 is running and right before gadget_driver is cleared
-and in parallel CPU2 executes dwc3_gadget_suspend where it finds
-dwc->gadget_driver which is not NULL and resumes execution and then
-CPU1 completes execution. CPU2 executes dwc3_disconnect_gadget where
-it checks dwc->gadget_driver is already NULL because of which the
-NULL pointer deference occur.
+The linked LLVM change moves global objects to the '.ltext' (and
+'.ltext.*' with '-ffunction-sections') sections with '-mcmodel=large',
+which ARCH=um uses. These sections should be handled just as '.text'
+and '.text.*' are, so add them to TEXT_SECTIONS.
 
 Cc: stable@vger.kernel.org
-Fixes: 9772b47a4c29 ("usb: dwc3: gadget: Fix suspend/resume during device mode")
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Signed-off-by: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
-Link: https://lore.kernel.org/r/20240119094825.26530-1-quic_uaggarwa@quicinc.com
+Closes: https://github.com/ClangBuiltLinux/linux/issues/1981
+Link: https://github.com/llvm/llvm-project/commit/4bf8a688956a759b7b6b8d94f42d25c13c7af130
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/gadget.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ scripts/mod/modpost.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -4703,15 +4703,13 @@ int dwc3_gadget_suspend(struct dwc3 *dwc
- 	unsigned long flags;
- 	int ret;
+--- a/scripts/mod/modpost.c
++++ b/scripts/mod/modpost.c
+@@ -812,7 +812,8 @@ static void check_section(const char *mo
  
--	if (!dwc->gadget_driver)
--		return 0;
--
- 	ret = dwc3_gadget_soft_disconnect(dwc);
- 	if (ret)
- 		goto err;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
--	dwc3_disconnect_gadget(dwc);
-+	if (dwc->gadget_driver)
-+		dwc3_disconnect_gadget(dwc);
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
- 	return 0;
+ #define DATA_SECTIONS ".data", ".data.rel"
+ #define TEXT_SECTIONS ".text", ".text.*", ".sched.text", \
+-		".kprobes.text", ".cpuidle.text", ".noinstr.text"
++		".kprobes.text", ".cpuidle.text", ".noinstr.text", \
++		".ltext", ".ltext.*"
+ #define OTHER_TEXT_SECTIONS ".ref.text", ".head.text", ".spinlock.text", \
+ 		".fixup", ".entry.text", ".exception.text", \
+ 		".coldtext", ".softirqentry.text"
 
 
 
