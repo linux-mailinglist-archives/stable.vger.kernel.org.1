@@ -1,144 +1,250 @@
-Return-Path: <stable+bounces-20933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F2A385C661
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:00:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE13885C6D2
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:05:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC2392836EE
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:00:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E15FD1C219DC
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:05:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 220A314C585;
-	Tue, 20 Feb 2024 21:00:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9593A1509AC;
+	Tue, 20 Feb 2024 21:05:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="brN64fUF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z6C450/X"
 X-Original-To: stable@vger.kernel.org
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B46C14AD15
-	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 21:00:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 545C5133987;
+	Tue, 20 Feb 2024 21:05:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708462826; cv=none; b=AKEI5eu+e1yXg4LDfDesYRbNj1spEHF70juqh1l6c6n2cfXZPo6zhtPcezc+VfiUzxuhdJXsCUJCkPUZ1DBwn6uBOXGhQXTUOXOmMwv6xlp5F+lOAZt6NwrVhvEZCDU71RagvoB1FNFN/Xti43zW/qibQpfX6sqBRNqCTkJ4yKw=
+	t=1708463116; cv=none; b=c0oA2hvHvuefDMt/jYIO2FJJenRTk43ndpmqiNn5MN3FfpEGYxHVhHLrY0Ony+EAWG++WaxPcjJ5JtoFx2RLH0klwW9vv2bdFppQ6TGHzRXp1OhzuDDHycyu2P0w0VL9VC5hRHCeNTTu/LlbnHZBN/TOmioTlXa6GriPgY1doG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708462826; c=relaxed/simple;
-	bh=cwoNYqSYOYttuttBAOBjicIw7kJ9/YRcq46xVwi+1C8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T7rSmkwJOQvbs2AYl55O3dKgq/fDloUZMKMtveUgQf6ssuPmfidrFNHr1JB2TcOB/dt3D2+DsWiexmCm7Sq0lw1bGE7hWIST3fTAYqhT/9ET1fti9nQT5jahCYtL3p938mNUGC5riGnBwH40198sXuuJ9udl7CK8hku1B+D9BsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=brN64fUF; arc=none smtp.client-ip=95.215.58.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Tue, 20 Feb 2024 16:00:18 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1708462822;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OngdcmO3PkxeAq3QE32mSrXrxXcw9VAOUxvVoF10f2c=;
-	b=brN64fUFjiORO9TFJpZDK/8z8X8Z4qEQgqRb+deWaqzN9l4O9RUlaj8Nu9tp2PtVr+pVJY
-	O9Ty5mimNrIk+3+NlLRcl2aB/BtSr29SsaT7G+mhYf/GXrBvJk2UsPYN0UZhkEI7caf1Dd
-	Q0LTCfCKCjK4YmqBZ2ZAkSZnXXMvqiY=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
-Subject: Re: fs/bcachefs/
-Message-ID: <uknxc26o6td7g6rawxffvsez46djmvcy2532kza2zyjuj33k7p@4jdywourgtqg>
-References: <g6el7eghhdk2v5osukhobvi4pige5bsfu5koqtmoyeknat36t7@irmmk7zo7edh>
- <ZaW5r5kRbOcKveVn@sashalap>
- <dlxqudswz64v6xn3fg2i6ob2msnytaatmnyhq4ivi7notzs6jf@itt42d42zmsw>
- <2024022056-monkhood-fossil-ec02@gregkh>
- <2024022007-buggy-operator-2dc5@gregkh>
- <g2jlxm6hcpywrezexi3kxrl6nu7bdmkoafa2kh2ptcf7olhofl@ycilgjsqyycq>
- <2024022022-viewless-astronaut-ab8c@gregkh>
- <mpqwydwybzktciqsqsi4ttryazihurwfyl7ruhrxu7o64ahmoh@2xg56usfednx>
- <2024022006-tricky-prankish-212c@gregkh>
+	s=arc-20240116; t=1708463116; c=relaxed/simple;
+	bh=eB6By04p293gKUNLY6y8wX9C2Y3UEeCkwazkM4zGBL8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=FfODG6/ZD53F35EXlS0t3r70i6fX9AqZG4GqUhw/U/zTPmvHyoKFmegaDfNls6x0ZoOd4lNZE+lX0G3eJErltmCtnwxai/ceLXsEs3J6ZWUQ3YXfzhFKAO2mfL4YeKdVGjC9Ho3JpkMXFLLRWiTCJoZrirWZHxPykWW6fBU9cRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z6C450/X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEA56C433F1;
+	Tue, 20 Feb 2024 21:05:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1708463116;
+	bh=eB6By04p293gKUNLY6y8wX9C2Y3UEeCkwazkM4zGBL8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=z6C450/XnuVmLXcObS0NStN79OGTNTdZ9TSrIlneFmxkFt/bO238A/HAD3ZZ0pot/
+	 A8bDWlNnQwm+5JyMDrtFKRjWCLrch36OlEZ/hjag/7JYYaxGA6qUBMqlOnwdqgRArQ
+	 lVgsooZx2mL2bPGJPm6df3zoQD9YChigp88hNs48=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Vincent Donnefort <vdonnefort@google.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Mete Durlu <meted@linux.ibm.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.1 100/197] tracing: Fix wasted memory in saved_cmdlines logic
+Date: Tue, 20 Feb 2024 21:50:59 +0100
+Message-ID: <20240220204844.077419659@linuxfoundation.org>
+X-Mailer: git-send-email 2.43.2
+In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
+References: <20240220204841.073267068@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2024022006-tricky-prankish-212c@gregkh>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
 
-On Tue, Feb 20, 2024 at 09:51:20PM +0100, Greg KH wrote:
-> On Tue, Feb 20, 2024 at 03:39:16PM -0500, Kent Overstreet wrote:
-> > On Tue, Feb 20, 2024 at 09:19:01PM +0100, Greg KH wrote:
-> > > On Tue, Feb 20, 2024 at 03:06:14PM -0500, Kent Overstreet wrote:
-> > > > On Tue, Feb 20, 2024 at 07:53:04PM +0100, Greg KH wrote:
-> > > > > On Tue, Feb 20, 2024 at 07:03:23PM +0100, Greg KH wrote:
-> > > > > > On Tue, Feb 20, 2024 at 12:23:33PM -0500, Kent Overstreet wrote:
-> > > > > > > On Mon, Jan 15, 2024 at 06:03:11PM -0500, Sasha Levin wrote:
-> > > > > > > > On Mon, Jan 15, 2024 at 05:12:17PM -0500, Kent Overstreet wrote:
-> > > > > > > > > Hi stable team - please don't take patches for fs/bcachefs/ except from
-> > > > > > > > > myself; I'll be doing backports and sending pull requests after stuff
-> > > > > > > > > has been tested by my CI.
-> > > > > > > > > 
-> > > > > > > > > Thanks, and let me know if there's any other workflow things I should
-> > > > > > > > > know about
-> > > > > > > > 
-> > > > > > > > Sure, we can ignore fs/bcachefs/ patches.
-> > > > > > > 
-> > > > > > > I see that you even acked this.
-> > > > > > > 
-> > > > > > > What the fuck?
-> > > > > > 
-> > > > > > Accidents happen, you were copied on those patches.  I'll go drop them
-> > > > > > now, not a big deal.
-> > > > > 
-> > > > > Wait, why are you doing "Fixes:" with an empty tag in your commits like
-> > > > > 1a1c93e7f814 ("bcachefs: Fix missing bch2_err_class() calls")?
-> > > > > 
-> > > > > That's messing with scripts and doesn't make much sense.  Please put a
-> > > > > real git id in there as the documentation suggests to.
-> > > > 
-> > > > There isn't always a clear-cut commit when a regression was introduced
-> > > > (it might not have been a regresison at all). I could dig and make
-> > > > something up, but that's slowing down your workflow, and I thought I was
-> > > > going to be handling all the stable backports for fs/bcachefs/, so - ?
-> > > > 
-> > > 
-> > > Doesn't matter, please do not put "fake" tags in commit messages like
-> > > this.  It hurts all of the people that parse commit logs.  Just don't
-> > > put a fixes tag at all as the documentation states that after "Fixes:" a
-> > > commit id belongs.
-> > 
-> > So you manually repicked a subset of my pull request, and of the two
-> > patches you silently dropped, one was a security fix - and you _never
-> > communicated_ what you were doing.
-> 
-> I explicitly said "Not all of these applied properly, please send me the
-> remaining ones".  I can go back and get the message-id if you want
-> reciepts :)
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
-I gave you a _signed pull request_, and there were no merge conflicts.
+------------------
 
-> > Greg, this isn't working. How are we going to fix this?
-> 
-> Please send a set of backported commits that you wish to have applied to
-> the stable trees.  All other subsystems do this fairly easily, it's no
-> different from sending a patch series out for anything else.
-> 
-> Worst case, I can take a git tree, BUT I will then turn that git tree
-> into individual commits as that is what we MUST deal with for the stable
-> trees, we can not work with direct pull requests for obvious reasons of
-> how the tree needs to be managed (i.e. rebasing all the time would never
-> work.)
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-You rebase these trees? Why? Are they not public?
+commit 44dc5c41b5b1267d4dd037d26afc0c4d3a568acb upstream.
 
-Look, I need to know that the code I send you is the same as the code
-that gets published in stable releases. If you're going to be rebasing
-the trees I send you, _all_ the mechanisms we have for doing that
-validation break and I'm back to manual verification.
+While looking at improving the saved_cmdlines cache I found a huge amount
+of wasted memory that should be used for the cmdlines.
 
-And given that we've got mechanisms for avoiding that - not rebasing so
-that we can verify by the sha1, gpg signing - why is stable special
-here?
+The tracing data saves pids during the trace. At sched switch, if a trace
+occurred, it will save the comm of the task that did the trace. This is
+saved in a "cache" that maps pids to comms and exposed to user space via
+the /sys/kernel/tracing/saved_cmdlines file. Currently it only caches by
+default 128 comms.
+
+The structure that uses this creates an array to store the pids using
+PID_MAX_DEFAULT (which is usually set to 32768). This causes the structure
+to be of the size of 131104 bytes on 64 bit machines.
+
+In hex: 131104 = 0x20020, and since the kernel allocates generic memory in
+powers of two, the kernel would allocate 0x40000 or 262144 bytes to store
+this structure. That leaves 131040 bytes of wasted space.
+
+Worse, the structure points to an allocated array to store the comm names,
+which is 16 bytes times the amount of names to save (currently 128), which
+is 2048 bytes. Instead of allocating a separate array, make the structure
+end with a variable length string and use the extra space for that.
+
+This is similar to a recommendation that Linus had made about eventfs_inode names:
+
+  https://lore.kernel.org/all/20240130190355.11486-5-torvalds@linux-foundation.org/
+
+Instead of allocating a separate string array to hold the saved comms,
+have the structure end with: char saved_cmdlines[]; and round up to the
+next power of two over sizeof(struct saved_cmdline_buffers) + num_cmdlines * TASK_COMM_LEN
+It will use this extra space for the saved_cmdline portion.
+
+Now, instead of saving only 128 comms by default, by using this wasted
+space at the end of the structure it can save over 8000 comms and even
+saves space by removing the need for allocating the other array.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20240209063622.1f7b6d5f@rorschach.local.home
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Vincent Donnefort <vdonnefort@google.com>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Mete Durlu <meted@linux.ibm.com>
+Fixes: 939c7a4f04fcd ("tracing: Introduce saved_cmdlines_size file")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ kernel/trace/trace.c |   75 +++++++++++++++++++++++++--------------------------
+ 1 file changed, 37 insertions(+), 38 deletions(-)
+
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -2249,7 +2249,7 @@ struct saved_cmdlines_buffer {
+ 	unsigned *map_cmdline_to_pid;
+ 	unsigned cmdline_num;
+ 	int cmdline_idx;
+-	char *saved_cmdlines;
++	char saved_cmdlines[];
+ };
+ static struct saved_cmdlines_buffer *savedcmd;
+ 
+@@ -2263,47 +2263,58 @@ static inline void set_cmdline(int idx,
+ 	strncpy(get_saved_cmdlines(idx), cmdline, TASK_COMM_LEN);
+ }
+ 
+-static int allocate_cmdlines_buffer(unsigned int val,
+-				    struct saved_cmdlines_buffer *s)
++static void free_saved_cmdlines_buffer(struct saved_cmdlines_buffer *s)
+ {
++	int order = get_order(sizeof(*s) + s->cmdline_num * TASK_COMM_LEN);
++
++	kfree(s->map_cmdline_to_pid);
++	free_pages((unsigned long)s, order);
++}
++
++static struct saved_cmdlines_buffer *allocate_cmdlines_buffer(unsigned int val)
++{
++	struct saved_cmdlines_buffer *s;
++	struct page *page;
++	int orig_size, size;
++	int order;
++
++	/* Figure out how much is needed to hold the given number of cmdlines */
++	orig_size = sizeof(*s) + val * TASK_COMM_LEN;
++	order = get_order(orig_size);
++	size = 1 << (order + PAGE_SHIFT);
++	page = alloc_pages(GFP_KERNEL, order);
++	if (!page)
++		return NULL;
++
++	s = page_address(page);
++	memset(s, 0, sizeof(*s));
++
++	/* Round up to actual allocation */
++	val = (size - sizeof(*s)) / TASK_COMM_LEN;
++	s->cmdline_num = val;
++
+ 	s->map_cmdline_to_pid = kmalloc_array(val,
+ 					      sizeof(*s->map_cmdline_to_pid),
+ 					      GFP_KERNEL);
+-	if (!s->map_cmdline_to_pid)
+-		return -ENOMEM;
+-
+-	s->saved_cmdlines = kmalloc_array(TASK_COMM_LEN, val, GFP_KERNEL);
+-	if (!s->saved_cmdlines) {
+-		kfree(s->map_cmdline_to_pid);
+-		return -ENOMEM;
++	if (!s->map_cmdline_to_pid) {
++		free_saved_cmdlines_buffer(s);
++		return NULL;
+ 	}
+ 
+ 	s->cmdline_idx = 0;
+-	s->cmdline_num = val;
+ 	memset(&s->map_pid_to_cmdline, NO_CMDLINE_MAP,
+ 	       sizeof(s->map_pid_to_cmdline));
+ 	memset(s->map_cmdline_to_pid, NO_CMDLINE_MAP,
+ 	       val * sizeof(*s->map_cmdline_to_pid));
+ 
+-	return 0;
++	return s;
+ }
+ 
+ static int trace_create_savedcmd(void)
+ {
+-	int ret;
+-
+-	savedcmd = kmalloc(sizeof(*savedcmd), GFP_KERNEL);
+-	if (!savedcmd)
+-		return -ENOMEM;
++	savedcmd = allocate_cmdlines_buffer(SAVED_CMDLINES_DEFAULT);
+ 
+-	ret = allocate_cmdlines_buffer(SAVED_CMDLINES_DEFAULT, savedcmd);
+-	if (ret < 0) {
+-		kfree(savedcmd);
+-		savedcmd = NULL;
+-		return -ENOMEM;
+-	}
+-
+-	return 0;
++	return savedcmd ? 0 : -ENOMEM;
+ }
+ 
+ int is_tracing_stopped(void)
+@@ -5972,26 +5983,14 @@ tracing_saved_cmdlines_size_read(struct
+ 	return simple_read_from_buffer(ubuf, cnt, ppos, buf, r);
+ }
+ 
+-static void free_saved_cmdlines_buffer(struct saved_cmdlines_buffer *s)
+-{
+-	kfree(s->saved_cmdlines);
+-	kfree(s->map_cmdline_to_pid);
+-	kfree(s);
+-}
+-
+ static int tracing_resize_saved_cmdlines(unsigned int val)
+ {
+ 	struct saved_cmdlines_buffer *s, *savedcmd_temp;
+ 
+-	s = kmalloc(sizeof(*s), GFP_KERNEL);
++	s = allocate_cmdlines_buffer(val);
+ 	if (!s)
+ 		return -ENOMEM;
+ 
+-	if (allocate_cmdlines_buffer(val, s) < 0) {
+-		kfree(s);
+-		return -ENOMEM;
+-	}
+-
+ 	preempt_disable();
+ 	arch_spin_lock(&trace_cmdline_lock);
+ 	savedcmd_temp = savedcmd;
+
+
 
