@@ -1,61 +1,55 @@
-Return-Path: <stable+bounces-21557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDA2C85C965
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:33:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B0B485C838
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:19:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2F8C1F22B49
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:33:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FD491F26FF5
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:19:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 030E2151CE9;
-	Tue, 20 Feb 2024 21:33:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AE12151CD8;
+	Tue, 20 Feb 2024 21:19:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K4snumFC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sZ4Fm+6B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B67CE446C9;
-	Tue, 20 Feb 2024 21:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCF45612D7;
+	Tue, 20 Feb 2024 21:19:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464786; cv=none; b=PjDDp62qO2KbQaJR5oF5jUVHLsvgJ6RoCF3XS0piXy9uJgxNQXxstZF4SXAc/ru2fa3imKsli0K9vy3tHEJY+CtqJ4U3oc/0WY3zoOUC5fS3ykpbyd06eU86oEvQNKPlVuDDAOkRMW7Nm1yIxtFMJKUoFv3/S5t/9pLo4Imwk/Y=
+	t=1708463969; cv=none; b=gT4CkbVXPO9phiZUxpagd6P12jGoWD1gZ97ang+IAd0THanR8+PygiYQ+eTrQJqBAg12mIbh+FeWdjVzkgnhaT0lhhuuXzG44d+kOwemzgHxbQYAjz+3Kr5hLRMyAEBtLa8nitVqRC+ed7Z92sf2KVw/q8eebnTY66NOrKqHi/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464786; c=relaxed/simple;
-	bh=Ahy4nKTpgtNXUUwWo6dORIZhF8G//kSXP4r9G14VcuM=;
+	s=arc-20240116; t=1708463969; c=relaxed/simple;
+	bh=1isNohZ30zvJ9w03heUyf4z+W4XwNqdcYo7OL9/0DEc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UJo7HOcmL1QQPCCN2VXXRJYyWNnKNehEJpkLvIbf/QuYb4mPOQQqT4PPL9rmaJN6sy1lI9n63J/KbV2m1yYPsIX7YrW+h3kUr4UpreE5MC08Hh9BspIVRThAHon/dyOMDcMf8VZrDq4VAWsMOQduoSHuH1ioml+wVT2PsLWkBc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K4snumFC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DCB7C433F1;
-	Tue, 20 Feb 2024 21:33:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cugN/7TZzhoxm30XrYX9kfl11xYYAXpKWEeovNGjtKli2+VazqHVRBxag4dhsxiO4K3Repw2eIA7WeWOWiyrpDDu3TF0imhlDbG5ZIXSt4v6dDdY0fb0IDhPXlYyHg1t3ca5g5L5pTqhcO4TYgwQ9srNhqGMCqL+f04gE6ez+Zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sZ4Fm+6B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41324C433F1;
+	Tue, 20 Feb 2024 21:19:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464786;
-	bh=Ahy4nKTpgtNXUUwWo6dORIZhF8G//kSXP4r9G14VcuM=;
+	s=korg; t=1708463968;
+	bh=1isNohZ30zvJ9w03heUyf4z+W4XwNqdcYo7OL9/0DEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K4snumFC8P2V/nhfgsYDCfcdFwx5bCsaEQe9sDkUKkS7ba+na2AFl7NAE88Z4C7OG
-	 n/ksSF6xWwbTp2XpHhwFniXoJg6u2olvI0/EsVezT6U8g5xRFVTb+dk9HMmTcXA3In
-	 Xqgt2GB5EsgVTVstzkQiKcSoB2lDQGbpq5zaKezY=
+	b=sZ4Fm+6BAzk62GOtJI5G86LB/Bw5alliKfZ3ruzC9xvxOSyksH3IRZWnjoYE+9DD6
+	 mJ58k03haqvHsv77kV/U/6EFd1xeM3jGtdqcfwHHFlfQPGFhhJhDwWWuK2C2Vn+kJR
+	 noEhJE0bmqrEX3VJ6uLVch5ICCPAOGfe3gIN+iNE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Nevenko Stupar <nevenko.stupar@amd.com>,
-	Chaitanya Dhere <chaitanya.dhere@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Wenjing Liu <wenjing.liu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.7 137/309] drm/amd/display: fix incorrect mpc_combine array size
-Date: Tue, 20 Feb 2024 21:54:56 +0100
-Message-ID: <20240220205637.420847652@linuxfoundation.org>
+	=?UTF-8?q?Jan=20Kundr=C3=A1t?= <jan.kundrat@cesnet.cz>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Subject: [PATCH 6.6 181/331] serial: max310x: fail probe if clock crystal is unstable
+Date: Tue, 20 Feb 2024 21:54:57 +0100
+Message-ID: <20240220205643.217645686@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,51 +59,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenjing Liu <wenjing.liu@amd.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-commit 39079fe8e660851abbafa90cd55cbf029210661f upstream.
+commit 8afa6c6decea37e7cb473d2c60473f37f46cea35 upstream.
 
-[why]
-MAX_SURFACES is per stream, while MAX_PLANES is per asic. The
-mpc_combine is an array that records all the planes per asic. Therefore
-MAX_PLANES should be used as the array size. Using MAX_SURFACES causes
-array overflow when there are more than 3 planes.
+A stable clock is really required in order to use this UART, so log an
+error message and bail out if the chip reports that the clock is not
+stable.
 
-[how]
-Use the MAX_PLANES for the mpc_combine array size.
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 4cf9a888fd3c ("serial: max310x: Check the clock readiness")
 Cc: stable@vger.kernel.org
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Reviewed-by: Nevenko Stupar <nevenko.stupar@amd.com>
-Reviewed-by: Chaitanya Dhere <chaitanya.dhere@amd.com>
-Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Wenjing Liu <wenjing.liu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Suggested-by: Jan Kundrát <jan.kundrat@cesnet.cz>
+Link: https://www.spinics.net/lists/linux-serial/msg35773.html
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20240116213001.3691629-4-hugo@hugovil.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/max310x.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
-@@ -1089,7 +1089,7 @@ struct pipe_slice_table {
- 		struct pipe_ctx *pri_pipe;
- 		struct dc_plane_state *plane;
- 		int slice_count;
--	} mpc_combines[MAX_SURFACES];
-+	} mpc_combines[MAX_PLANES];
- 	int mpc_combine_count;
- };
+--- a/drivers/tty/serial/max310x.c
++++ b/drivers/tty/serial/max310x.c
+@@ -587,7 +587,7 @@ static int max310x_update_best_err(unsig
+ 	return 1;
+ }
  
+-static u32 max310x_set_ref_clk(struct device *dev, struct max310x_port *s,
++static s32 max310x_set_ref_clk(struct device *dev, struct max310x_port *s,
+ 			       unsigned long freq, bool xtal)
+ {
+ 	unsigned int div, clksrc, pllcfg = 0;
+@@ -657,7 +657,8 @@ static u32 max310x_set_ref_clk(struct de
+ 		} while (!stable && (++try < MAX310X_XTAL_WAIT_RETRIES));
+ 
+ 		if (!stable)
+-			dev_warn(dev, "clock is not stable yet\n");
++			return dev_err_probe(dev, -EAGAIN,
++					     "clock is not stable\n");
+ 	}
+ 
+ 	return bestfreq;
+@@ -1282,7 +1283,7 @@ static int max310x_probe(struct device *
+ {
+ 	int i, ret, fmin, fmax, freq;
+ 	struct max310x_port *s;
+-	u32 uartclk = 0;
++	s32 uartclk = 0;
+ 	bool xtal;
+ 
+ 	for (i = 0; i < devtype->nr; i++)
+@@ -1360,6 +1361,11 @@ static int max310x_probe(struct device *
+ 	}
+ 
+ 	uartclk = max310x_set_ref_clk(dev, s, freq, xtal);
++	if (uartclk < 0) {
++		ret = uartclk;
++		goto out_uart;
++	}
++
+ 	dev_dbg(dev, "Reference clock set to %i Hz\n", uartclk);
+ 
+ 	for (i = 0; i < devtype->nr; i++) {
 
 
 
