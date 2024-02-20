@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-21151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50F6D85C757
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:11:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91C3D85C91E
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:29:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C29128236D
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:11:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 324E41F229DC
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:29:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A70D31509BF;
-	Tue, 20 Feb 2024 21:11:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADDB8151CED;
+	Tue, 20 Feb 2024 21:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oeMm+Q65"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XS4uVxYX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 625D5133987;
-	Tue, 20 Feb 2024 21:11:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD9314A4E6;
+	Tue, 20 Feb 2024 21:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463517; cv=none; b=O+k3AqMBN7fS+dlYcSGo2fffOYP9sGN+13pMnBGePApvU3t/Vel+ph/adMT8kG5ujBrcHtXDQLn8qNNERXFx1+YB2sljrgfl88C6vUGYEkJp56/ScHEqlxCBD6+0sGqwEu2MJdEfZAUT069C4T5HGcxIfJiimn2gj4CHibNx+1k=
+	t=1708464569; cv=none; b=Mt4lQBdTlNhGqDG6OHFCgsr45XJM6bFb3cztZ3f5cpRRoyc3Kl8iiKSZa99xawWFLqWQV75hyDALL0Aw32ENEvQ/0HptRpOVs2AicIXobSicE+mz2fG6Sr1zTlFqx2c/wYE8z7xh8oGQv/9IGraHs1Oh8M8A8TwzVYenfF8wl6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463517; c=relaxed/simple;
-	bh=njQ3FGvZdEVcGhzMV7k92pjfegfHM0UZ7htKeFcmtlU=;
+	s=arc-20240116; t=1708464569; c=relaxed/simple;
+	bh=v4bk9j6HyffpCSpWYzMrlGyAVYNTa9q48/yX+034pTQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F0EUnb6Y/nxr2KqnHbEU1HYf6RkQPTVLhbl7E5/gi6BZuOyxAidj48hTnNhQgNPOSjh1bt5gHMgaxyY1Fa2CH65OxABzU5hedMJW8CFDuD1yXUbLeEBehJfwny41+pvljzeZSPCrZclctKzWvRQ8ig1RetyNqD5wZ9BRbBbH48w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oeMm+Q65; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1404C433F1;
-	Tue, 20 Feb 2024 21:11:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uEgB4L8bxDooc2huMjKhYPPgN+4+ZPzn/CIryNN2quemv0MGcaHMZnHMoz56I0xsd/QnWQQ7YbiGrU/DEPedg1LtMeTdQuQ7b6mLa4Myr2KPQaGRysEDPzCpI/xCUIYh3EtS3QZodtGJ3Hj9m5usEAH9m9j5ELUUIoxFH9VizTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XS4uVxYX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E87DCC433C7;
+	Tue, 20 Feb 2024 21:29:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463517;
-	bh=njQ3FGvZdEVcGhzMV7k92pjfegfHM0UZ7htKeFcmtlU=;
+	s=korg; t=1708464569;
+	bh=v4bk9j6HyffpCSpWYzMrlGyAVYNTa9q48/yX+034pTQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oeMm+Q65RimH1moICfjqdrqGGxKpi8Wip9xR7xmT1Ji0g34MDfMp053xtYqw89IhG
-	 5NsGPjyLVlsBCf1sTTZfdj061uufQ2leaynEnJoCZE/sHEokY7zUyQijZlZ6yRF7mL
-	 KHcdxzKAxfue9AaeRieY9BRB6MKENmqZZQ0LFq54=
+	b=XS4uVxYXRX056UYkqsvBRc3yJz4ItMMNTXAjbfpWRD91CJDz6fUHNwhnZDZWsAIru
+	 tJq+NtmrtC2v/e8QMn/PyH2lqOF8yCNMBk0Qp2hhShCoRN0KoaE+YznpbixhMqoVdO
+	 J3sxdWP1yRlLxKCe3JXHxyUp82bZZPkauQEPRELQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.6 068/331] parisc: Prevent hung tasks when printing inventory on serial console
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 025/309] ASoC: Intel: avs: Fix dynamic port assignment when TDM is set
 Date: Tue, 20 Feb 2024 21:53:04 +0100
-Message-ID: <20240220205639.718345440@linuxfoundation.org>
+Message-ID: <20240220205633.973197919@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,39 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
 
-commit c8708d758e715c3824a73bf0cda97292b52be44d upstream.
+[ Upstream commit 44d3b8a19b91cd2af11f918b2fd05628383172de ]
 
-Printing the inventory on a serial console can be quite slow and thus may
-trigger the hung task detector (CONFIG_DETECT_HUNG_TASK=y) and possibly
-reboot the machine. Adding a cond_resched() prevents this.
+In case TDM is set in topology on SSP0, parser will overwrite vindex
+value, because it only checks if port is set. Fix this by checking whole
+field value.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: <stable@vger.kernel.org> # v6.0+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e6d50e474e45 ("ASoC: Intel: avs: Improve topology parsing of dynamic strings")
+Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Link: https://lore.kernel.org/r/20240207112624.2132821-1-amadeuszx.slawinski@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/drivers.c |    3 +++
- 1 file changed, 3 insertions(+)
+ sound/soc/intel/avs/topology.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/parisc/kernel/drivers.c
-+++ b/arch/parisc/kernel/drivers.c
-@@ -1004,6 +1004,9 @@ static __init int qemu_print_iodc_data(s
+diff --git a/sound/soc/intel/avs/topology.c b/sound/soc/intel/avs/topology.c
+index c74e9d622e4c..41020409ffb6 100644
+--- a/sound/soc/intel/avs/topology.c
++++ b/sound/soc/intel/avs/topology.c
+@@ -857,7 +857,7 @@ assign_copier_gtw_instance(struct snd_soc_component *comp, struct avs_tplg_modcf
+ 	}
  
- 	pr_info("\n");
+ 	/* If topology sets value don't overwrite it */
+-	if (cfg->copier.vindex.i2s.instance)
++	if (cfg->copier.vindex.val)
+ 		return;
  
-+	/* Prevent hung task messages when printing on serial console */
-+	cond_resched();
-+
- 	pr_info("#define HPA_%08lx_DESCRIPTION \"%s\"\n",
- 		hpa, parisc_hardware_description(&dev->id));
- 
+ 	mach = dev_get_platdata(comp->card->dev);
+-- 
+2.43.0
+
 
 
 
