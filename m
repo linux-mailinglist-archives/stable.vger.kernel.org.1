@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-21291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22EF785C834
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:19:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D32785C99E
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:36:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D087628480F
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:19:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F01F1C210FE
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:36:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85434151CD9;
-	Tue, 20 Feb 2024 21:19:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E53B151CEE;
+	Tue, 20 Feb 2024 21:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="casiQPpC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hgmEn5In"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 439FD612D7;
-	Tue, 20 Feb 2024 21:19:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C8B4151CCC;
+	Tue, 20 Feb 2024 21:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463956; cv=none; b=PiOgZF8WWUzJ0w9PsyOk75MX+4ZSd3f5GKBOJWxouWQ4edSgKYFRtIsaQTApEXiifHQ/BVceBVRXH6smH26lwbOn+CXD8CSBGfY3lamv0vyUopzWXTRMgzeeBzTWqLvkr9yM0v9SlO5fnOfKQKJewuVTB4U0Qeu/L+J0lVLU3+0=
+	t=1708464963; cv=none; b=YLENNOj6G30bt9+IMOIRYfDe31SLBVU04a1czgIDEKMncqbppB74TivzSniQDbOA3E3pdZLakqtF9sT0xaFCXXF+V8ljUi5A1Qb7gPvPfcTduULs+sVbefeyPTu1jISMZyI4KqdtiqNYs0Dbq4zHAYfcYculpISSlVsFqG9KMCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463956; c=relaxed/simple;
-	bh=rJOHBmF0um+6UxvsARUfvVH5ZCEDrKv0fnMK0zhD1K4=;
+	s=arc-20240116; t=1708464963; c=relaxed/simple;
+	bh=oKilM+6F9QS1fDxCRnfABopqYDPXb71S53cQowLCTII=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z8hUHm/fDkImwI0g9FKjR+F+wva8BCzl6VqwvQS6KytOuxJwjITCatPz/GwzwC5jCopOC/taR8qmM/shUy6yXtIJRh5p4xPlqYmdxJ40pMAHs6OknhL3Q5W8ZyOdlCLSF4x7QFJzc5fdbdHP1k2jIDl3G0Q5RsAUoOhy8RQWX5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=casiQPpC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B69FDC433C7;
-	Tue, 20 Feb 2024 21:19:15 +0000 (UTC)
+	 MIME-Version; b=Qur5SsM4TGS7ldMTxRxs4xQQJE0uyEVs6a07FIWp5scsaODnL3kzfbpWTDcSqFVuopKK0/y7RmxHk2Qu/SrqmOvdI8zbzjoyeqdukUPU1ku+k0YxU8ZQp4OU+jbbJOKKz/eT/ZiIBV6JgV0G3O6/CjG9YkjiqZ8BBxyJZVa+0pM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hgmEn5In; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98D36C433F1;
+	Tue, 20 Feb 2024 21:36:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463956;
-	bh=rJOHBmF0um+6UxvsARUfvVH5ZCEDrKv0fnMK0zhD1K4=;
+	s=korg; t=1708464963;
+	bh=oKilM+6F9QS1fDxCRnfABopqYDPXb71S53cQowLCTII=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=casiQPpCj7M4IaooyeTXHURPh8KZaYfCrZc2UviZvtd0GFcebNqdni0S/de6emzkz
-	 409eXkeMKxF5sO4wwk83k+S9OxYx11LAAdSVOMctpC2QntwRTdiAfRPRjZrMaVPSOD
-	 Z3Kovb9yCQ9VNwYvSrsf+i7l9s33jjbo1C5iYNEo=
+	b=hgmEn5InPMxlCYu1I8GWQZCgv4Xt4DAvwui/q9zYhylGIhCV/I4lZ3j+fkVXNaweB
+	 px7qN+cl+G2fDDtGL7gh0TEoA7uJNyBul5m91foufRepP3Qr4oZGE7iEMqog104mKN
+	 VJofb6SXRCewE2sjY3Ih2cxjLsJbZ0RBtgg5Q/+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guy Kaplan <guy.kaplan@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Subject: [PATCH 6.6 206/331] wifi: iwlwifi: fix double-free bug
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Thorsten Blum <thorsten.blum@toblux.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.7 163/309] tracing/synthetic: Fix trace_string() return value
 Date: Tue, 20 Feb 2024 21:55:22 +0100
-Message-ID: <20240220205644.166115676@linuxfoundation.org>
+Message-ID: <20240220205638.259870890@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Thorsten Blum <thorsten.blum@toblux.com>
 
-commit 353d321f63f7dbfc9ef58498cc732c9fe886a596 upstream.
+commit 9b6326354cf9a41521b79287da3bfab022ae0b6d upstream.
 
-The storage for the TLV PC register data wasn't done like all
-the other storage in the drv->fw area, which is cleared at the
-end of deallocation. Therefore, the freeing must also be done
-differently, explicitly NULL'ing it out after the free, since
-otherwise there's a nasty double-free bug here if a file fails
-to load after this has been parsed, and we get another free
-later (e.g. because no other file exists.) Fix that by adding
-the missing NULL assignment.
+Fix trace_string() by assigning the string length to the return variable
+which got lost in commit ddeea494a16f ("tracing/synthetic: Use union
+instead of casts") and caused trace_string() to always return 0.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20240214220555.711598-1-thorsten.blum@toblux.com
 
 Cc: stable@vger.kernel.org
-Fixes: 5e31b3df86ec ("wifi: iwlwifi: dbg: print pc register data once fw dump occurred")
-Reported-by: Guy Kaplan <guy.kaplan@intel.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240123200528.675f3c24ec0d.I6ab4015cd78d82dd95471f840629972ef0331de3@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Fixes: ddeea494a16f ("tracing/synthetic: Use union instead of casts")
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Thorsten Blum <thorsten.blum@toblux.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/trace/trace_events_synth.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-index ffe2670720c9..abf8001bdac1 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-@@ -128,6 +128,7 @@ static void iwl_dealloc_ucode(struct iwl_drv *drv)
- 	kfree(drv->fw.ucode_capa.cmd_versions);
- 	kfree(drv->fw.phy_integration_ver);
- 	kfree(drv->trans->dbg.pc_data);
-+	drv->trans->dbg.pc_data = NULL;
+--- a/kernel/trace/trace_events_synth.c
++++ b/kernel/trace/trace_events_synth.c
+@@ -441,8 +441,9 @@ static unsigned int trace_string(struct
+ 	if (is_dynamic) {
+ 		union trace_synth_field *data = &entry->fields[*n_u64];
  
- 	for (i = 0; i < IWL_UCODE_TYPE_MAX; i++)
- 		iwl_free_fw_img(drv, drv->fw.img + i);
--- 
-2.43.2
-
++		len = fetch_store_strlen((unsigned long)str_val);
+ 		data->as_dynamic.offset = struct_size(entry, fields, event->n_u64) + data_size;
+-		data->as_dynamic.len = fetch_store_strlen((unsigned long)str_val);
++		data->as_dynamic.len = len;
+ 
+ 		ret = fetch_store_string((unsigned long)str_val, &entry->fields[*n_u64], entry);
+ 
 
 
 
