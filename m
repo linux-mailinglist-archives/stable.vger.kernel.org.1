@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-21569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B35085C971
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:33:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE9B285C7F9
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:18:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D1951C20F83
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:33:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E7D21F26F99
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:18:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1324151CCC;
-	Tue, 20 Feb 2024 21:33:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0792151CD9;
+	Tue, 20 Feb 2024 21:18:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UTQ3V7nj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TCoBGn3k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A8D446C9;
-	Tue, 20 Feb 2024 21:33:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABDF1612D7;
+	Tue, 20 Feb 2024 21:18:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464823; cv=none; b=NJOIyneiZ35YZx/GEFFtj0arI+6fRxjKAg3L3Eq8cC8c+6qjE2zPOQ7PCD9840oB+PiCPv7iuwotDI9FR97/Ku2izM7jMI6P/8X6rIt6C/Wrlporav/uD9Y12AsIipfRELDDSEISOZqw93m9zj28xbMSfisBUfdP9pB1xBojqAU=
+	t=1708463906; cv=none; b=gLFU4RuXWo+5nmfPMsOCWeC6fKYUfU86UOhSsRz6ne4NYp+OAVazt1G2rEF+2FNBfccuOAFC4gZjH7ZpBxMZP0K4XKnGiVLzuEIB9EzTFrhL+5cdjUhSlkO3qE8fMN7hJ7D596tBODdgCOX2xAWzTpXVy2Jmo9QmWNnFZ9qFfaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464823; c=relaxed/simple;
-	bh=LPPbjdammpKnjaSuLLwOZwN7jmR90/ky+pROkXPr/vI=;
+	s=arc-20240116; t=1708463906; c=relaxed/simple;
+	bh=cr0zIS5PqahbwG/t2DOBiBq5XEYGp6WDIeaE3tl3d9w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AAi1eE8ph+gxIEPp8cfO7hTvcZnwOgsZ8LC1D1c+U9djIcSWfzeHidthASfoOhViG+BO+GgXORzZBlD7pnHO8aIPuMuh7iWiUJUQnKBsf65vA6sdbLr0sXLr1QhObpsK4wfQZkkNvEMjWnh3hUozU79+FkF80fhhPIiS5MIFx9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UTQ3V7nj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E9DC433F1;
-	Tue, 20 Feb 2024 21:33:42 +0000 (UTC)
+	 MIME-Version; b=Gf1/8GZAaRW/1iRXjt9kanJaCGa1CjjRrNVUrYfgQH98XXxm336CxFYcbNg3OmloWi+SLtZvLkWCGUmHsoj0EmaIhWi7CdyRGIOhVXT8YhXZeNJVd1jStQxirwsmmg6zzCj7Gr2IYAi9yX7ICe+i5I6UpS2uGBZKuh9FvyBkXKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TCoBGn3k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C41AAC43390;
+	Tue, 20 Feb 2024 21:18:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464823;
-	bh=LPPbjdammpKnjaSuLLwOZwN7jmR90/ky+pROkXPr/vI=;
+	s=korg; t=1708463906;
+	bh=cr0zIS5PqahbwG/t2DOBiBq5XEYGp6WDIeaE3tl3d9w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UTQ3V7njizZptY/CbxxOjgHvWhN9pI4Us/V0VHzdEcTALe8nMCnAZIFt802a3Bhe2
-	 1waci5llKvw4LomzmhNLlyoZMFw9R/eKICdYqK4tsnUNQT/WLhhLYTMdIJCQAbMf9O
-	 Rawvng9eHlvVovzCmPBsB8shrfYwMnmEvt2XtZoM=
+	b=TCoBGn3kO6hB8VfMtGs5BahomAYq50SMrlHefe+zxxX8Zx7tdaBxU1Hw9i7/195m9
+	 K+1szaumNFZvBbWqyAQ2Uc3qww+EkNhlzwZ5EkRodwrmVx58o/7JAVO02g6ascd4kV
+	 oIoiP+4m5dQPIY5TLNVfa9WsUJCklkV1VN64jiVM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.7 148/309] parisc: BTLB: Fix crash when setting up BTLB at CPU bringup
+	Prasad Pandit <pjp@fedoraproject.org>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.6 191/331] KVM: x86: make KVM_REQ_NMI request iff NMI pending for vcpu
 Date: Tue, 20 Feb 2024 21:55:07 +0100
-Message-ID: <20240220205637.807667437@linuxfoundation.org>
+Message-ID: <20240220205643.577013924@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Prasad Pandit <pjp@fedoraproject.org>
 
-commit 913b9d443a0180cf0de3548f1ab3149378998486 upstream.
+commit 6231c9e1a9f35b535c66709aa8a6eda40dbc4132 upstream.
 
-When using hotplug and bringing up a 32-bit CPU, ask the firmware about the
-BTLB information to set up the static (block) TLB entries.
+kvm_vcpu_ioctl_x86_set_vcpu_events() routine makes 'KVM_REQ_NMI'
+request for a vcpu even when its 'events->nmi.pending' is zero.
+Ex:
+    qemu_thread_start
+     kvm_vcpu_thread_fn
+      qemu_wait_io_event
+       qemu_wait_io_event_common
+        process_queued_cpu_work
+         do_kvm_cpu_synchronize_post_init/_reset
+          kvm_arch_put_registers
+           kvm_put_vcpu_events (cpu, level=[2|3])
 
-For that write access to the static btlb_info struct is needed, but
-since it is marked __ro_after_init the kernel segfaults with missing
-write permissions.
+This leads vCPU threads in QEMU to constantly acquire & release the
+global mutex lock, delaying the guest boot due to lock contention.
+Add check to make KVM_REQ_NMI request only if vcpu has NMI pending.
 
-Fix the crash by dropping the __ro_after_init annotation.
-
-Fixes: e5ef93d02d6c ("parisc: BTLB: Initialize BTLB tables at CPU startup")
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: <stable@vger.kernel.org> # v6.6+
+Fixes: bdedff263132 ("KVM: x86: Route pending NMIs from userspace through process_nmi()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Prasad Pandit <pjp@fedoraproject.org>
+Link: https://lore.kernel.org/r/20240103075343.549293-1-ppandit@redhat.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/kernel/cache.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/x86.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/parisc/kernel/cache.c
-+++ b/arch/parisc/kernel/cache.c
-@@ -58,7 +58,7 @@ int pa_serialize_tlb_flushes __ro_after_
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -5300,7 +5300,8 @@ static int kvm_vcpu_ioctl_x86_set_vcpu_e
+ 	if (events->flags & KVM_VCPUEVENT_VALID_NMI_PENDING) {
+ 		vcpu->arch.nmi_pending = 0;
+ 		atomic_set(&vcpu->arch.nmi_queued, events->nmi.pending);
+-		kvm_make_request(KVM_REQ_NMI, vcpu);
++		if (events->nmi.pending)
++			kvm_make_request(KVM_REQ_NMI, vcpu);
+ 	}
+ 	static_call(kvm_x86_set_nmi_mask)(vcpu, events->nmi.masked);
  
- struct pdc_cache_info cache_info __ro_after_init;
- #ifndef CONFIG_PA20
--struct pdc_btlb_info btlb_info __ro_after_init;
-+struct pdc_btlb_info btlb_info;
- #endif
- 
- DEFINE_STATIC_KEY_TRUE(parisc_has_cache);
 
 
 
