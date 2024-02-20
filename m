@@ -1,69 +1,73 @@
-Return-Path: <stable+bounces-20794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCD5D85B9F1
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 12:08:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D05BD85BA03
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 12:11:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D1ECB210F6
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 11:08:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3C1A1C23ED9
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 11:11:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5884965BA1;
-	Tue, 20 Feb 2024 11:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39BC167C4D;
+	Tue, 20 Feb 2024 11:10:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hx3xf6iP"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="BSSqGygS"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B49362178
-	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 11:08:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7826664CE;
+	Tue, 20 Feb 2024 11:10:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708427317; cv=none; b=beBMKe0YetieqHRFfYAfLcLupzoxd7Ew+rxhI6Tl+SD/Usu+CATvchg1IkAKzJuRODLEe7yCxevWmIEuWF43Jcc6vnQB7mWDh5Z3brZev67OL1BJ4FgmpVcyCpVrkfvKr7LbBHUXVxVFXPkPztokleKunlVk+HozCD8TMuZQ8Rc=
+	t=1708427459; cv=none; b=KTZyC14ktQClUCiXAIk0pki1PwXdJAihePlEPannGM0rJiMl9l+vQmjkQ28PwjEiZhMan2eHKHiPj3IcpSKMPfezMe/mMnItlxWsacByzzcFrKil6D6PYM9lCRZeo00tOOiquoY0L22D/qr7vUVbN+QOX1s1l9thJWQT1TgNnXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708427317; c=relaxed/simple;
-	bh=HIw9ATkvhWGFG9DqtWWojbNX03QxV3oGQ+1ulPbTphY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cRyMpG1HT5lUKq4hLt8R1Y2gY11rSVcP6nIWLsoiHxmvoWYgTDpzXNuMkUHOXLd1eDd7JSvc5u2Msq1wf/T3Lf+4eEm4gv2wUOJIqUrFrcNCuV5klgIfvFBOi975JN3FHlRjJ54ig34iLzCdYmulUxE+NLO6RJgqkQjVcSU0dC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hx3xf6iP; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708427316; x=1739963316;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=HIw9ATkvhWGFG9DqtWWojbNX03QxV3oGQ+1ulPbTphY=;
-  b=hx3xf6iP9eZrJC2eTbmrJZjv6NJv85+7g2ChhcdRfx7afGQLXaoau+4U
-   Dz1d6IpQr4l1K+fTEtTpgRD9IUMLR1PAZ+jflr2wysXES4xT7QwF39sOj
-   EIUUbGMp960XtF4p6kPxynpQKVf0rm3eTpTOQmDSTsDQYJy7//UaIIK+r
-   q1q8pdbof0P3vDuZGxqRlspXPJiIRysQnslS1CFZdHkrCoF7Qb7kNUmuW
-   O7/fG0/UMGngfFhRvMGZ6kAPj3ONAurhF4FJQGJrUCihKjnLlztknWsVc
-   2SffsMc26AwpbZHD6wnBm/4PoBKEwEuvp+jnzfy/XEB056pDtMUhPU7xk
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10989"; a="13640640"
-X-IronPort-AV: E=Sophos;i="6.06,172,1705392000"; 
-   d="scan'208";a="13640640"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 03:08:35 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,172,1705392000"; 
-   d="scan'208";a="5112498"
-Received: from jlawryno.igk.intel.com ([10.91.220.59])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 03:08:32 -0800
-From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-To: dri-devel@lists.freedesktop.org
-Cc: oded.gabbay@gmail.com,
-	quic_jhugo@quicinc.com,
-	stable@vger.kernel.org,
-	Andrzej Kacprowski <Andrzej.Kacprowski@intel.com>,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Subject: [PATCH] accel/ivpu: Don't enable any tiles by default on VPU40xx
-Date: Tue, 20 Feb 2024 12:08:30 +0100
-Message-ID: <20240220110830.1439719-1-jacek.lawrynowicz@linux.intel.com>
+	s=arc-20240116; t=1708427459; c=relaxed/simple;
+	bh=eRdcavBrbS7Z1tgoLtld/S/+yifdcL68SWTMBVmtqiw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gdZrQjECEnIgtDZJfEQ4z19X/uhT0LuJp8n+D2dJAv38+KFSzJDvjqZ7hm8Dr7hCXRiFeHiChWP9boLUtdsoste7HM3xYdt+GyWNnUtQTEIUilJbL6He6CiO17pGst2hCMeMFmeqdrSwaqLBQeeZyAXzTHDR0qrSrjuxH9+7vo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=BSSqGygS; arc=none smtp.client-ip=217.70.183.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPA id 8228F1BF211;
+	Tue, 20 Feb 2024 11:10:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1708427455;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dIMzuvrtDamZE0HiEkiJxqOPfEthKIYmnyBT6Ohkkxg=;
+	b=BSSqGygS1kfJ6h9uzsvevdfUzDbIxGanc5XtUCMUXQGcdCnf3cnhtH0K7dvIZnvx1o4gv9
+	pb8b/liLFtzXzfv9QHiHxYs6OKadiTWet707mwjuUUWn+48AZGNzUacFArNfD7qRADz366
+	CH7XVs+tmLzCYIaR1jRaQEG7WipxeK+paTL9zXrHvGFqFqITUr+onbxt1Z5ZZ6T7Tenksz
+	zNJl2XJlmMUsG4+Ok1TjcDClxVbHO4MsSQ8f0AeKsDJjegLT/08RTNak4iyejl2G4ZRJj7
+	8CLqxjwkIZXE4ur2TBC4seu3WJnSSrkMS9zlPTkP3GyxV9kpZb9GR2Trg0DJVw==
+From: Herve Codina <herve.codina@bootlin.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Frank Rowand <frowand.list@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Wolfram Sang <wsa@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
+	Rob Herring <robh@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Herve Codina <herve.codina@bootlin.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] driver core: Clear FWNODE_FLAG_NOT_DEVICE when a device is added
+Date: Tue, 20 Feb 2024 12:10:36 +0100
+Message-ID: <20240220111044.133776-2-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240220111044.133776-1-herve.codina@bootlin.com>
+References: <20240220111044.133776-1-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,37 +75,40 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-GND-Sasl: herve.codina@bootlin.com
 
-From: Andrzej Kacprowski <Andrzej.Kacprowski@intel.com>
+Since commit 1a50d9403fb9 ("treewide: Fix probing of devices in DT
+overlays"), when using device-tree overlays, the FWNODE_FLAG_NOT_DEVICE
+is set on each overlay nodes.
+When an overlay contains a node related to a bus (i2c for instance)
+and its children nodes representing i2c devices, the flag is cleared for
+the bus node by the OF notifier but the "standard" probe sequence takes
+place (the same one is performed without an overlay) for the bus and
+children devices are created simply by walking the children DT nodes
+without clearing the FWNODE_FLAG_NOT_DEVICE flag for these devices.
 
-There is no point in requesting 1 tile on VPU40xx as the FW will
-probably need more tiles to run workloads, so it will have to
-reconfigure PLL anyway. Don't enable any tiles and allow the FW to
-perform initial tile configuration.
+Clear the FWNODE_FLAG_NOT_DEVICE when the device is added, no matter if
+an overlay is used or not.
 
-This improves NPU boot stability as the tiles are always enabled only
-by the FW from the same initial state.
-
-Fixes: 79cdc56c4a54 ("accel/ivpu: Add initial support for VPU 4")
-Signed-off-by: Andrzej Kacprowski <Andrzej.Kacprowski@intel.com>
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Fixes: 1a50d9403fb9 ("treewide: Fix probing of devices in DT overlays")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- drivers/accel/ivpu/ivpu_hw_40xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/base/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/accel/ivpu/ivpu_hw_40xx.c b/drivers/accel/ivpu/ivpu_hw_40xx.c
-index 1c995307c113..a1523d0b1ef3 100644
---- a/drivers/accel/ivpu/ivpu_hw_40xx.c
-+++ b/drivers/accel/ivpu/ivpu_hw_40xx.c
-@@ -24,7 +24,7 @@
- #define SKU_HW_ID_SHIFT              16u
- #define SKU_HW_ID_MASK               0xffff0000u
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index 14d46af40f9a..61d09ac57bfb 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -3619,6 +3619,7 @@ int device_add(struct device *dev)
+ 	 */
+ 	if (dev->fwnode && !dev->fwnode->dev) {
+ 		dev->fwnode->dev = dev;
++		dev->fwnode->flags &= ~FWNODE_FLAG_NOT_DEVICE;
+ 		fw_devlink_link_device(dev);
+ 	}
  
--#define PLL_CONFIG_DEFAULT           0x1
-+#define PLL_CONFIG_DEFAULT           0x0
- #define PLL_CDYN_DEFAULT             0x80
- #define PLL_EPP_DEFAULT              0x80
- #define PLL_REF_CLK_FREQ	     (50 * 1000000)
 -- 
 2.43.0
 
