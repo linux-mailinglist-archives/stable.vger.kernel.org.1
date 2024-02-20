@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-21572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 524D985C975
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:33:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D22AA85C802
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:18:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB885B208B9
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:33:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D3CD284A60
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:18:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39E04151CE3;
-	Tue, 20 Feb 2024 21:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E1E6151CD6;
+	Tue, 20 Feb 2024 21:18:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dRkaiwBt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2hVtRN2R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3619446C9;
-	Tue, 20 Feb 2024 21:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E096F612D7;
+	Tue, 20 Feb 2024 21:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464833; cv=none; b=nZMZtTTgCLrAsx3VYzYjpXcELADsh4amFdhnshpoZbx23eMSYC0h/gf/Q99TvHmKlM+IUkM/AoqWsvJXnNdn91VssZ20+2ehCMvDbKVuRYxB1i92B+1kEDN2JHdoK7+QSsvOTW9el9YnGSRQh06JEiyUnf7CGoe9Jn3SwoUQNfA=
+	t=1708463919; cv=none; b=oznB+fZRe9tg+/EgvwE93ELD4Xlpe1pjk4qIjKgHm1T3ytxqPmlqk371mnTFb1f/80ixieKVbqmdfqFY+TMCmEqaMPRuLMYlZvIN2qAFj2ShYzoWdHo/NvwDU41CHgwZLnPcclEI41EW41vAXwInf3STZTFCT/U43ClH5YhdM7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464833; c=relaxed/simple;
-	bh=pdnP9DTfVn41gb74c2O49uL+8IArxheEWE05+xeH3ws=;
+	s=arc-20240116; t=1708463919; c=relaxed/simple;
+	bh=lKmZMQrY96zjNcBPLHh2rEh4FraAVqu7qSeyVc9T2fY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FUKakEODSXqpaC2hKyGDZ8PzM6YBttk47xBBQG5r0cnZS+gFJAzzmbUdabmekdGny8KUNLafrE6NKkUjNncAfHrYy+UbzLAa3lBuBr+Dc9bi+gwJTNBu1eDARZ+iYr2YmFR853686z8grQy3F0H3+8zRVoCR2YAG39dmA3mp72o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dRkaiwBt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69F6BC433C7;
-	Tue, 20 Feb 2024 21:33:52 +0000 (UTC)
+	 MIME-Version; b=C51co0DQVc7G+yRce6Z5IWAFySmz7ndeneZgX7Ongj+PSaIzj1UNEdLVeYXTWrBgOJfiasDXFCSH6EvMOi2hkeapK1J8PPDEJdS1J4KgZd6fHz7mRi88dV1rUR069M0TegYDcrbiW4Xte9LPYza6oSxAomghaY7sxvLTzu3uIgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2hVtRN2R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48186C43390;
+	Tue, 20 Feb 2024 21:18:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464832;
-	bh=pdnP9DTfVn41gb74c2O49uL+8IArxheEWE05+xeH3ws=;
+	s=korg; t=1708463918;
+	bh=lKmZMQrY96zjNcBPLHh2rEh4FraAVqu7qSeyVc9T2fY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dRkaiwBtmy3BtouwNRx2vP0Sw6PouWN0eb1n+VXfybzoqk1JGADQB7BsrH6AMavXY
-	 CViR2LSSySBp5FUlfyQGZ/B4w5wi14skT1zz63lpAMtotUP4kej2zlrup1UYHl9AcN
-	 aHWJbV63NldK07DlhKS9GbWuERN96mRPy1lReKrg=
+	b=2hVtRN2RNkAmBnrTa+iZI83W/GzmR+VWlEjHS3qb38sVoK3hRmlf5otlzj1EagraZ
+	 l72wHuethv1Dl8Hmk5etOBlGLDbVcquhR5yUKsvrHfnxiVDKNIjfC3qcYxV1/3rqZp
+	 Dez/1wtFCR/KzQIwZAB60tMkcGJi8mkJD8CUBwaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH 6.7 151/309] modpost: Add .ltext and .ltext.* to TEXT_SECTIONS
-Date: Tue, 20 Feb 2024 21:55:10 +0100
-Message-ID: <20240220205637.899126096@linuxfoundation.org>
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.6 195/331] mmc: slot-gpio: Allow non-sleeping GPIO ro
+Date: Tue, 20 Feb 2024 21:55:11 +0100
+Message-ID: <20240220205643.721149934@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-commit 397586506c3da005b9333ce5947ad01e8018a3be upstream.
+commit cc9432c4fb159a3913e0ce3173b8218cd5bad2e0 upstream.
 
-After the linked LLVM change, building ARCH=um defconfig results in a
-segmentation fault in modpost. Prior to commit a23e7584ecf3 ("modpost:
-unify 'sym' and 'to' in default_mismatch_handler()"), there was a
-warning:
+This change uses the appropriate _cansleep or non-sleeping API for
+reading GPIO read-only state. This allows users with GPIOs that
+never sleepbeing called in atomic context.
 
-  WARNING: modpost: vmlinux.o(__ex_table+0x88): Section mismatch in reference to the .ltext:(unknown)
-  WARNING: modpost: The relocation at __ex_table+0x88 references
-  section ".ltext" which is not in the list of
-  authorized sections.  If you're adding a new section
-  and/or if this reference is valid, add ".ltext" to the
-  list of authorized sections to jump to on fault.
-  This can be achieved by adding ".ltext" to
-  OTHER_TEXT_SECTIONS in scripts/mod/modpost.c.
+Implement the same mechanism as in commit 52af318c93e97 ("mmc: Allow
+non-sleeping GPIO cd").
 
-The linked LLVM change moves global objects to the '.ltext' (and
-'.ltext.*' with '-ffunction-sections') sections with '-mcmodel=large',
-which ARCH=um uses. These sections should be handled just as '.text'
-and '.text.*' are, so add them to TEXT_SECTIONS.
-
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 Cc: stable@vger.kernel.org
-Closes: https://github.com/ClangBuiltLinux/linux/issues/1981
-Link: https://github.com/llvm/llvm-project/commit/4bf8a688956a759b7b6b8d94f42d25c13c7af130
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Link: https://lore.kernel.org/r/20240206083912.2543142-1-alexander.stein@ew.tq-group.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/mod/modpost.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/mmc/core/slot-gpio.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/scripts/mod/modpost.c
-+++ b/scripts/mod/modpost.c
-@@ -807,7 +807,8 @@ static void check_section(const char *mo
+--- a/drivers/mmc/core/slot-gpio.c
++++ b/drivers/mmc/core/slot-gpio.c
+@@ -75,11 +75,15 @@ EXPORT_SYMBOL(mmc_gpio_set_cd_irq);
+ int mmc_gpio_get_ro(struct mmc_host *host)
+ {
+ 	struct mmc_gpio *ctx = host->slot.handler_priv;
++	int cansleep;
  
- #define DATA_SECTIONS ".data", ".data.rel"
- #define TEXT_SECTIONS ".text", ".text.*", ".sched.text", \
--		".kprobes.text", ".cpuidle.text", ".noinstr.text"
-+		".kprobes.text", ".cpuidle.text", ".noinstr.text", \
-+		".ltext", ".ltext.*"
- #define OTHER_TEXT_SECTIONS ".ref.text", ".head.text", ".spinlock.text", \
- 		".fixup", ".entry.text", ".exception.text", \
- 		".coldtext", ".softirqentry.text"
+ 	if (!ctx || !ctx->ro_gpio)
+ 		return -ENOSYS;
+ 
+-	return gpiod_get_value_cansleep(ctx->ro_gpio);
++	cansleep = gpiod_cansleep(ctx->ro_gpio);
++	return cansleep ?
++		gpiod_get_value_cansleep(ctx->ro_gpio) :
++		gpiod_get_value(ctx->ro_gpio);
+ }
+ EXPORT_SYMBOL(mmc_gpio_get_ro);
+ 
 
 
 
