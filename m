@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-21340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D751885C873
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:21:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F6DF85C9B3
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:37:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91A9D284D3A
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:21:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06F5EB2249F
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:37:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6A28152DE1;
-	Tue, 20 Feb 2024 21:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB0B2151CEA;
+	Tue, 20 Feb 2024 21:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xhZoD6YY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="huXGqjtg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7019E151CEC;
-	Tue, 20 Feb 2024 21:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C62151CCD;
+	Tue, 20 Feb 2024 21:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464113; cv=none; b=arx6CZBO5TZ4c0FtqEWhf4TFGH1aUfOPoh02zGnkkCsM0CV2FwlH20CmLOZiZmkc7WcpcgPSk7Y3tA2GV52JCdZQhHXCafokPDo8TZY4hf1ge4Zp23OxgEcjWCZ1gI3v119voGvKI3docbttTIcOU4cqPSq7S03KXj3Iaw4wJ/Q=
+	t=1708465028; cv=none; b=APx8RmdSj8jAoiP3eFsfgQ+rbg6Ja4DP00hzA+gwcxe0Yl8/RFoxShjifN1UTXK6Bn1OXC2QeVfuFeZY/m3hbLzCdSOr3vgmmuXb/YUiq+sVUcJTIRIB0loEXR2zaGkynknbxcKZCbW43/GheWTpjQkNloFam3VoyokVDpY+A0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464113; c=relaxed/simple;
-	bh=M3PwGVP5gpBKm4AoHCI4imKn5ITxrimW24WIHKFKK78=;
+	s=arc-20240116; t=1708465028; c=relaxed/simple;
+	bh=AlVHxQfyF1Q4EQsBUh/ufWalk1NheVqJGJQD5+C+oj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V42AyHDivmESY732zZczqIu1Sc8jb7MSuC3qvfAu2DyigCi7WiApYYky89rqeWJa5GgzhczrZpFnlmcZH5ytRtZzZCbJWbNajpPg/SHTsrXwlBqdwweC+whPL6bM4iDGH+kTJynd7ZAZ1pLSqgXX1pIbyRp3/3PmXu2vSKbRrpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xhZoD6YY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D30F3C433F1;
-	Tue, 20 Feb 2024 21:21:52 +0000 (UTC)
+	 MIME-Version; b=hyINZoV36cZG1rXSGsPyNVluYCHKIzQx6JeDQzEATrcIseqKr2HzWeTxygi5YykxV7R1KeLwLoGRENK0nPKnjfnbCJzqQeZBuMRh0tw7x6bDPo53aQQc2BUi8PZndKSwiCEOIiuslHenXF7EWcEqFN7TdAZizLuALQzNai74qqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=huXGqjtg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CE06C433C7;
+	Tue, 20 Feb 2024 21:37:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464113;
-	bh=M3PwGVP5gpBKm4AoHCI4imKn5ITxrimW24WIHKFKK78=;
+	s=korg; t=1708465028;
+	bh=AlVHxQfyF1Q4EQsBUh/ufWalk1NheVqJGJQD5+C+oj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xhZoD6YYFwqGlEe6Z3UCMVjlwZ7jFeFcBt91JOf0yxnaVu/6yVkG9E4HduXWnpRp/
-	 IBZ7zwiKQIdTWWayx3hJtk+VXzggXqFbIlNMFt+rQZVYZ6kwzV8NYDQXlTel6ccA/s
-	 8WGvqx0wH9GpgiSdoKsGenXMqL+dV76f+9oyl0yY=
+	b=huXGqjtgBafIaPPa4xYJ+uGH+WjqI2mGOMVk/0hqdKNck43tcPxP5voG6F0cBC2Ma
+	 ZK2Pn0bRUrN7G97/DrYGyqQUvBhCojWlwgBIE/5ils9CF8yW1ODUhskDUv6zsz9xXG
+	 Br+7YmtitrHl6gRKOuEGjeRRfHH10iYm1+eV+VMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+52bbc0ad036f6f0d4a25@syzkaller.appspotmail.com,
-	Brad Spengler <spender@grsecurity.net>,
-	=?UTF-8?q?=D0=A1=D1=82=D0=B0=D1=81=20=D0=9D=D0=B8=D1=87=D0=B8=D0=BF=D0=BE=D1=80=D0=BE=D0=B2=D0=B8=D1=87?= <stasn77@gmail.com>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 6.6 256/331] netfilter: ipset: Missing gc cancellations fixed
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.7 213/309] drm/amd/display: Preserve original aspect ratio in create stream
 Date: Tue, 20 Feb 2024 21:56:12 +0100
-Message-ID: <20240220205645.898282331@linuxfoundation.org>
+Message-ID: <20240220205639.837104078@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +62,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jozsef Kadlecsik <kadlec@netfilter.org>
+From: Tom Chung <chiahsuan.chung@amd.com>
 
-commit 27c5a095e2518975e20a10102908ae8231699879 upstream.
+commit deb110292180cd501f6fde2a0178d65fcbcabb0c upstream.
 
-The patch fdb8e12cc2cc ("netfilter: ipset: fix performance regression
-in swap operation") missed to add the calls to gc cancellations
-at the error path of create operations and at module unload. Also,
-because the half of the destroy operations now executed by a
-function registered by call_rcu(), neither NFNL_SUBSYS_IPSET mutex
-or rcu read lock is held and therefore the checking of them results
-false warnings.
+[Why]
+The original picture aspect ratio in mode struct may have chance be
+overwritten with wrong aspect ratio data in create_stream_for_sink().
+It will create a different VIC output and cause HDMI compliance test
+failed.
 
-Fixes: 97f7cf1cd80e ("netfilter: ipset: fix performance regression in swap operation")
-Reported-by: syzbot+52bbc0ad036f6f0d4a25@syzkaller.appspotmail.com
-Reported-by: Brad Spengler <spender@grsecurity.net>
-Reported-by: Стас Ничипорович <stasn77@gmail.com>
-Tested-by: Brad Spengler <spender@grsecurity.net>
-Tested-by: Стас Ничипорович <stasn77@gmail.com>
-Signed-off-by: Jozsef Kadlecsik <kadlec@netfilter.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+[How]
+Preserve the original picture aspect ratio data during create the
+stream.
+
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/ipset/ip_set_core.c     |    2 ++
- net/netfilter/ipset/ip_set_hash_gen.h |    4 ++--
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/netfilter/ipset/ip_set_core.c
-+++ b/net/netfilter/ipset/ip_set_core.c
-@@ -1154,6 +1154,7 @@ static int ip_set_create(struct sk_buff
- 	return ret;
- 
- cleanup:
-+	set->variant->cancel_gc(set);
- 	set->variant->destroy(set);
- put_out:
- 	module_put(set->type->me);
-@@ -2378,6 +2379,7 @@ ip_set_net_exit(struct net *net)
- 		set = ip_set(inst, i);
- 		if (set) {
- 			ip_set(inst, i) = NULL;
-+			set->variant->cancel_gc(set);
- 			ip_set_destroy_set(set);
- 		}
- 	}
---- a/net/netfilter/ipset/ip_set_hash_gen.h
-+++ b/net/netfilter/ipset/ip_set_hash_gen.h
-@@ -431,7 +431,7 @@ mtype_ahash_destroy(struct ip_set *set,
- 	u32 i;
- 
- 	for (i = 0; i < jhash_size(t->htable_bits); i++) {
--		n = __ipset_dereference(hbucket(t, i));
-+		n = (__force struct hbucket *)hbucket(t, i);
- 		if (!n)
- 			continue;
- 		if (set->extensions & IPSET_EXT_DESTROY && ext_destroy)
-@@ -451,7 +451,7 @@ mtype_destroy(struct ip_set *set)
- 	struct htype *h = set->data;
- 	struct list_head *l, *lt;
- 
--	mtype_ahash_destroy(set, ipset_dereference_nfnl(h->table), true);
-+	mtype_ahash_destroy(set, (__force struct htable *)h->table, true);
- 	list_for_each_safe(l, lt, &h->ad) {
- 		list_del(l);
- 		kfree(l);
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -6110,7 +6110,9 @@ create_stream_for_sink(struct drm_connec
+ 		if (recalculate_timing) {
+ 			freesync_mode = get_highest_refresh_rate_mode(aconnector, false);
+ 			drm_mode_copy(&saved_mode, &mode);
++			saved_mode.picture_aspect_ratio = mode.picture_aspect_ratio;
+ 			drm_mode_copy(&mode, freesync_mode);
++			mode.picture_aspect_ratio = saved_mode.picture_aspect_ratio;
+ 		} else {
+ 			decide_crtc_timing_for_drm_display_mode(
+ 					&mode, preferred_mode, scale);
 
 
 
