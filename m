@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-21231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5B7A85C7C7
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:16:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 605E385C943
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:31:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 768001F26D16
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:16:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91CBA1C20F83
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:31:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E0AA152E03;
-	Tue, 20 Feb 2024 21:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03358151CE1;
+	Tue, 20 Feb 2024 21:31:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MgZXfYmz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BGtmyA1a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE404151CD8;
-	Tue, 20 Feb 2024 21:16:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B630B14A4D2;
+	Tue, 20 Feb 2024 21:31:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463768; cv=none; b=Y0vJDTYwOjmlfrqtb62PJC5Ltw4zpfUHJ3V/gFxJBwBQHg23q/KZfZNCmCO6TPVOzQxHdC0phfwNcNySk8AjhRIXuBxoPvSetgWG/W2tZ2qv1ZpJPoonfzVwWIA8KgDFe8hXEsLJDClctE6kiGQDArumZwCjE8u8GoItH6ochJ0=
+	t=1708464680; cv=none; b=DhIw74aroQirPtr3n306V+ItwSne/SJepKE/M5DCk/kVMuUwfw3bSeIKBow0tavkuZMHf8KThn6rL2+Vgaehjc13u160iGGXtix2ljDzOx1Q7gNS3qNzIbyltIeiyikiuAblxGh1qVN5vRwmCqiFxLb1XXs/WZr5R9BmevNPM7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463768; c=relaxed/simple;
-	bh=JzkvkzSS4KihQCUHm8KQbcHJiLuseqVbihO8LZeFPo0=;
+	s=arc-20240116; t=1708464680; c=relaxed/simple;
+	bh=qb87wKKnEu3WetdDqx3yA6X8IH3O334OhiRKEYKwXT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=deiOCJFj1vw1HbMcUEiLvHoonjVW5cruuOIB/GT6XrkK1IQOUm798cuKVfVsmpcUzEIjkheef6mAF/Qz1DluPQgY6oyOu84O722T5XOXSrU4SaPkZjZqoGsWwD+sC25fSoSdZZuUVHWI4TGSgYQx6v0ntGJwPtRS8TZG4LCzsgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MgZXfYmz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 452BDC433F1;
-	Tue, 20 Feb 2024 21:16:08 +0000 (UTC)
+	 MIME-Version; b=KJQ8d1NaYPG5saX4bd7d1SdVy39f0Q0AIf8DhXkH00LLB1LeeTDJ9iEBgduuMExz3ub1yHyYRns89TPU0mCS6Yjf3pXDkXe/1sxQCrZbfbWMNVXtYFekbIlejySpjNwxVv5hxr3zZGfTj8iEee2BcU5au6IiJ1+hA5zlAYY+nio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BGtmyA1a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 413E5C43390;
+	Tue, 20 Feb 2024 21:31:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463768;
-	bh=JzkvkzSS4KihQCUHm8KQbcHJiLuseqVbihO8LZeFPo0=;
+	s=korg; t=1708464680;
+	bh=qb87wKKnEu3WetdDqx3yA6X8IH3O334OhiRKEYKwXT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MgZXfYmz+upeI9h4qj6kKSOiAZFsqt47QvM5WJlVsSDu8GbFl//oWPqBUDv40CbyT
-	 SoQ7UW7gWgmUabRHaobIz7WCwsPtg95wvLLLrH5hsx54g4O8cQRswvdcOxjL9Fhcy3
-	 evgPbJZDsAG9vI3ZQOd7CF/U5N6IuNopyWr0T2DE=
+	b=BGtmyA1acKjl6nwL7WK9AMyywY77r00/0Guhmzz9SLlPZJ76fZ1Tv2H9Q+iH/5mbI
+	 dMF53Vpu93q1l6vb7fae200F8d4K41IidoZA0bGN6+sGaKFKVnqLqa6DLqo070NNzN
+	 rs6crUMZIap1qlIjspcCjLAR0Sft7zXP0KtBvLw8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ekansh Gupta <quic_ekangupt@quicinc.com>
-Subject: [PATCH 6.6 145/331] misc: fastrpc: Mark all sessions as invalid in cb_remove
-Date: Tue, 20 Feb 2024 21:54:21 +0100
-Message-ID: <20240220205642.101935831@linuxfoundation.org>
+	Sanath S <sanath.s@amd.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Lukas Wunner <lukas@wunner.de>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 103/309] PCI: Fix active state requirement in PME polling
+Date: Tue, 20 Feb 2024 21:54:22 +0100
+Message-ID: <20240220205636.409728308@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +66,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ekansh Gupta <quic_ekangupt@quicinc.com>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-commit a4e61de63e34860c36a71d1a364edba16fb6203b upstream.
+[ Upstream commit 41044d5360685e78a869d40a168491a70cdb7e73 ]
 
-In remoteproc shutdown sequence, rpmsg_remove will get called which
-would depopulate all the child nodes that have been created during
-rpmsg_probe. This would result in cb_remove call for all the context
-banks for the remoteproc. In cb_remove function, session 0 is
-getting skipped which is not correct as session 0 will never become
-available again. Add changes to mark session 0 also as invalid.
+The commit noted in fixes added a bogus requirement that runtime PM managed
+devices need to be in the RPM_ACTIVE state for PME polling.  In fact, only
+devices in low power states should be polled.
 
-Fixes: f6f9279f2bf0 ("misc: fastrpc: Add Qualcomm fastrpc basic driver model")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
-Link: https://lore.kernel.org/r/20240108114833.20480-1-quic_ekangupt@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However there's still a requirement that the device config space must be
+accessible, which has implications for both the current state of the polled
+device and the parent bridge, when present.  It's not sufficient to assume
+the bridge remains in D0 and cases have been observed where the bridge
+passes the D0 test, but the PM state indicates RPM_SUSPENDING and config
+space of the polled device becomes inaccessible during pci_pme_wakeup().
+
+Therefore, since the bridge is already effectively required to be in the
+RPM_ACTIVE state, formalize this in the code and elevate the PM usage count
+to maintain the state while polling the subordinate device.
+
+This resolves a regression reported in the bugzilla below where a
+Thunderbolt/USB4 hierarchy fails to scan for an attached NVMe endpoint
+downstream of a bridge in a D3hot power state.
+
+Link: https://lore.kernel.org/r/20240123185548.1040096-1-alex.williamson@redhat.com
+Fixes: d3fcd7360338 ("PCI: Fix runtime PM race with PME polling")
+Reported-by: Sanath S <sanath.s@amd.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218360
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Sanath S <sanath.s@amd.com>
+Reviewed-by: Rafael J. Wysocki <rafael@kernel.org>
+Cc: Lukas Wunner <lukas@wunner.de>
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/fastrpc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/pci.c | 37 ++++++++++++++++++++++---------------
+ 1 file changed, 22 insertions(+), 15 deletions(-)
 
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -2191,7 +2191,7 @@ static int fastrpc_cb_remove(struct plat
- 	int i;
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index b2000b14faa0..e62de9730422 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -2459,29 +2459,36 @@ static void pci_pme_list_scan(struct work_struct *work)
+ 		if (pdev->pme_poll) {
+ 			struct pci_dev *bridge = pdev->bus->self;
+ 			struct device *dev = &pdev->dev;
+-			int pm_status;
++			struct device *bdev = bridge ? &bridge->dev : NULL;
++			int bref = 0;
  
- 	spin_lock_irqsave(&cctx->lock, flags);
--	for (i = 1; i < FASTRPC_MAX_SESSIONS; i++) {
-+	for (i = 0; i < FASTRPC_MAX_SESSIONS; i++) {
- 		if (cctx->session[i].sid == sess->sid) {
- 			cctx->session[i].valid = false;
- 			cctx->sesscount--;
+ 			/*
+-			 * If bridge is in low power state, the
+-			 * configuration space of subordinate devices
+-			 * may be not accessible
++			 * If we have a bridge, it should be in an active/D0
++			 * state or the configuration space of subordinate
++			 * devices may not be accessible or stable over the
++			 * course of the call.
+ 			 */
+-			if (bridge && bridge->current_state != PCI_D0)
+-				continue;
++			if (bdev) {
++				bref = pm_runtime_get_if_active(bdev, true);
++				if (!bref)
++					continue;
++
++				if (bridge->current_state != PCI_D0)
++					goto put_bridge;
++			}
+ 
+ 			/*
+-			 * If the device is in a low power state it
+-			 * should not be polled either.
++			 * The device itself should be suspended but config
++			 * space must be accessible, therefore it cannot be in
++			 * D3cold.
+ 			 */
+-			pm_status = pm_runtime_get_if_active(dev, true);
+-			if (!pm_status)
+-				continue;
+-
+-			if (pdev->current_state != PCI_D3cold)
++			if (pm_runtime_suspended(dev) &&
++			    pdev->current_state != PCI_D3cold)
+ 				pci_pme_wakeup(pdev, NULL);
+ 
+-			if (pm_status > 0)
+-				pm_runtime_put(dev);
++put_bridge:
++			if (bref > 0)
++				pm_runtime_put(bdev);
+ 		} else {
+ 			list_del(&pme_dev->list);
+ 			kfree(pme_dev);
+-- 
+2.43.0
+
 
 
 
