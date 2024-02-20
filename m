@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-20844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC1B085BFFA
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 16:32:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BD7685BFFD
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 16:33:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE1E81C21BAB
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 15:32:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A12FDB22AAB
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 15:33:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FF6D6BB3C;
-	Tue, 20 Feb 2024 15:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6CF37602F;
+	Tue, 20 Feb 2024 15:33:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hHJsZO2g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GjHjN/e/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E37A3664CF
-	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 15:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 979136A35B
+	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 15:33:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708443121; cv=none; b=dpSOCs16JI1z1c+t/WHgmmhVBzg5Xg9xf48cCwI4yOkKD7s14nFC2vfCFcs+qEWZ1TZzRwrJcEeiMO1mcoUXA3ts1vqNLkEDRomu+znqFQVxGQrBavcT8HADRcbotg5tf0QlZCxmQZ/dsmBJlPjOUDP/jlJzIJ6y91q+Vkx/Wrw=
+	t=1708443192; cv=none; b=Ebzj5Aeq0NSMn1O/OZXlNVEfXoHxeg7CTzcja0PRtJ8xpTspfB+WqkwtDyOn+OfVR356TystgfPG0OpCOYxQ5NV1KNGudKO8D4l0Eu1V0Vec0pXs4Oo9ZtV7jFsS1zbAQ/uCYIvu34yGbNeqLGZAk/ZvDbSzkv+L2j/SGOOAC8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708443121; c=relaxed/simple;
-	bh=9XnRy+40nbiu0URK19IolUXgdwSZ/3szEu9iR3CRAtU=;
+	s=arc-20240116; t=1708443192; c=relaxed/simple;
+	bh=ETHZ6lpzXCsHhiWsxxIwp75RUAj4Up5weXzI69QBuak=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IPhaYCdUTF77k9TIxXPrj/8AAdlmwAbmWIYbMq+6uKjWREfwGQkI30b/dwUJxRz/TNETTPC3ue13tbZal/NAt6c3ZyMslazuWq9zXkHcigywCNXX9kA9Cr+KqPqlAYpp4keR7shV9dnIbDtyPdA9BhtlzUFCOSzDentV8WizZaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hHJsZO2g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 022FAC433C7;
-	Tue, 20 Feb 2024 15:31:59 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=eRYTNc5sUpKjZUkviqqMNqm0kpA6qVJBOZzrF/j12Jk8jd9F4kUhrFXNiXKBM6OLVaNH8nnr1GjbAcqc3OX6zKzfjuGZh6fcR1bxd0k1KapvYZAUE1kRK5I+fYrzOCqyerydrbAcdayE7UmudqdEQNCfe7bbRUd5zSxv2ZexJmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GjHjN/e/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4E28C433F1;
+	Tue, 20 Feb 2024 15:33:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708443120;
-	bh=9XnRy+40nbiu0URK19IolUXgdwSZ/3szEu9iR3CRAtU=;
+	s=korg; t=1708443192;
+	bh=ETHZ6lpzXCsHhiWsxxIwp75RUAj4Up5weXzI69QBuak=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hHJsZO2gyWSmB1GXrt2hwT0cMBxcAMLB1kBRo5voX7XKCwMY0YbDvWORqLsw5aG+K
-	 /oOOGgGLzqYhR4TbJ2BAtxHI8VGJ8zHsnk1bXu58cZvbPPEvUuUk/7Gb1iHboCnF47
-	 Cz7aEwtNXllUVvOrsHxby+ub2JQd5QCRfDb8AuEE=
-Date: Tue, 20 Feb 2024 16:31:57 +0100
+	b=GjHjN/e/pmUdMtw94s0VLK5F3kJSiXL0IgrH9E6rXOQv6elrixWF+MtyS9ho7GAYI
+	 g0Ncscfs1kClG31y7BZ4hVjmdwTKX99Uuzn6n3LqOit34D3fVbiXICSl/X+5jdyCAf
+	 UcRpnb6CQ9EW+fPonSUvMnHxvdB5C/X/0PSUo9No=
+Date: Tue, 20 Feb 2024 16:33:09 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: Xiang Yang <xiangyang3@huawei.com>, mark.rutland@arm.com,
-	catalin.marinas@arm.com, will@kernel.org, keescook@chromium.org,
-	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org,
-	xiujianfeng@huawei.com, liaochang1@huawei.com
-Subject: Re: [PATCH 5.10.y v2] Revert "arm64: Stash shadow stack pointer in
- the task struct on interrupt"
-Message-ID: <2024022049-worst-dividable-0f1c@gregkh>
-References: <20240219132153.378265-1-xiangyang3@huawei.com>
- <CAMj1kXFwTLJ77MYy3Pm+S9WGgkMw0hAGdTKOF05xdqqBg8giMw@mail.gmail.com>
+To: "Marciniszyn, Mike" <mike.marciniszyn@intel.com>
+Cc: Sasha Levin <sashal@kernel.org>,
+	"Saleem, Shiraz" <shiraz.saleem@intel.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH 6.1.y] RDMA/irdma: Ensure iWarp QP queue memory is OS
+ paged aligned
+Message-ID: <2024022003-rocker-craftily-9cb6@gregkh>
+References: <20240207163240.433-1-shiraz.saleem@intel.com>
+ <Zcj1JyNJww8njJFv@sashalap>
+ <SA1PR11MB6895D85EBD4BEFDCEC57AAD286482@SA1PR11MB6895.namprd11.prod.outlook.com>
+ <2024021314-predator-scientist-84cd@gregkh>
+ <SA1PR11MB6895AE19B8C02FAD9A84BE58864F2@SA1PR11MB6895.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,43 +60,19 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAMj1kXFwTLJ77MYy3Pm+S9WGgkMw0hAGdTKOF05xdqqBg8giMw@mail.gmail.com>
+In-Reply-To: <SA1PR11MB6895AE19B8C02FAD9A84BE58864F2@SA1PR11MB6895.namprd11.prod.outlook.com>
 
-On Mon, Feb 19, 2024 at 05:57:07PM +0100, Ard Biesheuvel wrote:
-> On Mon, 19 Feb 2024 at 14:24, Xiang Yang <xiangyang3@huawei.com> wrote:
-> >
-> > This reverts commit 3f225f29c69c13ce1cbdb1d607a42efeef080056.
-> >
-> > The shadow call stack for irq now is stored in current task's thread info
-> > in irq_stack_entry. There is a possibility that we have some soft irqs
-> > pending at the end of hard irq, and when we process softirq with the irq
-> > enabled, irq_stack_entry will enter again and overwrite the shadow call
-> > stack whitch stored in current task's thread info, leading to the
-> > incorrect shadow call stack restoration for the first entry of the hard
-> > IRQ, then the system end up with a panic.
-> >
-> > task A                               |  task A
-> > -------------------------------------+------------------------------------
-> > el1_irq        //irq1 enter          |
-> >   irq_handler  //save scs_sp1        |
-> >     gic_handle_irq                   |
-> >     irq_exit                         |
-> >       __do_softirq                   |
-> >                                      | el1_irq         //irq2 enter
-> >                                      |   irq_handler   //save scs_sp2
-> >                                      |                 //overwrite scs_sp1
-> >                                      |   ...
-> >                                      |   irq_stack_exit //restore scs_sp2
-> >   irq_stack_exit //restore wrong     |
-> >                  //scs_sp2           |
-> >
-> > So revert this commit to fix it.
-> >
-> > Fixes: 3f225f29c69c ("arm64: Stash shadow stack pointer in the task struct on interrupt")
-> >
-> > Signed-off-by: Xiang Yang <xiangyang3@huawei.com>
+On Tue, Feb 13, 2024 at 04:20:21PM +0000, Marciniszyn, Mike wrote:
+> > 
+> > Is it needed for 6.1.y or not?
+> > 
+> > confused,
+> > 
+> It is needed.
 > 
-> Acked-by: Ard Biesheuvel <ardb@kernel.org>
+> Its just the Fixes: tag is incorrect because 6.1.y branch lacks the commit indicated in the Fixes: tag.
+> 
+> The upstream version split a large routine up for clarity.   The 6.1.y branch contains the pre-split code so the patch needed to be ported into the old larger routine.
 
 Now queued up, thanks.
 
