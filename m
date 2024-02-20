@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-21248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 620F785C7DD
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:17:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB96685C956
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:32:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1657D1F26F74
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:17:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 184B31C20A2F
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:32:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A8B151CDC;
-	Tue, 20 Feb 2024 21:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D3CC151CD6;
+	Tue, 20 Feb 2024 21:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YyA78aZX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QwYK5+iD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1029D76C9C;
-	Tue, 20 Feb 2024 21:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38ECB446C9;
+	Tue, 20 Feb 2024 21:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463822; cv=none; b=iOEUal4MTrFjymXoa5dFRW1skyOG0OsaoIJx4j3EQJyRiJFvNmojI5SDm4ZHOgkYHeJ9J2KoCi4bDVbuBtyYk887fL517QFY1mS+nZv4pdRQsiH8Z4kC8XKUb1E9oVBVZ/v2hsbWIueRafbAyq7uyfT4SbqS6pWcH8svZ23OkiA=
+	t=1708464740; cv=none; b=HmRIA8/0pqgxfaGmNypu9IEglrI9AfRioRLm05B1YNtRTFiB66RGaUHw1yjywFx8pIlc0inXKWebwnUk5PIauQyb+ZaeWDn+yuwlIjFM2opO+swYcE7ZEh7Hm8tEeid88NHOGgOAZ+RoUfoJB0xcUo7j7yIP7NzFckP273S8rbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463822; c=relaxed/simple;
-	bh=WA5rbB69OY7s/87VBaLnt8Q47U0AQyYMvK4nNsXr1Gw=;
+	s=arc-20240116; t=1708464740; c=relaxed/simple;
+	bh=WQnMzI09m9jxna40RmH8KHYQnqQyhKAAt3FbmJy8J+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h9Uy4qs0dr6JK5HQ3LvtoheUvI5AUAdaHg5hrbBbCHJZ1un1FiLhIXMb/vIcFX9BD5IePl3y5FrdDRplVmt+FpURF3qydjD4qSGmNwSVUeRU2FN+teAb5fZrqbttDWj8nQG+GiTUBk3dWTPVDhNlMQmLdZrOR+yFcy1EL3wRgvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YyA78aZX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9245AC433F1;
-	Tue, 20 Feb 2024 21:17:01 +0000 (UTC)
+	 MIME-Version; b=BkEKyHfzs3ZYnJEl0TsIHOZ0F+KGE2K2Sk+ZftgiUyYDLNUM811riDS2HcRY8i3w3LOV1sgtoKpiWySTJnMFasDB5ZNDWwiTiFnxpwW6fMn5t5tAvNwBx1+PABQigxTJOY4rOc2emX6O9pLFjPtsJeo97PoGk2/XQBnPlvmiGQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QwYK5+iD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6B00C433F1;
+	Tue, 20 Feb 2024 21:32:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463821;
-	bh=WA5rbB69OY7s/87VBaLnt8Q47U0AQyYMvK4nNsXr1Gw=;
+	s=korg; t=1708464740;
+	bh=WQnMzI09m9jxna40RmH8KHYQnqQyhKAAt3FbmJy8J+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YyA78aZXFnQm0V1h8ZtIyVqmqUEr6sEQ4j0AVgHt9r4DmLab/m3uNKujdhaRZIkJF
-	 AuITNtwXPZ9sy2EQWMoTQIFrnX2RWct/uKh3IVvLax3c3MGMhHyXIw+ElVdpUUjNCZ
-	 7eAicdekXdmpRcUhym1eITBaQIijxXdhJfxxG7BY=
+	b=QwYK5+iDnLAbVA4DY3mapHr7n1U53xUdfAyo4y2nwo3kExQELBu972yiV9VBK3poL
+	 hGrOHPIFRyBE5axBeojKcBrKo42Lw8ikP9yaUJUssRvC1184rgzufdc2DdKZ7x7EQl
+	 0dJ1NQHvcQCqc6Kuv7ka4ZBOTuquuFDiXLMSBI4Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eugen Hristev <eugen.hristev@collabora.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 164/331] pmdomain: mediatek: fix race conditions with genpd
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.7 121/309] selftests: mptcp: allow changing subtests prefix
 Date: Tue, 20 Feb 2024 21:54:40 +0100
-Message-ID: <20240220205642.686244741@linuxfoundation.org>
+Message-ID: <20240220205636.958935824@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eugen Hristev <eugen.hristev@collabora.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit c41336f4d69057cbf88fed47951379b384540df5 upstream.
+commit de46d138e7735eded9756906747fd3a8c3a42225 upstream.
 
-If the power domains are registered first with genpd and *after that*
-the driver attempts to power them on in the probe sequence, then it is
-possible that a race condition occurs if genpd tries to power them on
-in the same time.
-The same is valid for powering them off before unregistering them
-from genpd.
-Attempt to fix race conditions by first removing the domains from genpd
-and *after that* powering down domains.
-Also first power up the domains and *after that* register them
-to genpd.
+If a CI executes the same selftest multiple times with different
+options, all results from the same subtests will have the same title,
+which confuse the CI. With the same title printed in TAP, the tests are
+considered as the same ones.
 
-Fixes: 59b644b01cf4 ("soc: mediatek: Add MediaTek SCPSYS power domains")
-Signed-off-by: Eugen Hristev <eugen.hristev@collabora.com>
+Now, it is possible to override this prefix by using MPTCP_LIB_KSFT_TEST
+env var, and have a different title.
+
+While at it, use 'basename' to remove the suffix as well instead of
+using an extra 'sed'.
+
+Fixes: c4192967e62f ("selftests: mptcp: lib: format subtests results in TAP")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231225133615.78993-1-eugen.hristev@collabora.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/20240131-upstream-net-20240131-mptcp-ci-issues-v1-7-4c1c11e571ff@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pmdomain/mediatek/mtk-pm-domains.c |   15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_lib.sh |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pmdomain/mediatek/mtk-pm-domains.c
-+++ b/drivers/pmdomain/mediatek/mtk-pm-domains.c
-@@ -508,6 +508,11 @@ static int scpsys_add_subdomain(struct s
- 			goto err_put_node;
- 		}
+--- a/tools/testing/selftests/net/mptcp/mptcp_lib.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
+@@ -6,7 +6,7 @@ readonly KSFT_FAIL=1
+ readonly KSFT_SKIP=4
  
-+		/* recursive call to add all subdomains */
-+		ret = scpsys_add_subdomain(scpsys, child);
-+		if (ret)
-+			goto err_put_node;
-+
- 		ret = pm_genpd_add_subdomain(parent_pd, child_pd);
- 		if (ret) {
- 			dev_err(scpsys->dev, "failed to add %s subdomain to parent %s\n",
-@@ -517,11 +522,6 @@ static int scpsys_add_subdomain(struct s
- 			dev_dbg(scpsys->dev, "%s add subdomain: %s\n", parent_pd->name,
- 				child_pd->name);
- 		}
--
--		/* recursive call to add all subdomains */
--		ret = scpsys_add_subdomain(scpsys, child);
--		if (ret)
--			goto err_put_node;
- 	}
+ # shellcheck disable=SC2155 # declare and assign separately
+-readonly KSFT_TEST=$(basename "${0}" | sed 's/\.sh$//g')
++readonly KSFT_TEST="${MPTCP_LIB_KSFT_TEST:-$(basename "${0}" .sh)}"
  
- 	return 0;
-@@ -535,9 +535,6 @@ static void scpsys_remove_one_domain(str
- {
- 	int ret;
+ MPTCP_LIB_SUBTESTS=()
  
--	if (scpsys_domain_is_on(pd))
--		scpsys_power_off(&pd->genpd);
--
- 	/*
- 	 * We're in the error cleanup already, so we only complain,
- 	 * but won't emit another error on top of the original one.
-@@ -547,6 +544,8 @@ static void scpsys_remove_one_domain(str
- 		dev_err(pd->scpsys->dev,
- 			"failed to remove domain '%s' : %d - state may be inconsistent\n",
- 			pd->genpd.name, ret);
-+	if (scpsys_domain_is_on(pd))
-+		scpsys_power_off(&pd->genpd);
- 
- 	clk_bulk_put(pd->num_clks, pd->clks);
- 	clk_bulk_put(pd->num_subsys_clks, pd->subsys_clks);
 
 
 
