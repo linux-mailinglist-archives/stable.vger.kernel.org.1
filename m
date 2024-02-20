@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-21184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3566485C786
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:13:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8769385C916
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:29:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E20D02833DE
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:13:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40FA3284BCC
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:29:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 667FC151CEE;
-	Tue, 20 Feb 2024 21:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F124B152DE8;
+	Tue, 20 Feb 2024 21:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lS+ZyOZJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CpYAxVab"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2437E151CE8;
-	Tue, 20 Feb 2024 21:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD103151CEB;
+	Tue, 20 Feb 2024 21:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463618; cv=none; b=hIF3mdNnIbqDloDf1ytfkB09CVYqqcTGsbAmjM6WoSbxZcE21Z98xzfl1QCSagcrBn9Sxr0TLZv7vjHVrYD5ZoZQAve35UdJiaCgtGBRmb0Bi0aQ2yIn3F2TOKjUFSzjKMDtgjLmN/Up4APDDH1firQ63N7TBG4jf+4gaUusvu4=
+	t=1708464547; cv=none; b=Xk4PT8fro+jnU2thc0f5q/UjNhF09N9NO91CLJ28qC6HqYLIJxljT5CujUYDYw8jkuGcHUZb5UIesrSNafs31jGTRTR2I8wUrCAlCdSvz3Up+RgpCynsurs5U3lxbL2uY0IKe84q0nK9zquCZ6fSEjCVjQB8rV2Y7MNgZDC7XZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463618; c=relaxed/simple;
-	bh=FNJmbmkZABeentB1LMuka0sAUC6kJtUeR38Sk/SwGr8=;
+	s=arc-20240116; t=1708464547; c=relaxed/simple;
+	bh=7kCjagViAHGuv4Bi7oLLaM69uzV57RDzwK/WQxixSPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SeGO9p1x8zA+0Auc9uURsmRDb6s8A/tZEKu1/Mn6VJuctsHfwmfrHS+/BKHJ8hF6AWfMD9VKsV6iNImrLhzyyLyBHI1TfSMRdEj+D0p8JIzwJWRtjbAO566FhwDtfxc0SZyTcrWYdvRUxbHquiHc9J/F8AFzPuRo7ExaQHZCSDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lS+ZyOZJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98183C433C7;
-	Tue, 20 Feb 2024 21:13:37 +0000 (UTC)
+	 MIME-Version; b=D65WZLGQeQkIidE01DFe0B32+IyeNYSlg7Hoi8Zz2lC5T6CEDKGLg6UAc+N/03XOfXzLQCFtR5CjSJ+kJB4pP8eWWMHAorDqizn5C4Ewraa1uiekNCrINFS92yHPzQvES/3CYkHurPFcuzpGzYEoJz72U7p2j6j/twoht3EWahE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CpYAxVab; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 220B1C433F1;
+	Tue, 20 Feb 2024 21:29:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463618;
-	bh=FNJmbmkZABeentB1LMuka0sAUC6kJtUeR38Sk/SwGr8=;
+	s=korg; t=1708464547;
+	bh=7kCjagViAHGuv4Bi7oLLaM69uzV57RDzwK/WQxixSPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lS+ZyOZJVKUkEwgdhBQHZNURc/LPwfk+gdtWHDqRbEqg0BvMxOu02vpv1Hcp815QO
-	 cWz4DlQfwyu1JuTFbajcFmgnKTwOjxnlivhjOea6ZA/DFbnaZAOQAk1IAvJnNW+Wu9
-	 0AnNxBbXVdrZoHWNpzQwi2ME7Ck3ROD96BozQcgc=
+	b=CpYAxVabgJ1sTqIaIryaa2C8Iu2Q2ClD10dHkop7QfKNu7Gdjz+EpwaYDh+DHqLwz
+	 4lq8krFpgJGbYableXQtolZC3kKLfhbSUjOi1KBSUGWpk2dasAbHHlyPan0pg3FzAO
+	 3/85CTKWfdAFlGkAgy6mGy4n+y2kfQ6Co/xLzNXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Spoorthy <spoorthy@linux.ibm.com>,
-	Benjamin Gray <bgray@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 100/331] powerpc/kasan: Limit KASAN thread size increase to 32KB
-Date: Tue, 20 Feb 2024 21:53:36 +0100
-Message-ID: <20240220205640.725006471@linuxfoundation.org>
+Subject: [PATCH 6.7 058/309] MIPS: Add memory clobber to csum_ipv6_magic() inline assembler
+Date: Tue, 20 Feb 2024 21:53:37 +0100
+Message-ID: <20240220205635.030320014@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit f1acb109505d983779bbb7e20a1ee6244d2b5736 ]
+[ Upstream commit d55347bfe4e66dce2e1e7501e5492f4af3e315f8 ]
 
-KASAN is seen to increase stack usage, to the point that it was reported
-to lead to stack overflow on some 32-bit machines (see link).
+After 'lib: checksum: Use aligned accesses for ip_fast_csum and
+csum_ipv6_magic tests' was applied, the test_csum_ipv6_magic unit test
+started failing for all mips platforms, both little and bit endian.
+Oddly enough, adding debug code into test_csum_ipv6_magic() made the
+problem disappear.
 
-To avoid overflows the stack size was doubled for KASAN builds in
-commit 3e8635fb2e07 ("powerpc/kasan: Force thread size increase with
-KASAN").
+The gcc manual says:
 
-However with a 32KB stack size to begin with, the doubling leads to a
-64KB stack, which causes build errors:
-  arch/powerpc/kernel/switch.S:249: Error: operand out of range (0x000000000000fe50 is not between 0xffffffffffff8000 and 0x0000000000007fff)
+"The "memory" clobber tells the compiler that the assembly code performs
+ memory reads or writes to items other than those listed in the input
+ and output operands (for example, accessing the memory pointed to by one
+ of the input parameters)
+"
 
-Although the asm could be reworked, in practice a 32KB stack seems
-sufficient even for KASAN builds - the additional usage seems to be in
-the 2-3KB range for a 64-bit KASAN build.
+This is definitely the case for csum_ipv6_magic(). Indeed, adding the
+'memory' clobber fixes the problem.
 
-So only increase the stack for KASAN if the stack size is < 32KB.
-
-Fixes: 18f14afe2816 ("powerpc/64s: Increase default stack size to 32KB")
-Reported-by: Spoorthy <spoorthy@linux.ibm.com>
-Reported-by: Benjamin Gray <bgray@linux.ibm.com>
-Reviewed-by: Benjamin Gray <bgray@linux.ibm.com>
-Link: https://lore.kernel.org/linuxppc-dev/bug-207129-206035@https.bugzilla.kernel.org%2F/
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240212064244.3924505-1-mpe@ellerman.id.au
+Cc: Charlie Jenkins <charlie@rivosinc.com>
+Cc: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/thread_info.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/include/asm/checksum.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/thread_info.h b/arch/powerpc/include/asm/thread_info.h
-index bf5dde1a4114..15c5691dd218 100644
---- a/arch/powerpc/include/asm/thread_info.h
-+++ b/arch/powerpc/include/asm/thread_info.h
-@@ -14,7 +14,7 @@
+diff --git a/arch/mips/include/asm/checksum.h b/arch/mips/include/asm/checksum.h
+index 4044eaf989ac..0921ddda11a4 100644
+--- a/arch/mips/include/asm/checksum.h
++++ b/arch/mips/include/asm/checksum.h
+@@ -241,7 +241,8 @@ static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
+ 	"	.set	pop"
+ 	: "=&r" (sum), "=&r" (tmp)
+ 	: "r" (saddr), "r" (daddr),
+-	  "0" (htonl(len)), "r" (htonl(proto)), "r" (sum));
++	  "0" (htonl(len)), "r" (htonl(proto)), "r" (sum)
++	: "memory");
  
- #ifdef __KERNEL__
- 
--#ifdef CONFIG_KASAN
-+#if defined(CONFIG_KASAN) && CONFIG_THREAD_SHIFT < 15
- #define MIN_THREAD_SHIFT	(CONFIG_THREAD_SHIFT + 1)
- #else
- #define MIN_THREAD_SHIFT	CONFIG_THREAD_SHIFT
+ 	return csum_fold(sum);
+ }
 -- 
 2.43.0
 
