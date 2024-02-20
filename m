@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-21197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A40F785C794
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:14:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DFC985C920
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:29:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBEE41C21DD2
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:14:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F21161F2292E
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:29:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D69791509AC;
-	Tue, 20 Feb 2024 21:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC67C151CD9;
+	Tue, 20 Feb 2024 21:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VDoH6kEg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eb78KcAd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95EA876C9C;
-	Tue, 20 Feb 2024 21:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7D5614A4E6;
+	Tue, 20 Feb 2024 21:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463659; cv=none; b=JaQe82QOGSxIDHwxtsTY1JlgpJUAV3YKhWWVq2nf08/cFQPJeKFG3C9hCNHJsk+GqeCX+SWGsySG3Xl5nw7KSJv4CYGwuLg3fShkCiGhb+p82isjZhaHmOMEoUw0zHrSdDLqbjBuSImxVSzyjeK6/kvpKGqh2zMKnAXtF+gfRCo=
+	t=1708464575; cv=none; b=fKbj0+wUDc6cAGAGWvrETSNdN+8FYcotIaA5gi5MqpU7TUAuXfRjl0vgpCJuzXcTOnpUOQBtoTBjsrqQqE9Qoh7q9PagpuNcW9CiZmIgqes7mufLSx0lqyF+ZiUHk+97e9FUYaCudClc0+CRyTm1TKAlN1JBI3UyaBcDjUotnkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463659; c=relaxed/simple;
-	bh=S7d+DhSRq0S3ZSTwJ4MyBahdTCJN8MVc3eevDtzj1GM=;
+	s=arc-20240116; t=1708464575; c=relaxed/simple;
+	bh=TguUUsSJgZ4W4YoJtfLSE+kZi6o3/cTg4oY1CgMzj9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BBBLnD+CTTFX0SQ9vTRcn5yLD58zkbiTD/KEi9D2u0ARNp3njZWEaG+ipGlJbxxNv/zFBX+nkk9QxImgvz5/c0ZDLUSYuLPQNfnFcZcP+McdZrhOEKNyPtYAcYWeVPsq3wtx2TMLMHMwJXUjrLCCmmB5TqIpWg4JCcpJyvqFN64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VDoH6kEg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03A93C433C7;
-	Tue, 20 Feb 2024 21:14:18 +0000 (UTC)
+	 MIME-Version; b=tqUxIfT3yawLL/BDKI+MAqOrk0o8kQh5QzX8rW72AxiSzApZYmvB7lb45e1yne+GCN2CSlCgXKRnjpoQ+i+IoXuJ578pNDt8Wg8cHsoqo5D3h1DdjZopqhRzgMJETP+8MOwAzsGyI8E47meuMGJ26Z5911f9QHd+uoe2uTM715Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eb78KcAd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 173BCC433F1;
+	Tue, 20 Feb 2024 21:29:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463659;
-	bh=S7d+DhSRq0S3ZSTwJ4MyBahdTCJN8MVc3eevDtzj1GM=;
+	s=korg; t=1708464575;
+	bh=TguUUsSJgZ4W4YoJtfLSE+kZi6o3/cTg4oY1CgMzj9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VDoH6kEgA6uedeDnW4pWWaYpEktkgRzdS3Wa8R3ZLLLdCcvMSdblK6Hakag2upZVI
-	 BYk7031AKVMojNf3RnjC9rSfxVMxc3HJ3GGh9iTE7wbEQUbF1OXrBv6HdhMkQN6YE3
-	 o6muGg5tzzmFYxKEp87R9w/g4dqRGSMhp3ApRqwQ=
+	b=Eb78KcAdtXPO2fOJ2337/pxE4M0/1gmCxJ3e/vkr2onNMfYTi+1Zc4aXpGRaZVtMn
+	 Z/ykYD7dUcEtDsbCsWAALHJflD0/Kna9IikW6yOxsPdPfFLTWXKF0uuIuAilLbzmwc
+	 58cFVRpLfpLP4YmhyX23wKH500bgmcGu7guuH8ew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.6 112/331] mptcp: drop the push_pending field
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Shuah Khan <shuah@kernel.org>,
+	David Laight <David.Laight@ACULAB.COM>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.7 069/309] selftests/mm: switch to bash from sh
 Date: Tue, 20 Feb 2024 21:53:48 +0100
-Message-ID: <20240220205641.132259610@linuxfoundation.org>
+Message-ID: <20240220205635.368039342@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
 
-commit bdd70eb68913c960acb895b00a8c62eb64715b1f upstream.
+commit bc29036e1da1cf66e5f8312649aeec2d51ea3d86 upstream.
 
-Such field is there to avoid acquiring the data lock in a few spots,
-but it adds complexity to the already non trivial locking schema.
+Running charge_reserved_hugetlb.sh generates errors if sh is set to
+dash:
 
-All the relevant call sites (mptcp-level re-injection, set socket
-options), are slow-path, drop such field in favor of 'cb_flags', adding
-the relevant locking.
+./charge_reserved_hugetlb.sh: 9: [[: not found
+./charge_reserved_hugetlb.sh: 19: [[: not found
+./charge_reserved_hugetlb.sh: 27: [[: not found
+./charge_reserved_hugetlb.sh: 37: [[: not found
+./charge_reserved_hugetlb.sh: 45: Syntax error: "(" unexpected
 
-This patch could be seen as an improvement, instead of a fix. But it
-simplifies the next patch. The 'Fixes' tag has been added to help having
-this series backported to stable.
+Switch to using /bin/bash instead of /bin/sh.  Make the switch for
+write_hugetlb_memory.sh as well which is called from
+charge_reserved_hugetlb.sh.
 
-Fixes: e9d09baca676 ("mptcp: avoid atomic bit manipulation when possible")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Link: https://lkml.kernel.org/r/20240116090455.3407378-1-usama.anjum@collabora.com
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: David Laight <David.Laight@ACULAB.COM>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |   12 ++++++------
- net/mptcp/protocol.h |    1 -
- 2 files changed, 6 insertions(+), 7 deletions(-)
+ tools/testing/selftests/mm/charge_reserved_hugetlb.sh |    2 +-
+ tools/testing/selftests/mm/write_hugetlb_memory.sh    |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -1522,8 +1522,11 @@ static void mptcp_update_post_push(struc
+--- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
++++ b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/bin/bash
+ # SPDX-License-Identifier: GPL-2.0
  
- void mptcp_check_and_set_pending(struct sock *sk)
- {
--	if (mptcp_send_head(sk))
--		mptcp_sk(sk)->push_pending |= BIT(MPTCP_PUSH_PENDING);
-+	if (mptcp_send_head(sk)) {
-+		mptcp_data_lock(sk);
-+		mptcp_sk(sk)->cb_flags |= BIT(MPTCP_PUSH_PENDING);
-+		mptcp_data_unlock(sk);
-+	}
- }
+ # Kselftest framework requirement - SKIP code is 4.
+--- a/tools/testing/selftests/mm/write_hugetlb_memory.sh
++++ b/tools/testing/selftests/mm/write_hugetlb_memory.sh
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/bin/bash
+ # SPDX-License-Identifier: GPL-2.0
  
- static int __subflow_push_pending(struct sock *sk, struct sock *ssk,
-@@ -3134,7 +3137,6 @@ static int mptcp_disconnect(struct sock
- 	mptcp_destroy_common(msk, MPTCP_CF_FASTCLOSE);
- 	WRITE_ONCE(msk->flags, 0);
- 	msk->cb_flags = 0;
--	msk->push_pending = 0;
- 	msk->recovery = false;
- 	msk->can_ack = false;
- 	msk->fully_established = false;
-@@ -3359,8 +3361,7 @@ static void mptcp_release_cb(struct sock
- 	struct mptcp_sock *msk = mptcp_sk(sk);
- 
- 	for (;;) {
--		unsigned long flags = (msk->cb_flags & MPTCP_FLAGS_PROCESS_CTX_NEED) |
--				      msk->push_pending;
-+		unsigned long flags = (msk->cb_flags & MPTCP_FLAGS_PROCESS_CTX_NEED);
- 		struct list_head join_list;
- 
- 		if (!flags)
-@@ -3376,7 +3377,6 @@ static void mptcp_release_cb(struct sock
- 		 *    datapath acquires the msk socket spinlock while helding
- 		 *    the subflow socket lock
- 		 */
--		msk->push_pending = 0;
- 		msk->cb_flags &= ~flags;
- 		spin_unlock_bh(&sk->sk_lock.slock);
- 
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -283,7 +283,6 @@ struct mptcp_sock {
- 	int		rmem_released;
- 	unsigned long	flags;
- 	unsigned long	cb_flags;
--	unsigned long	push_pending;
- 	bool		recovery;		/* closing subflow write queue reinjected */
- 	bool		can_ack;
- 	bool		fully_established;
+ set -e
 
 
 
