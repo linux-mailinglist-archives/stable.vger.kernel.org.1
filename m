@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-21693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 053B285C9F1
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:40:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2F4185C8BD
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:25:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A0011F22D2C
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:40:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC4EA1C224C5
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:25:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F0F6151CE9;
-	Tue, 20 Feb 2024 21:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B8F8151CCC;
+	Tue, 20 Feb 2024 21:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TAboeIez"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HQuOYcNp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0632612D7;
-	Tue, 20 Feb 2024 21:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF47F14F9C8;
+	Tue, 20 Feb 2024 21:25:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708465215; cv=none; b=XNtL1/pfsmsFXicT/RLOoreBAVZdPnDIbXjkpE30sUeHpzBFSBUT+pZk10UJ2xDuWXDNH1N27s9YtjwLngnf3g/58qIBsm1ekRKCtvVk6FFP1ohot4zExLew+SIj94meEAQqQ+kllHh5R5ExQqVQ6tkRmF/K2RX84Mvy3qg3maw=
+	t=1708464304; cv=none; b=ATjDTu8Xm9Xb5+g9HMSY0r/sXVmCuMufPiuV6zUPhpCUGCVpe4YLVeDfCuRandZP7ZDxb6n4+Ata03ehogH7mjyYANygINyLu8T5+zLqC/iq4f6goLcrPAOZviRZTK5e21/c1N3di4hP8bb1G9LkI8ZNd0GjeBF8RJMoTNSxe7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708465215; c=relaxed/simple;
-	bh=hXNtOdm2AwuJalRwHCXD5mmLFjzlW3vhIJZL1UXjJoY=;
+	s=arc-20240116; t=1708464304; c=relaxed/simple;
+	bh=7uxUNJK8zccTyPwbNGDz5aAnWN5VuFEXDAK+c4H79Q0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S4fTeYoiyW9ttjmELAzRVWJDt2nu8KxMIDgqWZo9v2Sox9MzKPZdDpxpsK3V+fpmccrG98IxlliHEbIDXTf6u+TI0ehsQNLC6fwUik0/Fq7MN6P+J2s6e+sClg0jk7V1j4PbNMYNLVi4VeGQ1Kmkh0lqkSBXKoAL+hOMHycEBpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TAboeIez; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DE86C433C7;
-	Tue, 20 Feb 2024 21:40:14 +0000 (UTC)
+	 MIME-Version; b=lPfGsKvrKAQlyQHOFPYPr3Ci5O29Y4i8RIiSJX0XzyynzWRgENhJ3J5YEwBmdIZu+5737fpVwBGOUkjRqb+fm0raVJdolF7fOqyBV21i7dNbd7uFZynJjsuWgnHeK+h7V5kZdgIwpY6+lVLATitSaw0YzM7L4Rga61jYLUiMX2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HQuOYcNp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D349C433C7;
+	Tue, 20 Feb 2024 21:25:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708465214;
-	bh=hXNtOdm2AwuJalRwHCXD5mmLFjzlW3vhIJZL1UXjJoY=;
+	s=korg; t=1708464304;
+	bh=7uxUNJK8zccTyPwbNGDz5aAnWN5VuFEXDAK+c4H79Q0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TAboeIezhGIkdul1qZuIzxRq43V74mzFvdU/JoYFgBeYgy6LMF875JmVYnTOapa+S
-	 CVW1TILaY1X2135bkXD9A6Zm+lCA95TR7vdk6VZM0nCsG79jDLgvy+s5tU9ft3DIGP
-	 nd2aNgSTBN3IZt3KyeGtloMCK+qvKj+zsRpJRQos=
+	b=HQuOYcNp4feV3TBrsAzOPDfmfja6maqP0hgcAhDhmltolRG0GdmAgLP5S0hBsHSLu
+	 o+ewOZ6JRNtfkRE8wsFtd0qcKYR9mWu3eN8d02Ev+C6Gm1klN8+DqCVB3dp3vvZYHp
+	 XANAHKVxuUy2zcTZWp/RS5Hzw/xmyrRwBZllfqZs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	limingming3 <limingming3@lixiang.com>,
-	Daniel Bristot de Oliveira <bristot@kernel.org>
-Subject: [PATCH 6.7 273/309] tools/rtla: Replace setting prio with nice for SCHED_OTHER
+	Ard Biesheuvel <ardb@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>
+Subject: [PATCH 6.6 316/331] x86/efi: Drop EFI stub .bss from .data section
 Date: Tue, 20 Feb 2024 21:57:12 +0100
-Message-ID: <20240220205641.673986257@linuxfoundation.org>
+Message-ID: <20240220205648.148274833@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: limingming3 <limingming890315@gmail.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit 14f08c976ffe0d2117c6199c32663df1cbc45c65 upstream.
+commit 5f51c5d0e905608ba7be126737f7c84a793ae1aa upstream.
 
-Since the sched_priority for SCHED_OTHER is always 0, it makes no
-sence to set it.
-Setting nice for SCHED_OTHER seems more meaningful.
+Now that the EFI stub always zero inits its BSS section upon entry,
+there is no longer a need to place the BSS symbols carried by the stub
+into the .data section.
 
-Link: https://lkml.kernel.org/r/20240207065142.1753909-1-limingming3@lixiang.com
-
-Cc: stable@vger.kernel.org
-Fixes: b1696371d865 ("rtla: Helper functions for rtla")
-Signed-off-by: limingming3 <limingming3@lixiang.com>
-Signed-off-by: Daniel Bristot de Oliveira <bristot@kernel.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20230912090051.4014114-18-ardb@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/tracing/rtla/src/utils.c |    6 +++---
- tools/tracing/rtla/src/utils.h |    2 ++
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ arch/x86/boot/compressed/vmlinux.lds.S |    1 -
+ drivers/firmware/efi/libstub/Makefile  |    7 -------
+ 2 files changed, 8 deletions(-)
 
---- a/tools/tracing/rtla/src/utils.c
-+++ b/tools/tracing/rtla/src/utils.c
-@@ -473,13 +473,13 @@ int parse_prio(char *arg, struct sched_a
- 		if (prio == INVALID_VAL)
- 			return -1;
+--- a/arch/x86/boot/compressed/vmlinux.lds.S
++++ b/arch/x86/boot/compressed/vmlinux.lds.S
+@@ -47,7 +47,6 @@ SECTIONS
+ 		_data = . ;
+ 		*(.data)
+ 		*(.data.*)
+-		*(.bss.efistub)
+ 		_edata = . ;
+ 	}
+ 	. = ALIGN(L1_CACHE_BYTES);
+--- a/drivers/firmware/efi/libstub/Makefile
++++ b/drivers/firmware/efi/libstub/Makefile
+@@ -108,13 +108,6 @@ lib-y				:= $(patsubst %.o,%.stub.o,$(li
+ # https://bugs.llvm.org/show_bug.cgi?id=46480
+ STUBCOPY_FLAGS-y		+= --remove-section=.note.gnu.property
  
--		if (prio < sched_get_priority_min(SCHED_OTHER))
-+		if (prio < MIN_NICE)
- 			return -1;
--		if (prio > sched_get_priority_max(SCHED_OTHER))
-+		if (prio > MAX_NICE)
- 			return -1;
+-#
+-# For x86, bootloaders like systemd-boot or grub-efi do not zero-initialize the
+-# .bss section, so the .bss section of the EFI stub needs to be included in the
+-# .data section of the compressed kernel to ensure initialization. Rename the
+-# .bss section here so it's easy to pick out in the linker script.
+-#
+-STUBCOPY_FLAGS-$(CONFIG_X86)	+= --rename-section .bss=.bss.efistub,load,alloc
+ STUBCOPY_RELOC-$(CONFIG_X86_32)	:= R_386_32
+ STUBCOPY_RELOC-$(CONFIG_X86_64)	:= R_X86_64_64
  
- 		sched_param->sched_policy   = SCHED_OTHER;
--		sched_param->sched_priority = prio;
-+		sched_param->sched_nice = prio;
- 		break;
- 	default:
- 		return -1;
---- a/tools/tracing/rtla/src/utils.h
-+++ b/tools/tracing/rtla/src/utils.h
-@@ -9,6 +9,8 @@
-  */
- #define BUFF_U64_STR_SIZE	24
- #define MAX_PATH		1024
-+#define MAX_NICE		20
-+#define MIN_NICE		-19
- 
- #define container_of(ptr, type, member)({			\
- 	const typeof(((type *)0)->member) *__mptr = (ptr);	\
 
 
 
