@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-21159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A00785C762
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:12:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D947485C91C
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:29:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA2321F237C4
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:12:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F4E81F22A0D
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:29:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 830EE1509BC;
-	Tue, 20 Feb 2024 21:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73964151CFE;
+	Tue, 20 Feb 2024 21:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JiGYt7RV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G+ks8V9p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D6A612D7;
-	Tue, 20 Feb 2024 21:12:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3198C14F9C8;
+	Tue, 20 Feb 2024 21:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463543; cv=none; b=e7AgrM9Ni7LepRNEalH0N4Za4daokdq6iqn6mHvwv8V3Uw93YTaHGrQYzUOOLmLqyLAB6OwyosWHVOwWUP6BO1mtHP5cj/h5bPELBuP9zlb7UZ1cgQicL4mM6V0pGwB8HS8Rc85IN/flU29qo9TzkIJ6IpSdxSjV6crJDf+SmlU=
+	t=1708464563; cv=none; b=e7RRV8ayMDv8yzC6Qg0Z2XX0OtbuDqRys+Y8zVlAuqZWU0EGMG5as5jkA4aheFLZwgw1y5d6ib69I/O2kAKdBibUIuIeBE6ta9QEvBSdt0znigf5+yendsdmbvkjsBSEySIXeiiCBGfqfn6UW8TOyQRdJdsUouKVckQUrckycYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463543; c=relaxed/simple;
-	bh=L2gXQDY/6YUujn+hNx6/IrSSzSFkacOYoqk/0VBFOUY=;
+	s=arc-20240116; t=1708464563; c=relaxed/simple;
+	bh=a6KueRRi9IwNHnCU1fJ9OxEu4NmRgRXJCr2FROHOeW0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H3FCqfn46XOKKwwQpAtc1GTBmTGV4YA9cEspOd2FfWhNMvxr9aKYyxdvTVXVRwgZ0pwkOVgdpDqlbehet63mLVIl+L5SULmuoTOfzAFZ8hBmwWnZz3+GbLMeLgt0QXTehjL+TyMn5Gpzap/B3TtabkADFj0EdELlo8e/5tiZ3I0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JiGYt7RV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44A96C43394;
-	Tue, 20 Feb 2024 21:12:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sqhp/8d+QZkhtHVKHfOmpsvRpXbU1SvRfvx7jRI7ql/SRH9RAZj6bHqk9eoRtDLDav/2l1aQxIBbX9A9zcawDtR77Z+UJNBqcJhs9/6d7U1tuqBw9NONzzVZoGZK+UDnLh8T2TAD56x+JWJKmWWK9b2ypo2K1OLFH/5XFm0fTU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G+ks8V9p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A566FC433F1;
+	Tue, 20 Feb 2024 21:29:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463542;
-	bh=L2gXQDY/6YUujn+hNx6/IrSSzSFkacOYoqk/0VBFOUY=;
+	s=korg; t=1708464563;
+	bh=a6KueRRi9IwNHnCU1fJ9OxEu4NmRgRXJCr2FROHOeW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JiGYt7RVJHsgQzbMjSYQ9xcTYhpdKOGdA+HJGhv21OUN4G7CXOzMOyCOV8CxGCSWl
-	 N1wnLtloJvz+aShHiCVLGldEwHgc0u0gUbTmvQ7yIbCvMqKIOjz1Y3E2zpIK+bOC06
-	 9F8F92ciOLwRuUZjMrkTAVezJ/qitvQrGJj1QDtk=
+	b=G+ks8V9pIEHtie89ZVyAKYyw3Ofk9JQ6dntAyuTHhrNAmQxRKWtShdEq+xZG4kOWr
+	 3s4ldkBVz7DrbGYke74YrmjwAlxo1IRfTMSKOO5XotOQdRLQCNBPfES0MwK10ciNAP
+	 XhwF5AQQqyWyHovP3ft7JB9R/wFqXAWXlh9HmwwY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Jason Gerecke <jason.gerecke@wacom.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.6 075/331] HID: wacom: Do not register input devices until after hid_hw_start
-Date: Tue, 20 Feb 2024 21:53:11 +0100
-Message-ID: <20240220205639.942339859@linuxfoundation.org>
+	Prashant Batra <prbatra.mail@gmail.com>,
+	Magnus Karlsson <magnus.karlsson@intel.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 033/309] bonding: do not report NETDEV_XDP_ACT_XSK_ZEROCOPY
+Date: Tue, 20 Feb 2024 21:53:12 +0100
+Message-ID: <20240220205634.222938326@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,154 +62,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gerecke <killertofu@gmail.com>
+From: Magnus Karlsson <magnus.karlsson@intel.com>
 
-commit c1d6708bf0d3dd976460d435373cf5abf21ce258 upstream.
+[ Upstream commit 9b0ed890ac2ae233efd8b27d11aee28a19437bb8 ]
 
-If a input device is opened before hid_hw_start is called, events may
-not be received from the hardware. In the case of USB-backed devices,
-for example, the hid_hw_start function is responsible for filling in
-the URB which is submitted when the input device is opened. If a device
-is opened prematurely, polling will never start because the device will
-not have been in the correct state to send the URB.
+Do not report the XDP capability NETDEV_XDP_ACT_XSK_ZEROCOPY as the
+bonding driver does not support XDP and AF_XDP in zero-copy mode even
+if the real NIC drivers do.
 
-Because the wacom driver registers its input devices before calling
-hid_hw_start, there is a window of time where a device can be opened
-and end up in an inoperable state. Some ARM-based Chromebooks in particular
-reliably trigger this bug.
+Note that the driver used to report everything as supported before a
+device was bonded. Instead of just masking out the zero-copy support
+from this, have the driver report that no XDP feature is supported
+until a real device is bonded. This seems to be more truthful as it is
+the real drivers that decide what XDP features are supported.
 
-This commit splits the wacom_register_inputs function into two pieces.
-One which is responsible for setting up the allocated inputs (and runs
-prior to hid_hw_start so that devices are ready for any input events
-they may end up receiving) and another which only registers the devices
-(and runs after hid_hw_start to ensure devices can be immediately opened
-without issue). Note that the functions to initialize the LEDs and remotes
-are also moved after hid_hw_start to maintain their own dependency chains.
-
-Fixes: 7704ac937345 ("HID: wacom: implement generic HID handling for pen generic devices")
-Cc: stable@vger.kernel.org # v3.18+
-Suggested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
-Tested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: cb9e6e584d58 ("bonding: add xdp_features support")
+Reported-by: Prashant Batra <prbatra.mail@gmail.com>
+Link: https://lore.kernel.org/all/CAJ8uoz2ieZCopgqTvQ9ZY6xQgTbujmC6XkMTamhp68O-h_-rLg@mail.gmail.com/T/
+Signed-off-by: Magnus Karlsson <magnus.karlsson@intel.com>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Link: https://lore.kernel.org/r/20240207084737.20890-1-magnus.karlsson@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/wacom_sys.c |   63 ++++++++++++++++++++++++++++++++----------------
- 1 file changed, 43 insertions(+), 20 deletions(-)
+ drivers/net/bonding/bond_main.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/hid/wacom_sys.c
-+++ b/drivers/hid/wacom_sys.c
-@@ -2080,7 +2080,7 @@ static int wacom_allocate_inputs(struct
- 	return 0;
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 8e6cc0e133b7..6cf7f364704e 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -1819,6 +1819,8 @@ void bond_xdp_set_features(struct net_device *bond_dev)
+ 	bond_for_each_slave(bond, slave, iter)
+ 		val &= slave->dev->xdp_features;
+ 
++	val &= ~NETDEV_XDP_ACT_XSK_ZEROCOPY;
++
+ 	xdp_set_features_flag(bond_dev, val);
  }
  
--static int wacom_register_inputs(struct wacom *wacom)
-+static int wacom_setup_inputs(struct wacom *wacom)
- {
- 	struct input_dev *pen_input_dev, *touch_input_dev, *pad_input_dev;
- 	struct wacom_wac *wacom_wac = &(wacom->wacom_wac);
-@@ -2099,10 +2099,6 @@ static int wacom_register_inputs(struct
- 		input_free_device(pen_input_dev);
- 		wacom_wac->pen_input = NULL;
- 		pen_input_dev = NULL;
--	} else {
--		error = input_register_device(pen_input_dev);
--		if (error)
--			goto fail;
- 	}
- 
- 	error = wacom_setup_touch_input_capabilities(touch_input_dev, wacom_wac);
-@@ -2111,10 +2107,6 @@ static int wacom_register_inputs(struct
- 		input_free_device(touch_input_dev);
- 		wacom_wac->touch_input = NULL;
- 		touch_input_dev = NULL;
--	} else {
--		error = input_register_device(touch_input_dev);
--		if (error)
--			goto fail;
- 	}
- 
- 	error = wacom_setup_pad_input_capabilities(pad_input_dev, wacom_wac);
-@@ -2123,7 +2115,34 @@ static int wacom_register_inputs(struct
- 		input_free_device(pad_input_dev);
- 		wacom_wac->pad_input = NULL;
- 		pad_input_dev = NULL;
--	} else {
-+	}
-+
-+	return 0;
-+}
-+
-+static int wacom_register_inputs(struct wacom *wacom)
-+{
-+	struct input_dev *pen_input_dev, *touch_input_dev, *pad_input_dev;
-+	struct wacom_wac *wacom_wac = &(wacom->wacom_wac);
-+	int error = 0;
-+
-+	pen_input_dev = wacom_wac->pen_input;
-+	touch_input_dev = wacom_wac->touch_input;
-+	pad_input_dev = wacom_wac->pad_input;
-+
-+	if (pen_input_dev) {
-+		error = input_register_device(pen_input_dev);
-+		if (error)
-+			goto fail;
-+	}
-+
-+	if (touch_input_dev) {
-+		error = input_register_device(touch_input_dev);
-+		if (error)
-+			goto fail;
-+	}
-+
-+	if (pad_input_dev) {
- 		error = input_register_device(pad_input_dev);
- 		if (error)
- 			goto fail;
-@@ -2376,6 +2395,20 @@ static int wacom_parse_and_register(stru
- 	if (error)
- 		goto fail;
- 
-+	error = wacom_setup_inputs(wacom);
-+	if (error)
-+		goto fail;
-+
-+	if (features->type == HID_GENERIC)
-+		connect_mask |= HID_CONNECT_DRIVER;
-+
-+	/* Regular HID work starts now */
-+	error = hid_hw_start(hdev, connect_mask);
-+	if (error) {
-+		hid_err(hdev, "hw start failed\n");
-+		goto fail;
-+	}
-+
- 	error = wacom_register_inputs(wacom);
- 	if (error)
- 		goto fail;
-@@ -2390,16 +2423,6 @@ static int wacom_parse_and_register(stru
- 			goto fail;
- 	}
- 
--	if (features->type == HID_GENERIC)
--		connect_mask |= HID_CONNECT_DRIVER;
+@@ -5934,9 +5936,6 @@ void bond_setup(struct net_device *bond_dev)
+ 	if (BOND_MODE(bond) == BOND_MODE_ACTIVEBACKUP)
+ 		bond_dev->features |= BOND_XFRM_FEATURES;
+ #endif /* CONFIG_XFRM_OFFLOAD */
 -
--	/* Regular HID work starts now */
--	error = hid_hw_start(hdev, connect_mask);
--	if (error) {
--		hid_err(hdev, "hw start failed\n");
--		goto fail;
--	}
--
- 	if (!wireless) {
- 		/* Note that if query fails it is not a hard failure */
- 		wacom_query_tablet_data(wacom);
+-	if (bond_xdp_check(bond))
+-		bond_dev->xdp_features = NETDEV_XDP_ACT_MASK;
+ }
+ 
+ /* Destroy a bonding device.
+-- 
+2.43.0
+
 
 
 
