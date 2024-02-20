@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-21509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5853385C935
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:30:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAD2A85C78C
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:14:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC5B3B20CA6
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:30:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07F571C21D08
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:14:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEDA6151CDC;
-	Tue, 20 Feb 2024 21:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7B0D151CDC;
+	Tue, 20 Feb 2024 21:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OL4mKMlS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1CB4HAr4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC3414A4E6;
-	Tue, 20 Feb 2024 21:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65B031509AC;
+	Tue, 20 Feb 2024 21:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464641; cv=none; b=RleGX1oERCLSF8dR58/zMPH8WvA3+K1GbuILqDLfqKL7JVFlFZDzzvF+WJrxNB8hBjFeTWc3RP4o391ghb2mx+ok+xJxFvEPP3eEeE/jgyX0d7d5h3gO01bWSPNq9QLpTxbtUBHqlYZuO4t2A8s0RmACaDZfHKuafDamo8UCzz0=
+	t=1708463637; cv=none; b=meAzGdH8Q6mtJgvU3HAQpe10cthXh/lN3HvbWTbZ1rw/+QrrCpoWPzZeF0pQtxmzcJv9hnKxoH9PLQ02YZOrpMo5QYStp5yRQ/o3QgnYMkbUK+ruEiLHXFQLQ9O4uRxGM18P2OrxCnlwXpZKnyLz1r76N8b3o2oCIMpjpxCTcg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464641; c=relaxed/simple;
-	bh=kv9Dly8oaJMWeEapV3csJVrhHfznvYmLV1k9GvamQ4I=;
+	s=arc-20240116; t=1708463637; c=relaxed/simple;
+	bh=pHg+fo5y5ooLBlTxWCIVBaFNihGdfJvrTp9q2QWXLyg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dxZnIZIVsWyE2EA4EQGal6CGEw87WoMPqWXAWpxoJW0JFtCWmMAHjhW2ynznEyUKFA+01t/Uf9/bu+i7bIzM7lrLXvGK5l8rB706j3WFMlkBR9JIrDjUdshtILEQZ6mBR2h0UlIvdChFt5Wdz+OdjOyUiBK74eopX5ye3VZVEfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OL4mKMlS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23128C433C7;
-	Tue, 20 Feb 2024 21:30:40 +0000 (UTC)
+	 MIME-Version; b=K6+7Q0Igm/QbumN7HcmAjVuLk6fHkmGeTCamLzax6yfo48Pc+aPTCnZu9yqBDrRJCBiQ4nIAG0gDRO3bvBie5N1dJdlpLtqiHxhxUxhNDB7esgTGTg0r3YSEB3+994NIU1vZUu5a/j8Lv+BQf8peVDOzcCK03c7ZE1wYlcaKgVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1CB4HAr4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A91E3C433C7;
+	Tue, 20 Feb 2024 21:13:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464641;
-	bh=kv9Dly8oaJMWeEapV3csJVrhHfznvYmLV1k9GvamQ4I=;
+	s=korg; t=1708463637;
+	bh=pHg+fo5y5ooLBlTxWCIVBaFNihGdfJvrTp9q2QWXLyg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OL4mKMlSo14jiwFyuPqr4pynzjDeB6hUA6dkJ9n+dKgkgXKy3hG3kMRS6QPWeBljQ
-	 Qdc4OauzT1WJJw0G+FMYPBU5mU0ytS4Gk5lmXRcOs/QIFhqviQ+D76+gpp2rw1SGz5
-	 SPWNANtrQgsbzgQ9v0I7I7EqlungA8+a+8XNpnrg=
+	b=1CB4HAr4k3m8HTQ5Tqvx8KzDonkw9V7POt+KxpDwkoeccArCZr7ak/J90Q6ZHku2T
+	 6/mrVxHXEcbehAiqt9qDq4zjKJCZv46I4NnH/QNAzU4yxy6JcIT/neEOUf5u5iftAn
+	 hx/JNWDKPNST3vR8wBTdNsiLEfeALXY8u8qP/vWM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Vecera <ivecera@redhat.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 6.7 062/309] i40e: Fix waiting for queues of all VSIs to be disabled
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 105/331] mptcp: fix data re-injection from stale subflow
 Date: Tue, 20 Feb 2024 21:53:41 +0100
-Message-ID: <20240220205635.161301960@linuxfoundation.org>
+Message-ID: <20240220205640.889553922@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Vecera <ivecera@redhat.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit c73729b64bb692186da080602cd13612783f52ac ]
+commit b6c620dc43ccb4e802894e54b651cf81495e9598 upstream.
 
-The function i40e_pf_wait_queues_disabled() iterates all PF's VSIs
-up to 'pf->hw.func_caps.num_vsis' but this is incorrect because
-the real number of VSIs can be up to 'pf->num_alloc_vsi' that
-can be higher. Fix this loop.
+When the MPTCP PM detects that a subflow is stale, all the packet
+scheduler must re-inject all the mptcp-level unacked data. To avoid
+acquiring unneeded locks, it first try to check if any unacked data
+is present at all in the RTX queue, but such check is currently
+broken, as it uses TCP-specific helper on an MPTCP socket.
 
-Fixes: 69129dc39fac ("i40e: Modify Tx disable wait flow in case of DCB reconfiguration")
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Funnily enough fuzzers and static checkers are happy, as the accessed
+memory still belongs to the mptcp_sock struct, and even from a
+functional perspective the recovery completed successfully, as
+the short-cut test always failed.
+
+A recent unrelated TCP change - commit d5fed5addb2b ("tcp: reorganize
+tcp_sock fast path variables") - exposed the issue, as the tcp field
+reorganization makes the mptcp code always skip the re-inection.
+
+Fix the issue dropping the bogus call: we are on a slow path, the early
+optimization proved once again to be evil.
+
+Fixes: 1e1d9d6f119c ("mptcp: handle pending data on closed subflow")
+Cc: stable@vger.kernel.org
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/468
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/20240131-upstream-net-20240131-mptcp-ci-issues-v1-1-4c1c11e571ff@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mptcp/protocol.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index 2bd7b29fb251..d9716bcec81b 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -5361,7 +5361,7 @@ static int i40e_pf_wait_queues_disabled(struct i40e_pf *pf)
- {
- 	int v, ret = 0;
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2318,9 +2318,6 @@ bool __mptcp_retransmit_pending_data(str
+ 	if (__mptcp_check_fallback(msk))
+ 		return false;
  
--	for (v = 0; v < pf->hw.func_caps.num_vsis; v++) {
-+	for (v = 0; v < pf->num_alloc_vsi; v++) {
- 		if (pf->vsi[v]) {
- 			ret = i40e_vsi_wait_queues_disabled(pf->vsi[v]);
- 			if (ret)
--- 
-2.43.0
-
+-	if (tcp_rtx_and_write_queues_empty(sk))
+-		return false;
+-
+ 	/* the closing socket has some data untransmitted and/or unacked:
+ 	 * some data in the mptcp rtx queue has not really xmitted yet.
+ 	 * keep it simple and re-inject the whole mptcp level rtx queue
 
 
 
