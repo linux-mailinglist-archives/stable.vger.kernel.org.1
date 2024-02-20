@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-21647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A3AC85C9C0
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:37:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AC6085C85A
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:21:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56885283DE8
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:37:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A6841F27023
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:21:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09F8B151CDC;
-	Tue, 20 Feb 2024 21:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 416DF151CD9;
+	Tue, 20 Feb 2024 21:21:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hSK/RN90"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mSF2SSVa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD723446C9;
-	Tue, 20 Feb 2024 21:37:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3BAA612D7;
+	Tue, 20 Feb 2024 21:21:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708465069; cv=none; b=kEOnZ62O+NMOzbh1+/8z2c2Q6j+/st0gx+hh+JtxaUA5b2bFuMtucC935wz8J/pwaEkc9+iX55ZZDX8YrBwVWD2YRDwifZ6s6q1LwI7xFWHniBCn9ENjtmKa+71LA4taU/St1xU6Pr50PsYZtlxAKG2XIoV9qvyXFs2wK3r0z5Y=
+	t=1708464065; cv=none; b=QVK+AAHtfN1DCrTc56Sby53yllJgFpdMdxzG0FNZ5HQB+5HGh/wgBEtj+FQKtPZ6EKGeKptYwmii+IcFR7PozKRDXqafGRPO5FL37clhs+aGmuCecpJztpGhu3nPZuzBGIak1ZdxbQwcjgAr2vRYhhnbsgE7IC+HYLDTQyDGlXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708465069; c=relaxed/simple;
-	bh=dTNfgSZUWeHzo2LUbgQ+LqHoK4uXTUvXBrBB+F+VknQ=;
+	s=arc-20240116; t=1708464065; c=relaxed/simple;
+	bh=VTza+G5oCO0ZgAgjnNY7t3rRbR90fJdj9kz0Z0ZXEg0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=juS8rBQrv5jmz4rU5uF2asXj4abX7j/TiPZEynLbLOICQCraQ2j0L2dSsxbkrH5RScBbHdE7knb0/GVCexEDHKO065jdMBsEGOzyEm40YLzMskqji1+aUDSNtchehlBaSU1JdlOqj2kF91qHKXxf0Nf6DHb1/+1gIyJ3X62DjAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hSK/RN90; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46371C433F1;
-	Tue, 20 Feb 2024 21:37:49 +0000 (UTC)
+	 MIME-Version; b=CH3q4CJ1o0bw2gd7CtFdlNytHw/nZTrrqK6nJZEE4F4BOFU62Z8Z704ylCMJYDnqmyMjfOFYLtcTKQ93WAD0gKi6yMjSFoKucsEG5PI42oMNyjgPq4nBMbP8tVjKNn5jUunTeb6/boA0uLO4yRK+ZH06x2cc0ky1xEgPcuRIhZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mSF2SSVa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F956C433F1;
+	Tue, 20 Feb 2024 21:21:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708465069;
-	bh=dTNfgSZUWeHzo2LUbgQ+LqHoK4uXTUvXBrBB+F+VknQ=;
+	s=korg; t=1708464064;
+	bh=VTza+G5oCO0ZgAgjnNY7t3rRbR90fJdj9kz0Z0ZXEg0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hSK/RN90p5RmBrUth18tjwDplFP12PTYT4R4mvg49y+F2v+SgJh5cjto5DQwyeRLA
-	 WxIlXkRHOOm/MRYlQlHxSWmbURbwVyTC40RSmJy56ytIPfJCMZOfWM8hNcPyaGq9yc
-	 FDO5z5HZQ91Ov+29Wu4kFDZ7de/l4KY5u/EguETI=
+	b=mSF2SSVaL13goEzgktPNdkayfnum6b5PNr6AIHG56I/6eeq6Xht3LzkKtBBcBa5eH
+	 Hm2Y8w0b1T5TCbyREWip9GDb0SnrSvdQws8Vf5QmNK0TW5O7jZWun7QvO4b5vnySC0
+	 puAYIXxmMmWE3uYARSDcsnUPqllTBPsasAMaPiYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@ZenIV.linux.org.uk>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.7 196/309] eventfs: Warn if an eventfs_inode is freed without is_freed being set
+	Rishabh Dave <ridave@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Xiubo Li <xiubli@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 6.6 239/331] ceph: prevent use-after-free in encode_cap_msg()
 Date: Tue, 20 Feb 2024 21:55:55 +0100
-Message-ID: <20240220205639.311596045@linuxfoundation.org>
+Message-ID: <20240220205645.296870097@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,89 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+From: Rishabh Dave <ridave@redhat.com>
 
-commit 5a49f996046ba947466bc7461e4b19c4d1daf978 upstream.
+commit cda4672da1c26835dcbd7aec2bfed954eda9b5ef upstream.
 
-There should never be a case where an evenfs_inode is being freed without
-is_freed being set. Add a WARN_ON_ONCE() if it ever happens. That would
-mean there was one too many put_ei()s.
+In fs/ceph/caps.c, in encode_cap_msg(), "use after free" error was
+caught by KASAN at this line - 'ceph_buffer_get(arg->xattr_buf);'. This
+implies before the refcount could be increment here, it was freed.
 
-Link: https://lore.kernel.org/linux-trace-kernel/20240201161616.843551963@goodmis.org
+In same file, in "handle_cap_grant()" refcount is decremented by this
+line - 'ceph_buffer_put(ci->i_xattrs.blob);'. It appears that a race
+occurred and resource was freed by the latter line before the former
+line could increment it.
 
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Al Viro <viro@ZenIV.linux.org.uk>
-Cc: Ajay Kaher <ajay.kaher@broadcom.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+encode_cap_msg() is called by __send_cap() and __send_cap() is called by
+ceph_check_caps() after calling __prep_cap(). __prep_cap() is where
+arg->xattr_buf is assigned to ci->i_xattrs.blob. This is the spot where
+the refcount must be increased to prevent "use after free" error.
+
+Cc: stable@vger.kernel.org
+Link: https://tracker.ceph.com/issues/59259
+Signed-off-by: Rishabh Dave <ridave@redhat.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Xiubo Li <xiubli@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/tracefs/event_inode.c |   18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ fs/ceph/caps.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -73,6 +73,9 @@ enum {
- static void release_ei(struct kref *ref)
- {
- 	struct eventfs_inode *ei = container_of(ref, struct eventfs_inode, kref);
-+
-+	WARN_ON_ONCE(!ei->is_freed);
-+
- 	kfree(ei->entry_attrs);
- 	kfree_const(ei->name);
- 	kfree_rcu(ei, rcu);
-@@ -84,6 +87,14 @@ static inline void put_ei(struct eventfs
- 		kref_put(&ei->kref, release_ei);
+--- a/fs/ceph/caps.c
++++ b/fs/ceph/caps.c
+@@ -1415,7 +1415,7 @@ static void __prep_cap(struct cap_msg_ar
+ 	if (flushing & CEPH_CAP_XATTR_EXCL) {
+ 		arg->old_xattr_buf = __ceph_build_xattrs_blob(ci);
+ 		arg->xattr_version = ci->i_xattrs.version;
+-		arg->xattr_buf = ci->i_xattrs.blob;
++		arg->xattr_buf = ceph_buffer_get(ci->i_xattrs.blob);
+ 	} else {
+ 		arg->xattr_buf = NULL;
+ 		arg->old_xattr_buf = NULL;
+@@ -1513,6 +1513,7 @@ static void __send_cap(struct cap_msg_ar
+ 	encode_cap_msg(msg, arg);
+ 	ceph_con_send(&arg->session->s_con, msg);
+ 	ceph_buffer_put(arg->old_xattr_buf);
++	ceph_buffer_put(arg->xattr_buf);
+ 	if (arg->wake)
+ 		wake_up_all(&ci->i_cap_wq);
  }
- 
-+static inline void free_ei(struct eventfs_inode *ei)
-+{
-+	if (ei) {
-+		ei->is_freed = 1;
-+		put_ei(ei);
-+	}
-+}
-+
- static inline struct eventfs_inode *get_ei(struct eventfs_inode *ei)
- {
- 	if (ei)
-@@ -679,7 +690,7 @@ struct eventfs_inode *eventfs_create_dir
- 
- 	/* Was the parent freed? */
- 	if (list_empty(&ei->list)) {
--		put_ei(ei);
-+		free_ei(ei);
- 		ei = NULL;
- 	}
- 	return ei;
-@@ -770,7 +781,7 @@ struct eventfs_inode *eventfs_create_eve
- 	return ei;
- 
-  fail:
--	put_ei(ei);
-+	free_ei(ei);
- 	tracefs_failed_creating(dentry);
- 	return ERR_PTR(-ENOMEM);
- }
-@@ -801,9 +812,8 @@ static void eventfs_remove_rec(struct ev
- 	list_for_each_entry(ei_child, &ei->children, list)
- 		eventfs_remove_rec(ei_child, level + 1);
- 
--	ei->is_freed = 1;
- 	list_del(&ei->list);
--	put_ei(ei);
-+	free_ei(ei);
- }
- 
- /**
 
 
 
