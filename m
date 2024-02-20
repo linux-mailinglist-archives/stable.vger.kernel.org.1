@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-21604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF8D285C995
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:35:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96F9685C849
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:20:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FADC1F22B36
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:35:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C81961C20E1A
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:20:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9FA8151CEE;
-	Tue, 20 Feb 2024 21:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28BD8152DE9;
+	Tue, 20 Feb 2024 21:20:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R1pALzqP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eYKVIX+T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685E72DF9F;
-	Tue, 20 Feb 2024 21:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 530601509BC;
+	Tue, 20 Feb 2024 21:20:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464935; cv=none; b=o/Q+5XQgr2SZrVtz5w8IICVOwn397CpOl+UdhkWOCGc+EY5fF7dfDGLXAu8t9SYgvWLQgeuh3NniHodtEOe0OnAlsRwlJ08LpYuAQ14Wcwx19HW29EcSsD4g5/C7nwqNAu1kEgQ7pyaAYwWvePi1RySZbyCQZgvwBgtHovaz+Lk=
+	t=1708464018; cv=none; b=Jewt4qm9qm1X8BM4kx/dscunYbZQjsTQqPj1z8VvQ9NDFbzYOb4Rdh4kYI9sTXkW3YAMXNMUBcgpxvkOG9mkTHytUJkzMudaiemud6YMSTKgFHbk2vw2mvN2ZXcbhDv2VUMNgOGJd2rllol+pfaVibNYFB+chO7SQzSN9j5NlvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464935; c=relaxed/simple;
-	bh=4tyz4+W9GWvBUmVGyK8rW10NEVakBx0pNwa8y8quzlw=;
+	s=arc-20240116; t=1708464018; c=relaxed/simple;
+	bh=03j0+RAInSBSDkdErSkaEXjv1UY0KTJgpVs94COq1Ys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tmx/oTiSiIILJQETcH29lGw/aKk9qswdSsaU2GFB8MamW1fT9g/t0yUF7ksQCfb9dLMYYp1/c8nYGz1Q/0fM/0CQNfLZi46drS0TSRNlmEhkaXGwKr16ger2EHkkRe3Cwmc0lnE0LumGxehCo2ykMbas0nLMEMPYWApTdoLQLPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R1pALzqP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB860C433F1;
-	Tue, 20 Feb 2024 21:35:34 +0000 (UTC)
+	 MIME-Version; b=PiAX/FfHjcFy4XAcNJqKgFDMWOaknHGrFT87eL37rgg/xzw9MD8UE3QmRXltvlEA7dMkd9h9b6S+eGR3l3IiKASBanfe/WDSkCcPPCFdkrBYf0dnT4zrnvo6VIcMDqok6Con9uc3rp2kLs6eREUvyMuZ4dJV+t5ntOu1cRU0L3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eYKVIX+T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BAF1C433C7;
+	Tue, 20 Feb 2024 21:20:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464935;
-	bh=4tyz4+W9GWvBUmVGyK8rW10NEVakBx0pNwa8y8quzlw=;
+	s=korg; t=1708464017;
+	bh=03j0+RAInSBSDkdErSkaEXjv1UY0KTJgpVs94COq1Ys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R1pALzqPzrZ8RPZfMuT1gI8MS4hL6BHWomwBUf/aDnn83fLALGZHfIWA6eh7kSV5m
-	 7/6a9U8tcxMj4OCHEcqFFQW0UZ/bKCNrNtyJey6zSZIf8IG3z8/iyT76SZ8Xby+QOB
-	 V5GOgGLd9VnetB/g0Gn8oGxZd3zHvFE7aMzmJFvA=
+	b=eYKVIX+TIlhQvv4GnF6GJLlb57yMOhDQsFCZMp/BNLmqLo2MWMt6EtfmrLRBVbP7O
+	 DLV1Thj0XxjQuOiZ6Xo09vRsWCS6LzvU0mhp5tra81tIj1nv8/vQBgjwK13eCtsJi0
+	 IFI+qPTZhyKJvAb1VfCQ8iaC6bPm872gqLCqFKkk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.7 183/309] eventfs: Read ei->entries before ei->children in eventfs_iterate()
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Donald Zickus <dzickus@redhat.com>,
+	Daniel Bristot de Oliveira <bristot@kernel.org>
+Subject: [PATCH 6.6 226/331] tools/rtla: Remove unused sched_getattr() function
 Date: Tue, 20 Feb 2024 21:55:42 +0100
-Message-ID: <20240220205638.875573731@linuxfoundation.org>
+Message-ID: <20240220205644.860282898@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,122 +66,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+From: Daniel Bristot de Oliveira <bristot@kernel.org>
 
-commit 704f960dbee2f1634f4b4e16f208cb16eaf41c1e upstream.
+commit 084ce16df0f060efd371092a09a7ae74a536dc11 upstream.
 
-In order to apply a shortcut to skip over the current ctx->pos
-immediately, by using the ei->entries array, the reading of that array
-should be first. Moving the array reading before the linked list reading
-will make the shortcut change diff nicer to read.
+Clang is reporting:
 
-Link: https://lore.kernel.org/all/CAHk-=wiKwDUDv3+jCsv-uacDcHDVTYsXtBR9=6sGM5mqX+DhOg@mail.gmail.com/
-Link: https://lore.kernel.org/linux-trace-kernel/20240104220048.333115095@goodmis.org
+$ make HOSTCC=clang CC=clang LLVM_IAS=1
+[...]
+clang -O -g -DVERSION=\"6.8.0-rc3\" -flto=auto -fexceptions -fstack-protector-strong -fasynchronous-unwind-tables -fstack-clash-protection  -Wall -Werror=format-security -Wp,-D_FORTIFY_SOURCE=2 -Wp,-D_GLIBCXX_ASSERTIONS $(pkg-config --cflags libtracefs)    -c -o src/utils.o src/utils.c
+src/utils.c:241:19: warning: unused function 'sched_getattr' [-Wunused-function]
+  241 | static inline int sched_getattr(pid_t pid, struct sched_attr *attr,
+      |                   ^~~~~~~~~~~~~
+1 warning generated.
 
+Which is correct, so remove the unused function.
+
+Link: https://lkml.kernel.org/r/eaed7ba122c4ae88ce71277c824ef41cbf789385.1707217097.git.bristot@kernel.org
+
+Cc: stable@vger.kernel.org
 Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Bill Wendling <morbo@google.com>
+Cc: Justin Stitt <justinstitt@google.com>
+Cc: Donald Zickus <dzickus@redhat.com>
+Fixes: b1696371d865 ("rtla: Helper functions for rtla")
+Signed-off-by: Daniel Bristot de Oliveira <bristot@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/tracefs/event_inode.c |   46 +++++++++++++++++++++++-----------------------
- 1 file changed, 23 insertions(+), 23 deletions(-)
+ tools/tracing/rtla/src/utils.c |    6 ------
+ 1 file changed, 6 deletions(-)
 
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -714,8 +714,8 @@ static int eventfs_iterate(struct file *
- 	 * Need to create the dentries and inodes to have a consistent
- 	 * inode number.
- 	 */
--	list_for_each_entry_srcu(ei_child, &ei->children, list,
--				 srcu_read_lock_held(&eventfs_srcu)) {
-+	for (i = 0; i < ei->nr_entries; i++) {
-+		void *cdata = ei->data;
+--- a/tools/tracing/rtla/src/utils.c
++++ b/tools/tracing/rtla/src/utils.c
+@@ -238,12 +238,6 @@ static inline int sched_setattr(pid_t pi
+ 	return syscall(__NR_sched_setattr, pid, attr, flags);
+ }
  
- 		if (c > 0) {
- 			c--;
-@@ -724,23 +724,32 @@ static int eventfs_iterate(struct file *
- 
- 		ctx->pos++;
- 
--		if (ei_child->is_freed)
--			continue;
-+		entry = &ei->entries[i];
-+		name = entry->name;
- 
--		name = ei_child->name;
-+		mutex_lock(&eventfs_mutex);
-+		/* If ei->is_freed then just bail here, nothing more to do */
-+		if (ei->is_freed) {
-+			mutex_unlock(&eventfs_mutex);
-+			goto out_dec;
-+		}
-+		r = entry->callback(name, &mode, &cdata, &fops);
-+		mutex_unlock(&eventfs_mutex);
-+		if (r <= 0)
-+			continue;
- 
--		dentry = create_dir_dentry(ei, ei_child, ei_dentry);
-+		dentry = create_file_dentry(ei, i, ei_dentry, name, mode, cdata, fops);
- 		if (!dentry)
- 			goto out_dec;
- 		ino = dentry->d_inode->i_ino;
- 		dput(dentry);
- 
--		if (!dir_emit(ctx, name, strlen(name), ino, DT_DIR))
-+		if (!dir_emit(ctx, name, strlen(name), ino, DT_REG))
- 			goto out_dec;
- 	}
- 
--	for (i = 0; i < ei->nr_entries; i++) {
--		void *cdata = ei->data;
-+	list_for_each_entry_srcu(ei_child, &ei->children, list,
-+				 srcu_read_lock_held(&eventfs_srcu)) {
- 
- 		if (c > 0) {
- 			c--;
-@@ -749,27 +758,18 @@ static int eventfs_iterate(struct file *
- 
- 		ctx->pos++;
- 
--		entry = &ei->entries[i];
--		name = entry->name;
+-static inline int sched_getattr(pid_t pid, struct sched_attr *attr,
+-				unsigned int size, unsigned int flags)
+-{
+-	return syscall(__NR_sched_getattr, pid, attr, size, flags);
+-}
 -
--		mutex_lock(&eventfs_mutex);
--		/* If ei->is_freed then just bail here, nothing more to do */
--		if (ei->is_freed) {
--			mutex_unlock(&eventfs_mutex);
--			goto out_dec;
--		}
--		r = entry->callback(name, &mode, &cdata, &fops);
--		mutex_unlock(&eventfs_mutex);
--		if (r <= 0)
-+		if (ei_child->is_freed)
- 			continue;
- 
--		dentry = create_file_dentry(ei, i, ei_dentry, name, mode, cdata, fops);
-+		name = ei_child->name;
-+
-+		dentry = create_dir_dentry(ei, ei_child, ei_dentry);
- 		if (!dentry)
- 			goto out_dec;
- 		ino = dentry->d_inode->i_ino;
- 		dput(dentry);
- 
--		if (!dir_emit(ctx, name, strlen(name), ino, DT_REG))
-+		if (!dir_emit(ctx, name, strlen(name), ino, DT_DIR))
- 			goto out_dec;
- 	}
- 	ret = 1;
+ int __set_sched_attr(int pid, struct sched_attr *attr)
+ {
+ 	int flags = 0;
 
 
 
