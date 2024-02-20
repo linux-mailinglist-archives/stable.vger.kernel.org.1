@@ -1,123 +1,150 @@
-Return-Path: <stable+bounces-20801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0A3285BA88
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 12:27:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDBF285BAB1
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 12:36:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CB20284C76
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 11:27:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0AAB1C24432
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 11:36:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 844A7664DB;
-	Tue, 20 Feb 2024 11:27:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r5juAYSU"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3035866B2B;
+	Tue, 20 Feb 2024 11:36:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D14664AD;
-	Tue, 20 Feb 2024 11:27:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 924BE664A5;
+	Tue, 20 Feb 2024 11:36:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708428421; cv=none; b=lhgsQ+zt7ACnA2sg0UUcGx6Gw3mS+kTf/XfH1YKmn12+Wy4CH8wi2pqhWaoDKAOdQ79fkg7JBEq2svZQ8/8yEcwYmCaANJ56Xi9VUGnm/PmrnOEBXvKSF3u/H0iTF6sq0/CIOY9kZ4cP8cK46BCGFLK8Z33vz5V38b3Sd/5xYoA=
+	t=1708428965; cv=none; b=UoBoFofmzOUR2u8VgGXq0Yr4BaS6KQj3CBAzc+Qj0X1t0IXC7Txg3v9QSxPilSROu4b1G4Nv62LyYtR6QfQrFI55sJCcaW9LPbGwdnJij/UfH9WUUd0ZLrm5mRe2aK/OsUXg/wGnMuVMXEQsXwVbTNaAlp+SwOIhmGlQYCkmBuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708428421; c=relaxed/simple;
-	bh=VddnBpFylmssPBNR8LxVy9HNAItc6vmZJuhEvw0a1cc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hkK3ol7fiS83/xXDRbRdozrmkfsDhwVEbvKyypV7dYLxm8fUL6ysXr2yHbEuwFS+iK/9bPmNyp6tYeS7pawsK830H2zUM1jYZUz5IsgyUHOEpGyV4v6RegGaZELjAbDITXx+iQ68p703OQdX8Tuc4tjYuyPxoZXk0bPB1KoDSJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r5juAYSU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0BF5C433C7;
-	Tue, 20 Feb 2024 11:27:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708428420;
-	bh=VddnBpFylmssPBNR8LxVy9HNAItc6vmZJuhEvw0a1cc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=r5juAYSUvCxKuNFb30xnBGP17AeDgQUJFn90heG7na3+4GVGkGHv+uzoBqj9ng/t+
-	 EFpWosEYzWejLzvTu1Bjvd4u5MAlivbrRnLRMjMfuVHGn0lk6E5xGLqRZs6afOtc8c
-	 SYeeknMVdh8Ikld407i7xVPx2i0/h6I2pLkXnOgloW9j9ZrZa/OkqaAfpbGDOZjNpJ
-	 726ZtnhyNIwlhqnaH68sGapgpXtajy8uqaA7IHDbJGyFupXqg/fdqFU9YA2D8CGGvs
-	 JXtfLbRWHbGtx5EOJuo+kL+Wh1rV5LD7kN3bAl4LuNNiiS6AWwXNixXdTwbJAnTXyp
-	 H2SE4ozHo1jxw==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1rcOH5-000000005Em-1y3j;
-	Tue, 20 Feb 2024 12:26:59 +0100
-Date: Tue, 20 Feb 2024 12:26:59 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Markus Elfring <Markus.Elfring@web.de>
-Cc: Johan Hovold <johan+linaro@kernel.org>, freedreno@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org, linux-phy@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org, kernel-janitors@vger.kernel.org,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Vinod Koul <vkoul@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Kuogee Hsieh <quic_khsieh@quicinc.com>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Rob Clark <robdclark@gmail.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 3/6] soc: qcom: pmic_glink_altmode: fix drm bridge
- use-after-free
-Message-ID: <ZdSMg63b4ZGYhUXO@hovoldconsulting.com>
-References: <20240217150228.5788-4-johan+linaro@kernel.org>
- <9ff4221a-7083-4cb1-abde-1690f655da8d@web.de>
+	s=arc-20240116; t=1708428965; c=relaxed/simple;
+	bh=qHcLJNWxTJQToh5G2HiZBIotoKh5+JiFDgH6sfVxauA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=k0cZidHApNZv30sfcTDX8AcEGNNy7Ftj8svgqsSTmByWk7Y5ij1DvClKFDKDB+r1zXwg20DCnmM5tnytrANjXwbVrVXAEcaF9XuChLA7STKvgQuuftUouBOw3p34HKkRwXchCI8+dFzVrG7a5Jk7JROyXskWzDEcSljzXRUblok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1rcOPk-0000VS-3L; Tue, 20 Feb 2024 12:35:56 +0100
+Message-ID: <21370dc5-94a3-442c-ae04-76f9f94b1b96@leemhuis.info>
+Date: Tue, 20 Feb 2024 12:35:54 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: Regression with Lenovo ThinkPad Compact USB Keyboard
+Content-Language: en-US, de-DE
+To: =?UTF-8?Q?Rapha=C3=ABl_Halimi?= <raphael.halimi@gmail.com>,
+ Linux Stable Mailing List <stable@vger.kernel.org>
+Cc: Linux Regressions Mailing List <regressions@lists.linux.dev>,
+ Linux Input Mailing List <linux-input@vger.kernel.org>,
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>, Jiri Kosina <jikos@jikos.cz>,
+ Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+ Mikhail Khvainitski <me@khvoinitsky.org>,
+ Linux kernel regressions list <regressions@lists.linux.dev>
+References: <a29d56d2-c440-4a26-a9ac-014595d2ae8c@gmail.com>
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+In-Reply-To: <a29d56d2-c440-4a26-a9ac-014595d2ae8c@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <9ff4221a-7083-4cb1-abde-1690f655da8d@web.de>
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1708428962;707a7236;
+X-HE-SMSGID: 1rcOPk-0000VS-3L
 
-On Tue, Feb 20, 2024 at 11:55:57AM +0100, Markus Elfring wrote:
-> …
-> > Specifically, the dp-hpd bridge is currently registered before all
-> > resources have been acquired which means that it can also be
-> > deregistered on probe deferrals.
-> >
-> > In the meantime there is a race window where the new aux bridge driver
-> > (or PHY driver previously) may have looked up the dp-hpd bridge and
-> > stored a (non-reference-counted) pointer to the bridge which is about to
-> > be deallocated.
-> …
-> > +++ b/drivers/soc/qcom/pmic_glink_altmode.c
-> …
-> > @@ -454,7 +454,7 @@ static int pmic_glink_altmode_probe(struct auxiliary_device *adev,
-> >  		alt_port->index = port;
-> >  		INIT_WORK(&alt_port->work, pmic_glink_altmode_worker);
-> >
-> > -		alt_port->bridge = drm_dp_hpd_bridge_register(dev, to_of_node(fwnode));
-> > +		alt_port->bridge = devm_drm_dp_hpd_bridge_alloc(dev, to_of_node(fwnode));
-> >  		if (IS_ERR(alt_port->bridge)) {
-> >  			fwnode_handle_put(fwnode);
-> >  			return PTR_ERR(alt_port->bridge);
-> …
+[CCing the regression list, as it should be in the loop for regressions:
+https://docs.kernel.org/admin-guide/reporting-regressions.html]
+
+Hi, Thorsten here, the Linux kernel's regression tracker.
+
+On 16.02.24 12:51, Raphaël Halimi wrote:
 > 
-> The function call “fwnode_handle_put(fwnode)” is used in multiple if branches.
-> https://elixir.bootlin.com/linux/v6.8-rc5/source/drivers/soc/qcom/pmic_glink_altmode.c#L435
+> (sorry for the long CC list, it looks quite long to me, but I tried to
+> follow the issue reporting guide as closely as possible)
 > 
-> I suggest to add a jump target so that a bit of exception handling
-> can be better reused at the end of this function implementation.
+> Since patches [1], [2] and [3] were applied to the kernel, there is a
+> regression with Lenovo ThinkPad Compact USB Keyboard (old model, not II).
+> 
+> [1]
+> https://github.com/torvalds/linux/commit/46a0a2c96f0f47628190f122c2e3d879e590bcbe
+> [2]
+> https://github.com/torvalds/linux/commit/2f2bd7cbd1d1548137b351040dc4e037d18cdfdc
+> [3]
+> https://github.com/torvalds/linux/commit/43527a0094c10dfbf0d5a2e7979395a38de3ff65
+> 
+> The regression is that a middle click is performed when releasing middle
+> button after wheel emulation.
 
-Markus, as people have told you repeatedly, just stop with these
-comments. You're not helping, in fact, you are actively harmful to the
-kernel community as you are wasting people's time.
+How did you identify these three commits? Or do you just suspect that
+it's one of them?
 
-Johan
+And did you try to check which of the three is the actual culprit?
+Either by reverting them on top of master or by checking the parent for
+each of the commits (git show '2f2bd7cbd1d^' shows the parent for
+2f2bd7cbd1d).
+
+> The bug appears randomly, it can be after 5 minutes or 1 hour of
+> keyboard usage, and can only be worked around by unplugging/re-plugging
+> the keyboard. (I ended up resorting to simulate an unplug/replug, with a
+> script which echoes 0 then 1 to /sys/bus/usb/devices/<id>/authorized,
+> since I was afraid to damage the Micro-USB outlet by physically
+> unplugging/re-plugging too much).
+> 
+> Those spurious clicks are very annoying, since they can open links in
+> new tabs when scrolling in Firefox, or pasting text when scrolling in
+> terminals, or other unwanted stuff.
+> 
+> I witnessed it with latest kernels (Debian unstable) as well as stable
+> kernels (Debian 12 Bookworm, stable).
+> 
+> On Debian Stable, the last working kernel was 5.10.127, the regression
+> appeared in 5.10.136 (i read all changelogs on kernel.org between those
+> two releases but couldn't find anything about hid-lenovo, so I can't
+> tell exactly in which release the regression appeared, Debian upgraded
+> directly from .127 to .136).
+
+Why not bisect between .127 and .136 then?
+
+> I reported it in Debian [4], and apparently I'm not the only person
+> suffering from it [5].
+> 
+> [4] https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1058758#32
+> [5] https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1058758#42
+> 
+> I would understand that such bugs would end up in a development kernel
+> like the ones provided by Debian Unstable, but not with stable kernels
+> like the ones provided by Debian Stable.
+
+A bug report like yours can do the trick sometimes, as it might be
+enough to ring a bell for one of the developers. But given that nobody
+replied yet it looks like that is not the case. Then you most likely
+will need to perform a bisection to identify the exact commit that broke
+things.
+
+FWIW, I'm currently working on a new document describing the bisection,
+maybe it's of help for you:
+https://www.leemhuis.info/files/misc/How%20to%20bisect%20a%20Linux%20kernel%20regression%20%e2%80%94%20The%20Linux%20Kernel%20documentation.html
+
+Ciao, Thorsten
+
+P.S.: To be sure the issue doesn't fall through the cracks unnoticed,
+I'm adding it to regzbot, the Linux kernel regression tracking bot:
+
+#regzbot ^introduced v5.10.127..v5.10.136
+#regzbot title HID: lenovo: Lenovo ThinkPad Compact USB Keyboard
+sometimes sends middle-click
+#regzbot ignore-activity
+
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+That page also explains what to do if mails like this annoy you.
 
