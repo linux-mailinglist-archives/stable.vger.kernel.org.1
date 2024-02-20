@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-21071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E9CD85C704
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:07:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D722585C74A
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:11:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5286B1C2142A
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:07:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6EA5DB20D3F
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:11:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82AD1151CCC;
-	Tue, 20 Feb 2024 21:07:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7608B1509BF;
+	Tue, 20 Feb 2024 21:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Krh0XV00"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wXFlP2cB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FFB0612D7;
-	Tue, 20 Feb 2024 21:07:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 349F5612D7;
+	Tue, 20 Feb 2024 21:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463258; cv=none; b=FM8OjA3hXgqavohvTsay88mJwCorOajLIn3jTSA+BAO21GdE7Go48ZvH8INJPyunc0rSoh+GSUNOtdGU+B5w9OF0AwtxQVZyySQcTVX/6FyS5iKavcCjwTr0/uFY3SEW12dY0+8aT69Q8LYpar3iYmABuBUgveEuayb3FtbZClM=
+	t=1708463482; cv=none; b=GJPW5RP8WTD8fRi6YnaV8ctr5sfT0aBRZdg7aWgDoWae4/NlwyLx2LZi9L4+KKnHgWb9aVAiivaRMnLAOL/0TlfLhQQZNRVV+exGO2qkE1bswf4rtggxJiwooK28jQMfp9DPt3VEosouIh3AjKL6GLeJgSdGfNlOaFHc6G7Ovns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463258; c=relaxed/simple;
-	bh=+BGqk7qGvLtnjJAUe1wi8C53/4dzgjvMYV6GVTxv2qc=;
+	s=arc-20240116; t=1708463482; c=relaxed/simple;
+	bh=pN83oCIdkf7TCptRIAuv4HfcPbo+FPbLkbl0pcYnsKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fM0JayDO3mbVSUCQXF7fSgpLKRkIz+mUnXj1s1i6WFEYcJUFD+RQifzMMDX1YGf+xgefjSF5vBrWvAw4zBKBOKw+TMCpm3gQwMwVSSAuIuu2SBHVxPAQlJ6QDGDllSAIKFx5/nKDClsKAxvMuus7GyTpCpASOMvupnTDxoQlHg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Krh0XV00; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEDC6C433F1;
-	Tue, 20 Feb 2024 21:07:37 +0000 (UTC)
+	 MIME-Version; b=clRrC5J7bTGqw5wHE2m5rDoiWXqm8S5q36wfG6FzubhMzkKUFCIgreyKw5GrlrywLUgx/VjMQz6j3XyK8HwOqAXvv0hj7qSlAODdYLAHP4FWlpr5v2HTNU87x91ikNtHzdlpViURmpRhb87H79pIc4vJCZ35acva9arK0gmw8Zc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wXFlP2cB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E6DAC433C7;
+	Tue, 20 Feb 2024 21:11:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463258;
-	bh=+BGqk7qGvLtnjJAUe1wi8C53/4dzgjvMYV6GVTxv2qc=;
+	s=korg; t=1708463481;
+	bh=pN83oCIdkf7TCptRIAuv4HfcPbo+FPbLkbl0pcYnsKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Krh0XV00+8rcsM0cEFnC/efjR4esbH8/XmXkK8hz+ZnAl0DcggPm/9xuKl+d0XDyF
-	 1hHCpGhtmaJ9qtWqG32v4pvXGwKb8K1AnaIsEb/gP0qw3oiI1AZdUhZr6yOlEjUDLw
-	 WK89v2BktQnepOGnjJ8tX1PAuCt30cypA7S+oHBA=
+	b=wXFlP2cBLuO24Qj3bz9qE/7r51K6vFYcyGG5bIc8C2eApcZeru+1KUeeMOsF+4zyw
+	 yHW9CtnW1zg5ideRanIADG0ORtE1ZvZqJ+Jkx4wSZZdLYPsvh8vldNgNNCQdML1XeS
+	 VpSpqOgYxM78++qKDxFhw+AXocp1TghEm7y5AAKk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+52bbc0ad036f6f0d4a25@syzkaller.appspotmail.com,
-	Brad Spengler <spender@grsecurity.net>,
-	=?UTF-8?q?=D0=A1=D1=82=D0=B0=D1=81=20=D0=9D=D0=B8=D1=87=D0=B8=D0=BF=D0=BE=D1=80=D0=BE=D0=B2=D0=B8=D1=87?= <stasn77@gmail.com>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 6.1 185/197] netfilter: ipset: Missing gc cancellations fixed
+	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+	Simon Trimmer <simont@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 028/331] ALSA: hda/cs35l56: select intended config FW_CS_DSP
 Date: Tue, 20 Feb 2024 21:52:24 +0100
-Message-ID: <20240220204846.611852296@linuxfoundation.org>
+Message-ID: <20240220205638.472939877@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
-References: <20240220204841.073267068@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +61,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jozsef Kadlecsik <kadlec@netfilter.org>
+From: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 
-commit 27c5a095e2518975e20a10102908ae8231699879 upstream.
+[ Upstream commit e5aa6d51a2ef8c7ef7e3fe76bebe530fb68e7f08 ]
 
-The patch fdb8e12cc2cc ("netfilter: ipset: fix performance regression
-in swap operation") missed to add the calls to gc cancellations
-at the error path of create operations and at module unload. Also,
-because the half of the destroy operations now executed by a
-function registered by call_rcu(), neither NFNL_SUBSYS_IPSET mutex
-or rcu read lock is held and therefore the checking of them results
-false warnings.
+Commit 73cfbfa9caea ("ALSA: hda/cs35l56: Add driver for Cirrus Logic
+CS35L56 amplifier") adds configs SND_HDA_SCODEC_CS35L56_{I2C,SPI},
+which selects the non-existing config CS_DSP. Note the renaming in
+commit d7cfdf17cb9d ("firmware: cs_dsp: Rename KConfig symbol CS_DSP ->
+FW_CS_DSP"), though.
 
-Fixes: 97f7cf1cd80e ("netfilter: ipset: fix performance regression in swap operation")
-Reported-by: syzbot+52bbc0ad036f6f0d4a25@syzkaller.appspotmail.com
-Reported-by: Brad Spengler <spender@grsecurity.net>
-Reported-by: Стас Ничипорович <stasn77@gmail.com>
-Tested-by: Brad Spengler <spender@grsecurity.net>
-Tested-by: Стас Ничипорович <stasn77@gmail.com>
-Signed-off-by: Jozsef Kadlecsik <kadlec@netfilter.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Select the intended config FW_CS_DSP.
+
+This broken select command probably was not noticed as the configs also
+select SND_HDA_CS_DSP_CONTROLS and this then selects FW_CS_DSP. So, the
+select FW_CS_DSP could actually be dropped, but we will keep this
+redundancy in place as the author originally also intended to have this
+redundancy of selects in place.
+
+Fixes: 73cfbfa9caea ("ALSA: hda/cs35l56: Add driver for Cirrus Logic CS35L56 amplifier")
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Reviewed-by: Simon Trimmer <simont@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20240209082044.3981-1-lukas.bulwahn@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipset/ip_set_core.c     |    2 ++
- net/netfilter/ipset/ip_set_hash_gen.h |    4 ++--
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ sound/pci/hda/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/netfilter/ipset/ip_set_core.c
-+++ b/net/netfilter/ipset/ip_set_core.c
-@@ -1156,6 +1156,7 @@ static int ip_set_create(struct sk_buff
- 	return ret;
- 
- cleanup:
-+	set->variant->cancel_gc(set);
- 	set->variant->destroy(set);
- put_out:
- 	module_put(set->type->me);
-@@ -2380,6 +2381,7 @@ ip_set_net_exit(struct net *net)
- 		set = ip_set(inst, i);
- 		if (set) {
- 			ip_set(inst, i) = NULL;
-+			set->variant->cancel_gc(set);
- 			ip_set_destroy_set(set);
- 		}
- 	}
---- a/net/netfilter/ipset/ip_set_hash_gen.h
-+++ b/net/netfilter/ipset/ip_set_hash_gen.h
-@@ -419,7 +419,7 @@ mtype_ahash_destroy(struct ip_set *set,
- 	u32 i;
- 
- 	for (i = 0; i < jhash_size(t->htable_bits); i++) {
--		n = __ipset_dereference(hbucket(t, i));
-+		n = (__force struct hbucket *)hbucket(t, i);
- 		if (!n)
- 			continue;
- 		if (set->extensions & IPSET_EXT_DESTROY && ext_destroy)
-@@ -439,7 +439,7 @@ mtype_destroy(struct ip_set *set)
- 	struct htype *h = set->data;
- 	struct list_head *l, *lt;
- 
--	mtype_ahash_destroy(set, ipset_dereference_nfnl(h->table), true);
-+	mtype_ahash_destroy(set, (__force struct htable *)h->table, true);
- 	list_for_each_safe(l, lt, &h->ad) {
- 		list_del(l);
- 		kfree(l);
+diff --git a/sound/pci/hda/Kconfig b/sound/pci/hda/Kconfig
+index 0d7502d6e060..21046f72cdca 100644
+--- a/sound/pci/hda/Kconfig
++++ b/sound/pci/hda/Kconfig
+@@ -140,7 +140,7 @@ config SND_HDA_SCODEC_CS35L56_I2C
+ 	depends on I2C
+ 	depends on ACPI || COMPILE_TEST
+ 	depends on SND_SOC
+-	select CS_DSP
++	select FW_CS_DSP
+ 	select SND_HDA_GENERIC
+ 	select SND_SOC_CS35L56_SHARED
+ 	select SND_HDA_SCODEC_CS35L56
+@@ -154,7 +154,7 @@ config SND_HDA_SCODEC_CS35L56_SPI
+ 	depends on SPI_MASTER
+ 	depends on ACPI || COMPILE_TEST
+ 	depends on SND_SOC
+-	select CS_DSP
++	select FW_CS_DSP
+ 	select SND_HDA_GENERIC
+ 	select SND_SOC_CS35L56_SHARED
+ 	select SND_HDA_SCODEC_CS35L56
+-- 
+2.43.0
+
 
 
 
