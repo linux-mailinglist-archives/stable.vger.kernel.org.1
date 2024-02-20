@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-21419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A9EA85C8D2
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:26:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ED4585CA06
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:41:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 510541F21E9A
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:26:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6ED42838BC
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:41:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EA7C151CE1;
-	Tue, 20 Feb 2024 21:26:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52037151CEA;
+	Tue, 20 Feb 2024 21:41:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LuUqZbtW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="geRncnn1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6E91509BC;
-	Tue, 20 Feb 2024 21:26:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F0812DF9F;
+	Tue, 20 Feb 2024 21:41:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464360; cv=none; b=UXuA/C1P02xWbyyKlZ4DgioxHFH97f6p3cTs2cU4PfM6fsv8Kt4JLDeD80HWALgAH42Uj9MdtYLcvsHwyehJMdj4Ky2KxcRcRK91ysZwxmQ3EVvur8UsD7oLBNgHXs+cBU6IdTo9z7fQLHytsnH5n5rH9bAZYifWTndTdLoF4eU=
+	t=1708465278; cv=none; b=bmElqsQPQQRtw7NwY9cf96zZHHUhGvzsMdcDuTVKc4nD3RtiBsruvZYemukAsgA7n+THh9Lv5ZnfxfVVyYeMAehv54Ft7VWHdOb2WxPU48tpUwpwQb8+58g28+N2JJ5Yc/IVRc97OQaYWEL1iqYKPlNupUBEa5zRrAa4XxEtxno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464360; c=relaxed/simple;
-	bh=mZrZv5hElNnZQvoDdJqU2qKw+4mxVPX/y5KcRa3tsHs=;
+	s=arc-20240116; t=1708465278; c=relaxed/simple;
+	bh=UJwPlMu71y7JHlxiEyH4z7kI7bKmuCEgLGxaZFb8zV8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D8SUexgy+VyOXDp3bRQy81nSxweMYySOfF9pvqq4yyJZw5P6iHjmjP7EkPpMLlODRXbpfmt87y2RaBH+nAnaRnmeKmBleeiKRbcUvv6EDfqbi1nRYr7YhRVlsMpcPXiNWXLNx66ahKD4fMVsf77NXuMDZIC+0DYVJ0fHpyDBKJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LuUqZbtW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8713CC433F1;
-	Tue, 20 Feb 2024 21:25:59 +0000 (UTC)
+	 MIME-Version; b=Ykt+88YlPYIqmWOEUAOI3v+bhFLOqZCMBxlV3VrK/0mwXKJcq7uds8AHj6VdPXGrQrinyHlyMJ2dvrxEvJHfmmFQ3uW2OJ1FEKIEB6geO6LGMtFkOxDRXjTOHQJUYsXE7CR50OiR9Ol2e29AJnYwnsXclCD1ZJLFagINaRT3pTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=geRncnn1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83A9CC433C7;
+	Tue, 20 Feb 2024 21:41:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464359;
-	bh=mZrZv5hElNnZQvoDdJqU2qKw+4mxVPX/y5KcRa3tsHs=;
+	s=korg; t=1708465277;
+	bh=UJwPlMu71y7JHlxiEyH4z7kI7bKmuCEgLGxaZFb8zV8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LuUqZbtWAkoqC4XVO4PSzW8x6nVeJLebgiFCpPUeJ05ea18ao6c5nuWczl9oCCpG+
-	 h3kVOHZS24TYbaloxSLVMd0jZLuvbVDuaxxyqeeGa/c4+7IaoS/uZPhrgEHNWLNKLA
-	 KqQOdyEJkJkEFSvR5I0JfPuvFwqBfBYtzkIE7TVE=
+	b=geRncnn1kOqeqhV5THv2OrbZM8CUB4tRlQY9SqoPJHWW0zNZKueAb/OQFvzlI5BF2
+	 tU6ajQpmLJcKTJP4Bk6zhoCOVU+tYTkQZ/K8dL3JP9s7PUt1bka7P7Nd7V7Yz0YywA
+	 7N1SHbKx0TsxkJU1j5qtt5PorDxzy1FT2Dse3aVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@ZenIV.linux.org.uk>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	kernel test robot <oliver.sang@intel.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 305/331] eventfs: Initialize the tracefs inode properly
-Date: Tue, 20 Feb 2024 21:57:01 +0100
-Message-ID: <20240220205647.719531665@linuxfoundation.org>
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>
+Subject: [PATCH 6.7 263/309] zonefs: Improve error handling
+Date: Tue, 20 Feb 2024 21:57:02 +0100
+Message-ID: <20240220205641.386372890@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,68 +63,257 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit 4fa4b010b83fb2f837b5ef79e38072a79e96e4f1 upstream.
+commit 14db5f64a971fce3d8ea35de4dfc7f443a3efb92 upstream.
 
-The tracefs-specific fields in the inode were not initialized before the
-inode was exposed to others through the dentry with 'd_instantiate()'.
+Write error handling is racy and can sometime lead to the error recovery
+path wrongly changing the inode size of a sequential zone file to an
+incorrect value  which results in garbage data being readable at the end
+of a file. There are 2 problems:
 
-Move the field initializations up to before the d_instantiate.
+1) zonefs_file_dio_write() updates a zone file write pointer offset
+   after issuing a direct IO with iomap_dio_rw(). This update is done
+   only if the IO succeed for synchronous direct writes. However, for
+   asynchronous direct writes, the update is done without waiting for
+   the IO completion so that the next asynchronous IO can be
+   immediately issued. However, if an asynchronous IO completes with a
+   failure right before the i_truncate_mutex lock protecting the update,
+   the update may change the value of the inode write pointer offset
+   that was corrected by the error path (zonefs_io_error() function).
 
-Link: https://lore.kernel.org/linux-trace-kernel/20240131185512.478449628@goodmis.org
+2) zonefs_io_error() is called when a read or write error occurs. This
+   function executes a report zone operation using the callback function
+   zonefs_io_error_cb(), which does all the error recovery handling
+   based on the current zone condition, write pointer position and
+   according to the mount options being used. However, depending on the
+   zoned device being used, a report zone callback may be executed in a
+   context that is different from the context of __zonefs_io_error(). As
+   a result, zonefs_io_error_cb() may be executed without the inode
+   truncate mutex lock held, which can lead to invalid error processing.
 
+Fix both problems as follows:
+- Problem 1: Perform the inode write pointer offset update before a
+  direct write is issued with iomap_dio_rw(). This is safe to do as
+  partial direct writes are not supported (IOMAP_DIO_PARTIAL is not
+  set) and any failed IO will trigger the execution of zonefs_io_error()
+  which will correct the inode write pointer offset to reflect the
+  current state of the one on the device.
+- Problem 2: Change zonefs_io_error_cb() into zonefs_handle_io_error()
+  and call this function directly from __zonefs_io_error() after
+  obtaining the zone information using blkdev_report_zones() with a
+  simple callback function that copies to a local stack variable the
+  struct blk_zone obtained from the device. This ensures that error
+  handling is performed holding the inode truncate mutex.
+  This change also simplifies error handling for conventional zone files
+  by bypassing the execution of report zones entirely. This is safe to
+  do because the condition of conventional zones cannot be read-only or
+  offline and conventional zone files are always fully mapped with a
+  constant file size.
+
+Reported-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Fixes: 8dcc1a9d90c1 ("fs: New zonefs file system")
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Al Viro <viro@ZenIV.linux.org.uk>
-Cc: Ajay Kaher <ajay.kaher@broadcom.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Fixes: 5790b1fb3d672 ("eventfs: Remove eventfs_file and just use eventfs_inode")
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202401291043.e62e89dc-oliver.sang@intel.com
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Tested-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/tracefs/event_inode.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ fs/zonefs/file.c  |   42 +++++++++++++++++++++------------
+ fs/zonefs/super.c |   68 ++++++++++++++++++++++++++++++------------------------
+ 2 files changed, 66 insertions(+), 44 deletions(-)
 
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -370,6 +370,8 @@ static struct dentry *create_dir(struct
+--- a/fs/zonefs/file.c
++++ b/fs/zonefs/file.c
+@@ -348,7 +348,12 @@ static int zonefs_file_write_dio_end_io(
+ 	struct zonefs_inode_info *zi = ZONEFS_I(inode);
  
- 	ti = get_tracefs(inode);
- 	ti->flags |= TRACEFS_EVENT_INODE;
-+	/* Only directories have ti->private set to an ei, not files */
-+	ti->private = ei;
- 
- 	inc_nlink(inode);
- 	d_instantiate(dentry, inode);
-@@ -515,7 +517,6 @@ create_file_dentry(struct eventfs_inode
- static void eventfs_post_create_dir(struct eventfs_inode *ei)
- {
- 	struct eventfs_inode *ei_child;
--	struct tracefs_inode *ti;
- 
- 	lockdep_assert_held(&eventfs_mutex);
- 
-@@ -525,9 +526,6 @@ static void eventfs_post_create_dir(stru
- 				 srcu_read_lock_held(&eventfs_srcu)) {
- 		ei_child->d_parent = ei->dentry;
+ 	if (error) {
+-		zonefs_io_error(inode, true);
++		/*
++		 * For Sync IOs, error recovery is called from
++		 * zonefs_file_dio_write().
++		 */
++		if (!is_sync_kiocb(iocb))
++			zonefs_io_error(inode, true);
+ 		return error;
  	}
+ 
+@@ -491,6 +496,14 @@ static ssize_t zonefs_file_dio_write(str
+ 			ret = -EINVAL;
+ 			goto inode_unlock;
+ 		}
++		/*
++		 * Advance the zone write pointer offset. This assumes that the
++		 * IO will succeed, which is OK to do because we do not allow
++		 * partial writes (IOMAP_DIO_PARTIAL is not set) and if the IO
++		 * fails, the error path will correct the write pointer offset.
++		 */
++		z->z_wpoffset += count;
++		zonefs_inode_account_active(inode);
+ 		mutex_unlock(&zi->i_truncate_mutex);
+ 	}
+ 
+@@ -504,20 +517,19 @@ static ssize_t zonefs_file_dio_write(str
+ 	if (ret == -ENOTBLK)
+ 		ret = -EBUSY;
+ 
+-	if (zonefs_zone_is_seq(z) &&
+-	    (ret > 0 || ret == -EIOCBQUEUED)) {
+-		if (ret > 0)
+-			count = ret;
 -
--	ti = get_tracefs(ei->dentry->d_inode);
--	ti->private = ei;
+-		/*
+-		 * Update the zone write pointer offset assuming the write
+-		 * operation succeeded. If it did not, the error recovery path
+-		 * will correct it. Also do active seq file accounting.
+-		 */
+-		mutex_lock(&zi->i_truncate_mutex);
+-		z->z_wpoffset += count;
+-		zonefs_inode_account_active(inode);
+-		mutex_unlock(&zi->i_truncate_mutex);
++	/*
++	 * For a failed IO or partial completion, trigger error recovery
++	 * to update the zone write pointer offset to a correct value.
++	 * For asynchronous IOs, zonefs_file_write_dio_end_io() may already
++	 * have executed error recovery if the IO already completed when we
++	 * reach here. However, we cannot know that and execute error recovery
++	 * again (that will not change anything).
++	 */
++	if (zonefs_zone_is_seq(z)) {
++		if (ret > 0 && ret != count)
++			ret = -EIO;
++		if (ret < 0 && ret != -EIOCBQUEUED)
++			zonefs_io_error(inode, true);
+ 	}
+ 
+ inode_unlock:
+--- a/fs/zonefs/super.c
++++ b/fs/zonefs/super.c
+@@ -246,16 +246,18 @@ static void zonefs_inode_update_mode(str
+ 	z->z_mode = inode->i_mode;
  }
  
- /**
+-struct zonefs_ioerr_data {
+-	struct inode	*inode;
+-	bool		write;
+-};
+-
+ static int zonefs_io_error_cb(struct blk_zone *zone, unsigned int idx,
+ 			      void *data)
+ {
+-	struct zonefs_ioerr_data *err = data;
+-	struct inode *inode = err->inode;
++	struct blk_zone *z = data;
++
++	*z = *zone;
++	return 0;
++}
++
++static void zonefs_handle_io_error(struct inode *inode, struct blk_zone *zone,
++				   bool write)
++{
+ 	struct zonefs_zone *z = zonefs_inode_zone(inode);
+ 	struct super_block *sb = inode->i_sb;
+ 	struct zonefs_sb_info *sbi = ZONEFS_SB(sb);
+@@ -270,8 +272,8 @@ static int zonefs_io_error_cb(struct blk
+ 	data_size = zonefs_check_zone_condition(sb, z, zone);
+ 	isize = i_size_read(inode);
+ 	if (!(z->z_flags & (ZONEFS_ZONE_READONLY | ZONEFS_ZONE_OFFLINE)) &&
+-	    !err->write && isize == data_size)
+-		return 0;
++	    !write && isize == data_size)
++		return;
+ 
+ 	/*
+ 	 * At this point, we detected either a bad zone or an inconsistency
+@@ -292,7 +294,7 @@ static int zonefs_io_error_cb(struct blk
+ 	 * In all cases, warn about inode size inconsistency and handle the
+ 	 * IO error according to the zone condition and to the mount options.
+ 	 */
+-	if (zonefs_zone_is_seq(z) && isize != data_size)
++	if (isize != data_size)
+ 		zonefs_warn(sb,
+ 			    "inode %lu: invalid size %lld (should be %lld)\n",
+ 			    inode->i_ino, isize, data_size);
+@@ -352,8 +354,6 @@ static int zonefs_io_error_cb(struct blk
+ 	zonefs_i_size_write(inode, data_size);
+ 	z->z_wpoffset = data_size;
+ 	zonefs_inode_account_active(inode);
+-
+-	return 0;
+ }
+ 
+ /*
+@@ -367,23 +367,25 @@ void __zonefs_io_error(struct inode *ino
+ {
+ 	struct zonefs_zone *z = zonefs_inode_zone(inode);
+ 	struct super_block *sb = inode->i_sb;
+-	struct zonefs_sb_info *sbi = ZONEFS_SB(sb);
+ 	unsigned int noio_flag;
+-	unsigned int nr_zones = 1;
+-	struct zonefs_ioerr_data err = {
+-		.inode = inode,
+-		.write = write,
+-	};
++	struct blk_zone zone;
+ 	int ret;
+ 
+ 	/*
+-	 * The only files that have more than one zone are conventional zone
+-	 * files with aggregated conventional zones, for which the inode zone
+-	 * size is always larger than the device zone size.
+-	 */
+-	if (z->z_size > bdev_zone_sectors(sb->s_bdev))
+-		nr_zones = z->z_size >>
+-			(sbi->s_zone_sectors_shift + SECTOR_SHIFT);
++	 * Conventional zone have no write pointer and cannot become read-only
++	 * or offline. So simply fake a report for a single or aggregated zone
++	 * and let zonefs_handle_io_error() correct the zone inode information
++	 * according to the mount options.
++	 */
++	if (!zonefs_zone_is_seq(z)) {
++		zone.start = z->z_sector;
++		zone.len = z->z_size >> SECTOR_SHIFT;
++		zone.wp = zone.start + zone.len;
++		zone.type = BLK_ZONE_TYPE_CONVENTIONAL;
++		zone.cond = BLK_ZONE_COND_NOT_WP;
++		zone.capacity = zone.len;
++		goto handle_io_error;
++	}
+ 
+ 	/*
+ 	 * Memory allocations in blkdev_report_zones() can trigger a memory
+@@ -394,12 +396,20 @@ void __zonefs_io_error(struct inode *ino
+ 	 * the GFP_NOIO context avoids both problems.
+ 	 */
+ 	noio_flag = memalloc_noio_save();
+-	ret = blkdev_report_zones(sb->s_bdev, z->z_sector, nr_zones,
+-				  zonefs_io_error_cb, &err);
+-	if (ret != nr_zones)
++	ret = blkdev_report_zones(sb->s_bdev, z->z_sector, 1,
++				  zonefs_io_error_cb, &zone);
++	memalloc_noio_restore(noio_flag);
++
++	if (ret != 1) {
+ 		zonefs_err(sb, "Get inode %lu zone information failed %d\n",
+ 			   inode->i_ino, ret);
+-	memalloc_noio_restore(noio_flag);
++		zonefs_warn(sb, "remounting filesystem read-only\n");
++		sb->s_flags |= SB_RDONLY;
++		return;
++	}
++
++handle_io_error:
++	zonefs_handle_io_error(inode, &zone, write);
+ }
+ 
+ static struct kmem_cache *zonefs_inode_cachep;
 
 
 
