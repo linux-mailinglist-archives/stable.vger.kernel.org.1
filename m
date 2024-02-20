@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-21172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ADCC85C778
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:13:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C370285C8E2
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:26:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2ABBC1F24A8F
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:13:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64D00B21939
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:26:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB9631509BC;
-	Tue, 20 Feb 2024 21:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3ED3151CDC;
+	Tue, 20 Feb 2024 21:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g20mDwpj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eej3Tegd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A80612D7;
-	Tue, 20 Feb 2024 21:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 813B914F9C8;
+	Tue, 20 Feb 2024 21:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463583; cv=none; b=PbpJw0E2dWcen0DadOcCYAbtZ70h0Oi+4rNG73iRrH51Owftgzs4Sas9G8T5JJQP0G9xly7Umji9epMBKVxHVxD/mp/TuSuzCCBpfoLZHL2LgBPNZihMjXyEbuRyY52W+umqgi6IfAXYNQamo+8kTnxkxdCX9FMpPLT3iR8TXbI=
+	t=1708464411; cv=none; b=uhm8GgTfsMNTMqvW8Wb5Dl/9WqkcxDX5+6CnA1pMuwbHUPrnEVv/vek1K17N896n+zeE6crO1tss/xGJXr6DEikKhYGR/4KvJGnm3eChNGdvkmi1DH5Qbw9A7YztfX2d75iHBCRM/CID3OHGHCbxjXVOP7LRxRO2d2eT+g+whdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463583; c=relaxed/simple;
-	bh=y0N7vKSRMsThrjP6P8h3MqfL35IANBcCA15hY3vvmdc=;
+	s=arc-20240116; t=1708464411; c=relaxed/simple;
+	bh=iuIMTSktW5AZffAcaZblpyZL9x8zFXvaSccJ0JdonY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oPjrysiw21Is2n+i9rnf/coZn9zRegfrkqrpXDT68KnOGI0lIE0VNQsuPaojBQyy0ewNMGA7hyjrxX6D/vwiZ5VjBBSh3fU0Hrh49rnM1jTGK/kVywSQNMFO2zNEqCoClav35VS08jSJ34F5UQuG3TLExQS5shhxO5K2Gx9KqyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g20mDwpj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18577C43390;
-	Tue, 20 Feb 2024 21:13:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VUFVM9aN6PFY7rc9mans8/OMPG0yPdiUEKTD6yYqz4QNQ8APzbSOuyrK1L6gzAtFYfkxpwEq7rViIXPhzkliOEAISI/qhDUFdoQwE+78VJjn/to74u7L4ijwfft8wOEyCYDQWtxqHUnfKxQ0bVrDCbOhcHi959+nSurXp49mPjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eej3Tegd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2B18C433F1;
+	Tue, 20 Feb 2024 21:26:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463583;
-	bh=y0N7vKSRMsThrjP6P8h3MqfL35IANBcCA15hY3vvmdc=;
+	s=korg; t=1708464411;
+	bh=iuIMTSktW5AZffAcaZblpyZL9x8zFXvaSccJ0JdonY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g20mDwpjiFftIMDMbDgQj1q2ep5VTisc4Cw3DN6H5f4yq6IVNksjO6HLKdBGb9uG2
-	 BU+RL2XfJnlEGdViAtDmYXSUZyQoFKTwxvPAbVXuWV2HOhPc6U8OKm9nwR8HaFieKw
-	 9MzDw6BIcj8txpDuYTgfrhbLHQTjXzR3PQeBt1aQ=
+	b=Eej3TegdR/8KjwzrYqIwyd4/I2L+FshEV7qsSFZWaz6znj9su9qqKi+Sj9nhZmPlf
+	 HBw/AIfWPryvng2OsRybMXZYuzjFWv9yo+rZMrd+FWugoiyBos/mUoFZ9VkQWz5qmY
+	 lsKC9Gzq60wt/3B1br18SS+TtWx2ZMNO5G8BX73Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Matthew Wilcox <willy@infradead.org>,
-	Guo Xuenan <guoxuenan@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 060/331] readahead: avoid multiple marked readahead pages
+	Mark Brown <broonie@kernel.org>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Rob Herring <robh@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 017/309] kselftest: dt: Stop relying on dirname to improve performance
 Date: Tue, 20 Feb 2024 21:52:56 +0100
-Message-ID: <20240220205639.482094665@linuxfoundation.org>
+Message-ID: <20240220205633.701678922@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,99 +61,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-commit ab4443fe3ca6298663a55c4a70efc6c3ce913ca6 upstream.
+[ Upstream commit 6154fb9c2134f8d9534b2de10491aa3a22f3c9ff ]
 
-ra_alloc_folio() marks a page that should trigger next round of async
-readahead.  However it rounds up computed index to the order of page being
-allocated.  This can however lead to multiple consecutive pages being
-marked with readahead flag.  Consider situation with index == 1, mark ==
-1, order == 0.  We insert order 0 page at index 1 and mark it.  Then we
-bump order to 1, index to 2, mark (still == 1) is rounded up to 2 so page
-at index 2 is marked as well.  Then we bump order to 2, index is
-incremented to 4, mark gets rounded to 4 so page at index 4 is marked as
-well.  The fact that multiple pages get marked within a single readahead
-window confuses the readahead logic and results in readahead window being
-trimmed back to 1.  This situation is triggered in particular when maximum
-readahead window size is not a power of two (in the observed case it was
-768 KB) and as a result sequential read throughput suffers.
+When walking directory trees, instead of looking for specific files and
+running dirname to get the parent folder, traverse all folders and
+ignore the ones not containing the desired files. This avoids the need
+to call dirname inside the loop, which drastically decreases run time:
+Running locally on a mt8192-asurada-spherion, which reports 160 test
+cases, has gone from 5.5s to 2.9s, while running remotely with an
+nfsroot has gone from 13.5s to 5.5s.
 
-Fix the problem by rounding 'mark' down instead of up.  Because the index
-is naturally aligned to 'order', we are guaranteed 'rounded mark' == index
-iff 'mark' is within the page we are allocating at 'index' and thus
-exactly one page is marked with readahead flag as required by the
-readahead code and sequential read performance is restored.
+This change has a side-effect, which is that the root DT node now
+also shows in the output, even though it isn't expected to bind to a
+driver. However there shouldn't be a matching driver for the board
+compatible, so the end result will be just an extra skipped test:
 
-This effectively reverts part of commit b9ff43dd2743 ("mm/readahead: Fix
-readahead with large folios").  The commit changed the rounding with the
-rationale:
+ok 1 / # SKIP
 
-"...  we were setting the readahead flag on the folio which contains the
-last byte read from the block.  This is wrong because we will trigger
-readahead at the end of the read without waiting to see if a subsequent
-read is going to use the pages we just read."
-
-Although this is true, the fact is this was always the case with read
-sizes not aligned to folio boundaries and large folios in the page cache
-just make the situation more obvious (and frequent).  Also for sequential
-read workloads it is better to trigger the readahead earlier rather than
-later.  It is true that the difference in the rounding and thus earlier
-triggering of the readahead can result in reading more for semi-random
-workloads.  However workloads really suffering from this seem to be rare.
-In particular I have verified that the workload described in commit
-b9ff43dd2743 ("mm/readahead: Fix readahead with large folios") of reading
-random 100k blocks from a file like:
-
-[reader]
-bs=100k
-rw=randread
-numjobs=1
-size=64g
-runtime=60s
-
-is not impacted by the rounding change and achieves ~70MB/s in both cases.
-
-[jack@suse.cz: fix one more place where mark rounding was done as well]
-  Link: https://lkml.kernel.org/r/20240123153254.5206-1-jack@suse.cz
-Link: https://lkml.kernel.org/r/20240104085839.21029-1-jack@suse.cz
-Fixes: b9ff43dd2743 ("mm/readahead: Fix readahead with large folios")
-Signed-off-by: Jan Kara <jack@suse.cz>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Guo Xuenan <guoxuenan@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Mark Brown <broonie@kernel.org>
+Closes: https://lore.kernel.org/all/310391e8-fdf2-4c2f-a680-7744eb685177@sirena.org.uk
+Fixes: 14571ab1ad21 ("kselftest: Add new test for detecting unprobed Devicetree devices")
+Tested-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Link: https://lore.kernel.org/r/20240122-dt-kselftest-dirname-perf-fix-v2-1-f1630532fd38@collabora.com
+Signed-off-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/readahead.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/dt/test_unprobed_devices.sh | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/mm/readahead.c
-+++ b/mm/readahead.c
-@@ -469,7 +469,7 @@ static inline int ra_alloc_folio(struct
+diff --git a/tools/testing/selftests/dt/test_unprobed_devices.sh b/tools/testing/selftests/dt/test_unprobed_devices.sh
+index b07af2a4c4de..7fae90293a9d 100755
+--- a/tools/testing/selftests/dt/test_unprobed_devices.sh
++++ b/tools/testing/selftests/dt/test_unprobed_devices.sh
+@@ -33,8 +33,8 @@ if [[ ! -d "${PDT}" ]]; then
+ fi
  
- 	if (!folio)
- 		return -ENOMEM;
--	mark = round_up(mark, 1UL << order);
-+	mark = round_down(mark, 1UL << order);
- 	if (index == mark)
- 		folio_set_readahead(folio);
- 	err = filemap_add_folio(ractl->mapping, folio, index, gfp);
-@@ -577,7 +577,7 @@ static void ondemand_readahead(struct re
- 	 * It's the expected callback index, assume sequential access.
- 	 * Ramp up sizes, and push forward the readahead window.
- 	 */
--	expected = round_up(ra->start + ra->size - ra->async_size,
-+	expected = round_down(ra->start + ra->size - ra->async_size,
- 			1UL << order);
- 	if (index == expected || index == (ra->start + ra->size)) {
- 		ra->start += ra->size;
+ nodes_compatible=$(
+-	for node_compat in $(find ${PDT} -name compatible); do
+-		node=$(dirname "${node_compat}")
++	for node in $(find ${PDT} -type d); do
++		[ ! -f "${node}"/compatible ] && continue
+ 		# Check if node is available
+ 		if [[ -e "${node}"/status ]]; then
+ 			status=$(tr -d '\000' < "${node}"/status)
+@@ -46,10 +46,11 @@ nodes_compatible=$(
+ 
+ nodes_dev_bound=$(
+ 	IFS=$'\n'
+-	for uevent in $(find /sys/devices -name uevent); do
+-		if [[ -d "$(dirname "${uevent}")"/driver ]]; then
+-			grep '^OF_FULLNAME=' "${uevent}" | sed -e 's|OF_FULLNAME=||'
+-		fi
++	for dev_dir in $(find /sys/devices -type d); do
++		[ ! -f "${dev_dir}"/uevent ] && continue
++		[ ! -d "${dev_dir}"/driver ] && continue
++
++		grep '^OF_FULLNAME=' "${dev_dir}"/uevent | sed -e 's|OF_FULLNAME=||'
+ 	done
+ 	)
+ 
+-- 
+2.43.0
+
 
 
 
