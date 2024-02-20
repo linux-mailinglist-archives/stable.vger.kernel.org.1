@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-21193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCE6985C790
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:14:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 791D185C93C
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:31:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CCF51F25840
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:14:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 346A9284CB6
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:31:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ECA61509AC;
-	Tue, 20 Feb 2024 21:14:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871B9151CEC;
+	Tue, 20 Feb 2024 21:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XSmmJK62"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Yg+Ml63"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01CC76C9C;
-	Tue, 20 Feb 2024 21:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 444541509BC;
+	Tue, 20 Feb 2024 21:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463646; cv=none; b=L6PBlTF9liovPWhF49+mhpgJuJYGUkY3fS9EIo+bzkZLwtWK92DjrK+rDFVhKIQEQviHTg6bdtZbr8MJ3ksIN98zC6yXkDwP13cUhRlWP2WOCbPa+HEUMCbvzHxl5ImvJNL1SI3mi2atqgWSmePySSd0RqnpOHExc8oyVVAs33o=
+	t=1708464660; cv=none; b=Ze/+ptTL0yMFw+C4LHNzFfGDVJ9zTA+pEZfrvBA8N/ozBeWpJeYHdaDJcMe3vI6QAaROfE5dTSpknHCzjpRG6aTVHjhEXTHu5r0CQryrWORzsauI5qD4/PbLpuME7fH1DQtJI5lnmW3Q0OGoqeDrchehkBc2GaciJr2JHsk6v6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463646; c=relaxed/simple;
-	bh=4hqJ32uxtC527+UeqrWynomWY4Jj+18PNSSMryM6TG0=;
+	s=arc-20240116; t=1708464660; c=relaxed/simple;
+	bh=wC2Kh5cnoQWNwit2YU3AcAWJlZyolFjvpX4n24FW3jE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N3mDkESwDSMAGIMTfxbmmNj0KpyL6EcEd1UAiY98BgAYUaIklCOM8OyrzhhlD1gNxMBySW1ymBRomTdIc1Z6CboWhYKzsl8fqXW0gAafJM6BU+95a56JQkmTRWv2+HpqwaDgCUJPQstqNNvmq+hJugujo33LkWrfVPvM4O04A8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XSmmJK62; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48AF5C433F1;
-	Tue, 20 Feb 2024 21:14:06 +0000 (UTC)
+	 MIME-Version; b=Dv/R+BtmYlynUmy4o6as7eI1L1MrZiaTS6pbjGKx7NuWYTZONR4WNqAwU43nFaFlVFen861X+ads5WDqxwtuXRg3axcAsm+Zi0yeLl6AVcnl8wOXCj97ynQ47l7IgnSCshx0d+zeUOZRv5EEFYr5xj22IPPAFeVkHoFMM9pDMs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Yg+Ml63; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B62ABC433C7;
+	Tue, 20 Feb 2024 21:30:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463646;
-	bh=4hqJ32uxtC527+UeqrWynomWY4Jj+18PNSSMryM6TG0=;
+	s=korg; t=1708464660;
+	bh=wC2Kh5cnoQWNwit2YU3AcAWJlZyolFjvpX4n24FW3jE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XSmmJK62ICnkInvtqqqkkAqpxjheiRRAXVaM20ewHH8isMHhS0efrB80dWAC5zzLM
-	 MoPo6TyCvo1d58av9SeVYG7p5P/L+RmGG0wss3fuLic1ojxut6udW+g3xICISJYlt0
-	 04Iehiz/w3uRmrYUm4JZKHl22nKw/oLXT3+sqj7M=
+	b=0Yg+Ml639TMg4B1b1kfV2vmlhArnTYTXMvNn2mlDouGvvSL41HKn2ukd/Vq4t5qc1
+	 ut0JtivEF/J8R/sOtYm1SdR5NpjQ8B/9r44PVEwC41cuROMBcsBZfFeu1t3fVZL9Bw
+	 kIAgID0Uo5YKW+S825g1pgADnlK9BPa2U6GYfM8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 108/331] selftests: mptcp: add missing kconfig for NF Mangle
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Pedro Demarchi Gomes <pedrodemargomes@gmail.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.7 065/309] selftests/mm: ksm_tests should only MADV_HUGEPAGE valid memory
 Date: Tue, 20 Feb 2024 21:53:44 +0100
-Message-ID: <20240220205640.998638595@linuxfoundation.org>
+Message-ID: <20240220205635.250030237@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Ryan Roberts <ryan.roberts@arm.com>
 
-commit 2d41f10fa497182df9012d3e95d9cea24eb42e61 upstream.
+commit d021b442cf312664811783e92b3d5e4548e92a53 upstream.
 
-Since the commit mentioned below, 'mptcp_join' selftests is using
-IPTables to add rules to the Mangle table, only in IPv4.
+ksm_tests was previously mmapping a region of memory, aligning the
+returned pointer to a PMD boundary, then setting MADV_HUGEPAGE, but was
+setting it past the end of the mmapped area due to not taking the pointer
+alignment into consideration.  Fix this behaviour.
 
-This KConfig is usually enabled by default in many defconfig, but we
-recently noticed that some CI were running our selftests without them
-enabled.
+Up until commit efa7df3e3bb5 ("mm: align larger anonymous mappings on THP
+boundaries"), this buggy behavior was (usually) masked because the
+alignment difference was always less than PMD-size.  But since the
+mentioned commit, `ksm_tests -H -s 100` started failing.
 
-Fixes: b6e074e171bc ("selftests: mptcp: add infinite map testcase")
-Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240131-upstream-net-20240131-mptcp-ci-issues-v1-4-4c1c11e571ff@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lkml.kernel.org/r/20240122120554.3108022-1-ryan.roberts@arm.com
+Fixes: 325254899684 ("selftests: vm: add KSM huge pages merging time test")
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/config |    1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/mm/ksm_tests.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/testing/selftests/net/mptcp/config
-+++ b/tools/testing/selftests/net/mptcp/config
-@@ -23,6 +23,7 @@ CONFIG_NFT_SOCKET=m
- CONFIG_IP_ADVANCED_ROUTER=y
- CONFIG_IP_MULTIPLE_TABLES=y
- CONFIG_IP_NF_FILTER=m
-+CONFIG_IP_NF_MANGLE=m
- CONFIG_IP_NF_TARGET_REJECT=m
- CONFIG_IPV6_MULTIPLE_TABLES=y
- CONFIG_IP6_NF_FILTER=m
+--- a/tools/testing/selftests/mm/ksm_tests.c
++++ b/tools/testing/selftests/mm/ksm_tests.c
+@@ -566,7 +566,7 @@ static int ksm_merge_hugepages_time(int
+ 	if (map_ptr_orig == MAP_FAILED)
+ 		err(2, "initial mmap");
+ 
+-	if (madvise(map_ptr, len + HPAGE_SIZE, MADV_HUGEPAGE))
++	if (madvise(map_ptr, len, MADV_HUGEPAGE))
+ 		err(2, "MADV_HUGEPAGE");
+ 
+ 	pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
 
 
 
