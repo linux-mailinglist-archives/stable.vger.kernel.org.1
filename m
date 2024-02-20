@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-21403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5152685C8C0
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:25:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBE0785C9F6
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:40:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E651F1F21306
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:25:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 469651F215C7
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:40:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88CA21509AC;
-	Tue, 20 Feb 2024 21:25:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDCF4151CDC;
+	Tue, 20 Feb 2024 21:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sLtmbICN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="12hKZdSh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 483A114A4E6;
-	Tue, 20 Feb 2024 21:25:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D084612D7;
+	Tue, 20 Feb 2024 21:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464311; cv=none; b=AjY4nAsnoVKWfXkmBny2ynShKFIm4I/2YiGb/QBW3LUY1i8lbCxHTIAsF3rgVicvePhz5HYKG2LDziS7AwVhC7G7SAdYSErw74DVV72cWWsGn+QJBwyM4iBxmUOVk/vutqvG8FFiVKZHfbzcikylNM6CFrFtnm9bN7G3GjwLFRs=
+	t=1708465227; cv=none; b=l61azpdvinbgIAtHQ7D9TASTGOaRhJk6BkKxrM3ngtc110mDbvyT6lHaR2oII9OZvZbzWBOuX41eGZ0xNFeTKSt+7Qla4FRghpr7zq+NQNoGFG3+43bNHe2f6f6uNRjYU56sEzSrRRQ8Gx9B1z9EHjkct2sTn1uHH/Pqm8rXrSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464311; c=relaxed/simple;
-	bh=N0wGQ+hUoPg3hDPvePFDE1nZh5GSQG+ulI2Yw6oROjU=;
+	s=arc-20240116; t=1708465227; c=relaxed/simple;
+	bh=eEXrEmb6MGlyxmk4MOOpaaMb1ol5UQmNrrbKXWEq1YM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fRZsMjIZlIqvrM3e5oyCH+TqSzS9imusv3/mvr19O9uBKHI+b01rEpXsbMVoPoHkpPDgmso8GFn9vXb2En9zFuKvIjDB27DRLUbKzu4qadnMtNT47b0gistKYSPeOXR3pk/b5aYgnX314V9CYf7HYToCggGnTShVSXzilxB8MzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sLtmbICN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA93C433C7;
-	Tue, 20 Feb 2024 21:25:10 +0000 (UTC)
+	 MIME-Version; b=s95QRZaQC/p2JujE6VniLJyTGeu3jvYGAWECNVY7KC+2roFZo7qDSaaiE8iD/yiCBgwPJclInt0Beufj+000M4j166NVNC3qMkDGGz7goPId3pjepDgy3wpdrTxavHJ25z5ZOUpPP8B6Sn6rE5Hy3YvEjoOnd+g1N1hm/HwVdPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=12hKZdSh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0325C433C7;
+	Tue, 20 Feb 2024 21:40:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464311;
-	bh=N0wGQ+hUoPg3hDPvePFDE1nZh5GSQG+ulI2Yw6oROjU=;
+	s=korg; t=1708465227;
+	bh=eEXrEmb6MGlyxmk4MOOpaaMb1ol5UQmNrrbKXWEq1YM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sLtmbICNA3qHUJ9+DIsCHb2LMutcnegoKr1+0NN+rqBD2ANykFGD5tsEOqgwkyxBq
-	 4UfUBVGk0CtJMxgUG1/o8N31TCNOdx1UQ4zi18xo0J0NDpHdu7Js0HkNXG94TKkrNM
-	 0N/RYg7rLTvqRCxzvmBQeIl4ES69ztIojNVEPU2U=
+	b=12hKZdShyhkZNeGEWLIkt/ghWf/EjiZ15yKpkP2iecUJb7NuYhNl+lq2ASAJmFmYt
+	 AGxRqwFrVTc8S7roemrVIWfwVIj9lfkVNJoDJGch6fVMo9TlWsGm57UXyVJ2zTGmB5
+	 D4gaUHb4AcOGiXNGnladxeVsEtpGmTqNd8sAYDCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 6.6 318/331] x86/efi: Drop alignment flags from PE section headers
-Date: Tue, 20 Feb 2024 21:57:14 +0100
-Message-ID: <20240220205648.214789171@linuxfoundation.org>
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Donald Zickus <dzickus@redhat.com>,
+	Daniel Bristot de Oliveira <bristot@kernel.org>
+Subject: [PATCH 6.7 276/309] tools/rtla: Fix uninitialized bucket/data->bucket_size warning
+Date: Tue, 20 Feb 2024 21:57:15 +0100
+Message-ID: <20240220205641.759093747@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +66,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Daniel Bristot de Oliveira <bristot@kernel.org>
 
-commit bfab35f552ab3dd6d017165bf9de1d1d20f198cc upstream.
+commit 64dc40f7523369912d7adb22c8cb655f71610505 upstream.
 
-The section header flags for alignment are documented in the PE/COFF
-spec as being applicable to PE object files only, not to PE executables
-such as the Linux bzImage, so let's drop them from the PE header.
+When compiling rtla with clang, I am getting the following warnings:
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230912090051.4014114-20-ardb@google.com
+$ make HOSTCC=clang CC=clang LLVM_IAS=1
+
+[..]
+clang -O -g -DVERSION=\"6.8.0-rc3\" -flto=auto -fexceptions
+	-fstack-protector-strong -fasynchronous-unwind-tables
+	-fstack-clash-protection  -Wall -Werror=format-security
+	-Wp,-D_FORTIFY_SOURCE=2 -Wp,-D_GLIBCXX_ASSERTIONS
+	$(pkg-config --cflags libtracefs)
+	-c -o src/osnoise_hist.o src/osnoise_hist.c
+src/osnoise_hist.c:138:6: warning: variable 'bucket' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  138 |         if (data->bucket_size)
+      |             ^~~~~~~~~~~~~~~~~
+src/osnoise_hist.c:149:6: note: uninitialized use occurs here
+  149 |         if (bucket < entries)
+      |             ^~~~~~
+src/osnoise_hist.c:138:2: note: remove the 'if' if its condition is always true
+  138 |         if (data->bucket_size)
+      |         ^~~~~~~~~~~~~~~~~~~~~~
+  139 |                 bucket = duration / data->bucket_size;
+src/osnoise_hist.c:132:12: note: initialize the variable 'bucket' to silence this warning
+  132 |         int bucket;
+      |                   ^
+      |                    = 0
+1 warning generated.
+
+[...]
+
+clang -O -g -DVERSION=\"6.8.0-rc3\" -flto=auto -fexceptions
+	-fstack-protector-strong -fasynchronous-unwind-tables
+	-fstack-clash-protection  -Wall -Werror=format-security
+	-Wp,-D_FORTIFY_SOURCE=2 -Wp,-D_GLIBCXX_ASSERTIONS
+	$(pkg-config --cflags libtracefs)
+	-c -o src/timerlat_hist.o src/timerlat_hist.c
+src/timerlat_hist.c:181:6: warning: variable 'bucket' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+  181 |         if (data->bucket_size)
+      |             ^~~~~~~~~~~~~~~~~
+src/timerlat_hist.c:204:6: note: uninitialized use occurs here
+  204 |         if (bucket < entries)
+      |             ^~~~~~
+src/timerlat_hist.c:181:2: note: remove the 'if' if its condition is always true
+  181 |         if (data->bucket_size)
+      |         ^~~~~~~~~~~~~~~~~~~~~~
+  182 |                 bucket = latency / data->bucket_size;
+src/timerlat_hist.c:175:12: note: initialize the variable 'bucket' to silence this warning
+  175 |         int bucket;
+      |                   ^
+      |                    = 0
+1 warning generated.
+
+This is a legit warning, but data->bucket_size is always > 0 (see
+timerlat_hist_parse_args()), so the if is not necessary.
+
+Remove the unneeded if (data->bucket_size) to avoid the warning.
+
+Link: https://lkml.kernel.org/r/6e1b1665cd99042ae705b3e0fc410858c4c42346.1707217097.git.bristot@kernel.org
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Bill Wendling <morbo@google.com>
+Cc: Justin Stitt <justinstitt@google.com>
+Cc: Donald Zickus <dzickus@redhat.com>
+Fixes: 1eeb6328e8b3 ("rtla/timerlat: Add timerlat hist mode")
+Fixes: 829a6c0b5698 ("rtla/osnoise: Add the hist mode")
+Signed-off-by: Daniel Bristot de Oliveira <bristot@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/boot/header.S |   12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ tools/tracing/rtla/src/osnoise_hist.c  |    3 +--
+ tools/tracing/rtla/src/timerlat_hist.c |    3 +--
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
---- a/arch/x86/boot/header.S
-+++ b/arch/x86/boot/header.S
-@@ -209,8 +209,7 @@ section_table:
- 	.word	0				# NumberOfLineNumbers
- 	.long	IMAGE_SCN_CNT_CODE		| \
- 		IMAGE_SCN_MEM_READ		| \
--		IMAGE_SCN_MEM_EXECUTE		| \
--		IMAGE_SCN_ALIGN_16BYTES		# Characteristics
-+		IMAGE_SCN_MEM_EXECUTE		# Characteristics
+--- a/tools/tracing/rtla/src/osnoise_hist.c
++++ b/tools/tracing/rtla/src/osnoise_hist.c
+@@ -135,8 +135,7 @@ static void osnoise_hist_update_multiple
+ 	if (params->output_divisor)
+ 		duration = duration / params->output_divisor;
  
- 	#
- 	# The EFI application loader requires a relocation section
-@@ -230,8 +229,7 @@ section_table:
- 	.word	0				# NumberOfLineNumbers
- 	.long	IMAGE_SCN_CNT_INITIALIZED_DATA	| \
- 		IMAGE_SCN_MEM_READ		| \
--		IMAGE_SCN_MEM_DISCARDABLE	| \
--		IMAGE_SCN_ALIGN_1BYTES		# Characteristics
-+		IMAGE_SCN_MEM_DISCARDABLE	# Characteristics
+-	if (data->bucket_size)
+-		bucket = duration / data->bucket_size;
++	bucket = duration / data->bucket_size;
  
- #ifdef CONFIG_EFI_MIXED
- 	#
-@@ -249,8 +247,7 @@ section_table:
- 	.word	0				# NumberOfLineNumbers
- 	.long	IMAGE_SCN_CNT_INITIALIZED_DATA	| \
- 		IMAGE_SCN_MEM_READ		| \
--		IMAGE_SCN_MEM_DISCARDABLE	| \
--		IMAGE_SCN_ALIGN_1BYTES		# Characteristics
-+		IMAGE_SCN_MEM_DISCARDABLE	# Characteristics
- #endif
+ 	total_duration = duration * count;
  
- 	#
-@@ -271,8 +268,7 @@ section_table:
- 	.word	0				# NumberOfLineNumbers
- 	.long	IMAGE_SCN_CNT_CODE		| \
- 		IMAGE_SCN_MEM_READ		| \
--		IMAGE_SCN_MEM_EXECUTE		| \
--		IMAGE_SCN_ALIGN_16BYTES		# Characteristics
-+		IMAGE_SCN_MEM_EXECUTE		# Characteristics
+--- a/tools/tracing/rtla/src/timerlat_hist.c
++++ b/tools/tracing/rtla/src/timerlat_hist.c
+@@ -178,8 +178,7 @@ timerlat_hist_update(struct osnoise_tool
+ 	if (params->output_divisor)
+ 		latency = latency / params->output_divisor;
  
- 	.set	section_count, (. - section_table) / 40
- #endif /* CONFIG_EFI_STUB */
+-	if (data->bucket_size)
+-		bucket = latency / data->bucket_size;
++	bucket = latency / data->bucket_size;
+ 
+ 	if (!context) {
+ 		hist = data->hist[cpu].irq;
 
 
 
