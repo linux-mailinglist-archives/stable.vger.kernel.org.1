@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-20906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F4D885C634
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:59:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8715785C636
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:59:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 321911C216E6
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 20:59:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C2A6283F9D
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 20:59:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 621FE1509BC;
-	Tue, 20 Feb 2024 20:59:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1B3814A4E2;
+	Tue, 20 Feb 2024 20:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tXtIAEhE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0rHUK5oP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F96714A4E2;
-	Tue, 20 Feb 2024 20:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6EE14C585;
+	Tue, 20 Feb 2024 20:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708462743; cv=none; b=Y0mqfhRgviIfSiiHh1cqTTRGfzc6CsO/EYa7RIph300QKDFwmfUWONv684Bo1tjzhiANVKdvQxaHO1xr4214mxWeVphFnsF0ZrdUXWrWrDYlUdlgfzujQAAQg7jB1F5p/9tnnUJeZpIzB5Oo5vWcwh0dJCBADkiuc/SYMvNZWPc=
+	t=1708462749; cv=none; b=PL3JfEXVKlXlA2FtQwIECWUa/jSaLqUeu9OJriGS9/doBWHRVkreXQgCU5RNj5+9uH7OjlvDwnJfJ2MUlmaN2RdIfG4KKGxQEYIVw/4q+Ob/tr0IKRiEW51/pZ2tz0Ed3xBcv+HmiiuwBgNkdhNHyeLEIuAqs8nGib8iJfR9+xk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708462743; c=relaxed/simple;
-	bh=OOA2/PfgVRi08CO1UMr/y2Z8zbv/r+9hBu/YU7CsPZI=;
+	s=arc-20240116; t=1708462749; c=relaxed/simple;
+	bh=EGQRBkAYAEoPVdO9gJxcWDNIUn0NxHSO+j+D7x3D0hA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fil8U5bYe+q4JLfL0u88A2b5WeEryOBv52LKMkJM6CdMyCckGvMf4F0+L0ielSJACuEW5AL7ZtSNSEHNURCnNt7N9jmQKV0j7eOb/hG3RvVDCJ+3TpBsEtV/YHZZdP8Uk5Uy2urNOVIo4HK62fmX0/a7nowTEdnv2OTpvPeVrCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tXtIAEhE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35C75C433C7;
-	Tue, 20 Feb 2024 20:59:02 +0000 (UTC)
+	 MIME-Version; b=GRmRuJ5pX46pjkBvLuVk87CjC3j4gnECPDlf8fj+pCZ9BnfHaY2eksMUzZ50mOH4CK58IgsTkDvnlbiHxMLgXQ6ya/ia/wzF6xRUA8iXmwhuhOUIcpybsl90uRCfH0nXgkcw4qDohPuO8C+enO83Y/SR9gfME5AcHHQifEM4nhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0rHUK5oP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A44F7C433F1;
+	Tue, 20 Feb 2024 20:59:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708462742;
-	bh=OOA2/PfgVRi08CO1UMr/y2Z8zbv/r+9hBu/YU7CsPZI=;
+	s=korg; t=1708462749;
+	bh=EGQRBkAYAEoPVdO9gJxcWDNIUn0NxHSO+j+D7x3D0hA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tXtIAEhEbIiyFXO/j1dnwHJCcjQgEFFFQH1WMuUTSKCUabfFiwFnxQaNnyJ6LzqNT
-	 LXkxtE49jxnOUrzlhxdIUWXm8f+n4aXbdWT/OmOO4FmBrwQG/AlSVOZoXqI9jQnhAw
-	 SmnOY2zbA5YhijJXK5/6Xdj+LV/yPlcJuIk8y5Ss=
+	b=0rHUK5oPmINYZntUx6sxz9P3o5XRn+8BUojZvvLtpRyBzVg3ML+CGMOnL2Oc0enhv
+	 ISJPEOs0JNtgphiBHl3yMQhXGwdO9T2uGw+Ezk2kquYeAW+o1FbXYO5FO9WO7IL5s7
+	 gzbM6RVy5Mp7JnytV5/p9hmV2kXTGP5fsBXUxxfA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	valis <sec@valis.email>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Simon Horman <horms@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
 	Sabrina Dubroca <sd@queasysnail.net>,
 	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 023/197] net: tls: factor out tls_*crypt_async_wait()
-Date: Tue, 20 Feb 2024 21:49:42 +0100
-Message-ID: <20240220204841.774066836@linuxfoundation.org>
+Subject: [PATCH 6.1 024/197] tls: fix race between async notify and socket close
+Date: Tue, 20 Feb 2024 21:49:43 +0100
+Message-ID: <20240220204841.802959077@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
 References: <20240220204841.073267068@linuxfoundation.org>
@@ -70,185 +72,167 @@ Content-Transfer-Encoding: 8bit
 
 From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit c57ca512f3b68ddcd62bda9cc24a8f5584ab01b1 ]
+[ Upstream commit aec7961916f3f9e88766e2688992da6980f11b8d ]
 
-Factor out waiting for async encrypt and decrypt to finish.
-There are already multiple copies and a subsequent fix will
-need more. No functional changes.
+The submitting thread (one which called recvmsg/sendmsg)
+may exit as soon as the async crypto handler calls complete()
+so any code past that point risks touching already freed data.
 
-Note that crypto_wait_req() returns wait->err
+Try to avoid the locking and extra flags altogether.
+Have the main thread hold an extra reference, this way
+we can depend solely on the atomic ref counter for
+synchronization.
 
+Don't futz with reiniting the completion, either, we are now
+tightly controlling when completion fires.
+
+Reported-by: valis <sec@valis.email>
+Fixes: 0cada33241d9 ("net/tls: fix race condition causing kernel panic")
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
 Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
 Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: aec7961916f3 ("tls: fix race between async notify and socket close")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c | 96 +++++++++++++++++++++++-------------------------
- 1 file changed, 45 insertions(+), 51 deletions(-)
+ include/net/tls.h |  5 -----
+ net/tls/tls_sw.c  | 43 ++++++++++---------------------------------
+ 2 files changed, 10 insertions(+), 38 deletions(-)
 
+diff --git a/include/net/tls.h b/include/net/tls.h
+index c36bf4c50027..899c863aba02 100644
+--- a/include/net/tls.h
++++ b/include/net/tls.h
+@@ -108,9 +108,6 @@ struct tls_sw_context_tx {
+ 	struct tls_rec *open_rec;
+ 	struct list_head tx_list;
+ 	atomic_t encrypt_pending;
+-	/* protect crypto_wait with encrypt_pending */
+-	spinlock_t encrypt_compl_lock;
+-	int async_notify;
+ 	u8 async_capable:1;
+ 
+ #define BIT_TX_SCHEDULED	0
+@@ -147,8 +144,6 @@ struct tls_sw_context_rx {
+ 	struct tls_strparser strp;
+ 
+ 	atomic_t decrypt_pending;
+-	/* protect crypto_wait with decrypt_pending*/
+-	spinlock_t decrypt_compl_lock;
+ 	struct sk_buff_head async_hold;
+ 	struct wait_queue_head wq;
+ };
 diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 47ae429e50e3..b146be099a3f 100644
+index b146be099a3f..ee11932237c0 100644
 --- a/net/tls/tls_sw.c
 +++ b/net/tls/tls_sw.c
-@@ -229,6 +229,20 @@ static void tls_decrypt_done(crypto_completion_data_t *data, int err)
- 	spin_unlock_bh(&ctx->decrypt_compl_lock);
+@@ -223,22 +223,15 @@ static void tls_decrypt_done(crypto_completion_data_t *data, int err)
+ 
+ 	kfree(aead_req);
+ 
+-	spin_lock_bh(&ctx->decrypt_compl_lock);
+-	if (!atomic_dec_return(&ctx->decrypt_pending))
++	if (atomic_dec_and_test(&ctx->decrypt_pending))
+ 		complete(&ctx->async_wait.completion);
+-	spin_unlock_bh(&ctx->decrypt_compl_lock);
  }
  
-+static int tls_decrypt_async_wait(struct tls_sw_context_rx *ctx)
-+{
-+	int pending;
-+
-+	spin_lock_bh(&ctx->decrypt_compl_lock);
-+	reinit_completion(&ctx->async_wait.completion);
-+	pending = atomic_read(&ctx->decrypt_pending);
-+	spin_unlock_bh(&ctx->decrypt_compl_lock);
-+	if (pending)
-+		crypto_wait_req(-EINPROGRESS, &ctx->async_wait);
-+
-+	return ctx->async_wait.err;
-+}
-+
- static int tls_do_decryption(struct sock *sk,
- 			     struct scatterlist *sgin,
- 			     struct scatterlist *sgout,
-@@ -496,6 +510,28 @@ static void tls_encrypt_done(crypto_completion_data_t *data, int err)
- 		schedule_delayed_work(&ctx->tx_work.work, 1);
- }
+ static int tls_decrypt_async_wait(struct tls_sw_context_rx *ctx)
+ {
+-	int pending;
+-
+-	spin_lock_bh(&ctx->decrypt_compl_lock);
+-	reinit_completion(&ctx->async_wait.completion);
+-	pending = atomic_read(&ctx->decrypt_pending);
+-	spin_unlock_bh(&ctx->decrypt_compl_lock);
+-	if (pending)
++	if (!atomic_dec_and_test(&ctx->decrypt_pending))
+ 		crypto_wait_req(-EINPROGRESS, &ctx->async_wait);
++	atomic_inc(&ctx->decrypt_pending);
  
-+static int tls_encrypt_async_wait(struct tls_sw_context_tx *ctx)
-+{
-+	int pending;
-+
-+	spin_lock_bh(&ctx->encrypt_compl_lock);
-+	ctx->async_notify = true;
-+
-+	pending = atomic_read(&ctx->encrypt_pending);
-+	spin_unlock_bh(&ctx->encrypt_compl_lock);
-+	if (pending)
-+		crypto_wait_req(-EINPROGRESS, &ctx->async_wait);
-+	else
-+		reinit_completion(&ctx->async_wait.completion);
-+
-+	/* There can be no concurrent accesses, since we have no
-+	 * pending encrypt operations
-+	 */
-+	WRITE_ONCE(ctx->async_notify, false);
-+
-+	return ctx->async_wait.err;
-+}
-+
- static int tls_do_encryption(struct sock *sk,
- 			     struct tls_context *tls_ctx,
- 			     struct tls_sw_context_tx *ctx,
-@@ -953,7 +989,6 @@ int tls_sw_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
- 	int num_zc = 0;
- 	int orig_size;
- 	int ret = 0;
+ 	return ctx->async_wait.err;
+ }
+@@ -266,6 +259,7 @@ static int tls_do_decryption(struct sock *sk,
+ 		aead_request_set_callback(aead_req,
+ 					  CRYPTO_TFM_REQ_MAY_BACKLOG,
+ 					  tls_decrypt_done, aead_req);
++		DEBUG_NET_WARN_ON_ONCE(atomic_read(&ctx->decrypt_pending) < 1);
+ 		atomic_inc(&ctx->decrypt_pending);
+ 	} else {
+ 		aead_request_set_callback(aead_req,
+@@ -455,7 +449,6 @@ static void tls_encrypt_done(crypto_completion_data_t *data, int err)
+ 	struct tls_rec *rec;
+ 	bool ready = false;
+ 	struct sock *sk;
 -	int pending;
  
- 	if (msg->msg_flags & ~(MSG_MORE | MSG_DONTWAIT | MSG_NOSIGNAL |
- 			       MSG_CMSG_COMPAT))
-@@ -1122,24 +1157,12 @@ int tls_sw_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
- 	if (!num_async) {
- 		goto send_end;
- 	} else if (num_zc) {
--		/* Wait for pending encryptions to get completed */
--		spin_lock_bh(&ctx->encrypt_compl_lock);
--		ctx->async_notify = true;
--
--		pending = atomic_read(&ctx->encrypt_pending);
--		spin_unlock_bh(&ctx->encrypt_compl_lock);
--		if (pending)
--			crypto_wait_req(-EINPROGRESS, &ctx->async_wait);
--		else
--			reinit_completion(&ctx->async_wait.completion);
--
--		/* There can be no concurrent accesses, since we have no
--		 * pending encrypt operations
--		 */
--		WRITE_ONCE(ctx->async_notify, false);
-+		int err;
- 
--		if (ctx->async_wait.err) {
--			ret = ctx->async_wait.err;
-+		/* Wait for pending encryptions to get completed */
-+		err = tls_encrypt_async_wait(ctx);
-+		if (err) {
-+			ret = err;
- 			copied = 0;
- 		}
+ 	rec = container_of(aead_req, struct tls_rec, aead_req);
+ 	msg_en = &rec->msg_encrypted;
+@@ -495,12 +488,8 @@ static void tls_encrypt_done(crypto_completion_data_t *data, int err)
+ 			ready = true;
  	}
-@@ -1171,7 +1194,6 @@ void tls_sw_splice_eof(struct socket *sock)
- 	ssize_t copied = 0;
- 	bool retrying = false;
- 	int ret = 0;
--	int pending;
  
- 	if (!ctx->open_rec)
+-	spin_lock_bh(&ctx->encrypt_compl_lock);
+-	pending = atomic_dec_return(&ctx->encrypt_pending);
+-
+-	if (!pending && ctx->async_notify)
++	if (atomic_dec_and_test(&ctx->encrypt_pending))
+ 		complete(&ctx->async_wait.completion);
+-	spin_unlock_bh(&ctx->encrypt_compl_lock);
+ 
+ 	if (!ready)
  		return;
-@@ -1203,22 +1225,7 @@ void tls_sw_splice_eof(struct socket *sock)
- 	}
+@@ -512,22 +501,9 @@ static void tls_encrypt_done(crypto_completion_data_t *data, int err)
  
- 	/* Wait for pending encryptions to get completed */
+ static int tls_encrypt_async_wait(struct tls_sw_context_tx *ctx)
+ {
+-	int pending;
+-
 -	spin_lock_bh(&ctx->encrypt_compl_lock);
 -	ctx->async_notify = true;
 -
 -	pending = atomic_read(&ctx->encrypt_pending);
 -	spin_unlock_bh(&ctx->encrypt_compl_lock);
 -	if (pending)
--		crypto_wait_req(-EINPROGRESS, &ctx->async_wait);
++	if (!atomic_dec_and_test(&ctx->encrypt_pending))
+ 		crypto_wait_req(-EINPROGRESS, &ctx->async_wait);
 -	else
 -		reinit_completion(&ctx->async_wait.completion);
 -
--	/* There can be no concurrent accesses, since we have no pending
--	 * encrypt operations
+-	/* There can be no concurrent accesses, since we have no
+-	 * pending encrypt operations
 -	 */
 -	WRITE_ONCE(ctx->async_notify, false);
--
--	if (ctx->async_wait.err)
-+	if (tls_encrypt_async_wait(ctx))
- 		goto unlock;
++	atomic_inc(&ctx->encrypt_pending);
  
- 	/* Transmit if any encryptions have completed */
-@@ -2197,16 +2204,10 @@ int tls_sw_recvmsg(struct sock *sk,
+ 	return ctx->async_wait.err;
+ }
+@@ -578,6 +554,7 @@ static int tls_do_encryption(struct sock *sk,
  
- recv_end:
- 	if (async) {
--		int ret, pending;
-+		int ret;
+ 	/* Add the record in tx_list */
+ 	list_add_tail((struct list_head *)&rec->list, &ctx->tx_list);
++	DEBUG_NET_WARN_ON_ONCE(atomic_read(&ctx->encrypt_pending) < 1);
+ 	atomic_inc(&ctx->encrypt_pending);
  
- 		/* Wait for all previously submitted records to be decrypted */
--		spin_lock_bh(&ctx->decrypt_compl_lock);
--		reinit_completion(&ctx->async_wait.completion);
--		pending = atomic_read(&ctx->decrypt_pending);
--		spin_unlock_bh(&ctx->decrypt_compl_lock);
--		ret = 0;
--		if (pending)
--			ret = crypto_wait_req(-EINPROGRESS, &ctx->async_wait);
-+		ret = tls_decrypt_async_wait(ctx);
- 		__skb_queue_purge(&ctx->async_hold);
+ 	rc = crypto_aead_encrypt(aead_req);
+@@ -2594,7 +2571,7 @@ static struct tls_sw_context_tx *init_ctx_tx(struct tls_context *ctx, struct soc
+ 	}
  
- 		if (ret) {
-@@ -2425,16 +2426,9 @@ void tls_sw_release_resources_tx(struct sock *sk)
- 	struct tls_context *tls_ctx = tls_get_ctx(sk);
- 	struct tls_sw_context_tx *ctx = tls_sw_ctx_tx(tls_ctx);
- 	struct tls_rec *rec, *tmp;
--	int pending;
+ 	crypto_init_wait(&sw_ctx_tx->async_wait);
+-	spin_lock_init(&sw_ctx_tx->encrypt_compl_lock);
++	atomic_set(&sw_ctx_tx->encrypt_pending, 1);
+ 	INIT_LIST_HEAD(&sw_ctx_tx->tx_list);
+ 	INIT_DELAYED_WORK(&sw_ctx_tx->tx_work.work, tx_work_handler);
+ 	sw_ctx_tx->tx_work.sk = sk;
+@@ -2615,7 +2592,7 @@ static struct tls_sw_context_rx *init_ctx_rx(struct tls_context *ctx)
+ 	}
  
- 	/* Wait for any pending async encryptions to complete */
--	spin_lock_bh(&ctx->encrypt_compl_lock);
--	ctx->async_notify = true;
--	pending = atomic_read(&ctx->encrypt_pending);
--	spin_unlock_bh(&ctx->encrypt_compl_lock);
--
--	if (pending)
--		crypto_wait_req(-EINPROGRESS, &ctx->async_wait);
-+	tls_encrypt_async_wait(ctx);
- 
- 	tls_tx_records(sk, -1);
- 
+ 	crypto_init_wait(&sw_ctx_rx->async_wait);
+-	spin_lock_init(&sw_ctx_rx->decrypt_compl_lock);
++	atomic_set(&sw_ctx_rx->decrypt_pending, 1);
+ 	init_waitqueue_head(&sw_ctx_rx->wq);
+ 	skb_queue_head_init(&sw_ctx_rx->rx_list);
+ 	skb_queue_head_init(&sw_ctx_rx->async_hold);
 -- 
 2.43.0
 
