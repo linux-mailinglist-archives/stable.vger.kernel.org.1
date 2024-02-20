@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-21523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 605E385C943
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:31:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 294E485C7F2
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:18:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91CBA1C20F83
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:31:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ADAFDB214CA
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:18:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03358151CE1;
-	Tue, 20 Feb 2024 21:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0005C151CD8;
+	Tue, 20 Feb 2024 21:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BGtmyA1a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jxGbyU5a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B630B14A4D2;
-	Tue, 20 Feb 2024 21:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B216D612D7;
+	Tue, 20 Feb 2024 21:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464680; cv=none; b=DhIw74aroQirPtr3n306V+ItwSne/SJepKE/M5DCk/kVMuUwfw3bSeIKBow0tavkuZMHf8KThn6rL2+Vgaehjc13u160iGGXtix2ljDzOx1Q7gNS3qNzIbyltIeiyikiuAblxGh1qVN5vRwmCqiFxLb1XXs/WZr5R9BmevNPM7k=
+	t=1708463887; cv=none; b=DgEHP0HgWaITNUpdTZsbw3nUymvoKfX4UC0djP/qXIBUJhS8XDuG1ckbXhHDPu/Vk/6xe+Rsy+1tOvmLVLQbjwosValagV0ujlsOj0FIxlYp5x42BV2WqjJN7yn3M6vsGf/6DA5c4l4bqtBx0VBzmaww+LnP/nGwtTZBSX9E1Ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464680; c=relaxed/simple;
-	bh=qb87wKKnEu3WetdDqx3yA6X8IH3O334OhiRKEYKwXT8=;
+	s=arc-20240116; t=1708463887; c=relaxed/simple;
+	bh=Nv42b75NUqwm69nOKKEfgaUKElPK0Z82S+3cHsV0p4A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KJQ8d1NaYPG5saX4bd7d1SdVy39f0Q0AIf8DhXkH00LLB1LeeTDJ9iEBgduuMExz3ub1yHyYRns89TPU0mCS6Yjf3pXDkXe/1sxQCrZbfbWMNVXtYFekbIlejySpjNwxVv5hxr3zZGfTj8iEee2BcU5au6IiJ1+hA5zlAYY+nio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BGtmyA1a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 413E5C43390;
-	Tue, 20 Feb 2024 21:31:20 +0000 (UTC)
+	 MIME-Version; b=bR7R6EVwSFU10IExU3oOUCsvzlDlkz77bvFxklynmMUrnpOlig8Um9eafXKAM4GQZNEnbZlnbP5l5GAxWV3Dvkud887nnFyJq5+PWoWUKZbdLElHU1D+ZhwtaVsxIoTnNgv+r0yQMW9hLj1tLwPeHML/Q1ANnoyGP6RgYofCwSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jxGbyU5a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 284F5C433C7;
+	Tue, 20 Feb 2024 21:18:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464680;
-	bh=qb87wKKnEu3WetdDqx3yA6X8IH3O334OhiRKEYKwXT8=;
+	s=korg; t=1708463887;
+	bh=Nv42b75NUqwm69nOKKEfgaUKElPK0Z82S+3cHsV0p4A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BGtmyA1acKjl6nwL7WK9AMyywY77r00/0Guhmzz9SLlPZJ76fZ1Tv2H9Q+iH/5mbI
-	 dMF53Vpu93q1l6vb7fae200F8d4K41IidoZA0bGN6+sGaKFKVnqLqa6DLqo070NNzN
-	 rs6crUMZIap1qlIjspcCjLAR0Sft7zXP0KtBvLw8=
+	b=jxGbyU5axNeNzNnsuwv6mFVsnQYrTFe7zM+gHae1XRldC6bhfTauq0SLHnrCb8HmT
+	 SO1xqX/ydqLn85LMrH2RQ1exLDISznxuQBsNshtE8FYgDLFgt5xDBGKCIbBQtMaJUl
+	 TJyw1V6MH6vhIjEyZZLeVbGME/qDcr//YLeVB1Hg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanath S <sanath.s@amd.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Lukas Wunner <lukas@wunner.de>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 103/309] PCI: Fix active state requirement in PME polling
+	Wei Chen <harperchen1110@gmail.com>,
+	xingwei lee <xrivendell7@gmail.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.6 146/331] ext4: fix double-free of blocks due to wrong extents moved_len
 Date: Tue, 20 Feb 2024 21:54:22 +0100
-Message-ID: <20240220205636.409728308@linuxfoundation.org>
+Message-ID: <20240220205642.130113956@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,107 +64,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Williamson <alex.williamson@redhat.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 41044d5360685e78a869d40a168491a70cdb7e73 ]
+commit 55583e899a5357308274601364741a83e78d6ac4 upstream.
 
-The commit noted in fixes added a bogus requirement that runtime PM managed
-devices need to be in the RPM_ACTIVE state for PME polling.  In fact, only
-devices in low power states should be polled.
+In ext4_move_extents(), moved_len is only updated when all moves are
+successfully executed, and only discards orig_inode and donor_inode
+preallocations when moved_len is not zero. When the loop fails to exit
+after successfully moving some extents, moved_len is not updated and
+remains at 0, so it does not discard the preallocations.
 
-However there's still a requirement that the device config space must be
-accessible, which has implications for both the current state of the polled
-device and the parent bridge, when present.  It's not sufficient to assume
-the bridge remains in D0 and cases have been observed where the bridge
-passes the D0 test, but the PM state indicates RPM_SUSPENDING and config
-space of the polled device becomes inaccessible during pci_pme_wakeup().
+If the moved extents overlap with the preallocated extents, the
+overlapped extents are freed twice in ext4_mb_release_inode_pa() and
+ext4_process_freed_data() (as described in commit 94d7c16cbbbd ("ext4:
+Fix double-free of blocks with EXT4_IOC_MOVE_EXT")), and bb_free is
+incremented twice. Hence when trim is executed, a zero-division bug is
+triggered in mb_update_avg_fragment_size() because bb_free is not zero
+and bb_fragments is zero.
 
-Therefore, since the bridge is already effectively required to be in the
-RPM_ACTIVE state, formalize this in the code and elevate the PM usage count
-to maintain the state while polling the subordinate device.
+Therefore, update move_len after each extent move to avoid the issue.
 
-This resolves a regression reported in the bugzilla below where a
-Thunderbolt/USB4 hierarchy fails to scan for an attached NVMe endpoint
-downstream of a bridge in a D3hot power state.
-
-Link: https://lore.kernel.org/r/20240123185548.1040096-1-alex.williamson@redhat.com
-Fixes: d3fcd7360338 ("PCI: Fix runtime PM race with PME polling")
-Reported-by: Sanath S <sanath.s@amd.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218360
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Sanath S <sanath.s@amd.com>
-Reviewed-by: Rafael J. Wysocki <rafael@kernel.org>
-Cc: Lukas Wunner <lukas@wunner.de>
-Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Wei Chen <harperchen1110@gmail.com>
+Reported-by: xingwei lee <xrivendell7@gmail.com>
+Closes: https://lore.kernel.org/r/CAO4mrferzqBUnCag8R3m2zf897ts9UEuhjFQGPtODT92rYyR2Q@mail.gmail.com
+Fixes: fcf6b1b729bc ("ext4: refactor ext4_move_extents code base")
+CC:  <stable@vger.kernel.org> # 3.18
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20240104142040.2835097-2-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/pci.c | 37 ++++++++++++++++++++++---------------
- 1 file changed, 22 insertions(+), 15 deletions(-)
+ fs/ext4/move_extent.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index b2000b14faa0..e62de9730422 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -2459,29 +2459,36 @@ static void pci_pme_list_scan(struct work_struct *work)
- 		if (pdev->pme_poll) {
- 			struct pci_dev *bridge = pdev->bus->self;
- 			struct device *dev = &pdev->dev;
--			int pm_status;
-+			struct device *bdev = bridge ? &bridge->dev : NULL;
-+			int bref = 0;
+--- a/fs/ext4/move_extent.c
++++ b/fs/ext4/move_extent.c
+@@ -619,6 +619,7 @@ ext4_move_extents(struct file *o_filp, s
+ 		goto out;
+ 	o_end = o_start + len;
  
- 			/*
--			 * If bridge is in low power state, the
--			 * configuration space of subordinate devices
--			 * may be not accessible
-+			 * If we have a bridge, it should be in an active/D0
-+			 * state or the configuration space of subordinate
-+			 * devices may not be accessible or stable over the
-+			 * course of the call.
- 			 */
--			if (bridge && bridge->current_state != PCI_D0)
--				continue;
-+			if (bdev) {
-+				bref = pm_runtime_get_if_active(bdev, true);
-+				if (!bref)
-+					continue;
-+
-+				if (bridge->current_state != PCI_D0)
-+					goto put_bridge;
-+			}
++	*moved_len = 0;
+ 	while (o_start < o_end) {
+ 		struct ext4_extent *ex;
+ 		ext4_lblk_t cur_blk, next_blk;
+@@ -673,7 +674,7 @@ ext4_move_extents(struct file *o_filp, s
+ 		 */
+ 		ext4_double_up_write_data_sem(orig_inode, donor_inode);
+ 		/* Swap original branches with new branches */
+-		move_extent_per_page(o_filp, donor_inode,
++		*moved_len += move_extent_per_page(o_filp, donor_inode,
+ 				     orig_page_index, donor_page_index,
+ 				     offset_in_page, cur_len,
+ 				     unwritten, &ret);
+@@ -683,9 +684,6 @@ ext4_move_extents(struct file *o_filp, s
+ 		o_start += cur_len;
+ 		d_start += cur_len;
+ 	}
+-	*moved_len = o_start - orig_blk;
+-	if (*moved_len > len)
+-		*moved_len = len;
  
- 			/*
--			 * If the device is in a low power state it
--			 * should not be polled either.
-+			 * The device itself should be suspended but config
-+			 * space must be accessible, therefore it cannot be in
-+			 * D3cold.
- 			 */
--			pm_status = pm_runtime_get_if_active(dev, true);
--			if (!pm_status)
--				continue;
--
--			if (pdev->current_state != PCI_D3cold)
-+			if (pm_runtime_suspended(dev) &&
-+			    pdev->current_state != PCI_D3cold)
- 				pci_pme_wakeup(pdev, NULL);
- 
--			if (pm_status > 0)
--				pm_runtime_put(dev);
-+put_bridge:
-+			if (bref > 0)
-+				pm_runtime_put(bdev);
- 		} else {
- 			list_del(&pme_dev->list);
- 			kfree(pme_dev);
--- 
-2.43.0
-
+ out:
+ 	if (*moved_len) {
 
 
 
