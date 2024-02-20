@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-21303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E806B85C840
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:19:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78CCB85C98F
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:35:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66D69281027
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:19:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1379B2237C
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:35:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC42F151CDC;
-	Tue, 20 Feb 2024 21:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FAE3151CE1;
+	Tue, 20 Feb 2024 21:35:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fmhaZmoR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wdr8fwUW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9112114A4E6;
-	Tue, 20 Feb 2024 21:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FA462DF9F;
+	Tue, 20 Feb 2024 21:35:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463995; cv=none; b=ng2XgvPtmdqiGsMOefGjTqjex7r80D74jbMulp6aRDh+QgDNn8EjiXf8CoS37dV05kJZw+SczswLAFqPbeQqFL8Z944bdRdFe+k36P4JhonDn41Ckwaokj2HR8zfhDEhYWY8h6lQs9qqHaIqZ7il1qplfsxz3p1gWptyVnug/wg=
+	t=1708464916; cv=none; b=QoVnJBEL7IpQPTtgFohwY54CF3u7zZ97DADyNY4R9P7A/jjUIbYfbNnlIvn9tVkErtEKPV6JTXeTaUiJ8XRMgwkiZ5XDrJSWY2ePDwD14+c6a7UyOlE4brtstZV6bCsR7Pg5445Hk3uY72rLVffkBhVUAos2d283IYfiEavxoSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463995; c=relaxed/simple;
-	bh=5PsApUwjSD+1tVzqkM8JNYNh1cGChn6U5blNyOrjkRM=;
+	s=arc-20240116; t=1708464916; c=relaxed/simple;
+	bh=qIc+apUYueI3Gen5swJuPx0NKJoWgR9Fk/jjAkuHGHY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lJI8WWK//KrdXj6KVSoVXTXccKye0RKYvYU3QLile7lHmEnXou6uTEFBUczpYpt0e8xYnuVI1RTFoM/g2tG5ycyexoQTldCceUzH7t+c1R4J2T9kw1caY2YL6NXSSwmlrgEU/htBxp/PFNzJjNOgFBgK/yv/+v1axBO901WvQEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fmhaZmoR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2ABAC433C7;
-	Tue, 20 Feb 2024 21:19:54 +0000 (UTC)
+	 MIME-Version; b=E40iKWV1Hc7N0WmxnuR/kulYB+nz1102Fl2zCy0L8y7huUvqY/Hs8wX5cs15KL7atmk97pXGrW5my6w6itq0tEHCsAkmOVNOwUHmNCUUPve1w0HvnzbHVcAxgT2nuvxHvfI0HGm2m6i7vCT12P+BwfR+zfUXu/5Cq1Id4p+SyjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wdr8fwUW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 859D3C433F1;
+	Tue, 20 Feb 2024 21:35:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463995;
-	bh=5PsApUwjSD+1tVzqkM8JNYNh1cGChn6U5blNyOrjkRM=;
+	s=korg; t=1708464915;
+	bh=qIc+apUYueI3Gen5swJuPx0NKJoWgR9Fk/jjAkuHGHY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fmhaZmoRqdIvgQAjYGQ6U5UVD6vJzwl5YT1tsrv4N3zJe5nhmzBouxyaEGDC1iwtX
-	 RXKcznKcOPWoNy59YpXXBJmx1O0ExCs5z7+mpUT+apg0zZj79N3GKCL2pc4/UbbH3F
-	 tQn59Z8KWPZhbGP0Jqab6hd6nCeunLOuZfWdHehM=
+	b=wdr8fwUWF3sP7FH4iO2cP6/vIU5rEjrtSY5X1zMqihOTMBc3cMzu9idDDyFK0/LA9
+	 mWbhaFBIziuix9QHvIRQK3UdF1l4oLPlI1kNT2LEfo5SnDntOcqI6sG7wHEBEsWCir
+	 YTpIaf2uklFLytHkn4RhVtK+4vjs7x/rX7JGeO9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.6 219/331] arm64/signal: Dont assume that TIF_SVE means we saved SVE state
-Date: Tue, 20 Feb 2024 21:55:35 +0100
-Message-ID: <20240220205644.619961877@linuxfoundation.org>
+	Eugen Hristev <eugen.hristev@collabora.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.7 177/309] pmdomain: mediatek: fix race conditions with genpd
+Date: Tue, 20 Feb 2024 21:55:36 +0100
+Message-ID: <20240220205638.690757821@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +61,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Eugen Hristev <eugen.hristev@collabora.com>
 
-commit 61da7c8e2a602f66be578cbbcebe8638c10e0f48 upstream.
+commit c41336f4d69057cbf88fed47951379b384540df5 upstream.
 
-When we are in a syscall we will only save the FPSIMD subset even though
-the task still has access to the full register set, and on context switch
-we will only remove TIF_SVE when loading the register state. This means
-that the signal handling code should not assume that TIF_SVE means that
-the register state is stored in SVE format, it should instead check the
-format that was recorded during save.
+If the power domains are registered first with genpd and *after that*
+the driver attempts to power them on in the probe sequence, then it is
+possible that a race condition occurs if genpd tries to power them on
+in the same time.
+The same is valid for powering them off before unregistering them
+from genpd.
+Attempt to fix race conditions by first removing the domains from genpd
+and *after that* powering down domains.
+Also first power up the domains and *after that* register them
+to genpd.
 
-Fixes: 8c845e273104 ("arm64/sve: Leave SVE enabled on syscall if we don't context switch")
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 59b644b01cf4 ("soc: mediatek: Add MediaTek SCPSYS power domains")
+Signed-off-by: Eugen Hristev <eugen.hristev@collabora.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240130-arm64-sve-signal-regs-v2-1-9fc6f9502782@kernel.org
-Signed-off-by: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20231225133615.78993-1-eugen.hristev@collabora.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/fpsimd.c |    2 +-
- arch/arm64/kernel/signal.c |    4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/pmdomain/mediatek/mtk-pm-domains.c |   15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
---- a/arch/arm64/kernel/fpsimd.c
-+++ b/arch/arm64/kernel/fpsimd.c
-@@ -1686,7 +1686,7 @@ void fpsimd_preserve_current_state(void)
- void fpsimd_signal_preserve_current_state(void)
- {
- 	fpsimd_preserve_current_state();
--	if (test_thread_flag(TIF_SVE))
-+	if (current->thread.fp_type == FP_STATE_SVE)
- 		sve_to_fpsimd(current);
- }
+--- a/drivers/pmdomain/mediatek/mtk-pm-domains.c
++++ b/drivers/pmdomain/mediatek/mtk-pm-domains.c
+@@ -561,6 +561,11 @@ static int scpsys_add_subdomain(struct s
+ 			goto err_put_node;
+ 		}
  
---- a/arch/arm64/kernel/signal.c
-+++ b/arch/arm64/kernel/signal.c
-@@ -242,7 +242,7 @@ static int preserve_sve_context(struct s
- 		vl = task_get_sme_vl(current);
- 		vq = sve_vq_from_vl(vl);
- 		flags |= SVE_SIG_FLAG_SM;
--	} else if (test_thread_flag(TIF_SVE)) {
-+	} else if (current->thread.fp_type == FP_STATE_SVE) {
- 		vq = sve_vq_from_vl(vl);
++		/* recursive call to add all subdomains */
++		ret = scpsys_add_subdomain(scpsys, child);
++		if (ret)
++			goto err_put_node;
++
+ 		ret = pm_genpd_add_subdomain(parent_pd, child_pd);
+ 		if (ret) {
+ 			dev_err(scpsys->dev, "failed to add %s subdomain to parent %s\n",
+@@ -570,11 +575,6 @@ static int scpsys_add_subdomain(struct s
+ 			dev_dbg(scpsys->dev, "%s add subdomain: %s\n", parent_pd->name,
+ 				child_pd->name);
+ 		}
+-
+-		/* recursive call to add all subdomains */
+-		ret = scpsys_add_subdomain(scpsys, child);
+-		if (ret)
+-			goto err_put_node;
  	}
  
-@@ -878,7 +878,7 @@ static int setup_sigframe_layout(struct
- 	if (system_supports_sve() || system_supports_sme()) {
- 		unsigned int vq = 0;
+ 	return 0;
+@@ -588,9 +588,6 @@ static void scpsys_remove_one_domain(str
+ {
+ 	int ret;
  
--		if (add_all || test_thread_flag(TIF_SVE) ||
-+		if (add_all || current->thread.fp_type == FP_STATE_SVE ||
- 		    thread_sm_enabled(&current->thread)) {
- 			int vl = max(sve_max_vl(), sme_max_vl());
+-	if (scpsys_domain_is_on(pd))
+-		scpsys_power_off(&pd->genpd);
+-
+ 	/*
+ 	 * We're in the error cleanup already, so we only complain,
+ 	 * but won't emit another error on top of the original one.
+@@ -600,6 +597,8 @@ static void scpsys_remove_one_domain(str
+ 		dev_err(pd->scpsys->dev,
+ 			"failed to remove domain '%s' : %d - state may be inconsistent\n",
+ 			pd->genpd.name, ret);
++	if (scpsys_domain_is_on(pd))
++		scpsys_power_off(&pd->genpd);
  
+ 	clk_bulk_put(pd->num_clks, pd->clks);
+ 	clk_bulk_put(pd->num_subsys_clks, pd->subsys_clks);
 
 
 
