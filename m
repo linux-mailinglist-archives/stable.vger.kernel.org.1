@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-21143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBB2585C74D
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:11:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D85E585C6FC
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:07:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 861222828E2
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:11:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14FC01C21901
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:07:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5E5B1509BF;
-	Tue, 20 Feb 2024 21:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A200151CC3;
+	Tue, 20 Feb 2024 21:07:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JDPJBzX7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Bww/UUZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3701612D7;
-	Tue, 20 Feb 2024 21:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3930E612D7;
+	Tue, 20 Feb 2024 21:07:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463491; cv=none; b=AHVBH2XtADokFieZJnULbdFCWESVTksSlPM1B7qZRc2O1Yakd9nF8ADaajTyvbaQ93exw7jR8CkyxvQo4NXsdsusiCVvOk5ca46uq+c2/+ifMCUxIpp/Sg4ol548N1oSsgo7qw9elYOQ+NqFA+PG+bYcH70kcjZz0pNx1OAKylE=
+	t=1708463233; cv=none; b=ga5FtEjdvBuJjv3t1HJLrqpNzU+F+c+bB91gjkh5t4UlPZIngBOXn6KX/bGmRlHIvQ0wLoxyuUutbHV1DiqMzKmNGZmgk6Vg91PL6FBmjzp8WKZl5Cx0ZMiq1n8xvavtDZYPXrVwkBIRu+q4CLpaSY4W1ussBdfKOBtY2DeH3yQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463491; c=relaxed/simple;
-	bh=fRnd8t/FjAlMSRiX/b44SGkR2IDMo4350luXtwhjPkY=;
+	s=arc-20240116; t=1708463233; c=relaxed/simple;
+	bh=kRqCC62qTEMMvxCMtuLXxVnlBOLtSnuC2LHBoLFah0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rM1dp9xhfSXPWXNJ2lOHVnQBGDZu9Lf1/AStsQULvF7/KMLhPmZHoSBQNIkPx1COSCB/8IBMBzQIzwbJjnTiDkaeCeXNowJnG0an+jMAz/nfeWLOAOvJbxjFTxMC1NwJivRL8pE79KGqcXEbD9+updGMKZFbaBbp+T+ATi4OukM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JDPJBzX7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14EB2C433F1;
-	Tue, 20 Feb 2024 21:11:30 +0000 (UTC)
+	 MIME-Version; b=loHKVl0EhGlWPOE+qSIPuPJgg9eddMU4swLf8wsg3azyJlf82jyXiRy5KElHj9Ho2gjgZov0bBycj5nmhXaX09O16UO20Fncs9LWWPQtQPGYEJfJ4ym1CTO6xgaMamE5MpdYNIDGc8qs0GoQkveLTBtw0DX5rkL/UrFqHjV3UXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Bww/UUZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B995DC433F1;
+	Tue, 20 Feb 2024 21:07:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463491;
-	bh=fRnd8t/FjAlMSRiX/b44SGkR2IDMo4350luXtwhjPkY=;
+	s=korg; t=1708463233;
+	bh=kRqCC62qTEMMvxCMtuLXxVnlBOLtSnuC2LHBoLFah0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JDPJBzX708uEBkE+3pUyE7ZzpkYW4ThEGwfEbvvFYDioFIQg0CpL6pUV3svLOfloo
-	 kkurUiemcrNK0VJ95AGvtuVcMEYs8YfByMJMjsW0mztWGXeAu2sCENAaZeoxkUqFxP
-	 iBae5OZloc8SSHUHh0MR3PLsEcdsLH6omwce3P6A=
+	b=2Bww/UUZhoNdzs9xikUYI/T7DZgWG1APbnDY2s4M7WZCTLhM5jBwX7wAFK9AqJOSh
+	 fc3OlFwk5jifc12eHmBaF9KLeVoS+PIpVDXiUTxidNe82HGE4SoWZAN2ClweXni0Da
+	 v9qcadwMXidBF6+LdCpcW9X9P98TNvVdCK9XGXRI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Stephan Gerhold <stephan@gerhold.net>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 021/331] wifi: iwlwifi: uninitialized variable in iwl_acpi_get_ppag_table()
+Subject: [PATCH 6.1 178/197] arm64: dts: qcom: msm8916: Make blsp_dma controlled-remotely
 Date: Tue, 20 Feb 2024 21:52:17 +0100
-Message-ID: <20240220205638.258327931@linuxfoundation.org>
+Message-ID: <20240220204846.394417256@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
+References: <20240220204841.073267068@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Stephan Gerhold <stephan@gerhold.net>
 
-[ Upstream commit 65c6ee90455053cfd3067c17aaa4a42b0c766543 ]
+[ Upstream commit 7c45b6ddbcff01f9934d11802010cfeb0879e693 ]
 
-This is an error path and Smatch complains that "tbl_rev" is uninitialized
-on this path.  All the other functions follow this same patter where they
-set the error code and goto out_free so that's probably what was intended
-here as well.
+The blsp_dma controller is shared between the different subsystems,
+which is why it is already initialized by the firmware. We should not
+reinitialize it from Linux to avoid potential other users of the DMA
+engine to misbehave.
 
-Fixes: e8e10a37c51c ("iwlwifi: acpi: move ppag code from mvm to fw/acpi")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://msgid.link/09900c01-6540-4a32-9451-563da0029cb6@moroto.mountain
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+In mainline this can be described using the "qcom,controlled-remotely"
+property. In the downstream/vendor kernel from Qualcomm there is an
+opposite "qcom,managed-locally" property. This property is *not* set
+for the qcom,sps-dma@7884000 [1] so adding "qcom,controlled-remotely"
+upstream matches the behavior of the downstream/vendor kernel.
+
+Adding this seems to fix some weird issues with UART where both
+input/output becomes garbled with certain obscure firmware versions on
+some devices.
+
+[1]: https://git.codelinaro.org/clo/la/kernel/msm-3.10/-/blob/LA.BR.1.2.9.1-02310-8x16.0/arch/arm/boot/dts/qcom/msm8916.dtsi#L1466-1472
+
+Cc: stable@vger.kernel.org # 6.5
+Fixes: a0e5fb103150 ("arm64: dts: qcom: Add msm8916 BLSP device nodes")
+Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Link: https://lore.kernel.org/r/20231204-msm8916-blsp-dma-remote-v1-1-3e49c8838c8d@gerhold.net
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/acpi.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/boot/dts/qcom/msm8916.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-index 6f1919234f3f..359397a61715 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-@@ -1088,6 +1088,9 @@ int iwl_acpi_get_ppag_table(struct iwl_fw_runtime *fwrt)
- 		goto read_table;
- 	}
+diff --git a/arch/arm64/boot/dts/qcom/msm8916.dtsi b/arch/arm64/boot/dts/qcom/msm8916.dtsi
+index f0d097ade84c..987cebbda057 100644
+--- a/arch/arm64/boot/dts/qcom/msm8916.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8916.dtsi
+@@ -1522,6 +1522,7 @@ blsp_dma: dma-controller@7884000 {
+ 			clock-names = "bam_clk";
+ 			#dma-cells = <1>;
+ 			qcom,ee = <0>;
++			qcom,controlled-remotely;
+ 		};
  
-+	ret = PTR_ERR(wifi_pkg);
-+	goto out_free;
-+
- read_table:
- 	fwrt->ppag_ver = tbl_rev;
- 	flags = &wifi_pkg->package.elements[1];
+ 		blsp1_uart1: serial@78af000 {
 -- 
 2.43.0
 
