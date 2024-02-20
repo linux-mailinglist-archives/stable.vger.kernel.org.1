@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-21438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F88785C8E5
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:27:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 564C285C8EB
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:27:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A6A32845D8
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:27:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D6721F21C01
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:27:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A24151CCC;
-	Tue, 20 Feb 2024 21:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1559151CD8;
+	Tue, 20 Feb 2024 21:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lY3duZcY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W63erX3X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D2614A4E6;
-	Tue, 20 Feb 2024 21:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60B3D14A4E6;
+	Tue, 20 Feb 2024 21:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464420; cv=none; b=UjdKMn03JJwvsy8kLw3j2ILGIIj97tsM6Ll8YcGkCJRmv3AHzHi/otGRij9ZW4I7bUqNgtTHqQZepUwsbU2xPcuRsYjzyi0r1Xyb/3saKOUNjVvuwxZ80PSR1gYKI90tFRuVzMfizHY5hOrXvorwHMY1QcUHmR8AnsTh+XHLy04=
+	t=1708464439; cv=none; b=YjAudoe7PknSw87Gf+nEIUucfDsVTiQVw7HZTPIcHnvsumqyPQA0r8YgUJZKemsdFdVrpweLZ91CkIhC1SidKW1H172slt1oqAxq7+XZGapfqMgnYeKEiZFjPT/nvbfLpFUWeKZCCbm50/+JgshnYW9c6nYu9ZnBM8VnTB46/po=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464420; c=relaxed/simple;
-	bh=/zGf6fv+hr1oGxlkTRd/9UJw2rRDtWq3rElwPcNfBWY=;
+	s=arc-20240116; t=1708464439; c=relaxed/simple;
+	bh=ANIGfpzaxdszfuXW+ArOG/6q1SGWB9EV9gGBhSLRde4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cvzkFfnp1ozeczbtHWIqNTdhBqIajhEoDUaX/x5KxQMdKBrlD08kEQ8Z65BEiTbSVIXvcmLz9qiR6iKT+gMJz6rbZ0VEowdiPwLThKihm8AFxdm4En0KzRqqBqpzde274Atp8kW08pPul352xcb6jr+Bu5PNumsGiYDk4+NGWNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lY3duZcY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2821C433C7;
-	Tue, 20 Feb 2024 21:26:59 +0000 (UTC)
+	 MIME-Version; b=KlAccNkaB57FhgZoyzKamXxJziLQTE8Cg30BQOVfyuNYjK3ulRmCLS+WCOwO8BEV2ZR/b6cLy6ecl/s3dTg1rtv17ske/5Ai/czaXTXL6UsxMvPYRonUoTVQFs3DuxE55Ze9gquYG4HYM8cHkfsVrGxyc/BF2H43Qa4s6P3fE44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W63erX3X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE436C433C7;
+	Tue, 20 Feb 2024 21:27:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464420;
-	bh=/zGf6fv+hr1oGxlkTRd/9UJw2rRDtWq3rElwPcNfBWY=;
+	s=korg; t=1708464439;
+	bh=ANIGfpzaxdszfuXW+ArOG/6q1SGWB9EV9gGBhSLRde4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lY3duZcY38M4fQoivuuNcX4a+tdHnpqGsIAeOtmJjrnFy7fo8fqbWGrmXTGPlCyDt
-	 uqjVIoUgZIpLv2wg8cuIvagoVtHSrEB//5yweEvpZOsCQ28Ax3yt86TC5GY/+8enJr
-	 Jr8jSs1WBQCVwwX4K2AKjQPsMUNnaW38YFWfkvn0=
+	b=W63erX3XEm40zbfpaHTA4zCoXfyzWgKNrjaaDjtiDTNQcwHUl+7mWIzyMU7TevMX1
+	 FYy7EpduvLsXVGmbiD4FW9IYcFu4nBfQnFhOsZ6mfg8aszhe4QU9zSE43ZH9OF0zKc
+	 Q8gc6UV2unXFBAhXpyBfdqHq1csAjxLPExYM6vhg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Jelinek <jakub@redhat.com>,
-	Uros Bizjak <ubizjak@gmail.com>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Andrew Pinski <quic_apinski@quicinc.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.7 002/309] update workarounds for gcc "asm goto" issue
-Date: Tue, 20 Feb 2024 21:52:41 +0100
-Message-ID: <20240220205633.183123838@linuxfoundation.org>
+	Yang Shi <yang@os.amperecomputing.com>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Rik van Riel <riel@surriel.com>,
+	Christopher Lameter <cl@linux.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.7 003/309] mm: huge_memory: dont force huge page alignment on 32 bit
+Date: Tue, 20 Feb 2024 21:52:42 +0100
+Message-ID: <20240220205633.217454471@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
 References: <20240220205633.096363225@linuxfoundation.org>
@@ -69,118 +70,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Yang Shi <yang@os.amperecomputing.com>
 
-commit 68fb3ca0e408e00db1c3f8fccdfa19e274c033be upstream.
+commit 4ef9ad19e17676b9ef071309bc62020e2373705d upstream.
 
-In commit 4356e9f841f7 ("work around gcc bugs with 'asm goto' with
-outputs") I did the gcc workaround unconditionally, because the cause of
-the bad code generation wasn't entirely clear.
+commit efa7df3e3bb5 ("mm: align larger anonymous mappings on THP
+boundaries") caused two issues [1] [2] reported on 32 bit system or compat
+userspace.
 
-In the meantime, Jakub Jelinek debugged the issue, and has come up with
-a fix in gcc [2], which also got backported to the still maintained
-branches of gcc-11, gcc-12 and gcc-13.
+It doesn't make too much sense to force huge page alignment on 32 bit
+system due to the constrained virtual address space.
 
-Note that while the fix technically wasn't in the original gcc-14
-branch, Jakub says:
+[1] https://lore.kernel.org/linux-mm/d0a136a0-4a31-46bc-adf4-2db109a61672@kernel.org/
+[2] https://lore.kernel.org/linux-mm/CAJuCfpHXLdQy1a2B6xN2d7quTYwg2OoZseYPZTRpU0eHHKD-sQ@mail.gmail.com/
 
- "while it is true that no GCC 14 snapshots until today (or whenever the
-  fix will be committed) have the fix, for GCC trunk it is up to the
-  distros to use the latest snapshot if they use it at all and would
-  allow better testing of the kernel code without the workaround, so
-  that if there are other issues they won't be discovered years later.
-  Most userland code doesn't actually use asm goto with outputs..."
-
-so we will consider gcc-14 to be fixed - if somebody is using gcc
-snapshots of the gcc-14 before the fix, they should upgrade.
-
-Note that while the bug goes back to gcc-11, in practice other gcc
-changes seem to have effectively hidden it since gcc-12.1 as per a
-bisect by Jakub.  So even a gcc-14 snapshot without the fix likely
-doesn't show actual problems.
-
-Also, make the default 'asm_goto_output()' macro mark the asm as
-volatile by hand, because of an unrelated gcc issue [1] where it doesn't
-match the documented behavior ("asm goto is always volatile").
-
-Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103979 [1]
-Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=113921 [2]
-Link: https://lore.kernel.org/all/20240208220604.140859-1-seanjc@google.com/
-Requested-by: Jakub Jelinek <jakub@redhat.com>
-Cc: Uros Bizjak <ubizjak@gmail.com>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Sean Christopherson <seanjc@google.com>
-Cc: Andrew Pinski <quic_apinski@quicinc.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lkml.kernel.org/r/20240118180505.2914778-1-shy828301@gmail.com
+Fixes: efa7df3e3bb5 ("mm: align larger anonymous mappings on THP boundaries")
+Signed-off-by: Yang Shi <yang@os.amperecomputing.com>
+Reported-by: Jiri Slaby <jirislaby@kernel.org>
+Reported-by: Suren Baghdasaryan <surenb@google.com>
+Tested-by: Jiri Slaby <jirislaby@kernel.org>
+Tested-by: Suren Baghdasaryan <surenb@google.com>
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Christopher Lameter <cl@linux.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/compiler-gcc.h   |    7 ++++---
- include/linux/compiler_types.h |    9 ++++++++-
- init/Kconfig                   |    9 +++++++++
- 3 files changed, 21 insertions(+), 4 deletions(-)
+ mm/huge_memory.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/include/linux/compiler-gcc.h
-+++ b/include/linux/compiler-gcc.h
-@@ -67,10 +67,9 @@
- /*
-  * GCC 'asm goto' with outputs miscompiles certain code sequences:
-  *
-- *   https://gcc.gnu.org/bugzilla/show_bug.cgi?id=110420
-- *   https://gcc.gnu.org/bugzilla/show_bug.cgi?id=110422
-+ *   https://gcc.gnu.org/bugzilla/show_bug.cgi?id=113921
-  *
-- * Work it around via the same compiler barrier quirk that we used
-+ * Work around it via the same compiler barrier quirk that we used
-  * to use for the old 'asm goto' workaround.
-  *
-  * Also, always mark such 'asm goto' statements as volatile: all
-@@ -80,8 +79,10 @@
-  *
-  *    https://gcc.gnu.org/bugzilla/show_bug.cgi?id=98619
-  */
-+#ifdef CONFIG_GCC_ASM_GOTO_OUTPUT_WORKAROUND
- #define asm_goto_output(x...) \
- 	do { asm volatile goto(x); asm (""); } while (0)
-+#endif
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -37,6 +37,7 @@
+ #include <linux/page_owner.h>
+ #include <linux/sched/sysctl.h>
+ #include <linux/memory-tiers.h>
++#include <linux/compat.h>
  
- #if defined(CONFIG_ARCH_USE_BUILTIN_BSWAP)
- #define __HAVE_BUILTIN_BSWAP32__
---- a/include/linux/compiler_types.h
-+++ b/include/linux/compiler_types.h
-@@ -362,8 +362,15 @@ struct ftrace_likely_data {
- #define __member_size(p)	__builtin_object_size(p, 1)
- #endif
+ #include <asm/tlb.h>
+ #include <asm/pgalloc.h>
+@@ -634,6 +635,9 @@ static unsigned long __thp_get_unmapped_
+ 	loff_t off_align = round_up(off, size);
+ 	unsigned long len_pad, ret;
  
-+/*
-+ * Some versions of gcc do not mark 'asm goto' volatile:
-+ *
-+ *  https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103979
-+ *
-+ * We do it here by hand, because it doesn't hurt.
-+ */
- #ifndef asm_goto_output
--#define asm_goto_output(x...) asm goto(x)
-+#define asm_goto_output(x...) asm volatile goto(x)
- #endif
- 
- #ifdef CONFIG_CC_HAS_ASM_INLINE
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -89,6 +89,15 @@ config CC_HAS_ASM_GOTO_TIED_OUTPUT
- 	# Detect buggy gcc and clang, fixed in gcc-11 clang-14.
- 	def_bool $(success,echo 'int foo(int *x) { asm goto (".long (%l[bar]) - .": "+m"(*x) ::: bar); return *x; bar: return 0; }' | $CC -x c - -c -o /dev/null)
- 
-+config GCC_ASM_GOTO_OUTPUT_WORKAROUND
-+	bool
-+	depends on CC_IS_GCC && CC_HAS_ASM_GOTO_OUTPUT
-+	# Fixed in GCC 14, 13.3, 12.4 and 11.5
-+	# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=113921
-+	default y if GCC_VERSION < 110500
-+	default y if GCC_VERSION >= 120000 && GCC_VERSION < 120400
-+	default y if GCC_VERSION >= 130000 && GCC_VERSION < 130300
++	if (IS_ENABLED(CONFIG_32BIT) || in_compat_syscall())
++		return 0;
 +
- config TOOLS_SUPPORT_RELR
- 	def_bool $(success,env "CC=$(CC)" "LD=$(LD)" "NM=$(NM)" "OBJCOPY=$(OBJCOPY)" $(srctree)/scripts/tools-support-relr.sh)
+ 	if (off_end <= off_align || (off_end - off_align) < size)
+ 		return 0;
  
 
 
