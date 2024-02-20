@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-21179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BC3085C77F
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:13:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72D1F85C910
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:29:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B1331C21861
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:13:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4D191C225DA
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:29:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4480151CCC;
-	Tue, 20 Feb 2024 21:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FE6B151CD6;
+	Tue, 20 Feb 2024 21:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g5oZNJuw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0R46GBjG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F6276C9C;
-	Tue, 20 Feb 2024 21:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E214814A4E6;
+	Tue, 20 Feb 2024 21:28:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463605; cv=none; b=oJi3SwIeV6DSnbKPpKrBoYl5yVBMR5h1ldtH4R4XoZOZdMyGsdNZiZvaLh+sTRZvd3xIWuDBQSwFBA8FRKA5yGjPsaLwxTg7YOxSyybyAuFTCyd0OvyEPRFbR3wxp0OdBwncDqhuhiTOuYcb7jz9MMSZZI/fbco0iiztdXbXnG0=
+	t=1708464529; cv=none; b=mmrhcc0tok2qCee7dQTVFQF6hLrcPXp31A5/Ki9GC1+C0wRACKI15Nehw5AJJQaiYXoCTll5TI7y7iO7yT8hAXjAriyjGLTkI/Ihs7tOcCrTapeGEAV7W9fVcjGbB5uteLCh8pslkUHdSTmztkLjCgrvwAtwpHlvtkQOEFERy1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463605; c=relaxed/simple;
-	bh=kLT18up+TUd3e2qtJDBVPbUQB7tnHIBNwllEDADlzpo=;
+	s=arc-20240116; t=1708464529; c=relaxed/simple;
+	bh=IDRPryOeCwr5dLecK9IGG7Ev1G9+U5ytDHvx5yg5cOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KD/ul7OQuJOCcFMCmqf63uEKRvZ5biqMWWljdFMulT1ouoJd1kS4WmW6YdaxiL7jOW7VYgMhvmy740uYAMPMFHUy1sZDrKntqBqj0SzjTZRxbyNjFCidqd48WzbXDQRFt6VY2XPd7vuMmn+a9NOsJ9115iRgkJ2V/a9bRZZq4sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g5oZNJuw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC01FC433C7;
-	Tue, 20 Feb 2024 21:13:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=I0tuvl3qjMkFzPkmALGHh6bxtws+SE+zQ5xkNs7Uy8UbY6j/3c4zgMrMui368CTIQ/QtTKj2uUBReYTubRS5KiLKBmWdgvmwiB5SVaMXJfCU/Jixn5L5ENALZGfjQYQm8Ux/DkE7RLKtol6jJpzQf2KNuLzOWa8LmgzbAwoFo48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0R46GBjG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48C85C433C7;
+	Tue, 20 Feb 2024 21:28:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463605;
-	bh=kLT18up+TUd3e2qtJDBVPbUQB7tnHIBNwllEDADlzpo=;
+	s=korg; t=1708464528;
+	bh=IDRPryOeCwr5dLecK9IGG7Ev1G9+U5ytDHvx5yg5cOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g5oZNJuwX/uzuD02RMe/9dGQrZ5goPViAkZTXOfkotTIALkWlYvvpeWovJZPmeebL
-	 Eus55bBE6elO5YDL3JWjMbfxeesebCZO3OmWyPGAIXTQ64rd8f1KSkg0Oot9y8GLMW
-	 l0IVcsln5gx1GGuaeZ2XkfhXywlmDDO5iv8CCazI=
+	b=0R46GBjG7MAd/KdlV3TbHXRFgTCgGFN+gvsW6SqteVd7dKT3g0USR9HwNQUDM860R
+	 RAglSZwsXAm7AuiGLvxcbe/Cm35lUHoBZQnlfQ4+qSZSC5wF/I2EW13ROWXbkfiofZ
+	 dpSmOjgUg0PgPJ5tebvBGJHQ27Xu21xRPiqSHNN4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 096/331] cifs: fix underflow in parse_server_interfaces()
+Subject: [PATCH 6.7 053/309] spi: ppc4xx: Drop write-only variable
 Date: Tue, 20 Feb 2024 21:53:32 +0100
-Message-ID: <20240220205640.594031857@linuxfoundation.org>
+Message-ID: <20240220205634.859179806@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit cffe487026be13eaf37ea28b783d9638ab147204 ]
+[ Upstream commit b3aa619a8b4706f35cb62f780c14e68796b37f3f ]
 
-In this loop, we step through the buffer and after each item we check
-if the size_left is greater than the minimum size we need.  However,
-the problem is that "bytes_left" is type ssize_t while sizeof() is type
-size_t.  That means that because of type promotion, the comparison is
-done as an unsigned and if we have negative bytes left the loop
-continues instead of ending.
+Since commit 24778be20f87 ("spi: convert drivers to use
+bits_per_word_mask") the bits_per_word variable is only written to. The
+check that was there before isn't needed any more as the spi core
+ensures that only 8 bit transfers are used, so the variable can go away
+together with all assignments to it.
 
-Fixes: fe856be475f7 ("CIFS: parse and store info on iface queries")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 24778be20f87 ("spi: convert drivers to use bits_per_word_mask")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/20240210164006.208149-8-u.kleine-koenig@pengutronix.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2ops.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-ppc4xx.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index e33ed0fbc318..5850f861e7e1 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -619,7 +619,7 @@ parse_server_interfaces(struct network_interface_info_ioctl_rsp *buf,
- 		goto out;
- 	}
+diff --git a/drivers/spi/spi-ppc4xx.c b/drivers/spi/spi-ppc4xx.c
+index 03aab661be9d..e982d3189fdc 100644
+--- a/drivers/spi/spi-ppc4xx.c
++++ b/drivers/spi/spi-ppc4xx.c
+@@ -166,10 +166,8 @@ static int spi_ppc4xx_setupxfer(struct spi_device *spi, struct spi_transfer *t)
+ 	int scr;
+ 	u8 cdm = 0;
+ 	u32 speed;
+-	u8 bits_per_word;
  
--	while (bytes_left >= sizeof(*p)) {
-+	while (bytes_left >= (ssize_t)sizeof(*p)) {
- 		memset(&tmp_iface, 0, sizeof(tmp_iface));
- 		tmp_iface.speed = le64_to_cpu(p->LinkSpeed);
- 		tmp_iface.rdma_capable = le32_to_cpu(p->Capability & RDMA_CAPABLE) ? 1 : 0;
+ 	/* Start with the generic configuration for this device. */
+-	bits_per_word = spi->bits_per_word;
+ 	speed = spi->max_speed_hz;
+ 
+ 	/*
+@@ -177,9 +175,6 @@ static int spi_ppc4xx_setupxfer(struct spi_device *spi, struct spi_transfer *t)
+ 	 * the transfer to overwrite the generic configuration with zeros.
+ 	 */
+ 	if (t) {
+-		if (t->bits_per_word)
+-			bits_per_word = t->bits_per_word;
+-
+ 		if (t->speed_hz)
+ 			speed = min(t->speed_hz, spi->max_speed_hz);
+ 	}
 -- 
 2.43.0
 
