@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-21585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF8E785C981
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:34:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E45F85C7E1
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:17:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9CF3284D23
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:34:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 039A1284678
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:17:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F02F151CD6;
-	Tue, 20 Feb 2024 21:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AADB8151CE1;
+	Tue, 20 Feb 2024 21:17:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JjTFDUJ8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pUrUK92a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF3314F9C8;
-	Tue, 20 Feb 2024 21:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6859E1509AC;
+	Tue, 20 Feb 2024 21:17:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464875; cv=none; b=b/wCtCVXGJEziKVLoSrMDwXnJwpxbkmZcMjru18NUrcheQOFGH4g/PoyLH+43G5VmcR5Ksx5llvDc389sOFKT8EUUTxMi6ItTDbteffxdRjvxEMWpg/ZExYd9gTlBT/YZmjidrzRfEDMdUqA90yrU1YPAVJnGJSyOOuWBIhdN58=
+	t=1708463834; cv=none; b=TMR8SQCWZh0l+qZDJ9dBc6+In4ph3dUFOsjCM/m5dPJRbUPTIVFWnW+BpmYJq3O+jsREEjZt845bN5Ta0YVtT7T6xUIm4YNOZDePkUqbC+yYity5eBYeVaJLIyCdRkFT+Eaf2BxTJ3xsDMOzYqa8/5vsBmU2Z0rKEK9IOsxYVNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464875; c=relaxed/simple;
-	bh=bwEEXl8PIEN030VYvXpfD5VTrPthOhBvxEoGvyt+aE4=;
+	s=arc-20240116; t=1708463834; c=relaxed/simple;
+	bh=WFY5ZBnW0Z8aCZllshKZm2lfSclSTyNBdRcQKjwADRg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XCuLAF6znPo9FQPTLo2IqaczkQZmakMg02YCC5vlfRIxTIY/jDoueQUbW45QTQysatL0T1IlQ1FMTWyXt5w4C/rwvckrdlZfXiQ71To1OvxBrBjD+Hr1v9WPfS5v51B63OVauPp0TKsKW1WErITiyacWh0ecUQxunStSVT8tNg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JjTFDUJ8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EE88C433F1;
-	Tue, 20 Feb 2024 21:34:34 +0000 (UTC)
+	 MIME-Version; b=eo9R3wyx5TzqVxtnLjA/bysspeMCgXi7K4a5TSKSpOOjWsZV+OuuLoSRaDtg3msMT3r6+JJ89aZpvZOeyO+DeQyoAHBRrQe/nhR354e0LHA3M8zAGRoxOU4FLr3uI0SYC+uPQyGZIwRzh3MKbcuHql3224ycvnv4y3vbxW59b6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pUrUK92a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADBF3C433F1;
+	Tue, 20 Feb 2024 21:17:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464875;
-	bh=bwEEXl8PIEN030VYvXpfD5VTrPthOhBvxEoGvyt+aE4=;
+	s=korg; t=1708463834;
+	bh=WFY5ZBnW0Z8aCZllshKZm2lfSclSTyNBdRcQKjwADRg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JjTFDUJ8uzterIMzYciL85Dmq7GhpT+mpxwsDL7b0cxCqzIIvn3BMvhQuXI+sPPaj
-	 JwBGeY32oIY1pP2f2gLClBw6QKSWgzbMC+peTsYKW+97t5a5U8cmu8y3REmns4+kpH
-	 ds0BEB28ekMGr7fWvjqKHNWXhHzR+NBDB/4Ylb5s=
+	b=pUrUK92aNcWd/U1JQcCG+zdK8iF3Cn/ik66fmMR8Mtic0giHKDkJH46DRHmWbFQ+L
+	 Ld3Adc4NmtY8+RndtM5eSaV8dz5i16LP9pDTRqtNCAt1xiAGcjoDlqkirYV32aC+lX
+	 +mVirFht5C6RyRLSSKrW8/di28hV9MVNCnYrvWXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.7 124/309] mptcp: fix rcv space initialization
+	Robin Murphy <robin.murphy@arm.com>,
+	Rob Clark <robdclark@chromium.org>
+Subject: [PATCH 6.6 167/331] drm/msm: Wire up tlb ops
 Date: Tue, 20 Feb 2024 21:54:43 +0100
-Message-ID: <20240220205637.044426504@linuxfoundation.org>
+Message-ID: <20240220205642.772065026@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,129 +61,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Rob Clark <robdclark@chromium.org>
 
-commit 013e3179dbd2bc756ce1dd90354abac62f65b739 upstream.
+commit 8c7bfd8262319fd3f127a5380f593ea76f1b88a2 upstream.
 
-mptcp_rcv_space_init() is supposed to happen under the msk socket
-lock, but active msk socket does that without such protection.
+The brute force iommu_flush_iotlb_all() was good enough for unmap, but
+in some cases a map operation could require removing a table pte entry
+to replace with a block entry.  This also requires tlb invalidation.
+Missing this was resulting an obscure iova fault on what should be a
+valid buffer address.
 
-Leverage the existing mptcp_propagate_state() helper to that extent.
-We need to ensure mptcp_rcv_space_init will happen before
-mptcp_rcv_space_adjust(), and the release_cb does not assure that:
-explicitly check for such condition.
+Thanks to Robin Murphy for helping me understand the cause of the fault.
 
-While at it, move the wnd_end initialization out of mptcp_rcv_space_init(),
-it never belonged there.
-
-Note that the race does not produce ill effect in practice, but
-change allows cleaning-up and defying better the locking model.
-
-Fixes: a6b118febbab ("mptcp: add receive buffer auto-tuning")
+Cc: Robin Murphy <robin.murphy@arm.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: b145c6e65eb0 ("drm/msm: Add support to create a local pagetable")
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Patchwork: https://patchwork.freedesktop.org/patch/578117/
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |   10 ++++++----
- net/mptcp/protocol.h |    3 ++-
- net/mptcp/subflow.c  |    4 ++--
- 3 files changed, 10 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/msm/msm_iommu.c |   32 +++++++++++++++++++++++++++++---
+ 1 file changed, 29 insertions(+), 3 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -1977,6 +1977,9 @@ static void mptcp_rcv_space_adjust(struc
- 	if (copied <= 0)
- 		return;
+--- a/drivers/gpu/drm/msm/msm_iommu.c
++++ b/drivers/gpu/drm/msm/msm_iommu.c
+@@ -21,6 +21,8 @@ struct msm_iommu_pagetable {
+ 	struct msm_mmu base;
+ 	struct msm_mmu *parent;
+ 	struct io_pgtable_ops *pgtbl_ops;
++	const struct iommu_flush_ops *tlb;
++	struct device *iommu_dev;
+ 	unsigned long pgsize_bitmap;	/* Bitmap of page sizes in use */
+ 	phys_addr_t ttbr;
+ 	u32 asid;
+@@ -201,11 +203,33 @@ static const struct msm_mmu_funcs pageta
  
-+	if (!msk->rcvspace_init)
-+		mptcp_rcv_space_init(msk, msk->first);
-+
- 	msk->rcvq_space.copied += copied;
- 
- 	mstamp = div_u64(tcp_clock_ns(), NSEC_PER_USEC);
-@@ -3156,6 +3159,7 @@ static int mptcp_disconnect(struct sock
- 	msk->bytes_received = 0;
- 	msk->bytes_sent = 0;
- 	msk->bytes_retrans = 0;
-+	msk->rcvspace_init = 0;
- 
- 	WRITE_ONCE(sk->sk_shutdown, 0);
- 	sk_error_report(sk);
-@@ -3243,6 +3247,7 @@ void mptcp_rcv_space_init(struct mptcp_s
+ static void msm_iommu_tlb_flush_all(void *cookie)
  {
- 	const struct tcp_sock *tp = tcp_sk(ssk);
- 
-+	msk->rcvspace_init = 1;
- 	msk->rcvq_space.copied = 0;
- 	msk->rcvq_space.rtt_us = 0;
- 
-@@ -3253,8 +3258,6 @@ void mptcp_rcv_space_init(struct mptcp_s
- 				      TCP_INIT_CWND * tp->advmss);
- 	if (msk->rcvq_space.space == 0)
- 		msk->rcvq_space.space = TCP_INIT_CWND * TCP_MSS_DEFAULT;
--
--	WRITE_ONCE(msk->wnd_end, msk->snd_nxt + tcp_sk(ssk)->snd_wnd);
++	struct msm_iommu_pagetable *pagetable = cookie;
++	struct adreno_smmu_priv *adreno_smmu;
++
++	if (!pm_runtime_get_if_in_use(pagetable->iommu_dev))
++		return;
++
++	adreno_smmu = dev_get_drvdata(pagetable->parent->dev);
++
++	pagetable->tlb->tlb_flush_all((void *)adreno_smmu->cookie);
++
++	pm_runtime_put_autosuspend(pagetable->iommu_dev);
  }
  
- static struct sock *mptcp_accept(struct sock *ssk, int flags, int *err,
-@@ -3512,10 +3515,9 @@ void mptcp_finish_connect(struct sock *s
- 	WRITE_ONCE(msk->write_seq, subflow->idsn + 1);
- 	WRITE_ONCE(msk->snd_nxt, msk->write_seq);
- 	WRITE_ONCE(msk->snd_una, msk->write_seq);
-+	WRITE_ONCE(msk->wnd_end, msk->snd_nxt + tcp_sk(ssk)->snd_wnd);
- 
- 	mptcp_pm_new_connection(msk, ssk, 0);
--
--	mptcp_rcv_space_init(msk, ssk);
+ static void msm_iommu_tlb_flush_walk(unsigned long iova, size_t size,
+ 		size_t granule, void *cookie)
+ {
++	struct msm_iommu_pagetable *pagetable = cookie;
++	struct adreno_smmu_priv *adreno_smmu;
++
++	if (!pm_runtime_get_if_in_use(pagetable->iommu_dev))
++		return;
++
++	adreno_smmu = dev_get_drvdata(pagetable->parent->dev);
++
++	pagetable->tlb->tlb_flush_walk(iova, size, granule, (void *)adreno_smmu->cookie);
++
++	pm_runtime_put_autosuspend(pagetable->iommu_dev);
  }
  
- void mptcp_sock_graft(struct sock *sk, struct socket *parent)
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -304,7 +304,8 @@ struct mptcp_sock {
- 			nodelay:1,
- 			fastopening:1,
- 			in_accept_queue:1,
--			free_first:1;
-+			free_first:1,
-+			rcvspace_init:1;
- 	struct work_struct work;
- 	struct sk_buff  *ooo_last_skb;
- 	struct rb_root  out_of_order_queue;
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -424,6 +424,8 @@ void __mptcp_sync_state(struct sock *sk,
- 	struct mptcp_sock *msk = mptcp_sk(sk);
+ static void msm_iommu_tlb_add_page(struct iommu_iotlb_gather *gather,
+@@ -213,7 +237,7 @@ static void msm_iommu_tlb_add_page(struc
+ {
+ }
  
- 	__mptcp_propagate_sndbuf(sk, msk->first);
-+	if (!msk->rcvspace_init)
-+		mptcp_rcv_space_init(msk, msk->first);
- 	if (sk->sk_state == TCP_SYN_SENT) {
- 		inet_sk_state_store(sk, state);
- 		sk->sk_state_change(sk);
-@@ -545,7 +547,6 @@ static void subflow_finish_connect(struc
- 		}
- 	} else if (mptcp_check_fallback(sk)) {
- fallback:
--		mptcp_rcv_space_init(msk, sk);
- 		mptcp_propagate_state(parent, sk);
- 	}
- 	return;
-@@ -1744,7 +1745,6 @@ static void subflow_state_change(struct
- 	msk = mptcp_sk(parent);
- 	if (subflow_simultaneous_connect(sk)) {
- 		mptcp_do_fallback(sk);
--		mptcp_rcv_space_init(msk, sk);
- 		pr_fallback(msk);
- 		subflow->conn_finished = 1;
- 		mptcp_propagate_state(parent, sk);
+-static const struct iommu_flush_ops null_tlb_ops = {
++static const struct iommu_flush_ops tlb_ops = {
+ 	.tlb_flush_all = msm_iommu_tlb_flush_all,
+ 	.tlb_flush_walk = msm_iommu_tlb_flush_walk,
+ 	.tlb_add_page = msm_iommu_tlb_add_page,
+@@ -254,10 +278,10 @@ struct msm_mmu *msm_iommu_pagetable_crea
+ 
+ 	/* The incoming cfg will have the TTBR1 quirk enabled */
+ 	ttbr0_cfg.quirks &= ~IO_PGTABLE_QUIRK_ARM_TTBR1;
+-	ttbr0_cfg.tlb = &null_tlb_ops;
++	ttbr0_cfg.tlb = &tlb_ops;
+ 
+ 	pagetable->pgtbl_ops = alloc_io_pgtable_ops(ARM_64_LPAE_S1,
+-		&ttbr0_cfg, iommu->domain);
++		&ttbr0_cfg, pagetable);
+ 
+ 	if (!pagetable->pgtbl_ops) {
+ 		kfree(pagetable);
+@@ -279,6 +303,8 @@ struct msm_mmu *msm_iommu_pagetable_crea
+ 
+ 	/* Needed later for TLB flush */
+ 	pagetable->parent = parent;
++	pagetable->tlb = ttbr1_cfg->tlb;
++	pagetable->iommu_dev = ttbr1_cfg->iommu_dev;
+ 	pagetable->pgsize_bitmap = ttbr0_cfg.pgsize_bitmap;
+ 	pagetable->ttbr = ttbr0_cfg.arm_lpae_s1_cfg.ttbr;
+ 
 
 
 
