@@ -1,57 +1,52 @@
-Return-Path: <stable+bounces-20845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BD7685BFFD
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 16:33:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14B5B85C027
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 16:39:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A12FDB22AAB
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 15:33:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8DE9FB2472E
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 15:39:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6CF37602F;
-	Tue, 20 Feb 2024 15:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7F3F7603D;
+	Tue, 20 Feb 2024 15:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GjHjN/e/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DZNSBWG3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 979136A35B
-	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 15:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81D252C6AA
+	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 15:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708443192; cv=none; b=Ebzj5Aeq0NSMn1O/OZXlNVEfXoHxeg7CTzcja0PRtJ8xpTspfB+WqkwtDyOn+OfVR356TystgfPG0OpCOYxQ5NV1KNGudKO8D4l0Eu1V0Vec0pXs4Oo9ZtV7jFsS1zbAQ/uCYIvu34yGbNeqLGZAk/ZvDbSzkv+L2j/SGOOAC8U=
+	t=1708443488; cv=none; b=uU5D3FENPVBsDLL4w6C1JhEu154lm9xEdKQt4Ce0oDgZNEyGE+I5zSqkI5LFtjAdDaZ+2rLdc3e5J5cthwBIwwWhvIR13K0EhfZFl0iZpe41Y1uJxZb3F1J1/VpZQyW4H+rAzbMHcf7KynR38oc+9SI9HkFrrVylOM2k0mcTAPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708443192; c=relaxed/simple;
-	bh=ETHZ6lpzXCsHhiWsxxIwp75RUAj4Up5weXzI69QBuak=;
+	s=arc-20240116; t=1708443488; c=relaxed/simple;
+	bh=UqDHHHX0uJv6x2rrTS1eUZPKam1d4zqXLELUZYWNFBo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eRYTNc5sUpKjZUkviqqMNqm0kpA6qVJBOZzrF/j12Jk8jd9F4kUhrFXNiXKBM6OLVaNH8nnr1GjbAcqc3OX6zKzfjuGZh6fcR1bxd0k1KapvYZAUE1kRK5I+fYrzOCqyerydrbAcdayE7UmudqdEQNCfe7bbRUd5zSxv2ZexJmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GjHjN/e/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4E28C433F1;
-	Tue, 20 Feb 2024 15:33:11 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=XSDjbbvEp3wCOJtKBj96i7SbK1DOqjMHAfypvirTo91FCQpVwFl3cm7waPxmAwzg4MAnvMIb+wby6KC5EC1NJh58mUx3Iy46HZFpp3cu6OnsxrN6yEj/SYzLLKSY/amjuAFN6xmt9QfQ1VlcPkVIyqwFZ9xDa4k4lNQp2zTozbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DZNSBWG3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84C38C433F1;
+	Tue, 20 Feb 2024 15:38:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708443192;
-	bh=ETHZ6lpzXCsHhiWsxxIwp75RUAj4Up5weXzI69QBuak=;
+	s=korg; t=1708443488;
+	bh=UqDHHHX0uJv6x2rrTS1eUZPKam1d4zqXLELUZYWNFBo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GjHjN/e/pmUdMtw94s0VLK5F3kJSiXL0IgrH9E6rXOQv6elrixWF+MtyS9ho7GAYI
-	 g0Ncscfs1kClG31y7BZ4hVjmdwTKX99Uuzn6n3LqOit34D3fVbiXICSl/X+5jdyCAf
-	 UcRpnb6CQ9EW+fPonSUvMnHxvdB5C/X/0PSUo9No=
-Date: Tue, 20 Feb 2024 16:33:09 +0100
+	b=DZNSBWG3Zcq9ko/WqJ19fyh4tht5kdS4r/tOxwlmz2lnQDP00KIiAaQcfnRMmUgAd
+	 y3dNOuvfLgMkBXEDQnVCamKtr9R1WZBtK6qUseZC6bNFWdd4wDKZkqHJofAPb0I7Gw
+	 nUB52kiC0tLb+3pjf2mD3YZjfSh/B1ice8BIvHgo=
+Date: Tue, 20 Feb 2024 16:38:04 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: "Marciniszyn, Mike" <mike.marciniszyn@intel.com>
-Cc: Sasha Levin <sashal@kernel.org>,
-	"Saleem, Shiraz" <shiraz.saleem@intel.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH 6.1.y] RDMA/irdma: Ensure iWarp QP queue memory is OS
- paged aligned
-Message-ID: <2024022003-rocker-craftily-9cb6@gregkh>
-References: <20240207163240.433-1-shiraz.saleem@intel.com>
- <Zcj1JyNJww8njJFv@sashalap>
- <SA1PR11MB6895D85EBD4BEFDCEC57AAD286482@SA1PR11MB6895.namprd11.prod.outlook.com>
- <2024021314-predator-scientist-84cd@gregkh>
- <SA1PR11MB6895AE19B8C02FAD9A84BE58864F2@SA1PR11MB6895.namprd11.prod.outlook.com>
+To: Guruswamy Basavaiah <guruswamy.basavaiah@broadcom.com>
+Cc: stable@vger.kernel.org, ajay.kaher@broadcom.com,
+	tapas.kundu@broadcom.com
+Subject: Re: [PATCH 6.1.y 0/2] Backport Fixes to linux-6.1.y
+Message-ID: <2024022042-tummy-carol-4ce9@gregkh>
+References: <20240210200607.3089190-1-guruswamy.basavaiah@broadcom.com>
+ <20240210200607.3089190-3-guruswamy.basavaiah@broadcom.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,21 +55,29 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <SA1PR11MB6895AE19B8C02FAD9A84BE58864F2@SA1PR11MB6895.namprd11.prod.outlook.com>
+In-Reply-To: <20240210200607.3089190-3-guruswamy.basavaiah@broadcom.com>
 
-On Tue, Feb 13, 2024 at 04:20:21PM +0000, Marciniszyn, Mike wrote:
-> > 
-> > Is it needed for 6.1.y or not?
-> > 
-> > confused,
-> > 
-> It is needed.
+On Sun, Feb 11, 2024 at 01:36:07AM +0530, Guruswamy Basavaiah wrote:
+> Here are the two backported patches aimed at addressing a crash.
 > 
-> Its just the Fixes: tag is incorrect because 6.1.y branch lacks the commit indicated in the Fixes: tag.
+> Patch 1 fix validate offsets and lengths before dereferencing create
+> contexts in smb2_parse_contexts().
 > 
-> The upstream version split a large routine up for clarity.   The 6.1.y branch contains the pre-split code so the patch needed to be ported into the old larger routine.
+> Patch 2 fix issue in patch 1.
+> 
+> The original patches were authored by Paulo Alcantara <pc@manguebit.com>.
+> Original Patches:
+> 1. af1689a9b770 ("smb: client: fix potential OOBs in smb2_parse_contexts()")
+> 2. 76025cc2285d ("smb: client: fix parsing of SMB3.1.1 POSIX create context")
+> 
+> Please review and consider applying these patches.
 
-Now queued up, thanks.
+All now queued up.
+
+And it looks like af1689a9b770 ("smb: client: fix potential OOBs in
+smb2_parse_contexts()") should get a CVE assignment, right?
+
+thanks,
 
 greg k-h
 
