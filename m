@@ -1,51 +1,59 @@
-Return-Path: <stable+bounces-20834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6100485BF3A
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 15:57:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34A4385BF3B
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 15:59:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 943E31C2281B
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 14:57:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E509A2818F4
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 14:58:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1318C71B59;
-	Tue, 20 Feb 2024 14:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE64F6BB3A;
+	Tue, 20 Feb 2024 14:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zvQm0T0J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aaYib0aX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44B471B3F;
-	Tue, 20 Feb 2024 14:57:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D60F43AD3
+	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 14:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708441066; cv=none; b=dPm0QnXwsE1Zw76xZc66ru8mI2Wo9dtW9zngRlIKCPa5DKf4opKYQNLFmQ60IVLyJx9iuAow433LHoRe4VE0JGZxV8g37pAmuGHxi2aAJynSmKUeDGc9fCwblYH90eKHcamZ15H2RsvKuVHk6eb5h+UTAhz39A5NMxC4G49ws1o=
+	t=1708441136; cv=none; b=RLvWFMx0NzsLh/ikdqoq0A6eRVJl3F0rb64CC53NUYH6d5E/fqbfbtDCd0vMid28H0qwLqfqQqjGeeDPA0u5ZG0RCNmFLWn+O4uPnbCbWihy0t6ZQ76tkeINUduCl43c308O8J+eweeXd3CVfewl8TE7vtvoqi1JEzEl+SmcKk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708441066; c=relaxed/simple;
-	bh=bDE/5GUQAKkM+KJKawR3GrKSi0WUOOgAzwIOXZgidak=;
+	s=arc-20240116; t=1708441136; c=relaxed/simple;
+	bh=SXQuAz/r0LQReYMRL3pY1qlb7V9lh/QATpvVX/+cm/w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YxMd3FwzQuzO2soufvvQt49CD+d8XfvkMj265sYU1tTzbgL6y/nhnxrw49sHp8YQGVK6mr8lAraiUpnrNwMCLHHEImhG6nQjpozh5sLxDctu0TM7O3bf3N/5JA13E1IQGHGYbKg4h4++PYa5DsSuhpR04aZluE8urI2x+J1ZqpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zvQm0T0J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9181C433F1;
-	Tue, 20 Feb 2024 14:57:45 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=ljjDOszDfkC7AFMTyhltYpcLJHCcZrCUWBEW2dAH65PGYJKdCCdW5G/zBEjUuhVRXIzvytgUlNCYQbGLAMjImzRkPhu8sW3GaE9Nax7w3QsRtLTmKsWhu6RnxzmE7nw4qo1i58sbSmBGG8/pyv6fJiqeaxUtqhYggWXQHHdFhXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aaYib0aX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FE3EC433C7;
+	Tue, 20 Feb 2024 14:58:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708441066;
-	bh=bDE/5GUQAKkM+KJKawR3GrKSi0WUOOgAzwIOXZgidak=;
+	s=korg; t=1708441136;
+	bh=SXQuAz/r0LQReYMRL3pY1qlb7V9lh/QATpvVX/+cm/w=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=zvQm0T0JmVblfIBEC3t7iBo/LsMI0MaB1MzeK6fSZFdRNYsgJNmx7gGR0cUGU34FG
-	 VmTGmr+LPdOTJ8u0EVUiGBFS8f/rBYgLWjfqFjcxT52qwKPUuvq9VDY/4vqwv4Fqax
-	 8cIS5MjiDP1VSt3/APtmXMOijCV4VC6FvPf/Gn7Q=
-Date: Tue, 20 Feb 2024 15:57:43 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Chuck Lever <chuck.lever@oracle.com>
-Cc: stable@vger.kernel.org, linux-nfs@vger.kernel.org,
-	Jeff Layton <jlayton@redhat.com>
-Subject: Re: [GIT PULL] NFSD fixes for v6.1.y
-Message-ID: <2024022007-atypical-postnasal-37d3@gregkh>
-References: <ZdS8TXWl3QKf0qdk@manet.1015granger.net>
+	b=aaYib0aX41+aoIWwA4znbppyZ8a8o6g3IW2Nq9JWtW0SeljzxjWVmTbn7XE9WNXTu
+	 HmoL4hMPxRvrBqjYiPVV9hx9YY3JGOXzS4HTNMuNcsXyxKybAzdnbhvMPb0AxJwCPR
+	 r/JBAqByY/POfWCw2aU14zVmBoZ8VF1FRiaxorTc=
+Date: Tue, 20 Feb 2024 15:58:53 +0100
+From: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+To: "MOESSBAUER, Felix" <felix.moessbauer@siemens.com>
+Cc: "tglx@linutronix.de" <tglx@linutronix.de>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"dave@stgolabs.net" <dave@stgolabs.net>,
+	"Kiszka, Jan" <jan.kiszka@siemens.com>,
+	"bigeasy@linutronix.de" <bigeasy@linutronix.de>,
+	"Ivanov, Petr" <petr.ivanov@siemens.com>
+Subject: Re: [PATCH v2][5.10, 5.15, 6.1][1/1] hrtimer: Ignore slack time for
+ RT tasks in schedule_hrtimeout_range()
+Message-ID: <2024022019-donated-daringly-c9af@gregkh>
+References: <20240220123403.85403-1-felix.moessbauer@siemens.com>
+ <20240220123403.85403-2-felix.moessbauer@siemens.com>
+ <2024022057-slit-herself-a4d8@gregkh>
+ <89eef284bd0fb1f60dbfc62decd2a0438d436c6e.camel@siemens.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,31 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZdS8TXWl3QKf0qdk@manet.1015granger.net>
+In-Reply-To: <89eef284bd0fb1f60dbfc62decd2a0438d436c6e.camel@siemens.com>
 
-On Tue, Feb 20, 2024 at 09:50:53AM -0500, Chuck Lever wrote:
-> The following changes since commit 8b4118fabd6eb75fed19483b04dab3a036886489:
+On Tue, Feb 20, 2024 at 02:49:00PM +0000, MOESSBAUER, Felix wrote:
+> On Tue, 2024-02-20 at 15:32 +0100, Greg KH wrote:
+> > On Tue, Feb 20, 2024 at 01:34:03PM +0100, Felix Moessbauer wrote:
+> > > From: Davidlohr Bueso <dave@stgolabs.net>
+> > > 
+> > > commit 0c52310f260014d95c1310364379772cb74cf82d upstream.
+> > > 
+> > > While in theory the timer can be triggered before expires + delta,
+> > > for the
+> > > cases of RT tasks they really have no business giving any lenience
+> > > for
+> > > extra slack time, so override any passed value by the user and
+> > > always use
+> > > zero for schedule_hrtimeout_range() calls. Furthermore, this is
+> > > similar to
+> > > what the nanosleep(2) family already does with current-
+> > > >timer_slack_ns.
+> > > 
+> > > Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
+> > > Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> > > Link:
+> > > https://lore.kernel.org/r/20230123173206.6764-3-dave@stgolabs.net
+> > 
+> > You can't forward on a patch without signing off on it as well :(
 > 
->   Linux 6.1.78 (2024-02-16 19:06:32 +0100)
+> Ok, thanks for the info. I'll add the signoff and send a v3.
 > 
-> are available in the Git repository at:
+> > 
+> > And this is already in the 6.1.53 release, why apply it again?
 > 
->   https://git.kernel.org/pub/scm/linux/kernel/git/cel/linux.git nfsd-6.1.y
-> 
-> for you to fetch changes up to d432d1006b60bd6b5c38974727bdce78f449eeea:
-> 
->   nfsd: don't take fi_lock in nfsd_break_deleg_cb() (2024-02-16 13:58:29 -0500)
-> 
-> ----------------------------------------------------------------
-> NeilBrown (2):
->       nfsd: fix RELEASE_LOCKOWNER
->       nfsd: don't take fi_lock in nfsd_break_deleg_cb()
+> I can't find it there and also the change is not included in linux-
+> 6.1.y or 6.1.53. There is another commit referencing this patch (linux-
+> 6.1.y, fd4d61f85e7625cb21a7eff4efa1de46503ed2c3), but the "hrtimer:
+> Ignore slack time ..." patch did not get backported so far.
+> I also checked the source of v6.1.y and could not find the related
+> change. Which commit exactly are you referring to?
 
-A pull request for just 2 patches?  Ok, I'll go dig them out of here,
-but next time, a mbox or just sending them as patches works too, no need
-to go through the trouble of this.
+Ah, yes, that's my fault, my scripts picked up the full sha being
+referenced there as normally that's not how anyone does it in a
+changelog.
 
-thanks,
+So it will be needed for 6.1.y, thanks!
 
 greg k-h
 
