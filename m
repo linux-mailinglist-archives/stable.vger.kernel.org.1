@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-21086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2988485C713
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:08:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CD7885C71F
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:09:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B31F1C21600
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:08:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CE741C21491
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:09:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C20E814F9DA;
-	Tue, 20 Feb 2024 21:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE6C51509AC;
+	Tue, 20 Feb 2024 21:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0lf+MhNW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2wQrP8fv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7849476C9C;
-	Tue, 20 Feb 2024 21:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB9E14AD12;
+	Tue, 20 Feb 2024 21:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463306; cv=none; b=GzbuAOit7cox2HVuNAmyuE71RJi8vdkEK3976d3SPVwOVrI/JiYa5GhVp5VaqlEaaPzkNvWk0DMC7SX5RjwgWBn9rNMMAezpruSNKI8TpZS12l2ypS8X4RuEHptX0XrgaJKa5uXAeeowDUvccwhncaxqqIpphbJFybx7d/ziNRw=
+	t=1708463344; cv=none; b=erHAkX2ubSUQp8mtXMNU38Jih/RNiSJAgFnNMYV1k7c9itJx8LWBZZKn8IZ0D3IwaYxl/Iv7GXC722MKMp/vC8xEhW2bLBh3kLQPPPR12SOxZMISlTCXVECpFCVyxEwrrzlPY+FAqXLC/CjfnYXVLAytFdgO4Di4n0sPrwvhbGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463306; c=relaxed/simple;
-	bh=2JOrfx9Jf8GdaH7Jn6XJmJ2bcDWM7vDsqon0BBttjvE=;
+	s=arc-20240116; t=1708463344; c=relaxed/simple;
+	bh=H7UVuALMMvza4udjflVKC888AZPb79K+ypjlKdLqsd0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sdshwM6QBuTwTfCO3Rn8/HnGSsJ3D82xqNA4gyNnPesAc89HTGh/XE9B3gjr8LdHmhxERWdgbNfqCzb6LKAKUMFR1FmQ42ULJAzP9AjhBEZq2ZRCAYxDBnuI/TMtuDJ5Emzxj7GlKuAASCU3rLfPfFQmDLqKfPUQyC/CBeYtcwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0lf+MhNW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80D28C433F1;
-	Tue, 20 Feb 2024 21:08:25 +0000 (UTC)
+	 MIME-Version; b=X0sLnVpYzPbT0LjJRta8vvsEme1Yg3Jt/BQvDVmfFKSSfnp3+R1IbC4+wP//GsYObNA1s5p8kamnjWEk5RkPC72j8dZdVekdYIlRsRGiFFYOsEYFnrYHw1jU+62GKMAcK/5f+DLhXfNMZ3XXKQXwkkVPDoV9GWtiHaWT5O57G9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2wQrP8fv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 071A8C433F1;
+	Tue, 20 Feb 2024 21:09:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463306;
-	bh=2JOrfx9Jf8GdaH7Jn6XJmJ2bcDWM7vDsqon0BBttjvE=;
+	s=korg; t=1708463344;
+	bh=H7UVuALMMvza4udjflVKC888AZPb79K+ypjlKdLqsd0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0lf+MhNWhZDpjJ0Jti8gvUl5yq5Z1wme9ewxOCw3L7wcWFdd/yl0BmrIIrTc5qHzv
-	 /rzmOSS4w47EHaVdPRvDmuzlgmmFHnm/7BVOI+q4ikRMgS0mn6v7DongLbvkTfpeUA
-	 mZstK9iqA4fvCXj4N01YLWKS2xg2T8AZFqZaL9t8=
+	b=2wQrP8fv0U5kTw3Hb+9fpIW7PjZzLQzU4fhBjrdewcQxk+lph1neAiJUcwlpzWMAK
+	 528l0cOt1Rn1o72xj0qRiQ81jfQ6MrNvfCJ95+IdDO9P3gJPDBW560bhL9yC6CHVGk
+	 sqyhilQNEWwK2auo6n2nGalN88UBayOwk6qxP6hY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Audra Mitchell <audra@redhat.com>,
-	Rafael Aquini <raquini@redhat.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Adam Sindelar <adam@wowsignal.io>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 171/197] selftests/mm: Update va_high_addr_switch.sh to check CPU for la57 flag
-Date: Tue, 20 Feb 2024 21:52:10 +0100
-Message-ID: <20240220204846.189134750@linuxfoundation.org>
+Subject: [PATCH 6.6 015/331] KVM: selftests: Avoid infinite loop in hyperv_features when invtsc is missing
+Date: Tue, 20 Feb 2024 21:52:11 +0100
+Message-ID: <20240220205638.065692134@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
-References: <20240220204841.073267068@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,70 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Audra Mitchell <audra@redhat.com>
+From: Vitaly Kuznetsov <vkuznets@redhat.com>
 
-[ Upstream commit 52e63d67b5bb423b33d7a262ac7f8bd375a90145 ]
+[ Upstream commit 8ad4855273488c9bd5320b3fee80f66f0023f326 ]
 
-In order for the page table level 5 to be in use, the CPU must have the
-setting enabled in addition to the CONFIG option. Check for the flag to be
-set to avoid false test failures on systems that do not have this cpu flag
-set.
+When X86_FEATURE_INVTSC is missing, guest_test_msrs_access() was supposed
+to skip testing dependent Hyper-V invariant TSC feature. Unfortunately,
+'continue' does not lead to that as stage is not incremented. Moreover,
+'vm' allocated with vm_create_with_one_vcpu() is not freed and the test
+runs out of available file descriptors very quickly.
 
-The test does a series of mmap calls including three using the
-MAP_FIXED flag and specifying an address that is 1<<47 or 1<<48.  These
-addresses are only available if you are using level 5 page tables,
-which requires both the CPU to have the capabiltiy (la57 flag) and the
-kernel to be configured.  Currently the test only checks for the kernel
-configuration option, so this test can still report a false positive.
-Here are the three failing lines:
-
-$ ./va_high_addr_switch | grep FAILED
-mmap(ADDR_SWITCH_HINT, 2 * PAGE_SIZE, MAP_FIXED): 0xffffffffffffffff - FAILED
-mmap(HIGH_ADDR, MAP_FIXED): 0xffffffffffffffff - FAILED
-mmap(ADDR_SWITCH_HINT, 2 * PAGE_SIZE, MAP_FIXED): 0xffffffffffffffff - FAILED
-
-I thought (for about a second) refactoring the test so that these three
-mmap calls will only be run on systems with the level 5 page tables
-available, but the whole point of the test is to check the level 5
-feature...
-
-Link: https://lkml.kernel.org/r/20240119205801.62769-1-audra@redhat.com
-Fixes: 4f2930c6718a ("selftests/vm: only run 128TBswitch with 5-level paging")
-Signed-off-by: Audra Mitchell <audra@redhat.com>
-Cc: Rafael Aquini <raquini@redhat.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Adam Sindelar <adam@wowsignal.io>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: bd827bd77537 ("KVM: selftests: Test Hyper-V invariant TSC control")
+Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+Link: https://lore.kernel.org/r/20240129085847.2674082-1-vkuznets@redhat.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/vm/va_128TBswitch.sh | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tools/testing/selftests/kvm/x86_64/hyperv_features.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/vm/va_128TBswitch.sh b/tools/testing/selftests/vm/va_128TBswitch.sh
-index 41580751dc51..231622b3a232 100755
---- a/tools/testing/selftests/vm/va_128TBswitch.sh
-+++ b/tools/testing/selftests/vm/va_128TBswitch.sh
-@@ -29,9 +29,15 @@ check_supported_x86_64()
- 	# See man 1 gzip under '-f'.
- 	local pg_table_levels=$(gzip -dcfq "${config}" | grep PGTABLE_LEVELS | cut -d'=' -f 2)
+diff --git a/tools/testing/selftests/kvm/x86_64/hyperv_features.c b/tools/testing/selftests/kvm/x86_64/hyperv_features.c
+index 9f28aa276c4e..a726831b8024 100644
+--- a/tools/testing/selftests/kvm/x86_64/hyperv_features.c
++++ b/tools/testing/selftests/kvm/x86_64/hyperv_features.c
+@@ -454,7 +454,7 @@ static void guest_test_msrs_access(void)
+ 		case 44:
+ 			/* MSR is not available when CPUID feature bit is unset */
+ 			if (!has_invtsc)
+-				continue;
++				goto next_stage;
+ 			msr->idx = HV_X64_MSR_TSC_INVARIANT_CONTROL;
+ 			msr->write = false;
+ 			msr->fault_expected = true;
+@@ -462,7 +462,7 @@ static void guest_test_msrs_access(void)
+ 		case 45:
+ 			/* MSR is vailable when CPUID feature bit is set */
+ 			if (!has_invtsc)
+-				continue;
++				goto next_stage;
+ 			vcpu_set_cpuid_feature(vcpu, HV_ACCESS_TSC_INVARIANT);
+ 			msr->idx = HV_X64_MSR_TSC_INVARIANT_CONTROL;
+ 			msr->write = false;
+@@ -471,7 +471,7 @@ static void guest_test_msrs_access(void)
+ 		case 46:
+ 			/* Writing bits other than 0 is forbidden */
+ 			if (!has_invtsc)
+-				continue;
++				goto next_stage;
+ 			msr->idx = HV_X64_MSR_TSC_INVARIANT_CONTROL;
+ 			msr->write = true;
+ 			msr->write_val = 0xdeadbeef;
+@@ -480,7 +480,7 @@ static void guest_test_msrs_access(void)
+ 		case 47:
+ 			/* Setting bit 0 enables the feature */
+ 			if (!has_invtsc)
+-				continue;
++				goto next_stage;
+ 			msr->idx = HV_X64_MSR_TSC_INVARIANT_CONTROL;
+ 			msr->write = true;
+ 			msr->write_val = 1;
+@@ -513,6 +513,7 @@ static void guest_test_msrs_access(void)
+ 			return;
+ 		}
  
-+	local cpu_supports_pl5=$(awk '/^flags/ {if (/la57/) {print 0;}
-+		else {print 1}; exit}' /proc/cpuinfo 2>/dev/null)
-+
- 	if [[ "${pg_table_levels}" -lt 5 ]]; then
- 		echo "$0: PGTABLE_LEVELS=${pg_table_levels}, must be >= 5 to run this test"
- 		exit $ksft_skip
-+	elif [[ "${cpu_supports_pl5}" -ne 0 ]]; then
-+		echo "$0: CPU does not have the necessary la57 flag to support page table level 5"
-+		exit $ksft_skip
- 	fi
- }
- 
++next_stage:
+ 		stage++;
+ 		kvm_vm_free(vm);
+ 	}
 -- 
 2.43.0
 
