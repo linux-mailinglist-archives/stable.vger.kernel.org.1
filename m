@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-20953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD2F085C676
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:01:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B117D85C6A0
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:03:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D7791F20845
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:01:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B8DA283690
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:03:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFABA151CE4;
-	Tue, 20 Feb 2024 21:01:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA273151CE2;
+	Tue, 20 Feb 2024 21:03:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ss/5DNlj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="czmDDWHJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C9CC14F9DA;
-	Tue, 20 Feb 2024 21:01:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8472F151CE1;
+	Tue, 20 Feb 2024 21:03:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708462888; cv=none; b=ROEn4LC+OOtTlw2wfKUJJYo+UV+GH4tG4TJaJ7l3idYSY69pmK6n4yMlKyg1sXHPg5XPcy1eXP4/GJIKGrL7eN0r7GtW2+mApUYkWaVF/V8I8f73laqCa4PiavImINYSGoNoh78sl9KkR4p1DQCrFEu0ibLtJwAHT1zXYAY8Euo=
+	t=1708463012; cv=none; b=m81IPr6yjQ0CVGbUo6Dm/dBq7eXVmk8gs6K5PJ+D3lKbBcqHYM8v7s5kFqu7qV3v7rPa8WK7qZJsyu0B3su0+S6dTKoSYlLs7WfRHsZdttQTqOE7LJu2fd7oGVHlNdW1LsNBWIXSz+Ljq6c9zgxHt1aAKCaieuRjLW8wtN3kGe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708462888; c=relaxed/simple;
-	bh=Y2qSltzdY/t0UdaELxy7wotyEUTJVz58EY7kefWHvlI=;
+	s=arc-20240116; t=1708463012; c=relaxed/simple;
+	bh=ifHBdjTOdqUIAynLXcoVuXyqqgZItkVNG8m9ByrJvSg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mfLKKwHzUzC4wMFEhjoGqy4ml1BOL6eWiGnrQE983s/OSzq3hn66ViE5CSwRtFnfu4SrdWhRO7gjJqgakBfOgT/bpiOP7XyoN+smW/kYE0ZZeKI3Gj0p3DLxwHfm2lxPLNQzwJQ4Iz1N8cwu+f1soUoWfYL0tnM7nzbp0PSNpSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ss/5DNlj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 929BFC433F1;
-	Tue, 20 Feb 2024 21:01:27 +0000 (UTC)
+	 MIME-Version; b=hAJDIyTVqJbW1ics7FCVQTzDnQ0TId67a925J5LomokHCq08WDWikizzV4Vo7V83r2iikUOGFnoblVXxAwlUw52pFepLyq/EvMh/ep2XXNHzRPEhNY0GaqIS3GfQmRZ4qcoR+WkVvTlojUvq3rpAbDSdyijE2a/oVz6vNEO898E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=czmDDWHJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7092C433C7;
+	Tue, 20 Feb 2024 21:03:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708462888;
-	bh=Y2qSltzdY/t0UdaELxy7wotyEUTJVz58EY7kefWHvlI=;
+	s=korg; t=1708463012;
+	bh=ifHBdjTOdqUIAynLXcoVuXyqqgZItkVNG8m9ByrJvSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ss/5DNljhc2xZjtSfODFOT40K5aNvBM692H1CBrz3jG9c+aLLV+Ae9djq96Fjms0B
-	 9vh6sNLO//iDkV61XWZH2dwE1ykQynlJK0hI41G2DSb7B5jOTUtWsRyIL3cZ/Zl/PG
-	 A1Ams7aOZ/tDml39g6paN1S6q/P36efW0H7UHaHY=
+	b=czmDDWHJMq65dvPia4ct79oTYUZEY3vUVJPRlL/ng2wmGaW+pqN85274X3KESf8/N
+	 SPRvwLYiaR4rmw8PgFstfh1APVLL9Ii+GT2f4vwLrfGI9Oiwm1Rml+HTyD9J6YrEAq
+	 zJ7N9R5SkXKRcI/uRrY/aZhSkF0uk/GeiRDAbR6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
 	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 067/197] mptcp: fix data re-injection from stale subflow
-Date: Tue, 20 Feb 2024 21:50:26 +0100
-Message-ID: <20240220204843.085469580@linuxfoundation.org>
+Subject: [PATCH 6.1 068/197] selftests: mptcp: add missing kconfig for NF Filter
+Date: Tue, 20 Feb 2024 21:50:27 +0100
+Message-ID: <20240220204843.115605906@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
 References: <20240220204841.073267068@linuxfoundation.org>
@@ -67,53 +66,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit b6c620dc43ccb4e802894e54b651cf81495e9598 upstream.
+commit 3645c844902bd4e173d6704fc2a37e8746904d67 upstream.
 
-When the MPTCP PM detects that a subflow is stale, all the packet
-scheduler must re-inject all the mptcp-level unacked data. To avoid
-acquiring unneeded locks, it first try to check if any unacked data
-is present at all in the RTX queue, but such check is currently
-broken, as it uses TCP-specific helper on an MPTCP socket.
+Since the commit mentioned below, 'mptcp_join' selftests is using
+IPTables to add rules to the Filter table.
 
-Funnily enough fuzzers and static checkers are happy, as the accessed
-memory still belongs to the mptcp_sock struct, and even from a
-functional perspective the recovery completed successfully, as
-the short-cut test always failed.
+It is then required to have IP_NF_FILTER KConfig.
 
-A recent unrelated TCP change - commit d5fed5addb2b ("tcp: reorganize
-tcp_sock fast path variables") - exposed the issue, as the tcp field
-reorganization makes the mptcp code always skip the re-inection.
+This KConfig is usually enabled by default in many defconfig, but we
+recently noticed that some CI were running our selftests without them
+enabled.
 
-Fix the issue dropping the bogus call: we are on a slow path, the early
-optimization proved once again to be evil.
-
-Fixes: 1e1d9d6f119c ("mptcp: handle pending data on closed subflow")
+Fixes: 8d014eaa9254 ("selftests: mptcp: add ADD_ADDR timeout test case")
 Cc: stable@vger.kernel.org
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/468
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
+Reviewed-by: Geliang Tang <geliang@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240131-upstream-net-20240131-mptcp-ci-issues-v1-1-4c1c11e571ff@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |    3 ---
- 1 file changed, 3 deletions(-)
+ tools/testing/selftests/net/mptcp/config |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2336,9 +2336,6 @@ bool __mptcp_retransmit_pending_data(str
- 	if (__mptcp_check_fallback(mptcp_sk(sk)))
- 		return false;
- 
--	if (tcp_rtx_and_write_queues_empty(sk))
--		return false;
--
- 	/* the closing socket has some data untransmitted and/or unacked:
- 	 * some data in the mptcp rtx queue has not really xmitted yet.
- 	 * keep it simple and re-inject the whole mptcp level rtx queue
+--- a/tools/testing/selftests/net/mptcp/config
++++ b/tools/testing/selftests/net/mptcp/config
+@@ -22,6 +22,7 @@ CONFIG_NFT_TPROXY=m
+ CONFIG_NFT_SOCKET=m
+ CONFIG_IP_ADVANCED_ROUTER=y
+ CONFIG_IP_MULTIPLE_TABLES=y
++CONFIG_IP_NF_FILTER=m
+ CONFIG_IP_NF_TARGET_REJECT=m
+ CONFIG_IPV6_MULTIPLE_TABLES=y
+ CONFIG_NET_ACT_CSUM=m
 
 
 
