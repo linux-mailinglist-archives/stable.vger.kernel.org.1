@@ -1,66 +1,58 @@
-Return-Path: <stable+bounces-21090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4211A85C717
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:08:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B39085C739
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:10:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2B20B20F4B
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:08:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E71C1C21CE0
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:10:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E14C61509AC;
-	Tue, 20 Feb 2024 21:08:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE7C2151CEB;
+	Tue, 20 Feb 2024 21:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wn8w6Q92"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Swz1Ksov"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EF7776C9C;
-	Tue, 20 Feb 2024 21:08:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 457901509BC;
+	Tue, 20 Feb 2024 21:10:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463318; cv=none; b=Xm0rNBKsD7bM7fN46dFjdBv/HQDkllcRSXls0wjpjdmZ/S3cBrzP+K/ngBSIjK7QjiUr0GQ8DVG+rCZeXBvatBbz2/0QnCT5i5U8Fsi9OKSN2oDvuwYwm7ayc6IwkoYX3X0tjc5sz+/5zhFFDZI8jaXDhvQOQbdwiaX0t0WSBhg=
+	t=1708463425; cv=none; b=G5flGEYCORzUwy4CxBOGVwuC/Pv5CvgzcOE2S3ScgkliC0f9tFbkHsAWMucqPAYFkbOHWEfTJNgsdo0DPSUDu7/vroiePQUShaCM2cD+yOHcVTKgXYONsY1fhPViOlTuY3Bv08dAZJWw2BxDr5ULN5LBmxZHzzfVzZu5SQDACX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463318; c=relaxed/simple;
-	bh=Klr4l1X4v/y05B/Ui7XPK7P2X7xcPfAcBOeifQZZ20A=;
+	s=arc-20240116; t=1708463425; c=relaxed/simple;
+	bh=FrQ1ALmS+lwA93qv1EHtFEq0SV9CF/GZLgMGZGC1MhQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YxcplOFAKYCxnaEPzbepURYOHi17D/Nn4izW+0GVhpbigYr96Lq91s6PCcHTJeNvgBBy28TwFv3LKuV5WyCQpEgelBIWhnIuT+/LEk/Tmm6+afD9gGhZr7VSDg7QVB7ZWrN4+1OCV5a3jTyD41+fr0ghLhS9cb+hVsPD+YWupIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wn8w6Q92; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4895C433C7;
-	Tue, 20 Feb 2024 21:08:37 +0000 (UTC)
+	 MIME-Version; b=LZR3G4N28JuhdEBvE5472Dtq0yjpWJ3btTx2dFouMHw8fkJulUUFBI5L5FFaax//ynlc83DjVy+bd4M7XjORlYXLAFi4W6ivTmFfui9LOylY/KjyJF68TR2MMDMQZ8wuiQrWNHc+c7NxLZj1CsEr2NVHSq2AI5uqVslca0ln1HY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Swz1Ksov; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AE2AC433F1;
+	Tue, 20 Feb 2024 21:10:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463318;
-	bh=Klr4l1X4v/y05B/Ui7XPK7P2X7xcPfAcBOeifQZZ20A=;
+	s=korg; t=1708463424;
+	bh=FrQ1ALmS+lwA93qv1EHtFEq0SV9CF/GZLgMGZGC1MhQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wn8w6Q92jupcGg0YRPY6FyBIwzNgxyClKiGoHnK7kpaV88kr9gkwXDG09mPzstCII
-	 iQMsujULjTXKmmCECWLq/FCaqPFsxBNNo/39V92PLOS8KFPEGXkMdaofNsSmHKzIdM
-	 6sBhcSTYmEsBtj3tDb56lQdwTukt1D/49mK2HVys=
+	b=Swz1KsovBXdYLscJ2bbHcZf7nkM8MX9ma07Al3WyiGadNB0aR49ImX2RKhUmvdNTd
+	 DAwCmCwwQWfa5JPIP6O0Yar7nn4h7Zbf/JnUvI+LzM4XQRS93Afuq5HEp8Ziq169Af
+	 KeYfwBeZwvh1wTS9XbQKeeft6XEvz4rhU9QMRhxw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lokesh Gidra <lokeshgidra@google.com>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Brian Geffon <bgeffon@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	Jann Horn <jannh@google.com>,
-	Kalesh Singh <kaleshsingh@google.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Nicolas Geoffray <ngeoffray@google.com>,
-	Peter Xu <peterx@redhat.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 197/197] userfaultfd: fix mmap_changing checking in mfill_atomic_hugetlb
+	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 040/331] net: tls: factor out tls_*crypt_async_wait()
 Date: Tue, 20 Feb 2024 21:52:36 +0100
-Message-ID: <20240220204846.972490217@linuxfoundation.org>
+Message-ID: <20240220205638.868626160@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
-References: <20240220204841.073267068@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,86 +64,194 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lokesh Gidra <lokeshgidra@google.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit 67695f18d55924b2013534ef3bdc363bc9e14605 upstream.
+[ Upstream commit c57ca512f3b68ddcd62bda9cc24a8f5584ab01b1 ]
 
-In mfill_atomic_hugetlb(), mmap_changing isn't being checked
-again if we drop mmap_lock and reacquire it. When the lock is not held,
-mmap_changing could have been incremented. This is also inconsistent
-with the behavior in mfill_atomic().
+Factor out waiting for async encrypt and decrypt to finish.
+There are already multiple copies and a subsequent fix will
+need more. No functional changes.
 
-Link: https://lkml.kernel.org/r/20240117223729.1444522-1-lokeshgidra@google.com
-Fixes: df2cc96e77011 ("userfaultfd: prevent non-cooperative events vs mcopy_atomic races")
-Signed-off-by: Lokesh Gidra <lokeshgidra@google.com>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: Brian Geffon <bgeffon@google.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Kalesh Singh <kaleshsingh@google.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Nicolas Geoffray <ngeoffray@google.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Note that crypto_wait_req() returns wait->err
+
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: aec7961916f3 ("tls: fix race between async notify and socket close")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/userfaultfd.c |   15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ net/tls/tls_sw.c | 96 +++++++++++++++++++++++-------------------------
+ 1 file changed, 45 insertions(+), 51 deletions(-)
 
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -327,6 +327,7 @@ static __always_inline ssize_t __mcopy_a
- 					      unsigned long dst_start,
- 					      unsigned long src_start,
- 					      unsigned long len,
-+					      atomic_t *mmap_changing,
- 					      enum mcopy_atomic_mode mode,
- 					      bool wp_copy)
- {
-@@ -445,6 +446,15 @@ retry:
- 				goto out;
- 			}
- 			mmap_read_lock(dst_mm);
-+			/*
-+			 * If memory mappings are changing because of non-cooperative
-+			 * operation (e.g. mremap) running in parallel, bail out and
-+			 * request the user to retry later
-+			 */
-+			if (mmap_changing && atomic_read(mmap_changing)) {
-+				err = -EAGAIN;
-+				break;
-+			}
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index 3c176776e912..12c3635c2b3e 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -230,6 +230,20 @@ static void tls_decrypt_done(void *data, int err)
+ 	spin_unlock_bh(&ctx->decrypt_compl_lock);
+ }
  
- 			dst_vma = NULL;
- 			goto retry;
-@@ -480,6 +490,7 @@ extern ssize_t __mcopy_atomic_hugetlb(st
- 				      unsigned long dst_start,
- 				      unsigned long src_start,
- 				      unsigned long len,
-+				      atomic_t *mmap_changing,
- 				      enum mcopy_atomic_mode mode,
- 				      bool wp_copy);
- #endif /* CONFIG_HUGETLB_PAGE */
-@@ -601,8 +612,8 @@ retry:
- 	 */
- 	if (is_vm_hugetlb_page(dst_vma))
- 		return  __mcopy_atomic_hugetlb(dst_mm, dst_vma, dst_start,
--					       src_start, len, mcopy_mode,
--					       wp_copy);
-+					       src_start, len, mmap_changing,
-+					       mcopy_mode, wp_copy);
++static int tls_decrypt_async_wait(struct tls_sw_context_rx *ctx)
++{
++	int pending;
++
++	spin_lock_bh(&ctx->decrypt_compl_lock);
++	reinit_completion(&ctx->async_wait.completion);
++	pending = atomic_read(&ctx->decrypt_pending);
++	spin_unlock_bh(&ctx->decrypt_compl_lock);
++	if (pending)
++		crypto_wait_req(-EINPROGRESS, &ctx->async_wait);
++
++	return ctx->async_wait.err;
++}
++
+ static int tls_do_decryption(struct sock *sk,
+ 			     struct scatterlist *sgin,
+ 			     struct scatterlist *sgout,
+@@ -495,6 +509,28 @@ static void tls_encrypt_done(void *data, int err)
+ 		schedule_delayed_work(&ctx->tx_work.work, 1);
+ }
  
- 	if (!vma_is_anonymous(dst_vma) && !vma_is_shmem(dst_vma))
- 		goto out_unlock;
++static int tls_encrypt_async_wait(struct tls_sw_context_tx *ctx)
++{
++	int pending;
++
++	spin_lock_bh(&ctx->encrypt_compl_lock);
++	ctx->async_notify = true;
++
++	pending = atomic_read(&ctx->encrypt_pending);
++	spin_unlock_bh(&ctx->encrypt_compl_lock);
++	if (pending)
++		crypto_wait_req(-EINPROGRESS, &ctx->async_wait);
++	else
++		reinit_completion(&ctx->async_wait.completion);
++
++	/* There can be no concurrent accesses, since we have no
++	 * pending encrypt operations
++	 */
++	WRITE_ONCE(ctx->async_notify, false);
++
++	return ctx->async_wait.err;
++}
++
+ static int tls_do_encryption(struct sock *sk,
+ 			     struct tls_context *tls_ctx,
+ 			     struct tls_sw_context_tx *ctx,
+@@ -984,7 +1020,6 @@ static int tls_sw_sendmsg_locked(struct sock *sk, struct msghdr *msg,
+ 	int num_zc = 0;
+ 	int orig_size;
+ 	int ret = 0;
+-	int pending;
+ 
+ 	if (!eor && (msg->msg_flags & MSG_EOR))
+ 		return -EINVAL;
+@@ -1163,24 +1198,12 @@ static int tls_sw_sendmsg_locked(struct sock *sk, struct msghdr *msg,
+ 	if (!num_async) {
+ 		goto send_end;
+ 	} else if (num_zc) {
+-		/* Wait for pending encryptions to get completed */
+-		spin_lock_bh(&ctx->encrypt_compl_lock);
+-		ctx->async_notify = true;
+-
+-		pending = atomic_read(&ctx->encrypt_pending);
+-		spin_unlock_bh(&ctx->encrypt_compl_lock);
+-		if (pending)
+-			crypto_wait_req(-EINPROGRESS, &ctx->async_wait);
+-		else
+-			reinit_completion(&ctx->async_wait.completion);
+-
+-		/* There can be no concurrent accesses, since we have no
+-		 * pending encrypt operations
+-		 */
+-		WRITE_ONCE(ctx->async_notify, false);
++		int err;
+ 
+-		if (ctx->async_wait.err) {
+-			ret = ctx->async_wait.err;
++		/* Wait for pending encryptions to get completed */
++		err = tls_encrypt_async_wait(ctx);
++		if (err) {
++			ret = err;
+ 			copied = 0;
+ 		}
+ 	}
+@@ -1229,7 +1252,6 @@ void tls_sw_splice_eof(struct socket *sock)
+ 	ssize_t copied = 0;
+ 	bool retrying = false;
+ 	int ret = 0;
+-	int pending;
+ 
+ 	if (!ctx->open_rec)
+ 		return;
+@@ -1264,22 +1286,7 @@ void tls_sw_splice_eof(struct socket *sock)
+ 	}
+ 
+ 	/* Wait for pending encryptions to get completed */
+-	spin_lock_bh(&ctx->encrypt_compl_lock);
+-	ctx->async_notify = true;
+-
+-	pending = atomic_read(&ctx->encrypt_pending);
+-	spin_unlock_bh(&ctx->encrypt_compl_lock);
+-	if (pending)
+-		crypto_wait_req(-EINPROGRESS, &ctx->async_wait);
+-	else
+-		reinit_completion(&ctx->async_wait.completion);
+-
+-	/* There can be no concurrent accesses, since we have no pending
+-	 * encrypt operations
+-	 */
+-	WRITE_ONCE(ctx->async_notify, false);
+-
+-	if (ctx->async_wait.err)
++	if (tls_encrypt_async_wait(ctx))
+ 		goto unlock;
+ 
+ 	/* Transmit if any encryptions have completed */
+@@ -2109,16 +2116,10 @@ int tls_sw_recvmsg(struct sock *sk,
+ 
+ recv_end:
+ 	if (async) {
+-		int ret, pending;
++		int ret;
+ 
+ 		/* Wait for all previously submitted records to be decrypted */
+-		spin_lock_bh(&ctx->decrypt_compl_lock);
+-		reinit_completion(&ctx->async_wait.completion);
+-		pending = atomic_read(&ctx->decrypt_pending);
+-		spin_unlock_bh(&ctx->decrypt_compl_lock);
+-		ret = 0;
+-		if (pending)
+-			ret = crypto_wait_req(-EINPROGRESS, &ctx->async_wait);
++		ret = tls_decrypt_async_wait(ctx);
+ 		__skb_queue_purge(&ctx->async_hold);
+ 
+ 		if (ret) {
+@@ -2435,16 +2436,9 @@ void tls_sw_release_resources_tx(struct sock *sk)
+ 	struct tls_context *tls_ctx = tls_get_ctx(sk);
+ 	struct tls_sw_context_tx *ctx = tls_sw_ctx_tx(tls_ctx);
+ 	struct tls_rec *rec, *tmp;
+-	int pending;
+ 
+ 	/* Wait for any pending async encryptions to complete */
+-	spin_lock_bh(&ctx->encrypt_compl_lock);
+-	ctx->async_notify = true;
+-	pending = atomic_read(&ctx->encrypt_pending);
+-	spin_unlock_bh(&ctx->encrypt_compl_lock);
+-
+-	if (pending)
+-		crypto_wait_req(-EINPROGRESS, &ctx->async_wait);
++	tls_encrypt_async_wait(ctx);
+ 
+ 	tls_tx_records(sk, -1);
+ 
+-- 
+2.43.0
+
 
 
 
