@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-21097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52EF685C71E
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:09:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2988485C713
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:08:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EBA528462C
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:09:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B31F1C21600
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:08:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0B781509AC;
-	Tue, 20 Feb 2024 21:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C20E814F9DA;
+	Tue, 20 Feb 2024 21:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IOfLfmQR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0lf+MhNW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E3FE14AD12;
-	Tue, 20 Feb 2024 21:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7849476C9C;
+	Tue, 20 Feb 2024 21:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463341; cv=none; b=AERO83WUpYN3sKt+2+bpsMMRx4pNEWEL9qfs/YLz8vJ/LpHUjUhnP8pmlj1YHt/5T57HMZLf5sWcIyexw5U3nZkbo62xtjhCehUvxcIitqjnZ9sauxYBIu4AToHxDGOl+8GUQz91nz5mLvmiphb5cBfLJ5lOiAcT06sJLefRt/k=
+	t=1708463306; cv=none; b=GzbuAOit7cox2HVuNAmyuE71RJi8vdkEK3976d3SPVwOVrI/JiYa5GhVp5VaqlEaaPzkNvWk0DMC7SX5RjwgWBn9rNMMAezpruSNKI8TpZS12l2ypS8X4RuEHptX0XrgaJKa5uXAeeowDUvccwhncaxqqIpphbJFybx7d/ziNRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463341; c=relaxed/simple;
-	bh=7b2LDCpUhG0FeIg0CxaOktk5HFOljrrqArl4+gRMXos=;
+	s=arc-20240116; t=1708463306; c=relaxed/simple;
+	bh=2JOrfx9Jf8GdaH7Jn6XJmJ2bcDWM7vDsqon0BBttjvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CzQoJ//x8eNmiOeSVIATodw0oLzmKagnKCax0q+UHq9OnunBxZYx/ty5XL17dp+dz3N4ohT+2s6E1BdgHJgBFyqnfKs6NporACVE+prZE7Bx7Zjy0B9WM3piABxB+3j4iwMKu1DK/akWVJlkcnfNQ1Zp9kj02orIelLw9lJba/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IOfLfmQR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8726DC433F1;
-	Tue, 20 Feb 2024 21:09:00 +0000 (UTC)
+	 MIME-Version; b=sdshwM6QBuTwTfCO3Rn8/HnGSsJ3D82xqNA4gyNnPesAc89HTGh/XE9B3gjr8LdHmhxERWdgbNfqCzb6LKAKUMFR1FmQ42ULJAzP9AjhBEZq2ZRCAYxDBnuI/TMtuDJ5Emzxj7GlKuAASCU3rLfPfFQmDLqKfPUQyC/CBeYtcwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0lf+MhNW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80D28C433F1;
+	Tue, 20 Feb 2024 21:08:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463341;
-	bh=7b2LDCpUhG0FeIg0CxaOktk5HFOljrrqArl4+gRMXos=;
+	s=korg; t=1708463306;
+	bh=2JOrfx9Jf8GdaH7Jn6XJmJ2bcDWM7vDsqon0BBttjvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IOfLfmQRMbwoPg3udDUqBjmb5zNgZmsZf2yppMv6zXbftrYVKwyfor8CKI8oC8ZG2
-	 qCPm9fizKKB3o5uwswYdHWeHjdghZ4glkXDNPqqWDGWLjVhlWSpx2HGoAgPwGNizcT
-	 ULCdJjGwD3YIeJRDqHTDlvgBvAgL6FAhAP8GEHD0=
+	b=0lf+MhNWhZDpjJ0Jti8gvUl5yq5Z1wme9ewxOCw3L7wcWFdd/yl0BmrIIrTc5qHzv
+	 /rzmOSS4w47EHaVdPRvDmuzlgmmFHnm/7BVOI+q4ikRMgS0mn6v7DongLbvkTfpeUA
+	 mZstK9iqA4fvCXj4N01YLWKS2xg2T8AZFqZaL9t8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jim Mattson <jmattson@google.com>,
-	Sean Christopherson <seanjc@google.com>,
+	Audra Mitchell <audra@redhat.com>,
+	Rafael Aquini <raquini@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Adam Sindelar <adam@wowsignal.io>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 014/331] KVM: selftests: Delete superfluous, unused "stage" variable in AMX test
+Subject: [PATCH 6.1 171/197] selftests/mm: Update va_high_addr_switch.sh to check CPU for la57 flag
 Date: Tue, 20 Feb 2024 21:52:10 +0100
-Message-ID: <20240220205638.031119383@linuxfoundation.org>
+Message-ID: <20240220204846.189134750@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
+References: <20240220204841.073267068@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +65,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Audra Mitchell <audra@redhat.com>
 
-[ Upstream commit 46fee9e38995af9ae16a8cc7d05031486d44cf35 ]
+[ Upstream commit 52e63d67b5bb423b33d7a262ac7f8bd375a90145 ]
 
-Delete the AMX's tests "stage" counter, as the counter is no longer used,
-which makes clang unhappy:
+In order for the page table level 5 to be in use, the CPU must have the
+setting enabled in addition to the CONFIG option. Check for the flag to be
+set to avoid false test failures on systems that do not have this cpu flag
+set.
 
-  x86_64/amx_test.c:224:6: error: variable 'stage' set but not used
-          int stage, ret;
-              ^
-  1 error generated.
+The test does a series of mmap calls including three using the
+MAP_FIXED flag and specifying an address that is 1<<47 or 1<<48.  These
+addresses are only available if you are using level 5 page tables,
+which requires both the CPU to have the capabiltiy (la57 flag) and the
+kernel to be configured.  Currently the test only checks for the kernel
+configuration option, so this test can still report a false positive.
+Here are the three failing lines:
 
-Note, "stage" was never really used, it just happened to be dumped out by
-a (failed) assertion on run->exit_reason, i.e. the AMX test has no concept
-of stages, the code was likely copy+pasted from a different test.
+$ ./va_high_addr_switch | grep FAILED
+mmap(ADDR_SWITCH_HINT, 2 * PAGE_SIZE, MAP_FIXED): 0xffffffffffffffff - FAILED
+mmap(HIGH_ADDR, MAP_FIXED): 0xffffffffffffffff - FAILED
+mmap(ADDR_SWITCH_HINT, 2 * PAGE_SIZE, MAP_FIXED): 0xffffffffffffffff - FAILED
 
-Fixes: c96f57b08012 ("KVM: selftests: Make vCPU exit reason test assertion common")
-Reviewed-by: Jim Mattson <jmattson@google.com>
-Link: https://lore.kernel.org/r/20240109220302.399296-1-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+I thought (for about a second) refactoring the test so that these three
+mmap calls will only be run on systems with the level 5 page tables
+available, but the whole point of the test is to check the level 5
+feature...
+
+Link: https://lkml.kernel.org/r/20240119205801.62769-1-audra@redhat.com
+Fixes: 4f2930c6718a ("selftests/vm: only run 128TBswitch with 5-level paging")
+Signed-off-by: Audra Mitchell <audra@redhat.com>
+Cc: Rafael Aquini <raquini@redhat.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Adam Sindelar <adam@wowsignal.io>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/kvm/x86_64/amx_test.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/vm/va_128TBswitch.sh | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tools/testing/selftests/kvm/x86_64/amx_test.c b/tools/testing/selftests/kvm/x86_64/amx_test.c
-index 11329e5ff945..309ee5c72b46 100644
---- a/tools/testing/selftests/kvm/x86_64/amx_test.c
-+++ b/tools/testing/selftests/kvm/x86_64/amx_test.c
-@@ -221,7 +221,7 @@ int main(int argc, char *argv[])
- 	vm_vaddr_t amx_cfg, tiledata, xstate;
- 	struct ucall uc;
- 	u32 amx_offset;
--	int stage, ret;
-+	int ret;
+diff --git a/tools/testing/selftests/vm/va_128TBswitch.sh b/tools/testing/selftests/vm/va_128TBswitch.sh
+index 41580751dc51..231622b3a232 100755
+--- a/tools/testing/selftests/vm/va_128TBswitch.sh
++++ b/tools/testing/selftests/vm/va_128TBswitch.sh
+@@ -29,9 +29,15 @@ check_supported_x86_64()
+ 	# See man 1 gzip under '-f'.
+ 	local pg_table_levels=$(gzip -dcfq "${config}" | grep PGTABLE_LEVELS | cut -d'=' -f 2)
  
- 	/*
- 	 * Note, all off-by-default features must be enabled before anything
-@@ -263,7 +263,7 @@ int main(int argc, char *argv[])
- 	memset(addr_gva2hva(vm, xstate), 0, PAGE_SIZE * DIV_ROUND_UP(XSAVE_SIZE, PAGE_SIZE));
- 	vcpu_args_set(vcpu, 3, amx_cfg, tiledata, xstate);
- 
--	for (stage = 1; ; stage++) {
-+	for (;;) {
- 		vcpu_run(vcpu);
- 		TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
++	local cpu_supports_pl5=$(awk '/^flags/ {if (/la57/) {print 0;}
++		else {print 1}; exit}' /proc/cpuinfo 2>/dev/null)
++
+ 	if [[ "${pg_table_levels}" -lt 5 ]]; then
+ 		echo "$0: PGTABLE_LEVELS=${pg_table_levels}, must be >= 5 to run this test"
+ 		exit $ksft_skip
++	elif [[ "${cpu_supports_pl5}" -ne 0 ]]; then
++		echo "$0: CPU does not have the necessary la57 flag to support page table level 5"
++		exit $ksft_skip
+ 	fi
+ }
  
 -- 
 2.43.0
