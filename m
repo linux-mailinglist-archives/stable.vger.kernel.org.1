@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-21694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BAAE85C9F3
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:40:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBE3F85C8A9
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:24:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7658281CAB
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:40:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 721A41F2123A
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:24:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C314151CDC;
-	Tue, 20 Feb 2024 21:40:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2525151CEB;
+	Tue, 20 Feb 2024 21:24:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vwgMsSQ2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q8lyxU+T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB0C612D7;
-	Tue, 20 Feb 2024 21:40:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 702D91509BC;
+	Tue, 20 Feb 2024 21:24:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708465218; cv=none; b=t51TZSqpElEYmqnU5cyWYTlpD5S0Ssr/gd2qMWGnx5L4ypFdkhzU8lV1baNrpOCgR22LO2fFYSkaEv/P9tlg8iMYgU0F6Zaq7MKRDX0ExFFjcqubr/Gp3MG4tiSZY9HLtKnNusvUwQn5vhIJYsnxARqFViCMW0j29gDGNUJ2qrM=
+	t=1708464254; cv=none; b=aRVkK7YrewGk2Ginsrhm/fuDidrZqB6gXN1k26E5xsAcYuq5Xs46l5SAgvjYuQxA2VFlbP2r6+UDAZTJHnLhOJtFD78vyeWNF+47kDfSSVIPc17ZVGZPPqQBsi/j7+zZv0TaBHdFwoN631MElkqwYpUTjS/hiFuUDuxTZnimegQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708465218; c=relaxed/simple;
-	bh=S4SH48UWF0ynNzzGeutNdyxmTZ7JwNGyhaaFauSuQso=;
+	s=arc-20240116; t=1708464254; c=relaxed/simple;
+	bh=Ue2tAtCP0lFyNJ9SRg7GabHqZEoJ5FYqBmq2hEc5pZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X2jPhTNoIc5ANx6C2xe6Sz1mv9hLmErJ0yg+BQH2C5XCz4lcng1WdjR+hC7Lb/+vMk2o2n61yimeG0+5EgaLtPjFaPo60/oxOPtImv1x6B3rncGER7LYmtKTrQhHpArxpdtlYYHnoFZryKimO9ZT1ZHRDvOq8+Sag/bp/AavSPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vwgMsSQ2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F79CC433F1;
-	Tue, 20 Feb 2024 21:40:17 +0000 (UTC)
+	 MIME-Version; b=u6dYeGHP/NRd/p0jA9h2mMUnof1/pG+R6VIOudTYMcIUqXhmSx6n+EqnRKc1KXJ7jk7l1EaQZBm0fU0ux8YEllnxPcrAEFo0bkaQhPK6Au7NwyTd0Ce2Vrkb39wpf5frdHO6ugJpdMZ++2iQ+xvliZ2OK9EMZrOylgwHVPnqJhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q8lyxU+T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3470C433C7;
+	Tue, 20 Feb 2024 21:24:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708465217;
-	bh=S4SH48UWF0ynNzzGeutNdyxmTZ7JwNGyhaaFauSuQso=;
+	s=korg; t=1708464254;
+	bh=Ue2tAtCP0lFyNJ9SRg7GabHqZEoJ5FYqBmq2hEc5pZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vwgMsSQ2zxTVw6r9lFPHflfoBltcIg+8yDltBsHglQ7C97dHOhi6bbEjOD3ZEjO+m
-	 RWFpq6I6BCnj8jcYkfZY3MKQRCGlYZ+caSpuORYzEnHbz6hI6qQoPM6ZblLLKDZJ0M
-	 SGtDTlEnpKiQTAvlC5Axki90fBv0fkYsv+M0MlXs=
+	b=Q8lyxU+TztuQyAtevW4GP6kDRLjgosnWCgAA0agNercuCc/LsWSKnlXI9PUdUbFhC
+	 vUUF8K7RNxBZE0OsGDpygfiJHhxPBdt+EiAszCdQ93HZDNWxjA88W8h3h/LhaTZM+N
+	 E+hV/JkyAkg2S6/ppynnRlYCFx7ObQMir3DTNxGI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Zyngier <maz@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>
-Subject: [PATCH 6.7 256/309] irqchip/gic-v3-its: Restore quirk probing for ACPI-based systems
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@ZenIV.linux.org.uk>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 299/331] eventfs: Have the inodes all for files and directories all be the same
 Date: Tue, 20 Feb 2024 21:56:55 +0100
-Message-ID: <20240220205641.170264507@linuxfoundation.org>
+Message-ID: <20240220205647.482281234@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +67,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-commit 8b02da04ad978827e5ccd675acf170198f747a7a upstream.
+commit 53c41052ba3121761e6f62a813961164532a214f upstream.
 
-While refactoring the way the ITSs are probed, the handling of quirks
-applicable to ACPI-based platforms was lost. As a result, systems such as
-HIP07 lose their GICv4 functionnality, and some other may even fail to
-boot, unless they are configured to boot with DT.
+The dentries and inodes are created in the readdir for the sole purpose of
+getting a consistent inode number. Linus stated that is unnecessary, and
+that all inodes can have the same inode number. For a virtual file system
+they are pretty meaningless.
 
-Move the enabling of quirks into its_probe_one(), making it common to all
-firmware implementations.
+Instead use a single unique inode number for all files and one for all
+directories.
 
-Fixes: 9585a495ac93 ("irqchip/gic-v3-its: Split allocation from initialisation of its_node")
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240213101206.2137483-3-maz@kernel.org
+Link: https://lore.kernel.org/all/20240116133753.2808d45e@gandalf.local.home/
+Link: https://lore.kernel.org/linux-trace-kernel/20240116211353.412180363@goodmis.org
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Al  Viro <viro@ZenIV.linux.org.uk>
+Cc: Ajay Kaher <ajay.kaher@broadcom.com>
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-gic-v3-its.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/tracefs/event_inode.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -5091,6 +5091,8 @@ static int __init its_probe_one(struct i
- 	u32 ctlr;
- 	int err;
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -32,6 +32,10 @@
+  */
+ static DEFINE_MUTEX(eventfs_mutex);
  
-+	its_enable_quirks(its);
++/* Choose something "unique" ;-) */
++#define EVENTFS_FILE_INODE_INO		0x12c4e37
++#define EVENTFS_DIR_INODE_INO		0x134b2f5
 +
- 	if (is_v4(its)) {
- 		if (!(its->typer & GITS_TYPER_VMOVP)) {
- 			err = its_compute_its_list_map(its);
-@@ -5442,7 +5444,6 @@ static int __init its_of_probe(struct de
- 		if (!its)
- 			return -ENOMEM;
+ /*
+  * The eventfs_inode (ei) itself is protected by SRCU. It is released from
+  * its parent's list and will have is_freed set (under eventfs_mutex).
+@@ -352,6 +356,9 @@ static struct dentry *create_file(const
+ 	inode->i_fop = fop;
+ 	inode->i_private = data;
  
--		its_enable_quirks(its);
- 		err = its_probe_one(its);
- 		if (err)  {
- 			its_node_destroy(its);
++	/* All files will have the same inode number */
++	inode->i_ino = EVENTFS_FILE_INODE_INO;
++
+ 	ti = get_tracefs(inode);
+ 	ti->flags |= TRACEFS_EVENT_INODE;
+ 	d_instantiate(dentry, inode);
+@@ -388,6 +395,9 @@ static struct dentry *create_dir(struct
+ 	inode->i_op = &eventfs_root_dir_inode_operations;
+ 	inode->i_fop = &eventfs_file_operations;
+ 
++	/* All directories will have the same inode number */
++	inode->i_ino = EVENTFS_DIR_INODE_INO;
++
+ 	ti = get_tracefs(inode);
+ 	ti->flags |= TRACEFS_EVENT_INODE;
+ 
 
 
 
