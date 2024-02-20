@@ -1,140 +1,123 @@
-Return-Path: <stable+bounces-20800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9331085BA5D
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 12:23:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0A3285BA88
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 12:27:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F6CA286C51
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 11:23:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CB20284C76
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 11:27:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2D5F5CDFE;
-	Tue, 20 Feb 2024 11:21:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 844A7664DB;
+	Tue, 20 Feb 2024 11:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hckMj7mp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r5juAYSU"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F04B67756
-	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 11:21:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D14664AD;
+	Tue, 20 Feb 2024 11:27:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708428119; cv=none; b=JM2Fw84Se+lZwN2D6C6j7+hrIr75I45WoJ3uDIFFa5ucllmfbQVmRr41l6+/tcG48/HrbbzwZJOptcaGyMQRtB1JA9T4zTVYJvgFXiqngywwVouI3MOLmAKLwSu2L+hlOP4MENrUO1b3JhaZrxXorryETirfNF5XNKl5RgZbi+Y=
+	t=1708428421; cv=none; b=lhgsQ+zt7ACnA2sg0UUcGx6Gw3mS+kTf/XfH1YKmn12+Wy4CH8wi2pqhWaoDKAOdQ79fkg7JBEq2svZQ8/8yEcwYmCaANJ56Xi9VUGnm/PmrnOEBXvKSF3u/H0iTF6sq0/CIOY9kZ4cP8cK46BCGFLK8Z33vz5V38b3Sd/5xYoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708428119; c=relaxed/simple;
-	bh=t+iADnVDhVJYx2pC41LWdZL2wjAkD6oDaluEgktlvb0=;
+	s=arc-20240116; t=1708428421; c=relaxed/simple;
+	bh=VddnBpFylmssPBNR8LxVy9HNAItc6vmZJuhEvw0a1cc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=auj5FHQQWTtndcgsZq5REx1QiU0qCaLW4Bf7uMOZHvuB1AusxQ9m4kQ8vjMmfZd/2Lv9GVRV6Ey5pSJiy1X1lmSy9ZT9t1qsmwAY8YtPhChDeIfzqTK+PcowNQjb2HmazAFQYec2xUS6i2ZleyxhuJAzNBwpZUNA1HxA256OUVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hckMj7mp; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708428118; x=1739964118;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=t+iADnVDhVJYx2pC41LWdZL2wjAkD6oDaluEgktlvb0=;
-  b=hckMj7mp/pPfsAXyAfkyDf5m8GzqFKJSC6RjQRcI/aH+a+B14jaUvQxo
-   PQmrrjiR0R8Cq8WGuyLicRCETae80jIyGZmn58OnSMTeybDAEgtBEZF05
-   2OCR+gi+TK6u/qej2nlhw/h14THSEzbt1OjreF6ChHCylIkDpeK6uY5Rf
-   HBo3euhi4topC2n6XvOe4452T5d3ynPxP8k5CkcxgHu+4St7jvFrtFv9o
-   NM1SN+X1FZuTpnJIfQkas2zckkgc43fTy/XDNqyZSpZAThAxxwuqXhjgW
-   jXR6L/LoreiS6c8E9F9/7Qyw3W/z3f3UFxe4uTvTak02DJGmowSn4+qKV
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10989"; a="13232965"
-X-IronPort-AV: E=Sophos;i="6.06,172,1705392000"; 
-   d="scan'208";a="13232965"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 03:21:57 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,172,1705392000"; 
-   d="scan'208";a="4715832"
-Received: from alichtma-mobl.ger.corp.intel.com (HELO intel.com) ([10.246.34.74])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 03:21:54 -0800
-Date: Tue, 20 Feb 2024 12:21:51 +0100
-From: Andi Shyti <andi.shyti@linux.intel.com>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Cc: Andi Shyti <andi.shyti@linux.intel.com>,
-	intel-gfx <intel-gfx@lists.freedesktop.org>,
-	dri-devel <dri-devel@lists.freedesktop.org>,
-	Chris Wilson <chris.p.wilson@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>, stable@vger.kernel.org,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: Re: [PATCH 2/2] drm/i915/gt: Set default CCS mode '1'
-Message-ID: <ZdSLT_IsU6x4OMRZ@ashyti-mobl2.lan>
-References: <20240215135924.51705-1-andi.shyti@linux.intel.com>
- <20240215135924.51705-3-andi.shyti@linux.intel.com>
- <d61391f6-ff1d-4241-bd9e-2a3bee53c860@linux.intel.com>
- <c63a2d0e-fc57-4252-ad3d-2aa7615e062d@linux.intel.com>
- <ZdR6zeDlKXqR1mvZ@ashyti-mobl2.lan>
- <97b11121-4c48-4dd9-b966-4c42eda3f6a3@linux.intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=hkK3ol7fiS83/xXDRbRdozrmkfsDhwVEbvKyypV7dYLxm8fUL6ysXr2yHbEuwFS+iK/9bPmNyp6tYeS7pawsK830H2zUM1jYZUz5IsgyUHOEpGyV4v6RegGaZELjAbDITXx+iQ68p703OQdX8Tuc4tjYuyPxoZXk0bPB1KoDSJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r5juAYSU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0BF5C433C7;
+	Tue, 20 Feb 2024 11:27:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708428420;
+	bh=VddnBpFylmssPBNR8LxVy9HNAItc6vmZJuhEvw0a1cc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=r5juAYSUvCxKuNFb30xnBGP17AeDgQUJFn90heG7na3+4GVGkGHv+uzoBqj9ng/t+
+	 EFpWosEYzWejLzvTu1Bjvd4u5MAlivbrRnLRMjMfuVHGn0lk6E5xGLqRZs6afOtc8c
+	 SYeeknMVdh8Ikld407i7xVPx2i0/h6I2pLkXnOgloW9j9ZrZa/OkqaAfpbGDOZjNpJ
+	 726ZtnhyNIwlhqnaH68sGapgpXtajy8uqaA7IHDbJGyFupXqg/fdqFU9YA2D8CGGvs
+	 JXtfLbRWHbGtx5EOJuo+kL+Wh1rV5LD7kN3bAl4LuNNiiS6AWwXNixXdTwbJAnTXyp
+	 H2SE4ozHo1jxw==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1rcOH5-000000005Em-1y3j;
+	Tue, 20 Feb 2024 12:26:59 +0100
+Date: Tue, 20 Feb 2024 12:26:59 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Markus Elfring <Markus.Elfring@web.de>
+Cc: Johan Hovold <johan+linaro@kernel.org>, freedreno@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org, linux-phy@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org, kernel-janitors@vger.kernel.org,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Vinod Koul <vkoul@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Kuogee Hsieh <quic_khsieh@quicinc.com>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Rob Clark <robdclark@gmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 3/6] soc: qcom: pmic_glink_altmode: fix drm bridge
+ use-after-free
+Message-ID: <ZdSMg63b4ZGYhUXO@hovoldconsulting.com>
+References: <20240217150228.5788-4-johan+linaro@kernel.org>
+ <9ff4221a-7083-4cb1-abde-1690f655da8d@web.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <97b11121-4c48-4dd9-b966-4c42eda3f6a3@linux.intel.com>
+In-Reply-To: <9ff4221a-7083-4cb1-abde-1690f655da8d@web.de>
 
-On Tue, Feb 20, 2024 at 11:15:05AM +0000, Tvrtko Ursulin wrote:
-> On 20/02/2024 10:11, Andi Shyti wrote:
-> > On Mon, Feb 19, 2024 at 12:51:44PM +0000, Tvrtko Ursulin wrote:
-> > > On 19/02/2024 11:16, Tvrtko Ursulin wrote:
-> > > > On 15/02/2024 13:59, Andi Shyti wrote:
-> > 
-> > ...
-> > 
-> > > > > +/*
-> > > > > + * Exclude unavailable engines.
-> > > > > + *
-> > > > > + * Only the first CCS engine is utilized due to the disabling of
-> > > > > CCS auto load
-> > > > > + * balancing. As a result, all CCS engines operate collectively,
-> > > > > functioning
-> > > > > + * essentially as a single CCS engine, hence the count of active
-> > > > > CCS engines is
-> > > > > + * considered '1'.
-> > > > > + * Currently, this applies to platforms with more than one CCS engine,
-> > > > > + * specifically DG2.
-> > > > > + */
-> > > > > +#define for_each_available_uabi_engine(engine__, i915__) \
-> > > > > +    for_each_uabi_engine(engine__, i915__) \
-> > > > > +        if ((IS_DG2(i915__)) && \
-> > > > > +            ((engine__)->uabi_class == I915_ENGINE_CLASS_COMPUTE) && \
-> > > > > +            ((engine__)->uabi_instance)) { } \
-> > > > > +        else
-> > > > > +
-> > > > 
-> > > > If you don't want userspace to see some engines, just don't add them to
-> > > > the uabi list in intel_engines_driver_register or thereabouts?
-> > 
-> > It will be dynamic. In next series I am preparing the user will
-> > be able to increase the number of CCS engines he wants to use.
+On Tue, Feb 20, 2024 at 11:55:57AM +0100, Markus Elfring wrote:
+> â€¦
+> > Specifically, the dp-hpd bridge is currently registered before all
+> > resources have been acquired which means that it can also be
+> > deregistered on probe deferrals.
+> >
+> > In the meantime there is a race window where the new aux bridge driver
+> > (or PHY driver previously) may have looked up the dp-hpd bridge and
+> > stored a (non-reference-counted) pointer to the bridge which is about to
+> > be deallocated.
+> â€¦
+> > +++ b/drivers/soc/qcom/pmic_glink_altmode.c
+> â€¦
+> > @@ -454,7 +454,7 @@ static int pmic_glink_altmode_probe(struct auxiliary_device *adev,
+> >  		alt_port->index = port;
+> >  		INIT_WORK(&alt_port->work, pmic_glink_altmode_worker);
+> >
+> > -		alt_port->bridge = drm_dp_hpd_bridge_register(dev, to_of_node(fwnode));
+> > +		alt_port->bridge = devm_drm_dp_hpd_bridge_alloc(dev, to_of_node(fwnode));
+> >  		if (IS_ERR(alt_port->bridge)) {
+> >  			fwnode_handle_put(fwnode);
+> >  			return PTR_ERR(alt_port->bridge);
+> â€¦
 > 
-> Oh tricky and new. Does it need to be at runtime or could be boot time?
+> The function call â€œfwnode_handle_put(fwnode)â€ is used in multiple if branches.
+> https://elixir.bootlin.com/linux/v6.8-rc5/source/drivers/soc/qcom/pmic_glink_altmode.c#L435
+> 
+> I suggest to add a jump target so that a bit of exception handling
+> can be better reused at the end of this function implementation.
 
-At boot time the CCS mode has to be set to '1', i.e. only one CCS
-will be visible to the user. Then, during the normal execution of
-the driver, the user can decide to change the mode and therefore
-we would need to expose more than one CCS engine.
+Markus, as people have told you repeatedly, just stop with these
+comments. You're not helping, in fact, you are actively harmful to the
+kernel community as you are wasting people's time.
 
-> If you are aiming to make the static single CCS only into the 6.9 release,
-> and you feel running out of time, you could always do a simple solution for
-> now. The one I mentioned of simply not registering on the uabi list. Then
-> you can refine more leisurely for the next release.
-
-Thanks. I started working on a dynamic rebuilt of the
-uabi_engines, but in this series it wouldn't fit.
-
-I will add the limitation during the list creation.
-
-Thanks a lot,
-Andi
+Johan
 
