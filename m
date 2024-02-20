@@ -1,95 +1,94 @@
-Return-Path: <stable+bounces-20842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAC4F85BFBB
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 16:20:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D860285BFBD
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 16:21:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4254DB2144F
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 15:20:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 63532B21A92
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 15:21:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B225F7605C;
-	Tue, 20 Feb 2024 15:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A652776029;
+	Tue, 20 Feb 2024 15:21:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="WQBfuiQG";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="MRgjOTLs"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="Mx0ItV6G";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="czXKaZux"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh7-smtp.messagingengine.com (fhigh7-smtp.messagingengine.com [103.168.172.158])
+Received: from fout4-smtp.messagingengine.com (fout4-smtp.messagingengine.com [103.168.172.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D27BB7604D;
-	Tue, 20 Feb 2024 15:19:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0216F080
+	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 15:21:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708442398; cv=none; b=J+me8vMaw5aPAtX1E4bMNkubowOzqiLAJMgWwhfXMDgCEZxoMpoS03UnIY+2Jbuif6/iZN9xj0z66lfG0wRcPsVsNYb5yYF/1o1mIswc8fKFLCuebNrRIRPrnwrXSdujWbKimX7ZLqGgOCAEDzi9GGjUOOMy9VQyof1gBj2hbVI=
+	t=1708442486; cv=none; b=mR1Y3JegqK6nYDA/BU3Goq8j/c3zwCNs9Y5bf8+fjNn17VUxfKB5AMRX8d2ILus7rG+gxozLntneOvBNAbNStpxZGgxREnz0ugtyVishQWT/AgxZmb6U4e1Y6gaLuYKxTvEQnAxdsZ6P6w+4N4UF2vDSU2IbOkz9OaJ6+EzaXcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708442398; c=relaxed/simple;
-	bh=u8+UcTSzoPV4fl7A6yp66Oh3coBzrIGAi35j9Hy2Dho=;
+	s=arc-20240116; t=1708442486; c=relaxed/simple;
+	bh=kjGulcH2hxYQWCzIJzTzAN0QatTZ0LK3qvzcEiesXQQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uAWm7/G+UwS/iabHyyM8jD8w48acNJz9XRoxAUdPsz0u5LUE1BVxypQFtYUZ+RaZTLxXdGCltacDZxsTzzuw3qKM6nPhuve0xfn0zCSpaRKaeJGitg4cfeUi1bSz1HV5FQlrf1gU8SlljKUzHx1vjJtoCUjuq+Gbo/8fVlxE01A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=WQBfuiQG; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=MRgjOTLs; arc=none smtp.client-ip=103.168.172.158
+	 Content-Type:Content-Disposition:In-Reply-To; b=KhR+nRoa69mvou3s2JxxuPCRgcT/MAPaZX7+bkI5rrDhkFs/orbuTXPrQMod/t8dAXyJ5Lf/K/CCtnIxIzFIzo7HR7bt7DW5Ty86/3wGFuPBN5SNOmYIw2DvSoK3rgCQ6Y1Sn+Dx7xoNoSfI9T+A7NRd52If07NV+FVZMRUT/Gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=Mx0ItV6G; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=czXKaZux; arc=none smtp.client-ip=103.168.172.147
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailfhigh.nyi.internal (Postfix) with ESMTP id C6B4311400B6;
-	Tue, 20 Feb 2024 10:19:55 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute2.internal (MEProxy); Tue, 20 Feb 2024 10:19:55 -0500
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailfout.nyi.internal (Postfix) with ESMTP id 0CD4A13800A3;
+	Tue, 20 Feb 2024 10:21:24 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute6.internal (MEProxy); Tue, 20 Feb 2024 10:21:24 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
 	:cc:content-type:content-type:date:date:from:from:in-reply-to
 	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1708442395; x=1708528795; bh=KV9xIDxQIa
-	soIS7T9R5mqDJyVkBqqdiMWOwKf0ycX9U=; b=WQBfuiQGoo/0ScBwgVNbzIJt97
-	6XWJLakkF5lMHfna8H3rtHJM+16A2qskCrKplybrBHaOZ3PK5NbXLeK7eiTw94ln
-	+6WIOBryFddEBS7iplKaugjHQGnp1hVHZ/HpVLbuJeGBWnPI5V7tRADXvKTP/tft
-	abY47h8kLw9cJsRobPiNJ8wVGkZA8z6f3c/TsFAsA+fstPZjmafuIjry4fZlLWBE
-	Hgt5VcLqti8o2EiVApIF1xEJDY9Z+7yuYcfBaj+Ow8AYuLZZ/S+5/6XV6Bxvc06S
-	9hw8QOWTywDjdfVDB9U7EK+C4xq7wELYoMIll/QRoK4FMuoIa/hWuM221c/Q==
+	:subject:to:to; s=fm1; t=1708442484; x=1708528884; bh=CqBd8HrFvQ
+	frUZfCWCKvT0PT9ztXfpZhKDrA6nxXWxc=; b=Mx0ItV6GcNqxXGwUl3t8vJ4jWG
+	ylAVqbv7ZODFHjWwM5bwbtPiCgsDjObq2wstVSBDR+ah7/WXV1DRWk0VoyOFQ5lK
+	2Y2KmT30ux5V5Nj79U/HzDtB8BJI50BcjmBiCdQ8ZnVFmDsdxLg/RWljnQLb5k3T
+	TRkILYH57YETtpqnONXz/6P3rO5B9cy17nOs/f5DmM9gMEs+s09S3jIW42t8Hei1
+	7tgYNHVWlqeZd12SsB2Y4W4d1maOPkt7gjtWKmAM2+fIWkTToBZVZp0sV1FiNNI1
+	r3uo6DmhZlsNQjj5lIP7sqDetDuE0xShXtfd4J3gkFwMY3aJbK+/Ka3PzEjg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-type:content-type:date:date
 	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
 	:message-id:mime-version:references:reply-to:subject:subject:to
 	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm1; t=1708442395; x=1708528795; bh=KV9xIDxQIasoIS7T9R5mqDJyVkBq
-	qdiMWOwKf0ycX9U=; b=MRgjOTLs8p4z3NzWamKbq2Jm/bqM01LQpH9MnNp9KJoB
-	Ca7upMbzAf105iePr6kF+69nIqSaZMYBh3U8SN80QwpN6aqVg28Kj0GGO3nAQpdQ
-	tsFG69XhVrsdARnz3Iy/HP5rHgRh4Oi41WtgflLyL0i2gKikJZOZPvkzAV02tXf+
-	anrT+/NNNlcT/b2jSOiYVW9JH/W2hp22fjAGDZVJeF/JFP6ycpjd3CEOVFKRkNIf
-	IrCTmvL9/GMm1nhM6tYa8BT50hIBEGw1mum+FneI7bfw9tJ0B3JeeB0Di5b78pJD
-	LLKSECujPOyb/IonXD5mTbA1TwU0EZj48ZCg0/ZSDQ==
-X-ME-Sender: <xms:G8PUZcBu3cTcdpr3o1aGdwPIJpBvIH6SEVx3DeQbnhArKRxnKhifkw>
-    <xme:G8PUZejDvqQQ6nGM6egX5twfKIEtLD3xdVRok5-T8peASm95J-BJ20g0YOTTDZpzK
-    Xfr5F7zPbki7w>
-X-ME-Received: <xmr:G8PUZfkxfEpD_KOsXiByC5W1uP2MzIAjHgQxaLsJrkguQiur0GhFMj2p_x2iQ0vlfdGD1bhi2B6Nz--yjtfqH4aeqJRKi6jXYg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfedtgdejhecutefuodetggdotefrodftvf
+	fm1; t=1708442484; x=1708528884; bh=CqBd8HrFvQfrUZfCWCKvT0PT9ztX
+	fpZhKDrA6nxXWxc=; b=czXKaZuxVGuw1o/kgtK8zcJswgr4lQTRhMucJZqG17WG
+	3PyQtWTSYm84G4MksmurWI09SOLzaAveRT3iTF4tYzX4zhAAjz3zuQTCJykgzdMs
+	46QG48MzjYFy2FpjvYv43MEvdVeJ5GDH1/cXoyRvYb54LjSsDE2wpI3zoRFW/QmS
+	NS9QCF5yZFIH3uEDvkb+6z9UQJxreveKYWSqJC0dHo8JEyvXmiT1EXQQHoq9vpxQ
+	PKtdiCi6Do1XaLEAgPS3+JXvX1yky/XtIE2w5euxkxJm34wpVTPY4gyss4S1Snnm
+	b8q7F4agKt18V0HaFDN3frnvqwMBcDWHRyR0d5LMZA==
+X-ME-Sender: <xms:c8PUZVu_BSKdbtn4DxQ-pYdDcbkXTSfmL_w0ePrB2hfXZdQ8iMsauw>
+    <xme:c8PUZedXOECssvxb6SD6u-l4u33iqhYFusC1zoojhWfiIw3NE01ZlkapbzckeHhH2
+    tXTVAQGab-e5g>
+X-ME-Received: <xmr:c8PUZYxPS0lTT0OUUrX2wmcch-zPl_v933KsABCkFjwIdHyNNvIOlU8F_8hf528sh4Xv7vh32NpZl1OrRUydPaYoZ4ZaVgYWqA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfedtgdejiecutefuodetggdotefrodftvf
     curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
     uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
     fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcu
-    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeehgedvve
-    dvleejuefgtdduudfhkeeltdeihfevjeekjeeuhfdtueefhffgheekteenucevlhhushht
-    vghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhh
-    drtghomh
-X-ME-Proxy: <xmx:G8PUZSxpNpDJEfFFYLSVn-di9qwj-mshgom3iyOlvlGVHsMiiScoJQ>
-    <xmx:G8PUZRQUfKJS6wrlbQ2HW1KP5_OmUo2JxW_aEWrbbikZxHJMyCM65w>
-    <xmx:G8PUZdYgNQRINaryOCOdO9NsT9EaXHeQcfGWilWwzXkUKTp9XzwUPw>
-    <xmx:G8PUZSIPU1dBdNDC1oC9tfDhWrrH_gFklHdtkcaIenmq9ttdjfHCFg>
+    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeegheeuhe
+    fgtdeluddtleekfeegjeetgeeikeehfeduieffvddufeefleevtddtvdenucffohhmrghi
+    nhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
+    hmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhm
+X-ME-Proxy: <xmx:c8PUZcMSfOAe-sp6fN7F4Btc6jmlLHtaLEvNE1IoSsT16N3NczhsPg>
+    <xmx:c8PUZV_ztq9DeWSN5X4J49yF-qJl-d-Y065IHcGLy4spOikCZtehQg>
+    <xmx:c8PUZcWVB27vdpBrPizrLtWH8lltCZKKKMhe5HM36zO8QQGZZfM2vA>
+    <xmx:dMPUZZXough-0V9bP3iZdkFhzW9yBnTe477MJg5WzAj6qHl11iv8Qg>
 Feedback-ID: i787e41f1:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 20 Feb 2024 10:19:54 -0500 (EST)
-Date: Tue, 20 Feb 2024 16:19:53 +0100
+ 20 Feb 2024 10:21:23 -0500 (EST)
+Date: Tue, 20 Feb 2024 16:21:13 +0100
 From: Greg KH <greg@kroah.com>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: "# 3.4.x" <stable@vger.kernel.org>,
-	linux-efi <linux-efi@vger.kernel.org>, jan.setjeeilers@oracle.com,
-	Peter Jones <pjones@redhat.com>, Steve McIntyre <steve@einval.com>,
-	Julian Andres Klode <julian.klode@canonical.com>,
-	Luca Boccassi <bluca@debian.org>,
-	James Bottomley <jejb@linux.ibm.com>
-Subject: Re: x86 efistub stable backports for v6.6
-Message-ID: <2024022045-eclair-twisty-250a@gregkh>
-References: <CAMj1kXEGzHW07X963Q3q4VPEqUtKC==y152JyfuK_t=cZ0CKYA@mail.gmail.com>
+To: Felix Moessbauer <felix.moessbauer@siemens.com>
+Cc: stable@vger.kernel.org, dave@stgolabs.net, tglx@linutronix.de,
+	bigeasy@linutronix.de, petr.ivanov@siemens.com,
+	jan.kiszka@siemens.com
+Subject: Re: [PATCH v3][5.10, 5.15, 6.1][1/1] hrtimer: Ignore slack time for
+ RT tasks in schedule_hrtimeout_range()
+Message-ID: <2024022006-charting-repressed-6064@gregkh>
+References: <20240220150200.114173-1-felix.moessbauer@siemens.com>
+ <20240220150200.114173-2-felix.moessbauer@siemens.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -98,45 +97,25 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAMj1kXEGzHW07X963Q3q4VPEqUtKC==y152JyfuK_t=cZ0CKYA@mail.gmail.com>
+In-Reply-To: <20240220150200.114173-2-felix.moessbauer@siemens.com>
 
-On Thu, Feb 15, 2024 at 10:17:20AM +0100, Ard Biesheuvel wrote:
-> (cc stakeholders from various distros - apologies if I missed anyone)
+On Tue, Feb 20, 2024 at 04:02:00PM +0100, Felix Moessbauer wrote:
+> From: Davidlohr Bueso <dave@stgolabs.net>
 > 
-> Please consider the patches below for backporting to the linux-6.6.y
-> stable tree.
+> commit 0c52310f260014d95c1310364379772cb74cf82d upstream.
 > 
-> These are prerequisites for building a signed x86 efistub kernel image
-> that complies with the tightened UEFI boot requirements imposed by
-> MicroSoft, and this is the condition under which it is willing to sign
-> future Linux secure boot shim builds with its 3rd party CA
-> certificate. (Such builds must enforce a strict separation between
-> executable and writable code, among other things)
+> While in theory the timer can be triggered before expires + delta, for the
+> cases of RT tasks they really have no business giving any lenience for
+> extra slack time, so override any passed value by the user and always use
+> zero for schedule_hrtimeout_range() calls. Furthermore, this is similar to
+> what the nanosleep(2) family already does with current->timer_slack_ns.
 > 
-> The patches apply cleanly onto 6.6.17 (-rc2), resulting in a defconfig
-> build that boots as expected under OVMF/KVM.
-> 
-> 5f51c5d0e905 x86/efi: Drop EFI stub .bss from .data section
-> 7e50262229fa x86/efi: Disregard setup header of loaded image
-> bfab35f552ab x86/efi: Drop alignment flags from PE section headers
-> 768171d7ebbc x86/boot: Remove the 'bugger off' message
-> 8eace5b35556 x86/boot: Omit compression buffer from PE/COFF image
-> memory footprint
-> 7448e8e5d15a x86/boot: Drop redundant code setting the root device
-> b618d31f112b x86/boot: Drop references to startup_64
-> 2e765c02dcbf x86/boot: Grab kernel_info offset from zoffset header directly
-> eac956345f99 x86/boot: Set EFI handover offset directly in header asm
-> 093ab258e3fb x86/boot: Define setup size in linker script
-> aeb92067f6ae x86/boot: Derive file size from _edata symbol
-> efa089e63b56 x86/boot: Construct PE/COFF .text section from assembler
-> fa5750521e0a x86/boot: Drop PE/COFF .reloc section
-> 34951f3c28bd x86/boot: Split off PE/COFF .data section
-> 3e3eabe26dc8 x86/boot: Increase section and file alignment to 4k/512
-> 
-> 1ad55cecf22f x86/efistub: Use 1:1 file:memory mapping for PE/COFF
-> .compat section
+> Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Link: https://lore.kernel.org/r/20230123173206.6764-3-dave@stgolabs.net
+> Signed-off-by: Felix Moessbauer <felix.moessbauer@siemens.com>
 
-All now queued up, thanks!
+Now queued up, thanks.
 
 greg k-h
 
