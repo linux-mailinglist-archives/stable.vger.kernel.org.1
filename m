@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-21552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D332585C960
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:32:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98A9685C7BD
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:16:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5BC79B222D9
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:32:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED6221F26BDD
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:16:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86C18151CDC;
-	Tue, 20 Feb 2024 21:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D1B8152DED;
+	Tue, 20 Feb 2024 21:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q+UC876N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XB35TxE+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42BBC446C9;
-	Tue, 20 Feb 2024 21:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF084152DE5;
+	Tue, 20 Feb 2024 21:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464771; cv=none; b=k5HI72027FmBfevgpYvZmECvqvHIaT3sv6ncwM7QxLxkipZJaaXo0xnLOUSx56SkU9hp+GMi+fiJ2N+YGXAnnEyJ458u3+TIvRhumEDSoL0ohYYO388oQnQg30UajzTykisZWMhwZHTLSK+qCOWfcXNJiBqFDY2K5vBjXcg7FXY=
+	t=1708463733; cv=none; b=MkazofBQ74R2mru9yQ5iU95WR0NQPmrrRrcSWk0rCbeXLuRjAHUfOoVE+QUrBvgLEZycNm8Ix2x4vqj34ImfxXM6QIpGmRPkwwskLZFTk0Kz8lHjI2HhEUoiX/Q30iCU0L4CqKOy2xlYUq2t5Pxd/sdWWoYcTjpSZyIJEO1B5h4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464771; c=relaxed/simple;
-	bh=G1QdMosRq0iECQIkbXhrmsbMxVQIZc7AD+HZFwVQMiA=;
+	s=arc-20240116; t=1708463733; c=relaxed/simple;
+	bh=J//KcESzmYs4hjv9V3V0p6Y19+iIszVnRoRY+aUgnwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=abMh9Silk1f6eFcjmvsipo+OH2VidKroxxySn91e49vnhWIWYb8AXhGvwxW09/GPHk4uevcVj65zaEp46pIeT74dui1dYRtexDImYfWXjpPvYTQp1SHURCtrs3eZbeH8vjWzQVN5r6mN5gdFXCMSRuLyCiNMF3c8w+6YYIWXaAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q+UC876N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A637CC433C7;
-	Tue, 20 Feb 2024 21:32:50 +0000 (UTC)
+	 MIME-Version; b=U7C2yr28472aoKgP5+gwkUn06TBKsRZbhHS0rgFgHcLkGnvM/v0Sq4raB8avaUmFkkn7OlPPQsJ1LwhpDDZSTfgXfEqQJnasLJdCuKeUwu7/44gr7AE4XUamOfCHzErSeMDxGel3CxhUPFvRZrg22qf1L8DPrcxVHvy9FBooMv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XB35TxE+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51CCBC433C7;
+	Tue, 20 Feb 2024 21:15:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464771;
-	bh=G1QdMosRq0iECQIkbXhrmsbMxVQIZc7AD+HZFwVQMiA=;
+	s=korg; t=1708463732;
+	bh=J//KcESzmYs4hjv9V3V0p6Y19+iIszVnRoRY+aUgnwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q+UC876NKvZzZ3wSKRpQjxFe9olplf1YrSgZ37v6RFOjKy9oNLCY75V4DJOZZYRRH
-	 r/uOuveDERowuqrPKs+lx/vs39jlObqx7Uxc2f2Pg/14OWsvkmhLQQt+kkSrxqW5iI
-	 aOKW9/1/Uwk705sumMaFIi1xpbh4ufLKBV8tlf0Q=
+	b=XB35TxE+WgaH8uWhXUMBP3/d+bbJsd1+8VsxQFKQKFO/H4nBtOibBz4dJxeyfjqnU
+	 EOQzI3dI5l2f8YEWeRNR2iJeWeO8WrcxgLQJuYJMwqDOZxlm5Dj7nj/e2XWMTnhoBU
+	 OHfkUoPItMgkens/q8m0bnAPcTw8QhyKc8kJviIQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xu Yang <xu.yang_2@nxp.com>
-Subject: [PATCH 6.7 092/309] usb: chipidea: core: handle power lost in workqueue
+	Nathan Chancellor <nathan@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 6.6 135/331] um: Fix adding -no-pie for clang
 Date: Tue, 20 Feb 2024 21:54:11 +0100
-Message-ID: <20240220205636.079961446@linuxfoundation.org>
+Message-ID: <20240220205641.812430807@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,130 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit cc509b6a47e7c8998d9e41c273191299d5d9d631 upstream.
+commit 846cfbeed09b45d985079a9173cf390cc053715b upstream.
 
-When power is recycled in usb controller during system power management,
-the controller will recognize it and switch role if role has been changed
-during power lost. In current design, it will be completed in resume()
-function. However, this may bring issues since usb class devices have
-their pm operations too and these device's resume() functions are still
-not being called at this point. When usb controller recognized host role
-should be stopped, these usb class devices will be removed at this point.
-But these usb class devices can't be removed in some cases, such as scsi
-devices. Since scsi driver may sync data to U-disk, however it will block
-there because scsi drvier can only handle pm request when is in suspended
-state. Therefore, there may exist a dependency between ci_resume() and usb
-class device's resume(). To break this potential dependency, we need to
-handle power lost work in a workqueue.
+The kernel builds with -fno-PIE, so commit 883354afbc10 ("um: link
+vmlinux with -no-pie") added the compiler linker flag '-no-pie' via
+cc-option because '-no-pie' was only supported in GCC 6.1.0 and newer.
 
-Fixes: 74494b33211d ("usb: chipidea: core: add controller resume support when controller is powered off")
-cc: stable@vger.kernel.org
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Link: https://lore.kernel.org/r/20240119123537.3614838-1-xu.yang_2@nxp.com
+While this works for GCC, this does not work for clang because cc-option
+uses '-c', which stops the pipeline right before linking, so '-no-pie'
+is unconsumed and clang warns, causing cc-option to fail just as it
+would if the option was entirely unsupported:
+
+  $ clang -Werror -no-pie -c -o /dev/null -x c /dev/null
+  clang-16: error: argument unused during compilation: '-no-pie' [-Werror,-Wunused-command-line-argument]
+
+A recent version of clang exposes this because it generates a relocation
+under '-mcmodel=large' that is not supported in PIE mode:
+
+  /usr/sbin/ld: init/main.o: relocation R_X86_64_32 against symbol `saved_command_line' can not be used when making a PIE object; recompile with -fPIE
+  /usr/sbin/ld: failed to set dynamic section sizes: bad value
+  clang: error: linker command failed with exit code 1 (use -v to see invocation)
+
+Remove the cc-option check altogether. It is wasteful to invoke the
+compiler to check for '-no-pie' because only one supported compiler
+version does not support it, GCC 5.x (as it is supported with the
+minimum version of clang and GCC 6.1.0+). Use a combination of the
+gcc-min-version macro and CONFIG_CC_IS_CLANG to unconditionally add
+'-no-pie' with CONFIG_LD_SCRIPT_DYN=y, so that it is enabled with all
+compilers that support this. Furthermore, using gcc-min-version can help
+turn this back into
+
+  LINK-$(CONFIG_LD_SCRIPT_DYN) += -no-pie
+
+when the minimum version of GCC is bumped past 6.1.0.
+
+Cc: stable@vger.kernel.org
+Closes: https://github.com/ClangBuiltLinux/linux/issues/1982
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/chipidea/ci.h   |    2 ++
- drivers/usb/chipidea/core.c |   44 ++++++++++++++++++++++++--------------------
- 2 files changed, 26 insertions(+), 20 deletions(-)
+ arch/um/Makefile |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/chipidea/ci.h
-+++ b/drivers/usb/chipidea/ci.h
-@@ -176,6 +176,7 @@ struct hw_bank {
-  * @enabled_otg_timer_bits: bits of enabled otg timers
-  * @next_otg_timer: next nearest enabled timer to be expired
-  * @work: work for role changing
-+ * @power_lost_work: work for power lost handling
-  * @wq: workqueue thread
-  * @qh_pool: allocation pool for queue heads
-  * @td_pool: allocation pool for transfer descriptors
-@@ -226,6 +227,7 @@ struct ci_hdrc {
- 	enum otg_fsm_timer		next_otg_timer;
- 	struct usb_role_switch		*role_switch;
- 	struct work_struct		work;
-+	struct work_struct		power_lost_work;
- 	struct workqueue_struct		*wq;
+--- a/arch/um/Makefile
++++ b/arch/um/Makefile
+@@ -115,7 +115,9 @@ archprepare:
+ 	$(Q)$(MAKE) $(build)=$(HOST_DIR)/um include/generated/user_constants.h
  
- 	struct dma_pool			*qh_pool;
---- a/drivers/usb/chipidea/core.c
-+++ b/drivers/usb/chipidea/core.c
-@@ -856,6 +856,27 @@ static int ci_extcon_register(struct ci_
- 	return 0;
- }
+ LINK-$(CONFIG_LD_SCRIPT_STATIC) += -static
+-LINK-$(CONFIG_LD_SCRIPT_DYN) += $(call cc-option, -no-pie)
++ifdef CONFIG_LD_SCRIPT_DYN
++LINK-$(call gcc-min-version, 60100)$(CONFIG_CC_IS_CLANG) += -no-pie
++endif
+ LINK-$(CONFIG_LD_SCRIPT_DYN_RPATH) += -Wl,-rpath,/lib
  
-+static void ci_power_lost_work(struct work_struct *work)
-+{
-+	struct ci_hdrc *ci = container_of(work, struct ci_hdrc, power_lost_work);
-+	enum ci_role role;
-+
-+	disable_irq_nosync(ci->irq);
-+	pm_runtime_get_sync(ci->dev);
-+	if (!ci_otg_is_fsm_mode(ci)) {
-+		role = ci_get_role(ci);
-+
-+		if (ci->role != role) {
-+			ci_handle_id_switch(ci);
-+		} else if (role == CI_ROLE_GADGET) {
-+			if (ci->is_otg && hw_read_otgsc(ci, OTGSC_BSV))
-+				usb_gadget_vbus_connect(&ci->gadget);
-+		}
-+	}
-+	pm_runtime_put_sync(ci->dev);
-+	enable_irq(ci->irq);
-+}
-+
- static DEFINE_IDA(ci_ida);
- 
- struct platform_device *ci_hdrc_add_device(struct device *dev,
-@@ -1045,6 +1066,8 @@ static int ci_hdrc_probe(struct platform
- 
- 	spin_lock_init(&ci->lock);
- 	mutex_init(&ci->mutex);
-+	INIT_WORK(&ci->power_lost_work, ci_power_lost_work);
-+
- 	ci->dev = dev;
- 	ci->platdata = dev_get_platdata(dev);
- 	ci->imx28_write_fix = !!(ci->platdata->flags &
-@@ -1396,25 +1419,6 @@ static int ci_suspend(struct device *dev
- 	return 0;
- }
- 
--static void ci_handle_power_lost(struct ci_hdrc *ci)
--{
--	enum ci_role role;
--
--	disable_irq_nosync(ci->irq);
--	if (!ci_otg_is_fsm_mode(ci)) {
--		role = ci_get_role(ci);
--
--		if (ci->role != role) {
--			ci_handle_id_switch(ci);
--		} else if (role == CI_ROLE_GADGET) {
--			if (ci->is_otg && hw_read_otgsc(ci, OTGSC_BSV))
--				usb_gadget_vbus_connect(&ci->gadget);
--		}
--	}
--
--	enable_irq(ci->irq);
--}
--
- static int ci_resume(struct device *dev)
- {
- 	struct ci_hdrc *ci = dev_get_drvdata(dev);
-@@ -1446,7 +1450,7 @@ static int ci_resume(struct device *dev)
- 		ci_role(ci)->resume(ci, power_lost);
- 
- 	if (power_lost)
--		ci_handle_power_lost(ci);
-+		queue_work(system_freezable_wq, &ci->power_lost_work);
- 
- 	if (ci->supports_runtime_pm) {
- 		pm_runtime_disable(dev);
+ CFLAGS_NO_HARDENING := $(call cc-option, -fno-PIC,) $(call cc-option, -fno-pic,) \
 
 
 
