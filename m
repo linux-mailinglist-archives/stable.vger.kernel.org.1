@@ -1,54 +1,62 @@
-Return-Path: <stable+bounces-21344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 004B785C877
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:22:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACD0685C9A4
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:36:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 947041F22DBA
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:22:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68CA2283C8A
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:36:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32187151CD6;
-	Tue, 20 Feb 2024 21:22:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C079151CE9;
+	Tue, 20 Feb 2024 21:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BdLXE5Gx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RhKsd320"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5FF476C9C;
-	Tue, 20 Feb 2024 21:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B136151CCC;
+	Tue, 20 Feb 2024 21:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464126; cv=none; b=k8+wUffKAE7PRwRdZkpimi+aU+X56zHF/dQ4PX4DNyeWmyNtP5Qdi39EqIH/LxjToN7bbb56SvYvQ9/soS4hC4DXo2kHTdNO1+q4t6tEkCiOlEwbEZ82ju2tuSQ9zcaGW+ZdmZUP/wwVRqKxT0AG7rNnrCq65A2hz7gMyPBdEck=
+	t=1708464982; cv=none; b=XJDHFHX/FXoITbzHLLChSTMvrpEgGwOOnsAz0jfW1nnzBRd3JxXL4jPfrG8INGNfkwsB/rtvAdkcB2M8OZBV7PCU7TGasmskhylQCGD464O+Uybltys3eodO6F6eLeIO4q1BlwnbjWj/bP1MKupm/6wlBzemDOTUXnNrB8Cmg9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464126; c=relaxed/simple;
-	bh=2nGN83HAGOmyYvggYgsDTSRnb9E7tidHIwhUAkRMWak=;
+	s=arc-20240116; t=1708464982; c=relaxed/simple;
+	bh=wOUZ/MS+j43zbpTOXwSAjCHriJQ8M3VZ5hEQYPAT+D8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UWkZI5X6p2Eo76ejoHTirviCkgIcKONZXx64CDZyzaBhV1Q51b8Li9NTjeUjx1dmurShu83VFg9dcySDZYVK7okw/ndWQCUVae6YtuVKAkXST/tjf9+Fr/N3IktMyxo5pfV+ELcdAgYs1wjBEQdTVozpEJWp7jKER826Xl/wx04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BdLXE5Gx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A878C433C7;
-	Tue, 20 Feb 2024 21:22:04 +0000 (UTC)
+	 MIME-Version; b=FTWFrdRa6bJLAsgLR5wz2AcAL7iMRN+6B+HLxE/wsZO2wk6nkaJDzGpBfcbh+izZQa6FHmF967g29Qmd+XUbQ8vWGXqTcvLO4ByyBqY5/kd5GtGYu9JT7iqG7+PFsVXGZBMtBq0puYs8R0RTHeYUCV+p+hS8nNCQmnpKbWnBVko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RhKsd320; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC659C433F1;
+	Tue, 20 Feb 2024 21:36:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464125;
-	bh=2nGN83HAGOmyYvggYgsDTSRnb9E7tidHIwhUAkRMWak=;
+	s=korg; t=1708464982;
+	bh=wOUZ/MS+j43zbpTOXwSAjCHriJQ8M3VZ5hEQYPAT+D8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BdLXE5Gx2VvRdMeEY8R8nu9PgWipeT1NDrlO/Ey3rddzApo9eGH2FY9D1M3L1L7X0
-	 qD5gsO/Zn7gPFPjfrIY4rxQl+LrwpT3wMJC4aBGSP+FTuwUDEiGR51MsMGdOAjN/uF
-	 DlMb8pTQiETOqFkbcDtHwnV82E/HgAcmKdWWAbWs=
+	b=RhKsd320wvqyFAaRFy00CmKq3rJMT0f94KA/D/fMalL5rf/dZl4qK4ohNYWEtji73
+	 sjQrTMQk12/s6OgyAFevFrgzkqoDMiUwE3jSzeL5n4Rbjsi5EbyJzkqGPxuVpR7OFs
+	 4G+5+DnIzP4XF0rI+FDlwSvtcFf6k3FZ0htMvES8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.6 242/331] LoongArch: Fix earlycon parameter if KASAN enabled
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@ZenIV.linux.org.uk>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.7 199/309] eventfs: Keep all directory links at 1
 Date: Tue, 20 Feb 2024 21:55:58 +0100
-Message-ID: <20240220205645.403103350@linuxfoundation.org>
+Message-ID: <20240220205639.409923645@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +68,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-commit 639420e9f6cd9ca074732b17ac450d2518d5937f upstream.
+commit ca185770db914869ff9fe773bac5e0e5e4165b83 upstream.
 
-The earlycon parameter is based on fixmap, and fixmap addresses are not
-supposed to be shadowed by KASAN. So return the kasan_early_shadow_page
-in kasan_mem_to_shadow() if the input address is above FIXADDR_START.
-Otherwise earlycon cannot work after kasan_init().
+The directory link count in eventfs was somewhat bogus. It was only being
+updated when a directory child was being looked up and not on creation.
+
+One solution would be to update in get_attr() the link count by iterating
+the ei->children list and then adding 2. But that could slow down simple
+stat() calls, especially if it's done on all directories in eventfs.
+
+Another solution would be to add a parent pointer to the eventfs_inode
+and keep track of the number of sub directories it has on creation. But
+this adds overhead for something not really worthwhile.
+
+The solution decided upon is to keep all directory links in eventfs as 1.
+This tells user space not to rely on the hard links of directories. Which
+in this case it shouldn't.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20240201002719.GS2087318@ZenIV/
+Link: https://lore.kernel.org/linux-trace-kernel/20240201161617.339968298@goodmis.org
 
 Cc: stable@vger.kernel.org
-Fixes: 5aa4ac64e6add3e ("LoongArch: Add KASAN (Kernel Address Sanitizer) support")
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Al Viro <viro@ZenIV.linux.org.uk>
+Cc: Ajay Kaher <ajay.kaher@broadcom.com>
+Fixes: c1504e510238 ("eventfs: Implement eventfs dir creation functions")
+Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/mm/kasan_init.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/tracefs/event_inode.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/arch/loongarch/mm/kasan_init.c b/arch/loongarch/mm/kasan_init.c
-index cc3e81fe0186..c608adc99845 100644
---- a/arch/loongarch/mm/kasan_init.c
-+++ b/arch/loongarch/mm/kasan_init.c
-@@ -44,6 +44,9 @@ void *kasan_mem_to_shadow(const void *addr)
- 		unsigned long xrange = (maddr >> XRANGE_SHIFT) & 0xffff;
- 		unsigned long offset = 0;
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -404,9 +404,7 @@ static struct dentry *lookup_dir_entry(s
  
-+		if (maddr >= FIXADDR_START)
-+			return (void *)(kasan_early_shadow_page);
-+
- 		maddr &= XRANGE_SHADOW_MASK;
- 		switch (xrange) {
- 		case XKPRANGE_CC_SEG:
--- 
-2.43.2
-
+ 	dentry->d_fsdata = get_ei(ei);
+ 
+-	inc_nlink(inode);
+ 	d_add(dentry, inode);
+-	inc_nlink(dentry->d_parent->d_inode);
+ 	return NULL;
+ }
+ 
+@@ -769,9 +767,17 @@ struct eventfs_inode *eventfs_create_eve
+ 
+ 	dentry->d_fsdata = get_ei(ei);
+ 
+-	/* directory inodes start off with i_nlink == 2 (for "." entry) */
+-	inc_nlink(inode);
++	/*
++	 * Keep all eventfs directories with i_nlink == 1.
++	 * Due to the dynamic nature of the dentry creations and not
++	 * wanting to add a pointer to the parent eventfs_inode in the
++	 * eventfs_inode structure, keeping the i_nlink in sync with the
++	 * number of directories would cause too much complexity for
++	 * something not worth much. Keeping directory links at 1
++	 * tells userspace not to trust the link number.
++	 */
+ 	d_instantiate(dentry, inode);
++	/* The dentry of the "events" parent does keep track though */
+ 	inc_nlink(dentry->d_parent->d_inode);
+ 	fsnotify_mkdir(dentry->d_parent->d_inode, dentry);
+ 	tracefs_end_creating(dentry);
 
 
 
