@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-21296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6F8A85C83A
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:19:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30FDA85C968
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:33:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 230F1B20CDB
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:19:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B61F5B21D3F
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:33:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D7B6151CDC;
-	Tue, 20 Feb 2024 21:19:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03DDE151CD9;
+	Tue, 20 Feb 2024 21:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zb+hODGn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UKHRNAkl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4B0612D7;
-	Tue, 20 Feb 2024 21:19:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6934446C9;
+	Tue, 20 Feb 2024 21:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463972; cv=none; b=MeUXjNrLPldl0lHxXutSI5bg1ekzO5t8tZsS2unAPDr+BXNM69oBHQQbGPZZsJDXBj+Bt50kb8uRkjpIEGNOx6XWShDr1pDDfhVWPk0XP2aL60t8xArqhqIxe/os+nkh5k+wxu6NIVh1/1NeVTiZhtQcTurKuiwPMorbebVp4hE=
+	t=1708464795; cv=none; b=n2u6OiGmC1dnXIux/TfGTmBp4Op1gflzx3YvF9bZ46uAR2QTOQ50JLLfrD+KlFEEaYV8/MywLW811qiKlvfSHX95FxDicq/YQSJCYwFf47eM+cgDntaQTlqfkTfahd0rcjO1D7JK2sL/zrQQchQ8VCtBILpmprFDsFW814SV5B0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463972; c=relaxed/simple;
-	bh=o2mbXi0n0ycZxEhdeF50zQChVZUGUAzoKM/8sn1Tcuk=;
+	s=arc-20240116; t=1708464795; c=relaxed/simple;
+	bh=gLuNkKqu5DIeh9cDGGpSfJRD7bmFJZ3EtTjp5lCd2jE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T45QOu4S0DzCknmEOCjGlQf3rBA2yuqIOPnMopK41wWVWMsORrxYAqBBAUPOjPHDonXwS3hs8iDTWPIS51rSWJhWTCiwU4hXiniyiQ0NKY7lmNzh58KAzY7T2kgjS18FrtR/XaHqLZeKqgo2QMOHwSGk3E9hqCtZd1wNGuS1t5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zb+hODGn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E057C433C7;
-	Tue, 20 Feb 2024 21:19:31 +0000 (UTC)
+	 MIME-Version; b=TD/72U7j/L0zTX2sqhp8zJeJIU5BmmA6cGKBhzr0nqvdcwaHXJTrCWW28cZEqqS+CDEkZs1qiKUlMJ+uztoQs19b0knYQYgmbmpR9yiRcgFvIvtUv+Qw/iMTZOpkSogEbsRaIxpDFKcm/6ZIIQBH3Tx6Cdgx8wtApn3e+GNLKsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UKHRNAkl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31991C433C7;
+	Tue, 20 Feb 2024 21:33:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463972;
-	bh=o2mbXi0n0ycZxEhdeF50zQChVZUGUAzoKM/8sn1Tcuk=;
+	s=korg; t=1708464795;
+	bh=gLuNkKqu5DIeh9cDGGpSfJRD7bmFJZ3EtTjp5lCd2jE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zb+hODGnpvVJwW3Lx4XIUy05B2A23LPZZhCZXdxAOSqDT+h5Oq7iifRofAypBu1C6
-	 OXJ1AXAThERpB8ReJ8PejFynb79fPfb6NgQ8OzuV1kvcbz+0F8GAG59k+DGX0q+aDK
-	 SyO1HOZarZYM5Rn7n1kuAD2jDWxfvjv7wsD87nwA=
+	b=UKHRNAklep0aoOeL/2JrMKyi4TivD41tgfGM9CT/+I1h9FWTzMUif1kQzFRX5DNey
+	 PO96YC3IdiBKJfzUbh8OKaXrcnDNMmKtRo5xnboxpA1CVPYJ6mCuvuwnEdi7cUMnne
+	 ks8TJa26Q9Z1cRo3FezpA4LNxHXUOR9W1QWgcjAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Subject: [PATCH 6.6 182/331] serial: max310x: prevent infinite while() loop in port startup
-Date: Tue, 20 Feb 2024 21:54:58 +0100
-Message-ID: <20240220205643.250469028@linuxfoundation.org>
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	Casey Schaufler <casey@schaufler-ca.com>,
+	Paul Moore <paul@paul-moore.com>
+Subject: [PATCH 6.7 140/309] lsm: fix the logic in security_inode_getsecctx()
+Date: Tue, 20 Feb 2024 21:54:59 +0100
+Message-ID: <20240220205637.530892501@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,75 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Ondrej Mosnacek <omosnace@redhat.com>
 
-commit b35f8dbbce818b02c730dc85133dc7754266e084 upstream.
+commit 99b817c173cd213671daecd25ca27f56b0c7c4ec upstream.
 
-If there is a problem after resetting a port, the do/while() loop that
-checks the default value of DIVLSB register may run forever and spam the
-I2C bus.
+The inode_getsecctx LSM hook has previously been corrected to have
+-EOPNOTSUPP instead of 0 as the default return value to fix BPF LSM
+behavior. However, the call_int_hook()-generated loop in
+security_inode_getsecctx() was left treating 0 as the neutral value, so
+after an LSM returns 0, the loop continues to try other LSMs, and if one
+of them returns a non-zero value, the function immediately returns with
+said value. So in a situation where SELinux and the BPF LSMs registered
+this hook, -EOPNOTSUPP would be incorrectly returned whenever SELinux
+returned 0.
 
-Add a delay before each read of DIVLSB, and a maximum number of tries to
-prevent that situation from happening.
+Fix this by open-coding the call_int_hook() loop and making it use the
+correct LSM_RET_DEFAULT() value as the neutral one, similar to what
+other hooks do.
 
-Also fail probe if port reset is unsuccessful.
-
-Fixes: 10d8b34a4217 ("serial: max310x: Driver rework")
 Cc: stable@vger.kernel.org
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20240116213001.3691629-5-hugo@hugovil.com
+Reported-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+Link: https://lore.kernel.org/selinux/CAEjxPJ4ev-pasUwGx48fDhnmjBnq_Wh90jYPwRQRAqXxmOKD4Q@mail.gmail.com/
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2257983
+Fixes: b36995b8609a ("lsm: fix default return value for inode_getsecctx")
+Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+Reviewed-by: Casey Schaufler <casey@schaufler-ca.com>
+[PM: subject line tweak]
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/max310x.c |   20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ security/security.c |   14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
---- a/drivers/tty/serial/max310x.c
-+++ b/drivers/tty/serial/max310x.c
-@@ -237,6 +237,10 @@
- #define MAX310x_REV_MASK		(0xf8)
- #define MAX310X_WRITE_BIT		0x80
- 
-+/* Port startup definitions */
-+#define MAX310X_PORT_STARTUP_WAIT_RETRIES	20 /* Number of retries */
-+#define MAX310X_PORT_STARTUP_WAIT_DELAY_MS	10 /* Delay between retries */
+--- a/security/security.c
++++ b/security/security.c
+@@ -4030,7 +4030,19 @@ EXPORT_SYMBOL(security_inode_setsecctx);
+  */
+ int security_inode_getsecctx(struct inode *inode, void **ctx, u32 *ctxlen)
+ {
+-	return call_int_hook(inode_getsecctx, -EOPNOTSUPP, inode, ctx, ctxlen);
++	struct security_hook_list *hp;
++	int rc;
 +
- /* Crystal-related definitions */
- #define MAX310X_XTAL_WAIT_RETRIES	20 /* Number of retries */
- #define MAX310X_XTAL_WAIT_DELAY_MS	10 /* Delay between retries */
-@@ -1346,6 +1350,9 @@ static int max310x_probe(struct device *
- 		goto out_clk;
- 
- 	for (i = 0; i < devtype->nr; i++) {
-+		bool started = false;
-+		unsigned int try = 0, val = 0;
++	/*
++	 * Only one module will provide a security context.
++	 */
++	hlist_for_each_entry(hp, &security_hook_heads.inode_getsecctx, list) {
++		rc = hp->hook.inode_getsecctx(inode, ctx, ctxlen);
++		if (rc != LSM_RET_DEFAULT(inode_getsecctx))
++			return rc;
++	}
 +
- 		/* Reset port */
- 		regmap_write(regmaps[i], MAX310X_MODE2_REG,
- 			     MAX310X_MODE2_RST_BIT);
-@@ -1354,8 +1361,17 @@ static int max310x_probe(struct device *
++	return LSM_RET_DEFAULT(inode_getsecctx);
+ }
+ EXPORT_SYMBOL(security_inode_getsecctx);
  
- 		/* Wait for port startup */
- 		do {
--			regmap_read(regmaps[i], MAX310X_BRGDIVLSB_REG, &ret);
--		} while (ret != 0x01);
-+			msleep(MAX310X_PORT_STARTUP_WAIT_DELAY_MS);
-+			regmap_read(regmaps[i], MAX310X_BRGDIVLSB_REG, &val);
-+
-+			if (val == 0x01)
-+				started = true;
-+		} while (!started && (++try < MAX310X_PORT_STARTUP_WAIT_RETRIES));
-+
-+		if (!started) {
-+			ret = dev_err_probe(dev, -EAGAIN, "port reset failed\n");
-+			goto out_uart;
-+		}
- 
- 		regmap_write(regmaps[i], MAX310X_MODE1_REG, devtype->mode1);
- 	}
 
 
 
