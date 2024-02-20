@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-21135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C33985C745
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:11:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 868A185C6FF
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:07:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CF601C2175F
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:11:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3798D1F22355
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:07:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B20951509BF;
-	Tue, 20 Feb 2024 21:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A541509A5;
+	Tue, 20 Feb 2024 21:07:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ShtirRF4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zpLRqYap"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E55E612D7;
-	Tue, 20 Feb 2024 21:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81A3F612D7;
+	Tue, 20 Feb 2024 21:07:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463463; cv=none; b=tnOIW0nLqY0Lm4OMqo9Aij9fuh+tuoDxucMma+0sZnbQ8cKfEKl6nvarPE7O8+JEZ1XdKFS1LHLxyW+FKjKx8KP7bfc+MDIZ1Az3Mvn1N77TEw4OKmcyUCcuvsnh0BnqLiEkXq555dMPcO8BBz7rAWn6w4KCk5BVM3mP+mcoXZ8=
+	t=1708463242; cv=none; b=up+yQxA8b06tXhEr9NsGMCn6QlT11Av712nGfsJhcDoaMzmAq1Bizup7zdFao/cO2akvVCnqTeMNXsMqK4cmbu/NwYwJUKlwdGDloEfvP0zBfJGVBdQ3zOckP5P28YtqZjlXkkIZZxsu9iKXJtx/GBkZsRH5cVyQyHLcrAda2c4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463463; c=relaxed/simple;
-	bh=VqNeA+VEq9oRBEf2EGX55WKIg3qbCMGqUPwLbJBbXew=;
+	s=arc-20240116; t=1708463242; c=relaxed/simple;
+	bh=ndgprG2JVdaMQxQUcb71ezy6YA0c7605jkb111t+JvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BR13gXjNeOD3h5+MrMGqKesaQxJscdKsdEz22a26gF5c5xmg75ioUlCSdOzx3MtBBtOkeOU9FKmVKjlIPm/7HY5tM0lGzioDAaTA7Uysn1xZm1pHTeg4FgTw0kXhKFbVbuPXsdkKG2Um8XJ/n0kx38oenCidEPvCwrAf9L/5TQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ShtirRF4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9D1FC433C7;
-	Tue, 20 Feb 2024 21:11:02 +0000 (UTC)
+	 MIME-Version; b=Xiu/dIfESxF+21DYORqv9IhcRILX1HsFX9vBJU7Bmwdw05E4YBoRc7pY973IF3XIBxmugWDZ0FeQS4K+vLfuAZydHCdI/IW5XGGfFfQQwlzXiHmVUeuh5Z4GrzbA4QKEwiUfxQllK3qdw4m/JSLmA0/9H1BSJZxeYQhgdHCQnxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zpLRqYap; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5FDBC433C7;
+	Tue, 20 Feb 2024 21:07:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463463;
-	bh=VqNeA+VEq9oRBEf2EGX55WKIg3qbCMGqUPwLbJBbXew=;
+	s=korg; t=1708463242;
+	bh=ndgprG2JVdaMQxQUcb71ezy6YA0c7605jkb111t+JvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ShtirRF40+uzV62G/s9WLOnORyxpv2bcMWwobULKJy3lNovXR0CbqAtkqJDRL6eQt
-	 ZwtJTY2N1piAjY+HZvfcFHBZt4UJ3O0EhFsqi5YuD4y5yNcV0pe2IrvHstmCLY1u7T
-	 OBbfjQ6fAH3j63w8p2ZHEeWlFxlIXHgtVGAQpUBw=
+	b=zpLRqYapoSoTtCIts7E23vl3yFhNO4EMiL7UwdEhD3Ceo38luVj/Aw8sOEpZkfRG3
+	 TWmIYoGw3Og781eQindXxio/XxvBhN8x/gqBZxlVkbq4GknxUfZjTlWIQz5PHOkBFt
+	 OpkOdzhJL2FO4gFGeBaJwl9COaThLLQ2urOttcCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prashant Batra <prbatra.mail@gmail.com>,
-	Magnus Karlsson <magnus.karlsson@intel.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	David Lin <yu-hao.lin@nxp.com>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <error27@gmail.com>,
+	Brian Norris <briannorris@chromium.org>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 024/331] bonding: do not report NETDEV_XDP_ACT_XSK_ZEROCOPY
+Subject: [PATCH 6.1 181/197] wifi: mwifiex: fix uninitialized firmware_stat
 Date: Tue, 20 Feb 2024 21:52:20 +0100
-Message-ID: <20240220205638.352812408@linuxfoundation.org>
+Message-ID: <20240220204846.488999335@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
+References: <20240220204841.073267068@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +63,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Magnus Karlsson <magnus.karlsson@intel.com>
+From: David Lin <yu-hao.lin@nxp.com>
 
-[ Upstream commit 9b0ed890ac2ae233efd8b27d11aee28a19437bb8 ]
+[ Upstream commit 3df95e265924ac898c1a38a0c01846dd0bd3b354 ]
 
-Do not report the XDP capability NETDEV_XDP_ACT_XSK_ZEROCOPY as the
-bonding driver does not support XDP and AF_XDP in zero-copy mode even
-if the real NIC drivers do.
+Variable firmware_stat is possible to be used without initialization.
 
-Note that the driver used to report everything as supported before a
-device was bonded. Instead of just masking out the zero-copy support
-from this, have the driver report that no XDP feature is supported
-until a real device is bonded. This seems to be more truthful as it is
-the real drivers that decide what XDP features are supported.
-
-Fixes: cb9e6e584d58 ("bonding: add xdp_features support")
-Reported-by: Prashant Batra <prbatra.mail@gmail.com>
-Link: https://lore.kernel.org/all/CAJ8uoz2ieZCopgqTvQ9ZY6xQgTbujmC6XkMTamhp68O-h_-rLg@mail.gmail.com/T/
-Signed-off-by: Magnus Karlsson <magnus.karlsson@intel.com>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Link: https://lore.kernel.org/r/20240207084737.20890-1-magnus.karlsson@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: David Lin <yu-hao.lin@nxp.com>
+Fixes: 1c5d463c0770 ("wifi: mwifiex: add extra delay for firmware ready")
+Cc: stable@vger.kernel.org
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <error27@gmail.com>
+Closes: https://lore.kernel.org/r/202312192236.ZflaWYCw-lkp@intel.com/
+Acked-by: Brian Norris <briannorris@chromium.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20231221015511.1032128-1-yu-hao.lin@nxp.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_main.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/sdio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 8e6cc0e133b7..6cf7f364704e 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -1819,6 +1819,8 @@ void bond_xdp_set_features(struct net_device *bond_dev)
- 	bond_for_each_slave(bond, slave, iter)
- 		val &= slave->dev->xdp_features;
+diff --git a/drivers/net/wireless/marvell/mwifiex/sdio.c b/drivers/net/wireless/marvell/mwifiex/sdio.c
+index e55747b50dbf..2c9b70e9a726 100644
+--- a/drivers/net/wireless/marvell/mwifiex/sdio.c
++++ b/drivers/net/wireless/marvell/mwifiex/sdio.c
+@@ -779,7 +779,7 @@ static int mwifiex_check_fw_status(struct mwifiex_adapter *adapter,
+ {
+ 	struct sdio_mmc_card *card = adapter->card;
+ 	int ret = 0;
+-	u16 firmware_stat;
++	u16 firmware_stat = 0;
+ 	u32 tries;
  
-+	val &= ~NETDEV_XDP_ACT_XSK_ZEROCOPY;
-+
- 	xdp_set_features_flag(bond_dev, val);
- }
- 
-@@ -5934,9 +5936,6 @@ void bond_setup(struct net_device *bond_dev)
- 	if (BOND_MODE(bond) == BOND_MODE_ACTIVEBACKUP)
- 		bond_dev->features |= BOND_XFRM_FEATURES;
- #endif /* CONFIG_XFRM_OFFLOAD */
--
--	if (bond_xdp_check(bond))
--		bond_dev->xdp_features = NETDEV_XDP_ACT_MASK;
- }
- 
- /* Destroy a bonding device.
+ 	for (tries = 0; tries < poll_num; tries++) {
 -- 
 2.43.0
 
