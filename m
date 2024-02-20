@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-21056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 451D285C6F5
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:06:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70A3285C6D5
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:05:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C122FB211BF
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:06:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 247C41F2241D
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:05:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E95441509AC;
-	Tue, 20 Feb 2024 21:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E89D9151CE3;
+	Tue, 20 Feb 2024 21:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BPYm9yz6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q+P0LXVu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A788614AD12;
-	Tue, 20 Feb 2024 21:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7BE3133987;
+	Tue, 20 Feb 2024 21:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463210; cv=none; b=b9af/Z+kV0YRf4/1y8zlYIBW3A1VzYqeOalrQLa9FH2pehJaVt6xC7cbNJAZ7HwV6YijOtIJYgJnTs7IsjIP/s7Sn6KBQSZdDng4FzIS9rTbkfQbHYg90DtWadilbbVuX00kXCKfnpAZXnpR0/oBdwaMfwPCzB4/2pNMVzc5K3s=
+	t=1708463122; cv=none; b=GfwMBQ/Z0FH4+hQ5i2Zkw3ke0A9k6dtGMA8VWEKLBLRoLYFdZSpykLEVX5WGyAK2L7iGZvtslt1IS9VtFe2bvmnY+LBAmiKhxpPZ7+WnEbP/jeIqnEr9pfeN6s3cOHJkAG0lTyEToomnF6QMR55I/QUqW0orMkBKmAanOcivCJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463210; c=relaxed/simple;
-	bh=B4rtY8mQATUU7HumQZNzJGGCM2MAcfG0M/2Y7Y4hJkQ=;
+	s=arc-20240116; t=1708463122; c=relaxed/simple;
+	bh=gxTkstNBi6WX9LyxaUMH0SUSfE1oaoAn3e/gPKWjNwM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AM8kBs7uradukRLu60QaGlAb9xszaFhOqYIZBmAvKyd9gjVVHdBmxCeN77lNuYBWtMpR20HHko3G0GY04k++kWwxtwvNZjYYVDCfJyPlf3Dj8Iuvm8HLEYaypk/CKMxmzck12KAnM3A5XEYCSdiwjgIrCl89lWN2VpnWWJ3o3KY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BPYm9yz6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 227C8C433F1;
-	Tue, 20 Feb 2024 21:06:49 +0000 (UTC)
+	 MIME-Version; b=XFMdXvqcwa9khPK/x+h18djDXB1TyfuHoyMqoZW3woKVvmt/s+LHKtxXh2ITet509A5CWz6o3UM4O6BoWpX5IvEdi5PdHQQQxTRBQUKunSI1xYyh4h14u3NrMJVY0idDmLVU4OHldiOFG3I/CRc5DEb00SKy0E3mcgKs4GQG2N8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q+P0LXVu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20565C433C7;
+	Tue, 20 Feb 2024 21:05:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463210;
-	bh=B4rtY8mQATUU7HumQZNzJGGCM2MAcfG0M/2Y7Y4hJkQ=;
+	s=korg; t=1708463122;
+	bh=gxTkstNBi6WX9LyxaUMH0SUSfE1oaoAn3e/gPKWjNwM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BPYm9yz6eUGCmFaB0xnqw6cw+QIUPwZ203STAZKl5det8aj+K2JEdq8IOypcsrWvo
-	 rDSdEI/Ba+azj038qUIWSpBptm2/uEM6Xi4UYRdJIxkFH0dpGwIHKsfJqtBLQTAQ3U
-	 b+KPc64g3rKEroBKZ9AYP+YSiIxtDLbQqjpiCSFU=
+	b=q+P0LXVu/USiGH+33MRQu/jw6uPj3qNrD1cuiwybCEqK2J96gfkwFMCTgXapIznBD
+	 J8XghSMRuStWvnHSCiMUKNx7/0Nfmq/GHB3ZxJKj1lsLCaQWwqFmQ/d8jWMI0WqnHO
+	 Bt4+XNGhIVVHSAoPm/IkfgCmeMLGuT+9NEURKhiE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.1 142/197] irqchip/irq-brcmstb-l2: Add write memory barrier before exit
-Date: Tue, 20 Feb 2024 21:51:41 +0100
-Message-ID: <20240220204845.317004246@linuxfoundation.org>
+	Kunkun Jiang <jiangkunkun@huawei.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.1 143/197] irqchip/gic-v3-its: Fix GICv4.1 VPE affinity update
+Date: Tue, 20 Feb 2024 21:51:42 +0100
+Message-ID: <20240220204845.348310796@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
 References: <20240220204841.073267068@linuxfoundation.org>
@@ -67,63 +66,80 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Doug Berger <opendmb@gmail.com>
+From: Marc Zyngier <maz@kernel.org>
 
-commit b0344d6854d25a8b3b901c778b1728885dd99007 upstream.
+commit af9acbfc2c4b72c378d0b9a2ee023ed01055d3e2 upstream.
 
-It was observed on Broadcom devices that use GIC v3 architecture L1
-interrupt controllers as the parent of brcmstb-l2 interrupt controllers
-that the deactivation of the parent interrupt could happen before the
-brcmstb-l2 deasserted its output. This would lead the GIC to reactivate the
-interrupt only to find that no L2 interrupt was pending. The result was a
-spurious interrupt invoking handle_bad_irq() with its associated
-messaging. While this did not create a functional problem it is a waste of
-cycles.
+When updating the affinity of a VPE, the VMOVP command is currently skipped
+if the two CPUs are part of the same VPE affinity.
 
-The hazard exists because the memory mapped bus writes to the brcmstb-l2
-registers are buffered and the GIC v3 architecture uses a very efficient
-system register write to deactivate the interrupt.
+But this is wrong, as the doorbell corresponding to this VPE is still
+delivered on the 'old' CPU, which screws up the balancing.  Furthermore,
+offlining that 'old' CPU results in doorbell interrupts generated for this
+VPE being discarded.
 
-Add a write memory barrier prior to invoking chained_irq_exit() to
-introduce a dsb(st) on those systems to ensure the system register write
-cannot be executed until the memory mapped writes are visible to the
-system.
+The harsh reality is that VMOVP cannot be elided when a set_affinity()
+request occurs. It needs to be obeyed, and if an optimisation is to be
+made, it is at the point where the affinity change request is made (such as
+in KVM).
 
-[ florian: Added Fixes tag ]
+Drop the VMOVP elision altogether, and only use the vpe_table_mask
+to try and stay within the same ITS affinity group if at all possible.
 
-Fixes: 7f646e92766e ("irqchip: brcmstb-l2: Add Broadcom Set Top Box  Level-2 interrupt controller")
-Signed-off-by: Doug Berger <opendmb@gmail.com>
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Fixes: dd3f050a216e (irqchip/gic-v4.1: Implement the v4.1 flavour of VMOVP)
+Reported-by: Kunkun Jiang <jiangkunkun@huawei.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Acked-by: Marc Zyngier <maz@kernel.org>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240210012449.3009125-1-florian.fainelli@broadcom.com
+Link: https://lore.kernel.org/r/20240213101206.2137483-4-maz@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-brcmstb-l2.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/irqchip/irq-gic-v3-its.c |   22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
---- a/drivers/irqchip/irq-brcmstb-l2.c
-+++ b/drivers/irqchip/irq-brcmstb-l2.c
-@@ -2,7 +2,7 @@
- /*
-  * Generic Broadcom Set Top Box Level 2 Interrupt controller driver
-  *
-- * Copyright (C) 2014-2017 Broadcom
-+ * Copyright (C) 2014-2024 Broadcom
-  */
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -3805,8 +3805,9 @@ static int its_vpe_set_affinity(struct i
+ 				bool force)
+ {
+ 	struct its_vpe *vpe = irq_data_get_irq_chip_data(d);
+-	int from, cpu = cpumask_first(mask_val);
++	struct cpumask common, *table_mask;
+ 	unsigned long flags;
++	int from, cpu;
  
- #define pr_fmt(fmt)	KBUILD_MODNAME	": " fmt
-@@ -113,6 +113,9 @@ static void brcmstb_l2_intc_irq_handle(s
- 		generic_handle_domain_irq(b->domain, irq);
- 	} while (status);
- out:
-+	/* Don't ack parent before all device writes are done */
-+	wmb();
+ 	/*
+ 	 * Changing affinity is mega expensive, so let's be as lazy as
+@@ -3822,19 +3823,22 @@ static int its_vpe_set_affinity(struct i
+ 	 * taken on any vLPI handling path that evaluates vpe->col_idx.
+ 	 */
+ 	from = vpe_to_cpuid_lock(vpe, &flags);
+-	if (from == cpu)
+-		goto out;
+-
+-	vpe->col_idx = cpu;
++	table_mask = gic_data_rdist_cpu(from)->vpe_table_mask;
+ 
+ 	/*
+-	 * GICv4.1 allows us to skip VMOVP if moving to a cpu whose RD
+-	 * is sharing its VPE table with the current one.
++	 * If we are offered another CPU in the same GICv4.1 ITS
++	 * affinity, pick this one. Otherwise, any CPU will do.
+ 	 */
+-	if (gic_data_rdist_cpu(cpu)->vpe_table_mask &&
+-	    cpumask_test_cpu(from, gic_data_rdist_cpu(cpu)->vpe_table_mask))
++	if (table_mask && cpumask_and(&common, mask_val, table_mask))
++		cpu = cpumask_test_cpu(from, &common) ? from : cpumask_first(&common);
++	else
++		cpu = cpumask_first(mask_val);
 +
- 	chained_irq_exit(chip, desc);
- }
++	if (from == cpu)
+ 		goto out;
+ 
++	vpe->col_idx = cpu;
++
+ 	its_send_vmovp(vpe);
+ 	its_vpe_db_proxy_move(vpe, from, cpu);
  
 
 
