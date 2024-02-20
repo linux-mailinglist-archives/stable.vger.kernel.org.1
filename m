@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-21181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88B7E85C783
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:13:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F53685C913
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:29:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 29ED7B214F9
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:13:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 909271C22662
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:29:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7482F1509BF;
-	Tue, 20 Feb 2024 21:13:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3A9C152DE7;
+	Tue, 20 Feb 2024 21:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t/GbrBI2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qVpH+KGL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31BB8612D7;
-	Tue, 20 Feb 2024 21:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8084014A4E6;
+	Tue, 20 Feb 2024 21:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463612; cv=none; b=WzD5z1ZSJY/Q6xAqBhZUTUBgQa+GS+mXPDgBaQ/g1PmThrZDG1SvxY1Uh49U7ln2MPr3uqLf29tblLh9EnDAcILexCW74R0J/TMIZSiRtjT0DzwCiIYI1pre32s5+CyN0s9mE3bhRYqmBhVnwfdJUzqdrxUheSNyxpVMzNjMWP8=
+	t=1708464538; cv=none; b=K6e75QAluBVhkf7ZE+ayl2n0jV+Nu4UDrCIbMUxg6qsqaYqK2ScsYCVQPo0asTNkMGcLegu20zhYkNE+/Ew6y8v1f3p3J6KNzMq5e9OuoipsQYLbAqZnwZnt9AUsEAkm3xOhoY7+NzWGV175QqgxmSABqaTPPLslVCa9+70u5m0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463612; c=relaxed/simple;
-	bh=eZhG553ftj3euz2U2UHbTbt0damlFM67rOehkieRh+Y=;
+	s=arc-20240116; t=1708464538; c=relaxed/simple;
+	bh=fECkOSrEq1NV33X6mY94/fIIBZTeKMMHSiQkNWwkTMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u7fy7EetyYNM9P+HPZxaJSGxwb+dUeujEXeprP7qI1m1CBMgruBxNPop2MqEmXE8SXf7bo207nvSJLVy5vPA2iclqGAVHoc+9f3OB3LBluqxRGufFAYTqT9Zq987Vam94ebB7FQ8pMqHyQVUNIfnXt9vS+4hewf4SpVQZDcVRNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t/GbrBI2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 302B1C433C7;
-	Tue, 20 Feb 2024 21:13:30 +0000 (UTC)
+	 MIME-Version; b=a5Pj+iaAJz2Z3aBr2HIBOy2r7a13d4Gp0EEDkhO3violcuKOMnU453j9sE4Hn+zec728tcoqhNdUSuk0emnoWxbnmw7hjr084rd4lsZNTimQiEGj6nRg3CGEcE9GLyeFdjZa7yZvXuPOziKN4tl9b0/wogooTdE1q1Vm0OVGWq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qVpH+KGL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EA75C433F1;
+	Tue, 20 Feb 2024 21:28:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463611;
-	bh=eZhG553ftj3euz2U2UHbTbt0damlFM67rOehkieRh+Y=;
+	s=korg; t=1708464538;
+	bh=fECkOSrEq1NV33X6mY94/fIIBZTeKMMHSiQkNWwkTMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t/GbrBI2DdKGFcO+w5WD9k8cQdXSVciuidprfGCppVJnW3RpWeD2KzG/qNJfx+y2n
-	 0JEOYLjAetntondtqwZzeyXva5HxBkk7ecSj+G/+SUaIjSwY4wA1jx9ZNoSszGe6tx
-	 Jdi1a71nXGRNujA2L5SUC3kdYQHsxIYr4ZvMvXXU=
+	b=qVpH+KGL1NlLfGqhQA/D9nrivbML9l7tnhRSdDReaxKofQpfDY1Ebjy/4C0Arn0o5
+	 5bGy41Aff4q2OhTKRbVRLxL5sgq747VKePY71bsHYK4BHc/dvhagpWWk2ULNNq/6qX
+	 phYButLGQu0FFNlpK+dcuo3+1ganZvlVBRqJIENQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Suraj Kandpal <suraj.kandpal@intel.com>,
+	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
+	Animesh Manna <animesh.manna@intel.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Sean Paul <sean@poorly.run>,
+	Drew Davenport <ddavenport@chromium.org>,
+	Manasi Navare <navaremanasi@chromium.org>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 098/331] irqchip/loongson-eiointc: Use correct struct type in eiointc_domain_alloc()
+Subject: [PATCH 6.7 055/309] drm/i915/dsc: Fix the macro that calculates DSCC_/DSCA_ PPS reg address
 Date: Tue, 20 Feb 2024 21:53:34 +0100
-Message-ID: <20240220205640.661941698@linuxfoundation.org>
+Message-ID: <20240220205634.941538797@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +69,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Manasi Navare <navaremanasi@chromium.org>
 
-[ Upstream commit f1c2765c6afcd1f71f76ed8c9bf94acedab4cecb ]
+[ Upstream commit 962ac2dce56bb3aad1f82a4bbe3ada57a020287c ]
 
-eiointc_domain_alloc() uses struct eiointc, which is not defined, for a
-pointer. Older compilers treat that as a forward declaration and due to
-assignment of a void pointer there is no warning emitted. As the variable
-is then handed in as a void pointer argument to irq_domain_set_info() the
-code is functional.
+Commit bd077259d0a9 ("drm/i915/vdsc: Add function to read any PPS
+register") defines a new macro to calculate the DSC PPS register
+addresses with PPS number as an input. This macro correctly calculates
+the addresses till PPS 11 since the addresses increment by 4. So in that
+case the following macro works correctly to give correct register
+address:
 
-Use struct eiointc_priv instead.
+_MMIO(_DSCA_PPS_0 + (pps) * 4)
 
-[ tglx: Rewrote changelog ]
+However after PPS 11, the register address for PPS 12 increments by 12
+because of RC Buffer memory allocation in between. Because of this
+discontinuity in the address space, the macro calculates wrong addresses
+for PPS 12 - 16 resulting into incorrect DSC PPS parameter value
+read/writes causing DSC corruption.
 
-Fixes: dd281e1a1a93 ("irqchip: Add Loongson Extended I/O interrupt controller support")
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Huacai Chen <chenhuacai@loongson.cn>
-Link: https://lore.kernel.org/r/20240130082722.2912576-2-maobibo@loongson.cn
+This fixes it by correcting this macro to add the offset of 12 for PPS
+>=12.
+
+v3: Add correct paranthesis for pps argument (Jani Nikula)
+
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10172
+Fixes: bd077259d0a9 ("drm/i915/vdsc: Add function to read any PPS register")
+Cc: Suraj Kandpal <suraj.kandpal@intel.com>
+Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Cc: Animesh Manna <animesh.manna@intel.com>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: Sean Paul <sean@poorly.run>
+Cc: Drew Davenport <ddavenport@chromium.org>
+Signed-off-by: Manasi Navare <navaremanasi@chromium.org>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240205204619.1991673-1-navaremanasi@chromium.org
+(cherry picked from commit 6074be620c31dc2ae11af96a1a5ea95580976fb5)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-loongson-eiointc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/i915/display/intel_vdsc_regs.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/irqchip/irq-loongson-eiointc.c b/drivers/irqchip/irq-loongson-eiointc.c
-index 1623cd779175..b3736bdd4b9f 100644
---- a/drivers/irqchip/irq-loongson-eiointc.c
-+++ b/drivers/irqchip/irq-loongson-eiointc.c
-@@ -241,7 +241,7 @@ static int eiointc_domain_alloc(struct irq_domain *domain, unsigned int virq,
- 	int ret;
- 	unsigned int i, type;
- 	unsigned long hwirq = 0;
--	struct eiointc *priv = domain->host_data;
-+	struct eiointc_priv *priv = domain->host_data;
- 
- 	ret = irq_domain_translate_onecell(domain, arg, &hwirq, &type);
- 	if (ret)
+diff --git a/drivers/gpu/drm/i915/display/intel_vdsc_regs.h b/drivers/gpu/drm/i915/display/intel_vdsc_regs.h
+index 64f440fdc22b..8b21dc8e26d5 100644
+--- a/drivers/gpu/drm/i915/display/intel_vdsc_regs.h
++++ b/drivers/gpu/drm/i915/display/intel_vdsc_regs.h
+@@ -51,8 +51,8 @@
+ #define DSCC_PICTURE_PARAMETER_SET_0		_MMIO(0x6BA00)
+ #define _DSCA_PPS_0				0x6B200
+ #define _DSCC_PPS_0				0x6BA00
+-#define DSCA_PPS(pps)				_MMIO(_DSCA_PPS_0 + (pps) * 4)
+-#define DSCC_PPS(pps)				_MMIO(_DSCC_PPS_0 + (pps) * 4)
++#define DSCA_PPS(pps)				_MMIO(_DSCA_PPS_0 + ((pps) < 12 ? (pps) : (pps) + 12) * 4)
++#define DSCC_PPS(pps)				_MMIO(_DSCC_PPS_0 + ((pps) < 12 ? (pps) : (pps) + 12) * 4)
+ #define _ICL_DSC0_PICTURE_PARAMETER_SET_0_PB	0x78270
+ #define _ICL_DSC1_PICTURE_PARAMETER_SET_0_PB	0x78370
+ #define _ICL_DSC0_PICTURE_PARAMETER_SET_0_PC	0x78470
 -- 
 2.43.0
 
