@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-21562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CEE385C96A
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:33:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E85285C83D
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:19:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD87C1C22520
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:33:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBD05284BB1
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:19:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29609151CE9;
-	Tue, 20 Feb 2024 21:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DA7A151CCC;
+	Tue, 20 Feb 2024 21:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kMPRgl+E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X9OM8DUk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA510446C9;
-	Tue, 20 Feb 2024 21:33:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4863E151CE9;
+	Tue, 20 Feb 2024 21:19:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464801; cv=none; b=E6AcJgI8R55VII9f/lRP9z2jRaiCamvReByUvUT1Q+dlApOTn9qpiB2NKhvkkzYcG9cjS1w41m9JpAf1aff08+jR8az+eO4U5h6UuewvwX79u2BY/BBoY710b6AIthSMM2mdxzm/1HdpNhiARbZ4Worr5zHukMeKf2rQ30IIWQA=
+	t=1708463982; cv=none; b=giqmfSf16gJx8Ti2nIXlqqdg2IyTHqIAwZNoAvdLdjqw3hqz/2Fd7DaN8FXDHevA0Y2jdZf06f2ab5luozmT8pwdoQx26fLcGdS8IFGtyUG5TywUsdEnmpvslVuUcETyXBKrvBuiTIX+7ylL5RTmGEobxuR9v9WbCwulxx9XP5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464801; c=relaxed/simple;
-	bh=xLOf4nwwsDkMuAdUz9eHsN10Pz7lZqjIHTX9MZTClZA=;
+	s=arc-20240116; t=1708463982; c=relaxed/simple;
+	bh=4dwTk5xDCm7fZ+nZ2TFu7K3y4JcuB+kjPej8v+F5V/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cUZm/m/up3cNAIe8ettmjyakJS8QYT7NIfsJV7zg5QKavYAqSYT69HAl6VlSBU7slZALwSwJMwWk1g7rXfBpZXjqVEK9ROb2KHjlnhEQwsI4rQT1enxlsvbaPAylf3GvCcBwtbzcrUZ339VMwoTiH1OQ/cDQjkn4k4gJdg2vWss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kMPRgl+E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B65AC433C7;
-	Tue, 20 Feb 2024 21:33:21 +0000 (UTC)
+	 MIME-Version; b=khe/WIAKBDkwvTp+54f2X3weoZNXunXExCZx9kt367MNeZ+KmtOHEkoLBfR8Owtpyu/9PqNdzLUFkcNCKUxciKgT/YTmdHEbRKXyxfdJl69W0GRj0/5+69mJblZz4Stta18SK+w6Nfo8+h8B5JbVm2wQ0ELC+v9LVdirT1mg9jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X9OM8DUk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CB45C433C7;
+	Tue, 20 Feb 2024 21:19:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464801;
-	bh=xLOf4nwwsDkMuAdUz9eHsN10Pz7lZqjIHTX9MZTClZA=;
+	s=korg; t=1708463981;
+	bh=4dwTk5xDCm7fZ+nZ2TFu7K3y4JcuB+kjPej8v+F5V/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kMPRgl+Ey6Q347qH0HlgT1VbePpnlFITDc3c9b7eeoUb2Z0Tkrq2b+TGXYhfhAamV
-	 tWRrQH79jHo4I6sDuFNz4aSN05PXrnQgnbhPmJI6InGgtbnVskIlnDJJ45Jy044DV5
-	 z3KFFx/14WPDXUFSVdyN5zsWSxa+tIm9buzq54vI=
+	b=X9OM8DUkhXmVq4tGeqvvjEw/Y5Kn1yStB1Kjk1k/iRj6kar9YebPGznTKefLgLAJd
+	 3eOUS7fUO+2AmmzCjpppsk/YjwVW6x3NBB/K+ywrigOQ4qOC6OJcCWbYV1LAAZ6ejq
+	 mtV3kW2tslLgXmjNO4Wfyc7ErqKDQE/5TK0+w7FI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jos=C3=A9=20Relvas?= <josemonsantorelvas@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.7 142/309] ALSA: hda/realtek: Apply headset jack quirk for non-bass alc287 thinkpads
+	David Engraf <david.engraf@sysgo.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 6.6 185/331] powerpc/cputable: Add missing PPC_FEATURE_BOOKE on PPC64 Book-E
 Date: Tue, 20 Feb 2024 21:55:01 +0100
-Message-ID: <20240220205637.603736267@linuxfoundation.org>
+Message-ID: <20240220205643.366588863@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,57 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: José Relvas <josemonsantorelvas@gmail.com>
+From: David Engraf <david.engraf@sysgo.com>
 
-commit 2468e8922d2f6da81a6192b73023eff67e3fefdd upstream.
+commit eb6d871f4ba49ac8d0537e051fe983a3a4027f61 upstream.
 
-There currently exists two thinkpad headset jack fixups:
-ALC285_FIXUP_THINKPAD_NO_BASS_SPK_HEADSET_JACK
-ALC285_FIXUP_THINKPAD_HEADSET_JACK
+Commit e320a76db4b0 ("powerpc/cputable: Split cpu_specs[] out of
+cputable.h") moved the cpu_specs to separate header files. Previously
+PPC_FEATURE_BOOKE was enabled by CONFIG_PPC_BOOK3E_64. The definition in
+cpu_specs_e500mc.h for PPC64 no longer enables PPC_FEATURE_BOOKE.
 
-The latter is applied to alc285 and alc287 thinkpads which contain
-bass speakers.
-However, the former was only being applied to alc285 thinkpads,
-leaving non-bass alc287 thinkpads with no headset button controls.
-This patch fixes that by adding ALC285_FIXUP_THINKPAD_NO_BASS_SPK_HEADSET_JACK
-to the alc287 chains, allowing the detection of headset buttons.
+This breaks user space reading the ELF hwcaps and expect
+PPC_FEATURE_BOOKE. Debugging an application with gdb is no longer
+working on e5500/e6500 because the 64-bit detection relies on
+PPC_FEATURE_BOOKE for Book-E.
 
-Signed-off-by: José Relvas <josemonsantorelvas@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240131113407.34698-3-josemonsantorelvas@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: e320a76db4b0 ("powerpc/cputable: Split cpu_specs[] out of cputable.h")
+Cc: stable@vger.kernel.org # v6.1+
+Signed-off-by: David Engraf <david.engraf@sysgo.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240207092758.1058893-1-david.engraf@sysgo.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/powerpc/kernel/cpu_specs_e500mc.h |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9570,7 +9570,7 @@ static const struct hda_fixup alc269_fix
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = cs35l41_fixup_i2c_two,
- 		.chained = true,
--		.chain_id = ALC269_FIXUP_THINKPAD_ACPI,
-+		.chain_id = ALC285_FIXUP_THINKPAD_NO_BASS_SPK_HEADSET_JACK,
- 	},
- 	[ALC287_FIXUP_TAS2781_I2C] = {
- 		.type = HDA_FIXUP_FUNC,
-@@ -9591,6 +9591,8 @@ static const struct hda_fixup alc269_fix
- 	[ALC287_FIXUP_THINKPAD_I2S_SPK] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc287_fixup_bind_dacs,
-+		.chained = true,
-+		.chain_id = ALC285_FIXUP_THINKPAD_NO_BASS_SPK_HEADSET_JACK,
- 	},
- 	[ALC287_FIXUP_MG_RTKC_CSAMP_CS35L41_I2C_THINKPAD] = {
- 		.type = HDA_FIXUP_FUNC,
+--- a/arch/powerpc/kernel/cpu_specs_e500mc.h
++++ b/arch/powerpc/kernel/cpu_specs_e500mc.h
+@@ -8,7 +8,8 @@
+ 
+ #ifdef CONFIG_PPC64
+ #define COMMON_USER_BOOKE	(PPC_FEATURE_32 | PPC_FEATURE_HAS_MMU | \
+-				 PPC_FEATURE_HAS_FPU | PPC_FEATURE_64)
++				 PPC_FEATURE_HAS_FPU | PPC_FEATURE_64 | \
++				 PPC_FEATURE_BOOKE)
+ #else
+ #define COMMON_USER_BOOKE	(PPC_FEATURE_32 | PPC_FEATURE_HAS_MMU | \
+ 				 PPC_FEATURE_BOOKE)
 
 
 
