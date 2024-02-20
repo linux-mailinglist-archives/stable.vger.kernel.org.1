@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-21258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EBA085C7E7
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:17:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A38385C97D
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:34:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD6A628448F
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:17:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B09E1C22511
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:34:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 638A4151CE1;
-	Tue, 20 Feb 2024 21:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0251151CE1;
+	Tue, 20 Feb 2024 21:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NuwH0Zx9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FoVIr4tj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23EA1151CD6;
-	Tue, 20 Feb 2024 21:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A8D446C9;
+	Tue, 20 Feb 2024 21:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463853; cv=none; b=IL4ZL5wQL7TcW0y8B6PBBce4SJoRKcck2dmrnU/KiN0rgf3NhQ3EaGnIandpVwNF7jcZy54+lgrEcrAJTphtfph66wN0tVck4jPytqsWdN/iHWC9uVvn0yIKvt0dKqk6V+mhd7xv6BXGdcA9OZIyHKrFxI2fTRrAVXchUWWDtck=
+	t=1708464862; cv=none; b=DJoNqMH9oPdiKxQ9MXJ3PAJgWuI8C88VDAuWyawuAbzGuF1VLRKVryOD6h59k/WGA7wyTXdoBYRthPyJWXTyfAd9/zyDAVZLFetuvR9RHlYCSP0iuiCoRD3/g72nVFLGT3DnyRSkHNzQJch2zmW9CeA8qCpFuyyPBH2Ux+j8Z8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463853; c=relaxed/simple;
-	bh=LkcEOjjM6WamFbHFtQIM8/xk+OKLg7d2ncZ7Zpt6MJE=;
+	s=arc-20240116; t=1708464862; c=relaxed/simple;
+	bh=YQtBIU3IRjET6EfOKDht0iiBrqgzIvnqabh6e2uJaFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QhL/aKH3kqgSCDPZaAlsGLSznB2r4vdhm3kE/ZaEH5RnkM0PiMZ5Yv6kev4400LywQx3pYwCDKRHT6pteAZcQGt3rS4TmS3SQj6gzGGvI47gQ0Vx16Io+xLUNeNQRrtjBZKLcr4TF59Qz/it2X7mxsz/ncPD6yG3MqxlVLZsgPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NuwH0Zx9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99808C433F1;
-	Tue, 20 Feb 2024 21:17:32 +0000 (UTC)
+	 MIME-Version; b=KeNlztSne8Vr85gljV2QthOUgO1ohkHGMlCGCcTMJMueKWSC2NPMpguk0uQThx5neLO0XWtMXPY/79bNsf6ISC/UGnCly0dG/axjhz8s2H5RAx9LwS6vVeJasy+9GVdmBwpD6ZGcAABI4do7IAO5YWK1mvqR29FP7esnDwPo0fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FoVIr4tj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9464C433C7;
+	Tue, 20 Feb 2024 21:34:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463853;
-	bh=LkcEOjjM6WamFbHFtQIM8/xk+OKLg7d2ncZ7Zpt6MJE=;
+	s=korg; t=1708464862;
+	bh=YQtBIU3IRjET6EfOKDht0iiBrqgzIvnqabh6e2uJaFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NuwH0Zx9dhKSkZJR2vJwRPoOLHeCy/PPzwOxA8s0+I6VundZcQxxv9TSWQ7UFjx5/
-	 YsvuaCIPy68kBsYjhDVjxLv80bBQeNE62SQkT/ZxaONE342LMn093ywvPW3KD67xyh
-	 v7y5jMwjeZ6Cr8H5EZKtltS08mNKAWDh2OpR2CRU=
+	b=FoVIr4tj/6OcGUS8DnNa8RVECJJ1O/geZvc/8nxYA1YXgbCB2iM0zlHQcXDmaERj3
+	 gcpguU1PvMVPJt8ppRYvTbCe0NCzkAJI4l82dRGqNzVx+gN7tbsQS4dJX45uIHv1Vi
+	 k753RdUfyyB4raCYL2QPNnmtJxybVmdUDkDTpGAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.6 173/331] drm/amd/display: Preserve original aspect ratio in create stream
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 6.7 130/309] Revert "drm/amd: flush any delayed gfxoff on suspend entry"
 Date: Tue, 20 Feb 2024 21:54:49 +0100
-Message-ID: <20240220205642.956026031@linuxfoundation.org>
+Message-ID: <20240220205637.219106336@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Chung <chiahsuan.chung@amd.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit deb110292180cd501f6fde2a0178d65fcbcabb0c upstream.
+commit 916361685319098f696b798ef1560f69ed96e934 upstream.
 
-[Why]
-The original picture aspect ratio in mode struct may have chance be
-overwritten with wrong aspect ratio data in create_stream_for_sink().
-It will create a different VIC output and cause HDMI compliance test
-failed.
+commit ab4750332dbe ("drm/amdgpu/sdma5.2: add begin/end_use ring
+callbacks") caused GFXOFF control to be used more heavily and the
+codepath that was removed from commit 0dee72639533 ("drm/amd: flush any
+delayed gfxoff on suspend entry") now can be exercised at suspend again.
 
-[How]
-Preserve the original picture aspect ratio data during create the
-stream.
+Users report that by using GNOME to suspend the lockscreen trigger will
+cause SDMA traffic and the system can deadlock.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+This reverts commit 0dee726395333fea833eaaf838bc80962df886c8.
+
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: ab4750332dbe ("drm/amdgpu/sdma5.2: add begin/end_use ring callbacks")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |    1 -
+ drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c    |    9 ++++++++-
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -6072,7 +6072,9 @@ create_stream_for_sink(struct amdgpu_dm_
- 		if (recalculate_timing) {
- 			freesync_mode = get_highest_refresh_rate_mode(aconnector, false);
- 			drm_mode_copy(&saved_mode, &mode);
-+			saved_mode.picture_aspect_ratio = mode.picture_aspect_ratio;
- 			drm_mode_copy(&mode, freesync_mode);
-+			mode.picture_aspect_ratio = saved_mode.picture_aspect_ratio;
- 		} else {
- 			decide_crtc_timing_for_drm_display_mode(
- 					&mode, preferred_mode, scale);
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -4496,7 +4496,6 @@ int amdgpu_device_suspend(struct drm_dev
+ 		drm_fb_helper_set_suspend_unlocked(adev_to_drm(adev)->fb_helper, true);
+ 
+ 	cancel_delayed_work_sync(&adev->delayed_init_work);
+-	flush_delayed_work(&adev->gfx.gfx_off_delay_work);
+ 
+ 	amdgpu_ras_suspend(adev);
+ 
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
+@@ -723,8 +723,15 @@ void amdgpu_gfx_off_ctrl(struct amdgpu_d
+ 
+ 		if (adev->gfx.gfx_off_req_count == 0 &&
+ 		    !adev->gfx.gfx_off_state) {
+-			schedule_delayed_work(&adev->gfx.gfx_off_delay_work,
++			/* If going to s2idle, no need to wait */
++			if (adev->in_s0ix) {
++				if (!amdgpu_dpm_set_powergating_by_smu(adev,
++						AMD_IP_BLOCK_TYPE_GFX, true))
++					adev->gfx.gfx_off_state = true;
++			} else {
++				schedule_delayed_work(&adev->gfx.gfx_off_delay_work,
+ 					      delay);
++			}
+ 		}
+ 	} else {
+ 		if (adev->gfx.gfx_off_req_count == 0) {
 
 
 
