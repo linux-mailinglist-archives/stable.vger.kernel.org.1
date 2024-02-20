@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-21162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A62C785C76E
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:12:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FA4685C8FA
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:28:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4664D1F24542
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:12:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 259631F227ED
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:28:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D99D0151CDC;
-	Tue, 20 Feb 2024 21:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 175F7152E00;
+	Tue, 20 Feb 2024 21:27:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rnupGEae"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SPJRvFs9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9773514AD12;
-	Tue, 20 Feb 2024 21:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8AB9152DFC;
+	Tue, 20 Feb 2024 21:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463552; cv=none; b=GZNW22zGTPjUyTHkle16AS0Xvk6b4FPOQ/ojqprdz1ObmWf0EavCst85Zn6YJSKzBx4HNy4wsJsYHhHzzLFN/tZIIBA6S35Xjepl1Ax7q6coy2EGWwRKNUIpNLmkEtR60vYGXUtAaHyij1rpjiPxIoZZSJ0+hALkewaYgNnnC8Q=
+	t=1708464471; cv=none; b=hWV/4Phzg/Ls9EStY/ooc6snm70F1/DHBkRMcNKuMLLvfwf5wDSw/V8dUYx5EsQrP9k7DnaDgxOmcCsE62GxVro+5zthh+H/Xpxnvb4Bzj4KNsCimMGVcPoeZYduJnFaoP+LPe+ZDFmHcsZSaSrvj3f00mpiTpAm3+Y2pWMj0s4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463552; c=relaxed/simple;
-	bh=uoSvSWiDzoJF2zXlTmWejboKYUcXYiHEOZ7ZSNd70dE=;
+	s=arc-20240116; t=1708464471; c=relaxed/simple;
+	bh=0RLHtaeJVOiCcGdbVZ3LS9CYh88Q5Fpu4ufSnPs3Vu8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kZHgi3gBxJf7PgQMaT8Gm3Wl6dYnCv7qQL4+CBtJPEQv9SRCIE0h2pFX9Ux4MBe41L5a2i00cTk/Ey1bVy4b4jxgD/Kw9RlhgWDG2A3XsGw3j325TcpGckWXlyKz3qbK0JPn/daVnxfNu2QXb5aKfrBYG/Xb4OeCsR/DpnaftkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rnupGEae; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92D6AC433F1;
-	Tue, 20 Feb 2024 21:12:31 +0000 (UTC)
+	 MIME-Version; b=tEjBxCnsSjHQBuVE8UkWCHhM0IM1jbo67T8kFapjYaplVxGvOaITpWHeGRMmBvaQ9eb7f6ThA0LVo6S0gN+4bNqreGwJmP/aVwdxEjBhQYWNTMHMGVcYuzmbwxMKpl8ATl8E3yMnZoi9dsy6H9Jk5DVAxnwJLXK0x+PSTRknHK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SPJRvFs9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8EDFC433F1;
+	Tue, 20 Feb 2024 21:27:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463552;
-	bh=uoSvSWiDzoJF2zXlTmWejboKYUcXYiHEOZ7ZSNd70dE=;
+	s=korg; t=1708464471;
+	bh=0RLHtaeJVOiCcGdbVZ3LS9CYh88Q5Fpu4ufSnPs3Vu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rnupGEaevcCHs4k9Kp/419cXD6FGigMM6yYRGVevqnqxNhDpNB9cKKlGYTftr7Rap
-	 zRpXxh1I9MCTwG5y4K8Idm/Ay4+LoMYiu4QsVV1CecvSRo0/o7v1TuJwFHdy05LGwY
-	 0Z5jwkgn4x5F4ATW+XOfvsM7+///qlf6uttcmgQQ=
+	b=SPJRvFs9WzIIse0bNx6ERgVTxSAFESpZjVuptlgKw4cYZpC3JdOhSBfnjROS4/Egp
+	 3CcoYaHJmaYMQTERuba4j6szSoktihQdpfQjVaiW7ljo5ZwQGgZ0BRay4QsUnh2FFa
+	 abhX8O/NvFXx2KXgEEFpeXzZFkVHBx6Q7TR8Kdw8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@seco.com>
-Subject: [PATCH 6.6 078/331] usb: ulpi: Fix debugfs directory leak
-Date: Tue, 20 Feb 2024 21:53:14 +0100
-Message-ID: <20240220205640.032023939@linuxfoundation.org>
+	Saravana Kannan <saravanak@google.com>,
+	Rob Herring <robh@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 036/309] of: property: Improve finding the supplier of a remote-endpoint property
+Date: Tue, 20 Feb 2024 21:53:15 +0100
+Message-ID: <20240220205634.315174018@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@seco.com>
+From: Saravana Kannan <saravanak@google.com>
 
-commit 3caf2b2ad7334ef35f55b95f3e1b138c6f77b368 upstream.
+[ Upstream commit 782bfd03c3ae2c0e6e01b661b8e18f1de50357be ]
 
-The ULPI per-device debugfs root is named after the ulpi device's
-parent, but ulpi_unregister_interface tries to remove a debugfs
-directory named after the ulpi device itself. This results in the
-directory sticking around and preventing subsequent (deferred) probes
-from succeeding. Change the directory name to match the ulpi device.
+After commit 4a032827daa8 ("of: property: Simplify of_link_to_phandle()"),
+remote-endpoint properties created a fwnode link from the consumer device
+to the supplier endpoint. This is a tiny bit inefficient (not buggy) when
+trying to create device links or detecting cycles. So, improve this the
+same way we improved finding the consumer of a remote-endpoint property.
 
-Fixes: bd0a0a024f2a ("usb: ulpi: Add debugfs support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Anderson <sean.anderson@seco.com>
-Link: https://lore.kernel.org/r/20240126223800.2864613-1-sean.anderson@seco.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4a032827daa8 ("of: property: Simplify of_link_to_phandle()")
+Signed-off-by: Saravana Kannan <saravanak@google.com>
+Link: https://lore.kernel.org/r/20240207011803.2637531-3-saravanak@google.com
+Signed-off-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/common/ulpi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/of/property.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/common/ulpi.c
-+++ b/drivers/usb/common/ulpi.c
-@@ -301,7 +301,7 @@ static int ulpi_register(struct device *
- 		return ret;
- 	}
+diff --git a/drivers/of/property.c b/drivers/of/property.c
+index 41c3da8a54b6..aacedfdfedc6 100644
+--- a/drivers/of/property.c
++++ b/drivers/of/property.c
+@@ -1231,7 +1231,6 @@ DEFINE_SIMPLE_PROP(pinctrl5, "pinctrl-5", NULL)
+ DEFINE_SIMPLE_PROP(pinctrl6, "pinctrl-6", NULL)
+ DEFINE_SIMPLE_PROP(pinctrl7, "pinctrl-7", NULL)
+ DEFINE_SIMPLE_PROP(pinctrl8, "pinctrl-8", NULL)
+-DEFINE_SIMPLE_PROP(remote_endpoint, "remote-endpoint", NULL)
+ DEFINE_SIMPLE_PROP(pwms, "pwms", "#pwm-cells")
+ DEFINE_SIMPLE_PROP(resets, "resets", "#reset-cells")
+ DEFINE_SIMPLE_PROP(leds, "leds", NULL)
+@@ -1297,6 +1296,17 @@ static struct device_node *parse_interrupts(struct device_node *np,
+ 	return of_irq_parse_one(np, index, &sup_args) ? NULL : sup_args.np;
+ }
  
--	root = debugfs_create_dir(dev_name(dev), ulpi_root);
-+	root = debugfs_create_dir(dev_name(&ulpi->dev), ulpi_root);
- 	debugfs_create_file("regs", 0444, root, ulpi, &ulpi_regs_fops);
- 
- 	dev_dbg(&ulpi->dev, "registered ULPI PHY: vendor %04x, product %04x\n",
++static struct device_node *parse_remote_endpoint(struct device_node *np,
++						 const char *prop_name,
++						 int index)
++{
++	/* Return NULL for index > 0 to signify end of remote-endpoints. */
++	if (!index || strcmp(prop_name, "remote-endpoint"))
++		return NULL;
++
++	return of_graph_get_remote_port_parent(np);
++}
++
+ static const struct supplier_bindings of_supplier_bindings[] = {
+ 	{ .parse_prop = parse_clocks, },
+ 	{ .parse_prop = parse_interconnects, },
+-- 
+2.43.0
+
 
 
 
