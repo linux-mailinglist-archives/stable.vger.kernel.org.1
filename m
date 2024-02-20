@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-21301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF6DE85C83E
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:19:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFE4385C7F3
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:18:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0BA31C221A1
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:19:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AD2D283DFF
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:18:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DED5151CD9;
-	Tue, 20 Feb 2024 21:19:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E27C151CD6;
+	Tue, 20 Feb 2024 21:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RaiLsLS4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XUfkdtv0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AC3C612D7;
-	Tue, 20 Feb 2024 21:19:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB67612D7;
+	Tue, 20 Feb 2024 21:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463989; cv=none; b=a/KEOJ0V6/h8nkSOVSZI6Ek8gYwzSiiRl6uggqbLuDH+zG7PwyUSIM82/Yi9285Z/ahrRX5PbPuEZtPTHrYx39iQ3V1xKmbk6zYkqdJi/nUwZrMsGy0KMUIZQk02krweLyV+hb7A+GI/3nXOirFq2ztY+IwAECU1r58mpUs0ONo=
+	t=1708463891; cv=none; b=KlCbsIWTm2n7SSc4fXRPrR5V58CSmBr0JvcsHzlXI+5O2aBYQ5Smqfk16vQfAwBm1QjyAx+wlMR/+QsPyN1MJ7n5SpKBdQrWCDfmw/VbUN2h6hOTeuF7bJUEVSCAttQeAWXAs9AeXzZpNB3GSgAvdu8aeKkdgOuD2MZe/9Pgy/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463989; c=relaxed/simple;
-	bh=fPN3dCNE5XZa4p2nRb4FQ19eA5qAJviBbstl9/8yrdo=;
+	s=arc-20240116; t=1708463891; c=relaxed/simple;
+	bh=ueYgEkhhpMyxfxczl/x6vZ4Na8J+k1jk0bj7l+uB/uY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ozTu23sKlflxuxvkL51PbtKWzjM88i/W8vyQITestN+FU3++RtB7fK8X5bIseyecUfy06efLoRiJ/6+MS8KQK+0Pw5lP3SAb8tVrLP9/wH99F/JCeULhXqMffvSXMckg0RCwhyA/RHbeU90l5gK/wHdeDxVKGmMOOvjA4mvXNqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RaiLsLS4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4914FC433C7;
-	Tue, 20 Feb 2024 21:19:47 +0000 (UTC)
+	 MIME-Version; b=WGI057uJQUYa6vzNrnLBpGZI/1bvM1i2WomzeefEB5dNn3s+dXbidjCvnkPG/gFIWFFw5eBy/2WUo3Lky2NLHwjNy7V2qfOTSiklhMtgDhBPHwBEHrO65P2e5Y0SskmtlAGAfRkk/E9dghH8Mg/gLwVePq1j8QzGO9VFDA4RrZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XUfkdtv0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53CAFC433F1;
+	Tue, 20 Feb 2024 21:18:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463988;
-	bh=fPN3dCNE5XZa4p2nRb4FQ19eA5qAJviBbstl9/8yrdo=;
+	s=korg; t=1708463890;
+	bh=ueYgEkhhpMyxfxczl/x6vZ4Na8J+k1jk0bj7l+uB/uY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RaiLsLS4n2WC73IVGT0gOlpj9wmyisfbp2mw44y52/zaP1F4iPjWbcgz9T8K7WIDF
-	 HGY0yQL1Lb4A1/J9ABjOqLDcnss2WIgxOx+U8EiuVo6+mzTxPE+YJvBar/gmiEaTs5
-	 gz4/+oz8jli2YFNMKaQnODJmQ0+4YztYuEyMRsGU=
+	b=XUfkdtv06DQvPaVXbn+OpimNoqAHoxYdZkBq0j1vuspcAj9iWScilqMyuqdUHM/I9
+	 G7Yzvh6ye/r3lC3zuoTvo0LZDZG3LcM3XCicdrcxLTRBc/VEzyhmCid60Z6Tr+4a+o
+	 TYMsB+xOnIrgmJiTKqCf9N94bxbErxmMYEKZxBOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Hui Zhou <hui.zhou@corigine.com>,
 	Louis Peens <louis.peens@corigine.com>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 177/331] nfp: flower: add hardware offload check for post ct entry
-Date: Tue, 20 Feb 2024 21:54:53 +0100
-Message-ID: <20240220205643.076418376@linuxfoundation.org>
+Subject: [PATCH 6.6 178/331] nfp: flower: fix hardware offload for the transfer layer port
+Date: Tue, 20 Feb 2024 21:54:54 +0100
+Message-ID: <20240220205643.106502427@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
 References: <20240220205637.572693592@linuxfoundation.org>
@@ -68,62 +68,70 @@ Content-Transfer-Encoding: 8bit
 
 From: Hui Zhou <hui.zhou@corigine.com>
 
-commit cefa98e806fd4e2a5e2047457a11ae5f17b8f621 upstream.
+commit 3a007b8009b5f8af021021b7a590a6da0dc4c6e0 upstream.
 
-The nfp offload flow pay will not allocate a mask id when the out port
-is openvswitch internal port. This is because these flows are used to
-configure the pre_tun table and are never actually send to the firmware
-as an add-flow message. When a tc rule which action contains ct and
-the post ct entry's out port is openvswitch internal port, the merge
-offload flow pay with the wrong mask id of 0 will be send to the
-firmware. Actually, the nfp can not support hardware offload for this
-situation, so return EOPNOTSUPP.
+The nfp driver will merge the tp source port and tp destination port
+into one dword which the offset must be zero to do hardware offload.
+However, the mangle action for the tp source port and tp destination
+port is separated for tc ct action. Modify the mangle action for the
+FLOW_ACT_MANGLE_HDR_TYPE_TCP and FLOW_ACT_MANGLE_HDR_TYPE_UDP to
+satisfy the nfp driver offload check for the tp port.
 
-Fixes: bd0fe7f96a3c ("nfp: flower-ct: add zone table entry when handling pre/post_ct flows")
-CC: stable@vger.kernel.org # 5.14+
+The mangle action provides a 4B value for source, and a 4B value for
+the destination, but only 2B of each contains the useful information.
+For offload the 2B of each is combined into a single 4B word. Since the
+incoming mask for the source is '0xFFFF<mask>' the shift-left will
+throw away the 0xFFFF part. When this gets combined together in the
+offload it will clear the destination field. Fix this by setting the
+lower bits back to 0xFFFF, effectively doing a rotate-left operation on
+the mask.
+
+Fixes: 5cee92c6f57a ("nfp: flower: support hw offload for ct nat action")
+CC: stable@vger.kernel.org # 6.1+
 Signed-off-by: Hui Zhou <hui.zhou@corigine.com>
 Signed-off-by: Louis Peens <louis.peens@corigine.com>
-Link: https://lore.kernel.org/r/20240124151909.31603-2-louis.peens@corigine.com
+Link: https://lore.kernel.org/r/20240124151909.31603-3-louis.peens@corigine.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/netronome/nfp/flower/conntrack.c |   22 +++++++++++++++++-
- 1 file changed, 21 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/netronome/nfp/flower/conntrack.c |   24 ++++++++++++++++--
+ 1 file changed, 22 insertions(+), 2 deletions(-)
 
 --- a/drivers/net/ethernet/netronome/nfp/flower/conntrack.c
 +++ b/drivers/net/ethernet/netronome/nfp/flower/conntrack.c
-@@ -1864,10 +1864,30 @@ int nfp_fl_ct_handle_post_ct(struct nfp_
- {
- 	struct flow_rule *rule = flow_cls_offload_flow_rule(flow);
- 	struct nfp_fl_ct_flow_entry *ct_entry;
-+	struct flow_action_entry *ct_goto;
- 	struct nfp_fl_ct_zone_entry *zt;
-+	struct flow_action_entry *act;
- 	bool wildcarded = false;
- 	struct flow_match_ct ct;
--	struct flow_action_entry *ct_goto;
-+	int i;
-+
-+	flow_action_for_each(i, act, &rule->action) {
-+		switch (act->id) {
-+		case FLOW_ACTION_REDIRECT:
-+		case FLOW_ACTION_REDIRECT_INGRESS:
-+		case FLOW_ACTION_MIRRED:
-+		case FLOW_ACTION_MIRRED_INGRESS:
-+			if (act->dev->rtnl_link_ops &&
-+			    !strcmp(act->dev->rtnl_link_ops->kind, "openvswitch")) {
-+				NL_SET_ERR_MSG_MOD(extack,
-+						   "unsupported offload: out port is openvswitch internal port");
-+				return -EOPNOTSUPP;
-+			}
-+			break;
-+		default:
-+			break;
-+		}
-+	}
+@@ -1424,10 +1424,30 @@ static void nfp_nft_ct_translate_mangle_
+ 		mangle_action->mangle.mask = (__force u32)cpu_to_be32(mangle_action->mangle.mask);
+ 		return;
  
- 	flow_rule_match_ct(rule, &ct);
- 	if (!ct.mask->ct_zone) {
++	/* Both struct tcphdr and struct udphdr start with
++	 *	__be16 source;
++	 *	__be16 dest;
++	 * so we can use the same code for both.
++	 */
+ 	case FLOW_ACT_MANGLE_HDR_TYPE_TCP:
+ 	case FLOW_ACT_MANGLE_HDR_TYPE_UDP:
+-		mangle_action->mangle.val = (__force u16)cpu_to_be16(mangle_action->mangle.val);
+-		mangle_action->mangle.mask = (__force u16)cpu_to_be16(mangle_action->mangle.mask);
++		if (mangle_action->mangle.offset == offsetof(struct tcphdr, source)) {
++			mangle_action->mangle.val =
++				(__force u32)cpu_to_be32(mangle_action->mangle.val << 16);
++			/* The mask of mangle action is inverse mask,
++			 * so clear the dest tp port with 0xFFFF to
++			 * instead of rotate-left operation.
++			 */
++			mangle_action->mangle.mask =
++				(__force u32)cpu_to_be32(mangle_action->mangle.mask << 16 | 0xFFFF);
++		}
++		if (mangle_action->mangle.offset == offsetof(struct tcphdr, dest)) {
++			mangle_action->mangle.offset = 0;
++			mangle_action->mangle.val =
++				(__force u32)cpu_to_be32(mangle_action->mangle.val);
++			mangle_action->mangle.mask =
++				(__force u32)cpu_to_be32(mangle_action->mangle.mask);
++		}
+ 		return;
+ 
+ 	default:
 
 
 
