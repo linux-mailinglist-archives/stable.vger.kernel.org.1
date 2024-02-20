@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-21246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 739EF85C7DA
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:16:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AAB885C954
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:32:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DAF228356E
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:16:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B92CB2139F
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:32:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 620CF151CD9;
-	Tue, 20 Feb 2024 21:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8122E151CD9;
+	Tue, 20 Feb 2024 21:32:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="07/0K4l0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ugtenlfq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1D71509AC;
-	Tue, 20 Feb 2024 21:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4038714AD0F;
+	Tue, 20 Feb 2024 21:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463816; cv=none; b=sipWzOkdL1S6umZfEGN9U7jkF3y52iS4uUhZgDPqE7xvD1E53RLK5TvtH3KufkdF86npUWpnzpp+e5iHbrIaRFF1PvD/md6GCHouCELjw1RG+j36+y8uOEKSYqeyJJOlIzyEi0WQpxxBPxXCUcZTGBuduLVFkbIgxdpOB8rIlxk=
+	t=1708464734; cv=none; b=PnRfYrxzL1gAuPu49faUxUYmeX1lT8AOmAn8r9q2zzIt0i+VF4wvYPoIil5HcQWUMDlbnVIquwVC7h4sjLZ7ZdSJyja2aROGmctrWFZLQFWZg6cSLSKCiNOq8it/FFo4+wehDdpFT6MF65tLdDdaBk0wvrO5BL2QhNHd1gKNkuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463816; c=relaxed/simple;
-	bh=GT4yKaQUDdwTFodER7dhkAYc76DxxoAvSkjAMjn63YM=;
+	s=arc-20240116; t=1708464734; c=relaxed/simple;
+	bh=ZGdQtnNn20ewUfhRA5ekEVU1Sh2CqWGz6gbcvtbsFWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FIAU6RWQMnP3RB9Yr/g3wXvXQtSWe/8U8UyHLxY/vIdH0boTK4K3JXhRN9Kjzlrdz/jy1vymdhyUoqljOpA7FtZjQhVYigTspDMoZbSvflE5na30FrNqO8MhCiYg7TS855Sl6XqiEc6fm+mNx3B/rZEvSijhbRTwJ/29qeOCtcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=07/0K4l0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CA32C43390;
-	Tue, 20 Feb 2024 21:16:54 +0000 (UTC)
+	 MIME-Version; b=SnSX5Dsb3qijoIKQvKP02YNms8YvUD93/wU/z6aPBQ1KAX5M7txl+Qk8aG0G7pWQh8+2dQBL+1T2innzS2CMv8jYq3E47qTZBaaq7IjRVYS9RSD763WPeCtbjoxWHV1eoEDTYbwMe8xFoLmNfOIEXf+OewvieSsmNRkYEcrdpmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ugtenlfq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D83C433C7;
+	Tue, 20 Feb 2024 21:32:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463816;
-	bh=GT4yKaQUDdwTFodER7dhkAYc76DxxoAvSkjAMjn63YM=;
+	s=korg; t=1708464733;
+	bh=ZGdQtnNn20ewUfhRA5ekEVU1Sh2CqWGz6gbcvtbsFWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=07/0K4l00+QphIEamW0ic5IgRslqRdK1ExqaIAQxPLT8sh2NoyA4wkX5h5fYpIdgj
-	 T8r3pvTfuBnGzOEbobY9Pmx9i01frmmkfxhoxNs114IW4JhKzkPnDpQRy75dkOCHbY
-	 TPn8jgQgHndxvonufaIsu6mXh1Udq8+7tE/IaVXs=
+	b=ugtenlfq2ZQyYAPFMEjRXJ3iVLPSo4aktpD5kV/S59AYNSuXETkrPRGiuerMweJhG
+	 DvhudGKAMEXep3COoA1Alt3rlCZ+8hkrER10+YNwqy5vX/87q+ZOErfdKVIDPgGKUz
+	 Y9lbdqxG+Tl9B4KoDTW9Rt65Sw6ibOdH86CzPkqk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Andrea Merello <andrea.merello@iit.it>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	linux-iio@vger.kernel.org,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 162/331] iio: imu: bno055: serdev requires REGMAP
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.7 119/309] selftests: mptcp: add missing kconfig for NF Mangle
 Date: Tue, 20 Feb 2024 21:54:38 +0100
-Message-ID: <20240220205642.628824728@linuxfoundation.org>
+Message-ID: <20240220205636.899802493@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,58 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit 35ec2d03b282a939949090bd8c39eb37a5856721 upstream.
+commit 2d41f10fa497182df9012d3e95d9cea24eb42e61 upstream.
 
-There are a ton of build errors when REGMAP is not set, so select
-REGMAP to fix all of them.
+Since the commit mentioned below, 'mptcp_join' selftests is using
+IPTables to add rules to the Mangle table, only in IPv4.
 
-Examples (not all of them):
+This KConfig is usually enabled by default in many defconfig, but we
+recently noticed that some CI were running our selftests without them
+enabled.
 
-../drivers/iio/imu/bno055/bno055_ser_core.c:495:15: error: variable 'bno055_ser_regmap_bus' has initializer but incomplete type
-  495 | static struct regmap_bus bno055_ser_regmap_bus = {
-../drivers/iio/imu/bno055/bno055_ser_core.c:496:10: error: 'struct regmap_bus' has no member named 'write'
-  496 |         .write = bno055_ser_write_reg,
-../drivers/iio/imu/bno055/bno055_ser_core.c:497:10: error: 'struct regmap_bus' has no member named 'read'
-  497 |         .read = bno055_ser_read_reg,
-../drivers/iio/imu/bno055/bno055_ser_core.c: In function 'bno055_ser_probe':
-../drivers/iio/imu/bno055/bno055_ser_core.c:532:18: error: implicit declaration of function 'devm_regmap_init'; did you mean 'vmem_map_init'? [-Werror=implicit-function-declaration]
-  532 |         regmap = devm_regmap_init(&serdev->dev, &bno055_ser_regmap_bus,
-../drivers/iio/imu/bno055/bno055_ser_core.c:532:16: warning: assignment to 'struct regmap *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
-  532 |         regmap = devm_regmap_init(&serdev->dev, &bno055_ser_regmap_bus,
-../drivers/iio/imu/bno055/bno055_ser_core.c: At top level:
-../drivers/iio/imu/bno055/bno055_ser_core.c:495:26: error: storage size of 'bno055_ser_regmap_bus' isn't known
-  495 | static struct regmap_bus bno055_ser_regmap_bus = {
-
-Fixes: 2eef5a9cc643 ("iio: imu: add BNO055 serdev driver")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Andrea Merello <andrea.merello@iit.it>
-Cc: Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>
-Cc: linux-iio@vger.kernel.org
-Cc: <Stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240110185611.19723-1-rdunlap@infradead.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: b6e074e171bc ("selftests: mptcp: add infinite map testcase")
+Cc: stable@vger.kernel.org
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/20240131-upstream-net-20240131-mptcp-ci-issues-v1-4-4c1c11e571ff@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/bno055/Kconfig |    1 +
+ tools/testing/selftests/net/mptcp/config |    1 +
  1 file changed, 1 insertion(+)
 
---- a/drivers/iio/imu/bno055/Kconfig
-+++ b/drivers/iio/imu/bno055/Kconfig
-@@ -8,6 +8,7 @@ config BOSCH_BNO055
- config BOSCH_BNO055_SERIAL
- 	tristate "Bosch BNO055 attached via UART"
- 	depends on SERIAL_DEV_BUS
-+	select REGMAP
- 	select BOSCH_BNO055
- 	help
- 	  Enable this to support Bosch BNO055 IMUs attached via UART.
+--- a/tools/testing/selftests/net/mptcp/config
++++ b/tools/testing/selftests/net/mptcp/config
+@@ -23,6 +23,7 @@ CONFIG_NFT_SOCKET=m
+ CONFIG_IP_ADVANCED_ROUTER=y
+ CONFIG_IP_MULTIPLE_TABLES=y
+ CONFIG_IP_NF_FILTER=m
++CONFIG_IP_NF_MANGLE=m
+ CONFIG_IP_NF_TARGET_REJECT=m
+ CONFIG_IPV6_MULTIPLE_TABLES=y
+ CONFIG_IP6_NF_FILTER=m
 
 
 
