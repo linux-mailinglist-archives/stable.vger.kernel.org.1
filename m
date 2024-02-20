@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-21665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4199A85C9D4
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:38:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C575F85C898
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:23:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6A72B229F3
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:38:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 65EE7B210AD
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:23:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4061151CF4;
-	Tue, 20 Feb 2024 21:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE34E151CD9;
+	Tue, 20 Feb 2024 21:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PsmrJi99"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2KnXi16j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 702AD151CCC;
-	Tue, 20 Feb 2024 21:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C6EC1509B1;
+	Tue, 20 Feb 2024 21:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708465126; cv=none; b=ILyEGV+d84A43+MypU1KMiPmLrEGLKCTPDkQOdOY4/HjuApJhhZDGfhuy4GyAkUVMXL0/KEt6vNfOpoa1glNInISxeUvN6m7RvphKfZJXepZMM7/DRl+6SIZ5DNsalrL+c6blenClw55TQU+6DwyUiwQ3BL/CujVVKhLFqJ8ZhM=
+	t=1708464216; cv=none; b=LJRICNABv0GI31eyURlf2VYZHZnSwha8J7kLDbkIMwFu9y+uGaFRGjIbTTpm/NFfPM6JsfhsTBMqA0/K+Dn+NQ2NEq988j0IqijGaN0VKCul8aKoJ7WbG00841kElMVy9DK3NRxF/rqJnbwP4cSeA3ZBoUZKA/5+fVHLG78rWuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708465126; c=relaxed/simple;
-	bh=/uO8HqjRb7B246HPhW2DBFUHOazlw1apINdenfXUL4A=;
+	s=arc-20240116; t=1708464216; c=relaxed/simple;
+	bh=UdBi5FxSN8KUu0Y1OQCd5subKsGSHPsXvjKbagLWbXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PdT8ugkseTIGWOhPOSTjotdrZuzLVTI9iXq17iWW1rWtSePxRjXHOfJz7uup8p2TqGWhLPwdHwA1P5uv+9aDRZ8TLWHYeKnztrlV7qGYk18dXaAML2gVL07xIL8lIG8ydkiMgJN3o8UB2ojhoyi5O9GfMAldN3SFeG10CV3psSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PsmrJi99; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C62E5C433F1;
-	Tue, 20 Feb 2024 21:38:45 +0000 (UTC)
+	 MIME-Version; b=ZNHCndOLn76TJ/Co961wrsJNx++dLhdu7ixPPwW7wOxZChytEvxZkkmoXSRU+ZzrrSyFNqWcint30C3xKc2bTgJX8mqlI35og48jZnXJWqY9DzUUJ3rz4Ij+7RSnncMcQXekHs9/VQqgOEld9dsv3TCZ2P/GWKfEra65wEFX8TY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2KnXi16j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D617EC433C7;
+	Tue, 20 Feb 2024 21:23:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708465126;
-	bh=/uO8HqjRb7B246HPhW2DBFUHOazlw1apINdenfXUL4A=;
+	s=korg; t=1708464216;
+	bh=UdBi5FxSN8KUu0Y1OQCd5subKsGSHPsXvjKbagLWbXs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PsmrJi99x9b+rlkZ2//B4FHd01c6BVv3exErMp13+pTOOAVRH6iwQklLYuVT9t8YV
-	 EskB1PyH72PCdMQnHea1l8DbhWzcWbfRWzjjj+XcgeAAG55yKBtSef0YRSLWzNeThR
-	 GLi5xwm6A/TTVeHXuu+GabZ6s1TQuG3JdwjT4qhM=
+	b=2KnXi16jqv9AFTzAbkQ6pLXS6AV8nTmeu13qikPA6EsT3uqZloPkzybmK9H7tTcJz
+	 QrSN0GogxncjWPqEcTahcHQIJsMBGG83DmsW1Jx9DvSGXfYhLbOAznTfChU9vSpwDa
+	 xAXxPOPvS/jxjwTvWzVTsb9GBW24b7hJ0qbNJoqg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+ee2ae68da3b22d04cd8d@syzkaller.appspotmail.com,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.7 244/309] nilfs2: fix hang in nilfs_lookup_dirty_data_buffers()
-Date: Tue, 20 Feb 2024 21:56:43 +0100
-Message-ID: <20240220205640.792606003@linuxfoundation.org>
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Hongyu Jin <hongyu.jin@unisoc.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Dongliang Cui <cuidongliang390@gmail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 288/331] eventfs: Have event files and directories default to parent uid and gid
+Date: Tue, 20 Feb 2024 21:56:44 +0100
+Message-ID: <20240220205647.036705182@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +64,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-commit 38296afe3c6ee07319e01bb249aa4bb47c07b534 upstream.
+commit 0dfc852b6fe3cbecbea67332a0dce2bebeba540d upstream.
 
-Syzbot reported a hang issue in migrate_pages_batch() called by mbind()
-and nilfs_lookup_dirty_data_buffers() called in the log writer of nilfs2.
+Dongliang reported:
 
-While migrate_pages_batch() locks a folio and waits for the writeback to
-complete, the log writer thread that should bring the writeback to
-completion picks up the folio being written back in
-nilfs_lookup_dirty_data_buffers() that it calls for subsequent log
-creation and was trying to lock the folio.  Thus causing a deadlock.
+  I found that in the latest version, the nodes of tracefs have been
+  changed to dynamically created.
 
-In the first place, it is unexpected that folios/pages in the middle of
-writeback will be updated and become dirty.  Nilfs2 adds a checksum to
-verify the validity of the log being written and uses it for recovery at
-mount, so data changes during writeback are suppressed.  Since this is
-broken, an unclean shutdown could potentially cause recovery to fail.
+  This has caused me to encounter a problem where the gid I specified in
+  the mounting parameters cannot apply to all files, as in the following
+  situation:
 
-Investigation revealed that the root cause is that the wait for writeback
-completion in nilfs_page_mkwrite() is conditional, and if the backing
-device does not require stable writes, data may be modified without
-waiting.
+  /data/tmp/events # mount | grep tracefs
+  tracefs on /data/tmp type tracefs (rw,seclabel,relatime,gid=3012)
 
-Fix these issues by making nilfs_page_mkwrite() wait for writeback to
-finish regardless of the stable write requirement of the backing device.
+  gid 3012 = readtracefs
 
-Link: https://lkml.kernel.org/r/20240131145657.4209-1-konishi.ryusuke@gmail.com
-Fixes: 1d1d1a767206 ("mm: only enforce stable page writes if the backing device requires it")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+ee2ae68da3b22d04cd8d@syzkaller.appspotmail.com
-Closes: https://lkml.kernel.org/r/00000000000047d819061004ad6c@google.com
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+  /data/tmp # ls -lh
+  total 0
+  -r--r-----   1 root readtracefs 0 1970-01-01 08:00 README
+  -r--r-----   1 root readtracefs 0 1970-01-01 08:00 available_events
+
+  ums9621_1h10:/data/tmp/events # ls -lh
+  total 0
+  drwxr-xr-x 2 root root 0 2023-12-19 00:56 alarmtimer
+  drwxr-xr-x 2 root root 0 2023-12-19 00:56 asoc
+
+  It will prevent certain applications from accessing tracefs properly, I
+  try to avoid this issue by making the following modifications.
+
+To fix this, have the files created default to taking the ownership of
+the parent dentry unless the ownership was previously set by the user.
+
+Link: https://lore.kernel.org/linux-trace-kernel/1703063706-30539-1-git-send-email-dongliang.cui@unisoc.com/
+Link: https://lore.kernel.org/linux-trace-kernel/20231220105017.1489d790@gandalf.local.home
+
+Cc: stable@vger.kernel.org
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Hongyu Jin  <hongyu.jin@unisoc.com>
+Fixes: 28e12c09f5aa0 ("eventfs: Save ownership and mode")
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reported-by: Dongliang Cui <cuidongliang390@gmail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/file.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ fs/tracefs/event_inode.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/fs/nilfs2/file.c
-+++ b/fs/nilfs2/file.c
-@@ -105,7 +105,13 @@ static vm_fault_t nilfs_page_mkwrite(str
- 	nilfs_transaction_commit(inode->i_sb);
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -148,7 +148,8 @@ static const struct file_operations even
+ 	.release	= eventfs_release,
+ };
  
-  mapped:
--	wait_for_stable_page(page);
-+	/*
-+	 * Since checksumming including data blocks is performed to determine
-+	 * the validity of the log to be written and used for recovery, it is
-+	 * necessary to wait for writeback to finish here, regardless of the
-+	 * stable write requirement of the backing device.
-+	 */
-+	wait_on_page_writeback(page);
-  out:
- 	sb_end_pagefault(inode->i_sb);
- 	return vmf_fs_error(ret);
+-static void update_inode_attr(struct inode *inode, struct eventfs_attr *attr, umode_t mode)
++static void update_inode_attr(struct dentry *dentry, struct inode *inode,
++			      struct eventfs_attr *attr, umode_t mode)
+ {
+ 	if (!attr) {
+ 		inode->i_mode = mode;
+@@ -162,9 +163,13 @@ static void update_inode_attr(struct ino
+ 
+ 	if (attr->mode & EVENTFS_SAVE_UID)
+ 		inode->i_uid = attr->uid;
++	else
++		inode->i_uid = d_inode(dentry->d_parent)->i_uid;
+ 
+ 	if (attr->mode & EVENTFS_SAVE_GID)
+ 		inode->i_gid = attr->gid;
++	else
++		inode->i_gid = d_inode(dentry->d_parent)->i_gid;
+ }
+ 
+ /**
+@@ -206,7 +211,7 @@ static struct dentry *create_file(const
+ 		return eventfs_failed_creating(dentry);
+ 
+ 	/* If the user updated the directory's attributes, use them */
+-	update_inode_attr(inode, attr, mode);
++	update_inode_attr(dentry, inode, attr, mode);
+ 
+ 	inode->i_op = &eventfs_file_inode_operations;
+ 	inode->i_fop = fop;
+@@ -242,7 +247,8 @@ static struct dentry *create_dir(struct
+ 		return eventfs_failed_creating(dentry);
+ 
+ 	/* If the user updated the directory's attributes, use them */
+-	update_inode_attr(inode, &ei->attr, S_IFDIR | S_IRWXU | S_IRUGO | S_IXUGO);
++	update_inode_attr(dentry, inode, &ei->attr,
++			  S_IFDIR | S_IRWXU | S_IRUGO | S_IXUGO);
+ 
+ 	inode->i_op = &eventfs_root_dir_inode_operations;
+ 	inode->i_fop = &eventfs_file_operations;
 
 
 
