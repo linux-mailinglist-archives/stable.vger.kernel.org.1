@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-21685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBBDD85C9E9
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:39:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DE3F85C8D6
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:26:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 770DE284EDA
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:39:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE94D1C21A66
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:26:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED004151CCC;
-	Tue, 20 Feb 2024 21:39:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CAE21509BC;
+	Tue, 20 Feb 2024 21:26:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PkRiAzor"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F1fCde9t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA830612D7;
-	Tue, 20 Feb 2024 21:39:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDE0E14A4D2;
+	Tue, 20 Feb 2024 21:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708465189; cv=none; b=FQ6e736ndmkT2eErTZwXAnOiLLuRgCNFTneYCI954xxqtihjAKrMEZf9LAmgr608MOtiuRN0FDdShSgCAtYXYbfCnZq8vRnR6zhgN4gQ0889FcIkzDQWiCDg6WxwR/WAbf7HIzZiWP3/z8uCCL/lM+weOMM1aCxh+CfE21XRV2I=
+	t=1708464372; cv=none; b=AzLfIvPp66Ys7Bkd6+kLYMv/E0z4p0J/RPPjw7s/hRXD6pmPufLb9Rd4rJeUZhDcseuuc2TBFM70UJI2gxDVIj+CHX5/nlxqaLwKGse/JCUVV2dSd4Ni+GADMW8rvNmczFWQbXNQd8DS9C/r+LUQRLZovtQTSh7ZVfUnb/gecWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708465189; c=relaxed/simple;
-	bh=sg3Ul7GCXQynCf/YzAOVbPIYRJU/fnECqO3oNr72PWI=;
+	s=arc-20240116; t=1708464372; c=relaxed/simple;
+	bh=gxyjZVeYgtpAB0XwhAHMsno/zJMA1F2D4iAGd8q/j7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S3dpmSIezteSXNeu8B8vj9AYk2uWW6xiUOWICUwnQWephhpeOEidzxJRyJdmQYBfUQ3qlL4/CEy2S5OHNiYvHPGy4pDv6eUp+WfwduEU9BuUnBAb4BxHhRummDjcRxdinAB+U/RQB3I4KLrx91M2/MeMxDlv84WX+EI1tY7jhf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PkRiAzor; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17863C433C7;
-	Tue, 20 Feb 2024 21:39:48 +0000 (UTC)
+	 MIME-Version; b=YPQQqL8CLtrVH/6GQhDR5GXxY9fD68rUKE97IllJP56Yjj0vfq5uDMDbKom/LmX5q715VPiRrr+ZWeDPOpgFYHAPZi7ytVM3C048/MN9g/1icSA4BkLxZMWcvJ87tSkbncf+LNU3YG62rSkp9ifAX64fzGHB5I6IphhM4WVv+ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F1fCde9t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5355FC433F1;
+	Tue, 20 Feb 2024 21:26:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708465189;
-	bh=sg3Ul7GCXQynCf/YzAOVbPIYRJU/fnECqO3oNr72PWI=;
+	s=korg; t=1708464372;
+	bh=gxyjZVeYgtpAB0XwhAHMsno/zJMA1F2D4iAGd8q/j7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PkRiAzorm3E6hYMfFUK0lVDS81tOADx9Ehr6EnnAM7JTuvO5Bkx69P/HneMUKALOf
-	 RDhN+rBgjKNJsPgv6Yz+yMyQI/DkOH16AY2v07k2+rQS9uRGFsWxbpSPjuYgr+XFGq
-	 Cmx+K90X8CeEuL9k10NTmfmTpiIqzomAl/GXx1dc=
+	b=F1fCde9tUM/o87pzj3PakoW2f9PuaYsg9YdZ37mWljZfh1p9XWC2tU7wMYxpfsfnl
+	 lmZkglpwH/+iDsELc7MSw+V49Q3Hz7Xi7K6LBetxI675OucCTR4rXWRn168gGxUgYB
+	 5WZ/XvTURJx0GcWPftQ1a4Usz0nsxapSLPQYpFzE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.7 265/309] arm64/signal: Dont assume that TIF_SVE means we saved SVE state
-Date: Tue, 20 Feb 2024 21:57:04 +0100
-Message-ID: <20240220205641.444053190@linuxfoundation.org>
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@ZenIV.linux.org.uk>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 309/331] eventfs: Clean up dentry ops and add revalidate function
+Date: Tue, 20 Feb 2024 21:57:05 +0100
+Message-ID: <20240220205647.891842256@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +67,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-commit 61da7c8e2a602f66be578cbbcebe8638c10e0f48 upstream.
+commit 8dce06e98c70a7fcbb4bca7d90faf40522e65c58 upstream.
 
-When we are in a syscall we will only save the FPSIMD subset even though
-the task still has access to the full register set, and on context switch
-we will only remove TIF_SVE when loading the register state. This means
-that the signal handling code should not assume that TIF_SVE means that
-the register state is stored in SVE format, it should instead check the
-format that was recorded during save.
+In order for the dentries to stay up-to-date with the eventfs changes,
+just add a 'd_revalidate' function that checks the 'is_freed' bit.
 
-Fixes: 8c845e273104 ("arm64/sve: Leave SVE enabled on syscall if we don't context switch")
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Also, clean up the dentry release to actually use d_release() rather
+than the slightly odd d_iput() function.  We don't care about the inode,
+all we want to do is to get rid of the refcount to the eventfs data
+added by dentry->d_fsdata.
+
+It would probably be cleaner to make eventfs its own filesystem, or at
+least set its own dentry ops when looking up eventfs files.  But as it
+is, only eventfs dentries use d_fsdata, so we don't really need to split
+these things up by use.
+
+Another thing that might be worth doing is to make all eventfs lookups
+mark their dentries as not worth caching.  We could do that with
+d_delete(), but the DCACHE_DONTCACHE flag would likely be even better.
+
+As it is, the dentries are all freeable, but they only tend to get freed
+at memory pressure rather than more proactively.  But that's a separate
+issue.
+
+Link: https://lore.kernel.org/linux-trace-kernel/202401291043.e62e89dc-oliver.sang@intel.com/
+Link: https://lore.kernel.org/linux-trace-kernel/20240131185513.124644253@goodmis.org
+
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240130-arm64-sve-signal-regs-v2-1-9fc6f9502782@kernel.org
-Signed-off-by: Will Deacon <will@kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Al Viro <viro@ZenIV.linux.org.uk>
+Cc: Ajay Kaher <ajay.kaher@broadcom.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c1504e510238 ("eventfs: Implement eventfs dir creation functions")
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/fpsimd.c |    2 +-
- arch/arm64/kernel/signal.c |    4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ fs/tracefs/event_inode.c |    5 ++---
+ fs/tracefs/inode.c       |   27 ++++++++++++++++++---------
+ fs/tracefs/internal.h    |    3 ++-
+ 3 files changed, 22 insertions(+), 13 deletions(-)
 
---- a/arch/arm64/kernel/fpsimd.c
-+++ b/arch/arm64/kernel/fpsimd.c
-@@ -1628,7 +1628,7 @@ void fpsimd_preserve_current_state(void)
- void fpsimd_signal_preserve_current_state(void)
- {
- 	fpsimd_preserve_current_state();
--	if (test_thread_flag(TIF_SVE))
-+	if (current->thread.fp_type == FP_STATE_SVE)
- 		sve_to_fpsimd(current);
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -378,13 +378,12 @@ static void free_ei(struct eventfs_inode
  }
  
---- a/arch/arm64/kernel/signal.c
-+++ b/arch/arm64/kernel/signal.c
-@@ -242,7 +242,7 @@ static int preserve_sve_context(struct s
- 		vl = task_get_sme_vl(current);
- 		vq = sve_vq_from_vl(vl);
- 		flags |= SVE_SIG_FLAG_SM;
--	} else if (test_thread_flag(TIF_SVE)) {
-+	} else if (current->thread.fp_type == FP_STATE_SVE) {
- 		vq = sve_vq_from_vl(vl);
- 	}
+ /**
+- * eventfs_set_ei_status_free - remove the dentry reference from an eventfs_inode
+- * @ti: the tracefs_inode of the dentry
++ * eventfs_d_release - dentry is going away
+  * @dentry: dentry which has the reference to remove.
+  *
+  * Remove the association between a dentry from an eventfs_inode.
+  */
+-void eventfs_set_ei_status_free(struct tracefs_inode *ti, struct dentry *dentry)
++void eventfs_d_release(struct dentry *dentry)
+ {
+ 	struct eventfs_inode *ei;
+ 	int i;
+--- a/fs/tracefs/inode.c
++++ b/fs/tracefs/inode.c
+@@ -377,21 +377,30 @@ static const struct super_operations tra
+ 	.show_options	= tracefs_show_options,
+ };
  
-@@ -878,7 +878,7 @@ static int setup_sigframe_layout(struct
- 	if (system_supports_sve() || system_supports_sme()) {
- 		unsigned int vq = 0;
+-static void tracefs_dentry_iput(struct dentry *dentry, struct inode *inode)
++/*
++ * It would be cleaner if eventfs had its own dentry ops.
++ *
++ * Note that d_revalidate is called potentially under RCU,
++ * so it can't take the eventfs mutex etc. It's fine - if
++ * we open a file just as it's marked dead, things will
++ * still work just fine, and just see the old stale case.
++ */
++static void tracefs_d_release(struct dentry *dentry)
+ {
+-	struct tracefs_inode *ti;
++	if (dentry->d_fsdata)
++		eventfs_d_release(dentry);
++}
  
--		if (add_all || test_thread_flag(TIF_SVE) ||
-+		if (add_all || current->thread.fp_type == FP_STATE_SVE ||
- 		    thread_sm_enabled(&current->thread)) {
- 			int vl = max(sve_max_vl(), sme_max_vl());
+-	if (!dentry || !inode)
+-		return;
++static int tracefs_d_revalidate(struct dentry *dentry, unsigned int flags)
++{
++	struct eventfs_inode *ei = dentry->d_fsdata;
  
+-	ti = get_tracefs(inode);
+-	if (ti && ti->flags & TRACEFS_EVENT_INODE)
+-		eventfs_set_ei_status_free(ti, dentry);
+-	iput(inode);
++	return !(ei && ei->is_freed);
+ }
+ 
+ static const struct dentry_operations tracefs_dentry_operations = {
+-	.d_iput = tracefs_dentry_iput,
++	.d_revalidate = tracefs_d_revalidate,
++	.d_release = tracefs_d_release,
+ };
+ 
+ static int trace_fill_super(struct super_block *sb, void *data, int silent)
+--- a/fs/tracefs/internal.h
++++ b/fs/tracefs/internal.h
+@@ -78,6 +78,7 @@ struct dentry *tracefs_start_creating(co
+ struct dentry *tracefs_end_creating(struct dentry *dentry);
+ struct dentry *tracefs_failed_creating(struct dentry *dentry);
+ struct inode *tracefs_get_inode(struct super_block *sb);
+-void eventfs_set_ei_status_free(struct tracefs_inode *ti, struct dentry *dentry);
++
++void eventfs_d_release(struct dentry *dentry);
+ 
+ #endif /* _TRACEFS_INTERNAL_H */
 
 
 
