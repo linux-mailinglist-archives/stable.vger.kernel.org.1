@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-21201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3518F85C798
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:14:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39F8E85C908
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:29:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 962FAB215BA
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:14:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A76BA1F22B96
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:29:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05DA151CCC;
-	Tue, 20 Feb 2024 21:14:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FA5A151CED;
+	Tue, 20 Feb 2024 21:28:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wcCJXBcE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cy+8ZHPM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACDE114AD15;
-	Tue, 20 Feb 2024 21:14:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F361151CE1;
+	Tue, 20 Feb 2024 21:28:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463672; cv=none; b=h/c3i9ulIkB271spG2mh1klTk2QiV5YhFk6oLbGdiRDPolCCG3/10POJV2dCXcdL7qFHoMfFU93LSwOPto1AxcK5pxam96FzV80gLLjMtRbGT+p2tFKcDt9s8jktLDfLNoFGJitP3x8kOZc4iTShkAMYu9wYaC9VmWmiTckZAIc=
+	t=1708464503; cv=none; b=e8R6uRq6WpEOsDJXRaFZ+3wKC1PSXeVTSgiTKa2udq73oNBxNBbLL/KAMoX0Rzd+mBsgOiYcKe7T1+lKEbGv6aKbgc+xMzVabpQDh0XmOVW9RCM0p10xpP7bM9yD1u0UJCwaE5ZQV2brjc/66SM2/YO7ccTKKARRQ4MTmeLfV1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463672; c=relaxed/simple;
-	bh=2PRZuZPUOvEhhILWuCrRF6gUiArF7CU7T71AGEl8rxE=;
+	s=arc-20240116; t=1708464503; c=relaxed/simple;
+	bh=vhqfVl1QigxQ9daV1j8ZpmoxHJzkxAfVEyKB3BBZrzY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n4zfJKMFy5sqVZacc1SwvF3Qe7inVNyBofSVmSfaBslKxrrRVrQnftn5AIhADSgHBJ6T5HnlEDMi0SL6WMX+at1PpBv0pQw7hz3ivA7h3+QYOgr2VgtA21RjZ17Be328X0EY/xl66raK18CakJ8VxEX+sUd82o1ehcbU3zOVZkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wcCJXBcE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9B1AC433F1;
-	Tue, 20 Feb 2024 21:14:31 +0000 (UTC)
+	 MIME-Version; b=eruISKXsiLFFbkutvYZT70KJEMr5tkXIzvkBXrPibP5JZi89LRK4l6fjCX49eWuCVfgm9sRwRyH9ndHUE1iX50b9kn4BRoD/oXzY1s5WLVeNx1Scwa+TI7XpfUplqsZA+dm31CnazCWEmZztz1B1hDBhZoqRSuYR4Wy1Ob6EtPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cy+8ZHPM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3E90C433C7;
+	Tue, 20 Feb 2024 21:28:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463672;
-	bh=2PRZuZPUOvEhhILWuCrRF6gUiArF7CU7T71AGEl8rxE=;
+	s=korg; t=1708464503;
+	bh=vhqfVl1QigxQ9daV1j8ZpmoxHJzkxAfVEyKB3BBZrzY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wcCJXBcERfRaQqjo7ZAj+pZiwq+D+XWiMG+R5a34RgEY9fBvjq1o3wldG+EO0mQCY
-	 2fQ7zv6N6zRJBbEt/mtlIjDD7Z3RWb9WkBrB200Iz1qn3bnJ7Ml7wfH+ReAnVgOibT
-	 YQHescqBr3/27m29BnrELraDxSed7gJIX+MvOpn4=
+	b=cy+8ZHPMOolhGiVEMTWGNgJ/YyKY7acu4NsINf8o870MpaoKVEA7rjfSsi7hsjZZ8
+	 r1eJdgXd7C4SgIIyuh9WXiBXcBTs7e+W/AKX7ti5AEvjVgqMDZEEfkHdENgTzbgzJM
+	 sdefg0JiLBHT/99sAhyK0v1H0qSTuxwXx9JCimkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xu Yang <xu.yang_2@nxp.com>,
-	Saravana Kannan <saravanak@google.com>,
+	Aaron Conole <aconole@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 088/331] driver core: fw_devlink: Improve detection of overlapping cycles
+Subject: [PATCH 6.7 045/309] net: openvswitch: limit the number of recursions from action sets
 Date: Tue, 20 Feb 2024 21:53:24 +0100
-Message-ID: <20240220205640.355998217@linuxfoundation.org>
+Message-ID: <20240220205634.596522698@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,104 +63,216 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saravana Kannan <saravanak@google.com>
+From: Aaron Conole <aconole@redhat.com>
 
-[ Upstream commit 6442d79d880cf7a2fff18779265d657fef0cce4c ]
+[ Upstream commit 6e2f90d31fe09f2b852de25125ca875aabd81367 ]
 
-fw_devlink can detect most overlapping/intersecting cycles. However it was
-missing a few corner cases because of an incorrect optimization logic that
-tries to avoid repeating cycle detection for devices that are already
-marked as part of a cycle.
+The ovs module allows for some actions to recursively contain an action
+list for complex scenarios, such as sampling, checking lengths, etc.
+When these actions are copied into the internal flow table, they are
+evaluated to validate that such actions make sense, and these calls
+happen recursively.
 
-Here's an example provided by Xu Yang (edited for clarity):
+The ovs-vswitchd userspace won't emit more than 16 recursion levels
+deep.  However, the module has no such limit and will happily accept
+limits larger than 16 levels nested.  Prevent this by tracking the
+number of recursions happening and manually limiting it to 16 levels
+nested.
 
-                    usb
-                  +-----+
-   tcpc           |     |
-  +-----+         |  +--|
-  |     |----------->|EP|
-  |--+  |         |  +--|
-  |EP|<-----------|     |
-  |--+  |         |  B  |
-  |     |         +-----+
-  |  A  |            |
-  +-----+            |
-     ^     +-----+   |
-     |     |     |   |
-     +-----|  C  |<--+
-           |     |
-           +-----+
-           usb-phy
+The initial implementation of the sample action would track this depth
+and prevent more than 3 levels of recursion, but this was removed to
+support the clone use case, rather than limited at the current userspace
+limit.
 
-Node A (tcpc) will be populated as device 1-0050.
-Node B (usb) will be populated as device 38100000.usb.
-Node C (usb-phy) will be populated as device 381f0040.usb-phy.
-
-The description below uses the notation:
-consumer --> supplier
-child ==> parent
-
-1. Node C is populated as device C. No cycles detected because cycle
-   detection is only run when a fwnode link is converted to a device link.
-
-2. Node B is populated as device B. As we convert B --> C into a device
-   link we run cycle detection and find and mark the device link/fwnode
-   link cycle:
-   C--> A --> B.EP ==> B --> C
-
-3. Node A is populated as device A. As we convert C --> A into a device
-   link, we see it's already part of a cycle (from step 2) and don't run
-   cycle detection. Thus we miss detecting the cycle:
-   A --> B.EP ==> B --> A.EP ==> A
-
-Looking at it another way, A depends on B in one way:
-A --> B.EP ==> B
-
-But B depends on A in two ways and we only detect the first:
-B --> C --> A
-B --> A.EP ==> A
-
-To detect both of these, we remove the incorrect optimization attempt in
-step 3 and run cycle detection even if the fwnode link from which the
-device link is being created has already been marked as part of a cycle.
-
-Reported-by: Xu Yang <xu.yang_2@nxp.com>
-Closes: https://lore.kernel.org/lkml/DU2PR04MB8822693748725F85DC0CB86C8C792@DU2PR04MB8822.eurprd04.prod.outlook.com/
-Fixes: 3fb16866b51d ("driver core: fw_devlink: Make cycle detection more robust")
-Signed-off-by: Saravana Kannan <saravanak@google.com>
-Tested-by: Xu Yang <xu.yang_2@nxp.com>
-Link: https://lore.kernel.org/r/20240202095636.868578-3-saravanak@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 798c166173ff ("openvswitch: Optimize sample action for the clone use cases")
+Signed-off-by: Aaron Conole <aconole@redhat.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240207132416.1488485-2-aconole@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/core.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ net/openvswitch/flow_netlink.c | 49 +++++++++++++++++++++++-----------
+ 1 file changed, 33 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/base/core.c b/drivers/base/core.c
-index a81bc8844a8f..2cc0ab854168 100644
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -2059,9 +2059,14 @@ static int fw_devlink_create_devlink(struct device *con,
+diff --git a/net/openvswitch/flow_netlink.c b/net/openvswitch/flow_netlink.c
+index 88965e2068ac..ebc5728aab4e 100644
+--- a/net/openvswitch/flow_netlink.c
++++ b/net/openvswitch/flow_netlink.c
+@@ -48,6 +48,7 @@ struct ovs_len_tbl {
  
- 	/*
- 	 * SYNC_STATE_ONLY device links don't block probing and supports cycles.
--	 * So cycle detection isn't necessary and shouldn't be done.
-+	 * So, one might expect that cycle detection isn't necessary for them.
-+	 * However, if the device link was marked as SYNC_STATE_ONLY because
-+	 * it's part of a cycle, then we still need to do cycle detection. This
-+	 * is because the consumer and supplier might be part of multiple cycles
-+	 * and we need to detect all those cycles.
- 	 */
--	if (!(flags & DL_FLAG_SYNC_STATE_ONLY)) {
-+	if (!device_link_flag_is_sync_state_only(flags) ||
-+	    flags & DL_FLAG_CYCLE) {
- 		device_links_write_lock();
- 		if (__fw_devlink_relax_cycles(con, sup_handle)) {
- 			__fwnode_link_cycle(link);
+ #define OVS_ATTR_NESTED -1
+ #define OVS_ATTR_VARIABLE -2
++#define OVS_COPY_ACTIONS_MAX_DEPTH 16
+ 
+ static bool actions_may_change_flow(const struct nlattr *actions)
+ {
+@@ -2545,13 +2546,15 @@ static int __ovs_nla_copy_actions(struct net *net, const struct nlattr *attr,
+ 				  const struct sw_flow_key *key,
+ 				  struct sw_flow_actions **sfa,
+ 				  __be16 eth_type, __be16 vlan_tci,
+-				  u32 mpls_label_count, bool log);
++				  u32 mpls_label_count, bool log,
++				  u32 depth);
+ 
+ static int validate_and_copy_sample(struct net *net, const struct nlattr *attr,
+ 				    const struct sw_flow_key *key,
+ 				    struct sw_flow_actions **sfa,
+ 				    __be16 eth_type, __be16 vlan_tci,
+-				    u32 mpls_label_count, bool log, bool last)
++				    u32 mpls_label_count, bool log, bool last,
++				    u32 depth)
+ {
+ 	const struct nlattr *attrs[OVS_SAMPLE_ATTR_MAX + 1];
+ 	const struct nlattr *probability, *actions;
+@@ -2602,7 +2605,8 @@ static int validate_and_copy_sample(struct net *net, const struct nlattr *attr,
+ 		return err;
+ 
+ 	err = __ovs_nla_copy_actions(net, actions, key, sfa,
+-				     eth_type, vlan_tci, mpls_label_count, log);
++				     eth_type, vlan_tci, mpls_label_count, log,
++				     depth + 1);
+ 
+ 	if (err)
+ 		return err;
+@@ -2617,7 +2621,8 @@ static int validate_and_copy_dec_ttl(struct net *net,
+ 				     const struct sw_flow_key *key,
+ 				     struct sw_flow_actions **sfa,
+ 				     __be16 eth_type, __be16 vlan_tci,
+-				     u32 mpls_label_count, bool log)
++				     u32 mpls_label_count, bool log,
++				     u32 depth)
+ {
+ 	const struct nlattr *attrs[OVS_DEC_TTL_ATTR_MAX + 1];
+ 	int start, action_start, err, rem;
+@@ -2660,7 +2665,8 @@ static int validate_and_copy_dec_ttl(struct net *net,
+ 		return action_start;
+ 
+ 	err = __ovs_nla_copy_actions(net, actions, key, sfa, eth_type,
+-				     vlan_tci, mpls_label_count, log);
++				     vlan_tci, mpls_label_count, log,
++				     depth + 1);
+ 	if (err)
+ 		return err;
+ 
+@@ -2674,7 +2680,8 @@ static int validate_and_copy_clone(struct net *net,
+ 				   const struct sw_flow_key *key,
+ 				   struct sw_flow_actions **sfa,
+ 				   __be16 eth_type, __be16 vlan_tci,
+-				   u32 mpls_label_count, bool log, bool last)
++				   u32 mpls_label_count, bool log, bool last,
++				   u32 depth)
+ {
+ 	int start, err;
+ 	u32 exec;
+@@ -2694,7 +2701,8 @@ static int validate_and_copy_clone(struct net *net,
+ 		return err;
+ 
+ 	err = __ovs_nla_copy_actions(net, attr, key, sfa,
+-				     eth_type, vlan_tci, mpls_label_count, log);
++				     eth_type, vlan_tci, mpls_label_count, log,
++				     depth + 1);
+ 	if (err)
+ 		return err;
+ 
+@@ -3063,7 +3071,7 @@ static int validate_and_copy_check_pkt_len(struct net *net,
+ 					   struct sw_flow_actions **sfa,
+ 					   __be16 eth_type, __be16 vlan_tci,
+ 					   u32 mpls_label_count,
+-					   bool log, bool last)
++					   bool log, bool last, u32 depth)
+ {
+ 	const struct nlattr *acts_if_greater, *acts_if_lesser_eq;
+ 	struct nlattr *a[OVS_CHECK_PKT_LEN_ATTR_MAX + 1];
+@@ -3111,7 +3119,8 @@ static int validate_and_copy_check_pkt_len(struct net *net,
+ 		return nested_acts_start;
+ 
+ 	err = __ovs_nla_copy_actions(net, acts_if_lesser_eq, key, sfa,
+-				     eth_type, vlan_tci, mpls_label_count, log);
++				     eth_type, vlan_tci, mpls_label_count, log,
++				     depth + 1);
+ 
+ 	if (err)
+ 		return err;
+@@ -3124,7 +3133,8 @@ static int validate_and_copy_check_pkt_len(struct net *net,
+ 		return nested_acts_start;
+ 
+ 	err = __ovs_nla_copy_actions(net, acts_if_greater, key, sfa,
+-				     eth_type, vlan_tci, mpls_label_count, log);
++				     eth_type, vlan_tci, mpls_label_count, log,
++				     depth + 1);
+ 
+ 	if (err)
+ 		return err;
+@@ -3152,12 +3162,16 @@ static int __ovs_nla_copy_actions(struct net *net, const struct nlattr *attr,
+ 				  const struct sw_flow_key *key,
+ 				  struct sw_flow_actions **sfa,
+ 				  __be16 eth_type, __be16 vlan_tci,
+-				  u32 mpls_label_count, bool log)
++				  u32 mpls_label_count, bool log,
++				  u32 depth)
+ {
+ 	u8 mac_proto = ovs_key_mac_proto(key);
+ 	const struct nlattr *a;
+ 	int rem, err;
+ 
++	if (depth > OVS_COPY_ACTIONS_MAX_DEPTH)
++		return -EOVERFLOW;
++
+ 	nla_for_each_nested(a, attr, rem) {
+ 		/* Expected argument lengths, (u32)-1 for variable length. */
+ 		static const u32 action_lens[OVS_ACTION_ATTR_MAX + 1] = {
+@@ -3355,7 +3369,7 @@ static int __ovs_nla_copy_actions(struct net *net, const struct nlattr *attr,
+ 			err = validate_and_copy_sample(net, a, key, sfa,
+ 						       eth_type, vlan_tci,
+ 						       mpls_label_count,
+-						       log, last);
++						       log, last, depth);
+ 			if (err)
+ 				return err;
+ 			skip_copy = true;
+@@ -3426,7 +3440,7 @@ static int __ovs_nla_copy_actions(struct net *net, const struct nlattr *attr,
+ 			err = validate_and_copy_clone(net, a, key, sfa,
+ 						      eth_type, vlan_tci,
+ 						      mpls_label_count,
+-						      log, last);
++						      log, last, depth);
+ 			if (err)
+ 				return err;
+ 			skip_copy = true;
+@@ -3440,7 +3454,8 @@ static int __ovs_nla_copy_actions(struct net *net, const struct nlattr *attr,
+ 							      eth_type,
+ 							      vlan_tci,
+ 							      mpls_label_count,
+-							      log, last);
++							      log, last,
++							      depth);
+ 			if (err)
+ 				return err;
+ 			skip_copy = true;
+@@ -3450,7 +3465,8 @@ static int __ovs_nla_copy_actions(struct net *net, const struct nlattr *attr,
+ 		case OVS_ACTION_ATTR_DEC_TTL:
+ 			err = validate_and_copy_dec_ttl(net, a, key, sfa,
+ 							eth_type, vlan_tci,
+-							mpls_label_count, log);
++							mpls_label_count, log,
++							depth);
+ 			if (err)
+ 				return err;
+ 			skip_copy = true;
+@@ -3495,7 +3511,8 @@ int ovs_nla_copy_actions(struct net *net, const struct nlattr *attr,
+ 
+ 	(*sfa)->orig_len = nla_len(attr);
+ 	err = __ovs_nla_copy_actions(net, attr, key, sfa, key->eth.type,
+-				     key->eth.vlan.tci, mpls_label_count, log);
++				     key->eth.vlan.tci, mpls_label_count, log,
++				     0);
+ 	if (err)
+ 		ovs_nla_free_flow_actions(*sfa);
+ 
 -- 
 2.43.0
 
