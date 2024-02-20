@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-21067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C467A85C700
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:07:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BB5885C747
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:11:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F752284510
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:07:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64D411C21A87
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:11:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 121551509AC;
-	Tue, 20 Feb 2024 21:07:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 930B9151CCC;
+	Tue, 20 Feb 2024 21:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yE6Oiize"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pATganJc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5F4E612D7;
-	Tue, 20 Feb 2024 21:07:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D1D2612D7;
+	Tue, 20 Feb 2024 21:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463245; cv=none; b=ASILhNv0jKR/3B8pRFnci0OSAjUEllzmUKQQtUr7I8dfUuA2zcO3/4zCP0gwX11tLx6E87IhcsYi32cQjAfwTxNuqsh0FOCDbswOSEo1aDZyxIc9E35yS/FaKfViK9wZFjjMloJfXbVrxCshwyu0wDkSQlxwcw2QRm9J3qcY/Rk=
+	t=1708463470; cv=none; b=aPp//PsEaNnSM1BbRoHvoQm9AL7ldaO2syGTSNJQCGbNJuMDSIkz5VYvZpcirHKVH/C1UjJLCRA3N8zHkhWu7/NN6kZY96NubQ1Iz66JIJ2d+JZn5w+utWhMc5XDmhBFjWNrPGG0TIJ6cBxlUmPL0Ww2tmNPr8z0HjuWPZLkOKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463245; c=relaxed/simple;
-	bh=0GSL+1fOEWYX99j3dfHN85vPMoq+ajeuFbRcBHE8+tM=;
+	s=arc-20240116; t=1708463470; c=relaxed/simple;
+	bh=EzghjXfjNAaEV+ezgoYqXjZvn4nprKm+/9RPdNWsuAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BXrOGSlqJAJmaEVlZMtv/AgqTEcl/4sl+xfhIx8xdjFGN6o4C9cnYXe260k9yuC3HWYyDqOzerCb/7p+EiM1AtrcyEwK5gHUNBjsWrQYFjE/PKHNmFumlkcdtkRCWzGHrCa8TH6EH1NdWbuQfo3XV8ScxIPp8vbuBlFCT85v4Kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yE6Oiize; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34CF6C433C7;
-	Tue, 20 Feb 2024 21:07:25 +0000 (UTC)
+	 MIME-Version; b=eq7W2XvSN394Kh62Q6iFZO2ucYxFpe76yCataYR24CQFRHhuO2l+XlV8IC30Cs63b9l3vNbiWAT7UjXCll43ZxVEIP5nRvyCwEQVJFRqEryosXBdvVbvy65nzzieHnWcdjf40JnTPd0BhoaCtQaJ13a2YPpWJh+jvozrrxAF984=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pATganJc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB094C433C7;
+	Tue, 20 Feb 2024 21:11:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463245;
-	bh=0GSL+1fOEWYX99j3dfHN85vPMoq+ajeuFbRcBHE8+tM=;
+	s=korg; t=1708463470;
+	bh=EzghjXfjNAaEV+ezgoYqXjZvn4nprKm+/9RPdNWsuAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yE6Oiizev4HdCIbh4lv5tq8AYFaTxLqfgjvPgQb4xVhNDRCsueyt7EYFCH0ohJHnV
-	 xfhuKQjTDkkVeTUYe2EQ6CqpVIzkyFEpba7aSDTBQZKYRnq00daaJtdV0LAXcWtKRe
-	 hqyJ1SLpYVLkSOXZh6qbC6gzziJJ4B1gpjFalrKA=
+	b=pATganJco+Jg6QIDQ9R0WU8iCw5jUqkCamZq8hkVS+bzL/pDdBKzVkQ2v+5OgGnAu
+	 C4VNue+l63OHsCRAfgP8RvtYJbICsRSXdJSMQU/HKb1STOEXJHc7Gez9mVlXlWDobd
+	 v/etv4eBFm1D9701jIj0rB8Bmg2fJYgmL9QvdKI4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tianjia Zhang <tianjia.zhang@linux.alibaba.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Parav Pandit <parav@nvidia.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 182/197] crypto: lib/mpi - Fix unexpected pointer access in mpi_ec_init
+Subject: [PATCH 6.6 025/331] devlink: Fix command annotation documentation
 Date: Tue, 20 Feb 2024 21:52:21 +0100
-Message-ID: <20240220204846.522889225@linuxfoundation.org>
+Message-ID: <20240220205638.382509382@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
-References: <20240220204841.073267068@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+From: Parav Pandit <parav@nvidia.com>
 
-[ Upstream commit ba3c5574203034781ac4231acf117da917efcd2a ]
+[ Upstream commit 4ab18af47a2c2a80ac11674122935700caf80cc6 ]
 
-When the mpi_ec_ctx structure is initialized, some fields are not
-cleared, causing a crash when referencing the field when the
-structure was released. Initially, this issue was ignored because
-memory for mpi_ec_ctx is allocated with the __GFP_ZERO flag.
-For example, this error will be triggered when calculating the
-Za value for SM2 separately.
+Command example string is not read as command.
+Fix command annotation.
 
-Fixes: d58bb7e55a8a ("lib/mpi: Introduce ec implementation to MPI library")
-Cc: stable@vger.kernel.org # v6.5
-Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: a8ce7b26a51e ("devlink: Expose port function commands to control migratable")
+Signed-off-by: Parav Pandit <parav@nvidia.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240206161717.466653-1-parav@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/mpi/ec.c | 3 +++
- 1 file changed, 3 insertions(+)
+ Documentation/networking/devlink/devlink-port.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/mpi/ec.c b/lib/mpi/ec.c
-index 40f5908e57a4..e16dca1e23d5 100644
---- a/lib/mpi/ec.c
-+++ b/lib/mpi/ec.c
-@@ -584,6 +584,9 @@ void mpi_ec_init(struct mpi_ec_ctx *ctx, enum gcry_mpi_ec_models model,
- 	ctx->a = mpi_copy(a);
- 	ctx->b = mpi_copy(b);
+diff --git a/Documentation/networking/devlink/devlink-port.rst b/Documentation/networking/devlink/devlink-port.rst
+index e33ad2401ad7..562f46b41274 100644
+--- a/Documentation/networking/devlink/devlink-port.rst
++++ b/Documentation/networking/devlink/devlink-port.rst
+@@ -126,7 +126,7 @@ Users may also set the RoCE capability of the function using
+ `devlink port function set roce` command.
  
-+	ctx->d = NULL;
-+	ctx->t.two_inv_p = NULL;
-+
- 	ctx->t.p_barrett = use_barrett > 0 ? mpi_barrett_init(ctx->p, 0) : NULL;
+ Users may also set the function as migratable using
+-'devlink port function set migratable' command.
++`devlink port function set migratable` command.
  
- 	mpi_ec_get_reset(ctx);
+ Users may also set the IPsec crypto capability of the function using
+ `devlink port function set ipsec_crypto` command.
 -- 
 2.43.0
 
