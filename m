@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-21402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DBCC85C8BE
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:25:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47C7985C9F4
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:40:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AEDDA1C222F0
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:25:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46F101C2221F
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:40:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0A811509AC;
-	Tue, 20 Feb 2024 21:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78D1B151CEA;
+	Tue, 20 Feb 2024 21:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qr2JRT+1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1S3Wn5Ek"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 605CE14A4E6;
-	Tue, 20 Feb 2024 21:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38114612D7;
+	Tue, 20 Feb 2024 21:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464308; cv=none; b=lrntNcru8DhUJslRmbWCgIijET8AlDMIMWTBQPo2OBcGvUy7j8UacNVRXMSZWEUy9txkBXP8DmycR+OMS7UeFNwnWEXpc2SLgawXiEtcP546kOvN5g1GHFiqqtTJ9UBaftgwkqdjWxJS6NRacvsUB+nngKLfP3Heywx8ntA2PdY=
+	t=1708465221; cv=none; b=uMk3RGc+iDpT718u2pJT/SGhC0HtAGn5P5iEVk9Xs2vskIKiuHYosBcZZXaz7ncVZuQRYUEV/zYFMWQjMbq5/nSEwmGFNyzXr0/IkHoSXf1iA6yl15eRTdpi5BXoPZk+97s3D5hi5N9g5LQM76629Zj/gBJUGdRdrky+nuYSgJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464308; c=relaxed/simple;
-	bh=WRDksiKt9x9sCl1txKagCjOoucbIApvh75dw4QGv0Ds=;
+	s=arc-20240116; t=1708465221; c=relaxed/simple;
+	bh=Q+OTxl8H+JKUKLtDspoY1r5h7fO/h73LXxd6yQ5aHmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WRUowFrz4v3zYfS8Eod8fdYAOnp5pCh/CNqX5TZwVoUsAIRTdp7986q4Iw3wTSQrGYjZbB7IyRnfnyJM1scWnfDq0Phaag2TcSz3osbokugSEEfJHfuCEFCTGnnvVE///V/PPis9gTG5mkMpAOAQ458XYgycxYTRpXA1hsGgV0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qr2JRT+1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C9EC433F1;
-	Tue, 20 Feb 2024 21:25:07 +0000 (UTC)
+	 MIME-Version; b=unZlUrQCD90MwqaFWrf4xZQL2QlD/9HxqdfSq5xmgWI5NadQHWveTyaPCXdEMZATwiSDVzF8Kdu2Tw6NU2E3treGpD21vfOjOsHddKmA+NtywXl91DmxW2JUG5nxgo9EbyYlnhnDr8LMFANF/GqWm65lq7J6hfJkpR9WOkU+s6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1S3Wn5Ek; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B8AEC433C7;
+	Tue, 20 Feb 2024 21:40:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464308;
-	bh=WRDksiKt9x9sCl1txKagCjOoucbIApvh75dw4QGv0Ds=;
+	s=korg; t=1708465221;
+	bh=Q+OTxl8H+JKUKLtDspoY1r5h7fO/h73LXxd6yQ5aHmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qr2JRT+1a35UvJGKFjz83Xrb5Rzgluo3i9Hsbvodgj/we/BO4Ou8O0oovU4FfLrlp
-	 ls0IDcLESEMTyvu/FIxiPRDfMnnKIzILxmgRDExvgpMMefhdIIwYdFX1gs4u9sMwBJ
-	 +O1y54vddgIy25GRC4/El2qQiM5kT4W4RzhMlR9g=
+	b=1S3Wn5EkTUvgAQpc3+wr7DtdgwjxUryB9X5YIz/4Q7kSyscLNEpi1L5rzpPTkoCeI
+	 r4zU2TTmmmOyIG+ivZdPPlAcIYv7Vtrani8h9QllXWXIBos+MADekl+HUyw/z2FPfA
+	 mCUMT12ghjsL28l/rE0/V2z2KzNux8kmOG7bvJEo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 6.6 317/331] x86/efi: Disregard setup header of loaded image
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Donald Zickus <dzickus@redhat.com>,
+	Daniel Bristot de Oliveira <bristot@kernel.org>
+Subject: [PATCH 6.7 274/309] tools/rtla: Fix clang warning about mount_point var size
 Date: Tue, 20 Feb 2024 21:57:13 +0100
-Message-ID: <20240220205648.176674276@linuxfoundation.org>
+Message-ID: <20240220205641.702255671@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,115 +66,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Daniel Bristot de Oliveira <bristot@kernel.org>
 
-commit 7e50262229faad0c7b8c54477cd1c883f31cc4a7 upstream.
+commit 30369084ac6e27479a347899e74f523e6ca29b89 upstream.
 
-The native EFI entrypoint does not take a struct boot_params from the
-loader, but instead, it constructs one from scratch, using the setup
-header data placed at the start of the image.
+clang is reporting this warning:
 
-This setup header is placed in a way that permits legacy loaders to
-manipulate the contents (i.e., to pass the kernel command line or the
-address and size of an initial ramdisk), but EFI boot does not use it in
-that way - it only copies the contents that were placed there at build
-time, but EFI loaders will not (and should not) manipulate the setup
-header to configure the boot. (Commit 63bf28ceb3ebbe76 "efi: x86: Wipe
-setup_data on pure EFI boot" deals with some of the fallout of using
-setup_data in a way that breaks EFI boot.)
+$ make HOSTCC=clang CC=clang LLVM_IAS=1
+[...]
+clang -O -g -DVERSION=\"6.8.0-rc3\" -flto=auto -fexceptions
+	-fstack-protector-strong -fasynchronous-unwind-tables
+	-fstack-clash-protection  -Wall -Werror=format-security
+	-Wp,-D_FORTIFY_SOURCE=2 -Wp,-D_GLIBCXX_ASSERTIONS
+	$(pkg-config --cflags libtracefs)    -c -o src/utils.o src/utils.c
 
-Given that none of the non-zero values that are copied from the setup
-header into the EFI stub's struct boot_params are relevant to the boot
-now that the EFI stub no longer enters via the legacy decompressor, the
-copy can be omitted altogether.
+src/utils.c:548:66: warning: 'fscanf' may overflow; destination buffer in argument 3 has size 1024, but the corresponding specifier may require size 1025 [-Wfortify-source]
+  548 |         while (fscanf(fp, "%*s %" STR(MAX_PATH) "s %99s %*s %*d %*d\n", mount_point, type) == 2) {
+      |                                                                         ^
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230912090051.4014114-19-ardb@google.com
+Increase mount_point variable size to MAX_PATH+1 to avoid the overflow.
+
+Link: https://lkml.kernel.org/r/1b46712e93a2f4153909514a36016959dcc4021c.1707217097.git.bristot@kernel.org
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Bill Wendling <morbo@google.com>
+Cc: Justin Stitt <justinstitt@google.com>
+Cc: Donald Zickus <dzickus@redhat.com>
+Fixes: a957cbc02531 ("rtla: Add -C cgroup support")
+Signed-off-by: Daniel Bristot de Oliveira <bristot@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/efi/libstub/x86-stub.c |   46 ++++----------------------------
- 1 file changed, 6 insertions(+), 40 deletions(-)
+ tools/tracing/rtla/src/utils.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -458,9 +458,8 @@ void __noreturn efi_stub_entry(efi_handl
- efi_status_t __efiapi efi_pe_entry(efi_handle_t handle,
- 				   efi_system_table_t *sys_table_arg)
+--- a/tools/tracing/rtla/src/utils.c
++++ b/tools/tracing/rtla/src/utils.c
+@@ -530,7 +530,7 @@ int set_cpu_dma_latency(int32_t latency)
+  */
+ static const int find_mount(const char *fs, char *mp, int sizeof_mp)
  {
--	struct boot_params *boot_params;
--	struct setup_header *hdr;
--	void *image_base;
-+	static struct boot_params boot_params __page_aligned_bss;
-+	struct setup_header *hdr = &boot_params.hdr;
- 	efi_guid_t proto = LOADED_IMAGE_PROTOCOL_GUID;
- 	int options_size = 0;
- 	efi_status_t status;
-@@ -478,30 +477,9 @@ efi_status_t __efiapi efi_pe_entry(efi_h
- 		efi_exit(handle, status);
- 	}
- 
--	image_base = efi_table_attr(image, image_base);
--
--	status = efi_allocate_pages(sizeof(struct boot_params),
--				    (unsigned long *)&boot_params, ULONG_MAX);
--	if (status != EFI_SUCCESS) {
--		efi_err("Failed to allocate lowmem for boot params\n");
--		efi_exit(handle, status);
--	}
--
--	memset(boot_params, 0x0, sizeof(struct boot_params));
--
--	hdr = &boot_params->hdr;
--
--	/* Copy the setup header from the second sector to boot_params */
--	memcpy(&hdr->jump, image_base + 512,
--	       sizeof(struct setup_header) - offsetof(struct setup_header, jump));
--
--	/*
--	 * Fill out some of the header fields ourselves because the
--	 * EFI firmware loader doesn't load the first sector.
--	 */
-+	/* Assign the setup_header fields that the kernel actually cares about */
- 	hdr->root_flags	= 1;
- 	hdr->vid_mode	= 0xffff;
--	hdr->boot_flag	= 0xAA55;
- 
- 	hdr->type_of_loader = 0x21;
- 
-@@ -510,25 +488,13 @@ efi_status_t __efiapi efi_pe_entry(efi_h
- 	if (!cmdline_ptr)
- 		goto fail;
- 
--	efi_set_u64_split((unsigned long)cmdline_ptr,
--			  &hdr->cmd_line_ptr, &boot_params->ext_cmd_line_ptr);
--
--	hdr->ramdisk_image = 0;
--	hdr->ramdisk_size = 0;
-+	efi_set_u64_split((unsigned long)cmdline_ptr, &hdr->cmd_line_ptr,
-+			  &boot_params.ext_cmd_line_ptr);
- 
--	/*
--	 * Disregard any setup data that was provided by the bootloader:
--	 * setup_data could be pointing anywhere, and we have no way of
--	 * authenticating or validating the payload.
--	 */
--	hdr->setup_data = 0;
--
--	efi_stub_entry(handle, sys_table_arg, boot_params);
-+	efi_stub_entry(handle, sys_table_arg, &boot_params);
- 	/* not reached */
- 
- fail:
--	efi_free(sizeof(struct boot_params), (unsigned long)boot_params);
--
- 	efi_exit(handle, status);
- }
- 
+-	char mount_point[MAX_PATH];
++	char mount_point[MAX_PATH+1];
+ 	char type[100];
+ 	int found = 0;
+ 	FILE *fp;
 
 
 
