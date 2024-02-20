@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-21664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 380D785C9D2
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:38:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D61A385C896
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:23:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 877B3B224EB
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:38:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5A19AB20DD0
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:23:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79E6A151CFA;
-	Tue, 20 Feb 2024 21:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0449151CDC;
+	Tue, 20 Feb 2024 21:23:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z9UBbaBu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b89LySNn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A62151CF3;
-	Tue, 20 Feb 2024 21:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE5C1509B1;
+	Tue, 20 Feb 2024 21:23:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708465123; cv=none; b=af0Q/eTPIf1bkqjeYEoH6gB3e/jBwsxWS2PyxavnUtuf13IbTnLWkiA5wdJZJhM5znsTnDFDEWronsPWrAOx24hXhi/7HZulvXk3F1YqHsc70MsU+aCloXyWP2Kj/lPC99yR7VMWuXs1BzFYXQ3MHY4zk5vQSjiFrdaCyhJVl7M=
+	t=1708464213; cv=none; b=SOamEJ8CxkuOT2suN8GtXOZ3hnEFqdXvAhMsq1mRd2WBq/7fV5n3QLu3iwoDVWrD2fSS6+M76OmD5uu8T1q9th++MTTtuSMtcvS3SZkla9ScMJMWZ+Pmq3m9gvEqyb81QfUwzsyLcHlXFa/us9gdE3akEZNVhXqc/dssCpRbEFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708465123; c=relaxed/simple;
-	bh=ZVLJ4J2g+RArASlUm01nP79KShqqmRNZt8NOVjxWvvk=;
+	s=arc-20240116; t=1708464213; c=relaxed/simple;
+	bh=Ua4HbbEq4bT47c7ouwJ3UI0Q5GxLgUW/fUtXDpV+YHc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gnoc3IY1ZCe9DoE58Vt23NLLWPsxvYK8DKxPUAF/s7y2u5hG3MttZlaBKox6UCdJs6xs4GEl+YEJ2IGYTmRK/BMwn9u13Rx6AxuVGixMwoNp6nGaAvI7vNuvb/UTQ7aUWuHVZCE1QliClNbc6I7GmORq3m2U6iKNnqrJcd+1pj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z9UBbaBu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACAD6C433F1;
-	Tue, 20 Feb 2024 21:38:42 +0000 (UTC)
+	 MIME-Version; b=PHaPUqXfk6eeD+Zt8Yf6qj1gkQAFCrGsqDcSqnNgy+69CeyDkaB2jn5rDyEwOoX/FoWgorABVvbn3sgQYACoSwB4gjBHvVpcY6gpTi44F4anGHUCjjpj4OFF3LBCOUIthXBGf1sLoazalBCFZgLJ/9dGWr3CAsJpYicCmGJBHpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b89LySNn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2932C433C7;
+	Tue, 20 Feb 2024 21:23:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708465123;
-	bh=ZVLJ4J2g+RArASlUm01nP79KShqqmRNZt8NOVjxWvvk=;
+	s=korg; t=1708464213;
+	bh=Ua4HbbEq4bT47c7ouwJ3UI0Q5GxLgUW/fUtXDpV+YHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z9UBbaBuRJTSVybB/piBq51IsUnjW3QttuJ3lBZgkr77KVKvfSjN35SPaBBwi7Qye
-	 X+H/jaVDFouPxCMakHyB4MR/oSDKGRpXWyDTRc/TBNyBqHhUesEaJ6CkWAmOuOkQdj
-	 At6OAULbLXp2LFfSXX5vpTMFHV+I366YRPfuk4FY=
+	b=b89LySNnYf4gx/Vs1M1FvLbOuDk6hH2K6yePO+YchuCSQy7WyBPXtioSoBBBXOWWS
+	 u0sq7YVYyf85HZGvZdwVpK2FQR0KANfpD1OXDvfUVCD8fl0n9D33O9cws74LHXtrgD
+	 yLPg/NcbfqOx9YzKu/LI1kWJuzkjTcA+xq0W7EQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.7 243/309] nilfs2: fix data corruption in dsync block recovery for small block sizes
-Date: Tue, 20 Feb 2024 21:56:42 +0100
-Message-ID: <20240220205640.764702016@linuxfoundation.org>
+	Beau Belgrave <beaub@linux.microsoft.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 287/331] eventfs: Fix events beyond NAME_MAX blocking tasks
+Date: Tue, 20 Feb 2024 21:56:43 +0100
+Message-ID: <20240220205647.005175240@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Beau Belgrave <beaub@linux.microsoft.com>
 
-commit 67b8bcbaed4777871bb0dcc888fb02a614a98ab1 upstream.
+commit 5eaf7f0589c0d88178f0fbeebe0e0b7108258707 upstream.
 
-The helper function nilfs_recovery_copy_block() of
-nilfs_recovery_dsync_blocks(), which recovers data from logs created by
-data sync writes during a mount after an unclean shutdown, incorrectly
-calculates the on-page offset when copying repair data to the file's page
-cache.  In environments where the block size is smaller than the page
-size, this flaw can cause data corruption and leak uninitialized memory
-bytes during the recovery process.
+Eventfs uses simple_lookup(), however, it will fail if the name of the
+entry is beyond NAME_MAX length. When this error is encountered, eventfs
+still tries to create dentries instead of skipping the dentry creation.
+When the dentry is attempted to be created in this state d_wait_lookup()
+will loop forever, waiting for the lookup to be removed.
 
-Fix these issues by correcting this byte offset calculation on the page.
+Fix eventfs to return the error in simple_lookup() back to the caller
+instead of continuing to try to create the dentry.
 
-Link: https://lkml.kernel.org/r/20240124121936.10575-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Link: https://lore.kernel.org/linux-trace-kernel/20231210213534.497-1-beaub@linux.microsoft.com
+
+Fixes: 63940449555e ("eventfs: Implement eventfs lookup, read, open functions")
+Link: https://lore.kernel.org/linux-trace-kernel/20231208183601.GA46-beaub@linux.microsoft.com/
+Signed-off-by: Beau Belgrave <beaub@linux.microsoft.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/recovery.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ fs/tracefs/event_inode.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/fs/nilfs2/recovery.c
-+++ b/fs/nilfs2/recovery.c
-@@ -472,9 +472,10 @@ static int nilfs_prepare_segment_for_rec
- 
- static int nilfs_recovery_copy_block(struct the_nilfs *nilfs,
- 				     struct nilfs_recovery_block *rb,
--				     struct page *page)
-+				     loff_t pos, struct page *page)
- {
- 	struct buffer_head *bh_org;
-+	size_t from = pos & ~PAGE_MASK;
- 	void *kaddr;
- 
- 	bh_org = __bread(nilfs->ns_bdev, rb->blocknr, nilfs->ns_blocksize);
-@@ -482,7 +483,7 @@ static int nilfs_recovery_copy_block(str
- 		return -EIO;
- 
- 	kaddr = kmap_atomic(page);
--	memcpy(kaddr + bh_offset(bh_org), bh_org->b_data, bh_org->b_size);
-+	memcpy(kaddr + from, bh_org->b_data, bh_org->b_size);
- 	kunmap_atomic(kaddr);
- 	brelse(bh_org);
- 	return 0;
-@@ -521,7 +522,7 @@ static int nilfs_recover_dsync_blocks(st
- 			goto failed_inode;
- 		}
- 
--		err = nilfs_recovery_copy_block(nilfs, rb, page);
-+		err = nilfs_recovery_copy_block(nilfs, rb, pos, page);
- 		if (unlikely(err))
- 			goto failed_page;
- 
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -546,6 +546,8 @@ static struct dentry *eventfs_root_looku
+ 		if (strcmp(ei_child->name, name) != 0)
+ 			continue;
+ 		ret = simple_lookup(dir, dentry, flags);
++		if (IS_ERR(ret))
++			goto out;
+ 		create_dir_dentry(ei, ei_child, ei_dentry, true);
+ 		created = true;
+ 		break;
+@@ -568,6 +570,8 @@ static struct dentry *eventfs_root_looku
+ 			if (r <= 0)
+ 				continue;
+ 			ret = simple_lookup(dir, dentry, flags);
++			if (IS_ERR(ret))
++				goto out;
+ 			create_file_dentry(ei, i, ei_dentry, name, mode, cdata,
+ 					   fops, true);
+ 			break;
 
 
 
