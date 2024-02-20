@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-21496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F89585C927
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:30:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDB5F85C7CC
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:16:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EB9B1C21A66
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:30:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A269F1F26DB2
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:16:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E820A151CD6;
-	Tue, 20 Feb 2024 21:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE2BF152E13;
+	Tue, 20 Feb 2024 21:16:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rJY9U5Rr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QVgvrjs4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A431514A4E6;
-	Tue, 20 Feb 2024 21:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82574151CD8;
+	Tue, 20 Feb 2024 21:16:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464600; cv=none; b=jbUHd8diFJVsI2A1Jf/4w8YiSb3i5Gpm+9lizz0u6HBqauAObLdRb0o1b4gRQfTG+cSijpeGJR7qv8LRHVDxwNctOmiUV+owKNSrPqWUnDLgXdbLBO6U4+4jTYbMJ6B/u/nUOW0vcT1sd70V685I7A0+EnAPFM7D4vL1lEqNwJI=
+	t=1708463781; cv=none; b=p99D+JF/LfNHZp5kLqB7kPQFFu/cYxI8tugsJAuafqX3Bo3jhEuR7iSS9/kpGgbMiQ2c6CNR4lzU51No4BnMlCUwZDlXJen8M0jfDHKsXbolJYvLUxclzn810oKJTw+08ewL9CI5N4O3PQnskROpyhzgQ0C+NvDrHIinIdSvJTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464600; c=relaxed/simple;
-	bh=gib8IhQA1kusPVqMFr1m4XRFmCZ1ZocXFN/qO3mXZ28=;
+	s=arc-20240116; t=1708463781; c=relaxed/simple;
+	bh=Zz1HhAQQsaN9xefVCj0ZUMWwzkJfXIffNxyqQsE8C90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iGPEQyY+kv460WMVn+HdinvoKNUARlmRXeOxf/TkDan9Z6CFIiy/Huvs7rTj0UbPgFNLqHu+eSNzRiqNQA315UDR4RN9YKWVALpWRz8oxp2oMX/livxyP/aB3CdDegX+3C5Xl3Kl73quT47sEh6ckxu4+vn4Um+Pyx9UINSnvk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rJY9U5Rr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14B5EC433F1;
-	Tue, 20 Feb 2024 21:29:59 +0000 (UTC)
+	 MIME-Version; b=oVG0wHacGMo7Rn0K7ZqD/jcdykqFTgEoRciT/V5XZa6o6wvvFAmzqTGXsTODZf0mT1WrcD36yoaFUuSeMDISZC0uCvqPXY5/09WRUjMBotoFd3HXq2E3/kTSyoJXcQDarCFhi6kqhwVZFwzPEVhBAmZaciGDcY/OVEsYz/7f5cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QVgvrjs4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5E05C433C7;
+	Tue, 20 Feb 2024 21:16:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464600;
-	bh=gib8IhQA1kusPVqMFr1m4XRFmCZ1ZocXFN/qO3mXZ28=;
+	s=korg; t=1708463781;
+	bh=Zz1HhAQQsaN9xefVCj0ZUMWwzkJfXIffNxyqQsE8C90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rJY9U5RrH/RP3IqzFGx59kfqt7BHWq9+ez7qEvHVU6BTON0CJQAGRsibQKvlZ6ndj
-	 cJ60x6K6tTid7+l2kCDs16JqPawauwIpQgbRACGH2N3oEuUC7HTFbe41LtLC670Kih
-	 ozLb3X9D3gOL3pYFLq78NeieFX4at3ucBJYlSoK0=
+	b=QVgvrjs46mHpy6MZCRVXoVoZ8FZ1uy95liaRBzdEtlSa2aMloZrWmdyy7Uy9+MViO
+	 DnRAhwV7Kqs+UTI+2LyaW/ELuXQINwySMenqJWa+zsTuS0715a/bfSShk9QlbRya2e
+	 2MQJackW+IEmKXMuv/ZNEIajctVeTn/9rDG2lHxI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Techno Mooney <techno.mooney@gmail.com>,
-	Bagas Sanjaya <bagasdotme@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.7 077/309] ASoC: amd: yc: Add DMI quirk for MSI Bravo 15 C7VF
-Date: Tue, 20 Feb 2024 21:53:56 +0100
-Message-ID: <20240220205635.614992117@linuxfoundation.org>
+	kernel test robot <oliver.sang@intel.com>,
+	Keqi Wang <wangkeqi_chris@163.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 121/331] connector/cn_proc: revert "connector: Fix proc_event_num_listeners count not cleared"
+Date: Tue, 20 Feb 2024 21:53:57 +0100
+Message-ID: <20240220205641.408311658@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Techno Mooney <techno.mooney@gmail.com>
+From: Keqi Wang <wangkeqi_chris@163.com>
 
-commit c6dce23ec993f7da7790a9eadb36864ceb60e942 upstream.
+commit 8929f95b2b587791a7dcd04cc91520194a76d3a6 upstream.
 
-The laptop requires a quirk ID to enable its internal microphone. Add
-it to the DMI quirk table.
+This reverts commit c46bfba1337d ("connector: Fix proc_event_num_listeners
+count not cleared").
 
-Reported-by: Techno Mooney <techno.mooney@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218402
-Cc: stable@vger.kernel.org
-Signed-off-by: Techno Mooney <techno.mooney@gmail.com>
-Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
-Link: https://msgid.link/r/20240129081148.1044891-1-bagasdotme@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+It is not accurate to reset proc_event_num_listeners according to
+cn_netlink_send_mult() return value -ESRCH.
+
+In the case of stress-ng netlink-proc, -ESRCH will always be returned,
+because netlink_broadcast_filtered will return -ESRCH,
+which may cause stress-ng netlink-proc performance degradation.
+
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202401112259.b23a1567-oliver.sang@intel.com
+Fixes: c46bfba1337d ("connector: Fix proc_event_num_listeners count not cleared")
+Signed-off-by: Keqi Wang <wangkeqi_chris@163.com>
+Link: https://lore.kernel.org/r/20240209091659.68723-1-wangkeqi_chris@163.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/connector/cn_proc.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -300,6 +300,13 @@ static const struct dmi_system_id yc_acp
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "Micro-Star International Co., Ltd."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Bravo 15 C7VF"),
-+		}
-+	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "Alienware"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware m17 R5 AMD"),
- 		}
+--- a/drivers/connector/cn_proc.c
++++ b/drivers/connector/cn_proc.c
+@@ -108,9 +108,8 @@ static inline void send_msg(struct cn_ms
+ 		filter_data[1] = 0;
+ 	}
+ 
+-	if (cn_netlink_send_mult(msg, msg->len, 0, CN_IDX_PROC, GFP_NOWAIT,
+-			     cn_filter, (void *)filter_data) == -ESRCH)
+-		atomic_set(&proc_event_num_listeners, 0);
++	cn_netlink_send_mult(msg, msg->len, 0, CN_IDX_PROC, GFP_NOWAIT,
++			     cn_filter, (void *)filter_data);
+ 
+ 	local_unlock(&local_event.lock);
+ }
 
 
 
