@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-21247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26A1185C7DC
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:17:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 959F085C955
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:32:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4F26283F08
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:16:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3437C1F21632
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:32:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A468151CD9;
-	Tue, 20 Feb 2024 21:16:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54F85151CD6;
+	Tue, 20 Feb 2024 21:32:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J2lDUzIo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EK2L317Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47EF876C9C;
-	Tue, 20 Feb 2024 21:16:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 135F2446C9;
+	Tue, 20 Feb 2024 21:32:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463819; cv=none; b=PJcYyaXRU5MXD8iTvw2tzY0pE9i4hZ6naPx6IWm8EKCLSmTW4qKaaHPu8++UPr2BFrK+WhX8YE5Jhw0x8IedQO8ET1xwY94Oyi1HyQKioHLiFunLFrfc+hy3b3HhPRBr+8XHPzOgRjSQfzu9/aN2stGVTj1I9XsTBsFbPicw/lY=
+	t=1708464737; cv=none; b=fSz+j8cukXUgWNlX0yLkSzYiRMm4g67S7FgdaXl0CTHdX4uKwI8CH3akulsA3gIcOWSJXdlkBh5yq6eywV0ufZbaQ7NjL7JlpNr8/MRyKo8mg/IVgLqrW50Cq+idCxUPIz6LBc9H7fuZU4dIlM3f8aDZTHsqDPndKBWHuZe4kNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463819; c=relaxed/simple;
-	bh=TSeh8t0g39A3ruNDsLl52ZgE4l5PdojhK++dwXF8+wc=;
+	s=arc-20240116; t=1708464737; c=relaxed/simple;
+	bh=bLR0J57xcLEG6U9XR8bgdnzz2ULm52HsUsWTtb8KyO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rUFPtjz2rznTM7twQPhxYVJgOWkHkUHSYrY86ty27PsJPEbGQTMR7wO2oB4u4/qmBGMx2rAgONF4Et+Jwc9y1ZbPnc+gTExlUwqosifukoxPOS3DXsX+1Difp59Ns0dqY8po1+p9vuwXXrwh0HatAnqZeaIRlkKLVroqUedICzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J2lDUzIo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 776CAC433C7;
-	Tue, 20 Feb 2024 21:16:58 +0000 (UTC)
+	 MIME-Version; b=Zijwre8NwTJFPfhQkRma2M0jolb4I5Axo2GXp7gm/p0TNowwcPSYt9nYv+pWWTTmfhN/lDnX3Gt9pVR+gCqO2SnAXOTABXKHXvFBKKq3jFD/0taPLNe3Puobp00bgqHJVBauDDBCuMthBluE5ZNHPosI+CRMz5ihGRk5fi7IDXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EK2L317Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9596BC433F1;
+	Tue, 20 Feb 2024 21:32:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463818;
-	bh=TSeh8t0g39A3ruNDsLl52ZgE4l5PdojhK++dwXF8+wc=;
+	s=korg; t=1708464737;
+	bh=bLR0J57xcLEG6U9XR8bgdnzz2ULm52HsUsWTtb8KyO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J2lDUzIo8po33ze1iIPZlFN9fmoj6MsljAfNTDhoZINAfZiosAcYXTP39/Hq5Mbxo
-	 nTWyCtCccCwjOz3bDztUeBLE9lO2MedEhD+sQ5cSmLVlNZFYR4TOMrMV32905VbYt1
-	 QDbUKVLh+o3RqaCj9BkBnDC3uifhdnGbvJY2QEfI=
+	b=EK2L317QypnL/RitAs1Ss49weyhX38E1OIFPISvA8eSLqt1QJ2t7Bsu/fpTYwSyRL
+	 PCwKj535U6tUBEbjP2wVDz8N/OB7JO631i9/qH6xQ6Jm5ACV6StN8/IcSUMJN7LJTN
+	 4ypsbqq+Dg4QjLXNqlX5LIjIX6bTmQm3aCP+iw0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Protsenko <semen.protsenko@linaro.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 163/331] iio: pressure: bmp280: Add missing bmp085 to SPI id table
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.7 120/309] selftests: mptcp: increase timeout to 30 min
 Date: Tue, 20 Feb 2024 21:54:39 +0100
-Message-ID: <20240220205642.657798758@linuxfoundation.org>
+Message-ID: <20240220205636.929918335@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sam Protsenko <semen.protsenko@linaro.org>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit b67f3e653e305abf1471934d7b9fdb9ad2df3eef upstream.
+commit 4d4dfb2019d7010efb65926d9d1c1793f9a367c6 upstream.
 
-"bmp085" is missing in bmp280_spi_id[] table, which leads to the next
-warning in dmesg:
+On very slow environments -- e.g. when QEmu is used without KVM --,
+mptcp_join.sh selftest can take a bit more than 20 minutes. Bump the
+default timeout by 50% as it seems normal to take that long on some
+environments.
 
-    SPI driver bmp280 has no spi_device_id for bosch,bmp085
+When a debug kernel config is used, this selftest will take even longer,
+but that's certainly not a common test env to consider for the timeout.
 
-Add "bmp085" to bmp280_spi_id[] by mimicking its existing description in
-bmp280_of_spi_match[] table to fix the above warning.
+The Fixes tag that has been picked here is there simply to help having
+this patch backported to older stable versions. It is difficult to point
+to the exact commit that made some env reaching the timeout from time to
+time.
 
-Signed-off-by: Sam Protsenko <semen.protsenko@linaro.org>
-Fixes: b26b4e91700f ("iio: pressure: bmp280: add SPI interface driver")
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: d17b968b9876 ("selftests: mptcp: increase timeout to 20 minutes")
+Cc: stable@vger.kernel.org
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/20240131-upstream-net-20240131-mptcp-ci-issues-v1-5-4c1c11e571ff@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/pressure/bmp280-spi.c |    1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/net/mptcp/settings |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/pressure/bmp280-spi.c
-+++ b/drivers/iio/pressure/bmp280-spi.c
-@@ -91,6 +91,7 @@ static const struct of_device_id bmp280_
- MODULE_DEVICE_TABLE(of, bmp280_of_spi_match);
- 
- static const struct spi_device_id bmp280_spi_id[] = {
-+	{ "bmp085", (kernel_ulong_t)&bmp180_chip_info },
- 	{ "bmp180", (kernel_ulong_t)&bmp180_chip_info },
- 	{ "bmp181", (kernel_ulong_t)&bmp180_chip_info },
- 	{ "bmp280", (kernel_ulong_t)&bmp280_chip_info },
+--- a/tools/testing/selftests/net/mptcp/settings
++++ b/tools/testing/selftests/net/mptcp/settings
+@@ -1 +1 @@
+-timeout=1200
++timeout=1800
 
 
 
