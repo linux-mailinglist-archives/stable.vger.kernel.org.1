@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-21521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74CF585C942
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:31:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A43785C94C
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:31:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EA91CB21E4B
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:31:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9961A1C22148
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:31:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30769151CE1;
-	Tue, 20 Feb 2024 21:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA844151CE3;
+	Tue, 20 Feb 2024 21:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xYHah9NQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RY+izOIb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2BB8151CCC;
-	Tue, 20 Feb 2024 21:31:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B6514A4E6;
+	Tue, 20 Feb 2024 21:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464675; cv=none; b=QG0X0sXMzdHXwfO+nf6cYlZ0g2jQUTqwU11yqPYbymc9VGudW2FEbXT3Jqg/NH/nPbupGGc21biG8CLpZafnAgcn1OtoaAHYERB8R0Nxd/Xm2wDwctCfjor2MhRFjJHOHqHVX+vBjFQoegrBkrGEwtOjt0FI7Wbx26KhFi/tjhU=
+	t=1708464708; cv=none; b=qK7cqcopfTwhC7gDb9vA5OPV36jqjBQrWIGlrnWmBzzV+Bfsn5UxwM175rFs22LPTu/OevHEbyzpPgBYt+GZa/u7U73sj1o6x2g3+vRcoDnx8evKtifuRwFodpYSvFmNKPKxdHg26fyskfK0zoGTi3ItisPlLPsxhEh6rw9advE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464675; c=relaxed/simple;
-	bh=SCVOiDjlGRWw/vDT1PUBki3b059dJWxIhLx+cvQ4JQo=;
+	s=arc-20240116; t=1708464708; c=relaxed/simple;
+	bh=mFywHBIk/SAD/Ve2PEya7wQOmdGaT2EI1dRtFEOFPMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rxn1uHwm8vxhaLJY1+c+6CbA5jHeoqh3E9xOGlb4lW4EkFXVvKqEXmwWOqucd96Rj2fSQBn8GxErt6/mJ+bE0CY/BA9qggJHKX8fZ64wqZcPO0GUgFi7WH67hwW54x9g3U1V34/WfIb9ZPGQUkCM+GPpG3cKHpQ2Y9qHGJRt/ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xYHah9NQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69275C433F1;
-	Tue, 20 Feb 2024 21:31:14 +0000 (UTC)
+	 MIME-Version; b=uq2Zi5O9A9HK11XFFMYdGpDM7CqrmSypKG+YEsNBAGMaIy6Pin0lrEMiZfnKAiKDwk36ADTurRypYvbpASUA7eYG3VHrKtP4ep3fJg6MoSacZwV64/dsIiPiOlAErulsTk4ZlIrGB/VjC8kNc5WjuGfChpQ3HeqizqINHnlAM74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RY+izOIb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0805BC433C7;
+	Tue, 20 Feb 2024 21:31:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464674;
-	bh=SCVOiDjlGRWw/vDT1PUBki3b059dJWxIhLx+cvQ4JQo=;
+	s=korg; t=1708464708;
+	bh=mFywHBIk/SAD/Ve2PEya7wQOmdGaT2EI1dRtFEOFPMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xYHah9NQINBjWaLKvUOwCK6bo/ISeqsRMe9YM55ChWLEbJYgXC14THuyh+pt2jxmS
-	 KwdMbmpMTa8ANuT9SWCwt1YguoZgK99YbqbIo2Ew9FGCO/IdcMgFcoEBD6Btpgn+/J
-	 skMZ9NVDZOZofExDzfBees73jFRDFWwqS1iECrDA=
+	b=RY+izOIbBXa0XBHR7eGaioICs8XjKfFBXc/9IU0UVKASRVLaXWNll6uhaFOOAyLBR
+	 4PQBY7mEOSJ/CHsy7g0opYprvnXZrq4MYxR0rB1tZwwbH+2I8xsdSHqvV1aTP005W1
+	 gZDXq2PL8L+NxNk3dPyBn/E0InssKtRGQZdvpuIc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Udipto Goswami <quic_ugoswami@quicinc.com>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 6.7 093/309] usb: core: Prevent null pointer dereference in update_port_device_state
-Date: Tue, 20 Feb 2024 21:54:12 +0100
-Message-ID: <20240220205636.108467219@linuxfoundation.org>
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
+Subject: [PATCH 6.7 094/309] usb: dwc3: gadget: Fix NULL pointer dereference in dwc3_gadget_suspend
+Date: Tue, 20 Feb 2024 21:54:13 +0100
+Message-ID: <20240220205636.137251571@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
 References: <20240220205633.096363225@linuxfoundation.org>
@@ -65,53 +65,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Udipto Goswami <quic_ugoswami@quicinc.com>
+From: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
 
-commit 12783c0b9e2c7915a50d5ec829630ff2da50472c upstream.
+commit 61a348857e869432e6a920ad8ea9132e8d44c316 upstream.
 
-Currently, the function update_port_device_state gets the usb_hub from
-udev->parent by calling usb_hub_to_struct_hub.
-However, in case the actconfig or the maxchild is 0, the usb_hub would
-be NULL and upon further accessing to get port_dev would result in null
-pointer dereference.
+In current scenario if Plug-out and Plug-In performed continuously
+there could be a chance while checking for dwc->gadget_driver in
+dwc3_gadget_suspend, a NULL pointer dereference may occur.
 
-Fix this by introducing an if check after the usb_hub is populated.
+Call Stack:
 
-Fixes: 83cb2604f641 ("usb: core: add sysfs entry for usb device state")
+	CPU1:                           CPU2:
+	gadget_unbind_driver            dwc3_suspend_common
+	dwc3_gadget_stop                dwc3_gadget_suspend
+                                        dwc3_disconnect_gadget
+
+CPU1 basically clears the variable and CPU2 checks the variable.
+Consider CPU1 is running and right before gadget_driver is cleared
+and in parallel CPU2 executes dwc3_gadget_suspend where it finds
+dwc->gadget_driver which is not NULL and resumes execution and then
+CPU1 completes execution. CPU2 executes dwc3_disconnect_gadget where
+it checks dwc->gadget_driver is already NULL because of which the
+NULL pointer deference occur.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Udipto Goswami <quic_ugoswami@quicinc.com>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20240110095814.7626-1-quic_ugoswami@quicinc.com
+Fixes: 9772b47a4c29 ("usb: dwc3: gadget: Fix suspend/resume during device mode")
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
+Link: https://lore.kernel.org/r/20240119094825.26530-1-quic_uaggarwa@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/hub.c |   16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ drivers/usb/dwc3/gadget.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -2047,9 +2047,19 @@ static void update_port_device_state(str
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -4703,15 +4703,13 @@ int dwc3_gadget_suspend(struct dwc3 *dwc
+ 	unsigned long flags;
+ 	int ret;
  
- 	if (udev->parent) {
- 		hub = usb_hub_to_struct_hub(udev->parent);
--		port_dev = hub->ports[udev->portnum - 1];
--		WRITE_ONCE(port_dev->state, udev->state);
--		sysfs_notify_dirent(port_dev->state_kn);
-+
-+		/*
-+		 * The Link Layer Validation System Driver (lvstest)
-+		 * has a test step to unbind the hub before running the
-+		 * rest of the procedure. This triggers hub_disconnect
-+		 * which will set the hub's maxchild to 0, further
-+		 * resulting in usb_hub_to_struct_hub returning NULL.
-+		 */
-+		if (hub) {
-+			port_dev = hub->ports[udev->portnum - 1];
-+			WRITE_ONCE(port_dev->state, udev->state);
-+			sysfs_notify_dirent(port_dev->state_kn);
-+		}
- 	}
- }
+-	if (!dwc->gadget_driver)
+-		return 0;
+-
+ 	ret = dwc3_gadget_soft_disconnect(dwc);
+ 	if (ret)
+ 		goto err;
  
+ 	spin_lock_irqsave(&dwc->lock, flags);
+-	dwc3_disconnect_gadget(dwc);
++	if (dwc->gadget_driver)
++		dwc3_disconnect_gadget(dwc);
+ 	spin_unlock_irqrestore(&dwc->lock, flags);
+ 
+ 	return 0;
 
 
 
