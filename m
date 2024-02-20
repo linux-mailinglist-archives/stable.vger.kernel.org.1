@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-21658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D6B885C9CB
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:38:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E6EA85C88F
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:23:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B276CB21324
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:38:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 471A2284DC7
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:23:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C227D151CE9;
-	Tue, 20 Feb 2024 21:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19B15151CDC;
+	Tue, 20 Feb 2024 21:23:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lfSsDNo1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gNh4UPup"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81AE4446C9;
-	Tue, 20 Feb 2024 21:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB4BA2DF9F;
+	Tue, 20 Feb 2024 21:23:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708465104; cv=none; b=jW8n5urhtwQicN4yXGI5jb9ARG28iLIkQvjkabBiL+ZYFPlYqmNig8JQEEKlXTTmOxQ8IYGl8FOBOBCjw7eWjJzqiVvbUgKfIXD6cU4zeKuucGDdZGNwak422/+mM0U31MmEM2e6lN5vzecPdMXjFXQoUrmzO+C7x56fWtcKBfk=
+	t=1708464194; cv=none; b=TtySYTOc8xo1Z2OJDOAwDnPvniEH6+J7dcUX1vBo+tIdjvFZitIfQOcWdDvYz3Ob7NO+hsuYvkztmp8e0e5kKT6P+Y03gVOGw+bSN/AqPz6Z6jyF4EwLYjdJlWLjaH2H6PjY37h4fPD++50sjdLjHErbMaYVdiSPdQbImCkNFUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708465104; c=relaxed/simple;
-	bh=5K5kIEWzFpmI40Wbl19bPlDHjmkeuDjtSsng6IXC86I=;
+	s=arc-20240116; t=1708464194; c=relaxed/simple;
+	bh=zYaSaEVlG9x04Ev/loNmJ4xP+ZaXXxIDHPDVnrkW5YQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jHM9PA8A7/gwRdCmGqm098Yep75kYrL8yhHFr03Y9PgEab/mokj+dmS+eDdD0cO9ln9wSPdHqvbIpJNVtECq9NpJJ4vYYbVM3Sjg1yFSiympMtzQAxS/xXi5SW0Pd8wuvycFSE1jRAOowGFXbLf1B0ilSWazcc0g5vFQpJQtO/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lfSsDNo1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBB27C433C7;
-	Tue, 20 Feb 2024 21:38:23 +0000 (UTC)
+	 MIME-Version; b=LJL5HdoOq+f7QpwjpzTT35gt+bBwfc4uQ2biP/Bzl1IEY03TVMJhvCEpGddOkK5Ht8lK6xxjYoSfpBJf1B90vENhs3JmpFgofuJuI/JEmjYMUxvOB78Nxm6aow4Qem+bmKZZTKDRJ4eqRux7zd9sfSYn+rUDCLfbreG5xJmoPXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gNh4UPup; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4265BC433C7;
+	Tue, 20 Feb 2024 21:23:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708465104;
-	bh=5K5kIEWzFpmI40Wbl19bPlDHjmkeuDjtSsng6IXC86I=;
+	s=korg; t=1708464194;
+	bh=zYaSaEVlG9x04Ev/loNmJ4xP+ZaXXxIDHPDVnrkW5YQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lfSsDNo185F39KqgmjJYNHe/ZMH+txx5KbQoW9eHuI6ddru7ATgYJxpjNWm3Yunoe
-	 UQEL8w56tIZLo4aOyCA73CVTx4/wN8aBZGje5Qccwu2cJOP/xBHYSheziQQU5WiuN2
-	 JPRwKSnCY7QRjEiLO5p5mL/pP8HLy0Sx3MNuT5qc=
+	b=gNh4UPupbyrS68INIzY4+7djawSw377dD9sd1vQ53Rtvzt2c+sazNXhU3UToTBh3R
+	 fc7zjBNZwDsBR4bdLLXGTY8lS600GrwETmmKDF11bT5NqI24QY5VtthKLNZCfRDeOr
+	 cZ9gNVdRQ7sAng9hveIvsbzdfesFWO24+1HcTJkk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.7 238/309] gpiolib: add gpio_device_get_base() stub for !GPIOLIB
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 281/331] eventfs: Remove expectation that ei->is_freed means ei->dentry == NULL
 Date: Tue, 20 Feb 2024 21:56:37 +0100
-Message-ID: <20240220205640.608737466@linuxfoundation.org>
+Message-ID: <20240220205646.765058109@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-commit ebe0c15b135b1e4092c25b95d89e9a5899467499 upstream.
+commit 88903daecacf03b1e5636e1b5f18bda5b07030fc upstream.
 
-Add empty stub of gpio_device_get_base() when GPIOLIB is not enabled.
+The logic to free the eventfs_inode (ei) use to set is_freed and clear the
+"dentry" field under the eventfs_mutex. But that changed when a race was
+found where the ei->dentry needed to be cleared when the last dput() was
+called on it. But there was still logic that checked if ei->dentry was not
+NULL and is_freed is set, and would warn if it was.
 
-Cc: <stable@vger.kernel.org>
-Fixes: 8c85a102fc4e ("gpiolib: provide gpio_device_get_base()")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+But since that situation was changed and the ei->dentry isn't cleared
+until the last dput() is called on it while the ei->is_freed is set, do
+not test for that condition anymore, and change the comments to reflect
+that.
+
+Link: https://lkml.kernel.org/r/20231120235154.265826243@goodmis.org
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 020010fbfa20 ("eventfs: Delete eventfs_inode when the last dentry is freed")
+Reported-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/gpio/driver.h |    6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/tracefs/event_inode.c |   22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
---- a/include/linux/gpio/driver.h
-+++ b/include/linux/gpio/driver.h
-@@ -800,6 +800,12 @@ static inline struct gpio_chip *gpiod_to
- 	return ERR_PTR(-ENODEV);
- }
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -27,16 +27,16 @@
+ /*
+  * eventfs_mutex protects the eventfs_inode (ei) dentry. Any access
+  * to the ei->dentry must be done under this mutex and after checking
+- * if ei->is_freed is not set. The ei->dentry is released under the
+- * mutex at the same time ei->is_freed is set. If ei->is_freed is set
+- * then the ei->dentry is invalid.
++ * if ei->is_freed is not set. When ei->is_freed is set, the dentry
++ * is on its way to being freed after the last dput() is made on it.
+  */
+ static DEFINE_MUTEX(eventfs_mutex);
  
-+static inline int gpio_device_get_base(struct gpio_device *gdev)
-+{
-+	WARN_ON(1);
-+	return -ENODEV;
-+}
-+
- static inline int gpiochip_lock_as_irq(struct gpio_chip *gc,
- 				       unsigned int offset)
- {
+ /*
+  * The eventfs_inode (ei) itself is protected by SRCU. It is released from
+  * its parent's list and will have is_freed set (under eventfs_mutex).
+- * After the SRCU grace period is over, the ei may be freed.
++ * After the SRCU grace period is over and the last dput() is called
++ * the ei is freed.
+  */
+ DEFINE_STATIC_SRCU(eventfs_srcu);
+ 
+@@ -365,12 +365,14 @@ create_file_dentry(struct eventfs_inode
+ 		 * created the dentry for this e_dentry. In which case
+ 		 * use that one.
+ 		 *
+-		 * Note, with the mutex held, the e_dentry cannot have content
+-		 * and the ei->is_freed be true at the same time.
++		 * If ei->is_freed is set, the e_dentry is currently on its
++		 * way to being freed, don't return it. If e_dentry is NULL
++		 * it means it was already freed.
+ 		 */
+-		dentry = *e_dentry;
+-		if (WARN_ON_ONCE(dentry && ei->is_freed))
++		if (ei->is_freed)
+ 			dentry = NULL;
++		else
++			dentry = *e_dentry;
+ 		/* The lookup does not need to up the dentry refcount */
+ 		if (dentry && !lookup)
+ 			dget(dentry);
+@@ -473,8 +475,8 @@ create_dir_dentry(struct eventfs_inode *
+ 		 * created the dentry for this e_dentry. In which case
+ 		 * use that one.
+ 		 *
+-		 * Note, with the mutex held, the e_dentry cannot have content
+-		 * and the ei->is_freed be true at the same time.
++		 * If ei->is_freed is set, the e_dentry is currently on its
++		 * way to being freed.
+ 		 */
+ 		dentry = ei->dentry;
+ 		if (dentry && !lookup)
 
 
 
