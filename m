@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-21480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5893185C918
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:29:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A736685C75F
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:12:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8986A1C2265D
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:29:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 479A41F23176
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:12:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54370151CEE;
-	Tue, 20 Feb 2024 21:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDD811509A5;
+	Tue, 20 Feb 2024 21:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bnQ7DGi8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bcGA7VUF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03C4414A4E6;
-	Tue, 20 Feb 2024 21:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B3BA612D7;
+	Tue, 20 Feb 2024 21:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464551; cv=none; b=E6fiJfVS2qdu+dUtLVAZFmmg1EI/Tz3qN0P5zB1qVz6P6rYExFu3yPwTsl4D+YTpHh+EWG75c8mXNk8KlP1hw4k1ffQkFVW8c1iDmxPV+hzSk7wTB2LL650f1C07aCOr95+RPxB/eQG1UkXfEWXc+YP3675F7hAJnLl9hIOIsKk=
+	t=1708463533; cv=none; b=GIoO0W0WmUxqaDKAXibeAWJISPUa9EGYhJfEa+/dFjFoKaENEPRaEWbyQDhF4d4bNcfeHQPu4pa56c7S56OGKIQcnFGuNRE3grbD+BE4inJD3xTqpJI7e32eHB9vadet0/8LyrzYjRa9IpG+Miy0xw9345P/eby2FzijrC0N4aQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464551; c=relaxed/simple;
-	bh=J8v+Vjcu3dsUlwLKiYi/FERVuHS1rQ5OGx7h6YpEzXM=;
+	s=arc-20240116; t=1708463533; c=relaxed/simple;
+	bh=kHerM26IBtqDavTCh3Mj7qG+pzOYDx5FrjSwWG0JX/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VEV7TVxpsEUAd9V7rYANYLYDkxpRw0Z43L/PralkZl5GrXFbtm/LJiAn6DEU3to8f4UbWRDI1kJXPEWAxnKGDGq68o3qGh7v+2LyJ5sZWTOJROMU8LymxjXz40qOldJtSDlQHAprLisU7/0xEqhQSnc4+dg2M1HUJlESVmIUPD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bnQ7DGi8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66D1AC433F1;
-	Tue, 20 Feb 2024 21:29:10 +0000 (UTC)
+	 MIME-Version; b=Nl0/4N3NQgEvo1p0REgdJm0J8AGh64NSKd4+gJYr7EVhiYiX6NBIZen0iGSJnFycdjiLVQknX/Y6GM3rPE4kcmy4KocqwI58M8Pm1z+osroWQO0aJg2vRVSiGRJC1xb4nNyo4H8CPH7+yTEJp3T/me5EF/foDPvYs6wa0JGkqAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bcGA7VUF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0BA8C433F1;
+	Tue, 20 Feb 2024 21:12:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464550;
-	bh=J8v+Vjcu3dsUlwLKiYi/FERVuHS1rQ5OGx7h6YpEzXM=;
+	s=korg; t=1708463533;
+	bh=kHerM26IBtqDavTCh3Mj7qG+pzOYDx5FrjSwWG0JX/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bnQ7DGi8Sl8xRW/EhZOucfE5N3fIqeR7iHb0sfDZzNvSa+V6WL6CLhf8tOcXXXwqS
-	 WM1XvAZMqXPrN16kYvrE0cMZ5afRG/1aMxWgR5uAXSx3TfbPdcnSOffE8w1jX/TfIi
-	 bSThH40k12XS1fgVqGoC72V6Hnn7njKeAHTXsHJU=
+	b=bcGA7VUF1Q5IS5GIrWALDfyfdbdgviGjYr6OI1Jdhj3rzfrgYxl+oOAF2kH8qK2Ye
+	 o+pGbOMkzwrj7Byk0NqgPF9+K+f3S4LLKoP7bK4retmwC2IWmJGJmkCHZoqkoGIwRy
+	 VmLZKFJ91vHGWHNU0GErB14rI9PFmedmbmJZWFLE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 029/309] ASoC: SOF: ipc3-topology: Fix pipeline tear down logic
+	Benjamin Tissoires <bentiss@kernel.org>
+Subject: [PATCH 6.6 072/331] HID: bpf: actually free hdev memory after attaching a HID-BPF program
 Date: Tue, 20 Feb 2024 21:53:08 +0100
-Message-ID: <20240220205634.099990914@linuxfoundation.org>
+Message-ID: <20240220205639.832787929@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,129 +58,147 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+From: Benjamin Tissoires <bentiss@kernel.org>
 
-[ Upstream commit d7332c4a4f1a7d16f054c6357fb65c597b6a86a7 ]
+commit 89be8aa5b0ecb3b729c7bcff64bb2af7921fec63 upstream.
 
-With the change in the widget free logic to power down the cores only
-when the scheduler widgets are freed, we need to ensure that the
-scheduler widget is freed only after all the widgets associated with the
-scheduler are freed. This is to ensure that the secondary core that the
-scheduler is scheduled to run on is kept powered on until all widgets
-that need them are in use. While this works well for dynamic pipelines,
-in the case of static pipelines the current logic does not take this into
-account and frees all widgets in the order they occur in the
-widget_list. So, modify this to ensure that the scheduler widgets are freed
-only after all other types of widgets in the widget_list are freed.
+Turns out that I got my reference counts wrong and each successful
+bus_find_device() actually calls get_device(), and we need to manually
+call put_device().
 
-Link: https://github.com/thesofproject/linux/issues/4807
-Fixes: 31ed8da1c8e5 ("ASoC: SOF: sof-audio: Modify logic for enabling/disabling topology cores")
-Signed-off-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Link: https://lore.kernel.org/r/20240208133432.1688-1-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Ensure each bus_find_device() gets a matching put_device() when releasing
+the bpf programs and fix all the error paths.
+
+Cc: <stable@vger.kernel.org>
+Fixes: f5c27da4e3c8 ("HID: initial BPF implementation")
+Link: https://lore.kernel.org/r/20240124-b4-hid-bpf-fixes-v2-2-052520b1e5e6@kernel.org
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/sof/ipc3-topology.c | 55 ++++++++++++++++++++++++++---------
- 1 file changed, 41 insertions(+), 14 deletions(-)
+ drivers/hid/bpf/hid_bpf_dispatch.c  |   29 +++++++++++++++++++++++------
+ drivers/hid/bpf/hid_bpf_jmp_table.c |   20 +++++++++++++++++---
+ 2 files changed, 40 insertions(+), 9 deletions(-)
 
-diff --git a/sound/soc/sof/ipc3-topology.c b/sound/soc/sof/ipc3-topology.c
-index 2c7a5e7a364c..d96555438c6b 100644
---- a/sound/soc/sof/ipc3-topology.c
-+++ b/sound/soc/sof/ipc3-topology.c
-@@ -2309,27 +2309,16 @@ static int sof_tear_down_left_over_pipelines(struct snd_sof_dev *sdev)
- 	return 0;
+--- a/drivers/hid/bpf/hid_bpf_dispatch.c
++++ b/drivers/hid/bpf/hid_bpf_dispatch.c
+@@ -292,7 +292,7 @@ hid_bpf_attach_prog(unsigned int hid_id,
+ 	struct hid_device *hdev;
+ 	struct bpf_prog *prog;
+ 	struct device *dev;
+-	int fd;
++	int err, fd;
+ 
+ 	if (!hid_bpf_ops)
+ 		return -EINVAL;
+@@ -311,14 +311,24 @@ hid_bpf_attach_prog(unsigned int hid_id,
+ 	 * on errors or when it'll be detached
+ 	 */
+ 	prog = bpf_prog_get(prog_fd);
+-	if (IS_ERR(prog))
+-		return PTR_ERR(prog);
++	if (IS_ERR(prog)) {
++		err = PTR_ERR(prog);
++		goto out_dev_put;
++	}
+ 
+ 	fd = do_hid_bpf_attach_prog(hdev, prog_fd, prog, flags);
+-	if (fd < 0)
+-		bpf_prog_put(prog);
++	if (fd < 0) {
++		err = fd;
++		goto out_prog_put;
++	}
+ 
+ 	return fd;
++
++ out_prog_put:
++	bpf_prog_put(prog);
++ out_dev_put:
++	put_device(dev);
++	return err;
  }
  
--/*
-- * For older firmware, this function doesn't free widgets for static pipelines during suspend.
-- * It only resets use_count for all widgets.
-- */
--static int sof_ipc3_tear_down_all_pipelines(struct snd_sof_dev *sdev, bool verify)
-+static int sof_ipc3_free_widgets_in_list(struct snd_sof_dev *sdev, bool include_scheduler,
-+					 bool *dyn_widgets, bool verify)
+ /**
+@@ -345,8 +355,10 @@ hid_bpf_allocate_context(unsigned int hi
+ 	hdev = to_hid_device(dev);
+ 
+ 	ctx_kern = kzalloc(sizeof(*ctx_kern), GFP_KERNEL);
+-	if (!ctx_kern)
++	if (!ctx_kern) {
++		put_device(dev);
+ 		return NULL;
++	}
+ 
+ 	ctx_kern->ctx.hid = hdev;
+ 
+@@ -363,10 +375,15 @@ noinline void
+ hid_bpf_release_context(struct hid_bpf_ctx *ctx)
  {
- 	struct sof_ipc_fw_version *v = &sdev->fw_ready.version;
- 	struct snd_sof_widget *swidget;
--	struct snd_sof_route *sroute;
--	bool dyn_widgets = false;
- 	int ret;
+ 	struct hid_bpf_ctx_kern *ctx_kern;
++	struct hid_device *hid;
  
--	/*
--	 * This function is called during suspend and for one-time topology verification during
--	 * first boot. In both cases, there is no need to protect swidget->use_count and
--	 * sroute->setup because during suspend all running streams are suspended and during
--	 * topology loading the sound card unavailable to open PCMs.
--	 */
- 	list_for_each_entry(swidget, &sdev->widget_list, list) {
- 		if (swidget->dynamic_pipeline_widget) {
--			dyn_widgets = true;
-+			*dyn_widgets = true;
- 			continue;
- 		}
+ 	ctx_kern = container_of(ctx, struct hid_bpf_ctx_kern, ctx);
++	hid = (struct hid_device *)ctx_kern->ctx.hid; /* ignore const */
  
-@@ -2344,11 +2333,49 @@ static int sof_ipc3_tear_down_all_pipelines(struct snd_sof_dev *sdev, bool verif
- 			continue;
- 		}
- 
-+		if (include_scheduler && swidget->id != snd_soc_dapm_scheduler)
-+			continue;
+ 	kfree(ctx_kern);
 +
-+		if (!include_scheduler && swidget->id == snd_soc_dapm_scheduler)
-+			continue;
-+
- 		ret = sof_widget_free(sdev, swidget);
- 		if (ret < 0)
- 			return ret;
++	/* get_device() is called by bus_find_device() */
++	put_device(&hid->dev);
+ }
+ 
+ /**
+--- a/drivers/hid/bpf/hid_bpf_jmp_table.c
++++ b/drivers/hid/bpf/hid_bpf_jmp_table.c
+@@ -196,6 +196,7 @@ static void __hid_bpf_do_release_prog(in
+ static void hid_bpf_release_progs(struct work_struct *work)
+ {
+ 	int i, j, n, map_fd = -1;
++	bool hdev_destroyed;
+ 
+ 	if (!jmp_table.map)
+ 		return;
+@@ -220,6 +221,12 @@ static void hid_bpf_release_progs(struct
+ 		if (entry->hdev) {
+ 			hdev = entry->hdev;
+ 			type = entry->type;
++			/*
++			 * hdev is still valid, even if we are called after hid_destroy_device():
++			 * when hid_bpf_attach() gets called, it takes a ref on the dev through
++			 * bus_find_device()
++			 */
++			hdev_destroyed = hdev->bpf.destroyed;
+ 
+ 			hid_bpf_populate_hdev(hdev, type);
+ 
+@@ -232,12 +239,19 @@ static void hid_bpf_release_progs(struct
+ 				if (test_bit(next->idx, jmp_table.enabled))
+ 					continue;
+ 
+-				if (next->hdev == hdev && next->type == type)
++				if (next->hdev == hdev && next->type == type) {
++					/*
++					 * clear the hdev reference and decrement the device ref
++					 * that was taken during bus_find_device() while calling
++					 * hid_bpf_attach()
++					 */
+ 					next->hdev = NULL;
++					put_device(&hdev->dev);
++				}
+ 			}
+ 
+-			/* if type was rdesc fixup, reconnect device */
+-			if (type == HID_BPF_PROG_TYPE_RDESC_FIXUP)
++			/* if type was rdesc fixup and the device is not gone, reconnect device */
++			if (type == HID_BPF_PROG_TYPE_RDESC_FIXUP && !hdev_destroyed)
+ 				hid_bpf_reconnect(hdev);
+ 		}
  	}
- 
-+	return 0;
-+}
-+
-+/*
-+ * For older firmware, this function doesn't free widgets for static pipelines during suspend.
-+ * It only resets use_count for all widgets.
-+ */
-+static int sof_ipc3_tear_down_all_pipelines(struct snd_sof_dev *sdev, bool verify)
-+{
-+	struct sof_ipc_fw_version *v = &sdev->fw_ready.version;
-+	struct snd_sof_widget *swidget;
-+	struct snd_sof_route *sroute;
-+	bool dyn_widgets = false;
-+	int ret;
-+
-+	/*
-+	 * This function is called during suspend and for one-time topology verification during
-+	 * first boot. In both cases, there is no need to protect swidget->use_count and
-+	 * sroute->setup because during suspend all running streams are suspended and during
-+	 * topology loading the sound card unavailable to open PCMs. Do not free the scheduler
-+	 * widgets yet so that the secondary cores do not get powered down before all the widgets
-+	 * associated with the scheduler are freed.
-+	 */
-+	ret = sof_ipc3_free_widgets_in_list(sdev, false, &dyn_widgets, verify);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* free all the scheduler widgets now */
-+	ret = sof_ipc3_free_widgets_in_list(sdev, true, &dyn_widgets, verify);
-+	if (ret < 0)
-+		return ret;
-+
- 	/*
- 	 * Tear down all pipelines associated with PCMs that did not get suspended
- 	 * and unset the prepare flag so that they can be set up again during resume.
--- 
-2.43.0
-
 
 
 
