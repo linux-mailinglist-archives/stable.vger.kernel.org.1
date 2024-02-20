@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-21478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8769385C916
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:29:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B41DB85C787
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:13:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40FA3284BCC
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:29:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53DD31F25318
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:13:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F124B152DE8;
-	Tue, 20 Feb 2024 21:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0544114AD12;
+	Tue, 20 Feb 2024 21:13:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CpYAxVab"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YCxgJAAH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD103151CEB;
-	Tue, 20 Feb 2024 21:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B621A612D7;
+	Tue, 20 Feb 2024 21:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464547; cv=none; b=Xk4PT8fro+jnU2thc0f5q/UjNhF09N9NO91CLJ28qC6HqYLIJxljT5CujUYDYw8jkuGcHUZb5UIesrSNafs31jGTRTR2I8wUrCAlCdSvz3Up+RgpCynsurs5U3lxbL2uY0IKe84q0nK9zquCZ6fSEjCVjQB8rV2Y7MNgZDC7XZ0=
+	t=1708463621; cv=none; b=Izn2CRI6x5bRROel8SBoxD1qNn2DSiNWTq90QWacCBQTbzHm/+21hAJ2wU58CZd83hhJiG2rlsoUmdKqmzG83HDVjkg2+X3TOaxXwj+9XcL6UUR1JpqxgZjpCjrflO7TMBh1HsVUSxDBYhFanBcmFAd5Rb+ws1r4xquPj+ZAC64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464547; c=relaxed/simple;
-	bh=7kCjagViAHGuv4Bi7oLLaM69uzV57RDzwK/WQxixSPI=;
+	s=arc-20240116; t=1708463621; c=relaxed/simple;
+	bh=Qp0obcE7AnE1HAJbCDUJRBiwvUF2Q1dFev/XX2ir72M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D65WZLGQeQkIidE01DFe0B32+IyeNYSlg7Hoi8Zz2lC5T6CEDKGLg6UAc+N/03XOfXzLQCFtR5CjSJ+kJB4pP8eWWMHAorDqizn5C4Ewraa1uiekNCrINFS92yHPzQvES/3CYkHurPFcuzpGzYEoJz72U7p2j6j/twoht3EWahE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CpYAxVab; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 220B1C433F1;
-	Tue, 20 Feb 2024 21:29:06 +0000 (UTC)
+	 MIME-Version; b=LzHWyIrte6oPzI6af9v6WolBXVac5DZW2E6YzSNDFJCygotp3SkpPxt4tHoJVt1dWP6dQ7wCAjMHcKvV7sJPmsPuzuTYmNmDtI47DX1ybZc5bgMXwnS7BwejzYDEilkM2GztkDFSnZxQGA2XHwPEf+O2+koWjjoHghqmqqT3TTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YCxgJAAH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B090FC433C7;
+	Tue, 20 Feb 2024 21:13:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464547;
-	bh=7kCjagViAHGuv4Bi7oLLaM69uzV57RDzwK/WQxixSPI=;
+	s=korg; t=1708463621;
+	bh=Qp0obcE7AnE1HAJbCDUJRBiwvUF2Q1dFev/XX2ir72M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CpYAxVabgJ1sTqIaIryaa2C8Iu2Q2ClD10dHkop7QfKNu7Gdjz+EpwaYDh+DHqLwz
-	 4lq8krFpgJGbYableXQtolZC3kKLfhbSUjOi1KBSUGWpk2dasAbHHlyPan0pg3FzAO
-	 3/85CTKWfdAFlGkAgy6mGy4n+y2kfQ6Co/xLzNXM=
+	b=YCxgJAAHCQLYH2HPgDTHK/TK/N237rNvJj4RVH1S8I2ONLiyPn9W5Hl70Qrc8nT4q
+	 kTFgiXXXFexi9xJeA2XAf4nC0IR05ulHw52aepQlHaFSTrLqxIeIX1a2k3pqTvRhCP
+	 hq/AqSuvhaJw8A1ckZYNxW8g80KaNfnevpUi3uoo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Sven Peter <sven@svenpeter.dev>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 058/309] MIPS: Add memory clobber to csum_ipv6_magic() inline assembler
+Subject: [PATCH 6.6 101/331] i2c: pasemi: split driver into two separate modules
 Date: Tue, 20 Feb 2024 21:53:37 +0100
-Message-ID: <20240220205635.030320014@linuxfoundation.org>
+Message-ID: <20240220205640.758414999@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit d55347bfe4e66dce2e1e7501e5492f4af3e315f8 ]
+[ Upstream commit f44bff19268517ee98e80e944cad0f04f1db72e3 ]
 
-After 'lib: checksum: Use aligned accesses for ip_fast_csum and
-csum_ipv6_magic tests' was applied, the test_csum_ipv6_magic unit test
-started failing for all mips platforms, both little and bit endian.
-Oddly enough, adding debug code into test_csum_ipv6_magic() made the
-problem disappear.
+On powerpc, it is possible to compile test both the new apple (arm) and
+old pasemi (powerpc) drivers for the i2c hardware at the same time,
+which leads to a warning about linking the same object file twice:
 
-The gcc manual says:
+scripts/Makefile.build:244: drivers/i2c/busses/Makefile: i2c-pasemi-core.o is added to multiple modules: i2c-apple i2c-pasemi
 
-"The "memory" clobber tells the compiler that the assembly code performs
- memory reads or writes to items other than those listed in the input
- and output operands (for example, accessing the memory pointed to by one
- of the input parameters)
-"
+Rework the driver to have an explicit helper module, letting Kbuild
+take care of whether this should be built-in or a loadable driver.
 
-This is definitely the case for csum_ipv6_magic(). Indeed, adding the
-'memory' clobber fixes the problem.
-
-Cc: Charlie Jenkins <charlie@rivosinc.com>
-Cc: Palmer Dabbelt <palmer@rivosinc.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: 9bc5f4f660ff ("i2c: pasemi: Split pci driver to its own file")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Sven Peter <sven@svenpeter.dev>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/checksum.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/i2c/busses/Makefile          | 6 ++----
+ drivers/i2c/busses/i2c-pasemi-core.c | 6 ++++++
+ 2 files changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/include/asm/checksum.h b/arch/mips/include/asm/checksum.h
-index 4044eaf989ac..0921ddda11a4 100644
---- a/arch/mips/include/asm/checksum.h
-+++ b/arch/mips/include/asm/checksum.h
-@@ -241,7 +241,8 @@ static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
- 	"	.set	pop"
- 	: "=&r" (sum), "=&r" (tmp)
- 	: "r" (saddr), "r" (daddr),
--	  "0" (htonl(len)), "r" (htonl(proto)), "r" (sum));
-+	  "0" (htonl(len)), "r" (htonl(proto)), "r" (sum)
-+	: "memory");
+diff --git a/drivers/i2c/busses/Makefile b/drivers/i2c/busses/Makefile
+index af56fe2c75c0..9be9fdb07f3d 100644
+--- a/drivers/i2c/busses/Makefile
++++ b/drivers/i2c/busses/Makefile
+@@ -90,10 +90,8 @@ obj-$(CONFIG_I2C_NPCM)		+= i2c-npcm7xx.o
+ obj-$(CONFIG_I2C_OCORES)	+= i2c-ocores.o
+ obj-$(CONFIG_I2C_OMAP)		+= i2c-omap.o
+ obj-$(CONFIG_I2C_OWL)		+= i2c-owl.o
+-i2c-pasemi-objs := i2c-pasemi-core.o i2c-pasemi-pci.o
+-obj-$(CONFIG_I2C_PASEMI)	+= i2c-pasemi.o
+-i2c-apple-objs := i2c-pasemi-core.o i2c-pasemi-platform.o
+-obj-$(CONFIG_I2C_APPLE)	+= i2c-apple.o
++obj-$(CONFIG_I2C_PASEMI)	+= i2c-pasemi-core.o i2c-pasemi-pci.o
++obj-$(CONFIG_I2C_APPLE)		+= i2c-pasemi-core.o i2c-pasemi-platform.o
+ obj-$(CONFIG_I2C_PCA_PLATFORM)	+= i2c-pca-platform.o
+ obj-$(CONFIG_I2C_PNX)		+= i2c-pnx.o
+ obj-$(CONFIG_I2C_PXA)		+= i2c-pxa.o
+diff --git a/drivers/i2c/busses/i2c-pasemi-core.c b/drivers/i2c/busses/i2c-pasemi-core.c
+index 7d54a9f34c74..bd8becbdeeb2 100644
+--- a/drivers/i2c/busses/i2c-pasemi-core.c
++++ b/drivers/i2c/busses/i2c-pasemi-core.c
+@@ -369,6 +369,7 @@ int pasemi_i2c_common_probe(struct pasemi_smbus *smbus)
  
- 	return csum_fold(sum);
+ 	return 0;
  }
++EXPORT_SYMBOL_GPL(pasemi_i2c_common_probe);
+ 
+ irqreturn_t pasemi_irq_handler(int irq, void *dev_id)
+ {
+@@ -378,3 +379,8 @@ irqreturn_t pasemi_irq_handler(int irq, void *dev_id)
+ 	complete(&smbus->irq_completion);
+ 	return IRQ_HANDLED;
+ }
++EXPORT_SYMBOL_GPL(pasemi_irq_handler);
++
++MODULE_LICENSE("GPL");
++MODULE_AUTHOR("Olof Johansson <olof@lixom.net>");
++MODULE_DESCRIPTION("PA Semi PWRficient SMBus driver");
 -- 
 2.43.0
 
