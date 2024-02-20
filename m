@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-21559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C85AB85C967
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:33:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6F8A85C83A
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:19:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8372D284D6B
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:33:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 230F1B20CDB
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:19:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E4AC151CE3;
-	Tue, 20 Feb 2024 21:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D7B6151CDC;
+	Tue, 20 Feb 2024 21:19:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="02w+gIax"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zb+hODGn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1FDF446C9;
-	Tue, 20 Feb 2024 21:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4B0612D7;
+	Tue, 20 Feb 2024 21:19:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464792; cv=none; b=PtzSXbd7oXUAEpx2uA0+FGik/UrMuo3KZMjgJeFWsm19GUtaBBxwdvZRhQRZd7aybACFOshipZttlB7ccgUHKyN0XB/JskxEIH2ctuHBbaJEjt7Vrk/HWEexz5FhnDACRwe6Buy13WIBU8OmwYTLEFRtztHC9M0PrV9saPMS+28=
+	t=1708463972; cv=none; b=MeUXjNrLPldl0lHxXutSI5bg1ekzO5t8tZsS2unAPDr+BXNM69oBHQQbGPZZsJDXBj+Bt50kb8uRkjpIEGNOx6XWShDr1pDDfhVWPk0XP2aL60t8xArqhqIxe/os+nkh5k+wxu6NIVh1/1NeVTiZhtQcTurKuiwPMorbebVp4hE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464792; c=relaxed/simple;
-	bh=dPxiKnY47IWtWfg1Op1c1a46M0gPGe9DzOWK8HF5640=;
+	s=arc-20240116; t=1708463972; c=relaxed/simple;
+	bh=o2mbXi0n0ycZxEhdeF50zQChVZUGUAzoKM/8sn1Tcuk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VrAMrx8Te8Pa/eofDZ7M/79Bz/rjUd0q/FTxWVycgp0eiYM0cWmaYCu4N8AZsf3Ls3DJd9zwS4oB+h5hm0BzHRhHSBZOLXzK1M9mm5mLeJn81xvI+wu/TUe7FlalsPX6QhYIIiYIiU+VF3afM84ZQHHFQS1Ncibw/SrFL+i4ljM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=02w+gIax; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6100CC433F1;
-	Tue, 20 Feb 2024 21:33:12 +0000 (UTC)
+	 MIME-Version; b=T45QOu4S0DzCknmEOCjGlQf3rBA2yuqIOPnMopK41wWVWMsORrxYAqBBAUPOjPHDonXwS3hs8iDTWPIS51rSWJhWTCiwU4hXiniyiQ0NKY7lmNzh58KAzY7T2kgjS18FrtR/XaHqLZeKqgo2QMOHwSGk3E9hqCtZd1wNGuS1t5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zb+hODGn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E057C433C7;
+	Tue, 20 Feb 2024 21:19:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464792;
-	bh=dPxiKnY47IWtWfg1Op1c1a46M0gPGe9DzOWK8HF5640=;
+	s=korg; t=1708463972;
+	bh=o2mbXi0n0ycZxEhdeF50zQChVZUGUAzoKM/8sn1Tcuk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=02w+gIax0gy/gjipLE2xSP9ia09O12HCVBW5ntnFVmdf7zcp9lu2cFezjOD3O9qYV
-	 44cmHMGXb9baafGs+2BuXE0agp2qTUhFoatSvvHGA5N2p+AcHy/X46hF1zMW2GxRCJ
-	 UZP3hiTPQVMIxxl3ny5J8teNlUGizFVj9w0YpEQs=
+	b=zb+hODGnpvVJwW3Lx4XIUy05B2A23LPZZhCZXdxAOSqDT+h5Oq7iifRofAypBu1C6
+	 OXJ1AXAThERpB8ReJ8PejFynb79fPfb6NgQ8OzuV1kvcbz+0F8GAG59k+DGX0q+aDK
+	 SyO1HOZarZYM5Rn7n1kuAD2jDWxfvjv7wsD87nwA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ondrej Mosnacek <omosnace@redhat.com>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 6.7 139/309] lsm: fix default return value of the socket_getpeersec_*() hooks
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Subject: [PATCH 6.6 182/331] serial: max310x: prevent infinite while() loop in port startup
 Date: Tue, 20 Feb 2024 21:54:58 +0100
-Message-ID: <20240220205637.489254118@linuxfoundation.org>
+Message-ID: <20240220205643.250469028@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,92 +60,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ondrej Mosnacek <omosnace@redhat.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-commit 5a287d3d2b9de2b3e747132c615599907ba5c3c1 upstream.
+commit b35f8dbbce818b02c730dc85133dc7754266e084 upstream.
 
-For these hooks the true "neutral" value is -EOPNOTSUPP, which is
-currently what is returned when no LSM provides this hook and what LSMs
-return when there is no security context set on the socket. Correct the
-value in <linux/lsm_hooks.h> and adjust the dispatch functions in
-security/security.c to avoid issues when the BPF LSM is enabled.
+If there is a problem after resetting a port, the do/while() loop that
+checks the default value of DIVLSB register may run forever and spam the
+I2C bus.
 
+Add a delay before each read of DIVLSB, and a maximum number of tries to
+prevent that situation from happening.
+
+Also fail probe if port reset is unsuccessful.
+
+Fixes: 10d8b34a4217 ("serial: max310x: Driver rework")
 Cc: stable@vger.kernel.org
-Fixes: 98e828a0650f ("security: Refactor declaration of LSM hooks")
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
-[PM: subject line tweak]
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20240116213001.3691629-5-hugo@hugovil.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/lsm_hook_defs.h |    4 ++--
- security/security.c           |   31 +++++++++++++++++++++++++++----
- 2 files changed, 29 insertions(+), 6 deletions(-)
+ drivers/tty/serial/max310x.c |   20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
---- a/include/linux/lsm_hook_defs.h
-+++ b/include/linux/lsm_hook_defs.h
-@@ -311,9 +311,9 @@ LSM_HOOK(int, 0, socket_getsockopt, stru
- LSM_HOOK(int, 0, socket_setsockopt, struct socket *sock, int level, int optname)
- LSM_HOOK(int, 0, socket_shutdown, struct socket *sock, int how)
- LSM_HOOK(int, 0, socket_sock_rcv_skb, struct sock *sk, struct sk_buff *skb)
--LSM_HOOK(int, 0, socket_getpeersec_stream, struct socket *sock,
-+LSM_HOOK(int, -ENOPROTOOPT, socket_getpeersec_stream, struct socket *sock,
- 	 sockptr_t optval, sockptr_t optlen, unsigned int len)
--LSM_HOOK(int, 0, socket_getpeersec_dgram, struct socket *sock,
-+LSM_HOOK(int, -ENOPROTOOPT, socket_getpeersec_dgram, struct socket *sock,
- 	 struct sk_buff *skb, u32 *secid)
- LSM_HOOK(int, 0, sk_alloc_security, struct sock *sk, int family, gfp_t priority)
- LSM_HOOK(void, LSM_RET_VOID, sk_free_security, struct sock *sk)
---- a/security/security.c
-+++ b/security/security.c
-@@ -4387,8 +4387,20 @@ EXPORT_SYMBOL(security_sock_rcv_skb);
- int security_socket_getpeersec_stream(struct socket *sock, sockptr_t optval,
- 				      sockptr_t optlen, unsigned int len)
- {
--	return call_int_hook(socket_getpeersec_stream, -ENOPROTOOPT, sock,
--			     optval, optlen, len);
-+	struct security_hook_list *hp;
-+	int rc;
-+
-+	/*
-+	 * Only one module will provide a security context.
-+	 */
-+	hlist_for_each_entry(hp, &security_hook_heads.socket_getpeersec_stream,
-+			     list) {
-+		rc = hp->hook.socket_getpeersec_stream(sock, optval, optlen,
-+						       len);
-+		if (rc != LSM_RET_DEFAULT(socket_getpeersec_stream))
-+			return rc;
-+	}
-+	return LSM_RET_DEFAULT(socket_getpeersec_stream);
- }
+--- a/drivers/tty/serial/max310x.c
++++ b/drivers/tty/serial/max310x.c
+@@ -237,6 +237,10 @@
+ #define MAX310x_REV_MASK		(0xf8)
+ #define MAX310X_WRITE_BIT		0x80
  
- /**
-@@ -4408,8 +4420,19 @@ int security_socket_getpeersec_stream(st
- int security_socket_getpeersec_dgram(struct socket *sock,
- 				     struct sk_buff *skb, u32 *secid)
- {
--	return call_int_hook(socket_getpeersec_dgram, -ENOPROTOOPT, sock,
--			     skb, secid);
-+	struct security_hook_list *hp;
-+	int rc;
++/* Port startup definitions */
++#define MAX310X_PORT_STARTUP_WAIT_RETRIES	20 /* Number of retries */
++#define MAX310X_PORT_STARTUP_WAIT_DELAY_MS	10 /* Delay between retries */
 +
-+	/*
-+	 * Only one module will provide a security context.
-+	 */
-+	hlist_for_each_entry(hp, &security_hook_heads.socket_getpeersec_dgram,
-+			     list) {
-+		rc = hp->hook.socket_getpeersec_dgram(sock, skb, secid);
-+		if (rc != LSM_RET_DEFAULT(socket_getpeersec_dgram))
-+			return rc;
-+	}
-+	return LSM_RET_DEFAULT(socket_getpeersec_dgram);
- }
- EXPORT_SYMBOL(security_socket_getpeersec_dgram);
+ /* Crystal-related definitions */
+ #define MAX310X_XTAL_WAIT_RETRIES	20 /* Number of retries */
+ #define MAX310X_XTAL_WAIT_DELAY_MS	10 /* Delay between retries */
+@@ -1346,6 +1350,9 @@ static int max310x_probe(struct device *
+ 		goto out_clk;
  
+ 	for (i = 0; i < devtype->nr; i++) {
++		bool started = false;
++		unsigned int try = 0, val = 0;
++
+ 		/* Reset port */
+ 		regmap_write(regmaps[i], MAX310X_MODE2_REG,
+ 			     MAX310X_MODE2_RST_BIT);
+@@ -1354,8 +1361,17 @@ static int max310x_probe(struct device *
+ 
+ 		/* Wait for port startup */
+ 		do {
+-			regmap_read(regmaps[i], MAX310X_BRGDIVLSB_REG, &ret);
+-		} while (ret != 0x01);
++			msleep(MAX310X_PORT_STARTUP_WAIT_DELAY_MS);
++			regmap_read(regmaps[i], MAX310X_BRGDIVLSB_REG, &val);
++
++			if (val == 0x01)
++				started = true;
++		} while (!started && (++try < MAX310X_PORT_STARTUP_WAIT_RETRIES));
++
++		if (!started) {
++			ret = dev_err_probe(dev, -EAGAIN, "port reset failed\n");
++			goto out_uart;
++		}
+ 
+ 		regmap_write(regmaps[i], MAX310X_MODE1_REG, devtype->mode1);
+ 	}
 
 
 
