@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-21203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A678585C79D
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:14:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D24F085C90B
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:29:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 131FBB2157C
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:14:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9338DB226DE
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:29:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52C12152DE0;
-	Tue, 20 Feb 2024 21:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C53DB151CEE;
+	Tue, 20 Feb 2024 21:28:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oQV4/yKe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E9kannhz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10EF0151CFB;
-	Tue, 20 Feb 2024 21:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84A62151CE1;
+	Tue, 20 Feb 2024 21:28:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463679; cv=none; b=a2aj2Q9fj2GsJzTZJGfzqTVIKONJbj7jIlQ8VETA2Y9f0b+SoGA+oHGPwD/8+lwPf4AJdNP05/4+5+5BLzBhcRa3SeBcHD9nXKdWeRcZYqocGhGkFGvFqXG9yugBZ/UFi5n5mSkBWUp2l8szc5QA8lHQNjl3A4UvxmARR5aqTq4=
+	t=1708464509; cv=none; b=g//BDl5QPgspH9p6PZvibDy9zNSaNfiyc206u/e+tYblgxvi0hcYdCxSKkMnV62gFEX6Gt18dCgRzYoBFYr4VefXRIDykF5MeFEtBy2zEBEvzIWYIi+1IXGZ0ue6XUh7LAQ4aVx8Fa56C4sI0GQms9053oNIc0sXQz7M5FL8xPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463679; c=relaxed/simple;
-	bh=lkPZjqMxzH3IAL3zHBydF6otLYytUT4RxjhvVTFS+gg=;
+	s=arc-20240116; t=1708464509; c=relaxed/simple;
+	bh=eVFhI4mvZqKECdFL/vYIhF79Nz61qF6p6b+zPcsYwx0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E7LHsPBJCRCo475WOhV294p7fHG1scg4w8GibLYzYKpCjHwLdxFCtG4WlrKLl6LXxNjTA4XeyEBN88HKZZPUH8H3dAl0KgO4m9xOmxOJUn5rpo78wufuH7Fn9IrlYNdhUyAv72ayBvRMGbA1jESzUucxcWLh3sFj/Gr3FX1g22M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oQV4/yKe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 753D1C433F1;
-	Tue, 20 Feb 2024 21:14:38 +0000 (UTC)
+	 MIME-Version; b=AiubNE6LdudNK3k2qLQdKwLRzGCz0XUi09vYs60coiadS83e+r6ZjaGDDh57mqPB9ZH29Fx3Pdu3whh4ku0jX8f1DREO97XYeqk3kjAtWXObrMY17UVNg8OBmV+AR2oSnb382I53WS7s5fPZQQT+v67+8WEV2bcFK6wJ53F2Q1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E9kannhz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7920C433F1;
+	Tue, 20 Feb 2024 21:28:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463678;
-	bh=lkPZjqMxzH3IAL3zHBydF6otLYytUT4RxjhvVTFS+gg=;
+	s=korg; t=1708464509;
+	bh=eVFhI4mvZqKECdFL/vYIhF79Nz61qF6p6b+zPcsYwx0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oQV4/yKeWMEgVmanpodQHFEQEnh6ncuZnOI+OZ2Lglj8XYr5LWevaVlm587L5TP3e
-	 ObILzqmu6hoNoeH7DpMMSTRh8BOLLvGvuMfGKEmugb5HhD6vDVWaw4aU59XYh5nQR/
-	 DCIbEw3cg2ay65ZUimuWO6SIpTrZAjXUzgDYcEPo=
+	b=E9kannhzoRXoQoeorCQl3k4YJL6SC0mTOXr7r5vyRAOnyVtTXAfNfeqnLjd+lvuCZ
+	 /GM1TvIQ2Uhu7hjeoULsni20V+fPEXtEd3uzYwWvB81KiFIMOQ0wgeyu5DYjx7fip7
+	 Ug0TjguJrq14Rv0zOeW8+CZIXpGV1mduSulJrPQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 090/331] powerpc/6xx: set High BAT Enable flag on G2_LE cores
+Subject: [PATCH 6.7 047/309] net: tls: factor out tls_*crypt_async_wait()
 Date: Tue, 20 Feb 2024 21:53:26 +0100
-Message-ID: <20240220205640.412408376@linuxfoundation.org>
+Message-ID: <20240220205634.658473910@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +64,191 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit a038a3ff8c6582404834852c043dadc73a5b68b4 ]
+[ Upstream commit c57ca512f3b68ddcd62bda9cc24a8f5584ab01b1 ]
 
-MMU_FTR_USE_HIGH_BATS is set for G2_LE cores and derivatives like e300cX,
-but the high BATs need to be enabled in HID2 to work. Add register
-definitions and add the needed setup to __setup_cpu_603.
+Factor out waiting for async encrypt and decrypt to finish.
+There are already multiple copies and a subsequent fix will
+need more. No functional changes.
 
-This fixes boot on CPUs like the MPC5200B with STRICT_KERNEL_RWX enabled
-on systems where the flag has not been set by the bootloader already.
+Note that crypto_wait_req() returns wait->err
 
-Fixes: e4d6654ebe6e ("powerpc/mm/32s: rework mmu_mapin_ram()")
-Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240124103838.43675-1-matthias.schiffer@ew.tq-group.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: aec7961916f3 ("tls: fix race between async notify and socket close")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/reg.h      |  2 ++
- arch/powerpc/kernel/cpu_setup_6xx.S | 20 +++++++++++++++++++-
- 2 files changed, 21 insertions(+), 1 deletion(-)
+ net/tls/tls_sw.c | 96 +++++++++++++++++++++++-------------------------
+ 1 file changed, 45 insertions(+), 51 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
-index 4ae4ab9090a2..ade5f094dbd2 100644
---- a/arch/powerpc/include/asm/reg.h
-+++ b/arch/powerpc/include/asm/reg.h
-@@ -617,6 +617,8 @@
- #endif
- #define SPRN_HID2	0x3F8		/* Hardware Implementation Register 2 */
- #define SPRN_HID2_GEKKO	0x398		/* Gekko HID2 Register */
-+#define SPRN_HID2_G2_LE	0x3F3		/* G2_LE HID2 Register */
-+#define  HID2_G2_LE_HBE	(1<<18)		/* High BAT Enable (G2_LE) */
- #define SPRN_IABR	0x3F2	/* Instruction Address Breakpoint Register */
- #define SPRN_IABR2	0x3FA		/* 83xx */
- #define SPRN_IBCR	0x135		/* 83xx Insn Breakpoint Control Reg */
-diff --git a/arch/powerpc/kernel/cpu_setup_6xx.S b/arch/powerpc/kernel/cpu_setup_6xx.S
-index f29ce3dd6140..bfd3f442e5eb 100644
---- a/arch/powerpc/kernel/cpu_setup_6xx.S
-+++ b/arch/powerpc/kernel/cpu_setup_6xx.S
-@@ -26,6 +26,15 @@ BEGIN_FTR_SECTION
- 	bl	__init_fpu_registers
- END_FTR_SECTION_IFCLR(CPU_FTR_FPU_UNAVAILABLE)
- 	bl	setup_common_caches
-+
-+	/*
-+	 * This assumes that all cores using __setup_cpu_603 with
-+	 * MMU_FTR_USE_HIGH_BATS are G2_LE compatible
-+	 */
-+BEGIN_MMU_FTR_SECTION
-+	bl      setup_g2_le_hid2
-+END_MMU_FTR_SECTION_IFSET(MMU_FTR_USE_HIGH_BATS)
-+
- 	mtlr	r5
- 	blr
- _GLOBAL(__setup_cpu_604)
-@@ -115,6 +124,16 @@ SYM_FUNC_START_LOCAL(setup_604_hid0)
- 	blr
- SYM_FUNC_END(setup_604_hid0)
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index 31e8a94dfc11..6a73714f34cc 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -230,6 +230,20 @@ static void tls_decrypt_done(void *data, int err)
+ 	spin_unlock_bh(&ctx->decrypt_compl_lock);
+ }
  
-+/* Enable high BATs for G2_LE and derivatives like e300cX */
-+SYM_FUNC_START_LOCAL(setup_g2_le_hid2)
-+	mfspr	r11,SPRN_HID2_G2_LE
-+	oris	r11,r11,HID2_G2_LE_HBE@h
-+	mtspr	SPRN_HID2_G2_LE,r11
-+	sync
-+	isync
-+	blr
-+SYM_FUNC_END(setup_g2_le_hid2)
++static int tls_decrypt_async_wait(struct tls_sw_context_rx *ctx)
++{
++	int pending;
 +
- /* 7400 <= rev 2.7 and 7410 rev = 1.0 suffer from some
-  * erratas we work around here.
-  * Moto MPC710CE.pdf describes them, those are errata
-@@ -495,4 +514,3 @@ _GLOBAL(__restore_cpu_setup)
- 	mtcr	r7
- 	blr
- _ASM_NOKPROBE_SYMBOL(__restore_cpu_setup)
++	spin_lock_bh(&ctx->decrypt_compl_lock);
++	reinit_completion(&ctx->async_wait.completion);
++	pending = atomic_read(&ctx->decrypt_pending);
++	spin_unlock_bh(&ctx->decrypt_compl_lock);
++	if (pending)
++		crypto_wait_req(-EINPROGRESS, &ctx->async_wait);
++
++	return ctx->async_wait.err;
++}
++
+ static int tls_do_decryption(struct sock *sk,
+ 			     struct scatterlist *sgin,
+ 			     struct scatterlist *sgout,
+@@ -495,6 +509,28 @@ static void tls_encrypt_done(void *data, int err)
+ 		schedule_delayed_work(&ctx->tx_work.work, 1);
+ }
+ 
++static int tls_encrypt_async_wait(struct tls_sw_context_tx *ctx)
++{
++	int pending;
++
++	spin_lock_bh(&ctx->encrypt_compl_lock);
++	ctx->async_notify = true;
++
++	pending = atomic_read(&ctx->encrypt_pending);
++	spin_unlock_bh(&ctx->encrypt_compl_lock);
++	if (pending)
++		crypto_wait_req(-EINPROGRESS, &ctx->async_wait);
++	else
++		reinit_completion(&ctx->async_wait.completion);
++
++	/* There can be no concurrent accesses, since we have no
++	 * pending encrypt operations
++	 */
++	WRITE_ONCE(ctx->async_notify, false);
++
++	return ctx->async_wait.err;
++}
++
+ static int tls_do_encryption(struct sock *sk,
+ 			     struct tls_context *tls_ctx,
+ 			     struct tls_sw_context_tx *ctx,
+@@ -984,7 +1020,6 @@ static int tls_sw_sendmsg_locked(struct sock *sk, struct msghdr *msg,
+ 	int num_zc = 0;
+ 	int orig_size;
+ 	int ret = 0;
+-	int pending;
+ 
+ 	if (!eor && (msg->msg_flags & MSG_EOR))
+ 		return -EINVAL;
+@@ -1163,24 +1198,12 @@ static int tls_sw_sendmsg_locked(struct sock *sk, struct msghdr *msg,
+ 	if (!num_async) {
+ 		goto send_end;
+ 	} else if (num_zc) {
+-		/* Wait for pending encryptions to get completed */
+-		spin_lock_bh(&ctx->encrypt_compl_lock);
+-		ctx->async_notify = true;
 -
+-		pending = atomic_read(&ctx->encrypt_pending);
+-		spin_unlock_bh(&ctx->encrypt_compl_lock);
+-		if (pending)
+-			crypto_wait_req(-EINPROGRESS, &ctx->async_wait);
+-		else
+-			reinit_completion(&ctx->async_wait.completion);
+-
+-		/* There can be no concurrent accesses, since we have no
+-		 * pending encrypt operations
+-		 */
+-		WRITE_ONCE(ctx->async_notify, false);
++		int err;
+ 
+-		if (ctx->async_wait.err) {
+-			ret = ctx->async_wait.err;
++		/* Wait for pending encryptions to get completed */
++		err = tls_encrypt_async_wait(ctx);
++		if (err) {
++			ret = err;
+ 			copied = 0;
+ 		}
+ 	}
+@@ -1229,7 +1252,6 @@ void tls_sw_splice_eof(struct socket *sock)
+ 	ssize_t copied = 0;
+ 	bool retrying = false;
+ 	int ret = 0;
+-	int pending;
+ 
+ 	if (!ctx->open_rec)
+ 		return;
+@@ -1264,22 +1286,7 @@ void tls_sw_splice_eof(struct socket *sock)
+ 	}
+ 
+ 	/* Wait for pending encryptions to get completed */
+-	spin_lock_bh(&ctx->encrypt_compl_lock);
+-	ctx->async_notify = true;
+-
+-	pending = atomic_read(&ctx->encrypt_pending);
+-	spin_unlock_bh(&ctx->encrypt_compl_lock);
+-	if (pending)
+-		crypto_wait_req(-EINPROGRESS, &ctx->async_wait);
+-	else
+-		reinit_completion(&ctx->async_wait.completion);
+-
+-	/* There can be no concurrent accesses, since we have no pending
+-	 * encrypt operations
+-	 */
+-	WRITE_ONCE(ctx->async_notify, false);
+-
+-	if (ctx->async_wait.err)
++	if (tls_encrypt_async_wait(ctx))
+ 		goto unlock;
+ 
+ 	/* Transmit if any encryptions have completed */
+@@ -2109,16 +2116,10 @@ int tls_sw_recvmsg(struct sock *sk,
+ 
+ recv_end:
+ 	if (async) {
+-		int ret, pending;
++		int ret;
+ 
+ 		/* Wait for all previously submitted records to be decrypted */
+-		spin_lock_bh(&ctx->decrypt_compl_lock);
+-		reinit_completion(&ctx->async_wait.completion);
+-		pending = atomic_read(&ctx->decrypt_pending);
+-		spin_unlock_bh(&ctx->decrypt_compl_lock);
+-		ret = 0;
+-		if (pending)
+-			ret = crypto_wait_req(-EINPROGRESS, &ctx->async_wait);
++		ret = tls_decrypt_async_wait(ctx);
+ 		__skb_queue_purge(&ctx->async_hold);
+ 
+ 		if (ret) {
+@@ -2435,16 +2436,9 @@ void tls_sw_release_resources_tx(struct sock *sk)
+ 	struct tls_context *tls_ctx = tls_get_ctx(sk);
+ 	struct tls_sw_context_tx *ctx = tls_sw_ctx_tx(tls_ctx);
+ 	struct tls_rec *rec, *tmp;
+-	int pending;
+ 
+ 	/* Wait for any pending async encryptions to complete */
+-	spin_lock_bh(&ctx->encrypt_compl_lock);
+-	ctx->async_notify = true;
+-	pending = atomic_read(&ctx->encrypt_pending);
+-	spin_unlock_bh(&ctx->encrypt_compl_lock);
+-
+-	if (pending)
+-		crypto_wait_req(-EINPROGRESS, &ctx->async_wait);
++	tls_encrypt_async_wait(ctx);
+ 
+ 	tls_tx_records(sk, -1);
+ 
 -- 
 2.43.0
 
