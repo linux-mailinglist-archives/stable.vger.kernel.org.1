@@ -1,198 +1,190 @@
-Return-Path: <stable+bounces-21407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE28985C8C6
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:25:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0451E85C917
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:29:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 211A4B228DA
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:25:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADB0C284DE3
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:29:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99EB8151CED;
-	Tue, 20 Feb 2024 21:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93C91151CEB;
+	Tue, 20 Feb 2024 21:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gU39SdMX"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QB164S1u"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94EAA14F9DA;
-	Tue, 20 Feb 2024 21:25:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBEC114A4E6
+	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 21:29:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464321; cv=none; b=ACUi2N379echltjbrmd1/RfGzUkeQhpnpTvR3Bke+T3EyH6OJldeohtxVgnTwNUlOxtbMLxnVe6Pj5QUeYozeowbDPZVDZ/9xyRT6OWNp1BjuOqQEmKaatcihPNBlszUMPYt4e/Q446JxPJ67kywxVJL8kH5A6tcB7zYKwwWSbg=
+	t=1708464550; cv=none; b=gzpV/EdiVsMc4F4/ZUPBmxl+NqJnc16kTayv/Z12AIMd0SdIBG51ZxxDzcHfsbMHBPBtFQDXaThKj7V0tckMSa2Zr9yDTc7TmYfPGMa8PAbiuIH3tufp+RpGKIQHZJAvrbBLX2xxhdbFod6/2rf7qUhQ4q7n/Q6RUrLLZ3JwLOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464321; c=relaxed/simple;
-	bh=ccOl1B6MJSrFYO960l0mfmHlslZSEKYjP4pFDELe8Po=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Co+j6+TNrqp5HeheiG2a94KtzuDgg+YUvq8U80Ft3c20/YKLxOpWW3Y7hMwQpjDo4uOIpxwUN0qZy+qzWD7l6FE0bMlyVzBeJteVN5zgt/hIRKpICGZWqBP08qvfEStl2X3NijWk3szLfBBIj7HK7kasn5KFk7HG2tdtD9z15Zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gU39SdMX; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+	s=arc-20240116; t=1708464550; c=relaxed/simple;
+	bh=oLcpNiBHXLE3PwmdBTaeEDxExb9bW2Y7aknC/l5kDqA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=aSud5kkJszvIT5Pnfba6PHCG6R8c5lG/HXoBnkLnF2jNEdZOYk5L4alcbL7D4i7X62k2Q0uqLU15W+1HT9b4QNr5w0XQR6gXfWW4bg/T3vYAVCMu1+lQ7ahcUmF5p9/NLcNdlRLswpkbeYzmj9SWVZtPwwsRHIiVPvGEVXcKIVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QB164S1u; arc=none smtp.client-ip=209.85.161.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4126f48411dso6821205e9.0;
-        Tue, 20 Feb 2024 13:25:19 -0800 (PST)
+Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-59a8b9b327aso2182329eaf.2
+        for <stable@vger.kernel.org>; Tue, 20 Feb 2024 13:29:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708464318; x=1709069118; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=o2t1e11fIXYpiLcc52i34tjoEp92z5dlX1WlplkqNyU=;
-        b=gU39SdMXwL3pKulILL1CH3Uxk/BsMQv8u5vHK9DDm0QJuyekD84RJU1I6La2G+tbJJ
-         yQkw4Z8Rb4Bo5Dcbo+Wnc0P8gl3xyZ6WHNLskhUASu4CJlTMK0RL1Ef4q4c7Eo3FW82Q
-         Ic3V7vUpozBkRRMlOwfYdz6nRLoiIpOcR0Wsz2wYotAHAjnodvl3zemyfjo8gpqx7qT6
-         UQr6LXE+TCyXWNcn71v4RRfn1js1p23tbzKXkbaPwzk+ncPCnsuOkdY45Qo8Xlsg61CR
-         clLcdi9NH+/23zK3EQzYgR4uMp1uCgiEkwUVavaSIZBDFlExiufKB0nERpYOZ4DIuKlr
-         euKw==
+        d=gmail.com; s=20230601; t=1708464547; x=1709069347; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=CLZOFiozVwC5ME0m6wS7LFcODZPGY/Dn60kT2ULFEh0=;
+        b=QB164S1ulSg5t6caWPvPCPdHcVniXgyqE4JMOfzcY4SaheXcAqzgzM2So2/sd2/fPl
+         5uBeu6zLEPgZrJ8vNyGh+dR4OQrxTxgL3MIz3CRoIGdQAu80vzU/2bITSexGoW7SOak2
+         3Z6LX1V555Sd0Q9ibkgqJlLQpt4An1dznnEWz+VuL1pYD9OP06LKrAijnl0VG/Ua6qd2
+         rIInWZ/ts7Mppp9NsQM1284GE8s9XjugnRf/ekLXu8Wn5pItdy2Y7AwRII88Erbl3SjX
+         GOqEKur1k/gaSjJg1aBS1Jwotvfrq4Plc+Zuf+esZcgC+MUNDYTbkHi/Bpub3tl9P5S/
+         lVQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708464318; x=1709069118;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=o2t1e11fIXYpiLcc52i34tjoEp92z5dlX1WlplkqNyU=;
-        b=HoTia8zHLtFOXT1a9GFuplI0dz5xd3FLNroBTGNLBV8Q99JqvT1vsRGv+Y4FQAcspr
-         xx2lTwPYvokOrAoYSpv2HBhMqamEQL5QXYss+2f75K/ZdnwnlKVkw0l4ZnVg8v2NTgLm
-         3bWG3hfKYZ/Bc9aVug/8LgsGZdD7HBCGPBLX8h4J5EAONfeJqZu7s/6/AYhmOfJ5CeQ0
-         rcZa0V12iihWLupnSITqMuUn+bsvYo1taFGdp1AI9t3e6PEtN20ClzVKtmskJODAZquF
-         K2ZdFF6kwJzb1hbzJv4zh1qzbzf+GzjavGmpOyYXF6ATKfapSXUoC+du7gsR4a6PJRlt
-         O8TA==
-X-Forwarded-Encrypted: i=1; AJvYcCXFGQZf6HLdgXeNlVH4RQ3ffiHPRanpLUHycVFhHevro4QjwBQVYLmLFs6xww6toZCej0K7gpmHQWRRm+kwN+6eLHTAzCZJtKwy06XHOIH9bzXVhX+Eve/+dqyzRlKn6xIHpw==
-X-Gm-Message-State: AOJu0Yx8RDaK4qEJY1Wg4OZ3F46XrEXyp9DC69sdHJglDdHe7Jb47ZrX
-	nw9s0ARugSVi2Y+mVBssu1o1a9Q9LgfVXh1cFmJ/J8YCLMldfxYc
-X-Google-Smtp-Source: AGHT+IELfCQvBpF71Gvt8IsLC2VtPSSkkASqab5VZyRK93zl2RkycjKLamjrSRdP1y3CDVDG4j05RA==
-X-Received: by 2002:a05:600c:1c1d:b0:412:529f:934a with SMTP id j29-20020a05600c1c1d00b00412529f934amr11279424wms.19.1708464317657;
-        Tue, 20 Feb 2024 13:25:17 -0800 (PST)
-Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
-        by smtp.gmail.com with ESMTPSA id cl2-20020a5d5f02000000b0033d6bc17d0esm3387295wrb.74.2024.02.20.13.25.16
+        d=1e100.net; s=20230601; t=1708464547; x=1709069347;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CLZOFiozVwC5ME0m6wS7LFcODZPGY/Dn60kT2ULFEh0=;
+        b=J/i8+rpvR7eJQZtHddJezm88nsnyuKp0X6ZzeMvqcV7pKWVUhIl1IEY0p37+W3Q9xz
+         lfarYZQ6iOWTDR5bbVP11Z6kGWsMHz6rqfTwVqsh4kZDHNKGGyQbbA3/ACrzq4AaIZlk
+         tPNEOQjeDplAiZ9O7ekeIBF8PufnFPHCNVHkzULn4wBGKs6R2kGXR748w4bi9EQpT7dL
+         DOajheRRUQ4oC/VO9y8fgqWom5aCUnji4mRgGdcb7eSp8imue/E/738vlpMR+ry+W1ww
+         EPuE3ACbNHdyblrpq1giHyA6Gw74SStPCd9ZNJH1YgtFujTL32RCBFuxeySmMIQm7hNb
+         xttg==
+X-Gm-Message-State: AOJu0YygmK0Am6W2yDsIMm1kcP5n1yHbJdEi1H0e/vvKAskuAEfW7oB5
+	xsEmK62jU8fy13/y/3VnS/nkjl+dff1u7IMWO4mMy8zeq9dsYho335hgoEhl
+X-Google-Smtp-Source: AGHT+IHPh8BxaPdawerv+SLP2rMhgeLLkh3cumd3xyuvnBpvKy54kc5z/RTocLkTUHbUIkMN3GF2tg==
+X-Received: by 2002:a05:6358:7e04:b0:17b:2bc6:e843 with SMTP id o4-20020a0563587e0400b0017b2bc6e843mr13177303rwm.18.1708464547047;
+        Tue, 20 Feb 2024 13:29:07 -0800 (PST)
+Received: from carrot.. (i223-217-149-232.s42.a014.ap.plala.or.jp. [223.217.149.232])
+        by smtp.gmail.com with ESMTPSA id h23-20020a63f917000000b005bd980cca56sm7131962pgi.29.2024.02.20.13.29.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Feb 2024 13:25:17 -0800 (PST)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id 3E05EBE2EE8; Tue, 20 Feb 2024 22:25:16 +0100 (CET)
-Date: Tue, 20 Feb 2024 22:25:16 +0100
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Paulo Alcantara <pc@manguebit.com>,
-	Jan =?utf-8?B?xIxlcm3DoWs=?= <sairon@sairon.cz>,
-	Leonardo Brondani Schenkel <leonardo@schenkel.net>,
-	stable@vger.kernel.org, regressions@lists.linux.dev,
-	linux-cifs@vger.kernel.org,
-	Mathias =?iso-8859-1?Q?Wei=DFbach?= <m.weissbach@info-gate.de>
-Subject: Re: [REGRESSION 6.1.70] system calls with CIFS mounts failing with
- "Resource temporarily unavailable"
-Message-ID: <ZdUYvHe6u3LcUHDf@eldamar.lan>
-References: <8ad7c20e-0645-40f3-96e6-75257b4bd31a@schenkel.net>
- <7425b05a-d9a1-4c06-89a2-575504e132c3@sairon.cz>
- <446860c571d0699ed664175262a9e84b@manguebit.com>
- <2024010846-hefty-program-09c0@gregkh>
- <88a9efbd0718039e6214fd23978250d1@manguebit.com>
- <Zbl7qIcpekgPmLDP@eldamar.lan>
- <Zbl881W5S-nL7iof@eldamar.lan>
- <2024022058-scrubber-canola-37d2@gregkh>
+        Tue, 20 Feb 2024 13:29:05 -0800 (PST)
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 5.4 5.10 5.15 6.1 6.6 6.7] nilfs2: fix potential bug in end_buffer_async_write
+Date: Wed, 21 Feb 2024 06:29:28 +0900
+Message-Id: <20240220212928.5611-1-konishi.ryusuke@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2024022058-scrubber-canola-37d2@gregkh>
+Content-Transfer-Encoding: 8bit
 
-Hi Greg,
+commit 5bc09b397cbf1221f8a8aacb1152650c9195b02b upstream.
 
-On Tue, Feb 20, 2024 at 09:27:49PM +0100, Greg Kroah-Hartman wrote:
-> On Tue, Jan 30, 2024 at 11:49:23PM +0100, Salvatore Bonaccorso wrote:
-> > Hi Paulo, hi Greg,
-> > 
-> > On Tue, Jan 30, 2024 at 11:43:52PM +0100, Salvatore Bonaccorso wrote:
-> > > Hi Paulo, hi Greg,
-> > > 
-> > > Note this is about the 5.10.y backports of the cifs issue, were system
-> > > calls fail with "Resource temporarily unavailable".
-> > > 
-> > > On Mon, Jan 08, 2024 at 12:58:49PM -0300, Paulo Alcantara wrote:
-> > > > Greg Kroah-Hartman <gregkh@linuxfoundation.org> writes:
-> > > > 
-> > > > > Why can't we just include eb3e28c1e89b ("smb3: Replace smb2pdu 1-element
-> > > > > arrays with flex-arrays") to resolve this?
-> > > > 
-> > > > Yep, this is the right way to go.
-> > > > 
-> > > > > I've queued it up now.
-> > > > 
-> > > > Thanks!
-> > > 
-> > > Is the underlying issue by picking the three commits:
-> > > 
-> > > 3080ea5553cc ("stddef: Introduce DECLARE_FLEX_ARRAY() helper")
-> > > eb3e28c1e89b ("smb3: Replace smb2pdu 1-element arrays with flex-arrays")
-> > > 
-> > > and the last commit in linux-stable-rc for 5.10.y:
-> > > 
-> > > https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/commit?id=a280ecca48beb40ca6c0fc20dd5a7fdd9b3ee0b7
-> > > 
-> > > really fixing the issue?
-> > > 
-> > > Since we need to release a new update in Debian, I picked those three
-> > > for testing on top of the 5.10.209-1 and while testing explicitly a
-> > > cifs mount, I still get:
-> > > 
-> > > statfs(".", 0x7ffd809d5a70)             = -1 EAGAIN (Resource temporarily unavailable)
-> > > 
-> > > The same happens if I build
-> > > https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/commit?id=a280ecca48beb40ca6c0fc20dd5a7fdd9b3ee0b7
-> > > (knowing that it is not yet ready for review).
-> > > 
-> > > I'm slight confused as a280ecca48be ("cifs: fix off-by-one in
-> > > SMB2_query_info_init()") says in the commit message:
-> > > 
-> > > [...]
-> > > 	v5.10.y doesn't have
-> > > 
-> > >         eb3e28c1e89b ("smb3: Replace smb2pdu 1-element arrays with flex-arrays")
-> > > 
-> > > 	and the commit does
-> > > [...]
-> > > 
-> > > and in meanwhile though the eb3e28c1e89b was picked (in a backported
-> > > version). As 6.1.75-rc2 itself does not show the same problem, might
-> > > there be a prerequisite missing in the backports for 5.10.y or a
-> > > backport being wrong?
-> > 
-> > The problem seems to be that we are picking the backport for
-> > eb3e28c1e89b, but then still applying 
-> > 
-> > https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/commit?id=a280ecca48beb40ca6c0fc20dd5
-> > 
-> > which was made for the case in 5.10.y where eb3e28c1e89b is not
-> > present.
-> > 
-> > I reverted a280ecca48beb40ca6c0fc20dd5 and now:
-> > 
-> > statfs(".", {f_type=SMB2_MAGIC_NUMBER, f_bsize=4096, f_blocks=2189197, f_bfree=593878, f_bavail=593878, f_files=0, f_ffree=0, f_fsid={val=[2004816114, 0]}, f_namelen=255, f_frsize=4096, f_flags=ST_VALID|ST_RELATIME}) = 0
-> 
-> So this works?  Would that just be easier to do overall?  I feel like
-> that might be best here.
-> 
-> Again, a set of simple "do this and this and this" would be nice to
-> have, as there are too many threads here, some incomplete and missing
-> commits on my end.
-> 
-> confused,
+According to a syzbot report, end_buffer_async_write(), which handles the
+completion of block device writes, may detect abnormal condition of the
+buffer async_write flag and cause a BUG_ON failure when using nilfs2.
 
-It is quite chaotic, since I believe multiple people worked on trying
-to resolve the issue, and then for the 5.10.y and 5.15.y branches
-different initial commits were applied. 
+Nilfs2 itself does not use end_buffer_async_write().  But, the async_write
+flag is now used as a marker by commit 7f42ec394156 ("nilfs2: fix issue
+with race condition of competition between segments for dirty blocks") as
+a means of resolving double list insertion of dirty blocks in
+nilfs_lookup_dirty_data_buffers() and nilfs_lookup_node_buffers() and the
+resulting crash.
 
-For 5.10.y it's the case: Keep the backport of eb3e28c1e89b and drop
-a280ecca48be (as it is not true that v5.10.y does not have
-eb3e28c1e89b, as it is actually in the current 5.10.y queue).
+This modification is safe as long as it is used for file data and b-tree
+node blocks where the page caches are independent.  However, it was
+irrelevant and redundant to also introduce async_write for segment summary
+and super root blocks that share buffers with the backing device.  This
+led to the possibility that the BUG_ON check in end_buffer_async_write
+would fail as described above, if independent writebacks of the backing
+device occurred in parallel.
 
-Paulo can you please give Greg an authoratitative set of commits to
-keep/apply in the 5.10.y and 5.15.y series.
+The use of async_write for segment summary buffers has already been
+removed in a previous change.
 
-Regards,
-Salvatore
+Fix this issue by removing the manipulation of the async_write flag for
+the remaining super root block buffer.
+
+Link: https://lkml.kernel.org/r/20240203161645.4992-1-konishi.ryusuke@gmail.com
+Fixes: 7f42ec394156 ("nilfs2: fix issue with race condition of competition between segments for dirty blocks")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+5c04210f7c7f897c1e7f@syzkaller.appspotmail.com
+Closes: https://lkml.kernel.org/r/00000000000019a97c05fd42f8c8@google.com
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+Please queue this patch to these stable trees instead of the patch
+that failed to apply to them.
+
+This patch is tailored to account for page/folio conversion and can
+be applied from v4.8 to v6.7.
+
+Also, all the builds and tests I did on each stable tree passed.
+
+Thanks,
+Ryusuke Konishi
+
+ fs/nilfs2/segment.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/fs/nilfs2/segment.c b/fs/nilfs2/segment.c
+index 55e31cc903d1..0f21dbcd0bfb 100644
+--- a/fs/nilfs2/segment.c
++++ b/fs/nilfs2/segment.c
+@@ -1703,7 +1703,6 @@ static void nilfs_segctor_prepare_write(struct nilfs_sc_info *sci)
+ 
+ 		list_for_each_entry(bh, &segbuf->sb_payload_buffers,
+ 				    b_assoc_buffers) {
+-			set_buffer_async_write(bh);
+ 			if (bh == segbuf->sb_super_root) {
+ 				if (bh->b_page != bd_page) {
+ 					lock_page(bd_page);
+@@ -1714,6 +1713,7 @@ static void nilfs_segctor_prepare_write(struct nilfs_sc_info *sci)
+ 				}
+ 				break;
+ 			}
++			set_buffer_async_write(bh);
+ 			if (bh->b_page != fs_page) {
+ 				nilfs_begin_page_io(fs_page);
+ 				fs_page = bh->b_page;
+@@ -1799,7 +1799,6 @@ static void nilfs_abort_logs(struct list_head *logs, int err)
+ 
+ 		list_for_each_entry(bh, &segbuf->sb_payload_buffers,
+ 				    b_assoc_buffers) {
+-			clear_buffer_async_write(bh);
+ 			if (bh == segbuf->sb_super_root) {
+ 				clear_buffer_uptodate(bh);
+ 				if (bh->b_page != bd_page) {
+@@ -1808,6 +1807,7 @@ static void nilfs_abort_logs(struct list_head *logs, int err)
+ 				}
+ 				break;
+ 			}
++			clear_buffer_async_write(bh);
+ 			if (bh->b_page != fs_page) {
+ 				nilfs_end_page_io(fs_page, err);
+ 				fs_page = bh->b_page;
+@@ -1895,8 +1895,9 @@ static void nilfs_segctor_complete_write(struct nilfs_sc_info *sci)
+ 				 BIT(BH_Delay) | BIT(BH_NILFS_Volatile) |
+ 				 BIT(BH_NILFS_Redirected));
+ 
+-			set_mask_bits(&bh->b_state, clear_bits, set_bits);
+ 			if (bh == segbuf->sb_super_root) {
++				set_buffer_uptodate(bh);
++				clear_buffer_dirty(bh);
+ 				if (bh->b_page != bd_page) {
+ 					end_page_writeback(bd_page);
+ 					bd_page = bh->b_page;
+@@ -1904,6 +1905,7 @@ static void nilfs_segctor_complete_write(struct nilfs_sc_info *sci)
+ 				update_sr = true;
+ 				break;
+ 			}
++			set_mask_bits(&bh->b_state, clear_bits, set_bits);
+ 			if (bh->b_page != fs_page) {
+ 				nilfs_end_page_io(fs_page, 0);
+ 				fs_page = bh->b_page;
+-- 
+2.39.3
+
 
