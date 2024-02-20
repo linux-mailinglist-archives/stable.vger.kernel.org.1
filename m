@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-21649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E06C85C9C2
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:37:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 672E285C86C
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:21:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19382284550
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:37:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98C621C22258
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:21:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B424B151CEA;
-	Tue, 20 Feb 2024 21:37:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63ABB151CEA;
+	Tue, 20 Feb 2024 21:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hpmrAbGX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pG4RpRC7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7E214F9C8;
-	Tue, 20 Feb 2024 21:37:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211A41509AC;
+	Tue, 20 Feb 2024 21:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708465076; cv=none; b=aN77pjfkBZehA9CjIZFZdM5Aq35RFs9lLd2bZxYoDYeFW9HDMGdh7ebC99x/16cycbjOu9gPmOkaCgTDqtKkdyuvLMOeacaigzX5rK3hnN/CzVmEyFD2A/lZIewmfflf2HxnbMw/hdSnA2bKyfuJWhC0gHwR7tgprWsXxYrENbo=
+	t=1708464091; cv=none; b=omLdjVwitxjjcMMX/+I57s4qmLg2mBEEwohMlJeBjjdqV1CKuY5VNxgSY8MkbTCvY0wBT44R9IJC6/bEcinSlvDQygKk/AmzTu1+ylk86fOwlLNiqsl33ZbjvXT0IfRHvO37OiuqhLZHl5gulB4vFDTMrnkG9tQU0IJX+SX7xlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708465076; c=relaxed/simple;
-	bh=9fjxhADOWULJ+PFIekKlJoDYDF6uTK0GbjbOM93lhEU=;
+	s=arc-20240116; t=1708464091; c=relaxed/simple;
+	bh=wjqhyiOX/5i6wGpJkHJoRP6TXuuy77qt55w7QDuzO18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=omJOI6IpeEcLU2KuWj/Y88PbptbkWVuaQKIgkLeYWPeoGd1I2M8oc5Xqbx968XjUmqCOzLA3tkAkmLARIKmEZhk9U+RL1+iceJUz8bKR+s3b+h3N2L6+J+y6lPd1Zb1SIfFPlswsR1SprgHtKWVKqMHrGl/+VOp32lQjZ1g0Z9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hpmrAbGX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 824B9C433F1;
-	Tue, 20 Feb 2024 21:37:55 +0000 (UTC)
+	 MIME-Version; b=N8w6lv/vsK/UeDlIHSCW+VFfO3Yq88dvRSIcQiwJtW7AiXjg+0LAC+N9BrNysMiqizPspBoniZHK9efw//pz36vW5gIsm4hY3WZbGjBoXTEmpYF/X0LpJyuNFCkB1SjfRxxSy3dQcVeAA1Kzz0so0Xux2URvBzGj+oyxHdIKiNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pG4RpRC7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 622A5C433F1;
+	Tue, 20 Feb 2024 21:21:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708465076;
-	bh=9fjxhADOWULJ+PFIekKlJoDYDF6uTK0GbjbOM93lhEU=;
+	s=korg; t=1708464091;
+	bh=wjqhyiOX/5i6wGpJkHJoRP6TXuuy77qt55w7QDuzO18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hpmrAbGX9KUg4Rgahu/DpAPrW59sXF/AQZd6Wu+5ltO32vOoADvxjwjWUZxKpdjTF
-	 q1IOfljtkFynCv9HMEWZheWf/HuAbNXZZy0weV0Eho481DimognZz7DKnqd8yHM88o
-	 AAx+rUqmceG3StB+eAyZlv8Nr3uiCfeZa0YVkuUM=
+	b=pG4RpRC7bOG9UpXEowZKozQS1TdimkL03UQ0DfRvBOVv7cKPnN4hTdBcU87UW1gOY
+	 bgxO1vOjAN64LZIHt1Vxg1wOMTBCwnyTjjAjQB9r8zDTYDve9YaTN0o/eKpOxziHA2
+	 r9iAig6OGvtf4NmUQeasm+E0LKIpztcFZy8dJ8LY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@ZenIV.linux.org.uk>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.7 198/309] eventfs: Remove fsnotify*() functions from lookup()
+	Prakash Sangappa <prakash.sangappa@oracle.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 241/331] mm: hugetlb pages should not be reserved by shmat() if SHM_NORESERVE
 Date: Tue, 20 Feb 2024 21:55:57 +0100
-Message-ID: <20240220205639.380093301@linuxfoundation.org>
+Message-ID: <20240220205645.362019356@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,55 +62,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+From: Prakash Sangappa <prakash.sangappa@oracle.com>
 
-commit 12d823b31fadf47c8f36ecada7abac5f903cac33 upstream.
+commit e656c7a9e59607d1672d85ffa9a89031876ffe67 upstream.
 
-The dentries and inodes are created when referenced in the lookup code.
-There's no reason to call fsnotify_*() functions when they are created by
-a reference. It doesn't make any sense.
+For shared memory of type SHM_HUGETLB, hugetlb pages are reserved in
+shmget() call.  If SHM_NORESERVE flags is specified then the hugetlb pages
+are not reserved.  However when the shared memory is attached with the
+shmat() call the hugetlb pages are getting reserved incorrectly for
+SHM_HUGETLB shared memory created with SHM_NORESERVE which is a bug.
 
-Link: https://lore.kernel.org/linux-trace-kernel/20240201002719.GS2087318@ZenIV/
-Link: https://lore.kernel.org/linux-trace-kernel/20240201161617.166973329@goodmis.org
+-------------------------------
+Following test shows the issue.
 
-Cc: stable@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Al Viro <viro@ZenIV.linux.org.uk>
-Cc: Ajay Kaher <ajay.kaher@broadcom.com>
-Fixes: a376007917776 ("eventfs: Implement functions to create files and dirs when accessed");
-Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+$cat shmhtb.c
+
+int main()
+{
+	int shmflags = 0660 | IPC_CREAT | SHM_HUGETLB | SHM_NORESERVE;
+	int shmid;
+
+	shmid = shmget(SKEY, SHMSZ, shmflags);
+	if (shmid < 0)
+	{
+		printf("shmat: shmget() failed, %d\n", errno);
+		return 1;
+	}
+	printf("After shmget()\n");
+	system("cat /proc/meminfo | grep -i hugepages_");
+
+	shmat(shmid, NULL, 0);
+	printf("\nAfter shmat()\n");
+	system("cat /proc/meminfo | grep -i hugepages_");
+
+	shmctl(shmid, IPC_RMID, NULL);
+	return 0;
+}
+
+ #sysctl -w vm.nr_hugepages=20
+ #./shmhtb
+
+After shmget()
+HugePages_Total:      20
+HugePages_Free:       20
+HugePages_Rsvd:        0
+HugePages_Surp:        0
+
+After shmat()
+HugePages_Total:      20
+HugePages_Free:       20
+HugePages_Rsvd:        5 <--
+HugePages_Surp:        0
+--------------------------------
+
+Fix is to ensure that hugetlb pages are not reserved for SHM_HUGETLB shared
+memory in the shmat() call.
+
+Link: https://lkml.kernel.org/r/1706040282-12388-1-git-send-email-prakash.sangappa@oracle.com
+Signed-off-by: Prakash Sangappa <prakash.sangappa@oracle.com>
+Acked-by: Muchun Song <muchun.song@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/tracefs/event_inode.c |    2 --
- 1 file changed, 2 deletions(-)
+ fs/hugetlbfs/inode.c |   13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -366,7 +366,6 @@ static struct dentry *lookup_file(struct
- 	dentry->d_fsdata = get_ei(parent_ei);
+--- a/fs/hugetlbfs/inode.c
++++ b/fs/hugetlbfs/inode.c
+@@ -123,6 +123,7 @@ static int hugetlbfs_file_mmap(struct fi
+ 	loff_t len, vma_len;
+ 	int ret;
+ 	struct hstate *h = hstate_file(file);
++	vm_flags_t vm_flags;
  
- 	d_add(dentry, inode);
--	fsnotify_create(dentry->d_parent->d_inode, dentry);
- 	return NULL;
- };
+ 	/*
+ 	 * vma address alignment (but not the pgoff alignment) has
+@@ -164,10 +165,20 @@ static int hugetlbfs_file_mmap(struct fi
+ 	file_accessed(file);
  
-@@ -408,7 +407,6 @@ static struct dentry *lookup_dir_entry(s
- 	inc_nlink(inode);
- 	d_add(dentry, inode);
- 	inc_nlink(dentry->d_parent->d_inode);
--	fsnotify_mkdir(dentry->d_parent->d_inode, dentry);
- 	return NULL;
- }
+ 	ret = -ENOMEM;
++
++	vm_flags = vma->vm_flags;
++	/*
++	 * for SHM_HUGETLB, the pages are reserved in the shmget() call so skip
++	 * reserving here. Note: only for SHM hugetlbfs file, the inode
++	 * flag S_PRIVATE is set.
++	 */
++	if (inode->i_flags & S_PRIVATE)
++		vm_flags |= VM_NORESERVE;
++
+ 	if (!hugetlb_reserve_pages(inode,
+ 				vma->vm_pgoff >> huge_page_order(h),
+ 				len >> huge_page_shift(h), vma,
+-				vma->vm_flags))
++				vm_flags))
+ 		goto out;
  
+ 	ret = 0;
 
 
 
