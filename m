@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-21543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ABA685C957
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:32:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41BB685C95A
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:32:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3348F284CDD
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:32:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0B4F284D4D
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:32:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA863151CDC;
-	Tue, 20 Feb 2024 21:32:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 927E2151CDC;
+	Tue, 20 Feb 2024 21:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pf4Earz2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SkijK/Sq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6813D446C9;
-	Tue, 20 Feb 2024 21:32:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5286F446C9;
+	Tue, 20 Feb 2024 21:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464743; cv=none; b=OQ82dDntYS301u88uzYWq0foDVpijoV7jDfU1PcN2+NM0ioKpHwdHB0FPS2Sgkr/atsd2VTsfsKEto075p3RBKrg5EFQ6WUgWo3H0ScGpa+fsbc03jmEsD6lhT1ZWMbtXOGru9lMOMmhdtuBAujDCiVZj1sMc3R5T7zmqgWrzlQ=
+	t=1708464752; cv=none; b=VB8pZtEev/WPm46/Gi/Y4PalvSGxDKDBjDOVAyPkASFylwXIGL+sfxkeaS2fQyhGjNEfq/Fxc104EoYTqy9LloyABveNvaShB7gexN3Do61poTyfU2n5abpd0QxuIlvZujWrTHUG9FwdLipMIho1wpWykHuxaJyo561KWGL9dwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464743; c=relaxed/simple;
-	bh=MZJ9pBLm1pnFXQWXpvBJxmvpM/Ie7yATLlQhaZ0KQsk=;
+	s=arc-20240116; t=1708464752; c=relaxed/simple;
+	bh=0P+94enaeX/iVczTClIv1G0uJt1HT6J0ePcQ8EUIsgA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iOGEdYTk1z1sZboYmmXnk4gv6IUNqMaAsB1fk6Q6ug+vkUdsCHWwZAj6L0kl8BmMbfP0ZosJDXMp0wsQSZ6TLeo8/R2ix+DlXVFb0IvO0sDgGihu4lMzjhYDXqqR73zAyUAs15ohfXzhBKhUwGqIjafBhSReFKxl+xi26NxBDL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pf4Earz2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA382C433F1;
-	Tue, 20 Feb 2024 21:32:22 +0000 (UTC)
+	 MIME-Version; b=uKxNiJyKGNN+kW5jmg0zHz6HUbkO7aC/7MRtJGJ5rycGvTWbdCfhxZ2MWJZBSFnwIWVPvdJNRnBW7O3qw11/kHpUGen+QmZoxMdrEFOyVQfOd1Y8LvosLqom5DD0ZgenMHKp5GpGrOElipU1Is8ph2KzEjcNUdga8y3qaRFqDVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SkijK/Sq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D404EC433C7;
+	Tue, 20 Feb 2024 21:32:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464743;
-	bh=MZJ9pBLm1pnFXQWXpvBJxmvpM/Ie7yATLlQhaZ0KQsk=;
+	s=korg; t=1708464752;
+	bh=0P+94enaeX/iVczTClIv1G0uJt1HT6J0ePcQ8EUIsgA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pf4Earz2HD3IH1bGBDe0is7m7rI7q/PPaiVSecrNCu4AAkAlcBWo9LIcxfNUKq086
-	 pw2u6YUSnbSln+Y0j2eSeKmnBwRvhjBAr+dO7WUY/fL0AuzaPnzZIpihu2zuYMkl8r
-	 Pwll79p+zkAMvVa5fZKTob7nf4AB7tD+P27Zyqns=
+	b=SkijK/SqboFmEYtUnRmYSEZqO3aMz7vMNqmycN/OFehY4pvoFm+GvZ4KI0qm6HPLv
+	 +NlzvgUK7gGBOy9sDN+Aoa8L3sNvTgiz21JWWzoyPuggTQudC5xqIJ8vnoR+LXV5aD
+	 9d8hP2FH7hBiBVjPFKSl73PVwKk7h2UMTVxI2vLA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Georgi Djakov <djakov@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 095/309] interconnect: qcom: sc8180x: Mark CO0 BCM keepalive
-Date: Tue, 20 Feb 2024 21:54:14 +0100
-Message-ID: <20240220205636.165420146@linuxfoundation.org>
+Subject: [PATCH 6.7 096/309] interconnect: qcom: sm8550: Enable sync_state
+Date: Tue, 20 Feb 2024 21:54:15 +0100
+Message-ID: <20240220205636.193895040@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
 References: <20240220205633.096363225@linuxfoundation.org>
@@ -68,36 +69,33 @@ Content-Transfer-Encoding: 8bit
 
 From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 85e985a4f46e462a37f1875cb74ed380e7c0c2e0 ]
+[ Upstream commit 24406f6794aa631516241deb9e19de333d6a0600 ]
 
-The CO0 BCM needs to be up at all times, otherwise some hardware (like
-the UFS controller) loses its connection to the rest of the SoC,
-resulting in a hang of the platform, accompanied by a spectacular
-logspam.
+To ensure the interconnect votes are actually meaningful and in order to
+prevent holding all buses at FMAX, introduce the sync state callback.
 
-Mark it as keepalive to prevent such cases.
-
-Fixes: 9c8c6bac1ae8 ("interconnect: qcom: Add SC8180x providers")
+Fixes: e6f0d6a30f73 ("interconnect: qcom: Add SM8550 interconnect provider driver")
 Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20231214-topic-sc8180_fixes-v1-1-421904863006@linaro.org
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20231218-topic-8550_fixes-v1-2-ce1272d77540@linaro.org
 Signed-off-by: Georgi Djakov <djakov@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/interconnect/qcom/sc8180x.c | 1 +
+ drivers/interconnect/qcom/sm8550.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/interconnect/qcom/sc8180x.c b/drivers/interconnect/qcom/sc8180x.c
-index 20331e119beb..03d626776ba1 100644
---- a/drivers/interconnect/qcom/sc8180x.c
-+++ b/drivers/interconnect/qcom/sc8180x.c
-@@ -1372,6 +1372,7 @@ static struct qcom_icc_bcm bcm_mm0 = {
- 
- static struct qcom_icc_bcm bcm_co0 = {
- 	.name = "CO0",
-+	.keepalive = true,
- 	.num_nodes = 1,
- 	.nodes = { &slv_qns_cdsp_mem_noc }
+diff --git a/drivers/interconnect/qcom/sm8550.c b/drivers/interconnect/qcom/sm8550.c
+index 629faa4c9aae..fc22cecf650f 100644
+--- a/drivers/interconnect/qcom/sm8550.c
++++ b/drivers/interconnect/qcom/sm8550.c
+@@ -2223,6 +2223,7 @@ static struct platform_driver qnoc_driver = {
+ 	.driver = {
+ 		.name = "qnoc-sm8550",
+ 		.of_match_table = qnoc_of_match,
++		.sync_state = icc_sync_state,
+ 	},
  };
+ 
 -- 
 2.43.0
 
