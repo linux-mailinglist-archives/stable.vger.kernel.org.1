@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-21454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FA4685C8FA
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:28:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4C4685C76F
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:12:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 259631F227ED
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:28:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F2FB282CE0
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:12:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 175F7152E00;
-	Tue, 20 Feb 2024 21:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A833151CE3;
+	Tue, 20 Feb 2024 21:12:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SPJRvFs9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qjRez151"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8AB9152DFC;
-	Tue, 20 Feb 2024 21:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A39214AD12;
+	Tue, 20 Feb 2024 21:12:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464471; cv=none; b=hWV/4Phzg/Ls9EStY/ooc6snm70F1/DHBkRMcNKuMLLvfwf5wDSw/V8dUYx5EsQrP9k7DnaDgxOmcCsE62GxVro+5zthh+H/Xpxnvb4Bzj4KNsCimMGVcPoeZYduJnFaoP+LPe+ZDFmHcsZSaSrvj3f00mpiTpAm3+Y2pWMj0s4=
+	t=1708463555; cv=none; b=WL3leNg5K7lgdrD3uXBszNmRkuG4EDdfHWh69njKXSQmYJYe1vU1JQx4rft02BVoy8cXAZjlzI4lp+JYtiuP7mCWm374nuscJeQ0DBXZunLxdSJ9XzT8L8uakaE6pyKeEBAMECCinRL6UgbCxP2nKHoF8LHaXLTWvD3alykyK1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464471; c=relaxed/simple;
-	bh=0RLHtaeJVOiCcGdbVZ3LS9CYh88Q5Fpu4ufSnPs3Vu8=;
+	s=arc-20240116; t=1708463555; c=relaxed/simple;
+	bh=9HYqaTWl9aL4ZGn+qB1eOCv2oeQ53xcAtcjK+ieQHDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tEjBxCnsSjHQBuVE8UkWCHhM0IM1jbo67T8kFapjYaplVxGvOaITpWHeGRMmBvaQ9eb7f6ThA0LVo6S0gN+4bNqreGwJmP/aVwdxEjBhQYWNTMHMGVcYuzmbwxMKpl8ATl8E3yMnZoi9dsy6H9Jk5DVAxnwJLXK0x+PSTRknHK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SPJRvFs9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8EDFC433F1;
-	Tue, 20 Feb 2024 21:27:50 +0000 (UTC)
+	 MIME-Version; b=UOlcwbGwIYYFVsA9AugLkoixwgtXY4MGHzcemfFlyK/GI//tmVPDT9CvmvmWA8dLs08C1o91b+7pbQ2wOB82EKnCzo61QvlpIIro9aWYZ0d2TcBZ5Kf9m5VcWxehr5Vcg9lUe43zyRsqcDJOHN8zTIpquRLYyxusJeQqW/HLS5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qjRez151; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC33EC433F1;
+	Tue, 20 Feb 2024 21:12:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464471;
-	bh=0RLHtaeJVOiCcGdbVZ3LS9CYh88Q5Fpu4ufSnPs3Vu8=;
+	s=korg; t=1708463555;
+	bh=9HYqaTWl9aL4ZGn+qB1eOCv2oeQ53xcAtcjK+ieQHDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SPJRvFs9WzIIse0bNx6ERgVTxSAFESpZjVuptlgKw4cYZpC3JdOhSBfnjROS4/Egp
-	 3CcoYaHJmaYMQTERuba4j6szSoktihQdpfQjVaiW7ljo5ZwQGgZ0BRay4QsUnh2FFa
-	 abhX8O/NvFXx2KXgEEFpeXzZFkVHBx6Q7TR8Kdw8=
+	b=qjRez151dvWmtzV6ZcFvQ5trstMVk5Yv0TBWCXSe1hkABTatCt9V7MrdJYzrfemzl
+	 L2DO+MNmK7V57y19MCCUQ/ISnF+bU+n7JEosKLqHoyNEvtgGA0a1NcgEz5IkBp2sbl
+	 LsZzdio2pQXlESx8zlAEnH9MTfXFS1bvpf4UkBTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saravana Kannan <saravanak@google.com>,
-	Rob Herring <robh@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 036/309] of: property: Improve finding the supplier of a remote-endpoint property
+	"Christian A. Ehrhardt" <lk@c--e.de>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.6 079/331] usb: ucsi_acpi: Fix command completion handling
 Date: Tue, 20 Feb 2024 21:53:15 +0100
-Message-ID: <20240220205634.315174018@linuxfoundation.org>
+Message-ID: <20240220205640.061030798@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +61,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saravana Kannan <saravanak@google.com>
+From: Christian A. Ehrhardt <lk@c--e.de>
 
-[ Upstream commit 782bfd03c3ae2c0e6e01b661b8e18f1de50357be ]
+commit 2840143e393a4ddc1caab4372969ea337371168c upstream.
 
-After commit 4a032827daa8 ("of: property: Simplify of_link_to_phandle()"),
-remote-endpoint properties created a fwnode link from the consumer device
-to the supplier endpoint. This is a tiny bit inefficient (not buggy) when
-trying to create device links or detecting cycles. So, improve this the
-same way we improved finding the consumer of a remote-endpoint property.
+In case of a spurious or otherwise delayed notification it is
+possible that CCI still reports the previous completion. The
+UCSI spec is aware of this and provides two completion bits in
+CCI, one for normal commands and one for acks. As acks and commands
+alternate the notification handler can determine if the completion
+bit is from the current command.
 
-Fixes: 4a032827daa8 ("of: property: Simplify of_link_to_phandle()")
-Signed-off-by: Saravana Kannan <saravanak@google.com>
-Link: https://lore.kernel.org/r/20240207011803.2637531-3-saravanak@google.com
-Signed-off-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The initial UCSI code correctly handled this but the distinction
+between the two completion bits was lost with the introduction of
+the new API.
+
+To fix this revive the ACK_PENDING bit for ucsi_acpi and only complete
+commands if the completion bit matches.
+
+Fixes: f56de278e8ec ("usb: typec: ucsi: acpi: Move to the new API")
+Cc: stable@vger.kernel.org
+Signed-off-by: "Christian A. Ehrhardt" <lk@c--e.de>
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240121204123.275441-3-lk@c--e.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/property.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/usb/typec/ucsi/ucsi_acpi.c |   17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/of/property.c b/drivers/of/property.c
-index 41c3da8a54b6..aacedfdfedc6 100644
---- a/drivers/of/property.c
-+++ b/drivers/of/property.c
-@@ -1231,7 +1231,6 @@ DEFINE_SIMPLE_PROP(pinctrl5, "pinctrl-5", NULL)
- DEFINE_SIMPLE_PROP(pinctrl6, "pinctrl-6", NULL)
- DEFINE_SIMPLE_PROP(pinctrl7, "pinctrl-7", NULL)
- DEFINE_SIMPLE_PROP(pinctrl8, "pinctrl-8", NULL)
--DEFINE_SIMPLE_PROP(remote_endpoint, "remote-endpoint", NULL)
- DEFINE_SIMPLE_PROP(pwms, "pwms", "#pwm-cells")
- DEFINE_SIMPLE_PROP(resets, "resets", "#reset-cells")
- DEFINE_SIMPLE_PROP(leds, "leds", NULL)
-@@ -1297,6 +1296,17 @@ static struct device_node *parse_interrupts(struct device_node *np,
- 	return of_irq_parse_one(np, index, &sup_args) ? NULL : sup_args.np;
+--- a/drivers/usb/typec/ucsi/ucsi_acpi.c
++++ b/drivers/usb/typec/ucsi/ucsi_acpi.c
+@@ -73,9 +73,13 @@ static int ucsi_acpi_sync_write(struct u
+ 				const void *val, size_t val_len)
+ {
+ 	struct ucsi_acpi *ua = ucsi_get_drvdata(ucsi);
++	bool ack = UCSI_COMMAND(*(u64 *)val) == UCSI_ACK_CC_CI;
+ 	int ret;
+ 
+-	set_bit(COMMAND_PENDING, &ua->flags);
++	if (ack)
++		set_bit(ACK_PENDING, &ua->flags);
++	else
++		set_bit(COMMAND_PENDING, &ua->flags);
+ 
+ 	ret = ucsi_acpi_async_write(ucsi, offset, val, val_len);
+ 	if (ret)
+@@ -85,7 +89,10 @@ static int ucsi_acpi_sync_write(struct u
+ 		ret = -ETIMEDOUT;
+ 
+ out_clear_bit:
+-	clear_bit(COMMAND_PENDING, &ua->flags);
++	if (ack)
++		clear_bit(ACK_PENDING, &ua->flags);
++	else
++		clear_bit(COMMAND_PENDING, &ua->flags);
+ 
+ 	return ret;
+ }
+@@ -142,8 +149,10 @@ static void ucsi_acpi_notify(acpi_handle
+ 	if (UCSI_CCI_CONNECTOR(cci))
+ 		ucsi_connector_change(ua->ucsi, UCSI_CCI_CONNECTOR(cci));
+ 
+-	if (test_bit(COMMAND_PENDING, &ua->flags) &&
+-	    cci & (UCSI_CCI_ACK_COMPLETE | UCSI_CCI_COMMAND_COMPLETE))
++	if (cci & UCSI_CCI_ACK_COMPLETE && test_bit(ACK_PENDING, &ua->flags))
++		complete(&ua->complete);
++	if (cci & UCSI_CCI_COMMAND_COMPLETE &&
++	    test_bit(COMMAND_PENDING, &ua->flags))
+ 		complete(&ua->complete);
  }
  
-+static struct device_node *parse_remote_endpoint(struct device_node *np,
-+						 const char *prop_name,
-+						 int index)
-+{
-+	/* Return NULL for index > 0 to signify end of remote-endpoints. */
-+	if (!index || strcmp(prop_name, "remote-endpoint"))
-+		return NULL;
-+
-+	return of_graph_get_remote_port_parent(np);
-+}
-+
- static const struct supplier_bindings of_supplier_bindings[] = {
- 	{ .parse_prop = parse_clocks, },
- 	{ .parse_prop = parse_interconnects, },
--- 
-2.43.0
-
 
 
 
