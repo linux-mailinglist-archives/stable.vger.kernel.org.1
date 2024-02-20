@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-21364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D338885C890
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:23:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE79785C9E5
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:39:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 63DEAB20F49
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:23:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5F503B22679
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:39:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10B53151CE8;
-	Tue, 20 Feb 2024 21:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04989152DE5;
+	Tue, 20 Feb 2024 21:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nExRwAM5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i0qZvVR0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3AA52DF9F;
-	Tue, 20 Feb 2024 21:23:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B4B151CCC;
+	Tue, 20 Feb 2024 21:39:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464191; cv=none; b=kjLkUH32+UfUMrkq0F9QYEtcL5212OW+igRv7qHMhBHYYREKSlmn1H3Fn5k7lTU5RZXyUPaFmCIPPc1Hu5Fz+zr1X0rcMe3onxMComt+S23zcNw8MG07U3o0sVVnS95x4FvJ5WOvERKou071fSDGqAtlBnIrH+l1pNEHjEpAMn4=
+	t=1708465170; cv=none; b=NI45RgBkN1QjVfYs6qbSz3wzf+h1dKa/El+F3zOqPHnlsZ2wncMx53cEB3TvmGFaXPwXpuBIDeQCzd7s7om4FyWaj9GLUzZGdWx/mxRSzyIRDlviLXtoNDdlg68VAj6lCM4/yZW8N1u7FBDs5l3CLx+OJaTw4aW5II6o5S7BdFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464191; c=relaxed/simple;
-	bh=SPy5WVlY37WOhhL748uMy9ubr34yOH/n1BcVjtXzM34=;
+	s=arc-20240116; t=1708465170; c=relaxed/simple;
+	bh=z9qFDdv9UMAc8yLWkvLPdE/87VJahT8rGHjrBfMHqJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oWpeT1EIUzz1pU8UwhO8YrpuNzAGI2+04n+QHF8jthaQEd0TifRWFJpmxO6urMcYrGQ624wny8bLsqO3cM2V/bAgmSxQcx+bcPvr9TI8zCTGDpVjHBN2ootKtxd7fZQWBnSuCnoKZ9qECMmOADK8N+3KWPtYhTH9C1HXqY3msVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nExRwAM5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31387C433C7;
-	Tue, 20 Feb 2024 21:23:10 +0000 (UTC)
+	 MIME-Version; b=WdtoXmBz2jnN5hs++egvc+aETRN1phN2ha1F2b5s5t8gacwKNoV1cCO6vHnsrAWIwrO5llphDfU7ooNApSAT1tni0PpdNkwP1QHg0xTEz0XTXaqvHPPsu08FiKpAdICJ7BQfVwetP2bv8hlOgtezW4bzaNSPIrCxWJKBiSSMadM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i0qZvVR0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25145C433F1;
+	Tue, 20 Feb 2024 21:39:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464191;
-	bh=SPy5WVlY37WOhhL748uMy9ubr34yOH/n1BcVjtXzM34=;
+	s=korg; t=1708465170;
+	bh=z9qFDdv9UMAc8yLWkvLPdE/87VJahT8rGHjrBfMHqJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nExRwAM5mIuPMfhTi3ZsLUF4xQ5U64FlAxEhZpN4dFXLmkfQyUfRO4VAkBh7xsgBU
-	 DixDRpalVpmxRWGA3D6SPpb3p0nFlmaE7kt3Y5p7jR/7kiTJlq0AYTM0kKizYfq+Zj
-	 cdZe6LQNlXLnz8uO++gl3eh49aaz3IActp+KmjBk=
+	b=i0qZvVR0zLF+Ht9XST/5p5T2QYouKdVDoBCBjJRLY2Rlipr0IvJZhBN0ZKR0PxwnD
+	 LxvZAb/KkFrwKc0nFrOcfhz10LHVcsxi3y26REiGt8aoiI2xJUhip0UKIpbkmzzTYZ
+	 55Qbl5hpgIH1Fg0uUUyLHH9RObesoRApv2QKmpBg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	kernel test robot <lkp@intel.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 272/331] eventfs: Fix kerneldoc of eventfs_remove_rec()
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	stable <stable@kernel.org>,
+	Emil Kronborg <emil.kronborg@protonmail.com>
+Subject: [PATCH 6.7 229/309] serial: core: introduce uart_port_tx_flags()
 Date: Tue, 20 Feb 2024 21:56:28 +0100
-Message-ID: <20240220205646.433425913@linuxfoundation.org>
+Message-ID: <20240220205640.319088651@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-commit 9037caa09ed345b35325200f0e4acf5a94ae0a65 upstream.
+commit 3ee07964d407411fd578a3bc998de44fd64d266a upstream.
 
-The eventfs_remove_rec() had some missing parameters in the kerneldoc
-comment above it. Also, rephrase the description a bit more to have a bit
-more correct grammar.
+And an enum with a flag: UART_TX_NOSTOP. To NOT call
+__port->ops->stop_tx() when the circular buffer is empty. mxs-uart needs
+this (see the next patch).
 
-Link: https://lore.kernel.org/linux-trace-kernel/20231030121523.0b2225a7@gandalf.local.home
-
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Fixes: 5790b1fb3d672 ("eventfs: Remove eventfs_file and just use eventfs_inode");
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202310052216.4SgqasWo-lkp@intel.com/
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+Cc: stable <stable@kernel.org>
+Tested-by: Emil Kronborg <emil.kronborg@protonmail.com>
+Link: https://lore.kernel.org/r/20240201105557.28043-1-jirislaby@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/tracefs/event_inode.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ include/linux/serial_core.h |   32 +++++++++++++++++++++++++++-----
+ 1 file changed, 27 insertions(+), 5 deletions(-)
 
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -796,9 +796,11 @@ static void free_ei(struct rcu_head *hea
- /**
-  * eventfs_remove_rec - remove eventfs dir or file from list
-  * @ei: eventfs_inode to be removed.
-+ * @head: the list head to place the deleted @ei and children
-+ * @level: prevent recursion from going more than 3 levels deep.
-  *
-- * This function recursively remove eventfs_inode which
-- * contains info of file or dir.
-+ * This function recursively removes eventfs_inodes which
-+ * contains info of files and/or directories.
+--- a/include/linux/serial_core.h
++++ b/include/linux/serial_core.h
+@@ -748,8 +748,17 @@ struct uart_driver {
+ 
+ void uart_write_wakeup(struct uart_port *port);
+ 
+-#define __uart_port_tx(uport, ch, tx_ready, put_char, tx_done, for_test,      \
+-		for_post)						      \
++/**
++ * enum UART_TX_FLAGS -- flags for uart_port_tx_flags()
++ *
++ * @UART_TX_NOSTOP: don't call port->ops->stop_tx() on empty buffer
++ */
++enum UART_TX_FLAGS {
++	UART_TX_NOSTOP = BIT(0),
++};
++
++#define __uart_port_tx(uport, ch, flags, tx_ready, put_char, tx_done,	      \
++		       for_test, for_post)				      \
+ ({									      \
+ 	struct uart_port *__port = (uport);				      \
+ 	struct circ_buf *xmit = &__port->state->xmit;			      \
+@@ -777,7 +786,7 @@ void uart_write_wakeup(struct uart_port
+ 	if (pending < WAKEUP_CHARS) {					      \
+ 		uart_write_wakeup(__port);				      \
+ 									      \
+-		if (pending == 0)					      \
++		if (!((flags) & UART_TX_NOSTOP) && pending == 0)	      \
+ 			__port->ops->stop_tx(__port);			      \
+ 	}								      \
+ 									      \
+@@ -812,7 +821,7 @@ void uart_write_wakeup(struct uart_port
   */
- static void eventfs_remove_rec(struct eventfs_inode *ei, struct list_head *head, int level)
- {
+ #define uart_port_tx_limited(port, ch, count, tx_ready, put_char, tx_done) ({ \
+ 	unsigned int __count = (count);					      \
+-	__uart_port_tx(port, ch, tx_ready, put_char, tx_done, __count,	      \
++	__uart_port_tx(port, ch, 0, tx_ready, put_char, tx_done, __count,     \
+ 			__count--);					      \
+ })
+ 
+@@ -826,8 +835,21 @@ void uart_write_wakeup(struct uart_port
+  * See uart_port_tx_limited() for more details.
+  */
+ #define uart_port_tx(port, ch, tx_ready, put_char)			\
+-	__uart_port_tx(port, ch, tx_ready, put_char, ({}), true, ({}))
++	__uart_port_tx(port, ch, 0, tx_ready, put_char, ({}), true, ({}))
+ 
++
++/**
++ * uart_port_tx_flags -- transmit helper for uart_port with flags
++ * @port: uart port
++ * @ch: variable to store a character to be written to the HW
++ * @flags: %UART_TX_NOSTOP or similar
++ * @tx_ready: can HW accept more data function
++ * @put_char: function to write a character
++ *
++ * See uart_port_tx_limited() for more details.
++ */
++#define uart_port_tx_flags(port, ch, flags, tx_ready, put_char)		\
++	__uart_port_tx(port, ch, flags, tx_ready, put_char, ({}), true, ({}))
+ /*
+  * Baud rate helpers.
+  */
 
 
 
