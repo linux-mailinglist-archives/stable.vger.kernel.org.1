@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-21362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20C0085C88D
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:23:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6838F85C86D
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:21:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 520631C2244D
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:23:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9999B1C21826
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:21:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2417151CF1;
-	Tue, 20 Feb 2024 21:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5DDF152DE3;
+	Tue, 20 Feb 2024 21:21:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YCB5Uvoa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0OWwCwxZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DCD22DF9F;
-	Tue, 20 Feb 2024 21:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 952EB152DE0;
+	Tue, 20 Feb 2024 21:21:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464185; cv=none; b=P9U0t7ut+E+LbiAJ0cjxlqZ2guU7F4nYGLEQNiE96eJhpLJC/fKqJ4hyFsNknWROy4GaCIt5vtTfSD8hn8ANpIkiJZtbWKkBrG37+hYb/RBBHmL9iddzWdowtaWoI3zZjGpl/2mz2axyu6g/b/L1z0d4+lB0l4m7a/93YgdtrbI=
+	t=1708464094; cv=none; b=W2oix8R8tAjAxeIUF/RJp3M/3i6nmJIoga55eKRefvtGV+u9QoKMHeLPtWtqW1nXGmyiFIosYL4Cu/gPjXTMHT5Ns/4B0Lx9D4boDkMkpIbfL9zbrDy2I75Q4sAayMzmxZRJSjlZmaga9bnRx1BEsFMA2CqNRVYPBnkW1+JWRms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464185; c=relaxed/simple;
-	bh=4N+W58ybfUxCDjXoUl+wWXv2HzTrpogKDFXtorO3sgE=;
+	s=arc-20240116; t=1708464094; c=relaxed/simple;
+	bh=Je3p7mVddS6eShJQtm69I1uAZdB37jx6OLX3FFjGZtU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g9tmhVcFZDdy14zcC0MBUDlQLewULvyRP6ey75JWUb1CGkosu6zbx6CASfo44woGMv4P+bfvAfkdmOhtHwql4vyNaL3LwnA1b+1swDp8S4TgwNGRlHeRGQai+37pPVIuxjhoAM8woN2K0Be5gugGgeGMt+cRoUmp6EwEi8QD5IU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YCB5Uvoa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF87CC433F1;
-	Tue, 20 Feb 2024 21:23:04 +0000 (UTC)
+	 MIME-Version; b=J/QytAN/twNNEhvNPA8rjAoLvcrC5Hf093OVpK2Uzpp2resSRJLPsuHPxBrybqEDtf7tIPMFXZGvh7Sl1ADT+G4Ihka0wanfM5zD/nIs2IwRtS+MkSOZsuzr4OShx9WcwkcLfdB/eHsdiOrzpbTq9ZxIGx2KO/dYqs+adgUgV8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0OWwCwxZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 115BCC433F1;
+	Tue, 20 Feb 2024 21:21:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464185;
-	bh=4N+W58ybfUxCDjXoUl+wWXv2HzTrpogKDFXtorO3sgE=;
+	s=korg; t=1708464094;
+	bh=Je3p7mVddS6eShJQtm69I1uAZdB37jx6OLX3FFjGZtU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YCB5UvoaTBU4hKXcKhaIGtfi+MMqZtJIMtldoHIFK109ke7hUboav4VfIcRK6AnqR
-	 AlEekyzHhxrHGvJfok641cNSqr1F3+QaJDtITJWZur7j0VzhuxmxCnIziaoxETGm7K
-	 4ESqTab/ERke3L7F5mjiwqY9vnJH1h7X9oKjAeaY=
+	b=0OWwCwxZPePSqGPuk2WOJgdym1K/wP2vSpFYz4yW7Nbl+JY0Y1xf54Qs/Jady8ZP5
+	 3SIJJgDyTp4aoJnmF2U16/Ay9IHg1rzd/ismTMVO5j2ZSDSRZ9WnEtNKEnIyWcEzr/
+	 sIfThytiNhm9Zs/FJHjyo5u0aeH69x3wZp0EvV8o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 249/331] pmdomain: core: Move the unused cleanup to a _sync initcall
-Date: Tue, 20 Feb 2024 21:56:05 +0100
-Message-ID: <20240220205645.646799527@linuxfoundation.org>
+	Oleg Nesterov <oleg@redhat.com>,
+	Dylan Hatch <dylanbhatch@google.com>,
+	"Eric W. Biederman" <ebiederm@xmission.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 250/331] fs/proc: do_task_stat: move thread_group_cputime_adjusted() outside of lock_task_sighand()
+Date: Tue, 20 Feb 2024 21:56:06 +0100
+Message-ID: <20240220205645.690069437@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
 References: <20240220205637.572693592@linuxfoundation.org>
@@ -65,34 +67,76 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Oleg Nesterov <oleg@redhat.com>
 
-commit 741ba0134fa7822fcf4e4a0a537a5c4cfd706b20 upstream.
+commit 60f92acb60a989b14e4b744501a0df0f82ef30a3 upstream.
 
-The unused clock cleanup uses the _sync initcall to give all users at
-earlier initcalls time to probe. Do the same to avoid leaving some PDs
-dangling at "on" (which actually happened on qcom!).
+Patch series "fs/proc: do_task_stat: use sig->stats_".
 
-Fixes: 2fe71dcdfd10 ("PM / domains: Add late_initcall to disable unused PM domains")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231227-topic-pmdomain_sync_cleanup-v1-1-5f36769d538b@linaro.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+do_task_stat() has the same problem as getrusage() had before "getrusage:
+use sig->stats_lock rather than lock_task_sighand()": a hard lockup.  If
+NR_CPUS threads call lock_task_sighand() at the same time and the process
+has NR_THREADS, spin_lock_irq will spin with irqs disabled O(NR_CPUS *
+NR_THREADS) time.
+
+
+This patch (of 3):
+
+thread_group_cputime() does its own locking, we can safely shift
+thread_group_cputime_adjusted() which does another for_each_thread loop
+outside of ->siglock protected section.
+
+Not only this removes for_each_thread() from the critical section with
+irqs disabled, this removes another case when stats_lock is taken with
+siglock held.  We want to remove this dependency, then we can change the
+users of stats_lock to not disable irqs.
+
+Link: https://lkml.kernel.org/r/20240123153313.GA21832@redhat.com
+Link: https://lkml.kernel.org/r/20240123153355.GA21854@redhat.com
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Dylan Hatch <dylanbhatch@google.com>
+Cc: Eric W. Biederman <ebiederm@xmission.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/power/domain.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/proc/array.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/base/power/domain.c
-+++ b/drivers/base/power/domain.c
-@@ -1102,7 +1102,7 @@ static int __init genpd_power_off_unused
+--- a/fs/proc/array.c
++++ b/fs/proc/array.c
+@@ -511,7 +511,7 @@ static int do_task_stat(struct seq_file
  
- 	return 0;
- }
--late_initcall(genpd_power_off_unused);
-+late_initcall_sync(genpd_power_off_unused);
+ 	sigemptyset(&sigign);
+ 	sigemptyset(&sigcatch);
+-	cutime = cstime = utime = stime = 0;
++	cutime = cstime = 0;
+ 	cgtime = gtime = 0;
  
- #ifdef CONFIG_PM_SLEEP
+ 	if (lock_task_sighand(task, &flags)) {
+@@ -545,7 +545,6 @@ static int do_task_stat(struct seq_file
+ 
+ 			min_flt += sig->min_flt;
+ 			maj_flt += sig->maj_flt;
+-			thread_group_cputime_adjusted(task, &utime, &stime);
+ 			gtime += sig->gtime;
+ 
+ 			if (sig->flags & (SIGNAL_GROUP_EXIT | SIGNAL_STOP_STOPPED))
+@@ -561,10 +560,13 @@ static int do_task_stat(struct seq_file
+ 
+ 	if (permitted && (!whole || num_threads < 2))
+ 		wchan = !task_is_running(task);
+-	if (!whole) {
++
++	if (whole) {
++		thread_group_cputime_adjusted(task, &utime, &stime);
++	} else {
++		task_cputime_adjusted(task, &utime, &stime);
+ 		min_flt = task->min_flt;
+ 		maj_flt = task->maj_flt;
+-		task_cputime_adjusted(task, &utime, &stime);
+ 		gtime = task_gtime(task);
+ 	}
  
 
 
