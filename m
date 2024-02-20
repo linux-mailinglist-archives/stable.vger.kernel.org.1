@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-21270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFE4385C7F3
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:18:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1FDE85C963
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:33:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AD2D283DFF
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:18:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EEF21F213E6
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:33:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E27C151CD6;
-	Tue, 20 Feb 2024 21:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9344151CEA;
+	Tue, 20 Feb 2024 21:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XUfkdtv0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iEBz+JBV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB67612D7;
-	Tue, 20 Feb 2024 21:18:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A91446C9;
+	Tue, 20 Feb 2024 21:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463891; cv=none; b=KlCbsIWTm2n7SSc4fXRPrR5V58CSmBr0JvcsHzlXI+5O2aBYQ5Smqfk16vQfAwBm1QjyAx+wlMR/+QsPyN1MJ7n5SpKBdQrWCDfmw/VbUN2h6hOTeuF7bJUEVSCAttQeAWXAs9AeXzZpNB3GSgAvdu8aeKkdgOuD2MZe/9Pgy/E=
+	t=1708464780; cv=none; b=mH0SNVNi5amNrLOydg/NtsTLf8egYaVbnFvUVEY4anBWwQCTtb5TIR1dNgM0sHkrYZnKeuzIyxuoMGH9zbvhrYYbIRCKydQrJfcK4T3TZPTPK8yKZcg/eU/VUFcWdfE0n5JDaPDhFnBZ7v5IUkV3qz/6D6duP1yfKUbif/bLma8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463891; c=relaxed/simple;
-	bh=ueYgEkhhpMyxfxczl/x6vZ4Na8J+k1jk0bj7l+uB/uY=;
+	s=arc-20240116; t=1708464780; c=relaxed/simple;
+	bh=J0ClYpMnfXI8YARD1uiIntu/10LvZ6iEOnRKKUEEPt0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WGI057uJQUYa6vzNrnLBpGZI/1bvM1i2WomzeefEB5dNn3s+dXbidjCvnkPG/gFIWFFw5eBy/2WUo3Lky2NLHwjNy7V2qfOTSiklhMtgDhBPHwBEHrO65P2e5Y0SskmtlAGAfRkk/E9dghH8Mg/gLwVePq1j8QzGO9VFDA4RrZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XUfkdtv0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53CAFC433F1;
-	Tue, 20 Feb 2024 21:18:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bg3qFr1zX6wNKMN5KSdkiLyUYo+c0IBNluM9APO0RkbjU6EMqLcpdPnzxawnaYFOQmA6lJh4dc/IKnxObHS4R+zm6BaMOhAgf7A6o60nAAIJ+iEhJDci2hcsKMvKfP0dgOyJ7fL3YQ/V76RleCg2x8Qs285EvX7z9W95020hM4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iEBz+JBV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AE2BC433F1;
+	Tue, 20 Feb 2024 21:32:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463890;
-	bh=ueYgEkhhpMyxfxczl/x6vZ4Na8J+k1jk0bj7l+uB/uY=;
+	s=korg; t=1708464780;
+	bh=J0ClYpMnfXI8YARD1uiIntu/10LvZ6iEOnRKKUEEPt0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XUfkdtv06DQvPaVXbn+OpimNoqAHoxYdZkBq0j1vuspcAj9iWScilqMyuqdUHM/I9
-	 G7Yzvh6ye/r3lC3zuoTvo0LZDZG3LcM3XCicdrcxLTRBc/VEzyhmCid60Z6Tr+4a+o
-	 TYMsB+xOnIrgmJiTKqCf9N94bxbErxmMYEKZxBOs=
+	b=iEBz+JBVseiri+VRhix1P++cmph1l15jizev20NNcR1Qcqx3lNxpgVguBJPUXJqGE
+	 P9f/5YdGlGw6lQb3+xq4bczrozBQPkMyZxsABJWtorL4exBEq7XiD5/RsWZ/2Txwm8
+	 k48Laa6RTAw9dJLzPijcd/n3jffo7ZVqseDAbM+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hui Zhou <hui.zhou@corigine.com>,
-	Louis Peens <louis.peens@corigine.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 178/331] nfp: flower: fix hardware offload for the transfer layer port
+	Joshua Ashton <joshua@froggi.es>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Friedrich Vock <friedrich.vock@gmx.de>
+Subject: [PATCH 6.7 135/309] drm/amdgpu: Reset IH OVERFLOW_CLEAR bit
 Date: Tue, 20 Feb 2024 21:54:54 +0100
-Message-ID: <20240220205643.106502427@linuxfoundation.org>
+Message-ID: <20240220205637.363567117@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,78 +61,189 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hui Zhou <hui.zhou@corigine.com>
+From: Friedrich Vock <friedrich.vock@gmx.de>
 
-commit 3a007b8009b5f8af021021b7a590a6da0dc4c6e0 upstream.
+commit 7330256268664ea0a7dd5b07a3fed363093477dd upstream.
 
-The nfp driver will merge the tp source port and tp destination port
-into one dword which the offset must be zero to do hardware offload.
-However, the mangle action for the tp source port and tp destination
-port is separated for tc ct action. Modify the mangle action for the
-FLOW_ACT_MANGLE_HDR_TYPE_TCP and FLOW_ACT_MANGLE_HDR_TYPE_UDP to
-satisfy the nfp driver offload check for the tp port.
+Allows us to detect subsequent IH ring buffer overflows as well.
 
-The mangle action provides a 4B value for source, and a 4B value for
-the destination, but only 2B of each contains the useful information.
-For offload the 2B of each is combined into a single 4B word. Since the
-incoming mask for the source is '0xFFFF<mask>' the shift-left will
-throw away the 0xFFFF part. When this gets combined together in the
-offload it will clear the destination field. Fix this by setting the
-lower bits back to 0xFFFF, effectively doing a rotate-left operation on
-the mask.
-
-Fixes: 5cee92c6f57a ("nfp: flower: support hw offload for ct nat action")
-CC: stable@vger.kernel.org # 6.1+
-Signed-off-by: Hui Zhou <hui.zhou@corigine.com>
-Signed-off-by: Louis Peens <louis.peens@corigine.com>
-Link: https://lore.kernel.org/r/20240124151909.31603-3-louis.peens@corigine.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: Joshua Ashton <joshua@froggi.es>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Friedrich Vock <friedrich.vock@gmx.de>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/netronome/nfp/flower/conntrack.c |   24 ++++++++++++++++--
- 1 file changed, 22 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/cik_ih.c     |    6 ++++++
+ drivers/gpu/drm/amd/amdgpu/cz_ih.c      |    5 +++++
+ drivers/gpu/drm/amd/amdgpu/iceland_ih.c |    5 +++++
+ drivers/gpu/drm/amd/amdgpu/ih_v6_0.c    |    6 ++++++
+ drivers/gpu/drm/amd/amdgpu/ih_v6_1.c    |    7 +++++++
+ drivers/gpu/drm/amd/amdgpu/navi10_ih.c  |    6 ++++++
+ drivers/gpu/drm/amd/amdgpu/si_ih.c      |    6 ++++++
+ drivers/gpu/drm/amd/amdgpu/tonga_ih.c   |    6 ++++++
+ drivers/gpu/drm/amd/amdgpu/vega10_ih.c  |    6 ++++++
+ drivers/gpu/drm/amd/amdgpu/vega20_ih.c  |    6 ++++++
+ 10 files changed, 59 insertions(+)
 
---- a/drivers/net/ethernet/netronome/nfp/flower/conntrack.c
-+++ b/drivers/net/ethernet/netronome/nfp/flower/conntrack.c
-@@ -1424,10 +1424,30 @@ static void nfp_nft_ct_translate_mangle_
- 		mangle_action->mangle.mask = (__force u32)cpu_to_be32(mangle_action->mangle.mask);
- 		return;
+--- a/drivers/gpu/drm/amd/amdgpu/cik_ih.c
++++ b/drivers/gpu/drm/amd/amdgpu/cik_ih.c
+@@ -204,6 +204,12 @@ static u32 cik_ih_get_wptr(struct amdgpu
+ 		tmp = RREG32(mmIH_RB_CNTL);
+ 		tmp |= IH_RB_CNTL__WPTR_OVERFLOW_CLEAR_MASK;
+ 		WREG32(mmIH_RB_CNTL, tmp);
++
++		/* Unset the CLEAR_OVERFLOW bit immediately so new overflows
++		 * can be detected.
++		 */
++		tmp &= ~IH_RB_CNTL__WPTR_OVERFLOW_CLEAR_MASK;
++		WREG32(mmIH_RB_CNTL, tmp);
+ 	}
+ 	return (wptr & ih->ptr_mask);
+ }
+--- a/drivers/gpu/drm/amd/amdgpu/cz_ih.c
++++ b/drivers/gpu/drm/amd/amdgpu/cz_ih.c
+@@ -216,6 +216,11 @@ static u32 cz_ih_get_wptr(struct amdgpu_
+ 	tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 1);
+ 	WREG32(mmIH_RB_CNTL, tmp);
  
-+	/* Both struct tcphdr and struct udphdr start with
-+	 *	__be16 source;
-+	 *	__be16 dest;
-+	 * so we can use the same code for both.
++	/* Unset the CLEAR_OVERFLOW bit immediately so new overflows
++	 * can be detected.
 +	 */
- 	case FLOW_ACT_MANGLE_HDR_TYPE_TCP:
- 	case FLOW_ACT_MANGLE_HDR_TYPE_UDP:
--		mangle_action->mangle.val = (__force u16)cpu_to_be16(mangle_action->mangle.val);
--		mangle_action->mangle.mask = (__force u16)cpu_to_be16(mangle_action->mangle.mask);
-+		if (mangle_action->mangle.offset == offsetof(struct tcphdr, source)) {
-+			mangle_action->mangle.val =
-+				(__force u32)cpu_to_be32(mangle_action->mangle.val << 16);
-+			/* The mask of mangle action is inverse mask,
-+			 * so clear the dest tp port with 0xFFFF to
-+			 * instead of rotate-left operation.
-+			 */
-+			mangle_action->mangle.mask =
-+				(__force u32)cpu_to_be32(mangle_action->mangle.mask << 16 | 0xFFFF);
-+		}
-+		if (mangle_action->mangle.offset == offsetof(struct tcphdr, dest)) {
-+			mangle_action->mangle.offset = 0;
-+			mangle_action->mangle.val =
-+				(__force u32)cpu_to_be32(mangle_action->mangle.val);
-+			mangle_action->mangle.mask =
-+				(__force u32)cpu_to_be32(mangle_action->mangle.mask);
-+		}
- 		return;
++	tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 0);
++	WREG32(mmIH_RB_CNTL, tmp);
  
- 	default:
+ out:
+ 	return (wptr & ih->ptr_mask);
+--- a/drivers/gpu/drm/amd/amdgpu/iceland_ih.c
++++ b/drivers/gpu/drm/amd/amdgpu/iceland_ih.c
+@@ -215,6 +215,11 @@ static u32 iceland_ih_get_wptr(struct am
+ 	tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 1);
+ 	WREG32(mmIH_RB_CNTL, tmp);
+ 
++	/* Unset the CLEAR_OVERFLOW bit immediately so new overflows
++	 * can be detected.
++	 */
++	tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 0);
++	WREG32(mmIH_RB_CNTL, tmp);
+ 
+ out:
+ 	return (wptr & ih->ptr_mask);
+--- a/drivers/gpu/drm/amd/amdgpu/ih_v6_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/ih_v6_0.c
+@@ -418,6 +418,12 @@ static u32 ih_v6_0_get_wptr(struct amdgp
+ 	tmp = RREG32_NO_KIQ(ih_regs->ih_rb_cntl);
+ 	tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 1);
+ 	WREG32_NO_KIQ(ih_regs->ih_rb_cntl, tmp);
++
++	/* Unset the CLEAR_OVERFLOW bit immediately so new overflows
++	 * can be detected.
++	 */
++	tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 0);
++	WREG32_NO_KIQ(ih_regs->ih_rb_cntl, tmp);
+ out:
+ 	return (wptr & ih->ptr_mask);
+ }
+--- a/drivers/gpu/drm/amd/amdgpu/ih_v6_1.c
++++ b/drivers/gpu/drm/amd/amdgpu/ih_v6_1.c
+@@ -418,6 +418,13 @@ static u32 ih_v6_1_get_wptr(struct amdgp
+ 	tmp = RREG32_NO_KIQ(ih_regs->ih_rb_cntl);
+ 	tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 1);
+ 	WREG32_NO_KIQ(ih_regs->ih_rb_cntl, tmp);
++
++	/* Unset the CLEAR_OVERFLOW bit immediately so new overflows
++	 * can be detected.
++	 */
++	tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 0);
++	WREG32_NO_KIQ(ih_regs->ih_rb_cntl, tmp);
++
+ out:
+ 	return (wptr & ih->ptr_mask);
+ }
+--- a/drivers/gpu/drm/amd/amdgpu/navi10_ih.c
++++ b/drivers/gpu/drm/amd/amdgpu/navi10_ih.c
+@@ -442,6 +442,12 @@ static u32 navi10_ih_get_wptr(struct amd
+ 	tmp = RREG32_NO_KIQ(ih_regs->ih_rb_cntl);
+ 	tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 1);
+ 	WREG32_NO_KIQ(ih_regs->ih_rb_cntl, tmp);
++
++	/* Unset the CLEAR_OVERFLOW bit immediately so new overflows
++	 * can be detected.
++	 */
++	tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 0);
++	WREG32_NO_KIQ(ih_regs->ih_rb_cntl, tmp);
+ out:
+ 	return (wptr & ih->ptr_mask);
+ }
+--- a/drivers/gpu/drm/amd/amdgpu/si_ih.c
++++ b/drivers/gpu/drm/amd/amdgpu/si_ih.c
+@@ -119,6 +119,12 @@ static u32 si_ih_get_wptr(struct amdgpu_
+ 		tmp = RREG32(IH_RB_CNTL);
+ 		tmp |= IH_RB_CNTL__WPTR_OVERFLOW_CLEAR_MASK;
+ 		WREG32(IH_RB_CNTL, tmp);
++
++		/* Unset the CLEAR_OVERFLOW bit immediately so new overflows
++		 * can be detected.
++		 */
++		tmp &= ~IH_RB_CNTL__WPTR_OVERFLOW_CLEAR_MASK;
++		WREG32(IH_RB_CNTL, tmp);
+ 	}
+ 	return (wptr & ih->ptr_mask);
+ }
+--- a/drivers/gpu/drm/amd/amdgpu/tonga_ih.c
++++ b/drivers/gpu/drm/amd/amdgpu/tonga_ih.c
+@@ -219,6 +219,12 @@ static u32 tonga_ih_get_wptr(struct amdg
+ 	tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 1);
+ 	WREG32(mmIH_RB_CNTL, tmp);
+ 
++	/* Unset the CLEAR_OVERFLOW bit immediately so new overflows
++	 * can be detected.
++	 */
++	tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 0);
++	WREG32(mmIH_RB_CNTL, tmp);
++
+ out:
+ 	return (wptr & ih->ptr_mask);
+ }
+--- a/drivers/gpu/drm/amd/amdgpu/vega10_ih.c
++++ b/drivers/gpu/drm/amd/amdgpu/vega10_ih.c
+@@ -373,6 +373,12 @@ static u32 vega10_ih_get_wptr(struct amd
+ 	tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 1);
+ 	WREG32_NO_KIQ(ih_regs->ih_rb_cntl, tmp);
+ 
++	/* Unset the CLEAR_OVERFLOW bit immediately so new overflows
++	 * can be detected.
++	 */
++	tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 0);
++	WREG32_NO_KIQ(ih_regs->ih_rb_cntl, tmp);
++
+ out:
+ 	return (wptr & ih->ptr_mask);
+ }
+--- a/drivers/gpu/drm/amd/amdgpu/vega20_ih.c
++++ b/drivers/gpu/drm/amd/amdgpu/vega20_ih.c
+@@ -421,6 +421,12 @@ static u32 vega20_ih_get_wptr(struct amd
+ 	tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 1);
+ 	WREG32_NO_KIQ(ih_regs->ih_rb_cntl, tmp);
+ 
++	/* Unset the CLEAR_OVERFLOW bit immediately so new overflows
++	 * can be detected.
++	 */
++	tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 0);
++	WREG32_NO_KIQ(ih_regs->ih_rb_cntl, tmp);
++
+ out:
+ 	return (wptr & ih->ptr_mask);
+ }
 
 
 
