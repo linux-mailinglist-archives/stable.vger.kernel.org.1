@@ -1,287 +1,232 @@
-Return-Path: <stable+bounces-20847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B62885C058
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 16:52:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D43E85C0AD
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 17:06:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 415FDB216AB
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 15:52:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B35F5B2410E
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 16:06:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34407762EB;
-	Tue, 20 Feb 2024 15:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7992E762E0;
+	Tue, 20 Feb 2024 16:04:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="DobQbtKS"
+	dkim=pass (2048-bit key) header.d=seco.com header.i=@seco.com header.b="mhAjC9T2";
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=seco.com header.i=@seco.com header.b="caRtvgnE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2102.outbound.protection.outlook.com [40.107.8.102])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6CE76052
-	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 15:52:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708444348; cv=none; b=jWj4g+oxfESLfouz/rrIdQZx+xIx9r0b33167Gm6P8PUmgHFos85dbqnjyCYz9P6wsbDLHoLxKhJ6mhS0g5wILO5mM7ZOVv8e54pRpfoNFQdmo/opWOVm37u6hOfQrmywRA3LOsgrmwKGD9giMqG+Zpf510nE2ZYCqr+G42PGmc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708444348; c=relaxed/simple;
-	bh=kEfOVC0HOj7x8SZOZ4l9NpOGCg/1VRHsdAbpo1GmIJE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fzsn5zYX5XQ3EQdQOrnrPZjD0Me0NnKLQ+XtZ64TH84cbILcG36k5M9/6L073w3ue91aYlSMZlP4fTepQnIHAGVPLUKR/uyZ1y+Ma0FUYs6J/+t1q1fGC0c0BUHU3Va805xudpkQSsMXrsN9I9CK9tXKJd4yXBRm1rEX8M0/Sug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=DobQbtKS; arc=none smtp.client-ip=209.85.210.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-6e2e096e2ccso2221392a34.2
-        for <stable@vger.kernel.org>; Tue, 20 Feb 2024 07:52:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1708444345; x=1709049145; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DdFor41F3IC1r56a0HLGglXn70d2B2IHDR4s07Fdmrs=;
-        b=DobQbtKSk7Pi+4suEf/9G4DsUYT23UZurRig6reRKuNdHS5xXv1Hfl8ycFt4HJjT0j
-         jcdg9iMJPWDWeZxRxHLEtKrOqKAQk041yhXq37pCcxDRNMlFzq2WZBvgZewsqQcu2sOf
-         Y44jCJ2SgznArxelQ0qXU4qHYlNCOEMyBWa5c=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708444345; x=1709049145;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DdFor41F3IC1r56a0HLGglXn70d2B2IHDR4s07Fdmrs=;
-        b=hojnEKuXWKj8UWfXKvhsqFCB6QU5i6rCdKWHQSHYiq3IAMZKEjQk+Fgn8JOnLo++y1
-         PPxqzQfdMUfLl66ItYWHmZoYkNuyBgUyp37MvHhmsub30Px/pBAtSatv6TSgYgZrLnbG
-         AjlyTmMWRdvjlaqpDdVB9CKK2gy/ZMW63G+JWGdCyow+NPQSFVICRfvoHqJIIN+Zg1Uz
-         r/pAn/9vhzp2yR2orl09xkK8feXBQE4tDa5FsMCXPqlFD3YMCT2nAGBYr5XnIF9lv8cx
-         gF6iRZgDz45rT7mO1cOppDdkYngTU8PILQ6QIE76GIGDUCMxMCOfLP5bsfz/Z9PHYGjr
-         oXeA==
-X-Forwarded-Encrypted: i=1; AJvYcCV33wlCWJt07rX8Pq9ey4itpS+XAEg2pMTecgJEjXT14TLnTvbI1w94UrPyjuOc+3iwjW9nnQUrO9J7YmjmeKzdPA3RKmha
-X-Gm-Message-State: AOJu0YxN0mrJAJpzZ0YkobjsL1dhq/RGM0ls49q8lFXBcNlgf9OpH+5l
-	zxTLX1D08FbtTM6zDRh0SYkAPE2V5tL6oX6KQCM8w8KtN9ElAaheAAyHV8sdWeShsCsX7zaA08t
-	2oizV/CRUFDfPmO7CrVXJvSNaiSlhaV5vT6bu
-X-Google-Smtp-Source: AGHT+IEWG+l/QRVtfNEh+sJn3QHhpIF8SajAdIrjIPZq0YcYxQ5EHhhZkodoUJbW1yo55UqEMkUo3jXBI9O+TBqnA7c=
-X-Received: by 2002:a9d:6b08:0:b0:6e4:34ba:add2 with SMTP id
- g8-20020a9d6b08000000b006e434baadd2mr12014050otp.5.1708444345325; Tue, 20 Feb
- 2024 07:52:25 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D149E69E1C;
+	Tue, 20 Feb 2024 16:04:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.8.102
+ARC-Seal:i=3; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708445080; cv=fail; b=IbNbj51TmRDXE1i4czJKD7gadljj6YrCRmX8Scp8DWv+9iJcTzMXwmCdCOn1gmYEuWAikyg65uV8jEtQcGorxSu6ZRWPYABtfxnO5LKRrQS981Vi7jXXY2U2KlRcxCZDlQ0GF4GYyNzrO28cd2qMxUcmSD/953cTrhemHZBKqvE=
+ARC-Message-Signature:i=3; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708445080; c=relaxed/simple;
+	bh=CM7KTd8Ukj8Dyqy1Y6yhx+3G+H+N0EkTQKNiy8CSjJU=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=WiykGDypF2RcqgDCaIye6kYM81DjJR8YeU1r5QLldJcm93va3iNtR58j2H9N56LD8oiEx0Y364FMGLcvBxEF74e9iAxNymcfYHpartLB9RbU+HnX0uiQs5OvV217zn4ZIwxfr/3sH1aWHs6XUOH1eqR2n+z5MM4iUobg86JHZUc=
+ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seco.com; spf=pass smtp.mailfrom=seco.com; dkim=pass (2048-bit key) header.d=seco.com header.i=@seco.com header.b=mhAjC9T2; dkim=fail (2048-bit key) header.d=seco.com header.i=@seco.com header.b=caRtvgnE reason="signature verification failed"; arc=fail smtp.client-ip=40.107.8.102
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seco.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seco.com
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=pass;
+ b=Xyh6PeoDGN+9yv63+7eSgIrj3dPk86qlNtHeYfT7O/1fJ47ibcR3SBqg9tiOKks8K1+Ros9qILO+Mi85KErwtZMyuocOX+Xbw6u3/EIB87MUYnYKDqcAEm51ahGgqAJ4XAKRKtsNyiu/RKoHvv+pTrIKJrQhLND/NICcktSr+FdTbGVoUgfvUKPf03DGbEgN0Hkz9/1kOtVQRK0rtqefzfHHPaFPHf/BhZf8fFVp1f2QfVLRNnp0GrdjDktwtNMJDamSwJbV5TwV4YBEHqJF7pCtLSocMPI6HsS1DwUijYPo/7vjI35l5k+TETTxWXIKLUatw0dA4IcvOzysm3hXXw==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CM7KTd8Ukj8Dyqy1Y6yhx+3G+H+N0EkTQKNiy8CSjJU=;
+ b=NIz4lhe6P7hQYsLJ/nZo/vY3EwpmY/oyef8/wVd2rQ+ac76ZqhYjXgVM9FsjotoMfm/5vbBliiAcHzbQSc7kXXwtai3CXwvNqK4CE82hlBK9Pnbejz4m5wEZ4usBLKzJeRp62B+rA3T+/yxIy4b4hBN/Mv1822/ZQ4WkrcGsLRboqbWsMCuq7Z1v4xjSrl0rr3KnBlDY6H6RnBPZv9Pse05oKqZhgLoRpOzrIS9teBjURwZFMstaBWVqcgQxMiw84XPdLh7ey4RufFwr5qaRpRFAID+bH+eHEyvBowEGXU/9vHmyHvc1LaUHwCZD5IHCRoMDQf+LtH1EbNHmzPJpfg==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 20.160.56.87) smtp.rcpttodomain=arndb.de smtp.mailfrom=seco.com; dmarc=pass
+ (p=reject sp=reject pct=100) action=none header.from=seco.com; dkim=pass
+ (signature was verified) header.d=seco.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=seco.com] dkim=[1,1,header.d=seco.com]
+ dmarc=[1,1,header.from=seco.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seco.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CM7KTd8Ukj8Dyqy1Y6yhx+3G+H+N0EkTQKNiy8CSjJU=;
+ b=mhAjC9T2Ec2x/4LXFZg2l7zqWcBMdURve3HfJHDFTLsxqD5GP2oolebZYEXBl+wa/nasipC2+MbUkVLwOWopfFOwCEjvcEymdHH5s+LP6w0ZPupJw++QVY4CPXkmL6it+60AUWgIn5Nmiag4G5mgiemKASo3AjDXjWfG6m6B/A7d5aau3AuzAu4oCEXNnpFKkpojbjWCPRKi+xfVVd8PThOQNsjBfUPnvwBLKVzY9qHpIVwJaIdv6bblnXXjRBeKIa4iUiPU1KD6smcS2cgQtwK4bE/WU8WWl/1ymQQXMa1u6xFRYipJlJ6K0Ol1CiNXTNXq+MtGD78eXviGYyAoRA==
+Received: from DB9PR01CA0003.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:1d8::8) by AS4PR03MB8280.eurprd03.prod.outlook.com
+ (2603:10a6:20b:4ce::7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.38; Tue, 20 Feb
+ 2024 16:04:33 +0000
+Received: from DB5PEPF00014B99.eurprd02.prod.outlook.com
+ (2603:10a6:10:1d8:cafe::a1) by DB9PR01CA0003.outlook.office365.com
+ (2603:10a6:10:1d8::8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.39 via Frontend
+ Transport; Tue, 20 Feb 2024 16:04:33 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 20.160.56.87)
+ smtp.mailfrom=seco.com; dkim=pass (signature was verified)
+ header.d=seco.com;dmarc=pass action=none header.from=seco.com;
+Received-SPF: Pass (protection.outlook.com: domain of seco.com designates
+ 20.160.56.87 as permitted sender) receiver=protection.outlook.com;
+ client-ip=20.160.56.87; helo=repost-eu.tmcas.trendmicro.com; pr=C
+Received: from repost-eu.tmcas.trendmicro.com (20.160.56.87) by
+ DB5PEPF00014B99.mail.protection.outlook.com (10.167.8.166) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7292.25 via Frontend Transport; Tue, 20 Feb 2024 16:04:32 +0000
+Received: from outmta (unknown [192.168.82.132])
+	by repost-eu.tmcas.trendmicro.com (Trend Micro CAS) with ESMTP id 9717220080092;
+	Tue, 20 Feb 2024 16:04:32 +0000 (UTC)
+Received: from EUR03-VI1-obe.outbound.protection.outlook.com (unknown [104.47.30.105])
+	by repre.tmcas.trendmicro.com (Trend Micro CAS) with ESMTPS id 23D942008006E;
+	Tue, 20 Feb 2024 16:04:31 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=QsBW7ovs7Xe7FfDnZ66nF3QhLB6SXhnbkqW7/ybC7TAhsyJDAYqAjn8PgL/kHa7RkK2FW8LCROyireMeuEj1c6c+TCOwOnAipJrol6X7+J+WGLzxq1qVvnbZobo8eVsmeDEVOfTFoh4OX5uQoasQfvoWMXZ8l/g9LkxfyLKpfTPTnzLEVssHUvY/un+uDUfxgsHZ5n77a8pG5gOI9hvZxJQZ/yfiiYCTG5FSxzXv+t6wjaAomhgZiH9CAxdImZ/rM2JTtrCdjQb6J4ayJK0UOrdzKbz6m+dr6RSOum/nK6sxsEwDn9zVyT6gM8ujEGbGU+Isw7zkypsdUZoRU2fQEg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1X4q+usKTYI+ic55BclcLU0SZuGORAgBFqWirRgUrDM=;
+ b=THxZbyGSfhbI9z2zwefVt7euQB7bEJ91QKVnKgtB/h6QQ6qlPdn01FYawitYWAmUoTXBP+Alw6zRZ1o0wT25Pr5IJf6avHFXhWHAcvJx6A3CR4aG1BiIFy8bDYtKfXwXHkIf9XHWHMj6XR7ZMXqYXEg4k+xbwkSKsZkzxqM6bFh6S/EjWAePPCyz2Zw9FuX0VFYaN6ux1M1O7qoQIBSOB6bwhibQnwKULigci2x1VbY7K5BK+N2ErHPxE22Y7UDg4JVe8nPKBUUhC0iY/J+Rbb4rlMIdv4EAO25MErKXmV0ylkVX/bG9nR3mLtzaGXGe1JaBJC8ZfCyDYoDWC/nnpg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=seco.com; dmarc=pass action=none header.from=seco.com;
+ dkim=pass header.d=seco.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seco.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1X4q+usKTYI+ic55BclcLU0SZuGORAgBFqWirRgUrDM=;
+ b=caRtvgnE7OwFf4I3yCDs50mtKzkR6/RyWKvY8sMTyMwUtd7aC+Pp/qPBXt2cQAAE/1Vd63TSH1UJqglKGa/hBod8P3uICY2Tsm1x38QvAyTWIUV6O3oZR8GUNW+9JaSV9fes7k1pkXbHiQ7coiHk9uxb8/k+SLtssVcWCqbl3deTdTaULefnQT8ZGGI+MHGG3HH8Q4JuMQvxNwXOgiRcuZi1sC1Din5PwXd5jGDm1IOHTckxDhpauIlDTKtPM4hk5ZPh8VBMJVpCVCOD6SIRqpqo9EPKbYNxzTcmo4eMdXpxja8uX8NpngF/CV5YyMUIwjM+iZvaeQXD9gNyabjB0Q==
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=seco.com;
+Received: from DB9PR03MB8847.eurprd03.prod.outlook.com (2603:10a6:10:3dd::13)
+ by PA4PR03MB7133.eurprd03.prod.outlook.com (2603:10a6:102:f0::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.39; Tue, 20 Feb
+ 2024 16:04:29 +0000
+Received: from DB9PR03MB8847.eurprd03.prod.outlook.com
+ ([fe80::9529:5f9c:1795:a94c]) by DB9PR03MB8847.eurprd03.prod.outlook.com
+ ([fe80::9529:5f9c:1795:a94c%7]) with mapi id 15.20.7292.036; Tue, 20 Feb 2024
+ 16:04:29 +0000
+Message-ID: <cc5794cd-8f75-4694-bec6-1c8d7860f877@seco.com>
+Date: Tue, 20 Feb 2024 11:04:19 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RESEND PATCH net v4 1/2] soc: fsl: qbman: Always disable
+ interrupts when taking cgr_lock
+Content-Language: en-US
+To: Vladimir Oltean <vladimir.oltean@nxp.com>, Arnd Bergmann <arnd@arndb.de>
+Cc: "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Steffen Trumtrar <s.trumtrar@pengutronix.de>,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ Roy Pledge <roy.pledge@nxp.com>, Camelia Groza <camelia.groza@nxp.com>,
+ Claudiu Manoil <claudiu.manoil@nxp.com>, Scott Wood <oss@buserror.net>,
+ stable@vger.kernel.org
+References: <20240215162327.3663092-1-sean.anderson@seco.com>
+ <20240219153016.ntltc76bphwrv6hn@skbuf>
+From: Sean Anderson <sean.anderson@seco.com>
+In-Reply-To: <20240219153016.ntltc76bphwrv6hn@skbuf>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: SJ0PR03CA0068.namprd03.prod.outlook.com
+ (2603:10b6:a03:331::13) To DB9PR03MB8847.eurprd03.prod.outlook.com
+ (2603:10a6:10:3dd::13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240214170720.v1.1.Ic3de2566a7fd3de8501b2f18afa9f94eadb2df0a@changeid>
- <87jzn0ofdb.wl-tiwai@suse.de> <235ab5aa-90a4-4dd7-b2c6-70469605bcfb@suse.cz>
-In-Reply-To: <235ab5aa-90a4-4dd7-b2c6-70469605bcfb@suse.cz>
-From: Sven van Ashbrook <svenva@chromium.org>
-Date: Tue, 20 Feb 2024 10:52:14 -0500
-Message-ID: <CAG-rBihs_xMKb3wrMO1+-+p4fowP9oy1pa_OTkfxBzPUVOZF+g@mail.gmail.com>
-Subject: Re: Stall at page allocations with __GFP_RETRY_MAYFAIL (Re: [PATCH
- v1] ALSA: memalloc: Fix indefinite hang in non-iommu case)
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Takashi Iwai <tiwai@suse.de>, Karthikeyan Ramasubramanian <kramasub@chromium.org>, 
-	LKML <linux-kernel@vger.kernel.org>, Brian Geffon <bgeffon@google.com>, 
-	stable@vger.kernel.org, Curtis Malainey <cujomalainey@chromium.org>, 
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, linux-sound@vger.kernel.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-TrafficTypeDiagnostic:
+	DB9PR03MB8847:EE_|PA4PR03MB7133:EE_|DB5PEPF00014B99:EE_|AS4PR03MB8280:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4af1241e-3998-47e2-016d-08dc322da0a7
+X-TrendMicro-CAS-OUT-LOOP-IDENTIFIER: 656f966764b7fb185830381c646b41a1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted: BCL:0;
+X-Microsoft-Antispam-Message-Info-Original:
+ IkX2YVrg9GsrOHVumir2MtxH7AooZnq1OtB2XNHhTP22WSC1Ux42XeDzHMPS8Q0fR4d7z/jKHX/EeSMaySsg8nDptKvLcPZ0rTicRLMwZqnq5BGNEBT8vWsnZY+8tCTVZI7TOrbN/KOrEUp8t/kxeFZajOjabVPs+M4UjMVcqIUGeG9arsasL6ABrrhbPb+a22ZaQjgj7fHHxgAsBxGnrFgACAtnA4O2lRx6NzpzUIF4CgXBL1EiihBuaMBGrvBbCXWFiQ6ao3gL3gPqgNjRNeggt8CUYVHyxWmmpOD8Y1tZukRttODtAQtkxtsHIrSGciV/ifG7DmgyLAbbU5OUnPmXMTqHrBSjAFfHunM0BZpl85b8mcGLb2+K9DVedKQiV0WIPciCFKvz21kHriJEUaNGSvQhT2rs2puRi5RtocTGzh1qXzcKF/RhaomVPzWI4FLqExfiFuy2jzMGschKGllJp5NOc2+BmXd9REtwkJn8+ZmZrIRN7Ti+gqv+oqESx26Bzczt6N16yhzulML5DQTpRA0adQd8pKJdWMQ2xGDyhQsU3ppsIR+ZySl4jL6IwSSu088JWVMc/8VDhIxIOgY3hNz/DdpPL5GpRGFeYVA=
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR03MB8847.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(38350700005);DIR:OUT;SFP:1102;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR03MB7133
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ DB5PEPF00014B99.eurprd02.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	caaf93d8-9ec0-4aea-d828-08dc322d9e13
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	VVP6h/Rf5ijhRdCNvbQr4EyNSIJ/KbvnZg8J4qCP1/X1PXLSgI/qRgOsZ23Gjjk4u9+YD6FWf1wts47fmeScEhX54DvEZr9fPJeZIS8h9ksV0A1bXnDUhYhQfDPTIdFTKKXqM9x1x8MTIZaAgNukrJSCnSOx7x+uxr1nptrs/RknQivFWqTLJxcVNT29ie2qXsd1O18q3qiTdhMd3iFGxto2JsEwGzW/VnokEmfjEPPQlEdzId3W9VUnNPn8N+/GUAo3YgRZKJCqQ2GmfXd399rlfGe8Y99zOR95U4BiROQ3nu5Ogb8yeqmmDMZD8jDNGphnhGyxZEGeUB8KlWqS2U2IQJ28Ytq27b9ZclYPbaBB5IH5SduWEHzs3UTxqRv8Hsc3WhJzdCfZ97k781rvfqAvzuEQf8QEJ2mAHpu/ceYlRJBMiw7VX8Sg4BEixPKabh5i7aWrAtUjSrxsNVob69rMLWlQS4nA+t0x9aT/+pVrCI1DWTcuiqaKuK3Wof5/CMBGvjfKO+iawOwQ3WZ96hNCqPX/3PI/MXIz5OuGPAT1pEljwMEm9IZoTLR8/uNQAojOewmGJx4RCcpTDWkDH8QoLvdupOoEGWB+6NVWjLCIawaaQwYFveSO5CSb49B7+IfJpkLyP3KFBiTOnhNEJg==
+X-Forefront-Antispam-Report:
+	CIP:20.160.56.87;CTRY:NL;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:repost-eu.tmcas.trendmicro.com;PTR:repost-eu.tmcas.trendmicro.com;CAT:NONE;SFS:(13230031)(36860700004)(40470700004)(46966006);DIR:OUT;SFP:1102;
+X-OriginatorOrg: seco.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Feb 2024 16:04:32.9203
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4af1241e-3998-47e2-016d-08dc322da0a7
+X-MS-Exchange-CrossTenant-Id: bebe97c3-6438-442e-ade3-ff17aa50e733
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=bebe97c3-6438-442e-ade3-ff17aa50e733;Ip=[20.160.56.87];Helo=[repost-eu.tmcas.trendmicro.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DB5PEPF00014B99.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR03MB8280
 
-Takaski, Vlastimil: thanks so much for the engagement! See below.
-
-> On 2/19/24 12:36, Takashi Iwai wrote:
-> >
-> > Karthikeyan, Sven, and co: could you guys show the stack trace at the
-> > stall?  This may give us more clear light.
-
-Here are two typical stack traces at the stall. Note that the timer interru=
-pt
-is just a software watchdog that fires to generate the stack trace.
-This is running the v6.1 kernel.
-We should be able to reproduce this on v6.6 as well if need be.
-
-<4>[310289.546429] <TASK>
-<4>[310289.546431] asm_sysvec_apic_timer_interrupt+0x16/0x20
-<4>[310289.546434] RIP: 0010:super_cache_count+0xc/0xea
-<4>[310289.546438] Code: ff ff e8 48 ac e3 ff 4c 89 e0 48 83 c4 20 5b
-41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc cc 0f 1f 44 00 00 f6 87 23
-fc ff ff 20 <75> 08 31 c0 c3 cc cc cc cc cc 55 48 89 e5 41 57 41 56 41
-54 53 49
-<4>[310289.546440] RSP: 0018:ffffa64e8aed35c0 EFLAGS: 00000202
-<4>[310289.546443] RAX: 0000000000000080 RBX: 0000000000000400 RCX:
-0000000000000000
-<4>[310289.546445] RDX: ffffffffa6d66bc8 RSI: ffffa64e8aed3610 RDI:
-ffff9fd2873dbc30
-<4>[310289.546447] RBP: ffffa64e8aed3660 R08: 0000000000000064 R09:
-0000000000000000
-<4>[310289.546449] R10: ffffffffa6e3b260 R11: ffffffffa5163a52 R12:
-ffff9fd2873dbc50
-<4>[310289.546451] R13: 0000000000046c00 R14: 0000000000000000 R15:
-0000000000000000
-<4>[310289.546453] ? super_cache_scan+0x199/0x199
-<4>[310289.546457] shrink_slab+0xb3/0x37e
-<4>[310289.546460] shrink_node+0x377/0x110e
-<4>[310289.546464] ? sysvec_apic_timer_interrupt+0x17/0x80
-<4>[310289.546467] ? asm_sysvec_apic_timer_interrupt+0x16/0x20
-<4>[310289.546471] try_to_free_pages+0x46e/0x857
-<4>[310289.546475] ? psi_task_change+0x7f/0x9c
-<4>[310289.546478] __alloc_pages_slowpath+0x4e2/0xe5c
-<4>[310289.546482] __alloc_pages+0x225/0x2a2
-<4>[310289.546486] __dma_direct_alloc_pages+0xed/0x1cb
-<4>[310289.546489] dma_direct_alloc_pages+0x21/0xa3
-<4>[310289.546493] dma_alloc_noncontiguous+0xd1/0x144
-<4>[310289.546496] snd_dma_noncontig_alloc+0x45/0xe3
-<4>[310289.546499] snd_dma_alloc_dir_pages+0x4f/0x81
-<4>[310289.546502] hda_cl_stream_prepare+0x66/0x15e
-[snd_sof_intel_hda_common (HASH:1255 1)]
-<4>[310289.546510] hda_dsp_cl_boot_firmware+0xc4/0x2ca
-[snd_sof_intel_hda_common (HASH:1255 1)]
-<4>[310289.546518] snd_sof_run_firmware+0xca/0x2d7 [snd_sof (HASH:ecd9 2)]
-<4>[310289.546526] ? hda_dsp_resume+0x97/0x1a7
-[snd_sof_intel_hda_common (HASH:1255 1)]
-<4>[310289.546534] sof_resume+0x155/0x251 [snd_sof (HASH:ecd9 2)]
-<4>[310289.546542] ? pci_pm_suspend+0x1e7/0x1e7
-<4>[310289.546546] dpm_run_callback+0x3c/0x132
-<4>[310289.546549] device_resume+0x1f7/0x282
-<4>[310289.546552] ? dpm_watchdog_set+0x54/0x54
-<4>[310289.546555] async_resume+0x1f/0x5b
-<4>[310289.546558] async_run_entry_fn+0x2b/0xc5
-<4>[310289.546561] process_one_work+0x1be/0x381
-<4>[310289.546564] worker_thread+0x20b/0x35b
-<4>[310289.546568] kthread+0xde/0xf7
-<4>[310289.546571] ? pr_cont_work+0x54/0x54
-<4>[310289.546574] ? kthread_blkcg+0x32/0x32
-<4>[310289.546577] ret_from_fork+0x1f/0x30
-<4>[310289.546580] </TASK>
-
-<4>[171032.151834] <TASK>
-<4>[171032.151835] asm_sysvec_apic_timer_interrupt+0x16/0x20
-<4>[171032.151839] RIP: 0010:_raw_spin_unlock_irq+0x10/0x28
-<4>[171032.151842] Code: 2c 70 74 06 c3 cc cc cc cc cc 55 48 89 e5 e8
-7e 30 2b ff 5d c3 cc cc cc cc cc 0f 1f 44 00 00 c6 07 00 fb 65 ff 0d
-af b1 2c 70 <74> 06 c3 cc cc cc cc cc 55 48 89 e5 e8 56 30 2b ff 5d c3
-cc cc cc
-<4>[171032.151844] RSP: 0018:ffff942447b334d8 EFLAGS: 00000286
-<4>[171032.151847] RAX: 0000000000000031 RBX: 0000000000000001 RCX:
-0000000000000034
-<4>[171032.151849] RDX: 0000000000000031 RSI: 0000000000000002 RDI:
-ffffffff9103b1b0
-<4>[171032.151851] RBP: ffff942447b33660 R08: 0000000000000032 R09:
-0000000000000010
-<4>[171032.151853] R10: ffffffff9103b370 R11: 00000000ffffffff R12:
-ffffffff9103b160
-<4>[171032.151855] R13: ffffd055000111c8 R14: 0000000000000000 R15:
-0000000000000031
-<4>[171032.151858] evict_folios+0xf9e/0x1307
-<4>[171032.151861] ? asm_sysvec_apic_timer_interrupt+0x16/0x20
-<4>[171032.151866] shrink_node+0x2e8/0x110e
-<4>[171032.151870] ? common_interrupt+0x1c/0x95
-<4>[171032.151872] ? common_interrupt+0x1c/0x95
-<4>[171032.151875] ? asm_common_interrupt+0x22/0x40
-<4>[171032.151878] ? __compaction_suitable+0x7c/0x9d
-<4>[171032.151882] try_to_free_pages+0x46e/0x857
-<4>[171032.151885] ? psi_task_change+0x7f/0x9c
-<4>[171032.151889] __alloc_pages_slowpath+0x4e2/0xe5c
-<4>[171032.151893] __alloc_pages+0x225/0x2a2
-<4>[171032.151896] __dma_direct_alloc_pages+0xed/0x1cb
-<4>[171032.151900] dma_direct_alloc_pages+0x21/0xa3
-<4>[171032.151903] dma_alloc_noncontiguous+0xd1/0x144
-<4>[171032.151907] snd_dma_noncontig_alloc+0x45/0xe3
-<4>[171032.151910] snd_dma_alloc_dir_pages+0x4f/0x81
-<4>[171032.151913] hda_cl_stream_prepare+0x66/0x15e
-[snd_sof_intel_hda_common (HASH:7df0 1)]
-<4>[171032.151921] hda_dsp_cl_boot_firmware+0xc4/0x2ca
-[snd_sof_intel_hda_common (HASH:7df0 1)]
-<4>[171032.151929] snd_sof_run_firmware+0xca/0x2d7 [snd_sof (HASH:9f20 2)]
-<4>[171032.151937] ? hda_dsp_resume+0x97/0x1a7
-[snd_sof_intel_hda_common (HASH:7df0 1)]
-<4>[171032.151945] sof_resume+0x155/0x251 [snd_sof (HASH:9f20 2)]
-<4>[171032.151953] ? pci_pm_suspend+0x1e7/0x1e7
-<4>[171032.151957] dpm_run_callback+0x3c/0x132
-<4>[171032.151960] device_resume+0x1f7/0x282
-<4>[171032.151962] ? dpm_watchdog_set+0x54/0x54
-<4>[171032.151965] async_resume+0x1f/0x5b
-<4>[171032.151968] async_run_entry_fn+0x2b/0xc5
-<4>[171032.151971] process_one_work+0x1be/0x381
-<4>[171032.151975] worker_thread+0x20b/0x35b
-<4>[171032.151978] kthread+0xde/0xf7
-<4>[171032.151981] ? pr_cont_work+0x54/0x54
-<4>[171032.151984] ? kthread_blkcg+0x32/0x32
-<4>[171032.151987] ret_from_fork+0x1f/0x30
-<4>[171032.151991] </TASK>
-
-On Mon, Feb 19, 2024 at 6:40=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> wr=
-ote:
+On 2/19/24 10:30, Vladimir Oltean wrote:
+> Hi Sean,
 >
-> Yeah, if the inifinite loop with __GFP_RETRY_MAYFAIL happens in a call to
-> __alloc_pages and not in some retry loop around it in an upper layer (I
-> tried to check the dma functions but got lost quickly so the exact call
-> stack would be useful), we definitely want to know the details. It should=
-n't
-> happen for costly orders (>3) because the retries are hard limited for th=
-ose
-> despite apparent progress or reclaim or compaction.
-
-Here are our notes of the indefinite stall we saw on v5.10 with iommu SoCs.
-We did not pursue debugging the stall at the time, in favour of a work-arou=
-nd
-with the gfp flags. Therefore we only have partial confidence in the notes
-below. Take them with a block of salt, but they may point in a useful direc=
-tion.
-
-1. try to do a "costly" allocation (order > PAGE_ALLOC_COSTLY_ORDER) with
-    __GFP_RETRY_MAYFAIL set.
-
-2. page alloc's __alloc_pages_slowpath [1] tries to get a page from
-the freelist.
-    This fails because there is nothing free of that costly order.
-
-3. page alloc tries to reclaim by calling __alloc_pages_direct_reclaim, whi=
-ch
-    bails out [2] because a zone is ready to be compacted; it pretends
-to have made
-    a single page of progress.
-
-4. page alloc tries to compact, but this always bails out early [3]
-because __GFP_IO is not set
-    (it's not passed by the snd allocator, and even if it were, we are
-suspending so the
-    __GFP_IO flag would be cleared anyway).
-
-5. page alloc believes reclaim progress was made (because of the
-pretense in item 3) and
-    so it checks whether it should retry compaction. The compaction
-retry logic [4] thinks
-    it should try again, because:
-    a) reclaim is needed because of the early bail-out in item 4
-    b) a zonelist is suitable for compaction
-
-6. goto 2. indefinite stall.
-
+> On Thu, Feb 15, 2024 at 11:23:26AM -0500, Sean Anderson wrote:
+>> smp_call_function_single disables IRQs when executing the callback. To
+>> prevent deadlocks, we must disable IRQs when taking cgr_lock elsewhere.
+>> This is already done by qman_update_cgr and qman_delete_cgr; fix the
+>> other lockers.
+>>
+>> Fixes: 96f413f47677 ("soc/fsl/qbman: fix issue in qman_delete_cgr_safe()=
+")
+>> CC: stable@vger.kernel.org
+>> Signed-off-by: Sean Anderson <sean.anderson@seco.com>
+>> Reviewed-by: Camelia Groza <camelia.groza@nxp.com>
+>> Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+>> ---
+>> I got no response the first time I sent this, so I am resending to net.
+>> This issue was introduced in a series which went through net, so I hope
+>> it makes sense to take it via net.
+>>
+>> [1] https://cas5-0-urlprotect.trendmicro.com:443/wis/clicktime/v1/query?=
+url=3Dhttps%3a%2f%2flore.kernel.org%2flinux%2darm%2dkernel%2f20240108161904=
+.2865093%2d1%2dsean.anderson%40seco.com%2f&umid=3D75622bdd-3d90-45a2-89a9-6=
+0921f1f3189&auth=3Dd807158c60b7d2502abde8a2fc01f40662980862-0625a208f4f6c24=
+1a307b4380763ba50532758bf
+>>
+>> (no changes since v3)
+>>
+>> Changes in v3:
+>> - Change blamed commit to something more appropriate
+>>
+>> Changes in v2:
+>> - Fix one additional call to spin_unlock
 >
-> > Also, Vlastimil suggested that tracepoints would be helpful if that's
-> > really in the page allocator, too.
-> >
+> Leo Li (Li Yang) is no longer with NXP. Until we figure out within NXP
+> how to continue with the maintainership of drivers/soc/fsl/, yes, please
+> continue to submit this series to 'net'. I would also like to point
+> out to Arnd that this is the case.
+>
+> Arnd, a large portion of drivers/soc/fsl/ is networking-related
+> (dpio, qbman). Would it make sense to transfer the maintainership
+> of these under the respective networking drivers, to simplify the
+> procedures?
+>
+> Also, your patches are whitespace-damaged. They do not apply to the
+> kernel, and patchwork shows this as well.
+> https://cas5-0-urlprotect.trendmicro.com:443/wis/clicktime/v1/query?url=
+=3Dhttps%3a%2f%2fpatchwork.kernel.org%2fproject%2fnetdevbpf%2fpatch%2f20240=
+215162327.3663092%2d1%2dsean.anderson%40seco.com%2f&umid=3D75622bdd-3d90-45=
+a2-89a9-60921f1f3189&auth=3Dd807158c60b7d2502abde8a2fc01f40662980862-ec9df0=
+3b11ef3e6b48a457ca5469e0b20c4b0439
+>
+> Please repost with this fixed.
 
-We might be able to generate traces by bailing out of the indefinite
-stall using a timer,
-which should hopefully give us a device that's "alive enough" to read
-the traces.
+Hm, I used the same method I have in the past (git send-email). But I
+guess something is converting my tabs to spaces? Maybe it is related to
+the embedded world advertisement...
 
-Can you advise which tracepoints you'd like to see? Is trace-cmd [5]
-suitable to capture
-this?
+Maybe the solution is to get a kernel.org email...
 
-[1] https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src=
-/third_party/kernel/v5.10/mm/page_alloc.c;l=3D4654;drc=3Da16293af64a1f558da=
-b9a5dd7fb05fdbc2b7c5c0
-[2] https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src=
-/third_party/kernel/v5.10/mm/vmscan.c;drc=3D44452e4236561f6e36ec587805a52b6=
-83e2804c9;l=3D6177
-[3] https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src=
-/third_party/kernel/v5.10/mm/compaction.c;l=3D2479;drc=3Dd7b105aa1559e6c287=
-f3f372044c21c7400b7784
-[4] https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src=
-/third_party/kernel/v5.10/mm/page_alloc.c;l=3D4171;drc=3Da16293af64a1f558da=
-b9a5dd7fb05fdbc2b7c5c0
-[5] https://chromium.googlesource.com/chromiumos/docs/+/HEAD/kernel_develop=
-ment.md#ftrace-debugging
+--Sean
+
+[Embedded World 2024, SECO SpA]<https://www.messe-ticket.de/Nuernberg/embed=
+dedworld2024/Register/ew24517689>
 
