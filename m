@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-21268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAA0585C7F1
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:18:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1A1085C94E
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:31:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8AF7AB20DF0
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:18:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABB0A284CB7
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:31:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D18A3151CCC;
-	Tue, 20 Feb 2024 21:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D47B151CE9;
+	Tue, 20 Feb 2024 21:31:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l3QRAxc5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kr/yN4B/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EDF2612D7;
-	Tue, 20 Feb 2024 21:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AA8414AD0F;
+	Tue, 20 Feb 2024 21:31:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463884; cv=none; b=CYLULS8T6jDKbxmR4mDhGQmw4UKZDgDFnKwmcLwM2kh3DhZr/SmRpjLkTiXaMOAKkRCfSHpAfSVa8STIaW0XapzwIW+Y0yNei0xsV0OeR4rgSY8RZOcJO7Zsx6yEZ3IH8GN7GxTtKrjE6WciphdWFCMxFewJHL2Mb10LrIdpeF4=
+	t=1708464715; cv=none; b=hozcTzW9IUrRuXgEB8gHSURz1l7w/rImaInNhijGN7w/Twsj7+p09v0vRDf2rO2HoeZd3uXOzc0/tTNKZNEqDTiyUC/laBcMUAf3zq0LjG39fXM/yZC/oiloKzjn0zEAeTmVp33OOozc5QdeamUJX+cDTmQxyf1C8fvmtlqGZe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463884; c=relaxed/simple;
-	bh=2S9CTb3gZb+mE/z8aIj1qVI6TYuIlnPqbOtIg/dUwMs=;
+	s=arc-20240116; t=1708464715; c=relaxed/simple;
+	bh=05rDaWPbkhJ1OPnViRast9VU/pnkoXttk46gdWDgBUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l9JbR5xvuZ+NpNxc/06LUpR8ovdFZ2OMEVdB9pmWKpkT2IhbDzGcA69ATUBFEOb/bBkPyALBb44Q2J9fxhq2xras8Ezn17KQifixNuOMyAfVUo/bfdwtlMhhsZVwmIv6yh7oRLh9WR2QwJ9DuW+73GoE8hA/jfG8qnztzIH1uTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l3QRAxc5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 179C9C433F1;
-	Tue, 20 Feb 2024 21:18:03 +0000 (UTC)
+	 MIME-Version; b=bBN8j6eMgxqMHmrtW4PA1gRyABbU6Ulyc+yXh/p2M+ZG9j7gH4Cd0E+r2JJGgONf+a+y8Tn9j6U5eua1PVaP9TVzhoQ9cXFTkT2Ry7k57qmXx7clzn6H69pXzG6kEfZvyLvN1ezAH9e8zrMKoAw1VBTIchHiGGJmQJCGRIJBusA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kr/yN4B/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71DF5C433F1;
+	Tue, 20 Feb 2024 21:31:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463884;
-	bh=2S9CTb3gZb+mE/z8aIj1qVI6TYuIlnPqbOtIg/dUwMs=;
+	s=korg; t=1708464714;
+	bh=05rDaWPbkhJ1OPnViRast9VU/pnkoXttk46gdWDgBUo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l3QRAxc5HXSxej7scD5JlDNf0DX2XtyH70fsCBO+DPEX8zNB2WShgB+T0TRMXVeCR
-	 lLhF5AvVgeNXLrXIerIV+47FoNzHsbLjkW3gaLYtLkllq5qDsZKQuHxN6N1DKfzoht
-	 tNn+vV3OOHcdBgEawuD7cjVzoGUbNiIYD052HBew=
+	b=kr/yN4B/aUn3tWU/kIlaRD+vJ5kujIoWRs2GMfhF8bIn07FmFHxuO+Bxq4E9ugCnG
+	 vPOiznO9r72I9sa2uHx9BWdEgBPK+SmI8/oXzJn2n+LwgikVbzulW32D9ZBAY1O21M
+	 Zk+3V5MXmpE14VbNZdUwukj9LJDaTci5hOloOwRo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Schiller <david.schiller@jku.at>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 155/331] staging: iio: ad5933: fix type mismatch regression
-Date: Tue, 20 Feb 2024 21:54:31 +0100
-Message-ID: <20240220205642.401187887@linuxfoundation.org>
+	Jean Delvare <jdelvare@suse.de>,
+	Piotr Zakowski <piotr.zakowski@intel.com>,
+	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 113/309] i2c: i801: Fix block process call transactions
+Date: Tue, 20 Feb 2024 21:54:32 +0100
+Message-ID: <20240220205636.725779095@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Schiller <david.schiller@jku.at>
+From: Jean Delvare <jdelvare@suse.de>
 
-commit 6db053cd949fcd6254cea9f2cd5d39f7bd64379c upstream.
+[ Upstream commit c1c9d0f6f7f1dbf29db996bd8e166242843a5f21 ]
 
-Commit 4c3577db3e4f ("Staging: iio: impedance-analyzer: Fix sparse
-warning") fixed a compiler warning, but introduced a bug that resulted
-in one of the two 16 bit IIO channels always being zero (when both are
-enabled).
+According to the Intel datasheets, software must reset the block
+buffer index twice for block process call transactions: once before
+writing the outgoing data to the buffer, and once again before
+reading the incoming data from the buffer.
 
-This is because int is 32 bits wide on most architectures and in the
-case of a little-endian machine the two most significant bytes would
-occupy the buffer for the second channel as 'val' is being passed as a
-void pointer to 'iio_push_to_buffers()'.
+The driver is currently missing the second reset, causing the wrong
+portion of the block buffer to be read.
 
-Fix by defining 'val' as u16. Tested working on ARM64.
-
-Fixes: 4c3577db3e4f ("Staging: iio: impedance-analyzer: Fix sparse warning")
-Signed-off-by: David Schiller <david.schiller@jku.at>
-Link: https://lore.kernel.org/r/20240122134916.2137957-1-david.schiller@jku.at
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jean Delvare <jdelvare@suse.de>
+Reported-by: Piotr Zakowski <piotr.zakowski@intel.com>
+Closes: https://lore.kernel.org/linux-i2c/20240213120553.7b0ab120@endymion.delvare/
+Fixes: 315cd67c9453 ("i2c: i801: Add Block Write-Block Read Process Call support")
+Reviewed-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/iio/impedance-analyzer/ad5933.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-i801.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/staging/iio/impedance-analyzer/ad5933.c
-+++ b/drivers/staging/iio/impedance-analyzer/ad5933.c
-@@ -608,7 +608,7 @@ static void ad5933_work(struct work_stru
- 		struct ad5933_state, work.work);
- 	struct iio_dev *indio_dev = i2c_get_clientdata(st->client);
- 	__be16 buf[2];
--	int val[2];
-+	u16 val[2];
- 	unsigned char status;
- 	int ret;
+diff --git a/drivers/i2c/busses/i2c-i801.c b/drivers/i2c/busses/i2c-i801.c
+index 070999139c6d..6a5a93cf4ecc 100644
+--- a/drivers/i2c/busses/i2c-i801.c
++++ b/drivers/i2c/busses/i2c-i801.c
+@@ -498,11 +498,10 @@ static int i801_block_transaction_by_block(struct i801_priv *priv,
+ 	/* Set block buffer mode */
+ 	outb_p(inb_p(SMBAUXCTL(priv)) | SMBAUXCTL_E32B, SMBAUXCTL(priv));
  
+-	inb_p(SMBHSTCNT(priv)); /* reset the data buffer index */
+-
+ 	if (read_write == I2C_SMBUS_WRITE) {
+ 		len = data->block[0];
+ 		outb_p(len, SMBHSTDAT0(priv));
++		inb_p(SMBHSTCNT(priv));	/* reset the data buffer index */
+ 		for (i = 0; i < len; i++)
+ 			outb_p(data->block[i+1], SMBBLKDAT(priv));
+ 	}
+@@ -520,6 +519,7 @@ static int i801_block_transaction_by_block(struct i801_priv *priv,
+ 		}
+ 
+ 		data->block[0] = len;
++		inb_p(SMBHSTCNT(priv));	/* reset the data buffer index */
+ 		for (i = 0; i < len; i++)
+ 			data->block[i + 1] = inb_p(SMBBLKDAT(priv));
+ 	}
+-- 
+2.43.0
+
 
 
 
