@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-21224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 850D385C7C1
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:16:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFBFD85C95B
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:32:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3EF74283EEE
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:16:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48179B2127A
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:32:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AE02152DFA;
-	Tue, 20 Feb 2024 21:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A05D1151CD9;
+	Tue, 20 Feb 2024 21:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZUFDMkQ5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OxgNpHac"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B370676C9C;
-	Tue, 20 Feb 2024 21:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E00446C9;
+	Tue, 20 Feb 2024 21:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463745; cv=none; b=lEB0fPZjlf9xZ3vW99EgYXWT6rWjJcYECgZlDNExab7cORe+r1fWspaF0T2Z0oYwOYrzRZFU9787LvtogEY7D0C3RsFYC2zxqvZZmhclFqmTRbdYecKjhMrqf+ILApA5tFlooXoFZcmnlhQtgP9kxrox0xdElpDvTiQd2YuayJ0=
+	t=1708464755; cv=none; b=sp04Te6KQXQOQra9Ww4H7t8qKN7ty3FX2akD6gkphg1NDCFYDTFK3YZnPLXvgKdSbaiorECmem7FWMwedHwo43zbhPfJb7zpsyb8FTyOKqfDibeOd3OWEqopiTz3mKzXPoraymsNMek8LUkik96r2hM7fRWK+tdSVhWVs39rrqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463745; c=relaxed/simple;
-	bh=Yu0DqaOSpNHwGWKPN3psq0NaeF9EM/8Cl3wKasK2wuE=;
+	s=arc-20240116; t=1708464755; c=relaxed/simple;
+	bh=ptarE3S9pjht4yh2+dLm8Fma5yyh+u525ZRLB/qIflg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H6wWYsMkBsk87fD0CNvfjCLFrHU2D2JOtdtXWWi2r0P74iioajh6TvsjGQZuzjksQ8yHeZUvHzvQCLKqLiP+6/cSBq3KQvin8b0XanQ8k4dWLy1dm5CgAfzQpvIOtThKpLtBROjvvrZGRbU+xGjcoKfhe4XqQdYYBK68kezJtng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZUFDMkQ5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21E1FC433F1;
-	Tue, 20 Feb 2024 21:15:44 +0000 (UTC)
+	 MIME-Version; b=hZj6gVv4vygEW72f3xeBhRdEnIRTRAjIHPJknj0ATYPxOs8hXf0aYEZybwNsn62NxEAnn1NwGLmB0SUvgWiNiQGTzMF5M5pjH+PGCUdE2OHtxlHR2X38ASE93+6kcQz8D9wfrR9JpRh810y5DeEVzWs8TueDmI9vtkbRNVM51s8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OxgNpHac; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C02C433C7;
+	Tue, 20 Feb 2024 21:32:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463745;
-	bh=Yu0DqaOSpNHwGWKPN3psq0NaeF9EM/8Cl3wKasK2wuE=;
+	s=korg; t=1708464755;
+	bh=ptarE3S9pjht4yh2+dLm8Fma5yyh+u525ZRLB/qIflg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZUFDMkQ56de+WKcy4GJaaAlSoq7PTq7lRbYj+Ql9kfmPk0i0GzG0judEDyKGm1oyI
-	 Ktqay2BO+LUUj7Npaj+IIOK7PlDfgN9o1paKK19KHsqvvlQJlRk3+R+pJX2ajwxK/0
-	 YaddPFFzcrLA7k25w4J27ELq1+/vOikMElRFlGnw=
+	b=OxgNpHacjijtzgjgdcQ6ISvKsGaraBiGpqHnAf1KWtGGVZm8IaYb9GNuswv6+J1eW
+	 nGqrZOFNmYQwaSqUmVJFqK1jaer0E7dEGK6q7ywA0eH5i1L/xDU6MeishSqtS5F8Kz
+	 YANFdmNi2/morePRBi8nVBuB7j+qk8Za8Yl8Tgz4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edson Juliano Drosdeck <edson.drosdeck@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 139/331] ALSA: hda/realtek: Enable headset mic on Vaio VJFE-ADL
-Date: Tue, 20 Feb 2024 21:54:15 +0100
-Message-ID: <20240220205641.930362321@linuxfoundation.org>
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Sean Young <sean@mess.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 097/309] media: ir_toy: fix a memleak in irtoy_tx
+Date: Tue, 20 Feb 2024 21:54:16 +0100
+Message-ID: <20240220205636.223653004@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-commit c7de2d9bb68a5fc71c25ff96705a80a76c8436eb upstream.
+[ Upstream commit dc9ceb90c4b42c6e5c6757df1d6257110433788e ]
 
-Vaio VJFE-ADL is equipped with ALC269VC, and it needs
-ALC298_FIXUP_SPK_VOLUME quirk to make its headset mic work.
+When irtoy_command fails, buf should be freed since it is allocated by
+irtoy_tx, or there is a memleak.
 
-Signed-off-by: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240201122114.30080-1-edson.drosdeck@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4114978dcd24 ("media: ir_toy: prevent device from hanging during transmit")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/rc/ir_toy.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10204,6 +10204,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x1d72, 0x1945, "Redmi G", ALC256_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1d72, 0x1947, "RedmiBook Air", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
-+	SND_PCI_QUIRK(0x2782, 0x1707, "Vaio VJFE-ADL", ALC298_FIXUP_SPK_VOLUME),
- 	SND_PCI_QUIRK(0x8086, 0x2074, "Intel NUC 8", ALC233_FIXUP_INTEL_NUC8_DMIC),
- 	SND_PCI_QUIRK(0x8086, 0x2080, "Intel NUC 8 Rugged", ALC256_FIXUP_INTEL_NUC8_RUGGED),
- 	SND_PCI_QUIRK(0x8086, 0x2081, "Intel NUC 10", ALC256_FIXUP_INTEL_NUC10),
+diff --git a/drivers/media/rc/ir_toy.c b/drivers/media/rc/ir_toy.c
+index 196806709259..69e630d85262 100644
+--- a/drivers/media/rc/ir_toy.c
++++ b/drivers/media/rc/ir_toy.c
+@@ -332,6 +332,7 @@ static int irtoy_tx(struct rc_dev *rc, uint *txbuf, uint count)
+ 			    sizeof(COMMAND_SMODE_EXIT), STATE_COMMAND_NO_RESP);
+ 	if (err) {
+ 		dev_err(irtoy->dev, "exit sample mode: %d\n", err);
++		kfree(buf);
+ 		return err;
+ 	}
+ 
+@@ -339,6 +340,7 @@ static int irtoy_tx(struct rc_dev *rc, uint *txbuf, uint count)
+ 			    sizeof(COMMAND_SMODE_ENTER), STATE_COMMAND);
+ 	if (err) {
+ 		dev_err(irtoy->dev, "enter sample mode: %d\n", err);
++		kfree(buf);
+ 		return err;
+ 	}
+ 
+-- 
+2.43.0
+
 
 
 
