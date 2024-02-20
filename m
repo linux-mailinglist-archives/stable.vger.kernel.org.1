@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-21036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAF7D85C6E3
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7358E85C6E2
 	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:06:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 23F51B23E89
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:06:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E1282841F9
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:06:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E96FE151CFA;
-	Tue, 20 Feb 2024 21:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3E2F151CC3;
+	Tue, 20 Feb 2024 21:05:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WOsUc6Dv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zGq8lBFp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6DF7133987;
-	Tue, 20 Feb 2024 21:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 608AC133987;
+	Tue, 20 Feb 2024 21:05:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463150; cv=none; b=XRm+BRWIKW27WaRl5y3Muik+hpsP1DHncnmL4nFn88iL04xBeDVqYhiyHCEQjmx4Yxu6hA6prrT3aMskLfOC4KjwCD4LDSjB+3wQhC3cubpVM+v7OgvsYBE/hAgpdlTgG8mivdzw5V4kI3JF8MGmlRufJNPmPzjBjBC1vYKP/aI=
+	t=1708463157; cv=none; b=gJrCpIXtFQk6rdIDgzfqZtWef6605QcjUQcNhWGgtgwkTQQnVnQ3mKwaXDhULV7lLSGEL5YB+kV5k5OepJMGAmoxFB2TOWWNrd88fedvfSTRCD4aGwO5bgTzM2EfC1Vt5Mz5jHLLbb7yjkSwwouAjnoKu02cM77Uy6/iLI6EZw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463150; c=relaxed/simple;
-	bh=GRUGCw4JXwwUvEDUa9ER15yUrPpZKp6fJydSiX1UenA=;
+	s=arc-20240116; t=1708463157; c=relaxed/simple;
+	bh=RSbu9ynEBrDRGNjCm/0ZwNlq2NZyt0sIKkaR1ANgtbk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rL52Ixt7uwUF5hmIOS18hZpB9mCbteVjsPANof9EDa27p9ZViSFZvBoryk6MkZRLDF29Smm5csoEn3F479B2US8dGQbRVj4X5QcEAgt42uMKM3JWSYyjd77XZbgbBTuaFtYnQiNLWhxhcTMnKMCTCKgV1gi3LR/fYq6uL2yo3CE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WOsUc6Dv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15711C433F1;
-	Tue, 20 Feb 2024 21:05:49 +0000 (UTC)
+	 MIME-Version; b=o1raAt6B46c6Ym60g+s2C8dCoIgyIQquQZPSU/5Y0vvTMxTyKnUed1ml7ahjx3r47J0/VDuM9tiNM+YB1KJq5l0bh2FHKmCBRcUNOYCbvJdSF+Cx0UBo/GA2na1/v4ngKreKhWYyLXMgvczNRE73oOVBio1trmo3I4/9/o6J140=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zGq8lBFp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C8A9C433C7;
+	Tue, 20 Feb 2024 21:05:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463150;
-	bh=GRUGCw4JXwwUvEDUa9ER15yUrPpZKp6fJydSiX1UenA=;
+	s=korg; t=1708463156;
+	bh=RSbu9ynEBrDRGNjCm/0ZwNlq2NZyt0sIKkaR1ANgtbk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WOsUc6DvQa0XYzYIiGnyweWzxig/Mp5hps5MeCVWTeiWsCo2EOiiXZi3DyS6+SyWQ
-	 q5vtDkcyDoMxD8kq9JL1dSFna8+BzJxW1BVYQWHD+DSloBO4gQ4xjwOuwV4a4hPaiY
-	 gv04WT7rdB8NvrN6wOrZGGFo6lkcZ48GxeR6tSMM=
+	b=zGq8lBFpRuYfx/p3VlsOAvuj+IwVl+X8oRYoxbvjjxfLnq9FROYzQWpyP1nM3ftiW
+	 rDY5CdapXjFYyjXMBUZh5AzQ1hceSrpGLHnt+3awlSuJWTbWKQd2MHAMggXAKBQfCh
+	 cir4eagVpZJN6yIeYKVmV2JdBkds2GyxdVieB8Bs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Karel Zak <kzak@redhat.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.1 152/197] fs: relax mount_setattr() permission checks
-Date: Tue, 20 Feb 2024 21:51:51 +0100
-Message-ID: <20240220204845.623334338@linuxfoundation.org>
+	Sinthu Raja <sinthu.raja@ti.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.1 153/197] net: ethernet: ti: cpsw: enable mac_managed_pm to fix mdio
+Date: Tue, 20 Feb 2024 21:51:52 +0100
+Message-ID: <20240220204845.654277940@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
 References: <20240220204841.073267068@linuxfoundation.org>
@@ -66,60 +65,63 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Sinthu Raja <sinthu.raja@ti.com>
 
-commit 46f5ab762d048dad224436978315cbc2fa79c630 upstream.
+commit bc4ce46b1e3d1da4309405cd4afc7c0fcddd0b90 upstream.
 
-When we added mount_setattr() I added additional checks compared to the
-legacy do_reconfigure_mnt() and do_change_type() helpers used by regular
-mount(2). If that mount had a parent then verify that the caller and the
-mount namespace the mount is attached to match and if not make sure that
-it's an anonymous mount.
+The below commit  introduced a WARN when phy state is not in the states:
+PHY_HALTED, PHY_READY and PHY_UP.
+commit 744d23c71af3 ("net: phy: Warn about incorrect mdio_bus_phy_resume() state")
 
-The real rootfs falls into neither category. It is neither an anoymous
-mount because it is obviously attached to the initial mount namespace
-but it also obviously doesn't have a parent mount. So that means legacy
-mount(2) allows changing mount properties on the real rootfs but
-mount_setattr(2) blocks this. I never thought much about this but of
-course someone on this planet of earth changes properties on the real
-rootfs as can be seen in [1].
+When cpsw resumes, there have port in PHY_NOLINK state, so the below
+warning comes out. Set mac_managed_pm be true to tell mdio that the phy
+resume/suspend is managed by the mac, to fix the following warning:
 
-Since util-linux finally switched to the new mount api in 2.39 not so
-long ago it also relies on mount_setattr() and that surfaced this issue
-when Fedora 39 finally switched to it. Fix this.
+WARNING: CPU: 0 PID: 965 at drivers/net/phy/phy_device.c:326 mdio_bus_phy_resume+0x140/0x144
+CPU: 0 PID: 965 Comm: sh Tainted: G           O       6.1.46-g247b2535b2 #1
+Hardware name: Generic AM33XX (Flattened Device Tree)
+ unwind_backtrace from show_stack+0x18/0x1c
+ show_stack from dump_stack_lvl+0x24/0x2c
+ dump_stack_lvl from __warn+0x84/0x15c
+ __warn from warn_slowpath_fmt+0x1a8/0x1c8
+ warn_slowpath_fmt from mdio_bus_phy_resume+0x140/0x144
+ mdio_bus_phy_resume from dpm_run_callback+0x3c/0x140
+ dpm_run_callback from device_resume+0xb8/0x2b8
+ device_resume from dpm_resume+0x144/0x314
+ dpm_resume from dpm_resume_end+0x14/0x20
+ dpm_resume_end from suspend_devices_and_enter+0xd0/0x924
+ suspend_devices_and_enter from pm_suspend+0x2e0/0x33c
+ pm_suspend from state_store+0x74/0xd0
+ state_store from kernfs_fop_write_iter+0x104/0x1ec
+ kernfs_fop_write_iter from vfs_write+0x1b8/0x358
+ vfs_write from ksys_write+0x78/0xf8
+ ksys_write from ret_fast_syscall+0x0/0x54
+Exception stack(0xe094dfa8 to 0xe094dff0)
+dfa0:                   00000004 005c3fb8 00000001 005c3fb8 00000004 00000001
+dfc0: 00000004 005c3fb8 b6f6bba0 00000004 00000004 0059edb8 00000000 00000000
+dfe0: 00000004 bed918f0 b6f09bd3 b6e89a66
 
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2256843
-Link: https://lore.kernel.org/r/20240206-vfs-mount-rootfs-v1-1-19b335eee133@kernel.org
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reported-by: Karel Zak <kzak@redhat.com>
-Cc: stable@vger.kernel.org # v5.12+
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Cc: <stable@vger.kernel.org> # v6.0+
+Fixes: 744d23c71af3 ("net: phy: Warn about incorrect mdio_bus_phy_resume() state")
+Fixes: fba863b81604 ("net: phy: make PHY PM ops a no-op if MAC driver manages PHY PM")
+Signed-off-by: Sinthu Raja <sinthu.raja@ti.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/namespace.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/ti/cpsw.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -4172,10 +4172,15 @@ static int do_mount_setattr(struct path
- 	/*
- 	 * If this is an attached mount make sure it's located in the callers
- 	 * mount namespace. If it's not don't let the caller interact with it.
--	 * If this is a detached mount make sure it has an anonymous mount
--	 * namespace attached to it, i.e. we've created it via OPEN_TREE_CLONE.
-+	 *
-+	 * If this mount doesn't have a parent it's most often simply a
-+	 * detached mount with an anonymous mount namespace. IOW, something
-+	 * that's simply not attached yet. But there are apparently also users
-+	 * that do change mount properties on the rootfs itself. That obviously
-+	 * neither has a parent nor is it a detached mount so we cannot
-+	 * unconditionally check for detached mounts.
- 	 */
--	if (!(mnt_has_parent(mnt) ? check_mnt(mnt) : is_anon_ns(mnt->mnt_ns)))
-+	if ((mnt_has_parent(mnt) || !is_anon_ns(mnt->mnt_ns)) && !check_mnt(mnt))
- 		goto out;
+--- a/drivers/net/ethernet/ti/cpsw.c
++++ b/drivers/net/ethernet/ti/cpsw.c
+@@ -631,6 +631,8 @@ static void cpsw_slave_open(struct cpsw_
+ 		}
+ 	}
  
- 	/*
++	phy->mac_managed_pm = true;
++
+ 	slave->phy = phy;
+ 
+ 	phy_attached_info(slave->phy);
 
 
 
