@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-21098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CD7885C71F
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:09:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C36985C714
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:08:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CE741C21491
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:09:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CFA81C21C28
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:08:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE6C51509AC;
-	Tue, 20 Feb 2024 21:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B136A1509A5;
+	Tue, 20 Feb 2024 21:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2wQrP8fv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cYR44PnQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB9E14AD12;
-	Tue, 20 Feb 2024 21:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6534376C9C;
+	Tue, 20 Feb 2024 21:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463344; cv=none; b=erHAkX2ubSUQp8mtXMNU38Jih/RNiSJAgFnNMYV1k7c9itJx8LWBZZKn8IZ0D3IwaYxl/Iv7GXC722MKMp/vC8xEhW2bLBh3kLQPPPR12SOxZMISlTCXVECpFCVyxEwrrzlPY+FAqXLC/CjfnYXVLAytFdgO4Di4n0sPrwvhbGk=
+	t=1708463309; cv=none; b=THGi3LaMGo6wBthpNsK86u+GYlouLOSdAiZM1M73HsuQc3M6zjVF12au3v/UjwHZyHQhUXB/tXMIlHFXAyf800LfUlFXl8TVDBWbNBT0NA0t5rcEbKg8ds55qqd1g2PlFleChGLlGVDdJpTCRS+yV6Gn+FfIr1ARDJ6uMPPVXEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463344; c=relaxed/simple;
-	bh=H7UVuALMMvza4udjflVKC888AZPb79K+ypjlKdLqsd0=;
+	s=arc-20240116; t=1708463309; c=relaxed/simple;
+	bh=hLVsQCp2saBAMYuDBibZ6mkgZ8iK5QDHyipywwqOzxI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X0sLnVpYzPbT0LjJRta8vvsEme1Yg3Jt/BQvDVmfFKSSfnp3+R1IbC4+wP//GsYObNA1s5p8kamnjWEk5RkPC72j8dZdVekdYIlRsRGiFFYOsEYFnrYHw1jU+62GKMAcK/5f+DLhXfNMZ3XXKQXwkkVPDoV9GWtiHaWT5O57G9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2wQrP8fv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 071A8C433F1;
-	Tue, 20 Feb 2024 21:09:03 +0000 (UTC)
+	 MIME-Version; b=QmjM8YtlobZNtn4GE5KZazKDW+7P/un+DqZBRVxcpwiNBMixtr1QgM/OgPqwbCtUzxd8HmUPhKTPMMKjjPGUHR7c79hMbazTt6uqeNl51K0cAoQ6wb3TwVEc/DDLsv19QGDLfqVDe0gdVB8pRQgsl0ygxKwOJXef5g9ITf02REM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cYR44PnQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C42C3C433F1;
+	Tue, 20 Feb 2024 21:08:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463344;
-	bh=H7UVuALMMvza4udjflVKC888AZPb79K+ypjlKdLqsd0=;
+	s=korg; t=1708463309;
+	bh=hLVsQCp2saBAMYuDBibZ6mkgZ8iK5QDHyipywwqOzxI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2wQrP8fv0U5kTw3Hb+9fpIW7PjZzLQzU4fhBjrdewcQxk+lph1neAiJUcwlpzWMAK
-	 528l0cOt1Rn1o72xj0qRiQ81jfQ6MrNvfCJ95+IdDO9P3gJPDBW560bhL9yC6CHVGk
-	 sqyhilQNEWwK2auo6n2nGalN88UBayOwk6qxP6hY=
+	b=cYR44PnQCqZmCR929fH4LyGag3eDwqJkjY8TB+n8acPWI0UOTk5qpBAsCheHakrIL
+	 gJ3QhXPrySYHgs3rqFktdMKGBlHbkdwCRHrv4wBKuVOf+Fa7HJOZilqjdGyW8UckcX
+	 fCVf/aDQtKRDjMChAScI67yst4GAdDjT21Tmz46k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 015/331] KVM: selftests: Avoid infinite loop in hyperv_features when invtsc is missing
+Subject: [PATCH 6.1 172/197] md: bypass block throttle for superblock update
 Date: Tue, 20 Feb 2024 21:52:11 +0100
-Message-ID: <20240220205638.065692134@linuxfoundation.org>
+Message-ID: <20240220204846.218720777@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
+References: <20240220204841.073267068@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Kuznetsov <vkuznets@redhat.com>
+From: Junxiao Bi <junxiao.bi@oracle.com>
 
-[ Upstream commit 8ad4855273488c9bd5320b3fee80f66f0023f326 ]
+[ Upstream commit d6e035aad6c09991da1c667fb83419329a3baed8 ]
 
-When X86_FEATURE_INVTSC is missing, guest_test_msrs_access() was supposed
-to skip testing dependent Hyper-V invariant TSC feature. Unfortunately,
-'continue' does not lead to that as stage is not incremented. Moreover,
-'vm' allocated with vm_create_with_one_vcpu() is not freed and the test
-runs out of available file descriptors very quickly.
+commit 5e2cf333b7bd ("md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d")
+introduced a hung bug and will be reverted in next patch, since the issue
+that commit is fixing is due to md superblock write is throttled by wbt,
+to fix it, we can have superblock write bypass block layer throttle.
 
-Fixes: bd827bd77537 ("KVM: selftests: Test Hyper-V invariant TSC control")
-Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
-Link: https://lore.kernel.org/r/20240129085847.2674082-1-vkuznets@redhat.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Fixes: 5e2cf333b7bd ("md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d")
+Cc: stable@vger.kernel.org # v5.19+
+Suggested-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Junxiao Bi <junxiao.bi@oracle.com>
+Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20231108182216.73611-1-junxiao.bi@oracle.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/kvm/x86_64/hyperv_features.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/md/md.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/x86_64/hyperv_features.c b/tools/testing/selftests/kvm/x86_64/hyperv_features.c
-index 9f28aa276c4e..a726831b8024 100644
---- a/tools/testing/selftests/kvm/x86_64/hyperv_features.c
-+++ b/tools/testing/selftests/kvm/x86_64/hyperv_features.c
-@@ -454,7 +454,7 @@ static void guest_test_msrs_access(void)
- 		case 44:
- 			/* MSR is not available when CPUID feature bit is unset */
- 			if (!has_invtsc)
--				continue;
-+				goto next_stage;
- 			msr->idx = HV_X64_MSR_TSC_INVARIANT_CONTROL;
- 			msr->write = false;
- 			msr->fault_expected = true;
-@@ -462,7 +462,7 @@ static void guest_test_msrs_access(void)
- 		case 45:
- 			/* MSR is vailable when CPUID feature bit is set */
- 			if (!has_invtsc)
--				continue;
-+				goto next_stage;
- 			vcpu_set_cpuid_feature(vcpu, HV_ACCESS_TSC_INVARIANT);
- 			msr->idx = HV_X64_MSR_TSC_INVARIANT_CONTROL;
- 			msr->write = false;
-@@ -471,7 +471,7 @@ static void guest_test_msrs_access(void)
- 		case 46:
- 			/* Writing bits other than 0 is forbidden */
- 			if (!has_invtsc)
--				continue;
-+				goto next_stage;
- 			msr->idx = HV_X64_MSR_TSC_INVARIANT_CONTROL;
- 			msr->write = true;
- 			msr->write_val = 0xdeadbeef;
-@@ -480,7 +480,7 @@ static void guest_test_msrs_access(void)
- 		case 47:
- 			/* Setting bit 0 enables the feature */
- 			if (!has_invtsc)
--				continue;
-+				goto next_stage;
- 			msr->idx = HV_X64_MSR_TSC_INVARIANT_CONTROL;
- 			msr->write = true;
- 			msr->write_val = 1;
-@@ -513,6 +513,7 @@ static void guest_test_msrs_access(void)
- 			return;
- 		}
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index 3ccf1920682c..c7efe1522951 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -963,9 +963,10 @@ void md_super_write(struct mddev *mddev, struct md_rdev *rdev,
+ 		return;
  
-+next_stage:
- 		stage++;
- 		kvm_vm_free(vm);
- 	}
+ 	bio = bio_alloc_bioset(rdev->meta_bdev ? rdev->meta_bdev : rdev->bdev,
+-			       1,
+-			       REQ_OP_WRITE | REQ_SYNC | REQ_PREFLUSH | REQ_FUA,
+-			       GFP_NOIO, &mddev->sync_set);
++			      1,
++			      REQ_OP_WRITE | REQ_SYNC | REQ_IDLE | REQ_META
++				  | REQ_PREFLUSH | REQ_FUA,
++			      GFP_NOIO, &mddev->sync_set);
+ 
+ 	atomic_inc(&rdev->nr_pending);
+ 
 -- 
 2.43.0
 
