@@ -1,129 +1,114 @@
-Return-Path: <stable+bounces-20806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2444B85BBE3
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 13:22:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DDBE85BBE8
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 13:22:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 581171C22358
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 12:22:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9ADC31F22897
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 12:22:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94C8567E79;
-	Tue, 20 Feb 2024 12:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0F7267E83;
+	Tue, 20 Feb 2024 12:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=katalix.com header.i=@katalix.com header.b="uEyjcR8V"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QDYtDv/L"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.katalix.com (mail.katalix.com [3.9.82.81])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C54485A787;
-	Tue, 20 Feb 2024 12:22:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=3.9.82.81
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4755C5B1F9
+	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 12:22:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708431724; cv=none; b=s3D0glpnJ5a7fnBS0SRB7MfRY44Wk0magc7FT+ik39MNb4dA1i4o0XVq5DNfTzYq9+QHS1ldX+5GQN7PT8Mu72bpZ1lK5ePtNPFJE9r301ai/Pw7IV0l3lKy5BneID+yWxIF/9oFZIWrUTxSYQhbZ5XiFdsnQl/NF9MuIGe4cUc=
+	t=1708431767; cv=none; b=kqW33buSS44zwlnMJvlYYDLDw/7vCY1BgWusOhouGb5EoQJ1kf0CX0oFWRHXxXCFGmlRhAhE9w9cYTVgYiLRTgl5497eJbISd9I+vttUcYrlB7C0lbphGWr9jfWRav7KYdDNfrwvosgNyOKiIwvPbg+T0P/Jnlq6SQLRzQ/9KoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708431724; c=relaxed/simple;
-	bh=lx2Zc2pBT3bvlCLnN8gbcnhxqOzDirH/yNVWnwLQu6c=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=h7/NfqmYx/eoFsVd/ZbvN8lTFXpHeYfq461MlIvIocq/cMG73ENlBADHthcyNFI393hvaLTMXmrjyKO7EypoVSkYIFb4td2bWvXewjmH7AoH9anKVDOhba6Hg0tb36fqXPNFh7MFB06PJ4gsUOv17UJWb7ieFsll6Ret9t4+xRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=katalix.com; spf=pass smtp.mailfrom=katalix.com; dkim=pass (2048-bit key) header.d=katalix.com header.i=@katalix.com header.b=uEyjcR8V; arc=none smtp.client-ip=3.9.82.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=katalix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=katalix.com
-Received: from jackdaw.fritz.box (unknown [IPv6:2a02:8012:909b:0:d103:fdef:9fb8:df5c])
-	(Authenticated sender: tom)
-	by mail.katalix.com (Postfix) with ESMTPSA id AC1467D982;
-	Tue, 20 Feb 2024 12:22:01 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=katalix.com; s=mail;
-	t=1708431721; bh=lx2Zc2pBT3bvlCLnN8gbcnhxqOzDirH/yNVWnwLQu6c=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:From;
-	z=From:=20Tom=20Parkin=20<tparkin@katalix.com>|To:=20netdev@vger.ke
-	 rnel.org|Cc:=20Tom=20Parkin=20<tparkin@katalix.com>,=0D=0A=09David
-	 =20Howells=20<dhowells@redhat.com>,=0D=0A=09stable@vger.kernel.org
-	 |Subject:=20[PATCH=20net]=20l2tp:=20pass=20correct=20message=20len
-	 gth=20to=20ip6_append_data|Date:=20Tue,=2020=20Feb=202024=2012:21:
-	 56=20+0000|Message-Id:=20<20240220122156.43131-1-tparkin@katalix.c
-	 om>|MIME-Version:=201.0;
-	b=uEyjcR8V/v40hJc/qZrJvNjeeBrgpzFhLTF6mnkS6ag57WmViseIGiXL2YqMqgs97
-	 0/fftv4a2kPkW2UjQYFU+C5Qc+hL4ZyODLW2llQ7w+l0HfG/uGWSJUYHWJk5qTLU6D
-	 Ww6F4HVILXkw2xPl7iZnUQcmfvxKdCTKyogJYrIwwgTMUPXk5PT6JdsHHVLqLhAAWr
-	 Qt6mpQ3Z3775uGikDuQPVl+oryAIXUTFAyzK87opQ6DZ+2zd/q+dvsI0v1hE+GzZz2
-	 B8JhcGGMCOMWKMkr1k0SXo8N8d7vlSQqSgKRw++XOHtfHUWHuEhNAqx0OJ+gZsxfvt
-	 cwB7zvZ6puTUg==
-From: Tom Parkin <tparkin@katalix.com>
-To: netdev@vger.kernel.org
-Cc: Tom Parkin <tparkin@katalix.com>,
-	David Howells <dhowells@redhat.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net] l2tp: pass correct message length to ip6_append_data
-Date: Tue, 20 Feb 2024 12:21:56 +0000
-Message-Id: <20240220122156.43131-1-tparkin@katalix.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1708431767; c=relaxed/simple;
+	bh=1f11NDJPNaBatEI6pO3kjUS1wCUWc9exdxFhhlFAAj0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qQy0sG0VV83LBb0cLozdIVLv9egG3WmpqBwm/NadyNbu3n6hC9Bf758XRjD+Ra+vds2wdWD7iR4qnkNpjSA2UTaKRMjilaubBb4PcCDcXgBVNb/6kcBl241UX1NU7cE83EhoZX4HiBmVvQ7i5lCB7xppw8nCy9apWptjDbwXkx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QDYtDv/L; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1708431765;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nryE0QvpwIF+GBr6vQnaZDO8tVOPi12/n3SsPAdoTf4=;
+	b=QDYtDv/LeiRDpgJx4tt0BA4UsHSmM2uQdHag/+jy8dFZf/UTUl/Rcmg+34cBNZWqmXqyTC
+	m7eSzg8g24jyD/qQhoI6YaLMsVyx5JdlOfo5bWIq11K6bOGKRQ9pYV7hbQ7MvUtGy2hmxA
+	9dXFnkZ9pajMURjLxKaGZl2BEjcwoQc=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-513-f043jcXxOweED2Fsd7gQ-w-1; Tue, 20 Feb 2024 07:22:43 -0500
+X-MC-Unique: f043jcXxOweED2Fsd7gQ-w-1
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-41225d3b3d1so26400755e9.0
+        for <stable@vger.kernel.org>; Tue, 20 Feb 2024 04:22:43 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708431762; x=1709036562;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nryE0QvpwIF+GBr6vQnaZDO8tVOPi12/n3SsPAdoTf4=;
+        b=A/LIEMz/wbBjwK0aFSDb4Czd4QZAzc9Ym87HLaBnFAG6NNcwPbwPaq2Nqex/HqQbiN
+         a6JPj7GJurD0O4XChm6XetUPsCBpteKkaDPDZ+Xa6QO9eAEgq1lmnD1Ad9ppFW3mpZDG
+         9iHZoxidUzCC69Ho8lW1KOmfsIfrfKOKTJp4OWisYARDj9/9XBO6O5OXj2NWv6mZKQK0
+         e0JGZHTssQnIx6ZsDkQc+0LJyfg/lXh5Pk1Is40cQUsblow+FRicx7mN/Dw1w2z2uVhv
+         FWbemUw01eogeUZ7UoK3kfLWrq7ZLSs0ss0ply/quM9aRk4VP96UaKHlOnzbHBuZFr/3
+         oLSg==
+X-Forwarded-Encrypted: i=1; AJvYcCVkN+UMIP6UHDdzzHqAVa22R3iYVqwZ5/doCr0NngbbLhbgu8nSiiXtT+vntEGm68Z+hwK3+u6KIpF87opRbEQXxqSWINbN
+X-Gm-Message-State: AOJu0YxqrXYfNGF2RTCLyQK2UCx6KhWXLwLfkasB1cPHPkSexB0oEz/g
+	gldxpoyInw4mE4skNprpFo+tGsS1GiZI0lQbgduZRUO7cRqUW2Jrz9NRJyh89K4sFa6kWkjeZ09
+	3pbimIaCerdGs+yJCoemlGE7kP3AqS8LxB5xeuOxNJNxvSf7lBWvdytmCp3yFlvrG5HiHheJ3In
+	xcxzHxpXinxAacO2HI59JTLy/7Xvor
+X-Received: by 2002:a05:600c:35c4:b0:411:e145:bfad with SMTP id r4-20020a05600c35c400b00411e145bfadmr10448435wmq.40.1708431762459;
+        Tue, 20 Feb 2024 04:22:42 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFvnATC39HsxnxsVPrX2vePi3o4k+bGJVrQJVVrIuj4lKaYfDwJip1nNryMKhpbiQwD04oJARcbUxMwnO4L7xA=
+X-Received: by 2002:a05:600c:35c4:b0:411:e145:bfad with SMTP id
+ r4-20020a05600c35c400b00411e145bfadmr10448417wmq.40.1708431762136; Tue, 20
+ Feb 2024 04:22:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240131230902.1867092-1-pbonzini@redhat.com> <2b5e6d68-007e-48bd-be61-9a354be2ccbf@intel.com>
+ <CABgObfa_7ZAq1Kb9G=ehkzHfc5if3wnFi-kj3MZLE3oYLrArdQ@mail.gmail.com>
+ <CABgObfbetwO=4whrCE+cFfCPJa0nsK=h6sQAaoamJH=UqaJqTg@mail.gmail.com>
+ <CABgObfbUcG5NyKhLOnihWKNVM0OZ7zb9R=ADzq7mjbyOCg3tUw@mail.gmail.com> <eefbce80-18c5-42e7-8cde-3a352d5811de@intel.com>
+In-Reply-To: <eefbce80-18c5-42e7-8cde-3a352d5811de@intel.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Tue, 20 Feb 2024 13:22:29 +0100
+Message-ID: <CABgObfY=3msvJ2M-gHMqawcoaW5CDVDVxCO0jWi+6wrcrsEtAw@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] x86/cpu: fix invalid MTRR mask values for SEV or TME
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	Zixi Chen <zixchen@redhat.com>, Adam Dunlap <acdunlap@google.com>, 
+	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>, 
+	Kai Huang <kai.huang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@kernel.org>, x86@kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-l2tp_ip6_sendmsg needs to avoid accounting for the transport header
-twice when splicing more data into an already partially-occupied skbuff.
+On Tue, Feb 13, 2024 at 11:02=E2=80=AFPM Dave Hansen <dave.hansen@intel.com=
+> wrote:
+> Your patches make things a wee bit worse in the meantime, but they pale
+> in comparison to the random spaghetti that we've already got.  Also, we
+> probably need the early TME stuff regardless.
+>
+> I think I'll probably suck it up, apply them, then fix them up along
+> with the greater mess.
+>
+> Anybody have any better ideas?
 
-To manage this, we check whether the skbuff contains data using
-skb_queue_empty when deciding how much data to append using
-ip6_append_data.
+Ping, in the end are we applying these patches for either 6.8 or 6.9?
 
-However, the code which performed the calculation was incorrect:
-
-     ulen = len + skb_queue_empty(&sk->sk_write_queue) ? transhdrlen : 0;
-
-...due to C operator precedence, this ends up setting ulen to
-transhdrlen for messages with a non-zero length, which results in
-corrupted packets on the wire.
-
-Add parentheses to correct the calculation in line with the original
-intent.
-
-Fixes: 9d4c75800f61 ("ipv4, ipv6: Fix handling of transhdrlen in __ip{,6}_append_data()")
-Cc: David Howells <dhowells@redhat.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Tom Parkin <tparkin@katalix.com>
----
-This issue was uncovered by Debian build-testing for the
-golang-github-katalix-go-l2tp package[1].
-
-It seems 9d4c75800f61 has been backported to the linux-6.1.y stable
-kernel (and possibly others), so I think this fix will also need
-backporting.
-
-The bug is currently seen on at least Debian Bookworm, Ubuntu Jammy, and 
-Debian testing/unstable.
-
-Unfortunately tests using "ip l2tp" and which focus on dataplane
-transport will not uncover this bug: it's necessary to send a packet
-using an L2TPIP6 socket opened by userspace, and to verify the packet on
-the wire.  The l2tp-ktest[2] test suite has been extended to cover this.
-
-[1]. https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1063746
-[2]. https://github.com/katalix/l2tp-ktest
-
----
- net/l2tp/l2tp_ip6.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/l2tp/l2tp_ip6.c b/net/l2tp/l2tp_ip6.c
-index dd3153966173..7bf14cf9ffaa 100644
---- a/net/l2tp/l2tp_ip6.c
-+++ b/net/l2tp/l2tp_ip6.c
-@@ -627,7 +627,7 @@ static int l2tp_ip6_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
- 
- back_from_confirm:
- 	lock_sock(sk);
--	ulen = len + skb_queue_empty(&sk->sk_write_queue) ? transhdrlen : 0;
-+	ulen = len + (skb_queue_empty(&sk->sk_write_queue) ? transhdrlen : 0);
- 	err = ip6_append_data(sk, ip_generic_getfrag, msg,
- 			      ulen, transhdrlen, &ipc6,
- 			      &fl6, (struct rt6_info *)dst,
--- 
-2.34.1
+Paolo
 
 
