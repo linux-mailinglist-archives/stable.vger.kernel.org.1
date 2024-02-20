@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-21331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3244385C86A
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:21:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B03EF85C98C
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:35:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 642611C20CD5
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:21:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65F281F227ED
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:35:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF016151CFE;
-	Tue, 20 Feb 2024 21:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48DB5151CED;
+	Tue, 20 Feb 2024 21:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yCexzRmH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oszQWww8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993EB1509BC;
-	Tue, 20 Feb 2024 21:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 068782DF9F;
+	Tue, 20 Feb 2024 21:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464084; cv=none; b=ZUU6kZ1m0/Ws1fWUkMEDgp8fr0STJA9s8bLWKBevuLUtIaOcKhNdDsJ1MZbbm/KFbeGRTPDrL+lQT97sueeu6EWBC6h39MrMCDhK9Efy961A3b055UUiDKuwj0YV/nn0BYIXfmYg83AGW4Dsdo8Xbv3CMq69LOyjzPSepZfJR5o=
+	t=1708464910; cv=none; b=C5Ik5/9H7TCeayFriP2KR7uYCKeGOrUyqkfGpa0gr3WhbgMaNrWhvaN5bi3md4uaNKa7ZCARHvrVd8uNT7l/BSz9s6qEZM4p4oy97pBGv8HZYeWCAtrsg1NtiMJsCR6d+9h8EWhDhQLKrxbuXXsF79tlM63D5t/65Tfo4LOL/JE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464084; c=relaxed/simple;
-	bh=//c/HyO/K5N1U0Z0wKMT1u2zNiP6fNBb1M5mgt9eagM=;
+	s=arc-20240116; t=1708464910; c=relaxed/simple;
+	bh=GaGNJwup+kmiKtPUABicm6fJ2EZqWOH8LJv//m61OSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gYW8bl0V7RohYoCi514DFQn3FhaTt5CdufkNadIZyPjc8rTwcRNYAojjKVPoZ3rtu35KJjbRIWS9axEy7fCiIoK0gPxUPvD+lltNFvM5habNkssagi1lZ7gAbJC/caWVQfRTrHTMI0rDVVTxriXCilWm7c9qbny1/bjLwblWEtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yCexzRmH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1494C43394;
-	Tue, 20 Feb 2024 21:21:23 +0000 (UTC)
+	 MIME-Version; b=maw9MU9yvdrq6VgoglgWXjuG7ym+Gq6IIATopKzkpu16GvU6dukQmSHl5SRJ8xr8dTzS4KK/Wum39ay2rbsCN3lk2YPT7Q5TJJyFdom+FqDHwPjFZ2MUIUYLIJnJGd/IeHASViN9huEtowqtvan4n1DfNyHEFmDfWzD6A2qRKVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oszQWww8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 837A2C433F1;
+	Tue, 20 Feb 2024 21:35:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464084;
-	bh=//c/HyO/K5N1U0Z0wKMT1u2zNiP6fNBb1M5mgt9eagM=;
+	s=korg; t=1708464909;
+	bh=GaGNJwup+kmiKtPUABicm6fJ2EZqWOH8LJv//m61OSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yCexzRmHZr7NQfwXeEfOD7I8wgtrc5AteYEOraRv4rT9k2i5dtbWk3ZZFXhmnNnx3
-	 iFQ4BEVkocC7OqcT++PTnxi8gBBuxx9HRizn5FuzsP0XP5u1rey5HeAMRQvJYbpWaf
-	 r2jQWIMm1AoaR0lEXGKr2mKuXoMsIauzJcHC/G4I=
+	b=oszQWww88QIqdevtbetLrOwbcklqsQ9UhRee8eX2wagHYpAfQSHF8iagJUk1ueykX
+	 /oWSZm89rdeMHZrmDu41SGzA7S/Faf36krLl6yd3gtweS297fgXxWGAimMKWe0nQCH
+	 q+lPPMSLiaZ2f2Bv/Fe5/IPJg1Ric2cJ2D9XYsXI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fred Ai <fred.ai@bayhubtech.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 218/331] mmc: sdhci-pci-o2micro: Fix a warm reboot issue that disk cant be detected by BIOS
-Date: Tue, 20 Feb 2024 21:55:34 +0100
-Message-ID: <20240220205644.590767950@linuxfoundation.org>
+	Sam Protsenko <semen.protsenko@linaro.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.7 176/309] iio: pressure: bmp280: Add missing bmp085 to SPI id table
+Date: Tue, 20 Feb 2024 21:55:35 +0100
+Message-ID: <20240220205638.662038710@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fred Ai <fred.ai@bayhubtech.com>
+From: Sam Protsenko <semen.protsenko@linaro.org>
 
-commit 58aeb5623c2ebdadefe6352b14f8076a7073fea0 upstream.
+commit b67f3e653e305abf1471934d7b9fdb9ad2df3eef upstream.
 
-Driver shall switch clock source from DLL clock to
-OPE clock when power off card to ensure that card
-can be identified with OPE clock by BIOS.
+"bmp085" is missing in bmp280_spi_id[] table, which leads to the next
+warning in dmesg:
 
-Signed-off-by: Fred Ai <fred.ai@bayhubtech.com>
-Fixes:4be33cf18703 ("mmc: sdhci-pci-o2micro: Improve card input timing at SDR104/HS200 mode")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240203102908.4683-1-fredaibayhubtech@126.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+    SPI driver bmp280 has no spi_device_id for bosch,bmp085
+
+Add "bmp085" to bmp280_spi_id[] by mimicking its existing description in
+bmp280_of_spi_match[] table to fix the above warning.
+
+Signed-off-by: Sam Protsenko <semen.protsenko@linaro.org>
+Fixes: b26b4e91700f ("iio: pressure: bmp280: add SPI interface driver")
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci-pci-o2micro.c |   30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ drivers/iio/pressure/bmp280-spi.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/mmc/host/sdhci-pci-o2micro.c
-+++ b/drivers/mmc/host/sdhci-pci-o2micro.c
-@@ -693,6 +693,35 @@ static int sdhci_pci_o2_init_sd_express(
- 	return 0;
- }
+--- a/drivers/iio/pressure/bmp280-spi.c
++++ b/drivers/iio/pressure/bmp280-spi.c
+@@ -91,6 +91,7 @@ static const struct of_device_id bmp280_
+ MODULE_DEVICE_TABLE(of, bmp280_of_spi_match);
  
-+static void sdhci_pci_o2_set_power(struct sdhci_host *host, unsigned char mode,  unsigned short vdd)
-+{
-+	struct sdhci_pci_chip *chip;
-+	struct sdhci_pci_slot *slot = sdhci_priv(host);
-+	u32 scratch_32 = 0;
-+	u8 scratch_8 = 0;
-+
-+	chip = slot->chip;
-+
-+	if (mode == MMC_POWER_OFF) {
-+		/* UnLock WP */
-+		pci_read_config_byte(chip->pdev, O2_SD_LOCK_WP, &scratch_8);
-+		scratch_8 &= 0x7f;
-+		pci_write_config_byte(chip->pdev, O2_SD_LOCK_WP, scratch_8);
-+
-+		/* Set PCR 0x354[16] to switch Clock Source back to OPE Clock */
-+		pci_read_config_dword(chip->pdev, O2_SD_OUTPUT_CLK_SOURCE_SWITCH, &scratch_32);
-+		scratch_32 &= ~(O2_SD_SEL_DLL);
-+		pci_write_config_dword(chip->pdev, O2_SD_OUTPUT_CLK_SOURCE_SWITCH, scratch_32);
-+
-+		/* Lock WP */
-+		pci_read_config_byte(chip->pdev, O2_SD_LOCK_WP, &scratch_8);
-+		scratch_8 |= 0x80;
-+		pci_write_config_byte(chip->pdev, O2_SD_LOCK_WP, scratch_8);
-+	}
-+
-+	sdhci_set_power(host, mode, vdd);
-+}
-+
- static int sdhci_pci_o2_probe_slot(struct sdhci_pci_slot *slot)
- {
- 	struct sdhci_pci_chip *chip;
-@@ -1051,6 +1080,7 @@ static const struct sdhci_ops sdhci_pci_
- 	.set_bus_width = sdhci_set_bus_width,
- 	.reset = sdhci_reset,
- 	.set_uhs_signaling = sdhci_set_uhs_signaling,
-+	.set_power = sdhci_pci_o2_set_power,
- };
- 
- const struct sdhci_pci_fixes sdhci_o2 = {
+ static const struct spi_device_id bmp280_spi_id[] = {
++	{ "bmp085", (kernel_ulong_t)&bmp180_chip_info },
+ 	{ "bmp180", (kernel_ulong_t)&bmp180_chip_info },
+ 	{ "bmp181", (kernel_ulong_t)&bmp180_chip_info },
+ 	{ "bmp280", (kernel_ulong_t)&bmp280_chip_info },
 
 
 
