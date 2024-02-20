@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-21443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D942F85C8EA
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:27:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBBB085C755
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:11:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A4A01F217C1
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:27:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 167D91C2103A
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:11:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D913151CD6;
-	Tue, 20 Feb 2024 21:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78F45151CC8;
+	Tue, 20 Feb 2024 21:11:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QqS6lzue"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gJHnS5/G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF68314A4E6;
-	Tue, 20 Feb 2024 21:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A9614AD12;
+	Tue, 20 Feb 2024 21:11:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464435; cv=none; b=r+r2WR2yZd29Ow7gNV2INbZiPnuhLL0uoFjb1VrNfd0Mr01FgSeAGhFOrZwfsdeT3beNVS8IJ5z+62NPhG0ZVV6BDDZofpjnsn36aUrfPLIRe0JRTt+7IzWM4PWeeXFJZifP1NM92YLHyJRXb8RBmiTfvbfA2+H2x8D2RV6FIJQ=
+	t=1708463514; cv=none; b=jO/sg/ClowL2H+XkfcHiXzrsY5W3iNdi+JV6ur6Nzy9PgIRjPXG2weytQ3ffy8aIJ/FH3KeKDnrqkJfv8XPuwukK4toSeDDhXGDFRxZfSQvf0bWWbfLirfutcW5B/fO6SG8Ruau3xBNG/+mQNd74t4UIFtO5PqlKdYt1l7pf/WQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464435; c=relaxed/simple;
-	bh=vzFgPa69uBZXqkBqbQq7/0htOqh+4wnUIHqMZ0OdOPU=;
+	s=arc-20240116; t=1708463514; c=relaxed/simple;
+	bh=jLD71/wMuRLTvuCC/8LXTtPyrUjPnyioMcwrRrc/xv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FjLqHsnD5qRKSmpSEIgmwQqxatn5BkhnKIpD0++2ePdOA9HS4iUU19goV6wetsjTRLb0qjuTNWwBjjNXp90OlUpbkOFgjmeh4B/w+UTY7iAHfkeHiw36EYcp+h3RIdCQExVcUA0r6x4aZSePlvsd2xA+nuOW9YUZpj3hRopi80M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QqS6lzue; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59F0AC433F1;
-	Tue, 20 Feb 2024 21:27:15 +0000 (UTC)
+	 MIME-Version; b=q9AxBmimFjhwovuYxVweewVLJVUBM7z4zjSAO+EA5LUbzGVd26+tkh+yNUMzrctHtyy7uEVGL536qSGjk0+rEqsWI4uswpcT+64U5nKPJI2ylsOmdzOIBNYzp9NrMMHWUpJ2g2Y241QH7xW6m9iay57pCVejJbDBzCdRohXiR+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJHnS5/G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93E16C433C7;
+	Tue, 20 Feb 2024 21:11:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464435;
-	bh=vzFgPa69uBZXqkBqbQq7/0htOqh+4wnUIHqMZ0OdOPU=;
+	s=korg; t=1708463514;
+	bh=jLD71/wMuRLTvuCC/8LXTtPyrUjPnyioMcwrRrc/xv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QqS6lzue7fhrUR+p4fxdzfTxt6Deo5X1YB82WnVOidytYQIrtLXNYBGfq2FOTRxNJ
-	 CGATHZQFl7ynZRNqmhpY6Hc4LI04/2cOY7PHhlj/BCekWwiCeogYo2FiJ9vp8IGZHM
-	 o2DV4ZAZrJ7SPFh7Xz7/Lfi07p19J9XAl5oBunKw=
+	b=gJHnS5/GrQ7WzeFerEPpTbK18oF7DsNouqQXZ4mdQj5Zc288idhoR+J24Wj678eXy
+	 AVdxa/k6QIbDRxvECSIth4krq49Kkbfo+5JA0JB8UzjuPACsiz25/V/mgsrqsV4uwM
+	 gXtHWFziV81WWv/xf0/IQIczuwX/mAXv65c4wB/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carlos Song <carlos.song@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 024/309] spi: imx: fix the burst length at DMA mode and CPU mode
+	Techno Mooney <techno.mooney@gmail.com>,
+	Bagas Sanjaya <bagasdotme@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 067/331] ASoC: amd: yc: Add DMI quirk for MSI Bravo 15 C7VF
 Date: Tue, 20 Feb 2024 21:53:03 +0100
-Message-ID: <20240220205633.935793097@linuxfoundation.org>
+Message-ID: <20240220205639.690042766@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Song <carlos.song@nxp.com>
+From: Techno Mooney <techno.mooney@gmail.com>
 
-[ Upstream commit c712c05e46c8ce550842951e9e2606e24dbf0475 ]
+commit c6dce23ec993f7da7790a9eadb36864ceb60e942 upstream.
 
-For DMA mode, the bus width of the DMA is equal to the size of data
-word, so burst length should be configured as bits per word.
+The laptop requires a quirk ID to enable its internal microphone. Add
+it to the DMI quirk table.
 
-For CPU mode, because of the spi transfer len is in byte, so calculate
-the total number of words according to spi transfer len and bits per
-word, burst length should be configured as total data bits.
-
-Signed-off-by: Carlos Song <carlos.song@nxp.com>
-Reviewed-by: Clark Wang <xiaoning.wang@nxp.com>
-Fixes: e9b220aeacf1 ("spi: spi-imx: correctly configure burst length when using dma")
-Fixes: 5f66db08cbd3 ("spi: imx: Take in account bits per word instead of assuming 8-bits")
-Link: https://lore.kernel.org/r/20240204091912.36488-1-carlos.song@nxp.com
+Reported-by: Techno Mooney <techno.mooney@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218402
+Cc: stable@vger.kernel.org
+Signed-off-by: Techno Mooney <techno.mooney@gmail.com>
+Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
+Link: https://msgid.link/r/20240129081148.1044891-1-bagasdotme@gmail.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-imx.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ sound/soc/amd/yc/acp6x-mach.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 272bc871a848..e2d3e3ec1378 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -2,6 +2,7 @@
- // Copyright 2004-2007 Freescale Semiconductor, Inc. All Rights Reserved.
- // Copyright (C) 2008 Juergen Beisert
- 
-+#include <linux/bits.h>
- #include <linux/clk.h>
- #include <linux/completion.h>
- #include <linux/delay.h>
-@@ -660,15 +661,15 @@ static int mx51_ecspi_prepare_transfer(struct spi_imx_data *spi_imx,
- 			<< MX51_ECSPI_CTRL_BL_OFFSET;
- 	else {
- 		if (spi_imx->usedma) {
--			ctrl |= (spi_imx->bits_per_word *
--				spi_imx_bytes_per_word(spi_imx->bits_per_word) - 1)
-+			ctrl |= (spi_imx->bits_per_word - 1)
- 				<< MX51_ECSPI_CTRL_BL_OFFSET;
- 		} else {
- 			if (spi_imx->count >= MX51_ECSPI_CTRL_MAX_BURST)
--				ctrl |= (MX51_ECSPI_CTRL_MAX_BURST - 1)
-+				ctrl |= (MX51_ECSPI_CTRL_MAX_BURST * BITS_PER_BYTE - 1)
- 						<< MX51_ECSPI_CTRL_BL_OFFSET;
- 			else
--				ctrl |= (spi_imx->count * spi_imx->bits_per_word - 1)
-+				ctrl |= spi_imx->count / DIV_ROUND_UP(spi_imx->bits_per_word,
-+						BITS_PER_BYTE) * spi_imx->bits_per_word
- 						<< MX51_ECSPI_CTRL_BL_OFFSET;
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -300,6 +300,13 @@ static const struct dmi_system_id yc_acp
+ 	{
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "Micro-Star International Co., Ltd."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Bravo 15 C7VF"),
++		}
++	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "Alienware"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware m17 R5 AMD"),
  		}
- 	}
--- 
-2.43.0
-
 
 
 
