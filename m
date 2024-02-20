@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-21239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA2F885C7CF
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:16:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF0CE85C944
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:31:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB9251C220CE
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:16:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79661284C7D
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:31:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 086DF151CF6;
-	Tue, 20 Feb 2024 21:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1681C151CD6;
+	Tue, 20 Feb 2024 21:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tt3LRed6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TsbkiXHG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7E871509BF;
-	Tue, 20 Feb 2024 21:16:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C937214A4D2;
+	Tue, 20 Feb 2024 21:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463793; cv=none; b=WlFWwtraAEEPEPLBV5UjH6JueZFjPwo4RP6gbJwnvU5Iwm0Ubw60+7WuqW/F+TRxRLf+itvsyOOPu2YbRUyA1kHXSKLJFYS9vsytZ+BzUa8HNB4GREPE5U7rkp2IRs14RwQ1JKDxuLDUNS9X6gEUaty3dVe5GQNNC+Cb0UTbH5c=
+	t=1708464683; cv=none; b=rGECtApHJCQDx3qUItE9kWGv0JapjPKPo3cV8zn/xbTX6rKz2UNY2Sr47azevxmIJ5bpOrj2OiHwKomNf6U/qeTMlL4BYEh+PHukAk8REc/Jc4lyIDyOTQ8gZfvP4iKPJrLMSUo1Sto2vhNfCPjMVKAw7iGF2Oxh7iriQSQe3pU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463793; c=relaxed/simple;
-	bh=Oe7oGxwZB/1+FctoX/LQWwHbugaqvF7CmiOrRhWK+yA=;
+	s=arc-20240116; t=1708464683; c=relaxed/simple;
+	bh=2bSrAPKqteJsqx91EyFOHtnYG5V4s26YimudmUrkPMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cPVcxLRCsc09mhFPMofnlKUOPFUnNmB8/klYXDopC2OQe9VyEeFSLoe11fp/m73Vu0qM4XhHGdNwk+lf9JCRVNxvTLXFmVxYczOn3Smnvbz9z4FqgcYLqrYlCQU87lRnlsTTLV5EJ+Q7UazMkGeRqZgCpiMv1wTjp7WxzQSQFrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tt3LRed6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2729EC433C7;
-	Tue, 20 Feb 2024 21:16:32 +0000 (UTC)
+	 MIME-Version; b=LqSNsOgA5F9m13DrmBaR2oXyfE+oy5eFf9y7c0WK3O6pqxaKX40zPkijgEelzGj+v6FzvUYQ43G02+2txUqko+dIvzr1UXHFBdxm7siErPFJvUeD5oGtheVCD+/a5Tv8F76E69JuHZkjTEG+j2ck5mgVcz4P5TkPCZGVg4WgbfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TsbkiXHG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4834FC433F1;
+	Tue, 20 Feb 2024 21:31:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463793;
-	bh=Oe7oGxwZB/1+FctoX/LQWwHbugaqvF7CmiOrRhWK+yA=;
+	s=korg; t=1708464683;
+	bh=2bSrAPKqteJsqx91EyFOHtnYG5V4s26YimudmUrkPMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tt3LRed6bxOyW9Jss8qc1nCWTN6IEZ9Gr+D9M0kcAs45rMzISEy3sEtwljxWXH4Ei
-	 XWFwDHvnUpftusF8xi9no2c0+5j6PdUha+JsHkwX7fPUGQOpsAFMox9tIeJPWi8S0d
-	 r/KCJZhPISq4qPx7PLak7m68/oCAqlsdhGMA5WSw=
+	b=TsbkiXHGJYWw44mkSLzZSiUBw/0MoBnciP/q+601N1kTCeS2dB2kCxpx2IbEDkIKZ
+	 SJRCKR4pQ0ETBlBHCVlqsROoVAuKmS/RhgBqZkcUNZVVSQj3OAbd0VbYKaGbU35d6t
+	 NeygrUIzhhuJoQ89VS5SlKEVwuGQUErJmFbm1MaQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Baokun Li <libaokun1@huawei.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.6 147/331] ext4: avoid bb_free and bb_fragments inconsistency in mb_free_blocks()
+	Cosmin Tanislav <demonsingur@gmail.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 104/309] iio: adc: ad4130: zero-initialize clock init data
 Date: Tue, 20 Feb 2024 21:54:23 +0100
-Message-ID: <20240220205642.165285982@linuxfoundation.org>
+Message-ID: <20240220205636.438717589@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,106 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Cosmin Tanislav <demonsingur@gmail.com>
 
-commit 2331fd4a49864e1571b4f50aa3aa1536ed6220d0 upstream.
+[ Upstream commit a22b0a2be69a36511cb5b37d948b651ddf7debf3 ]
 
-After updating bb_free in mb_free_blocks, it is possible to return without
-updating bb_fragments because the block being freed is found to have
-already been freed, which leads to inconsistency between bb_free and
-bb_fragments.
+The clk_init_data struct does not have all its members
+initialized, causing issues when trying to expose the internal
+clock on the CLK pin.
 
-Since the group may be unlocked in ext4_grp_locked_error(), this can lead
-to problems such as dividing by zero when calculating the average fragment
-length. Hence move the update of bb_free to after the block double-free
-check guarantees that the corresponding statistics are updated only after
-the core block bitmap is modified.
+Fix this by zero-initializing the clk_init_data struct.
 
-Fixes: eabe0444df90 ("ext4: speed-up releasing blocks on commit")
-CC:  <stable@vger.kernel.org> # 3.10
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240104142040.2835097-5-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 62094060cf3a ("iio: adc: ad4130: add AD4130 driver")
+Signed-off-by: Cosmin Tanislav <demonsingur@gmail.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20240207132007.253768-1-demonsingur@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c |   39 +++++++++++++++++++++------------------
- 1 file changed, 21 insertions(+), 18 deletions(-)
+ drivers/iio/adc/ad4130.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -1909,11 +1909,6 @@ static void mb_free_blocks(struct inode
- 	mb_check_buddy(e4b);
- 	mb_free_blocks_double(inode, e4b, first, count);
+diff --git a/drivers/iio/adc/ad4130.c b/drivers/iio/adc/ad4130.c
+index feb86fe6c422..9daeac16499b 100644
+--- a/drivers/iio/adc/ad4130.c
++++ b/drivers/iio/adc/ad4130.c
+@@ -1821,7 +1821,7 @@ static int ad4130_setup_int_clk(struct ad4130_state *st)
+ {
+ 	struct device *dev = &st->spi->dev;
+ 	struct device_node *of_node = dev_of_node(dev);
+-	struct clk_init_data init;
++	struct clk_init_data init = {};
+ 	const char *clk_name;
+ 	int ret;
  
--	this_cpu_inc(discard_pa_seq);
--	e4b->bd_info->bb_free += count;
--	if (first < e4b->bd_info->bb_first_free)
--		e4b->bd_info->bb_first_free = first;
--
- 	/* access memory sequentially: check left neighbour,
- 	 * clear range and then check right neighbour
- 	 */
-@@ -1927,23 +1922,31 @@ static void mb_free_blocks(struct inode
- 		struct ext4_sb_info *sbi = EXT4_SB(sb);
- 		ext4_fsblk_t blocknr;
- 
-+		/*
-+		 * Fastcommit replay can free already freed blocks which
-+		 * corrupts allocation info. Regenerate it.
-+		 */
-+		if (sbi->s_mount_state & EXT4_FC_REPLAY) {
-+			mb_regenerate_buddy(e4b);
-+			goto check;
-+		}
-+
- 		blocknr = ext4_group_first_block_no(sb, e4b->bd_group);
- 		blocknr += EXT4_C2B(sbi, block);
--		if (!(sbi->s_mount_state & EXT4_FC_REPLAY)) {
--			ext4_grp_locked_error(sb, e4b->bd_group,
--					      inode ? inode->i_ino : 0,
--					      blocknr,
--					      "freeing already freed block (bit %u); block bitmap corrupt.",
--					      block);
--			ext4_mark_group_bitmap_corrupted(
--				sb, e4b->bd_group,
-+		ext4_grp_locked_error(sb, e4b->bd_group,
-+				      inode ? inode->i_ino : 0, blocknr,
-+				      "freeing already freed block (bit %u); block bitmap corrupt.",
-+				      block);
-+		ext4_mark_group_bitmap_corrupted(sb, e4b->bd_group,
- 				EXT4_GROUP_INFO_BBITMAP_CORRUPT);
--		} else {
--			mb_regenerate_buddy(e4b);
--		}
--		goto done;
-+		return;
- 	}
- 
-+	this_cpu_inc(discard_pa_seq);
-+	e4b->bd_info->bb_free += count;
-+	if (first < e4b->bd_info->bb_first_free)
-+		e4b->bd_info->bb_first_free = first;
-+
- 	/* let's maintain fragments counter */
- 	if (left_is_free && right_is_free)
- 		e4b->bd_info->bb_fragments--;
-@@ -1968,9 +1971,9 @@ static void mb_free_blocks(struct inode
- 	if (first <= last)
- 		mb_buddy_mark_free(e4b, first >> 1, last >> 1);
- 
--done:
- 	mb_set_largest_free_order(sb, e4b->bd_info);
- 	mb_update_avg_fragment_size(sb, e4b->bd_info);
-+check:
- 	mb_check_buddy(e4b);
- }
- 
+-- 
+2.43.0
+
 
 
 
