@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-21650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F77C85C9C3
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:38:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C1B585C852
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:20:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29E34282C2B
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:38:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 022E11F27035
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:20:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BE65151CD6;
-	Tue, 20 Feb 2024 21:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E45F151CEE;
+	Tue, 20 Feb 2024 21:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jenzZK4j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B0XEPGt2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A989446C9;
-	Tue, 20 Feb 2024 21:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E068E152DFA;
+	Tue, 20 Feb 2024 21:20:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708465079; cv=none; b=oIPXYD75uQjjZlJg7CYwU1+s9jFwUoW6/zZG0rxc0qxKb5t0cJC7bw69w82hjlBgUHuvl92vY+0P4UJhLTWQsmQ+emKZXVgv7aICAPQHrcd5qU+cJ0b3LvhqesvZBxqmSD9zTvZIN4C68uIwcWNan+J4ypAhcEUEo4NQfxlIMKo=
+	t=1708464039; cv=none; b=LKtRcTJIJGj1RKVp+fqKnKlCierjxpPFj6HjJZoxK9Uf/2hQLu4FQTLf9dF7UsxN9GLOloe6bWcJMo4KV6ulz12p40bu8bousS08b4RraIreTnUMRZYjQ9iOEVXtOgq/CWldUPtDhZ0eSzHXMuf4UbYa67NSTkE+lOMOA4ybEkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708465079; c=relaxed/simple;
-	bh=W7if0nXnOl/5NOnh++qKE81RTV7T9Vf2GWJP/VvShk0=;
+	s=arc-20240116; t=1708464039; c=relaxed/simple;
+	bh=5inuS1er+cApPYbEPxdllZ7HSiiQaOQnYzrib8v3a0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y/FieWBT102G+Obu6DW7YYm2ZLhnyaiA9B9SpR0Likl400bI83/i84KASUijajeYq4JExUmvLP6aabciRNuAQ1/Vvrc2VF/ULwOBMvkLJIDX0LaZgl/ZylM36xJuAhjEQpwuQTNWIAsOLheos4XeIKa88dnMUTiJfXVP9wnRJMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jenzZK4j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD5A7C433C7;
-	Tue, 20 Feb 2024 21:37:58 +0000 (UTC)
+	 MIME-Version; b=ZQPib3Og1SwjJt1TyWv8HBCD/1iUyGFaVWthdGJTwHA1eJeWKMjZXt5BYNTe4M+X/P8AlfF2Zbc741qlEJWChykqlOnLdUNgDWDFCGQkXh/ALqhHhNh6uk/HSDTYYclTtc+/M8lh+WoylMgufJ3TLrhCwBty049qb3iNHEC6S+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B0XEPGt2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C9EEC433F1;
+	Tue, 20 Feb 2024 21:20:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708465079;
-	bh=W7if0nXnOl/5NOnh++qKE81RTV7T9Vf2GWJP/VvShk0=;
+	s=korg; t=1708464038;
+	bh=5inuS1er+cApPYbEPxdllZ7HSiiQaOQnYzrib8v3a0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jenzZK4jViJkCSMNSsMkxrVlfX8Q7VRKAouXmqZ2lvUJzH8V9jykbTP7me8chNQ/C
-	 IjxrfN7vI2rz/fIIV9UeesGByCLQ+KvNtvD1NbE+3ivFBPukugkEHb9aHvH+sN8u/T
-	 MyZWsmlYpJjRWO4sQB9RsxxrA74YMeSlkE9fZ5zQ=
+	b=B0XEPGt246ebqgpMICaF9E1C8KVvTLylpr/drj71aUgTC6uuU47I+znxiVugekxqt
+	 MAamwiAf9xboeyKRV243ADUA1HnUPIXArSABzD7O6CvtSQfq0fUf2uaVCRx0zSQZDz
+	 5PLGoro0j+CZNfzaCiTqcMVLS9dpK1XhfdgDG4Yc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@ZenIV.linux.org.uk>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	kernel test robot <oliver.sang@intel.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.7 189/309] tracefs: Zero out the tracefs_inode when allocating it
+	Jan Kara <jack@suse.cz>,
+	Karel Zak <kzak@redhat.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.6 232/331] fs: relax mount_setattr() permission checks
 Date: Tue, 20 Feb 2024 21:55:48 +0100
-Message-ID: <20240220205639.069420681@linuxfoundation.org>
+Message-ID: <20240220205645.083556979@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,82 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+From: Christian Brauner <brauner@kernel.org>
 
-commit d81786f53aec14fd4d56263145a0635afbc64617 upstream.
+commit 46f5ab762d048dad224436978315cbc2fa79c630 upstream.
 
-eventfs uses the tracefs_inode and assumes that it's already initialized
-to zero. That is, it doesn't set fields to zero (like ti->private) after
-getting its tracefs_inode. This causes bugs due to stale values.
+When we added mount_setattr() I added additional checks compared to the
+legacy do_reconfigure_mnt() and do_change_type() helpers used by regular
+mount(2). If that mount had a parent then verify that the caller and the
+mount namespace the mount is attached to match and if not make sure that
+it's an anonymous mount.
 
-Just initialize the entire structure to zero on allocation so there isn't
-any more surprises.
+The real rootfs falls into neither category. It is neither an anoymous
+mount because it is obviously attached to the initial mount namespace
+but it also obviously doesn't have a parent mount. So that means legacy
+mount(2) allows changing mount properties on the real rootfs but
+mount_setattr(2) blocks this. I never thought much about this but of
+course someone on this planet of earth changes properties on the real
+rootfs as can be seen in [1].
 
-This is a partial fix to access to ti->private. The assignment still needs
-to be made before the dentry is instantiated.
+Since util-linux finally switched to the new mount api in 2.39 not so
+long ago it also relies on mount_setattr() and that surfaced this issue
+when Fedora 39 finally switched to it. Fix this.
 
-Link: https://lore.kernel.org/linux-trace-kernel/20240131185512.315825944@goodmis.org
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Al Viro <viro@ZenIV.linux.org.uk>
-Cc: Ajay Kaher <ajay.kaher@broadcom.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Fixes: 5790b1fb3d672 ("eventfs: Remove eventfs_file and just use eventfs_inode")
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202401291043.e62e89dc-oliver.sang@intel.com
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2256843
+Link: https://lore.kernel.org/r/20240206-vfs-mount-rootfs-v1-1-19b335eee133@kernel.org
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reported-by: Karel Zak <kzak@redhat.com>
+Cc: stable@vger.kernel.org # v5.12+
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/tracefs/inode.c    |    6 ++++--
- fs/tracefs/internal.h |    3 ++-
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ fs/namespace.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/fs/tracefs/inode.c
-+++ b/fs/tracefs/inode.c
-@@ -38,8 +38,6 @@ static struct inode *tracefs_alloc_inode
- 	if (!ti)
- 		return NULL;
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -4470,10 +4470,15 @@ static int do_mount_setattr(struct path
+ 	/*
+ 	 * If this is an attached mount make sure it's located in the callers
+ 	 * mount namespace. If it's not don't let the caller interact with it.
+-	 * If this is a detached mount make sure it has an anonymous mount
+-	 * namespace attached to it, i.e. we've created it via OPEN_TREE_CLONE.
++	 *
++	 * If this mount doesn't have a parent it's most often simply a
++	 * detached mount with an anonymous mount namespace. IOW, something
++	 * that's simply not attached yet. But there are apparently also users
++	 * that do change mount properties on the rootfs itself. That obviously
++	 * neither has a parent nor is it a detached mount so we cannot
++	 * unconditionally check for detached mounts.
+ 	 */
+-	if (!(mnt_has_parent(mnt) ? check_mnt(mnt) : is_anon_ns(mnt->mnt_ns)))
++	if ((mnt_has_parent(mnt) || !is_anon_ns(mnt->mnt_ns)) && !check_mnt(mnt))
+ 		goto out;
  
--	ti->flags = 0;
--
- 	return &ti->vfs_inode;
- }
- 
-@@ -779,7 +777,11 @@ static void init_once(void *foo)
- {
- 	struct tracefs_inode *ti = (struct tracefs_inode *) foo;
- 
-+	/* inode_init_once() calls memset() on the vfs_inode portion */
- 	inode_init_once(&ti->vfs_inode);
-+
-+	/* Zero out the rest */
-+	memset_after(ti, 0, vfs_inode);
- }
- 
- static int __init tracefs_init(void)
---- a/fs/tracefs/internal.h
-+++ b/fs/tracefs/internal.h
-@@ -11,9 +11,10 @@ enum {
- };
- 
- struct tracefs_inode {
-+	struct inode            vfs_inode;
-+	/* The below gets initialized with memset_after(ti, 0, vfs_inode) */
- 	unsigned long           flags;
- 	void                    *private;
--	struct inode            vfs_inode;
- };
- 
- /*
+ 	/*
 
 
 
