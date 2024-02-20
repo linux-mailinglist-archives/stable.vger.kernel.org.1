@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-21058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70EBD85C6F7
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:06:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12DD785C702
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:07:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A29141C21AE6
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:06:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A858D1F22675
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:07:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1756E14F9DA;
-	Tue, 20 Feb 2024 21:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D2DD1509A5;
+	Tue, 20 Feb 2024 21:07:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lWHRdFHF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pIveMWVL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A5214AD12;
-	Tue, 20 Feb 2024 21:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B23F612D7;
+	Tue, 20 Feb 2024 21:07:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463216; cv=none; b=C2KIMR772zf+Rpm/KIjnfJSX5Jyo9R6pIKptwnEtCehvCpo/69KKTPNEoWje3hPa34OoUihygN2cYewSZB6SUdOKUY243RsXVhmrTgWTMnXKUbzclIXXH8LWQYTaLKYIb0w7QelzHyCsjvUTswCS4ydTB2cfM0T11qum1O8gulo=
+	t=1708463252; cv=none; b=hdpRN5dQO/DvUppdrsjSYz944ZQ59encYU6dHFRaDO+yYZeQclOXDb3T2r4sSKweEHSKJnFAFuNTlaG5Xn9eu9asPGYJ8AfIHlR8bqTvmkVPZSABr6Ni8lD0ghs68wB1+xXvbZnA0U0M2a+G7iDpqrMslm4iiMQ9Gs2OpGnabj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463216; c=relaxed/simple;
-	bh=oDNAvLTjwNk9Hf/hpkYkMp1v/3aem9baf4Jnd3TeqJM=;
+	s=arc-20240116; t=1708463252; c=relaxed/simple;
+	bh=Vqk6HHztxIQhfeqhFB1zTNfhGfSDaAWsvFROWum+xOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KyPfY1qgI0DScd4QOkzwCuud9ShIlqp1dTiSwIh8UbCMyhh3m6Nwyo4inAVuYqjk79L6NvGkq9AXM9RaQWaW4oCdZ8Rwn0bvcz4gAD8KYjtlTfLfCgU4g486Ei3OW+qMlLFK3yxWn6YomxmETpuogQTAha7ltG+fzgl4GrVypbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lWHRdFHF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51FF6C433C7;
-	Tue, 20 Feb 2024 21:06:56 +0000 (UTC)
+	 MIME-Version; b=kJL83P+k6MZjNVlsyYBGKy6D99y/iWNqVwxs1ZJhZZfG2jSyHTjYsAVqAtej/X7rhJeE6n7TQ8qcpKGSmMs2UpNBRMXlN+OpyXy5BZ7DpQt748NMgM8t2kx/Qce7nXkx4OXuH+fkjPhsj3SU1Jo0Bi+CaOrqe+2UYjaO2MYfDVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pIveMWVL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82C6DC433C7;
+	Tue, 20 Feb 2024 21:07:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463216;
-	bh=oDNAvLTjwNk9Hf/hpkYkMp1v/3aem9baf4Jnd3TeqJM=;
+	s=korg; t=1708463251;
+	bh=Vqk6HHztxIQhfeqhFB1zTNfhGfSDaAWsvFROWum+xOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lWHRdFHF+wnJ7Ncl2Ft5AokSQZRNjwsGySItiPovKnm0oDwzyynHtCQrMqXZWO4wn
-	 OXUumtQFc20qXPGxKB7dlaIkQXzTdQilec/N1mvedmmWzQrUtyfGiL6+04rnjVU55O
-	 YLDb/gkcbViYuFp1yytSE9xxcGRv919Mn7+zZop0=
+	b=pIveMWVLvySSj3raW0RlUvDt7H6AnvZz/LC8jTgzSDOoyT+m/A8ZBVW0Uw9TaKUuy
+	 Z6fZqE1WDPQguHv5OAD7fqeL3SfkSMkkXGlCx40M7K8aocXxK6vN9EsgjU+8UZ+Saa
+	 lx9D/xwDYdXPnb+BSRqMBdfcwr7s3lvM59YsUc8o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleg Nesterov <oleg@redhat.com>,
-	Dylan Hatch <dylanbhatch@google.com>,
-	"Eric W. Biederman" <ebiederm@xmission.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 165/197] fs/proc: do_task_stat: move thread_group_cputime_adjusted() outside of lock_task_sighand()
-Date: Tue, 20 Feb 2024 21:52:04 +0100
-Message-ID: <20240220204846.011444200@linuxfoundation.org>
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.1 166/197] tracing: Inform kmemleak of saved_cmdlines allocation
+Date: Tue, 20 Feb 2024 21:52:05 +0100
+Message-ID: <20240220204846.041962443@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
 References: <20240220204841.073267068@linuxfoundation.org>
@@ -67,77 +68,95 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-commit 60f92acb60a989b14e4b744501a0df0f82ef30a3 upstream.
+commit 2394ac4145ea91b92271e675a09af2a9ea6840b7 upstream.
 
-Patch series "fs/proc: do_task_stat: use sig->stats_".
+The allocation of the struct saved_cmdlines_buffer structure changed from:
 
-do_task_stat() has the same problem as getrusage() had before "getrusage:
-use sig->stats_lock rather than lock_task_sighand()": a hard lockup.  If
-NR_CPUS threads call lock_task_sighand() at the same time and the process
-has NR_THREADS, spin_lock_irq will spin with irqs disabled O(NR_CPUS *
-NR_THREADS) time.
+        s = kmalloc(sizeof(*s), GFP_KERNEL);
+	s->saved_cmdlines = kmalloc_array(TASK_COMM_LEN, val, GFP_KERNEL);
 
+to:
 
-This patch (of 3):
+	orig_size = sizeof(*s) + val * TASK_COMM_LEN;
+	order = get_order(orig_size);
+	size = 1 << (order + PAGE_SHIFT);
+	page = alloc_pages(GFP_KERNEL, order);
+	if (!page)
+		return NULL;
 
-thread_group_cputime() does its own locking, we can safely shift
-thread_group_cputime_adjusted() which does another for_each_thread loop
-outside of ->siglock protected section.
+	s = page_address(page);
+	memset(s, 0, sizeof(*s));
 
-Not only this removes for_each_thread() from the critical section with
-irqs disabled, this removes another case when stats_lock is taken with
-siglock held.  We want to remove this dependency, then we can change the
-users of stats_lock to not disable irqs.
+	s->saved_cmdlines = kmalloc_array(TASK_COMM_LEN, val, GFP_KERNEL);
 
-Link: https://lkml.kernel.org/r/20240123153313.GA21832@redhat.com
-Link: https://lkml.kernel.org/r/20240123153355.GA21854@redhat.com
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Dylan Hatch <dylanbhatch@google.com>
-Cc: Eric W. Biederman <ebiederm@xmission.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Where that s->saved_cmdlines allocation looks to be a dangling allocation
+to kmemleak. That's because kmemleak only keeps track of kmalloc()
+allocations. For allocations that use page_alloc() directly, the kmemleak
+needs to be explicitly informed about it.
+
+Add kmemleak_alloc() and kmemleak_free() around the page allocation so
+that it doesn't give the following false positive:
+
+unreferenced object 0xffff8881010c8000 (size 32760):
+  comm "swapper", pid 0, jiffies 4294667296
+  hex dump (first 32 bytes):
+    ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+    ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+  backtrace (crc ae6ec1b9):
+    [<ffffffff86722405>] kmemleak_alloc+0x45/0x80
+    [<ffffffff8414028d>] __kmalloc_large_node+0x10d/0x190
+    [<ffffffff84146ab1>] __kmalloc+0x3b1/0x4c0
+    [<ffffffff83ed7103>] allocate_cmdlines_buffer+0x113/0x230
+    [<ffffffff88649c34>] tracer_alloc_buffers.isra.0+0x124/0x460
+    [<ffffffff8864a174>] early_trace_init+0x14/0xa0
+    [<ffffffff885dd5ae>] start_kernel+0x12e/0x3c0
+    [<ffffffff885f5758>] x86_64_start_reservations+0x18/0x30
+    [<ffffffff885f582b>] x86_64_start_kernel+0x7b/0x80
+    [<ffffffff83a001c3>] secondary_startup_64_no_verify+0x15e/0x16b
+
+Link: https://lore.kernel.org/linux-trace-kernel/87r0hfnr9r.fsf@kernel.org/
+Link: https://lore.kernel.org/linux-trace-kernel/20240214112046.09a322d6@gandalf.local.home
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Fixes: 44dc5c41b5b1 ("tracing: Fix wasted memory in saved_cmdlines logic")
+Reported-by: Kalle Valo <kvalo@kernel.org>
+Tested-by: Kalle Valo <kvalo@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/array.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ kernel/trace/trace.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/proc/array.c
-+++ b/fs/proc/array.c
-@@ -501,7 +501,7 @@ static int do_task_stat(struct seq_file
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -40,6 +40,7 @@
+ #include <linux/ctype.h>
+ #include <linux/init.h>
+ #include <linux/panic_notifier.h>
++#include <linux/kmemleak.h>
+ #include <linux/poll.h>
+ #include <linux/nmi.h>
+ #include <linux/fs.h>
+@@ -2268,6 +2269,7 @@ static void free_saved_cmdlines_buffer(s
+ 	int order = get_order(sizeof(*s) + s->cmdline_num * TASK_COMM_LEN);
  
- 	sigemptyset(&sigign);
- 	sigemptyset(&sigcatch);
--	cutime = cstime = utime = stime = 0;
-+	cutime = cstime = 0;
- 	cgtime = gtime = 0;
+ 	kfree(s->map_cmdline_to_pid);
++	kmemleak_free(s);
+ 	free_pages((unsigned long)s, order);
+ }
  
- 	if (lock_task_sighand(task, &flags)) {
-@@ -535,7 +535,6 @@ static int do_task_stat(struct seq_file
+@@ -2287,6 +2289,7 @@ static struct saved_cmdlines_buffer *all
+ 		return NULL;
  
- 			min_flt += sig->min_flt;
- 			maj_flt += sig->maj_flt;
--			thread_group_cputime_adjusted(task, &utime, &stime);
- 			gtime += sig->gtime;
+ 	s = page_address(page);
++	kmemleak_alloc(s, size, 1, GFP_KERNEL);
+ 	memset(s, 0, sizeof(*s));
  
- 			if (sig->flags & (SIGNAL_GROUP_EXIT | SIGNAL_STOP_STOPPED))
-@@ -551,10 +550,13 @@ static int do_task_stat(struct seq_file
- 
- 	if (permitted && (!whole || num_threads < 2))
- 		wchan = !task_is_running(task);
--	if (!whole) {
-+
-+	if (whole) {
-+		thread_group_cputime_adjusted(task, &utime, &stime);
-+	} else {
-+		task_cputime_adjusted(task, &utime, &stime);
- 		min_flt = task->min_flt;
- 		maj_flt = task->maj_flt;
--		task_cputime_adjusted(task, &utime, &stime);
- 		gtime = task_gtime(task);
- 	}
- 
+ 	/* Round up to actual allocation */
 
 
 
