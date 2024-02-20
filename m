@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-21635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A18685C9B4
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:37:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A27CA85C874
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:22:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB1EE1C21868
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:37:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C3A8284C99
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:22:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25947151CDC;
-	Tue, 20 Feb 2024 21:37:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1655151CD8;
+	Tue, 20 Feb 2024 21:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XYN4MZ7e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0P+fJWGD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9100151CCC;
-	Tue, 20 Feb 2024 21:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A05B976C9C;
+	Tue, 20 Feb 2024 21:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708465031; cv=none; b=YJNYfMKu6ls4SnID3fUDF9wivwEXVfw9lFPqp3rN826S0K3HRgFJryhEE2THPn6Ik/PHhqg6arUcQI0g6QN5fNtN2Laa/qH0gsqPmhL6vfaEgvBHQ4lPnaMolmtX0AOXFELj4o3bbxg8eoVJ3CbCp3uO5hGZngZkuQ5OPUKLk2c=
+	t=1708464119; cv=none; b=GDbzNDbKltOINSSfT/x9L4oDXWQzSTbk+ZoScZv45vEtLY6P91tmAhAmlhP1NzwJFJ5iNC5Wt0OunvIUFA8Zv/5nFDgx3FeLC3UF8tGA5OeekpCpMXjeTkm7jpcVaQnDJyjK4nVR8GcKyaKBjXzbCOstlzvwOhXgdCNzY6lU98g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708465031; c=relaxed/simple;
-	bh=8fz9PzWYZSBklPQD4ncFTgkXvLCgrEFqHLoNNAK98NQ=;
+	s=arc-20240116; t=1708464119; c=relaxed/simple;
+	bh=Vbkpe8WY5AAFjzNjDXPXBFT1oWhOcAPxt9+Q56m6K8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jiwCwlOJmsriY/dr5MRrpAirKCaScOkTemxI9tT/j96MTBfKqPSa2J6sv2h9yOatiKBV4ypL3mC3TG1YfWLLthwbV6wxs3ylTrBCWd3jJCk3LLHzqlpEarvrZ+WSxC1nEjKlVwgRONe1d02UHKaW6eL5XRPpx8WMkBzcqpNiz4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XYN4MZ7e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AF73C433F1;
-	Tue, 20 Feb 2024 21:37:11 +0000 (UTC)
+	 MIME-Version; b=XcCjNagDMJkx350rG/O5y/hmDMRoHOe+ajiyXFueoJzKFv49l87kEmOcsUiRAKGFhAeFR/MuVySMuk5sqF/bspbLvlOtjnD+/48+tZhXAXXGBWHqz7NSA/Fwr/kuxCG/Gdjkfdu+QuSe2CGJiTFoW6dcbf5aFQYEJA2cFfLAM4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0P+fJWGD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24126C433F1;
+	Tue, 20 Feb 2024 21:21:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708465031;
-	bh=8fz9PzWYZSBklPQD4ncFTgkXvLCgrEFqHLoNNAK98NQ=;
+	s=korg; t=1708464119;
+	bh=Vbkpe8WY5AAFjzNjDXPXBFT1oWhOcAPxt9+Q56m6K8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XYN4MZ7eYPR5lz6/QsRo3Mn1Vxe+sHOye7OyAFch6WopHxZw2wn34r9gyhcwFjKiF
-	 fZvw53PnzaggwwEIcpGYwL8wX04Uf6rDOOyfxeSrtWAVsEF1t3F9mv8/qdvKh74HrF
-	 ZSVKm3rG3DyqE5QW/jw08cxrfrcAmHlxuMRf2eNA=
+	b=0P+fJWGDllx7jwN7NeGNUd2LX3/zGXJTFg5LPrE41XlVNHtbQq927qCOZg/CxaKzL
+	 9NnFP2829dMTb0bb4j+FX2RJCwTHmvAun90cf2zWaUsHQ6SPX+qDFKGSPSo7GTteEf
+	 GRngSNcGH3IOLvDmqALja1gTCEHmVtFEiQpJZQg8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.7 214/309] drm/amdgpu: Avoid fetching VRAM vendor info
-Date: Tue, 20 Feb 2024 21:56:13 +0100
-Message-ID: <20240220205639.869178227@linuxfoundation.org>
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 258/331] Revert "eventfs: Do not allow NULL parent to eventfs_start_creating()"
+Date: Tue, 20 Feb 2024 21:56:14 +0100
+Message-ID: <20240220205645.970252501@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +60,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lijo Lazar <lijo.lazar@amd.com>
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-commit 55173942a63668bdc1d61812c7c9e0406aefb5bf upstream.
+This reverts commit 6abb8c223ce12078a0f2c129656a13338dfe960b.
 
-The present way to fetch VRAM vendor information turns out to be not
-reliable on GFX 9.4.3 dGPUs as well. Avoid using the data.
+The eventfs was not designed properly and may have some hidden bugs in it.
+Linus rewrote it properly and I trust his version more than this one. Revert
+the backported patches for 6.6 and re-apply all the changes to make it
+equivalent to Linus's version.
 
-Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c |    8 --------
- 1 file changed, 8 deletions(-)
+ fs/tracefs/inode.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c
-@@ -1947,14 +1947,6 @@ static int gmc_v9_0_init_mem_ranges(stru
+--- a/fs/tracefs/inode.c
++++ b/fs/tracefs/inode.c
+@@ -509,15 +509,20 @@ struct dentry *eventfs_start_creating(co
+ 	struct dentry *dentry;
+ 	int error;
  
- static void gmc_v9_4_3_init_vram_info(struct amdgpu_device *adev)
- {
--	static const u32 regBIF_BIOS_SCRATCH_4 = 0x50;
--	u32 vram_info;
+-	/* Must always have a parent. */
+-	if (WARN_ON_ONCE(!parent))
+-		return ERR_PTR(-EINVAL);
 -
--	/* Only for dGPU, vendor informaton is reliable */
--	if (!amdgpu_sriov_vf(adev) && !(adev->flags & AMD_IS_APU)) {
--		vram_info = RREG32(regBIF_BIOS_SCRATCH_4);
--		adev->gmc.vram_vendor = vram_info & 0xF;
--	}
- 	adev->gmc.vram_type = AMDGPU_VRAM_TYPE_HBM;
- 	adev->gmc.vram_width = 128 * 64;
- }
+ 	error = simple_pin_fs(&trace_fs_type, &tracefs_mount,
+ 			      &tracefs_mount_count);
+ 	if (error)
+ 		return ERR_PTR(error);
+ 
++	/*
++	 * If the parent is not specified, we create it in the root.
++	 * We need the root dentry to do this, which is in the super
++	 * block. A pointer to that is in the struct vfsmount that we
++	 * have around.
++	 */
++	if (!parent)
++		parent = tracefs_mount->mnt_root;
++
+ 	if (unlikely(IS_DEADDIR(parent->d_inode)))
+ 		dentry = ERR_PTR(-ENOENT);
+ 	else
 
 
 
