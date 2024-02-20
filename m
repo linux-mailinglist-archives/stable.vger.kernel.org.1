@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-21045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A378285C6EA
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:06:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A403F85C724
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:09:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 580891F23218
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:06:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C66EF1C21D98
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:09:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC50C151CC4;
-	Tue, 20 Feb 2024 21:06:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C2811509BF;
+	Tue, 20 Feb 2024 21:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ll1Bj996"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xf5bVApr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D14014AD12;
-	Tue, 20 Feb 2024 21:06:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF38B14AD12;
+	Tue, 20 Feb 2024 21:09:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463177; cv=none; b=hSADDnrg5pqoGxJwK+lOAcsh1Sd0bRDY8Y3WIXkgHNlP0vC/ho4g6qHWWuFwf2q64Euhmt+hABkStl30Di6DfTg1OfwPzqFSQ0+4Lj/cQQ8ITCqQbNi5S1Yn0b+d+df/GZke962b+E8uk4LyNMmzZNUtYk3RtkcYjtEnhNRwqy4=
+	t=1708463361; cv=none; b=uwYX5/AZt0lpr0LrmAdWfSEazCqgx4r89cfGWnmf/DG1ED2c3iVPg3qreXYbIr8gtXFzPaP197ftVDYbj4gtAfUCbpJioH6nak/Ft98mryAfMKwqUyHpNMScYpKE1fx2fa78IV3is1SjbPXixBIv55C+h97tKXg6F+mn7ypqIxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463177; c=relaxed/simple;
-	bh=JIJAE9Dit1jn3iqcZmDfPnUuY9JVF5diqKsNnr/Msj0=;
+	s=arc-20240116; t=1708463361; c=relaxed/simple;
+	bh=sHRORr0dijtn2QhxeodOBaHVh9hQnkpcXqakKQXGwmo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cv99PdouegLbNb3AP4naQG87ztrLYQBFhUbm524oV3HOzEpC85LfQ+8/mvjKxot+vEH0R3eX4YTx07U0SdAvvfAvWTrL8E0MsxhcwRUJHIXAQkH9LAgrWA5+AZduPf8QOVuVtXhZSeDv6g9AJjtROj4QCVpQ25dXdIF3cld/Cd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ll1Bj996; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03615C433C7;
-	Tue, 20 Feb 2024 21:06:16 +0000 (UTC)
+	 MIME-Version; b=aplvms4FqimQirMbh4NR2TAfQQNPCO/uSTTF9ObN/WF1m4fsoHHu39ATcn2aeezgjkVDqiE+9wjQtOXvCvmbFvgPTmGcXp0y86EroF/WlDOIGf7u6p98wsWgi74kfLAk8iLeHISOIqSFF8DEii7A5l/Dc11sDto5BqNXb5TEutg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xf5bVApr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D2A9C433C7;
+	Tue, 20 Feb 2024 21:09:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463177;
-	bh=JIJAE9Dit1jn3iqcZmDfPnUuY9JVF5diqKsNnr/Msj0=;
+	s=korg; t=1708463360;
+	bh=sHRORr0dijtn2QhxeodOBaHVh9hQnkpcXqakKQXGwmo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ll1Bj996tw16QvyrqpcW/paUQrRH63ALBfqAvognLhlDP0+QF9P1gpny0VjnTONVg
-	 3/cgLkllxGoYy0PJtzkowmEaooC6Ie2TmxAcg9MPkH2DQXWitmsglH/LdqHsyxSzvB
-	 88GVEMHPddvYfOPvZCqIo/txawy5itvP/IjEvWgM=
+	b=xf5bVAprAi+by2UcAj4be/Ow26p/4fUTMLxvq/jcfHZfmLSLSJhI+CC1qTPXEVpnR
+	 Vl34QfHz6tIimCfqh6Uqim7J1bTrxbOJXAaW4ZPwRQRyaIOlvbr5of3Skjnlw7n5i1
+	 pXk3IUPFdNiKYryJ9KDHlB+PHPoGlNkslM8yN7+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prakash Sangappa <prakash.sangappa@oracle.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 159/197] mm: hugetlb pages should not be reserved by shmat() if SHM_NORESERVE
+	Jakub Jelinek <jakub@redhat.com>,
+	Uros Bizjak <ubizjak@gmail.com>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Andrew Pinski <quic_apinski@quicinc.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.6 002/331] update workarounds for gcc "asm goto" issue
 Date: Tue, 20 Feb 2024 21:51:58 +0100
-Message-ID: <20240220204845.832778670@linuxfoundation.org>
+Message-ID: <20240220205637.650763062@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
-References: <20240220204841.073267068@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,108 +65,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prakash Sangappa <prakash.sangappa@oracle.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-commit e656c7a9e59607d1672d85ffa9a89031876ffe67 upstream.
+commit 68fb3ca0e408e00db1c3f8fccdfa19e274c033be upstream.
 
-For shared memory of type SHM_HUGETLB, hugetlb pages are reserved in
-shmget() call.  If SHM_NORESERVE flags is specified then the hugetlb pages
-are not reserved.  However when the shared memory is attached with the
-shmat() call the hugetlb pages are getting reserved incorrectly for
-SHM_HUGETLB shared memory created with SHM_NORESERVE which is a bug.
+In commit 4356e9f841f7 ("work around gcc bugs with 'asm goto' with
+outputs") I did the gcc workaround unconditionally, because the cause of
+the bad code generation wasn't entirely clear.
 
--------------------------------
-Following test shows the issue.
+In the meantime, Jakub Jelinek debugged the issue, and has come up with
+a fix in gcc [2], which also got backported to the still maintained
+branches of gcc-11, gcc-12 and gcc-13.
 
-$cat shmhtb.c
+Note that while the fix technically wasn't in the original gcc-14
+branch, Jakub says:
 
-int main()
-{
-	int shmflags = 0660 | IPC_CREAT | SHM_HUGETLB | SHM_NORESERVE;
-	int shmid;
+ "while it is true that no GCC 14 snapshots until today (or whenever the
+  fix will be committed) have the fix, for GCC trunk it is up to the
+  distros to use the latest snapshot if they use it at all and would
+  allow better testing of the kernel code without the workaround, so
+  that if there are other issues they won't be discovered years later.
+  Most userland code doesn't actually use asm goto with outputs..."
 
-	shmid = shmget(SKEY, SHMSZ, shmflags);
-	if (shmid < 0)
-	{
-		printf("shmat: shmget() failed, %d\n", errno);
-		return 1;
-	}
-	printf("After shmget()\n");
-	system("cat /proc/meminfo | grep -i hugepages_");
+so we will consider gcc-14 to be fixed - if somebody is using gcc
+snapshots of the gcc-14 before the fix, they should upgrade.
 
-	shmat(shmid, NULL, 0);
-	printf("\nAfter shmat()\n");
-	system("cat /proc/meminfo | grep -i hugepages_");
+Note that while the bug goes back to gcc-11, in practice other gcc
+changes seem to have effectively hidden it since gcc-12.1 as per a
+bisect by Jakub.  So even a gcc-14 snapshot without the fix likely
+doesn't show actual problems.
 
-	shmctl(shmid, IPC_RMID, NULL);
-	return 0;
-}
+Also, make the default 'asm_goto_output()' macro mark the asm as
+volatile by hand, because of an unrelated gcc issue [1] where it doesn't
+match the documented behavior ("asm goto is always volatile").
 
- #sysctl -w vm.nr_hugepages=20
- #./shmhtb
-
-After shmget()
-HugePages_Total:      20
-HugePages_Free:       20
-HugePages_Rsvd:        0
-HugePages_Surp:        0
-
-After shmat()
-HugePages_Total:      20
-HugePages_Free:       20
-HugePages_Rsvd:        5 <--
-HugePages_Surp:        0
---------------------------------
-
-Fix is to ensure that hugetlb pages are not reserved for SHM_HUGETLB shared
-memory in the shmat() call.
-
-Link: https://lkml.kernel.org/r/1706040282-12388-1-git-send-email-prakash.sangappa@oracle.com
-Signed-off-by: Prakash Sangappa <prakash.sangappa@oracle.com>
-Acked-by: Muchun Song <muchun.song@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103979 [1]
+Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=113921 [2]
+Link: https://lore.kernel.org/all/20240208220604.140859-1-seanjc@google.com/
+Requested-by: Jakub Jelinek <jakub@redhat.com>
+Cc: Uros Bizjak <ubizjak@gmail.com>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Sean Christopherson <seanjc@google.com>
+Cc: Andrew Pinski <quic_apinski@quicinc.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/hugetlbfs/inode.c |   13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ include/linux/compiler-gcc.h   |    7 ++++---
+ include/linux/compiler_types.h |    9 ++++++++-
+ init/Kconfig                   |    9 +++++++++
+ 3 files changed, 21 insertions(+), 4 deletions(-)
 
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -123,6 +123,7 @@ static int hugetlbfs_file_mmap(struct fi
- 	loff_t len, vma_len;
- 	int ret;
- 	struct hstate *h = hstate_file(file);
-+	vm_flags_t vm_flags;
+--- a/include/linux/compiler-gcc.h
++++ b/include/linux/compiler-gcc.h
+@@ -69,10 +69,9 @@
+ /*
+  * GCC 'asm goto' with outputs miscompiles certain code sequences:
+  *
+- *   https://gcc.gnu.org/bugzilla/show_bug.cgi?id=110420
+- *   https://gcc.gnu.org/bugzilla/show_bug.cgi?id=110422
++ *   https://gcc.gnu.org/bugzilla/show_bug.cgi?id=113921
+  *
+- * Work it around via the same compiler barrier quirk that we used
++ * Work around it via the same compiler barrier quirk that we used
+  * to use for the old 'asm goto' workaround.
+  *
+  * Also, always mark such 'asm goto' statements as volatile: all
+@@ -82,8 +81,10 @@
+  *
+  *    https://gcc.gnu.org/bugzilla/show_bug.cgi?id=98619
+  */
++#ifdef CONFIG_GCC_ASM_GOTO_OUTPUT_WORKAROUND
+ #define asm_goto_output(x...) \
+ 	do { asm volatile goto(x); asm (""); } while (0)
++#endif
  
- 	/*
- 	 * vma address alignment (but not the pgoff alignment) has
-@@ -164,10 +165,20 @@ static int hugetlbfs_file_mmap(struct fi
- 	file_accessed(file);
+ #if defined(CONFIG_ARCH_USE_BUILTIN_BSWAP)
+ #define __HAVE_BUILTIN_BSWAP32__
+--- a/include/linux/compiler_types.h
++++ b/include/linux/compiler_types.h
+@@ -352,8 +352,15 @@ struct ftrace_likely_data {
+ # define __realloc_size(x, ...)
+ #endif
  
- 	ret = -ENOMEM;
++/*
++ * Some versions of gcc do not mark 'asm goto' volatile:
++ *
++ *  https://gcc.gnu.org/bugzilla/show_bug.cgi?id=103979
++ *
++ * We do it here by hand, because it doesn't hurt.
++ */
+ #ifndef asm_goto_output
+-#define asm_goto_output(x...) asm goto(x)
++#define asm_goto_output(x...) asm volatile goto(x)
+ #endif
+ 
+ #ifdef CONFIG_CC_HAS_ASM_INLINE
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -89,6 +89,15 @@ config CC_HAS_ASM_GOTO_TIED_OUTPUT
+ 	# Detect buggy gcc and clang, fixed in gcc-11 clang-14.
+ 	def_bool $(success,echo 'int foo(int *x) { asm goto (".long (%l[bar]) - .": "+m"(*x) ::: bar); return *x; bar: return 0; }' | $CC -x c - -c -o /dev/null)
+ 
++config GCC_ASM_GOTO_OUTPUT_WORKAROUND
++	bool
++	depends on CC_IS_GCC && CC_HAS_ASM_GOTO_OUTPUT
++	# Fixed in GCC 14, 13.3, 12.4 and 11.5
++	# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=113921
++	default y if GCC_VERSION < 110500
++	default y if GCC_VERSION >= 120000 && GCC_VERSION < 120400
++	default y if GCC_VERSION >= 130000 && GCC_VERSION < 130300
 +
-+	vm_flags = vma->vm_flags;
-+	/*
-+	 * for SHM_HUGETLB, the pages are reserved in the shmget() call so skip
-+	 * reserving here. Note: only for SHM hugetlbfs file, the inode
-+	 * flag S_PRIVATE is set.
-+	 */
-+	if (inode->i_flags & S_PRIVATE)
-+		vm_flags |= VM_NORESERVE;
-+
- 	if (!hugetlb_reserve_pages(inode,
- 				vma->vm_pgoff >> huge_page_order(h),
- 				len >> huge_page_shift(h), vma,
--				vma->vm_flags))
-+				vm_flags))
- 		goto out;
+ config TOOLS_SUPPORT_RELR
+ 	def_bool $(success,env "CC=$(CC)" "LD=$(LD)" "NM=$(NM)" "OBJCOPY=$(OBJCOPY)" $(srctree)/scripts/tools-support-relr.sh)
  
- 	ret = 0;
 
 
 
