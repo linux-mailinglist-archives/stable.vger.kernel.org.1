@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-21577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7398485C979
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:34:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2434285C813
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:18:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DD8E284D20
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:34:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2F982848F0
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:18:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC50E151CDC;
-	Tue, 20 Feb 2024 21:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87321151CDC;
+	Tue, 20 Feb 2024 21:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eqWPn7sg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xNXAdDk4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68399446C9;
-	Tue, 20 Feb 2024 21:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454B1612D7;
+	Tue, 20 Feb 2024 21:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464848; cv=none; b=CTr+eycxgJToK4svGoNfXXsTjCD+W74AL75zJsdFg0fCx4nksIxwTNBaZi4k3Hf0Ur4+T7iGqsyLGLPcIKJS+LXmwWXpLoS9wxONkIul385lGGPSjwErc4r/sAhQwzv8bInGBqh4Zp6BZi5xjVpq8VFXpB9moXnprp89JjYzvAg=
+	t=1708463931; cv=none; b=MM+wHkVhD+UV+RlqxDIFv4kJEEnXQgu/QLxJgvuBQC+PJZt+Kq8TI4VmXGrgPKAac8U+agcAjRMFVEvalESv+qNxDxOaGICqbMptCTpw/7N0ppAtJ+1eX9kRfEtXG3fIzu/++Jpwuq+Yuzis6J5aAyXbkfN/rZwKv1tswqA7Q7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464848; c=relaxed/simple;
-	bh=tyK2jAEZzSpmvQvWiInSW7A7Ru4PGtDWrAn0wHtq7yQ=;
+	s=arc-20240116; t=1708463931; c=relaxed/simple;
+	bh=jZ4Ax3Pl9ugaSs/RAzHT6WElsCRDKRUaIc4x7ylHJWA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GetKjz9vCnWZJrIHpyyRWBRNcpkMVPCE1YB84FwimYK1GVvl4T/lIMXQJncNNH4ecE6NWs8y4J0v+I2j41k4WJ/YRYLKemF0BnYOOEuKSyUNr68kEW58iWiYiCZasizxi2U4kPbkQeOVBE3OhCp0UaSquaIqcT6exnVpXptysyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eqWPn7sg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D012FC433C7;
-	Tue, 20 Feb 2024 21:34:07 +0000 (UTC)
+	 MIME-Version; b=m2kxtnRBqy7HeM+AtbX2ctuEV5KvE08xE3ggNbqr2L0qs7MMleUg+f18sjdkp6uNVRzAeOTjjMSgJGJmnl69d0CH3hbAT2mC/X0DNwX4i2kA6WoBGWBtlAHtSXFjjUf0jH9JpCG6Vy+ZQVogNWWu0+IdA2fOKHvu5YlTSmmIOag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xNXAdDk4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA16BC433F1;
+	Tue, 20 Feb 2024 21:18:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464848;
-	bh=tyK2jAEZzSpmvQvWiInSW7A7Ru4PGtDWrAn0wHtq7yQ=;
+	s=korg; t=1708463931;
+	bh=jZ4Ax3Pl9ugaSs/RAzHT6WElsCRDKRUaIc4x7ylHJWA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eqWPn7sgtzYOWkul/QFNyOSdEL0rtZFfK+CR6kgsSwYNcG1lejZPsi42w2wsoTkf8
-	 LrMLAlDmpQBL5xuoL12rXt/12dSDQpa5yTapHCI6mTWQanjtWgloBxEgR/v3/jFVAM
-	 DrwbXHh9bN4XgFGyTuu6FSOJoT06PDyZJ8GxDHH0=
+	b=xNXAdDk4LJk7Xq4H9pyEngQuL5HCHQpxZqN/H1mO1iNBiBOPMNJk0G722FmU8LLcM
+	 oWsWnzH4ql7t9dq50g0X2Aw2sTCgytUViRAU2R9S16/YQTTr8ng8RJFNW0i8YAd5ee
+	 pjxYRd+ZbV6uyIl6VYGy7N1kBSR2YmmulwB4+X7s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Rodionov <vitalyr@opensource.cirrus.com>,
+	Shuming Fan <shumingf@realtek.com>,
 	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.7 155/309] ALSA: hda/cs8409: Suppress vmaster control for Dolphin models
+Subject: [PATCH 6.6 198/331] ALSA: hda/realtek: add IDs for Dell dual spk platform
 Date: Tue, 20 Feb 2024 21:55:14 +0100
-Message-ID: <20240220205638.013483925@linuxfoundation.org>
+Message-ID: <20240220205643.851607369@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Rodionov <vitalyr@opensource.cirrus.com>
+From: Shuming Fan <shumingf@realtek.com>
 
-commit a2ed0a44d637ef9deca595054c206da7d6cbdcbc upstream.
+commit fddab35fd064414c677e9488c4fb3a1f67725d37 upstream.
 
-Customer has reported an issue with specific desktop platform
-where two CS42L42 codecs are connected to CS8409 HDA bridge.
-If "Master Volume Control" is created then on Ubuntu OS UCM
-left/right balance slider in UI audio settings has no effect.
-This patch will fix this issue for a target paltform.
+This patch adds another two IDs for the Dell dual speaker platform.
 
-Fixes: 20e507724113 ("ALSA: hda/cs8409: Add support for dolphin")
-Signed-off-by: Vitaly Rodionov <vitalyr@opensource.cirrus.com>
+Signed-off-by: Shuming Fan <shumingf@realtek.com>
 Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240122184710.5802-1-vitalyr@opensource.cirrus.com
+Link: https://lore.kernel.org/r/20240205072252.3791500-1-shumingf@realtek.com
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_cs8409.c |    1 +
- 1 file changed, 1 insertion(+)
+ sound/pci/hda/patch_realtek.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/sound/pci/hda/patch_cs8409.c
-+++ b/sound/pci/hda/patch_cs8409.c
-@@ -1371,6 +1371,7 @@ void dolphin_fixups(struct hda_codec *co
- 		spec->scodecs[CS8409_CODEC1] = &dolphin_cs42l42_1;
- 		spec->scodecs[CS8409_CODEC1]->codec = codec;
- 		spec->num_scodecs = 2;
-+		spec->gen.suppress_vmaster = 1;
- 
- 		codec->patch_ops = cs8409_dolphin_patch_ops;
- 
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9631,7 +9631,9 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1028, 0x0b71, "Dell Inspiron 16 Plus 7620", ALC295_FIXUP_DELL_INSPIRON_TOP_SPEAKERS),
+ 	SND_PCI_QUIRK(0x1028, 0x0beb, "Dell XPS 15 9530 (2023)", ALC289_FIXUP_DELL_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1028, 0x0c03, "Dell Precision 5340", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE),
++	SND_PCI_QUIRK(0x1028, 0x0c0b, "Dell Oasis 14 RPL-P", ALC289_FIXUP_RTK_AMP_DUAL_SPK),
+ 	SND_PCI_QUIRK(0x1028, 0x0c0d, "Dell Oasis", ALC289_FIXUP_RTK_AMP_DUAL_SPK),
++	SND_PCI_QUIRK(0x1028, 0x0c0e, "Dell Oasis 16", ALC289_FIXUP_RTK_AMP_DUAL_SPK),
+ 	SND_PCI_QUIRK(0x1028, 0x0c19, "Dell Precision 3340", ALC236_FIXUP_DELL_DUAL_CODECS),
+ 	SND_PCI_QUIRK(0x1028, 0x0c1a, "Dell Precision 3340", ALC236_FIXUP_DELL_DUAL_CODECS),
+ 	SND_PCI_QUIRK(0x1028, 0x0c1b, "Dell Precision 3440", ALC236_FIXUP_DELL_DUAL_CODECS),
 
 
 
