@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-21267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6273885C7F0
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:18:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D804985C94D
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:31:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BC132848F0
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:18:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A8871F2101E
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:31:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFF55151CD9;
-	Tue, 20 Feb 2024 21:18:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B68FE151CD6;
+	Tue, 20 Feb 2024 21:31:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s58wtgx2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mQz4rWPZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CFC3151CCC;
-	Tue, 20 Feb 2024 21:18:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7435514A4E6;
+	Tue, 20 Feb 2024 21:31:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463881; cv=none; b=Kp6qHCqVyy8jIRbrmCe3F50x37T5uDXm0EXa8ce8I25cXDb+V1LxSr6Sk1OxEUvLOhHiMzYXzVj/1dGLZPJ71yFBhiNDoFYmGTbbzCkDmP3pVXcxV47mJy/Oz+nsZFgE6XhOE/11031KdJ9Styzwutve3YCTEySAzsovrTCdIcc=
+	t=1708464711; cv=none; b=u6xfYLhUCyoV/tivRpuzhUThwoJQNzaPRWsj8U7rM5fYQWxPWTJ4VnsrcCtDq+t/27whKN1EjpB53uSp13kQFSKEZ404ANBvx/U3aguijVXG4LA0kjMSN5SedA//MfMSxqRnM2nh7PGhqz0QOghNpsHMAbAhGqU5e7ADojkaZ4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463881; c=relaxed/simple;
-	bh=opo3C22fOqG/id70eR4gekTl9/VnSPnGnGvNnnSHgrc=;
+	s=arc-20240116; t=1708464711; c=relaxed/simple;
+	bh=TYSkgrsYV9TLn42i6O13wFAlmY3qQYBrj8y1VzLyfUA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KHrL9D7m+7q5DAhf2r2BYEiV7NoYNfTK2ZlRUbhrmVxY236rdzOyxfUBX+wQIBrW4D1oBryClh2m2huZfamXJhLEuhXQGO26ns2e4B3tYb1RCSJsW4iiyHujD1JBbVlE7J1fbnRLqexsPPzClQfPrevp16y18JnnDc4Hi7u0gT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s58wtgx2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1881C433F1;
-	Tue, 20 Feb 2024 21:18:00 +0000 (UTC)
+	 MIME-Version; b=GouhR290KIDB2Iq4kRwAJczh1yK5goN9c2vzP2aotPmNLo3Yfe+PiW3oi73fJpqusw6sbZQjDO7bYpZqnIfR2CtJvGpRFvYQF1u9LJvbpVt4GDq1hye748lqyWGa6IzA864C09DEARQE2uc9AF5FPxtmUH4YkL69m/RdTrwCXT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mQz4rWPZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2B07C433C7;
+	Tue, 20 Feb 2024 21:31:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463881;
-	bh=opo3C22fOqG/id70eR4gekTl9/VnSPnGnGvNnnSHgrc=;
+	s=korg; t=1708464711;
+	bh=TYSkgrsYV9TLn42i6O13wFAlmY3qQYBrj8y1VzLyfUA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s58wtgx2GPYc8uy69/+HcRa5hWw/J5gBKIj08+gBRGUHl9jl3lI2G3eFekTlMmHXx
-	 0k9AN97c22Is9oz1jyE1LJhL/J/BoIlZ0O4ofWcqIIsS6tWdLYZY7H4QJtvDK9Q4BS
-	 SoekpAelLdWA26+4l2B4DbXZsPvWgu+t8xlYlrXU=
+	b=mQz4rWPZNyqGurLQG6NXextHdaxVXABCtjX+gYoPLmKnKKINPscQQY6yt/AyG24iE
+	 MSsW4FrO9bPiUPCyBWHUMLu0FBMF4RcRgvAfB5supAvg9ABCTRQjLeyNTPb5t8HbKh
+	 jARR4GsF+gKR4WeKCl42rOzD0TiQJidINA9C1Ro4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.6 154/331] Revert "workqueue: Override implicit ordered attribute in workqueue_apply_unbound_cpumask()"
-Date: Tue, 20 Feb 2024 21:54:30 +0100
-Message-ID: <20240220205642.372336868@linuxfoundation.org>
+	Arnd Bergmann <arnd@arndb.de>,
+	Sven Peter <sven@svenpeter.dev>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 112/309] i2c: pasemi: split driver into two separate modules
+Date: Tue, 20 Feb 2024 21:54:31 +0100
+Message-ID: <20240220205636.694676800@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tejun Heo <tj@kernel.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit aac8a59537dfc704ff344f1aacfd143c089ee20f upstream.
+[ Upstream commit f44bff19268517ee98e80e944cad0f04f1db72e3 ]
 
-This reverts commit ca10d851b9ad0338c19e8e3089e24d565ebfffd7.
+On powerpc, it is possible to compile test both the new apple (arm) and
+old pasemi (powerpc) drivers for the i2c hardware at the same time,
+which leads to a warning about linking the same object file twice:
 
-The commit allowed workqueue_apply_unbound_cpumask() to clear __WQ_ORDERED
-on now removed implicitly ordered workqueues. This was incorrect in that
-system-wide config change shouldn't break ordering properties of all
-workqueues. The reason why apply_workqueue_attrs() path was allowed to do so
-was because it was targeting the specific workqueue - either the workqueue
-had WQ_SYSFS set or the workqueue user specifically tried to change
-max_active, both of which indicate that the workqueue doesn't need to be
-ordered.
+scripts/Makefile.build:244: drivers/i2c/busses/Makefile: i2c-pasemi-core.o is added to multiple modules: i2c-apple i2c-pasemi
 
-The implicitly ordered workqueue promotion was removed by the previous
-commit 3bc1e711c26b ("workqueue: Don't implicitly make UNBOUND workqueues w/
-@max_active==1 ordered"). However, it didn't update this path and broke
-build. Let's revert the commit which was incorrect in the first place which
-also fixes build.
+Rework the driver to have an explicit helper module, letting Kbuild
+take care of whether this should be built-in or a loadable driver.
 
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Fixes: 3bc1e711c26b ("workqueue: Don't implicitly make UNBOUND workqueues w/ @max_active==1 ordered")
-Fixes: ca10d851b9ad ("workqueue: Override implicit ordered attribute in workqueue_apply_unbound_cpumask()")
-Cc: stable@vger.kernel.org # v6.6+
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9bc5f4f660ff ("i2c: pasemi: Split pci driver to its own file")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Sven Peter <sven@svenpeter.dev>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/workqueue.c |    8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/i2c/busses/Makefile          | 6 ++----
+ drivers/i2c/busses/i2c-pasemi-core.c | 6 ++++++
+ 2 files changed, 8 insertions(+), 4 deletions(-)
 
---- a/kernel/workqueue.c
-+++ b/kernel/workqueue.c
-@@ -5793,13 +5793,9 @@ static int workqueue_apply_unbound_cpuma
- 	list_for_each_entry(wq, &workqueues, list) {
- 		if (!(wq->flags & WQ_UNBOUND))
- 			continue;
--
- 		/* creating multiple pwqs breaks ordering guarantee */
--		if (!list_empty(&wq->pwqs)) {
--			if (wq->flags & __WQ_ORDERED_EXPLICIT)
--				continue;
--			wq->flags &= ~__WQ_ORDERED;
--		}
-+		if (wq->flags & __WQ_ORDERED)
-+			continue;
+diff --git a/drivers/i2c/busses/Makefile b/drivers/i2c/busses/Makefile
+index 3757b9391e60..aa0ee8ecd6f2 100644
+--- a/drivers/i2c/busses/Makefile
++++ b/drivers/i2c/busses/Makefile
+@@ -90,10 +90,8 @@ obj-$(CONFIG_I2C_NPCM)		+= i2c-npcm7xx.o
+ obj-$(CONFIG_I2C_OCORES)	+= i2c-ocores.o
+ obj-$(CONFIG_I2C_OMAP)		+= i2c-omap.o
+ obj-$(CONFIG_I2C_OWL)		+= i2c-owl.o
+-i2c-pasemi-objs := i2c-pasemi-core.o i2c-pasemi-pci.o
+-obj-$(CONFIG_I2C_PASEMI)	+= i2c-pasemi.o
+-i2c-apple-objs := i2c-pasemi-core.o i2c-pasemi-platform.o
+-obj-$(CONFIG_I2C_APPLE)	+= i2c-apple.o
++obj-$(CONFIG_I2C_PASEMI)	+= i2c-pasemi-core.o i2c-pasemi-pci.o
++obj-$(CONFIG_I2C_APPLE)		+= i2c-pasemi-core.o i2c-pasemi-platform.o
+ obj-$(CONFIG_I2C_PCA_PLATFORM)	+= i2c-pca-platform.o
+ obj-$(CONFIG_I2C_PNX)		+= i2c-pnx.o
+ obj-$(CONFIG_I2C_PXA)		+= i2c-pxa.o
+diff --git a/drivers/i2c/busses/i2c-pasemi-core.c b/drivers/i2c/busses/i2c-pasemi-core.c
+index 7d54a9f34c74..bd8becbdeeb2 100644
+--- a/drivers/i2c/busses/i2c-pasemi-core.c
++++ b/drivers/i2c/busses/i2c-pasemi-core.c
+@@ -369,6 +369,7 @@ int pasemi_i2c_common_probe(struct pasemi_smbus *smbus)
  
- 		ctx = apply_wqattrs_prepare(wq, wq->unbound_attrs, unbound_cpumask);
- 		if (IS_ERR(ctx)) {
+ 	return 0;
+ }
++EXPORT_SYMBOL_GPL(pasemi_i2c_common_probe);
+ 
+ irqreturn_t pasemi_irq_handler(int irq, void *dev_id)
+ {
+@@ -378,3 +379,8 @@ irqreturn_t pasemi_irq_handler(int irq, void *dev_id)
+ 	complete(&smbus->irq_completion);
+ 	return IRQ_HANDLED;
+ }
++EXPORT_SYMBOL_GPL(pasemi_irq_handler);
++
++MODULE_LICENSE("GPL");
++MODULE_AUTHOR("Olof Johansson <olof@lixom.net>");
++MODULE_DESCRIPTION("PA Semi PWRficient SMBus driver");
+-- 
+2.43.0
+
 
 
 
