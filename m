@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-21440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D50985C8E7
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:27:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D14285C752
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:11:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2916E284617
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:27:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABA961C218D9
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:11:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBB5E151CD6;
-	Tue, 20 Feb 2024 21:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D1DE14C585;
+	Tue, 20 Feb 2024 21:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mEAuREgQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kmVHwkyQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79D6814A4E6;
-	Tue, 20 Feb 2024 21:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF9E612D7;
+	Tue, 20 Feb 2024 21:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464426; cv=none; b=uq51tsB8Xm27Plg7COawO39B66MbeNXH3qYCzXXxlyDz7PZAO/xLJWGj3V5qG+2iUCm92BgEHA6MXCYqoL04C/TEcXZFBjHCF4vv/+jezzhkbCfjJSl/RyXr/v1L2EXX1Suh0nOjMH1upOY9FoENzCAetGJgjvDO8usJh9qG/k8=
+	t=1708463507; cv=none; b=aC8JzETsqg/sxCUnTUaXgBNPAqFu95Gk6bMft0ec++VOmmNyDbkwN6xTQShaAGqTPA/+BDoK9AkirLKto6ks90VDo9EpJdwNzPoSC6WW65JDFY8qTZbBWDUZlyBxu/eFEyBjQkzWSjzMtwm0ad2Qt2lL/FQENmF1w7Vha9e8H6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464426; c=relaxed/simple;
-	bh=6uFiHGqZxGywwR+I2sb/vfiV2RG9DO5s2JsQWfILvt0=;
+	s=arc-20240116; t=1708463507; c=relaxed/simple;
+	bh=107JA96k3nlnwCLSG8n0fYOtryWjAXE0steNiGEi0ds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IH5WpONYVq6IDKCVHRnlESGohsGiTKrVf9RpL2ovWTENdOndjn9hVyQjgnUimV8otfP8HpV7zjH+wbz//rVcdi2hoDh0Ms23LyjSRJWcqYHUxPMIsZ+KfXK+TY3//QUxz9ZZJbsnk8gEEToh8hKwHS7s+cc7PyvxMKIEEXud5r0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mEAuREgQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07BD7C43390;
-	Tue, 20 Feb 2024 21:27:05 +0000 (UTC)
+	 MIME-Version; b=HKApS3Uy++bz1Qtqj4PoDRPR/0IUJBl32Dr/LwMIzzLXElwprvT2FQJNMXHFToU8mWJqUVwqPHj+HJommYhEtCgoidMNqxwd8a9pjnZMIUHGrSnd0Z15wpX7zLLlBNF498LadQplijkNKxUt9XFL3CyhvMss4EryoizEgSQF6SQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kmVHwkyQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2C39C433C7;
+	Tue, 20 Feb 2024 21:11:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464426;
-	bh=6uFiHGqZxGywwR+I2sb/vfiV2RG9DO5s2JsQWfILvt0=;
+	s=korg; t=1708463507;
+	bh=107JA96k3nlnwCLSG8n0fYOtryWjAXE0steNiGEi0ds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mEAuREgQ9eKsmX4bo5lmJEjJdjG2HPHa6Y/BsIQwHTPi2Jjan6wFXjTHXBwyCuKwc
-	 7DU9iu0lBwvIcOxwVPzoSnaiDg8qLi9x3bDEr0Z/9tfPEAZnT+O7x4R3kvvJniS7hu
-	 o4Nugbavn83uHsfVFHOPO59jWINwFv6lnZoCbgfA=
+	b=kmVHwkyQsooukXx7pHS9of3qMdcYafPGKXraRE+7QUF+WRE5/SZSc1zrpmCTF5yTO
+	 skFrkiy9z0ui+u4fXNSVyhGMjy+n9hsgdnTnnLq5kWLirAxloONNY1MNGgheime6oC
+	 uqjKuqFIRP2RuQKdI+D5K+Lh/gprZjtsfvbI9fNA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Clark <robdclark@chromium.org>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 021/309] drm/msm/gem: Fix double resv lock aquire
-Date: Tue, 20 Feb 2024 21:53:00 +0100
-Message-ID: <20240220205633.842184723@linuxfoundation.org>
+	linux-stable@vger.kernel.org,
+	Dave Airlie <airlied@redhat.com>
+Subject: [PATCH 6.6 065/331] nouveau: offload fence uevents work to workqueue
+Date: Tue, 20 Feb 2024 21:53:01 +0100
+Message-ID: <20240220205639.627304620@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,58 +59,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robdclark@chromium.org>
+From: Dave Airlie <airlied@redhat.com>
 
-[ Upstream commit 03facb39d6c6433a78d0f79c7a146b1e6a61943e ]
+commit 39126abc5e20611579602f03b66627d7cd1422f0 upstream.
 
-Since commit 79e2cf2e7a19 ("drm/gem: Take reservation lock for vmap/vunmap
-operations"), the resv lock is already held in the prime vmap path, so
-don't try to grab it again.
+This should break the deadlock between the fctx lock and the irq lock.
 
-v2: This applies to vunmap path as well
-v3: Fix fixes commit
+This offloads the processing off the work from the irq into a workqueue.
 
-Fixes: 79e2cf2e7a19 ("drm/gem: Take reservation lock for vmap/vunmap operations")
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Acked-by: Christian König <christian.koenig@amd.com>
-Patchwork: https://patchwork.freedesktop.org/patch/576642/
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: linux-stable@vger.kernel.org
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/576237/
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/msm_gem_prime.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_fence.c |   24 ++++++++++++++++++------
+ drivers/gpu/drm/nouveau/nouveau_fence.h |    1 +
+ 2 files changed, 19 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/msm_gem_prime.c b/drivers/gpu/drm/msm/msm_gem_prime.c
-index 5f68e31a3e4e..0915f3b68752 100644
---- a/drivers/gpu/drm/msm/msm_gem_prime.c
-+++ b/drivers/gpu/drm/msm/msm_gem_prime.c
-@@ -26,7 +26,7 @@ int msm_gem_prime_vmap(struct drm_gem_object *obj, struct iosys_map *map)
+--- a/drivers/gpu/drm/nouveau/nouveau_fence.c
++++ b/drivers/gpu/drm/nouveau/nouveau_fence.c
+@@ -103,6 +103,7 @@ nouveau_fence_context_kill(struct nouvea
+ void
+ nouveau_fence_context_del(struct nouveau_fence_chan *fctx)
  {
- 	void *vaddr;
- 
--	vaddr = msm_gem_get_vaddr(obj);
-+	vaddr = msm_gem_get_vaddr_locked(obj);
- 	if (IS_ERR(vaddr))
- 		return PTR_ERR(vaddr);
- 	iosys_map_set_vaddr(map, vaddr);
-@@ -36,7 +36,7 @@ int msm_gem_prime_vmap(struct drm_gem_object *obj, struct iosys_map *map)
- 
- void msm_gem_prime_vunmap(struct drm_gem_object *obj, struct iosys_map *map)
- {
--	msm_gem_put_vaddr(obj);
-+	msm_gem_put_vaddr_locked(obj);
++	cancel_work_sync(&fctx->uevent_work);
+ 	nouveau_fence_context_kill(fctx, 0);
+ 	nvif_event_dtor(&fctx->event);
+ 	fctx->dead = 1;
+@@ -145,12 +146,13 @@ nouveau_fence_update(struct nouveau_chan
+ 	return drop;
  }
  
- struct drm_gem_object *msm_gem_prime_import_sg_table(struct drm_device *dev,
--- 
-2.43.0
-
+-static int
+-nouveau_fence_wait_uevent_handler(struct nvif_event *event, void *repv, u32 repc)
++static void
++nouveau_fence_uevent_work(struct work_struct *work)
+ {
+-	struct nouveau_fence_chan *fctx = container_of(event, typeof(*fctx), event);
++	struct nouveau_fence_chan *fctx = container_of(work, struct nouveau_fence_chan,
++						       uevent_work);
+ 	unsigned long flags;
+-	int ret = NVIF_EVENT_KEEP;
++	int drop = 0;
+ 
+ 	spin_lock_irqsave(&fctx->lock, flags);
+ 	if (!list_empty(&fctx->pending)) {
+@@ -160,11 +162,20 @@ nouveau_fence_wait_uevent_handler(struct
+ 		fence = list_entry(fctx->pending.next, typeof(*fence), head);
+ 		chan = rcu_dereference_protected(fence->channel, lockdep_is_held(&fctx->lock));
+ 		if (nouveau_fence_update(chan, fctx))
+-			ret = NVIF_EVENT_DROP;
++			drop = 1;
+ 	}
++	if (drop)
++		nvif_event_block(&fctx->event);
++
+ 	spin_unlock_irqrestore(&fctx->lock, flags);
++}
+ 
+-	return ret;
++static int
++nouveau_fence_wait_uevent_handler(struct nvif_event *event, void *repv, u32 repc)
++{
++	struct nouveau_fence_chan *fctx = container_of(event, typeof(*fctx), event);
++	schedule_work(&fctx->uevent_work);
++	return NVIF_EVENT_KEEP;
+ }
+ 
+ void
+@@ -178,6 +189,7 @@ nouveau_fence_context_new(struct nouveau
+ 	} args;
+ 	int ret;
+ 
++	INIT_WORK(&fctx->uevent_work, nouveau_fence_uevent_work);
+ 	INIT_LIST_HEAD(&fctx->flip);
+ 	INIT_LIST_HEAD(&fctx->pending);
+ 	spin_lock_init(&fctx->lock);
+--- a/drivers/gpu/drm/nouveau/nouveau_fence.h
++++ b/drivers/gpu/drm/nouveau/nouveau_fence.h
+@@ -44,6 +44,7 @@ struct nouveau_fence_chan {
+ 	u32 context;
+ 	char name[32];
+ 
++	struct work_struct uevent_work;
+ 	struct nvif_event event;
+ 	int notify_ref, dead, killed;
+ };
 
 
 
