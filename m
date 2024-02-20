@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-21429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0912885C8DC
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:26:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0299985C75E
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:12:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B127B1F21F31
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:26:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 339DD1C2103A
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:12:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D82A151CDC;
-	Tue, 20 Feb 2024 21:26:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36518151CC3;
+	Tue, 20 Feb 2024 21:12:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1J/6TyCw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EDnPvKqV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F12B414A4E6;
-	Tue, 20 Feb 2024 21:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8168612D7;
+	Tue, 20 Feb 2024 21:12:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464393; cv=none; b=XklOz/lSLorSblWY5Se9Z1iRmnGkOflRpduPTuSZQ0yWELtfDRn2Qef5VB4dVhX8uW5iWWZs2lrlDVAsuqefS5jsI51883cou7Y0AvImA6kSIrpy8ur9BwixJ7aXRIKbwNohBsdTmU+uKbsUyE0eLEAgzoB4xPBN3gIT9W1vI6s=
+	t=1708463530; cv=none; b=W3Q/xi2v2brzXfoYEkAw9RYkYaMTxWkigmnAaIodrY7GlJagbLE/DndJGGQdL/mzey0T4qbwAMF2LQE7uwy7DTG2tVkzMQ+O0LkTJQMxR4KKTgWZaOrKvsLR75pG58BNDoM0hVUYpprtt++IYxhz6wSOprTiC0Y8I7WHdr/mOic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464393; c=relaxed/simple;
-	bh=FIbepJBWSRKf5unE36h3DD75ahtBKpuS1TolINuAyPI=;
+	s=arc-20240116; t=1708463530; c=relaxed/simple;
+	bh=1mjzOXpxe694iedR063Nen99IAxmDtqoTWt0ydiRwM0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qv13EwZQYOBHSvuwmdDiE2SQqCYwO5mL17PLc7A2QtUCQCWiRj01YfgQChBcEP84cM8mZF/ISaIznD6YE75k7gNu4jivazccJKP+mblk61ZJ1tXW8EZGeiQtCRilxfA7IAAqtYNVNy+d7Vh0zr9tc/yJ90oKceY1LUYkdK3g6kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1J/6TyCw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E418C433F1;
-	Tue, 20 Feb 2024 21:26:32 +0000 (UTC)
+	 MIME-Version; b=ow0/5jLeBamYzEsrt4O6EscXzfLZNuuhh9wjJX6ScAe6Xr7Z9AMCFxNrAxE+/k7Nr1OlpFgRvIn2TBsD/IyDjZM3xWQGK5bgGJWpN+f2nrTRttKRMGJ6lJS8OznF7Jru8rXPha0182BYoKudPnVIIrdv1Ru8Jnek19g073hRy/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EDnPvKqV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 746ECC433C7;
+	Tue, 20 Feb 2024 21:12:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464392;
-	bh=FIbepJBWSRKf5unE36h3DD75ahtBKpuS1TolINuAyPI=;
+	s=korg; t=1708463529;
+	bh=1mjzOXpxe694iedR063Nen99IAxmDtqoTWt0ydiRwM0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1J/6TyCwyGJx098g/tyY985xOe77Z4mUtFGrf4q5rSBUVd4u+0JhSiZqOUdS0hY8E
-	 29DqF4mHTcpdydTa3LBZhBMechHxMqgilJKKF7c09Gptf+E0ekimg+/DKv4c5waFOc
-	 Jb1TtttfvHZ4jWZ5SOu1s0kYJXOF41xctwYUSzxM=
+	b=EDnPvKqVQ3KYtAWGdFsnruXpT8o0vN7D9sC8yGjmpuvGY12qtgzGFv8YPweGA8/5K
+	 40adoljLkL5bglTZACt0tp+2vX0qWYR3AS0ldzo3wEIbGLb3vQVuhu7g+8bHeIwK7n
+	 jOfn5rdsmuxJdc/4VmDrS6+A5Ukdk8Lv/QxmFab4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.7 011/309] btrfs: forbid deleting live subvol qgroup
+	Ivan Vecera <ivecera@redhat.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 6.6 054/331] i40e: Fix waiting for queues of all VSIs to be disabled
 Date: Tue, 20 Feb 2024 21:52:50 +0100
-Message-ID: <20240220205633.487299950@linuxfoundation.org>
+Message-ID: <20240220205639.287278003@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: Ivan Vecera <ivecera@redhat.com>
 
-commit a8df35619948bd8363d330c20a90c9a7fbff28c0 upstream.
+[ Upstream commit c73729b64bb692186da080602cd13612783f52ac ]
 
-If a subvolume still exists, forbid deleting its qgroup 0/subvolid.
-This behavior generally leads to incorrect behavior in squotas and
-doesn't have a legitimate purpose.
+The function i40e_pf_wait_queues_disabled() iterates all PF's VSIs
+up to 'pf->hw.func_caps.num_vsis' but this is incorrect because
+the real number of VSIs can be up to 'pf->num_alloc_vsi' that
+can be higher. Fix this loop.
 
-Fixes: cecbb533b5fc ("btrfs: record simple quota deltas in delayed refs")
-CC: stable@vger.kernel.org # 5.4+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 69129dc39fac ("i40e: Modify Tx disable wait flow in case of DCB reconfiguration")
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/qgroup.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/net/ethernet/intel/i40e/i40e_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -1736,6 +1736,15 @@ out:
- 	return ret;
- }
- 
-+static bool qgroup_has_usage(struct btrfs_qgroup *qgroup)
-+{
-+	return (qgroup->rfer > 0 || qgroup->rfer_cmpr > 0 ||
-+		qgroup->excl > 0 || qgroup->excl_cmpr > 0 ||
-+		qgroup->rsv.values[BTRFS_QGROUP_RSV_DATA] > 0 ||
-+		qgroup->rsv.values[BTRFS_QGROUP_RSV_META_PREALLOC] > 0 ||
-+		qgroup->rsv.values[BTRFS_QGROUP_RSV_META_PERTRANS] > 0);
-+}
-+
- int btrfs_remove_qgroup(struct btrfs_trans_handle *trans, u64 qgroupid)
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index aad39ebff4ab..9d37c0374c75 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -5351,7 +5351,7 @@ static int i40e_pf_wait_queues_disabled(struct i40e_pf *pf)
  {
- 	struct btrfs_fs_info *fs_info = trans->fs_info;
-@@ -1755,6 +1764,11 @@ int btrfs_remove_qgroup(struct btrfs_tra
- 		goto out;
- 	}
+ 	int v, ret = 0;
  
-+	if (is_fstree(qgroupid) && qgroup_has_usage(qgroup)) {
-+		ret = -EBUSY;
-+		goto out;
-+	}
-+
- 	/* Check if there are no children of this qgroup */
- 	if (!list_empty(&qgroup->members)) {
- 		ret = -EBUSY;
+-	for (v = 0; v < pf->hw.func_caps.num_vsis; v++) {
++	for (v = 0; v < pf->num_alloc_vsi; v++) {
+ 		if (pf->vsi[v]) {
+ 			ret = i40e_vsi_wait_queues_disabled(pf->vsi[v]);
+ 			if (ret)
+-- 
+2.43.0
+
 
 
 
