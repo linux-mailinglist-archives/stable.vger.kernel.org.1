@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-21118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D49085C734
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:10:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FF6485C70C
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:08:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32D171F227CF
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:10:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B86D51F228DC
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:08:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34428152E02;
-	Tue, 20 Feb 2024 21:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 205B31509A5;
+	Tue, 20 Feb 2024 21:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ERwy2sjG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eGOSdkrM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8B71152DF9;
-	Tue, 20 Feb 2024 21:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D232414AD15;
+	Tue, 20 Feb 2024 21:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463410; cv=none; b=k7lNciXxEkvpSqzLfLtGIK4t+OK/4UptJwqwNaSykZ9L+DhBl7j/UekC920TH03HMIIs9x3zNtMVm/MPIDtegmNbFnfsymUXFHT8Nm8igwB47xNdw6zgXPyIU8GRlTLXb+MoEADlViCSST+fNW1WnYBACqKB7ME3ER9ymVGHrBM=
+	t=1708463283; cv=none; b=pzW/Z20XK3LcysFbpAdC4ak93XuTwR0tMtiZbBp2s4CRMv+bHWddg9ORx2ixbz4JvpDtlEmb96jc1WskzdUWv5YvDoWF6HkktisuypSkArVhEfetvd38MO5i33PybpaITfgvy8iRQzpXZ18HuhKWHy7NpMVvv54d1rOfHfiR0QE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463410; c=relaxed/simple;
-	bh=Fm5nyNiQhAHEoqroFUFCfugFa6IubF/aLZ0+sIskEdQ=;
+	s=arc-20240116; t=1708463283; c=relaxed/simple;
+	bh=Vrp6a65B+ek3dn/R05vNshr6BCsuaiRLCEPHWxKZg3E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UCrkn1FB+fwjSUeGNcrFx7EAn7AYUXljLyfpPvKbMSrciZeo4ZP7U3rL5fPkIMMVZc82ZPHtsrW6m2PDXC7/tQ3khZAKjBsqPq6qvyw+4WUM524sBhMubXrnuUynrL6Fbt1mgtKm/0m4C5lkKALz2iKiZtrGVmE2DQBE9Z3/VaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ERwy2sjG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2237AC433F1;
-	Tue, 20 Feb 2024 21:10:07 +0000 (UTC)
+	 MIME-Version; b=WfNjYp/Yc3Z84ZjmcM1OasoOwMuSsua7zzRuHBYpfOJ6R1Y59YQ2zBBBandAz4m3mNsrJmh7khJcWQWekSPfbMn0D55XrP7VhGkneobsAnJ/deXWRRCRe2SENOOolxXRnjOu+5/KBsBTZVlhXEYEuxL8wGKZDsBD6MjxsHcIdRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eGOSdkrM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A9A1C433F1;
+	Tue, 20 Feb 2024 21:08:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463408;
-	bh=Fm5nyNiQhAHEoqroFUFCfugFa6IubF/aLZ0+sIskEdQ=;
+	s=korg; t=1708463283;
+	bh=Vrp6a65B+ek3dn/R05vNshr6BCsuaiRLCEPHWxKZg3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ERwy2sjGYXXNg2sKX+1d/Dr8XMlijlWqtJHgUNY1HkV7EsmSmnzt4rnsCFpZi4dxo
-	 IXlCM+AXZWUpT3rsTU8E0dJpuZjvNphhO/F2jhmDWyusVr1rajG0VwphfBYP+VmvJX
-	 VCj+/2rx2/5TfI3Q3fM7ceY6L2WY0a237gEzeues=
+	b=eGOSdkrMIvigsT/YXSnxTwxT+TA4CuF9rl4R24RYfTQWYwEDFmU1sj3il9OFaXXqY
+	 mieh/Y4xp+6fErqMOndLIbq8l0cVH+NeOVkRGth4Jus/kKLhJddQ/n3budPOiZNCoA
+	 JHLU3cHGGQpPA+RO1ycHdG7KNmvOoN/HsRQRKzDY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 035/331] selftests: forwarding: Suppress grep warnings
-Date: Tue, 20 Feb 2024 21:52:31 +0100
-Message-ID: <20240220205638.699618769@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 193/197] net: prevent mss overflow in skb_segment()
+Date: Tue, 20 Feb 2024 21:52:32 +0100
+Message-ID: <20240220204846.856774520@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
+References: <20240220204841.073267068@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +63,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit dd6b34589441f2ad4698dd88a664811550148b41 ]
+commit 23d05d563b7e7b0314e65c8e882bc27eac2da8e7 upstream.
 
-Suppress the following grep warnings:
+Once again syzbot is able to crash the kernel in skb_segment() [1]
 
-[...]
-INFO: # Port group entries configuration tests - (*, G)
-TEST: Common port group entries configuration tests (IPv4 (*, G))   [ OK ]
-TEST: Common port group entries configuration tests (IPv6 (*, G))   [ OK ]
-grep: warning: stray \ before /
-grep: warning: stray \ before /
-grep: warning: stray \ before /
-TEST: IPv4 (*, G) port group entries configuration tests            [ OK ]
-grep: warning: stray \ before /
-grep: warning: stray \ before /
-grep: warning: stray \ before /
-TEST: IPv6 (*, G) port group entries configuration tests            [ OK ]
-[...]
+GSO_BY_FRAGS is a forbidden value, but unfortunately the following
+computation in skb_segment() can reach it quite easily :
 
-They do not fail the test, but do clutter the output.
+	mss = mss * partial_segs;
 
-Fixes: b6d00da08610 ("selftests: forwarding: Add bridge MDB test")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://lore.kernel.org/r/20240208155529.1199729-4-idosch@nvidia.com
+65535 = 3 * 5 * 17 * 257, so many initial values of mss can lead to
+a bad final result.
+
+Make sure to limit segmentation so that the new mss value is smaller
+than GSO_BY_FRAGS.
+
+[1]
+
+general protection fault, probably for non-canonical address 0xdffffc000000000e: 0000 [#1] PREEMPT SMP KASAN
+KASAN: null-ptr-deref in range [0x0000000000000070-0x0000000000000077]
+CPU: 1 PID: 5079 Comm: syz-executor993 Not tainted 6.7.0-rc4-syzkaller-00141-g1ae4cd3cbdd0 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/10/2023
+RIP: 0010:skb_segment+0x181d/0x3f30 net/core/skbuff.c:4551
+Code: 83 e3 02 e9 fb ed ff ff e8 90 68 1c f9 48 8b 84 24 f8 00 00 00 48 8d 78 70 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <0f> b6 04 02 84 c0 74 08 3c 03 0f 8e 8a 21 00 00 48 8b 84 24 f8 00
+RSP: 0018:ffffc900043473d0 EFLAGS: 00010202
+RAX: dffffc0000000000 RBX: 0000000000010046 RCX: ffffffff886b1597
+RDX: 000000000000000e RSI: ffffffff886b2520 RDI: 0000000000000070
+RBP: ffffc90004347578 R08: 0000000000000005 R09: 000000000000ffff
+R10: 000000000000ffff R11: 0000000000000002 R12: ffff888063202ac0
+R13: 0000000000010000 R14: 000000000000ffff R15: 0000000000000046
+FS: 0000555556e7e380(0000) GS:ffff8880b9900000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000020010000 CR3: 0000000027ee2000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+<TASK>
+udp6_ufo_fragment+0xa0e/0xd00 net/ipv6/udp_offload.c:109
+ipv6_gso_segment+0x534/0x17e0 net/ipv6/ip6_offload.c:120
+skb_mac_gso_segment+0x290/0x610 net/core/gso.c:53
+__skb_gso_segment+0x339/0x710 net/core/gso.c:124
+skb_gso_segment include/net/gso.h:83 [inline]
+validate_xmit_skb+0x36c/0xeb0 net/core/dev.c:3626
+__dev_queue_xmit+0x6f3/0x3d60 net/core/dev.c:4338
+dev_queue_xmit include/linux/netdevice.h:3134 [inline]
+packet_xmit+0x257/0x380 net/packet/af_packet.c:276
+packet_snd net/packet/af_packet.c:3087 [inline]
+packet_sendmsg+0x24c6/0x5220 net/packet/af_packet.c:3119
+sock_sendmsg_nosec net/socket.c:730 [inline]
+__sock_sendmsg+0xd5/0x180 net/socket.c:745
+__sys_sendto+0x255/0x340 net/socket.c:2190
+__do_sys_sendto net/socket.c:2202 [inline]
+__se_sys_sendto net/socket.c:2198 [inline]
+__x64_sys_sendto+0xe0/0x1b0 net/socket.c:2198
+do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+do_syscall_64+0x40/0x110 arch/x86/entry/common.c:83
+entry_SYSCALL_64_after_hwframe+0x63/0x6b
+RIP: 0033:0x7f8692032aa9
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 d1 19 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fff8d685418 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007f8692032aa9
+RDX: 0000000000010048 RSI: 00000000200000c0 RDI: 0000000000000003
+RBP: 00000000000f4240 R08: 0000000020000540 R09: 0000000000000014
+R10: 0000000000000000 R11: 0000000000000246 R12: 00007fff8d685480
+R13: 0000000000000001 R14: 00007fff8d685480 R15: 0000000000000003
+</TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:skb_segment+0x181d/0x3f30 net/core/skbuff.c:4551
+Code: 83 e3 02 e9 fb ed ff ff e8 90 68 1c f9 48 8b 84 24 f8 00 00 00 48 8d 78 70 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <0f> b6 04 02 84 c0 74 08 3c 03 0f 8e 8a 21 00 00 48 8b 84 24 f8 00
+RSP: 0018:ffffc900043473d0 EFLAGS: 00010202
+RAX: dffffc0000000000 RBX: 0000000000010046 RCX: ffffffff886b1597
+RDX: 000000000000000e RSI: ffffffff886b2520 RDI: 0000000000000070
+RBP: ffffc90004347578 R08: 0000000000000005 R09: 000000000000ffff
+R10: 000000000000ffff R11: 0000000000000002 R12: ffff888063202ac0
+R13: 0000000000010000 R14: 000000000000ffff R15: 0000000000000046
+FS: 0000555556e7e380(0000) GS:ffff8880b9900000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000020010000 CR3: 0000000027ee2000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+
+Fixes: 3953c46c3ac7 ("sk_buff: allow segmenting based on frag sizes")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://lore.kernel.org/r/20231212164621.4131800-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/forwarding/bridge_mdb.sh | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/core/skbuff.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/forwarding/bridge_mdb.sh b/tools/testing/selftests/net/forwarding/bridge_mdb.sh
-index ebeb43f6606c..a3678dfe5848 100755
---- a/tools/testing/selftests/net/forwarding/bridge_mdb.sh
-+++ b/tools/testing/selftests/net/forwarding/bridge_mdb.sh
-@@ -329,7 +329,7 @@ __cfg_test_port_ip_star_g()
- 
- 	bridge -d -s mdb get dev br0 grp $grp vid 10 | grep -q " 0.00"
- 	check_err $? "(*, G) \"permanent\" entry has a pending group timer"
--	bridge -d -s mdb get dev br0 grp $grp vid 10 | grep -q "\/0.00"
-+	bridge -d -s mdb get dev br0 grp $grp vid 10 | grep -q "/0.00"
- 	check_err $? "\"permanent\" source entry has a pending source timer"
- 
- 	bridge mdb del dev br0 port $swp1 grp $grp vid 10
-@@ -346,7 +346,7 @@ __cfg_test_port_ip_star_g()
- 
- 	bridge -d -s mdb get dev br0 grp $grp vid 10 | grep -q " 0.00"
- 	check_fail $? "(*, G) EXCLUDE entry does not have a pending group timer"
--	bridge -d -s mdb get dev br0 grp $grp vid 10 | grep -q "\/0.00"
-+	bridge -d -s mdb get dev br0 grp $grp vid 10 | grep -q "/0.00"
- 	check_err $? "\"blocked\" source entry has a pending source timer"
- 
- 	bridge mdb del dev br0 port $swp1 grp $grp vid 10
-@@ -363,7 +363,7 @@ __cfg_test_port_ip_star_g()
- 
- 	bridge -d -s mdb get dev br0 grp $grp vid 10 | grep -q " 0.00"
- 	check_err $? "(*, G) INCLUDE entry has a pending group timer"
--	bridge -d -s mdb get dev br0 grp $grp vid 10 | grep -q "\/0.00"
-+	bridge -d -s mdb get dev br0 grp $grp vid 10 | grep -q "/0.00"
- 	check_fail $? "Source entry does not have a pending source timer"
- 
- 	bridge mdb del dev br0 port $swp1 grp $grp vid 10
--- 
-2.43.0
-
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -4213,8 +4213,9 @@ struct sk_buff *skb_segment(struct sk_bu
+ 		/* GSO partial only requires that we trim off any excess that
+ 		 * doesn't fit into an MSS sized block, so take care of that
+ 		 * now.
++		 * Cap len to not accidentally hit GSO_BY_FRAGS.
+ 		 */
+-		partial_segs = len / mss;
++		partial_segs = min(len, GSO_BY_FRAGS - 1U) / mss;
+ 		if (partial_segs > 1)
+ 			mss *= partial_segs;
+ 		else
 
 
 
