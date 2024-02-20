@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-21497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13E0C85C929
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:30:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AE4085C7CD
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:16:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC90A1F227B9
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:30:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBD591C221CB
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:16:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07A75151CD9;
-	Tue, 20 Feb 2024 21:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 733E2151CF3;
+	Tue, 20 Feb 2024 21:16:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lfaLu2By"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UlbsQMSz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B947614A4E6;
-	Tue, 20 Feb 2024 21:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30235151CED;
+	Tue, 20 Feb 2024 21:16:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464603; cv=none; b=Dz7vqaznigV9tLjBO7klFyKlJeVcU7bPhpNQtNrNeuS7ahdmRcfWyiFEoovKMd/My4CM3HvuKpgFOdUqjQRd/BvIAZZXzi5e4Hb4SYLtxfjOvnwhVSszO8tbq2qf94Ek5CQx/z0fWWfbpeuj0l+nCJOl2gWL3lkJDd7M13hvY2U=
+	t=1708463784; cv=none; b=LBjrojfAh527QO+dBzfE9E6TlHhOt1KRxEmWH3BAZFRPWoOMlDA2FfdNuK35WwpcQ2/x+JiGEcODce5AcLpx+QoMxcCu155ciPx+Adj3LxdL5WzsUOcxZ+jtyMUidzvAWklkEeJhwwhwkF6TZD89wGpJBCORWwd0POM28Foif74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464603; c=relaxed/simple;
-	bh=00TqylvyRWTS9gLKE5sZ6RkVUIsZ2ipitEbA6PKSvu0=;
+	s=arc-20240116; t=1708463784; c=relaxed/simple;
+	bh=hkoJW2chKhDjtol2L55aT7UZF+IWk4VIzfN3suAxsJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nh4neWIurXhmgJKbMECq4ev+hY+Fr8PkcsCDk8BRf7IPHauP/5nWvVD3w3cx57wvXqKWXbObrdFlHe756CmiNFptJreEwE88O5Rrj2Ty7MbWbIenjaO7wdW0DWki3MQ8L6sE+L0eF0TU+4LGb2FucAEbNor/6nr4Y8SLNDTHhEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lfaLu2By; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20A41C433F1;
-	Tue, 20 Feb 2024 21:30:02 +0000 (UTC)
+	 MIME-Version; b=l3JX6se7XjtlaCyQ333h7vZdJjDhnCHK/YlrVKr/JABDFRvu/KbhdZkgd2hnvViIK2VV+XRGuBbkmdXS6ut2F/HxX10Skzef/fA3gvGg45F4+x0nTlTJJrwDTb5ovRzYs3/7391VgHLbaRUNdofYpNzEUEN7Y2vK986AMSFPxQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UlbsQMSz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACE57C433F1;
+	Tue, 20 Feb 2024 21:16:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464603;
-	bh=00TqylvyRWTS9gLKE5sZ6RkVUIsZ2ipitEbA6PKSvu0=;
+	s=korg; t=1708463784;
+	bh=hkoJW2chKhDjtol2L55aT7UZF+IWk4VIzfN3suAxsJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lfaLu2ByDhu+6vVsDU9VzuDSwHCiNCDLzfNfuUSEiDa6iz/hw3v2PRG2OdteGhl8D
-	 Mr+relgqJx3Xj/aO0eM3yINf9R/poSO5yRY+pyh07aTynlk2CAY+RTopQ9+jUTwevU
-	 do69WWfOSjGyZNNgRnMakKCupvcVbynYoen80/5E=
+	b=UlbsQMSzURFR60Iiu3V6T2EI6988/T2hLuuXZphGrfdW5m/kzpgl+imDYy7cf2kIe
+	 G55hUDjYUKm74yTAWp/XAPFBVYebU7sNA/15dfhzQxzZfcZiv9SlTgzvrosd9b6k7N
+	 5VyOETvDDkQUGo0nDiyuOOadneX73FmdillDdr20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.7 078/309] parisc: Prevent hung tasks when printing inventory on serial console
-Date: Tue, 20 Feb 2024 21:53:57 +0100
-Message-ID: <20240220205635.644151716@linuxfoundation.org>
+	Zhenyu Zhang <zhenyzha@redhat.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Sebastian Ott <sebott@redhat.com>,
+	Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Subject: [PATCH 6.6 122/331] drm/virtio: Set segment size for virtio_gpu device
+Date: Tue, 20 Feb 2024 21:53:58 +0100
+Message-ID: <20240220205641.436610282@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,37 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Sebastian Ott <sebott@redhat.com>
 
-commit c8708d758e715c3824a73bf0cda97292b52be44d upstream.
+commit 9c64e749cebd9c2d3d55261530a98bcccb83b950 upstream.
 
-Printing the inventory on a serial console can be quite slow and thus may
-trigger the hung task detector (CONFIG_DETECT_HUNG_TASK=y) and possibly
-reboot the machine. Adding a cond_resched() prevents this.
+Set the segment size of the virtio_gpu device to the value
+used by the drm helpers when allocating sg lists to fix the
+following complaint from DMA_API debug code:
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: <stable@vger.kernel.org> # v6.0+
+DMA-API: virtio-pci 0000:07:00.0: mapping sg segment longer than
+device claims to support [len=262144] [max=65536]
+
+Cc: stable@vger.kernel.org
+Tested-by: Zhenyu Zhang <zhenyzha@redhat.com>
+Acked-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Signed-off-by: Sebastian Ott <sebott@redhat.com>
+Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/7258a4cc-da16-5c34-a042-2a23ee396d56@redhat.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/kernel/drivers.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/virtio/virtgpu_drv.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/parisc/kernel/drivers.c
-+++ b/arch/parisc/kernel/drivers.c
-@@ -1004,6 +1004,9 @@ static __init int qemu_print_iodc_data(s
+--- a/drivers/gpu/drm/virtio/virtgpu_drv.c
++++ b/drivers/gpu/drm/virtio/virtgpu_drv.c
+@@ -94,6 +94,7 @@ static int virtio_gpu_probe(struct virti
+ 			goto err_free;
+ 	}
  
- 	pr_info("\n");
- 
-+	/* Prevent hung task messages when printing on serial console */
-+	cond_resched();
-+
- 	pr_info("#define HPA_%08lx_DESCRIPTION \"%s\"\n",
- 		hpa, parisc_hardware_description(&dev->id));
- 
++	dma_set_max_seg_size(dev->dev, dma_max_mapping_size(dev->dev) ?: UINT_MAX);
+ 	ret = virtio_gpu_init(vdev, dev);
+ 	if (ret)
+ 		goto err_free;
 
 
 
