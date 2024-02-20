@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-21508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A14785C934
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:30:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66F7D85C7B8
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:16:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81A3BB2095B
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:30:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C6FD1F26A82
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:16:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE6E3151CD6;
-	Tue, 20 Feb 2024 21:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C3F0151CFA;
+	Tue, 20 Feb 2024 21:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FOxKPGJP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QTMZlQnn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C58414A4D2;
-	Tue, 20 Feb 2024 21:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 596D7151CD6;
+	Tue, 20 Feb 2024 21:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464638; cv=none; b=a0TRUSYJXuD0JhtaJqk8Qy2qSNHU/1B94/6BdMZKgJCX4etBRk+RAyYm9lr4J1UwoXSyGT5sf0i1Mprx85BrGtLSXr8x0mVxO/kwbk3enOoPUPwtOKWRbwMLm3m0bjDbCrtvO9nkYAcsBYZ4WchPCzqAebYIbwwtLyJ2cmIKxrM=
+	t=1708463717; cv=none; b=lJjZ5KpgsvHh9bUH2VPTlhDGHN6MHPRL69mzU9EiwaXFUKVAtEyUNrDyhsjHbEmey+UnbKMMCivn5/b/TIjWwGSvu4JRkDX1hSJ8d5wY2xXjU6Ka+bhoGR5LxCKQzkarM2gKgEkP3kHvq6fkS40ZG5754rNhDGqb1sS8CbgmahY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464638; c=relaxed/simple;
-	bh=r3oJjUBdTzGPHKTiNybDHQijBlWBgbU9E6xVyqhVh48=;
+	s=arc-20240116; t=1708463717; c=relaxed/simple;
+	bh=54iJexPEea6UK5+m72P/4J1dKCXyyArwWyaMV2TkPMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y8i6ETvpg8OObN/wZCZR3u0Wv40+C1sv1mIYkR9uuH1Si7xALLC44hrKP3hE8YDP2jTTLb5mTCl85t4tjzAj78ijj1fkrYlrDnLfE81c4rMQMpd/rf9QE8/PZzi/wI2D/L7bd19g39W2RQTBvh4/3ttsSarwqMYScZdG5fh1VZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FOxKPGJP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D5C5C433C7;
-	Tue, 20 Feb 2024 21:30:37 +0000 (UTC)
+	 MIME-Version; b=XoDFUHVj5qPTG9HItR5wsPrj+BWfio07qdQan2ldyPSeL4fg4QLIWh7AW9n2XWvnTsNSJecYS7gS3fzYsJjMDgAByX1TJQN5yjqKCYRH7aJG/P8HZ6d+odjKGKgfAMt881gd93kEos0mEttm5q5qgLS0xRjpk2anfChTr/j9DK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QTMZlQnn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 811C1C433C7;
+	Tue, 20 Feb 2024 21:15:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464638;
-	bh=r3oJjUBdTzGPHKTiNybDHQijBlWBgbU9E6xVyqhVh48=;
+	s=korg; t=1708463716;
+	bh=54iJexPEea6UK5+m72P/4J1dKCXyyArwWyaMV2TkPMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FOxKPGJP/YEezFwAGQIwo+W3L92u4TP61LFj1WMVwWEhR3K4H3YsvFHX1HSfxBYYu
-	 YIKquFwRXWvBIEDgAPdIljiaeisHg/BPUEYNk4L/PbOUCMgM3CfSAmixZbeMJEql7b
-	 G4lC0YFWH0MGK9tLhdUMGlx5hbb4OQI0jbg4uJDg=
+	b=QTMZlQnneZ0i1pN1dtAupO5dUjWYR8PVGCww1YnbeD5+uLx2bPAwQuQAyd63O6dcU
+	 nv6JWBuwnUHVJCDMyVFCSVT+ytR1b/U5KzBTZlHzHR996p9U21MQdXnyOsXNML8d96
+	 NsKrUntWd5npnNqz7wZju+JnDYcZZy0DiMUjfdqY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@seco.com>
-Subject: [PATCH 6.7 088/309] usb: ulpi: Fix debugfs directory leak
+	syzbot+3ae0a3f42c84074b7c8e@syzkaller.appspotmail.com,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.6 131/331] net: hsr: remove WARN_ONCE() in send_hsr_supervision_frame()
 Date: Tue, 20 Feb 2024 21:54:07 +0100
-Message-ID: <20240220205635.955514837@linuxfoundation.org>
+Message-ID: <20240220205641.694610474@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@seco.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-commit 3caf2b2ad7334ef35f55b95f3e1b138c6f77b368 upstream.
+commit 37e8c97e539015637cb920d3e6f1e404f707a06e upstream.
 
-The ULPI per-device debugfs root is named after the ulpi device's
-parent, but ulpi_unregister_interface tries to remove a debugfs
-directory named after the ulpi device itself. This results in the
-directory sticking around and preventing subsequent (deferred) probes
-from succeeding. Change the directory name to match the ulpi device.
+Syzkaller reported [1] hitting a warning after failing to allocate
+resources for skb in hsr_init_skb(). Since a WARN_ONCE() call will
+not help much in this case, it might be prudent to switch to
+netdev_warn_once(). At the very least it will suppress syzkaller
+reports such as [1].
 
-Fixes: bd0a0a024f2a ("usb: ulpi: Add debugfs support")
+Just in case, use netdev_warn_once() in send_prp_supervision_frame()
+for similar reasons.
+
+[1]
+HSR: Could not send supervision frame
+WARNING: CPU: 1 PID: 85 at net/hsr/hsr_device.c:294 send_hsr_supervision_frame+0x60a/0x810 net/hsr/hsr_device.c:294
+RIP: 0010:send_hsr_supervision_frame+0x60a/0x810 net/hsr/hsr_device.c:294
+...
+Call Trace:
+ <IRQ>
+ hsr_announce+0x114/0x370 net/hsr/hsr_device.c:382
+ call_timer_fn+0x193/0x590 kernel/time/timer.c:1700
+ expire_timers kernel/time/timer.c:1751 [inline]
+ __run_timers+0x764/0xb20 kernel/time/timer.c:2022
+ run_timer_softirq+0x58/0xd0 kernel/time/timer.c:2035
+ __do_softirq+0x21a/0x8de kernel/softirq.c:553
+ invoke_softirq kernel/softirq.c:427 [inline]
+ __irq_exit_rcu kernel/softirq.c:632 [inline]
+ irq_exit_rcu+0xb7/0x120 kernel/softirq.c:644
+ sysvec_apic_timer_interrupt+0x95/0xb0 arch/x86/kernel/apic/apic.c:1076
+ </IRQ>
+ <TASK>
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:649
+...
+
+This issue is also found in older kernels (at least up to 5.10).
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Sean Anderson <sean.anderson@seco.com>
-Link: https://lore.kernel.org/r/20240126223800.2864613-1-sean.anderson@seco.com
+Reported-by: syzbot+3ae0a3f42c84074b7c8e@syzkaller.appspotmail.com
+Fixes: 121c33b07b31 ("net: hsr: introduce common code for skb initialization")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/common/ulpi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/hsr/hsr_device.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/common/ulpi.c
-+++ b/drivers/usb/common/ulpi.c
-@@ -301,7 +301,7 @@ static int ulpi_register(struct device *
- 		return ret;
+--- a/net/hsr/hsr_device.c
++++ b/net/hsr/hsr_device.c
+@@ -291,7 +291,7 @@ static void send_hsr_supervision_frame(s
+ 
+ 	skb = hsr_init_skb(master);
+ 	if (!skb) {
+-		WARN_ONCE(1, "HSR: Could not send supervision frame\n");
++		netdev_warn_once(master->dev, "HSR: Could not send supervision frame\n");
+ 		return;
  	}
  
--	root = debugfs_create_dir(dev_name(dev), ulpi_root);
-+	root = debugfs_create_dir(dev_name(&ulpi->dev), ulpi_root);
- 	debugfs_create_file("regs", 0444, root, ulpi, &ulpi_regs_fops);
+@@ -338,7 +338,7 @@ static void send_prp_supervision_frame(s
  
- 	dev_dbg(&ulpi->dev, "registered ULPI PHY: vendor %04x, product %04x\n",
+ 	skb = hsr_init_skb(master);
+ 	if (!skb) {
+-		WARN_ONCE(1, "PRP: Could not send supervision frame\n");
++		netdev_warn_once(master->dev, "PRP: Could not send supervision frame\n");
+ 		return;
+ 	}
+ 
 
 
 
