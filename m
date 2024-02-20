@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-21205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F17E85C79F
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:14:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AB2085C90A
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:29:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 623BD1C21F73
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:14:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2553C284D26
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:29:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F74B151CC3;
-	Tue, 20 Feb 2024 21:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2408C152E00;
+	Tue, 20 Feb 2024 21:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZ5KP+9Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="odxemw9h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA2276C9C;
-	Tue, 20 Feb 2024 21:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D700214A4E6;
+	Tue, 20 Feb 2024 21:28:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463685; cv=none; b=T8sPP373YBUnzIHokK2ckoda1xkUl/LfX/QRkBGhuMgBxo+IEhB43Q0k6D721rM5w0Tm7gVST7jjQk4PbpJNAN21Omtj3mQJ66saWrG0ScSEZBHbOx3eLAOi54RLlU0B3YFgptjb+1lAk7K40tEJNK6Qded1CI2ZTlbzFgbVLcw=
+	t=1708464515; cv=none; b=kr0ASVBtYCxfCNn4mGHlO8M4e03NdwGR2dxpELNkP6DTub6spy1p7uMChtUXXugjzs1/K8Lf+5cYhUlAj6e2jCHIPAzoU5agUFd3AzCXmUbSFf3FFe3z92uNHDpS0P33S/S7PbgUiMewosk825/oKOeDWJyRp6IigWWGH1maSmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463685; c=relaxed/simple;
-	bh=QOeoZs1MW9HzUymSFi+a3ZeKX4hC2+TLa9g6TkyBZ+c=;
+	s=arc-20240116; t=1708464515; c=relaxed/simple;
+	bh=2IkZHqt9Qrbp5y54z8Z7ZOO8REqwiQ2nL5wrRIdYEa8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n9V0c5TkPum6QG+7BN2w6VY2lw8LZPkbI0jgmjQXWBhHDyzuhMQOqrWzsY7knevCWW5snnr1uLqcmLVZS4WXkz/xyXBYEgvAtJg/TU1dODhtKfKKWroWpOIT/VbyjdCxqqkfPUoInTvnbiaJ6PEcF0/SjyuHosKFHpvCa1icEC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZ5KP+9Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF488C433C7;
-	Tue, 20 Feb 2024 21:14:44 +0000 (UTC)
+	 MIME-Version; b=WEYU6b2R3o2KO++TioTKZYGr5nEeNCCHlaf5wfJ/C8x/OzPDS60d8PoLSHaf0qnoofuInB0elr4f+crVC5ShMEoKPWKIkXpJMft6SHBtnUWJgTC2nO01lReh6dC7lug48j2RfdHA/WjjdOCyU9X3Wsl3DBMjKQffB42aMK6Okyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=odxemw9h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47FA7C433F1;
+	Tue, 20 Feb 2024 21:28:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463685;
-	bh=QOeoZs1MW9HzUymSFi+a3ZeKX4hC2+TLa9g6TkyBZ+c=;
+	s=korg; t=1708464515;
+	bh=2IkZHqt9Qrbp5y54z8Z7ZOO8REqwiQ2nL5wrRIdYEa8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XZ5KP+9Q0fFd/lTMiEnHw5U9pXjhJwfYvGooob35Bh8TuqyyMJp67KIRyZJ/AKZMl
-	 7CQn+Uu7bUDrD//7UPKnci0x1/JBrttOklv3MXmYa2UjUt44qfTkGfYIzOZ/I+SHx6
-	 6GvTy1dZ0sJq0SDOHpVjFfXqiXeGoNJEvxSaWKAI=
+	b=odxemw9hHecY5rpkKLnFNCPe7agphrWDS1K7RdxnPhyBfWmFMHRNcdJ1BQesFp+vr
+	 yQ7eVdjcJml1Uh3K+0IgMXRe8+aZLnR5BI1a2g2PTHdEBD845j/m95DCOgXcwuwZR9
+	 rb6G3KM+3V3KlTkRuy4GjcPbw2QN3koPHOh+w/DA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	Zhen Lei <thunder.leizhen@huawei.com>,
+	valis <sec@valis.email>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 092/331] Revert "kobject: Remove redundant checks for whether ktype is NULL"
+Subject: [PATCH 6.7 049/309] tls: fix race between tx work scheduling and socket close
 Date: Tue, 20 Feb 2024 21:53:28 +0100
-Message-ID: <20240220205640.474362096@linuxfoundation.org>
+Message-ID: <20240220205634.727040027@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +65,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 3ca8fbabcceb8bfe44f7f50640092fd8f1de375c ]
+[ Upstream commit e01e3934a1b2d122919f73bc6ddbe1cdafc4bbdb ]
 
-This reverts commit 1b28cb81dab7c1eedc6034206f4e8d644046ad31.
+Similarly to previous commit, the submitting thread (recvmsg/sendmsg)
+may exit as soon as the async crypto handler calls complete().
+Reorder scheduling the work before calling complete().
+This seems more logical in the first place, as it's
+the inverse order of what the submitting thread will do.
 
-It is reported to cause problems, so revert it for now until the root
-cause can be found.
-
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Fixes: 1b28cb81dab7 ("kobject: Remove redundant checks for whether ktype is NULL")
-Cc: Zhen Lei <thunder.leizhen@huawei.com>
-Closes: https://lore.kernel.org/oe-lkp/202402071403.e302e33a-oliver.sang@intel.com
-Link: https://lore.kernel.org/r/2024020849-consensus-length-6264@gregkh
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: valis <sec@valis.email>
+Fixes: a42055e8d2c3 ("net/tls: Add support for async encryption of records for performance")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/kobject.c | 24 ++++++++++++++----------
- 1 file changed, 14 insertions(+), 10 deletions(-)
+ net/tls/tls_sw.c | 16 ++++++----------
+ 1 file changed, 6 insertions(+), 10 deletions(-)
 
-diff --git a/lib/kobject.c b/lib/kobject.c
-index 59dbcbdb1c91..72fa20f405f1 100644
---- a/lib/kobject.c
-+++ b/lib/kobject.c
-@@ -74,10 +74,12 @@ static int create_dir(struct kobject *kobj)
- 	if (error)
- 		return error;
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index 635305bebfef..9374a61cef00 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -447,7 +447,6 @@ static void tls_encrypt_done(void *data, int err)
+ 	struct tls_rec *rec = data;
+ 	struct scatterlist *sge;
+ 	struct sk_msg *msg_en;
+-	bool ready = false;
+ 	struct sock *sk;
  
--	error = sysfs_create_groups(kobj, ktype->default_groups);
--	if (error) {
--		sysfs_remove_dir(kobj);
--		return error;
-+	if (ktype) {
-+		error = sysfs_create_groups(kobj, ktype->default_groups);
-+		if (error) {
-+			sysfs_remove_dir(kobj);
-+			return error;
+ 	msg_en = &rec->msg_encrypted;
+@@ -483,19 +482,16 @@ static void tls_encrypt_done(void *data, int err)
+ 		/* If received record is at head of tx_list, schedule tx */
+ 		first_rec = list_first_entry(&ctx->tx_list,
+ 					     struct tls_rec, list);
+-		if (rec == first_rec)
+-			ready = true;
++		if (rec == first_rec) {
++			/* Schedule the transmission */
++			if (!test_and_set_bit(BIT_TX_SCHEDULED,
++					      &ctx->tx_bitmask))
++				schedule_delayed_work(&ctx->tx_work.work, 1);
 +		}
  	}
  
- 	/*
-@@ -589,7 +591,8 @@ static void __kobject_del(struct kobject *kobj)
- 	sd = kobj->sd;
- 	ktype = get_ktype(kobj);
+ 	if (atomic_dec_and_test(&ctx->encrypt_pending))
+ 		complete(&ctx->async_wait.completion);
+-
+-	if (!ready)
+-		return;
+-
+-	/* Schedule the transmission */
+-	if (!test_and_set_bit(BIT_TX_SCHEDULED, &ctx->tx_bitmask))
+-		schedule_delayed_work(&ctx->tx_work.work, 1);
+ }
  
--	sysfs_remove_groups(kobj, ktype->default_groups);
-+	if (ktype)
-+		sysfs_remove_groups(kobj, ktype->default_groups);
- 
- 	/* send "remove" if the caller did not do it but sent "add" */
- 	if (kobj->state_add_uevent_sent && !kobj->state_remove_uevent_sent) {
-@@ -666,6 +669,10 @@ static void kobject_cleanup(struct kobject *kobj)
- 	pr_debug("'%s' (%p): %s, parent %p\n",
- 		 kobject_name(kobj), kobj, __func__, kobj->parent);
- 
-+	if (t && !t->release)
-+		pr_debug("'%s' (%p): does not have a release() function, it is broken and must be fixed. See Documentation/core-api/kobject.rst.\n",
-+			 kobject_name(kobj), kobj);
-+
- 	/* remove from sysfs if the caller did not do it */
- 	if (kobj->state_in_sysfs) {
- 		pr_debug("'%s' (%p): auto cleanup kobject_del\n",
-@@ -676,13 +683,10 @@ static void kobject_cleanup(struct kobject *kobj)
- 		parent = NULL;
- 	}
- 
--	if (t->release) {
-+	if (t && t->release) {
- 		pr_debug("'%s' (%p): calling ktype release\n",
- 			 kobject_name(kobj), kobj);
- 		t->release(kobj);
--	} else {
--		pr_debug("'%s' (%p): does not have a release() function, it is broken and must be fixed. See Documentation/core-api/kobject.rst.\n",
--			 kobject_name(kobj), kobj);
- 	}
- 
- 	/* free name if we allocated it */
-@@ -1056,7 +1060,7 @@ const struct kobj_ns_type_operations *kobj_child_ns_ops(const struct kobject *pa
- {
- 	const struct kobj_ns_type_operations *ops = NULL;
- 
--	if (parent && parent->ktype->child_ns_type)
-+	if (parent && parent->ktype && parent->ktype->child_ns_type)
- 		ops = parent->ktype->child_ns_type(parent);
- 
- 	return ops;
+ static int tls_encrypt_async_wait(struct tls_sw_context_tx *ctx)
 -- 
 2.43.0
 
