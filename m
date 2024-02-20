@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-21597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAA2085C98E
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:35:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9722A85C831
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:19:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75995284050
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:35:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C82DE1C22146
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:19:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58CCC151CEC;
-	Tue, 20 Feb 2024 21:35:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35B8E151CDC;
+	Tue, 20 Feb 2024 21:19:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D77drdcz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lB6VuqN8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14664151CCC;
-	Tue, 20 Feb 2024 21:35:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E73DA612D7;
+	Tue, 20 Feb 2024 21:19:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464913; cv=none; b=hWPJtvz4heWt9bJ3PFOq4XfHbCwa7LP3e5IDRILd3Cq8sc8IaZKdm+1z9lZvETRXHWVc/gyMJd04PBbXvDkeZgL0IkxkB93iJpyhqmPBU9NJqNSBjGE1oGonCfPgb12XEQ6aVeVMfXb82XxFLt/7fjmGXrYLgcEZLjRk8jZS0ac=
+	t=1708463947; cv=none; b=Uluwhu+ukd1Y/jGEey5erj+fH0NPYF50XwxaSQahOWxc2MDx//mMn+IQ0GcOr10G7AKOJHb5PZTHvj13N7fgYpVNKxYOaO5BwBUujd/vBy/Ho1P6F6eJgiERfWkXKYGzpDX/L11/qQ4T2rg3FLsXsmNjpfgpbrMnN45xPWGbKSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464913; c=relaxed/simple;
-	bh=gjVvIM056Yzhh/sprcngxjU57s0gL2mYOo3YtpaQj4U=;
+	s=arc-20240116; t=1708463947; c=relaxed/simple;
+	bh=q1QpKmlBWVOtxpqHAKh/uFbGik43O6BagFRDnGLkquc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JO9LSpvlVAW5HS0tNvbKXA5brbXZ35THDf4bIJvsfXei2/y5CxOuCg9GJEh+e3qCI1EpHVeBOzfEb9MPIUjVg7K3W4XPEk+4mRpX183GVT6a5N3KZL9WRbikc28EpP6y2OQbQyqWw9UD9C8KoMpJ8HDEGVTVtkMX91Ufv1F3sEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D77drdcz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9319EC433F1;
-	Tue, 20 Feb 2024 21:35:12 +0000 (UTC)
+	 MIME-Version; b=DWrK7JIOyd1LhtzQ+KfQKVNVXj5m3U11acpTIBIvmzhAHJxGia4m6dgu08BnFbwgjs63ba4fie8GAWUy36uImYII1iRoVBaj0tgUc0wSWkiswS8VObDicXlUnwOAguAc9EudAt3EYHlZCKTnlpzksT1at/tVhRV/AzMo+JqqDgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lB6VuqN8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66CA7C433C7;
+	Tue, 20 Feb 2024 21:19:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464912;
-	bh=gjVvIM056Yzhh/sprcngxjU57s0gL2mYOo3YtpaQj4U=;
+	s=korg; t=1708463946;
+	bh=q1QpKmlBWVOtxpqHAKh/uFbGik43O6BagFRDnGLkquc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D77drdczQJAiK5IxEJIDslqzY0lnM+/FAN6v+z06hQR0WlA//839GCPQdJIpHbAcQ
-	 xtJ9vqP6igcT5tyhrHj2v9vFqiP5gnOsNe3jKP85GM3cH2TyhNc+yb4wXWTA59p8dz
-	 gl28Q777wo23BRuXHdXNmvwuFVExwNoqj3h5cMXQ=
+	b=lB6VuqN8icjPzP7fW2aHnMIOPJSKQaUmJDplMBXjgZGxGLI2QGGCU98LWLSbFb2/Y
+	 GV0oWh8IkV8MpmuTDB+NL3+zhPj5IpfJqk90Hg0D9+pBKjX8PqMj9gsRiRgU1saBOQ
+	 HbG0HlUJ5rwLcJ2qYfbW0wTAACUEmgSN+pWycG8Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Chen <harperchen1110@gmail.com>,
-	xingwei lee <xrivendell7@gmail.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.7 159/309] ext4: fix double-free of blocks due to wrong extents moved_len
-Date: Tue, 20 Feb 2024 21:55:18 +0100
-Message-ID: <20240220205638.139859610@linuxfoundation.org>
+	Daniel Basilio <daniel.basilio@corigine.com>,
+	Louis Peens <louis.peens@corigine.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.6 203/331] nfp: use correct macro for LengthSelect in BAR config
+Date: Tue, 20 Feb 2024 21:55:19 +0100
+Message-ID: <20240220205644.031247833@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Daniel Basilio <daniel.basilio@corigine.com>
 
-commit 55583e899a5357308274601364741a83e78d6ac4 upstream.
+commit b3d4f7f2288901ed2392695919b3c0e24c1b4084 upstream.
 
-In ext4_move_extents(), moved_len is only updated when all moves are
-successfully executed, and only discards orig_inode and donor_inode
-preallocations when moved_len is not zero. When the loop fails to exit
-after successfully moving some extents, moved_len is not updated and
-remains at 0, so it does not discard the preallocations.
+The 1st and 2nd expansion BAR configuration registers are configured,
+when the driver starts up, in variables 'barcfg_msix_general' and
+'barcfg_msix_xpb', respectively. The 'LengthSelect' field is ORed in
+from bit 0, which is incorrect. The 'LengthSelect' field should
+start from bit 27.
 
-If the moved extents overlap with the preallocated extents, the
-overlapped extents are freed twice in ext4_mb_release_inode_pa() and
-ext4_process_freed_data() (as described in commit 94d7c16cbbbd ("ext4:
-Fix double-free of blocks with EXT4_IOC_MOVE_EXT")), and bb_free is
-incremented twice. Hence when trim is executed, a zero-division bug is
-triggered in mb_update_avg_fragment_size() because bb_free is not zero
-and bb_fragments is zero.
+This has largely gone un-noticed because
+NFP_PCIE_BAR_PCIE2CPP_LengthSelect_32BIT happens to be 0.
 
-Therefore, update move_len after each extent move to avoid the issue.
-
-Reported-by: Wei Chen <harperchen1110@gmail.com>
-Reported-by: xingwei lee <xrivendell7@gmail.com>
-Closes: https://lore.kernel.org/r/CAO4mrferzqBUnCag8R3m2zf897ts9UEuhjFQGPtODT92rYyR2Q@mail.gmail.com
-Fixes: fcf6b1b729bc ("ext4: refactor ext4_move_extents code base")
-CC:  <stable@vger.kernel.org> # 3.18
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240104142040.2835097-2-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 4cb584e0ee7d ("nfp: add CPP access core")
+Cc: stable@vger.kernel.org # 4.11+
+Signed-off-by: Daniel Basilio <daniel.basilio@corigine.com>
+Signed-off-by: Louis Peens <louis.peens@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/move_extent.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/netronome/nfp/nfpcore/nfp6000_pcie.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/fs/ext4/move_extent.c
-+++ b/fs/ext4/move_extent.c
-@@ -618,6 +618,7 @@ ext4_move_extents(struct file *o_filp, s
- 		goto out;
- 	o_end = o_start + len;
- 
-+	*moved_len = 0;
- 	while (o_start < o_end) {
- 		struct ext4_extent *ex;
- 		ext4_lblk_t cur_blk, next_blk;
-@@ -672,7 +673,7 @@ ext4_move_extents(struct file *o_filp, s
- 		 */
- 		ext4_double_up_write_data_sem(orig_inode, donor_inode);
- 		/* Swap original branches with new branches */
--		move_extent_per_page(o_filp, donor_inode,
-+		*moved_len += move_extent_per_page(o_filp, donor_inode,
- 				     orig_page_index, donor_page_index,
- 				     offset_in_page, cur_len,
- 				     unwritten, &ret);
-@@ -682,9 +683,6 @@ ext4_move_extents(struct file *o_filp, s
- 		o_start += cur_len;
- 		d_start += cur_len;
- 	}
--	*moved_len = o_start - orig_blk;
--	if (*moved_len > len)
--		*moved_len = len;
- 
- out:
- 	if (*moved_len) {
+--- a/drivers/net/ethernet/netronome/nfp/nfpcore/nfp6000_pcie.c
++++ b/drivers/net/ethernet/netronome/nfp/nfpcore/nfp6000_pcie.c
+@@ -537,11 +537,13 @@ static int enable_bars(struct nfp6000_pc
+ 	const u32 barcfg_msix_general =
+ 		NFP_PCIE_BAR_PCIE2CPP_MapType(
+ 			NFP_PCIE_BAR_PCIE2CPP_MapType_GENERAL) |
+-		NFP_PCIE_BAR_PCIE2CPP_LengthSelect_32BIT;
++		NFP_PCIE_BAR_PCIE2CPP_LengthSelect(
++			NFP_PCIE_BAR_PCIE2CPP_LengthSelect_32BIT);
+ 	const u32 barcfg_msix_xpb =
+ 		NFP_PCIE_BAR_PCIE2CPP_MapType(
+ 			NFP_PCIE_BAR_PCIE2CPP_MapType_BULK) |
+-		NFP_PCIE_BAR_PCIE2CPP_LengthSelect_32BIT |
++		NFP_PCIE_BAR_PCIE2CPP_LengthSelect(
++			NFP_PCIE_BAR_PCIE2CPP_LengthSelect_32BIT) |
+ 		NFP_PCIE_BAR_PCIE2CPP_Target_BaseAddress(
+ 			NFP_CPP_TARGET_ISLAND_XPB);
+ 	const u32 barcfg_explicit[4] = {
 
 
 
