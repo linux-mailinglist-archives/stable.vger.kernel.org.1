@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-21462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3522D85C906
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:29:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3518F85C798
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:14:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC159283F08
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:29:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 962FAB215BA
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:14:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33DC2152DF8;
-	Tue, 20 Feb 2024 21:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05DA151CCC;
+	Tue, 20 Feb 2024 21:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cm4Mw2we"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wcCJXBcE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E635F151CE9;
-	Tue, 20 Feb 2024 21:28:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACDE114AD15;
+	Tue, 20 Feb 2024 21:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464497; cv=none; b=tjuEOP0sG2CtbEyaIhn1+WUpywg+Dh4Fd/vbqsjFiWpvwe01LMGSWNEUcuqpzb9jbLG11lMbXbMiYye2cf+MPakScP0RzRteWiXi3mRmsMf73glTFzpwyv3quZTSzbUVzQ2RyK4a0G/XyZZ/GEbRs17QlTHf3WPlh19wVqzka+k=
+	t=1708463672; cv=none; b=h/c3i9ulIkB271spG2mh1klTk2QiV5YhFk6oLbGdiRDPolCCG3/10POJV2dCXcdL7qFHoMfFU93LSwOPto1AxcK5pxam96FzV80gLLjMtRbGT+p2tFKcDt9s8jktLDfLNoFGJitP3x8kOZc4iTShkAMYu9wYaC9VmWmiTckZAIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464497; c=relaxed/simple;
-	bh=XRJL2hMnxPkhHjb9ChkLNc+Z1aq+oeBKqb+I00lWzG8=;
+	s=arc-20240116; t=1708463672; c=relaxed/simple;
+	bh=2PRZuZPUOvEhhILWuCrRF6gUiArF7CU7T71AGEl8rxE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uInxWjoe4wdUyfUJUWmEdRuibvM26ZzCgJ6GkdwEhG5Sack4qvJTAmxQzGGpOKQaj75iYXGe20eN6HEIg5BcZACk0FobfnqvzPt2Z7cjG8gPlt2BRYBhH39rpLd/tHI5NpzPwHsvtAy7Nj+O6PPf1LqreejJpDMp8r5KMiUvVxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cm4Mw2we; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56334C433C7;
-	Tue, 20 Feb 2024 21:28:16 +0000 (UTC)
+	 MIME-Version; b=n4zfJKMFy5sqVZacc1SwvF3Qe7inVNyBofSVmSfaBslKxrrRVrQnftn5AIhADSgHBJ6T5HnlEDMi0SL6WMX+at1PpBv0pQw7hz3ivA7h3+QYOgr2VgtA21RjZ17Be328X0EY/xl66raK18CakJ8VxEX+sUd82o1ehcbU3zOVZkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wcCJXBcE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9B1AC433F1;
+	Tue, 20 Feb 2024 21:14:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464496;
-	bh=XRJL2hMnxPkhHjb9ChkLNc+Z1aq+oeBKqb+I00lWzG8=;
+	s=korg; t=1708463672;
+	bh=2PRZuZPUOvEhhILWuCrRF6gUiArF7CU7T71AGEl8rxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cm4Mw2weLnupWnFiFC3eH2pS12Xz4Vnb7xdU0sig05h3VlwF01T9zbcH4Yhsw6UJ2
-	 4oLkCdBLoJYMWe2RvKgOgV4KM9VCcVRff+dkV3yG5ateU5AqCxPWCSjqg4gVBZuq9S
-	 NwIwKYW0LcY/p72P4mjQivAp0pXgTe2rYh2nCUPI=
+	b=wcCJXBcERfRaQqjo7ZAj+pZiwq+D+XWiMG+R5a34RgEY9fBvjq1o3wldG+EO0mQCY
+	 2fQ7zv6N6zRJBbEt/mtlIjDD7Z3RWb9WkBrB200Iz1qn3bnJ7Ml7wfH+ReAnVgOibT
+	 YQHescqBr3/27m29BnrELraDxSed7gJIX+MvOpn4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	Saravana Kannan <saravanak@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 044/309] selftests: forwarding: Fix bridge locked port test flakiness
-Date: Tue, 20 Feb 2024 21:53:23 +0100
-Message-ID: <20240220205634.562784631@linuxfoundation.org>
+Subject: [PATCH 6.6 088/331] driver core: fw_devlink: Improve detection of overlapping cycles
+Date: Tue, 20 Feb 2024 21:53:24 +0100
+Message-ID: <20240220205640.355998217@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +62,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Saravana Kannan <saravanak@google.com>
 
-[ Upstream commit f97f1fcc96908c97a240ff6cb4474e155abfa0d7 ]
+[ Upstream commit 6442d79d880cf7a2fff18779265d657fef0cce4c ]
 
-The redirection test case fails in the netdev CI on debug kernels
-because an FDB entry is learned despite the presence of a tc filter that
-redirects incoming traffic [1].
+fw_devlink can detect most overlapping/intersecting cycles. However it was
+missing a few corner cases because of an incorrect optimization logic that
+tries to avoid repeating cycle detection for devices that are already
+marked as part of a cycle.
 
-I am unable to reproduce the failure locally, but I can see how it can
-happen given that learning is first enabled and only then the ingress tc
-filter is configured. On debug kernels the time window between these two
-operations is longer compared to regular kernels, allowing random
-packets to be transmitted and trigger learning.
+Here's an example provided by Xu Yang (edited for clarity):
 
-Fix by reversing the order and configure the ingress tc filter before
-enabling learning.
+                    usb
+                  +-----+
+   tcpc           |     |
+  +-----+         |  +--|
+  |     |----------->|EP|
+  |--+  |         |  +--|
+  |EP|<-----------|     |
+  |--+  |         |  B  |
+  |     |         +-----+
+  |  A  |            |
+  +-----+            |
+     ^     +-----+   |
+     |     |     |   |
+     +-----|  C  |<--+
+           |     |
+           +-----+
+           usb-phy
 
-[1]
-[...]
- # TEST: Locked port MAB redirect                                      [FAIL]
- # Locked entry created for redirected traffic
+Node A (tcpc) will be populated as device 1-0050.
+Node B (usb) will be populated as device 38100000.usb.
+Node C (usb-phy) will be populated as device 381f0040.usb-phy.
 
-Fixes: 38c43a1ce758 ("selftests: forwarding: Add test case for traffic redirection from a locked port")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://lore.kernel.org/r/20240208155529.1199729-5-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The description below uses the notation:
+consumer --> supplier
+child ==> parent
+
+1. Node C is populated as device C. No cycles detected because cycle
+   detection is only run when a fwnode link is converted to a device link.
+
+2. Node B is populated as device B. As we convert B --> C into a device
+   link we run cycle detection and find and mark the device link/fwnode
+   link cycle:
+   C--> A --> B.EP ==> B --> C
+
+3. Node A is populated as device A. As we convert C --> A into a device
+   link, we see it's already part of a cycle (from step 2) and don't run
+   cycle detection. Thus we miss detecting the cycle:
+   A --> B.EP ==> B --> A.EP ==> A
+
+Looking at it another way, A depends on B in one way:
+A --> B.EP ==> B
+
+But B depends on A in two ways and we only detect the first:
+B --> C --> A
+B --> A.EP ==> A
+
+To detect both of these, we remove the incorrect optimization attempt in
+step 3 and run cycle detection even if the fwnode link from which the
+device link is being created has already been marked as part of a cycle.
+
+Reported-by: Xu Yang <xu.yang_2@nxp.com>
+Closes: https://lore.kernel.org/lkml/DU2PR04MB8822693748725F85DC0CB86C8C792@DU2PR04MB8822.eurprd04.prod.outlook.com/
+Fixes: 3fb16866b51d ("driver core: fw_devlink: Make cycle detection more robust")
+Signed-off-by: Saravana Kannan <saravanak@google.com>
+Tested-by: Xu Yang <xu.yang_2@nxp.com>
+Link: https://lore.kernel.org/r/20240202095636.868578-3-saravanak@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/forwarding/bridge_locked_port.sh | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/base/core.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/net/forwarding/bridge_locked_port.sh b/tools/testing/selftests/net/forwarding/bridge_locked_port.sh
-index 9af9f6964808..c62331b2e006 100755
---- a/tools/testing/selftests/net/forwarding/bridge_locked_port.sh
-+++ b/tools/testing/selftests/net/forwarding/bridge_locked_port.sh
-@@ -327,10 +327,10 @@ locked_port_mab_redirect()
- 	RET=0
- 	check_port_mab_support || return 0
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index a81bc8844a8f..2cc0ab854168 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -2059,9 +2059,14 @@ static int fw_devlink_create_devlink(struct device *con,
  
--	bridge link set dev $swp1 learning on locked on mab on
- 	tc qdisc add dev $swp1 clsact
- 	tc filter add dev $swp1 ingress protocol all pref 1 handle 101 flower \
- 		action mirred egress redirect dev $swp2
-+	bridge link set dev $swp1 learning on locked on mab on
- 
- 	ping_do $h1 192.0.2.2
- 	check_err $? "Ping did not work with redirection"
-@@ -349,8 +349,8 @@ locked_port_mab_redirect()
- 	check_err $? "Locked entry not created after deleting filter"
- 
- 	bridge fdb del `mac_get $h1` vlan 1 dev $swp1 master
--	tc qdisc del dev $swp1 clsact
- 	bridge link set dev $swp1 learning off locked off mab off
-+	tc qdisc del dev $swp1 clsact
- 
- 	log_test "Locked port MAB redirect"
- }
+ 	/*
+ 	 * SYNC_STATE_ONLY device links don't block probing and supports cycles.
+-	 * So cycle detection isn't necessary and shouldn't be done.
++	 * So, one might expect that cycle detection isn't necessary for them.
++	 * However, if the device link was marked as SYNC_STATE_ONLY because
++	 * it's part of a cycle, then we still need to do cycle detection. This
++	 * is because the consumer and supplier might be part of multiple cycles
++	 * and we need to detect all those cycles.
+ 	 */
+-	if (!(flags & DL_FLAG_SYNC_STATE_ONLY)) {
++	if (!device_link_flag_is_sync_state_only(flags) ||
++	    flags & DL_FLAG_CYCLE) {
+ 		device_links_write_lock();
+ 		if (__fw_devlink_relax_cycles(con, sup_handle)) {
+ 			__fwnode_link_cycle(link);
 -- 
 2.43.0
 
