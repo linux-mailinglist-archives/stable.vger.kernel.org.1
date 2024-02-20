@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-21262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4914C85C7EB
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:17:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B684085C962
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:32:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79AEF1C220C8
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:17:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71E30284C82
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:32:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF199151CDC;
-	Tue, 20 Feb 2024 21:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C01B0151CE1;
+	Tue, 20 Feb 2024 21:32:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rLd/sXMw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D/jfLev9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E434612D7;
-	Tue, 20 Feb 2024 21:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F3141509BC;
+	Tue, 20 Feb 2024 21:32:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463865; cv=none; b=MzG6crjO01EVpVQd0VkXQKw2YJWOw4Jjz+HQw7/2lgncoLrWC1ytYJGlbCI2yI8E4NKnR2087BhXa+ZcLzjRpxxNlEbGfG2d06cmZ6dEvBgmPnTrlYuJbgt7I8UXvqrGxr8S+Ql+YrUxN4XFHwdqJ2gB5GN1BjcMDhY3kXyjPKk=
+	t=1708464777; cv=none; b=GggpOk6I6C9P4fsgDLxsH7UHxEfiu3KcXIODsWJHphBA731En0K1IDKdFJdcMkeHALB/BTL0b2+WuGPb/gVyBY9NixIb5+SXQzDc+0MtopfrTw0rGZjtIsYdBRidbqB7Gl8wRVYOwSa6jIYXdJbYuMQUA+j0CRGJ/Y0W8h2851I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463865; c=relaxed/simple;
-	bh=sNCv/W/mR0K20h1YhMGve28ki9LmfFJ5ZyJa7x/t6Bw=;
+	s=arc-20240116; t=1708464777; c=relaxed/simple;
+	bh=QM3qE/cRLtwWse3Lj3dGiWoMenGnW5AlitFLXrqbRNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nr9ua6+TzwYQJ+YYyj4YOQK6yasuVNesoTAtlq5vg+AqLmDHuV7hKXMXOiLfLTIkKG8cl2cA7WbEoT1x6RXX9Ef7c2oydgFl3Lzyyv7py9d37htHYSUiYF3ZD2O1MW/zvViugP7zR9TJkRGzR7icnUBrUgIUsEOJKu8rD5SxTFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rLd/sXMw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C18CC433C7;
-	Tue, 20 Feb 2024 21:17:44 +0000 (UTC)
+	 MIME-Version; b=fTgFpEribttqdVV83fo35tlIaLkpYvloHhlSTLQG6PihZncvjo2F6rDjd2QvXqN8biTSGiJDrGcogYkBiiAonBqwV+Ennw4NWb1GOj1qI2P4/3yXmd+YGr1OoRMegGqIH3lp+p0lxUdBIvvPAr0eKIRP7iiZEZBWt3sLJymdtK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D/jfLev9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3FB4C433F1;
+	Tue, 20 Feb 2024 21:32:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463865;
-	bh=sNCv/W/mR0K20h1YhMGve28ki9LmfFJ5ZyJa7x/t6Bw=;
+	s=korg; t=1708464777;
+	bh=QM3qE/cRLtwWse3Lj3dGiWoMenGnW5AlitFLXrqbRNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rLd/sXMwlm/pftse9mnp/dqSXZsquYF8ptfqRJBg256AAQ2lcGvxhm98k3sx7Dv04
-	 Pk8ZJ/NIqyjf9wgoHeWtXFJ42L6u8deiYsynDI3mBGS4gpMVI/OTwlcVa36qf+sGIu
-	 acXgfbdFMAkZqUNk4HwoSL2mVwSfhrBcwBm6XAQI=
+	b=D/jfLev9/e/HLSPDjpJK7UaWarvuDNMi8C7V4pa5P6qdrLNmY1QDJ3hJ4YPTlw6sj
+	 V0IKSeRIRUDqmAnw5yGnK3xnxbuZitxg2Vf5e5+dCfdxGvXD4PDLd3XmP9I0reLX00
+	 Ms6BClHi8FxsjAuOFX2Y3yS+Kq26qsROamWoVQ7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Menninger <tmenninger@purestorage.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 176/331] net: dsa: mv88e6xxx: Fix failed probe due to unsupported C45 reads
-Date: Tue, 20 Feb 2024 21:54:52 +0100
-Message-ID: <20240220205643.042300352@linuxfoundation.org>
+	Zhenyu Zhang <zhenyzha@redhat.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Sebastian Ott <sebott@redhat.com>,
+	Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Subject: [PATCH 6.7 134/309] drm/virtio: Set segment size for virtio_gpu device
+Date: Tue, 20 Feb 2024 21:54:53 +0100
+Message-ID: <20240220205637.334502108@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Lunn <andrew@lunn.ch>
+From: Sebastian Ott <sebott@redhat.com>
 
-commit 585b40e25dc9ff3d2b03d1495150540849009e5b upstream.
+commit 9c64e749cebd9c2d3d55261530a98bcccb83b950 upstream.
 
-Not all mv88e6xxx device support C45 read/write operations. Those
-which do not return -EOPNOTSUPP. However, when phylib scans the bus,
-it considers this fatal, and the probe of the MDIO bus fails, which in
-term causes the mv88e6xxx probe as a whole to fail.
+Set the segment size of the virtio_gpu device to the value
+used by the drm helpers when allocating sg lists to fix the
+following complaint from DMA_API debug code:
 
-When there is no device on the bus for a given address, the pull up
-resistor on the data line results in the read returning 0xffff. The
-phylib core code understands this when scanning for devices on the
-bus. C45 allows multiple devices to be supported at one address, so
-phylib will perform a few reads at each address, so although thought
-not the most efficient solution, it is a way to avoid fatal
-errors. Make use of this as a minimal fix for stable to fix the
-probing problems.
-
-Follow up patches will rework how C45 operates to make it similar to
-C22 which considers -ENODEV as a none-fatal, and swap mv88e6xxx to
-using this.
+DMA-API: virtio-pci 0000:07:00.0: mapping sg segment longer than
+device claims to support [len=262144] [max=65536]
 
 Cc: stable@vger.kernel.org
-Fixes: 743a19e38d02 ("net: dsa: mv88e6xxx: Separate C22 and C45 transactions")
-Reported-by: Tim Menninger <tmenninger@purestorage.com>
-Signed-off-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/20240129224948.1531452-1-andrew@lunn.ch
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Tested-by: Zhenyu Zhang <zhenyzha@redhat.com>
+Acked-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Signed-off-by: Sebastian Ott <sebott@redhat.com>
+Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/7258a4cc-da16-5c34-a042-2a23ee396d56@redhat.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/virtio/virtgpu_drv.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -3545,7 +3545,7 @@ static int mv88e6xxx_mdio_read_c45(struc
- 	int err;
+--- a/drivers/gpu/drm/virtio/virtgpu_drv.c
++++ b/drivers/gpu/drm/virtio/virtgpu_drv.c
+@@ -94,6 +94,7 @@ static int virtio_gpu_probe(struct virti
+ 			goto err_free;
+ 	}
  
- 	if (!chip->info->ops->phy_read_c45)
--		return -EOPNOTSUPP;
-+		return 0xffff;
- 
- 	mv88e6xxx_reg_lock(chip);
- 	err = chip->info->ops->phy_read_c45(chip, bus, phy, devad, reg, &val);
++	dma_set_max_seg_size(dev->dev, dma_max_mapping_size(dev->dev) ?: UINT_MAX);
+ 	ret = virtio_gpu_init(vdev, dev);
+ 	if (ret)
+ 		goto err_free;
 
 
 
