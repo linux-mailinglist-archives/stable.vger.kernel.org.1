@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-21659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91B9D85C9CC
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:38:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF60C85C892
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:23:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E5041F2264D
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:38:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA826284CB1
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:23:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9A1A151CCD;
-	Tue, 20 Feb 2024 21:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E063151CD6;
+	Tue, 20 Feb 2024 21:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JUAJbD3E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yA6KSJq/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89CC5446C9;
-	Tue, 20 Feb 2024 21:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC282DF9F;
+	Tue, 20 Feb 2024 21:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708465107; cv=none; b=ZrOpZkGkG3DV/n3AtEbVxfaGKZcxJ1PbYrevjw6vVU6xxnL3CSIPi0Ynp+4Hb4eEKJzrAdKp/4iDMNI1wR1RgLBABwsq6dK/MKeS3oflWb0xQArWGSb9orHHpdO04JPZzwkf12W5UfEAFKbtxzgpIoTqMeSihw3uIhl3AloMQ8s=
+	t=1708464201; cv=none; b=QHIlGbTw63e0RdMAcgdQf83zM2Nejyy2G56SPqikf64ap+ekGPOFUUrcdNw6hQCHrmD5jrZW/ghxkpqz/9jIL69Uj1tk+FZyGHYn/pDOBRNliQZpvKrkQojK3zznpkUX2TpG6tkk7kyQQlgtfbOuCMZryhy6jSAg7iHaAfNNi5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708465107; c=relaxed/simple;
-	bh=OYSAKJdrA79LbLhLfCnmk+b4C/4qhDlP3AS6diVJ29Q=;
+	s=arc-20240116; t=1708464201; c=relaxed/simple;
+	bh=DCNXIC8pmSL1o8EUmqRcKGtv1TlQ9To9dClIkRJylWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mw1Df/KVTQod9Gk0E080yOLOaWwFwxoGpZTRYz2NGVzfr/mZnAdHlOllueR4Gh4/tuHLqfFc699ls1e+f5qAfehkzpN71vBauH8f+w9I6CPxXuLht9AVsBLI8CMIuR5nOvr7Q1N5T7jbXXDaKqZvcmH7aTgrXdd71Eu+19GQq+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JUAJbD3E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE068C433C7;
-	Tue, 20 Feb 2024 21:38:26 +0000 (UTC)
+	 MIME-Version; b=Kdl7UyfeVSfsvRqHZxnZpiBNupX6d2VEzCSNNsg3Pak3/gaM7NJI00BlHlgwiwIFFDvBFnHt/V/6dituC58IAFDHDp5ahUhqFlpx/18Ec0BOApaziIUw7lM4BPzwA99Jb41h7+9YkT0QZHGkM5uTk1W8GqghvgWYeTr/B0ElYx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yA6KSJq/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E154C433F1;
+	Tue, 20 Feb 2024 21:23:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708465107;
-	bh=OYSAKJdrA79LbLhLfCnmk+b4C/4qhDlP3AS6diVJ29Q=;
+	s=korg; t=1708464201;
+	bh=DCNXIC8pmSL1o8EUmqRcKGtv1TlQ9To9dClIkRJylWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JUAJbD3Eu7N1wVVQwXv1C+4URvaEHKRB63pfOgkMF/9sIzTMlwwTQE8fvImzd8vzZ
-	 I+T3egJibA3KKwQbAtHy+eItSEf+eJBB7apzByEtJc8/prJdxvy3Ot5X7mVkk42dQT
-	 cgExsiYonqJVG0jKJr9I50JCSQwHuQUN7gTi19fM=
+	b=yA6KSJq/oLKKwg2Jj/oQ8ow2ITR49jYRMvMcwLpVHOdKRq2naVOsmcVpXGZb+6dd5
+	 JN5fYOYdvwlo8vVeNSVvv5kIafWm0vllfxdhsVwYULMmKW78Dvl3kQaFSpb8nm+2Wj
+	 jqhQIk9qRpdecLJCpevYSU3V49dhoF0/r3oC23Es=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.7 239/309] gpiolib: add gpiod_to_gpio_device() stub for !GPIOLIB
-Date: Tue, 20 Feb 2024 21:56:38 +0100
-Message-ID: <20240220205640.642923190@linuxfoundation.org>
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 283/331] eventfs: Use GFP_NOFS for allocation when eventfs_mutex is held
+Date: Tue, 20 Feb 2024 21:56:39 +0100
+Message-ID: <20240220205646.856232235@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-commit 6ac86372102b477083db99a9af8246fb916271b5 upstream.
+commit 4763d635c907baed212664dc579dde1663bb2676 upstream.
 
-Add empty stub of gpiod_to_gpio_device() when GPIOLIB is not enabled.
+If memory reclaim happens, it can reclaim file system pages. The file
+system pages from eventfs may take the eventfs_mutex on reclaim. This
+means that allocation while holding the eventfs_mutex must not call into
+filesystem reclaim. A lockdep splat uncovered this.
 
-Cc: <stable@vger.kernel.org>
-Fixes: 370232d096e3 ("gpiolib: provide gpiod_to_gpio_device()")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Link: https://lkml.kernel.org/r/20231121231112.373501894@goodmis.org
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 28e12c09f5aa0 ("eventfs: Save ownership and mode")
+Fixes: 5790b1fb3d672 ("eventfs: Remove eventfs_file and just use eventfs_inode")
+Reported-by: Mark Rutland <mark.rutland@arm.com>
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/gpio/driver.h |    6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/tracefs/event_inode.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/include/linux/gpio/driver.h
-+++ b/include/linux/gpio/driver.h
-@@ -806,6 +806,12 @@ static inline int gpio_device_get_base(s
- 	return -ENODEV;
- }
- 
-+static inline struct gpio_device *gpiod_to_gpio_device(struct gpio_desc *desc)
-+{
-+	WARN_ON(1);
-+	return ERR_PTR(-ENODEV);
-+}
-+
- static inline int gpiochip_lock_as_irq(struct gpio_chip *gc,
- 				       unsigned int offset)
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -95,7 +95,7 @@ static int eventfs_set_attr(struct mnt_i
+ 	if (!(dentry->d_inode->i_mode & S_IFDIR)) {
+ 		if (!ei->entry_attrs) {
+ 			ei->entry_attrs = kzalloc(sizeof(*ei->entry_attrs) * ei->nr_entries,
+-						  GFP_KERNEL);
++						  GFP_NOFS);
+ 			if (!ei->entry_attrs) {
+ 				ret = -ENOMEM;
+ 				goto out;
+@@ -627,7 +627,7 @@ static int add_dentries(struct dentry **
  {
+ 	struct dentry **tmp;
+ 
+-	tmp = krealloc(*dentries, sizeof(d) * (cnt + 2), GFP_KERNEL);
++	tmp = krealloc(*dentries, sizeof(d) * (cnt + 2), GFP_NOFS);
+ 	if (!tmp)
+ 		return -1;
+ 	tmp[cnt] = d;
 
 
 
