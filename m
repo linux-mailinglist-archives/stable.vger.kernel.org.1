@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-21114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED8C885C730
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:10:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFED285C708
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:07:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75A1E282999
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:10:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97B71284521
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:07:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FA06151CF3;
-	Tue, 20 Feb 2024 21:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44408151CC3;
+	Tue, 20 Feb 2024 21:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GZkpiir9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="18gNwpBC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B341151CED;
-	Tue, 20 Feb 2024 21:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 029D314AD15;
+	Tue, 20 Feb 2024 21:07:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463396; cv=none; b=fmyDYiCtur1TxKzxK0JCQEd9q24RmXglz9Ce7RNYKroDaRATElUoI0t0+NKnxL+F5wW5RnShwC1sLsSIAoaBw6nUYoBg1U5F6Lvmul4R27ynvzXPOtMe2v61H4e813GxqHJRvLAaF4jeBtTQX3edA3eon2qgrfZenDdQG11Fgbg=
+	t=1708463271; cv=none; b=miLqGS5K/IiXnqFXcgPPyBhuUGaad7HceXMjWQQv90VnVDyRftriP0BM8jLh2nC2j+4rs7aVFF545aF0958YON1hajdLnb9Jw7CnbmD+eNZPmG0UUf822ctm3LlMRQW0yYTMZd/VZNS65gVIEdMfzzO67BWJFFN4nPDdNqcLFoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463396; c=relaxed/simple;
-	bh=O1udH8h27BedeQ8P2CVqEBGsb+hCVrrSMQJn8jtmmiE=;
+	s=arc-20240116; t=1708463271; c=relaxed/simple;
+	bh=zSs6GmrKCmuOWTKqNJjMNgs3FYLWGCkqL9agh0yI8yI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZS4yGyDwxzdFVArLeRK/aiKtp3fzkU+jNki6GXy9StZRaNN3H9Jl6+Ge3AGdntr4Umb3btcyo+OZc61dZ8BfxCRWJpecnnWtIDUR0eTKb8tiuZXVDdnAxpNtzRt+zABAx58ZeAh7uIyXCodQkfafasW+uymqueHyPaTLSBiPF9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GZkpiir9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A537C433F1;
-	Tue, 20 Feb 2024 21:09:55 +0000 (UTC)
+	 MIME-Version; b=DAajgWENMzlwhQsBDWObT5CJPD8Nf/F0bE2AQ/MjHgAJGVbsLIF9jpqHnrngVDOBqf7RZGxoGEn/p7IoUBkC1zWMCroh3Ed3UbLhc35Lh0N1zW2I3puT6UaAUu+8N2+FG2Y+SK7R3k04UEXv64ANPF77ACcOTg6IlCQmW0rD6kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=18gNwpBC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62A18C433F1;
+	Tue, 20 Feb 2024 21:07:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463395;
-	bh=O1udH8h27BedeQ8P2CVqEBGsb+hCVrrSMQJn8jtmmiE=;
+	s=korg; t=1708463270;
+	bh=zSs6GmrKCmuOWTKqNJjMNgs3FYLWGCkqL9agh0yI8yI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GZkpiir9Jbjx2nKAgFUwTt1MJXNdSRA1gwTVot2osv1Tyc0FqZxCLfOd59wgNdLAf
-	 o7nlP6C/JB4uNoexQ0EYBg1p/tlz9q5Yos7dABeEuXxRmmf3xQciCOOobBdEpJnUFB
-	 4/w2vPjokjhUlYXG/oKrXEss1wQsU4MvGEeEmXUs=
+	b=18gNwpBC+FsNAOYYjDOpCj1IGdRAlfDFxn+kNIm08mkESUctGOlqGbALwlQ9I/N0h
+	 Tcaod6+nUYHvqZo0cE776IefwBM/ebvj/OuKpv2Zsfk7synSvB+ZJ1yG3lXDGVxRGI
+	 0zTGSDlh+pzu26wTuo1891NRzD7GV8iGFShPZyME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 031/331] selftests: net: Fix bridge backup port test flakiness
-Date: Tue, 20 Feb 2024 21:52:27 +0100
-Message-ID: <20240220205638.568521586@linuxfoundation.org>
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Felix Moessbauer <felix.moessbauer@siemens.com>
+Subject: [PATCH 6.1 189/197] hrtimer: Ignore slack time for RT tasks in schedule_hrtimeout_range()
+Date: Tue, 20 Feb 2024 21:52:28 +0100
+Message-ID: <20240220204846.736629649@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
+References: <20240220204841.073267068@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,167 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Davidlohr Bueso <dave@stgolabs.net>
 
-[ Upstream commit 38ee0cb2a2e2ade077442085638eb181b0562971 ]
+commit 0c52310f260014d95c1310364379772cb74cf82d upstream.
 
-The test toggles the carrier of a bridge port in order to test the
-bridge backup port feature.
+While in theory the timer can be triggered before expires + delta, for the
+cases of RT tasks they really have no business giving any lenience for
+extra slack time, so override any passed value by the user and always use
+zero for schedule_hrtimeout_range() calls. Furthermore, this is similar to
+what the nanosleep(2) family already does with current->timer_slack_ns.
 
-Due to the linkwatch delayed work the carrier change is not always
-reflected fast enough to the bridge driver and packets are not forwarded
-as the test expects, resulting in failures [1].
-
-Fix by busy waiting on the bridge port state until it changes to the
-desired state following the carrier change.
-
-[1]
- # Backup port
- # -----------
- [...]
- # TEST: swp1 carrier off                                              [ OK ]
- # TEST: No forwarding out of swp1                                     [FAIL]
- [  641.995910] br0: port 1(swp1) entered disabled state
- # TEST: No forwarding out of vx0                                      [ OK ]
-
-Fixes: b408453053fb ("selftests: net: Add bridge backup port and backup nexthop ID test")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://lore.kernel.org/r/20240208123110.1063930-1-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20230123173206.6764-3-dave@stgolabs.net
+Signed-off-by: Felix Moessbauer <felix.moessbauer@siemens.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../selftests/net/test_bridge_backup_port.sh  | 23 +++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ kernel/time/hrtimer.c |   14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/net/test_bridge_backup_port.sh b/tools/testing/selftests/net/test_bridge_backup_port.sh
-index 70a7d87ba2d2..1b3f89e2b86e 100755
---- a/tools/testing/selftests/net/test_bridge_backup_port.sh
-+++ b/tools/testing/selftests/net/test_bridge_backup_port.sh
-@@ -124,6 +124,16 @@ tc_check_packets()
- 	[[ $pkts == $count ]]
- }
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -2266,7 +2266,7 @@ void __init hrtimers_init(void)
+ /**
+  * schedule_hrtimeout_range_clock - sleep until timeout
+  * @expires:	timeout value (ktime_t)
+- * @delta:	slack in expires timeout (ktime_t)
++ * @delta:	slack in expires timeout (ktime_t) for SCHED_OTHER tasks
+  * @mode:	timer mode
+  * @clock_id:	timer clock to be used
+  */
+@@ -2293,6 +2293,13 @@ schedule_hrtimeout_range_clock(ktime_t *
+ 		return -EINTR;
+ 	}
  
-+bridge_link_check()
-+{
-+	local ns=$1; shift
-+	local dev=$1; shift
-+	local state=$1; shift
++	/*
++	 * Override any slack passed by the user if under
++	 * rt contraints.
++	 */
++	if (rt_task(current))
++		delta = 0;
 +
-+	bridge -n $ns -d -j link show dev $dev | \
-+		jq -e ".[][\"state\"] == \"$state\"" &> /dev/null
-+}
-+
- ################################################################################
- # Setup
- 
-@@ -259,6 +269,7 @@ backup_port()
- 	log_test $? 0 "No forwarding out of vx0"
- 
- 	run_cmd "ip -n $sw1 link set dev swp1 carrier off"
-+	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw1 swp1 disabled
- 	log_test $? 0 "swp1 carrier off"
- 
- 	run_cmd "ip netns exec $sw1 mausezahn br0.10 -a $smac -b $dmac -A 198.51.100.1 -B 198.51.100.2 -t ip -p 100 -q -c 1"
-@@ -268,6 +279,7 @@ backup_port()
- 	log_test $? 0 "No forwarding out of vx0"
- 
- 	run_cmd "ip -n $sw1 link set dev swp1 carrier on"
-+	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw1 swp1 forwarding
- 	log_test $? 0 "swp1 carrier on"
- 
- 	# Configure vx0 as the backup port of swp1 and check that packets are
-@@ -284,6 +296,7 @@ backup_port()
- 	log_test $? 0 "No forwarding out of vx0"
- 
- 	run_cmd "ip -n $sw1 link set dev swp1 carrier off"
-+	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw1 swp1 disabled
- 	log_test $? 0 "swp1 carrier off"
- 
- 	run_cmd "ip netns exec $sw1 mausezahn br0.10 -a $smac -b $dmac -A 198.51.100.1 -B 198.51.100.2 -t ip -p 100 -q -c 1"
-@@ -293,6 +306,7 @@ backup_port()
- 	log_test $? 0 "Forwarding out of vx0"
- 
- 	run_cmd "ip -n $sw1 link set dev swp1 carrier on"
-+	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw1 swp1 forwarding
- 	log_test $? 0 "swp1 carrier on"
- 
- 	run_cmd "ip netns exec $sw1 mausezahn br0.10 -a $smac -b $dmac -A 198.51.100.1 -B 198.51.100.2 -t ip -p 100 -q -c 1"
-@@ -314,6 +328,7 @@ backup_port()
- 	log_test $? 0 "No forwarding out of vx0"
- 
- 	run_cmd "ip -n $sw1 link set dev swp1 carrier off"
-+	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw1 swp1 disabled
- 	log_test $? 0 "swp1 carrier off"
- 
- 	run_cmd "ip netns exec $sw1 mausezahn br0.10 -a $smac -b $dmac -A 198.51.100.1 -B 198.51.100.2 -t ip -p 100 -q -c 1"
-@@ -369,6 +384,7 @@ backup_nhid()
- 	log_test $? 0 "No forwarding out of vx0"
- 
- 	run_cmd "ip -n $sw1 link set dev swp1 carrier off"
-+	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw1 swp1 disabled
- 	log_test $? 0 "swp1 carrier off"
- 
- 	run_cmd "ip netns exec $sw1 mausezahn br0.10 -a $smac -b $dmac -A 198.51.100.1 -B 198.51.100.2 -t ip -p 100 -q -c 1"
-@@ -382,6 +398,7 @@ backup_nhid()
- 	log_test $? 0 "Forwarding using VXLAN FDB entry"
- 
- 	run_cmd "ip -n $sw1 link set dev swp1 carrier on"
-+	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw1 swp1 forwarding
- 	log_test $? 0 "swp1 carrier on"
- 
- 	# Configure nexthop ID 10 as the backup nexthop ID of swp1 and check
-@@ -398,6 +415,7 @@ backup_nhid()
- 	log_test $? 0 "No forwarding out of vx0"
- 
- 	run_cmd "ip -n $sw1 link set dev swp1 carrier off"
-+	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw1 swp1 disabled
- 	log_test $? 0 "swp1 carrier off"
- 
- 	run_cmd "ip netns exec $sw1 mausezahn br0.10 -a $smac -b $dmac -A 198.51.100.1 -B 198.51.100.2 -t ip -p 100 -q -c 1"
-@@ -411,6 +429,7 @@ backup_nhid()
- 	log_test $? 0 "No forwarding using VXLAN FDB entry"
- 
- 	run_cmd "ip -n $sw1 link set dev swp1 carrier on"
-+	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw1 swp1 forwarding
- 	log_test $? 0 "swp1 carrier on"
- 
- 	run_cmd "ip netns exec $sw1 mausezahn br0.10 -a $smac -b $dmac -A 198.51.100.1 -B 198.51.100.2 -t ip -p 100 -q -c 1"
-@@ -441,6 +460,7 @@ backup_nhid()
- 	log_test $? 0 "No forwarding using VXLAN FDB entry"
- 
- 	run_cmd "ip -n $sw1 link set dev swp1 carrier off"
-+	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw1 swp1 disabled
- 	log_test $? 0 "swp1 carrier off"
- 
- 	run_cmd "ip netns exec $sw1 mausezahn br0.10 -a $smac -b $dmac -A 198.51.100.1 -B 198.51.100.2 -t ip -p 100 -q -c 1"
-@@ -497,6 +517,7 @@ backup_nhid_invalid()
- 	log_test $? 0 "Valid nexthop as backup nexthop"
- 
- 	run_cmd "ip -n $sw1 link set dev swp1 carrier off"
-+	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw1 swp1 disabled
- 	log_test $? 0 "swp1 carrier off"
- 
- 	run_cmd "ip netns exec $sw1 mausezahn br0.10 -a $smac -b $dmac -A 198.51.100.1 -B 198.51.100.2 -t ip -p 100 -q -c 1"
-@@ -604,7 +625,9 @@ backup_nhid_ping()
- 	run_cmd "bridge -n $sw2 link set dev swp1 backup_nhid 10"
- 
- 	run_cmd "ip -n $sw1 link set dev swp1 carrier off"
-+	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw1 swp1 disabled
- 	run_cmd "ip -n $sw2 link set dev swp1 carrier off"
-+	busywait $BUSYWAIT_TIMEOUT bridge_link_check $sw2 swp1 disabled
- 
- 	run_cmd "ip netns exec $sw1 ping -i 0.1 -c 10 -w $PING_TIMEOUT 192.0.2.66"
- 	log_test $? 0 "Ping with backup nexthop ID"
--- 
-2.43.0
-
+ 	hrtimer_init_sleeper_on_stack(&t, clock_id, mode);
+ 	hrtimer_set_expires_range_ns(&t.timer, *expires, delta);
+ 	hrtimer_sleeper_start_expires(&t, mode);
+@@ -2312,7 +2319,7 @@ EXPORT_SYMBOL_GPL(schedule_hrtimeout_ran
+ /**
+  * schedule_hrtimeout_range - sleep until timeout
+  * @expires:	timeout value (ktime_t)
+- * @delta:	slack in expires timeout (ktime_t)
++ * @delta:	slack in expires timeout (ktime_t) for SCHED_OTHER tasks
+  * @mode:	timer mode
+  *
+  * Make the current task sleep until the given expiry time has
+@@ -2320,7 +2327,8 @@ EXPORT_SYMBOL_GPL(schedule_hrtimeout_ran
+  * the current task state has been set (see set_current_state()).
+  *
+  * The @delta argument gives the kernel the freedom to schedule the
+- * actual wakeup to a time that is both power and performance friendly.
++ * actual wakeup to a time that is both power and performance friendly
++ * for regular (non RT/DL) tasks.
+  * The kernel give the normal best effort behavior for "@expires+@delta",
+  * but may decide to fire the timer earlier, but no earlier than @expires.
+  *
 
 
 
