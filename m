@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-21465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B02485C909
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:29:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E966585C79B
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:14:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21E7E1F229D2
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:29:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17F3F1C21F4C
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:14:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CFE6152DF5;
-	Tue, 20 Feb 2024 21:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A09C14AD12;
+	Tue, 20 Feb 2024 21:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2JEtTxwZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2a8gJsSK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A054151CE9;
-	Tue, 20 Feb 2024 21:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC854151CD6;
+	Tue, 20 Feb 2024 21:14:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464506; cv=none; b=e57as64uDVHkQ4jk397ZFozez1gZ4dN2KR6sKfbwqvOuXDqwmJm4lSSuDPgeogSx9U5CT0JHxutg5ys2rBkSdLiUR82WVd0axOf5OZn8EObzMO199hMX7HpQGrXMoxF0R+OSZjxEEwdiF5wrZ0gde+rpRKB4DBWrLcrtAhkxeLY=
+	t=1708463675; cv=none; b=ZBpsqspchrxSvJU5++7oyMPi08Kqm3YQCpEvQy3Frd++9Ez/iU6Mnm1HvzBDz1Bi59L4C3vvaS5oAURK/xd+7LNbDVyoW4CVKfSkaWyJ6KlbdyIg6k0HgnU7LySuROLZm6hQBFto4mwqOaqovZk1c6irc86LsrEKuvXImhyJk6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464506; c=relaxed/simple;
-	bh=onlFAS9uG1v/e2ONcXIrZf0ZIujTPHoImDUJLLymDKM=;
+	s=arc-20240116; t=1708463675; c=relaxed/simple;
+	bh=JL+djesjcFK5R/Sy1bnc9ulalB4HmCBzZ93lVWSewZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s5ZkPwznjeqe4EIZWI0COSu2dOAzOR0FuALutPLMF4+CfDQANpBAbk6KNVKrtGVkHyCottAW3r18ptN0SU0jSI6hx3rVh+MTcWcZz24h4fYdgJ+VAK+UEEcmbm0itvIHXvjhxMY27vo6sBvj7yJrwn2oKtmsD9v9UQBOP/AESUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2JEtTxwZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD60DC433F1;
-	Tue, 20 Feb 2024 21:28:25 +0000 (UTC)
+	 MIME-Version; b=N2tixeUFif4XRtfb9aI1so/BU1jXYpDDOU3kKMrtNETcLEsRutPWdENvxeJ6jIlluEKjeJbb2wOwQbAJUcgmOhBpxLIDfNqWzSlpXaNmgUGx2tDs+ClbyTgRWNCF/V0HVJ2+onh/s5YgRZMxD6ASgqIKH31AfFLmzZQQfgrkkrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2a8gJsSK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30F3FC433F1;
+	Tue, 20 Feb 2024 21:14:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464506;
-	bh=onlFAS9uG1v/e2ONcXIrZf0ZIujTPHoImDUJLLymDKM=;
+	s=korg; t=1708463675;
+	bh=JL+djesjcFK5R/Sy1bnc9ulalB4HmCBzZ93lVWSewZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2JEtTxwZ/RXT+tfC+lns/W5Qwn4VvtKSMuv98sgXwp1uSgV8tLnn0S2gn60qI/OVU
-	 u+TIE/4eSPFWu3p1YY4NpscvCvdiTLYRgkZS2iRaVG2gUhpVq07gcGY2ZBQXHFt7tZ
-	 dsMD6gtySnL5Ef1azx07f9H1YyzB+E0FUwR7VslY=
+	b=2a8gJsSKEoaZ2LycUwZJZF3HUd0C+JK5cFNt3NXSLXEgVHmmgyxFtKKbS3m+1AWFP
+	 b5CWK5j3oqQVMoEK1xm8mr5WJNAB3W1r4RDpS8FcEGVmpB4WTsVw8YpmWMPebqhkXb
+	 pIF8YIWGUkRGJY9FHt0qa4rNUYmTJMnH7tLg1ydY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Gaurav Batra <gbatra@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 046/309] lan966x: Fix crash when adding interface under a lag
+Subject: [PATCH 6.6 089/331] powerpc/pseries/iommu: Fix iommu initialisation during DLPAR add
 Date: Tue, 20 Feb 2024 21:53:25 +0100
-Message-ID: <20240220205634.629575190@linuxfoundation.org>
+Message-ID: <20240220205640.384413359@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +62,157 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
+From: Gaurav Batra <gbatra@linux.ibm.com>
 
-[ Upstream commit 15faa1f67ab405d47789d4702f587ec7df7ef03e ]
+[ Upstream commit ed8b94f6e0acd652ce69bd69d678a0c769172df8 ]
 
-There is a crash when adding one of the lan966x interfaces under a lag
-interface. The issue can be reproduced like this:
-ip link add name bond0 type bond miimon 100 mode balance-xor
-ip link set dev eth0 master bond0
+When a PCI device is dynamically added, the kernel oopses with a NULL
+pointer dereference:
 
-The reason is because when adding a interface under the lag it would go
-through all the ports and try to figure out which other ports are under
-that lag interface. And the issue is that lan966x can have ports that are
-NULL pointer as they are not probed. So then iterating over these ports
-it would just crash as they are NULL pointers.
-The fix consists in actually checking for NULL pointers before accessing
-something from the ports. Like we do in other places.
+  BUG: Kernel NULL pointer dereference on read at 0x00000030
+  Faulting instruction address: 0xc0000000006bbe5c
+  Oops: Kernel access of bad area, sig: 11 [#1]
+  LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
+  Modules linked in: rpadlpar_io rpaphp rpcsec_gss_krb5 auth_rpcgss nfsv4 dns_resolver nfs lockd grace fscache netfs xsk_diag bonding nft_compat nf_tables nfnetlink rfkill binfmt_misc dm_multipath rpcrdma sunrpc rdma_ucm ib_srpt ib_isert iscsi_target_mod target_core_mod ib_umad ib_iser libiscsi scsi_transport_iscsi ib_ipoib rdma_cm iw_cm ib_cm mlx5_ib ib_uverbs ib_core pseries_rng drm drm_panel_orientation_quirks xfs libcrc32c mlx5_core mlxfw sd_mod t10_pi sg tls ibmvscsi ibmveth scsi_transport_srp vmx_crypto pseries_wdt psample dm_mirror dm_region_hash dm_log dm_mod fuse
+  CPU: 17 PID: 2685 Comm: drmgr Not tainted 6.7.0-203405+ #66
+  Hardware name: IBM,9080-HEX POWER10 (raw) 0x800200 0xf000006 of:IBM,FW1060.00 (NH1060_008) hv:phyp pSeries
+  NIP:  c0000000006bbe5c LR: c000000000a13e68 CTR: c0000000000579f8
+  REGS: c00000009924f240 TRAP: 0300   Not tainted  (6.7.0-203405+)
+  MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 24002220  XER: 20040006
+  CFAR: c000000000a13e64 DAR: 0000000000000030 DSISR: 40000000 IRQMASK: 0
+  ...
+  NIP sysfs_add_link_to_group+0x34/0x94
+  LR  iommu_device_link+0x5c/0x118
+  Call Trace:
+   iommu_init_device+0x26c/0x318 (unreliable)
+   iommu_device_link+0x5c/0x118
+   iommu_init_device+0xa8/0x318
+   iommu_probe_device+0xc0/0x134
+   iommu_bus_notifier+0x44/0x104
+   notifier_call_chain+0xb8/0x19c
+   blocking_notifier_call_chain+0x64/0x98
+   bus_notify+0x50/0x7c
+   device_add+0x640/0x918
+   pci_device_add+0x23c/0x298
+   of_create_pci_dev+0x400/0x884
+   of_scan_pci_dev+0x124/0x1b0
+   __of_scan_bus+0x78/0x18c
+   pcibios_scan_phb+0x2a4/0x3b0
+   init_phb_dynamic+0xb8/0x110
+   dlpar_add_slot+0x170/0x3b8 [rpadlpar_io]
+   add_slot_store.part.0+0xb4/0x130 [rpadlpar_io]
+   kobj_attr_store+0x2c/0x48
+   sysfs_kf_write+0x64/0x78
+   kernfs_fop_write_iter+0x1b0/0x290
+   vfs_write+0x350/0x4a0
+   ksys_write+0x84/0x140
+   system_call_exception+0x124/0x330
+   system_call_vectored_common+0x15c/0x2ec
 
-Fixes: cabc9d49333d ("net: lan966x: Add lag support for lan966x")
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240206123054.3052966-1-horatiu.vultur@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Commit a940904443e4 ("powerpc/iommu: Add iommu_ops to report capabilities
+and allow blocking domains") broke DLPAR add of PCI devices.
+
+The above added iommu_device structure to pci_controller. During
+system boot, PCI devices are discovered and this newly added iommu_device
+structure is initialized by a call to iommu_device_register().
+
+During DLPAR add of a PCI device, a new pci_controller structure is
+allocated but there are no calls made to iommu_device_register()
+interface.
+
+Fix is to register the iommu device during DLPAR add as well.
+
+Fixes: a940904443e4 ("powerpc/iommu: Add iommu_ops to report capabilities and allow blocking domains")
+Signed-off-by: Gaurav Batra <gbatra@linux.ibm.com>
+[mpe: Trim oops and tweak some change log wording]
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240122222407.39603-1-gbatra@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microchip/lan966x/lan966x_lag.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ arch/powerpc/include/asm/ppc-pci.h         |  3 +++
+ arch/powerpc/kernel/iommu.c                | 21 ++++++++++++++++-----
+ arch/powerpc/platforms/pseries/pci_dlpar.c |  4 ++++
+ 3 files changed, 23 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_lag.c b/drivers/net/ethernet/microchip/lan966x/lan966x_lag.c
-index 41fa2523d91d..5f2cd9a8cf8f 100644
---- a/drivers/net/ethernet/microchip/lan966x/lan966x_lag.c
-+++ b/drivers/net/ethernet/microchip/lan966x/lan966x_lag.c
-@@ -37,19 +37,24 @@ static void lan966x_lag_set_aggr_pgids(struct lan966x *lan966x)
- 
- 	/* Now, set PGIDs for each active LAG */
- 	for (lag = 0; lag < lan966x->num_phys_ports; ++lag) {
--		struct net_device *bond = lan966x->ports[lag]->bond;
-+		struct lan966x_port *port = lan966x->ports[lag];
- 		int num_active_ports = 0;
-+		struct net_device *bond;
- 		unsigned long bond_mask;
- 		u8 aggr_idx[16];
- 
--		if (!bond || (visited & BIT(lag)))
-+		if (!port || !port->bond || (visited & BIT(lag)))
- 			continue;
- 
-+		bond = port->bond;
- 		bond_mask = lan966x_lag_get_mask(lan966x, bond);
- 
- 		for_each_set_bit(p, &bond_mask, lan966x->num_phys_ports) {
- 			struct lan966x_port *port = lan966x->ports[p];
- 
-+			if (!port)
-+				continue;
+diff --git a/arch/powerpc/include/asm/ppc-pci.h b/arch/powerpc/include/asm/ppc-pci.h
+index d9fcff575027..e500a7b9d1b5 100644
+--- a/arch/powerpc/include/asm/ppc-pci.h
++++ b/arch/powerpc/include/asm/ppc-pci.h
+@@ -29,6 +29,9 @@ void *pci_traverse_device_nodes(struct device_node *start,
+ 				void *(*fn)(struct device_node *, void *),
+ 				void *data);
+ extern void pci_devs_phb_init_dynamic(struct pci_controller *phb);
++extern void ppc_iommu_register_device(struct pci_controller *phb);
++extern void ppc_iommu_unregister_device(struct pci_controller *phb);
 +
- 			lan_wr(ANA_PGID_PGID_SET(bond_mask),
- 			       lan966x, ANA_PGID(p));
- 			if (port->lag_tx_active)
+ 
+ /* From rtas_pci.h */
+ extern void init_pci_config_tokens (void);
+diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
+index 14251bc5219e..7e23cc03c06c 100644
+--- a/arch/powerpc/kernel/iommu.c
++++ b/arch/powerpc/kernel/iommu.c
+@@ -1393,6 +1393,21 @@ static const struct attribute_group *spapr_tce_iommu_groups[] = {
+ 	NULL,
+ };
+ 
++void ppc_iommu_register_device(struct pci_controller *phb)
++{
++	iommu_device_sysfs_add(&phb->iommu, phb->parent,
++				spapr_tce_iommu_groups, "iommu-phb%04x",
++				phb->global_number);
++	iommu_device_register(&phb->iommu, &spapr_tce_iommu_ops,
++				phb->parent);
++}
++
++void ppc_iommu_unregister_device(struct pci_controller *phb)
++{
++	iommu_device_unregister(&phb->iommu);
++	iommu_device_sysfs_remove(&phb->iommu);
++}
++
+ /*
+  * This registers IOMMU devices of PHBs. This needs to happen
+  * after core_initcall(iommu_init) + postcore_initcall(pci_driver_init) and
+@@ -1403,11 +1418,7 @@ static int __init spapr_tce_setup_phb_iommus_initcall(void)
+ 	struct pci_controller *hose;
+ 
+ 	list_for_each_entry(hose, &hose_list, list_node) {
+-		iommu_device_sysfs_add(&hose->iommu, hose->parent,
+-				       spapr_tce_iommu_groups, "iommu-phb%04x",
+-				       hose->global_number);
+-		iommu_device_register(&hose->iommu, &spapr_tce_iommu_ops,
+-				      hose->parent);
++		ppc_iommu_register_device(hose);
+ 	}
+ 	return 0;
+ }
+diff --git a/arch/powerpc/platforms/pseries/pci_dlpar.c b/arch/powerpc/platforms/pseries/pci_dlpar.c
+index 4ba824568119..4448386268d9 100644
+--- a/arch/powerpc/platforms/pseries/pci_dlpar.c
++++ b/arch/powerpc/platforms/pseries/pci_dlpar.c
+@@ -35,6 +35,8 @@ struct pci_controller *init_phb_dynamic(struct device_node *dn)
+ 
+ 	pseries_msi_allocate_domains(phb);
+ 
++	ppc_iommu_register_device(phb);
++
+ 	/* Create EEH devices for the PHB */
+ 	eeh_phb_pe_create(phb);
+ 
+@@ -76,6 +78,8 @@ int remove_phb_dynamic(struct pci_controller *phb)
+ 		}
+ 	}
+ 
++	ppc_iommu_unregister_device(phb);
++
+ 	pseries_msi_free_domains(phb);
+ 
+ 	/* Keep a reference so phb isn't freed yet */
 -- 
 2.43.0
 
