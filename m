@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-21672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D73C885C9DA
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:39:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE12F85C9DD
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:39:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76B921F22A87
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:39:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 894A7284E3B
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:39:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A392151CCD;
-	Tue, 20 Feb 2024 21:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A6DF151CF4;
+	Tue, 20 Feb 2024 21:39:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HvCWAUrO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oMWJ5Fre"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8E1614F9DA;
-	Tue, 20 Feb 2024 21:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B309C151CCC;
+	Tue, 20 Feb 2024 21:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708465148; cv=none; b=fY/Gf/Ipkz3LJNCuewz+4VTtzQ9KTkgy/fBZOM1EGsR+UqsFz0vVzqOxLoY999Lng9whR2JfIYLWxe4AF1U95myM/DKZ96CJjNgjVVkzQekWNeHGdLexIK0Wojj10dIlz659ASVQnqkTFKJZNoXWN0I/9wY3FG3ghU5bNA088oo=
+	t=1708465154; cv=none; b=CipeiKOL00zOMtIViJDTNIoyuqYun20ZqNs9Mtce23i54/mFBdZ/7jDrVoDbKejdoKDdvSWiUvIAlD4nQqp9LgwNDBHSh+N2+MegSbR3TOCFTsYeoWgG1tjSmYjJPkEg4K67VwcKnNJc6D4ifSL2wv0S5PWsPBhjDun6hTASZec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708465148; c=relaxed/simple;
-	bh=VG05iOsIOttXd8xEwkSUcamU8bjfepln6wFRzkpqdiM=;
+	s=arc-20240116; t=1708465154; c=relaxed/simple;
+	bh=H5h437pAjYZaJmXkBgXsk8DRuz+/XWGavXaL2uNB9dE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FpgyugO8N0Lp2zwnFDGPDXl+81xe+AkZjOqPl+q0Z4TbBBZSirew0fT8K0YUo+mqgkYLevamqHEEEEPiBsM5ZBkLeh7NvwptKTEXWu6LlJM2xiohYjuIFW5XSssNjJjJG1mlZtxeLg7ymv0RyrV42N+DU82gBh8xJqoQjGo4720=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HvCWAUrO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 213A0C433F1;
-	Tue, 20 Feb 2024 21:39:07 +0000 (UTC)
+	 MIME-Version; b=An6DzCcl5FASitWJZtrbS67LVxOdQfCjDpOAmwUvXHAdbehUfm+S09+6DgxQIgncqdMmn9bGGytQP1UPzEnoy5brxBn7iWb5pIaLE7PU53V9KKFqDYwS5+ymRmkK6LWzPbn3WcLt9LznzZb4CgGfm86bZTmcwq5zqp9LkNtvDLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oMWJ5Fre; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43BF4C433F1;
+	Tue, 20 Feb 2024 21:39:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708465148;
-	bh=VG05iOsIOttXd8xEwkSUcamU8bjfepln6wFRzkpqdiM=;
+	s=korg; t=1708465154;
+	bh=H5h437pAjYZaJmXkBgXsk8DRuz+/XWGavXaL2uNB9dE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HvCWAUrOgd6oZ3PN6dDYAU7dGLSyhlt/WrXBQ8Sx/G+KED+LWZjAioVb2eBPe5yhI
-	 WAWCtgYyZSKM16Pwyp2rvfWcpGa0b/MxS6sJbKis3sFJjDfw6s3BwO3epBw29rR72J
-	 ZrtsXdUtgNM4iRm9cKYncQe6mK9hHsj1Djim6S4s=
+	b=oMWJ5Fre8BgkUeKW17eqaJ0EgbXh9fPDaIoc8LHwfS/WuQJ47CEtrgePNi8icEtZr
+	 8X+ZOfZvOlmwTYR0MvPuhewjFRyR9OPn9SZPcU83g9aT7fJ9S3kqTqCG65OsE9yehc
+	 PjYNpXkBicOhcj4XALNksUoaHiwHcooeieW+kmvg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jouni Malinen <j@w1.fi>,
 	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.7 251/309] wifi: cfg80211: fix wiphy delayed work queueing
-Date: Tue, 20 Feb 2024 21:56:50 +0100
-Message-ID: <20240220205641.022971418@linuxfoundation.org>
+Subject: [PATCH 6.7 252/309] wifi: mac80211: reload info pointer in ieee80211_tx_dequeue()
+Date: Tue, 20 Feb 2024 21:56:51 +0100
+Message-ID: <20240220205641.052020987@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
 References: <20240220205633.096363225@linuxfoundation.org>
@@ -67,45 +66,50 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-commit b743287d7a0007493f5cada34ed2085d475050b4 upstream.
+commit c98d8836b817d11fdff4ca7749cbbe04ff7f0c64 upstream.
 
-When a wiphy work is queued with timer, and then again
-without a delay, it's started immediately but *also*
-started again after the timer expires. This can lead,
-for example, to warnings in mac80211's offchannel code
-as reported by Jouni. Running the same work twice isn't
-expected, of course. Fix this by deleting the timer at
-this point, when queuing immediately due to delay=0.
+This pointer can change here since the SKB can change, so we
+actually later open-coded IEEE80211_SKB_CB() again. Reload
+the pointer where needed, so the monitor-mode case using it
+gets fixed, and then use info-> later as well.
 
 Cc: stable@vger.kernel.org
-Reported-by: Jouni Malinen <j@w1.fi>
-Fixes: a3ee4dc84c4e ("wifi: cfg80211: add a work abstraction with special semantics")
-Link: https://msgid.link/20240125095108.2feb0eaaa446.I4617f3210ed0e7f252290d5970dac6a876aa595b@changeid
+Fixes: 531682159092 ("mac80211: fix VLAN handling with TXQs")
+Link: https://msgid.link/20240131164910.b54c28d583bc.I29450cec84ea6773cff5d9c16ff92b836c331471@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/core.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/mac80211/tx.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
 @@ -5,7 +5,7 @@
-  * Copyright 2006-2010		Johannes Berg <johannes@sipsolutions.net>
+  * Copyright 2006-2007	Jiri Benc <jbenc@suse.cz>
+  * Copyright 2007	Johannes Berg <johannes@sipsolutions.net>
   * Copyright 2013-2014  Intel Mobile Communications GmbH
-  * Copyright 2015-2017	Intel Deutschland GmbH
-- * Copyright (C) 2018-2023 Intel Corporation
+- * Copyright (C) 2018-2022 Intel Corporation
 + * Copyright (C) 2018-2024 Intel Corporation
+  *
+  * Transmit and frame generation functions.
   */
+@@ -3927,6 +3927,7 @@ begin:
+ 			goto begin;
  
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-@@ -1661,6 +1661,7 @@ void wiphy_delayed_work_queue(struct wip
- 			      unsigned long delay)
- {
- 	if (!delay) {
-+		del_timer(&dwork->timer);
- 		wiphy_work_queue(wiphy, &dwork->work);
- 		return;
+ 		skb = __skb_dequeue(&tx.skbs);
++		info = IEEE80211_SKB_CB(skb);
+ 
+ 		if (!skb_queue_empty(&tx.skbs)) {
+ 			spin_lock_bh(&fq->lock);
+@@ -3971,7 +3972,7 @@ begin:
  	}
+ 
+ encap_out:
+-	IEEE80211_SKB_CB(skb)->control.vif = vif;
++	info->control.vif = vif;
+ 
+ 	if (tx.sta &&
+ 	    wiphy_ext_feature_isset(local->hw.wiphy, NL80211_EXT_FEATURE_AQL)) {
 
 
 
