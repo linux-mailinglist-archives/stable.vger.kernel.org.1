@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-21394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D65885C8B7
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:24:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D338885C890
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:23:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EA221C2224C
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:24:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 63DEAB20F49
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:23:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 203E3151CE5;
-	Tue, 20 Feb 2024 21:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10B53151CE8;
+	Tue, 20 Feb 2024 21:23:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wOzySVGl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nExRwAM5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D200514F9CE;
-	Tue, 20 Feb 2024 21:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3AA52DF9F;
+	Tue, 20 Feb 2024 21:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464285; cv=none; b=VMdl0u4otzOVLeI0OdQnj0of1n/r08+wrIezMztHWJCo+imkTQ/P0n/zVCbo3v15gaRq9TRvUHKMKZkOqmc686GQndBh1j8yVlIgta4F/F7/UR33W77k1Hw+VZEhys2J2nxXW/PnZu4w47wKuumn+p/lRRa9hKeyNX/JI1rZbcQ=
+	t=1708464191; cv=none; b=kjLkUH32+UfUMrkq0F9QYEtcL5212OW+igRv7qHMhBHYYREKSlmn1H3Fn5k7lTU5RZXyUPaFmCIPPc1Hu5Fz+zr1X0rcMe3onxMComt+S23zcNw8MG07U3o0sVVnS95x4FvJ5WOvERKou071fSDGqAtlBnIrH+l1pNEHjEpAMn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464285; c=relaxed/simple;
-	bh=ClyEEoRstEsLyDiprOb+MiyoAgB3MtQytR40HQLkl08=;
+	s=arc-20240116; t=1708464191; c=relaxed/simple;
+	bh=SPy5WVlY37WOhhL748uMy9ubr34yOH/n1BcVjtXzM34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XsPoSB2AQiE3caX1hY2bIzRr8wqPbvhIGPog1feiEcwhviETCCfB0NeUpdU5hnXaeOMgwUv8z8ufIXYeIBTxgt+muApwS8EHln1dToP4V43HL8f+mpfNnMmFFdZBBVIYLaSjdlCveEX2SQRp35eLXW+5DKiUREZja2Tup3vsawY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wOzySVGl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3EEDC433C7;
-	Tue, 20 Feb 2024 21:24:44 +0000 (UTC)
+	 MIME-Version; b=oWpeT1EIUzz1pU8UwhO8YrpuNzAGI2+04n+QHF8jthaQEd0TifRWFJpmxO6urMcYrGQ624wny8bLsqO3cM2V/bAgmSxQcx+bcPvr9TI8zCTGDpVjHBN2ootKtxd7fZQWBnSuCnoKZ9qECMmOADK8N+3KWPtYhTH9C1HXqY3msVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nExRwAM5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31387C433C7;
+	Tue, 20 Feb 2024 21:23:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464285;
-	bh=ClyEEoRstEsLyDiprOb+MiyoAgB3MtQytR40HQLkl08=;
+	s=korg; t=1708464191;
+	bh=SPy5WVlY37WOhhL748uMy9ubr34yOH/n1BcVjtXzM34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wOzySVGl1oGBPLbbyEeL42rCEkRTtSoAYFKK2Y+rQxYHYOtYfoET5KooMzY828Uys
-	 XOJ+6I0yv/Wr44ITfvjg/tWcwqi+eq/gtab2uij9F35R8uUVocq2uMVspUJ4CB3zK2
-	 PIDQn+nsyXIxCG8e9lOkd32iFfRpivw+GN16itWo=
+	b=nExRwAM5mIuPMfhTi3ZsLUF4xQ5U64FlAxEhZpN4dFXLmkfQyUfRO4VAkBh7xsgBU
+	 DixDRpalVpmxRWGA3D6SPpb3p0nFlmaE7kt3Y5p7jR/7kiTJlq0AYTM0kKizYfq+Zj
+	 cdZe6LQNlXLnz8uO++gl3eh49aaz3IActp+KmjBk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Masami Hiramatsu <mhiramat@kernel.org>,
 	Mark Rutland <mark.rutland@arm.com>,
+	kernel test robot <lkp@intel.com>,
 	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 271/331] eventfs: Remove extra dget() in eventfs_create_events_dir()
-Date: Tue, 20 Feb 2024 21:56:27 +0100
-Message-ID: <20240220205646.404132617@linuxfoundation.org>
+Subject: [PATCH 6.6 272/331] eventfs: Fix kerneldoc of eventfs_remove_rec()
+Date: Tue, 20 Feb 2024 21:56:28 +0100
+Message-ID: <20240220205646.433425913@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
 References: <20240220205637.572693592@linuxfoundation.org>
@@ -68,40 +69,41 @@ Content-Transfer-Encoding: 8bit
 
 From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-commit 77bc4d4921bd3497678ba8e7f4e480de35692f05 upstream.
+commit 9037caa09ed345b35325200f0e4acf5a94ae0a65 upstream.
 
-The creation of the top events directory does a dget() at the end of the
-creation in eventfs_create_events_dir() with a comment saying the final
-dput() will happen when it is removed. The problem is that a dget() is
-already done on the dentry when it was created with tracefs_start_creating()!
-The dget() now just causes a memory leak of that dentry.
+The eventfs_remove_rec() had some missing parameters in the kerneldoc
+comment above it. Also, rephrase the description a bit more to have a bit
+more correct grammar.
 
-Remove the extra dget() as the final dput() in the deletion of the events
-directory actually matches the one in tracefs_start_creating().
-
-Link: https://lore.kernel.org/linux-trace-kernel/20231031124229.4f2e3fa1@gandalf.local.home
+Link: https://lore.kernel.org/linux-trace-kernel/20231030121523.0b2225a7@gandalf.local.home
 
 Cc: Masami Hiramatsu <mhiramat@kernel.org>
 Cc: Mark Rutland <mark.rutland@arm.com>
-Fixes: 5790b1fb3d672 ("eventfs: Remove eventfs_file and just use eventfs_inode")
+Fixes: 5790b1fb3d672 ("eventfs: Remove eventfs_file and just use eventfs_inode");
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202310052216.4SgqasWo-lkp@intel.com/
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/tracefs/event_inode.c |    3 ---
- 1 file changed, 3 deletions(-)
+ fs/tracefs/event_inode.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 --- a/fs/tracefs/event_inode.c
 +++ b/fs/tracefs/event_inode.c
-@@ -774,9 +774,6 @@ struct eventfs_inode *eventfs_create_eve
- 	fsnotify_mkdir(dentry->d_parent->d_inode, dentry);
- 	tracefs_end_creating(dentry);
- 
--	/* Will call dput when the directory is removed */
--	dget(dentry);
--
- 	return ei;
- 
-  fail:
+@@ -796,9 +796,11 @@ static void free_ei(struct rcu_head *hea
+ /**
+  * eventfs_remove_rec - remove eventfs dir or file from list
+  * @ei: eventfs_inode to be removed.
++ * @head: the list head to place the deleted @ei and children
++ * @level: prevent recursion from going more than 3 levels deep.
+  *
+- * This function recursively remove eventfs_inode which
+- * contains info of file or dir.
++ * This function recursively removes eventfs_inodes which
++ * contains info of files and/or directories.
+  */
+ static void eventfs_remove_rec(struct eventfs_inode *ei, struct list_head *head, int level)
+ {
 
 
 
