@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-21221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15E0285C7C0
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:16:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74CF585C942
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:31:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4C66EB21C0B
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:16:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EA91CB21E4B
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:31:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60F73152DEE;
-	Tue, 20 Feb 2024 21:15:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30769151CE1;
+	Tue, 20 Feb 2024 21:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U4p6VcUw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xYHah9NQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E7F152DE5;
-	Tue, 20 Feb 2024 21:15:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2BB8151CCC;
+	Tue, 20 Feb 2024 21:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463736; cv=none; b=SypWiGOFpLiDDkIWwJy1OdsHMWRhgMfsCTURQsq14KckvPiqosa36sH7MlW6j/Tc4M0487vNVvvF1NPva1onVd4rB6exPB7hb5jUZSQ2SCH2vkLDQrgrSyEXeaD/abqIPj0XMN/4+ZJJLrAnpDWQ5vSE2d93UEH9o3TO42fGMsQ=
+	t=1708464675; cv=none; b=QG0X0sXMzdHXwfO+nf6cYlZ0g2jQUTqwU11yqPYbymc9VGudW2FEbXT3Jqg/NH/nPbupGGc21biG8CLpZafnAgcn1OtoaAHYERB8R0Nxd/Xm2wDwctCfjor2MhRFjJHOHqHVX+vBjFQoegrBkrGEwtOjt0FI7Wbx26KhFi/tjhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463736; c=relaxed/simple;
-	bh=NPijuwwDEWvQOy2YPEyQkw3gYcFjJsyFwSSPdVLHYVo=;
+	s=arc-20240116; t=1708464675; c=relaxed/simple;
+	bh=SCVOiDjlGRWw/vDT1PUBki3b059dJWxIhLx+cvQ4JQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qzf2LwBIO2h8xFinf2FkN2DQqp7rIexjrKp1BUv5hkF9VOV6+zBoIZDTpSAfISdAn0HM77ghqeclbAaRvivOETmkH1MZByLT9VX2Pe+ceO+Gd01NqzwBddRzNYSraFOHLC9gto67HUJTPiyhRAFehI653Snx2ZVb0XWzK7Lrk0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U4p6VcUw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96847C433C7;
-	Tue, 20 Feb 2024 21:15:35 +0000 (UTC)
+	 MIME-Version; b=rxn1uHwm8vxhaLJY1+c+6CbA5jHeoqh3E9xOGlb4lW4EkFXVvKqEXmwWOqucd96Rj2fSQBn8GxErt6/mJ+bE0CY/BA9qggJHKX8fZ64wqZcPO0GUgFi7WH67hwW54x9g3U1V34/WfIb9ZPGQUkCM+GPpG3cKHpQ2Y9qHGJRt/ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xYHah9NQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69275C433F1;
+	Tue, 20 Feb 2024 21:31:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463736;
-	bh=NPijuwwDEWvQOy2YPEyQkw3gYcFjJsyFwSSPdVLHYVo=;
+	s=korg; t=1708464674;
+	bh=SCVOiDjlGRWw/vDT1PUBki3b059dJWxIhLx+cvQ4JQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U4p6VcUwCuR4dFnV81HUWkGWP9oxdNz6NtuiOVYPQ7Mt5FpoSgu2nLhJfmJKIxmNu
-	 uYuR4Uq4HHCpxhtx9MoJer+36+PCObCYIo2E2Jw68Ydc4Qy9QEO7Y5Q+uE5pNnHnAl
-	 S7Uz0kh2QpGd78Px1TOJJnW2JHzk1yGMpGw7nvfY=
+	b=xYHah9NQINBjWaLKvUOwCK6bo/ISeqsRMe9YM55ChWLEbJYgXC14THuyh+pt2jxmS
+	 KwdMbmpMTa8ANuT9SWCwt1YguoZgK99YbqbIo2Ew9FGCO/IdcMgFcoEBD6Btpgn+/J
+	 skMZ9NVDZOZofExDzfBees73jFRDFWwqS1iECrDA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 6.6 136/331] linux/init: remove __memexit* annotations
+	Udipto Goswami <quic_ugoswami@quicinc.com>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 6.7 093/309] usb: core: Prevent null pointer dereference in update_port_device_state
 Date: Tue, 20 Feb 2024 21:54:12 +0100
-Message-ID: <20240220205641.841000900@linuxfoundation.org>
+Message-ID: <20240220205636.108467219@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,139 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Udipto Goswami <quic_ugoswami@quicinc.com>
 
-commit 6a4e59eeedc3018cb57722eecfcbb49431aeb05f upstream.
+commit 12783c0b9e2c7915a50d5ec829630ff2da50472c upstream.
 
-We have never used __memexit, __memexitdata, or __memexitconst.
+Currently, the function update_port_device_state gets the usb_hub from
+udev->parent by calling usb_hub_to_struct_hub.
+However, in case the actconfig or the maxchild is 0, the usb_hub would
+be NULL and upon further accessing to get port_dev would result in null
+pointer dereference.
 
-These were unneeded.
+Fix this by introducing an if check after the usb_hub is populated.
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+Fixes: 83cb2604f641 ("usb: core: add sysfs entry for usb device state")
+Cc: stable@vger.kernel.org
+Signed-off-by: Udipto Goswami <quic_ugoswami@quicinc.com>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20240110095814.7626-1-quic_ugoswami@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/asm-generic/vmlinux.lds.h |    6 ------
- include/linux/init.h              |    3 ---
- scripts/mod/modpost.c             |   15 +++------------
- 3 files changed, 3 insertions(+), 21 deletions(-)
+ drivers/usb/core/hub.c |   16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
---- a/include/asm-generic/vmlinux.lds.h
-+++ b/include/asm-generic/vmlinux.lds.h
-@@ -356,7 +356,6 @@
- 	*(.ref.data)							\
- 	*(.data..shared_aligned) /* percpu related */			\
- 	MEM_KEEP(init.data*)						\
--	MEM_KEEP(exit.data*)						\
- 	*(.data.unlikely)						\
- 	__start_once = .;						\
- 	*(.data.once)							\
-@@ -521,7 +520,6 @@
- 	__init_rodata : AT(ADDR(__init_rodata) - LOAD_OFFSET) {		\
- 		*(.ref.rodata)						\
- 		MEM_KEEP(init.rodata)					\
--		MEM_KEEP(exit.rodata)					\
- 	}								\
- 									\
- 	/* Built-in module parameters. */				\
-@@ -574,7 +572,6 @@
- 		*(.ref.text)						\
- 		*(.text.asan.* .text.tsan.*)				\
- 	MEM_KEEP(init.text*)						\
--	MEM_KEEP(exit.text*)						\
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -2047,9 +2047,19 @@ static void update_port_device_state(str
  
- 
- /* sched.text is aling to function alignment to secure we have same
-@@ -714,13 +711,10 @@
- 	*(.exit.data .exit.data.*)					\
- 	*(.fini_array .fini_array.*)					\
- 	*(.dtors .dtors.*)						\
--	MEM_DISCARD(exit.data*)						\
--	MEM_DISCARD(exit.rodata*)
- 
- #define EXIT_TEXT							\
- 	*(.exit.text)							\
- 	*(.text.exit)							\
--	MEM_DISCARD(exit.text)
- 
- #define EXIT_CALL							\
- 	*(.exitcall.exit)
---- a/include/linux/init.h
-+++ b/include/linux/init.h
-@@ -89,9 +89,6 @@
- 						  __latent_entropy
- #define __meminitdata    __section(".meminit.data")
- #define __meminitconst   __section(".meminit.rodata")
--#define __memexit        __section(".memexit.text") __exitused __cold notrace
--#define __memexitdata    __section(".memexit.data")
--#define __memexitconst   __section(".memexit.rodata")
- 
- /* For assembly routines */
- #define __HEAD		.section	".head.text","ax"
---- a/scripts/mod/modpost.c
-+++ b/scripts/mod/modpost.c
-@@ -798,7 +798,7 @@ static void check_section(const char *mo
- #define ALL_INIT_TEXT_SECTIONS \
- 	".init.text", ".meminit.text"
- #define ALL_EXIT_TEXT_SECTIONS \
--	".exit.text", ".memexit.text"
-+	".exit.text"
- 
- #define ALL_PCI_INIT_SECTIONS	\
- 	".pci_fixup_early", ".pci_fixup_header", ".pci_fixup_final", \
-@@ -806,10 +806,9 @@ static void check_section(const char *mo
- 	".pci_fixup_resume_early", ".pci_fixup_suspend"
- 
- #define ALL_XXXINIT_SECTIONS MEM_INIT_SECTIONS
--#define ALL_XXXEXIT_SECTIONS MEM_EXIT_SECTIONS
- 
- #define ALL_INIT_SECTIONS INIT_SECTIONS, ALL_XXXINIT_SECTIONS
--#define ALL_EXIT_SECTIONS EXIT_SECTIONS, ALL_XXXEXIT_SECTIONS
-+#define ALL_EXIT_SECTIONS EXIT_SECTIONS
- 
- #define DATA_SECTIONS ".data", ".data.rel"
- #define TEXT_SECTIONS ".text", ".text.*", ".sched.text", \
-@@ -822,7 +821,6 @@ static void check_section(const char *mo
- #define MEM_INIT_SECTIONS  ".meminit.*"
- 
- #define EXIT_SECTIONS      ".exit.*"
--#define MEM_EXIT_SECTIONS  ".memexit.*"
- 
- #define ALL_TEXT_SECTIONS  ALL_INIT_TEXT_SECTIONS, ALL_EXIT_TEXT_SECTIONS, \
- 		TEXT_SECTIONS, OTHER_TEXT_SECTIONS
-@@ -832,7 +830,6 @@ enum mismatch {
- 	DATA_TO_ANY_INIT,
- 	TEXTDATA_TO_ANY_EXIT,
- 	XXXINIT_TO_SOME_INIT,
--	XXXEXIT_TO_SOME_EXIT,
- 	ANY_INIT_TO_ANY_EXIT,
- 	ANY_EXIT_TO_ANY_INIT,
- 	EXTABLE_TO_NON_TEXT,
-@@ -883,12 +880,6 @@ static const struct sectioncheck section
- 	.bad_tosec = { INIT_SECTIONS, NULL },
- 	.mismatch = XXXINIT_TO_SOME_INIT,
- },
--/* Do not reference exit code/data from memexit code/data */
--{
--	.fromsec = { ALL_XXXEXIT_SECTIONS, NULL },
--	.bad_tosec = { EXIT_SECTIONS, NULL },
--	.mismatch = XXXEXIT_TO_SOME_EXIT,
--},
- /* Do not use exit code/data from init code */
- {
- 	.fromsec = { ALL_INIT_SECTIONS, NULL },
-@@ -1017,7 +1008,7 @@ static int secref_whitelist(const char *
- 
- 	/* symbols in data sections that may refer to meminit sections */
- 	if (match(fromsec, PATTERNS(DATA_SECTIONS)) &&
--	    match(tosec, PATTERNS(ALL_XXXINIT_SECTIONS, ALL_XXXEXIT_SECTIONS)) &&
-+	    match(tosec, PATTERNS(ALL_XXXINIT_SECTIONS)) &&
- 	    match(fromsym, PATTERNS("*driver")))
- 		return 0;
+ 	if (udev->parent) {
+ 		hub = usb_hub_to_struct_hub(udev->parent);
+-		port_dev = hub->ports[udev->portnum - 1];
+-		WRITE_ONCE(port_dev->state, udev->state);
+-		sysfs_notify_dirent(port_dev->state_kn);
++
++		/*
++		 * The Link Layer Validation System Driver (lvstest)
++		 * has a test step to unbind the hub before running the
++		 * rest of the procedure. This triggers hub_disconnect
++		 * which will set the hub's maxchild to 0, further
++		 * resulting in usb_hub_to_struct_hub returning NULL.
++		 */
++		if (hub) {
++			port_dev = hub->ports[udev->portnum - 1];
++			WRITE_ONCE(port_dev->state, udev->state);
++			sysfs_notify_dirent(port_dev->state_kn);
++		}
+ 	}
+ }
  
 
 
