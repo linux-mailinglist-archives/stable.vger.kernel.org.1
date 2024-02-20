@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-21599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98B8985C990
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:35:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA48385C844
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:20:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D6011F22C8C
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:35:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93C60282BE1
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:20:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8818151CEA;
-	Tue, 20 Feb 2024 21:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CF47151CDC;
+	Tue, 20 Feb 2024 21:20:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LENY/B3s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zHJsoZhI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9599B2DF9F;
-	Tue, 20 Feb 2024 21:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD5814A4E6;
+	Tue, 20 Feb 2024 21:20:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464919; cv=none; b=ihZKQO6bj2+Qmr++49BmS01meoU3pEfA/O+ODCOvP2vZ3T26pdU2x72ayO4rJm7kYfJyAcJa0ibloW0TnSlnKsANEUiE+qAJ2A3lEe4gikYlYruzb0YrTbkxuVeZSb+NTnF9mIG6lMkp0bspVV1TJOJiJpUMXCwBc/jmszf9Gf4=
+	t=1708464005; cv=none; b=ZhUzgPJiPCovWY7gKD0kr28uIILkjkE497SKpFZ1GiG21PnNMUSheXkhk0YFmQTF27THAQ8hPPwHvCiau8iC6EOv90fyEyV06LUdyVTHqviOAreyO+neM09HF15TpO4r68ISBeR0voeE/T004IcVdJaEMSfWl+TUrAIIUgvt+pg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464919; c=relaxed/simple;
-	bh=cp3gD1oPp+Ex/TIBQ2phGcIS+yvIKDrALSTjGNjb1ZI=;
+	s=arc-20240116; t=1708464005; c=relaxed/simple;
+	bh=5vBMINww6tX8LKU5ipD7csU0/elH3Gy40qyqJ3eT3F8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C8OxaNJBX6jnhIBBPPNW2ngm2w0y8wJMrRF1obpRPp33k7lcToJm8eIckGdxW5hCHtMJ3IJlUR+NokczzRFbb24sUvXEjjZbCeBEj8xd5DgTRzEvtFssnoFYiDOnPwXSVUj9Z1+fHKb9OzjPHe5dAENEYGBd/0aZbzNnq2MuCF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LENY/B3s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8725EC433C7;
-	Tue, 20 Feb 2024 21:35:18 +0000 (UTC)
+	 MIME-Version; b=Jacyquoh4KALLC5TOq+Gzwtt0hRj0WzoxkkJf6Sm1/+SzeN5tiz/AAwe/pFIWIZwB0hhavZKKq7XvJD3o0Uj6VlZnvKTqEuQ1pNP0JCN9/quEixmEok5k8845uuiVCnMfmQkMrOK5X7S+dEO2OtFPV6z2n9SVdmimSO0p6V/ZkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zHJsoZhI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C1EEC433F1;
+	Tue, 20 Feb 2024 21:20:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464919;
-	bh=cp3gD1oPp+Ex/TIBQ2phGcIS+yvIKDrALSTjGNjb1ZI=;
+	s=korg; t=1708464004;
+	bh=5vBMINww6tX8LKU5ipD7csU0/elH3Gy40qyqJ3eT3F8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LENY/B3sGYtolkiEm4OTF+QG9fNMNgdBhIyRCkvy5DCNaDfa0YwACWuxMmdtEjxgL
-	 3gMj5N3uSGS+PUsIsipAthzkhzElL8UGij3qNo9zHA2R3mpzP4MRx976kZMpLJDTtD
-	 M1/P+K9PP0ienPC08jtsricbzR7XekZlvQgtC2rE=
+	b=zHJsoZhItqyleYgmetFGfE57TsDeGXlaDHAC0edkHGLoEBxPbNrItM93tKdyYS4YN
+	 9Ai0kmkQl5HulqXXKegmSJBqP48LLM0gFmjxYOYb/eD16Izn5JgLVBF59hVJahVbr0
+	 5xuEV+EWxPEsmCYuGEwedprHNds1oVwQT12zOPAY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Young <sean@mess.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>
-Subject: [PATCH 6.7 178/309] media: rc: bpf attach/detach requires write permission
-Date: Tue, 20 Feb 2024 21:55:37 +0100
-Message-ID: <20240220205638.723276226@linuxfoundation.org>
+	Gergo Koteles <soyer@irl.hu>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 222/331] ASoC: tas2781: add module parameter to tascodec_init()
+Date: Tue, 20 Feb 2024 21:55:38 +0100
+Message-ID: <20240220205644.707989846@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +61,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Young <sean@mess.org>
+From: Gergo Koteles <soyer@irl.hu>
 
-commit 6a9d552483d50953320b9d3b57abdee8d436f23f upstream.
+commit 34a1066981a967eab619938e7b35a9be6b4c34e1 upstream.
 
-Note that bpf attach/detach also requires CAP_NET_ADMIN.
+The tascodec_init() of the snd-soc-tas2781-comlib module is called from
+snd-soc-tas2781-i2c and snd-hda-scodec-tas2781-i2c modules. It calls
+request_firmware_nowait() with parameter THIS_MODULE and a cont/callback
+from the latter modules.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+The latter modules can be removed while their callbacks are running,
+resulting in a general protection failure.
+
+Add module parameter to tascodec_init() so request_firmware_nowait() can
+be called with the module of the callback.
+
+Fixes: ef3bcde75d06 ("ASoC: tas2781: Add tas2781 driver")
+CC: stable@vger.kernel.org
+Signed-off-by: Gergo Koteles <soyer@irl.hu>
+Link: https://lore.kernel.org/r/118dad922cef50525e5aab09badef2fa0eb796e5.1707076603.git.soyer@irl.hu
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/rc/bpf-lirc.c     |    6 +++---
- drivers/media/rc/lirc_dev.c     |    5 ++++-
- drivers/media/rc/rc-core-priv.h |    2 +-
- 3 files changed, 8 insertions(+), 5 deletions(-)
+ include/sound/tas2781.h           |    1 +
+ sound/pci/hda/tas2781_hda_i2c.c   |    2 +-
+ sound/soc/codecs/tas2781-comlib.c |    3 ++-
+ sound/soc/codecs/tas2781-i2c.c    |    2 +-
+ 4 files changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/media/rc/bpf-lirc.c
-+++ b/drivers/media/rc/bpf-lirc.c
-@@ -253,7 +253,7 @@ int lirc_prog_attach(const union bpf_att
- 	if (attr->attach_flags)
- 		return -EINVAL;
+--- a/include/sound/tas2781.h
++++ b/include/sound/tas2781.h
+@@ -135,6 +135,7 @@ struct tasdevice_priv {
  
--	rcdev = rc_dev_get_from_fd(attr->target_fd);
-+	rcdev = rc_dev_get_from_fd(attr->target_fd, true);
- 	if (IS_ERR(rcdev))
- 		return PTR_ERR(rcdev);
+ void tas2781_reset(struct tasdevice_priv *tas_dev);
+ int tascodec_init(struct tasdevice_priv *tas_priv, void *codec,
++	struct module *module,
+ 	void (*cont)(const struct firmware *fw, void *context));
+ struct tasdevice_priv *tasdevice_kzalloc(struct i2c_client *i2c);
+ int tasdevice_init(struct tasdevice_priv *tas_priv);
+--- a/sound/pci/hda/tas2781_hda_i2c.c
++++ b/sound/pci/hda/tas2781_hda_i2c.c
+@@ -627,7 +627,7 @@ static int tas2781_hda_bind(struct devic
  
-@@ -278,7 +278,7 @@ int lirc_prog_detach(const union bpf_att
- 	if (IS_ERR(prog))
- 		return PTR_ERR(prog);
+ 	strscpy(comps->name, dev_name(dev), sizeof(comps->name));
  
--	rcdev = rc_dev_get_from_fd(attr->target_fd);
-+	rcdev = rc_dev_get_from_fd(attr->target_fd, true);
- 	if (IS_ERR(rcdev)) {
- 		bpf_prog_put(prog);
- 		return PTR_ERR(rcdev);
-@@ -303,7 +303,7 @@ int lirc_prog_query(const union bpf_attr
- 	if (attr->query.query_flags)
- 		return -EINVAL;
+-	ret = tascodec_init(tas_hda->priv, codec, tasdev_fw_ready);
++	ret = tascodec_init(tas_hda->priv, codec, THIS_MODULE, tasdev_fw_ready);
+ 	if (!ret)
+ 		comps->playback_hook = tas2781_hda_playback_hook;
  
--	rcdev = rc_dev_get_from_fd(attr->query.target_fd);
-+	rcdev = rc_dev_get_from_fd(attr->query.target_fd, false);
- 	if (IS_ERR(rcdev))
- 		return PTR_ERR(rcdev);
+--- a/sound/soc/codecs/tas2781-comlib.c
++++ b/sound/soc/codecs/tas2781-comlib.c
+@@ -267,6 +267,7 @@ void tas2781_reset(struct tasdevice_priv
+ EXPORT_SYMBOL_GPL(tas2781_reset);
  
---- a/drivers/media/rc/lirc_dev.c
-+++ b/drivers/media/rc/lirc_dev.c
-@@ -814,7 +814,7 @@ void __exit lirc_dev_exit(void)
- 	unregister_chrdev_region(lirc_base_dev, RC_DEV_MAX);
+ int tascodec_init(struct tasdevice_priv *tas_priv, void *codec,
++	struct module *module,
+ 	void (*cont)(const struct firmware *fw, void *context))
+ {
+ 	int ret = 0;
+@@ -280,7 +281,7 @@ int tascodec_init(struct tasdevice_priv
+ 		tas_priv->dev_name, tas_priv->ndev);
+ 	crc8_populate_msb(tas_priv->crc8_lkp_tbl, TASDEVICE_CRC8_POLYNOMIAL);
+ 	tas_priv->codec = codec;
+-	ret = request_firmware_nowait(THIS_MODULE, FW_ACTION_UEVENT,
++	ret = request_firmware_nowait(module, FW_ACTION_UEVENT,
+ 		tas_priv->rca_binaryname, tas_priv->dev, GFP_KERNEL, tas_priv,
+ 		cont);
+ 	if (ret)
+--- a/sound/soc/codecs/tas2781-i2c.c
++++ b/sound/soc/codecs/tas2781-i2c.c
+@@ -564,7 +564,7 @@ static int tasdevice_codec_probe(struct
+ {
+ 	struct tasdevice_priv *tas_priv = snd_soc_component_get_drvdata(codec);
+ 
+-	return tascodec_init(tas_priv, codec, tasdevice_fw_ready);
++	return tascodec_init(tas_priv, codec, THIS_MODULE, tasdevice_fw_ready);
  }
  
--struct rc_dev *rc_dev_get_from_fd(int fd)
-+struct rc_dev *rc_dev_get_from_fd(int fd, bool write)
- {
- 	struct fd f = fdget(fd);
- 	struct lirc_fh *fh;
-@@ -828,6 +828,9 @@ struct rc_dev *rc_dev_get_from_fd(int fd
- 		return ERR_PTR(-EINVAL);
- 	}
- 
-+	if (write && !(f.file->f_mode & FMODE_WRITE))
-+		return ERR_PTR(-EPERM);
-+
- 	fh = f.file->private_data;
- 	dev = fh->rc;
- 
---- a/drivers/media/rc/rc-core-priv.h
-+++ b/drivers/media/rc/rc-core-priv.h
-@@ -325,7 +325,7 @@ void lirc_raw_event(struct rc_dev *dev,
- void lirc_scancode_event(struct rc_dev *dev, struct lirc_scancode *lsc);
- int lirc_register(struct rc_dev *dev);
- void lirc_unregister(struct rc_dev *dev);
--struct rc_dev *rc_dev_get_from_fd(int fd);
-+struct rc_dev *rc_dev_get_from_fd(int fd, bool write);
- #else
- static inline int lirc_dev_init(void) { return 0; }
- static inline void lirc_dev_exit(void) {}
+ static void tasdevice_deinit(void *context)
 
 
 
