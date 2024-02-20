@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-20959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DF7885C67D
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:01:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5303385C65D
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:00:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E8A91C20B48
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:01:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E1F7281861
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:00:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0F80151CC9;
-	Tue, 20 Feb 2024 21:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 565D7151CE3;
+	Tue, 20 Feb 2024 21:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O7JvYHRJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cixwYdks"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA821509AE;
-	Tue, 20 Feb 2024 21:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C131151CCC;
+	Tue, 20 Feb 2024 21:00:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708462907; cv=none; b=Zx1II02S8KVLdhqi/7CgCdFsrJo7gmqPlv/e7eKFcMkhcDUqfTeLJ7kzvgqdigBhA3q9znSx6yPV78NcpuCHHQd8j6fCUsWCCa/m7ty0l23HVGgNEErLsHeMhPsFuDcZEmzFywBj0Era+aWnXnwMnTrVK/MTTM8VyBFiNJBKgXA=
+	t=1708462817; cv=none; b=jSMAGbsRw1Kkbn5dsVGATnLXonSD7mxN4a3HEtEVYcSuZ/y230PE0wISOeG1P8ciKnPQplNTMtWabHt6dDWzHvMoh2v9RVp+lQCeQpSAo2UBaHJfPk1gLa78nQUruf0iCzrnVr6Bjs1ap1EQS3/YFFm1oRKizDRamQEfxHO775E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708462907; c=relaxed/simple;
-	bh=z7VBpX8v5qwHHZVtOPMryUTB7KS123aEEHq3MKU6fsE=;
+	s=arc-20240116; t=1708462817; c=relaxed/simple;
+	bh=oIkUQEZCSEaIim3+0zyBEceR/00HPf/bSHUSax3xMMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PU44N7P540sLPvITdX3zP2XMpQmUYDWyQZqzx4duDkeU+HQpwSHUlBsl+wjWkGy3I0QlxySAu4fUr/KetlsA5g7ewUZwUuBPfMZtsrePVi4C4PGJaFLF/g479DC1lOWScywuf7EyXZamQPxMqAE04BxkjjqivR0ohtWW5jHP3L8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O7JvYHRJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F101FC433C7;
-	Tue, 20 Feb 2024 21:01:46 +0000 (UTC)
+	 MIME-Version; b=EZt006N7mva/UZcp98plvpR4dDtmNCmwlOGaVe1lOc7g9TKrAGfPJa37GhGa8bmzntJS5iIEvkMZuRxQ3RXo8npDGnBevjYhgojBimzJk8un6Qdcn3N0i/7kcdCbjRidWYkSv72thk7C2b1kc7jBAtQIw1M5guBPPnp+mEOAMgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cixwYdks; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33DA8C43390;
+	Tue, 20 Feb 2024 21:00:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708462907;
-	bh=z7VBpX8v5qwHHZVtOPMryUTB7KS123aEEHq3MKU6fsE=;
+	s=korg; t=1708462816;
+	bh=oIkUQEZCSEaIim3+0zyBEceR/00HPf/bSHUSax3xMMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O7JvYHRJLYBU0cjHILHCmkkBpt6+AFeZhGGG7jbGZ7/oixxk+FfJSzvtWG9ksTDFH
-	 RMqcA9i6ZoxxRFMt+i78Q8wFLSUcKPQVggT1PXCXwiHFeXIPyXCUEt/QhGDR3aSbG1
-	 J0MRbIVBzlXXpXrLjQxX48F+GDJMBJ/wS13GANX8=
+	b=cixwYdkswRVVaNg5pNxna4jcUaosdaB5vixae4TpjVirjDOOPSq+WU/7b4x9IKL/H
+	 F2x0m5ox6KmGiXBq8swidVWjV5zbNBSdGhpFxYpnJlh1A1NLN7f013QHsjL+YR4Vmi
+	 LTn3AYOqhciRHIVCuNhmU4JtuRevDdEaYZ9+AzK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Jason Gerecke <jason.gerecke@wacom.com>,
-	Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>,
 	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.1 045/197] HID: wacom: generic: Avoid reporting a serial of 0 to userspace
-Date: Tue, 20 Feb 2024 21:50:04 +0100
-Message-ID: <20240220204842.429241572@linuxfoundation.org>
+Subject: [PATCH 6.1 046/197] HID: wacom: Do not register input devices until after hid_hw_start
+Date: Tue, 20 Feb 2024 21:50:05 +0100
+Message-ID: <20240220204842.459980126@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
 References: <20240220204841.073267068@linuxfoundation.org>
@@ -66,51 +66,148 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>
+From: Jason Gerecke <killertofu@gmail.com>
 
-commit ab41a31dd5e2681803642b6d08590b61867840ec upstream.
+commit c1d6708bf0d3dd976460d435373cf5abf21ce258 upstream.
 
-The xf86-input-wacom driver does not treat '0' as a valid serial
-number and will drop any input report which contains an
-MSC_SERIAL = 0 event. The kernel driver already takes care to
-avoid sending any MSC_SERIAL event if the value of serial[0] == 0
-(which is the case for devices that don't actually report a
-serial number), but this is not quite sufficient.
-Only the lower 32 bits of the serial get reported to userspace,
-so if this portion of the serial is zero then there can still
-be problems.
+If a input device is opened before hid_hw_start is called, events may
+not be received from the hardware. In the case of USB-backed devices,
+for example, the hid_hw_start function is responsible for filling in
+the URB which is submitted when the input device is opened. If a device
+is opened prematurely, polling will never start because the device will
+not have been in the correct state to send the URB.
 
-This commit allows the driver to report either the lower 32 bits
-if they are non-zero or the upper 32 bits otherwise.
+Because the wacom driver registers its input devices before calling
+hid_hw_start, there is a window of time where a device can be opened
+and end up in an inoperable state. Some ARM-based Chromebooks in particular
+reliably trigger this bug.
 
+This commit splits the wacom_register_inputs function into two pieces.
+One which is responsible for setting up the allocated inputs (and runs
+prior to hid_hw_start so that devices are ready for any input events
+they may end up receiving) and another which only registers the devices
+(and runs after hid_hw_start to ensure devices can be immediately opened
+without issue). Note that the functions to initialize the LEDs and remotes
+are also moved after hid_hw_start to maintain their own dependency chains.
+
+Fixes: 7704ac937345 ("HID: wacom: implement generic HID handling for pen generic devices")
+Cc: stable@vger.kernel.org # v3.18+
+Suggested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
-Signed-off-by: Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>
-Fixes: f85c9dc678a5 ("HID: wacom: generic: Support tool ID and additional tool types")
-CC: stable@vger.kernel.org # v4.10
+Tested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/wacom_wac.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/hid/wacom_sys.c |   63 ++++++++++++++++++++++++++++++++----------------
+ 1 file changed, 43 insertions(+), 20 deletions(-)
 
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -2571,7 +2571,14 @@ static void wacom_wac_pen_report(struct
- 				wacom_wac->hid_data.tipswitch);
- 		input_report_key(input, wacom_wac->tool[0], sense);
- 		if (wacom_wac->serial[0]) {
--			input_event(input, EV_MSC, MSC_SERIAL, wacom_wac->serial[0]);
-+			/*
-+			 * xf86-input-wacom does not accept a serial number
-+			 * of '0'. Report the low 32 bits if possible, but
-+			 * if they are zero, report the upper ones instead.
-+			 */
-+			__u32 serial_lo = wacom_wac->serial[0] & 0xFFFFFFFFu;
-+			__u32 serial_hi = wacom_wac->serial[0] >> 32;
-+			input_event(input, EV_MSC, MSC_SERIAL, (int)(serial_lo ? serial_lo : serial_hi));
- 			input_report_abs(input, ABS_MISC, sense ? id : 0);
- 		}
+--- a/drivers/hid/wacom_sys.c
++++ b/drivers/hid/wacom_sys.c
+@@ -2080,7 +2080,7 @@ static int wacom_allocate_inputs(struct
+ 	return 0;
+ }
  
+-static int wacom_register_inputs(struct wacom *wacom)
++static int wacom_setup_inputs(struct wacom *wacom)
+ {
+ 	struct input_dev *pen_input_dev, *touch_input_dev, *pad_input_dev;
+ 	struct wacom_wac *wacom_wac = &(wacom->wacom_wac);
+@@ -2099,10 +2099,6 @@ static int wacom_register_inputs(struct
+ 		input_free_device(pen_input_dev);
+ 		wacom_wac->pen_input = NULL;
+ 		pen_input_dev = NULL;
+-	} else {
+-		error = input_register_device(pen_input_dev);
+-		if (error)
+-			goto fail;
+ 	}
+ 
+ 	error = wacom_setup_touch_input_capabilities(touch_input_dev, wacom_wac);
+@@ -2111,10 +2107,6 @@ static int wacom_register_inputs(struct
+ 		input_free_device(touch_input_dev);
+ 		wacom_wac->touch_input = NULL;
+ 		touch_input_dev = NULL;
+-	} else {
+-		error = input_register_device(touch_input_dev);
+-		if (error)
+-			goto fail;
+ 	}
+ 
+ 	error = wacom_setup_pad_input_capabilities(pad_input_dev, wacom_wac);
+@@ -2123,7 +2115,34 @@ static int wacom_register_inputs(struct
+ 		input_free_device(pad_input_dev);
+ 		wacom_wac->pad_input = NULL;
+ 		pad_input_dev = NULL;
+-	} else {
++	}
++
++	return 0;
++}
++
++static int wacom_register_inputs(struct wacom *wacom)
++{
++	struct input_dev *pen_input_dev, *touch_input_dev, *pad_input_dev;
++	struct wacom_wac *wacom_wac = &(wacom->wacom_wac);
++	int error = 0;
++
++	pen_input_dev = wacom_wac->pen_input;
++	touch_input_dev = wacom_wac->touch_input;
++	pad_input_dev = wacom_wac->pad_input;
++
++	if (pen_input_dev) {
++		error = input_register_device(pen_input_dev);
++		if (error)
++			goto fail;
++	}
++
++	if (touch_input_dev) {
++		error = input_register_device(touch_input_dev);
++		if (error)
++			goto fail;
++	}
++
++	if (pad_input_dev) {
+ 		error = input_register_device(pad_input_dev);
+ 		if (error)
+ 			goto fail;
+@@ -2379,6 +2398,20 @@ static int wacom_parse_and_register(stru
+ 			goto fail;
+ 	}
+ 
++	error = wacom_setup_inputs(wacom);
++	if (error)
++		goto fail;
++
++	if (features->type == HID_GENERIC)
++		connect_mask |= HID_CONNECT_DRIVER;
++
++	/* Regular HID work starts now */
++	error = hid_hw_start(hdev, connect_mask);
++	if (error) {
++		hid_err(hdev, "hw start failed\n");
++		goto fail;
++	}
++
+ 	error = wacom_register_inputs(wacom);
+ 	if (error)
+ 		goto fail;
+@@ -2393,16 +2426,6 @@ static int wacom_parse_and_register(stru
+ 			goto fail;
+ 	}
+ 
+-	if (features->type == HID_GENERIC)
+-		connect_mask |= HID_CONNECT_DRIVER;
+-
+-	/* Regular HID work starts now */
+-	error = hid_hw_start(hdev, connect_mask);
+-	if (error) {
+-		hid_err(hdev, "hw start failed\n");
+-		goto fail;
+-	}
+-
+ 	if (!wireless) {
+ 		/* Note that if query fails it is not a hard failure */
+ 		wacom_query_tablet_data(wacom);
 
 
 
