@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-21708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A02285CA01
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:41:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF0E985C8AC
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:24:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4F031F23035
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:41:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAECD284E5A
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:24:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F063151CDC;
-	Tue, 20 Feb 2024 21:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 385F6151CF6;
+	Tue, 20 Feb 2024 21:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YKa2rzoV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="totcupWE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F19FD612D7;
-	Tue, 20 Feb 2024 21:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9723151CE9;
+	Tue, 20 Feb 2024 21:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708465262; cv=none; b=ZpTvJV3SgXLy17YN1X8GXyCHUPGom0R0NnW0IqDw38jXaZOgRVYZyT04F9GFn4QthrdWT4Q6w0UfdFJIKZKKhK27Jr58XmWFnjS2XpjZT6dEnj2VBnoKnWgDRkr364W+ukyqCxXRTYonNyxovnrQKaz3kTt/EsNKikqvh+pV9VQ=
+	t=1708464264; cv=none; b=C9rhSbBuC4B1uXxrvMvPhbG1gL3y/LjzTUZhk+KQvAn/7n13zD1upmCCtgHwN797QXeczAWpVqBnRX5a0K86gwD6xlqcTEAxzIRM/BvrZBBdnwP3JTyp8RIKLzB9eKOFqkgPPoxyh/1lwAfdAL5NrV3HJWIT1AbiwReJ60aWzw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708465262; c=relaxed/simple;
-	bh=U3g/3z9t02xk2ybCuX0ZMS0LauV+qkYpee5jPE6d+oQ=;
+	s=arc-20240116; t=1708464264; c=relaxed/simple;
+	bh=MM+7WmqMzWiWDZIbtNU+jsNi6ytYn+CMWJkkqqWVGa4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p83gJ5AilY4/rbaKiSewXny3muC8eCiY7D/UhPA6ZS+wptmGhcTSJPsKdTdOxAqMg3FlHrRlfz3cstqqLLs/tlCTjKCHA0oAIg2Eboyi9I/zSwdYWn3bnHYs9L3V5Qf1LdcWxCHAfaMJclqpmIhOHv1OvSdF493MRI5QIEj1GGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YKa2rzoV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 694B5C433F1;
-	Tue, 20 Feb 2024 21:41:01 +0000 (UTC)
+	 MIME-Version; b=IXi9tTQGxMcphZnEgMrykmEnS+ROpMHC6PGnH6IHkAmqfuXt2tAN0OKsH9TwmnRAIYn4NH75Jaul00fBp0xItuLpb1LWAGXiZvPAw4BznM+KBG8XEjKSoWgIekToIDDxjsphr1iUfSzs7e1WoJAEJBmjM6zX7RKenWqTSxy+SRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=totcupWE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14A8EC433F1;
+	Tue, 20 Feb 2024 21:24:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708465261;
-	bh=U3g/3z9t02xk2ybCuX0ZMS0LauV+qkYpee5jPE6d+oQ=;
+	s=korg; t=1708464263;
+	bh=MM+7WmqMzWiWDZIbtNU+jsNi6ytYn+CMWJkkqqWVGa4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YKa2rzoVr2htxZBfelRVxIhu2VQOfOQ4vn8+AGxDuXRwkvWzPfKnnRHHk4SbCwFVo
-	 FfXP03FtEQLg7Wk8VJp6jo4hjGpGDU2b6dRFrW1ChcAvtW4PGfTeLJJHzzVjKfjec2
-	 hxSp5kmyUobD6tm33jzkLLQFmdIc1wbVh763UTHQ=
+	b=totcupWEMeyVcgB/njtvkbR8RHFFE9seohgCc2+W32JyGnl8XQJask9o4gzeIK+b0
+	 1DeXWUkj2eL4kchv0xwh1sbPGyFawCERYyF+uIfrM6uOh1jo/vcNgSwOKUMIZLiygF
+	 1ugmBhJjg16hNY3sJFiw1/z4DJwgB7Ju4ROiCkhU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mohammad Rahimi <rahimi.mhmmd@gmail.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.7 258/309] thunderbolt: Fix setting the CNS bit in ROUTER_CS_5
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Erick Archer <erick.archer@gmx.com>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 301/331] eventfs: Use kcalloc() instead of kzalloc()
 Date: Tue, 20 Feb 2024 21:56:57 +0100
-Message-ID: <20240220205641.226910434@linuxfoundation.org>
+Message-ID: <20240220205647.555928502@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +65,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mohammad Rahimi <rahimi.mhmmd@gmail.com>
+From: Erick Archer <erick.archer@gmx.com>
 
-commit ec4d82f855ce332de26fe080892483de98cc1a19 upstream.
+commit 1057066009c4325bb1d8430c9274894d0860e7c3 upstream.
 
-The bit 23, CM TBT3 Not Supported (CNS), in ROUTER_CS_5 indicates
-whether a USB4 Connection Manager is TBT3-Compatible and should be:
-    0b for TBT3-Compatible
-    1b for Not TBT3-Compatible
+As noted in the "Deprecated Interfaces, Language Features, Attributes,
+and Conventions" documentation [1], size calculations (especially
+multiplication) should not be performed in memory allocator (or similar)
+function arguments due to the risk of them overflowing. This could lead
+to values wrapping around and a smaller allocation being made than the
+caller was expecting. Using those allocations could lead to linear
+overflows of heap memory and other misbehaviors.
 
-Fixes: b04079837b20 ("thunderbolt: Add initial support for USB4")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mohammad Rahimi <rahimi.mhmmd@gmail.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+So, use the purpose specific kcalloc() function instead of the argument
+size * count in the kzalloc() function.
+
+[1] https://www.kernel.org/doc/html/next/process/deprecated.html#open-coded-arithmetic-in-allocator-arguments
+
+Link: https://lore.kernel.org/linux-trace-kernel/20240115181658.4562-1-erick.archer@gmx.com
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Link: https://github.com/KSPP/linux/issues/162
+Signed-off-by: Erick Archer <erick.archer@gmx.com>
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/tb_regs.h |    2 +-
- drivers/thunderbolt/usb4.c    |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ fs/tracefs/event_inode.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/thunderbolt/tb_regs.h
-+++ b/drivers/thunderbolt/tb_regs.h
-@@ -203,7 +203,7 @@ struct tb_regs_switch_header {
- #define ROUTER_CS_5_WOP				BIT(1)
- #define ROUTER_CS_5_WOU				BIT(2)
- #define ROUTER_CS_5_WOD				BIT(3)
--#define ROUTER_CS_5_C3S				BIT(23)
-+#define ROUTER_CS_5_CNS				BIT(23)
- #define ROUTER_CS_5_PTO				BIT(24)
- #define ROUTER_CS_5_UTO				BIT(25)
- #define ROUTER_CS_5_HCO				BIT(26)
---- a/drivers/thunderbolt/usb4.c
-+++ b/drivers/thunderbolt/usb4.c
-@@ -290,7 +290,7 @@ int usb4_switch_setup(struct tb_switch *
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -97,7 +97,7 @@ static int eventfs_set_attr(struct mnt_i
+ 	/* Preallocate the children mode array if necessary */
+ 	if (!(dentry->d_inode->i_mode & S_IFDIR)) {
+ 		if (!ei->entry_attrs) {
+-			ei->entry_attrs = kzalloc(sizeof(*ei->entry_attrs) * ei->nr_entries,
++			ei->entry_attrs = kcalloc(ei->nr_entries, sizeof(*ei->entry_attrs),
+ 						  GFP_NOFS);
+ 			if (!ei->entry_attrs) {
+ 				ret = -ENOMEM;
+@@ -874,7 +874,7 @@ struct eventfs_inode *eventfs_create_dir
  	}
  
- 	/* TBT3 supported by the CM */
--	val |= ROUTER_CS_5_C3S;
-+	val &= ~ROUTER_CS_5_CNS;
+ 	if (size) {
+-		ei->d_children = kzalloc(sizeof(*ei->d_children) * size, GFP_KERNEL);
++		ei->d_children = kcalloc(size, sizeof(*ei->d_children), GFP_KERNEL);
+ 		if (!ei->d_children) {
+ 			kfree_const(ei->name);
+ 			kfree(ei);
+@@ -941,7 +941,7 @@ struct eventfs_inode *eventfs_create_eve
+ 		goto fail;
  
- 	return tb_sw_write(sw, &val, TB_CFG_SWITCH, ROUTER_CS_5, 1);
- }
+ 	if (size) {
+-		ei->d_children = kzalloc(sizeof(*ei->d_children) * size, GFP_KERNEL);
++		ei->d_children = kcalloc(size, sizeof(*ei->d_children), GFP_KERNEL);
+ 		if (!ei->d_children)
+ 			goto fail;
+ 	}
 
 
 
