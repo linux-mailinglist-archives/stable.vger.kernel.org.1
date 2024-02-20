@@ -1,140 +1,172 @@
-Return-Path: <stable+bounces-20758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5AF685B0EA
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 03:39:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C9AF85B151
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 04:26:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6093CB225E1
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 02:39:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43D3A1F245A6
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 03:26:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A9CF29D0C;
-	Tue, 20 Feb 2024 02:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 548DD56B86;
+	Tue, 20 Feb 2024 03:25:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YB6NFOq7"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="SQYcJSb7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA258C04;
-	Tue, 20 Feb 2024 02:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F925336A;
+	Tue, 20 Feb 2024 03:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708396749; cv=none; b=k1EAe3TTLxCG8TWOlPipgX4McivJf+Y/Csbd3OWF0P7EjzEoRW7nruwhVoXmykBiIPwsYhNlptBzwclge7jVVe3ZUpINrKXe1WQ5ee57NxM2mqM98Q7aq4aP/3HlFuUYzLUp2+XckyIeUaDWZSXqMv36IlaBxbqmsK/8hjHDMzU=
+	t=1708399540; cv=none; b=useY+VVeQT47U9C9q24I1MqAdTWwUex3ea9opQ2F4E8RyYj0O6AD4RrBG9Btv4yLAVuncUxZNDF0icxq++phtLJ/AfGF1R5t+orYEg27IydB8E9RYZMdM0FRm9KJf/0w9xNRBojg61WHHxZRdyX8oELe6oPmnxDBQ7g5YPLws44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708396749; c=relaxed/simple;
-	bh=IMwzauYZetrMijGUdyA3fsIO45z89hM65VuA1iwSV/s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=r7JzoGLADWYHkhf+PFpSgAE7Xea2rtcGfBYgZIJ9v3vm8/vOsbZfg9svoS1/pYBb8JU0Db+lPvH797aJxxAT3vMyfBgQJYzDSnzCGTtqe3v5OgFXBdznKMgJ4TRae+Nw86UfWfXPGHLT0BJVq0Gu7QOGATF/shg7QPxrgWeTg2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YB6NFOq7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10C98C433F1;
-	Tue, 20 Feb 2024 02:39:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708396748;
-	bh=IMwzauYZetrMijGUdyA3fsIO45z89hM65VuA1iwSV/s=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YB6NFOq76aBrk1UjP07/9OTebNduLf+HeewS19UjQ16nt8QoxeiQhyW8vrJMGwxDN
-	 wF4BoSSpTb1418jqu29RqMJACKjPDmd045ibXmEppdhRjcR0GiZ/UJUrROONjoJV+8
-	 UAuTHquJ9kkq+/FAuuLjcip0UOTGfHqC/4GPhCOTar28LXFqX+c4NgGD0sngUkUNPW
-	 tLA1+XwXHVMASPoJRiva6tIBUDDHTdEPYn0GntilA8MdJBhrtng/WvMpGi6jyTZYVg
-	 fsp+y4gjM3PA9Xgh55LBrGmLVRAILHITbuQx/x/XkJDj/JlO4mRGwLGitqnStBCDR8
-	 Vb3EOsri+ab7w==
-Message-ID: <2247088a-aed0-4120-93a5-cf52a829db26@kernel.org>
-Date: Tue, 20 Feb 2024 10:39:03 +0800
+	s=arc-20240116; t=1708399540; c=relaxed/simple;
+	bh=Qdoy+M+xlKi0GsrOb4w3F9SIeYLgcxmc4mCg+YDeB9U=;
+	h=Date:To:From:Subject:Message-Id; b=nLXIE5oobNcXECubIdqavb5XkEFa0Q5sq8weHLqBIuymY2ykrYUTpmnxue2vYf5l8ZS6OWQZSswN5dxMRQQ2GdnSDCYj6ma18YAQjFgkvWOVuosCpspF4KJg4TCOADSQSdbqdo4udBkDq0ieQU0P7GXLS1mdcEaXdg7om9vXg4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=SQYcJSb7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C25C433F1;
+	Tue, 20 Feb 2024 03:25:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1708399539;
+	bh=Qdoy+M+xlKi0GsrOb4w3F9SIeYLgcxmc4mCg+YDeB9U=;
+	h=Date:To:From:Subject:From;
+	b=SQYcJSb70pONVDOWTsgjo0geLI+2xpSSZ7aGVvvwRfuHmEsZyBUPqg0Fvj3B0DAAu
+	 MVuhdrkzzupgYWqd6lTwSteHEcu90mDBuBHdsqmHwLc6Boif8MiKVDXwvv4gQuB4bE
+	 +P+iU3FrxeLRi3RIucbZKaMtEaxu1F4BPbRzivZ4=
+Date: Mon, 19 Feb 2024 19:25:38 -0800
+To: mm-commits@vger.kernel.org,ying.huang@intel.com,stable@vger.kernel.org,osalvador@suse.de,hyeongtak.ji@sk.com,hannes@cmpxchg.org,baolin.wang@linux.alibaba.com,byungchul@sk.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-vmscan-fix-a-bug-calling-wakeup_kswapd-with-a-wrong-zone-index.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240220032539.63C25C433F1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [regression 6.1.y] f2fs: invalid zstd compress level: 6
-Content-Language: en-US
-To: Salvatore Bonaccorso <carnil@debian.org>
-Cc: Dhya <dhya@picorealm.net>, 1063422@bugs.debian.org,
- Jaegeuk Kim <jaegeuk@kernel.org>, linux-f2fs-devel@lists.sourceforge.net,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- regressions@lists.linux.dev
-References: <170736382774.1975.1861975122613668970.reportbug@tsuga.picorealm.net>
- <ZcU3VCrt9VOpuFUq@eldamar.lan>
- <6d14ea70-ac1c-46f2-af1d-ba34ea0165aa@kernel.org>
- <ZdOx73kckFXADcol@eldamar.lan>
-From: Chao Yu <chao@kernel.org>
-In-Reply-To: <ZdOx73kckFXADcol@eldamar.lan>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 2024/2/20 3:54, Salvatore Bonaccorso wrote:
-> Hi,
-> 
-> On Mon, Feb 19, 2024 at 10:35:13AM +0800, Chao Yu wrote:
->> On 2024/2/9 4:19, Salvatore Bonaccorso wrote:
->>> Hi Jaegeuk Kim, Chao Yu,
->>>
->>> In Debian the following regression was reported after a Dhya updated
->>> to 6.1.76:
->>>
->>> On Wed, Feb 07, 2024 at 10:43:47PM -0500, Dhya wrote:
->>>> Package: src:linux
->>>> Version: 6.1.76-1
->>>> Severity: critical
->>>> Justification: breaks the whole system
->>>>
->>>> Dear Maintainer,
->>>>
->>>> After upgrade to linux-image-6.1.0-18-amd64 6.1.76-1 F2FS filesystem
->>>> fails to mount rw.  Message in the boot journal:
->>>>
->>>>     kernel: F2FS-fs (nvme0n1p6): invalid zstd compress level: 6
->>>>
->>>> There was recently an f2fs patch to the 6.1 kernel tree which might be
->>>> related: https://www.spinics.net/lists/stable-commits/msg329957.html
->>>>
->>>> Was able to recover the system by doing:
->>>>
->>>> sudo mount -o remount,rw,relatime,lazytime,background_gc=on,discard,no_heap,user_xattr,inline_xattr,acl,inline_data,inline_dentry,extent_cache,mode=adaptive,active_logs=6,alloc_mode=default,checkpoint_merge,fsync_mode=posix,compress_algorithm=lz4,compress_log_size=2,compress_mode=fs,atgc,discard_unit=block,memory=normal /dev/nvme0n1p6 /
->>>>
->>>> under the running bad 6.1.0-18-amd64 kernel, then editing
->>>> /etc/default/grub:
->>>>
->>>>     GRUB_DEFAULT="Advanced options for Debian GNU/Linux>Debian GNU/Linux, with Linux 6.1.0-17-amd64"
->>>>
->>>> and running 'update-grub' and rebooting to boot the 6.1.0-17-amd64
->>>> kernel.
->>>
->>> The issue is easily reproducible by:
->>>
->>> # dd if=/dev/zero of=test.img count=100 bs=1M
->>> # mkfs.f2fs -f -O compression,extra_attr ./test.img
->>> # mount -t f2fs -o compress_algorithm=zstd:6,compress_chksum,atgc,gc_merge,lazytime ./test.img /mnt
->>>
->>> resulting in
->>>
->>> [   60.789982] F2FS-fs (loop0): invalid zstd compress level: 6
->>
->> Hi Salvatore,
->>
->> Can you please try below fixes:
->>
->> [PATCH 6.1] f2fs: add helper to check compression level
->> https://lore.kernel.org/linux-f2fs-devel/20240212160530.1017205-1-chao@kernel.org
-> 
-> Confirmed that this fixes the reported issue as it was reported to us
-> in Debian in https://bugs.debian.org/1063422 . Thanks a lot!
-> (note just tested with the first commit as it landed in 6.1.78 to
-> confirm the immediate regression).
-> 
-> #regzbot fixed-by: cf3d57ad6ff8b566deba3544b9ad3384781fb604
 
-Hi,
+The patch titled
+     Subject: mm/vmscan: fix a bug calling wakeup_kswapd() with a wrong zone index
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-vmscan-fix-a-bug-calling-wakeup_kswapd-with-a-wrong-zone-index.patch
 
-Thank you for confirmation.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-vmscan-fix-a-bug-calling-wakeup_kswapd-with-a-wrong-zone-index.patch
 
-Thanks,
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-> 
-> Regards,
-> Salvatore
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Byungchul Park <byungchul@sk.com>
+Subject: mm/vmscan: fix a bug calling wakeup_kswapd() with a wrong zone index
+Date: Fri, 16 Feb 2024 20:15:02 +0900
+
+With numa balancing on, when a numa system is running where a numa node
+doesn't have its local memory so it has no managed zones, the following
+oops has been observed.  It's because wakeup_kswapd() is called with a
+wrong zone index, -1.  Fixed it by checking the index before calling
+wakeup_kswapd().
+
+> BUG: unable to handle page fault for address: 00000000000033f3
+> #PF: supervisor read access in kernel mode
+> #PF: error_code(0x0000) - not-present page
+> PGD 0 P4D 0
+> Oops: 0000 [#1] PREEMPT SMP NOPTI
+> CPU: 2 PID: 895 Comm: masim Not tainted 6.6.0-dirty #255
+> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
+>    rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+> RIP: 0010:wakeup_kswapd (./linux/mm/vmscan.c:7812)
+> Code: (omitted)
+> RSP: 0000:ffffc90004257d58 EFLAGS: 00010286
+> RAX: ffffffffffffffff RBX: ffff88883fff0480 RCX: 0000000000000003
+> RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff88883fff0480
+> RBP: ffffffffffffffff R08: ff0003ffffffffff R09: ffffffffffffffff
+> R10: ffff888106c95540 R11: 0000000055555554 R12: 0000000000000003
+> R13: 0000000000000000 R14: 0000000000000000 R15: ffff88883fff0940
+> FS:  00007fc4b8124740(0000) GS:ffff888827c00000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 00000000000033f3 CR3: 000000026cc08004 CR4: 0000000000770ee0
+> DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+> DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+> PKRU: 55555554
+> Call Trace:
+>  <TASK>
+> ? __die
+> ? page_fault_oops
+> ? __pte_offset_map_lock
+> ? exc_page_fault
+> ? asm_exc_page_fault
+> ? wakeup_kswapd
+> migrate_misplaced_page
+> __handle_mm_fault
+> handle_mm_fault
+> do_user_addr_fault
+> exc_page_fault
+> asm_exc_page_fault
+> RIP: 0033:0x55b897ba0808
+> Code: (omitted)
+> RSP: 002b:00007ffeefa821a0 EFLAGS: 00010287
+> RAX: 000055b89983acd0 RBX: 00007ffeefa823f8 RCX: 000055b89983acd0
+> RDX: 00007fc2f8122010 RSI: 0000000000020000 RDI: 000055b89983acd0
+> RBP: 00007ffeefa821a0 R08: 0000000000000037 R09: 0000000000000075
+> R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000000
+> R13: 00007ffeefa82410 R14: 000055b897ba5dd8 R15: 00007fc4b8340000
+>  </TASK>
+
+Link: https://lkml.kernel.org/r/20240216111502.79759-1-byungchul@sk.com
+Signed-off-by: Byungchul Park <byungchul@sk.com>
+Reported-by: Hyeongtak Ji <hyeongtak.ji@sk.com>
+Fixes: c574bbe917036 ("NUMA balancing: optimize page placement for memory tiering system")
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: "Huang, Ying" <ying.huang@intel.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/migrate.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+--- a/mm/migrate.c~mm-vmscan-fix-a-bug-calling-wakeup_kswapd-with-a-wrong-zone-index
++++ a/mm/migrate.c
+@@ -2519,6 +2519,14 @@ static int numamigrate_isolate_folio(pg_
+ 			if (managed_zone(pgdat->node_zones + z))
+ 				break;
+ 		}
++
++		/*
++		 * If there are no managed zones, it should not proceed
++		 * further.
++		 */
++		if (z < 0)
++			return 0;
++
+ 		wakeup_kswapd(pgdat->node_zones + z, 0,
+ 			      folio_order(folio), ZONE_MOVABLE);
+ 		return 0;
+_
+
+Patches currently in -mm which might be from byungchul@sk.com are
+
+mm-vmscan-fix-a-bug-calling-wakeup_kswapd-with-a-wrong-zone-index.patch
+mm-vmscan-dont-turn-on-cache_trim_mode-at-the-highest-scan-priority.patch
+sched-numa-mm-do-not-try-to-migrate-memory-to-memoryless-nodes.patch
+
 
