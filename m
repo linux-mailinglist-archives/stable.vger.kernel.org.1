@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-21431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C09B085C8DE
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:26:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10EEB85C775
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:13:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED3D01C2240F
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:26:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A270B20801
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:13:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CA591509BC;
-	Tue, 20 Feb 2024 21:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DC52151CF3;
+	Tue, 20 Feb 2024 21:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tmb9i3sO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YOYFX0gV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D09E414A4E6;
-	Tue, 20 Feb 2024 21:26:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B53F612D7;
+	Tue, 20 Feb 2024 21:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464398; cv=none; b=E/YSd1cN8rT2CXqcqCZJl9zFPL5kmtrad4grk2sYKxfaabR4Y0Na0RIWXj/xm/Ft2aKTR0o+3PDQ7Rh5WVLiz4Utq8L/x1sUhOEjPoAElQDWL1aY5prXlqOqkMfw0XpmOEl1aAk5b+87+TYzbrohBuCo2BVlkSTS3ceHvb1su7Y=
+	t=1708463571; cv=none; b=AfTr+ldxtGalrYJ9CdWDeKxy3XpMT2MelKz9UBafc3MqtNBWnM1e2eKrRuqgSryPPFOYiXGEk27Ya8mPjuPZcsjV01HMhJ6bFK2tWlHrKMJbk9uk3A4QREbOPrnUiwrt6L0z8TzPFjzTQv8pBzJi8HeYixbt2kVCFmAcE7ebyNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464398; c=relaxed/simple;
-	bh=hFoW2ByaVQt9syEwYkoIFkhScL7/G0M+QEj6+eEohxU=;
+	s=arc-20240116; t=1708463571; c=relaxed/simple;
+	bh=wY2EEy8Jegerr84D9L99pggT9XypAIasFisNCoZKDTc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HSNK7RtjvUZMuUfrDGe6yJKTxa0aq50XmeBLyELlga/1DWiycZWiKNlN23kiDPIWxRlX0UqtX+hDxIcnKLkwubXo8uvHHBsx+63vnp+Dqrc5OPtOpJvSE95OLWNK+B0C6YA99L+dDlbga0lCsUxCMfT9ocHb/nHndr58vezpqlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tmb9i3sO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55FF1C433F1;
-	Tue, 20 Feb 2024 21:26:38 +0000 (UTC)
+	 MIME-Version; b=T6orXiSX4duKpevoPQm9PQyQ61qglpEpgfpRFMfKtSKJKblZ2Bb0GZ29CFoBP3jJ9FXqFFgFEfUvnZTiL+xf0Cg66lbX5kTH2ZLEaZ2xpFilBIlF269G5es4lmnMNLIKiz1s2a4ZNoPuPqDti/Wl4Y3iAEIYgN4mFF6ZMy0pHWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YOYFX0gV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52EB1C433C7;
+	Tue, 20 Feb 2024 21:12:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464398;
-	bh=hFoW2ByaVQt9syEwYkoIFkhScL7/G0M+QEj6+eEohxU=;
+	s=korg; t=1708463570;
+	bh=wY2EEy8Jegerr84D9L99pggT9XypAIasFisNCoZKDTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tmb9i3sOaV697AFIaKTxZMb53F//OITAl+pGwB14gVreTkmRCnGUSDm+2EiJoffTM
-	 Ia7T0mvPIALh1yqtIQUd9pnAVRcSLC4GY+DWwgvHJLcNM0iseeRt9bCBv5sa1H7P2v
-	 G+4TPpuCa2t9GxZ68R1l3Uz6s5iAWOvRC3CQNGJI=
+	b=YOYFX0gV353KQmSLMc6HBrU5DsxVQjnNsO1fV/+McVm9Eh0r4IHNFDn38drCurYaJ
+	 VLllN/FGqlixllGxJDEnO96pArrCUC4kCKqI1DIV+gl9iStLx7IyHsTkxLJiea05pj
+	 l/UIyF1bWoGhNUY7aCYkGpieCJUkvOckV9cWZT2E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.7 013/309] btrfs: dont reserve space for checksums when writing to nocow files
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Pedro Demarchi Gomes <pedrodemargomes@gmail.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 056/331] selftests/mm: ksm_tests should only MADV_HUGEPAGE valid memory
 Date: Tue, 20 Feb 2024 21:52:52 +0100
-Message-ID: <20240220205633.559136695@linuxfoundation.org>
+Message-ID: <20240220205639.353085118@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,114 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
 
-commit feefe1f49d26bad9d8997096e3a200280fa7b1c5 upstream.
+commit d021b442cf312664811783e92b3d5e4548e92a53 upstream.
 
-Currently when doing a write to a file we always reserve metadata space
-for inserting data checksums. However we don't need to do it if we have
-a nodatacow file (-o nodatacow mount option or chattr +C) or if checksums
-are disabled (-o nodatasum mount option), as in that case we are only
-adding unnecessary pressure to metadata reservations.
+ksm_tests was previously mmapping a region of memory, aligning the
+returned pointer to a PMD boundary, then setting MADV_HUGEPAGE, but was
+setting it past the end of the mmapped area due to not taking the pointer
+alignment into consideration.  Fix this behaviour.
 
-For example on x86_64, with the default node size of 16K, a 4K buffered
-write into a nodatacow file is reserving 655360 bytes of metadata space,
-as it's accounting for checksums. After this change, which stops reserving
-space for checksums if we have a nodatacow file or checksums are disabled,
-we only need to reserve 393216 bytes of metadata.
+Up until commit efa7df3e3bb5 ("mm: align larger anonymous mappings on THP
+boundaries"), this buggy behavior was (usually) masked because the
+alignment difference was always less than PMD-size.  But since the
+mentioned commit, `ksm_tests -H -s 100` started failing.
 
-CC: stable@vger.kernel.org # 6.1+
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Link: https://lkml.kernel.org/r/20240122120554.3108022-1-ryan.roberts@arm.com
+Fixes: 325254899684 ("selftests: vm: add KSM huge pages merging time test")
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/delalloc-space.c |   29 +++++++++++++++++++----------
- 1 file changed, 19 insertions(+), 10 deletions(-)
+ tools/testing/selftests/mm/ksm_tests.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/btrfs/delalloc-space.c
-+++ b/fs/btrfs/delalloc-space.c
-@@ -245,7 +245,6 @@ static void btrfs_calculate_inode_block_
- 	struct btrfs_block_rsv *block_rsv = &inode->block_rsv;
- 	u64 reserve_size = 0;
- 	u64 qgroup_rsv_size = 0;
--	u64 csum_leaves;
- 	unsigned outstanding_extents;
+--- a/tools/testing/selftests/mm/ksm_tests.c
++++ b/tools/testing/selftests/mm/ksm_tests.c
+@@ -566,7 +566,7 @@ static int ksm_merge_hugepages_time(int
+ 	if (map_ptr_orig == MAP_FAILED)
+ 		err(2, "initial mmap");
  
- 	lockdep_assert_held(&inode->lock);
-@@ -260,10 +259,12 @@ static void btrfs_calculate_inode_block_
- 						outstanding_extents);
- 		reserve_size += btrfs_calc_metadata_size(fs_info, 1);
- 	}
--	csum_leaves = btrfs_csum_bytes_to_leaves(fs_info,
--						 inode->csum_bytes);
--	reserve_size += btrfs_calc_insert_metadata_size(fs_info,
--							csum_leaves);
-+	if (!(inode->flags & BTRFS_INODE_NODATASUM)) {
-+		u64 csum_leaves;
-+
-+		csum_leaves = btrfs_csum_bytes_to_leaves(fs_info, inode->csum_bytes);
-+		reserve_size += btrfs_calc_insert_metadata_size(fs_info, csum_leaves);
-+	}
- 	/*
- 	 * For qgroup rsv, the calculation is very simple:
- 	 * account one nodesize for each outstanding extent
-@@ -278,14 +279,20 @@ static void btrfs_calculate_inode_block_
- 	spin_unlock(&block_rsv->lock);
- }
+-	if (madvise(map_ptr, len + HPAGE_SIZE, MADV_HUGEPAGE))
++	if (madvise(map_ptr, len, MADV_HUGEPAGE))
+ 		err(2, "MADV_HUGEPAGE");
  
--static void calc_inode_reservations(struct btrfs_fs_info *fs_info,
-+static void calc_inode_reservations(struct btrfs_inode *inode,
- 				    u64 num_bytes, u64 disk_num_bytes,
- 				    u64 *meta_reserve, u64 *qgroup_reserve)
- {
-+	struct btrfs_fs_info *fs_info = inode->root->fs_info;
- 	u64 nr_extents = count_max_extents(fs_info, num_bytes);
--	u64 csum_leaves = btrfs_csum_bytes_to_leaves(fs_info, disk_num_bytes);
-+	u64 csum_leaves;
- 	u64 inode_update = btrfs_calc_metadata_size(fs_info, 1);
- 
-+	if (inode->flags & BTRFS_INODE_NODATASUM)
-+		csum_leaves = 0;
-+	else
-+		csum_leaves = btrfs_csum_bytes_to_leaves(fs_info, disk_num_bytes);
-+
- 	*meta_reserve = btrfs_calc_insert_metadata_size(fs_info,
- 						nr_extents + csum_leaves);
- 
-@@ -337,7 +344,7 @@ int btrfs_delalloc_reserve_metadata(stru
- 	 * everything out and try again, which is bad.  This way we just
- 	 * over-reserve slightly, and clean up the mess when we are done.
- 	 */
--	calc_inode_reservations(fs_info, num_bytes, disk_num_bytes,
-+	calc_inode_reservations(inode, num_bytes, disk_num_bytes,
- 				&meta_reserve, &qgroup_reserve);
- 	ret = btrfs_qgroup_reserve_meta_prealloc(root, qgroup_reserve, true,
- 						 noflush);
-@@ -359,7 +366,8 @@ int btrfs_delalloc_reserve_metadata(stru
- 	nr_extents = count_max_extents(fs_info, num_bytes);
- 	spin_lock(&inode->lock);
- 	btrfs_mod_outstanding_extents(inode, nr_extents);
--	inode->csum_bytes += disk_num_bytes;
-+	if (!(inode->flags & BTRFS_INODE_NODATASUM))
-+		inode->csum_bytes += disk_num_bytes;
- 	btrfs_calculate_inode_block_rsv_size(fs_info, inode);
- 	spin_unlock(&inode->lock);
- 
-@@ -393,7 +401,8 @@ void btrfs_delalloc_release_metadata(str
- 
- 	num_bytes = ALIGN(num_bytes, fs_info->sectorsize);
- 	spin_lock(&inode->lock);
--	inode->csum_bytes -= num_bytes;
-+	if (!(inode->flags & BTRFS_INODE_NODATASUM))
-+		inode->csum_bytes -= num_bytes;
- 	btrfs_calculate_inode_block_rsv_size(fs_info, inode);
- 	spin_unlock(&inode->lock);
- 
+ 	pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
 
 
 
