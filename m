@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-21163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4C4685C76F
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:12:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B25285C8FD
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:28:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F2FB282CE0
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:12:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 244932849E3
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:28:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A833151CE3;
-	Tue, 20 Feb 2024 21:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20714152E0D;
+	Tue, 20 Feb 2024 21:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qjRez151"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bArGT9Da"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A39214AD12;
-	Tue, 20 Feb 2024 21:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB90152E06;
+	Tue, 20 Feb 2024 21:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463555; cv=none; b=WL3leNg5K7lgdrD3uXBszNmRkuG4EDdfHWh69njKXSQmYJYe1vU1JQx4rft02BVoy8cXAZjlzI4lp+JYtiuP7mCWm374nuscJeQ0DBXZunLxdSJ9XzT8L8uakaE6pyKeEBAMECCinRL6UgbCxP2nKHoF8LHaXLTWvD3alykyK1o=
+	t=1708464474; cv=none; b=CSP0MHftyQv7/ozwE3O2KBrlGxQmbEPVy/B+K4xOmwzN82HGkpotdcI71yl4HzfZLtIFF46TGm9gEL0fvmmOaq2MgGtKKfeDVACYXcw/J/mvNt54t6DmEaw8T0w3CFBs+yiLX6ieZxeA3nmCeOAnJZKdwpF+czLqUQ6ir5Wl/jA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463555; c=relaxed/simple;
-	bh=9HYqaTWl9aL4ZGn+qB1eOCv2oeQ53xcAtcjK+ieQHDE=;
+	s=arc-20240116; t=1708464474; c=relaxed/simple;
+	bh=HzihEej5vWTdwXh4PEP2TxrhWY1q3Xi28obrYOTbHoE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UOlcwbGwIYYFVsA9AugLkoixwgtXY4MGHzcemfFlyK/GI//tmVPDT9CvmvmWA8dLs08C1o91b+7pbQ2wOB82EKnCzo61QvlpIIro9aWYZ0d2TcBZ5Kf9m5VcWxehr5Vcg9lUe43zyRsqcDJOHN8zTIpquRLYyxusJeQqW/HLS5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qjRez151; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC33EC433F1;
-	Tue, 20 Feb 2024 21:12:34 +0000 (UTC)
+	 MIME-Version; b=FX3blcVFzqQVdCWzAmfCodRX9j/yoTuiQAHCpD/PqKpCTO14m9ezvacYGvGNCVZMB0BGBN0/g10zDj6llAkCnOZCUKY+LIx6pe3S+Eb7Ks1oo6SsmmCzYi7HAnK/PWNgOjz4ZayzgH7Cf0UKuGe9jmpiRy2OVd5MVwm4CBuPb5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bArGT9Da; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07ADAC43399;
+	Tue, 20 Feb 2024 21:27:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463555;
-	bh=9HYqaTWl9aL4ZGn+qB1eOCv2oeQ53xcAtcjK+ieQHDE=;
+	s=korg; t=1708464474;
+	bh=HzihEej5vWTdwXh4PEP2TxrhWY1q3Xi28obrYOTbHoE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qjRez151dvWmtzV6ZcFvQ5trstMVk5Yv0TBWCXSe1hkABTatCt9V7MrdJYzrfemzl
-	 L2DO+MNmK7V57y19MCCUQ/ISnF+bU+n7JEosKLqHoyNEvtgGA0a1NcgEz5IkBp2sbl
-	 LsZzdio2pQXlESx8zlAEnH9MTfXFS1bvpf4UkBTo=
+	b=bArGT9Da7LcybOGBo0xdY/M782MmNnGZybgCg5NNxVas7OJXVTA3Fld15ubpS/+CA
+	 7Pcb+LZQVJVBk7r6Y0Y1h9kKlN6qUfYGNe6sJdrblD4UkLSYEu//SLhetlEk1qoQ3S
+	 nZDtqUaGq5T4F+5CsHXeruKxVMyYaffet74wE45E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.6 079/331] usb: ucsi_acpi: Fix command completion handling
-Date: Tue, 20 Feb 2024 21:53:15 +0100
-Message-ID: <20240220205640.061030798@linuxfoundation.org>
+	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+	Simon Trimmer <simont@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 037/309] ALSA: hda/cs35l56: select intended config FW_CS_DSP
+Date: Tue, 20 Feb 2024 21:53:16 +0100
+Message-ID: <20240220205634.345914077@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian A. Ehrhardt <lk@c--e.de>
+From: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 
-commit 2840143e393a4ddc1caab4372969ea337371168c upstream.
+[ Upstream commit e5aa6d51a2ef8c7ef7e3fe76bebe530fb68e7f08 ]
 
-In case of a spurious or otherwise delayed notification it is
-possible that CCI still reports the previous completion. The
-UCSI spec is aware of this and provides two completion bits in
-CCI, one for normal commands and one for acks. As acks and commands
-alternate the notification handler can determine if the completion
-bit is from the current command.
+Commit 73cfbfa9caea ("ALSA: hda/cs35l56: Add driver for Cirrus Logic
+CS35L56 amplifier") adds configs SND_HDA_SCODEC_CS35L56_{I2C,SPI},
+which selects the non-existing config CS_DSP. Note the renaming in
+commit d7cfdf17cb9d ("firmware: cs_dsp: Rename KConfig symbol CS_DSP ->
+FW_CS_DSP"), though.
 
-The initial UCSI code correctly handled this but the distinction
-between the two completion bits was lost with the introduction of
-the new API.
+Select the intended config FW_CS_DSP.
 
-To fix this revive the ACK_PENDING bit for ucsi_acpi and only complete
-commands if the completion bit matches.
+This broken select command probably was not noticed as the configs also
+select SND_HDA_CS_DSP_CONTROLS and this then selects FW_CS_DSP. So, the
+select FW_CS_DSP could actually be dropped, but we will keep this
+redundancy in place as the author originally also intended to have this
+redundancy of selects in place.
 
-Fixes: f56de278e8ec ("usb: typec: ucsi: acpi: Move to the new API")
-Cc: stable@vger.kernel.org
-Signed-off-by: "Christian A. Ehrhardt" <lk@c--e.de>
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240121204123.275441-3-lk@c--e.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 73cfbfa9caea ("ALSA: hda/cs35l56: Add driver for Cirrus Logic CS35L56 amplifier")
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Reviewed-by: Simon Trimmer <simont@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20240209082044.3981-1-lukas.bulwahn@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi_acpi.c |   17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ sound/pci/hda/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/typec/ucsi/ucsi_acpi.c
-+++ b/drivers/usb/typec/ucsi/ucsi_acpi.c
-@@ -73,9 +73,13 @@ static int ucsi_acpi_sync_write(struct u
- 				const void *val, size_t val_len)
- {
- 	struct ucsi_acpi *ua = ucsi_get_drvdata(ucsi);
-+	bool ack = UCSI_COMMAND(*(u64 *)val) == UCSI_ACK_CC_CI;
- 	int ret;
- 
--	set_bit(COMMAND_PENDING, &ua->flags);
-+	if (ack)
-+		set_bit(ACK_PENDING, &ua->flags);
-+	else
-+		set_bit(COMMAND_PENDING, &ua->flags);
- 
- 	ret = ucsi_acpi_async_write(ucsi, offset, val, val_len);
- 	if (ret)
-@@ -85,7 +89,10 @@ static int ucsi_acpi_sync_write(struct u
- 		ret = -ETIMEDOUT;
- 
- out_clear_bit:
--	clear_bit(COMMAND_PENDING, &ua->flags);
-+	if (ack)
-+		clear_bit(ACK_PENDING, &ua->flags);
-+	else
-+		clear_bit(COMMAND_PENDING, &ua->flags);
- 
- 	return ret;
- }
-@@ -142,8 +149,10 @@ static void ucsi_acpi_notify(acpi_handle
- 	if (UCSI_CCI_CONNECTOR(cci))
- 		ucsi_connector_change(ua->ucsi, UCSI_CCI_CONNECTOR(cci));
- 
--	if (test_bit(COMMAND_PENDING, &ua->flags) &&
--	    cci & (UCSI_CCI_ACK_COMPLETE | UCSI_CCI_COMMAND_COMPLETE))
-+	if (cci & UCSI_CCI_ACK_COMPLETE && test_bit(ACK_PENDING, &ua->flags))
-+		complete(&ua->complete);
-+	if (cci & UCSI_CCI_COMMAND_COMPLETE &&
-+	    test_bit(COMMAND_PENDING, &ua->flags))
- 		complete(&ua->complete);
- }
- 
+diff --git a/sound/pci/hda/Kconfig b/sound/pci/hda/Kconfig
+index 21a90b3c4cc7..8e0ff70fb610 100644
+--- a/sound/pci/hda/Kconfig
++++ b/sound/pci/hda/Kconfig
+@@ -156,7 +156,7 @@ config SND_HDA_SCODEC_CS35L56_I2C
+ 	depends on I2C
+ 	depends on ACPI || COMPILE_TEST
+ 	depends on SND_SOC
+-	select CS_DSP
++	select FW_CS_DSP
+ 	select SND_HDA_GENERIC
+ 	select SND_SOC_CS35L56_SHARED
+ 	select SND_HDA_SCODEC_CS35L56
+@@ -171,7 +171,7 @@ config SND_HDA_SCODEC_CS35L56_SPI
+ 	depends on SPI_MASTER
+ 	depends on ACPI || COMPILE_TEST
+ 	depends on SND_SOC
+-	select CS_DSP
++	select FW_CS_DSP
+ 	select SND_HDA_GENERIC
+ 	select SND_SOC_CS35L56_SHARED
+ 	select SND_HDA_SCODEC_CS35L56
+-- 
+2.43.0
+
 
 
 
