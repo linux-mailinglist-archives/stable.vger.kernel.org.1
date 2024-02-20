@@ -1,113 +1,83 @@
-Return-Path: <stable+bounces-20777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9B3785B4A5
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 09:12:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B316085B4B2
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 09:16:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4167CB20D8D
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 08:12:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E52EA1C218D1
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 08:16:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BA755C91E;
-	Tue, 20 Feb 2024 08:12:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 406305C5EC;
+	Tue, 20 Feb 2024 08:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="g+nggSxm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qYozbIQO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90FD65C5FC
-	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 08:12:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C6D53819;
+	Tue, 20 Feb 2024 08:16:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708416740; cv=none; b=H/BfLo/Eoth3I8YNFMKpcsV8t2GwPLa0mJi/LMtw0nY0bkdrnunECi/wavYWTgXkEShK4T72yDZOuGm5PT1STyqmN0BzvZ9y75LaHvyuV7TNX7we5hSthLa0dU5niUQv1X7e/QnRUFgfPvYGEvB16V8Ob3BPGwC1mXbxQt5mjTw=
+	t=1708416973; cv=none; b=C1755POOkiuMcK1usMbWZrPchv2YxEpufOeQRryAI9O02ujLXc+gF3E7MhPg2BRiuEloxky3pL69R9k7MQeZUTpUIPfUFfI+6Q1Ws82BV0oSh1stzJRtBkTeMYQR2ffjqv20XeMx3LdXvC1wBP6Dz60RbAF+wjus3/itd9zpUtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708416740; c=relaxed/simple;
-	bh=/rabM4Ojv3qXPABWhPOzcXvWzcE1bpcBe1707Z9xKgg=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=oU0tqU48HU44NSDICQfn+xo9PG22Au1FpcltsBgwpbe1THFij9oW2jKTQuYGZSWMSzRWjDTnLDWk2Wwe8YSCp478dIqYuirmq0ZQQfYWX3HUab02231yjeszQcZPwQBncocVexBaSgTt4fY+X+35IhWSJ+040CkOr8L3lWCdoX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--raychi.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=g+nggSxm; arc=none smtp.client-ip=209.85.219.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--raychi.bounces.google.com
-Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dc6b26eef6cso7509696276.3
-        for <stable@vger.kernel.org>; Tue, 20 Feb 2024 00:12:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1708416736; x=1709021536; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=7NyTQc14Zf/h2SqeLHUekdRb34OTt1i2UvuEmj+OuFE=;
-        b=g+nggSxmQkbCXvjQQMjfd+GJrhqjetnwR3vH3J7tBDV3Mki9t9r4v1QDZnCPz5OK88
-         kG6dQSYSd73EVxG6bae7vMB7ZAP+fbZanubSs/NaF8qvgLPygjoSgLLS+ZUhO+TC3zy6
-         lvYQcIoD1oYrhwiyo6s2bNb9OQ8/J7BgLzwxBN/iFSoax/63sS82m6waRJSSYe26oOp0
-         c6DlUqQYAQEllT78ObvQYJg7nN5+WCor/I4P62AVuztaruIblbXmezvm6tTFkJlwmnzL
-         DKyZW8x2J1vf+gOCdsx8h7krEexg/qz7i0R7bc9C29X9FUOcw8j4Qzg6iR+kmJ0iYi3x
-         JpDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708416736; x=1709021536;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7NyTQc14Zf/h2SqeLHUekdRb34OTt1i2UvuEmj+OuFE=;
-        b=MMjI8ArSksIYHjqDf7ChTkDPE0A0AzFOnZ0F/mju1fRuLyqNSmS4IPi8tIhenTbTEU
-         y/hEnODy2CWEFBdOD0D6ogeeUtbnLO2iF1OlEf2UKq4Q/at5ARUlxmzIEBmv8DprN8wW
-         qCNUqOoAzKhyhtjwacpIUS+gKlV2v++jcTIF+CN3iFE1iola+E2kJGD6O9TlytPnnE/7
-         lNUzAmbkcUmp365PHzmZhe05vp95nyfw742xOdcIWhITz0HAnNqdI73eHdke/JaYqENO
-         iiVSLyjAyyPidEcgT5HZcGp+XkFFfpHMFmYkPP8QhR0uFTs1lKFAEVUm6W0t8HkY8z1L
-         xVBA==
-X-Forwarded-Encrypted: i=1; AJvYcCV1mTeR0KrDzAnIzukjWwpWcZv5p2yvT3C68piEoeHKXgwlaj22ZIgE+Uxf32kK5fIOXqV4L5xs62Ypw4+zCP7F/9g3ij81
-X-Gm-Message-State: AOJu0Yz86wdC63tV3APucmYobQkz7O2/A1/F3t1rbwHOonUYXPL3ZJvp
-	X1A03Af+BFoscF940mxOyXeEUAnYUNwRaTj9ai2gjArNtBFGS74AY35UeobYDMdPaRxZk7HbTGc
-	1Yg==
-X-Google-Smtp-Source: AGHT+IHNQS6LSHevRMTxDokV0cAYaI5EkrQn4V1Y4tZL0I+ejqlFuzOyBy3AA2eQbWjAGfgyiPZewI6v+oY=
-X-Received: from raychi-p620lin01.ntc.corp.google.com ([2401:fa00:fc:202:d899:e5b8:ba5f:3c9])
- (user=raychi job=sendgmr) by 2002:a25:abec:0:b0:dcc:94b7:a7a3 with SMTP id
- v99-20020a25abec000000b00dcc94b7a7a3mr495450ybi.12.1708416736722; Tue, 20 Feb
- 2024 00:12:16 -0800 (PST)
-Date: Tue, 20 Feb 2024 16:12:04 +0800
+	s=arc-20240116; t=1708416973; c=relaxed/simple;
+	bh=pVCYDmfneMY62lQgQwPPW3z78UJse8fVQB3vd1YwRjs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MUv+vH8CC7/nRoAa1ajeo/TzDrJCRZP3VGNVSSN+h6fpQLqyeFNIAk27kHPwPWHoty8/tojDh9teXE8vYGOb3OSZoM00TdQvZlajHO70a4IUBn8/rAmfvmn54hoS15hreZfB2yi3/2/atECKYlNqmNJbyW01GHYOfNpOgk9SbBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qYozbIQO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFA45C433C7;
+	Tue, 20 Feb 2024 08:16:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1708416972;
+	bh=pVCYDmfneMY62lQgQwPPW3z78UJse8fVQB3vd1YwRjs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qYozbIQOSK2rEkQCG/1xB0lScZDwfEmYACQKm0luEGGWMLhwjWqvA+5jXIdU2AMaR
+	 E7BpqOtxhrdI7bG2R2deEsI+rvTMaZReRRU1O8wbGNwvsvbTsK8p8x+t7zsj/k4+8O
+	 qebmuhmnyJsGVIKJGnJ33MVj+C9CNht3AlpPKTLY=
+Date: Tue, 20 Feb 2024 09:16:08 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: Thorsten Leemhuis <regressions@leemhuis.info>, stable@vger.kernel.org,
+	patches@lists.linux.dev, Frank Wang <frank.wang@rock-chips.com>,
+	Badhri Jagan Sridharan <badhri@google.com>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH 6.7 093/124] Revert "usb: typec: tcpm: fix cc role at
+ port reset"
+Message-ID: <2024022003-doctrine-java-f6b0@gregkh>
+References: <20240213171853.722912593@linuxfoundation.org>
+ <20240213171856.446249309@linuxfoundation.org>
+ <571afc70-dd77-4678-bdd0-673e15cdd5ad@leemhuis.info>
+ <2024021630-unfold-landmine-5999@gregkh>
+ <ZdDS4drripFkFqJp@finisterre.sirena.org.uk>
+ <2024021752-shorty-unwarlike-671d@gregkh>
+ <e8b11fc8-6c01-41a1-97a7-9269fa95a990@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.44.0.rc0.258.g7320e95886-goog
-Message-ID: <20240220081205.135063-1-raychi@google.com>
-Subject: [PATCH] usb: dwc3: gadget: remove warning during kernel boot
-From: Ray Chi <raychi@google.com>
-To: Thinh.Nguyen@synopsys.com, gregkh@linuxfoundation.org, 
-	quic_uaggarwa@quicinc.com
-Cc: albertccwang@google.com, linux-usb@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Ray Chi <raychi@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e8b11fc8-6c01-41a1-97a7-9269fa95a990@sirena.org.uk>
 
-The dwc3->gadget_driver is not initialized during the dwc3 probe
-process. This leads to a warning when the runtime power management (PM)
-attempts to suspend the gadget using dwc3_gadget_suspend().
+On Mon, Feb 19, 2024 at 12:40:52PM +0000, Mark Brown wrote:
+> On Sat, Feb 17, 2024 at 05:11:28PM +0100, Greg Kroah-Hartman wrote:
+> > On Sat, Feb 17, 2024 at 03:38:09PM +0000, Mark Brown wrote:
+> 
+> > > This getting backported to older stables is breaking at least this board
+> > > in those stables, and I would tend to rate a "remove all power from the
+> > > system" bug at the very high end of the severity scale while the
+> > > reverted patch was there for six months and several kernel releases.
+> 
+> > Ok, that's different, I'll queue your revert for the revert up on Monday
+> > and get this fixed up as that's not ok.
+> 
+> Thanks.
 
-This patch adds a check to prevent the warning.
-
-Cc: stable@vger.kernel.org
-Fixes: 61a348857e86 ("usb: dwc3: gadget: Fix NULL pointer dereference in dwc3_gadget_suspend")
-Signed-off-by: Ray Chi <raychi@google.com>
----
- drivers/usb/dwc3/gadget.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index 28f49400f3e8..de987cffe1ec 100644
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -4708,6 +4708,9 @@ int dwc3_gadget_suspend(struct dwc3 *dwc)
- 	unsigned long flags;
- 	int ret;
- 
-+	if (!dwc->gadget_driver)
-+		return 0;
-+
- 	ret = dwc3_gadget_soft_disconnect(dwc);
- 	if (ret)
- 		goto err;
--- 
-2.44.0.rc0.258.g7320e95886-goog
-
+Now queued up.
 
