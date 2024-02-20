@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-21065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FF5085C6FE
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:07:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C33985C745
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:11:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD5BB2844ED
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:07:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CF601C2175F
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:11:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BFDB1509AC;
-	Tue, 20 Feb 2024 21:07:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B20951509BF;
+	Tue, 20 Feb 2024 21:11:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fyJ89pGz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ShtirRF4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2B5612D7;
-	Tue, 20 Feb 2024 21:07:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E55E612D7;
+	Tue, 20 Feb 2024 21:11:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463239; cv=none; b=mHrkKJydKJ3SK+PNphbDwm0gpLs8EL4oe9BNwfPLki0T8WaV3mxxsF0293IDk6amv/NaoIIQfoWYkCn3S+RB+AAtGm62RVRw6S0RdroioQsFOtPIlMbB/hQG/QNnZbZZ1tPSjoINCMe01GEfJAm/qh7b1/TalemlsdM5alnHo7A=
+	t=1708463463; cv=none; b=tnOIW0nLqY0Lm4OMqo9Aij9fuh+tuoDxucMma+0sZnbQ8cKfEKl6nvarPE7O8+JEZ1XdKFS1LHLxyW+FKjKx8KP7bfc+MDIZ1Az3Mvn1N77TEw4OKmcyUCcuvsnh0BnqLiEkXq555dMPcO8BBz7rAWn6w4KCk5BVM3mP+mcoXZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463239; c=relaxed/simple;
-	bh=3uP4Rigzu889rEMMCUUXRth9HSbQXG6omiKVhoF4YI8=;
+	s=arc-20240116; t=1708463463; c=relaxed/simple;
+	bh=VqNeA+VEq9oRBEf2EGX55WKIg3qbCMGqUPwLbJBbXew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WLcf76aZPY5msm3dnzHop2RnUhPgpKc67XX2EXXe0SAQlG+/EDkGQ+/3I4BeHcPLPj1fUDWRhWH9iXldDnn38tGBJNnmMAWjYiVeQ6xexIWCYlpUKZUh8l9e+sI7uT6IOLrbrXxwKiHiKta29bWIram0CQ65mRbcqmcwK74phpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fyJ89pGz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAF0AC433F1;
-	Tue, 20 Feb 2024 21:07:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BR13gXjNeOD3h5+MrMGqKesaQxJscdKsdEz22a26gF5c5xmg75ioUlCSdOzx3MtBBtOkeOU9FKmVKjlIPm/7HY5tM0lGzioDAaTA7Uysn1xZm1pHTeg4FgTw0kXhKFbVbuPXsdkKG2Um8XJ/n0kx38oenCidEPvCwrAf9L/5TQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ShtirRF4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9D1FC433C7;
+	Tue, 20 Feb 2024 21:11:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463239;
-	bh=3uP4Rigzu889rEMMCUUXRth9HSbQXG6omiKVhoF4YI8=;
+	s=korg; t=1708463463;
+	bh=VqNeA+VEq9oRBEf2EGX55WKIg3qbCMGqUPwLbJBbXew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fyJ89pGzbofoBREIDKHq8LvIulqeDJ9aQDVzFdLMx0ykc9Ahe252vKANWzVoB1oKI
-	 8qtisa53MrqC4SGo0ie4UMrfjoaG+hzsEdx4quDpxllXD7NzCThI0v67idBp6hn2Q0
-	 h5CkT7Wcs1HYSg81Dec2nbQ5TT4wuSGGVavwjAUE=
+	b=ShtirRF40+uzV62G/s9WLOnORyxpv2bcMWwobULKJy3lNovXR0CbqAtkqJDRL6eQt
+	 ZwtJTY2N1piAjY+HZvfcFHBZt4UJ3O0EhFsqi5YuD4y5yNcV0pe2IrvHstmCLY1u7T
+	 OBbfjQ6fAH3j63w8p2ZHEeWlFxlIXHgtVGAQpUBw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jack Pham <quic_jackp@quicinc.com>,
-	Jonathan Marek <jonathan@marek.ca>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Prashant Batra <prbatra.mail@gmail.com>,
+	Magnus Karlsson <magnus.karlsson@intel.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 180/197] arm64: dts: qcom: sm8150: fix USB SS wakeup
-Date: Tue, 20 Feb 2024 21:52:19 +0100
-Message-ID: <20240220204846.455423933@linuxfoundation.org>
+Subject: [PATCH 6.6 024/331] bonding: do not report NETDEV_XDP_ACT_XSK_ZEROCOPY
+Date: Tue, 20 Feb 2024 21:52:20 +0100
+Message-ID: <20240220205638.352812408@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
-References: <20240220204841.073267068@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Magnus Karlsson <magnus.karlsson@intel.com>
 
-[ Upstream commit cc4e1da491b84ca05339a19893884cda78f74aef ]
+[ Upstream commit 9b0ed890ac2ae233efd8b27d11aee28a19437bb8 ]
 
-The USB SS PHY interrupts need to be provided by the PDC interrupt
-controller in order to be able to wake the system up from low-power
-states.
+Do not report the XDP capability NETDEV_XDP_ACT_XSK_ZEROCOPY as the
+bonding driver does not support XDP and AF_XDP in zero-copy mode even
+if the real NIC drivers do.
 
-Fixes: 0c9dde0d2015 ("arm64: dts: qcom: sm8150: Add secondary USB and PHY nodes")
-Fixes: b33d2868e8d3 ("arm64: dts: qcom: sm8150: Add USB and PHY device nodes")
-Cc: stable@vger.kernel.org      # 5.10
-Cc: Jack Pham <quic_jackp@quicinc.com>
-Cc: Jonathan Marek <jonathan@marek.ca>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20231213173403.29544-6-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Note that the driver used to report everything as supported before a
+device was bonded. Instead of just masking out the zero-copy support
+from this, have the driver report that no XDP feature is supported
+until a real device is bonded. This seems to be more truthful as it is
+the real drivers that decide what XDP features are supported.
+
+Fixes: cb9e6e584d58 ("bonding: add xdp_features support")
+Reported-by: Prashant Batra <prbatra.mail@gmail.com>
+Link: https://lore.kernel.org/all/CAJ8uoz2ieZCopgqTvQ9ZY6xQgTbujmC6XkMTamhp68O-h_-rLg@mail.gmail.com/T/
+Signed-off-by: Magnus Karlsson <magnus.karlsson@intel.com>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Link: https://lore.kernel.org/r/20240207084737.20890-1-magnus.karlsson@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8150.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/bonding/bond_main.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8150.dtsi b/arch/arm64/boot/dts/qcom/sm8150.dtsi
-index 8efd0e227d78..eb1a9369926d 100644
---- a/arch/arm64/boot/dts/qcom/sm8150.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8150.dtsi
-@@ -3629,7 +3629,7 @@ usb_1: usb@a6f8800 {
- 			assigned-clock-rates = <19200000>, <200000000>;
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 8e6cc0e133b7..6cf7f364704e 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -1819,6 +1819,8 @@ void bond_xdp_set_features(struct net_device *bond_dev)
+ 	bond_for_each_slave(bond, slave, iter)
+ 		val &= slave->dev->xdp_features;
  
- 			interrupts-extended = <&intc GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
--					      <&intc GIC_SPI 486 IRQ_TYPE_LEVEL_HIGH>,
-+					      <&pdc 6 IRQ_TYPE_LEVEL_HIGH>,
- 					      <&pdc 8 IRQ_TYPE_EDGE_BOTH>,
- 					      <&pdc 9 IRQ_TYPE_EDGE_BOTH>;
- 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
-@@ -3678,7 +3678,7 @@ usb_2: usb@a8f8800 {
- 			assigned-clock-rates = <19200000>, <200000000>;
++	val &= ~NETDEV_XDP_ACT_XSK_ZEROCOPY;
++
+ 	xdp_set_features_flag(bond_dev, val);
+ }
  
- 			interrupts-extended = <&intc GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>,
--					      <&intc GIC_SPI 487 IRQ_TYPE_LEVEL_HIGH>,
-+					      <&pdc 7 IRQ_TYPE_LEVEL_HIGH>,
- 					      <&pdc 10 IRQ_TYPE_EDGE_BOTH>,
- 					      <&pdc 11 IRQ_TYPE_EDGE_BOTH>;
- 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
+@@ -5934,9 +5936,6 @@ void bond_setup(struct net_device *bond_dev)
+ 	if (BOND_MODE(bond) == BOND_MODE_ACTIVEBACKUP)
+ 		bond_dev->features |= BOND_XFRM_FEATURES;
+ #endif /* CONFIG_XFRM_OFFLOAD */
+-
+-	if (bond_xdp_check(bond))
+-		bond_dev->xdp_features = NETDEV_XDP_ACT_MASK;
+ }
+ 
+ /* Destroy a bonding device.
 -- 
 2.43.0
 
