@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-20805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8932585BBDE
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 13:22:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2444B85BBE3
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 13:22:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DD6C1F23887
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 12:22:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 581171C22358
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 12:22:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72BF0692E3;
-	Tue, 20 Feb 2024 12:21:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94C8567E79;
+	Tue, 20 Feb 2024 12:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=katalix.com header.i=@katalix.com header.b="Mi2IqrNS"
+	dkim=pass (2048-bit key) header.d=katalix.com header.i=@katalix.com header.b="uEyjcR8V"
 X-Original-To: stable@vger.kernel.org
 Received: from mail.katalix.com (mail.katalix.com [3.9.82.81])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C300692E2
-	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 12:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C54485A787;
+	Tue, 20 Feb 2024 12:22:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=3.9.82.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708431708; cv=none; b=ouMAyf2JLe9zCwH0XR6EEy/1WqRmOCFcKRex+44f2W0V00QgIfnjJ51RGAZoJJxsvCCKkOVgKrCcW2BPiIAgzTioj1ExMj+wu3FQPFzcL7jF3xPw2q2wxbBI6CU5OygJYva4YTF9Bwd+UYIl7MRV2LuWo2kgtubYbj4O84I2TQY=
+	t=1708431724; cv=none; b=s3D0glpnJ5a7fnBS0SRB7MfRY44Wk0magc7FT+ik39MNb4dA1i4o0XVq5DNfTzYq9+QHS1ldX+5GQN7PT8Mu72bpZ1lK5ePtNPFJE9r301ai/Pw7IV0l3lKy5BneID+yWxIF/9oFZIWrUTxSYQhbZ5XiFdsnQl/NF9MuIGe4cUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708431708; c=relaxed/simple;
+	s=arc-20240116; t=1708431724; c=relaxed/simple;
 	bh=lx2Zc2pBT3bvlCLnN8gbcnhxqOzDirH/yNVWnwLQu6c=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QfZrA+LL2ysCm0P8F5i+JUFK3E5feJY4PFJlXTDGAEQ35f/hcFEB16kpX0brYu+QHktgrYltmnjIg9ign9jjqdF7srEeTg4lMJVV4RU8ea9VWnWIfxt/fea4ZnatqeT6mrWDh+NT/4O2HpM2x5QS3ci6bU0oSKDd8FieBnfadgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=katalix.com; spf=pass smtp.mailfrom=katalix.com; dkim=pass (2048-bit key) header.d=katalix.com header.i=@katalix.com header.b=Mi2IqrNS; arc=none smtp.client-ip=3.9.82.81
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=h7/NfqmYx/eoFsVd/ZbvN8lTFXpHeYfq461MlIvIocq/cMG73ENlBADHthcyNFI393hvaLTMXmrjyKO7EypoVSkYIFb4td2bWvXewjmH7AoH9anKVDOhba6Hg0tb36fqXPNFh7MFB06PJ4gsUOv17UJWb7ieFsll6Ret9t4+xRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=katalix.com; spf=pass smtp.mailfrom=katalix.com; dkim=pass (2048-bit key) header.d=katalix.com header.i=@katalix.com header.b=uEyjcR8V; arc=none smtp.client-ip=3.9.82.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=katalix.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=katalix.com
 Received: from jackdaw.fritz.box (unknown [IPv6:2a02:8012:909b:0:d103:fdef:9fb8:df5c])
 	(Authenticated sender: tom)
-	by mail.katalix.com (Postfix) with ESMTPSA id E28D57D945;
-	Tue, 20 Feb 2024 12:21:39 +0000 (GMT)
+	by mail.katalix.com (Postfix) with ESMTPSA id AC1467D982;
+	Tue, 20 Feb 2024 12:22:01 +0000 (GMT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=katalix.com; s=mail;
-	t=1708431700; bh=lx2Zc2pBT3bvlCLnN8gbcnhxqOzDirH/yNVWnwLQu6c=;
+	t=1708431721; bh=lx2Zc2pBT3bvlCLnN8gbcnhxqOzDirH/yNVWnwLQu6c=;
 	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:From;
-	z=From:=20Tom=20Parkin=20<tparkin@katalix.com>|To:=20tparkin@katali
-	 x.com|Cc:=20David=20Howells=20<dhowells@redhat.com>,=0D=0A=09stabl
-	 e@vger.kernel.org|Subject:=20[PATCH=20net]=20l2tp:=20pass=20correc
-	 t=20message=20length=20to=20ip6_append_data|Date:=20Tue,=2020=20Fe
-	 b=202024=2012:21:32=20+0000|Message-Id:=20<20240220122132.42990-1-
-	 tparkin@katalix.com>|MIME-Version:=201.0;
-	b=Mi2IqrNS8ZpD7VE1gCKi8l0WIdoNRY3jpro8HeYjn3bewx5IwKmp76MYSL3y0kz+y
-	 p7j6eYem2DF+JHxLq0Q7tZqjSI1M7bdl+xZC4BD619tOsaD5zseQvSs6+qtDCrJ45P
-	 6rD0tLruAKoCzLHeHIHqTuc0M6/m6RhEz3j/k8Rmltmn5QX/g+Dt6JuaFHOen70rlC
-	 54iPp08wasKTLK10KfWQcqAjuT86Cmmqi/rV8Mf1QXWfKABf9wzd7jPg2audBJ4l2W
-	 MsCIm4nD4IH32hP4aHhZigaBEsCKrXrxO3jQYRc62ZfH/vVgM7AKQzV1/v+t9m4qwD
-	 YHZvyK+CocwQw==
+	z=From:=20Tom=20Parkin=20<tparkin@katalix.com>|To:=20netdev@vger.ke
+	 rnel.org|Cc:=20Tom=20Parkin=20<tparkin@katalix.com>,=0D=0A=09David
+	 =20Howells=20<dhowells@redhat.com>,=0D=0A=09stable@vger.kernel.org
+	 |Subject:=20[PATCH=20net]=20l2tp:=20pass=20correct=20message=20len
+	 gth=20to=20ip6_append_data|Date:=20Tue,=2020=20Feb=202024=2012:21:
+	 56=20+0000|Message-Id:=20<20240220122156.43131-1-tparkin@katalix.c
+	 om>|MIME-Version:=201.0;
+	b=uEyjcR8V/v40hJc/qZrJvNjeeBrgpzFhLTF6mnkS6ag57WmViseIGiXL2YqMqgs97
+	 0/fftv4a2kPkW2UjQYFU+C5Qc+hL4ZyODLW2llQ7w+l0HfG/uGWSJUYHWJk5qTLU6D
+	 Ww6F4HVILXkw2xPl7iZnUQcmfvxKdCTKyogJYrIwwgTMUPXk5PT6JdsHHVLqLhAAWr
+	 Qt6mpQ3Z3775uGikDuQPVl+oryAIXUTFAyzK87opQ6DZ+2zd/q+dvsI0v1hE+GzZz2
+	 B8JhcGGMCOMWKMkr1k0SXo8N8d7vlSQqSgKRw++XOHtfHUWHuEhNAqx0OJ+gZsxfvt
+	 cwB7zvZ6puTUg==
 From: Tom Parkin <tparkin@katalix.com>
-To: tparkin@katalix.com
-Cc: David Howells <dhowells@redhat.com>,
+To: netdev@vger.kernel.org
+Cc: Tom Parkin <tparkin@katalix.com>,
+	David Howells <dhowells@redhat.com>,
 	stable@vger.kernel.org
 Subject: [PATCH net] l2tp: pass correct message length to ip6_append_data
-Date: Tue, 20 Feb 2024 12:21:32 +0000
-Message-Id: <20240220122132.42990-1-tparkin@katalix.com>
+Date: Tue, 20 Feb 2024 12:21:56 +0000
+Message-Id: <20240220122156.43131-1-tparkin@katalix.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
