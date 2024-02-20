@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-21280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92E8D85C808
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:18:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FA8085C976
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:34:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4814F283F2C
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:18:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30A67B22189
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:34:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 224BF151CD8;
-	Tue, 20 Feb 2024 21:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85D31151CE1;
+	Tue, 20 Feb 2024 21:33:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uVDSnics"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PH3NOnrz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4499612D7;
-	Tue, 20 Feb 2024 21:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42566446C9;
+	Tue, 20 Feb 2024 21:33:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463921; cv=none; b=dOpdEsnYNEZ2dZiSty2EIQpBTenVToOMXMJhU7LRFeHhoUQSvobmNzyeSVmpvj94fbzIBrihLz8Q4mZTczCrlSluGSqCYQF+Cfztn9bCqQyBSdlIbMka3ht4AyLpOChCSP6tG5tThmsHG9KG10z7TJIghaSR16birYqn9vkmVCQ=
+	t=1708464839; cv=none; b=uVKclcZxAmm+LavKreHU3VujmHx+bXPZ3oHHax9XRrpsF0OhEDu+eP9ke1RV7b5aFU+u1qNfg3e8wuizEWQyMwPxNffhUmXpkwQHbKCaO5LPkRxEAugXgqTRgrTviydR3AXdNs61fdTr4tVEEGIwVjyQf07kngoxrogM8Hb93js=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463921; c=relaxed/simple;
-	bh=9DCR8j6Vh7wYSl8upzYPTaRxpi/kuKN9mxw+efPYDDM=;
+	s=arc-20240116; t=1708464839; c=relaxed/simple;
+	bh=K6AZK+pCAbzORmqCzYJYRf1AklVbm5xDz+rHS9/j5+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U5s5jXFcx48pn+4ds6L4mxyUTqDiT61IxAYTiCeUjlPKmANIlw22hHUltzLLTzwizwzyWXUYTHvEWjUyPiDEMOWUJKwZdfpzopRegWptpEAILfjVzHZDdoL/lpRLrGjIH8CwZwS5YHFSwB3FrrfJfDOXUia5l3SQRpk9s7+Y7TU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uVDSnics; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AB6CC433C7;
-	Tue, 20 Feb 2024 21:18:41 +0000 (UTC)
+	 MIME-Version; b=SbA7kGl6uR5VMzTf5cErmwYMsOj6HwRMdUCMecc+wmSy+jyIDJzKkheRFwNLB/Sc5GuAe1//GsHz/6cDd5FWm0yPDTq7d7kDXS2NMYwrtV5+xpU0B45/17iZRRT4EfRtQnbsgequwrtH7L4VklLC9sn/4+tN5sKsy+CcYCjBp5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PH3NOnrz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5B9CC433C7;
+	Tue, 20 Feb 2024 21:33:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463921;
-	bh=9DCR8j6Vh7wYSl8upzYPTaRxpi/kuKN9mxw+efPYDDM=;
+	s=korg; t=1708464839;
+	bh=K6AZK+pCAbzORmqCzYJYRf1AklVbm5xDz+rHS9/j5+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uVDSnics8xSqzFwwltZ1lzt1xharUn3D/OyKmjG4ZXQD1axbZXvS+LgaAdWwHqIhJ
-	 mZ78F/UatHGXTKmF8mGr1DqipAIDCR5uWXVf3BIzWyXjGwVlomRt8NO4gCt5JrOqFz
-	 1EbGnP7yZ4jEub5QM3Ba+OKGFdAdSRYk9CXxK9cg=
+	b=PH3NOnrzBCXtTFMVlEOPOAnqZLt1X9H2UUy35L17PDHB5VuIgzH9KqRxXtkT6fUDk
+	 7mNfuHgN9bC6W0wnDn2YLZZGkfKY8q9twCzWwizlT/tn2HSvXH+jCxiuFwjtJmLBI5
+	 VYb/ORvTfqh6NuKECflN07DQyGcHUxy+eNT2YThQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eniac Zhang <eniac-xw.zhang@hp.com>,
-	Alexandru Gagniuc <alexandru.gagniuc@hp.com>,
+	Kailang Yang <kailang@realtek.com>,
 	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 196/331] ALSA: hda/realtek: fix mute/micmute LED For HP mt645
+Subject: [PATCH 6.7 153/309] ALSA: hda/realtek - Add speaker pin verbtable for Dell dual speaker platform
 Date: Tue, 20 Feb 2024 21:55:12 +0100
-Message-ID: <20240220205643.766887687@linuxfoundation.org>
+Message-ID: <20240220205637.955727184@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eniac Zhang <eniac-xw.zhang@hp.com>
+From: Kailang Yang <kailang@realtek.com>
 
-commit 32f03f4002c5df837fb920eb23fcd2f4af9b0b23 upstream.
+commit fcfc9f711d1e2fc7876ac12b1b16c509404b9625 upstream.
 
-The HP mt645 G7 Thin Client uses an ALC236 codec and needs the
-ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF quirk to make the mute and
-micmute LEDs work.
+SSID 0x0c0d platform. It can't mute speaker when HP plugged.
+This patch add quirk to fill speaker pin verbtable.
+And disable speaker passthrough.
 
-There are two variants of the USB-C PD chip on this device. Each uses
-a different BIOS and board ID, hence the two entries.
-
-Signed-off-by: Eniac Zhang <eniac-xw.zhang@hp.com>
-Signed-off-by: Alexandru Gagniuc <alexandru.gagniuc@hp.com>
+Signed-off-by: Kailang Yang <kailang@realtek.com>
 Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240215154922.778394-1-alexandru.gagniuc@hp.com
+Link: https://lore.kernel.org/r/38b82976a875451d833d514cee34ff6a@realtek.com
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    2 ++
- 1 file changed, 2 insertions(+)
+ sound/pci/hda/patch_realtek.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
 --- a/sound/pci/hda/patch_realtek.c
 +++ b/sound/pci/hda/patch_realtek.c
-@@ -9821,6 +9821,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x8abb, "HP ZBook Firefly 14 G9", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8ad1, "HP EliteBook 840 14 inch G9 Notebook PC", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8ad2, "HP EliteBook 860 16 inch G9 Notebook PC", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8b0f, "HP Elite mt645 G7 Mobile Thin Client U81", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
- 	SND_PCI_QUIRK(0x103c, 0x8b2f, "HP 255 15.6 inch G10 Notebook PC", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x8b42, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8b43, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
-@@ -9828,6 +9829,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x8b45, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8b46, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8b47, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8b59, "HP Elite mt645 G7 Mobile Thin Client U89", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
- 	SND_PCI_QUIRK(0x103c, 0x8b5d, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
- 	SND_PCI_QUIRK(0x103c, 0x8b5e, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
- 	SND_PCI_QUIRK(0x103c, 0x8b63, "HP Elite Dragonfly 13.5 inch G4", ALC245_FIXUP_CS35L41_SPI_4_HP_GPIO_LED),
+@@ -439,6 +439,10 @@ static void alc_fill_eapd_coef(struct hd
+ 		alc_update_coef_idx(codec, 0x67, 0xf000, 0x3000);
+ 		fallthrough;
+ 	case 0x10ec0215:
++	case 0x10ec0285:
++	case 0x10ec0289:
++		alc_update_coef_idx(codec, 0x36, 1<<13, 0);
++		fallthrough;
+ 	case 0x10ec0230:
+ 	case 0x10ec0233:
+ 	case 0x10ec0235:
+@@ -452,9 +456,7 @@ static void alc_fill_eapd_coef(struct hd
+ 	case 0x10ec0283:
+ 	case 0x10ec0286:
+ 	case 0x10ec0288:
+-	case 0x10ec0285:
+ 	case 0x10ec0298:
+-	case 0x10ec0289:
+ 	case 0x10ec0300:
+ 		alc_update_coef_idx(codec, 0x10, 1<<9, 0);
+ 		break;
+@@ -9722,6 +9724,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1028, 0x0b71, "Dell Inspiron 16 Plus 7620", ALC295_FIXUP_DELL_INSPIRON_TOP_SPEAKERS),
+ 	SND_PCI_QUIRK(0x1028, 0x0beb, "Dell XPS 15 9530 (2023)", ALC289_FIXUP_DELL_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1028, 0x0c03, "Dell Precision 5340", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE),
++	SND_PCI_QUIRK(0x1028, 0x0c0d, "Dell Oasis", ALC289_FIXUP_RTK_AMP_DUAL_SPK),
+ 	SND_PCI_QUIRK(0x1028, 0x0c19, "Dell Precision 3340", ALC236_FIXUP_DELL_DUAL_CODECS),
+ 	SND_PCI_QUIRK(0x1028, 0x0c1a, "Dell Precision 3340", ALC236_FIXUP_DELL_DUAL_CODECS),
+ 	SND_PCI_QUIRK(0x1028, 0x0c1b, "Dell Precision 3440", ALC236_FIXUP_DELL_DUAL_CODECS),
 
 
 
