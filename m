@@ -1,148 +1,116 @@
-Return-Path: <stable+bounces-20850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A26185C179
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 17:32:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44FC085C185
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 17:35:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D2B65B21E6D
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 16:32:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDE0D2825CA
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 16:35:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A3C7640D;
-	Tue, 20 Feb 2024 16:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6154762E0;
+	Tue, 20 Feb 2024 16:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CmnP2qmD"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DedQTk2V"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077F667C69
-	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 16:32:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E87322599
+	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 16:35:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708446751; cv=none; b=M3THblnygskUJT3MbtEZr2VHlyHKBflYF2MT2oSnfcB0WbVFKD50P8JclAT/pNvm2nf/b35AodXKav1YECcdx76kowmH71Gj4X6pTCFWCBg6VH8d+poLyntx6DlX/EvMq+Ibp8UQiPhf8nNWiJc3WvWCG84BTzh/ciyGQ5oyIqM=
+	t=1708446906; cv=none; b=MuIz21vUT5wIvOJbmZ4hCL3xxW+GQYBdg6hFVYiMyB6OeC9j0cEIeS6VZxIZ60LwkqEtTRxj1vC8eTx5SmeoG0VFKjM6Ohu/1rUTvjckXIGSGK8MyfF2JUW8d7xcuPz3zqsEdP0KhSFrGJTfj2CES1KGCGRkKhm5FJbxSGSJXMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708446751; c=relaxed/simple;
-	bh=N355tVdPSOKMObJsCfJAPqCnsKJxMxvzjEgXaDCSUXw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PfbCNS6puPW6Tqtpa9fvh2fvB2bb5rfoa8uS23cC6+U4hPiNgrJsepOyTT2lnG2bagO5h5b9SqD5BiKU3pNSFR6JnXwc7Vwr1j1npyBDv5RCV3jwrlEL4aUhB4B/+BQgfHroo0Z6uoTwlPJHwBMsUNc2ceIC4hSqFnYQ1UfNn4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CmnP2qmD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DAE1C4166A
-	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 16:32:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708446750;
-	bh=N355tVdPSOKMObJsCfJAPqCnsKJxMxvzjEgXaDCSUXw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=CmnP2qmD/M9yEkgydZZU3v+WxaSDjI+CJo+RQ5FVKERrUziDft1RI0x52ykfTUBOn
-	 WSKpPyDCsVtJ4RiDG9sYGTUb8v6FNZmHEyn1rJX0pdBb4CD2jw6FfgrlutN5qA+lVu
-	 qXInCRbgKUGGj+d3hCrgIfBUEuSg3v2lDHaUoOeMhy5/LmjUWLzAbe4SOFl2WLJh4u
-	 oiUTKmm4IXeGIJYzlz1SoOuPdibZTVLSCXlk8rMgfBAl/EwjmrNRoe/JLlozAUA+hK
-	 l7y/yX86cPsCdoqgJLiGkFnLhk7Dczd/HAz7uBQ8/UMdTcgt6d1ok905KlP+M7TE0z
-	 Z51worHqqkYdg==
-Received: by mail-il1-f177.google.com with SMTP id e9e14a558f8ab-364f794f237so24127675ab.1
-        for <stable@vger.kernel.org>; Tue, 20 Feb 2024 08:32:30 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUBHJnehIFyqayEeN8TIukvQKkbRa8e+LirpK/tCgVHxBlCEkhJxl1Vi5jG82qTwyg/oYJ2DRi07iS0sWUvVNFqkF38ypaS
-X-Gm-Message-State: AOJu0YztLc+FILsM/Mpqm5g9A9IQ9X2xV3h/s+BLxZg12PqtmuLjItVP
-	YF57ayDiGTbsCEj5JvB2Y40052/GgI6Bu8ow5FbBf3lekZ0HWCRUbEJwtYTBYjCE5cnFwU4f35x
-	Sj3Z7Pe23vj0KDCBWBmO06jIuS2xY02+wUU5a
-X-Google-Smtp-Source: AGHT+IHoX5iSsVEGfeRD4cVDodXDxIVSA1k9wV22OCHIw4jn0j9xiCArJfC2r0sinIV6wprQrsUc1IoQGOjKhC7E+Mc=
-X-Received: by 2002:a05:6e02:154c:b0:364:216e:d1dc with SMTP id
- j12-20020a056e02154c00b00364216ed1dcmr17350823ilu.22.1708446745860; Tue, 20
- Feb 2024 08:32:25 -0800 (PST)
+	s=arc-20240116; t=1708446906; c=relaxed/simple;
+	bh=j/Afb2Dxl4RH/+nknh0QbyQZ6iTzJWFVe41iWcwGHvk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=o3N1Ai51l87IcFPbZwxwpSxeuI33rbvH6sP7BUQ2nX9yAfTM51NnYmpFdmfg17skBhEOQgxOeoTdPf/0zvAwqdLAA2I7UqZc4Zv9sNj1/pWTI4Qgbv09xjjymX+OAor2ukIHqPpclDj1dLHHtEUyXQoijYGEVcyKdrlVj2d0F1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DedQTk2V; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708446905; x=1739982905;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=j/Afb2Dxl4RH/+nknh0QbyQZ6iTzJWFVe41iWcwGHvk=;
+  b=DedQTk2VM4n/ETmFx3ErDU8AaJJpzWnS0Hu9tgnUnpIstEf/6kxUUTNw
+   /uVgNm3fXijGCPNkyJ/xXNrrzK6jmFle/aHWWohNmEgpK0mNcmYvDRWci
+   Wfvhfy/QOaoctP4HrtmiplyFlsmdr+bukxXIqpCQrAq72Wru3gjZGXAT9
+   UEqCBikh/I0T/2iEioR9R2oVjt671dRjUjT34qpKdxc+aWjUTWlZ9m527
+   uExpw9y0X3wSweE3BCbRd1CONcT7IxpMeUkfT5ICYMRq1M/yWxxIfLy2z
+   frHOfZd8qW0lsXRSSBzWnrpq2UKW+3CSZMMzC3aS/IkPFh2A/SCI2PUCh
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="3023565"
+X-IronPort-AV: E=Sophos;i="6.06,174,1705392000"; 
+   d="scan'208";a="3023565"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 08:35:04 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="827179336"
+X-IronPort-AV: E=Sophos;i="6.06,174,1705392000"; 
+   d="scan'208";a="827179336"
+Received: from jlawryno-mobl.ger.corp.intel.com (HELO [10.245.114.39]) ([10.245.114.39])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 08:35:02 -0800
+Message-ID: <c82a9ceb-9e3b-419a-a6ea-7838a9959afb@linux.intel.com>
+Date: Tue, 20 Feb 2024 17:34:59 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240219082040.7495-1-ryncsn@gmail.com> <20240219173147.3f4b50b7c9ae554008f50b66@linux-foundation.org>
- <CAMgjq7DgBOJhDJStwGuD+C6-FNYZBp-cu6M_HAgRry3gBSf7GA@mail.gmail.com>
- <CAGsJ_4zyf5OOq_WA7VjsDKp1ciaDwzM23Ef95_O-24oLtr_5AQ@mail.gmail.com> <CAMgjq7AnZJSseC2BB_nF+s533YybyP_WU8HijEKFA=OXE1x41Q@mail.gmail.com>
-In-Reply-To: <CAMgjq7AnZJSseC2BB_nF+s533YybyP_WU8HijEKFA=OXE1x41Q@mail.gmail.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Tue, 20 Feb 2024 08:32:13 -0800
-X-Gmail-Original-Message-ID: <CAF8kJuMbocSa06MSeg5HOofWisc0BxVnCFBLdKErmV8_7pKhUA@mail.gmail.com>
-Message-ID: <CAF8kJuMbocSa06MSeg5HOofWisc0BxVnCFBLdKErmV8_7pKhUA@mail.gmail.com>
-Subject: Re: [PATCH v4] mm/swap: fix race when skipping swapcache
-To: Kairui Song <ryncsn@gmail.com>
-Cc: Barry Song <21cnbao@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	"Huang, Ying" <ying.huang@intel.com>, Minchan Kim <minchan@kernel.org>, 
-	Barry Song <v-songbaohua@oppo.com>, Yu Zhao <yuzhao@google.com>, SeongJae Park <sj@kernel.org>, 
-	David Hildenbrand <david@redhat.com>, Hugh Dickins <hughd@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox <willy@infradead.org>, Michal Hocko <mhocko@suse.com>, 
-	Yosry Ahmed <yosryahmed@google.com>, Aaron Lu <aaron.lu@intel.com>, stable@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] accel/ivpu: Don't enable any tiles by default on
+ VPU40xx
+To: dri-devel@lists.freedesktop.org
+Cc: oded.gabbay@gmail.com, quic_jhugo@quicinc.com,
+ Andrzej Kacprowski <Andrzej.Kacprowski@intel.com>, stable@vger.kernel.org
+References: <20240220110830.1439719-1-jacek.lawrynowicz@linux.intel.com>
+ <20240220131624.1447813-1-jacek.lawrynowicz@linux.intel.com>
+Content-Language: en-US
+From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
+ Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <20240220131624.1447813-1-jacek.lawrynowicz@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Feb 19, 2024 at 8:56=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
-e:
+Applied to drm-misc-fixes
 
->
-> Hi Barry,
->
-> > it might not be a problem for throughput. but for real-time and tail la=
-tency,
-> > this hurts. For example, this might increase dropping frames of UI whic=
-h
-> > is an important parameter to evaluate performance :-)
-> >
->
-> That's a true issue, as Chris mentioned before I think we need to
-> think of some clever data struct to solve this more naturally in the
-> future, similar issue exists for cached swapin as well and it has been
-> there for a while. On the other hand I think maybe applications that
-> are extremely latency sensitive should try to avoid swap on fault? A
-> swapin could cause other issues like reclaim, throttled or contention
-> with many other things, these seem to have a higher chance than this
-> race.
-
-
-Yes, I do think the best long term solution is to have some clever
-data structure to solve the synchronization issue and allow racing
-threads to make forward progress at the same time.
-
-I have also explored some (failed) synchronization ideas, for example
-having the run time swap entry refcount separate from swap_map count.
-BTW, zswap entry->refcount behaves like that, it is separate from swap
-entry and manages the temporary run time usage count held by the
-function. However that idea has its own problem as well, it needs to
-have an xarray to track the swap entry run time refcount (only stored
-in the xarray when CPU fails to get SWAP_HAS_CACHE bit.) When we are
-done with page faults, we still need to look up the xarray to make
-sure there is no racing CPU and put the refcount into the xarray. That
- kind of defeats the purpose of avoiding the swap cache in the first
-place. We still need to do the xarray lookup in the normal path.
-
-I came to realize that, while this current fix is not perfect, (I
-still wish we had a better solution not pausing the racing CPU). This
-patch stands better than not fixing this data corruption issue and the
-patch remains relatively simple. Yes it has latency issues but still
-better than data corruption.  It also doesn't stop us from coming up
-with better solutions later on. If we want to address the
-synchronization in a way not blocking other CPUs, it will likely
-require a much bigger change.
-
-Unless we have a better suggestion. It seems the better one among the
-alternatives so far.
-
-Chris
-
->
-> > BTW, I wonder if ying's previous proposal - moving swapcache_prepare()
-> > after swap_read_folio() will further help decrease the number?
->
-> We can move the swapcache_prepare after folio alloc or cgroup charge,
-> but I didn't see an observable change from statistics, for some
-> workload the reading is even worse. I think that's mostly due to
-> noise, or higher swap out rate since all raced threads will alloc an
-> extra folio now. Applications that have many pages swapped out due to
-> memory limit are already on the edge of triggering another reclaim, so
-> a dozen more folio alloc could just trigger that...
->
-> And we can't move it after swap_read_folio()... That's exactly what we
-> want to protect.
->
+On 20.02.2024 14:16, Jacek Lawrynowicz wrote:
+> From: Andrzej Kacprowski <Andrzej.Kacprowski@intel.com>
+> 
+> There is no point in requesting 1 tile on VPU40xx as the FW will
+> probably need more tiles to run workloads, so it will have to
+> reconfigure PLL anyway. Don't enable any tiles and allow the FW to
+> perform initial tile configuration.
+> 
+> This improves NPU boot stability as the tiles are always enabled only
+> by the FW from the same initial state.
+> 
+> Fixes: 79cdc56c4a54 ("accel/ivpu: Add initial support for VPU 4")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Andrzej Kacprowski <Andrzej.Kacprowski@intel.com>
+> Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+> ---
+>  drivers/accel/ivpu/ivpu_hw_40xx.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/accel/ivpu/ivpu_hw_40xx.c b/drivers/accel/ivpu/ivpu_hw_40xx.c
+> index 1c995307c113..a1523d0b1ef3 100644
+> --- a/drivers/accel/ivpu/ivpu_hw_40xx.c
+> +++ b/drivers/accel/ivpu/ivpu_hw_40xx.c
+> @@ -24,7 +24,7 @@
+>  #define SKU_HW_ID_SHIFT              16u
+>  #define SKU_HW_ID_MASK               0xffff0000u
+>  
+> -#define PLL_CONFIG_DEFAULT           0x1
+> +#define PLL_CONFIG_DEFAULT           0x0
+>  #define PLL_CDYN_DEFAULT             0x80
+>  #define PLL_EPP_DEFAULT              0x80
+>  #define PLL_REF_CLK_FREQ	     (50 * 1000000)
 
