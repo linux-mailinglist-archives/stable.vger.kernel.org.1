@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-21292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADEA985C835
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:19:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDA2C85C965
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:33:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E885B21451
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:19:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2F8C1F22B49
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:33:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD9BD151CD8;
-	Tue, 20 Feb 2024 21:19:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 030E2151CE9;
+	Tue, 20 Feb 2024 21:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zQveWb10"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K4snumFC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7FC612D7;
-	Tue, 20 Feb 2024 21:19:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B67CE446C9;
+	Tue, 20 Feb 2024 21:33:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463959; cv=none; b=os+XNmkzc2fnvcjdBK2VSt9rgaWJoO3J75xSTcJ29VfhPvyeqJUO7OytoAYm7TU0iq/9b/6Jl2pEWv7yZdUFY27JvXNsUhEP8h9vCq8J8u60RbkCuhLf7NmfQO6r4VbvUnLNTWte8cd7sMQJpYvaYO06dRCaRVSo4dIuHHc0Rfw=
+	t=1708464786; cv=none; b=PjDDp62qO2KbQaJR5oF5jUVHLsvgJ6RoCF3XS0piXy9uJgxNQXxstZF4SXAc/ru2fa3imKsli0K9vy3tHEJY+CtqJ4U3oc/0WY3zoOUC5fS3ykpbyd06eU86oEvQNKPlVuDDAOkRMW7Nm1yIxtFMJKUoFv3/S5t/9pLo4Imwk/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463959; c=relaxed/simple;
-	bh=h10FjmCkymlvyP5Gkv2wuXjINqdiL1e1/dXo5p5VC7M=;
+	s=arc-20240116; t=1708464786; c=relaxed/simple;
+	bh=Ahy4nKTpgtNXUUwWo6dORIZhF8G//kSXP4r9G14VcuM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PEOsmST42EZ4iPNOKh8SK4yGLDEPmNCJ4rzlzl5WHZ93pG1Y6ObJqJMqU0nwiL3nw7ZKBcH/BPbHftRdNheVhWKwWxYeiXh+RXdNuB8+GBLvjDHyuFwCDfKzoyEyDwt4g/b1lGoGtidB7ZG1SAmxWSOlI0u8eexvg6wt9Yheing=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zQveWb10; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF86CC433C7;
-	Tue, 20 Feb 2024 21:19:18 +0000 (UTC)
+	 MIME-Version; b=UJo7HOcmL1QQPCCN2VXXRJYyWNnKNehEJpkLvIbf/QuYb4mPOQQqT4PPL9rmaJN6sy1lI9n63J/KbV2m1yYPsIX7YrW+h3kUr4UpreE5MC08Hh9BspIVRThAHon/dyOMDcMf8VZrDq4VAWsMOQduoSHuH1ioml+wVT2PsLWkBc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K4snumFC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DCB7C433F1;
+	Tue, 20 Feb 2024 21:33:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463959;
-	bh=h10FjmCkymlvyP5Gkv2wuXjINqdiL1e1/dXo5p5VC7M=;
+	s=korg; t=1708464786;
+	bh=Ahy4nKTpgtNXUUwWo6dORIZhF8G//kSXP4r9G14VcuM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zQveWb101rdgmP2Z/bE1qF6Toa9sm9gN3+UJ0qcRWykILK8MydFv3cJm9SbjvUMNp
-	 fY+twquvJX2ZqAwjXwpWgizsRntHApn3CzKE04s1BosiiZs78dMsGrAY3ladjZ0stB
-	 ChD+K/U8mViPnqZSePOgMFqhDunlAJvtsVKyi6rc=
+	b=K4snumFC8P2V/nhfgsYDCfcdFwx5bCsaEQe9sDkUKkS7ba+na2AFl7NAE88Z4C7OG
+	 n/ksSF6xWwbTp2XpHhwFniXoJg6u2olvI0/EsVezT6U8g5xRFVTb+dk9HMmTcXA3In
+	 Xqgt2GB5EsgVTVstzkQiKcSoB2lDQGbpq5zaKezY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jan=20Kundr=C3=A1t?= <jan.kundrat@cesnet.cz>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Subject: [PATCH 6.6 180/331] serial: max310x: improve crystal stable clock detection
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Nevenko Stupar <nevenko.stupar@amd.com>,
+	Chaitanya Dhere <chaitanya.dhere@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Wenjing Liu <wenjing.liu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.7 137/309] drm/amd/display: fix incorrect mpc_combine array size
 Date: Tue, 20 Feb 2024 21:54:56 +0100
-Message-ID: <20240220205643.177949092@linuxfoundation.org>
+Message-ID: <20240220205637.420847652@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,87 +65,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Wenjing Liu <wenjing.liu@amd.com>
 
-commit 93cd256ab224c2519e7c4e5f58bb4f1ac2bf0965 upstream.
+commit 39079fe8e660851abbafa90cd55cbf029210661f upstream.
 
-Some people are seeing a warning similar to this when using a crystal:
+[why]
+MAX_SURFACES is per stream, while MAX_PLANES is per asic. The
+mpc_combine is an array that records all the planes per asic. Therefore
+MAX_PLANES should be used as the array size. Using MAX_SURFACES causes
+array overflow when there are more than 3 planes.
 
-    max310x 11-006c: clock is not stable yet
+[how]
+Use the MAX_PLANES for the mpc_combine array size.
 
-The datasheet doesn't mention the maximum time to wait for the clock to be
-stable when using a crystal, and it seems that the 10ms delay in the driver
-is not always sufficient.
-
-Jan Kundrát reported that it took three tries (each separated by 10ms) to
-get a stable clock.
-
-Modify behavior to check stable clock ready bit multiple times (20), and
-waiting 10ms between each try.
-
-Note: the first draft of the driver originally used a 50ms delay, without
-checking the clock stable bit.
-Then a loop with 1000 retries was implemented, each time reading the clock
-stable bit.
-
-Fixes: 4cf9a888fd3c ("serial: max310x: Check the clock readiness")
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Suggested-by: Jan Kundrát <jan.kundrat@cesnet.cz>
-Link: https://www.spinics.net/lists/linux-serial/msg35773.html
-Link: https://lore.kernel.org/all/20240110174015.6f20195fde08e5c9e64e5675@hugovil.com/raw
-Link: https://github.com/boundarydevices/linux/commit/e5dfe3e4a751392515d78051973190301a37ca9a
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20240116213001.3691629-3-hugo@hugovil.com
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Reviewed-by: Nevenko Stupar <nevenko.stupar@amd.com>
+Reviewed-by: Chaitanya Dhere <chaitanya.dhere@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Wenjing Liu <wenjing.liu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/max310x.c |   21 ++++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/serial/max310x.c
-+++ b/drivers/tty/serial/max310x.c
-@@ -237,6 +237,10 @@
- #define MAX310x_REV_MASK		(0xf8)
- #define MAX310X_WRITE_BIT		0x80
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
+@@ -1089,7 +1089,7 @@ struct pipe_slice_table {
+ 		struct pipe_ctx *pri_pipe;
+ 		struct dc_plane_state *plane;
+ 		int slice_count;
+-	} mpc_combines[MAX_SURFACES];
++	} mpc_combines[MAX_PLANES];
+ 	int mpc_combine_count;
+ };
  
-+/* Crystal-related definitions */
-+#define MAX310X_XTAL_WAIT_RETRIES	20 /* Number of retries */
-+#define MAX310X_XTAL_WAIT_DELAY_MS	10 /* Delay between retries */
-+
- /* MAX3107 specific */
- #define MAX3107_REV_ID			(0xa0)
- 
-@@ -641,12 +645,19 @@ static u32 max310x_set_ref_clk(struct de
- 
- 	/* Wait for crystal */
- 	if (xtal) {
--		unsigned int val = 0;
--		msleep(10);
--		regmap_read(s->regmap, MAX310X_STS_IRQSTS_REG, &val);
--		if (!(val & MAX310X_STS_CLKREADY_BIT)) {
-+		bool stable = false;
-+		unsigned int try = 0, val = 0;
-+
-+		do {
-+			msleep(MAX310X_XTAL_WAIT_DELAY_MS);
-+			regmap_read(s->regmap, MAX310X_STS_IRQSTS_REG, &val);
-+
-+			if (val & MAX310X_STS_CLKREADY_BIT)
-+				stable = true;
-+		} while (!stable && (++try < MAX310X_XTAL_WAIT_RETRIES));
-+
-+		if (!stable)
- 			dev_warn(dev, "clock is not stable yet\n");
--		}
- 	}
- 
- 	return bestfreq;
 
 
 
