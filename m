@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-21211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2152885C7AD
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:15:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 111E785C930
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:30:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D09752824C2
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:15:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6589EB20A9E
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:30:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22F13151CF1;
-	Tue, 20 Feb 2024 21:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55175151CD9;
+	Tue, 20 Feb 2024 21:30:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dtI/sw/t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b+owhf7F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D597F152DF4;
-	Tue, 20 Feb 2024 21:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 130A614A4D2;
+	Tue, 20 Feb 2024 21:30:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463704; cv=none; b=pvhrtLIfr9zSrgvNmrgbw3h2wed7vkunQ+AaDkqsqGEtDlcdval6QBsr/KZCzyqbbEZTH5tUW9yCVak6Zu/YDhcAWRZa82tjWUXlDwDdt4QjIBsONLsXsNdnLypAN2dLZ7Y0WtG3xGiG1ulhdJ+uJCVhC2p/8Rz0G1jnFyLWrrM=
+	t=1708464626; cv=none; b=Rn2OCrGMUbWiVBHruHwJRfUD5QDhSaDw+dUlgA/2HhZkxm8hg/b5/iYUE21KK/KbNzT6PhskfR4FccUPGtZyeod36mj/MWXMnBJ2uK53WFJTqg1jKu7GeVmBB53QSpPS7lAw1oMa5ovT0VsKMLe4160zOLKe3WkHUPGOKq4Kkq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463704; c=relaxed/simple;
-	bh=Wk/vea82LoD1TToJfYXtnX3HTy+8flk17rlBskL/W/U=;
+	s=arc-20240116; t=1708464626; c=relaxed/simple;
+	bh=ul7yDQqYTSRbCIbPpwqv+2fn6GnuRXRZwhBQrpDYbrs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WBV/cEOIrz4aV6pgS8DhVicKSswCZOgQEw19G8G6vC12dDxFTWwEOVGO0RGc5+OJhkyy4vmPGLhhS3h6atdMyEDvuvHEk+0obVVwjhj2HZ8R9yj1N86ObYaVFTMr/moNzNwyYdrA1HK/nQ+gTMzA6KHVq/lLa6+sN2Gl0NYmPTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dtI/sw/t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44C98C43399;
-	Tue, 20 Feb 2024 21:15:04 +0000 (UTC)
+	 MIME-Version; b=lnv0FZJBSQkABep2eRgEFPbbavZ/rDPmvSgNLM2NDLp6aA9wGA1p+mvP4ma+PcqcuVOmxRVrjLigW6hmZ1fJrknb7H3aLbF+PMz2oQ0I5m6y+Rl5h2DGFicXhqhprEuEHIy+jXljiA11fXtWdM58lZbxrC4W7A36ySb+8J9JeKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b+owhf7F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75C2AC433F1;
+	Tue, 20 Feb 2024 21:30:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463704;
-	bh=Wk/vea82LoD1TToJfYXtnX3HTy+8flk17rlBskL/W/U=;
+	s=korg; t=1708464625;
+	bh=ul7yDQqYTSRbCIbPpwqv+2fn6GnuRXRZwhBQrpDYbrs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dtI/sw/tjtTb/oNK1h8CB+T6FIsclO5+a1rBg5cSi9f9Z4D3NHOHXQSsJW37Rhozf
-	 IYpp1UQfRTEk8LWtv1izU8Cey3Ag5L4+VICfBWVVWZU+G0fnR95gSBXVIJA1SdGi+u
-	 u/lRvgTyPrL++OcIUfZfXP44anUO3snU+qwgYoJ8=
+	b=b+owhf7FtyyJFnIAMNdsYE2NrpT6PVvh68uIEBhBeRoflF0wdP2rQDvo8iCwfZ4Oi
+	 Dnn1oirI8SC+cVfiaLtZwUjwWec9hgsGbrTFGPiMctJI7QcktXKVYbkeemfW4FQxD8
+	 NYNpyiB1xfMbfzW5fsIEWky0ge+hK74134/14xFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Subject: [PATCH 6.6 127/331] firewire: core: correct documentation of fw_csr_string() kernel API
+	Jason Gerecke <jason.gerecke@wacom.com>,
+	Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.7 084/309] HID: wacom: generic: Avoid reporting a serial of 0 to userspace
 Date: Tue, 20 Feb 2024 21:54:03 +0100
-Message-ID: <20240220205641.579449131@linuxfoundation.org>
+Message-ID: <20240220205635.819056248@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+From: Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>
 
-commit 5f9ab17394f831cb7986ec50900fa37507a127f1 upstream.
+commit ab41a31dd5e2681803642b6d08590b61867840ec upstream.
 
-Against its current description, the kernel API can accepts all types of
-directory entries.
+The xf86-input-wacom driver does not treat '0' as a valid serial
+number and will drop any input report which contains an
+MSC_SERIAL = 0 event. The kernel driver already takes care to
+avoid sending any MSC_SERIAL event if the value of serial[0] == 0
+(which is the case for devices that don't actually report a
+serial number), but this is not quite sufficient.
+Only the lower 32 bits of the serial get reported to userspace,
+so if this portion of the serial is zero then there can still
+be problems.
 
-This commit corrects the documentation.
+This commit allows the driver to report either the lower 32 bits
+if they are non-zero or the upper 32 bits otherwise.
 
-Cc: stable@vger.kernel.org
-Fixes: 3c2c58cb33b3 ("firewire: core: fw_csr_string addendum")
-Link: https://lore.kernel.org/r/20240130100409.30128-2-o-takashi@sakamocchi.jp
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
+Signed-off-by: Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>
+Fixes: f85c9dc678a5 ("HID: wacom: generic: Support tool ID and additional tool types")
+CC: stable@vger.kernel.org # v4.10
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firewire/core-device.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/hid/wacom_wac.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/firewire/core-device.c
-+++ b/drivers/firewire/core-device.c
-@@ -100,10 +100,9 @@ static int textual_leaf_to_string(const
-  * @buf:	where to put the string
-  * @size:	size of @buf, in bytes
-  *
-- * The string is taken from a minimal ASCII text descriptor leaf after
-- * the immediate entry with @key.  The string is zero-terminated.
-- * An overlong string is silently truncated such that it and the
-- * zero byte fit into @size.
-+ * The string is taken from a minimal ASCII text descriptor leaf just after the entry with the
-+ * @key. The string is zero-terminated. An overlong string is silently truncated such that it
-+ * and the zero byte fit into @size.
-  *
-  * Returns strlen(buf) or a negative error code.
-  */
+--- a/drivers/hid/wacom_wac.c
++++ b/drivers/hid/wacom_wac.c
+@@ -2574,7 +2574,14 @@ static void wacom_wac_pen_report(struct
+ 				wacom_wac->hid_data.tipswitch);
+ 		input_report_key(input, wacom_wac->tool[0], sense);
+ 		if (wacom_wac->serial[0]) {
+-			input_event(input, EV_MSC, MSC_SERIAL, wacom_wac->serial[0]);
++			/*
++			 * xf86-input-wacom does not accept a serial number
++			 * of '0'. Report the low 32 bits if possible, but
++			 * if they are zero, report the upper ones instead.
++			 */
++			__u32 serial_lo = wacom_wac->serial[0] & 0xFFFFFFFFu;
++			__u32 serial_hi = wacom_wac->serial[0] >> 32;
++			input_event(input, EV_MSC, MSC_SERIAL, (int)(serial_lo ? serial_lo : serial_hi));
+ 			input_report_abs(input, ABS_MISC, sense ? id : 0);
+ 		}
+ 
 
 
 
