@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-21392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F41F285C8B3
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:24:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1533D85C9C9
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:38:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30CEA1C22332
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:24:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 469891C209FD
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:38:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFB18152DE1;
-	Tue, 20 Feb 2024 21:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65FAD151CEC;
+	Tue, 20 Feb 2024 21:38:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FGAmC74f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wmfmf3A9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F4E1151CE3;
-	Tue, 20 Feb 2024 21:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22DE7446C9;
+	Tue, 20 Feb 2024 21:38:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464279; cv=none; b=H4LPOiX1/CF4UqTD49iexoTJUYjz5Nk1KQPKtJhlrdvwQouq2SL1wtmQLcyCQzFWZMq6JY3yO3ypn0fIOneLIr4EV5uMft4cmOUp6R9zIVJXRlpx/yEkBuQtfChiaQOghcsNUaRblQbYVLoOnqpi2OXul8CDe33bNiErIu/QitE=
+	t=1708465098; cv=none; b=E0AUnQhlXalGoi9rtoWFO3UobPe8X4yaKqwXvFSWxaNMkqedZKvSfUxDCpck/B996Guax33dsR0A7XF9gxzuurKyNTb6QWkpNmM+jMETXBpJpS9Iy5gYdTTi2d+RRc5/jgcNqiMTwbj+zJmaHHUxG7jUeKJwpfuOVB14vBVdWQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464279; c=relaxed/simple;
-	bh=fyQLqLyAUyMDLS/6H8wh7s8ufADci3LKDZ8atyog760=;
+	s=arc-20240116; t=1708465098; c=relaxed/simple;
+	bh=Hc6ohvvN0cdjlAsf9hSQofUwPQ70Z8Bd/XrEW1hX2bs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i/k+HrAFvfITBDI+N11ueIXZhDBmrjsIXKtARtfP+Zbk/hpCftIctL7cfluEAoE+B06BMJHz7eR8ZeOwUvZbYZn349JJaWFYmXfQfrEV9YvbD9pwh4UaumRQOrEn5J33w0oRxOtHxRqYcHre2h9wAdKaHF45ip6opZz50QWD1mg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FGAmC74f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF982C43399;
-	Tue, 20 Feb 2024 21:24:38 +0000 (UTC)
+	 MIME-Version; b=BL5pU/tgjKArLj/jLrd3pJT1KeeU02B+55YsPjQ0xRw7OVdqKbTu3q9Wa+PL6+NbH7saQ7O8KYr4mGMD4h3gojtuy2pqVVwv1B9QHq3avyxNappygw1PsKst5EKhfdj/apARbh3G0b+/sFHPoByWnX15EPfSPtAUulDNH+Mh0Os=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wmfmf3A9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B0BC433F1;
+	Tue, 20 Feb 2024 21:38:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464279;
-	bh=fyQLqLyAUyMDLS/6H8wh7s8ufADci3LKDZ8atyog760=;
+	s=korg; t=1708465098;
+	bh=Hc6ohvvN0cdjlAsf9hSQofUwPQ70Z8Bd/XrEW1hX2bs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FGAmC74fH3skxXLGyDH317yDmpHWsWQ/L3OsSYu0AJy7qyRmCrP+UoR3lVNF4yTgb
-	 R8mkLx+rB3abAE1Q9r9kYY0ieCRKUSE5YB4NvYefBtAwz/wg+nLpV87RgHTdkg3MlD
-	 nXUrHRnbTgo9jxXuWZrhRlGHqdTnRJ/NLm6+FEKg=
+	b=wmfmf3A93Y2o8xzqjbJ70VX04kWOx0YjQ+7uW0dXU6ojIYOJm2PmwifVe/oz44QJM
+	 oPmvg9LCdqZOdmxQG6LKJ8qZn4xWxOAJ0zYsdTpgWiQaAEU1yVzkDS5DwGFlZ73YKc
+	 VdrdwNfQTDAgILbonMVrtrO0YbkhVtqQDV4HuPVw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ajay Kaher <akaher@vmware.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 279/331] eventfs: Remove special processing of dput() of events directory
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.7 236/309] io_uring/net: fix multishot accept overflow handling
 Date: Tue, 20 Feb 2024 21:56:35 +0100
-Message-ID: <20240220205646.694783238@linuxfoundation.org>
+Message-ID: <20240220205640.542521874@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +60,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 62d65cac119d08d39f751b4e3e2063ed996edc05 upstream.
+commit a37ee9e117ef73bbc2f5c0b31911afd52d229861 upstream.
 
-The top level events directory is no longer special with regards to how it
-should be delete. Remove the extra processing for it in
-eventfs_set_ei_status_free().
+If we hit CQ ring overflow when attempting to post a multishot accept
+completion, we don't properly save the result or return code. This
+results in losing the accepted fd value.
 
-Link: https://lkml.kernel.org/r/20231101172650.340876747@goodmis.org
+Instead, we return the result from the poll operation that triggered
+the accept retry. This is generally POLLIN|POLLPRI|POLLRDNORM|POLLRDBAND
+which is 0xc3, or 195, which looks like a valid file descriptor, but it
+really has no connection to that.
 
-Cc: Ajay Kaher <akaher@vmware.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Handle this like we do for other multishot completions - assign the
+result, and return IOU_STOP_MULTISHOT to cancel any further completions
+from this request when overflow is hit. This preserves the result, as we
+should, and tells the application that the request needs to be re-armed.
+
+Cc: stable@vger.kernel.org
+Fixes: 515e26961295 ("io_uring: revert "io_uring fix multishot accept ordering"")
+Link: https://github.com/axboe/liburing/issues/1062
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/tracefs/event_inode.c |   19 ++-----------------
- 1 file changed, 2 insertions(+), 17 deletions(-)
+ io_uring/net.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -274,28 +274,11 @@ static void free_ei(struct eventfs_inode
-  */
- void eventfs_set_ei_status_free(struct tracefs_inode *ti, struct dentry *dentry)
- {
--	struct tracefs_inode *ti_parent;
- 	struct eventfs_inode *ei;
- 	int i;
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -1372,7 +1372,7 @@ retry:
+ 			 * has already been done
+ 			 */
+ 			if (issue_flags & IO_URING_F_MULTISHOT)
+-				ret = IOU_ISSUE_SKIP_COMPLETE;
++				return IOU_ISSUE_SKIP_COMPLETE;
+ 			return ret;
+ 		}
+ 		if (ret == -ERESTARTSYS)
+@@ -1397,7 +1397,8 @@ retry:
+ 				ret, IORING_CQE_F_MORE))
+ 		goto retry;
  
--	/* The top level events directory may be freed by this */
--	if (unlikely(ti->flags & TRACEFS_EVENT_TOP_INODE)) {
--		mutex_lock(&eventfs_mutex);
--		ei = ti->private;
--		/* Nothing should access this, but just in case! */
--		ti->private = NULL;
--		mutex_unlock(&eventfs_mutex);
--
--		free_ei(ei);
--		return;
--	}
--
- 	mutex_lock(&eventfs_mutex);
+-	return -ECANCELED;
++	io_req_set_res(req, ret, 0);
++	return IOU_STOP_MULTISHOT;
+ }
  
--	ti_parent = get_tracefs(dentry->d_parent->d_inode);
--	if (!ti_parent || !(ti_parent->flags & TRACEFS_EVENT_INODE))
--		goto out;
--
- 	ei = dentry->d_fsdata;
- 	if (!ei)
- 		goto out;
-@@ -920,6 +903,8 @@ struct eventfs_inode *eventfs_create_eve
- 	inode->i_op = &eventfs_root_dir_inode_operations;
- 	inode->i_fop = &eventfs_file_operations;
- 
-+	dentry->d_fsdata = ei;
-+
- 	/* directory inodes start off with i_nlink == 2 (for "." entry) */
- 	inc_nlink(inode);
- 	d_instantiate(dentry, inode);
+ int io_socket_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
 
 
 
