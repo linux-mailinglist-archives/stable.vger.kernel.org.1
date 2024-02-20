@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-21120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5048085C736
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:10:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5A3285C70F
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:08:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC4C61F229C1
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:10:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56BE2B20DF3
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:08:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D021A151CF9;
-	Tue, 20 Feb 2024 21:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AADC71509AC;
+	Tue, 20 Feb 2024 21:08:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OLGALcOK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vq8zXO0L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C57152DE8;
-	Tue, 20 Feb 2024 21:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6921D14AD15;
+	Tue, 20 Feb 2024 21:08:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463416; cv=none; b=p69/4s4+846eoM8XJaVrC4bmvMfnJvLeVXaYmMbTHv1rBQ4fViyk0uyj6L+lpMGsHMvtwBFXlA62omaNSJj8dGMEE3ZMQSIy3bLaUWLSXa/qYvzLyq/DoFPXzkmft+e6kC/u9AH31TVjLjgPUVhY3BGpq1pZFKWGXnw7HlBj0Cs=
+	t=1708463293; cv=none; b=Pk9R8Jo4yVzjtqoFAFrGIrgmOv+OFIOWDYNwxTjKGz/Mbgfi0wRt+5pCgCG1Yf79zZlHLAR1jdcBfxefi9NxtT9ZWAW/y8JSLe+9LtllGg+Q4k+Zbt2THt5WzDxbJq2z+dQ2ziOzKhfWnTbXQEuDemsHnAkMv0RZFHawbBKcCX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463416; c=relaxed/simple;
-	bh=2rEuN7zFtA9vklIpAascVFyO6DPCWVL+pRNuznlpfZU=;
+	s=arc-20240116; t=1708463293; c=relaxed/simple;
+	bh=CXMLcyQ1/qU0iN1SjesfNj7eWz4l2dz9zLT2t3Tz4TM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E2AiQ57A6XTNcAO6Qv5VoLTWgBKnckSEllHFF03o321E9O4c+4r2eY/XZ7y3gHLhhMwLpGZr5ULp7HXFluHpWQYDEV6HWrAr97BRYNvzh0MGt3K1o8/Jn6HqKXJ8zV1+jWIIczgZVxolOo2mIcZVaRfkeyMV+z3V/MHBuW6mm90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OLGALcOK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FCBEC43390;
-	Tue, 20 Feb 2024 21:10:14 +0000 (UTC)
+	 MIME-Version; b=gUS3Brpn+YszbaYBoEWQJh+e6dIt6dQLyhtPuty9k4z76doma0hJMvn2evjB4/1pa6E74l0sTT+eIPvONq7muMWaAwKs2S7LYrciAm3eD1z5D9Kdp/pEr2+bb2oKl4gLGuZF+Nm5qK+3728pbO5kQALvtrRK5ycl+s33bScgyWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vq8zXO0L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA7ABC433F1;
+	Tue, 20 Feb 2024 21:08:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463415;
-	bh=2rEuN7zFtA9vklIpAascVFyO6DPCWVL+pRNuznlpfZU=;
+	s=korg; t=1708463293;
+	bh=CXMLcyQ1/qU0iN1SjesfNj7eWz4l2dz9zLT2t3Tz4TM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OLGALcOKpqavMk+xeQj9QdUif54LOkAUQ/6V4UWDPwXayNxH+ItDcDDBfK/7Y4P6r
-	 uGv95m9bTdAzWioDDKIRqSirND7xYuw2ey5hfNEJCaCJC+H0QfTUI07VsLj6Kacw0c
-	 Fm39IqbdxTqpO8K804TtpL/nlHGs/a1FylucRnQI=
+	b=vq8zXO0LnPJ/cGNDjp2rRrNzEReer/xa6JVhWjb8Eh9NEa5zcWvqFFl9jeNO81n8h
+	 uTlIX5ucRj7+U5Ig1kplxRT+T+hrljgM0D5ntGsBrl8MIHreV7yKEZSF2ixtrtIa3W
+	 gn8MOi4Rx0osyaHzvqC0VA66YSE+8CILaiRN4Bds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaron Conole <aconole@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 037/331] net: openvswitch: limit the number of recursions from action sets
-Date: Tue, 20 Feb 2024 21:52:33 +0100
-Message-ID: <20240220205638.771195994@linuxfoundation.org>
+	Jiri Olsa <jolsa@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Yonghong Song <yhs@fb.com>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 6.1 195/197] bpf: Do cleanup in bpf_bprintf_cleanup only when needed
+Date: Tue, 20 Feb 2024 21:52:34 +0100
+Message-ID: <20240220204846.914755458@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
+References: <20240220204841.073267068@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,219 +63,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaron Conole <aconole@redhat.com>
+From: Jiri Olsa <jolsa@kernel.org>
 
-[ Upstream commit 6e2f90d31fe09f2b852de25125ca875aabd81367 ]
+commit f19a4050455aad847fb93f18dc1fe502eb60f989 upstream.
 
-The ovs module allows for some actions to recursively contain an action
-list for complex scenarios, such as sampling, checking lengths, etc.
-When these actions are copied into the internal flow table, they are
-evaluated to validate that such actions make sense, and these calls
-happen recursively.
+Currently we always cleanup/decrement bpf_bprintf_nest_level variable
+in bpf_bprintf_cleanup if it's > 0.
 
-The ovs-vswitchd userspace won't emit more than 16 recursion levels
-deep.  However, the module has no such limit and will happily accept
-limits larger than 16 levels nested.  Prevent this by tracking the
-number of recursions happening and manually limiting it to 16 levels
-nested.
+There's possible scenario where this could cause a problem, when
+bpf_bprintf_prepare does not get bin_args buffer (because num_args is 0)
+and following bpf_bprintf_cleanup call decrements bpf_bprintf_nest_level
+variable, like:
 
-The initial implementation of the sample action would track this depth
-and prevent more than 3 levels of recursion, but this was removed to
-support the clone use case, rather than limited at the current userspace
-limit.
+  in task context:
+    bpf_bprintf_prepare(num_args != 0) increments 'bpf_bprintf_nest_level = 1'
+    -> first irq :
+       bpf_bprintf_prepare(num_args == 0)
+       bpf_bprintf_cleanup decrements 'bpf_bprintf_nest_level = 0'
+    -> second irq:
+       bpf_bprintf_prepare(num_args != 0) bpf_bprintf_nest_level = 1
+       gets same buffer as task context above
 
-Fixes: 798c166173ff ("openvswitch: Optimize sample action for the clone use cases")
-Signed-off-by: Aaron Conole <aconole@redhat.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240207132416.1488485-2-aconole@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Adding check to bpf_bprintf_cleanup and doing the real cleanup only if we
+got bin_args data in the first place.
+
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Yonghong Song <yhs@fb.com>
+Link: https://lore.kernel.org/bpf/20221215214430.1336195-3-jolsa@kernel.org
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/openvswitch/flow_netlink.c | 49 +++++++++++++++++++++++-----------
- 1 file changed, 33 insertions(+), 16 deletions(-)
+ include/linux/bpf.h      |    2 +-
+ kernel/bpf/helpers.c     |   16 +++++++++-------
+ kernel/trace/bpf_trace.c |    6 +++---
+ 3 files changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/net/openvswitch/flow_netlink.c b/net/openvswitch/flow_netlink.c
-index 88965e2068ac..ebc5728aab4e 100644
---- a/net/openvswitch/flow_netlink.c
-+++ b/net/openvswitch/flow_netlink.c
-@@ -48,6 +48,7 @@ struct ovs_len_tbl {
+--- a/include/linux/bpf.h
++++ b/include/linux/bpf.h
+@@ -2747,7 +2747,7 @@ struct bpf_bprintf_data {
  
- #define OVS_ATTR_NESTED -1
- #define OVS_ATTR_VARIABLE -2
-+#define OVS_COPY_ACTIONS_MAX_DEPTH 16
+ int bpf_bprintf_prepare(char *fmt, u32 fmt_size, const u64 *raw_args,
+ 			u32 num_args, struct bpf_bprintf_data *data);
+-void bpf_bprintf_cleanup(void);
++void bpf_bprintf_cleanup(struct bpf_bprintf_data *data);
  
- static bool actions_may_change_flow(const struct nlattr *actions)
+ /* the implementation of the opaque uapi struct bpf_dynptr */
+ struct bpf_dynptr_kern {
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -781,12 +781,14 @@ static int try_get_fmt_tmp_buf(char **tm
+ 	return 0;
+ }
+ 
+-void bpf_bprintf_cleanup(void)
++void bpf_bprintf_cleanup(struct bpf_bprintf_data *data)
  {
-@@ -2545,13 +2546,15 @@ static int __ovs_nla_copy_actions(struct net *net, const struct nlattr *attr,
- 				  const struct sw_flow_key *key,
- 				  struct sw_flow_actions **sfa,
- 				  __be16 eth_type, __be16 vlan_tci,
--				  u32 mpls_label_count, bool log);
-+				  u32 mpls_label_count, bool log,
-+				  u32 depth);
+-	if (this_cpu_read(bpf_bprintf_nest_level)) {
+-		this_cpu_dec(bpf_bprintf_nest_level);
+-		preempt_enable();
+-	}
++	if (!data->bin_args)
++		return;
++	if (WARN_ON_ONCE(this_cpu_read(bpf_bprintf_nest_level) == 0))
++		return;
++	this_cpu_dec(bpf_bprintf_nest_level);
++	preempt_enable();
+ }
  
- static int validate_and_copy_sample(struct net *net, const struct nlattr *attr,
- 				    const struct sw_flow_key *key,
- 				    struct sw_flow_actions **sfa,
- 				    __be16 eth_type, __be16 vlan_tci,
--				    u32 mpls_label_count, bool log, bool last)
-+				    u32 mpls_label_count, bool log, bool last,
-+				    u32 depth)
- {
- 	const struct nlattr *attrs[OVS_SAMPLE_ATTR_MAX + 1];
- 	const struct nlattr *probability, *actions;
-@@ -2602,7 +2605,8 @@ static int validate_and_copy_sample(struct net *net, const struct nlattr *attr,
- 		return err;
- 
- 	err = __ovs_nla_copy_actions(net, actions, key, sfa,
--				     eth_type, vlan_tci, mpls_label_count, log);
-+				     eth_type, vlan_tci, mpls_label_count, log,
-+				     depth + 1);
- 
+ /*
+@@ -1018,7 +1020,7 @@ nocopy_fmt:
+ 	err = 0;
+ out:
  	if (err)
- 		return err;
-@@ -2617,7 +2621,8 @@ static int validate_and_copy_dec_ttl(struct net *net,
- 				     const struct sw_flow_key *key,
- 				     struct sw_flow_actions **sfa,
- 				     __be16 eth_type, __be16 vlan_tci,
--				     u32 mpls_label_count, bool log)
-+				     u32 mpls_label_count, bool log,
-+				     u32 depth)
- {
- 	const struct nlattr *attrs[OVS_DEC_TTL_ATTR_MAX + 1];
- 	int start, action_start, err, rem;
-@@ -2660,7 +2665,8 @@ static int validate_and_copy_dec_ttl(struct net *net,
- 		return action_start;
+-		bpf_bprintf_cleanup();
++		bpf_bprintf_cleanup(data);
+ 	return err;
+ }
  
- 	err = __ovs_nla_copy_actions(net, actions, key, sfa, eth_type,
--				     vlan_tci, mpls_label_count, log);
-+				     vlan_tci, mpls_label_count, log,
-+				     depth + 1);
- 	if (err)
- 		return err;
+@@ -1044,7 +1046,7 @@ BPF_CALL_5(bpf_snprintf, char *, str, u3
  
-@@ -2674,7 +2680,8 @@ static int validate_and_copy_clone(struct net *net,
- 				   const struct sw_flow_key *key,
- 				   struct sw_flow_actions **sfa,
- 				   __be16 eth_type, __be16 vlan_tci,
--				   u32 mpls_label_count, bool log, bool last)
-+				   u32 mpls_label_count, bool log, bool last,
-+				   u32 depth)
- {
- 	int start, err;
- 	u32 exec;
-@@ -2694,7 +2701,8 @@ static int validate_and_copy_clone(struct net *net,
- 		return err;
+ 	err = bstr_printf(str, str_size, fmt, data.bin_args);
  
- 	err = __ovs_nla_copy_actions(net, attr, key, sfa,
--				     eth_type, vlan_tci, mpls_label_count, log);
-+				     eth_type, vlan_tci, mpls_label_count, log,
-+				     depth + 1);
- 	if (err)
- 		return err;
+-	bpf_bprintf_cleanup();
++	bpf_bprintf_cleanup(&data);
  
-@@ -3063,7 +3071,7 @@ static int validate_and_copy_check_pkt_len(struct net *net,
- 					   struct sw_flow_actions **sfa,
- 					   __be16 eth_type, __be16 vlan_tci,
- 					   u32 mpls_label_count,
--					   bool log, bool last)
-+					   bool log, bool last, u32 depth)
- {
- 	const struct nlattr *acts_if_greater, *acts_if_lesser_eq;
- 	struct nlattr *a[OVS_CHECK_PKT_LEN_ATTR_MAX + 1];
-@@ -3111,7 +3119,8 @@ static int validate_and_copy_check_pkt_len(struct net *net,
- 		return nested_acts_start;
+ 	return err + 1;
+ }
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -395,7 +395,7 @@ BPF_CALL_5(bpf_trace_printk, char *, fmt
+ 	trace_bpf_trace_printk(buf);
+ 	raw_spin_unlock_irqrestore(&trace_printk_lock, flags);
  
- 	err = __ovs_nla_copy_actions(net, acts_if_lesser_eq, key, sfa,
--				     eth_type, vlan_tci, mpls_label_count, log);
-+				     eth_type, vlan_tci, mpls_label_count, log,
-+				     depth + 1);
+-	bpf_bprintf_cleanup();
++	bpf_bprintf_cleanup(&data);
  
- 	if (err)
- 		return err;
-@@ -3124,7 +3133,8 @@ static int validate_and_copy_check_pkt_len(struct net *net,
- 		return nested_acts_start;
+ 	return ret;
+ }
+@@ -453,7 +453,7 @@ BPF_CALL_4(bpf_trace_vprintk, char *, fm
+ 	trace_bpf_trace_printk(buf);
+ 	raw_spin_unlock_irqrestore(&trace_printk_lock, flags);
  
- 	err = __ovs_nla_copy_actions(net, acts_if_greater, key, sfa,
--				     eth_type, vlan_tci, mpls_label_count, log);
-+				     eth_type, vlan_tci, mpls_label_count, log,
-+				     depth + 1);
+-	bpf_bprintf_cleanup();
++	bpf_bprintf_cleanup(&data);
  
- 	if (err)
- 		return err;
-@@ -3152,12 +3162,16 @@ static int __ovs_nla_copy_actions(struct net *net, const struct nlattr *attr,
- 				  const struct sw_flow_key *key,
- 				  struct sw_flow_actions **sfa,
- 				  __be16 eth_type, __be16 vlan_tci,
--				  u32 mpls_label_count, bool log)
-+				  u32 mpls_label_count, bool log,
-+				  u32 depth)
- {
- 	u8 mac_proto = ovs_key_mac_proto(key);
- 	const struct nlattr *a;
- 	int rem, err;
+ 	return ret;
+ }
+@@ -493,7 +493,7 @@ BPF_CALL_5(bpf_seq_printf, struct seq_fi
  
-+	if (depth > OVS_COPY_ACTIONS_MAX_DEPTH)
-+		return -EOVERFLOW;
-+
- 	nla_for_each_nested(a, attr, rem) {
- 		/* Expected argument lengths, (u32)-1 for variable length. */
- 		static const u32 action_lens[OVS_ACTION_ATTR_MAX + 1] = {
-@@ -3355,7 +3369,7 @@ static int __ovs_nla_copy_actions(struct net *net, const struct nlattr *attr,
- 			err = validate_and_copy_sample(net, a, key, sfa,
- 						       eth_type, vlan_tci,
- 						       mpls_label_count,
--						       log, last);
-+						       log, last, depth);
- 			if (err)
- 				return err;
- 			skip_copy = true;
-@@ -3426,7 +3440,7 @@ static int __ovs_nla_copy_actions(struct net *net, const struct nlattr *attr,
- 			err = validate_and_copy_clone(net, a, key, sfa,
- 						      eth_type, vlan_tci,
- 						      mpls_label_count,
--						      log, last);
-+						      log, last, depth);
- 			if (err)
- 				return err;
- 			skip_copy = true;
-@@ -3440,7 +3454,8 @@ static int __ovs_nla_copy_actions(struct net *net, const struct nlattr *attr,
- 							      eth_type,
- 							      vlan_tci,
- 							      mpls_label_count,
--							      log, last);
-+							      log, last,
-+							      depth);
- 			if (err)
- 				return err;
- 			skip_copy = true;
-@@ -3450,7 +3465,8 @@ static int __ovs_nla_copy_actions(struct net *net, const struct nlattr *attr,
- 		case OVS_ACTION_ATTR_DEC_TTL:
- 			err = validate_and_copy_dec_ttl(net, a, key, sfa,
- 							eth_type, vlan_tci,
--							mpls_label_count, log);
-+							mpls_label_count, log,
-+							depth);
- 			if (err)
- 				return err;
- 			skip_copy = true;
-@@ -3495,7 +3511,8 @@ int ovs_nla_copy_actions(struct net *net, const struct nlattr *attr,
+ 	seq_bprintf(m, fmt, data.bin_args);
  
- 	(*sfa)->orig_len = nla_len(attr);
- 	err = __ovs_nla_copy_actions(net, attr, key, sfa, key->eth.type,
--				     key->eth.vlan.tci, mpls_label_count, log);
-+				     key->eth.vlan.tci, mpls_label_count, log,
-+				     0);
- 	if (err)
- 		ovs_nla_free_flow_actions(*sfa);
+-	bpf_bprintf_cleanup();
++	bpf_bprintf_cleanup(&data);
  
--- 
-2.43.0
-
+ 	return seq_has_overflowed(m) ? -EOVERFLOW : 0;
+ }
 
 
 
