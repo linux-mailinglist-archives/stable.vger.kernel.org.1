@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-21062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8467785C6FB
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:07:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCDF185C725
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:09:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B66B81C21AA1
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:07:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 096661C21CBE
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:09:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 038441509AC;
-	Tue, 20 Feb 2024 21:07:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C8FA1509AC;
+	Tue, 20 Feb 2024 21:09:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="efn5ud3O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L5+9mwAT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3CE714AD12;
-	Tue, 20 Feb 2024 21:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF0AD76C9C;
+	Tue, 20 Feb 2024 21:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463229; cv=none; b=TsYwM0m6FXEz3aVojjSdVSLhmfI0ASutFT7pElERN3PLA9+Zh5MkIaOWaLplA1WU5unfcsnBgj+YUnvRP5M4+hD5vSKg3pOjNskGwUdrL0NsxQnPWmQgFybP+gSmg+2ynsDPitYY8wEbHP9SyuxoFmPoAgQjlAPIQHxIf3UIE4A=
+	t=1708463364; cv=none; b=FmiNQ3IwptuagRwi3FCsRTB5QSzryXDqnBRNNP3WV+twSqnVUHSieaWyapVHb5We/P7PVnL+9hXKeaQTQk5Ocqdj9wpcWO+Ys7Oo68i/sFzv4tgMjIjSsM0hCQWASIsF/hD7+mT6VzSJywZwSdbOYeoquCCetIbeQYoEHoRjTps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463229; c=relaxed/simple;
-	bh=keQ6cz6T8GE7x+5T+PWQVI9X78kocp0OtrzpTHoEA08=;
+	s=arc-20240116; t=1708463364; c=relaxed/simple;
+	bh=uidsajpnHClLEkAiLNhBa6/fh5KY6fAZSdAAOcKeCE8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CuW6YoyziE9A7iEt3URi/h+WnIekbpvocg601yjy+U9wfTceTPjCVKiPPGbe0QIQH2MLa3YH5PNN28glWlw+BIAZWWNoeOgITDDj6zJb0j5LL/5ygn+fogj4XJNzuNovSqRAv5zSTLkhrHKZ5CYkv+rdFho/LaAPIgpG+wy1hGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=efn5ud3O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2211FC433F1;
-	Tue, 20 Feb 2024 21:07:08 +0000 (UTC)
+	 MIME-Version; b=MBVWGsr2baTItdKiVLoc+KuoYYB6YR6A+DV2oX+jotD2kmPU/7nkGxNgw0Wnaw/hXzz+nZ2M2L7KUGgVC7fdTSNIQP2BITpHeR9o/W0FmtdwS90HrnduFoDYAD7MkFv5+z5IlAVC0IZfae4ogw97l/YocxbFSagFNal36WLZW3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L5+9mwAT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EBC0C433F1;
+	Tue, 20 Feb 2024 21:09:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463229;
-	bh=keQ6cz6T8GE7x+5T+PWQVI9X78kocp0OtrzpTHoEA08=;
+	s=korg; t=1708463363;
+	bh=uidsajpnHClLEkAiLNhBa6/fh5KY6fAZSdAAOcKeCE8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=efn5ud3Ooo+yNnU5VP5SQLrH7acEU0liJYfVjMBHf6OVgkDkZpap/PuDg5ilpkgX3
-	 FPO7XOyYnzn/W9cFk4O3bL25oWV3d9BlvhnPLeFEytE0/xRUgTHp8o+6TWqSwa0l5Y
-	 Pfvl8QhDymgTFdoaTzpTL0+9pPFZAMZl/CSgbN74=
+	b=L5+9mwATUt7WD+no0IwZdit3cfyhr+M4gAZq7q0qkuRrVmglb3vfNBjCwR/QlQRlQ
+	 yWxR2TrJ1AQ5HkMFTy35njrii2TgVnwpWqYchS9bVl0AIa0/h0fF8arJI20owRUTVl
+	 M5qwBaWVbko+NxtLA3SD7MiVzSy4Msya2xt9vnIw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan@gerhold.net>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 177/197] arm64: dts: qcom: msm8916: Enable blsp_dma by default
+Subject: [PATCH 6.6 020/331] wifi: iwlwifi: Fix some error codes
 Date: Tue, 20 Feb 2024 21:52:16 +0100
-Message-ID: <20240220204846.365474877@linuxfoundation.org>
+Message-ID: <20240220205638.223706891@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
-References: <20240220204841.073267068@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan@gerhold.net>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 0154d3594af3c198532ac7b4ab70f50fb5207a15 ]
+[ Upstream commit c6ebb5b67641994de8bc486b33457fe0b681d6fe ]
 
-Adding the "dmas" to the I2C controllers prevents probing them if
-blsp_dma is disabled (infinite probe deferral). Avoid this by enabling
-blsp_dma by default - it's an integral part of the SoC that is almost
-always used (even if just for UART).
+This saves the error as PTR_ERR(wifi_pkg).  The problem is that
+"wifi_pkg" is a valid pointer, not an error pointer.  Set the error code
+to -EINVAL instead.
 
-Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230107110958.5762-2-stephan@gerhold.net
-Stable-dep-of: 7c45b6ddbcff ("arm64: dts: qcom: msm8916: Make blsp_dma controlled-remotely")
+Fixes: 2a8084147bff ("iwlwifi: acpi: support reading and storing WRDS revision 1 and 2")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://msgid.link/9620bb77-2d7c-4d76-b255-ad824ebf8e35@moroto.mountain
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/apq8016-sbc.dts | 4 ----
- arch/arm64/boot/dts/qcom/msm8916.dtsi    | 1 -
- 2 files changed, 5 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/apq8016-sbc.dts b/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
-index 9d116e1fbe10..1ac4f8c24e23 100644
---- a/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
-+++ b/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
-@@ -169,10 +169,6 @@ led@6 {
- 	};
- };
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+index b26f90e52256..6f1919234f3f 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+@@ -618,7 +618,7 @@ int iwl_sar_get_wrds_table(struct iwl_fw_runtime *fwrt)
+ 					 &tbl_rev);
+ 	if (!IS_ERR(wifi_pkg)) {
+ 		if (tbl_rev != 2) {
+-			ret = PTR_ERR(wifi_pkg);
++			ret = -EINVAL;
+ 			goto out_free;
+ 		}
  
--&blsp_dma {
--	status = "okay";
--};
--
- &blsp_i2c2 {
- 	/* On Low speed expansion */
- 	status = "okay";
-diff --git a/arch/arm64/boot/dts/qcom/msm8916.dtsi b/arch/arm64/boot/dts/qcom/msm8916.dtsi
-index bafac2cf7e3d..f0d097ade84c 100644
---- a/arch/arm64/boot/dts/qcom/msm8916.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8916.dtsi
-@@ -1522,7 +1522,6 @@ blsp_dma: dma-controller@7884000 {
- 			clock-names = "bam_clk";
- 			#dma-cells = <1>;
- 			qcom,ee = <0>;
--			status = "disabled";
- 		};
+@@ -634,7 +634,7 @@ int iwl_sar_get_wrds_table(struct iwl_fw_runtime *fwrt)
+ 					 &tbl_rev);
+ 	if (!IS_ERR(wifi_pkg)) {
+ 		if (tbl_rev != 1) {
+-			ret = PTR_ERR(wifi_pkg);
++			ret = -EINVAL;
+ 			goto out_free;
+ 		}
  
- 		blsp1_uart1: serial@78af000 {
+@@ -650,7 +650,7 @@ int iwl_sar_get_wrds_table(struct iwl_fw_runtime *fwrt)
+ 					 &tbl_rev);
+ 	if (!IS_ERR(wifi_pkg)) {
+ 		if (tbl_rev != 0) {
+-			ret = PTR_ERR(wifi_pkg);
++			ret = -EINVAL;
+ 			goto out_free;
+ 		}
+ 
+@@ -707,7 +707,7 @@ int iwl_sar_get_ewrd_table(struct iwl_fw_runtime *fwrt)
+ 					 &tbl_rev);
+ 	if (!IS_ERR(wifi_pkg)) {
+ 		if (tbl_rev != 2) {
+-			ret = PTR_ERR(wifi_pkg);
++			ret = -EINVAL;
+ 			goto out_free;
+ 		}
+ 
+@@ -723,7 +723,7 @@ int iwl_sar_get_ewrd_table(struct iwl_fw_runtime *fwrt)
+ 					 &tbl_rev);
+ 	if (!IS_ERR(wifi_pkg)) {
+ 		if (tbl_rev != 1) {
+-			ret = PTR_ERR(wifi_pkg);
++			ret = -EINVAL;
+ 			goto out_free;
+ 		}
+ 
+@@ -739,7 +739,7 @@ int iwl_sar_get_ewrd_table(struct iwl_fw_runtime *fwrt)
+ 					 &tbl_rev);
+ 	if (!IS_ERR(wifi_pkg)) {
+ 		if (tbl_rev != 0) {
+-			ret = PTR_ERR(wifi_pkg);
++			ret = -EINVAL;
+ 			goto out_free;
+ 		}
+ 
 -- 
 2.43.0
 
