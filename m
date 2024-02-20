@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-21164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE7B485C770
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:12:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E722185C8FE
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:28:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BFDE1C21EA9
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:12:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2465D1C225BC
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:28:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07A32151CEA;
-	Tue, 20 Feb 2024 21:12:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 289DB1534E1;
+	Tue, 20 Feb 2024 21:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IkeTSJZb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T1ZpKSr8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85531509BF;
-	Tue, 20 Feb 2024 21:12:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBFD1152E1C;
+	Tue, 20 Feb 2024 21:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463558; cv=none; b=BmPJhUXcyjFRkDlz6Zz43devLvG/2UUkfitVIWgbcRDGfeSkEpWqyrOdTCPVWczi4gdmJPktaxi/VMQtr8qekkZ0Uf/UYJJCSCSSau7mnCgrW+Cmoe39KVshwRLHmZk27foFd4THERyNIBpduXhkrhHG1MJbvSA2QvTCJwYjzhs=
+	t=1708464477; cv=none; b=i9YokXhQeUh8TcCOSNctORH+qXpqctgB/vIIAsGTi8CRXa1DkFeNEgsfNL6A5DgsAo+VvJN/lDqxUucVL3cfyn0uHLm80JXJpPJA9OfTduB2GPXTbLIKfY8P+zcz1A7vyFst98GhZ4drovm0wh/o3cU+ZGBL+g8FeITh4ES7ObI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463558; c=relaxed/simple;
-	bh=aBsT9P4feVs1arXo6SeWMiVponHw47sx8W0IQjWTjVs=;
+	s=arc-20240116; t=1708464477; c=relaxed/simple;
+	bh=hdQsFzSQPk/Jc6Adi5kb1s7Jp8uyhLgeg4rTIjaQ+FE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JzjAnZEU+I41i3EDki4tF9jeO+m91puPuWkknDy96peirbE5B9Uetis+5T/Z8PYg7HCbZzzJBhHypKyOTLVefDdrSYL3U/ucNBw9dLUhtQj2iXiO23LTpB1jWvfPjtQgfAiia9et9LXghhUQ6/7bW0tp61LzBiI9l0Gj43eoWRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IkeTSJZb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD514C433C7;
-	Tue, 20 Feb 2024 21:12:37 +0000 (UTC)
+	 MIME-Version; b=bFM8QempkW4wrKlFi5HAMJ4A2Yj2EzW/GxRpBX9YidAY8ZXPZsKEjxYloeMfCkz4iY/n3wvmXiP0ddfcmN6/thpjtwhL38KXdjKRQ34rnfaA2rKpUFZ5ILfxYOz0kaQ2ZGi4OIOCJMiqjio7uieoT9Egq7JevqN9whWN4ZqrrEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T1ZpKSr8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6316EC433C7;
+	Tue, 20 Feb 2024 21:27:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463558;
-	bh=aBsT9P4feVs1arXo6SeWMiVponHw47sx8W0IQjWTjVs=;
+	s=korg; t=1708464477;
+	bh=hdQsFzSQPk/Jc6Adi5kb1s7Jp8uyhLgeg4rTIjaQ+FE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IkeTSJZbdvkG62ErcK3T7XmWmmVr78N4U4qPEFpVjuk7MW+2niZngVlLKFIOs+hbz
-	 xU0OH3v5vregdQxDE+rYiTsIzmr9DZ6GfS0VDXfLeyEtXP9SKnfSuskxEmy30DE/jo
-	 E62c7JWhYzOiruSpUgf4o9eCqxahm5Go/wZ776Xk=
+	b=T1ZpKSr8bCSav+B5qCkZ5qHMJoE5XEVv+LYRB1l1DQ3g5DA5IDDZDLPGoJ6/o2PRH
+	 VfI1VAdwKk3OWyZkE699y+KcqhAkXM1mkf5pKzRg1mwBMMCHIjgK3VIbUnCp40wi9o
+	 7lJlpE1AmbnZC0YhP6bvM+wLl653QxqYiLR0J1pM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.6 080/331] USB: hub: check for alternate port before enabling A_ALT_HNP_SUPPORT
-Date: Tue, 20 Feb 2024 21:53:16 +0100
-Message-ID: <20240220205640.095006484@linuxfoundation.org>
+	Hojin Nam <hj96.nam@samsung.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Will Deacon <will@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 038/309] perf: CXL: fix mismatched cpmu event opcode
+Date: Tue, 20 Feb 2024 21:53:17 +0100
+Message-ID: <20240220205634.385209165@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,84 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Hojin Nam <hj96.nam@samsung.com>
 
-commit f17c34ffc792bbb520e4b61baa16b6cfc7d44b13 upstream.
+[ Upstream commit 719da04f2d1285922abca72b074fb6fa75d464ea ]
 
-The OTG 1.3 spec has the feature A_ALT_HNP_SUPPORT, which tells
-a device that it is connected to the wrong port. Some devices
-refuse to operate if you enable that feature, because it indicates
-to them that they ought to request to be connected to another port.
+S2M NDR BI-ConflictAck opcode is described as 4 in the CXL
+r3.0 3.3.9 Table 3.43. However, it is defined as 3 in macro definition.
 
-According to the spec this feature may be used based only the following
-three conditions:
-
-6.5.3 a_alt_hnp_support
-Setting this feature indicates to the B-device that it is connected to
-an A-device port that is not capable of HNP, but that the A-device does
-have an alternate port that is capable of HNP.
-The A-device is required to set this feature under the following conditions:
-• the A-device has multiple receptacles
-• the A-device port that connects to the B-device does not support HNP
-• the A-device has another port that does support HNP
-
-A check for the third and first condition is missing. Add it.
-
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Cc: stable <stable@kernel.org>
-Fixes: 7d2d641c44269 ("usb: otg: don't set a_alt_hnp_support feature for OTG 2.0 device")
-Link: https://lore.kernel.org/r/20240122153545.12284-1-oneukum@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5d7107c72796 ("perf: CXL Performance Monitoring Unit driver")
+Signed-off-by: Hojin Nam <hj96.nam@samsung.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Link: https://lore.kernel.org/r/20240208013415epcms2p2904187c8a863f4d0d2adc980fb91a2dc@epcms2p2
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/hub.c |   30 +++++++++++++++++++-----------
- 1 file changed, 19 insertions(+), 11 deletions(-)
+ drivers/perf/cxl_pmu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -2380,17 +2380,25 @@ static int usb_enumerate_device_otg(stru
- 			}
- 		} else if (desc->bLength == sizeof
- 				(struct usb_otg_descriptor)) {
--			/* Set a_alt_hnp_support for legacy otg device */
--			err = usb_control_msg(udev,
--				usb_sndctrlpipe(udev, 0),
--				USB_REQ_SET_FEATURE, 0,
--				USB_DEVICE_A_ALT_HNP_SUPPORT,
--				0, NULL, 0,
--				USB_CTRL_SET_TIMEOUT);
--			if (err < 0)
--				dev_err(&udev->dev,
--					"set a_alt_hnp_support failed: %d\n",
--					err);
-+			/*
-+			 * We are operating on a legacy OTP device
-+			 * These should be told that they are operating
-+			 * on the wrong port if we have another port that does
-+			 * support HNP
-+			 */
-+			if (bus->otg_port != 0) {
-+				/* Set a_alt_hnp_support for legacy otg device */
-+				err = usb_control_msg(udev,
-+					usb_sndctrlpipe(udev, 0),
-+					USB_REQ_SET_FEATURE, 0,
-+					USB_DEVICE_A_ALT_HNP_SUPPORT,
-+					0, NULL, 0,
-+					USB_CTRL_SET_TIMEOUT);
-+				if (err < 0)
-+					dev_err(&udev->dev,
-+						"set a_alt_hnp_support failed: %d\n",
-+						err);
-+			}
- 		}
- 	}
- #endif
+diff --git a/drivers/perf/cxl_pmu.c b/drivers/perf/cxl_pmu.c
+index 365d964b0f6a..bc0d414a6aff 100644
+--- a/drivers/perf/cxl_pmu.c
++++ b/drivers/perf/cxl_pmu.c
+@@ -419,7 +419,7 @@ static struct attribute *cxl_pmu_event_attrs[] = {
+ 	CXL_PMU_EVENT_CXL_ATTR(s2m_ndr_cmp,			CXL_PMU_GID_S2M_NDR, BIT(0)),
+ 	CXL_PMU_EVENT_CXL_ATTR(s2m_ndr_cmps,			CXL_PMU_GID_S2M_NDR, BIT(1)),
+ 	CXL_PMU_EVENT_CXL_ATTR(s2m_ndr_cmpe,			CXL_PMU_GID_S2M_NDR, BIT(2)),
+-	CXL_PMU_EVENT_CXL_ATTR(s2m_ndr_biconflictack,		CXL_PMU_GID_S2M_NDR, BIT(3)),
++	CXL_PMU_EVENT_CXL_ATTR(s2m_ndr_biconflictack,		CXL_PMU_GID_S2M_NDR, BIT(4)),
+ 	/* CXL rev 3.0 Table 3-46 S2M DRS opcodes */
+ 	CXL_PMU_EVENT_CXL_ATTR(s2m_drs_memdata,			CXL_PMU_GID_S2M_DRS, BIT(0)),
+ 	CXL_PMU_EVENT_CXL_ATTR(s2m_drs_memdatanxm,		CXL_PMU_GID_S2M_DRS, BIT(1)),
+-- 
+2.43.0
+
 
 
 
