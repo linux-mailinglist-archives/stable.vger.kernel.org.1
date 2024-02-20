@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-21616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42C7B85C9A1
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:36:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 345C185C86B
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:21:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F002C283112
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:36:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6600F1C22423
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:21:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61CB3151CEC;
-	Tue, 20 Feb 2024 21:36:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C876C152DE1;
+	Tue, 20 Feb 2024 21:21:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XW2et0Sz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DCSQOMIo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C2E151CCC;
-	Tue, 20 Feb 2024 21:36:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85587151CD9;
+	Tue, 20 Feb 2024 21:21:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464973; cv=none; b=bWoya6TrQ9p0rDRUguoK5Licvyvg0vnWoKqdh5Sqk/rYPOk07cvrTbLtBbi9aqtlZhBUgOiqTS8pqns2ZXOl/zSAlawV6Ny375sJ8+M9IJeYzimCwighNqQds8nhG+2EWQfsxoUj3dnfattGYW+SXVDYTHCs1yPBp2m/VpcS3+0=
+	t=1708464087; cv=none; b=gmB5yDINd+iFo344zSFAWamokAUqdHLw1LIYcRKxCjsxzXDrWb2Z3xF+YHaAoWdNMm6luwAq8zLJpYuCxdrfLCI3uE4LuPZcYA6k1HdWWz/QiCoJ4P0mU2H+SJphmgh3qg4YhedIS9Sn1bDej247B9P5p+9ALS74+QzFHLCC8fs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464973; c=relaxed/simple;
-	bh=rcPNBkYriL0PhTcbhMRR/msXztP76/PtrIcX+WQKH/A=;
+	s=arc-20240116; t=1708464087; c=relaxed/simple;
+	bh=4RZY93deDuhTekOS2oWVAmP/Gxd5oHCTiE5GFiGSvHc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jlw7KCV9KP9ac2hyhiMjayeqIC6ftSZHUcadIOeLIw1C2kCPf0AhkWmK7KHHHH/xC1Gzs04tcK/T476w6GzKqz37Orhj7qA0ywyuIPKmLOY8Jd9HcfFJkv3oikSQAupUDILLJGSXxKIlL9KNaX25u+KSw+PKHWBgFUxdM4Z4mc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XW2et0Sz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37B11C433F1;
-	Tue, 20 Feb 2024 21:36:12 +0000 (UTC)
+	 MIME-Version; b=P7a7bjmEskCpNkcpzz7b6Op2UVItkuJ8lmSxh94+s4sF2ip367+jaei/AhZ1YORmIxIJYbAtd16OB1fwxCHkT8o4+xDOO6WNFGoWoEJRr0GZUp8TE2HPLamZeEECk03uRnGgrEMz7YZUfY9ERiHe6AQXAkavf7CgO1VCSBwDTzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DCSQOMIo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7B39C433C7;
+	Tue, 20 Feb 2024 21:21:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464972;
-	bh=rcPNBkYriL0PhTcbhMRR/msXztP76/PtrIcX+WQKH/A=;
+	s=korg; t=1708464087;
+	bh=4RZY93deDuhTekOS2oWVAmP/Gxd5oHCTiE5GFiGSvHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XW2et0SzFOjee2/PbY4CKvOm9+DPNIHvAsOg+Jwl04pOvHn11NMh7r6S77TF2/c+S
-	 y1FjL36eMfctp6LoeW7Ez8mKmEhau/4NvTaD9Tb2h4dI680w2hymiR2EQWKs5WtYTI
-	 Own73p76S8TS2QFy7zfgZz2ltM/8ES6xbGiw9kxY=
+	b=DCSQOMIoVL32ajaSFmEC3ij/YKCu8bVDbXHFaAZl5ph3QNKbtvXDzTRy0FE/F3hbA
+	 clkrD/fse9Uz4T9EfKx48SPWcmjygu1BioG79tgKVwW7LxTlJEYyijH2yG0FZS/2nO
+	 1JQJt+R8e1X6MRE1UlHCrYeRJR+FB6t1aAMnkuoU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.7 166/309] tracing/probes: Fix to search structure fields correctly
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.6 209/331] wifi: iwlwifi: mvm: fix a crash when we run out of stations
 Date: Tue, 20 Feb 2024 21:55:25 +0100
-Message-ID: <20240220205638.347135627@linuxfoundation.org>
+Message-ID: <20240220205644.260646751@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-commit 9704669c386f9bbfef2e002e7e690c56b7dcf5de upstream.
+commit b7198383ef2debe748118996f627452281cf27d7 upstream.
 
-Fix to search a field from the structure which has anonymous union
-correctly.
-Since the reference `type` pointer was updated in the loop, the search
-loop suddenly aborted where it hits an anonymous union. Thus it can not
-find the field after the anonymous union. This avoids updating the
-cursor `type` pointer in the loop.
+A DoS tool that injects loads of authentication frames made our AP
+crash. The iwl_mvm_is_dup() function couldn't find the per-queue
+dup_data which was not allocated.
 
-Link: https://lore.kernel.org/all/170791694361.389532.10047514554799419688.stgit@devnote2/
+The root cause for that is that we ran out of stations in the firmware
+and we didn't really add the station to the firmware, yet we didn't
+return an error to mac80211.
+Mac80211 was thinking that we have the station and because of that,
+sta_info::uploaded was set to 1. This allowed
+ieee80211_find_sta_by_ifaddr() to return a valid station object, but
+that ieee80211_sta didn't have any iwl_mvm_sta object initialized and
+that caused the crash mentioned earlier when we got Rx on that station.
 
-Fixes: 302db0f5b3d8 ("tracing/probes: Add a function to search a member of a struct/union")
 Cc: stable@vger.kernel.org
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: 57974a55d995 ("wifi: iwlwifi: mvm: refactor iwl_mvm_mac_sta_state_common()")
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240206175739.1f76c44b2486.I6a00955e2842f15f0a089db2f834adb9d10fbe35@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_btf.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c |    3 +++
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c     |    4 ++++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/kernel/trace/trace_btf.c b/kernel/trace/trace_btf.c
-index ca224d53bfdc..5bbdbcbbde3c 100644
---- a/kernel/trace/trace_btf.c
-+++ b/kernel/trace/trace_btf.c
-@@ -91,8 +91,8 @@ const struct btf_member *btf_find_struct_member(struct btf *btf,
- 	for_each_member(i, type, member) {
- 		if (!member->name_off) {
- 			/* Anonymous union/struct: push it for later use */
--			type = btf_type_skip_modifiers(btf, member->type, &tid);
--			if (type && top < BTF_ANON_STACK_MAX) {
-+			if (btf_type_skip_modifiers(btf, member->type, &tid) &&
-+			    top < BTF_ANON_STACK_MAX) {
- 				anon_stack[top].tid = tid;
- 				anon_stack[top++].offset =
- 					cur_offset + member->offset;
--- 
-2.43.2
-
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -3666,6 +3666,9 @@ iwl_mvm_sta_state_notexist_to_none(struc
+ 					   NL80211_TDLS_SETUP);
+ 	}
+ 
++	if (ret)
++		return ret;
++
+ 	for_each_sta_active_link(vif, sta, link_sta, i)
+ 		link_sta->agg.max_rc_amsdu_len = 1;
+ 
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+@@ -503,6 +503,10 @@ static bool iwl_mvm_is_dup(struct ieee80
+ 		return false;
+ 
+ 	mvm_sta = iwl_mvm_sta_from_mac80211(sta);
++
++	if (WARN_ON_ONCE(!mvm_sta->dup_data))
++		return false;
++
+ 	dup_data = &mvm_sta->dup_data[queue];
+ 
+ 	/*
 
 
 
