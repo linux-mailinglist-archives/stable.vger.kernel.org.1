@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-21615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C7EA85C9A0
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:36:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1637A85C837
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:19:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05C5B2821FB
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:36:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4717F1C220B8
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:19:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 189D2151CE1;
-	Tue, 20 Feb 2024 21:36:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A015151CDC;
+	Tue, 20 Feb 2024 21:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DxlZK/3G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VV3k3Mba"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAADB151CCC;
-	Tue, 20 Feb 2024 21:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38152612D7;
+	Tue, 20 Feb 2024 21:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464969; cv=none; b=PuCwI/6zMXrDHMIYyXh+OUbF41aHHzM8OyipD3qHY8ekKirW0zPM47XeycM/3AfD6Dw+O53gbQDOao5bbHvMsHWhxHrbGj28ahcqZPnhudMMnvJ9BK05WYl86bN6ROZBLxAPt1ZAm4sZmLxKtG0qkYopsNP79l6RW7T/xgCjfP4=
+	t=1708463966; cv=none; b=YxPkrdHzUnf5MAYDL/OFohqlKm2UYc74Bz/WZzNOH1oQutSw16RM24nM5uwzrZIujyhurBDwsr+OKJp8XEDMRc2AIPcwcuDx+asHKQOKm35guAqQOFM6j/uZO38jS9zlPA4rAwhg/9rqVDPVx+rb0+DPQ3I/CEvDVSlWQrzwvxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464969; c=relaxed/simple;
-	bh=9XsyvbbfSiUtIjgGisNN00fhRprmFLX56tl3A6m641M=;
+	s=arc-20240116; t=1708463966; c=relaxed/simple;
+	bh=3sZ85q8uZBvXkGez5ACT1nIXyyCsawPi7+XBwLbv98I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nDdjSET2uP/RwLOxslEQitz6JjctP93Ft5/TzyZJJqWXDQXNaHmXm3Vy/XOXsZruslm3rhielhAhPIiLZukcXCUagxk8rzCvrXGitssBl1siHZE62KO/K5hpKv5Kog/ChGci68La5rN0RCoo3T7JKQMGpbwlHT2894NGkgF0TWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DxlZK/3G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B107C433C7;
-	Tue, 20 Feb 2024 21:36:09 +0000 (UTC)
+	 MIME-Version; b=OgFBRAUNbfGFxrjipWMZ2H7nMVHVXjTsQgwkjcX7SJ1WvFDAWqPeJV0gpm5rxL6sTu2vb3qhimC3+CUmE/Gg4zuU4qYlKI56cXegB833oU2EAZ+MPiEBvIVc8BJeTNIqLt10X32YZyMNL1mmjMSeTslkMoVmnCd+HMENz/Cyk/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VV3k3Mba; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49884C433C7;
+	Tue, 20 Feb 2024 21:19:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464969;
-	bh=9XsyvbbfSiUtIjgGisNN00fhRprmFLX56tl3A6m641M=;
+	s=korg; t=1708463965;
+	bh=3sZ85q8uZBvXkGez5ACT1nIXyyCsawPi7+XBwLbv98I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DxlZK/3GAFikBMSIFM7wCU4WAk3dhmuNCLyaA44stXvi0b0sbdaDqaU+fzZ3eIiU/
-	 cv4Wi9jFzURsVrymiQOri6GfjoHg2Zp+x2coHfMPXW6g5LuXXwJjd1Y0neDcnNwccF
-	 Mpf5NGVZ7x0w+/YUhbNFLugvlHAvYED2FG/QS8Es=
+	b=VV3k3MbaxNvqXEfQtbROONrFuvb/+bHNLelgpKXEjXi85amFUd0LPgEAc57B2yluH
+	 LDU3qcWDQcEbijV1EZiXTJXayBu9EZR6l7tnVISAIAV9WE4KnQLgO+s7deBR34QscA
+	 k7IZYjcTTzb+VbB+B6mXA5m1saU4ouSlb67HfGFY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.7 165/309] tracing/probes: Fix to set arg size and fmt after setting type from BTF
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.6 208/331] wifi: mac80211: reload info pointer in ieee80211_tx_dequeue()
 Date: Tue, 20 Feb 2024 21:55:24 +0100
-Message-ID: <20240220205638.318619804@linuxfoundation.org>
+Message-ID: <20240220205644.232049330@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,69 +60,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit 9a571c1e275cedacd48c66a6bddd0c23f1dffdbf upstream.
+commit c98d8836b817d11fdff4ca7749cbbe04ff7f0c64 upstream.
 
-Since the BTF type setting updates probe_arg::type, the type size
-calculation and setting print-fmt should be done after that.
-Without this fix, the argument size and print-fmt can be wrong.
+This pointer can change here since the SKB can change, so we
+actually later open-coded IEEE80211_SKB_CB() again. Reload
+the pointer where needed, so the monitor-mode case using it
+gets fixed, and then use info-> later as well.
 
-Link: https://lore.kernel.org/all/170602218196.215583.6417859469540955777.stgit@devnote2/
-
-Fixes: b576e09701c7 ("tracing/probes: Support function parameters if BTF is available")
 Cc: stable@vger.kernel.org
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: 531682159092 ("mac80211: fix VLAN handling with TXQs")
+Link: https://msgid.link/20240131164910.b54c28d583bc.I29450cec84ea6773cff5d9c16ff92b836c331471@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_probe.c |   25 +++++++++++++------------
- 1 file changed, 13 insertions(+), 12 deletions(-)
+ net/mac80211/tx.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/kernel/trace/trace_probe.c
-+++ b/kernel/trace/trace_probe.c
-@@ -1172,18 +1172,6 @@ static int traceprobe_parse_probe_arg_bo
- 		trace_probe_log_err(ctx->offset + (t ? (t - arg) : 0), BAD_TYPE);
- 		goto out;
- 	}
--	parg->offset = *size;
--	*size += parg->type->size * (parg->count ?: 1);
--
--	ret = -ENOMEM;
--	if (parg->count) {
--		len = strlen(parg->type->fmttype) + 6;
--		parg->fmt = kmalloc(len, GFP_KERNEL);
--		if (!parg->fmt)
--			goto out;
--		snprintf(parg->fmt, len, "%s[%d]", parg->type->fmttype,
--			 parg->count);
--	}
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -5,7 +5,7 @@
+  * Copyright 2006-2007	Jiri Benc <jbenc@suse.cz>
+  * Copyright 2007	Johannes Berg <johannes@sipsolutions.net>
+  * Copyright 2013-2014  Intel Mobile Communications GmbH
+- * Copyright (C) 2018-2022 Intel Corporation
++ * Copyright (C) 2018-2024 Intel Corporation
+  *
+  * Transmit and frame generation functions.
+  */
+@@ -3913,6 +3913,7 @@ begin:
+ 			goto begin;
  
- 	code = tmp = kcalloc(FETCH_INSN_MAX, sizeof(*code), GFP_KERNEL);
- 	if (!code)
-@@ -1207,6 +1195,19 @@ static int traceprobe_parse_probe_arg_bo
- 				goto fail;
- 		}
- 	}
-+	parg->offset = *size;
-+	*size += parg->type->size * (parg->count ?: 1);
-+
-+	if (parg->count) {
-+		len = strlen(parg->type->fmttype) + 6;
-+		parg->fmt = kmalloc(len, GFP_KERNEL);
-+		if (!parg->fmt) {
-+			ret = -ENOMEM;
-+			goto out;
-+		}
-+		snprintf(parg->fmt, len, "%s[%d]", parg->type->fmttype,
-+			 parg->count);
-+	}
+ 		skb = __skb_dequeue(&tx.skbs);
++		info = IEEE80211_SKB_CB(skb);
  
- 	ret = -EINVAL;
- 	/* Store operation */
+ 		if (!skb_queue_empty(&tx.skbs)) {
+ 			spin_lock_bh(&fq->lock);
+@@ -3957,7 +3958,7 @@ begin:
+ 	}
+ 
+ encap_out:
+-	IEEE80211_SKB_CB(skb)->control.vif = vif;
++	info->control.vif = vif;
+ 
+ 	if (tx.sta &&
+ 	    wiphy_ext_feature_isset(local->hw.wiphy, NL80211_EXT_FEATURE_AQL)) {
 
 
 
