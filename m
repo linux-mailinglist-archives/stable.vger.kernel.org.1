@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-21540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AAB885C954
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:32:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26A1185C7DC
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:17:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B92CB2139F
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:32:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4F26283F08
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:16:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8122E151CD9;
-	Tue, 20 Feb 2024 21:32:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A468151CD9;
+	Tue, 20 Feb 2024 21:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ugtenlfq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J2lDUzIo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4038714AD0F;
-	Tue, 20 Feb 2024 21:32:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47EF876C9C;
+	Tue, 20 Feb 2024 21:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464734; cv=none; b=PnRfYrxzL1gAuPu49faUxUYmeX1lT8AOmAn8r9q2zzIt0i+VF4wvYPoIil5HcQWUMDlbnVIquwVC7h4sjLZ7ZdSJyja2aROGmctrWFZLQFWZg6cSLSKCiNOq8it/FFo4+wehDdpFT6MF65tLdDdaBk0wvrO5BL2QhNHd1gKNkuY=
+	t=1708463819; cv=none; b=PJcYyaXRU5MXD8iTvw2tzY0pE9i4hZ6naPx6IWm8EKCLSmTW4qKaaHPu8++UPr2BFrK+WhX8YE5Jhw0x8IedQO8ET1xwY94Oyi1HyQKioHLiFunLFrfc+hy3b3HhPRBr+8XHPzOgRjSQfzu9/aN2stGVTj1I9XsTBsFbPicw/lY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464734; c=relaxed/simple;
-	bh=ZGdQtnNn20ewUfhRA5ekEVU1Sh2CqWGz6gbcvtbsFWg=;
+	s=arc-20240116; t=1708463819; c=relaxed/simple;
+	bh=TSeh8t0g39A3ruNDsLl52ZgE4l5PdojhK++dwXF8+wc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SnSX5Dsb3qijoIKQvKP02YNms8YvUD93/wU/z6aPBQ1KAX5M7txl+Qk8aG0G7pWQh8+2dQBL+1T2innzS2CMv8jYq3E47qTZBaaq7IjRVYS9RSD763WPeCtbjoxWHV1eoEDTYbwMe8xFoLmNfOIEXf+OewvieSsmNRkYEcrdpmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ugtenlfq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D83C433C7;
-	Tue, 20 Feb 2024 21:32:13 +0000 (UTC)
+	 MIME-Version; b=rUFPtjz2rznTM7twQPhxYVJgOWkHkUHSYrY86ty27PsJPEbGQTMR7wO2oB4u4/qmBGMx2rAgONF4Et+Jwc9y1ZbPnc+gTExlUwqosifukoxPOS3DXsX+1Difp59Ns0dqY8po1+p9vuwXXrwh0HatAnqZeaIRlkKLVroqUedICzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J2lDUzIo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 776CAC433C7;
+	Tue, 20 Feb 2024 21:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464733;
-	bh=ZGdQtnNn20ewUfhRA5ekEVU1Sh2CqWGz6gbcvtbsFWg=;
+	s=korg; t=1708463818;
+	bh=TSeh8t0g39A3ruNDsLl52ZgE4l5PdojhK++dwXF8+wc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ugtenlfq2ZQyYAPFMEjRXJ3iVLPSo4aktpD5kV/S59AYNSuXETkrPRGiuerMweJhG
-	 DvhudGKAMEXep3COoA1Alt3rlCZ+8hkrER10+YNwqy5vX/87q+ZOErfdKVIDPgGKUz
-	 Y9lbdqxG+Tl9B4KoDTW9Rt65Sw6ibOdH86CzPkqk=
+	b=J2lDUzIo8po33ze1iIPZlFN9fmoj6MsljAfNTDhoZINAfZiosAcYXTP39/Hq5Mbxo
+	 nTWyCtCccCwjOz3bDztUeBLE9lO2MedEhD+sQ5cSmLVlNZFYR4TOMrMV32905VbYt1
+	 QDbUKVLh+o3RqaCj9BkBnDC3uifhdnGbvJY2QEfI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.7 119/309] selftests: mptcp: add missing kconfig for NF Mangle
-Date: Tue, 20 Feb 2024 21:54:38 +0100
-Message-ID: <20240220205636.899802493@linuxfoundation.org>
+	Sam Protsenko <semen.protsenko@linaro.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 163/331] iio: pressure: bmp280: Add missing bmp085 to SPI id table
+Date: Tue, 20 Feb 2024 21:54:39 +0100
+Message-ID: <20240220205642.657798758@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Sam Protsenko <semen.protsenko@linaro.org>
 
-commit 2d41f10fa497182df9012d3e95d9cea24eb42e61 upstream.
+commit b67f3e653e305abf1471934d7b9fdb9ad2df3eef upstream.
 
-Since the commit mentioned below, 'mptcp_join' selftests is using
-IPTables to add rules to the Mangle table, only in IPv4.
+"bmp085" is missing in bmp280_spi_id[] table, which leads to the next
+warning in dmesg:
 
-This KConfig is usually enabled by default in many defconfig, but we
-recently noticed that some CI were running our selftests without them
-enabled.
+    SPI driver bmp280 has no spi_device_id for bosch,bmp085
 
-Fixes: b6e074e171bc ("selftests: mptcp: add infinite map testcase")
-Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240131-upstream-net-20240131-mptcp-ci-issues-v1-4-4c1c11e571ff@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Add "bmp085" to bmp280_spi_id[] by mimicking its existing description in
+bmp280_of_spi_match[] table to fix the above warning.
+
+Signed-off-by: Sam Protsenko <semen.protsenko@linaro.org>
+Fixes: b26b4e91700f ("iio: pressure: bmp280: add SPI interface driver")
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/config |    1 +
+ drivers/iio/pressure/bmp280-spi.c |    1 +
  1 file changed, 1 insertion(+)
 
---- a/tools/testing/selftests/net/mptcp/config
-+++ b/tools/testing/selftests/net/mptcp/config
-@@ -23,6 +23,7 @@ CONFIG_NFT_SOCKET=m
- CONFIG_IP_ADVANCED_ROUTER=y
- CONFIG_IP_MULTIPLE_TABLES=y
- CONFIG_IP_NF_FILTER=m
-+CONFIG_IP_NF_MANGLE=m
- CONFIG_IP_NF_TARGET_REJECT=m
- CONFIG_IPV6_MULTIPLE_TABLES=y
- CONFIG_IP6_NF_FILTER=m
+--- a/drivers/iio/pressure/bmp280-spi.c
++++ b/drivers/iio/pressure/bmp280-spi.c
+@@ -91,6 +91,7 @@ static const struct of_device_id bmp280_
+ MODULE_DEVICE_TABLE(of, bmp280_of_spi_match);
+ 
+ static const struct spi_device_id bmp280_spi_id[] = {
++	{ "bmp085", (kernel_ulong_t)&bmp180_chip_info },
+ 	{ "bmp180", (kernel_ulong_t)&bmp180_chip_info },
+ 	{ "bmp181", (kernel_ulong_t)&bmp180_chip_info },
+ 	{ "bmp280", (kernel_ulong_t)&bmp280_chip_info },
 
 
 
