@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-20940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 670AC85C668
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:00:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1C1085C677
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:01:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1AFF01F2368B
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:00:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 290A7B212AF
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:01:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F986151CD2;
-	Tue, 20 Feb 2024 21:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71D1D151CD2;
+	Tue, 20 Feb 2024 21:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cxD2SnaC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qje/Qa9x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFF5914A4E2;
-	Tue, 20 Feb 2024 21:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F6511509AE;
+	Tue, 20 Feb 2024 21:01:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708462847; cv=none; b=miRAphN7nVe09owj8Eu+k2UI3bVVCeCoWjUqJl5qaQXEpkNiMsVSiU1Rvrnfv6TIfdPNBhDqF1Knlu3WJg43xPhQ/70DlUoJGCSrKPEj+5RSBHgEmFMZ5FDr8hkYKe4y5mXDPXbb8jYz9FiShZ0kjXTbWwig51A38BkwuOX8xmY=
+	t=1708462882; cv=none; b=qY0S1UvYix2ZaxjhW0lkJpEdVhs+alf2uyPJJFHmVgi5pcHl/Z5/cR7PZOW64ioIZwlxvSM0fs/1zTObzZPLhJMOHDdPOo7YNsmOxmyKBDZtsA/jTamHgAKjtD3X992fNBJrVWv2wUrKQFJCvFNndpzSUCYemNgAL9tpkS1eplI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708462847; c=relaxed/simple;
-	bh=WGzx5sh/nkygiVerqK+CFpEdaAlzXE8iEcgz+CGt9uY=;
+	s=arc-20240116; t=1708462882; c=relaxed/simple;
+	bh=w8mU+z8oMjQTddqEpr1OmXDsFLqXlS91abmp/JyNmbo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q49+vKET9Kazv/AA84lMMvH5SE+kE6t1qyd3NEVXWCkGYASnmXHoa+1y0w4n+oxPaAOso9f0pbTSR34NvgVNVfohUFUizynPoCeByvVBSWJek91UaflpnfwhLbRQztee/XUZbkAJvRw4i0onvSx3JcjWT1p7VPn0ytRebLD0Cps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cxD2SnaC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58FBEC433F1;
-	Tue, 20 Feb 2024 21:00:47 +0000 (UTC)
+	 MIME-Version; b=LC7o6Sqz3/gFpfisUXUJz/VgwtbHCoFbmFJfE3q+ryqq1XImzA9rSxzmFHmXJihuF/7XWuqUQ5kcb9TcSDtvR4qi+e9UgdRnvMIwrwHuYaRikvuTxCIfUNg8aDiX1dhUcp61wUV7ssTvnoknGVFBFmKHRLE6CFkLHuqu2DX83z4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qje/Qa9x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 451D2C433C7;
+	Tue, 20 Feb 2024 21:01:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708462847;
-	bh=WGzx5sh/nkygiVerqK+CFpEdaAlzXE8iEcgz+CGt9uY=;
+	s=korg; t=1708462881;
+	bh=w8mU+z8oMjQTddqEpr1OmXDsFLqXlS91abmp/JyNmbo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cxD2SnaClkhmGXmxb5D9ds56XDdD34S1k3rNoMsrriYHVvAO5TaS9XzqrEiKn1/Xb
-	 MOsriS+ClDvsfaMyYBrlfQp94SmuyxBiX7onFtglb6S09L9VK7Q2xcW8w4ZkPTtDRQ
-	 wsc4TzztIRqNXurjduTlDtqhUdjn3E+Au75hjeNE=
+	b=Qje/Qa9xXexD4y1LB3dDFD1qw42uEVWbUbl8AN6wlw2zQ5TJWwBoxAbSwfzkIQpHr
+	 RdDZDHUzjZp0eMwSioz6CE/to16pLAazgLLILH9gjAabIPHGoiRJCoAO1+wpUSc+J/
+	 OXP+SbX2NMwFi5Kx1ZXtkoHYMaG6+W2l3Jg/tT70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Kelley <mhklinux@outlook.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 038/197] scsi: storvsc: Fix ring buffer size calculation
-Date: Tue, 20 Feb 2024 21:49:57 +0100
-Message-ID: <20240220204842.218785937@linuxfoundation.org>
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>
+Subject: [PATCH 6.1 039/197] dm-crypt, dm-verity: disable tasklets
+Date: Tue, 20 Feb 2024 21:49:58 +0100
+Message-ID: <20240220204842.249151062@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
 References: <20240220204841.073267068@linuxfoundation.org>
@@ -65,84 +65,183 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Michael Kelley <mhklinux@outlook.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit f4469f3858352ad1197434557150b1f7086762a0 upstream.
+commit 0a9bab391e336489169b95cb0d4553d921302189 upstream.
 
-Current code uses the specified ring buffer size (either the default of 128
-Kbytes or a module parameter specified value) to encompass the one page
-ring buffer header plus the actual ring itself.  When the page size is 4K,
-carving off one page for the header isn't significant.  But when the page
-size is 64K on ARM64, only half of the default 128 Kbytes is left for the
-actual ring.  While this doesn't break anything, the smaller ring size
-could be a performance bottleneck.
+Tasklets have an inherent problem with memory corruption. The function
+tasklet_action_common calls tasklet_trylock, then it calls the tasklet
+callback and then it calls tasklet_unlock. If the tasklet callback frees
+the structure that contains the tasklet or if it calls some code that may
+free it, tasklet_unlock will write into free memory.
 
-Fix this by applying the VMBUS_RING_SIZE macro to the specified ring buffer
-size.  This macro adds a page for the header, and rounds up the size to a
-page boundary, using the page size for which the kernel is built.  Use this
-new size for subsequent ring buffer calculations.  For example, on ARM64
-with 64K page size and the default ring size, this results in the actual
-ring being 128 Kbytes, which is intended.
+The commits 8e14f610159d and d9a02e016aaf try to fix it for dm-crypt, but
+it is not a sufficient fix and the data corruption can still happen [1].
+There is no fix for dm-verity and dm-verity will write into free memory
+with every tasklet-processed bio.
 
-Cc: stable@vger.kernel.org # 5.15.x
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-Link: https://lore.kernel.org/r/20240122170956.496436-1-mhklinux@outlook.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+There will be atomic workqueues implemented in the kernel 6.9 [2]. They
+will have better interface and they will not suffer from the memory
+corruption problem.
+
+But we need something that stops the memory corruption now and that can be
+backported to the stable kernels. So, I'm proposing this commit that
+disables tasklets in both dm-crypt and dm-verity. This commit doesn't
+remove the tasklet support, because the tasklet code will be reused when
+atomic workqueues will be implemented.
+
+[1] https://lore.kernel.org/all/d390d7ee-f142-44d3-822a-87949e14608b@suse.de/T/
+[2] https://lore.kernel.org/lkml/20240130091300.2968534-1-tj@kernel.org/
+
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: stable@vger.kernel.org
+Fixes: 39d42fa96ba1b ("dm crypt: add flags to optionally bypass kcryptd workqueues")
+Fixes: 5721d4e5a9cdb ("dm verity: Add optional "try_verify_in_tasklet" feature")
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/storvsc_drv.c |   12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/md/dm-crypt.c         |   37 ++-----------------------------------
+ drivers/md/dm-verity-target.c |   26 ++------------------------
+ drivers/md/dm-verity.h        |    1 -
+ 3 files changed, 4 insertions(+), 60 deletions(-)
 
---- a/drivers/scsi/storvsc_drv.c
-+++ b/drivers/scsi/storvsc_drv.c
-@@ -326,6 +326,7 @@ enum storvsc_request_type {
-  */
+--- a/drivers/md/dm-crypt.c
++++ b/drivers/md/dm-crypt.c
+@@ -72,10 +72,8 @@ struct dm_crypt_io {
+ 	struct bio *base_bio;
+ 	u8 *integrity_metadata;
+ 	bool integrity_metadata_from_pool:1;
+-	bool in_tasklet:1;
  
- static int storvsc_ringbuffer_size = (128 * 1024);
-+static int aligned_ringbuffer_size;
- static u32 max_outstanding_req_per_channel;
- static int storvsc_change_queue_depth(struct scsi_device *sdev, int queue_depth);
+ 	struct work_struct work;
+-	struct tasklet_struct tasklet;
  
-@@ -683,8 +684,8 @@ static void handle_sc_creation(struct vm
- 	new_sc->next_request_id_callback = storvsc_next_request_id;
+ 	struct convert_context ctx;
  
- 	ret = vmbus_open(new_sc,
--			 storvsc_ringbuffer_size,
--			 storvsc_ringbuffer_size,
-+			 aligned_ringbuffer_size,
-+			 aligned_ringbuffer_size,
- 			 (void *)&props,
- 			 sizeof(struct vmstorage_channel_properties),
- 			 storvsc_on_channel_callback, new_sc);
-@@ -1964,7 +1965,7 @@ static int storvsc_probe(struct hv_devic
- 	dma_set_min_align_mask(&device->device, HV_HYP_PAGE_SIZE - 1);
- 
- 	stor_device->port_number = host->host_no;
--	ret = storvsc_connect_to_vsp(device, storvsc_ringbuffer_size, is_fc);
-+	ret = storvsc_connect_to_vsp(device, aligned_ringbuffer_size, is_fc);
- 	if (ret)
- 		goto err_out1;
- 
-@@ -2157,7 +2158,7 @@ static int storvsc_resume(struct hv_devi
- {
- 	int ret;
- 
--	ret = storvsc_connect_to_vsp(hv_dev, storvsc_ringbuffer_size,
-+	ret = storvsc_connect_to_vsp(hv_dev, aligned_ringbuffer_size,
- 				     hv_dev_is_fc(hv_dev));
- 	return ret;
+@@ -1729,7 +1727,6 @@ static void crypt_io_init(struct dm_cryp
+ 	io->ctx.r.req = NULL;
+ 	io->integrity_metadata = NULL;
+ 	io->integrity_metadata_from_pool = false;
+-	io->in_tasklet = false;
+ 	atomic_set(&io->io_pending, 0);
  }
-@@ -2191,8 +2192,9 @@ static int __init storvsc_drv_init(void)
- 	 * the ring buffer indices) by the max request size (which is
- 	 * vmbus_channel_packet_multipage_buffer + struct vstor_packet + u64)
- 	 */
-+	aligned_ringbuffer_size = VMBUS_RING_SIZE(storvsc_ringbuffer_size);
- 	max_outstanding_req_per_channel =
--		((storvsc_ringbuffer_size - PAGE_SIZE) /
-+		((aligned_ringbuffer_size - PAGE_SIZE) /
- 		ALIGN(MAX_MULTIPAGE_BUFFER_PACKET +
- 		sizeof(struct vstor_packet) + sizeof(u64),
- 		sizeof(u64)));
+ 
+@@ -1738,12 +1735,6 @@ static void crypt_inc_pending(struct dm_
+ 	atomic_inc(&io->io_pending);
+ }
+ 
+-static void kcryptd_io_bio_endio(struct work_struct *work)
+-{
+-	struct dm_crypt_io *io = container_of(work, struct dm_crypt_io, work);
+-	bio_endio(io->base_bio);
+-}
+-
+ /*
+  * One of the bios was finished. Check for completion of
+  * the whole request and correctly clean up the buffer.
+@@ -1767,20 +1758,6 @@ static void crypt_dec_pending(struct dm_
+ 
+ 	base_bio->bi_status = error;
+ 
+-	/*
+-	 * If we are running this function from our tasklet,
+-	 * we can't call bio_endio() here, because it will call
+-	 * clone_endio() from dm.c, which in turn will
+-	 * free the current struct dm_crypt_io structure with
+-	 * our tasklet. In this case we need to delay bio_endio()
+-	 * execution to after the tasklet is done and dequeued.
+-	 */
+-	if (io->in_tasklet) {
+-		INIT_WORK(&io->work, kcryptd_io_bio_endio);
+-		queue_work(cc->io_queue, &io->work);
+-		return;
+-	}
+-
+ 	bio_endio(base_bio);
+ }
+ 
+@@ -2213,11 +2190,6 @@ static void kcryptd_crypt(struct work_st
+ 		kcryptd_crypt_write_convert(io);
+ }
+ 
+-static void kcryptd_crypt_tasklet(unsigned long work)
+-{
+-	kcryptd_crypt((struct work_struct *)work);
+-}
+-
+ static void kcryptd_queue_crypt(struct dm_crypt_io *io)
+ {
+ 	struct crypt_config *cc = io->cc;
+@@ -2229,15 +2201,10 @@ static void kcryptd_queue_crypt(struct d
+ 		 * irqs_disabled(): the kernel may run some IO completion from the idle thread, but
+ 		 * it is being executed with irqs disabled.
+ 		 */
+-		if (in_hardirq() || irqs_disabled()) {
+-			io->in_tasklet = true;
+-			tasklet_init(&io->tasklet, kcryptd_crypt_tasklet, (unsigned long)&io->work);
+-			tasklet_schedule(&io->tasklet);
++		if (!(in_hardirq() || irqs_disabled())) {
++			kcryptd_crypt(&io->work);
+ 			return;
+ 		}
+-
+-		kcryptd_crypt(&io->work);
+-		return;
+ 	}
+ 
+ 	INIT_WORK(&io->work, kcryptd_crypt);
+--- a/drivers/md/dm-verity-target.c
++++ b/drivers/md/dm-verity-target.c
+@@ -634,23 +634,6 @@ static void verity_work(struct work_stru
+ 	verity_finish_io(io, errno_to_blk_status(verity_verify_io(io)));
+ }
+ 
+-static void verity_tasklet(unsigned long data)
+-{
+-	struct dm_verity_io *io = (struct dm_verity_io *)data;
+-	int err;
+-
+-	io->in_tasklet = true;
+-	err = verity_verify_io(io);
+-	if (err == -EAGAIN || err == -ENOMEM) {
+-		/* fallback to retrying with work-queue */
+-		INIT_WORK(&io->work, verity_work);
+-		queue_work(io->v->verify_wq, &io->work);
+-		return;
+-	}
+-
+-	verity_finish_io(io, errno_to_blk_status(err));
+-}
+-
+ static void verity_end_io(struct bio *bio)
+ {
+ 	struct dm_verity_io *io = bio->bi_private;
+@@ -663,13 +646,8 @@ static void verity_end_io(struct bio *bi
+ 		return;
+ 	}
+ 
+-	if (static_branch_unlikely(&use_tasklet_enabled) && io->v->use_tasklet) {
+-		tasklet_init(&io->tasklet, verity_tasklet, (unsigned long)io);
+-		tasklet_schedule(&io->tasklet);
+-	} else {
+-		INIT_WORK(&io->work, verity_work);
+-		queue_work(io->v->verify_wq, &io->work);
+-	}
++	INIT_WORK(&io->work, verity_work);
++	queue_work(io->v->verify_wq, &io->work);
+ }
+ 
+ /*
+--- a/drivers/md/dm-verity.h
++++ b/drivers/md/dm-verity.h
+@@ -83,7 +83,6 @@ struct dm_verity_io {
+ 	struct bvec_iter iter;
+ 
+ 	struct work_struct work;
+-	struct tasklet_struct tasklet;
+ 
+ 	/*
+ 	 * Three variably-size fields follow this struct:
 
 
 
