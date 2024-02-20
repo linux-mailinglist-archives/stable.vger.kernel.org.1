@@ -1,181 +1,184 @@
-Return-Path: <stable+bounces-20768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32ABF85B206
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 05:57:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4919285B245
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 06:32:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B430E1F23C48
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 04:57:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00B2A282E91
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 05:32:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 523C6481B3;
-	Tue, 20 Feb 2024 04:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25B9856B7E;
+	Tue, 20 Feb 2024 05:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RdZ/jIKK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c6Rwf6xi"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD45B45942;
-	Tue, 20 Feb 2024 04:56:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3929C56B6E;
+	Tue, 20 Feb 2024 05:31:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708405033; cv=none; b=SWQF+rau4EK3o3NOiXfMdSiZypM9ZyQi9nWg+JO4WfHD1Jqny66M8/BoagYnOmCOO3oHd+UavuTe4Z/G70PLcSFz23rk/BysXf4HyQ60TBeUyHr4kyJF69Va6GvxH9+rofKdQeKko5HxpLPCBJBgN5X1oUIWHbzEUOcfQiRc7i4=
+	t=1708407117; cv=none; b=RlYOTtVuPamujDOkpZVlRqGALZ+FkuJ3nKmjXW9XW/i/L1EEAgqcw+6zIPk8glacZGaPoGmXj3Z9WvoTdPp5JyAxseWJ//j+6nmbBc7JhIQvZ6yju3SR1Y6ClKodFP3Yabb74PerCUlhZuPhw8hq5ZeSEGNlJWQ9MCSBEpHEzlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708405033; c=relaxed/simple;
-	bh=MawsSdPUwxQAQsozFkAy+ITHA2q+yH579NNdBmQ+rcA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ro5AS7VVu9VLHkz7qyZuvtnYdrjuUoyHddvnVgOB2ppJ6DT8F6iZnEoQmoSlOJ8FvGPP8uEU9YMSceuj5wNbePcR1+ACl3SuHEABIxV61d6eAYR+eciRabPcH3a69x/jMbxRRRdKFt8jJHjPbFIl4G7bQV+BBN9AfjLGw9EzRd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RdZ/jIKK; arc=none smtp.client-ip=209.85.208.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2d1094b5568so66815261fa.1;
-        Mon, 19 Feb 2024 20:56:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708404994; x=1709009794; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wg3T1pEc7CYdM3PwDVHR28RzeLutlMFhPKCwmDpZrlA=;
-        b=RdZ/jIKKIGH5Ki9sCAHPDRJFkM9jqatou7iLJTJ4Werv3TzoSmMyH/AV+BuYNKJiNK
-         Jkfa6A15VTHCLWQCEvtTl/nGx4vRr0i5DcYQpKptaohJileimgSmFht36v3UVyfgrhkP
-         xsZPAXpEnhgrLfhajBXGVAyFGYIoUzlbn50Bc20CImkv9nn1QQAk5k4eAenpzAJ5S8ea
-         f605xKqAT7ZWZ8/ASTwBli4Af1xRZMlX8/0jWhS/071WYmpr0ABWI7Xgu678UR45OEvP
-         qoIZCM1i9Bov3+STJa6gcFGIYtF4OaQjNfquo8xyJF6zA+adObQ2CSzPW8KSCL4RTs1C
-         UysA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708404994; x=1709009794;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wg3T1pEc7CYdM3PwDVHR28RzeLutlMFhPKCwmDpZrlA=;
-        b=UPBJYFpphxIg/jVnTCb3viQgUgljlnHJjJpw30MXOyvX+h9fx/rEg4JkAkCSuty71e
-         Ru+ccfK/BMDSXk5FRDQciHknr5jwZJG198fkkAMaQ91zmlGegjpR7/n4pAiwldSowkei
-         oe/imP9nFZEcXl9kZOJrw96/ZQFByn17WLKT9H+bz9e2BtaC8vKk3+LSMbNiFEpgNKE5
-         fVdIXc2VQAvDpj6rWxlDw6JvlnndzdBymle4sw9zvcEFhVu+5sMNAij7Pw6zOjMvRQBz
-         o1p5E7houUrGGf9kAXOHejkbeVQXeYZnaogweeSek00a90gKhg86IQyWWabqTIb++4W9
-         KaTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVLJr+fieAocbX3hhBifsSi8KIZUWhRexUBdcYfnUTukjkmZClU5mXH269doVgk0SNuHpYnQLXDNstW4m42URg6Bgli+YQJpjSodcTDukSkE7+cQFLONJIye2sip3ylewWbsN7X
-X-Gm-Message-State: AOJu0YwDfn3Np/ZoUxrnbKCmajlHfy9pXE9P/FtEYCz7FjMk16LjF1/F
-	Kyjj2P+NjG/TJbxgCpI5Fs0sxywHNaIwsMqwtC6t8Pjw84+jdkNtvHz+NHiR3HACbre+8xDToXk
-	Q9H16lOBhEIvCh+XYIeQ9mIB8pMI=
-X-Google-Smtp-Source: AGHT+IE51DNAgivlKygoc8YbW1wKrzKBcOJ4CPEsfVHtg+lnqpbB4fNtvhyJqsoLe19BPgghFJKRz+xa/iUE3D8jCkc=
-X-Received: by 2002:a2e:860e:0:b0:2d1:59:9474 with SMTP id a14-20020a2e860e000000b002d100599474mr9764115lji.48.1708404993637;
- Mon, 19 Feb 2024 20:56:33 -0800 (PST)
+	s=arc-20240116; t=1708407117; c=relaxed/simple;
+	bh=SqVTf6G26lQVP2Kos51dRn5WI0uPk9WrsIkm1pz1Gow=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=cZqt+s5xSf8wYn20bAJsmOhLiG9hmEqE+ZT03pPff+JZxhByV/5/pNzf8vElGtWTGnVcrNZlr4bHh157nJxP+FLyHq8QdEPTudyRKCwvdj4fahSE5FVGBUmAmtnl/bbN++di1UMEkYBHGkd+OMqh8nb/HAME16QDq71OWhBY1OA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c6Rwf6xi; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708407116; x=1739943116;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=SqVTf6G26lQVP2Kos51dRn5WI0uPk9WrsIkm1pz1Gow=;
+  b=c6Rwf6xi57KxKO17r0cL2ixv3thBrBFqphA9u6QJDoKk+hZW4cgjJXHC
+   aHe0UQjNTJ0k/IHajGeNd6P6u/cVuj+xq5NOFUajRbsNKMk0/pdNQ+SJm
+   HFoNhG3TLDAwicNxEmNll36xAfnQTk0YH93A1DeVM8HJ9mcUlnCUXqeWp
+   32NIebQUps6sgLB5hMWWx8/isfNZlLp24MIcrfzJow8L/my8MleiQL8dg
+   5md5XdCXEhsUUB6smuUK4iTopcMeehKCYdsg+NoeTZp/IwUGrN0W46ZqJ
+   1LWQZeJmmh5l//3vgwCqMXooPC/93EK9B0mS7wVrJ/NjZkGMSyiOWsqD+
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10989"; a="2636760"
+X-IronPort-AV: E=Sophos;i="6.06,171,1705392000"; 
+   d="scan'208";a="2636760"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2024 21:31:55 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,171,1705392000"; 
+   d="scan'208";a="4964130"
+Received: from yhuang6-desk2.sh.intel.com (HELO yhuang6-desk2.ccr.corp.intel.com) ([10.238.208.55])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2024 21:31:52 -0800
+From: "Huang, Ying" <ying.huang@intel.com>
+To: Byungchul Park <byungchul@sk.com>
+Cc: <akpm@linux-foundation.org>,  <osalvador@suse.de>,
+  <baolin.wang@linux.alibaba.com>,  <hannes@cmpxchg.org>,
+  <linux-kernel@vger.kernel.org>,  <linux-mm@kvack.org>,
+  <kernel_team@skhynix.com>,  <stable@vger.kernel.org>
+Subject: Re: [PATCH] mm/vmscan: Fix a bug calling wakeup_kswapd() with a
+ wrong zone index
+In-Reply-To: <20240220040306.GI65758@system.software.com> (Byungchul Park's
+	message of "Tue, 20 Feb 2024 13:03:06 +0900")
+References: <20240216111502.79759-1-byungchul@sk.com>
+	<871q97rec8.fsf@yhuang6-desk2.ccr.corp.intel.com>
+	<20240220040306.GI65758@system.software.com>
+Date: Tue, 20 Feb 2024 13:29:56 +0800
+Message-ID: <87wmqzpusr.fsf@yhuang6-desk2.ccr.corp.intel.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240219082040.7495-1-ryncsn@gmail.com> <20240219173147.3f4b50b7c9ae554008f50b66@linux-foundation.org>
- <CAMgjq7DgBOJhDJStwGuD+C6-FNYZBp-cu6M_HAgRry3gBSf7GA@mail.gmail.com> <CAGsJ_4zyf5OOq_WA7VjsDKp1ciaDwzM23Ef95_O-24oLtr_5AQ@mail.gmail.com>
-In-Reply-To: <CAGsJ_4zyf5OOq_WA7VjsDKp1ciaDwzM23Ef95_O-24oLtr_5AQ@mail.gmail.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Tue, 20 Feb 2024 12:56:16 +0800
-Message-ID: <CAMgjq7AnZJSseC2BB_nF+s533YybyP_WU8HijEKFA=OXE1x41Q@mail.gmail.com>
-Subject: Re: [PATCH v4] mm/swap: fix race when skipping swapcache
-To: Barry Song <21cnbao@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	"Huang, Ying" <ying.huang@intel.com>, Chris Li <chrisl@kernel.org>, 
-	Minchan Kim <minchan@kernel.org>, Barry Song <v-songbaohua@oppo.com>, Yu Zhao <yuzhao@google.com>, 
-	SeongJae Park <sj@kernel.org>, David Hildenbrand <david@redhat.com>, Hugh Dickins <hughd@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox <willy@infradead.org>, Michal Hocko <mhocko@suse.com>, 
-	Yosry Ahmed <yosryahmed@google.com>, Aaron Lu <aaron.lu@intel.com>, stable@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=ascii
 
-On Tue, Feb 20, 2024 at 12:01=E2=80=AFPM Barry Song <21cnbao@gmail.com> wro=
-te:
+Byungchul Park <byungchul@sk.com> writes:
+
+> On Tue, Feb 20, 2024 at 11:42:31AM +0800, Huang, Ying wrote:
+>> Byungchul Park <byungchul@sk.com> writes:
+>> 
+>> > With numa balancing on, when a numa system is running where a numa node
+>> > doesn't have its local memory so it has no managed zones, the following
+>> > oops has been observed. It's because wakeup_kswapd() is called with a
+>> > wrong zone index, -1. Fixed it by checking the index before calling
+>> > wakeup_kswapd().
+>> >
+>> >> BUG: unable to handle page fault for address: 00000000000033f3
+>> >> #PF: supervisor read access in kernel mode
+>> >> #PF: error_code(0x0000) - not-present page
+>> >> PGD 0 P4D 0
+>> >> Oops: 0000 [#1] PREEMPT SMP NOPTI
+>> >> CPU: 2 PID: 895 Comm: masim Not tainted 6.6.0-dirty #255
+>> >> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
+>> >>    rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+>> >> RIP: 0010:wakeup_kswapd (./linux/mm/vmscan.c:7812)
+>> >> Code: (omitted)
+>> >> RSP: 0000:ffffc90004257d58 EFLAGS: 00010286
+>> >> RAX: ffffffffffffffff RBX: ffff88883fff0480 RCX: 0000000000000003
+>> >> RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff88883fff0480
+>> >> RBP: ffffffffffffffff R08: ff0003ffffffffff R09: ffffffffffffffff
+>> >> R10: ffff888106c95540 R11: 0000000055555554 R12: 0000000000000003
+>> >> R13: 0000000000000000 R14: 0000000000000000 R15: ffff88883fff0940
+>> >> FS:  00007fc4b8124740(0000) GS:ffff888827c00000(0000) knlGS:0000000000000000
+>> >> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>> >> CR2: 00000000000033f3 CR3: 000000026cc08004 CR4: 0000000000770ee0
+>> >> DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+>> >> DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+>> >> PKRU: 55555554
+>> >> Call Trace:
+>> >>  <TASK>
+>> >> ? __die
+>> >> ? page_fault_oops
+>> >> ? __pte_offset_map_lock
+>> >> ? exc_page_fault
+>> >> ? asm_exc_page_fault
+>> >> ? wakeup_kswapd
+>> >> migrate_misplaced_page
+>> >> __handle_mm_fault
+>> >> handle_mm_fault
+>> >> do_user_addr_fault
+>> >> exc_page_fault
+>> >> asm_exc_page_fault
+>> >> RIP: 0033:0x55b897ba0808
+>> >> Code: (omitted)
+>> >> RSP: 002b:00007ffeefa821a0 EFLAGS: 00010287
+>> >> RAX: 000055b89983acd0 RBX: 00007ffeefa823f8 RCX: 000055b89983acd0
+>> >> RDX: 00007fc2f8122010 RSI: 0000000000020000 RDI: 000055b89983acd0
+>> >> RBP: 00007ffeefa821a0 R08: 0000000000000037 R09: 0000000000000075
+>> >> R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000000
+>> >> R13: 00007ffeefa82410 R14: 000055b897ba5dd8 R15: 00007fc4b8340000
+>> >>  </TASK>
+>> >
+>> > Signed-off-by: Byungchul Park <byungchul@sk.com>
+>> > Reported-by: Hyeongtak Ji <hyeongtak.ji@sk.com>
+>> > Cc: stable@vger.kernel.org
+>> > Fixes: c574bbe917036 ("NUMA balancing: optimize page placement for memory tiering system")
+>> > ---
+>> >  mm/migrate.c | 8 ++++++++
+>> >  1 file changed, 8 insertions(+)
+>> >
+>> > diff --git a/mm/migrate.c b/mm/migrate.c
+>> > index fbc8586ed735..51ee6865b0f6 100644
+>> > --- a/mm/migrate.c
+>> > +++ b/mm/migrate.c
+>> > @@ -2825,6 +2825,14 @@ static int numamigrate_isolate_folio(pg_data_t *pgdat, struct folio *folio)
+>> >  			if (managed_zone(pgdat->node_zones + z))
+>> >  				break;
+>> >  		}
+>> > +
+>> > +		/*
+>> > +		 * If there are no managed zones, it should not proceed
+>> > +		 * further.
+>> > +		 */
+>> > +		if (z < 0)
+>> > +			return 0;
+>> > +
+>> 
+>> I think that it's better to check pgdat->nr_zones directly earlier in
+>> the function.  That is a little easier to be understood.
 >
-> On Tue, Feb 20, 2024 at 4:42=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wr=
-ote:
-> >
-> > On Tue, Feb 20, 2024 at 9:31=E2=80=AFAM Andrew Morton <akpm@linux-found=
-ation.org> wrote:
-> > >
-> > > On Mon, 19 Feb 2024 16:20:40 +0800 Kairui Song <ryncsn@gmail.com> wro=
-te:
-> > >
-> > > > From: Kairui Song <kasong@tencent.com>
-> > > >
-> > > > When skipping swapcache for SWP_SYNCHRONOUS_IO, if two or more thre=
-ads
-> > > > swapin the same entry at the same time, they get different pages (A=
-, B).
-> > > > Before one thread (T0) finishes the swapin and installs page (A)
-> > > > to the PTE, another thread (T1) could finish swapin of page (B),
-> > > > swap_free the entry, then swap out the possibly modified page
-> > > > reusing the same entry. It breaks the pte_same check in (T0) becaus=
-e
-> > > > PTE value is unchanged, causing ABA problem. Thread (T0) will
-> > > > install a stalled page (A) into the PTE and cause data corruption.
-> > > >
-> > > > @@ -3867,6 +3868,20 @@ vm_fault_t do_swap_page(struct vm_fault *vmf=
-)
-> > > >       if (!folio) {
-> > > >               if (data_race(si->flags & SWP_SYNCHRONOUS_IO) &&
-> > > >                   __swap_count(entry) =3D=3D 1) {
-> > > > +                     /*
-> > > > +                      * Prevent parallel swapin from proceeding wi=
-th
-> > > > +                      * the cache flag. Otherwise, another thread =
-may
-> > > > +                      * finish swapin first, free the entry, and s=
-wapout
-> > > > +                      * reusing the same entry. It's undetectable =
-as
-> > > > +                      * pte_same() returns true due to entry reuse=
-.
-> > > > +                      */
-> > > > +                     if (swapcache_prepare(entry)) {
-> > > > +                             /* Relax a bit to prevent rapid repea=
-ted page faults */
-> > > > +                             schedule_timeout_uninterruptible(1);
-> > >
-> > > Well this is unpleasant.  How often can we expect this to occur?
-> > >
-> >
-> > The chance is very low, using the current mainline kernel and ZRAM,
-> > even with threads set to race on purpose using the reproducer I
-> > provides, for 647132 page faults it occured 1528 times (~0.2%).
-> >
-> > If I run MySQL and sysbench with 128 threads and 16G buffer pool, with
-> > 6G cgroup limit and 32G ZRAM, it occured 1372 times for 40 min,
-> > 109930201 page faults in total (~0.001%).
+> No. No matter what the value of ->nr_zones is, the oops is going to
+> happen if there are no managed zones by any reason.
+
+Yes.  You are right.  Sorry for noise.
+
+--
+Best Regards,
+Huang, Ying
+
+> 	Byungchul
 >
-
-Hi Barry,
-
-> it might not be a problem for throughput. but for real-time and tail late=
-ncy,
-> this hurts. For example, this might increase dropping frames of UI which
-> is an important parameter to evaluate performance :-)
->
-
-That's a true issue, as Chris mentioned before I think we need to
-think of some clever data struct to solve this more naturally in the
-future, similar issue exists for cached swapin as well and it has been
-there for a while. On the other hand I think maybe applications that
-are extremely latency sensitive should try to avoid swap on fault? A
-swapin could cause other issues like reclaim, throttled or contention
-with many other things, these seem to have a higher chance than this
-race.
-
-> BTW, I wonder if ying's previous proposal - moving swapcache_prepare()
-> after swap_read_folio() will further help decrease the number?
-
-We can move the swapcache_prepare after folio alloc or cgroup charge,
-but I didn't see an observable change from statistics, for some
-workload the reading is even worse. I think that's mostly due to
-noise, or higher swap out rate since all raced threads will alloc an
-extra folio now. Applications that have many pages swapped out due to
-memory limit are already on the edge of triggering another reclaim, so
-a dozen more folio alloc could just trigger that...
-
-And we can't move it after swap_read_folio()... That's exactly what we
-want to protect.
+>> >  		wakeup_kswapd(pgdat->node_zones + z, 0,
+>> >  			      folio_order(folio), ZONE_MOVABLE);
+>> >  		return 0;
+>> 
+>> --
+>> Best Regards,
+>> Huang, Ying
 
