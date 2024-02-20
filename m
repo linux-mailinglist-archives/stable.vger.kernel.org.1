@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-21704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2965385C9FD
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:40:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D99E85C8CC
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:25:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2F031F21125
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:40:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E839D283460
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:25:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3641E151CE9;
-	Tue, 20 Feb 2024 21:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95675151CD8;
+	Tue, 20 Feb 2024 21:25:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v2bxrk0c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hN5BvMdO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDE50612D7;
-	Tue, 20 Feb 2024 21:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54BAA14A4E6;
+	Tue, 20 Feb 2024 21:25:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708465250; cv=none; b=K7cJox9RaCl2lSGR+0iWNxROeEZn1qDSMjDN0pPTD679o4crAzJss0AIlIQwdlPMmfCu9L6sXqgUQpdz7ELz9eCzADCSrlbay9LiOw3+TDzJXmIBKr31u7pLf+2JrP25Sc5VD5oaLJWddbQmkfOQQc8ZxZNeBYSQPHFV/Bxpp2s=
+	t=1708464343; cv=none; b=hlOUUsQA32VSl9mVvc2nvIoE780Yu9f1TvxraDsiCJP6yKAq9b/xRRbs5nA3/oIntkbb6JEyhXtpK5buHG8cy0IgWL3y+lYeJconhXdBlsCxXe5dt4ILxIYvSttN6ANJJip1UMQKeZ4AcewNPKhvXWm5mWk0+OLiKC7B0yxpXEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708465250; c=relaxed/simple;
-	bh=7Ms3Q/UPNWrOSOv0H5ENkiwffBFC57UYFXpbG0aMu40=;
+	s=arc-20240116; t=1708464343; c=relaxed/simple;
+	bh=XyM3M7S62tYS/RWvAD0Eed/wNJO78Uf0VdYkwziFGqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GTK7GjyFnZoh04ejnqF7YCPs+fz+8QHLPZSjOU4bqwDq3MKf98XL5fWGMhHvYtR+tcoELSN3dn02pO9CmwWyr6k8hAznsg9sT3AMgUlsgNDGtGpAQAgd/QoV5h8GRlxV26hyVJCHkdrWhX02XK0ohYF4Ybj2ICLq68nPwCB6rlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v2bxrk0c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B349C433F1;
-	Tue, 20 Feb 2024 21:40:49 +0000 (UTC)
+	 MIME-Version; b=riKwkirDGQ1NsSnsI2lrZ0Hhjl9i8zQTL5SfQClHNCcsBMFRMGs2Q8h1Gey28EGOBz1PXH5aeLtd+ANQLwNEjIKd1mOIykI9K3w3o7Vug8mqjlcYqsh+UdOXAaQwfoqnD7j+UpAGhMxqGWx6aoPYzmrBlK46kZzYl5OemAzFyPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hN5BvMdO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BBA2C433C7;
+	Tue, 20 Feb 2024 21:25:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708465249;
-	bh=7Ms3Q/UPNWrOSOv0H5ENkiwffBFC57UYFXpbG0aMu40=;
+	s=korg; t=1708464342;
+	bh=XyM3M7S62tYS/RWvAD0Eed/wNJO78Uf0VdYkwziFGqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v2bxrk0c8EUgQqYCqmX1poKIlzrTF2Uhvw0JYx7dbhpROorBIc7BU8I6hkz7euHzW
-	 KJKXa0Qcm0NtPN9xCAPGct1JZCoVxfcJpS9sENwa0gjynofqqTWDE2o8G5pqfd/xv+
-	 XGntEajocxebx7AEPgFtojg3Hwmc5rNyxJXf1LiI=
+	b=hN5BvMdOX6hacR6ZMVE7mKCs1ehihCWOVA1bao0n+W1Wx5T/WLnm+ycbVLJUr+wYV
+	 6KdZq/3pqnWcSnqe6a+y1+WJgGM8dEMg3uS50Y3mK9U3oHRDkjkLX2GxVZ1CDFXSnu
+	 Ay+uSGJB7OICwNHF/zTIi+SNlKjYOgu16R/EGkdc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.7 283/309] pmdomain: renesas: r8a77980-sysc: CR7 must be always on
-Date: Tue, 20 Feb 2024 21:57:22 +0100
-Message-ID: <20240220205641.975530428@linuxfoundation.org>
+	Ard Biesheuvel <ardb@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>
+Subject: [PATCH 6.6 327/331] x86/boot: Construct PE/COFF .text section from assembler
+Date: Tue, 20 Feb 2024 21:57:23 +0100
+Message-ID: <20240220205648.489162203@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,47 +59,185 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit f0e4a1356466ec1858ae8e5c70bea2ce5e55008b upstream.
+commit efa089e63b56bdc5eca754b995cb039dd7a5457e upstream.
 
-The power domain containing the Cortex-R7 CPU core on the R-Car V3H SoC
-must always be in power-on state, unlike on other SoCs in the R-Car Gen3
-family.  See Table 9.4 "Power domains" in the R-Car Series, 3rd
-Generation Hardware User’s Manual Rev.1.00 and later.
+Now that the size of the setup block is visible to the assembler, it is
+possible to populate the PE/COFF header fields from the asm code
+directly, instead of poking the values into the binary using the build
+tool. This will make it easier to reorganize the section layout without
+having to tweak the build tool in lockstep.
 
-Fix this by marking the domain as a CPU domain without control
-registers, so the driver will not touch it.
+This change has no impact on the resulting bzImage binary.
 
-Fixes: 41d6d8bd8ae9 ("soc: renesas: rcar-sysc: add R8A77980 support")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/fdad9a86132d53ecddf72b734dac406915c4edc0.1705076735.git.geert+renesas@glider.be
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20230915171623.655440-15-ardb@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pmdomain/renesas/r8a77980-sysc.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/boot/header.S      |   22 ++++++--------------
+ arch/x86/boot/tools/build.c |   47 --------------------------------------------
+ 2 files changed, 7 insertions(+), 62 deletions(-)
 
---- a/drivers/pmdomain/renesas/r8a77980-sysc.c
-+++ b/drivers/pmdomain/renesas/r8a77980-sysc.c
-@@ -25,7 +25,8 @@ static const struct rcar_sysc_area r8a77
- 	  PD_CPU_NOCR },
- 	{ "ca53-cpu3",	0x200, 3, R8A77980_PD_CA53_CPU3, R8A77980_PD_CA53_SCU,
- 	  PD_CPU_NOCR },
--	{ "cr7",	0x240, 0, R8A77980_PD_CR7,	R8A77980_PD_ALWAYS_ON },
-+	{ "cr7",	0x240, 0, R8A77980_PD_CR7,	R8A77980_PD_ALWAYS_ON,
-+	  PD_CPU_NOCR },
- 	{ "a3ir",	0x180, 0, R8A77980_PD_A3IR,	R8A77980_PD_ALWAYS_ON },
- 	{ "a2ir0",	0x400, 0, R8A77980_PD_A2IR0,	R8A77980_PD_A3IR },
- 	{ "a2ir1",	0x400, 1, R8A77980_PD_A2IR1,	R8A77980_PD_A3IR },
+--- a/arch/x86/boot/header.S
++++ b/arch/x86/boot/header.S
+@@ -75,14 +75,12 @@ optional_header:
+ 	.byte	0x02				# MajorLinkerVersion
+ 	.byte	0x14				# MinorLinkerVersion
+ 
+-	# Filled in by build.c
+-	.long	0				# SizeOfCode
++	.long	setup_size + ZO__end - 0x200	# SizeOfCode
+ 
+ 	.long	0				# SizeOfInitializedData
+ 	.long	0				# SizeOfUninitializedData
+ 
+-	# Filled in by build.c
+-	.long	0x0000				# AddressOfEntryPoint
++	.long	setup_size + ZO_efi_pe_entry	# AddressOfEntryPoint
+ 
+ 	.long	0x0200				# BaseOfCode
+ #ifdef CONFIG_X86_32
+@@ -105,10 +103,7 @@ extra_header_fields:
+ 	.word	0				# MinorSubsystemVersion
+ 	.long	0				# Win32VersionValue
+ 
+-	#
+-	# The size of the bzImage is written in tools/build.c
+-	#
+-	.long	0				# SizeOfImage
++	.long	setup_size + ZO__end 		# SizeOfImage
+ 
+ 	.long	0x200				# SizeOfHeaders
+ 	.long	0				# CheckSum
+@@ -199,18 +194,15 @@ section_table:
+ 		IMAGE_SCN_MEM_DISCARDABLE	# Characteristics
+ #endif
+ 
+-	#
+-	# The offset & size fields are filled in by build.c.
+-	#
+ 	.ascii	".text"
+ 	.byte	0
+ 	.byte	0
+ 	.byte	0
+-	.long	0
+-	.long	0x0				# startup_{32,64}
+-	.long	0				# Size of initialized data
++	.long	ZO__end
++	.long	setup_size
++	.long	ZO__edata			# Size of initialized data
+ 						# on disk
+-	.long	0x0				# startup_{32,64}
++	.long	setup_size
+ 	.long	0				# PointerToRelocations
+ 	.long	0				# PointerToLineNumbers
+ 	.word	0				# NumberOfRelocations
+--- a/arch/x86/boot/tools/build.c
++++ b/arch/x86/boot/tools/build.c
+@@ -50,10 +50,8 @@ u8 buf[SETUP_SECT_MAX*512];
+ #define PECOFF_RELOC_RESERVE 0x20
+ #define PECOFF_COMPAT_RESERVE 0x20
+ 
+-static unsigned long efi_pe_entry;
+ static unsigned long efi32_pe_entry;
+ static unsigned long _edata;
+-static unsigned long _end;
+ 
+ /*----------------------------------------------------------------------*/
+ 
+@@ -216,32 +214,6 @@ static void update_pecoff_setup_and_relo
+ #endif
+ }
+ 
+-static void update_pecoff_text(unsigned int text_start, unsigned int file_sz)
+-{
+-	unsigned int pe_header;
+-	unsigned int text_sz = file_sz - text_start;
+-	unsigned int bss_sz = _end - text_sz;
+-
+-	pe_header = get_unaligned_le32(&buf[0x3c]);
+-
+-	/*
+-	 * Size of code: Subtract the size of the first sector (512 bytes)
+-	 * which includes the header.
+-	 */
+-	put_unaligned_le32(file_sz - 512 + bss_sz, &buf[pe_header + 0x1c]);
+-
+-	/* Size of image */
+-	put_unaligned_le32(file_sz + bss_sz, &buf[pe_header + 0x50]);
+-
+-	/*
+-	 * Address of entry point for PE/COFF executable
+-	 */
+-	put_unaligned_le32(text_start + efi_pe_entry, &buf[pe_header + 0x28]);
+-
+-	update_pecoff_section_header_fields(".text", text_start, text_sz + bss_sz,
+-					    text_sz, text_start);
+-}
+-
+ static int reserve_pecoff_reloc_section(int c)
+ {
+ 	/* Reserve 0x20 bytes for .reloc section */
+@@ -249,22 +221,9 @@ static int reserve_pecoff_reloc_section(
+ 	return PECOFF_RELOC_RESERVE;
+ }
+ 
+-static void efi_stub_defaults(void)
+-{
+-	/* Defaults for old kernel */
+-#ifdef CONFIG_X86_32
+-	efi_pe_entry = 0x10;
+-#else
+-	efi_pe_entry = 0x210;
+-#endif
+-}
+-
+ #else
+ 
+ static inline void update_pecoff_setup_and_reloc(unsigned int size) {}
+-static inline void update_pecoff_text(unsigned int text_start,
+-				      unsigned int file_sz) {}
+-static inline void efi_stub_defaults(void) {}
+ 
+ static inline int reserve_pecoff_reloc_section(int c)
+ {
+@@ -307,10 +266,8 @@ static void parse_zoffset(char *fname)
+ 	p = (char *)buf;
+ 
+ 	while (p && *p) {
+-		PARSE_ZOFS(p, efi_pe_entry);
+ 		PARSE_ZOFS(p, efi32_pe_entry);
+ 		PARSE_ZOFS(p, _edata);
+-		PARSE_ZOFS(p, _end);
+ 
+ 		p = strchr(p, '\n');
+ 		while (p && (*p == '\r' || *p == '\n'))
+@@ -328,8 +285,6 @@ int main(int argc, char ** argv)
+ 	void *kernel;
+ 	u32 crc = 0xffffffffUL;
+ 
+-	efi_stub_defaults();
+-
+ 	if (argc != 5)
+ 		usage();
+ 	parse_zoffset(argv[3]);
+@@ -376,8 +331,6 @@ int main(int argc, char ** argv)
+ 	kernel = mmap(NULL, sz, PROT_READ, MAP_SHARED, fd, 0);
+ 	if (kernel == MAP_FAILED)
+ 		die("Unable to mmap '%s': %m", argv[2]);
+-	update_pecoff_text(setup_sectors * 512, i + _edata);
+-
+ 
+ 	crc = partial_crc32(buf, i, crc);
+ 	if (fwrite(buf, 1, i, dest) != i)
 
 
 
