@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-21235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDB5F85C7CC
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:16:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13E0C85C929
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:30:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A269F1F26DB2
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:16:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC90A1F227B9
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:30:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE2BF152E13;
-	Tue, 20 Feb 2024 21:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07A75151CD9;
+	Tue, 20 Feb 2024 21:30:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QVgvrjs4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lfaLu2By"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82574151CD8;
-	Tue, 20 Feb 2024 21:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B947614A4E6;
+	Tue, 20 Feb 2024 21:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708463781; cv=none; b=p99D+JF/LfNHZp5kLqB7kPQFFu/cYxI8tugsJAuafqX3Bo3jhEuR7iSS9/kpGgbMiQ2c6CNR4lzU51No4BnMlCUwZDlXJen8M0jfDHKsXbolJYvLUxclzn810oKJTw+08ewL9CI5N4O3PQnskROpyhzgQ0C+NvDrHIinIdSvJTU=
+	t=1708464603; cv=none; b=Dz7vqaznigV9tLjBO7klFyKlJeVcU7bPhpNQtNrNeuS7ahdmRcfWyiFEoovKMd/My4CM3HvuKpgFOdUqjQRd/BvIAZZXzi5e4Hb4SYLtxfjOvnwhVSszO8tbq2qf94Ek5CQx/z0fWWfbpeuj0l+nCJOl2gWL3lkJDd7M13hvY2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708463781; c=relaxed/simple;
-	bh=Zz1HhAQQsaN9xefVCj0ZUMWwzkJfXIffNxyqQsE8C90=;
+	s=arc-20240116; t=1708464603; c=relaxed/simple;
+	bh=00TqylvyRWTS9gLKE5sZ6RkVUIsZ2ipitEbA6PKSvu0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oVG0wHacGMo7Rn0K7ZqD/jcdykqFTgEoRciT/V5XZa6o6wvvFAmzqTGXsTODZf0mT1WrcD36yoaFUuSeMDISZC0uCvqPXY5/09WRUjMBotoFd3HXq2E3/kTSyoJXcQDarCFhi6kqhwVZFwzPEVhBAmZaciGDcY/OVEsYz/7f5cs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QVgvrjs4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5E05C433C7;
-	Tue, 20 Feb 2024 21:16:20 +0000 (UTC)
+	 MIME-Version; b=nh4neWIurXhmgJKbMECq4ev+hY+Fr8PkcsCDk8BRf7IPHauP/5nWvVD3w3cx57wvXqKWXbObrdFlHe756CmiNFptJreEwE88O5Rrj2Ty7MbWbIenjaO7wdW0DWki3MQ8L6sE+L0eF0TU+4LGb2FucAEbNor/6nr4Y8SLNDTHhEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lfaLu2By; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20A41C433F1;
+	Tue, 20 Feb 2024 21:30:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708463781;
-	bh=Zz1HhAQQsaN9xefVCj0ZUMWwzkJfXIffNxyqQsE8C90=;
+	s=korg; t=1708464603;
+	bh=00TqylvyRWTS9gLKE5sZ6RkVUIsZ2ipitEbA6PKSvu0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QVgvrjs46mHpy6MZCRVXoVoZ8FZ1uy95liaRBzdEtlSa2aMloZrWmdyy7Uy9+MViO
-	 DnRAhwV7Kqs+UTI+2LyaW/ELuXQINwySMenqJWa+zsTuS0715a/bfSShk9QlbRya2e
-	 2MQJackW+IEmKXMuv/ZNEIajctVeTn/9rDG2lHxI=
+	b=lfaLu2ByDhu+6vVsDU9VzuDSwHCiNCDLzfNfuUSEiDa6iz/hw3v2PRG2OdteGhl8D
+	 Mr+relgqJx3Xj/aO0eM3yINf9R/poSO5yRY+pyh07aTynlk2CAY+RTopQ9+jUTwevU
+	 do69WWfOSjGyZNNgRnMakKCupvcVbynYoen80/5E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	Keqi Wang <wangkeqi_chris@163.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 121/331] connector/cn_proc: revert "connector: Fix proc_event_num_listeners count not cleared"
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.7 078/309] parisc: Prevent hung tasks when printing inventory on serial console
 Date: Tue, 20 Feb 2024 21:53:57 +0100
-Message-ID: <20240220205641.408311658@linuxfoundation.org>
+Message-ID: <20240220205635.644151716@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
-References: <20240220205637.572693592@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +60,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keqi Wang <wangkeqi_chris@163.com>
+From: Helge Deller <deller@gmx.de>
 
-commit 8929f95b2b587791a7dcd04cc91520194a76d3a6 upstream.
+commit c8708d758e715c3824a73bf0cda97292b52be44d upstream.
 
-This reverts commit c46bfba1337d ("connector: Fix proc_event_num_listeners
-count not cleared").
+Printing the inventory on a serial console can be quite slow and thus may
+trigger the hung task detector (CONFIG_DETECT_HUNG_TASK=y) and possibly
+reboot the machine. Adding a cond_resched() prevents this.
 
-It is not accurate to reset proc_event_num_listeners according to
-cn_netlink_send_mult() return value -ESRCH.
-
-In the case of stress-ng netlink-proc, -ESRCH will always be returned,
-because netlink_broadcast_filtered will return -ESRCH,
-which may cause stress-ng netlink-proc performance degradation.
-
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202401112259.b23a1567-oliver.sang@intel.com
-Fixes: c46bfba1337d ("connector: Fix proc_event_num_listeners count not cleared")
-Signed-off-by: Keqi Wang <wangkeqi_chris@163.com>
-Link: https://lore.kernel.org/r/20240209091659.68723-1-wangkeqi_chris@163.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: <stable@vger.kernel.org> # v6.0+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/connector/cn_proc.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ arch/parisc/kernel/drivers.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/connector/cn_proc.c
-+++ b/drivers/connector/cn_proc.c
-@@ -108,9 +108,8 @@ static inline void send_msg(struct cn_ms
- 		filter_data[1] = 0;
- 	}
+--- a/arch/parisc/kernel/drivers.c
++++ b/arch/parisc/kernel/drivers.c
+@@ -1004,6 +1004,9 @@ static __init int qemu_print_iodc_data(s
  
--	if (cn_netlink_send_mult(msg, msg->len, 0, CN_IDX_PROC, GFP_NOWAIT,
--			     cn_filter, (void *)filter_data) == -ESRCH)
--		atomic_set(&proc_event_num_listeners, 0);
-+	cn_netlink_send_mult(msg, msg->len, 0, CN_IDX_PROC, GFP_NOWAIT,
-+			     cn_filter, (void *)filter_data);
+ 	pr_info("\n");
  
- 	local_unlock(&local_event.lock);
- }
++	/* Prevent hung task messages when printing on serial console */
++	cond_resched();
++
+ 	pr_info("#define HPA_%08lx_DESCRIPTION \"%s\"\n",
+ 		hpa, parisc_hardware_description(&dev->id));
+ 
 
 
 
