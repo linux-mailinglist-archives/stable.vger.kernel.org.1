@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-21580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 538CA85C97C
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:34:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EBA085C7E7
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:17:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08E791F22279
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:34:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD6A628448F
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:17:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D6B151CDC;
-	Tue, 20 Feb 2024 21:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 638A4151CE1;
+	Tue, 20 Feb 2024 21:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dYaz2nA+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NuwH0Zx9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5366C446C9;
-	Tue, 20 Feb 2024 21:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23EA1151CD6;
+	Tue, 20 Feb 2024 21:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464859; cv=none; b=bXzC75BjxiuPHmjaeBM46A59BxkOPbOHTt1d3S6V4G1s/QRoG/yRULarg3n7D8qW3pn6739k5kpL8X7cZnaaNdcS4SNk2xrzs9S9mOnKXH1lXC6Zm3lM7B47GK0Y0LhhIfhfp4++I062qU8Ovsc8vJO4QbeeNPjb04APvWCj8cE=
+	t=1708463853; cv=none; b=IL4ZL5wQL7TcW0y8B6PBBce4SJoRKcck2dmrnU/KiN0rgf3NhQ3EaGnIandpVwNF7jcZy54+lgrEcrAJTphtfph66wN0tVck4jPytqsWdN/iHWC9uVvn0yIKvt0dKqk6V+mhd7xv6BXGdcA9OZIyHKrFxI2fTRrAVXchUWWDtck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464859; c=relaxed/simple;
-	bh=KaloyAWi1ouenLVcZS1mmi/QRWExbmeqBAiUIu6Xo18=;
+	s=arc-20240116; t=1708463853; c=relaxed/simple;
+	bh=LkcEOjjM6WamFbHFtQIM8/xk+OKLg7d2ncZ7Zpt6MJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gtuyn1vyjI5XnrQ9KSQbokeD+T1rbEyjfvLzAEFI7K2DomCrWdW2gRaYI3k1fBdL3xnLLFeS8a5qCXBHjvsm3Xae4X39qQVVSC5lBZB4MnODg040/fFI9FXDrkoguwrHhamg/QsBchU6p3VRs344CWFKyOF3DRtasKsf6oBwAUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dYaz2nA+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7867C433C7;
-	Tue, 20 Feb 2024 21:34:18 +0000 (UTC)
+	 MIME-Version; b=QhL/aKH3kqgSCDPZaAlsGLSznB2r4vdhm3kE/ZaEH5RnkM0PiMZ5Yv6kev4400LywQx3pYwCDKRHT6pteAZcQGt3rS4TmS3SQj6gzGGvI47gQ0Vx16Io+xLUNeNQRrtjBZKLcr4TF59Qz/it2X7mxsz/ncPD6yG3MqxlVLZsgPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NuwH0Zx9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99808C433F1;
+	Tue, 20 Feb 2024 21:17:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464859;
-	bh=KaloyAWi1ouenLVcZS1mmi/QRWExbmeqBAiUIu6Xo18=;
+	s=korg; t=1708463853;
+	bh=LkcEOjjM6WamFbHFtQIM8/xk+OKLg7d2ncZ7Zpt6MJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dYaz2nA+P/8qBzIwbBdC5SfoX+6DzY5LUHnwG3zWBI50c3r9vjAs30qbN+rTnDaja
-	 55+uIXu1fpp/zg2KqANn9OJQOzwKOU8K9nZWwk98jxk3Czy6u2DpRKLNz+sSSVlnr7
-	 hPp/j87xLhk1xNnem0Z40U3gReRbCwMqsOaXTUsk=
+	b=NuwH0Zx9dhKSkZJR2vJwRPoOLHeCy/PPzwOxA8s0+I6VundZcQxxv9TSWQ7UFjx5/
+	 YsvuaCIPy68kBsYjhDVjxLv80bBQeNE62SQkT/ZxaONE342LMn093ywvPW3KD67xyh
+	 v7y5jMwjeZ6Cr8H5EZKtltS08mNKAWDh2OpR2CRU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lee Duncan <lduncan@suse.com>,
-	Hannes Reinecke <hare@suse.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.7 129/309] scsi: Revert "scsi: fcoe: Fix potential deadlock on &fip->ctlr_lock"
-Date: Tue, 20 Feb 2024 21:54:48 +0100
-Message-ID: <20240220205637.190464394@linuxfoundation.org>
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.6 173/331] drm/amd/display: Preserve original aspect ratio in create stream
+Date: Tue, 20 Feb 2024 21:54:49 +0100
+Message-ID: <20240220205642.956026031@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,118 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lee Duncan <lduncan@suse.com>
+From: Tom Chung <chiahsuan.chung@amd.com>
 
-commit 977fe773dcc7098d8eaf4ee6382cb51e13e784cb upstream.
+commit deb110292180cd501f6fde2a0178d65fcbcabb0c upstream.
 
-This reverts commit 1a1975551943f681772720f639ff42fbaa746212.
+[Why]
+The original picture aspect ratio in mode struct may have chance be
+overwritten with wrong aspect ratio data in create_stream_for_sink().
+It will create a different VIC output and cause HDMI compliance test
+failed.
 
-This commit causes interrupts to be lost for FCoE devices, since it changed
-sping locks from "bh" to "irqsave".
+[How]
+Preserve the original picture aspect ratio data during create the
+stream.
 
-Instead, a work queue should be used, and will be addressed in a separate
-commit.
-
-Fixes: 1a1975551943 ("scsi: fcoe: Fix potential deadlock on &fip->ctlr_lock")
-Signed-off-by: Lee Duncan <lduncan@suse.com>
-Link: https://lore.kernel.org/r/c578cdcd46b60470535c4c4a953e6a1feca0dffd.1707500786.git.lduncan@suse.com
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/fcoe/fcoe_ctlr.c |   20 ++++++++------------
- 1 file changed, 8 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/scsi/fcoe/fcoe_ctlr.c
-+++ b/drivers/scsi/fcoe/fcoe_ctlr.c
-@@ -319,17 +319,16 @@ static void fcoe_ctlr_announce(struct fc
- {
- 	struct fcoe_fcf *sel;
- 	struct fcoe_fcf *fcf;
--	unsigned long flags;
- 
- 	mutex_lock(&fip->ctlr_mutex);
--	spin_lock_irqsave(&fip->ctlr_lock, flags);
-+	spin_lock_bh(&fip->ctlr_lock);
- 
- 	kfree_skb(fip->flogi_req);
- 	fip->flogi_req = NULL;
- 	list_for_each_entry(fcf, &fip->fcfs, list)
- 		fcf->flogi_sent = 0;
- 
--	spin_unlock_irqrestore(&fip->ctlr_lock, flags);
-+	spin_unlock_bh(&fip->ctlr_lock);
- 	sel = fip->sel_fcf;
- 
- 	if (sel && ether_addr_equal(sel->fcf_mac, fip->dest_addr))
-@@ -700,7 +699,6 @@ int fcoe_ctlr_els_send(struct fcoe_ctlr
- {
- 	struct fc_frame *fp;
- 	struct fc_frame_header *fh;
--	unsigned long flags;
- 	u16 old_xid;
- 	u8 op;
- 	u8 mac[ETH_ALEN];
-@@ -734,11 +732,11 @@ int fcoe_ctlr_els_send(struct fcoe_ctlr
- 		op = FIP_DT_FLOGI;
- 		if (fip->mode == FIP_MODE_VN2VN)
- 			break;
--		spin_lock_irqsave(&fip->ctlr_lock, flags);
-+		spin_lock_bh(&fip->ctlr_lock);
- 		kfree_skb(fip->flogi_req);
- 		fip->flogi_req = skb;
- 		fip->flogi_req_send = 1;
--		spin_unlock_irqrestore(&fip->ctlr_lock, flags);
-+		spin_unlock_bh(&fip->ctlr_lock);
- 		schedule_work(&fip->timer_work);
- 		return -EINPROGRESS;
- 	case ELS_FDISC:
-@@ -1707,11 +1705,10 @@ static int fcoe_ctlr_flogi_send_locked(s
- static int fcoe_ctlr_flogi_retry(struct fcoe_ctlr *fip)
- {
- 	struct fcoe_fcf *fcf;
--	unsigned long flags;
- 	int error;
- 
- 	mutex_lock(&fip->ctlr_mutex);
--	spin_lock_irqsave(&fip->ctlr_lock, flags);
-+	spin_lock_bh(&fip->ctlr_lock);
- 	LIBFCOE_FIP_DBG(fip, "re-sending FLOGI - reselect\n");
- 	fcf = fcoe_ctlr_select(fip);
- 	if (!fcf || fcf->flogi_sent) {
-@@ -1722,7 +1719,7 @@ static int fcoe_ctlr_flogi_retry(struct
- 		fcoe_ctlr_solicit(fip, NULL);
- 		error = fcoe_ctlr_flogi_send_locked(fip);
- 	}
--	spin_unlock_irqrestore(&fip->ctlr_lock, flags);
-+	spin_unlock_bh(&fip->ctlr_lock);
- 	mutex_unlock(&fip->ctlr_mutex);
- 	return error;
- }
-@@ -1739,9 +1736,8 @@ static int fcoe_ctlr_flogi_retry(struct
- static void fcoe_ctlr_flogi_send(struct fcoe_ctlr *fip)
- {
- 	struct fcoe_fcf *fcf;
--	unsigned long flags;
- 
--	spin_lock_irqsave(&fip->ctlr_lock, flags);
-+	spin_lock_bh(&fip->ctlr_lock);
- 	fcf = fip->sel_fcf;
- 	if (!fcf || !fip->flogi_req_send)
- 		goto unlock;
-@@ -1768,7 +1764,7 @@ static void fcoe_ctlr_flogi_send(struct
- 	} else /* XXX */
- 		LIBFCOE_FIP_DBG(fip, "No FCF selected - defer send\n");
- unlock:
--	spin_unlock_irqrestore(&fip->ctlr_lock, flags);
-+	spin_unlock_bh(&fip->ctlr_lock);
- }
- 
- /**
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -6072,7 +6072,9 @@ create_stream_for_sink(struct amdgpu_dm_
+ 		if (recalculate_timing) {
+ 			freesync_mode = get_highest_refresh_rate_mode(aconnector, false);
+ 			drm_mode_copy(&saved_mode, &mode);
++			saved_mode.picture_aspect_ratio = mode.picture_aspect_ratio;
+ 			drm_mode_copy(&mode, freesync_mode);
++			mode.picture_aspect_ratio = saved_mode.picture_aspect_ratio;
+ 		} else {
+ 			decide_crtc_timing_for_drm_display_mode(
+ 					&mode, preferred_mode, scale);
 
 
 
