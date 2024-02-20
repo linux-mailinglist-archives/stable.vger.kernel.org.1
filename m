@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-21428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38E6A85C8DB
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:26:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FCFA85C74E
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:11:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD9711F21C23
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:26:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FBF21C21CC6
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:11:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E7321509BC;
-	Tue, 20 Feb 2024 21:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4E5314C585;
+	Tue, 20 Feb 2024 21:11:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P0fzn4/8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xWJ2Icqg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09A0514A4E6;
-	Tue, 20 Feb 2024 21:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80480612D7;
+	Tue, 20 Feb 2024 21:11:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464390; cv=none; b=GESfLEyw20g1pJ7F62v6gcRLf/hfXG8Fe9RKQW1BwmQsr/Po+oz9a3L0/3mLpx1F9LT9SlWzg7KazKgsZ074l5ZeOWdaf7TmUzPWehYvX5EueX5gOtCfzhVXBOboeb1GIF/4LF45AHJF58TKhOmc9Gs3EcDuLraWaob7RLAykzg=
+	t=1708463495; cv=none; b=YX/1KtnW8ujBhHsBocxrkmI8vgsH6eKAS0U11uHf2bdlQSf0w08Sn2EK6ia2IjNhpM9XGlT85xfrMjq5B0KWuxydu2VepRBTJHmeDVUi49g8Mbu0IAy71A8idJ2kazO0F1drV0CMKlOl7H2M37JLXcLuleQPtfG2IwpeAOLXHFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464390; c=relaxed/simple;
-	bh=MDkRv3hydYMdvMogZ6of5bd9/JYi8D+TlIWiHjbof+g=;
+	s=arc-20240116; t=1708463495; c=relaxed/simple;
+	bh=6iqK4GS5F32T6VTpn6xCi2UoxtPlBJ1SgWDMUgROzVs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cWXeMxXHSwBgmliv/yx38ns3tONuyuz4kDZvSmvFe3MQdbYZ8JaLCM/b4krn0LKvnVm44u4GGM0Pvd3d9wol5ijY1uC7+xDw1OTZgl5aU+uzSzfxpBOhRqsPlteDMPqPI5pOcDbX9LDOI/r9jx8goWyQMvnuex0DEAPFntzH148=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P0fzn4/8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CF0DC433C7;
-	Tue, 20 Feb 2024 21:26:29 +0000 (UTC)
+	 MIME-Version; b=pOAzvd2/dfM3g/TDfnBLtT6v9hoCdqkLNRaMU+dGGoTHp8Qhve9aG/9uPakxEHjbEMWYV5fTEJqrkisTNZm6ubuc7eozLVuDLiNhws3ofSVsy4v6cgj1oQUy1S9KhpU5HbsvcLAYxUAPs23yEP7xBYYKZ1NLpFh8lsWp3B9S47A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xWJ2Icqg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25F97C43390;
+	Tue, 20 Feb 2024 21:11:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464389;
-	bh=MDkRv3hydYMdvMogZ6of5bd9/JYi8D+TlIWiHjbof+g=;
+	s=korg; t=1708463495;
+	bh=6iqK4GS5F32T6VTpn6xCi2UoxtPlBJ1SgWDMUgROzVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P0fzn4/8BRbgIrqyFabyN7tNoWuvs63vX3n6FZK9vcmCsQFJhBrIuThT5NSOvE8uk
-	 YZYxZSrdXXuVZIhSds1xVxBoFaAZgm9sGJqLmxGEgRcH0jGVoo6qwtbnfxMVDOvmjA
-	 8ZtPxZ47/RAEcCHDIorQwcG2k+cPJSkHKCSKHTIE=
+	b=xWJ2IcqgYgnVGgBD7tIUU8lE0U/rUjjdpJZwwAMk7xrMq2hkKBcdQHC1hUk8glZ3C
+	 FvNwtszgU0T/gG50en9pgzIDFElocbHOlMsYjpPYVQKG7Zy14Xyua4UwbxNQ1eaAXj
+	 A7POjiV1G4Gq4cdWv5bEABfDrxZF38eVElh9G9xI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.7 010/309] btrfs: do not ASSERT() if the newly created subvolume already got read
+	Ivan Vecera <ivecera@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 053/331] i40e: Do not allow untrusted VF to remove administratively set MAC
 Date: Tue, 20 Feb 2024 21:52:49 +0100
-Message-ID: <20240220205633.456789730@linuxfoundation.org>
+Message-ID: <20240220205639.258812271@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,97 +65,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Ivan Vecera <ivecera@redhat.com>
 
-commit e03ee2fe873eb68c1f9ba5112fee70303ebf9dfb upstream.
+[ Upstream commit 73d9629e1c8c1982f13688c4d1019c3994647ccc ]
 
-[BUG]
-There is a syzbot crash, triggered by the ASSERT() during subvolume
-creation:
+Currently when PF administratively sets VF's MAC address and the VF
+is put down (VF tries to delete all MACs) then the MAC is removed
+from MAC filters and primary VF MAC is zeroed.
 
- assertion failed: !anon_dev, in fs/btrfs/disk-io.c:1319
- ------------[ cut here ]------------
- kernel BUG at fs/btrfs/disk-io.c:1319!
- invalid opcode: 0000 [#1] PREEMPT SMP KASAN
- RIP: 0010:btrfs_get_root_ref.part.0+0x9aa/0xa60
-  <TASK>
-  btrfs_get_new_fs_root+0xd3/0xf0
-  create_subvol+0xd02/0x1650
-  btrfs_mksubvol+0xe95/0x12b0
-  __btrfs_ioctl_snap_create+0x2f9/0x4f0
-  btrfs_ioctl_snap_create+0x16b/0x200
-  btrfs_ioctl+0x35f0/0x5cf0
-  __x64_sys_ioctl+0x19d/0x210
-  do_syscall_64+0x3f/0xe0
-  entry_SYSCALL_64_after_hwframe+0x63/0x6b
- ---[ end trace 0000000000000000 ]---
+Do not allow untrusted VF to remove primary MAC when it was set
+administratively by PF.
 
-[CAUSE]
-During create_subvol(), after inserting root item for the newly created
-subvolume, we would trigger btrfs_get_new_fs_root() to get the
-btrfs_root of that subvolume.
+Reproducer:
+1) Create VF
+2) Set VF interface up
+3) Administratively set the VF's MAC
+4) Put VF interface down
 
-The idea here is, we have preallocated an anonymous device number for
-the subvolume, thus we can assign it to the new subvolume.
+[root@host ~]# echo 1 > /sys/class/net/enp2s0f0/device/sriov_numvfs
+[root@host ~]# ip link set enp2s0f0v0 up
+[root@host ~]# ip link set enp2s0f0 vf 0 mac fe:6c:b5:da:c7:7d
+[root@host ~]# ip link show enp2s0f0
+23: enp2s0f0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP mode DEFAULT group default qlen 1000
+    link/ether 3c:ec:ef:b7:dd:04 brd ff:ff:ff:ff:ff:ff
+    vf 0     link/ether fe:6c:b5:da:c7:7d brd ff:ff:ff:ff:ff:ff, spoof checking on, link-state auto, trust off
+[root@host ~]# ip link set enp2s0f0v0 down
+[root@host ~]# ip link show enp2s0f0
+23: enp2s0f0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP mode DEFAULT group default qlen 1000
+    link/ether 3c:ec:ef:b7:dd:04 brd ff:ff:ff:ff:ff:ff
+    vf 0     link/ether 00:00:00:00:00:00 brd ff:ff:ff:ff:ff:ff, spoof checking on, link-state auto, trust off
 
-But there is really nothing preventing things like backref walk to read
-the new subvolume.
-If that happens before we call btrfs_get_new_fs_root(), the subvolume
-would be read out, with a new anonymous device number assigned already.
-
-In that case, we would trigger ASSERT(), as we really expect no one to
-read out that subvolume (which is not yet accessible from the fs).
-But things like backref walk is still possible to trigger the read on
-the subvolume.
-
-Thus our assumption on the ASSERT() is not correct in the first place.
-
-[FIX]
-Fix it by removing the ASSERT(), and just free the @anon_dev, reset it
-to 0, and continue.
-
-If the subvolume tree is read out by something else, it should have
-already get a new anon_dev assigned thus we only need to free the
-preallocated one.
-
-Reported-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Fixes: 2dfb1e43f57d ("btrfs: preallocate anon block device at first phase of snapshot creation")
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 700bbf6c1f9e ("i40e: allow VF to remove any MAC filter")
+Fixes: ceb29474bbbc ("i40e: Add support for VF to specify its primary MAC address")
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://lore.kernel.org/r/20240208180335.1844996-1-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/disk-io.c |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ .../ethernet/intel/i40e/i40e_virtchnl_pf.c    | 38 ++++++++++++++++---
+ 1 file changed, 33 insertions(+), 5 deletions(-)
 
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -1315,8 +1315,17 @@ static struct btrfs_root *btrfs_get_root
- again:
- 	root = btrfs_lookup_fs_root(fs_info, objectid);
- 	if (root) {
--		/* Shouldn't get preallocated anon_dev for cached roots */
--		ASSERT(!anon_dev);
-+		/*
-+		 * Some other caller may have read out the newly inserted
-+		 * subvolume already (for things like backref walk etc).  Not
-+		 * that common but still possible.  In that case, we just need
-+		 * to free the anon_dev.
-+		 */
-+		if (unlikely(anon_dev)) {
-+			free_anon_bdev(anon_dev);
-+			anon_dev = 0;
-+		}
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+index cc4c53470db2..082c09920999 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -2848,6 +2848,24 @@ static int i40e_vc_get_stats_msg(struct i40e_vf *vf, u8 *msg)
+ 				      (u8 *)&stats, sizeof(stats));
+ }
+ 
++/**
++ * i40e_can_vf_change_mac
++ * @vf: pointer to the VF info
++ *
++ * Return true if the VF is allowed to change its MAC filters, false otherwise
++ */
++static bool i40e_can_vf_change_mac(struct i40e_vf *vf)
++{
++	/* If the VF MAC address has been set administratively (via the
++	 * ndo_set_vf_mac command), then deny permission to the VF to
++	 * add/delete unicast MAC addresses, unless the VF is trusted
++	 */
++	if (vf->pf_set_mac && !vf->trusted)
++		return false;
 +
- 		if (check_ref && btrfs_root_refs(&root->root_item) == 0) {
- 			btrfs_put_root(root);
- 			return ERR_PTR(-ENOENT);
++	return true;
++}
++
+ #define I40E_MAX_MACVLAN_PER_HW 3072
+ #define I40E_MAX_MACVLAN_PER_PF(num_ports) (I40E_MAX_MACVLAN_PER_HW /	\
+ 	(num_ports))
+@@ -2907,8 +2925,8 @@ static inline int i40e_check_vf_permission(struct i40e_vf *vf,
+ 		 * The VF may request to set the MAC address filter already
+ 		 * assigned to it so do not return an error in that case.
+ 		 */
+-		if (!test_bit(I40E_VIRTCHNL_VF_CAP_PRIVILEGE, &vf->vf_caps) &&
+-		    !is_multicast_ether_addr(addr) && vf->pf_set_mac &&
++		if (!i40e_can_vf_change_mac(vf) &&
++		    !is_multicast_ether_addr(addr) &&
+ 		    !ether_addr_equal(addr, vf->default_lan_addr.addr)) {
+ 			dev_err(&pf->pdev->dev,
+ 				"VF attempting to override administratively set MAC address, bring down and up the VF interface to resume normal operation\n");
+@@ -3114,19 +3132,29 @@ static int i40e_vc_del_mac_addr_msg(struct i40e_vf *vf, u8 *msg)
+ 			ret = -EINVAL;
+ 			goto error_param;
+ 		}
+-		if (ether_addr_equal(al->list[i].addr, vf->default_lan_addr.addr))
+-			was_unimac_deleted = true;
+ 	}
+ 	vsi = pf->vsi[vf->lan_vsi_idx];
+ 
+ 	spin_lock_bh(&vsi->mac_filter_hash_lock);
+ 	/* delete addresses from the list */
+-	for (i = 0; i < al->num_elements; i++)
++	for (i = 0; i < al->num_elements; i++) {
++		const u8 *addr = al->list[i].addr;
++
++		/* Allow to delete VF primary MAC only if it was not set
++		 * administratively by PF or if VF is trusted.
++		 */
++		if (ether_addr_equal(addr, vf->default_lan_addr.addr) &&
++		    i40e_can_vf_change_mac(vf))
++			was_unimac_deleted = true;
++		else
++			continue;
++
+ 		if (i40e_del_mac_filter(vsi, al->list[i].addr)) {
+ 			ret = -EINVAL;
+ 			spin_unlock_bh(&vsi->mac_filter_hash_lock);
+ 			goto error_param;
+ 		}
++	}
+ 
+ 	spin_unlock_bh(&vsi->mac_filter_hash_lock);
+ 
+-- 
+2.43.0
+
 
 
 
