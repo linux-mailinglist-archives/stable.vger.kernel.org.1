@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-20972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5795085C68A
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:02:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E19885C696
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:03:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1057328357B
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:02:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE8061C20AA0
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:03:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5CDF151CC4;
-	Tue, 20 Feb 2024 21:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E720B151CC3;
+	Tue, 20 Feb 2024 21:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GtLXPbg0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Avq56qBz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C2A14F9DA;
-	Tue, 20 Feb 2024 21:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5DEC14F9C8;
+	Tue, 20 Feb 2024 21:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708462949; cv=none; b=VblY3W02xt89uUwo7ESpQ8PaQmi+Xm75Iwa0lD2UgHZTx8Tuuv54LbXSGHzqR4XjUUXzgBox1aT7vUshEGOTQscb5fwxIROzUp6FU7wZhHhrAykXZrmu0HXu9hxyRbx2QCAYofzORQLX7/jvz9FypfOZ5dv+rb5JP2yLu2jGVjA=
+	t=1708462984; cv=none; b=odaPtd7yFmCdK/qn1AvAOxXNE6k3tjy/OmhEiyxA4RHqBimKTtbaQwUD4UUe5eANMjHKFI/Udh6OHjjmEft3gF7hIQp6NUklE23gWUBFdAiHPIR/WkAl8ng2kdTL93odp0nuTCArAAk68Hy0aRA2xInPcYxabS6d4xZwuFxgQJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708462949; c=relaxed/simple;
-	bh=Jh0xuAgkkwKcEVjw2KB7wGSSBnuoM/AimcLlNCY5II4=;
+	s=arc-20240116; t=1708462984; c=relaxed/simple;
+	bh=R30G304cvSxKGLcOLKRDssqmkPq5mlvvwyPZCUVHLiI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G98Gc2E3Tfg7FIwPVvCg1eED0BnAIVIkjxMSzHceFXVQOuVXQgjywFARUCYGKW9t7wfXETHhOmgJykioAmP9yFDWyDr+BB1pYiO/CXjxfzkMIqXunJ+YT2B1mF8jpw6izzhWTkjycj0HmZDD5AuYdv1ldNupoN9w8xToFdX4mJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GtLXPbg0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D662BC433C7;
-	Tue, 20 Feb 2024 21:02:28 +0000 (UTC)
+	 MIME-Version; b=e9BrnBHUrchPkGXQlvNOgOtaqY3z0Vwsbu1zqvAODQrHjmO0bo+NMBSrjr6i2CdAH6z/+9XToo1Uqav+2VkC5BrcCusbeTDQ7dpwuz4pz+bYKJ7+QGZ02pGXJ6P7aR9jJ34akMy6JjG6IFvrT8AILEQ69P/99cMVd+soLV8y468=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Avq56qBz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15DEBC433C7;
+	Tue, 20 Feb 2024 21:03:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708462949;
-	bh=Jh0xuAgkkwKcEVjw2KB7wGSSBnuoM/AimcLlNCY5II4=;
+	s=korg; t=1708462984;
+	bh=R30G304cvSxKGLcOLKRDssqmkPq5mlvvwyPZCUVHLiI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GtLXPbg0Qy9QpRRcPtmCQAI8Eip65ptCYCubghyqowcBud3OAmUi6uNcmnPIHW9ep
-	 qyTaWDSM3pCsbXJ4fR4Kh5ma0QTGUpcZqZZX6/rcHTq4WRxQwpzFBxy2PCZ+bz1gLv
-	 9d0C26cSsYjvSNBO40eRRdzQFC0iEndLNM2MmRlU=
+	b=Avq56qBzTf1ADN6rM1Lo4FSrm4Dc5f+Gg63/MjgklX+eGyC/nS4sMlyTQWEpSHPlX
+	 ROISyerGI/OpGHHgZ18Tm8sk/UZGXMYUEhUb+94+j59hnTKPbBT4O7EJeP87x3ZFFt
+	 dI6lI4FNAQ+0IM6IZUan9j+HGp/N2zovXw7hKUcE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 070/197] selftests: mptcp: add missing kconfig for NF Mangle
-Date: Tue, 20 Feb 2024 21:50:29 +0100
-Message-ID: <20240220204843.175560228@linuxfoundation.org>
+Subject: [PATCH 6.1 071/197] selftests: mptcp: increase timeout to 30 min
+Date: Tue, 20 Feb 2024 21:50:30 +0100
+Message-ID: <20240220204843.205024977@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
 References: <20240220204841.073267068@linuxfoundation.org>
@@ -68,36 +68,42 @@ Content-Transfer-Encoding: 8bit
 
 From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit 2d41f10fa497182df9012d3e95d9cea24eb42e61 upstream.
+commit 4d4dfb2019d7010efb65926d9d1c1793f9a367c6 upstream.
 
-Since the commit mentioned below, 'mptcp_join' selftests is using
-IPTables to add rules to the Mangle table, only in IPv4.
+On very slow environments -- e.g. when QEmu is used without KVM --,
+mptcp_join.sh selftest can take a bit more than 20 minutes. Bump the
+default timeout by 50% as it seems normal to take that long on some
+environments.
 
-This KConfig is usually enabled by default in many defconfig, but we
-recently noticed that some CI were running our selftests without them
-enabled.
+When a debug kernel config is used, this selftest will take even longer,
+but that's certainly not a common test env to consider for the timeout.
 
-Fixes: b6e074e171bc ("selftests: mptcp: add infinite map testcase")
+The Fixes tag that has been picked here is there simply to help having
+this patch backported to older stable versions. It is difficult to point
+to the exact commit that made some env reaching the timeout from time to
+time.
+
+Fixes: d17b968b9876 ("selftests: mptcp: increase timeout to 20 minutes")
 Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240131-upstream-net-20240131-mptcp-ci-issues-v1-4-4c1c11e571ff@kernel.org
+Link: https://lore.kernel.org/r/20240131-upstream-net-20240131-mptcp-ci-issues-v1-5-4c1c11e571ff@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/config |    1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/net/mptcp/settings | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/testing/selftests/net/mptcp/config
-+++ b/tools/testing/selftests/net/mptcp/config
-@@ -23,6 +23,7 @@ CONFIG_NFT_SOCKET=m
- CONFIG_IP_ADVANCED_ROUTER=y
- CONFIG_IP_MULTIPLE_TABLES=y
- CONFIG_IP_NF_FILTER=m
-+CONFIG_IP_NF_MANGLE=m
- CONFIG_IP_NF_TARGET_REJECT=m
- CONFIG_IPV6_MULTIPLE_TABLES=y
- CONFIG_IP6_NF_FILTER=m
+diff --git a/tools/testing/selftests/net/mptcp/settings b/tools/testing/selftests/net/mptcp/settings
+index 79b65bdf05db..abc5648b59ab 100644
+--- a/tools/testing/selftests/net/mptcp/settings
++++ b/tools/testing/selftests/net/mptcp/settings
+@@ -1 +1 @@
+-timeout=1200
++timeout=1800
+-- 
+2.43.2
+
 
 
 
