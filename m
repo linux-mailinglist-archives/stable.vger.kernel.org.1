@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-21533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D804985C94D
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:31:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAA0585C7F1
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:18:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A8871F2101E
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:31:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8AF7AB20DF0
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:18:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B68FE151CD6;
-	Tue, 20 Feb 2024 21:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D18A3151CCC;
+	Tue, 20 Feb 2024 21:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mQz4rWPZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l3QRAxc5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7435514A4E6;
-	Tue, 20 Feb 2024 21:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EDF2612D7;
+	Tue, 20 Feb 2024 21:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464711; cv=none; b=u6xfYLhUCyoV/tivRpuzhUThwoJQNzaPRWsj8U7rM5fYQWxPWTJ4VnsrcCtDq+t/27whKN1EjpB53uSp13kQFSKEZ404ANBvx/U3aguijVXG4LA0kjMSN5SedA//MfMSxqRnM2nh7PGhqz0QOghNpsHMAbAhGqU5e7ADojkaZ4c=
+	t=1708463884; cv=none; b=CYLULS8T6jDKbxmR4mDhGQmw4UKZDgDFnKwmcLwM2kh3DhZr/SmRpjLkTiXaMOAKkRCfSHpAfSVa8STIaW0XapzwIW+Y0yNei0xsV0OeR4rgSY8RZOcJO7Zsx6yEZ3IH8GN7GxTtKrjE6WciphdWFCMxFewJHL2Mb10LrIdpeF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464711; c=relaxed/simple;
-	bh=TYSkgrsYV9TLn42i6O13wFAlmY3qQYBrj8y1VzLyfUA=;
+	s=arc-20240116; t=1708463884; c=relaxed/simple;
+	bh=2S9CTb3gZb+mE/z8aIj1qVI6TYuIlnPqbOtIg/dUwMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GouhR290KIDB2Iq4kRwAJczh1yK5goN9c2vzP2aotPmNLo3Yfe+PiW3oi73fJpqusw6sbZQjDO7bYpZqnIfR2CtJvGpRFvYQF1u9LJvbpVt4GDq1hye748lqyWGa6IzA864C09DEARQE2uc9AF5FPxtmUH4YkL69m/RdTrwCXT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mQz4rWPZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2B07C433C7;
-	Tue, 20 Feb 2024 21:31:50 +0000 (UTC)
+	 MIME-Version; b=l9JbR5xvuZ+NpNxc/06LUpR8ovdFZ2OMEVdB9pmWKpkT2IhbDzGcA69ATUBFEOb/bBkPyALBb44Q2J9fxhq2xras8Ezn17KQifixNuOMyAfVUo/bfdwtlMhhsZVwmIv6yh7oRLh9WR2QwJ9DuW+73GoE8hA/jfG8qnztzIH1uTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l3QRAxc5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 179C9C433F1;
+	Tue, 20 Feb 2024 21:18:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464711;
-	bh=TYSkgrsYV9TLn42i6O13wFAlmY3qQYBrj8y1VzLyfUA=;
+	s=korg; t=1708463884;
+	bh=2S9CTb3gZb+mE/z8aIj1qVI6TYuIlnPqbOtIg/dUwMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mQz4rWPZNyqGurLQG6NXextHdaxVXABCtjX+gYoPLmKnKKINPscQQY6yt/AyG24iE
-	 MSsW4FrO9bPiUPCyBWHUMLu0FBMF4RcRgvAfB5supAvg9ABCTRQjLeyNTPb5t8HbKh
-	 jARR4GsF+gKR4WeKCl42rOzD0TiQJidINA9C1Ro4=
+	b=l3QRAxc5HXSxej7scD5JlDNf0DX2XtyH70fsCBO+DPEX8zNB2WShgB+T0TRMXVeCR
+	 lLhF5AvVgeNXLrXIerIV+47FoNzHsbLjkW3gaLYtLkllq5qDsZKQuHxN6N1DKfzoht
+	 tNn+vV3OOHcdBgEawuD7cjVzoGUbNiIYD052HBew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Sven Peter <sven@svenpeter.dev>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 112/309] i2c: pasemi: split driver into two separate modules
+	David Schiller <david.schiller@jku.at>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 155/331] staging: iio: ad5933: fix type mismatch regression
 Date: Tue, 20 Feb 2024 21:54:31 +0100
-Message-ID: <20240220205636.694676800@linuxfoundation.org>
+Message-ID: <20240220205642.401187887@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: David Schiller <david.schiller@jku.at>
 
-[ Upstream commit f44bff19268517ee98e80e944cad0f04f1db72e3 ]
+commit 6db053cd949fcd6254cea9f2cd5d39f7bd64379c upstream.
 
-On powerpc, it is possible to compile test both the new apple (arm) and
-old pasemi (powerpc) drivers for the i2c hardware at the same time,
-which leads to a warning about linking the same object file twice:
+Commit 4c3577db3e4f ("Staging: iio: impedance-analyzer: Fix sparse
+warning") fixed a compiler warning, but introduced a bug that resulted
+in one of the two 16 bit IIO channels always being zero (when both are
+enabled).
 
-scripts/Makefile.build:244: drivers/i2c/busses/Makefile: i2c-pasemi-core.o is added to multiple modules: i2c-apple i2c-pasemi
+This is because int is 32 bits wide on most architectures and in the
+case of a little-endian machine the two most significant bytes would
+occupy the buffer for the second channel as 'val' is being passed as a
+void pointer to 'iio_push_to_buffers()'.
 
-Rework the driver to have an explicit helper module, letting Kbuild
-take care of whether this should be built-in or a loadable driver.
+Fix by defining 'val' as u16. Tested working on ARM64.
 
-Fixes: 9bc5f4f660ff ("i2c: pasemi: Split pci driver to its own file")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Sven Peter <sven@svenpeter.dev>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4c3577db3e4f ("Staging: iio: impedance-analyzer: Fix sparse warning")
+Signed-off-by: David Schiller <david.schiller@jku.at>
+Link: https://lore.kernel.org/r/20240122134916.2137957-1-david.schiller@jku.at
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/Makefile          | 6 ++----
- drivers/i2c/busses/i2c-pasemi-core.c | 6 ++++++
- 2 files changed, 8 insertions(+), 4 deletions(-)
+ drivers/staging/iio/impedance-analyzer/ad5933.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/busses/Makefile b/drivers/i2c/busses/Makefile
-index 3757b9391e60..aa0ee8ecd6f2 100644
---- a/drivers/i2c/busses/Makefile
-+++ b/drivers/i2c/busses/Makefile
-@@ -90,10 +90,8 @@ obj-$(CONFIG_I2C_NPCM)		+= i2c-npcm7xx.o
- obj-$(CONFIG_I2C_OCORES)	+= i2c-ocores.o
- obj-$(CONFIG_I2C_OMAP)		+= i2c-omap.o
- obj-$(CONFIG_I2C_OWL)		+= i2c-owl.o
--i2c-pasemi-objs := i2c-pasemi-core.o i2c-pasemi-pci.o
--obj-$(CONFIG_I2C_PASEMI)	+= i2c-pasemi.o
--i2c-apple-objs := i2c-pasemi-core.o i2c-pasemi-platform.o
--obj-$(CONFIG_I2C_APPLE)	+= i2c-apple.o
-+obj-$(CONFIG_I2C_PASEMI)	+= i2c-pasemi-core.o i2c-pasemi-pci.o
-+obj-$(CONFIG_I2C_APPLE)		+= i2c-pasemi-core.o i2c-pasemi-platform.o
- obj-$(CONFIG_I2C_PCA_PLATFORM)	+= i2c-pca-platform.o
- obj-$(CONFIG_I2C_PNX)		+= i2c-pnx.o
- obj-$(CONFIG_I2C_PXA)		+= i2c-pxa.o
-diff --git a/drivers/i2c/busses/i2c-pasemi-core.c b/drivers/i2c/busses/i2c-pasemi-core.c
-index 7d54a9f34c74..bd8becbdeeb2 100644
---- a/drivers/i2c/busses/i2c-pasemi-core.c
-+++ b/drivers/i2c/busses/i2c-pasemi-core.c
-@@ -369,6 +369,7 @@ int pasemi_i2c_common_probe(struct pasemi_smbus *smbus)
+--- a/drivers/staging/iio/impedance-analyzer/ad5933.c
++++ b/drivers/staging/iio/impedance-analyzer/ad5933.c
+@@ -608,7 +608,7 @@ static void ad5933_work(struct work_stru
+ 		struct ad5933_state, work.work);
+ 	struct iio_dev *indio_dev = i2c_get_clientdata(st->client);
+ 	__be16 buf[2];
+-	int val[2];
++	u16 val[2];
+ 	unsigned char status;
+ 	int ret;
  
- 	return 0;
- }
-+EXPORT_SYMBOL_GPL(pasemi_i2c_common_probe);
- 
- irqreturn_t pasemi_irq_handler(int irq, void *dev_id)
- {
-@@ -378,3 +379,8 @@ irqreturn_t pasemi_irq_handler(int irq, void *dev_id)
- 	complete(&smbus->irq_completion);
- 	return IRQ_HANDLED;
- }
-+EXPORT_SYMBOL_GPL(pasemi_irq_handler);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_AUTHOR("Olof Johansson <olof@lixom.net>");
-+MODULE_DESCRIPTION("PA Semi PWRficient SMBus driver");
--- 
-2.43.0
-
 
 
 
