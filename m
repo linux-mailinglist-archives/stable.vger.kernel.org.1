@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-20761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBE6A85B194
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 04:44:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36BC385B19E
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 04:48:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 783AC1F2216D
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 03:44:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB067281AB4
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 03:48:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E9B147768;
-	Tue, 20 Feb 2024 03:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A958347A4C;
+	Tue, 20 Feb 2024 03:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="efxjr0r2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pdr9C+X8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101004643B
-	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 03:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B3B61C2E
+	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 03:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708400666; cv=none; b=BFXTMK7jCqvbtKY8llM9/PR7BgPdoaumClGvEgBMBZ1oKwGaeb5u+/dNpNTKy6T0vLtcktcx4lDk6UEdSb4bg+epvH0XMe7DPSGuWnQGdAp24qMPHJenUfR4k2yaspKTlMWNov8jH1pIFaLCzcE5AUeC2YfFr0El6HoTbLDu+NY=
+	t=1708400896; cv=none; b=e+oKr1TocwFB0bjgWBI5ox26DiX6Fa8OuZ9MHkH8pG6sFm/yd3Qe7PjjTEA8r+GM4QWotzvVd5OQZ1ho1ZuouNyQEBStd9bSyPo2vaS3LLtq1WtU9dxRPKfo0nw6SuyjyUIIwhGwz9jkyZYqwjb6Y2qZv47gtGILEEBDp+GihQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708400666; c=relaxed/simple;
-	bh=Y0TobukOJxIADNGFhWQxctZecj04MSsrX95/VSKaRnU=;
+	s=arc-20240116; t=1708400896; c=relaxed/simple;
+	bh=OXA16Hpjqvpl285+uhB/KZbd4aN5s4oFsZqUtu8rbTY=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r5l2QyIDJV3c/toc9wx7iruncIDU94DA0+aVtIAxPpQlOqcee7llkDFpTIDJcbAeffCqDxOn8hHWLZ6YVs57Rx6CL6kZ6E2SnX+v0PNcXyd48tmTzzAuV7jfgoxKtApeela0e819vz8UDJavhcFk4n5sBcS5jUsJ1ewFe8BKAOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=efxjr0r2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F5BDC433C7
-	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 03:44:25 +0000 (UTC)
+	 MIME-Version; b=LkOyfEvk+5k+L7WHwvC0lgTakqNlm8cJIYyvEwpxrHinvjFuOL6sy9LOQaYCBKdsqKdiAk3QvkBY75t7uNQ7Em/dIRJM6eaJEg7QT+LJPVK0RQCMmHEv8YuzeS48Wp04EhexPbVa7LJqB34BXfDjTh6MzrcUcXS/CF8arihvzMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pdr9C+X8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC949C433F1
+	for <stable@vger.kernel.org>; Tue, 20 Feb 2024 03:48:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708400665;
-	bh=Y0TobukOJxIADNGFhWQxctZecj04MSsrX95/VSKaRnU=;
+	s=k20201202; t=1708400895;
+	bh=OXA16Hpjqvpl285+uhB/KZbd4aN5s4oFsZqUtu8rbTY=;
 	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=efxjr0r2kRIsR+o2+1YNxSWB5+o1Dm/ewe26NVaaUN0oVGPVL/LUmYFkvlbok+hKV
-	 PlycICNEjlCLxS5GNeP1drEtWRYqRVSHXLbbx9DBmNCwVwj9qJg5GEr1tv9omwtR4n
-	 zhZnLPq+W6EzgJ4kbVcBwlQh6zbwv0l61sFhhkN4+zsDuNdmhGhqQDObIysfXEnpy7
-	 FvHajrCf7cPhoqr6I1szixR9YGkyob7nLwg5bds1tZARx2rpG7vce9V3IR99S6Pld7
-	 EJJepdJGdnO/JwU2AcJrL+1X1oNr/pCbwa2p/+kEbjxt0y/XWwGxmWPXuPwqj/vOMo
-	 WEcdSCGgDeukQ==
+	b=pdr9C+X8YENBihSJAx20oTLYT18X7zNleK7E6z0mNpcEpAJPbLvE+2es9Bce1VFGH
+	 bMUwtW/fTKVtBIbx2TXDOlP9iF5mYltE4Nb7kDXJHFyuFGQhPLhwmsM4/kDXZuvo/W
+	 nfFFxi8Tb/ZzUkKE+ffP+6EwtxSS52ok+RddJ7YEDQLvtX5bvxi+kg7AJ9TAuleFi+
+	 1KNEesLg6TB7PcVi6JUeoDigfAGPoF7VXDgh810WfLi7Zwu8XiqkoHs/HNiqjTjf3g
+	 YQv3T1weLnIXKc5KExFs23x3NPLwQ0C+QGP4SO3O/rX5YTMlXmZcZuHH6WVbRKi/kj
+	 GlHfWPcDjrA+w==
 From: Damien Le Moal <dlemoal@kernel.org>
 To: stable@vger.kernel.org
-Subject: [PATCH 5.15.y] zonefs: Improve error handling
-Date: Tue, 20 Feb 2024 12:44:23 +0900
-Message-ID: <20240220034423.2571184-1-dlemoal@kernel.org>
+Subject: [PATCH 5.10.y] zonefs: Improve error handling
+Date: Tue, 20 Feb 2024 12:48:14 +0900
+Message-ID: <20240220034814.2680699-1-dlemoal@kernel.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <2024021942-driven-backhand-7edd@gregkh>
-References: <2024021942-driven-backhand-7edd@gregkh>
+In-Reply-To: <2024021944-kettle-upturned-4371@gregkh>
+References: <2024021944-kettle-upturned-4371@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -115,10 +115,10 @@ Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
  1 file changed, 39 insertions(+), 29 deletions(-)
 
 diff --git a/fs/zonefs/super.c b/fs/zonefs/super.c
-index 9619a68df163..788f10a21ce0 100644
+index b9522eee1257..f9ecade9ea65 100644
 --- a/fs/zonefs/super.c
 +++ b/fs/zonefs/super.c
-@@ -327,16 +327,18 @@ static loff_t zonefs_check_zone_condition(struct inode *inode,
+@@ -319,16 +319,18 @@ static loff_t zonefs_check_zone_condition(struct inode *inode,
  	}
  }
  
@@ -144,7 +144,7 @@ index 9619a68df163..788f10a21ce0 100644
  	struct zonefs_inode_info *zi = ZONEFS_I(inode);
  	struct super_block *sb = inode->i_sb;
  	struct zonefs_sb_info *sbi = ZONEFS_SB(sb);
-@@ -352,8 +354,8 @@ static int zonefs_io_error_cb(struct blk_zone *zone, unsigned int idx,
+@@ -344,8 +346,8 @@ static int zonefs_io_error_cb(struct blk_zone *zone, unsigned int idx,
  	isize = i_size_read(inode);
  	if (zone->cond != BLK_ZONE_COND_OFFLINE &&
  	    zone->cond != BLK_ZONE_COND_READONLY &&
@@ -155,7 +155,7 @@ index 9619a68df163..788f10a21ce0 100644
  
  	/*
  	 * At this point, we detected either a bad zone or an inconsistency
-@@ -374,8 +376,9 @@ static int zonefs_io_error_cb(struct blk_zone *zone, unsigned int idx,
+@@ -366,8 +368,9 @@ static int zonefs_io_error_cb(struct blk_zone *zone, unsigned int idx,
  	 * In all cases, warn about inode size inconsistency and handle the
  	 * IO error according to the zone condition and to the mount options.
  	 */
@@ -167,7 +167,7 @@ index 9619a68df163..788f10a21ce0 100644
  			    inode->i_ino, isize, data_size);
  
  	/*
-@@ -435,8 +438,6 @@ static int zonefs_io_error_cb(struct blk_zone *zone, unsigned int idx,
+@@ -427,8 +430,6 @@ static int zonefs_io_error_cb(struct blk_zone *zone, unsigned int idx,
  	zonefs_update_stats(inode, data_size);
  	zonefs_i_size_write(inode, data_size);
  	zi->i_wpoffset = data_size;
@@ -176,7 +176,7 @@ index 9619a68df163..788f10a21ce0 100644
  }
  
  /*
-@@ -450,23 +451,25 @@ static void __zonefs_io_error(struct inode *inode, bool write)
+@@ -442,23 +443,25 @@ static void __zonefs_io_error(struct inode *inode, bool write)
  {
  	struct zonefs_inode_info *zi = ZONEFS_I(inode);
  	struct super_block *sb = inode->i_sb;
@@ -214,7 +214,7 @@ index 9619a68df163..788f10a21ce0 100644
  
  	/*
  	 * Memory allocations in blkdev_report_zones() can trigger a memory
-@@ -477,12 +480,19 @@ static void __zonefs_io_error(struct inode *inode, bool write)
+@@ -469,12 +472,19 @@ static void __zonefs_io_error(struct inode *inode, bool write)
  	 * the GFP_NOIO context avoids both problems.
  	 */
  	noio_flag = memalloc_noio_save();
