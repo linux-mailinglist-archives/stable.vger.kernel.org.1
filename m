@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-21592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8F8985C988
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:34:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38C9C85C868
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:21:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 068AD281CEF
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:34:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E815F281EBE
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:21:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C011151CE1;
-	Tue, 20 Feb 2024 21:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A937C151CF3;
+	Tue, 20 Feb 2024 21:21:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ilhaoK/G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gh2KpwBu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A1072DF9F;
-	Tue, 20 Feb 2024 21:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A41151CE3;
+	Tue, 20 Feb 2024 21:21:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464897; cv=none; b=PnzJq7nKqX7yYX7XgCFHcb5zFK3dUYHRWGLHAoSxlRtAtxZwdgvyvQrjbNC8h/52MpP7NXhrlC1RZRD/TDX9vIc6zrbsc8HNNTD8HtHgo60cn5kjoKImt5XG3YBRU+L5WGJfc6MN8KYyKmFk3pBEUs+WQSlAGqnO6KNh2aTvuY4=
+	t=1708464078; cv=none; b=b3YlRXiaaxrQW3VTgx8+RrsFpM1QdSk36/kEQQaXTa/nSp3a3JpuqU7LUYEzvJrzAdqBMl2BCYmCYdyK/RmCLxcrGoE0QJeS5U6hLOO1mqmDoiiwB8zhcQUnFnqdfeB74EgPD1RC1XIxzZwJa183uGiqd3KdN+tlmMeRvu6qEFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464897; c=relaxed/simple;
-	bh=w5+NHdID38LApUGG1z7XxQSjAr744iQmKUiIlfUasso=;
+	s=arc-20240116; t=1708464078; c=relaxed/simple;
+	bh=WxHWwCrf1ewF0dVrC42+3zTZE6YUt1QsknOYxXvFc88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jyOhYUbiSEbgNmDz6uTrEkpLJg3LSinchiRTM6QbDg+7Pko80yP9TxKv6kDpaxoLboFpCPgBFxIWqfZ6nqW5L0izKUUks6qY0ZccL0ubcbXuypxtujvtAqBLg3398WluSbkM7uIkElFNm8IHvi1O2aN3V/I5Bjuq9lk5jmZ/AUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ilhaoK/G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BC05C433C7;
-	Tue, 20 Feb 2024 21:34:56 +0000 (UTC)
+	 MIME-Version; b=maUGWjDRecLHyjnrdiarQvebHw5/hso1L8tA1M0QZT4vjjvneqVxSNkcaw2ptVqUpOxoYO0J9HzC7ocG2tuLBLnHGjLmPo2MkLVeMxHLYqZWeb2XbLpc6es5JWqYrNdwc01vI7nGljVT4TTWagqp4ydA91WY6ICcB7qFGTGyxOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gh2KpwBu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A58DEC433C7;
+	Tue, 20 Feb 2024 21:21:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464897;
-	bh=w5+NHdID38LApUGG1z7XxQSjAr744iQmKUiIlfUasso=;
+	s=korg; t=1708464078;
+	bh=WxHWwCrf1ewF0dVrC42+3zTZE6YUt1QsknOYxXvFc88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ilhaoK/GtuaPg9YRn/5OxksW/bdl54WfCEGoqWWxMRtMmIxeggicoZvypRiHrc6dI
-	 lt8XNAnDEa1+1iycRWv7zKAI8lhJrKHoueWk9O5He4ewO9qBbkFsOptqTlDYwhGF5Z
-	 GRjb4BB0PnsDQuf0lLWdOZGdPQm7GuNWj/nF4kRA=
+	b=Gh2KpwBu7yZwEfieLpVczPIGjBS6r0FEzFiO8Hv4j4eDlkiYnC/wlUD5Fr8/T5B4c
+	 a8JFO+wTB/VO5Bh4aCoiyGXRgYSIW/6U2niwzFtiMgJnjKFx/+aRIxUNVbCPZZMj8C
+	 M98v2b2PcJdZliz6WmDNBB5d9zzBPghMinslFLnM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.7 172/309] iio: accel: bma400: Fix a compilation problem
-Date: Tue, 20 Feb 2024 21:55:31 +0100
-Message-ID: <20240220205638.534634980@linuxfoundation.org>
+	Sebastian Ene <sebastianene@google.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.6 216/331] KVM: arm64: Fix circular locking dependency
+Date: Tue, 20 Feb 2024 21:55:32 +0100
+Message-ID: <20240220205644.515038925@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Sebastian Ene <sebastianene@google.com>
 
-commit 4cb81840d8f29b66d9d05c6d7f360c9560f7e2f4 upstream.
+commit 10c02aad111df02088d1a81792a709f6a7eca6cc upstream.
 
-The kernel fails when compiling without `CONFIG_REGMAP_I2C` but with
-`CONFIG_BMA400`.
-```
-ld: drivers/iio/accel/bma400_i2c.o: in function `bma400_i2c_probe':
-bma400_i2c.c:(.text+0x23): undefined reference to `__devm_regmap_init_i2c'
-```
+The rule inside kvm enforces that the vcpu->mutex is taken *inside*
+kvm->lock. The rule is violated by the pkvm_create_hyp_vm() which acquires
+the kvm->lock while already holding the vcpu->mutex lock from
+kvm_vcpu_ioctl(). Avoid the circular locking dependency altogether by
+protecting the hyp vm handle with the config_lock, much like we already
+do for other forms of VM-scoped data.
 
-Link: https://download.01.org/0day-ci/archive/20240131/202401311634.FE5CBVwe-lkp@intel.com/config
-Fixes: 465c811f1f20 ("iio: accel: Add driver for the BMA400")
-Fixes: 9bea10642396 ("iio: accel: bma400: add support for bma400 spi")
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20240131225246.14169-1-mario.limonciello@amd.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sebastian Ene <sebastianene@google.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20240124091027.1477174-2-sebastianene@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/accel/Kconfig |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/kvm/pkvm.c |   27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
---- a/drivers/iio/accel/Kconfig
-+++ b/drivers/iio/accel/Kconfig
-@@ -219,10 +219,12 @@ config BMA400
+--- a/arch/arm64/kvm/pkvm.c
++++ b/arch/arm64/kvm/pkvm.c
+@@ -101,6 +101,17 @@ void __init kvm_hyp_reserve(void)
+ 		 hyp_mem_base);
+ }
  
- config BMA400_I2C
- 	tristate
-+	select REGMAP_I2C
- 	depends on BMA400
++static void __pkvm_destroy_hyp_vm(struct kvm *host_kvm)
++{
++	if (host_kvm->arch.pkvm.handle) {
++		WARN_ON(kvm_call_hyp_nvhe(__pkvm_teardown_vm,
++					  host_kvm->arch.pkvm.handle));
++	}
++
++	host_kvm->arch.pkvm.handle = 0;
++	free_hyp_memcache(&host_kvm->arch.pkvm.teardown_mc);
++}
++
+ /*
+  * Allocates and donates memory for hypervisor VM structs at EL2.
+  *
+@@ -181,7 +192,7 @@ static int __pkvm_create_hyp_vm(struct k
+ 	return 0;
  
- config BMA400_SPI
- 	tristate
-+	select REGMAP_SPI
- 	depends on BMA400
+ destroy_vm:
+-	pkvm_destroy_hyp_vm(host_kvm);
++	__pkvm_destroy_hyp_vm(host_kvm);
+ 	return ret;
+ free_vm:
+ 	free_pages_exact(hyp_vm, hyp_vm_sz);
+@@ -194,23 +205,19 @@ int pkvm_create_hyp_vm(struct kvm *host_
+ {
+ 	int ret = 0;
  
- config BMC150_ACCEL
+-	mutex_lock(&host_kvm->lock);
++	mutex_lock(&host_kvm->arch.config_lock);
+ 	if (!host_kvm->arch.pkvm.handle)
+ 		ret = __pkvm_create_hyp_vm(host_kvm);
+-	mutex_unlock(&host_kvm->lock);
++	mutex_unlock(&host_kvm->arch.config_lock);
+ 
+ 	return ret;
+ }
+ 
+ void pkvm_destroy_hyp_vm(struct kvm *host_kvm)
+ {
+-	if (host_kvm->arch.pkvm.handle) {
+-		WARN_ON(kvm_call_hyp_nvhe(__pkvm_teardown_vm,
+-					  host_kvm->arch.pkvm.handle));
+-	}
+-
+-	host_kvm->arch.pkvm.handle = 0;
+-	free_hyp_memcache(&host_kvm->arch.pkvm.teardown_mc);
++	mutex_lock(&host_kvm->arch.config_lock);
++	__pkvm_destroy_hyp_vm(host_kvm);
++	mutex_unlock(&host_kvm->arch.config_lock);
+ }
+ 
+ int pkvm_init_host_vm(struct kvm *host_kvm)
 
 
 
