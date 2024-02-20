@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-21596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B03EF85C98C
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:35:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E806B85C840
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 22:19:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65F281F227ED
-	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:35:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66D69281027
+	for <lists+stable@lfdr.de>; Tue, 20 Feb 2024 21:19:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48DB5151CED;
-	Tue, 20 Feb 2024 21:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC42F151CDC;
+	Tue, 20 Feb 2024 21:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oszQWww8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fmhaZmoR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 068782DF9F;
-	Tue, 20 Feb 2024 21:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9112114A4E6;
+	Tue, 20 Feb 2024 21:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708464910; cv=none; b=C5Ik5/9H7TCeayFriP2KR7uYCKeGOrUyqkfGpa0gr3WhbgMaNrWhvaN5bi3md4uaNKa7ZCARHvrVd8uNT7l/BSz9s6qEZM4p4oy97pBGv8HZYeWCAtrsg1NtiMJsCR6d+9h8EWhDhQLKrxbuXXsF79tlM63D5t/65Tfo4LOL/JE=
+	t=1708463995; cv=none; b=ng2XgvPtmdqiGsMOefGjTqjex7r80D74jbMulp6aRDh+QgDNn8EjiXf8CoS37dV05kJZw+SczswLAFqPbeQqFL8Z944bdRdFe+k36P4JhonDn41Ckwaokj2HR8zfhDEhYWY8h6lQs9qqHaIqZ7il1qplfsxz3p1gWptyVnug/wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708464910; c=relaxed/simple;
-	bh=GaGNJwup+kmiKtPUABicm6fJ2EZqWOH8LJv//m61OSs=;
+	s=arc-20240116; t=1708463995; c=relaxed/simple;
+	bh=5PsApUwjSD+1tVzqkM8JNYNh1cGChn6U5blNyOrjkRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=maw9MU9yvdrq6VgoglgWXjuG7ym+Gq6IIATopKzkpu16GvU6dukQmSHl5SRJ8xr8dTzS4KK/Wum39ay2rbsCN3lk2YPT7Q5TJJyFdom+FqDHwPjFZ2MUIUYLIJnJGd/IeHASViN9huEtowqtvan4n1DfNyHEFmDfWzD6A2qRKVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oszQWww8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 837A2C433F1;
-	Tue, 20 Feb 2024 21:35:09 +0000 (UTC)
+	 MIME-Version; b=lJI8WWK//KrdXj6KVSoVXTXccKye0RKYvYU3QLile7lHmEnXou6uTEFBUczpYpt0e8xYnuVI1RTFoM/g2tG5ycyexoQTldCceUzH7t+c1R4J2T9kw1caY2YL6NXSSwmlrgEU/htBxp/PFNzJjNOgFBgK/yv/+v1axBO901WvQEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fmhaZmoR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2ABAC433C7;
+	Tue, 20 Feb 2024 21:19:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708464909;
-	bh=GaGNJwup+kmiKtPUABicm6fJ2EZqWOH8LJv//m61OSs=;
+	s=korg; t=1708463995;
+	bh=5PsApUwjSD+1tVzqkM8JNYNh1cGChn6U5blNyOrjkRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oszQWww88QIqdevtbetLrOwbcklqsQ9UhRee8eX2wagHYpAfQSHF8iagJUk1ueykX
-	 /oWSZm89rdeMHZrmDu41SGzA7S/Faf36krLl6yd3gtweS297fgXxWGAimMKWe0nQCH
-	 q+lPPMSLiaZ2f2Bv/Fe5/IPJg1Ric2cJ2D9XYsXI=
+	b=fmhaZmoRqdIvgQAjYGQ6U5UVD6vJzwl5YT1tsrv4N3zJe5nhmzBouxyaEGDC1iwtX
+	 RXKcznKcOPWoNy59YpXXBJmx1O0ExCs5z7+mpUT+apg0zZj79N3GKCL2pc4/UbbH3F
+	 tQn59Z8KWPZhbGP0Jqab6hd6nCeunLOuZfWdHehM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Protsenko <semen.protsenko@linaro.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.7 176/309] iio: pressure: bmp280: Add missing bmp085 to SPI id table
+	Mark Brown <broonie@kernel.org>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.6 219/331] arm64/signal: Dont assume that TIF_SVE means we saved SVE state
 Date: Tue, 20 Feb 2024 21:55:35 +0100
-Message-ID: <20240220205638.662038710@linuxfoundation.org>
+Message-ID: <20240220205644.619961877@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
+References: <20240220205637.572693592@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sam Protsenko <semen.protsenko@linaro.org>
+From: Mark Brown <broonie@kernel.org>
 
-commit b67f3e653e305abf1471934d7b9fdb9ad2df3eef upstream.
+commit 61da7c8e2a602f66be578cbbcebe8638c10e0f48 upstream.
 
-"bmp085" is missing in bmp280_spi_id[] table, which leads to the next
-warning in dmesg:
+When we are in a syscall we will only save the FPSIMD subset even though
+the task still has access to the full register set, and on context switch
+we will only remove TIF_SVE when loading the register state. This means
+that the signal handling code should not assume that TIF_SVE means that
+the register state is stored in SVE format, it should instead check the
+format that was recorded during save.
 
-    SPI driver bmp280 has no spi_device_id for bosch,bmp085
-
-Add "bmp085" to bmp280_spi_id[] by mimicking its existing description in
-bmp280_of_spi_match[] table to fix the above warning.
-
-Signed-off-by: Sam Protsenko <semen.protsenko@linaro.org>
-Fixes: b26b4e91700f ("iio: pressure: bmp280: add SPI interface driver")
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 8c845e273104 ("arm64/sve: Leave SVE enabled on syscall if we don't context switch")
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240130-arm64-sve-signal-regs-v2-1-9fc6f9502782@kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/pressure/bmp280-spi.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/kernel/fpsimd.c |    2 +-
+ arch/arm64/kernel/signal.c |    4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/iio/pressure/bmp280-spi.c
-+++ b/drivers/iio/pressure/bmp280-spi.c
-@@ -91,6 +91,7 @@ static const struct of_device_id bmp280_
- MODULE_DEVICE_TABLE(of, bmp280_of_spi_match);
+--- a/arch/arm64/kernel/fpsimd.c
++++ b/arch/arm64/kernel/fpsimd.c
+@@ -1686,7 +1686,7 @@ void fpsimd_preserve_current_state(void)
+ void fpsimd_signal_preserve_current_state(void)
+ {
+ 	fpsimd_preserve_current_state();
+-	if (test_thread_flag(TIF_SVE))
++	if (current->thread.fp_type == FP_STATE_SVE)
+ 		sve_to_fpsimd(current);
+ }
  
- static const struct spi_device_id bmp280_spi_id[] = {
-+	{ "bmp085", (kernel_ulong_t)&bmp180_chip_info },
- 	{ "bmp180", (kernel_ulong_t)&bmp180_chip_info },
- 	{ "bmp181", (kernel_ulong_t)&bmp180_chip_info },
- 	{ "bmp280", (kernel_ulong_t)&bmp280_chip_info },
+--- a/arch/arm64/kernel/signal.c
++++ b/arch/arm64/kernel/signal.c
+@@ -242,7 +242,7 @@ static int preserve_sve_context(struct s
+ 		vl = task_get_sme_vl(current);
+ 		vq = sve_vq_from_vl(vl);
+ 		flags |= SVE_SIG_FLAG_SM;
+-	} else if (test_thread_flag(TIF_SVE)) {
++	} else if (current->thread.fp_type == FP_STATE_SVE) {
+ 		vq = sve_vq_from_vl(vl);
+ 	}
+ 
+@@ -878,7 +878,7 @@ static int setup_sigframe_layout(struct
+ 	if (system_supports_sve() || system_supports_sme()) {
+ 		unsigned int vq = 0;
+ 
+-		if (add_all || test_thread_flag(TIF_SVE) ||
++		if (add_all || current->thread.fp_type == FP_STATE_SVE ||
+ 		    thread_sm_enabled(&current->thread)) {
+ 			int vl = max(sve_max_vl(), sme_max_vl());
+ 
 
 
 
