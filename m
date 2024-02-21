@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-22417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CD1B85DBF1
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:47:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1E2385DECF
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:22:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11F8AB21413
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:47:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1714B2882D
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:20:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C67B77A03;
-	Wed, 21 Feb 2024 13:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF1ED79DAE;
+	Wed, 21 Feb 2024 14:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FnrUPGUu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z4Rh5mDW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF4969318;
-	Wed, 21 Feb 2024 13:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC3BA762C1;
+	Wed, 21 Feb 2024 14:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523232; cv=none; b=KXB2einCsnnyrCTB6Toff+WErpoyckJzdmNQQ9zYo/iNp994H2J+JSmQz5d6wVgh/TcqQq26MlLJexfc+4jwNNJSsyz2hgCfIqUObO1RsD/T9Phj4wc9wsh10fxbypVEjAD0LAB7xZjWZH6KKfmag10NxlAwDPoj9K8hqQ16hQ0=
+	t=1708525182; cv=none; b=qllTZkaGA3bQEqxJ+avXTgxp+Mtu85W8rafkRBIlv6TCDu18wEUt3S2JvK/OVzuJcm9PZoYmtOn5D6l/uJGAIjyXUcCJYW8c+A0rEw5kTEi7Bv+pfuHolM9RxvaAWosI3IqSuUijcC0ZNjS9xjxkjG3WNJCJKEEn0beKMpVBmg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523232; c=relaxed/simple;
-	bh=Z/94GXyUuZGRXTN3GQG3m/wowfpiK7Bn5S/CWPp91oY=;
+	s=arc-20240116; t=1708525182; c=relaxed/simple;
+	bh=zwgAhRmwiY7PsEQCrmLjIrGSoJ7Gi/3Oi8oxB/MzhPE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=csYe8UihHjRQIz9asPUwvv4jKneMr5YiOphJETFydKrF9ebyGft6pFP2p+c4tiq/ktbNIDTpKLvHn/eYSfDder9al5s+Y1kvTt3R5+VtvDlujmh29qBPUvS6SoIGGBPGEx9mGgNchAHBRZGHTvJV0eejb5WiZg6S75hLRnj4hg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FnrUPGUu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 604C4C433F1;
-	Wed, 21 Feb 2024 13:47:11 +0000 (UTC)
+	 MIME-Version; b=Q1lzH4sYWNa6ZP/4MNYzt8rsURrc154RRjd8uz2gH21mj8apUP8YZ+9Wr5IYLPxmRAQohNlyDK+FX0ipQ9+oZiA9U5sXbCIw2I++pgj9ZJlkGLv0lOkes4uDwL2A3QPoaSpScRqzFvQr5RkDW2yAtPJ2OIhEod/fweXHdnqTyMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z4Rh5mDW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AE94C43399;
+	Wed, 21 Feb 2024 14:19:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523231;
-	bh=Z/94GXyUuZGRXTN3GQG3m/wowfpiK7Bn5S/CWPp91oY=;
+	s=korg; t=1708525182;
+	bh=zwgAhRmwiY7PsEQCrmLjIrGSoJ7Gi/3Oi8oxB/MzhPE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FnrUPGUu6O+QNdIh0YGEMYxcx5UzfM3z2F7gwAsVEU9LXQIanklmnqVjEv1+/Htxw
-	 87IDzMD8j4loe2G+C2wwgZA6tyW1MCb7XcCmvHztPUGjEABqHisMuSq5+tsl0Ai8Sq
-	 ajMLW78269OmIJqUShf+K3XPRU9wz/qRcCd5y7jc=
+	b=z4Rh5mDWcMcE9priHEh2EMpp5BZjInONXeCsGOHeLQitQ6K9mdYXK2boXF/Y3ivTf
+	 pN0lrOkU4cTbIgTy0S8i1dof1A4E33Njl2itYmOiAaiOW8QQOB8Ji6jPRt2FNCMtEA
+	 TijC6SMJWv25T5oivgrlM7sCVCPH+BCNL7GWw4BA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Radek Krejci <radek.krejci@oracle.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 374/476] modpost: trim leading spaces when processing source files list
+Subject: [PATCH 5.4 084/267] KVM: s390: fix setting of fpc register
 Date: Wed, 21 Feb 2024 14:07:05 +0100
-Message-ID: <20240221130021.852856199@linuxfoundation.org>
+Message-ID: <20240221125942.602323841@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Radek Krejci <radek.krejci@oracle.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 5d9a16b2a4d9e8fa028892ded43f6501bc2969e5 ]
+[ Upstream commit b988b1bb0053c0dcd26187d29ef07566a565cf55 ]
 
-get_line() does not trim the leading spaces, but the
-parse_source_files() expects to get lines with source files paths where
-the first space occurs after the file path.
+kvm_arch_vcpu_ioctl_set_fpu() allows to set the floating point control
+(fpc) register of a guest cpu. The new value is tested for validity by
+temporarily loading it into the fpc register.
 
-Fixes: 70f30cfe5b89 ("modpost: use read_text_file() and get_line() for reading text files")
-Signed-off-by: Radek Krejci <radek.krejci@oracle.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+This may lead to corruption of the fpc register of the host process:
+if an interrupt happens while the value is temporarily loaded into the fpc
+register, and within interrupt context floating point or vector registers
+are used, the current fp/vx registers are saved with save_fpu_regs()
+assuming they belong to user space and will be loaded into fp/vx registers
+when returning to user space.
+
+test_fp_ctl() restores the original user space / host process fpc register
+value, however it will be discarded, when returning to user space.
+
+In result the host process will incorrectly continue to run with the value
+that was supposed to be used for a guest cpu.
+
+Fix this by simply removing the test. There is another test right before
+the SIE context is entered which will handles invalid values.
+
+This results in a change of behaviour: invalid values will now be accepted
+instead of that the ioctl fails with -EINVAL. This seems to be acceptable,
+given that this interface is most likely not used anymore, and this is in
+addition the same behaviour implemented with the memory mapped interface
+(replace invalid values with zero) - see sync_regs() in kvm-s390.c.
+
+Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/mod/sumversion.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/s390/kvm/kvm-s390.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/scripts/mod/sumversion.c b/scripts/mod/sumversion.c
-index 905c0ec291e1..e6962678032e 100644
---- a/scripts/mod/sumversion.c
-+++ b/scripts/mod/sumversion.c
-@@ -328,7 +328,12 @@ static int parse_source_files(const char *objfile, struct md4_ctx *md)
+diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+index b11eb11e2f49..6a1b46e85dac 100644
+--- a/arch/s390/kvm/kvm-s390.c
++++ b/arch/s390/kvm/kvm-s390.c
+@@ -3348,10 +3348,6 @@ int kvm_arch_vcpu_ioctl_set_fpu(struct kvm_vcpu *vcpu, struct kvm_fpu *fpu)
  
- 	/* Sum all files in the same dir or subdirs. */
- 	while ((line = get_line(&pos))) {
--		char* p = line;
-+		char* p;
-+
-+		/* trim the leading spaces away */
-+		while (isspace(*line))
-+			line++;
-+		p = line;
+ 	vcpu_load(vcpu);
  
- 		if (strncmp(line, "source_", sizeof("source_")-1) == 0) {
- 			p = strrchr(line, ' ');
+-	if (test_fp_ctl(fpu->fpc)) {
+-		ret = -EINVAL;
+-		goto out;
+-	}
+ 	vcpu->run->s.regs.fpc = fpu->fpc;
+ 	if (MACHINE_HAS_VX)
+ 		convert_fp_to_vx((__vector128 *) vcpu->run->s.regs.vrs,
+@@ -3359,7 +3355,6 @@ int kvm_arch_vcpu_ioctl_set_fpu(struct kvm_vcpu *vcpu, struct kvm_fpu *fpu)
+ 	else
+ 		memcpy(vcpu->run->s.regs.fprs, &fpu->fprs, sizeof(fpu->fprs));
+ 
+-out:
+ 	vcpu_put(vcpu);
+ 	return ret;
+ }
 -- 
 2.43.0
 
