@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-22715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED1B785DD68
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:05:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F91385D91E
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7CB19B23326
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:05:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B20B71C22DB6
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:14:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 310017E59A;
-	Wed, 21 Feb 2024 14:04:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2342769D32;
+	Wed, 21 Feb 2024 13:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BupFy4BF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JCk6uOMc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29F97BB19;
-	Wed, 21 Feb 2024 14:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A7169D09;
+	Wed, 21 Feb 2024 13:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524274; cv=none; b=CyW2EVfj3e+TY7mcIdj8WdyVGJ1WhoFLBUxdNFZXeMHVkecti3oOB5VuRV+dwr48kYKFneCEsNj/xrrBR7K34Cij81M7/V9HcSOqQn07wldFrjTP77JBEEB6hPo+j+cxB9uHm+IRP2/pHgP11HSIk90JN0oUGkE3vNEKzbvnjm4=
+	t=1708521290; cv=none; b=UwKDqq9YZsBO2EPwuo+ARGpQ5XSpimk0Z18TwYHNI+es6I7WJ0FHbenATVVWgP3Xoddz91ZqjrXWkdHRyOPoe9sEUh6cQGYtOITMeuLbB4h2KyvqBDohZ7/Ip1kQ1Vmd7Y9SnT/PvxEqS52oHPj65uR2rkrE98RlH1Wk5Ze3RRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524274; c=relaxed/simple;
-	bh=fG51BO70FZqsWIsZblBNwpGS3CTFfNrRpaZlUdD1mfY=;
+	s=arc-20240116; t=1708521290; c=relaxed/simple;
+	bh=qOzdr7xwOGJw+lbDjlvkbhn4y6BmSaL/MeH+8W5qeb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e1TJKyzRbsexCfCeTgfR2Cdktqo2HtuQ5ofZjTOAtudJuBWJE+hKYku96L8z5Pms0pcTrAwguMRoC9dNkozABUXLL5BKBmA/xpBxN3yUNDG75vs3F5eNJJvp3nFbSnkQTrBMStHAIjR7kvA6IFXjO/s6muDR9OkOycQtMrwkl3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BupFy4BF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49B96C43394;
-	Wed, 21 Feb 2024 14:04:33 +0000 (UTC)
+	 MIME-Version; b=cjRL2ICna5uezxA47VWpkenuWp0DHzwdoUVwCdD2ROST/SGWtG2m8AVAidlGLB3cy8FaloKkDC1d688gDqwkSCaUxhwYEKiglU+MA2ncullqK8HOmEk9c8nCpsWe6ve7vV05zRJQMRopwwAUDe9Fk0elrl3EnCLBoOQ13mwf8u8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JCk6uOMc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D5F6C433F1;
+	Wed, 21 Feb 2024 13:14:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524273;
-	bh=fG51BO70FZqsWIsZblBNwpGS3CTFfNrRpaZlUdD1mfY=;
+	s=korg; t=1708521290;
+	bh=qOzdr7xwOGJw+lbDjlvkbhn4y6BmSaL/MeH+8W5qeb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BupFy4BFGNlfEwfoqOxxYRAU2xpDsuIrrGz7nVgxntcBiW86Oi3fNfe6sLZekoFAs
-	 57YA4mQ99TLSoUZ5ZsgyTT60z73sWdWwGK/N6b9EiFEaCCyHG01yL+nTOqHHiOqaPY
-	 VU8bAE/rjgyMPr7mxJfPBr6AAApUDORHZSIIMOfc=
+	b=JCk6uOMcKl2OMgKiciRl4AbPCa4EoUkZ+9bhN3zBebf97na9iKyH2IyciCbisecDu
+	 N3h3GdGBbzonVNpf1Emh8p20cKgA4UBNOH7rxyAO7TQP+GvUMDXn+vit2G5Ci4uUnu
+	 UhyRSpf26xGSLBtO8nTgmA3k1HC90skvA3QlnxP8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 195/379] clk: mmp: pxa168: Fix memory leak in pxa168_clk_init()
+Subject: [PATCH 4.19 073/202] ext4: remove unnecessary check from alloc_flex_gd()
 Date: Wed, 21 Feb 2024 14:06:14 +0100
-Message-ID: <20240221130000.673509843@linuxfoundation.org>
+Message-ID: <20240221125934.174464720@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 2fbabea626b6467eb4e6c4cb7a16523da12e43b4 ]
+[ Upstream commit b099eb87de105cf07cad731ded6fb40b2675108b ]
 
-In cases where mapping of mpmu/apmu/apbc registers fails, the code path
-does not handle the failure gracefully, potentially leading to a memory
-leak. This fix ensures proper cleanup by freeing the allocated memory
-for 'pxa_unit' before returning.
+In commit 967ac8af4475 ("ext4: fix potential integer overflow in
+alloc_flex_gd()"), an overflow check is added to alloc_flex_gd() to
+prevent the allocated memory from being smaller than expected due to
+the overflow. However, after kmalloc() is replaced with kmalloc_array()
+in commit 6da2ec56059c ("treewide: kmalloc() -> kmalloc_array()"), the
+kmalloc_array() function has an overflow check, so the above problem
+will not occur. Therefore, the extra check is removed.
 
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Link: https://lore.kernel.org/r/20231210175232.3414584-1-visitorckw@gmail.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20231023013057.2117948-3-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/mmp/clk-of-pxa168.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/ext4/resize.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/clk/mmp/clk-of-pxa168.c b/drivers/clk/mmp/clk-of-pxa168.c
-index f110c02e83cb..9674c6c06dca 100644
---- a/drivers/clk/mmp/clk-of-pxa168.c
-+++ b/drivers/clk/mmp/clk-of-pxa168.c
-@@ -258,18 +258,21 @@ static void __init pxa168_clk_init(struct device_node *np)
- 	pxa_unit->mpmu_base = of_iomap(np, 0);
- 	if (!pxa_unit->mpmu_base) {
- 		pr_err("failed to map mpmu registers\n");
-+		kfree(pxa_unit);
- 		return;
- 	}
+diff --git a/fs/ext4/resize.c b/fs/ext4/resize.c
+index 2d27d4e06f7b..d9a8742873c9 100644
+--- a/fs/ext4/resize.c
++++ b/fs/ext4/resize.c
+@@ -245,10 +245,7 @@ static struct ext4_new_flex_group_data *alloc_flex_gd(unsigned int flexbg_size)
+ 	if (flex_gd == NULL)
+ 		goto out3;
  
- 	pxa_unit->apmu_base = of_iomap(np, 1);
- 	if (!pxa_unit->apmu_base) {
- 		pr_err("failed to map apmu registers\n");
-+		kfree(pxa_unit);
- 		return;
- 	}
- 
- 	pxa_unit->apbc_base = of_iomap(np, 2);
- 	if (!pxa_unit->apbc_base) {
- 		pr_err("failed to map apbc registers\n");
-+		kfree(pxa_unit);
- 		return;
- 	}
- 
+-	if (flexbg_size >= UINT_MAX / sizeof(struct ext4_new_group_data))
+-		goto out2;
+ 	flex_gd->count = flexbg_size;
+-
+ 	flex_gd->groups = kmalloc_array(flexbg_size,
+ 					sizeof(struct ext4_new_group_data),
+ 					GFP_NOFS);
 -- 
 2.43.0
 
