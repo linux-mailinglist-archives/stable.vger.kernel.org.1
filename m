@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-22297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C561C85DB53
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:39:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76A0D85DD34
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:03:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 021941C23329
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:39:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99BFB1C21DC6
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:03:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 688016996B;
-	Wed, 21 Feb 2024 13:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC1937BB19;
+	Wed, 21 Feb 2024 14:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="THKISXb2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gmyl0trY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 269F73C2F;
-	Wed, 21 Feb 2024 13:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABAA469E08;
+	Wed, 21 Feb 2024 14:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522774; cv=none; b=Nlvs6fGuD57OuOp9bZGnSc4oBXcAATKEMCXeSufbD+AlOk0o3Lbszvv2p8g0xcSV2CC+VjuuomS9JNXYOyRtsZRSiVeODYc14fXvD84pQAOVELcfbhLG/Go8lCk8q/uV4CeEu4AcLamUiH4X0E+G2Nk2oX8u+VfqZsqcqvds5Xc=
+	t=1708524133; cv=none; b=mlZrOopNLJ21hc8GE8v5JdnzbKazR6RUtz4pxNmLRRLziUhCJ/Gq5G512nl8854ZblWLg88CKwOCxm4xLga9tK5REOAlmT+RmWWGg2BQDHbwKLJw8mhHo4E8Q8eRygbAxcAGIUQsYQXlkGnBqG4UDWmrsZEaTKdCMOlvIoVpFH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522774; c=relaxed/simple;
-	bh=0+FlTxdcJMFflO6IL1R+EjRJOdiimC2Mze/fRdx/8Qc=;
+	s=arc-20240116; t=1708524133; c=relaxed/simple;
+	bh=6/7Hbf19V5dOpnsUOVaZ39IWZrVpRL2X4U23uhHix/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QtNnX5fZqE1vTWAh3ppo6FXNk6ke9WyMl8PEJKD7Od/mOpo4ftYrcHIr4gEVmJmgbenaaWg/HB/JEJ1lOxgX07XJVJJQc4Qp8u80AFGARL3xdkVfdJ8824A6qYL+oKkv0CkG7yL2rgubRiAcX3JiSgp2Pu8FWsSGIEDFRheUHDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=THKISXb2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BCDDC433C7;
-	Wed, 21 Feb 2024 13:39:33 +0000 (UTC)
+	 MIME-Version; b=ITFPmXTsvS/lCX62WcMXveqYkfWzk28b25YJN8dVz9LzCxyEH6SZfroVP1Mcq/UwsJ17jmQZb6lLEacXMHhd5xUzfcDI7ekHe4RHKGqwR5rBvHpCyfs2JAki8Kh3KIHA08ZF5BIuvjBGweTLSzpXxjUlfuXgnrFhYmiNdgZYq5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gmyl0trY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B9EEC43399;
+	Wed, 21 Feb 2024 14:02:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522773;
-	bh=0+FlTxdcJMFflO6IL1R+EjRJOdiimC2Mze/fRdx/8Qc=;
+	s=korg; t=1708524133;
+	bh=6/7Hbf19V5dOpnsUOVaZ39IWZrVpRL2X4U23uhHix/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=THKISXb2OelWq2VE1trmNpcIrDIIqDFvFIyYeZYu8qzk6KbQg8f3WHvvLEEl4Sf/1
-	 64Vp/7y+gLc19Z7ABQq1fuwLL8p6ejFNAYld9r+pJhGHV7wGIMlnLZK0+aUBlSSW1w
-	 BRTlYY/atnlL1Ax/GE/PAaMoEXc1RTUWXmFvKRLw=
+	b=gmyl0trYD8Qbwo6Jkz8k3R2njoVqqPxDyeYaalGrDi3wmiaQIpK5Mgqp3kWiyo2Wy
+	 7LzZTU9f+TWndyHCoGn9HEEAaGLHIvQC9II1I2mQyB3F0te4zNaOu8Iq6hSIKoZHRC
+	 K3xaWBuYqq9AKoXHucwA4uYxBZu/4rPgHZjlmRYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	Adrian Reber <areber@redhat.com>,
-	Andrei Vagin <avagin@gmail.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 254/476] tty: allow TIOCSLCKTRMIOS with CAP_CHECKPOINT_RESTORE
+Subject: [PATCH 5.10 126/379] afs: fix the usage of read_seqbegin_or_lock() in afs_find_server*()
 Date: Wed, 21 Feb 2024 14:05:05 +0100
-Message-ID: <20240221130017.238287280@linuxfoundation.org>
+Message-ID: <20240221125958.655399323@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +64,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Reber <areber@redhat.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-[ Upstream commit e0f25b8992345aa5f113da2815f5add98738c611 ]
+[ Upstream commit 1702e0654ca9a7bcd7c7619c8a5004db58945b71 ]
 
-The capability CAP_CHECKPOINT_RESTORE was introduced to allow non-root
-users to checkpoint and restore processes as non-root with CRIU.
+David Howells says:
 
-This change extends CAP_CHECKPOINT_RESTORE to enable the CRIU option
-'--shell-job' as non-root. CRIU's man-page describes the '--shell-job'
-option like this:
+ (5) afs_find_server().
 
-  Allow one to dump shell jobs. This implies the restored task will
-  inherit session and process group ID from the criu itself. This option
-  also allows to migrate a single external tty connection, to migrate
-  applications like top.
+     There could be a lot of servers in the list and each server can have
+     multiple addresses, so I think this would be better with an exclusive
+     second pass.
 
-TIOCSLCKTRMIOS can only be done if the process has CAP_SYS_ADMIN and
-this change extends it to CAP_SYS_ADMIN or CAP_CHECKPOINT_RESTORE.
+     The server list isn't likely to change all that often, but when it does
+     change, there's a good chance several servers are going to be
+     added/removed one after the other.  Further, this is only going to be
+     used for incoming cache management/callback requests from the server,
+     which hopefully aren't going to happen too often - but it is remotely
+     drivable.
 
-With this change it is possible to checkpoint and restore processes
-which have a tty connection as non-root if CAP_CHECKPOINT_RESTORE is
-set.
+ (6) afs_find_server_by_uuid().
 
-Acked-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Adrian Reber <areber@redhat.com>
-Acked-by: Andrei Vagin <avagin@gmail.com>
-Link: https://lore.kernel.org/r/20231208143656.1019-1-areber@redhat.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+     Similarly to (5), there could be a lot of servers to search through, but
+     they are in a tree not a flat list, so it should be faster to process.
+     Again, it's not likely to change that often and, again, when it does
+     change it's likely to involve multiple changes.  This can be driven
+     remotely by an incoming cache management request but is mostly going to
+     be driven by setting up or reconfiguring a volume's server list -
+     something that also isn't likely to happen often.
+
+Make the "seq" counter odd on the 2nd pass, otherwise read_seqbegin_or_lock()
+never takes the lock.
+
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Link: https://lore.kernel.org/r/20231130115614.GA21581@redhat.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/tty_ioctl.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/afs/server.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/tty/tty_ioctl.c b/drivers/tty/tty_ioctl.c
-index dac1e2568803..224f13b98312 100644
---- a/drivers/tty/tty_ioctl.c
-+++ b/drivers/tty/tty_ioctl.c
-@@ -786,7 +786,7 @@ int tty_mode_ioctl(struct tty_struct *tty, struct file *file,
- 			ret = -EFAULT;
- 		return ret;
- 	case TIOCSLCKTRMIOS:
--		if (!capable(CAP_SYS_ADMIN))
-+		if (!checkpoint_restore_ns_capable(&init_user_ns))
- 			return -EPERM;
- 		copy_termios_locked(real_tty, &kterm);
- 		if (user_termios_to_kernel_termios(&kterm,
-@@ -803,7 +803,7 @@ int tty_mode_ioctl(struct tty_struct *tty, struct file *file,
- 			ret = -EFAULT;
- 		return ret;
- 	case TIOCSLCKTRMIOS:
--		if (!capable(CAP_SYS_ADMIN))
-+		if (!checkpoint_restore_ns_capable(&init_user_ns))
- 			return -EPERM;
- 		copy_termios_locked(real_tty, &kterm);
- 		if (user_termios_to_kernel_termios_1(&kterm,
+diff --git a/fs/afs/server.c b/fs/afs/server.c
+index 684a2b02b9ff..733e3c470f7e 100644
+--- a/fs/afs/server.c
++++ b/fs/afs/server.c
+@@ -27,7 +27,7 @@ struct afs_server *afs_find_server(struct afs_net *net,
+ 	const struct afs_addr_list *alist;
+ 	struct afs_server *server = NULL;
+ 	unsigned int i;
+-	int seq = 0, diff;
++	int seq = 1, diff;
+ 
+ 	rcu_read_lock();
+ 
+@@ -35,6 +35,7 @@ struct afs_server *afs_find_server(struct afs_net *net,
+ 		if (server)
+ 			afs_unuse_server_notime(net, server, afs_server_trace_put_find_rsq);
+ 		server = NULL;
++		seq++; /* 2 on the 1st/lockless path, otherwise odd */
+ 		read_seqbegin_or_lock(&net->fs_addr_lock, &seq);
+ 
+ 		if (srx->transport.family == AF_INET6) {
+@@ -90,7 +91,7 @@ struct afs_server *afs_find_server_by_uuid(struct afs_net *net, const uuid_t *uu
+ {
+ 	struct afs_server *server = NULL;
+ 	struct rb_node *p;
+-	int diff, seq = 0;
++	int diff, seq = 1;
+ 
+ 	_enter("%pU", uuid);
+ 
+@@ -102,7 +103,7 @@ struct afs_server *afs_find_server_by_uuid(struct afs_net *net, const uuid_t *uu
+ 		if (server)
+ 			afs_unuse_server(net, server, afs_server_trace_put_uuid_rsq);
+ 		server = NULL;
+-
++		seq++; /* 2 on the 1st/lockless path, otherwise odd */
+ 		read_seqbegin_or_lock(&net->fs_lock, &seq);
+ 
+ 		p = net->fs_servers.rb_node;
 -- 
 2.43.0
 
