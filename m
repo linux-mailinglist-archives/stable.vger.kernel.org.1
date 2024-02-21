@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-23068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4E3685DF16
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:24:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BC2985DC32
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:50:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C6F5283D09
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:24:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBCDF285727
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:50:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BAA178B73;
-	Wed, 21 Feb 2024 14:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 717B27BB14;
+	Wed, 21 Feb 2024 13:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z9Pu39oh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="httftXqK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD47473161;
-	Wed, 21 Feb 2024 14:24:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24EDE7BB0F;
+	Wed, 21 Feb 2024 13:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525473; cv=none; b=BuSlfgrDn5AxYriczMtNZIuQfqUdqpFU0fhO8RXyrg4s/4TIUT+L/zo6LeByxY3M7Jp2TlZ/qqE2PTYVz3NomFIFr79I6ycn0nUXx4A2qYkWfp97xCpUhXD+W2bpiRdOFiCzTWQ5AHzvfqPY1v25sOzD1EHQDzR8MWm+l1IWTUU=
+	t=1708523407; cv=none; b=a8JT8iyUELSpmP8CEp1jnmK9ANO7dUIcQEdVJm+JpgBDSb4ovQX6+VKbIfbEaTSG7qXQszGRXc9iYJQpXQ2X+kjlzgXKDaHCGMycFX0eE2oGEYA+oufFJFgtpJBNc9zhV3NQbpPdONpxJ//v8Yzp7n5St0JAf1OmIoFn5wlyUz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525473; c=relaxed/simple;
-	bh=TNqvS6uyobU64wZJt4ubUzB+wrfqliEsEHcAz/p6QFk=;
+	s=arc-20240116; t=1708523407; c=relaxed/simple;
+	bh=WY+jW6aAuCiWQhUIEekj7/ug+lwVp18R3CeYcOZhbe8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WnAgM5UC11Y/9XuxufLfLsuoRAoKHx3YRAi+PYasNDx095M6et1JJNgMpA34I/+y6rfjqhalWp90nW2sSVVjCLTPGHOQGqDMx7GwHa++H/p8ZGKr6JJNG4SYH/u6WoCTfmU0BGEiW9hbVtjR8/Yqaekf7EkjuZwHD1RPgGt34m8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z9Pu39oh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A70EC43394;
-	Wed, 21 Feb 2024 14:24:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ebpZAk5ffzHCPBXuA9za8rczBnjqGR9xMcYrmZ1IAJA1Ew6yI78+UmUXVyQGTdlGqj2gNSjS765pLOV1rdG3Qs6qlAZAt/ugmHrG8TX9/s5MX+HBJUIM+P55NUEIfRSyMkNmzz3x3DHhKYUn+h+I3/1Q4Ir/iBuifWO6bTLTgK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=httftXqK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B90FC433C7;
+	Wed, 21 Feb 2024 13:50:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525473;
-	bh=TNqvS6uyobU64wZJt4ubUzB+wrfqliEsEHcAz/p6QFk=;
+	s=korg; t=1708523407;
+	bh=WY+jW6aAuCiWQhUIEekj7/ug+lwVp18R3CeYcOZhbe8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z9Pu39ohvGmKbmLp0guSTcxv1hx7Qchq/gYdPYBjs1wTueArKLSad3rRkMk40P5oF
-	 QnuwMMzZkGoL50+y8bjeVC+JVebNsorbr6VSG6sTx9kGoPe/Poi7ZSuXJo/AxIhR0h
-	 oxzrlkJ94vIYHpftKoUg2hs3Peg/NVw3eBIbIx8E=
+	b=httftXqKcZCpJvAt/L5WS1FTvSXoN4c4OpPYd+sBiDSjWVTs6a6b+Zr/Rqvp+s9vG
+	 kJnlqQNdx63s7o1UvRljbUao+DCFubqZRUmUGjraCyFa9GHr05UXNjGW817SZw+Yh6
+	 V+0C7hGfF91F+XK1r5GEEparSEBmo4e/RX0tWddY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aric Cyr <aric.cyr@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Josip Pavic <josip.pavic@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Andrejs Cainikovs <andrejs.cainikovs@toradex.com>,
+	=?UTF-8?q?Alvin=20=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 137/267] drm/amd/display: make flip_timestamp_in_us a 64-bit variable
+Subject: [PATCH 5.15 427/476] mwifiex: Select firmware based on strapping
 Date: Wed, 21 Feb 2024 14:07:58 +0100
-Message-ID: <20240221125944.351522154@linuxfoundation.org>
+Message-ID: <20240221130023.815110111@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +61,134 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josip Pavic <josip.pavic@amd.com>
+From: Andrejs Cainikovs <andrejs.cainikovs@toradex.com>
 
-[ Upstream commit 6fb12518ca58412dc51054e2a7400afb41328d85 ]
+[ Upstream commit 255ca28a659d3cfb069f73c7644853ed93aecdb0 ]
 
-[Why]
-This variable currently overflows after about 71 minutes. This doesn't
-cause any known functional issues but it does make debugging more
-difficult.
+Some WiFi/Bluetooth modules might have different host connection
+options, allowing to either use SDIO for both WiFi and Bluetooth,
+or SDIO for WiFi and UART for Bluetooth. It is possible to detect
+whether a module has SDIO-SDIO or SDIO-UART connection by reading
+its host strap register.
 
-[How]
-Make it a 64-bit variable.
+This change introduces a way to automatically select appropriate
+firmware depending of the connection method, and removes a need
+of symlinking or overwriting the original firmware file with a
+required one.
 
-Reviewed-by: Aric Cyr <aric.cyr@amd.com>
-Acked-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Josip Pavic <josip.pavic@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Host strap register used in this commit comes from the NXP driver [1]
+hosted at Code Aurora.
+
+[1] https://source.codeaurora.org/external/imx/linux-imx/tree/drivers/net/wireless/nxp/mxm_wifiex/wlan_src/mlinux/moal_sdio_mmc.c?h=rel_imx_5.4.70_2.3.2&id=688b67b2c7220b01521ffe560da7eee33042c7bd#n1274
+
+Signed-off-by: Andrejs Cainikovs <andrejs.cainikovs@toradex.com>
+Reviewed-by: Alvin Šipraga <alsi@bang-olufsen.dk>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20220422090313.125857-2-andrejs.cainikovs@toradex.com
+Stable-dep-of: 1c5d463c0770 ("wifi: mwifiex: add extra delay for firmware ready")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dc_hw_types.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/marvell/mwifiex/sdio.c | 21 ++++++++++++++++++++-
+ drivers/net/wireless/marvell/mwifiex/sdio.h |  5 +++++
+ 2 files changed, 25 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dc_hw_types.h b/drivers/gpu/drm/amd/display/dc/dc_hw_types.h
-index 0b8700a8a94a..c6281d4a18ce 100644
---- a/drivers/gpu/drm/amd/display/dc/dc_hw_types.h
-+++ b/drivers/gpu/drm/amd/display/dc/dc_hw_types.h
-@@ -423,7 +423,7 @@ struct dc_cursor_position {
- };
+diff --git a/drivers/net/wireless/marvell/mwifiex/sdio.c b/drivers/net/wireless/marvell/mwifiex/sdio.c
+index b09e60fedeb1..016065a56e6c 100644
+--- a/drivers/net/wireless/marvell/mwifiex/sdio.c
++++ b/drivers/net/wireless/marvell/mwifiex/sdio.c
+@@ -182,6 +182,9 @@ static const struct mwifiex_sdio_card_reg mwifiex_reg_sd8997 = {
+ 	.host_int_rsr_reg = 0x4,
+ 	.host_int_status_reg = 0x0C,
+ 	.host_int_mask_reg = 0x08,
++	.host_strap_reg = 0xF4,
++	.host_strap_mask = 0x01,
++	.host_strap_value = 0x00,
+ 	.status_reg_0 = 0xE8,
+ 	.status_reg_1 = 0xE9,
+ 	.sdio_int_mask = 0xff,
+@@ -283,6 +286,9 @@ static const struct mwifiex_sdio_card_reg mwifiex_reg_sd8987 = {
+ 	.host_int_rsr_reg = 0x4,
+ 	.host_int_status_reg = 0x0C,
+ 	.host_int_mask_reg = 0x08,
++	.host_strap_reg = 0xF4,
++	.host_strap_mask = 0x01,
++	.host_strap_value = 0x00,
+ 	.status_reg_0 = 0xE8,
+ 	.status_reg_1 = 0xE9,
+ 	.sdio_int_mask = 0xff,
+@@ -537,6 +543,7 @@ mwifiex_sdio_probe(struct sdio_func *func, const struct sdio_device_id *id)
+ 		struct mwifiex_sdio_device *data = (void *)id->driver_data;
  
- struct dc_cursor_mi_param {
--	unsigned int pixel_clk_khz;
-+	unsigned long long pixel_clk_khz;
- 	unsigned int ref_clk_khz;
- 	struct rect viewport;
- 	struct fixed31_32 h_scale_ratio;
+ 		card->firmware = data->firmware;
++		card->firmware_sdiouart = data->firmware_sdiouart;
+ 		card->reg = data->reg;
+ 		card->max_ports = data->max_ports;
+ 		card->mp_agg_pkt_limit = data->mp_agg_pkt_limit;
+@@ -2440,6 +2447,7 @@ static int mwifiex_register_dev(struct mwifiex_adapter *adapter)
+ 	int ret;
+ 	struct sdio_mmc_card *card = adapter->card;
+ 	struct sdio_func *func = card->func;
++	const char *firmware = card->firmware;
+ 
+ 	/* save adapter pointer in card */
+ 	card->adapter = adapter;
+@@ -2456,7 +2464,18 @@ static int mwifiex_register_dev(struct mwifiex_adapter *adapter)
+ 		return ret;
+ 	}
+ 
+-	strcpy(adapter->fw_name, card->firmware);
++	/* Select correct firmware (sdsd or sdiouart) firmware based on the strapping
++	 * option
++	 */
++	if (card->firmware_sdiouart) {
++		u8 val;
++
++		mwifiex_read_reg(adapter, card->reg->host_strap_reg, &val);
++		if ((val & card->reg->host_strap_mask) == card->reg->host_strap_value)
++			firmware = card->firmware_sdiouart;
++	}
++	strcpy(adapter->fw_name, firmware);
++
+ 	if (card->fw_dump_enh) {
+ 		adapter->mem_type_mapping_tbl = generic_mem_type_map;
+ 		adapter->num_mem_types = 1;
+diff --git a/drivers/net/wireless/marvell/mwifiex/sdio.h b/drivers/net/wireless/marvell/mwifiex/sdio.h
+index 5648512c9300..ad2c28cbb630 100644
+--- a/drivers/net/wireless/marvell/mwifiex/sdio.h
++++ b/drivers/net/wireless/marvell/mwifiex/sdio.h
+@@ -196,6 +196,9 @@ struct mwifiex_sdio_card_reg {
+ 	u8 host_int_rsr_reg;
+ 	u8 host_int_status_reg;
+ 	u8 host_int_mask_reg;
++	u8 host_strap_reg;
++	u8 host_strap_mask;
++	u8 host_strap_value;
+ 	u8 status_reg_0;
+ 	u8 status_reg_1;
+ 	u8 sdio_int_mask;
+@@ -241,6 +244,7 @@ struct sdio_mmc_card {
+ 
+ 	struct completion fw_done;
+ 	const char *firmware;
++	const char *firmware_sdiouart;
+ 	const struct mwifiex_sdio_card_reg *reg;
+ 	u8 max_ports;
+ 	u8 mp_agg_pkt_limit;
+@@ -274,6 +278,7 @@ struct sdio_mmc_card {
+ 
+ struct mwifiex_sdio_device {
+ 	const char *firmware;
++	const char *firmware_sdiouart;
+ 	const struct mwifiex_sdio_card_reg *reg;
+ 	u8 max_ports;
+ 	u8 mp_agg_pkt_limit;
 -- 
 2.43.0
 
