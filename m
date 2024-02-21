@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-21938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 037A785D948
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:17:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3FA085DBD5
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:45:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1950283523
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:17:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21A421C20AB6
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:45:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82AD979DAB;
-	Wed, 21 Feb 2024 13:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9797F78B4B;
+	Wed, 21 Feb 2024 13:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QZLGFz4I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="doihKC9R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4063378B57;
-	Wed, 21 Feb 2024 13:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 562E54D5B7;
+	Wed, 21 Feb 2024 13:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521397; cv=none; b=YKRD3I05f7wrZbvE2G+7DRDO6HAzFT8QlUCuaZv8wwB1sPcCwxwYvHiWO0X0vMdiIRiJBMysYL4NI5BxXl0Gx4r7d15GUukITtQKT5e0+euiU0CUmT11ss6dTJJhn/orW4E0aMF3Q8pHHRy5ktrhTIBkOzoQi4blKYVTJsKVz+g=
+	t=1708523133; cv=none; b=dI6XlroE3lNJzPFr/sYSD1KWvv7p0RrbIdm9iONZAZUpccMSYnm7mhcZJeMJGPGTEz5XWOn8EaYjnSsnUhpUPp/nFTW7PK0YKvL1oy0YEYByC3ebJRkbfe6uYGnt0bLmClRT7u+xYw9Hm5ohNhqkIqDxsgoWMYUZNJ1PwvKmFYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521397; c=relaxed/simple;
-	bh=pDJG0GR6EgAe3VNkYN4bgSdaIlbEd2s+azEQpJb0w0w=;
+	s=arc-20240116; t=1708523133; c=relaxed/simple;
+	bh=/j2Mtl5Bkusi4FsorGss6I1BKtsMsOKCl8+P44ANTaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U3mEUgxjG6JRrd3cNv9nNR9TYxwMHX4Seg6OD+R8IBSvNuvLjNJS0XoZ9YDI2aRlBIJ3pHuk4x4zlN+Q56phJd9eksboHXwDxNaJhxj8H5PgkVk5KA5FvI2RTkgH30apDIQEpo/jmYIBHymwdDBhyX67gdzHseUrDLuFI311DvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QZLGFz4I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39D6FC43390;
-	Wed, 21 Feb 2024 13:16:36 +0000 (UTC)
+	 MIME-Version; b=sVtaZu4kP8Ty6nyvllUaS5qltiW+pXm8Q6GP5j4aGHv8BN2dYWP90P4ox99xtPFXkvpWJ+speb+MeJb2RMw4242iAmVLjqB8sYancBnsfQkOwXnQFIpnnYtJKi+R0zykmlScry/wdqEX/BO9/h9dZWwnLD+R4nDYIMWfaRq6QKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=doihKC9R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 894F9C43394;
+	Wed, 21 Feb 2024 13:45:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521396;
-	bh=pDJG0GR6EgAe3VNkYN4bgSdaIlbEd2s+azEQpJb0w0w=;
+	s=korg; t=1708523133;
+	bh=/j2Mtl5Bkusi4FsorGss6I1BKtsMsOKCl8+P44ANTaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QZLGFz4IdJBXedLIry/46GSpC8s02oXVnZw/wxAcmi9TUv8YXkB4CpeFiUUaY752y
-	 WyNwPdLLsrLySLbkMCeQG97o6Kz9REyVKl99CrUjgg3mcFpnrIqLu3otqyPbAMz/zK
-	 iOkJcq996jY/k+jWufrU8B0Ztpj7fesNi9ow2xjU=
+	b=doihKC9RUarPJqRMYcBv0sRY+JAAxbpWb/zlkE42OJYFMRL0O38hCohEX0e3rLU2m
+	 a9AyOPvT4JRtdtKc9l9QKebJDlUjUIL9NK10O6jSyYzSkpMLqz2npoVpK4FRqPtAf4
+	 OlYKUxIkU4zPzlj824fSbKZJL+61kPrCKDyWkUNw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jack Wang <jinpu.wang@ionos.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 099/202] RDMA/IPoIB: Fix error code return in ipoib_mcast_join
+Subject: [PATCH 5.15 349/476] wifi: iwlwifi: Fix some error codes
 Date: Wed, 21 Feb 2024 14:06:40 +0100
-Message-ID: <20240221125934.974843940@linuxfoundation.org>
+Message-ID: <20240221130020.883405022@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,36 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jack Wang <jinpu.wang@ionos.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 753fff78f430704548f45eda52d6d55371a52c0f ]
+[ Upstream commit c6ebb5b67641994de8bc486b33457fe0b681d6fe ]
 
-Return the error code in case of ib_sa_join_multicast fail.
+This saves the error as PTR_ERR(wifi_pkg).  The problem is that
+"wifi_pkg" is a valid pointer, not an error pointer.  Set the error code
+to -EINVAL instead.
 
-Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
-Link: https://lore.kernel.org/r/20231121130316.126364-2-jinpu.wang@ionos.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 2a8084147bff ("iwlwifi: acpi: support reading and storing WRDS revision 1 and 2")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://msgid.link/9620bb77-2d7c-4d76-b255-ad824ebf8e35@moroto.mountain
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/ipoib/ipoib_multicast.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/ipoib/ipoib_multicast.c b/drivers/infiniband/ulp/ipoib/ipoib_multicast.c
-index b9e9562f5034..805df1fcba84 100644
---- a/drivers/infiniband/ulp/ipoib/ipoib_multicast.c
-+++ b/drivers/infiniband/ulp/ipoib/ipoib_multicast.c
-@@ -558,6 +558,7 @@ static int ipoib_mcast_join(struct net_device *dev, struct ipoib_mcast *mcast)
- 		spin_unlock_irq(&priv->lock);
- 		complete(&mcast->done);
- 		spin_lock_irq(&priv->lock);
-+		return ret;
- 	}
- 	return 0;
- }
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+index 9e00d1d7e146..f0e0d4ccbc09 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+@@ -527,7 +527,7 @@ int iwl_sar_get_wrds_table(struct iwl_fw_runtime *fwrt)
+ 					 &tbl_rev);
+ 	if (!IS_ERR(wifi_pkg)) {
+ 		if (tbl_rev != 2) {
+-			ret = PTR_ERR(wifi_pkg);
++			ret = -EINVAL;
+ 			goto out_free;
+ 		}
+ 
+@@ -543,7 +543,7 @@ int iwl_sar_get_wrds_table(struct iwl_fw_runtime *fwrt)
+ 					 &tbl_rev);
+ 	if (!IS_ERR(wifi_pkg)) {
+ 		if (tbl_rev != 1) {
+-			ret = PTR_ERR(wifi_pkg);
++			ret = -EINVAL;
+ 			goto out_free;
+ 		}
+ 
+@@ -559,7 +559,7 @@ int iwl_sar_get_wrds_table(struct iwl_fw_runtime *fwrt)
+ 					 &tbl_rev);
+ 	if (!IS_ERR(wifi_pkg)) {
+ 		if (tbl_rev != 0) {
+-			ret = PTR_ERR(wifi_pkg);
++			ret = -EINVAL;
+ 			goto out_free;
+ 		}
+ 
+@@ -614,7 +614,7 @@ int iwl_sar_get_ewrd_table(struct iwl_fw_runtime *fwrt)
+ 					 &tbl_rev);
+ 	if (!IS_ERR(wifi_pkg)) {
+ 		if (tbl_rev != 2) {
+-			ret = PTR_ERR(wifi_pkg);
++			ret = -EINVAL;
+ 			goto out_free;
+ 		}
+ 
+@@ -630,7 +630,7 @@ int iwl_sar_get_ewrd_table(struct iwl_fw_runtime *fwrt)
+ 					 &tbl_rev);
+ 	if (!IS_ERR(wifi_pkg)) {
+ 		if (tbl_rev != 1) {
+-			ret = PTR_ERR(wifi_pkg);
++			ret = -EINVAL;
+ 			goto out_free;
+ 		}
+ 
+@@ -646,7 +646,7 @@ int iwl_sar_get_ewrd_table(struct iwl_fw_runtime *fwrt)
+ 					 &tbl_rev);
+ 	if (!IS_ERR(wifi_pkg)) {
+ 		if (tbl_rev != 0) {
+-			ret = PTR_ERR(wifi_pkg);
++			ret = -EINVAL;
+ 			goto out_free;
+ 		}
+ 
 -- 
 2.43.0
 
