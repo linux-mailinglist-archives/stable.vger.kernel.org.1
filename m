@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-23048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3423285DEFA
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:23:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC84D85DDFE
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:14:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4FAC1F22370
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:23:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14AB21C23878
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EF2269962;
-	Wed, 21 Feb 2024 14:23:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6C208060A;
+	Wed, 21 Feb 2024 14:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vLngDih1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dULLBpjm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15AE83CF42;
-	Wed, 21 Feb 2024 14:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773A280604;
+	Wed, 21 Feb 2024 14:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525405; cv=none; b=awkx4YQtZuQ+IXC/qN9tCc44hQRfxw8aSB7MaF63xjXcX5cCoiyZGo5HTjpgOsCXLW0YOPZ38NvHf9y1yCa0i0AIsMHXC45dSDdA+YfjTZzhzcoxBJPXECFubJX6/ZjmjQeYb1CBYDDXEzBdGbW6uQJ/kEOChPzs8HRqgCvSjzs=
+	t=1708524656; cv=none; b=NXms2qc9fDDsW41GWtcPzBdNESEa4B7t7+z7hEYVCziro7mdSfjHkHw2BKsKyAPAOWPtryFiFHxZQ1svLHIx2DBnwC/90QnUIHjDxxQxe6xPFN05f8UGG+Xd7gamfHccbEVmVMtZaiIB8tpkBKGzp548z3PGb9wZLVjDlTNsY+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525405; c=relaxed/simple;
-	bh=MV4iXCM5iaboXWC/JUo3D9mCs9HsDCsUbOk5wovwJDU=;
+	s=arc-20240116; t=1708524656; c=relaxed/simple;
+	bh=ziw5RVNGJZU+hELz9Xr/4NFwaYkIwMTNWT/PFO0KRH0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c7qk+YUYMhVyNC9zKpRWLMYSGExv1+78UeqPp+DWKso/HSOUB6u7iNKAL6jTXZtLp3pGC+ZPRlnCftrbahTw1clafFjEXGbkWZoc8CZ+OnJJMh2eAltGHpeQfcCB5X6AOqtx2BKcR6VZqB1nGGACLqYlVStvfl4Pq4rizErmfIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vLngDih1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40116C433C7;
-	Wed, 21 Feb 2024 14:23:24 +0000 (UTC)
+	 MIME-Version; b=u63IWusSXJKZ+KHcS156hLzotmEUS9LBo9DiC5BonFrcKjA1KFl0A5o0BKH8BQmxHN+A5mjVNZAFFwCmCKIF8OY00UgFb1nhli4VbUqwcCjry61dUl77pq/lfejxcV3AHQq6jZEkTalMzZHwbHks54QAxwTyvo1FP2E76U8y3Kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dULLBpjm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C6BC433F1;
+	Wed, 21 Feb 2024 14:10:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525404;
-	bh=MV4iXCM5iaboXWC/JUo3D9mCs9HsDCsUbOk5wovwJDU=;
+	s=korg; t=1708524656;
+	bh=ziw5RVNGJZU+hELz9Xr/4NFwaYkIwMTNWT/PFO0KRH0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vLngDih1b4S4lHePkcTIE9lhibC2z49QKkr2VjFWaCRJG2yJLVGUBQqHIKJyozioJ
-	 cUfisa5MlKp1cONmu+YbIvwT4Z7Lq7NlXHyV00g5OeEcd6G7HDcpNbVXz53Sa06GuN
-	 sI6CJjXFogQ9UNKZKJvECkZF8prbUtxEqmJyLwV4=
+	b=dULLBpjmyDWh6uxdsq7cq1LbEUqT3FXqH8mDgAc/gSNp0LPKZo7CeCSsCSyKypTC7
+	 j8dqqr0V7rahRx1Uiot0TsGs/CgqE/xfcQ02K0atY9aCGwDK3E7BlFaPXqINNotUk6
+	 kqGnENn44k2pqOT/erzsyz3sE9wLx+zrcT1tsC1g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Huang Rui <ray.huang@amd.com>,
-	Vicki Pfau <vi@endrift.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jean Delvare <jdelvare@suse.de>,
+	Wolfram Sang <wsa@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 146/267] PCI: Only override AMD USB controller if required
+Subject: [PATCH 5.10 308/379] i2c: i801: Remove i801_set_block_buffer_mode
 Date: Wed, 21 Feb 2024 14:08:07 +0100
-Message-ID: <20240221125944.641698076@linuxfoundation.org>
+Message-ID: <20240221130004.039523480@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guilherme G. Piccoli <gpiccoli@igalia.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit e585a37e5061f6d5060517aed1ca4ccb2e56a34c ]
+[ Upstream commit 1e1d6582f483a4dba4ea03445e6f2f05d9de5bcf ]
 
-By running a Van Gogh device (Steam Deck), the following message
-was noticed in the kernel log:
+If FEATURE_BLOCK_BUFFER is set then bit SMBAUXCTL_E32B is supported
+and there's no benefit in reading it back. Origin of this check
+seems to be 14 yrs ago when people were not completely sure which
+chip versions support the block buffer mode.
 
-  pci 0000:04:00.3: PCI class overridden (0x0c03fe -> 0x0c03fe) so dwc3 driver can claim this instead of xhci
-
-Effectively this means the quirk executed but changed nothing, since the
-class of this device was already the proper one (likely adjusted by newer
-firmware versions).
-
-Check and perform the override only if necessary.
-
-Link: https://lore.kernel.org/r/20231120160531.361552-1-gpiccoli@igalia.com
-Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: Huang Rui <ray.huang@amd.com>
-Cc: Vicki Pfau <vi@endrift.com>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Reviewed-by: Jean Delvare <jdelvare@suse.de>
+Tested-by: Jean Delvare <jdelvare@suse.de>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Stable-dep-of: c1c9d0f6f7f1 ("i2c: i801: Fix block process call transactions")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/i2c/busses/i2c-i801.c | 17 +++++------------
+ 1 file changed, 5 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index d1fab1d27e4d..821e71a45849 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -609,10 +609,13 @@ static void quirk_amd_dwc_class(struct pci_dev *pdev)
- {
- 	u32 class = pdev->class;
+diff --git a/drivers/i2c/busses/i2c-i801.c b/drivers/i2c/busses/i2c-i801.c
+index cb8f56022592..15520d491140 100644
+--- a/drivers/i2c/busses/i2c-i801.c
++++ b/drivers/i2c/busses/i2c-i801.c
+@@ -540,9 +540,11 @@ static int i801_block_transaction_by_block(struct i801_priv *priv,
+ 		return -EOPNOTSUPP;
+ 	}
  
--	/* Use "USB Device (not host controller)" class */
--	pdev->class = PCI_CLASS_SERIAL_USB_DEVICE;
--	pci_info(pdev, "PCI class overridden (%#08x -> %#08x) so dwc3 driver can claim this instead of xhci\n",
--		 class, pdev->class);
-+	if (class != PCI_CLASS_SERIAL_USB_DEVICE) {
-+		/* Use "USB Device (not host controller)" class */
-+		pdev->class = PCI_CLASS_SERIAL_USB_DEVICE;
-+		pci_info(pdev,
-+			"PCI class overridden (%#08x -> %#08x) so dwc3 driver can claim this instead of xhci\n",
-+			class, pdev->class);
-+	}
++	/* Set block buffer mode */
++	outb_p(inb_p(SMBAUXCTL(priv)) | SMBAUXCTL_E32B, SMBAUXCTL(priv));
++
+ 	inb_p(SMBHSTCNT(priv)); /* reset the data buffer index */
+ 
+-	/* Use 32-byte buffer to process this transaction */
+ 	if (read_write == I2C_SMBUS_WRITE) {
+ 		len = data->block[0];
+ 		outb_p(len, SMBHSTDAT0(priv));
+@@ -780,14 +782,6 @@ static int i801_block_transaction_byte_by_byte(struct i801_priv *priv,
+ 	return i801_check_post(priv, status);
  }
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_NL_USB,
- 		quirk_amd_dwc_class);
+ 
+-static int i801_set_block_buffer_mode(struct i801_priv *priv)
+-{
+-	outb_p(inb_p(SMBAUXCTL(priv)) | SMBAUXCTL_E32B, SMBAUXCTL(priv));
+-	if ((inb_p(SMBAUXCTL(priv)) & SMBAUXCTL_E32B) == 0)
+-		return -EIO;
+-	return 0;
+-}
+-
+ /* Block transaction function */
+ static int i801_block_transaction(struct i801_priv *priv,
+ 				  union i2c_smbus_data *data, char read_write,
+@@ -817,9 +811,8 @@ static int i801_block_transaction(struct i801_priv *priv,
+ 	/* Experience has shown that the block buffer can only be used for
+ 	   SMBus (not I2C) block transactions, even though the datasheet
+ 	   doesn't mention this limitation. */
+-	if ((priv->features & FEATURE_BLOCK_BUFFER)
+-	 && command != I2C_SMBUS_I2C_BLOCK_DATA
+-	 && i801_set_block_buffer_mode(priv) == 0)
++	if ((priv->features & FEATURE_BLOCK_BUFFER) &&
++	    command != I2C_SMBUS_I2C_BLOCK_DATA)
+ 		result = i801_block_transaction_by_block(priv, data,
+ 							 read_write,
+ 							 command, hwpec);
 -- 
 2.43.0
 
