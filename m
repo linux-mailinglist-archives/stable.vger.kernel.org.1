@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-22736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E29985DD8A
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:06:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E665785D917
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CDCA28422C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:06:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87E84B2149D
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:14:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D794F7E78D;
-	Wed, 21 Feb 2024 14:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5D9569D2E;
+	Wed, 21 Feb 2024 13:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lFK7pXri"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i5i2rTSW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9531378B7C;
-	Wed, 21 Feb 2024 14:05:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83A6153816;
+	Wed, 21 Feb 2024 13:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524346; cv=none; b=O2gGjTDtmRcgsQ5xbX5ozSJHiVUus4YVEBtLuK8sCVqfniLDEHeQdibkRv5MzTHHTFr1HQvXyITB6d36FpkqoFiKGkpVYVqCe6WCpuWIAGPGtIb7Ykk1iWL5T2FUhU91wHbnMILaooTyrWEsTsZKxV/YJGhnR3JW1yQMlxOkSiI=
+	t=1708521267; cv=none; b=q3Y69dvJ3hisYbUMxle0hOyOC88ZdMk5COA9O5T+wibICCpS/JQHLJTGNFu6s1l+JrNpiMxqBgABjq2Q3MEGbHDjzkzZaPkMJEJ6G8n9PP9/CW4QQsJ5k6tXKE+tcyRtPM7sr3zKHzjQcTqVc3D0uMiS1fJ9btPZgYgA6cTroi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524346; c=relaxed/simple;
-	bh=eR7Nk+6P1b1qAj3dnzV7nWuvp14hdSQpCfPO33Sdbzw=;
+	s=arc-20240116; t=1708521267; c=relaxed/simple;
+	bh=23KJecyOqZpNGqy1WWPhDY7N6cIJxa3D1uxMsIcfKzo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XIKtxfS5/xy0mjuYNUN54yw3Zc6OD1pLpZvoSQaBdPgkgJeapyw80VtMXrKwUL1pAd9Aoqg8MbjHQABH0IA6Vw1HPTVRV+GQuyAf/XKh635pzosfnJRDyLyQSJ0DtvEKDVNlG3Z/W3l5JXvdBNUb8NLoVIJX22dWwUPx1gg4U08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lFK7pXri; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13F84C433F1;
-	Wed, 21 Feb 2024 14:05:44 +0000 (UTC)
+	 MIME-Version; b=uhDAKBziHSTOhyYsTzc11k8i844P+cSYZ3IkmnGg74zQlgLSHMG7WylSLnt326YVAsOprEgoiLGLhd/pT8wrsCYgkKJHTK395Q6EBN7aac3pCYdRcahlqqgf/UoVzPL0Jp6bJI5IYHt2ue+iAfaLcMb/nvr4j6OddDwcR1YO6dM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i5i2rTSW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDFA0C433F1;
+	Wed, 21 Feb 2024 13:14:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524345;
-	bh=eR7Nk+6P1b1qAj3dnzV7nWuvp14hdSQpCfPO33Sdbzw=;
+	s=korg; t=1708521267;
+	bh=23KJecyOqZpNGqy1WWPhDY7N6cIJxa3D1uxMsIcfKzo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lFK7pXriGnr5Bgnnau/TI7NptAqO6ffRhY5rzrxvfOWpjlcRWKHcEYoP7jSxZyvj+
-	 g0WOIW3dFxbYSZGphV7+oZ1dQqkb/Gw4FZsOcEQ4yuarEAHt/dnehl62IXLV931iTN
-	 vI4G7Avn62S0MQpcfHnel4HbGG3AWeKQR3rGnnxw=
+	b=i5i2rTSW1wJuIXTyRkLM5ZqnpMhhqa08xFqwr3ZZg3+uWdBNaljPXHHmKoF7OaFJx
+	 aQVIhj5lMaJJXxDWBulIcUR6Yegv6bmTdg1yv43tF5T1iAyWHzw/H0Z4J88CNuZw5Q
+	 bBU1YPN83wlzprGyS6ehDr11Ka3XhyfaIAYoD3l4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Takashi Iwai <tiwai@suse.de>,
+	Oleg Nesterov <oleg@redhat.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 188/379] ALSA: hda: Intel: add HDA_ARL PCI ID support
+Subject: [PATCH 4.19 066/202] rxrpc_find_service_conn_rcu: fix the usage of read_seqbegin_or_lock()
 Date: Wed, 21 Feb 2024 14:06:07 +0100
-Message-ID: <20240221130000.470688137@linuxfoundation.org>
+Message-ID: <20240221125933.964743421@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-[ Upstream commit a31014ebad617868c246d3985ff80d891f03711e ]
+[ Upstream commit bad1a11c0f061aa073bab785389fe04f19ba02e1 ]
 
-Yet another PCI ID.
+rxrpc_find_service_conn_rcu() should make the "seq" counter odd on the
+second pass, otherwise read_seqbegin_or_lock() never takes the lock.
 
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Acked-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20231204212710.185976-3-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Link: https://lore.kernel.org/r/20231117164846.GA10410@redhat.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/hda_intel.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/rxrpc/conn_service.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
-index 12c6eb76fca3..a3c6a5eeba3a 100644
---- a/sound/pci/hda/hda_intel.c
-+++ b/sound/pci/hda/hda_intel.c
-@@ -2581,6 +2581,8 @@ static const struct pci_device_id azx_ids[] = {
- 	  .driver_data = AZX_DRIVER_SKL | AZX_DCAPS_INTEL_SKYLAKE},
- 	{ PCI_DEVICE(0x8086, 0x4b58),
- 	  .driver_data = AZX_DRIVER_SKL | AZX_DCAPS_INTEL_SKYLAKE},
-+	/* Arrow Lake */
-+	{ PCI_DEVICE_DATA(INTEL, HDA_ARL, AZX_DRIVER_SKL | AZX_DCAPS_INTEL_SKYLAKE) },
- 	/* Broxton-P(Apollolake) */
- 	{ PCI_DEVICE(0x8086, 0x5a98),
- 	  .driver_data = AZX_DRIVER_SKL | AZX_DCAPS_INTEL_BROXTON },
+diff --git a/net/rxrpc/conn_service.c b/net/rxrpc/conn_service.c
+index 6da7c4bf15e8..4b1564824aed 100644
+--- a/net/rxrpc/conn_service.c
++++ b/net/rxrpc/conn_service.c
+@@ -29,7 +29,7 @@ struct rxrpc_connection *rxrpc_find_service_conn_rcu(struct rxrpc_peer *peer,
+ 	struct rxrpc_conn_proto k;
+ 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
+ 	struct rb_node *p;
+-	unsigned int seq = 0;
++	unsigned int seq = 1;
+ 
+ 	k.epoch	= sp->hdr.epoch;
+ 	k.cid	= sp->hdr.cid & RXRPC_CIDMASK;
+@@ -39,6 +39,7 @@ struct rxrpc_connection *rxrpc_find_service_conn_rcu(struct rxrpc_peer *peer,
+ 		 * under just the RCU read lock, so we have to check for
+ 		 * changes.
+ 		 */
++		seq++; /* 2 on the 1st/lockless path, otherwise odd */
+ 		read_seqbegin_or_lock(&peer->service_conn_lock, &seq);
+ 
+ 		p = rcu_dereference_raw(peer->service_conns.rb_node);
 -- 
 2.43.0
 
