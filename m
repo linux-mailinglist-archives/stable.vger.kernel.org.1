@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-22537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C69385DC83
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:54:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEA9085DAD1
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:35:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E0771C235FD
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:54:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88E492820F2
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:35:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82DA078B53;
-	Wed, 21 Feb 2024 13:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC7AB7F470;
+	Wed, 21 Feb 2024 13:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EnOLuVmA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c3TB49o9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4070E38398;
-	Wed, 21 Feb 2024 13:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE857F469;
+	Wed, 21 Feb 2024 13:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523641; cv=none; b=Q75pfkxdDeEXaUlFL/BcSn08E3M+JGJZCyKPV5nx9DgHCUiAY6HPxqtkrmT2V9WEAyAZaotfim2/gqk8iISQB7PLIa3GxBDWy2+80YI0R84TfWHj4V4RiogmlRWhJAbEyaCo3xh1hLD/N36N/7cdoEa1EOVpHNTF/3+QRfR+lQg=
+	t=1708522399; cv=none; b=bVaIAhlFtjWqSE6+Wkc6rMd+kCChdFpqrveAwoiT6uP1cU2crwYeb3Uq7QddSw54oh6M64O2me7S91oSw99koDFxvAzHvP3gA0n6WfoiVPRNFq3rgj3PiUlE4wJNEiEYzYByi4Efgpl4A7i9CpxXswniDDrF9Iz/YhgcO1eMIW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523641; c=relaxed/simple;
-	bh=/m4Cngj/FF0ceA3So7N60LeavKpfPWMQx0jLquHx/t4=;
+	s=arc-20240116; t=1708522399; c=relaxed/simple;
+	bh=QD9d/DsgGpyYp3r/tyuU0BNlG7HJ2b3O7rm6F6nzuhA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AgC1gsXwh3U/zxVr3TAlSzHinZ4hiQ+N77p12g1P9wh9eZc30aKNAxOl2WzzgQ1mj5MOh+iCJW0n02yuY/x0vbFX+QugOvhC+5RNHvhChRnw212a0aZa71jPNkSIn9k/ggHA/fWqH4VHYtXViffv/MH2kwZFO4Z7M4pJLNSy90E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EnOLuVmA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3450C433F1;
-	Wed, 21 Feb 2024 13:54:00 +0000 (UTC)
+	 MIME-Version; b=ImQyohhBMDftTtjbmwsyRAdsbZ1Z2No5fCgW+jGxQijaMg9NPs2wFPEBTxVh2Lh798onh23YQLXZmnGrPH1ZK1xoPtYpYFY5XxJ6qt7KCaKf+tQaqSVydBKRpzc8EaINI2RiH/UF2pBiQC1Q8lnEhCbPMDZk7f+KkxsdYfoPMdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c3TB49o9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85102C433C7;
+	Wed, 21 Feb 2024 13:33:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523641;
-	bh=/m4Cngj/FF0ceA3So7N60LeavKpfPWMQx0jLquHx/t4=;
+	s=korg; t=1708522399;
+	bh=QD9d/DsgGpyYp3r/tyuU0BNlG7HJ2b3O7rm6F6nzuhA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EnOLuVmAUHW+KJiE+wQUdkroLlCxo3uYrzCaWel3fdUN+Uv2nyKt3RqR7TDle/PN0
-	 aFj8K+K319ndqXLH3skIFhKWSkqaAWKHvx4Smy+ZddoG5N0YzRYx7SwzTh3IkZom9n
-	 iJBKCx2gkLwt+9NCA2n4acv/qdlN90FWxrOC07Bo=
+	b=c3TB49o9aadcvMNrJJG/CAGwlZMLmSDevk/klnC4c+Ra48ktBi8CYQhDh+8EdmN/4
+	 9pgrVz6aijJF20aYFFvDqnnbtXv++rvj8knQsyCuW7ltICgUqXbafS45ZqsAzB305c
+	 Nc0rXhRbm3wBDwn3CidWe7b1ml3z4WO9laS0cJV4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suraj Jitindar Singh <surajjs@amazon.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.10 017/379] ext4: allow for the last group to be marked as trimmed
+	Osama Muhammad <osmtendev@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+d4b1df2e9d4ded6488ec@syzkaller.appspotmail.com
+Subject: [PATCH 5.15 145/476] UBSAN: array-index-out-of-bounds in dtSplitRoot
 Date: Wed, 21 Feb 2024 14:03:16 +0100
-Message-ID: <20240221125955.429829831@linuxfoundation.org>
+Message-ID: <20240221130013.281155958@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suraj Jitindar Singh <surajjs@amazon.com>
+From: Osama Muhammad <osmtendev@gmail.com>
 
-commit 7c784d624819acbeefb0018bac89e632467cca5a upstream.
+[ Upstream commit 27e56f59bab5ddafbcfe69ad7a4a6ea1279c1b16 ]
 
-The ext4 filesystem tracks the trim status of blocks at the group
-level.  When an entire group has been trimmed then it is marked as
-such and subsequent trim invocations with the same minimum trim size
-will not be attempted on that group unless it is marked as able to be
-trimmed again such as when a block is freed.
+Syzkaller reported the following issue:
 
-Currently the last group can't be marked as trimmed due to incorrect
-logic in ext4_last_grp_cluster(). ext4_last_grp_cluster() is supposed
-to return the zero based index of the last cluster in a group. This is
-then used by ext4_try_to_trim_range() to determine if the trim
-operation spans the entire group and as such if the trim status of the
-group should be recorded.
+oop0: detected capacity change from 0 to 32768
 
-ext4_last_grp_cluster() takes a 0 based group index, thus the valid
-values for grp are 0..(ext4_get_groups_count - 1). Any group index
-less than (ext4_get_groups_count - 1) is not the last group and must
-have EXT4_CLUSTERS_PER_GROUP(sb) clusters. For the last group we need
-to calculate the number of clusters based on the number of blocks in
-the group. Finally subtract 1 from the number of clusters as zero
-based indexing is expected.  Rearrange the function slightly to make
-it clear what we are calculating and returning.
+UBSAN: array-index-out-of-bounds in fs/jfs/jfs_dtree.c:1971:9
+index -2 is out of range for type 'struct dtslot [128]'
+CPU: 0 PID: 3613 Comm: syz-executor270 Not tainted 6.0.0-syzkaller-09423-g493ffd6605b2 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/22/2022
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x1b1/0x28e lib/dump_stack.c:106
+ ubsan_epilogue lib/ubsan.c:151 [inline]
+ __ubsan_handle_out_of_bounds+0xdb/0x130 lib/ubsan.c:283
+ dtSplitRoot+0x8d8/0x1900 fs/jfs/jfs_dtree.c:1971
+ dtSplitUp fs/jfs/jfs_dtree.c:985 [inline]
+ dtInsert+0x1189/0x6b80 fs/jfs/jfs_dtree.c:863
+ jfs_mkdir+0x757/0xb00 fs/jfs/namei.c:270
+ vfs_mkdir+0x3b3/0x590 fs/namei.c:4013
+ do_mkdirat+0x279/0x550 fs/namei.c:4038
+ __do_sys_mkdirat fs/namei.c:4053 [inline]
+ __se_sys_mkdirat fs/namei.c:4051 [inline]
+ __x64_sys_mkdirat+0x85/0x90 fs/namei.c:4051
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7fcdc0113fd9
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 c0 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffeb8bc67d8 EFLAGS: 00000246 ORIG_RAX: 0000000000000102
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fcdc0113fd9
+RDX: 0000000000000000 RSI: 0000000020000340 RDI: 0000000000000003
+RBP: 00007fcdc00d37a0 R08: 0000000000000000 R09: 00007fcdc00d37a0
+R10: 00005555559a72c0 R11: 0000000000000246 R12: 00000000f8008000
+R13: 0000000000000000 R14: 00083878000000f8 R15: 0000000000000000
+ </TASK>
 
-Reproducer:
-// Create file system where the last group has fewer blocks than
-// blocks per group
-$ mkfs.ext4 -b 4096 -g 8192 /dev/nvme0n1 8191
-$ mount /dev/nvme0n1 /mnt
+The issue is caused when the value of fsi becomes less than -1.
+The check to break the loop when fsi value becomes -1 is present
+but syzbot was able to produce value less than -1 which cause the error.
+This patch simply add the change for the values less than 0.
 
-Before Patch:
-$ fstrim -v /mnt
-/mnt: 25.9 MiB (27156480 bytes) trimmed
-// Group not marked as trimmed so second invocation still discards blocks
-$ fstrim -v /mnt
-/mnt: 25.9 MiB (27156480 bytes) trimmed
+The patch is tested via syzbot.
 
-After Patch:
-fstrim -v /mnt
-/mnt: 25.9 MiB (27156480 bytes) trimmed
-// Group marked as trimmed so second invocation DOESN'T discard any blocks
-fstrim -v /mnt
-/mnt: 0 B (0 bytes) trimmed
-
-Fixes: 45e4ab320c9b ("ext4: move setting of trimmed bit into ext4_try_to_trim_range()")
-Cc:  <stable@vger.kernel.org> # 4.19+
-Signed-off-by: Suraj Jitindar Singh <surajjs@amazon.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20231213051635.37731-1-surajjs@amazon.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-and-tested-by: syzbot+d4b1df2e9d4ded6488ec@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=d4b1df2e9d4ded6488ec
+Signed-off-by: Osama Muhammad <osmtendev@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c |   15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ fs/jfs/jfs_dtree.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -5895,11 +5895,16 @@ __acquires(bitlock)
- static ext4_grpblk_t ext4_last_grp_cluster(struct super_block *sb,
- 					   ext4_group_t grp)
- {
--	if (grp < ext4_get_groups_count(sb))
--		return EXT4_CLUSTERS_PER_GROUP(sb) - 1;
--	return (ext4_blocks_count(EXT4_SB(sb)->s_es) -
--		ext4_group_first_block_no(sb, grp) - 1) >>
--					EXT4_CLUSTER_BITS(sb);
-+	unsigned long nr_clusters_in_group;
-+
-+	if (grp < (ext4_get_groups_count(sb) - 1))
-+		nr_clusters_in_group = EXT4_CLUSTERS_PER_GROUP(sb);
-+	else
-+		nr_clusters_in_group = (ext4_blocks_count(EXT4_SB(sb)->s_es) -
-+					ext4_group_first_block_no(sb, grp))
-+				       >> EXT4_CLUSTER_BITS(sb);
-+
-+	return nr_clusters_in_group - 1;
- }
+diff --git a/fs/jfs/jfs_dtree.c b/fs/jfs/jfs_dtree.c
+index 837d42f61464..fafcb90219cf 100644
+--- a/fs/jfs/jfs_dtree.c
++++ b/fs/jfs/jfs_dtree.c
+@@ -1970,7 +1970,7 @@ static int dtSplitRoot(tid_t tid,
+ 		do {
+ 			f = &rp->slot[fsi];
+ 			fsi = f->next;
+-		} while (fsi != -1);
++		} while (fsi >= 0);
  
- static bool ext4_trim_interrupted(void)
+ 		f->next = n;
+ 	}
+-- 
+2.43.0
+
 
 
 
