@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-22727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0802885DD81
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:06:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1002385DBE5
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:46:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 805ECB2240D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:06:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9CC41F21180
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:46:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B4AF7C0BD;
-	Wed, 21 Feb 2024 14:05:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8394378B50;
+	Wed, 21 Feb 2024 13:46:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Z7AOWxd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ECJeLfz4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3C7F78B4B;
-	Wed, 21 Feb 2024 14:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 414CD55E5E;
+	Wed, 21 Feb 2024 13:46:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524311; cv=none; b=CxDP0KFESfD+aAhxCH8hgXRV0BGpNqkfZcPoz0As0LoQGx90Ka9MzKOBaf3C7Hb23OL+uIHNQvva+kmX2MBCmjfatEQLgdU9h/88CNKEXy+Is5K+UKV5VhlcmY8HT1kSnVd1BPySbjAuO0AKNIw8QRFaSoDw+cekhfem7OKfHuc=
+	t=1708523188; cv=none; b=W7crS4beEj0avlmo4XV+dtc6PaCSMLtj22tNHRdRm8Lnihe+MFEWnwWOE1CeIJGa1MEyTaP01kNSwOAQ+42A7TE1S9mXJuO0UWeG5YrUJPZs/ff+CkaptZGwusR5SHlzmMTNJYNsV1e0u1rqHYMrrMikyskMUWMiFCW+YbPthNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524311; c=relaxed/simple;
-	bh=AaPeamt8GGF7h3Qf1RDX6D7DqQm8j/NJXESkkGei9+o=;
+	s=arc-20240116; t=1708523188; c=relaxed/simple;
+	bh=VXFmQ1PPQDsQh3+JYT1wWzYQpTeLBMteiUg5J/6mFgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AO2CKCFtLdD+qzT1ehgZdUJs5MlkGSBxWtzNPYvCjVcbWcf3WG0M0oDxIdAxffso8Za2ADhhU+8nOTALepaqDr7VuuPSB31i3u5Wlo2NpymChMOL56Ai+HQ99/tWJwytGIZXCMC6nRjZ5VIEqN4Fr4Gi0oanp/QEjwVXnWsSwqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Z7AOWxd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFAC8C433C7;
-	Wed, 21 Feb 2024 14:05:10 +0000 (UTC)
+	 MIME-Version; b=ghNDTPdpayZ3ItRWVmuna3+FKqcLrwl211kXLsmFTiDgwGtIQUiLWvhiXUEny6ZqTHOV+DKYlQbJlmxnxWUche/z3cdivMQGHqxvF8BuYoJkkoGNmPqWTIZP7hwlYMQlr4P65nHJEjRZ2HUz+F408MMla4dwk/lmkTXZPh9CkXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ECJeLfz4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BBE6C433C7;
+	Wed, 21 Feb 2024 13:46:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524311;
-	bh=AaPeamt8GGF7h3Qf1RDX6D7DqQm8j/NJXESkkGei9+o=;
+	s=korg; t=1708523187;
+	bh=VXFmQ1PPQDsQh3+JYT1wWzYQpTeLBMteiUg5J/6mFgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Z7AOWxd6hZqpWIbAVDImVv/j4+ooKK+75givxCP47b8oxmpoPFs2kQvCs9GBJHUk
-	 K3zPM4N6KMctWT3lhtGyB2DtmXffW3ZBYuWCtv00onnTgsbQ+QwuuanYka89X/kS7i
-	 +wjYM3CEyUPITRMqKEpvN9qTRR9oSo0SFI0M+mYA=
+	b=ECJeLfz4/55NUBEl0kiFk2Qb5UmHdzkgxmMbolHfuXGDTVvOm/QsyHHLaEKiGSSBc
+	 FcFXFFH64gWLtxAGlp3vonkP9GW6En9kcnf/ReMXWcZHVh1MyUbsWriUVZipnjBr0I
+	 ocUYqtDO9uJ8eOfD855cmjl326ueui9e5pZtpBI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Robinson <pbrobinson@gmail.com>,
-	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 206/379] mfd: ti_am335x_tscadc: Fix TI SoC dependencies
-Date: Wed, 21 Feb 2024 14:06:25 +0100
-Message-ID: <20240221130000.995462103@linuxfoundation.org>
+	Prashanth K <quic_prashk@quicinc.com>
+Subject: [PATCH 5.15 335/476] usb: host: xhci-plat: Add support for XHCI_SG_TRB_CACHE_SIZE_QUIRK
+Date: Wed, 21 Feb 2024 14:06:26 +0100
+Message-ID: <20240221130020.400552874@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +60,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Robinson <pbrobinson@gmail.com>
+From: Prashanth K <quic_prashk@quicinc.com>
 
-[ Upstream commit 284d16c456e5d4b143f375b8ccc4038ab3f4ee0f ]
+commit 520b391e3e813c1dd142d1eebb3ccfa6d08c3995 upstream.
 
-The ti_am335x_tscadc is specific to some TI SoCs, update
-the dependencies for those SoCs and compile testing.
+Upstream commit bac1ec551434 ("usb: xhci: Set quirk for
+XHCI_SG_TRB_CACHE_SIZE_QUIRK") introduced a new quirk in XHCI
+which fixes XHC timeout, which was seen on synopsys XHCs while
+using SG buffers. Currently this quirk can only be set using
+xhci private data. But there are some drivers like dwc3/host.c
+which adds adds quirks using software node for xhci device.
+Hence set this xhci quirk by iterating over device properties.
 
-Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
-Link: https://lore.kernel.org/r/20231220155643.445849-1-pbrobinson@gmail.com
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # 5.11
+Fixes: bac1ec551434 ("usb: xhci: Set quirk for XHCI_SG_TRB_CACHE_SIZE_QUIRK")
+Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
+Link: https://lore.kernel.org/r/20240116055816.1169821-3-quic_prashk@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/host/xhci-plat.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-index b8847ae04d93..c5c6608ccc84 100644
---- a/drivers/mfd/Kconfig
-+++ b/drivers/mfd/Kconfig
-@@ -1382,6 +1382,7 @@ config MFD_DAVINCI_VOICECODEC
+--- a/drivers/usb/host/xhci-plat.c
++++ b/drivers/usb/host/xhci-plat.c
+@@ -323,6 +323,9 @@ static int xhci_plat_probe(struct platfo
+ 		if (device_property_read_bool(tmpdev, "quirk-broken-port-ped"))
+ 			xhci->quirks |= XHCI_BROKEN_PORT_PED;
  
- config MFD_TI_AM335X_TSCADC
- 	tristate "TI ADC / Touch Screen chip support"
-+	depends on ARCH_OMAP2PLUS || ARCH_K3 || COMPILE_TEST
- 	select MFD_CORE
- 	select REGMAP
- 	select REGMAP_MMIO
--- 
-2.43.0
-
++		if (device_property_read_bool(tmpdev, "xhci-sg-trb-cache-size-quirk"))
++			xhci->quirks |= XHCI_SG_TRB_CACHE_SIZE_QUIRK;
++
+ 		device_property_read_u32(tmpdev, "imod-interval-ns",
+ 					 &xhci->imod_interval);
+ 	}
 
 
 
