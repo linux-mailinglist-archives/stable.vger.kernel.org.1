@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-22764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38F7D85DDC4
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:11:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9E4985DE9D
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:20:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFA111F227F4
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:11:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D53A282CE3
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:20:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F6507E798;
-	Wed, 21 Feb 2024 14:07:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 894747E77F;
+	Wed, 21 Feb 2024 14:19:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k8xGdzt2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gDtiewiz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 375337E787;
-	Wed, 21 Feb 2024 14:07:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473907CF32;
+	Wed, 21 Feb 2024 14:19:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524437; cv=none; b=A3qKpTxOjLyN0eK2n8BWdUVjy1LLJ6HePwZYVHwPf1Lr9YEjmw04DJ85txneqBI1III/CI0dAwn75/Vc5v3g1I3OvmqoLTBOcY4F1PAAPvW9bUHpjJFp9E4K41VPsIExUFVHTFila0qY9lmIONEmNk+AhXMDDRrJvnhC52EbNN8=
+	t=1708525173; cv=none; b=Wqp+s8RL9N04W4p0Em15UofiViAvEHlz3b291dNnwyfXG11D8I8gmDUbRg0O4UFgD4Ik0RtVYyK9yHqcvjg9s2HxCusasznTKe6a/HGGGAVJRYraiWBM5f6SJcGGxo9KR5T5HtNOzETWxVBQrzT93CE5n5fSH9E+AXAdrwE5d1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524437; c=relaxed/simple;
-	bh=nWUcs2ZeISJfj/AskPdhOjpJQt6Ppg2kaq+wLFdjOlI=;
+	s=arc-20240116; t=1708525173; c=relaxed/simple;
+	bh=XBxgJjzyNjc5gK+n+KJlVltN8YFbenOUdw5E0QxHWPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mFvOPAC5E/kR5IrXC3xKVjgscXsEiMrqmtblnuJwH48UTmJ+fqgOkXjX0SvE0z3zAyssAZSBNxfRi/mjz9sgmc2sTOmJDKQbHK+7Y8sws8co0S1/tRDD947DlY4M67QriZ3ADBLW6hq+cJrBEJpoujwlzG2aYSjV2pog//MKFHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k8xGdzt2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A416C433C7;
-	Wed, 21 Feb 2024 14:07:16 +0000 (UTC)
+	 MIME-Version; b=eXJs2qCzzDZYRv/esdc1hAQDygqliaZpnjBhVFtj63XLesA5TpgzgrimoB0/KkbO0M7FKcy1EIkPvql1qNGwiIxMpABCyJrYl/hCJwQu8am5c8KrU/r2dhUG4cEKH3r1F1VeAuH/O7j7FslWIMA5hpXEN9C7ctsKDJMis3j+voE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gDtiewiz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7CA1C43394;
+	Wed, 21 Feb 2024 14:19:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524437;
-	bh=nWUcs2ZeISJfj/AskPdhOjpJQt6Ppg2kaq+wLFdjOlI=;
+	s=korg; t=1708525173;
+	bh=XBxgJjzyNjc5gK+n+KJlVltN8YFbenOUdw5E0QxHWPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k8xGdzt2aI8tRw6cC/zxW0yUWmCfhB+/WJx6BW43lv8vyoTOXEredvZxvIgP1DE/G
-	 iUF8KK3yDg2LhpWcCzSQX+ZHhhOtlxGirfS0oDX8EmoDv56y491Y2PJesihgqcxosd
-	 7Ks4I2diNloQbzrReTn1b/WHgB1dcJVHMZ4prTSM=
+	b=gDtiewizDmC4oMPBXyl+Zu5625RmPM17oaOJfudERP7WVijLTbXQah+7SyAvqJvFw
+	 Vb9/dahhSfaSWBr1wagO23m0sJ1wAqHV+qqflzGBl+6Ov0UaeLwPelP1k4lfP+wBCM
+	 jnA3XbdC/gJP1ONHUXkL7fLEs5GoSEMiXVsEE+MQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Zhengchao Shao <shaozhengchao@huawei.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.10 243/379] bonding: remove print in bond_verify_device_path
+	Oleg Nesterov <oleg@redhat.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 081/267] rxrpc_find_service_conn_rcu: fix the usage of read_seqbegin_or_lock()
 Date: Wed, 21 Feb 2024 14:07:02 +0100
-Message-ID: <20240221130002.100448835@linuxfoundation.org>
+Message-ID: <20240221125942.517058090@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchao Shao <shaozhengchao@huawei.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-commit 486058f42a4728053ae69ebbf78e9731d8ce6f8b upstream.
+[ Upstream commit bad1a11c0f061aa073bab785389fe04f19ba02e1 ]
 
-As suggested by Paolo in link[1], if the memory allocation fails, the mm
-layer will emit a lot warning comprising the backtrace, so remove the
-print.
+rxrpc_find_service_conn_rcu() should make the "seq" counter odd on the
+second pass, otherwise read_seqbegin_or_lock() never takes the lock.
 
-[1] https://lore.kernel.org/all/20231118081653.1481260-1-shaozhengchao@huawei.com/
-
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Link: https://lore.kernel.org/r/20231117164846.GA10410@redhat.com/
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_main.c |    5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ net/rxrpc/conn_service.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -2777,11 +2777,8 @@ struct bond_vlan_tag *bond_verify_device
+diff --git a/net/rxrpc/conn_service.c b/net/rxrpc/conn_service.c
+index 21da48e3d2e5..7ad4b4e9341e 100644
+--- a/net/rxrpc/conn_service.c
++++ b/net/rxrpc/conn_service.c
+@@ -25,7 +25,7 @@ struct rxrpc_connection *rxrpc_find_service_conn_rcu(struct rxrpc_peer *peer,
+ 	struct rxrpc_conn_proto k;
+ 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
+ 	struct rb_node *p;
+-	unsigned int seq = 0;
++	unsigned int seq = 1;
  
- 	if (start_dev == end_dev) {
- 		tags = kcalloc(level + 1, sizeof(*tags), GFP_ATOMIC);
--		if (!tags) {
--			net_err_ratelimited("%s: %s: Failed to allocate tags\n",
--					    __func__, start_dev->name);
-+		if (!tags)
- 			return ERR_PTR(-ENOMEM);
--		}
- 		tags[level].vlan_proto = VLAN_N_VID;
- 		return tags;
- 	}
+ 	k.epoch	= sp->hdr.epoch;
+ 	k.cid	= sp->hdr.cid & RXRPC_CIDMASK;
+@@ -35,6 +35,7 @@ struct rxrpc_connection *rxrpc_find_service_conn_rcu(struct rxrpc_peer *peer,
+ 		 * under just the RCU read lock, so we have to check for
+ 		 * changes.
+ 		 */
++		seq++; /* 2 on the 1st/lockless path, otherwise odd */
+ 		read_seqbegin_or_lock(&peer->service_conn_lock, &seq);
+ 
+ 		p = rcu_dereference_raw(peer->service_conns.rb_node);
+-- 
+2.43.0
+
 
 
 
