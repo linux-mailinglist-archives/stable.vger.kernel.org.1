@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-22768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B3FB85DDE8
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:13:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CD1B85DBF1
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:47:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B56A5B2AA55
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:11:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11F8AB21413
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:47:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57DA87EEEC;
-	Wed, 21 Feb 2024 14:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C67B77A03;
+	Wed, 21 Feb 2024 13:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x6VA30BZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FnrUPGUu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082B67EEE6;
-	Wed, 21 Feb 2024 14:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF4969318;
+	Wed, 21 Feb 2024 13:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524450; cv=none; b=hi8tkhc3afrCfZFuqTZfS8AknL3s6o0PbUn0VC1acVLDlDLmVYcnCYmCZiZEKz0qwS026+2VizGorarG2wXSfU55Seg6cZ2luyU0fSmytOsJyTdsCnaSSV1WhdDeuOT+lxfTzrxlgTXG1yfvLUOz5CiqCWJSQscKhrbzUpW3B6U=
+	t=1708523232; cv=none; b=KXB2einCsnnyrCTB6Toff+WErpoyckJzdmNQQ9zYo/iNp994H2J+JSmQz5d6wVgh/TcqQq26MlLJexfc+4jwNNJSsyz2hgCfIqUObO1RsD/T9Phj4wc9wsh10fxbypVEjAD0LAB7xZjWZH6KKfmag10NxlAwDPoj9K8hqQ16hQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524450; c=relaxed/simple;
-	bh=IzgK1TKpoi8/UYjEu39AFgXeT9/f3x/gro6rDWyd5Tg=;
+	s=arc-20240116; t=1708523232; c=relaxed/simple;
+	bh=Z/94GXyUuZGRXTN3GQG3m/wowfpiK7Bn5S/CWPp91oY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LART7Sg1SGyNU23wcPRd04cbuHboTrpk/h28yF/0Yy0VDAR9SySQX6w6qWvdWyWKh3xoLpLaEK+HZ/OATcO8VVHT2VW/1D96SdGJSCO6J8d6wYY+yZW9aUweyemzRqQPZ/5F6RYxiYLJgUCETOHSQtX/H+r1q+603E2/b1R4Ixg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x6VA30BZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 826E4C433C7;
-	Wed, 21 Feb 2024 14:07:29 +0000 (UTC)
+	 MIME-Version; b=csYe8UihHjRQIz9asPUwvv4jKneMr5YiOphJETFydKrF9ebyGft6pFP2p+c4tiq/ktbNIDTpKLvHn/eYSfDder9al5s+Y1kvTt3R5+VtvDlujmh29qBPUvS6SoIGGBPGEx9mGgNchAHBRZGHTvJV0eejb5WiZg6S75hLRnj4hg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FnrUPGUu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 604C4C433F1;
+	Wed, 21 Feb 2024 13:47:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524449;
-	bh=IzgK1TKpoi8/UYjEu39AFgXeT9/f3x/gro6rDWyd5Tg=;
+	s=korg; t=1708523231;
+	bh=Z/94GXyUuZGRXTN3GQG3m/wowfpiK7Bn5S/CWPp91oY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x6VA30BZuAYwk6obVZoCf37Xv20U7KWNIunauYQbzzB8CRLXUYFHd4648u3Owvoky
-	 PnZxAItCN0XiWrFMCE4jBnPe0cgRzk01cpC6E8Dvnrl9Rlc02mAeFeWRhr+Y3AfZkN
-	 vqt/hJ9VvjqGxvc7f/QcL/ncJksRrvVMczfWFIk4=
+	b=FnrUPGUu6O+QNdIh0YGEMYxcx5UzfM3z2F7gwAsVEU9LXQIanklmnqVjEv1+/Htxw
+	 87IDzMD8j4loe2G+C2wwgZA6tyW1MCb7XcCmvHztPUGjEABqHisMuSq5+tsl0Ai8Sq
+	 ajMLW78269OmIJqUShf+K3XPRU9wz/qRcCd5y7jc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guanhua Gao <guanhua.gao@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Radek Krejci <radek.krejci@oracle.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 246/379] dmaengine: fsl-dpaa2-qdma: Fix the size of dma pools
+Subject: [PATCH 5.15 374/476] modpost: trim leading spaces when processing source files list
 Date: Wed, 21 Feb 2024 14:07:05 +0100
-Message-ID: <20240221130002.188050958@linuxfoundation.org>
+Message-ID: <20240221130021.852856199@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guanhua Gao <guanhua.gao@nxp.com>
+From: Radek Krejci <radek.krejci@oracle.com>
 
-[ Upstream commit b73e43dcd7a8be26880ef8ff336053b29e79dbc5 ]
+[ Upstream commit 5d9a16b2a4d9e8fa028892ded43f6501bc2969e5 ]
 
-In case of long format of qDMA command descriptor, there are one frame
-descriptor, three entries in the frame list and two data entries. So the
-size of dma_pool_create for these three fields should be the same with
-the total size of entries respectively, or the contents may be overwritten
-by the next allocated descriptor.
+get_line() does not trim the leading spaces, but the
+parse_source_files() expects to get lines with source files paths where
+the first space occurs after the file path.
 
-Fixes: 7fdf9b05c73b ("dmaengine: fsl-dpaa2-qdma: Add NXP dpaa2 qDMA controller driver for Layerscape SoCs")
-Signed-off-by: Guanhua Gao <guanhua.gao@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20240118162917.2951450-1-Frank.Li@nxp.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 70f30cfe5b89 ("modpost: use read_text_file() and get_line() for reading text files")
+Signed-off-by: Radek Krejci <radek.krejci@oracle.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/fsl-dpaa2-qdma/dpaa2-qdma.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ scripts/mod/sumversion.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/dma/fsl-dpaa2-qdma/dpaa2-qdma.c b/drivers/dma/fsl-dpaa2-qdma/dpaa2-qdma.c
-index 4ae057922ef1..2d905f0633d5 100644
---- a/drivers/dma/fsl-dpaa2-qdma/dpaa2-qdma.c
-+++ b/drivers/dma/fsl-dpaa2-qdma/dpaa2-qdma.c
-@@ -38,15 +38,17 @@ static int dpaa2_qdma_alloc_chan_resources(struct dma_chan *chan)
- 	if (!dpaa2_chan->fd_pool)
- 		goto err;
+diff --git a/scripts/mod/sumversion.c b/scripts/mod/sumversion.c
+index 905c0ec291e1..e6962678032e 100644
+--- a/scripts/mod/sumversion.c
++++ b/scripts/mod/sumversion.c
+@@ -328,7 +328,12 @@ static int parse_source_files(const char *objfile, struct md4_ctx *md)
  
--	dpaa2_chan->fl_pool = dma_pool_create("fl_pool", dev,
--					      sizeof(struct dpaa2_fl_entry),
--					      sizeof(struct dpaa2_fl_entry), 0);
-+	dpaa2_chan->fl_pool =
-+		dma_pool_create("fl_pool", dev,
-+				 sizeof(struct dpaa2_fl_entry) * 3,
-+				 sizeof(struct dpaa2_fl_entry), 0);
+ 	/* Sum all files in the same dir or subdirs. */
+ 	while ((line = get_line(&pos))) {
+-		char* p = line;
++		char* p;
 +
- 	if (!dpaa2_chan->fl_pool)
- 		goto err_fd;
++		/* trim the leading spaces away */
++		while (isspace(*line))
++			line++;
++		p = line;
  
- 	dpaa2_chan->sdd_pool =
- 		dma_pool_create("sdd_pool", dev,
--				sizeof(struct dpaa2_qdma_sd_d),
-+				sizeof(struct dpaa2_qdma_sd_d) * 2,
- 				sizeof(struct dpaa2_qdma_sd_d), 0);
- 	if (!dpaa2_chan->sdd_pool)
- 		goto err_fl;
+ 		if (strncmp(line, "source_", sizeof("source_")-1) == 0) {
+ 			p = strrchr(line, ' ');
 -- 
 2.43.0
 
