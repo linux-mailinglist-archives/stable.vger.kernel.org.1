@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-22384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DCF585DBC5
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:45:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20B3585D93C
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:16:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C3F27B25EE6
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:45:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC5DA1F221F8
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:16:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2430678B53;
-	Wed, 21 Feb 2024 13:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E4A978685;
+	Wed, 21 Feb 2024 13:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oZg3lpBd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UkwrJviz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D747E78B50;
-	Wed, 21 Feb 2024 13:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE236A038;
+	Wed, 21 Feb 2024 13:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523104; cv=none; b=KpS1SW633dlN7wDCxgkiLSn+wq/3x8vvhK9E4thE1mek/LzAulBQhroKZm/z7mDu+0fNqx+o8s8y9cA+Dlc2ZsDdGjf81gbAXYTaL/CuDqd4W9UZRDbzm70/Uoha4WjBSZW25bcgmlOjuS3LmdzBPDfUxA02h2VuDa9CdwepkDc=
+	t=1708521354; cv=none; b=CsmlveUTSRgpKsmIvaAvdae+myIXY8A1XsTUrjmfjwXkez80juhzsfPMhJA86S46+RUnQaqpWhdR6XeYxHSVGTh5FZTl2cbHf1Ld8F6bK5XuuaSSTOL17Lv43wz0zLOfn7cBFEEo9xpM54FdXjDaPtu1EyKO9CY8f9aANu2w4oE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523104; c=relaxed/simple;
-	bh=8Ro1DuEVRk0zmYolSHd21dzau5ZJAAbfdxCXepAQ984=;
+	s=arc-20240116; t=1708521354; c=relaxed/simple;
+	bh=5zPZo+PD2Jq+Da21pmYAv5Tm1uHIP1OZFqwBuqre21U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QOzSqAAc4x/C+qvcky/H7hWMlOvVVGlPxAPzXcBz1xnY+IMgS8x8I0P/vKgudm7fgjyLRam1/aaxdjHSTfgx+CV8zgJ8JAcmZfRUq97nsEIp+Mgtk3uTqt9jXyB8BywKnp7YIBK9FgoEM5Kehb3k4uAvTHkRqz0S1FiAmreG0z0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oZg3lpBd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47386C433F1;
-	Wed, 21 Feb 2024 13:45:04 +0000 (UTC)
+	 MIME-Version; b=Ug/t0/IuXlKj/Cp6nafD8lHm6ZpTb4jziBk+szjYFSYcrHXcymp0bmyAMmWlt2JvTMdgo9ZFLtPdKVq8hAAHnfEd1flbrdG/ES+eXMyw8O48zvw6ZnhAXQBqjhAd4bUS4a8b0Kh7TTTflLIGNG+ztbG/02ZosknitJ+xawie2rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UkwrJviz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24D2FC433C7;
+	Wed, 21 Feb 2024 13:15:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523104;
-	bh=8Ro1DuEVRk0zmYolSHd21dzau5ZJAAbfdxCXepAQ984=;
+	s=korg; t=1708521354;
+	bh=5zPZo+PD2Jq+Da21pmYAv5Tm1uHIP1OZFqwBuqre21U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oZg3lpBdVfHWGTbEVyFiOa5th4f5m5IW4s6UEs5GncOBP03Ng7iXP90u/Vd8AMlHE
-	 x2eFtgaZN2hOYearMHJRw1ddYuGVaGL6xabEbdoZBRvBSIfSMEJsfbzxgACnPqh9Uo
-	 1lmxMtrUx+DPdNAsUVjacx/WXzwlJ7Pha2TR0qtA=
+	b=UkwrJviz0DDlgFYcJdiioqY4B34jvMTMqdGylJdOGkwCPmpTyMaZVDBKCUCZgFgyK
+	 h0WrI6CyrlG4fYWnNSfKiO29VTc2dIdEW6AtP2ar0rTCw+u71EVxsNqa9kwLfrAkqw
+	 ZW9irpiajQhvGYPpeVY+1XZzpCP7tQoYOCfhiaPM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jon Hunter <jonathanh@nvidia.com>,
-	kernel test robot <lkp@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 341/476] net: stmmac: xgmac: use #define for string constants
+	Fabio Estevam <festevam@denx.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 091/202] ARM: dts: imx23/28: Fix the DMA controller node name
 Date: Wed, 21 Feb 2024 14:06:32 +0100
-Message-ID: <20240221130020.621724123@linuxfoundation.org>
+Message-ID: <20240221125934.725346867@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,129 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Horman <horms@kernel.org>
+From: Fabio Estevam <festevam@denx.de>
 
-commit 1692b9775e745f84b69dc8ad0075b0855a43db4e upstream.
+[ Upstream commit 858d83ca4b50bbc8693d95cc94310e6d791fb2e6 ]
 
-The cited commit introduces and uses the string constants dpp_tx_err and
-dpp_rx_err. These are assigned to constant fields of the array
-dwxgmac3_error_desc.
+Per fsl,mxs-dma.yaml, the node name should be 'dma-controller'.
 
-It has been reported that on GCC 6 and 7.5.0 this results in warnings
-such as:
+Change it to fix the following dt-schema warning.
 
-  .../dwxgmac2_core.c:836:20: error: initialiser element is not constant
-   { true, "TDPES0", dpp_tx_err },
+imx28-apf28.dtb: dma-apbx@80024000: $nodename:0: 'dma-apbx@80024000' does not match '^dma-controller(@.*)?$'
+	from schema $id: http://devicetree.org/schemas/dma/fsl,mxs-dma.yaml#
 
-I have been able to reproduce this using: GCC 7.5.0, 8.4.0, 9.4.0 and 10.5.0.
-But not GCC 13.2.0.
-
-So it seems this effects older compilers but not newer ones.
-As Jon points out in his report, the minimum compiler supported by
-the kernel is GCC 5.1, so it does seem that this ought to be fixed.
-
-It is not clear to me what combination of 'const', if any, would address
-this problem.  So this patch takes of using #defines for the string
-constants
-
-Compile tested only.
-
-Fixes: 46eba193d04f ("net: stmmac: xgmac: fix handling of DPP safety error for DMA channels")
-Reported-by: Jon Hunter <jonathanh@nvidia.com>
-Closes: https://lore.kernel.org/netdev/c25eb595-8d91-40ea-9f52-efa15ebafdbc@nvidia.com/
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202402081135.lAxxBXHk-lkp@intel.com/
-Signed-off-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240208-xgmac-const-v1-1-e69a1eeabfc8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c |   69 ++++++++++----------
- 1 file changed, 35 insertions(+), 34 deletions(-)
+ arch/arm/boot/dts/imx23.dtsi | 2 +-
+ arch/arm/boot/dts/imx28.dtsi | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-@@ -789,41 +789,42 @@ static const struct dwxgmac3_error_desc
- 	{ false, "UNKNOWN", "Unknown Error" }, /* 31 */
- };
+diff --git a/arch/arm/boot/dts/imx23.dtsi b/arch/arm/boot/dts/imx23.dtsi
+index aaaa987d8eff..223c5171edab 100644
+--- a/arch/arm/boot/dts/imx23.dtsi
++++ b/arch/arm/boot/dts/imx23.dtsi
+@@ -406,7 +406,7 @@
+ 				status = "disabled";
+ 			};
  
--static const char * const dpp_rx_err = "Read Rx Descriptor Parity checker Error";
--static const char * const dpp_tx_err = "Read Tx Descriptor Parity checker Error";
-+#define DPP_RX_ERR "Read Rx Descriptor Parity checker Error"
-+#define DPP_TX_ERR "Read Tx Descriptor Parity checker Error"
-+
- static const struct dwxgmac3_error_desc dwxgmac3_dma_dpp_errors[32] = {
--	{ true, "TDPES0", dpp_tx_err },
--	{ true, "TDPES1", dpp_tx_err },
--	{ true, "TDPES2", dpp_tx_err },
--	{ true, "TDPES3", dpp_tx_err },
--	{ true, "TDPES4", dpp_tx_err },
--	{ true, "TDPES5", dpp_tx_err },
--	{ true, "TDPES6", dpp_tx_err },
--	{ true, "TDPES7", dpp_tx_err },
--	{ true, "TDPES8", dpp_tx_err },
--	{ true, "TDPES9", dpp_tx_err },
--	{ true, "TDPES10", dpp_tx_err },
--	{ true, "TDPES11", dpp_tx_err },
--	{ true, "TDPES12", dpp_tx_err },
--	{ true, "TDPES13", dpp_tx_err },
--	{ true, "TDPES14", dpp_tx_err },
--	{ true, "TDPES15", dpp_tx_err },
--	{ true, "RDPES0", dpp_rx_err },
--	{ true, "RDPES1", dpp_rx_err },
--	{ true, "RDPES2", dpp_rx_err },
--	{ true, "RDPES3", dpp_rx_err },
--	{ true, "RDPES4", dpp_rx_err },
--	{ true, "RDPES5", dpp_rx_err },
--	{ true, "RDPES6", dpp_rx_err },
--	{ true, "RDPES7", dpp_rx_err },
--	{ true, "RDPES8", dpp_rx_err },
--	{ true, "RDPES9", dpp_rx_err },
--	{ true, "RDPES10", dpp_rx_err },
--	{ true, "RDPES11", dpp_rx_err },
--	{ true, "RDPES12", dpp_rx_err },
--	{ true, "RDPES13", dpp_rx_err },
--	{ true, "RDPES14", dpp_rx_err },
--	{ true, "RDPES15", dpp_rx_err },
-+	{ true, "TDPES0", DPP_TX_ERR },
-+	{ true, "TDPES1", DPP_TX_ERR },
-+	{ true, "TDPES2", DPP_TX_ERR },
-+	{ true, "TDPES3", DPP_TX_ERR },
-+	{ true, "TDPES4", DPP_TX_ERR },
-+	{ true, "TDPES5", DPP_TX_ERR },
-+	{ true, "TDPES6", DPP_TX_ERR },
-+	{ true, "TDPES7", DPP_TX_ERR },
-+	{ true, "TDPES8", DPP_TX_ERR },
-+	{ true, "TDPES9", DPP_TX_ERR },
-+	{ true, "TDPES10", DPP_TX_ERR },
-+	{ true, "TDPES11", DPP_TX_ERR },
-+	{ true, "TDPES12", DPP_TX_ERR },
-+	{ true, "TDPES13", DPP_TX_ERR },
-+	{ true, "TDPES14", DPP_TX_ERR },
-+	{ true, "TDPES15", DPP_TX_ERR },
-+	{ true, "RDPES0", DPP_RX_ERR },
-+	{ true, "RDPES1", DPP_RX_ERR },
-+	{ true, "RDPES2", DPP_RX_ERR },
-+	{ true, "RDPES3", DPP_RX_ERR },
-+	{ true, "RDPES4", DPP_RX_ERR },
-+	{ true, "RDPES5", DPP_RX_ERR },
-+	{ true, "RDPES6", DPP_RX_ERR },
-+	{ true, "RDPES7", DPP_RX_ERR },
-+	{ true, "RDPES8", DPP_RX_ERR },
-+	{ true, "RDPES9", DPP_RX_ERR },
-+	{ true, "RDPES10", DPP_RX_ERR },
-+	{ true, "RDPES11", DPP_RX_ERR },
-+	{ true, "RDPES12", DPP_RX_ERR },
-+	{ true, "RDPES13", DPP_RX_ERR },
-+	{ true, "RDPES14", DPP_RX_ERR },
-+	{ true, "RDPES15", DPP_RX_ERR },
- };
+-			dma_apbx: dma-apbx@80024000 {
++			dma_apbx: dma-controller@80024000 {
+ 				compatible = "fsl,imx23-dma-apbx";
+ 				reg = <0x80024000 0x2000>;
+ 				interrupts = <7 5 9 26
+diff --git a/arch/arm/boot/dts/imx28.dtsi b/arch/arm/boot/dts/imx28.dtsi
+index 5107fdc482ea..84f7c86373b5 100644
+--- a/arch/arm/boot/dts/imx28.dtsi
++++ b/arch/arm/boot/dts/imx28.dtsi
+@@ -984,7 +984,7 @@
+ 				status = "disabled";
+ 			};
  
- static void dwxgmac3_handle_dma_err(struct net_device *ndev,
+-			dma_apbx: dma-apbx@80024000 {
++			dma_apbx: dma-controller@80024000 {
+ 				compatible = "fsl,imx28-dma-apbx";
+ 				reg = <0x80024000 0x2000>;
+ 				interrupts = <78 79 66 0
+-- 
+2.43.0
+
 
 
 
