@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-22447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2A9985DC12
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:49:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BD3085DDE2
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:13:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E2DA2840A4
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:49:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2672F281001
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:13:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E547D7BB0C;
-	Wed, 21 Feb 2024 13:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E2407F7CB;
+	Wed, 21 Feb 2024 14:09:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ARaAcl9X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a/jeUqk4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A261E7BAFF;
-	Wed, 21 Feb 2024 13:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0C3E7D3EE;
+	Wed, 21 Feb 2024 14:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523330; cv=none; b=t6uNOBdBgr7lRNMjP6uo3aLbb0YfZMYutKpQoCdx8hiifVEbNa/3RrpgOelKi7yGqvqJevaVlqA/8NxQDfciGe96qBiIScqRGOl2COpMFdFSDeHvy8OVqkJXyqgYT2LdW3QH2irS70GaigWxJX+JWcbtyM+QN5ERiT2ATwkR+FA=
+	t=1708524542; cv=none; b=e8dsOcL+Vrc2tzw87HFRSTKKoANbiUREBbRT2eyW/dNhlmzJPb5zE/BK9VCftPAtCL/Mo6p5rIBX5OgPyUXlobeRDJQbFxt/OPqC1STkGafdMATF4kcaguMOLW3G7vlDU81z7U0OB8h2oTVx3ig1Kz+UBiqJMUw8kCZsCJL3lIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523330; c=relaxed/simple;
-	bh=f7OSnkMBGTeufyvrTELTy5z7LH5AwrhTE242GmL+OD0=;
+	s=arc-20240116; t=1708524542; c=relaxed/simple;
+	bh=ehFmc/qQy2LtbUW+zpIli2z++BY0P42g1TFuXbJ/UoI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sckYV4ebvp7tJF39kHADR3Ow53BuHTMYCJmbvQsZj7jC+n7UFes9agS3buPDz5ruhuPqDJmgxky8bBoXnDHUkhP07Supo8zsONez72kRVmZh7EMcc2MywJn3sz9Utn8mnPgYa9c5asHVOHGDwwsr1IszNe579HQihJegBl4ZI58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ARaAcl9X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EF63C433F1;
-	Wed, 21 Feb 2024 13:48:50 +0000 (UTC)
+	 MIME-Version; b=W4GYKPvqfPn1FCpnHMKJG17Izp/G1plFLzC3rtH2Swqkk0sxCfDBS/+1c4oMjO/Td5iUx3UdsJcMy2MWfY1BzpW0M9C98YMaegLQrFcfcPFlmLALPGwY8xTDtSxp6Ai0FkZLhe+8yWZh+LRYgNabiHZnzlSNuhacSFzyrC2R5zM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a/jeUqk4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F076C433C7;
+	Wed, 21 Feb 2024 14:09:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523330;
-	bh=f7OSnkMBGTeufyvrTELTy5z7LH5AwrhTE242GmL+OD0=;
+	s=korg; t=1708524541;
+	bh=ehFmc/qQy2LtbUW+zpIli2z++BY0P42g1TFuXbJ/UoI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ARaAcl9XLFSRmnSeFGtQjpu2tNtZXA8+rSFwbDre6d67o7fdMmB63xL2/CiqR6iFG
-	 78BV8W//EbCFKZWfQNNnKYKHCcYxOiuLcBDsnHFsERWsEk81tTPA5HKpfhLiIC4bOx
-	 qsJt62VFgBb7NTAOTidQapwcURZRp35YNSKQ1Fro=
+	b=a/jeUqk4zrGgYMJK1QHGOEluDigCWTZ/mKlKCq3Ybv29D3OYu9E4D/jy5qtfKV7f/
+	 2Le6df0wpwvSFISoMIFxsCGViUVcNLz6a6B+77t3pSfNmCwrC3v7FaKCDbjCKYjtCd
+	 SfxuikEKVRk8FkzKPhiwy2TF9U33cEzINbJFvE7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve Wahl <steve.wahl@hpe.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH 5.15 404/476] x86/mm/ident_map: Use gbpages only where full GB page should be mapped.
+	Leonard Dallmayr <leonard.dallmayr@mailbox.org>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.10 276/379] USB: serial: cp210x: add ID for IMST iM871A-USB
 Date: Wed, 21 Feb 2024 14:07:35 +0100
-Message-ID: <20240221130022.936148828@linuxfoundation.org>
+Message-ID: <20240221130003.070182291@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve Wahl <steve.wahl@hpe.com>
+From: Leonard Dallmayr <leonard.dallmayr@mailbox.org>
 
-commit d794734c9bbfe22f86686dc2909c25f5ffe1a572 upstream.
+commit 12b17b4eb82a41977eb848048137b5908d52845c upstream.
 
-When ident_pud_init() uses only gbpages to create identity maps, large
-ranges of addresses not actually requested can be included in the
-resulting table; a 4K request will map a full GB.  On UV systems, this
-ends up including regions that will cause hardware to halt the system
-if accessed (these are marked "reserved" by BIOS).  Even processor
-speculation into these regions is enough to trigger the system halt.
+The device IMST USB-Stick for Smart Meter is a rebranded IMST iM871A-USB
+Wireless M-Bus USB-adapter. It is used to read wireless water, gas and
+electricity meters.
 
-Only use gbpages when map creation requests include the full GB page
-of space.  Fall back to using smaller 2M pages when only portions of a
-GB page are included in the request.
-
-No attempt is made to coalesce mapping requests. If a request requires
-a map entry at the 2M (pmd) level, subsequent mapping requests within
-the same 1G region will also be at the pmd level, even if adjacent or
-overlapping such requests could have been combined to map a full
-gbpage.  Existing usage starts with larger regions and then adds
-smaller regions, so this should not have any great consequence.
-
-[ dhansen: fix up comment formatting, simplifty changelog ]
-
-Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Leonard Dallmayr <leonard.dallmayr@mailbox.org>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20240126164841.170866-1-steve.wahl%40hpe.com
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/mm/ident_map.c |   23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+ drivers/usb/serial/cp210x.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/x86/mm/ident_map.c
-+++ b/arch/x86/mm/ident_map.c
-@@ -26,18 +26,31 @@ static int ident_pud_init(struct x86_map
- 	for (; addr < end; addr = next) {
- 		pud_t *pud = pud_page + pud_index(addr);
- 		pmd_t *pmd;
-+		bool use_gbpage;
- 
- 		next = (addr & PUD_MASK) + PUD_SIZE;
- 		if (next > end)
- 			next = end;
- 
--		if (info->direct_gbpages) {
--			pud_t pudval;
-+		/* if this is already a gbpage, this portion is already mapped */
-+		if (pud_large(*pud))
-+			continue;
-+
-+		/* Is using a gbpage allowed? */
-+		use_gbpage = info->direct_gbpages;
- 
--			if (pud_present(*pud))
--				continue;
-+		/* Don't use gbpage if it maps more than the requested region. */
-+		/* at the begining: */
-+		use_gbpage &= ((addr & ~PUD_MASK) == 0);
-+		/* ... or at the end: */
-+		use_gbpage &= ((next & ~PUD_MASK) == 0);
-+
-+		/* Never overwrite existing mappings */
-+		use_gbpage &= !pud_present(*pud);
-+
-+		if (use_gbpage) {
-+			pud_t pudval;
- 
--			addr &= PUD_MASK;
- 			pudval = __pud((addr - info->offset) | info->page_flag);
- 			set_pud(pud, pudval);
- 			continue;
+--- a/drivers/usb/serial/cp210x.c
++++ b/drivers/usb/serial/cp210x.c
+@@ -150,6 +150,7 @@ static const struct usb_device_id id_tab
+ 	{ USB_DEVICE(0x10C4, 0x85F8) }, /* Virtenio Preon32 */
+ 	{ USB_DEVICE(0x10C4, 0x8664) }, /* AC-Services CAN-IF */
+ 	{ USB_DEVICE(0x10C4, 0x8665) }, /* AC-Services OBD-IF */
++	{ USB_DEVICE(0x10C4, 0x87ED) }, /* IMST USB-Stick for Smart Meter */
+ 	{ USB_DEVICE(0x10C4, 0x8856) },	/* CEL EM357 ZigBee USB Stick - LR */
+ 	{ USB_DEVICE(0x10C4, 0x8857) },	/* CEL EM357 ZigBee USB Stick */
+ 	{ USB_DEVICE(0x10C4, 0x88A4) }, /* MMB Networks ZigBee USB Device */
 
 
 
