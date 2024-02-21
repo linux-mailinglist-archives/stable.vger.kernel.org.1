@@ -1,186 +1,121 @@
-Return-Path: <stable+bounces-21810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 140E985D578
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 11:27:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC5B985D59A
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 11:33:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D2301F23368
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 10:27:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74A682812B8
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 10:33:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B3CE3D970;
-	Wed, 21 Feb 2024 10:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5E7B46B7;
+	Wed, 21 Feb 2024 10:33:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="OTa3AGcq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tSZpk8tr"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2071.outbound.protection.outlook.com [40.107.243.71])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560033C48A
-	for <stable@vger.kernel.org>; Wed, 21 Feb 2024 10:27:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.71
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708511223; cv=fail; b=di9PbQnJXRsivTkr5bpvCLNHc/IPi4cNEOmgx77WhiqY0CWjASzTcuo9JBLej64JC2j3Bg4e1NWghditgFA1xYF6ji1FEu+rIR4Eq7fsut6OXPeVHjdifVYMv/5XZxZGiih9R9REP0VXNZdxNtaU6odMpCUrBLI6bNuucsWGFq0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708511223; c=relaxed/simple;
-	bh=FJMo9CDrVjqsd+sXkRlPbfuedEbk7SYnbcvhSWSPH00=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=SEIvNFcLHg18sU/qq+LHOk2j13KMsrWkLf4KNymjFNDQUVU0Zx2o0LXpYKQgPh80Mb4f3mba9clzjP34Kdg/V0TWXCrBiAhr6Omxam/Olb+0zjAETMLut8T6LT9ipcbygSW2QmuubRUdotU+SveN3wCb5/IjQH7ugQj9W38cIao=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=OTa3AGcq; arc=fail smtp.client-ip=40.107.243.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Fc6uStw4A1DtSbwitCAwtjeKpr1SSPzmXl/97FW8FMWbrdeq4NP4Dj7g+6MHbTV8UbYmB1ZnXpqcVhYX0Et/8eLFcPtezzRHe4iUN3YopQdS2ML0f5PgB6jMqodWRhYNpCwR3D96/24yS5stiB87iCzkZr+JIS+siLpHTviruiX6rrQuo2oLxXF5jmC5OhDC4ypPfFR78tsEQsSkRKcNzxUUdSI10q+MoFCBjOWV8ftpSio2Jf2GfKdzYzo0pXHfQGqHyXprUdbWsV2pwC9uib2fOsn8S2vE6W7hMD2i3zRWD5c9JDJ5CjvtO32mPM/6ojyQbvXMW5+yBjGB3X6+NA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JUwyHumVju0+AOwMwXKmVgVyCIde5vq//HvDxfd3SAY=;
- b=UrtQkIsFvxP+lTVeBX2qfVN4+V6oxInWGIOKgNe6BK51oIiPXPN2dDhVMhcxV/3NTIPYT83o4izcLwFi2DvI8jZ7ibjkL2sofnp9pVC0PWxjhhPTBYz2Ww/Ja6p6xtW1BtY+QRogJJj5EGYAOqKEyi+rIQtAkD9XnXsbbHqh9NqfByhAr8dOimXnefDKTn7/ldo3nIxQxqdd3E1UTQ+O1uPLNrDQ9Lg4hvj6TeVBuNXP3y5EKq2R2tfvxBwkU42BIdQT9VmpY4dxlU0WkbWTt8zCHxS9X1Nj7lncYd9HgrzThkNAV4Q5TarWkCJL7DjuLJOZURbyR/KwZNy524IEpg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JUwyHumVju0+AOwMwXKmVgVyCIde5vq//HvDxfd3SAY=;
- b=OTa3AGcqnUxerfTVDDszPPJVGuj7mzPgv1kB8jtT5Lt6bVU4bPjTe5Whh0XCwFGaIAOENZxb1CKhq9gyPSdSaC9GEmHBadPR5tboXcWLMRD350sl/jPlfEWOQsVFV6IpPGGL1+Z211GEYU62nqiG8USVRAeJeyeFWcGVjDSq9qU=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by SN7PR12MB7836.namprd12.prod.outlook.com (2603:10b6:806:34e::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.19; Wed, 21 Feb
- 2024 10:26:58 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::e1fb:4123:48b1:653]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::e1fb:4123:48b1:653%4]) with mapi id 15.20.7316.018; Wed, 21 Feb 2024
- 10:26:58 +0000
-Message-ID: <6733f48a-4fb2-446c-91a8-e631937fbfcb@amd.com>
-Date: Wed, 21 Feb 2024 11:26:53 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/ttm: Fix an invalid freeing on already freed page in
- error path
-Content-Language: en-US
-To: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- intel-xe@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
-Cc: Dave Airlie <airlied@redhat.com>, Huang Rui <ray.huang@amd.com>,
- dri-devel@lists.freedesktop.org, stable@vger.kernel.org
-References: <20240221073324.3303-1-thomas.hellstrom@linux.intel.com>
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <20240221073324.3303-1-thomas.hellstrom@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR0P281CA0008.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:15::13) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D4A55228;
+	Wed, 21 Feb 2024 10:33:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708511592; cv=none; b=rmV8ngeqXZXx0H2gUHTrrQjR8O4mHt4D94/FjTsdWu0n/gHadNtr3qwNN/HCNkjrUj2e8sFUm8vNrDGQ4XYwpN8oUb7Vmo1pUDi0tcOdbF09Q5Ibkgf07XPP/+z10KtRjPeQoGxL6PYdwKuPjaJb5nGk31sPJJOr5Dsz6zoh/Ik=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708511592; c=relaxed/simple;
+	bh=wBmpAvypePMGkIr64sby2PVZroYKG6tZ/uT/sRxVsCw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q+RZRFa2xAUSXkuRUk4KbEpo1T7LNkOvQ520yhw80swF4fax44wGsJqI1DLCrRQTpQv1Iqel1Li2hZhl672t423xLbHO9lDMNRiBrckMeThzm7r1OvSkTGiQdDIFMuMg0+6GRkLdG5zdQdlcJw45LV4UeBArC/rKG0v+Ol1m48w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tSZpk8tr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D1E5C433F1;
+	Wed, 21 Feb 2024 10:33:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1708511592;
+	bh=wBmpAvypePMGkIr64sby2PVZroYKG6tZ/uT/sRxVsCw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tSZpk8tri2tl/8IMrs+lD1pVMj3Bf4dQXWUMZzYf7PdI4pCeNODVpgKdVS4KG9CRa
+	 vDleH5viYPTSufxHeZpKmIro4z9N3zOM+xjnnZ8W6dqqrKqDiaudLW7rnrXgx8Zh0k
+	 rJSsMcdQfhbjVAYriBiu3HKEYFGLqvtDN6E6x2Zc=
+Date: Wed, 21 Feb 2024 11:33:08 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Lukas Wunner <lukas@wunner.de>, Kalle Valo <kvalo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.1 174/197] wifi: mwifiex: Support SD8978 chipset
+Message-ID: <2024022145-abnormal-evasive-c978@gregkh>
+References: <20240220204841.073267068@linuxfoundation.org>
+ <20240220204846.279064097@linuxfoundation.org>
+ <20240221080353.GB5131@francesco-nb>
+ <2024022106-speculate-scallion-67a7@gregkh>
+ <20240221083904.GA5872@francesco-nb>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|SN7PR12MB7836:EE_
-X-MS-Office365-Filtering-Correlation-Id: 123ba354-4cf3-4f4c-cefc-08dc32c7a278
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	wDeeK5S4a3N63AW90wFsp+PLXQzg/sbRPJOftrhQmr6L73XQqrNkoRINiwxwgZyXHd+OSeSzNcf9lTSANTxSTWDFOSTcvdtkx6aNiggFl1yuqj6qQgy8GVeEwDhBtCFMgb15JOXUYYVyDK33W2BxOJuc1iCqMMLL/Tm8Nr4KuSVNV0uu0jJHlbey9sMIjjwfoMLXxLFNuWu3CAt4/98VlWSkbMdGOJ4UrJbqaPUjU+V7ekOcQMCJ0vFGarvxzfzwL51R2/mK1fDmezWma/rEyDAGCrzaKDpUqYPnsRl6kXt7rk/WtBkp9mQl88Z10FkzuQK65l/ZuCyk+j4rTnHkOLrLKSIPyHHU8qFL7T+OV5/eiSvwBOM3uO2NGXGaBwapC0PN9bG0adNccZAUHcnHoC3r6exkB8OIko4ywOb04+CQcSaeXZ99Njl8+SP4f2pMFhHh+knHUlodjiln2O6tz3lYw34kvSdDfzXSiGlYQR8gr87dPfcPuRwRKzObPWKEaXXSvnwPGSWe6+RtiNkt/m1OIonAcFDeA4R2xAr75s8=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZzhJbjlZYXdFNS9IOTNxUllpaVVuM3p5cndFZHJXamdlN1ljeVpDVFR5NHNV?=
- =?utf-8?B?b1lBR01GWmxLOGhsMVRWQkJIZ2JTd2p3VDVRSHNhTWNDK0FGNU5uWDJFTWx2?=
- =?utf-8?B?c3B3cWZBazJhTGo0VlNTL1Zwd0k4QmNMbFExdGVKUGxKdmdndGZiVlBuQzcx?=
- =?utf-8?B?SU9sZC9sRHJES3VBZVNTZ3k5VHM0SExOWkFEdXhGa3NyUVMzY2t4cUxGSFd5?=
- =?utf-8?B?T2lqMzYvLzVnT2VpQTZiVDIrc05PcHU1TkZQUkNsS0dNZ2ZVUTBZU1RjR21L?=
- =?utf-8?B?ZGdWWHpkMFFyS25keGd2R3AvMkgvMXZOaVk4SVdycUtFRjBPZjc1Mk9OR2FP?=
- =?utf-8?B?TEZXd2dkUmxpWitZRTJmQ3A5Q0orTUloZlpBdFZZQnlXRldCdWIyeVdnTDRr?=
- =?utf-8?B?cm4xQXdJVDRKb2hQazZPUDJ5OFVLR2NjbVJNWXJ0Y1ZVa2pRSUJBd2Y3cVBt?=
- =?utf-8?B?OGxCS3kxVkg5ekFQaUVVb0Z3TW5DSEt4V1FRKzYyVHlmcnNNa21NQTYyTjNu?=
- =?utf-8?B?WjBEbEpkS3gwaVdoaVg5UHhsOFZOQVRuelU0dHFUZ1RNQVl4Q204RUIxdHJv?=
- =?utf-8?B?UjUyYXJVaHM3VzM4cUUyV2FCZUxXVk5nYmMyRjlsWUZ0eGxxTVdnY05IQVZh?=
- =?utf-8?B?djE4cWpOUDg2S0svV2VSdDJoUzhIYUR0Y0FNdDI4dENMdS9iaE96OWNURmUz?=
- =?utf-8?B?UTB2NzI3V1J1VHY1Z2RHT2srRThzNUUrTE90cTZYZjR6VDloSE94bVQ3ME5i?=
- =?utf-8?B?bDdtY2lDcnpzR3lsa29vRFlPSENKL2IxUUZKWlRLdEQ4MHoyb0lhU2tTcXpi?=
- =?utf-8?B?VDV5Rk9CNHZyVy9JV3lsOU9EVnI5QXkzRkNLdXVTV0hGUENQckZTZGRSMHZS?=
- =?utf-8?B?cittVmpPcFFZV3pyTkNsRDJXY21Dd1Q3OEZqWFowTmF1OTNtOCtDa3hmWmxQ?=
- =?utf-8?B?aXlhQnljbkpFajVqNUNOZUg5SGhScEU4RTJFZTdzRXVGRFpWTXVoTnNlVFRm?=
- =?utf-8?B?eXJmSWxpNnFCejZNaXZnZVRDazhQMUxDNmF5WjQxelJiNktBZVF1OVlza05w?=
- =?utf-8?B?WmtCeTlLUENYdW15ZHFBZllNbXh4UW1pd2VOajVJRXpKbitEN04xb2lzZHd6?=
- =?utf-8?B?aVI5RHY1MHBLZlZqc2dMenJmTGJKaWx2ZkxmcXNhVU9YTnRyN2xueXB0YWVE?=
- =?utf-8?B?Y0ZGRGxaRzN3MnJqNXZjRTYwUEo3RmN3TzIzM0xxUHdiSlpsRkJ0REtKR01K?=
- =?utf-8?B?YWVZanluajlEbm9JajNDL2pWTnlub2VvUHh6RWZMbENabEJ2d2Q3Y1RIdGVr?=
- =?utf-8?B?bUR1dFNuR0RFQnVjc0NjN2JTNGZaN1BqOXB2V1NweUhzaUNhaXBEVmdIM3pJ?=
- =?utf-8?B?aStNMWJqZklON3ZodGQyTHVFdGE0Q25saS9lSzFpdS96dDVoTHpyZVE4RnQ2?=
- =?utf-8?B?TXNoUmxncTJ1ZXJ5WUp2UWJtVUJldDBuc0MwUDJDT2xPeVBBTkdzMWExaWtL?=
- =?utf-8?B?VlhqaWplTFJ5L1ZlUjJoMklzNWdCcjlmZ2ZyWldsMEQ4R1RTNlY3U0JWbklR?=
- =?utf-8?B?NDlneG5EdWhQUXg1NERCdFVxdFppSk84cEZYaDZxS3BFMEl4TlZzakZGdjFM?=
- =?utf-8?B?ZHhzaUI4Vnd4VktsS3ZFcUM0NUlxZFRMa0hLMUxMamE2R21hZUhmc1VGSUJV?=
- =?utf-8?B?U3lGbWs5YTgzZGg2T0ZvRmMxSk5UZm9jKy8rWjB2dGsrdHJkLy9ETDk4dnRM?=
- =?utf-8?B?ejE5ZSt6ZEh0YjRKMEJzemN5Ti8rK0dpYXF0bVR1T0NLZ1luN1VPaTBVSDZM?=
- =?utf-8?B?ZW51ajRKVXNIQ1E0eFRvTnFWMDJPSUhrbGJaKzZaNURVN3pGR0xFWUdBZno3?=
- =?utf-8?B?a2xnV2Nhc3RXZzlabkEyU1c0WmpsZHI3NHordVRsNm1jSE9YdjRSdEtHdUlk?=
- =?utf-8?B?Nk54UmRrbk1GVXJXY0d4dlI4T1JkeVFRcUZzSFNGc0ZlTVFCdGpCRzJHa2w4?=
- =?utf-8?B?OVpDNFk0MjhHYy9LVk1DQTQ5YkRSK0ZkRGkzN25GMC9MVEpyenlJZy9DOUF0?=
- =?utf-8?B?V1VuTVFkM3dVbDN6QmRnZjJjUWdVTmdnQlE1L3JHV3V4WjQ1MG55Z1ZCR1pW?=
- =?utf-8?Q?s4AevoyKGAK2D4LGrtlIo408Z?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 123ba354-4cf3-4f4c-cefc-08dc32c7a278
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Feb 2024 10:26:58.7754
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: x5HbnPKPPhQsBGVbJLqhw/MC4D0zOaZIFd4IeXJR8dzcJI8S+LfYU0DJL2B3Lax7
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7836
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240221083904.GA5872@francesco-nb>
 
-Am 21.02.24 um 08:33 schrieb Thomas Hellström:
-> If caching mode change fails due to, for example, OOM we
-> free the allocated pages in a two-step process. First the pages
-> for which the caching change has already succeeded. Secondly
-> the pages for which a caching change did not succeed.
->
-> However the second step was incorrectly freeing the pages already
-> freed in the first step.
->
-> Fix.
->
-> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-> Fixes: 379989e7cbdc ("drm/ttm/pool: Fix ttm_pool_alloc error path")
-> Cc: Christian König <christian.koenig@amd.com>
-> Cc: Dave Airlie <airlied@redhat.com>
-> Cc: Christian Koenig <christian.koenig@amd.com>
-> Cc: Huang Rui <ray.huang@amd.com>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: <stable@vger.kernel.org> # v6.4+
+On Wed, Feb 21, 2024 at 09:39:04AM +0100, Francesco Dolcini wrote:
+> On Wed, Feb 21, 2024 at 09:12:23AM +0100, Greg Kroah-Hartman wrote:
+> > On Wed, Feb 21, 2024 at 09:03:53AM +0100, Francesco Dolcini wrote:
+> > > On Tue, Feb 20, 2024 at 09:52:13PM +0100, Greg Kroah-Hartman wrote:
+> > > > 6.1-stable review patch.  If anyone has any objections, please let me know.
+> > > > 
+> > > > ------------------
+> > > > 
+> > > > From: Lukas Wunner <lukas@wunner.de>
+> > > > 
+> > > > [ Upstream commit bba047f15851c8b053221f1b276eb7682d59f755 ]
+> > > > 
+> > > > The Marvell SD8978 (aka NXP IW416) uses identical registers as SD8987,
+> > > > so reuse the existing mwifiex_reg_sd8987 definition.
+> > > > 
+> > > > Note that mwifiex_reg_sd8977 and mwifiex_reg_sd8997 are likewise
+> > > > identical, save for the fw_dump_ctrl register:  They define it as 0xf0
+> > > > whereas mwifiex_reg_sd8987 defines it as 0xf9.  I've verified that
+> > > > 0xf9 is the correct value on SD8978.  NXP's out-of-tree driver uses
+> > > > 0xf9 for all of them, so there's a chance that 0xf0 is not correct
+> > > > in the mwifiex_reg_sd8977 and mwifiex_reg_sd8997 definitions.  I cannot
+> > > > test that for lack of hardware, hence am leaving it as is.
+> > > > 
+> > > > NXP has only released a firmware which runs Bluetooth over UART.
+> > > > Perhaps Bluetooth over SDIO is unsupported by this chipset.
+> > > > Consequently, only an "sdiouart" firmware image is referenced, not an
+> > > > alternative "sdsd" image.
+> > > > 
+> > > > Signed-off-by: Lukas Wunner <lukas@wunner.de>
+> > > > Signed-off-by: Kalle Valo <kvalo@kernel.org>
+> > > > Link: https://lore.kernel.org/r/536b4f17a72ca460ad1b07045757043fb0778988.1674827105.git.lukas@wunner.de
+> > > > Stable-dep-of: 1c5d463c0770 ("wifi: mwifiex: add extra delay for firmware ready")
+> > > 
+> > > I would drop this and 1c5d463c0770.
+> > 
+> > Why?  Commit 1c5d463c0770 was explicitly tagged for stable inclusion,
+> > what changed?
+> 
+> 1c5d463c0770 is a fix for bba047f15851c8b053221f1b276eb7682d59f755.
+> 
+> So there is no bug, unless bba047f15851c8b053221f1b276eb7682d59f755 is
+> there.
 
-You don't know how much time I've spend staring at this line to find the 
-bug in it and haven't seen it. Got bug reports about that for month as well.
+It is.
 
-Reviewed-by: Christian König <christian.koenig@amd.com>
+> The mistake that we did at that time is that it should have been
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: bba047f15851 ("wifi: mwifiex: Support SD8978 chipset")
 
-> ---
->   drivers/gpu/drm/ttm/ttm_pool.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/gpu/drm/ttm/ttm_pool.c b/drivers/gpu/drm/ttm/ttm_pool.c
-> index b62f420a9f96..112438d965ff 100644
-> --- a/drivers/gpu/drm/ttm/ttm_pool.c
-> +++ b/drivers/gpu/drm/ttm/ttm_pool.c
-> @@ -387,7 +387,7 @@ static void ttm_pool_free_range(struct ttm_pool *pool, struct ttm_tt *tt,
->   				enum ttm_caching caching,
->   				pgoff_t start_page, pgoff_t end_page)
->   {
-> -	struct page **pages = tt->pages;
-> +	struct page **pages = &tt->pages[start_page];
->   	unsigned int order;
->   	pgoff_t i, nr;
->   
+Great, that commit is currently in:
+	6.3 queue-5.10 queue-5.15 queue-6.1
+so all is good.
 
+thanks,
+
+greg k-h
 
