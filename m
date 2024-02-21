@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-22552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD0A285DC94
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:55:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D462785DABC
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:34:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C33C1F22686
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:55:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64289B23F5F
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:34:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5D1179DAB;
-	Wed, 21 Feb 2024 13:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A460369E08;
+	Wed, 21 Feb 2024 13:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hKET4KSg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L4KTNfJ0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93217762C1;
-	Wed, 21 Feb 2024 13:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 631047993D;
+	Wed, 21 Feb 2024 13:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523698; cv=none; b=aoe01ewGOYBMlCe/ZxFhPr67tIqfQbOLVgPJRQt/IFovLbWQyIC4HEjb4Hn6cfeuGAWi6cOHbpoeAjfFdtDCTZFzR/L93lIn7qSgNksN4e0qC08CsVaKtigiFYZ/YnAKbq9aEWiFpcQzHhA6eSJ3UssILxTSupVNnO6Rjbo6KIA=
+	t=1708522332; cv=none; b=Cxv8U/nnJDCxnbGtbdJmHPEJf8AIcZ0ODgOhADerRxDy6To+3fO+Skoh1hSYvUFQ3PE3LcruGkE3RMJVvU7sQiGhSGQlWw1z5N1Jd5HFlsSBRM5PbePeE4w04lZ1pcc14fqU6cL9LNqMeIGub52qKak8Rr6e4HcR5k+HSQfz7KU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523698; c=relaxed/simple;
-	bh=x4AtH/sZaJBfS6ZfbV/LBfLGsk+BPNiseBk1eQ3IdpE=;
+	s=arc-20240116; t=1708522332; c=relaxed/simple;
+	bh=blZvTnffSLajbZWCPna45jzn6StyNrABklb03wn/V8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f1Z+NujQ3tFHU+CKBbqb3/879GhOHYoYtvaH7UEVbajeTBdL7DlbPylLzG9Yl+DmeyaUm/LcXORsgIiDSQQpHW1kJqYBMasa3B8qJRfZS3pSzUlk4SrogvQg0sHcaYZGy9HxP/D5XprQaNuOePV+tc/3GTC0Vpcp5buvWnYC3Yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hKET4KSg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09FA4C433C7;
-	Wed, 21 Feb 2024 13:54:57 +0000 (UTC)
+	 MIME-Version; b=dcnwTFaYFia6abHAj6uBCbIidFG9c7OC76V5Zt2XsULdTDAH/xdYnrMwQAv6qMuywXbM+wiLJp3MYv78GRI+kQj/QxNzSAvWpX8TIaQLhJ6AFget9lyowGcH9v3UlZQJA7zMiBXRVYihYubd5xW0RXBPZdPjG4mThTSwy9j4X2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L4KTNfJ0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 403FBC433F1;
+	Wed, 21 Feb 2024 13:32:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523698;
-	bh=x4AtH/sZaJBfS6ZfbV/LBfLGsk+BPNiseBk1eQ3IdpE=;
+	s=korg; t=1708522331;
+	bh=blZvTnffSLajbZWCPna45jzn6StyNrABklb03wn/V8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hKET4KSgvO/MB+3MAnAx9Pm9PBW6LonCLwpc/b81fOewasqytd0RleDuP2TkDPRIH
-	 MuwZKa6NfXW8MraeXbl52JebdJckxP1Gs0SEsldeb4ttBYt0TFRiylRGUV0O8oUDhD
-	 wbaEfjKjlbm+LNeddimGEvEp/K0/STjY0EQcnP1w=
+	b=L4KTNfJ0Pro9bN0U7eAX8Yqc1t66I3b+qR+n//PFkmlWFVKJMrttRtXUUqpTxJXpi
+	 TXit2AaKu2sIiMrzkMa64yZCyisXkJYZF/n6a4TREx6dsNzTVqQNKJdiGrEIKfUE47
+	 Z8Au63YCPWWHLpHu5uVThYcrp3yncdVsSipyFOjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
+	Youquan Song <youquan.song@intel.com>,
+	Zhiquan Li <zhiquan1.li@intel.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Naoya Horiguchi <naoya.horiguchi@nec.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 005/379] usb: cdns3: Fix uvc fail when DMA cross 4k boundery since sg enabled
-Date: Wed, 21 Feb 2024 14:03:04 +0100
-Message-ID: <20240221125955.081133755@linuxfoundation.org>
+Subject: [PATCH 5.15 134/476] x86/mce: Mark fatal MCEs page as poison to avoid panic in the kdump kernel
+Date: Wed, 21 Feb 2024 14:03:05 +0100
+Message-ID: <20240221130012.908778246@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,93 +64,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Zhiquan Li <zhiquan1.li@intel.com>
 
-[ Upstream commit 40c304109e866a7dc123661a5c8ca72f6b5e14e0 ]
+[ Upstream commit 9f3b130048bfa2e44a8cfb1b616f826d9d5d8188 ]
 
-Supposed DMA cross 4k bounder problem should be fixed at DEV_VER_V2, but
-still met problem when do ISO transfer if sg enabled.
+Memory errors don't happen very often, especially fatal ones. However,
+in large-scale scenarios such as data centers, that probability
+increases with the amount of machines present.
 
-Data pattern likes below when sg enabled, package size is 1k and mult is 2
-	[UVC Header(8B) ] [data(3k - 8)] ...
+When a fatal machine check happens, mce_panic() is called based on the
+severity grading of that error. The page containing the error is not
+marked as poison.
 
-The received data at offset 0xd000 will get 0xc000 data, len 0x70. Error
-happen position as below pattern:
-	0xd000: wrong
-	0xe000: wrong
-	0xf000: correct
-	0x10000: wrong
-	0x11000: wrong
-	0x12000: correct
-	...
+However, when kexec is enabled, tools like makedumpfile understand when
+pages are marked as poison and do not touch them so as not to cause
+a fatal machine check exception again while dumping the previous
+kernel's memory.
 
-To avoid DMA cross 4k bounder at ISO transfer, reduce burst len according
-to start DMA address's alignment.
+Therefore, mark the page containing the error as poisoned so that the
+kexec'ed kernel can avoid accessing the page.
 
-Cc:  <stable@vger.kernel.org>
-Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20231224153816.1664687-4-Frank.Li@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  [ bp: Rewrite commit message and comment. ]
+
+Co-developed-by: Youquan Song <youquan.song@intel.com>
+Signed-off-by: Youquan Song <youquan.song@intel.com>
+Signed-off-by: Zhiquan Li <zhiquan1.li@intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Naoya Horiguchi <naoya.horiguchi@nec.com>
+Link: https://lore.kernel.org/r/20231014051754.3759099-1-zhiquan1.li@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/cdns3/gadget.c | 32 +++++++++++++++++++++++++++++++-
- 1 file changed, 31 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/mce/core.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/usb/cdns3/gadget.c b/drivers/usb/cdns3/gadget.c
-index 118c9402bb60..8a1f0a636848 100644
---- a/drivers/usb/cdns3/gadget.c
-+++ b/drivers/usb/cdns3/gadget.c
-@@ -1119,6 +1119,7 @@ static int cdns3_ep_run_transfer(struct cdns3_endpoint *priv_ep,
- 	u32 togle_pcs = 1;
- 	int sg_iter = 0;
- 	int num_trb_req;
-+	int trb_burst;
- 	int num_trb;
- 	int address;
- 	u32 control;
-@@ -1241,7 +1242,36 @@ static int cdns3_ep_run_transfer(struct cdns3_endpoint *priv_ep,
- 			total_tdl += DIV_ROUND_UP(length,
- 					       priv_ep->endpoint.maxpacket);
+diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
+index a0727723676b..eb48729e220e 100644
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -44,6 +44,7 @@
+ #include <linux/sync_core.h>
+ #include <linux/task_work.h>
+ #include <linux/hardirq.h>
++#include <linux/kexec.h>
  
--		trb->length |= cpu_to_le32(TRB_BURST_LEN(priv_ep->trb_burst_size) |
-+		trb_burst = priv_ep->trb_burst_size;
+ #include <asm/intel-family.h>
+ #include <asm/processor.h>
+@@ -274,6 +275,7 @@ static noinstr void mce_panic(const char *msg, struct mce *final, char *exp)
+ 	struct llist_node *pending;
+ 	struct mce_evt_llist *l;
+ 	int apei_err = 0;
++	struct page *p;
+ 
+ 	/*
+ 	 * Allow instrumentation around external facilities usage. Not that it
+@@ -329,6 +331,20 @@ static noinstr void mce_panic(const char *msg, struct mce *final, char *exp)
+ 	if (!fake_panic) {
+ 		if (panic_timeout == 0)
+ 			panic_timeout = mca_cfg.panic_timeout;
 +
 +		/*
-+		 * Supposed DMA cross 4k bounder problem should be fixed at DEV_VER_V2, but still
-+		 * met problem when do ISO transfer if sg enabled.
-+		 *
-+		 * Data pattern likes below when sg enabled, package size is 1k and mult is 2
-+		 *       [UVC Header(8B) ] [data(3k - 8)] ...
-+		 *
-+		 * The received data at offset 0xd000 will get 0xc000 data, len 0x70. Error happen
-+		 * as below pattern:
-+		 *	0xd000: wrong
-+		 *	0xe000: wrong
-+		 *	0xf000: correct
-+		 *	0x10000: wrong
-+		 *	0x11000: wrong
-+		 *	0x12000: correct
-+		 *	...
-+		 *
-+		 * But it is still unclear about why error have not happen below 0xd000, it should
-+		 * cross 4k bounder. But anyway, the below code can fix this problem.
-+		 *
-+		 * To avoid DMA cross 4k bounder at ISO transfer, reduce burst len according to 16.
++		 * Kdump skips the poisoned page in order to avoid
++		 * touching the error bits again. Poison the page even
++		 * if the error is fatal and the machine is about to
++		 * panic.
 +		 */
-+		if (priv_ep->type == USB_ENDPOINT_XFER_ISOC && priv_dev->dev_ver <= DEV_VER_V2)
-+			if (ALIGN_DOWN(trb->buffer, SZ_4K) !=
-+			    ALIGN_DOWN(trb->buffer + length, SZ_4K))
-+				trb_burst = 16;
-+
-+		trb->length |= cpu_to_le32(TRB_BURST_LEN(trb_burst) |
- 					TRB_LEN(length));
- 		pcs = priv_ep->pcs ? TRB_CYCLE : 0;
- 
++		if (kexec_crash_loaded()) {
++			if (final && (final->status & MCI_STATUS_ADDRV)) {
++				p = pfn_to_online_page(final->addr >> PAGE_SHIFT);
++				if (p)
++					SetPageHWPoison(p);
++			}
++		}
+ 		panic(msg);
+ 	} else
+ 		pr_emerg(HW_ERR "Fake kernel panic: %s\n", msg);
 -- 
 2.43.0
 
