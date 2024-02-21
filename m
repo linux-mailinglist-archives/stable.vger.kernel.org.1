@@ -1,224 +1,128 @@
-Return-Path: <stable+bounces-21796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A80685D2DC
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 09:51:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 293BB85D2DD
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 09:53:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32D75B208FB
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 08:51:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B8C41C22831
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 08:53:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 320833CF42;
-	Wed, 21 Feb 2024 08:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADBE63D0A9;
+	Wed, 21 Feb 2024 08:53:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="RAIbUh6v"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="H7TaBOX3";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Zr/aKmTq"
 X-Original-To: stable@vger.kernel.org
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+Received: from fout7-smtp.messagingengine.com (fout7-smtp.messagingengine.com [103.168.172.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D5A3B793;
-	Wed, 21 Feb 2024 08:51:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 422523D0D2
+	for <stable@vger.kernel.org>; Wed, 21 Feb 2024 08:53:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708505504; cv=none; b=Ul2kZSw0edmbRtFpGVNwaXgTGD0td83a+wIbXSW1KM3ZAAM9Er1Q/Y/qKwT2TisnpBjbC5+eYMuBnZW+VcfX0WYsZGASDGAJRg9K9tqvdXEqpbfF0yZtUNh9XKbgxq2kb0h5cnO69AjmCJ2PMRq2SruLiGQQdT4PW4hOCg00dCk=
+	t=1708505632; cv=none; b=PXYdDN/dZvH78f/eJ3jFOPSDRUlMP0+WIjihzRktDhITlXBmNTi9AAXueIummRTo3wIc30b1V+1cu+wR93gQTa4AQtYQ0VugpMK+mqvRihWqrY3TKvR5xmocIPAvUVM9ypj59QZAOJ6ySMVgJIDnXzNO1NIU5fQFPg+SdFycXqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708505504; c=relaxed/simple;
-	bh=U2xKP1+FG6hj5j28nPiVq6aHy746t6BeNF5UKoKkyV8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dtggKT19aFmdAkU2EjX7avjsNWpdLy9Mw2xIQzAAy0ZJpErLjMx/3+Z6SunwVibIWFRDVSb2gyJPwDWUg9MYophUavRlr3d82zTuodpdGnpV2PlM1axjVVcNHk9zfkrqR7ugDI3eo889s0wliyWcbZy+9ZJwfVB+HxSukqqzGeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=RAIbUh6v; arc=none smtp.client-ip=217.70.183.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 27C72FF80B;
-	Wed, 21 Feb 2024 08:51:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1708505499;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ewzG+Or2vfRP7XY3UgnYiV6tCm6wiDunEr+A5LjqZBQ=;
-	b=RAIbUh6vKDDmDDi8DhhbecTdObckBkSaotTDLNFMSD82+GpZQdPnFTyNUG+9KoWw2eerM/
-	/KzfjFYFy8tJWWuB07pnVGxNJ+s7e+5WemC2q958COberQ25Lbhhl908SPRWIMHpI2GRJ8
-	IqHX/pUtpRBLIVh54jA5WgWfBa4BGHCnhA2bBv42Mx+85G98nHILJQqlxSvSxzlndZVKNX
-	cIAErcPer/aV9iFka3EthukZq8c+/WRF7QmAT3LvE7fCSl08mXL3I4nn/lUEjjEFBjZqDh
-	Wg9rAYmFU+VleC4c0cRVHniAv+vguQ2qrYH1Djvive0dYkFjWQWZ1nnkcX9z8g==
-Date: Wed, 21 Feb 2024 09:51:37 +0100
-From: Herve Codina <herve.codina@bootlin.com>
-To: Saravana Kannan <saravanak@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Rob Herring <robh+dt@kernel.org>, Frank Rowand
- <frowand.list@gmail.com>, Shawn Guo <shawnguo@kernel.org>, Wolfram Sang
- <wsa@kernel.org>, Mark Brown <broonie@kernel.org>, Geert Uytterhoeven
- <geert+renesas@glider.be>, Rob Herring <robh@kernel.org>,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, Luca Ceresoli
- <luca.ceresoli@bootlin.com>, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>, stable@vger.kernel.org, Android Kernel Team
- <kernel-team@android.com>
-Subject: Re: [PATCH 2/2] of: property: fw_devlink: Fix links to supplier
- when created from phandles
-Message-ID: <20240221095137.616d2aaa@bootlin.com>
-In-Reply-To: <CAGETcx_xkVJn1NvCmztAv13N-7ZGqZ+KfkFg-Xn__skEBiYtHw@mail.gmail.com>
-References: <20240220111044.133776-1-herve.codina@bootlin.com>
-	<20240220111044.133776-3-herve.codina@bootlin.com>
-	<CAGETcx_xkVJn1NvCmztAv13N-7ZGqZ+KfkFg-Xn__skEBiYtHw@mail.gmail.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+	s=arc-20240116; t=1708505632; c=relaxed/simple;
+	bh=seAWvNEF+bpbfdQiXWD4tzHW4PNYgdcLH8yVn3vPhSo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=McmdCRlu5BA+SCD/ZW4UI8E4Vgihq7Uwo97RjnRTqpIutJxc53/X3dfrRtvdL7Ww/3Ns1x64cCyqzz1aSoI+xOrmZ26e1y85/P69IzVj+qnW3jzEt5z12Vb6xItUyEaJwcjBSPyIbI7Ie6Sw2oUsxrmt5w3zmv1WkgPjdl28adY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=H7TaBOX3; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Zr/aKmTq; arc=none smtp.client-ip=103.168.172.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+	by mailfout.nyi.internal (Postfix) with ESMTP id 3144D13800B1;
+	Wed, 21 Feb 2024 03:53:36 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute3.internal (MEProxy); Wed, 21 Feb 2024 03:53:36 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm1; t=1708505616; x=1708592016; bh=68c7U6GWch
+	1ANmqpPUknCJmr+7osoRa28nWAXTwftM0=; b=H7TaBOX3uXNd0J/iN/T39yeRI9
+	jZPCIdXws+zWGIwCkzLhQa8jIjvJDFl5nBRNcnXZDdAKfV/Biuo3nfSTWAS+i8SC
+	ozFx0T3h1cD8bibKcZcEgV0QGWTkstmJIHMXFPxqoMlVX/2tctmtBthf0YpS7Ts2
+	ol5EWuy/yO9yMOkmz4eERpGwqFHkUnGecwab0OvkJCsTlaYJYR+hx/5u3IH8DC1i
+	asFWy9aiea6zgpXHRl5qUmIoTht94jyLohlui0qVsEQN6DPQNQCN0Fqa/tk8jcxY
+	26dbeillJbRU0k96P+Nure1uLixVShdDlF2rptOPfE4ULGsSaJYnTu6uPeuw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm1; t=1708505616; x=1708592016; bh=68c7U6GWch1ANmqpPUknCJmr+7os
+	oRa28nWAXTwftM0=; b=Zr/aKmTq6rRtm4QlmXAiK20RyNPKrKjAFJwgKpa1FY9n
+	iTjgi5Lf02pwmv0qgJj3Jo7aY8tVBZH8zFfBDlcDrBV78GDpbsUNnYtKW2QL9/DS
+	oqNXnw1D06HYwe9ISmGo1/pObdooEALBGiF1u2GDJVnzGE2xJJosD/kABvG2rPdl
+	Ek+ltgN334j0QXPyQ09I/KxhTODqqsnVMA94G2ug6+R0W4471v3U7q1QAyet/EQ4
+	mAOEC5vuUQhcLjCsT2IdhQgfSIc+ERUiGDOeHLpR2ewrtZfGk+qpy/rZm1kvQTRf
+	D6u0TfPXo82n3gruJIbykkIgrasTsUcG3G1lZ6M/gg==
+X-ME-Sender: <xms:D7rVZdzYNt0_v-KO-BHq43S_JTAM9VCz6EVasjDiBzFIzsC7TtgP0Q>
+    <xme:D7rVZdQZ9nG_8lKdCWlNaKvdkooK5M_JKZo7JWzRXMqk5vjSzUFA-v3ms4tUI_q4T
+    gapwGz2-vsZDQ>
+X-ME-Received: <xmr:D7rVZXXPzT_BJqBGKqEAYlsIpcvITmpusCn7u_xQ-DJJpE_1MrOzUzGDbfMasBZU35DMFSh8tnE9lBjlLzfj7zIESplbpmquzA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfedugdduvdeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
+    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepgeehue
+    ehgfdtledutdelkeefgeejteegieekheefudeiffdvudeffeelvedttddvnecuffhomhgr
+    ihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
+    epmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomh
+X-ME-Proxy: <xmx:D7rVZfjeww2D3dE7d-UIdb4fLFkyEEtcdwmeTxhwUVEL8q_9iBoyvg>
+    <xmx:D7rVZfCDnK8OOfeEoEOXQGlZFc_APkZUovuwH6VDiMLVxN1X9BhHQg>
+    <xmx:D7rVZYJpVKYRwUr1pQFg_6T1380IHaJFCY-BBJqs1wxKVmy4BqxGkQ>
+    <xmx:ELrVZXa7apUhKk0R1Z3bA90qkLLzQ-Eh-pMHovP8R6uGPUWCry3F_g>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 21 Feb 2024 03:53:35 -0500 (EST)
+Date: Wed, 21 Feb 2024 09:53:20 +0100
+From: Greg KH <greg@kroah.com>
+To: Easwar Hariharan <eahariha@linux.microsoft.com>
+Cc: stable@vger.kernel.org, Anshuman Khandual <anshuman.khandual@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>, Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Will Deacon <will@kernel.org>
+Subject: Re: [PATCH 5.15.y] arm64: Subscribe Microsoft Azure Cobalt 100 to
+ ARM Neoverse N2 errata
+Message-ID: <2024022112-laziness-alongside-0c87@gregkh>
+References: <2024021948-flashing-prescribe-3dcf@gregkh>
+ <20240220192816.2842423-1-eahariha@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240220192816.2842423-1-eahariha@linux.microsoft.com>
 
-Hi Saravana,
-
-On Tue, 20 Feb 2024 18:40:40 -0800
-Saravana Kannan <saravanak@google.com> wrote:
-
-> On Tue, Feb 20, 2024 at 3:10 AM Herve Codina <herve.codina@bootlin.com> wrote:
-> >
-> > Since commit 1a50d9403fb9 ("treewide: Fix probing of devices in DT
-> > overlays"), when using device-tree overlays, the FWNODE_FLAG_NOT_DEVICE
-> > is set on each overlay nodes. This flag is cleared when a struct device
-> > is actually created for the DT node.
-> > Also, when a device is created, the device DT node is parsed for known
-> > phandle and devlinks consumer/supplier links are created between the
-> > device (consumer) and the devices referenced by phandles (suppliers).
-> > As these supplier device can have a struct device not already created,
-> > the FWNODE_FLAG_NOT_DEVICE can be set for suppliers and leads the
-> > devlink supplier point to the device's parent instead of the device
-> > itself.
-> >
-> > Avoid this situation clearing the supplier FWNODE_FLAG_NOT_DEVICE just
-> > before the devlink creation if a device is supposed to be created and
-> > handled later in the process.
-> >
-> > Fixes: 1a50d9403fb9 ("treewide: Fix probing of devices in DT overlays")
-> > Cc: <stable@vger.kernel.org>
-> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> > ---
-> >  drivers/of/property.c | 16 +++++++++++++++-
-> >  1 file changed, 15 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/of/property.c b/drivers/of/property.c
-> > index 641a40cf5cf3..ff5cac477dbe 100644
-> > --- a/drivers/of/property.c
-> > +++ b/drivers/of/property.c
-> > @@ -1097,6 +1097,7 @@ static void of_link_to_phandle(struct device_node *con_np,
-> >                               struct device_node *sup_np)
-> >  {
-> >         struct device_node *tmp_np = of_node_get(sup_np);
-> > +       struct fwnode_handle *sup_fwnode;
-> >
-> >         /* Check that sup_np and its ancestors are available. */
-> >         while (tmp_np) {
-> > @@ -1113,7 +1114,20 @@ static void of_link_to_phandle(struct device_node *con_np,
-> >                 tmp_np = of_get_next_parent(tmp_np);
-> >         }
-> >
-> > -       fwnode_link_add(of_fwnode_handle(con_np), of_fwnode_handle(sup_np));
-> > +       /*
-> > +        * In case of overlays, the fwnode are added with FWNODE_FLAG_NOT_DEVICE
-> > +        * flag set. A node can have a phandle that references an other node
-> > +        * added by the overlay.
-> > +        * Clear the supplier's FWNODE_FLAG_NOT_DEVICE so that fw_devlink links
-> > +        * to this supplier instead of linking to its parent.
-> > +        */
-> > +       sup_fwnode = of_fwnode_handle(sup_np);
-> > +       if (sup_fwnode->flags & FWNODE_FLAG_NOT_DEVICE) {
-> > +               if (of_property_present(sup_np, "compatible") &&
-> > +                   of_device_is_available(sup_np))
-> > +                       sup_fwnode->flags &= ~FWNODE_FLAG_NOT_DEVICE;
-> > +       }
-> > +       fwnode_link_add(of_fwnode_handle(con_np), sup_fwnode);  
+On Tue, Feb 20, 2024 at 07:28:16PM +0000, Easwar Hariharan wrote:
+> commit fb091ff394792c018527b3211bbdfae93ea4ac02 upstream
 > 
-> Nack.
+> Add the MIDR value of Microsoft Azure Cobalt 100, which is a Microsoft
+> implemented CPU based on r0p0 of the ARM Neoverse N2 CPU, and therefore
+> suffers from all the same errata.
 > 
-> of_link_to_phandle() doesn't care about any of the fwnode flags. It
-> just creates links between the consumer and supplier nodes. Don't add
-> more intelligence into it please. Also, "compatible" doesn't really
-> guarantee device creation and you can have devices created out of
-> nodes with no compatible property. I finally managed to get away from
-> looking for the "compatible" property. So, let's not add back a
-> dependency on that property please.
-> 
-> Can you please give a real example where you are hitting this? I have
-> some thoughts on solutions, but I want to understand the issue fully
-> before I make suggestions.
-> 
+> CC: stable@vger.kernel.org # 5.15+
+> Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+> Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> Acked-by: Mark Rutland <mark.rutland@arm.com>
+> Acked-by: Marc Zyngier <maz@kernel.org>
+> Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
+> Link: https://lore.kernel.org/r/20240214175522.2457857-1-eahariha@linux.microsoft.com
+> Signed-off-by: Will Deacon <will@kernel.org>
+> Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+> ---
+>  Documentation/arm64/silicon-errata.rst | 7 +++++++
+>  arch/arm64/include/asm/cputype.h       | 4 ++++
+>  arch/arm64/kernel/cpu_errata.c         | 3 +++
+>  3 files changed, 14 insertions(+)
 
-I detected the issue with this overlay:
---- 8< ---
-&{/}
-{
-	reg_dock_sys_3v3: regulator-dock-sys-3v3 {
-		compatible = "regulator-fixed";
-		regulator-name = "DOCK_SYS_3V3";
-		regulator-min-microvolt = <3300000>;
-		regulator-max-microvolt = <3300000>;
-		gpios = <&tca6424_dock_1 5 GPIO_ACTIVE_HIGH>; // DOCK_SYS3V3_EN
-		enable-active-high;
-		regulator-always-on;
-	};
-};
+Both now queued up, thanks.
 
-&i2c5 {
-	tca6424_dock_1: gpio@22 {
-		compatible = "ti,tca6424";
-		reg = <0x22>;
-		gpio-controller;
-		#gpio-cells = <2>;
-		interrupt-parent = <&gpio4>;
-		interrupts = <1 IRQ_TYPE_EDGE_FALLING>;
-		interrupt-controller;
-		#interrupt-cells = <2>;
-		vcc-supply = <&reg_dock_ctrl_3v3>;
-	};
-};
---- 8< ---
-
-The regulator uses a gpio.
-The supplier for the regulator was not the gpio chip (gpio@22) but the i2c bus.
-
-I first tried to clear always the flag in of_link_to_phandle() without any check
-to a "compatible" string and in that case, I broke pinctrl.
-
-All devices were waiting for the pinctrl they used (child of pinctrl device
-node) even if the pinctrl driver was bound to the device.
-
-For pinctrl, the DT structure looks like the following:
---- 8< ---
-{
-	...
-	pinctrl@1234 {
-		reg = <1234>;
-		compatible = "vendor,chip";
-
-		pinctrl_some_device: grp {
-			fsl,pins = < ... >;
-		};
-	};
-
-	some_device@4567 {
-		compablile = "foo,bar";
-		reg = <4567>;
-		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_some_device>;
-		...
-	};
-};
---- 8< ---
-		
-In that case the link related to pinctrl for some_device needs to be to the
-'pinctrl_some_device' node parent (i.e. the pinctrl@1234 node).
-
-
-Best regards,
-Hervé
+greg k-h
 
