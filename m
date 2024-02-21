@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-22354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B37085DB9F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:43:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6B9C85DF40
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:26:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11ACA1F246DD
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:43:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39BBEB2B7F2
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:17:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43B237BB1E;
-	Wed, 21 Feb 2024 13:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D5A57EF06;
+	Wed, 21 Feb 2024 14:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LibYp0ee"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tYHIZKrX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00AC66F074;
-	Wed, 21 Feb 2024 13:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB6F7EF03;
+	Wed, 21 Feb 2024 14:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522996; cv=none; b=uz020dvxEWSGgipFPQKQbkYIYodROMLtsW8+gPCaDf0wXp3VAYG2lokpA2NF36PQEF6nuGy+DEx7NIn/bWfBvNSAMWmvzgxfJAHSX8RE4OudVRT7GiVtUaGyNMyGzDc/d+aXkFja02iroCVAfMUdX9xjPWVig1zen1sC6qcUq7w=
+	t=1708524973; cv=none; b=mWNJb03vaY8NB8jzJBnM1tX6S4aqzzUqvTrbjIGAy5tePd2iJcUWSt7aXzJ9O61C2k2hpdc2Mq5UmXtv4sCt7dPBBBSbOOHtzZVpVDqw/TyvBnF88XP6Lik+VIvShGbjnk9KQXtKrwIKyftQXhCh/Eb2any8KcVLHTMWUFot1xs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522996; c=relaxed/simple;
-	bh=NY7/hAYZTl4f5LGAK0m+EikhY0rq5q2jxn4I/uoc1CY=;
+	s=arc-20240116; t=1708524973; c=relaxed/simple;
+	bh=p+qmro4wLYy8I7mIwEN6VhhQ+Iz/rob+tKbyCniXvfw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S/jiKFPmvFICz1zRXcDHAx0dHQmOs/z8wt8K434S1K3B7yICQu7oR6cY2Ile8YNflDx3lJ4vV7ar5Tk73yYNctE6JZX4dLs72d2f0hk6iJ3KdhmhQbcYTh5Kt+jFheq/SoXU4h+rHxNeSKvgZw+OjKh33r3fPwsd2xB3ia0anOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LibYp0ee; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D554C43330;
-	Wed, 21 Feb 2024 13:43:15 +0000 (UTC)
+	 MIME-Version; b=XibQpnb8x5R5FnErCJi9SQ1/KGMG1kjwYgbN5ZGdVAwVgWccvwLGmUk9OUQBVepSarPWJIfJNzHMvAGL4LgQG/nHzwUrMfgf2eJYBuoW8FnuM/uehN+BJc90ZPG9MCOfZlgauZV/J6dez02UKC4HFcP4IqKEwVdnC+Y8XlVl/f8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tYHIZKrX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FE03C43394;
+	Wed, 21 Feb 2024 14:16:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522995;
-	bh=NY7/hAYZTl4f5LGAK0m+EikhY0rq5q2jxn4I/uoc1CY=;
+	s=korg; t=1708524972;
+	bh=p+qmro4wLYy8I7mIwEN6VhhQ+Iz/rob+tKbyCniXvfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LibYp0eeAemyvg+YR2M9QfrEXKF6bRc3IPZyHRRBRzjFJeqPK0mN2m8TrDBvr+CZR
-	 iMjPSXpPK8WUqb5UPmlq8foQjAvduD+LWNA5Dx61XwYMPULMC6FnfuPhm5YUeYLcMg
-	 YxWs6xMY1lq3FSyLRdpKBi+D85A7z0hvwAWG0vOA=
+	b=tYHIZKrX6gFheNn3XEXM84wHFlKlNAGY8cvLSHJHNeqeGt1OD0kpeHd/1CRxqIi+7
+	 JH1nyxvtje3vqikAxZhS8VV7jFO+LtU3Jnzq6qUtfN1j7cJWH7fWV2PixgbRtuq9sY
+	 ly24/9yU3pAjR0Zg8bw8XS9OfpiiY9xmy9idUi9Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	miquel.raynal@bootlin.com
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Rui <rui.zhang@intel.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 311/476] hwmon: (coretemp) Fix out-of-bounds memory access
+	JaimeLiao <jaimeliao@mxic.com.tw>
+Subject: [PATCH 5.4 021/267] mtd: spinand: macronix: Fix MX35LFxGE4AD page size
 Date: Wed, 21 Feb 2024 14:06:02 +0100
-Message-ID: <20240221130019.521204233@linuxfoundation.org>
+Message-ID: <20240221125940.713244616@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Rui <rui.zhang@intel.com>
+From: JaimeLiao <jaimeliao@mxic.com.tw>
 
-[ Upstream commit 4e440abc894585a34c2904a32cd54af1742311b3 ]
+Support for MX35LF{2,4}GE4AD chips was added in mainline through
+upstream commit 5ece78de88739b4c68263e9f2582380c1fd8314f.
 
-Fix a bug that pdata->cpu_map[] is set before out-of-bounds check.
-The problem might be triggered on systems with more than 128 cores per
-package.
+The patch was later adapted to 5.4.y and backported through
+stable commit 85258ae3070848d9d0f6fbee385be2db80e8cf26.
 
-Fixes: 7108b80a542b ("hwmon/coretemp: Handle large core ID value")
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240202092144.71180-2-rui.zhang@intel.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Stable-dep-of: fdaf0c8629d4 ("hwmon: (coretemp) Fix bogus core_id to attr name mapping")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix the backport mentioned right above as it is wrong: the bigger chip
+features 4kiB pages and not 2kiB pages.
+
+Fixes: 85258ae30708 ("mtd: spinand: macronix: Add support for MX35LFxGE4AD")
+Cc: stable@vger.kernel.org # v5.4.y
+Cc: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: JaimeLiao <jaimeliao@mxic.com.tw>
+Acked-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/coretemp.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/mtd/nand/spi/macronix.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/coretemp.c b/drivers/hwmon/coretemp.c
-index 5b2057ce5a59..7f6615ef8c88 100644
---- a/drivers/hwmon/coretemp.c
-+++ b/drivers/hwmon/coretemp.c
-@@ -467,18 +467,14 @@ static int create_core_data(struct platform_device *pdev, unsigned int cpu,
- 	if (pkg_flag) {
- 		attr_no = PKG_SYSFS_ATTR_NO;
- 	} else {
--		index = ida_alloc(&pdata->ida, GFP_KERNEL);
-+		index = ida_alloc_max(&pdata->ida, NUM_REAL_CORES - 1, GFP_KERNEL);
- 		if (index < 0)
- 			return index;
-+
- 		pdata->cpu_map[index] = topology_core_id(cpu);
- 		attr_no = index + BASE_SYSFS_ATTR_NO;
- 	}
- 
--	if (attr_no > MAX_CORE_DATA - 1) {
--		err = -ERANGE;
--		goto ida_free;
--	}
--
- 	tdata = init_temp_data(cpu, pkg_flag);
- 	if (!tdata) {
- 		err = -ENOMEM;
--- 
-2.43.0
-
+--- a/drivers/mtd/nand/spi/macronix.c
++++ b/drivers/mtd/nand/spi/macronix.c
+@@ -125,7 +125,7 @@ static const struct spinand_info macroni
+ 		     SPINAND_HAS_QE_BIT,
+ 		     SPINAND_ECCINFO(&mx35lfxge4ab_ooblayout, NULL)),
+ 	SPINAND_INFO("MX35LF4GE4AD", 0x37,
+-		     NAND_MEMORG(1, 2048, 128, 64, 2048, 40, 1, 1, 1),
++		     NAND_MEMORG(1, 4096, 128, 64, 2048, 40, 1, 1, 1),
+ 		     NAND_ECCREQ(8, 512),
+ 		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
+ 					      &write_cache_variants,
 
 
 
