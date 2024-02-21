@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-23110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E85285DF51
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:26:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B99E385DEE4
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:22:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E9871F2446A
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:26:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 90694B2501A
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:16:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06A247C0BA;
-	Wed, 21 Feb 2024 14:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 969047FBA0;
+	Wed, 21 Feb 2024 14:14:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nbtirdem"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qtZkKsiM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D787BAF7;
-	Wed, 21 Feb 2024 14:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 530167F7FA;
+	Wed, 21 Feb 2024 14:14:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525606; cv=none; b=I1GfqmR9+ALvZ5O6G2fosEm7JOJ/NGe0T76s9HVZJ0ah9lX3f6rVG7iTq9ciFIsy/Fr+BPZAzIEgioIqonxk0KxqUvMxu8+zbD+metnF5k860uFsuza9uJcOjXrVA1BjscLp4KPGQ3lo/AnaeV8l+x0ziTaoSipnu/aDbasQqYU=
+	t=1708524860; cv=none; b=inYSt2OsT0lcry+3Du4IqW3M7AOADk/hHqJKBhPTrxJ4zsWNmqX1lFEiVvTMI/8oPV0xfYKV1Ph/DvIWBGXjACRNk34PdNgFo+8CJdfuCx3yt00VOeb6FnU229JjGkCYJ0IbClV0Q+gm6HsIvYZekzWz9VIra33NrNwFRyQ9Ycw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525606; c=relaxed/simple;
-	bh=Xg/PMUQjhul62weFzS9CvDSWIEOYWU3TSrpQcldU518=;
+	s=arc-20240116; t=1708524860; c=relaxed/simple;
+	bh=U3TYyz9O4pMEcyZ1OokRidqQI1XeBZaqAL3WLBmA2rw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IIsPrmbWcI19ig5v4inS8ED0wLK6c+tqJU2N/cucBWAF8HQw5apnAz1vpvgi9RuyAPPyuY9NoxySFiSYcfCebjV4r6Qqu6LXUV/FRXfgssAXgwGXVBzpM58cTYWaKucEJADmrR8h0684cZvKUusR4v0zV9Weov6auaha1GV/L5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nbtirdem; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CF09C43390;
-	Wed, 21 Feb 2024 14:26:46 +0000 (UTC)
+	 MIME-Version; b=hMo+oRr/DUdXgG7Jch9RzXJkgPEyWJMIEFWP5J4Z1MJbD68ikhSBd428tW+ffDaWo2G/wbRiYROHP5Bqbk/cu1/7tLw+Q+F5SonoRtiHA3Wc5acWUdaZy6/Z80kFq5ibiSu7xq421VrbyYwWg9HS2fL5TP/8NiYPIJfcpyIO1CQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qtZkKsiM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B802AC43394;
+	Wed, 21 Feb 2024 14:14:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525606;
-	bh=Xg/PMUQjhul62weFzS9CvDSWIEOYWU3TSrpQcldU518=;
+	s=korg; t=1708524860;
+	bh=U3TYyz9O4pMEcyZ1OokRidqQI1XeBZaqAL3WLBmA2rw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NbtirdemWRwR23zXZVnk071ksZwsElslrXwx7TVXkogt4zE6nJ27ddDsv6aS3hYB6
-	 ovXRO+Ydn7WvuNItiLn/x4avQLKMJZf8mzQkKXOHdsWzKlEVGO+zKOhBVSW/rpjYmG
-	 mt9t86oTLsA7PMv1Rp/oUfZbO/8/IFPjIgPqJJnA=
+	b=qtZkKsiMZbz5/vvmhJQs9am4ROtEnpPdpiR4QD2Y+O6hvb76n5LyySZDzaQrTo4Bx
+	 cAmTTA98koAV9kJJQTFSYurMtQl5sigc3huD7p8uYjBCGsHrMyqpCOMBHnTe1iWL73
+	 2eSVia1NShD6sTCPIXPDOgGNucOoUVmVVSL87ge0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Rowand <frank.rowand@sony.com>,
-	Rob Herring <robh@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 207/267] of: unittest: add overlay gpio test to catch gpio hog problem
+	Eric Dumazet <edumazet@google.com>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 369/379] net: prevent mss overflow in skb_segment()
 Date: Wed, 21 Feb 2024 14:09:08 +0100
-Message-ID: <20240221125946.683733412@linuxfoundation.org>
+Message-ID: <20240221130005.978333848@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,512 +63,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Rowand <frank.rowand@sony.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit f4056e705b2ef7f123a188f6aee23ade70e7d793 ]
+commit 23d05d563b7e7b0314e65c8e882bc27eac2da8e7 upstream.
 
-Geert reports that gpio hog nodes are not properly processed when
-the gpio hog node is added via an overlay reply and provides an
-RFC patch to fix the problem [1].
+Once again syzbot is able to crash the kernel in skb_segment() [1]
 
-Add a unittest that shows the problem.  Unittest will report "1 failed"
-test before applying Geert's RFC patch and "0 failed" after applying
-Geert's RFC patch.
+GSO_BY_FRAGS is a forbidden value, but unfortunately the following
+computation in skb_segment() can reach it quite easily :
 
-[1] https://lore.kernel.org/linux-devicetree/20191230133852.5890-1-geert+renesas@glider.be/
+	mss = mss * partial_segs;
 
-Signed-off-by: Frank Rowand <frank.rowand@sony.com>
-Signed-off-by: Rob Herring <robh@kernel.org>
-Stable-dep-of: 607aad1e4356 ("of: unittest: Fix compile in the non-dynamic case")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+65535 = 3 * 5 * 17 * 257, so many initial values of mss can lead to
+a bad final result.
+
+Make sure to limit segmentation so that the new mss value is smaller
+than GSO_BY_FRAGS.
+
+[1]
+
+general protection fault, probably for non-canonical address 0xdffffc000000000e: 0000 [#1] PREEMPT SMP KASAN
+KASAN: null-ptr-deref in range [0x0000000000000070-0x0000000000000077]
+CPU: 1 PID: 5079 Comm: syz-executor993 Not tainted 6.7.0-rc4-syzkaller-00141-g1ae4cd3cbdd0 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/10/2023
+RIP: 0010:skb_segment+0x181d/0x3f30 net/core/skbuff.c:4551
+Code: 83 e3 02 e9 fb ed ff ff e8 90 68 1c f9 48 8b 84 24 f8 00 00 00 48 8d 78 70 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <0f> b6 04 02 84 c0 74 08 3c 03 0f 8e 8a 21 00 00 48 8b 84 24 f8 00
+RSP: 0018:ffffc900043473d0 EFLAGS: 00010202
+RAX: dffffc0000000000 RBX: 0000000000010046 RCX: ffffffff886b1597
+RDX: 000000000000000e RSI: ffffffff886b2520 RDI: 0000000000000070
+RBP: ffffc90004347578 R08: 0000000000000005 R09: 000000000000ffff
+R10: 000000000000ffff R11: 0000000000000002 R12: ffff888063202ac0
+R13: 0000000000010000 R14: 000000000000ffff R15: 0000000000000046
+FS: 0000555556e7e380(0000) GS:ffff8880b9900000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000020010000 CR3: 0000000027ee2000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+<TASK>
+udp6_ufo_fragment+0xa0e/0xd00 net/ipv6/udp_offload.c:109
+ipv6_gso_segment+0x534/0x17e0 net/ipv6/ip6_offload.c:120
+skb_mac_gso_segment+0x290/0x610 net/core/gso.c:53
+__skb_gso_segment+0x339/0x710 net/core/gso.c:124
+skb_gso_segment include/net/gso.h:83 [inline]
+validate_xmit_skb+0x36c/0xeb0 net/core/dev.c:3626
+__dev_queue_xmit+0x6f3/0x3d60 net/core/dev.c:4338
+dev_queue_xmit include/linux/netdevice.h:3134 [inline]
+packet_xmit+0x257/0x380 net/packet/af_packet.c:276
+packet_snd net/packet/af_packet.c:3087 [inline]
+packet_sendmsg+0x24c6/0x5220 net/packet/af_packet.c:3119
+sock_sendmsg_nosec net/socket.c:730 [inline]
+__sock_sendmsg+0xd5/0x180 net/socket.c:745
+__sys_sendto+0x255/0x340 net/socket.c:2190
+__do_sys_sendto net/socket.c:2202 [inline]
+__se_sys_sendto net/socket.c:2198 [inline]
+__x64_sys_sendto+0xe0/0x1b0 net/socket.c:2198
+do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+do_syscall_64+0x40/0x110 arch/x86/entry/common.c:83
+entry_SYSCALL_64_after_hwframe+0x63/0x6b
+RIP: 0033:0x7f8692032aa9
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 d1 19 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fff8d685418 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007f8692032aa9
+RDX: 0000000000010048 RSI: 00000000200000c0 RDI: 0000000000000003
+RBP: 00000000000f4240 R08: 0000000020000540 R09: 0000000000000014
+R10: 0000000000000000 R11: 0000000000000246 R12: 00007fff8d685480
+R13: 0000000000000001 R14: 00007fff8d685480 R15: 0000000000000003
+</TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:skb_segment+0x181d/0x3f30 net/core/skbuff.c:4551
+Code: 83 e3 02 e9 fb ed ff ff e8 90 68 1c f9 48 8b 84 24 f8 00 00 00 48 8d 78 70 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <0f> b6 04 02 84 c0 74 08 3c 03 0f 8e 8a 21 00 00 48 8b 84 24 f8 00
+RSP: 0018:ffffc900043473d0 EFLAGS: 00010202
+RAX: dffffc0000000000 RBX: 0000000000010046 RCX: ffffffff886b1597
+RDX: 000000000000000e RSI: ffffffff886b2520 RDI: 0000000000000070
+RBP: ffffc90004347578 R08: 0000000000000005 R09: 000000000000ffff
+R10: 000000000000ffff R11: 0000000000000002 R12: ffff888063202ac0
+R13: 0000000000010000 R14: 000000000000ffff R15: 0000000000000046
+FS: 0000555556e7e380(0000) GS:ffff8880b9900000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000020010000 CR3: 0000000027ee2000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+
+Fixes: 3953c46c3ac7 ("sk_buff: allow segmenting based on frag sizes")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://lore.kernel.org/r/20231212164621.4131800-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/unittest-data/Makefile             |   8 +-
- drivers/of/unittest-data/overlay_gpio_01.dts  |  23 ++
- drivers/of/unittest-data/overlay_gpio_02a.dts |  16 ++
- drivers/of/unittest-data/overlay_gpio_02b.dts |  16 ++
- drivers/of/unittest-data/overlay_gpio_03.dts  |  23 ++
- drivers/of/unittest-data/overlay_gpio_04a.dts |  16 ++
- drivers/of/unittest-data/overlay_gpio_04b.dts |  16 ++
- drivers/of/unittest.c                         | 253 ++++++++++++++++++
- 8 files changed, 370 insertions(+), 1 deletion(-)
- create mode 100644 drivers/of/unittest-data/overlay_gpio_01.dts
- create mode 100644 drivers/of/unittest-data/overlay_gpio_02a.dts
- create mode 100644 drivers/of/unittest-data/overlay_gpio_02b.dts
- create mode 100644 drivers/of/unittest-data/overlay_gpio_03.dts
- create mode 100644 drivers/of/unittest-data/overlay_gpio_04a.dts
- create mode 100644 drivers/of/unittest-data/overlay_gpio_04b.dts
+ net/core/skbuff.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/of/unittest-data/Makefile b/drivers/of/unittest-data/Makefile
-index 9b6807065827..009f4045c8e4 100644
---- a/drivers/of/unittest-data/Makefile
-+++ b/drivers/of/unittest-data/Makefile
-@@ -21,7 +21,13 @@ obj-$(CONFIG_OF_OVERLAY) += overlay.dtb.o \
- 			    overlay_bad_add_dup_prop.dtb.o \
- 			    overlay_bad_phandle.dtb.o \
- 			    overlay_bad_symbol.dtb.o \
--			    overlay_base.dtb.o
-+			    overlay_base.dtb.o \
-+			    overlay_gpio_01.dtb.o \
-+			    overlay_gpio_02a.dtb.o \
-+			    overlay_gpio_02b.dtb.o \
-+			    overlay_gpio_03.dtb.o \
-+			    overlay_gpio_04a.dtb.o \
-+			    overlay_gpio_04b.dtb.o
- 
- # enable creation of __symbols__ node
- DTC_FLAGS_overlay += -@
-diff --git a/drivers/of/unittest-data/overlay_gpio_01.dts b/drivers/of/unittest-data/overlay_gpio_01.dts
-new file mode 100644
-index 000000000000..699ff104ae10
---- /dev/null
-+++ b/drivers/of/unittest-data/overlay_gpio_01.dts
-@@ -0,0 +1,23 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/dts-v1/;
-+/plugin/;
-+
-+&unittest_test_bus {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	gpio@0 {
-+		compatible = "unittest-gpio";
-+		reg = <0>;
-+		gpio-controller;
-+		#gpio-cells = <2>;
-+		ngpios = <2>;
-+		gpio-line-names = "line-A", "line-B";
-+
-+		line-b {
-+			gpio-hog;
-+			gpios = <2 0>;
-+			input;
-+			line-name = "line-B-input";
-+		};
-+	};
-+};
-diff --git a/drivers/of/unittest-data/overlay_gpio_02a.dts b/drivers/of/unittest-data/overlay_gpio_02a.dts
-new file mode 100644
-index 000000000000..ec59aff6ed47
---- /dev/null
-+++ b/drivers/of/unittest-data/overlay_gpio_02a.dts
-@@ -0,0 +1,16 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/dts-v1/;
-+/plugin/;
-+
-+&unittest_test_bus {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	gpio@2 {
-+		compatible = "unittest-gpio";
-+		reg = <2>;
-+		gpio-controller;
-+		#gpio-cells = <2>;
-+		ngpios = <2>;
-+		gpio-line-names = "line-A", "line-B";
-+	};
-+};
-diff --git a/drivers/of/unittest-data/overlay_gpio_02b.dts b/drivers/of/unittest-data/overlay_gpio_02b.dts
-new file mode 100644
-index 000000000000..43ce111d41ce
---- /dev/null
-+++ b/drivers/of/unittest-data/overlay_gpio_02b.dts
-@@ -0,0 +1,16 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/dts-v1/;
-+/plugin/;
-+
-+&unittest_test_bus {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	gpio@2 {
-+		line-a {
-+			gpio-hog;
-+			gpios = <1 0>;
-+			input;
-+			line-name = "line-A-input";
-+		};
-+	};
-+};
-diff --git a/drivers/of/unittest-data/overlay_gpio_03.dts b/drivers/of/unittest-data/overlay_gpio_03.dts
-new file mode 100644
-index 000000000000..6e0312340a1b
---- /dev/null
-+++ b/drivers/of/unittest-data/overlay_gpio_03.dts
-@@ -0,0 +1,23 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/dts-v1/;
-+/plugin/;
-+
-+&unittest_test_bus {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	gpio@3 {
-+		compatible = "unittest-gpio";
-+		reg = <3>;
-+		gpio-controller;
-+		#gpio-cells = <2>;
-+		ngpios = <2>;
-+		gpio-line-names = "line-A", "line-B", "line-C", "line-D";
-+
-+		line-d {
-+			gpio-hog;
-+			gpios = <4 0>;
-+			input;
-+			line-name = "line-D-input";
-+		};
-+	};
-+};
-diff --git a/drivers/of/unittest-data/overlay_gpio_04a.dts b/drivers/of/unittest-data/overlay_gpio_04a.dts
-new file mode 100644
-index 000000000000..7b1e04ebfa7a
---- /dev/null
-+++ b/drivers/of/unittest-data/overlay_gpio_04a.dts
-@@ -0,0 +1,16 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/dts-v1/;
-+/plugin/;
-+
-+&unittest_test_bus {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	gpio@4 {
-+		compatible = "unittest-gpio";
-+		reg = <4>;
-+		gpio-controller;
-+		#gpio-cells = <2>;
-+		ngpios = <2>;
-+		gpio-line-names = "line-A", "line-B", "line-C", "line-D";
-+	};
-+};
-diff --git a/drivers/of/unittest-data/overlay_gpio_04b.dts b/drivers/of/unittest-data/overlay_gpio_04b.dts
-new file mode 100644
-index 000000000000..a14e95c6699a
---- /dev/null
-+++ b/drivers/of/unittest-data/overlay_gpio_04b.dts
-@@ -0,0 +1,16 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/dts-v1/;
-+/plugin/;
-+
-+&unittest_test_bus {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	gpio@4 {
-+		line-c {
-+			gpio-hog;
-+			gpios = <3 0>;
-+			input;
-+			line-name = "line-C-input";
-+		};
-+	};
-+};
-diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
-index 1ed470b03cd7..7585df5e3daf 100644
---- a/drivers/of/unittest.c
-+++ b/drivers/of/unittest.c
-@@ -23,6 +23,7 @@
- 
- #include <linux/i2c.h>
- #include <linux/i2c-mux.h>
-+#include <linux/gpio/driver.h>
- 
- #include <linux/bitops.h>
- 
-@@ -45,6 +46,97 @@ static struct unittest_results {
- 	failed; \
- })
- 
-+/*
-+ * Expected message may have a message level other than KERN_INFO.
-+ * Print the expected message only if the current loglevel will allow
-+ * the actual message to print.
-+ */
-+#define EXPECT_BEGIN(level, fmt, ...) \
-+	printk(level pr_fmt("EXPECT \\ : ") fmt, ##__VA_ARGS__)
-+
-+#define EXPECT_END(level, fmt, ...) \
-+	printk(level pr_fmt("EXPECT / : ") fmt, ##__VA_ARGS__)
-+
-+struct unittest_gpio_dev {
-+	struct gpio_chip chip;
-+};
-+
-+static int unittest_gpio_chip_request_count;
-+static int unittest_gpio_probe_count;
-+static int unittest_gpio_probe_pass_count;
-+
-+static int unittest_gpio_chip_request(struct gpio_chip *chip, unsigned int offset)
-+{
-+	unittest_gpio_chip_request_count++;
-+
-+	pr_debug("%s(): %s %d %d\n", __func__, chip->label, offset,
-+		 unittest_gpio_chip_request_count);
-+	return 0;
-+}
-+
-+static int unittest_gpio_probe(struct platform_device *pdev)
-+{
-+	struct unittest_gpio_dev *devptr;
-+	int ret;
-+
-+	unittest_gpio_probe_count++;
-+
-+	devptr = kzalloc(sizeof(*devptr), GFP_KERNEL);
-+	if (!devptr)
-+		return -ENOMEM;
-+
-+	platform_set_drvdata(pdev, devptr);
-+
-+	devptr->chip.of_node = pdev->dev.of_node;
-+	devptr->chip.label = "of-unittest-gpio";
-+	devptr->chip.base = -1; /* dynamic allocation */
-+	devptr->chip.ngpio = 5;
-+	devptr->chip.request = unittest_gpio_chip_request;
-+
-+	ret = gpiochip_add_data(&devptr->chip, NULL);
-+
-+	unittest(!ret,
-+		 "gpiochip_add_data() for node @%pOF failed, ret = %d\n", devptr->chip.of_node, ret);
-+
-+	if (!ret)
-+		unittest_gpio_probe_pass_count++;
-+	return ret;
-+}
-+
-+static int unittest_gpio_remove(struct platform_device *pdev)
-+{
-+	struct unittest_gpio_dev *gdev = platform_get_drvdata(pdev);
-+	struct device *dev = &pdev->dev;
-+	struct device_node *np = pdev->dev.of_node;
-+
-+	dev_dbg(dev, "%s for node @%pOF\n", __func__, np);
-+
-+	if (!gdev)
-+		return -EINVAL;
-+
-+	if (gdev->chip.base != -1)
-+		gpiochip_remove(&gdev->chip);
-+
-+	platform_set_drvdata(pdev, NULL);
-+	kfree(pdev);
-+
-+	return 0;
-+}
-+
-+static const struct of_device_id unittest_gpio_id[] = {
-+	{ .compatible = "unittest-gpio", },
-+	{}
-+};
-+
-+static struct platform_driver unittest_gpio_driver = {
-+	.probe	= unittest_gpio_probe,
-+	.remove	= unittest_gpio_remove,
-+	.driver	= {
-+		.name		= "unittest-gpio",
-+		.of_match_table	= of_match_ptr(unittest_gpio_id),
-+	},
-+};
-+
- static void __init of_unittest_find_node_by_name(void)
- {
- 	struct device_node *np;
-@@ -2114,6 +2206,153 @@ static inline void of_unittest_overlay_i2c_15(void) { }
- 
- #endif
- 
-+static void __init of_unittest_overlay_gpio(void)
-+{
-+	int chip_request_count;
-+	int probe_pass_count;
-+	int ret;
-+
-+	/*
-+	 * tests: apply overlays before registering driver
-+	 * Similar to installing a driver as a module, the
-+	 * driver is registered after applying the overlays.
-+	 *
-+	 * - apply overlay_gpio_01
-+	 * - apply overlay_gpio_02a
-+	 * - apply overlay_gpio_02b
-+	 * - register driver
-+	 *
-+	 * register driver will result in
-+	 *   - probe and processing gpio hog for overlay_gpio_01
-+	 *   - probe for overlay_gpio_02a
-+	 *   - processing gpio for overlay_gpio_02b
-+	 */
-+
-+	probe_pass_count = unittest_gpio_probe_pass_count;
-+	chip_request_count = unittest_gpio_chip_request_count;
-+
-+	/*
-+	 * overlay_gpio_01 contains gpio node and child gpio hog node
-+	 * overlay_gpio_02a contains gpio node
-+	 * overlay_gpio_02b contains child gpio hog node
-+	 */
-+
-+	unittest(overlay_data_apply("overlay_gpio_01", NULL),
-+		 "Adding overlay 'overlay_gpio_01' failed\n");
-+
-+	unittest(overlay_data_apply("overlay_gpio_02a", NULL),
-+		 "Adding overlay 'overlay_gpio_02a' failed\n");
-+
-+	unittest(overlay_data_apply("overlay_gpio_02b", NULL),
-+		 "Adding overlay 'overlay_gpio_02b' failed\n");
-+
-+	/*
-+	 * messages are the result of the probes, after the
-+	 * driver is registered
-+	 */
-+
-+	EXPECT_BEGIN(KERN_INFO,
-+		     "GPIO line <<int>> (line-B-input) hogged as input\n");
-+
-+	EXPECT_BEGIN(KERN_INFO,
-+		     "GPIO line <<int>> (line-A-input) hogged as input\n");
-+
-+	ret = platform_driver_register(&unittest_gpio_driver);
-+	if (unittest(ret == 0, "could not register unittest gpio driver\n"))
-+		return;
-+
-+	EXPECT_END(KERN_INFO,
-+		   "GPIO line <<int>> (line-A-input) hogged as input\n");
-+	EXPECT_END(KERN_INFO,
-+		   "GPIO line <<int>> (line-B-input) hogged as input\n");
-+
-+	unittest(probe_pass_count + 2 == unittest_gpio_probe_pass_count,
-+		 "unittest_gpio_probe() failed or not called\n");
-+
-+	unittest(chip_request_count + 2 == unittest_gpio_chip_request_count,
-+		 "unittest_gpio_chip_request() called %d times (expected 1 time)\n",
-+		 unittest_gpio_chip_request_count - chip_request_count);
-+
-+	/*
-+	 * tests: apply overlays after registering driver
-+	 *
-+	 * Similar to a driver built-in to the kernel, the
-+	 * driver is registered before applying the overlays.
-+	 *
-+	 * overlay_gpio_03 contains gpio node and child gpio hog node
-+	 *
-+	 * - apply overlay_gpio_03
-+	 *
-+	 * apply overlay will result in
-+	 *   - probe and processing gpio hog.
-+	 */
-+
-+	probe_pass_count = unittest_gpio_probe_pass_count;
-+	chip_request_count = unittest_gpio_chip_request_count;
-+
-+	EXPECT_BEGIN(KERN_INFO,
-+		     "GPIO line <<int>> (line-D-input) hogged as input\n");
-+
-+	/* overlay_gpio_03 contains gpio node and child gpio hog node */
-+
-+	unittest(overlay_data_apply("overlay_gpio_03", NULL),
-+		 "Adding overlay 'overlay_gpio_03' failed\n");
-+
-+	EXPECT_END(KERN_INFO,
-+		   "GPIO line <<int>> (line-D-input) hogged as input\n");
-+
-+	unittest(probe_pass_count + 1 == unittest_gpio_probe_pass_count,
-+		 "unittest_gpio_probe() failed or not called\n");
-+
-+	unittest(chip_request_count + 1 == unittest_gpio_chip_request_count,
-+		 "unittest_gpio_chip_request() called %d times (expected 1 time)\n",
-+		 unittest_gpio_chip_request_count - chip_request_count);
-+
-+	/*
-+	 * overlay_gpio_04a contains gpio node
-+	 *
-+	 * - apply overlay_gpio_04a
-+	 *
-+	 * apply the overlay will result in
-+	 *   - probe for overlay_gpio_04a
-+	 */
-+
-+	probe_pass_count = unittest_gpio_probe_pass_count;
-+	chip_request_count = unittest_gpio_chip_request_count;
-+
-+	/* overlay_gpio_04a contains gpio node */
-+
-+	unittest(overlay_data_apply("overlay_gpio_04a", NULL),
-+		 "Adding overlay 'overlay_gpio_04a' failed\n");
-+
-+	unittest(probe_pass_count + 1 == unittest_gpio_probe_pass_count,
-+		 "unittest_gpio_probe() failed or not called\n");
-+
-+	/*
-+	 * overlay_gpio_04b contains child gpio hog node
-+	 *
-+	 * - apply overlay_gpio_04b
-+	 *
-+	 * apply the overlay will result in
-+	 *   - processing gpio for overlay_gpio_04b
-+	 */
-+
-+	EXPECT_BEGIN(KERN_INFO,
-+		     "GPIO line <<int>> (line-C-input) hogged as input\n");
-+
-+	/* overlay_gpio_04b contains child gpio hog node */
-+
-+	unittest(overlay_data_apply("overlay_gpio_04b", NULL),
-+		 "Adding overlay 'overlay_gpio_04b' failed\n");
-+
-+	EXPECT_END(KERN_INFO,
-+		   "GPIO line <<int>> (line-C-input) hogged as input\n");
-+
-+	unittest(chip_request_count + 1 == unittest_gpio_chip_request_count,
-+		 "unittest_gpio_chip_request() called %d times (expected 1 time)\n",
-+		 unittest_gpio_chip_request_count - chip_request_count);
-+}
-+
- static void __init of_unittest_overlay(void)
- {
- 	struct device_node *bus_np = NULL;
-@@ -2173,6 +2412,8 @@ static void __init of_unittest_overlay(void)
- 	of_unittest_overlay_i2c_cleanup();
- #endif
- 
-+	of_unittest_overlay_gpio();
-+
- 	of_unittest_destroy_tracked_overlays();
- 
- out:
-@@ -2226,6 +2467,12 @@ OVERLAY_INFO_EXTERN(overlay_11);
- OVERLAY_INFO_EXTERN(overlay_12);
- OVERLAY_INFO_EXTERN(overlay_13);
- OVERLAY_INFO_EXTERN(overlay_15);
-+OVERLAY_INFO_EXTERN(overlay_gpio_01);
-+OVERLAY_INFO_EXTERN(overlay_gpio_02a);
-+OVERLAY_INFO_EXTERN(overlay_gpio_02b);
-+OVERLAY_INFO_EXTERN(overlay_gpio_03);
-+OVERLAY_INFO_EXTERN(overlay_gpio_04a);
-+OVERLAY_INFO_EXTERN(overlay_gpio_04b);
- OVERLAY_INFO_EXTERN(overlay_bad_add_dup_node);
- OVERLAY_INFO_EXTERN(overlay_bad_add_dup_prop);
- OVERLAY_INFO_EXTERN(overlay_bad_phandle);
-@@ -2250,6 +2497,12 @@ static struct overlay_info overlays[] = {
- 	OVERLAY_INFO(overlay_12, 0),
- 	OVERLAY_INFO(overlay_13, 0),
- 	OVERLAY_INFO(overlay_15, 0),
-+	OVERLAY_INFO(overlay_gpio_01, 0),
-+	OVERLAY_INFO(overlay_gpio_02a, 0),
-+	OVERLAY_INFO(overlay_gpio_02b, 0),
-+	OVERLAY_INFO(overlay_gpio_03, 0),
-+	OVERLAY_INFO(overlay_gpio_04a, 0),
-+	OVERLAY_INFO(overlay_gpio_04b, 0),
- 	OVERLAY_INFO(overlay_bad_add_dup_node, -EINVAL),
- 	OVERLAY_INFO(overlay_bad_add_dup_prop, -EINVAL),
- 	OVERLAY_INFO(overlay_bad_phandle, -EINVAL),
--- 
-2.43.0
-
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -3877,8 +3877,9 @@ struct sk_buff *skb_segment(struct sk_bu
+ 		/* GSO partial only requires that we trim off any excess that
+ 		 * doesn't fit into an MSS sized block, so take care of that
+ 		 * now.
++		 * Cap len to not accidentally hit GSO_BY_FRAGS.
+ 		 */
+-		partial_segs = len / mss;
++		partial_segs = min(len, GSO_BY_FRAGS - 1U) / mss;
+ 		if (partial_segs > 1)
+ 			mss *= partial_segs;
+ 		else
 
 
 
