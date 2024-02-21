@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-22617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91D4585DCE1
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:59:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EE8B85DB09
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:37:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 21C96B28205
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:59:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04A032844B0
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:37:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB20E762C1;
-	Wed, 21 Feb 2024 13:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FB137C089;
+	Wed, 21 Feb 2024 13:36:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t6aW3AwO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PLUXHS9n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8832A7BB01;
-	Wed, 21 Feb 2024 13:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E248778B50;
+	Wed, 21 Feb 2024 13:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523939; cv=none; b=n/aeMBDBncQMY4Gm8/bHRloPkMkfnHY31h2+whMqLInCHiDH6qMniHn5KtjcNJBoxrUKO6FKVY+ENpGEJP3NRC823JG9milKuNbRiwYbTwzM+4ziMBLSt08dyli4oNilYHJfdfYPVPNkEyv/JU5IZbhWQ4cTrCPzCm2iCKVbBVw=
+	t=1708522564; cv=none; b=rIqlBWAQGFXAAN2o2xUj8bW0MhMK0Dc3yn/bd1PT8nQ0t7gu6V6M6xPiyNuib067kUQ3RYpO53GcDPiqM+kGtLSVQ55/UrrZhoBKUwq+0v5LPE3W8xa7HA6lD7HrbUI0wurx5vYYeFXFxr7I5oxzNq5L8USpg7HqkSb9OP5YauI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523939; c=relaxed/simple;
-	bh=VpJAgLDCTfhxiDpQdHQ/OFUpmqPkc4DxJggMT2m92AQ=;
+	s=arc-20240116; t=1708522564; c=relaxed/simple;
+	bh=/fSiHcooAG7gNHX930xVcDrqpq1rGJEoEywI+6IOetw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bA4Lld4x6e/R8a4yFC6qXfCxfiDde4xCm9eyaUb/s2rc5LYKNtwPvikEhfmmb5y2pQCKm8ND3rQBJddgHsqDPfiIcyyOjAmaPhhe8kTaCS5DUZ7oxn4U5hOLljgLwod6bN+2/+HRYT8IUcLm21EuemZnBU65fgczOvmn+ottWMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t6aW3AwO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA282C43390;
-	Wed, 21 Feb 2024 13:58:58 +0000 (UTC)
+	 MIME-Version; b=M/k3tMFot4eukGYekBCKK1mDqwrcWrdn1MNa0jEYGWOoyCPpc9EiYiKoIh7BP50q+2XkDShZMfDQL4TeoIcwGjP1963CtO4Ddzd2jm3y6Cs+oBSHXo4Hm4zjWlyQq/GJqQuSICJTrXXthoNoPSBl2iF8l06OICeH1UyV3bP+Ht8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PLUXHS9n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3973CC433C7;
+	Wed, 21 Feb 2024 13:36:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523939;
-	bh=VpJAgLDCTfhxiDpQdHQ/OFUpmqPkc4DxJggMT2m92AQ=;
+	s=korg; t=1708522563;
+	bh=/fSiHcooAG7gNHX930xVcDrqpq1rGJEoEywI+6IOetw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t6aW3AwOlL8vKFBgB0b+cMVzzHFqKhGvZ73/IcHCATMgMaAabSKaP37wilZrvPULZ
-	 k73Al1RsjwENcxwAjV+dSU+oo5EAIb5IaBewNqJMR6731qX0t9fxf4b7QHOfg2PZVs
-	 FX0cjcz7T59RRWZzHdn0u2KH6NMfviSglrqAV2PY=
+	b=PLUXHS9nLu48meWTxg4VjP6E4qz83NWYETUfIC+EK0DZBkYOv0IQqdkhrQebn+0Mo
+	 5Ue/P9UYPDpFUrpP4xRi1NzGhwdrsVpfCfJyYCO+jWpz/mLNxNFjnFyXdOShQe83j/
+	 cRvzyzryRvkA+8MF1Jy+9EYYtgAh9LEtV30WSu2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Dongsheng Yang <dongsheng.yang@easystack.cn>
-Subject: [PATCH 5.10 067/379] rbd: dont move requests to the running list on errors
-Date: Wed, 21 Feb 2024 14:04:06 +0100
-Message-ID: <20240221125956.898145178@linuxfoundation.org>
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Mao Jinlong <quic_jinlmao@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 196/476] arm64: dts: qcom: msm8996: Fix in-ports is a required property
+Date: Wed, 21 Feb 2024 14:04:07 +0100
+Message-ID: <20240221130015.167810296@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Mao Jinlong <quic_jinlmao@quicinc.com>
 
-commit ded080c86b3f99683774af0441a58fc2e3d60cae upstream.
+[ Upstream commit 9a6fc510a6a3ec150cb7450aec1e5f257e6fc77b ]
 
-The running list is supposed to contain requests that are pinning the
-exclusive lock, i.e. those that must be flushed before exclusive lock
-is released.  When wake_lock_waiters() is called to handle an error,
-requests on the acquiring list are failed with that error and no
-flushing takes place.  Briefly moving them to the running list is not
-only pointless but also harmful: if exclusive lock gets acquired
-before all of their state machines are scheduled and go through
-rbd_lock_del_request(), we trigger
+Add the inport of funnel@3023000 to fix 'in-ports' is a required property
+warning.
 
-    rbd_assert(list_empty(&rbd_dev->running_list));
-
-in rbd_try_acquire_lock().
-
-Cc: stable@vger.kernel.org
-Fixes: 637cd060537d ("rbd: new exclusive lock wait/wake code")
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Mao Jinlong <quic_jinlmao@quicinc.com>
+Link: https://lore.kernel.org/r/20231210072633.4243-3-quic_jinlmao@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/rbd.c |   22 ++++++++++++++--------
- 1 file changed, 14 insertions(+), 8 deletions(-)
+ arch/arm64/boot/dts/qcom/msm8996.dtsi | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
---- a/drivers/block/rbd.c
-+++ b/drivers/block/rbd.c
-@@ -3517,14 +3517,15 @@ static bool rbd_lock_add_request(struct
- static void rbd_lock_del_request(struct rbd_img_request *img_req)
- {
- 	struct rbd_device *rbd_dev = img_req->rbd_dev;
--	bool need_wakeup;
-+	bool need_wakeup = false;
+diff --git a/arch/arm64/boot/dts/qcom/msm8996.dtsi b/arch/arm64/boot/dts/qcom/msm8996.dtsi
+index 8a7c65178507..fd9ffe8448b0 100644
+--- a/arch/arm64/boot/dts/qcom/msm8996.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8996.dtsi
+@@ -394,6 +394,19 @@
+ 		reg = <0x0 0x80000000 0x0 0x0>;
+ 	};
  
- 	lockdep_assert_held(&rbd_dev->lock_rwsem);
- 	spin_lock(&rbd_dev->lock_lists_lock);
--	rbd_assert(!list_empty(&img_req->lock_item));
--	list_del_init(&img_req->lock_item);
--	need_wakeup = (rbd_dev->lock_state == RBD_LOCK_STATE_RELEASING &&
--		       list_empty(&rbd_dev->running_list));
-+	if (!list_empty(&img_req->lock_item)) {
-+		list_del_init(&img_req->lock_item);
-+		need_wakeup = (rbd_dev->lock_state == RBD_LOCK_STATE_RELEASING &&
-+			       list_empty(&rbd_dev->running_list));
-+	}
- 	spin_unlock(&rbd_dev->lock_lists_lock);
- 	if (need_wakeup)
- 		complete(&rbd_dev->releasing_wait);
-@@ -3907,14 +3908,19 @@ static void wake_lock_waiters(struct rbd
- 		return;
- 	}
++	etm {
++		compatible = "qcom,coresight-remote-etm";
++
++		out-ports {
++			port {
++				modem_etm_out_funnel_in2: endpoint {
++					remote-endpoint =
++					  <&funnel_in2_in_modem_etm>;
++				};
++			};
++		};
++	};
++
+ 	psci {
+ 		compatible = "arm,psci-1.0";
+ 		method = "smc";
+@@ -2203,6 +2216,14 @@
+ 			clocks = <&rpmcc RPM_QDSS_CLK>, <&rpmcc RPM_QDSS_A_CLK>;
+ 			clock-names = "apb_pclk", "atclk";
  
--	list_for_each_entry(img_req, &rbd_dev->acquiring_list, lock_item) {
-+	while (!list_empty(&rbd_dev->acquiring_list)) {
-+		img_req = list_first_entry(&rbd_dev->acquiring_list,
-+					   struct rbd_img_request, lock_item);
- 		mutex_lock(&img_req->state_mutex);
- 		rbd_assert(img_req->state == RBD_IMG_EXCLUSIVE_LOCK);
-+		if (!result)
-+			list_move_tail(&img_req->lock_item,
-+				       &rbd_dev->running_list);
-+		else
-+			list_del_init(&img_req->lock_item);
- 		rbd_img_schedule(img_req, result);
- 		mutex_unlock(&img_req->state_mutex);
- 	}
--
--	list_splice_tail_init(&rbd_dev->acquiring_list, &rbd_dev->running_list);
- }
++			in-ports {
++				port {
++					funnel_in2_in_modem_etm: endpoint {
++						remote-endpoint =
++						  <&modem_etm_out_funnel_in2>;
++					};
++				};
++			};
  
- static bool locker_equal(const struct ceph_locker *lhs,
+ 			out-ports {
+ 				port {
+-- 
+2.43.0
+
 
 
 
