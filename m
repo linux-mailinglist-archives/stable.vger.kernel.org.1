@@ -1,80 +1,55 @@
-Return-Path: <stable+bounces-22910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD4C885DE40
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:17:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47F4D85D8FA
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:13:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62BD8285489
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:17:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A26B1C212CE
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:13:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCB4D7E780;
-	Wed, 21 Feb 2024 14:15:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6606C69E00;
+	Wed, 21 Feb 2024 13:13:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TCe7zCof"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NQdW0PW9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 998237E581;
-	Wed, 21 Feb 2024 14:15:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E64F69DF1;
+	Wed, 21 Feb 2024 13:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524938; cv=none; b=HuIxH2iZ4V1Ag671lvkMu0ET/UpsswIAtOmJIhywDoj5y5y0xzwUl3u6spj2MKa2Ah2n6ho78k9PDCZ6Ef7S+PFutRiwuUs6k0a08GjaiNDSJoT1qtScM7uI+qMMlUsooz/Xe2ZNp22RmRW07YDJKgDHfVGPxXagKDgqUGMpb2A=
+	t=1708521185; cv=none; b=iTgV36XDMaLM8wIM+iVXmTTkQzz01h5ffUDsUAKGN6KrY35l6R+fEDCgiZBUsRHq5RXujJ8rgGp+OuslhTbj63zrLldAKCPj2OvI26ukB77iIT5kH/qgquLNFbwEdW23JSjXQuLboZUR7aKOnKgZHWAhU4tq9RyNygAk+i9C6Z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524938; c=relaxed/simple;
-	bh=kLY76MHKJoGtWeLQ+5a7ohfJGmTjChYwfeDII2CP9bA=;
+	s=arc-20240116; t=1708521185; c=relaxed/simple;
+	bh=IptNgpz+WIcSMhY9WpjkiQZT6gGAkeiIuI18ACwPY4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LTsopHofIIe13WTVNKLTPInCGKAOj07EHd83Vb7g/ynwwCiAUwhLEMElsR6oXUokGJDy1TmWZQsb9Bb2+A0FrBNKS0beZQwmdwZ5EZ8UysrZxYoRRLhbIyJ5LUvktohitA5fpC3uBc5MNAz29jIe8PuWlWL1Yj4DAleNtuYn5YE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TCe7zCof; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9D78C433C7;
-	Wed, 21 Feb 2024 14:15:37 +0000 (UTC)
+	 MIME-Version; b=sM+V3cJhndlEcu87AggxKsQqGktR9jWhpVytyn0xwD3z/kkWSzwPqd3E+Heuyi9qq7w4dE4Mby2XKxCEs1gojbsqrEzG6NeYKiKM17yWJkjRmxbmb6bzqs2E/ekGXVL447e0t12Q7pF4mBy/WNffLUvUl4OS4x9iL0q/y3AEPuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NQdW0PW9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B34BC433F1;
+	Wed, 21 Feb 2024 13:13:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524938;
-	bh=kLY76MHKJoGtWeLQ+5a7ohfJGmTjChYwfeDII2CP9bA=;
+	s=korg; t=1708521184;
+	bh=IptNgpz+WIcSMhY9WpjkiQZT6gGAkeiIuI18ACwPY4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TCe7zCofEw0k+rkD3HbkaXm34JqKED5sel9yenS0bJz1j4HKrKD6rg92noYsetioE
-	 kZyCvecpiNNxooEiPR38Dew74Ts7SYPfHif8RHVyMew6xBcz0AecbMnMonZbI32tVf
-	 fktvpBbOQwetJkH0tPvvgXJlVIxjQoVx0OuhEgq8=
+	b=NQdW0PW9xa51XtF+DTFlcktMgKW23KSjbz0Tity0bim3W63I7gLk5bWS/l3sBigQp
+	 SBF+Nqu4rtqvBS6fPPAzTUv87WIGn6+NAVllD7JbeVo95kF8ChiVq7KravirBE8t3n
+	 HdbtFmAaim5g6B9h4ZIdBrqd0ijXbrnu5ZCUSZKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akinobu Mita <akinobu.mita@gmail.com>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Sujith Thomas <sujith.thomas@intel.com>,
-	Darren Hart <dvhart@infradead.org>,
-	Zhang Rui <rui.zhang@intel.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Amit Kucheria <amit.kucheria@verdurent.com>,
-	Jean Delvare <jdelvare@suse.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Keith Busch <kbusch@kernel.org>,
-	Jens Axboe <axboe@fb.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Kalle Valo <kvalo@codeaurora.org>,
-	Stanislaw Gruszka <sgruszka@redhat.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Luca Coelho <luciano.coelho@intel.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Hartmut Knaack <knaack.h@gmx.de>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-	Andy Shevchenko <andy@infradead.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 002/267] include/linux/units.h: add helpers for kelvin to/from Celsius conversion
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Robert Foss <rfoss@kernel.org>
+Subject: [PATCH 4.19 042/202] drm/bridge: nxp-ptn3460: fix i2c_master_send() error checking
 Date: Wed, 21 Feb 2024 14:05:43 +0100
-Message-ID: <20240221125940.135410254@linuxfoundation.org>
+Message-ID: <20240221125933.150950693@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -86,164 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akinobu Mita <akinobu.mita@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 23331e4893614deb555c65cdf115c8a28ed32471 ]
+commit 914437992876838662c968cb416f832110fb1093 upstream.
 
-Patch series "add header file for kelvin to/from Celsius conversion
-helpers", v4.
+The i2c_master_send/recv() functions return negative error codes or the
+number of bytes that were able to be sent/received.  This code has
+two problems.  1)  Instead of checking if all the bytes were sent or
+received, it checks that at least one byte was sent or received.
+2) If there was a partial send/receive then we should return a negative
+error code but this code returns success.
 
-There are several helper macros to convert kelvin to/from Celsius in
-<linux/thermal.h> for thermal drivers.  These are useful for any other
-drivers or subsystems, but it's odd to include <linux/thermal.h> just
-for the helpers.
-
-This adds a new <linux/units.h> that provides the equivalent inline
-functions for any drivers or subsystems, and switches all the users of
-conversion helpers in <linux/thermal.h> to use <linux/units.h> helpers.
-
-This patch (of 12):
-
-There are several helper macros to convert kelvin to/from Celsius in
-<linux/thermal.h> for thermal drivers.  These are useful for any other
-drivers or subsystems, but it's odd to include <linux/thermal.h> just
-for the helpers.
-
-This adds a new <linux/units.h> that provides the equivalent inline
-functions for any drivers or subsystems.  It is intended to replace the
-helpers in <linux/thermal.h>.
-
-Link: http://lkml.kernel.org/r/1576386975-7941-2-git-send-email-akinobu.mita@gmail.com
-Signed-off-by: Akinobu Mita <akinobu.mita@gmail.com>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Sujith Thomas <sujith.thomas@intel.com>
-Cc: Darren Hart <dvhart@infradead.org>
-Cc: Zhang Rui <rui.zhang@intel.com>
-Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc: Amit Kucheria <amit.kucheria@verdurent.com>
-Cc: Jean Delvare <jdelvare@suse.com>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Cc: Keith Busch <kbusch@kernel.org>
-Cc: Jens Axboe <axboe@fb.com>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Sagi Grimberg <sagi@grimberg.me>
-Cc: Kalle Valo <kvalo@codeaurora.org>
-Cc: Stanislaw Gruszka <sgruszka@redhat.com>
-Cc: Johannes Berg <johannes.berg@intel.com>
-Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Cc: Luca Coelho <luciano.coelho@intel.com>
-Cc: Jonathan Cameron <jic23@kernel.org>
-Cc: Hartmut Knaack <knaack.h@gmx.de>
-Cc: Lars-Peter Clausen <lars@metafoo.de>
-Cc: Peter Meerwald-Stadler <pmeerw@pmeerw.net>
-Cc: Andy Shevchenko <andy@infradead.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Stable-dep-of: 3ef79cd14122 ("serial: sc16is7xx: set safe default SPI clock frequency")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a9fe713d7d45 ("drm/bridge: Add PTN3460 bridge driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Robert Foss <rfoss@kernel.org>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/0cdc2dce-ca89-451a-9774-1482ab2f4762@moroto.mountain
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/units.h | 84 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 84 insertions(+)
- create mode 100644 include/linux/units.h
+ drivers/gpu/drm/bridge/nxp-ptn3460.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/units.h b/include/linux/units.h
-new file mode 100644
-index 000000000000..aaf716364ec3
---- /dev/null
-+++ b/include/linux/units.h
-@@ -0,0 +1,84 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _LINUX_UNITS_H
-+#define _LINUX_UNITS_H
-+
-+#include <linux/kernel.h>
-+
-+#define ABSOLUTE_ZERO_MILLICELSIUS -273150
-+
-+static inline long milli_kelvin_to_millicelsius(long t)
-+{
-+	return t + ABSOLUTE_ZERO_MILLICELSIUS;
-+}
-+
-+static inline long millicelsius_to_milli_kelvin(long t)
-+{
-+	return t - ABSOLUTE_ZERO_MILLICELSIUS;
-+}
-+
-+#define MILLIDEGREE_PER_DEGREE 1000
-+#define MILLIDEGREE_PER_DECIDEGREE 100
-+
-+static inline long kelvin_to_millicelsius(long t)
-+{
-+	return milli_kelvin_to_millicelsius(t * MILLIDEGREE_PER_DEGREE);
-+}
-+
-+static inline long millicelsius_to_kelvin(long t)
-+{
-+	t = millicelsius_to_milli_kelvin(t);
-+
-+	return DIV_ROUND_CLOSEST(t, MILLIDEGREE_PER_DEGREE);
-+}
-+
-+static inline long deci_kelvin_to_celsius(long t)
-+{
-+	t = milli_kelvin_to_millicelsius(t * MILLIDEGREE_PER_DECIDEGREE);
-+
-+	return DIV_ROUND_CLOSEST(t, MILLIDEGREE_PER_DEGREE);
-+}
-+
-+static inline long celsius_to_deci_kelvin(long t)
-+{
-+	t = millicelsius_to_milli_kelvin(t * MILLIDEGREE_PER_DEGREE);
-+
-+	return DIV_ROUND_CLOSEST(t, MILLIDEGREE_PER_DECIDEGREE);
-+}
-+
-+/**
-+ * deci_kelvin_to_millicelsius_with_offset - convert Kelvin to Celsius
-+ * @t: temperature value in decidegrees Kelvin
-+ * @offset: difference between Kelvin and Celsius in millidegrees
-+ *
-+ * Return: temperature value in millidegrees Celsius
-+ */
-+static inline long deci_kelvin_to_millicelsius_with_offset(long t, long offset)
-+{
-+	return t * MILLIDEGREE_PER_DECIDEGREE - offset;
-+}
-+
-+static inline long deci_kelvin_to_millicelsius(long t)
-+{
-+	return milli_kelvin_to_millicelsius(t * MILLIDEGREE_PER_DECIDEGREE);
-+}
-+
-+static inline long millicelsius_to_deci_kelvin(long t)
-+{
-+	t = millicelsius_to_milli_kelvin(t);
-+
-+	return DIV_ROUND_CLOSEST(t, MILLIDEGREE_PER_DECIDEGREE);
-+}
-+
-+static inline long kelvin_to_celsius(long t)
-+{
-+	return t + DIV_ROUND_CLOSEST(ABSOLUTE_ZERO_MILLICELSIUS,
-+				     MILLIDEGREE_PER_DEGREE);
-+}
-+
-+static inline long celsius_to_kelvin(long t)
-+{
-+	return t - DIV_ROUND_CLOSEST(ABSOLUTE_ZERO_MILLICELSIUS,
-+				     MILLIDEGREE_PER_DEGREE);
-+}
-+
-+#endif /* _LINUX_UNITS_H */
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/bridge/nxp-ptn3460.c
++++ b/drivers/gpu/drm/bridge/nxp-ptn3460.c
+@@ -66,13 +66,13 @@ static int ptn3460_read_bytes(struct ptn
+ 	ret = i2c_master_send(ptn_bridge->client, &addr, 1);
+ 	if (ret <= 0) {
+ 		DRM_ERROR("Failed to send i2c command, ret=%d\n", ret);
+-		return ret;
++		return ret ?: -EIO;
+ 	}
+ 
+ 	ret = i2c_master_recv(ptn_bridge->client, buf, len);
+-	if (ret <= 0) {
++	if (ret != len) {
+ 		DRM_ERROR("Failed to recv i2c data, ret=%d\n", ret);
+-		return ret;
++		return ret < 0 ? ret : -EIO;
+ 	}
+ 
+ 	return 0;
+@@ -88,9 +88,9 @@ static int ptn3460_write_byte(struct ptn
+ 	buf[1] = val;
+ 
+ 	ret = i2c_master_send(ptn_bridge->client, buf, ARRAY_SIZE(buf));
+-	if (ret <= 0) {
++	if (ret != ARRAY_SIZE(buf)) {
+ 		DRM_ERROR("Failed to send i2c command, ret=%d\n", ret);
+-		return ret;
++		return ret < 0 ? ret : -EIO;
+ 	}
+ 
+ 	return 0;
 
 
 
