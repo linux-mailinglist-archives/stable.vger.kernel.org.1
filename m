@@ -1,119 +1,130 @@
-Return-Path: <stable+bounces-23191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8732C85E136
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 16:32:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0C4885E156
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 16:36:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D6141F2534F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:32:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA821285A23
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:36:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0B7E69D24;
-	Wed, 21 Feb 2024 15:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C0898062A;
+	Wed, 21 Feb 2024 15:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UywHCwMC"
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="fbRqzzI5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f42.google.com (mail-io1-f42.google.com [209.85.166.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB6E180C07
-	for <stable@vger.kernel.org>; Wed, 21 Feb 2024 15:32:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 240267FBC8;
+	Wed, 21 Feb 2024 15:36:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708529564; cv=none; b=CjitpfFtX3rO9c6KQi4x0WYoULXTkU3lc59MPvEOWu8xJAP8Qw9bm+xGWLHCthPHCXOP8X95xPH2wvjpl+uU3DdKcfnleQ67t2uNX2fzgAo+6HLdDMNNh7KBovAq+PTgzNaZaOStjTRQRDnyoNDAJrHB8PNtbpTE4yxLLuzuyDo=
+	t=1708529782; cv=none; b=BeQsfb4Xlxsu1CoEiQnzYZ8ce6M/RXuqA+7oqN6LI01bEc5Cjw9KLa7L32XgI7pXOyfQMT2spS+8FStS3NRFHM2y6hmpNAOxFCOTraE/nOanpM+lkQfI/nIKbcKfGHSXKU+x7l/V854/zhX0P0rCHVt//h/CdojVjYE/NDn6hzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708529564; c=relaxed/simple;
-	bh=V7d0HSjRnHzOfU+EEKSUCWwEtLbsiZEB5+rydMOHck8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kXiBcXhAEvd5VrBI8HiN6hCGQg2Sw+lmgwUavguvNe8BjXWB8xz6xoW82P4DZC+CwbXAG/gYoKBtmnul93Q5RDgn+JR5ps3vowUzTUAoQQdRKBsJw23UbYSv+gxp96aM+6vvyhkot6BoCwBkQgVquBOuuQyCu+BHs3H7DX8Y7O0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UywHCwMC; arc=none smtp.client-ip=209.85.166.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-io1-f42.google.com with SMTP id ca18e2360f4ac-7c49c979b5dso110967939f.1
-        for <stable@vger.kernel.org>; Wed, 21 Feb 2024 07:32:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1708529562; x=1709134362; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=rTUWS3ITPqTvVHNlrNDdtxwJD4AyTQiAHNyBeZPU4ps=;
-        b=UywHCwMCyRhpzKcw84pCaY/tJ0RV+xQE+s/etFllRxxYUfTQ+EcZkGZSpxCMQ0+AkJ
-         vU/i6bxXmPX8koM7nzRH3V6wfw0NvMOTrwa8rBIQzG1qa7Q71ZP4LGVXBSIiR7XgpDgG
-         DFDwvgiRRN17NEEyxVG7i1ahm/lALiBCt3zBU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708529562; x=1709134362;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rTUWS3ITPqTvVHNlrNDdtxwJD4AyTQiAHNyBeZPU4ps=;
-        b=gfF6ep0wyLLjYT9j/daw4pd2eAnZOOnDhLkrMdXotKiIpTc2gy3VHFWibdSo4cPd+F
-         1C2MIwjbgHgblZeXVzNKJGmhFtF8A2YmznXzb3rVZETQB/Vzc4LK3KXByDXatairZecM
-         XClt+RtUgtfHl/rCSFuSOMbN1mEiGPwJuChDMev4pQf4jux2ZIMQbxhyb5XTpRyiHttw
-         IvfKRY8U9qQ4/flUynYXcLvqrmRV/IMtVT6vm14ptRZN57tOfkUTOKFG+2k9tN2gl2h/
-         kOhk0ZT7fE+KM2w2X/mIF9D8Qh9aGyHOP6GXL8zvLYfr55H2jtyaDlnONBdUiV3uMU2m
-         ExUg==
-X-Forwarded-Encrypted: i=1; AJvYcCV9KX4BG2H2Tzs5iCGV/sL2ff4v2/O9Ps2ILwPCPxdRIsRj3lHmUNBk9iSkpjBKded6o+wtUH8EDjW+A/r2xF45YoMfguAd
-X-Gm-Message-State: AOJu0YzRbzpB37700Fg1vRzT+86h4UCUDCNH2RtBv7Ytu9MrpnqI6ig0
-	BcFdCBYxkIive33M733gcMoqqPYDexu+1GTK87+7RPci+EOxHFHilVDtVTVHz/k=
-X-Google-Smtp-Source: AGHT+IGsafhl7SWuEo6yvVNtfR8RuWLkNqrVmSIk/bzAZaHH0TBGFMabmNdsRvlZhXzy453/7nPXrw==
-X-Received: by 2002:a05:6602:1d47:b0:7c4:655:6e05 with SMTP id hi7-20020a0566021d4700b007c406556e05mr17213245iob.2.1708529562000;
-        Wed, 21 Feb 2024 07:32:42 -0800 (PST)
-Received: from [192.168.1.128] ([38.175.170.29])
-        by smtp.gmail.com with ESMTPSA id q11-20020a0566380ecb00b00474269ff209sm1796067jas.119.2024.02.21.07.32.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 21 Feb 2024 07:32:41 -0800 (PST)
-Message-ID: <bc6e74d1-4354-4881-929f-ae45ea1e35c6@linuxfoundation.org>
-Date: Wed, 21 Feb 2024 08:32:40 -0700
+	s=arc-20240116; t=1708529782; c=relaxed/simple;
+	bh=jz7bQ0RRoK61Cw9zhVIJUimC34X5/mo8M/CW0Rqtf2w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sE7j8q5DAkwubBgWp60IjI3HLPeiVvlP/4k1e1rldgkC1HTLXAD340B0q9TXdtGjpECZnYUg0D+Z4VK29jz1ROputhJw4mEsul5qD/ith9GCPmAsYhP+9m2sPu5lOKMqrFBxjeYdlGvPRNQkIyZQH3hUNUUBjehHq98r2TOZ/Js=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=fbRqzzI5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 477ABC433C7;
+	Wed, 21 Feb 2024 15:36:21 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="fbRqzzI5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1708529777;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jz7bQ0RRoK61Cw9zhVIJUimC34X5/mo8M/CW0Rqtf2w=;
+	b=fbRqzzI5dot6PF85I/FDqACOB44aW4zyUYsUhILas048I9XMxDJZ8gU523UWwrqfVu11V9
+	pTlvCiX+GRlMt5gB7OgU85ckQGSayWvmVIYEuxEqub7J839hk1WIh3HII4BBaVWSoOLx6A
+	Y/e3hwQXECdZ8MRdBwnXrjDep6Du0cM=
+Received: 
+	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 996651aa (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Wed, 21 Feb 2024 15:36:17 +0000 (UTC)
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-607e60d01b2so29073267b3.1;
+        Wed, 21 Feb 2024 07:36:16 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXJbQTPNyfQU5EwAN+CFlDlDXlSxtISFqkQEeTJaUKphpcxxweLMUtxgyVsrzdaZxZbzz+RBxy3t7sj9UUMYiq77ynMYcb4qMQjBUYMJa4KTnJ1LylcXK7UUQl0mIjP2p+xK7rh
+X-Gm-Message-State: AOJu0Yw59w1q8rZKapHUHkNC5f/QFlPOgmsqAgFoGsNZStelJH7qh+W/
+	uTFCHwdf6UA2q5WtkKB7RidMLpqo0L5WExjiNWQ40UmjdgfI/vI54aYZcl8XIMquxGh378jfnKw
+	hSlkGXKV+wGwYVi96IyxCbb7nr9A=
+X-Google-Smtp-Source: AGHT+IEsVdtIcMbXk+wPT6SZPtutgQaNIU1JGngGnegEtXVIhAaP2QEbpBeZUGbXZ8l2NwEPOjdcpbSY0/xQ3aAXUNY=
+X-Received: by 2002:a81:df02:0:b0:608:8d57:368c with SMTP id
+ c2-20020a81df02000000b006088d57368cmr840841ywn.49.1708529775977; Wed, 21 Feb
+ 2024 07:36:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.7 000/309] 6.7.6-rc1 review
-Content-Language: en-US
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <20240220205633.096363225@linuxfoundation.org>
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20240221123248.25570-1-Jason@zx2c4.com>
+In-Reply-To: <20240221123248.25570-1-Jason@zx2c4.com>
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Date: Wed, 21 Feb 2024 16:36:02 +0100
+X-Gmail-Original-Message-ID: <CAHmME9r-W5UEok=EsD56grZ_Fy_nJ4u2sUp1CHw0A0F6=CCjmQ@mail.gmail.com>
+Message-ID: <CAHmME9r-W5UEok=EsD56grZ_Fy_nJ4u2sUp1CHw0A0F6=CCjmQ@mail.gmail.com>
+Subject: Re: [PATCH v3] x86/coco: Require seeding RNG with RDRAND on CoCo systems
+To: x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Cc: Borislav Petkov <bp@alien8.de>, =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
+	"H . Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, 
+	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, "Theodore Ts'o" <tytso@mit.edu>, 
+	Thomas Gleixner <tglx@linutronix.de>, stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2/20/24 13:52, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.7.6 release.
-> There are 309 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 22 Feb 2024 20:55:42 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.7.6-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.7.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
+On Wed, Feb 21, 2024 at 1:33=E2=80=AFPM Jason A. Donenfeld <Jason@zx2c4.com=
+> wrote:
+>
+> There are few uses of CoCo that don't rely on working cryptography and
+> hence a working RNG. Unfortunately, the CoCo threat model means that the
+> VM host cannot be trusted and may actively work against guests to
+> extract secrets or manipulate computation. Since a malicious host can
+> modify or observe nearly all inputs to guests, the only remaining source
+> of entropy for CoCo guests is RDRAND.
+>
+> If RDRAND is broken -- due to CPU hardware fault -- the RNG as a whole
+> is meant to gracefully continue on gathering entropy from other sources,
+> but since there aren't other sources on CoCo, this is catastrophic.
+> This is mostly a concern at boot time when initially seeding the RNG, as
+> after that the consequences of a broken RDRAND are much more
+> theoretical.
+>
+> So, try at boot to seed the RNG using 256 bits of RDRAND output. If this
+> fails, panic(). This will also trigger if the system is booted without
+> RDRAND, as RDRAND is essential for a safe CoCo boot.
+>
+> This patch is deliberately written to be "just a CoCo x86 driver
+> feature" and not part of the RNG itself. Many device drivers and
+> platforms have some desire to contribute something to the RNG, and
+> add_device_randomness() is specifically meant for this purpose. Any
+> driver can call this with seed data of any quality, or even garbage
+> quality, and it can only possibly make the quality of the RNG better or
+> have no effect, but can never make it worse. Rather than trying to
+> build something into the core of the RNG, this patch interprets the
+> particular CoCo issue as just a CoCo issue, and therefore separates this
+> all out into driver (well, arch/platform) code.
+>
+> Cc: Borislav Petkov <bp@alien8.de>
+> Cc: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: Elena Reshetova <elena.reshetova@intel.com>
+> Cc: H. Peter Anvin <hpa@zytor.com>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> Cc: Theodore Ts'o <tytso@mit.edu>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
 
-Compiled and booted on my test system. No dmesg regressions.
+Also,
 
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
+Cc: stable@vger.kernel.org
 
-thanks,
--- Shuah
-
+At least, I think that's probably what we want, though I don't know
+what version range is relevant for CoCo.
 
