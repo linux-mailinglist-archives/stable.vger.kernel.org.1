@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-22036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 725CD85D9D1
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:23:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C309685DC46
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:51:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13EB7B25BBE
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:22:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0096C1C227C9
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:51:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 625EF78B4F;
-	Wed, 21 Feb 2024 13:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CAAA78B70;
+	Wed, 21 Feb 2024 13:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ONwW33z2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WAOgVcXG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ADF6763FE;
-	Wed, 21 Feb 2024 13:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD5338398;
+	Wed, 21 Feb 2024 13:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521758; cv=none; b=mLU3u00tsE6PwbYbqTd/3GrXIw/5WIXm6RDjOJmPSR201mmXVCI61MOb9XLGq7WkRRLChBROw6+njlBNnq/r5+OCRK2iMUe54UO3nFH3eUotgkJjdbMBrL2trOUN1DoQ+cu5Co7kBWhxra7SS1sPy2E2gF3dK6F0a1GtHwevLOY=
+	t=1708523474; cv=none; b=jsXomNNyyAw3fdyspXYSg9MtVLBg4abUIyGF3A3+9GVrr+zT2HX6TSAW02WOeeEUvmOYlCnj63IQunYMoBa9ThWjCiUByY/ubj/bU9A5aHA4Bpg1I3OBipg/eNnesd2VJPQ96Z5kEhYWJDzg3mTC72SMNwuRhjDFGnqHufYzCeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521758; c=relaxed/simple;
-	bh=qQcP0oFSN9RR40+te1j65J34tmqKnzD8quYbnin9y9U=;
+	s=arc-20240116; t=1708523474; c=relaxed/simple;
+	bh=GanLoMuCQY/Ji0alC5JRXo/QaiOQWm7UHliD7uktXQI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nFhcNZphDwq/TKdexx5k2ZxH7T23z2yGEP1uDG4f3AFDm8l73wtX2zHuyHFs2SkQyTTDnKf3jQrb6cAhEV4GDzZ6weOVCKtQdQvF0em5+MF2aetfQ1OjHyEzwmOwCSa5IOtFZrxcfp0v0BrKtvLRFXHq/0umZhmhdXClM0hjzTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ONwW33z2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93401C433C7;
-	Wed, 21 Feb 2024 13:22:37 +0000 (UTC)
+	 MIME-Version; b=I7dm5S7G2MRTKL2cCmJyJ2IWS6ib+F+3zVH+a/tbIk7ZNLr0WXwdejEohr1IC+Jscx+7M5tjClGUfTvKrI9OaVoDAZobiwD7UBmdRozkb/Kwn60bigosmmzFuy7J/VtV6zY3hlCU7jXctK5x75Hu8WMgFJ62/Xif4ssj//7a3Rg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WAOgVcXG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B8C0C433F1;
+	Wed, 21 Feb 2024 13:51:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521758;
-	bh=qQcP0oFSN9RR40+te1j65J34tmqKnzD8quYbnin9y9U=;
+	s=korg; t=1708523473;
+	bh=GanLoMuCQY/Ji0alC5JRXo/QaiOQWm7UHliD7uktXQI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ONwW33z23YhMRJF5rBZ2Voq55oM+SerYOatpixk3ElMdWlpkFjwaZ/+IRSwnP9O7O
-	 1UDEA8YIIrjDyssMmvdC2nfleQkBYAbYFMSSP/FC8UvGoGF17Y0c79IQ6fU2ak0VxN
-	 3uuAz3ypbw8pSHm8rNaWr6SdaV2tq/A1UFCyz2qY=
+	b=WAOgVcXGu/mBskj2sHdvfI1/RqQ0kekMZkJ2NSpsDDUS2Pq2/wYvEtFEhyiUuxIwp
+	 S6JJ34vL9Lrna3hZacOCdsu28s+rowr4vvaiLlSZOlrSDxSRGQApvzHgdWz5v40qAQ
+	 6WAkS2PCzWOf9qbOSzUuxNzX0CECKl0JyBpv4yGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 4.19 196/202] pmdomain: core: Move the unused cleanup to a _sync initcall
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 446/476] fbdev/defio: Early-out if page is already enlisted
 Date: Wed, 21 Feb 2024 14:08:17 +0100
-Message-ID: <20240221125938.125257117@linuxfoundation.org>
+Message-ID: <20240221130024.519467424@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit 741ba0134fa7822fcf4e4a0a537a5c4cfd706b20 upstream.
+[ Upstream commit 105a940416fc622406653b6fe54732897642dfbc ]
 
-The unused clock cleanup uses the _sync initcall to give all users at
-earlier initcalls time to probe. Do the same to avoid leaving some PDs
-dangling at "on" (which actually happened on qcom!).
+Return early if a page is already in the list of dirty pages for
+deferred I/O. This can be detected if the page's list head is not
+empty. Keep the list head initialized while the page is not enlisted
+to make this work reliably.
 
-Fixes: 2fe71dcdfd10 ("PM / domains: Add late_initcall to disable unused PM domains")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231227-topic-pmdomain_sync_cleanup-v1-1-5f36769d538b@linaro.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+v2:
+	* update comment and fix spelling (Sam)
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Acked-by: Sam Ravnborg <sam@ravnborg.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20220211094640.21632-2-tzimmermann@suse.de
+Stable-dep-of: 33cd6ea9c067 ("fbdev: flush deferred IO before closing")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/domain.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/fbdev/core/fb_defio.c | 26 +++++++++++++++++---------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
 
---- a/drivers/base/power/domain.c
-+++ b/drivers/base/power/domain.c
-@@ -847,7 +847,7 @@ static int __init genpd_power_off_unused
+diff --git a/drivers/video/fbdev/core/fb_defio.c b/drivers/video/fbdev/core/fb_defio.c
+index 0708e214c5a3..95264a621221 100644
+--- a/drivers/video/fbdev/core/fb_defio.c
++++ b/drivers/video/fbdev/core/fb_defio.c
+@@ -59,6 +59,7 @@ static vm_fault_t fb_deferred_io_fault(struct vm_fault *vmf)
+ 		printk(KERN_ERR "no mapping available\n");
  
- 	return 0;
+ 	BUG_ON(!page->mapping);
++	INIT_LIST_HEAD(&page->lru);
+ 	page->index = vmf->pgoff;
+ 
+ 	vmf->page = page;
+@@ -118,17 +119,24 @@ static vm_fault_t fb_deferred_io_mkwrite(struct vm_fault *vmf)
+ 	 */
+ 	lock_page(page);
+ 
++	/*
++	 * This check is to catch the case where a new process could start
++	 * writing to the same page through a new PTE. This new access
++	 * can cause a call to .page_mkwrite even if the original process'
++	 * PTE is marked writable.
++	 *
++	 * TODO: The lru field is owned by the page cache; hence the name.
++	 *       We dequeue in fb_deferred_io_work() after flushing the
++	 *       page's content into video memory. Instead of lru, fbdefio
++	 *       should have it's own field.
++	 */
++	if (!list_empty(&page->lru))
++		goto page_already_added;
++
+ 	/* we loop through the pagelist before adding in order
+ 	to keep the pagelist sorted */
+ 	list_for_each_entry(cur, &fbdefio->pagelist, lru) {
+-		/* this check is to catch the case where a new
+-		process could start writing to the same page
+-		through a new pte. this new access can cause the
+-		mkwrite even when the original ps's pte is marked
+-		writable */
+-		if (unlikely(cur == page))
+-			goto page_already_added;
+-		else if (cur->index > page->index)
++		if (cur->index > page->index)
+ 			break;
+ 	}
+ 
+@@ -190,7 +198,7 @@ static void fb_deferred_io_work(struct work_struct *work)
+ 
+ 	/* clear the list */
+ 	list_for_each_safe(node, next, &fbdefio->pagelist) {
+-		list_del(node);
++		list_del_init(node);
+ 	}
+ 	mutex_unlock(&fbdefio->lock);
  }
--late_initcall(genpd_power_off_unused);
-+late_initcall_sync(genpd_power_off_unused);
- 
- #if defined(CONFIG_PM_SLEEP) || defined(CONFIG_PM_GENERIC_DOMAINS_OF)
- 
+-- 
+2.43.0
+
 
 
 
