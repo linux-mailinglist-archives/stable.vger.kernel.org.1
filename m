@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-22624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A75ED85DCED
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:59:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D2D085DB38
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:38:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 478B61F223F0
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:59:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8A10B26C11
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:38:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73FAA7C089;
-	Wed, 21 Feb 2024 13:59:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A2E57A715;
+	Wed, 21 Feb 2024 13:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kMy8rZox"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yHuyC0J1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F15B7BB16;
-	Wed, 21 Feb 2024 13:59:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0944A79DAE;
+	Wed, 21 Feb 2024 13:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523961; cv=none; b=bXCxuU4fQO09HwmFp3Zp2eA49W+tgcalPlmdAP9wBlOgfVjhf95myzicy4ctyRbjwsl3+4PLkCf9ltQ8dTkN46gOiYQpDZtasUjIKNiWmE4Vn5bBtlZL/l6+JPXFVk8EZmdPDK3esLjc82zCD6DrAKzDW34VsMvojMMuBF03Ldk=
+	t=1708522694; cv=none; b=rxv6KP/RRpcoFCuLTbEomnn+Uo2AfIG/ciEECvz6hh/C2waNSgXh/6ksDCiMOwuS5Tb3k9tBWS4AFBiSiYOMhM/xayxhL2j3HTssrXnpAZlYITOWGjC9RYDhOXpwkZ/mB+zxm4Cc3dpAti/Ftea94IBr+l4z6M3XnSN5uLdlBPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523961; c=relaxed/simple;
-	bh=HlngtkI1J5OCUkhIgGLQ1mzjETONitHHu2Seis6pUuc=;
+	s=arc-20240116; t=1708522694; c=relaxed/simple;
+	bh=4D0EzCgq8/Ud0o0pJVDb7KJ6gukWv9aXTmD6Qvr3ZMQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lkMXstJRI8QCmoZqSxFjngDYUPmdTeBpLc5o8Iv2D2YSChl8HOoSOsrne8wNnCJwGceMbFsinVNigVoZ19ReFqONbwS9dk9c6Y+kF31HUA2kKe2sZaB8+9opmVafGiEZDMrz9WIa1cQXowUzJyASp6+vy1myobVRnqKUY3R7Hmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kMy8rZox; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AE62C433F1;
-	Wed, 21 Feb 2024 13:59:20 +0000 (UTC)
+	 MIME-Version; b=hyCh/Oz+h6xyLSaSztLIEf5MYfbqWuIOIF5V1aq0mQxSoJFpkeWrsvVRfQiUpU0pHcWYvf8AmTJNTpf0drj03n8XD5NN8YRAwLsLFaXFLezfr/ykc8nj/EOY27b1jCOSJ39tI+uH9i1TZOqNRUnIvvBVmBWKCgLCxSNug1wcfTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yHuyC0J1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84AC7C433F1;
+	Wed, 21 Feb 2024 13:38:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523961;
-	bh=HlngtkI1J5OCUkhIgGLQ1mzjETONitHHu2Seis6pUuc=;
+	s=korg; t=1708522693;
+	bh=4D0EzCgq8/Ud0o0pJVDb7KJ6gukWv9aXTmD6Qvr3ZMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kMy8rZoxpEnvc+9BUmXLbHSL2nuH/iTc/H9WuQ0axgAF7gi/WNLhzhzXXhmtutLDf
-	 49skQiPpwsqlJYJyLEuIfPlLbKNrgKXTScmZUtZh5JxLZUKW8FaXBMV+OPJMgKZ+NJ
-	 5T4+Uesk0JVPXDDYFIn72yPstSYJKOYqROAhTMac=
+	b=yHuyC0J1RTQYZ0ecc8N8npUWpcAnJdtCpr9M4sIcJb0nOaILBujWZHdzBCeCcHUuR
+	 a7HNpTyZ5vZwc9o5wEcJKB9FWns03ZOWUglAn1B9O0e+gO+nESPbBW+hhu0ump0dls
+	 5muyVsTKVZK4Bd8hSy60bE4nz/MW1bGcnvyDl0pQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Werner Fischer <devlists@wefi.net>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 104/379] powerpc/mm: Fix build failures due to arch_reserved_kernel_pages()
-Date: Wed, 21 Feb 2024 14:04:43 +0100
-Message-ID: <20240221125957.995067824@linuxfoundation.org>
+Subject: [PATCH 5.15 233/476] watchdog: it87_wdt: Keep WDTCTRL bit 3 unmodified for IT8784/IT8786
+Date: Wed, 21 Feb 2024 14:04:44 +0100
+Message-ID: <20240221130016.503400548@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,70 +61,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Werner Fischer <devlists@wefi.net>
 
-[ Upstream commit d8c3f243d4db24675b653f0568bb65dae34e6455 ]
+[ Upstream commit d12971849d71781c1e4ffd1117d4878ce233d319 ]
 
-With NUMA=n and FA_DUMP=y or PRESERVE_FA_DUMP=y the build fails with:
+WDTCTRL bit 3 sets the mode choice for the clock input of IT8784/IT8786.
+Some motherboards require this bit to be set to 1 (= PCICLK mode),
+otherwise the watchdog functionality gets broken. The BIOS of those
+motherboards sets WDTCTRL bit 3 already to 1.
 
-  arch/powerpc/kernel/fadump.c:1739:22: error: no previous prototype for ‘arch_reserved_kernel_pages’ [-Werror=missing-prototypes]
-  1739 | unsigned long __init arch_reserved_kernel_pages(void)
-       |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~
+Instead of setting all bits of WDTCTRL to 0 by writing 0x00 to it, keep
+bit 3 of it unchanged for IT8784/IT8786 chips. In this way, bit 3 keeps
+the status as set by the BIOS of the motherboard.
 
-The prototype for arch_reserved_kernel_pages() is in include/linux/mm.h,
-but it's guarded by __HAVE_ARCH_RESERVED_KERNEL_PAGES. The powerpc
-headers define __HAVE_ARCH_RESERVED_KERNEL_PAGES in asm/mmzone.h, which
-is not included into the generic headers when NUMA=n.
+Watchdog tests have been successful with this patch with the following
+systems:
+  IT8784: Thomas-Krenn LES plus v2 (YANLING YL-KBRL2 V2)
+  IT8786: Thomas-Krenn LES plus v3 (YANLING YL-CLU L2)
+  IT8786: Thomas-Krenn LES network 6L v2 (YANLING YL-CLU6L)
 
-Move the definition of __HAVE_ARCH_RESERVED_KERNEL_PAGES into asm/mmu.h
-which is included regardless of NUMA=n.
+Link: https://lore.kernel.org/all/140b264d-341f-465b-8715-dacfe84b3f71@roeck-us.net/
 
-Additionally the ifdef around __HAVE_ARCH_RESERVED_KERNEL_PAGES needs to
-also check for CONFIG_PRESERVE_FA_DUMP.
-
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231130114433.3053544-1-mpe@ellerman.id.au
+Signed-off-by: Werner Fischer <devlists@wefi.net>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20231213094525.11849-4-devlists@wefi.net
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/mmu.h    | 4 ++++
- arch/powerpc/include/asm/mmzone.h | 3 ---
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ drivers/watchdog/it87_wdt.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/mmu.h b/arch/powerpc/include/asm/mmu.h
-index 255a1837e9f7..3a5a27318a0e 100644
---- a/arch/powerpc/include/asm/mmu.h
-+++ b/arch/powerpc/include/asm/mmu.h
-@@ -390,5 +390,9 @@ extern void *abatron_pteptrs[2];
- #include <asm/nohash/mmu.h>
- #endif
+diff --git a/drivers/watchdog/it87_wdt.c b/drivers/watchdog/it87_wdt.c
+index bb1122909396..843f9f8e3917 100644
+--- a/drivers/watchdog/it87_wdt.c
++++ b/drivers/watchdog/it87_wdt.c
+@@ -255,6 +255,7 @@ static struct watchdog_device wdt_dev = {
+ static int __init it87_wdt_init(void)
+ {
+ 	u8  chip_rev;
++	u8 ctrl;
+ 	int rc;
  
-+#if defined(CONFIG_FA_DUMP) || defined(CONFIG_PRESERVE_FA_DUMP)
-+#define __HAVE_ARCH_RESERVED_KERNEL_PAGES
-+#endif
+ 	rc = superio_enter();
+@@ -313,7 +314,18 @@ static int __init it87_wdt_init(void)
+ 
+ 	superio_select(GPIO);
+ 	superio_outb(WDT_TOV1, WDTCFG);
+-	superio_outb(0x00, WDTCTRL);
 +
- #endif /* __KERNEL__ */
- #endif /* _ASM_POWERPC_MMU_H_ */
-diff --git a/arch/powerpc/include/asm/mmzone.h b/arch/powerpc/include/asm/mmzone.h
-index 6cda76b57c5d..bd1a8d7256ff 100644
---- a/arch/powerpc/include/asm/mmzone.h
-+++ b/arch/powerpc/include/asm/mmzone.h
-@@ -42,9 +42,6 @@ u64 memory_hotplug_max(void);
- #else
- #define memory_hotplug_max() memblock_end_of_DRAM()
- #endif /* CONFIG_NEED_MULTIPLE_NODES */
--#ifdef CONFIG_FA_DUMP
--#define __HAVE_ARCH_RESERVED_KERNEL_PAGES
--#endif
++	switch (chip_type) {
++	case IT8784_ID:
++	case IT8786_ID:
++		ctrl = superio_inb(WDTCTRL);
++		ctrl &= 0x08;
++		superio_outb(ctrl, WDTCTRL);
++		break;
++	default:
++		superio_outb(0x00, WDTCTRL);
++	}
++
+ 	superio_exit();
  
- #ifdef CONFIG_MEMORY_HOTPLUG
- extern int create_section_mapping(unsigned long start, unsigned long end,
+ 	if (timeout < 1 || timeout > max_units * 60) {
 -- 
 2.43.0
 
