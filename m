@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-22450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE54F85DC1A
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:49:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22D6B85D986
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:19:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E1E21C2360E
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:49:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C96C41F22713
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:19:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 109B27C09A;
-	Wed, 21 Feb 2024 13:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C35013FB21;
+	Wed, 21 Feb 2024 13:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aKvhB5OI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lfvYG0c6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20FA7B3F2;
-	Wed, 21 Feb 2024 13:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D83763FE;
+	Wed, 21 Feb 2024 13:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523339; cv=none; b=qNb1gsL/WaanhAQfa2V8ghYRdwmHYb6TQnjCupk/1y1UELI5ZZ7/TaNZ5lEFfAP1+xqcBCgjd8yLw9/hhgjGXAIGYf8V4Ey6eAQAOil969ElXCDatyveaUNW8mNIWek8XQyYX3hAYGPQqXXvbAjpkCRXsu3Y7kScwZ+ilETKv6c=
+	t=1708521570; cv=none; b=SOSdFEeLlObpWl9PW89KOmfdGYe44gpvdYYbOkd+7b6F1uEg4vXC+SZzj0KcLUYUpHd8cA8592NPGoSiFLIHIz0c8vok9v7CZKQHomGOAKJADNNbvAUQnBUssDV7xDi8xW7BuVq+/GWGIWqcYbWSdAZHz6VGNgrHSMdIZvmhNFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523339; c=relaxed/simple;
-	bh=o1N+EaROBu5losXiiovO3caepH0qrcvb3c8DKsW/Dg4=;
+	s=arc-20240116; t=1708521570; c=relaxed/simple;
+	bh=3DPCDP7jgIXMhXjYrzbVjv+qMWEKNoAjVz3UneBK6N0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EzB95atvqtLm7T/1rkTV6YwtoPnbu2h1Sy1YjZiXdzbTfsik0GCz53BZqJ6lnq5I4HqDpgbEF/ZJI8wguoPOTXhLg49GFjtGPg3BkCZY4M3rYgWGM1cttihzQKqIKC2fJg5sQDklm7DlJ6BrKDbXV74QEZsSjgvFODIWCWF76O4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aKvhB5OI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 303BDC433C7;
-	Wed, 21 Feb 2024 13:48:58 +0000 (UTC)
+	 MIME-Version; b=lQ/8/4X5WNFIBsFLoU3i0sTHen64QDJ+7fhjQqF+xIZ+Y7JKwcifHWi4nIwpmPZskOrAEiXSvmMGPZ4x54EkJCKwZ/64gKaXeL4f4Hbr8v1LIuTRuQkX8R+3405Q++rdvIV9+ljwM1M+eYXfkQlKJ89GZTk7t6o4TALS9Gbm8XM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lfvYG0c6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 940E7C43399;
+	Wed, 21 Feb 2024 13:19:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523339;
-	bh=o1N+EaROBu5losXiiovO3caepH0qrcvb3c8DKsW/Dg4=;
+	s=korg; t=1708521570;
+	bh=3DPCDP7jgIXMhXjYrzbVjv+qMWEKNoAjVz3UneBK6N0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aKvhB5OIVu5Yk7ERBTk82HPo+qmlQHUwuatWrNTv/moJ4bS/7+6IcB6sMqKlLFqUG
-	 oLY9vHs1SD9nySwlwWpJe79PSKcBuzGQR9At9X2jB94BR6KCxQDx2JnS65+l5GbQdX
-	 EP3Mejc5Nnmm6cdgzORfUoy/gu3i9h9IIndEhLjc=
+	b=lfvYG0c689MWf7IjUAfACbDY/ESkCO3aONgJPG3s6ECMzVcew4OxhOZs0HjnTqj7c
+	 1TlRDa6nqwV5gGcY2x0qjuHuR88vmg3WhP4D/2HCHTL1q1OtQe8bLAjTYoUduM4xTZ
+	 LYzQ5otOzdwsJN0ndtKzeIFMx1D/YWhK1IHV9YEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Chen <harperchen1110@gmail.com>,
-	xingwei lee <xrivendell7@gmail.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.15 389/476] ext4: fix double-free of blocks due to wrong extents moved_len
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 139/202] net: ipv4: fix a memleak in ip_setup_cork
 Date: Wed, 21 Feb 2024 14:07:20 +0100
-Message-ID: <20240221130022.412693242@linuxfoundation.org>
+Message-ID: <20240221125936.199476476@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-commit 55583e899a5357308274601364741a83e78d6ac4 upstream.
+[ Upstream commit 5dee6d6923458e26966717f2a3eae7d09fc10bf6 ]
 
-In ext4_move_extents(), moved_len is only updated when all moves are
-successfully executed, and only discards orig_inode and donor_inode
-preallocations when moved_len is not zero. When the loop fails to exit
-after successfully moving some extents, moved_len is not updated and
-remains at 0, so it does not discard the preallocations.
+When inetdev_valid_mtu fails, cork->opt should be freed if it is
+allocated in ip_setup_cork. Otherwise there could be a memleak.
 
-If the moved extents overlap with the preallocated extents, the
-overlapped extents are freed twice in ext4_mb_release_inode_pa() and
-ext4_process_freed_data() (as described in commit 94d7c16cbbbd ("ext4:
-Fix double-free of blocks with EXT4_IOC_MOVE_EXT")), and bb_free is
-incremented twice. Hence when trim is executed, a zero-division bug is
-triggered in mb_update_avg_fragment_size() because bb_free is not zero
-and bb_fragments is zero.
-
-Therefore, update move_len after each extent move to avoid the issue.
-
-Reported-by: Wei Chen <harperchen1110@gmail.com>
-Reported-by: xingwei lee <xrivendell7@gmail.com>
-Closes: https://lore.kernel.org/r/CAO4mrferzqBUnCag8R3m2zf897ts9UEuhjFQGPtODT92rYyR2Q@mail.gmail.com
-Fixes: fcf6b1b729bc ("ext4: refactor ext4_move_extents code base")
-CC:  <stable@vger.kernel.org> # 3.18
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240104142040.2835097-2-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 501a90c94510 ("inet: protect against too small mtu values.")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240129091017.2938835-1-alexious@zju.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/move_extent.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ net/ipv4/ip_output.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/fs/ext4/move_extent.c
-+++ b/fs/ext4/move_extent.c
-@@ -615,6 +615,7 @@ ext4_move_extents(struct file *o_filp, s
- 		goto out;
- 	o_end = o_start + len;
+diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
+index 6936f703758b..3e15c1b388ae 100644
+--- a/net/ipv4/ip_output.c
++++ b/net/ipv4/ip_output.c
+@@ -1140,6 +1140,12 @@ static int ip_setup_cork(struct sock *sk, struct inet_cork *cork,
+ 	if (unlikely(!rt))
+ 		return -EFAULT;
  
-+	*moved_len = 0;
- 	while (o_start < o_end) {
- 		struct ext4_extent *ex;
- 		ext4_lblk_t cur_blk, next_blk;
-@@ -670,7 +671,7 @@ ext4_move_extents(struct file *o_filp, s
- 		 */
- 		ext4_double_up_write_data_sem(orig_inode, donor_inode);
- 		/* Swap original branches with new branches */
--		move_extent_per_page(o_filp, donor_inode,
-+		*moved_len += move_extent_per_page(o_filp, donor_inode,
- 				     orig_page_index, donor_page_index,
- 				     offset_in_page, cur_len,
- 				     unwritten, &ret);
-@@ -680,9 +681,6 @@ ext4_move_extents(struct file *o_filp, s
- 		o_start += cur_len;
- 		d_start += cur_len;
++	cork->fragsize = ip_sk_use_pmtu(sk) ?
++			 dst_mtu(&rt->dst) : READ_ONCE(rt->dst.dev->mtu);
++
++	if (!inetdev_valid_mtu(cork->fragsize))
++		return -ENETUNREACH;
++
+ 	/*
+ 	 * setup for corking.
+ 	 */
+@@ -1156,12 +1162,6 @@ static int ip_setup_cork(struct sock *sk, struct inet_cork *cork,
+ 		cork->addr = ipc->addr;
  	}
--	*moved_len = o_start - orig_blk;
--	if (*moved_len > len)
--		*moved_len = len;
  
- out:
- 	if (*moved_len) {
+-	cork->fragsize = ip_sk_use_pmtu(sk) ?
+-			 dst_mtu(&rt->dst) : READ_ONCE(rt->dst.dev->mtu);
+-
+-	if (!inetdev_valid_mtu(cork->fragsize))
+-		return -ENETUNREACH;
+-
+ 	cork->gso_size = ipc->gso_size;
+ 
+ 	cork->dst = &rt->dst;
+-- 
+2.43.0
+
 
 
 
