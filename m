@@ -1,155 +1,141 @@
-Return-Path: <stable+bounces-21764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D76285CC9C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 01:14:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C23985CC9D
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 01:16:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EC701C21861
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 00:14:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 61E22B230A7
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 00:16:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAE5A382;
-	Wed, 21 Feb 2024 00:14:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C0A57F8;
+	Wed, 21 Feb 2024 00:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QWRVh+o3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RkXi10iY"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A06323A6
-	for <stable@vger.kernel.org>; Wed, 21 Feb 2024 00:14:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1831193;
+	Wed, 21 Feb 2024 00:15:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708474494; cv=none; b=SQ4U0xS31oUweXgN5zmCDBcZleBM7LaZqFQWmQTr4GJDhWfmMbTFY14MdjtSxiEMvidG+T/PXyzRHj20sx5r+14Y4feic2HcuQLsfcmwZRxsoRvwREXRu+Ok0DODyBbS2u9X9eBiGRye+jjvsYQApdQYML1FFWjy+Sv2dgbTwU4=
+	t=1708474556; cv=none; b=ptP7jRi+iqPZbEhZLjheeo/n/wo8oETVlciTQPZqCY2lX7/pm4R7iOXOjcsomwZEQ3V9A/MqyUqlv04AxKAFlzQqOsMpTPBm0TwWl8/CepB4VtFbCfkxqMpS33cH2f+uNh+ZD4z1DiAEmFYfsi+T+f+JqtuOUyIjvVwL6e32fOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708474494; c=relaxed/simple;
-	bh=p2+aMGpVWQdd72/xp9GUR35skeNEMEQfwDisn1NrPsU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ayuo7/lz7K6OXlZnLZ6dZ4aq9Rjh0ilx9SxJ5J4pUjcQ0uqq9kh5qHCgTL/HkRE3+aC/9BvOoRtKEi5qriV31IrgHtYNcuo7aYXvspry/+XZukO0G0xj7AxVWyHDiRRr7NBA0eLwGUA/Z/wf9dmId+2zyC9ENeMtEGUdp8l56Kc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QWRVh+o3; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708474493; x=1740010493;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=p2+aMGpVWQdd72/xp9GUR35skeNEMEQfwDisn1NrPsU=;
-  b=QWRVh+o3kty7zbSkh7SWwijg5dSDJCieQ9PZBSuysmS8TfPHuAIYFbP3
-   zmZcWZNgP4ioFbYlgmHAx04+cNTMDz2/kPW1IcqkJba4Qk8v/4L+v/6ST
-   YC2E9AVdE3HOGLKlHMe9jDLQuVxbhmqeuZtiUKpa7QNtbgid1Kgf5QROl
-   o9OxvsQUYJBXDW2LoCnRV8wi4Uts20CQFzNVKvs3miJ5qVGWIT12f8MV5
-   cSYCnFtU7S/M7T4hCl2CJi1UMbU0/KRS84VyxC1sjVxBnDQo4YtGONKQz
-   vHgu+3PdxMq5ZdqVtU4cLO0X1gn0IMF6WJKRfSUwgRPKdtyb6VEbmVJyP
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="6386893"
-X-IronPort-AV: E=Sophos;i="6.06,174,1705392000"; 
-   d="scan'208";a="6386893"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 16:14:52 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,174,1705392000"; 
-   d="scan'208";a="4927738"
-Received: from okeles-mobl.ger.corp.intel.com (HELO intel.com) ([10.246.32.195])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 16:14:49 -0800
-Date: Wed, 21 Feb 2024 01:14:47 +0100
-From: Andi Shyti <andi.shyti@linux.intel.com>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Cc: Andi Shyti <andi.shyti@linux.intel.com>,
-	intel-gfx <intel-gfx@lists.freedesktop.org>,
-	dri-devel <dri-devel@lists.freedesktop.org>,
-	Chris Wilson <chris.p.wilson@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	John Harrison <John.C.Harrison@intel.com>, stable@vger.kernel.org,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: Re: [PATCH v2 2/2] drm/i915/gt: Enable only one CCS for compute
- workload
-Message-ID: <ZdVAd3NxUNBZofts@ashyti-mobl2.lan>
-References: <20240220143526.259109-1-andi.shyti@linux.intel.com>
- <20240220143526.259109-3-andi.shyti@linux.intel.com>
- <af007641-9705-4259-b29c-3cb78f67fc64@linux.intel.com>
+	s=arc-20240116; t=1708474556; c=relaxed/simple;
+	bh=3UKf88/OO9PrlzxTprcbvLUA+oabicAk0A7ct1jS0Hk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=iJX25f2QzjInlRvKXOGupdGiGVGfmjuyFt+KQn6otaP8pLjgb+YPE/RNhqGn7twGax3BqZww2S1ZyLCsnnqk1XG0kV83o+fVXZPslPsYCArHkRQbTJMnGh58Z5zmT784OmgSewQhWwatjJN3K8/0EpYzVOu7njBzLJCxf3b3jRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RkXi10iY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CBE8C433C7;
+	Wed, 21 Feb 2024 00:15:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708474555;
+	bh=3UKf88/OO9PrlzxTprcbvLUA+oabicAk0A7ct1jS0Hk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=RkXi10iYaVYVR6VWm0leETcV94QcWYGMz2HrbLzdfyOmSH3a00DymBH7cmNDfoCQi
+	 xVC3Lu24E7JnEX1XF/Lk9qhedRTkL3OJWZVSfh6VSA+WHQkPvKw6KxkWoONnnMoW/h
+	 ew/G06241W01m+IyrtIpnwkIlp5tZQ32JKZztZH6cokg57zT7x948cHRVRDB2OpqMP
+	 4D2Y/oIWNa7SjW4oCLM4i6kubdTmfezA1emHIPDkosedFLPgiJM6alKOo/n7A4Rfaj
+	 7NXD4LRnXH1QZfqEvUE6zVkzw702mkguz9NWymEOmKiIXZ/N/jRqSAl6Jah/G9ZU4j
+	 24DQUhf1xETRA==
+From: SeongJae Park <sj@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org,
+	patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	allen.lkml@gmail.com,
+	damon@lists.linux.dev,
+	SeongJae Park <sj@kernel.org>
+Subject: Re: [PATCH 6.7 000/309] 6.7.6-rc1 review
+Date: Tue, 20 Feb 2024 16:15:52 -0800
+Message-Id: <20240221001552.46741-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <af007641-9705-4259-b29c-3cb78f67fc64@linux.intel.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Tvrtko,
+Hello,
 
-On Tue, Feb 20, 2024 at 02:48:31PM +0000, Tvrtko Ursulin wrote:
-> On 20/02/2024 14:35, Andi Shyti wrote:
-> > Enable only one CCS engine by default with all the compute sices
+On Tue, 20 Feb 2024 21:52:39 +0100 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+
+> This is the start of the stable review cycle for the 6.7.6 release.
+> There are 309 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> slices
-
-Thanks!
-
-> > diff --git a/drivers/gpu/drm/i915/gt/intel_engine_user.c b/drivers/gpu/drm/i915/gt/intel_engine_user.c
-> > index 833987015b8b..7041acc77810 100644
-> > --- a/drivers/gpu/drm/i915/gt/intel_engine_user.c
-> > +++ b/drivers/gpu/drm/i915/gt/intel_engine_user.c
-> > @@ -243,6 +243,15 @@ void intel_engines_driver_register(struct drm_i915_private *i915)
-> >   		if (engine->uabi_class == I915_NO_UABI_CLASS)
-> >   			continue;
-> > +		/*
-> > +		 * Do not list and do not count CCS engines other than the first
-> > +		 */
-> > +		if (engine->uabi_class == I915_ENGINE_CLASS_COMPUTE &&
-> > +		    engine->uabi_instance > 0) {
-> > +			i915->engine_uabi_class_count[engine->uabi_class]--;
-> > +			continue;
-> > +		}
+> Responses should be made by Thu, 22 Feb 2024 20:55:42 +0000.
+> Anything received after that time might be too late.
 > 
-> It's a bit ugly to decrement after increment, instead of somehow
-> restructuring the loop to satisfy both cases more elegantly.
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.7.6-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.7.y
+> and the diffstat can be found below.
 
-yes, agree, indeed I had a hard time here to accept this change
-myself.
+This rc kernel passes DAMON functionality test[1] on my test machine.
+Attaching the test results summary below.  Please note that I retrieved the
+kernel from linux-stable-rc tree[2].
 
-But moving the check above where the counter was incremented it
-would have been much uglier.
+Tested-by: SeongJae Park <sj@kernel.org>
 
-This check looks ugly everywhere you place it :-)
+[1] https://github.com/awslabs/damon-tests/tree/next/corr
+[2] c40c992a3e2e ("Linux 6.7.6-rc1")
 
-In any case, I'm working on a patch that is splitting this
-function in two parts and there is some refactoring happening
-here (for the first initialization and the dynamic update).
-
-Please let me know if it's OK with you or you want me to fix it
-in this run.
-
-> And I wonder if
-> internally (in dmesg when engine name is logged) we don't end up with ccs0
-> ccs0 ccs0 ccs0.. for all instances.
-
-I don't see this. Even in sysfs we see only one ccs. Where is it?
-
-> > +
-> >   		rb_link_node(&engine->uabi_node, prev, p);
-> >   		rb_insert_color(&engine->uabi_node, &i915->uabi_engines);
+Thanks,
+SJ
 
 [...]
 
-> > diff --git a/drivers/gpu/drm/i915/i915_query.c b/drivers/gpu/drm/i915/i915_query.c
-> > index 3baa2f54a86e..d5a5143971f5 100644
-> > --- a/drivers/gpu/drm/i915/i915_query.c
-> > +++ b/drivers/gpu/drm/i915/i915_query.c
-> > @@ -124,6 +124,7 @@ static int query_geometry_subslices(struct drm_i915_private *i915,
-> >   	return fill_topology_info(sseu, query_item, sseu->geometry_subslice_mask);
-> >   }
-> > +
-> 
-> Zap please.
+---
 
-yes... yes... I noticed it after sending the patch :-)
-
-Thanks,
-Andi
+ok 1 selftests: damon: debugfs_attrs.sh
+ok 2 selftests: damon: debugfs_schemes.sh
+ok 3 selftests: damon: debugfs_target_ids.sh
+ok 4 selftests: damon: debugfs_empty_targets.sh
+ok 5 selftests: damon: debugfs_huge_count_read_write.sh
+ok 6 selftests: damon: debugfs_duplicate_context_creation.sh
+ok 7 selftests: damon: debugfs_rm_non_contexts.sh
+ok 8 selftests: damon: sysfs.sh
+ok 9 selftests: damon: sysfs_update_removed_scheme_dir.sh
+ok 10 selftests: damon: reclaim.sh
+ok 11 selftests: damon: lru_sort.sh
+ok 1 selftests: damon-tests: kunit.sh
+ok 2 selftests: damon-tests: huge_count_read_write.sh
+ok 3 selftests: damon-tests: buffer_overflow.sh
+ok 4 selftests: damon-tests: rm_contexts.sh
+ok 5 selftests: damon-tests: record_null_deref.sh
+ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
+ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
+ok 8 selftests: damon-tests: damo_tests.sh
+ok 9 selftests: damon-tests: masim-record.sh
+ok 10 selftests: damon-tests: build_i386.sh
+ok 11 selftests: damon-tests: build_arm64.sh
+ok 12 selftests: damon-tests: build_m68k.sh
+ok 13 selftests: damon-tests: build_i386_idle_flag.sh
+ok 14 selftests: damon-tests: build_i386_highpte.sh
+ok 15 selftests: damon-tests: build_nomemcg.sh
+ [33m
+ [92mPASS [39m
 
