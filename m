@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-22761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F4F685DDC1
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:11:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94D5D85D961
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:18:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C550E1F240A2
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:11:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4BB731F2287E
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:18:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A244B7E77A;
-	Wed, 21 Feb 2024 14:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59A8378B73;
+	Wed, 21 Feb 2024 13:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zBLrC4KA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XAgquRcd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 611927D3F4;
-	Wed, 21 Feb 2024 14:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16AE076C85;
+	Wed, 21 Feb 2024 13:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524427; cv=none; b=Rq3bOaUD1fERmkJiRj0S4INozwCobgONZTQvUOABXgGkPLBl2LTG1tnlGtyKm/4/nsbGI/EF6ITwCifWXJzuawrB0kGO3rwczOUV385LE5YE81JiVONraJlRef3XMf3kYv8KKaAcrsq6+rKLxEryvxwz5ppVPuSetEOknj32atI=
+	t=1708521463; cv=none; b=jY+1w6DFGCTEmOuWGuIo+G/LmgftWnO5xLUxsvnKWvoEeiYdBBDBQTCBfixp9UFTkZ/SEWZ2k58KAaWdXrR5Ch8LDJXOmOpoB6LstjtzXPsioElDKrknvN44u0wBKJfQ5VUkF6putaLd2ySrjclY7K3oNwoUhOTg0ARqdrcK7mE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524427; c=relaxed/simple;
-	bh=m687sNx9aupA6NmK4oaxPQuZ5vO8rPuyQMFbG/m8Zuw=;
+	s=arc-20240116; t=1708521463; c=relaxed/simple;
+	bh=zwTaaxmzfyoEdR6JlClTahT6m35k8pnQ776rNJLeKdY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gtkuJZPPavX57b1co6PIT0tKlInQi+JMYDfsvBFNHlAzirXw3wE6GzlIe9LHmbUKb4E5PPKwqIJmVPU3NxhDfcys8h+kf4RG/9RGyBRpSMzrbeNQZdl1ycSy7Ha4n+7Wbg4Mamm7QA01nr1cTh4wmeIZiUbh+F5x6p8QF+n8ui4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zBLrC4KA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3B1BC433F1;
-	Wed, 21 Feb 2024 14:07:06 +0000 (UTC)
+	 MIME-Version; b=s4HLUeOPsKZxq+9JttSPJogyX3H9D6q4pATD1gffIvl+SIV1mHZ9zYjtfp0UXzT7IBmD/b0oNg0qxuPz7T0CVI2pH5tt3kc/ftLCd18pC/cDaAtFO4Ux5m/iFuAWLKTGgoSgyCeMjO0Dsi6w3ib4CzvjnP31H3YXis8Atqo+Syk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XAgquRcd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 919E4C433C7;
+	Wed, 21 Feb 2024 13:17:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524427;
-	bh=m687sNx9aupA6NmK4oaxPQuZ5vO8rPuyQMFbG/m8Zuw=;
+	s=korg; t=1708521463;
+	bh=zwTaaxmzfyoEdR6JlClTahT6m35k8pnQ776rNJLeKdY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zBLrC4KAWoVNWErADx8mF8EwP71yTT0b0FjX9CSZJZPD6f7RAoDwv+xOxf/4+SOGw
-	 VChyu04WXiNla6ukaYWBWLfaK95iUdFwAs8lKpThBLQ5tObhepXChOAz4TIOUgL/fw
-	 qsFm4Q7Gg+PfvYCqF/BIf1PtHjlDkc5jc3tpQb0I=
+	b=XAgquRcdRZG+j0C5YY9P4AnZ+NZSl5RmsJ54EWzyCC4CIXu7qcUtSW4R7ODaaoKpO
+	 Hsl6zKSVrgeYvCeMR6wJsDwkDsxCpyuLQ/CV54l32lVdZZa1oHboX8mvYrwsoNrROV
+	 l5pc9m8dZ65GLGKu2yepzNiEqxqjhNT6FfZk1ct4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Benjamin Berg <benjamin@sipsolutions.net>,
+	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 240/379] net: sysfs: Fix /sys/class/net/<iface> path
+Subject: [PATCH 4.19 118/202] um: Dont use vfprintf() for os_info()
 Date: Wed, 21 Feb 2024 14:06:59 +0100
-Message-ID: <20240221130002.013784525@linuxfoundation.org>
+Message-ID: <20240221125935.540458696@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,129 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Benjamin Berg <benjamin@sipsolutions.net>
 
-[ Upstream commit ae3f4b44641dfff969604735a0dcbf931f383285 ]
+[ Upstream commit 236f9fe39b02c15fa5530b53e9cca48354394389 ]
 
-The documentation is pointing to the wrong path for the interface.
-Documentation is pointing to /sys/class/<iface>, instead of
-/sys/class/net/<iface>.
+The threads allocated inside the kernel have only a single page of
+stack. Unfortunately, the vfprintf function in standard glibc may use
+too much stack-space, overflowing it.
 
-Fix it by adding the `net/` directory before the interface.
+To make os_info safe to be used by helper threads, use the kernel
+vscnprintf function into a smallish buffer and write out the information
+to stderr.
 
-Fixes: 1a02ef76acfa ("net: sysfs: add documentation entries for /sys/class/<iface>/queues")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://lore.kernel.org/r/20240131102150.728960-2-leitao@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Benjamin Berg <benjamin@sipsolutions.net>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ABI/testing/sysfs-class-net-queues        | 22 +++++++++----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ arch/um/os-Linux/util.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-class-net-queues b/Documentation/ABI/testing/sysfs-class-net-queues
-index 978b76358661..40d5aab8452d 100644
---- a/Documentation/ABI/testing/sysfs-class-net-queues
-+++ b/Documentation/ABI/testing/sysfs-class-net-queues
-@@ -1,4 +1,4 @@
--What:		/sys/class/<iface>/queues/rx-<queue>/rps_cpus
-+What:		/sys/class/net/<iface>/queues/rx-<queue>/rps_cpus
- Date:		March 2010
- KernelVersion:	2.6.35
- Contact:	netdev@vger.kernel.org
-@@ -8,7 +8,7 @@ Description:
- 		network device queue. Possible values depend on the number
- 		of available CPU(s) in the system.
+diff --git a/arch/um/os-Linux/util.c b/arch/um/os-Linux/util.c
+index 8cc8b2617a67..0436cc9537e0 100644
+--- a/arch/um/os-Linux/util.c
++++ b/arch/um/os-Linux/util.c
+@@ -166,23 +166,38 @@ __uml_setup("quiet", quiet_cmd_param,
+ "quiet\n"
+ "    Turns off information messages during boot.\n\n");
  
--What:		/sys/class/<iface>/queues/rx-<queue>/rps_flow_cnt
-+What:		/sys/class/net/<iface>/queues/rx-<queue>/rps_flow_cnt
- Date:		April 2010
- KernelVersion:	2.6.35
- Contact:	netdev@vger.kernel.org
-@@ -16,7 +16,7 @@ Description:
- 		Number of Receive Packet Steering flows being currently
- 		processed by this particular network device receive queue.
++/*
++ * The os_info/os_warn functions will be called by helper threads. These
++ * have a very limited stack size and using the libc formatting functions
++ * may overflow the stack.
++ * So pull in the kernel vscnprintf and use that instead with a fixed
++ * on-stack buffer.
++ */
++int vscnprintf(char *buf, size_t size, const char *fmt, va_list args);
++
+ void os_info(const char *fmt, ...)
+ {
++	char buf[256];
+ 	va_list list;
++	int len;
  
--What:		/sys/class/<iface>/queues/tx-<queue>/tx_timeout
-+What:		/sys/class/net/<iface>/queues/tx-<queue>/tx_timeout
- Date:		November 2011
- KernelVersion:	3.3
- Contact:	netdev@vger.kernel.org
-@@ -24,7 +24,7 @@ Description:
- 		Indicates the number of transmit timeout events seen by this
- 		network interface transmit queue.
+ 	if (quiet_info)
+ 		return;
  
--What:		/sys/class/<iface>/queues/tx-<queue>/tx_maxrate
-+What:		/sys/class/net/<iface>/queues/tx-<queue>/tx_maxrate
- Date:		March 2015
- KernelVersion:	4.1
- Contact:	netdev@vger.kernel.org
-@@ -32,7 +32,7 @@ Description:
- 		A Mbps max-rate set for the queue, a value of zero means disabled,
- 		default is disabled.
+ 	va_start(list, fmt);
+-	vfprintf(stderr, fmt, list);
++	len = vscnprintf(buf, sizeof(buf), fmt, list);
++	fwrite(buf, len, 1, stderr);
+ 	va_end(list);
+ }
  
--What:		/sys/class/<iface>/queues/tx-<queue>/xps_cpus
-+What:		/sys/class/net/<iface>/queues/tx-<queue>/xps_cpus
- Date:		November 2010
- KernelVersion:	2.6.38
- Contact:	netdev@vger.kernel.org
-@@ -42,7 +42,7 @@ Description:
- 		network device transmit queue. Possible vaules depend on the
- 		number of available CPU(s) in the system.
+ void os_warn(const char *fmt, ...)
+ {
++	char buf[256];
+ 	va_list list;
++	int len;
  
--What:		/sys/class/<iface>/queues/tx-<queue>/xps_rxqs
-+What:		/sys/class/net/<iface>/queues/tx-<queue>/xps_rxqs
- Date:		June 2018
- KernelVersion:	4.18.0
- Contact:	netdev@vger.kernel.org
-@@ -53,7 +53,7 @@ Description:
- 		number of available receive queue(s) in the network device.
- 		Default is disabled.
- 
--What:		/sys/class/<iface>/queues/tx-<queue>/byte_queue_limits/hold_time
-+What:		/sys/class/net/<iface>/queues/tx-<queue>/byte_queue_limits/hold_time
- Date:		November 2011
- KernelVersion:	3.3
- Contact:	netdev@vger.kernel.org
-@@ -62,7 +62,7 @@ Description:
- 		of this particular network device transmit queue.
- 		Default value is 1000.
- 
--What:		/sys/class/<iface>/queues/tx-<queue>/byte_queue_limits/inflight
-+What:		/sys/class/net/<iface>/queues/tx-<queue>/byte_queue_limits/inflight
- Date:		November 2011
- KernelVersion:	3.3
- Contact:	netdev@vger.kernel.org
-@@ -70,7 +70,7 @@ Description:
- 		Indicates the number of bytes (objects) in flight on this
- 		network device transmit queue.
- 
--What:		/sys/class/<iface>/queues/tx-<queue>/byte_queue_limits/limit
-+What:		/sys/class/net/<iface>/queues/tx-<queue>/byte_queue_limits/limit
- Date:		November 2011
- KernelVersion:	3.3
- Contact:	netdev@vger.kernel.org
-@@ -79,7 +79,7 @@ Description:
- 		on this network device transmit queue. This value is clamped
- 		to be within the bounds defined by limit_max and limit_min.
- 
--What:		/sys/class/<iface>/queues/tx-<queue>/byte_queue_limits/limit_max
-+What:		/sys/class/net/<iface>/queues/tx-<queue>/byte_queue_limits/limit_max
- Date:		November 2011
- KernelVersion:	3.3
- Contact:	netdev@vger.kernel.org
-@@ -88,7 +88,7 @@ Description:
- 		queued on this network device transmit queue. See
- 		include/linux/dynamic_queue_limits.h for the default value.
- 
--What:		/sys/class/<iface>/queues/tx-<queue>/byte_queue_limits/limit_min
-+What:		/sys/class/net/<iface>/queues/tx-<queue>/byte_queue_limits/limit_min
- Date:		November 2011
- KernelVersion:	3.3
- Contact:	netdev@vger.kernel.org
+ 	va_start(list, fmt);
+-	vfprintf(stderr, fmt, list);
++	len = vscnprintf(buf, sizeof(buf), fmt, list);
++	fwrite(buf, len, 1, stderr);
+ 	va_end(list);
+ }
 -- 
 2.43.0
 
