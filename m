@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-22381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5119985DBC3
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:45:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8287985DE8C
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:19:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E6FBCB25E2F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:45:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B435B1C23C25
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:19:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACFFD7BAF6;
-	Wed, 21 Feb 2024 13:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5D5D7CF02;
+	Wed, 21 Feb 2024 14:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Gax7n60"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qyrYpEl4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C13F7992D;
-	Wed, 21 Feb 2024 13:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 940E43CF42;
+	Wed, 21 Feb 2024 14:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523095; cv=none; b=fvfEQk3CZDptiXMNdkpTkEg1EbfGEfsd0s1MROhVdllVf2BGjWu5C1S++JDEh5sU4cR2v3PhjYQZ32Ve0O1PTcMjDMUpb+qWMXfDQY6QGAROMk/uXV7CQuVhoYGHigICe3BpzBPPdxWpXCvL/Uz1Ki3gtkg4Kw6TZuSfZSXsoUA=
+	t=1708525155; cv=none; b=uSrgzpZs9pygDaVWCctOmMk41bGbmCKhKIt0sSms5u5jReiBr0rWttGvOfAqp9CtE17uyAv5RPP9/fgcW0z7a80u04BVdGVmxddhEqlS9gU9TWnMfzpx0vRdyOtHL4JY3SLqbUteZMuQvThqcszXo5Nq9qN0ueAP9opdtbnczDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523095; c=relaxed/simple;
-	bh=yBkIbr99ZXDzYNVQmrBY2cU6NhfJ0gSmYcypqwiyjYU=;
+	s=arc-20240116; t=1708525155; c=relaxed/simple;
+	bh=dfaIaZCTkMc1l5o5dPIjiXZ71B6x1ZrpYxBcpAYnwSA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fLeD/ZVzFpSW7w7URhW1Fy3SuwZ1XzNNpHznByJ2b7g5TEcn8a13Na1zQ7EzLSxN7gfcedE440eaSWsLBf+9fO0j1GizLL9B0lqPYe7gWmet9HENVKWyf+AxkH3L9vqX+WnISr3bHCvDpNQs8y4ahIGnAam+5xaiy/fJOhVJu2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Gax7n60; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE3CDC433C7;
-	Wed, 21 Feb 2024 13:44:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DbMfk0cv8XVwh3espJW1ZKS9PLHkXShR+O+SmasSljxotX/IW7S3kn6NpFWawcok90awBlQfstADb6VMubHX3hM47nC6fo0r/8d8DbCl8F2UXfEnkO0Iw/baAlUZ6h6gF++OkDzfaUJ0p+JCI9hN0O3bbfzjhvn6LIpQlB9Hi40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qyrYpEl4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13481C43390;
+	Wed, 21 Feb 2024 14:19:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523095;
-	bh=yBkIbr99ZXDzYNVQmrBY2cU6NhfJ0gSmYcypqwiyjYU=;
+	s=korg; t=1708525155;
+	bh=dfaIaZCTkMc1l5o5dPIjiXZ71B6x1ZrpYxBcpAYnwSA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Gax7n60O3SNmcoUJ7H1WJB/53ravMvVAEVw8sM9Kh/kDUwZt4dF7c7TlOQsQzHVh
-	 x17sRTdOjRMBRtmeP/nKZvqegyCyjZvsj9wSt+pt/SJew+ANYqGwp7c72wBosk4LqV
-	 BX5YK0XUb/hctm5GtULUyIrqeeLmcqJbzcjemDJs=
+	b=qyrYpEl47i8eeyU23oj8r6A+RAQI64dHkW4I7MRcNGfsq79LQGxrXSS5C+TrH/FuC
+	 c3s9Vth+6igWUt7GeuzCFM8LDap4t4oYiSkItv46lvkXaFbVHlMoDg107MMvARVHLc
+	 kfsFd0j9O5hrzwtbTS+ncorYZ2PtLgvTLWS3wcJA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 5.15 338/476] Input: atkbd - skip ATKBD_CMD_SETLEDS when skipping ATKBD_CMD_GETID
-Date: Wed, 21 Feb 2024 14:06:29 +0100
-Message-ID: <20240221130020.525335001@linuxfoundation.org>
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Javier Martinez Canillas <javierm@redhat.com>
+Subject: [PATCH 5.4 049/267] drm: Dont unref the same fb many times by mistake due to deadlock handling
+Date: Wed, 21 Feb 2024 14:06:30 +0100
+Message-ID: <20240221125941.548564084@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,89 +59,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit 683cd8259a9b883a51973511f860976db2550a6e upstream.
+commit cb4daf271302d71a6b9a7c01bd0b6d76febd8f0c upstream.
 
-After commit 936e4d49ecbc ("Input: atkbd - skip ATKBD_CMD_GETID in
-translated mode") the keyboard on Dell XPS 13 9350 / 9360 / 9370 models
-has stopped working after a suspend/resume.
+If we get a deadlock after the fb lookup in drm_mode_page_flip_ioctl()
+we proceed to unref the fb and then retry the whole thing from the top.
+But we forget to reset the fb pointer back to NULL, and so if we then
+get another error during the retry, before the fb lookup, we proceed
+the unref the same fb again without having gotten another reference.
+The end result is that the fb will (eventually) end up being freed
+while it's still in use.
 
-The problem appears to be that atkbd_probe() fails when called
-from atkbd_reconnect() on resume, which on systems where
-ATKBD_CMD_GETID is skipped can only happen by ATKBD_CMD_SETLEDS
-failing. ATKBD_CMD_SETLEDS failing because ATKBD_CMD_GETID was
-skipped is weird, but apparently that is what is happening.
+Reset fb to NULL once we've unreffed it to avoid doing it again
+until we've done another fb lookup.
 
-Fix this by also skipping ATKBD_CMD_SETLEDS when skipping
-ATKBD_CMD_GETID.
+This turned out to be pretty easy to hit on a DG2 when doing async
+flips (and CONFIG_DEBUG_WW_MUTEX_SLOWPATH=y). The first symptom I
+saw that drm_closefb() simply got stuck in a busy loop while walking
+the framebuffer list. Fortunately I was able to convince it to oops
+instead, and from there it was easier to track down the culprit.
 
-Fixes: 936e4d49ecbc ("Input: atkbd - skip ATKBD_CMD_GETID in translated mode")
-Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Closes: https://lore.kernel.org/linux-input/0aa4a61f-c939-46fe-a572-08022e8931c7@molgen.mpg.de/
-Closes: https://bbs.archlinux.org/viewtopic.php?pid=2146300
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218424
-Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2260517
-Tested-by: Paul Menzel <pmenzel@molgen.mpg.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240126160724.13278-2-hdegoede@redhat.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231211081625.25704-1-ville.syrjala@linux.intel.com
+Acked-by: Javier Martinez Canillas <javierm@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/keyboard/atkbd.c |   13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/drm_plane.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/input/keyboard/atkbd.c
-+++ b/drivers/input/keyboard/atkbd.c
-@@ -802,7 +802,6 @@ static int atkbd_probe(struct atkbd *atk
- {
- 	struct ps2dev *ps2dev = &atkbd->ps2dev;
- 	unsigned char param[2];
--	bool skip_getid;
- 
- /*
-  * Some systems, where the bit-twiddling when testing the io-lines of the
-@@ -816,6 +815,11 @@ static int atkbd_probe(struct atkbd *atk
- 				 "keyboard reset failed on %s\n",
- 				 ps2dev->serio->phys);
- 
-+	if (atkbd_skip_getid(atkbd)) {
-+		atkbd->id = 0xab83;
-+		return 0;
-+	}
-+
- /*
-  * Then we check the keyboard ID. We should get 0xab83 under normal conditions.
-  * Some keyboards report different values, but the first byte is always 0xab or
-@@ -824,18 +828,17 @@ static int atkbd_probe(struct atkbd *atk
-  */
- 
- 	param[0] = param[1] = 0xa5;	/* initialize with invalid values */
--	skip_getid = atkbd_skip_getid(atkbd);
--	if (skip_getid || ps2_command(ps2dev, param, ATKBD_CMD_GETID)) {
-+	if (ps2_command(ps2dev, param, ATKBD_CMD_GETID)) {
- 
- /*
-- * If the get ID command was skipped or failed, we check if we can at least set
-+ * If the get ID command failed, we check if we can at least set
-  * the LEDs on the keyboard. This should work on every keyboard out there.
-  * It also turns the LEDs off, which we want anyway.
-  */
- 		param[0] = 0;
- 		if (ps2_command(ps2dev, param, ATKBD_CMD_SETLEDS))
- 			return -1;
--		atkbd->id = skip_getid ? 0xab83 : 0xabba;
-+		atkbd->id = 0xabba;
- 		return 0;
- 	}
- 
+--- a/drivers/gpu/drm/drm_plane.c
++++ b/drivers/gpu/drm/drm_plane.c
+@@ -1203,6 +1203,7 @@ retry:
+ out:
+ 	if (fb)
+ 		drm_framebuffer_put(fb);
++	fb = NULL;
+ 	if (plane->old_fb)
+ 		drm_framebuffer_put(plane->old_fb);
+ 	plane->old_fb = NULL;
 
 
 
