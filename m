@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-21925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6677085D934
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:16:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4B6085DBC1
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:45:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 07AE7B24767
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:16:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B93D1F247FC
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:45:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15A406BFCF;
-	Wed, 21 Feb 2024 13:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0A4479DAE;
+	Wed, 21 Feb 2024 13:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kJ0xLY11"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GTwwC8wb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8F1069972;
-	Wed, 21 Feb 2024 13:15:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 901757993D;
+	Wed, 21 Feb 2024 13:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521336; cv=none; b=n+nInuRIpOG/fG5Z/Y0/XtdTvbmGA7aV6CSlZWQ/AL+W6c1Qwlskqf3jJjOL0CtY6gkQhms1u/MP/9hvx0M97kEE6tA3Hx3fo/q/E2WghaWZAyDYdYRFNcCtfzxbHIEw7G63RFY6v+sVcr10HYivC4MuZjcrZlEUmdU4i+/ieJE=
+	t=1708523092; cv=none; b=CwYdskRPV1AdvV6hlKAydjdYR10a98dOsS1nxprGFWA4vioIx/6RUx3TOuSSPPSOmXTwknBN3NOxpDGJGhv7dV4GIidoNcwdEWRbyGSnaqaoDMt1Np1+iDtZMWiEQ9JtG5Up/8r36R92qtq7xMJqW0ycVvf3kPuzQLmP+6jV8Rw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521336; c=relaxed/simple;
-	bh=AZfGF/vo317lH1VTaM7a47ExxBZxtdjbASpnnK9kaIY=;
+	s=arc-20240116; t=1708523092; c=relaxed/simple;
+	bh=0bL1glqdxs2b69jfhLbtktSVc8lfLWO6DHxDYwrwz08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qf1BSXI5rTZBvv49ec/NO1ZG7IYZAWDcLiRh277Pa622hIFEHhb64/TdULfmm2WMvwJJkCxPIlDXWuiGZnKz8PLnGvqmbkOURhl78E2W5gKV4erSP/YZFm8FyXMkZ8U2jmT00zr+3DtzuYOpqawFXVFzrQqqOB1PF8Tm0xj3xWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kJ0xLY11; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3909DC433C7;
-	Wed, 21 Feb 2024 13:15:36 +0000 (UTC)
+	 MIME-Version; b=g4mZ+XYZOZY5yljiDlx4/bg0tMQ5jn99AuxUw97K55b+/AeDNum4YhvLynjEbCttHleQiNb3KmSumFvUhjtfdcEvsFoizGvEU08P2wWA85cI5HB/5WL2gQ5Z4Q76bTdP3KoeS9pocnjkcpfq2vd7EDoQ26jhU9ojtpukqNGm3PQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GTwwC8wb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C9BC433C7;
+	Wed, 21 Feb 2024 13:44:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521336;
-	bh=AZfGF/vo317lH1VTaM7a47ExxBZxtdjbASpnnK9kaIY=;
+	s=korg; t=1708523092;
+	bh=0bL1glqdxs2b69jfhLbtktSVc8lfLWO6DHxDYwrwz08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kJ0xLY11MVPwoIjFsGCT0hXI7qTlhZqVFvBifDPEaqZ9qnrlSienaN77cni+2sdAO
-	 74kSQgRLJmLvhyLqLaDSJFWoMPQgN+CQnN/SCjzAP1Cm7SHoXvXjzjG0dBHGRlmZZh
-	 G5oZm7Kix3/Li3OurlWwEvOyqkKlTmXJwiAdy7mk=
+	b=GTwwC8wbHaZvz6IaRAz0jH6Rm72whaYHA53YZGIZtSgNSHP/+oHA0lDyA7vK+iXsf
+	 GyQ8mXTJJEFCLYG3BMKs+OVUgzXjAVaRAM09o9ngpWY6Zu2rt+j/Sk78wk+a74pTa6
+	 f/iHtYd+JYrybB9M86bNsevT9RsA7DeyXOAiWS18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 087/202] ARM: dts: imx27: Fix sram node
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 5.15 337/476] Input: i8042 - fix strange behavior of touchpad on Clevo NS70PU
 Date: Wed, 21 Feb 2024 14:06:28 +0100
-Message-ID: <20240221125934.606841158@linuxfoundation.org>
+Message-ID: <20240221130020.481916241@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Werner Sembach <wse@tuxedocomputers.com>
 
-[ Upstream commit 2fb7b2a2f06bb3f8321cf26c33e4e820c5b238b6 ]
+commit a60e6c3918d20848906ffcdfcf72ca6a8cfbcf2e upstream.
 
-Per sram.yaml, address-cells, size-cells and ranges are mandatory.
+When closing the laptop lid with an external screen connected, the mouse
+pointer has a constant movement to the lower right corner. Opening the
+lid again stops this movement, but after that the touchpad does no longer
+register clicks.
 
-Pass them to fix the following dt-schema warnings:
+The touchpad is connected both via i2c-hid and PS/2, the predecessor of
+this device (NS70MU) has the same layout in this regard and also strange
+behaviour caused by the psmouse and the i2c-hid driver fighting over
+touchpad control. This fix is reusing the same workaround by just
+disabling the PS/2 aux port, that is only used by the touchpad, to give the
+i2c-hid driver the lone control over the touchpad.
 
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+v2: Rebased on current master
+
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20231205163602.16106-1-wse@tuxedocomputers.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/imx27.dtsi | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/input/serio/i8042-acpipnpio.h |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/arm/boot/dts/imx27.dtsi b/arch/arm/boot/dts/imx27.dtsi
-index 39e75b997bdc..ecfb07c8e185 100644
---- a/arch/arm/boot/dts/imx27.dtsi
-+++ b/arch/arm/boot/dts/imx27.dtsi
-@@ -588,6 +588,9 @@
- 		iram: iram@ffff4c00 {
- 			compatible = "mmio-sram";
- 			reg = <0xffff4c00 0xb400>;
-+			ranges = <0 0xffff4c00 0xb400>;
-+			#address-cells = <1>;
-+			#size-cells = <1>;
- 		};
- 	};
- };
--- 
-2.43.0
-
+--- a/drivers/input/serio/i8042-acpipnpio.h
++++ b/drivers/input/serio/i8042-acpipnpio.h
+@@ -1173,6 +1173,12 @@ static const struct dmi_system_id i8042_
+ 	},
+ 	{
+ 		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "NS5x_7xPU"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_NOAUX)
++	},
++	{
++		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "NJ50_70CU"),
+ 		},
+ 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
 
 
 
