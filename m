@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-22346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E3EA85DB90
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:42:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BF4085D8E2
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:11:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD5592837AC
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:42:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2679F28280F
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:11:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A7907A715;
-	Wed, 21 Feb 2024 13:42:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BEDB3EA71;
+	Wed, 21 Feb 2024 13:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zdwi5uCJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O7sqoibE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E38C7992D;
-	Wed, 21 Feb 2024 13:42:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BB7B69954;
+	Wed, 21 Feb 2024 13:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522961; cv=none; b=pO8HFMEisGQrkuek93IuYG4eFlluKEwd7GI2rzpqTd6yAwhSL7jIJ+ZSPh1n7VVvabB32cX6fyCKUKi3ir4hFLmqjWo4DyVrXri6dVMBO6Mn31TwDxJ0UvAHIG+bNkCpefSMDK/VKqMkbmWSJrpXufzbCaYlZVo/JA9LBYv7IJM=
+	t=1708521104; cv=none; b=QgZAlwB5RpcsWZy4d2J1VwRcpBDl8Qm8sdpJmPxWiacdMbhwMmrHxeh5LtdyW60EoXL/56lk2LZCNrYM2l5CxiML00tDIhFn3x5ncYPgEvtu0kGMgoww28awDcz+RKYjeWEaaS35HN8EJm5xYs0qm+U+zTPn9wzgNz9pWtpm1rw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522961; c=relaxed/simple;
-	bh=/PhKVqBBab9/8Pdz9j7fI5UGCa8x2shcUT4iVVDdsu8=;
+	s=arc-20240116; t=1708521104; c=relaxed/simple;
+	bh=SZbcjJ/8jqEpx2Ucqy3TuDGDNN1zoPfaOTy9C/NOt7s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EV5mn3WhM4nJoafvfDzggcawXxhsDHFC7w/yc2tZNSar08GWKy4taD2rcCsKfYS6kkbcfykO0zsgeddok5zvIAK8Ay1S1jydD4PAD9JsQng/dhGZT7v17DRmdzkWY023SvdrZeRJG6wsve64zyqIsqDkApAWadoI3LqmeDbUZAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zdwi5uCJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98306C433C7;
-	Wed, 21 Feb 2024 13:42:40 +0000 (UTC)
+	 MIME-Version; b=OR3K2PTGdMS6OuCIVtWi/urqz3J9n2JbGrxPJhxfc6f9OY2wZJVEEGFJmeWsXVV9JsG3KaXJqv0F4hpl2/wfyRA23cwDJUB19ZdY94op4IQX+xmg9jHdVps+vINwwVGTgfV959vjE+rAL9jQDyAnHL8BQTFu5umqUcj/pq/EaWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O7sqoibE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9C01C433C7;
+	Wed, 21 Feb 2024 13:11:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522961;
-	bh=/PhKVqBBab9/8Pdz9j7fI5UGCa8x2shcUT4iVVDdsu8=;
+	s=korg; t=1708521104;
+	bh=SZbcjJ/8jqEpx2Ucqy3TuDGDNN1zoPfaOTy9C/NOt7s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zdwi5uCJ+yI0XSUPK4J5/MMvgBx0jCUA474lICBMTzS+L/NsN6E8gWNaic8JQHM3J
-	 VEEj59ORhzOpttculJ1znYD85q6uocAmm7sDrp4M56H85T6p5PvHt29c6JpImWTFxv
-	 WRxeRbgeuKsyTmdtuNtBBHmorGMZDuktRuQ4V9V0=
+	b=O7sqoibE2OV7HKHXnK1K7rqJK+z4Vt24yMEZI1unF998N4Dav3yox/fOppcwMFbPD
+	 CezdMXbvyPRGKtRT+urBQ2DSoysUyvOd4y5PTj5+8LNC+ubDvJd/vEftsBXgAQSPo3
+	 ZfmoaQJaJ6ZwCTzNqL4t+rvq5j0HNUPy2b/u3F0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Arjun Roy <arjunroy@google.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	linux-mm@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-fsdevel@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>,
-	ZhangPeng <zhangpeng362@huawei.com>
-Subject: [PATCH 5.15 275/476] tcp: add sanity checks to rx zerocopy
+	Lin Ma <linma@zju.edu.cn>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 025/202] vlan: skip nested type that is not IFLA_VLAN_QOS_MAPPING
 Date: Wed, 21 Feb 2024 14:05:26 +0100
-Message-ID: <20240221130018.132969026@linuxfoundation.org>
+Message-ID: <20240221125932.593719229@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,80 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit 577e4432f3ac810049cb7e6b71f4d96ec7c6e894 ]
+[ Upstream commit 6c21660fe221a15c789dee2bc2fd95516bc5aeaf ]
 
-TCP rx zerocopy intent is to map pages initially allocated
-from NIC drivers, not pages owned by a fs.
+In the vlan_changelink function, a loop is used to parse the nested
+attributes IFLA_VLAN_EGRESS_QOS and IFLA_VLAN_INGRESS_QOS in order to
+obtain the struct ifla_vlan_qos_mapping. These two nested attributes are
+checked in the vlan_validate_qos_map function, which calls
+nla_validate_nested_deprecated with the vlan_map_policy.
 
-This patch adds to can_map_frag() these additional checks:
+However, this deprecated validator applies a LIBERAL strictness, allowing
+the presence of an attribute with the type IFLA_VLAN_QOS_UNSPEC.
+Consequently, the loop in vlan_changelink may parse an attribute of type
+IFLA_VLAN_QOS_UNSPEC and believe it carries a payload of
+struct ifla_vlan_qos_mapping, which is not necessarily true.
 
-- Page must not be a compound one.
-- page->mapping must be NULL.
+To address this issue and ensure compatibility, this patch introduces two
+type checks that skip attributes whose type is not IFLA_VLAN_QOS_MAPPING.
 
-This fixes the panic reported by ZhangPeng.
-
-syzbot was able to loopback packets built with sendfile(),
-mapping pages owned by an ext4 file to TCP rx zerocopy.
-
-r3 = socket$inet_tcp(0x2, 0x1, 0x0)
-mmap(&(0x7f0000ff9000/0x4000)=nil, 0x4000, 0x0, 0x12, r3, 0x0)
-r4 = socket$inet_tcp(0x2, 0x1, 0x0)
-bind$inet(r4, &(0x7f0000000000)={0x2, 0x4e24, @multicast1}, 0x10)
-connect$inet(r4, &(0x7f00000006c0)={0x2, 0x4e24, @empty}, 0x10)
-r5 = openat$dir(0xffffffffffffff9c, &(0x7f00000000c0)='./file0\x00',
-    0x181e42, 0x0)
-fallocate(r5, 0x0, 0x0, 0x85b8)
-sendfile(r4, r5, 0x0, 0x8ba0)
-getsockopt$inet_tcp_TCP_ZEROCOPY_RECEIVE(r4, 0x6, 0x23,
-    &(0x7f00000001c0)={&(0x7f0000ffb000/0x3000)=nil, 0x3000, 0x0, 0x0, 0x0,
-    0x0, 0x0, 0x0, 0x0}, &(0x7f0000000440)=0x40)
-r6 = openat$dir(0xffffffffffffff9c, &(0x7f00000000c0)='./file0\x00',
-    0x181e42, 0x0)
-
-Fixes: 93ab6cc69162 ("tcp: implement mmap() for zero copy receive")
-Link: https://lore.kernel.org/netdev/5106a58e-04da-372a-b836-9d3d0bd2507b@huawei.com/T/
-Reported-and-bisected-by: ZhangPeng <zhangpeng362@huawei.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Arjun Roy <arjunroy@google.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: linux-mm@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 07b5b17e157b ("[VLAN]: Use rtnl_link API")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240118130306.1644001-1-linma@zju.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ net/8021q/vlan_netlink.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 0659f0d9414d..626cef75afe7 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -1798,7 +1798,17 @@ static skb_frag_t *skb_advance_to_frag(struct sk_buff *skb, u32 offset_skb,
- 
- static bool can_map_frag(const skb_frag_t *frag)
- {
--	return skb_frag_size(frag) == PAGE_SIZE && !skb_frag_off(frag);
-+	struct page *page;
-+
-+	if (skb_frag_size(frag) != PAGE_SIZE || skb_frag_off(frag))
-+		return false;
-+
-+	page = skb_frag_page(frag);
-+
-+	if (PageCompound(page) || page->mapping)
-+		return false;
-+
-+	return true;
- }
- 
- static int find_next_mappable_frag(const skb_frag_t *frag,
+diff --git a/net/8021q/vlan_netlink.c b/net/8021q/vlan_netlink.c
+index 74042b9d7f73..231eae2f1685 100644
+--- a/net/8021q/vlan_netlink.c
++++ b/net/8021q/vlan_netlink.c
+@@ -120,12 +120,16 @@ static int vlan_changelink(struct net_device *dev, struct nlattr *tb[],
+ 	}
+ 	if (data[IFLA_VLAN_INGRESS_QOS]) {
+ 		nla_for_each_nested(attr, data[IFLA_VLAN_INGRESS_QOS], rem) {
++			if (nla_type(attr) != IFLA_VLAN_QOS_MAPPING)
++				continue;
+ 			m = nla_data(attr);
+ 			vlan_dev_set_ingress_priority(dev, m->to, m->from);
+ 		}
+ 	}
+ 	if (data[IFLA_VLAN_EGRESS_QOS]) {
+ 		nla_for_each_nested(attr, data[IFLA_VLAN_EGRESS_QOS], rem) {
++			if (nla_type(attr) != IFLA_VLAN_QOS_MAPPING)
++				continue;
+ 			m = nla_data(attr);
+ 			err = vlan_dev_set_egress_priority(dev, m->from, m->to);
+ 			if (err)
 -- 
 2.43.0
 
