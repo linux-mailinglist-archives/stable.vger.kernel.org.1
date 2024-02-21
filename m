@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-22422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F0A685DBF5
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:47:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9CF185DEA4
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:20:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FB2C1C22FB6
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:47:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBAD61C20977
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:20:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3D8269D21;
-	Wed, 21 Feb 2024 13:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57C927BB16;
+	Wed, 21 Feb 2024 14:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rew3LaW/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o67w64Hi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 610BE3C2F;
-	Wed, 21 Feb 2024 13:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B34762C1;
+	Wed, 21 Feb 2024 14:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523252; cv=none; b=lFaGrUQIZjSLM2IwOYKbQl5zfJKEXNcdB75fw9Se2xTBYFQx3XVIUti3qmL1wDJirL8KQYy5wlrd3QO5uSN2PPj+aUQYQBhIPVb1JxK4NviPrWtgpHdvJyWzYVhhhCxanFaxCuyuJ+k7VBQAzqPxrWLJet138IWbCjlSynS5So8=
+	t=1708525195; cv=none; b=Cd2xfH6bkHJLlSpePe1wdAqzTzJxcp81J57QfGKIahxHS/THeQmi3rJ5AgNuJmMKoqOn6/z9tYTRglOuAjbZLavhHmbQG0jerw/NS8F5HIf68YB08NFIH01Ge6i10mP+z9M1Y5jpWX5tOzvT3PvfAh+7P5rK1BelAVGE3W4aAaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523252; c=relaxed/simple;
-	bh=sa4+mQ9Qs2ftqKbegkxpDkpJA4foh685rJTprthpEUg=;
+	s=arc-20240116; t=1708525195; c=relaxed/simple;
+	bh=ImNPaqe0/+qbQIPE0J6FDaIubnlMwc3nIuZ6tPp9WlI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xt6khL2swzEihUtwhRhKZd+aAAWgzYck5tc8D9BcoCQANvUPKtLArTwJdE6pNfWjP1Sn1B9qpKn70T63eROUBGhh3DrgjP6xPEqUFoVmo3xJBI99JbuWJVWRcRldS90SwRWeYdUzWeR7YAbI+oOWBcrHiq1GmJE8WSgkd+Bq1UA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rew3LaW/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9D6DC433F1;
-	Wed, 21 Feb 2024 13:47:31 +0000 (UTC)
+	 MIME-Version; b=j3o7yqZazPt1NR2/iSk2c7hcrXwA5qMzvvTY1raI/opiLdT8S2eM08F5DZiczzp3YrpJICp0SIjviRPQXF4yVCA7gQGCU1k9QENKsqo7qnXRJuTNwUdue90DPt99p4WHit3tYoTlfUNBa5cngkCyStU8xXEaonaFqLtU4TQrmWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o67w64Hi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A89EC433F1;
+	Wed, 21 Feb 2024 14:19:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523252;
-	bh=sa4+mQ9Qs2ftqKbegkxpDkpJA4foh685rJTprthpEUg=;
+	s=korg; t=1708525195;
+	bh=ImNPaqe0/+qbQIPE0J6FDaIubnlMwc3nIuZ6tPp9WlI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rew3LaW/ts8poWVI+9007o8msH3XCmf0o52AJ6qDEXQCMBiUjFP4uTAqgKYeMiPcA
-	 UKqc30GMjSE1tn7kxp3pc9oiSZWbTHhz5ADs3/xysmn+qvmeRTikW+GmZLnFFrBZYz
-	 cI7iHhrX5/6hUk0Kg4lSVCe50lkuul64SaSo1ngs=
+	b=o67w64HiEzNlWuYOehJKeFEB/lD2zQvcP1Dg3jYWra5RNY/BiATplxuvJ7LlQ8vUp
+	 dXqO0anFQ5Z5sw5Vozn552rO6Q09bDUOxUwMZYgKWsjdUilAIAtocmIvY+/aflxjX5
+	 XDwZh+Ww8WNSLBcEtSnIgtRT/PGQd5CIN4oTTnfU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Smalley <stephen.smalley.work@gmail.com>,
-	Ondrej Mosnacek <omosnace@redhat.com>,
-	Casey Schaufler <casey@schaufler-ca.com>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 5.15 378/476] lsm: fix the logic in security_inode_getsecctx()
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 088/267] ext4: unify the type of flexbg_size to unsigned int
 Date: Wed, 21 Feb 2024 14:07:09 +0100
-Message-ID: <20240221130022.022814722@linuxfoundation.org>
+Message-ID: <20240221125942.725603057@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +63,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ondrej Mosnacek <omosnace@redhat.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit 99b817c173cd213671daecd25ca27f56b0c7c4ec upstream.
+[ Upstream commit 658a52344fb139f9531e7543a6e0015b630feb38 ]
 
-The inode_getsecctx LSM hook has previously been corrected to have
--EOPNOTSUPP instead of 0 as the default return value to fix BPF LSM
-behavior. However, the call_int_hook()-generated loop in
-security_inode_getsecctx() was left treating 0 as the neutral value, so
-after an LSM returns 0, the loop continues to try other LSMs, and if one
-of them returns a non-zero value, the function immediately returns with
-said value. So in a situation where SELinux and the BPF LSMs registered
-this hook, -EOPNOTSUPP would be incorrectly returned whenever SELinux
-returned 0.
+The maximum value of flexbg_size is 2^31, but the maximum value of int
+is (2^31 - 1), so overflow may occur when the type of flexbg_size is
+declared as int.
 
-Fix this by open-coding the call_int_hook() loop and making it use the
-correct LSM_RET_DEFAULT() value as the neutral one, similar to what
-other hooks do.
+For example, when uninit_mask is initialized in ext4_alloc_group_tables(),
+if flexbg_size == 2^31, the initialized uninit_mask is incorrect, and this
+may causes set_flexbg_block_bitmap() to trigger a BUG_ON().
 
-Cc: stable@vger.kernel.org
-Reported-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-Link: https://lore.kernel.org/selinux/CAEjxPJ4ev-pasUwGx48fDhnmjBnq_Wh90jYPwRQRAqXxmOKD4Q@mail.gmail.com/
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2257983
-Fixes: b36995b8609a ("lsm: fix default return value for inode_getsecctx")
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
-Reviewed-by: Casey Schaufler <casey@schaufler-ca.com>
-[PM: subject line tweak]
-Signed-off-by: Paul Moore <paul@paul-moore.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Therefore, the flexbg_size type is declared as unsigned int to avoid
+overflow and memory waste.
+
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20231023013057.2117948-2-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/security.c |   14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ fs/ext4/resize.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/security/security.c
-+++ b/security/security.c
-@@ -2163,7 +2163,19 @@ EXPORT_SYMBOL(security_inode_setsecctx);
- 
- int security_inode_getsecctx(struct inode *inode, void **ctx, u32 *ctxlen)
+diff --git a/fs/ext4/resize.c b/fs/ext4/resize.c
+index 3616c437bea6..ae768fdbafa8 100644
+--- a/fs/ext4/resize.c
++++ b/fs/ext4/resize.c
+@@ -237,7 +237,7 @@ struct ext4_new_flex_group_data {
+  *
+  * Returns NULL on failure otherwise address of the allocated structure.
+  */
+-static struct ext4_new_flex_group_data *alloc_flex_gd(unsigned long flexbg_size)
++static struct ext4_new_flex_group_data *alloc_flex_gd(unsigned int flexbg_size)
  {
--	return call_int_hook(inode_getsecctx, -EOPNOTSUPP, inode, ctx, ctxlen);
-+	struct security_hook_list *hp;
-+	int rc;
-+
-+	/*
-+	 * Only one module will provide a security context.
-+	 */
-+	hlist_for_each_entry(hp, &security_hook_heads.inode_getsecctx, list) {
-+		rc = hp->hook.inode_getsecctx(inode, ctx, ctxlen);
-+		if (rc != LSM_RET_DEFAULT(inode_getsecctx))
-+			return rc;
-+	}
-+
-+	return LSM_RET_DEFAULT(inode_getsecctx);
- }
- EXPORT_SYMBOL(security_inode_getsecctx);
+ 	struct ext4_new_flex_group_data *flex_gd;
  
+@@ -292,7 +292,7 @@ static void free_flex_gd(struct ext4_new_flex_group_data *flex_gd)
+  */
+ static int ext4_alloc_group_tables(struct super_block *sb,
+ 				struct ext4_new_flex_group_data *flex_gd,
+-				int flexbg_size)
++				unsigned int flexbg_size)
+ {
+ 	struct ext4_new_group_data *group_data = flex_gd->groups;
+ 	ext4_fsblk_t start_blk;
+@@ -393,12 +393,12 @@ static int ext4_alloc_group_tables(struct super_block *sb,
+ 		group = group_data[0].group;
+ 
+ 		printk(KERN_DEBUG "EXT4-fs: adding a flex group with "
+-		       "%d groups, flexbg size is %d:\n", flex_gd->count,
++		       "%u groups, flexbg size is %u:\n", flex_gd->count,
+ 		       flexbg_size);
+ 
+ 		for (i = 0; i < flex_gd->count; i++) {
+ 			ext4_debug(
+-			       "adding %s group %u: %u blocks (%d free, %d mdata blocks)\n",
++			       "adding %s group %u: %u blocks (%u free, %u mdata blocks)\n",
+ 			       ext4_bg_has_super(sb, group + i) ? "normal" :
+ 			       "no-super", group + i,
+ 			       group_data[i].blocks_count,
+@@ -1585,7 +1585,7 @@ static int ext4_flex_group_add(struct super_block *sb,
+ static int ext4_setup_next_flex_gd(struct super_block *sb,
+ 				    struct ext4_new_flex_group_data *flex_gd,
+ 				    ext4_fsblk_t n_blocks_count,
+-				    unsigned long flexbg_size)
++				    unsigned int flexbg_size)
+ {
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+ 	struct ext4_super_block *es = sbi->s_es;
+@@ -1963,8 +1963,9 @@ int ext4_resize_fs(struct super_block *sb, ext4_fsblk_t n_blocks_count)
+ 	ext4_fsblk_t o_blocks_count;
+ 	ext4_fsblk_t n_blocks_count_retry = 0;
+ 	unsigned long last_update_time = 0;
+-	int err = 0, flexbg_size = 1 << sbi->s_log_groups_per_flex;
++	int err = 0;
+ 	int meta_bg;
++	unsigned int flexbg_size = ext4_flex_bg_size(sbi);
+ 
+ 	/* See if the device is actually as big as what was requested */
+ 	bh = sb_bread(sb, n_blocks_count - 1);
+-- 
+2.43.0
+
 
 
 
