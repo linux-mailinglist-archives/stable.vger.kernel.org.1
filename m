@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-22274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 828D785DB33
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:38:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3131485DCE9
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:59:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B45011C232FA
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:38:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAECD1F22AF7
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:59:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 825787992D;
-	Wed, 21 Feb 2024 13:38:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9086D7BB11;
+	Wed, 21 Feb 2024 13:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wZiEa+Al"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RAVgN2wP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CB9F7866C;
-	Wed, 21 Feb 2024 13:38:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE7C7BB14;
+	Wed, 21 Feb 2024 13:59:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522685; cv=none; b=Vt2/dVjsQzyVNridmh/oDiR21+eE3TvYCLY7+A9S6xpISh1/DT5yacVUvqzd6Y0uDuMuyc1RVAsOvO8DoZ5b9MbOajdbAder8xFKwfkRCDA+foIlkVOl5KK9Qsmk+KrUTXyCpCd0ZcE/uHMcPivlMKLkudEiRgU8lhk4UEtGnOk=
+	t=1708523955; cv=none; b=tVSiWoe0XNKAdVNnzD7uqXWUf0uWyTeIwQTOlaQwP39In43NCJqpoLB8njQCobFF87y8zdMW6U35fqJMFPcit7/dKVWtnM8RF/8XOpqPQQsJ7KSEBmlhg/q3l5MaCTqDk8NtXIHaibya84A2tpSzDFYDZmjy3tOvrejB/g/6KFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522685; c=relaxed/simple;
-	bh=qB1X53shHoQ83NIVfJKf4AP1LE0VKg7CcnlHMN5qn+8=;
+	s=arc-20240116; t=1708523955; c=relaxed/simple;
+	bh=Ova3qjBy4sH8lUNFXVnn9RLp2KVmpai2CrRk09U860M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hPte9ei03qhWUSWDuSfXL7fPA75Y8g9hVdunSkbTHtUu6UPjxrcNx3YeOjMXxC8eRAmCJsyG4mtQuoS/+uaTh5YjldyPDsRvOGydqHAtAGRZjeSe6DslJoyCZGvhvgefxSbVjtOjv9zra5+3njV0h1AFj59Ih7CoedXt+7OaUck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wZiEa+Al; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F239C433C7;
-	Wed, 21 Feb 2024 13:38:04 +0000 (UTC)
+	 MIME-Version; b=TLWrUUKTZ3mb3Uu+JAliI//LWeQuIMjJIHU27Yvxd6TBZXdGtUPcAfKgVKT72LqlBcICMlAfPXe9k+PQTAMxs8SmCIFy08tqmvCVbUsW7kSDe8AUBkGfFPZ2ajijc0JPxCSTO/NKuNEI+eNPRDuBOQ5ogOOTWFiGHJ8bFbCoMMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RAVgN2wP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AE92C433F1;
+	Wed, 21 Feb 2024 13:59:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522685;
-	bh=qB1X53shHoQ83NIVfJKf4AP1LE0VKg7CcnlHMN5qn+8=;
+	s=korg; t=1708523954;
+	bh=Ova3qjBy4sH8lUNFXVnn9RLp2KVmpai2CrRk09U860M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wZiEa+Als4rCd5ugjFOi8S7Nzn1HkrhdqViEQl/4jF4KnkkiSuR74nenbjbg+uNO4
-	 qS3FbEkYx6ty4cdlFcJQdEEixMPssPT5GUFfUkz94+ZXfpl4S7Ub6Sdoi7lF4vb6Z5
-	 XQh3YcqffKR3usHMY3Dg5PtXhL1b0PrbWozG01qk=
+	b=RAVgN2wPVTaWwA/OUckZW0nxBhaim0ehw51o5QzdfSaMNpq21Fy1XPkpyH6rHEer4
+	 ftvmGLzHvu+kEMymWAaN6SfNlvQ8ihFQezMT4ulxU7asyivYbfTXArKnVKe4EcyV0j
+	 qEDo8pnZCur0KVk+gDZtR/7Pp2zh7JMuXnYrPL6E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev, "Wang, Beyond" <Wang.Beyond@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>, Wang@web.codeaurora.org
-Subject: [PATCH 5.15 230/476] drm/amdgpu: fix ftrace event amdgpu_bo_move always move on same heap
+	patches@lists.linux.dev,
+	Mark Rutland <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 102/379] drivers/perf: pmuv3: dont expose SW_INCR event in sysfs
 Date: Wed, 21 Feb 2024 14:04:41 +0100
-Message-ID: <20240221130016.379413967@linuxfoundation.org>
+Message-ID: <20240221125957.937776051@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,116 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang, Beyond <Wang.Beyond@amd.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit 94aeb4117343d072e3a35b9595bcbfc0058ee724 ]
+[ Upstream commit ca6f537e459e2da4b331fe8928d1a0b0f9301f42 ]
 
-Issue: during evict or validate happened on amdgpu_bo, the 'from' and
-'to' is always same in ftrace event of amdgpu_bo_move
+The SW_INCR event is somewhat unusual, and depends on the specific HW
+counter that it is programmed into. When programmed into PMEVCNTR<n>,
+SW_INCR will count any writes to PMSWINC_EL0 with bit n set, ignoring
+writes to SW_INCR with bit n clear.
 
-where calling the 'trace_amdgpu_bo_move', the comment says move_notify
-is called before move happens, but actually it is called after move
-happens, here the new_mem is same as bo->resource
+Event rotation means that there's no fixed relationship between
+perf_events and HW counters, so this isn't all that useful.
 
-Fix: move trace_amdgpu_bo_move from move_notify to amdgpu_bo_move
+Further, we program PMUSERENR.{SW,EN}=={0,0}, which causes EL0 writes to
+PMSWINC_EL0 to be trapped and handled as UNDEFINED, resulting in a
+SIGILL to userspace.
 
-Signed-off-by: Wang, Beyond <Wang.Beyond@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Given that, it's not a good idea to expose SW_INCR in sysfs. Hide it as
+we did for CHAIN back in commit:
+
+  4ba2578fa7b55701 ("arm64: perf: don't expose CHAIN event in sysfs")
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20231204115847.2993026-1-mark.rutland@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_object.c | 13 +------------
- drivers/gpu/drm/amd/amdgpu/amdgpu_object.h |  4 +---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c    |  5 +++--
- 3 files changed, 5 insertions(+), 17 deletions(-)
+ arch/arm64/kernel/perf_event.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
-index 8a0b652da4f4..5d95594a1753 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
-@@ -1236,19 +1236,15 @@ int amdgpu_bo_get_metadata(struct amdgpu_bo *bo, void *buffer,
-  * amdgpu_bo_move_notify - notification about a memory move
-  * @bo: pointer to a buffer object
-  * @evict: if this move is evicting the buffer from the graphics address space
-- * @new_mem: new information of the bufer object
-  *
-  * Marks the corresponding &amdgpu_bo buffer object as invalid, also performs
-  * bookkeeping.
-  * TTM driver callback which is called when ttm moves a buffer.
-  */
--void amdgpu_bo_move_notify(struct ttm_buffer_object *bo,
--			   bool evict,
--			   struct ttm_resource *new_mem)
-+void amdgpu_bo_move_notify(struct ttm_buffer_object *bo, bool evict)
- {
- 	struct amdgpu_device *adev = amdgpu_ttm_adev(bo->bdev);
- 	struct amdgpu_bo *abo;
--	struct ttm_resource *old_mem = bo->resource;
+diff --git a/arch/arm64/kernel/perf_event.c b/arch/arm64/kernel/perf_event.c
+index cdb3d4549b3a..8e428f8dd108 100644
+--- a/arch/arm64/kernel/perf_event.c
++++ b/arch/arm64/kernel/perf_event.c
+@@ -171,7 +171,11 @@ armv8pmu_events_sysfs_show(struct device *dev,
+ 	}).attr.attr)
  
- 	if (!amdgpu_bo_is_amdgpu_bo(bo))
- 		return;
-@@ -1265,13 +1261,6 @@ void amdgpu_bo_move_notify(struct ttm_buffer_object *bo,
- 	/* remember the eviction */
- 	if (evict)
- 		atomic64_inc(&adev->num_evictions);
--
--	/* update statistics */
--	if (!new_mem)
--		return;
--
--	/* move_notify is called before move happens */
--	trace_amdgpu_bo_move(abo, new_mem->mem_type, old_mem->mem_type);
- }
- 
- void amdgpu_bo_get_memory(struct amdgpu_bo *bo, uint64_t *vram_mem,
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h
-index dc5b889828d9..0969669f1d4e 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h
-@@ -313,9 +313,7 @@ int amdgpu_bo_set_metadata (struct amdgpu_bo *bo, void *metadata,
- int amdgpu_bo_get_metadata(struct amdgpu_bo *bo, void *buffer,
- 			   size_t buffer_size, uint32_t *metadata_size,
- 			   uint64_t *flags);
--void amdgpu_bo_move_notify(struct ttm_buffer_object *bo,
--			   bool evict,
--			   struct ttm_resource *new_mem);
-+void amdgpu_bo_move_notify(struct ttm_buffer_object *bo, bool evict);
- void amdgpu_bo_release_notify(struct ttm_buffer_object *bo);
- vm_fault_t amdgpu_bo_fault_reserve_notify(struct ttm_buffer_object *bo);
- void amdgpu_bo_fence(struct amdgpu_bo *bo, struct dma_fence *fence,
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-index 51c76d6322c9..b06fb1fa411b 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-@@ -554,10 +554,11 @@ static int amdgpu_bo_move(struct ttm_buffer_object *bo, bool evict,
- 			return r;
- 	}
- 
-+	trace_amdgpu_bo_move(abo, new_mem->mem_type, old_mem->mem_type);
- out:
- 	/* update statistics */
- 	atomic64_add(bo->base.size, &adev->num_bytes_moved);
--	amdgpu_bo_move_notify(bo, evict, new_mem);
-+	amdgpu_bo_move_notify(bo, evict);
- 	return 0;
- }
- 
-@@ -1480,7 +1481,7 @@ static int amdgpu_ttm_access_memory(struct ttm_buffer_object *bo,
- static void
- amdgpu_bo_delete_mem_notify(struct ttm_buffer_object *bo)
- {
--	amdgpu_bo_move_notify(bo, false, NULL);
-+	amdgpu_bo_move_notify(bo, false);
- }
- 
- static struct ttm_device_funcs amdgpu_bo_driver = {
+ static struct attribute *armv8_pmuv3_event_attrs[] = {
+-	ARMV8_EVENT_ATTR(sw_incr, ARMV8_PMUV3_PERFCTR_SW_INCR),
++	/*
++	 * Don't expose the sw_incr event in /sys. It's not usable as writes to
++	 * PMSWINC_EL0 will trap as PMUSERENR.{SW,EN}=={0,0} and event rotation
++	 * means we don't have a fixed event<->counter relationship regardless.
++	 */
+ 	ARMV8_EVENT_ATTR(l1i_cache_refill, ARMV8_PMUV3_PERFCTR_L1I_CACHE_REFILL),
+ 	ARMV8_EVENT_ATTR(l1i_tlb_refill, ARMV8_PMUV3_PERFCTR_L1I_TLB_REFILL),
+ 	ARMV8_EVENT_ATTR(l1d_cache_refill, ARMV8_PMUV3_PERFCTR_L1D_CACHE_REFILL),
 -- 
 2.43.0
 
