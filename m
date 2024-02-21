@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-22648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DECE085DD12
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:01:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DD2085DB2F
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:38:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 66D80B20EE1
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:01:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7893B1C23354
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:38:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96F4F7C098;
-	Wed, 21 Feb 2024 14:00:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3698A76C99;
+	Wed, 21 Feb 2024 13:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TrlqE7jz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LwltRqmN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52AE57BB0C;
-	Wed, 21 Feb 2024 14:00:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7B8D2A1D7;
+	Wed, 21 Feb 2024 13:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524041; cv=none; b=DVsUfuqX2i3Osn1VXneHHYs7KEinyvr0qi+mWcp00VOZjB9r+soiuaJOzw12Ff2Upe1dJraUhtNLg+LDdGu2LN3YByAYrvO6m7WqXf1IM4t95ppqWeM5wSzqJdz+8qbrI371TfxSlJnqTT7u0+ROi/oEpwSCsupJ1Y1VTDTTPQE=
+	t=1708522676; cv=none; b=i58QmeF1V7FpgJIL7Afz6SGAPh+8vpKCwC5s6xjGwB8LxxpP2PGb8koS8vpyyJW8AmfaPZawedyEzAWQPUHLsB79jdb+EJVEjjCq72Hn83nRupi/VgtYeaagS2zVJ5HPE+ChfSYZaJ2S4Dh/vjyU295VoutybXJY56UpYEIVVvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524041; c=relaxed/simple;
-	bh=drGzIVzvdwIiclk7pPb5v4Nikgpei+95BX1gjXDQx/g=;
+	s=arc-20240116; t=1708522676; c=relaxed/simple;
+	bh=yQM3/mhiCDAUgk7cd2lb8OsqYUH7aeKOlaqz1deMjiA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HGOlY5UMOOJ8jZI0zTjwUkALP3j3knBJjthWSgvGQSaLnTXPCTPucMupVgJtFOjGKupF49XZ4a4wxup4++YlFC4Q36fEJkm5TBjyyTli0Ndhb68y8Ch7hfsA8kuPnf5VeORAxA3rOcLMEyZ58MWv/hO6aNf/Fi3Z54qVLbxrpMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TrlqE7jz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B70A1C433C7;
-	Wed, 21 Feb 2024 14:00:40 +0000 (UTC)
+	 MIME-Version; b=kajkYnYckAmsejIxzg6zp9MaCHD6zS9GjSx5bkoNcsaH66bbwY/YonWpoBU8vxWR/vqoMUHZmSDgZcOaYb6qajwZRjxZBRwzLCftbu7ktZN2W5fLdryNXBR3LUdD0mNnlmRqJRguMdTGzTQEoK+6HpzuiGPnjSJLcJ+FPedDB+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LwltRqmN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 786E7C433F1;
+	Wed, 21 Feb 2024 13:37:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524041;
-	bh=drGzIVzvdwIiclk7pPb5v4Nikgpei+95BX1gjXDQx/g=;
+	s=korg; t=1708522675;
+	bh=yQM3/mhiCDAUgk7cd2lb8OsqYUH7aeKOlaqz1deMjiA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TrlqE7jzIDCy+xOH6aNvJki7eUV2kJahffjEc4AujrFER2FuIQwJJh/dyaWrc4U5q
-	 HWAnmVoXsnHQgtfg0ZObSABwcMm7mIG6dyCfxGqVhPPVPdK16uo8b2lr6P+gD0W8Y7
-	 77udz8UkmucRjNKGclOS/7j3QCuiiUfkThWegVW4=
+	b=LwltRqmNr70I6Ff51WSgPoGY2N6qJ0jIgZlwThfLehJ+UzgpxXILdxPaIyimFgReQ
+	 5XY4e2n1AFQ830DEvC+Jjnl8POp/EbXMVvUKLElAabQml5uR+GFsRWgm8xGqVnD+4R
+	 UOxHX8dfffDC7P3tTweVtYV4lFJa5iNUXakGhhqg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Chen <tim.c.chen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 5.10 099/379] tick/sched: Preserve number of idle sleeps across CPU hotplug events
+	Su Hui <suhui@nfschina.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 227/476] media: ddbridge: fix an error code problem in ddb_probe
 Date: Wed, 21 Feb 2024 14:04:38 +0100
-Message-ID: <20240221125957.851305759@linuxfoundation.org>
+Message-ID: <20240221130016.267621530@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Chen <tim.c.chen@linux.intel.com>
+From: Su Hui <suhui@nfschina.com>
 
-commit 9a574ea9069be30b835a3da772c039993c43369b upstream.
+[ Upstream commit 09b4195021be69af1e1936cca995712a6d0f2562 ]
 
-Commit 71fee48f ("tick-sched: Fix idle and iowait sleeptime accounting vs
-CPU hotplug") preserved total idle sleep time and iowait sleeptime across
-CPU hotplug events.
+Error code is assigned to 'stat', return 'stat' rather than '-1'.
 
-Similar reasoning applies to the number of idle calls and idle sleeps to
-get the proper average of sleep time per idle invocation.
-
-Preserve those fields too.
-
-Fixes: 71fee48f ("tick-sched: Fix idle and iowait sleeptime accounting vs CPU hotplug")
-Signed-off-by: Tim Chen <tim.c.chen@linux.intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240122233534.3094238-1-tim.c.chen@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/tick-sched.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/media/pci/ddbridge/ddbridge-main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/time/tick-sched.c
-+++ b/kernel/time/tick-sched.c
-@@ -1440,6 +1440,7 @@ void tick_cancel_sched_timer(int cpu)
- {
- 	struct tick_sched *ts = &per_cpu(tick_cpu_sched, cpu);
- 	ktime_t idle_sleeptime, iowait_sleeptime;
-+	unsigned long idle_calls, idle_sleeps;
- 
- # ifdef CONFIG_HIGH_RES_TIMERS
- 	if (ts->sched_timer.base)
-@@ -1448,9 +1449,13 @@ void tick_cancel_sched_timer(int cpu)
- 
- 	idle_sleeptime = ts->idle_sleeptime;
- 	iowait_sleeptime = ts->iowait_sleeptime;
-+	idle_calls = ts->idle_calls;
-+	idle_sleeps = ts->idle_sleeps;
- 	memset(ts, 0, sizeof(*ts));
- 	ts->idle_sleeptime = idle_sleeptime;
- 	ts->iowait_sleeptime = iowait_sleeptime;
-+	ts->idle_calls = idle_calls;
-+	ts->idle_sleeps = idle_sleeps;
+diff --git a/drivers/media/pci/ddbridge/ddbridge-main.c b/drivers/media/pci/ddbridge/ddbridge-main.c
+index 03dc9924fa2c..bb7fb6402d6e 100644
+--- a/drivers/media/pci/ddbridge/ddbridge-main.c
++++ b/drivers/media/pci/ddbridge/ddbridge-main.c
+@@ -247,7 +247,7 @@ static int ddb_probe(struct pci_dev *pdev,
+ 	ddb_unmap(dev);
+ 	pci_set_drvdata(pdev, NULL);
+ 	pci_disable_device(pdev);
+-	return -1;
++	return stat;
  }
- #endif
  
+ /****************************************************************************/
+-- 
+2.43.0
+
 
 
 
