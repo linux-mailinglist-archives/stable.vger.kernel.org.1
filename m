@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-22829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D135085DE49
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:17:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2674885D9A0
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:21:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9461B25B9D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5BA82873FF
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:21:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 702B57C0BD;
-	Wed, 21 Feb 2024 14:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85D357BAF8;
+	Wed, 21 Feb 2024 13:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0b4iJbzW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tb4xaF2a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EFE88005F;
-	Wed, 21 Feb 2024 14:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4467B7CF0B;
+	Wed, 21 Feb 2024 13:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524653; cv=none; b=ZNTGxwmduk+WpkBBZKZzYPN2paoM3qJjzAQJ2qyEDKNV9pPGw3djID0jslVD8rkjjKbhEtPjSpxSlSVcRpeMHShs1t7IcE27ao26heL1YFinqmjaKaa63vQzd4s3bRzAi8yjnopAjLebBuqrGpDN2/6+e1DvHfcoJzl7DdEJXmg=
+	t=1708521616; cv=none; b=tD8XNWiGw8GO8foWcaxEOn6ftfFD4Zrb2WCM1v1dorWd0W5dHqd32FVJLRRHhhT4JH6hJj9rn2OLYIaeBCJ9+/F3SiyOD7kXRqt8BHKt6yxpJWdASJ5r6sTD9KQEmcO3VLDjlizlJAA/BQO+lEFLCGvrChSyQ7rpWpQYe42G5ME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524653; c=relaxed/simple;
-	bh=GsS5y13VI+kfJh6oHgSSHp5m5JOXhxdmbFGliSej4Yw=;
+	s=arc-20240116; t=1708521616; c=relaxed/simple;
+	bh=WnM6N3p/RzxxUIEDnfI7rMnTNSYx7LkQUcpXM6Ftsc0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gPPjHWoMnkxFiq+BfTRCSME6WkWq8p+tYDPCmoUhpGiQ31+rhJsjkFUO/6S22+EpN2LAJC8Ez81sMS6LWOgb4rjB998C2EG+ZeUQ8KNfRAlBze2vQeTCUGIqZzOoDFE1d8u6XpZBmsr/uaYQUlOcatiRzwqIyc24+8AOUq90gWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0b4iJbzW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA67BC433F1;
-	Wed, 21 Feb 2024 14:10:52 +0000 (UTC)
+	 MIME-Version; b=sOvtRq7OHCP7y5FreIjhp98WB5XOW2vGRxXtqBT2PoKqWWfFx2Uhu/YdQJz8vS1p2+0+k0YZoacLdHuYkhvtw5axFI7DE9UqNtAaqwP+ASoJwL4wc7AdSxu1fIPQuRZRWcmdZRLmb6qpV6IM1w2vVehXzExD+OZjNYZmInpjIVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tb4xaF2a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7865C43390;
+	Wed, 21 Feb 2024 13:20:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524653;
-	bh=GsS5y13VI+kfJh6oHgSSHp5m5JOXhxdmbFGliSej4Yw=;
+	s=korg; t=1708521616;
+	bh=WnM6N3p/RzxxUIEDnfI7rMnTNSYx7LkQUcpXM6Ftsc0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0b4iJbzWrJV6hV9+gR0YbuFeQa1hiV1tPAThYbmlyMaEa0e0ASJMyp6epjPKzGWPd
-	 2LWhl/w9z31BAXkTKgj/K5kFPZ5vnvHJDyvqyGRF+NnoMxPGqnejHMkduwJJzSg8j5
-	 UvFWLyL/WiBZRQoYjX9+RZXhIlFagZrf00AnJzzg=
+	b=Tb4xaF2aKgzdKTOMGcrqgO/ic0MoLkaxXM6gMGUqfP1iK5pwePzgnYg2FZG7mySLl
+	 WfJg8vFQ1pTp1g1KjSJ9YNWgXS5OPNwJZseTNLawlK74+R2bBXPSZzfaCDVNbfOKUy
+	 LLI0jgnZ6hDk7axEVoA08cGUgUhNZ9lMeeRWyaSk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prathu Baronia <prathubaronia2011@gmail.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>
-Subject: [PATCH 5.10 281/379] vhost: use kzalloc() instead of kmalloc() followed by memset()
+	JackBB Wu <wojackbb@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 4.19 159/202] USB: serial: qcserial: add new usb-id for Dell Wireless DW5826e
 Date: Wed, 21 Feb 2024 14:07:40 +0100
-Message-ID: <20240221130003.224715011@linuxfoundation.org>
+Message-ID: <20240221125936.837712608@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +61,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prathu Baronia <prathubaronia2011@gmail.com>
+From: JackBB Wu <wojackbb@gmail.com>
 
-commit 4d8df0f5f79f747d75a7d356d9b9ea40a4e4c8a9 upstream.
+commit 129690fb229a20b6e563a77a2c85266acecf20bc upstream.
 
-Use kzalloc() to allocate new zeroed out msg node instead of
-memsetting a node allocated with kmalloc().
+Add support for Dell DW5826e with USB-id 0x413c:0x8217 & 0x413c:0x8218.
 
-Signed-off-by: Prathu Baronia <prathubaronia2011@gmail.com>
-Message-Id: <20230522085019.42914-1-prathubaronia2011@gmail.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
+It is 0x413c:0x8217
+T:  Bus=02 Lev=01 Prnt=01 Port=05 Cnt=01 Dev#=  4 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=413c ProdID=8217 Rev= 5.04
+S:  Manufacturer=DELL
+S:  Product=COMPAL Electronics EXM-G1A
+S:  SerialNumber=359302940050401
+C:* #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=qcserial
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=qcserial
+E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=qcserial
+E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
+E:  Ad=87(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:* If#= 8 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=88(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+It is 0x413c:0x8218
+T:  Bus=02 Lev=01 Prnt=01 Port=05 Cnt=01 Dev#=  3 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=413c ProdID=8218 Rev= 0.00
+S:  Manufacturer=DELL
+S:  Product=COMPAL Electronics EXM-G1A
+S:  SerialNumber=359302940050401
+C:* #Ifs= 1 Cfg#= 1 Atr=a0 MxPwr=  2mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=qcserial
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Signed-off-by: JackBB Wu <wojackbb@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vhost/vhost.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/usb/serial/qcserial.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/vhost/vhost.c
-+++ b/drivers/vhost/vhost.c
-@@ -2577,12 +2577,11 @@ EXPORT_SYMBOL_GPL(vhost_disable_notify);
- /* Create a new message. */
- struct vhost_msg_node *vhost_new_msg(struct vhost_virtqueue *vq, int type)
- {
--	struct vhost_msg_node *node = kmalloc(sizeof *node, GFP_KERNEL);
-+	/* Make sure all padding within the structure is initialized. */
-+	struct vhost_msg_node *node = kzalloc(sizeof(*node), GFP_KERNEL);
- 	if (!node)
- 		return NULL;
+--- a/drivers/usb/serial/qcserial.c
++++ b/drivers/usb/serial/qcserial.c
+@@ -184,6 +184,8 @@ static const struct usb_device_id id_tab
+ 	{DEVICE_SWI(0x413c, 0x81d0)},   /* Dell Wireless 5819 */
+ 	{DEVICE_SWI(0x413c, 0x81d1)},   /* Dell Wireless 5818 */
+ 	{DEVICE_SWI(0x413c, 0x81d2)},   /* Dell Wireless 5818 */
++	{DEVICE_SWI(0x413c, 0x8217)},	/* Dell Wireless DW5826e */
++	{DEVICE_SWI(0x413c, 0x8218)},	/* Dell Wireless DW5826e QDL */
  
--	/* Make sure all padding within the structure is initialized. */
--	memset(&node->msg, 0, sizeof node->msg);
- 	node->vq = vq;
- 	node->msg.type = type;
- 	return node;
+ 	/* Huawei devices */
+ 	{DEVICE_HWI(0x03f0, 0x581d)},	/* HP lt4112 LTE/HSPA+ Gobi 4G Modem (Huawei me906e) */
 
 
 
