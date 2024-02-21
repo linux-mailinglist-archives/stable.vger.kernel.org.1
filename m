@@ -1,52 +1,55 @@
-Return-Path: <stable+bounces-22651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE2F985DD13
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:01:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBF7685DCE7
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:59:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEA721C233B0
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:01:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 28576B23D75
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:59:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B26897BB14;
-	Wed, 21 Feb 2024 14:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54BFA7D414;
+	Wed, 21 Feb 2024 13:59:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SC4C7g7p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q+yV0zRm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7336A47A7C;
-	Wed, 21 Feb 2024 14:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 123E67D401;
+	Wed, 21 Feb 2024 13:59:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524051; cv=none; b=ROB0l7prRXHYhoiCM2zoI79fNANkqNDUdiN2i60Zn09f0/FZjmFFHuxJEJj1uFjfeLEBM2F5TYlrIp1YoQ1asD4DkP63s5/HXTH4VFjSsESY4Zd5YvTkNAg59in405TMP9PB3VddJcQM3uhqjCjGhmLUYJeeWky2Rv8EcOy8Kks=
+	t=1708523952; cv=none; b=d7oSOrBM5b4VbnZwY22zvOvbxmAhAKLX/N+9VjN3aysE9EwrRduCqjm8ouHuerWuifWKLDIq/S3F633tjgqAuKR4/2ApIJjQwaO8+/Mq6MnL3qLtL1foIAMVjI7VEW1TQ1tStU53nzL/9d5JjJKwKmMB5Il+pDehGz4QQgqhvM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524051; c=relaxed/simple;
-	bh=YpyWVYswGpziSy3HhcIZxNBwCd0d8KAAi+gDYlV/m1s=;
+	s=arc-20240116; t=1708523952; c=relaxed/simple;
+	bh=UXGSa6Q/Olh8NH0xJQNFbm5MKDekN30gvvPnNvqaGjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nXKver4CltkBp8fiWzOY8iS6MLcnoqL/qXvJvoyy3wGhWgyI7SWge2xdKZvLliE6r76kDpL9Q60XM3scrGTv0X7g+uJwszDPASsIWXOo1sg54Ticc/va3SknKggfienPkJJCGsc7ZrbO/LmvXNTbMg74wbvmonMclgpPgnANbEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SC4C7g7p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7736C433C7;
-	Wed, 21 Feb 2024 14:00:50 +0000 (UTC)
+	 MIME-Version; b=ADnxKSDso5+ZkL2nJevKkF0mM10h7qQZWfPdaOF1XlJ4fN/bBxVaR25klTkT7+ogk7VDTNEhbcSHt0qlpAoGUA4NLX/61Fd49J/aaKL18tUq/rSjt/pj9RVS9inOGaI7PjzxvfKbPWt4SV1DhC3xBBTF/h7/pMntufxxkJGTFfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q+yV0zRm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8831CC43394;
+	Wed, 21 Feb 2024 13:59:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524051;
-	bh=YpyWVYswGpziSy3HhcIZxNBwCd0d8KAAi+gDYlV/m1s=;
+	s=korg; t=1708523951;
+	bh=UXGSa6Q/Olh8NH0xJQNFbm5MKDekN30gvvPnNvqaGjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SC4C7g7pZqrDJ79Nq4piYUA2CPEsG88qytJgLbQopbJghOKk9AogXEK650l2LL3O4
-	 CUNI/yg2UgKxw6kzPOhng6O3Qd/FPW/KnSZzwEUVoMDvFxadi0XKDS7vb9aBZ65TY/
-	 IQP7ULhK/9eBa3f/ny+c9gLgiaHglImy/NUEb83U=
+	b=q+yV0zRmlAwFSHqwjAdpXhDKJplVQ6UbSA1QxNUcnSJFzZO1TJdyGyCX473pGczeL
+	 B1oSFNkoZVWkeGKN+kYj98sQAQNc2+XXUq1gxPaYMjd91UjJ8dSh+00v2zNnTcNXU2
+	 GWC5N1J4aPjexwOGxG2QJdWs9mKxejUiBCJohBPA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 092/379] NFSD: Add documenting comment for nfsd4_release_lockowner()
-Date: Wed, 21 Feb 2024 14:04:31 +0100
-Message-ID: <20240221125957.626899942@linuxfoundation.org>
+Subject: [PATCH 5.10 093/379] drm: panel-simple: add missing bus flags for Tianma tm070jvhg[30/33]
+Date: Wed, 21 Feb 2024 14:04:32 +0100
+Message-ID: <20240221125957.655868982@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
 References: <20240221125954.917878865@linuxfoundation.org>
@@ -65,71 +68,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
 
-[ Upstream commit 043862b09cc00273e35e6c3a6389957953a34207 ]
+[ Upstream commit 45dd7df26cee741b31c25ffdd44fb8794eb45ccd ]
 
-And return explicit nfserr values that match what is documented in the
-new comment / API contract.
+The DE signal is active high on this display, fill in the missing
+bus_flags. This aligns panel_desc with its display_timing.
 
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Stable-dep-of: edcf9725150e ("nfsd: fix RELEASE_LOCKOWNER")
+Fixes: 9a2654c0f62a ("drm/panel: Add and fill drm_panel type field")
+Fixes: b3bfcdf8a3b6 ("drm/panel: simple: add Tianma TM070JVHG33")
+
+Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+Link: https://lore.kernel.org/r/20231012084208.2731650-1-alexander.stein@ew.tq-group.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231012084208.2731650-1-alexander.stein@ew.tq-group.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c | 23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/panel/panel-simple.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 1b40b2197ce6..b6480be7b5e6 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -7107,6 +7107,23 @@ check_for_locks(struct nfs4_file *fp, struct nfs4_lockowner *lowner)
- 	return status;
- }
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index ee01b61a6baf..51470020ba61 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -3635,6 +3635,7 @@ static const struct panel_desc tianma_tm070jdhg30 = {
+ 	},
+ 	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_SPWG,
+ 	.connector_type = DRM_MODE_CONNECTOR_LVDS,
++	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
+ };
  
-+/**
-+ * nfsd4_release_lockowner - process NFSv4.0 RELEASE_LOCKOWNER operations
-+ * @rqstp: RPC transaction
-+ * @cstate: NFSv4 COMPOUND state
-+ * @u: RELEASE_LOCKOWNER arguments
-+ *
-+ * The lockowner's so_count is bumped when a lock record is added
-+ * or when copying a conflicting lock. The latter case is brief,
-+ * but can lead to fleeting false positives when looking for
-+ * locks-in-use.
-+ *
-+ * Return values:
-+ *   %nfs_ok: lockowner released or not found
-+ *   %nfserr_locks_held: lockowner still in use
-+ *   %nfserr_stale_clientid: clientid no longer active
-+ *   %nfserr_expired: clientid not recognized
-+ */
- __be32
- nfsd4_release_lockowner(struct svc_rqst *rqstp,
- 			struct nfsd4_compound_state *cstate,
-@@ -7133,7 +7150,7 @@ nfsd4_release_lockowner(struct svc_rqst *rqstp,
- 	lo = find_lockowner_str_locked(clp, &rlockowner->rl_owner);
- 	if (!lo) {
- 		spin_unlock(&clp->cl_lock);
--		return status;
-+		return nfs_ok;
- 	}
- 	if (atomic_read(&lo->lo_owner.so_count) != 2) {
- 		spin_unlock(&clp->cl_lock);
-@@ -7149,11 +7166,11 @@ nfsd4_release_lockowner(struct svc_rqst *rqstp,
- 		put_ol_stateid_locked(stp, &reaplist);
- 	}
- 	spin_unlock(&clp->cl_lock);
-+
- 	free_ol_stateid_reaplist(&reaplist);
- 	remove_blocked_locks(lo);
- 	nfs4_put_stateowner(&lo->lo_owner);
--
--	return status;
-+	return nfs_ok;
- }
+ static const struct panel_desc tianma_tm070jvhg33 = {
+@@ -3647,6 +3648,7 @@ static const struct panel_desc tianma_tm070jvhg33 = {
+ 	},
+ 	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_SPWG,
+ 	.connector_type = DRM_MODE_CONNECTOR_LVDS,
++	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
+ };
  
- static inline struct nfs4_client_reclaim *
+ static const struct display_timing tianma_tm070rvhg71_timing = {
 -- 
 2.43.0
 
