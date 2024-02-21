@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-22388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8047D85DBC9
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:45:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E67A85DD9B
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:07:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2140A1F2229C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:45:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B2C39B24316
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:07:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 831AA77A03;
-	Wed, 21 Feb 2024 13:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C137F497;
+	Wed, 21 Feb 2024 14:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DZR8uOTQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="phuNm4PL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4383555E5E;
-	Wed, 21 Feb 2024 13:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 319B07E105;
+	Wed, 21 Feb 2024 14:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523117; cv=none; b=hmBuimNbPWV40vO85XXI/1lf2DnCtDpmYs+G2YDqxFGQmPvAsytTL46nY2HD3IkI2ICBvT6gnXYyX8VWezyDJa4rAJqjlbmyF07w5zN9XpXJCNpgsZzPKubiXJGINglklJAp5wFeJA2uODdWA3Fi8K7LutJR2UXCHe65UFyBp8Y=
+	t=1708524374; cv=none; b=NZ+b4YQ55zMpmfU9rz0XmQ8F/ltGlt+CI3sjEAgF7Myr5e94tkdiCQCVZ7FcMr9S3PDRKHjouClTE4l7pf2UL3ukXraYaC7nQ19npRNUsXE6YqyJva3/spVBqWwtHA7CFAUY2WpyvrALmlh47uodoFo1eG9owPeLbfUKxK3MS+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523117; c=relaxed/simple;
-	bh=6GzJ62gpls329yMN1WNuaLQCtEQTfitNEnJ9kq8fGTg=;
+	s=arc-20240116; t=1708524374; c=relaxed/simple;
+	bh=ydr+iPGAnik4SWUKHh89Bs1fx9YZ+V9tqAeF9/uj+h8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EuNOBosV9QlEIASoP5Pt05A+A0O+/n9CG+6pZdXYVg69qFGxHL6OiXeinA6UZOZaUXJCYl5QJNV5csDURbRhy2DKSVhlrb9EZsVvoivqitQZwlrNgw26Cb9Qae+a8K45OLoXCm3ScNh30r/zRQLCZxFpaOTpP2mswe/dcTCl4+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DZR8uOTQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A68B1C433F1;
-	Wed, 21 Feb 2024 13:45:16 +0000 (UTC)
+	 MIME-Version; b=ck2LXTeUeFjiJVJiVsxC0GFVBOlQ/brpYxLjrc3Vd6Y0munzGUBvZCp8cPQ5pQFB6O/TvtsuOC6rzlpXiarUjnGNYtOJedOSfd6XEFH5hBJQ0m13yfnuowkSyx/euj4EbhbrcrOa7EYGFpmMaW2cTjNgQGnttgeOW10kj8NwCws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=phuNm4PL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC2B3C433F1;
+	Wed, 21 Feb 2024 14:06:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523117;
-	bh=6GzJ62gpls329yMN1WNuaLQCtEQTfitNEnJ9kq8fGTg=;
+	s=korg; t=1708524374;
+	bh=ydr+iPGAnik4SWUKHh89Bs1fx9YZ+V9tqAeF9/uj+h8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DZR8uOTQe3CRI0dKWIF8/m357JyHtRuFNWtXDcuxlngdeUT/IACPmOHMqSbubFvn1
-	 t66E6yb5q4CVGQb6yFr1S6hPqpF4fJokz1X247+riOiupMioY1DXZeU3+ZRM4jl95r
-	 lGty8PmwyRBP8cTMJShp31a1AgMrD9bEZ+NbFp+o=
+	b=phuNm4PLmxUjEHtP5VDtO8wgPmDlktozLuC8XtfBnNno/lsGFmwLsmqbWHE33ocww
+	 fWKW/Pt/zJiKBFz8BAvAQy4ovVwBTNxrb8MeaJbURODVT+DZBoeHwRsq+FcaTT3D/l
+	 nt9WsVUn3sYxapr5itNMzB/8QjyCVG6or4C3ETNM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.15 345/476] btrfs: do not ASSERT() if the newly created subvolume already got read
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Xiubo Li <xiubli@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 217/379] ceph: fix deadlock or deadcode of misusing dget()
 Date: Wed, 21 Feb 2024 14:06:36 +0100
-Message-ID: <20240221130020.747947159@linuxfoundation.org>
+Message-ID: <20240221130001.322154532@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,97 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Xiubo Li <xiubli@redhat.com>
 
-commit e03ee2fe873eb68c1f9ba5112fee70303ebf9dfb upstream.
+[ Upstream commit b493ad718b1f0357394d2cdecbf00a44a36fa085 ]
 
-[BUG]
-There is a syzbot crash, triggered by the ASSERT() during subvolume
-creation:
+The lock order is incorrect between denty and its parent, we should
+always make sure that the parent get the lock first.
 
- assertion failed: !anon_dev, in fs/btrfs/disk-io.c:1319
- ------------[ cut here ]------------
- kernel BUG at fs/btrfs/disk-io.c:1319!
- invalid opcode: 0000 [#1] PREEMPT SMP KASAN
- RIP: 0010:btrfs_get_root_ref.part.0+0x9aa/0xa60
-  <TASK>
-  btrfs_get_new_fs_root+0xd3/0xf0
-  create_subvol+0xd02/0x1650
-  btrfs_mksubvol+0xe95/0x12b0
-  __btrfs_ioctl_snap_create+0x2f9/0x4f0
-  btrfs_ioctl_snap_create+0x16b/0x200
-  btrfs_ioctl+0x35f0/0x5cf0
-  __x64_sys_ioctl+0x19d/0x210
-  do_syscall_64+0x3f/0xe0
-  entry_SYSCALL_64_after_hwframe+0x63/0x6b
- ---[ end trace 0000000000000000 ]---
+But since this deadcode is never used and the parent dir will always
+be set from the callers, let's just remove it.
 
-[CAUSE]
-During create_subvol(), after inserting root item for the newly created
-subvolume, we would trigger btrfs_get_new_fs_root() to get the
-btrfs_root of that subvolume.
-
-The idea here is, we have preallocated an anonymous device number for
-the subvolume, thus we can assign it to the new subvolume.
-
-But there is really nothing preventing things like backref walk to read
-the new subvolume.
-If that happens before we call btrfs_get_new_fs_root(), the subvolume
-would be read out, with a new anonymous device number assigned already.
-
-In that case, we would trigger ASSERT(), as we really expect no one to
-read out that subvolume (which is not yet accessible from the fs).
-But things like backref walk is still possible to trigger the read on
-the subvolume.
-
-Thus our assumption on the ASSERT() is not correct in the first place.
-
-[FIX]
-Fix it by removing the ASSERT(), and just free the @anon_dev, reset it
-to 0, and continue.
-
-If the subvolume tree is read out by something else, it should have
-already get a new anon_dev assigned thus we only need to free the
-preallocated one.
-
-Reported-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Fixes: 2dfb1e43f57d ("btrfs: preallocate anon block device at first phase of snapshot creation")
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20231116081919.GZ1957730@ZenIV
+Reported-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/disk-io.c |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ fs/ceph/caps.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -1619,8 +1619,17 @@ static struct btrfs_root *btrfs_get_root
- again:
- 	root = btrfs_lookup_fs_root(fs_info, objectid);
- 	if (root) {
--		/* Shouldn't get preallocated anon_dev for cached roots */
--		ASSERT(!anon_dev);
-+		/*
-+		 * Some other caller may have read out the newly inserted
-+		 * subvolume already (for things like backref walk etc).  Not
-+		 * that common but still possible.  In that case, we just need
-+		 * to free the anon_dev.
-+		 */
-+		if (unlikely(anon_dev)) {
-+			free_anon_bdev(anon_dev);
-+			anon_dev = 0;
-+		}
+diff --git a/fs/ceph/caps.c b/fs/ceph/caps.c
+index 432dc2a16e28..b0cf79b0dc49 100644
+--- a/fs/ceph/caps.c
++++ b/fs/ceph/caps.c
+@@ -4598,12 +4598,14 @@ int ceph_encode_dentry_release(void **p, struct dentry *dentry,
+ 			       struct inode *dir,
+ 			       int mds, int drop, int unless)
+ {
+-	struct dentry *parent = NULL;
+ 	struct ceph_mds_request_release *rel = *p;
+ 	struct ceph_dentry_info *di = ceph_dentry(dentry);
+ 	int force = 0;
+ 	int ret;
+ 
++	/* This shouldn't happen */
++	BUG_ON(!dir);
 +
- 		if (check_ref && btrfs_root_refs(&root->root_item) == 0) {
- 			btrfs_put_root(root);
- 			return ERR_PTR(-ENOENT);
+ 	/*
+ 	 * force an record for the directory caps if we have a dentry lease.
+ 	 * this is racy (can't take i_ceph_lock and d_lock together), but it
+@@ -4613,14 +4615,9 @@ int ceph_encode_dentry_release(void **p, struct dentry *dentry,
+ 	spin_lock(&dentry->d_lock);
+ 	if (di->lease_session && di->lease_session->s_mds == mds)
+ 		force = 1;
+-	if (!dir) {
+-		parent = dget(dentry->d_parent);
+-		dir = d_inode(parent);
+-	}
+ 	spin_unlock(&dentry->d_lock);
+ 
+ 	ret = ceph_encode_inode_release(p, dir, mds, drop, unless, force);
+-	dput(parent);
+ 
+ 	spin_lock(&dentry->d_lock);
+ 	if (ret && di->lease_session && di->lease_session->s_mds == mds) {
+-- 
+2.43.0
+
 
 
 
