@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-22611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48E7885DCD7
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:58:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82F9C85DAFE
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:36:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AE2A1C236C6
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:58:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36E061F20F2D
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:36:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA26055E5E;
-	Wed, 21 Feb 2024 13:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFDD769951;
+	Wed, 21 Feb 2024 13:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V2WpX2+P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iLQncRZS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2AF76C99;
-	Wed, 21 Feb 2024 13:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EB322A1D7;
+	Wed, 21 Feb 2024 13:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523915; cv=none; b=Bt7IM4cnPq8B3/QhWBmJV0+yNy2rfm9xTWQnL2kOezH3vhFj396PlNpFEaJofsMkmBDPX5blsxumiZzc4whnhZCN+3NDTXmu3A8R5XSHUwz69RAuj00hxwo5i4oQiQkg0gtvaewKGb5DhUyTYAJCO8aRgA6Em2dot9/bhoVYEP8=
+	t=1708522535; cv=none; b=P0Mv8CSk+R1VrdSIaauUzmTwG1paUDGCpIMljVzZdCMLhq1cSFToZwTGusO5Y21Z05m6U+J9zvN87puKRMJ92pQF7N6GcjNDj912J1shaQwn5Rw9CUBFeol9BQKAfQ9eU+P4eN/LatOkLrYDaHdvineFbKBhb0uDSSPeC2ENPzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523915; c=relaxed/simple;
-	bh=gzG7TaMasnPo353MKC3UGmxt22wPGwszCUtIOtUNs44=;
+	s=arc-20240116; t=1708522535; c=relaxed/simple;
+	bh=O/WI+bZl5clnd2j0RiJAwPUuvUidlaDrRPIZFrkVMrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oMZw0NCoh7Bu3S48SZ70lRdAtS37LFiTL2qcMeDY8dDHc+4Tay7VDAbTwus9HIwCwL8UN2uaguTCI3FhMvk5gLeFiruGlZRtZK0AuPgeNq1y/XbFGGAvrEDl5RGsdPkp7kN72QHvRgI4d0tS5IASuuA4PYLkpcHW2A+u4wVbG0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V2WpX2+P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB5E4C433C7;
-	Wed, 21 Feb 2024 13:58:34 +0000 (UTC)
+	 MIME-Version; b=OHOTZmkMW3qCZQdfXGhMajXT0+8W1jD0pmoQAePB0LAba7N49zv23+JjlQzml8A5C4wc4ZQ/Ll5Lr6yu/y3SqZtcTNr8Sa9Jr2wcBEfYkZQXwVrxxcteeiF0udU+V3NFFU7QhZ3eZc1OzfHp6cF0PCk5FanaFQgQf50Lz9Id+tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iLQncRZS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14F01C433C7;
+	Wed, 21 Feb 2024 13:35:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523915;
-	bh=gzG7TaMasnPo353MKC3UGmxt22wPGwszCUtIOtUNs44=;
+	s=korg; t=1708522535;
+	bh=O/WI+bZl5clnd2j0RiJAwPUuvUidlaDrRPIZFrkVMrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V2WpX2+PYZLdYcpnL+nAZvqMaQNsl4oTOy5AbLIpFfM6AmfgNKKsKPvBdLtHdCLbf
-	 8TGd9iqclFjmZsaVjiDJCsBQSpn7dayXoYKlma/TJ0RtCysbehvkLBGJz8YL9WZ3LK
-	 5Jo00kVTC8n1nP5kNPpJ8FZSW9TzBytF9UMY+Fsc=
+	b=iLQncRZS1pbxClOb0e33G3zfqGvHJiEJcr+tpWIiBvxoMKeq9TMbojRvM7AR8Uk2a
+	 Ha68x+WAfG6s8QrnlwfsUtiaSTAUv9lX2Z++fP1asJhmsIKmsb8zbRgV1RhOL1iSeP
+	 va7PhXruT0sut/AsGtsgK1JhOH6YWAvPZatElsMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	Chung-Chiang Cheng <cccheng@synology.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.10 063/379] btrfs: tree-checker: fix inline ref size in error messages
+	Fabio Estevam <festevam@denx.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 191/476] ARM: dts: imx23-sansa: Use preferred i2c-gpios properties
 Date: Wed, 21 Feb 2024 14:04:02 +0100
-Message-ID: <20240221125956.776359261@linuxfoundation.org>
+Message-ID: <20240221130014.966243070@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chung-Chiang Cheng <cccheng@synology.com>
+From: Fabio Estevam <festevam@denx.de>
 
-commit f398e70dd69e6ceea71463a5380e6118f219197e upstream.
+[ Upstream commit e3aa1a82fb20ee97597022f6528823a8ab82bde6 ]
 
-The error message should accurately reflect the size rather than the
-type.
+The 'gpios' property to describe the SDA and SCL GPIOs is considered
+deprecated according to i2c-gpio.yaml.
 
-Fixes: f82d1c7ca8ae ("btrfs: tree-checker: Add EXTENT_ITEM and METADATA_ITEM check")
-CC: stable@vger.kernel.org # 5.4+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Chung-Chiang Cheng <cccheng@synology.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Switch to the preferred 'sda-gpios' and 'scl-gpios' properties.
+
+This fixes the following schema warnings:
+
+imx23-sansa.dtb: i2c-0: 'sda-gpios' is a required property
+	from schema $id: http://devicetree.org/schemas/i2c/i2c-gpio.yaml#
+imx23-sansa.dtb: i2c-0: 'scl-gpios' is a required property
+	from schema $id: http://devicetree.org/schemas/i2c/i2c-gpio.yaml#
+
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/tree-checker.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/imx23-sansa.dts | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
---- a/fs/btrfs/tree-checker.c
-+++ b/fs/btrfs/tree-checker.c
-@@ -1334,7 +1334,7 @@ static int check_extent_item(struct exte
- 		if (ptr + btrfs_extent_inline_ref_size(inline_type) > end) {
- 			extent_err(leaf, slot,
- "inline ref item overflows extent item, ptr %lu iref size %u end %lu",
--				   ptr, inline_type, end);
-+				   ptr, btrfs_extent_inline_ref_size(inline_type), end);
- 			return -EUCLEAN;
- 		}
+diff --git a/arch/arm/boot/dts/imx23-sansa.dts b/arch/arm/boot/dts/imx23-sansa.dts
+index 46057d9bf555..c2efcc20ae80 100644
+--- a/arch/arm/boot/dts/imx23-sansa.dts
++++ b/arch/arm/boot/dts/imx23-sansa.dts
+@@ -175,10 +175,8 @@
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+ 		compatible = "i2c-gpio";
+-		gpios = <
+-			&gpio1 24 0		/* SDA */
+-			&gpio1 22 0		/* SCL */
+-		>;
++		sda-gpios = <&gpio1 24 0>;
++		scl-gpios = <&gpio1 22 0>;
+ 		i2c-gpio,delay-us = <2>;	/* ~100 kHz */
+ 	};
  
+@@ -186,10 +184,8 @@
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+ 		compatible = "i2c-gpio";
+-		gpios = <
+-			&gpio0 31 0		/* SDA */
+-			&gpio0 30 0		/* SCL */
+-		>;
++		sda-gpios = <&gpio0 31 0>;
++		scl-gpios = <&gpio0 30 0>;
+ 		i2c-gpio,delay-us = <2>;	/* ~100 kHz */
+ 
+ 		touch: touch@20 {
+-- 
+2.43.0
+
 
 
 
