@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-23097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 080A785DF3D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:26:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 142FE85DE21
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:15:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C50F1F24672
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:26:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4633D1C23893
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:15:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0ADA7C097;
-	Wed, 21 Feb 2024 14:25:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 158F47E10F;
+	Wed, 21 Feb 2024 14:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g+ZpcQkN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iSAZlzud"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F66269962;
-	Wed, 21 Feb 2024 14:25:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E7A7D3EE;
+	Wed, 21 Feb 2024 14:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525559; cv=none; b=KLLad7zODDbFCK1jIvadtVr/7QWEvUGIPGmjc7CIlJGYNa6RM0nZKXvuJ1/rJbYImdKT7G1wT2RE5wm/k13tEI2qnj9dGJNB2kv9kbP8UAaQgmD28c5NwqwWpIAy8pqzLZNrdCV978ZO6SWSjmqROkSDnqKzLi5A661c1MjzujQ=
+	t=1708524807; cv=none; b=f/8PbHiaoTaCceZ0YrbyeNcO6VZbG9lqk6f6K6CpCvHMFcVWGb71M28aYQ8ar/VrcMx4sX2HiWrrHh0/ZdNi6lVHEzohrpk8yDJlJw5uMNtwJ2XDIS6A5iTmbMChIuX8vswBeqxg9nIeqlWw66B/uwk4HENzOYTvc1ybZ9PoGJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525559; c=relaxed/simple;
-	bh=kV6L4zFPo6ftjJpC3XNtjgw/OmyUatiZP7c3S6WaoIE=;
+	s=arc-20240116; t=1708524807; c=relaxed/simple;
+	bh=q10YDg5zNg3dURRyBUjLPzUuzjqRIR1SdqUbWQnJo+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D6H44QCT/j/lJNFVkxXyzXr5t1iBqYbQCqEqHWm2fdixDMYBHnPWHLBedmahDA6GWt/sEUbutqMtAqJ3EH0+rJBjrywCu/Ig2KIWd5fj0p/1bZOIkA8m+12Yg6CK9OCECUuryYoUteTAEDAZ0J2RINmw+h8AWZ3t1WEp9XPQ98g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g+ZpcQkN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2186BC433C7;
-	Wed, 21 Feb 2024 14:25:58 +0000 (UTC)
+	 MIME-Version; b=gNso0xgwnxuTkuujD2ipoCv33ZMAxWp8jze/OjOZhbWLOHpWdktyuizITmL4mApqLZ6tmu2ShfJJU80FOeDVLjWpkO40S177nWvgjMAwEpfNEdjSVc+WPbEPT9edgZx3BlmtpBW/V51HLlgFuNSS4yx/u4sO9C89wFMyg7KAebA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iSAZlzud; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53679C433F1;
+	Wed, 21 Feb 2024 14:13:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525559;
-	bh=kV6L4zFPo6ftjJpC3XNtjgw/OmyUatiZP7c3S6WaoIE=;
+	s=korg; t=1708524807;
+	bh=q10YDg5zNg3dURRyBUjLPzUuzjqRIR1SdqUbWQnJo+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g+ZpcQkNSO62gsnCNxBLwTCW1Jcvd38WRyZMAoD+ggC/BONrk478YA7cykhfLKEGw
-	 EnktE4xRft/1WmvYkJPrLc3g1Qkcj0jKQYe6GsND7jZYukwHnK4Qcge01qzmjzyNLU
-	 CbERVGGFpB9JHVjy5ZTCPWzigLa/VF9CgGGIY2Tc=
+	b=iSAZlzud6jPAdz5/4669hai+a4lcallg7Y8BLZMpxZ+11mZnxm7OdbAjs9M1fvdFG
+	 NV+cghMJjMrst7MsQKorRwbP+Hi8TWO6jnqETUu29e1dyR5UetrzvosPRQburNBhTR
+	 LEK2BmRvqUlYXAbmckMIJXv1BUzs1SHWLfrXFrgE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 192/267] netfilter: nft_compat: restrict match/target protocol to u16
-Date: Wed, 21 Feb 2024 14:08:53 +0100
-Message-ID: <20240221125946.162703338@linuxfoundation.org>
+Subject: [PATCH 5.10 355/379] mips: Fix max_mapnr being uninitialized on early stages
+Date: Wed, 21 Feb 2024 14:08:54 +0100
+Message-ID: <20240221130005.541478652@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Serge Semin <fancer.lancer@gmail.com>
 
-[ Upstream commit d694b754894c93fb4d71a7f3699439dec111decc ]
+[ Upstream commit e1a9ae45736989c972a8d1c151bc390678ae6205 ]
 
-xt_check_{match,target} expects u16, but NFTA_RULE_COMPAT_PROTO is u32.
+max_mapnr variable is utilized in the pfn_valid() method in order to
+determine the upper PFN space boundary. Having it uninitialized
+effectively makes any PFN passed to that method invalid. That in its turn
+causes the kernel mm-subsystem occasion malfunctions even after the
+max_mapnr variable is actually properly updated. For instance,
+pfn_valid() is called in the init_unavailable_range() method in the
+framework of the calls-chain on MIPS:
+setup_arch()
++-> paging_init()
+    +-> free_area_init()
+        +-> memmap_init()
+            +-> memmap_init_zone_range()
+                +-> init_unavailable_range()
 
-NLA_POLICY_MAX(NLA_BE32, 65535) cannot be used because .max in
-nla_policy is s16, see 3e48be05f3c7 ("netlink: add attribute range
-validation to policy").
+Since pfn_valid() always returns "false" value before max_mapnr is
+initialized in the mem_init() method, any flatmem page-holes will be left
+in the poisoned/uninitialized state including the IO-memory pages. Thus
+any further attempts to map/remap the IO-memory by using MMU may fail.
+In particular it happened in my case on attempt to map the SRAM region.
+The kernel bootup procedure just crashed on the unhandled unaligned access
+bug raised in the __update_cache() method:
 
-Fixes: 0ca743a55991 ("netfilter: nf_tables: add compatibility layer for x_tables")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+> Unhandled kernel unaligned access[#1]:
+> CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.7.0-rc1-XXX-dirty #2056
+> ...
+> Call Trace:
+> [<8011ef9c>] __update_cache+0x88/0x1bc
+> [<80385944>] ioremap_page_range+0x110/0x2a4
+> [<80126948>] ioremap_prot+0x17c/0x1f4
+> [<80711b80>] __devm_ioremap+0x8c/0x120
+> [<80711e0c>] __devm_ioremap_resource+0xf4/0x218
+> [<808bf244>] sram_probe+0x4f4/0x930
+> [<80889d20>] platform_probe+0x68/0xec
+> ...
+
+Let's fix the problem by initializing the max_mapnr variable as soon as
+the required data is available. In particular it can be done right in the
+paging_init() method before free_area_init() is called since all the PFN
+zone boundaries have already been calculated by that time.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_compat.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/mips/mm/init.c | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
 
-diff --git a/net/netfilter/nft_compat.c b/net/netfilter/nft_compat.c
-index 44583da6ec6b..2372f0bbb133 100644
---- a/net/netfilter/nft_compat.c
-+++ b/net/netfilter/nft_compat.c
-@@ -192,6 +192,7 @@ static const struct nla_policy nft_rule_compat_policy[NFTA_RULE_COMPAT_MAX + 1]
- static int nft_parse_compat(const struct nlattr *attr, u16 *proto, bool *inv)
- {
- 	struct nlattr *tb[NFTA_RULE_COMPAT_MAX+1];
-+	u32 l4proto;
- 	u32 flags;
- 	int err;
- 
-@@ -210,7 +211,12 @@ static int nft_parse_compat(const struct nlattr *attr, u16 *proto, bool *inv)
- 	if (flags & NFT_RULE_COMPAT_F_INV)
- 		*inv = true;
- 
--	*proto = ntohl(nla_get_be32(tb[NFTA_RULE_COMPAT_PROTO]));
-+	l4proto = ntohl(nla_get_be32(tb[NFTA_RULE_COMPAT_PROTO]));
-+	if (l4proto > U16_MAX)
-+		return -EINVAL;
+diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
+index 07e84a774938..32e7b869a291 100644
+--- a/arch/mips/mm/init.c
++++ b/arch/mips/mm/init.c
+@@ -421,7 +421,12 @@ void __init paging_init(void)
+ 		       (highend_pfn - max_low_pfn) << (PAGE_SHIFT - 10));
+ 		max_zone_pfns[ZONE_HIGHMEM] = max_low_pfn;
+ 	}
 +
-+	*proto = l4proto;
-+
- 	return 0;
++	max_mapnr = highend_pfn ? highend_pfn : max_low_pfn;
++#else
++	max_mapnr = max_low_pfn;
+ #endif
++	high_memory = (void *) __va(max_low_pfn << PAGE_SHIFT);
+ 
+ 	free_area_init(max_zone_pfns);
  }
+@@ -457,16 +462,6 @@ void __init mem_init(void)
+ 	 */
+ 	BUILD_BUG_ON(IS_ENABLED(CONFIG_32BIT) && (_PFN_SHIFT > PAGE_SHIFT));
  
+-#ifdef CONFIG_HIGHMEM
+-#ifdef CONFIG_DISCONTIGMEM
+-#error "CONFIG_HIGHMEM and CONFIG_DISCONTIGMEM dont work together yet"
+-#endif
+-	max_mapnr = highend_pfn ? highend_pfn : max_low_pfn;
+-#else
+-	max_mapnr = max_low_pfn;
+-#endif
+-	high_memory = (void *) __va(max_low_pfn << PAGE_SHIFT);
+-
+ 	maar_init();
+ 	memblock_free_all();
+ 	setup_zero_pages();	/* Setup zeroed pages.  */
 -- 
 2.43.0
 
