@@ -1,53 +1,51 @@
-Return-Path: <stable+bounces-22619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C35385DCE0
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:59:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F46085DCC2
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:57:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DB701C23743
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:59:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0255928240B
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:57:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED9077BB10;
-	Wed, 21 Feb 2024 13:59:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9789855E5E;
+	Wed, 21 Feb 2024 13:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kc6RGOT9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GRdpiNhF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD0F7B3F2;
-	Wed, 21 Feb 2024 13:59:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5643E79DBF;
+	Wed, 21 Feb 2024 13:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523945; cv=none; b=H7kLQ0ifUXnaonPhPx8Noo1T08q7rtOE22kwIMbGSdU6CszzEhZ3Mdk7L5L9Wvpn4FHa373YrZQhgEy7Gswh888QuERkP9X8JNMatVZMrD3jg11q49eMrfy1I2UxHGLun3mEJVJNiXsgj27sAeAh2t6RrLM85RXzi1RrFJ94oGQ=
+	t=1708523827; cv=none; b=g8iNCSkjMH3rj3D4hI3lfKBIGn4aqWiYkqHcy6AwrpdHSgeZkd2SQrkGF97+3uwxZSn+f6if6Te+9ZDwKF7CvyGP7t9bBXvBCQB4SZfyIs6QaPXWvqf0lO2t045fBop9KHBaRxuruHHrqgymX91i2qgqGDjgX/V/QH1EEQLVFSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523945; c=relaxed/simple;
-	bh=roQdJZfXg56mO8iKU7A0kpZ7Npg4phomjcptZZPJtnA=;
+	s=arc-20240116; t=1708523827; c=relaxed/simple;
+	bh=SMnTCiQmYslWJfI2aHtiy9vT4w/f7h52u1wUgIzMIJs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QZS6NQs7hm4p1XZ+DOQI6G7feWN9v2e9K+gcwR2tgnoFCe4YxPKI8YH79JGE7foJIpFjg5XDmBWBx2Kq5nDn4YeJUGKKJsBQHVbAVi1xJm1eKj6p91si+S7bwIWLMmJAW+NQQM7jcUYiGaTDgoLhQG0WPGjgJYin9phDmLS5VwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kc6RGOT9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32558C433F1;
-	Wed, 21 Feb 2024 13:59:05 +0000 (UTC)
+	 MIME-Version; b=ijF8tRRxdnKBIolm+L8oKAgyCEjXAzgBEjBQUwk1SQKDHJ45uvXkDJHrmyggHagrL+nGS+yTjJ6UNVzsl+nT2AmFP07ehjnIZSkAZ9ugeYcGlX/uxkQ32SUW3cjQnvvUylea2a6JqReal9gql+RmFj4X/Y3leZtHL1mEyWYSyKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GRdpiNhF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60444C433F1;
+	Wed, 21 Feb 2024 13:57:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523945;
-	bh=roQdJZfXg56mO8iKU7A0kpZ7Npg4phomjcptZZPJtnA=;
+	s=korg; t=1708523827;
+	bh=SMnTCiQmYslWJfI2aHtiy9vT4w/f7h52u1wUgIzMIJs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kc6RGOT9xHMpCluVBXCUIW02iFFID7EofpeuVhncCq23ONnb7QlX8ihcqkI2UVRrO
-	 Q1U30jfKE79oz+FpO9qP1MeY6lzEgDpuduKJVA5/D3yWTv1tWHBbw5S8h381IKOfCn
-	 DXMQpTBCYbm0J+XAeNra0RuvhKwxcfJuG2NJ6whY=
+	b=GRdpiNhFrPmOPv/7wO+LyCN8gjfxbUiC5YkSaem/j9ZVkAJsUsRko1GhnCXfRM3OO
+	 NB+4E4yUO0GBtFOPJWHKSUMJnSqudJkrCnNy89Gb5I+A9Q4Zo1klyc/93TYwyI+vYZ
+	 USUwYXCGYvon1hWg+Q765Qp40c96/Vcq2Ht8hWA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 5.10 069/379] wifi: iwlwifi: fix a memory corruption
-Date: Wed, 21 Feb 2024 14:04:08 +0100
-Message-ID: <20240221125956.958303391@linuxfoundation.org>
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.10 070/379] netfilter: nft_chain_filter: handle NETDEV_UNREGISTER for inet/ingress basechain
+Date: Wed, 21 Feb 2024 14:04:09 +0100
+Message-ID: <20240221125956.987426829@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
 References: <20240221125954.917878865@linuxfoundation.org>
@@ -66,37 +64,58 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit cf4a0d840ecc72fcf16198d5e9c505ab7d5a5e4d upstream.
+commit 01acb2e8666a6529697141a6017edbf206921913 upstream.
 
-iwl_fw_ini_trigger_tlv::data is a pointer to a __le32, which means that
-if we copy to iwl_fw_ini_trigger_tlv::data + offset while offset is in
-bytes, we'll write past the buffer.
+Remove netdevice from inet/ingress basechain in case NETDEV_UNREGISTER
+event is reported, otherwise a stale reference to netdevice remains in
+the hook list.
 
+Fixes: 60a3815da702 ("netfilter: add inet ingress support")
 Cc: stable@vger.kernel.org
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218233
-Fixes: cf29c5b66b9f ("iwlwifi: dbg_ini: implement time point handling")
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240111150610.2d2b8b870194.I14ed76505a5cf87304e0c9cc05cc0ae85ed3bf91@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nft_chain_filter.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-@@ -876,7 +876,7 @@ static int iwl_dbg_tlv_override_trig_nod
- 		node_trig = (void *)node_tlv->data;
- 	}
+--- a/net/netfilter/nft_chain_filter.c
++++ b/net/netfilter/nft_chain_filter.c
+@@ -358,9 +358,10 @@ static int nf_tables_netdev_event(struct
+ 				  unsigned long event, void *ptr)
+ {
+ 	struct net_device *dev = netdev_notifier_info_to_dev(ptr);
++	struct nft_base_chain *basechain;
+ 	struct nftables_pernet *nft_net;
+-	struct nft_table *table;
+ 	struct nft_chain *chain, *nr;
++	struct nft_table *table;
+ 	struct nft_ctx ctx = {
+ 		.net	= dev_net(dev),
+ 	};
+@@ -372,7 +373,8 @@ static int nf_tables_netdev_event(struct
+ 	nft_net = net_generic(ctx.net, nf_tables_net_id);
+ 	mutex_lock(&nft_net->commit_mutex);
+ 	list_for_each_entry(table, &nft_net->tables, list) {
+-		if (table->family != NFPROTO_NETDEV)
++		if (table->family != NFPROTO_NETDEV &&
++		    table->family != NFPROTO_INET)
+ 			continue;
  
--	memcpy(node_trig->data + offset, trig->data, trig_data_len);
-+	memcpy((u8 *)node_trig->data + offset, trig->data, trig_data_len);
- 	node_tlv->length = cpu_to_le32(size);
+ 		ctx.family = table->family;
+@@ -381,6 +383,11 @@ static int nf_tables_netdev_event(struct
+ 			if (!nft_is_base_chain(chain))
+ 				continue;
  
- 	if (policy & IWL_FW_INI_APPLY_POLICY_OVERRIDE_CFG) {
++			basechain = nft_base_chain(chain);
++			if (table->family == NFPROTO_INET &&
++			    basechain->ops.hooknum != NF_INET_INGRESS)
++				continue;
++
+ 			ctx.chain = chain;
+ 			nft_netdev_event(event, dev, &ctx);
+ 		}
 
 
 
