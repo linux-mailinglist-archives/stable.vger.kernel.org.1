@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-21874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E032085D8EF
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:12:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F18A085DB73
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:41:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D7CA1C22DCE
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:12:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 933A11F222B1
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:41:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A52A69D30;
-	Wed, 21 Feb 2024 13:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2873077A03;
+	Wed, 21 Feb 2024 13:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eWHnJSep"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="padQxG4I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55CA63EA71;
-	Wed, 21 Feb 2024 13:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA19D1E4B2;
+	Wed, 21 Feb 2024 13:41:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521154; cv=none; b=X3xrHEZDfVkff7WWk5X9ggQ7IDH5eBjk7AgGLTzhwhBglmrYWvKsS3KkR/mA3uuN2TQ+Pfe8NZ7vlzLvsOJZMZJ5/jNJm4S+t9Lo6VmzUzK2Rj0uKps+zcA2Z0j5FrYk9lJkAOZeh8FtFlFabzqi7QBmPm1j/eplNlbc1YAlqj8=
+	t=1708522891; cv=none; b=eXPa/Dx6kwAHP91Hbw4UfI1rcdNE7cLowAEgQmXUTjou7gtW2mqMduzjyWNc8rs3UMylyZ1ZZjMj7Dtk4C7M7aJQ0/Nvw4iBh/ZMHaz4zWv23HC2uUDJSHCT2MczHPFt9bHpl7iQcOL2omKBtX2u+Mnv6hZxsPf7Cu3hIy7e8Uw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521154; c=relaxed/simple;
-	bh=seQsWcEqfHz5ZJ6TSOOCCTpEs7C29ETyoSDGpnZBYGA=;
+	s=arc-20240116; t=1708522891; c=relaxed/simple;
+	bh=QZyDI4N+xayeVGIl2RspAAUEDnW+idmOJebXDKslffE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SAls8v5dMpXkm0IDuVhdXFbESZFl96lRl+ZV8h6KlBh+x6XoUbb+juDTzPNB8FYgexF45C8N1bJvQXwbWZsjL+ehB3Qw/MKSlcvJTnO99f1OvYSvMvGTv/MShGHLDrLhCp2ay1UqQzNDZe0DiZ/j1afCyTRtU7Zie3j5IYJs04I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eWHnJSep; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9F42C433F1;
-	Wed, 21 Feb 2024 13:12:33 +0000 (UTC)
+	 MIME-Version; b=u0KENEmHd/aNihtOehHMN+0ggtPidD/wkWiunCMUh21NA5SIu1qn7OgXm+liIGyCaeT6IIuvWwMbDewIH372i1AGb5pho7jfYgSg4+3ytj2aiBWecQGSXq9N5T+glUb3yULKA+9vxixc5iFuMQEF4J5svOxmdikYkfS719opF98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=padQxG4I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52DDEC433C7;
+	Wed, 21 Feb 2024 13:41:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521154;
-	bh=seQsWcEqfHz5ZJ6TSOOCCTpEs7C29ETyoSDGpnZBYGA=;
+	s=korg; t=1708522891;
+	bh=QZyDI4N+xayeVGIl2RspAAUEDnW+idmOJebXDKslffE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eWHnJSepY3J8BMlZKpC7lmDr1RQBdI4VAig8Ub/PIO+XG1XWpJuF3bjgEqR+UH3se
-	 isqUA305vNZ9OjX450MmC9/eax/0xIpU3CR9FGRwNPPYKwzYUKaczQNtswi+kvNCPm
-	 N2kDSdGCKURqv0VbOaQt7l4N5H4nXBGQ6sBo8J28=
+	b=padQxG4IZtF4MW/o0r+12CiuzaeUNAMPgzMSgf997MT2LoV6ucf/MHFIWa8Q6U3R6
+	 bPkgu/g+aEbrdFBPKDiAHKsdzYXpDam/QAfBBRsmAjKAQ+iGUV1OtDT0ujynxzrh7M
+	 N5FLi12OAGlg54Ft769bB7KAkL/lEsQfXlpLiJ/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 035/202] fjes: fix memleaks in fjes_hw_setup
+Subject: [PATCH 5.15 285/476] netfilter: nft_ct: sanitize layer 3 and 4 protocol number in custom expectations
 Date: Wed, 21 Feb 2024 14:05:36 +0100
-Message-ID: <20240221125932.926203508@linuxfoundation.org>
+Message-ID: <20240221130018.531271767@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,111 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit f6cc4b6a3ae53df425771000e9c9540cce9b7bb1 ]
+[ Upstream commit 8059918a1377f2f1fff06af4f5a4ed3d5acd6bc4 ]
 
-In fjes_hw_setup, it allocates several memory and delay the deallocation
-to the fjes_hw_exit in fjes_probe through the following call chain:
+- Disallow families other than NFPROTO_{IPV4,IPV6,INET}.
+- Disallow layer 4 protocol with no ports, since destination port is a
+  mandatory attribute for this object.
 
-fjes_probe
-  |-> fjes_hw_init
-        |-> fjes_hw_setup
-  |-> fjes_hw_exit
-
-However, when fjes_hw_setup fails, fjes_hw_exit won't be called and thus
-all the resources allocated in fjes_hw_setup will be leaked. In this
-patch, we free those resources in fjes_hw_setup and prevents such leaks.
-
-Fixes: 2fcbca687702 ("fjes: platform_driver's .probe and .remove routine")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240122172445.3841883-1-alexious@zju.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 857b46027d6f ("netfilter: nft_ct: add ct expectations support")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/fjes/fjes_hw.c | 37 ++++++++++++++++++++++++++++++-------
- 1 file changed, 30 insertions(+), 7 deletions(-)
+ net/netfilter/nft_ct.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/drivers/net/fjes/fjes_hw.c b/drivers/net/fjes/fjes_hw.c
-index 9c652c04375b..c3fa8db69b9e 100644
---- a/drivers/net/fjes/fjes_hw.c
-+++ b/drivers/net/fjes/fjes_hw.c
-@@ -235,21 +235,25 @@ static int fjes_hw_setup(struct fjes_hw *hw)
+diff --git a/net/netfilter/nft_ct.c b/net/netfilter/nft_ct.c
+index bd468e955a21..d8fd7e487e47 100644
+--- a/net/netfilter/nft_ct.c
++++ b/net/netfilter/nft_ct.c
+@@ -1186,7 +1186,31 @@ static int nft_ct_expect_obj_init(const struct nft_ctx *ctx,
+ 	if (tb[NFTA_CT_EXPECT_L3PROTO])
+ 		priv->l3num = ntohs(nla_get_be16(tb[NFTA_CT_EXPECT_L3PROTO]));
  
- 	mem_size = FJES_DEV_REQ_BUF_SIZE(hw->max_epid);
- 	hw->hw_info.req_buf = kzalloc(mem_size, GFP_KERNEL);
--	if (!(hw->hw_info.req_buf))
--		return -ENOMEM;
-+	if (!(hw->hw_info.req_buf)) {
-+		result = -ENOMEM;
-+		goto free_ep_info;
-+	}
- 
- 	hw->hw_info.req_buf_size = mem_size;
- 
- 	mem_size = FJES_DEV_RES_BUF_SIZE(hw->max_epid);
- 	hw->hw_info.res_buf = kzalloc(mem_size, GFP_KERNEL);
--	if (!(hw->hw_info.res_buf))
--		return -ENOMEM;
-+	if (!(hw->hw_info.res_buf)) {
-+		result = -ENOMEM;
-+		goto free_req_buf;
-+	}
- 
- 	hw->hw_info.res_buf_size = mem_size;
- 
- 	result = fjes_hw_alloc_shared_status_region(hw);
- 	if (result)
--		return result;
-+		goto free_res_buf;
- 
- 	hw->hw_info.buffer_share_bit = 0;
- 	hw->hw_info.buffer_unshare_reserve_bit = 0;
-@@ -260,11 +264,11 @@ static int fjes_hw_setup(struct fjes_hw *hw)
- 
- 			result = fjes_hw_alloc_epbuf(&buf_pair->tx);
- 			if (result)
--				return result;
-+				goto free_epbuf;
- 
- 			result = fjes_hw_alloc_epbuf(&buf_pair->rx);
- 			if (result)
--				return result;
-+				goto free_epbuf;
- 
- 			spin_lock_irqsave(&hw->rx_status_lock, flags);
- 			fjes_hw_setup_epbuf(&buf_pair->tx, mac,
-@@ -287,6 +291,25 @@ static int fjes_hw_setup(struct fjes_hw *hw)
- 	fjes_hw_init_command_registers(hw, &param);
- 
- 	return 0;
++	switch (priv->l3num) {
++	case NFPROTO_IPV4:
++	case NFPROTO_IPV6:
++		if (priv->l3num != ctx->family)
++			return -EINVAL;
 +
-+free_epbuf:
-+	for (epidx = 0; epidx < hw->max_epid ; epidx++) {
-+		if (epidx == hw->my_epid)
-+			continue;
-+		fjes_hw_free_epbuf(&hw->ep_shm_info[epidx].tx);
-+		fjes_hw_free_epbuf(&hw->ep_shm_info[epidx].rx);
++		fallthrough;
++	case NFPROTO_INET:
++		break;
++	default:
++		return -EOPNOTSUPP;
 +	}
-+	fjes_hw_free_shared_status_region(hw);
-+free_res_buf:
-+	kfree(hw->hw_info.res_buf);
-+	hw->hw_info.res_buf = NULL;
-+free_req_buf:
-+	kfree(hw->hw_info.req_buf);
-+	hw->hw_info.req_buf = NULL;
-+free_ep_info:
-+	kfree(hw->ep_shm_info);
-+	hw->ep_shm_info = NULL;
-+	return result;
- }
- 
- static void fjes_hw_cleanup(struct fjes_hw *hw)
++
+ 	priv->l4proto = nla_get_u8(tb[NFTA_CT_EXPECT_L4PROTO]);
++	switch (priv->l4proto) {
++	case IPPROTO_TCP:
++	case IPPROTO_UDP:
++	case IPPROTO_UDPLITE:
++	case IPPROTO_DCCP:
++	case IPPROTO_SCTP:
++		break;
++	default:
++		return -EOPNOTSUPP;
++	}
++
+ 	priv->dport = nla_get_be16(tb[NFTA_CT_EXPECT_DPORT]);
+ 	priv->timeout = nla_get_u32(tb[NFTA_CT_EXPECT_TIMEOUT]);
+ 	priv->size = nla_get_u8(tb[NFTA_CT_EXPECT_SIZE]);
 -- 
 2.43.0
 
