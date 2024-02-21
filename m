@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-21946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1F3885D953
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:17:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4D4F85DD9E
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:07:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 730A5B2407C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:17:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B1981F222BE
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:07:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3962E762FF;
-	Wed, 21 Feb 2024 13:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0DC87E110;
+	Wed, 21 Feb 2024 14:06:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pVz0eRDf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CKuKXV94"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC7A469E08;
-	Wed, 21 Feb 2024 13:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D3C7C09A;
+	Wed, 21 Feb 2024 14:06:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521427; cv=none; b=WCf7umRVdkdmZZbtOhDBGaO5nQiXM80vA6cmf30tbPckQUHSpIrLjaJvxZVtWOAxMCLP/K8nYgx73P8WdqyGX3242nyiABEZpigaMP84Xg90bxazHAOtjImxdF9hMgWAib5SjNSL6Eceb87Eildq2VjOjLgwd/hCGH4Pj1v3stw=
+	t=1708524382; cv=none; b=CeXaRWls4wYak7QxmAKey6CmiVKal5PH7O/YWmFd+0hFsn5rVWLnibBu1hxu9J0iKl1yQ90jLU/oKKIspaQxvK8mFHwISNXluwauGGVt67kikrxY2Q7uFCBRnkL1pVjGYCBZMiBSGOjKnSml11T+yOvzZs2GOIlv2U3HdDCU2Oc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521427; c=relaxed/simple;
-	bh=nxQLd+Sn+E4Dp0POb2WH9ZqQfKtm17Z+sSrQ5b+Fhno=;
+	s=arc-20240116; t=1708524382; c=relaxed/simple;
+	bh=I2WpASzRV60LC6TTkX6zxn8viD+1XhUjbRzE7zkGXgo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hg6km0fXNFJ3Ix32Czc3a8iIQmkiiHBF3vTo92Ery+beHwZx78cbbeDTiZDYUBZt0LRuWEetOlYP2Ob5neGFI/mVmBgqlxk2sRs1BS2Lh9N20bnwyriKmfhlRc1nFM46T/V+oHh3v7KrG9Phz29NUGFWO1G4T+gn4M9UW3zOHdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pVz0eRDf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09C15C43390;
-	Wed, 21 Feb 2024 13:17:05 +0000 (UTC)
+	 MIME-Version; b=mipUWvsp/2oI1Pzj3Mr+Jlygk4b5zIfL5fXXxUlbwAY4nnTLCSw7muoZJkxmicbDYTucMkIGBr3SNzjnXc1qbgcFPV2FsSFwgxMoIF0PgzF7y5P2/WUALcFGSGrMThynT59YB02M00ZtF51GHJC0D51d3JwrSCXcxHRQ4peuPYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CKuKXV94; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEB82C433C7;
+	Wed, 21 Feb 2024 14:06:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521426;
-	bh=nxQLd+Sn+E4Dp0POb2WH9ZqQfKtm17Z+sSrQ5b+Fhno=;
+	s=korg; t=1708524382;
+	bh=I2WpASzRV60LC6TTkX6zxn8viD+1XhUjbRzE7zkGXgo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pVz0eRDfFXps7CkqpjsOyZemThYEuVhCiat2Pub9yW/ysX56QuBUv/iUUtaPDniRd
-	 FM3NUDE1hbsk1Fo85B68gKkJFCs+sd5JvcFyLoXGbVPveeJbU1+HmI3D/QORHsSrX6
-	 SRDEQfT+Lrl/eFGLxbJfQsKgvkZtaCfjSVuIPm74=
+	b=CKuKXV94szSZJTnmUJza5/Ek6tlEEcVX07X8mHml5DTd0dbXk7I7n4ZZB0nPeXxAN
+	 poZtFS375Wo9enRJ2FJiS2vSDkcQBb4GGaTWnzXNXaIAaljUIRNQA4mnYDiLeMTjBM
+	 Ko4qGJr/ZryEJz1VBfgcG33ERxbbE6cjvUt/kCo4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Takashi Iwai <tiwai@suse.de>,
+	Arjun Roy <arjunroy@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Soheil Hassas Yeganeh <soheil@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 106/202] ALSA: hda: Intel: add HDA_ARL PCI ID support
+Subject: [PATCH 5.10 228/379] net-zerocopy: Refactor frag-is-remappable test.
 Date: Wed, 21 Feb 2024 14:06:47 +0100
-Message-ID: <20240221125935.182264985@linuxfoundation.org>
+Message-ID: <20240221130001.642129937@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Arjun Roy <arjunroy@google.com>
 
-[ Upstream commit a31014ebad617868c246d3985ff80d891f03711e ]
+[ Upstream commit 98917cf0d6eda01e8c3c34d35398d46b247b6fd3 ]
 
-Yet another PCI ID.
+Refactor frag-is-remappable test for tcp receive zerocopy. This is
+part of a patch set that introduces short-circuited hybrid copies
+for small receive operations, which results in roughly 33% fewer
+syscalls for small RPC scenarios.
 
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Acked-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20231204212710.185976-3-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Arjun Roy <arjunroy@google.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Soheil Hassas Yeganeh <soheil@google.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 577e4432f3ac ("tcp: add sanity checks to rx zerocopy")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/hda_intel.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv4/tcp.c | 34 ++++++++++++++++++++++++++--------
+ 1 file changed, 26 insertions(+), 8 deletions(-)
 
-diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
-index e66d8729c72f..94a97832cf0f 100644
---- a/sound/pci/hda/hda_intel.c
-+++ b/sound/pci/hda/hda_intel.c
-@@ -2615,6 +2615,8 @@ static const struct pci_device_id azx_ids[] = {
- 	/* Icelake */
- 	{ PCI_DEVICE(0x8086, 0x34c8),
- 	  .driver_data = AZX_DRIVER_SKL | AZX_DCAPS_INTEL_SKYLAKE},
-+	/* Arrow Lake */
-+	{ PCI_DEVICE_DATA(INTEL, HDA_ARL, AZX_DRIVER_SKL | AZX_DCAPS_INTEL_SKYLAKE) },
- 	/* Broxton-P(Apollolake) */
- 	{ PCI_DEVICE(0x8086, 0x5a98),
- 	  .driver_data = AZX_DRIVER_SKL | AZX_DCAPS_INTEL_BROXTON },
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 27e0d3dfc5bd..18541527abce 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -1778,6 +1778,26 @@ static skb_frag_t *skb_advance_to_frag(struct sk_buff *skb, u32 offset_skb,
+ 	return frag;
+ }
+ 
++static bool can_map_frag(const skb_frag_t *frag)
++{
++	return skb_frag_size(frag) == PAGE_SIZE && !skb_frag_off(frag);
++}
++
++static int find_next_mappable_frag(const skb_frag_t *frag,
++				   int remaining_in_skb)
++{
++	int offset = 0;
++
++	if (likely(can_map_frag(frag)))
++		return 0;
++
++	while (offset < remaining_in_skb && !can_map_frag(frag)) {
++		offset += skb_frag_size(frag);
++		++frag;
++	}
++	return offset;
++}
++
+ static int tcp_copy_straggler_data(struct tcp_zerocopy_receive *zc,
+ 				   struct sk_buff *skb, u32 copylen,
+ 				   u32 *offset, u32 *seq)
+@@ -1903,6 +1923,8 @@ static int tcp_zerocopy_receive(struct sock *sk,
+ 	ret = 0;
+ 	curr_addr = address;
+ 	while (length + PAGE_SIZE <= zc->length) {
++		int mappable_offset;
++
+ 		if (zc->recv_skip_hint < PAGE_SIZE) {
+ 			u32 offset_frag;
+ 
+@@ -1930,15 +1952,11 @@ static int tcp_zerocopy_receive(struct sock *sk,
+ 			if (!frags || offset_frag)
+ 				break;
+ 		}
+-		if (skb_frag_size(frags) != PAGE_SIZE || skb_frag_off(frags)) {
+-			int remaining = zc->recv_skip_hint;
+ 
+-			while (remaining && (skb_frag_size(frags) != PAGE_SIZE ||
+-					     skb_frag_off(frags))) {
+-				remaining -= skb_frag_size(frags);
+-				frags++;
+-			}
+-			zc->recv_skip_hint -= remaining;
++		mappable_offset = find_next_mappable_frag(frags,
++							  zc->recv_skip_hint);
++		if (mappable_offset) {
++			zc->recv_skip_hint = mappable_offset;
+ 			break;
+ 		}
+ 		pages[pg_idx] = skb_frag_page(frags);
 -- 
 2.43.0
 
