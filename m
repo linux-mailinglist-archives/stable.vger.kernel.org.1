@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-23053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 433FD85DEFE
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:23:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FD8D85DC4B
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:51:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3313283366
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:23:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF53EB24F35
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:51:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7CA369D3B;
-	Wed, 21 Feb 2024 14:23:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A5EA7CF29;
+	Wed, 21 Feb 2024 13:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K06Qvha5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X8FMdmp/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64A6D3CF42;
-	Wed, 21 Feb 2024 14:23:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C1D79DAE;
+	Wed, 21 Feb 2024 13:51:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525421; cv=none; b=DP9tYVIuJI0haV0ogRd591oYMcEWRz57W01AUNPAzHoH2jXgXriu5gn2+oaCmm8Ef7vuzOGg7JZAeCns7mxE04PqmbAYGf/0YO0ubd2x6sDKI4BcDEppDogCieeGIUei8BIqXOBB8StuQWoxz6xHcVNMTx8UQwnCoXY1VFLrws4=
+	t=1708523495; cv=none; b=UJod49tbzoPBIU+//0M9ndM+zR+TvY9RwqCxjYquS2Hnq3AwcMzc9bY9+C5cxpA9jcH/SLtY3z2+j1a951188804fntAzTstzAbRaPy5XtPS8s5mP7VCqYmoR2bjQM8sqLEVJF3ql8zN1a4ePOJIYsY6OzsKAA6MoZCFPjwT4/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525421; c=relaxed/simple;
-	bh=JOmUEpC76kRk8feLwMx2ExZraHxvQ4C/zaDDdGYAIqE=;
+	s=arc-20240116; t=1708523495; c=relaxed/simple;
+	bh=skPU2jBzRpS0YJ8IZKH0PmIl/JU+vda100MnNbzOXAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GOAPbg/u7CTovEWZqhVQypLoHUM5cU1XJL0+dOSGoMcV3+UtxExZxvKGbwWUVsF82oJ3QDQbsiBeQlcMW0PnOifpjCbw1XMBfjQn7raWVOPkYWKQ8KH2J2c1tP5ITg2/WO7d5XskJXsxUS8SXbG5Usazne1PSgODmekFqW5BkSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K06Qvha5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B42AC433F1;
-	Wed, 21 Feb 2024 14:23:40 +0000 (UTC)
+	 MIME-Version; b=NdzOA9X2i6gsghQEE4c3y8rI0toAsKUAnDad9A0TI32gGBmgM/T+Imhj1ZKTKemYNDFhR2/ziT9smjOpIifI40GzD1Pgt67LqpRY1Q6yJrp+325PjmPRDFnWgza7vOzWMYax+kM1fjuBeL0rk6A7s5c5ZDzqClSpJhsxKhCjN4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X8FMdmp/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A371C433F1;
+	Wed, 21 Feb 2024 13:51:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525421;
-	bh=JOmUEpC76kRk8feLwMx2ExZraHxvQ4C/zaDDdGYAIqE=;
+	s=korg; t=1708523494;
+	bh=skPU2jBzRpS0YJ8IZKH0PmIl/JU+vda100MnNbzOXAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K06Qvha5ktqmiy/XZ+By6dwOkJCfj+FELxYF+HAtshbk6PrYejp1SzVv9ptsTfpS4
-	 NWsSqqQam23/+F1JOpaMPj2h6S2bU3QaSmGAzxZuMmhrO0M5MpugeUhhmUvRxriS++
-	 YEA0iQy9g63r7Khr37xzwB0mGA7h1wVWcaycVbBI=
+	b=X8FMdmp/FcriSw1nkcjyGOQdXBUPAY5TzavdBMezcAgVsbXIWMQ5sivR9AScYBChJ
+	 xyxa1b9hSx5juoKG15SNxNTezI3pPtFEpdtZ9B0IPovBqf597seYBL/8wXrlGk/eNw
+	 KryQnuz4T1v7zgyMdW3j/PnjmLNLhuLfU2AExac4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 133/267] media: ddbridge: fix an error code problem in ddb_probe
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 423/476] pmdomain: core: Move the unused cleanup to a _sync initcall
 Date: Wed, 21 Feb 2024 14:07:54 +0100
-Message-ID: <20240221125944.223285721@linuxfoundation.org>
+Message-ID: <20240221130023.670839120@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 09b4195021be69af1e1936cca995712a6d0f2562 ]
+commit 741ba0134fa7822fcf4e4a0a537a5c4cfd706b20 upstream.
 
-Error code is assigned to 'stat', return 'stat' rather than '-1'.
+The unused clock cleanup uses the _sync initcall to give all users at
+earlier initcalls time to probe. Do the same to avoid leaving some PDs
+dangling at "on" (which actually happened on qcom!).
 
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2fe71dcdfd10 ("PM / domains: Add late_initcall to disable unused PM domains")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20231227-topic-pmdomain_sync_cleanup-v1-1-5f36769d538b@linaro.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/pci/ddbridge/ddbridge-main.c | 2 +-
+ drivers/base/power/domain.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/pci/ddbridge/ddbridge-main.c b/drivers/media/pci/ddbridge/ddbridge-main.c
-index 03dc9924fa2c..bb7fb6402d6e 100644
---- a/drivers/media/pci/ddbridge/ddbridge-main.c
-+++ b/drivers/media/pci/ddbridge/ddbridge-main.c
-@@ -247,7 +247,7 @@ static int ddb_probe(struct pci_dev *pdev,
- 	ddb_unmap(dev);
- 	pci_set_drvdata(pdev, NULL);
- 	pci_disable_device(pdev);
--	return -1;
-+	return stat;
- }
+--- a/drivers/base/power/domain.c
++++ b/drivers/base/power/domain.c
+@@ -1044,7 +1044,7 @@ static int __init genpd_power_off_unused
  
- /****************************************************************************/
--- 
-2.43.0
-
+ 	return 0;
+ }
+-late_initcall(genpd_power_off_unused);
++late_initcall_sync(genpd_power_off_unused);
+ 
+ #ifdef CONFIG_PM_SLEEP
+ 
 
 
 
