@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-22960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D435085DE6F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:18:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A43D285DDEB
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:13:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84F7B1F2469A
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:18:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E75A2B2AEE1
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:12:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BAFD7BB16;
-	Wed, 21 Feb 2024 14:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82BBB7F7EE;
+	Wed, 21 Feb 2024 14:07:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oAooFjWW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g0hdjQiw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C3903D981;
-	Wed, 21 Feb 2024 14:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F59A7F46C;
+	Wed, 21 Feb 2024 14:07:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525099; cv=none; b=TK3Iptl+AIbtZcmtwOOfOwueI2YAaYeLpcx9rnOqrEzRx94Eam1P5Gf9z6EGaqtwfaDtiSPtYPUinQJiR7SxLCPOkhSLPmWJoRFWJNHcny2+BFPTapvkLeKahQ+5tniGX3ZsORY0G2JwyxgGbJcB5k/qKr4Cg6BfFK0DqR68kb0=
+	t=1708524456; cv=none; b=FVEZzb9oDwvftlwH20KawXzG2k5kq9U2YoVCDu/LrgFGFmr2VzOUgGZFjZv+kNAaS5Iy/gnDLwhpixPJdWr0L1KfbKUIDY8/uTIvdP4iKZHIFIap6TfV4bRA42vxlU3hL1lY1bjUBv9+Uw4l5jc++Zm3HJ4r/PZR1ksJ4w4TRxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525099; c=relaxed/simple;
-	bh=svFvsT0f21uQ2vJf3kmlWKN7qu9twkImaBEXfPpRq0Q=;
+	s=arc-20240116; t=1708524456; c=relaxed/simple;
+	bh=wbICEqvs+aqtqktIE2LpLSVP+PESsOG5WRgVp+vwRJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wy5/bJk39QE3VFSjy9E7fhjL/EpxC7+yD0FcFIzN9QregmMS+gwpn6r3b3PNKCgtujk6pM2Kok0rIVV6vHSU0PojjL/QFpRrI00U73FvxfqmzxuMO/ZEvflJcR7gyPgObVki/3lfXulVewGXMa09eO4QhO1/yDTQ3XTwIcQYRRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oAooFjWW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F060C433F1;
-	Wed, 21 Feb 2024 14:18:16 +0000 (UTC)
+	 MIME-Version; b=Xm8n5GHTC5xaCm6oirIRWgV28O55vIc8JygbyEMf+wU5RwYObamXXVbI9MwpOnBhYMNcHPEeOkPmLKEDjYJ2TUmcF8sgZ2MyELuB7/Ei3tFyAnew11XnAaKiP/ZHdBERACqO2A4UYO02pUJAcYCGVvH+YkILDHGPayDNBRy0L4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g0hdjQiw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D971C433F1;
+	Wed, 21 Feb 2024 14:07:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525099;
-	bh=svFvsT0f21uQ2vJf3kmlWKN7qu9twkImaBEXfPpRq0Q=;
+	s=korg; t=1708524456;
+	bh=wbICEqvs+aqtqktIE2LpLSVP+PESsOG5WRgVp+vwRJc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oAooFjWWOcExocRNaCjtEhu+r8Bei1gSr5fkZp4zdTaTb0F2ACKI11oMTL1oos8o7
-	 5BzyH1ieJgjGsKHLlivKRkkJ/9N7saSn0CVpULicKE6BGZkVFmc2GdxW77wXjmNK0f
-	 NqODtIVh7EwLH3fDjmZw0BYWNJ7QuYMDyrhj6c08=
+	b=g0hdjQiwEX+GOhPyB/y6GQA8seXgY49ZXajktbrgOM9rE0SCs+jt+T48U7EUOhObS
+	 1Kuh4DQdJAgcKrFMf5a9zlbfENwmUnQ3tp7OQUgvqSicCeab7Dh84A7I5DLVWZCWE/
+	 jPLownRm4trApRGtS3uu1LUEigB3lGI+5gnvbkyo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Chen <tim.c.chen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 5.4 059/267] tick/sched: Preserve number of idle sleeps across CPU hotplug events
+	Edward Adam Davis <eadavis@qq.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+864a269c27ee06b58374@syzkaller.appspotmail.com
+Subject: [PATCH 5.10 221/379] wifi: cfg80211: fix RCU dereference in __cfg80211_bss_update
 Date: Wed, 21 Feb 2024 14:06:40 +0100
-Message-ID: <20240221125941.858649978@linuxfoundation.org>
+Message-ID: <20240221130001.439218492@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Chen <tim.c.chen@linux.intel.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-commit 9a574ea9069be30b835a3da772c039993c43369b upstream.
+[ Upstream commit 1184950e341c11b6f82bc5b59564411d9537ab27 ]
 
-Commit 71fee48f ("tick-sched: Fix idle and iowait sleeptime accounting vs
-CPU hotplug") preserved total idle sleep time and iowait sleeptime across
-CPU hotplug events.
+Replace rcu_dereference() with rcu_access_pointer() since we hold
+the lock here (and aren't in an RCU critical section).
 
-Similar reasoning applies to the number of idle calls and idle sleeps to
-get the proper average of sleep time per idle invocation.
-
-Preserve those fields too.
-
-Fixes: 71fee48f ("tick-sched: Fix idle and iowait sleeptime accounting vs CPU hotplug")
-Signed-off-by: Tim Chen <tim.c.chen@linux.intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240122233534.3094238-1-tim.c.chen@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 32af9a9e1069 ("wifi: cfg80211: free beacon_ies when overridden from hidden BSS")
+Reported-and-tested-by: syzbot+864a269c27ee06b58374@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Link: https://msgid.link/tencent_BF8F0DF0258C8DBF124CDDE4DD8D992DCF07@qq.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/tick-sched.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ net/wireless/scan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/time/tick-sched.c
-+++ b/kernel/time/tick-sched.c
-@@ -1398,6 +1398,7 @@ void tick_cancel_sched_timer(int cpu)
- {
- 	struct tick_sched *ts = &per_cpu(tick_cpu_sched, cpu);
- 	ktime_t idle_sleeptime, iowait_sleeptime;
-+	unsigned long idle_calls, idle_sleeps;
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index 6f0a01038db1..a6c289a61d30 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -1802,7 +1802,7 @@ cfg80211_bss_update(struct cfg80211_registered_device *rdev,
+ 					 &hidden->hidden_list);
+ 				hidden->refcount++;
  
- # ifdef CONFIG_HIGH_RES_TIMERS
- 	if (ts->sched_timer.base)
-@@ -1406,9 +1407,13 @@ void tick_cancel_sched_timer(int cpu)
- 
- 	idle_sleeptime = ts->idle_sleeptime;
- 	iowait_sleeptime = ts->iowait_sleeptime;
-+	idle_calls = ts->idle_calls;
-+	idle_sleeps = ts->idle_sleeps;
- 	memset(ts, 0, sizeof(*ts));
- 	ts->idle_sleeptime = idle_sleeptime;
- 	ts->iowait_sleeptime = iowait_sleeptime;
-+	ts->idle_calls = idle_calls;
-+	ts->idle_sleeps = idle_sleeps;
- }
- #endif
- 
+-				ies = (void *)rcu_dereference(new->pub.beacon_ies);
++				ies = (void *)rcu_access_pointer(new->pub.beacon_ies);
+ 				rcu_assign_pointer(new->pub.beacon_ies,
+ 						   hidden->pub.beacon_ies);
+ 				if (ies)
+-- 
+2.43.0
+
 
 
 
