@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-22262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DC9485DB22
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:37:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D809485DCDA
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:58:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10709284995
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:37:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9362F284700
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:58:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22A1C6EB77;
-	Wed, 21 Feb 2024 13:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F25F7BB02;
+	Wed, 21 Feb 2024 13:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V9qk8+qf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W2tbd2G3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3A177B3F2;
-	Wed, 21 Feb 2024 13:37:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1D1479DAB;
+	Wed, 21 Feb 2024 13:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522643; cv=none; b=KYDF+1YzUePZxHxOAGJ534kv+czUXcDSqTLwr55yk0CcArsdS735ioaX/NotO3iALIcJvjUopsPC+yS8jfTyYbVfLPdRTH5c16RI7YD30jVhUQihdqUdhc9ptmzhSyxpoW3EaEjSkqI+PrJtGP8F8Vwi2fR5/EKVF8Cj4WKOq8I=
+	t=1708523926; cv=none; b=FR/uqo5T3pc1AaZJC/Rasfs6Rp0TVlug0gk+VWBju/hIz/fDK81aJFhJvbI3venNDWBeb4d4bVwAu94eG72aPOKcs23naIYz2Awl2yfNojWxfJ1XJeSjTmIglNRWXVC2wH5txi+eLdWCa8fLSUqVFt4OVkhOM/urtJPW59XkYTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522643; c=relaxed/simple;
-	bh=ZfbOTySsZNqc50oEruDp9bIguhTibXKYzMFo6VxLIYk=;
+	s=arc-20240116; t=1708523926; c=relaxed/simple;
+	bh=QGKjcqTEhz4LXtKvkoBwF/5mBD6PPl3Is9DplGBytkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fC3+cwOv6tLa3MTc/Wnfg6oq0cIkcq4Ymk6250LOxIQWVso/FEv3T17AbVtwwPgbz4soIxZrHm/3b6GTZdq/2Vicm8FztC3ijgjDa5jH/5vTTgRmUlC4nicaFDPcctKGQpSEDj2WUBjK/LDkmVcO1+54kPf/es7j9Xjauw42n2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V9qk8+qf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D3D2C433F1;
-	Wed, 21 Feb 2024 13:37:23 +0000 (UTC)
+	 MIME-Version; b=lgVVXBypIHxOB4jjGLjyeT5o834ZIqth0s/XzaqJRMLwG9nVAmtesT1KroVDFmU5CNY+e7PS2jQ2VRUZlp5sN168t88ZIX6XIhCm+A8B0WFBh5PmbWUI4yd1zJT9PF4S5L0FDqsE78uEGOlcgWXPhqiqMvpi9DeN/pIhF+heUnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W2tbd2G3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40319C433F1;
+	Wed, 21 Feb 2024 13:58:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522643;
-	bh=ZfbOTySsZNqc50oEruDp9bIguhTibXKYzMFo6VxLIYk=;
+	s=korg; t=1708523926;
+	bh=QGKjcqTEhz4LXtKvkoBwF/5mBD6PPl3Is9DplGBytkU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V9qk8+qfAN+Mml6iM09LM9rrB+yEp7T79h3faObC/lKHVAV0orOGdSk0a/0tqc0Q+
-	 75hGN7TA07iBFCRcsTRlA/e5KXLoKtudjJKCvXAs4V79sIEiWUbGcIxCpYBMn02JJV
-	 b49EAI7h1lD+8oPOgvBX9RvPoNx020kA0G8PKBaI=
+	b=W2tbd2G3otu92fxfHgao0N+uPjVzvKn4ywt+9QxJCws8bwprKCTcaU+LE9ORTWokm
+	 JXsfmCJFXzzBxkp2nxaLGD8NAMwmhJMsrbm0tWEEkyJ8vVq8RX2DWVTynpmvtt5/eV
+	 LB6w1LTpypJleOWAHYcIL9NvEzuG1oEmHtOsWxZs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Tretter <m.tretter@pengutronix.de>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 219/476] media: rockchip: rga: fix swizzling for RGB formats
+Subject: [PATCH 5.10 091/379] NFSD: Modernize nfsd4_release_lockowner()
 Date: Wed, 21 Feb 2024 14:04:30 +0100
-Message-ID: <20240221130015.990395080@linuxfoundation.org>
+Message-ID: <20240221125957.597967433@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +61,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Tretter <m.tretter@pengutronix.de>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 9e7dc39260edac180c206bb6149595a40eabae3e ]
+[ Upstream commit bd8fdb6e545f950f4654a9a10d7e819ad48146e5 ]
 
-When using 32 bit RGB formats, the RGA on the rk3568 produces wrong
-colors as the wrong color channels are read or written.  The reason is
-that the format description for the channel swizzeling is wrong and the
-wrong bits are configured. For example, when converting ARGB32 to NV12,
-the alpha channel is used as blue channel.. This doesn't happen if the
-color format is the same on both sides.
+Refactor: Use existing helpers that other lock operations use. This
+change removes several automatic variables, so re-organize the
+variable declarations for readability.
 
-Fix the color_swap settings of the formats to correctly handle 32 bit
-RGB formats.
-
-For RGA_COLOR_FMT_XBGR8888, the RGA_COLOR_ALPHA_SWAP bit doesn't have an
-effect. Thus, it isn't possible to handle the V4L2_PIX_FMT_XRGB32. Thus,
-it is removed from the list of supported formats.
-
-Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Stable-dep-of: edcf9725150e ("nfsd: fix RELEASE_LOCKOWNER")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/rockchip/rga/rga.c | 15 +++------------
- 1 file changed, 3 insertions(+), 12 deletions(-)
+ fs/nfsd/nfs4state.c | 36 +++++++++++-------------------------
+ 1 file changed, 11 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/media/platform/rockchip/rga/rga.c b/drivers/media/platform/rockchip/rga/rga.c
-index e3246344fb72..bcbbd1408b36 100644
---- a/drivers/media/platform/rockchip/rga/rga.c
-+++ b/drivers/media/platform/rockchip/rga/rga.c
-@@ -187,25 +187,16 @@ static int rga_setup_ctrls(struct rga_ctx *ctx)
- static struct rga_fmt formats[] = {
- 	{
- 		.fourcc = V4L2_PIX_FMT_ARGB32,
--		.color_swap = RGA_COLOR_RB_SWAP,
-+		.color_swap = RGA_COLOR_ALPHA_SWAP,
- 		.hw_format = RGA_COLOR_FMT_ABGR8888,
- 		.depth = 32,
- 		.uv_factor = 1,
- 		.y_div = 1,
- 		.x_div = 1,
- 	},
--	{
--		.fourcc = V4L2_PIX_FMT_XRGB32,
--		.color_swap = RGA_COLOR_RB_SWAP,
--		.hw_format = RGA_COLOR_FMT_XBGR8888,
--		.depth = 32,
--		.uv_factor = 1,
--		.y_div = 1,
--		.x_div = 1,
--	},
- 	{
- 		.fourcc = V4L2_PIX_FMT_ABGR32,
--		.color_swap = RGA_COLOR_ALPHA_SWAP,
-+		.color_swap = RGA_COLOR_RB_SWAP,
- 		.hw_format = RGA_COLOR_FMT_ABGR8888,
- 		.depth = 32,
- 		.uv_factor = 1,
-@@ -214,7 +205,7 @@ static struct rga_fmt formats[] = {
- 	},
- 	{
- 		.fourcc = V4L2_PIX_FMT_XBGR32,
--		.color_swap = RGA_COLOR_ALPHA_SWAP,
-+		.color_swap = RGA_COLOR_RB_SWAP,
- 		.hw_format = RGA_COLOR_FMT_XBGR8888,
- 		.depth = 32,
- 		.uv_factor = 1,
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index d402ca0b535f..1b40b2197ce6 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -7113,16 +7113,13 @@ nfsd4_release_lockowner(struct svc_rqst *rqstp,
+ 			union nfsd4_op_u *u)
+ {
+ 	struct nfsd4_release_lockowner *rlockowner = &u->release_lockowner;
++	struct nfsd_net *nn = net_generic(SVC_NET(rqstp), nfsd_net_id);
+ 	clientid_t *clid = &rlockowner->rl_clientid;
+-	struct nfs4_stateowner *sop;
+-	struct nfs4_lockowner *lo = NULL;
+ 	struct nfs4_ol_stateid *stp;
+-	struct xdr_netobj *owner = &rlockowner->rl_owner;
+-	unsigned int hashval = ownerstr_hashval(owner);
+-	__be32 status;
+-	struct nfsd_net *nn = net_generic(SVC_NET(rqstp), nfsd_net_id);
++	struct nfs4_lockowner *lo;
+ 	struct nfs4_client *clp;
+-	LIST_HEAD (reaplist);
++	LIST_HEAD(reaplist);
++	__be32 status;
+ 
+ 	dprintk("nfsd4_release_lockowner clientid: (%08x/%08x):\n",
+ 		clid->cl_boot, clid->cl_id);
+@@ -7130,30 +7127,19 @@ nfsd4_release_lockowner(struct svc_rqst *rqstp,
+ 	status = lookup_clientid(clid, cstate, nn, false);
+ 	if (status)
+ 		return status;
+-
+ 	clp = cstate->clp;
+-	/* Find the matching lock stateowner */
+-	spin_lock(&clp->cl_lock);
+-	list_for_each_entry(sop, &clp->cl_ownerstr_hashtbl[hashval],
+-			    so_strhash) {
+ 
+-		if (sop->so_is_open_owner || !same_owner_str(sop, owner))
+-			continue;
+-
+-		if (atomic_read(&sop->so_count) != 1) {
+-			spin_unlock(&clp->cl_lock);
+-			return nfserr_locks_held;
+-		}
+-
+-		lo = lockowner(sop);
+-		nfs4_get_stateowner(sop);
+-		break;
+-	}
++	spin_lock(&clp->cl_lock);
++	lo = find_lockowner_str_locked(clp, &rlockowner->rl_owner);
+ 	if (!lo) {
+ 		spin_unlock(&clp->cl_lock);
+ 		return status;
+ 	}
+-
++	if (atomic_read(&lo->lo_owner.so_count) != 2) {
++		spin_unlock(&clp->cl_lock);
++		nfs4_put_stateowner(&lo->lo_owner);
++		return nfserr_locks_held;
++	}
+ 	unhash_lockowner_locked(lo);
+ 	while (!list_empty(&lo->lo_owner.so_stateids)) {
+ 		stp = list_first_entry(&lo->lo_owner.so_stateids,
 -- 
 2.43.0
 
