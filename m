@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-22345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0046985DB91
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:42:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3428485DD26
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:02:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 61E25B255ED
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:42:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2DD82832D1
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:02:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C717479DAE;
-	Wed, 21 Feb 2024 13:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A52B7BAF8;
+	Wed, 21 Feb 2024 14:01:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rOix1Srt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YwmU08Ay"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FBB47992D;
-	Wed, 21 Feb 2024 13:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28BA378B5E;
+	Wed, 21 Feb 2024 14:01:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522958; cv=none; b=KyZ1L76qW4s2qnN26gxVRMyhzhPQmH46gE4YKuu0q9KHypzYsNUq4UjCMfpkSO4Z8ZacnDs3uNKweX4uFTVqBorT+NHGyB0TYsriL26PjwQYMPl2vH01E+SCNRE7JEStmZoyi1LzP6SjrK4Liej0bMqPWOEhC/Bu8SXwPuDV9qE=
+	t=1708524110; cv=none; b=nd3pbtRSuF0+36Rw0jH5wOdyigp/uczY8SyoEVEscSjsskHTOtaBJ5J6Uqz7it1QVQPv49hmV8NCeZz95WOr/F5sDe+0J7me7/xzLDvMQVR/Ukx1RW3JQ3uRpK71yShpYdCclCKm5mzp0Jj6siWZEwbnaDhbRxndDVaFjqeG6w4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522958; c=relaxed/simple;
-	bh=h8fbINHqDhZ/24lZynN94ViKwLOH+i0LahxcaeevAiA=;
+	s=arc-20240116; t=1708524110; c=relaxed/simple;
+	bh=Iubbyb1JtDUnBRCcVDjc49NiGJ3Wvj10UJ/RKv8TRg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G0w+KWgNjyhk0U9WwgA6EE+uARLCMDzjxkFQZEkt+YWiVSKZbyIZ4bsOXi9wIMx/N/7A5h/Pvg7sWm2mXT03F5rJ/xziCVBQlL3y1GjQ+4DV6qhzreiJhg+ljnFl3PpmrwRl3Avf3lMbzxe6ZEoiUD7OrS/LdWOdd7XmBEyF4e4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rOix1Srt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92108C433F1;
-	Wed, 21 Feb 2024 13:42:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=abQpS7SbWOSytPQS5Ngf4tyB/AqL1oQiHerxiy5QnppzsW3/7ZwIvZL94tHcsa/aqRZUQgWF8aSKPFKnwKu+mRAZcxW6GgCcTxYTU0CvCoWmaSUnB7fNPJrGHKwMg1ni7U828wgVjhYkCUDQdMJM/KpHqnXZ3RBDZwDXu+NZ6S4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YwmU08Ay; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 570F4C43390;
+	Wed, 21 Feb 2024 14:01:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522958;
-	bh=h8fbINHqDhZ/24lZynN94ViKwLOH+i0LahxcaeevAiA=;
+	s=korg; t=1708524109;
+	bh=Iubbyb1JtDUnBRCcVDjc49NiGJ3Wvj10UJ/RKv8TRg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rOix1SrtINbTeXq7hjnW6Hqna7Fyq3SruIZzKKegrdI3kpmset1XWhhiqCtOjQn5j
-	 a0H8fWPrfnT8CZCh2fjZcBgUnpQqzZpYC/28DC+qM2/xnrP2HZkyFFjVXwSCJqBJ2a
-	 xO9vxWAFUjnCEANUQuxiaxg5mEkqdnnvBXc1LJEA=
+	b=YwmU08AyqYUxyFJhB/5LXQOGRlmiPTqdo1QLf4R4yJqIHt3+R3CAOgDTrtO+WuI91
+	 thr28qHaojJ6Uo5UeU4C524/9U3IVMlBBTCrD8JULRa8M+f1HrGhx2vWp2OLsB1Rhs
+	 FmmQ8gVJTwgrSeRZTcfYxHM5Cv9msl6OnHsv2GPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Minsuk Kang <linuxlovemin@yonsei.ac.kr>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 274/476] ip6_tunnel: make sure to pull inner header in __ip6_tnl_rcv()
-Date: Wed, 21 Feb 2024 14:05:25 +0100
-Message-ID: <20240221130018.094549391@linuxfoundation.org>
+Subject: [PATCH 5.10 147/379] wifi: ath9k: Fix potential array-index-out-of-bounds read in ath9k_htc_txstatus()
+Date: Wed, 21 Feb 2024 14:05:26 +0100
+Message-ID: <20240221125959.271063591@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,143 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
 
-[ Upstream commit 8d975c15c0cd744000ca386247432d57b21f9df0 ]
+[ Upstream commit 2adc886244dff60f948497b59affb6c6ebb3c348 ]
 
-syzbot found __ip6_tnl_rcv() could access unitiliazed data [1].
+Fix an array-index-out-of-bounds read in ath9k_htc_txstatus(). The bug
+occurs when txs->cnt, data from a URB provided by a USB device, is
+bigger than the size of the array txs->txstatus, which is
+HTC_MAX_TX_STATUS. WARN_ON() already checks it, but there is no bug
+handling code after the check. Make the function return if that is the
+case.
 
-Call pskb_inet_may_pull() to fix this, and initialize ipv6h
-variable after this call as it can change skb->head.
+Found by a modified version of syzkaller.
 
-[1]
- BUG: KMSAN: uninit-value in __INET_ECN_decapsulate include/net/inet_ecn.h:253 [inline]
- BUG: KMSAN: uninit-value in INET_ECN_decapsulate include/net/inet_ecn.h:275 [inline]
- BUG: KMSAN: uninit-value in IP6_ECN_decapsulate+0x7df/0x1e50 include/net/inet_ecn.h:321
-  __INET_ECN_decapsulate include/net/inet_ecn.h:253 [inline]
-  INET_ECN_decapsulate include/net/inet_ecn.h:275 [inline]
-  IP6_ECN_decapsulate+0x7df/0x1e50 include/net/inet_ecn.h:321
-  ip6ip6_dscp_ecn_decapsulate+0x178/0x1b0 net/ipv6/ip6_tunnel.c:727
-  __ip6_tnl_rcv+0xd4e/0x1590 net/ipv6/ip6_tunnel.c:845
-  ip6_tnl_rcv+0xce/0x100 net/ipv6/ip6_tunnel.c:888
- gre_rcv+0x143f/0x1870
-  ip6_protocol_deliver_rcu+0xda6/0x2a60 net/ipv6/ip6_input.c:438
-  ip6_input_finish net/ipv6/ip6_input.c:483 [inline]
-  NF_HOOK include/linux/netfilter.h:314 [inline]
-  ip6_input+0x15d/0x430 net/ipv6/ip6_input.c:492
-  ip6_mc_input+0xa7e/0xc80 net/ipv6/ip6_input.c:586
-  dst_input include/net/dst.h:461 [inline]
-  ip6_rcv_finish+0x5db/0x870 net/ipv6/ip6_input.c:79
-  NF_HOOK include/linux/netfilter.h:314 [inline]
-  ipv6_rcv+0xda/0x390 net/ipv6/ip6_input.c:310
-  __netif_receive_skb_one_core net/core/dev.c:5532 [inline]
-  __netif_receive_skb+0x1a6/0x5a0 net/core/dev.c:5646
-  netif_receive_skb_internal net/core/dev.c:5732 [inline]
-  netif_receive_skb+0x58/0x660 net/core/dev.c:5791
-  tun_rx_batched+0x3ee/0x980 drivers/net/tun.c:1555
-  tun_get_user+0x53af/0x66d0 drivers/net/tun.c:2002
-  tun_chr_write_iter+0x3af/0x5d0 drivers/net/tun.c:2048
-  call_write_iter include/linux/fs.h:2084 [inline]
-  new_sync_write fs/read_write.c:497 [inline]
-  vfs_write+0x786/0x1200 fs/read_write.c:590
-  ksys_write+0x20f/0x4c0 fs/read_write.c:643
-  __do_sys_write fs/read_write.c:655 [inline]
-  __se_sys_write fs/read_write.c:652 [inline]
-  __x64_sys_write+0x93/0xd0 fs/read_write.c:652
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0x6d/0x140 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
+UBSAN: array-index-out-of-bounds in htc_drv_txrx.c
+index 13 is out of range for type '__wmi_event_txstatus [12]'
+Call Trace:
+ ath9k_htc_txstatus
+ ath9k_wmi_event_tasklet
+ tasklet_action_common
+ __do_softirq
+ irq_exit_rxu
+ sysvec_apic_timer_interrupt
 
-Uninit was created at:
-  slab_post_alloc_hook+0x129/0xa70 mm/slab.h:768
-  slab_alloc_node mm/slub.c:3478 [inline]
-  kmem_cache_alloc_node+0x5e9/0xb10 mm/slub.c:3523
-  kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:560
-  __alloc_skb+0x318/0x740 net/core/skbuff.c:651
-  alloc_skb include/linux/skbuff.h:1286 [inline]
-  alloc_skb_with_frags+0xc8/0xbd0 net/core/skbuff.c:6334
-  sock_alloc_send_pskb+0xa80/0xbf0 net/core/sock.c:2787
-  tun_alloc_skb drivers/net/tun.c:1531 [inline]
-  tun_get_user+0x1e8a/0x66d0 drivers/net/tun.c:1846
-  tun_chr_write_iter+0x3af/0x5d0 drivers/net/tun.c:2048
-  call_write_iter include/linux/fs.h:2084 [inline]
-  new_sync_write fs/read_write.c:497 [inline]
-  vfs_write+0x786/0x1200 fs/read_write.c:590
-  ksys_write+0x20f/0x4c0 fs/read_write.c:643
-  __do_sys_write fs/read_write.c:655 [inline]
-  __se_sys_write fs/read_write.c:652 [inline]
-  __x64_sys_write+0x93/0xd0 fs/read_write.c:652
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0x6d/0x140 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
-
-CPU: 0 PID: 5034 Comm: syz-executor331 Not tainted 6.7.0-syzkaller-00562-g9f8413c4a66f #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/17/2023
-
-Fixes: 0d3c703a9d17 ("ipv6: Cleanup IPv6 tunnel receive path")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240125170557.2663942-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20231113065756.1491991-1-linuxlovemin@yonsei.ac.kr
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_tunnel.c | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath9k/htc_drv_txrx.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-index 35bd93347b8b..d370a71c9752 100644
---- a/net/ipv6/ip6_tunnel.c
-+++ b/net/ipv6/ip6_tunnel.c
-@@ -798,8 +798,8 @@ static int __ip6_tnl_rcv(struct ip6_tnl *tunnel, struct sk_buff *skb,
- 						struct sk_buff *skb),
- 			 bool log_ecn_err)
- {
--	const struct ipv6hdr *ipv6h = ipv6_hdr(skb);
--	int err;
-+	const struct ipv6hdr *ipv6h;
-+	int nh, err;
+diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
+index 622fc7f17040..5037142c5a82 100644
+--- a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
++++ b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
+@@ -647,9 +647,10 @@ void ath9k_htc_txstatus(struct ath9k_htc_priv *priv, void *wmi_event)
+ 	struct ath9k_htc_tx_event *tx_pend;
+ 	int i;
  
- 	if ((!(tpi->flags & TUNNEL_CSUM) &&
- 	     (tunnel->parms.i_flags & TUNNEL_CSUM)) ||
-@@ -831,7 +831,6 @@ static int __ip6_tnl_rcv(struct ip6_tnl *tunnel, struct sk_buff *skb,
- 			goto drop;
- 		}
+-	for (i = 0; i < txs->cnt; i++) {
+-		WARN_ON(txs->cnt > HTC_MAX_TX_STATUS);
++	if (WARN_ON_ONCE(txs->cnt > HTC_MAX_TX_STATUS))
++		return;
  
--		ipv6h = ipv6_hdr(skb);
- 		skb->protocol = eth_type_trans(skb, tunnel->dev);
- 		skb_postpull_rcsum(skb, eth_hdr(skb), ETH_HLEN);
- 	} else {
-@@ -839,7 +838,23 @@ static int __ip6_tnl_rcv(struct ip6_tnl *tunnel, struct sk_buff *skb,
- 		skb_reset_mac_header(skb);
- 	}
++	for (i = 0; i < txs->cnt; i++) {
+ 		__txs = &txs->txstatus[i];
  
-+	/* Save offset of outer header relative to skb->head,
-+	 * because we are going to reset the network header to the inner header
-+	 * and might change skb->head.
-+	 */
-+	nh = skb_network_header(skb) - skb->head;
-+
- 	skb_reset_network_header(skb);
-+
-+	if (!pskb_inet_may_pull(skb)) {
-+		DEV_STATS_INC(tunnel->dev, rx_length_errors);
-+		DEV_STATS_INC(tunnel->dev, rx_errors);
-+		goto drop;
-+	}
-+
-+	/* Get the outer header. */
-+	ipv6h = (struct ipv6hdr *)(skb->head + nh);
-+
- 	memset(skb->cb, 0, sizeof(struct inet6_skb_parm));
- 
- 	__skb_tunnel_rx(skb, tunnel->dev, tunnel->net);
+ 		skb = ath9k_htc_tx_get_packet(priv, __txs);
 -- 
 2.43.0
 
