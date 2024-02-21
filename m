@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-22944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F22F185DEB6
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:21:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4C6F85DD50
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:04:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A5F8B2A301
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:18:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31A06B2460D
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:04:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACFCE7BB16;
-	Wed, 21 Feb 2024 14:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF447EEEB;
+	Wed, 21 Feb 2024 14:03:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="STBmelHw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KxxmRfC/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB1A78B5E;
-	Wed, 21 Feb 2024 14:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E09797D3E3;
+	Wed, 21 Feb 2024 14:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525045; cv=none; b=nA3mZ5sgvx2OASIgCBGILXtU6AWp+C8Dw5b9Z9jiu3eM6S9FknFTrzf8ghmeELxsdYgScwp7Cn0nWyrwotXPtUw+AqPHd0+Zvopqwpp/plF4iUy4Jf8wXxd3iGtLsrpsM9BD/UuPFsGHzMbDZOFhqMFeN+3O8NzfhyLj6vTxMBY=
+	t=1708524210; cv=none; b=AqN3ARrbKf8wK3H+GMjchLAe+Pd48hETXkETfIVkHgHn2ktrzhIqr+an9E2H6TT76Xhelwew29xiQVoGYhrg3sfyT8PZlUyR4SojcdSfdgYLvjKKnJv73PKyPFlinIjbUllcRQi1DMTCKVLj0Vmr+SuZLv1/AGQL9iQ+dSorC8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525045; c=relaxed/simple;
-	bh=yOuJBEYrJzjpuwyx0YoGJMDghAKmeIiseOFIo/9KBfU=;
+	s=arc-20240116; t=1708524210; c=relaxed/simple;
+	bh=yTtlMdzNbLy0sMKmknjk0B6OK4HBOytQ4bVoI4HVzKs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p/sykitEAX08Nfb9Om9WsRsK4A7Y6ZuH8opgC2hR1W+8tsaOSToBzhIJ5K8vqAg3ew7yT7Wia7gnW4RaHrJpuAqMFmZkSwa+tpTpbCJA4qmMTvRAPVtd8JkFjjJ0c+7jH9U6FOD/HZqny8trYCTMIdsubYO2eYgZ1NY91kwANEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=STBmelHw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 572ABC433F1;
-	Wed, 21 Feb 2024 14:17:23 +0000 (UTC)
+	 MIME-Version; b=QD64w8kFYwKpvjoTQqR6/Isgp62KjFxie8PcVy/+JJ2jat+5eeEcdhO5yKAmXWAdCIM1HKsVtGTRe8/RZIfUHnCHdqB+ac9QpU3aFyKXUH/52NHXLZ1TcAYE0LyNzPAzfupDpuR0h1BsJzz/6XWCx7INsOdC44pjmHa3+ntIuRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KxxmRfC/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 498E8C433F1;
+	Wed, 21 Feb 2024 14:03:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525043;
-	bh=yOuJBEYrJzjpuwyx0YoGJMDghAKmeIiseOFIo/9KBfU=;
+	s=korg; t=1708524209;
+	bh=yTtlMdzNbLy0sMKmknjk0B6OK4HBOytQ4bVoI4HVzKs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=STBmelHwM5M/BbcQTpydAB0jaXCPsg/F+LQbwbNRHti+yzaaBGye2+N1gjAZAdSSH
-	 iROb1XiSkj8XORFKw++NSwUk2vJQearT5oVySQ5l3odeaPIzcSjYmgzejxRqQxVGII
-	 EWgKXKIvmDU8tGq1XRZthb2a1QWIFAwvInlPACEs=
+	b=KxxmRfC/GAM3PQGj2xFDY0wF/crCypJH8VJnfGJcgTlB/xQZ20wgDGNCKUpOVSuY+
+	 clohkg5atiR3nUEKN/+FBiwNCmqbW2nxN9IG1LLS395R8ZSlpsw5T6Zjm+P39IToPy
+	 PpiEOfIFil0CS6s/EbP+UPuMQrnahUqTyjLLLeSo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 5.4 015/267] arm64: dts: qcom: sdm845: fix USB wakeup interrupt types
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 177/379] ASoC: doc: Fix undefined SND_SOC_DAPM_NOPM argument
 Date: Wed, 21 Feb 2024 14:05:56 +0100
-Message-ID: <20240221125940.531673812@linuxfoundation.org>
+Message-ID: <20240221130000.148558157@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-commit 84ad9ac8d9ca29033d589e79a991866b38e23b85 upstream.
+[ Upstream commit 67c7666fe808c3a7af3cc6f9d0a3dd3acfd26115 ]
 
-The DP/DM wakeup interrupts are edge triggered and which edge to trigger
-on depends on use-case and whether a Low speed or Full/High speed device
-is connected.
+The virtual widget example makes use of an undefined SND_SOC_DAPM_NOPM
+argument passed to SND_SOC_DAPM_MIXER().  Replace with the correct
+SND_SOC_NOPM definition.
 
-Fixes: ca4db2b538a1 ("arm64: dts: qcom: sdm845: Add USB-related nodes")
-Cc: stable@vger.kernel.org      # 4.20
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20231120164331.8116-9-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Link: https://lore.kernel.org/r/20231121120751.77355-1-cristian.ciocaltea@collabora.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845.dtsi |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ Documentation/sound/soc/dapm.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-@@ -2503,8 +2503,8 @@
+diff --git a/Documentation/sound/soc/dapm.rst b/Documentation/sound/soc/dapm.rst
+index 8e44107933ab..c3154ce6e1b2 100644
+--- a/Documentation/sound/soc/dapm.rst
++++ b/Documentation/sound/soc/dapm.rst
+@@ -234,7 +234,7 @@ corresponding soft power control. In this case it is necessary to create
+ a virtual widget - a widget with no control bits e.g.
+ ::
  
- 			interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
- 				     <GIC_SPI 486 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 488 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 489 IRQ_TYPE_LEVEL_HIGH>;
-+				     <GIC_SPI 488 IRQ_TYPE_EDGE_BOTH>,
-+				     <GIC_SPI 489 IRQ_TYPE_EDGE_BOTH>;
- 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
- 					  "dm_hs_phy_irq", "dp_hs_phy_irq";
+-  SND_SOC_DAPM_MIXER("AC97 Mixer", SND_SOC_DAPM_NOPM, 0, 0, NULL, 0),
++  SND_SOC_DAPM_MIXER("AC97 Mixer", SND_SOC_NOPM, 0, 0, NULL, 0),
  
-@@ -2547,8 +2547,8 @@
+ This can be used to merge to signal paths together in software.
  
- 			interrupts = <GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>,
- 				     <GIC_SPI 487 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 490 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 491 IRQ_TYPE_LEVEL_HIGH>;
-+				     <GIC_SPI 490 IRQ_TYPE_EDGE_BOTH>,
-+				     <GIC_SPI 491 IRQ_TYPE_EDGE_BOTH>;
- 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
- 					  "dm_hs_phy_irq", "dp_hs_phy_irq";
- 
+-- 
+2.43.0
+
 
 
 
