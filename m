@@ -1,72 +1,55 @@
-Return-Path: <stable+bounces-22554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B60F85DC96
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:55:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9315485DABD
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:34:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE6801C236E4
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:55:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4B591C20F2E
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:34:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0B4778B50;
-	Wed, 21 Feb 2024 13:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAD617866C;
+	Wed, 21 Feb 2024 13:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1XuOqbs4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eRQsHdI1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CECB79DAB;
-	Wed, 21 Feb 2024 13:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AB3D7CF32;
+	Wed, 21 Feb 2024 13:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523704; cv=none; b=cqTa4eiG1e2fCkRhordDScFyQY2UWn0HsqfG8yheVZJKOknYv14qax8H0OQOQTpQvMnTbxfHZBoERP00MDOrWBvjhjj+dIHuAsJDuDeM6hZW3CLF+eSi7+mHsf4qcRdeDrbK3/sPqRuYE8kWfdXQdDpAtlFVuO5tay778jzTwxM=
+	t=1708522335; cv=none; b=DhM8fkAcGOw048xZDcibcz9GOAmBmwANW6fYgGNEOd7WDQjyPddYbiPYwj/Zx6SZmOwATEDCLDiFq6nQpYKVwkCo+1tC/OlMP/MvkaFW+HaSdnnUAdI2LFjlfrgG/kqydaSSNJ6kOHdkJqcrZfaWUxbjOorYKQnmOy19nT91zLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523704; c=relaxed/simple;
-	bh=AmzD+HpGzYBG6nuZAahBxfSD0c6cubSh46IEFNClbto=;
+	s=arc-20240116; t=1708522335; c=relaxed/simple;
+	bh=6u3YeICE3FH6jIW5fmbiKzkBx29q8qGz1VS2MlvSLCk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yza4dCOSVByDrkXl15LwRsAPjyWaYQ9J5VkjbrkwU5XZ3UkV2sQirXiiS11lxeN+lEzEX+70h0v51fE42ijqhsNftIndzWAIDo7zDLfnrbVEdywTW/pn3o6TUlHb8DiiZnpvC+mqDwPG1UbihPyGXE6VZxMsfEygM3MU+74XNJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1XuOqbs4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E79A9C433F1;
-	Wed, 21 Feb 2024 13:55:03 +0000 (UTC)
+	 MIME-Version; b=POdZliv7EzbIsXekuLGdssds9zaOcFyezP913z9arcT3s2eFVEZgU89fhu/ZVO15WkDyhR2f5c9KvCbcNS79SWWMQB08o1PSMtowul/SRwUo5xemW9RIvUOdKeBHeDox7g5ScldbmhX/3IH8/oSt+BkOxhGmdp7cXPMd0a+7aBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eRQsHdI1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DD4BC433F1;
+	Wed, 21 Feb 2024 13:32:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523704;
-	bh=AmzD+HpGzYBG6nuZAahBxfSD0c6cubSh46IEFNClbto=;
+	s=korg; t=1708522335;
+	bh=6u3YeICE3FH6jIW5fmbiKzkBx29q8qGz1VS2MlvSLCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1XuOqbs4inIDmB2qriakzr4ZndHKY3hYPRVE0aS59mFKcMGvr6lI7xLQZZpsZIpCP
-	 PU1u/Srg1RcZWmJ4JHb9kqjG20FIuZo459kFkPeSE+w67lIFl7msT1PgNgZYNuRmNY
-	 AdgJWWOu30kCKXc9YF2/c2Eg5DlhkqDAXNyD7suA=
+	b=eRQsHdI1vhJtic2eEIkUxs2B2Xfn+NagxMzBcsClyKxgzMyx+zWVhDTFvwXJYwWgg
+	 vFLI+mM4hh2eZUcpinIRHYs4SP4aPijLuOzC0532Q45LQ0kfdQpBIl6SxFzVeKZYph
+	 RZ4ipoaa0xBq+q7YZusp4T4sD0Vbco3KhYS05jlU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Christian Eggers <ceggers@arri.de>,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	MyungJoo Ham <myungjoo.ham@samsung.com>,
-	Kyungmin Park <kyungmin.park@samsung.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Peter Meerwald <pmeerw@pmeerw.net>,
-	Zhang Rui <rui.zhang@intel.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 007/379] units: change from L to UL
+Subject: [PATCH 5.15 135/476] perf/core: Fix narrow startup race when creating the perf nr_addr_filters sysfs file
 Date: Wed, 21 Feb 2024 14:03:06 +0100
-Message-ID: <20240221125955.138887846@linuxfoundation.org>
+Message-ID: <20240221130012.938825439@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,73 +61,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
+From: Greg KH <gregkh@linuxfoundation.org>
 
-[ Upstream commit c9221919a2d2df5741ab074dfec5bdfc6f1e043b ]
+[ Upstream commit 652ffc2104ec1f69dd4a46313888c33527145ccf ]
 
-Patch series "Add Hz macros", v3.
-
-There are multiple definitions of the HZ_PER_MHZ or HZ_PER_KHZ in the
-different drivers.  Instead of duplicating this definition again and
-again, add one in the units.h header to be reused in all the place the
-redefiniton occurs.
-
-At the same time, change the type of the Watts, as they can not be
-negative.
-
-This patch (of 10):
-
-The users of the macros are safe to be assigned with an unsigned instead
-of signed as the variables using them are themselves unsigned.
-
-Link: https://lkml.kernel.org/r/20210816114732.1834145-1-daniel.lezcano@linaro.org
-Link: https://lkml.kernel.org/r/20210816114732.1834145-2-daniel.lezcano@linaro.org
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Jonathan Cameron <jic23@kernel.org>
-Cc: Christian Eggers <ceggers@arri.de>
-Cc: Lukasz Luba <lukasz.luba@arm.com>
-Cc: MyungJoo Ham <myungjoo.ham@samsung.com>
-Cc: Kyungmin Park <kyungmin.park@samsung.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>
-Cc: Peter Meerwald <pmeerw@pmeerw.net>
-Cc: Zhang Rui <rui.zhang@intel.com>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc: Chanwoo Choi <cw00.choi@samsung.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Stable-dep-of: 3ef79cd14122 ("serial: sc16is7xx: set safe default SPI clock frequency")
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/2023061204-decal-flyable-6090@gregkh
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/units.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ kernel/events/core.c | 40 ++++++++++++++++++++++++++++------------
+ 1 file changed, 28 insertions(+), 12 deletions(-)
 
-diff --git a/include/linux/units.h b/include/linux/units.h
-index 3457179f7116..62149b5082e1 100644
---- a/include/linux/units.h
-+++ b/include/linux/units.h
-@@ -20,9 +20,9 @@
- #define PICO	1000000000000ULL
- #define FEMTO	1000000000000000ULL
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index ada7ef0eb639..0e03afd82348 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -11220,9 +11220,32 @@ static DEVICE_ATTR_RW(perf_event_mux_interval_ms);
+ static struct attribute *pmu_dev_attrs[] = {
+ 	&dev_attr_type.attr,
+ 	&dev_attr_perf_event_mux_interval_ms.attr,
++	&dev_attr_nr_addr_filters.attr,
++	NULL,
++};
++
++static umode_t pmu_dev_is_visible(struct kobject *kobj, struct attribute *a, int n)
++{
++	struct device *dev = kobj_to_dev(kobj);
++	struct pmu *pmu = dev_get_drvdata(dev);
++
++	if (!pmu->nr_addr_filters)
++		return 0;
++
++	return a->mode;
++
++	return 0;
++}
++
++static struct attribute_group pmu_dev_attr_group = {
++	.is_visible = pmu_dev_is_visible,
++	.attrs = pmu_dev_attrs,
++};
++
++static const struct attribute_group *pmu_dev_groups[] = {
++	&pmu_dev_attr_group,
+ 	NULL,
+ };
+-ATTRIBUTE_GROUPS(pmu_dev);
  
--#define MILLIWATT_PER_WATT	1000L
--#define MICROWATT_PER_MILLIWATT	1000L
--#define MICROWATT_PER_WATT	1000000L
-+#define MILLIWATT_PER_WATT	1000UL
-+#define MICROWATT_PER_MILLIWATT	1000UL
-+#define MICROWATT_PER_WATT	1000000UL
+ static int pmu_bus_running;
+ static struct bus_type pmu_bus = {
+@@ -11258,18 +11281,11 @@ static int pmu_dev_alloc(struct pmu *pmu)
+ 	if (ret)
+ 		goto free_dev;
  
- #define ABSOLUTE_ZERO_MILLICELSIUS -273150
+-	/* For PMUs with address filters, throw in an extra attribute: */
+-	if (pmu->nr_addr_filters)
+-		ret = device_create_file(pmu->dev, &dev_attr_nr_addr_filters);
+-
+-	if (ret)
+-		goto del_dev;
+-
+-	if (pmu->attr_update)
++	if (pmu->attr_update) {
+ 		ret = sysfs_update_groups(&pmu->dev->kobj, pmu->attr_update);
+-
+-	if (ret)
+-		goto del_dev;
++		if (ret)
++			goto del_dev;
++	}
  
+ out:
+ 	return ret;
 -- 
 2.43.0
 
