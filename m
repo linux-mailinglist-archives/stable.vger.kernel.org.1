@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-22514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAE1185DC5F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:52:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B44ED85DE29
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:15:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4AC62B262CB
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:52:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E53D11C2039A
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:15:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7FAD78B53;
-	Wed, 21 Feb 2024 13:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16D8D7C099;
+	Wed, 21 Feb 2024 14:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jMPO04ip"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zf11BH93"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C8D269942;
-	Wed, 21 Feb 2024 13:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94A03CF42;
+	Wed, 21 Feb 2024 14:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523552; cv=none; b=g57I6mkkqHY+nbvWe1AUYstK7ZeRQoh5jp1s21vsOBBZ7zRzQXlIqdnJ4mdDbj8ieO+cCdSrjERtQuaUbbqGSVTL8TFI75TwJrkhST2A2sttnugHUSrAjtJOydXhDY0/7CphwB8+wSOFoEO3FNPeq2qXxS03Kn8Icn88U9dUiYI=
+	t=1708524823; cv=none; b=gf3XV77cO5fC+VWu2nzLzYvic6e7D+9lQWvOgSwh35TvVBa3cqHmG2SIOLlVSnX6PyXfvkBpl15hsiUF67a+wFccGyQP1YE1gxyqi5bbCS9hodyaI1YHFVO2GX65K2WiOtLQpe6MjMnc4H/SdZPvP0gvdTuTaAyIDv8JSZqM0zQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523552; c=relaxed/simple;
-	bh=61OMF2WuSgcJj4AbP40L3a5wXvGa4gtnKJ+2enx1Sgc=;
+	s=arc-20240116; t=1708524823; c=relaxed/simple;
+	bh=yUVTMikuvSW7Z6o3hpw57LUzKJH4EnPK0tgSzCaFvYw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=butDuW6Rza0VnzSzNQqiKG98NhSPeIAlrrsC5X59TQnOMG7nmCHht3lR3RcD85H6KKC3zKx9hWWhfg22hS312rlwAehVPShD7qtzuE1a/z9AFdKZC7mgu+iF7fQ/RXjlAfjYcQNTkH0ljnCB5buw9ue3Q03nCG9JLeeM5Gl+Jts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jMPO04ip; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF8C5C433F1;
-	Wed, 21 Feb 2024 13:52:31 +0000 (UTC)
+	 MIME-Version; b=YJ2OW8Fpjk0MmXaxFibUaET/LPVwkA0tPKseW9ofg7C4cYlo8sAMs2GmJqSvmT6y+x66t5OVwYvpOW+wXZFid3hZLaxlY14qDrISSfiKPzYcHrLbE5u1ZzyxtEguK4936SpA6HC8eP2UY1hwbJzU2pUHnggVjJ6v3GLv1lQ/adY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zf11BH93; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1469C433C7;
+	Wed, 21 Feb 2024 14:13:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523552;
-	bh=61OMF2WuSgcJj4AbP40L3a5wXvGa4gtnKJ+2enx1Sgc=;
+	s=korg; t=1708524823;
+	bh=yUVTMikuvSW7Z6o3hpw57LUzKJH4EnPK0tgSzCaFvYw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jMPO04ipEHZb0GXXIsA3X7P8Uawc3XXKlHMQzL6nrWdxiouvv0CXlbmZg+jpasaFj
-	 tMKV+yRBxuhAR5MzcEWOMdn/faSvKr4OrRC0WivUWqsayIDtZ7liYfd4966Qv00bOT
-	 KEINjuI1wtTKODvlGZCCxsQOSOrirudVWATE8fzY=
+	b=Zf11BH93K7aSA0bfEgLO898qbVsptE7uf7irXsopv0iuYnmMvo52jkVLjIsCeJ/rC
+	 uBegTGUfzmJYDnHdnbbrdT1p28gLrH2fjb9MrhxiTAPEPmbm1TFB0OPsn0jfTtdO1v
+	 SBqK/gA/AtUjMLxmg8eK62mAqTkVwSok15j74YG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	"Doebel, Bjoern" <doebel@amazon.de>
-Subject: [PATCH 5.15 470/476] fs/ntfs3: Add null pointer checks
+	Kunkun Jiang <jiangkunkun@huawei.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 5.10 342/379] irqchip/gic-v3-its: Fix GICv4.1 VPE affinity update
 Date: Wed, 21 Feb 2024 14:08:41 +0100
-Message-ID: <20240221130025.388945973@linuxfoundation.org>
+Message-ID: <20240221130005.105806928@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Marc Zyngier <maz@kernel.org>
 
-commit fc4992458e0aa2d2e82a25c922e6ac36c2d91083 upstream.
+commit af9acbfc2c4b72c378d0b9a2ee023ed01055d3e2 upstream.
 
-Added null pointer checks in function ntfs_security_init.
-Also added le32_to_cpu in functions ntfs_security_init and indx_read.
+When updating the affinity of a VPE, the VMOVP command is currently skipped
+if the two CPUs are part of the same VPE affinity.
 
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Cc: "Doebel, Bjoern" <doebel@amazon.de>
+But this is wrong, as the doorbell corresponding to this VPE is still
+delivered on the 'old' CPU, which screws up the balancing.  Furthermore,
+offlining that 'old' CPU results in doorbell interrupts generated for this
+VPE being discarded.
+
+The harsh reality is that VMOVP cannot be elided when a set_affinity()
+request occurs. It needs to be obeyed, and if an optimisation is to be
+made, it is at the point where the affinity change request is made (such as
+in KVM).
+
+Drop the VMOVP elision altogether, and only use the vpe_table_mask
+to try and stay within the same ITS affinity group if at all possible.
+
+Fixes: dd3f050a216e (irqchip/gic-v4.1: Implement the v4.1 flavour of VMOVP)
+Reported-by: Kunkun Jiang <jiangkunkun@huawei.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240213101206.2137483-4-maz@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/fsntfs.c |   16 ++++++++++------
- fs/ntfs3/index.c  |    3 ++-
- 2 files changed, 12 insertions(+), 7 deletions(-)
+ drivers/irqchip/irq-gic-v3-its.c |   22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
---- a/fs/ntfs3/fsntfs.c
-+++ b/fs/ntfs3/fsntfs.c
-@@ -1872,10 +1872,12 @@ int ntfs_security_init(struct ntfs_sb_in
- 		goto out;
- 	}
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -3782,8 +3782,9 @@ static int its_vpe_set_affinity(struct i
+ 				bool force)
+ {
+ 	struct its_vpe *vpe = irq_data_get_irq_chip_data(d);
+-	int from, cpu = cpumask_first(mask_val);
++	struct cpumask common, *table_mask;
+ 	unsigned long flags;
++	int from, cpu;
  
--	root_sdh = resident_data_ex(attr, sizeof(struct INDEX_ROOT));
--	if (root_sdh->type != ATTR_ZERO ||
-+	if(!(root_sdh = resident_data_ex(attr, sizeof(struct INDEX_ROOT))) ||
-+	    root_sdh->type != ATTR_ZERO ||
- 	    root_sdh->rule != NTFS_COLLATION_TYPE_SECURITY_HASH ||
--	    offsetof(struct INDEX_ROOT, ihdr) + root_sdh->ihdr.used > attr->res.data_size) {
-+	    offsetof(struct INDEX_ROOT, ihdr) +
-+			le32_to_cpu(root_sdh->ihdr.used) >
-+			le32_to_cpu(attr->res.data_size)) {
- 		err = -EINVAL;
- 		goto out;
- 	}
-@@ -1891,10 +1893,12 @@ int ntfs_security_init(struct ntfs_sb_in
- 		goto out;
- 	}
+ 	/*
+ 	 * Changing affinity is mega expensive, so let's be as lazy as
+@@ -3799,19 +3800,22 @@ static int its_vpe_set_affinity(struct i
+ 	 * taken on any vLPI handling path that evaluates vpe->col_idx.
+ 	 */
+ 	from = vpe_to_cpuid_lock(vpe, &flags);
+-	if (from == cpu)
+-		goto out;
+-
+-	vpe->col_idx = cpu;
++	table_mask = gic_data_rdist_cpu(from)->vpe_table_mask;
  
--	root_sii = resident_data_ex(attr, sizeof(struct INDEX_ROOT));
--	if (root_sii->type != ATTR_ZERO ||
-+	if(!(root_sii = resident_data_ex(attr, sizeof(struct INDEX_ROOT))) ||
-+	    root_sii->type != ATTR_ZERO ||
- 	    root_sii->rule != NTFS_COLLATION_TYPE_UINT ||
--	    offsetof(struct INDEX_ROOT, ihdr) + root_sii->ihdr.used > attr->res.data_size) {
-+	    offsetof(struct INDEX_ROOT, ihdr) +
-+			le32_to_cpu(root_sii->ihdr.used) >
-+			le32_to_cpu(attr->res.data_size)) {
- 		err = -EINVAL;
+ 	/*
+-	 * GICv4.1 allows us to skip VMOVP if moving to a cpu whose RD
+-	 * is sharing its VPE table with the current one.
++	 * If we are offered another CPU in the same GICv4.1 ITS
++	 * affinity, pick this one. Otherwise, any CPU will do.
+ 	 */
+-	if (gic_data_rdist_cpu(cpu)->vpe_table_mask &&
+-	    cpumask_test_cpu(from, gic_data_rdist_cpu(cpu)->vpe_table_mask))
++	if (table_mask && cpumask_and(&common, mask_val, table_mask))
++		cpu = cpumask_test_cpu(from, &common) ? from : cpumask_first(&common);
++	else
++		cpu = cpumask_first(mask_val);
++
++	if (from == cpu)
  		goto out;
- 	}
---- a/fs/ntfs3/index.c
-+++ b/fs/ntfs3/index.c
-@@ -1106,7 +1106,8 @@ ok:
- 	}
  
- 	/* check for index header length */
--	if (offsetof(struct INDEX_BUFFER, ihdr) + ib->ihdr.used > bytes) {
-+	if (offsetof(struct INDEX_BUFFER, ihdr) + le32_to_cpu(ib->ihdr.used) >
-+	    bytes) {
- 		err = -EINVAL;
- 		goto out;
- 	}
++	vpe->col_idx = cpu;
++
+ 	its_send_vmovp(vpe);
+ 	its_vpe_db_proxy_move(vpe, from, cpu);
+ 
 
 
 
