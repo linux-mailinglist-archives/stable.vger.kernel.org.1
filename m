@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-21903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BFD085D915
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A51C85DD64
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:05:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41D691F24243
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:14:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D47C52826C9
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:04:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9996D69D2F;
-	Wed, 21 Feb 2024 13:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D80BF7CF1D;
+	Wed, 21 Feb 2024 14:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ohyHGJeA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="usmyYIDI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58BB853816;
-	Wed, 21 Feb 2024 13:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 967337C6E5;
+	Wed, 21 Feb 2024 14:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521261; cv=none; b=bK7i5+oipyaERJAQ/v7F/ZBCNTo5jHu9z5h2CtTLJyb0MdmE9MM/pwHNuJgxLHGgXxlmr5KeQ0JJeb7WCZM+S1BEj0VJrhRMpVuZIsWYxFjWrXrtHHMfp19DEtwdObWZWbYXHI3HyrjNrc1cXjGzKXvZKV7EaZmcOcaldpH4p/M=
+	t=1708524270; cv=none; b=eteQ9sepvfDJYI3YyaYroDdZDXlQw3G8w6Wj7Hyu3dqn1VF7C7oI+O8wVmkIpZOEn33Mz+b18TRxRSC5I/9puHSHg8kaZ3fxfu1MQuReOsuweXklToOYVwKJwxa+nfCEopXvpguRqlebhHMFw4SsWec+S6XQdxsQzIG3rx6WGUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521261; c=relaxed/simple;
-	bh=2z1cob3ILXosoxfYZLvxW2Lo2acx8QzPB7VW2iyW/vI=;
+	s=arc-20240116; t=1708524270; c=relaxed/simple;
+	bh=aUwwTqNXidOz+eT2RiW4xR+Gt5sosqMPk0DlRi/WEOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DePT9LJGONAF0yIaHV99F8rBLUiEtHBMCn+jGtFEhHjLif3kMdAX4Y/0Lj19G/Icw1z9Dx1sHNRJg5WoUHYJD9jivlVepO32l79kZkuR6S8fHIiicQuSc2QERfB7NeWKp7P1g8EcDWpD7k+ZyzylQSt/ay2I+rLYjQy0yQsj30A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ohyHGJeA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9846C433C7;
-	Wed, 21 Feb 2024 13:14:20 +0000 (UTC)
+	 MIME-Version; b=GW0Mf9D/GTNs8gTFiEGeJfYimAapnMtYOgNu2HpKePyba5j4N4xUHYxeaj9nu1uhaBgD3EKsrbDIo95MpPlSCt7cvkY+4CA14N9qZx9i5haCSY63mYQtptorlgoRCIkSXYMUP/gBnF9CezhhVSOqrFbMhSZ5v6lsztM4caL2TkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=usmyYIDI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2A16C433B1;
+	Wed, 21 Feb 2024 14:04:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521261;
-	bh=2z1cob3ILXosoxfYZLvxW2Lo2acx8QzPB7VW2iyW/vI=;
+	s=korg; t=1708524270;
+	bh=aUwwTqNXidOz+eT2RiW4xR+Gt5sosqMPk0DlRi/WEOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ohyHGJeACIZy5tzQwYxZ1td0QgOq7HNr1rFzUjuYZMzPgmQb4Y4NL8LloJr6P8nmY
-	 vuUhglJY5LC2elOpyWADGSxKLhCLM5zayqq/5LjRjIdejMxxj1O6eindlRERt+NWht
-	 LxEDUhnU26366CEyHh/03Ym+nshh3Y3zkIsfOS34=
+	b=usmyYIDIzoOlze7oyfjy+57IWFtGfattEUY5Rj9RWxvOyz2a0gSTzf0H/HH6nHkng
+	 v2Uhgn0ITl9V1sYnLR4o3SVXO7EEwvmmjEl/58vlQUwI1F2l7C+fDH4upPws+Aq0Y5
+	 VtFEHLT+zwvW89ZnbGeq3S/QdHJB/zPesYin/tf4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <error27@gmail.com>,
-	Thomas Bourgoin <thomas.bourgoin@foss.st.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Michael Tretter <m.tretter@pengutronix.de>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 064/202] crypto: stm32/crc32 - fix parsing list of devices
+Subject: [PATCH 5.10 186/379] media: rockchip: rga: fix swizzling for RGB formats
 Date: Wed, 21 Feb 2024 14:06:05 +0100
-Message-ID: <20240221125933.905325722@linuxfoundation.org>
+Message-ID: <20240221130000.408077360@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Bourgoin <thomas.bourgoin@foss.st.com>
+From: Michael Tretter <m.tretter@pengutronix.de>
 
-[ Upstream commit 0eaef675b94c746900dcea7f6c41b9a103ed5d53 ]
+[ Upstream commit 9e7dc39260edac180c206bb6149595a40eabae3e ]
 
-smatch warnings:
-drivers/crypto/stm32/stm32-crc32.c:108 stm32_crc_get_next_crc() warn:
-can 'crc' even be NULL?
+When using 32 bit RGB formats, the RGA on the rk3568 produces wrong
+colors as the wrong color channels are read or written.  The reason is
+that the format description for the channel swizzeling is wrong and the
+wrong bits are configured. For example, when converting ARGB32 to NV12,
+the alpha channel is used as blue channel.. This doesn't happen if the
+color format is the same on both sides.
 
-Use list_first_entry_or_null instead of list_first_entry to retrieve
-the first device registered.
-The function list_first_entry always return a non NULL pointer even if
-the list is empty. Hence checking if the pointer returned is NULL does
-not tell if the list is empty or not.
+Fix the color_swap settings of the formats to correctly handle 32 bit
+RGB formats.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/r/202311281111.ou2oUL2i-lkp@intel.com/
-Reported-by: Dan Carpenter <error27@gmail.com>
-Closes: https://lore.kernel.org/r/202311281111.ou2oUL2i-lkp@intel.com/
-Signed-off-by: Thomas Bourgoin <thomas.bourgoin@foss.st.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+For RGA_COLOR_FMT_XBGR8888, the RGA_COLOR_ALPHA_SWAP bit doesn't have an
+effect. Thus, it isn't possible to handle the V4L2_PIX_FMT_XRGB32. Thus,
+it is removed from the list of supported formats.
+
+Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/stm32/stm32_crc32.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/rockchip/rga/rga.c | 15 +++------------
+ 1 file changed, 3 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/crypto/stm32/stm32_crc32.c b/drivers/crypto/stm32/stm32_crc32.c
-index de645bf84980..04adc84d677c 100644
---- a/drivers/crypto/stm32/stm32_crc32.c
-+++ b/drivers/crypto/stm32/stm32_crc32.c
-@@ -98,7 +98,7 @@ static struct stm32_crc *stm32_crc_get_next_crc(void)
- 	struct stm32_crc *crc;
- 
- 	spin_lock_bh(&crc_list.lock);
--	crc = list_first_entry(&crc_list.dev_list, struct stm32_crc, list);
-+	crc = list_first_entry_or_null(&crc_list.dev_list, struct stm32_crc, list);
- 	if (crc)
- 		list_move_tail(&crc->list, &crc_list.dev_list);
- 	spin_unlock_bh(&crc_list.lock);
+diff --git a/drivers/media/platform/rockchip/rga/rga.c b/drivers/media/platform/rockchip/rga/rga.c
+index e3246344fb72..bcbbd1408b36 100644
+--- a/drivers/media/platform/rockchip/rga/rga.c
++++ b/drivers/media/platform/rockchip/rga/rga.c
+@@ -187,25 +187,16 @@ static int rga_setup_ctrls(struct rga_ctx *ctx)
+ static struct rga_fmt formats[] = {
+ 	{
+ 		.fourcc = V4L2_PIX_FMT_ARGB32,
+-		.color_swap = RGA_COLOR_RB_SWAP,
++		.color_swap = RGA_COLOR_ALPHA_SWAP,
+ 		.hw_format = RGA_COLOR_FMT_ABGR8888,
+ 		.depth = 32,
+ 		.uv_factor = 1,
+ 		.y_div = 1,
+ 		.x_div = 1,
+ 	},
+-	{
+-		.fourcc = V4L2_PIX_FMT_XRGB32,
+-		.color_swap = RGA_COLOR_RB_SWAP,
+-		.hw_format = RGA_COLOR_FMT_XBGR8888,
+-		.depth = 32,
+-		.uv_factor = 1,
+-		.y_div = 1,
+-		.x_div = 1,
+-	},
+ 	{
+ 		.fourcc = V4L2_PIX_FMT_ABGR32,
+-		.color_swap = RGA_COLOR_ALPHA_SWAP,
++		.color_swap = RGA_COLOR_RB_SWAP,
+ 		.hw_format = RGA_COLOR_FMT_ABGR8888,
+ 		.depth = 32,
+ 		.uv_factor = 1,
+@@ -214,7 +205,7 @@ static struct rga_fmt formats[] = {
+ 	},
+ 	{
+ 		.fourcc = V4L2_PIX_FMT_XBGR32,
+-		.color_swap = RGA_COLOR_ALPHA_SWAP,
++		.color_swap = RGA_COLOR_RB_SWAP,
+ 		.hw_format = RGA_COLOR_FMT_XBGR8888,
+ 		.depth = 32,
+ 		.uv_factor = 1,
 -- 
 2.43.0
 
