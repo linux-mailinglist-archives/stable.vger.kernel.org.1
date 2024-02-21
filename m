@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-21854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEFA485D8D8
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:11:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F362585DB57
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:39:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D3DE1F2438C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:11:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8877EB21DEB
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:39:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3A4169D28;
-	Wed, 21 Feb 2024 13:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB46E73161;
+	Wed, 21 Feb 2024 13:39:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J/KGtkvZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vlCqHlnK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FF643EA71;
-	Wed, 21 Feb 2024 13:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B2833FB21;
+	Wed, 21 Feb 2024 13:39:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521070; cv=none; b=sPaTuFRCUE+Fr+Ni7zLvAGIuosrHdYfkZkMJSR6asEG5ku9Bqp1HbbG/eHoCd+GpIBB8e0lkq94943emAGgZSgcuhMbxNESdD87TGBxoczm/ntPPQD5/QoQPrB1KpkDc8m1XDyjuW9XFcR1jVmnnjqji8hDpY0Pxl+OBPuKbafs=
+	t=1708522785; cv=none; b=c2V5Q/NEvSO4dVS91tUkqC7UyYyJmn4BrJraVqYvcRcEeWukkp/PNGaH9I3/71SpX3oXeOWZsC+5svIjMyKYh5LB41Rjj6SefvKxSp+NwV7WNYEtyhqwrJiE965BcAAzfprYYMf5jWNZNVlPAVwNi9CRmpwVxWwJ0JvVkaUPaE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521070; c=relaxed/simple;
-	bh=CubFgC7yWsP4yUz9DBjsYXVA7cEahnWoRc9FJxBSi/4=;
+	s=arc-20240116; t=1708522785; c=relaxed/simple;
+	bh=SM/y7JjW9PgzULgVzCjohehhuzh/zCTXl48sum7wygI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uEAakCfLPPL123KYf03llRH0OPOEU4KaczPUnrNq2/kxj2Tx4XVr8Av9ypmJArr4apF1yP6+1ib4u7gxrsY6bG73hlXDJCT6PjIHp9k8AxdPaBvP1KInnNWigXUdfuhKPPyfXSY8fJ8RyF/PdGoNwYnPgPEXbZEPf0dnmgEvVjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J/KGtkvZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2002C433F1;
-	Wed, 21 Feb 2024 13:11:09 +0000 (UTC)
+	 MIME-Version; b=uSyH+41G9HZdwD9dT3J249XDrBlBK4b8MLhFrdT4H9vJNbjf//zlUxr8f4imrLq5c7zs1WCNSVAPosoelGPbRk5btHWmnn9StUs10enVN/Jc84CvpHjWFmpa6QSr6+e/tJZa0k1hss+BynkFc4N5rP0z5tPh8MSS9BenKHiwx4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vlCqHlnK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1855CC433C7;
+	Wed, 21 Feb 2024 13:39:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521070;
-	bh=CubFgC7yWsP4yUz9DBjsYXVA7cEahnWoRc9FJxBSi/4=;
+	s=korg; t=1708522785;
+	bh=SM/y7JjW9PgzULgVzCjohehhuzh/zCTXl48sum7wygI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J/KGtkvZ9QerxTpAoSN6jsGw55YZOa4GDEQVS4k9bfR1/oj9UwBX2m0Xxr1qqUiMu
-	 47+4/FPFNZ8fd/Mhqtasxku4hE9Yh43fnaGfTId0z+7pPMrck2xpul7Ad9zjx8i1je
-	 j/Y62MlcfH58Tv3QYgunDLWdO9fF+o/Zc9GGMNzg=
+	b=vlCqHlnKKtv8BEbvdh9hX5xknr5p3KHdXKpge/4zLKwMJPn6nWDvK9i8e6Jdresz0
+	 59f93XtjsMGLToPW0ijfWk+WGhi7kmX3c9bwvVCqOVFjjrxu/RQSI1gkSa/hkZ8Izy
+	 HzEnEk/ssT5jsNS/YAH4dZ3T6XvLXWp9EfkLo83c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrzej Hajda <a.hajda@samsung.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 007/202] driver core: add device probe log helper
+Subject: [PATCH 5.15 257/476] PCI/AER: Decode Requester ID when no error info found
 Date: Wed, 21 Feb 2024 14:05:08 +0100
-Message-ID: <20240221125931.981661835@linuxfoundation.org>
+Message-ID: <20240221130017.343877639@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,107 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrzej Hajda <a.hajda@samsung.com>
+From: Bjorn Helgaas <bhelgaas@google.com>
 
-[ Upstream commit a787e5400a1ceeb0ef92d71ec43aeb35b1fa1334 ]
+[ Upstream commit 1291b716bbf969e101d517bfb8ba18d958f758b8 ]
 
-During probe every time driver gets resource it should usually check for
-error printk some message if it is not -EPROBE_DEFER and return the error.
-This pattern is simple but requires adding few lines after any resource
-acquisition code, as a result it is often omitted or implemented only
-partially.
-dev_err_probe helps to replace such code sequences with simple call,
-so code:
-	if (err != -EPROBE_DEFER)
-		dev_err(dev, ...);
-	return err;
-becomes:
-	return dev_err_probe(dev, err, ...);
+When a device with AER detects an error, it logs error information in its
+own AER Error Status registers.  It may send an Error Message to the Root
+Port (RCEC in the case of an RCiEP), which logs the fact that an Error
+Message was received (Root Error Status) and the Requester ID of the
+message source (Error Source Identification).
 
-Signed-off-by: Andrzej Hajda <a.hajda@samsung.com>
-Reviewed-by: Rafael J. Wysocki <rafael@kernel.org>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Link: https://lore.kernel.org/r/20200713144324.23654-2-a.hajda@samsung.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 6d710b769c1f ("serial: sc16is7xx: add check for unsupported SPI modes during probe")
+aer_print_port_info() prints the Requester ID from the Root Port Error
+Source in the usual Linux "bb:dd.f" format, but when find_source_device()
+finds no error details in the hierarchy below the Root Port, it printed the
+raw Requester ID without decoding it.
+
+Decode the Requester ID in the usual Linux format so it matches other
+messages.
+
+Sample message changes:
+
+  - pcieport 0000:00:1c.5: AER: Correctable error received: 0000:00:1c.5
+  - pcieport 0000:00:1c.5: AER: can't find device of ID00e5
+  + pcieport 0000:00:1c.5: AER: Correctable error message received from 0000:00:1c.5
+  + pcieport 0000:00:1c.5: AER: found no error details for 0000:00:1c.5
+
+Link: https://lore.kernel.org/r/20231206224231.732765-3-helgaas@kernel.org
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/core.c    | 42 ++++++++++++++++++++++++++++++++++++++++++
- include/linux/device.h |  3 +++
- 2 files changed, 45 insertions(+)
+ drivers/pci/pcie/aer.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/base/core.c b/drivers/base/core.c
-index 6e380ad9d08a..b66647277d52 100644
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -3334,6 +3334,48 @@ define_dev_printk_level(_dev_info, KERN_INFO);
+diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+index ca9ac8c6a202..4f7744aab6c7 100644
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -743,7 +743,7 @@ static void aer_print_port_info(struct pci_dev *dev, struct aer_err_info *info)
+ 	u8 bus = info->id >> 8;
+ 	u8 devfn = info->id & 0xff;
  
- #endif
+-	pci_info(dev, "%s%s error received: %04x:%02x:%02x.%d\n",
++	pci_info(dev, "%s%s error message received from %04x:%02x:%02x.%d\n",
+ 		 info->multi_error_valid ? "Multiple " : "",
+ 		 aer_error_severity_string[info->severity],
+ 		 pci_domain_nr(dev->bus), bus, PCI_SLOT(devfn),
+@@ -931,7 +931,12 @@ static bool find_source_device(struct pci_dev *parent,
+ 		pci_walk_bus(parent->subordinate, find_device_iter, e_info);
  
-+/**
-+ * dev_err_probe - probe error check and log helper
-+ * @dev: the pointer to the struct device
-+ * @err: error value to test
-+ * @fmt: printf-style format string
-+ * @...: arguments as specified in the format string
-+ *
-+ * This helper implements common pattern present in probe functions for error
-+ * checking: print debug or error message depending if the error value is
-+ * -EPROBE_DEFER and propagate error upwards.
-+ * It replaces code sequence:
-+ * 	if (err != -EPROBE_DEFER)
-+ * 		dev_err(dev, ...);
-+ * 	else
-+ * 		dev_dbg(dev, ...);
-+ * 	return err;
-+ * with
-+ * 	return dev_err_probe(dev, err, ...);
-+ *
-+ * Returns @err.
-+ *
-+ */
-+int dev_err_probe(const struct device *dev, int err, const char *fmt, ...)
-+{
-+	struct va_format vaf;
-+	va_list args;
+ 	if (!e_info->error_dev_num) {
+-		pci_info(parent, "can't find device of ID%04x\n", e_info->id);
++		u8 bus = e_info->id >> 8;
++		u8 devfn = e_info->id & 0xff;
 +
-+	va_start(args, fmt);
-+	vaf.fmt = fmt;
-+	vaf.va = &args;
-+
-+	if (err != -EPROBE_DEFER)
-+		dev_err(dev, "error %d: %pV", err, &vaf);
-+	else
-+		dev_dbg(dev, "error %d: %pV", err, &vaf);
-+
-+	va_end(args);
-+
-+	return err;
-+}
-+EXPORT_SYMBOL_GPL(dev_err_probe);
-+
- static inline bool fwnode_is_primary(struct fwnode_handle *fwnode)
- {
- 	return fwnode && !IS_ERR(fwnode->secondary);
-diff --git a/include/linux/device.h b/include/linux/device.h
-index bccd367c11de..0714d6e5d500 100644
---- a/include/linux/device.h
-+++ b/include/linux/device.h
-@@ -1581,6 +1581,9 @@ do {									\
- 	WARN_ONCE(condition, "%s %s: " format, \
- 			dev_driver_string(dev), dev_name(dev), ## arg)
- 
-+extern __printf(3, 4)
-+int dev_err_probe(const struct device *dev, int err, const char *fmt, ...);
-+
- /* Create alias, so I can be autoloaded. */
- #define MODULE_ALIAS_CHARDEV(major,minor) \
- 	MODULE_ALIAS("char-major-" __stringify(major) "-" __stringify(minor))
++		pci_info(parent, "found no error details for %04x:%02x:%02x.%d\n",
++			 pci_domain_nr(parent->bus), bus, PCI_SLOT(devfn),
++			 PCI_FUNC(devfn));
+ 		return false;
+ 	}
+ 	return true;
 -- 
 2.43.0
 
