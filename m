@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-22734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5025D85DD89
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:06:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DCF585DBC5
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:45:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB6C0B22B0F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:06:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C3F27B25EE6
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:45:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADCBA7E781;
-	Wed, 21 Feb 2024 14:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2430678B53;
+	Wed, 21 Feb 2024 13:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BX0VThhq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oZg3lpBd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AF227C6C0;
-	Wed, 21 Feb 2024 14:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D747E78B50;
+	Wed, 21 Feb 2024 13:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524339; cv=none; b=gY3itDBJnah/+FieBeKHMQ6sTDfnRbyFpjZFjk8m6oIdJqxrJU7nbIAje26BrXj8ScddAhSmM54vFdneah5NVkmtD/quxekkz3ZPQIAS4YF17brxyB0wHYRy0YdbRpcF0bDdRanJfjkafAPpGEHROMywxkQFwGpTk3udlyQqUP4=
+	t=1708523104; cv=none; b=KpS1SW633dlN7wDCxgkiLSn+wq/3x8vvhK9E4thE1mek/LzAulBQhroKZm/z7mDu+0fNqx+o8s8y9cA+Dlc2ZsDdGjf81gbAXYTaL/CuDqd4W9UZRDbzm70/Uoha4WjBSZW25bcgmlOjuS3LmdzBPDfUxA02h2VuDa9CdwepkDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524339; c=relaxed/simple;
-	bh=lTfYrVFa9cjeJh+ifkvMMY14avtn36kvlRafsO3Av4E=;
+	s=arc-20240116; t=1708523104; c=relaxed/simple;
+	bh=8Ro1DuEVRk0zmYolSHd21dzau5ZJAAbfdxCXepAQ984=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qJoe+6l+JFUHau1Fwom9VAhellM/CVqT/UTrNXyeLGycEgD0DQHrPO66JlX41PVF7gxAEWML+BwtqB9sOIYn1Wycj7GzbhDB/kql9kZvnLbzYpiOWBUuJ0yoy8azZGd6zU5k06ACiBsrHoEBhiCrj+IrxfFqkwooVpsUo5X7pkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BX0VThhq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD3D9C433F1;
-	Wed, 21 Feb 2024 14:05:38 +0000 (UTC)
+	 MIME-Version; b=QOzSqAAc4x/C+qvcky/H7hWMlOvVVGlPxAPzXcBz1xnY+IMgS8x8I0P/vKgudm7fgjyLRam1/aaxdjHSTfgx+CV8zgJ8JAcmZfRUq97nsEIp+Mgtk3uTqt9jXyB8BywKnp7YIBK9FgoEM5Kehb3k4uAvTHkRqz0S1FiAmreG0z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oZg3lpBd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47386C433F1;
+	Wed, 21 Feb 2024 13:45:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524339;
-	bh=lTfYrVFa9cjeJh+ifkvMMY14avtn36kvlRafsO3Av4E=;
+	s=korg; t=1708523104;
+	bh=8Ro1DuEVRk0zmYolSHd21dzau5ZJAAbfdxCXepAQ984=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BX0VThhqTQZAVRid/x1l1o4UOXtLRzcrwGuVNLafFnzQRXZLjLetwXs3BQuPmGB8t
-	 FWAF8Gew+9Q+dQFK/lMBtm7XLxS2hIwm8n2WoUhTUdtT1tnlyaOh0phA+DVswiOUmg
-	 wdmSfDUMTPfW/uPQ7DW9mnKwlWG1UTPBt3VkAR2Y=
+	b=oZg3lpBdVfHWGTbEVyFiOa5th4f5m5IW4s6UEs5GncOBP03Ng7iXP90u/Vd8AMlHE
+	 x2eFtgaZN2hOYearMHJRw1ddYuGVaGL6xabEbdoZBRvBSIfSMEJsfbzxgACnPqh9Uo
+	 1lmxMtrUx+DPdNAsUVjacx/WXzwlJ7Pha2TR0qtA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 213/379] misc: lis3lv02d_i2c: Add missing setting of the reg_ctrl callback
+	Jon Hunter <jonathanh@nvidia.com>,
+	kernel test robot <lkp@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 341/476] net: stmmac: xgmac: use #define for string constants
 Date: Wed, 21 Feb 2024 14:06:32 +0100
-Message-ID: <20240221130001.205668819@linuxfoundation.org>
+Message-ID: <20240221130020.621724123@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +63,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit b1b9f7a494400c0c39f8cd83de3aaa6111c55087 ]
+commit 1692b9775e745f84b69dc8ad0075b0855a43db4e upstream.
 
-The lis3lv02d_i2c driver was missing a line to set the lis3_dev's
-reg_ctrl callback.
+The cited commit introduces and uses the string constants dpp_tx_err and
+dpp_rx_err. These are assigned to constant fields of the array
+dwxgmac3_error_desc.
 
-lis3_reg_ctrl(on) is called from the init callback, but due to
-the missing reg_ctrl callback the regulators where never turned off
-again leading to the following oops/backtrace when detaching the driver:
+It has been reported that on GCC 6 and 7.5.0 this results in warnings
+such as:
 
-[   82.313527] ------------[ cut here ]------------
-[   82.313546] WARNING: CPU: 1 PID: 1724 at drivers/regulator/core.c:2396 _regulator_put+0x219/0x230
-...
-[   82.313695] RIP: 0010:_regulator_put+0x219/0x230
-...
-[   82.314767] Call Trace:
-[   82.314770]  <TASK>
-[   82.314772]  ? _regulator_put+0x219/0x230
-[   82.314777]  ? __warn+0x81/0x170
-[   82.314784]  ? _regulator_put+0x219/0x230
-[   82.314791]  ? report_bug+0x18d/0x1c0
-[   82.314801]  ? handle_bug+0x3c/0x80
-[   82.314806]  ? exc_invalid_op+0x13/0x60
-[   82.314812]  ? asm_exc_invalid_op+0x16/0x20
-[   82.314845]  ? _regulator_put+0x219/0x230
-[   82.314857]  regulator_bulk_free+0x39/0x60
-[   82.314865]  i2c_device_remove+0x22/0xb0
+  .../dwxgmac2_core.c:836:20: error: initialiser element is not constant
+   { true, "TDPES0", dpp_tx_err },
 
-Add the missing setting of the callback so that the regulators
-properly get turned off again when not used.
+I have been able to reproduce this using: GCC 7.5.0, 8.4.0, 9.4.0 and 10.5.0.
+But not GCC 13.2.0.
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20231224183402.95640-1-hdegoede@redhat.com
+So it seems this effects older compilers but not newer ones.
+As Jon points out in his report, the minimum compiler supported by
+the kernel is GCC 5.1, so it does seem that this ought to be fixed.
+
+It is not clear to me what combination of 'const', if any, would address
+this problem.  So this patch takes of using #defines for the string
+constants
+
+Compile tested only.
+
+Fixes: 46eba193d04f ("net: stmmac: xgmac: fix handling of DPP safety error for DMA channels")
+Reported-by: Jon Hunter <jonathanh@nvidia.com>
+Closes: https://lore.kernel.org/netdev/c25eb595-8d91-40ea-9f52-efa15ebafdbc@nvidia.com/
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202402081135.lAxxBXHk-lkp@intel.com/
+Signed-off-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240208-xgmac-const-v1-1-e69a1eeabfc8@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/lis3lv02d/lis3lv02d_i2c.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c |   69 ++++++++++----------
+ 1 file changed, 35 insertions(+), 34 deletions(-)
 
-diff --git a/drivers/misc/lis3lv02d/lis3lv02d_i2c.c b/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
-index 52555d2e824b..ab1db760ba4e 100644
---- a/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
-+++ b/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
-@@ -151,6 +151,7 @@ static int lis3lv02d_i2c_probe(struct i2c_client *client,
- 	lis3_dev.init	  = lis3_i2c_init;
- 	lis3_dev.read	  = lis3_i2c_read;
- 	lis3_dev.write	  = lis3_i2c_write;
-+	lis3_dev.reg_ctrl = lis3_reg_ctrl;
- 	lis3_dev.irq	  = client->irq;
- 	lis3_dev.ac	  = lis3lv02d_axis_map;
- 	lis3_dev.pm_dev	  = &client->dev;
--- 
-2.43.0
-
+--- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
+@@ -789,41 +789,42 @@ static const struct dwxgmac3_error_desc
+ 	{ false, "UNKNOWN", "Unknown Error" }, /* 31 */
+ };
+ 
+-static const char * const dpp_rx_err = "Read Rx Descriptor Parity checker Error";
+-static const char * const dpp_tx_err = "Read Tx Descriptor Parity checker Error";
++#define DPP_RX_ERR "Read Rx Descriptor Parity checker Error"
++#define DPP_TX_ERR "Read Tx Descriptor Parity checker Error"
++
+ static const struct dwxgmac3_error_desc dwxgmac3_dma_dpp_errors[32] = {
+-	{ true, "TDPES0", dpp_tx_err },
+-	{ true, "TDPES1", dpp_tx_err },
+-	{ true, "TDPES2", dpp_tx_err },
+-	{ true, "TDPES3", dpp_tx_err },
+-	{ true, "TDPES4", dpp_tx_err },
+-	{ true, "TDPES5", dpp_tx_err },
+-	{ true, "TDPES6", dpp_tx_err },
+-	{ true, "TDPES7", dpp_tx_err },
+-	{ true, "TDPES8", dpp_tx_err },
+-	{ true, "TDPES9", dpp_tx_err },
+-	{ true, "TDPES10", dpp_tx_err },
+-	{ true, "TDPES11", dpp_tx_err },
+-	{ true, "TDPES12", dpp_tx_err },
+-	{ true, "TDPES13", dpp_tx_err },
+-	{ true, "TDPES14", dpp_tx_err },
+-	{ true, "TDPES15", dpp_tx_err },
+-	{ true, "RDPES0", dpp_rx_err },
+-	{ true, "RDPES1", dpp_rx_err },
+-	{ true, "RDPES2", dpp_rx_err },
+-	{ true, "RDPES3", dpp_rx_err },
+-	{ true, "RDPES4", dpp_rx_err },
+-	{ true, "RDPES5", dpp_rx_err },
+-	{ true, "RDPES6", dpp_rx_err },
+-	{ true, "RDPES7", dpp_rx_err },
+-	{ true, "RDPES8", dpp_rx_err },
+-	{ true, "RDPES9", dpp_rx_err },
+-	{ true, "RDPES10", dpp_rx_err },
+-	{ true, "RDPES11", dpp_rx_err },
+-	{ true, "RDPES12", dpp_rx_err },
+-	{ true, "RDPES13", dpp_rx_err },
+-	{ true, "RDPES14", dpp_rx_err },
+-	{ true, "RDPES15", dpp_rx_err },
++	{ true, "TDPES0", DPP_TX_ERR },
++	{ true, "TDPES1", DPP_TX_ERR },
++	{ true, "TDPES2", DPP_TX_ERR },
++	{ true, "TDPES3", DPP_TX_ERR },
++	{ true, "TDPES4", DPP_TX_ERR },
++	{ true, "TDPES5", DPP_TX_ERR },
++	{ true, "TDPES6", DPP_TX_ERR },
++	{ true, "TDPES7", DPP_TX_ERR },
++	{ true, "TDPES8", DPP_TX_ERR },
++	{ true, "TDPES9", DPP_TX_ERR },
++	{ true, "TDPES10", DPP_TX_ERR },
++	{ true, "TDPES11", DPP_TX_ERR },
++	{ true, "TDPES12", DPP_TX_ERR },
++	{ true, "TDPES13", DPP_TX_ERR },
++	{ true, "TDPES14", DPP_TX_ERR },
++	{ true, "TDPES15", DPP_TX_ERR },
++	{ true, "RDPES0", DPP_RX_ERR },
++	{ true, "RDPES1", DPP_RX_ERR },
++	{ true, "RDPES2", DPP_RX_ERR },
++	{ true, "RDPES3", DPP_RX_ERR },
++	{ true, "RDPES4", DPP_RX_ERR },
++	{ true, "RDPES5", DPP_RX_ERR },
++	{ true, "RDPES6", DPP_RX_ERR },
++	{ true, "RDPES7", DPP_RX_ERR },
++	{ true, "RDPES8", DPP_RX_ERR },
++	{ true, "RDPES9", DPP_RX_ERR },
++	{ true, "RDPES10", DPP_RX_ERR },
++	{ true, "RDPES11", DPP_RX_ERR },
++	{ true, "RDPES12", DPP_RX_ERR },
++	{ true, "RDPES13", DPP_RX_ERR },
++	{ true, "RDPES14", DPP_RX_ERR },
++	{ true, "RDPES15", DPP_RX_ERR },
+ };
+ 
+ static void dwxgmac3_handle_dma_err(struct net_device *ndev,
 
 
 
