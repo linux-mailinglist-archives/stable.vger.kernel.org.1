@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-22645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38E3C85DD0E
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:01:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE6CD85DB2D
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:38:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A38D4B28CE5
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:01:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 554DBB26B1C
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:38:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BBB77BB16;
-	Wed, 21 Feb 2024 14:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9367C7BB0D;
+	Wed, 21 Feb 2024 13:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pItgiUvL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QKzxr2Dt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B8E78B5E;
-	Wed, 21 Feb 2024 14:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F3947868A;
+	Wed, 21 Feb 2024 13:37:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524032; cv=none; b=tRZdPTT9gl9Cp9obDTPf1uZHE5xcx0u/1Xal5To6fvRRe6DykgCD8dhigwTiyCfJavudC97OB6EBw1uc6pgcQO7Hqbi/8R3pyKWiC+CK9gJ7b3c5lnKvTmN6qE14Sjn+H/NaMMz8t/shfjN66d5owbMHQ7lDARTPiKQ81tokUq0=
+	t=1708522659; cv=none; b=rXB8IPYDr5GX3QJQy3VgHvb1yF8fPUGGCPea0fwT05wMXa3uEmpY5b8D64xrUuxX4Q4EpC6yBdXemWlOLaoaogfa+dTyma3ko5aFTKafCGd0cJ9Dh3eBKFW2oriHVt5wQw9BTA9u5cnPOl6xuCbevH7N5SGD3z+vx4T2qUwU9Fg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524032; c=relaxed/simple;
-	bh=4zRObaEghZBaHTsIYOAlevh2t1g6FPSFCW09Kn5bZiA=;
+	s=arc-20240116; t=1708522659; c=relaxed/simple;
+	bh=aab/wuMvcItxJ/UvlOVyOm1jNXxkAQqwbrv6J9jiTEU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DikHYodz3HexUrgvUkDPMhQ3vTsr3G+zIT2xuYdRugwy2cZCzPdo97Ow37I3/ytvVBHlsD431g2FurBPilU5uaTsHX2rVXLqG4nO3AEwO/AbdgYpkjUdbfq0G+eEGf4JRKTfuc4ZgwGdReFNPtsTy2hpRNV/nKB4wCXfaDYeRPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pItgiUvL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B1EAC433F1;
-	Wed, 21 Feb 2024 14:00:31 +0000 (UTC)
+	 MIME-Version; b=SIw8ZATRSAz/uN0e8ozT1zb97SpLw19J1Zv2YCkrY5yVvGX5hFSbYOWz0cqqmfQaiAb70zf/Sdzc0r3LpagzBqnJfb1it1IgxMxA/orjc/CZc0G+clNdOekrbhKf0df2uJ13E3a6qtC78Aa3Ncc2U93Ff0lhuhD2Ve1geuQ62Bg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QKzxr2Dt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45CBEC433F1;
+	Wed, 21 Feb 2024 13:37:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524032;
-	bh=4zRObaEghZBaHTsIYOAlevh2t1g6FPSFCW09Kn5bZiA=;
+	s=korg; t=1708522658;
+	bh=aab/wuMvcItxJ/UvlOVyOm1jNXxkAQqwbrv6J9jiTEU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pItgiUvLt3pXZWXd0KIW3tZM8y5RDM5goxjM3r+YdGsDzUaZgIgD6hCNoU4j7IRii
-	 XCb6RPITi4oOVjyNdx6KhFKgNcFAacA7k/gdQkbSJV5wdbZujuPvUKEXJkXKDgKsYi
-	 OxOctn7M7jqS9RqrjzrQ4uvBOgOObTz2D/wlUsRw=
+	b=QKzxr2DtPl8BNRyLO+TkyNtB8A8heijakw0J/HxCiakskCvG8RdPIw4jOjtS8f+5X
+	 p+Gqu9INHksmTop03uUmcnFAm+pT2F2mi+0+vYZrHynU+F60AP0eMgWwc4nFFubQo2
+	 wjnGcCro2WxvYjm+XAHByg48zOxIM9QT3vjvDQPA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Wenhua Lin <Wenhua.Lin@unisoc.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 096/379] gpio: eic-sprd: Clear interrupt after set the interrupt type
+Subject: [PATCH 5.15 224/476] f2fs: fix to tag gcing flag on page during block migration
 Date: Wed, 21 Feb 2024 14:04:35 +0100
-Message-ID: <20240221125957.763062950@linuxfoundation.org>
+Message-ID: <20240221130016.170992560@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,162 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenhua Lin <Wenhua.Lin@unisoc.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 84aef4ed59705585d629e81d633a83b7d416f5fb ]
+[ Upstream commit 4961acdd65c956e97c1a000c82d91a8c1cdbe44b ]
 
-The raw interrupt status of eic maybe set before the interrupt is enabled,
-since the eic interrupt has a latch function, which would trigger the
-interrupt event once enabled it from user side. To solve this problem,
-interrupts generated before setting the interrupt trigger type are ignored.
+It needs to add missing gcing flag on page during block migration,
+in order to garantee migrated data be persisted during checkpoint,
+otherwise out-of-order persistency between data and node may cause
+data corruption after SPOR.
 
-Fixes: 25518e024e3a ("gpio: Add Spreadtrum EIC driver support")
-Acked-by: Chunyan Zhang <zhang.lyra@gmail.com>
-Signed-off-by: Wenhua Lin <Wenhua.Lin@unisoc.com>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Similar issue was fixed by commit 2d1fe8a86bf5 ("f2fs: fix to tag
+gcing flag on page during file defragment").
+
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-eic-sprd.c | 32 ++++++++++++++++++++++++++++----
- 1 file changed, 28 insertions(+), 4 deletions(-)
+ fs/f2fs/compress.c | 4 +++-
+ fs/f2fs/file.c     | 2 ++
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-eic-sprd.c b/drivers/gpio/gpio-eic-sprd.c
-index 865ab2b34fdd..3dfb8b6c6c71 100644
---- a/drivers/gpio/gpio-eic-sprd.c
-+++ b/drivers/gpio/gpio-eic-sprd.c
-@@ -318,20 +318,27 @@ static int sprd_eic_irq_set_type(struct irq_data *data, unsigned int flow_type)
- 		switch (flow_type) {
- 		case IRQ_TYPE_LEVEL_HIGH:
- 			sprd_eic_update(chip, offset, SPRD_EIC_DBNC_IEV, 1);
-+			sprd_eic_update(chip, offset, SPRD_EIC_DBNC_IC, 1);
+diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
+index 3982b4a7618c..7b4479d5b531 100644
+--- a/fs/f2fs/compress.c
++++ b/fs/f2fs/compress.c
+@@ -1037,8 +1037,10 @@ static void set_cluster_dirty(struct compress_ctx *cc)
+ 	int i;
+ 
+ 	for (i = 0; i < cc->cluster_size; i++)
+-		if (cc->rpages[i])
++		if (cc->rpages[i]) {
+ 			set_page_dirty(cc->rpages[i]);
++			set_page_private_gcing(cc->rpages[i]);
++		}
+ }
+ 
+ static int prepare_compress_overwrite(struct compress_ctx *cc,
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index d220c4523982..489854d841e7 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -1278,6 +1278,7 @@ static int __clone_blkaddrs(struct inode *src_inode, struct inode *dst_inode,
+ 			}
+ 			f2fs_copy_page(psrc, pdst);
+ 			set_page_dirty(pdst);
++			set_page_private_gcing(pdst);
+ 			f2fs_put_page(pdst, 1);
+ 			f2fs_put_page(psrc, 1);
+ 
+@@ -3981,6 +3982,7 @@ static int redirty_blocks(struct inode *inode, pgoff_t page_idx, int len)
  			break;
- 		case IRQ_TYPE_LEVEL_LOW:
- 			sprd_eic_update(chip, offset, SPRD_EIC_DBNC_IEV, 0);
-+			sprd_eic_update(chip, offset, SPRD_EIC_DBNC_IC, 1);
- 			break;
- 		case IRQ_TYPE_EDGE_RISING:
- 		case IRQ_TYPE_EDGE_FALLING:
- 		case IRQ_TYPE_EDGE_BOTH:
- 			state = sprd_eic_get(chip, offset);
--			if (state)
-+			if (state) {
- 				sprd_eic_update(chip, offset,
- 						SPRD_EIC_DBNC_IEV, 0);
--			else
-+				sprd_eic_update(chip, offset,
-+						SPRD_EIC_DBNC_IC, 1);
-+			} else {
- 				sprd_eic_update(chip, offset,
- 						SPRD_EIC_DBNC_IEV, 1);
-+				sprd_eic_update(chip, offset,
-+						SPRD_EIC_DBNC_IC, 1);
-+			}
- 			break;
- 		default:
- 			return -ENOTSUPP;
-@@ -343,20 +350,27 @@ static int sprd_eic_irq_set_type(struct irq_data *data, unsigned int flow_type)
- 		switch (flow_type) {
- 		case IRQ_TYPE_LEVEL_HIGH:
- 			sprd_eic_update(chip, offset, SPRD_EIC_LATCH_INTPOL, 0);
-+			sprd_eic_update(chip, offset, SPRD_EIC_LATCH_INTCLR, 1);
- 			break;
- 		case IRQ_TYPE_LEVEL_LOW:
- 			sprd_eic_update(chip, offset, SPRD_EIC_LATCH_INTPOL, 1);
-+			sprd_eic_update(chip, offset, SPRD_EIC_LATCH_INTCLR, 1);
- 			break;
- 		case IRQ_TYPE_EDGE_RISING:
- 		case IRQ_TYPE_EDGE_FALLING:
- 		case IRQ_TYPE_EDGE_BOTH:
- 			state = sprd_eic_get(chip, offset);
--			if (state)
-+			if (state) {
- 				sprd_eic_update(chip, offset,
- 						SPRD_EIC_LATCH_INTPOL, 0);
--			else
-+				sprd_eic_update(chip, offset,
-+						SPRD_EIC_LATCH_INTCLR, 1);
-+			} else {
- 				sprd_eic_update(chip, offset,
- 						SPRD_EIC_LATCH_INTPOL, 1);
-+				sprd_eic_update(chip, offset,
-+						SPRD_EIC_LATCH_INTCLR, 1);
-+			}
- 			break;
- 		default:
- 			return -ENOTSUPP;
-@@ -370,29 +384,34 @@ static int sprd_eic_irq_set_type(struct irq_data *data, unsigned int flow_type)
- 			sprd_eic_update(chip, offset, SPRD_EIC_ASYNC_INTBOTH, 0);
- 			sprd_eic_update(chip, offset, SPRD_EIC_ASYNC_INTMODE, 0);
- 			sprd_eic_update(chip, offset, SPRD_EIC_ASYNC_INTPOL, 1);
-+			sprd_eic_update(chip, offset, SPRD_EIC_ASYNC_INTCLR, 1);
- 			irq_set_handler_locked(data, handle_edge_irq);
- 			break;
- 		case IRQ_TYPE_EDGE_FALLING:
- 			sprd_eic_update(chip, offset, SPRD_EIC_ASYNC_INTBOTH, 0);
- 			sprd_eic_update(chip, offset, SPRD_EIC_ASYNC_INTMODE, 0);
- 			sprd_eic_update(chip, offset, SPRD_EIC_ASYNC_INTPOL, 0);
-+			sprd_eic_update(chip, offset, SPRD_EIC_ASYNC_INTCLR, 1);
- 			irq_set_handler_locked(data, handle_edge_irq);
- 			break;
- 		case IRQ_TYPE_EDGE_BOTH:
- 			sprd_eic_update(chip, offset, SPRD_EIC_ASYNC_INTMODE, 0);
- 			sprd_eic_update(chip, offset, SPRD_EIC_ASYNC_INTBOTH, 1);
-+			sprd_eic_update(chip, offset, SPRD_EIC_ASYNC_INTCLR, 1);
- 			irq_set_handler_locked(data, handle_edge_irq);
- 			break;
- 		case IRQ_TYPE_LEVEL_HIGH:
- 			sprd_eic_update(chip, offset, SPRD_EIC_ASYNC_INTBOTH, 0);
- 			sprd_eic_update(chip, offset, SPRD_EIC_ASYNC_INTMODE, 1);
- 			sprd_eic_update(chip, offset, SPRD_EIC_ASYNC_INTPOL, 1);
-+			sprd_eic_update(chip, offset, SPRD_EIC_ASYNC_INTCLR, 1);
- 			irq_set_handler_locked(data, handle_level_irq);
- 			break;
- 		case IRQ_TYPE_LEVEL_LOW:
- 			sprd_eic_update(chip, offset, SPRD_EIC_ASYNC_INTBOTH, 0);
- 			sprd_eic_update(chip, offset, SPRD_EIC_ASYNC_INTMODE, 1);
- 			sprd_eic_update(chip, offset, SPRD_EIC_ASYNC_INTPOL, 0);
-+			sprd_eic_update(chip, offset, SPRD_EIC_ASYNC_INTCLR, 1);
- 			irq_set_handler_locked(data, handle_level_irq);
- 			break;
- 		default:
-@@ -405,29 +424,34 @@ static int sprd_eic_irq_set_type(struct irq_data *data, unsigned int flow_type)
- 			sprd_eic_update(chip, offset, SPRD_EIC_SYNC_INTBOTH, 0);
- 			sprd_eic_update(chip, offset, SPRD_EIC_SYNC_INTMODE, 0);
- 			sprd_eic_update(chip, offset, SPRD_EIC_SYNC_INTPOL, 1);
-+			sprd_eic_update(chip, offset, SPRD_EIC_SYNC_INTCLR, 1);
- 			irq_set_handler_locked(data, handle_edge_irq);
- 			break;
- 		case IRQ_TYPE_EDGE_FALLING:
- 			sprd_eic_update(chip, offset, SPRD_EIC_SYNC_INTBOTH, 0);
- 			sprd_eic_update(chip, offset, SPRD_EIC_SYNC_INTMODE, 0);
- 			sprd_eic_update(chip, offset, SPRD_EIC_SYNC_INTPOL, 0);
-+			sprd_eic_update(chip, offset, SPRD_EIC_SYNC_INTCLR, 1);
- 			irq_set_handler_locked(data, handle_edge_irq);
- 			break;
- 		case IRQ_TYPE_EDGE_BOTH:
- 			sprd_eic_update(chip, offset, SPRD_EIC_SYNC_INTMODE, 0);
- 			sprd_eic_update(chip, offset, SPRD_EIC_SYNC_INTBOTH, 1);
-+			sprd_eic_update(chip, offset, SPRD_EIC_SYNC_INTCLR, 1);
- 			irq_set_handler_locked(data, handle_edge_irq);
- 			break;
- 		case IRQ_TYPE_LEVEL_HIGH:
- 			sprd_eic_update(chip, offset, SPRD_EIC_SYNC_INTBOTH, 0);
- 			sprd_eic_update(chip, offset, SPRD_EIC_SYNC_INTMODE, 1);
- 			sprd_eic_update(chip, offset, SPRD_EIC_SYNC_INTPOL, 1);
-+			sprd_eic_update(chip, offset, SPRD_EIC_SYNC_INTCLR, 1);
- 			irq_set_handler_locked(data, handle_level_irq);
- 			break;
- 		case IRQ_TYPE_LEVEL_LOW:
- 			sprd_eic_update(chip, offset, SPRD_EIC_SYNC_INTBOTH, 0);
- 			sprd_eic_update(chip, offset, SPRD_EIC_SYNC_INTMODE, 1);
- 			sprd_eic_update(chip, offset, SPRD_EIC_SYNC_INTPOL, 0);
-+			sprd_eic_update(chip, offset, SPRD_EIC_SYNC_INTCLR, 1);
- 			irq_set_handler_locked(data, handle_level_irq);
- 			break;
- 		default:
+ 		}
+ 		set_page_dirty(page);
++		set_page_private_gcing(page);
+ 		f2fs_put_page(page, 1);
+ 		f2fs_put_page(page, 0);
+ 	}
 -- 
 2.43.0
 
