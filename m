@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-21859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 715F485D8DE
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:11:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BB0285DD25
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:02:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2E021C216D2
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:11:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C937B25D26
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:02:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2115B69DF9;
-	Wed, 21 Feb 2024 13:11:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DE3E78B4B;
+	Wed, 21 Feb 2024 14:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uhN7FuxQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kTq8weQe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D253E69DE7;
-	Wed, 21 Feb 2024 13:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0C5A7E595;
+	Wed, 21 Feb 2024 14:01:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521086; cv=none; b=hYzBHwPaBObvF9FzEx3ajSiWE/HBJOKWUmIoCqtF6OIAjUyBvjFC5Q9Y447wFjYpcuzjgdOvcnoH5mNHL6AVEtbJeWIF4ZlzbSgXCCR71ilP4iTEDeVBgXi6lF2wP83hbF6WHWsrtu25JMIiZoO3JBmuSqvMkEDvJ4P6iIiw91k=
+	t=1708524098; cv=none; b=aIrghk5cyuWwpu/RmCzwXGZdMz8YQ6XMImj0o/JgOvZDxfBUEv7sgiBSquZB4b3fjFWrSP2Icbs3el8hCKGbJ0RmQe7Tf3NF6HL1T5OajZXWXilByXJ3mqzfdzs15BuBEky9Xzs+moIQ1/mikfziywHISdzO8aLyCvTK1NlL9ic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521086; c=relaxed/simple;
-	bh=kCe7qGiDtedqPNdAKy3ybqA3s2CLWY3y+AHXYpDMRr0=;
+	s=arc-20240116; t=1708524098; c=relaxed/simple;
+	bh=H+HzTdTjkUicEumF+woahV9Qa7SZOlciRxwdcRY9ZHk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IC4RkKbUt9Qm7avmWA692sW2By/zy83XidcumDMQY8z+kwXxVqHZKrppdItCr264RCfQp07VQcaDiQtdQ/KdPHOZB8mopRyDwwPXaWgy7RVpjm+y3YNBfrkSXyIsMM4+mG7GM1XJ7EA17XmNRFOVvDNVvPYWU8vZL6lt7fP9St0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uhN7FuxQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41C2CC433C7;
-	Wed, 21 Feb 2024 13:11:26 +0000 (UTC)
+	 MIME-Version; b=rMJrwYCei+tYLK9vqDv7m0wDDPgDMLZxG6OgVBdCsFpz7QDtgc7vc8UNrAjjjyA21Pe4S1xxLSdK4iCRf5O4ieZjDnd9MEsXJAZV8lnp7ZYdMmA05p2gYL9b5mKRxfhUF7zkS+U6rTZQk4wAa3f/PrV7PPVhy22z14LdhkVsm0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kTq8weQe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21D70C433C7;
+	Wed, 21 Feb 2024 14:01:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521086;
-	bh=kCe7qGiDtedqPNdAKy3ybqA3s2CLWY3y+AHXYpDMRr0=;
+	s=korg; t=1708524097;
+	bh=H+HzTdTjkUicEumF+woahV9Qa7SZOlciRxwdcRY9ZHk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uhN7FuxQhe6GpcyCCmXjxh0Ou0mAHzbvLILkkHMfO3/XLdeponziLOrHDSeGql/KM
-	 nc36wTytbSKxueEKJsvLg9YBiYHyQfkTvbHC0nl7yYd0IcZHaS7G2anU6IHCXvfWqq
-	 HCPHTXFSpEyKtMKMF0XeeQC+nArK2kljaPfdVAVA=
+	b=kTq8weQeOu7AMB0waM3Rr/IKWmD3i0OQKkI1WyDHdIVCg1+Lj8hspgwx3P6D6xGm8
+	 5kJG/Xo+U+eOH/qj1rqug7VtJeNE83uQcbsTpQqtDh3JkWB3hRJoRbHYVeTxvYNIWW
+	 gqBrNV1gzRUGJ3Vh3uli9QDBd+FjL4xTv+NOjr4Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 4.19 021/202] Revert "driver core: Annotate dev_err_probe() with __must_check"
+	ching Huang <ching2048@areca.com.tw>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 143/379] scsi: arcmsr: Support new PCI device IDs 1883 and 1886
 Date: Wed, 21 Feb 2024 14:05:22 +0100
-Message-ID: <20240221125932.457721400@linuxfoundation.org>
+Message-ID: <20240221125959.156138467@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: ching Huang <ching2048@areca.com.tw>
 
-commit f601e8f37c2c1c52f2923fffc48204a7f7dc023d upstream.
+[ Upstream commit 41c8a1a1e90fa4721f856bf3cf71211fd16d6434 ]
 
-This reverts commit e1f82a0dcf388d98bcc7ad195c03bd812405e6b2 as it's
-already starting to cause build warnings in linux-next for things that
-are "obviously correct".
+Add support for Areca RAID controllers with PCI device IDs 1883 and 1886.
 
-It's up to driver authors do "do the right thing" here with this
-function, and if they don't want to call it as the last line of a
-function, that's up to them, otherwise code that looks like:
-	ret = dev_err_probe(..., ret, ...);
-does look really "odd".
-
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Reported-by: Krzysztof Kozlowski <krzk@kernel.org>
-Fixes: e1f82a0dcf38 ("driver core: Annotate dev_err_probe() with __must_check")
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: ching Huang <ching2048@areca.com.tw>
+Link: https://lore.kernel.org/r/7732e743eaad57681b1552eec9c6a86c76dbe459.camel@areca.com.tw
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/device.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/arcmsr/arcmsr.h     | 4 ++++
+ drivers/scsi/arcmsr/arcmsr_hba.c | 6 ++++++
+ 2 files changed, 10 insertions(+)
 
---- a/include/linux/device.h
-+++ b/include/linux/device.h
-@@ -1582,7 +1582,7 @@ do {									\
- 			dev_driver_string(dev), dev_name(dev), ## arg)
- 
- extern __printf(3, 4)
--int __must_check dev_err_probe(const struct device *dev, int err, const char *fmt, ...);
-+int dev_err_probe(const struct device *dev, int err, const char *fmt, ...);
- 
- /* Create alias, so I can be autoloaded. */
- #define MODULE_ALIAS_CHARDEV(major,minor) \
+diff --git a/drivers/scsi/arcmsr/arcmsr.h b/drivers/scsi/arcmsr/arcmsr.h
+index 5d054d5c70a5..f2e587e66e19 100644
+--- a/drivers/scsi/arcmsr/arcmsr.h
++++ b/drivers/scsi/arcmsr/arcmsr.h
+@@ -77,9 +77,13 @@ struct device_attribute;
+ #ifndef PCI_DEVICE_ID_ARECA_1203
+ #define PCI_DEVICE_ID_ARECA_1203	0x1203
+ #endif
++#ifndef PCI_DEVICE_ID_ARECA_1883
++#define PCI_DEVICE_ID_ARECA_1883	0x1883
++#endif
+ #ifndef PCI_DEVICE_ID_ARECA_1884
+ #define PCI_DEVICE_ID_ARECA_1884	0x1884
+ #endif
++#define PCI_DEVICE_ID_ARECA_1886_0	0x1886
+ #define PCI_DEVICE_ID_ARECA_1886	0x188A
+ #define	ARCMSR_HOURS			(1000 * 60 * 60 * 4)
+ #define	ARCMSR_MINUTES			(1000 * 60 * 60)
+diff --git a/drivers/scsi/arcmsr/arcmsr_hba.c b/drivers/scsi/arcmsr/arcmsr_hba.c
+index 9294a2c677b3..199b102f31a2 100644
+--- a/drivers/scsi/arcmsr/arcmsr_hba.c
++++ b/drivers/scsi/arcmsr/arcmsr_hba.c
+@@ -208,8 +208,12 @@ static struct pci_device_id arcmsr_device_id_table[] = {
+ 		.driver_data = ACB_ADAPTER_TYPE_A},
+ 	{PCI_DEVICE(PCI_VENDOR_ID_ARECA, PCI_DEVICE_ID_ARECA_1880),
+ 		.driver_data = ACB_ADAPTER_TYPE_C},
++	{PCI_DEVICE(PCI_VENDOR_ID_ARECA, PCI_DEVICE_ID_ARECA_1883),
++		.driver_data = ACB_ADAPTER_TYPE_C},
+ 	{PCI_DEVICE(PCI_VENDOR_ID_ARECA, PCI_DEVICE_ID_ARECA_1884),
+ 		.driver_data = ACB_ADAPTER_TYPE_E},
++	{PCI_DEVICE(PCI_VENDOR_ID_ARECA, PCI_DEVICE_ID_ARECA_1886_0),
++		.driver_data = ACB_ADAPTER_TYPE_F},
+ 	{PCI_DEVICE(PCI_VENDOR_ID_ARECA, PCI_DEVICE_ID_ARECA_1886),
+ 		.driver_data = ACB_ADAPTER_TYPE_F},
+ 	{0, 0}, /* Terminating entry */
+@@ -4701,9 +4705,11 @@ static const char *arcmsr_info(struct Scsi_Host *host)
+ 	case PCI_DEVICE_ID_ARECA_1680:
+ 	case PCI_DEVICE_ID_ARECA_1681:
+ 	case PCI_DEVICE_ID_ARECA_1880:
++	case PCI_DEVICE_ID_ARECA_1883:
+ 	case PCI_DEVICE_ID_ARECA_1884:
+ 		type = "SAS/SATA";
+ 		break;
++	case PCI_DEVICE_ID_ARECA_1886_0:
+ 	case PCI_DEVICE_ID_ARECA_1886:
+ 		type = "NVMe/SAS/SATA";
+ 		break;
+-- 
+2.43.0
+
 
 
 
