@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-22682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE14885DD3E
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:04:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F32485DB50
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:39:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 740B61F21937
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:04:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C418D1F23046
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:39:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA1127EEE2;
-	Wed, 21 Feb 2024 14:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4546069E08;
+	Wed, 21 Feb 2024 13:39:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t73exshK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qMrDOMe9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 965527E795;
-	Wed, 21 Feb 2024 14:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01B0D3C2F;
+	Wed, 21 Feb 2024 13:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524158; cv=none; b=Wko6cf5PeYmuTUL7yVMqFxYGC2NDqoiKGGt7EnfhTt6fLuuCTsSWB27K7ycK6CKt0xkU2jq1QKFcQJvgyP86Je0oG3pJxzX81H4KoK/DQnbNO76Efm63eLMQbCEvcr8b7IUvM2x94c9My6npOLJ9ITEVxSS47D32EWoJgGRpHjg=
+	t=1708522765; cv=none; b=JrQm4LO2O12QB8uR0aRI+1Gm2LFRjUbuSRdAh+oGZXGR7Q1RymYATpkWdH6naHkGDkYruUK7GfSqrG7MhfHlUt0LmQ7GjR1cgvZZFg4zN8aEOX8TaVYL7SQKTZQ2F9H/YEXNFZUG8tX+wOZXfJVTbf4LaLuAed24IZlTl1d9DC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524158; c=relaxed/simple;
-	bh=nG9oGOpQJBSCmwdyroGWr13Qn+Ngp6rRRol4/2xDdcs=;
+	s=arc-20240116; t=1708522765; c=relaxed/simple;
+	bh=xcByPhYVNmXWU2lF19XIw8rvTanjZcKmLfcRosIfbxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g8Vjj15N2OQMZIpIGMCFi2mEyCFYpBCyh9x+eYpOybWXuxqwGMORUCa8pmqA0ffYYQH1AG4hB9MwRV+t431tEwMfK7JIYxcghQlIgHtjzBgciMZ611vrcnwSWDpdhcjv9sTYlOE2S0jj/IrXxjRF4Zcr8cvH/n/gsV3Air4zkis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t73exshK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2BD8C433F1;
-	Wed, 21 Feb 2024 14:02:37 +0000 (UTC)
+	 MIME-Version; b=G0vbrbVfZqDGOU+QTZwNxwhy2BT0HMyTg3DmdEnnYJPKhZPB3Ped5vXeJCVrYVTD0TicAec9C0ILDRI3TC3MUQAoC3WtdnZEIG+fPrfrQbZelpXzTAeYMXtI9RrXteWZDnbrcoYScrQEjkHf5LJCRfexDn5TY0oAFU4iTRseC7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qMrDOMe9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FEA6C433F1;
+	Wed, 21 Feb 2024 13:39:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524158;
-	bh=nG9oGOpQJBSCmwdyroGWr13Qn+Ngp6rRRol4/2xDdcs=;
+	s=korg; t=1708522764;
+	bh=xcByPhYVNmXWU2lF19XIw8rvTanjZcKmLfcRosIfbxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t73exshKfFqneMeacZR+xV1PyEbfojGz3z6k9iLIn7GZy/lXBTu+WNCRmh2d5yF/R
-	 LSqcBwFJ73TJySGzP2Aar+GpT1Bzw5Lxo4MKmwKs27IGlFDU1yhCOLmJAzm3K6Kq5m
-	 QVKujb3TnWEprQCaTsh52aUmKDcl+rnCNwMnLMG8=
+	b=qMrDOMe92Yd825/oNmzc8YqnBlXp+I33zyQ+prUvYWFoHN133b9B9IH0FKy8Y2jeW
+	 OEt8EA7mW5W+oXjbf/zn/gbnAFe6DhYYSuh4CFnVC67DDKLXaglKTovJ4k6egd3FHm
+	 x/XbXVX3EUVkGf+1yh8BnECIYQ2vIzfQ2RmzquJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weichen Chen <weichen.chen@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	Kees Cook <keescook@chromium.org>,
+	Ian Rogers <irogers@google.com>,
+	James Clark <james.clark@arm.com>,
+	Leo Yan <leo.yan@linaro.org>,
+	John Garry <john.g.garry@oracle.com>,
+	Mike Leach <mike.leach@linaro.org>,
+	Will Deacon <will@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 123/379] pstore/ram: Fix crash when setting number of cpus to an odd number
+Subject: [PATCH 5.15 251/476] perf cs-etm: Bump minimum OpenCSD version to ensure a bugfix is present
 Date: Wed, 21 Feb 2024 14:05:02 +0100
-Message-ID: <20240221125958.567068015@linuxfoundation.org>
+Message-ID: <20240221130017.136027448@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +68,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weichen Chen <weichen.chen@mediatek.com>
+From: James Clark <james.clark@arm.com>
 
-[ Upstream commit d49270a04623ce3c0afddbf3e984cb245aa48e9c ]
+[ Upstream commit 2dbba30fd69b604802a9535b74bddb5bcca23793 ]
 
-When the number of cpu cores is adjusted to 7 or other odd numbers,
-the zone size will become an odd number.
-The address of the zone will become:
-    addr of zone0 = BASE
-    addr of zone1 = BASE + zone_size
-    addr of zone2 = BASE + zone_size*2
-    ...
-The address of zone1/3/5/7 will be mapped to non-alignment va.
-Eventually crashes will occur when accessing these va.
+Since commit d927ef5004ef ("perf cs-etm: Add exception level consistency
+check"), the exception that was added to Perf will be triggered unless
+the following bugfix from OpenCSD is present:
 
-So, use ALIGN_DOWN() to make sure the zone size is even
-to avoid this bug.
+ - _Version 1.2.1_:
+  - __Bugfix__:
+    ETM4x / ETE - output of context elements to client can in some
+    circumstances be delayed until after subsequent atoms have been
+    processed leading to incorrect memory decode access via the client
+    callbacks. Fixed to flush context elements immediately they are
+    committed.
 
-Signed-off-by: Weichen Chen <weichen.chen@mediatek.com>
-Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
-Tested-by: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Link: https://lore.kernel.org/r/20230224023632.6840-1-weichen.chen@mediatek.com
-Signed-off-by: Kees Cook <keescook@chromium.org>
+Rather than remove the assert and silently fail, just increase the
+minimum version requirement to avoid hard to debug issues and
+regressions.
+
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: James Clark <james.clark@arm.com>
+Tested-by: Leo Yan <leo.yan@linaro.org>
+Cc: John Garry <john.g.garry@oracle.com>
+Cc: Mike Leach <mike.leach@linaro.org>
+Cc: Will Deacon <will@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org
+Link: https://lore.kernel.org/r/20230901133716.677499-1-james.clark@arm.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/pstore/ram.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/build/feature/test-libopencsd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/pstore/ram.c b/fs/pstore/ram.c
-index 98e579ce0d63..44fc3b396288 100644
---- a/fs/pstore/ram.c
-+++ b/fs/pstore/ram.c
-@@ -519,6 +519,7 @@ static int ramoops_init_przs(const char *name,
- 	}
+diff --git a/tools/build/feature/test-libopencsd.c b/tools/build/feature/test-libopencsd.c
+index eb6303ff446e..4cfcef9da3e4 100644
+--- a/tools/build/feature/test-libopencsd.c
++++ b/tools/build/feature/test-libopencsd.c
+@@ -4,9 +4,9 @@
+ /*
+  * Check OpenCSD library version is sufficient to provide required features
+  */
+-#define OCSD_MIN_VER ((1 << 16) | (1 << 8) | (1))
++#define OCSD_MIN_VER ((1 << 16) | (2 << 8) | (1))
+ #if !defined(OCSD_VER_NUM) || (OCSD_VER_NUM < OCSD_MIN_VER)
+-#error "OpenCSD >= 1.1.1 is required"
++#error "OpenCSD >= 1.2.1 is required"
+ #endif
  
- 	zone_sz = mem_sz / *cnt;
-+	zone_sz = ALIGN_DOWN(zone_sz, 2);
- 	if (!zone_sz) {
- 		dev_err(dev, "%s zone size == 0\n", name);
- 		goto fail;
+ int main(void)
 -- 
 2.43.0
 
