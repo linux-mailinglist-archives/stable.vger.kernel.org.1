@@ -1,83 +1,106 @@
-Return-Path: <stable+bounces-21846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F4F785D8C4
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:08:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0615185DDF5
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:13:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A7471F2374F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:08:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AC211F24290
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:13:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A10A6995E;
-	Wed, 21 Feb 2024 13:07:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0494A80030;
+	Wed, 21 Feb 2024 14:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s92/mDN0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uYxhL/MT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 433AE29AB;
-	Wed, 21 Feb 2024 13:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5BEE7C6E9;
+	Wed, 21 Feb 2024 14:10:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708520879; cv=none; b=hjnFGG/OdwgsC0U8rnmdIvyGHrFsyofMWkIbn3FuuHWM1GuZ+W/ypLue+CG+MdWAdSmUKnTF2+0FxRntDAhuQB40Ht3/7A5IQ8LW0it3vOlSAoeZbkeV6BgP/izY19l9gIFcstu+qD2LUgn2imbngKhmmatjsmIE8OGbnf2Llz4=
+	t=1708524613; cv=none; b=GI7wiyRN3NcZztqqVGrO5UvysN0N8xEic+h+6SH9PQHL7cIwBp7OCiZ0FswkZ/2XK6pS/1ZojqugQvoYh+jjwh9UMn6bO4t59Fuk/koykhXjMAM2BTH8TTZCNX/Xr2JaIJ5y7anUdmz9FeolDkTWltxPS9ZKc2BRCWGZH4QFhIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708520879; c=relaxed/simple;
-	bh=7ExkksBPK+mQaI2810aWKVFf5/cXXYe8R3b49O1Z1Bg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rjRIvDXCJdcOOwoo1I23PR6qUhm1ZZDC5Px09iPIRz87vDBd7cjQcgvpkr/dh26PAAw+TIjjxWHb7PQQ3ERb3QVws3JCVd5gmpUFVF6zW3PPfuDNPkrKgoyHPYTssSrmUcslaol2C9ImJfDTQGYhicdOVDePaXTLjuiHCDLTWi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s92/mDN0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 266D1C433C7;
-	Wed, 21 Feb 2024 13:07:58 +0000 (UTC)
+	s=arc-20240116; t=1708524613; c=relaxed/simple;
+	bh=zEp8fSqwa243mLx6WXsk1liS4uIfFHbBH60ggIhO0pU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=L8hkVCsbjo6Qot1mx+7VQpE2MpAgtKfNg/pnXozMBhEFQy6tgHWZ8IySdxWJkwsiwmI6Tw4dH0bL7GXtbnIj2PyUIqjuWc232/++z/fgPbiGLjwXyi6zjlkkIw0ZPNIFOgGmh9Qp7p0oJFo+3/2lkIT13EvfKLhTCziRHqa+C0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uYxhL/MT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D072C433F1;
+	Wed, 21 Feb 2024 14:10:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708520878;
-	bh=7ExkksBPK+mQaI2810aWKVFf5/cXXYe8R3b49O1Z1Bg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=s92/mDN039RWwaPp68GlRz9VI0Ngl2a9aSctuj4SlcRun1xy03sYMHB2aeipSAWeB
-	 LIOVR1iqF+Az5W/Y2j76meVmiFbJZGBXlHJIp8PNe9n0jWIE+rQ9v7Axes2tvfRa8k
-	 NQsNEwkS+xno1QR5KkV1V+7AFP2l52xq+TNv+bAE=
-Date: Wed, 21 Feb 2024 14:07:56 +0100
+	s=korg; t=1708524613;
+	bh=zEp8fSqwa243mLx6WXsk1liS4uIfFHbBH60ggIhO0pU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=uYxhL/MTWg/pKnICK0MzEOCUsknyyNcP8UFt5aZjuVzSj1JS2LqzCuqzHI5509X9h
+	 VEE0ZOhacclT7dECtPVoyhZ4dd9ou3NJ6h4OxLMNzrpA31a5tgBrlZqCc7KuA+WjGE
+	 K4osesZQ+tSn5lU90HyhbvBblTAXKC3WZPAkB0q0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	allen.lkml@gmail.com
-Subject: Re: [PATCH 6.1 000/206] 6.1.79-rc1 review
-Message-ID: <2024022140-arbitrate-freefall-81c3@gregkh>
-References: <20240221125936.478639123@linuxfoundation.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Vincent Donnefort <vdonnefort@google.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.10 297/379] tracing/trigger: Fix to return error if failed to alloc snapshot
+Date: Wed, 21 Feb 2024 14:07:56 +0100
+Message-ID: <20240221130003.710270739@linuxfoundation.org>
+X-Mailer: git-send-email 2.43.2
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240221125936.478639123@linuxfoundation.org>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Feb 21, 2024 at 01:58:04PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.79 release.
-> There are 206 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Fri, 23 Feb 2024 12:59:02 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.79-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
-Oops, nope, this should have been -rc2, will fix that up and resend,
-sorry for the noise.
+------------------
 
-greg k-h
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+
+commit 0958b33ef5a04ed91f61cef4760ac412080c4e08 upstream.
+
+Fix register_snapshot_trigger() to return error code if it failed to
+allocate a snapshot instead of 0 (success). Unless that, it will register
+snapshot trigger without an error.
+
+Link: https://lore.kernel.org/linux-trace-kernel/170622977792.270660.2789298642759362200.stgit@devnote2
+
+Fixes: 0bbe7f719985 ("tracing: Fix the race between registering 'snapshot' event trigger and triggering 'snapshot' operation")
+Cc: stable@vger.kernel.org
+Cc: Vincent Donnefort <vdonnefort@google.com>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ kernel/trace/trace_events_trigger.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+--- a/kernel/trace/trace_events_trigger.c
++++ b/kernel/trace/trace_events_trigger.c
+@@ -1140,8 +1140,10 @@ register_snapshot_trigger(char *glob, st
+ 			  struct event_trigger_data *data,
+ 			  struct trace_event_file *file)
+ {
+-	if (tracing_alloc_snapshot_instance(file->tr) != 0)
+-		return 0;
++	int ret = tracing_alloc_snapshot_instance(file->tr);
++
++	if (ret < 0)
++		return ret;
+ 
+ 	return register_trigger(glob, ops, data, file);
+ }
+
+
 
