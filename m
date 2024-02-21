@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-23023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A030E85DED4
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:22:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE5A285DC2D
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:50:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1E6F1C22CA3
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:22:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 59AB4B24BFA
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:50:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8ACD7C08D;
-	Wed, 21 Feb 2024 14:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31C347CF29;
+	Wed, 21 Feb 2024 13:49:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sCVmB0RK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="biIGbieX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A585276905;
-	Wed, 21 Feb 2024 14:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A007C083;
+	Wed, 21 Feb 2024 13:49:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525325; cv=none; b=VO+PpTwpN1aecFNmXnfZRHjeifSFv1bfj5/FuDQ4umu5rnk3bFt3r0F1tCULZxflkQK+jO+gbZyYziqazC9lmxrexEsbSS0e0FRLiDaqpk6YrkIe1soMaT1F+CfLs3Nc69WxqsA8kv97TISnePIcfZDe0yXNZ2oRfZNu8ZEfq5Q=
+	t=1708523391; cv=none; b=iPGPfTp8wlWw1gHGPGKHHFh1Vgdu+1oppRaotyx1m45yWOYSP4XgT9+3N3OWRbJ9Mg+rnDDmjyEwYMcTpy1KdpJVQecKejJZfCJ0qEcO309i8MXs6nkOerzG4zpEvykx6QHNaxq0XzVQvf4fmI3wLS57fyYUBHgUN5I4JFQmtXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525325; c=relaxed/simple;
-	bh=4dZfnxAXEuRBeQUSUjyVFGaecwKpQgDheS9mxhseObU=;
+	s=arc-20240116; t=1708523391; c=relaxed/simple;
+	bh=9Cx1gCdf57L7SD59r0cBYIZv4eDFmOeZ8eaqum9zKXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PedDChVbdcCrTgSsoPJtdst9GwvKKuyq7Rxy2s+74EKNgJ/OrLdrmEuEIXeqn537udRO41pE1jUuu+yx3a/X8yDMItBTuuNfLnvTGXPlo2LkAGWc0W9dKyi5S+qwUGaHpxIHhg0QyImzeJVIgU5MYwzOFqnNzL1sE9hzW9ZB/UI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sCVmB0RK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8AFEC433F1;
-	Wed, 21 Feb 2024 14:22:04 +0000 (UTC)
+	 MIME-Version; b=hAVh9RdnzDYEjBP97B+ucYOyZhsdsLt3sufuQt05KrbR+Z8bd7fNvwj2aD1zFBpl7gNX3MDXsnPQisU5qRk+oCj9J90vGl6RDZ/k5+uJM8Wc/TyYFuyWe6AADgqngMYEQ518vI4Sg+eFI7u7Sxutpbi+9AFpUUfFfsmxIUcwXIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=biIGbieX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E865C433F1;
+	Wed, 21 Feb 2024 13:49:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525325;
-	bh=4dZfnxAXEuRBeQUSUjyVFGaecwKpQgDheS9mxhseObU=;
+	s=korg; t=1708523391;
+	bh=9Cx1gCdf57L7SD59r0cBYIZv4eDFmOeZ8eaqum9zKXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sCVmB0RKojiOokjS0bME6SB33GCIcsLljo9ZPS1CtfXgSxltWE0RGHHrP/fB9GnMI
-	 H3nDbUJ95rVRxYgQBfD3j35J8v+J/VhAgriy80TCS0lFxcCy/GeeVpbAgs62bs4bdU
-	 JDy+ITfL64E9MRJx/wvTW3FKHDEWBxV/94HGowy4=
+	b=biIGbieXpilEyF69L98u9D1C3yiHgthf77i7RyxM+/3EN86HCpMPa4F+YY6Pp7my+
+	 2v+VOzYVaBNOO/Ghli/J0mXJtouwHurs1U+TBwm2nghqZS6+Vybn2MokqwZ8hF2uY4
+	 f0Ra8S2uVPuLg+uJx1q5Q0uP5gyrrINg4V+1kfEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@suse.de>,
-	Christoph Hellwig <hch@lst.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 103/267] scsi: libfc: Fix up timeout error in fc_fcp_rec_error()
-Date: Wed, 21 Feb 2024 14:07:24 +0100
-Message-ID: <20240221125943.171088764@linuxfoundation.org>
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.15 394/476] iio: accel: bma400: Fix a compilation problem
+Date: Wed, 21 Feb 2024 14:07:25 +0100
+Message-ID: <20240221130022.586576758@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hannes Reinecke <hare@suse.de>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 53122a49f49796beb2c4a1bb702303b66347e29f ]
+commit 4cb81840d8f29b66d9d05c6d7f360c9560f7e2f4 upstream.
 
-We should set the status to FC_TIMED_OUT when a timeout error is passed to
-fc_fcp_rec_error().
+The kernel fails when compiling without `CONFIG_REGMAP_I2C` but with
+`CONFIG_BMA400`.
+```
+ld: drivers/iio/accel/bma400_i2c.o: in function `bma400_i2c_probe':
+bma400_i2c.c:(.text+0x23): undefined reference to `__devm_regmap_init_i2c'
+```
 
-Signed-off-by: Hannes Reinecke <hare@suse.de>
-Link: https://lore.kernel.org/r/20231129165832.224100-3-hare@kernel.org
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://download.01.org/0day-ci/archive/20240131/202401311634.FE5CBVwe-lkp@intel.com/config
+Fixes: 465c811f1f20 ("iio: accel: Add driver for the BMA400")
+Fixes: 9bea10642396 ("iio: accel: bma400: add support for bma400 spi")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20240131225246.14169-1-mario.limonciello@amd.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/libfc/fc_fcp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/accel/Kconfig |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/scsi/libfc/fc_fcp.c b/drivers/scsi/libfc/fc_fcp.c
-index 22e286f920f4..5e00ee0645f2 100644
---- a/drivers/scsi/libfc/fc_fcp.c
-+++ b/drivers/scsi/libfc/fc_fcp.c
-@@ -1685,7 +1685,7 @@ static void fc_fcp_rec_error(struct fc_fcp_pkt *fsp, struct fc_frame *fp)
- 		if (fsp->recov_retry++ < FC_MAX_RECOV_RETRY)
- 			fc_fcp_rec(fsp);
- 		else
--			fc_fcp_recovery(fsp, FC_ERROR);
-+			fc_fcp_recovery(fsp, FC_TIMED_OUT);
- 		break;
- 	}
- 	fc_fcp_unlock_pkt(fsp);
--- 
-2.43.0
-
+--- a/drivers/iio/accel/Kconfig
++++ b/drivers/iio/accel/Kconfig
+@@ -128,10 +128,12 @@ config BMA400
+ 
+ config BMA400_I2C
+ 	tristate
++	select REGMAP_I2C
+ 	depends on BMA400
+ 
+ config BMA400_SPI
+ 	tristate
++	select REGMAP_SPI
+ 	depends on BMA400
+ 
+ config BMC150_ACCEL
 
 
 
