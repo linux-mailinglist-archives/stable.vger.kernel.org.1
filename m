@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-21948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 717D685D956
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:17:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3365A85DBE0
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:46:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE9C4B23FA5
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:17:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B7A37B27486
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:46:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 834237762D;
-	Wed, 21 Feb 2024 13:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C2AC79DBC;
+	Wed, 21 Feb 2024 13:46:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nkbdhlib"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E7b/eL+X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FAD676C62;
-	Wed, 21 Feb 2024 13:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE4747B3F2;
+	Wed, 21 Feb 2024 13:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521433; cv=none; b=pywkP4mtJ9yg9nnyHWLjeaWhZDWnMh75Ytqb/FjNEYSAiePvSh8jkw5AMbrfWOPbc2Od2z5lVCjeAIU2ayqJi8DdwOac79rILX5w4vTH48C7bUReMGuU2yr8/g2mnDaDZWmuJ16mjtmOEcCfDeHSKinncSqMkyysIT2rDQt7zl8=
+	t=1708523172; cv=none; b=WeOl7Hbqm1ES/QExEOgj6JdfAxHjwiDZiDOh42Li9Gwu6ng/iysW5J/YA9iSOoyM2mCjNtaaihYQkmvfc6dIuOhxZkxssMCEOLLFlo/BXwuOFOvU1z+t1+fBy4TN7B2PrehSVIQBFg9nGKmY5T8FB89MhE7B0yRCK8WO/WQWb18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521433; c=relaxed/simple;
-	bh=sy4G68/8enhobcHWIwSfBNcDr/NYOzzzYPrPoDviA5Y=;
+	s=arc-20240116; t=1708523172; c=relaxed/simple;
+	bh=aBC8A86UhPWSMeeSvMUbcu9XaVJFpfPEOA7xL/EZzgo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U9jFggBcGKibRuaa5roHFGyTmNjdM74KyLLFGr3222yovKMAhSSxMWpPaeokqfbjJF0yRoJw0QzizIPcQmdP7WYl3nt8BQyAv1Ss55fJ1hT88WWOJeYk8dQHqWJMMaRNDYfpp8haDuksSKU6yUe+8QoXq0unBCeZe6LJCzi5Prc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nkbdhlib; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A008C433F1;
-	Wed, 21 Feb 2024 13:17:12 +0000 (UTC)
+	 MIME-Version; b=ulj6KhnU2kaECz/LXMCJH1/h40V0cfaSA+tNoTAj9WLLDL7MY4ZsMSELXTC1Rzz/fw1/KmxyNr3fCPMFKzmEOQncTj9sZz0AK5i657tsrCDTti1uuRKxDx6MartS+mTjyE6KG4dVXioFuKEUoX/Ai8CnF2MqBD8GyVstcoLC2wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E7b/eL+X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58117C433C7;
+	Wed, 21 Feb 2024 13:46:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521432;
-	bh=sy4G68/8enhobcHWIwSfBNcDr/NYOzzzYPrPoDviA5Y=;
+	s=korg; t=1708523172;
+	bh=aBC8A86UhPWSMeeSvMUbcu9XaVJFpfPEOA7xL/EZzgo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nkbdhlibpZV7prx19UbPbM9xIS+yjLkNGvwEW902TbU5h3cpJx/Ga4WJF7gABzP3f
-	 cSFJucoYI+q5ljH5oqenKn01fqrMhRxdgCLwQUxPWalOWg0SJP5+KlXJzTiAu1fKNX
-	 hglK6qlgJLzYD0PMnjwNoqIDQpgvGQcuFTXPm050=
+	b=E7b/eL+XsYyK8J3+Ioaprxc1tKtEpe7L7Eq3WExTyo/lbyn2yITwdBTWlyOAsTWwn
+	 JYEx+L65gG2Z6hIgj+jAhzplVDNK4kXr5pl5PhxpVivXeuGLHbLNHI4hp1PzFHDIww
+	 2gSOWzcdJcx+7OPgh18wa7IIERmnUO5wTY0ugbHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Minsuk Kang <linuxlovemin@yonsei.ac.kr>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 080/202] wifi: ath9k: Fix potential array-index-out-of-bounds read in ath9k_htc_txstatus()
+	Julian Sikorski <belegdol+github@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 330/476] ALSA: usb-audio: Add a quirk for Yamaha YIT-W12TX transmitter
 Date: Wed, 21 Feb 2024 14:06:21 +0100
-Message-ID: <20240221125934.389782460@linuxfoundation.org>
+Message-ID: <20240221130020.219023292@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +59,39 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
+From: Julian Sikorski <belegdol+github@gmail.com>
 
-[ Upstream commit 2adc886244dff60f948497b59affb6c6ebb3c348 ]
+commit a969210066054ea109d8b7aff29a9b1c98776841 upstream.
 
-Fix an array-index-out-of-bounds read in ath9k_htc_txstatus(). The bug
-occurs when txs->cnt, data from a URB provided by a USB device, is
-bigger than the size of the array txs->txstatus, which is
-HTC_MAX_TX_STATUS. WARN_ON() already checks it, but there is no bug
-handling code after the check. Make the function return if that is the
-case.
+The device fails to initialize otherwise, giving the following error:
+[ 3676.671641] usb 2-1.1: 1:1: cannot get freq at ep 0x1
 
-Found by a modified version of syzkaller.
-
-UBSAN: array-index-out-of-bounds in htc_drv_txrx.c
-index 13 is out of range for type '__wmi_event_txstatus [12]'
-Call Trace:
- ath9k_htc_txstatus
- ath9k_wmi_event_tasklet
- tasklet_action_common
- __do_softirq
- irq_exit_rxu
- sysvec_apic_timer_interrupt
-
-Signed-off-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20231113065756.1491991-1-linuxlovemin@yonsei.ac.kr
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Julian Sikorski <belegdol+github@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240123084935.2745-1-belegdol+github@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath9k/htc_drv_txrx.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ sound/usb/quirks.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
-index 979ac31a77a0..527bca8f7deb 100644
---- a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
-+++ b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
-@@ -647,9 +647,10 @@ void ath9k_htc_txstatus(struct ath9k_htc_priv *priv, void *wmi_event)
- 	struct ath9k_htc_tx_event *tx_pend;
- 	int i;
- 
--	for (i = 0; i < txs->cnt; i++) {
--		WARN_ON(txs->cnt > HTC_MAX_TX_STATUS);
-+	if (WARN_ON_ONCE(txs->cnt > HTC_MAX_TX_STATUS))
-+		return;
- 
-+	for (i = 0; i < txs->cnt; i++) {
- 		__txs = &txs->txstatus[i];
- 
- 		skb = ath9k_htc_tx_get_packet(priv, __txs);
--- 
-2.43.0
-
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -1759,6 +1759,8 @@ static const struct usb_audio_quirk_flag
+ 		   QUIRK_FLAG_CTL_MSG_DELAY_1M | QUIRK_FLAG_IGNORE_CTL_ERROR),
+ 	DEVICE_FLG(0x0499, 0x1509, /* Steinberg UR22 */
+ 		   QUIRK_FLAG_GENERIC_IMPLICIT_FB),
++	DEVICE_FLG(0x0499, 0x3108, /* Yamaha YIT-W12TX */
++		   QUIRK_FLAG_GET_SAMPLE_RATE),
+ 	DEVICE_FLG(0x04d8, 0xfeea, /* Benchmark DAC1 Pre */
+ 		   QUIRK_FLAG_GET_SAMPLE_RATE),
+ 	DEVICE_FLG(0x04e8, 0xa051, /* Samsung USBC Headset (AKG) */
 
 
 
