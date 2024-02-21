@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-22792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD8ED85DDDE
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:13:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCAD585D98D
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:20:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FDB41F23FD9
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:13:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D7FDB23547
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:20:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EEEF7F7C1;
-	Wed, 21 Feb 2024 14:08:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E044B7BAFE;
+	Wed, 21 Feb 2024 13:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="04G1VN4B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DJcGzjWR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49F0C7F48F;
-	Wed, 21 Feb 2024 14:08:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E55C7BAF7;
+	Wed, 21 Feb 2024 13:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524526; cv=none; b=lVmJ19k7iu6EByvxM+XRDXfE83L3/7JWbFewg+tRRwwZff7pwf9TZtQND0vCUvTixvPceFE6m2utT96CvtmGTfpvxzFXJ8HDsdcJRc057NY3C9WyP3r5dpsdK4bh46jjGzBgkgjuLEthgAv7GoG4nb7KXfi9W/ERJM0dajhMkR4=
+	t=1708521576; cv=none; b=HGiZvD2Us2xyUBunW6uTs0mdhTVuW39ovEBBwbxaDSkNmkycP6hAGvwn7VurjVAJ2MT+sKhPAThwgWmpG+vZnev+cY3IZWi1elhIP/wIr5lJwVvNjvyKDXhM2tmDFNeuaMorB4uPC/MqgbSYeyrFD2h4G2dvN6jf4/ITCz5EOzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524526; c=relaxed/simple;
-	bh=wZA23Bj4jV3AVMBNEBrCjqTzQob7BKFuBMIvNPOdhpg=;
+	s=arc-20240116; t=1708521576; c=relaxed/simple;
+	bh=UvPzTnaQgYXvP3gn6QHcatCcwRTKoGRvG8fgfdZHzwA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E22T+AeFkDgcXBA36z+xd9QnjVVQOE8rYxewjT0sm77TtXRZqMZNOFYbQh23sAfbdTJraeR578pI6TncrOaO/ggQv7vxsbzQ8ZClavjYX5qae0LgnKC9jNG0BCrIavdGGIVq/XafM6CC9+rf04Wer6Zfsp6FOAJZDWy8Pk7ahCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=04G1VN4B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE500C433C7;
-	Wed, 21 Feb 2024 14:08:45 +0000 (UTC)
+	 MIME-Version; b=BSYSsC9VR2pNqG/PVQJgFpJzQU3u53gzFh9pKfGDyRQFoUXdc8FZEFJG7gW4UlKyBtqSaaARtHTdBBxYyGawJe/CMRKuqVDcW29P75xHmYNi06+mZoLgf08W3DtBCQ0xc6oU5wozMQse0Vg/0IIaBVtSYTvyD9qbgD+FxS3pfY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DJcGzjWR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DF01C433F1;
+	Wed, 21 Feb 2024 13:19:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524526;
-	bh=wZA23Bj4jV3AVMBNEBrCjqTzQob7BKFuBMIvNPOdhpg=;
+	s=korg; t=1708521576;
+	bh=UvPzTnaQgYXvP3gn6QHcatCcwRTKoGRvG8fgfdZHzwA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=04G1VN4BDMnRYFjjzT/zqD7rpbnGhbeDHbqwgK3MEgQswCWQAqB0FmilkrtKEE+R5
-	 IBtS34V5UgPAJB5VneJZA5Mynqhi6Fd3AJyEJI+uVcDd2CyLAUcUUSB1ITScfiEsU+
-	 Ve39ZDsb75FOz56cVHTpTpt92D0MzYG6UDa2/xo0=
+	b=DJcGzjWR12RsUdeVHSOZZgNfbE3w7kg6dJMb1Tx+qfOPJXV0HGqB0ZlDP4y1bgkLB
+	 jtqn6BxiXaaCHsFui38YOuCqynJS9/YaG2H8e21UVm79i4jOJe0kh5FYHKEYk8dM5G
+	 8oYr/8cG+StWglRv9FzLcMTTQiq3Bq3UnY3fCqL8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sathya Prakash Veerichetty <safhya.prakash@broadcom.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Ewan D. Milne" <emilne@redhat.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Loic Prylli <lprylli@netflix.com>,
+	Alexander Hansen <alexander.hansen@9elements.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 271/379] scsi: core: Move scsi_host_busy() out of host lock if it is for per-command
+Subject: [PATCH 4.19 149/202] hwmon: (aspeed-pwm-tacho) mutex for tach reading
 Date: Wed, 21 Feb 2024 14:07:30 +0100
-Message-ID: <20240221130002.925505622@linuxfoundation.org>
+Message-ID: <20240221125936.517518944@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,70 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Loic Prylli <lprylli@netflix.com>
 
-[ Upstream commit 4e6c9011990726f4d175e2cdfebe5b0b8cce4839 ]
+[ Upstream commit 1168491e7f53581ba7b6014a39a49cfbbb722feb ]
 
-Commit 4373534a9850 ("scsi: core: Move scsi_host_busy() out of host lock
-for waking up EH handler") intended to fix a hard lockup issue triggered by
-EH. The core idea was to move scsi_host_busy() out of the host lock when
-processing individual commands for EH. However, a suggested style change
-inadvertently caused scsi_host_busy() to remain under the host lock. Fix
-this by calling scsi_host_busy() outside the lock.
+the ASPEED_PTCR_RESULT Register can only hold the result for a
+single fan input. Adding a mutex to protect the register until the
+reading is done.
 
-Fixes: 4373534a9850 ("scsi: core: Move scsi_host_busy() out of host lock for waking up EH handler")
-Cc: Sathya Prakash Veerichetty <safhya.prakash@broadcom.com>
-Cc: Bart Van Assche <bvanassche@acm.org>
-Cc: Ewan D. Milne <emilne@redhat.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20240203024521.2006455-1-ming.lei@redhat.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Loic Prylli <lprylli@netflix.com>
+Signed-off-by: Alexander Hansen <alexander.hansen@9elements.com>
+Fixes: 2d7a548a3eff ("drivers: hwmon: Support for ASPEED PWM/Fan tach")
+Link: https://lore.kernel.org/r/121d888762a1232ef403cf35230ccf7b3887083a.1699007401.git.alexander.hansen@9elements.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_error.c | 3 ++-
- drivers/scsi/scsi_lib.c   | 4 +++-
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ drivers/hwmon/aspeed-pwm-tacho.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/scsi/scsi_error.c b/drivers/scsi/scsi_error.c
-index 7618a31358e6..ffc6f3031e82 100644
---- a/drivers/scsi/scsi_error.c
-+++ b/drivers/scsi/scsi_error.c
-@@ -241,11 +241,12 @@ static void scsi_eh_inc_host_failed(struct rcu_head *head)
- {
- 	struct scsi_cmnd *scmd = container_of(head, typeof(*scmd), rcu);
- 	struct Scsi_Host *shost = scmd->device->host;
-+	unsigned int busy = scsi_host_busy(shost);
- 	unsigned long flags;
+diff --git a/drivers/hwmon/aspeed-pwm-tacho.c b/drivers/hwmon/aspeed-pwm-tacho.c
+index a43fa730a513..4097ae62e9a4 100644
+--- a/drivers/hwmon/aspeed-pwm-tacho.c
++++ b/drivers/hwmon/aspeed-pwm-tacho.c
+@@ -197,6 +197,8 @@ struct aspeed_pwm_tacho_data {
+ 	u8 fan_tach_ch_source[16];
+ 	struct aspeed_cooling_device *cdev[8];
+ 	const struct attribute_group *groups[3];
++	/* protects access to shared ASPEED_PTCR_RESULT */
++	struct mutex tach_lock;
+ };
  
- 	spin_lock_irqsave(shost->host_lock, flags);
- 	shost->host_failed++;
--	scsi_eh_wakeup(shost, scsi_host_busy(shost));
-+	scsi_eh_wakeup(shost, busy);
- 	spin_unlock_irqrestore(shost->host_lock, flags);
- }
+ enum type { TYPEM, TYPEN, TYPEO };
+@@ -531,6 +533,8 @@ static int aspeed_get_fan_tach_ch_rpm(struct aspeed_pwm_tacho_data *priv,
+ 	u8 fan_tach_ch_source, type, mode, both;
+ 	int ret;
  
-diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
-index 625d1c2015d6..14dec86ff749 100644
---- a/drivers/scsi/scsi_lib.c
-+++ b/drivers/scsi/scsi_lib.c
-@@ -310,9 +310,11 @@ static void scsi_dec_host_busy(struct Scsi_Host *shost, struct scsi_cmnd *cmd)
- 	rcu_read_lock();
- 	__clear_bit(SCMD_STATE_INFLIGHT, &cmd->state);
- 	if (unlikely(scsi_host_in_recovery(shost))) {
-+		unsigned int busy = scsi_host_busy(shost);
++	mutex_lock(&priv->tach_lock);
 +
- 		spin_lock_irqsave(shost->host_lock, flags);
- 		if (shost->host_failed || shost->host_eh_scheduled)
--			scsi_eh_wakeup(shost, scsi_host_busy(shost));
-+			scsi_eh_wakeup(shost, busy);
- 		spin_unlock_irqrestore(shost->host_lock, flags);
- 	}
- 	rcu_read_unlock();
+ 	regmap_write(priv->regmap, ASPEED_PTCR_TRIGGER, 0);
+ 	regmap_write(priv->regmap, ASPEED_PTCR_TRIGGER, 0x1 << fan_tach_ch);
+ 
+@@ -548,6 +552,8 @@ static int aspeed_get_fan_tach_ch_rpm(struct aspeed_pwm_tacho_data *priv,
+ 		ASPEED_RPM_STATUS_SLEEP_USEC,
+ 		usec);
+ 
++	mutex_unlock(&priv->tach_lock);
++
+ 	/* return -ETIMEDOUT if we didn't get an answer. */
+ 	if (ret)
+ 		return ret;
+@@ -938,6 +944,7 @@ static int aspeed_pwm_tacho_probe(struct platform_device *pdev)
+ 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+ 	if (!priv)
+ 		return -ENOMEM;
++	mutex_init(&priv->tach_lock);
+ 	priv->regmap = devm_regmap_init(dev, NULL, (__force void *)regs,
+ 			&aspeed_pwm_tacho_regmap_config);
+ 	if (IS_ERR(priv->regmap))
 -- 
 2.43.0
 
