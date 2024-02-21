@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-23014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB34785DEBF
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:21:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E12E885DDE1
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:13:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E68B61C23C6B
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:21:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F1071C227C1
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:13:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6887078B73;
-	Wed, 21 Feb 2024 14:21:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED22B7F7CC;
+	Wed, 21 Feb 2024 14:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1JAY3G2s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mMGwwpEV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25BBD4C62;
-	Wed, 21 Feb 2024 14:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB6827F7C9;
+	Wed, 21 Feb 2024 14:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525292; cv=none; b=p/MrwGFBMOWhziJFucXf8PTgHKTPkAOkS9yIwca0f/GzFtEr+2brF3h7SzRm/QPVXkbiN8ZtOPzOL7g9qVuDyKP3xSJ3+SuMthRgBRzinuPzEdfsnFMmNE6tfegVt5pjeN75X7m2DLO5H83UwRFovjdQsC550pCcUc9a4KtsqAI=
+	t=1708524538; cv=none; b=q6eND1zjOvq/tXLKTRiPedtLy0JYeXWrfYeZCjOYTuLpNgowOpToRx77nk2Hqgecj55q2W0QDc46To+oyS3Tej1vnLWDlzDdVzNahDOYAGzH73veb3VTKKucQxIADSsJHSd486FqfwgQzSm2ZnOCRWm2AXEbN6tnuUgOqO00ClQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525292; c=relaxed/simple;
-	bh=jTlv8LOKJ8hWHZXOYjN5L/Yq/QPOe/pL+Yiu36WMAqw=;
+	s=arc-20240116; t=1708524538; c=relaxed/simple;
+	bh=y9+xL8T313nUBvHPg5a0EloH+yecLi+NPUkmHqwj7oY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h9OxDAERyWW+kaL7KB1c+WiQSF8zNea7CobqAxrtBZewI8P3bEB7/YQe8K0ZOGr3uJ2BigVqBBxH93jHgQgxTx2blezF7Bn6pQra4V8WQCyNhtJPDfi9ZZ7ex0Iz+4ZIJUS9/hd0ulzd1BUqUF/7MuafElwaya/UnUZ8Qp2IK4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1JAY3G2s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2837BC433F1;
-	Wed, 21 Feb 2024 14:21:30 +0000 (UTC)
+	 MIME-Version; b=I9qfxNurdcWoKJlkkEAWtg4jskdTmOJ2xxLZef8MYz8i+bJCYm98hwMi0+XCyQsajdkiC22UecAZ37gEQB7Jno4YpR1zrBWkdYGwDK9iG+TEihyvjPGdCDiNZUs8i5Y6lsG14tHxZ1ppgeEnM5lwXLoH1ggasujPWwhz4GejV/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mMGwwpEV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A8EEC433C7;
+	Wed, 21 Feb 2024 14:08:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525291;
-	bh=jTlv8LOKJ8hWHZXOYjN5L/Yq/QPOe/pL+Yiu36WMAqw=;
+	s=korg; t=1708524538;
+	bh=y9+xL8T313nUBvHPg5a0EloH+yecLi+NPUkmHqwj7oY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1JAY3G2sDf8e5O93o/D5YSkmLlOmwTBZ/uwe6rgyMePJ6HuwF+qJLe1YDBLTQAb47
-	 lsC9YFm6f5KujSC8xRU76mZHLA6Uc2mBaYzr0dH+F5Kwy+LZCn0wt9QfErvIAYVg+N
-	 46bpFPACeo2BiEwWdyry92VsIIzIfIJo4QHP+BrA=
+	b=mMGwwpEVfjn0JDsHBfEHbU6BclDAvYQoHE7uT5/arQg/fet7OFOMDTp5dKlhvEA0K
+	 JqdwdVHXYzoM9rMI3p3ic0SXNrPvTP/aStCIJQRCZ8YZhhEXfolf0936WbFJFijvEa
+	 IVn6uf7Kn+HU49sT8U3cI/B71QbuXQ03nFnecC+g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 112/267] ARM: dts: imx23/28: Fix the DMA controller node name
-Date: Wed, 21 Feb 2024 14:07:33 +0100
-Message-ID: <20240221125943.481882843@linuxfoundation.org>
+	Puliang Lu <puliang.lu@fibocom.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.10 275/379] USB: serial: option: add Fibocom FM101-GL variant
+Date: Wed, 21 Feb 2024 14:07:34 +0100
+Message-ID: <20240221130003.041273781@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Puliang Lu <puliang.lu@fibocom.com>
 
-[ Upstream commit 858d83ca4b50bbc8693d95cc94310e6d791fb2e6 ]
+commit b4a1f4eaf1d798066affc6ad040f76eb1a16e1c9 upstream.
 
-Per fsl,mxs-dma.yaml, the node name should be 'dma-controller'.
+Update the USB serial option driver support for the Fibocom
+FM101-GL
+LTE modules as there are actually several different variants.
+- VID:PID 2cb7:01a3, FM101-GL are laptop M.2 cards (with
+MBIM interfaces for /Linux/Chrome OS)
 
-Change it to fix the following dt-schema warning.
+0x01a3:mbim,gnss
 
-imx28-apf28.dtb: dma-apbx@80024000: $nodename:0: 'dma-apbx@80024000' does not match '^dma-controller(@.*)?$'
-	from schema $id: http://devicetree.org/schemas/dma/fsl,mxs-dma.yaml#
+Here are the outputs of usb-devices:
 
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  3 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=2cb7 ProdID=01a3 Rev=05.04
+S:  Manufacturer=Fibocom Wireless Inc.
+S:  Product=Fibocom FM101-GL Module
+S:  SerialNumber=5ccd5cd4
+C:  #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+
+Signed-off-by: Puliang Lu <puliang.lu@fibocom.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/imx23.dtsi | 2 +-
- arch/arm/boot/dts/imx28.dtsi | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/serial/option.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/boot/dts/imx23.dtsi b/arch/arm/boot/dts/imx23.dtsi
-index 42700d7f8bf7..ba1705595b29 100644
---- a/arch/arm/boot/dts/imx23.dtsi
-+++ b/arch/arm/boot/dts/imx23.dtsi
-@@ -406,7 +406,7 @@
- 				status = "disabled";
- 			};
- 
--			dma_apbx: dma-apbx@80024000 {
-+			dma_apbx: dma-controller@80024000 {
- 				compatible = "fsl,imx23-dma-apbx";
- 				reg = <0x80024000 0x2000>;
- 				interrupts = <7 5 9 26
-diff --git a/arch/arm/boot/dts/imx28.dtsi b/arch/arm/boot/dts/imx28.dtsi
-index 235c69bd181f..26dc6c9e1e6c 100644
---- a/arch/arm/boot/dts/imx28.dtsi
-+++ b/arch/arm/boot/dts/imx28.dtsi
-@@ -982,7 +982,7 @@
- 				status = "disabled";
- 			};
- 
--			dma_apbx: dma-apbx@80024000 {
-+			dma_apbx: dma-controller@80024000 {
- 				compatible = "fsl,imx28-dma-apbx";
- 				reg = <0x80024000 0x2000>;
- 				interrupts = <78 79 66 0
--- 
-2.43.0
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2269,6 +2269,7 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0111, 0xff) },			/* Fibocom FM160 (MBIM mode) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a0, 0xff) },			/* Fibocom NL668-AM/NL652-EU (laptop MBIM) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a2, 0xff) },			/* Fibocom FM101-GL (laptop MBIM) */
++	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a3, 0xff) },			/* Fibocom FM101-GL (laptop MBIM) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a4, 0xff),			/* Fibocom FM101-GL (laptop MBIM) */
+ 	  .driver_info = RSVD(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2df3, 0x9d03, 0xff) },			/* LongSung M5710 */
 
 
 
