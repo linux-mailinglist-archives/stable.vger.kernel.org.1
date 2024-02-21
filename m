@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-22459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC69085DC27
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:50:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFC9985D9A7
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:21:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C8FAB23056
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:50:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64E6DB25435
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:21:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D0FE7C0AB;
-	Wed, 21 Feb 2024 13:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1B117BB0C;
+	Wed, 21 Feb 2024 13:20:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="no2zQDZ6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eads9eqN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FF6A78B70;
-	Wed, 21 Feb 2024 13:49:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FDEB69953;
+	Wed, 21 Feb 2024 13:20:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523370; cv=none; b=dlADWoimxV1kaleD+/fNGP27e/bgbXiO4azx8G3tdho0WFooWEDqLUZVhTYI0l5AO6UfmtwQPqe5QgCc8IQV4BdNSWhSg3f68/SQ9vyox302zVZrxggAqyGohSO+I114+lJvfZP9dig7EUwUS/akzeuZZACRcYfHDoHxRCV5zd8=
+	t=1708521638; cv=none; b=SZnzfMS8khhPFdBHO3FkYJFSo1zwgEkJH25PU3Z+KgQYlKB0M9jkuTydBAu7pQ7/dhaSuQ8AK4jfr/jrtfw8aD1llBKvO3keL8+nehRXeOA4e15kZfmLSVJuglJz2U5D+OXV7d3wlxIm4zmVgAfyxDDqewoMQAAlFZvXiJWgeMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523370; c=relaxed/simple;
-	bh=bKnrItrAjV1chRqk1lqOBt5TJD66rLSGjFT6PdShlCI=;
+	s=arc-20240116; t=1708521638; c=relaxed/simple;
+	bh=ssseN71+A+GaDoxTw6TYRgas2S/l7W6C9OqfFGkFBuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W6qsWzNkbzmUtlY5SQWfBwRnJN+lE5dUl5fsiUd10b4Ji0WWqgWBj1hdbUuSMkoUi/rJhZd4zgJ0rmFravlrlEjxc+ttXo7KRHclhBn92hSY2wmZL5CKrBicMLLXoAQf6FSWTF3AAw9WmU2+5+RR2/zmBc2Kow/KN/3mQl3QocE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=no2zQDZ6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3556FC433C7;
-	Wed, 21 Feb 2024 13:49:27 +0000 (UTC)
+	 MIME-Version; b=VzBrtnvt50Tiy083jUqFj0Bh+bGvGmAixyDHxwOVEv31RAJliZcOs6WCY7iX1Yt6InKyjvFRc2Dvf+bQ5NjO8pvrYG6F3sccEZdMHIxj6ym/llvIXT1ggV3b7+IbhyoB/XnVZz73+xvwda6nW8s8oecwRnCdtmq2vB5EK9dpovg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eads9eqN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA16C433F1;
+	Wed, 21 Feb 2024 13:20:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523367;
-	bh=bKnrItrAjV1chRqk1lqOBt5TJD66rLSGjFT6PdShlCI=;
+	s=korg; t=1708521638;
+	bh=ssseN71+A+GaDoxTw6TYRgas2S/l7W6C9OqfFGkFBuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=no2zQDZ6eYQAr8VkMCUNB2gb1s/wEBxAYUCGrlP1edTAn6thfQ1BzjiUCO0WGdNgW
-	 ZpwuSjKmP8c2xZqRFq+K5aCDvrwHkQ+ywxA2kJSTZFoG6KpB6NRHg/atcx0hgac+/y
-	 9LA+JzRLrhL5ile2ejGXJFoa7B25D3TdfbEOCtTg=
+	b=Eads9eqNapp1b9IAcpYblzzC5EMYeJDWfL7QmlFQJ/DQbglgJqVjA9GERbI2ejuZ3
+	 Qwbzg68NBwehKn4Gwkau3vNMgBt+e5bVQKUVVZqWoyOezJNo3r3NjhHJr16UIboNbq
+	 uCT/IRBNG/v7G5SiIP8d0NMqFXgxtqgeAWFb3HNg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sinthu Raja <sinthu.raja@ti.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.15 415/476] net: ethernet: ti: cpsw: enable mac_managed_pm to fix mdio
-Date: Wed, 21 Feb 2024 14:07:46 +0100
-Message-ID: <20240221130023.362958862@linuxfoundation.org>
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 4.19 166/202] btrfs: send: return EOPNOTSUPP on unknown flags
+Date: Wed, 21 Feb 2024 14:07:47 +0100
+Message-ID: <20240221125937.113831338@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,72 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sinthu Raja <sinthu.raja@ti.com>
+From: David Sterba <dsterba@suse.com>
 
-commit bc4ce46b1e3d1da4309405cd4afc7c0fcddd0b90 upstream.
+commit f884a9f9e59206a2d41f265e7e403f080d10b493 upstream.
 
-The below commit  introduced a WARN when phy state is not in the states:
-PHY_HALTED, PHY_READY and PHY_UP.
-commit 744d23c71af3 ("net: phy: Warn about incorrect mdio_bus_phy_resume() state")
+When some ioctl flags are checked we return EOPNOTSUPP, like for
+BTRFS_SCRUB_SUPPORTED_FLAGS, BTRFS_SUBVOL_CREATE_ARGS_MASK or fallocate
+modes. The EINVAL is supposed to be for a supported but invalid
+values or combination of options. Fix that when checking send flags so
+it's consistent with the rest.
 
-When cpsw resumes, there have port in PHY_NOLINK state, so the below
-warning comes out. Set mac_managed_pm be true to tell mdio that the phy
-resume/suspend is managed by the mac, to fix the following warning:
-
-WARNING: CPU: 0 PID: 965 at drivers/net/phy/phy_device.c:326 mdio_bus_phy_resume+0x140/0x144
-CPU: 0 PID: 965 Comm: sh Tainted: G           O       6.1.46-g247b2535b2 #1
-Hardware name: Generic AM33XX (Flattened Device Tree)
- unwind_backtrace from show_stack+0x18/0x1c
- show_stack from dump_stack_lvl+0x24/0x2c
- dump_stack_lvl from __warn+0x84/0x15c
- __warn from warn_slowpath_fmt+0x1a8/0x1c8
- warn_slowpath_fmt from mdio_bus_phy_resume+0x140/0x144
- mdio_bus_phy_resume from dpm_run_callback+0x3c/0x140
- dpm_run_callback from device_resume+0xb8/0x2b8
- device_resume from dpm_resume+0x144/0x314
- dpm_resume from dpm_resume_end+0x14/0x20
- dpm_resume_end from suspend_devices_and_enter+0xd0/0x924
- suspend_devices_and_enter from pm_suspend+0x2e0/0x33c
- pm_suspend from state_store+0x74/0xd0
- state_store from kernfs_fop_write_iter+0x104/0x1ec
- kernfs_fop_write_iter from vfs_write+0x1b8/0x358
- vfs_write from ksys_write+0x78/0xf8
- ksys_write from ret_fast_syscall+0x0/0x54
-Exception stack(0xe094dfa8 to 0xe094dff0)
-dfa0:                   00000004 005c3fb8 00000001 005c3fb8 00000004 00000001
-dfc0: 00000004 005c3fb8 b6f6bba0 00000004 00000004 0059edb8 00000000 00000000
-dfe0: 00000004 bed918f0 b6f09bd3 b6e89a66
-
-Cc: <stable@vger.kernel.org> # v6.0+
-Fixes: 744d23c71af3 ("net: phy: Warn about incorrect mdio_bus_phy_resume() state")
-Fixes: fba863b81604 ("net: phy: make PHY PM ops a no-op if MAC driver manages PHY PM")
-Signed-off-by: Sinthu Raja <sinthu.raja@ti.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+CC: stable@vger.kernel.org # 4.14+
+Link: https://lore.kernel.org/linux-btrfs/CAL3q7H5rryOLzp3EKq8RTbjMHMHeaJubfpsVLF6H4qJnKCUR1w@mail.gmail.com/
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ti/cpsw.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/btrfs/send.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/ti/cpsw.c b/drivers/net/ethernet/ti/cpsw.c
-index ea85c6dd5484..c0a5abd8d9a8 100644
---- a/drivers/net/ethernet/ti/cpsw.c
-+++ b/drivers/net/ethernet/ti/cpsw.c
-@@ -631,6 +631,8 @@ static void cpsw_slave_open(struct cpsw_slave *slave, struct cpsw_priv *priv)
- 		}
+--- a/fs/btrfs/send.c
++++ b/fs/btrfs/send.c
+@@ -6842,7 +6842,7 @@ long btrfs_ioctl_send(struct file *mnt_f
  	}
  
-+	phy->mac_managed_pm = true;
-+
- 	slave->phy = phy;
+ 	if (arg->flags & ~BTRFS_SEND_FLAG_MASK) {
+-		ret = -EINVAL;
++		ret = -EOPNOTSUPP;
+ 		goto out;
+ 	}
  
- 	phy_attached_info(slave->phy);
--- 
-2.43.2
-
 
 
 
