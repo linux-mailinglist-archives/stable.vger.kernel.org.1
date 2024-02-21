@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-22178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D462785DABC
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:34:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46BD885DC95
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:55:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64289B23F5F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:34:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A768DB25DEE
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:55:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A460369E08;
-	Wed, 21 Feb 2024 13:32:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E91F379DAE;
+	Wed, 21 Feb 2024 13:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L4KTNfJ0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vhS9DrHY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 631047993D;
-	Wed, 21 Feb 2024 13:32:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A664578B7C;
+	Wed, 21 Feb 2024 13:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522332; cv=none; b=Cxv8U/nnJDCxnbGtbdJmHPEJf8AIcZ0ODgOhADerRxDy6To+3fO+Skoh1hSYvUFQ3PE3LcruGkE3RMJVvU7sQiGhSGQlWw1z5N1Jd5HFlsSBRM5PbePeE4w04lZ1pcc14fqU6cL9LNqMeIGub52qKak8Rr6e4HcR5k+HSQfz7KU=
+	t=1708523701; cv=none; b=WmLr1haiUQErsykE4awpz9xwc3NumYCAV0cg6fsKgft6MNYFSNKc3+XC8nM3IH1QstKc6zzKTgUrWZJbzLdNrbgX3GJVO2Oy7t+WpQ4HpA0tzBRoYvJTpykNcAtC/1l+fIs5oz6xBTR+Z95Cgo5ZmoI3Ri0r1A0aLvePd9nURss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522332; c=relaxed/simple;
-	bh=blZvTnffSLajbZWCPna45jzn6StyNrABklb03wn/V8A=;
+	s=arc-20240116; t=1708523701; c=relaxed/simple;
+	bh=RH/uTf4irE2Fzqt+zq++iCx7xbcXI6Lj59pkGQbN20k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dcnwTFaYFia6abHAj6uBCbIidFG9c7OC76V5Zt2XsULdTDAH/xdYnrMwQAv6qMuywXbM+wiLJp3MYv78GRI+kQj/QxNzSAvWpX8TIaQLhJ6AFget9lyowGcH9v3UlZQJA7zMiBXRVYihYubd5xW0RXBPZdPjG4mThTSwy9j4X2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L4KTNfJ0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 403FBC433F1;
-	Wed, 21 Feb 2024 13:32:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iV/gTjuMwC49itu6p8aMdRF5ydKBPRIM2Q6gPoOxNRl+CgdkuPByl+G+2xYepn7a8qXcH66NuVCRvGY8jIKmfBG2Ek2eGDNSvMSTmQC997F9NxPvjjmMq/ILDP+YfmAChQzoPICC3KaB9N1PSLMCjpn4/9vqKjHwaSEuO7PTAa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vhS9DrHY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E164C433F1;
+	Wed, 21 Feb 2024 13:55:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522331;
-	bh=blZvTnffSLajbZWCPna45jzn6StyNrABklb03wn/V8A=;
+	s=korg; t=1708523701;
+	bh=RH/uTf4irE2Fzqt+zq++iCx7xbcXI6Lj59pkGQbN20k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L4KTNfJ0Pro9bN0U7eAX8Yqc1t66I3b+qR+n//PFkmlWFVKJMrttRtXUUqpTxJXpi
-	 TXit2AaKu2sIiMrzkMa64yZCyisXkJYZF/n6a4TREx6dsNzTVqQNKJdiGrEIKfUE47
-	 Z8Au63YCPWWHLpHu5uVThYcrp3yncdVsSipyFOjE=
+	b=vhS9DrHYkxdgNR8Y1DUOquUwzOvDUhpToRz3twik4lCNJ1pz1nTT+8cpmVeV32LYu
+	 s5TvoiFaZLsbYKx2hVinXpPMpSbMxF7kL7Zx1k2DYLuTG6nRSzbQ8NHGI7zifQyV8H
+	 Y103jEtav2AV54rnDFcxqcHtHZKAJGhPS6wrEtPc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Youquan Song <youquan.song@intel.com>,
-	Zhiquan Li <zhiquan1.li@intel.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Naoya Horiguchi <naoya.horiguchi@nec.com>,
+	qizhong cheng <qizhong.cheng@mediatek.com>,
+	Jianjun Wang <jianjun.wang@mediatek.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 134/476] x86/mce: Mark fatal MCEs page as poison to avoid panic in the kdump kernel
+Subject: [PATCH 5.10 006/379] PCI: mediatek: Clear interrupt status before dispatching handler
 Date: Wed, 21 Feb 2024 14:03:05 +0100
-Message-ID: <20240221130012.908778246@linuxfoundation.org>
+Message-ID: <20240221125955.109695977@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +63,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhiquan Li <zhiquan1.li@intel.com>
+From: qizhong cheng <qizhong.cheng@mediatek.com>
 
-[ Upstream commit 9f3b130048bfa2e44a8cfb1b616f826d9d5d8188 ]
+[ Upstream commit 4e11c29873a8a296a20f99b3e03095e65ebf897d ]
 
-Memory errors don't happen very often, especially fatal ones. However,
-in large-scale scenarios such as data centers, that probability
-increases with the amount of machines present.
+We found a failure when using the iperf tool during WiFi performance
+testing, where some MSIs were received while clearing the interrupt
+status, and these MSIs cannot be serviced.
 
-When a fatal machine check happens, mce_panic() is called based on the
-severity grading of that error. The page containing the error is not
-marked as poison.
+The interrupt status can be cleared even if the MSI status remains pending.
+As such, given the edge-triggered interrupt type, its status should be
+cleared before being dispatched to the handler of the underling device.
 
-However, when kexec is enabled, tools like makedumpfile understand when
-pages are marked as poison and do not touch them so as not to cause
-a fatal machine check exception again while dumping the previous
-kernel's memory.
-
-Therefore, mark the page containing the error as poisoned so that the
-kexec'ed kernel can avoid accessing the page.
-
-  [ bp: Rewrite commit message and comment. ]
-
-Co-developed-by: Youquan Song <youquan.song@intel.com>
-Signed-off-by: Youquan Song <youquan.song@intel.com>
-Signed-off-by: Zhiquan Li <zhiquan1.li@intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Naoya Horiguchi <naoya.horiguchi@nec.com>
-Link: https://lore.kernel.org/r/20231014051754.3759099-1-zhiquan1.li@intel.com
+[kwilczynski: commit log, code comment wording]
+Link: https://lore.kernel.org/linux-pci/20231211094923.31967-1-jianjun.wang@mediatek.com
+Fixes: 43e6409db64d ("PCI: mediatek: Add MSI support for MT2712 and MT7622")
+Signed-off-by: qizhong cheng <qizhong.cheng@mediatek.com>
+Signed-off-by: Jianjun Wang <jianjun.wang@mediatek.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+[bhelgaas: rewrap comment]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc:  <stable@vger.kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/mce/core.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/pci/controller/pcie-mediatek.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
-index a0727723676b..eb48729e220e 100644
---- a/arch/x86/kernel/cpu/mce/core.c
-+++ b/arch/x86/kernel/cpu/mce/core.c
-@@ -44,6 +44,7 @@
- #include <linux/sync_core.h>
- #include <linux/task_work.h>
- #include <linux/hardirq.h>
-+#include <linux/kexec.h>
+diff --git a/drivers/pci/controller/pcie-mediatek.c b/drivers/pci/controller/pcie-mediatek.c
+index 23548b517e4b..ea91d63c8be1 100644
+--- a/drivers/pci/controller/pcie-mediatek.c
++++ b/drivers/pci/controller/pcie-mediatek.c
+@@ -620,14 +620,20 @@ static void mtk_pcie_intr_handler(struct irq_desc *desc)
+ 		if (status & MSI_STATUS){
+ 			unsigned long imsi_status;
  
- #include <asm/intel-family.h>
- #include <asm/processor.h>
-@@ -274,6 +275,7 @@ static noinstr void mce_panic(const char *msg, struct mce *final, char *exp)
- 	struct llist_node *pending;
- 	struct mce_evt_llist *l;
- 	int apei_err = 0;
-+	struct page *p;
++			/*
++			 * The interrupt status can be cleared even if the
++			 * MSI status remains pending. As such, given the
++			 * edge-triggered interrupt type, its status should
++			 * be cleared before being dispatched to the
++			 * handler of the underlying device.
++			 */
++			writel(MSI_STATUS, port->base + PCIE_INT_STATUS);
+ 			while ((imsi_status = readl(port->base + PCIE_IMSI_STATUS))) {
+ 				for_each_set_bit(bit, &imsi_status, MTK_MSI_IRQS_NUM) {
+ 					virq = irq_find_mapping(port->inner_domain, bit);
+ 					generic_handle_irq(virq);
+ 				}
+ 			}
+-			/* Clear MSI interrupt status */
+-			writel(MSI_STATUS, port->base + PCIE_INT_STATUS);
+ 		}
+ 	}
  
- 	/*
- 	 * Allow instrumentation around external facilities usage. Not that it
-@@ -329,6 +331,20 @@ static noinstr void mce_panic(const char *msg, struct mce *final, char *exp)
- 	if (!fake_panic) {
- 		if (panic_timeout == 0)
- 			panic_timeout = mca_cfg.panic_timeout;
-+
-+		/*
-+		 * Kdump skips the poisoned page in order to avoid
-+		 * touching the error bits again. Poison the page even
-+		 * if the error is fatal and the machine is about to
-+		 * panic.
-+		 */
-+		if (kexec_crash_loaded()) {
-+			if (final && (final->status & MCI_STATUS_ADDRV)) {
-+				p = pfn_to_online_page(final->addr >> PAGE_SHIFT);
-+				if (p)
-+					SetPageHWPoison(p);
-+			}
-+		}
- 		panic(msg);
- 	} else
- 		pr_emerg(HW_ERR "Fake kernel panic: %s\n", msg);
 -- 
 2.43.0
 
