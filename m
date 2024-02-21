@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-23052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCD0485DEFD
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:23:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB8BB85DC40
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:50:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16B201C23BF0
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:23:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D823B24E67
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:50:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79A676A8D6;
-	Wed, 21 Feb 2024 14:23:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 709EB78B70;
+	Wed, 21 Feb 2024 13:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YVOe2faY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y2K3pWq8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 383A269317;
-	Wed, 21 Feb 2024 14:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E27E55E5E;
+	Wed, 21 Feb 2024 13:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525418; cv=none; b=TVCYVZbSkqg/HnzZJPDlx0x45C6wnXRZR8qB1mgJGos2F+1BeZuQbvGlRAm/ejtKtTqUSJv+jLJt9ap8s5GrjasZT3TaPXiBmDT4z9naNev2ebM4q1KTPgW+0Rs/nAGB0cTVlN0cR2FTYoTZd8LDRI3Zsu81gkHZuhHvK+jY2jw=
+	t=1708523455; cv=none; b=Dhmpgd6b1E4L5XkxZwmIohBUDybYtGFqdSUPqVlfEO2VfdqAyzymfam/QFH57T4DIk83ojXwk9uJt/uT2oA5/7WSugRfgSs7qJSIF/r3J9HaL3O16d/zqF5smqkVJldSGB+Q0LLYg3OMoZlPYMDoddOc74yfmM1ZlUbZ4qwGVAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525418; c=relaxed/simple;
-	bh=PKOp9mLH5a0C1sn3Rdze/wp+Z8s6inZl3jkB3BnzyQs=;
+	s=arc-20240116; t=1708523455; c=relaxed/simple;
+	bh=LlP3jfWLWiEYoeAxH+TwvrOaNFg1JB5nHvtcoS3eSKQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k0WcALfUeGLi0ojd8fT7JwPhgwC3YRmvmS2w4fMzQ/wYG7LY6S9d9ddgJdjZlVZ7vKx2HyM6Lgf34JBAqFBrPwaqeKrCoEW4IQe7tQDlKe7p19tOeMvAprJMtzv1yrhIC/13a+kTwgheadIkcanzXA+vz2QLy8kOV0Fm3ZIcETA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YVOe2faY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36889C433F1;
-	Wed, 21 Feb 2024 14:23:37 +0000 (UTC)
+	 MIME-Version; b=b+1HfLFQA0A6s7Ahc7nwi4vXc6RML0Cq3ZiwFroF3bvrxkFmPBmVn+HdH2aCSgO+gJLW6iE1qACQwuF9XxZO3v3Lft0gMmaUJXYjAEoe5y91c/mynrlyndgUeF7FeuQzbMgqJg40iKCoL8uk+KZJNLDK36KAyNhiF3ruuY87Hzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y2K3pWq8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 936DFC433F1;
+	Wed, 21 Feb 2024 13:50:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525417;
-	bh=PKOp9mLH5a0C1sn3Rdze/wp+Z8s6inZl3jkB3BnzyQs=;
+	s=korg; t=1708523455;
+	bh=LlP3jfWLWiEYoeAxH+TwvrOaNFg1JB5nHvtcoS3eSKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YVOe2faYA+Vo5Wg4pgAmDk3A47y/olgIvNKutBPGyXgLB/ARwhpr1VPE94744aeTN
-	 D/94chFhgevkkxhwSIx4Kj9eLM7qKmYuTay9N5nPJW7HNjqyKnllVzpCeGk6DkSw8W
-	 eRT178ttpHCRrp8Y7Lhadn+vjRBLE7oukKySEquA=
+	b=y2K3pWq8PNqcBH3kDWTUmbYdb3WGH0a7SuzZtb6ETB/bogA6YuJ9XBxVASr9SK5IA
+	 C+7PHOLzVPkXETZ/DotaxDrzcHuFVekJLHD9vVR5M7i/IlpCzTczLhdVhpIeyl4k0F
+	 5W4KDzpM155eAM16HNegSM+Cl2DWCk3z6xP6GYkM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Wesley Cheng <quic_wcheng@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 150/267] PCI/AER: Decode Requester ID when no error info found
+Subject: [PATCH 5.15 440/476] usb: dwc3: gadget: Stall and restart EP0 if host is unresponsive
 Date: Wed, 21 Feb 2024 14:08:11 +0100
-Message-ID: <20240221125944.779303283@linuxfoundation.org>
+Message-ID: <20240221130024.303993266@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +62,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+From: Wesley Cheng <quic_wcheng@quicinc.com>
 
-[ Upstream commit 1291b716bbf969e101d517bfb8ba18d958f758b8 ]
+[ Upstream commit 02435a739b81ae24aff5d6e930efef9458e2af3c ]
 
-When a device with AER detects an error, it logs error information in its
-own AER Error Status registers.  It may send an Error Message to the Root
-Port (RCEC in the case of an RCiEP), which logs the fact that an Error
-Message was received (Root Error Status) and the Requester ID of the
-message source (Error Source Identification).
+It was observed that there are hosts that may complete pending SETUP
+transactions before the stop active transfers and controller halt occurs,
+leading to lingering endxfer commands on DEPs on subsequent pullup/gadget
+start iterations.
 
-aer_print_port_info() prints the Requester ID from the Root Port Error
-Source in the usual Linux "bb:dd.f" format, but when find_source_device()
-finds no error details in the hierarchy below the Root Port, it printed the
-raw Requester ID without decoding it.
+  dwc3_gadget_ep_disable   name=ep8in flags=0x3009  direction=1
+  dwc3_gadget_ep_disable   name=ep4in flags=1  direction=1
+  dwc3_gadget_ep_disable   name=ep3out flags=1  direction=0
+  usb_gadget_disconnect   deactivated=0  connected=0  ret=0
 
-Decode the Requester ID in the usual Linux format so it matches other
-messages.
+The sequence shows that the USB gadget disconnect (dwc3_gadget_pullup(0))
+routine completed successfully, allowing for the USB gadget to proceed with
+a USB gadget connect.  However, if this occurs the system runs into an
+issue where:
 
-Sample message changes:
+  BUG: spinlock already unlocked on CPU
+  spin_bug+0x0
+  dwc3_remove_requests+0x278
+  dwc3_ep0_out_start+0xb0
+  __dwc3_gadget_start+0x25c
 
-  - pcieport 0000:00:1c.5: AER: Correctable error received: 0000:00:1c.5
-  - pcieport 0000:00:1c.5: AER: can't find device of ID00e5
-  + pcieport 0000:00:1c.5: AER: Correctable error message received from 0000:00:1c.5
-  + pcieport 0000:00:1c.5: AER: found no error details for 0000:00:1c.5
+This is due to the pending endxfers, leading to gadget start (w/o lock
+held) to execute the remove requests, which will unlock the dwc3
+spinlock as part of giveback.
 
-Link: https://lore.kernel.org/r/20231206224231.732765-3-helgaas@kernel.org
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+To mitigate this, resolve the pending endxfers on the pullup disable
+path by re-locating the SETUP phase check after stop active transfers, since
+that is where the DWC3_EP_DELAY_STOP is potentially set.  This also allows
+for handling of a host that may be unresponsive by using the completion
+timeout to trigger the stall and restart for EP0.
+
+Fixes: c96683798e27 ("usb: dwc3: ep0: Don't prepare beyond Setup stage")
+Cc: stable@vger.kernel.org
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
+Link: https://lore.kernel.org/r/20230413195742.11821-2-quic_wcheng@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 730e12fbec53 ("usb: dwc3: gadget: Handle EP0 request dequeuing properly")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pcie/aer.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/usb/dwc3/gadget.c | 49 +++++++++++++++++++++++++--------------
+ 1 file changed, 32 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index aec1748cc821..6b5c9f7916fa 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -782,7 +782,7 @@ static void aer_print_port_info(struct pci_dev *dev, struct aer_err_info *info)
- 	u8 bus = info->id >> 8;
- 	u8 devfn = info->id & 0xff;
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index c61b6f49701a..a74ac44c6cd8 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -2459,29 +2459,17 @@ static int __dwc3_gadget_start(struct dwc3 *dwc);
+ static int dwc3_gadget_soft_disconnect(struct dwc3 *dwc)
+ {
+ 	unsigned long flags;
++	int ret;
  
--	pci_info(dev, "%s%s error received: %04x:%02x:%02x.%d\n",
-+	pci_info(dev, "%s%s error message received from %04x:%02x:%02x.%d\n",
- 		 info->multi_error_valid ? "Multiple " : "",
- 		 aer_error_severity_string[info->severity],
- 		 pci_domain_nr(dev->bus), bus, PCI_SLOT(devfn),
-@@ -968,7 +968,12 @@ static bool find_source_device(struct pci_dev *parent,
- 	pci_walk_bus(parent->subordinate, find_device_iter, e_info);
+ 	spin_lock_irqsave(&dwc->lock, flags);
+ 	dwc->connected = false;
  
- 	if (!e_info->error_dev_num) {
--		pci_info(parent, "can't find device of ID%04x\n", e_info->id);
-+		u8 bus = e_info->id >> 8;
-+		u8 devfn = e_info->id & 0xff;
+ 	/*
+-	 * Per databook, when we want to stop the gadget, if a control transfer
+-	 * is still in process, complete it and get the core into setup phase.
++	 * Attempt to end pending SETUP status phase, and not wait for the
++	 * function to do so.
+ 	 */
+-	if (dwc->ep0state != EP0_SETUP_PHASE) {
+-		int ret;
+-
+-		if (dwc->delayed_status)
+-			dwc3_ep0_send_delayed_status(dwc);
+-
+-		reinit_completion(&dwc->ep0_in_setup);
+-
+-		spin_unlock_irqrestore(&dwc->lock, flags);
+-		ret = wait_for_completion_timeout(&dwc->ep0_in_setup,
+-				msecs_to_jiffies(DWC3_PULL_UP_TIMEOUT));
+-		spin_lock_irqsave(&dwc->lock, flags);
+-		if (ret == 0)
+-			dev_warn(dwc->dev, "timed out waiting for SETUP phase\n");
+-	}
++	if (dwc->delayed_status)
++		dwc3_ep0_send_delayed_status(dwc);
+ 
+ 	/*
+ 	 * In the Synopsys DesignWare Cores USB3 Databook Rev. 3.30a
+@@ -2494,6 +2482,33 @@ static int dwc3_gadget_soft_disconnect(struct dwc3 *dwc)
+ 	__dwc3_gadget_stop(dwc);
+ 	spin_unlock_irqrestore(&dwc->lock, flags);
+ 
++	/*
++	 * Per databook, when we want to stop the gadget, if a control transfer
++	 * is still in process, complete it and get the core into setup phase.
++	 * In case the host is unresponsive to a SETUP transaction, forcefully
++	 * stall the transfer, and move back to the SETUP phase, so that any
++	 * pending endxfers can be executed.
++	 */
++	if (dwc->ep0state != EP0_SETUP_PHASE) {
++		reinit_completion(&dwc->ep0_in_setup);
 +
-+		pci_info(parent, "found no error details for %04x:%02x:%02x.%d\n",
-+			 pci_domain_nr(parent->bus), bus, PCI_SLOT(devfn),
-+			 PCI_FUNC(devfn));
- 		return false;
- 	}
- 	return true;
++		ret = wait_for_completion_timeout(&dwc->ep0_in_setup,
++				msecs_to_jiffies(DWC3_PULL_UP_TIMEOUT));
++		if (ret == 0) {
++			unsigned int    dir;
++
++			dev_warn(dwc->dev, "wait for SETUP phase timed out\n");
++			spin_lock_irqsave(&dwc->lock, flags);
++			dir = !!dwc->ep0_expect_in;
++			if (dwc->ep0state == EP0_DATA_PHASE)
++				dwc3_ep0_end_control_data(dwc, dwc->eps[dir]);
++			else
++				dwc3_ep0_end_control_data(dwc, dwc->eps[!dir]);
++			dwc3_ep0_stall_and_restart(dwc);
++			spin_unlock_irqrestore(&dwc->lock, flags);
++		}
++	}
++
+ 	/*
+ 	 * Note: if the GEVNTCOUNT indicates events in the event buffer, the
+ 	 * driver needs to acknowledge them before the controller can halt.
 -- 
 2.43.0
 
