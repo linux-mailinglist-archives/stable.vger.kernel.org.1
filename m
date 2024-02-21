@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-22233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5021485DAFF
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:36:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D338585DCCC
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:58:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E5A45B26410
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:36:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 751FC1F22613
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:58:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DA5B7EEEB;
-	Wed, 21 Feb 2024 13:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B89578B7C;
+	Wed, 21 Feb 2024 13:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lbeA5nQ/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yn2ar327"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D13CA7EEE2;
-	Wed, 21 Feb 2024 13:35:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD38555E5E;
+	Wed, 21 Feb 2024 13:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522532; cv=none; b=bE5MHfFJuovUKKtMm2xRiJNztxlYMM6jLAwZ9ffDpxR4QwH15tT2j3zq4N9Xz2+OZPW1/HRr+tjuRzbQIdZ1A7EnvRnQwNqHLZrQLMvff0E0POd2gEOZE80ciHVmQdVXUp9Gxa0qZEAVcUeKxw2GGi6FSbK9mfIoY9mjpNAih2Q=
+	t=1708523880; cv=none; b=tJ7EBuPnYR7O92Rx9xr9LcDVTtNc79yn4eDiY5QRWxgsNtpU7G7L2n0wjFPSnrns0bzbLpboHRmD2eppGcsvq2PopC5Se2IGxueRpR84ZkTOTvnvxqUs1srQFH8Em4yqoLLJdxEax5gVHx35JoY2KshpfHNoB1hwOQRV0PHq+gI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522532; c=relaxed/simple;
-	bh=ikMyxss+AwqJq62c56GN3pSAI1eH1MLvlNcOaM/RO2I=;
+	s=arc-20240116; t=1708523880; c=relaxed/simple;
+	bh=L4vv/55q8Ag7M7B7FO34vE123/DIXT2m4oGG3xA/+VE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aNWSyjqb+0FOH0Ml1meXKaqCu+em2pJP9QuwsL97k4DTmPxZkDjrutLmEEPebUVjQ/Sp8vcQ20fDNoK9obuDRomgsOvG1rf2OzAumO7BVdv3yN2mh2OSyEo53LjzWcWxjfe+YQ0UFH7FghhQq6uE1mY3+h81IpYkcOKUK0Pe6/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lbeA5nQ/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16D44C433C7;
-	Wed, 21 Feb 2024 13:35:31 +0000 (UTC)
+	 MIME-Version; b=f6gDZQjGsxktOeH7cVMS3gWdX9mmRs5RPOTUsK5KaKUhFx5M3LpTCW63S9fb27oVwwyvWtyEPIpDou98yTKuNjfHnxN4FtY1fD1uKqgcAP2ZKbyGfGht4x9SGxWGRQargWLQA6WR4tlWySj0olq3HVSVvXHa/WytwM5jQa2zBdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yn2ar327; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6EB5C433F1;
+	Wed, 21 Feb 2024 13:57:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522532;
-	bh=ikMyxss+AwqJq62c56GN3pSAI1eH1MLvlNcOaM/RO2I=;
+	s=korg; t=1708523880;
+	bh=L4vv/55q8Ag7M7B7FO34vE123/DIXT2m4oGG3xA/+VE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lbeA5nQ//3AGwKDa/c4bekaIkDleEvNDHLj4fd39uBZyoLmz1GvBv2cm8W4rwTl8s
-	 Ko1ZyFtOCE3ifvJHthxVxzKePWwL3fe3FddRbov0c+5uAwgdpAC9ZYgBTRDA2Xecum
-	 UOouR/ySl44FihQJdgwjBv5vsd4UBl7lbkn0zMYg=
+	b=yn2ar327Regr/EHTiCxJXz0AvoLuukHQ2xpzStXqNN9X8qDiafj4AzaHfVwd3tdLZ
+	 gL1CPP/i72GpO2B/OMdC+XYpl0y64veF4ZlE5PgiNYhW/LuwbQT+deJsuEYWksa+G/
+	 PtNareIo6YPmTqY3zIDw/KzEghiKKARLK1IxIqcU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 190/476] ARM: dts: imx27-apf27dev: Fix LED name
+	syzbot+be14ed7728594dc8bd42@syzkaller.appspotmail.com,
+	syzbot+c563a3c79927971f950f@syzkaller.appspotmail.com,
+	Anand Jain <anand.jain@oracle.com>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.10 062/379] btrfs: ref-verify: free ref cache before clearing mount opt
 Date: Wed, 21 Feb 2024 14:04:01 +0100
-Message-ID: <20240221130014.924498680@linuxfoundation.org>
+Message-ID: <20240221125956.746694296@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit dc35e253d032b959d92e12f081db5b00db26ae64 ]
+commit f03e274a8b29d1d1c1bbd7f764766cb5ca537ab7 upstream.
 
-Per leds-gpio.yaml, the led names should start with 'led'.
+As clearing REF_VERIFY mount option indicates there were some errors in a
+ref-verify process, a ref cache is not relevant anymore and should be
+freed.
 
-Change it to fix the following dt-schema warning:
+btrfs_free_ref_cache() requires REF_VERIFY option being set so call
+it just before clearing the mount option.
 
-imx27-apf27dev.dtb: leds: 'user' does not match any of the regexes: '(^led-[0-9a-f]$|led)', 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/leds/leds-gpio.yaml#
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+be14ed7728594dc8bd42@syzkaller.appspotmail.com
+Fixes: fd708b81d972 ("Btrfs: add a extent ref verify tool")
+CC: stable@vger.kernel.org # 5.4+
+Closes: https://lore.kernel.org/lkml/000000000000e5a65c05ee832054@google.com/
+Reported-by: syzbot+c563a3c79927971f950f@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/lkml/0000000000007fe09705fdc6086c@google.com/
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/imx27-apf27dev.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/ref-verify.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/imx27-apf27dev.dts b/arch/arm/boot/dts/imx27-apf27dev.dts
-index 68fcb5ce9a9e..3d9bb7fc3be2 100644
---- a/arch/arm/boot/dts/imx27-apf27dev.dts
-+++ b/arch/arm/boot/dts/imx27-apf27dev.dts
-@@ -47,7 +47,7 @@
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&pinctrl_gpio_leds>;
+--- a/fs/btrfs/ref-verify.c
++++ b/fs/btrfs/ref-verify.c
+@@ -899,8 +899,10 @@ int btrfs_ref_tree_mod(struct btrfs_fs_i
+ out_unlock:
+ 	spin_unlock(&fs_info->ref_verify_lock);
+ out:
+-	if (ret)
++	if (ret) {
++		btrfs_free_ref_cache(fs_info);
+ 		btrfs_clear_opt(fs_info->mount_opt, REF_VERIFY);
++	}
+ 	return ret;
+ }
  
--		user {
-+		led-user {
- 			label = "Heartbeat";
- 			gpios = <&gpio6 14 GPIO_ACTIVE_HIGH>;
- 			linux,default-trigger = "heartbeat";
--- 
-2.43.0
-
+@@ -1029,8 +1031,8 @@ int btrfs_build_ref_tree(struct btrfs_fs
+ 		}
+ 	}
+ 	if (ret) {
+-		btrfs_clear_opt(fs_info->mount_opt, REF_VERIFY);
+ 		btrfs_free_ref_cache(fs_info);
++		btrfs_clear_opt(fs_info->mount_opt, REF_VERIFY);
+ 	}
+ 	btrfs_free_path(path);
+ 	return ret;
 
 
 
