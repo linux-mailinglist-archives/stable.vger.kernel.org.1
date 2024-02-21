@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-22951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C444885DE66
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:18:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5025D85DD89
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:06:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B72D1C23B2E
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:18:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB6C0B22B0F
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:06:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A42D7E590;
-	Wed, 21 Feb 2024 14:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADCBA7E781;
+	Wed, 21 Feb 2024 14:05:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hydfFRL7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BX0VThhq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58A017E110;
-	Wed, 21 Feb 2024 14:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AF227C6C0;
+	Wed, 21 Feb 2024 14:05:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525065; cv=none; b=hQiPvPn9DrFaeaL32sSm0En5TEiCkpfu+KmphDFhGdbjn2I6iV6dPN354YPHuHolHK/+TNx6R13P90r7+GLRQyVFhL9IWT/oRdULSmfTnVMLlQ5DLXkjc3ASgijGSXUVJP5+JSQ3Wi5Nae3MF2IR7s1jPGltx4iaot8+2JcfihU=
+	t=1708524339; cv=none; b=gY3itDBJnah/+FieBeKHMQ6sTDfnRbyFpjZFjk8m6oIdJqxrJU7nbIAje26BrXj8ScddAhSmM54vFdneah5NVkmtD/quxekkz3ZPQIAS4YF17brxyB0wHYRy0YdbRpcF0bDdRanJfjkafAPpGEHROMywxkQFwGpTk3udlyQqUP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525065; c=relaxed/simple;
-	bh=xEFNDpiNcW5jMbt4RJBjG25s751zRXLqvN7GXqUiJBM=;
+	s=arc-20240116; t=1708524339; c=relaxed/simple;
+	bh=lTfYrVFa9cjeJh+ifkvMMY14avtn36kvlRafsO3Av4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HjG/nBek5f+Yvzmlgw7uL2Eaf/B2olCSTKYUnVBb96r4l0jINv2bmWRls3JFz5v1J9prsEs4P9quy6h0JgRVDKCw0O6XO80p2Jb36vEXYceef8J8W+gjGBUdKWHkX854i3w8F/7rP6+FjFZzAnasCFtDOdSlkImJ8uo1el4XV2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hydfFRL7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD15EC433C7;
-	Wed, 21 Feb 2024 14:17:44 +0000 (UTC)
+	 MIME-Version; b=qJoe+6l+JFUHau1Fwom9VAhellM/CVqT/UTrNXyeLGycEgD0DQHrPO66JlX41PVF7gxAEWML+BwtqB9sOIYn1Wycj7GzbhDB/kql9kZvnLbzYpiOWBUuJ0yoy8azZGd6zU5k06ACiBsrHoEBhiCrj+IrxfFqkwooVpsUo5X7pkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BX0VThhq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD3D9C433F1;
+	Wed, 21 Feb 2024 14:05:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525065;
-	bh=xEFNDpiNcW5jMbt4RJBjG25s751zRXLqvN7GXqUiJBM=;
+	s=korg; t=1708524339;
+	bh=lTfYrVFa9cjeJh+ifkvMMY14avtn36kvlRafsO3Av4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hydfFRL7nGj2+lNcqEQXoSQADk+UQUCFvTFObt/8gY/gMIKYeNh5J9+9eZyzoFQ8p
-	 F3ASe5tUMFZeqjokTl9mjSoOK0qppdHQppRRcYUVN6aCi50NVjPHV3CqqTc9Jr8bvO
-	 ABm+Aj3OUqma1jz6WBuSJRBRMYHEFFyWAVsGkmx0=
+	b=BX0VThhqTQZAVRid/x1l1o4UOXtLRzcrwGuVNLafFnzQRXZLjLetwXs3BQuPmGB8t
+	 FWAF8Gew+9Q+dQFK/lMBtm7XLxS2hIwm8n2WoUhTUdtT1tnlyaOh0phA+DVswiOUmg
+	 wdmSfDUMTPfW/uPQ7DW9mnKwlWG1UTPBt3VkAR2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Robert Foss <rfoss@kernel.org>
-Subject: [PATCH 5.4 051/267] drm/bridge: nxp-ptn3460: simplify some error checking
+	Hans de Goede <hdegoede@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 213/379] misc: lis3lv02d_i2c: Add missing setting of the reg_ctrl callback
 Date: Wed, 21 Feb 2024 14:06:32 +0100
-Message-ID: <20240221125941.606948469@linuxfoundation.org>
+Message-ID: <20240221130001.205668819@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 28d3d0696688154cc04983f343011d07bf0508e4 upstream.
+[ Upstream commit b1b9f7a494400c0c39f8cd83de3aaa6111c55087 ]
 
-The i2c_master_send/recv() functions return negative error codes or
-they return "len" on success.  So the error handling here can be written
-as just normal checks for "if (ret < 0) return ret;".  No need to
-complicate things.
+The lis3lv02d_i2c driver was missing a line to set the lis3_dev's
+reg_ctrl callback.
 
-Btw, in this code the "len" parameter can never be zero, but even if
-it were, then I feel like this would still be the best way to write it.
+lis3_reg_ctrl(on) is called from the init callback, but due to
+the missing reg_ctrl callback the regulators where never turned off
+again leading to the following oops/backtrace when detaching the driver:
 
-Fixes: 914437992876 ("drm/bridge: nxp-ptn3460: fix i2c_master_send() error checking")
-Suggested-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Robert Foss <rfoss@kernel.org>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/04242630-42d8-4920-8c67-24ac9db6b3c9@moroto.mountain
+[   82.313527] ------------[ cut here ]------------
+[   82.313546] WARNING: CPU: 1 PID: 1724 at drivers/regulator/core.c:2396 _regulator_put+0x219/0x230
+...
+[   82.313695] RIP: 0010:_regulator_put+0x219/0x230
+...
+[   82.314767] Call Trace:
+[   82.314770]  <TASK>
+[   82.314772]  ? _regulator_put+0x219/0x230
+[   82.314777]  ? __warn+0x81/0x170
+[   82.314784]  ? _regulator_put+0x219/0x230
+[   82.314791]  ? report_bug+0x18d/0x1c0
+[   82.314801]  ? handle_bug+0x3c/0x80
+[   82.314806]  ? exc_invalid_op+0x13/0x60
+[   82.314812]  ? asm_exc_invalid_op+0x16/0x20
+[   82.314845]  ? _regulator_put+0x219/0x230
+[   82.314857]  regulator_bulk_free+0x39/0x60
+[   82.314865]  i2c_device_remove+0x22/0xb0
+
+Add the missing setting of the callback so that the regulators
+properly get turned off again when not used.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20231224183402.95640-1-hdegoede@redhat.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/nxp-ptn3460.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/misc/lis3lv02d/lis3lv02d_i2c.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/bridge/nxp-ptn3460.c
-+++ b/drivers/gpu/drm/bridge/nxp-ptn3460.c
-@@ -54,15 +54,15 @@ static int ptn3460_read_bytes(struct ptn
- 	int ret;
- 
- 	ret = i2c_master_send(ptn_bridge->client, &addr, 1);
--	if (ret <= 0) {
-+	if (ret < 0) {
- 		DRM_ERROR("Failed to send i2c command, ret=%d\n", ret);
--		return ret ?: -EIO;
-+		return ret;
- 	}
- 
- 	ret = i2c_master_recv(ptn_bridge->client, buf, len);
--	if (ret != len) {
-+	if (ret < 0) {
- 		DRM_ERROR("Failed to recv i2c data, ret=%d\n", ret);
--		return ret < 0 ? ret : -EIO;
-+		return ret;
- 	}
- 
- 	return 0;
-@@ -78,9 +78,9 @@ static int ptn3460_write_byte(struct ptn
- 	buf[1] = val;
- 
- 	ret = i2c_master_send(ptn_bridge->client, buf, ARRAY_SIZE(buf));
--	if (ret != ARRAY_SIZE(buf)) {
-+	if (ret < 0) {
- 		DRM_ERROR("Failed to send i2c command, ret=%d\n", ret);
--		return ret < 0 ? ret : -EIO;
-+		return ret;
- 	}
- 
- 	return 0;
+diff --git a/drivers/misc/lis3lv02d/lis3lv02d_i2c.c b/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
+index 52555d2e824b..ab1db760ba4e 100644
+--- a/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
++++ b/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
+@@ -151,6 +151,7 @@ static int lis3lv02d_i2c_probe(struct i2c_client *client,
+ 	lis3_dev.init	  = lis3_i2c_init;
+ 	lis3_dev.read	  = lis3_i2c_read;
+ 	lis3_dev.write	  = lis3_i2c_write;
++	lis3_dev.reg_ctrl = lis3_reg_ctrl;
+ 	lis3_dev.irq	  = client->irq;
+ 	lis3_dev.ac	  = lis3lv02d_axis_map;
+ 	lis3_dev.pm_dev	  = &client->dev;
+-- 
+2.43.0
+
 
 
 
