@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-22318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FBAA85DB68
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:40:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9222D85D8FF
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:13:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29F8B2823A2
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:40:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3DEC1C22E53
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:13:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE19C763F6;
-	Wed, 21 Feb 2024 13:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B40869DE9;
+	Wed, 21 Feb 2024 13:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0rdGzH3D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JJxox+aZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CCE369951;
-	Wed, 21 Feb 2024 13:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C1669D2B;
+	Wed, 21 Feb 2024 13:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522841; cv=none; b=R8hi9LYhswrJ2FumjvTO2ssQRl/Tsll/My1JIwWGyB5fuVR7iHbmUVLI8C2bwFJ6TbyUpvR6ynrkkPSoQB9/Uwx1GAdypaJqcLWaU/H/U28FKA9n8HpnxdTqL/ugz2HVJhtOOMKmDUk38GOZ0Hrfs/hoaq6Z1RL3IYkutp4ICAY=
+	t=1708521200; cv=none; b=dNldAWcDfcggGhhAK9hOufO7KjomGzJtYvpFUfDcw4WoIDLggZFmMoXmBmtJzAqSWxNKOTe/gwmUPaX0Ih0pbxMRtHpLRqiSOvMHVW+XRYuMjv8oMZy8SBq6BDI3JUErx3v4KSZuEcacf06R3cLEOqGLiWsdfZdQWn+2nlsGHeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522841; c=relaxed/simple;
-	bh=wlC8N2C99kK96Dul8h93bPlDzDWHrNZ45LvNDJxOhKg=;
+	s=arc-20240116; t=1708521200; c=relaxed/simple;
+	bh=XWphp+VEBVar9rl9cAKfZ1ZjCAGB3jfyJILwn1KX6LU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HrYkCd6nL68kIPkrn5uqmqnNosqdTRSYLuayki+qsQD41I+x5ykNUxjdFKScaEgRFvHYqucIFQtI08O7Dub0iXOxLGAb5UD0iaCVGNbPfRbrfWEYe/RoIBjiGXlzhcaeYfIqj+XezuPf7a6ip3WwKkhfQTlLjwI2hX7NKgOUqdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0rdGzH3D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFD17C433C7;
-	Wed, 21 Feb 2024 13:40:40 +0000 (UTC)
+	 MIME-Version; b=cxNIxgySNHeqB1z/0HBoVui8aVo9OLLhb08PjI4LbTaczf7i81JFWJv916zgI5k1u+JgpFRQBV/9zbQGBGk55PS1nNpA+cDoKN4Y1/a/PysQJf77mHlkHvHos5IwPyxJXfLcJnOdtfdKpbYnyP/yDdVGTrQFVJeX8HC4PSEjL8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JJxox+aZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A46BC433C7;
+	Wed, 21 Feb 2024 13:13:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522841;
-	bh=wlC8N2C99kK96Dul8h93bPlDzDWHrNZ45LvNDJxOhKg=;
+	s=korg; t=1708521200;
+	bh=XWphp+VEBVar9rl9cAKfZ1ZjCAGB3jfyJILwn1KX6LU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0rdGzH3D9Kfiy8lqRY6s1ti5bUH5/jtXrTqx+vk9Y6xU8SBHYCkS+irXqg7q8GCz7
-	 XndaxkL4wiRdcf2isBCHcfkBwGBBRxZiQtqqkeoN43PCkPsFw1l4eZKkXbSHqBa1+f
-	 FcD48v1yNKEZUqMU4/vOGoCQ6/FF23AYORp+tUyU=
+	b=JJxox+aZuzVy5KbzekN3IXlq4DiysfC2idJ8m/h2jbut+//TKSbu9sqFaOV6XC77Q
+	 /qUo/1JWl4AM6+9JmsRJ3DXL5I4vfxcfRFkS81A4VByogMpdy7u97In2Wv38WJ5Rsk
+	 L/uk8/HLE0eO1aJE/UjGE8f0A5a3wkKARudhkLuE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Richter <tmricht@linux.ibm.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 267/476] perf: Fix the nr_addr_filters fix
-Date: Wed, 21 Feb 2024 14:05:18 +0100
-Message-ID: <20240221130017.718452195@linuxfoundation.org>
+	"stable@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,  linux-kbuild@vger.kernel.org, llvm@lists.linux.dev,  Nathan Chancellor" <nathan@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 4.19 018/202] powerpc: Use always instead of always-y in for crtsavres.o
+Date: Wed, 21 Feb 2024 14:05:19 +0100
+Message-ID: <20240221125932.342861096@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 388a1fb7da6aaa1970c7e2a7d7fcd983a87a8484 ]
+This commit is for linux-4.19.y only, it has no direct upstream
+equivalent.
 
-Thomas reported that commit 652ffc2104ec ("perf/core: Fix narrow
-startup race when creating the perf nr_addr_filters sysfs file") made
-the entire attribute group vanish, instead of only the nr_addr_filters
-attribute.
+Prior to commit 5f2fb52fac15 ("kbuild: rename hostprogs-y/always to
+hostprogs/always-y"), always-y did not exist, making the backport of
+mainline commit 1b1e38002648 ("powerpc: add crtsavres.o to always-y
+instead of extra-y") to linux-4.19.y as commit b7b85ec5ec15 ("powerpc:
+add crtsavres.o to always-y instead of extra-y") incorrect, breaking the
+build with linkers that need crtsavres.o:
 
-Additionally a stray return.
+  ld.lld: error: cannot open arch/powerpc/lib/crtsavres.o: No such file or directory
 
-Insufficient coffee was involved with both writing and merging the
-patch.
+Backporting the aforementioned kbuild commit is not suitable for stable
+due to its size and number of conflicts, so transform the always-y usage
+to an equivalent form using always, which resolves the build issues.
 
-Fixes: 652ffc2104ec ("perf/core: Fix narrow startup race when creating the perf nr_addr_filters sysfs file")
-Reported-by: Thomas Richter <tmricht@linux.ibm.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Thomas Richter <tmricht@linux.ibm.com>
-Link: https://lkml.kernel.org/r/20231122100756.GP8262@noisy.programming.kicks-ass.net
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b7b85ec5ec15 ("powerpc: add crtsavres.o to always-y instead of extra-y")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/events/core.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/powerpc/lib/Makefile |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 0e03afd82348..4e5a73c7db12 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -11229,12 +11229,10 @@ static umode_t pmu_dev_is_visible(struct kobject *kobj, struct attribute *a, int
- 	struct device *dev = kobj_to_dev(kobj);
- 	struct pmu *pmu = dev_get_drvdata(dev);
+--- a/arch/powerpc/lib/Makefile
++++ b/arch/powerpc/lib/Makefile
+@@ -21,8 +21,8 @@ obj-$(CONFIG_PPC32)	+= div64.o copy_32.o
+ # 64-bit linker creates .sfpr on demand for final link (vmlinux),
+ # so it is only needed for modules, and only for older linkers which
+ # do not support --save-restore-funcs
+-ifeq ($(call ld-ifversion, -lt, 225000000, y),y)
+-always-$(CONFIG_PPC64)	+= crtsavres.o
++ifeq ($(call ld-ifversion, -lt, 225000000, y)$(CONFIG_PPC64),yy)
++always	+= crtsavres.o
+ endif
  
--	if (!pmu->nr_addr_filters)
-+	if (n == 2 && !pmu->nr_addr_filters)
- 		return 0;
- 
- 	return a->mode;
--
--	return 0;
- }
- 
- static struct attribute_group pmu_dev_attr_group = {
--- 
-2.43.0
-
+ obj-$(CONFIG_PPC_BOOK3S_64) += copyuser_power7.o copypage_power7.o \
 
 
 
