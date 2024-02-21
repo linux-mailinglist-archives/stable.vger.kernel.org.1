@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-22512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0BC985DC5D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:52:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8274085DE38
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:16:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A62562854D8
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:52:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B223D1C23880
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:16:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7362C76C99;
-	Wed, 21 Feb 2024 13:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EACA7E76B;
+	Wed, 21 Feb 2024 14:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/n11ySU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S5exqYeu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD0478B73;
-	Wed, 21 Feb 2024 13:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1BF87D413;
+	Wed, 21 Feb 2024 14:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523546; cv=none; b=IVlOa39LSPCvzzeWg2w9YqU9j4OOKP5g5fu+8beFjl9d+/Ekkjh4qyvxzp7J2PGBu58BAbDtz/8MJyrSesfCLpVFOqkX+uzoxf/1Gw77e/GeNIs6U0Uj08eG2Kt4zkGfD34Ef+vZlAB3yqNgnIOjXHXuYe3gcTWFbO81Bk//rAE=
+	t=1708524889; cv=none; b=f2XHR6h5I1R8lSn7LWgsJ70X9elDUNZlEUqfoSj62hm8MJ09v8DFlzNZaz0U86FI199vX4+TYQfkIMOB03MyRTHXxf8VsEooaXGHolJy2qhHXikDi1e9oSHgg4EOlSqdOkidcJ6IXlC/QsLOh8J5e0UdYD9hfw1YhtaOQKwRweI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523546; c=relaxed/simple;
-	bh=rzYFQLQVj6ZD5eU75DVP0UOO85A4RAvYdXzSz6TFIDU=;
+	s=arc-20240116; t=1708524889; c=relaxed/simple;
+	bh=hfXj2/oJcOgrEYNl6JYcljpCYM3TXfD+/AUk5uecdck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lLSrzWIvbco+ks3VWYrORNhdwLJswz63Nc6veOd2bsgonrKbUoUPwMy5gP6GvZ++a8w6XnDxN3YPYm51E6HRon/mQT/bx9RnEM15SIzmd8BypnH+7acg2K4DKLGNZSlOYleKowCpuEPbqjUKDgWa9tm77VYBT97R3ZeXdzaQQGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/n11ySU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97F58C43394;
-	Wed, 21 Feb 2024 13:52:25 +0000 (UTC)
+	 MIME-Version; b=Y7dx8fDAz17lxIkZJ0gX+NtjoniuNSWSMzDv8C9kBiSlDrfQ+ckcozIdpCgK2PrwrKg0Q93FCNIgZA9TakjazES8MG8axsJNj+N4LerY1GUhvejvlMry1ypynkdeL2MVdadEKyIH6aTexYuxl33M4+ZBNADh7bE5C3kAOPUrKsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S5exqYeu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5827BC433C7;
+	Wed, 21 Feb 2024 14:14:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523546;
-	bh=rzYFQLQVj6ZD5eU75DVP0UOO85A4RAvYdXzSz6TFIDU=;
+	s=korg; t=1708524888;
+	bh=hfXj2/oJcOgrEYNl6JYcljpCYM3TXfD+/AUk5uecdck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u/n11ySUqjAxRZQ/zXxsR3VBMsJHkbpLYrkIUFmrpnlcwJ33qzX0xw7exCsaDRY2+
-	 3GwzZyoJdFZYeeT+vmCA2PDLxhhevF9OEsPlA9JsWWuK9ER6I9jNtfizILwLMpeqwO
-	 GMb+Mv+14G2UL2b/UqSYHbg1XhDX1bRluMqe/7Mo=
+	b=S5exqYeusMXU7QaBoNp3DfcHjStU+eMZaOFE0eUEa8HmnW5En4QyU0PDPwEjvtMla
+	 sT9NBObeI0v/5tt48zclC6Jf+RzkCJCvNYKDPERg3no+rG+7Xlz/TWdx8TGcqxU3dI
+	 FNzFgwrui//i76Y4y9sF5ZZR/o/qBssPfY/LrwYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
-Subject: [PATCH 5.15 468/476] Revert "selftests/bpf: Test tail call counting with bpf2bpf and data on stack"
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 5.10 340/379] wifi: mac80211: reload info pointer in ieee80211_tx_dequeue()
 Date: Wed, 21 Feb 2024 14:08:39 +0100
-Message-ID: <20240221130025.325787931@linuxfoundation.org>
+Message-ID: <20240221130005.047654680@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,140 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-This reverts commit 3eefb2fbf4ec1c1ff239b8b65e6e78aae335e4a6.
+commit c98d8836b817d11fdff4ca7749cbbe04ff7f0c64 upstream.
 
-libbpf support for "tc" progs doesn't exist for the linux-5.15.y tree.
-This commit was backported too far back in upstream, to a kernel where
-the libbpf support was not there for the test.
+This pointer can change here since the SKB can change, so we
+actually later open-coded IEEE80211_SKB_CB() again. Reload
+the pointer where needed, so the monitor-mode case using it
+gets fixed, and then use info-> later as well.
 
-Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+Cc: stable@vger.kernel.org
+Fixes: 531682159092 ("mac80211: fix VLAN handling with TXQs")
+Link: https://msgid.link/20240131164910.b54c28d583bc.I29450cec84ea6773cff5d9c16ff92b836c331471@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/bpf/prog_tests/tailcalls.c    |   55 ------------------
- tools/testing/selftests/bpf/progs/tailcall_bpf2bpf6.c |   42 -------------
- 2 files changed, 97 deletions(-)
- delete mode 100644 tools/testing/selftests/bpf/progs/tailcall_bpf2bpf6.c
+ net/mac80211/tx.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/tools/testing/selftests/bpf/prog_tests/tailcalls.c
-+++ b/tools/testing/selftests/bpf/prog_tests/tailcalls.c
-@@ -810,59 +810,6 @@ out:
- 	bpf_object__close(obj);
- }
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -3721,6 +3721,7 @@ begin:
+ 			goto begin;
  
--#include "tailcall_bpf2bpf6.skel.h"
--
--/* Tail call counting works even when there is data on stack which is
-- * not aligned to 8 bytes.
-- */
--static void test_tailcall_bpf2bpf_6(void)
--{
--	struct tailcall_bpf2bpf6 *obj;
--	int err, map_fd, prog_fd, main_fd, data_fd, i, val;
--	LIBBPF_OPTS(bpf_test_run_opts, topts,
--		.data_in = &pkt_v4,
--		.data_size_in = sizeof(pkt_v4),
--		.repeat = 1,
--	);
--
--	obj = tailcall_bpf2bpf6__open_and_load();
--	if (!ASSERT_OK_PTR(obj, "open and load"))
--		return;
--
--	main_fd = bpf_program__fd(obj->progs.entry);
--	if (!ASSERT_GE(main_fd, 0, "entry prog fd"))
--		goto out;
--
--	map_fd = bpf_map__fd(obj->maps.jmp_table);
--	if (!ASSERT_GE(map_fd, 0, "jmp_table map fd"))
--		goto out;
--
--	prog_fd = bpf_program__fd(obj->progs.classifier_0);
--	if (!ASSERT_GE(prog_fd, 0, "classifier_0 prog fd"))
--		goto out;
--
--	i = 0;
--	err = bpf_map_update_elem(map_fd, &i, &prog_fd, BPF_ANY);
--	if (!ASSERT_OK(err, "jmp_table map update"))
--		goto out;
--
--	err = bpf_prog_test_run_opts(main_fd, &topts);
--	ASSERT_OK(err, "entry prog test run");
--	ASSERT_EQ(topts.retval, 0, "tailcall retval");
--
--	data_fd = bpf_map__fd(obj->maps.bss);
--	if (!ASSERT_GE(data_fd, 0, "bss map fd"))
--		goto out;
--
--	i = 0;
--	err = bpf_map_lookup_elem(data_fd, &i, &val);
--	ASSERT_OK(err, "bss map lookup");
--	ASSERT_EQ(val, 1, "done flag is set");
--
--out:
--	tailcall_bpf2bpf6__destroy(obj);
--}
--
- void test_tailcalls(void)
- {
- 	if (test__start_subtest("tailcall_1"))
-@@ -885,6 +832,4 @@ void test_tailcalls(void)
- 		test_tailcall_bpf2bpf_4(false);
- 	if (test__start_subtest("tailcall_bpf2bpf_5"))
- 		test_tailcall_bpf2bpf_4(true);
--	if (test__start_subtest("tailcall_bpf2bpf_6"))
--		test_tailcall_bpf2bpf_6();
- }
---- a/tools/testing/selftests/bpf/progs/tailcall_bpf2bpf6.c
-+++ /dev/null
-@@ -1,42 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--#include <linux/bpf.h>
--#include <bpf/bpf_helpers.h>
--
--#define __unused __attribute__((unused))
--
--struct {
--	__uint(type, BPF_MAP_TYPE_PROG_ARRAY);
--	__uint(max_entries, 1);
--	__uint(key_size, sizeof(__u32));
--	__uint(value_size, sizeof(__u32));
--} jmp_table SEC(".maps");
--
--int done = 0;
--
--SEC("tc")
--int classifier_0(struct __sk_buff *skb __unused)
--{
--	done = 1;
--	return 0;
--}
--
--static __noinline
--int subprog_tail(struct __sk_buff *skb)
--{
--	/* Don't propagate the constant to the caller */
--	volatile int ret = 1;
--
--	bpf_tail_call_static(skb, &jmp_table, 0);
--	return ret;
--}
--
--SEC("tc")
--int entry(struct __sk_buff *skb)
--{
--	/* Have data on stack which size is not a multiple of 8 */
--	volatile char arr[1] = {};
--
--	return subprog_tail(skb);
--}
--
--char __license[] SEC("license") = "GPL";
+ 		skb = __skb_dequeue(&tx.skbs);
++		info = IEEE80211_SKB_CB(skb);
+ 
+ 		if (!skb_queue_empty(&tx.skbs)) {
+ 			spin_lock_bh(&fq->lock);
+@@ -3765,7 +3766,7 @@ begin:
+ 	}
+ 
+ encap_out:
+-	IEEE80211_SKB_CB(skb)->control.vif = vif;
++	info->control.vif = vif;
+ 
+ 	if (vif &&
+ 	    wiphy_ext_feature_isset(local->hw.wiphy, NL80211_EXT_FEATURE_AQL)) {
 
 
 
