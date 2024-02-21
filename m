@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-22896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13B8385DED0
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:22:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 835C785DF31
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:25:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8CAB2B22E6F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:16:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37F43283460
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:25:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B89047E595;
-	Wed, 21 Feb 2024 14:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8C587C08D;
+	Wed, 21 Feb 2024 14:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y054UkXJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fmwlIR12"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767F078B60;
-	Wed, 21 Feb 2024 14:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6594C3D0A1;
+	Wed, 21 Feb 2024 14:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524879; cv=none; b=TtvyXcidGwb+f+3JV3HFXZWQrNTd4hVFcrUYVVtlhsgtUBv37wPfDpk0521m16C8PNUC0HjCbrSgKCrZx0tNHb6z4sQlwcGKNwSS0GEJzsicCSIkyD9XDjedU+Q+fdtw8U15mhDeR0cpW7ev6wu3D+ON4UyqRYqzq8x1WGcHgaI=
+	t=1708525534; cv=none; b=UlHVTuqjHEJykwtFGL31KVip10/Vt2yG0BafBaqyzIygTu80ia/E6HFQbPNpWkMSkLpXxFGItnLKODrEkp+p8UWl6Y14XFoCmv047m8nVg00iwSWdE5UdTViXYCEkbtHQBagtNYUshM7B6my/EVNus2XHx2zWgxtVpDyHyw4IP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524879; c=relaxed/simple;
-	bh=4a+A3P5xrOY74U+H8UZZ9ifb7WyTUKYpj4brZTQKYeA=;
+	s=arc-20240116; t=1708525534; c=relaxed/simple;
+	bh=o9iZk0f2BhzQgDoynd3HBGsK5+e541luEquJ9PEwSZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AaL7GJtxbJ1RsTtyG7OoCBxWd/m2OjNTdew+UIVtUfQlKA/evgqH9h3KBA+I9hIOxnpNjn+mfzaFvhlT7oC0gphZP0jgsuEc15TDcQzxChzFYxJ0F058jfh5kXJmDYdPDsLd5Z4uIdDCNoaDiKPwJ/fvGzfqWQ0qXlhKcMzEUl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y054UkXJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEBA3C433C7;
-	Wed, 21 Feb 2024 14:14:38 +0000 (UTC)
+	 MIME-Version; b=HQOYqNCs5UikuO5TMlVa+PnZ6gCvIxUr71EnWqn6RrMDEcoVeLY/4CLPCwI2s5MBTuft3HAmA/6zwfjXKzfFwu2EYu0pz0j0yXtKJkSofrOlbIMl+sSPb9P+0LQCr9k0BnsutrZW2uIl+3vIdDUqoS4VBltTrCszn08ob1Uf/5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fmwlIR12; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1677C433C7;
+	Wed, 21 Feb 2024 14:25:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524879;
-	bh=4a+A3P5xrOY74U+H8UZZ9ifb7WyTUKYpj4brZTQKYeA=;
+	s=korg; t=1708525534;
+	bh=o9iZk0f2BhzQgDoynd3HBGsK5+e541luEquJ9PEwSZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y054UkXJoRg8rmmw0Zp8pcrLMkL9lYD3tkG9Ijfs3WLJ89McveVMfayda8ytGh/j8
-	 tNAVLNGwbSwAGb8/3MwY83bNLFCKDej92sCy8bkE1Xt6COUSg8uYscPMS3teyAL70G
-	 EkKI++sdyO2YZSb66533gMoMmBlKbM5TH4kF9pBg=
+	b=fmwlIR12kVIJXVcNAkYivt/EW5wPln5FzYkYzk1w6Gt+FWaoTOIKdTDxoGRXLcWip
+	 z0IRFr4iH8lxMx5K2D3/RoylJ0WwIjgEgJ7IbvGSx/BgM8ZolwcUksLr5KJ4FZMqjn
+	 4u8+SfqVUgHTSGzQsEouarT2t60PpPKTeuqMqpk4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.10 347/379] pmdomain: core: Move the unused cleanup to a _sync initcall
+	Zhang Rui <rui.zhang@intel.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 185/267] hwmon: (coretemp) Fix out-of-bounds memory access
 Date: Wed, 21 Feb 2024 14:08:46 +0100
-Message-ID: <20240221130005.263003070@linuxfoundation.org>
+Message-ID: <20240221125945.935989317@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Zhang Rui <rui.zhang@intel.com>
 
-commit 741ba0134fa7822fcf4e4a0a537a5c4cfd706b20 upstream.
+[ Upstream commit 4e440abc894585a34c2904a32cd54af1742311b3 ]
 
-The unused clock cleanup uses the _sync initcall to give all users at
-earlier initcalls time to probe. Do the same to avoid leaving some PDs
-dangling at "on" (which actually happened on qcom!).
+Fix a bug that pdata->cpu_map[] is set before out-of-bounds check.
+The problem might be triggered on systems with more than 128 cores per
+package.
 
-Fixes: 2fe71dcdfd10 ("PM / domains: Add late_initcall to disable unused PM domains")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231227-topic-pmdomain_sync_cleanup-v1-1-5f36769d538b@linaro.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7108b80a542b ("hwmon/coretemp: Handle large core ID value")
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240202092144.71180-2-rui.zhang@intel.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Stable-dep-of: fdaf0c8629d4 ("hwmon: (coretemp) Fix bogus core_id to attr name mapping")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/domain.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwmon/coretemp.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
---- a/drivers/base/power/domain.c
-+++ b/drivers/base/power/domain.c
-@@ -958,7 +958,7 @@ static int __init genpd_power_off_unused
+diff --git a/drivers/hwmon/coretemp.c b/drivers/hwmon/coretemp.c
+index 0eabad344961..10e1d189a619 100644
+--- a/drivers/hwmon/coretemp.c
++++ b/drivers/hwmon/coretemp.c
+@@ -467,18 +467,14 @@ static int create_core_data(struct platform_device *pdev, unsigned int cpu,
+ 	if (pkg_flag) {
+ 		attr_no = PKG_SYSFS_ATTR_NO;
+ 	} else {
+-		index = ida_alloc(&pdata->ida, GFP_KERNEL);
++		index = ida_alloc_max(&pdata->ida, NUM_REAL_CORES - 1, GFP_KERNEL);
+ 		if (index < 0)
+ 			return index;
++
+ 		pdata->cpu_map[index] = topology_core_id(cpu);
+ 		attr_no = index + BASE_SYSFS_ATTR_NO;
+ 	}
  
- 	return 0;
- }
--late_initcall(genpd_power_off_unused);
-+late_initcall_sync(genpd_power_off_unused);
- 
- #ifdef CONFIG_PM_SLEEP
- 
+-	if (attr_no > MAX_CORE_DATA - 1) {
+-		err = -ERANGE;
+-		goto ida_free;
+-	}
+-
+ 	tdata = init_temp_data(cpu, pkg_flag);
+ 	if (!tdata) {
+ 		err = -ENOMEM;
+-- 
+2.43.0
+
 
 
 
