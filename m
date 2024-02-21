@@ -1,55 +1,62 @@
-Return-Path: <stable+bounces-22796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E12E885DDE1
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:13:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EAA385D997
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:20:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F1071C227C1
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:13:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2FDE7B24FC0
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:20:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED22B7F7CC;
-	Wed, 21 Feb 2024 14:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57E3C7C0A4;
+	Wed, 21 Feb 2024 13:19:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mMGwwpEV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="woBLoTeB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB6827F7C9;
-	Wed, 21 Feb 2024 14:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15086763F6;
+	Wed, 21 Feb 2024 13:19:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524538; cv=none; b=q6eND1zjOvq/tXLKTRiPedtLy0JYeXWrfYeZCjOYTuLpNgowOpToRx77nk2Hqgecj55q2W0QDc46To+oyS3Tej1vnLWDlzDdVzNahDOYAGzH73veb3VTKKucQxIADSsJHSd486FqfwgQzSm2ZnOCRWm2AXEbN6tnuUgOqO00ClQ=
+	t=1708521594; cv=none; b=MO8q561DU+GkGp0kNpxJ122W08WxSCHbRRZuNeTd3Upl6zPvd3KN5QWFxrStilagGiSbUEcwu+DEOH08bpyP0nCjJCtwRVr+Gnt7Plxj2fz4VultRlCVOydUnMqh1vhd/7ufLj2bWKYPztdZP6LgXfZcqidgbsoWkFtaZbieSkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524538; c=relaxed/simple;
-	bh=y9+xL8T313nUBvHPg5a0EloH+yecLi+NPUkmHqwj7oY=;
+	s=arc-20240116; t=1708521594; c=relaxed/simple;
+	bh=LbFv/9KabQfjhDV5YKlwmWtzfbB85+f/a2TFZCMq5jI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I9qfxNurdcWoKJlkkEAWtg4jskdTmOJ2xxLZef8MYz8i+bJCYm98hwMi0+XCyQsajdkiC22UecAZ37gEQB7Jno4YpR1zrBWkdYGwDK9iG+TEihyvjPGdCDiNZUs8i5Y6lsG14tHxZ1ppgeEnM5lwXLoH1ggasujPWwhz4GejV/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mMGwwpEV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A8EEC433C7;
-	Wed, 21 Feb 2024 14:08:57 +0000 (UTC)
+	 MIME-Version; b=g42an0zlG11adNPA1Bu4L/yBshl7/VHYGhx+G9cwGnqzbYcg0Nj9JTdCdxzrsFu+ZL3e+AZ6pUIHOVwAy8QNNeKl2j3s5/rAsv6Ht/sqXPtVdTLJjQfzJC692ZL/PEw4a5tEmAaJ9+lUV/VGTVpVMC1lpxCnZiTo1aPT+6WqD1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=woBLoTeB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 847A4C43390;
+	Wed, 21 Feb 2024 13:19:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524538;
-	bh=y9+xL8T313nUBvHPg5a0EloH+yecLi+NPUkmHqwj7oY=;
+	s=korg; t=1708521593;
+	bh=LbFv/9KabQfjhDV5YKlwmWtzfbB85+f/a2TFZCMq5jI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mMGwwpEVfjn0JDsHBfEHbU6BclDAvYQoHE7uT5/arQg/fet7OFOMDTp5dKlhvEA0K
-	 JqdwdVHXYzoM9rMI3p3ic0SXNrPvTP/aStCIJQRCZ8YZhhEXfolf0936WbFJFijvEa
-	 IVn6uf7Kn+HU49sT8U3cI/B71QbuXQ03nFnecC+g=
+	b=woBLoTeBBtlzDHtt+18UfU+3YdJkwSuWeoVsm9sj3yi+UW7aVFw+bO7SvJk9sJGrj
+	 1mHBdR5DFOopebFbjv7ZPSy6CKr6u+iEKXhV+GeY6TNDiXjkJajLFa8OLLsBa+hfBu
+	 1YiHHYAiIsrLT8HX5aGskwmtDL6TLtcYMvdT7+40=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Puliang Lu <puliang.lu@fibocom.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.10 275/379] USB: serial: option: add Fibocom FM101-GL variant
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-afs@lists.infradead.org,
+	netdev@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 153/202] rxrpc: Fix response to PING RESPONSE ACKs to a dead call
 Date: Wed, 21 Feb 2024 14:07:34 +0100
-Message-ID: <20240221130003.041273781@linuxfoundation.org>
+Message-ID: <20240221125936.634735812@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +68,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Puliang Lu <puliang.lu@fibocom.com>
+From: David Howells <dhowells@redhat.com>
 
-commit b4a1f4eaf1d798066affc6ad040f76eb1a16e1c9 upstream.
+[ Upstream commit 6f769f22822aa4124b556339781b04d810f0e038 ]
 
-Update the USB serial option driver support for the Fibocom
-FM101-GL
-LTE modules as there are actually several different variants.
-- VID:PID 2cb7:01a3, FM101-GL are laptop M.2 cards (with
-MBIM interfaces for /Linux/Chrome OS)
+Stop rxrpc from sending a DUP ACK in response to a PING RESPONSE ACK on a
+dead call.  We may have initiated the ping but the call may have beaten the
+response to completion.
 
-0x01a3:mbim,gnss
-
-Here are the outputs of usb-devices:
-
-T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  3 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=2cb7 ProdID=01a3 Rev=05.04
-S:  Manufacturer=Fibocom Wireless Inc.
-S:  Product=Fibocom FM101-GL Module
-S:  SerialNumber=5ccd5cd4
-C:  #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-
-Signed-off-by: Puliang Lu <puliang.lu@fibocom.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 18bfeba50dfd ("rxrpc: Perform terminal call ACK/ABORT retransmission from conn processor")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: "David S. Miller" <davem@davemloft.net>
+cc: Eric Dumazet <edumazet@google.com>
+cc: Jakub Kicinski <kuba@kernel.org>
+cc: Paolo Abeni <pabeni@redhat.com>
+cc: linux-afs@lists.infradead.org
+cc: netdev@vger.kernel.org
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/rxrpc/conn_event.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2269,6 +2269,7 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0111, 0xff) },			/* Fibocom FM160 (MBIM mode) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a0, 0xff) },			/* Fibocom NL668-AM/NL652-EU (laptop MBIM) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a2, 0xff) },			/* Fibocom FM101-GL (laptop MBIM) */
-+	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a3, 0xff) },			/* Fibocom FM101-GL (laptop MBIM) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a4, 0xff),			/* Fibocom FM101-GL (laptop MBIM) */
- 	  .driver_info = RSVD(4) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2df3, 0x9d03, 0xff) },			/* LongSung M5710 */
+diff --git a/net/rxrpc/conn_event.c b/net/rxrpc/conn_event.c
+index 04213afd7710..84a70d7d0285 100644
+--- a/net/rxrpc/conn_event.c
++++ b/net/rxrpc/conn_event.c
+@@ -45,6 +45,14 @@ static void rxrpc_conn_retransmit_call(struct rxrpc_connection *conn,
+ 
+ 	_enter("%d", conn->debug_id);
+ 
++	if (sp && sp->hdr.type == RXRPC_PACKET_TYPE_ACK) {
++		if (skb_copy_bits(skb, sizeof(struct rxrpc_wire_header),
++				  &pkt.ack, sizeof(pkt.ack)) < 0)
++			return;
++		if (pkt.ack.reason == RXRPC_ACK_PING_RESPONSE)
++			return;
++	}
++
+ 	chan = &conn->channels[channel];
+ 
+ 	/* If the last call got moved on whilst we were waiting to run, just
+-- 
+2.43.0
+
 
 
 
