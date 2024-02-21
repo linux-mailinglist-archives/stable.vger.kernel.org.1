@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-23056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22033-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBD6285DF46
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:26:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49DF985D9CC
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:22:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BD123B261C8
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:23:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C0051C232A8
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:22:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17D9678B73;
-	Wed, 21 Feb 2024 14:23:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34C4178B73;
+	Wed, 21 Feb 2024 13:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x6ox8OFM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jOrk0eRv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C91F069317;
-	Wed, 21 Feb 2024 14:23:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E713C53816;
+	Wed, 21 Feb 2024 13:22:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525430; cv=none; b=q//NB62JMG2+fSVafmQTEpDM6fo/Xt06GsF2YdDupr4xYbbLHbPK2J50hAinDZuF3xKe53Xp3ww5rnYv3CPg0I0qKUKIMPxgQBzs8C5LRpWHS+TpxjTJmsXTmgp/vmC3+DzvkQupmyeDV9Y5lUef1h8msocJzP1HHWp5kBP2cYQ=
+	t=1708521744; cv=none; b=U6nxdXc0XMgrt4lq8FNVof2mHrBBkZbQRsJm81veziCghjIaoZsaMuD6PRzQXuzhs5bg3b2vIz0ds/fviO3a/e6tBaUY6BpWtBUfuSAYay8fG+4Hzp5XlOILueF2ktQs0fXyTO9QHv1FrJrgpBQWq6EjooEFLVmIGZBlFhhP61A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525430; c=relaxed/simple;
-	bh=vgs2JhrHQqlm2GP6kmxJcUBF2dLazJztBy5S5T0C1WQ=;
+	s=arc-20240116; t=1708521744; c=relaxed/simple;
+	bh=1q6uWuXe8V5m/ivItWzkz3+sVWuwkUsHQFKiMix2jE0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XICPM2K5A7Jw0kTbuZL/4UjQ2ZTyPi6vSIY1x1dlnSH7mmK/BVQiflIymUgoNLPsIIdPrT2vZcxtSQdhtT/jfhyrR83zKg9G8U+45ZUntwXNowFhw7+BDoJkhSzPc1hUy74bExNB7wipiRhFAjVwRn//IrawMYHYea+uFRbUsYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x6ox8OFM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3384DC433F1;
-	Wed, 21 Feb 2024 14:23:50 +0000 (UTC)
+	 MIME-Version; b=sT0NUBUbLplOLbPpkg8RdYDQqQUl5P3cC7/UfzBuPuEZJzelaytJmlCwCLO+4886WwbYtZW29EUt6nbS24IlkMUMli9n/ZU6AHBmC8E5QMecgapTEuAhjozolkp65jR9chpibKG0UxUO5hZcPm3tfZgZAjVtRfYLekS+RmhJo9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jOrk0eRv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A4CDC43390;
+	Wed, 21 Feb 2024 13:22:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525430;
-	bh=vgs2JhrHQqlm2GP6kmxJcUBF2dLazJztBy5S5T0C1WQ=;
+	s=korg; t=1708521743;
+	bh=1q6uWuXe8V5m/ivItWzkz3+sVWuwkUsHQFKiMix2jE0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x6ox8OFMKVyM7VdqhdVQsfSbaTMxRAt3DwRx0KDeOaA1mQjysw5kIsYYYLpGMWTPg
-	 iRXUtsH/86yf7sIyDSIZSlf/99z4XoIfHNJFrQnS2wP5RxMw9oszsaTyplEUi7Yxr8
-	 2GCRb9BscgzZ15RlaasRHS0lKKYRb1j5+ThmWZDs=
+	b=jOrk0eRvNeQZ190wvzuAxNvivn6EECPDrXWo2J1XrDjYsPt1/tKAwXi0GM4pLzrT+
+	 tAeBFEWRleWBVhQMt0YngnDp3LCnwCKYcR/2PTK9uKPH3us2Y7PE45Aptyj1x6i+XV
+	 fQ6QZI2SeMXLWqNFNdKuIWFmpraNSX9aINoxt0w4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: =?UTF-8?q?=5BPATCH=205=2E4=20153/267=5D=20=3D=3FUTF-8=3Fq=3Fvirtio=3D5Fnet=3A=3D20Fix=3D20=22=3DE2=3D80=3D98=25d=3DE2=3D80=3D99=3D20directive=3F=3D=20=3D=3FUTF-8=3Fq=3F=3D20writing=3D20between=3D201=3D20and=3D2011=3D20bytes=3D20into=3D20a=3D20region=3F=3D=20=3D=3FUTF-8=3Fq=3F=3D20of=3D20size=3D2010=22=3D20warnings=3F=3D?=
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+ee2ae68da3b22d04cd8d@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 193/202] nilfs2: fix hang in nilfs_lookup_dirty_data_buffers()
 Date: Wed, 21 Feb 2024 14:08:14 +0100
-Message-ID: <20240221125944.877720902@linuxfoundation.org>
+Message-ID: <20240221125938.027014186@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +60,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit e3fe8d28c67bf6c291e920c6d04fa22afa14e6e4 ]
+commit 38296afe3c6ee07319e01bb249aa4bb47c07b534 upstream.
 
-Fix the warnings when building virtio_net driver.
+Syzbot reported a hang issue in migrate_pages_batch() called by mbind()
+and nilfs_lookup_dirty_data_buffers() called in the log writer of nilfs2.
 
-"
-drivers/net/virtio_net.c: In function ‘init_vqs’:
-drivers/net/virtio_net.c:4551:48: warning: ‘%d’ directive writing between 1 and 11 bytes into a region of size 10 [-Wformat-overflow=]
- 4551 |                 sprintf(vi->rq[i].name, "input.%d", i);
-      |                                                ^~
-In function ‘virtnet_find_vqs’,
-    inlined from ‘init_vqs’ at drivers/net/virtio_net.c:4645:8:
-drivers/net/virtio_net.c:4551:41: note: directive argument in the range [-2147483643, 65534]
- 4551 |                 sprintf(vi->rq[i].name, "input.%d", i);
-      |                                         ^~~~~~~~~~
-drivers/net/virtio_net.c:4551:17: note: ‘sprintf’ output between 8 and 18 bytes into a destination of size 16
- 4551 |                 sprintf(vi->rq[i].name, "input.%d", i);
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-drivers/net/virtio_net.c: In function ‘init_vqs’:
-drivers/net/virtio_net.c:4552:49: warning: ‘%d’ directive writing between 1 and 11 bytes into a region of size 9 [-Wformat-overflow=]
- 4552 |                 sprintf(vi->sq[i].name, "output.%d", i);
-      |                                                 ^~
-In function ‘virtnet_find_vqs’,
-    inlined from ‘init_vqs’ at drivers/net/virtio_net.c:4645:8:
-drivers/net/virtio_net.c:4552:41: note: directive argument in the range [-2147483643, 65534]
- 4552 |                 sprintf(vi->sq[i].name, "output.%d", i);
-      |                                         ^~~~~~~~~~~
-drivers/net/virtio_net.c:4552:17: note: ‘sprintf’ output between 9 and 19 bytes into a destination of size 16
- 4552 |                 sprintf(vi->sq[i].name, "output.%d", i);
+While migrate_pages_batch() locks a folio and waits for the writeback to
+complete, the log writer thread that should bring the writeback to
+completion picks up the folio being written back in
+nilfs_lookup_dirty_data_buffers() that it calls for subsequent log
+creation and was trying to lock the folio.  Thus causing a deadlock.
 
-"
+In the first place, it is unexpected that folios/pages in the middle of
+writeback will be updated and become dirty.  Nilfs2 adds a checksum to
+verify the validity of the log being written and uses it for recovery at
+mount, so data changes during writeback are suppressed.  Since this is
+broken, an unclean shutdown could potentially cause recovery to fail.
 
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Link: https://lore.kernel.org/r/20240104020902.2753599-1-yanjun.zhu@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Investigation revealed that the root cause is that the wait for writeback
+completion in nilfs_page_mkwrite() is conditional, and if the backing
+device does not require stable writes, data may be modified without
+waiting.
+
+Fix these issues by making nilfs_page_mkwrite() wait for writeback to
+finish regardless of the stable write requirement of the backing device.
+
+Link: https://lkml.kernel.org/r/20240131145657.4209-1-konishi.ryusuke@gmail.com
+Fixes: 1d1d1a767206 ("mm: only enforce stable page writes if the backing device requires it")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+ee2ae68da3b22d04cd8d@syzkaller.appspotmail.com
+Closes: https://lkml.kernel.org/r/00000000000047d819061004ad6c@google.com
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/virtio_net.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ fs/nilfs2/file.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index f6a6678f43b9..4faf3275b1f6 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -2864,10 +2864,11 @@ static int virtnet_find_vqs(struct virtnet_info *vi)
- {
- 	vq_callback_t **callbacks;
- 	struct virtqueue **vqs;
--	int ret = -ENOMEM;
--	int i, total_vqs;
- 	const char **names;
-+	int ret = -ENOMEM;
-+	int total_vqs;
- 	bool *ctx;
-+	u16 i;
+--- a/fs/nilfs2/file.c
++++ b/fs/nilfs2/file.c
+@@ -105,7 +105,13 @@ static vm_fault_t nilfs_page_mkwrite(str
+ 	nilfs_transaction_commit(inode->i_sb);
  
- 	/* We expect 1 RX virtqueue followed by 1 TX virtqueue, followed by
- 	 * possible N-1 RX/TX queue pairs used in multiqueue mode, followed by
-@@ -2904,8 +2905,8 @@ static int virtnet_find_vqs(struct virtnet_info *vi)
- 	for (i = 0; i < vi->max_queue_pairs; i++) {
- 		callbacks[rxq2vq(i)] = skb_recv_done;
- 		callbacks[txq2vq(i)] = skb_xmit_done;
--		sprintf(vi->rq[i].name, "input.%d", i);
--		sprintf(vi->sq[i].name, "output.%d", i);
-+		sprintf(vi->rq[i].name, "input.%u", i);
-+		sprintf(vi->sq[i].name, "output.%u", i);
- 		names[rxq2vq(i)] = vi->rq[i].name;
- 		names[txq2vq(i)] = vi->sq[i].name;
- 		if (ctx)
--- 
-2.43.0
-
+  mapped:
+-	wait_for_stable_page(page);
++	/*
++	 * Since checksumming including data blocks is performed to determine
++	 * the validity of the log to be written and used for recovery, it is
++	 * necessary to wait for writeback to finish here, regardless of the
++	 * stable write requirement of the backing device.
++	 */
++	wait_on_page_writeback(page);
+  out:
+ 	sb_end_pagefault(inode->i_sb);
+ 	return block_page_mkwrite_return(ret);
 
 
 
