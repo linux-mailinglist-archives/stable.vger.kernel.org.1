@@ -1,56 +1,64 @@
-Return-Path: <stable+bounces-23096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 004FF85DF3C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:26:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CD3285DC72
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:53:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A94F71F2487D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:26:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D28F1F225F1
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:53:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CB3F7BB16;
-	Wed, 21 Feb 2024 14:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 108FE79DBF;
+	Wed, 21 Feb 2024 13:53:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sL6TNTsf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lxjsyHT8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE51878B7C;
-	Wed, 21 Feb 2024 14:25:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C340279DAB;
+	Wed, 21 Feb 2024 13:53:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525557; cv=none; b=Am1yaGN3thE9wgeN0u0aa5fg4Wfcww5d5lNJcE9TRM2iXbbdZvL/fVcBtQQVzooaqiHhcRti2dsu1G9sqrwXLJUB5rQmOK4O4fEXjLFfCmCly0Yc3d69kMAh+iN0ZYWVTHwzuQYxkcJgVkaSDJL1KTRy1YuHpO2IhOXG9YRCSIs=
+	t=1708523595; cv=none; b=Aa5IYWQarJJQNXsRoRQBzpCLcN1/XM3De6mXrYEj57AaPM5vgQa1cImSdK1vnXWvcoCpVEyMQNPTG5kIeA8M6TIbZwJTwfrx2N5TdAlauyzEh0EUIEfo+d8zpOjlFUyEnwcyznHashEU9S3+URq7clr+/M/w5XQghER405nLDLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525557; c=relaxed/simple;
-	bh=lVw2ift45b0EW3IVIoo93rgF2AMcOJWjJ6Sinf/62QM=;
+	s=arc-20240116; t=1708523595; c=relaxed/simple;
+	bh=apG4KkGyj49eZ7mUUIZafXeLt3jasV9jJxNWrIR91FI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mq8oj6XuhIO4y1ddZmU43Lul8M/8YbJC7BSPVMH2frA252+jMsUwGxOS1MV8le41GgxS/GS9ad82WLHWHa98fQ6l1C/Ej8aoJ3HdStANm/IvPuCH1UYlbTgvbXVnVJ/BB9b/c2wBfzkZYq0PUscOdWxM8WtO/aHo66A5dxNqOjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sL6TNTsf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D2B7C43390;
-	Wed, 21 Feb 2024 14:25:55 +0000 (UTC)
+	 MIME-Version; b=aIYGmhOr0llOu/KzKjp1tS9pjw1iaT3w+AERXOgk1rvjPq0pMOBxXURysFA/3/BEGw9JHz1B5lB+M/lAq1HekOlhHx2cpOT9Ek/TydWpV4XghA0UCCAImu+Nez5psG9aCtTJCnRxkVFVXi0RW/OB2Dbw1HaP8PZT4v+KED3NUNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lxjsyHT8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB78AC433C7;
+	Wed, 21 Feb 2024 13:53:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525556;
-	bh=lVw2ift45b0EW3IVIoo93rgF2AMcOJWjJ6Sinf/62QM=;
+	s=korg; t=1708523595;
+	bh=apG4KkGyj49eZ7mUUIZafXeLt3jasV9jJxNWrIR91FI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sL6TNTsfSkDDx4wRwQkjPl8SDopndb1Xnv5v6OeL1HYUISDgPH0rCQs9XJEaU0cCs
-	 v0yEsEEwjtH8/i5Ys1rPX0Kuf6fREjVkW4s6FC48sz+y3AnVm7mAbNu2XfyaGMMAvo
-	 VRIai5EMlrmBZP/ywRlGThztm0013PdoVZvUN5h0=
+	b=lxjsyHT8d7UE5xH9fDrQNVej9miwcgHGyz6SzdLuZqsgZJJvWgKpAkvRvhP21n++9
+	 k+/VUHKZbPn7sqwUyOBPsi9Lr1q/5P/nrM8UcHOCjqOnH0t3BkUEyIX3nE78E8hpzp
+	 w06YeAFKeBd/5JwaFY8cRpgWYOYUYDGQMDE+7DZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Carlos Llamas <cmllamas@google.com>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Elliot Berman <quic_eberman@quicinc.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Will Deacon <will@kernel.org>,
+	John Stultz <jstultz@google.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Tom Rix <trix@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 165/267] ipv6: Ensure natural alignment of const ipv6 loopback and router addresses
-Date: Wed, 21 Feb 2024 14:08:26 +0100
-Message-ID: <20240221125945.290794393@linuxfoundation.org>
+Subject: [PATCH 5.15 456/476] scripts/decode_stacktrace.sh: optionally use LLVM utilities
+Date: Wed, 21 Feb 2024 14:08:27 +0100
+Message-ID: <20240221130024.898419459@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +70,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@kernel.org>
+From: Carlos Llamas <cmllamas@google.com>
 
-[ Upstream commit 60365049ccbacd101654a66ddcb299abfabd4fc5 ]
+[ Upstream commit efbd6398353315b7018e6943e41fee9ec35e875f ]
 
-On a parisc64 kernel I sometimes notice this kernel warning:
-Kernel unaligned access to 0x40ff8814 at ndisc_send_skb+0xc0/0x4d8
+GNU's addr2line can have problems parsing a vmlinux built with LLVM,
+particularly when LTO was used.  In order to decode the traces correctly
+this patch adds the ability to switch to LLVM's utilities readelf and
+addr2line.  The same approach is followed by Will in [1].
 
-The address 0x40ff8814 points to the in6addr_linklocal_allrouters
-variable and the warning simply means that some ipv6 function tries to
-read a 64-bit word directly from the not-64-bit aligned
-in6addr_linklocal_allrouters variable.
+Before:
+  $ scripts/decode_stacktrace.sh vmlinux < kernel.log
+  [17716.240635] Call trace:
+  [17716.240646] skb_cow_data (??:?)
+  [17716.240654] esp6_input (ld-temp.o:?)
+  [17716.240666] xfrm_input (ld-temp.o:?)
+  [17716.240674] xfrm6_rcv (??:?)
+  [...]
 
-Unaligned accesses are non-critical as the architecture or exception
-handlers usually will fix it up at runtime. Nevertheless it may trigger
-a performance penality for some architectures. For details read the
-"unaligned-memory-access" kernel documentation.
+After:
+  $ LLVM=1 scripts/decode_stacktrace.sh vmlinux < kernel.log
+  [17716.240635] Call trace:
+  [17716.240646] skb_cow_data (include/linux/skbuff.h:2172 net/core/skbuff.c:4503)
+  [17716.240654] esp6_input (net/ipv6/esp6.c:977)
+  [17716.240666] xfrm_input (net/xfrm/xfrm_input.c:659)
+  [17716.240674] xfrm6_rcv (net/ipv6/xfrm6_input.c:172)
+  [...]
 
-The patch below ensures that the ipv6 loopback and router addresses will
-always be naturally aligned. This prevents the unaligned accesses for
-all architectures.
+Note that one could set CROSS_COMPILE=llvm- instead to hack around this
+issue.  However, doing so can break the decodecode routine as it will
+force the selection of other LLVM utilities down the line e.g.  llvm-as.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Fixes: 034dfc5df99eb ("ipv6: export in6addr_loopback to modules")
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/r/ZbNuFM1bFqoH-UoY@p100
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[1] https://lore.kernel.org/all/20230914131225.13415-3-will@kernel.org/
+
+Link: https://lkml.kernel.org/r/20230929034836.403735-1-cmllamas@google.com
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+Reviewed-by: Elliot Berman <quic_eberman@quicinc.com>
+Tested-by: Justin Stitt <justinstitt@google.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: John Stultz <jstultz@google.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Tom Rix <trix@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/addrconf_core.c | 21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ scripts/decode_stacktrace.sh | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv6/addrconf_core.c b/net/ipv6/addrconf_core.c
-index ea00ce3d4117..8494ee9679b4 100644
---- a/net/ipv6/addrconf_core.c
-+++ b/net/ipv6/addrconf_core.c
-@@ -204,19 +204,26 @@ const struct ipv6_stub *ipv6_stub __read_mostly = &(struct ipv6_stub) {
- EXPORT_SYMBOL_GPL(ipv6_stub);
+diff --git a/scripts/decode_stacktrace.sh b/scripts/decode_stacktrace.sh
+index 564c5632e1a2..bfe5a4082d8e 100755
+--- a/scripts/decode_stacktrace.sh
++++ b/scripts/decode_stacktrace.sh
+@@ -16,6 +16,21 @@ elif type c++filt >/dev/null 2>&1 ; then
+ 	cppfilt_opts=-i
+ fi
  
- /* IPv6 Wildcard Address and Loopback Address defined by RFC2553 */
--const struct in6_addr in6addr_loopback = IN6ADDR_LOOPBACK_INIT;
-+const struct in6_addr in6addr_loopback __aligned(BITS_PER_LONG/8)
-+	= IN6ADDR_LOOPBACK_INIT;
- EXPORT_SYMBOL(in6addr_loopback);
--const struct in6_addr in6addr_any = IN6ADDR_ANY_INIT;
-+const struct in6_addr in6addr_any __aligned(BITS_PER_LONG/8)
-+	= IN6ADDR_ANY_INIT;
- EXPORT_SYMBOL(in6addr_any);
--const struct in6_addr in6addr_linklocal_allnodes = IN6ADDR_LINKLOCAL_ALLNODES_INIT;
-+const struct in6_addr in6addr_linklocal_allnodes __aligned(BITS_PER_LONG/8)
-+	= IN6ADDR_LINKLOCAL_ALLNODES_INIT;
- EXPORT_SYMBOL(in6addr_linklocal_allnodes);
--const struct in6_addr in6addr_linklocal_allrouters = IN6ADDR_LINKLOCAL_ALLROUTERS_INIT;
-+const struct in6_addr in6addr_linklocal_allrouters __aligned(BITS_PER_LONG/8)
-+	= IN6ADDR_LINKLOCAL_ALLROUTERS_INIT;
- EXPORT_SYMBOL(in6addr_linklocal_allrouters);
--const struct in6_addr in6addr_interfacelocal_allnodes = IN6ADDR_INTERFACELOCAL_ALLNODES_INIT;
-+const struct in6_addr in6addr_interfacelocal_allnodes __aligned(BITS_PER_LONG/8)
-+	= IN6ADDR_INTERFACELOCAL_ALLNODES_INIT;
- EXPORT_SYMBOL(in6addr_interfacelocal_allnodes);
--const struct in6_addr in6addr_interfacelocal_allrouters = IN6ADDR_INTERFACELOCAL_ALLROUTERS_INIT;
-+const struct in6_addr in6addr_interfacelocal_allrouters __aligned(BITS_PER_LONG/8)
-+	= IN6ADDR_INTERFACELOCAL_ALLROUTERS_INIT;
- EXPORT_SYMBOL(in6addr_interfacelocal_allrouters);
--const struct in6_addr in6addr_sitelocal_allrouters = IN6ADDR_SITELOCAL_ALLROUTERS_INIT;
-+const struct in6_addr in6addr_sitelocal_allrouters __aligned(BITS_PER_LONG/8)
-+	= IN6ADDR_SITELOCAL_ALLROUTERS_INIT;
- EXPORT_SYMBOL(in6addr_sitelocal_allrouters);
++UTIL_SUFFIX=
++if [[ -z ${LLVM:-} ]]; then
++	UTIL_PREFIX=${CROSS_COMPILE:-}
++else
++	UTIL_PREFIX=llvm-
++	if [[ ${LLVM} == */ ]]; then
++		UTIL_PREFIX=${LLVM}${UTIL_PREFIX}
++	elif [[ ${LLVM} == -* ]]; then
++		UTIL_SUFFIX=${LLVM}
++	fi
++fi
++
++READELF=${UTIL_PREFIX}readelf${UTIL_SUFFIX}
++ADDR2LINE=${UTIL_PREFIX}addr2line${UTIL_SUFFIX}
++
+ if [[ $1 == "-r" ]] ; then
+ 	vmlinux=""
+ 	basepath="auto"
+@@ -75,7 +90,7 @@ find_module() {
  
- static void snmp6_free_dev(struct inet6_dev *idev)
+ 	if [[ "$modpath" != "" ]] ; then
+ 		for fn in $(find "$modpath" -name "${module//_/[-_]}.ko*") ; do
+-			if readelf -WS "$fn" | grep -qwF .debug_line ; then
++			if ${READELF} -WS "$fn" | grep -qwF .debug_line ; then
+ 				echo $fn
+ 				return
+ 			fi
+@@ -169,7 +184,7 @@ parse_symbol() {
+ 	if [[ $aarray_support == true && "${cache[$module,$address]+isset}" == "isset" ]]; then
+ 		local code=${cache[$module,$address]}
+ 	else
+-		local code=$(${CROSS_COMPILE}addr2line -i -e "$objfile" "$address" 2>/dev/null)
++		local code=$(${ADDR2LINE} -i -e "$objfile" "$address" 2>/dev/null)
+ 		if [[ $aarray_support == true ]]; then
+ 			cache[$module,$address]=$code
+ 		fi
 -- 
 2.43.0
 
