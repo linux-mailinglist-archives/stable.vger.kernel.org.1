@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-22576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BAEC85DCAE
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:56:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C69B085DB1C
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:37:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC8F41F225F1
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:56:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4BF84B26827
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:37:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC51178B7C;
-	Wed, 21 Feb 2024 13:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35E1B77A03;
+	Wed, 21 Feb 2024 13:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pTK6Kr4Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DZw5UYEI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B01762C1;
-	Wed, 21 Feb 2024 13:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCE3669953;
+	Wed, 21 Feb 2024 13:37:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523780; cv=none; b=X8wRPj0WyxWSun1UUwD7aIeKPG6T903tlrddxurHoWFphsY/bnDXbRnmXDqBizHMKcwI8jdy1x8TQIDvI0Ov5LkUUHAv6o3Iz9zsZJ+h0brx1/wjjvNIsBFUzbg1vyFCU9Dm/NcZLnoEzOPCh+5vvidVW21aRG1C3UMWGVtkF5Y=
+	t=1708522623; cv=none; b=dqgeVf8ktg/yC8u66xBGrrxq5ynEwJTqrd/iJCub/HGH61J1qYgWr2jZ24xFATitd2cs0W6z287LAG/cl+KJWpTjIhX16LlmKRlKCrl8XeBtvaNHbyNVBPxMUyDTUwQV5ulAUI9435ZCzGsQbgA4U09MtHxkezrTSURaE8hzSsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523780; c=relaxed/simple;
-	bh=+DMeBh8EZ8zwxIriMbQxz7490ao3ZfTdHAGNhZXQaKg=;
+	s=arc-20240116; t=1708522623; c=relaxed/simple;
+	bh=8gzjpF/FkWUwdWuAMxXVEFaBL0uWDJTKwmC6dPsNnzA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i14tUHxqR8yZV/LIlNdLaoY/TrCcGxKL+pO52p8idpBrJf0e0JnxcvPUs0nxbDzXjZDbv1I+nBI8Y+bauqKojnCh+8xAnU+SE7jnMO1fLwqPcXoBMVd6gtep8mPqcZOTmPAhMP5jJyllqMBB0BB3FVKssCNgMKYvBcPLPR6jggg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pTK6Kr4Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26A30C433C7;
-	Wed, 21 Feb 2024 13:56:19 +0000 (UTC)
+	 MIME-Version; b=ey+i59ABAEyMUU8XN1kFaTSlOdRCd0o/2IuaHjlrp4hpY6RE3v53AlakbZ4orDmwEr9h/zgQf7zXH/u0NQKL9hzwLtM2vVbEsBfQ91uv3quv8uLNn6TVsWo+T5WVOnw25gZOKA14cYGGhy+s2fAe7+h5MW9cdlsNu8ur4RN+4b0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DZw5UYEI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A9B5C433F1;
+	Wed, 21 Feb 2024 13:37:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523780;
-	bh=+DMeBh8EZ8zwxIriMbQxz7490ao3ZfTdHAGNhZXQaKg=;
+	s=korg; t=1708522622;
+	bh=8gzjpF/FkWUwdWuAMxXVEFaBL0uWDJTKwmC6dPsNnzA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pTK6Kr4YXShMnjSieuhLp8wvSOfa7dxQKzcYZ7vA/FmFnU5tcOolxkk1rXa8UWD4N
-	 35DnmMiQV0OZdbKL6EUZpFDtV5vx+gFDwBMTDXtxxCj2gA8E8NA0H+iJsfZkmgJdmz
-	 yVg8xY/beuzTBmNFd12T8mHmhcdpHuv06FDCuGPQ=
+	b=DZw5UYEIQQS081T24Eu3osuFtfPDsmcqbUNFqA523XJXC4sMnrXtQtPZQNJnlXdds
+	 ZEhPOM7w5IO/72gAjK1n8bEk/MsKS9WSghh7OJY9e1qCmYcEVSQrWootS56TTVwUXm
+	 f3abrgPJya5c9SLBJn8wj7dbyQAAoc44Zl3vpGCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Simon Horman <horms@kernel.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
+	Fabio Estevam <festevam@denx.de>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 055/379] net/mlx5e: fix a double-free in arfs_create_groups
-Date: Wed, 21 Feb 2024 14:03:54 +0100
-Message-ID: <20240221125956.543881250@linuxfoundation.org>
+Subject: [PATCH 5.15 184/476] ARM: dts: imx27: Fix sram node
+Date: Wed, 21 Feb 2024 14:03:55 +0100
+Message-ID: <20240221130014.681972509@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Fabio Estevam <festevam@denx.de>
 
-[ Upstream commit 3c6d5189246f590e4e1f167991558bdb72a4738b ]
+[ Upstream commit 2fb7b2a2f06bb3f8321cf26c33e4e820c5b238b6 ]
 
-When `in` allocated by kvzalloc fails, arfs_create_groups will free
-ft->g and return an error. However, arfs_create_table, the only caller of
-arfs_create_groups, will hold this error and call to
-mlx5e_destroy_flow_table, in which the ft->g will be freed again.
+Per sram.yaml, address-cells, size-cells and ranges are mandatory.
 
-Fixes: 1cabe6b0965e ("net/mlx5e: Create aRFS flow tables")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Pass them to fix the following dt-schema warnings:
+
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/en_arfs.c | 26 +++++++++++--------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+ arch/arm/boot/dts/imx27.dtsi | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c b/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c
-index 39475f6565c7..7c436bdcf5b5 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c
-@@ -208,11 +208,13 @@ static int arfs_create_groups(struct mlx5e_flow_table *ft,
- 
- 	ft->g = kcalloc(MLX5E_ARFS_NUM_GROUPS,
- 			sizeof(*ft->g), GFP_KERNEL);
--	in = kvzalloc(inlen, GFP_KERNEL);
--	if  (!in || !ft->g) {
--		kfree(ft->g);
--		kvfree(in);
-+	if (!ft->g)
- 		return -ENOMEM;
-+
-+	in = kvzalloc(inlen, GFP_KERNEL);
-+	if (!in) {
-+		err = -ENOMEM;
-+		goto err_free_g;
- 	}
- 
- 	mc = MLX5_ADDR_OF(create_flow_group_in, in, match_criteria);
-@@ -232,7 +234,7 @@ static int arfs_create_groups(struct mlx5e_flow_table *ft,
- 		break;
- 	default:
- 		err = -EINVAL;
--		goto out;
-+		goto err_free_in;
- 	}
- 
- 	switch (type) {
-@@ -254,7 +256,7 @@ static int arfs_create_groups(struct mlx5e_flow_table *ft,
- 		break;
- 	default:
- 		err = -EINVAL;
--		goto out;
-+		goto err_free_in;
- 	}
- 
- 	MLX5_SET_CFG(in, match_criteria_enable, MLX5_MATCH_OUTER_HEADERS);
-@@ -263,7 +265,7 @@ static int arfs_create_groups(struct mlx5e_flow_table *ft,
- 	MLX5_SET_CFG(in, end_flow_index, ix - 1);
- 	ft->g[ft->num_groups] = mlx5_create_flow_group(ft->t, in);
- 	if (IS_ERR(ft->g[ft->num_groups]))
--		goto err;
-+		goto err_clean_group;
- 	ft->num_groups++;
- 
- 	memset(in, 0, inlen);
-@@ -272,18 +274,20 @@ static int arfs_create_groups(struct mlx5e_flow_table *ft,
- 	MLX5_SET_CFG(in, end_flow_index, ix - 1);
- 	ft->g[ft->num_groups] = mlx5_create_flow_group(ft->t, in);
- 	if (IS_ERR(ft->g[ft->num_groups]))
--		goto err;
-+		goto err_clean_group;
- 	ft->num_groups++;
- 
- 	kvfree(in);
- 	return 0;
- 
--err:
-+err_clean_group:
- 	err = PTR_ERR(ft->g[ft->num_groups]);
- 	ft->g[ft->num_groups] = NULL;
--out:
-+err_free_in:
- 	kvfree(in);
--
-+err_free_g:
-+	kfree(ft->g);
-+	ft->g = NULL;
- 	return err;
- }
- 
+diff --git a/arch/arm/boot/dts/imx27.dtsi b/arch/arm/boot/dts/imx27.dtsi
+index fd525c3b16fa..247617d6d41e 100644
+--- a/arch/arm/boot/dts/imx27.dtsi
++++ b/arch/arm/boot/dts/imx27.dtsi
+@@ -588,6 +588,9 @@
+ 		iram: sram@ffff4c00 {
+ 			compatible = "mmio-sram";
+ 			reg = <0xffff4c00 0xb400>;
++			ranges = <0 0xffff4c00 0xb400>;
++			#address-cells = <1>;
++			#size-cells = <1>;
+ 		};
+ 	};
+ };
 -- 
 2.43.0
 
