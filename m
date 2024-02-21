@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-22893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFA3885DE9C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:20:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3B9785DC62
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:52:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C4C22B2C3C8
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:16:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 67E31B26391
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:52:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4488E7F7D6;
-	Wed, 21 Feb 2024 14:14:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35B8278B5E;
+	Wed, 21 Feb 2024 13:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y7oA+sig"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YT4F6z4x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021F76A8D6;
-	Wed, 21 Feb 2024 14:14:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8FA055E5E;
+	Wed, 21 Feb 2024 13:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524870; cv=none; b=kANlWplUQthpXjgPOAxPRhbVMeDx5fV6sY8ByH8ROn6r9N7ET0r0t7pdu872do0m+uMBD8g43lyImJ76l9VAiq4khMtv+Ibb9u9h5CUs8VscV9TgfJg+BPAqFrjKZXmpEymwHzmrK0wcDXTsbbv/ImRv6mxHp8zqBaaYA3Fkd/c=
+	t=1708523559; cv=none; b=GCaXS3AI1h9ulSA/HoYuOknG9ODh1Buw3wyfQMnaPyG4Z8BkB0tU8mL9ER8JZSdd1L1piJfJ/o8fRHQCjVvH+Kk5jUL8hpEn3dZ43O7vleHvL7YvhTgib20DAGl1q646c6/N9VfDfM87IX+ScuiWVcGY7zdz9Iloqs4SWlvDEoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524870; c=relaxed/simple;
-	bh=0zrh3sF54acJ23gOWm7P2csz6Jw4oS2BRCpclyfTPjY=;
+	s=arc-20240116; t=1708523559; c=relaxed/simple;
+	bh=BLeOqfWCCe2wFULvUWu98wjX6A17RUvv2qRnANY+c8s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rv+pVAvPqVJjJCt7bDDic+PB97/d0Y56AL+gtgNl6N1LaHu6rArxiWNR+BPAq0h/3TMcf7VCuAYJ7TSsyaL43zG/QcKPcgqCxoOC3K/BhPMfpgWXuof+fD74td8zUYijbc6U/CUg/A+FyKygJo5Fh8qN9lLgdHdYt0Fw5T1mgxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y7oA+sig; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C1C9C433F1;
-	Wed, 21 Feb 2024 14:14:29 +0000 (UTC)
+	 MIME-Version; b=JuoKZyYqx0CKWvmJx1fqevdhmI8sdNpmIsONtucocAVudgX9PhdTZSEM+km7TWz9rp4SXjuOGIY9s79NZ3clyeTMOippYi6OSnMJzFQfX1gW8HqTm2s32OfYDx+IiOfqMuH9MYIYE6pt+Fre0P7ox7Ugd3Y0E3S9e5a8BKSx9nI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YT4F6z4x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52A90C43390;
+	Wed, 21 Feb 2024 13:52:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524869;
-	bh=0zrh3sF54acJ23gOWm7P2csz6Jw4oS2BRCpclyfTPjY=;
+	s=korg; t=1708523558;
+	bh=BLeOqfWCCe2wFULvUWu98wjX6A17RUvv2qRnANY+c8s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y7oA+sigUd7D3iqc2RNLn8fIs3hLR5aNvR1wgZfB0OvMyXMktoVOM3jRYPrE+0rIe
-	 z/wm2N53OIzl41x2rmgUCaeLOEez6sCAJZ+LazCdYoZiHv5QdN7IPddNAUESwqgZ8T
-	 HW+oPKVkqGdsOTE1g3kxBdzrNqoYgSCIJF5Jw0c8=
+	b=YT4F6z4xbjguJvjsU8rWFvTb24OQkmJarzQ8JWvnH1K4u5V6vcTJy1tUcMU0S2Z67
+	 RGHS8ZeJbdnkls+PMJeCOB25uViPVMG90Ib6k5pzPtZFqwWvRIpGmVaylmMVH1rG1K
+	 oudYCNWjQ/pYFb9YTtRkSOuqKemXeyO1Y+nF9OjA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rishabh Dave <ridave@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Xiubo Li <xiubli@redhat.com>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 5.10 344/379] ceph: prevent use-after-free in encode_cap_msg()
+	Peter Suti <peter.suti@streamunlimited.com>
+Subject: [PATCH 5.15 472/476] staging: fbtft: core: set smem_len before fb_deferred_io_init call
 Date: Wed, 21 Feb 2024 14:08:43 +0100
-Message-ID: <20240221130005.164568791@linuxfoundation.org>
+Message-ID: <20240221130025.447181560@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +60,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rishabh Dave <ridave@redhat.com>
+From: Peter Suti <peter.suti@streamunlimited.com>
 
-commit cda4672da1c26835dcbd7aec2bfed954eda9b5ef upstream.
+commit 81e878887ff82a7dd42f22951391069a5d520627 upstream.
 
-In fs/ceph/caps.c, in encode_cap_msg(), "use after free" error was
-caught by KASAN at this line - 'ceph_buffer_get(arg->xattr_buf);'. This
-implies before the refcount could be increment here, it was freed.
+The fbtft_framebuffer_alloc() calls fb_deferred_io_init() before
+initializing info->fix.smem_len.  It is set to zero by the
+framebuffer_alloc() function.  It will trigger a WARN_ON() at the
+start of fb_deferred_io_init() and the function will not do anything.
 
-In same file, in "handle_cap_grant()" refcount is decremented by this
-line - 'ceph_buffer_put(ci->i_xattrs.blob);'. It appears that a race
-occurred and resource was freed by the latter line before the former
-line could increment it.
-
-encode_cap_msg() is called by __send_cap() and __send_cap() is called by
-ceph_check_caps() after calling __prep_cap(). __prep_cap() is where
-arg->xattr_buf is assigned to ci->i_xattrs.blob. This is the spot where
-the refcount must be increased to prevent "use after free" error.
-
-Cc: stable@vger.kernel.org
-Link: https://tracker.ceph.com/issues/59259
-Signed-off-by: Rishabh Dave <ridave@redhat.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Xiubo Li <xiubli@redhat.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Fixes: 856082f021a2 ("fbdev: defio: fix the pagelist corruption")
+Signed-off-by: Peter Suti <peter.suti@streamunlimited.com>
+Link: https://lore.kernel.org/r/20220727073550.1491126-1-peter.suti@streamunlimited.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ceph/caps.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/staging/fbtft/fbtft-core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ceph/caps.c
-+++ b/fs/ceph/caps.c
-@@ -1402,7 +1402,7 @@ static void __prep_cap(struct cap_msg_ar
- 	if (flushing & CEPH_CAP_XATTR_EXCL) {
- 		arg->old_xattr_buf = __ceph_build_xattrs_blob(ci);
- 		arg->xattr_version = ci->i_xattrs.version;
--		arg->xattr_buf = ci->i_xattrs.blob;
-+		arg->xattr_buf = ceph_buffer_get(ci->i_xattrs.blob);
- 	} else {
- 		arg->xattr_buf = NULL;
- 		arg->old_xattr_buf = NULL;
-@@ -1468,6 +1468,7 @@ static void __send_cap(struct cap_msg_ar
- 	encode_cap_msg(msg, arg);
- 	ceph_con_send(&arg->session->s_con, msg);
- 	ceph_buffer_put(arg->old_xattr_buf);
-+	ceph_buffer_put(arg->xattr_buf);
- 	if (arg->wake)
- 		wake_up_all(&ci->i_cap_wq);
- }
+--- a/drivers/staging/fbtft/fbtft-core.c
++++ b/drivers/staging/fbtft/fbtft-core.c
+@@ -657,7 +657,6 @@ struct fb_info *fbtft_framebuffer_alloc(
+ 	fbdefio->delay =            HZ / fps;
+ 	fbdefio->sort_pagereflist = true;
+ 	fbdefio->deferred_io =      fbtft_deferred_io;
+-	fb_deferred_io_init(info);
+ 
+ 	snprintf(info->fix.id, sizeof(info->fix.id), "%s", dev->driver->name);
+ 	info->fix.type =           FB_TYPE_PACKED_PIXELS;
+@@ -668,6 +667,7 @@ struct fb_info *fbtft_framebuffer_alloc(
+ 	info->fix.line_length =    width * bpp / 8;
+ 	info->fix.accel =          FB_ACCEL_NONE;
+ 	info->fix.smem_len =       vmem_size;
++	fb_deferred_io_init(info);
+ 
+ 	info->var.rotate =         pdata->rotate;
+ 	info->var.xres =           width;
 
 
 
