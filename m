@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-22970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9418085DE82
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:19:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0DF385DBF3
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:47:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B779D1C23C05
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:19:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 714D7B21BA3
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:47:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E694576C99;
-	Wed, 21 Feb 2024 14:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6088469951;
+	Wed, 21 Feb 2024 13:47:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nW8vVoMH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jN01MN//"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A35CE3D981;
-	Wed, 21 Feb 2024 14:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E5223C2F;
+	Wed, 21 Feb 2024 13:47:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525130; cv=none; b=X+ZEITeBfJQ/ERFfMp9wA0gNTKfFU7fDxM5KMLWtLhVtMBDJAZn4mOKUCjnd8eYMDlFsv70C08TytCH7cZFOeQJGWdr5YuWZx4Luy554sOiAU168PELI1bnemL8GjLSJTXKcYvMaBEeeFHbq2PEmBH2fbXymNVQ51q8HxLb4690=
+	t=1708523243; cv=none; b=fPwuQ17+vKIgBbe6XKplwcn/Tj5kJ0d1LvhWHsCXH1DLG7VLcZWL35Qbhc7/HtQLIi3rsx+r3cbwOXZ6tmyOdPemRI+tpkQxwqy/DWlGBS2UCAF3JLGaXc1gsV01IpUbinC1oDaqAzfhjAS4BQMgyF9ZTyVcZV6T3Jc9zRFnDgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525130; c=relaxed/simple;
-	bh=Xv70nnC0Mtvhb5NXj5hfzjTDAd6m0Y6c6tDKZeNfq/g=;
+	s=arc-20240116; t=1708523243; c=relaxed/simple;
+	bh=UQqFvO/tquahAwYJqVp8OAh1gIbit83RxfJ5C6ymB3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pXnZ7YGDrFy7arh0JBAx3JX9SJ9wFWmP4dKK8DAu1IeCURuwPeCMfM0ibMH5PQ3QQOvZU1ZY6ycH1SCeNaoQNiha6rJfC64qw0kj5AHJK4lSy35tYpDi7WdXOEWGGMymfZqQNcdwt6YdlGX3qPj+khp6z3sliw7w5BYoYx7VSXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nW8vVoMH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15EAFC433C7;
-	Wed, 21 Feb 2024 14:18:49 +0000 (UTC)
+	 MIME-Version; b=BC+8vI6WwGJHieGkUH+PyZWikct5RjtJbxql3WytsO6mUw94MmWBFOEUlBy0apC3EUOGKdj5QsXn+jRu2S57Ej+8PLTopC0SG48MWAuzG3Zsg28ZACBEPcXjqml25FRsb4u9w5N5btIaiD5pZ1w6pkvkiaW7eIcdIBaL+EvAh9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jN01MN//; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8187DC433F1;
+	Wed, 21 Feb 2024 13:47:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525130;
-	bh=Xv70nnC0Mtvhb5NXj5hfzjTDAd6m0Y6c6tDKZeNfq/g=;
+	s=korg; t=1708523243;
+	bh=UQqFvO/tquahAwYJqVp8OAh1gIbit83RxfJ5C6ymB3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nW8vVoMH+aeJM12JwrtypnchnKnbWgFjlm3hIgK8JORFhMDirUV+zFdYw7Ti8xuVz
-	 FCYnPa/q2j2qGX8h1qulipw2qMOxq/EduTjWyEt5w3n+cFsLAAAYnaCVJwDEQX3GcW
-	 eS8K2w0dDKqsx+tblUx1v9gzEvVyxtjkyeZqF444=
+	b=jN01MN//zKdJBuU33JqQkH/KSkgVOiCJLT7N84CNQV4LClV2aRkDzyvGsXdzb4J1k
+	 gn7EE6/oNJcwFfiP1suPq3Ej8o+ZnA+CLsp8q+X8jS4PoI4QxGaesWAaTVR3OuD2Qc
+	 2VSlklESj+yWeY7xqXR/9wZCsjU8PzGqjCQTkAI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rui Zhang <zr.zhang@vivo.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 068/267] regulator: core: Only increment use_count when enable_count changes
+	Zach OKeefe <zokeefe@google.com>,
+	Maxim Patlasov <MPatlasov@parallels.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 358/476] mm/writeback: fix possible divide-by-zero in wb_dirty_limits(), again
 Date: Wed, 21 Feb 2024 14:06:49 +0100
-Message-ID: <20240221125942.123422346@linuxfoundation.org>
+Message-ID: <20240221130021.231294642@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,118 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rui Zhang <zr.zhang@vivo.com>
+From: Zach O'Keefe <zokeefe@google.com>
 
-[ Upstream commit 7993d3a9c34f609c02171e115fd12c10e2105ff4 ]
+commit 9319b647902cbd5cc884ac08a8a6d54ce111fc78 upstream.
 
-The use_count of a regulator should only be incremented when the
-enable_count changes from 0 to 1. Similarly, the use_count should
-only be decremented when the enable_count changes from 1 to 0.
+(struct dirty_throttle_control *)->thresh is an unsigned long, but is
+passed as the u32 divisor argument to div_u64().  On architectures where
+unsigned long is 64 bytes, the argument will be implicitly truncated.
 
-In the previous implementation, use_count was sometimes decremented
-to 0 when some consumer called unbalanced disable,
-leading to unexpected disable even the regulator is enabled by
-other consumers. With this change, the use_count accurately reflects
-the number of users which the regulator is enabled.
+Use div64_u64() instead of div_u64() so that the value used in the "is
+this a safe division" check is the same as the divisor.
 
-This should make things more robust in the case where a consumer does
-leak references.
+Also, remove redundant cast of the numerator to u64, as that should happen
+implicitly.
 
-Signed-off-by: Rui Zhang <zr.zhang@vivo.com>
-Link: https://lore.kernel.org/r/20231103074231.8031-1-zr.zhang@vivo.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This would be difficult to exploit in memcg domain, given the ratio-based
+arithmetic domain_drity_limits() uses, but is much easier in global
+writeback domain with a BDI_CAP_STRICTLIMIT-backing device, using e.g.
+vm.dirty_bytes=(1<<32)*PAGE_SIZE so that dtc->thresh == (1<<32)
+
+Link: https://lkml.kernel.org/r/20240118181954.1415197-1-zokeefe@google.com
+Fixes: f6789593d5ce ("mm/page-writeback.c: fix divide by zero in bdi_dirty_limits()")
+Signed-off-by: Zach O'Keefe <zokeefe@google.com>
+Cc: Maxim Patlasov <MPatlasov@parallels.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/regulator/core.c | 56 +++++++++++++++++++++-------------------
- 1 file changed, 30 insertions(+), 26 deletions(-)
+ mm/page-writeback.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index 87d0cd6f49ca..894915892eaf 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -2658,7 +2658,8 @@ static int _regulator_enable(struct regulator *regulator)
- 		/* Fallthrough on positive return values - already enabled */
- 	}
+--- a/mm/page-writeback.c
++++ b/mm/page-writeback.c
+@@ -1529,7 +1529,7 @@ static inline void wb_dirty_limits(struc
+ 	 */
+ 	dtc->wb_thresh = __wb_calc_thresh(dtc);
+ 	dtc->wb_bg_thresh = dtc->thresh ?
+-		div_u64((u64)dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0;
++		div64_u64(dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0;
  
--	rdev->use_count++;
-+	if (regulator->enable_count == 1)
-+		rdev->use_count++;
- 
- 	return 0;
- 
-@@ -2736,37 +2737,40 @@ static int _regulator_disable(struct regulator *regulator)
- 
- 	lockdep_assert_held_once(&rdev->mutex.base);
- 
--	if (WARN(rdev->use_count <= 0,
-+	if (WARN(regulator->enable_count == 0,
- 		 "unbalanced disables for %s\n", rdev_get_name(rdev)))
- 		return -EIO;
- 
--	/* are we the last user and permitted to disable ? */
--	if (rdev->use_count == 1 &&
--	    (rdev->constraints && !rdev->constraints->always_on)) {
--
--		/* we are last user */
--		if (regulator_ops_is_valid(rdev, REGULATOR_CHANGE_STATUS)) {
--			ret = _notifier_call_chain(rdev,
--						   REGULATOR_EVENT_PRE_DISABLE,
--						   NULL);
--			if (ret & NOTIFY_STOP_MASK)
--				return -EINVAL;
--
--			ret = _regulator_do_disable(rdev);
--			if (ret < 0) {
--				rdev_err(rdev, "failed to disable\n");
--				_notifier_call_chain(rdev,
--						REGULATOR_EVENT_ABORT_DISABLE,
-+	if (regulator->enable_count == 1) {
-+	/* disabling last enable_count from this regulator */
-+		/* are we the last user and permitted to disable ? */
-+		if (rdev->use_count == 1 &&
-+		    (rdev->constraints && !rdev->constraints->always_on)) {
-+
-+			/* we are last user */
-+			if (regulator_ops_is_valid(rdev, REGULATOR_CHANGE_STATUS)) {
-+				ret = _notifier_call_chain(rdev,
-+							   REGULATOR_EVENT_PRE_DISABLE,
-+							   NULL);
-+				if (ret & NOTIFY_STOP_MASK)
-+					return -EINVAL;
-+
-+				ret = _regulator_do_disable(rdev);
-+				if (ret < 0) {
-+					rdev_err(rdev, "failed to disable\n");
-+					_notifier_call_chain(rdev,
-+							REGULATOR_EVENT_ABORT_DISABLE,
-+							NULL);
-+					return ret;
-+				}
-+				_notifier_call_chain(rdev, REGULATOR_EVENT_DISABLE,
- 						NULL);
--				return ret;
- 			}
--			_notifier_call_chain(rdev, REGULATOR_EVENT_DISABLE,
--					NULL);
--		}
- 
--		rdev->use_count = 0;
--	} else if (rdev->use_count > 1) {
--		rdev->use_count--;
-+			rdev->use_count = 0;
-+		} else if (rdev->use_count > 1) {
-+			rdev->use_count--;
-+		}
- 	}
- 
- 	if (ret == 0)
--- 
-2.43.0
-
+ 	/*
+ 	 * In order to avoid the stacked BDI deadlock we need
 
 
 
