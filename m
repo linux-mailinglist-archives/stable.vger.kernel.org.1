@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-22753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 837FA85DDA5
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:08:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D5C585DE90
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:19:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D0B1285767
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:08:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FD421F246B0
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:19:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 410FB79DBF;
-	Wed, 21 Feb 2024 14:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AE007E105;
+	Wed, 21 Feb 2024 14:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ND7Ta9B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UpGbN9cA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB6BF78B4B;
-	Wed, 21 Feb 2024 14:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCC137BB10;
+	Wed, 21 Feb 2024 14:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524400; cv=none; b=F3WNH1DxA3DFOiR5NHFQz/i/bRiLH5CMpXqI0GUQlxte8pka7KX56YWMrGDhWorWOTj/BDVWQM7PguePYPMwdIqduYDzOnAUHjQ7iia8c4R6wipk5mGzVfdkKarY+EZbeuA2xu8AgxrTDskpbfgJLy0ZoRc/E7LmCViF0a/TyIw=
+	t=1708525161; cv=none; b=FKNuogEdpRBGwB3N7Seky7xvMkW9qfl91m2vO1oth3bGkxAjp68FKEfn1KB4Be9KoDg4wkvLWMQ6x6sVzTYaVoPgmgLRV0fKvEEVHR18MU32pO9zM9i0fIO8w/5qZVrMC52yTiabhVkqdrIG4hMpK3skohpFyp4N7CnH/bzftdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524400; c=relaxed/simple;
-	bh=+hU+LcNFV66JPS1W3whaUqvy+ozzDbBrsVlLSIENChk=;
+	s=arc-20240116; t=1708525161; c=relaxed/simple;
+	bh=VjvbtI4hC4BjBRyazqXWTCzCGLRMq8gCugEP7ro1xEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MJsamDvM+UpDDwZN+5euWg4T4BbBN4sac4QuXC/PL+6M9rTXv2p7gGckthHhpwPHM9POow6X24AzdoK6D3odY3XOLBrfhqa7YAsVLZEKaaxgO0GIeVQ1EOndcaZT805lO3BxN1ug5OOtc0MERiS0VFVl/i5A340gW0YaMRstx00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ND7Ta9B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62FA4C433F1;
-	Wed, 21 Feb 2024 14:06:39 +0000 (UTC)
+	 MIME-Version; b=DTFNBH4Wfp+Hn1ZnHkdCUw/AccRWMksXXoUkZXIk7funqRo+v+kep4UjdA8KLUjCwAwiy0Si2Ev4hG3sOpJZbW4JZ6fOXE1VBvKHrf/vr0ye0jO9EHJ7oQMbhvLU26kdpBy4RCuXF5HvB7dfYR6FH2uH6oC9LBNIaU3c0N5xkFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UpGbN9cA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFD94C433F1;
+	Wed, 21 Feb 2024 14:19:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524399;
-	bh=+hU+LcNFV66JPS1W3whaUqvy+ozzDbBrsVlLSIENChk=;
+	s=korg; t=1708525161;
+	bh=VjvbtI4hC4BjBRyazqXWTCzCGLRMq8gCugEP7ro1xEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1ND7Ta9BjW7TMBZ4AUiuXXF744bYY6D7CbZvb1aRWoWUhuT4JlGfPNON3BdTJAunc
-	 teCY3o4ZTMHQOZ6x1xhdtulSGPYp6WQcipw1/42igGLlTnqM76evNDzFBAl8xaIES6
-	 YUN+xHhmslr/gmkvC8/C1wrqnh+MD54tIQmJAb70=
+	b=UpGbN9cA/TvpsI1JDHObkR1UzhgPagZzGcpzGtEl13LDogVquEcJRd7YR3/MVfyWO
+	 Z/lP1dwA89Le6bnFTBGG6iHqapzKTfx+8GDt5Z/gqm+EtcBY6plSZFn8CLodd57/cc
+	 nJ15cN/l6nrVG915sQE3/0e5VgvWUGOysstw4ZJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Simon Horman <horms@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 5.10 233/379] ixgbe: Fix an error handling path in ixgbe_read_iosf_sb_reg_x550()
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Kees Cook <keescook@chromium.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 071/267] PNP: ACPI: fix fortify warning
 Date: Wed, 21 Feb 2024 14:06:52 +0100
-Message-ID: <20240221130001.806015323@linuxfoundation.org>
+Message-ID: <20240221125942.212699997@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit bbc404d20d1b46d89b461918bc44587620eda200 ]
+[ Upstream commit ba3f5058db437d919f8468db50483dd9028ff688 ]
 
-All error handling paths, except this one, go to 'out' where
-release_swfw_sync() is called.
-This call balances the acquire_swfw_sync() call done at the beginning of
-the function.
+When compiling with gcc version 14.0.0 20231126 (experimental)
+and CONFIG_FORTIFY_SOURCE=y, I've noticed the following:
 
-Branch to the error handling path in order to correctly release some
-resources in case of error.
+In file included from ./include/linux/string.h:295,
+                 from ./include/linux/bitmap.h:12,
+                 from ./include/linux/cpumask.h:12,
+                 from ./arch/x86/include/asm/paravirt.h:17,
+                 from ./arch/x86/include/asm/cpuid.h:62,
+                 from ./arch/x86/include/asm/processor.h:19,
+                 from ./arch/x86/include/asm/cpufeature.h:5,
+                 from ./arch/x86/include/asm/thread_info.h:53,
+                 from ./include/linux/thread_info.h:60,
+                 from ./arch/x86/include/asm/preempt.h:9,
+                 from ./include/linux/preempt.h:79,
+                 from ./include/linux/spinlock.h:56,
+                 from ./include/linux/mmzone.h:8,
+                 from ./include/linux/gfp.h:7,
+                 from ./include/linux/slab.h:16,
+                 from ./include/linux/resource_ext.h:11,
+                 from ./include/linux/acpi.h:13,
+                 from drivers/pnp/pnpacpi/rsparser.c:11:
+In function 'fortify_memcpy_chk',
+    inlined from 'pnpacpi_parse_allocated_vendor' at drivers/pnp/pnpacpi/rsparser.c:158:3,
+    inlined from 'pnpacpi_allocated_resource' at drivers/pnp/pnpacpi/rsparser.c:249:3:
+./include/linux/fortify-string.h:588:25: warning: call to '__read_overflow2_field'
+declared with attribute warning: detected read beyond size of field (2nd parameter);
+maybe use struct_group()? [-Wattribute-warning]
+  588 |                         __read_overflow2_field(q_size_field, size);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Fixes: ae14a1d8e104 ("ixgbe: Fix IOSF SB access issues")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+According to the comments in include/linux/fortify-string.h, 'memcpy()',
+'memmove()' and 'memset()' must not be used beyond individual struct
+members to ensure that the compiler can enforce protection against
+buffer overflows, and, IIUC, this also applies to partial copies from
+the particular member ('vendor->byte_data' in this case). So it should
+be better (and safer) to do both copies at once (and 'byte_data' of
+'struct acpi_resource_vendor_typed' seems to be a good candidate for
+'__counted_by(byte_length)' as well).
+
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pnp/pnpacpi/rsparser.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c
-index 73d1a8b85449..9347dc786b5b 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c
-@@ -717,7 +717,8 @@ static s32 ixgbe_read_iosf_sb_reg_x550(struct ixgbe_hw *hw, u32 reg_addr,
- 		error = (command & IXGBE_SB_IOSF_CTRL_CMPL_ERR_MASK) >>
- 			 IXGBE_SB_IOSF_CTRL_CMPL_ERR_SHIFT;
- 		hw_dbg(hw, "Failed to read, error %x\n", error);
--		return -EIO;
-+		ret = -EIO;
-+		goto out;
- 	}
+diff --git a/drivers/pnp/pnpacpi/rsparser.c b/drivers/pnp/pnpacpi/rsparser.c
+index da78dc77aed3..9879deb4dc0b 100644
+--- a/drivers/pnp/pnpacpi/rsparser.c
++++ b/drivers/pnp/pnpacpi/rsparser.c
+@@ -151,13 +151,13 @@ static int vendor_resource_matches(struct pnp_dev *dev,
+ static void pnpacpi_parse_allocated_vendor(struct pnp_dev *dev,
+ 				    struct acpi_resource_vendor_typed *vendor)
+ {
+-	if (vendor_resource_matches(dev, vendor, &hp_ccsr_uuid, 16)) {
+-		u64 start, length;
++	struct { u64 start, length; } range;
  
- 	if (!ret)
+-		memcpy(&start, vendor->byte_data, sizeof(start));
+-		memcpy(&length, vendor->byte_data + 8, sizeof(length));
+-
+-		pnp_add_mem_resource(dev, start, start + length - 1, 0);
++	if (vendor_resource_matches(dev, vendor, &hp_ccsr_uuid,
++				    sizeof(range))) {
++		memcpy(&range, vendor->byte_data, sizeof(range));
++		pnp_add_mem_resource(dev, range.start, range.start +
++				     range.length - 1, 0);
+ 	}
+ }
+ 
 -- 
 2.43.0
 
