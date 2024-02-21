@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-22599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E82F885DCCB
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:57:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A849F85DB3B
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:38:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25BEB1C2362C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:57:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13FEAB2681A
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:38:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89EA479DAB;
-	Wed, 21 Feb 2024 13:57:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B589969953;
+	Wed, 21 Feb 2024 13:38:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XeHagEJg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hS6RqQ0m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F1E76C99;
-	Wed, 21 Feb 2024 13:57:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739902A1D7;
+	Wed, 21 Feb 2024 13:38:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523877; cv=none; b=LMQSnxQXkVIo8ZthR2nKn0BOrv08SBTdXxwC8uOpND6KMH8oL55PMfNUbUfwOh/bQcqc6sHrnOS8N0/paux7yL1IbaSNU53Lx7UK98APuayF6td4+rdZnxx/PCcBCf0a4ZQ9V6FHH8476dX5BRWiPIoaD165NfBBC99qJl3T+9s=
+	t=1708522705; cv=none; b=MIGFSK1Qe8C7bW7bXXrGW7skMu+VZN4fiGUmNXa1IZOHjEoBqSQwZPVE8ImGT7kcBNVlWvCX/MqJ+J6vCVo0IjXCUL/pIEeP8tu3uOSFfRQ9t1Fe+QGcDR841+es4d3Qjb1Y11e6JQe5aG8gpy0Ohs9ixT+JCm+Rra1M9XgdlJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523877; c=relaxed/simple;
-	bh=E6sFRRWTAuDbJiJiNNLaE5jJl+S0cfgwrYGdptAy8J0=;
+	s=arc-20240116; t=1708522705; c=relaxed/simple;
+	bh=qEyh5l8YTpu8GubhBOvskUayNDV2sv4HjgUtVufaKKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fxsJHE1ldkoJBB3MWYykPPtI7in6JZHVPCgR1AsFT1UeWqx3EIH6K460mF1ZFixNYCYvR2HB/CSWQGyvKWicXPPzxoYChhD2N4HQz7vNgaBfFO0tfr2iEXRjSc3PEWZq3TkWDOiOTT/5IkH8ZiPWZLcPuIu2cufjvkZWNMQshpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XeHagEJg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAA27C433F1;
-	Wed, 21 Feb 2024 13:57:56 +0000 (UTC)
+	 MIME-Version; b=Ns58Nzo8dox+2NJrShfiXiJ6m1iJBIrsw0fC23/cHfCbaRhaS0Hj+m8NnxLil9na5VgL5vuEsnx0oUB2++/URABqMlsIbdcZCloxMcaK4kjlJY1dhplAzbkp+dc84Y3QYVZVQhtFRSWLwn8wDfjRf7NuYkoyvauAhG2VZVXKw/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hS6RqQ0m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D48DC433C7;
+	Wed, 21 Feb 2024 13:38:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523877;
-	bh=E6sFRRWTAuDbJiJiNNLaE5jJl+S0cfgwrYGdptAy8J0=;
+	s=korg; t=1708522704;
+	bh=qEyh5l8YTpu8GubhBOvskUayNDV2sv4HjgUtVufaKKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XeHagEJgG6n/fzbKQ6s7hyZFSj+nW2dHlCoN9QzxkMWVpNTMxdlu2v/j5HLOLGb6u
-	 0pYBLXlAkTJEJaT/MNdIgx7r50hzXyJki0ywgrBpZ8RqGP9E0FsprgJwHKjKpJTZ7Z
-	 cVRmo3zjSHXCSsGa8t3xD7K48MNC+uKK+4s2e4+s=
+	b=hS6RqQ0m/Aa3q0KUmnCgih5PYPrL4GsdO3H0j3pW7Opy45vBVp46QLlXpRuVauZPy
+	 67xYNbh9uQFZj7g3dpz+EYF1f8+4Vdne4Xf2ewjJ8DTolxs+RntUSXzzkh3+12lN7z
+	 VrI8MYPmMPk6b9fcrMqCG8+2lG6VIsmTfmrX5aoY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li zeming <zeming@nfschina.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 079/379] PM: core: Remove unnecessary (void *) conversions
-Date: Wed, 21 Feb 2024 14:04:18 +0100
-Message-ID: <20240221125957.246168319@linuxfoundation.org>
+Subject: [PATCH 5.15 208/476] f2fs: fix to check return value of f2fs_reserve_new_block()
+Date: Wed, 21 Feb 2024 14:04:19 +0100
+Message-ID: <20240221130015.602303937@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li zeming <zeming@nfschina.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 73d73f5ee7fb0c42ff87091d105bee720a9565f1 ]
+[ Upstream commit 956fa1ddc132e028f3b7d4cf17e6bfc8cb36c7fd ]
 
-Assignments from pointer variables of type (void *) do not require
-explicit type casts, so remove such type cases from the code in
-drivers/base/power/main.c where applicable.
+Let's check return value of f2fs_reserve_new_block() in do_recover_data()
+rather than letting it fails silently.
 
-Signed-off-by: Li zeming <zeming@nfschina.com>
-[ rjw: Subject and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: 7839d0078e0d ("PM: sleep: Fix possible deadlocks in core system-wide PM code")
+Also refactoring check condition on return value of f2fs_reserve_new_block()
+as below:
+- trigger f2fs_bug_on() only for ENOSPC case;
+- use do-while statement to avoid redundant codes;
+
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/main.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ fs/f2fs/recovery.c | 23 +++++++++++++++++------
+ 1 file changed, 17 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
-index 6c334a65644c..402f3c4e3668 100644
---- a/drivers/base/power/main.c
-+++ b/drivers/base/power/main.c
-@@ -683,7 +683,7 @@ static bool dpm_async_fn(struct device *dev, async_func_t func)
+diff --git a/fs/f2fs/recovery.c b/fs/f2fs/recovery.c
+index ba7eeb3c2738..da0801aa4118 100644
+--- a/fs/f2fs/recovery.c
++++ b/fs/f2fs/recovery.c
+@@ -657,7 +657,16 @@ static int do_recover_data(struct f2fs_sb_info *sbi, struct inode *inode,
+ 		 */
+ 		if (dest == NEW_ADDR) {
+ 			f2fs_truncate_data_blocks_range(&dn, 1);
+-			f2fs_reserve_new_block(&dn);
++			do {
++				err = f2fs_reserve_new_block(&dn);
++				if (err == -ENOSPC) {
++					f2fs_bug_on(sbi, 1);
++					break;
++				}
++			} while (err &&
++				IS_ENABLED(CONFIG_F2FS_FAULT_INJECTION));
++			if (err)
++				goto err;
+ 			continue;
+ 		}
  
- static void async_resume_noirq(void *data, async_cookie_t cookie)
- {
--	struct device *dev = (struct device *)data;
-+	struct device *dev = data;
- 	int error;
+@@ -665,12 +674,14 @@ static int do_recover_data(struct f2fs_sb_info *sbi, struct inode *inode,
+ 		if (f2fs_is_valid_blkaddr(sbi, dest, META_POR)) {
  
- 	error = device_resume_noirq(dev, pm_transition, true);
-@@ -822,7 +822,7 @@ static int device_resume_early(struct device *dev, pm_message_t state, bool asyn
- 
- static void async_resume_early(void *data, async_cookie_t cookie)
- {
--	struct device *dev = (struct device *)data;
-+	struct device *dev = data;
- 	int error;
- 
- 	error = device_resume_early(dev, pm_transition, true);
-@@ -986,7 +986,7 @@ static int device_resume(struct device *dev, pm_message_t state, bool async)
- 
- static void async_resume(void *data, async_cookie_t cookie)
- {
--	struct device *dev = (struct device *)data;
-+	struct device *dev = data;
- 	int error;
- 
- 	error = device_resume(dev, pm_transition, true);
-@@ -1275,7 +1275,7 @@ static int __device_suspend_noirq(struct device *dev, pm_message_t state, bool a
- 
- static void async_suspend_noirq(void *data, async_cookie_t cookie)
- {
--	struct device *dev = (struct device *)data;
-+	struct device *dev = data;
- 	int error;
- 
- 	error = __device_suspend_noirq(dev, pm_transition, true);
-@@ -1458,7 +1458,7 @@ static int __device_suspend_late(struct device *dev, pm_message_t state, bool as
- 
- static void async_suspend_late(void *data, async_cookie_t cookie)
- {
--	struct device *dev = (struct device *)data;
-+	struct device *dev = data;
- 	int error;
- 
- 	error = __device_suspend_late(dev, pm_transition, true);
-@@ -1734,7 +1734,7 @@ static int __device_suspend(struct device *dev, pm_message_t state, bool async)
- 
- static void async_suspend(void *data, async_cookie_t cookie)
- {
--	struct device *dev = (struct device *)data;
-+	struct device *dev = data;
- 	int error;
- 
- 	error = __device_suspend(dev, pm_transition, true);
+ 			if (src == NULL_ADDR) {
+-				err = f2fs_reserve_new_block(&dn);
+-				while (err &&
+-				       IS_ENABLED(CONFIG_F2FS_FAULT_INJECTION))
++				do {
+ 					err = f2fs_reserve_new_block(&dn);
+-				/* We should not get -ENOSPC */
+-				f2fs_bug_on(sbi, err);
++					if (err == -ENOSPC) {
++						f2fs_bug_on(sbi, 1);
++						break;
++					}
++				} while (err &&
++					IS_ENABLED(CONFIG_F2FS_FAULT_INJECTION));
+ 				if (err)
+ 					goto err;
+ 			}
 -- 
 2.43.0
 
