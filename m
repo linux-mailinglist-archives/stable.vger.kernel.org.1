@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-22660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B23D85DD1D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:02:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3010C85DB8B
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:42:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 574AB281A0A
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:02:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF60B28419D
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:42:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAE0E7E780;
-	Wed, 21 Feb 2024 14:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2692F78B5E;
+	Wed, 21 Feb 2024 13:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N4Wdl24s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xm8bHLjT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A90469317;
-	Wed, 21 Feb 2024 14:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C062A1D7;
+	Wed, 21 Feb 2024 13:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524080; cv=none; b=F0zv409u05JJpUc7yJxyb7LDt3fXbNLlN+i/O1L1xWAvKOuI1aHMl/Cg9eZMDcqJDY1WAOaY2FBr4TtxqYW58VyAF9xjAfWS/YhT/cTyzAqpDunj5xYYVn07BjQOIKzVWVB29UbKmP1y46/vKqBdamk8Q47tCG1tWjMruY1e+tU=
+	t=1708522942; cv=none; b=n6Cyd8SQIJgVf/mC7VnMmYkNGjb9BzIjuQGEyP3s16kwvz1E6FED0c2YXotrEVrxTFLcbui2zSxTZsPR7fcNOGhKJ2p5ZzjW2Dy4kcgDGNQOyG1JH2Uw6y5Gy9GIK8IARbplSHs3BQPi3KvEcIT4ouYukZw+SbuCq3dZTs54cFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524080; c=relaxed/simple;
-	bh=FvYRLOglrn0XWHXmmaSKgD/i+DducUs3KkrsA0jn2FA=;
+	s=arc-20240116; t=1708522942; c=relaxed/simple;
+	bh=XQ/9lPHDE6O8iNTLR+FnYWkbEkqaYH83IDMa5AT2nUc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t69d8WqgcL2/At5Fa2oHBTgTXk3/wFRKIt2mleov/dVLt0x8Ma82HFTGABHbWZ09brH+ZbfKt5kWdTQlSUXDvWrMlKysWbqkIniuc3SSqh+rEk/socEuQmo8MGQ9oz4PSo1Yrpr4xzxstY1rGWA63+cIMQ7srZaPzDvbKFcpH1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N4Wdl24s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0725DC433F1;
-	Wed, 21 Feb 2024 14:01:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Hvpl+IecrjrfEuiHs+mGa5qxAwo2TNO77A/3hOPwio5Q25yhV8jCIEWk0xSwenufMIpuXl4MEsYHN0DIWNaU812NNu2J+YxPD8BikVgPDL5j2b733WsV+lLNe3ui9+bYR+ZLfy9m3EoY4JT1L+0zZMiyTYC0s6vxM4kbc1N+SlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xm8bHLjT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E772C433F1;
+	Wed, 21 Feb 2024 13:42:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524080;
-	bh=FvYRLOglrn0XWHXmmaSKgD/i+DducUs3KkrsA0jn2FA=;
+	s=korg; t=1708522942;
+	bh=XQ/9lPHDE6O8iNTLR+FnYWkbEkqaYH83IDMa5AT2nUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N4Wdl24sG+3HwyjAUgoMdldw+T0sMmVAAApEABsUWrPWNZktHRlqQ/AU26bkqpb8M
-	 iPK9VSnUHAgpWBTvqqP7aqxbQo5YMJ3uifWYUBGjCWl9wS/IX8lxJ6IHR2g/EyONBs
-	 eL8vFlmEQzMDFMUIs9BZjHqcGRxVdfnkOF4opXNA=
+	b=xm8bHLjTWkHmS+oEwc0RVrXWdGL1qUaDhKmKEaKw0QGcHj1UBSkDu/QYnhU+NSFMi
+	 6t9/43ppliEAUn711Sqn+BqI1Qwwy4KG+8/nQWmounw17OxOsleIjP6+PCKkAwQUX6
+	 5uAnKzPsalUJMOnXaIA3U3MZfEsgydmrB/+9DuQM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 140/379] scsi: lpfc: Fix possible file string name overflow when updating firmware
-Date: Wed, 21 Feb 2024 14:05:19 +0100
-Message-ID: <20240221125959.068931860@linuxfoundation.org>
+Subject: [PATCH 5.15 269/476] drm: using mul_u32_u32() requires linux/math64.h
+Date: Wed, 21 Feb 2024 14:05:20 +0100
+Message-ID: <20240221130017.797620317@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Stephen Rothwell <sfr@canb.auug.org.au>
 
-[ Upstream commit f5779b529240b715f0e358489ad0ed933bf77c97 ]
+[ Upstream commit 933a2a376fb3f22ba4774f74233571504ac56b02 ]
 
-Because file_name and phba->ModelName are both declared a size 80 bytes,
-the extra ".grp" file extension could cause an overflow into file_name.
+Some pending include file cleanups produced this error:
 
-Define a ELX_FW_NAME_SIZE macro with value 84.  84 incorporates the 4 extra
-characters from ".grp".  file_name is changed to be declared as a char and
-initialized to zeros i.e. null chars.
+In file included from include/linux/kernel.h:27,
+                 from drivers/gpu/ipu-v3/ipu-dp.c:7:
+include/drm/drm_color_mgmt.h: In function 'drm_color_lut_extract':
+include/drm/drm_color_mgmt.h:45:46: error: implicit declaration of function 'mul_u32_u32' [-Werror=implicit-function-declaration]
+   45 |                 return DIV_ROUND_CLOSEST_ULL(mul_u32_u32(user_input, (1 << bit_precision) - 1),
+      |                                              ^~~~~~~~~~~
 
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20231031191224.150862-3-justintee8345@gmail.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: c6fbb6bca108 ("drm: Fix color LUT rounding")
+Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231219145734.13e40e1e@canb.auug.org.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc.h      | 1 +
- drivers/scsi/lpfc/lpfc_init.c | 4 ++--
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ include/drm/drm_color_mgmt.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/scsi/lpfc/lpfc.h b/drivers/scsi/lpfc/lpfc.h
-index 03bc472f302a..cf69f831a725 100644
---- a/drivers/scsi/lpfc/lpfc.h
-+++ b/drivers/scsi/lpfc/lpfc.h
-@@ -32,6 +32,7 @@
- struct lpfc_sli2_slim;
+diff --git a/include/drm/drm_color_mgmt.h b/include/drm/drm_color_mgmt.h
+index 54b2b2467bfd..ed81741036d7 100644
+--- a/include/drm/drm_color_mgmt.h
++++ b/include/drm/drm_color_mgmt.h
+@@ -24,6 +24,7 @@
+ #define __DRM_COLOR_MGMT_H__
  
- #define ELX_MODEL_NAME_SIZE	80
-+#define ELX_FW_NAME_SIZE	84
+ #include <linux/ctype.h>
++#include <linux/math64.h>
+ #include <drm/drm_property.h>
  
- #define LPFC_PCI_DEV_LP		0x1
- #define LPFC_PCI_DEV_OC		0x2
-diff --git a/drivers/scsi/lpfc/lpfc_init.c b/drivers/scsi/lpfc/lpfc_init.c
-index 1bb3c96a04bd..5f2009327a59 100644
---- a/drivers/scsi/lpfc/lpfc_init.c
-+++ b/drivers/scsi/lpfc/lpfc_init.c
-@@ -13026,7 +13026,7 @@ lpfc_write_firmware(const struct firmware *fw, void *context)
- int
- lpfc_sli4_request_firmware_update(struct lpfc_hba *phba, uint8_t fw_upgrade)
- {
--	uint8_t file_name[ELX_MODEL_NAME_SIZE];
-+	char file_name[ELX_FW_NAME_SIZE] = {0};
- 	int ret;
- 	const struct firmware *fw;
- 
-@@ -13035,7 +13035,7 @@ lpfc_sli4_request_firmware_update(struct lpfc_hba *phba, uint8_t fw_upgrade)
- 	    LPFC_SLI_INTF_IF_TYPE_2)
- 		return -EPERM;
- 
--	snprintf(file_name, ELX_MODEL_NAME_SIZE, "%s.grp", phba->ModelName);
-+	scnprintf(file_name, sizeof(file_name), "%s.grp", phba->ModelName);
- 
- 	if (fw_upgrade == INT_FW_UPGRADE) {
- 		ret = request_firmware_nowait(THIS_MODULE, FW_ACTION_HOTPLUG,
+ struct drm_crtc;
 -- 
 2.43.0
 
