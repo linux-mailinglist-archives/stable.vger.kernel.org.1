@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-22722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88FD285DD7B
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:06:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A611185D959
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:17:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32948284359
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:06:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D7E4B245E0
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:17:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1059D7BB10;
-	Wed, 21 Feb 2024 14:04:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3617C7B3EA;
+	Wed, 21 Feb 2024 13:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MKY5KOgb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HoFX+rSZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42D83CF42;
-	Wed, 21 Feb 2024 14:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E790D7993D;
+	Wed, 21 Feb 2024 13:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524295; cv=none; b=TMDKrNO/rsy65yclp2qc3H/BmmMb0WqQSl5oQVfeY1nD08/MU/kEVgiLT2skU/LTykVmwxhh/KCGfaY3pOAzQ/zc+esuIe4icVKcc439P4o1YYmxesiJyPxqqOqzo/uN3JiEQIsCUnCnYHss4CpnzbQdyE3PU0rHiBqQXLLjfN0=
+	t=1708521436; cv=none; b=C/x9v8++De18nxlNCKzvkDDeePYkocczXv8EHY+8tqNhNoEBgvTLGrsbVAeXyxxIon780zBfxtASlC9Z0+vsGWLrt53dRrvVX0d6hQrremFsUNQ36nSQTsHNQ9JZ5qoWCo1rsK23CFtH3HSPtcm9BLzhvbm5sH7wlODcOgwoES8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524295; c=relaxed/simple;
-	bh=h58a0AMHIHy4ffpmaHSfHk60wkwWl+kwvevWmeSTF3w=;
+	s=arc-20240116; t=1708521436; c=relaxed/simple;
+	bh=5oac1d21qiDoJPGYPnp1IveNFAw3z7Mw1kfHB4S9TTQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KXzeGFZPa5khAoc6lpY2hY3NFAR+WcnV8K9e2BVLQUFmz6jlQMlA/81RQtvfpAkTWA3b+yz0cxIzVFEokKwJir/4xUMLP85n4drO8wSXt0B7gFO845kYfjysr/edNjVFKeePW+3rrcO/af9Pudt6QKcXKiEM5NxBRZUUXYjjKEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MKY5KOgb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D13C433C7;
-	Wed, 21 Feb 2024 14:04:54 +0000 (UTC)
+	 MIME-Version; b=GB4rZ4kWafUWNLOvqZfwPEzdZQx5+c8DGKMPOSOtlePnONmO6xCDHyAW+y6ITHX4sVlUPe0Mw9aZRI+MhaBKc/zu0Lu665jAsgbrB7Hl728hA4Q3TPWRl4lgVVVhCDF5BXs2KhGDbDlEl5lQ5hZn5jYGbHl6b8y7D09qPPcXTTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HoFX+rSZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57197C433C7;
+	Wed, 21 Feb 2024 13:17:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524295;
-	bh=h58a0AMHIHy4ffpmaHSfHk60wkwWl+kwvevWmeSTF3w=;
+	s=korg; t=1708521435;
+	bh=5oac1d21qiDoJPGYPnp1IveNFAw3z7Mw1kfHB4S9TTQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MKY5KOgbxNu8gGtG3lG2TvHvc0X+VQ1LMAGw1Hlcza6IPcS7O8Xu4ghd5H3wstz/8
-	 QRrhAo/xE3x/GvOwlrPiA9PWWXHmO3KggkGNAZmseotOI52BAls4+YmuXtFeCDuvJU
-	 1gl2jB5KhC/j8m0YYItJXShtgqZummwWMzr7ts38=
+	b=HoFX+rSZ6oFV+6HTzDt6E0WqoTv+TsdMLWe0weg2R5NCXDS/nbEWIZJozFNZ9f5ry
+	 CQM+RtkCFv8G/UKz/z4VtmyrZlPxLPh9WF9yCUQaz/rd2agVJGrqbQn5coluLAcRx6
+	 RLfcCtoC/Bn3IR5jyO6CNCwyFYdgvyDXfpofD/Hk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin@sipsolutions.net>,
-	Richard Weinberger <richard@nod.at>,
+	Hou Tao <houtao1@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 202/379] um: Dont use vfprintf() for os_info()
-Date: Wed, 21 Feb 2024 14:06:21 +0100
-Message-ID: <20240221130000.878138926@linuxfoundation.org>
+Subject: [PATCH 4.19 081/202] bpf: Add map and need_defer parameters to .map_fd_put_ptr()
+Date: Wed, 21 Feb 2024 14:06:22 +0100
+Message-ID: <20240221125934.420147830@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +62,175 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin@sipsolutions.net>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit 236f9fe39b02c15fa5530b53e9cca48354394389 ]
+[ Upstream commit 20c20bd11a0702ce4dc9300c3da58acf551d9725 ]
 
-The threads allocated inside the kernel have only a single page of
-stack. Unfortunately, the vfprintf function in standard glibc may use
-too much stack-space, overflowing it.
+map is the pointer of outer map, and need_defer needs some explanation.
+need_defer tells the implementation to defer the reference release of
+the passed element and ensure that the element is still alive before
+the bpf program, which may manipulate it, exits.
 
-To make os_info safe to be used by helper threads, use the kernel
-vscnprintf function into a smallish buffer and write out the information
-to stderr.
+The following three cases will invoke map_fd_put_ptr() and different
+need_defer values will be passed to these callers:
 
-Signed-off-by: Benjamin Berg <benjamin@sipsolutions.net>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+1) release the reference of the old element in the map during map update
+   or map deletion. The release must be deferred, otherwise the bpf
+   program may incur use-after-free problem, so need_defer needs to be
+   true.
+2) release the reference of the to-be-added element in the error path of
+   map update. The to-be-added element is not visible to any bpf
+   program, so it is OK to pass false for need_defer parameter.
+3) release the references of all elements in the map during map release.
+   Any bpf program which has access to the map must have been exited and
+   released, so need_defer=false will be OK.
+
+These two parameters will be used by the following patches to fix the
+potential use-after-free problem for map-in-map.
+
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/r/20231204140425.1480317-3-houtao@huaweicloud.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/os-Linux/util.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ include/linux/bpf.h     |  6 +++++-
+ kernel/bpf/arraymap.c   | 12 +++++++-----
+ kernel/bpf/hashtab.c    |  6 +++---
+ kernel/bpf/map_in_map.c |  2 +-
+ kernel/bpf/map_in_map.h |  2 +-
+ 5 files changed, 17 insertions(+), 11 deletions(-)
 
-diff --git a/arch/um/os-Linux/util.c b/arch/um/os-Linux/util.c
-index 07327425d06e..56d9589e1cd1 100644
---- a/arch/um/os-Linux/util.c
-+++ b/arch/um/os-Linux/util.c
-@@ -166,23 +166,38 @@ __uml_setup("quiet", quiet_cmd_param,
- "quiet\n"
- "    Turns off information messages during boot.\n\n");
+diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+index 766ea96bf5b8..269754890879 100644
+--- a/include/linux/bpf.h
++++ b/include/linux/bpf.h
+@@ -44,7 +44,11 @@ struct bpf_map_ops {
+ 	/* funcs called by prog_array and perf_event_array map */
+ 	void *(*map_fd_get_ptr)(struct bpf_map *map, struct file *map_file,
+ 				int fd);
+-	void (*map_fd_put_ptr)(void *ptr);
++	/* If need_defer is true, the implementation should guarantee that
++	 * the to-be-put element is still alive before the bpf program, which
++	 * may manipulate it, exists.
++	 */
++	void (*map_fd_put_ptr)(struct bpf_map *map, void *ptr, bool need_defer);
+ 	u32 (*map_gen_lookup)(struct bpf_map *map, struct bpf_insn *insn_buf);
+ 	u32 (*map_fd_sys_lookup_elem)(void *ptr);
+ 	void (*map_seq_show_elem)(struct bpf_map *map, void *key,
+diff --git a/kernel/bpf/arraymap.c b/kernel/bpf/arraymap.c
+index 0c17aab3ce5f..44f53c06629e 100644
+--- a/kernel/bpf/arraymap.c
++++ b/kernel/bpf/arraymap.c
+@@ -469,7 +469,7 @@ int bpf_fd_array_map_update_elem(struct bpf_map *map, struct file *map_file,
  
-+/*
-+ * The os_info/os_warn functions will be called by helper threads. These
-+ * have a very limited stack size and using the libc formatting functions
-+ * may overflow the stack.
-+ * So pull in the kernel vscnprintf and use that instead with a fixed
-+ * on-stack buffer.
-+ */
-+int vscnprintf(char *buf, size_t size, const char *fmt, va_list args);
-+
- void os_info(const char *fmt, ...)
- {
-+	char buf[256];
- 	va_list list;
-+	int len;
+ 	old_ptr = xchg(array->ptrs + index, new_ptr);
+ 	if (old_ptr)
+-		map->ops->map_fd_put_ptr(old_ptr);
++		map->ops->map_fd_put_ptr(map, old_ptr, true);
  
- 	if (quiet_info)
- 		return;
+ 	return 0;
+ }
+@@ -485,7 +485,7 @@ static int fd_array_map_delete_elem(struct bpf_map *map, void *key)
  
- 	va_start(list, fmt);
--	vfprintf(stderr, fmt, list);
-+	len = vscnprintf(buf, sizeof(buf), fmt, list);
-+	fwrite(buf, len, 1, stderr);
- 	va_end(list);
+ 	old_ptr = xchg(array->ptrs + index, NULL);
+ 	if (old_ptr) {
+-		map->ops->map_fd_put_ptr(old_ptr);
++		map->ops->map_fd_put_ptr(map, old_ptr, true);
+ 		return 0;
+ 	} else {
+ 		return -ENOENT;
+@@ -509,8 +509,9 @@ static void *prog_fd_array_get_ptr(struct bpf_map *map,
+ 	return prog;
  }
  
- void os_warn(const char *fmt, ...)
+-static void prog_fd_array_put_ptr(void *ptr)
++static void prog_fd_array_put_ptr(struct bpf_map *map, void *ptr, bool need_defer)
  {
-+	char buf[256];
- 	va_list list;
-+	int len;
- 
- 	va_start(list, fmt);
--	vfprintf(stderr, fmt, list);
-+	len = vscnprintf(buf, sizeof(buf), fmt, list);
-+	fwrite(buf, len, 1, stderr);
- 	va_end(list);
++	/* bpf_prog is freed after one RCU or tasks trace grace period */
+ 	bpf_prog_put(ptr);
  }
+ 
+@@ -598,8 +599,9 @@ static void *perf_event_fd_array_get_ptr(struct bpf_map *map,
+ 	return ee;
+ }
+ 
+-static void perf_event_fd_array_put_ptr(void *ptr)
++static void perf_event_fd_array_put_ptr(struct bpf_map *map, void *ptr, bool need_defer)
+ {
++	/* bpf_perf_event is freed after one RCU grace period */
+ 	bpf_event_entry_free_rcu(ptr);
+ }
+ 
+@@ -640,7 +642,7 @@ static void *cgroup_fd_array_get_ptr(struct bpf_map *map,
+ 	return cgroup_get_from_fd(fd);
+ }
+ 
+-static void cgroup_fd_array_put_ptr(void *ptr)
++static void cgroup_fd_array_put_ptr(struct bpf_map *map, void *ptr, bool need_defer)
+ {
+ 	/* cgroup_put free cgrp after a rcu grace period */
+ 	cgroup_put(ptr);
+diff --git a/kernel/bpf/hashtab.c b/kernel/bpf/hashtab.c
+index 3f3ed33bd2fd..8e379b667a0f 100644
+--- a/kernel/bpf/hashtab.c
++++ b/kernel/bpf/hashtab.c
+@@ -677,7 +677,7 @@ static void htab_put_fd_value(struct bpf_htab *htab, struct htab_elem *l)
+ 
+ 	if (map->ops->map_fd_put_ptr) {
+ 		ptr = fd_htab_map_get_ptr(map, l);
+-		map->ops->map_fd_put_ptr(ptr);
++		map->ops->map_fd_put_ptr(map, ptr, true);
+ 	}
+ }
+ 
+@@ -1337,7 +1337,7 @@ static void fd_htab_map_free(struct bpf_map *map)
+ 		hlist_nulls_for_each_entry_safe(l, n, head, hash_node) {
+ 			void *ptr = fd_htab_map_get_ptr(map, l);
+ 
+-			map->ops->map_fd_put_ptr(ptr);
++			map->ops->map_fd_put_ptr(map, ptr, false);
+ 		}
+ 	}
+ 
+@@ -1378,7 +1378,7 @@ int bpf_fd_htab_map_update_elem(struct bpf_map *map, struct file *map_file,
+ 
+ 	ret = htab_map_update_elem(map, key, &ptr, map_flags);
+ 	if (ret)
+-		map->ops->map_fd_put_ptr(ptr);
++		map->ops->map_fd_put_ptr(map, ptr, false);
+ 
+ 	return ret;
+ }
+diff --git a/kernel/bpf/map_in_map.c b/kernel/bpf/map_in_map.c
+index 9670ee5ee74e..051c5e40792c 100644
+--- a/kernel/bpf/map_in_map.c
++++ b/kernel/bpf/map_in_map.c
+@@ -102,7 +102,7 @@ void *bpf_map_fd_get_ptr(struct bpf_map *map,
+ 	return inner_map;
+ }
+ 
+-void bpf_map_fd_put_ptr(void *ptr)
++void bpf_map_fd_put_ptr(struct bpf_map *map, void *ptr, bool need_defer)
+ {
+ 	/* ptr->ops->map_free() has to go through one
+ 	 * rcu grace period by itself.
+diff --git a/kernel/bpf/map_in_map.h b/kernel/bpf/map_in_map.h
+index 6183db9ec08c..1e652a7bf60e 100644
+--- a/kernel/bpf/map_in_map.h
++++ b/kernel/bpf/map_in_map.h
+@@ -18,7 +18,7 @@ bool bpf_map_meta_equal(const struct bpf_map *meta0,
+ 			const struct bpf_map *meta1);
+ void *bpf_map_fd_get_ptr(struct bpf_map *map, struct file *map_file,
+ 			 int ufd);
+-void bpf_map_fd_put_ptr(void *ptr);
++void bpf_map_fd_put_ptr(struct bpf_map *map, void *ptr, bool need_defer);
+ u32 bpf_map_fd_sys_lookup_elem(void *ptr);
+ 
+ #endif
 -- 
 2.43.0
 
