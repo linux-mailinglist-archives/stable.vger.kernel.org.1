@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-22337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D320F85DB87
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:42:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6CD085DD41
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:04:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5AD28B24AFE
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:42:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A18962839E6
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:04:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6DFA7BAF6;
-	Wed, 21 Feb 2024 13:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 775DE7BB11;
+	Wed, 21 Feb 2024 14:02:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fHoyBBRr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="le4Lu0WK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF6477A03;
-	Wed, 21 Feb 2024 13:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3447E7BAF8;
+	Wed, 21 Feb 2024 14:02:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522928; cv=none; b=jaGhiUIvUoXYYo3xgwjHT+g9Eyc479M1+FtwNTDE3Rk9+hKhC5Yy/OgN8xX1CHCM4n9w0zyqBTasQnym++JQNiexzMasDvSPtlu30CW7UoPtVBrebnnbqYoZpvKfQNvyq56hAYjL96e9S0vdU7LMQ+rcRznM3VjnrvtvrI+WC3E=
+	t=1708524168; cv=none; b=I3Fn3TJcpdMO2/f603njxI63fj3Exq86YAWKa0HfozW4CQtW2AkgacMUK0BP3IaMYJTZDDzAtBnTJWeZNM8u86nCeEgCDRtgm1dxeeJWHvUPxxLqlWzLw76GrAGdcte+ldFgs51SufEHZ4oCKle+xiQ3Fe59ONYWPQv2IRftQTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522928; c=relaxed/simple;
-	bh=VxjJzrRygX1vD9mkuwcHVmes8U6Z0Zp0zh0CpaENSZo=;
+	s=arc-20240116; t=1708524168; c=relaxed/simple;
+	bh=RmppxLtmjNemNwoXYaFvnmG3rUMHsM+2pN+v6BK9LF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TDX0WCMXp/g52IGg32/0FhyysTFJ9w3FzwzkCz2MrtyyGRbSgfEem9IJMJ2AU2A2ReR7jCj69hFc2dj9QKzn6225Sv0IyQjntAu8NvahzjUll+2XOWvvP5cDStgbIfFgO5XeEeHP2S8IgRSntc7edDmQqspKOD1pcMW2M3ELHWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fHoyBBRr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC20DC433A6;
-	Wed, 21 Feb 2024 13:42:07 +0000 (UTC)
+	 MIME-Version; b=XC70efzf81FOLx5jzHD33mJMn96i/va3QtK4SA6leg1yXNQuBnSh48Dleo4IpKX/fF3XMTikN4jr5uvWA3aRDN4oZbP9xm0VFVkN4FpeR4+jjVwHVqy7mBBXltOFZHR7slJCkijyPPBV1Krj7GW/cysgeJ07DajXYo+2k1jSQyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=le4Lu0WK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA87AC433C7;
+	Wed, 21 Feb 2024 14:02:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522928;
-	bh=VxjJzrRygX1vD9mkuwcHVmes8U6Z0Zp0zh0CpaENSZo=;
+	s=korg; t=1708524168;
+	bh=RmppxLtmjNemNwoXYaFvnmG3rUMHsM+2pN+v6BK9LF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fHoyBBRrRxhShfcQuzWtsGDjn8FXUnZBci0PSIUnL/3PRscYCAl2UMQ4oPBe1sv/P
-	 DrONgYCZ40jgq/0sipYIfX/wAhw7u3FnkiuZFenJNSDHs0aRM09QVC4+m92M+h3blX
-	 WZBiaV4op5Vf+S5tqoZ51kFCblv8LtAJsX+0tt2M=
+	b=le4Lu0WK1a+OkZrYCi78CJCQwYZSgwX7HJwWMXcpaUMVBO9iep/ijhJdxQW6BYkyK
+	 ke9SgFUR77v0NKZfi4E2/ScUc8sxAAmDojyBfg8T0QKJRG5vj/4qUtPDHDhA4xUpnc
+	 MgvE6mx5uAML8TIT5tvtlFbZBRERDrGl363uMM8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <bberg@redhat.com>,
-	Jiri Kosina <jkosina@suse.cz>,
-	Aseda Aboagye <aaboagye@chromium.org>
-Subject: [PATCH 5.15 293/476] HID: apple: Add 2021 magic keyboard FN key mapping
+	Christoph Hellwig <hch@lst.de>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 165/379] block: prevent an integer overflow in bvec_try_merge_hw_page
 Date: Wed, 21 Feb 2024 14:05:44 +0100
-Message-ID: <20240221130018.823135537@linuxfoundation.org>
+Message-ID: <20240221125959.796825081@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <bberg@redhat.com>
+From: Christoph Hellwig <hch@lst.de>
 
-commit 531cb56972f2773c941499fcfb639cd5128dfb27 upstream.
+[ Upstream commit 3f034c374ad55773c12dd8f3c1607328e17c0072 ]
 
-The new 2021 apple models have a different FN key assignment. Add a new
-translation table and use that for the 2021 magic keyboard.
+Reordered a check to avoid a possible overflow when adding len to bv_len.
 
-Signed-off-by: Benjamin Berg <bberg@redhat.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
-Cc: Aseda Aboagye <aaboagye@chromium.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Link: https://lore.kernel.org/r/20231204173419.782378-2-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-apple.c |   29 ++++++++++++++++++++++++++++-
- 1 file changed, 28 insertions(+), 1 deletion(-)
+ block/bio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/hid/hid-apple.c
-+++ b/drivers/hid/hid-apple.c
-@@ -70,6 +70,28 @@ struct apple_key_translation {
- 	u8 flags;
- };
+diff --git a/block/bio.c b/block/bio.c
+index b729f0240082..6f7a1aa9ea22 100644
+--- a/block/bio.c
++++ b/block/bio.c
+@@ -770,7 +770,7 @@ static bool bio_try_merge_hw_seg(struct request_queue *q, struct bio *bio,
  
-+static const struct apple_key_translation apple2021_fn_keys[] = {
-+	{ KEY_BACKSPACE, KEY_DELETE },
-+	{ KEY_ENTER,	KEY_INSERT },
-+	{ KEY_F1,	KEY_BRIGHTNESSDOWN, APPLE_FLAG_FKEY },
-+	{ KEY_F2,	KEY_BRIGHTNESSUP,   APPLE_FLAG_FKEY },
-+	{ KEY_F3,	KEY_SCALE,          APPLE_FLAG_FKEY },
-+	{ KEY_F4,	KEY_SEARCH,         APPLE_FLAG_FKEY },
-+	{ KEY_F5,	KEY_MICMUTE,        APPLE_FLAG_FKEY },
-+	{ KEY_F6,	KEY_SLEEP,          APPLE_FLAG_FKEY },
-+	{ KEY_F7,	KEY_PREVIOUSSONG,   APPLE_FLAG_FKEY },
-+	{ KEY_F8,	KEY_PLAYPAUSE,      APPLE_FLAG_FKEY },
-+	{ KEY_F9,	KEY_NEXTSONG,       APPLE_FLAG_FKEY },
-+	{ KEY_F10,	KEY_MUTE,           APPLE_FLAG_FKEY },
-+	{ KEY_F11,	KEY_VOLUMEDOWN,     APPLE_FLAG_FKEY },
-+	{ KEY_F12,	KEY_VOLUMEUP,       APPLE_FLAG_FKEY },
-+	{ KEY_UP,	KEY_PAGEUP },
-+	{ KEY_DOWN,	KEY_PAGEDOWN },
-+	{ KEY_LEFT,	KEY_HOME },
-+	{ KEY_RIGHT,	KEY_END },
-+	{ }
-+};
-+
- static const struct apple_key_translation macbookair_fn_keys[] = {
- 	{ KEY_BACKSPACE, KEY_DELETE },
- 	{ KEY_ENTER,	KEY_INSERT },
-@@ -214,7 +236,9 @@ static int hidinput_apple_event(struct h
- 	}
- 
- 	if (fnmode) {
--		if (hid->product >= USB_DEVICE_ID_APPLE_WELLSPRING4_ANSI &&
-+		if (hid->product == USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2021)
-+			table = apple2021_fn_keys;
-+		else if (hid->product >= USB_DEVICE_ID_APPLE_WELLSPRING4_ANSI &&
- 				hid->product <= USB_DEVICE_ID_APPLE_WELLSPRING4A_JIS)
- 			table = macbookair_fn_keys;
- 		else if (hid->product < 0x21d || hid->product >= 0x300)
-@@ -377,6 +401,9 @@ static void apple_setup_input(struct inp
- 	for (trans = apple_iso_keyboard; trans->from; trans++)
- 		set_bit(trans->to, input->keybit);
- 
-+	for (trans = apple2021_fn_keys; trans->from; trans++)
-+		set_bit(trans->to, input->keybit);
-+
- 	if (swap_fn_leftctrl) {
- 		for (trans = swapped_fn_leftctrl_keys; trans->from; trans++)
- 			set_bit(trans->to, input->keybit);
+ 	if ((addr1 | mask) != (addr2 | mask))
+ 		return false;
+-	if (bv->bv_len + len > queue_max_segment_size(q))
++	if (len > queue_max_segment_size(q) - bv->bv_len)
+ 		return false;
+ 	return __bio_try_merge_page(bio, page, len, offset, same_page);
+ }
+-- 
+2.43.0
+
 
 
 
