@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-22432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9705285DBFF
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:48:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE26485DF01
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:23:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8FB41C235A2
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:48:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF6F5B22C34
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:21:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 243E63C2F;
-	Wed, 21 Feb 2024 13:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F60278B5E;
+	Wed, 21 Feb 2024 14:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m3Y5WdzX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hVzT9uUp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D687969942;
-	Wed, 21 Feb 2024 13:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A44569D29;
+	Wed, 21 Feb 2024 14:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523283; cv=none; b=f9cvB3I6LmKql7IE4T3rR7mvUO+iGpC/I5JM2lUck4zGjZjluxyLKns2wRchajyiKG3hEzQ8nNR278MxDsNIWVWVW/THc4oOcT+7OcLMrKOit39CaVPV77v2BCMqSiLSmGZa57wfUq/PWbhBUVD5y2+IvWS42+JmlOGvZQDCX1c=
+	t=1708525282; cv=none; b=co4WXxRSJtVyBmEO0BWEU+3t6vPMWoDjxAxMbpcDbcptRs4QWmXTmY4b694oVOnv6D3/4vVJ5oKhYNR5EHt37yKd015p0ulcWbbLmBpiQHDYIqrfQ+JARtwasT9tEYkDJy1JFFqOD6nIq8bK+Dz25HIA4j0w43r1OkCsCx3kbxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523283; c=relaxed/simple;
-	bh=iX8zh1/DJWQq9dB5PTJ3kTbkr/s3aeitvEh8vTbdwO4=;
+	s=arc-20240116; t=1708525282; c=relaxed/simple;
+	bh=eGJVFEtvM73fqZiN5KAs2kV6sswxncFEO/nC0hQJA7I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N7V0WIjuNG5mT9mp317JFavSApgTCDmcqnIQt6pA0yuQUVC1H9NHOjuZH1yLYXFQy8IMVFEW2sUKfl2JQIgle7052CnZUCQtP3EnM1JDLRAJLdaIyVsEhNugQSj/kODFO3jPCK3GHhIjt0EsIIEjFE0XWn7WuE2aZ+LQ1T6CzIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m3Y5WdzX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47884C433C7;
-	Wed, 21 Feb 2024 13:48:03 +0000 (UTC)
+	 MIME-Version; b=Ub4LmZEcIF7MYjvjvye+2208DV+9ei263uW7f2zq6L1M+dyrvk9ZJxBEDRwXwgRLs9JvEEKTA9GjMDrqDVx+v1dPDHYzh6loSd3u7TWcw8fWbVASMRpw3tTxM/U9Z+Mn/jn2EwWKFlRnyq1DTD1gW3ML5jLgqlSY0U1JWBV4pvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hVzT9uUp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84A4BC433C7;
+	Wed, 21 Feb 2024 14:21:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523283;
-	bh=iX8zh1/DJWQq9dB5PTJ3kTbkr/s3aeitvEh8vTbdwO4=;
+	s=korg; t=1708525281;
+	bh=eGJVFEtvM73fqZiN5KAs2kV6sswxncFEO/nC0hQJA7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m3Y5WdzXEt3jqb09rQ5SM2QXoJkM7iq8RyehVYOa25fJCdQbgknU2wS2rXVM2rG/c
-	 2YlUaAdetr0zeNMB5T6lKqbGNgOJA5uQYhifF6ClpjHd+RU9ua0MJZipQp69Pb1oLX
-	 uHhPVrPVrrCPwBpzwglHEoFhcUbVryTpfz8iaB/E=
+	b=hVzT9uUpN4N6/bBXdz0ZTN5Svtu1ORxPqXLNPAAT+xNfhIY7QGWZdYVmWZDQaMOoF
+	 NPxfYVsxWqEPE7bgvKtiAUvA8/NyUAgyBH3yEXOrrwDYBGsYuEPyJ0A0STy8xOgPI/
+	 65a7EDSBwBQ6c8e7ekdz/MgkNn/6PT8bMNiYYihg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Senoner <seda18@rolmail.net>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 360/476] ALSA: hda/realtek: Fix the external mic not being recognised for Acer Swift 1 SF114-32
+	Yuluo Qiu <qyl27@outlook.com>,
+	Celeste Liu <CoelacanthusHex@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 070/267] ACPI: video: Add quirk for the Colorful X15 AT 23 Laptop
 Date: Wed, 21 Feb 2024 14:06:51 +0100
-Message-ID: <20240221130021.312329041@linuxfoundation.org>
+Message-ID: <20240221125942.182881674@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Senoner <seda18@rolmail.net>
+From: Yuluo Qiu <qyl27@outlook.com>
 
-commit efb56d84dd9c3de3c99fc396abb57c6d330038b5 upstream.
+[ Upstream commit 143176a46bdd3bfbe9ba2462bf94458e80d65ebf ]
 
-If you connect an external headset/microphone to the 3.5mm jack on the
-Acer Swift 1 SF114-32 it does not recognize the microphone. This fixes
-that and gives the user the ability to choose between internal and
-headset mic.
+The Colorful X15 AT 23 ACPI video-bus device report spurious
+ACPI_VIDEO_NOTIFY_CYCLE events resulting in spurious KEY_SWITCHVIDEOMODE
+events being reported to userspace (and causing trouble there) when
+an external screen plugged in.
 
-Signed-off-by: David Senoner <seda18@rolmail.net>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240126155626.2304465-1-seda18@rolmail.net
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add a quirk setting the report_key_events mask to
+REPORT_BRIGHTNESS_KEY_EVENTS so that the ACPI_VIDEO_NOTIFY_CYCLE
+events will be ignored, while still reporting brightness up/down
+hotkey-presses to userspace normally.
+
+Signed-off-by: Yuluo Qiu <qyl27@outlook.com>
+Co-developed-by: Celeste Liu <CoelacanthusHex@gmail.com>
+Signed-off-by: Celeste Liu <CoelacanthusHex@gmail.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/acpi/acpi_video.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -8905,6 +8905,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x1025, 0x1247, "Acer vCopperbox", ALC269VC_FIXUP_ACER_VCOPPERBOX_PINS),
- 	SND_PCI_QUIRK(0x1025, 0x1248, "Acer Veriton N4660G", ALC269VC_FIXUP_ACER_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1025, 0x1269, "Acer SWIFT SF314-54", ALC256_FIXUP_ACER_HEADSET_MIC),
-+	SND_PCI_QUIRK(0x1025, 0x126a, "Acer Swift SF114-32", ALC256_FIXUP_ACER_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1025, 0x128f, "Acer Veriton Z6860G", ALC286_FIXUP_ACER_AIO_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1025, 0x1290, "Acer Veriton Z4860G", ALC286_FIXUP_ACER_AIO_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1025, 0x1291, "Acer Veriton Z4660G", ALC286_FIXUP_ACER_AIO_HEADSET_MIC),
+diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
+index 9648ec76de2b..fd33fdbaffa9 100644
+--- a/drivers/acpi/acpi_video.c
++++ b/drivers/acpi/acpi_video.c
+@@ -568,6 +568,15 @@ static const struct dmi_system_id video_dmi_table[] = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "Vostro 3350"),
+ 		},
+ 	},
++	{
++	 .callback = video_set_report_key_events,
++	 .driver_data = (void *)((uintptr_t)REPORT_BRIGHTNESS_KEY_EVENTS),
++	 .ident = "COLORFUL X15 AT 23",
++	 .matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "COLORFUL"),
++		DMI_MATCH(DMI_PRODUCT_NAME, "X15 AT 23"),
++		},
++	},
+ 	/*
+ 	 * Some machines change the brightness themselves when a brightness
+ 	 * hotkey gets pressed, despite us telling them not to. In this case
+-- 
+2.43.0
+
 
 
 
