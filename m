@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-22771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A26885DDCA
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:12:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E61A985DE72
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:18:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1E0D283C48
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:12:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 165961C23C04
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:18:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 629A981AB1;
-	Wed, 21 Feb 2024 14:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7579C79DAE;
+	Wed, 21 Feb 2024 14:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nG7Lijr1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nfgqd6eX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 206BB81AAE;
-	Wed, 21 Feb 2024 14:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C9F78B5E;
+	Wed, 21 Feb 2024 14:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524459; cv=none; b=uknZTDsMTAUeWUJWSjYkB11y3TWQtYURwdyXJ6FkWbU2bFA+dh2aTwkWzIX2ifXzaJz/cP3yCBQZej+dqS6QRkKBvewiThVdvm3uFeIERoduX89SPXwAmCcudJUn+LuUfRZ5f8RaEsbMO9C2bw2pxfCQwo+Mo/5JVx4LSOwKrLg=
+	t=1708525105; cv=none; b=kmVBjfoxx276iAJ6Ht6F1K13aC9gVOWEAWX2ilftGfgKCP5/Gct5bKnRwE22OMHI8QIknyeaVt2OtdX8YZw2/zthuZYHT6nIU8zJJJb9L2Au9dHSfT1w24nyg8KavRvJzNNq3Kx5qtcjhftFToCJQFkcbF2NiA7G5nGYET/ZZRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524459; c=relaxed/simple;
-	bh=p9+JhdxkoE2cQw33eAFST2av7kbaSPQSP9q+6sgTCP4=;
+	s=arc-20240116; t=1708525105; c=relaxed/simple;
+	bh=93hxTLOjHW+WWThGtfIaDm4rzoye02vPiw0HFiAaLl8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FTcvvBDJo9Ik4W2pUrzDq42r6OU6LEP1KFWizxub2Vn6UHNobGoUAM7c1kq/A3cUj0Q1P6n8oPzKRWi86X/Djk0HZqqpX8CWVZJKbzPrwa2c4oWOo6Buiwc0cNb61lU9gaF2JdEJh60YFV2p2IjDIIE4ft+VsloUUm9NI5ZbZes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nG7Lijr1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94DFAC43399;
-	Wed, 21 Feb 2024 14:07:38 +0000 (UTC)
+	 MIME-Version; b=SCJfthGocOrDOykcc2z5y9Gd4129gfPKfIXAdf6glWtJHPXV8OQYl/vWxv5B3TgZw0DLIxh6uixatWLjPDZzmQMiT45HetapTdB3hdkVnS/05M6foCUXK6zMsA3/6N8Gtlza6wzRIRJPlFfU+X5mHMnpqMe8ThC2gBgT31nFLZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nfgqd6eX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9016EC433C7;
+	Wed, 21 Feb 2024 14:18:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524459;
-	bh=p9+JhdxkoE2cQw33eAFST2av7kbaSPQSP9q+6sgTCP4=;
+	s=korg; t=1708525105;
+	bh=93hxTLOjHW+WWThGtfIaDm4rzoye02vPiw0HFiAaLl8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nG7Lijr1QjUe2H1DE7iHRzzqlavTbhmQcy4/tf/EkvxCqRr5mM9GoQ1qYBcFjJowr
-	 c/6n1cA/hbwcWii9qtyog0DwEF7WWSKBt8nhXPNLCp+50ccqcoMa+ErjNIqITBtKLv
-	 Hv/URbrhfMZNkRml9r0IETlS02LXmX6PI1ZyTT7Y=
+	b=Nfgqd6eXLCynrM3lJ4/ZwvxKawCnUdWlR8jmRSMXpcO1SmyDPDhUNmNkfkWsZ91ih
+	 QXqgXj9Z5+yejLT2R+zzvzbwHU4vQay+zoJQPwLq7wGoa69LzzgHl0YC3OHUwfrQ5t
+	 Sp4ipruni7vJgKOQZH+8cS0YEtLxBbKKR4Dogv5Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 222/379] drm: using mul_u32_u32() requires linux/math64.h
+	Arnd Bergmann <arnd@arndb.de>,
+	Richard Palethorpe <rpalethorpe@suse.com>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 5.4 060/267] x86/entry/ia32: Ensure s32 is sign extended to s64
 Date: Wed, 21 Feb 2024 14:06:41 +0100
-Message-ID: <20240221130001.467539146@linuxfoundation.org>
+Message-ID: <20240221125941.887545848@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +61,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Rothwell <sfr@canb.auug.org.au>
+From: Richard Palethorpe <rpalethorpe@suse.com>
 
-[ Upstream commit 933a2a376fb3f22ba4774f74233571504ac56b02 ]
+commit 56062d60f117dccfb5281869e0ab61e090baf864 upstream.
 
-Some pending include file cleanups produced this error:
+Presently ia32 registers stored in ptregs are unconditionally cast to
+unsigned int by the ia32 stub. They are then cast to long when passed to
+__se_sys*, but will not be sign extended.
 
-In file included from include/linux/kernel.h:27,
-                 from drivers/gpu/ipu-v3/ipu-dp.c:7:
-include/drm/drm_color_mgmt.h: In function 'drm_color_lut_extract':
-include/drm/drm_color_mgmt.h:45:46: error: implicit declaration of function 'mul_u32_u32' [-Werror=implicit-function-declaration]
-   45 |                 return DIV_ROUND_CLOSEST_ULL(mul_u32_u32(user_input, (1 << bit_precision) - 1),
-      |                                              ^~~~~~~~~~~
+This takes the sign of the syscall argument into account in the ia32
+stub. It still casts to unsigned int to avoid implementation specific
+behavior. However then casts to int or unsigned int as necessary. So that
+the following cast to long sign extends the value.
 
-Fixes: c6fbb6bca108 ("drm: Fix color LUT rounding")
-Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231219145734.13e40e1e@canb.auug.org.au
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This fixes the io_pgetevents02 LTP test when compiled with -m32. Presently
+the systemcall io_pgetevents_time64() unexpectedly accepts -1 for the
+maximum number of events.
+
+It doesn't appear other systemcalls with signed arguments are effected
+because they all have compat variants defined and wired up.
+
+Fixes: ebeb8c82ffaf ("syscalls/x86: Use 'struct pt_regs' based syscall calling for IA32_EMULATION and x32")
+Suggested-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Richard Palethorpe <rpalethorpe@suse.com>
+Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240110130122.3836513-1-nik.borisov@suse.com
+Link: https://lore.kernel.org/ltp/20210921130127.24131-1-rpalethorpe@suse.com/
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/drm/drm_color_mgmt.h | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/include/asm/syscall_wrapper.h |   25 +++++++++++++++++++++----
+ include/linux/syscalls.h               |    1 +
+ 2 files changed, 22 insertions(+), 4 deletions(-)
 
-diff --git a/include/drm/drm_color_mgmt.h b/include/drm/drm_color_mgmt.h
-index 54b2b2467bfd..ed81741036d7 100644
---- a/include/drm/drm_color_mgmt.h
-+++ b/include/drm/drm_color_mgmt.h
-@@ -24,6 +24,7 @@
- #define __DRM_COLOR_MGMT_H__
+--- a/arch/x86/include/asm/syscall_wrapper.h
++++ b/arch/x86/include/asm/syscall_wrapper.h
+@@ -14,12 +14,29 @@ struct pt_regs;
+ 		,,regs->di,,regs->si,,regs->dx				\
+ 		,,regs->r10,,regs->r8,,regs->r9)			\
  
- #include <linux/ctype.h>
-+#include <linux/math64.h>
- #include <drm/drm_property.h>
++
++/* SYSCALL_PT_ARGS is Adapted from s390x */
++#define SYSCALL_PT_ARG6(m, t1, t2, t3, t4, t5, t6)			\
++	SYSCALL_PT_ARG5(m, t1, t2, t3, t4, t5), m(t6, (regs->bp))
++#define SYSCALL_PT_ARG5(m, t1, t2, t3, t4, t5)				\
++	SYSCALL_PT_ARG4(m, t1, t2, t3, t4),  m(t5, (regs->di))
++#define SYSCALL_PT_ARG4(m, t1, t2, t3, t4)				\
++	SYSCALL_PT_ARG3(m, t1, t2, t3),  m(t4, (regs->si))
++#define SYSCALL_PT_ARG3(m, t1, t2, t3)					\
++	SYSCALL_PT_ARG2(m, t1, t2), m(t3, (regs->dx))
++#define SYSCALL_PT_ARG2(m, t1, t2)					\
++	SYSCALL_PT_ARG1(m, t1), m(t2, (regs->cx))
++#define SYSCALL_PT_ARG1(m, t1) m(t1, (regs->bx))
++#define SYSCALL_PT_ARGS(x, ...) SYSCALL_PT_ARG##x(__VA_ARGS__)
++
++#define __SC_COMPAT_CAST(t, a)						\
++	(__typeof(__builtin_choose_expr(__TYPE_IS_L(t), 0, 0U)))	\
++	(unsigned int)a
++
+ /* Mapping of registers to parameters for syscalls on i386 */
+ #define SC_IA32_REGS_TO_ARGS(x, ...)					\
+-	__MAP(x,__SC_ARGS						\
+-	      ,,(unsigned int)regs->bx,,(unsigned int)regs->cx		\
+-	      ,,(unsigned int)regs->dx,,(unsigned int)regs->si		\
+-	      ,,(unsigned int)regs->di,,(unsigned int)regs->bp)
++	SYSCALL_PT_ARGS(x, __SC_COMPAT_CAST,				\
++			__MAP(x, __SC_TYPE, __VA_ARGS__))		\
  
- struct drm_crtc;
--- 
-2.43.0
-
+ #ifdef CONFIG_IA32_EMULATION
+ /*
+--- a/include/linux/syscalls.h
++++ b/include/linux/syscalls.h
+@@ -120,6 +120,7 @@ struct clone_args;
+ #define __TYPE_IS_LL(t) (__TYPE_AS(t, 0LL) || __TYPE_AS(t, 0ULL))
+ #define __SC_LONG(t, a) __typeof(__builtin_choose_expr(__TYPE_IS_LL(t), 0LL, 0L)) a
+ #define __SC_CAST(t, a)	(__force t) a
++#define __SC_TYPE(t, a)	t
+ #define __SC_ARGS(t, a)	a
+ #define __SC_TEST(t, a) (void)BUILD_BUG_ON_ZERO(!__TYPE_IS_LL(t) && sizeof(t) > sizeof(long))
+ 
 
 
 
