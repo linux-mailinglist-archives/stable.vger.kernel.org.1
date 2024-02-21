@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-22474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3474E85DC35
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:50:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69AD385D9B9
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:22:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65CEC1C2352E
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:50:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2494A287DDA
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:22:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E432379DAB;
-	Wed, 21 Feb 2024 13:50:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 339EF69DF9;
+	Wed, 21 Feb 2024 13:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zuCo2Gv0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CScen9T4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A383969942;
-	Wed, 21 Feb 2024 13:50:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E509A6BB52;
+	Wed, 21 Feb 2024 13:21:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523419; cv=none; b=fdqhVGBd/gn0mraBViKj1gh76eY/tQUS4lvIdbH2zP2jh14S0iwzLTiBKW0G8vcQQFP+Ua4Xc2JfPlc0FVqjcM+b8ux/L+hkOLXiTpROwLqfMD6GDTYM9YSjQ3Nzfyhrx5/KAnz2F8k1oXmiLfw1Hz37EN7g9+6HEHLu8ams7HQ=
+	t=1708521693; cv=none; b=ihXu9pVPL/1JCP/fuDC3ZINX6wb5eo41oqnhHl6yuIxNDlNW9qHaclAJkI6Rps0dyrWwqRdttKL9vwtPdwqLFruggIKBpZduBMSBGdt+MAeMWOn3TOAs4uxbfvtH96pD36EFUz6ceO8JeCD/0TBBZsdR2anC3IGdhskgD0SJ1Dg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523419; c=relaxed/simple;
-	bh=cp89iE8V4iT78vY2rPN7fEhJbu2PhOGx9jb9x06c+8g=;
+	s=arc-20240116; t=1708521693; c=relaxed/simple;
+	bh=2A6iy4DkqEguZ0wXRUfjhrICHxv9XaHhvOHqN4hqivs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q+W7lUvdeAXGbspjpMZ4s8VHKfvdoTySWcVW5WdeMcdmGa5MpENoNlndEwoK+VQzipxVUDpkFulyaVv7J5jtKlbQey3izQwYcvNc8Pq++7nLFs0q+whOAqfVsC4Ue2vh5guBDcAuljWUzvbCSwkMaY9kx39PmvQuJIGHouyTLWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zuCo2Gv0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AEB2C433F1;
-	Wed, 21 Feb 2024 13:50:18 +0000 (UTC)
+	 MIME-Version; b=oibj2ImGVVQ5nvFAsKYn+0FQDP19hq3GeT4CxUbQoJBXkVpPpkLnfO9MklaM94gsRXSPKCMKmVyJki+ibHywj/KFqtB1WWM/FJDbCY5LfDTWqijTidb4ssVZajX+OFQRHY/LEjYutLJheCb+Xp/uj4CRlB/lL03mNmx9drxDnSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CScen9T4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11FA6C433C7;
+	Wed, 21 Feb 2024 13:21:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523419;
-	bh=cp89iE8V4iT78vY2rPN7fEhJbu2PhOGx9jb9x06c+8g=;
+	s=korg; t=1708521692;
+	bh=2A6iy4DkqEguZ0wXRUfjhrICHxv9XaHhvOHqN4hqivs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zuCo2Gv0EvuKdgLgKVYE2L6CxNaegNrQrqfaD4JllsSjVxrRBEvRR6BURHAyEcy9U
-	 zV9mJ4odl9YPo+C5u/bGxbTxP1cCv7kGqEG6Zu/YQ4rOxcnEM2EKK2RVyUv0+coFcM
-	 eKyDLqybCxK2xP12ZzNdtN/DCNY9CR+TIMUZSVCQ=
+	b=CScen9T4DYSshB5+7DCRqUZHegogJ1gJZBQqf0/hoXqsrCDtm/wNCp0fFQERlIBFI
+	 1yjrRFfuoMrMccwnf3azY3KqawcxnBEjuOTqb9nUqG8ONH18lqPFJSZ+VwAYO/Bcxh
+	 6pBw0+GwoeDtneh+aEIXZZUUin3l+jTq+b7Wccf8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lin <yu-hao.lin@nxp.com>,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <error27@gmail.com>,
-	Brian Norris <briannorris@chromium.org>,
-	Kalle Valo <kvalo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 431/476] wifi: mwifiex: fix uninitialized firmware_stat
+	syzbot+6b7c68d9c21e4ee4251b@syzkaller.appspotmail.com,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 4.19 181/202] nfc: nci: free rx_data_reassembly skb on NCI device cleanup
 Date: Wed, 21 Feb 2024 14:08:02 +0100
-Message-ID: <20240221130023.958578187@linuxfoundation.org>
+Message-ID: <20240221125937.672219112@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lin <yu-hao.lin@nxp.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 3df95e265924ac898c1a38a0c01846dd0bd3b354 ]
+commit bfb007aebe6bff451f7f3a4be19f4f286d0d5d9c upstream.
 
-Variable firmware_stat is possible to be used without initialization.
+rx_data_reassembly skb is stored during NCI data exchange for processing
+fragmented packets. It is dropped only when the last fragment is processed
+or when an NTF packet with NCI_OP_RF_DEACTIVATE_NTF opcode is received.
+However, the NCI device may be deallocated before that which leads to skb
+leak.
 
-Signed-off-by: David Lin <yu-hao.lin@nxp.com>
-Fixes: 1c5d463c0770 ("wifi: mwifiex: add extra delay for firmware ready")
+As by design the rx_data_reassembly skb is bound to the NCI device and
+nothing prevents the device to be freed before the skb is processed in
+some way and cleaned, free it on the NCI device cleanup.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: 6a2968aaf50c ("NFC: basic NCI protocol implementation")
 Cc: stable@vger.kernel.org
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <error27@gmail.com>
-Closes: https://lore.kernel.org/r/202312192236.ZflaWYCw-lkp@intel.com/
-Acked-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20231221015511.1032128-1-yu-hao.lin@nxp.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+6b7c68d9c21e4ee4251b@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/lkml/000000000000f43987060043da7b@google.com/
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/marvell/mwifiex/sdio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/nfc/nci/core.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/sdio.c b/drivers/net/wireless/marvell/mwifiex/sdio.c
-index dd4bfb7d71ee..45f46a445a6c 100644
---- a/drivers/net/wireless/marvell/mwifiex/sdio.c
-+++ b/drivers/net/wireless/marvell/mwifiex/sdio.c
-@@ -790,7 +790,7 @@ static int mwifiex_check_fw_status(struct mwifiex_adapter *adapter,
+--- a/net/nfc/nci/core.c
++++ b/net/nfc/nci/core.c
+@@ -1209,6 +1209,10 @@ void nci_free_device(struct nci_dev *nde
  {
- 	struct sdio_mmc_card *card = adapter->card;
- 	int ret = 0;
--	u16 firmware_stat;
-+	u16 firmware_stat = 0;
- 	u32 tries;
- 
- 	for (tries = 0; tries < poll_num; tries++) {
--- 
-2.43.0
-
+ 	nfc_free_device(ndev->nfc_dev);
+ 	nci_hci_deallocate(ndev);
++
++	/* drop partial rx data packet if present */
++	if (ndev->rx_data_reassembly)
++		kfree_skb(ndev->rx_data_reassembly);
+ 	kfree(ndev);
+ }
+ EXPORT_SYMBOL(nci_free_device);
 
 
 
