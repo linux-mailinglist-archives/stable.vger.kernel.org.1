@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-22757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7174585DDC9
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:12:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F08785D97F
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:19:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 61EC7B2A321
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:11:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 719671C22C50
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:19:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B31177E772;
-	Wed, 21 Feb 2024 14:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4DEF6EB77;
+	Wed, 21 Feb 2024 13:19:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="11Vs6Y5Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kPFmKoiQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 711307E769;
-	Wed, 21 Feb 2024 14:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9208053816;
+	Wed, 21 Feb 2024 13:19:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524415; cv=none; b=nUCkZwZK9cu7f1iWz5IsWjsRmvrWTOqP6QVYxmqBib+0vJNdft4rXQ9bOyoNjXhhDaibSHIWyTqRnnLdv0TCicbgK4XxXslXnbg/fyBzGNE9mBtNEKKKILzGz0tt4aXuo3ugAcTbkCSh+hW5q+mzesjBcx2PJAaWQwtuGEd+yco=
+	t=1708521557; cv=none; b=ezoy6vPzsM9rq3cdGdqKk0IVUscXqLzFkZtsNqU5wy4BRE9JfmdDSyE3PxLLYi2Hsz8wFHATbVvX1X6noKOvqnhpxYjdj5HLg8QTT6pE9R+w/oluAF4r2gFm7bLbg/rmjKm4aLLv60fg8L0TiquZAnrjncXB7VNDQQMumWUwtKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524415; c=relaxed/simple;
-	bh=TSzGFlzm2hjIXVd8mTo8vrkTJI1GoJXgpagSR0k4ejE=;
+	s=arc-20240116; t=1708521557; c=relaxed/simple;
+	bh=9hJauWcuciE/MwP11IRDUjl9DSzON3ah4ibyHalizgM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jWxzES7vmKCV+u8RIigGlUsE6szORFSIj3B2rNjmcXrV4QKqDWFU62XmHJWJNUSWX+TH0NiXoXqZjyUR3hqyo8Q+MfhwQFIGVlubLlqvljOzv/mATJb4Jyu1AD7fd3I7AHeSqJbfqDh68IIw1jBHShcgoRk+4cN6Sy1EBdTd+yc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=11Vs6Y5Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 954B9C433C7;
-	Wed, 21 Feb 2024 14:06:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ac3bBa5TqY9vP6j2H1Pj73rs3hNvUqvjy4LwOZ2awdjsklX1UaiSnTnRgXNNJqGzF3q9XYD57y6OQoJ1tdutmfrYks/8JYpoF6aPBeEJhd9wRlNeeRdfj5u7z3jww9qR6ltJe0QlL7kdmLDJihFbkRyhzMXS8d3+ZNMCwBMqJ2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kPFmKoiQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01C2FC433C7;
+	Wed, 21 Feb 2024 13:19:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524415;
-	bh=TSzGFlzm2hjIXVd8mTo8vrkTJI1GoJXgpagSR0k4ejE=;
+	s=korg; t=1708521557;
+	bh=9hJauWcuciE/MwP11IRDUjl9DSzON3ah4ibyHalizgM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=11Vs6Y5Q8xIQ+6ipRtoTmKNzA4hfsPy4fc7IlIHiLLjvKZih8RceBbc5H06UOtYPs
-	 KuKFAN1E8BG0VeDrHl6XvdzfTPNJ/WVuz36ELscTPb9w9j22YglzsA51DttPaLXgqx
-	 htSXcSurhDNEUGsbpBlf7iIMDu5P6MdL8jjQAOVU=
+	b=kPFmKoiQYakQIwxGNjVTYc4PTpMepmDtVXBjZgcQ4D9q05c+QLBs4lKCxZhZXcJMS
+	 WwkfHdBcHEADPOFnZuYtEjj1T1Yz1uJBm5hrRvBLpTljKym76krI6VU47jA5Db/sb1
+	 Jg4iH4zbTy1Pn9zlUW7U0FVNOLS7gN8QDKg/b/30=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Felix Kuehling <Felix.Kuehling@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 236/379] netfilter: nf_log: replace BUG_ON by WARN_ON_ONCE when putting logger
+Subject: [PATCH 4.19 114/202] drm/amdgpu: Let KFD sync with VM fences
 Date: Wed, 21 Feb 2024 14:06:55 +0100
-Message-ID: <20240221130001.896213499@linuxfoundation.org>
+Message-ID: <20240221125935.421329811@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,50 +61,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Felix Kuehling <Felix.Kuehling@amd.com>
 
-[ Upstream commit 259eb32971e9eb24d1777a28d82730659f50fdcb ]
+[ Upstream commit ec9ba4821fa52b5efdbc4cdf0a77497990655231 ]
 
-Module reference is bumped for each user, this should not ever happen.
+Change the rules for amdgpu_sync_resv to let KFD synchronize with VM
+fences on page table reservations. This fixes intermittent memory
+corruption after evictions when using amdgpu_vm_handle_moved to update
+page tables for VM mappings managed through render nodes.
 
-But BUG_ON check should use rcu_access_pointer() instead.
-
-If this ever happens, do WARN_ON_ONCE() instead of BUG_ON() and
-consolidate pointer check under the rcu read side lock section.
-
-Fixes: fab4085f4e24 ("netfilter: log: nf_log_packet() as real unified interface")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Felix Kuehling <Felix.Kuehling@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_log.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_sync.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_log.c b/net/netfilter/nf_log.c
-index 6cb9f9474b05..28c6cb5cff0e 100644
---- a/net/netfilter/nf_log.c
-+++ b/net/netfilter/nf_log.c
-@@ -203,11 +203,12 @@ void nf_logger_put(int pf, enum nf_log_type type)
- 		return;
- 	}
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_sync.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_sync.c
+index 2d6f5ec77a68..5eb8f93c7022 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_sync.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_sync.c
+@@ -219,7 +219,8 @@ int amdgpu_sync_resv(struct amdgpu_device *adev,
+ 		 */
+ 		fence_owner = amdgpu_sync_get_owner(f);
+ 		if (fence_owner == AMDGPU_FENCE_OWNER_KFD &&
+-		    owner != AMDGPU_FENCE_OWNER_UNDEFINED)
++		    owner != AMDGPU_FENCE_OWNER_UNDEFINED &&
++	    owner != AMDGPU_FENCE_OWNER_KFD)
+ 			continue;
  
--	BUG_ON(loggers[pf][type] == NULL);
--
- 	rcu_read_lock();
- 	logger = rcu_dereference(loggers[pf][type]);
--	module_put(logger->me);
-+	if (!logger)
-+		WARN_ON_ONCE(1);
-+	else
-+		module_put(logger->me);
- 	rcu_read_unlock();
- }
- EXPORT_SYMBOL_GPL(nf_logger_put);
+ 		if (amdgpu_sync_same_dev(adev, f)) {
 -- 
 2.43.0
 
