@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-22876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D946F85DE26
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:15:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0144E85DF49
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:26:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93978284F53
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:15:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A984A282D8A
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:26:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2385E7F467;
-	Wed, 21 Feb 2024 14:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE23A7C093;
+	Wed, 21 Feb 2024 14:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l7YYMqpJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U+ZDNsyz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71EB7EF1F;
-	Wed, 21 Feb 2024 14:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CE5E3B287;
+	Wed, 21 Feb 2024 14:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524810; cv=none; b=WuNWir9i6Wg6cfg6q4WM0+UYOelem+ob8UFQAVhG8mR9FHSERJxK82Wdq7HV7ilVCOtZWqBm9p1/sc9qvxWrfEG5evH0czD3gqvTZtYjQGjS6R8vHchwnaUfKD4Jb6gpOA/7tVNFCMEaNZ0cuj2QEKSsDg/lXxDOhjTPcAcsv/o=
+	t=1708525592; cv=none; b=EuKsfkuzksB4pCAl/t5R0A+NoeMG7WNWHRaRu9mmodWQOywiyr4rxT6npaf7BR/MCaaLALR2HNA2/USPaIcBDZ5XC2AFot8j3q69SSxl5eYHwkVpFfzSR+y0T/pUQgPmh3akhYGX/UVAYPKOir9822l+zM+Giv6ZU2FsePxz0mg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524810; c=relaxed/simple;
-	bh=5bJ+gA7stFkIVHQCCpPf7514/NOAB3/JoP7WINfAVdY=;
+	s=arc-20240116; t=1708525592; c=relaxed/simple;
+	bh=vmuWrMUXIcSedqu8ZVhX9pH79NHXUEsUAymcmywGJvM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wh4b4XsytC/wRjKsw+4j7DYwHivjBChlpMF+QpPv9V4e/3XTJOcdPgA/KcOkJajbZHlfTjIvlcEeNC5lHFVCFr9MB1eJOKjGSrxkQFLXpEPVEh1gUue5d+56ZjZsHKZKLaTUSlc8ttJvqg4DYKgNIR+ygULZMRxip8kKb/EAAcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l7YYMqpJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60201C433B1;
-	Wed, 21 Feb 2024 14:13:30 +0000 (UTC)
+	 MIME-Version; b=SsnhMAbBTfvINIB90uSQru20lG7oBs6xQp3LRH3bx5qmPP9P2zC1jmxZH17Cc9PiVrxO50bZuYTJk7dXrm87NnSZfqbhmSXJT7maNgKRaRmW9LPmlv2ETJQddH1jLzg0daQ5xEEDZGHc47DojSRpbbucq9ojFJk7LKWnS7zDRgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U+ZDNsyz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77181C433F1;
+	Wed, 21 Feb 2024 14:26:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524810;
-	bh=5bJ+gA7stFkIVHQCCpPf7514/NOAB3/JoP7WINfAVdY=;
+	s=korg; t=1708525591;
+	bh=vmuWrMUXIcSedqu8ZVhX9pH79NHXUEsUAymcmywGJvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l7YYMqpJY7m082uvcK/j9zV1fm1RiZFoZV8TQErCPuum3ftQBn99+QFK26v7/FncJ
-	 CCJB1iSsfZB3XWJYE5B2OKtrNqL8JDSZ/gqNDT0uwcwhRcel6YEpOYsXGtNLNJcySL
-	 ysJ3boam1aPL+uDHbFmMY593PCtp9O/C+hvezYdY=
+	b=U+ZDNsyz1bR2hRX/tmLWSsdxC0BvJZH/oMADlm9sGPfskbNdQ9bNIygEbPdPVJFNI
+	 JdwjKnZyZ2unW0T9UY0nzl17ZccKD6DiQ7cumMHcqS3lr1Z5mqWJiom7V5yQYYlVbO
+	 U7KqkNLTsPPEsaKxqkshjW1hg/KHBaiYZS9zYp70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lin <yu-hao.lin@nxp.com>,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <error27@gmail.com>,
-	Brian Norris <briannorris@chromium.org>,
-	Kalle Valo <kvalo@kernel.org>,
+	Julian Wiedmann <jwi@linux.ibm.com>,
+	Karsten Graul <kgraul@linux.ibm.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 356/379] wifi: mwifiex: fix uninitialized firmware_stat
+Subject: [PATCH 5.4 194/267] net/af_iucv: clean up a try_then_request_module()
 Date: Wed, 21 Feb 2024 14:08:55 +0100
-Message-ID: <20240221130005.580763500@linuxfoundation.org>
+Message-ID: <20240221125946.228634831@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,43 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lin <yu-hao.lin@nxp.com>
+From: Julian Wiedmann <jwi@linux.ibm.com>
 
-[ Upstream commit 3df95e265924ac898c1a38a0c01846dd0bd3b354 ]
+[ Upstream commit 4eb9eda6ba64114d98827e2870e024d5ab7cd35b ]
 
-Variable firmware_stat is possible to be used without initialization.
+Use IS_ENABLED(CONFIG_IUCV) to determine whether the iucv_if symbol
+is available, and let depmod deal with the module dependency.
 
-Signed-off-by: David Lin <yu-hao.lin@nxp.com>
-Fixes: 1c5d463c0770 ("wifi: mwifiex: add extra delay for firmware ready")
-Cc: stable@vger.kernel.org
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <error27@gmail.com>
-Closes: https://lore.kernel.org/r/202312192236.ZflaWYCw-lkp@intel.com/
-Acked-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20231221015511.1032128-1-yu-hao.lin@nxp.com
+This was introduced back with commit 6fcd61f7bf5d ("af_iucv: use
+loadable iucv interface"). And to avoid sprinkling IS_ENABLED() over
+all the code, we're keeping the indirection through pr_iucv->...().
+
+Signed-off-by: Julian Wiedmann <jwi@linux.ibm.com>
+Signed-off-by: Karsten Graul <kgraul@linux.ibm.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/sdio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/iucv/af_iucv.c | 14 +++-----------
+ 1 file changed, 3 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/sdio.c b/drivers/net/wireless/marvell/mwifiex/sdio.c
-index dd4bfb7d71ee..45f46a445a6c 100644
---- a/drivers/net/wireless/marvell/mwifiex/sdio.c
-+++ b/drivers/net/wireless/marvell/mwifiex/sdio.c
-@@ -790,7 +790,7 @@ static int mwifiex_check_fw_status(struct mwifiex_adapter *adapter,
+diff --git a/net/iucv/af_iucv.c b/net/iucv/af_iucv.c
+index bbc1924d64e5..652285191da1 100644
+--- a/net/iucv/af_iucv.c
++++ b/net/iucv/af_iucv.c
+@@ -2455,7 +2455,7 @@ static int __init afiucv_init(void)
  {
- 	struct sdio_mmc_card *card = adapter->card;
- 	int ret = 0;
--	u16 firmware_stat;
-+	u16 firmware_stat = 0;
- 	u32 tries;
+ 	int err;
  
- 	for (tries = 0; tries < poll_num; tries++) {
+-	if (MACHINE_IS_VM) {
++	if (MACHINE_IS_VM && IS_ENABLED(CONFIG_IUCV)) {
+ 		cpcmd("QUERY USERID", iucv_userid, sizeof(iucv_userid), &err);
+ 		if (unlikely(err)) {
+ 			WARN_ON(err);
+@@ -2463,11 +2463,7 @@ static int __init afiucv_init(void)
+ 			goto out;
+ 		}
+ 
+-		pr_iucv = try_then_request_module(symbol_get(iucv_if), "iucv");
+-		if (!pr_iucv) {
+-			printk(KERN_WARNING "iucv_if lookup failed\n");
+-			memset(&iucv_userid, 0, sizeof(iucv_userid));
+-		}
++		pr_iucv = &iucv_if;
+ 	} else {
+ 		memset(&iucv_userid, 0, sizeof(iucv_userid));
+ 		pr_iucv = NULL;
+@@ -2501,17 +2497,13 @@ static int __init afiucv_init(void)
+ out_proto:
+ 	proto_unregister(&iucv_proto);
+ out:
+-	if (pr_iucv)
+-		symbol_put(iucv_if);
+ 	return err;
+ }
+ 
+ static void __exit afiucv_exit(void)
+ {
+-	if (pr_iucv) {
++	if (pr_iucv)
+ 		afiucv_iucv_exit();
+-		symbol_put(iucv_if);
+-	}
+ 
+ 	unregister_netdevice_notifier(&afiucv_netdev_notifier);
+ 	dev_remove_pack(&iucv_packet_type);
 -- 
 2.43.0
 
