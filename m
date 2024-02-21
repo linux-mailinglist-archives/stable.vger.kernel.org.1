@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-22916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B7E585DE47
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:17:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0950C85D921
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:15:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF4E11F21434
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:17:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B85F4281BAD
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:15:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DD4E7E79D;
-	Wed, 21 Feb 2024 14:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5275469D2F;
+	Wed, 21 Feb 2024 13:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jfR0t3nN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lLAvngXT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFCD378B5E;
-	Wed, 21 Feb 2024 14:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1168469D09;
+	Wed, 21 Feb 2024 13:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524957; cv=none; b=fEf9vRzInSTSzp4EGixgZRdIUrT9WWwMDcrZ9eQZdpXRMpBR6Xkot9IJQ+5ama+F73xHFCt5AkA3ZvjcHIThL3+zVe8yTL/sPYBpQGEUSvj2g/n9K9Hd3OPI4SkwucX8Fy9qjk8RNmdD/o5h6Rf7YKQcjQXUKdXlN2yK7dDULc8=
+	t=1708521300; cv=none; b=lx9sVjofeDaGPkvrXKOG5RZh9Jd6si5J1Bfqo+EkE8T/7mWJR2lzfs3d/WWhESJ26pySNUd88g1HcKB+emXLgCcBeQ0iMBMbhVCx676MB4tX1aS7M4kWTpNeVOtqg5zxhuwiaQLS3YdBF6jo7xtJBVWncl+VZKBt+z/0Wygo91Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524957; c=relaxed/simple;
-	bh=ia8p9bI0vJqx38rOwtIy7KUc/BnCRfbgcSKA6PHMF0Y=;
+	s=arc-20240116; t=1708521300; c=relaxed/simple;
+	bh=ss1KEpUsUJixKytzjlbaAvU78vRQunONTnKbAmBCl/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D8FG6N5nii4fNZgJJC/nCO34QXA3yaU0MErQq97oTFXCsMca8IPiqRGKR2362hDElaC5fypktI3Fecrr9BKJ1tEKzjobvHyq5s92dSYN67rrBBG0a/Nafb13IPwzBacLlDXA/va3KGLueIG+sjTGdjrGkHVtYz7T4E/2D0bYhsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jfR0t3nN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C0AAC433C7;
-	Wed, 21 Feb 2024 14:15:57 +0000 (UTC)
+	 MIME-Version; b=FPEINcq3hCUerfXGggZoG4tzl5FMWBCv0QB3GDQ+nrvsRb9yToWG1Vp00TWY3G2e8IydjIrao2j+7W2ds60ZEci4t8gsYEI1/M1cQLlnYTLreFBPnUmH+6z8qEVYiVpI9SgjrruXrouCO2BcFA961u5aZA42q+ei97vNIMf06i0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lLAvngXT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73528C433C7;
+	Wed, 21 Feb 2024 13:14:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524957;
-	bh=ia8p9bI0vJqx38rOwtIy7KUc/BnCRfbgcSKA6PHMF0Y=;
+	s=korg; t=1708521299;
+	bh=ss1KEpUsUJixKytzjlbaAvU78vRQunONTnKbAmBCl/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jfR0t3nNdlXtGWrvIb0mdFARoeA0sTFGuqFc6TNbw5KCb5y1epXxY4f5PlyG6qkhC
-	 dP3WNXl+8wce7pEgXbqNgjO0xAvs2961eOcfGr8c32JcSSeKxypGQE4iS26MSW/TZH
-	 05GoEz1IriJ2U5k5ClmHtpx8TtClwY4OTZsv4+bY=
+	b=lLAvngXTDqzFrY/39ki25XS6Kr8covV1D1mRM8s1iv40ht3eaayLLcq6xo0W8Jxc/
+	 sK4ECS4YzvQzybjKre92WIFC4Mv/wYodaC39e3b8RMgqy0WuRsf3oCumr+jZlxx4sv
+	 YDq8kuGaHrcH72Ekk+IWLDIPKP+eyleVengPRVYY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 008/267] serial: sc16is7xx: add check for unsupported SPI modes during probe
+	Arnd Bergmann <arnd@arndb.de>,
+	Richard Palethorpe <rpalethorpe@suse.com>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 4.19 048/202] x86/entry/ia32: Ensure s32 is sign extended to s64
 Date: Wed, 21 Feb 2024 14:05:49 +0100
-Message-ID: <20240221125940.325502979@linuxfoundation.org>
+Message-ID: <20240221125933.370602192@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Richard Palethorpe <rpalethorpe@suse.com>
 
-[ Upstream commit 6d710b769c1f5f0d55c9ad9bb49b7dce009ec103 ]
+commit 56062d60f117dccfb5281869e0ab61e090baf864 upstream.
 
-The original comment is confusing because it implies that variants other
-than the SC16IS762 supports other SPI modes beside SPI_MODE_0.
+Presently ia32 registers stored in ptregs are unconditionally cast to
+unsigned int by the ia32 stub. They are then cast to long when passed to
+__se_sys*, but will not be sign extended.
 
-Extract from datasheet:
-    The SC16IS762 differs from the SC16IS752 in that it supports SPI clock
-    speeds up to 15 Mbit/s instead of the 4 Mbit/s supported by the
-    SC16IS752... In all other aspects, the SC16IS762 is functionally and
-    electrically the same as the SC16IS752.
+This takes the sign of the syscall argument into account in the ia32
+stub. It still casts to unsigned int to avoid implementation specific
+behavior. However then casts to int or unsigned int as necessary. So that
+the following cast to long sign extends the value.
 
-The same is also true of the SC16IS760 variant versus the SC16IS740 and
-SC16IS750 variants.
+This fixes the io_pgetevents02 LTP test when compiled with -m32. Presently
+the systemcall io_pgetevents_time64() unexpectedly accepts -1 for the
+maximum number of events.
 
-For all variants, only SPI mode 0 is supported.
+It doesn't appear other systemcalls with signed arguments are effected
+because they all have compat variants defined and wired up.
 
-Change comment and abort probing if the specified SPI mode is not
-SPI_MODE_0.
-
-Fixes: 2c837a8a8f9f ("sc16is7xx: spi interface is added")
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20231221231823.2327894-3-hugo@hugovil.com
+Fixes: ebeb8c82ffaf ("syscalls/x86: Use 'struct pt_regs' based syscall calling for IA32_EMULATION and x32")
+Suggested-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Richard Palethorpe <rpalethorpe@suse.com>
+Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240110130122.3836513-1-nik.borisov@suse.com
+Link: https://lore.kernel.org/ltp/20210921130127.24131-1-rpalethorpe@suse.com/
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sc16is7xx.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/syscall_wrapper.h |   25 +++++++++++++++++++++----
+ include/linux/syscalls.h               |    1 +
+ 2 files changed, 22 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index ce0681ba7734..892e27cddb0f 100644
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -1413,7 +1413,10 @@ static int sc16is7xx_spi_probe(struct spi_device *spi)
+--- a/arch/x86/include/asm/syscall_wrapper.h
++++ b/arch/x86/include/asm/syscall_wrapper.h
+@@ -12,12 +12,29 @@
+ 		,,regs->di,,regs->si,,regs->dx				\
+ 		,,regs->r10,,regs->r8,,regs->r9)			\
  
- 	/* Setup SPI bus */
- 	spi->bits_per_word	= 8;
--	/* only supports mode 0 on SC16IS762 */
-+	/* For all variants, only mode 0 is supported */
-+	if ((spi->mode & SPI_MODE_X_MASK) != SPI_MODE_0)
-+		return dev_err_probe(&spi->dev, -EINVAL, "Unsupported SPI mode\n");
 +
- 	spi->mode		= spi->mode ? : SPI_MODE_0;
- 	spi->max_speed_hz	= spi->max_speed_hz ? : 4 * HZ_PER_MHZ;
- 	ret = spi_setup(spi);
--- 
-2.43.0
-
++/* SYSCALL_PT_ARGS is Adapted from s390x */
++#define SYSCALL_PT_ARG6(m, t1, t2, t3, t4, t5, t6)			\
++	SYSCALL_PT_ARG5(m, t1, t2, t3, t4, t5), m(t6, (regs->bp))
++#define SYSCALL_PT_ARG5(m, t1, t2, t3, t4, t5)				\
++	SYSCALL_PT_ARG4(m, t1, t2, t3, t4),  m(t5, (regs->di))
++#define SYSCALL_PT_ARG4(m, t1, t2, t3, t4)				\
++	SYSCALL_PT_ARG3(m, t1, t2, t3),  m(t4, (regs->si))
++#define SYSCALL_PT_ARG3(m, t1, t2, t3)					\
++	SYSCALL_PT_ARG2(m, t1, t2), m(t3, (regs->dx))
++#define SYSCALL_PT_ARG2(m, t1, t2)					\
++	SYSCALL_PT_ARG1(m, t1), m(t2, (regs->cx))
++#define SYSCALL_PT_ARG1(m, t1) m(t1, (regs->bx))
++#define SYSCALL_PT_ARGS(x, ...) SYSCALL_PT_ARG##x(__VA_ARGS__)
++
++#define __SC_COMPAT_CAST(t, a)						\
++	(__typeof(__builtin_choose_expr(__TYPE_IS_L(t), 0, 0U)))	\
++	(unsigned int)a
++
+ /* Mapping of registers to parameters for syscalls on i386 */
+ #define SC_IA32_REGS_TO_ARGS(x, ...)					\
+-	__MAP(x,__SC_ARGS						\
+-	      ,,(unsigned int)regs->bx,,(unsigned int)regs->cx		\
+-	      ,,(unsigned int)regs->dx,,(unsigned int)regs->si		\
+-	      ,,(unsigned int)regs->di,,(unsigned int)regs->bp)
++	SYSCALL_PT_ARGS(x, __SC_COMPAT_CAST,				\
++			__MAP(x, __SC_TYPE, __VA_ARGS__))		\
+ 
+ #ifdef CONFIG_IA32_EMULATION
+ /*
+--- a/include/linux/syscalls.h
++++ b/include/linux/syscalls.h
+@@ -120,6 +120,7 @@ union bpf_attr;
+ #define __TYPE_IS_LL(t) (__TYPE_AS(t, 0LL) || __TYPE_AS(t, 0ULL))
+ #define __SC_LONG(t, a) __typeof(__builtin_choose_expr(__TYPE_IS_LL(t), 0LL, 0L)) a
+ #define __SC_CAST(t, a)	(__force t) a
++#define __SC_TYPE(t, a)	t
+ #define __SC_ARGS(t, a)	a
+ #define __SC_TEST(t, a) (void)BUILD_BUG_ON_ZERO(!__TYPE_IS_LL(t) && sizeof(t) > sizeof(long))
+ 
 
 
 
