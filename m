@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-22901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71C1A85DEBC
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:21:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5938885DF57
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:27:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31084B2C471
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:16:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E3311F22B2F
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:27:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 827AE7E779;
-	Wed, 21 Feb 2024 14:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6057F7BAF7;
+	Wed, 21 Feb 2024 14:26:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RdDckFx2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GfsESV3d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4190A78B7C;
-	Wed, 21 Feb 2024 14:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE817BB1F;
+	Wed, 21 Feb 2024 14:26:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524895; cv=none; b=VSuvpNi6u0YG+naijd9EfG95Qz24xGjonu++1GfZTq396iTrO637EReY7NgeG6tFd9vYJwdD+TvQMl1UI8tFTCNywjemN++i9i0BlMLKr39hNl7vnSyGsPpnXzzgRdlomkuTwb3VjwvnstU9brWWkdjTMk5R9c9nPbAHsUCbFBs=
+	t=1708525619; cv=none; b=BA9ZSlWHTpfGp+ikZPMriMmaH7o7Xu4Sw6r5CrM/CWxD47ZOMRC8F4DOrSl6prQWumm0u/n7nfLMzbioZMukNxGzUP9DGdrjg9VGKWvxTNxN7M8EbS3xYYftOd8vbNxN4iPPhJiQPhLKDRJCYzh9282mMNfk1G2B6xN1WBIPzxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524895; c=relaxed/simple;
-	bh=wjxiL/xM9gISPe9huV+/6UAbQMpjjtdij7Ai/HEOiOA=;
+	s=arc-20240116; t=1708525619; c=relaxed/simple;
+	bh=klAWYQ/oFiVf51Pq+V37ciCTSdIq825686FgVX4p7tQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dFhIfcy+KUtXQ0sHoJlCK+mI2919aiLyFQZEDb5FcdOYcWbgskcSZdTTR2jVoygF6NBxIgbFVcW/MpV42H8mYciSjXKuE3jcQCrRyytNtX6AYt0t5JKqpIiNNhPbW2do8Ffg7BlwOVvIVVWTJgL/T0Bx718rQD2llf3JCw9UOvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RdDckFx2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A32BDC433C7;
-	Wed, 21 Feb 2024 14:14:54 +0000 (UTC)
+	 MIME-Version; b=nandieTxgrRWL1UocsPvLWo7P2KI4NgqTcRzgK4dhuBFyTideYuw87cH0o8RfjHzlxGEBlKRzImcLU3utV3aava+HMrH3i3E2NTvfFg0hD7FlKznJE8hNVYTTE0Sacn52tTubBQR9S3VIAGm6872cwIYsckyX3RjH2OafUJMkJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GfsESV3d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9610DC433F1;
+	Wed, 21 Feb 2024 14:26:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524895;
-	bh=wjxiL/xM9gISPe9huV+/6UAbQMpjjtdij7Ai/HEOiOA=;
+	s=korg; t=1708525619;
+	bh=klAWYQ/oFiVf51Pq+V37ciCTSdIq825686FgVX4p7tQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RdDckFx2eZKkE+AsTJYxn1QQJlDg7d1MUqiui3Xoxr6187mZCCM1COgc8FOn1YbHf
-	 Ot5URD2qnnAgfRmvDmtWBFAnlvi9vMM9eF1FOby3FrsHsaxCaGIV3o10lUEBt15jCF
-	 AGTHPEnyFOMzMNbN/NQ57eODrN87c9kd8tS8Xxgw=
+	b=GfsESV3dvAab8So1j/26EAy/fndH0VszLZ6qcfnUjmtT+Ucj/StXs4E78cqQbDn7B
+	 yb69oPYCIjgoZf9W8aiCIDrmIfr+b0LBwaHIQxcOkYRdu4ttUGIHIBpTG6+P7qyHUb
+	 RMzbQgwq5kMGlLDwm/tyg4Nl/pBOVFEObIFZPqPE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>,
-	He Gao <hegao@google.com>
-Subject: [PATCH 5.10 373/379] dm: limit the number of targets and parameter size area
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 211/267] MIPS: Add memory clobber to csum_ipv6_magic() inline assembler
 Date: Wed, 21 Feb 2024 14:09:12 +0100
-Message-ID: <20240221130006.097771511@linuxfoundation.org>
+Message-ID: <20240221125946.813068156@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-commit bd504bcfec41a503b32054da5472904b404341a4 upstream.
+[ Upstream commit d55347bfe4e66dce2e1e7501e5492f4af3e315f8 ]
 
-The kvmalloc function fails with a warning if the size is larger than
-INT_MAX. The warning was triggered by a syscall testing robot.
+After 'lib: checksum: Use aligned accesses for ip_fast_csum and
+csum_ipv6_magic tests' was applied, the test_csum_ipv6_magic unit test
+started failing for all mips platforms, both little and bit endian.
+Oddly enough, adding debug code into test_csum_ipv6_magic() made the
+problem disappear.
 
-In order to avoid the warning, this commit limits the number of targets to
-1048576 and the size of the parameter area to 1073741824.
+The gcc manual says:
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: He Gao <hegao@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+"The "memory" clobber tells the compiler that the assembly code performs
+ memory reads or writes to items other than those listed in the input
+ and output operands (for example, accessing the memory pointed to by one
+ of the input parameters)
+"
+
+This is definitely the case for csum_ipv6_magic(). Indeed, adding the
+'memory' clobber fixes the problem.
+
+Cc: Charlie Jenkins <charlie@rivosinc.com>
+Cc: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-core.h  |    2 ++
- drivers/md/dm-ioctl.c |    3 ++-
- drivers/md/dm-table.c |    9 +++++++--
- 3 files changed, 11 insertions(+), 3 deletions(-)
+ arch/mips/include/asm/checksum.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/md/dm-core.h
-+++ b/drivers/md/dm-core.h
-@@ -19,6 +19,8 @@
- #include "dm.h"
+diff --git a/arch/mips/include/asm/checksum.h b/arch/mips/include/asm/checksum.h
+index dcebaaf8c862..803f2a6f9960 100644
+--- a/arch/mips/include/asm/checksum.h
++++ b/arch/mips/include/asm/checksum.h
+@@ -276,7 +276,8 @@ static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
+ 	"	.set	pop"
+ 	: "=&r" (sum), "=&r" (tmp)
+ 	: "r" (saddr), "r" (daddr),
+-	  "0" (htonl(len)), "r" (htonl(proto)), "r" (sum));
++	  "0" (htonl(len)), "r" (htonl(proto)), "r" (sum)
++	: "memory");
  
- #define DM_RESERVED_MAX_IOS		1024
-+#define DM_MAX_TARGETS			1048576
-+#define DM_MAX_TARGET_PARAMS		1024
- 
- struct dm_kobject_holder {
- 	struct kobject kobj;
---- a/drivers/md/dm-ioctl.c
-+++ b/drivers/md/dm-ioctl.c
-@@ -1760,7 +1760,8 @@ static int copy_params(struct dm_ioctl _
- 	if (copy_from_user(param_kernel, user, minimum_data_size))
- 		return -EFAULT;
- 
--	if (param_kernel->data_size < minimum_data_size)
-+	if (unlikely(param_kernel->data_size < minimum_data_size) ||
-+	    unlikely(param_kernel->data_size > DM_MAX_TARGETS * DM_MAX_TARGET_PARAMS))
- 		return -EINVAL;
- 
- 	secure_data = param_kernel->flags & DM_SECURE_DATA_FLAG;
---- a/drivers/md/dm-table.c
-+++ b/drivers/md/dm-table.c
-@@ -144,7 +144,12 @@ static int alloc_targets(struct dm_table
- int dm_table_create(struct dm_table **result, fmode_t mode,
- 		    unsigned num_targets, struct mapped_device *md)
- {
--	struct dm_table *t = kzalloc(sizeof(*t), GFP_KERNEL);
-+	struct dm_table *t;
-+
-+	if (num_targets > DM_MAX_TARGETS)
-+		return -EOVERFLOW;
-+
-+	t = kzalloc(sizeof(*t), GFP_KERNEL);
- 
- 	if (!t)
- 		return -ENOMEM;
-@@ -158,7 +163,7 @@ int dm_table_create(struct dm_table **re
- 
- 	if (!num_targets) {
- 		kfree(t);
--		return -ENOMEM;
-+		return -EOVERFLOW;
- 	}
- 
- 	if (alloc_targets(t, num_targets)) {
+ 	return csum_fold(sum);
+ }
+-- 
+2.43.0
+
 
 
 
