@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-22853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C721A85DECC
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:22:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2565785DF47
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:26:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78EBCB26994
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A71F31F21AC9
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:26:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AF9B7EEE2;
-	Wed, 21 Feb 2024 14:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4120D79DAE;
+	Wed, 21 Feb 2024 14:26:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kNVX4feu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TjWgEAA/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD3697E792;
-	Wed, 21 Feb 2024 14:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 000B74C62;
+	Wed, 21 Feb 2024 14:26:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524732; cv=none; b=L+u/RGWtheI/4y56SAu6VhoXDdi5vMhk880FZDGhXB7C3I1YUyVRfxcMAkDYaWeeNTcmPig66R2qECGa/yaZIHT5B6pO6pWq3hB3AzCJKfJEM8T0Z7fNa+ctLzGi041dUAJRhfTvlv+2IXhAVkNPE0YJxoeHtPrPmL3Jq7DPi+A=
+	t=1708525581; cv=none; b=VfDI9RYp6VuPHH5HWnk1XfxYztd03SfZ0UWNr33UZOBSI0y/xl3YARt4Wi7dW7huxvJJ8WLLrjzzBFeE45p7tjmq3JkM+ocmi70tgvy0mYkSYRKRP2UbBkXck/Oj0wKxDGNn+LKtKAiq8GAIwozdK2xQ/rcIOOSIDEWXg7Ikqyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524732; c=relaxed/simple;
-	bh=3F4ywAcbh6mLsfLUdJSuVGd8HBskPBrWA+r1BRsiXAE=;
+	s=arc-20240116; t=1708525581; c=relaxed/simple;
+	bh=j2Hi+Qv2Zg3gGypqAtUiMjxKJdGzG2/uy2hRD3WxrAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pJBeVSKccSFsqQCf6lhE5hvvvkp5TYOeYITrbSMjbpBnI3ahs4QPNV4rnd/TF0PSIVPzxj155MJtcIvaDBW9mzaNFs9ocVpRqZ/L1/MnVPFuW4efKwGSggGDh0DaFp222yIMwWu12cmFF3wrUtEkJ3Lhhrubt8R3xAic3dI0Piw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kNVX4feu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F997C433C7;
-	Wed, 21 Feb 2024 14:12:12 +0000 (UTC)
+	 MIME-Version; b=NzDd9Swg85hI5CtiyGmglN1fYrmAhoj/Yo6hl8bix9SoI6elHBNATz+aQyImk5UulBzx2bTKXDdjGoffQpu9SVQSb3fMr2YLRejNqjw4PcKvf30bz8IzP1cDJvygvWAQdqOade2+Y/xFSzokXhuAq3FQ8wuF4Y3AL1egLXULhDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TjWgEAA/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DCA6C433C7;
+	Wed, 21 Feb 2024 14:26:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524732;
-	bh=3F4ywAcbh6mLsfLUdJSuVGd8HBskPBrWA+r1BRsiXAE=;
+	s=korg; t=1708525580;
+	bh=j2Hi+Qv2Zg3gGypqAtUiMjxKJdGzG2/uy2hRD3WxrAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kNVX4feumJqVWp5m/MK7+MRHx//KgQTNMiWclv/n4VFNmqG2bRYieCnjG0Qj4WLPz
-	 JEpqPSEo1EwWH3qr7LuWoh23DJnoULZ4tWdahDAoS3fnETV826voL++A5JMACaiV4U
-	 TykkC83BVuHjyDidyZdKnZXFxh2Xeb3v0Q3AakOI=
+	b=TjWgEAA/jkuZ8yPteguOQYhbU+DiCFV6V/j1zqmCQ3UoFcR//Gsmow+CtzwbAyUJl
+	 vB9aodAke1l9FO4t5BHT/Z2DgVRrLuXS2UfpIN3tInLyuuKt5l5/8x5m6QWbOIrmmx
+	 BgZlqGx5EkEkUqrP4BU85Pbqxb/YMTN6sfVAC030=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve Wahl <steve.wahl@hpe.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH 5.10 332/379] x86/mm/ident_map: Use gbpages only where full GB page should be mapped.
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 170/267] af_unix: fix lockdep positive in sk_diag_dump_icons()
 Date: Wed, 21 Feb 2024 14:08:31 +0100
-Message-ID: <20240221130004.798415456@linuxfoundation.org>
+Message-ID: <20240221125945.474125544@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +64,248 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve Wahl <steve.wahl@hpe.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit d794734c9bbfe22f86686dc2909c25f5ffe1a572 upstream.
+[ Upstream commit 4d322dce82a1d44f8c83f0f54f95dd1b8dcf46c9 ]
 
-When ident_pud_init() uses only gbpages to create identity maps, large
-ranges of addresses not actually requested can be included in the
-resulting table; a 4K request will map a full GB.  On UV systems, this
-ends up including regions that will cause hardware to halt the system
-if accessed (these are marked "reserved" by BIOS).  Even processor
-speculation into these regions is enough to trigger the system halt.
+syzbot reported a lockdep splat [1].
 
-Only use gbpages when map creation requests include the full GB page
-of space.  Fall back to using smaller 2M pages when only portions of a
-GB page are included in the request.
+Blamed commit hinted about the possible lockdep
+violation, and code used unix_state_lock_nested()
+in an attempt to silence lockdep.
 
-No attempt is made to coalesce mapping requests. If a request requires
-a map entry at the 2M (pmd) level, subsequent mapping requests within
-the same 1G region will also be at the pmd level, even if adjacent or
-overlapping such requests could have been combined to map a full
-gbpage.  Existing usage starts with larger regions and then adds
-smaller regions, so this should not have any great consequence.
+It is not sufficient, because unix_state_lock_nested()
+is already used from unix_state_double_lock().
 
-[ dhansen: fix up comment formatting, simplifty changelog ]
+We need to use a separate subclass.
 
-Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20240126164841.170866-1-steve.wahl%40hpe.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch adds a distinct enumeration to make things
+more explicit.
+
+Also use swap() in unix_state_double_lock() as a clean up.
+
+v2: add a missing inline keyword to unix_state_lock_nested()
+
+[1]
+WARNING: possible circular locking dependency detected
+6.8.0-rc1-syzkaller-00356-g8a696a29c690 #0 Not tainted
+
+syz-executor.1/2542 is trying to acquire lock:
+ ffff88808b5df9e8 (rlock-AF_UNIX){+.+.}-{2:2}, at: skb_queue_tail+0x36/0x120 net/core/skbuff.c:3863
+
+but task is already holding lock:
+ ffff88808b5dfe70 (&u->lock/1){+.+.}-{2:2}, at: unix_dgram_sendmsg+0xfc7/0x2200 net/unix/af_unix.c:2089
+
+which lock already depends on the new lock.
+
+the existing dependency chain (in reverse order) is:
+
+-> #1 (&u->lock/1){+.+.}-{2:2}:
+        lock_acquire+0x1e3/0x530 kernel/locking/lockdep.c:5754
+        _raw_spin_lock_nested+0x31/0x40 kernel/locking/spinlock.c:378
+        sk_diag_dump_icons net/unix/diag.c:87 [inline]
+        sk_diag_fill+0x6ea/0xfe0 net/unix/diag.c:157
+        sk_diag_dump net/unix/diag.c:196 [inline]
+        unix_diag_dump+0x3e9/0x630 net/unix/diag.c:220
+        netlink_dump+0x5c1/0xcd0 net/netlink/af_netlink.c:2264
+        __netlink_dump_start+0x5d7/0x780 net/netlink/af_netlink.c:2370
+        netlink_dump_start include/linux/netlink.h:338 [inline]
+        unix_diag_handler_dump+0x1c3/0x8f0 net/unix/diag.c:319
+       sock_diag_rcv_msg+0xe3/0x400
+        netlink_rcv_skb+0x1df/0x430 net/netlink/af_netlink.c:2543
+        sock_diag_rcv+0x2a/0x40 net/core/sock_diag.c:280
+        netlink_unicast_kernel net/netlink/af_netlink.c:1341 [inline]
+        netlink_unicast+0x7e6/0x980 net/netlink/af_netlink.c:1367
+        netlink_sendmsg+0xa37/0xd70 net/netlink/af_netlink.c:1908
+        sock_sendmsg_nosec net/socket.c:730 [inline]
+        __sock_sendmsg net/socket.c:745 [inline]
+        sock_write_iter+0x39a/0x520 net/socket.c:1160
+        call_write_iter include/linux/fs.h:2085 [inline]
+        new_sync_write fs/read_write.c:497 [inline]
+        vfs_write+0xa74/0xca0 fs/read_write.c:590
+        ksys_write+0x1a0/0x2c0 fs/read_write.c:643
+        do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+        do_syscall_64+0xf5/0x230 arch/x86/entry/common.c:83
+       entry_SYSCALL_64_after_hwframe+0x63/0x6b
+
+-> #0 (rlock-AF_UNIX){+.+.}-{2:2}:
+        check_prev_add kernel/locking/lockdep.c:3134 [inline]
+        check_prevs_add kernel/locking/lockdep.c:3253 [inline]
+        validate_chain+0x1909/0x5ab0 kernel/locking/lockdep.c:3869
+        __lock_acquire+0x1345/0x1fd0 kernel/locking/lockdep.c:5137
+        lock_acquire+0x1e3/0x530 kernel/locking/lockdep.c:5754
+        __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
+        _raw_spin_lock_irqsave+0xd5/0x120 kernel/locking/spinlock.c:162
+        skb_queue_tail+0x36/0x120 net/core/skbuff.c:3863
+        unix_dgram_sendmsg+0x15d9/0x2200 net/unix/af_unix.c:2112
+        sock_sendmsg_nosec net/socket.c:730 [inline]
+        __sock_sendmsg net/socket.c:745 [inline]
+        ____sys_sendmsg+0x592/0x890 net/socket.c:2584
+        ___sys_sendmsg net/socket.c:2638 [inline]
+        __sys_sendmmsg+0x3b2/0x730 net/socket.c:2724
+        __do_sys_sendmmsg net/socket.c:2753 [inline]
+        __se_sys_sendmmsg net/socket.c:2750 [inline]
+        __x64_sys_sendmmsg+0xa0/0xb0 net/socket.c:2750
+        do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+        do_syscall_64+0xf5/0x230 arch/x86/entry/common.c:83
+       entry_SYSCALL_64_after_hwframe+0x63/0x6b
+
+other info that might help us debug this:
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  lock(&u->lock/1);
+                               lock(rlock-AF_UNIX);
+                               lock(&u->lock/1);
+  lock(rlock-AF_UNIX);
+
+ *** DEADLOCK ***
+
+1 lock held by syz-executor.1/2542:
+  #0: ffff88808b5dfe70 (&u->lock/1){+.+.}-{2:2}, at: unix_dgram_sendmsg+0xfc7/0x2200 net/unix/af_unix.c:2089
+
+stack backtrace:
+CPU: 1 PID: 2542 Comm: syz-executor.1 Not tainted 6.8.0-rc1-syzkaller-00356-g8a696a29c690 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/17/2023
+Call Trace:
+ <TASK>
+  __dump_stack lib/dump_stack.c:88 [inline]
+  dump_stack_lvl+0x1e7/0x2d0 lib/dump_stack.c:106
+  check_noncircular+0x366/0x490 kernel/locking/lockdep.c:2187
+  check_prev_add kernel/locking/lockdep.c:3134 [inline]
+  check_prevs_add kernel/locking/lockdep.c:3253 [inline]
+  validate_chain+0x1909/0x5ab0 kernel/locking/lockdep.c:3869
+  __lock_acquire+0x1345/0x1fd0 kernel/locking/lockdep.c:5137
+  lock_acquire+0x1e3/0x530 kernel/locking/lockdep.c:5754
+  __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
+  _raw_spin_lock_irqsave+0xd5/0x120 kernel/locking/spinlock.c:162
+  skb_queue_tail+0x36/0x120 net/core/skbuff.c:3863
+  unix_dgram_sendmsg+0x15d9/0x2200 net/unix/af_unix.c:2112
+  sock_sendmsg_nosec net/socket.c:730 [inline]
+  __sock_sendmsg net/socket.c:745 [inline]
+  ____sys_sendmsg+0x592/0x890 net/socket.c:2584
+  ___sys_sendmsg net/socket.c:2638 [inline]
+  __sys_sendmmsg+0x3b2/0x730 net/socket.c:2724
+  __do_sys_sendmmsg net/socket.c:2753 [inline]
+  __se_sys_sendmmsg net/socket.c:2750 [inline]
+  __x64_sys_sendmmsg+0xa0/0xb0 net/socket.c:2750
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xf5/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
+RIP: 0033:0x7f26d887cda9
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 e1 20 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f26d95a60c8 EFLAGS: 00000246 ORIG_RAX: 0000000000000133
+RAX: ffffffffffffffda RBX: 00007f26d89abf80 RCX: 00007f26d887cda9
+RDX: 000000000000003e RSI: 00000000200bd000 RDI: 0000000000000004
+RBP: 00007f26d88c947a R08: 0000000000000000 R09: 0000000000000000
+R10: 00000000000008c0 R11: 0000000000000246 R12: 0000000000000000
+R13: 000000000000000b R14: 00007f26d89abf80 R15: 00007ffcfe081a68
+
+Fixes: 2aac7a2cb0d9 ("unix_diag: Pending connections IDs NLA")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240130184235.1620738-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/mm/ident_map.c |   23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+ include/net/af_unix.h | 20 ++++++++++++++------
+ net/unix/af_unix.c    | 14 ++++++--------
+ net/unix/diag.c       |  2 +-
+ 3 files changed, 21 insertions(+), 15 deletions(-)
 
---- a/arch/x86/mm/ident_map.c
-+++ b/arch/x86/mm/ident_map.c
-@@ -26,18 +26,31 @@ static int ident_pud_init(struct x86_map
- 	for (; addr < end; addr = next) {
- 		pud_t *pud = pud_page + pud_index(addr);
- 		pmd_t *pmd;
-+		bool use_gbpage;
+diff --git a/include/net/af_unix.h b/include/net/af_unix.h
+index 3426d6dacc45..6cb5026cf727 100644
+--- a/include/net/af_unix.h
++++ b/include/net/af_unix.h
+@@ -43,12 +43,6 @@ struct unix_skb_parms {
  
- 		next = (addr & PUD_MASK) + PUD_SIZE;
- 		if (next > end)
- 			next = end;
+ #define UNIXCB(skb)	(*(struct unix_skb_parms *)&((skb)->cb))
  
--		if (info->direct_gbpages) {
--			pud_t pudval;
-+		/* if this is already a gbpage, this portion is already mapped */
-+		if (pud_large(*pud))
-+			continue;
+-#define unix_state_lock(s)	spin_lock(&unix_sk(s)->lock)
+-#define unix_state_unlock(s)	spin_unlock(&unix_sk(s)->lock)
+-#define unix_state_lock_nested(s) \
+-				spin_lock_nested(&unix_sk(s)->lock, \
+-				SINGLE_DEPTH_NESTING)
+-
+ /* The AF_UNIX socket */
+ struct unix_sock {
+ 	/* WARNING: sk has to be the first member */
+@@ -72,6 +66,20 @@ static inline struct unix_sock *unix_sk(const struct sock *sk)
+ 	return (struct unix_sock *)sk;
+ }
+ 
++#define unix_state_lock(s)	spin_lock(&unix_sk(s)->lock)
++#define unix_state_unlock(s)	spin_unlock(&unix_sk(s)->lock)
++enum unix_socket_lock_class {
++	U_LOCK_NORMAL,
++	U_LOCK_SECOND,	/* for double locking, see unix_state_double_lock(). */
++	U_LOCK_DIAG, /* used while dumping icons, see sk_diag_dump_icons(). */
++};
 +
-+		/* Is using a gbpage allowed? */
-+		use_gbpage = info->direct_gbpages;
- 
--			if (pud_present(*pud))
--				continue;
-+		/* Don't use gbpage if it maps more than the requested region. */
-+		/* at the begining: */
-+		use_gbpage &= ((addr & ~PUD_MASK) == 0);
-+		/* ... or at the end: */
-+		use_gbpage &= ((next & ~PUD_MASK) == 0);
++static inline void unix_state_lock_nested(struct sock *sk,
++				   enum unix_socket_lock_class subclass)
++{
++	spin_lock_nested(&unix_sk(sk)->lock, subclass);
++}
 +
-+		/* Never overwrite existing mappings */
-+		use_gbpage &= !pud_present(*pud);
-+
-+		if (use_gbpage) {
-+			pud_t pudval;
+ #define peer_wait peer_wq.wait
  
--			addr &= PUD_MASK;
- 			pudval = __pud((addr - info->offset) | info->page_flag);
- 			set_pud(pud, pudval);
- 			continue;
+ long unix_inq_len(struct sock *sk);
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 304eb26b34dc..9b1dd845bca1 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -1118,13 +1118,11 @@ static void unix_state_double_lock(struct sock *sk1, struct sock *sk2)
+ 		unix_state_lock(sk1);
+ 		return;
+ 	}
+-	if (sk1 < sk2) {
+-		unix_state_lock(sk1);
+-		unix_state_lock_nested(sk2);
+-	} else {
+-		unix_state_lock(sk2);
+-		unix_state_lock_nested(sk1);
+-	}
++	if (sk1 > sk2)
++		swap(sk1, sk2);
++
++	unix_state_lock(sk1);
++	unix_state_lock_nested(sk2, U_LOCK_SECOND);
+ }
+ 
+ static void unix_state_double_unlock(struct sock *sk1, struct sock *sk2)
+@@ -1343,7 +1341,7 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
+ 		goto out_unlock;
+ 	}
+ 
+-	unix_state_lock_nested(sk);
++	unix_state_lock_nested(sk, U_LOCK_SECOND);
+ 
+ 	if (sk->sk_state != st) {
+ 		unix_state_unlock(sk);
+diff --git a/net/unix/diag.c b/net/unix/diag.c
+index 951b33fa8f5c..2975e7a061d0 100644
+--- a/net/unix/diag.c
++++ b/net/unix/diag.c
+@@ -83,7 +83,7 @@ static int sk_diag_dump_icons(struct sock *sk, struct sk_buff *nlskb)
+ 			 * queue lock. With the other's queue locked it's
+ 			 * OK to lock the state.
+ 			 */
+-			unix_state_lock_nested(req);
++			unix_state_lock_nested(req, U_LOCK_DIAG);
+ 			peer = unix_sk(req)->peer;
+ 			buf[i++] = (peer ? sock_i_ino(peer) : 0);
+ 			unix_state_unlock(req);
+-- 
+2.43.0
+
 
 
 
