@@ -1,128 +1,155 @@
-Return-Path: <stable+bounces-21797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 293BB85D2DD
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 09:53:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78B4F85D2FE
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 10:02:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B8C41C22831
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 08:53:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2139A1F21BE8
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 09:02:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADBE63D0A9;
-	Wed, 21 Feb 2024 08:53:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="H7TaBOX3";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Zr/aKmTq"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF04A3D0AF;
+	Wed, 21 Feb 2024 09:02:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from fout7-smtp.messagingengine.com (fout7-smtp.messagingengine.com [103.168.172.150])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 422523D0D2
-	for <stable@vger.kernel.org>; Wed, 21 Feb 2024 08:53:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA103A269;
+	Wed, 21 Feb 2024 09:02:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708505632; cv=none; b=PXYdDN/dZvH78f/eJ3jFOPSDRUlMP0+WIjihzRktDhITlXBmNTi9AAXueIummRTo3wIc30b1V+1cu+wR93gQTa4AQtYQ0VugpMK+mqvRihWqrY3TKvR5xmocIPAvUVM9ypj59QZAOJ6ySMVgJIDnXzNO1NIU5fQFPg+SdFycXqY=
+	t=1708506127; cv=none; b=ZNpK7IrL07xO85GdmEKN+hmNCr9mOI22XU7qp6PEx3i4J324SVbUGyvJGAcyQGyNw7lgSh2eApTpBHWrEC8LbQ/QjgBfo3RNYzKQrrZKSz+8TY8wZjMlb2vD0tDoz74vuB95DIPe7bT9nlidTWf8yb9X8fhQG5fRdlGBcCiRv6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708505632; c=relaxed/simple;
-	bh=seAWvNEF+bpbfdQiXWD4tzHW4PNYgdcLH8yVn3vPhSo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=McmdCRlu5BA+SCD/ZW4UI8E4Vgihq7Uwo97RjnRTqpIutJxc53/X3dfrRtvdL7Ww/3Ns1x64cCyqzz1aSoI+xOrmZ26e1y85/P69IzVj+qnW3jzEt5z12Vb6xItUyEaJwcjBSPyIbI7Ie6Sw2oUsxrmt5w3zmv1WkgPjdl28adY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=H7TaBOX3; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Zr/aKmTq; arc=none smtp.client-ip=103.168.172.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-	by mailfout.nyi.internal (Postfix) with ESMTP id 3144D13800B1;
-	Wed, 21 Feb 2024 03:53:36 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute3.internal (MEProxy); Wed, 21 Feb 2024 03:53:36 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1708505616; x=1708592016; bh=68c7U6GWch
-	1ANmqpPUknCJmr+7osoRa28nWAXTwftM0=; b=H7TaBOX3uXNd0J/iN/T39yeRI9
-	jZPCIdXws+zWGIwCkzLhQa8jIjvJDFl5nBRNcnXZDdAKfV/Biuo3nfSTWAS+i8SC
-	ozFx0T3h1cD8bibKcZcEgV0QGWTkstmJIHMXFPxqoMlVX/2tctmtBthf0YpS7Ts2
-	ol5EWuy/yO9yMOkmz4eERpGwqFHkUnGecwab0OvkJCsTlaYJYR+hx/5u3IH8DC1i
-	asFWy9aiea6zgpXHRl5qUmIoTht94jyLohlui0qVsEQN6DPQNQCN0Fqa/tk8jcxY
-	26dbeillJbRU0k96P+Nure1uLixVShdDlF2rptOPfE4ULGsSaJYnTu6uPeuw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm1; t=1708505616; x=1708592016; bh=68c7U6GWch1ANmqpPUknCJmr+7os
-	oRa28nWAXTwftM0=; b=Zr/aKmTq6rRtm4QlmXAiK20RyNPKrKjAFJwgKpa1FY9n
-	iTjgi5Lf02pwmv0qgJj3Jo7aY8tVBZH8zFfBDlcDrBV78GDpbsUNnYtKW2QL9/DS
-	oqNXnw1D06HYwe9ISmGo1/pObdooEALBGiF1u2GDJVnzGE2xJJosD/kABvG2rPdl
-	Ek+ltgN334j0QXPyQ09I/KxhTODqqsnVMA94G2ug6+R0W4471v3U7q1QAyet/EQ4
-	mAOEC5vuUQhcLjCsT2IdhQgfSIc+ERUiGDOeHLpR2ewrtZfGk+qpy/rZm1kvQTRf
-	D6u0TfPXo82n3gruJIbykkIgrasTsUcG3G1lZ6M/gg==
-X-ME-Sender: <xms:D7rVZdzYNt0_v-KO-BHq43S_JTAM9VCz6EVasjDiBzFIzsC7TtgP0Q>
-    <xme:D7rVZdQZ9nG_8lKdCWlNaKvdkooK5M_JKZo7JWzRXMqk5vjSzUFA-v3ms4tUI_q4T
-    gapwGz2-vsZDQ>
-X-ME-Received: <xmr:D7rVZXXPzT_BJqBGKqEAYlsIpcvITmpusCn7u_xQ-DJJpE_1MrOzUzGDbfMasBZU35DMFSh8tnE9lBjlLzfj7zIESplbpmquzA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfedugdduvdeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
-    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepgeehue
-    ehgfdtledutdelkeefgeejteegieekheefudeiffdvudeffeelvedttddvnecuffhomhgr
-    ihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomh
-X-ME-Proxy: <xmx:D7rVZfjeww2D3dE7d-UIdb4fLFkyEEtcdwmeTxhwUVEL8q_9iBoyvg>
-    <xmx:D7rVZfCDnK8OOfeEoEOXQGlZFc_APkZUovuwH6VDiMLVxN1X9BhHQg>
-    <xmx:D7rVZYJpVKYRwUr1pQFg_6T1380IHaJFCY-BBJqs1wxKVmy4BqxGkQ>
-    <xmx:ELrVZXa7apUhKk0R1Z3bA90qkLLzQ-Eh-pMHovP8R6uGPUWCry3F_g>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 21 Feb 2024 03:53:35 -0500 (EST)
-Date: Wed, 21 Feb 2024 09:53:20 +0100
-From: Greg KH <greg@kroah.com>
-To: Easwar Hariharan <eahariha@linux.microsoft.com>
-Cc: stable@vger.kernel.org, Anshuman Khandual <anshuman.khandual@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>, Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Will Deacon <will@kernel.org>
-Subject: Re: [PATCH 5.15.y] arm64: Subscribe Microsoft Azure Cobalt 100 to
- ARM Neoverse N2 errata
-Message-ID: <2024022112-laziness-alongside-0c87@gregkh>
-References: <2024021948-flashing-prescribe-3dcf@gregkh>
- <20240220192816.2842423-1-eahariha@linux.microsoft.com>
+	s=arc-20240116; t=1708506127; c=relaxed/simple;
+	bh=DG6+fpNdY1Tug+hDsUyTbjuti0AppTqFewpkJHzY90I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HtuoDhjgHK90i7yfj1oL+arT3TMFr8c5nlPrdAYmJOb4e0Ewwy3+D4Z/ySWZB827A59kwO1FqCHgZCA43/rzVb80dkXheMaOn3y6fmvJGzuV9rlqtPadgYa9ZbsHDwTZaEALIgf5R9tNkaJQa845EuCDOEa6XsUOt+8tVE/+9xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D60CC433F1;
+	Wed, 21 Feb 2024 09:02:05 +0000 (UTC)
+Message-ID: <852dea56-336a-4484-8754-ee735af7bdaf@xs4all.nl>
+Date: Wed, 21 Feb 2024 10:02:01 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240220192816.2842423-1-eahariha@linux.microsoft.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] media: cec: core: remove length check of Timer Status
+To: =?UTF-8?B?TmluaSBTb25nICjlrovlrpvlpq4p?= <Nini.Song@mediatek.com>
+Cc: "linux-mediatek@lists.infradead.org"
+ <linux-mediatek@lists.infradead.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
+ =?UTF-8?B?Q0kgV3UgKOS8jeWAieWEhCk=?= <ci.wu@mediatek.com>,
+ "mchehab@kernel.org" <mchehab@kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "nicolas@fjasle.eu" <nicolas@fjasle.eu>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "matthias.bgg@gmail.com" <matthias.bgg@gmail.com>,
+ "angelogioacchino.delregno@collabora.com"
+ <angelogioacchino.delregno@collabora.com>,
+ "jani.nikula@intel.com" <jani.nikula@intel.com>
+References: <20240125132850.10430-1-nini.song@mediatek.com>
+ <8a4447ba-d4ac-40ac-9d6b-796db37f3100@xs4all.nl>
+ <089a5abf85fb3aaa57cb9436193b09eea47a03d2.camel@mediatek.com>
+Content-Language: en-US, nl
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+In-Reply-To: <089a5abf85fb3aaa57cb9436193b09eea47a03d2.camel@mediatek.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Feb 20, 2024 at 07:28:16PM +0000, Easwar Hariharan wrote:
-> commit fb091ff394792c018527b3211bbdfae93ea4ac02 upstream
+Dear Nini,
+
+Unfortunately I forgot to add a 'Fixes' tag to the patch, if I had, then it would
+have happened automatically.
+
+Please remind me of this once kernel 6.9-rc1 is released since that will contain
+the fix. Then I can post the same patch to the stable mailinglist for inclusion in
+older kernels.
+
+It has to wait until 6.9-rc1 is release though, patches need to be in mainline first
+before they can be backported.
+
+Regards,
+
+	Hans
+
+On 21/02/2024 07:30, Nini Song (宋宛妮) wrote:
+> Dear Hans,
 > 
-> Add the MIDR value of Microsoft Azure Cobalt 100, which is a Microsoft
-> implemented CPU based on r0p0 of the ARM Neoverse N2 CPU, and therefore
-> suffers from all the same errata.
+> Thank your reply.
+> Could you also help to marge solution into v5.15? Our customer used v5.15 for MP production, which requires this solution.
 > 
-> CC: stable@vger.kernel.org # 5.15+
-> Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-> Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> Acked-by: Mark Rutland <mark.rutland@arm.com>
-> Acked-by: Marc Zyngier <maz@kernel.org>
-> Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
-> Link: https://lore.kernel.org/r/20240214175522.2457857-1-eahariha@linux.microsoft.com
-> Signed-off-by: Will Deacon <will@kernel.org>
-> Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-> ---
->  Documentation/arm64/silicon-errata.rst | 7 +++++++
->  arch/arm64/include/asm/cputype.h       | 4 ++++
->  arch/arm64/kernel/cpu_errata.c         | 3 +++
->  3 files changed, 14 insertions(+)
+> 
+> BR,
+> Nini Song
+> On Mon, 2024-02-05 at 13:00 +0100, Hans Verkuil wrote:
+>> 	
+>>
+>> External email : Please do not click links or open attachments until you have verified the sender or the content.
+>>
+>> On 25/01/2024 14:28, nini.song@mediatek.com wrote:
+>> > From: "nini.song" <nini.song@mediatek.com>
+>> > 
+>> > The valid_la is used to check the length requirements,
+>> > including special cases of Timer Status. If the length is
+>> > shorter than 5, that means no Duration Available is returned,
+>> > the message will be forced to be invalid.
+>> > 
+>> > However, the description of Duration Available in the spec
+>> > is that this parameter may be returned when these cases, or
+>> > that it can be optionally return when these cases. The key
+>> > words in the spec description are flexible choices.
+>>
+>> Good catch, the spec indeed says 'may', so dropping the check
+>> in this patch is the correct thing to do.
+>>
+>> It's merged in our staging tree and it will appear in v6.9.
+>>
+>> Regards,
+>>
+>> Hans
+>>
+>> > 
+>> > Remove the special length check of Timer Status to fit the
+>> > spec which is not compulsory about that.
+>> > 
+>> > Signed-off-by: Nini Song <nini.song@mediatek.com>
+>> > ---
+>> >  drivers/media/cec/core/cec-adap.c | 14 --------------
+>> >  1 file changed, 14 deletions(-)
+>> > 
+>> > diff --git a/drivers/media/cec/core/cec-adap.c b/drivers/media/cec/core/cec-adap.c
+>> > index 5741adf09a2e..559a172ebc6c 100644
+>> > --- a/drivers/media/cec/core/cec-adap.c
+>> > +++ b/drivers/media/cec/core/cec-adap.c
+>> > @@ -1151,20 +1151,6 @@ void cec_received_msg_ts(struct cec_adapter *adap,
+>> >  if (valid_la && min_len) {
+>> >  /* These messages have special length requirements */
+>> >  switch (cmd) {
+>> > -case CEC_MSG_TIMER_STATUS:
+>> > -if (msg->msg[2] & 0x10) {
+>> > -switch (msg->msg[2] & 0xf) {
+>> > -case CEC_OP_PROG_INFO_NOT_ENOUGH_SPACE:
+>> > -case CEC_OP_PROG_INFO_MIGHT_NOT_BE_ENOUGH_SPACE:
+>> > -if (msg->len < 5)
+>> > -valid_la = false;
+>> > -break;
+>> > -}
+>> > -} else if ((msg->msg[2] & 0xf) == CEC_OP_PROG_ERROR_DUPLICATE) {
+>> > -if (msg->len < 5)
+>> > -valid_la = false;
+>> > -}
+>> > -break;
+>> >  case CEC_MSG_RECORD_ON:
+>> >  switch (msg->msg[2]) {
+>> >  case CEC_OP_RECORD_SRC_OWN:
+>>
+>>
 
-Both now queued up, thanks.
-
-greg k-h
 
