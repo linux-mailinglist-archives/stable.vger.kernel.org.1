@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-22765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6496485DDC5
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:11:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7584585DBEF
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:47:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20C8D282AB1
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:11:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 05F88B21574
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:47:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC7A37E795;
-	Wed, 21 Feb 2024 14:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44F9269D21;
+	Wed, 21 Feb 2024 13:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oh+dXc9p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v47rjpcc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79A4D7E78F;
-	Wed, 21 Feb 2024 14:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF13B4D5B7;
+	Wed, 21 Feb 2024 13:47:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524440; cv=none; b=D6B/G07pB9uQyYbwFNrgfZarDlxxzzBr66wCocCpb6eb7JjEM/eeziINSvCklCRl+noBya3D9va81OVM0RG3momEwgZde0+f1Da3ogJ22R3+qOO0WxRu4f6k1thFQDUiZ4X+dmA+dk9GYkRUicbZpFK55qfEVzDd7YyxyFwakJI=
+	t=1708523229; cv=none; b=rBhjUK+ifPqxpE4CfmTV5JOiHR1p5G/ccbpbhjvatwJyO2eNknt6x4TV/m9OrDzyNtTb6dpeLwzx5KB6hfs/rtqNZHEhDQNdHFT5cNoFN2ss89Pn5ChN59Gh+9jMOFQdX5+QMrtoaek/Y/Z7Eplu9ofXHK1Jto4HVt4MGI5bD2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524440; c=relaxed/simple;
-	bh=uKgKyIokow+9Rcxaj7gKw+xoA6q/S/uDnHWZFt19g4M=;
+	s=arc-20240116; t=1708523229; c=relaxed/simple;
+	bh=phkmQbiJ7rSiVv/9/cG9pgqSdj5eLxXkAFuntwOAo+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FtGRY3RJNDa1/2dW2SyDJ96hfQqRRAo4mAmlC0lvVLo91GqML3jrdRYypM6SG4nngUtLIoQAGvcacWkpB8gRUu7pOk5dVlZSxg4XC5UFlT4iZNwRhQxsBkAEzGazmMot3RbjFftobEm2DUUCnyXOoWCFEe3xTkc4/Lt9p8D8sBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oh+dXc9p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE714C433F1;
-	Wed, 21 Feb 2024 14:07:19 +0000 (UTC)
+	 MIME-Version; b=amnviw38NBpV+pPwZApMnUAhcKx97inHbmWN86AnyyYPXddD6yYCpZQhHcbthSXQ1O8kSQHxqMyD/5QzWPpi5CjZ3IoJ+Rsc3RPp08tHYEY/WlxyfzDeR7sM5+bhFYVdLZ9Mq6IswxZtaiMx3nyGLI3aT5yEjAk+BH4Ofq1GrJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v47rjpcc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74D29C433C7;
+	Wed, 21 Feb 2024 13:47:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524440;
-	bh=uKgKyIokow+9Rcxaj7gKw+xoA6q/S/uDnHWZFt19g4M=;
+	s=korg; t=1708523228;
+	bh=phkmQbiJ7rSiVv/9/cG9pgqSdj5eLxXkAFuntwOAo+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oh+dXc9pdtp2ZcnwcIIH4BdcVBT2YYgzqEoS4f0ntCozJTxx/TP/tKGWVAhDEkv0P
-	 WUJepb3DAfT/TOKJSHgMzwYtr9Hl0zSZpuFZIsbnUEsTSoBuU3iE6ZhsKzKdsZVsnQ
-	 iVUx/cRVhJ7aR03/Y6pDkVVMJiLOEPkF5OetdWHg=
+	b=v47rjpccRUqoL3hCseJqEzpzYU0m4V2x3JQ0pJ6AdVv4QSJQAe9n1QS42KugsQuPT
+	 wFv3My6fVEPpgDiwCAGav7YIaHsgjseesGD6GaXGNDdgBNM3GsdFt2ybqfnnbNncXD
+	 DlmToFzE+NY91xXwCjoxcQQtrh7mirQTGbv5AE0w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Kees Cook <keescook@chromium.org>,
+	Jean Delvare <jdelvare@suse.de>,
+	Piotr Zakowski <piotr.zakowski@intel.com>,
+	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 244/379] uapi: stddef.h: Fix __DECLARE_FLEX_ARRAY for C++
-Date: Wed, 21 Feb 2024 14:07:03 +0100
-Message-ID: <20240221130002.129694812@linuxfoundation.org>
+Subject: [PATCH 5.15 373/476] i2c: i801: Fix block process call transactions
+Date: Wed, 21 Feb 2024 14:07:04 +0100
+Message-ID: <20240221130021.819058122@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Dobriyan <adobriyan@gmail.com>
+From: Jean Delvare <jdelvare@suse.de>
 
-[ Upstream commit 32a4ec211d4164e667d9d0b807fadf02053cd2e9 ]
+[ Upstream commit c1c9d0f6f7f1dbf29db996bd8e166242843a5f21 ]
 
-__DECLARE_FLEX_ARRAY(T, member) macro expands to
+According to the Intel datasheets, software must reset the block
+buffer index twice for block process call transactions: once before
+writing the outgoing data to the buffer, and once again before
+reading the incoming data from the buffer.
 
-	struct {
-		struct {} __empty_member;
-		T member[];
-	};
+The driver is currently missing the second reset, causing the wrong
+portion of the block buffer to be read.
 
-which is subtly wrong in C++ because sizeof(struct{}) is 1 not 0,
-changing UAPI structures layouts.
-
-This can be fixed by expanding to
-
-	T member[];
-
-Now g++ doesn't like "T member[]" either, throwing errors on
-the following code:
-
-	struct S {
-		union {
-			T1 member1[];
-			T2 member2[];
-		};
-	};
-
-or
-
-	struct S {
-		T member[];
-	};
-
-Use "T member[0];" which seems to work and does the right thing wrt
-structure layout.
-
-Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
-Fixes: 3080ea5553cc ("stddef: Introduce DECLARE_FLEX_ARRAY() helper")
-Link: https://lore.kernel.org/r/97242381-f1ec-4a4a-9472-1a464f575657@p183
-Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Jean Delvare <jdelvare@suse.de>
+Reported-by: Piotr Zakowski <piotr.zakowski@intel.com>
+Closes: https://lore.kernel.org/linux-i2c/20240213120553.7b0ab120@endymion.delvare/
+Fixes: 315cd67c9453 ("i2c: i801: Add Block Write-Block Read Process Call support")
+Reviewed-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/stddef.h | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/i2c/busses/i2c-i801.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/uapi/linux/stddef.h b/include/uapi/linux/stddef.h
-index 7837ba4fe728..46c7bab501cb 100644
---- a/include/uapi/linux/stddef.h
-+++ b/include/uapi/linux/stddef.h
-@@ -29,6 +29,11 @@
- 		struct TAG { MEMBERS } ATTRS NAME; \
- 	}
+diff --git a/drivers/i2c/busses/i2c-i801.c b/drivers/i2c/busses/i2c-i801.c
+index 8ecba1ca9236..87c2c7c84736 100644
+--- a/drivers/i2c/busses/i2c-i801.c
++++ b/drivers/i2c/busses/i2c-i801.c
+@@ -522,11 +522,10 @@ static int i801_block_transaction_by_block(struct i801_priv *priv,
+ 	/* Set block buffer mode */
+ 	outb_p(inb_p(SMBAUXCTL(priv)) | SMBAUXCTL_E32B, SMBAUXCTL(priv));
  
-+#ifdef __cplusplus
-+/* sizeof(struct{}) is 1 in C++, not 0, can't use C version of the macro. */
-+#define __DECLARE_FLEX_ARRAY(T, member)	\
-+	T member[0]
-+#else
- /**
-  * __DECLARE_FLEX_ARRAY() - Declare a flexible array usable in a union
-  *
-@@ -45,3 +50,5 @@
- 		TYPE NAME[]; \
+-	inb_p(SMBHSTCNT(priv)); /* reset the data buffer index */
+-
+ 	if (read_write == I2C_SMBUS_WRITE) {
+ 		len = data->block[0];
+ 		outb_p(len, SMBHSTDAT0(priv));
++		inb_p(SMBHSTCNT(priv));	/* reset the data buffer index */
+ 		for (i = 0; i < len; i++)
+ 			outb_p(data->block[i+1], SMBBLKDAT(priv));
  	}
- #endif
-+
-+#endif
+@@ -542,6 +541,7 @@ static int i801_block_transaction_by_block(struct i801_priv *priv,
+ 			return -EPROTO;
+ 
+ 		data->block[0] = len;
++		inb_p(SMBHSTCNT(priv));	/* reset the data buffer index */
+ 		for (i = 0; i < len; i++)
+ 			data->block[i + 1] = inb_p(SMBBLKDAT(priv));
+ 	}
 -- 
 2.43.0
 
