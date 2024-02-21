@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-23049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F31B85DEFB
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:23:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDFD985D9C8
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:22:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEBDA1F238D9
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:23:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E463B25957
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:22:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D3B969E00;
-	Wed, 21 Feb 2024 14:23:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A9917BAE2;
+	Wed, 21 Feb 2024 13:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aba7CRzz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kLeZ0631"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29EAA3CF42;
-	Wed, 21 Feb 2024 14:23:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 199C7763F6;
+	Wed, 21 Feb 2024 13:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525408; cv=none; b=ITTKfDIrkj4ajFBWn3F42Y2UIEQHjPLUHMhFDc7qtNYxZjpoqCiAF+tZ3IHE1Sn71/SO7y/nAUpBGzePX+cstWVzUmlnn2HSAOSO2l2B1onemiQUEPBoCyk2RLfL2f6NM8ME6ePHgslRLazE3xYKjWAHrJ+/fctJzFi0UFSvUL0=
+	t=1708521725; cv=none; b=gQ+SeKLXqQw3MqsgmmgKiTZhHxeNbW9rIFhHmWchVLmJ7f3JAn0gXu+xbanduMtLJR4cGsPRMb6Uq1aHATmPZGCM9wltbWXALPSAmnpqIisGMIS93z9usIPVCikuFvDjyqOx8lZUv5MhF1pqaTOxqnOSyGPdiC0hJWkAjF4ATSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525408; c=relaxed/simple;
-	bh=ZT/GXNB3Ui7g/T1/y4nS+64ab7EAkd6xg+RZomtp2WE=;
+	s=arc-20240116; t=1708521725; c=relaxed/simple;
+	bh=SDvzDTtArtkXy++YzCaqdmyFRiLfCLp2mMs2huSqy4I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZveEv5owCXPAfZdJS0rzN5gDi9IRLL90sdCALnIRf1km6FtCvKkmEhMv+DjUve9RGrrT2dP5EqcnIp5WUwKPUZ2c+IH1Dmy+we9vt6wd0G6QC0/c9VKHjnCVXkRDVnzO8scEUzEQ28MlotpnyJuRzHJW/kFi/S5hXfH5pYIgBPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aba7CRzz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79B02C433C7;
-	Wed, 21 Feb 2024 14:23:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sGn5RGiEvJ5YVlNHBG00o+5Ct7vazUh6NxzquYji4yd848q07SqXLId6ZsSVlypsK3ySti3nMesi03uYEwOX6zXrmE4hqJLLMSLSypr/sMV17QE7hnOFMGWnHSaelTtg1eRm1IdiUcqV0MQZP9N0GJOFGr1j9V+Vc+do1cvs+IU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kLeZ0631; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F98BC433F1;
+	Wed, 21 Feb 2024 13:22:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525408;
-	bh=ZT/GXNB3Ui7g/T1/y4nS+64ab7EAkd6xg+RZomtp2WE=;
+	s=korg; t=1708521724;
+	bh=SDvzDTtArtkXy++YzCaqdmyFRiLfCLp2mMs2huSqy4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aba7CRzzVFVb1Tr0kH5tmkgOYpw7c9ZyM043yplY6sECVEE4xWGkVOm/1tjtqOLsm
-	 YLmH1h67TGbSHwCedCYazHFbD2EHJ/6wa0+Qkec1LNOOfqdQ0ejPnnQN0O5773BjQv
-	 y+sA4QzJZVDV+KgSLfqU1p6iJq/pCnWCgAxzA5+I=
+	b=kLeZ0631hftkP7yGmK+yExg6J/q19MJo8a0/HXQbJ7ErnhWYOmM8HK4nZHfowNRz9
+	 hsgzwOCNPF0Nwd00PIGb+0ZVb58bJxbwhQ6nktyiz6ZbL6bnzrQ1VF7K/m8sXwTJb6
+	 jzKNAt/2pUVvl6dKVsHrKpSb8tN5qLUDYJM58NCU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Stodden <dns@arista.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Dmitry Safonov <dima@arista.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 147/267] PCI: switchtec: Fix stdev_release() crash after surprise hot remove
-Date: Wed, 21 Feb 2024 14:08:08 +0100
-Message-ID: <20240221125944.671325300@linuxfoundation.org>
+	=?UTF-8?q?Jan=20Kundr=C3=A1t?= <jan.kundrat@cesnet.cz>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Subject: [PATCH 4.19 188/202] serial: max310x: improve crystal stable clock detection
+Date: Wed, 21 Feb 2024 14:08:09 +0100
+Message-ID: <20240221125937.880702899@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +59,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Stodden <dns@arista.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[ Upstream commit df25461119d987b8c81d232cfe4411e91dcabe66 ]
+commit 93cd256ab224c2519e7c4e5f58bb4f1ac2bf0965 upstream.
 
-A PCI device hot removal may occur while stdev->cdev is held open. The call
-to stdev_release() then happens during close or exit, at a point way past
-switchtec_pci_remove(). Otherwise the last ref would vanish with the
-trailing put_device(), just before return.
+Some people are seeing a warning similar to this when using a crystal:
 
-At that later point in time, the devm cleanup has already removed the
-stdev->mmio_mrpc mapping. Also, the stdev->pdev reference was not a counted
-one. Therefore, in DMA mode, the iowrite32() in stdev_release() will cause
-a fatal page fault, and the subsequent dma_free_coherent(), if reached,
-would pass a stale &stdev->pdev->dev pointer.
+    max310x 11-006c: clock is not stable yet
 
-Fix by moving MRPC DMA shutdown into switchtec_pci_remove(), after
-stdev_kill(). Counting the stdev->pdev ref is now optional, but may prevent
-future accidents.
+The datasheet doesn't mention the maximum time to wait for the clock to be
+stable when using a crystal, and it seems that the 10ms delay in the driver
+is not always sufficient.
 
-Reproducible via the script at
-https://lore.kernel.org/r/20231113212150.96410-1-dns@arista.com
+Jan Kundrát reported that it took three tries (each separated by 10ms) to
+get a stable clock.
 
-Link: https://lore.kernel.org/r/20231122042316.91208-2-dns@arista.com
-Signed-off-by: Daniel Stodden <dns@arista.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
-Reviewed-by: Dmitry Safonov <dima@arista.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Modify behavior to check stable clock ready bit multiple times (20), and
+waiting 10ms between each try.
+
+Note: the first draft of the driver originally used a 50ms delay, without
+checking the clock stable bit.
+Then a loop with 1000 retries was implemented, each time reading the clock
+stable bit.
+
+Fixes: 4cf9a888fd3c ("serial: max310x: Check the clock readiness")
+Cc: stable@vger.kernel.org
+Suggested-by: Jan Kundrát <jan.kundrat@cesnet.cz>
+Link: https://www.spinics.net/lists/linux-serial/msg35773.html
+Link: https://lore.kernel.org/all/20240110174015.6f20195fde08e5c9e64e5675@hugovil.com/raw
+Link: https://github.com/boundarydevices/linux/commit/e5dfe3e4a751392515d78051973190301a37ca9a
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20240116213001.3691629-3-hugo@hugovil.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/switch/switchtec.c | 25 +++++++++++++++++--------
- 1 file changed, 17 insertions(+), 8 deletions(-)
+ drivers/tty/serial/max310x.c |   21 ++++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/pci/switch/switchtec.c b/drivers/pci/switch/switchtec.c
-index 2c9c3061894b..0037f368f62b 100644
---- a/drivers/pci/switch/switchtec.c
-+++ b/drivers/pci/switch/switchtec.c
-@@ -1082,13 +1082,6 @@ static void stdev_release(struct device *dev)
- {
- 	struct switchtec_dev *stdev = to_stdev(dev);
+--- a/drivers/tty/serial/max310x.c
++++ b/drivers/tty/serial/max310x.c
+@@ -235,6 +235,10 @@
+ #define MAX310x_REV_MASK		(0xf8)
+ #define MAX310X_WRITE_BIT		0x80
  
--	if (stdev->dma_mrpc) {
--		iowrite32(0, &stdev->mmio_mrpc->dma_en);
--		flush_wc_buf(stdev);
--		writeq(0, &stdev->mmio_mrpc->dma_addr);
--		dma_free_coherent(&stdev->pdev->dev, sizeof(*stdev->dma_mrpc),
--				stdev->dma_mrpc, stdev->dma_mrpc_dma_addr);
--	}
- 	kfree(stdev);
- }
- 
-@@ -1131,7 +1124,7 @@ static struct switchtec_dev *stdev_create(struct pci_dev *pdev)
- 		return ERR_PTR(-ENOMEM);
- 
- 	stdev->alive = true;
--	stdev->pdev = pdev;
-+	stdev->pdev = pci_dev_get(pdev);
- 	INIT_LIST_HEAD(&stdev->mrpc_queue);
- 	mutex_init(&stdev->mrpc_mutex);
- 	stdev->mrpc_busy = 0;
-@@ -1165,6 +1158,7 @@ static struct switchtec_dev *stdev_create(struct pci_dev *pdev)
- 	return stdev;
- 
- err_put:
-+	pci_dev_put(stdev->pdev);
- 	put_device(&stdev->dev);
- 	return ERR_PTR(rc);
- }
-@@ -1407,6 +1401,18 @@ static int switchtec_init_pci(struct switchtec_dev *stdev,
- 	return 0;
- }
- 
-+static void switchtec_exit_pci(struct switchtec_dev *stdev)
-+{
-+	if (stdev->dma_mrpc) {
-+		iowrite32(0, &stdev->mmio_mrpc->dma_en);
-+		flush_wc_buf(stdev);
-+		writeq(0, &stdev->mmio_mrpc->dma_addr);
-+		dma_free_coherent(&stdev->pdev->dev, sizeof(*stdev->dma_mrpc),
-+				  stdev->dma_mrpc, stdev->dma_mrpc_dma_addr);
-+		stdev->dma_mrpc = NULL;
-+	}
-+}
++/* Crystal-related definitions */
++#define MAX310X_XTAL_WAIT_RETRIES	20 /* Number of retries */
++#define MAX310X_XTAL_WAIT_DELAY_MS	10 /* Delay between retries */
 +
- static int switchtec_pci_probe(struct pci_dev *pdev,
- 			       const struct pci_device_id *id)
- {
-@@ -1464,6 +1470,9 @@ static void switchtec_pci_remove(struct pci_dev *pdev)
- 	ida_simple_remove(&switchtec_minor_ida, MINOR(stdev->dev.devt));
- 	dev_info(&stdev->dev, "unregistered.\n");
- 	stdev_kill(stdev);
-+	switchtec_exit_pci(stdev);
-+	pci_dev_put(stdev->pdev);
-+	stdev->pdev = NULL;
- 	put_device(&stdev->dev);
- }
+ /* MAX3107 specific */
+ #define MAX3107_REV_ID			(0xa0)
  
--- 
-2.43.0
-
+@@ -600,12 +604,19 @@ static int max310x_set_ref_clk(struct de
+ 
+ 	/* Wait for crystal */
+ 	if (xtal) {
+-		unsigned int val = 0;
+-		msleep(10);
+-		regmap_read(s->regmap, MAX310X_STS_IRQSTS_REG, &val);
+-		if (!(val & MAX310X_STS_CLKREADY_BIT)) {
++		bool stable = false;
++		unsigned int try = 0, val = 0;
++
++		do {
++			msleep(MAX310X_XTAL_WAIT_DELAY_MS);
++			regmap_read(s->regmap, MAX310X_STS_IRQSTS_REG, &val);
++
++			if (val & MAX310X_STS_CLKREADY_BIT)
++				stable = true;
++		} while (!stable && (++try < MAX310X_XTAL_WAIT_RETRIES));
++
++		if (!stable)
+ 			dev_warn(dev, "clock is not stable yet\n");
+-		}
+ 	}
+ 
+ 	return (int)bestfreq;
 
 
 
