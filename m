@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-22766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D3DE85DE1A
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:14:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F6A385DEA0
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:20:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EED88B2A9B7
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:11:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2557C284E22
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:20:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1338A7E79F;
-	Wed, 21 Feb 2024 14:07:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38F647E78B;
+	Wed, 21 Feb 2024 14:19:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w7wmtqt1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GQ5oMx3k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C61CE7E78F;
-	Wed, 21 Feb 2024 14:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E807E78B73;
+	Wed, 21 Feb 2024 14:19:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524443; cv=none; b=U51qQgXyBHKY0ryoMq4xIP2YgVA/66dFJGZord+lEAg9kwnHl8RC3LWSeeotOQO24X2Clu5q8BndMB2WbRqLhC4mmfRIsfiRAHJ3IGozp/QvGywzls2otOsqkEdtr/Lzqe6GdeZCejScYFv6ORcSrO77Ms3s3ivphKGpTpLBckI=
+	t=1708525180; cv=none; b=Pn5MyevyiD+0ZJXw2QmSP/MqNyuJb3usNh2+LngSuutgf6nMAX9RsdkDzHzsiaIT/p2em2GNSshY6Pe/S2lna4QiLT2hRZnLxFb2QPirPKxGLMsfjEs9JKf2WvNNHsJwbhfJrtTHdp6agxSyqjwhANWuT5zVWaR3AoEa9uhop90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524443; c=relaxed/simple;
-	bh=PxwlP9XENhhbsBO2ZFtAGUBa7l+4/q5TOu85Occ1Va4=;
+	s=arc-20240116; t=1708525180; c=relaxed/simple;
+	bh=Uz4ffUujdoD1MtwuaHYtzUcswFbrz7sT6f/74CQepf8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UglmOmSNeGjVMLS6a02W3jsf3s8FS87a9HCP2qPAHourtZKpjOeUhwuR6O7utx2GA8viStxdCrTkhKknrTECEgGka89NEiJubnSDiuFJ0YQ3tLvV647emmGyqEOTSYK1C9TZxbGPlJW8Kb2bGr8nWeWbeqGQTteRwdfhUvUahmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w7wmtqt1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C977C433F1;
-	Wed, 21 Feb 2024 14:07:22 +0000 (UTC)
+	 MIME-Version; b=Jbzi8wNdpkG3ektoFtRKLwAknbC17kmwkYVkE7KzXaZxsG6Yk6aAru2hGmb1/w6/U5GOslSOiYadB2UP3P+Hgkf3MKuo2fuBPW1T8t/MtYjcuzgZO8YFGbnlVLDv4duPq8Jpb9kRY2puNkqt9uM4vofc7cj338R8DEC44EW8LbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GQ5oMx3k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 094A8C433F1;
+	Wed, 21 Feb 2024 14:19:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524443;
-	bh=PxwlP9XENhhbsBO2ZFtAGUBa7l+4/q5TOu85Occ1Va4=;
+	s=korg; t=1708525179;
+	bh=Uz4ffUujdoD1MtwuaHYtzUcswFbrz7sT6f/74CQepf8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w7wmtqt1IzhiOo8HJtxqyHBQxivnev0LW9Sfc3Y7qihi0ETK5UgXXgQQTpWI0HU3b
-	 Vjsmq7vObrID8OyVD1eF0AZnGnLxs/ltCgi2Q1RhQ8IPSIQgNS7newu5RPSOewFp6i
-	 lkQ64UK7x1Jlx2rrIJ359yJCX03HbcLOkwSD/zj8=
+	b=GQ5oMx3kGwRXd2rsjp2MWaobNGI+z7vIjW8IEQh+AUwA+lk0117gpLxCHMmRtRNKp
+	 h5IkPieWlU+Bhlk/usSv/XeK46fz8A38zIdkoXu2hLTbW9H2L/fRI5/KcvdrO2yy/d
+	 S65PyK6wsnAAH9Skl2wyzyYYkSLVIqzxMubvJK1Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 245/379] PM: sleep: Fix error handling in dpm_prepare()
+Subject: [PATCH 5.4 083/267] s390/ptrace: handle setting of fpc register correctly
 Date: Wed, 21 Feb 2024 14:07:04 +0100
-Message-ID: <20240221130002.158766520@linuxfoundation.org>
+Message-ID: <20240221125942.574062157@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +61,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 544e737dea5ad1a457f25dbddf68761ff25e028b ]
+[ Upstream commit 8b13601d19c541158a6e18b278c00ba69ae37829 ]
 
-Commit 2aa36604e824 ("PM: sleep: Avoid calling put_device() under
-dpm_list_mtx") forgot to update the while () loop termination
-condition to also break the loop if error is nonzero, which
-causes the loop to become infinite if device_prepare() returns
-an error for one device.
+If the content of the floating point control (fpc) register of a traced
+process is modified with the ptrace interface the new value is tested for
+validity by temporarily loading it into the fpc register.
 
-Add the missing !error check.
+This may lead to corruption of the fpc register of the tracing process:
+if an interrupt happens while the value is temporarily loaded into the
+fpc register, and within interrupt context floating point or vector
+registers are used, the current fp/vx registers are saved with
+save_fpu_regs() assuming they belong to user space and will be loaded into
+fp/vx registers when returning to user space.
 
-Fixes: 2aa36604e824 ("PM: sleep: Avoid calling put_device() under dpm_list_mtx")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reported-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Cc: All applicable <stable@vger.kernel.org>
+test_fp_ctl() restores the original user space fpc register value, however
+it will be discarded, when returning to user space.
+
+In result the tracer will incorrectly continue to run with the value that
+was supposed to be used for the traced process.
+
+Fix this by saving fpu register contents with save_fpu_regs() before using
+test_fp_ctl().
+
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/kernel/ptrace.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
-index c493e48e420f..fbc57c4fcdd0 100644
---- a/drivers/base/power/main.c
-+++ b/drivers/base/power/main.c
-@@ -1897,7 +1897,7 @@ int dpm_prepare(pm_message_t state)
- 	device_block_probing();
+diff --git a/arch/s390/kernel/ptrace.c b/arch/s390/kernel/ptrace.c
+index 34ca344039bb..05e1367c23d5 100644
+--- a/arch/s390/kernel/ptrace.c
++++ b/arch/s390/kernel/ptrace.c
+@@ -413,6 +413,7 @@ static int __poke_user(struct task_struct *child, addr_t addr, addr_t data)
+ 		/*
+ 		 * floating point control reg. is in the thread structure
+ 		 */
++		save_fpu_regs();
+ 		if ((unsigned int) data != 0 ||
+ 		    test_fp_ctl(data >> (BITS_PER_LONG - 32)))
+ 			return -EINVAL;
+@@ -773,6 +774,7 @@ static int __poke_user_compat(struct task_struct *child,
+ 		/*
+ 		 * floating point control reg. is in the thread structure
+ 		 */
++		save_fpu_regs();
+ 		if (test_fp_ctl(tmp))
+ 			return -EINVAL;
+ 		child->thread.fpu.fpc = data;
+@@ -1006,9 +1008,7 @@ static int s390_fpregs_set(struct task_struct *target,
+ 	int rc = 0;
+ 	freg_t fprs[__NUM_FPRS];
  
- 	mutex_lock(&dpm_list_mtx);
--	while (!list_empty(&dpm_list)) {
-+	while (!list_empty(&dpm_list) && !error) {
- 		struct device *dev = to_device(dpm_list.next);
- 
- 		get_device(dev);
+-	if (target == current)
+-		save_fpu_regs();
+-
++	save_fpu_regs();
+ 	if (MACHINE_HAS_VX)
+ 		convert_vx_to_fp(fprs, target->thread.fpu.vxrs);
+ 	else
 -- 
 2.43.0
 
