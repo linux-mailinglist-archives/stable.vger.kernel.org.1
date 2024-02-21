@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-22817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0615185DDF5
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:13:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F378285DF10
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:24:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AC211F24290
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:13:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8BF5283A2C
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:24:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0494A80030;
-	Wed, 21 Feb 2024 14:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A51973161;
+	Wed, 21 Feb 2024 14:24:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uYxhL/MT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oCcfL++x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5BEE7C6E9;
-	Wed, 21 Feb 2024 14:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC8C13CF42;
+	Wed, 21 Feb 2024 14:24:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524613; cv=none; b=GI7wiyRN3NcZztqqVGrO5UvysN0N8xEic+h+6SH9PQHL7cIwBp7OCiZ0FswkZ/2XK6pS/1ZojqugQvoYh+jjwh9UMn6bO4t59Fuk/koykhXjMAM2BTH8TTZCNX/Xr2JaIJ5y7anUdmz9FeolDkTWltxPS9ZKc2BRCWGZH4QFhIM=
+	t=1708525468; cv=none; b=pEgtv8bOiyyrUcC5cvM3OJMv7IzJQcuOoXsZA38MfXX3Y1vZN+HWz5YAKZSfs1mSum8sMMe53tqQgj5SZnhcRuoGryFTkM9gMFdqjIQ1GK7eb+Ni4gkzZQbrjD8o2IGQoQotuDHFPSXdX0lGO/xi6pbgRJmLDRv6VG3B946Rn5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524613; c=relaxed/simple;
-	bh=zEp8fSqwa243mLx6WXsk1liS4uIfFHbBH60ggIhO0pU=;
+	s=arc-20240116; t=1708525468; c=relaxed/simple;
+	bh=exafPFEsj56r1FJkHiJPwWj0FNub1fTj9xIXeAi6Vng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L8hkVCsbjo6Qot1mx+7VQpE2MpAgtKfNg/pnXozMBhEFQy6tgHWZ8IySdxWJkwsiwmI6Tw4dH0bL7GXtbnIj2PyUIqjuWc232/++z/fgPbiGLjwXyi6zjlkkIw0ZPNIFOgGmh9Qp7p0oJFo+3/2lkIT13EvfKLhTCziRHqa+C0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uYxhL/MT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D072C433F1;
-	Wed, 21 Feb 2024 14:10:13 +0000 (UTC)
+	 MIME-Version; b=qT3QPgY6gLaMh2RTSQ4GW4Gk6qxwAjZCr8lyQObQd1yVMqZjMJcWPIvyCNebpSk/LhLxMBMbFFUN9+Fkip3Jf0eA+xjyLqyOdEvbpFic4LOpBJC0UlbYT25FwSm6TPL7HayZJaVag8FGShsTQbcg3SRPHgqNE7/Fm8zt73ph0zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oCcfL++x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F26C9C433F1;
+	Wed, 21 Feb 2024 14:24:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524613;
-	bh=zEp8fSqwa243mLx6WXsk1liS4uIfFHbBH60ggIhO0pU=;
+	s=korg; t=1708525467;
+	bh=exafPFEsj56r1FJkHiJPwWj0FNub1fTj9xIXeAi6Vng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uYxhL/MTWg/pKnICK0MzEOCUsknyyNcP8UFt5aZjuVzSj1JS2LqzCuqzHI5509X9h
-	 VEE0ZOhacclT7dECtPVoyhZ4dd9ou3NJ6h4OxLMNzrpA31a5tgBrlZqCc7KuA+WjGE
-	 K4osesZQ+tSn5lU90HyhbvBblTAXKC3WZPAkB0q0=
+	b=oCcfL++xio/m4WQG/aapecpPbFy4ZvGpT7nQZcSU1+jlUZZXeLn4eZEPJnh47OdIS
+	 syFKh9tavl1lMWtb0gxNk5E6d3cCDDncNAPR2pzGOeFgWFGzUSJDVL4VlGVCYicaqc
+	 rXr+nZUDXVKn/PBFVqs1ThMrHkWukyrvTJ/bz0uI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Donnefort <vdonnefort@google.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.10 297/379] tracing/trigger: Fix to return error if failed to alloc snapshot
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 135/267] clk: hi3620: Fix memory leak in hi3620_mmc_clk_init()
 Date: Wed, 21 Feb 2024 14:07:56 +0100
-Message-ID: <20240221130003.710270739@linuxfoundation.org>
+Message-ID: <20240221125944.291692958@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
 
-commit 0958b33ef5a04ed91f61cef4760ac412080c4e08 upstream.
+[ Upstream commit bfbea9e5667cfa9552c3d88f023386f017f6c308 ]
 
-Fix register_snapshot_trigger() to return error code if it failed to
-allocate a snapshot instead of 0 (success). Unless that, it will register
-snapshot trigger without an error.
+In cases where kcalloc() fails for the 'clk_data->clks' allocation, the
+code path does not handle the failure gracefully, potentially leading
+to a memory leak. This fix ensures proper cleanup by freeing the
+allocated memory for 'clk_data' before returning.
 
-Link: https://lore.kernel.org/linux-trace-kernel/170622977792.270660.2789298642759362200.stgit@devnote2
-
-Fixes: 0bbe7f719985 ("tracing: Fix the race between registering 'snapshot' event trigger and triggering 'snapshot' operation")
-Cc: stable@vger.kernel.org
-Cc: Vincent Donnefort <vdonnefort@google.com>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Link: https://lore.kernel.org/r/20231210165040.3407545-1-visitorckw@gmail.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events_trigger.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/clk/hisilicon/clk-hi3620.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/kernel/trace/trace_events_trigger.c
-+++ b/kernel/trace/trace_events_trigger.c
-@@ -1140,8 +1140,10 @@ register_snapshot_trigger(char *glob, st
- 			  struct event_trigger_data *data,
- 			  struct trace_event_file *file)
- {
--	if (tracing_alloc_snapshot_instance(file->tr) != 0)
--		return 0;
-+	int ret = tracing_alloc_snapshot_instance(file->tr);
-+
-+	if (ret < 0)
-+		return ret;
+diff --git a/drivers/clk/hisilicon/clk-hi3620.c b/drivers/clk/hisilicon/clk-hi3620.c
+index a3d04c7c3da8..eb9c139babc3 100644
+--- a/drivers/clk/hisilicon/clk-hi3620.c
++++ b/drivers/clk/hisilicon/clk-hi3620.c
+@@ -467,8 +467,10 @@ static void __init hi3620_mmc_clk_init(struct device_node *node)
+ 		return;
  
- 	return register_trigger(glob, ops, data, file);
- }
+ 	clk_data->clks = kcalloc(num, sizeof(*clk_data->clks), GFP_KERNEL);
+-	if (!clk_data->clks)
++	if (!clk_data->clks) {
++		kfree(clk_data);
+ 		return;
++	}
+ 
+ 	for (i = 0; i < num; i++) {
+ 		struct hisi_mmc_clock *mmc_clk = &hi3620_mmc_clks[i];
+-- 
+2.43.0
+
 
 
 
