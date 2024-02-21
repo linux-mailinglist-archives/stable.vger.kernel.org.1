@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-22374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAE4E85DBB7
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:44:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FC0F85DE60
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:18:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70AF31F24606
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:44:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3910E285722
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:18:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F5AC69D21;
-	Wed, 21 Feb 2024 13:44:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0A937D3E3;
+	Wed, 21 Feb 2024 14:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sjp5Z8E2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UHmz7uG/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D965173161;
-	Wed, 21 Feb 2024 13:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA8D7CF08;
+	Wed, 21 Feb 2024 14:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523064; cv=none; b=Bh4s6d+5VSNaDU9PSl3n1AAKGYffRJCjfOAxJHEUAJSQ/3m+09MpLQ7+0qb/wdlpAI1DmFEA55fQz2vMnTjsz8Vvce+sMGGFFfaXnOcX/80QNsOW7cJOCMpPH7F1qyfUXcKMLRxiJEYUe1J1/abDqfaXNBH+eitsw/Uff203Rpk=
+	t=1708525037; cv=none; b=NgqQ1mV0MQmN3m5mGeQmxwvxmCVFw/W+mBfqQaJb5FfqQzoc1iJ/Ax7vpaPbn/oZKyTb9suPTXYxWFnBpPjwXOe1099x3fuAP6jTQNEql9PvEH3D8wpwiYZIncLX7So7qbvViG7pedLxWJ1T+sysP9qRc+NPaIbeIyQ530w3U2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523064; c=relaxed/simple;
-	bh=7qzgHFcr6JVsg2RDmqO9DhskZHlBzAy2hp6f5t+4BRI=;
+	s=arc-20240116; t=1708525037; c=relaxed/simple;
+	bh=N2LFya0fl/sBaZoS4R5Xd9KqXk8GeplQN2SZ/I87D0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IVxTfoK/W7Td4jIbTlymwfoIJtanTBhRfMcf9pmU5AZcWzugXBCH3zQjU1rbat557VSJWBGqNmXG373qZEmCSPgyGjk5xTNJ1NSc7fMIh+F7iYcNsFz/vip0r+11BtBqNana0/NRejw9qOBR3lC2xGGDvcu9g1Ov3YUIi6bAk2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sjp5Z8E2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 690C8C433C7;
-	Wed, 21 Feb 2024 13:44:23 +0000 (UTC)
+	 MIME-Version; b=YMa0m7/DVITT3PGpHU7wLUIO3tnP5WDNQqy1lexIAM++fjsD/djE4WZG4TdSIuUNNT9IqKnsn8glbYpgA1f/Ioi3C5rloggsuCXuCYOPyrNfmDfnLGXap9oEb8LTYKOngY9bZA4P5+Ojraj0rW3Mp05Q2G33Yy/wWDwSG1KJdcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UHmz7uG/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01D31C43390;
+	Wed, 21 Feb 2024 14:17:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523063;
-	bh=7qzgHFcr6JVsg2RDmqO9DhskZHlBzAy2hp6f5t+4BRI=;
+	s=korg; t=1708525037;
+	bh=N2LFya0fl/sBaZoS4R5Xd9KqXk8GeplQN2SZ/I87D0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sjp5Z8E224ViFd5+AnXaS59VFZ5x0bn/H7vfNhwU5mF4N6qxckLQSSpTDIlJX6LKP
-	 lwv0uTUPfYJkusEBJICvRHNgNqJUEV/w0IxSX3MvacFM9tvw5B/Xq16RrO/oyH3C5r
-	 xvn2pRHfc/YJUvofiOW43aC9zobyPkX1YfZvTAh0=
+	b=UHmz7uG/ytk0YHpXRTTnIifhFm/o4gTMNxyGDESTl7mG2+PwsBEdK7enjbNf4u609
+	 UUczTFzsp/wT8AZKq0iQkVRLliUZ0SOa4GePQZsUOQFZH+gJ8opAUD6GUkM+hgK6vN
+	 2kHHP+H/9PFEXGgsEOcaGmrO6pkacbmvQKLwGFRk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuogee Hsieh <quic_khsieh@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 303/476] drm/msm/dp: return correct Colorimetry for DP_TEST_DYNAMIC_RANGE_CEA case
+	Xiaolei Wang <xiaolei.wang@windriver.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>
+Subject: [PATCH 5.4 013/267] rpmsg: virtio: Free driver_override when rpmsg_remove()
 Date: Wed, 21 Feb 2024 14:05:54 +0100
-Message-ID: <20240221130019.198854875@linuxfoundation.org>
+Message-ID: <20240221125940.472799699@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuogee Hsieh <quic_khsieh@quicinc.com>
+From: Xiaolei Wang <xiaolei.wang@windriver.com>
 
-[ Upstream commit fcccdafd91f8bdde568b86ff70848cf83f029add ]
+commit d5362c37e1f8a40096452fc201c30e705750e687 upstream.
 
-MSA MISC0 bit 1 to 7 contains Colorimetry Indicator Field.
-dp_link_get_colorimetry_config() returns wrong colorimetry value
-in the DP_TEST_DYNAMIC_RANGE_CEA case in the current implementation.
-Hence fix this problem by having dp_link_get_colorimetry_config()
-return defined CEA RGB colorimetry value in the case of
-DP_TEST_DYNAMIC_RANGE_CEA.
+Free driver_override when rpmsg_remove(), otherwise
+the following memory leak will occur:
 
-Changes in V2:
--- drop retrieving colorimetry from colorspace
--- drop dr = link->dp_link.test_video.test_dyn_range assignment
+unreferenced object 0xffff0000d55d7080 (size 128):
+  comm "kworker/u8:2", pid 56, jiffies 4294893188 (age 214.272s)
+  hex dump (first 32 bytes):
+    72 70 6d 73 67 5f 6e 73 00 00 00 00 00 00 00 00  rpmsg_ns........
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace:
+    [<000000009c94c9c1>] __kmem_cache_alloc_node+0x1f8/0x320
+    [<000000002300d89b>] __kmalloc_node_track_caller+0x44/0x70
+    [<00000000228a60c3>] kstrndup+0x4c/0x90
+    [<0000000077158695>] driver_set_override+0xd0/0x164
+    [<000000003e9c4ea5>] rpmsg_register_device_override+0x98/0x170
+    [<000000001c0c89a8>] rpmsg_ns_register_device+0x24/0x30
+    [<000000008bbf8fa2>] rpmsg_probe+0x2e0/0x3ec
+    [<00000000e65a68df>] virtio_dev_probe+0x1c0/0x280
+    [<00000000443331cc>] really_probe+0xbc/0x2dc
+    [<00000000391064b1>] __driver_probe_device+0x78/0xe0
+    [<00000000a41c9a5b>] driver_probe_device+0xd8/0x160
+    [<000000009c3bd5df>] __device_attach_driver+0xb8/0x140
+    [<0000000043cd7614>] bus_for_each_drv+0x7c/0xd4
+    [<000000003b929a36>] __device_attach+0x9c/0x19c
+    [<00000000a94e0ba8>] device_initial_probe+0x14/0x20
+    [<000000003c999637>] bus_probe_device+0xa0/0xac
 
-Changes in V3:
--- move defined MISCr0a Colorimetry vale to dp_reg.h
--- rewording commit title
--- rewording commit text to more precise describe this patch
-
-Fixes: c943b4948b58 ("drm/msm/dp: add displayPort driver support")
-Signed-off-by: Kuogee Hsieh <quic_khsieh@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/574888/
-Link: https://lore.kernel.org/r/1705526010-597-1-git-send-email-quic_khsieh@quicinc.com
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+Fixes: b0b03b811963 ("rpmsg: Release rpmsg devices in backends")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20231215020049.78750-1-xiaolei.wang@windriver.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/dp/dp_link.c | 12 +++++++-----
- drivers/gpu/drm/msm/dp/dp_reg.h  |  3 +++
- 2 files changed, 10 insertions(+), 5 deletions(-)
+ drivers/rpmsg/virtio_rpmsg_bus.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/msm/dp/dp_link.c b/drivers/gpu/drm/msm/dp/dp_link.c
-index d4d31e5bda07..0b4539be0685 100644
---- a/drivers/gpu/drm/msm/dp/dp_link.c
-+++ b/drivers/gpu/drm/msm/dp/dp_link.c
-@@ -7,6 +7,7 @@
+--- a/drivers/rpmsg/virtio_rpmsg_bus.c
++++ b/drivers/rpmsg/virtio_rpmsg_bus.c
+@@ -381,6 +381,7 @@ static void virtio_rpmsg_release_device(
+ 	struct rpmsg_device *rpdev = to_rpmsg_device(dev);
+ 	struct virtio_rpmsg_channel *vch = to_virtio_rpmsg_channel(rpdev);
  
- #include <drm/drm_print.h>
- 
-+#include "dp_reg.h"
- #include "dp_link.h"
- #include "dp_panel.h"
- 
-@@ -1064,7 +1065,7 @@ int dp_link_process_request(struct dp_link *dp_link)
- 
- int dp_link_get_colorimetry_config(struct dp_link *dp_link)
- {
--	u32 cc;
-+	u32 cc = DP_MISC0_COLORIMERY_CFG_LEGACY_RGB;
- 	struct dp_link_private *link;
- 
- 	if (!dp_link) {
-@@ -1078,10 +1079,11 @@ int dp_link_get_colorimetry_config(struct dp_link *dp_link)
- 	 * Unless a video pattern CTS test is ongoing, use RGB_VESA
- 	 * Only RGB_VESA and RGB_CEA supported for now
- 	 */
--	if (dp_link_is_video_pattern_requested(link))
--		cc = link->dp_link.test_video.test_dyn_range;
--	else
--		cc = DP_TEST_DYNAMIC_RANGE_VESA;
-+	if (dp_link_is_video_pattern_requested(link)) {
-+		if (link->dp_link.test_video.test_dyn_range &
-+					DP_TEST_DYNAMIC_RANGE_CEA)
-+			cc = DP_MISC0_COLORIMERY_CFG_CEA_RGB;
-+	}
- 
- 	return cc;
++	kfree(rpdev->driver_override);
+ 	kfree(vch);
  }
-diff --git a/drivers/gpu/drm/msm/dp/dp_reg.h b/drivers/gpu/drm/msm/dp/dp_reg.h
-index 268602803d9a..176a503ece9c 100644
---- a/drivers/gpu/drm/msm/dp/dp_reg.h
-+++ b/drivers/gpu/drm/msm/dp/dp_reg.h
-@@ -129,6 +129,9 @@
- #define DP_MISC0_COLORIMETRY_CFG_SHIFT		(0x00000001)
- #define DP_MISC0_TEST_BITS_DEPTH_SHIFT		(0x00000005)
  
-+#define DP_MISC0_COLORIMERY_CFG_LEGACY_RGB	(0)
-+#define DP_MISC0_COLORIMERY_CFG_CEA_RGB		(0x04)
-+
- #define REG_DP_VALID_BOUNDARY			(0x00000030)
- #define REG_DP_VALID_BOUNDARY_2			(0x00000034)
- 
--- 
-2.43.0
-
 
 
 
