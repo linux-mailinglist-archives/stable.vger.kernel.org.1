@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-22363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D463785DBA9
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:44:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E95285D91A
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F572285064
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:43:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 602D41C22DD6
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:14:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6BBC78B5E;
-	Wed, 21 Feb 2024 13:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9E6169D2E;
+	Wed, 21 Feb 2024 13:14:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yr3bPIk7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bH70GHWQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64EEB73161;
-	Wed, 21 Feb 2024 13:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C14A69D09;
+	Wed, 21 Feb 2024 13:14:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523029; cv=none; b=kg5MU0wFYG7me4Fi1euZyBOxNvpMdAymBBdaIyN7ib4sXQuQbhRe7OS0B+P38tGOI8VMiMSPRl6Vu8Vf1MOGPRbHlqWk6Sbo5cRh9khimxc5pH3+8Y47mwno+BoF6ugH2RCOrvPN1Opfu01WT1qLV6eowLNtTYg4D2hiY0TDnz8=
+	t=1708521277; cv=none; b=ml7/Td7M4X8wAzjjYRJOJH8R9fZt0J5hI460GHhlH9W2hR2780loguDpQmc1s5fOmmUlnD0JOU2owjXj3menY9+g54pSig2bIwWd33BjytuFfyUwkO1EdbNOlXyZA+mNX2tJPaIQ98cMCJXg9lOK1in9SdewuyMl3qtTJ5NLDbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523029; c=relaxed/simple;
-	bh=Y3KJKnCSWR6dF2p/gREpLpBPT+u1xqDM9r1Br/J7nwA=;
+	s=arc-20240116; t=1708521277; c=relaxed/simple;
+	bh=/7ePqoOkCgebyyS2VfmypzqDY/C9RQJ/N8tM+dpZE80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AqOGp//eIVtSsQCVvtUepMttrHCrUxEOffU1djakEj5KdiJYb2y3K6rvXJjSXfyqzg0Z1QzuXRmAx1bKL+Kfbhd+iDk0z+nRqOumlBfr7rNmsj5B6gwnOD5hFXye11GCBasJNSKngJymz8gv5Z/k6BZAk0m9L0lQgjurTSVE6PY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yr3bPIk7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C75C43390;
-	Wed, 21 Feb 2024 13:43:48 +0000 (UTC)
+	 MIME-Version; b=g23ry5TgvfuzZuQGvMaWJNJ3CUKhjkh9Lv/PItio3+VGeCaf5/uewhudfgCek3KOo0TLnxlcbu1fmKPePIoCGGHlytLYa1DdFBH/MIzh0hAcbzJgIMg2vH4dXveZma88Ot9deusmyMsIxvl9kqlmA05pxVp+T1RiLKe2Hv+YnI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bH70GHWQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4766C433F1;
+	Wed, 21 Feb 2024 13:14:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523029;
-	bh=Y3KJKnCSWR6dF2p/gREpLpBPT+u1xqDM9r1Br/J7nwA=;
+	s=korg; t=1708521277;
+	bh=/7ePqoOkCgebyyS2VfmypzqDY/C9RQJ/N8tM+dpZE80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yr3bPIk7NIHU7ttgy5N0FMQ3NEAK9viCQ3UdAP1Wz4N5AKQ+FXsIQDVHWQMzDrGUZ
-	 Zx1PsqKxjj13YL8Q+7ilECsRYiZfJ6Bu2bC46FeNz2y+Pyd4B69RtDoOS/4dr+57hC
-	 sHyqsNvS/Z9uvjY84NrmkIu/+xLX/nhDv0PMnK+0=
+	b=bH70GHWQqJNK1t2QvjtAqRxjHc6WqMtZKAPBwDKfnyrrUe2l04Y7wWinWwYvhHYUH
+	 6xhrTca6MQdM1SxyUeyU0DN9tXtcwuFH7QhZWq58C35xVZAvSPh8NKOtxe3l6p19QA
+	 vMeR/ExI3XO6cxrsXDne0i+g5LYPjehIpX9Y91MA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 319/476] netfilter: nft_compat: restrict match/target protocol to u16
+Subject: [PATCH 4.19 069/202] KVM: s390: fix setting of fpc register
 Date: Wed, 21 Feb 2024 14:06:10 +0100
-Message-ID: <20240221130019.806418139@linuxfoundation.org>
+Message-ID: <20240221125934.053618896@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit d694b754894c93fb4d71a7f3699439dec111decc ]
+[ Upstream commit b988b1bb0053c0dcd26187d29ef07566a565cf55 ]
 
-xt_check_{match,target} expects u16, but NFTA_RULE_COMPAT_PROTO is u32.
+kvm_arch_vcpu_ioctl_set_fpu() allows to set the floating point control
+(fpc) register of a guest cpu. The new value is tested for validity by
+temporarily loading it into the fpc register.
 
-NLA_POLICY_MAX(NLA_BE32, 65535) cannot be used because .max in
-nla_policy is s16, see 3e48be05f3c7 ("netlink: add attribute range
-validation to policy").
+This may lead to corruption of the fpc register of the host process:
+if an interrupt happens while the value is temporarily loaded into the fpc
+register, and within interrupt context floating point or vector registers
+are used, the current fp/vx registers are saved with save_fpu_regs()
+assuming they belong to user space and will be loaded into fp/vx registers
+when returning to user space.
 
-Fixes: 0ca743a55991 ("netfilter: nf_tables: add compatibility layer for x_tables")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+test_fp_ctl() restores the original user space / host process fpc register
+value, however it will be discarded, when returning to user space.
+
+In result the host process will incorrectly continue to run with the value
+that was supposed to be used for a guest cpu.
+
+Fix this by simply removing the test. There is another test right before
+the SIE context is entered which will handles invalid values.
+
+This results in a change of behaviour: invalid values will now be accepted
+instead of that the ioctl fails with -EINVAL. This seems to be acceptable,
+given that this interface is most likely not used anymore, and this is in
+addition the same behaviour implemented with the memory mapped interface
+(replace invalid values with zero) - see sync_regs() in kvm-s390.c.
+
+Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_compat.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/s390/kvm/kvm-s390.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/net/netfilter/nft_compat.c b/net/netfilter/nft_compat.c
-index 4ef664a2bbe6..64a2a5f19589 100644
---- a/net/netfilter/nft_compat.c
-+++ b/net/netfilter/nft_compat.c
-@@ -200,6 +200,7 @@ static const struct nla_policy nft_rule_compat_policy[NFTA_RULE_COMPAT_MAX + 1]
- static int nft_parse_compat(const struct nlattr *attr, u16 *proto, bool *inv)
- {
- 	struct nlattr *tb[NFTA_RULE_COMPAT_MAX+1];
-+	u32 l4proto;
- 	u32 flags;
- 	int err;
+diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+index 92041d442d2e..bc700cb9fc53 100644
+--- a/arch/s390/kvm/kvm-s390.c
++++ b/arch/s390/kvm/kvm-s390.c
+@@ -2995,10 +2995,6 @@ int kvm_arch_vcpu_ioctl_set_fpu(struct kvm_vcpu *vcpu, struct kvm_fpu *fpu)
  
-@@ -218,7 +219,12 @@ static int nft_parse_compat(const struct nlattr *attr, u16 *proto, bool *inv)
- 	if (flags & NFT_RULE_COMPAT_F_INV)
- 		*inv = true;
+ 	vcpu_load(vcpu);
  
--	*proto = ntohl(nla_get_be32(tb[NFTA_RULE_COMPAT_PROTO]));
-+	l4proto = ntohl(nla_get_be32(tb[NFTA_RULE_COMPAT_PROTO]));
-+	if (l4proto > U16_MAX)
-+		return -EINVAL;
-+
-+	*proto = l4proto;
-+
- 	return 0;
+-	if (test_fp_ctl(fpu->fpc)) {
+-		ret = -EINVAL;
+-		goto out;
+-	}
+ 	vcpu->run->s.regs.fpc = fpu->fpc;
+ 	if (MACHINE_HAS_VX)
+ 		convert_fp_to_vx((__vector128 *) vcpu->run->s.regs.vrs,
+@@ -3006,7 +3002,6 @@ int kvm_arch_vcpu_ioctl_set_fpu(struct kvm_vcpu *vcpu, struct kvm_fpu *fpu)
+ 	else
+ 		memcpy(vcpu->run->s.regs.fprs, &fpu->fprs, sizeof(fpu->fprs));
+ 
+-out:
+ 	vcpu_put(vcpu);
+ 	return ret;
  }
- 
 -- 
 2.43.0
 
