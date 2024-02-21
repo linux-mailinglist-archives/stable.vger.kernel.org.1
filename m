@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-22071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 113A185DA0D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:26:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4347385D9E1
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:23:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FC721C22BAF
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:26:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 744AA1C230ED
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:23:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A313F7BB03;
-	Wed, 21 Feb 2024 13:25:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3C076F074;
+	Wed, 21 Feb 2024 13:23:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0MBigRH4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gslk/9ss"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6264677A03;
-	Wed, 21 Feb 2024 13:25:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 834F253816;
+	Wed, 21 Feb 2024 13:23:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521903; cv=none; b=ZB2Dds/w6I/JlKmRwJrCVBAJBTvXbefuW5rGtZNQs7TjPfOVadc8+FYCCxA7n6Rp3slXg25BIwqbJu4g/jnkZxD9MLSzNtt4ePloczQxXCnrj9U3cgPSACfHe5lFE66ZIimFE1jcrPKSKKUS5j67zRCaA63PyMHHrqaekcGxCfA=
+	t=1708521818; cv=none; b=oqOfT45Fw/AZhzyqkVBWEsgjrmHLC4fFLiX8wfXYe0vTeQ1toJAIFbMo4iZGSSgUPxoSJMlhAGUrqKZVsNyzIjC+jUi2uzXgcrIhG7QzLyQqLA+/BhiM4xYZBe0r9jAn3W5rPXkFjEr8uOp46TxAV4X1683dXCx8iXBrstiReSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521903; c=relaxed/simple;
-	bh=hB1/Zf1tdQ7GK4C4F5r3CHOA77+m0vnvY5qNtpi5K/A=;
+	s=arc-20240116; t=1708521818; c=relaxed/simple;
+	bh=vmzbBcMqqvXaDRddqcBX/7h25Gs6wqNQoDBghNXr5QQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mKfWVu5FT5/98LEsPzaVZvrLxeMrBgg/DWaaoj0T78Q5Qe2xZqM0KgjNGsg/t634V1RWAbf8LLZaH57eUFI+iBhAyz5yESuIrJTpRddIQqPJtamYzTNPPMFqJvBJomxQTJpJL4UIsmjaBrU4nYD6DI5+7S4QMcMgBstlYlZmNfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0MBigRH4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF093C433C7;
-	Wed, 21 Feb 2024 13:25:02 +0000 (UTC)
+	 MIME-Version; b=fx2TdRUaL5AnarS5Onl6fvbEHxqUjkJyJ571iw7reoWaMmWrXDPf+yTKtmO8vzT7REOrwdfureDVk+ia34q2KBOm7rwyaFNus67CRYVwBpFNbQwRfwq61Nm/uaL0aaySzSLSUYQUUFeRfwUwpUtrB62dYpq0HGPXhcNusd/Hexc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gslk/9ss; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E502EC433C7;
+	Wed, 21 Feb 2024 13:23:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521903;
-	bh=hB1/Zf1tdQ7GK4C4F5r3CHOA77+m0vnvY5qNtpi5K/A=;
+	s=korg; t=1708521818;
+	bh=vmzbBcMqqvXaDRddqcBX/7h25Gs6wqNQoDBghNXr5QQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0MBigRH4ifDp42FeHk1NdyAUM6fY0Zw01U9+Urcm6sjYkdp7tiiCJIJxpwGUkOgZv
-	 sr4ol4aigHWv0YcRcPXf6UJCxL9/D96JwiV5VrJfUy1dHm5X0NM1irpFOWDiWZU35D
-	 aYTl5jOT8W8wr+bodxbhy6pWQyoGzTULWGIXVbQ0=
+	b=gslk/9ssQKtI5lvvRvLIRZURfO7szP7lZ2uhll82FEyedYmkBQPZpKRNfsbkHA3+Q
+	 n89+xE5vOGFT6aPuRgZONOYVSZNJG1TGrELc4akH4WE2fvhhf7bF8hF4N8v/qrAio1
+	 BO/cBgOMy4r/JTRS15faDLiV4uxpeQgBaIo5H9wU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amelie Delaunay <amelie.delaunay@foss.st.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Can Guo <quic_cang@quicinc.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 009/476] dmaengine: fix NULL pointer in channel unregistration function
-Date: Wed, 21 Feb 2024 14:01:00 +0100
-Message-ID: <20240221130008.215222902@linuxfoundation.org>
+Subject: [PATCH 5.15 010/476] scsi: ufs: core: Simplify power management during async scan
+Date: Wed, 21 Feb 2024 14:01:01 +0100
+Message-ID: <20240221130008.250433087@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
 References: <20240221130007.738356493@linuxfoundation.org>
@@ -67,53 +68,58 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Amelie Delaunay <amelie.delaunay@foss.st.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit f5c24d94512f1b288262beda4d3dcb9629222fc7 ]
+[ Upstream commit daf7795406bf307997366f694888bd317ae5b5fa ]
 
-__dma_async_device_channel_register() can fail. In case of failure,
-chan->local is freed (with free_percpu()), and chan->local is nullified.
-When dma_async_device_unregister() is called (because of managed API or
-intentionally by DMA controller driver), channels are unconditionally
-unregistered, leading to this NULL pointer:
-[    1.318693] Unable to handle kernel NULL pointer dereference at virtual address 00000000000000d0
-[...]
-[    1.484499] Call trace:
-[    1.486930]  device_del+0x40/0x394
-[    1.490314]  device_unregister+0x20/0x7c
-[    1.494220]  __dma_async_device_channel_unregister+0x68/0xc0
+ufshcd_init() calls pm_runtime_get_sync() before it calls
+async_schedule(). ufshcd_async_scan() calls pm_runtime_put_sync() directly
+or indirectly from ufshcd_add_lus(). Simplify ufshcd_async_scan() by always
+calling pm_runtime_put_sync() from ufshcd_async_scan().
 
-Look at dma_async_device_register() function error path, channel device
-unregistration is done only if chan->local is not NULL.
-
-Then add the same condition at the beginning of
-__dma_async_device_channel_unregister() function, to avoid NULL pointer
-issue whatever the API used to reach this function.
-
-Fixes: d2fb0a043838 ("dmaengine: break out channel registration")
-Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://lore.kernel.org/r/20231213160452.2598073-1-amelie.delaunay@foss.st.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20231218225229.2542156-2-bvanassche@acm.org
+Reviewed-by: Can Guo <quic_cang@quicinc.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: ee36710912b2 ("scsi: ufs: core: Remove the ufshcd_hba_exit() call from ufshcd_async_scan()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/dmaengine.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/scsi/ufs/ufshcd.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/dma/dmaengine.c b/drivers/dma/dmaengine.c
-index 4ec7bb58c195..9559ebd61f3b 100644
---- a/drivers/dma/dmaengine.c
-+++ b/drivers/dma/dmaengine.c
-@@ -1108,6 +1108,9 @@ EXPORT_SYMBOL_GPL(dma_async_device_channel_register);
- static void __dma_async_device_channel_unregister(struct dma_device *device,
- 						  struct dma_chan *chan)
- {
-+	if (chan->local == NULL)
-+		return;
+diff --git a/drivers/scsi/ufs/ufshcd.c b/drivers/scsi/ufs/ufshcd.c
+index e78461f66400..0354e3bce455 100644
+--- a/drivers/scsi/ufs/ufshcd.c
++++ b/drivers/scsi/ufs/ufshcd.c
+@@ -7896,7 +7896,6 @@ static int ufshcd_add_lus(struct ufs_hba *hba)
+ 	ufs_bsg_probe(hba);
+ 	ufshpb_init(hba);
+ 	scsi_scan_host(hba->host);
+-	pm_runtime_put_sync(hba->dev);
+ 
+ out:
+ 	return ret;
+@@ -8018,15 +8017,15 @@ static void ufshcd_async_scan(void *data, async_cookie_t cookie)
+ 
+ 	/* Probe and add UFS logical units  */
+ 	ret = ufshcd_add_lus(hba);
 +
- 	WARN_ONCE(!device->device_release && chan->client_count,
- 		  "%s called while %d clients hold a reference\n",
- 		  __func__, chan->client_count);
+ out:
++	pm_runtime_put_sync(hba->dev);
+ 	/*
+ 	 * If we failed to initialize the device or the device is not
+ 	 * present, turn off the power/clocks etc.
+ 	 */
+-	if (ret) {
+-		pm_runtime_put_sync(hba->dev);
++	if (ret)
+ 		ufshcd_hba_exit(hba);
+-	}
+ }
+ 
+ static const struct attribute_group *ufshcd_driver_groups[] = {
 -- 
 2.43.0
 
