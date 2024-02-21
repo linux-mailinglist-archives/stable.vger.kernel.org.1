@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-22857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0EC485DE15
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:14:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAD5385DF22
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:25:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5144E1F23CDF
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B2301F23B8C
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:25:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCF0178B7C;
-	Wed, 21 Feb 2024 14:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 268A178B60;
+	Wed, 21 Feb 2024 14:24:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NMwtMC0E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P+krN0ML"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5767EEF6;
-	Wed, 21 Feb 2024 14:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0FF69962;
+	Wed, 21 Feb 2024 14:24:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524750; cv=none; b=bX+jIO+A3WRV0VBiPm8K2ZlbzXijj10q559W3YJDa0sULQtgxgiTukfDxvJ+WW1cToLDoRkWjVrg9yWkjfOGjB1TuouizBPEnwZHJNpMHDcVBcVSnGqgeeVPNPfxRBE+3hUUGugM+rE/pHA34lKr12aMgoPvNcsjfrI1tKFxFNE=
+	t=1708525497; cv=none; b=Dy68xtay9Qax2uJ2gYah5ht9cyIEVygkG4LzrK7LFRNqL1TGh8mc9Ofv2hlDDzMiXMhoc0K/tbPio7FZMsYLL3zOJe1BYPSZffwgK5sfhCHP7MTH6B0GpL5aoKxJAJWcOP4CbJUlQ36obKncrjVio8eipmwePdNdjPuN9uuyFrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524750; c=relaxed/simple;
-	bh=pSSH0QPh9/zJwtqQgJ+p9wZhVlZs/wZaHnboIzDFZBU=;
+	s=arc-20240116; t=1708525497; c=relaxed/simple;
+	bh=kCLlk9E9QTeZxXXIZKNzct2H2cGE2t4FscZWx4vkV08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e/cw8H8gXsetxxsFR2SuPqJ9DNlebD9wgW7+czSIcuDrv0UHFqBoAslfrDmDgWmCxalFNfyRXNQ9pSFyKQiH1sh0NqmCa5T5yue92pGe5msWbVbQ+9ye2lXHGFjOKsWTNfQLHqcZGXUq0YwVD5k2BhcKmD7uqTdG7uF22mEJB7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NMwtMC0E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDF6BC433C7;
-	Wed, 21 Feb 2024 14:12:29 +0000 (UTC)
+	 MIME-Version; b=AAOj8s46Pi6YJgL+kZCD6wY24UWNaZCoso4NLF2/73IgnyelTLQtEiMlkDbmPJR1bLSx9SL6g7DeWq5wiOq+MFInIbwLcCyym8XhIpb6Fj1P+mdmd55DMgOEDeWP3OCKKXNsqPMYlUS3N2mlyeFvojSIyE8Pf8d9PnCO3mIWX6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P+krN0ML; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 004A1C433C7;
+	Wed, 21 Feb 2024 14:24:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524750;
-	bh=pSSH0QPh9/zJwtqQgJ+p9wZhVlZs/wZaHnboIzDFZBU=;
+	s=korg; t=1708525497;
+	bh=kCLlk9E9QTeZxXXIZKNzct2H2cGE2t4FscZWx4vkV08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NMwtMC0EwAWQmeJnSPIpMi9LwCM3bEqIJCOUUBUdz9u3/Nm9Wv58ivYeluIr7XVjU
-	 tZNIuNq/KINoIVmyUTJsUkPuig9wXAUZ9Ae1mDQZOfHyGlasyJNsjH4o8tl0hZJ1Ij
-	 ChtWcJAvRzE/IjrnDx0olqvw1U6UU5/OpjxzEHHo=
+	b=P+krN0MLMxhSZ3tNQLUluuo5Qq7KvogVYvVNE8n2SB4OC5yf/wogaNxxEbRQFvfKX
+	 UQ5lBULEMdW5w+gMkUW6WZx7vJqUhvk1Z2zsePZb1hzmD329BcHxLJuje+vtIiFkjK
+	 CIH6eObnHV7LxCVSRes6GkpVKm2UNHa9ppQhE0eA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+ee2ae68da3b22d04cd8d@syzkaller.appspotmail.com,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 336/379] nilfs2: fix hang in nilfs_lookup_dirty_data_buffers()
+	Benjamin Berg <bberg@redhat.com>,
+	Jiri Kosina <jkosina@suse.cz>,
+	Aseda Aboagye <aaboagye@chromium.org>
+Subject: [PATCH 5.4 174/267] HID: apple: Add 2021 magic keyboard FN key mapping
 Date: Wed, 21 Feb 2024 14:08:35 +0100
-Message-ID: <20240221130004.919267100@linuxfoundation.org>
+Message-ID: <20240221125945.593309399@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Benjamin Berg <bberg@redhat.com>
 
-commit 38296afe3c6ee07319e01bb249aa4bb47c07b534 upstream.
+commit 531cb56972f2773c941499fcfb639cd5128dfb27 upstream.
 
-Syzbot reported a hang issue in migrate_pages_batch() called by mbind()
-and nilfs_lookup_dirty_data_buffers() called in the log writer of nilfs2.
+The new 2021 apple models have a different FN key assignment. Add a new
+translation table and use that for the 2021 magic keyboard.
 
-While migrate_pages_batch() locks a folio and waits for the writeback to
-complete, the log writer thread that should bring the writeback to
-completion picks up the folio being written back in
-nilfs_lookup_dirty_data_buffers() that it calls for subsequent log
-creation and was trying to lock the folio.  Thus causing a deadlock.
-
-In the first place, it is unexpected that folios/pages in the middle of
-writeback will be updated and become dirty.  Nilfs2 adds a checksum to
-verify the validity of the log being written and uses it for recovery at
-mount, so data changes during writeback are suppressed.  Since this is
-broken, an unclean shutdown could potentially cause recovery to fail.
-
-Investigation revealed that the root cause is that the wait for writeback
-completion in nilfs_page_mkwrite() is conditional, and if the backing
-device does not require stable writes, data may be modified without
-waiting.
-
-Fix these issues by making nilfs_page_mkwrite() wait for writeback to
-finish regardless of the stable write requirement of the backing device.
-
-Link: https://lkml.kernel.org/r/20240131145657.4209-1-konishi.ryusuke@gmail.com
-Fixes: 1d1d1a767206 ("mm: only enforce stable page writes if the backing device requires it")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+ee2ae68da3b22d04cd8d@syzkaller.appspotmail.com
-Closes: https://lkml.kernel.org/r/00000000000047d819061004ad6c@google.com
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Benjamin Berg <bberg@redhat.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Cc: Aseda Aboagye <aaboagye@chromium.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/file.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/hid/hid-apple.c |   29 ++++++++++++++++++++++++++++-
+ 1 file changed, 28 insertions(+), 1 deletion(-)
 
---- a/fs/nilfs2/file.c
-+++ b/fs/nilfs2/file.c
-@@ -105,7 +105,13 @@ static vm_fault_t nilfs_page_mkwrite(str
- 	nilfs_transaction_commit(inode->i_sb);
+--- a/drivers/hid/hid-apple.c
++++ b/drivers/hid/hid-apple.c
+@@ -70,6 +70,28 @@ struct apple_key_translation {
+ 	u8 flags;
+ };
  
-  mapped:
--	wait_for_stable_page(page);
-+	/*
-+	 * Since checksumming including data blocks is performed to determine
-+	 * the validity of the log to be written and used for recovery, it is
-+	 * necessary to wait for writeback to finish here, regardless of the
-+	 * stable write requirement of the backing device.
-+	 */
-+	wait_on_page_writeback(page);
-  out:
- 	sb_end_pagefault(inode->i_sb);
- 	return block_page_mkwrite_return(ret);
++static const struct apple_key_translation apple2021_fn_keys[] = {
++	{ KEY_BACKSPACE, KEY_DELETE },
++	{ KEY_ENTER,	KEY_INSERT },
++	{ KEY_F1,	KEY_BRIGHTNESSDOWN, APPLE_FLAG_FKEY },
++	{ KEY_F2,	KEY_BRIGHTNESSUP,   APPLE_FLAG_FKEY },
++	{ KEY_F3,	KEY_SCALE,          APPLE_FLAG_FKEY },
++	{ KEY_F4,	KEY_SEARCH,         APPLE_FLAG_FKEY },
++	{ KEY_F5,	KEY_MICMUTE,        APPLE_FLAG_FKEY },
++	{ KEY_F6,	KEY_SLEEP,          APPLE_FLAG_FKEY },
++	{ KEY_F7,	KEY_PREVIOUSSONG,   APPLE_FLAG_FKEY },
++	{ KEY_F8,	KEY_PLAYPAUSE,      APPLE_FLAG_FKEY },
++	{ KEY_F9,	KEY_NEXTSONG,       APPLE_FLAG_FKEY },
++	{ KEY_F10,	KEY_MUTE,           APPLE_FLAG_FKEY },
++	{ KEY_F11,	KEY_VOLUMEDOWN,     APPLE_FLAG_FKEY },
++	{ KEY_F12,	KEY_VOLUMEUP,       APPLE_FLAG_FKEY },
++	{ KEY_UP,	KEY_PAGEUP },
++	{ KEY_DOWN,	KEY_PAGEDOWN },
++	{ KEY_LEFT,	KEY_HOME },
++	{ KEY_RIGHT,	KEY_END },
++	{ }
++};
++
+ static const struct apple_key_translation macbookair_fn_keys[] = {
+ 	{ KEY_BACKSPACE, KEY_DELETE },
+ 	{ KEY_ENTER,	KEY_INSERT },
+@@ -204,7 +226,9 @@ static int hidinput_apple_event(struct h
+ 	}
+ 
+ 	if (fnmode) {
+-		if (hid->product >= USB_DEVICE_ID_APPLE_WELLSPRING4_ANSI &&
++		if (hid->product == USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2021)
++			table = apple2021_fn_keys;
++		else if (hid->product >= USB_DEVICE_ID_APPLE_WELLSPRING4_ANSI &&
+ 				hid->product <= USB_DEVICE_ID_APPLE_WELLSPRING4A_JIS)
+ 			table = macbookair_fn_keys;
+ 		else if (hid->product < 0x21d || hid->product >= 0x300)
+@@ -363,6 +387,9 @@ static void apple_setup_input(struct inp
+ 	for (trans = apple_iso_keyboard; trans->from; trans++)
+ 		set_bit(trans->to, input->keybit);
+ 
++	for (trans = apple2021_fn_keys; trans->from; trans++)
++		set_bit(trans->to, input->keybit);
++
+ 	if (swap_fn_leftctrl) {
+ 		for (trans = swapped_fn_leftctrl_keys; trans->from; trans++)
+ 			set_bit(trans->to, input->keybit);
 
 
 
