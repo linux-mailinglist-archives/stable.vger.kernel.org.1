@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-22050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E031185D9E0
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:23:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B62AD85DC6C
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:53:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D5901C23160
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:23:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E86251C236B2
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:53:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20E3E6F074;
-	Wed, 21 Feb 2024 13:23:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DAD37BB03;
+	Wed, 21 Feb 2024 13:53:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U0rCVl+4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R6h63yz5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D25C553816;
-	Wed, 21 Feb 2024 13:23:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B57955E5E;
+	Wed, 21 Feb 2024 13:53:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521811; cv=none; b=TgrZ/9BHDjDYj9MaWxZasLg/CO6uLKaPMedePMpPZ4bJkG/RdfHO2h7F1GuZhr9hBeBZcjGJCU/4pVTanfHCgXjED87yEdKbmyAlPGp8N+aghasbyGuf3hmb2/cQV8rqjp3cRUlwTsIrGPzhYNl6Wz278hjE6hHaoJzsCqg/YF0=
+	t=1708523580; cv=none; b=Kuyj6VpYTTlITf2VcAxzJbz34GlWWDevaJUtxeVWC6NLG1p+v3YEt7ZxJ2tQSJngP+kGKuTZUs5Dgp1DZy4pgqj7uxWLa2LjnosorZFIuzWCOjHZ9sT1Kt1766uLZCm4IZvDu8tfwwoEwQsbx/nYWRQZ/2zknd1y96rYXhUA5D4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521811; c=relaxed/simple;
-	bh=PdPnfr7sI/vgLqYI5BJ/1X0wihvwTSxMZaCkf85KtE8=;
+	s=arc-20240116; t=1708523580; c=relaxed/simple;
+	bh=9HA8aK8k5PJCJe20XN1KcEQuVAVhK7mAKAIu8v5dWQw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AR/C7BtcZY4s7vtNrtLfQcGt+1YjzRSSXk2yWW7SpMoHnzzJo1uK98udV/oKjjkCEacjCf+n5RTUnHwx2jsEjloRLPxHiLigHft9fcCEBjn1ohkJ7FXiuM0ACLtP7dA1YgPErUnphXNnTwVQh4SEyvb1OnbYd3NcgNtt2HPo3LM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U0rCVl+4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42852C433F1;
-	Wed, 21 Feb 2024 13:23:31 +0000 (UTC)
+	 MIME-Version; b=LmbMQZYQASNLKD/DpZAYUBfK6KXH8SG48YNE0Wr6wbz7MZvjhWsdLFWso+z4zymVy9GAoxx+Cq9ynrw7cJCrMYGKIlX+ufi0WM9w3LrXxdkWrqpscR9nozTnpF5OhL4E76qsBoGz9WFr5znc0Ww+5Qqq1hqGQPvIrA9aNZKzzKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R6h63yz5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 697BBC433F1;
+	Wed, 21 Feb 2024 13:52:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521811;
-	bh=PdPnfr7sI/vgLqYI5BJ/1X0wihvwTSxMZaCkf85KtE8=;
+	s=korg; t=1708523579;
+	bh=9HA8aK8k5PJCJe20XN1KcEQuVAVhK7mAKAIu8v5dWQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U0rCVl+4GjgB5pCaKfpvS7pDoeRvIyPL9D2d30yu1M3jgswbTTkteX7Jt3B2yRdKM
-	 TA7990lflB8ADtKcpL8qT4a1TL3TfYje+dZMTGUvVNezU7L1TxzGqs1l+ORWc8QPDf
-	 fXUqASJYcc3tqGhzLIMCnX9oQCYFFI0KZGJqAaTE=
+	b=R6h63yz5VEBEoYsxkC7yWXwE8GKkvmrfy87GioUJQ0GV2LdvDm9ZeePx908dMAIEA
+	 zFpiPlpcF38Ig9Tr26+DU5UYEWl2ofYLR87Q0bH43zzDvKq8KulGgHgmxJ3FbAtTxx
+	 bgOv8bVDxi6Iy+rTRn6u8UIDC25/obvs6ptxpRYg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+5d5d25f90f195a3cfcb4@syzkaller.appspotmail.com,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.19 200/202] nilfs2: replace WARN_ONs for invalid DAT metadata block requests
-Date: Wed, 21 Feb 2024 14:08:21 +0100
-Message-ID: <20240221125938.249496188@linuxfoundation.org>
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Miko Larsson <mikoxyzzz@gmail.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 451/476] fbdev: Fix invalid page access after closing deferred I/O devices
+Date: Wed, 21 Feb 2024 14:08:22 +0100
+Message-ID: <20240221130024.699469227@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +64,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 5124a0a549857c4b87173280e192eea24dea72ad upstream.
+[ Upstream commit 3efc61d95259956db25347e2a9562c3e54546e20 ]
 
-If DAT metadata file block access fails due to corruption of the DAT file
-or abnormal virtual block numbers held by b-trees or inodes, a kernel
-warning is generated.
+When a fbdev with deferred I/O is once opened and closed, the dirty
+pages still remain queued in the pageref list, and eventually later
+those may be processed in the delayed work.  This may lead to a
+corruption of pages, hitting an Oops.
 
-This replaces the WARN_ONs by error output, so that a kernel, booted with
-panic_on_warn, does not panic.  This patch also replaces the detected
-return code -ENOENT with another internal code -EINVAL to notify the bmap
-layer of metadata corruption.  When the bmap layer sees -EINVAL, it
-handles the abnormal situation with nilfs_bmap_convert_error() and finally
-returns code -EIO as it should.
+This patch makes sure to cancel the delayed work and clean up the
+pageref list at closing the device for addressing the bug.  A part of
+the cleanup code is factored out as a new helper function that is
+called from the common fb_release().
 
-Link: https://lkml.kernel.org/r/0000000000005cc3d205ea23ddcf@google.com
-Link: https://lkml.kernel.org/r/20230126164114.6911-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: <syzbot+5d5d25f90f195a3cfcb4@syzkaller.appspotmail.com>
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Tested-by: Miko Larsson <mikoxyzzz@gmail.com>
+Fixes: 56c134f7f1b5 ("fbdev: Track deferred-I/O pages in pageref struct")
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230129082856.22113-1-tiwai@suse.de
+Stable-dep-of: 33cd6ea9c067 ("fbdev: flush deferred IO before closing")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/dat.c |   27 +++++++++++++++++----------
- 1 file changed, 17 insertions(+), 10 deletions(-)
+ drivers/video/fbdev/core/fb_defio.c | 10 +++++++++-
+ drivers/video/fbdev/core/fbmem.c    |  4 ++++
+ include/linux/fb.h                  |  1 +
+ 3 files changed, 14 insertions(+), 1 deletion(-)
 
---- a/fs/nilfs2/dat.c
-+++ b/fs/nilfs2/dat.c
-@@ -40,8 +40,21 @@ static inline struct nilfs_dat_info *NIL
- static int nilfs_dat_prepare_entry(struct inode *dat,
- 				   struct nilfs_palloc_req *req, int create)
+diff --git a/drivers/video/fbdev/core/fb_defio.c b/drivers/video/fbdev/core/fb_defio.c
+index 5faeca61d3dd..b3f41f432ec2 100644
+--- a/drivers/video/fbdev/core/fb_defio.c
++++ b/drivers/video/fbdev/core/fb_defio.c
+@@ -292,7 +292,7 @@ void fb_deferred_io_open(struct fb_info *info,
+ }
+ EXPORT_SYMBOL_GPL(fb_deferred_io_open);
+ 
+-void fb_deferred_io_cleanup(struct fb_info *info)
++void fb_deferred_io_release(struct fb_info *info)
  {
--	return nilfs_palloc_get_entry_block(dat, req->pr_entry_nr,
--					    create, &req->pr_entry_bh);
-+	int ret;
+ 	struct fb_deferred_io *fbdefio = info->fbdefio;
+ 	struct page *page;
+@@ -306,6 +306,14 @@ void fb_deferred_io_cleanup(struct fb_info *info)
+ 		page = fb_deferred_io_page(info, i);
+ 		page->mapping = NULL;
+ 	}
++}
++EXPORT_SYMBOL_GPL(fb_deferred_io_release);
 +
-+	ret = nilfs_palloc_get_entry_block(dat, req->pr_entry_nr,
-+					   create, &req->pr_entry_bh);
-+	if (unlikely(ret == -ENOENT)) {
-+		nilfs_error(dat->i_sb,
-+			  "DAT doesn't have a block to manage vblocknr = %llu",
-+			  (unsigned long long)req->pr_entry_nr);
-+		/*
-+		 * Return internal code -EINVAL to notify bmap layer of
-+		 * metadata corruption.
-+		 */
-+		ret = -EINVAL;
-+	}
-+	return ret;
- }
++void fb_deferred_io_cleanup(struct fb_info *info)
++{
++	struct fb_deferred_io *fbdefio = info->fbdefio;
++
++	fb_deferred_io_release(info);
  
- static void nilfs_dat_commit_entry(struct inode *dat,
-@@ -123,11 +136,7 @@ static void nilfs_dat_commit_free(struct
+ 	kvfree(info->pagerefs);
+ 	mutex_destroy(&fbdefio->lock);
+diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
+index 1b288a613a6e..ec7a883715e3 100644
+--- a/drivers/video/fbdev/core/fbmem.c
++++ b/drivers/video/fbdev/core/fbmem.c
+@@ -1454,6 +1454,10 @@ __releases(&info->lock)
+ 	struct fb_info * const info = file->private_data;
  
- int nilfs_dat_prepare_start(struct inode *dat, struct nilfs_palloc_req *req)
- {
--	int ret;
--
--	ret = nilfs_dat_prepare_entry(dat, req, 0);
--	WARN_ON(ret == -ENOENT);
--	return ret;
-+	return nilfs_dat_prepare_entry(dat, req, 0);
- }
- 
- void nilfs_dat_commit_start(struct inode *dat, struct nilfs_palloc_req *req,
-@@ -154,10 +163,8 @@ int nilfs_dat_prepare_end(struct inode *
- 	int ret;
- 
- 	ret = nilfs_dat_prepare_entry(dat, req, 0);
--	if (ret < 0) {
--		WARN_ON(ret == -ENOENT);
-+	if (ret < 0)
- 		return ret;
--	}
- 
- 	kaddr = kmap_atomic(req->pr_entry_bh->b_page);
- 	entry = nilfs_palloc_block_get_entry(dat, req->pr_entry_nr,
+ 	lock_fb_info(info);
++#if IS_ENABLED(CONFIG_FB_DEFERRED_IO)
++	if (info->fbdefio)
++		fb_deferred_io_release(info);
++#endif
+ 	if (info->fbops->fb_release)
+ 		info->fbops->fb_release(info,1);
+ 	module_put(info->fbops->owner);
+diff --git a/include/linux/fb.h b/include/linux/fb.h
+index b322d30f6225..433cddf8442b 100644
+--- a/include/linux/fb.h
++++ b/include/linux/fb.h
+@@ -675,6 +675,7 @@ extern int  fb_deferred_io_init(struct fb_info *info);
+ extern void fb_deferred_io_open(struct fb_info *info,
+ 				struct inode *inode,
+ 				struct file *file);
++extern void fb_deferred_io_release(struct fb_info *info);
+ extern void fb_deferred_io_cleanup(struct fb_info *info);
+ extern int fb_deferred_io_fsync(struct file *file, loff_t start,
+ 				loff_t end, int datasync);
+-- 
+2.43.0
+
 
 
 
