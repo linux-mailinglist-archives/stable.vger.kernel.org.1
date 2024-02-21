@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-21978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECE1885D97A
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:19:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57F5E85DC00
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:48:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 244201C22F33
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:19:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EDD6AB23FCD
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:48:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6961A76905;
-	Wed, 21 Feb 2024 13:19:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5610978B50;
+	Wed, 21 Feb 2024 13:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z44zx4be"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="whQdZpRy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2927529AB;
-	Wed, 21 Feb 2024 13:19:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 138244D5B7;
+	Wed, 21 Feb 2024 13:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521543; cv=none; b=iL0Avl6VC5hyUxwJTO2cRDrkWOJEdMdiHbshL8mz8lb8c/IO4t7O2R3FGLqeMjqs1rkNr3F8+VX8QskL8560lkJL3yREs4MI/FcA9DIhp40y2GE5/s/69x3zkMLGe6mNOICwhwHCxEYm1MBoREug1Z76WmGaWWKrVgwwwHs7weM=
+	t=1708523287; cv=none; b=FsQ8T0qVeWdgzjwP3uMmzgdLVDC8UuA+OqTXCeq56iQOoi9hRVv03aGQX3Ydv9ThVW+1CKxUzVLOPUsZMWvSWWacfxOkCf+n4P3SODjl/QTPTbf+GYCKnYtUocsV4JzFtEphBskIY2dfmAAcUZjl/AdA1vs7F50ITUPhNydekzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521543; c=relaxed/simple;
-	bh=d52kfQFeUTVggFyKzfaNxh1ByiyZ4ppFz8jXY+ES2kQ=;
+	s=arc-20240116; t=1708523287; c=relaxed/simple;
+	bh=ExaYNAbiUjGsIe96ev+rXTx0F6SsNWrTQOivoqiAAEc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oSla7x4NI6cur9sSphCssJ3cS0qr2d1nDv7d9gb5x9h2e+e3rjgaoQOiWC18PKVmnno7RVccZ/IlQsnVrb8nIgKrMuI9TLH57YIF70JenFVIMGZQZCVi8rJYkN+G8UZiW9n9AkDZOoBPgOtfNI5JY37BZgdMl2ld4rcKItKRzh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z44zx4be; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AD42C433F1;
-	Wed, 21 Feb 2024 13:19:02 +0000 (UTC)
+	 MIME-Version; b=mLmFPr/saa3s28tBp8TBxZhdUx0mXXgLEo5T8HdMEjfpaYNWrki94OLV12UMSgedrS6UDP2Bi70pia7ESoDt/GMsq8Mf4+dgq6fLXbZn3suQam8XkycDv3UCtfV3cdBfMFGxJ5nIKJt1KOe+Mr2Yqat8I9NhPm7F1PhlFF2w/04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=whQdZpRy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 715F0C433F1;
+	Wed, 21 Feb 2024 13:48:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521543;
-	bh=d52kfQFeUTVggFyKzfaNxh1ByiyZ4ppFz8jXY+ES2kQ=;
+	s=korg; t=1708523286;
+	bh=ExaYNAbiUjGsIe96ev+rXTx0F6SsNWrTQOivoqiAAEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z44zx4beQfU6TnpS40UD+H6QYZW4GYTL6Y3xLMjtPNsvii/Q3FPJDCCqprJd+3Plz
-	 0Z++RNAfeFclFJ6E8JuxljXWLASYPdwrMT25wjFMdUt1hAEw3EcHuUrlM3V3ikVgTh
-	 aNjMkdlhiLdRuroxedTR2JR/gVY2+OEkKIryqY+M=
+	b=whQdZpRys+E38zq/g3A+Nup7wVevNKBuxexr1uNmedfNmoIDAJKXO2Hc5xUtpDdex
+	 7xWPXalw2CTTG8i7nvk3Yd8Nr729Z8DgwpaWXJsmItzV1hfQ40GTw+yOFpAl4EQ4x3
+	 aIVqYN1G6qsPGlnIO0hi5i1EO9AfjtlaE0O3uvYA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 111/202] clk: hi3620: Fix memory leak in hi3620_mmc_clk_init()
+	Luka Guzenko <l.guzenko@web.de>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 361/476] ALSA: hda/realtek: Enable Mute LED on HP Laptop 14-fq0xxx
 Date: Wed, 21 Feb 2024 14:06:52 +0100
-Message-ID: <20240221125935.332114058@linuxfoundation.org>
+Message-ID: <20240221130021.341426530@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
+From: Luka Guzenko <l.guzenko@web.de>
 
-[ Upstream commit bfbea9e5667cfa9552c3d88f023386f017f6c308 ]
+commit f0d78972f27dc1d1d51fbace2713ad3cdc60a877 upstream.
 
-In cases where kcalloc() fails for the 'clk_data->clks' allocation, the
-code path does not handle the failure gracefully, potentially leading
-to a memory leak. This fix ensures proper cleanup by freeing the
-allocated memory for 'clk_data' before returning.
+This HP Laptop uses ALC236 codec with COEF 0x07 controlling the
+mute LED. Enable existing quirk for this device.
 
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Link: https://lore.kernel.org/r/20231210165040.3407545-1-visitorckw@gmail.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Luka Guzenko <l.guzenko@web.de>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240128155704.2333812-1-l.guzenko@web.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/hisilicon/clk-hi3620.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/hisilicon/clk-hi3620.c b/drivers/clk/hisilicon/clk-hi3620.c
-index 77072c7778b9..93b4d8933797 100644
---- a/drivers/clk/hisilicon/clk-hi3620.c
-+++ b/drivers/clk/hisilicon/clk-hi3620.c
-@@ -481,8 +481,10 @@ static void __init hi3620_mmc_clk_init(struct device_node *node)
- 		return;
- 
- 	clk_data->clks = kcalloc(num, sizeof(*clk_data->clks), GFP_KERNEL);
--	if (!clk_data->clks)
-+	if (!clk_data->clks) {
-+		kfree(clk_data);
- 		return;
-+	}
- 
- 	for (i = 0; i < num; i++) {
- 		struct hisi_mmc_clock *mmc_clk = &hi3620_mmc_clks[i];
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9090,6 +9090,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x8786, "HP OMEN 15", ALC285_FIXUP_HP_MUTE_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8787, "HP OMEN 15", ALC285_FIXUP_HP_MUTE_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8788, "HP OMEN 15", ALC285_FIXUP_HP_MUTE_LED),
++	SND_PCI_QUIRK(0x103c, 0x87b7, "HP Laptop 14-fq0xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x87c8, "HP", ALC287_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x87e5, "HP ProBook 440 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x87e7, "HP ProBook 450 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
 
 
 
