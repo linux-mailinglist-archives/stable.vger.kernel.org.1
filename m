@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-23085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DB4085DF2D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:25:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C383685DC73
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:53:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A62451C21AEC
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:25:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 52D1BB26969
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:53:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8F6D7E593;
-	Wed, 21 Feb 2024 14:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B44B97D401;
+	Wed, 21 Feb 2024 13:53:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uAEU3yZF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g/Qp/iuG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6250C7CF27;
-	Wed, 21 Feb 2024 14:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70C5979DAB;
+	Wed, 21 Feb 2024 13:53:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525522; cv=none; b=VN3WrQN+wXohml1s4CsgxRG6azo03GQH/vDya+/iM5Z5/mn5I9vQc1W4CA1+nxbXwRCaIG1JOiZymvSmfMH7w2JSpEaSVm5K2UHlmMtecY5VE7B0a0YWGO+8mNJnt2RXQoGRkaiyV0C3rBV3EwTEmQeo4zsWcgjV8vzEuufE6aQ=
+	t=1708523589; cv=none; b=ccP8gA4jLfIUrnZwoQ7fblMy+madFWomWUSew3srsvpRzQJLov6WOOcpZn71gwv8MfAN7wpj/f8XKMWtubVHZlBMZZIrdzPIfPkUx2TPhjsQF+FbhucQx+OuxqJm/UaJ0DA5fjTW4g5ybKePJWbB210d6JfC2EydgOgo3iH8H5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525522; c=relaxed/simple;
-	bh=WiQE+qRYq0QIyFA0CoDr/xg38Ekucp3O6OlSWSN0p0U=;
+	s=arc-20240116; t=1708523589; c=relaxed/simple;
+	bh=XYkhy8QGIBygRigGkARX/MA+scopnlbaJnLkM6K1y04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HmKnd92eClQUAi0iebEkyy1/OSCrD7rhXi8B6qdYCj07rLKdZocfuuG3aMKNIpX0tBCv2Rhxd7jW0hpI3PUKk1pWTWj4GrufhWIVxqclLdKHPTEMAtnhjUExk+5AOCPloWQ8BSY1KgEREpqUAUIwsB2d+eHUQ6JLl7bkdIQoiYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uAEU3yZF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4617C43390;
-	Wed, 21 Feb 2024 14:25:21 +0000 (UTC)
+	 MIME-Version; b=VxnlTq/vzilYBdMI7H3UWWLY+v+EqdaxIn7NISYEnBWnf/cZTLIfyEZYlR6igu1P2WtPquCxOMRzjNWzSjBgJHFn9Qms9FstsmE2f/S+y7C9v3A/dATquU1vYQonwV3Yrot/lx9uZTWmyHtanvObyeFT52opzWfz7ZPDYt1THYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g/Qp/iuG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA32C433C7;
+	Wed, 21 Feb 2024 13:53:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525522;
-	bh=WiQE+qRYq0QIyFA0CoDr/xg38Ekucp3O6OlSWSN0p0U=;
+	s=korg; t=1708523589;
+	bh=XYkhy8QGIBygRigGkARX/MA+scopnlbaJnLkM6K1y04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uAEU3yZFCjEPFipZi46FhouJNIZ1FjcLjELM8FqTFNokibhiPnrCUuqixNYpdpdge
-	 iKsF8mKxhDITZ1/3ILmGcXsgo1Qn3y+xXUttmi2IKzSRl2sZaMqM2orz4Zjagly87D
-	 J9g/yAp9uRLUkPNKNO4uTW42JC8CgEAeZ/ShC3x4=
+	b=g/Qp/iuGatxxFXYbNCjWRRRu3ccv4W4W+E77JxgKxfL840Xb1dXcvbGlyFsq8aZ8K
+	 3T2VBxwvsX5GRx4YGq5K5CXdR+JohDNzQlUAdKGbfetCa0dJWAliwKiVvXdAWKIe4f
+	 QqWXqWSTbgkpcrZZ/AXyJSbWpeUc+qRO6uQrQp8Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Simon Horman <horms@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 5.4 164/267] ixgbe: Fix an error handling path in ixgbe_read_iosf_sb_reg_x550()
+	Schspa Shi <schspa@gmail.com>,
+	Stephen Boyd <swboyd@chromium.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 454/476] scripts/decode_stacktrace.sh: support old bash version
 Date: Wed, 21 Feb 2024 14:08:25 +0100
-Message-ID: <20240221125945.250853869@linuxfoundation.org>
+Message-ID: <20240221130024.822980212@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +63,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Schspa Shi <schspa@gmail.com>
 
-[ Upstream commit bbc404d20d1b46d89b461918bc44587620eda200 ]
+[ Upstream commit 3af8acf6aff2a98731522b52927429760f0b8006 ]
 
-All error handling paths, except this one, go to 'out' where
-release_swfw_sync() is called.
-This call balances the acquire_swfw_sync() call done at the beginning of
-the function.
+Old bash version don't support associative array variables.  Avoid to use
+associative array variables to avoid error.
 
-Branch to the error handling path in order to correctly release some
-resources in case of error.
+Without this, old bash version will report error as fellowing
+[   15.954042] Kernel panic - not syncing: sysrq triggered crash
+[   15.955252] CPU: 1 PID: 167 Comm: sh Not tainted 5.18.0-rc1-00208-gb7d075db2fd5 #4
+[   15.956472] Hardware name: Hobot J5 Virtual development board (DT)
+[   15.957856] Call trace:
+./scripts/decode_stacktrace.sh: line 128: ,dump_backtrace: syntax error: operand expected (error token is ",dump_backtrace")
 
-Fixes: ae14a1d8e104 ("ixgbe: Fix IOSF SB access issues")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://lkml.kernel.org/r/20220409180331.24047-1-schspa@gmail.com
+Signed-off-by: Schspa Shi <schspa@gmail.com>
+Cc: Stephen Boyd <swboyd@chromium.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: efbd63983533 ("scripts/decode_stacktrace.sh: optionally use LLVM utilities")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ scripts/decode_stacktrace.sh | 27 +++++++++++++++++++--------
+ 1 file changed, 19 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c
-index 7d3da1e823dc..48b95f0bca4e 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c
-@@ -717,7 +717,8 @@ static s32 ixgbe_read_iosf_sb_reg_x550(struct ixgbe_hw *hw, u32 reg_addr,
- 		error = (command & IXGBE_SB_IOSF_CTRL_CMPL_ERR_MASK) >>
- 			 IXGBE_SB_IOSF_CTRL_CMPL_ERR_SHIFT;
- 		hw_dbg(hw, "Failed to read, error %x\n", error);
--		return -EIO;
-+		ret = -EIO;
-+		goto out;
- 	}
+diff --git a/scripts/decode_stacktrace.sh b/scripts/decode_stacktrace.sh
+index 5fbad61fe490..7075e26ab2c4 100755
+--- a/scripts/decode_stacktrace.sh
++++ b/scripts/decode_stacktrace.sh
+@@ -45,8 +45,13 @@ else
+ 	fi
+ fi
  
- 	if (!ret)
+-declare -A cache
+-declare -A modcache
++declare aarray_support=true
++declare -A cache 2>/dev/null
++if [[ $? != 0 ]]; then
++	aarray_support=false
++else
++	declare -A modcache
++fi
+ 
+ find_module() {
+ 	if [[ -n $debuginfod ]] ; then
+@@ -97,7 +102,7 @@ parse_symbol() {
+ 
+ 	if [[ $module == "" ]] ; then
+ 		local objfile=$vmlinux
+-	elif [[ "${modcache[$module]+isset}" == "isset" ]]; then
++	elif [[ $aarray_support == true && "${modcache[$module]+isset}" == "isset" ]]; then
+ 		local objfile=${modcache[$module]}
+ 	else
+ 		local objfile=$(find_module)
+@@ -105,7 +110,9 @@ parse_symbol() {
+ 			echo "WARNING! Modules path isn't set, but is needed to parse this symbol" >&2
+ 			return
+ 		fi
+-		modcache[$module]=$objfile
++		if [[ $aarray_support == true ]]; then
++			modcache[$module]=$objfile
++		fi
+ 	fi
+ 
+ 	# Remove the englobing parenthesis
+@@ -125,7 +132,7 @@ parse_symbol() {
+ 	# Use 'nm vmlinux' to figure out the base address of said symbol.
+ 	# It's actually faster to call it every time than to load it
+ 	# all into bash.
+-	if [[ "${cache[$module,$name]+isset}" == "isset" ]]; then
++	if [[ $aarray_support == true && "${cache[$module,$name]+isset}" == "isset" ]]; then
+ 		local base_addr=${cache[$module,$name]}
+ 	else
+ 		local base_addr=$(nm "$objfile" 2>/dev/null | awk '$3 == "'$name'" && ($2 == "t" || $2 == "T") {print $1; exit}')
+@@ -133,7 +140,9 @@ parse_symbol() {
+ 			# address not found
+ 			return
+ 		fi
+-		cache[$module,$name]="$base_addr"
++		if [[ $aarray_support == true ]]; then
++			cache[$module,$name]="$base_addr"
++		fi
+ 	fi
+ 	# Let's start doing the math to get the exact address into the
+ 	# symbol. First, strip out the symbol total length.
+@@ -149,11 +158,13 @@ parse_symbol() {
+ 
+ 	# Pass it to addr2line to get filename and line number
+ 	# Could get more than one result
+-	if [[ "${cache[$module,$address]+isset}" == "isset" ]]; then
++	if [[ $aarray_support == true && "${cache[$module,$address]+isset}" == "isset" ]]; then
+ 		local code=${cache[$module,$address]}
+ 	else
+ 		local code=$(${CROSS_COMPILE}addr2line -i -e "$objfile" "$address" 2>/dev/null)
+-		cache[$module,$address]=$code
++		if [[ $aarray_support == true ]]; then
++			cache[$module,$address]=$code
++		fi
+ 	fi
+ 
+ 	# addr2line doesn't return a proper error code if it fails, so
 -- 
 2.43.0
 
