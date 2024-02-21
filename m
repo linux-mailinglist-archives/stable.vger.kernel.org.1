@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-22626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECAD985DCF1
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:00:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4DCF85DB37
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:38:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 749ECB271CF
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:00:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9AF491F23CBD
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:38:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3DC57C6C0;
-	Wed, 21 Feb 2024 13:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8E537BAFF;
+	Wed, 21 Feb 2024 13:38:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PWRHtevN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GCGdEA2L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 623C678B73;
-	Wed, 21 Feb 2024 13:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64A1779DBC;
+	Wed, 21 Feb 2024 13:38:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523967; cv=none; b=citZSrZjTvL/JV9EU13/CpaPtRfSpQqb69RP0uD23HozaU7LDfNEmxP5uRDq/LKPXw6aatVMoV+rbpplBqsV/Gvf8lB7scmHNTcOWSFZpJI6dmwSPwh1xYA1DlfPRRDqxHBpwWpUWKY6b1WFwRzqnCSJB+P0XrNu2cXoMLf9LQI=
+	t=1708522697; cv=none; b=E7pxopkuJp+xR4avWUJxFGXiAmPSMHXL1rFSRbMgG9LecJqSvJkNStJa3v0bfo532Kf7ifSDiUXJZdCBO0BdoyNLzsuvwZ8SXPQUHEDli6xTH5snSxGD85lF3d6s22cj7mmPJwkmnKDBf4zZD/MqpZa3AN0L3PaHWFxeyL3lOuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523967; c=relaxed/simple;
-	bh=N2EUR8k845CU1bhFV6yKC6LlnFMQRLukqSLmEsKqpZc=;
+	s=arc-20240116; t=1708522697; c=relaxed/simple;
+	bh=8wEGm6NZVea5MRaDfJ/3uDt+AoBF5iu3nSAxJaGKoiw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UUPtUo3/uPZ/PfqP54eXe5qjfdY8IkKoN5rFPtsplRLlZz1mAUQ8SkyZS7kowpjn89lEdRwPO/3HVRKhqQjS0D+WJhRKTZAy8WjBa87U69SXnLAeIrXUHmLt0StT/OVpC57HIIWDhAV01YE3DHwceyH10ESYXz+8sX3K0dhP4OM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PWRHtevN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6385C43394;
-	Wed, 21 Feb 2024 13:59:26 +0000 (UTC)
+	 MIME-Version; b=ELj6LwHqzcsRUZ9yqv96rDW0l4neRNCpyv1e6YH3l3mixCNFsT7Uypjk6DBez7u0BF1/SirfZ/xd7vuT6ijruZbrmZOD/Bal7g3xIMoAt9U8R1uxKUK4DZvaE2DRNqDR/ePTS6QdhwWqLBZzxE0ecox0hJfPWpYbLRVMYBdRgQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GCGdEA2L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CAE1C43390;
+	Wed, 21 Feb 2024 13:38:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523967;
-	bh=N2EUR8k845CU1bhFV6yKC6LlnFMQRLukqSLmEsKqpZc=;
+	s=korg; t=1708522696;
+	bh=8wEGm6NZVea5MRaDfJ/3uDt+AoBF5iu3nSAxJaGKoiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PWRHtevNdqvhCgKNDRpefMnBfqUzVbwK4VspG7gHeKqFpu4FKCvmVR/bTR2pUCcp+
-	 YzbqNvG+IiIeVnkO1azgZmAeUniQiVKq/XA3vwxw1vMYaz5WvinQVsLd/UQ32rmZXA
-	 VIIZjde/MRE9gZ5yPyR8jbM21e7Uh4VXB0YWV8AA=
+	b=GCGdEA2LSuoB9yoF3isVzH2BmsaXYyiPiGi5OQWc52PrNMjC3XZJuPyfMLP0PA29o
+	 UXv3KJsKYInrVQe3UgX4x62Jpx3NzS9M9sbEEf8kI0u7QcI39OI/4RrwLZg5AJE5F7
+	 +w0iABFCR8ah0S94wAzQv5fjJr9TF1oLlIge9uio=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Aric Cyr <aric.cyr@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Josip Pavic <josip.pavic@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 106/379] powerpc: pmd_move_must_withdraw() is only needed for CONFIG_TRANSPARENT_HUGEPAGE
+Subject: [PATCH 5.15 234/476] drm/amd/display: make flip_timestamp_in_us a 64-bit variable
 Date: Wed, 21 Feb 2024 14:04:45 +0100
-Message-ID: <20240221125958.053883407@linuxfoundation.org>
+Message-ID: <20240221130016.536891156@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Rothwell <sfr@canb.auug.org.au>
+From: Josip Pavic <josip.pavic@amd.com>
 
-[ Upstream commit 0d555b57ee660d8a871781c0eebf006e855e918d ]
+[ Upstream commit 6fb12518ca58412dc51054e2a7400afb41328d85 ]
 
-The linux-next build of powerpc64 allnoconfig fails with:
+[Why]
+This variable currently overflows after about 71 minutes. This doesn't
+cause any known functional issues but it does make debugging more
+difficult.
 
-  arch/powerpc/mm/book3s64/pgtable.c:557:5: error: no previous prototype for 'pmd_move_must_withdraw'
-    557 | int pmd_move_must_withdraw(struct spinlock *new_pmd_ptl,
-        |     ^~~~~~~~~~~~~~~~~~~~~~
+[How]
+Make it a 64-bit variable.
 
-Caused by commit:
-
-  c6345dfa6e3e ("Makefile.extrawarn: turn on missing-prototypes globally")
-
-Fix it by moving the function definition under
-CONFIG_TRANSPARENT_HUGEPAGE like the prototype. The function is only
-called when CONFIG_TRANSPARENT_HUGEPAGE=y.
-
-Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
-[mpe: Flesh out change log from linux-next patch]
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231127132809.45c2b398@canb.auug.org.au
+Reviewed-by: Aric Cyr <aric.cyr@amd.com>
+Acked-by: Wayne Lin <wayne.lin@amd.com>
+Signed-off-by: Josip Pavic <josip.pavic@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/mm/book3s64/pgtable.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/display/dc/dc_hw_types.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
-index e18ae50a275c..a86d932a7c30 100644
---- a/arch/powerpc/mm/book3s64/pgtable.c
-+++ b/arch/powerpc/mm/book3s64/pgtable.c
-@@ -446,6 +446,7 @@ void ptep_modify_prot_commit(struct vm_area_struct *vma, unsigned long addr,
- 	set_pte_at(vma->vm_mm, addr, ptep, pte);
- }
+diff --git a/drivers/gpu/drm/amd/display/dc/dc_hw_types.h b/drivers/gpu/drm/amd/display/dc/dc_hw_types.h
+index 52355fe6994c..51df38a210e8 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc_hw_types.h
++++ b/drivers/gpu/drm/amd/display/dc/dc_hw_types.h
+@@ -417,7 +417,7 @@ struct dc_cursor_position {
+ };
  
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
- /*
-  * For hash translation mode, we use the deposited table to store hash slot
-  * information and they are stored at PTRS_PER_PMD offset from related pmd
-@@ -467,6 +468,7 @@ int pmd_move_must_withdraw(struct spinlock *new_pmd_ptl,
- 
- 	return true;
- }
-+#endif
- 
- /*
-  * Does the CPU support tlbie?
+ struct dc_cursor_mi_param {
+-	unsigned int pixel_clk_khz;
++	unsigned long long pixel_clk_khz;
+ 	unsigned int ref_clk_khz;
+ 	struct rect viewport;
+ 	struct fixed31_32 h_scale_ratio;
 -- 
 2.43.0
 
