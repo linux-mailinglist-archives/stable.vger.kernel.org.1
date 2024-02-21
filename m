@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-22401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3365A85DBE0
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:46:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88FD285DD7B
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:06:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B7A37B27486
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:46:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32948284359
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:06:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C2AC79DBC;
-	Wed, 21 Feb 2024 13:46:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1059D7BB10;
+	Wed, 21 Feb 2024 14:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E7b/eL+X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MKY5KOgb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE4747B3F2;
-	Wed, 21 Feb 2024 13:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42D83CF42;
+	Wed, 21 Feb 2024 14:04:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523172; cv=none; b=WeOl7Hbqm1ES/QExEOgj6JdfAxHjwiDZiDOh42Li9Gwu6ng/iysW5J/YA9iSOoyM2mCjNtaaihYQkmvfc6dIuOhxZkxssMCEOLLFlo/BXwuOFOvU1z+t1+fBy4TN7B2PrehSVIQBFg9nGKmY5T8FB89MhE7B0yRCK8WO/WQWb18=
+	t=1708524295; cv=none; b=TMDKrNO/rsy65yclp2qc3H/BmmMb0WqQSl5oQVfeY1nD08/MU/kEVgiLT2skU/LTykVmwxhh/KCGfaY3pOAzQ/zc+esuIe4icVKcc439P4o1YYmxesiJyPxqqOqzo/uN3JiEQIsCUnCnYHss4CpnzbQdyE3PU0rHiBqQXLLjfN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523172; c=relaxed/simple;
-	bh=aBC8A86UhPWSMeeSvMUbcu9XaVJFpfPEOA7xL/EZzgo=;
+	s=arc-20240116; t=1708524295; c=relaxed/simple;
+	bh=h58a0AMHIHy4ffpmaHSfHk60wkwWl+kwvevWmeSTF3w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ulj6KhnU2kaECz/LXMCJH1/h40V0cfaSA+tNoTAj9WLLDL7MY4ZsMSELXTC1Rzz/fw1/KmxyNr3fCPMFKzmEOQncTj9sZz0AK5i657tsrCDTti1uuRKxDx6MartS+mTjyE6KG4dVXioFuKEUoX/Ai8CnF2MqBD8GyVstcoLC2wo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E7b/eL+X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58117C433C7;
-	Wed, 21 Feb 2024 13:46:12 +0000 (UTC)
+	 MIME-Version; b=KXzeGFZPa5khAoc6lpY2hY3NFAR+WcnV8K9e2BVLQUFmz6jlQMlA/81RQtvfpAkTWA3b+yz0cxIzVFEokKwJir/4xUMLP85n4drO8wSXt0B7gFO845kYfjysr/edNjVFKeePW+3rrcO/af9Pudt6QKcXKiEM5NxBRZUUXYjjKEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MKY5KOgb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D13C433C7;
+	Wed, 21 Feb 2024 14:04:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523172;
-	bh=aBC8A86UhPWSMeeSvMUbcu9XaVJFpfPEOA7xL/EZzgo=;
+	s=korg; t=1708524295;
+	bh=h58a0AMHIHy4ffpmaHSfHk60wkwWl+kwvevWmeSTF3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E7b/eL+XsYyK8J3+Ioaprxc1tKtEpe7L7Eq3WExTyo/lbyn2yITwdBTWlyOAsTWwn
-	 JYEx+L65gG2Z6hIgj+jAhzplVDNK4kXr5pl5PhxpVivXeuGLHbLNHI4hp1PzFHDIww
-	 2gSOWzcdJcx+7OPgh18wa7IIERmnUO5wTY0ugbHk=
+	b=MKY5KOgbxNu8gGtG3lG2TvHvc0X+VQ1LMAGw1Hlcza6IPcS7O8Xu4ghd5H3wstz/8
+	 QRrhAo/xE3x/GvOwlrPiA9PWWXHmO3KggkGNAZmseotOI52BAls4+YmuXtFeCDuvJU
+	 1gl2jB5KhC/j8m0YYItJXShtgqZummwWMzr7ts38=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julian Sikorski <belegdol+github@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 330/476] ALSA: usb-audio: Add a quirk for Yamaha YIT-W12TX transmitter
+	Benjamin Berg <benjamin@sipsolutions.net>,
+	Richard Weinberger <richard@nod.at>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 202/379] um: Dont use vfprintf() for os_info()
 Date: Wed, 21 Feb 2024 14:06:21 +0100
-Message-ID: <20240221130020.219023292@linuxfoundation.org>
+Message-ID: <20240221130000.878138926@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Julian Sikorski <belegdol+github@gmail.com>
+From: Benjamin Berg <benjamin@sipsolutions.net>
 
-commit a969210066054ea109d8b7aff29a9b1c98776841 upstream.
+[ Upstream commit 236f9fe39b02c15fa5530b53e9cca48354394389 ]
 
-The device fails to initialize otherwise, giving the following error:
-[ 3676.671641] usb 2-1.1: 1:1: cannot get freq at ep 0x1
+The threads allocated inside the kernel have only a single page of
+stack. Unfortunately, the vfprintf function in standard glibc may use
+too much stack-space, overflowing it.
 
-Signed-off-by: Julian Sikorski <belegdol+github@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240123084935.2745-1-belegdol+github@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To make os_info safe to be used by helper threads, use the kernel
+vscnprintf function into a smallish buffer and write out the information
+to stderr.
+
+Signed-off-by: Benjamin Berg <benjamin@sipsolutions.net>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/um/os-Linux/util.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -1759,6 +1759,8 @@ static const struct usb_audio_quirk_flag
- 		   QUIRK_FLAG_CTL_MSG_DELAY_1M | QUIRK_FLAG_IGNORE_CTL_ERROR),
- 	DEVICE_FLG(0x0499, 0x1509, /* Steinberg UR22 */
- 		   QUIRK_FLAG_GENERIC_IMPLICIT_FB),
-+	DEVICE_FLG(0x0499, 0x3108, /* Yamaha YIT-W12TX */
-+		   QUIRK_FLAG_GET_SAMPLE_RATE),
- 	DEVICE_FLG(0x04d8, 0xfeea, /* Benchmark DAC1 Pre */
- 		   QUIRK_FLAG_GET_SAMPLE_RATE),
- 	DEVICE_FLG(0x04e8, 0xa051, /* Samsung USBC Headset (AKG) */
+diff --git a/arch/um/os-Linux/util.c b/arch/um/os-Linux/util.c
+index 07327425d06e..56d9589e1cd1 100644
+--- a/arch/um/os-Linux/util.c
++++ b/arch/um/os-Linux/util.c
+@@ -166,23 +166,38 @@ __uml_setup("quiet", quiet_cmd_param,
+ "quiet\n"
+ "    Turns off information messages during boot.\n\n");
+ 
++/*
++ * The os_info/os_warn functions will be called by helper threads. These
++ * have a very limited stack size and using the libc formatting functions
++ * may overflow the stack.
++ * So pull in the kernel vscnprintf and use that instead with a fixed
++ * on-stack buffer.
++ */
++int vscnprintf(char *buf, size_t size, const char *fmt, va_list args);
++
+ void os_info(const char *fmt, ...)
+ {
++	char buf[256];
+ 	va_list list;
++	int len;
+ 
+ 	if (quiet_info)
+ 		return;
+ 
+ 	va_start(list, fmt);
+-	vfprintf(stderr, fmt, list);
++	len = vscnprintf(buf, sizeof(buf), fmt, list);
++	fwrite(buf, len, 1, stderr);
+ 	va_end(list);
+ }
+ 
+ void os_warn(const char *fmt, ...)
+ {
++	char buf[256];
+ 	va_list list;
++	int len;
+ 
+ 	va_start(list, fmt);
+-	vfprintf(stderr, fmt, list);
++	len = vscnprintf(buf, sizeof(buf), fmt, list);
++	fwrite(buf, len, 1, stderr);
+ 	va_end(list);
+ }
+-- 
+2.43.0
+
 
 
 
