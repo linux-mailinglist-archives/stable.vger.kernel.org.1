@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-22696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A71485DD4D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:04:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9328D85DE61
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:18:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA1402816E5
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:04:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C47861C23B41
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:18:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B39567EEE7;
-	Wed, 21 Feb 2024 14:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D3E57CF08;
+	Wed, 21 Feb 2024 14:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AIpyGoFI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UR3NR6fb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BFF27D3E3;
-	Wed, 21 Feb 2024 14:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD2F87BB16;
+	Wed, 21 Feb 2024 14:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524203; cv=none; b=XomtRKqa8fsyXCsn8DLebxwLXpVJ7dtd6yqhgzqDXmqA1uoQsXTzDKvbKUoBNdv5Ku1vQfmPaGRWSF58uJALybWbzZjrS3xH0eVJTQJqA/IP3DK5WE066h8XL4QnVl4WEjsLulMeal5VlEWFqalIzgWlA6iNZEq4V2Qky3Pu2e8=
+	t=1708525040; cv=none; b=o8wVdJNoVUnp/HlaX89Hiiqgb574Xfs3MFLhdxHz57jO/qfGZO/8L0hFOhKJCup7w5uZXLebe9Z2hCM1DWT3CZr0n08hSgEvP35jvqzwcDI2XXqA5eBlDXgoZOxwHapa+trTdYrB2ZUNIX+syJWWdaGC/UUXj5SoQT/YKJ4SSgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524203; c=relaxed/simple;
-	bh=/YviRCb/IzLYCo+Na9mfjkGoUwB38lQPoVNUPQFNwAk=;
+	s=arc-20240116; t=1708525040; c=relaxed/simple;
+	bh=yeWQsOxemudhJmS8WjXmD3ABrBS2DOJbkSDtfnGYix0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iZLdZ6ktayDofI1G7B70AhAj3KQQ5XJSQihDHhBgU9qS0HQ3H5z5LVvkmKyr5iaXBKBOPdz3iRUSSYP7gORtQFkIbww58BXSZMSfLZ9sGKqfn9abIyMrVFwCvANiM3TnrO4k1MrFUaNl2+bmNYvx/TclaDnGgOAMgMjL/9ThJoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AIpyGoFI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFAD3C433C7;
-	Wed, 21 Feb 2024 14:03:22 +0000 (UTC)
+	 MIME-Version; b=NcCIBr7hUA6V7SUHoK4qIf4evjnDs2MoFQE1uwNlU+kg2Y8z0oFjQXm/Ac2IxzLSwfc0CS9KRFC+PgRHMeAN5FD1d5jEfVoHB2agTdZc9pRB3rZyw9vYKC2FFQRB9hOOOBynW7k8+Z4kSHn7rbjguTNwybfg4sc19iAe/RUAXOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UR3NR6fb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DF23C433F1;
+	Wed, 21 Feb 2024 14:17:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524203;
-	bh=/YviRCb/IzLYCo+Na9mfjkGoUwB38lQPoVNUPQFNwAk=;
+	s=korg; t=1708525040;
+	bh=yeWQsOxemudhJmS8WjXmD3ABrBS2DOJbkSDtfnGYix0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AIpyGoFIkutKB6ZIUwekia0PiQYiYWIsbHKtlHZJhbqpuWg/ZReEeuMJKBIZdAxza
-	 MLwvNm0d7w7ONduBf32RAGIrHoLj3DZ3Kw3Ot+0v8KmiJ/RcOreIfaP6P6afmQH+iP
-	 aztIq5j2ss9OK2HPMEtLud4h4lp0ONTxfr3tpwQE=
+	b=UR3NR6fbz4kdWPQIqtJNe0aNTc0CznpaQAmMsAsM2TWGwE1s2o6sPh+kKtMfhk8p0
+	 S278IihNDRXK2UY79gkrSZf0TAv/ceQWHlr1Ujfjos6UTN0hGNa01ULIdsyW9dJgKX
+	 9qxCD9Iy0n6EF5Qp4sYAToUXcg2YYnA6u2AyNK8o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 175/379] f2fs: fix to check return value of f2fs_reserve_new_block()
-Date: Wed, 21 Feb 2024 14:05:54 +0100
-Message-ID: <20240221130000.091324513@linuxfoundation.org>
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.4 014/267] parisc/firmware: Fix F-extend for PDC addresses
+Date: Wed, 21 Feb 2024 14:05:55 +0100
+Message-ID: <20240221125940.501273342@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +60,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 956fa1ddc132e028f3b7d4cf17e6bfc8cb36c7fd ]
+commit 735ae74f73e55c191d48689bd11ff4a06ea0508f upstream.
 
-Let's check return value of f2fs_reserve_new_block() in do_recover_data()
-rather than letting it fails silently.
+When running with narrow firmware (64-bit kernel using a 32-bit
+firmware), extend PDC addresses into the 0xfffffff0.00000000
+region instead of the 0xf0f0f0f0.00000000 region.
 
-Also refactoring check condition on return value of f2fs_reserve_new_block()
-as below:
-- trigger f2fs_bug_on() only for ENOSPC case;
-- use do-while statement to avoid redundant codes;
+This fixes the power button on the C3700 machine in qemu (64-bit CPU
+with 32-bit firmware), and my assumption is that the previous code was
+really never used (because most 64-bit machines have a 64-bit firmware),
+or it just worked on very old machines because they may only decode
+40-bit of virtual addresses.
 
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/recovery.c | 23 +++++++++++++++++------
- 1 file changed, 17 insertions(+), 6 deletions(-)
+ arch/parisc/kernel/firmware.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/f2fs/recovery.c b/fs/f2fs/recovery.c
-index c3c527afdd07..2700e0fdd3e0 100644
---- a/fs/f2fs/recovery.c
-+++ b/fs/f2fs/recovery.c
-@@ -641,7 +641,16 @@ static int do_recover_data(struct f2fs_sb_info *sbi, struct inode *inode,
- 		 */
- 		if (dest == NEW_ADDR) {
- 			f2fs_truncate_data_blocks_range(&dn, 1);
--			f2fs_reserve_new_block(&dn);
-+			do {
-+				err = f2fs_reserve_new_block(&dn);
-+				if (err == -ENOSPC) {
-+					f2fs_bug_on(sbi, 1);
-+					break;
-+				}
-+			} while (err &&
-+				IS_ENABLED(CONFIG_F2FS_FAULT_INJECTION));
-+			if (err)
-+				goto err;
- 			continue;
- 		}
+--- a/arch/parisc/kernel/firmware.c
++++ b/arch/parisc/kernel/firmware.c
+@@ -122,10 +122,10 @@ static unsigned long f_extend(unsigned l
+ #ifdef CONFIG_64BIT
+ 	if(unlikely(parisc_narrow_firmware)) {
+ 		if((address & 0xff000000) == 0xf0000000)
+-			return 0xf0f0f0f000000000UL | (u32)address;
++			return (0xfffffff0UL << 32) | (u32)address;
  
-@@ -649,12 +658,14 @@ static int do_recover_data(struct f2fs_sb_info *sbi, struct inode *inode,
- 		if (f2fs_is_valid_blkaddr(sbi, dest, META_POR)) {
- 
- 			if (src == NULL_ADDR) {
--				err = f2fs_reserve_new_block(&dn);
--				while (err &&
--				       IS_ENABLED(CONFIG_F2FS_FAULT_INJECTION))
-+				do {
- 					err = f2fs_reserve_new_block(&dn);
--				/* We should not get -ENOSPC */
--				f2fs_bug_on(sbi, err);
-+					if (err == -ENOSPC) {
-+						f2fs_bug_on(sbi, 1);
-+						break;
-+					}
-+				} while (err &&
-+					IS_ENABLED(CONFIG_F2FS_FAULT_INJECTION));
- 				if (err)
- 					goto err;
- 			}
--- 
-2.43.0
-
+ 		if((address & 0xf0000000) == 0xf0000000)
+-			return 0xffffffff00000000UL | (u32)address;
++			return (0xffffffffUL << 32) | (u32)address;
+ 	}
+ #endif
+ 	return address;
 
 
 
