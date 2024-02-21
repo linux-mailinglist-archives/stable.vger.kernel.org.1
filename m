@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-22826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDC0E85DDFB
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:14:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 816BA85DEF7
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:23:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D4FE1F242D4
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C2E61F2166C
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:23:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9C5C7D401;
-	Wed, 21 Feb 2024 14:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B72478B60;
+	Wed, 21 Feb 2024 14:23:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vjj3Ok7N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNyjWRdC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46FA80058;
-	Wed, 21 Feb 2024 14:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A08E6A8D6;
+	Wed, 21 Feb 2024 14:23:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524643; cv=none; b=MpM5J96xJDJW8FcxxPkHDVy0Y7tFFEpg25OxcXgaqX4uB8ITKv+cOSWEKzPVoTaQOaCALgCi+3/MNUazQq+8IeBUudkl6Js/gPuldNUCYmn8RgJ2jLoxWodgz7/Q/qwsvC2mYVq1k/3GPl308IwjQRGAoS8oThsCA75zvmE+IM4=
+	t=1708525395; cv=none; b=CktlqkCJBxFgiLZU3pEoxieTV6jI0UAJU5pCyXsWYRU4lB+kzfPLIgAS2uVAbYeNHYvdwQPebxKoHs5SLNtwONioEJ5Dk+aUARmnpQeX4VgaQiBKcgVaVZOVsGlfoLO8xFv7zUtc4pnKqnqvRtn5svOZqAYPBueriZyNBz68fyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524643; c=relaxed/simple;
-	bh=AzUBFOoEK+CukRAUNGUCJT16bKsthtppzxUo1AYkaTQ=;
+	s=arc-20240116; t=1708525395; c=relaxed/simple;
+	bh=sWGr9EviMK9s1aNttGLCDPPNZbP5wFALsA1xZSDi5W8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IdOi3stVR1nEM2pvz2Cw8ajjN2lArD84L1fUl0b39Ricp2kOpRkPaPy/j2qTjcRQfopwG4RYXIvIoGQXaSxl58/w5jmqcHOcJoihoEvDDAkSKA8Hgd/WgbauNxdvOIAGB2Zf0XbGyZWTImk2N7pzTIAisQAkVQKiSs6JrRQbsbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vjj3Ok7N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10E78C433C7;
-	Wed, 21 Feb 2024 14:10:42 +0000 (UTC)
+	 MIME-Version; b=eLU7CCCViES5VPuvo8VqkBceyQ3kwpiEZ9AKKJLpRa5utrm2X+xRIFFWSCpMxHNvGFXBN9T5LZDINzKNRXxTpUsIih38PhVqSrCHnq8lcgcSkGujTpvnaZfcDh9nzEuA/zQ/7tZ47OjfzzzlN94qwaCC5JwYC/eaTv/L3e9CLJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNyjWRdC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA5A1C433C7;
+	Wed, 21 Feb 2024 14:23:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524643;
-	bh=AzUBFOoEK+CukRAUNGUCJT16bKsthtppzxUo1AYkaTQ=;
+	s=korg; t=1708525395;
+	bh=sWGr9EviMK9s1aNttGLCDPPNZbP5wFALsA1xZSDi5W8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vjj3Ok7No/sVpd9OswWuRB3/mm/cMvJHllskrKhdRC1B7fw6PXS6gpAGDoyjVBKMu
-	 1WtgrNgBDKw8Jb/mAgIF0W6g69/H7Ga3wBLlANXpFy6D5N21a5dT1YlLcW99MLC+fy
-	 Y6h3WDjLuKXR86IFcJ3PmVO5+RkUYWPINy6cUxsM=
+	b=TNyjWRdCcG6G6g7jFglg0HcuafwcqDi5gGAaoD/M9QniT35puLVaS59q31uD9xJ+X
+	 Sw3lCAuXHEapxzEGCVPozZUT5DeBnDzIrKTd9A6RSCmO19jJNjQbOf5N4Lb3h1ldVa
+	 ZSdiR7GqHMoUWLl62p7E8DmIs8BmjOR0trY9sTEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	yuan linyu <yuanlinyu@hihonor.com>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 5.10 305/379] usb: f_mass_storage: forbid async queue when shutdown happen
+	kernel test robot <lkp@intel.com>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Richard Weinberger <richard@nod.at>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 143/267] um: net: Fix return type of uml_net_start_xmit()
 Date: Wed, 21 Feb 2024 14:08:04 +0100
-Message-ID: <20240221130003.943590244@linuxfoundation.org>
+Message-ID: <20240221125944.543727873@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: yuan linyu <yuanlinyu@hihonor.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit b2d2d7ea0dd09802cf5a0545bf54d8ad8987d20c upstream.
+[ Upstream commit 7d748f60a4b82b50bf25fad1bd42d33f049f76aa ]
 
-When write UDC to empty and unbind gadget driver from gadget device, it is
-possible that there are many queue failures for mass storage function.
+With clang's kernel control flow integrity (kCFI, CONFIG_CFI_CLANG),
+indirect call targets are validated against the expected function
+pointer prototype to make sure the call target is valid to help mitigate
+ROP attacks. If they are not identical, there is a failure at run time,
+which manifests as either a kernel panic or thread getting killed. A
+warning in clang aims to catch these at compile time, which reveals:
 
-The root cause is mass storage main thread alaways try to queue request to
-receive a command from host if running flag is on, on platform like dwc3,
-if pull down called, it will not queue request again and return
--ESHUTDOWN, but it not affect running flag of mass storage function.
+  arch/um/drivers/net_kern.c:353:21: warning: incompatible function pointer types initializing 'netdev_tx_t (*)(struct sk_buff *, struct net_device *)' (aka 'enum netdev_tx (*)(struct sk_buff *, struct net_device *)') with an expression of type 'int (struct sk_buff *, struct net_device *)' [-Wincompatible-function-pointer-types-strict]
+    353 |         .ndo_start_xmit         = uml_net_start_xmit,
+        |                                   ^~~~~~~~~~~~~~~~~~
+  1 warning generated.
 
-Check return code from mass storage function and clear running flag if it
-is -ESHUTDOWN, also indicate start in/out transfer failure to break loops.
+->ndo_start_xmit() in 'struct net_device_ops' expects a return type of
+'netdev_tx_t', not 'int'. Adjust the return type of uml_net_start_xmit()
+to match the prototype's to resolve the warning. While UML does not
+currently implement support for kCFI, it could in the future, which
+means this warning becomes a fatal CFI failure at run time.
 
-Cc: stable <stable@kernel.org>
-Signed-off-by: yuan linyu <yuanlinyu@hihonor.com>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20240123034829.3848409-1-yuanlinyu@hihonor.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202310031340.v1vPh207-lkp@intel.com/
+Acked-by: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_mass_storage.c |   20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ arch/um/drivers/net_kern.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/function/f_mass_storage.c
-+++ b/drivers/usb/gadget/function/f_mass_storage.c
-@@ -575,21 +575,37 @@ static int start_transfer(struct fsg_dev
- 
- static bool start_in_transfer(struct fsg_common *common, struct fsg_buffhd *bh)
- {
-+	int rc;
-+
- 	if (!fsg_is_set(common))
- 		return false;
- 	bh->state = BUF_STATE_SENDING;
--	if (start_transfer(common->fsg, common->fsg->bulk_in, bh->inreq))
-+	rc = start_transfer(common->fsg, common->fsg->bulk_in, bh->inreq);
-+	if (rc) {
- 		bh->state = BUF_STATE_EMPTY;
-+		if (rc == -ESHUTDOWN) {
-+			common->running = 0;
-+			return false;
-+		}
-+	}
- 	return true;
+diff --git a/arch/um/drivers/net_kern.c b/arch/um/drivers/net_kern.c
+index 327b728f7244..db15a456482f 100644
+--- a/arch/um/drivers/net_kern.c
++++ b/arch/um/drivers/net_kern.c
+@@ -204,7 +204,7 @@ static int uml_net_close(struct net_device *dev)
+ 	return 0;
  }
  
- static bool start_out_transfer(struct fsg_common *common, struct fsg_buffhd *bh)
+-static int uml_net_start_xmit(struct sk_buff *skb, struct net_device *dev)
++static netdev_tx_t uml_net_start_xmit(struct sk_buff *skb, struct net_device *dev)
  {
-+	int rc;
-+
- 	if (!fsg_is_set(common))
- 		return false;
- 	bh->state = BUF_STATE_RECEIVING;
--	if (start_transfer(common->fsg, common->fsg->bulk_out, bh->outreq))
-+	rc = start_transfer(common->fsg, common->fsg->bulk_out, bh->outreq);
-+	if (rc) {
- 		bh->state = BUF_STATE_FULL;
-+		if (rc == -ESHUTDOWN) {
-+			common->running = 0;
-+			return false;
-+		}
-+	}
- 	return true;
- }
- 
+ 	struct uml_net_private *lp = netdev_priv(dev);
+ 	unsigned long flags;
+-- 
+2.43.0
+
 
 
 
