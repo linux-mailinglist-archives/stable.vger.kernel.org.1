@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-22724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F246A85DD7D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:06:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D10685DE84
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:19:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E4DF282741
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:06:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C5D91F245B5
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:19:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 544757BB1B;
-	Wed, 21 Feb 2024 14:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3012669D29;
+	Wed, 21 Feb 2024 14:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hnm3huHn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WG3eX3b4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11FDD7BB18;
-	Wed, 21 Feb 2024 14:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29053D981;
+	Wed, 21 Feb 2024 14:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524302; cv=none; b=RYfjQxwT9ysm5DISmZCPvtje5D/liD9hzawgALSqnrLfYGsgLQn7z0buRpOLteU3DsvNXbkUeG74FYiOCAX37RZtQL31bjEp0U/rG71lqFT/gkTVwwCBeOMOSGnhQItqbOegWsHJ6PQACZ0okvGa+RppT27FxlxX3L+uFU92A1E=
+	t=1708525137; cv=none; b=M/NcLuCEb9K/p1IZ5LNwQsj7RI1YhOFsOIG61boru+hSGx6VpKAl1AW2/uge6bSrt1yhiajmU7EPcB4wK7m/y9xyGCy4w14TPcoK33TdRI2+/U+ed8ahJT2cdzSX0/7Uk/+9R4sRAE5VwhtsCxS9EaradWbGrItBgrM3oQR6ot4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524302; c=relaxed/simple;
-	bh=YoUdixj2NDfBfH/bW4XefA0wYIDogPHxxBZrZdPUoGU=;
+	s=arc-20240116; t=1708525137; c=relaxed/simple;
+	bh=uYP6ShDtyna7wYsx2SonbMgg1GjrbOk/q2MA0yIxZqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iurODn5Ck5nb1tLNfu7seF67pitD+LiLaDvjdiKLsuCdl38tWy4Mjlvfzpl1JEJqu15I5kO1lwovRnWsO1kgvaPSKsLp1tznjhublzAethPBpM9kSpsiO9hNwtXngmzPpXEdL+Wuzhe018Z771sYfLyO5iUXAAvFo9qV6uZKasY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hnm3huHn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7110FC433F1;
-	Wed, 21 Feb 2024 14:05:01 +0000 (UTC)
+	 MIME-Version; b=qi5fabGO7UeC1QCazCqRX3jhUzi8ad+YhRFMEzR2/HDo37b5ckh+EADcH26hd2n02aWootqmK1QMOE6GWKwZJy6ZOHzfmVjvqLQbbbHB7v8oGeM/SgMo27O1BtF9pCBxqSQqxmyOe9BX3xtGgH2mtQrKlRE8eOz3c/1zeLhyfsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WG3eX3b4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AB86C433C7;
+	Wed, 21 Feb 2024 14:18:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524301;
-	bh=YoUdixj2NDfBfH/bW4XefA0wYIDogPHxxBZrZdPUoGU=;
+	s=korg; t=1708525136;
+	bh=uYP6ShDtyna7wYsx2SonbMgg1GjrbOk/q2MA0yIxZqI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hnm3huHn7jeKagqBRS0kKvj3v71W1rpgSSizZX/kQCfG6/EvtYrFqKSBIsP+6IZdg
-	 a5qOJrLGLMyJzN7vS2thrUPSJWMgOs992PBN9D9gjVTukQrzUQiT6Np0401Y4oKdDY
-	 HjlTVyHX/WUpQew3bMhWfAejAxGsJN9YPbXOj678=
+	b=WG3eX3b4K81FWV+adZaFDYM7yEonstJQMc/nKPjVH8pUtozL8TaGICy1cpT+CDCzY
+	 r7P4hYFsU1+cvO8ItgwUh52ti2BmpkjpwRC//M8UlKM27K0ZleqI73bAlzeF2Fy9vR
+	 31HnUPnbFcO/uQQS3Xfzt8fKm7EqQjI4jIsCgiwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harshit Shah <harshitshah.opendev@gmail.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 204/379] i3c: master: cdns: Update maximum prescaler value for i2c clock
-Date: Wed, 21 Feb 2024 14:06:23 +0100
-Message-ID: <20240221130000.937401366@linuxfoundation.org>
+	Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Chung-Chiang Cheng <cccheng@synology.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.4 043/267] btrfs: tree-checker: fix inline ref size in error messages
+Date: Wed, 21 Feb 2024 14:06:24 +0100
+Message-ID: <20240221125941.368388512@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harshit Shah <harshitshah.opendev@gmail.com>
+From: Chung-Chiang Cheng <cccheng@synology.com>
 
-[ Upstream commit 374c13f9080a1b9835a5ed3e7bea93cf8e2dc262 ]
+commit f398e70dd69e6ceea71463a5380e6118f219197e upstream.
 
-As per the Cadence IP document fixed the I2C clock divider value limit from
-16 bits instead of 10 bits. Without this change setting up the I2C clock to
-low frequencies will not work as the prescaler value might be greater than
-10 bit number.
+The error message should accurately reflect the size rather than the
+type.
 
-I3C clock divider value is 10 bits only. Updating the macro names for both.
-
-Signed-off-by: Harshit Shah <harshitshah.opendev@gmail.com>
-Link: https://lore.kernel.org/r/1703927483-28682-1-git-send-email-harshitshah.opendev@gmail.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f82d1c7ca8ae ("btrfs: tree-checker: Add EXTENT_ITEM and METADATA_ITEM check")
+CC: stable@vger.kernel.org # 5.4+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Chung-Chiang Cheng <cccheng@synology.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/i3c-master-cdns.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ fs/btrfs/tree-checker.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/i3c/master/i3c-master-cdns.c b/drivers/i3c/master/i3c-master-cdns.c
-index 6b9df33ac561..6b126fce5a9e 100644
---- a/drivers/i3c/master/i3c-master-cdns.c
-+++ b/drivers/i3c/master/i3c-master-cdns.c
-@@ -77,7 +77,8 @@
- #define PRESCL_CTRL0			0x14
- #define PRESCL_CTRL0_I2C(x)		((x) << 16)
- #define PRESCL_CTRL0_I3C(x)		(x)
--#define PRESCL_CTRL0_MAX		GENMASK(9, 0)
-+#define PRESCL_CTRL0_I3C_MAX		GENMASK(9, 0)
-+#define PRESCL_CTRL0_I2C_MAX		GENMASK(15, 0)
+--- a/fs/btrfs/tree-checker.c
++++ b/fs/btrfs/tree-checker.c
+@@ -1165,7 +1165,7 @@ static int check_extent_item(struct exte
+ 		if (ptr + btrfs_extent_inline_ref_size(inline_type) > end) {
+ 			extent_err(leaf, slot,
+ "inline ref item overflows extent item, ptr %lu iref size %u end %lu",
+-				   ptr, inline_type, end);
++				   ptr, btrfs_extent_inline_ref_size(inline_type), end);
+ 			return -EUCLEAN;
+ 		}
  
- #define PRESCL_CTRL1			0x18
- #define PRESCL_CTRL1_PP_LOW_MASK	GENMASK(15, 8)
-@@ -1234,7 +1235,7 @@ static int cdns_i3c_master_bus_init(struct i3c_master_controller *m)
- 		return -EINVAL;
- 
- 	pres = DIV_ROUND_UP(sysclk_rate, (bus->scl_rate.i3c * 4)) - 1;
--	if (pres > PRESCL_CTRL0_MAX)
-+	if (pres > PRESCL_CTRL0_I3C_MAX)
- 		return -ERANGE;
- 
- 	bus->scl_rate.i3c = sysclk_rate / ((pres + 1) * 4);
-@@ -1247,7 +1248,7 @@ static int cdns_i3c_master_bus_init(struct i3c_master_controller *m)
- 	max_i2cfreq = bus->scl_rate.i2c;
- 
- 	pres = (sysclk_rate / (max_i2cfreq * 5)) - 1;
--	if (pres > PRESCL_CTRL0_MAX)
-+	if (pres > PRESCL_CTRL0_I2C_MAX)
- 		return -ERANGE;
- 
- 	bus->scl_rate.i2c = sysclk_rate / ((pres + 1) * 5);
--- 
-2.43.0
-
 
 
 
