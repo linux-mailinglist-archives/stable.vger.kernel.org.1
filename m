@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-22393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3FA085DBD5
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:45:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D435085DE6F
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:18:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21A421C20AB6
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:45:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84F7B1F2469A
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:18:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9797F78B4B;
-	Wed, 21 Feb 2024 13:45:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BAFD7BB16;
+	Wed, 21 Feb 2024 14:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="doihKC9R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oAooFjWW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 562E54D5B7;
-	Wed, 21 Feb 2024 13:45:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C3903D981;
+	Wed, 21 Feb 2024 14:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523133; cv=none; b=dI6XlroE3lNJzPFr/sYSD1KWvv7p0RrbIdm9iONZAZUpccMSYnm7mhcZJeMJGPGTEz5XWOn8EaYjnSsnUhpUPp/nFTW7PK0YKvL1oy0YEYByC3ebJRkbfe6uYGnt0bLmClRT7u+xYw9Hm5ohNhqkIqDxsgoWMYUZNJ1PwvKmFYw=
+	t=1708525099; cv=none; b=TK3Iptl+AIbtZcmtwOOfOwueI2YAaYeLpcx9rnOqrEzRx94Eam1P5Gf9z6EGaqtwfaDtiSPtYPUinQJiR7SxLCPOkhSLPmWJoRFWJNHcny2+BFPTapvkLeKahQ+5tniGX3ZsORY0G2JwyxgGbJcB5k/qKr4Cg6BfFK0DqR68kb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523133; c=relaxed/simple;
-	bh=/j2Mtl5Bkusi4FsorGss6I1BKtsMsOKCl8+P44ANTaE=;
+	s=arc-20240116; t=1708525099; c=relaxed/simple;
+	bh=svFvsT0f21uQ2vJf3kmlWKN7qu9twkImaBEXfPpRq0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sVtaZu4kP8Ty6nyvllUaS5qltiW+pXm8Q6GP5j4aGHv8BN2dYWP90P4ox99xtPFXkvpWJ+speb+MeJb2RMw4242iAmVLjqB8sYancBnsfQkOwXnQFIpnnYtJKi+R0zykmlScry/wdqEX/BO9/h9dZWwnLD+R4nDYIMWfaRq6QKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=doihKC9R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 894F9C43394;
-	Wed, 21 Feb 2024 13:45:32 +0000 (UTC)
+	 MIME-Version; b=Wy5/bJk39QE3VFSjy9E7fhjL/EpxC7+yD0FcFIzN9QregmMS+gwpn6r3b3PNKCgtujk6pM2Kok0rIVV6vHSU0PojjL/QFpRrI00U73FvxfqmzxuMO/ZEvflJcR7gyPgObVki/3lfXulVewGXMa09eO4QhO1/yDTQ3XTwIcQYRRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oAooFjWW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F060C433F1;
+	Wed, 21 Feb 2024 14:18:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523133;
-	bh=/j2Mtl5Bkusi4FsorGss6I1BKtsMsOKCl8+P44ANTaE=;
+	s=korg; t=1708525099;
+	bh=svFvsT0f21uQ2vJf3kmlWKN7qu9twkImaBEXfPpRq0Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=doihKC9RUarPJqRMYcBv0sRY+JAAxbpWb/zlkE42OJYFMRL0O38hCohEX0e3rLU2m
-	 a9AyOPvT4JRtdtKc9l9QKebJDlUjUIL9NK10O6jSyYzSkpMLqz2npoVpK4FRqPtAf4
-	 OlYKUxIkU4zPzlj824fSbKZJL+61kPrCKDyWkUNw=
+	b=oAooFjWWOcExocRNaCjtEhu+r8Bei1gSr5fkZp4zdTaTb0F2ACKI11oMTL1oos8o7
+	 5BzyH1ieJgjGsKHLlivKRkkJ/9N7saSn0CVpULicKE6BGZkVFmc2GdxW77wXjmNK0f
+	 NqODtIVh7EwLH3fDjmZw0BYWNJ7QuYMDyrhj6c08=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 349/476] wifi: iwlwifi: Fix some error codes
+	Tim Chen <tim.c.chen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 5.4 059/267] tick/sched: Preserve number of idle sleeps across CPU hotplug events
 Date: Wed, 21 Feb 2024 14:06:40 +0100
-Message-ID: <20240221130020.883405022@linuxfoundation.org>
+Message-ID: <20240221125941.858649978@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Tim Chen <tim.c.chen@linux.intel.com>
 
-[ Upstream commit c6ebb5b67641994de8bc486b33457fe0b681d6fe ]
+commit 9a574ea9069be30b835a3da772c039993c43369b upstream.
 
-This saves the error as PTR_ERR(wifi_pkg).  The problem is that
-"wifi_pkg" is a valid pointer, not an error pointer.  Set the error code
-to -EINVAL instead.
+Commit 71fee48f ("tick-sched: Fix idle and iowait sleeptime accounting vs
+CPU hotplug") preserved total idle sleep time and iowait sleeptime across
+CPU hotplug events.
 
-Fixes: 2a8084147bff ("iwlwifi: acpi: support reading and storing WRDS revision 1 and 2")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://msgid.link/9620bb77-2d7c-4d76-b255-ad824ebf8e35@moroto.mountain
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Similar reasoning applies to the number of idle calls and idle sleeps to
+get the proper average of sleep time per idle invocation.
+
+Preserve those fields too.
+
+Fixes: 71fee48f ("tick-sched: Fix idle and iowait sleeptime accounting vs CPU hotplug")
+Signed-off-by: Tim Chen <tim.c.chen@linux.intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240122233534.3094238-1-tim.c.chen@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/acpi.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ kernel/time/tick-sched.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-index 9e00d1d7e146..f0e0d4ccbc09 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-@@ -527,7 +527,7 @@ int iwl_sar_get_wrds_table(struct iwl_fw_runtime *fwrt)
- 					 &tbl_rev);
- 	if (!IS_ERR(wifi_pkg)) {
- 		if (tbl_rev != 2) {
--			ret = PTR_ERR(wifi_pkg);
-+			ret = -EINVAL;
- 			goto out_free;
- 		}
+--- a/kernel/time/tick-sched.c
++++ b/kernel/time/tick-sched.c
+@@ -1398,6 +1398,7 @@ void tick_cancel_sched_timer(int cpu)
+ {
+ 	struct tick_sched *ts = &per_cpu(tick_cpu_sched, cpu);
+ 	ktime_t idle_sleeptime, iowait_sleeptime;
++	unsigned long idle_calls, idle_sleeps;
  
-@@ -543,7 +543,7 @@ int iwl_sar_get_wrds_table(struct iwl_fw_runtime *fwrt)
- 					 &tbl_rev);
- 	if (!IS_ERR(wifi_pkg)) {
- 		if (tbl_rev != 1) {
--			ret = PTR_ERR(wifi_pkg);
-+			ret = -EINVAL;
- 			goto out_free;
- 		}
+ # ifdef CONFIG_HIGH_RES_TIMERS
+ 	if (ts->sched_timer.base)
+@@ -1406,9 +1407,13 @@ void tick_cancel_sched_timer(int cpu)
  
-@@ -559,7 +559,7 @@ int iwl_sar_get_wrds_table(struct iwl_fw_runtime *fwrt)
- 					 &tbl_rev);
- 	if (!IS_ERR(wifi_pkg)) {
- 		if (tbl_rev != 0) {
--			ret = PTR_ERR(wifi_pkg);
-+			ret = -EINVAL;
- 			goto out_free;
- 		}
+ 	idle_sleeptime = ts->idle_sleeptime;
+ 	iowait_sleeptime = ts->iowait_sleeptime;
++	idle_calls = ts->idle_calls;
++	idle_sleeps = ts->idle_sleeps;
+ 	memset(ts, 0, sizeof(*ts));
+ 	ts->idle_sleeptime = idle_sleeptime;
+ 	ts->iowait_sleeptime = iowait_sleeptime;
++	ts->idle_calls = idle_calls;
++	ts->idle_sleeps = idle_sleeps;
+ }
+ #endif
  
-@@ -614,7 +614,7 @@ int iwl_sar_get_ewrd_table(struct iwl_fw_runtime *fwrt)
- 					 &tbl_rev);
- 	if (!IS_ERR(wifi_pkg)) {
- 		if (tbl_rev != 2) {
--			ret = PTR_ERR(wifi_pkg);
-+			ret = -EINVAL;
- 			goto out_free;
- 		}
- 
-@@ -630,7 +630,7 @@ int iwl_sar_get_ewrd_table(struct iwl_fw_runtime *fwrt)
- 					 &tbl_rev);
- 	if (!IS_ERR(wifi_pkg)) {
- 		if (tbl_rev != 1) {
--			ret = PTR_ERR(wifi_pkg);
-+			ret = -EINVAL;
- 			goto out_free;
- 		}
- 
-@@ -646,7 +646,7 @@ int iwl_sar_get_ewrd_table(struct iwl_fw_runtime *fwrt)
- 					 &tbl_rev);
- 	if (!IS_ERR(wifi_pkg)) {
- 		if (tbl_rev != 0) {
--			ret = PTR_ERR(wifi_pkg);
-+			ret = -EINVAL;
- 			goto out_free;
- 		}
- 
--- 
-2.43.0
-
 
 
 
