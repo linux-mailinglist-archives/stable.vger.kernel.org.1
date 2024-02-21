@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-22669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D936285DD2B
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:02:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C58285D8E3
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:11:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88E36283478
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:02:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F01D6B22589
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:11:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 108F47E770;
-	Wed, 21 Feb 2024 14:01:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53B3C69D2F;
+	Wed, 21 Feb 2024 13:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pt/7bQt8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p2JEp7hZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF9C57BB02;
-	Wed, 21 Feb 2024 14:01:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1362869D28;
+	Wed, 21 Feb 2024 13:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524112; cv=none; b=olqA5FRrpkhg/ju46UC3Q1e6WwjsAToIw7xo5cWx5i8Yg8blR/7zPde0XlrOzjd8gWlzKgD+sdhv7PT/Jd5XF6F0uIbwZi0NgKcfTUav+TVANFV7NDLgBsVRIt6ns57Srl5BcOejwLRUOf4HK0TCfxY7PH7u8NSsogYfosj/fN8=
+	t=1708521108; cv=none; b=evYr8N0iTmDeYbWcpwgtuq/nzmrlgDhyGhV0W+lAwV+rulXYjDbw7CwMekCdforIRe1HWift2IT+uGfmCjuttC5fhrOg86TB5DUAALR72m4eEmRSNiJixlUC75EDgPmzy7bO05BQWSjanMc8Gt1WyyfnAOPr1RmknEyi1dQ1gZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524112; c=relaxed/simple;
-	bh=ehl/zBsnh1vn+laNKGXr4ntrddJgHUfRwKKsXYeSspM=;
+	s=arc-20240116; t=1708521108; c=relaxed/simple;
+	bh=PLotUPDMSExy5GelaJZGPPX2BkB17cTwyOO+hXGmDCA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z55OPO0dNNRCzXw7OCZCpL+gRDVXA5tJ8g4fvM+EnHDex2aPHXEBG0/sFbKykuUaW3dV1aGsaoUfHPajE2A46dAaRXOXkSXLoejxPSdC8q3k3KnLtJYtHsE4Cx8WA//vQ4t2gREJcXzu5WFTbFfHvzkDmBuOC3jFzwKbcWPYdDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pt/7bQt8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F541C43390;
-	Wed, 21 Feb 2024 14:01:52 +0000 (UTC)
+	 MIME-Version; b=Dr6DuqwjmYR5VQIHQIzyWzgthm70PI4r/pqMr51uZ3QLQKZlhZRnV9HNdLHLWWNd/RW0IM04PhkxwwrTLLflfXULKheYFDBe5l+NYunw3b3WIxsweinEGQDtBdJR3oFKNLF3IBh/eqN32qeHP5PtrTrdMqMY315a5wi7sQ0VWC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p2JEp7hZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F83EC433F1;
+	Wed, 21 Feb 2024 13:11:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524112;
-	bh=ehl/zBsnh1vn+laNKGXr4ntrddJgHUfRwKKsXYeSspM=;
+	s=korg; t=1708521107;
+	bh=PLotUPDMSExy5GelaJZGPPX2BkB17cTwyOO+hXGmDCA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pt/7bQt8eYpUUkKxmJcWFCjSkhqv47ViTB8kNKSZxbr5Hg6qHi/Zbss6Soyephk1T
-	 78XQL+MipPI4sguJZ5jwg4Rsz7iwYDb+BYyN25Sb/zgDvZAsCx46yCY/7hq3oUraHZ
-	 Kjyucnglx32wQ8WZC/YTTc0FORf4YMvprMeGtk1g=
+	b=p2JEp7hZd2rNRLBOxDWqtCol0ylsOo0ldtGauOovGP6Nmaoy9DgtkA1xDcLlv7N/W
+	 qJzM98csJYIsen/CWAtwJtIqYITo9YICL+a5/m7oDYUK7GTigl9CC6/Rhdoi+He9Ts
+	 FF5EZdOQaza8COdEaS802vncF+uxaTCdB8QocYkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hou Tao <houtao1@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 148/379] bpf: Add map and need_defer parameters to .map_fd_put_ptr()
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+2a7024e9502df538e8ef@syzkaller.appspotmail.com
+Subject: [PATCH 4.19 026/202] llc: make llc_ui_sendmsg() more robust against bonding changes
 Date: Wed, 21 Feb 2024 14:05:27 +0100
-Message-ID: <20240221125959.300602326@linuxfoundation.org>
+Message-ID: <20240221125932.623182235@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,175 +64,156 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 20c20bd11a0702ce4dc9300c3da58acf551d9725 ]
+[ Upstream commit dad555c816a50c6a6a8a86be1f9177673918c647 ]
 
-map is the pointer of outer map, and need_defer needs some explanation.
-need_defer tells the implementation to defer the reference release of
-the passed element and ensure that the element is still alive before
-the bpf program, which may manipulate it, exits.
+syzbot was able to trick llc_ui_sendmsg(), allocating an skb with no
+headroom, but subsequently trying to push 14 bytes of Ethernet header [1]
 
-The following three cases will invoke map_fd_put_ptr() and different
-need_defer values will be passed to these callers:
+Like some others, llc_ui_sendmsg() releases the socket lock before
+calling sock_alloc_send_skb().
+Then it acquires it again, but does not redo all the sanity checks
+that were performed.
 
-1) release the reference of the old element in the map during map update
-   or map deletion. The release must be deferred, otherwise the bpf
-   program may incur use-after-free problem, so need_defer needs to be
-   true.
-2) release the reference of the to-be-added element in the error path of
-   map update. The to-be-added element is not visible to any bpf
-   program, so it is OK to pass false for need_defer parameter.
-3) release the references of all elements in the map during map release.
-   Any bpf program which has access to the map must have been exited and
-   released, so need_defer=false will be OK.
+This fix:
 
-These two parameters will be used by the following patches to fix the
-potential use-after-free problem for map-in-map.
+- Uses LL_RESERVED_SPACE() to reserve space.
+- Check all conditions again after socket lock is held again.
+- Do not account Ethernet header for mtu limitation.
 
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/r/20231204140425.1480317-3-houtao@huaweicloud.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+[1]
+
+skbuff: skb_under_panic: text:ffff800088baa334 len:1514 put:14 head:ffff0000c9c37000 data:ffff0000c9c36ff2 tail:0x5dc end:0x6c0 dev:bond0
+
+ kernel BUG at net/core/skbuff.c:193 !
+Internal error: Oops - BUG: 00000000f2000800 [#1] PREEMPT SMP
+Modules linked in:
+CPU: 0 PID: 6875 Comm: syz-executor.0 Not tainted 6.7.0-rc8-syzkaller-00101-g0802e17d9aca-dirty #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/17/2023
+pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+ pc : skb_panic net/core/skbuff.c:189 [inline]
+ pc : skb_under_panic+0x13c/0x140 net/core/skbuff.c:203
+ lr : skb_panic net/core/skbuff.c:189 [inline]
+ lr : skb_under_panic+0x13c/0x140 net/core/skbuff.c:203
+sp : ffff800096f97000
+x29: ffff800096f97010 x28: ffff80008cc8d668 x27: dfff800000000000
+x26: ffff0000cb970c90 x25: 00000000000005dc x24: ffff0000c9c36ff2
+x23: ffff0000c9c37000 x22: 00000000000005ea x21: 00000000000006c0
+x20: 000000000000000e x19: ffff800088baa334 x18: 1fffe000368261ce
+x17: ffff80008e4ed000 x16: ffff80008a8310f8 x15: 0000000000000001
+x14: 1ffff00012df2d58 x13: 0000000000000000 x12: 0000000000000000
+x11: 0000000000000001 x10: 0000000000ff0100 x9 : e28a51f1087e8400
+x8 : e28a51f1087e8400 x7 : ffff80008028f8d0 x6 : 0000000000000000
+x5 : 0000000000000001 x4 : 0000000000000001 x3 : ffff800082b78714
+x2 : 0000000000000001 x1 : 0000000100000000 x0 : 0000000000000089
+Call trace:
+  skb_panic net/core/skbuff.c:189 [inline]
+  skb_under_panic+0x13c/0x140 net/core/skbuff.c:203
+  skb_push+0xf0/0x108 net/core/skbuff.c:2451
+  eth_header+0x44/0x1f8 net/ethernet/eth.c:83
+  dev_hard_header include/linux/netdevice.h:3188 [inline]
+  llc_mac_hdr_init+0x110/0x17c net/llc/llc_output.c:33
+  llc_sap_action_send_xid_c+0x170/0x344 net/llc/llc_s_ac.c:85
+  llc_exec_sap_trans_actions net/llc/llc_sap.c:153 [inline]
+  llc_sap_next_state net/llc/llc_sap.c:182 [inline]
+  llc_sap_state_process+0x1ec/0x774 net/llc/llc_sap.c:209
+  llc_build_and_send_xid_pkt+0x12c/0x1c0 net/llc/llc_sap.c:270
+  llc_ui_sendmsg+0x7bc/0xb1c net/llc/af_llc.c:997
+  sock_sendmsg_nosec net/socket.c:730 [inline]
+  __sock_sendmsg net/socket.c:745 [inline]
+  sock_sendmsg+0x194/0x274 net/socket.c:767
+  splice_to_socket+0x7cc/0xd58 fs/splice.c:881
+  do_splice_from fs/splice.c:933 [inline]
+  direct_splice_actor+0xe4/0x1c0 fs/splice.c:1142
+  splice_direct_to_actor+0x2a0/0x7e4 fs/splice.c:1088
+  do_splice_direct+0x20c/0x348 fs/splice.c:1194
+  do_sendfile+0x4bc/0xc70 fs/read_write.c:1254
+  __do_sys_sendfile64 fs/read_write.c:1322 [inline]
+  __se_sys_sendfile64 fs/read_write.c:1308 [inline]
+  __arm64_sys_sendfile64+0x160/0x3b4 fs/read_write.c:1308
+  __invoke_syscall arch/arm64/kernel/syscall.c:37 [inline]
+  invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:51
+  el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:136
+  do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:155
+  el0_svc+0x54/0x158 arch/arm64/kernel/entry-common.c:678
+  el0t_64_sync_handler+0x84/0xfc arch/arm64/kernel/entry-common.c:696
+  el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:595
+Code: aa1803e6 aa1903e7 a90023f5 94792f6a (d4210000)
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-and-tested-by: syzbot+2a7024e9502df538e8ef@syzkaller.appspotmail.com
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240118183625.4007013-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bpf.h     |  6 +++++-
- kernel/bpf/arraymap.c   | 12 +++++++-----
- kernel/bpf/hashtab.c    |  6 +++---
- kernel/bpf/map_in_map.c |  2 +-
- kernel/bpf/map_in_map.h |  2 +-
- 5 files changed, 17 insertions(+), 11 deletions(-)
+ net/llc/af_llc.c | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index 8f4379e93ad4..bfdf40be5360 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -82,7 +82,11 @@ struct bpf_map_ops {
- 	/* funcs called by prog_array and perf_event_array map */
- 	void *(*map_fd_get_ptr)(struct bpf_map *map, struct file *map_file,
- 				int fd);
--	void (*map_fd_put_ptr)(void *ptr);
-+	/* If need_defer is true, the implementation should guarantee that
-+	 * the to-be-put element is still alive before the bpf program, which
-+	 * may manipulate it, exists.
-+	 */
-+	void (*map_fd_put_ptr)(struct bpf_map *map, void *ptr, bool need_defer);
- 	int (*map_gen_lookup)(struct bpf_map *map, struct bpf_insn *insn_buf);
- 	u32 (*map_fd_sys_lookup_elem)(void *ptr);
- 	void (*map_seq_show_elem)(struct bpf_map *map, void *key,
-diff --git a/kernel/bpf/arraymap.c b/kernel/bpf/arraymap.c
-index f241bda2679d..5102338129d5 100644
---- a/kernel/bpf/arraymap.c
-+++ b/kernel/bpf/arraymap.c
-@@ -764,7 +764,7 @@ int bpf_fd_array_map_update_elem(struct bpf_map *map, struct file *map_file,
- 	}
- 
- 	if (old_ptr)
--		map->ops->map_fd_put_ptr(old_ptr);
-+		map->ops->map_fd_put_ptr(map, old_ptr, true);
- 	return 0;
- }
- 
-@@ -787,7 +787,7 @@ static int fd_array_map_delete_elem(struct bpf_map *map, void *key)
- 	}
- 
- 	if (old_ptr) {
--		map->ops->map_fd_put_ptr(old_ptr);
-+		map->ops->map_fd_put_ptr(map, old_ptr, true);
- 		return 0;
- 	} else {
- 		return -ENOENT;
-@@ -811,8 +811,9 @@ static void *prog_fd_array_get_ptr(struct bpf_map *map,
- 	return prog;
- }
- 
--static void prog_fd_array_put_ptr(void *ptr)
-+static void prog_fd_array_put_ptr(struct bpf_map *map, void *ptr, bool need_defer)
+diff --git a/net/llc/af_llc.c b/net/llc/af_llc.c
+index 5cba9199c3c9..a5c104ea477c 100644
+--- a/net/llc/af_llc.c
++++ b/net/llc/af_llc.c
+@@ -926,14 +926,15 @@ static int llc_ui_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+  */
+ static int llc_ui_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
  {
-+	/* bpf_prog is freed after one RCU or tasks trace grace period */
- 	bpf_prog_put(ptr);
- }
++	DECLARE_SOCKADDR(struct sockaddr_llc *, addr, msg->msg_name);
+ 	struct sock *sk = sock->sk;
+ 	struct llc_sock *llc = llc_sk(sk);
+-	DECLARE_SOCKADDR(struct sockaddr_llc *, addr, msg->msg_name);
+ 	int flags = msg->msg_flags;
+ 	int noblock = flags & MSG_DONTWAIT;
++	int rc = -EINVAL, copied = 0, hdrlen, hh_len;
+ 	struct sk_buff *skb = NULL;
++	struct net_device *dev;
+ 	size_t size = 0;
+-	int rc = -EINVAL, copied = 0, hdrlen;
  
-@@ -1139,8 +1140,9 @@ static void *perf_event_fd_array_get_ptr(struct bpf_map *map,
- 	return ee;
- }
- 
--static void perf_event_fd_array_put_ptr(void *ptr)
-+static void perf_event_fd_array_put_ptr(struct bpf_map *map, void *ptr, bool need_defer)
- {
-+	/* bpf_perf_event is freed after one RCU grace period */
- 	bpf_event_entry_free_rcu(ptr);
- }
- 
-@@ -1195,7 +1197,7 @@ static void *cgroup_fd_array_get_ptr(struct bpf_map *map,
- 	return cgroup_get_from_fd(fd);
- }
- 
--static void cgroup_fd_array_put_ptr(void *ptr)
-+static void cgroup_fd_array_put_ptr(struct bpf_map *map, void *ptr, bool need_defer)
- {
- 	/* cgroup_put free cgrp after a rcu grace period */
- 	cgroup_put(ptr);
-diff --git a/kernel/bpf/hashtab.c b/kernel/bpf/hashtab.c
-index 0ce445aadfdf..ec8497314272 100644
---- a/kernel/bpf/hashtab.c
-+++ b/kernel/bpf/hashtab.c
-@@ -786,7 +786,7 @@ static void htab_put_fd_value(struct bpf_htab *htab, struct htab_elem *l)
- 
- 	if (map->ops->map_fd_put_ptr) {
- 		ptr = fd_htab_map_get_ptr(map, l);
--		map->ops->map_fd_put_ptr(ptr);
-+		map->ops->map_fd_put_ptr(map, ptr, true);
+ 	dprintk("%s: sending from %02X to %02X\n", __func__,
+ 		llc->laddr.lsap, llc->daddr.lsap);
+@@ -953,22 +954,29 @@ static int llc_ui_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
+ 		if (rc)
+ 			goto out;
  	}
- }
- 
-@@ -2023,7 +2023,7 @@ static void fd_htab_map_free(struct bpf_map *map)
- 		hlist_nulls_for_each_entry_safe(l, n, head, hash_node) {
- 			void *ptr = fd_htab_map_get_ptr(map, l);
- 
--			map->ops->map_fd_put_ptr(ptr);
-+			map->ops->map_fd_put_ptr(map, ptr, false);
- 		}
- 	}
- 
-@@ -2064,7 +2064,7 @@ int bpf_fd_htab_map_update_elem(struct bpf_map *map, struct file *map_file,
- 
- 	ret = htab_map_update_elem(map, key, &ptr, map_flags);
- 	if (ret)
--		map->ops->map_fd_put_ptr(ptr);
-+		map->ops->map_fd_put_ptr(map, ptr, false);
- 
- 	return ret;
- }
-diff --git a/kernel/bpf/map_in_map.c b/kernel/bpf/map_in_map.c
-index 39ab0b68cade..0cf4cb685810 100644
---- a/kernel/bpf/map_in_map.c
-+++ b/kernel/bpf/map_in_map.c
-@@ -100,7 +100,7 @@ void *bpf_map_fd_get_ptr(struct bpf_map *map,
- 	return inner_map;
- }
- 
--void bpf_map_fd_put_ptr(void *ptr)
-+void bpf_map_fd_put_ptr(struct bpf_map *map, void *ptr, bool need_defer)
- {
- 	/* ptr->ops->map_free() has to go through one
- 	 * rcu grace period by itself.
-diff --git a/kernel/bpf/map_in_map.h b/kernel/bpf/map_in_map.h
-index bcb7534afb3c..7d61602354de 100644
---- a/kernel/bpf/map_in_map.h
-+++ b/kernel/bpf/map_in_map.h
-@@ -13,7 +13,7 @@ struct bpf_map *bpf_map_meta_alloc(int inner_map_ufd);
- void bpf_map_meta_free(struct bpf_map *map_meta);
- void *bpf_map_fd_get_ptr(struct bpf_map *map, struct file *map_file,
- 			 int ufd);
--void bpf_map_fd_put_ptr(void *ptr);
-+void bpf_map_fd_put_ptr(struct bpf_map *map, void *ptr, bool need_defer);
- u32 bpf_map_fd_sys_lookup_elem(void *ptr);
- 
- #endif
+-	hdrlen = llc->dev->hard_header_len + llc_ui_header_len(sk, addr);
++	dev = llc->dev;
++	hh_len = LL_RESERVED_SPACE(dev);
++	hdrlen = llc_ui_header_len(sk, addr);
+ 	size = hdrlen + len;
+-	if (size > llc->dev->mtu)
+-		size = llc->dev->mtu;
++	size = min_t(size_t, size, READ_ONCE(dev->mtu));
+ 	copied = size - hdrlen;
+ 	rc = -EINVAL;
+ 	if (copied < 0)
+ 		goto out;
+ 	release_sock(sk);
+-	skb = sock_alloc_send_skb(sk, size, noblock, &rc);
++	skb = sock_alloc_send_skb(sk, hh_len + size, noblock, &rc);
+ 	lock_sock(sk);
+ 	if (!skb)
+ 		goto out;
+-	skb->dev      = llc->dev;
++	if (sock_flag(sk, SOCK_ZAPPED) ||
++	    llc->dev != dev ||
++	    hdrlen != llc_ui_header_len(sk, addr) ||
++	    hh_len != LL_RESERVED_SPACE(dev) ||
++	    size > READ_ONCE(dev->mtu))
++		goto out;
++	skb->dev      = dev;
+ 	skb->protocol = llc_proto_type(addr->sllc_arphrd);
+-	skb_reserve(skb, hdrlen);
++	skb_reserve(skb, hh_len + hdrlen);
+ 	rc = memcpy_from_msg(skb_put(skb, copied), msg, copied);
+ 	if (rc)
+ 		goto out;
 -- 
 2.43.0
 
