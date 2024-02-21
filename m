@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-22457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC23285DC24
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:50:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B376D85D9A3
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:21:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3BC8DB24A46
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:49:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD2451C23091
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:21:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 021C17EEF9;
-	Wed, 21 Feb 2024 13:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23D9D6A8D6;
+	Wed, 21 Feb 2024 13:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e3BPvmTc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M4cRIQHX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CD697E79D;
-	Wed, 21 Feb 2024 13:49:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D775A69953;
+	Wed, 21 Feb 2024 13:20:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523362; cv=none; b=UkFGbOu7VZMqy3r/H3UYbw1o22enuTJU/Qor2FyfvfdSqJQk2FPQOtNjb8r9mPgv+sAM4SNl8bjNOAW4sbaEqjl2nPmFOu4EQPQTIT2Kjy5Pnw5zTNRCVkpVPEqFd6+nN3EYhdUnajSMjHBde43KSrBFIqUNftzPGjE8/9M/gKo=
+	t=1708521628; cv=none; b=Ekle7L9BrzswAh9AkqFFalrg6MG/PwcZ9gRbZvGJc6JvBISLXyrFQpG7AEUY0P7Irx3o7i+UmA1uo78ZR1O5iI+phCFkwnaWvGJ9WCgs+EwdkxJZ211tny++yOxbX5lolTzc+0MgJUfG8D0OyrBchzKxNysUNy3AVSjvYtzzw+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523362; c=relaxed/simple;
-	bh=oREJK221AUQsGO7bJ4GmZCcX3EKb9dkk7wpMUiP88Nk=;
+	s=arc-20240116; t=1708521628; c=relaxed/simple;
+	bh=odtCWk29SCVpF1NqZCb+ow8CAKyqIFCw8+JWpl5gyK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FKj4Yznw7DN5Tz1kchMtNgrAeHTdh1ugfOdbQC9YRrOxlsfF/lsbCJL2qwRfIl3/UbzGdbiLNBdlPYgc9hACEHaF2GZd+wP4vA44xU43Axzf870ljacN5voR1jGfLMMr1+op2AeRXeWZlkni/mMUjcNxjuXvL+6KgaDdhaEFfow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e3BPvmTc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AC9FC433F1;
-	Wed, 21 Feb 2024 13:49:20 +0000 (UTC)
+	 MIME-Version; b=ZCJHDVf6AS2vqboteWr1mRsvwH5Q8U+SJ+SJ8Jn/4a9GNIbEYU+6R+z5S0OIArBipp5oXj1D3hjwrx0t6Rz0JkF/nEj6IFS1pHEjSOiuwnYXLUTF3ipB9dmOU0y3JwVPg4O/AehDjHP2t5Sbgjg43uwKiQEEi9uGXeeEaWbJI1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M4cRIQHX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F771C43390;
+	Wed, 21 Feb 2024 13:20:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523361;
-	bh=oREJK221AUQsGO7bJ4GmZCcX3EKb9dkk7wpMUiP88Nk=;
+	s=korg; t=1708521628;
+	bh=odtCWk29SCVpF1NqZCb+ow8CAKyqIFCw8+JWpl5gyK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e3BPvmTcPZNnfBEG5O+8fZsIJDQjLrtsSM888eHk+5dlhrFbCMPhBn/xowGrzZWvi
-	 VjaSu2v30ZK9qtIh0U8za+XXfy3Bmt7KN8QuMJUQEsChbk4/R4Iul3AYkbL2ro4+cX
-	 pZw040cDolh1LG2qnV21GO4FyNkohbp22/gor6KQ=
+	b=M4cRIQHX/gtmi3qumbhrnN08Cl1R+jIgSIcEkrCMrhEFGwh4RcdNOATQFDZnIPwzs
+	 8blkt4/HdYuoWJhZ2u/BENm9iT7k6D3MyxqlJ+h+mdfpxEYwtrKo0H7oUs3kF7HFhS
+	 M6DjrExvWEWQicmSF+blWNeRr6d+OU1CiHL8qeJ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 5.15 413/476] irqchip/irq-brcmstb-l2: Add write memory barrier before exit
+	Prathu Baronia <prathubaronia2011@gmail.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>
+Subject: [PATCH 4.19 163/202] vhost: use kzalloc() instead of kmalloc() followed by memset()
 Date: Wed, 21 Feb 2024 14:07:44 +0100
-Message-ID: <20240221130023.281235508@linuxfoundation.org>
+Message-ID: <20240221125937.000598371@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Doug Berger <opendmb@gmail.com>
+From: Prathu Baronia <prathubaronia2011@gmail.com>
 
-commit b0344d6854d25a8b3b901c778b1728885dd99007 upstream.
+commit 4d8df0f5f79f747d75a7d356d9b9ea40a4e4c8a9 upstream.
 
-It was observed on Broadcom devices that use GIC v3 architecture L1
-interrupt controllers as the parent of brcmstb-l2 interrupt controllers
-that the deactivation of the parent interrupt could happen before the
-brcmstb-l2 deasserted its output. This would lead the GIC to reactivate the
-interrupt only to find that no L2 interrupt was pending. The result was a
-spurious interrupt invoking handle_bad_irq() with its associated
-messaging. While this did not create a functional problem it is a waste of
-cycles.
+Use kzalloc() to allocate new zeroed out msg node instead of
+memsetting a node allocated with kmalloc().
 
-The hazard exists because the memory mapped bus writes to the brcmstb-l2
-registers are buffered and the GIC v3 architecture uses a very efficient
-system register write to deactivate the interrupt.
-
-Add a write memory barrier prior to invoking chained_irq_exit() to
-introduce a dsb(st) on those systems to ensure the system register write
-cannot be executed until the memory mapped writes are visible to the
-system.
-
-[ florian: Added Fixes tag ]
-
-Fixes: 7f646e92766e ("irqchip: brcmstb-l2: Add Broadcom Set Top Box  Level-2 interrupt controller")
-Signed-off-by: Doug Berger <opendmb@gmail.com>
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Acked-by: Marc Zyngier <maz@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240210012449.3009125-1-florian.fainelli@broadcom.com
+Signed-off-by: Prathu Baronia <prathubaronia2011@gmail.com>
+Message-Id: <20230522085019.42914-1-prathubaronia2011@gmail.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-brcmstb-l2.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/vhost/vhost.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/irqchip/irq-brcmstb-l2.c
-+++ b/drivers/irqchip/irq-brcmstb-l2.c
-@@ -2,7 +2,7 @@
- /*
-  * Generic Broadcom Set Top Box Level 2 Interrupt controller driver
-  *
-- * Copyright (C) 2014-2017 Broadcom
-+ * Copyright (C) 2014-2024 Broadcom
-  */
+--- a/drivers/vhost/vhost.c
++++ b/drivers/vhost/vhost.c
+@@ -2490,12 +2490,11 @@ EXPORT_SYMBOL_GPL(vhost_disable_notify);
+ /* Create a new message. */
+ struct vhost_msg_node *vhost_new_msg(struct vhost_virtqueue *vq, int type)
+ {
+-	struct vhost_msg_node *node = kmalloc(sizeof *node, GFP_KERNEL);
++	/* Make sure all padding within the structure is initialized. */
++	struct vhost_msg_node *node = kzalloc(sizeof(*node), GFP_KERNEL);
+ 	if (!node)
+ 		return NULL;
  
- #define pr_fmt(fmt)	KBUILD_MODNAME	": " fmt
-@@ -113,6 +113,9 @@ static void brcmstb_l2_intc_irq_handle(s
- 		generic_handle_domain_irq(b->domain, irq);
- 	} while (status);
- out:
-+	/* Don't ack parent before all device writes are done */
-+	wmb();
-+
- 	chained_irq_exit(chip, desc);
- }
- 
+-	/* Make sure all padding within the structure is initialized. */
+-	memset(&node->msg, 0, sizeof node->msg);
+ 	node->vq = vq;
+ 	node->msg.type = type;
+ 	return node;
 
 
 
