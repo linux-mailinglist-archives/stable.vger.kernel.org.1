@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-22973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBE9C85DF3A
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:25:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D24D585DBE4
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:46:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F898B2AAF4
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:19:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 888F81F211B8
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:46:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EBCA7A708;
-	Wed, 21 Feb 2024 14:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 368C27BB0D;
+	Wed, 21 Feb 2024 13:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="etThYVgq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F5avRxNR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D9B3CF42;
-	Wed, 21 Feb 2024 14:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E71EE78B73;
+	Wed, 21 Feb 2024 13:46:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525140; cv=none; b=f/f4+s9dqxKUUvELAXk8olm9LTr1098ASFgHUBeqEgapx3/gWe3f2wsJtPMsmy0IDcn6aOzeBj91Bwu2jwv6O9ihWHrIjZ0RKUUF9CDJyLeBRy4DLam7xRv4rB0/1bddWyaWdMiyYH8aMQSjedJNI/kCsoShIRgbZwn4sLiN42s=
+	t=1708523185; cv=none; b=d4pCzJ+5h0fiuaOIhZraInyMLYX9LloyxXUkggoqE+lj+NRzW447X1wd415Hmszcbt/zONWjQimhUAOaDE5Id1m+YjdLeiyVbg6r9DFxwNVSNwm403Z5OclXArj4DeguRraiCzj6iKWFiQj3/BysiWEeTAl5naAS6R0apt1sQiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525140; c=relaxed/simple;
-	bh=D6D5zR4q7x+BDJSRCWfZSoRtesi/2fMyD8NkObLwGJE=;
+	s=arc-20240116; t=1708523185; c=relaxed/simple;
+	bh=YSwQOEQuvKjH7s+WkqZvv2rSEmar/QdjY1sw/FLyDDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IsF/IWNsrxRmcqUqPEU5LChW+eFV6JDB6nmxgAleDyTtX034oVKS8MJV3Q/kG++6A8tDQCzL1+RwiIOwyBAhf642X3QJjSvqanGxn9g76y5mdlAjdAajPO+JXLt8wq4bqeXFSX3idglRdbhwPezSunHc+2P466VV3BsuA8HGx/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=etThYVgq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64674C433F1;
-	Wed, 21 Feb 2024 14:18:59 +0000 (UTC)
+	 MIME-Version; b=pPWRcP1RimG0x34Dke3bAOJ+5XP8XWTywbRgXtmloKaKbYpCXNYS2Vrp1VYdpwX5R8S3afcdfhf6L5AmVJ1OsBjHDiu9Z4CQ1aytcwKBnpJIIXyUuXoYpF4hwFmXFqPm9vkojGZs8ATacnnqf0ODroJG1x/LOMqoJzwzlPKSSp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F5avRxNR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DFBBC433C7;
+	Wed, 21 Feb 2024 13:46:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525139;
-	bh=D6D5zR4q7x+BDJSRCWfZSoRtesi/2fMyD8NkObLwGJE=;
+	s=korg; t=1708523184;
+	bh=YSwQOEQuvKjH7s+WkqZvv2rSEmar/QdjY1sw/FLyDDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=etThYVgq9dgZwWP+FLSFq09UekXoeeAPfn9A1OMF5soBDglmt9PlTR8prNmJfxKOv
-	 zFVuKcTQnmjIfHp2BdwYIZR4r/NAwMW9GbCeB9XGNcLS4zBYXgpgxHaUZ99p0riaqq
-	 9SVWo1f7JxDXMraKRbGv+GjXrjosrBkfpYdxHJg0=
+	b=F5avRxNRNOOLmnDjr+zme8mnx2GY/SyQHUN1ZNBoCoPnw9d42pX2tODAJRPQ+KYWr
+	 BjEW/OPkV/h0yHTbmPmftWH6HgxPEcQExglwBa/iqojAhv5GNp6uUTnl+1CrWVNkfq
+	 RYuqgu0dz11p2IzZPztpJ/L+p9oEr0EJmJQJpybs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4a4f1eba14eb5c3417d1@syzkaller.appspotmail.com,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Anand Jain <anand.jain@oracle.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.4 044/267] btrfs: dont warn if discard range is not aligned to sector
+	Prashanth K <quic_prashk@quicinc.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 5.15 334/476] usb: dwc3: host: Set XHCI_SG_TRB_CACHE_SIZE_QUIRK
 Date: Wed, 21 Feb 2024 14:06:25 +0100
-Message-ID: <20240221125941.399573985@linuxfoundation.org>
+Message-ID: <20240221130020.356018322@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Prashanth K <quic_prashk@quicinc.com>
 
-commit a208b3f132b48e1f94f620024e66fea635925877 upstream.
+commit 817349b6d26aadd8b38283a05ce0bab106b4c765 upstream.
 
-There's a warning in btrfs_issue_discard() when the range is not aligned
-to 512 bytes, originally added in 4d89d377bbb0 ("btrfs:
-btrfs_issue_discard ensure offset/length are aligned to sector
-boundaries"). We can't do sub-sector writes anyway so the adjustment is
-the only thing that we can do and the warning is unnecessary.
+Upstream commit bac1ec551434 ("usb: xhci: Set quirk for
+XHCI_SG_TRB_CACHE_SIZE_QUIRK") introduced a new quirk in XHCI
+which fixes XHC timeout, which was seen on synopsys XHCs while
+using SG buffers. But the support for this quirk isn't present
+in the DWC3 layer.
 
-CC: stable@vger.kernel.org # 4.19+
-Reported-by: syzbot+4a4f1eba14eb5c3417d1@syzkaller.appspotmail.com
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+We will encounter this XHCI timeout/hung issue if we run iperf
+loopback tests using RTL8156 ethernet adaptor on DWC3 targets
+with scatter-gather enabled. This gets resolved after enabling
+the XHCI_SG_TRB_CACHE_SIZE_QUIRK. This patch enables it using
+the xhci device property since its needed for DWC3 controller.
+
+In Synopsys DWC3 databook,
+Table 9-3: xHCI Debug Capability Limitations
+Chained TRBs greater than TRB cache size: The debug capability
+driver must not create a multi-TRB TD that describes smaller
+than a 1K packet that spreads across 8 or more TRBs on either
+the IN TR or the OUT TR.
+
+Cc: stable@vger.kernel.org #5.11
+Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20240116055816.1169821-2-quic_prashk@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/extent-tree.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/dwc3/host.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -1243,7 +1243,8 @@ static int btrfs_issue_discard(struct bl
- 	u64 bytes_left, end;
- 	u64 aligned_start = ALIGN(start, 1 << 9);
+--- a/drivers/usb/dwc3/host.c
++++ b/drivers/usb/dwc3/host.c
+@@ -44,7 +44,7 @@ out:
  
--	if (WARN_ON(start != aligned_start)) {
-+	/* Adjust the range to be aligned to 512B sectors if necessary. */
-+	if (start != aligned_start) {
- 		len -= aligned_start - start;
- 		len = round_down(len, 1 << 9);
- 		start = aligned_start;
+ int dwc3_host_init(struct dwc3 *dwc)
+ {
+-	struct property_entry	props[4];
++	struct property_entry	props[5];
+ 	struct platform_device	*xhci;
+ 	int			ret, irq;
+ 	struct resource		*res;
+@@ -89,6 +89,8 @@ int dwc3_host_init(struct dwc3 *dwc)
+ 
+ 	memset(props, 0, sizeof(struct property_entry) * ARRAY_SIZE(props));
+ 
++	props[prop_idx++] = PROPERTY_ENTRY_BOOL("xhci-sg-trb-cache-size-quirk");
++
+ 	if (dwc->usb3_lpm_capable)
+ 		props[prop_idx++] = PROPERTY_ENTRY_BOOL("usb3-lpm-capable");
+ 
 
 
 
