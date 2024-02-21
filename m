@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-23027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC92085DED8
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:22:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9BA585DE06
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:14:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0AAA71C21DD4
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:22:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F2F91F242E6
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70A027C099;
-	Wed, 21 Feb 2024 14:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB79480614;
+	Wed, 21 Feb 2024 14:11:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UUCfSxCj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Axs1R1Ql"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E60269317;
-	Wed, 21 Feb 2024 14:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B21380616;
+	Wed, 21 Feb 2024 14:11:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525338; cv=none; b=BIGBC0ZyUkP8s0jzUIj0LFwuJhsq9HHIeaf4Jv4js3lrODzHk58JKzlCL/B0ZFpzLo2FOEpokKe1N8Nu06QxcsrpR/2vdsJvgA5uRPiCEB8wRgkTira7Lr7chnwhDD1ayG6YkZExc4xECB2ugKRdk6g6LSpB3Dpa1DNPmwQ/GSA=
+	t=1708524671; cv=none; b=tXmqemsEvxwra2hfQtwLvn1FxqWuICw7ppVba3WeTU6lVUz7DQZWRFsb///dwyTWD6ISSRJ7b1KoTsAecysuQk9dzZYbjQdc//V8bq/o92GFrUHr2OzdkPs5ZL3oeJo2MZIq9OjPx23RPalR4eL0rQdGAM11J552qRfKl4pBEEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525338; c=relaxed/simple;
-	bh=xs90hVGigphkaazRh6ytRetl+hb+op0PQWfrX01NE+s=;
+	s=arc-20240116; t=1708524671; c=relaxed/simple;
+	bh=qsGcm/MjQ4sHs5Wkk6DT5zBObVpA2l7f9tif2sdzb+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bg8on5/h09G05uNhc2BQ8j36gjs2CTvmN413nFFYCB2aFafDu+5JGvJHElCWgYfbqcmMdgUU1DA3teH6kyD9ZsJNPzpDBDO/CL4tKhdRgNvrc+kt69NtzzAullT6rLs27kOQ9q8va41D+Na2bRn20nSbKbw7fRUAAfYE+8u/0ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UUCfSxCj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C805C433F1;
-	Wed, 21 Feb 2024 14:22:17 +0000 (UTC)
+	 MIME-Version; b=MtU7RPdzjIM0IcdKjsXJBATRS2eoqriZOMIWYqeu3rDyQpb1ZyGoOrz430MtNBBYu+ouh/th9KEBsgrIoUx53mpwjjinRCTaDbd8Q3d+xqO+oH2N8nH+mQvIrhM3hd+O6QZKXFWw9F6ymtRymM9f5eVhJaVoEGO1t6jLEcI9ey4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Axs1R1Ql; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06BCBC433F1;
+	Wed, 21 Feb 2024 14:11:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525337;
-	bh=xs90hVGigphkaazRh6ytRetl+hb+op0PQWfrX01NE+s=;
+	s=korg; t=1708524671;
+	bh=qsGcm/MjQ4sHs5Wkk6DT5zBObVpA2l7f9tif2sdzb+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UUCfSxCjUjegR+Goi/5KypThyJQCfKHe7OVeJ6jPFiTSB64aJyg+h/WNTGqvwlle+
-	 43R0H3dNGR+89ScPVxTBAEOALlyCYfRJ6Xf4wuBNDM1AwV6zH6BIlPxPL1gk+Cce7v
-	 9Tse58AjksPZHEikIKBw5bmd8rdxE3JgLTedxeHg=
+	b=Axs1R1QlGyWT4ybITXRGxalRVTliN9Px2GoxLG6iMq+ZzZGfO27Oq57Fy53abVyab
+	 do1Dm1uJY2I112uRXa9jlvnqOp6KH5VxTFTkioPpEuLJNwd+a4/nxVxuRmz3zghLqu
+	 o+/IJbjMHzmL3i2isz1qEYIW9DWWp5n8LiYteqP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 124/267] drm/drm_file: fix use of uninitialized variable
+	Qu Wenruo <wqu@suse.com>,
+	Boris Burkov <boris@bur.io>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.10 286/379] btrfs: forbid creating subvol qgroups
 Date: Wed, 21 Feb 2024 14:07:45 +0100
-Message-ID: <20240221125943.911883437@linuxfoundation.org>
+Message-ID: <20240221130003.369630068@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Boris Burkov <boris@bur.io>
 
-[ Upstream commit 1d3062fad9c7313fff9970a88e0538a24480ffb8 ]
+commit 0c309d66dacddf8ce939b891d9ead4a8e21ad6f0 upstream.
 
-smatch reports:
+Creating a qgroup 0/subvolid leads to various races and it isn't
+helpful, because you can't specify a subvol id when creating a subvol,
+so you can't be sure it will be the right one. Any requirements on the
+automatic subvol can be gratified by using a higher level qgroup and the
+inheritance parameters of subvol creation.
 
-drivers/gpu/drm/drm_file.c:967 drm_show_memory_stats() error: uninitialized symbol 'supported_status'.
-
-'supported_status' is only set in one code path. I'm not familiar with
-the code to say if that path will always be ran in real life, but
-whether that is the case or not, I think it is good to initialize
-'supported_status' to 0 to silence the warning (and possibly fix a bug).
-
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231103-uninit-fixes-v2-1-c22b2444f5f5@ideasonboard.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cecbb533b5fc ("btrfs: record simple quota deltas in delayed refs")
+CC: stable@vger.kernel.org # 4.14+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_file.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/ioctl.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/gpu/drm/drm_file.c b/drivers/gpu/drm/drm_file.c
-index ea34bc991858..e27a15a6fe79 100644
---- a/drivers/gpu/drm/drm_file.c
-+++ b/drivers/gpu/drm/drm_file.c
-@@ -369,7 +369,7 @@ int drm_open(struct inode *inode, struct file *filp)
- {
- 	struct drm_device *dev;
- 	struct drm_minor *minor;
--	int retcode;
-+	int retcode = 0;
- 	int need_setup = 0;
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -4325,6 +4325,11 @@ static long btrfs_ioctl_qgroup_create(st
+ 		goto out;
+ 	}
  
- 	minor = drm_minor_acquire(iminor(inode));
--- 
-2.43.0
-
++	if (sa->create && is_fstree(sa->qgroupid)) {
++		ret = -EINVAL;
++		goto out;
++	}
++
+ 	trans = btrfs_join_transaction(root);
+ 	if (IS_ERR(trans)) {
+ 		ret = PTR_ERR(trans);
 
 
 
