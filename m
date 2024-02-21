@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-22454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B61585DC21
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:49:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FFFC85D9A2
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:21:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CA901C235E7
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:49:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B077287583
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:21:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D44707BB02;
-	Wed, 21 Feb 2024 13:49:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC9087BB0F;
+	Wed, 21 Feb 2024 13:20:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HxwD5Tg9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eot4k+9S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F9D67BB16;
-	Wed, 21 Feb 2024 13:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994897866C;
+	Wed, 21 Feb 2024 13:20:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523352; cv=none; b=OZdKyKhc3WD9NKWzScOGjvF2xnWgAGeh9LGvwRagHhbkqJyWB5xBNnfbb44QlcAuMVF3JwFiF66n5ItLjOchAMz390bMjKncj8yFv3zPyFT6JWdCWXqP2TPcBu4la5jp8nz+BpAsGbT7cOpmcw4ALPXpJwt922kx+xTbl+JW140=
+	t=1708521622; cv=none; b=GAA2ENaiOxCApU8Mdnv+Ci89dNLg5VTiMLLg4QBxKVPO4bmgIfQx512YsIWuUEpehf6f1Z5hf0LmmNwDNxdQwN81ijzvUfJNwakqLk/8AEbi3xTYzgKda4w0DlQqjfNaP3vY0yoFHM3wNIZtq6BvEBHod0ux3vd1cb10lmpQO9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523352; c=relaxed/simple;
-	bh=9XUQC2RwwPUvUMHxvWsCWSPAajmcHj7cibFGfOXjnZg=;
+	s=arc-20240116; t=1708521622; c=relaxed/simple;
+	bh=xsELHlVa09fWL9TRxy6uJebFglqGyyy/Nx99s65wGc8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ld1e7HRIxjmfJ5ha0Ovkzoqz6yrSyh3IVuxBU1lRodaGAM6Pnt7qWw9vO1f5ODPH4auykZqvLmVMQNyGMjEbGytLcsb9foil6ucb9B2//o8jQ+SrhjhQnh/NOMqUNhqY+RPRt03pFAqpJzv646VPNMBqSrYTpHuM1m83zC7Hqf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HxwD5Tg9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A6CFC433F1;
-	Wed, 21 Feb 2024 13:49:11 +0000 (UTC)
+	 MIME-Version; b=rQZNwBX1zHvB2D+G7aBi9/nsIbJu901plLIHL+5S3yMmdWIIge9aavzM0QjXAFR5+HlU5HFSqYiErLWd0W7NRVgE2W58ZqHnj1UlLcESaFwnryonCyNBgPIA2lwby/moZLpWO6yXPJ6GaJZlgAWGuuPlRf8FwC2Fh4NK0e3HvCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eot4k+9S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C705C433C7;
+	Wed, 21 Feb 2024 13:20:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523352;
-	bh=9XUQC2RwwPUvUMHxvWsCWSPAajmcHj7cibFGfOXjnZg=;
+	s=korg; t=1708521622;
+	bh=xsELHlVa09fWL9TRxy6uJebFglqGyyy/Nx99s65wGc8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HxwD5Tg90N4h7OaGsTx0R/4oFIdYsrxWu2jsDqKy2Lwl4JtM4FN8p5vmmLzOoE0sg
-	 vNEggvbLQJ09sYjTzGtbf5kVZohrdGQtP9bLXz7/gbkwERcz0w3iIGa5uASXUgl+th
-	 Ay5DfOTtC4WTEldXST83Yql3gJieFF7bY7RUzi0k=
+	b=eot4k+9SNiyUTbfmhju5BSO8zzA3vpstjFzfRpQ6Vs0mCEiO9uy4Mf+M0st3KSBBX
+	 Wm+g6jDwLuB8esuaDJqBpenQ0RL7XpSXgpqGE35y/RlTdbSAE7vgQSn1KvnYCbZ90K
+	 kKDLV5U16saUPmoJl4E7k8mjWv1h49J9QTwn5gG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Basilio <daniel.basilio@corigine.com>,
-	Louis Peens <louis.peens@corigine.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.15 410/476] nfp: use correct macro for LengthSelect in BAR config
-Date: Wed, 21 Feb 2024 14:07:41 +0100
-Message-ID: <20240221130023.163543753@linuxfoundation.org>
+	Leonard Dallmayr <leonard.dallmayr@mailbox.org>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 4.19 161/202] USB: serial: cp210x: add ID for IMST iM871A-USB
+Date: Wed, 21 Feb 2024 14:07:42 +0100
+Message-ID: <20240221125936.918865506@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Basilio <daniel.basilio@corigine.com>
+From: Leonard Dallmayr <leonard.dallmayr@mailbox.org>
 
-commit b3d4f7f2288901ed2392695919b3c0e24c1b4084 upstream.
+commit 12b17b4eb82a41977eb848048137b5908d52845c upstream.
 
-The 1st and 2nd expansion BAR configuration registers are configured,
-when the driver starts up, in variables 'barcfg_msix_general' and
-'barcfg_msix_xpb', respectively. The 'LengthSelect' field is ORed in
-from bit 0, which is incorrect. The 'LengthSelect' field should
-start from bit 27.
+The device IMST USB-Stick for Smart Meter is a rebranded IMST iM871A-USB
+Wireless M-Bus USB-adapter. It is used to read wireless water, gas and
+electricity meters.
 
-This has largely gone un-noticed because
-NFP_PCIE_BAR_PCIE2CPP_LengthSelect_32BIT happens to be 0.
-
-Fixes: 4cb584e0ee7d ("nfp: add CPP access core")
-Cc: stable@vger.kernel.org # 4.11+
-Signed-off-by: Daniel Basilio <daniel.basilio@corigine.com>
-Signed-off-by: Louis Peens <louis.peens@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Leonard Dallmayr <leonard.dallmayr@mailbox.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/netronome/nfp/nfpcore/nfp6000_pcie.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/usb/serial/cp210x.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/ethernet/netronome/nfp/nfpcore/nfp6000_pcie.c
-+++ b/drivers/net/ethernet/netronome/nfp/nfpcore/nfp6000_pcie.c
-@@ -542,11 +542,13 @@ static int enable_bars(struct nfp6000_pc
- 	const u32 barcfg_msix_general =
- 		NFP_PCIE_BAR_PCIE2CPP_MapType(
- 			NFP_PCIE_BAR_PCIE2CPP_MapType_GENERAL) |
--		NFP_PCIE_BAR_PCIE2CPP_LengthSelect_32BIT;
-+		NFP_PCIE_BAR_PCIE2CPP_LengthSelect(
-+			NFP_PCIE_BAR_PCIE2CPP_LengthSelect_32BIT);
- 	const u32 barcfg_msix_xpb =
- 		NFP_PCIE_BAR_PCIE2CPP_MapType(
- 			NFP_PCIE_BAR_PCIE2CPP_MapType_BULK) |
--		NFP_PCIE_BAR_PCIE2CPP_LengthSelect_32BIT |
-+		NFP_PCIE_BAR_PCIE2CPP_LengthSelect(
-+			NFP_PCIE_BAR_PCIE2CPP_LengthSelect_32BIT) |
- 		NFP_PCIE_BAR_PCIE2CPP_Target_BaseAddress(
- 			NFP_CPP_TARGET_ISLAND_XPB);
- 	const u32 barcfg_explicit[4] = {
+--- a/drivers/usb/serial/cp210x.c
++++ b/drivers/usb/serial/cp210x.c
+@@ -147,6 +147,7 @@ static const struct usb_device_id id_tab
+ 	{ USB_DEVICE(0x10C4, 0x85F8) }, /* Virtenio Preon32 */
+ 	{ USB_DEVICE(0x10C4, 0x8664) }, /* AC-Services CAN-IF */
+ 	{ USB_DEVICE(0x10C4, 0x8665) }, /* AC-Services OBD-IF */
++	{ USB_DEVICE(0x10C4, 0x87ED) }, /* IMST USB-Stick for Smart Meter */
+ 	{ USB_DEVICE(0x10C4, 0x8856) },	/* CEL EM357 ZigBee USB Stick - LR */
+ 	{ USB_DEVICE(0x10C4, 0x8857) },	/* CEL EM357 ZigBee USB Stick */
+ 	{ USB_DEVICE(0x10C4, 0x88A4) }, /* MMB Networks ZigBee USB Device */
 
 
 
