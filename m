@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-22328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F18A085DB73
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:41:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7FBF85DD54
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:04:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 933A11F222B1
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:41:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DCE91F21878
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:04:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2873077A03;
-	Wed, 21 Feb 2024 13:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1492B7D414;
+	Wed, 21 Feb 2024 14:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="padQxG4I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="00HFl/Cp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA19D1E4B2;
-	Wed, 21 Feb 2024 13:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C77B278B4F;
+	Wed, 21 Feb 2024 14:03:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522891; cv=none; b=eXPa/Dx6kwAHP91Hbw4UfI1rcdNE7cLowAEgQmXUTjou7gtW2mqMduzjyWNc8rs3UMylyZ1ZZjMj7Dtk4C7M7aJQ0/Nvw4iBh/ZMHaz4zWv23HC2uUDJSHCT2MczHPFt9bHpl7iQcOL2omKBtX2u+Mnv6hZxsPf7Cu3hIy7e8Uw=
+	t=1708524231; cv=none; b=chmA6CFTlL+lDKs46wqlkcQXVFut0QyF32Bk8YOAbK6e0cA/5a7ZK1wW9C+qwmNWGhuRmfxC35olpLAq3t5hbFcm1OtecPLt6kYmjAO2PZ20v6IoUod9O7mlIcI9wGDPj4ce399kWCSC7VLZduqlGk6YajGUwze1H+keQe3M4ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522891; c=relaxed/simple;
-	bh=QZyDI4N+xayeVGIl2RspAAUEDnW+idmOJebXDKslffE=;
+	s=arc-20240116; t=1708524231; c=relaxed/simple;
+	bh=a+l6VXvIUggz23RcYYYF9k/Uy63HlU4FoIzKX7RE84E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u0KENEmHd/aNihtOehHMN+0ggtPidD/wkWiunCMUh21NA5SIu1qn7OgXm+liIGyCaeT6IIuvWwMbDewIH372i1AGb5pho7jfYgSg4+3ytj2aiBWecQGSXq9N5T+glUb3yULKA+9vxixc5iFuMQEF4J5svOxmdikYkfS719opF98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=padQxG4I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52DDEC433C7;
-	Wed, 21 Feb 2024 13:41:31 +0000 (UTC)
+	 MIME-Version; b=aJI3nVMKvYeTvfT+U5XjUR2AwK5eGw5IUSyiCOOmmypFlJrFlxwx/iLlepn1AUD7v6NvFwlWJVYEqfnGIMVo+iPfYNGTRIi/52cEO5vhUxQasM5Yst0lkMBBUorhee2leM3vIvtLqtXRGO2wgvQZbhZQDYunLXjPc4jiiJJMo5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=00HFl/Cp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33A9EC433F1;
+	Wed, 21 Feb 2024 14:03:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522891;
-	bh=QZyDI4N+xayeVGIl2RspAAUEDnW+idmOJebXDKslffE=;
+	s=korg; t=1708524231;
+	bh=a+l6VXvIUggz23RcYYYF9k/Uy63HlU4FoIzKX7RE84E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=padQxG4IZtF4MW/o0r+12CiuzaeUNAMPgzMSgf997MT2LoV6ucf/MHFIWa8Q6U3R6
-	 bPkgu/g+aEbrdFBPKDiAHKsdzYXpDam/QAfBBRsmAjKAQ+iGUV1OtDT0ujynxzrh7M
-	 N5FLi12OAGlg54Ft769bB7KAkL/lEsQfXlpLiJ/M=
+	b=00HFl/CpCavHdofw81D6XvnBSlaKXgsezLNH+IjHDp7T9nWph2M/H1xe3BGaEV2Z7
+	 WcmAQwhKzegqRB1Sr9yHVPwwYCn5uj8fkV/j4fI1yXqA31vAtAQ7+y6SFPZ30xfLCv
+	 TyLVmkl/C5tjis/gOVkk/AQbnflMVTYWVoRRfUno=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Brett Creeley <brett.creeley@amd.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 285/476] netfilter: nft_ct: sanitize layer 3 and 4 protocol number in custom expectations
+Subject: [PATCH 5.10 157/379] ionic: pass opcode to devcmd_wait
 Date: Wed, 21 Feb 2024 14:05:36 +0100
-Message-ID: <20240221130018.531271767@linuxfoundation.org>
+Message-ID: <20240221125959.562870051@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Shannon Nelson <shannon.nelson@amd.com>
 
-[ Upstream commit 8059918a1377f2f1fff06af4f5a4ed3d5acd6bc4 ]
+[ Upstream commit 24f110240c03c6b5368f1203bac72883d511e606 ]
 
-- Disallow families other than NFPROTO_{IPV4,IPV6,INET}.
-- Disallow layer 4 protocol with no ports, since destination port is a
-  mandatory attribute for this object.
+Don't rely on the PCI memory for the devcmd opcode because we
+read a 0xff value if the PCI bus is broken, which can cause us
+to report a bogus dev_cmd opcode later.
 
-Fixes: 857b46027d6f ("netfilter: nft_ct: add ct expectations support")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+Reviewed-by: Brett Creeley <brett.creeley@amd.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_ct.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ drivers/net/ethernet/pensando/ionic/ionic_dev.c  | 1 +
+ drivers/net/ethernet/pensando/ionic/ionic_dev.h  | 1 +
+ drivers/net/ethernet/pensando/ionic/ionic_main.c | 2 +-
+ 3 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nft_ct.c b/net/netfilter/nft_ct.c
-index bd468e955a21..d8fd7e487e47 100644
---- a/net/netfilter/nft_ct.c
-+++ b/net/netfilter/nft_ct.c
-@@ -1186,7 +1186,31 @@ static int nft_ct_expect_obj_init(const struct nft_ctx *ctx,
- 	if (tb[NFTA_CT_EXPECT_L3PROTO])
- 		priv->l3num = ntohs(nla_get_be16(tb[NFTA_CT_EXPECT_L3PROTO]));
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_dev.c b/drivers/net/ethernet/pensando/ionic/ionic_dev.c
+index dc5fbc2704f3..b5f681918f6e 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_dev.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_dev.c
+@@ -200,6 +200,7 @@ void ionic_dev_cmd_comp(struct ionic_dev *idev, union ionic_dev_cmd_comp *comp)
  
-+	switch (priv->l3num) {
-+	case NFPROTO_IPV4:
-+	case NFPROTO_IPV6:
-+		if (priv->l3num != ctx->family)
-+			return -EINVAL;
-+
-+		fallthrough;
-+	case NFPROTO_INET:
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+
- 	priv->l4proto = nla_get_u8(tb[NFTA_CT_EXPECT_L4PROTO]);
-+	switch (priv->l4proto) {
-+	case IPPROTO_TCP:
-+	case IPPROTO_UDP:
-+	case IPPROTO_UDPLITE:
-+	case IPPROTO_DCCP:
-+	case IPPROTO_SCTP:
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+
- 	priv->dport = nla_get_be16(tb[NFTA_CT_EXPECT_DPORT]);
- 	priv->timeout = nla_get_u32(tb[NFTA_CT_EXPECT_TIMEOUT]);
- 	priv->size = nla_get_u8(tb[NFTA_CT_EXPECT_SIZE]);
+ void ionic_dev_cmd_go(struct ionic_dev *idev, union ionic_dev_cmd *cmd)
+ {
++	idev->opcode = cmd->cmd.opcode;
+ 	memcpy_toio(&idev->dev_cmd_regs->cmd, cmd, sizeof(*cmd));
+ 	iowrite32(0, &idev->dev_cmd_regs->done);
+ 	iowrite32(1, &idev->dev_cmd_regs->doorbell);
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_dev.h b/drivers/net/ethernet/pensando/ionic/ionic_dev.h
+index 64d27e8e0772..1ce0d307a9d0 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_dev.h
++++ b/drivers/net/ethernet/pensando/ionic/ionic_dev.h
+@@ -136,6 +136,7 @@ struct ionic_dev {
+ 	unsigned long last_hb_time;
+ 	u32 last_hb;
+ 	u8 last_fw_status;
++	u8 opcode;
+ 
+ 	u64 __iomem *db_pages;
+ 	dma_addr_t phy_db_pages;
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_main.c b/drivers/net/ethernet/pensando/ionic/ionic_main.c
+index 00b6985edea0..694e710244e6 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_main.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_main.c
+@@ -333,7 +333,7 @@ int ionic_dev_cmd_wait(struct ionic *ionic, unsigned long max_seconds)
+ 	 */
+ 	max_wait = jiffies + (max_seconds * HZ);
+ try_again:
+-	opcode = readb(&idev->dev_cmd_regs->cmd.cmd.opcode);
++	opcode = idev->opcode;
+ 	start_time = jiffies;
+ 	do {
+ 		done = ionic_dev_cmd_done(idev);
 -- 
 2.43.0
 
