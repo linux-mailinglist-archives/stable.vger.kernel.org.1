@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-22440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBE8185DC0D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:48:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EED6385D9B4
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:21:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72E401F2216D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:48:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B7061C23144
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:21:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9B427C6DB;
-	Wed, 21 Feb 2024 13:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB2EA7C08C;
+	Wed, 21 Feb 2024 13:21:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AVKqN9Gn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xykQKsZs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09237C6C0;
-	Wed, 21 Feb 2024 13:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B8D7BAE4;
+	Wed, 21 Feb 2024 13:21:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523308; cv=none; b=Smw4JjyiR8vkzv52PHdPgp6R2T0Jm7oEbJVpV2e7m31w1XhOWW818oji2xwSfmJl0a88MeCwEFSZLJYKnwqqwP/tfBU+SARxQgAcRDQpZsMKA4mFGRdwrclXzthKEjXzxZ+ZCl/xYldbyOmVMy8+hfxs5vogdMpzsIkT28pjvdc=
+	t=1708521674; cv=none; b=YExvLxH0zwUsgmMZ4B1F1vTVQoKoNil1ASWKJ3+7+8o24IIuGXisiwwMulhYheqJfMkqH0HtaKc+4Bk94enr+BINr2KgyTvuewEIMFAk8iMk9kagrIrXANM/KY+BZtGElHvkJWF9vTWnc1mpC9ThPJyjVjw65yTFv6umSUCzcL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523308; c=relaxed/simple;
-	bh=9IF4iJRYqfHKQog7vr82gakksuLvDBsK5vzKEVovQwk=;
+	s=arc-20240116; t=1708521674; c=relaxed/simple;
+	bh=MZfYX5mB29S7dSncBpuFOpOZa01rOJZdYnZYECQtVBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ny1udbeL7/gzUdEzl3ELZcuZRdEfQB/dJiA4sl3zXZiqOjvPGr30CS//5TsCA0DRgY1Dhxo0nOX2gwLNMmy5v9I8ETjkAwcwj0aIRrxe6lqrRQIGJyuDNtiYsgPWJa31nOMtk6dZ3UDM2rbzYchfB1JUtrDtFHognClsGkjz2Yc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AVKqN9Gn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 102ADC433F1;
-	Wed, 21 Feb 2024 13:48:27 +0000 (UTC)
+	 MIME-Version; b=Ptbr9qjLvw1xXrF1QtaNubAz806LlC7LkDEWEcpKOSbIhhOXIQlNYQDhgWu6bBGtv0f/cTPCRRLMkkiKE0w9cGQ9HpUI9tr6whocWaPi1+gZIDwnWvNDBF7uixni9EcmLtDKWr+lmUznMyijHoN/Z1TYs/MwbK43oAPi+CKXO84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xykQKsZs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC886C433F1;
+	Wed, 21 Feb 2024 13:21:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523308;
-	bh=9IF4iJRYqfHKQog7vr82gakksuLvDBsK5vzKEVovQwk=;
+	s=korg; t=1708521674;
+	bh=MZfYX5mB29S7dSncBpuFOpOZa01rOJZdYnZYECQtVBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AVKqN9GncOn5ruR06S+lEnjJBhnQ2fqp3VdLwZTssUa8jqVzsy4E8nro/LZ3ChwD/
-	 fcE6kjFsilRgkH5UwjPuQKiwdzG9kNFYGlhKKUc7XufFbOrAFWJY9BoF6k6bmjF2B9
-	 HJwo9LFBLKP0bfdFiW0iTDADQwQFEdOvMdDIMpJg=
+	b=xykQKsZsunUzyxfbx7+nWbuP/ssrJbRf9BTWZZeqgBjR7HvelYOsHLQ9vU9hm5he2
+	 pEoNUcSsZW4AA62hzogsxmkmc+Hty1GdeOAhq1WgQ0FwHxx0DvG3vZy725xQgYp1cm
+	 RkYvnj+oKDoWOcQm//24eLlJLmn49S+DolIGzOAQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>,
-	Dexuan Cui <decui@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 397/476] hv_netvsc: Fix race condition between netvsc_probe and netvsc_remove
+	Tony Lindgren <tony@atomide.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 147/202] phy: ti: phy-omap-usb2: Fix NULL pointer dereference for SRP
 Date: Wed, 21 Feb 2024 14:07:28 +0100
-Message-ID: <20240221130022.684092763@linuxfoundation.org>
+Message-ID: <20240221125936.454503660@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
+From: Tony Lindgren <tony@atomide.com>
 
-commit e0526ec5360a48ad3ab2e26e802b0532302a7e11 upstream.
+[ Upstream commit 7104ba0f1958adb250319e68a15eff89ec4fd36d ]
 
-In commit ac5047671758 ("hv_netvsc: Disable NAPI before closing the
-VMBus channel"), napi_disable was getting called for all channels,
-including all subchannels without confirming if they are enabled or not.
+If the external phy working together with phy-omap-usb2 does not implement
+send_srp(), we may still attempt to call it. This can happen on an idle
+Ethernet gadget triggering a wakeup for example:
 
-This caused hv_netvsc getting hung at napi_disable, when netvsc_probe()
-has finished running but nvdev->subchan_work has not started yet.
-netvsc_subchan_work() -> rndis_set_subchannel() has not created the
-sub-channels and because of that netvsc_sc_open() is not running.
-netvsc_remove() calls cancel_work_sync(&nvdev->subchan_work), for which
-netvsc_subchan_work did not run.
+configfs-gadget.g1 gadget.0: ECM Suspend
+configfs-gadget.g1 gadget.0: Port suspended. Triggering wakeup
+...
+Unable to handle kernel NULL pointer dereference at virtual address
+00000000 when execute
+...
+PC is at 0x0
+LR is at musb_gadget_wakeup+0x1d4/0x254 [musb_hdrc]
+...
+musb_gadget_wakeup [musb_hdrc] from usb_gadget_wakeup+0x1c/0x3c [udc_core]
+usb_gadget_wakeup [udc_core] from eth_start_xmit+0x3b0/0x3d4 [u_ether]
+eth_start_xmit [u_ether] from dev_hard_start_xmit+0x94/0x24c
+dev_hard_start_xmit from sch_direct_xmit+0x104/0x2e4
+sch_direct_xmit from __dev_queue_xmit+0x334/0xd88
+__dev_queue_xmit from arp_solicit+0xf0/0x268
+arp_solicit from neigh_probe+0x54/0x7c
+neigh_probe from __neigh_event_send+0x22c/0x47c
+__neigh_event_send from neigh_resolve_output+0x14c/0x1c0
+neigh_resolve_output from ip_finish_output2+0x1c8/0x628
+ip_finish_output2 from ip_send_skb+0x40/0xd8
+ip_send_skb from udp_send_skb+0x124/0x340
+udp_send_skb from udp_sendmsg+0x780/0x984
+udp_sendmsg from __sys_sendto+0xd8/0x158
+__sys_sendto from ret_fast_syscall+0x0/0x58
 
-netif_napi_add() sets the bit NAPI_STATE_SCHED because it ensures NAPI
-cannot be scheduled. Then netvsc_sc_open() -> napi_enable will clear the
-NAPIF_STATE_SCHED bit, so it can be scheduled. napi_disable() does the
-opposite.
+Let's fix the issue by checking for send_srp() and set_vbus() before
+calling them. For USB peripheral only cases these both could be NULL.
 
-Now during netvsc_device_remove(), when napi_disable is called for those
-subchannels, napi_disable gets stuck on infinite msleep.
-
-This fix addresses this problem by ensuring that napi_disable() is not
-getting called for non-enabled NAPI struct.
-But netif_napi_del() is still necessary for these non-enabled NAPI struct
-for cleanup purpose.
-
-Call trace:
-[  654.559417] task:modprobe        state:D stack:    0 pid: 2321 ppid:  1091 flags:0x00004002
-[  654.568030] Call Trace:
-[  654.571221]  <TASK>
-[  654.573790]  __schedule+0x2d6/0x960
-[  654.577733]  schedule+0x69/0xf0
-[  654.581214]  schedule_timeout+0x87/0x140
-[  654.585463]  ? __bpf_trace_tick_stop+0x20/0x20
-[  654.590291]  msleep+0x2d/0x40
-[  654.593625]  napi_disable+0x2b/0x80
-[  654.597437]  netvsc_device_remove+0x8a/0x1f0 [hv_netvsc]
-[  654.603935]  rndis_filter_device_remove+0x194/0x1c0 [hv_netvsc]
-[  654.611101]  ? do_wait_intr+0xb0/0xb0
-[  654.615753]  netvsc_remove+0x7c/0x120 [hv_netvsc]
-[  654.621675]  vmbus_remove+0x27/0x40 [hv_vmbus]
-
-Cc: stable@vger.kernel.org
-Fixes: ac5047671758 ("hv_netvsc: Disable NAPI before closing the VMBus channel")
-Signed-off-by: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
-Reviewed-by: Dexuan Cui <decui@microsoft.com>
-Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/1706686551-28510-1-git-send-email-schakrabarti@linux.microsoft.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 657b306a7bdf ("usb: phy: add a new driver for omap usb2 phy")
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Link: https://lore.kernel.org/r/20240128120556.8848-1-tony@atomide.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/hyperv/netvsc.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/phy/ti/phy-omap-usb2.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/hyperv/netvsc.c
-+++ b/drivers/net/hyperv/netvsc.c
-@@ -710,7 +710,10 @@ void netvsc_device_remove(struct hv_devi
- 	/* Disable NAPI and disassociate its context from the device. */
- 	for (i = 0; i < net_device->num_chn; i++) {
- 		/* See also vmbus_reset_channel_cb(). */
--		napi_disable(&net_device->chan_table[i].napi);
-+		/* only disable enabled NAPI channel */
-+		if (i < ndev->real_num_rx_queues)
-+			napi_disable(&net_device->chan_table[i].napi);
-+
- 		netif_napi_del(&net_device->chan_table[i].napi);
- 	}
+diff --git a/drivers/phy/ti/phy-omap-usb2.c b/drivers/phy/ti/phy-omap-usb2.c
+index fe909fd8144f..ae94e1e66bcc 100644
+--- a/drivers/phy/ti/phy-omap-usb2.c
++++ b/drivers/phy/ti/phy-omap-usb2.c
+@@ -64,7 +64,7 @@ static int omap_usb_set_vbus(struct usb_otg *otg, bool enabled)
+ {
+ 	struct omap_usb *phy = phy_to_omapusb(otg->usb_phy);
  
+-	if (!phy->comparator)
++	if (!phy->comparator || !phy->comparator->set_vbus)
+ 		return -ENODEV;
+ 
+ 	return phy->comparator->set_vbus(phy->comparator, enabled);
+@@ -74,7 +74,7 @@ static int omap_usb_start_srp(struct usb_otg *otg)
+ {
+ 	struct omap_usb *phy = phy_to_omapusb(otg->usb_phy);
+ 
+-	if (!phy->comparator)
++	if (!phy->comparator || !phy->comparator->start_srp)
+ 		return -ENODEV;
+ 
+ 	return phy->comparator->start_srp(phy->comparator);
+-- 
+2.43.0
+
 
 
 
