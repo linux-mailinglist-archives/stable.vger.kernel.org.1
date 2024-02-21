@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-22268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 762FF85DB2C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:38:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E82F885DCCB
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:57:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12F4E1F21343
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:38:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25BEB1C2362C
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:57:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 456273FB21;
-	Wed, 21 Feb 2024 13:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89EA479DAB;
+	Wed, 21 Feb 2024 13:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xp1ohmaj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XeHagEJg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 017BF3C2F;
-	Wed, 21 Feb 2024 13:37:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F1E76C99;
+	Wed, 21 Feb 2024 13:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522667; cv=none; b=joC8dHNWONphZGemTM5Zz+xVPpbE5dyurSWeEnoViS0eE1lFvVE73AsJ/LJpBz9FInwOi/Hb6mPa/NEGNwDqzZuvlA8fsLUnROxeU58MmmRxDextZN/gn/cA3i1hE697rh92Yj+Cw0H9ESUh0b3Hw4lpvPh5UmGOXzuH7fspEpw=
+	t=1708523877; cv=none; b=LMQSnxQXkVIo8ZthR2nKn0BOrv08SBTdXxwC8uOpND6KMH8oL55PMfNUbUfwOh/bQcqc6sHrnOS8N0/paux7yL1IbaSNU53Lx7UK98APuayF6td4+rdZnxx/PCcBCf0a4ZQ9V6FHH8476dX5BRWiPIoaD165NfBBC99qJl3T+9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522667; c=relaxed/simple;
-	bh=tF89mTYlCHXQNVRw7UkYcQbBXj2QzkGpopUuYDJLyVM=;
+	s=arc-20240116; t=1708523877; c=relaxed/simple;
+	bh=E6sFRRWTAuDbJiJiNNLaE5jJl+S0cfgwrYGdptAy8J0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sSksu9PSHJQnt3jN+5MThfPsbDp+sLap+cZ62jl065KZVdaNdFWubPrrC5Vikv3p6bddJI8a3Cfd7vQ4j2UAK/ZGaDTky/Xk8gLvZmsiu6OSQP10v/5V9Vatho3iJmFEhVrS1uYrN2Txh9Cnh2UEc3oxHtagxBHs5QhvwBkWRxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xp1ohmaj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67391C433C7;
-	Wed, 21 Feb 2024 13:37:46 +0000 (UTC)
+	 MIME-Version; b=fxsJHE1ldkoJBB3MWYykPPtI7in6JZHVPCgR1AsFT1UeWqx3EIH6K460mF1ZFixNYCYvR2HB/CSWQGyvKWicXPPzxoYChhD2N4HQz7vNgaBfFO0tfr2iEXRjSc3PEWZq3TkWDOiOTT/5IkH8ZiPWZLcPuIu2cufjvkZWNMQshpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XeHagEJg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAA27C433F1;
+	Wed, 21 Feb 2024 13:57:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522666;
-	bh=tF89mTYlCHXQNVRw7UkYcQbBXj2QzkGpopUuYDJLyVM=;
+	s=korg; t=1708523877;
+	bh=E6sFRRWTAuDbJiJiNNLaE5jJl+S0cfgwrYGdptAy8J0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xp1ohmajIvrqPTvR3VRgAPD/SSCQbwPbWNv8ORdhbQteOaq6vxw9ecyxWVaprx5CE
-	 lf2gcjQsAHHl6JW++SvNzax1iFrwoEj05ZHyRivcVp0Gjrkm3Y43OfnfNs5VWIfq04
-	 ltZyCEmcd5CSMW4KLBPtwS582gSJUPjvQftlmBSI=
+	b=XeHagEJgG6n/fzbKQ6s7hyZFSj+nW2dHlCoN9QzxkMWVpNTMxdlu2v/j5HLOLGb6u
+	 0pYBLXlAkTJEJaT/MNdIgx7r50hzXyJki0ywgrBpZ8RqGP9E0FsprgJwHKjKpJTZ7Z
+	 cVRmo3zjSHXCSsGa8t3xD7K48MNC+uKK+4s2e4+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suman Ghosh <sumang@marvell.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Li zeming <zeming@nfschina.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 207/476] octeontx2-af: Fix max NPC MCAM entry check while validating ref_entry
+Subject: [PATCH 5.10 079/379] PM: core: Remove unnecessary (void *) conversions
 Date: Wed, 21 Feb 2024 14:04:18 +0100
-Message-ID: <20240221130015.573887583@linuxfoundation.org>
+Message-ID: <20240221125957.246168319@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suman Ghosh <sumang@marvell.com>
+From: Li zeming <zeming@nfschina.com>
 
-[ Upstream commit 4ebb1f95e0c3c3e0eec5bb21aa43097580c4b6e4 ]
+[ Upstream commit 73d73f5ee7fb0c42ff87091d105bee720a9565f1 ]
 
-As of today, the last MCAM entry was not getting allocated because of
-a <= check with the max_bmap count. This patch modifies that and if the
-requested entry is greater than the available entries then set it to the
-max value.
+Assignments from pointer variables of type (void *) do not require
+explicit type casts, so remove such type cases from the code in
+drivers/base/power/main.c where applicable.
 
-Signed-off-by: Suman Ghosh <sumang@marvell.com>
-Link: https://lore.kernel.org/r/20240101145042.419697-1-sumang@marvell.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Li zeming <zeming@nfschina.com>
+[ rjw: Subject and changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: 7839d0078e0d ("PM: sleep: Fix possible deadlocks in core system-wide PM code")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/base/power/main.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-index 8b16738e249f..70b4f2a3b02f 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-@@ -2625,18 +2625,17 @@ int rvu_mbox_handler_npc_mcam_alloc_entry(struct rvu *rvu,
- 	rsp->entry = NPC_MCAM_ENTRY_INVALID;
- 	rsp->free_count = 0;
+diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
+index 6c334a65644c..402f3c4e3668 100644
+--- a/drivers/base/power/main.c
++++ b/drivers/base/power/main.c
+@@ -683,7 +683,7 @@ static bool dpm_async_fn(struct device *dev, async_func_t func)
  
--	/* Check if ref_entry is within range */
--	if (req->priority && req->ref_entry >= mcam->bmap_entries) {
--		dev_err(rvu->dev, "%s: reference entry %d is out of range\n",
--			__func__, req->ref_entry);
--		return NPC_MCAM_INVALID_REQ;
--	}
-+	/* Check if ref_entry is greater that the range
-+	 * then set it to max value.
-+	 */
-+	if (req->ref_entry > mcam->bmap_entries)
-+		req->ref_entry = mcam->bmap_entries;
+ static void async_resume_noirq(void *data, async_cookie_t cookie)
+ {
+-	struct device *dev = (struct device *)data;
++	struct device *dev = data;
+ 	int error;
  
- 	/* ref_entry can't be '0' if requested priority is high.
- 	 * Can't be last entry if requested priority is low.
- 	 */
- 	if ((!req->ref_entry && req->priority == NPC_MCAM_HIGHER_PRIO) ||
--	    ((req->ref_entry == (mcam->bmap_entries - 1)) &&
-+	    ((req->ref_entry == mcam->bmap_entries) &&
- 	     req->priority == NPC_MCAM_LOWER_PRIO))
- 		return NPC_MCAM_INVALID_REQ;
+ 	error = device_resume_noirq(dev, pm_transition, true);
+@@ -822,7 +822,7 @@ static int device_resume_early(struct device *dev, pm_message_t state, bool asyn
  
+ static void async_resume_early(void *data, async_cookie_t cookie)
+ {
+-	struct device *dev = (struct device *)data;
++	struct device *dev = data;
+ 	int error;
+ 
+ 	error = device_resume_early(dev, pm_transition, true);
+@@ -986,7 +986,7 @@ static int device_resume(struct device *dev, pm_message_t state, bool async)
+ 
+ static void async_resume(void *data, async_cookie_t cookie)
+ {
+-	struct device *dev = (struct device *)data;
++	struct device *dev = data;
+ 	int error;
+ 
+ 	error = device_resume(dev, pm_transition, true);
+@@ -1275,7 +1275,7 @@ static int __device_suspend_noirq(struct device *dev, pm_message_t state, bool a
+ 
+ static void async_suspend_noirq(void *data, async_cookie_t cookie)
+ {
+-	struct device *dev = (struct device *)data;
++	struct device *dev = data;
+ 	int error;
+ 
+ 	error = __device_suspend_noirq(dev, pm_transition, true);
+@@ -1458,7 +1458,7 @@ static int __device_suspend_late(struct device *dev, pm_message_t state, bool as
+ 
+ static void async_suspend_late(void *data, async_cookie_t cookie)
+ {
+-	struct device *dev = (struct device *)data;
++	struct device *dev = data;
+ 	int error;
+ 
+ 	error = __device_suspend_late(dev, pm_transition, true);
+@@ -1734,7 +1734,7 @@ static int __device_suspend(struct device *dev, pm_message_t state, bool async)
+ 
+ static void async_suspend(void *data, async_cookie_t cookie)
+ {
+-	struct device *dev = (struct device *)data;
++	struct device *dev = data;
+ 	int error;
+ 
+ 	error = __device_suspend(dev, pm_transition, true);
 -- 
 2.43.0
 
