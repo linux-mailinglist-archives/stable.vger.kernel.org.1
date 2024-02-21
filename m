@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-22506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE87485DC56
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:52:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E2DF85DE14
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:14:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79FD128515D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:52:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EF371F23242
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBC0E7C092;
-	Wed, 21 Feb 2024 13:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A00A87EEEC;
+	Wed, 21 Feb 2024 14:12:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j8QHHEOb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="05COFn6d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3106E7CF26;
-	Wed, 21 Feb 2024 13:52:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F2BB7E590;
+	Wed, 21 Feb 2024 14:12:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523526; cv=none; b=HCQHidL5e3/GslIMBFqk0r2xyoyhG1AwJsrPedwxm1nBI42Wra9/7g9oVCT7PCUT7DNxIgEwEWd1jmDAAYVCoz6Nfq24x/D7dY5qvgpgWzcf6+tm+3BbOfHUzSApGBM0lrIfg6dSiAu2BG6tnqw5WfeoW49e7PrMAWk/GcgU1eY=
+	t=1708524747; cv=none; b=Y1O6DUIc0mJeBeAW4axD1DcVOy18MAo3dvRautMvTDO0xseERX7yhEAOdVmgLtERDbI322nT/AK2r2Ovv4mEfGnSUwXDgD0zEXJd3jMVI1fD7rCQpMeWCuuviexifcXdmgQ0UjF0Cq+BzZZHZTGgGgj9uPuoyXFakF3tQWetbR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523526; c=relaxed/simple;
-	bh=xsdmKh8XIgG0C6ONNJHn9lcHrplb4o80zpvUZEq3GWE=;
+	s=arc-20240116; t=1708524747; c=relaxed/simple;
+	bh=CfwgDEVKIK6YUOMCDY/ey30w+54ygV074Tn9VNPBJXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HZpsclu3NepTUv26G9fk8i+KRs79SIYVG3nYzTCITL4rEXFGbuwc3yuIXdnUFrQwp3xQAe0RTYUh3/gMw/SLwZFl0C50pBYnFhcvjozlcW/99iDoWTrqLMMW2wDiHhv5y+6kul9uqX2F9XFx4c8d2DBKp9rJRtYE6yq+Lf+2E4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j8QHHEOb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F927C433F1;
-	Wed, 21 Feb 2024 13:52:04 +0000 (UTC)
+	 MIME-Version; b=rUBwCDf8PWYzoteT62SeK6MK0r0OHsdUSUhLm8kDWqhDlV0jYExTkOxtsojNO2Ofo/RKS5qG335O5XpPW0wUEHvSsMrv2sVixei2LF9qxIHAMHVeuNCcUvRFAZWQD4wjWxLyyElxgXdvn8ngKALa+uTbnzepejuBpWwXEgN8RMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=05COFn6d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4187C433C7;
+	Wed, 21 Feb 2024 14:12:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523525;
-	bh=xsdmKh8XIgG0C6ONNJHn9lcHrplb4o80zpvUZEq3GWE=;
+	s=korg; t=1708524747;
+	bh=CfwgDEVKIK6YUOMCDY/ey30w+54ygV074Tn9VNPBJXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j8QHHEObRM9b6r52hXbmwN7LNLfSARdiMhpqdZXDu/6JZNeW5ND3POlaIfS704PbA
-	 Ix5GxfflJTKmLNrEOblbwAkrceyEV0xHeFD1I8ATWbH7KgME2ElobEjSMY+QPJyqG9
-	 8Ug/KKZJOfD1qvA9XgyP5MXu/rsWi4NX3Net0Zao=
+	b=05COFn6dnch/fpXO863S/sTMnZ95TAtpOlrgx26Ek87z+PcImKPpOWbFCN/Jw4zdu
+	 oBB9iEG54rDAgGxzx6kO2Pci/4+J8oq6W1XN4KluQIee7gOZTXbkM30KaDDdG2Xt1E
+	 dBIA+CPs+jqeDeVt/uGFJdg682AmJA3xWoJz4Ovs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+5d5d25f90f195a3cfcb4@syzkaller.appspotmail.com,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 463/476] nilfs2: replace WARN_ONs for invalid DAT metadata block requests
+Subject: [PATCH 5.10 335/379] nilfs2: fix data corruption in dsync block recovery for small block sizes
 Date: Wed, 21 Feb 2024 14:08:34 +0100
-Message-ID: <20240221130025.155386970@linuxfoundation.org>
+Message-ID: <20240221130004.890144642@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit 5124a0a549857c4b87173280e192eea24dea72ad upstream.
+commit 67b8bcbaed4777871bb0dcc888fb02a614a98ab1 upstream.
 
-If DAT metadata file block access fails due to corruption of the DAT file
-or abnormal virtual block numbers held by b-trees or inodes, a kernel
-warning is generated.
+The helper function nilfs_recovery_copy_block() of
+nilfs_recovery_dsync_blocks(), which recovers data from logs created by
+data sync writes during a mount after an unclean shutdown, incorrectly
+calculates the on-page offset when copying repair data to the file's page
+cache.  In environments where the block size is smaller than the page
+size, this flaw can cause data corruption and leak uninitialized memory
+bytes during the recovery process.
 
-This replaces the WARN_ONs by error output, so that a kernel, booted with
-panic_on_warn, does not panic.  This patch also replaces the detected
-return code -ENOENT with another internal code -EINVAL to notify the bmap
-layer of metadata corruption.  When the bmap layer sees -EINVAL, it
-handles the abnormal situation with nilfs_bmap_convert_error() and finally
-returns code -EIO as it should.
+Fix these issues by correcting this byte offset calculation on the page.
 
-Link: https://lkml.kernel.org/r/0000000000005cc3d205ea23ddcf@google.com
-Link: https://lkml.kernel.org/r/20230126164114.6911-1-konishi.ryusuke@gmail.com
+Link: https://lkml.kernel.org/r/20240124121936.10575-1-konishi.ryusuke@gmail.com
 Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: <syzbot+5d5d25f90f195a3cfcb4@syzkaller.appspotmail.com>
 Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/dat.c |   27 +++++++++++++++++----------
- 1 file changed, 17 insertions(+), 10 deletions(-)
+ fs/nilfs2/recovery.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/fs/nilfs2/dat.c
-+++ b/fs/nilfs2/dat.c
-@@ -40,8 +40,21 @@ static inline struct nilfs_dat_info *NIL
- static int nilfs_dat_prepare_entry(struct inode *dat,
- 				   struct nilfs_palloc_req *req, int create)
+--- a/fs/nilfs2/recovery.c
++++ b/fs/nilfs2/recovery.c
+@@ -472,9 +472,10 @@ static int nilfs_prepare_segment_for_rec
+ 
+ static int nilfs_recovery_copy_block(struct the_nilfs *nilfs,
+ 				     struct nilfs_recovery_block *rb,
+-				     struct page *page)
++				     loff_t pos, struct page *page)
  {
--	return nilfs_palloc_get_entry_block(dat, req->pr_entry_nr,
--					    create, &req->pr_entry_bh);
-+	int ret;
-+
-+	ret = nilfs_palloc_get_entry_block(dat, req->pr_entry_nr,
-+					   create, &req->pr_entry_bh);
-+	if (unlikely(ret == -ENOENT)) {
-+		nilfs_err(dat->i_sb,
-+			  "DAT doesn't have a block to manage vblocknr = %llu",
-+			  (unsigned long long)req->pr_entry_nr);
-+		/*
-+		 * Return internal code -EINVAL to notify bmap layer of
-+		 * metadata corruption.
-+		 */
-+		ret = -EINVAL;
-+	}
-+	return ret;
- }
+ 	struct buffer_head *bh_org;
++	size_t from = pos & ~PAGE_MASK;
+ 	void *kaddr;
  
- static void nilfs_dat_commit_entry(struct inode *dat,
-@@ -123,11 +136,7 @@ static void nilfs_dat_commit_free(struct
+ 	bh_org = __bread(nilfs->ns_bdev, rb->blocknr, nilfs->ns_blocksize);
+@@ -482,7 +483,7 @@ static int nilfs_recovery_copy_block(str
+ 		return -EIO;
  
- int nilfs_dat_prepare_start(struct inode *dat, struct nilfs_palloc_req *req)
- {
--	int ret;
--
--	ret = nilfs_dat_prepare_entry(dat, req, 0);
--	WARN_ON(ret == -ENOENT);
--	return ret;
-+	return nilfs_dat_prepare_entry(dat, req, 0);
- }
+ 	kaddr = kmap_atomic(page);
+-	memcpy(kaddr + bh_offset(bh_org), bh_org->b_data, bh_org->b_size);
++	memcpy(kaddr + from, bh_org->b_data, bh_org->b_size);
+ 	kunmap_atomic(kaddr);
+ 	brelse(bh_org);
+ 	return 0;
+@@ -521,7 +522,7 @@ static int nilfs_recover_dsync_blocks(st
+ 			goto failed_inode;
+ 		}
  
- void nilfs_dat_commit_start(struct inode *dat, struct nilfs_palloc_req *req,
-@@ -154,10 +163,8 @@ int nilfs_dat_prepare_end(struct inode *
- 	int ret;
+-		err = nilfs_recovery_copy_block(nilfs, rb, page);
++		err = nilfs_recovery_copy_block(nilfs, rb, pos, page);
+ 		if (unlikely(err))
+ 			goto failed_page;
  
- 	ret = nilfs_dat_prepare_entry(dat, req, 0);
--	if (ret < 0) {
--		WARN_ON(ret == -ENOENT);
-+	if (ret < 0)
- 		return ret;
--	}
- 
- 	kaddr = kmap_atomic(req->pr_entry_bh->b_page);
- 	entry = nilfs_palloc_block_get_entry(dat, req->pr_entry_nr,
 
 
 
