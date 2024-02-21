@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-22251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4D8385DB16
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:37:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF07A85DCAD
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:56:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83E651F2170E
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:37:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28A351C227D7
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:56:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F4747BB0D;
-	Wed, 21 Feb 2024 13:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 794BE79DAE;
+	Wed, 21 Feb 2024 13:56:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q+LSDayv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vkmt1xSs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CBE86F074;
-	Wed, 21 Feb 2024 13:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371E376C99;
+	Wed, 21 Feb 2024 13:56:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522606; cv=none; b=lQMPvhDOY1BGRs1fSCP1tHr9lk37W25s7eMLIhEvjfNze2hZR9kiuV8ssNLGDraI7DVkkxssKiMu6cg4G9FBQS/xg4/W1aMPfFyEpDbrChLeVrJhm+8wlQ+cvIwvE5jOahoep60dMQGi33sWyB/5WcP9AN+dh3eFPtmQy8bAWyA=
+	t=1708523775; cv=none; b=lU9aNp7HN0yS8Us6ZW4D0TxzivajTYD5yPh9QbTvR9pwQGHSlhRdmyIelDxS+R79IvKTTnVaSL9LRf+WqI31nHCaz+Bigr4G31BMbpWLYdJ09gKf0wkwKtvqGurdsKqUVGEkmu/kQle+MJSviT1HF8bHCcHM8EoFPpCkLP6Woxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522606; c=relaxed/simple;
-	bh=ZRCXTLPJIPYw/fwZM5N6yqLKSJ37XJBlmgPb9He6Cfw=;
+	s=arc-20240116; t=1708523775; c=relaxed/simple;
+	bh=vIUsHJ1ly/bOWynOcCRVSEbhZ6afQbAUwJZBGuki1aU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m2Xdgp3MEpWqGWc4LjDy7R+QuK34iS3z755b6d3eS7AXglnvziPrbTjGKRvr+fJ2QvpcdUViOeh/PiFmAlA+OY3q4dzZRHapeAw2Qd6WShXHXFnXx8jxLMBvaaV0z5rWBomA5vtXmYS52Nmdnxg3MkZ0Ty8C9kqXTrkcddCu5tg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q+LSDayv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46739C433C7;
-	Wed, 21 Feb 2024 13:36:45 +0000 (UTC)
+	 MIME-Version; b=UXRo03i72Pk98ZbxWrZhWHt+WsMQjRgyncLU4K8BB8m0n5NKnq3DEmoDkbLzeSKpXKDuii73Jj+rfjxQXPaO9lOZm4RmFuLbzKIWzEFrFiOHUPnTVW9FDkGVQ5rOzVxRYl69ZDhJvK32yugN8n/wz1V8mBpJkQsHxGDVKhjECx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vkmt1xSs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B92F1C433F1;
+	Wed, 21 Feb 2024 13:56:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522605;
-	bh=ZRCXTLPJIPYw/fwZM5N6yqLKSJ37XJBlmgPb9He6Cfw=;
+	s=korg; t=1708523775;
+	bh=vIUsHJ1ly/bOWynOcCRVSEbhZ6afQbAUwJZBGuki1aU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q+LSDayvnH2f99TcjlA9Tkug3NZJDy2w8u0kFizgaXHBLMxJXimOVdlR1U958PZTj
-	 gpfq0o3YSZ1VcuOMTepTu5Zr2UjjsRtPX/hC2wjulwKSkmB2VNSeDbXGnBYfwOlZCi
-	 56koSj+54M0wrJCu3Nar5Pk3Yqd1Nvoh8jVYHjWs=
+	b=Vkmt1xSsNCNVNGJ/Xq+8kaCX0vktGjCNZaD1zKqoygU0BXWww8HY7TnoHqX0M5qzJ
+	 GmlmkrZNJiYRvMHnYJkD+sQMBA/68bdSHhR72ACnBXPs9iwn1icmHdLy8+Cr29XvfR
+	 kYN0cpiborvpjOpGN7G2l+nZ3e0JObbOEIQltVSM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hou Tao <houtao1@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Zhengchao Shao <shaozhengchao@huawei.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 180/476] bpf: Set uattr->batch.count as zero before batched update or deletion
-Date: Wed, 21 Feb 2024 14:03:51 +0100
-Message-ID: <20240221130014.557139494@linuxfoundation.org>
+Subject: [PATCH 5.10 053/379] ipv6: init the accept_queues spinlocks in inet6_create
+Date: Wed, 21 Feb 2024 14:03:52 +0100
+Message-ID: <20240221125956.486084710@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Zhengchao Shao <shaozhengchao@huawei.com>
 
-[ Upstream commit 06e5c999f10269a532304e89a6adb2fbfeb0593c ]
+[ Upstream commit 435e202d645c197dcfd39d7372eb2a56529b6640 ]
 
-generic_map_{delete,update}_batch() doesn't set uattr->batch.count as
-zero before it tries to allocate memory for key. If the memory
-allocation fails, the value of uattr->batch.count will be incorrect.
+In commit 198bc90e0e73("tcp: make sure init the accept_queue's spinlocks
+once"), the spinlocks of accept_queue are initialized only when socket is
+created in the inet4 scenario. The locks are not initialized when socket
+is created in the inet6 scenario. The kernel reports the following error:
+INFO: trying to register non-static key.
+The code is fine but needs lockdep annotation, or maybe
+you didn't initialize this object before use?
+turning off the locking correctness validator.
+Hardware name: Red Hat KVM, BIOS 0.5.1 01/01/2011
+Call Trace:
+<TASK>
+	dump_stack_lvl (lib/dump_stack.c:107)
+	register_lock_class (kernel/locking/lockdep.c:1289)
+	__lock_acquire (kernel/locking/lockdep.c:5015)
+	lock_acquire.part.0 (kernel/locking/lockdep.c:5756)
+	_raw_spin_lock_bh (kernel/locking/spinlock.c:178)
+	inet_csk_listen_stop (net/ipv4/inet_connection_sock.c:1386)
+	tcp_disconnect (net/ipv4/tcp.c:2981)
+	inet_shutdown (net/ipv4/af_inet.c:935)
+	__sys_shutdown (./include/linux/file.h:32 net/socket.c:2438)
+	__x64_sys_shutdown (net/socket.c:2445)
+	do_syscall_64 (arch/x86/entry/common.c:52)
+	entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:129)
+RIP: 0033:0x7f52ecd05a3d
+Code: 5b 41 5c c3 66 0f 1f 84 00 00 00 00 00 f3 0f 1e fa 48 89 f8 48 89 f7
+48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff
+ff 73 01 c3 48 8b 0d ab a3 0e 00 f7 d8 64 89 01 48
+RSP: 002b:00007f52ecf5dde8 EFLAGS: 00000293 ORIG_RAX: 0000000000000030
+RAX: ffffffffffffffda RBX: 00007f52ecf5e640 RCX: 00007f52ecd05a3d
+RDX: 00007f52ecc8b188 RSI: 0000000000000000 RDI: 0000000000000004
+RBP: 00007f52ecf5de20 R08: 00007ffdae45c69f R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000293 R12: 00007f52ecf5e640
+R13: 0000000000000000 R14: 00007f52ecc8b060 R15: 00007ffdae45c6e0
 
-Fix it by setting uattr->batch.count as zero beore batched update or
-deletion.
-
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/r/20231208102355.2628918-6-houtao@huaweicloud.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 198bc90e0e73 ("tcp: make sure init the accept_queue's spinlocks once")
+Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240122102001.2851701-1-shaozhengchao@huawei.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/syscall.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ net/ipv6/af_inet6.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index dbe98040e855..64206856a05c 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -1314,6 +1314,9 @@ int generic_map_delete_batch(struct bpf_map *map,
- 	if (!max_count)
- 		return 0;
+diff --git a/net/ipv6/af_inet6.c b/net/ipv6/af_inet6.c
+index 4247997077bf..329b3b36688a 100644
+--- a/net/ipv6/af_inet6.c
++++ b/net/ipv6/af_inet6.c
+@@ -197,6 +197,9 @@ static int inet6_create(struct net *net, struct socket *sock, int protocol,
+ 	if (INET_PROTOSW_REUSE & answer_flags)
+ 		sk->sk_reuse = SK_CAN_REUSE;
  
-+	if (put_user(0, &uattr->batch.count))
-+		return -EFAULT;
++	if (INET_PROTOSW_ICSK & answer_flags)
++		inet_init_csk_locks(sk);
 +
- 	key = kvmalloc(map->key_size, GFP_USER | __GFP_NOWARN);
- 	if (!key)
- 		return -ENOMEM;
-@@ -1372,6 +1375,9 @@ int generic_map_update_batch(struct bpf_map *map,
- 	if (!max_count)
- 		return 0;
+ 	inet = inet_sk(sk);
+ 	inet->is_icsk = (INET_PROTOSW_ICSK & answer_flags) != 0;
  
-+	if (put_user(0, &uattr->batch.count))
-+		return -EFAULT;
-+
- 	key = kvmalloc(map->key_size, GFP_USER | __GFP_NOWARN);
- 	if (!key)
- 		return -ENOMEM;
 -- 
 2.43.0
 
