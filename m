@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-22966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6114D85DE7E
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:19:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5A5085D94F
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:17:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 785DD1C23BE5
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:19:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF7691C22F25
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:17:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B7AF7E590;
-	Wed, 21 Feb 2024 14:18:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BBE178B49;
+	Wed, 21 Feb 2024 13:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eWOw1x/e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RV59wLd8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB2B7E581;
-	Wed, 21 Feb 2024 14:18:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E0369DF6;
+	Wed, 21 Feb 2024 13:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525117; cv=none; b=b94S1moR1EiCEliH41EyA7VJ1TYtJvAg14osLSorQHsxxw0NdgzHUp1h2cHc04yEJ3eLvia9DF+ud9O5cfb+dWbtsdT/xxgXUYs0mX9DlyNpDNXG6HlgScYwyypbgApQNhmi6xjdWNgj/CxU2ksZ7NT8Q0sioyrAAtzpZIFqyww=
+	t=1708521417; cv=none; b=db8612MjU6y2RkeP8KcChUqgjSSAcCoxFoWbix7tt6FxhEAQptPaxwPoJw2W3U0McGAr8zNvUHgvMVhOcxBu5Mux/T2m9afHZfYgdfRKIhWClkOY1rT9Vo2r7LYDYr9wYQX70fMA+QucmnNCTr7BR9CKQD16SW1c5dySCx9G0aI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525117; c=relaxed/simple;
-	bh=JYADzpHKEPvSzq2WcmZYnwweBe6VL58GaNqZUjCE54Y=;
+	s=arc-20240116; t=1708521417; c=relaxed/simple;
+	bh=VbSOiAAJLAJjhsTvKhIxvvkj8QNLNCFIrS0dEEL8gYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hkEzwiMGq+WtOvpRQxBs1qh/raPMWIZWL3sRub3xzcVu6UT13kZGu7/529y9J9r9gnLWyJsNmjLqnuCaIIY2YEpIWQBrb9BTYEaT30NQ+MUnbcDyBES+Z5o6iQowagmI3w9WxNkqWUy44okVrM36WC5hh92DhcNx1kay2PoJJZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eWOw1x/e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E368C433C7;
-	Wed, 21 Feb 2024 14:18:36 +0000 (UTC)
+	 MIME-Version; b=QWGswWAtA2xohcj0nDy+i5CbTQseYZoiYBfQFRxpVdhPMvJKQFXth1z6/vv5MsuTnca9fmMD2XCmmFAJVw95VdwNZXcpLK5LTxp0Qspp6TNE0d+LmQBVsuqNhGCAJb5IiPpeUB7re8l64GGYGya9hrYnCQjac1EPtiD+2D64uJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RV59wLd8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88732C433C7;
+	Wed, 21 Feb 2024 13:16:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525117;
-	bh=JYADzpHKEPvSzq2WcmZYnwweBe6VL58GaNqZUjCE54Y=;
+	s=korg; t=1708521416;
+	bh=VbSOiAAJLAJjhsTvKhIxvvkj8QNLNCFIrS0dEEL8gYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eWOw1x/eNABAiyi+dAF4uWSigtlEfxRc47uU5zzdueXxGMhj8EQJV1dPonSSv0EES
-	 ZLZPNxMCqaDBAqs+4e35oysHpBBOZ4b0DGCdDCnA0g1G7slgx81Lmd7uCEmQ+7v6M7
-	 hkRKzlX5l8vowc3Owszdrs/Vrtt4FAbvxcAI/TRk=
+	b=RV59wLd8iu80kDqeElIe/4qhzIPbA5eHEVR3xyWULH8Zo+ogIKIKizU+9DIMN5zLw
+	 GTgCnIOk6EKk5nRW2O8wR12ylqmphmZmqd/424Dnefy26SMm5kUY8dcOLWlcVxAHlz
+	 zwusU0wd/YH952eTop8ij+jgufAtaMrGqlNHkwCU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Michael Tretter <m.tretter@pengutronix.de>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 064/267] powerpc: pmd_move_must_withdraw() is only needed for CONFIG_TRANSPARENT_HUGEPAGE
+Subject: [PATCH 4.19 104/202] media: rockchip: rga: fix swizzling for RGB formats
 Date: Wed, 21 Feb 2024 14:06:45 +0100
-Message-ID: <20240221125942.008268843@linuxfoundation.org>
+Message-ID: <20240221125935.122407529@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Rothwell <sfr@canb.auug.org.au>
+From: Michael Tretter <m.tretter@pengutronix.de>
 
-[ Upstream commit 0d555b57ee660d8a871781c0eebf006e855e918d ]
+[ Upstream commit 9e7dc39260edac180c206bb6149595a40eabae3e ]
 
-The linux-next build of powerpc64 allnoconfig fails with:
+When using 32 bit RGB formats, the RGA on the rk3568 produces wrong
+colors as the wrong color channels are read or written.  The reason is
+that the format description for the channel swizzeling is wrong and the
+wrong bits are configured. For example, when converting ARGB32 to NV12,
+the alpha channel is used as blue channel.. This doesn't happen if the
+color format is the same on both sides.
 
-  arch/powerpc/mm/book3s64/pgtable.c:557:5: error: no previous prototype for 'pmd_move_must_withdraw'
-    557 | int pmd_move_must_withdraw(struct spinlock *new_pmd_ptl,
-        |     ^~~~~~~~~~~~~~~~~~~~~~
+Fix the color_swap settings of the formats to correctly handle 32 bit
+RGB formats.
 
-Caused by commit:
+For RGA_COLOR_FMT_XBGR8888, the RGA_COLOR_ALPHA_SWAP bit doesn't have an
+effect. Thus, it isn't possible to handle the V4L2_PIX_FMT_XRGB32. Thus,
+it is removed from the list of supported formats.
 
-  c6345dfa6e3e ("Makefile.extrawarn: turn on missing-prototypes globally")
-
-Fix it by moving the function definition under
-CONFIG_TRANSPARENT_HUGEPAGE like the prototype. The function is only
-called when CONFIG_TRANSPARENT_HUGEPAGE=y.
-
-Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
-[mpe: Flesh out change log from linux-next patch]
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231127132809.45c2b398@canb.auug.org.au
+Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/mm/book3s64/pgtable.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/media/platform/rockchip/rga/rga.c | 15 +++------------
+ 1 file changed, 3 insertions(+), 12 deletions(-)
 
-diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
-index 2bf7e1b4fd82..c4890f4b0b6c 100644
---- a/arch/powerpc/mm/book3s64/pgtable.c
-+++ b/arch/powerpc/mm/book3s64/pgtable.c
-@@ -442,6 +442,7 @@ void ptep_modify_prot_commit(struct vm_area_struct *vma, unsigned long addr,
- 	set_pte_at(vma->vm_mm, addr, ptep, pte);
- }
- 
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
- /*
-  * For hash translation mode, we use the deposited table to store hash slot
-  * information and they are stored at PTRS_PER_PMD offset from related pmd
-@@ -463,6 +464,7 @@ int pmd_move_must_withdraw(struct spinlock *new_pmd_ptl,
- 
- 	return true;
- }
-+#endif
- 
- /*
-  * Does the CPU support tlbie?
+diff --git a/drivers/media/platform/rockchip/rga/rga.c b/drivers/media/platform/rockchip/rga/rga.c
+index 86a76f35a9a1..03bf575fd31a 100644
+--- a/drivers/media/platform/rockchip/rga/rga.c
++++ b/drivers/media/platform/rockchip/rga/rga.c
+@@ -195,25 +195,16 @@ static int rga_setup_ctrls(struct rga_ctx *ctx)
+ static struct rga_fmt formats[] = {
+ 	{
+ 		.fourcc = V4L2_PIX_FMT_ARGB32,
+-		.color_swap = RGA_COLOR_RB_SWAP,
++		.color_swap = RGA_COLOR_ALPHA_SWAP,
+ 		.hw_format = RGA_COLOR_FMT_ABGR8888,
+ 		.depth = 32,
+ 		.uv_factor = 1,
+ 		.y_div = 1,
+ 		.x_div = 1,
+ 	},
+-	{
+-		.fourcc = V4L2_PIX_FMT_XRGB32,
+-		.color_swap = RGA_COLOR_RB_SWAP,
+-		.hw_format = RGA_COLOR_FMT_XBGR8888,
+-		.depth = 32,
+-		.uv_factor = 1,
+-		.y_div = 1,
+-		.x_div = 1,
+-	},
+ 	{
+ 		.fourcc = V4L2_PIX_FMT_ABGR32,
+-		.color_swap = RGA_COLOR_ALPHA_SWAP,
++		.color_swap = RGA_COLOR_RB_SWAP,
+ 		.hw_format = RGA_COLOR_FMT_ABGR8888,
+ 		.depth = 32,
+ 		.uv_factor = 1,
+@@ -222,7 +213,7 @@ static struct rga_fmt formats[] = {
+ 	},
+ 	{
+ 		.fourcc = V4L2_PIX_FMT_XBGR32,
+-		.color_swap = RGA_COLOR_ALPHA_SWAP,
++		.color_swap = RGA_COLOR_RB_SWAP,
+ 		.hw_format = RGA_COLOR_FMT_XBGR8888,
+ 		.depth = 32,
+ 		.uv_factor = 1,
 -- 
 2.43.0
 
