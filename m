@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-22231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76F2385DAF9
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:36:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 074C685DCC1
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:57:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A10641C22DAD
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:36:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B041D1F221FC
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:57:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36E6D7E77B;
-	Wed, 21 Feb 2024 13:35:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34EE278B53;
+	Wed, 21 Feb 2024 13:57:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RpQS0EMQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wPGjWL/m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E91867B3E5;
-	Wed, 21 Feb 2024 13:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E743D55E5E;
+	Wed, 21 Feb 2024 13:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522527; cv=none; b=q/PSXHSIIj2hUKhveidamz40BVX8S2qGdKN8VBVMmZa/PbeF4sokEg8TEXGLnJq4xeLtgaqnRcLnFs4duhNVUefuDk1gtUL+sBndiEobFe2V+ZCnJJb5VzT9vClpvDYy4l9SjY26Y1TYkrs4E61b4p/SRn4rxXvyl54EixSo7F0=
+	t=1708523824; cv=none; b=pWYsv5k9f/I5hFfwSCwT7DLkuCcR7sG3EDIFNQPlvUr3uiWgo/GmRBjWx/+O1+LWl1VjheMBLjwnUkir9Cx46h8yCHFXud/KbKN01fxyI+gaLFsDvjoK3f1aS9lARWPc0P0dcyfvJd1Lat4jXk0nmQpq1gjsZCmbAxF9FqGAhLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522527; c=relaxed/simple;
-	bh=/rZmtPZuHt+8P6o/wmE+As2vi+LDv15fqdtolTEmhqM=;
+	s=arc-20240116; t=1708523824; c=relaxed/simple;
+	bh=4as6G4uzySnBMm7vUTbFPr3h+wEmVrGilZ++qwDgkNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BdS0e+bUfGJ/YRr1Jh+nAuYF34ePDjJp0mh5HzJWJiCqvhbBUB2Lh+Wr6joSXcpesu662LnGHulWBiO2V5NwMKHEdVi3vxCP8yku0Pqq22pkZmhxM5VZvvwlR2Li4St+00FA9Cpk/NQ3adfEN9W0OEcSEwkqqUqwy7jN4CKDTGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RpQS0EMQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BF0CC433F1;
-	Wed, 21 Feb 2024 13:35:26 +0000 (UTC)
+	 MIME-Version; b=oDSIejpwzdoxotkGs/UUUmHaZ9gpKWnYl0z7YPaXg15Y3CRxSissG7Ynt0D8Vbswl3PQn6MH+AGbxyokRWBAUDr7reg8uDkr48pFu1MD9VFtKrY7PfaLvMCsYH9IMIZYd0DsXammTcsVI/wndXZmoZXYTsZn+aSk+v4l+jO8944=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wPGjWL/m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E1E6C433C7;
+	Wed, 21 Feb 2024 13:57:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522526;
-	bh=/rZmtPZuHt+8P6o/wmE+As2vi+LDv15fqdtolTEmhqM=;
+	s=korg; t=1708523823;
+	bh=4as6G4uzySnBMm7vUTbFPr3h+wEmVrGilZ++qwDgkNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RpQS0EMQwv6n5zVi75dLjyBMKHhWXBUBl0q9nI6BLG6OaAAkMnirjY0UPxvIlVS+G
-	 /48I3uoT10sAr45tFbA5ol4VtMFZGucCp296Ur1n6PZyNtNvbKO1GWFrBQyVDDv6TW
-	 ErEjAAi2Jk7gaEYwKpdTgXCF3REkV9iB30spsHb0=
+	b=wPGjWL/m5OsSvQ0Lyu4xrZxT9GGoTc9CnobYchDdvwKi+YPGd6IIpDKIghK0LRBYb
+	 6jY9epvTWrGGW4c/kY0Pt7cgkRb4lle7p1XPRMubFJWukoAZlYjpINTkboJc11QkJM
+	 atDFEDEz7Kyk4V4Ax/EQoLeas4XmjPYrOd7tb5nw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Shenwei Wang <shenwei.wang@nxp.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 188/476] ARM: dts: imx25: Fix the iim compatible string
-Date: Wed, 21 Feb 2024 14:03:59 +0100
-Message-ID: <20240221130014.832286068@linuxfoundation.org>
+Subject: [PATCH 5.10 061/379] net: fec: fix the unhandled context fault from smmu
+Date: Wed, 21 Feb 2024 14:04:00 +0100
+Message-ID: <20240221125956.717761426@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Shenwei Wang <shenwei.wang@nxp.com>
 
-[ Upstream commit f0b929f58719fc57a4926ab4fc972f185453d6a5 ]
+[ Upstream commit 5e344807735023cd3a67c37a1852b849caa42620 ]
 
-Per imx-iim.yaml, the compatible string should only contain a single
-entry.
+When repeatedly changing the interface link speed using the command below:
 
-Use it as "fsl,imx25-iim" to fix the following dt-schema warning:
+ethtool -s eth0 speed 100 duplex full
+ethtool -s eth0 speed 1000 duplex full
 
-imx25-karo-tx25.dtb: efuse@53ff0000: compatible: ['fsl,imx25-iim', 'fsl,imx27-iim'] is too long
-	from schema $id: http://devicetree.org/schemas/nvmem/imx-iim.yaml#
+The following errors may sometimes be reported by the ARM SMMU driver:
 
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+[ 5395.035364] fec 5b040000.ethernet eth0: Link is Down
+[ 5395.039255] arm-smmu 51400000.iommu: Unhandled context fault:
+fsr=0x402, iova=0x00000000, fsynr=0x100001, cbfrsynra=0x852, cb=2
+[ 5398.108460] fec 5b040000.ethernet eth0: Link is Up - 100Mbps/Full -
+flow control off
+
+It is identified that the FEC driver does not properly stop the TX queue
+during the link speed transitions, and this results in the invalid virtual
+I/O address translations from the SMMU and causes the context faults.
+
+Fixes: dbc64a8ea231 ("net: fec: move calls to quiesce/resume packet processing out of fec_restart()")
+Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+Link: https://lore.kernel.org/r/20240123165141.2008104-1-shenwei.wang@nxp.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/imx25.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/freescale/fec_main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/boot/dts/imx25.dtsi b/arch/arm/boot/dts/imx25.dtsi
-index bd8ea2ec2457..5eb79a9ffe04 100644
---- a/arch/arm/boot/dts/imx25.dtsi
-+++ b/arch/arm/boot/dts/imx25.dtsi
-@@ -543,7 +543,7 @@
- 			};
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index 4ce913559c91..fe29769cb158 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -1766,6 +1766,7 @@ static void fec_enet_adjust_link(struct net_device *ndev)
  
- 			iim: efuse@53ff0000 {
--				compatible = "fsl,imx25-iim", "fsl,imx27-iim";
-+				compatible = "fsl,imx25-iim";
- 				reg = <0x53ff0000 0x4000>;
- 				interrupts = <19>;
- 				clocks = <&clks 99>;
+ 		/* if any of the above changed restart the FEC */
+ 		if (status_change) {
++			netif_stop_queue(ndev);
+ 			napi_disable(&fep->napi);
+ 			netif_tx_lock_bh(ndev);
+ 			fec_restart(ndev);
+@@ -1775,6 +1776,7 @@ static void fec_enet_adjust_link(struct net_device *ndev)
+ 		}
+ 	} else {
+ 		if (fep->link) {
++			netif_stop_queue(ndev);
+ 			napi_disable(&fep->napi);
+ 			netif_tx_lock_bh(ndev);
+ 			fec_stop(ndev);
 -- 
 2.43.0
 
