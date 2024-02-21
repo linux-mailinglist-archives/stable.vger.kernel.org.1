@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-23054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2909285DEFF
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:23:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B1ED85D9CA
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:22:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8A6F282A4B
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:23:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEC931F22E2E
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:22:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABD7A69E00;
-	Wed, 21 Feb 2024 14:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EE6677F33;
+	Wed, 21 Feb 2024 13:22:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ePJhAghj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U952NIhd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69DDA3CF42;
-	Wed, 21 Feb 2024 14:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5AC53816;
+	Wed, 21 Feb 2024 13:22:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525424; cv=none; b=KXRs/Otppc3ONsAXs4ALsJEwfYiwyvJqb+2kHbh7KoXt56Drfd3pICiF/h8MSKy+WNAr99R0NYj13IMJ2atGGLqAPoJBJUXcwtUEGg16p+qibFanP5z5VOBYfpW3KVz0P9x2ccQYtoy5Ftt/thXXAURh6aRR9O3nPRFELbOTTm4=
+	t=1708521738; cv=none; b=WioxaVa1W4zSViGMblKcoGw9a6gl5s/NES179fGHWTyyLMjn7jUqjJ4Fk4IS0a75OeCdwncfJiehhixupwqMt/6GL6ImVOOaCyFxBcpYUoCvqOtuy4dzhid0tc4V/e/c1z8B+JCVhJJxio3tdUHS/LSoXSTzT2vEdshGICOQqFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525424; c=relaxed/simple;
-	bh=QngrM7lXfwhpnEXYUL7oJeRNyawPw/ikUINv+opSWnQ=;
+	s=arc-20240116; t=1708521738; c=relaxed/simple;
+	bh=P4DqFx2y1IKIPXGzFQMVjOQWISwuCw4+NASLAGn9WD8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DIYPnS5vy89EaDzCLtdxOcSHUO+x0QLN2dSEVVXyVMXBLO29uH6f8cgNUgL4iOak8UfimMCW/r3ppLyjXhcLNPXsNXdBzQ+7cwWM379QgiPrGoFV82m/OpwrIhxqeUWbnxTOVTcrBrNWkk1YlACT6D//P8PlRoIAPbqA8AvVsVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ePJhAghj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BE7BC433C7;
-	Wed, 21 Feb 2024 14:23:43 +0000 (UTC)
+	 MIME-Version; b=frI0qjF4yaJWaxCq/aPmzwmCINO6+8x2b2CcPgIe6MlX24eQLPX8b4XkMt1kd9/Wz2KluLNRJ8biDTnWu3uW/JYgaaFFgnMYtpOX4Qjxmms+vDIcLiCdRDlEBXXOEqVi5+9mt8CbsuA17Vso36zO3KPW7KjKd7z8UxdxdKwDUEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U952NIhd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2084DC433C7;
+	Wed, 21 Feb 2024 13:22:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525424;
-	bh=QngrM7lXfwhpnEXYUL7oJeRNyawPw/ikUINv+opSWnQ=;
+	s=korg; t=1708521737;
+	bh=P4DqFx2y1IKIPXGzFQMVjOQWISwuCw4+NASLAGn9WD8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ePJhAghjK8eHwBdlgAokD3zG7gxW4Sx43OyhCBLQICGpAL6bCpXyodgwWcRgqlBMv
-	 oq7UtuFUO8QxN3zCqKvY5BVv8lVw25qTX5A9ewNRFc9Y401Xb/21V3Mem+P5eRMbqF
-	 /QL/NzoWmajd+BA4uB3qHn0sCqny70AOqtttimJw=
+	b=U952NIhd1jTsoGK9ooTPl2YFL/MlC6ZxO8205V9AsOr75Thzi+xfJJo/qHgmwT9MS
+	 rg0tYil45D7A5aj2ILa+efce2lF8NVIpChLZ0j4iRCVYvq8q5idaFgRd0C27EZi9cG
+	 q9jXgWKCOt6Af1eZjXPYH6I1NwkqLa9K4ZmRulU4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 151/267] misc: lis3lv02d_i2c: Add missing setting of the reg_ctrl callback
+	bo liu <bo.liu@senarytech.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 4.19 191/202] ALSA: hda/conexant: Add quirk for SWS JS201D
 Date: Wed, 21 Feb 2024 14:08:12 +0100
-Message-ID: <20240221125944.808861688@linuxfoundation.org>
+Message-ID: <20240221125937.968537862@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +61,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: bo liu <bo.liu@senarytech.com>
 
-[ Upstream commit b1b9f7a494400c0c39f8cd83de3aaa6111c55087 ]
+commit 4639c5021029d49fd2f97fa8d74731f167f98919 upstream.
 
-The lis3lv02d_i2c driver was missing a line to set the lis3_dev's
-reg_ctrl callback.
+The SWS JS201D need a different pinconfig from windows driver.
+Add a quirk to use a specific pinconfig to SWS JS201D.
 
-lis3_reg_ctrl(on) is called from the init callback, but due to
-the missing reg_ctrl callback the regulators where never turned off
-again leading to the following oops/backtrace when detaching the driver:
-
-[   82.313527] ------------[ cut here ]------------
-[   82.313546] WARNING: CPU: 1 PID: 1724 at drivers/regulator/core.c:2396 _regulator_put+0x219/0x230
-...
-[   82.313695] RIP: 0010:_regulator_put+0x219/0x230
-...
-[   82.314767] Call Trace:
-[   82.314770]  <TASK>
-[   82.314772]  ? _regulator_put+0x219/0x230
-[   82.314777]  ? __warn+0x81/0x170
-[   82.314784]  ? _regulator_put+0x219/0x230
-[   82.314791]  ? report_bug+0x18d/0x1c0
-[   82.314801]  ? handle_bug+0x3c/0x80
-[   82.314806]  ? exc_invalid_op+0x13/0x60
-[   82.314812]  ? asm_exc_invalid_op+0x16/0x20
-[   82.314845]  ? _regulator_put+0x219/0x230
-[   82.314857]  regulator_bulk_free+0x39/0x60
-[   82.314865]  i2c_device_remove+0x22/0xb0
-
-Add the missing setting of the callback so that the regulators
-properly get turned off again when not used.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20231224183402.95640-1-hdegoede@redhat.com
+Signed-off-by: bo liu <bo.liu@senarytech.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240205013802.51907-1-bo.liu@senarytech.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/lis3lv02d/lis3lv02d_i2c.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/pci/hda/patch_conexant.c |   18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/drivers/misc/lis3lv02d/lis3lv02d_i2c.c b/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
-index 52555d2e824b..ab1db760ba4e 100644
---- a/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
-+++ b/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
-@@ -151,6 +151,7 @@ static int lis3lv02d_i2c_probe(struct i2c_client *client,
- 	lis3_dev.init	  = lis3_i2c_init;
- 	lis3_dev.read	  = lis3_i2c_read;
- 	lis3_dev.write	  = lis3_i2c_write;
-+	lis3_dev.reg_ctrl = lis3_reg_ctrl;
- 	lis3_dev.irq	  = client->irq;
- 	lis3_dev.ac	  = lis3lv02d_axis_map;
- 	lis3_dev.pm_dev	  = &client->dev;
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_conexant.c
++++ b/sound/pci/hda/patch_conexant.c
+@@ -229,6 +229,7 @@ enum {
+ 	CXT_FIXUP_MUTE_LED_GPIO,
+ 	CXT_FIXUP_HEADSET_MIC,
+ 	CXT_FIXUP_HP_MIC_NO_PRESENCE,
++	CXT_PINCFG_SWS_JS201D,
+ };
+ 
+ /* for hda_fixup_thinkpad_acpi() */
+@@ -717,6 +718,17 @@ static const struct hda_pintbl cxt_pincf
+ 	{}
+ };
+ 
++/* SuoWoSi/South-holding JS201D with sn6140 */
++static const struct hda_pintbl cxt_pincfg_sws_js201d[] = {
++	{ 0x16, 0x03211040 }, /* hp out */
++	{ 0x17, 0x91170110 }, /* SPK/Class_D */
++	{ 0x18, 0x95a70130 }, /* Internal mic */
++	{ 0x19, 0x03a11020 }, /* Headset Mic */
++	{ 0x1a, 0x40f001f0 }, /* Not used */
++	{ 0x21, 0x40f001f0 }, /* Not used */
++	{}
++};
++
+ static const struct hda_fixup cxt_fixups[] = {
+ 	[CXT_PINCFG_LENOVO_X200] = {
+ 		.type = HDA_FIXUP_PINS,
+@@ -868,6 +880,10 @@ static const struct hda_fixup cxt_fixups
+ 		.chained = true,
+ 		.chain_id = CXT_FIXUP_HEADSET_MIC,
+ 	},
++	[CXT_PINCFG_SWS_JS201D] = {
++		.type = HDA_FIXUP_PINS,
++		.v.pins = cxt_pincfg_sws_js201d,
++	},
+ };
+ 
+ static const struct snd_pci_quirk cxt5045_fixups[] = {
+@@ -939,6 +955,7 @@ static const struct snd_pci_quirk cxt506
+ 	SND_PCI_QUIRK(0x103c, 0x8457, "HP Z2 G4 mini", CXT_FIXUP_HP_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x103c, 0x8458, "HP Z2 G4 mini premium", CXT_FIXUP_HP_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x138d, "Asus", CXT_FIXUP_HEADPHONE_MIC_PIN),
++	SND_PCI_QUIRK(0x14f1, 0x0265, "SWS JS201D", CXT_PINCFG_SWS_JS201D),
+ 	SND_PCI_QUIRK(0x152d, 0x0833, "OLPC XO-1.5", CXT_FIXUP_OLPC_XO),
+ 	SND_PCI_QUIRK(0x17aa, 0x20f2, "Lenovo T400", CXT_PINCFG_LENOVO_TP410),
+ 	SND_PCI_QUIRK(0x17aa, 0x215e, "Lenovo T410", CXT_PINCFG_LENOVO_TP410),
+@@ -978,6 +995,7 @@ static const struct hda_model_fixup cxt5
+ 	{ .id = CXT_FIXUP_MUTE_LED_GPIO, .name = "mute-led-gpio" },
+ 	{ .id = CXT_FIXUP_HP_MIC_NO_PRESENCE, .name = "hp-mic-fix" },
+ 	{ .id = CXT_PINCFG_LENOVO_NOTEBOOK, .name = "lenovo-20149" },
++	{ .id = CXT_PINCFG_SWS_JS201D, .name = "sws-js201d" },
+ 	{}
+ };
+ 
 
 
 
