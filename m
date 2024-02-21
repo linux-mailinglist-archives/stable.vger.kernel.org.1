@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-22371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3B0085DBB1
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:44:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC55E85D924
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:15:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD784285293
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:44:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 821251F22DE7
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:15:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CFA478B53;
-	Wed, 21 Feb 2024 13:44:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D3E669D32;
+	Wed, 21 Feb 2024 13:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJq3VnuQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G/bC8XHt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7D76F074;
-	Wed, 21 Feb 2024 13:44:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4281E522;
+	Wed, 21 Feb 2024 13:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523054; cv=none; b=ulMCwI+Ip4in3FWp8qPNZd5ygU94GOujo+KOfQIZYGq4EuJD16BeuCIEls7/4ZUEvjE/tqH0qHg781iiWbGxWpOnwPRWcm+lRAX0CUf+Wx+KYNKu8/1ptwsO+9eDtHiVWTtFMUpM3sI6Bpgr/i5xEhCcd+DeIjlN0SC3W+DUqjU=
+	t=1708521309; cv=none; b=cGkaH76OseRWfuF/GFR/6rBd1yJyrOmqHCl52wK+8vwKd+oZgzUKr6nt3+7HN8j0szlp7uviTkAfxhLLd37FcGa8GXXtw5gGVrmKl9/j9BOzA5HWld5nj2r+VexGMtV+LIxrSRE1njTeejniQNfUsXdlJwjD12Zfky7eK+DZFHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523054; c=relaxed/simple;
-	bh=ukGeJR6QhregJD+vOO0hdCIsgZX0SWh4RuQaQ5RtXdw=;
+	s=arc-20240116; t=1708521309; c=relaxed/simple;
+	bh=5gM96E//o6dLnx0fnRZuZwwEsrx0qNHwEAbqRdM3shg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=md6OlXwjHxbiE6T9x5qeWI3Jgz4f+2o3azTXMdWrAUrFo9ES6V1MfTz+kVjgq2MKlGvmdL8sVMfxC8lfG/mqRwwbvnnAw7FtOEvW1ph9zhn8oHAyGe6vSCSycuMhJDc5nH+yiCSSrOaNRDX6r9+J+3xPCW8WWjSPmIz1QgklTWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJq3VnuQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC5BDC43394;
-	Wed, 21 Feb 2024 13:44:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VLMD8SgimifR0WBmcGELvxL7Sg0zNK2EoN9/PSTp3BN2uj8zdEA4bav7yu6Q7okoU/PLvLtzSAIMpZ+kkGqJxgS29od6ZNunoHx5pL/mwcLqsKD6PyoTo/Xvn6yeAWGTAdADtPuIlFHq4lYOjrJV5ARFSm5nq7Fq06rbQz6OuDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G/bC8XHt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB907C433C7;
+	Wed, 21 Feb 2024 13:15:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523054;
-	bh=ukGeJR6QhregJD+vOO0hdCIsgZX0SWh4RuQaQ5RtXdw=;
+	s=korg; t=1708521309;
+	bh=5gM96E//o6dLnx0fnRZuZwwEsrx0qNHwEAbqRdM3shg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RJq3VnuQe0sVNL6Cxgd3z/BOVMsEvzXBIthsD60gjBDJfsGQKs7W9pIRpYXos1I/M
-	 2WZLZ7MMZAYFYpessV1a9TBRWauFga+0YkEpXkhQRNggr4I6Cz6Q8E1DmIFTaQp7fS
-	 tkVfmkhnk9cqaHrCbWerVjoNUPdfOHrJ/uLI+Gp0=
+	b=G/bC8XHtY0MLcaW/nPN5YhUk3EOIXTmaX0+/aiTIaMSMbhTBwjZk3KsftzxvR1fo9
+	 HvQXxzJSSHTTNvvJ9INHQo+eh7hqEJZdpY0OPnQuulL/N2sj6gJKskZgv4Zmn6NkGT
+	 Gc0N/g+OM2uHPxExSLouPNA18vL88tTf+1V6qFig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <error27@gmail.com>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Vinod Koul <vkoul@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 300/476] phy: renesas: rcar-gen3-usb2: Fix returning wrong error code
-Date: Wed, 21 Feb 2024 14:05:51 +0100
-Message-ID: <20240221130019.088721507@linuxfoundation.org>
+Subject: [PATCH 4.19 051/202] powerpc: Fix build error due to is_valid_bugaddr()
+Date: Wed, 21 Feb 2024 14:05:52 +0100
+Message-ID: <20240221125933.486005064@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +59,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 249abaf3bf0dd07f5ddebbb2fe2e8f4d675f074e ]
+[ Upstream commit f8d3555355653848082c351fa90775214fb8a4fa ]
 
-Even if device_create_file() returns error code,
-rcar_gen3_phy_usb2_probe() will return zero because the "ret" is
-variable shadowing.
+With CONFIG_GENERIC_BUG=n the build fails with:
 
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <error27@gmail.com>
-Closes: https://lore.kernel.org/r/202312161021.gOLDl48K-lkp@intel.com/
-Fixes: 441a681b8843 ("phy: rcar-gen3-usb2: fix implementation for runtime PM")
-Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20240105093703.3359949-1-yoshihiro.shimoda.uh@renesas.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+  arch/powerpc/kernel/traps.c:1442:5: error: no previous prototype for ‘is_valid_bugaddr’ [-Werror=missing-prototypes]
+  1442 | int is_valid_bugaddr(unsigned long addr)
+       |     ^~~~~~~~~~~~~~~~
+
+The prototype is only defined, and the function is only needed, when
+CONFIG_GENERIC_BUG=y, so move the implementation under that.
+
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231130114433.3053544-2-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/renesas/phy-rcar-gen3-usb2.c | 4 ----
- 1 file changed, 4 deletions(-)
+ arch/powerpc/kernel/traps.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/phy/renesas/phy-rcar-gen3-usb2.c b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-index 9de617ca9daa..7e61c6b278a7 100644
---- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-+++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-@@ -675,8 +675,6 @@ static int rcar_gen3_phy_usb2_probe(struct platform_device *pdev)
- 	channel->irq = platform_get_irq_optional(pdev, 0);
- 	channel->dr_mode = rcar_gen3_get_dr_mode(dev->of_node);
- 	if (channel->dr_mode != USB_DR_MODE_UNKNOWN) {
--		int ret;
--
- 		channel->is_otg_channel = true;
- 		channel->uses_otg_pins = !of_property_read_bool(dev->of_node,
- 							"renesas,no-otg-pins");
-@@ -740,8 +738,6 @@ static int rcar_gen3_phy_usb2_probe(struct platform_device *pdev)
- 		ret = PTR_ERR(provider);
- 		goto error;
- 	} else if (channel->is_otg_channel) {
--		int ret;
--
- 		ret = device_create_file(dev, &dev_attr_role);
- 		if (ret < 0)
- 			goto error;
+diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
+index 63c751ce130a..67a00131ec42 100644
+--- a/arch/powerpc/kernel/traps.c
++++ b/arch/powerpc/kernel/traps.c
+@@ -1341,10 +1341,12 @@ static int emulate_instruction(struct pt_regs *regs)
+ 	return -EINVAL;
+ }
+ 
++#ifdef CONFIG_GENERIC_BUG
+ int is_valid_bugaddr(unsigned long addr)
+ {
+ 	return is_kernel_addr(addr);
+ }
++#endif
+ 
+ #ifdef CONFIG_MATH_EMULATION
+ static int emulate_math(struct pt_regs *regs)
 -- 
 2.43.0
 
