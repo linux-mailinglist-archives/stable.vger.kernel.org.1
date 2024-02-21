@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-22978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8287985DE8C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:19:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61C9985DBC2
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:45:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B435B1C23C25
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:19:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 025BD1F247E6
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:45:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5D5D7CF02;
-	Wed, 21 Feb 2024 14:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C14B978B70;
+	Wed, 21 Feb 2024 13:44:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qyrYpEl4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MlsMBDui"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 940E43CF42;
-	Wed, 21 Feb 2024 14:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 814DD4D5B7;
+	Wed, 21 Feb 2024 13:44:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525155; cv=none; b=uSrgzpZs9pygDaVWCctOmMk41bGbmCKhKIt0sSms5u5jReiBr0rWttGvOfAqp9CtE17uyAv5RPP9/fgcW0z7a80u04BVdGVmxddhEqlS9gU9TWnMfzpx0vRdyOtHL4JY3SLqbUteZMuQvThqcszXo5Nq9qN0ueAP9opdtbnczDI=
+	t=1708523098; cv=none; b=FHf/d5KUDyVhPxaXtc/2FGknsBOFjZhU9sNPXPsxvXO4hAs4RszmLMQOb3rNDSHWnYMeXGgmRUgBd99WFnOHAlP+BWdHpSNBlni8Uyn057DqPUG4mLn80dfI/gKpp+XqBOoL3PU7icbSvhNKwRTCGG4hE1RC1m6qgKioa8c8toI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525155; c=relaxed/simple;
-	bh=dfaIaZCTkMc1l5o5dPIjiXZ71B6x1ZrpYxBcpAYnwSA=;
+	s=arc-20240116; t=1708523098; c=relaxed/simple;
+	bh=kF8/Vr9j7SGzsL/b70CID38dsLvpXdyCj9XfLh7p/1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DbMfk0cv8XVwh3espJW1ZKS9PLHkXShR+O+SmasSljxotX/IW7S3kn6NpFWawcok90awBlQfstADb6VMubHX3hM47nC6fo0r/8d8DbCl8F2UXfEnkO0Iw/baAlUZ6h6gF++OkDzfaUJ0p+JCI9hN0O3bbfzjhvn6LIpQlB9Hi40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qyrYpEl4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13481C43390;
-	Wed, 21 Feb 2024 14:19:14 +0000 (UTC)
+	 MIME-Version; b=e23O05D4RUu+CwstaUHCK8rA/6B9ZoMM3GIguSnydkUHtt60CGDg/W6RoNgNW1/K6L2kRRASi7VCBBK3nRgsvhnzRbz0BKibircC9vbYGcdB7nZl7Yd/0f4j+RehrkSTkG7VBXxOi+gGsfVPapRi1b2ug+f1/62D3YiwB5AK1ZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MlsMBDui; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E656DC433F1;
+	Wed, 21 Feb 2024 13:44:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525155;
-	bh=dfaIaZCTkMc1l5o5dPIjiXZ71B6x1ZrpYxBcpAYnwSA=;
+	s=korg; t=1708523098;
+	bh=kF8/Vr9j7SGzsL/b70CID38dsLvpXdyCj9XfLh7p/1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qyrYpEl47i8eeyU23oj8r6A+RAQI64dHkW4I7MRcNGfsq79LQGxrXSS5C+TrH/FuC
-	 c3s9Vth+6igWUt7GeuzCFM8LDap4t4oYiSkItv46lvkXaFbVHlMoDg107MMvARVHLc
-	 kfsFd0j9O5hrzwtbTS+ncorYZ2PtLgvTLWS3wcJA=
+	b=MlsMBDuiDvGpRbnnraYq0doBiC5HduzQjINbYtLxLIXbRtQy8mi+YqnUpCdDJRhDm
+	 Y9kJqTjY+UDTL/GnqZdui0JKwAHBIZrxGknYmux98tUhzWWVvC6mpDhdU2/7WMe+ii
+	 HuEZKJuJCz+/JaEFGCBY8J3wbcTOkuBkSSC8v0tw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Javier Martinez Canillas <javierm@redhat.com>
-Subject: [PATCH 5.4 049/267] drm: Dont unref the same fb many times by mistake due to deadlock handling
+	Prathu Baronia <prathubaronia2011@gmail.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>
+Subject: [PATCH 5.15 339/476] vhost: use kzalloc() instead of kmalloc() followed by memset()
 Date: Wed, 21 Feb 2024 14:06:30 +0100
-Message-ID: <20240221125941.548564084@linuxfoundation.org>
+Message-ID: <20240221130020.563462776@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,53 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Prathu Baronia <prathubaronia2011@gmail.com>
 
-commit cb4daf271302d71a6b9a7c01bd0b6d76febd8f0c upstream.
+commit 4d8df0f5f79f747d75a7d356d9b9ea40a4e4c8a9 upstream.
 
-If we get a deadlock after the fb lookup in drm_mode_page_flip_ioctl()
-we proceed to unref the fb and then retry the whole thing from the top.
-But we forget to reset the fb pointer back to NULL, and so if we then
-get another error during the retry, before the fb lookup, we proceed
-the unref the same fb again without having gotten another reference.
-The end result is that the fb will (eventually) end up being freed
-while it's still in use.
+Use kzalloc() to allocate new zeroed out msg node instead of
+memsetting a node allocated with kmalloc().
 
-Reset fb to NULL once we've unreffed it to avoid doing it again
-until we've done another fb lookup.
-
-This turned out to be pretty easy to hit on a DG2 when doing async
-flips (and CONFIG_DEBUG_WW_MUTEX_SLOWPATH=y). The first symptom I
-saw that drm_closefb() simply got stuck in a busy loop while walking
-the framebuffer list. Fortunately I was able to convince it to oops
-instead, and from there it was easier to track down the culprit.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231211081625.25704-1-ville.syrjala@linux.intel.com
-Acked-by: Javier Martinez Canillas <javierm@redhat.com>
+Signed-off-by: Prathu Baronia <prathubaronia2011@gmail.com>
+Message-Id: <20230522085019.42914-1-prathubaronia2011@gmail.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_plane.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/vhost/vhost.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/drm_plane.c
-+++ b/drivers/gpu/drm/drm_plane.c
-@@ -1203,6 +1203,7 @@ retry:
- out:
- 	if (fb)
- 		drm_framebuffer_put(fb);
-+	fb = NULL;
- 	if (plane->old_fb)
- 		drm_framebuffer_put(plane->old_fb);
- 	plane->old_fb = NULL;
+--- a/drivers/vhost/vhost.c
++++ b/drivers/vhost/vhost.c
+@@ -2582,12 +2582,11 @@ EXPORT_SYMBOL_GPL(vhost_disable_notify);
+ /* Create a new message. */
+ struct vhost_msg_node *vhost_new_msg(struct vhost_virtqueue *vq, int type)
+ {
+-	struct vhost_msg_node *node = kmalloc(sizeof *node, GFP_KERNEL);
++	/* Make sure all padding within the structure is initialized. */
++	struct vhost_msg_node *node = kzalloc(sizeof(*node), GFP_KERNEL);
+ 	if (!node)
+ 		return NULL;
+ 
+-	/* Make sure all padding within the structure is initialized. */
+-	memset(&node->msg, 0, sizeof node->msg);
+ 	node->vq = vq;
+ 	node->msg.type = type;
+ 	return node;
 
 
 
