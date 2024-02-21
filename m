@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-22678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0160B85DD3A
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:03:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEFA485D8D8
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:11:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A16DB1F2241A
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:03:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D3DE1F2438C
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:11:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B01367F48F;
-	Wed, 21 Feb 2024 14:02:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3A4169D28;
+	Wed, 21 Feb 2024 13:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z/Wlp1cp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J/KGtkvZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC837F489;
-	Wed, 21 Feb 2024 14:02:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FF643EA71;
+	Wed, 21 Feb 2024 13:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524146; cv=none; b=OLJ5vE0fUK6xaj6Qf8dosUlA8tjLfeNEJ8tKBbGgE6InAqZfTK4mtY67Ltt1ercLv80Ewpdm1avSvA0iBSKYS1xwTxoIS2T4CQ0wWX7hmbg0dxR66JUmdTXDE82o9DiZ6YRhRoGWeJwnRWk22d8tLvZRVWB3H20CHypt/Llnm8k=
+	t=1708521070; cv=none; b=sPaTuFRCUE+Fr+Ni7zLvAGIuosrHdYfkZkMJSR6asEG5ku9Bqp1HbbG/eHoCd+GpIBB8e0lkq94943emAGgZSgcuhMbxNESdD87TGBxoczm/ntPPQD5/QoQPrB1KpkDc8m1XDyjuW9XFcR1jVmnnjqji8hDpY0Pxl+OBPuKbafs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524146; c=relaxed/simple;
-	bh=ifL4tlibGLxYKvpuOkS7+F/Rk84rEGQYAEXKcP22YEY=;
+	s=arc-20240116; t=1708521070; c=relaxed/simple;
+	bh=CubFgC7yWsP4yUz9DBjsYXVA7cEahnWoRc9FJxBSi/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QqsfR41n3qRjE4LHcrI7UHQOJ7O+PYM2FZdbexw5lcF8knFQBJLP5AJKG2QLC7OWKbV+M7E8ZgJwkCQ0Tr7hKP4nCLLsuVXYbY3pZMg/YLDZiwCGfNcdXhiUsO6QTm07CpjKvSEQNB4W+Yd5S49RgkXHCt9y8Frnycxi5Okb1D0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z/Wlp1cp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B9A7C433F1;
-	Wed, 21 Feb 2024 14:02:25 +0000 (UTC)
+	 MIME-Version; b=uEAakCfLPPL123KYf03llRH0OPOEU4KaczPUnrNq2/kxj2Tx4XVr8Av9ypmJArr4apF1yP6+1ib4u7gxrsY6bG73hlXDJCT6PjIHp9k8AxdPaBvP1KInnNWigXUdfuhKPPyfXSY8fJ8RyF/PdGoNwYnPgPEXbZEPf0dnmgEvVjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J/KGtkvZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2002C433F1;
+	Wed, 21 Feb 2024 13:11:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524146;
-	bh=ifL4tlibGLxYKvpuOkS7+F/Rk84rEGQYAEXKcP22YEY=;
+	s=korg; t=1708521070;
+	bh=CubFgC7yWsP4yUz9DBjsYXVA7cEahnWoRc9FJxBSi/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z/Wlp1cp/8ScPgp4cXLd6p1r5pXda7ncJgLVuKzC4SCxOcedx7Ax+JoS9FlYv086w
-	 jcldXnLMDez7SG1qh8LNFQsABEciMNI5kL8QARi3cROMvCHuAmBHS8Kly6eoAEq9tv
-	 7HqGRN9nyq6Pp+LSh5eo4Tu3Avb+J9Iv0gg8m39U=
+	b=J/KGtkvZ9QerxTpAoSN6jsGw55YZOa4GDEQVS4k9bfR1/oj9UwBX2m0Xxr1qqUiMu
+	 47+4/FPFNZ8fd/Mhqtasxku4hE9Yh43fnaGfTId0z+7pPMrck2xpul7Ad9zjx8i1je
+	 j/Y62MlcfH58Tv3QYgunDLWdO9fF+o/Zc9GGMNzg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andrzej Hajda <a.hajda@samsung.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 129/379] s390/ptrace: handle setting of fpc register correctly
+Subject: [PATCH 4.19 007/202] driver core: add device probe log helper
 Date: Wed, 21 Feb 2024 14:05:08 +0100
-Message-ID: <20240221125958.743137696@linuxfoundation.org>
+Message-ID: <20240221125931.981661835@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +64,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Andrzej Hajda <a.hajda@samsung.com>
 
-[ Upstream commit 8b13601d19c541158a6e18b278c00ba69ae37829 ]
+[ Upstream commit a787e5400a1ceeb0ef92d71ec43aeb35b1fa1334 ]
 
-If the content of the floating point control (fpc) register of a traced
-process is modified with the ptrace interface the new value is tested for
-validity by temporarily loading it into the fpc register.
+During probe every time driver gets resource it should usually check for
+error printk some message if it is not -EPROBE_DEFER and return the error.
+This pattern is simple but requires adding few lines after any resource
+acquisition code, as a result it is often omitted or implemented only
+partially.
+dev_err_probe helps to replace such code sequences with simple call,
+so code:
+	if (err != -EPROBE_DEFER)
+		dev_err(dev, ...);
+	return err;
+becomes:
+	return dev_err_probe(dev, err, ...);
 
-This may lead to corruption of the fpc register of the tracing process:
-if an interrupt happens while the value is temporarily loaded into the
-fpc register, and within interrupt context floating point or vector
-registers are used, the current fp/vx registers are saved with
-save_fpu_regs() assuming they belong to user space and will be loaded into
-fp/vx registers when returning to user space.
-
-test_fp_ctl() restores the original user space fpc register value, however
-it will be discarded, when returning to user space.
-
-In result the tracer will incorrectly continue to run with the value that
-was supposed to be used for the traced process.
-
-Fix this by saving fpu register contents with save_fpu_regs() before using
-test_fp_ctl().
-
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Andrzej Hajda <a.hajda@samsung.com>
+Reviewed-by: Rafael J. Wysocki <rafael@kernel.org>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Link: https://lore.kernel.org/r/20200713144324.23654-2-a.hajda@samsung.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 6d710b769c1f ("serial: sc16is7xx: add check for unsupported SPI modes during probe")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/ptrace.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/base/core.c    | 42 ++++++++++++++++++++++++++++++++++++++++++
+ include/linux/device.h |  3 +++
+ 2 files changed, 45 insertions(+)
 
-diff --git a/arch/s390/kernel/ptrace.c b/arch/s390/kernel/ptrace.c
-index 3009bb527252..f381caddd905 100644
---- a/arch/s390/kernel/ptrace.c
-+++ b/arch/s390/kernel/ptrace.c
-@@ -411,6 +411,7 @@ static int __poke_user(struct task_struct *child, addr_t addr, addr_t data)
- 		/*
- 		 * floating point control reg. is in the thread structure
- 		 */
-+		save_fpu_regs();
- 		if ((unsigned int) data != 0 ||
- 		    test_fp_ctl(data >> (BITS_PER_LONG - 32)))
- 			return -EINVAL;
-@@ -771,6 +772,7 @@ static int __poke_user_compat(struct task_struct *child,
- 		/*
- 		 * floating point control reg. is in the thread structure
- 		 */
-+		save_fpu_regs();
- 		if (test_fp_ctl(tmp))
- 			return -EINVAL;
- 		child->thread.fpu.fpc = data;
-@@ -1010,9 +1012,7 @@ static int s390_fpregs_set(struct task_struct *target,
- 	int rc = 0;
- 	freg_t fprs[__NUM_FPRS];
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index 6e380ad9d08a..b66647277d52 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -3334,6 +3334,48 @@ define_dev_printk_level(_dev_info, KERN_INFO);
  
--	if (target == current)
--		save_fpu_regs();
--
-+	save_fpu_regs();
- 	if (MACHINE_HAS_VX)
- 		convert_vx_to_fp(fprs, target->thread.fpu.vxrs);
- 	else
+ #endif
+ 
++/**
++ * dev_err_probe - probe error check and log helper
++ * @dev: the pointer to the struct device
++ * @err: error value to test
++ * @fmt: printf-style format string
++ * @...: arguments as specified in the format string
++ *
++ * This helper implements common pattern present in probe functions for error
++ * checking: print debug or error message depending if the error value is
++ * -EPROBE_DEFER and propagate error upwards.
++ * It replaces code sequence:
++ * 	if (err != -EPROBE_DEFER)
++ * 		dev_err(dev, ...);
++ * 	else
++ * 		dev_dbg(dev, ...);
++ * 	return err;
++ * with
++ * 	return dev_err_probe(dev, err, ...);
++ *
++ * Returns @err.
++ *
++ */
++int dev_err_probe(const struct device *dev, int err, const char *fmt, ...)
++{
++	struct va_format vaf;
++	va_list args;
++
++	va_start(args, fmt);
++	vaf.fmt = fmt;
++	vaf.va = &args;
++
++	if (err != -EPROBE_DEFER)
++		dev_err(dev, "error %d: %pV", err, &vaf);
++	else
++		dev_dbg(dev, "error %d: %pV", err, &vaf);
++
++	va_end(args);
++
++	return err;
++}
++EXPORT_SYMBOL_GPL(dev_err_probe);
++
+ static inline bool fwnode_is_primary(struct fwnode_handle *fwnode)
+ {
+ 	return fwnode && !IS_ERR(fwnode->secondary);
+diff --git a/include/linux/device.h b/include/linux/device.h
+index bccd367c11de..0714d6e5d500 100644
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -1581,6 +1581,9 @@ do {									\
+ 	WARN_ONCE(condition, "%s %s: " format, \
+ 			dev_driver_string(dev), dev_name(dev), ## arg)
+ 
++extern __printf(3, 4)
++int dev_err_probe(const struct device *dev, int err, const char *fmt, ...);
++
+ /* Create alias, so I can be autoloaded. */
+ #define MODULE_ALIAS_CHARDEV(major,minor) \
+ 	MODULE_ALIAS("char-major-" __stringify(major) "-" __stringify(minor))
 -- 
 2.43.0
 
