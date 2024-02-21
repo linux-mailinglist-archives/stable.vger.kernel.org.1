@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-22586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A699985DCBE
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:57:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A36C85DADE
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:35:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7F351C22DCA
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:57:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE87D281DF1
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:35:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF5453FE5D;
-	Wed, 21 Feb 2024 13:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47B0B69318;
+	Wed, 21 Feb 2024 13:34:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cUGt7dQ7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s5krjPI+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4FA87BB1E;
-	Wed, 21 Feb 2024 13:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 044BE3C2F;
+	Wed, 21 Feb 2024 13:34:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523812; cv=none; b=RsrMutdMt7ybHcGLW5Vg/y5htoqXhCzDEym2viS6bgQ2N8JIch9LtNSLyeOADbZaYnEIHTh5dR8vUKNXOvYFO8eXHohIM6KbED982h/vMA4bsL8k6mSeC8nKs11ufYDPssuQ5oHUWU9fT0eQV4g7SYv45Ul5BuqkMQ0AP+rGIG8=
+	t=1708522445; cv=none; b=rdkTfstFqVk1PRWRDt6C9i/U7LYKbIrAVr+BUv3FtfPXYxKWe7tIoZuaB6GmldnQ5RxvaEMTcEpouk85DcFGMOn0ELTBkvhLrOyMH5opIci5q5iShIJbLyR/Ayz3GaitGhSZIVerCqOG4ugw/Hq8qA/+iaLUZmSLuYHMiuGO26k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523812; c=relaxed/simple;
-	bh=kD1KEylZmKUz9aos2l/6CGeOCO/cwewfHr07g4XwAeQ=;
+	s=arc-20240116; t=1708522445; c=relaxed/simple;
+	bh=kagAMGh3WIni5H3MNxDwXmwTKKNjFt09IS6auYbMrAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=the9fHe5iGWQkh5Cn4FJbQQJ8QZCzOV03l7+zizU3acSjunkb7vS5mUwNeAah+D2TMEEtIGAoIwb8IwbfGWYHEDd+aXmaOa8od2r8Xp1OppE30epqZTmLJRLZTOe5MAWxDMTSNsSh6KqmZffHyG1GNVIAdlABIob+lzRwGzTDNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cUGt7dQ7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F682C433F1;
-	Wed, 21 Feb 2024 13:56:52 +0000 (UTC)
+	 MIME-Version; b=phvINKHmLek0mwvyOvLseVRZtB9ky6vKmyGFV9bCXrueDm//J8MhVe7dBC6ZtD6rs+9TIwt7WvdgcYVW7VmQRKetqRX79sKKv3GrALzG2k2lrGYhzBfOUzqVgubta6fP/nx+uVVy0ilRmsHK4x3OcYiGGX6kl8kBTs68936dqiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s5krjPI+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6523FC433F1;
+	Wed, 21 Feb 2024 13:34:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523812;
-	bh=kD1KEylZmKUz9aos2l/6CGeOCO/cwewfHr07g4XwAeQ=;
+	s=korg; t=1708522444;
+	bh=kagAMGh3WIni5H3MNxDwXmwTKKNjFt09IS6auYbMrAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cUGt7dQ7QuiWiKUmL3d05Bmar7+xKu9IwbasnE/fNfOtZ7aU3Zon8i/+SoE4a58H5
-	 MzUC1Au/6r7d6ZW7II8D1Hx6cfdnyol9QH5JAhLpoUhtSiktD8peQ70hpIAcS0GWeC
-	 oYR/V8V43a/+8oFuAhZ/pXgrwjNpfTbGCySbm8ao=
+	b=s5krjPI+tQaFCJJnRwS0WcS4vvNyJ0AOU4KdM7bBflKCOvYeP9LEZNzBNyObZeG3V
+	 rEdfrGK+7u1mCEq49LWdOk6SrOpYkb1tMTnU0PmpSGX5xqRnj7VWfGunG1omipzd9S
+	 2YrIOENAQwrDg7jzZg+UKId02i8CyPZVJfLT3PVY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.10 037/379] block: Remove special-casing of compound pages
+	Shiji Yang <yangshiji66@outlook.com>,
+	Stanislaw Gruszka <stf_xl@wp.pl>,
+	Kalle Valo <kvalo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 165/476] wifi: rt2x00: restart beacon queue when hardware reset
 Date: Wed, 21 Feb 2024 14:03:36 +0100
-Message-ID: <20240221125956.012705636@linuxfoundation.org>
+Message-ID: <20240221130014.032398156@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Shiji Yang <yangshiji66@outlook.com>
 
-commit 1b151e2435fc3a9b10c8946c6aebe9f3e1938c55 upstream.
+[ Upstream commit a11d965a218f0cd95b13fe44d0bcd8a20ce134a8 ]
 
-The special casing was originally added in pre-git history; reproducing
-the commit log here:
+When a hardware reset is triggered, all registers are reset, so all
+queues are forced to stop in hardware interface. However, mac80211
+will not automatically stop the queue. If we don't manually stop the
+beacon queue, the queue will be deadlocked and unable to start again.
+This patch fixes the issue where Apple devices cannot connect to the
+AP after calling ieee80211_restart_hw().
 
-> commit a318a92567d77
-> Author: Andrew Morton <akpm@osdl.org>
-> Date:   Sun Sep 21 01:42:22 2003 -0700
->
->     [PATCH] Speed up direct-io hugetlbpage handling
->
->     This patch short-circuits all the direct-io page dirtying logic for
->     higher-order pages.  Without this, we pointlessly bounce BIOs up to
->     keventd all the time.
-
-In the last twenty years, compound pages have become used for more than
-just hugetlb.  Rewrite these functions to operate on folios instead
-of pages and remove the special case for hugetlbfs; I don't think
-it's needed any more (and if it is, we can put it back in as a call
-to folio_test_hugetlb()).
-
-This was found by inspection; as far as I can tell, this bug can lead
-to pages used as the destination of a direct I/O read not being marked
-as dirty.  If those pages are then reclaimed by the MM without being
-dirtied for some other reason, they won't be written out.  Then when
-they're faulted back in, they will not contain the data they should.
-It'll take a pretty unusual setup to produce this problem with several
-races all going the wrong way.
-
-This problem predates the folio work; it could for example have been
-triggered by mmaping a THP in tmpfs and using that as the target of an
-O_DIRECT read.
-
-Fixes: 800d8c63b2e98 ("shmem: add huge pages support")
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
+Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/TYAP286MB031530EB6D98DCE4DF20766CBCA4A@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/bio.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ralink/rt2x00/rt2x00dev.c |  3 +++
+ drivers/net/wireless/ralink/rt2x00/rt2x00mac.c | 11 +++++++++++
+ 2 files changed, 14 insertions(+)
 
---- a/block/bio.c
-+++ b/block/bio.c
-@@ -954,7 +954,7 @@ void bio_release_pages(struct bio *bio,
- 		return;
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
+index 388675d073ce..10ae5e313dda 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
+@@ -101,6 +101,7 @@ void rt2x00lib_disable_radio(struct rt2x00_dev *rt2x00dev)
+ 	rt2x00link_stop_tuner(rt2x00dev);
+ 	rt2x00queue_stop_queues(rt2x00dev);
+ 	rt2x00queue_flush_queues(rt2x00dev, true);
++	rt2x00queue_stop_queue(rt2x00dev->bcn);
  
- 	bio_for_each_segment_all(bvec, bio, iter_all) {
--		if (mark_dirty && !PageCompound(bvec->bv_page))
-+		if (mark_dirty)
- 			set_page_dirty_lock(bvec->bv_page);
- 		put_page(bvec->bv_page);
- 	}
-@@ -1326,8 +1326,7 @@ void bio_set_pages_dirty(struct bio *bio
- 	struct bvec_iter_all iter_all;
+ 	/*
+ 	 * Disable radio.
+@@ -1268,6 +1269,7 @@ int rt2x00lib_start(struct rt2x00_dev *rt2x00dev)
+ 	rt2x00dev->intf_ap_count = 0;
+ 	rt2x00dev->intf_sta_count = 0;
+ 	rt2x00dev->intf_associated = 0;
++	rt2x00dev->intf_beaconing = 0;
  
- 	bio_for_each_segment_all(bvec, bio, iter_all) {
--		if (!PageCompound(bvec->bv_page))
--			set_page_dirty_lock(bvec->bv_page);
-+		set_page_dirty_lock(bvec->bv_page);
- 	}
+ 	/* Enable the radio */
+ 	retval = rt2x00lib_enable_radio(rt2x00dev);
+@@ -1294,6 +1296,7 @@ void rt2x00lib_stop(struct rt2x00_dev *rt2x00dev)
+ 	rt2x00dev->intf_ap_count = 0;
+ 	rt2x00dev->intf_sta_count = 0;
+ 	rt2x00dev->intf_associated = 0;
++	rt2x00dev->intf_beaconing = 0;
  }
  
-@@ -1375,7 +1374,7 @@ void bio_check_pages_dirty(struct bio *b
- 	struct bvec_iter_all iter_all;
- 
- 	bio_for_each_segment_all(bvec, bio, iter_all) {
--		if (!PageDirty(bvec->bv_page) && !PageCompound(bvec->bv_page))
-+		if (!PageDirty(bvec->bv_page))
- 			goto defer;
- 	}
- 
+ static inline void rt2x00lib_set_if_combinations(struct rt2x00_dev *rt2x00dev)
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c b/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
+index dea5babd30fe..f81b0ab0b4c5 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
+@@ -598,6 +598,17 @@ void rt2x00mac_bss_info_changed(struct ieee80211_hw *hw,
+ 	 */
+ 	if (changes & BSS_CHANGED_BEACON_ENABLED) {
+ 		mutex_lock(&intf->beacon_skb_mutex);
++
++		/*
++		 * Clear the 'enable_beacon' flag and clear beacon because
++		 * the beacon queue has been stopped after hardware reset.
++		 */
++		if (test_bit(DEVICE_STATE_RESET, &rt2x00dev->flags) &&
++		    intf->enable_beacon) {
++			intf->enable_beacon = false;
++			rt2x00queue_clear_beacon(rt2x00dev, vif);
++		}
++
+ 		if (!bss_conf->enable_beacon && intf->enable_beacon) {
+ 			rt2x00dev->intf_beaconing--;
+ 			intf->enable_beacon = false;
+-- 
+2.43.0
+
 
 
 
