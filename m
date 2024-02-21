@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-23095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A692A85DF3F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:26:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A073C85DE1F
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:15:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAA3A1C237A6
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:26:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5ADC8282821
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:15:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FA887BAF7;
-	Wed, 21 Feb 2024 14:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D3BD7CF1A;
+	Wed, 21 Feb 2024 14:13:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RnEtmcYI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v+gNfntZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DB8779DAE;
-	Wed, 21 Feb 2024 14:25:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0CFD3CF42;
+	Wed, 21 Feb 2024 14:13:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525554; cv=none; b=kn0HG641UfPdqXRy5kWZdosNefVhMNWeREaQM6zv8q/sPtcJOfjBw6xhJrc1K2kRxKmpQt28nVo3I+5mlMpXrVZgcHf/7DtyQwAeYtvzIz77nug6unjQWycX2zgXmh1g/fYuuZI/aI0hWlNNK3TRfuP4xONCF2qR/kgCbcns1a0=
+	t=1708524801; cv=none; b=t1WIkxqxj45MTrcNz6SNy5Uz+qM8XAUAcIuif5beroc/S/vmU/3daMBFgSB2i2n1kvy4UaAzg4/McuKqGePCKv33PCQ4C4gYLkCgYM63GyiSvIq3whQ/UDNcqN0SeKIIWM8R7H+huN95S0wO8qOrly65VNAQzD5a2TSavy9GCDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525554; c=relaxed/simple;
-	bh=1G8S8Nx1xn9cwFNc83O2yqcg0u9izUdiAADHWG5d6UA=;
+	s=arc-20240116; t=1708524801; c=relaxed/simple;
+	bh=5L2zd43X8K14JHfLr84h1+wM89FuvwSV0hZ6DqAlW/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tGey519qNtWg0hkrszjt52bsYYMnI+vCluqumRx88aur5+Kg0VJ0d/Xx5sOWm7lcEbUFoUZxJySxN2uA4mckL9lgyyfdPb58Xzc201KgYnEzqkfJxuBWc2bMtRnIIxSttAlOyWojnS5osY121phFwatfTuns5U6PFUBdYIQhtCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RnEtmcYI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E7B8C433F1;
-	Wed, 21 Feb 2024 14:25:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=W5IMO5GVfwwc8w3BYXn3YTluetom7rNyJJhftVItxKYOcTvdMOZ8Q4C/baYi60+QSvSQXZZJlw8oGS05MPt+nXvv/ptR1AJCjNW6bU8jogphKDMS7lXUJIsOr8ndDoLS5tQDAAx/cJIABZp8rXu0DxurmFFyg8zEctd0WjDkzis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v+gNfntZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED053C433C7;
+	Wed, 21 Feb 2024 14:13:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525553;
-	bh=1G8S8Nx1xn9cwFNc83O2yqcg0u9izUdiAADHWG5d6UA=;
+	s=korg; t=1708524801;
+	bh=5L2zd43X8K14JHfLr84h1+wM89FuvwSV0hZ6DqAlW/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RnEtmcYIXEJZFh1SpilLoCV72OJFtSTqptA3A9D6BUQAstErHbwEFvJLCpPzFuoE0
-	 wehI84HvqxYdmjnT9+skBFvs67lknQ1f6Hm3RV1QoJYlhuBJ3LMV9pfUnIYv/7VhfI
-	 J+36BLxvlu8ZggVnOKf3fmxC+JShu6p1iKuLvHYY=
+	b=v+gNfntZf1RUdqc8KC7jd0aW2457oeYjlXTvAf6JoC3jXijf3SYRFdLewebMXR1mn
+	 E29D/9gLQ0oJBkIyit0BEjV9TxlVvUXWoPoY5fOs9O50/9WYmm5/kDRi/jc9+MnFyy
+	 I2UsG3Nndvt879EhPdj9c2FLwX/iZzJQ7VTI+DN4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sjoerd Simons <sjoerd@collabora.com>,
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 191/267] netfilter: nft_compat: reject unused compat flag
+Subject: [PATCH 5.10 353/379] bus: moxtet: Add spi device table
 Date: Wed, 21 Feb 2024 14:08:52 +0100
-Message-ID: <20240221125946.131877311@linuxfoundation.org>
+Message-ID: <20240221130005.472240451@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,57 +61,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Sjoerd Simons <sjoerd@collabora.com>
 
-[ Upstream commit 292781c3c5485ce33bd22b2ef1b2bed709b4d672 ]
+[ Upstream commit aaafe88d5500ba18b33be72458439367ef878788 ]
 
-Flag (1 << 0) is ignored is set, never used, reject it it with EINVAL
-instead.
+The moxtet module fails to auto-load on. Add a SPI id table to
+allow it to do so.
 
-Fixes: 0ca743a55991 ("netfilter: nf_tables: add compatibility layer for x_tables")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sjoerd Simons <sjoerd@collabora.com>
+Cc:  <stable@vger.kernel.org>
+Reviewed-by: Marek Behún <kabel@kernel.org>
+Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/netfilter/nf_tables.h | 2 ++
- net/netfilter/nft_compat.c               | 3 ++-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ drivers/bus/moxtet.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/include/uapi/linux/netfilter/nf_tables.h b/include/uapi/linux/netfilter/nf_tables.h
-index 6a08c03a511d..bc70d580e8d6 100644
---- a/include/uapi/linux/netfilter/nf_tables.h
-+++ b/include/uapi/linux/netfilter/nf_tables.h
-@@ -243,9 +243,11 @@ enum nft_rule_attributes {
- /**
-  * enum nft_rule_compat_flags - nf_tables rule compat flags
-  *
-+ * @NFT_RULE_COMPAT_F_UNUSED: unused
-  * @NFT_RULE_COMPAT_F_INV: invert the check result
-  */
- enum nft_rule_compat_flags {
-+	NFT_RULE_COMPAT_F_UNUSED = (1 << 0),
- 	NFT_RULE_COMPAT_F_INV	= (1 << 1),
- 	NFT_RULE_COMPAT_F_MASK	= NFT_RULE_COMPAT_F_INV,
- };
-diff --git a/net/netfilter/nft_compat.c b/net/netfilter/nft_compat.c
-index f01f3cf4f8f5..44583da6ec6b 100644
---- a/net/netfilter/nft_compat.c
-+++ b/net/netfilter/nft_compat.c
-@@ -204,7 +204,8 @@ static int nft_parse_compat(const struct nlattr *attr, u16 *proto, bool *inv)
- 		return -EINVAL;
+diff --git a/drivers/bus/moxtet.c b/drivers/bus/moxtet.c
+index b20fdcbd035b..34377195bf87 100644
+--- a/drivers/bus/moxtet.c
++++ b/drivers/bus/moxtet.c
+@@ -832,6 +832,12 @@ static int moxtet_remove(struct spi_device *spi)
+ 	return 0;
+ }
  
- 	flags = ntohl(nla_get_be32(tb[NFTA_RULE_COMPAT_FLAGS]));
--	if (flags & ~NFT_RULE_COMPAT_F_MASK)
-+	if (flags & NFT_RULE_COMPAT_F_UNUSED ||
-+	    flags & ~NFT_RULE_COMPAT_F_MASK)
- 		return -EINVAL;
- 	if (flags & NFT_RULE_COMPAT_F_INV)
- 		*inv = true;
++static const struct spi_device_id moxtet_spi_ids[] = {
++	{ "moxtet" },
++	{ },
++};
++MODULE_DEVICE_TABLE(spi, moxtet_spi_ids);
++
+ static const struct of_device_id moxtet_dt_ids[] = {
+ 	{ .compatible = "cznic,moxtet" },
+ 	{},
+@@ -843,6 +849,7 @@ static struct spi_driver moxtet_spi_driver = {
+ 		.name		= "moxtet",
+ 		.of_match_table = moxtet_dt_ids,
+ 	},
++	.id_table	= moxtet_spi_ids,
+ 	.probe		= moxtet_probe,
+ 	.remove		= moxtet_remove,
+ };
 -- 
 2.43.0
 
