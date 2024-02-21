@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-23119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3172285DF5B
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:27:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 148F585DE71
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:18:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 154B11C23851
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:27:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02A3DB2A884
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:16:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 475A07BB01;
-	Wed, 21 Feb 2024 14:27:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A91B878B7C;
+	Wed, 21 Feb 2024 14:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QbQwvxQZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y4FyzcUg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0719D4C62;
-	Wed, 21 Feb 2024 14:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6028D76C99;
+	Wed, 21 Feb 2024 14:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525632; cv=none; b=gns6RN6v07a8z5zvDD6W5CSaleu3/COO17LvQE86ffWoeAWAC6dNceBL51HjMhyQTcfBr89zj/leokVBdRdP5GNWmHA8Hf219KGCCQeSXNlKkT7yri/4dixuqj/MizJJmxbER8TohWUONSB1aFmd7KShbEheENLb6HTIcB2fygk=
+	t=1708524909; cv=none; b=jymFmKTfec8mMnLBLPcvXCYPu5Q4fyctkHqZwuUvXBn+dT18cMXbJVvMRsM2uBhXElc++/2RtFR3I5jL55iLldwIlsIVp9B/7Ntd7JwqJFPMHv9tmUdr966n/b+ZAXi9jW6KK0VLoDSWs5+/by4ez0oASwk0yoLCVxn0I3H27jQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525632; c=relaxed/simple;
-	bh=7BjqHf244sB3cOJrCRElSc27HTMZI1a5qX5j42lcUdY=;
+	s=arc-20240116; t=1708524909; c=relaxed/simple;
+	bh=Ds/41fnbdpC1r8hkGr15Hhad3KTQi9wI0iuZZGnr9qc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mECXr8KspuNc0j9LY49nLdAj4fDWx0q/pOIAzrJaoJJr6zW5PNA9IdiYKniihzWCi6dQP5GcoGNwuUv/xvOSjWbMVLLULMarx08WYVyirc0qkrvE/K3RHF4rtDECJuWEzsBhipY0tUpEC2oakZP9TA1cH4SSRhARH6vrtRqU/do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QbQwvxQZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0958BC433C7;
-	Wed, 21 Feb 2024 14:27:10 +0000 (UTC)
+	 MIME-Version; b=JpAyFFLCiZh9zUU1Sv0F0mhM0buRo7SVpDPcASg5c/mbAPBNNslPCzZC1DeFVhWoo/JtPSlRFm9AZh9i501cBS/EvRShVtXNwKxCr+w6Kz2HkeGtwsqBLMJLLdjwaSFjRVaUcVY9bUZ9BnRuaUhAfVNGx2mNPwaY0HfVjJEkbpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y4FyzcUg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA9D7C43394;
+	Wed, 21 Feb 2024 14:15:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525631;
-	bh=7BjqHf244sB3cOJrCRElSc27HTMZI1a5qX5j42lcUdY=;
+	s=korg; t=1708524909;
+	bh=Ds/41fnbdpC1r8hkGr15Hhad3KTQi9wI0iuZZGnr9qc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QbQwvxQZrtdV8V+bTaxj6fyLPN9tX9koMsCLp8l68Pbbvmgocvowf+cjC7o0oyGrk
-	 Wlx2pplU0wIMz5BqAZX0YJBiMGFkSm6YT9lD3l6X1LhQFT/a3qo/5l6IjC96Vd81MT
-	 AtoZAq1z+BQOsWiF6lZ4dxK298dyu+WFtwIClViM=
+	b=Y4FyzcUgZrYlyPfDYsb0JARZsNPWugENPKqbloChWP5nAML7SdlXoLUo8O+dZxhk1
+	 MqqQzG9bHVkt1TxQhtBMgmve/oMshU8NUkpO/E0s6mh1/zMLtud4m9gtS7JMlubp+5
+	 URzqRuYuO8yB1zQ0RK2+yUtQgqTZsuQ6yPWyOE58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zach OKeefe <zokeefe@google.com>,
-	Maxim Patlasov <MPatlasov@parallels.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 214/267] mm/writeback: fix possible divide-by-zero in wb_dirty_limits(), again
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Amit Pundir <amit.pundir@linaro.org>
+Subject: [PATCH 5.10 376/379] drm/msm/dsi: Enable runtime PM
 Date: Wed, 21 Feb 2024 14:09:15 +0100
-Message-ID: <20240221125946.933043806@linuxfoundation.org>
+Message-ID: <20240221130006.185300875@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zach O'Keefe <zokeefe@google.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-commit 9319b647902cbd5cc884ac08a8a6d54ce111fc78 upstream.
+[ Upstream commit 6ab502bc1cf3147ea1d8540d04b83a7a4cb6d1f1 ]
 
-(struct dirty_throttle_control *)->thresh is an unsigned long, but is
-passed as the u32 divisor argument to div_u64().  On architectures where
-unsigned long is 64 bytes, the argument will be implicitly truncated.
+Some devices power the DSI PHY/PLL through a power rail that we model
+as a GENPD. Enable runtime PM to make it suspendable.
 
-Use div64_u64() instead of div_u64() so that the value used in the "is
-this a safe division" check is the same as the divisor.
-
-Also, remove redundant cast of the numerator to u64, as that should happen
-implicitly.
-
-This would be difficult to exploit in memcg domain, given the ratio-based
-arithmetic domain_drity_limits() uses, but is much easier in global
-writeback domain with a BDI_CAP_STRICTLIMIT-backing device, using e.g.
-vm.dirty_bytes=(1<<32)*PAGE_SIZE so that dtc->thresh == (1<<32)
-
-Link: https://lkml.kernel.org/r/20240118181954.1415197-1-zokeefe@google.com
-Fixes: f6789593d5ce ("mm/page-writeback.c: fix divide by zero in bdi_dirty_limits()")
-Signed-off-by: Zach O'Keefe <zokeefe@google.com>
-Cc: Maxim Patlasov <MPatlasov@parallels.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/543352/
+Link: https://lore.kernel.org/r/20230620-topic-dsiphy_rpm-v2-2-a11a751f34f0@linaro.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Stable-dep-of: 3d07a411b4fa ("drm/msm/dsi: Use pm_runtime_resume_and_get to prevent refcnt leaks")
+Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/page-writeback.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/msm/dsi/phy/dsi_phy.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/mm/page-writeback.c
-+++ b/mm/page-writeback.c
-@@ -1530,7 +1530,7 @@ static inline void wb_dirty_limits(struc
- 	 */
- 	dtc->wb_thresh = __wb_calc_thresh(dtc);
- 	dtc->wb_bg_thresh = dtc->thresh ?
--		div_u64((u64)dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0;
-+		div64_u64(dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0;
+--- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
++++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
+@@ -710,6 +710,10 @@ static int dsi_phy_driver_probe(struct p
+ 			goto fail;
+ 	}
  
- 	/*
- 	 * In order to avoid the stacked BDI deadlock we need
++	ret = devm_pm_runtime_enable(&pdev->dev);
++	if (ret)
++		return ret;
++
+ 	/* PLL init will call into clk_register which requires
+ 	 * register access, so we need to enable power and ahb clock.
+ 	 */
 
 
 
