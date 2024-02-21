@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-22025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE24985D9C4
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:22:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60FC585DC3C
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:50:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B7E81C231C7
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:22:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC50B1F2103E
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:50:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E0E17BAFB;
-	Wed, 21 Feb 2024 13:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E797BB18;
+	Wed, 21 Feb 2024 13:50:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hOcdP537"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="US0UcFYc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5572E763F6;
-	Wed, 21 Feb 2024 13:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A2D78B70;
+	Wed, 21 Feb 2024 13:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521718; cv=none; b=ZvqZdNBsfpzfhHZgzOfexL8CR02JDKhxK2Ns+lfxWrelK1bSbMED7fm/5AQVFPLbxvqyoNuH+T68VtNIt5ygIvVV3DnPMKW2Hl4+01UcC3LLXghyG9KaxGafE2LE8zs/K5XrnmzwuFlrXm/vk/2SXaxT1hUhSO5HWDgr5gvtYVQ=
+	t=1708523441; cv=none; b=gAYzr+N+shO2YmkwHeOba0Y9spKOp/vTrvM/36y1ez8BCsMzJuzqh8kiUV1bMw8DxZY3TxnmwGeVK8oTOoSundy5UxZ1fjRO8gnPG08ozxG01mR29dLV8TQBlH5DQn9+u6zutJqanqcRU6gq3Vg1taw+kwkvmTBOkRXksisJNQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521718; c=relaxed/simple;
-	bh=5Ah1NTqH80hvILYxu/r6F1TX1zzwhiBx4x34jxJlPI0=;
+	s=arc-20240116; t=1708523441; c=relaxed/simple;
+	bh=dJxDYqWIePra83pIldEGEc39cK5ewTTNJWYMaQ35dok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gVYzclfBMBW5E/eTaAz+g4z2MenrGLPCRDhzgQPdI3S8k3WXcy7k52un5uTK2c2nVqWLijW9MzCf8cn9NkvNVVQPdibjRoCKVR7yYo4031384mxMGOus730VJT9/WcHyauSqqzT35q47ishV2QMesTihXWF4cV02CmIyiLBSll0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hOcdP537; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4899C433F1;
-	Wed, 21 Feb 2024 13:21:57 +0000 (UTC)
+	 MIME-Version; b=PGqLONQl8BW6Ast1EiUf7oMUrxQNl9WmoJLMyVYlKL5OLx3mCNyYYB/EuHnE6esaO9c/K2X4gkqiiPhtazpdZvO0kQaVdVppCYHRZmQCCaUmeVtvYJJC1cQ4ZThUFlo9+2J+va05At5fA45PJEjb57yrdUM9Wp72uex21e71tJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=US0UcFYc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 447BDC433C7;
+	Wed, 21 Feb 2024 13:50:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521718;
-	bh=5Ah1NTqH80hvILYxu/r6F1TX1zzwhiBx4x34jxJlPI0=;
+	s=korg; t=1708523440;
+	bh=dJxDYqWIePra83pIldEGEc39cK5ewTTNJWYMaQ35dok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hOcdP537zrmKtEvRnpSr9ZmIfLz6h+4mHdj16j/t0nwjVGn7iQze4oSi6JrX3YsCG
-	 /P9L0gWd5h4SGdVWlygnJk3Lzu3uom7A6C/J1xZpq5MooxMTbq/erc8SGoKTWGxms3
-	 ttuWL0Ct7fdKnBx8ZCTXI5Iooki4Gom0Hban50JM=
+	b=US0UcFYcUSlAVhSeK9OtmZf5LbOwNqPlJAdyZhmzu+U3Sde0J98veN1poZl19qp9K
+	 Yw/+XlymcoaX6l/gcqzgnQIscYNsrvhV+wW9yRfrDp5FfcVVrcag+TuK39jtQ+NPsf
+	 g22Z2z93FyJfs0vRQXPtHpw/3hfAjE7bDEDzRoaA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Donnefort <vdonnefort@google.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 4.19 186/202] ring-buffer: Clean ring_buffer_poll_wait() error return
-Date: Wed, 21 Feb 2024 14:08:07 +0100
-Message-ID: <20240221125937.821512649@linuxfoundation.org>
+	Mayank Rana <quic_mrana@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 437/476] usb: dwc3: Fix ep0 handling when getting reset while doing control transfer
+Date: Wed, 21 Feb 2024 14:08:08 +0100
+Message-ID: <20240221130024.188309947@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +61,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Donnefort <vdonnefort@google.com>
+From: Mayank Rana <quic_mrana@quicinc.com>
 
-commit 66bbea9ed6446b8471d365a22734dc00556c4785 upstream.
+[ Upstream commit 9d778f0c5f95ca5aa2ff628ea281978697e8d89b ]
 
-The return type for ring_buffer_poll_wait() is __poll_t. This is behind
-the scenes an unsigned where we can set event bits. In case of a
-non-allocated CPU, we do return instead -EINVAL (0xffffffea). Lucky us,
-this ends up setting few error bits (EPOLLERR | EPOLLHUP | EPOLLNVAL), so
-user-space at least is aware something went wrong.
+According to the databook ep0 should be in setup phase during reset.
+If host issues reset between control transfers, ep0 will be  in an
+invalid state. Fix this by issuing stall and restart on ep0 if it
+is not in setup phase.
 
-Nonetheless, this is an incorrect code. Replace that -EINVAL with a
-proper EPOLLERR to clean that output. As this doesn't change the
-behaviour, there's no need to treat this change as a bug fix.
+Also SW needs to complete pending control transfer and setup core for
+next setup stage as per data book. Hence check ep0 state during reset
+interrupt handling and make sure active transfers on ep0 out/in
+endpoint are stopped by queuing ENDXFER command for that endpoint and
+restart ep0 out again to receive next setup packet.
 
-Link: https://lore.kernel.org/linux-trace-kernel/20240131140955.3322792-1-vdonnefort@google.com
-
-Cc: stable@vger.kernel.org
-Fixes: 6721cb6002262 ("ring-buffer: Do not poll non allocated cpu buffers")
-Signed-off-by: Vincent Donnefort <vdonnefort@google.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Mayank Rana <quic_mrana@quicinc.com>
+Link: https://lore.kernel.org/r/1651693001-29891-1-git-send-email-quic_mrana@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 730e12fbec53 ("usb: dwc3: gadget: Handle EP0 request dequeuing properly")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/dwc3/ep0.c    | 11 ++++++++---
+ drivers/usb/dwc3/gadget.c | 27 +++++++++++++++++++++++++--
+ drivers/usb/dwc3/gadget.h |  2 ++
+ 3 files changed, 35 insertions(+), 5 deletions(-)
 
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -676,7 +676,7 @@ __poll_t ring_buffer_poll_wait(struct ri
- 		work = &buffer->irq_work;
- 	else {
- 		if (!cpumask_test_cpu(cpu, buffer->cpumask))
--			return -EINVAL;
-+			return EPOLLERR;
+diff --git a/drivers/usb/dwc3/ep0.c b/drivers/usb/dwc3/ep0.c
+index 624de23782b5..f402c66039af 100644
+--- a/drivers/usb/dwc3/ep0.c
++++ b/drivers/usb/dwc3/ep0.c
+@@ -218,7 +218,7 @@ int dwc3_gadget_ep0_queue(struct usb_ep *ep, struct usb_request *request,
+ 	return ret;
+ }
  
- 		cpu_buffer = buffer->buffers[cpu];
- 		work = &cpu_buffer->irq_work;
+-static void dwc3_ep0_stall_and_restart(struct dwc3 *dwc)
++void dwc3_ep0_stall_and_restart(struct dwc3 *dwc)
+ {
+ 	struct dwc3_ep		*dep;
+ 
+@@ -1090,13 +1090,18 @@ void dwc3_ep0_send_delayed_status(struct dwc3 *dwc)
+ 	__dwc3_ep0_do_control_status(dwc, dwc->eps[direction]);
+ }
+ 
+-static void dwc3_ep0_end_control_data(struct dwc3 *dwc, struct dwc3_ep *dep)
++void dwc3_ep0_end_control_data(struct dwc3 *dwc, struct dwc3_ep *dep)
+ {
+ 	struct dwc3_gadget_ep_cmd_params params;
+ 	u32			cmd;
+ 	int			ret;
+ 
+-	if (!dep->resource_index)
++	/*
++	 * For status/DATA OUT stage, TRB will be queued on ep0 out
++	 * endpoint for which resource index is zero. Hence allow
++	 * queuing ENDXFER command for ep0 out endpoint.
++	 */
++	if (!dep->resource_index && dep->number)
+ 		return;
+ 
+ 	cmd = DWC3_DEPCMD_ENDTRANSFER;
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index 5cf2fb165a56..b978e42ace75 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -869,12 +869,13 @@ static int __dwc3_gadget_ep_enable(struct dwc3_ep *dep, unsigned int action)
+ 		reg |= DWC3_DALEPENA_EP(dep->number);
+ 		dwc3_writel(dwc->regs, DWC3_DALEPENA, reg);
+ 
++		dep->trb_dequeue = 0;
++		dep->trb_enqueue = 0;
++
+ 		if (usb_endpoint_xfer_control(desc))
+ 			goto out;
+ 
+ 		/* Initialize the TRB ring */
+-		dep->trb_dequeue = 0;
+-		dep->trb_enqueue = 0;
+ 		memset(dep->trb_pool, 0,
+ 		       sizeof(struct dwc3_trb) * DWC3_TRB_NUM);
+ 
+@@ -2702,6 +2703,7 @@ static int __dwc3_gadget_start(struct dwc3 *dwc)
+ 
+ 	/* begin to receive SETUP packets */
+ 	dwc->ep0state = EP0_SETUP_PHASE;
++	dwc->ep0_bounced = false;
+ 	dwc->link_state = DWC3_LINK_STATE_SS_DIS;
+ 	dwc->delayed_status = false;
+ 	dwc3_ep0_out_start(dwc);
+@@ -3790,6 +3792,27 @@ static void dwc3_gadget_reset_interrupt(struct dwc3 *dwc)
+ 	}
+ 
+ 	dwc3_reset_gadget(dwc);
++
++	/*
++	 * From SNPS databook section 8.1.2, the EP0 should be in setup
++	 * phase. So ensure that EP0 is in setup phase by issuing a stall
++	 * and restart if EP0 is not in setup phase.
++	 */
++	if (dwc->ep0state != EP0_SETUP_PHASE) {
++		unsigned int	dir;
++
++		dir = !!dwc->ep0_expect_in;
++		if (dwc->ep0state == EP0_DATA_PHASE)
++			dwc3_ep0_end_control_data(dwc, dwc->eps[dir]);
++		else
++			dwc3_ep0_end_control_data(dwc, dwc->eps[!dir]);
++
++		dwc->eps[0]->trb_enqueue = 0;
++		dwc->eps[1]->trb_enqueue = 0;
++
++		dwc3_ep0_stall_and_restart(dwc);
++	}
++
+ 	/*
+ 	 * In the Synopsis DesignWare Cores USB3 Databook Rev. 3.30a
+ 	 * Section 4.1.2 Table 4-2, it states that during a USB reset, the SW
+diff --git a/drivers/usb/dwc3/gadget.h b/drivers/usb/dwc3/gadget.h
+index f763380e672e..55a56cf67d73 100644
+--- a/drivers/usb/dwc3/gadget.h
++++ b/drivers/usb/dwc3/gadget.h
+@@ -110,6 +110,8 @@ void dwc3_gadget_giveback(struct dwc3_ep *dep, struct dwc3_request *req,
+ void dwc3_ep0_interrupt(struct dwc3 *dwc,
+ 		const struct dwc3_event_depevt *event);
+ void dwc3_ep0_out_start(struct dwc3 *dwc);
++void dwc3_ep0_end_control_data(struct dwc3 *dwc, struct dwc3_ep *dep);
++void dwc3_ep0_stall_and_restart(struct dwc3 *dwc);
+ int __dwc3_gadget_ep0_set_halt(struct usb_ep *ep, int value);
+ int dwc3_gadget_ep0_set_halt(struct usb_ep *ep, int value);
+ int dwc3_gadget_ep0_queue(struct usb_ep *ep, struct usb_request *request,
+-- 
+2.43.0
+
 
 
 
