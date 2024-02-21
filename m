@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-22746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D29E85DD9D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:07:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53D4B85DBDE
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:46:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE189B233A0
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:07:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC5A9281430
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:46:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30F577F496;
-	Wed, 21 Feb 2024 14:06:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CA7F78B50;
+	Wed, 21 Feb 2024 13:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WD4jbWck"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gy4efiFx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1DF97D411;
-	Wed, 21 Feb 2024 14:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD444D5B7;
+	Wed, 21 Feb 2024 13:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524377; cv=none; b=Lr34g1hzw57DQWDFp70uFGyzF2v0gpjFaXiPJyw0jIR7M5lQsv1YNxWcw9kZsBQZ1RlCO9NEMM5Qizj71OzT30IwFoMnsk9QhcskzpXLgLH/QAxKotvscMG3yakvJ6HHyNKeCGJZN0xqVifO0LicxZ6kPwlte1gMdR145hYkogU=
+	t=1708523167; cv=none; b=bSlUKEz2vrccR9hva3tpgNrwpoighTUHnWkKlUScjcui0qoVh4W/a1jR68eovPmfKS5BdRK903nTZE67RcdjPP08oo2jMvr7ftRZ9vF6R7a4ZmmG4cE+gUoJsFIvEx8K/t7Ve/9m/KkG4ORIRWsnZO9LVBK3wLmEzmO4/+DQpeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524377; c=relaxed/simple;
-	bh=jz8t9wxalv0aksXs0qUjKptVytbxedTOL5FCjE9AwZE=;
+	s=arc-20240116; t=1708523167; c=relaxed/simple;
+	bh=5h2skk5KFC7l5nzCti3arsOGGB0bz5D5WoyzPWyqohg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jPnzd81WJrd1HfQ9TuLcXLv6DnsPYOkmqvh7dpodAiIxAs4LmCaZ88xN8AtOKiY5bjhLixRP4gEi4sBg/EvXwAbk8ywC/ergDuJ5M1e3KcQlc0l/YyNaMjN1M1QxXS2F7GoTksOZ2qorJpAu6FHGQxCPmx0hR728qfmHamsqrik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WD4jbWck; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EBFBC43394;
-	Wed, 21 Feb 2024 14:06:16 +0000 (UTC)
+	 MIME-Version; b=gcEsmoEPj4orUSY04cKbylSOGE697/0ktAl04gCp6gO2tYCcOfrPU9Q6aNWLWYYToCgKdCxpo72gSgUkDVyoKCbQgVX5h5jMWGAVfKqGLlLz/mR5IvvFqsph295NBSpSAu+Gc4kDzpJWk6b1iUXkdDnHiwM7eMAE0Atd9MbVPok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gy4efiFx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54832C433C7;
+	Wed, 21 Feb 2024 13:46:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524376;
-	bh=jz8t9wxalv0aksXs0qUjKptVytbxedTOL5FCjE9AwZE=;
+	s=korg; t=1708523166;
+	bh=5h2skk5KFC7l5nzCti3arsOGGB0bz5D5WoyzPWyqohg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WD4jbWck94GhhtacPiwmuWDxT12W/97TEDNL9CVOoqBtZEp37Cg0ZS6DgZU/ZnrH8
-	 4S39GAZGhPNWIVaV5HG7r8/BUWLwo57AB26ueodQSj3TEwfI4q6HlxvZ36NF6PdLwW
-	 etMJvkKHeA9EJV+JqsQqGRbJ+UciqCmlw7Q2e4ZM=
+	b=gy4efiFx1K0TlOq8IYi7iC2S1ji7mRqTza2mUpZL3ImNVlFZOMU1OIJF1uPTQUvGI
+	 z3wSJQahkbTk7Upss0viYhQSMMFoFp2wZiYBXT5RFIroUUgP0N8QEqDUn68weynxFq
+	 4TGZI7Fk0LJU+r/LkDFKM+kbJIlZLyzp3l2d2rZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 226/379] ip6_tunnel: use dev_sw_netstats_rx_add()
-Date: Wed, 21 Feb 2024 14:06:45 +0100
-Message-ID: <20240221130001.584365907@linuxfoundation.org>
+	Ivan Vecera <ivecera@redhat.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 5.15 355/476] i40e: Fix waiting for queues of all VSIs to be disabled
+Date: Wed, 21 Feb 2024 14:06:46 +0100
+Message-ID: <20240221130021.118794671@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +65,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ivan Vecera <ivecera@redhat.com>
 
-[ Upstream commit afd2051b18404640a116fd3bb2460da214ccbda4 ]
+[ Upstream commit c73729b64bb692186da080602cd13612783f52ac ]
 
-We have a convenient helper, let's use it.
+The function i40e_pf_wait_queues_disabled() iterates all PF's VSIs
+up to 'pf->hw.func_caps.num_vsis' but this is incorrect because
+the real number of VSIs can be up to 'pf->num_alloc_vsi' that
+can be higher. Fix this loop.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 8d975c15c0cd ("ip6_tunnel: make sure to pull inner header in __ip6_tnl_rcv()")
+Fixes: 69129dc39fac ("i40e: Modify Tx disable wait flow in case of DCB reconfiguration")
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_tunnel.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-index edf4a842506f..9b8b209b780a 100644
---- a/net/ipv6/ip6_tunnel.c
-+++ b/net/ipv6/ip6_tunnel.c
-@@ -829,7 +829,6 @@ static int __ip6_tnl_rcv(struct ip6_tnl *tunnel, struct sk_buff *skb,
- 						struct sk_buff *skb),
- 			 bool log_ecn_err)
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index 10737418565f..3d2b92a952a6 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -5323,7 +5323,7 @@ static int i40e_pf_wait_queues_disabled(struct i40e_pf *pf)
  {
--	struct pcpu_sw_netstats *tstats;
- 	const struct ipv6hdr *ipv6h = ipv6_hdr(skb);
- 	int err;
+ 	int v, ret = 0;
  
-@@ -888,11 +887,7 @@ static int __ip6_tnl_rcv(struct ip6_tnl *tunnel, struct sk_buff *skb,
- 		}
- 	}
- 
--	tstats = this_cpu_ptr(tunnel->dev->tstats);
--	u64_stats_update_begin(&tstats->syncp);
--	tstats->rx_packets++;
--	tstats->rx_bytes += skb->len;
--	u64_stats_update_end(&tstats->syncp);
-+	dev_sw_netstats_rx_add(tunnel->dev, skb->len);
- 
- 	skb_scrub_packet(skb, !net_eq(tunnel->net, dev_net(tunnel->dev)));
- 
+-	for (v = 0; v < pf->hw.func_caps.num_vsis; v++) {
++	for (v = 0; v < pf->num_alloc_vsi; v++) {
+ 		if (pf->vsi[v]) {
+ 			ret = i40e_vsi_wait_queues_disabled(pf->vsi[v]);
+ 			if (ret)
 -- 
 2.43.0
 
