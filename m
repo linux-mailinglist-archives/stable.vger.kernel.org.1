@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-21984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 828E785D985
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:19:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86AA585DEE0
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:22:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B41001C21AD4
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:19:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C4CEB2AC36
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:19:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 463F66EB77;
-	Wed, 21 Feb 2024 13:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA3976A8D6;
+	Wed, 21 Feb 2024 14:18:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZphRk5vl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KtWLSHy3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 058E969DF6;
-	Wed, 21 Feb 2024 13:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EACC3D981;
+	Wed, 21 Feb 2024 14:18:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521567; cv=none; b=HoE+R/t850idX9Pg9izZPnumZGhKcPYCxyrKPpOo8MD3lHfjdlfYNYZXJ7ES1f+KrUsM/MCSNTO1L97HMgwkrbsCfNtj9Phj/GpFi2sxKnun3U7HKn8Ixe7r8JY1+5oXfyeuAvBEF7N0lggxMnmdluSQWTlUH9AIGhUa0dbRbS0=
+	t=1708525127; cv=none; b=ElFn3F/VoCNrAMiNpkl1iu7KLjGbsIe2XbkdzU+Km7hntOQYNSfHvu5FGgk9q8gMXwv47HESLJgcmW8aHE0b91DGqcHMQUrWglQUrW2SEV7T3hzyeFPMPG6bNKqHmCvt47nFb8Dp/UEo2WONJk0hds/aNpiSS0j+mA+/4uKGCkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521567; c=relaxed/simple;
-	bh=H3GLAT/qIh6pN3bKvays8y2ULfYfINWjOqEkUXmhg7g=;
+	s=arc-20240116; t=1708525127; c=relaxed/simple;
+	bh=VGAFU8JxoCRoiFh94SbuKJfihLoqaokvjaJCijmmjxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ePFkdAnK8ut9YI+wgSqOu+hgz67PikgYaZy8fWKsZoqNN4Jy+ls0GMauV6l9NXG4RZHiKGp3TdRxfPQbrWB5K69jd980CUY7bQBm0Io7Z37VQsFuY2YXKMu3eLyqSIeLBJXUK0KHD5VyqV4ANA/KYETmG0rNjhFFcribxPoCkRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZphRk5vl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68B10C433C7;
-	Wed, 21 Feb 2024 13:19:26 +0000 (UTC)
+	 MIME-Version; b=FWv/lMT83DOh57aU81mXb3xoaG2BBBDd1IIkPCCODu1pWYVO0mSjYCJH/hku8xX7RMasFIteu+toEbzRzBhvw/zam5RCWB2x/iUtY+/nQ9qnUX5dCDgZXAkut7bf0OjAWC1bLYNAq8laAKa2Isr1713NRpMgbEjELY4Mc4vLb0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KtWLSHy3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E01ABC433F1;
+	Wed, 21 Feb 2024 14:18:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521566;
-	bh=H3GLAT/qIh6pN3bKvays8y2ULfYfINWjOqEkUXmhg7g=;
+	s=korg; t=1708525127;
+	bh=VGAFU8JxoCRoiFh94SbuKJfihLoqaokvjaJCijmmjxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZphRk5vlGq99q7L2a7lB+/CnqZuge6mIXgT9WgrBX46dLu+YXYTXHNo6FEiEVgGvC
-	 2qdrbQ7nZ/PFc53fdRAeAEfarIgyXQ1cJtiZv6cPGWm5a8o16TdC0GZKMY6jFVyJpo
-	 4idC8MdgIhtPaT42N8kYukSUmiHi3yIDMmD/U9i4=
+	b=KtWLSHy33/6R4Sk22GfLJjJhsTBth/t3hOvY2ynwFYLL59CyRw5LnvWe/6Ei+6GOE
+	 lcYR7KINhGdbr0c3SCF06TtVT+PSv/On0yrKNE+HsDrSM8voq9jMofsA7NLUbjt+WX
+	 5zLnmw9MZQUOomvCfIFpzY91gvQeWIvyIGpsDWyo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Inki Dae <inki.dae@samsung.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 107/202] drm/exynos: Call drm_atomic_helper_shutdown() at shutdown/unbind time
+Subject: [PATCH 5.4 067/267] perf/core: Fix narrow startup race when creating the perf nr_addr_filters sysfs file
 Date: Wed, 21 Feb 2024 14:06:48 +0100
-Message-ID: <20240221125935.212087219@linuxfoundation.org>
+Message-ID: <20240221125942.095104021@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +61,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Greg KH <gregkh@linuxfoundation.org>
 
-[ Upstream commit 16ac5b21b31b439f03cdf44c153c5f5af94fb3eb ]
+[ Upstream commit 652ffc2104ec1f69dd4a46313888c33527145ccf ]
 
-Based on grepping through the source code this driver appears to be
-missing a call to drm_atomic_helper_shutdown() at system shutdown time
-and at driver unbind time. Among other things, this means that if a
-panel is in use that it won't be cleanly powered off at system
-shutdown time.
-
-The fact that we should call drm_atomic_helper_shutdown() in the case
-of OS shutdown/restart and at driver remove (or unbind) time comes
-straight out of the kernel doc "driver instance overview" in
-drm_drv.c.
-
-A few notes about this fix:
-- When adding drm_atomic_helper_shutdown() to the unbind path, I added
-  it after drm_kms_helper_poll_fini() since that's when other drivers
-  seemed to have it.
-- Technically with a previous patch, ("drm/atomic-helper:
-  drm_atomic_helper_shutdown(NULL) should be a noop"), we don't
-  actually need to check to see if our "drm" pointer is NULL before
-  calling drm_atomic_helper_shutdown(). We'll leave the "if" test in,
-  though, so that this patch can land without any dependencies. It
-  could potentially be removed later.
-- This patch also makes sure to set the drvdata to NULL in the case of
-  bind errors to make sure that shutdown can't access freed data.
-
-Suggested-by: Maxime Ripard <mripard@kernel.org>
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Reviewed-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/2023061204-decal-flyable-6090@gregkh
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/exynos/exynos_drm_drv.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ kernel/events/core.c | 40 ++++++++++++++++++++++++++++------------
+ 1 file changed, 28 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_drv.c b/drivers/gpu/drm/exynos/exynos_drm_drv.c
-index b599f74692e5..db09e2055c86 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_drv.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_drv.c
-@@ -410,6 +410,7 @@ static int exynos_drm_bind(struct device *dev)
- 	drm_release_iommu_mapping(drm);
- err_free_private:
- 	kfree(private);
-+	dev_set_drvdata(dev, NULL);
- err_free_drm:
- 	drm_dev_put(drm);
- 
-@@ -424,6 +425,7 @@ static void exynos_drm_unbind(struct device *dev)
- 
- 	exynos_drm_fbdev_fini(drm);
- 	drm_kms_helper_poll_fini(drm);
-+	drm_atomic_helper_shutdown(drm);
- 
- 	component_unbind_all(drm->dev, drm);
- 	drm_mode_config_cleanup(drm);
-@@ -461,9 +463,18 @@ static int exynos_drm_platform_remove(struct platform_device *pdev)
- 	return 0;
- }
- 
-+static void exynos_drm_platform_shutdown(struct platform_device *pdev)
-+{
-+	struct drm_device *drm = platform_get_drvdata(pdev);
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 1e62a567b0d7..3ec29a27d877 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -10080,9 +10080,32 @@ static DEVICE_ATTR_RW(perf_event_mux_interval_ms);
+ static struct attribute *pmu_dev_attrs[] = {
+ 	&dev_attr_type.attr,
+ 	&dev_attr_perf_event_mux_interval_ms.attr,
++	&dev_attr_nr_addr_filters.attr,
++	NULL,
++};
 +
-+	if (drm)
-+		drm_atomic_helper_shutdown(drm);
++static umode_t pmu_dev_is_visible(struct kobject *kobj, struct attribute *a, int n)
++{
++	struct device *dev = kobj_to_dev(kobj);
++	struct pmu *pmu = dev_get_drvdata(dev);
++
++	if (!pmu->nr_addr_filters)
++		return 0;
++
++	return a->mode;
++
++	return 0;
 +}
 +
- static struct platform_driver exynos_drm_platform_driver = {
- 	.probe	= exynos_drm_platform_probe,
- 	.remove	= exynos_drm_platform_remove,
-+	.shutdown = exynos_drm_platform_shutdown,
- 	.driver	= {
- 		.name	= "exynos-drm",
- 		.pm	= &exynos_drm_pm_ops,
++static struct attribute_group pmu_dev_attr_group = {
++	.is_visible = pmu_dev_is_visible,
++	.attrs = pmu_dev_attrs,
++};
++
++static const struct attribute_group *pmu_dev_groups[] = {
++	&pmu_dev_attr_group,
+ 	NULL,
+ };
+-ATTRIBUTE_GROUPS(pmu_dev);
+ 
+ static int pmu_bus_running;
+ static struct bus_type pmu_bus = {
+@@ -10118,18 +10141,11 @@ static int pmu_dev_alloc(struct pmu *pmu)
+ 	if (ret)
+ 		goto free_dev;
+ 
+-	/* For PMUs with address filters, throw in an extra attribute: */
+-	if (pmu->nr_addr_filters)
+-		ret = device_create_file(pmu->dev, &dev_attr_nr_addr_filters);
+-
+-	if (ret)
+-		goto del_dev;
+-
+-	if (pmu->attr_update)
++	if (pmu->attr_update) {
+ 		ret = sysfs_update_groups(&pmu->dev->kobj, pmu->attr_update);
+-
+-	if (ret)
+-		goto del_dev;
++		if (ret)
++			goto del_dev;
++	}
+ 
+ out:
+ 	return ret;
 -- 
 2.43.0
 
