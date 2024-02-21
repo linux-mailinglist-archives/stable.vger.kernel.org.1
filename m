@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-22549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CF6A85DC91
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:54:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 793A185DAD4
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:35:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E6E11C23670
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:54:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3464D282201
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:35:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7244F78B50;
-	Wed, 21 Feb 2024 13:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EC927F473;
+	Wed, 21 Feb 2024 13:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nU6ZbXmf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E250dmoP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E98938398;
-	Wed, 21 Feb 2024 13:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C05627CF33;
+	Wed, 21 Feb 2024 13:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523689; cv=none; b=uT4X5i/9yvpZtYeWYwvvtquVPd0wZ0H7DBMk7J2tXf2AnMQ/OVEC1GDz3zpuDJZTctlLdNIWSO/vYYvW5QaQ3RuF0egnFJcp0q2GvVOpjHUXLzZEAwIPB9lxdu0gZnJDW5g+Dat+r6LFaarM+Fqvkpm7oLs73TxIHg0IYoDsqFM=
+	t=1708522408; cv=none; b=dz45xmbRMnOJrrFGtJq364NlHWQnxU/Z+lD6SgR3RlnjYlD+UR9TKpyQti2YUaJgSkeVcbEuzE9WyKIhklVrRBPGjkHeI/2vsh4MPPO2m/PAaXlqyRsyt/BKwAIgiLEErSuhvIyRFsmGIXf4dLZ9mzQiWRqiJaeT0FfTKB/aSjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523689; c=relaxed/simple;
-	bh=NQVeA7kCbTgF5opdTXdCvep/3IuY+w2oBbZIPSZoX3s=;
+	s=arc-20240116; t=1708522408; c=relaxed/simple;
+	bh=O07sxVX7OAiS9Jd3/fJRUgQ27biJDT/6JPxirD22cSA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fzq3adIqIe3Enb7yXPFeVSvcSUzzEGp3hByW8KhmvFQBxOUcVs3x3PLrHAGj7gj2r2awwVuuBRXLGfVPZ1zfxL+rSAapm5WKMpksADlberDAYZIw4mFZsp6OlE5ktO8r2enkNjHagDCH9MngqwBYmhJlbbeac3Xiqcyq5xXd4bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nU6ZbXmf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 909ABC433C7;
-	Wed, 21 Feb 2024 13:54:48 +0000 (UTC)
+	 MIME-Version; b=X+qsj5JitI5I8cRCYfdWk2c/DeQdovAZHx5bLxrOD98YRHeARlfz5B7+szZQSs2lWLTpiJYWZzGoFrUUeHTuWljv3DL4yMjLOcmeBK43Q7/Sl+Auif5qNbjCZU5GExnKfThQK+7JhucI58AW6RmaeoQkYDlzFQmfgABCDe5zZbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E250dmoP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1901C433F1;
+	Wed, 21 Feb 2024 13:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523689;
-	bh=NQVeA7kCbTgF5opdTXdCvep/3IuY+w2oBbZIPSZoX3s=;
+	s=korg; t=1708522408;
+	bh=O07sxVX7OAiS9Jd3/fJRUgQ27biJDT/6JPxirD22cSA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nU6ZbXmfypm7s/vB4DKvThYJjwpu8iPwdVU3cmTpEzZ6KdAHjwFGJ/7hAMgfHLEDQ
-	 bS85wyXLr3laU0naXOBELO8XERdyfaeXlCLI6IArZ6bN5FtOnhoxI+Q1tvQ/e24jhN
-	 jneupk1hxunYTP73VCn4brv5I4TpklzM+h4zKaBo=
+	b=E250dmoPWRs3PStIV7f9UNrr/mLwP6b1Hi5n07vOk06Nh//igilYOwuV5aMNA3vPI
+	 rF30ydoTwalmU/M2YrxWU6RDLQTOE4A3OpJMiPJ4ISAp4IK+GQB82AHZqA5rqF8S/f
+	 pvlCS5dUfgJijHWbjKABc3/qURd/6iMVVPkvnpPw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 5.10 028/379] arm64: dts: qcom: sdm845: fix USB DP/DM HS PHY interrupts
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Guo Ren <guoren@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 156/476] arch: consolidate arch_irq_work_raise prototypes
 Date: Wed, 21 Feb 2024 14:03:27 +0100
-Message-ID: <20240221125955.750735500@linuxfoundation.org>
+Message-ID: <20240221130013.692276232@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +65,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 204f9ed4bad6293933179517624143b8f412347c upstream.
+[ Upstream commit 64bac5ea17d527872121adddfee869c7a0618f8f ]
 
-The USB DP/DM HS PHY interrupts need to be provided by the PDC interrupt
-controller in order to be able to wake the system up from low-power
-states and to be able to detect disconnect events, which requires
-triggering on falling edges.
+The prototype was hidden in an #ifdef on x86, which causes a warning:
 
-A recent commit updated the trigger type but failed to change the
-interrupt provider as required. This leads to the current Linux driver
-failing to probe instead of printing an error during suspend and USB
-wakeup not working as intended.
+kernel/irq_work.c:72:13: error: no previous prototype for 'arch_irq_work_raise' [-Werror=missing-prototypes]
 
-Fixes: 84ad9ac8d9ca ("arm64: dts: qcom: sdm845: fix USB wakeup interrupt types")
-Fixes: ca4db2b538a1 ("arm64: dts: qcom: sdm845: Add USB-related nodes")
-Cc: stable@vger.kernel.org      # 4.20
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20231213173403.29544-3-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Some architectures have a working prototype, while others don't.
+Fix this by providing it in only one place that is always visible.
+
+Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
+Acked-by: Guo Ren <guoren@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845.dtsi |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ arch/arm64/include/asm/irq_work.h   | 2 --
+ arch/csky/include/asm/irq_work.h    | 2 +-
+ arch/powerpc/include/asm/irq_work.h | 1 -
+ arch/riscv/include/asm/irq_work.h   | 2 +-
+ arch/s390/include/asm/irq_work.h    | 2 --
+ arch/x86/include/asm/irq_work.h     | 1 -
+ include/linux/irq_work.h            | 3 +++
+ 7 files changed, 5 insertions(+), 8 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-@@ -3565,10 +3565,10 @@
- 					  <&gcc GCC_USB30_PRIM_MASTER_CLK>;
- 			assigned-clock-rates = <19200000>, <150000000>;
+diff --git a/arch/arm64/include/asm/irq_work.h b/arch/arm64/include/asm/irq_work.h
+index 81bbfa3a035b..a1020285ea75 100644
+--- a/arch/arm64/include/asm/irq_work.h
++++ b/arch/arm64/include/asm/irq_work.h
+@@ -2,8 +2,6 @@
+ #ifndef __ASM_IRQ_WORK_H
+ #define __ASM_IRQ_WORK_H
  
--			interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 486 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 488 IRQ_TYPE_EDGE_BOTH>,
--				     <GIC_SPI 489 IRQ_TYPE_EDGE_BOTH>;
-+			interrupts-extended = <&intc GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
-+					      <&intc GIC_SPI 486 IRQ_TYPE_LEVEL_HIGH>,
-+					      <&pdc_intc 8 IRQ_TYPE_EDGE_BOTH>,
-+					      <&pdc_intc 9 IRQ_TYPE_EDGE_BOTH>;
- 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
- 					  "dm_hs_phy_irq", "dp_hs_phy_irq";
+-extern void arch_irq_work_raise(void);
+-
+ static inline bool arch_irq_work_has_interrupt(void)
+ {
+ 	return true;
+diff --git a/arch/csky/include/asm/irq_work.h b/arch/csky/include/asm/irq_work.h
+index 33aaf39d6f94..d39fcc1f5395 100644
+--- a/arch/csky/include/asm/irq_work.h
++++ b/arch/csky/include/asm/irq_work.h
+@@ -7,5 +7,5 @@ static inline bool arch_irq_work_has_interrupt(void)
+ {
+ 	return true;
+ }
+-extern void arch_irq_work_raise(void);
++
+ #endif /* __ASM_CSKY_IRQ_WORK_H */
+diff --git a/arch/powerpc/include/asm/irq_work.h b/arch/powerpc/include/asm/irq_work.h
+index b8b0be8f1a07..c6d3078bd8c3 100644
+--- a/arch/powerpc/include/asm/irq_work.h
++++ b/arch/powerpc/include/asm/irq_work.h
+@@ -6,6 +6,5 @@ static inline bool arch_irq_work_has_interrupt(void)
+ {
+ 	return true;
+ }
+-extern void arch_irq_work_raise(void);
  
-@@ -3613,10 +3613,10 @@
- 					  <&gcc GCC_USB30_SEC_MASTER_CLK>;
- 			assigned-clock-rates = <19200000>, <150000000>;
+ #endif /* _ASM_POWERPC_IRQ_WORK_H */
+diff --git a/arch/riscv/include/asm/irq_work.h b/arch/riscv/include/asm/irq_work.h
+index b53891964ae0..b27a4d64fc6a 100644
+--- a/arch/riscv/include/asm/irq_work.h
++++ b/arch/riscv/include/asm/irq_work.h
+@@ -6,5 +6,5 @@ static inline bool arch_irq_work_has_interrupt(void)
+ {
+ 	return IS_ENABLED(CONFIG_SMP);
+ }
+-extern void arch_irq_work_raise(void);
++
+ #endif /* _ASM_RISCV_IRQ_WORK_H */
+diff --git a/arch/s390/include/asm/irq_work.h b/arch/s390/include/asm/irq_work.h
+index 603783766d0a..f00c9f610d5a 100644
+--- a/arch/s390/include/asm/irq_work.h
++++ b/arch/s390/include/asm/irq_work.h
+@@ -7,6 +7,4 @@ static inline bool arch_irq_work_has_interrupt(void)
+ 	return true;
+ }
  
--			interrupts = <GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 487 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 490 IRQ_TYPE_EDGE_BOTH>,
--				     <GIC_SPI 491 IRQ_TYPE_EDGE_BOTH>;
-+			interrupts-extended = <&intc GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>,
-+					      <&intc GIC_SPI 487 IRQ_TYPE_LEVEL_HIGH>,
-+					      <&pdc_intc 10 IRQ_TYPE_EDGE_BOTH>,
-+					      <&pdc_intc 11 IRQ_TYPE_EDGE_BOTH>;
- 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
- 					  "dm_hs_phy_irq", "dp_hs_phy_irq";
- 
+-void arch_irq_work_raise(void);
+-
+ #endif /* _ASM_S390_IRQ_WORK_H */
+diff --git a/arch/x86/include/asm/irq_work.h b/arch/x86/include/asm/irq_work.h
+index 800ffce0db29..6b4d36c95165 100644
+--- a/arch/x86/include/asm/irq_work.h
++++ b/arch/x86/include/asm/irq_work.h
+@@ -9,7 +9,6 @@ static inline bool arch_irq_work_has_interrupt(void)
+ {
+ 	return boot_cpu_has(X86_FEATURE_APIC);
+ }
+-extern void arch_irq_work_raise(void);
+ #else
+ static inline bool arch_irq_work_has_interrupt(void)
+ {
+diff --git a/include/linux/irq_work.h b/include/linux/irq_work.h
+index ec2a47a81e42..ee5f9120c4d7 100644
+--- a/include/linux/irq_work.h
++++ b/include/linux/irq_work.h
+@@ -58,6 +58,9 @@ void irq_work_sync(struct irq_work *work);
+ void irq_work_run(void);
+ bool irq_work_needs_cpu(void);
+ void irq_work_single(void *arg);
++
++void arch_irq_work_raise(void);
++
+ #else
+ static inline bool irq_work_needs_cpu(void) { return false; }
+ static inline void irq_work_run(void) { }
+-- 
+2.43.0
+
 
 
 
