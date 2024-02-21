@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-22247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED9AF85DB13
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:37:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90BFB85DCC7
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:57:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A84FA281FCD
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:37:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1965DB22CA5
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:57:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD00A69D21;
-	Wed, 21 Feb 2024 13:36:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58BD678B7C;
+	Wed, 21 Feb 2024 13:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VjlgLk2g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BkD3OPPA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A7897BB00;
-	Wed, 21 Feb 2024 13:36:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 161DD78B53;
+	Wed, 21 Feb 2024 13:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522594; cv=none; b=iJ7UhBo+jVDIa0L5S3P30dKeTJcrFbdHzESrAR2Cl5TPyjpa0fcpka9xhNniKGL/MWBXk8ejZm1SUdoMe+xG/LlyF3C2mDLSjArbFAxnQWb9r5KjxSNSsJ3ZyRkoUGJ9K9zpPJdyRki9T8VitLv6AJaasAh6o1u9FIhWOFJfdLw=
+	t=1708523859; cv=none; b=CtqOJv7crfqm0nAdkp0rcnoCBXnbEYihNmD9Ic1JOAODlBL5T0uuRtBLJK3oSa2UJK60+flAOLho2ZWSldKjNYLsXz8V52KzRigX7GwBRbNCLiBchbPdKij7z/+76DzEPrUAyfFBMZsoR9N9gHZ0mvN80iq/QZ+YJu5ksIbP5Yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522594; c=relaxed/simple;
-	bh=pDEVcUIu0VSopUVFJyxdgA3Ifz8GMQmj7KCr9eJNK5I=;
+	s=arc-20240116; t=1708523859; c=relaxed/simple;
+	bh=z2CwmBzqwLH6iBFmWX2JuZB7IBUinK/KLo8kGuxcsbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AxHmz90o6cajH8dKN2xoVBoJ7UvI5l7dxUhe7txAoBPMLdVQp8jpliPtwxGNqGeVbUSB2bjg4RvsujIAQw3JbgYkiJMloCBn3wNfvWqjk9rwKuRacEQoN5hCf+/bLmWq5wqbg45n+qLQ6zm3vCBPTw6/bRE4Nl04EfBu0GyZAqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VjlgLk2g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA5B6C433F1;
-	Wed, 21 Feb 2024 13:36:33 +0000 (UTC)
+	 MIME-Version; b=UK7UG51l9QgJ8Yt0AC1767qquisUGOQvPrh++otBYp/aqq6XccNvVglOGNyMiAlN9M+/HSS32mb3IWUZ1nhYQK8tJiZhCQjuGwhjkRuKet+ErjTBNLldAwzqNHrR/3rFBzIclf/P0DhFvA/6H3Q+Wt7Z5X826s+niPgsT1M5a0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BkD3OPPA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 031F6C433F1;
+	Wed, 21 Feb 2024 13:57:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522594;
-	bh=pDEVcUIu0VSopUVFJyxdgA3Ifz8GMQmj7KCr9eJNK5I=;
+	s=korg; t=1708523859;
+	bh=z2CwmBzqwLH6iBFmWX2JuZB7IBUinK/KLo8kGuxcsbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VjlgLk2gg9OJpkHJjld1sqHzCwULEWHTMW1MbxHZW/I4L2Jbdy6h0etAQeLWDW+EL
-	 ZIvXaX3Dcd/DFT5TLEp1wHx55sL9IOART/mEgqd6PRbXy99cwQT7yJH0BQA5l3Iuh2
-	 k9jSn0KT/0o2LPyynDd3Hebs8mRNURAcz1Km0TYg=
+	b=BkD3OPPAi1x5JkUKcAk0SuAlpQEBgn51c+OG4ioJ59rXIkOlHayK43PuL7w17fy8g
+	 qczLsRYVrcHAewsitpFqVEAoyqlOnfmn/agwG11bN/NgZNRn5TpnEDN9W2uDFea4aP
+	 LwEfIiYUjBR2fjzh2dcX5O04avWiKhaTzaF99WSo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 203/476] Bluetooth: qca: Set both WIDEBAND_SPEECH and LE_STATES quirks for QCA2066
+	Aradhya Bhatia <a-bhatia1@ti.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Subject: [PATCH 5.10 075/379] drm/tidss: Fix atomic_flush check
 Date: Wed, 21 Feb 2024 14:04:14 +0100
-Message-ID: <20240221130015.410752013@linuxfoundation.org>
+Message-ID: <20240221125957.130119342@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit 5d192b697c7417254cdd9edc3d5e9e0364eb9045 ]
+commit 95d4b471953411854f9c80b568da7fcf753f3801 upstream.
 
-Set both WIDEBAND_SPEECH_SUPPORTED and VALID_LE_STATES quirks
-for QCA2066.
+tidss_crtc_atomic_flush() checks if the crtc is enabled, and if not,
+returns immediately as there's no reason to do any register changes.
 
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, the code checks for 'crtc->state->enable', which does not
+reflect the actual HW state. We should instead look at the
+'crtc->state->active' flag.
+
+This causes the tidss_crtc_atomic_flush() to proceed with the flush even
+if the active state is false, which then causes us to hit the
+WARN_ON(!crtc->state->event) check.
+
+Fix this by checking the active flag, and while at it, fix the related
+debug print which had "active" and "needs modeset" wrong way.
+
+Cc:  <stable@vger.kernel.org>
+Fixes: 32a1795f57ee ("drm/tidss: New driver for TI Keystone platform Display SubSystem")
+Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
+Link: https://lore.kernel.org/r/20231109-tidss-probe-v2-10-ac91b5ea35c0@ideasonboard.com
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/hci_qca.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/tidss/tidss_crtc.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
-index 56b4b7248483..d10f1fe0f5fa 100644
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -1860,6 +1860,7 @@ static const struct qca_device_data qca_soc_data_wcn3998 = {
- static const struct qca_device_data qca_soc_data_qca6390 = {
- 	.soc_type = QCA_QCA6390,
- 	.num_vregs = 0,
-+	.capabilities = QCA_CAP_WIDEBAND_SPEECH | QCA_CAP_VALID_LE_STATES,
- };
+--- a/drivers/gpu/drm/tidss/tidss_crtc.c
++++ b/drivers/gpu/drm/tidss/tidss_crtc.c
+@@ -168,13 +168,13 @@ static void tidss_crtc_atomic_flush(stru
+ 	struct tidss_device *tidss = to_tidss(ddev);
+ 	unsigned long flags;
  
- static const struct qca_device_data qca_soc_data_wcn6750 = {
--- 
-2.43.0
-
+-	dev_dbg(ddev->dev,
+-		"%s: %s enabled %d, needs modeset %d, event %p\n", __func__,
+-		crtc->name, drm_atomic_crtc_needs_modeset(crtc->state),
+-		crtc->state->enable, crtc->state->event);
++	dev_dbg(ddev->dev, "%s: %s is %sactive, %s modeset, event %p\n",
++		__func__, crtc->name, crtc->state->active ? "" : "not ",
++		drm_atomic_crtc_needs_modeset(crtc->state) ? "needs" : "doesn't need",
++		crtc->state->event);
+ 
+ 	/* There is nothing to do if CRTC is not going to be enabled. */
+-	if (!crtc->state->enable)
++	if (!crtc->state->active)
+ 		return;
+ 
+ 	/*
 
 
 
