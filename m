@@ -1,81 +1,81 @@
-Return-Path: <stable+bounces-23189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8635185E0C3
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 16:17:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 347F585E109
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 16:26:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 156E01F23C68
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:17:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5492E1C21DF6
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:26:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96B0C80036;
-	Wed, 21 Feb 2024 15:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC4717F7FD;
+	Wed, 21 Feb 2024 15:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UCZ17FAs"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gi9iTckN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F687BB01
-	for <stable@vger.kernel.org>; Wed, 21 Feb 2024 15:17:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC72D69D05
+	for <stable@vger.kernel.org>; Wed, 21 Feb 2024 15:26:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708528633; cv=none; b=jI3zhwIjqqRR1jnO5+lo58pZPxOMksE+P5to5zXUDX6Jvng0gN3H9Hj/wUmJAW+L7zd5FEujt85NYe/zG2fvtW5reSs8PFYkB13bnrNfLHy5c7XUnSiKZLWXC1a0/avULjyv+vcfrLG591dfBlAhWCrgwJQ0NYBp9jAE2JTxJoU=
+	t=1708529172; cv=none; b=Gwg9LuLHFzj8lI0P9Tn3+FZVGevizrael57L+ZPOT8yiV2LsBntMyB2Tvjr7GUawaHkI7UNVH/3jbpwyvNk2F5+mnqDMRjHiAFRNwY77Zi6hX9/YU6DeI79l93IfHlSjg72Ynlyoa0h0G0SpfqYlvRVkVi/1OtbchYoMfMmlbBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708528633; c=relaxed/simple;
-	bh=nGTqTtzt2sUbREhVbQv0j4QAW9PmN/RDVodP5ym54x4=;
+	s=arc-20240116; t=1708529172; c=relaxed/simple;
+	bh=cci5BOGZK3Spt55yQ2qdW1t58lXnRhMvgGTY0oAAFq0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eGudleh8ejDmDehLH3ei4wqhojW8bgMHjpyulUUd7FdEdgCC5kqvdxp0fBMqHHVnTNw/rhTF0L5XeR8grwYZIYWi6pwUMGE6l5gtN6DqTNeGukhhYsMIHtNRXKRhPM7MCLHw5Uyz4zCSFBtK9UvLhaPiaebikfK6j+/sU8dgULg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UCZ17FAs; arc=none smtp.client-ip=209.85.208.173
+	 To:Cc:Content-Type; b=nRP4HUuWkmnisVZWnX+AYVaS+NeTTwOOpNq3S8+/VQfwH8Nf4/EYW8KUTM+JUdfIogJREmHtg5gU3pMZO8RAmgYM80t54iJf18XEfBUym4qow5y+x9PJ6EbAgF2DBzVl3PNqgVlYLcjqWkc4z1OS/66rNCQv7DX6+WcDpmYUOC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gi9iTckN; arc=none smtp.client-ip=209.85.167.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2d0a4e1789cso8091001fa.3
-        for <stable@vger.kernel.org>; Wed, 21 Feb 2024 07:17:11 -0800 (PST)
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-512d19e2cb8so1019231e87.0
+        for <stable@vger.kernel.org>; Wed, 21 Feb 2024 07:26:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708528630; x=1709133430; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1708529168; x=1709133968; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JXiICswg4YzXiw6dk2Mwt7frOWpPnP2GHTGVPqL0gDM=;
-        b=UCZ17FAsK8+9jZuSQ0b07sg9RILaz1dFx8iFjYhAXJTE5AECHLr9QJI6PF/i72dI6w
-         RmKed6iYD8Sx4qBACnIYsC35Fx93/FqI2U1ytOFApjynGCbt+HMlRW1NKJbN3lQpe+JX
-         DkM4cfKtnFAV2pymD8gJhm8IzY66Ot+y4tWitJqbeY3upiVZdR0lD6rdT7ccUB/YTFRq
-         y49m1X93Cms06niL9IOcdFFBacXo8wnedsRQUePoWIapL+gIx+uphB4jVfhNbaZ9Eosf
-         U6uFEKfyvpG0rlizqp77NlMcfNPnwqGPDl6/2OZhzMYqEQyhXNlz4NrreqQHvT4afPnj
-         lpwg==
+        bh=c7CFRwEaj5O3n1vig9mmc40S2b7I6iaaWbSwi8GiOwQ=;
+        b=gi9iTckNSt96N28N+n6zvBHLEIpK68lVodmPGWwFhWv2VeeJk5qdnt4j0A0Kt6vbbF
+         P5lNTH7hiqztOVVG+Q0WFkRmgoVLvIxjcbS9muYrg/s8pcwpHzOw6AshIwMdWe9Y9RIT
+         nD+JSC4iSRfBOiXgeW0nbg34NW2zl8jLAfJdbaCYEv8833DXaTrDjk2RZ26d47jtbP7u
+         Oh7MxP5QN9V2h2XpatYD+9QaUHzF06FmvkBEdE8aO4zselcjn0dAUjXcVn1t30SqVqJe
+         /705GC931RKp5KVSFq7O6tc2Dc8rMAT86Xnz79GS+V3NvUfDTedu+O8KL/s05WJ0MGmY
+         Yh4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708528630; x=1709133430;
+        d=1e100.net; s=20230601; t=1708529168; x=1709133968;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=JXiICswg4YzXiw6dk2Mwt7frOWpPnP2GHTGVPqL0gDM=;
-        b=K2aKby8EPrr2MxH1jyKiYp4fSnOrpjpPA2z2VHRteAnxIBytZB4xULlpMGJ9xpqPTy
-         fLmWYMe8EtTP1nn0qa4cvRdM3J6aEtuOlATldugI+ksrcaMb6RhutBMKLb9lcWJiFAME
-         0jXJ6VkxW4PMadbZWpVnUzgSZGc28RcCEPOl9gbt5DWh+mlPvbt1PW5UC09Us3fEM1KW
-         v1dCUH9zyC7QMs/ee5tEmVGe+tZ/9h62xdJhY4E/Ix8Rg5OxYX0ST6lDi6nwRwgXkJbf
-         T+8CE4JXAEPAlUBkWNHnOM7iuFydFipFXXKk0VZQhGg2eBORgD79ldXDmuAZluRKIXnJ
-         UAdA==
-X-Gm-Message-State: AOJu0Yyw2BkWPfgdbDQW3zjBja/8zKZdKnAB9B3kAIwJBjyxgCpE+4EF
-	T4L5WYFrMlwNfh5uA8gh824Gm0rJ6RUQrT6MM6nXvApTImeF2nUI4IrPY/oiWVRiE3eDg4O8gfb
-	FLOI/cNn8oIpTlXE9t1zS9tB+cFE=
-X-Google-Smtp-Source: AGHT+IHIynpkHqXe8avSjnJLeB5fSyluG656zsi359TGvdRHvZvNP0y0mooqtI6wTgWvZpDaDR39gmrlO8fgWUle50s=
-X-Received: by 2002:a2e:8303:0:b0:2d0:97ac:69fa with SMTP id
- a3-20020a2e8303000000b002d097ac69famr11232242ljh.25.1708528629754; Wed, 21
- Feb 2024 07:17:09 -0800 (PST)
+        bh=c7CFRwEaj5O3n1vig9mmc40S2b7I6iaaWbSwi8GiOwQ=;
+        b=eq7qcj0Vf62bKymadkMb2NsZ1uwrgcobOY54/XOJ8jA8IRQov3xRThc4f/nNPbM+7P
+         ceRIn9SbdV0P6GtKvMwA/H0BiEhq43NhjFct0D1jgLAIsG/CW/0SILbZehLBnqxFhjmG
+         rGwYqKSXhIMqjLz6cRS1btSTFt6dQySzBvn2jj+H7HKUfrrv6otNUBxIqpLX6R/Apcm4
+         tGhl9FFyQxCLMjqTcjPTxZPwzW8MyQa2CAdI+o3DeKXpdZejG25uEnT2tRLIITwx/IyY
+         Laz/mCBA+PWCjEn6rVLCGZnSioABRniP40UdItwpAPjkwgHbrGPNbokqEZyb/XzhWkpI
+         904A==
+X-Gm-Message-State: AOJu0YwMI+N6+aQqmH64gs+pme5SnE7YspqXfcMfGHx2yph1PTKIKTRu
+	xiU/Xb4CR6nVQJaAQDEexh7AHMHj2te6T9+Qz1ybSbn7/anMgnHa5F+BXUspT5GCuRMGxBdjR8V
+	RzvID+bHcMaUbyeh3DhgUkIu2hzA=
+X-Google-Smtp-Source: AGHT+IHKXAczEIV6dUiAdkT+Wz92ctah8iGk2CHccvb9gcB8i8NaBhlm16ApdXAmheuRwLyy/wxvNaN3pXDa62LWkqE=
+X-Received: by 2002:a05:6512:6ce:b0:512:cc76:4dab with SMTP id
+ u14-20020a05651206ce00b00512cc764dabmr3308659lff.29.1708529167899; Wed, 21
+ Feb 2024 07:26:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240221125931.742034354@linuxfoundation.org> <20240221125938.249496188@linuxfoundation.org>
-In-Reply-To: <20240221125938.249496188@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org> <20240221125948.348622258@linuxfoundation.org>
+In-Reply-To: <20240221125948.348622258@linuxfoundation.org>
 From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Date: Thu, 22 Feb 2024 00:16:53 +0900
-Message-ID: <CAKFNMo=7OYs+_GWPqytySpnvRiY1LjFUV80ppE7WxSBzEjN9tg@mail.gmail.com>
-Subject: Re: [PATCH 4.19 200/202] nilfs2: replace WARN_ONs for invalid DAT
+Date: Thu, 22 Feb 2024 00:25:51 +0900
+Message-ID: <CAKFNMonCSHt1ziZo=UcUvRSRfoARYUT+YycnoF2jQx78XENOyA@mail.gmail.com>
+Subject: Re: [PATCH 5.4 258/267] nilfs2: replace WARN_ONs for invalid DAT
  metadata block requests
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
@@ -84,10 +84,10 @@ Cc: stable@vger.kernel.org, patches@lists.linux.dev,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 21, 2024 at 10:23=E2=80=AFPM Greg Kroah-Hartman wrote:
+On Wed, Feb 21, 2024 at 11:30=E2=80=AFPM Greg Kroah-Hartman wrote:
 >
-> 4.19-stable review patch.  If anyone has any objections, please let me kn=
-ow.
+> 5.4-stable review patch.  If anyone has any objections, please let me kno=
+w.
 >
 > ------------------
 >
@@ -179,11 +179,11 @@ req,
 
 Hi Greg,
 
-Could you please drop this patch for 4.19?
+Please drop this patch for 5.4 as well as the patch for 4.19.
+(same reason as the review comment for the 4.19 patch)
 
-This uses nilfs_error() instead of nilfs_err(), but they are different
-functions.
-I will separately send an equivalent replacement patch for 4.19 (and 5.4).
+I will send an equivalent replacement patch.
 
+Thanks,
 Ryusuke Konishi
 
