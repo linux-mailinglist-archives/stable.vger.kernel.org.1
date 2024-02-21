@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-22958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC29785DE6D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:18:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7053385D947
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:17:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D43E61C23BB1
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:18:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9207F1C22E6A
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:17:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9DE47C0BA;
-	Wed, 21 Feb 2024 14:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3874E7993E;
+	Wed, 21 Feb 2024 13:16:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XbkG1e5A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vqg5Zenk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86FF67BB1F;
-	Wed, 21 Feb 2024 14:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD6C2C9A;
+	Wed, 21 Feb 2024 13:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525086; cv=none; b=gSjumfjqwFyO5lm35JV85bcDD3olBpw+urANxm3UmDLX16TDxnNDcWatzslFDy6VvUd5cuTCwBp9ZbXJibXhUndAbAd8CToArSloMgItZWYIOB7YVeYEDtgMrpECmTxp7o2UVU9YdYje+Gt1LGWYCsEg2H0S1h0qRy2nQ+SMY0w=
+	t=1708521386; cv=none; b=L3E29cvqysBB9DqHI1yYa1ym3tI1tOb0gkd7dobEh6IryeintsAuzs+DgVUJ5RhUytJaHZTXCk7RAbThGW4qLNGmbv4/+VjYfatZwFd0NFj8lVHbiJ6n1V4UlD8h3OoP89TpSl0UF/vjxth0W+o07Jo+WZAafGmIYVw1A0O3+8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525086; c=relaxed/simple;
-	bh=wCBwiOPdPJnaevFNVTj0S4GVvPd1rpvgqskgQkTZYD8=;
+	s=arc-20240116; t=1708521386; c=relaxed/simple;
+	bh=1uYpvLpIkaAZwvUZu3uRPCdbKMIsPtCmRmGapb6n96c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oL1ipn5B9cM/yplv81+kyD2zyCEfj6jKP8IvudwIWJP/rlia0j0oDLTNg1Pm31jQ49u0nssac5MLSmH/+K9dBOeqAbArbkjXM6NisTmPM1Q4RUcmbvTzDH5s2giMqOIQ9xQyfaLMm99JAW/DlUSorW9Ds3ytvNgBylh/QiQYXCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XbkG1e5A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DE61C433C7;
-	Wed, 21 Feb 2024 14:18:05 +0000 (UTC)
+	 MIME-Version; b=twcw262b/M/6ifJLoisEd6dY7DRhMkWwMulZJaQ08l04D91OwBlEs9kqi8CaSHSJnwQPnCOKYB4xHCJT1tev6rlW2CU+W0iTpEJ0lc8BbZxBhdoQHYiSqPhvyAA2SQkPBFRQtCJ2eduEljGj7m+9+gCeOr+b+nRXlqTmh0yNcHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vqg5Zenk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B742C43390;
+	Wed, 21 Feb 2024 13:16:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525086;
-	bh=wCBwiOPdPJnaevFNVTj0S4GVvPd1rpvgqskgQkTZYD8=;
+	s=korg; t=1708521385;
+	bh=1uYpvLpIkaAZwvUZu3uRPCdbKMIsPtCmRmGapb6n96c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XbkG1e5Aj2ja01+aSh/CXbkdwixXO146loyOZu9SR3xWYuaur3R9+2GwMI9NuJvvB
-	 HyASw8sUHonBDHB5YDxDoEN4jJoKqu0n4sGrk9v48BySmV2yXZ7rfRu664qSoQfzJ1
-	 vkGkql/mnz4adufbF9k2DnibhsXeO57Lp7brgvC8=
+	b=Vqg5ZenkmWIOg9pifsf6q7sjwR2P3n/am7+Ffc76h9H9tA4Q6h8malGMiPzmqv8z6
+	 Am7wvh+YD4u9GZqTJ5swspFK7xd1WEi/gJY4l8owRafAmc+CKbKDxVAEhA7owRJ8oe
+	 LXCO//UDO7Pnz2lnZ4KeKyPj+waCpzqLbdJJk3B0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kamal Dasu <kamal.dasu@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 057/267] spi: bcm-qspi: fix SFDP BFPT read by usig mspi read
+Subject: [PATCH 4.19 097/202] ASoC: doc: Fix undefined SND_SOC_DAPM_NOPM argument
 Date: Wed, 21 Feb 2024 14:06:38 +0100
-Message-ID: <20240221125941.800856178@linuxfoundation.org>
+Message-ID: <20240221125934.915346942@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kamal Dasu <kamal.dasu@broadcom.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 574bf7bbe83794a902679846770f75a9b7f28176 ]
+[ Upstream commit 67c7666fe808c3a7af3cc6f9d0a3dd3acfd26115 ]
 
-SFDP read shall use the mspi reads when using the bcm_qspi_exec_mem_op()
-call. This fixes SFDP parameter page read failures seen with parts that
-now use SFDP protocol to read the basic flash parameter table.
+The virtual widget example makes use of an undefined SND_SOC_DAPM_NOPM
+argument passed to SND_SOC_DAPM_MIXER().  Replace with the correct
+SND_SOC_NOPM definition.
 
-Fixes: 5f195ee7d830 ("spi: bcm-qspi: Implement the spi_mem interface")
-Signed-off-by: Kamal Dasu <kamal.dasu@broadcom.com>
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://msgid.link/r/20240109210033.43249-1-kamal.dasu@broadcom.com
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Link: https://lore.kernel.org/r/20231121120751.77355-1-cristian.ciocaltea@collabora.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-bcm-qspi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ Documentation/sound/soc/dapm.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-bcm-qspi.c b/drivers/spi/spi-bcm-qspi.c
-index 118d9161a788..b4032d1e7c98 100644
---- a/drivers/spi/spi-bcm-qspi.c
-+++ b/drivers/spi/spi-bcm-qspi.c
-@@ -19,7 +19,7 @@
- #include <linux/platform_device.h>
- #include <linux/slab.h>
- #include <linux/spi/spi.h>
--#include <linux/spi/spi-mem.h>
-+#include <linux/mtd/spi-nor.h>
- #include <linux/sysfs.h>
- #include <linux/types.h>
- #include "spi-bcm-qspi.h"
-@@ -976,7 +976,7 @@ static int bcm_qspi_exec_mem_op(struct spi_mem *mem,
+diff --git a/Documentation/sound/soc/dapm.rst b/Documentation/sound/soc/dapm.rst
+index 8e44107933ab..c3154ce6e1b2 100644
+--- a/Documentation/sound/soc/dapm.rst
++++ b/Documentation/sound/soc/dapm.rst
+@@ -234,7 +234,7 @@ corresponding soft power control. In this case it is necessary to create
+ a virtual widget - a widget with no control bits e.g.
+ ::
  
- 	/* non-aligned and very short transfers are handled by MSPI */
- 	if (!IS_ALIGNED((uintptr_t)addr, 4) || !IS_ALIGNED((uintptr_t)buf, 4) ||
--	    len < 4)
-+	    len < 4 || op->cmd.opcode == SPINOR_OP_RDSFDP)
- 		mspi_read = true;
+-  SND_SOC_DAPM_MIXER("AC97 Mixer", SND_SOC_DAPM_NOPM, 0, 0, NULL, 0),
++  SND_SOC_DAPM_MIXER("AC97 Mixer", SND_SOC_NOPM, 0, 0, NULL, 0),
  
- 	if (!has_bspi(qspi) || mspi_read)
+ This can be used to merge to signal paths together in software.
+ 
 -- 
 2.43.0
 
