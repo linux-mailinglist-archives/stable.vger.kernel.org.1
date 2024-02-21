@@ -1,129 +1,120 @@
-Return-Path: <stable+bounces-23258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF8E285ED16
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 00:38:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99B7285ED2C
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 00:41:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89A411C22C6D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 23:38:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 29306B20F3A
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 23:41:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4BD1129A68;
-	Wed, 21 Feb 2024 23:38:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 157FD3B2B6;
+	Wed, 21 Feb 2024 23:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UaKnizN0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KGRvRsks"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 718FB126F00;
-	Wed, 21 Feb 2024 23:38:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B0B281752;
+	Wed, 21 Feb 2024 23:41:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708558681; cv=none; b=n3TP5VtTZ6LN/cdGeXXIIhHA3q69R4bRc/7uKSub9S0DyA218S+E6ZySW3/ZXf3r4YcdXX5getksYs4XI7NQ6wonNbf/NBBzUBqnlWHhqKxQSDPEEkBacMasBC3yV7zLtjjI1br963H4nEfmOaZZVnm7Ep7M6mnhyS3mgl9O35I=
+	t=1708558880; cv=none; b=OXE6hX0I7ffbMhERBC4xI8o3+KAXAzH7gqBX8CxPbby/gltcQ7tfQAfdq9VWKxBR5LbDE4U4uBkLaabjr8k7GZikw6MEkrTYZdLsANo5SlcoUztwm61KwcaqVSSbuxP+ezN7WYUYxn7Sft4CoyvA1G9fHhW7nroihPE0Fb1jUME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708558681; c=relaxed/simple;
-	bh=WAXaGEI2juxPFHl35+ioThue0wtLioF1NPhr5VM0UkQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=V1tZ+v/80EnoR4EOsNcQhTf4Z1Cuco6zRbfgZc8GHb7ZxSuidZjkFYov2DgnIx/w0MhcnGxAiqx26UjrCGhn42kcSIZkLwsUSYXnU9U4i54606zXGxu8kklGeTintN/RylRERqojEJ5ocWQ2Ix5dvfkPhiZx3iXtjgEhvzvy9oM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UaKnizN0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBD99C433C7;
-	Wed, 21 Feb 2024 23:38:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708558680;
-	bh=WAXaGEI2juxPFHl35+ioThue0wtLioF1NPhr5VM0UkQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=UaKnizN0x8enyIettGm+0P9IFjEgQle8zT06jCvWpkm0F+ga7+XKvPsmE4mZiHQS0
-	 BtxooqOJbBXO+orTooSB2dk79aZLlvx55IOj7iMoQ9tC+gsYfVrezizdGqzykHDM65
-	 0LpbaMrtIPBHN9vTlzpMdStwUdJ2V4OR2UfX1Ac/x/on6gneACcmSeU3wtNoGE0mrs
-	 VPnn8nOwxumtIm+12Av4cOyLGvpx/2j2iEPpNXKDNgj5wjwxJ6vCXxb61c0IQUrpye
-	 qbXyG8P5/wJymdr3qpppBsIvqcv00sWt0t9VowKXp7K+bJlG8Vb6SLL40fRKNJwAJF
-	 WK4CLvUEnGkCA==
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-511ac32fe38so11071978e87.1;
-        Wed, 21 Feb 2024 15:38:00 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUcV2BLMgAGEuaU81K8xVwOmrrFx2ZSjxRqVw/Sl38dghL5Qp0rQICtHRLl75pGwnqyVh4JaADGLWAW9dgvGjMEHXJTg64H
-X-Gm-Message-State: AOJu0YzmTdmtreZ98JyH1G8WYfXAkxwvc6Jf1Mvrv8jFj/q1CyQy5v9S
-	oncY+kMn6QUUtiPxIWM5miQvlSxt7mH+ix32DHN9+GXJ3pBKL+tLez4VvGr02rf7/cTUTWI3vvH
-	FGl/XIjYjfkE9jJ9Y6YGYHz0sG4M=
-X-Google-Smtp-Source: AGHT+IGenZZOFkRMP6+eKElpXmWoSrGK5FHYxUOF69aa2bLEa/DwqCxn3XiWHJ1Xw5V1AaranzDq5lrQhp2GSIIM9hY=
-X-Received: by 2002:a05:6512:3a83:b0:512:b04a:aa56 with SMTP id
- q3-20020a0565123a8300b00512b04aaa56mr10911020lfu.24.1708558679072; Wed, 21
- Feb 2024 15:37:59 -0800 (PST)
+	s=arc-20240116; t=1708558880; c=relaxed/simple;
+	bh=peA9XfH82m0PDu+D+3ZCMjMzlRV6jT/mQwz03yS/uF8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oTict709vcdKN6xBShDeFOYMuL2GGJeZK3udb2PdF/rLIiIwrdBzmy+LVnkanjyRomq+G56xbJR5Kb5rz5gwjURLKEDGQhcMxrmyPr1FtDcmt0Ry1K91uuWwABOK78b+BRAzODuOIWFvm5PglKC2DXEodXfuWLENRTrTsJcCLmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KGRvRsks; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-6e4560664b5so1129228b3a.1;
+        Wed, 21 Feb 2024 15:41:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708558879; x=1709163679; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4wn3lnUr6QvHlVk0vYM9gSiyKQ1rcyaC3AxclYDdvOE=;
+        b=KGRvRsksz5AQl7JKZ/XJ4z5jq3YvmS/9QfbJiUXTfp9E4kFT9E3LvCsX7B/7Ajc04v
+         VTP3Y16drkYOu0hgryfwv7wEpx8A4CgJvL+GMJKjrO5w5MDrUVZshrvFxojLCvhI2mpu
+         9UCVM8iqXG3B+bCWRzoPj8ppexg3hJ58cykPcdqNaYhkSaqjWJnHRMMBD950IeFHrkN7
+         fsr49xalwXA6jiZFXbt8DrY3o9WPpLLUorQKGoCbvO3s7TNKP0MmUjVUsJFDpXSuTqwW
+         qXSCmLNvmvKBSealptK1Bnmq/agHKNFW7IuOKJCmkX+jtIIV2IWDb+R0ZMIW7qqhRD9B
+         lmPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708558879; x=1709163679;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4wn3lnUr6QvHlVk0vYM9gSiyKQ1rcyaC3AxclYDdvOE=;
+        b=SbMlcjexqetMCe9+haSm9aXsquOMxN40toW9jKJjTrcb5Dj08/3iP+YkkLLSYsmpG3
+         F0hsZsS389qoZrQcoRt+PXuckAkZ2V1UDXpw2oAYkWrf/63xrKOwxOPNImvesJsvj2Kj
+         lfWfvpOgxNLtd6bIjMGq3nbqJL4gWBfgKq1uKqj/0awI7s+tsGyB4f1x4RJHUiKwcbP5
+         TGSvQwKxsUERUbl7b+8gRWOwiCB2V1eGVkhq+h2sOhrjS8bKe9c3SoQQo2x1iraaiuoV
+         gEg1+hRXB6ro1G6gpaXOPpn5ybO3lpWpAaqRD0XFZvKTXj1OJBt0yEFx8X59CjgKOB4c
+         ODUA==
+X-Forwarded-Encrypted: i=1; AJvYcCUuhUnEm5gzDzlKA4kB5UGxkzRBhSutblV2y8PtZgYW2wi56bRT2Y80JZbfD3si1K6ZnEvwv5MeFWa3/wnm5gm3K6cC02qvZnSVBJ5pHvFOmjZJ0ULAPqbKafnBDxlEZkp4jkTp
+X-Gm-Message-State: AOJu0YwQdVqP6xCA6nIkGhi9K3H80mEegZ9nbRcdeK1XN75WRzWHFPAD
+	62vBnkcH6wdYc8PcKbjZYU38IMN5GqLhzmOwJYEmcG0siNqbrnIa
+X-Google-Smtp-Source: AGHT+IE4OsDUYJmlhzfSnU3fjQT55rsecC0mb4NZ0MRKrPJG4olCy8r0HlPJgm4UfflptFVs5PlLTg==
+X-Received: by 2002:a05:6a21:1706:b0:1a0:9391:b066 with SMTP id nv6-20020a056a21170600b001a09391b066mr15253871pzb.35.1708558878754;
+        Wed, 21 Feb 2024 15:41:18 -0800 (PST)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id g5-20020a17090adac500b002989864e50dsm676669pjx.0.2024.02.21.15.41.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 21 Feb 2024 15:41:18 -0800 (PST)
+Message-ID: <8f70c289-8fc9-4925-a3b0-feb928259b6d@gmail.com>
+Date: Wed, 21 Feb 2024 15:41:15 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240217161151.3987164-2-ardb+git@google.com>
-In-Reply-To: <20240217161151.3987164-2-ardb+git@google.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Thu, 22 Feb 2024 00:37:45 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXH+k4Z_iowxp+t=yU4tQFwLYjQxAQ92bga-xeZxE734BA@mail.gmail.com>
-Message-ID: <CAMj1kXH+k4Z_iowxp+t=yU4tQFwLYjQxAQ92bga-xeZxE734BA@mail.gmail.com>
-Subject: Re: [PATCH] crypto: arm64/neonbs - fix out-of-bounds access on short input
-To: Ard Biesheuvel <ardb+git@google.com>
-Cc: linux-crypto@vger.kernel.org, herbert@gondor.apana.org.au, 
-	stable@vger.kernel.org, syzbot+f1ceaa1a09ab891e1934@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.10 000/379] 5.10.210-rc1 review
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com
+References: <20240221125954.917878865@linuxfoundation.org>
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Sat, 17 Feb 2024 at 17:12, Ard Biesheuvel <ardb+git@google.com> wrote:
->
-> From: Ard Biesheuvel <ardb@kernel.org>
->
-> The bit-sliced implementation of AES-CTR operates on blocks of 128
-> bytes, and will fall back to the plain NEON version for tail blocks or
-> inputs that are shorter than 128 bytes to begin with.
->
-> It will call straight into the plain NEON asm helper, which performs all
-> memory accesses in granules of 16 bytes (the size of a NEON register).
-> For this reason, the associated plain NEON glue code will copy inputs
-> shorter than 16 bytes into a temporary buffer, given that this is a rare
-> occurrence and it is not worth the effort to work around this in the asm
-> code.
->
-> The fallback from the bit-sliced NEON version fails to take this into
-> account, potentially resulting in out-of-bounds accesses. So clone the
-> same workaround, and use a temp buffer for short in/outputs.
->
-> Cc: <stable@vger.kernel.org>
-> Reported-by: syzbot+f1ceaa1a09ab891e1934@syzkaller.appspotmail.com
-> Tested-by: syzbot+f1ceaa1a09ab891e1934@syzkaller.appspotmail.com
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+On 2/21/24 05:02, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.10.210 release.
+> There are 379 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri, 23 Feb 2024 12:59:02 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.210-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Ping?
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-> ---
->  arch/arm64/crypto/aes-neonbs-glue.c | 11 +++++++++++
->  1 file changed, 11 insertions(+)
->
-> diff --git a/arch/arm64/crypto/aes-neonbs-glue.c b/arch/arm64/crypto/aes-neonbs-glue.c
-> index bac4cabef607..849dc41320db 100644
-> --- a/arch/arm64/crypto/aes-neonbs-glue.c
-> +++ b/arch/arm64/crypto/aes-neonbs-glue.c
-> @@ -227,8 +227,19 @@ static int ctr_encrypt(struct skcipher_request *req)
->                         src += blocks * AES_BLOCK_SIZE;
->                 }
->                 if (nbytes && walk.nbytes == walk.total) {
-> +                       u8 buf[AES_BLOCK_SIZE];
-> +                       u8 *d = dst;
-> +
-> +                       if (unlikely(nbytes < AES_BLOCK_SIZE))
-> +                               src = dst = memcpy(buf + sizeof(buf) - nbytes,
-> +                                                  src, nbytes);
-> +
->                         neon_aes_ctr_encrypt(dst, src, ctx->enc, ctx->key.rounds,
->                                              nbytes, walk.iv);
-> +
-> +                       if (unlikely(nbytes < AES_BLOCK_SIZE))
-> +                               memcpy(d, buf + sizeof(buf) - nbytes, nbytes);
-> +
->                         nbytes = 0;
->                 }
->                 kernel_neon_end();
-> --
-> 2.44.0.rc0.258.g7320e95886-goog
->
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
+
 
