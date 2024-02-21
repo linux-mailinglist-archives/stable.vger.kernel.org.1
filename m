@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-22618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 269CA85DCDF
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:59:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5862B85DB0F
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:37:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58A7D1C23787
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:59:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6814B25029
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:37:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44DC87BB05;
-	Wed, 21 Feb 2024 13:59:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B370B7CF32;
+	Wed, 21 Feb 2024 13:36:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iQWH+V0A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vlCfscMJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0166E76C99;
-	Wed, 21 Feb 2024 13:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7343B7CF29;
+	Wed, 21 Feb 2024 13:36:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523943; cv=none; b=nIClIq4FKJ14okx2oftsklv0JrciibPZ1pfsxzpMDn68pHL4BBcDXSZZz3JhqXVYJkQjM73BLwsIgls34Q7RcjrTvYU8D/wo52eI9qjQMC3DP+yziBmoG+tIZEAPzO7zZfQID8U8h0l49MYtGr8cMxguEh70dCsVRGv1YjeGUkg=
+	t=1708522571; cv=none; b=SyECqjKUNUhcpaJ9dKaNaNfRDI6fprmp7a3HB6d/eM7oaXfK90y/gXLWOlXAiWs+fQWScAU4/Fmc8veyyDU8bjhDNAdgqL8JAA7dkKsN6+xi9Aia38JRTtBIHob+UTj1QmXEYsat+SiZG8ZpL2360aM8pH2kmxo7QXZU0VbFtuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523943; c=relaxed/simple;
-	bh=i6GB1Amkyo19BaT+l4gCi6TYq1NcjGofduHMXUyGSJc=;
+	s=arc-20240116; t=1708522571; c=relaxed/simple;
+	bh=Ku+a2kt1ECAG0jDJUiZJTYL82EPLu3NhgzL93qiI/QQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vk2D4MKht54qZ1uJb1nwe6KONYs5Zj0ZxOV2jm7Kf6/Dy72owm/hjCPxFYO1ODtbh368JhP2uWFH4JtkFFaRSfw2Hnzc0R4EXT/WXeNBvYWVVaMNyyYK7mqMws12+vbp5cp0UHij7cWJ66JN2g2RdgnVw6jt5u2qs+0iu7K5Ldg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iQWH+V0A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20CAAC43394;
-	Wed, 21 Feb 2024 13:59:01 +0000 (UTC)
+	 MIME-Version; b=IXzrEWctHGoAtfGkD5C5yyf4HS74Sh82PXYJ3aMzuEZY7BZhkeLL2q8rWuJGNBhvsKkTYXQEgBu5MZ16hSvI7EnVNuB9NTRS2Y8Hu9JyLCG41d2PRbPxPwVrtevt8JNTa4GhSz8EgG9Q9ZHvnfn4Whap+bSpUtFJ2A/oCI5x03Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vlCfscMJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1F9BC43390;
+	Wed, 21 Feb 2024 13:36:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523942;
-	bh=i6GB1Amkyo19BaT+l4gCi6TYq1NcjGofduHMXUyGSJc=;
+	s=korg; t=1708522571;
+	bh=Ku+a2kt1ECAG0jDJUiZJTYL82EPLu3NhgzL93qiI/QQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iQWH+V0AwFf7yrr3QcTzKbZy86DrSPiT0vRJQiQS/Mhu9AmPgLthyPaG6PwedXtl6
-	 GbSV+gHiFN1AbSyLkEqpMReQbD25Nx9RmtXXTGTrRn6snFgSsqjPd6Q4Z6BJQX1ymT
-	 5l0KGY0DX54HhwGDDkUemy/trmESKUjnhSX+lLHM=
+	b=vlCfscMJTeFyuLXD3A0zWWYhrm9wLFDaL3tP6OD5upJ2tW0EFnaBDQPQOYyIx1mx7
+	 E9HoRJHuueUrYbw0Hyl2NojnS5dm4iDuBtXAFi6wKligflniw2K270VaMpxgtV0Tsf
+	 TmmRMzg1gcTH7w43OOImnIR+56hvfGCgYaNcP4wY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bernd Edlinger <bernd.edlinger@hotmail.de>,
-	"Eric W. Biederman" <ebiederm@xmission.com>,
-	Kees Cook <keescook@chromium.org>
-Subject: [PATCH 5.10 068/379] exec: Fix error handling in begin_new_exec()
-Date: Wed, 21 Feb 2024 14:04:07 +0100
-Message-ID: <20240221125956.927091696@linuxfoundation.org>
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Mao Jinlong <quic_jinlmao@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 197/476] arm64: dts: qcom: msm8998: Fix out-ports is a required property
+Date: Wed, 21 Feb 2024 14:04:08 +0100
+Message-ID: <20240221130015.201092465@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bernd Edlinger <bernd.edlinger@hotmail.de>
+From: Mao Jinlong <quic_jinlmao@quicinc.com>
 
-commit 84c39ec57d409e803a9bb6e4e85daf1243e0e80b upstream.
+[ Upstream commit ae5ee3562a2519214b12228545e88a203dd68bbd ]
 
-If get_unused_fd_flags() fails, the error handling is incomplete because
-bprm->cred is already set to NULL, and therefore free_bprm will not
-unlock the cred_guard_mutex. Note there are two error conditions which
-end up here, one before and one after bprm->cred is cleared.
+out-ports is a required property for coresight ETM. Add out-ports for
+ETM nodes to fix the warning.
 
-Fixes: b8a61c9e7b4a ("exec: Generic execfd support")
-Signed-off-by: Bernd Edlinger <bernd.edlinger@hotmail.de>
-Acked-by: Eric W. Biederman <ebiederm@xmission.com>
-Link: https://lore.kernel.org/r/AS8P193MB128517ADB5EFF29E04389EDAE4752@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM
-Cc: stable@vger.kernel.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Mao Jinlong <quic_jinlmao@quicinc.com>
+Link: https://lore.kernel.org/r/20231210072633.4243-4-quic_jinlmao@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/exec.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/boot/dts/qcom/msm8998.dtsi | 32 +++++++++++++++++----------
+ 1 file changed, 20 insertions(+), 12 deletions(-)
 
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -1392,6 +1392,9 @@ int begin_new_exec(struct linux_binprm *
+diff --git a/arch/arm64/boot/dts/qcom/msm8998.dtsi b/arch/arm64/boot/dts/qcom/msm8998.dtsi
+index b7d72b0d579e..7eadecba0175 100644
+--- a/arch/arm64/boot/dts/qcom/msm8998.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8998.dtsi
+@@ -1863,9 +1863,11 @@
  
- out_unlock:
- 	up_write(&me->signal->exec_update_lock);
-+	if (!bprm->cred)
-+		mutex_unlock(&me->signal->cred_guard_mutex);
-+
- out:
- 	return retval;
- }
+ 			cpu = <&CPU4>;
+ 
+-			port{
+-				etm4_out: endpoint {
+-					remote-endpoint = <&apss_funnel_in4>;
++			out-ports {
++				port{
++					etm4_out: endpoint {
++						remote-endpoint = <&apss_funnel_in4>;
++					};
+ 				};
+ 			};
+ 		};
+@@ -1880,9 +1882,11 @@
+ 
+ 			cpu = <&CPU5>;
+ 
+-			port{
+-				etm5_out: endpoint {
+-					remote-endpoint = <&apss_funnel_in5>;
++			out-ports {
++				port{
++					etm5_out: endpoint {
++						remote-endpoint = <&apss_funnel_in5>;
++					};
+ 				};
+ 			};
+ 		};
+@@ -1897,9 +1901,11 @@
+ 
+ 			cpu = <&CPU6>;
+ 
+-			port{
+-				etm6_out: endpoint {
+-					remote-endpoint = <&apss_funnel_in6>;
++			out-ports {
++				port{
++					etm6_out: endpoint {
++						remote-endpoint = <&apss_funnel_in6>;
++					};
+ 				};
+ 			};
+ 		};
+@@ -1914,9 +1920,11 @@
+ 
+ 			cpu = <&CPU7>;
+ 
+-			port{
+-				etm7_out: endpoint {
+-					remote-endpoint = <&apss_funnel_in7>;
++			out-ports {
++				port{
++					etm7_out: endpoint {
++						remote-endpoint = <&apss_funnel_in7>;
++					};
+ 				};
+ 			};
+ 		};
+-- 
+2.43.0
+
 
 
 
