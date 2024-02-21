@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-23080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E28385DF25
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:25:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0BC985DC5D
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:52:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E78181F23D69
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:25:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A62562854D8
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:52:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C10C3D0A1;
-	Wed, 21 Feb 2024 14:25:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7362C76C99;
+	Wed, 21 Feb 2024 13:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gAaPyIn1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/n11ySU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F017A69E00;
-	Wed, 21 Feb 2024 14:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD0478B73;
+	Wed, 21 Feb 2024 13:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525511; cv=none; b=LfyuruswCSa35XRBVJ64jNpT4X/6HG3DeEt/77KDwIirddPBYfsuKEFQlkqKcL+q+srRYkMdgLEJAOc0wdd+SHmKx4b7EDtCqhdVlpfdLz+fR2xai17tp6iBDBdRAyVKfRl8s/KG2JaCVPbe526Cs8Ar8OViJrERZ/8/Eu6cCrc=
+	t=1708523546; cv=none; b=IVlOa39LSPCvzzeWg2w9YqU9j4OOKP5g5fu+8beFjl9d+/Ekkjh4qyvxzp7J2PGBu58BAbDtz/8MJyrSesfCLpVFOqkX+uzoxf/1Gw77e/GeNIs6U0Uj08eG2Kt4zkGfD34Ef+vZlAB3yqNgnIOjXHXuYe3gcTWFbO81Bk//rAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525511; c=relaxed/simple;
-	bh=TUVNUJIiNBtMN/2dc7TvB5Z5fdRcPMzIOle+jC/XPsQ=;
+	s=arc-20240116; t=1708523546; c=relaxed/simple;
+	bh=rzYFQLQVj6ZD5eU75DVP0UOO85A4RAvYdXzSz6TFIDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bR5ABYwqgaWxW5snumfttY34BhEKID0obXt3+Ba+FpOMCM/q0tPbwTNcT7hlJCOA6dE2zuJ/ENh0/olW/GS0053VJbu6Z0RPks5XYaEITGVD7WtCmCHS8VS9B1TYXZ0w8dJs9NWxZb9m5KbGpt/Jes1qqbNQVLVduJlbgE7uXvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gAaPyIn1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00536C43390;
-	Wed, 21 Feb 2024 14:25:09 +0000 (UTC)
+	 MIME-Version; b=lLSrzWIvbco+ks3VWYrORNhdwLJswz63Nc6veOd2bsgonrKbUoUPwMy5gP6GvZ++a8w6XnDxN3YPYm51E6HRon/mQT/bx9RnEM15SIzmd8BypnH+7acg2K4DKLGNZSlOYleKowCpuEPbqjUKDgWa9tm77VYBT97R3ZeXdzaQQGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/n11ySU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97F58C43394;
+	Wed, 21 Feb 2024 13:52:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525510;
-	bh=TUVNUJIiNBtMN/2dc7TvB5Z5fdRcPMzIOle+jC/XPsQ=;
+	s=korg; t=1708523546;
+	bh=rzYFQLQVj6ZD5eU75DVP0UOO85A4RAvYdXzSz6TFIDU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gAaPyIn1vd31xj7Nx1ST14XkD6cR2alMhLV941pqA/vOsoAKznYpMIYfB7YHt6vu1
-	 pKEukv1JoZyOq95AL0yQ2Ktty7m4ZdH4POsRzDIClA5tQDn0oi7bXjhvixdQWSxlS1
-	 ZhSv36VmMQOw0zLt1Us2+FWr16LNr7BjVxryNIq8=
+	b=u/n11ySUqjAxRZQ/zXxsR3VBMsJHkbpLYrkIUFmrpnlcwJ33qzX0xw7exCsaDRY2+
+	 3GwzZyoJdFZYeeT+vmCA2PDLxhhevF9OEsPlA9JsWWuK9ER6I9jNtfizILwLMpeqwO
+	 GMb+Mv+14G2UL2b/UqSYHbg1XhDX1bRluMqe/7Mo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <error27@gmail.com>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 178/267] phy: renesas: rcar-gen3-usb2: Fix returning wrong error code
+	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+Subject: [PATCH 5.15 468/476] Revert "selftests/bpf: Test tail call counting with bpf2bpf and data on stack"
 Date: Wed, 21 Feb 2024 14:08:39 +0100
-Message-ID: <20240221125945.722934382@linuxfoundation.org>
+Message-ID: <20240221130025.325787931@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,56 +60,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
 
-[ Upstream commit 249abaf3bf0dd07f5ddebbb2fe2e8f4d675f074e ]
+This reverts commit 3eefb2fbf4ec1c1ff239b8b65e6e78aae335e4a6.
 
-Even if device_create_file() returns error code,
-rcar_gen3_phy_usb2_probe() will return zero because the "ret" is
-variable shadowing.
+libbpf support for "tc" progs doesn't exist for the linux-5.15.y tree.
+This commit was backported too far back in upstream, to a kernel where
+the libbpf support was not there for the test.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <error27@gmail.com>
-Closes: https://lore.kernel.org/r/202312161021.gOLDl48K-lkp@intel.com/
-Fixes: 441a681b8843 ("phy: rcar-gen3-usb2: fix implementation for runtime PM")
-Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20240105093703.3359949-1-yoshihiro.shimoda.uh@renesas.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/renesas/phy-rcar-gen3-usb2.c | 4 ----
- 1 file changed, 4 deletions(-)
+ tools/testing/selftests/bpf/prog_tests/tailcalls.c    |   55 ------------------
+ tools/testing/selftests/bpf/progs/tailcall_bpf2bpf6.c |   42 -------------
+ 2 files changed, 97 deletions(-)
+ delete mode 100644 tools/testing/selftests/bpf/progs/tailcall_bpf2bpf6.c
 
-diff --git a/drivers/phy/renesas/phy-rcar-gen3-usb2.c b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-index cfb98bba7715..ddc41db1f65a 100644
---- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-+++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-@@ -631,8 +631,6 @@ static int rcar_gen3_phy_usb2_probe(struct platform_device *pdev)
- 	channel->irq = platform_get_irq_optional(pdev, 0);
- 	channel->dr_mode = rcar_gen3_get_dr_mode(dev->of_node);
- 	if (channel->dr_mode != USB_DR_MODE_UNKNOWN) {
--		int ret;
+--- a/tools/testing/selftests/bpf/prog_tests/tailcalls.c
++++ b/tools/testing/selftests/bpf/prog_tests/tailcalls.c
+@@ -810,59 +810,6 @@ out:
+ 	bpf_object__close(obj);
+ }
+ 
+-#include "tailcall_bpf2bpf6.skel.h"
 -
- 		channel->is_otg_channel = true;
- 		channel->uses_otg_pins = !of_property_read_bool(dev->of_node,
- 							"renesas,no-otg-pins");
-@@ -691,8 +689,6 @@ static int rcar_gen3_phy_usb2_probe(struct platform_device *pdev)
- 		ret = PTR_ERR(provider);
- 		goto error;
- 	} else if (channel->is_otg_channel) {
--		int ret;
+-/* Tail call counting works even when there is data on stack which is
+- * not aligned to 8 bytes.
+- */
+-static void test_tailcall_bpf2bpf_6(void)
+-{
+-	struct tailcall_bpf2bpf6 *obj;
+-	int err, map_fd, prog_fd, main_fd, data_fd, i, val;
+-	LIBBPF_OPTS(bpf_test_run_opts, topts,
+-		.data_in = &pkt_v4,
+-		.data_size_in = sizeof(pkt_v4),
+-		.repeat = 1,
+-	);
 -
- 		ret = device_create_file(dev, &dev_attr_role);
- 		if (ret < 0)
- 			goto error;
--- 
-2.43.0
-
+-	obj = tailcall_bpf2bpf6__open_and_load();
+-	if (!ASSERT_OK_PTR(obj, "open and load"))
+-		return;
+-
+-	main_fd = bpf_program__fd(obj->progs.entry);
+-	if (!ASSERT_GE(main_fd, 0, "entry prog fd"))
+-		goto out;
+-
+-	map_fd = bpf_map__fd(obj->maps.jmp_table);
+-	if (!ASSERT_GE(map_fd, 0, "jmp_table map fd"))
+-		goto out;
+-
+-	prog_fd = bpf_program__fd(obj->progs.classifier_0);
+-	if (!ASSERT_GE(prog_fd, 0, "classifier_0 prog fd"))
+-		goto out;
+-
+-	i = 0;
+-	err = bpf_map_update_elem(map_fd, &i, &prog_fd, BPF_ANY);
+-	if (!ASSERT_OK(err, "jmp_table map update"))
+-		goto out;
+-
+-	err = bpf_prog_test_run_opts(main_fd, &topts);
+-	ASSERT_OK(err, "entry prog test run");
+-	ASSERT_EQ(topts.retval, 0, "tailcall retval");
+-
+-	data_fd = bpf_map__fd(obj->maps.bss);
+-	if (!ASSERT_GE(data_fd, 0, "bss map fd"))
+-		goto out;
+-
+-	i = 0;
+-	err = bpf_map_lookup_elem(data_fd, &i, &val);
+-	ASSERT_OK(err, "bss map lookup");
+-	ASSERT_EQ(val, 1, "done flag is set");
+-
+-out:
+-	tailcall_bpf2bpf6__destroy(obj);
+-}
+-
+ void test_tailcalls(void)
+ {
+ 	if (test__start_subtest("tailcall_1"))
+@@ -885,6 +832,4 @@ void test_tailcalls(void)
+ 		test_tailcall_bpf2bpf_4(false);
+ 	if (test__start_subtest("tailcall_bpf2bpf_5"))
+ 		test_tailcall_bpf2bpf_4(true);
+-	if (test__start_subtest("tailcall_bpf2bpf_6"))
+-		test_tailcall_bpf2bpf_6();
+ }
+--- a/tools/testing/selftests/bpf/progs/tailcall_bpf2bpf6.c
++++ /dev/null
+@@ -1,42 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-#include <linux/bpf.h>
+-#include <bpf/bpf_helpers.h>
+-
+-#define __unused __attribute__((unused))
+-
+-struct {
+-	__uint(type, BPF_MAP_TYPE_PROG_ARRAY);
+-	__uint(max_entries, 1);
+-	__uint(key_size, sizeof(__u32));
+-	__uint(value_size, sizeof(__u32));
+-} jmp_table SEC(".maps");
+-
+-int done = 0;
+-
+-SEC("tc")
+-int classifier_0(struct __sk_buff *skb __unused)
+-{
+-	done = 1;
+-	return 0;
+-}
+-
+-static __noinline
+-int subprog_tail(struct __sk_buff *skb)
+-{
+-	/* Don't propagate the constant to the caller */
+-	volatile int ret = 1;
+-
+-	bpf_tail_call_static(skb, &jmp_table, 0);
+-	return ret;
+-}
+-
+-SEC("tc")
+-int entry(struct __sk_buff *skb)
+-{
+-	/* Have data on stack which size is not a multiple of 8 */
+-	volatile char arr[1] = {};
+-
+-	return subprog_tail(skb);
+-}
+-
+-char __license[] SEC("license") = "GPL";
 
 
 
