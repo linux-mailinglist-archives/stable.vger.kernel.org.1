@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-22582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 385C385DCBA
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:57:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B40985DADA
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:35:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A45C1C236ED
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:57:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3CB3FB26347
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:35:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8102E7B3F2;
-	Wed, 21 Feb 2024 13:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF3A879953;
+	Wed, 21 Feb 2024 13:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CNf4MZQe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dy809BjA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F539762C1;
-	Wed, 21 Feb 2024 13:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A410D69951;
+	Wed, 21 Feb 2024 13:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523800; cv=none; b=DTU+/lg9i3GAWb/itctYJE1IzvJcpjRRkOEV59UBZb0ouaaEb0rVaNtJrfISZfW8BMUvsE/C2kqCwqkfRvuYhfptHkYEg/pJxCd+1LcrUnmNkC2mgB1fIAR+3v5RE1QocdGzFpCboZwj81NjCKHn4o31GCSg0TnLFE4SSm3LhbQ=
+	t=1708522424; cv=none; b=IEOrUiOvI7SRzaCoKsFOUUzTRxxvFAzMs7m2Guc/n6iynwz/N44N0zhItj56Sy+vvaBpIkC3IBOubWuQMp2DxAAhCzfVXGl6Ln2pWcPqoGprBLHaFM/D6odrVWgLAXLg86UUziYmtTQsZWgcYlyHbrkSgpwcvM/zH2sQ65Um+cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523800; c=relaxed/simple;
-	bh=33RTbqNVq+FR8JtQ4mVQ0/pHlhB1hehtBm8ym8WvBp8=;
+	s=arc-20240116; t=1708522424; c=relaxed/simple;
+	bh=RVMreYPnKnn2aZeqf0TlIU7Nv2K+JIp9yDr9AEgIrOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fN2k9mGC2WddjTkiaLAF7LQE+kIXk7bPnXtc/UE9Jut0CTzyyYx4fdYJ4y/6JXuB9f6kabYbqTlrXkfwKaeDV3k11ZRODrYyS8Qmg2s4LG+EAOhkz5HxzTKqXl+P3JMQgHS2assVHOGWl02KvrDCGL9KxphJqzMvMImxk9IyU5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CNf4MZQe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAC9BC433C7;
-	Wed, 21 Feb 2024 13:56:39 +0000 (UTC)
+	 MIME-Version; b=LGHhn2fqXFkny+sb/ZodM+ZowrCPhp4jM+MuJSmseDLTkufyVSjGsF3j3L3y5N0j5fUEhZJ5Vr1QuCVqpq5WpmumXXDqPYEgwpINN3h+01YvmBbEw+5dl/9m7ihf0E84U0Ti1RE5HGAybSDEyN9KVbfOicE+/fXr0Tn8oIiucMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dy809BjA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2C71C433A6;
+	Wed, 21 Feb 2024 13:33:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523800;
-	bh=33RTbqNVq+FR8JtQ4mVQ0/pHlhB1hehtBm8ym8WvBp8=;
+	s=korg; t=1708522424;
+	bh=RVMreYPnKnn2aZeqf0TlIU7Nv2K+JIp9yDr9AEgIrOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CNf4MZQeuHi8V8pjsP3F+/esSCTmUseEWm6GjsY5LcpTgfWup+E1w+qKhMs2fRe+8
-	 ZBjmaVqtN49WyIMi9ypGwFLipWcWAVMNrehp9tRmgd/YHq3EaB5rn3+w1zd9rA9Rnr
-	 uobKmJrfAJCS0kHJVs7IkcoS4dWNSUybVD4J5WDM=
+	b=dy809BjAe3vxQzCZ7Qbcnw4NbiDHcrr90CKOjR4Ja5n+EfjMQSkTGdFkLM7ujCbTl
+	 vFyWp8TdoctLnbpgOcXeoICqeskE7jS7u/7/UzfIKTpsrIiCSdI6IJDT1N6dwccfj3
+	 bHeRBr3kQCpqZ7gClKAyxN8sjQfsXzavcuoVfRzc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 5.10 033/379] rtc: Adjust failure return code for cmos_set_alarm()
+	Ye Bin <yebin10@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 161/476] ext4: fix inconsistent between segment fstrim and full fstrim
 Date: Wed, 21 Feb 2024 14:03:32 +0100
-Message-ID: <20240221125955.896586320@linuxfoundation.org>
+Message-ID: <20240221130013.898930390@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +61,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Ye Bin <yebin10@huawei.com>
 
-commit 1311a8f0d4b23f58bbababa13623aa40b8ad4e0c upstream.
+[ Upstream commit 68da4c44b994aea797eb9821acb3a4a36015293e ]
 
-When mc146818_avoid_UIP() fails to return a valid value, this is because
-UIP didn't clear in the timeout period. Adjust the return code in this
-case to -ETIMEDOUT.
+Suppose we issue two FITRIM ioctls for ranges [0,15] and [16,31] with
+mininum length of trimmed range set to 8 blocks. If we have say a range of
+blocks 10-22 free, this range will not be trimmed because it straddles the
+boundary of the two FITRIM ranges and neither part is big enough. This is a
+bit surprising to some users that call FITRIM on smaller ranges of blocks
+to limit impact on the system. Also XFS trims all free space extents that
+overlap with the specified range so we are inconsistent among filesystems.
+Let's change ext4_try_to_trim_range() to consider for trimming the whole
+free space extent that straddles the end of specified range, not just the
+part of it within the range.
 
-Tested-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
-Reviewed-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
-Acked-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
-Cc:  <stable@vger.kernel.org>
-Fixes: cdedc45c579f ("rtc: cmos: avoid UIP when reading alarm time")
-Fixes: cd17420ebea5 ("rtc: cmos: avoid UIP when writing alarm time")
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20231128053653.101798-3-mario.limonciello@amd.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20231216010919.1995851-1-yebin10@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-cmos.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ext4/mballoc.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/drivers/rtc/rtc-cmos.c
-+++ b/drivers/rtc/rtc-cmos.c
-@@ -292,7 +292,7 @@ static int cmos_read_alarm(struct device
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index a82ebc746cc4..762c2f8b5b2a 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -6457,13 +6457,15 @@ static int ext4_try_to_trim_range(struct super_block *sb,
+ __acquires(ext4_group_lock_ptr(sb, e4b->bd_group))
+ __releases(ext4_group_lock_ptr(sb, e4b->bd_group))
+ {
+-	ext4_grpblk_t next, count, free_count;
++	ext4_grpblk_t next, count, free_count, last, origin_start;
+ 	bool set_trimmed = false;
+ 	void *bitmap;
  
- 	/* This not only a rtc_op, but also called directly */
- 	if (!is_valid_irq(cmos->irq))
--		return -EIO;
-+		return -ETIMEDOUT;
++	last = ext4_last_grp_cluster(sb, e4b->bd_group);
+ 	bitmap = e4b->bd_bitmap;
+-	if (start == 0 && max >= ext4_last_grp_cluster(sb, e4b->bd_group))
++	if (start == 0 && max >= last)
+ 		set_trimmed = true;
++	origin_start = start;
+ 	start = max(e4b->bd_info->bb_first_free, start);
+ 	count = 0;
+ 	free_count = 0;
+@@ -6472,7 +6474,10 @@ __releases(ext4_group_lock_ptr(sb, e4b->bd_group))
+ 		start = mb_find_next_zero_bit(bitmap, max + 1, start);
+ 		if (start > max)
+ 			break;
+-		next = mb_find_next_bit(bitmap, max + 1, start);
++
++		next = mb_find_next_bit(bitmap, last + 1, start);
++		if (origin_start == 0 && next >= last)
++			set_trimmed = true;
  
- 	/* Basic alarms only support hour, minute, and seconds fields.
- 	 * Some also support day and month, for alarms up to a year in
-@@ -557,7 +557,7 @@ static int cmos_set_alarm(struct device
- 	 * Use mc146818_avoid_UIP() to avoid this.
- 	 */
- 	if (!mc146818_avoid_UIP(cmos_set_alarm_callback, &p))
--		return -EIO;
-+		return -ETIMEDOUT;
- 
- 	cmos->alarm_expires = rtc_tm_to_time64(&t->time);
- 
+ 		if ((next - start) >= minblocks) {
+ 			int ret = ext4_trim_extent(sb, start, next - start, e4b);
+-- 
+2.43.0
+
 
 
 
