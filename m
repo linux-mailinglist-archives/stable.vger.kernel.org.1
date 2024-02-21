@@ -1,168 +1,128 @@
-Return-Path: <stable+bounces-21777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A416485CE3D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 03:45:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E9F985D090
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 07:42:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C136282959
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 02:45:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D01DD2882EF
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 06:42:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5181D25777;
-	Wed, 21 Feb 2024 02:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 948242E400;
+	Wed, 21 Feb 2024 06:42:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Fo8+X5x2"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dge1XcLl"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1533B2B9CC;
-	Wed, 21 Feb 2024 02:45:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F31B1365;
+	Wed, 21 Feb 2024 06:42:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708483537; cv=none; b=GJvoszCR+XQjklVZ+BTbD+rFOlrepmAheObMpUUPICvRquPCDgHzdipVLFfBBG7xmSd0GukfZrSYC/FBZVp7Ny9m9rtcApsHcCyMv80oHo84nvwDa4KAyq+80f6zUY0/gxU5RbvHFbE+GNY7IcUbfNapZHUV9j1cP6x7iNNrL1U=
+	t=1708497744; cv=none; b=GPIkj/qKXpg/aJNYQi3zKVT8TxwVAg/3ji4E6Ebj7xpz5zBRYeyTPJHo8eWdXRSMmMtWzj7cpwzU7eC6SLR/I9W+pZK5Trgxe3cG/fuDL33HoSs+w7KauzZ9ihIKYQy3CTCoGsBxc3DyE7/XM46RP/vfbEtDlAvv65ip+C3pjrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708483537; c=relaxed/simple;
-	bh=obtYbZZ9g4Ih4ksC+MZPfSTGjvsL7/Xd7/k5rk/le/s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sUZIeEPG8wYA9Cjj4Ajv9Y/Pu3o4Z5kD3NdM+m7H90LnCPCrwrN3ev4sMSZFeHoXfmJhDLnOLphFrzKxfWFh4tILZKHrtNVRix7uHrEnAbXYHIUTV563hzxTAHWTohCMSjowEObv2NL+mduI+0NPhLBKurraxHrAkGVV5X9oc2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Fo8+X5x2; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708483535; x=1740019535;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=obtYbZZ9g4Ih4ksC+MZPfSTGjvsL7/Xd7/k5rk/le/s=;
-  b=Fo8+X5x29Zw3DZ3UZcHSyPA9nijTRjbT3KxZyP+Pqt24FQB+KK0nk6NE
-   c1dodl1U2EJ2iCW31H3bYM3EeRkvj/U5rkOx4Oxcvnl+qd7vdolW8O8g5
-   1ltG9rD+agUbOjh6LsBSFSOH7GGw10Qiy7kPEyk/8pkjfFnzDVatqa9CA
-   hUtjt0zGN/3vxkVzXUAzHtzbIZCEcTwDLP8l28DAlllRWMBMEyRoTDw6b
-   cnu3mQtJvY51IJi6G2YIroGUobsTvnQ06llJl2DlC9xSDiPqaHAtY8Vtb
-   9sO4K+afOtpMz3nToiuRhKj12ruBOII5T8Pv8nSiJ0jMOLSVsaQS86Mw5
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="13247242"
-X-IronPort-AV: E=Sophos;i="6.06,174,1705392000"; 
-   d="scan'208";a="13247242"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 18:45:34 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,174,1705392000"; 
-   d="scan'208";a="5349724"
-Received: from msbabaa-mobl.amr.corp.intel.com (HELO [10.209.28.248]) ([10.209.28.248])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 18:45:34 -0800
-Message-ID: <39ef1387-609c-45ca-9bfa-e01b72cacaaa@linux.intel.com>
-Date: Tue, 20 Feb 2024 18:45:32 -0800
+	s=arc-20240116; t=1708497744; c=relaxed/simple;
+	bh=VNdJmD/gpyse/FMH9lufHreZgd3FLHQhGe9fMKcG+6w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sKCZtgH6emYx1PW6X2U4anEayBOF9WUP0j/KxhKTmfw2cnGIBf1bWMmr0FKhp10MAKLLhXCl8BcFrWQ4moXQBgl/nKddv1bJvYLGJU4WsLceJ6i07x+TsWgB25kydQvHzxcaEEQKa7qQ3ULi84l+6qtYUTqx0m2uE0QbnzgSYUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dge1XcLl; arc=none smtp.client-ip=209.85.210.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-6e461a9e40eso605777a34.2;
+        Tue, 20 Feb 2024 22:42:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708497742; x=1709102542; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=8qepPg3+JSFA4GPvBKRhv/lZipuP/R6kgkTa4naVw58=;
+        b=dge1XcLlHmZDLPKBloNzE9MOZL8rsE2q1ZdPG3mrNG/LooEBvtbdL4irDHWmrG/TLC
+         JfRGGZzcGFTO2rBehvlx5bVP8/+Vebu2kbUcsctkRsy0zQd2HWS4CKAhZ4xjFMQbqMzN
+         0L2e12tQKjaPpgbcd+HDQmmEhUaFQ5u2YBBsHBkC9+BAr0+6NU5bptASAUv58ohAz78p
+         J/TxIqlIP+V38J248mQnI/RguPCCyYAlWlTRzqrzMuMe38vsBQFR8OduhDN3lf9+M/KQ
+         k4W/pWjrUnzXBCwio+sRKtoifdURQlZROPnYLKoOaJBFU9ziDNNH36nI248smO/O6ShR
+         WByA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708497742; x=1709102542;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8qepPg3+JSFA4GPvBKRhv/lZipuP/R6kgkTa4naVw58=;
+        b=lBkLyWwxinoru4Hzb/o+5wE4ddeewhW2KqQDsnueynmIL+ZHmJ2tB++LNyYrMBai6u
+         M/Wq+ap8m5O6WGqPxYG5wBF2UXDh2qslj+4Sx6+ObT0ncv6aYRSZCxa8pFsSlvIAiQbA
+         nbWl9gQSjPdJ88LHuCbyEq6MRTzV0I4Ankg1+M2kzZFt1Ncgh6g/kH5UlHuUINN1Mb4D
+         J+PokFUTyrs9xbXTOKytQjvIk7IOie6sOaQyIAWB/Go3leGylms3o5WgeObBtvWktbEP
+         jJ58sQWD7KVV/hSrjJWsvuWcqS+sD3+8ZF0FUxMMs26u9sxBfr2TK4W4n+K5OdqM0UEs
+         ugvg==
+X-Forwarded-Encrypted: i=1; AJvYcCW9wc5SWk4Q40ya3arkjqOEpsuRA+JCqshOcnPOa3sfb8KBtCAQZqyxKqlK5rTyEuKOYtIk0eaDgvMtKaGGWTUDJuyVyXTzA0g07QPwckZeyCw8iNFrFC+s58ZK08HwfYXdom+B
+X-Gm-Message-State: AOJu0YwXNJtst5euha6Nf4F01WUVuOm+qnOzoXknlCGUf8+zPXZS1wtT
+	2WPUCKnsck3+MHXkbBvIbufB1WntdT0FpQNGASJdAWFe7Rww+j9PWks+p8zHttc=
+X-Google-Smtp-Source: AGHT+IFX2wH+plNNcu1hJmDhVaeR7nE/+xXlIrJD4rY1IqlkWMMc9Bz7kLC8LWre+uDoFlouYw/hgA==
+X-Received: by 2002:a05:6830:12:b0:6e2:d9a0:b2b0 with SMTP id c18-20020a056830001200b006e2d9a0b2b0mr18278306otp.0.1708497742019;
+        Tue, 20 Feb 2024 22:42:22 -0800 (PST)
+Received: from archie.me ([103.131.18.64])
+        by smtp.gmail.com with ESMTPSA id 5-20020a630f45000000b005d30550f954sm7667671pgp.31.2024.02.20.22.42.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Feb 2024 22:42:21 -0800 (PST)
+Received: by archie.me (Postfix, from userid 1000)
+	id D76C318468568; Wed, 21 Feb 2024 13:42:17 +0700 (WIB)
+Date: Wed, 21 Feb 2024 13:42:17 +0700
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	allen.lkml@gmail.com
+Subject: Re: [PATCH 6.6 000/331] 6.6.18-rc1 review
+Message-ID: <ZdWbSQMfQoHUZFMH@archie.me>
+References: <20240220205637.572693592@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] PCI/DPC: Request DPC only if also requesting AER
-Content-Language: en-US
-To: Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
- stable@vger.kernel.org, Matthew W Carlis <mattc@purestorage.com>,
- Keith Busch <kbusch@kernel.org>, Lukas Wunner <lukas@wunner.de>,
- Mika Westerberg <mika.westerberg@linux.intel.com>,
- Jesse Brandeburg <jesse.brandeburg@intel.com>
-References: <20240220235520.1514548-1-helgaas@kernel.org>
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <20240220235520.1514548-1-helgaas@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="xfP/hcoK8GryOZ4A"
+Content-Disposition: inline
+In-Reply-To: <20240220205637.572693592@linuxfoundation.org>
 
 
-On 2/20/24 3:55 PM, Bjorn Helgaas wrote:
-> From: Bjorn Helgaas <bhelgaas@google.com>
->
-> When booting with "pci=noaer", we don't request control of AER, but we
-> previously *did* request control of DPC, as in the dmesg log attached at
-> the bugzilla below:
->
->   Command line: ... pci=noaer
->   acpi PNP0A08:00: _OSC: OS supports [ExtendedConfig ASPM ClockPM Segments MSI EDR HPX-Type3]
->   acpi PNP0A08:00: _OSC: OS now controls [PCIeHotplug SHPCHotplug PME PCIeCapability LTR DPC]
->
-> That's illegal per PCI Firmware Spec, r3.3, sec 4.5.1, table 4-5, which
-> says:
->
->   If the operating system sets this bit [OSC_PCI_EXPRESS_DPC_CONTROL], it
->   must also set bit 7 of the Support field (indicating support for Error
->   Disconnect Recover notifications) and bits 3 and 4 of the Control field
->   (requesting control of PCI Express Advanced Error Reporting and the PCI
->   Express Capability Structure).
->
-> Request DPC control only if we have also requested AER control.
+--xfP/hcoK8GryOZ4A
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Can you also add similar check in calculate_support call?
+On Tue, Feb 20, 2024 at 09:51:56PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.18 release.
+> There are 331 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
 
-        if (pci_aer_available() && IS_ENABLED(CONFIG_PCIE_EDR))
-                support |= OSC_PCI_EDR_SUPPORT;
+Successfully compiled and installed the kernel on my computer (Acer
+Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
 
+Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
 
->
-> Fixes: ac1c8e35a326 ("PCI/DPC: Add Error Disconnect Recover (EDR) support")
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=218491#c12
-> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-> Cc: <stable@vger.kernel.org>	# v5.7+
-> Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-> Cc: Matthew W Carlis <mattc@purestorage.com>
-> Cc: Keith Busch <kbusch@kernel.org>
-> Cc: Lukas Wunner <lukas@wunner.de>
-> Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
-> Cc: Jesse Brandeburg <jesse.brandeburg@intel.com>
-> ---
->  drivers/acpi/pci_root.c | 20 +++++++++++---------
->  1 file changed, 11 insertions(+), 9 deletions(-)
->
-> diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
-> index 58b89b8d950e..1c16965427b3 100644
-> --- a/drivers/acpi/pci_root.c
-> +++ b/drivers/acpi/pci_root.c
-> @@ -518,17 +518,19 @@ static u32 calculate_control(void)
->  	if (IS_ENABLED(CONFIG_HOTPLUG_PCI_SHPC))
->  		control |= OSC_PCI_SHPC_NATIVE_HP_CONTROL;
->  
-> -	if (pci_aer_available())
-> +	if (pci_aer_available()) {
->  		control |= OSC_PCI_EXPRESS_AER_CONTROL;
->  
-> -	/*
-> -	 * Per the Downstream Port Containment Related Enhancements ECN to
-> -	 * the PCI Firmware Spec, r3.2, sec 4.5.1, table 4-5,
-> -	 * OSC_PCI_EXPRESS_DPC_CONTROL indicates the OS supports both DPC
-> -	 * and EDR.
-> -	 */
-> -	if (IS_ENABLED(CONFIG_PCIE_DPC) && IS_ENABLED(CONFIG_PCIE_EDR))
-> -		control |= OSC_PCI_EXPRESS_DPC_CONTROL;
-> +		/*
-> +		 * Per PCI Firmware Spec, r3.3, sec 4.5.1, table 4-5, the
-> +		 * OS can request DPC control only if it has advertised
-> +		 * OSC_PCI_EDR_SUPPORT and requested both
-> +		 * OSC_PCI_EXPRESS_CAPABILITY_CONTROL and
-I think you mean OSC_PCI_EXPRESS_DPC_CONTROL.
-> +		 * OSC_PCI_EXPRESS_AER_CONTROL.
-> +		 */
-> +		if (IS_ENABLED(CONFIG_PCIE_DPC) && IS_ENABLED(CONFIG_PCIE_EDR))
-> +			control |= OSC_PCI_EXPRESS_DPC_CONTROL;
+--=20
+An old man doll... just what I always wanted! - Clara
 
-Since you are cleaning up this part, why not add a patch to remove
-CONFIG_PCIE_EDR?
+--xfP/hcoK8GryOZ4A
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
-> +	}
->  
->  	return control;
->  }
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZdWbQAAKCRD2uYlJVVFO
+o8gSAQDcSoCptSpp/zoQllZP4KjRqZXxe+YdNcfeyiCxVWalRwD/TXM0d9CHkfig
+QgHIDWMCF5pGxWzKdg02GHHmkFstiwQ=
+=OaW4
+-----END PGP SIGNATURE-----
 
--- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
-
+--xfP/hcoK8GryOZ4A--
 
