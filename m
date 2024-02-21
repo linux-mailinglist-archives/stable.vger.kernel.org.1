@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-22579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 598B485DCB7
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:56:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A3C585DAF7
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:36:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CADA1C22CEB
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:56:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0026284073
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:36:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93B037CF26;
-	Wed, 21 Feb 2024 13:56:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 449E37E770;
+	Wed, 21 Feb 2024 13:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UV8Dm6Q8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P7ii1EIN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 514087B3F2;
-	Wed, 21 Feb 2024 13:56:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0317A7E58D;
+	Wed, 21 Feb 2024 13:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523790; cv=none; b=cAFEObRbMVGFK9wdozQ7SkHGEUelswL7h6lDPU4kXTZDq26pZIOhIIwcE2vyZZ2ckVED70IcvH0Io7FXAcYdDzdmF1huNHEbvhGKW1LUYGJQNpxgQkn+Q9n9rZC3d79IgzFs6Oj3kZxQG0UUT1slA1Zdc8KltbdwopAuRZfw+js=
+	t=1708522521; cv=none; b=dlaId7SxsW8MuHf/YHcI8TD8+tcM/Okg5h3a3UsIgFk7gSDksLqTJUinLoJIzWpLUED9cg0x1BIazyDQO9M19eAYWWwl9aI3u+l2TxaBS3nvBuOAAoT1+2PTZ4cdD0U7bLmkyIXu+JNdygBQfT7QNSQdVcSfltLTnMxTuabpAn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523790; c=relaxed/simple;
-	bh=m2BPwJptNQ88ibIhAZcQxLaAw7KA5Zl65gTLHOvF+O0=;
+	s=arc-20240116; t=1708522521; c=relaxed/simple;
+	bh=Okm6G4FeiVJ3JJD8r0EwFg1LKsRY6AbYIptzgybZyOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qsim7UWr6hZIvBL0opr5ZoArGGrpOAd1xxkp+SNm5/9RhZEidZO6yPIJC9K5yUilqpJ9fKUzD0tgc5SdW8aMuEwx5RlN0xw4DpZtUDerTpo1eiarQdUtJ6sC4R8C/3SDosNZMa/0VPqFPoF0LXfoS8fujcoU5EY3Xi5HfpuGYgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UV8Dm6Q8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE536C43394;
-	Wed, 21 Feb 2024 13:56:29 +0000 (UTC)
+	 MIME-Version; b=USnmANdrD2o8C+/cpdp9srAiBRIZHNfCh5gKxJeb1ky5X3EjB6bShfftDgQVz9CySKH7MO1put1Mj0JngABqm/AjrT7OIUdXy4C+9pr5EuuYk8VGA4Bk+5Qy3SJBV+qmkiF26IbYoC+GuC7kBL0/VELfu0Tkr36mSOnylhinRMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P7ii1EIN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FF04C433F1;
+	Wed, 21 Feb 2024 13:35:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523790;
-	bh=m2BPwJptNQ88ibIhAZcQxLaAw7KA5Zl65gTLHOvF+O0=;
+	s=korg; t=1708522520;
+	bh=Okm6G4FeiVJ3JJD8r0EwFg1LKsRY6AbYIptzgybZyOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UV8Dm6Q87RaGDIviBK8VrWj2yXLjj7ksLKQogMie8WbXB++YBXRDBHeNDq1hwOWn7
-	 J9dqr2OFJdOIsGDvKKxwgkPhMJwwykD6WP8p4RoP/AcOJoK9PIOlW3zRi7Vb+8M9ot
-	 +Q/a9QmST4WjJ8iqFS0mTaEw7zcTQvpcK5G8Kxhg=
+	b=P7ii1EIN5I25dEJ1GZe2DgqpnmDkEa2QOcAJ8EYtBIkTgoBax7Ey54c4doSU2sCB6
+	 w2bLhy3qcug9ZsJQ22+0Ed8Q1vyi5RlJOCr5pFrrHJ48ZZuHHcj3Sb33EXISKXgwMU
+	 Hi3+gV4+6ZyOWmqi9kI2IfeaFFo3XJsR4YCBnmWA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jenishkumar Maheshbhai Patel <jpatel2@marvell.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Brett Creeley <brett.creeley@amd.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 058/379] net: mvpp2: clear BM pool before initialization
+Subject: [PATCH 5.15 186/476] ionic: pass opcode to devcmd_wait
 Date: Wed, 21 Feb 2024 14:03:57 +0100
-Message-ID: <20240221125956.630346851@linuxfoundation.org>
+Message-ID: <20240221130014.759297604@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jenishkumar Maheshbhai Patel <jpatel2@marvell.com>
+From: Shannon Nelson <shannon.nelson@amd.com>
 
-[ Upstream commit 9f538b415db862e74b8c5d3abbccfc1b2b6caa38 ]
+[ Upstream commit 24f110240c03c6b5368f1203bac72883d511e606 ]
 
-Register value persist after booting the kernel using
-kexec which results in kernel panic. Thus clear the
-BM pool registers before initialisation to fix the issue.
+Don't rely on the PCI memory for the devcmd opcode because we
+read a 0xff value if the PCI bus is broken, which can cause us
+to report a bogus dev_cmd opcode later.
 
-Fixes: 3f518509dedc ("ethernet: Add new driver for Marvell Armada 375 network unit")
-Signed-off-by: Jenishkumar Maheshbhai Patel <jpatel2@marvell.com>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://lore.kernel.org/r/20240119035914.2595665-1-jpatel2@marvell.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+Reviewed-by: Brett Creeley <brett.creeley@amd.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/marvell/mvpp2/mvpp2_main.c   | 27 ++++++++++++++++++-
- 1 file changed, 26 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/pensando/ionic/ionic_dev.c  | 1 +
+ drivers/net/ethernet/pensando/ionic/ionic_dev.h  | 1 +
+ drivers/net/ethernet/pensando/ionic/ionic_main.c | 2 +-
+ 3 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-index e0e6275b3e20..e4e80c2b1ce4 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-@@ -581,12 +581,38 @@ static int mvpp2_bm_pools_init(struct device *dev, struct mvpp2 *priv)
- 	return err;
- }
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_dev.c b/drivers/net/ethernet/pensando/ionic/ionic_dev.c
+index b778d8264bca..f81b00c7e106 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_dev.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_dev.c
+@@ -268,6 +268,7 @@ void ionic_dev_cmd_comp(struct ionic_dev *idev, union ionic_dev_cmd_comp *comp)
  
-+/* Cleanup pool before actual initialization in the OS */
-+static void mvpp2_bm_pool_cleanup(struct mvpp2 *priv, int pool_id)
-+{
-+	unsigned int thread = mvpp2_cpu_to_thread(priv, get_cpu());
-+	u32 val;
-+	int i;
-+
-+	/* Drain the BM from all possible residues left by firmware */
-+	for (i = 0; i < MVPP2_BM_POOL_SIZE_MAX; i++)
-+		mvpp2_thread_read(priv, thread, MVPP2_BM_PHY_ALLOC_REG(pool_id));
-+
-+	put_cpu();
-+
-+	/* Stop the BM pool */
-+	val = mvpp2_read(priv, MVPP2_BM_POOL_CTRL_REG(pool_id));
-+	val |= MVPP2_BM_STOP_MASK;
-+	mvpp2_write(priv, MVPP2_BM_POOL_CTRL_REG(pool_id), val);
-+}
-+
- static int mvpp2_bm_init(struct device *dev, struct mvpp2 *priv)
+ void ionic_dev_cmd_go(struct ionic_dev *idev, union ionic_dev_cmd *cmd)
  {
- 	enum dma_data_direction dma_dir = DMA_FROM_DEVICE;
- 	int i, err, poolnum = MVPP2_BM_POOLS_NUM;
- 	struct mvpp2_port *port;
++	idev->opcode = cmd->cmd.opcode;
+ 	memcpy_toio(&idev->dev_cmd_regs->cmd, cmd, sizeof(*cmd));
+ 	iowrite32(0, &idev->dev_cmd_regs->done);
+ 	iowrite32(1, &idev->dev_cmd_regs->doorbell);
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_dev.h b/drivers/net/ethernet/pensando/ionic/ionic_dev.h
+index 38f38fe8f21d..1ab86eee8b5a 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_dev.h
++++ b/drivers/net/ethernet/pensando/ionic/ionic_dev.h
+@@ -144,6 +144,7 @@ struct ionic_dev {
+ 	bool fw_hb_ready;
+ 	bool fw_status_ready;
+ 	u8 fw_generation;
++	u8 opcode;
  
-+	if (priv->percpu_pools)
-+		poolnum = mvpp2_get_nrxqs(priv) * 2;
-+
-+	/* Clean up the pool state in case it contains stale state */
-+	for (i = 0; i < poolnum; i++)
-+		mvpp2_bm_pool_cleanup(priv, i);
-+
- 	if (priv->percpu_pools) {
- 		for (i = 0; i < priv->port_count; i++) {
- 			port = priv->port_list[i];
-@@ -596,7 +622,6 @@ static int mvpp2_bm_init(struct device *dev, struct mvpp2 *priv)
- 			}
- 		}
- 
--		poolnum = mvpp2_get_nrxqs(priv) * 2;
- 		for (i = 0; i < poolnum; i++) {
- 			/* the pool in use */
- 			int pn = i / (poolnum / 2);
+ 	u64 __iomem *db_pages;
+ 	dma_addr_t phy_db_pages;
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_main.c b/drivers/net/ethernet/pensando/ionic/ionic_main.c
+index 538c024afed5..7942a7f0f7b3 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_main.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_main.c
+@@ -350,7 +350,7 @@ int ionic_dev_cmd_wait(struct ionic *ionic, unsigned long max_seconds)
+ 	 */
+ 	max_wait = jiffies + (max_seconds * HZ);
+ try_again:
+-	opcode = readb(&idev->dev_cmd_regs->cmd.cmd.opcode);
++	opcode = idev->opcode;
+ 	start_time = jiffies;
+ 	do {
+ 		done = ionic_dev_cmd_done(idev);
 -- 
 2.43.0
 
