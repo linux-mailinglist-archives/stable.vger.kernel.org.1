@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-22653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF9CB85DD16
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:02:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E026F85D8DD
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:11:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5058FB219F7
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:01:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F8CD1C20C3B
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:11:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1199F7CF1A;
-	Wed, 21 Feb 2024 14:00:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC89D69D3B;
+	Wed, 21 Feb 2024 13:11:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FGyf11j+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T46pqd2H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C518E78B4F;
-	Wed, 21 Feb 2024 14:00:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA3069D34;
+	Wed, 21 Feb 2024 13:11:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524057; cv=none; b=kkBUrn41XN3Bze5PewnLtDsBLNlPosUVLjyN4zKpEdjFvZzbkoYGeHMTLtGcOB9m1ta1dZUwu1c4uEdKw4wb+wGZD9rXn8dcitCVQrZDz0hnilnIo66DFBmYr4oNwR0+f/PVzSZA/1a11e9cOgQl3Tp4qBClJiVonSwKdlwwl0I=
+	t=1708521083; cv=none; b=F1MOzK9NXgFvOX7HYSV2nV6/8amNNPx3A3FrmXjEBMKWbnRFCZAt8sZKJnSkRe3JFLiLlpkv7cCgLmP3sCNk8ws1njahd7ZlRDfOl6/UeNwCq6JadI0U5GQg7PYJTiHM+RgnfPOAoBRcE+kGQ62FFl0N3GSySrpzuSXzC6wJbD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524057; c=relaxed/simple;
-	bh=TiXYV5ts68jvB++gM6IhH0XdmSDe4kQNKq18+kb/wcI=;
+	s=arc-20240116; t=1708521083; c=relaxed/simple;
+	bh=itj5/lY8UweG9I7gMu/ZQGXPApZNPXPpQktvd/nofC0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KQBXYLSfnMYseoEoUj+Nkn4CAdj48UwwnN3y9XFAKqARGP/WZ1ca4dR12yNZO5JqOCANKtNXq9TJPHzs7MJO5EmmEyRBrM9YRGKkca4XfsvB2La+T3KJkQjgd2pfccOO+fYjUdQeNM3dBeUaChvGRHy/YpgJHLwa016D2/neKy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FGyf11j+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B94C433F1;
-	Wed, 21 Feb 2024 14:00:56 +0000 (UTC)
+	 MIME-Version; b=IK7tDwhadN2/sRq/MRaPJUbJXvLkA0w8nHvwoGQQdiFn87RjrGLmBmocFclWcE4CYiD2LhlMlnJUC9kimGgyx/ut0PGe8DL/zIHf01TEYJL+156im6rw4wWTCZ/u5F3G6YxALDsjtgFW/Ck9aViM56frlA38y3nmpc2lejWh69E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T46pqd2H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18AE0C43390;
+	Wed, 21 Feb 2024 13:11:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524057;
-	bh=TiXYV5ts68jvB++gM6IhH0XdmSDe4kQNKq18+kb/wcI=;
+	s=korg; t=1708521083;
+	bh=itj5/lY8UweG9I7gMu/ZQGXPApZNPXPpQktvd/nofC0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FGyf11j+i8v0W7EzqXGaFTLwc9dbq/pxH7JX98iV8BjAtGY8xXiOWSUyhJiJQSMyi
-	 qLJsdt1fAHo5UveNHWZ+mEZswMD9x4sdNzRnaTeCFNdgZAngCtMsTkQsvMdkgUSVDt
-	 3YujHNOi58P6JgvBj7RdCp8fXtvZCSXrhQFqI6vI=
+	b=T46pqd2HC3mdaqK7SwIbMBTnmwi8tfEDaPbwrpbyiFcf8Bo3m8XlqMInbRktZGZVa
+	 9SXg1CcaTDmqLptYcTYoIj/00wgpEHylh7onaR2vVt5V5jm6BqMsogu+9KRolkAC8S
+	 aVUc0+bIZN2aYKR0fcFr9L4Ikl0spfeOEhaeIFD8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 133/379] ext4: fix inconsistent between segment fstrim and full fstrim
-Date: Wed, 21 Feb 2024 14:05:12 +0100
-Message-ID: <20240221125958.860438793@linuxfoundation.org>
+	Hongchen Zhang <zhanghongchen@loongson.cn>,
+	Weihao Li <liweihao@loongson.cn>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 4.19 012/202] PM: hibernate: Enforce ordering during image compression/decompression
+Date: Wed, 21 Feb 2024 14:05:13 +0100
+Message-ID: <20240221125932.149458733@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +62,207 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Hongchen Zhang <zhanghongchen@loongson.cn>
 
-[ Upstream commit 68da4c44b994aea797eb9821acb3a4a36015293e ]
+commit 71cd7e80cfde548959952eac7063aeaea1f2e1c6 upstream.
 
-Suppose we issue two FITRIM ioctls for ranges [0,15] and [16,31] with
-mininum length of trimmed range set to 8 blocks. If we have say a range of
-blocks 10-22 free, this range will not be trimmed because it straddles the
-boundary of the two FITRIM ranges and neither part is big enough. This is a
-bit surprising to some users that call FITRIM on smaller ranges of blocks
-to limit impact on the system. Also XFS trims all free space extents that
-overlap with the specified range so we are inconsistent among filesystems.
-Let's change ext4_try_to_trim_range() to consider for trimming the whole
-free space extent that straddles the end of specified range, not just the
-part of it within the range.
+An S4 (suspend to disk) test on the LoongArch 3A6000 platform sometimes
+fails with the following error messaged in the dmesg log:
 
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20231216010919.1995851-1-yebin10@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+	Invalid LZO compressed length
+
+That happens because when compressing/decompressing the image, the
+synchronization between the control thread and the compress/decompress/crc
+thread is based on a relaxed ordering interface, which is unreliable, and the
+following situation may occur:
+
+CPU 0					CPU 1
+save_image_lzo				lzo_compress_threadfn
+					  atomic_set(&d->stop, 1);
+  atomic_read(&data[thr].stop)
+  data[thr].cmp = data[thr].cmp_len;
+	  				  WRITE data[thr].cmp_len
+
+Then CPU0 gets a stale cmp_len and writes it to disk. During resume from S4,
+wrong cmp_len is loaded.
+
+To maintain data consistency between the two threads, use the acquire/release
+variants of atomic set and read operations.
+
+Fixes: 081a9d043c98 ("PM / Hibernate: Improve performance of LZO/plain hibernation, checksum image")
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Hongchen Zhang <zhanghongchen@loongson.cn>
+Co-developed-by: Weihao Li <liweihao@loongson.cn>
+Signed-off-by: Weihao Li <liweihao@loongson.cn>
+[ rjw: Subject rewrite and changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/mballoc.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ kernel/power/swap.c |   38 +++++++++++++++++++-------------------
+ 1 file changed, 19 insertions(+), 19 deletions(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 39d03e0ef78b..9bec75847b85 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -5916,13 +5916,15 @@ static int ext4_try_to_trim_range(struct super_block *sb,
- 		struct ext4_buddy *e4b, ext4_grpblk_t start,
- 		ext4_grpblk_t max, ext4_grpblk_t minblocks)
- {
--	ext4_grpblk_t next, count, free_count;
-+	ext4_grpblk_t next, count, free_count, last, origin_start;
- 	bool set_trimmed = false;
- 	void *bitmap;
+--- a/kernel/power/swap.c
++++ b/kernel/power/swap.c
+@@ -596,11 +596,11 @@ static int crc32_threadfn(void *data)
+ 	unsigned i;
  
-+	last = ext4_last_grp_cluster(sb, e4b->bd_group);
- 	bitmap = e4b->bd_bitmap;
--	if (start == 0 && max >= ext4_last_grp_cluster(sb, e4b->bd_group))
-+	if (start == 0 && max >= last)
- 		set_trimmed = true;
-+	origin_start = start;
- 	start = max(e4b->bd_info->bb_first_free, start);
- 	count = 0;
- 	free_count = 0;
-@@ -5931,7 +5933,10 @@ static int ext4_try_to_trim_range(struct super_block *sb,
- 		start = mb_find_next_zero_bit(bitmap, max + 1, start);
- 		if (start > max)
+ 	while (1) {
+-		wait_event(d->go, atomic_read(&d->ready) ||
++		wait_event(d->go, atomic_read_acquire(&d->ready) ||
+ 		                  kthread_should_stop());
+ 		if (kthread_should_stop()) {
+ 			d->thr = NULL;
+-			atomic_set(&d->stop, 1);
++			atomic_set_release(&d->stop, 1);
+ 			wake_up(&d->done);
  			break;
--		next = mb_find_next_bit(bitmap, max + 1, start);
-+
-+		next = mb_find_next_bit(bitmap, last + 1, start);
-+		if (origin_start == 0 && next >= last)
-+			set_trimmed = true;
+ 		}
+@@ -609,7 +609,7 @@ static int crc32_threadfn(void *data)
+ 		for (i = 0; i < d->run_threads; i++)
+ 			*d->crc32 = crc32_le(*d->crc32,
+ 			                     d->unc[i], *d->unc_len[i]);
+-		atomic_set(&d->stop, 1);
++		atomic_set_release(&d->stop, 1);
+ 		wake_up(&d->done);
+ 	}
+ 	return 0;
+@@ -639,12 +639,12 @@ static int lzo_compress_threadfn(void *d
+ 	struct cmp_data *d = data;
  
- 		if ((next - start) >= minblocks) {
- 			int ret = ext4_trim_extent(sb, start, next - start, e4b);
--- 
-2.43.0
-
+ 	while (1) {
+-		wait_event(d->go, atomic_read(&d->ready) ||
++		wait_event(d->go, atomic_read_acquire(&d->ready) ||
+ 		                  kthread_should_stop());
+ 		if (kthread_should_stop()) {
+ 			d->thr = NULL;
+ 			d->ret = -1;
+-			atomic_set(&d->stop, 1);
++			atomic_set_release(&d->stop, 1);
+ 			wake_up(&d->done);
+ 			break;
+ 		}
+@@ -653,7 +653,7 @@ static int lzo_compress_threadfn(void *d
+ 		d->ret = lzo1x_1_compress(d->unc, d->unc_len,
+ 		                          d->cmp + LZO_HEADER, &d->cmp_len,
+ 		                          d->wrk);
+-		atomic_set(&d->stop, 1);
++		atomic_set_release(&d->stop, 1);
+ 		wake_up(&d->done);
+ 	}
+ 	return 0;
+@@ -791,7 +791,7 @@ static int save_image_lzo(struct swap_ma
+ 
+ 			data[thr].unc_len = off;
+ 
+-			atomic_set(&data[thr].ready, 1);
++			atomic_set_release(&data[thr].ready, 1);
+ 			wake_up(&data[thr].go);
+ 		}
+ 
+@@ -799,12 +799,12 @@ static int save_image_lzo(struct swap_ma
+ 			break;
+ 
+ 		crc->run_threads = thr;
+-		atomic_set(&crc->ready, 1);
++		atomic_set_release(&crc->ready, 1);
+ 		wake_up(&crc->go);
+ 
+ 		for (run_threads = thr, thr = 0; thr < run_threads; thr++) {
+ 			wait_event(data[thr].done,
+-			           atomic_read(&data[thr].stop));
++				atomic_read_acquire(&data[thr].stop));
+ 			atomic_set(&data[thr].stop, 0);
+ 
+ 			ret = data[thr].ret;
+@@ -843,7 +843,7 @@ static int save_image_lzo(struct swap_ma
+ 			}
+ 		}
+ 
+-		wait_event(crc->done, atomic_read(&crc->stop));
++		wait_event(crc->done, atomic_read_acquire(&crc->stop));
+ 		atomic_set(&crc->stop, 0);
+ 	}
+ 
+@@ -1124,12 +1124,12 @@ static int lzo_decompress_threadfn(void
+ 	struct dec_data *d = data;
+ 
+ 	while (1) {
+-		wait_event(d->go, atomic_read(&d->ready) ||
++		wait_event(d->go, atomic_read_acquire(&d->ready) ||
+ 		                  kthread_should_stop());
+ 		if (kthread_should_stop()) {
+ 			d->thr = NULL;
+ 			d->ret = -1;
+-			atomic_set(&d->stop, 1);
++			atomic_set_release(&d->stop, 1);
+ 			wake_up(&d->done);
+ 			break;
+ 		}
+@@ -1142,7 +1142,7 @@ static int lzo_decompress_threadfn(void
+ 			flush_icache_range((unsigned long)d->unc,
+ 					   (unsigned long)d->unc + d->unc_len);
+ 
+-		atomic_set(&d->stop, 1);
++		atomic_set_release(&d->stop, 1);
+ 		wake_up(&d->done);
+ 	}
+ 	return 0;
+@@ -1330,7 +1330,7 @@ static int load_image_lzo(struct swap_ma
+ 		}
+ 
+ 		if (crc->run_threads) {
+-			wait_event(crc->done, atomic_read(&crc->stop));
++			wait_event(crc->done, atomic_read_acquire(&crc->stop));
+ 			atomic_set(&crc->stop, 0);
+ 			crc->run_threads = 0;
+ 		}
+@@ -1366,7 +1366,7 @@ static int load_image_lzo(struct swap_ma
+ 					pg = 0;
+ 			}
+ 
+-			atomic_set(&data[thr].ready, 1);
++			atomic_set_release(&data[thr].ready, 1);
+ 			wake_up(&data[thr].go);
+ 		}
+ 
+@@ -1385,7 +1385,7 @@ static int load_image_lzo(struct swap_ma
+ 
+ 		for (run_threads = thr, thr = 0; thr < run_threads; thr++) {
+ 			wait_event(data[thr].done,
+-			           atomic_read(&data[thr].stop));
++				atomic_read_acquire(&data[thr].stop));
+ 			atomic_set(&data[thr].stop, 0);
+ 
+ 			ret = data[thr].ret;
+@@ -1416,7 +1416,7 @@ static int load_image_lzo(struct swap_ma
+ 				ret = snapshot_write_next(snapshot);
+ 				if (ret <= 0) {
+ 					crc->run_threads = thr + 1;
+-					atomic_set(&crc->ready, 1);
++					atomic_set_release(&crc->ready, 1);
+ 					wake_up(&crc->go);
+ 					goto out_finish;
+ 				}
+@@ -1424,13 +1424,13 @@ static int load_image_lzo(struct swap_ma
+ 		}
+ 
+ 		crc->run_threads = thr;
+-		atomic_set(&crc->ready, 1);
++		atomic_set_release(&crc->ready, 1);
+ 		wake_up(&crc->go);
+ 	}
+ 
+ out_finish:
+ 	if (crc->run_threads) {
+-		wait_event(crc->done, atomic_read(&crc->stop));
++		wait_event(crc->done, atomic_read_acquire(&crc->stop));
+ 		atomic_set(&crc->stop, 0);
+ 	}
+ 	stop = ktime_get();
 
 
 
