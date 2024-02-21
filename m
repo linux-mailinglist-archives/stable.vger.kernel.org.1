@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-22254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CD7085DB19
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:37:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BAEC85DCAE
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:56:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBA17284A3B
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:37:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC8F41F225F1
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:56:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 809F276905;
-	Wed, 21 Feb 2024 13:37:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC51178B7C;
+	Wed, 21 Feb 2024 13:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tWYAWtrs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pTK6Kr4Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F73A69953;
-	Wed, 21 Feb 2024 13:36:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B01762C1;
+	Wed, 21 Feb 2024 13:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522620; cv=none; b=pJIMTFFa8y1/cySajX0biDI0im9dAfzYNrry165DOtYr++NJdcyS8D0TubfCVTmF9GaB3gz1F+JnCpCbzcZD28rnA5lPDgNfJuno9/lewBhQ4bLG2htSYuQyhoWB9el2ghbrdu5E+F5lHOB4f/aOWnFMrVDCQdHvtRv37SMwvAk=
+	t=1708523780; cv=none; b=X8wRPj0WyxWSun1UUwD7aIeKPG6T903tlrddxurHoWFphsY/bnDXbRnmXDqBizHMKcwI8jdy1x8TQIDvI0Ov5LkUUHAv6o3Iz9zsZJ+h0brx1/wjjvNIsBFUzbg1vyFCU9Dm/NcZLnoEzOPCh+5vvidVW21aRG1C3UMWGVtkF5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522620; c=relaxed/simple;
-	bh=/jOVuCcKYpoGhSx399RAarjbvpYXS9aXvBkT/yCGq8Q=;
+	s=arc-20240116; t=1708523780; c=relaxed/simple;
+	bh=+DMeBh8EZ8zwxIriMbQxz7490ao3ZfTdHAGNhZXQaKg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d3jRmz1TxCNL/cXMunQ0EYi0f0y19uEGkij1+xB0nfQ3dZ2PYqGkDjHjUVgB+E9nnTx5KG5e0/ANP5VOgRdCRLDNAaLD0WgB85+33YNt4ofo5zs7hqOIvyTGGPwZud+arArWBvMztewm4IWVg8AFheeibBplthNxg+HqV/EV8KA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tWYAWtrs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E65AC433F1;
-	Wed, 21 Feb 2024 13:36:59 +0000 (UTC)
+	 MIME-Version; b=i14tUHxqR8yZV/LIlNdLaoY/TrCcGxKL+pO52p8idpBrJf0e0JnxcvPUs0nxbDzXjZDbv1I+nBI8Y+bauqKojnCh+8xAnU+SE7jnMO1fLwqPcXoBMVd6gtep8mPqcZOTmPAhMP5jJyllqMBB0BB3FVKssCNgMKYvBcPLPR6jggg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pTK6Kr4Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26A30C433C7;
+	Wed, 21 Feb 2024 13:56:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522619;
-	bh=/jOVuCcKYpoGhSx399RAarjbvpYXS9aXvBkT/yCGq8Q=;
+	s=korg; t=1708523780;
+	bh=+DMeBh8EZ8zwxIriMbQxz7490ao3ZfTdHAGNhZXQaKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tWYAWtrsIevjAdPgCz0SwBSbemvmVc6JKDilag1c15oaAQcgO0A7URLneniwfPbz9
-	 vVyAQJrTA/wphee4aHAlftZeHhqHopIupD+PLM7ihDRbwAY76D6O8WuB/iowCCH0lx
-	 61oASA+yFu79LYAsCS5/bNzBjS00Afx4BFG4IxSo=
+	b=pTK6Kr4YXShMnjSieuhLp8wvSOfa7dxQKzcYZ7vA/FmFnU5tcOolxkk1rXa8UWD4N
+	 35DnmMiQV0OZdbKL6EUZpFDtV5vx+gFDwBMTDXtxxCj2gA8E8NA0H+iJsfZkmgJdmz
+	 yVg8xY/beuzTBmNFd12T8mHmhcdpHuv06FDCuGPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Simon Horman <horms@kernel.org>,
+	Saeed Mahameed <saeedm@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 183/476] ARM: dts: imx: Use flash@0,0 pattern
+Subject: [PATCH 5.10 055/379] net/mlx5e: fix a double-free in arfs_create_groups
 Date: Wed, 21 Feb 2024 14:03:54 +0100
-Message-ID: <20240221130014.649440884@linuxfoundation.org>
+Message-ID: <20240221125956.543881250@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +63,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-[ Upstream commit 1e1d7cc478fb16816de09740e3c323c0c188d58f ]
+[ Upstream commit 3c6d5189246f590e4e1f167991558bdb72a4738b ]
 
-Per mtd-physmap.yaml, 'nor@0,0' is not a valid node pattern.
+When `in` allocated by kvzalloc fails, arfs_create_groups will free
+ft->g and return an error. However, arfs_create_table, the only caller of
+arfs_create_groups, will hold this error and call to
+mlx5e_destroy_flow_table, in which the ft->g will be freed again.
 
-Change it to 'flash@0,0' to fix the following dt-schema warning:
-
-imx1-ads.dtb: nor@0,0: $nodename:0: 'nor@0,0' does not match '^(flash|.*sram|nand)(@.*)?$'
-	from schema $id: http://devicetree.org/schemas/mtd/mtd-physmap.yaml#
-
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: 1cabe6b0965e ("net/mlx5e: Create aRFS flow tables")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/imx1-ads.dts                  | 2 +-
- arch/arm/boot/dts/imx1-apf9328.dts              | 2 +-
- arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi    | 2 +-
- arch/arm/boot/dts/imx27-phytec-phycore-som.dtsi | 2 +-
- 4 files changed, 4 insertions(+), 4 deletions(-)
+ .../net/ethernet/mellanox/mlx5/core/en_arfs.c | 26 +++++++++++--------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
 
-diff --git a/arch/arm/boot/dts/imx1-ads.dts b/arch/arm/boot/dts/imx1-ads.dts
-index 5833fb6f15d8..2c817c4a4c68 100644
---- a/arch/arm/boot/dts/imx1-ads.dts
-+++ b/arch/arm/boot/dts/imx1-ads.dts
-@@ -65,7 +65,7 @@
- 	pinctrl-0 = <&pinctrl_weim>;
- 	status = "okay";
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c b/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c
+index 39475f6565c7..7c436bdcf5b5 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c
+@@ -208,11 +208,13 @@ static int arfs_create_groups(struct mlx5e_flow_table *ft,
  
--	nor: nor@0,0 {
-+	nor: flash@0,0 {
- 		compatible = "cfi-flash";
- 		reg = <0 0x00000000 0x02000000>;
- 		bank-width = <4>;
-diff --git a/arch/arm/boot/dts/imx1-apf9328.dts b/arch/arm/boot/dts/imx1-apf9328.dts
-index 77b21aa7a146..27e72b07b517 100644
---- a/arch/arm/boot/dts/imx1-apf9328.dts
-+++ b/arch/arm/boot/dts/imx1-apf9328.dts
-@@ -45,7 +45,7 @@
- 	pinctrl-0 = <&pinctrl_weim>;
- 	status = "okay";
+ 	ft->g = kcalloc(MLX5E_ARFS_NUM_GROUPS,
+ 			sizeof(*ft->g), GFP_KERNEL);
+-	in = kvzalloc(inlen, GFP_KERNEL);
+-	if  (!in || !ft->g) {
+-		kfree(ft->g);
+-		kvfree(in);
++	if (!ft->g)
+ 		return -ENOMEM;
++
++	in = kvzalloc(inlen, GFP_KERNEL);
++	if (!in) {
++		err = -ENOMEM;
++		goto err_free_g;
+ 	}
  
--	nor: nor@0,0 {
-+	nor: flash@0,0 {
- 		compatible = "cfi-flash";
- 		reg = <0 0x00000000 0x02000000>;
- 		bank-width = <2>;
-diff --git a/arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi b/arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi
-index 4b83e2918b55..c7e923584878 100644
---- a/arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi
-+++ b/arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi
-@@ -90,7 +90,7 @@
- &weim {
- 	status = "okay";
+ 	mc = MLX5_ADDR_OF(create_flow_group_in, in, match_criteria);
+@@ -232,7 +234,7 @@ static int arfs_create_groups(struct mlx5e_flow_table *ft,
+ 		break;
+ 	default:
+ 		err = -EINVAL;
+-		goto out;
++		goto err_free_in;
+ 	}
  
--	nor: nor@0,0 {
-+	nor: flash@0,0 {
- 		#address-cells = <1>;
- 		#size-cells = <1>;
- 		compatible = "cfi-flash";
-diff --git a/arch/arm/boot/dts/imx27-phytec-phycore-som.dtsi b/arch/arm/boot/dts/imx27-phytec-phycore-som.dtsi
-index 3d10273177e9..a5fdc2fd4ce5 100644
---- a/arch/arm/boot/dts/imx27-phytec-phycore-som.dtsi
-+++ b/arch/arm/boot/dts/imx27-phytec-phycore-som.dtsi
-@@ -322,7 +322,7 @@
- &weim {
- 	status = "okay";
+ 	switch (type) {
+@@ -254,7 +256,7 @@ static int arfs_create_groups(struct mlx5e_flow_table *ft,
+ 		break;
+ 	default:
+ 		err = -EINVAL;
+-		goto out;
++		goto err_free_in;
+ 	}
  
--	nor: nor@0,0 {
-+	nor: flash@0,0 {
- 		compatible = "cfi-flash";
- 		reg = <0 0x00000000 0x02000000>;
- 		bank-width = <2>;
+ 	MLX5_SET_CFG(in, match_criteria_enable, MLX5_MATCH_OUTER_HEADERS);
+@@ -263,7 +265,7 @@ static int arfs_create_groups(struct mlx5e_flow_table *ft,
+ 	MLX5_SET_CFG(in, end_flow_index, ix - 1);
+ 	ft->g[ft->num_groups] = mlx5_create_flow_group(ft->t, in);
+ 	if (IS_ERR(ft->g[ft->num_groups]))
+-		goto err;
++		goto err_clean_group;
+ 	ft->num_groups++;
+ 
+ 	memset(in, 0, inlen);
+@@ -272,18 +274,20 @@ static int arfs_create_groups(struct mlx5e_flow_table *ft,
+ 	MLX5_SET_CFG(in, end_flow_index, ix - 1);
+ 	ft->g[ft->num_groups] = mlx5_create_flow_group(ft->t, in);
+ 	if (IS_ERR(ft->g[ft->num_groups]))
+-		goto err;
++		goto err_clean_group;
+ 	ft->num_groups++;
+ 
+ 	kvfree(in);
+ 	return 0;
+ 
+-err:
++err_clean_group:
+ 	err = PTR_ERR(ft->g[ft->num_groups]);
+ 	ft->g[ft->num_groups] = NULL;
+-out:
++err_free_in:
+ 	kvfree(in);
+-
++err_free_g:
++	kfree(ft->g);
++	ft->g = NULL;
+ 	return err;
+ }
+ 
 -- 
 2.43.0
 
