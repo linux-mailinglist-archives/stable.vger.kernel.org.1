@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-22779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40A1D85DDD2
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:12:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA95885DEB0
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:20:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D43761F222A5
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:12:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB6641C23804
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:20:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0B3A76C99;
-	Wed, 21 Feb 2024 14:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A3FC7EEEA;
+	Wed, 21 Feb 2024 14:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zH4PGR+9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AtbjIEp1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DA397CF33;
-	Wed, 21 Feb 2024 14:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FED878B5E;
+	Wed, 21 Feb 2024 14:20:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524484; cv=none; b=QXYxLKctCRN6wqZ0F3o8nyTkGX2GPJXIOaLzRSoor/kmwIKjImlLvKnMbl9tnFu7rq7DcFMYuRpBqNf/lVMb1sKqMN+l/lBWEAJfscf0BE5AOCYn/bdgrcu+/wWnlmpJqH6z+xTSCbanC1Iw2LuPZCpYb+ZlmuCjzgcX9L9BA84=
+	t=1708525233; cv=none; b=eew5xxtgnxXKpaAwUtB/m1a++zfQzD6JXdfTmwAGgfoYV6PRKkOjDhRcYA/TRlCtP9KFS+NhrNtEqOFN8zjFEXHrCvElic0UkKUV1j3eF4fUuxIuPUZ69lkqwAjaH9aHGg6h04dRn8dMgFDb02Y/vU8JtoKjBNw7hZgh9s/wag8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524484; c=relaxed/simple;
-	bh=imJmeiK4IN5Qih0oq8eYNc+KicEACC8YYtKGpifX8d0=;
+	s=arc-20240116; t=1708525233; c=relaxed/simple;
+	bh=XcOFahc5EwHNMTdQuPU99rz1PRUO2hBil5HPanAxsK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TnrfYNsldEkLsB6rbHiMH8Kl5Dw0OQ7PrxJCcF1nmKVf9n5/pCFn/a4yXoHbCnI8fzkUCYAXoepu70rs9TvvDdBgJ2l4+F30F5eat+mdaq5DBeZdvcYi6d6uREJuQBafbgH3jkm3SixeDpHtYSVwTqfGEu3F9OhjjYhzgMxbhL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zH4PGR+9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5FBCC433C7;
-	Wed, 21 Feb 2024 14:08:03 +0000 (UTC)
+	 MIME-Version; b=A+PrgKBVqHPcl9sTmHc2KUuvfXbi6lXjgAJhCCO5lWgiLCakdeXvQ+hTCVBQ2Jx43hTAlJ8qMiJf9iYufoD5U2BBB/0vTm02xnbYyRtH76jOq+Jb33ez9KshSXG3h3NwtedAOcUPG4lCgx63HUgGTsN1nqUVw7uZQuIDNJkQJ+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AtbjIEp1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58FADC433F1;
+	Wed, 21 Feb 2024 14:20:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524484;
-	bh=imJmeiK4IN5Qih0oq8eYNc+KicEACC8YYtKGpifX8d0=;
+	s=korg; t=1708525231;
+	bh=XcOFahc5EwHNMTdQuPU99rz1PRUO2hBil5HPanAxsK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zH4PGR+9PKLXeE0uxFGTpUYL/fdLcED68bSaQwZmQmjCu0p1bACAo/pnrSHg2MKW8
-	 QjrAPozrTLvUkSPwYuC8ugAIE/+CXVn1y/BdRBcHQKelEERYYFoFGDN8wkjqXcAhqz
-	 upxlsgRt1MC0NUkpTAjeDYjrDGcij5+1H+wKPmEY=
+	b=AtbjIEp1oPC7/EjAmzOd9HqIWZcUd5YCFbsB10X9n0xdbFiOlYL2D93U9zHbbYbn2
+	 eHBWVHELL6nu+i3Du6w3ONVupX1ccsJkReU2AuSN31/gFJMcwZyNLjguOv2f4uG9qp
+	 ouPmX/a+puDr4cgipJb4GFj5aIcbx6CtJFkKrOdM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Rui <rui.zhang@intel.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 259/379] hwmon: (coretemp) Fix out-of-bounds memory access
+Subject: [PATCH 5.4 097/267] ARM: dts: imx7d: Fix coresight funnel ports
 Date: Wed, 21 Feb 2024 14:07:18 +0100
-Message-ID: <20240221130002.579059961@linuxfoundation.org>
+Message-ID: <20240221125942.994079069@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Rui <rui.zhang@intel.com>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit 4e440abc894585a34c2904a32cd54af1742311b3 ]
+[ Upstream commit 0d4ac04fa7c3f6dc263dba6f575a2ec7a2d4eca8 ]
 
-Fix a bug that pdata->cpu_map[] is set before out-of-bounds check.
-The problem might be triggered on systems with more than 128 cores per
-package.
+imx7d uses two ports for 'in-ports', so the syntax port@<num> has to
+be used. imx7d has both port and port@1 nodes present, raising these
+error:
+funnel@30041000: in-ports: More than one condition true in oneOf schema
+funnel@30041000: Unevaluated properties are not allowed
+('in-ports' was unexpected)
 
-Fixes: 7108b80a542b ("hwmon/coretemp: Handle large core ID value")
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240202092144.71180-2-rui.zhang@intel.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Stable-dep-of: fdaf0c8629d4 ("hwmon: (coretemp) Fix bogus core_id to attr name mapping")
+Fix this by also using port@0 for imx7s as well.
+
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/coretemp.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ arch/arm/boot/dts/imx7d.dtsi | 3 ---
+ arch/arm/boot/dts/imx7s.dtsi | 6 +++++-
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hwmon/coretemp.c b/drivers/hwmon/coretemp.c
-index 5b2057ce5a59..7f6615ef8c88 100644
---- a/drivers/hwmon/coretemp.c
-+++ b/drivers/hwmon/coretemp.c
-@@ -467,18 +467,14 @@ static int create_core_data(struct platform_device *pdev, unsigned int cpu,
- 	if (pkg_flag) {
- 		attr_no = PKG_SYSFS_ATTR_NO;
- 	} else {
--		index = ida_alloc(&pdata->ida, GFP_KERNEL);
-+		index = ida_alloc_max(&pdata->ida, NUM_REAL_CORES - 1, GFP_KERNEL);
- 		if (index < 0)
- 			return index;
-+
- 		pdata->cpu_map[index] = topology_core_id(cpu);
- 		attr_no = index + BASE_SYSFS_ATTR_NO;
- 	}
+diff --git a/arch/arm/boot/dts/imx7d.dtsi b/arch/arm/boot/dts/imx7d.dtsi
+index 8b65ca8b5f30..2b9d0b1bd982 100644
+--- a/arch/arm/boot/dts/imx7d.dtsi
++++ b/arch/arm/boot/dts/imx7d.dtsi
+@@ -204,9 +204,6 @@
+ };
  
--	if (attr_no > MAX_CORE_DATA - 1) {
--		err = -ERANGE;
--		goto ida_free;
--	}
+ &ca_funnel_in_ports {
+-	#address-cells = <1>;
+-	#size-cells = <0>;
 -
- 	tdata = init_temp_data(cpu, pkg_flag);
- 	if (!tdata) {
- 		err = -ENOMEM;
+ 	port@1 {
+ 		reg = <1>;
+ 		ca_funnel_in_port1: endpoint {
+diff --git a/arch/arm/boot/dts/imx7s.dtsi b/arch/arm/boot/dts/imx7s.dtsi
+index 7ce541fcac76..33e9c210fd2f 100644
+--- a/arch/arm/boot/dts/imx7s.dtsi
++++ b/arch/arm/boot/dts/imx7s.dtsi
+@@ -183,7 +183,11 @@
+ 			clock-names = "apb_pclk";
+ 
+ 			ca_funnel_in_ports: in-ports {
+-				port {
++				#address-cells = <1>;
++				#size-cells = <0>;
++
++				port@0 {
++					reg = <0>;
+ 					ca_funnel_in_port0: endpoint {
+ 						remote-endpoint = <&etm0_out_port>;
+ 					};
 -- 
 2.43.0
 
