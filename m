@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-22221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F4CB85DAEA
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:35:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 020FA85DC8A
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:54:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04495281F2D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:35:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 983AD1F224C1
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:54:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2B3B7C085;
-	Wed, 21 Feb 2024 13:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36FE67BB01;
+	Wed, 21 Feb 2024 13:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XPTt7Rb2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YgI66SfV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A265B3FB21;
-	Wed, 21 Feb 2024 13:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7BA778B70;
+	Wed, 21 Feb 2024 13:54:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522491; cv=none; b=G5eL2cTnLshhjydjMHRTb1t2i79GT6ZsJQ/kzo0EE7PDNMD13FB3kYRhgKp51DmPmozMKDWqDM1sojrpfM9Ia0X3xfQP82kEW/xyoxMd4rVXqcv3ayY2zutjJ/ODJ/A+xakeEUO5yG/VVTjziLRrMgoGcYZtI1xlQwhHtowg6vc=
+	t=1708523662; cv=none; b=jZINkrB/ZSXCU66Ubz8O2ciHikeUe8zUQWAVsNolPG+qsSGQbUwIE9ds95yWqI7Vc4sRTUW0s9Sh4YWAcoF4bJJA91dVm3mOrckmh23uOi32seTgbq/3vQZ7ZZKr4QvHdjEkwjpNPlnSpNiXENvW/MUycRyAKYLTOKbPX86qdew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522491; c=relaxed/simple;
-	bh=2XDSceo2setOmVMKyV4Ni42xvAk14S+klYYfN5rbY7k=;
+	s=arc-20240116; t=1708523662; c=relaxed/simple;
+	bh=nSfliVwsS/gVgP9M9bW8H6GdtdyKetx50HG2XKtjYlM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DqL1IplnNVvI4kRyu77RyNLKOLOCq3gzbGZO3Ov4jwnbblLWFYApCUdXeudfVuTEMS3iigcCdi9RdT+3V/tVtSVUPdItLMofqT1c97cbsHPzOWzb59x4aEsoNP/DxrEW0usKSBVM/EE0G38mx8IeUROhkmKTRBeb1EZIj5AJeis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XPTt7Rb2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BAD5C433F1;
-	Wed, 21 Feb 2024 13:34:50 +0000 (UTC)
+	 MIME-Version; b=AqL9tQvKvTl1qqz6wDtnMyC5MzwnKwF3GWTkwhLMLW3Wvohl802WKMeCL+xgWpj29pim8yAqftWe6ggw+7lkwalCXsewzKwaoSrt3Mli5+3FgNd0cOplfmKKMOlZwoOpLHZAOabgtmkOW8jIsvjOac91mfawMEtj7rWeKYP7ri4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YgI66SfV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87762C433C7;
+	Wed, 21 Feb 2024 13:54:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522491;
-	bh=2XDSceo2setOmVMKyV4Ni42xvAk14S+klYYfN5rbY7k=;
+	s=korg; t=1708523661;
+	bh=nSfliVwsS/gVgP9M9bW8H6GdtdyKetx50HG2XKtjYlM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XPTt7Rb28fxMtyJQ/eZem2Foy1BUDJdiNuvaOuVGAEY+ZuekWsf4zpZHMoj06Bq3a
-	 UP/AIUrnt4rpxq47TkiZlwTpJwLwmYDLMoWTLNSFd6Ap8aKqf6k+/UoF/ekZaw6Hur
-	 7i8DpmeU+OW5mkpuKYpWIgC9eJyG4Mo7XtmmV4zk=
+	b=YgI66SfVoRMerdaTi5OpDzGmr7LImC9SJ7Tnzh8wYk+jwfaMFOL0kTf7tD/JGT3Jl
+	 78Rqr3t0Y95UWtdTRgOoCcwuK5qZcXfT7yVldNH9P8GgwVkheAVbdXXOSf7zqIcqrh
+	 eYW85LsE9M+QBqMvZWnLD3Yq3kCgHWUZbJp68zTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weichen Chen <weichen.chen@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	Kees Cook <keescook@chromium.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 149/476] pstore/ram: Fix crash when setting number of cpus to an odd number
+	Guangwu Zhang <guazhang@redhat.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Harald Freudenberger <freude@de.ibm.com>
+Subject: [PATCH 5.10 021/379] crypto: s390/aes - Fix buffer overread in CTR mode
 Date: Wed, 21 Feb 2024 14:03:20 +0100
-Message-ID: <20240221130013.435243631@linuxfoundation.org>
+Message-ID: <20240221125955.546487983@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weichen Chen <weichen.chen@mediatek.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit d49270a04623ce3c0afddbf3e984cb245aa48e9c ]
+commit d07f951903fa9922c375b8ab1ce81b18a0034e3b upstream.
 
-When the number of cpu cores is adjusted to 7 or other odd numbers,
-the zone size will become an odd number.
-The address of the zone will become:
-    addr of zone0 = BASE
-    addr of zone1 = BASE + zone_size
-    addr of zone2 = BASE + zone_size*2
-    ...
-The address of zone1/3/5/7 will be mapped to non-alignment va.
-Eventually crashes will occur when accessing these va.
+When processing the last block, the s390 ctr code will always read
+a whole block, even if there isn't a whole block of data left.  Fix
+this by using the actual length left and copy it into a buffer first
+for processing.
 
-So, use ALIGN_DOWN() to make sure the zone size is even
-to avoid this bug.
-
-Signed-off-by: Weichen Chen <weichen.chen@mediatek.com>
-Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
-Tested-by: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Link: https://lore.kernel.org/r/20230224023632.6840-1-weichen.chen@mediatek.com
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0200f3ecc196 ("crypto: s390 - add System z hardware support for CTR mode")
+Cc: <stable@vger.kernel.org>
+Reported-by: Guangwu Zhang <guazhang@redhat.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Reviewd-by: Harald Freudenberger <freude@de.ibm.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/pstore/ram.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/s390/crypto/aes_s390.c  |    4 +++-
+ arch/s390/crypto/paes_s390.c |    4 +++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/fs/pstore/ram.c b/fs/pstore/ram.c
-index f3fa3625d772..e15b4631364a 100644
---- a/fs/pstore/ram.c
-+++ b/fs/pstore/ram.c
-@@ -519,6 +519,7 @@ static int ramoops_init_przs(const char *name,
- 	}
- 
- 	zone_sz = mem_sz / *cnt;
-+	zone_sz = ALIGN_DOWN(zone_sz, 2);
- 	if (!zone_sz) {
- 		dev_err(dev, "%s zone size == 0\n", name);
- 		goto fail;
--- 
-2.43.0
-
+--- a/arch/s390/crypto/aes_s390.c
++++ b/arch/s390/crypto/aes_s390.c
+@@ -600,7 +600,9 @@ static int ctr_aes_crypt(struct skcipher
+ 	 * final block may be < AES_BLOCK_SIZE, copy only nbytes
+ 	 */
+ 	if (nbytes) {
+-		cpacf_kmctr(sctx->fc, sctx->key, buf, walk.src.virt.addr,
++		memset(buf, 0, AES_BLOCK_SIZE);
++		memcpy(buf, walk.src.virt.addr, nbytes);
++		cpacf_kmctr(sctx->fc, sctx->key, buf, buf,
+ 			    AES_BLOCK_SIZE, walk.iv);
+ 		memcpy(walk.dst.virt.addr, buf, nbytes);
+ 		crypto_inc(walk.iv, AES_BLOCK_SIZE);
+--- a/arch/s390/crypto/paes_s390.c
++++ b/arch/s390/crypto/paes_s390.c
+@@ -676,9 +676,11 @@ static int ctr_paes_crypt(struct skciphe
+ 	 * final block may be < AES_BLOCK_SIZE, copy only nbytes
+ 	 */
+ 	if (nbytes) {
++		memset(buf, 0, AES_BLOCK_SIZE);
++		memcpy(buf, walk.src.virt.addr, nbytes);
+ 		while (1) {
+ 			if (cpacf_kmctr(ctx->fc, &param, buf,
+-					walk.src.virt.addr, AES_BLOCK_SIZE,
++					buf, AES_BLOCK_SIZE,
+ 					walk.iv) == AES_BLOCK_SIZE)
+ 				break;
+ 			if (__paes_convert_key(ctx))
 
 
 
