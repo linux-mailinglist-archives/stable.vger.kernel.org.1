@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-21952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 901EF85D95A
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:17:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0802885DD81
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:06:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C26771C22B8A
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:17:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 805ECB2240D
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:06:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 856846BB52;
-	Wed, 21 Feb 2024 13:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B4AF7C0BD;
+	Wed, 21 Feb 2024 14:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PPMi5p5u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Z7AOWxd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4339B46B9B;
-	Wed, 21 Feb 2024 13:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3C7F78B4B;
+	Wed, 21 Feb 2024 14:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521445; cv=none; b=Ko9QNsQgtgk1aZ13Sao+pSO5a58p/tmklqsgzCAiDnfYbehl+t/nGK79PIXtvHmeuT0nBjqLbilTveGouhPTRq5eilPOlEeEnojTuSoIFQpbaVRE8IETr6ECWmHGM9CtBJZge+F7isHTc8OMnsWdhEkTV5R49ngXhQOc5sEsIQU=
+	t=1708524311; cv=none; b=CxDP0KFESfD+aAhxCH8hgXRV0BGpNqkfZcPoz0As0LoQGx90Ka9MzKOBaf3C7Hb23OL+uIHNQvva+kmX2MBCmjfatEQLgdU9h/88CNKEXy+Is5K+UKV5VhlcmY8HT1kSnVd1BPySbjAuO0AKNIw8QRFaSoDw+cekhfem7OKfHuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521445; c=relaxed/simple;
-	bh=0Vz4UBgX4qyK6VSleWbrBM6/OlVRgOPyAMNA6l2xdoA=;
+	s=arc-20240116; t=1708524311; c=relaxed/simple;
+	bh=AaPeamt8GGF7h3Qf1RDX6D7DqQm8j/NJXESkkGei9+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dCW1yXkn0HcwBZSUY7dnY3WTkd7ufwu38tuRIeVmBrdjDvAOitG07nfmxCGUM0oksilJWyxen1Z9imnSnMOTX+kU8+D8IIgiWi4ipsahdfSrpBo8h7gITyLtT8og8dLlhjUpbNoI7LakZN1dsWA8t7agWim1J2wgd/bL9lt5xS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PPMi5p5u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A41DDC43390;
-	Wed, 21 Feb 2024 13:17:24 +0000 (UTC)
+	 MIME-Version; b=AO2CKCFtLdD+qzT1ehgZdUJs5MlkGSBxWtzNPYvCjVcbWcf3WG0M0oDxIdAxffso8Za2ADhhU+8nOTALepaqDr7VuuPSB31i3u5Wlo2NpymChMOL56Ai+HQ99/tWJwytGIZXCMC6nRjZ5VIEqN4Fr4Gi0oanp/QEjwVXnWsSwqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Z7AOWxd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFAC8C433C7;
+	Wed, 21 Feb 2024 14:05:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521445;
-	bh=0Vz4UBgX4qyK6VSleWbrBM6/OlVRgOPyAMNA6l2xdoA=;
+	s=korg; t=1708524311;
+	bh=AaPeamt8GGF7h3Qf1RDX6D7DqQm8j/NJXESkkGei9+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PPMi5p5uLIDRE+lZRGRFgRQKwSuPYC5YxJI4mQM2FVomwDb8fAsmU87QKBAKmf6IF
-	 z07cwW+BqeVhw9Wwo/sip2Zf2676ZhR5KFhgjxg0l6RzsLYbVOrOCGsKvY0zMDKJyZ
-	 rwoUJpoQhHGzXNJNcT9CIFu56zbL7IPAAtmn7cGw=
+	b=2Z7AOWxd6hZqpWIbAVDImVv/j4+ooKK+75givxCP47b8oxmpoPFs2kQvCs9GBJHUk
+	 K3zPM4N6KMctWT3lhtGyB2DtmXffW3ZBYuWCtv00onnTgsbQ+QwuuanYka89X/kS7i
+	 +wjYM3CEyUPITRMqKEpvN9qTRR9oSo0SFI0M+mYA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Jonker <jbx6244@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Peter Robinson <pbrobinson@gmail.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 084/202] ARM: dts: rockchip: fix rk3036 hdmi ports node
+Subject: [PATCH 5.10 206/379] mfd: ti_am335x_tscadc: Fix TI SoC dependencies
 Date: Wed, 21 Feb 2024 14:06:25 +0100
-Message-ID: <20240221125934.509930387@linuxfoundation.org>
+Message-ID: <20240221130000.995462103@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Jonker <jbx6244@gmail.com>
+From: Peter Robinson <pbrobinson@gmail.com>
 
-[ Upstream commit 27ded76ef0fcfcf939914532aae575cf23c221b4 ]
+[ Upstream commit 284d16c456e5d4b143f375b8ccc4038ab3f4ee0f ]
 
-Fix hdmi ports node so that it matches the
-rockchip,inno-hdmi.yaml binding.
+The ti_am335x_tscadc is specific to some TI SoCs, update
+the dependencies for those SoCs and compile testing.
 
-Signed-off-by: Johan Jonker <jbx6244@gmail.com>
-Link: https://lore.kernel.org/r/9a2afac1-ed5c-382d-02b0-b2f5f1af3abb@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
+Link: https://lore.kernel.org/r/20231220155643.445849-1-pbrobinson@gmail.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/rk3036.dtsi | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ drivers/mfd/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/boot/dts/rk3036.dtsi b/arch/arm/boot/dts/rk3036.dtsi
-index db612271371b..c5144f06c3e7 100644
---- a/arch/arm/boot/dts/rk3036.dtsi
-+++ b/arch/arm/boot/dts/rk3036.dtsi
-@@ -336,12 +336,20 @@
- 		pinctrl-0 = <&hdmi_ctl>;
- 		status = "disabled";
+diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+index b8847ae04d93..c5c6608ccc84 100644
+--- a/drivers/mfd/Kconfig
++++ b/drivers/mfd/Kconfig
+@@ -1382,6 +1382,7 @@ config MFD_DAVINCI_VOICECODEC
  
--		hdmi_in: port {
-+		ports {
- 			#address-cells = <1>;
- 			#size-cells = <0>;
--			hdmi_in_vop: endpoint@0 {
-+
-+			hdmi_in: port@0 {
- 				reg = <0>;
--				remote-endpoint = <&vop_out_hdmi>;
-+
-+				hdmi_in_vop: endpoint {
-+					remote-endpoint = <&vop_out_hdmi>;
-+				};
-+			};
-+
-+			hdmi_out: port@1 {
-+				reg = <1>;
- 			};
- 		};
- 	};
+ config MFD_TI_AM335X_TSCADC
+ 	tristate "TI ADC / Touch Screen chip support"
++	depends on ARCH_OMAP2PLUS || ARCH_K3 || COMPILE_TEST
+ 	select MFD_CORE
+ 	select REGMAP
+ 	select REGMAP_MMIO
 -- 
 2.43.0
 
