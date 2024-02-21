@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-22173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EFE385DAB5
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:34:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 595E085DC92
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:54:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C3AD0B21370
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:34:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89B3C1C236F4
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:54:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C0207EF04;
-	Wed, 21 Feb 2024 13:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC2B378B70;
+	Wed, 21 Feb 2024 13:54:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HKr6Sj4A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="naBxYy0C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64137EF02;
-	Wed, 21 Feb 2024 13:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F4038398;
+	Wed, 21 Feb 2024 13:54:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522312; cv=none; b=IGwe+D5MDJOcshXgmR52TErWb60P3beR6IhSE6TqyhxtthLFrH0w/77Cnz1VMny2K32zGI3uGWKFxHsTszv1Jb4e7V05Y8cFXY/c1WJcvFRlDnFubJ5Hvjx1k35gOYSRXN5YGe++E6/3AqIlOgSJUBj/xDhmWMq+yi/essbWpnM=
+	t=1708523692; cv=none; b=QOaFRBy9leEAGugMibAqRsgxuOiwUWx4WI08iA6VfazIWumkh505H5jQvCCVaY680Fgdgpg4AEaJTj+V7Njx5zu3aw6iboKoOWmmZ5XeDnKa4CsKwdZX+Y4P/auJsj07fhxIkIh18bLo2mzc8HZqj3u/7uBtkjTTWuegEMf5DhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522312; c=relaxed/simple;
-	bh=W5tDHLLe9LQQ8WStPZT5R/VXXtAAqCWnC3cHP6/fvo0=;
+	s=arc-20240116; t=1708523692; c=relaxed/simple;
+	bh=dqqbjycNx694mxCfz/Md1YHQLTM7LO52ktv82Tepb9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iA93dzHmaptnVrS1517VbkhONuWrNH2U/7OBgT+Q+fRNwcU5fR78wxjPsqosYaXtspfUlK/JDEAiRg4EhMyOXp0qQHEtAiZ3QZJOdp0axxm5rBwrJpuFaSrkr5kmpvD0k4dXHEjk+wQ57pYPxbxGBBEK7yhpuzhkqwA6uchta9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HKr6Sj4A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73F63C433C7;
-	Wed, 21 Feb 2024 13:31:50 +0000 (UTC)
+	 MIME-Version; b=k/oPpo3f/mS9iDKjVTOuMNjuKMhB7UxNSDLShIOCl/J0htHEpmBMh33yj2gSwk9mZ+r+/bJU+k7Zc0PFhBz9DHyw7hAPKDsyReHZ+Oahm/iJa04uAxK7+7U9/A1kOBRPqN3n4BwrR1ejtRbi61P7pCAP2ftJ1YxeSkbd3CLlvrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=naBxYy0C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3BC8C433C7;
+	Wed, 21 Feb 2024 13:54:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522310;
-	bh=W5tDHLLe9LQQ8WStPZT5R/VXXtAAqCWnC3cHP6/fvo0=;
+	s=korg; t=1708523692;
+	bh=dqqbjycNx694mxCfz/Md1YHQLTM7LO52ktv82Tepb9c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HKr6Sj4AZupDetLbrpm9+ybdlsdvcrTe9cLpPTP8iSF5IcRljiJW6OtqwUm+SWUoc
-	 do1Mg4QAu8TumPJ6Iy3PgG6Lm3U70876aSqxMp0/ytg258TQT2t/QANL+JwJmw5u6l
-	 hYjtCIuWUzyh/mpSXeBVL2mJkLzMhDbEhyO2aQl8=
+	b=naBxYy0CEK3r1m5OvoK8bXx4RNvkhnkfmsJQDNllx+thhEuP0yHB6ssr/zhsZJMeD
+	 wiFRNNkU+25VwNIs/n/msS1d0JfQUeuHy1hE4tsp1XCMMyuJZwSGI/Y2MZTPPAQYpl
+	 Od0LeCDRxvcOzNPL5py7yBkTkaczCyicZT3mZdj0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	stable <stable@kernel.org>,
+	Ravi Gunasekaran <r-gunasekaran@ti.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Peter Chen <peter.chen@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 130/476] powerpc/64s: Fix CONFIG_NUMA=n build due to create_section_mapping()
-Date: Wed, 21 Feb 2024 14:03:01 +0100
-Message-ID: <20240221130012.760953629@linuxfoundation.org>
+Subject: [PATCH 5.10 003/379] usb: cdns3: fix incorrect calculation of ep_buf_size when more than one config
+Date: Wed, 21 Feb 2024 14:03:02 +0100
+Message-ID: <20240221125955.023428385@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,67 +62,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit ede66cd22441820cbd399936bf84fdc4294bc7fa ]
+[ Upstream commit 2627335a1329a0d39d8d277994678571c4f21800 ]
 
-With CONFIG_NUMA=n the build fails with:
+Previously, the cdns3_gadget_check_config() function in the cdns3 driver
+mistakenly calculated the ep_buf_size by considering only one
+configuration's endpoint information because "claimed" will be clear after
+call usb_gadget_check_config().
 
-  arch/powerpc/mm/book3s64/pgtable.c:275:15: error: no previous prototype for ‘create_section_mapping’ [-Werror=missing-prototypes]
-  275 | int __meminit create_section_mapping(unsigned long start, unsigned long end,
-      |               ^~~~~~~~~~~~~~~~~~~~~~
+The fix involves checking the private flags EP_CLAIMED instead of relying
+on the "claimed" flag.
 
-That happens because the prototype for create_section_mapping() is in
-asm/mmzone.h, but asm/mmzone.h is only included by linux/mmzone.h
-when CONFIG_NUMA=y.
-
-In fact the prototype is only needed by arch/powerpc/mm code, so move
-the prototype into arch/powerpc/mm/mmu_decl.h, which also fixes the
-build error.
-
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231129131919.2528517-5-mpe@ellerman.id.au
+Fixes: dce49449e04f ("usb: cdns3: allocate TX FIFO size according to composite EP number")
+Cc: stable <stable@kernel.org>
+Reported-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Tested-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
+Link: https://lore.kernel.org/r/20230707230015.494999-2-Frank.Li@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 92f02efa1d86 ("usb: cdns3: fix iso transfer error when mult is not zero")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/mmzone.h | 5 -----
- arch/powerpc/mm/mmu_decl.h        | 5 +++++
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/usb/cdns3/gadget.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/mmzone.h b/arch/powerpc/include/asm/mmzone.h
-index 3764d3585d30..da827d2d0866 100644
---- a/arch/powerpc/include/asm/mmzone.h
-+++ b/arch/powerpc/include/asm/mmzone.h
-@@ -43,10 +43,5 @@ u64 memory_hotplug_max(void);
- #define memory_hotplug_max() memblock_end_of_DRAM()
- #endif /* CONFIG_NUMA */
- 
--#ifdef CONFIG_MEMORY_HOTPLUG
--extern int create_section_mapping(unsigned long start, unsigned long end,
--				  int nid, pgprot_t prot);
--#endif
--
- #endif /* __KERNEL__ */
- #endif /* _ASM_MMZONE_H_ */
-diff --git a/arch/powerpc/mm/mmu_decl.h b/arch/powerpc/mm/mmu_decl.h
-index dd1cabc2ea0f..21996b9e0a64 100644
---- a/arch/powerpc/mm/mmu_decl.h
-+++ b/arch/powerpc/mm/mmu_decl.h
-@@ -190,3 +190,8 @@ static inline bool debug_pagealloc_enabled_or_kfence(void)
+diff --git a/drivers/usb/cdns3/gadget.c b/drivers/usb/cdns3/gadget.c
+index 575180a59ad4..ee64c4ab8dd2 100644
+--- a/drivers/usb/cdns3/gadget.c
++++ b/drivers/usb/cdns3/gadget.c
+@@ -3030,12 +3030,14 @@ static int cdns3_gadget_udc_stop(struct usb_gadget *gadget)
+ static int cdns3_gadget_check_config(struct usb_gadget *gadget)
  {
- 	return IS_ENABLED(CONFIG_KFENCE) || debug_pagealloc_enabled();
- }
-+
-+#ifdef CONFIG_MEMORY_HOTPLUG
-+int create_section_mapping(unsigned long start, unsigned long end,
-+			   int nid, pgprot_t prot);
-+#endif
+ 	struct cdns3_device *priv_dev = gadget_to_cdns3_device(gadget);
++	struct cdns3_endpoint *priv_ep;
+ 	struct usb_ep *ep;
+ 	int n_in = 0;
+ 	int total;
+ 
+ 	list_for_each_entry(ep, &gadget->ep_list, ep_list) {
+-		if (ep->claimed && (ep->address & USB_DIR_IN))
++		priv_ep = ep_to_cdns3_ep(ep);
++		if ((priv_ep->flags & EP_CLAIMED) && (ep->address & USB_DIR_IN))
+ 			n_in++;
+ 	}
+ 
 -- 
 2.43.0
 
