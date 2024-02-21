@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-21878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0090685D8F3
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:12:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C43285DD5B
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:04:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF687281BF0
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:12:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CD8A1F21776
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:04:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6498069D2B;
-	Wed, 21 Feb 2024 13:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E96327BAF8;
+	Wed, 21 Feb 2024 14:04:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xojf+zKb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KpG9VWaw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 243E73EA71;
-	Wed, 21 Feb 2024 13:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B2078B4B;
+	Wed, 21 Feb 2024 14:04:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521167; cv=none; b=TTtGZFz7+Syg9+G79ouAD27bor9GR+aADZddK4rSWleZSNjX2Kh6wQ8oGAdfxg2svmYnFPzkpsGDaxN+PZTgkzZ8/Jx7FNMLJcjBgKOxEQ+FdPlg8MEwmiIltTMjd1GuCFkdd4OjS3BGgFKA6W7BPwGbR532D+nhQPV0L3nQsLg=
+	t=1708524247; cv=none; b=lj5yw0U7XMs3CpAqr+rt8hSu8UZlRxRKPxQSkNjtMgeiGMXQBJDCyG9X2sG5Vub43PFnwo/Bx7GKu35/pVRTE/alUGPeQww59lyct6YSg2Bkoglsk/r7+300Vy0COMlT5mqMw2LOPtZQW5UqyZTgBFrae2pxuOgNC5prXEOB+KY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521167; c=relaxed/simple;
-	bh=Ubjpur7dP0OXeFRufAS8Ihto3VX/+Wgqf+r5085rPVs=;
+	s=arc-20240116; t=1708524247; c=relaxed/simple;
+	bh=zXzjFrVGFWRXUlJ93zfphXKdISAS4rWTyRs9rIUXYAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tzu4Ve/X8SdR9rQf7Z9mg8ruWmc+43PJsADKv3kEZu7ayG3ZVMyXAX/QMsXHRn0kqirqWD0P1cxp2JIumjNYtuwajOhhVNESmq+uaRy633lhVDTYSpbFkcoqc5Lvpj1MyNaB/Zv3mJxY/J0knE0ERpJ3bz1wVU4AxlVGuJjbnBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xojf+zKb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86BFCC433F1;
-	Wed, 21 Feb 2024 13:12:46 +0000 (UTC)
+	 MIME-Version; b=qwacgYqMAokI1OFTLD0Tr5yxEnv2XxJ3cGpg52yYAFjE9SRaKA72ZPwuWPV3ZoZ2unK2FcCYH338cJPu4IUHgSB2P6586DdjbCNWl0PmRb9pUaIAUz1qjgt0IvVvBd555Cy1hUl9fndeB/AblkQCchYbEH8uAVGCjsQjDBdscjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KpG9VWaw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1471EC433F1;
+	Wed, 21 Feb 2024 14:04:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521167;
-	bh=Ubjpur7dP0OXeFRufAS8Ihto3VX/+Wgqf+r5085rPVs=;
+	s=korg; t=1708524247;
+	bh=zXzjFrVGFWRXUlJ93zfphXKdISAS4rWTyRs9rIUXYAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xojf+zKbd46gXw3dzxIIEta9FbExvvhHZVVfiIL5rRFC6oqChEdaJ3opcS9zynboe
-	 AZhlRbtI8qeDrS5GLJXLAnrVrryIB28AQ0rpJnen9V+rN6zokdPIUL9UGaVSOLkrsy
-	 LSfptv7pqsk2WAmozJCziELZ4GO56QmVfTvchisE=
+	b=KpG9VWaw5Fixo8h4eu+ME7cuwIgllOGZ2aJPrnmnpl9GNCdGmffvJsY6GLP38dT6Q
+	 fwow9C1/5iWTBF9S8cFLxADwcgTCVJj7zw8BpTex71iI46whoGLuz5l/l3YXUwuS7N
+	 ZqSIrSSasK5MbZ+MxpdxwtlJ4vHkw08JDIt40btw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Notselwyn <notselwyn@pwning.tech>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 4.19 039/202] netfilter: nf_tables: reject QUEUE/DROP verdict parameters
+	Fabio Estevam <festevam@denx.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 161/379] ARM: dts: imx27-apf27dev: Fix LED name
 Date: Wed, 21 Feb 2024 14:05:40 +0100
-Message-ID: <20240221125933.060269581@linuxfoundation.org>
+Message-ID: <20240221125959.680623796@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Fabio Estevam <festevam@denx.de>
 
-commit f342de4e2f33e0e39165d8639387aa6c19dff660 upstream.
+[ Upstream commit dc35e253d032b959d92e12f081db5b00db26ae64 ]
 
-This reverts commit e0abdadcc6e1.
+Per leds-gpio.yaml, the led names should start with 'led'.
 
-core.c:nf_hook_slow assumes that the upper 16 bits of NF_DROP
-verdicts contain a valid errno, i.e. -EPERM, -EHOSTUNREACH or similar,
-or 0.
+Change it to fix the following dt-schema warning:
 
-Due to the reverted commit, its possible to provide a positive
-value, e.g. NF_ACCEPT (1), which results in use-after-free.
+imx27-apf27dev.dtb: leds: 'user' does not match any of the regexes: '(^led-[0-9a-f]$|led)', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/leds/leds-gpio.yaml#
 
-Its not clear to me why this commit was made.
-
-NF_QUEUE is not used by nftables; "queue" rules in nftables
-will result in use of "nft_queue" expression.
-
-If we later need to allow specifiying errno values from userspace
-(do not know why), this has to call NF_DROP_GETERR and check that
-"err <= 0" holds true.
-
-Fixes: e0abdadcc6e1 ("netfilter: nf_tables: accept QUEUE/DROP verdict parameters")
-Cc: stable@vger.kernel.org
-Reported-by: Notselwyn <notselwyn@pwning.tech>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c |   16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+ arch/arm/boot/dts/imx27-apf27dev.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -7341,16 +7341,10 @@ static int nft_verdict_init(const struct
- 	data->verdict.code = ntohl(nla_get_be32(tb[NFTA_VERDICT_CODE]));
+diff --git a/arch/arm/boot/dts/imx27-apf27dev.dts b/arch/arm/boot/dts/imx27-apf27dev.dts
+index 68fcb5ce9a9e..3d9bb7fc3be2 100644
+--- a/arch/arm/boot/dts/imx27-apf27dev.dts
++++ b/arch/arm/boot/dts/imx27-apf27dev.dts
+@@ -47,7 +47,7 @@
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pinctrl_gpio_leds>;
  
- 	switch (data->verdict.code) {
--	default:
--		switch (data->verdict.code & NF_VERDICT_MASK) {
--		case NF_ACCEPT:
--		case NF_DROP:
--		case NF_QUEUE:
--			break;
--		default:
--			return -EINVAL;
--		}
--		/* fall through */
-+	case NF_ACCEPT:
-+	case NF_DROP:
-+	case NF_QUEUE:
-+		break;
- 	case NFT_CONTINUE:
- 	case NFT_BREAK:
- 	case NFT_RETURN:
-@@ -7370,6 +7364,8 @@ static int nft_verdict_init(const struct
- 
- 		data->verdict.chain = chain;
- 		break;
-+	default:
-+		return -EINVAL;
- 	}
- 
- 	desc->len = sizeof(data->verdict);
+-		user {
++		led-user {
+ 			label = "Heartbeat";
+ 			gpios = <&gpio6 14 GPIO_ACTIVE_HIGH>;
+ 			linux,default-trigger = "heartbeat";
+-- 
+2.43.0
+
 
 
 
