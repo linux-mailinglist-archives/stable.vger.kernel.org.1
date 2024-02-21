@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-22429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AB0E85DBFC
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:47:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C65485DDD0
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:12:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C8621C23549
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:47:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1594E2818BB
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:12:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C215177A03;
-	Wed, 21 Feb 2024 13:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7490E7E567;
+	Wed, 21 Feb 2024 14:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MamXD2fX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U8ZvaKaj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB343C2F;
-	Wed, 21 Feb 2024 13:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C3E17CF33;
+	Wed, 21 Feb 2024 14:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523274; cv=none; b=SFJ/SqPqayHMtuZCzKm7eJL0s9csFbZNL97u3quzmINaAcnT4nWPwW4MhVO3jwrFGsnl9H9leIvaziOP1nRG5y/AQbz1Ui75a8LPdhB4oV3UOcR8oi4nbxmJ+mK9Is+MmmClTdNy5bgLUOWt2GvoNixx5R/VVMgXBNmLBREYyoY=
+	t=1708524478; cv=none; b=pD8Nu3kOVbEaBnamH2JiFLjemcOdnNPiOFM0R69g0IN+iGLfkACpeY9oXm97h5rPZSbzWSKVkUhlDHriCDeZ0MxTDP1ToH6RSPItTamX+L+6AeTXU+He5l2sByWAuTlH+LGlvFm+1Z8n+Er/cwT3+HAdSGok1DdCAjWdaFv+n5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523274; c=relaxed/simple;
-	bh=HpByqWA6dDTzn+vNhpTSyYdh3ezzrebKkCGqr3OQSbw=;
+	s=arc-20240116; t=1708524478; c=relaxed/simple;
+	bh=qyn/kM6crTrvXZeyiQqoiLrjW7McniMEEJ/ky9Qk4P8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mCDIH29gP0k78OPA9E6gangzv25McDhIkXQDm96kiApisFC4OeATzqm3iXiIXik1ssHEsDZXZfbODcZ9LmvLZAhYVzEs0dizSXBfS9ZgL8lEZ5WFbM48ZvDUyVs7p4OlLZv5ZglzgschJdQKimKT+F8mxjWAIJhgOdqXCTkP0QA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MamXD2fX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECF92C433F1;
-	Wed, 21 Feb 2024 13:47:53 +0000 (UTC)
+	 MIME-Version; b=CtjV5NtrqSxifKxrsWpK0Ep8QwMDmoeHI9lCSYRWVeZGLLzNdH8TwfFrTpUpWZZjED10MEnCuQneD9oNgTR++0Bq8FwaXbVjqFsD/0r638qTZRchUIkYMmdoXdVPnTGSGu4R0TzfADjZXuy5olLvkRv4X5hsirAaqLbvCqeH/oQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U8ZvaKaj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A065AC43390;
+	Wed, 21 Feb 2024 14:07:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523274;
-	bh=HpByqWA6dDTzn+vNhpTSyYdh3ezzrebKkCGqr3OQSbw=;
+	s=korg; t=1708524478;
+	bh=qyn/kM6crTrvXZeyiQqoiLrjW7McniMEEJ/ky9Qk4P8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MamXD2fXVLJMPzqyWdqreTqTVar7e/Wvv5UBCE8J2pTIg/jUgWWF0zH20q6KRHLwG
-	 9GUw9GstfSJEJ9Wcp+Rvi7aktOO86g0LkqkU0jO7QDzQIjoYbVD8DLRPSYW5jgH5RN
-	 8rUOga2BxHD5TcETxg+aDothry9bl+T0JU+KNeR4=
+	b=U8ZvaKajBw55vvcw9zzpoynh+aVmUXGyYoSpDqFYzV5yBtda5IkgmNNK51s0xp4It
+	 zbwoDF4LYKGHnOpOonxuUB8IJd0u8C/KQB4bI3H1Vuu5J2xFZiVXPcFXDfp/dRBZzG
+	 MBqnlHCE2m7nYjOlNR+B31CR/K1z9Sl0NksiFLHo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.15 385/476] ASoC: codecs: wcd938x: handle deferred probe
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Jiri Pirko <jiri@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 257/379] atm: idt77252: fix a memleak in open_card_ubr0
 Date: Wed, 21 Feb 2024 14:07:16 +0100
-Message-ID: <20240221130022.276979251@linuxfoundation.org>
+Message-ID: <20240221130002.521263241@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-commit 086df711d9b886194481b4fbe525eb43e9ae7403 upstream.
+[ Upstream commit f3616173bf9be9bf39d131b120d6eea4e6324cb5 ]
 
-WCD938x sound codec driver ignores return status of getting regulators
-and returns EINVAL instead of EPROBE_DEFER.  If regulator provider
-probes after the codec, system is left without probed audio:
+When alloc_scq fails, card->vcs[0] (i.e. vc) should be freed. Otherwise,
+in the following call chain:
 
-  wcd938x_codec audio-codec: wcd938x_probe: Fail to obtain platform data
-  wcd938x_codec: probe of audio-codec failed with error -22
+idt77252_init_one
+  |-> idt77252_dev_open
+        |-> open_card_ubr0
+              |-> alloc_scq [failed]
+  |-> deinit_card
+        |-> vfree(card->vcs);
 
-Fixes: 16572522aece ("ASoC: codecs: wcd938x-sdw: add SoundWire driver")
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://msgid.link/r/20240117151208.1219755-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+card->vcs is freed and card->vcs[0] is leaked.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/wcd938x.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/atm/idt77252.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/sound/soc/codecs/wcd938x.c
-+++ b/sound/soc/codecs/wcd938x.c
-@@ -4573,7 +4573,7 @@ static int wcd938x_probe(struct platform
- 	ret = wcd938x_populate_dt_data(wcd938x, dev);
- 	if (ret) {
- 		dev_err(dev, "%s: Fail to obtain platform data\n", __func__);
--		return -EINVAL;
-+		return ret;
+diff --git a/drivers/atm/idt77252.c b/drivers/atm/idt77252.c
+index a217b50439e7..e616e33c8a20 100644
+--- a/drivers/atm/idt77252.c
++++ b/drivers/atm/idt77252.c
+@@ -2936,6 +2936,8 @@ open_card_ubr0(struct idt77252_dev *card)
+ 	vc->scq = alloc_scq(card, vc->class);
+ 	if (!vc->scq) {
+ 		printk("%s: can't get SCQ.\n", card->name);
++		kfree(card->vcs[0]);
++		card->vcs[0] = NULL;
+ 		return -ENOMEM;
  	}
  
- 	ret = wcd938x_add_slave_components(wcd938x, dev, &match);
+-- 
+2.43.0
+
 
 
 
