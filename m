@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-22641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0807485DD09
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:01:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38ADD85DB4D
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:39:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 986791F22FA4
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:01:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD833B26E1D
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:39:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5E1278B73;
-	Wed, 21 Feb 2024 14:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39EF969953;
+	Wed, 21 Feb 2024 13:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E8rJaU/g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dzvomMMI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8357D7C6C0;
-	Wed, 21 Feb 2024 14:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE8E3C2F;
+	Wed, 21 Feb 2024 13:39:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524019; cv=none; b=U3CU7AVN6CrN1qVMYpeVnMKfs+fowB0ZomLSUuscMQRqJ0ivm1KN2Oc7oigXObBdpS8YdO/7ejp48YFJwgj4Ux1PriZsTqU9MHwpLyH75fu97lqrZyI6DOEaRvXVS+PGwgGCC4ZFOsVOF6Dsv3jw3BdKgW5vLlkZJAuRIen7B/U=
+	t=1708522756; cv=none; b=mxUNDs2dtZtTuuf5wXUGnSRDgrV2n0WWogZl0I60NxgyTHObN+57CXQyeWgfgjcM/1X2TC/Pu/JJTn1XlGsGABI80VP1w0XFkANsrSLkXZ4IVDfant9zueaUmq6o931cfOIWJqFWfD6M6HU/WUV8V2oAWZSGCGQ/opYIpe33yXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524019; c=relaxed/simple;
-	bh=aamcWPAk7g5u49/GZtbfyBwwp3JR03/jhAerAiNYYM4=;
+	s=arc-20240116; t=1708522756; c=relaxed/simple;
+	bh=GYS3fiEHc0KPo9dBBVRqjaxqEywi+lSbH08OShwIIwk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NiTVAMWnEN0EG9iI4KKwsGpX6eMJLR9HN5d0rIAs93JYw1Ss0nHNu+GkJwW4/QwYYo7ZxRC7BbS78YbXa1M94PAp6wp4ZF8HNzksX7GhEIRNuY2GWoFYjT8v0oarhJluVZCSaFFagnxJshMaUxKFTcUCWbk7vI8q+lTpFQreFdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E8rJaU/g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4D9BC433F1;
-	Wed, 21 Feb 2024 14:00:18 +0000 (UTC)
+	 MIME-Version; b=WqHV+HnrRdA0sWCa2L2SGOJbtlICaAb9WSJXHrpOhKxN8K0/zljCv1xteuhsG1uSm7NUsjqjKfMIYX3EbNrOaZCmQ/aYRWzwMQTRhOaEzLi6Rw/UJGl75LmwV8jYbiSdiTHIUrDz7K9AIC+shRP8bDhGzPQFPJW/ojXjXdpMC9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dzvomMMI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7503EC433F1;
+	Wed, 21 Feb 2024 13:39:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524019;
-	bh=aamcWPAk7g5u49/GZtbfyBwwp3JR03/jhAerAiNYYM4=;
+	s=korg; t=1708522755;
+	bh=GYS3fiEHc0KPo9dBBVRqjaxqEywi+lSbH08OShwIIwk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E8rJaU/glXPPvZqzKqJgg0XzCqiWsxVr9As6Co5YHxTs4LqKeZ8E65RxBPsYpZStV
-	 cnOJW60U+Bd4BdvyuDeuxyFqKZc9N57ViHz3hjhSED/ew8XBdp/KY2YrpSk//U5jeS
-	 J+UoBOWE0xfrvf19luQZ2m3MJ2XdXUtIrZMT5Q50=
+	b=dzvomMMIJCdintvyMrSZyTKmjRXiqgZYiywoc641KRbxgdJaeMRhVi9ymlvXXC607
+	 sawZ6rIvQ63VvNxzyGbBYrlveWm6kYYFrU5ZDl1Z3fnDP8DWD0Mj6c4jfLQPjoo2Tn
+	 r7dGWqdUfDyucaAS9CkkREb/UYkAXrClmiSYPS4w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Manas Ghandat <ghandatmanas@gmail.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	"Xiaowu.ding" <xiaowu.ding@jaguarmicro.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Jassi Brar <jaswinder.singh@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 120/379] jfs: fix slab-out-of-bounds Read in dtSearch
+Subject: [PATCH 5.15 248/476] mailbox: arm_mhuv2: Fix a bug for mhuv2_sender_interrupt
 Date: Wed, 21 Feb 2024 14:04:59 +0100
-Message-ID: <20240221125958.477385435@linuxfoundation.org>
+Message-ID: <20240221130017.029844073@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manas Ghandat <ghandatmanas@gmail.com>
+From: Xiaowu.ding <xiaowu.ding@jaguarmicro.com>
 
-[ Upstream commit fa5492ee89463a7590a1449358002ff7ef63529f ]
+[ Upstream commit ee01c0b4384d19ecc5dfa7db3fd4303f965c3eba ]
 
-Currently while searching for current page in the sorted entry table
-of the page there is a out of bound access. Added a bound check to fix
-the error.
+Message Handling Unit version is v2.1.
 
-Dave:
-Set return code to -EIO
+When arm_mhuv2 working with the data protocol transfer mode.
+We have split one mhu into two channels, and every channel
+include four channel windows, the two channels share
+one gic spi interrupt.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/202310241724.Ed02yUz9-lkp@intel.com/
-Signed-off-by: Manas Ghandat <ghandatmanas@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+There is a problem with the sending scenario.
+
+The first channel will take up 0-3 channel windows, and the second
+channel take up 4-7 channel windows. When the first channel send the
+data, and the receiver will clear all the four channels status.
+Although we only enabled the interrupt on the last channel window with
+register CH_INT_EN,the register CHCOMB_INT_ST0 will be 0xf, not be 0x8.
+Currently we just clear the last channel windows int status with the
+data proctol mode.So after that,the CHCOMB_INT_ST0 status will be 0x7,
+not be the 0x0.
+
+Then the second channel send the data, the receiver read the
+data, clear all the four channel windows status, trigger the sender
+interrupt. But currently the CHCOMB_INT_ST0 register will be 0xf7,
+get_irq_chan_comb function will always return the first channel.
+
+So this patch clear all channel windows int status to avoid this interrupt
+confusion.
+
+Signed-off-by: Xiaowu.ding <xiaowu.ding@jaguarmicro.com>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Jassi Brar <jaswinder.singh@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dtree.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/mailbox/arm_mhuv2.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/jfs/jfs_dtree.c b/fs/jfs/jfs_dtree.c
-index fafcb90219cf..a222a9d71887 100644
---- a/fs/jfs/jfs_dtree.c
-+++ b/fs/jfs/jfs_dtree.c
-@@ -633,6 +633,11 @@ int dtSearch(struct inode *ip, struct component_name * key, ino_t * data,
- 		for (base = 0, lim = p->header.nextindex; lim; lim >>= 1) {
- 			index = base + (lim >> 1);
+diff --git a/drivers/mailbox/arm_mhuv2.c b/drivers/mailbox/arm_mhuv2.c
+index 3af15083a25a..68f766621b9b 100644
+--- a/drivers/mailbox/arm_mhuv2.c
++++ b/drivers/mailbox/arm_mhuv2.c
+@@ -552,7 +552,8 @@ static irqreturn_t mhuv2_sender_interrupt(int irq, void *data)
+ 	priv = chan->con_priv;
  
-+			if (stbl[index] < 0) {
-+				rc = -EIO;
-+				goto out;
-+			}
-+
- 			if (p->header.flag & BT_LEAF) {
- 				/* uppercase leaf name to compare */
- 				cmp =
+ 	if (!IS_PROTOCOL_DOORBELL(priv)) {
+-		writel_relaxed(1, &mhu->send->ch_wn[priv->ch_wn_idx + priv->windows - 1].int_clr);
++		for (i = 0; i < priv->windows; i++)
++			writel_relaxed(1, &mhu->send->ch_wn[priv->ch_wn_idx + i].int_clr);
+ 
+ 		if (chan->cl) {
+ 			mbox_chan_txdone(chan, 0);
 -- 
 2.43.0
 
