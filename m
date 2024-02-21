@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-21985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22D6B85D986
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:19:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8302185DF41
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:26:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C96C41F22713
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:19:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C12E8B27C5F
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:20:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C35013FB21;
-	Wed, 21 Feb 2024 13:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 288AC7D411;
+	Wed, 21 Feb 2024 14:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lfvYG0c6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hn66/eJn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D83763FE;
-	Wed, 21 Feb 2024 13:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503EB7C093;
+	Wed, 21 Feb 2024 14:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521570; cv=none; b=SOSdFEeLlObpWl9PW89KOmfdGYe44gpvdYYbOkd+7b6F1uEg4vXC+SZzj0KcLUYUpHd8cA8592NPGoSiFLIHIz0c8vok9v7CZKQHomGOAKJADNNbvAUQnBUssDV7xDi8xW7BuVq+/GWGIWqcYbWSdAZHz6VGNgrHSMdIZvmhNFg=
+	t=1708525239; cv=none; b=NDbTcz0BxFuH7A2uf+uY1A32FC3XJNRl4vL/TO3oPAlnYTu5oSLKJwHkp9posm8GfclZEfdkspOPm5FMgIZct8l5onygioSfYnvId1fs5gApajDoEoVqWQK4LT4e017WiDYUzi7BRQHV0HE1RHoQpu+7hgppAghXlG7dqpODDBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521570; c=relaxed/simple;
-	bh=3DPCDP7jgIXMhXjYrzbVjv+qMWEKNoAjVz3UneBK6N0=;
+	s=arc-20240116; t=1708525239; c=relaxed/simple;
+	bh=VZu+q89BWDI0gJv5x2sGSZFGRWxIq+BC+ScTxbldzMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lQ/8/4X5WNFIBsFLoU3i0sTHen64QDJ+7fhjQqF+xIZ+Y7JKwcifHWi4nIwpmPZskOrAEiXSvmMGPZ4x54EkJCKwZ/64gKaXeL4f4Hbr8v1LIuTRuQkX8R+3405Q++rdvIV9+ljwM1M+eYXfkQlKJ89GZTk7t6o4TALS9Gbm8XM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lfvYG0c6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 940E7C43399;
-	Wed, 21 Feb 2024 13:19:29 +0000 (UTC)
+	 MIME-Version; b=XFrSih8G3S0b/NByyok2uOaPlYVbwmR7iACSAWk5WlDusNL2or3Yf6zprqrWuGvLUQypgrA7VTZGRXjga1LSoQoyXq8ZYvGeLDOOsGnKOo3TLiqNVgwvrqfX7Zo1jSpEHtVtgYqoi8MXAAjQ2MUz9mP8MmMmzRT9mU7k/sfSPS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hn66/eJn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6E67C433F1;
+	Wed, 21 Feb 2024 14:20:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521570;
-	bh=3DPCDP7jgIXMhXjYrzbVjv+qMWEKNoAjVz3UneBK6N0=;
+	s=korg; t=1708525238;
+	bh=VZu+q89BWDI0gJv5x2sGSZFGRWxIq+BC+ScTxbldzMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lfvYG0c689MWf7IjUAfACbDY/ESkCO3aONgJPG3s6ECMzVcew4OxhOZs0HjnTqj7c
-	 1TlRDa6nqwV5gGcY2x0qjuHuR88vmg3WhP4D/2HCHTL1q1OtQe8bLAjTYoUduM4xTZ
-	 LYzQ5otOzdwsJN0ndtKzeIFMx1D/YWhK1IHV9YEw=
+	b=hn66/eJnlzdu2dnecvhuGInCFp5YJCPkLc1uWknvahvZRZ7E1B0+Tt4TYUPv3B3Is
+	 Mu69xC65NDYp1/ioThGra2VZm/MTS+VUuIkuKzzOy7T+H55oAuaUa2jc3sEa/nKcnz
+	 pXF3MCV5wPLl3NV4ocpKGm0heIhefvRPI6/ERWiw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 139/202] net: ipv4: fix a memleak in ip_setup_cork
+Subject: [PATCH 5.4 099/267] ARM: dts: imx7s: Fix nand-controller #size-cells
 Date: Wed, 21 Feb 2024 14:07:20 +0100
-Message-ID: <20240221125936.199476476@linuxfoundation.org>
+Message-ID: <20240221125943.053506128@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit 5dee6d6923458e26966717f2a3eae7d09fc10bf6 ]
+[ Upstream commit 4aadb841ed49bada1415c48c44d21f5b69e01299 ]
 
-When inetdev_valid_mtu fails, cork->opt should be freed if it is
-allocated in ip_setup_cork. Otherwise there could be a memleak.
+nand-controller.yaml bindings says #size-cells shall be set to 0.
+Fixes the dtbs_check warning:
+arch/arm/boot/dts/nxp/imx/imx7s-mba7.dtb: nand-controller@33002000:
+ #size-cells:0:0: 0 was expected
+  from schema $id: http://devicetree.org/schemas/mtd/gpmi-nand.yaml#
 
-Fixes: 501a90c94510 ("inet: protect against too small mtu values.")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240129091017.2938835-1-alexious@zju.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/ip_output.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ arch/arm/boot/dts/imx7s.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
-index 6936f703758b..3e15c1b388ae 100644
---- a/net/ipv4/ip_output.c
-+++ b/net/ipv4/ip_output.c
-@@ -1140,6 +1140,12 @@ static int ip_setup_cork(struct sock *sk, struct inet_cork *cork,
- 	if (unlikely(!rt))
- 		return -EFAULT;
- 
-+	cork->fragsize = ip_sk_use_pmtu(sk) ?
-+			 dst_mtu(&rt->dst) : READ_ONCE(rt->dst.dev->mtu);
-+
-+	if (!inetdev_valid_mtu(cork->fragsize))
-+		return -ENETUNREACH;
-+
- 	/*
- 	 * setup for corking.
- 	 */
-@@ -1156,12 +1162,6 @@ static int ip_setup_cork(struct sock *sk, struct inet_cork *cork,
- 		cork->addr = ipc->addr;
- 	}
- 
--	cork->fragsize = ip_sk_use_pmtu(sk) ?
--			 dst_mtu(&rt->dst) : READ_ONCE(rt->dst.dev->mtu);
--
--	if (!inetdev_valid_mtu(cork->fragsize))
--		return -ENETUNREACH;
--
- 	cork->gso_size = ipc->gso_size;
- 
- 	cork->dst = &rt->dst;
+diff --git a/arch/arm/boot/dts/imx7s.dtsi b/arch/arm/boot/dts/imx7s.dtsi
+index a7ed880b12fc..8e86841ef4e6 100644
+--- a/arch/arm/boot/dts/imx7s.dtsi
++++ b/arch/arm/boot/dts/imx7s.dtsi
+@@ -1217,7 +1217,7 @@
+ 		gpmi: gpmi-nand@33002000{
+ 			compatible = "fsl,imx7d-gpmi-nand";
+ 			#address-cells = <1>;
+-			#size-cells = <1>;
++			#size-cells = <0>;
+ 			reg = <0x33002000 0x2000>, <0x33004000 0x4000>;
+ 			reg-names = "gpmi-nand", "bch";
+ 			interrupts = <GIC_SPI 14 IRQ_TYPE_LEVEL_HIGH>;
 -- 
 2.43.0
 
