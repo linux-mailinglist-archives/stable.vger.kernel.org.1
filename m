@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-22361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED0AE85DBA6
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:43:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5522C85D918
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29F2F1C23560
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:43:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10EC9282C28
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:14:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C3937BAFF;
-	Wed, 21 Feb 2024 13:43:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86B3769D33;
+	Wed, 21 Feb 2024 13:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="amWtt9Za"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NqfQ6eK6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B23973161;
-	Wed, 21 Feb 2024 13:43:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4512B69D28;
+	Wed, 21 Feb 2024 13:14:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523023; cv=none; b=bT1VL9Wfc9R2OTHgHko+HnCzx5bfi5tJw5UrzycFP+z9yrmxjbQG/yjkL/hGp27MC78m8pXImlFr3YbqkvsSnINhUcRoNIJzIXOfxd/gh/yVvrQbkQZZ8eVClV8jGMz4l2aCaZK5m+TsJXF8PgyXsbZbk1euYHejlYaROLYjVDU=
+	t=1708521272; cv=none; b=bsFIuMjnHdOfah6BnpK1r+F3qJfuLSiAtLfDdaaVopIxMuDQzKmQqj14Ts8r9eFPY+IKj6x//A74u+UhxPUwTwev/HayLLtFNbMAiT/Kc1KB0+WyaoLyGk7JGI5KOlE5g3KRsQLQ0aLgAUDwA2NhhGxf/8Bqh9gZvpduo5l6ivo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523023; c=relaxed/simple;
-	bh=FcZp9eHi2qxayHqZaoKdFo4ZqRTRFTp6xoyDQPP7/yg=;
+	s=arc-20240116; t=1708521272; c=relaxed/simple;
+	bh=MvDWiW022LwALGTOXwwSdYS4Yq/zI7YKd+PB9vireb0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nnXQDrgrGwdYKn6iCnMBBIKgdD8o4QduT4p14XdbisIW1tTyciR8Ovwwk4C7zLQ+2GfDL/luiIJo0xQNGPWwA70bEMPeo9BBXvzzTtgTw1A2hhLkLODG01JDtWWrTvQSswoHcqmtap297u4PRmdk24K/BvOGXS76zurOTXeHHsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=amWtt9Za; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BFB2C43399;
-	Wed, 21 Feb 2024 13:43:42 +0000 (UTC)
+	 MIME-Version; b=mqsdfSeqwH/zXARHNkoWRKApEGMHNGB3glTm8BqD3cAS+XRHlH6kri6LKMoOufAxxXb5FYEZrnSbpezrllzFhJuY1aKYNBkqL6GQk+ubzs424I7uM+6PJtUtb3yLiRy3zzMyyQ00rBov1Ap8FAYNLmJdeBIFGZdxK/q0KEZsYSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NqfQ6eK6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46C08C433C7;
+	Wed, 21 Feb 2024 13:14:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523023;
-	bh=FcZp9eHi2qxayHqZaoKdFo4ZqRTRFTp6xoyDQPP7/yg=;
+	s=korg; t=1708521270;
+	bh=MvDWiW022LwALGTOXwwSdYS4Yq/zI7YKd+PB9vireb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=amWtt9Za6zzNFnBGg2Bl7wAtd/Jm/Hu6q0Fw6HcEwuEIQLxnu8qLNT1uH7Ks9Gt8h
-	 C9FccrzSuU1GeLlA5mX5p8GCQwjtzW3ntFf/P+J5iXMwRPfxojKvjSdN3pMVfxYXlq
-	 wgod40r1WTCA6stCuYW/DH0y8qDB4tU7si58jWDw=
+	b=NqfQ6eK63pm3XjV4SpM7UzyHu5X61zHApFsUOHwgFNjrButPBejxaE6O+tOLly/M4
+	 Tu7ndowNnacXGPMPguvGthmaVG7XQBcOSk5QUaKBLVLO7cOvNeFb0paHSNuoIjaeXK
+	 O1bs1R3SGmKvBXP1qmwJjgkt7RZ1COwEz8Zl4e1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Edward Adam Davis <eadavis@qq.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	syzbot+c5da1f087c9e4ec6c933@syzkaller.appspotmail.com
-Subject: [PATCH 5.15 317/476] ppp_async: limit MRU to 64K
+	syzbot+553d90297e6d2f50dbc7@syzkaller.appspotmail.com
+Subject: [PATCH 4.19 067/202] jfs: fix array-index-out-of-bounds in diNewExt
 Date: Wed, 21 Feb 2024 14:06:08 +0100
-Message-ID: <20240221130019.738822986@linuxfoundation.org>
+Message-ID: <20240221125933.994105418@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,93 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit cb88cb53badb8aeb3955ad6ce80b07b598e310b8 ]
+[ Upstream commit 49f9637aafa6e63ba686c13cb8549bf5e6920402 ]
 
-syzbot triggered a warning [1] in __alloc_pages():
+[Syz report]
+UBSAN: array-index-out-of-bounds in fs/jfs/jfs_imap.c:2360:2
+index -878706688 is out of range for type 'struct iagctl[128]'
+CPU: 1 PID: 5065 Comm: syz-executor282 Not tainted 6.7.0-rc4-syzkaller-00009-gbee0e7762ad2 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/10/2023
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x1e7/0x2d0 lib/dump_stack.c:106
+ ubsan_epilogue lib/ubsan.c:217 [inline]
+ __ubsan_handle_out_of_bounds+0x11c/0x150 lib/ubsan.c:348
+ diNewExt+0x3cf3/0x4000 fs/jfs/jfs_imap.c:2360
+ diAllocExt fs/jfs/jfs_imap.c:1949 [inline]
+ diAllocAG+0xbe8/0x1e50 fs/jfs/jfs_imap.c:1666
+ diAlloc+0x1d3/0x1760 fs/jfs/jfs_imap.c:1587
+ ialloc+0x8f/0x900 fs/jfs/jfs_inode.c:56
+ jfs_mkdir+0x1c5/0xb90 fs/jfs/namei.c:225
+ vfs_mkdir+0x2f1/0x4b0 fs/namei.c:4106
+ do_mkdirat+0x264/0x3a0 fs/namei.c:4129
+ __do_sys_mkdir fs/namei.c:4149 [inline]
+ __se_sys_mkdir fs/namei.c:4147 [inline]
+ __x64_sys_mkdir+0x6e/0x80 fs/namei.c:4147
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x45/0x110 arch/x86/entry/common.c:82
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
+RIP: 0033:0x7fcb7e6a0b57
+Code: ff ff 77 07 31 c0 c3 0f 1f 40 00 48 c7 c2 b8 ff ff ff f7 d8 64 89 02 b8 ff ff ff ff c3 66 0f 1f 44 00 00 b8 53 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffd83023038 EFLAGS: 00000286 ORIG_RAX: 0000000000000053
+RAX: ffffffffffffffda RBX: 00000000ffffffff RCX: 00007fcb7e6a0b57
+RDX: 00000000000a1020 RSI: 00000000000001ff RDI: 0000000020000140
+RBP: 0000000020000140 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000286 R12: 00007ffd830230d0
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
 
-WARN_ON_ONCE_GFP(order > MAX_PAGE_ORDER, gfp)
+[Analysis]
+When the agstart is too large, it can cause agno overflow.
 
-Willem fixed a similar issue in commit c0a2a1b0d631 ("ppp: limit MRU to 64K")
+[Fix]
+After obtaining agno, if the value is invalid, exit the subsequent process.
 
-Adopt the same sanity check for ppp_async_ioctl(PPPIOCSMRU)
+Reported-and-tested-by: syzbot+553d90297e6d2f50dbc7@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
 
-[1]:
+Modified the test from agno > MAXAG to agno >= MAXAG based on linux-next
+report by kernel test robot (Dan Carpenter).
 
- WARNING: CPU: 1 PID: 11 at mm/page_alloc.c:4543 __alloc_pages+0x308/0x698 mm/page_alloc.c:4543
-Modules linked in:
-CPU: 1 PID: 11 Comm: kworker/u4:0 Not tainted 6.8.0-rc2-syzkaller-g41bccc98fb79 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/17/2023
-Workqueue: events_unbound flush_to_ldisc
-pstate: 204000c5 (nzCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
- pc : __alloc_pages+0x308/0x698 mm/page_alloc.c:4543
- lr : __alloc_pages+0xc8/0x698 mm/page_alloc.c:4537
-sp : ffff800093967580
-x29: ffff800093967660 x28: ffff8000939675a0 x27: dfff800000000000
-x26: ffff70001272ceb4 x25: 0000000000000000 x24: ffff8000939675c0
-x23: 0000000000000000 x22: 0000000000060820 x21: 1ffff0001272ceb8
-x20: ffff8000939675e0 x19: 0000000000000010 x18: ffff800093967120
-x17: ffff800083bded5c x16: ffff80008ac97500 x15: 0000000000000005
-x14: 1ffff0001272cebc x13: 0000000000000000 x12: 0000000000000000
-x11: ffff70001272cec1 x10: 1ffff0001272cec0 x9 : 0000000000000001
-x8 : ffff800091c91000 x7 : 0000000000000000 x6 : 000000000000003f
-x5 : 00000000ffffffff x4 : 0000000000000000 x3 : 0000000000000020
-x2 : 0000000000000008 x1 : 0000000000000000 x0 : ffff8000939675e0
-Call trace:
-  __alloc_pages+0x308/0x698 mm/page_alloc.c:4543
-  __alloc_pages_node include/linux/gfp.h:238 [inline]
-  alloc_pages_node include/linux/gfp.h:261 [inline]
-  __kmalloc_large_node+0xbc/0x1fc mm/slub.c:3926
-  __do_kmalloc_node mm/slub.c:3969 [inline]
-  __kmalloc_node_track_caller+0x418/0x620 mm/slub.c:4001
-  kmalloc_reserve+0x17c/0x23c net/core/skbuff.c:590
-  __alloc_skb+0x1c8/0x3d8 net/core/skbuff.c:651
-  __netdev_alloc_skb+0xb8/0x3e8 net/core/skbuff.c:715
-  netdev_alloc_skb include/linux/skbuff.h:3235 [inline]
-  dev_alloc_skb include/linux/skbuff.h:3248 [inline]
-  ppp_async_input drivers/net/ppp/ppp_async.c:863 [inline]
-  ppp_asynctty_receive+0x588/0x186c drivers/net/ppp/ppp_async.c:341
-  tty_ldisc_receive_buf+0x12c/0x15c drivers/tty/tty_buffer.c:390
-  tty_port_default_receive_buf+0x74/0xac drivers/tty/tty_port.c:37
-  receive_buf drivers/tty/tty_buffer.c:444 [inline]
-  flush_to_ldisc+0x284/0x6e4 drivers/tty/tty_buffer.c:494
-  process_one_work+0x694/0x1204 kernel/workqueue.c:2633
-  process_scheduled_works kernel/workqueue.c:2706 [inline]
-  worker_thread+0x938/0xef4 kernel/workqueue.c:2787
-  kthread+0x288/0x310 kernel/kthread.c:388
-  ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:860
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-and-tested-by: syzbot+c5da1f087c9e4ec6c933@syzkaller.appspotmail.com
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://lore.kernel.org/r/20240205171004.1059724-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ppp/ppp_async.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/jfs/jfs_imap.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ppp/ppp_async.c b/drivers/net/ppp/ppp_async.c
-index 29a93d6bfe37..4a5c749ba223 100644
---- a/drivers/net/ppp/ppp_async.c
-+++ b/drivers/net/ppp/ppp_async.c
-@@ -471,6 +471,10 @@ ppp_async_ioctl(struct ppp_channel *chan, unsigned int cmd, unsigned long arg)
- 	case PPPIOCSMRU:
- 		if (get_user(val, p))
- 			break;
-+		if (val > U16_MAX) {
-+			err = -EINVAL;
-+			break;
-+		}
- 		if (val < PPP_MRU)
- 			val = PPP_MRU;
- 		ap->mru = val;
+diff --git a/fs/jfs/jfs_imap.c b/fs/jfs/jfs_imap.c
+index b45cc109e506..00800c8c6f07 100644
+--- a/fs/jfs/jfs_imap.c
++++ b/fs/jfs/jfs_imap.c
+@@ -2194,6 +2194,9 @@ static int diNewExt(struct inomap * imap, struct iag * iagp, int extno)
+ 	/* get the ag and iag numbers for this iag.
+ 	 */
+ 	agno = BLKTOAG(le64_to_cpu(iagp->agstart), sbi);
++	if (agno >= MAXAG || agno < 0)
++		return -EIO;
++
+ 	iagno = le32_to_cpu(iagp->iagnum);
+ 
+ 	/* check if this is the last free extent within the
 -- 
 2.43.0
 
