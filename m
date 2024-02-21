@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-22007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2948B85D9A9
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:21:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9273985DDEF
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:13:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2B36B2510F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:21:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DF61280A06
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:13:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 223BA78B5E;
-	Wed, 21 Feb 2024 13:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF0397FBCE;
+	Wed, 21 Feb 2024 14:09:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KUgAUVlk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RwK43MUg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D568C3FB21;
-	Wed, 21 Feb 2024 13:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BD647FBC8;
+	Wed, 21 Feb 2024 14:09:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521641; cv=none; b=hw6QCEMumeoU5b/ZfCDHd0fQenX1sYsn2p3oB+YLHVB0AY0s7mWPQXjYDPaS9bkjwpJ0lMnxGyV+4BjmyZ5xNnQkLYLKeMjusvHPby/6ji5X6M4uCCXcnY+hT9kaKZlqzTRWIviNRqr/ZCMUBzsxo6O3x9wmL+pZN2bRR6J+ATA=
+	t=1708524584; cv=none; b=DO617g4+DysQrNG+/O+M0jaXjyjDUE+am/sRKHV5ntOQd5nBXYZFh9vk5YIjAmVKS6zkPVQgPWlJFAf7qmvPKpDHHBX7iQ55qPEU8jPuv+id5U7kr2cQZKktKC0FTy36ThpJ/RDceaISj+0njPoGiban1gQD6HPrUwl6MtA0F7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521641; c=relaxed/simple;
-	bh=h0Ov+Ar4Mv00ICjvIcpJ5zWPmB5HFYRNhQcxZ9/0uTs=;
+	s=arc-20240116; t=1708524584; c=relaxed/simple;
+	bh=Y81jBjDsXrqbM+zcprjjRPMaM0e7vR40gFWS9lrKe7g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f/QhhWwU9m+49Xxug2xjYldgp9+IzHPaCqECOtHYp0I5+PV7d+EuS1S0MGqopZAbgtfgCBZdJ85R8RYJgmRRE6KONWgzqrLIJknqQlG3OGzcfzaGkJWilEmhqF7FmNvHyKiDgbgqgqEEvUjuz94J5kjHaMw6gSzSWA1vFVG+vcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KUgAUVlk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46BA1C433F1;
-	Wed, 21 Feb 2024 13:20:41 +0000 (UTC)
+	 MIME-Version; b=obILO7TrI0va3xLp2LU8RhRQZQ/rgKNlkqtLS+A+Q60FNxqU6w7LaZPiYVz/tyK4cVOVCi3uLPYBLw+a7OZmIYd1GDTVtMsyPRC0P5uIVPhzXH0hYBbHklUKiM/5RldB9T66oT9weHCfJCk5HQFqWIXcmqsl3AJIYxI83DbnCUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RwK43MUg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC07EC433F1;
+	Wed, 21 Feb 2024 14:09:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521641;
-	bh=h0Ov+Ar4Mv00ICjvIcpJ5zWPmB5HFYRNhQcxZ9/0uTs=;
+	s=korg; t=1708524584;
+	bh=Y81jBjDsXrqbM+zcprjjRPMaM0e7vR40gFWS9lrKe7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KUgAUVlkqjVt5PkxGC6u9jGyE2rMQR+UzDqVlE5Fsl/d5SQHLghWAcIKZMwqouh2S
-	 Hy6ioLuhBAJu6ECw6nBVtIGuC+AxpODLmbIWoZNko/y2cD0yCrhucL58J2Z/FYV3gm
-	 5Cc9nDlPXuK3PYxOEf6/7dqULaLTs9lP2TBTinoY=
+	b=RwK43MUgIP9PAFE3YqcStvfKSttShmkCxdHIN0WOy5Kj2wGwT0viznKWvvj0r40QP
+	 q+FhZLGL0b9KjKWW1Qk0gtAVHfwrI0C4lxXUbB3uAi5glfUPd/oQqo8YZsvlSQupoK
+	 FsPe/lUNn5sVjV49wIZf0A/mWwOXsF04H8wLKMnY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 167/202] spi: ppc4xx: Drop write-only variable
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.10 289/379] btrfs: send: return EOPNOTSUPP on unknown flags
 Date: Wed, 21 Feb 2024 14:07:48 +0100
-Message-ID: <20240221125937.152124622@linuxfoundation.org>
+Message-ID: <20240221130003.458337274@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +59,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: David Sterba <dsterba@suse.com>
 
-[ Upstream commit b3aa619a8b4706f35cb62f780c14e68796b37f3f ]
+commit f884a9f9e59206a2d41f265e7e403f080d10b493 upstream.
 
-Since commit 24778be20f87 ("spi: convert drivers to use
-bits_per_word_mask") the bits_per_word variable is only written to. The
-check that was there before isn't needed any more as the spi core
-ensures that only 8 bit transfers are used, so the variable can go away
-together with all assignments to it.
+When some ioctl flags are checked we return EOPNOTSUPP, like for
+BTRFS_SCRUB_SUPPORTED_FLAGS, BTRFS_SUBVOL_CREATE_ARGS_MASK or fallocate
+modes. The EINVAL is supposed to be for a supported but invalid
+values or combination of options. Fix that when checking send flags so
+it's consistent with the rest.
 
-Fixes: 24778be20f87 ("spi: convert drivers to use bits_per_word_mask")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/20240210164006.208149-8-u.kleine-koenig@pengutronix.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org # 4.14+
+Link: https://lore.kernel.org/linux-btrfs/CAL3q7H5rryOLzp3EKq8RTbjMHMHeaJubfpsVLF6H4qJnKCUR1w@mail.gmail.com/
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-ppc4xx.c | 5 -----
- 1 file changed, 5 deletions(-)
+ fs/btrfs/send.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-ppc4xx.c b/drivers/spi/spi-ppc4xx.c
-index 967d94844b30..58765a62fc15 100644
---- a/drivers/spi/spi-ppc4xx.c
-+++ b/drivers/spi/spi-ppc4xx.c
-@@ -173,10 +173,8 @@ static int spi_ppc4xx_setupxfer(struct spi_device *spi, struct spi_transfer *t)
- 	int scr;
- 	u8 cdm = 0;
- 	u32 speed;
--	u8 bits_per_word;
- 
- 	/* Start with the generic configuration for this device. */
--	bits_per_word = spi->bits_per_word;
- 	speed = spi->max_speed_hz;
- 
- 	/*
-@@ -184,9 +182,6 @@ static int spi_ppc4xx_setupxfer(struct spi_device *spi, struct spi_transfer *t)
- 	 * the transfer to overwrite the generic configuration with zeros.
- 	 */
- 	if (t) {
--		if (t->bits_per_word)
--			bits_per_word = t->bits_per_word;
--
- 		if (t->speed_hz)
- 			speed = min(t->speed_hz, spi->max_speed_hz);
+--- a/fs/btrfs/send.c
++++ b/fs/btrfs/send.c
+@@ -7285,7 +7285,7 @@ long btrfs_ioctl_send(struct file *mnt_f
  	}
--- 
-2.43.0
-
+ 
+ 	if (arg->flags & ~BTRFS_SEND_FLAG_MASK) {
+-		ret = -EINVAL;
++		ret = -EOPNOTSUPP;
+ 		goto out;
+ 	}
+ 
 
 
 
