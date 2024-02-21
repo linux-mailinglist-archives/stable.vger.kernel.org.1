@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-21969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1A5085D970
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:18:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6A5C85DEA8
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:20:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D137B24A81
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:18:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11CFF1C21D26
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:20:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 640BE7867B;
-	Wed, 21 Feb 2024 13:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE9407C097;
+	Wed, 21 Feb 2024 14:20:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ylNmbpkb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ixxN2JP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22FFE77638;
-	Wed, 21 Feb 2024 13:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D0BF76905;
+	Wed, 21 Feb 2024 14:20:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521504; cv=none; b=YeE7NuC7vmYkY6RRALd7ls2NVJKoWysSBoxa0v0EpXiYMQ13Te+i2ISBy/o2IZFK6+6bjt4NH2a+s+JimLCYf93gOlZgDrbSrZolrUo4IcUKqrl50tER6MtVdbGxpNEbdEsblQPzyleYQgr6ZLpAaeFxH3Pi45Y+t/+cGeEUK1o=
+	t=1708525209; cv=none; b=qDDrF0A2Q6diOZ7NcSHw2RahKpkjmDkFN7RXFBqAI93john+g8Qx1goZoA1o3wAmU7EP0Ja9qVQoOgRF91oBUSR3jOc1K5FeZ69kyXCVqxAtyK2WsnoQCOEmpYq4EA4tOg0pygHILB0561w2HD5hspcS3M3nHJeurUGwDzHICY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521504; c=relaxed/simple;
-	bh=i7ATDTVQq2Hq+xiSL5lAif+ni97HAW5RfAWyr9115ZI=;
+	s=arc-20240116; t=1708525209; c=relaxed/simple;
+	bh=+WVevK9FLsqlFYTKOyGN72udFy7py3ufawh+yimGafg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VJHvv+NuHn4rYNWw9Xk/0vK5JeWItGwceRvjbuxZGMw6Ui8As0y9yKbvC2IzC2yXqV4YYABFvL3cebfBAAJwaw7f358C9DU6IB6SZ57M/sXc2xczJXhPmk4u1dxOkXm2eLRNsU0rveXaQgb4uxVu3gDemwCdUTyHe1QXNI8DptI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ylNmbpkb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9164CC433F1;
-	Wed, 21 Feb 2024 13:18:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=E+gaXTnc4zEcevuVbBCCsDr0JqOX/75CbB7z3/mwQG4yQf07Wiu5ipXJdv+khvemj/QnYKz8xiNlR6yzWusL6e8S0FrL2Kk57wHvUXw+Ek5nie5zKjWVzp69NjgZWWJBGYnT/qGlYxnsfQX5VkHhXq8wk+gflkJLkIFdnjECwyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ixxN2JP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09805C433F1;
+	Wed, 21 Feb 2024 14:20:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521504;
-	bh=i7ATDTVQq2Hq+xiSL5lAif+ni97HAW5RfAWyr9115ZI=;
+	s=korg; t=1708525209;
+	bh=+WVevK9FLsqlFYTKOyGN72udFy7py3ufawh+yimGafg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ylNmbpkboCK/XsAyKvHa4RtjAZaVH0+QL4iUKkQJuHRP8oPaT/boGhlO64Lt2D6qP
-	 KvHQ3WSyLDFZWKWnLDxUxXYpqZtoRKQRcOBI3yWOI1Iy8yLyl+/rrqb0deI1cb5F1L
-	 3YXZ1IrI0Gqgp3+AGekLFdqfDqngV65HFxpvfy24=
+	b=0ixxN2JPbPIkF/bSJS8o0GVOLyTwJn6OY9vg1TuPMYpz4FoywYuT32Kf9oPIMJLN8
+	 JsKCnB0OOY1xbEmTaDR1KxdV56c+RHAmR/SlT+AR7QIwKzjqN0tm8FtRJbfvhKG87p
+	 +Y61O+7/0XuTY+a6uADKQ5YKwVqI5nA/EobWr920=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Artur Paszkiewicz <artur.paszkiewicz@intel.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 130/202] scsi: isci: Fix an error code problem in isci_io_request_build()
+Subject: [PATCH 5.4 090/267] ext4: avoid online resizing failures due to oversized flex bg
 Date: Wed, 21 Feb 2024 14:07:11 +0100
-Message-ID: <20240221125935.910837123@linuxfoundation.org>
+Message-ID: <20240221125942.784217392@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +61,135 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 658365c6b0857e6a306436e315a8633937e3af42 ]
+[ Upstream commit 5d1935ac02ca5aee364a449a35e2977ea84509b0 ]
 
-Clang static complains that Value stored to 'status' is never read. Return
-'status' rather than 'SCI_SUCCESS'.
+When we online resize an ext4 filesystem with a oversized flexbg_size,
 
-Fixes: f1f52e75939b ("isci: uplevel request infrastructure")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Link: https://lore.kernel.org/r/20240112041926.3924315-1-suhui@nfschina.com
-Reviewed-by: Artur Paszkiewicz <artur.paszkiewicz@intel.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+     mkfs.ext4 -F -G 67108864 $dev -b 4096 100M
+     mount $dev $dir
+     resize2fs $dev 16G
+
+the following WARN_ON is triggered:
+==================================================================
+WARNING: CPU: 0 PID: 427 at mm/page_alloc.c:4402 __alloc_pages+0x411/0x550
+Modules linked in: sg(E)
+CPU: 0 PID: 427 Comm: resize2fs Tainted: G  E  6.6.0-rc5+ #314
+RIP: 0010:__alloc_pages+0x411/0x550
+Call Trace:
+ <TASK>
+ __kmalloc_large_node+0xa2/0x200
+ __kmalloc+0x16e/0x290
+ ext4_resize_fs+0x481/0xd80
+ __ext4_ioctl+0x1616/0x1d90
+ ext4_ioctl+0x12/0x20
+ __x64_sys_ioctl+0xf0/0x150
+ do_syscall_64+0x3b/0x90
+==================================================================
+
+This is because flexbg_size is too large and the size of the new_group_data
+array to be allocated exceeds MAX_ORDER. Currently, the minimum value of
+MAX_ORDER is 8, the minimum value of PAGE_SIZE is 4096, the corresponding
+maximum number of groups that can be allocated is:
+
+ (PAGE_SIZE << MAX_ORDER) / sizeof(struct ext4_new_group_data) ≈ 21845
+
+And the value that is down-aligned to the power of 2 is 16384. Therefore,
+this value is defined as MAX_RESIZE_BG, and the number of groups added
+each time does not exceed this value during resizing, and is added multiple
+times to complete the online resizing. The difference is that the metadata
+in a flex_bg may be more dispersed.
+
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20231023013057.2117948-4-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/isci/request.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ext4/resize.c | 25 +++++++++++++++++--------
+ 1 file changed, 17 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/scsi/isci/request.c b/drivers/scsi/isci/request.c
-index 2f151708b59a..13ecf554762e 100644
---- a/drivers/scsi/isci/request.c
-+++ b/drivers/scsi/isci/request.c
-@@ -3398,7 +3398,7 @@ static enum sci_status isci_io_request_build(struct isci_host *ihost,
- 		return SCI_FAILURE;
- 	}
+diff --git a/fs/ext4/resize.c b/fs/ext4/resize.c
+index 682596f3205f..409b4ad28e71 100644
+--- a/fs/ext4/resize.c
++++ b/fs/ext4/resize.c
+@@ -227,10 +227,17 @@ struct ext4_new_flex_group_data {
+ 						   in the flex group */
+ 	__u16 *bg_flags;			/* block group flags of groups
+ 						   in @groups */
++	ext4_group_t resize_bg;			/* number of allocated
++						   new_group_data */
+ 	ext4_group_t count;			/* number of groups in @groups
+ 						 */
+ };
  
--	return SCI_SUCCESS;
-+	return status;
- }
++/*
++ * Avoiding memory allocation failures due to too many groups added each time.
++ */
++#define MAX_RESIZE_BG				16384
++
+ /*
+  * alloc_flex_gd() allocates a ext4_new_flex_group_data with size of
+  * @flexbg_size.
+@@ -245,14 +252,18 @@ static struct ext4_new_flex_group_data *alloc_flex_gd(unsigned int flexbg_size)
+ 	if (flex_gd == NULL)
+ 		goto out3;
  
- static struct isci_request *isci_request_from_tag(struct isci_host *ihost, u16 tag)
+-	flex_gd->count = flexbg_size;
+-	flex_gd->groups = kmalloc_array(flexbg_size,
++	if (unlikely(flexbg_size > MAX_RESIZE_BG))
++		flex_gd->resize_bg = MAX_RESIZE_BG;
++	else
++		flex_gd->resize_bg = flexbg_size;
++
++	flex_gd->groups = kmalloc_array(flex_gd->resize_bg,
+ 					sizeof(struct ext4_new_group_data),
+ 					GFP_NOFS);
+ 	if (flex_gd->groups == NULL)
+ 		goto out2;
+ 
+-	flex_gd->bg_flags = kmalloc_array(flexbg_size, sizeof(__u16),
++	flex_gd->bg_flags = kmalloc_array(flex_gd->resize_bg, sizeof(__u16),
+ 					  GFP_NOFS);
+ 	if (flex_gd->bg_flags == NULL)
+ 		goto out1;
+@@ -1581,8 +1592,7 @@ static int ext4_flex_group_add(struct super_block *sb,
+ 
+ static int ext4_setup_next_flex_gd(struct super_block *sb,
+ 				    struct ext4_new_flex_group_data *flex_gd,
+-				    ext4_fsblk_t n_blocks_count,
+-				    unsigned int flexbg_size)
++				    ext4_fsblk_t n_blocks_count)
+ {
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+ 	struct ext4_super_block *es = sbi->s_es;
+@@ -1606,7 +1616,7 @@ static int ext4_setup_next_flex_gd(struct super_block *sb,
+ 	BUG_ON(last);
+ 	ext4_get_group_no_and_offset(sb, n_blocks_count - 1, &n_group, &last);
+ 
+-	last_group = group | (flexbg_size - 1);
++	last_group = group | (flex_gd->resize_bg - 1);
+ 	if (last_group > n_group)
+ 		last_group = n_group;
+ 
+@@ -2103,8 +2113,7 @@ int ext4_resize_fs(struct super_block *sb, ext4_fsblk_t n_blocks_count)
+ 	/* Add flex groups. Note that a regular group is a
+ 	 * flex group with 1 group.
+ 	 */
+-	while (ext4_setup_next_flex_gd(sb, flex_gd, n_blocks_count,
+-					      flexbg_size)) {
++	while (ext4_setup_next_flex_gd(sb, flex_gd, n_blocks_count)) {
+ 		if (jiffies - last_update_time > HZ * 10) {
+ 			if (last_update_time)
+ 				ext4_msg(sb, KERN_INFO,
 -- 
 2.43.0
 
