@@ -1,55 +1,64 @@
-Return-Path: <stable+bounces-22952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75C3385DE67
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:18:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B76185DD88
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:06:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CA531F2443B
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:18:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ECB071F22A51
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:06:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F36E7E769;
-	Wed, 21 Feb 2024 14:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C235669E08;
+	Wed, 21 Feb 2024 14:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k57zSscw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RR/TPa75"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500517E59A;
-	Wed, 21 Feb 2024 14:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BEAD7E77B;
+	Wed, 21 Feb 2024 14:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525068; cv=none; b=cIYzwCuVe2EpcjF4bvmOlI0w4OObnSA9JMRJTX0yQwbEoEQ7zDcGeydULnvyLIAxgXjk/BZ8n+9D3bNPDgytrKCtb6ScBud9GXskYhN5i6X9ij7ww/k90gE2bRAiMJ2tFJbaHWtMZj6AUoypwLP+XuRTYOpK+lXRy02VbqfDu7c=
+	t=1708524342; cv=none; b=ScyNQ6EmxPi4nNaSapU6gx9QjIIRhscDeQKJ6biLZbc+zfBH49seRxTTv+PoVK1Sb3S+mwZbMA51HcFll+hpKU/mm0s4WCSTfiw5zoxF/lIJDbx3pxAAxMAa9QdRMhpbLTB0mQX6CyVjRX5TfOogEP0jaoHAha+21oOsIINaTVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525068; c=relaxed/simple;
-	bh=TVwJ8f+xN43LuaWjSSlBK1+/b07TnzJdfgHJ2HWdANM=;
+	s=arc-20240116; t=1708524342; c=relaxed/simple;
+	bh=FmS+2aepbOU3l9CNNtzrCHr+Ud2+cZ/rdHT7ae1NWZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RhxFiuHUCPKtencJQbgkfOSLu/wP+u/KZA6vkQQ63mqxQvbK5A4DVmTFMAbu4HMm7e3+VUvVG8NW9il17gRCHiFlXxQFoptO8qtqbslNAn9FePJu8i2BY2gpfEIEamWYyHqb8YVcxzZHLciQR2tkuZ/rXgiAuY3nFCOlJT7uwEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k57zSscw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9368C433F1;
-	Wed, 21 Feb 2024 14:17:47 +0000 (UTC)
+	 MIME-Version; b=HWZC06IHjPR2y8ncM43RMlNelI0k7Dljqee6zjIpJ5e9CGQd0KLkJTmCHf5w7OgLSIGglLR+cMvEtjNOZwItAJ2FBnm8NqSsbmLtm3S9d3wt8LQ5hsqTCJstLmKNo0KXtpI4JLPRTeAYkpO2O2Ref5vg6qWl4ZoVy63dSWXiaOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RR/TPa75; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5575C43390;
+	Wed, 21 Feb 2024 14:05:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525068;
-	bh=TVwJ8f+xN43LuaWjSSlBK1+/b07TnzJdfgHJ2HWdANM=;
+	s=korg; t=1708524342;
+	bh=FmS+2aepbOU3l9CNNtzrCHr+Ud2+cZ/rdHT7ae1NWZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k57zSscwp40l4nh4kWpo8XCN/9JYFxjx1ztaqdhR/pATNBsVNAiVHF1/fWd23/rjG
-	 rzDO8ShiCX7MammEePtp3y/0B9lSDJ5MGhzM9psNJxVTWHYT4VIj7vCWLIwdotDrfe
-	 vQfRs8ggVVem+5FcrZ8oeglCeF8CzTnv9noDdBJw=
+	b=RR/TPa75WBMrqlb4erYZF0H/h4SZSLyjiEPycOXqnRoYOJOWrQz9fF+aThnh8xjGp
+	 DS3cDpKeZWHrl2ojqLgK1cAsmyMrQyMHak9QzVcbyt9RxQ4BQY8NyVQRYiLHGOQOs8
+	 5A5XxNV9oqIoTj+d7btFPL5o/xFYp/irxyWa6NtI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Chenyuan Mi <cymi20@fudan.edu.cn>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 052/267] NFSD: Modernize nfsd4_release_lockowner()
+Subject: [PATCH 5.10 214/379] libsubcmd: Fix memory leak in uniq()
 Date: Wed, 21 Feb 2024 14:06:33 +0100
-Message-ID: <20240221125941.636617894@linuxfoundation.org>
+Message-ID: <20240221130001.235003786@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,88 +70,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit bd8fdb6e545f950f4654a9a10d7e819ad48146e5 ]
+[ Upstream commit ad30469a841b50dbb541df4d6971d891f703c297 ]
 
-Refactor: Use existing helpers that other lock operations use. This
-change removes several automatic variables, so re-organize the
-variable declarations for readability.
+uniq() will write one command name over another causing the overwritten
+string to be leaked. Fix by doing a pass that removes duplicates and a
+second that removes the holes.
 
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Stable-dep-of: edcf9725150e ("nfsd: fix RELEASE_LOCKOWNER")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Chenyuan Mi <cymi20@fudan.edu.cn>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20231208000515.1693746-1-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c | 36 +++++++++++-------------------------
- 1 file changed, 11 insertions(+), 25 deletions(-)
+ tools/lib/subcmd/help.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index a0aa7e63739d..9a77a3eac4ac 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -6873,16 +6873,13 @@ nfsd4_release_lockowner(struct svc_rqst *rqstp,
- 			union nfsd4_op_u *u)
- {
- 	struct nfsd4_release_lockowner *rlockowner = &u->release_lockowner;
-+	struct nfsd_net *nn = net_generic(SVC_NET(rqstp), nfsd_net_id);
- 	clientid_t *clid = &rlockowner->rl_clientid;
--	struct nfs4_stateowner *sop;
--	struct nfs4_lockowner *lo = NULL;
- 	struct nfs4_ol_stateid *stp;
--	struct xdr_netobj *owner = &rlockowner->rl_owner;
--	unsigned int hashval = ownerstr_hashval(owner);
--	__be32 status;
--	struct nfsd_net *nn = net_generic(SVC_NET(rqstp), nfsd_net_id);
-+	struct nfs4_lockowner *lo;
- 	struct nfs4_client *clp;
--	LIST_HEAD (reaplist);
-+	LIST_HEAD(reaplist);
-+	__be32 status;
+diff --git a/tools/lib/subcmd/help.c b/tools/lib/subcmd/help.c
+index bf02d62a3b2b..42f57b640f11 100644
+--- a/tools/lib/subcmd/help.c
++++ b/tools/lib/subcmd/help.c
+@@ -50,11 +50,21 @@ void uniq(struct cmdnames *cmds)
+ 	if (!cmds->cnt)
+ 		return;
  
- 	dprintk("nfsd4_release_lockowner clientid: (%08x/%08x):\n",
- 		clid->cl_boot, clid->cl_id);
-@@ -6890,30 +6887,19 @@ nfsd4_release_lockowner(struct svc_rqst *rqstp,
- 	status = lookup_clientid(clid, cstate, nn);
- 	if (status)
- 		return status;
+-	for (i = j = 1; i < cmds->cnt; i++)
+-		if (strcmp(cmds->names[i]->name, cmds->names[i-1]->name))
+-			cmds->names[j++] = cmds->names[i];
 -
- 	clp = cstate->clp;
--	/* Find the matching lock stateowner */
--	spin_lock(&clp->cl_lock);
--	list_for_each_entry(sop, &clp->cl_ownerstr_hashtbl[hashval],
--			    so_strhash) {
- 
--		if (sop->so_is_open_owner || !same_owner_str(sop, owner))
--			continue;
--
--		if (atomic_read(&sop->so_count) != 1) {
--			spin_unlock(&clp->cl_lock);
--			return nfserr_locks_held;
--		}
--
--		lo = lockowner(sop);
--		nfs4_get_stateowner(sop);
--		break;
--	}
-+	spin_lock(&clp->cl_lock);
-+	lo = find_lockowner_str_locked(clp, &rlockowner->rl_owner);
- 	if (!lo) {
- 		spin_unlock(&clp->cl_lock);
- 		return status;
- 	}
--
-+	if (atomic_read(&lo->lo_owner.so_count) != 2) {
-+		spin_unlock(&clp->cl_lock);
-+		nfs4_put_stateowner(&lo->lo_owner);
-+		return nfserr_locks_held;
++	for (i = 1; i < cmds->cnt; i++) {
++		if (!strcmp(cmds->names[i]->name, cmds->names[i-1]->name))
++			zfree(&cmds->names[i - 1]);
 +	}
- 	unhash_lockowner_locked(lo);
- 	while (!list_empty(&lo->lo_owner.so_stateids)) {
- 		stp = list_first_entry(&lo->lo_owner.so_stateids,
++	for (i = 0, j = 0; i < cmds->cnt; i++) {
++		if (cmds->names[i]) {
++			if (i == j)
++				j++;
++			else
++				cmds->names[j++] = cmds->names[i];
++		}
++	}
+ 	cmds->cnt = j;
++	while (j < i)
++		cmds->names[j++] = NULL;
+ }
+ 
+ void exclude_cmds(struct cmdnames *cmds, struct cmdnames *excludes)
 -- 
 2.43.0
 
