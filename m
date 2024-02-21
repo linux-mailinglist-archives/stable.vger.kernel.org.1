@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-22938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E4C385DE5C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:18:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1C0D85DBC0
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:45:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 404371C23B0A
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:18:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0ABF8B25DAF
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:45:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CA057C0B8;
-	Wed, 21 Feb 2024 14:17:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD7FC78B53;
+	Wed, 21 Feb 2024 13:44:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QS/ijctK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vlqKrdgG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2593C69942;
-	Wed, 21 Feb 2024 14:17:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BD3376C82;
+	Wed, 21 Feb 2024 13:44:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525025; cv=none; b=Y0XV3bc+Fw6g4R5S9pXO1jDfwdfgn1mITjVoVCNdeV4ksfZ7d7mv301evzAKh4+HC9GSkofyYWMA6PxJoAWTTt6yC7pOvRjQYNANDnQEm9RgBGtXpr+z7JdYGhAq727udo9QOjoVKq7mKryezlZ3m9Zmb+yiRTb1m+xBfb4ebVs=
+	t=1708523086; cv=none; b=ETSVlcKcjwP4y01agq2AOOcp9GiR2qRQmPkplgQX5XNDnYOKpF9TrljVG/bOTLY00Adrwul8lm7x0z0HRAVuTfV9rcwqKXeGcHjBGsf45jczvHaVKoC3Wva7EjhmxfUC2tneWKt+KxDuGO5x12f2y287w9VbFuvOEx9f9KDbn2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525025; c=relaxed/simple;
-	bh=0LFGoDtGidrrJTFPy1pfakleeTI4pdUZShVZIOk/wH8=;
+	s=arc-20240116; t=1708523086; c=relaxed/simple;
+	bh=x+6J/iv78tond7fd6rSL0100EHf37CNrX7AcVVL29WQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V50xXRfjjfvFdWhYTEfr5XsjQlSDJE2lvcfEa/n05tR+HNwWlj0caP1rj/gADzZQ4+p4Otp7XuCZ3FKZ86ZyCF7m3uLOctn2h3N2R13746BpeDaxuWkOpbaRiaZVwZLe+bzD2J6ziT05J1RysuLzmDXxH6eBLjogvdXwbynyxyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QS/ijctK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A73FDC433F1;
-	Wed, 21 Feb 2024 14:17:04 +0000 (UTC)
+	 MIME-Version; b=eGu7PnSigW2T85dxh0gwZpx6xA2XHdP+6vRbfhK9B9PzHON+WaKTP1pMMHyBE3X4erEJ9MQvSJ7URrzIdkWb9OPlIh68F6TaWQkGI1RLohpwRyP7MIiYLVhoK9i/zfTWVMVuJW2H+Gl77cWvgBqH1Fv7gSZB8qgCMWhkhxQKaq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vlqKrdgG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B826FC433C7;
+	Wed, 21 Feb 2024 13:44:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525025;
-	bh=0LFGoDtGidrrJTFPy1pfakleeTI4pdUZShVZIOk/wH8=;
+	s=korg; t=1708523086;
+	bh=x+6J/iv78tond7fd6rSL0100EHf37CNrX7AcVVL29WQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QS/ijctKm0LhwbecX7twPrCOKRMS4iWW9iYk77t8WTBty+UBypeCL8G1Zr2rzNBJN
-	 duSVpf/dm89Pa9CkHONHz2KTTmWh7lc6BHSE3ojJl/EpknG9bqMx9nhhe5hoxXq5PV
-	 D1vAektUCcyX/yQdFGNzJodB9NcbXTgnbYSMZZnA=
+	b=vlqKrdgGwKFRcZMQ9E2Zxp+2xH3lZGcxJJrqwSBbhCOyWEqwr6JbDF9MwYAK4IARJ
+	 kpAiuQjWyXPTxZKHN0EZTrhKAZWZSil4aEJ6Xq/TB3W0BuxvKLPY1JLjN+ZrdvKjNA
+	 3OPhCyZZcuRcW9CPCBXjGeJWxyGr+vPaDQER9fvE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Simon Horman <horms@kernel.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
+	Sathya Prakash Veerichetty <safhya.prakash@broadcom.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Ewan D. Milne" <emilne@redhat.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 037/267] net/mlx5e: fix a double-free in arfs_create_groups
+Subject: [PATCH 5.15 327/476] scsi: core: Move scsi_host_busy() out of host lock if it is for per-command
 Date: Wed, 21 Feb 2024 14:06:18 +0100
-Message-ID: <20240221125941.190756291@linuxfoundation.org>
+Message-ID: <20240221130020.118648566@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +65,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit 3c6d5189246f590e4e1f167991558bdb72a4738b ]
+[ Upstream commit 4e6c9011990726f4d175e2cdfebe5b0b8cce4839 ]
 
-When `in` allocated by kvzalloc fails, arfs_create_groups will free
-ft->g and return an error. However, arfs_create_table, the only caller of
-arfs_create_groups, will hold this error and call to
-mlx5e_destroy_flow_table, in which the ft->g will be freed again.
+Commit 4373534a9850 ("scsi: core: Move scsi_host_busy() out of host lock
+for waking up EH handler") intended to fix a hard lockup issue triggered by
+EH. The core idea was to move scsi_host_busy() out of the host lock when
+processing individual commands for EH. However, a suggested style change
+inadvertently caused scsi_host_busy() to remain under the host lock. Fix
+this by calling scsi_host_busy() outside the lock.
 
-Fixes: 1cabe6b0965e ("net/mlx5e: Create aRFS flow tables")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Fixes: 4373534a9850 ("scsi: core: Move scsi_host_busy() out of host lock for waking up EH handler")
+Cc: Sathya Prakash Veerichetty <safhya.prakash@broadcom.com>
+Cc: Bart Van Assche <bvanassche@acm.org>
+Cc: Ewan D. Milne <emilne@redhat.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20240203024521.2006455-1-ming.lei@redhat.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/en_arfs.c | 26 +++++++++++--------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+ drivers/scsi/scsi_error.c | 3 ++-
+ drivers/scsi/scsi_lib.c   | 4 +++-
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c b/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c
-index b75074d8d22b..18c2abbe0b7e 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c
-@@ -227,11 +227,13 @@ static int arfs_create_groups(struct mlx5e_flow_table *ft,
+diff --git a/drivers/scsi/scsi_error.c b/drivers/scsi/scsi_error.c
+index ffd3d8df3d82..2d5dc488f511 100644
+--- a/drivers/scsi/scsi_error.c
++++ b/drivers/scsi/scsi_error.c
+@@ -276,11 +276,12 @@ static void scsi_eh_inc_host_failed(struct rcu_head *head)
+ {
+ 	struct scsi_cmnd *scmd = container_of(head, typeof(*scmd), rcu);
+ 	struct Scsi_Host *shost = scmd->device->host;
++	unsigned int busy = scsi_host_busy(shost);
+ 	unsigned long flags;
  
- 	ft->g = kcalloc(MLX5E_ARFS_NUM_GROUPS,
- 			sizeof(*ft->g), GFP_KERNEL);
--	in = kvzalloc(inlen, GFP_KERNEL);
--	if  (!in || !ft->g) {
--		kfree(ft->g);
--		kvfree(in);
-+	if (!ft->g)
- 		return -ENOMEM;
-+
-+	in = kvzalloc(inlen, GFP_KERNEL);
-+	if (!in) {
-+		err = -ENOMEM;
-+		goto err_free_g;
- 	}
- 
- 	mc = MLX5_ADDR_OF(create_flow_group_in, in, match_criteria);
-@@ -251,7 +253,7 @@ static int arfs_create_groups(struct mlx5e_flow_table *ft,
- 		break;
- 	default:
- 		err = -EINVAL;
--		goto out;
-+		goto err_free_in;
- 	}
- 
- 	switch (type) {
-@@ -273,7 +275,7 @@ static int arfs_create_groups(struct mlx5e_flow_table *ft,
- 		break;
- 	default:
- 		err = -EINVAL;
--		goto out;
-+		goto err_free_in;
- 	}
- 
- 	MLX5_SET_CFG(in, match_criteria_enable, MLX5_MATCH_OUTER_HEADERS);
-@@ -282,7 +284,7 @@ static int arfs_create_groups(struct mlx5e_flow_table *ft,
- 	MLX5_SET_CFG(in, end_flow_index, ix - 1);
- 	ft->g[ft->num_groups] = mlx5_create_flow_group(ft->t, in);
- 	if (IS_ERR(ft->g[ft->num_groups]))
--		goto err;
-+		goto err_clean_group;
- 	ft->num_groups++;
- 
- 	memset(in, 0, inlen);
-@@ -291,18 +293,20 @@ static int arfs_create_groups(struct mlx5e_flow_table *ft,
- 	MLX5_SET_CFG(in, end_flow_index, ix - 1);
- 	ft->g[ft->num_groups] = mlx5_create_flow_group(ft->t, in);
- 	if (IS_ERR(ft->g[ft->num_groups]))
--		goto err;
-+		goto err_clean_group;
- 	ft->num_groups++;
- 
- 	kvfree(in);
- 	return 0;
- 
--err:
-+err_clean_group:
- 	err = PTR_ERR(ft->g[ft->num_groups]);
- 	ft->g[ft->num_groups] = NULL;
--out:
-+err_free_in:
- 	kvfree(in);
--
-+err_free_g:
-+	kfree(ft->g);
-+	ft->g = NULL;
- 	return err;
+ 	spin_lock_irqsave(shost->host_lock, flags);
+ 	shost->host_failed++;
+-	scsi_eh_wakeup(shost, scsi_host_busy(shost));
++	scsi_eh_wakeup(shost, busy);
+ 	spin_unlock_irqrestore(shost->host_lock, flags);
  }
  
+diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
+index e9ab87335115..0389bf281f4b 100644
+--- a/drivers/scsi/scsi_lib.c
++++ b/drivers/scsi/scsi_lib.c
+@@ -281,9 +281,11 @@ static void scsi_dec_host_busy(struct Scsi_Host *shost, struct scsi_cmnd *cmd)
+ 	rcu_read_lock();
+ 	__clear_bit(SCMD_STATE_INFLIGHT, &cmd->state);
+ 	if (unlikely(scsi_host_in_recovery(shost))) {
++		unsigned int busy = scsi_host_busy(shost);
++
+ 		spin_lock_irqsave(shost->host_lock, flags);
+ 		if (shost->host_failed || shost->host_eh_scheduled)
+-			scsi_eh_wakeup(shost, scsi_host_busy(shost));
++			scsi_eh_wakeup(shost, busy);
+ 		spin_unlock_irqrestore(shost->host_lock, flags);
+ 	}
+ 	rcu_read_unlock();
 -- 
 2.43.0
 
