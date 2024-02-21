@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-22925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B903885DE88
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:19:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5270D85D916
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0CCEEB2C810
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:17:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 074371F23C12
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:14:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7A597F46A;
-	Wed, 21 Feb 2024 14:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91EA469D30;
+	Wed, 21 Feb 2024 13:14:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ghGYoAhN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Oc86tRF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A8D7EF1E;
-	Wed, 21 Feb 2024 14:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF1753816;
+	Wed, 21 Feb 2024 13:14:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524985; cv=none; b=HZm3pbg9GrLt6HzzVIiCABboMuJwWcMx/yPGV02AJnV1Ef0G+iJ5fP6BlO3pP4yUvuU1s/0QuV3HyPP5js/TZMh9EUvAkaI/RPSXa5XOX+slbvA1qooy9G/wYOEWTceCmr9duJD950myBCtPlw5YNPgh6Dwxh0gleNW9UwVxLa4=
+	t=1708521264; cv=none; b=lZ6JHyxwrkOECgEmKeTbTMok0JirU9QxNKfvHoCKDqSeUNy0MEr9bUli0dCLxacGblO8iAxgpCCh+IOxhjfCJKcv2ErIgsBkf+OcMBccnyPd+Z5gyfe+EEeepcFXkNCJ/yex+HIpqGqqT5fMa3MTE/Mf1TIn9qQM5KBUw431FAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524985; c=relaxed/simple;
-	bh=Znrv2NMVT2o2XbVOdmrrAjsT8jRmL/qUUTMVKVrZvUY=;
+	s=arc-20240116; t=1708521264; c=relaxed/simple;
+	bh=PJ3ek/z8/tUsgq/ztmKutoaSTzbvGUq50aOEGlPsZns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tFh4NqEFHHiar5C4QkfZZvEhY2LA4O6X7Epy6ZTLLSUSbvSc4/nga+meaR1mkr1Q8kTIUeqiaKTBOwFJLnzxjz3VuJRhtxZxV8xxqpNZ27eAv49NhXntUdPtaw4Xs/ph2vTJab/AC00aCsVs+quJJaWJyy/hUs101QMlt3PA0cA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ghGYoAhN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3261C433F1;
-	Wed, 21 Feb 2024 14:16:24 +0000 (UTC)
+	 MIME-Version; b=APmGNxNVSME995OmI7X5XOEEmlKZvQyNcz80sOKM4VlPszinzzQPjNrt8xDzckYwWYSra9rgbvc0neCQRS+lufpa+lKPUotOybMgokOL5jrAkYTT+sGEWZg751nrXVTcF9kzKluA4yE0S34fAWBmKOqHUD7ltRgj/rjRkXR2SXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Oc86tRF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB174C433F1;
+	Wed, 21 Feb 2024 13:14:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524985;
-	bh=Znrv2NMVT2o2XbVOdmrrAjsT8jRmL/qUUTMVKVrZvUY=;
+	s=korg; t=1708521264;
+	bh=PJ3ek/z8/tUsgq/ztmKutoaSTzbvGUq50aOEGlPsZns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ghGYoAhNbHjh2RPUFoh4Bagbxybwm+T/rMXQxkDzvtlGuh16k3dQcJjEkhYHPQygq
-	 GZ4d1hwacldzZ0/69T1wWt/kFyT188jM/sratxrDBlWfe1kMzFgtGBwDf6nbuY39ze
-	 RJ3FOc0UsV22/CA3j7lgytlMF2mC5znLsXgQBqOA=
+	b=0Oc86tRFifdYIz6VLIbI+iUbiCYu/ma1Sxfrtax1TO1KJ7QHo3EJfkdxlqjlktbu6
+	 YKFpOI5UZ6GpfUub+WayU32UCVmbNvrqoAqmUBi093R+UOSmWGe4Ld/j8JAdUisYDz
+	 s9lb6i/IQEg+Lq/RWyuqXWkdDPv3BjiYRdavMLDo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
-Subject: [PATCH 5.4 025/267] x86/CPU/AMD: Fix disabling XSAVES on AMD family 0x17 due to erratum
+	Oleg Nesterov <oleg@redhat.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 065/202] afs: fix the usage of read_seqbegin_or_lock() in afs_find_server*()
 Date: Wed, 21 Feb 2024 14:06:06 +0100
-Message-ID: <20240221125940.838738137@linuxfoundation.org>
+Message-ID: <20240221125933.935584883@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +64,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-The stable kernel version backport of the patch disabling XSAVES on AMD
-Zen family 0x17 applied this change to the wrong function (init_amd_k6()),
-one which isn't called for Zen CPUs.
+[ Upstream commit 1702e0654ca9a7bcd7c7619c8a5004db58945b71 ]
 
-Move the erratum to the init_amd_zn() function instead.
+David Howells says:
 
-Add an explicit family 0x17 check to the erratum so nothing will break if
-someone naively makes this kernel version call init_amd_zn() also for
-family 0x19 in the future (as the current upstream code does).
+ (5) afs_find_server().
 
-Fixes: e40c1e9da1ec ("x86/CPU/AMD: Disable XSAVES on AMD family 0x17")
-Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+     There could be a lot of servers in the list and each server can have
+     multiple addresses, so I think this would be better with an exclusive
+     second pass.
+
+     The server list isn't likely to change all that often, but when it does
+     change, there's a good chance several servers are going to be
+     added/removed one after the other.  Further, this is only going to be
+     used for incoming cache management/callback requests from the server,
+     which hopefully aren't going to happen too often - but it is remotely
+     drivable.
+
+ (6) afs_find_server_by_uuid().
+
+     Similarly to (5), there could be a lot of servers to search through, but
+     they are in a tree not a flat list, so it should be faster to process.
+     Again, it's not likely to change that often and, again, when it does
+     change it's likely to involve multiple changes.  This can be driven
+     remotely by an incoming cache management request but is mostly going to
+     be driven by setting up or reconfiguring a volume's server list -
+     something that also isn't likely to happen often.
+
+Make the "seq" counter odd on the 2nd pass, otherwise read_seqbegin_or_lock()
+never takes the lock.
+
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Link: https://lore.kernel.org/r/20231130115614.GA21581@redhat.com/
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/amd.c |   20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ fs/afs/server.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -277,15 +277,6 @@ static void init_amd_k6(struct cpuinfo_x
- 		return;
- 	}
- #endif
--	/*
--	 * Work around Erratum 1386.  The XSAVES instruction malfunctions in
--	 * certain circumstances on Zen1/2 uarch, and not all parts have had
--	 * updated microcode at the time of writing (March 2023).
--	 *
--	 * Affected parts all have no supervisor XSAVE states, meaning that
--	 * the XSAVEC instruction (which works fine) is equivalent.
--	 */
--	clear_cpu_cap(c, X86_FEATURE_XSAVES);
- }
+diff --git a/fs/afs/server.c b/fs/afs/server.c
+index 2c7f6211c360..b12caa1acf53 100644
+--- a/fs/afs/server.c
++++ b/fs/afs/server.c
+@@ -37,7 +37,7 @@ struct afs_server *afs_find_server(struct afs_net *net,
+ 	const struct afs_addr_list *alist;
+ 	struct afs_server *server = NULL;
+ 	unsigned int i;
+-	int seq = 0, diff;
++	int seq = 1, diff;
  
- static void init_amd_k7(struct cpuinfo_x86 *c)
-@@ -989,6 +980,17 @@ static void init_amd_zn(struct cpuinfo_x
- 		if (c->x86 == 0x19 && !cpu_has(c, X86_FEATURE_BTC_NO))
- 			set_cpu_cap(c, X86_FEATURE_BTC_NO);
- 	}
-+
-+	/*
-+	 * Work around Erratum 1386.  The XSAVES instruction malfunctions in
-+	 * certain circumstances on Zen1/2 uarch, and not all parts have had
-+	 * updated microcode at the time of writing (March 2023).
-+	 *
-+	 * Affected parts all have no supervisor XSAVE states, meaning that
-+	 * the XSAVEC instruction (which works fine) is equivalent.
-+	 */
-+	if (c->x86 == 0x17)
-+		clear_cpu_cap(c, X86_FEATURE_XSAVES);
- }
+ 	rcu_read_lock();
  
- static bool cpu_has_zenbleed_microcode(void)
+@@ -45,6 +45,7 @@ struct afs_server *afs_find_server(struct afs_net *net,
+ 		if (server)
+ 			afs_put_server(net, server);
+ 		server = NULL;
++		seq++; /* 2 on the 1st/lockless path, otherwise odd */
+ 		read_seqbegin_or_lock(&net->fs_addr_lock, &seq);
+ 
+ 		if (srx->transport.family == AF_INET6) {
+@@ -100,7 +101,7 @@ struct afs_server *afs_find_server_by_uuid(struct afs_net *net, const uuid_t *uu
+ {
+ 	struct afs_server *server = NULL;
+ 	struct rb_node *p;
+-	int diff, seq = 0;
++	int diff, seq = 1;
+ 
+ 	_enter("%pU", uuid);
+ 
+@@ -112,7 +113,7 @@ struct afs_server *afs_find_server_by_uuid(struct afs_net *net, const uuid_t *uu
+ 		if (server)
+ 			afs_put_server(net, server);
+ 		server = NULL;
+-
++		seq++; /* 2 on the 1st/lockless path, otherwise odd */
+ 		read_seqbegin_or_lock(&net->fs_lock, &seq);
+ 
+ 		p = net->fs_servers.rb_node;
+-- 
+2.43.0
+
 
 
 
