@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-22030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF59485D9C9
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:22:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1972D85DC41
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:51:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB0CC2886FA
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:22:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE87AB24EA0
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:51:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81F776C99;
-	Wed, 21 Feb 2024 13:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09ECE79DD7;
+	Wed, 21 Feb 2024 13:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cxZmMLNn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="id+kAbnc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8662253816;
-	Wed, 21 Feb 2024 13:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51BA78B73;
+	Wed, 21 Feb 2024 13:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521734; cv=none; b=sMeiYkq1fG4upUrt7TcHXPMqtqKkyOKOjyHgCXYNsvjcyf3ZSXq0n42tEGya92XwNsopsGO3mrGIjwTAYyyFnKFwsKoHVk5pTt3cnv3y5NXHwqzEkh9KdjZsszDU6vgWb1JgVEXjjWj4P27+lI/byHSf+QoJO3fs9Qv9xGpdxAI=
+	t=1708523458; cv=none; b=im7eDPYLitdX7/uUr+zMb/UnbXvVKjih7sIa0QBhmAIPe8zcJg85r/+TgT2n8LtHV7zxvV1Hrw0KyVOnb5zRpIv/GDn2rgTGjsS8Q+I/fqzkVjbOvgbbDUYeH2kUYGfUm3NiCGLuw9E5Xo+D0BunGfgKJiFwEj0ZiPXsDmkyyJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521734; c=relaxed/simple;
-	bh=AWGB5XTET2+UX7jcOKsbj680tUarbcKg9yqBddXWkIk=;
+	s=arc-20240116; t=1708523458; c=relaxed/simple;
+	bh=kA3tfJEeop8IA1czY6W1CBRqIooGIIEgNkdaoWTOAT4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S0Ssz1P255ygVy5l6uLLEmAO5gBpdi6gv0aE/E3XKQE9PIe9QQZke8DTGsy+wVlOnc5ZKfDVUpjQhbDseCRTWkr6coF9Ccy4pf+pG73nFrO1OhtJHx5pI+epxgVTLKXp3pT2P0dcwHUwhbz8rAf7nr/Kqo22HsvvLDPVhC41QOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cxZmMLNn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA8F3C433F1;
-	Wed, 21 Feb 2024 13:22:13 +0000 (UTC)
+	 MIME-Version; b=XMIJlUslmYHAteXqpu1XjPk8lPfmQ5jQvg8cZRg8/jg1GyzKHllJHmmkLXn+bjYTq8n3cXobfpGMP48PTchAFeA5AHiKRh95kIskZ2mvAI8EX7ZbJ1yx7+i1+kbCWF0XpAAeEy+WR3UbfoU6HS3H03N95GIyZbYGP8SyWgLjHwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=id+kAbnc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ABBFC433C7;
+	Wed, 21 Feb 2024 13:50:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521734;
-	bh=AWGB5XTET2+UX7jcOKsbj680tUarbcKg9yqBddXWkIk=;
+	s=korg; t=1708523458;
+	bh=kA3tfJEeop8IA1czY6W1CBRqIooGIIEgNkdaoWTOAT4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cxZmMLNnCkWWpDjy33kj+Yv2WCODvvjTKjsY8oDyFBWb/mmkLGMveC3f0s/onf0gN
-	 ujIcjRT89cnmMhk/Y/jie4jeHW13CWtVJw5VKZfUoNQjZ+7VJ7lowVPXSWFMNzxoyN
-	 RFuMI2tBCXJ+6k+/BZwwEkac2nrYc5643Eb0SskA=
+	b=id+kAbnc1k9LT+TbsOUqWjQ4cdM8Q7Boh/PyQkaDMnm8ZIsi4RJogM2u1OIKflHhp
+	 PchzkHMPzCuZ1xjSv51FjPjcNG99TfPxp7GhhPx38qc7VxC3BeEdkke2Va9iAXEFT+
+	 jmrf4SWfMt/HF8nfozH87drt82nHrd5TRf4xib8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve Wahl <steve.wahl@hpe.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH 4.19 190/202] x86/mm/ident_map: Use gbpages only where full GB page should be mapped.
-Date: Wed, 21 Feb 2024 14:08:11 +0100
-Message-ID: <20240221125937.939785810@linuxfoundation.org>
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Wesley Cheng <quic_wcheng@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 441/476] usb: dwc3: gadget: Refactor EP0 forced stall/restart into a separate API
+Date: Wed, 21 Feb 2024 14:08:12 +0100
+Message-ID: <20240221130024.344979322@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +62,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve Wahl <steve.wahl@hpe.com>
+From: Wesley Cheng <quic_wcheng@quicinc.com>
 
-commit d794734c9bbfe22f86686dc2909c25f5ffe1a572 upstream.
+[ Upstream commit 8f40fc0808137c157dd408d2632e63bfca2aecdb ]
 
-When ident_pud_init() uses only gbpages to create identity maps, large
-ranges of addresses not actually requested can be included in the
-resulting table; a 4K request will map a full GB.  On UV systems, this
-ends up including regions that will cause hardware to halt the system
-if accessed (these are marked "reserved" by BIOS).  Even processor
-speculation into these regions is enough to trigger the system halt.
+Several sequences utilize the same routine for forcing the control endpoint
+back into the SETUP phase.  This is required, because those operations need
+to ensure that EP0 is back in the default state.
 
-Only use gbpages when map creation requests include the full GB page
-of space.  Fall back to using smaller 2M pages when only portions of a
-GB page are included in the request.
-
-No attempt is made to coalesce mapping requests. If a request requires
-a map entry at the 2M (pmd) level, subsequent mapping requests within
-the same 1G region will also be at the pmd level, even if adjacent or
-overlapping such requests could have been combined to map a full
-gbpage.  Existing usage starts with larger regions and then adds
-smaller regions, so this should not have any great consequence.
-
-[ dhansen: fix up comment formatting, simplifty changelog ]
-
-Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20240126164841.170866-1-steve.wahl%40hpe.com
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
+Link: https://lore.kernel.org/r/20230420212759.29429-3-quic_wcheng@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 730e12fbec53 ("usb: dwc3: gadget: Handle EP0 request dequeuing properly")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/mm/ident_map.c |   23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+ drivers/usb/dwc3/gadget.c | 53 ++++++++++++++++-----------------------
+ 1 file changed, 21 insertions(+), 32 deletions(-)
 
---- a/arch/x86/mm/ident_map.c
-+++ b/arch/x86/mm/ident_map.c
-@@ -26,18 +26,31 @@ static int ident_pud_init(struct x86_map
- 	for (; addr < end; addr = next) {
- 		pud_t *pud = pud_page + pud_index(addr);
- 		pmd_t *pmd;
-+		bool use_gbpage;
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index a74ac44c6cd8..7704e2444b4b 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -139,6 +139,24 @@ int dwc3_gadget_set_link_state(struct dwc3 *dwc, enum dwc3_link_state state)
+ 	return -ETIMEDOUT;
+ }
  
- 		next = (addr & PUD_MASK) + PUD_SIZE;
- 		if (next > end)
- 			next = end;
- 
--		if (info->direct_gbpages) {
--			pud_t pudval;
-+		/* if this is already a gbpage, this portion is already mapped */
-+		if (pud_large(*pud))
-+			continue;
++static void dwc3_ep0_reset_state(struct dwc3 *dwc)
++{
++	unsigned int	dir;
 +
-+		/* Is using a gbpage allowed? */
-+		use_gbpage = info->direct_gbpages;
- 
--			if (pud_present(*pud))
--				continue;
-+		/* Don't use gbpage if it maps more than the requested region. */
-+		/* at the begining: */
-+		use_gbpage &= ((addr & ~PUD_MASK) == 0);
-+		/* ... or at the end: */
-+		use_gbpage &= ((next & ~PUD_MASK) == 0);
++	if (dwc->ep0state != EP0_SETUP_PHASE) {
++		dir = !!dwc->ep0_expect_in;
++		if (dwc->ep0state == EP0_DATA_PHASE)
++			dwc3_ep0_end_control_data(dwc, dwc->eps[dir]);
++		else
++			dwc3_ep0_end_control_data(dwc, dwc->eps[!dir]);
 +
-+		/* Never overwrite existing mappings */
-+		use_gbpage &= !pud_present(*pud);
++		dwc->eps[0]->trb_enqueue = 0;
++		dwc->eps[1]->trb_enqueue = 0;
 +
-+		if (use_gbpage) {
-+			pud_t pudval;
++		dwc3_ep0_stall_and_restart(dwc);
++	}
++}
++
+ /**
+  * dwc3_ep_inc_trb - increment a trb index.
+  * @index: Pointer to the TRB index to increment.
+@@ -2495,16 +2513,9 @@ static int dwc3_gadget_soft_disconnect(struct dwc3 *dwc)
+ 		ret = wait_for_completion_timeout(&dwc->ep0_in_setup,
+ 				msecs_to_jiffies(DWC3_PULL_UP_TIMEOUT));
+ 		if (ret == 0) {
+-			unsigned int    dir;
+-
+ 			dev_warn(dwc->dev, "wait for SETUP phase timed out\n");
+ 			spin_lock_irqsave(&dwc->lock, flags);
+-			dir = !!dwc->ep0_expect_in;
+-			if (dwc->ep0state == EP0_DATA_PHASE)
+-				dwc3_ep0_end_control_data(dwc, dwc->eps[dir]);
+-			else
+-				dwc3_ep0_end_control_data(dwc, dwc->eps[!dir]);
+-			dwc3_ep0_stall_and_restart(dwc);
++			dwc3_ep0_reset_state(dwc);
+ 			spin_unlock_irqrestore(&dwc->lock, flags);
+ 		}
+ 	}
+@@ -3762,16 +3773,7 @@ static void dwc3_gadget_disconnect_interrupt(struct dwc3 *dwc)
+ 	dwc->setup_packet_pending = false;
+ 	usb_gadget_set_state(dwc->gadget, USB_STATE_NOTATTACHED);
  
--			addr &= PUD_MASK;
- 			pudval = __pud((addr - info->offset) | info->page_flag);
- 			set_pud(pud, pudval);
- 			continue;
+-	if (dwc->ep0state != EP0_SETUP_PHASE) {
+-		unsigned int    dir;
+-
+-		dir = !!dwc->ep0_expect_in;
+-		if (dwc->ep0state == EP0_DATA_PHASE)
+-			dwc3_ep0_end_control_data(dwc, dwc->eps[dir]);
+-		else
+-			dwc3_ep0_end_control_data(dwc, dwc->eps[!dir]);
+-		dwc3_ep0_stall_and_restart(dwc);
+-	}
++	dwc3_ep0_reset_state(dwc);
+ }
+ 
+ static void dwc3_gadget_reset_interrupt(struct dwc3 *dwc)
+@@ -3827,20 +3829,7 @@ static void dwc3_gadget_reset_interrupt(struct dwc3 *dwc)
+ 	 * phase. So ensure that EP0 is in setup phase by issuing a stall
+ 	 * and restart if EP0 is not in setup phase.
+ 	 */
+-	if (dwc->ep0state != EP0_SETUP_PHASE) {
+-		unsigned int	dir;
+-
+-		dir = !!dwc->ep0_expect_in;
+-		if (dwc->ep0state == EP0_DATA_PHASE)
+-			dwc3_ep0_end_control_data(dwc, dwc->eps[dir]);
+-		else
+-			dwc3_ep0_end_control_data(dwc, dwc->eps[!dir]);
+-
+-		dwc->eps[0]->trb_enqueue = 0;
+-		dwc->eps[1]->trb_enqueue = 0;
+-
+-		dwc3_ep0_stall_and_restart(dwc);
+-	}
++	dwc3_ep0_reset_state(dwc);
+ 
+ 	/*
+ 	 * In the Synopsis DesignWare Cores USB3 Databook Rev. 3.30a
+-- 
+2.43.0
+
 
 
 
