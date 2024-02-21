@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-22408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A222A85DBE7
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:46:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 828E785D985
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:19:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56A1E1F21449
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:46:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B41001C21AD4
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:19:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EA6478B7C;
-	Wed, 21 Feb 2024 13:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 463F66EB77;
+	Wed, 21 Feb 2024 13:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aSJYB2rv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZphRk5vl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C31D78B4B;
-	Wed, 21 Feb 2024 13:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 058E969DF6;
+	Wed, 21 Feb 2024 13:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523194; cv=none; b=nAZyVQeX4MsEBm4YG8+9jaFDb25zxtBxMYvVjqYrGGElsN5k+R5C9/uXdHQsjiifh+3nH/mERrmdpcPrQv7+gEJqliDljwYFI9VqzffcwmRnFduv+XRJzRWITYhQxLyHjUgDmSXkKPPberNKYaLzaB486jF2LE6Og23F5V0Tu7c=
+	t=1708521567; cv=none; b=HoE+R/t850idX9Pg9izZPnumZGhKcPYCxyrKPpOo8MD3lHfjdlfYNYZXJ7ES1f+KrUsM/MCSNTO1L97HMgwkrbsCfNtj9Phj/GpFi2sxKnun3U7HKn8Ixe7r8JY1+5oXfyeuAvBEF7N0lggxMnmdluSQWTlUH9AIGhUa0dbRbS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523194; c=relaxed/simple;
-	bh=eyvOTqH3yMdghiou4EM/w8TwaFYc2RpK8ZiX+hIuKdY=;
+	s=arc-20240116; t=1708521567; c=relaxed/simple;
+	bh=H3GLAT/qIh6pN3bKvays8y2ULfYfINWjOqEkUXmhg7g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ay2tcwsdrUBgJvPVeenHOpN9ppWz7StKEOYwrRaM4ywKVmh08wInMdhFbP5rMdjmCuWxGsLq0/rCWuP/NWiY7Ett8yHmyY3xth5A/0v8llbdjJ3yZH8x+Zj0ABMDkGkDTTMDdfjIPtZ+RnvVKEQGECtREr8baq+K/aQ41/fr17o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aSJYB2rv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F9D3C433C7;
-	Wed, 21 Feb 2024 13:46:33 +0000 (UTC)
+	 MIME-Version; b=ePFkdAnK8ut9YI+wgSqOu+hgz67PikgYaZy8fWKsZoqNN4Jy+ls0GMauV6l9NXG4RZHiKGp3TdRxfPQbrWB5K69jd980CUY7bQBm0Io7Z37VQsFuY2YXKMu3eLyqSIeLBJXUK0KHD5VyqV4ANA/KYETmG0rNjhFFcribxPoCkRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZphRk5vl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68B10C433C7;
+	Wed, 21 Feb 2024 13:19:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523194;
-	bh=eyvOTqH3yMdghiou4EM/w8TwaFYc2RpK8ZiX+hIuKdY=;
+	s=korg; t=1708521566;
+	bh=H3GLAT/qIh6pN3bKvays8y2ULfYfINWjOqEkUXmhg7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aSJYB2rvRX3dhQG3f5s7MJEEjdlxocXIPeq7gPNrSVYzXssIpSGj8M7r8deH93UdG
-	 GrV8zMajNH0h6frSWcqlCwosBuRHoV03JGcv/GXDHEZZxA6FcMbxZlFnbl5glV6ofS
-	 7sU0p7Ffmerdtm0EkDfRSFlLiubx/FoTWlOcp+c8=
+	b=ZphRk5vlGq99q7L2a7lB+/CnqZuge6mIXgT9WgrBX46dLu+YXYTXHNo6FEiEVgGvC
+	 2qdrbQ7nZ/PFc53fdRAeAEfarIgyXQ1cJtiZv6cPGWm5a8o16TdC0GZKMY6jFVyJpo
+	 4idC8MdgIhtPaT42N8kYukSUmiHi3yIDMmD/U9i4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Donnefort <vdonnefort@google.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.15 357/476] tracing/trigger: Fix to return error if failed to alloc snapshot
+	Maxime Ripard <mripard@kernel.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Inki Dae <inki.dae@samsung.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 107/202] drm/exynos: Call drm_atomic_helper_shutdown() at shutdown/unbind time
 Date: Wed, 21 Feb 2024 14:06:48 +0100
-Message-ID: <20240221130021.199822181@linuxfoundation.org>
+Message-ID: <20240221125935.212087219@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +64,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Douglas Anderson <dianders@chromium.org>
 
-commit 0958b33ef5a04ed91f61cef4760ac412080c4e08 upstream.
+[ Upstream commit 16ac5b21b31b439f03cdf44c153c5f5af94fb3eb ]
 
-Fix register_snapshot_trigger() to return error code if it failed to
-allocate a snapshot instead of 0 (success). Unless that, it will register
-snapshot trigger without an error.
+Based on grepping through the source code this driver appears to be
+missing a call to drm_atomic_helper_shutdown() at system shutdown time
+and at driver unbind time. Among other things, this means that if a
+panel is in use that it won't be cleanly powered off at system
+shutdown time.
 
-Link: https://lore.kernel.org/linux-trace-kernel/170622977792.270660.2789298642759362200.stgit@devnote2
+The fact that we should call drm_atomic_helper_shutdown() in the case
+of OS shutdown/restart and at driver remove (or unbind) time comes
+straight out of the kernel doc "driver instance overview" in
+drm_drv.c.
 
-Fixes: 0bbe7f719985 ("tracing: Fix the race between registering 'snapshot' event trigger and triggering 'snapshot' operation")
-Cc: stable@vger.kernel.org
-Cc: Vincent Donnefort <vdonnefort@google.com>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+A few notes about this fix:
+- When adding drm_atomic_helper_shutdown() to the unbind path, I added
+  it after drm_kms_helper_poll_fini() since that's when other drivers
+  seemed to have it.
+- Technically with a previous patch, ("drm/atomic-helper:
+  drm_atomic_helper_shutdown(NULL) should be a noop"), we don't
+  actually need to check to see if our "drm" pointer is NULL before
+  calling drm_atomic_helper_shutdown(). We'll leave the "if" test in,
+  though, so that this patch can land without any dependencies. It
+  could potentially be removed later.
+- This patch also makes sure to set the drvdata to NULL in the case of
+  bind errors to make sure that shutdown can't access freed data.
+
+Suggested-by: Maxime Ripard <mripard@kernel.org>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events_trigger.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/exynos/exynos_drm_drv.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/kernel/trace/trace_events_trigger.c
-+++ b/kernel/trace/trace_events_trigger.c
-@@ -1161,8 +1161,10 @@ register_snapshot_trigger(char *glob, st
- 			  struct event_trigger_data *data,
- 			  struct trace_event_file *file)
- {
--	if (tracing_alloc_snapshot_instance(file->tr) != 0)
--		return 0;
-+	int ret = tracing_alloc_snapshot_instance(file->tr);
-+
-+	if (ret < 0)
-+		return ret;
+diff --git a/drivers/gpu/drm/exynos/exynos_drm_drv.c b/drivers/gpu/drm/exynos/exynos_drm_drv.c
+index b599f74692e5..db09e2055c86 100644
+--- a/drivers/gpu/drm/exynos/exynos_drm_drv.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_drv.c
+@@ -410,6 +410,7 @@ static int exynos_drm_bind(struct device *dev)
+ 	drm_release_iommu_mapping(drm);
+ err_free_private:
+ 	kfree(private);
++	dev_set_drvdata(dev, NULL);
+ err_free_drm:
+ 	drm_dev_put(drm);
  
- 	return register_trigger(glob, ops, data, file);
+@@ -424,6 +425,7 @@ static void exynos_drm_unbind(struct device *dev)
+ 
+ 	exynos_drm_fbdev_fini(drm);
+ 	drm_kms_helper_poll_fini(drm);
++	drm_atomic_helper_shutdown(drm);
+ 
+ 	component_unbind_all(drm->dev, drm);
+ 	drm_mode_config_cleanup(drm);
+@@ -461,9 +463,18 @@ static int exynos_drm_platform_remove(struct platform_device *pdev)
+ 	return 0;
  }
+ 
++static void exynos_drm_platform_shutdown(struct platform_device *pdev)
++{
++	struct drm_device *drm = platform_get_drvdata(pdev);
++
++	if (drm)
++		drm_atomic_helper_shutdown(drm);
++}
++
+ static struct platform_driver exynos_drm_platform_driver = {
+ 	.probe	= exynos_drm_platform_probe,
+ 	.remove	= exynos_drm_platform_remove,
++	.shutdown = exynos_drm_platform_shutdown,
+ 	.driver	= {
+ 		.name	= "exynos-drm",
+ 		.pm	= &exynos_drm_pm_ops,
+-- 
+2.43.0
+
 
 
 
