@@ -1,72 +1,56 @@
-Return-Path: <stable+bounces-21852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3FC885D8D6
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:11:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE30485DB56
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:39:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 549D11F2408F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:11:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62CD31F21728
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:39:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC70C69973;
-	Wed, 21 Feb 2024 13:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF4FE3C2F;
+	Wed, 21 Feb 2024 13:39:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qiku6zBD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l65dnrja"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A90B69954;
-	Wed, 21 Feb 2024 13:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACCD869951;
+	Wed, 21 Feb 2024 13:39:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521063; cv=none; b=pMPOOmr9Z9Hx+IOxrbWXGfKrCtuRlfwjZ6J3Uiaz2i0IrjZ2+b7jUviqToFbZEvZdBHt9B5VYQZukArWANIcvs+0qElZOd9UYO2Uhja1wFpCGFtuTe5X+PB1MkOF47GoeYdljQwNfkVlEVu+nBf8wY0INixPZm0KHBy5entUNsM=
+	t=1708522782; cv=none; b=haq2aACCJtvmj9lGdSlv7ju+Gz1BomQBuuwqgHusL6Pn4VZhKiZiutXy9x4M+xhOk2zwRv01V3IQkNo/Lf6zutplS1EpMqAzX/lkMMpU5lqMVGPHa7Hd5nk/sYocgkwDtUhjBGNcyNTmdwfIJffezlyqay8Ik1E1QFWpMQxVSGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521063; c=relaxed/simple;
-	bh=8V3HxYy4DGe5YVY24cSvjx0BM5mypUAUFi9bcMhdatY=;
+	s=arc-20240116; t=1708522782; c=relaxed/simple;
+	bh=EEwodmqQtAoa4WU8QGT7gK0ghA4qutvTU3ADe66WybI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mPtRto/GhqxxQdmSTs9Ys5nXKXYx+DLbjxtFv0pnDM6aiVNsWG4/R7uA/QuHJaHh1kS6NkhPC4obdOHYYmYFIvxm9hEDb4zEcWYr3noRbJTuPK5BSTXMKBCVP1T72smeoNRs7UL3BGUaj5/eWQUv030HYXX0pFgU6sBJPbJn5Nw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qiku6zBD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D737AC433F1;
-	Wed, 21 Feb 2024 13:11:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rrukoJTea6XKs36wjYRnl8d0E4nNfyROWXIUG8Kq2vC1vZ6zwKlaLbPdAaH+6uRP1E566wPCHjzLoruhxmSfOvQbENuXKczmd6CIEgi10qidwVGb0hDFj9nw8xRLT0pUs0QNg79yg69227eTy/pB+5SvZSbBZ6ojcycw1F1MngY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l65dnrja; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CF2BC433C7;
+	Wed, 21 Feb 2024 13:39:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521063;
-	bh=8V3HxYy4DGe5YVY24cSvjx0BM5mypUAUFi9bcMhdatY=;
+	s=korg; t=1708522782;
+	bh=EEwodmqQtAoa4WU8QGT7gK0ghA4qutvTU3ADe66WybI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qiku6zBDwXjApWUCoKcXZO1jJFQ84dlmTgxtvNW7LH13YbhssKZ7r/8XA0uCvdiLj
-	 3FVvraYNClwhDXdD8H0COTdb2e33XpaKT8ZStt7EtyC8WJgJRpsazeWJv3jG6DSpZ9
-	 HjauZJrpghpsdoX8DTANGDNEKgcWQKOUnpJt0Qe0=
+	b=l65dnrjaObkj/MaMML68HLE3LJS4wgVmjpgYLFDzLQwZJgblXlhcZanCiUXLmruGZ
+	 G/i0yKZ9FmEESsjjumScGeLgNVU1VwGnKXA1CkaHuFj9ldl9/QJ7ItlKEBSkFWnQsQ
+	 EPIsZlJfofVbC9tdSsm8Gm5wel0A1HiOvpzYMyVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Christian Eggers <ceggers@arri.de>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Kyungmin Park <kyungmin.park@samsung.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	MyungJoo Ham <myungjoo.ham@samsung.com>,
-	Peter Meerwald <pmeerw@pmeerw.net>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Zhang Rui <rui.zhang@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 005/202] units: add the HZ macros
-Date: Wed, 21 Feb 2024 14:05:06 +0100
-Message-ID: <20240221125931.912091066@linuxfoundation.org>
+Subject: [PATCH 5.15 256/476] PCI: Fix 64GT/s effective data rate calculation
+Date: Wed, 21 Feb 2024 14:05:07 +0100
+Message-ID: <20240221130017.306694966@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,61 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit e2c77032fcbe515194107994d12cd72ddb77b022 ]
+[ Upstream commit ac4f1897fa5433a1b07a625503a91b6aa9d7e643 ]
 
-The macros for the unit conversion for frequency are duplicated in
-different places.
+Unlike the lower rates, the PCIe 64GT/s Data Rate uses 1b/1b encoding, not
+128b/130b (PCIe r6.1 sec 1.2, Table 1-1).  Correct the PCIE_SPEED2MBS_ENC()
+calculation to reflect that.
 
-Provide these macros in the 'units' header, so they can be reused.
-
-Link: https://lkml.kernel.org/r/20210816114732.1834145-3-daniel.lezcano@linaro.org
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Reviewed-by: Christian Eggers <ceggers@arri.de>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Chanwoo Choi <cw00.choi@samsung.com>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Cc: Jonathan Cameron <jic23@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Kyungmin Park <kyungmin.park@samsung.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>
-Cc: Lukasz Luba <lukasz.luba@arm.com>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: MyungJoo Ham <myungjoo.ham@samsung.com>
-Cc: Peter Meerwald <pmeerw@pmeerw.net>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Zhang Rui <rui.zhang@intel.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Stable-dep-of: 3ef79cd14122 ("serial: sc16is7xx: set safe default SPI clock frequency")
+Link: https://lore.kernel.org/r/20240102172701.65501-1-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/units.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/pci/pci.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/units.h b/include/linux/units.h
-index 4a23e39acc7b..a0af6d2ef4e5 100644
---- a/include/linux/units.h
-+++ b/include/linux/units.h
-@@ -4,6 +4,10 @@
+diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+index 72280e9b23b2..2b5337980da7 100644
+--- a/drivers/pci/pci.h
++++ b/drivers/pci/pci.h
+@@ -312,7 +312,7 @@ void pci_bus_put(struct pci_bus *bus);
  
- #include <linux/kernel.h>
- 
-+#define HZ_PER_KHZ		1000UL
-+#define KHZ_PER_MHZ		1000UL
-+#define HZ_PER_MHZ		1000000UL
-+
- #define MILLIWATT_PER_WATT	1000UL
- #define MICROWATT_PER_MILLIWATT	1000UL
- #define MICROWATT_PER_WATT	1000000UL
+ /* PCIe speed to Mb/s reduced by encoding overhead */
+ #define PCIE_SPEED2MBS_ENC(speed) \
+-	((speed) == PCIE_SPEED_64_0GT ? 64000*128/130 : \
++	((speed) == PCIE_SPEED_64_0GT ? 64000*1/1 : \
+ 	 (speed) == PCIE_SPEED_32_0GT ? 32000*128/130 : \
+ 	 (speed) == PCIE_SPEED_16_0GT ? 16000*128/130 : \
+ 	 (speed) == PCIE_SPEED_8_0GT  ?  8000*128/130 : \
 -- 
 2.43.0
 
