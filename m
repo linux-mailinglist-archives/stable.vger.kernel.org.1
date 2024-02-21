@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-22186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0DA785DAC4
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:34:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62CA085DC80
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:54:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4FCE2822DB
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:34:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 031D61F222B9
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:54:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DF6778B7C;
-	Wed, 21 Feb 2024 13:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF2877B3F2;
+	Wed, 21 Feb 2024 13:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dnLhOMeM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZdlHJv1l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF457E58D;
-	Wed, 21 Feb 2024 13:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8CC78B53;
+	Wed, 21 Feb 2024 13:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522363; cv=none; b=syCXCx5hORV0DtHSNG2I+8O06ncZes9P959SzYHphwger4A82BI51qvMYCwbEGsE6VIr+CyJ3SgtBUoXRfSqPy/Z6wq1OLsR6hhcnehyxjCb0qENssmIUf+7zDz2S+bIE3tdZW4qfBqyKjOhjg2oVp6+BaJ5+1sWwhSNlQ9KfV4=
+	t=1708523631; cv=none; b=Pp9VgEAc5r2lQT+CfmcAOIInes2QCeAYzPQTZ0A0MgV6ycKsD237iU1Ei1GItrFp2HjQKdHnyOlXnzyQbhRcykeOuldLKsuMUE9kHpS1+QYaJ1i9f8VmC6q+HVXwI7vGJAi9reMByUWw2yD8KNeKx7jPBqg9UvmUuC2bw/X5dnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522363; c=relaxed/simple;
-	bh=h23FF4Q4P3vUni37rGfZjxX78TimbNT/QmChD0fPzMQ=;
+	s=arc-20240116; t=1708523631; c=relaxed/simple;
+	bh=fiw8ovPqvWd0d0H9zt6yOHQO5G6EoCjtnfOGR774EW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dykDbCaxH7Z7a+bTUn488lSAZ2C2hsFkxIrZncZqn1Vff40yyRkyBWCgLnEzxoVw3s0pwBL7BKXYn1mSCxN+zXs8ngdyCfFH+9J409C+EUvx0uXsKz8NMdq/V5eCNrHTMa+Eg2t2TXvPDlQ97S9tNHTYiDX45ko/mK6kXee34TA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dnLhOMeM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1573BC433F1;
-	Wed, 21 Feb 2024 13:32:41 +0000 (UTC)
+	 MIME-Version; b=rZ0muusx7UCMRcF+HVAxDUnmpN5zGQeWhmkLrYJ0h5KqI3hY2aPOlKrj2S7WajpTS5tzOT5PSu+tgnSqlYj8fRULNbW/WveAFhB5PmB0gExD7ztRYlK2UmwaFc4/y3OiiGyFgY6v7ubeOPQvfnuTUTI98efs9BYdgHb3PeqlKxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZdlHJv1l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A91FC433C7;
+	Wed, 21 Feb 2024 13:53:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522362;
-	bh=h23FF4Q4P3vUni37rGfZjxX78TimbNT/QmChD0fPzMQ=;
+	s=korg; t=1708523631;
+	bh=fiw8ovPqvWd0d0H9zt6yOHQO5G6EoCjtnfOGR774EW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dnLhOMeMB2le1qe7BEECK1OlpjOeGmL8M+YbSsR4bIDTgJ6lTfbK76u+d5dAQ3Dtj
-	 E38Pu2fjNSdgXuUTrnmPdP+V+B5RvN4OLpZZumD4ufNbUMnGeZcOeD/z2b9pfloRPp
-	 EEoSwenKlQMN+qDprVLOhXKTjO4hw+w+xvm7YbNU=
+	b=ZdlHJv1lh09GIr+3+Y5i06KEIGySw+E0yQi4cVNAPvY5zx5Ak3aiN6FjM4Rb3RsfG
+	 zlDjyywEa7nIkkSZxcjo7Kpbzcfjmpb8QmT8ZF0vT0iAg72+LKFg/SEb6f6+KM1TMG
+	 lCVvgL9T8Uc5t/hXAMdb3MbV3OMqRVOtyxua4UDE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joyyoung Huang <huangzaiyang@oppo.com>,
-	MyungJoo Ham <myungjoo.ham@samsung.com>,
-	Mukesh Ojha <quic_mojha@quicinc.com>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 142/476] PM / devfreq: Synchronize devfreq_monitor_[start/stop]
+Subject: [PATCH 5.10 014/379] iio: adc: ad7091r: Enable internal vref if external vref is not supplied
 Date: Wed, 21 Feb 2024 14:03:13 +0100
-Message-ID: <20240221130013.179566282@linuxfoundation.org>
+Message-ID: <20240221125955.342293227@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,167 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mukesh Ojha <quic_mojha@quicinc.com>
+From: Marcelo Schmitt <marcelo.schmitt@analog.com>
 
-[ Upstream commit aed5ed595960c6d301dcd4ed31aeaa7a8054c0c6 ]
+[ Upstream commit e71c5c89bcb165a02df35325aa13d1ee40112401 ]
 
-There is a chance if a frequent switch of the governor
-done in a loop result in timer list corruption where
-timer cancel being done from two place one from
-cancel_delayed_work_sync() and followed by expire_timers()
-can be seen from the traces[1].
+The ADC needs a voltage reference to work correctly.
+Users can provide an external voltage reference or use the chip internal
+reference to operate the ADC.
+The availability of an in chip reference for the ADC saves the user from
+having to supply an external voltage reference, which makes the external
+reference an optional property as described in the device tree
+documentation.
+Though, to use the internal reference, it must be enabled by writing to
+the configuration register.
+Enable AD7091R internal voltage reference if no external vref is supplied.
 
-while true
-do
-        echo "simple_ondemand" > /sys/class/devfreq/1d84000.ufshc/governor
-        echo "performance" > /sys/class/devfreq/1d84000.ufshc/governor
-done
-
-It looks to be issue with devfreq driver where
-device_monitor_[start/stop] need to synchronized so that
-delayed work should get corrupted while it is either
-being queued or running or being cancelled.
-
-Let's use polling flag and devfreq lock to synchronize the
-queueing the timer instance twice and work data being
-corrupted.
-
-[1]
-...
-..
-<idle>-0    [003]   9436.209662:  timer_cancel   timer=0xffffff80444f0428
-<idle>-0    [003]   9436.209664:  timer_expire_entry   timer=0xffffff80444f0428  now=0x10022da1c  function=__typeid__ZTSFvP10timer_listE_global_addr  baseclk=0x10022da1c
-<idle>-0    [003]   9436.209718:  timer_expire_exit   timer=0xffffff80444f0428
-kworker/u16:6-14217    [003]   9436.209863:  timer_start   timer=0xffffff80444f0428  function=__typeid__ZTSFvP10timer_listE_global_addr  expires=0x10022da2b  now=0x10022da1c  flags=182452227
-vendor.xxxyyy.ha-1593    [004]   9436.209888:  timer_cancel   timer=0xffffff80444f0428
-vendor.xxxyyy.ha-1593    [004]   9436.216390:  timer_init   timer=0xffffff80444f0428
-vendor.xxxyyy.ha-1593    [004]   9436.216392:  timer_start   timer=0xffffff80444f0428  function=__typeid__ZTSFvP10timer_listE_global_addr  expires=0x10022da2c  now=0x10022da1d  flags=186646532
-vendor.xxxyyy.ha-1593    [005]   9436.220992:  timer_cancel   timer=0xffffff80444f0428
-xxxyyyTraceManag-7795    [004]   9436.261641:  timer_cancel   timer=0xffffff80444f0428
-
-[2]
-
- 9436.261653][    C4] Unable to handle kernel paging request at virtual address dead00000000012a
-[ 9436.261664][    C4] Mem abort info:
-[ 9436.261666][    C4]   ESR = 0x96000044
-[ 9436.261669][    C4]   EC = 0x25: DABT (current EL), IL = 32 bits
-[ 9436.261671][    C4]   SET = 0, FnV = 0
-[ 9436.261673][    C4]   EA = 0, S1PTW = 0
-[ 9436.261675][    C4] Data abort info:
-[ 9436.261677][    C4]   ISV = 0, ISS = 0x00000044
-[ 9436.261680][    C4]   CM = 0, WnR = 1
-[ 9436.261682][    C4] [dead00000000012a] address between user and kernel address ranges
-[ 9436.261685][    C4] Internal error: Oops: 96000044 [#1] PREEMPT SMP
-[ 9436.261701][    C4] Skip md ftrace buffer dump for: 0x3a982d0
-...
-
-[ 9436.262138][    C4] CPU: 4 PID: 7795 Comm: TraceManag Tainted: G S      W  O      5.10.149-android12-9-o-g17f915d29d0c #1
-[ 9436.262141][    C4] Hardware name: Qualcomm Technologies, Inc.  (DT)
-[ 9436.262144][    C4] pstate: 22400085 (nzCv daIf +PAN -UAO +TCO BTYPE=--)
-[ 9436.262161][    C4] pc : expire_timers+0x9c/0x438
-[ 9436.262164][    C4] lr : expire_timers+0x2a4/0x438
-[ 9436.262168][    C4] sp : ffffffc010023dd0
-[ 9436.262171][    C4] x29: ffffffc010023df0 x28: ffffffd0636fdc18
-[ 9436.262178][    C4] x27: ffffffd063569dd0 x26: ffffffd063536008
-[ 9436.262182][    C4] x25: 0000000000000001 x24: ffffff88f7c69280
-[ 9436.262185][    C4] x23: 00000000000000e0 x22: dead000000000122
-[ 9436.262188][    C4] x21: 000000010022da29 x20: ffffff8af72b4e80
-[ 9436.262191][    C4] x19: ffffffc010023e50 x18: ffffffc010025038
-[ 9436.262195][    C4] x17: 0000000000000240 x16: 0000000000000201
-[ 9436.262199][    C4] x15: ffffffffffffffff x14: ffffff889f3c3100
-[ 9436.262203][    C4] x13: ffffff889f3c3100 x12: 00000000049f56b8
-[ 9436.262207][    C4] x11: 00000000049f56b8 x10: 00000000ffffffff
-[ 9436.262212][    C4] x9 : ffffffc010023e50 x8 : dead000000000122
-[ 9436.262216][    C4] x7 : ffffffffffffffff x6 : ffffffc0100239d8
-[ 9436.262220][    C4] x5 : 0000000000000000 x4 : 0000000000000101
-[ 9436.262223][    C4] x3 : 0000000000000080 x2 : ffffff889edc155c
-[ 9436.262227][    C4] x1 : ffffff8001005200 x0 : ffffff80444f0428
-[ 9436.262232][    C4] Call trace:
-[ 9436.262236][    C4]  expire_timers+0x9c/0x438
-[ 9436.262240][    C4]  __run_timers+0x1f0/0x330
-[ 9436.262245][    C4]  run_timer_softirq+0x28/0x58
-[ 9436.262255][    C4]  efi_header_end+0x168/0x5ec
-[ 9436.262265][    C4]  __irq_exit_rcu+0x108/0x124
-[ 9436.262274][    C4]  __handle_domain_irq+0x118/0x1e4
-[ 9436.262282][    C4]  gic_handle_irq.30369+0x6c/0x2bc
-[ 9436.262286][    C4]  el0_irq_naked+0x60/0x6c
-
-Link: https://lore.kernel.org/all/1700860318-4025-1-git-send-email-quic_mojha@quicinc.com/
-Reported-by: Joyyoung Huang <huangzaiyang@oppo.com>
-Acked-by: MyungJoo Ham <myungjoo.ham@samsung.com>
-Signed-off-by: Mukesh Ojha <quic_mojha@quicinc.com>
-Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
+Fixes: 260442cc5be4 ("iio: adc: ad7091r5: Add scale and external VREF support")
+Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Link: https://lore.kernel.org/r/b865033fa6a4fc4bf2b4a98ec51a6144e0f64f77.1703013352.git.marcelo.schmitt1@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/devfreq/devfreq.c |   24 ++++++++++++++++++++++--
- 1 file changed, 22 insertions(+), 2 deletions(-)
+ drivers/iio/adc/ad7091r-base.c | 7 +++++++
+ drivers/iio/adc/ad7091r-base.h | 2 ++
+ 2 files changed, 9 insertions(+)
 
---- a/drivers/devfreq/devfreq.c
-+++ b/drivers/devfreq/devfreq.c
-@@ -464,10 +464,14 @@ static void devfreq_monitor(struct work_
- 	if (err)
- 		dev_err(&devfreq->dev, "dvfs failed with (%d) error\n", err);
- 
-+	if (devfreq->stop_polling)
-+		goto out;
+diff --git a/drivers/iio/adc/ad7091r-base.c b/drivers/iio/adc/ad7091r-base.c
+index 9ddda08918db..f345542e69a0 100644
+--- a/drivers/iio/adc/ad7091r-base.c
++++ b/drivers/iio/adc/ad7091r-base.c
+@@ -405,7 +405,14 @@ int ad7091r_probe(struct device *dev, const char *name,
+ 	if (IS_ERR(st->vref)) {
+ 		if (PTR_ERR(st->vref) == -EPROBE_DEFER)
+ 			return -EPROBE_DEFER;
 +
- 	queue_delayed_work(devfreq_wq, &devfreq->work,
- 				msecs_to_jiffies(devfreq->profile->polling_ms));
--	mutex_unlock(&devfreq->lock);
+ 		st->vref = NULL;
++		/* Enable internal vref */
++		ret = regmap_set_bits(st->map, AD7091R_REG_CONF,
++				      AD7091R_REG_CONF_INT_VREF);
++		if (ret)
++			return dev_err_probe(st->dev, ret,
++					     "Error on enable internal reference\n");
+ 	} else {
+ 		ret = regulator_enable(st->vref);
+ 		if (ret)
+diff --git a/drivers/iio/adc/ad7091r-base.h b/drivers/iio/adc/ad7091r-base.h
+index 7a78976a2f80..b9e1c8bf3440 100644
+--- a/drivers/iio/adc/ad7091r-base.h
++++ b/drivers/iio/adc/ad7091r-base.h
+@@ -8,6 +8,8 @@
+ #ifndef __DRIVERS_IIO_ADC_AD7091R_BASE_H__
+ #define __DRIVERS_IIO_ADC_AD7091R_BASE_H__
  
-+out:
-+	mutex_unlock(&devfreq->lock);
- 	trace_devfreq_monitor(devfreq);
- }
- 
-@@ -485,6 +489,10 @@ void devfreq_monitor_start(struct devfre
- 	if (IS_SUPPORTED_FLAG(devfreq->governor->flags, IRQ_DRIVEN))
- 		return;
- 
-+	mutex_lock(&devfreq->lock);
-+	if (delayed_work_pending(&devfreq->work))
-+		goto out;
++#define AD7091R_REG_CONF_INT_VREF	BIT(0)
 +
- 	switch (devfreq->profile->timer) {
- 	case DEVFREQ_TIMER_DEFERRABLE:
- 		INIT_DEFERRABLE_WORK(&devfreq->work, devfreq_monitor);
-@@ -493,12 +501,16 @@ void devfreq_monitor_start(struct devfre
- 		INIT_DELAYED_WORK(&devfreq->work, devfreq_monitor);
- 		break;
- 	default:
--		return;
-+		goto out;
- 	}
- 
- 	if (devfreq->profile->polling_ms)
- 		queue_delayed_work(devfreq_wq, &devfreq->work,
- 			msecs_to_jiffies(devfreq->profile->polling_ms));
-+
-+out:
-+	devfreq->stop_polling = false;
-+	mutex_unlock(&devfreq->lock);
- }
- EXPORT_SYMBOL(devfreq_monitor_start);
- 
-@@ -515,6 +527,14 @@ void devfreq_monitor_stop(struct devfreq
- 	if (IS_SUPPORTED_FLAG(devfreq->governor->flags, IRQ_DRIVEN))
- 		return;
- 
-+	mutex_lock(&devfreq->lock);
-+	if (devfreq->stop_polling) {
-+		mutex_unlock(&devfreq->lock);
-+		return;
-+	}
-+
-+	devfreq->stop_polling = true;
-+	mutex_unlock(&devfreq->lock);
- 	cancel_delayed_work_sync(&devfreq->work);
- }
- EXPORT_SYMBOL(devfreq_monitor_stop);
+ /* AD7091R_REG_CH_LIMIT */
+ #define AD7091R_HIGH_LIMIT		0xFFF
+ #define AD7091R_LOW_LIMIT		0x0
+-- 
+2.43.0
+
 
 
 
