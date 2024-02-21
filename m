@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-22302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35B4985DB58
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:39:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0338585DD3D
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:04:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C580BB2220B
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:39:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4C59AB27346
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:03:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EFF6763F6;
-	Wed, 21 Feb 2024 13:39:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F9F67E797;
+	Wed, 21 Feb 2024 14:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CWO87BEs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WVJYtImK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0F9D69951;
-	Wed, 21 Feb 2024 13:39:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD137E78A;
+	Wed, 21 Feb 2024 14:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522789; cv=none; b=f7py7yFb4GrTF89EQRxvCCdrQDndjN/XP5LNLcARu2Img0Tjvd7Z4zZCP8SOs5u8Y2Q6Ci2sj5cxdQzhlirGe+Qzwie0QnSciK3o0y4A98VWrSBPM1oZI74+Iaaf98AMuVRceI0Nc0+20RfodB9ZbyVxwEeN3KUiktdfZgffog4=
+	t=1708524149; cv=none; b=n+v1XlD44ZiOdnl50yId0/uISRrR5K4N0KYtVCj79fj7ubVi5H0cQGRbDjyy4ep0LGkALT1wcUkSWOXHuKo58iVtcHVL9TYqWDtm4AdJ5dosJBZbSYymvkXGG0oh5hVhIb+0SN5j5Li9vbjZAo482foQwWV92MKYynaOOz4KuSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522789; c=relaxed/simple;
-	bh=imakWmCMfNRPMXTg6kL7ooOG6j4J3t4VP754TUIVNJo=;
+	s=arc-20240116; t=1708524149; c=relaxed/simple;
+	bh=G/WmjUlU57N77kODX/joQ1DX88xHnvoxUt1Tn1OTUJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LHs0vAhwMdQWQHgCe5ekF1O4ZAe/VCjZAPL6ASC4dAzLcYye1JTS9zjLt/M4SMV7TTPJ8yYzi6xCOMed+pMUGQj1zYhWbztg8E2IHVWtYso7KBnHUiPdH2DlpFMp4WNRKKHKopS73GyYMrsT6xDdNTuUauAfw9tN08HxpgpTBhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CWO87BEs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 116F8C433C7;
-	Wed, 21 Feb 2024 13:39:47 +0000 (UTC)
+	 MIME-Version; b=J0kqk2xBT5pzhi3+2c+1qylesne7EFCRDVVY7+Z8yablzvkfx/5uE+fiWnIy6fMx0yJJ7925eulD+rLB5Iuf4/q7W3Q2zoKbcnRk7EY3i3uJwHQ+OITh0yY/io2ce3gDQ0aPZOk76mMkyECeH1hMO3OZDHkuTUg/JTbONGZC4Js=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WVJYtImK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C870C433F1;
+	Wed, 21 Feb 2024 14:02:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522788;
-	bh=imakWmCMfNRPMXTg6kL7ooOG6j4J3t4VP754TUIVNJo=;
+	s=korg; t=1708524148;
+	bh=G/WmjUlU57N77kODX/joQ1DX88xHnvoxUt1Tn1OTUJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CWO87BEsRh4FIiGxmyJEPKgga+Xqsma6DTUr4TVQz0GYuL9ULqhKiEChLaZ/a3y2X
-	 4/DPfyBucjYBSWca7URzMdi/bayhQePWsJYuPzftwh63pPm9tHM/xNsKhtKKPkHEiZ
-	 /JpzDjGKCH5C/LvmFyLi+T6eTbT1hlGo2SkcXNz8=
+	b=WVJYtImKtH8oo221ZTWlkEUkCmIamxmrbRpEOv5Y0YpvaPMRAS07XNq95cd8c0p0p
+	 s3qwt1As+jkF3Loyt1jZn7EzawcICmV0CuwmNCb4Pjw65aevu63yrnRa9NOGqW7zgk
+	 uSHqumvEDUBb5Q1FUt4BSHN3L9x09UaldBnN7WIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 258/476] misc: lis3lv02d_i2c: Add missing setting of the reg_ctrl callback
+Subject: [PATCH 5.10 130/379] KVM: s390: fix setting of fpc register
 Date: Wed, 21 Feb 2024 14:05:09 +0100
-Message-ID: <20240221130017.380309277@linuxfoundation.org>
+Message-ID: <20240221125958.773151537@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit b1b9f7a494400c0c39f8cd83de3aaa6111c55087 ]
+[ Upstream commit b988b1bb0053c0dcd26187d29ef07566a565cf55 ]
 
-The lis3lv02d_i2c driver was missing a line to set the lis3_dev's
-reg_ctrl callback.
+kvm_arch_vcpu_ioctl_set_fpu() allows to set the floating point control
+(fpc) register of a guest cpu. The new value is tested for validity by
+temporarily loading it into the fpc register.
 
-lis3_reg_ctrl(on) is called from the init callback, but due to
-the missing reg_ctrl callback the regulators where never turned off
-again leading to the following oops/backtrace when detaching the driver:
+This may lead to corruption of the fpc register of the host process:
+if an interrupt happens while the value is temporarily loaded into the fpc
+register, and within interrupt context floating point or vector registers
+are used, the current fp/vx registers are saved with save_fpu_regs()
+assuming they belong to user space and will be loaded into fp/vx registers
+when returning to user space.
 
-[   82.313527] ------------[ cut here ]------------
-[   82.313546] WARNING: CPU: 1 PID: 1724 at drivers/regulator/core.c:2396 _regulator_put+0x219/0x230
-...
-[   82.313695] RIP: 0010:_regulator_put+0x219/0x230
-...
-[   82.314767] Call Trace:
-[   82.314770]  <TASK>
-[   82.314772]  ? _regulator_put+0x219/0x230
-[   82.314777]  ? __warn+0x81/0x170
-[   82.314784]  ? _regulator_put+0x219/0x230
-[   82.314791]  ? report_bug+0x18d/0x1c0
-[   82.314801]  ? handle_bug+0x3c/0x80
-[   82.314806]  ? exc_invalid_op+0x13/0x60
-[   82.314812]  ? asm_exc_invalid_op+0x16/0x20
-[   82.314845]  ? _regulator_put+0x219/0x230
-[   82.314857]  regulator_bulk_free+0x39/0x60
-[   82.314865]  i2c_device_remove+0x22/0xb0
+test_fp_ctl() restores the original user space / host process fpc register
+value, however it will be discarded, when returning to user space.
 
-Add the missing setting of the callback so that the regulators
-properly get turned off again when not used.
+In result the host process will incorrectly continue to run with the value
+that was supposed to be used for a guest cpu.
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20231224183402.95640-1-hdegoede@redhat.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by simply removing the test. There is another test right before
+the SIE context is entered which will handles invalid values.
+
+This results in a change of behaviour: invalid values will now be accepted
+instead of that the ioctl fails with -EINVAL. This seems to be acceptable,
+given that this interface is most likely not used anymore, and this is in
+addition the same behaviour implemented with the memory mapped interface
+(replace invalid values with zero) - see sync_regs() in kvm-s390.c.
+
+Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/lis3lv02d/lis3lv02d_i2c.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/s390/kvm/kvm-s390.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/drivers/misc/lis3lv02d/lis3lv02d_i2c.c b/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
-index 52555d2e824b..ab1db760ba4e 100644
---- a/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
-+++ b/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
-@@ -151,6 +151,7 @@ static int lis3lv02d_i2c_probe(struct i2c_client *client,
- 	lis3_dev.init	  = lis3_i2c_init;
- 	lis3_dev.read	  = lis3_i2c_read;
- 	lis3_dev.write	  = lis3_i2c_write;
-+	lis3_dev.reg_ctrl = lis3_reg_ctrl;
- 	lis3_dev.irq	  = client->irq;
- 	lis3_dev.ac	  = lis3lv02d_axis_map;
- 	lis3_dev.pm_dev	  = &client->dev;
+diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+index 7a326d03087a..f6c27b44766f 100644
+--- a/arch/s390/kvm/kvm-s390.c
++++ b/arch/s390/kvm/kvm-s390.c
+@@ -3649,10 +3649,6 @@ int kvm_arch_vcpu_ioctl_set_fpu(struct kvm_vcpu *vcpu, struct kvm_fpu *fpu)
+ 
+ 	vcpu_load(vcpu);
+ 
+-	if (test_fp_ctl(fpu->fpc)) {
+-		ret = -EINVAL;
+-		goto out;
+-	}
+ 	vcpu->run->s.regs.fpc = fpu->fpc;
+ 	if (MACHINE_HAS_VX)
+ 		convert_fp_to_vx((__vector128 *) vcpu->run->s.regs.vrs,
+@@ -3660,7 +3656,6 @@ int kvm_arch_vcpu_ioctl_set_fpu(struct kvm_vcpu *vcpu, struct kvm_fpu *fpu)
+ 	else
+ 		memcpy(vcpu->run->s.regs.fprs, &fpu->fprs, sizeof(fpu->fprs));
+ 
+-out:
+ 	vcpu_put(vcpu);
+ 	return ret;
+ }
 -- 
 2.43.0
 
