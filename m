@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-22627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18A8285DCF3
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:00:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCE2985DB66
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:40:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9D48DB28769
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:00:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EB951F2371F
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:40:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0BF27BB0F;
-	Wed, 21 Feb 2024 13:59:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF77776C99;
+	Wed, 21 Feb 2024 13:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LrZi6emP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z2Mcf0gR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E03B78B4B;
-	Wed, 21 Feb 2024 13:59:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CA8D6996B;
+	Wed, 21 Feb 2024 13:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523970; cv=none; b=STQZezD5yqnS8g0no3HGobSKaPfQ132SkCplh8GyNCbo128IkJmVlEoSt90QaHuR5HJBpSmdvYAAockLOGDDZCJEOJOnbhQKfdJs2NGXg9ZjORH4P15o9GnT7dtv5bq6nUBQMAei1r2jsYB9xiOZ+HRKHAvGj8HVpu2C5EbVo3o=
+	t=1708522838; cv=none; b=Hd1h4w+Pq5z9JSGv02ZBdjJ4aShEKFEPjiEgvM0enJEYfpwLLNNYvpD+ltOeQgV9Zbg34Eefw2H8G1C5ztbNp8bkPxP4/VZOFF8U9EAT6wd68KpRDQp+F45GH+HMW1rn0bJ++DGSVYcjM6kgnEk3/vC1AtEYPTjsBk2wYRlj9YY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523970; c=relaxed/simple;
-	bh=etzVpM5+is26qfrNpKg6/0SeMNIEVBaJdoP32vv/1TY=;
+	s=arc-20240116; t=1708522838; c=relaxed/simple;
+	bh=RPA0KEmgnY+9d367Oy2oeNb+CgJoItXhCDC9ChBL2o4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y6fz4vltWyC8GPThBmX8k/yQni+o0oQMGC1u/E/Pni75BJiFHSHeDnONZdAeJgwYMsYaMbVrVvy5NDp6a3CwvT6Z274cXoJDvpJkjy2cw+26uWJgcXH2SypHp5jAzW6N3xdvK/2sg31ma2nQd2paPv+yDWusaD9hESGzTojjbK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LrZi6emP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0DB2C433C7;
-	Wed, 21 Feb 2024 13:59:29 +0000 (UTC)
+	 MIME-Version; b=tPowHfvX7HOB42c9I66LFG0PK1CF7tsgHto4ViLcf2G88a3rVlOKISZhOMMtlIpth6SWrVDFi3xu07YFsmXCaTOY31lZ3aVvhKU9iBd+P8jKTwUgSr+eoXrRtw3hrtPqBPY88tIkbbVpaRJKSDz1FQXWU2DGw9v5f1cSqM2R8T4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z2Mcf0gR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE5DEC433C7;
+	Wed, 21 Feb 2024 13:40:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523970;
-	bh=etzVpM5+is26qfrNpKg6/0SeMNIEVBaJdoP32vv/1TY=;
+	s=korg; t=1708522838;
+	bh=RPA0KEmgnY+9d367Oy2oeNb+CgJoItXhCDC9ChBL2o4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LrZi6emP+QAPO617VbiLyy5w/uUVhKRo/42vun7O12ntZCSaq+ZqBjZKQUjwQ0cuh
-	 V+AcfP7r3bn6i5eGI+wHTO30wCnI36Vo5sIujKpqICnlss7igkGU0qoMSutFKc7138
-	 xw8dNSKDSgWqUFWlPrLBNDI3lW+BHjNSmaVtbyEs=
+	b=z2Mcf0gRrm5OURztkxYuVnCPgc/pvHZnLlEFWlzSL/ifQjIqsTr2E9w0JXbrM2DYk
+	 p4w9VcexhBgD+TBaqrjrMWxzBKT/v8/nUz644pjLaPyBXd9md3W4zXnDy92w/X+Aon
+	 bWx1rQEDxR7lJ49P4hobU+pZCnZx69tSQBOQpI68=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naveen N Rao <naveen@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Abel Vesa <abel.vesa@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 107/379] powerpc/lib: Validate size for vector operations
+Subject: [PATCH 5.15 235/476] clk: imx: scu: Fix memory leak in __imx_clk_gpr_scu()
 Date: Wed, 21 Feb 2024 14:04:46 +0100
-Message-ID: <20240221125958.087810712@linuxfoundation.org>
+Message-ID: <20240221130016.582057044@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naveen N Rao <naveen@kernel.org>
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
 
-[ Upstream commit 8f9abaa6d7de0a70fc68acaedce290c1f96e2e59 ]
+[ Upstream commit 21c0efbcb45cf94724d17b040ebc03fcd4a81f22 ]
 
-Some of the fp/vmx code in sstep.c assume a certain maximum size for the
-instructions being emulated. The size of those operations however is
-determined separately in analyse_instr().
+In cases where imx_clk_is_resource_owned() returns false, the code path
+does not handle the failure gracefully, potentially leading to a memory
+leak. This fix ensures proper cleanup by freeing the allocated memory
+for 'clk_node' before returning.
 
-Add a check to validate the assumption on the maximum size of the
-operations, so as to prevent any unintended kernel stack corruption.
-
-Signed-off-by: Naveen N Rao <naveen@kernel.org>
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Build-tested-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231123071705.397625-1-naveen@kernel.org
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Link: https://lore.kernel.org/all/20231210171907.3410922-1-visitorckw@gmail.com/
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/lib/sstep.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/clk/imx/clk-scu.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
-index 2d19655328f1..ca4733fbd02d 100644
---- a/arch/powerpc/lib/sstep.c
-+++ b/arch/powerpc/lib/sstep.c
-@@ -512,6 +512,8 @@ static int do_fp_load(struct instruction_op *op, unsigned long ea,
- 	} u;
+diff --git a/drivers/clk/imx/clk-scu.c b/drivers/clk/imx/clk-scu.c
+index 1cee88b073fa..89a914a15d62 100644
+--- a/drivers/clk/imx/clk-scu.c
++++ b/drivers/clk/imx/clk-scu.c
+@@ -841,8 +841,10 @@ struct clk_hw *__imx_clk_gpr_scu(const char *name, const char * const *parent_na
+ 	if (!clk_node)
+ 		return ERR_PTR(-ENOMEM);
  
- 	nb = GETSIZE(op->type);
-+	if (nb > sizeof(u))
-+		return -EINVAL;
- 	if (!address_ok(regs, ea, nb))
- 		return -EFAULT;
- 	rn = op->reg;
-@@ -562,6 +564,8 @@ static int do_fp_store(struct instruction_op *op, unsigned long ea,
- 	} u;
+-	if (!imx_scu_clk_is_valid(rsrc_id))
++	if (!imx_scu_clk_is_valid(rsrc_id)) {
++		kfree(clk_node);
+ 		return ERR_PTR(-EINVAL);
++	}
  
- 	nb = GETSIZE(op->type);
-+	if (nb > sizeof(u))
-+		return -EINVAL;
- 	if (!address_ok(regs, ea, nb))
- 		return -EFAULT;
- 	rn = op->reg;
-@@ -606,6 +610,9 @@ static nokprobe_inline int do_vec_load(int rn, unsigned long ea,
- 		u8 b[sizeof(__vector128)];
- 	} u = {};
- 
-+	if (size > sizeof(u))
-+		return -EINVAL;
-+
- 	if (!address_ok(regs, ea & ~0xfUL, 16))
- 		return -EFAULT;
- 	/* align to multiple of size */
-@@ -633,6 +640,9 @@ static nokprobe_inline int do_vec_store(int rn, unsigned long ea,
- 		u8 b[sizeof(__vector128)];
- 	} u;
- 
-+	if (size > sizeof(u))
-+		return -EINVAL;
-+
- 	if (!address_ok(regs, ea & ~0xfUL, 16))
- 		return -EFAULT;
- 	/* align to multiple of size */
+ 	clk = kzalloc(sizeof(*clk), GFP_KERNEL);
+ 	if (!clk) {
 -- 
 2.43.0
 
