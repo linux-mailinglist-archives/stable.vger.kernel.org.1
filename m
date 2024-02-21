@@ -1,189 +1,111 @@
-Return-Path: <stable+bounces-23190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 347F585E109
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 16:26:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DA1C85E13F
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 16:33:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5492E1C21DF6
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:26:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F32A1C23922
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:33:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC4717F7FD;
-	Wed, 21 Feb 2024 15:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A90E280BED;
+	Wed, 21 Feb 2024 15:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gi9iTckN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K4tne/0o"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC72D69D05
-	for <stable@vger.kernel.org>; Wed, 21 Feb 2024 15:26:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64C7E80BEB;
+	Wed, 21 Feb 2024 15:32:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708529172; cv=none; b=Gwg9LuLHFzj8lI0P9Tn3+FZVGevizrael57L+ZPOT8yiV2LsBntMyB2Tvjr7GUawaHkI7UNVH/3jbpwyvNk2F5+mnqDMRjHiAFRNwY77Zi6hX9/YU6DeI79l93IfHlSjg72Ynlyoa0h0G0SpfqYlvRVkVi/1OtbchYoMfMmlbBw=
+	t=1708529573; cv=none; b=gAWsoWpmE29LFqoUcTupjnbbEirRSkpXpVudwwC8KVNJBUfLE/+11hWqOQo6jmU2n/BhkYrB3plSpN01pPf4ZZATIu8mntpP8g+dTyGU5ka+A80VgXPrnvL6/iCma9L52Dp3AJ1y+gKe0XgO9L4kY8G4+5mUDHyS//lrH2/Iy9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708529172; c=relaxed/simple;
-	bh=cci5BOGZK3Spt55yQ2qdW1t58lXnRhMvgGTY0oAAFq0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nRP4HUuWkmnisVZWnX+AYVaS+NeTTwOOpNq3S8+/VQfwH8Nf4/EYW8KUTM+JUdfIogJREmHtg5gU3pMZO8RAmgYM80t54iJf18XEfBUym4qow5y+x9PJ6EbAgF2DBzVl3PNqgVlYLcjqWkc4z1OS/66rNCQv7DX6+WcDpmYUOC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gi9iTckN; arc=none smtp.client-ip=209.85.167.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-512d19e2cb8so1019231e87.0
-        for <stable@vger.kernel.org>; Wed, 21 Feb 2024 07:26:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708529168; x=1709133968; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=c7CFRwEaj5O3n1vig9mmc40S2b7I6iaaWbSwi8GiOwQ=;
-        b=gi9iTckNSt96N28N+n6zvBHLEIpK68lVodmPGWwFhWv2VeeJk5qdnt4j0A0Kt6vbbF
-         P5lNTH7hiqztOVVG+Q0WFkRmgoVLvIxjcbS9muYrg/s8pcwpHzOw6AshIwMdWe9Y9RIT
-         nD+JSC4iSRfBOiXgeW0nbg34NW2zl8jLAfJdbaCYEv8833DXaTrDjk2RZ26d47jtbP7u
-         Oh7MxP5QN9V2h2XpatYD+9QaUHzF06FmvkBEdE8aO4zselcjn0dAUjXcVn1t30SqVqJe
-         /705GC931RKp5KVSFq7O6tc2Dc8rMAT86Xnz79GS+V3NvUfDTedu+O8KL/s05WJ0MGmY
-         Yh4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708529168; x=1709133968;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=c7CFRwEaj5O3n1vig9mmc40S2b7I6iaaWbSwi8GiOwQ=;
-        b=eq7qcj0Vf62bKymadkMb2NsZ1uwrgcobOY54/XOJ8jA8IRQov3xRThc4f/nNPbM+7P
-         ceRIn9SbdV0P6GtKvMwA/H0BiEhq43NhjFct0D1jgLAIsG/CW/0SILbZehLBnqxFhjmG
-         rGwYqKSXhIMqjLz6cRS1btSTFt6dQySzBvn2jj+H7HKUfrrv6otNUBxIqpLX6R/Apcm4
-         tGhl9FFyQxCLMjqTcjPTxZPwzW8MyQa2CAdI+o3DeKXpdZejG25uEnT2tRLIITwx/IyY
-         Laz/mCBA+PWCjEn6rVLCGZnSioABRniP40UdItwpAPjkwgHbrGPNbokqEZyb/XzhWkpI
-         904A==
-X-Gm-Message-State: AOJu0YwMI+N6+aQqmH64gs+pme5SnE7YspqXfcMfGHx2yph1PTKIKTRu
-	xiU/Xb4CR6nVQJaAQDEexh7AHMHj2te6T9+Qz1ybSbn7/anMgnHa5F+BXUspT5GCuRMGxBdjR8V
-	RzvID+bHcMaUbyeh3DhgUkIu2hzA=
-X-Google-Smtp-Source: AGHT+IHKXAczEIV6dUiAdkT+Wz92ctah8iGk2CHccvb9gcB8i8NaBhlm16ApdXAmheuRwLyy/wxvNaN3pXDa62LWkqE=
-X-Received: by 2002:a05:6512:6ce:b0:512:cc76:4dab with SMTP id
- u14-20020a05651206ce00b00512cc764dabmr3308659lff.29.1708529167899; Wed, 21
- Feb 2024 07:26:07 -0800 (PST)
+	s=arc-20240116; t=1708529573; c=relaxed/simple;
+	bh=ini15tE19mitrKkG+HJLkGZ4AXHSX+Bhi6ca/Nfuh/0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZEwfBc6vaCEgYkGbPBKPNI5MMkJKoRNVp8q914Bn/ejdE7NN+ClfsryDii38R5E7Nl7JDyOWvqvBEfIK63jtsCpJxLIOpnkCdrIvkwZ7ZErk1gA29FbbrJVNIyA67BiNKVY5jt0sCLLDECnw3ysxWl/w4mTG5Mhf6FX5/8w3rw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K4tne/0o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF3E9C43390;
+	Wed, 21 Feb 2024 15:32:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708529573;
+	bh=ini15tE19mitrKkG+HJLkGZ4AXHSX+Bhi6ca/Nfuh/0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=K4tne/0o3ReHxJpYIG981esY1f85ra9Flh/637W4yf8qYLkVxCP3vVmGuAPCZE3e1
+	 d23jzgdy2MOsW0HaeTnOExIW4sEH6fbsa9F5sLkAlLxiGhgqijGL/Vs6SjZ46YsqGz
+	 p/dlhP1gnkuhKYG19eCZlUFpwr+zdjBVlQw2l56g9t4YJ8UnLSgXha2jMgcUorotG/
+	 1BER956nu3JXKrFHWsMlVceoWrepBJ1m+setcDEVljJwLahZV4bq8DeBQBHxGNK3cK
+	 F0l07N17Hkiboqw+p6EMVDJ2etau/kwDGGZogJYnvtPwf614d7GMkw9NnW+o9NISAc
+	 jk4LjWAG1AUDA==
+From: Christian Brauner <brauner@kernel.org>
+To: Bart Van Assche <bvanassche@acm.org>,
+	Jens Axboe <axboe@kernel.dk>
+Cc: Christian Brauner <brauner@kernel.org>,
+	linux-fsdevel@vger.kernel.org,
+	Christoph Hellwig <hch@lst.de>,
+	Avi Kivity <avi@scylladb.com>,
+	Sandeep Dhavale <dhavale@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	stable@vger.kernel.org,
+	Alexander Viro <viro@zeniv.linux.org.uk>
+Subject: Re: (subset) [PATCH v4 1/2] fs/aio: Restrict kiocb_set_cancel_fn() to I/O submitted via libaio
+Date: Wed, 21 Feb 2024 16:32:19 +0100
+Message-ID: <20240221-postleitzahl-flanieren-799c28d3ad95@brauner>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240215204739.2677806-2-bvanassche@acm.org>
+References: <20240215204739.2677806-1-bvanassche@acm.org> <20240215204739.2677806-2-bvanassche@acm.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240221125940.058369148@linuxfoundation.org> <20240221125948.348622258@linuxfoundation.org>
-In-Reply-To: <20240221125948.348622258@linuxfoundation.org>
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Date: Thu, 22 Feb 2024 00:25:51 +0900
-Message-ID: <CAKFNMonCSHt1ziZo=UcUvRSRfoARYUT+YycnoF2jQx78XENOyA@mail.gmail.com>
-Subject: Re: [PATCH 5.4 258/267] nilfs2: replace WARN_ONs for invalid DAT
- metadata block requests
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	syzbot+5d5d25f90f195a3cfcb4@syzkaller.appspotmail.com, 
-	Andrew Morton <akpm@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1426; i=brauner@kernel.org; h=from:subject:message-id; bh=ini15tE19mitrKkG+HJLkGZ4AXHSX+Bhi6ca/Nfuh/0=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaReE5/7gaHDuGIbMyOTeuQaGTnlZ4/WSvFIF6aev2+yc +/Tg8+FOkpZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACbSs5LhN1tdzvr97M/rj959 4atT93117vEri6KFlSo5pXILXaRl/jEybJ7FbCAduU+o+qrVR9mvXr5ru6x8rLdmJPxs+hgsVl/ DBwA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-On Wed, Feb 21, 2024 at 11:30=E2=80=AFPM Greg Kroah-Hartman wrote:
->
-> 5.4-stable review patch.  If anyone has any objections, please let me kno=
-w.
->
-> ------------------
->
-> From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
->
-> commit 5124a0a549857c4b87173280e192eea24dea72ad upstream.
->
-> If DAT metadata file block access fails due to corruption of the DAT file
-> or abnormal virtual block numbers held by b-trees or inodes, a kernel
-> warning is generated.
->
-> This replaces the WARN_ONs by error output, so that a kernel, booted with
-> panic_on_warn, does not panic.  This patch also replaces the detected
-> return code -ENOENT with another internal code -EINVAL to notify the bmap
-> layer of metadata corruption.  When the bmap layer sees -EINVAL, it
-> handles the abnormal situation with nilfs_bmap_convert_error() and finall=
-y
-> returns code -EIO as it should.
->
-> Link: https://lkml.kernel.org/r/0000000000005cc3d205ea23ddcf@google.com
-> Link: https://lkml.kernel.org/r/20230126164114.6911-1-konishi.ryusuke@gma=
-il.com
-> Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-> Reported-by: <syzbot+5d5d25f90f195a3cfcb4@syzkaller.appspotmail.com>
-> Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
->  fs/nilfs2/dat.c |   27 +++++++++++++++++----------
->  1 file changed, 17 insertions(+), 10 deletions(-)
->
-> --- a/fs/nilfs2/dat.c
-> +++ b/fs/nilfs2/dat.c
-> @@ -40,8 +40,21 @@ static inline struct nilfs_dat_info *NIL
->  static int nilfs_dat_prepare_entry(struct inode *dat,
->                                    struct nilfs_palloc_req *req, int crea=
-te)
->  {
-> -       return nilfs_palloc_get_entry_block(dat, req->pr_entry_nr,
-> -                                           create, &req->pr_entry_bh);
-> +       int ret;
-> +
-> +       ret =3D nilfs_palloc_get_entry_block(dat, req->pr_entry_nr,
-> +                                          create, &req->pr_entry_bh);
-> +       if (unlikely(ret =3D=3D -ENOENT)) {
-> +               nilfs_error(dat->i_sb,
-> +                         "DAT doesn't have a block to manage vblocknr =
-=3D %llu",
-> +                         (unsigned long long)req->pr_entry_nr);
-> +               /*
-> +                * Return internal code -EINVAL to notify bmap layer of
-> +                * metadata corruption.
-> +                */
-> +               ret =3D -EINVAL;
-> +       }
-> +       return ret;
->  }
->
->  static void nilfs_dat_commit_entry(struct inode *dat,
-> @@ -123,11 +136,7 @@ static void nilfs_dat_commit_free(struct
->
->  int nilfs_dat_prepare_start(struct inode *dat, struct nilfs_palloc_req *=
-req)
->  {
-> -       int ret;
-> -
-> -       ret =3D nilfs_dat_prepare_entry(dat, req, 0);
-> -       WARN_ON(ret =3D=3D -ENOENT);
-> -       return ret;
-> +       return nilfs_dat_prepare_entry(dat, req, 0);
->  }
->
->  void nilfs_dat_commit_start(struct inode *dat, struct nilfs_palloc_req *=
-req,
-> @@ -154,10 +163,8 @@ int nilfs_dat_prepare_end(struct inode *
->         int ret;
->
->         ret =3D nilfs_dat_prepare_entry(dat, req, 0);
-> -       if (ret < 0) {
-> -               WARN_ON(ret =3D=3D -ENOENT);
-> +       if (ret < 0)
->                 return ret;
-> -       }
->
->         kaddr =3D kmap_atomic(req->pr_entry_bh->b_page);
->         entry =3D nilfs_palloc_block_get_entry(dat, req->pr_entry_nr,
->
->
+On Thu, 15 Feb 2024 12:47:38 -0800, Bart Van Assche wrote:
+> If kiocb_set_cancel_fn() is called for I/O submitted via io_uring, the
+> following kernel warning appears:
+> 
+> WARNING: CPU: 3 PID: 368 at fs/aio.c:598 kiocb_set_cancel_fn+0x9c/0xa8
+> Call trace:
+>  kiocb_set_cancel_fn+0x9c/0xa8
+>  ffs_epfile_read_iter+0x144/0x1d0
+>  io_read+0x19c/0x498
+>  io_issue_sqe+0x118/0x27c
+>  io_submit_sqes+0x25c/0x5fc
+>  __arm64_sys_io_uring_enter+0x104/0xab0
+>  invoke_syscall+0x58/0x11c
+>  el0_svc_common+0xb4/0xf4
+>  do_el0_svc+0x2c/0xb0
+>  el0_svc+0x2c/0xa4
+>  el0t_64_sync_handler+0x68/0xb4
+>  el0t_64_sync+0x1a4/0x1a8
+> 
+> [...]
 
-Hi Greg,
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
-Please drop this patch for 5.4 as well as the patch for 4.19.
-(same reason as the review comment for the 4.19 patch)
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-I will send an equivalent replacement patch.
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
-Thanks,
-Ryusuke Konishi
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
+
+[1/2] fs/aio: Restrict kiocb_set_cancel_fn() to I/O submitted via libaio
+      https://git.kernel.org/vfs/vfs/c/b820de741ae4
 
