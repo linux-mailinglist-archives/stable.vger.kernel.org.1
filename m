@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-21940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4023385D94A
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:17:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A634F85DBDA
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:46:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECC95283A3E
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:17:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2FBC6B273DD
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:46:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B31927A715;
-	Wed, 21 Feb 2024 13:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E13E7C089;
+	Wed, 21 Feb 2024 13:45:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1IpdHU7x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zBgFz8na"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7057C7A733;
-	Wed, 21 Feb 2024 13:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8B17BB1A;
+	Wed, 21 Feb 2024 13:45:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521403; cv=none; b=M+6SHKjrvJsw2T6vwptEidH7GcFqFTp+ZbND3QzhEP9HXySWjHjRmKoiPtAKK3iJoLv9JCl8xOL2cU/lLfO95vSxcfNE7uOUv9hvp2HcaIK2UP7eHnyiQQqgCxvbgyhhSC8pACDnejGoFkfsvr5cNgSSRag8PjKIvF1QjRcRp+E=
+	t=1708523144; cv=none; b=Zz2BEKTSgytYGuqNgtHAhToY1vmsLHCPQQmFWJXRR43SPAM+FkCUTaJcwF60setOaE0Qvjpj+r1H4rYEuODR8Qeaa0LYd0xUuV6j/7IpblxqYSm0U3iBjx1AjsknNCM+3uCUV/amOZnqG6JntSzd8WgZjzvcCABkPStc5dE7m28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521403; c=relaxed/simple;
-	bh=BDhTuR0aZGKCVcntgp1Q2ucz0ae9kdV+hIlxlsTw4q0=;
+	s=arc-20240116; t=1708523144; c=relaxed/simple;
+	bh=xRLW/W3Lf9LWgBnMDsS45lB8hvcMKabXY86QpfiN678=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BRQtx8Z1VYXzxPsXl+y3X4RZfPfy+YfHS0G9pK3BBHtP6VecDKmzijAHksvOzNh4yHmnEb0J9ATJdyMAgI64uoV+K80EHeRoIAk/8LtPxDqczPX5aOMX8LNhfmvRP4NAmZpPoboYP3fKte+1Z1ArgJqDfNlRIV2B5ZzZa/pAPVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1IpdHU7x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 987C7C433F1;
-	Wed, 21 Feb 2024 13:16:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DJtypmlXXKcCp5iVLvPvlpjnQK/zlPP+49ocj9Rvwd2+lDM9vGYo5r7NlSeqoZu7x0okB9nl3MQjW2nryWdZICzJ+kqlZWsZXjN1I3+gDexw5Ad5nj4nIstaSM9x57w9bGgRzIeGh5QL7xxlj3j3Zt+pMZkHzigdyFw5foj9mYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zBgFz8na; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7028C43390;
+	Wed, 21 Feb 2024 13:45:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521403;
-	bh=BDhTuR0aZGKCVcntgp1Q2ucz0ae9kdV+hIlxlsTw4q0=;
+	s=korg; t=1708523144;
+	bh=xRLW/W3Lf9LWgBnMDsS45lB8hvcMKabXY86QpfiN678=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1IpdHU7x12dIdFH2FiT+YZTLKTBPv9ptdqrMG7qppt/wpvY3V48uMwkw8Yqf//90K
-	 vnJWStXgzJCZX4Ph6asjIcmcOy3m60EXiHJWL4mqiGupverBr8A6mQv7hcoyrueixP
-	 p5jFhpEssSgqDxxx87yfFlwPeC3Ve/Lmwmb1C0Qc=
+	b=zBgFz8namZrhnreeVy2Zj15gMUjHS8S1TALWEfs712KtA+hfUEG6W8C84AvkRWZ1P
+	 KXJXc7CyQdy+bUVbrhkDXqnzsFWw9J7IDu11oT/gKfTFBgm5uCGPlg63KHK+ZANwxx
+	 egUaJvxSdLZMxrfnPZ2PxtFdiNKfQtqdpl78E3QU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 101/202] drm/framebuffer: Fix use of uninitialized variable
+Subject: [PATCH 5.15 351/476] spi: ppc4xx: Drop write-only variable
 Date: Wed, 21 Feb 2024 14:06:42 +0100
-Message-ID: <20240221125935.034040941@linuxfoundation.org>
+Message-ID: <20240221130020.959154697@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit f9af8f0c1dc567a5a6a6318ff324c45d80d4a60f ]
+[ Upstream commit b3aa619a8b4706f35cb62f780c14e68796b37f3f ]
 
-smatch reports:
+Since commit 24778be20f87 ("spi: convert drivers to use
+bits_per_word_mask") the bits_per_word variable is only written to. The
+check that was there before isn't needed any more as the spi core
+ensures that only 8 bit transfers are used, so the variable can go away
+together with all assignments to it.
 
-drivers/gpu/drm/drm_framebuffer.c:654 drm_mode_getfb2_ioctl() error: uninitialized symbol 'ret'.
-
-'ret' is possibly not set when there are no errors, causing the error
-above. I can't say if that ever happens in real-life, but in any case I
-think it is good to initialize 'ret' to 0.
-
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231103-uninit-fixes-v2-2-c22b2444f5f5@ideasonboard.com
+Fixes: 24778be20f87 ("spi: convert drivers to use bits_per_word_mask")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/20240210164006.208149-8-u.kleine-koenig@pengutronix.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_framebuffer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-ppc4xx.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_framebuffer.c b/drivers/gpu/drm/drm_framebuffer.c
-index b64a6ffc0aed..9fc4af4b10a6 100644
---- a/drivers/gpu/drm/drm_framebuffer.c
-+++ b/drivers/gpu/drm/drm_framebuffer.c
-@@ -538,7 +538,7 @@ int drm_mode_dirtyfb_ioctl(struct drm_device *dev,
- 	struct drm_framebuffer *fb;
- 	unsigned flags;
- 	int num_clips;
--	int ret;
-+	int ret = 0;
+diff --git a/drivers/spi/spi-ppc4xx.c b/drivers/spi/spi-ppc4xx.c
+index d65f047b6c82..1179a1115137 100644
+--- a/drivers/spi/spi-ppc4xx.c
++++ b/drivers/spi/spi-ppc4xx.c
+@@ -166,10 +166,8 @@ static int spi_ppc4xx_setupxfer(struct spi_device *spi, struct spi_transfer *t)
+ 	int scr;
+ 	u8 cdm = 0;
+ 	u32 speed;
+-	u8 bits_per_word;
  
- 	if (!drm_core_check_feature(dev, DRIVER_MODESET))
- 		return -EINVAL;
+ 	/* Start with the generic configuration for this device. */
+-	bits_per_word = spi->bits_per_word;
+ 	speed = spi->max_speed_hz;
+ 
+ 	/*
+@@ -177,9 +175,6 @@ static int spi_ppc4xx_setupxfer(struct spi_device *spi, struct spi_transfer *t)
+ 	 * the transfer to overwrite the generic configuration with zeros.
+ 	 */
+ 	if (t) {
+-		if (t->bits_per_word)
+-			bits_per_word = t->bits_per_word;
+-
+ 		if (t->speed_hz)
+ 			speed = min(t->speed_hz, spi->max_speed_hz);
+ 	}
 -- 
 2.43.0
 
