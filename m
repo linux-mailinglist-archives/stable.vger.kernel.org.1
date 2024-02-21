@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-22763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6531F85DDC3
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:11:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AF0585DE95
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:20:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 979941C22FAF
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:11:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF3411F24797
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:20:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DACE7E78A;
-	Wed, 21 Feb 2024 14:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E1E47E771;
+	Wed, 21 Feb 2024 14:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B61C/43A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JA/uGFjr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C96D7E0E8;
-	Wed, 21 Feb 2024 14:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F139969D38;
+	Wed, 21 Feb 2024 14:19:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524434; cv=none; b=uvILF6Hwsa0wZJS53TnGqhC4/GgXQ2OOjiiXWqksKGFGWXDDyEIAuPqRbHnN07URKuL79lMe0hV4MaMm4SB64koI3Um9W39U2WLg7zj+uz1+ioK3eITarTpEnoNj82T72NwjeMaukqUaMKXvJ/eNwqrs+96MuIR73pDosA7cur8=
+	t=1708525165; cv=none; b=FDQGcvRkvNWd/9yk+KlzPsnNG4By2x20ZbREWy6qGK2ZVMC4M/XsNMnZqaPdV34mSBUGe6pF6jY013voyw1Fhm3eAn1TloLA+Rtp6uKm/PHHmSzo7A1Kw44TfnxrM9F7ts/1Bp1rPlk8LH4i7z+PS8ddtmpB0J2UbRIKC1YAZXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524434; c=relaxed/simple;
-	bh=a658GTPPwGmuiWS4F3Q68j0VbqFvVunfRtQKftZhGTw=;
+	s=arc-20240116; t=1708525165; c=relaxed/simple;
+	bh=nK5aBoDjaRimcmPkFAFEl3Jm0sCzA7YOTMSEQEjU478=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lDMCVGoQT17DVBk3E9bqgNTUTvb6a+2tF2uDIaY+GcpxYh9V1how0fGyFjVn23aqxFy6AbI/gUZc9sMPIUQNC7WvKv+hfGl9+ChV0ZMCFj/gfo8eRAZQA4l9P+G8nt4MukqWbRErFoJz3WCNtX9ESJdhuUdnTDtjMqi7FJV17eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B61C/43A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D86FC433C7;
-	Wed, 21 Feb 2024 14:07:12 +0000 (UTC)
+	 MIME-Version; b=G+RPyCKhNL5vgf4NnN8423uTq6GB5VFXkhDASXAo4ZyEs+O/pDwngDOKMCBTVgk8F2vG+HAU4mRX/5isqfLnubuSEAdhN+hX1caxChjiT1az/PEd3wXUgXVX7MOKexUE5IXIB37YRiPim+tmfd41P+OMR2LDQqhjgKEqtm+Jdac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JA/uGFjr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60E05C433F1;
+	Wed, 21 Feb 2024 14:19:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524434;
-	bh=a658GTPPwGmuiWS4F3Q68j0VbqFvVunfRtQKftZhGTw=;
+	s=korg; t=1708525164;
+	bh=nK5aBoDjaRimcmPkFAFEl3Jm0sCzA7YOTMSEQEjU478=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B61C/43AL4LxtWNXzkdvInfZVbObZ/d2bN9MEaOasthKK4gUsypu8W/qnTtBJjtJ8
-	 M+hwVff99fKw4Y49xmWUpPS7glk0ii/P++eJpZXoKttaTEsCbU6nFyToioKejzqlqm
-	 1Tb9+6WxIE7KwAHB/g+r3jsnpVrrCe7zOEDDw7oY=
+	b=JA/uGFjrU1tAe8n4swSoaP2jDDLScjwh49/k2wm05wdoE71xYTcG3gkms/pNW1S66
+	 ofwPTNd0zURO0hGYneoSh7KflCj9tM/jQigDpDKmTN3CcIllXdVHti3tmvXzFGBt+x
+	 Wa5NXStkjh8ReDSg+OEWF/D1bXBWJknUCRs9p1Bw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <bberg@redhat.com>,
-	Jiri Kosina <jkosina@suse.cz>,
-	Aseda Aboagye <aaboagye@chromium.org>
-Subject: [PATCH 5.10 242/379] HID: apple: Add 2021 magic keyboard FN key mapping
+	Oleg Nesterov <oleg@redhat.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 080/267] afs: fix the usage of read_seqbegin_or_lock() in afs_find_server*()
 Date: Wed, 21 Feb 2024 14:07:01 +0100
-Message-ID: <20240221130002.071612684@linuxfoundation.org>
+Message-ID: <20240221125942.486259475@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +64,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <bberg@redhat.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-commit 531cb56972f2773c941499fcfb639cd5128dfb27 upstream.
+[ Upstream commit 1702e0654ca9a7bcd7c7619c8a5004db58945b71 ]
 
-The new 2021 apple models have a different FN key assignment. Add a new
-translation table and use that for the 2021 magic keyboard.
+David Howells says:
 
-Signed-off-by: Benjamin Berg <bberg@redhat.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
-Cc: Aseda Aboagye <aaboagye@chromium.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ (5) afs_find_server().
+
+     There could be a lot of servers in the list and each server can have
+     multiple addresses, so I think this would be better with an exclusive
+     second pass.
+
+     The server list isn't likely to change all that often, but when it does
+     change, there's a good chance several servers are going to be
+     added/removed one after the other.  Further, this is only going to be
+     used for incoming cache management/callback requests from the server,
+     which hopefully aren't going to happen too often - but it is remotely
+     drivable.
+
+ (6) afs_find_server_by_uuid().
+
+     Similarly to (5), there could be a lot of servers to search through, but
+     they are in a tree not a flat list, so it should be faster to process.
+     Again, it's not likely to change that often and, again, when it does
+     change it's likely to involve multiple changes.  This can be driven
+     remotely by an incoming cache management request but is mostly going to
+     be driven by setting up or reconfiguring a volume's server list -
+     something that also isn't likely to happen often.
+
+Make the "seq" counter odd on the 2nd pass, otherwise read_seqbegin_or_lock()
+never takes the lock.
+
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Link: https://lore.kernel.org/r/20231130115614.GA21581@redhat.com/
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-apple.c |   29 ++++++++++++++++++++++++++++-
- 1 file changed, 28 insertions(+), 1 deletion(-)
+ fs/afs/server.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/hid/hid-apple.c
-+++ b/drivers/hid/hid-apple.c
-@@ -70,6 +70,28 @@ struct apple_key_translation {
- 	u8 flags;
- };
+diff --git a/fs/afs/server.c b/fs/afs/server.c
+index d3a9288f7556..44985ca6602e 100644
+--- a/fs/afs/server.c
++++ b/fs/afs/server.c
+@@ -35,7 +35,7 @@ struct afs_server *afs_find_server(struct afs_net *net,
+ 	const struct afs_addr_list *alist;
+ 	struct afs_server *server = NULL;
+ 	unsigned int i;
+-	int seq = 0, diff;
++	int seq = 1, diff;
  
-+static const struct apple_key_translation apple2021_fn_keys[] = {
-+	{ KEY_BACKSPACE, KEY_DELETE },
-+	{ KEY_ENTER,	KEY_INSERT },
-+	{ KEY_F1,	KEY_BRIGHTNESSDOWN, APPLE_FLAG_FKEY },
-+	{ KEY_F2,	KEY_BRIGHTNESSUP,   APPLE_FLAG_FKEY },
-+	{ KEY_F3,	KEY_SCALE,          APPLE_FLAG_FKEY },
-+	{ KEY_F4,	KEY_SEARCH,         APPLE_FLAG_FKEY },
-+	{ KEY_F5,	KEY_MICMUTE,        APPLE_FLAG_FKEY },
-+	{ KEY_F6,	KEY_SLEEP,          APPLE_FLAG_FKEY },
-+	{ KEY_F7,	KEY_PREVIOUSSONG,   APPLE_FLAG_FKEY },
-+	{ KEY_F8,	KEY_PLAYPAUSE,      APPLE_FLAG_FKEY },
-+	{ KEY_F9,	KEY_NEXTSONG,       APPLE_FLAG_FKEY },
-+	{ KEY_F10,	KEY_MUTE,           APPLE_FLAG_FKEY },
-+	{ KEY_F11,	KEY_VOLUMEDOWN,     APPLE_FLAG_FKEY },
-+	{ KEY_F12,	KEY_VOLUMEUP,       APPLE_FLAG_FKEY },
-+	{ KEY_UP,	KEY_PAGEUP },
-+	{ KEY_DOWN,	KEY_PAGEDOWN },
-+	{ KEY_LEFT,	KEY_HOME },
-+	{ KEY_RIGHT,	KEY_END },
-+	{ }
-+};
-+
- static const struct apple_key_translation macbookair_fn_keys[] = {
- 	{ KEY_BACKSPACE, KEY_DELETE },
- 	{ KEY_ENTER,	KEY_INSERT },
-@@ -204,7 +226,9 @@ static int hidinput_apple_event(struct h
- 	}
+ 	rcu_read_lock();
  
- 	if (fnmode) {
--		if (hid->product >= USB_DEVICE_ID_APPLE_WELLSPRING4_ANSI &&
-+		if (hid->product == USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2021)
-+			table = apple2021_fn_keys;
-+		else if (hid->product >= USB_DEVICE_ID_APPLE_WELLSPRING4_ANSI &&
- 				hid->product <= USB_DEVICE_ID_APPLE_WELLSPRING4A_JIS)
- 			table = macbookair_fn_keys;
- 		else if (hid->product < 0x21d || hid->product >= 0x300)
-@@ -363,6 +387,9 @@ static void apple_setup_input(struct inp
- 	for (trans = apple_iso_keyboard; trans->from; trans++)
- 		set_bit(trans->to, input->keybit);
+@@ -43,6 +43,7 @@ struct afs_server *afs_find_server(struct afs_net *net,
+ 		if (server)
+ 			afs_put_server(net, server, afs_server_trace_put_find_rsq);
+ 		server = NULL;
++		seq++; /* 2 on the 1st/lockless path, otherwise odd */
+ 		read_seqbegin_or_lock(&net->fs_addr_lock, &seq);
  
-+	for (trans = apple2021_fn_keys; trans->from; trans++)
-+		set_bit(trans->to, input->keybit);
-+
- 	if (swap_fn_leftctrl) {
- 		for (trans = swapped_fn_leftctrl_keys; trans->from; trans++)
- 			set_bit(trans->to, input->keybit);
+ 		if (srx->transport.family == AF_INET6) {
+@@ -98,7 +99,7 @@ struct afs_server *afs_find_server_by_uuid(struct afs_net *net, const uuid_t *uu
+ {
+ 	struct afs_server *server = NULL;
+ 	struct rb_node *p;
+-	int diff, seq = 0;
++	int diff, seq = 1;
+ 
+ 	_enter("%pU", uuid);
+ 
+@@ -110,7 +111,7 @@ struct afs_server *afs_find_server_by_uuid(struct afs_net *net, const uuid_t *uu
+ 		if (server)
+ 			afs_put_server(net, server, afs_server_trace_put_uuid_rsq);
+ 		server = NULL;
+-
++		seq++; /* 2 on the 1st/lockless path, otherwise odd */
+ 		read_seqbegin_or_lock(&net->fs_lock, &seq);
+ 
+ 		p = net->fs_servers.rb_node;
+-- 
+2.43.0
+
 
 
 
