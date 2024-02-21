@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-22395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A634F85DBDA
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:46:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43F8E85DE74
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:18:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2FBC6B273DD
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:46:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 758291C23B1F
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:18:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E13E7C089;
-	Wed, 21 Feb 2024 13:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9540A76C99;
+	Wed, 21 Feb 2024 14:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zBgFz8na"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dkGrucWY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8B17BB1A;
-	Wed, 21 Feb 2024 13:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 550DB3D981;
+	Wed, 21 Feb 2024 14:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523144; cv=none; b=Zz2BEKTSgytYGuqNgtHAhToY1vmsLHCPQQmFWJXRR43SPAM+FkCUTaJcwF60setOaE0Qvjpj+r1H4rYEuODR8Qeaa0LYd0xUuV6j/7IpblxqYSm0U3iBjx1AjsknNCM+3uCUV/amOZnqG6JntSzd8WgZjzvcCABkPStc5dE7m28=
+	t=1708525108; cv=none; b=CYTdT34hPjv5pqRDOJ8a+DiuDjdTNgOme4F5UEkL6THuVDj2hX4zOdpNYKOYn2u3OiN2aqeSAMN5HUg9rp63HM61i9O7jVm9VU4Z39EDz5ObJnwODkyPuTki4BP9zPHf5PLTC4CmXgd+6IwnukdlUsUwLKFd2ykJTi2ZpZKy0aI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523144; c=relaxed/simple;
-	bh=xRLW/W3Lf9LWgBnMDsS45lB8hvcMKabXY86QpfiN678=;
+	s=arc-20240116; t=1708525108; c=relaxed/simple;
+	bh=i2SHeGy/GaXNob2ybWThg01T3FY25L+AaaxwXExA+eo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DJtypmlXXKcCp5iVLvPvlpjnQK/zlPP+49ocj9Rvwd2+lDM9vGYo5r7NlSeqoZu7x0okB9nl3MQjW2nryWdZICzJ+kqlZWsZXjN1I3+gDexw5Ad5nj4nIstaSM9x57w9bGgRzIeGh5QL7xxlj3j3Zt+pMZkHzigdyFw5foj9mYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zBgFz8na; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7028C43390;
-	Wed, 21 Feb 2024 13:45:43 +0000 (UTC)
+	 MIME-Version; b=ifdLlS9yjfLQkIDjepxf3jG3gNNMzn/8A0EzO/R8yZHt1tNnbAusNrKzMBjhoafOBSRchwfDWxjuo3jUQSfhMtugw3eEPq08mGyD/ch1AwF1eiz2rexZ1EiZF/hdSEPDnZEyr3uGwB21ImCcVVzdwUK+qATgRKu4SzQ1UpX0uUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dkGrucWY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB693C433C7;
+	Wed, 21 Feb 2024 14:18:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523144;
-	bh=xRLW/W3Lf9LWgBnMDsS45lB8hvcMKabXY86QpfiN678=;
+	s=korg; t=1708525108;
+	bh=i2SHeGy/GaXNob2ybWThg01T3FY25L+AaaxwXExA+eo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zBgFz8namZrhnreeVy2Zj15gMUjHS8S1TALWEfs712KtA+hfUEG6W8C84AvkRWZ1P
-	 KXJXc7CyQdy+bUVbrhkDXqnzsFWw9J7IDu11oT/gKfTFBgm5uCGPlg63KHK+ZANwxx
-	 egUaJvxSdLZMxrfnPZ2PxtFdiNKfQtqdpl78E3QU=
+	b=dkGrucWYIeA0zFXnrcjllG4+xfcvWSA+rq8nQQIm5Rwo1kvBipax4XFio9R+HJhs8
+	 y1O63VGXFN2a2+jmA/Jq0Z1vPMrq+8PsV651xUkHTeuSZj2+3ZrAdZG9iGR6/truIQ
+	 zZvauq1lT6/Kca6HkovEsM5Di+HfkscK9oq/6VxM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Mark Brown <broonie@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Kunwu Chan <chentao@kylinos.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 351/476] spi: ppc4xx: Drop write-only variable
+Subject: [PATCH 5.4 061/267] powerpc/mm: Fix null-pointer dereference in pgtable_cache_add
 Date: Wed, 21 Feb 2024 14:06:42 +0100
-Message-ID: <20240221130020.959154697@linuxfoundation.org>
+Message-ID: <20240221125941.916358989@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-[ Upstream commit b3aa619a8b4706f35cb62f780c14e68796b37f3f ]
+[ Upstream commit f46c8a75263f97bda13c739ba1c90aced0d3b071 ]
 
-Since commit 24778be20f87 ("spi: convert drivers to use
-bits_per_word_mask") the bits_per_word variable is only written to. The
-check that was there before isn't needed any more as the spi core
-ensures that only 8 bit transfers are used, so the variable can go away
-together with all assignments to it.
+kasprintf() returns a pointer to dynamically allocated memory
+which can be NULL upon failure. Ensure the allocation was successful
+by checking the pointer validity.
 
-Fixes: 24778be20f87 ("spi: convert drivers to use bits_per_word_mask")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/20240210164006.208149-8-u.kleine-koenig@pengutronix.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231204023223.2447523-1-chentao@kylinos.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-ppc4xx.c | 5 -----
- 1 file changed, 5 deletions(-)
+ arch/powerpc/mm/init-common.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-ppc4xx.c b/drivers/spi/spi-ppc4xx.c
-index d65f047b6c82..1179a1115137 100644
---- a/drivers/spi/spi-ppc4xx.c
-+++ b/drivers/spi/spi-ppc4xx.c
-@@ -166,10 +166,8 @@ static int spi_ppc4xx_setupxfer(struct spi_device *spi, struct spi_transfer *t)
- 	int scr;
- 	u8 cdm = 0;
- 	u32 speed;
--	u8 bits_per_word;
+diff --git a/arch/powerpc/mm/init-common.c b/arch/powerpc/mm/init-common.c
+index a84da92920f7..e7b9cc90fd9e 100644
+--- a/arch/powerpc/mm/init-common.c
++++ b/arch/powerpc/mm/init-common.c
+@@ -104,7 +104,7 @@ void pgtable_cache_add(unsigned int shift)
+ 	 * as to leave enough 0 bits in the address to contain it. */
+ 	unsigned long minalign = max(MAX_PGTABLE_INDEX_SIZE + 1,
+ 				     HUGEPD_SHIFT_MASK + 1);
+-	struct kmem_cache *new;
++	struct kmem_cache *new = NULL;
  
- 	/* Start with the generic configuration for this device. */
--	bits_per_word = spi->bits_per_word;
- 	speed = spi->max_speed_hz;
+ 	/* It would be nice if this was a BUILD_BUG_ON(), but at the
+ 	 * moment, gcc doesn't seem to recognize is_power_of_2 as a
+@@ -117,7 +117,8 @@ void pgtable_cache_add(unsigned int shift)
  
- 	/*
-@@ -177,9 +175,6 @@ static int spi_ppc4xx_setupxfer(struct spi_device *spi, struct spi_transfer *t)
- 	 * the transfer to overwrite the generic configuration with zeros.
- 	 */
- 	if (t) {
--		if (t->bits_per_word)
--			bits_per_word = t->bits_per_word;
--
- 		if (t->speed_hz)
- 			speed = min(t->speed_hz, spi->max_speed_hz);
- 	}
+ 	align = max_t(unsigned long, align, minalign);
+ 	name = kasprintf(GFP_KERNEL, "pgtable-2^%d", shift);
+-	new = kmem_cache_create(name, table_size, align, 0, ctor(shift));
++	if (name)
++		new = kmem_cache_create(name, table_size, align, 0, ctor(shift));
+ 	if (!new)
+ 		panic("Could not allocate pgtable cache for order %d", shift);
+ 
 -- 
 2.43.0
 
