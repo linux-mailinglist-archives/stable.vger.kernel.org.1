@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-22963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43F8E85DE74
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:18:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C647E85DDCB
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:12:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 758291C23B1F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:18:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 819F3282AB1
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:12:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9540A76C99;
-	Wed, 21 Feb 2024 14:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A91757F47D;
+	Wed, 21 Feb 2024 14:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dkGrucWY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ktxoQXhS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 550DB3D981;
-	Wed, 21 Feb 2024 14:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674F94C62;
+	Wed, 21 Feb 2024 14:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525108; cv=none; b=CYTdT34hPjv5pqRDOJ8a+DiuDjdTNgOme4F5UEkL6THuVDj2hX4zOdpNYKOYn2u3OiN2aqeSAMN5HUg9rp63HM61i9O7jVm9VU4Z39EDz5ObJnwODkyPuTki4BP9zPHf5PLTC4CmXgd+6IwnukdlUsUwLKFd2ykJTi2ZpZKy0aI=
+	t=1708524462; cv=none; b=N75sEyC1kwEA6WxhKVzW/uvPQ4JFOsZVs7IMdM+x0Kriw7j4e1wJU2FiU1NwjXM/QNl2RUfqfz6fReVSUh/SM79qHKmL/6mwbNPFXYpY4P/RftEhstKZaD+NUHjVQaRw8QFx5KXNi11JfQTY6UKemgkW4bA6gxSRGFEQkGphGF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525108; c=relaxed/simple;
-	bh=i2SHeGy/GaXNob2ybWThg01T3FY25L+AaaxwXExA+eo=;
+	s=arc-20240116; t=1708524462; c=relaxed/simple;
+	bh=j/8FlocKoQiVjsaFXrlN5kg0nlNdiZvLVEOP+YuYLXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ifdLlS9yjfLQkIDjepxf3jG3gNNMzn/8A0EzO/R8yZHt1tNnbAusNrKzMBjhoafOBSRchwfDWxjuo3jUQSfhMtugw3eEPq08mGyD/ch1AwF1eiz2rexZ1EiZF/hdSEPDnZEyr3uGwB21ImCcVVzdwUK+qATgRKu4SzQ1UpX0uUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dkGrucWY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB693C433C7;
-	Wed, 21 Feb 2024 14:18:27 +0000 (UTC)
+	 MIME-Version; b=gMByWIfpW0xkX0Z/hqSjfExs3+PsvBf4ah5uoDujPkEXn1FDpzV+YZh3PQPdK4Tis72g6ocpVr+LQLIQkkAex18K+oraY0wu3NmAJqwiXMlekpZ3/yonIFiQ9R+jvPEM4Z6eQo74KI4SqnQP7k4/QztUJEjQkrrvdg3rSzR7MCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ktxoQXhS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3A05C43394;
+	Wed, 21 Feb 2024 14:07:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525108;
-	bh=i2SHeGy/GaXNob2ybWThg01T3FY25L+AaaxwXExA+eo=;
+	s=korg; t=1708524462;
+	bh=j/8FlocKoQiVjsaFXrlN5kg0nlNdiZvLVEOP+YuYLXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dkGrucWYIeA0zFXnrcjllG4+xfcvWSA+rq8nQQIm5Rwo1kvBipax4XFio9R+HJhs8
-	 y1O63VGXFN2a2+jmA/Jq0Z1vPMrq+8PsV651xUkHTeuSZj2+3ZrAdZG9iGR6/truIQ
-	 zZvauq1lT6/Kca6HkovEsM5Di+HfkscK9oq/6VxM=
+	b=ktxoQXhSr9hDcy2k/8M64Jbd1ch09ypEmEbV9RAqy9kIbW/c9nULdtmkF5XCVHnWI
+	 +RV13scqtjgV69SrOq43vSdMXL3MAI1n0tCrV3I8c0GG93hvByJZRMA22ZVsqY5ht/
+	 lijAURHM++5QXI3r7H0qQ1jPZ3tzxSx0qDoQFmbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Kunwu Chan <chentao@kylinos.cn>,
+	Su Hui <suhui@nfschina.com>,
+	Artur Paszkiewicz <artur.paszkiewicz@intel.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 061/267] powerpc/mm: Fix null-pointer dereference in pgtable_cache_add
+Subject: [PATCH 5.10 223/379] scsi: isci: Fix an error code problem in isci_io_request_build()
 Date: Wed, 21 Feb 2024 14:06:42 +0100
-Message-ID: <20240221125941.916358989@linuxfoundation.org>
+Message-ID: <20240221130001.496718024@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit f46c8a75263f97bda13c739ba1c90aced0d3b071 ]
+[ Upstream commit 658365c6b0857e6a306436e315a8633937e3af42 ]
 
-kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure. Ensure the allocation was successful
-by checking the pointer validity.
+Clang static complains that Value stored to 'status' is never read. Return
+'status' rather than 'SCI_SUCCESS'.
 
-Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231204023223.2447523-1-chentao@kylinos.cn
+Fixes: f1f52e75939b ("isci: uplevel request infrastructure")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Link: https://lore.kernel.org/r/20240112041926.3924315-1-suhui@nfschina.com
+Reviewed-by: Artur Paszkiewicz <artur.paszkiewicz@intel.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/mm/init-common.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/scsi/isci/request.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/mm/init-common.c b/arch/powerpc/mm/init-common.c
-index a84da92920f7..e7b9cc90fd9e 100644
---- a/arch/powerpc/mm/init-common.c
-+++ b/arch/powerpc/mm/init-common.c
-@@ -104,7 +104,7 @@ void pgtable_cache_add(unsigned int shift)
- 	 * as to leave enough 0 bits in the address to contain it. */
- 	unsigned long minalign = max(MAX_PGTABLE_INDEX_SIZE + 1,
- 				     HUGEPD_SHIFT_MASK + 1);
--	struct kmem_cache *new;
-+	struct kmem_cache *new = NULL;
+diff --git a/drivers/scsi/isci/request.c b/drivers/scsi/isci/request.c
+index b6d68d871b6c..a4129e456efa 100644
+--- a/drivers/scsi/isci/request.c
++++ b/drivers/scsi/isci/request.c
+@@ -3398,7 +3398,7 @@ static enum sci_status isci_io_request_build(struct isci_host *ihost,
+ 		return SCI_FAILURE;
+ 	}
  
- 	/* It would be nice if this was a BUILD_BUG_ON(), but at the
- 	 * moment, gcc doesn't seem to recognize is_power_of_2 as a
-@@ -117,7 +117,8 @@ void pgtable_cache_add(unsigned int shift)
+-	return SCI_SUCCESS;
++	return status;
+ }
  
- 	align = max_t(unsigned long, align, minalign);
- 	name = kasprintf(GFP_KERNEL, "pgtable-2^%d", shift);
--	new = kmem_cache_create(name, table_size, align, 0, ctor(shift));
-+	if (name)
-+		new = kmem_cache_create(name, table_size, align, 0, ctor(shift));
- 	if (!new)
- 		panic("Could not allocate pgtable cache for order %d", shift);
- 
+ static struct isci_request *isci_request_from_tag(struct isci_host *ihost, u16 tag)
 -- 
 2.43.0
 
