@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-21924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5B1585D932
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:16:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2141385DD82
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:06:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E92D282A87
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:15:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6FF21F222F4
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:06:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE95769D36;
-	Wed, 21 Feb 2024 13:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 303E57CF03;
+	Wed, 21 Feb 2024 14:05:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uCIf3vv+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N610o7Hl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DB5269972;
-	Wed, 21 Feb 2024 13:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26687A715;
+	Wed, 21 Feb 2024 14:05:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521333; cv=none; b=fgDd2/Gez5dGOfFJvBObclH73/63FLBVbAmnELONu/832ZIwR966zlfQYXyLOkW8yWgL/hSRPn0aVeQZMhjriMcxTrLdKcT+jO9XlDMzfhy4rHxEC2F0lOYv28LIUrbjyFOqxY7jWBoilTlM2Cb2sgXLWjNdQ0LWLdNKaw2tHj4=
+	t=1708524318; cv=none; b=gPbHOllrEeOC4mrnvyaV4CpGtTW9bGCd3ORNkm9JnqOKRop42fQYQ8KCQe+5cJQbtXMur5U+5yanKRhXr2RQHdtxDdOyceZWXxgEhAqH0JJZUSgrpgJcG4CC9grXVpnCNr4yVI44XGkRxxPfeuus9UEA+Ad/+xcnFXmcMA6gomE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521333; c=relaxed/simple;
-	bh=uE9Kz441loUgf7OGMfPeYqRLNVYuwH/ygdhQYeDjG+I=;
+	s=arc-20240116; t=1708524318; c=relaxed/simple;
+	bh=6xXLiHkpRAbawh91smz1xcjCRvhC3jUBCh7TeQeCDlk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XXx25VgENNxcje4If+7MeDkS9yMSsCgyQIoTLhXJoNHZbIwGvPVl+L8iXPHkKU/5aU8d2WT7GCQrkmF2gCNTqksZwVD31souWt+h/zxUyqVJpq/dXpFjDsiBJXnvOf1fJESqP23LAQtUcURVXce26MP/dqKY+usPl6/ZqR+ev8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uCIf3vv+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D802C43390;
-	Wed, 21 Feb 2024 13:15:32 +0000 (UTC)
+	 MIME-Version; b=j+Ow+G2j+HYfirSAG/cmAlJKg2fqAwD3MBpkHdUaMknVz3VQ6LkSKOE6ESYemTemMEybR1XMHinej1nAU9GcgnVBBPMRBKdaDvEvBxh0ZPt0DScyK/EBi9GX7Owt2hlpbDukapm/678EeLOL4wNQvfAWFYrsnf+oMHR3O8iadyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N610o7Hl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52531C433C7;
+	Wed, 21 Feb 2024 14:05:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521333;
-	bh=uE9Kz441loUgf7OGMfPeYqRLNVYuwH/ygdhQYeDjG+I=;
+	s=korg; t=1708524317;
+	bh=6xXLiHkpRAbawh91smz1xcjCRvhC3jUBCh7TeQeCDlk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uCIf3vv+jFECF+xbiuoK6z8/wKeCSOLPw5c5lVpdqseezAIypysnfO7FEN7giEMM7
-	 2SDj04omusZa8sEv2FjOdDM7SQI91q5p7dHMXxu1INiqIoRjWNRXq3qhktdJkOzgxF
-	 zvL7dwAMrnWJmQEDNK/vvKgQqvZZt8uhttRtVudE=
+	b=N610o7HlnjKqzACjOOqaYgFlRTEUliOUYil1YKC801BQtzdDLhgCct6qTLNFtNDZW
+	 AgrRVqu9BCZYB0IE+DyLBe6Rq51YlianJwXTk56yWyeWRpDYn9hzCvynq78OMmzmKV
+	 OsJwh8v+IzHit3YfhT9LdPCEbpv9WbXhqoNl5qIQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Daniel Stodden <dns@arista.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Dmitry Safonov <dima@arista.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 086/202] ARM: dts: imx: Use flash@0,0 pattern
+Subject: [PATCH 5.10 208/379] PCI: switchtec: Fix stdev_release() crash after surprise hot remove
 Date: Wed, 21 Feb 2024 14:06:27 +0100
-Message-ID: <20240221125934.577952377@linuxfoundation.org>
+Message-ID: <20240221130001.055108481@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +64,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Daniel Stodden <dns@arista.com>
 
-[ Upstream commit 1e1d7cc478fb16816de09740e3c323c0c188d58f ]
+[ Upstream commit df25461119d987b8c81d232cfe4411e91dcabe66 ]
 
-Per mtd-physmap.yaml, 'nor@0,0' is not a valid node pattern.
+A PCI device hot removal may occur while stdev->cdev is held open. The call
+to stdev_release() then happens during close or exit, at a point way past
+switchtec_pci_remove(). Otherwise the last ref would vanish with the
+trailing put_device(), just before return.
 
-Change it to 'flash@0,0' to fix the following dt-schema warning:
+At that later point in time, the devm cleanup has already removed the
+stdev->mmio_mrpc mapping. Also, the stdev->pdev reference was not a counted
+one. Therefore, in DMA mode, the iowrite32() in stdev_release() will cause
+a fatal page fault, and the subsequent dma_free_coherent(), if reached,
+would pass a stale &stdev->pdev->dev pointer.
 
-imx1-ads.dtb: nor@0,0: $nodename:0: 'nor@0,0' does not match '^(flash|.*sram|nand)(@.*)?$'
-	from schema $id: http://devicetree.org/schemas/mtd/mtd-physmap.yaml#
+Fix by moving MRPC DMA shutdown into switchtec_pci_remove(), after
+stdev_kill(). Counting the stdev->pdev ref is now optional, but may prevent
+future accidents.
 
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Reproducible via the script at
+https://lore.kernel.org/r/20231113212150.96410-1-dns@arista.com
+
+Link: https://lore.kernel.org/r/20231122042316.91208-2-dns@arista.com
+Signed-off-by: Daniel Stodden <dns@arista.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
+Reviewed-by: Dmitry Safonov <dima@arista.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/imx1-ads.dts                  | 2 +-
- arch/arm/boot/dts/imx1-apf9328.dts              | 2 +-
- arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi    | 2 +-
- arch/arm/boot/dts/imx27-phytec-phycore-som.dtsi | 2 +-
- 4 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/pci/switch/switchtec.c | 25 +++++++++++++++++--------
+ 1 file changed, 17 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm/boot/dts/imx1-ads.dts b/arch/arm/boot/dts/imx1-ads.dts
-index 119b19ba53b6..26af4e05abec 100644
---- a/arch/arm/boot/dts/imx1-ads.dts
-+++ b/arch/arm/boot/dts/imx1-ads.dts
-@@ -71,7 +71,7 @@
- 	pinctrl-0 = <&pinctrl_weim>;
- 	status = "okay";
+diff --git a/drivers/pci/switch/switchtec.c b/drivers/pci/switch/switchtec.c
+index ba52459928f7..5cea3ad290c5 100644
+--- a/drivers/pci/switch/switchtec.c
++++ b/drivers/pci/switch/switchtec.c
+@@ -1251,13 +1251,6 @@ static void stdev_release(struct device *dev)
+ {
+ 	struct switchtec_dev *stdev = to_stdev(dev);
  
--	nor: nor@0,0 {
-+	nor: flash@0,0 {
- 		compatible = "cfi-flash";
- 		reg = <0 0x00000000 0x02000000>;
- 		bank-width = <4>;
-diff --git a/arch/arm/boot/dts/imx1-apf9328.dts b/arch/arm/boot/dts/imx1-apf9328.dts
-index ee4b1b106b1a..f5015f5e808a 100644
---- a/arch/arm/boot/dts/imx1-apf9328.dts
-+++ b/arch/arm/boot/dts/imx1-apf9328.dts
-@@ -51,7 +51,7 @@
- 	pinctrl-0 = <&pinctrl_weim>;
- 	status = "okay";
+-	if (stdev->dma_mrpc) {
+-		iowrite32(0, &stdev->mmio_mrpc->dma_en);
+-		flush_wc_buf(stdev);
+-		writeq(0, &stdev->mmio_mrpc->dma_addr);
+-		dma_free_coherent(&stdev->pdev->dev, sizeof(*stdev->dma_mrpc),
+-				stdev->dma_mrpc, stdev->dma_mrpc_dma_addr);
+-	}
+ 	kfree(stdev);
+ }
  
--	nor: nor@0,0 {
-+	nor: flash@0,0 {
- 		compatible = "cfi-flash";
- 		reg = <0 0x00000000 0x02000000>;
- 		bank-width = <2>;
-diff --git a/arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi b/arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi
-index 56c790705155..bb1d0576732d 100644
---- a/arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi
-+++ b/arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi
-@@ -96,7 +96,7 @@
- &weim {
- 	status = "okay";
+@@ -1301,7 +1294,7 @@ static struct switchtec_dev *stdev_create(struct pci_dev *pdev)
+ 		return ERR_PTR(-ENOMEM);
  
--	nor: nor@0,0 {
-+	nor: flash@0,0 {
- 		#address-cells = <1>;
- 		#size-cells = <1>;
- 		compatible = "cfi-flash";
-diff --git a/arch/arm/boot/dts/imx27-phytec-phycore-som.dtsi b/arch/arm/boot/dts/imx27-phytec-phycore-som.dtsi
-index 0935e1400e5d..e4ed62397d62 100644
---- a/arch/arm/boot/dts/imx27-phytec-phycore-som.dtsi
-+++ b/arch/arm/boot/dts/imx27-phytec-phycore-som.dtsi
-@@ -328,7 +328,7 @@
- &weim {
- 	status = "okay";
+ 	stdev->alive = true;
+-	stdev->pdev = pdev;
++	stdev->pdev = pci_dev_get(pdev);
+ 	INIT_LIST_HEAD(&stdev->mrpc_queue);
+ 	mutex_init(&stdev->mrpc_mutex);
+ 	stdev->mrpc_busy = 0;
+@@ -1335,6 +1328,7 @@ static struct switchtec_dev *stdev_create(struct pci_dev *pdev)
+ 	return stdev;
  
--	nor: nor@0,0 {
-+	nor: flash@0,0 {
- 		compatible = "cfi-flash";
- 		reg = <0 0x00000000 0x02000000>;
- 		bank-width = <2>;
+ err_put:
++	pci_dev_put(stdev->pdev);
+ 	put_device(&stdev->dev);
+ 	return ERR_PTR(rc);
+ }
+@@ -1587,6 +1581,18 @@ static int switchtec_init_pci(struct switchtec_dev *stdev,
+ 	return 0;
+ }
+ 
++static void switchtec_exit_pci(struct switchtec_dev *stdev)
++{
++	if (stdev->dma_mrpc) {
++		iowrite32(0, &stdev->mmio_mrpc->dma_en);
++		flush_wc_buf(stdev);
++		writeq(0, &stdev->mmio_mrpc->dma_addr);
++		dma_free_coherent(&stdev->pdev->dev, sizeof(*stdev->dma_mrpc),
++				  stdev->dma_mrpc, stdev->dma_mrpc_dma_addr);
++		stdev->dma_mrpc = NULL;
++	}
++}
++
+ static int switchtec_pci_probe(struct pci_dev *pdev,
+ 			       const struct pci_device_id *id)
+ {
+@@ -1646,6 +1652,9 @@ static void switchtec_pci_remove(struct pci_dev *pdev)
+ 	ida_simple_remove(&switchtec_minor_ida, MINOR(stdev->dev.devt));
+ 	dev_info(&stdev->dev, "unregistered.\n");
+ 	stdev_kill(stdev);
++	switchtec_exit_pci(stdev);
++	pci_dev_put(stdev->pdev);
++	stdev->pdev = NULL;
+ 	put_device(&stdev->dev);
+ }
+ 
 -- 
 2.43.0
 
