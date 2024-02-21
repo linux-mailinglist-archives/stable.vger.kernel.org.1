@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-22744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 740CE85DD9A
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:07:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A7AA85DBA3
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:43:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E2272855BC
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:07:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BB541F24734
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:43:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05BBA7F7C6;
-	Wed, 21 Feb 2024 14:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 092A379DBC;
+	Wed, 21 Feb 2024 13:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hvBkON1u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eQ/p85pP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA0917E105;
-	Wed, 21 Feb 2024 14:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B79E877A03;
+	Wed, 21 Feb 2024 13:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524370; cv=none; b=e8eNIMEIRrSNKYHiXs0WZDojWzf7/61TabFLWYGYyi9y4ugBwPRVZA1/0gVkRYePH82u94hiozr6d5arhsJR74q09Gv3MExL20UMwTmm0tf42w/wrsHUG0YwfvFVR6ENdJYqg8L1wK09r+Jn489kmC6RaFrhl9gGMXtyEcpgxkw=
+	t=1708523005; cv=none; b=KiBc48P/C9RM3ZmpYZeBlkAJnlNBzVjDPcNNLdWfeZzgv7VEQvL5LQ2caJbsNz0HDrzKpAKjQF/bgdepZOO0Ei0Po7CsVID05X8o8mkuf1HvZKt0f20Ux3Ow/uqd+36Kvv0SJ3YM86593H6DZgoNyXTnbPO14SuR7ZJ+3SG9oF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524370; c=relaxed/simple;
-	bh=DZ6cWtXE96n4irvy7U0atArlhRFP7RTVcGAyhk1urS0=;
+	s=arc-20240116; t=1708523005; c=relaxed/simple;
+	bh=uP/Ea56hthg40vZx1OB5rsYksI5y9kJrZSiuhjyvWtY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LwdGN0mkMLS0kOfZdiXRcK6d1AotkWPzO/6/YrclgRJKDeA9fJHYwcypGaUDT4IAAwb1ECUYy4zR/jKoT8Oiw4Hk2t2VUzeN4bti6GlXdrf2+SaUMaEp7kufptjTRll2tv0kz1OuImJB7kl1BRMRhMjZ0RjRMVTNijX/qrRKDRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hvBkON1u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40BD7C433A6;
-	Wed, 21 Feb 2024 14:06:10 +0000 (UTC)
+	 MIME-Version; b=pNtkhy0GtQUqpVDPof5yCvAvXCSxtb6/0fFLBM/B1rxIXfAnMxpZId18vNTzaxNTq7XZs2OuCC+UotK1uT2Yor9duwxf1ErHIUA1IU/t1aqu0TfghZi5o9PcC7FDpWchU93h7kv67uT5ooqgiviGpT50QWLL2k/NlcDBdDE3Y+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eQ/p85pP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08484C433C7;
+	Wed, 21 Feb 2024 13:43:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524370;
-	bh=DZ6cWtXE96n4irvy7U0atArlhRFP7RTVcGAyhk1urS0=;
+	s=korg; t=1708523005;
+	bh=uP/Ea56hthg40vZx1OB5rsYksI5y9kJrZSiuhjyvWtY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hvBkON1uZtnDObdeeOsMNsLKTRKrgNSt+a1MCOviZqdVkgQG/9a0RuTZUIk5eN+lH
-	 eyqQBjkyU3LK2XPioAEqt4aDGRHQgi7oPmvK0kDbkrYURjsp7oKg2+WR9Th8pTdGwJ
-	 i9MCdorZUNHhO1VPRFPFuG71QD1VscRE05XFdQjo=
+	b=eQ/p85pPv1QWbjgcQFa3iUmNecA1lY8djq/jyVld8oyBhrG1zpFnWxsDhz6+0aNSE
+	 zyhNuO3r0vR0cMpf5yA2/KIrMeFTve/NP4R+8TifUVFuJugmp9gl48IzNU+8HQGnRr
+	 kS4y1O6Lu82DZSJqJoG/xLeXrnynt+AYcTZ5kfDs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phillip Potter <phil@philpotter.co.uk>,
-	Ghanshyam Agrawal <ghanshyam1898@gmail.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-afs@lists.infradead.org,
+	netdev@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 185/379] media: stk1160: Fixed high volume of stk1160_dbg messages
-Date: Wed, 21 Feb 2024 14:06:04 +0100
-Message-ID: <20240221130000.379509278@linuxfoundation.org>
+Subject: [PATCH 5.15 314/476] rxrpc: Fix response to PING RESPONSE ACKs to a dead call
+Date: Wed, 21 Feb 2024 14:06:05 +0100
+Message-ID: <20240221130019.636627513@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +68,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit b3695e86d25aafbe175dd51f6aaf6f68d341d590 ]
+[ Upstream commit 6f769f22822aa4124b556339781b04d810f0e038 ]
 
-The function stk1160_dbg gets called too many times, which causes
-the output to get flooded with messages. Since stk1160_dbg uses
-printk, it is now replaced with printk_ratelimited.
+Stop rxrpc from sending a DUP ACK in response to a PING RESPONSE ACK on a
+dead call.  We may have initiated the ping but the call may have beaten the
+response to completion.
 
-Suggested-by: Phillip Potter <phil@philpotter.co.uk>
-Signed-off-by: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 18bfeba50dfd ("rxrpc: Perform terminal call ACK/ABORT retransmission from conn processor")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: "David S. Miller" <davem@davemloft.net>
+cc: Eric Dumazet <edumazet@google.com>
+cc: Jakub Kicinski <kuba@kernel.org>
+cc: Paolo Abeni <pabeni@redhat.com>
+cc: linux-afs@lists.infradead.org
+cc: netdev@vger.kernel.org
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/stk1160/stk1160-video.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ net/rxrpc/conn_event.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/media/usb/stk1160/stk1160-video.c b/drivers/media/usb/stk1160/stk1160-video.c
-index 202b084f65a2..4cf540d1b250 100644
---- a/drivers/media/usb/stk1160/stk1160-video.c
-+++ b/drivers/media/usb/stk1160/stk1160-video.c
-@@ -107,8 +107,7 @@ void stk1160_copy_video(struct stk1160 *dev, u8 *src, int len)
+diff --git a/net/rxrpc/conn_event.c b/net/rxrpc/conn_event.c
+index aab069701398..5d91ef562ff7 100644
+--- a/net/rxrpc/conn_event.c
++++ b/net/rxrpc/conn_event.c
+@@ -41,6 +41,14 @@ static void rxrpc_conn_retransmit_call(struct rxrpc_connection *conn,
  
- 	/*
- 	 * TODO: These stk1160_dbg are very spammy!
--	 * We should 1) check why we are getting them
--	 * and 2) add ratelimit.
-+	 * We should check why we are getting them.
- 	 *
- 	 * UPDATE: One of the reasons (the only one?) for getting these
- 	 * is incorrect standard (mismatch between expected and configured).
-@@ -151,7 +150,7 @@ void stk1160_copy_video(struct stk1160 *dev, u8 *src, int len)
+ 	_enter("%d", conn->debug_id);
  
- 	/* Let the bug hunt begin! sanity checks! */
- 	if (lencopy < 0) {
--		stk1160_dbg("copy skipped: negative lencopy\n");
-+		printk_ratelimited(KERN_DEBUG "copy skipped: negative lencopy\n");
- 		return;
- 	}
++	if (sp && sp->hdr.type == RXRPC_PACKET_TYPE_ACK) {
++		if (skb_copy_bits(skb, sizeof(struct rxrpc_wire_header),
++				  &pkt.ack, sizeof(pkt.ack)) < 0)
++			return;
++		if (pkt.ack.reason == RXRPC_ACK_PING_RESPONSE)
++			return;
++	}
++
+ 	chan = &conn->channels[channel];
  
+ 	/* If the last call got moved on whilst we were waiting to run, just
 -- 
 2.43.0
 
