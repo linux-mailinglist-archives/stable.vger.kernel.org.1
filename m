@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-23058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E85285DF05
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:23:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F8A185DE1C
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:15:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08F0D1F23D44
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:23:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B15DC1C23873
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:15:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91ED878B7C;
-	Wed, 21 Feb 2024 14:23:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80C9A1E4B2;
+	Wed, 21 Feb 2024 14:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EO7CxTf+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qyMHkQIb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5163469E00;
-	Wed, 21 Feb 2024 14:23:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 364D97C08C;
+	Wed, 21 Feb 2024 14:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525437; cv=none; b=EMya8fT3yPFlPe1Ytazq74PoJS1YJ8qeQM1vXVANUOiLAokSIa5Qg1ev0j02Bd0ZwGh/Qj0fKyli5+dmVpkPB2LGdJia9CS/o3yc/upPhbzu/bVsLBHylAnyHIgVjwTOfVe2KqVkmUZoIQlJWWSFAydt13/9hExNMjnAzjV2KWk=
+	t=1708524782; cv=none; b=WUFuYcN0hLKVrPCuEstKHoPvPhNzSc5RdQaTaj2NZDzGTK8/eBP5ohL1avri6cBPfomgdhzb/VxXsNsYcvqanuFze2fFPLHP33QkS/E+3Qf2/z6c3L2J9oNILT0KpS+gXS6TBhN+mZUc/GUu7vQpO1ZVsT1LHCxSkQW6bgqHrbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525437; c=relaxed/simple;
-	bh=gELpO2MbBXKae89WYyHu29Xv0k+9vROipg2a9i41GZI=;
+	s=arc-20240116; t=1708524782; c=relaxed/simple;
+	bh=c4yYcwfjZOHEJKCLLVSzABm4kWmEzuJL2U5xcyNrXU0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VoZfJBnflIQF93klrzZbmKPDZA0QGeOVMoEGT+uA5oK4MnLdLYKg3YLWFmliwFOR3Nnw13xv6pmfdk4fYYf2QiI3kCBu3d+bULJKN1xo9mOsYFia5O814OPDA8p+3Srry+GJgSsWmHBMq74c4QN+FDrWrCJEiVXjCJmxNdAsfMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EO7CxTf+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7554BC433C7;
-	Wed, 21 Feb 2024 14:23:56 +0000 (UTC)
+	 MIME-Version; b=F3wN2vZojuqKz5DrH9Cr2zbckwdmd1yifP4+X76IKypodtqH6aEPgwlCbqzj1GZyljWRqOvpxwA7TFg1i0G8wh9FAizc/cjYgzHXaUpVYPCaWTNbX71m43E7SzdY67eCMgrme52SzN2W5YXrDPIZl2qd0b7F1pts4WtJVpkvR+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qyMHkQIb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 968AFC433C7;
+	Wed, 21 Feb 2024 14:13:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525436;
-	bh=gELpO2MbBXKae89WYyHu29Xv0k+9vROipg2a9i41GZI=;
+	s=korg; t=1708524782;
+	bh=c4yYcwfjZOHEJKCLLVSzABm4kWmEzuJL2U5xcyNrXU0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EO7CxTf+OQJpnm7tdmiqVQXz0V5Q2AREIwPqoUrFzHItEEJ2W/op+lhpksTcU1YtH
-	 KeLcWeYIdHt9n6YQrenfglqD/zliTz3HxpdpwsV+AZ1img0a2PFjtAogasrspEwXkb
-	 Ayo04/PELKwaIGxQtwJXEoldlM7onfAP8WOAz39k=
+	b=qyMHkQIb7rs2mIyWnWfIm9fQ/veNTaX4D0l/btJDtaDUdOlB1kVXySxGHbQbzYfj0
+	 CpLrge0MDAB2KmXLIqb3B5w9w8JVSvfLqN5s/R/JGlyTme08K6EY7PykBzYOau91K6
+	 G3Dfwv1YVMHtsv1llrafLE+g3g53RFTgqDXOt98M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Xiubo Li <xiubli@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 155/267] ceph: fix deadlock or deadcode of misusing dget()
-Date: Wed, 21 Feb 2024 14:08:16 +0100
-Message-ID: <20240221125944.937499828@linuxfoundation.org>
+	Edson Juliano Drosdeck <edson.drosdeck@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 318/379] ALSA: hda/realtek: Enable headset mic on Vaio VJFE-ADL
+Date: Wed, 21 Feb 2024 14:08:17 +0100
+Message-ID: <20240221130004.347775756@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiubo Li <xiubli@redhat.com>
+From: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
 
-[ Upstream commit b493ad718b1f0357394d2cdecbf00a44a36fa085 ]
+commit c7de2d9bb68a5fc71c25ff96705a80a76c8436eb upstream.
 
-The lock order is incorrect between denty and its parent, we should
-always make sure that the parent get the lock first.
+Vaio VJFE-ADL is equipped with ALC269VC, and it needs
+ALC298_FIXUP_SPK_VOLUME quirk to make its headset mic work.
 
-But since this deadcode is never used and the parent dir will always
-be set from the callers, let's just remove it.
-
-Link: https://lore.kernel.org/r/20231116081919.GZ1957730@ZenIV
-Reported-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Xiubo Li <xiubli@redhat.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240201122114.30080-1-edson.drosdeck@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ceph/caps.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/ceph/caps.c b/fs/ceph/caps.c
-index 4e88cb990723..45b8f6741f8d 100644
---- a/fs/ceph/caps.c
-+++ b/fs/ceph/caps.c
-@@ -4304,12 +4304,14 @@ int ceph_encode_dentry_release(void **p, struct dentry *dentry,
- 			       struct inode *dir,
- 			       int mds, int drop, int unless)
- {
--	struct dentry *parent = NULL;
- 	struct ceph_mds_request_release *rel = *p;
- 	struct ceph_dentry_info *di = ceph_dentry(dentry);
- 	int force = 0;
- 	int ret;
- 
-+	/* This shouldn't happen */
-+	BUG_ON(!dir);
-+
- 	/*
- 	 * force an record for the directory caps if we have a dentry lease.
- 	 * this is racy (can't take i_ceph_lock and d_lock together), but it
-@@ -4319,14 +4321,9 @@ int ceph_encode_dentry_release(void **p, struct dentry *dentry,
- 	spin_lock(&dentry->d_lock);
- 	if (di->lease_session && di->lease_session->s_mds == mds)
- 		force = 1;
--	if (!dir) {
--		parent = dget(dentry->d_parent);
--		dir = d_inode(parent);
--	}
- 	spin_unlock(&dentry->d_lock);
- 
- 	ret = ceph_encode_inode_release(p, dir, mds, drop, unless, force);
--	dput(parent);
- 
- 	spin_lock(&dentry->d_lock);
- 	if (ret && di->lease_session && di->lease_session->s_mds == mds) {
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9333,6 +9333,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1d72, 0x1945, "Redmi G", ALC256_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d72, 0x1947, "RedmiBook Air", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
++	SND_PCI_QUIRK(0x2782, 0x1707, "Vaio VJFE-ADL", ALC298_FIXUP_SPK_VOLUME),
+ 	SND_PCI_QUIRK(0x8086, 0x2074, "Intel NUC 8", ALC233_FIXUP_INTEL_NUC8_DMIC),
+ 	SND_PCI_QUIRK(0x8086, 0x2080, "Intel NUC 8 Rugged", ALC256_FIXUP_INTEL_NUC8_RUGGED),
+ 	SND_PCI_QUIRK(0x8086, 0x2081, "Intel NUC 10", ALC256_FIXUP_INTEL_NUC10),
 
 
 
