@@ -1,184 +1,178 @@
-Return-Path: <stable+bounces-23247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33D1785EB75
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 22:58:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44B2B85EB51
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 22:50:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56AB51C21993
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 21:58:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BDBB11F21AB4
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 21:50:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B09981272CB;
-	Wed, 21 Feb 2024 21:58:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E340D1272A1;
+	Wed, 21 Feb 2024 21:50:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=valentinobst.de header.i=kernel@valentinobst.de header.b="RvBAoFPk"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="gq1KhCTY";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="R+Os6ZOI";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="0INANFlK";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="4jTNePOA"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A63EEB3;
-	Wed, 21 Feb 2024 21:58:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F2F10953;
+	Wed, 21 Feb 2024 21:50:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708552690; cv=none; b=B+0ibRukL//XMpPZuZa8mha4DrJ+fUjzGGmINW+3/s4emqIpGFAW08hAQusFqLzZNa8RNWvtOVhzdO3FkfubioX5yvP9cfDl1fHXPJv2lR8RSAR4izKukYKS+FA/fowjdoKa8K8l0A/h2uYL5VqJfWCo4UYsPzyeRONeshrX8mo=
+	t=1708552231; cv=none; b=auRZ18B1OVNU2VVomz4v/wvW6uzjalV5L+40Lr0k0Gx9n9EF1QOQKvnMFSPqXopn1Q/QPGy2s4NO2cz3F/1Z85qxuLwlN9br6yqqVizttFC5SyS1lBOPeHUqUSEED5sEOknl6A7NpLOBLak6z9IdyFYqoIdJGaf6QfjeNdFje9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708552690; c=relaxed/simple;
-	bh=dF9IwFLl0Po1lq5MLlVQLSbQsLpawdVgsA5ipOvGk4w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qsbKpO1tQZ4QuMyYtcop5ocM5EcsxGDBuY3nbLXdPeBy/0Rtwemb6YUX6jmrsM7Jq7Nz5XPBvCIl7iqKq2LX0oggtDOT2SRiEdT1i0JAAeUgZ5lYKzskDcGp1gzqxEWC//E+kr/uHEAseNOUVjiZ5GyS4pq+RPWgWAsaBU8r3b4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de; spf=pass smtp.mailfrom=valentinobst.de; dkim=pass (2048-bit key) header.d=valentinobst.de header.i=kernel@valentinobst.de header.b=RvBAoFPk; arc=none smtp.client-ip=212.227.126.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valentinobst.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=valentinobst.de;
-	s=s1-ionos; t=1708552677; x=1709157477; i=kernel@valentinobst.de;
-	bh=dF9IwFLl0Po1lq5MLlVQLSbQsLpawdVgsA5ipOvGk4w=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:
-	 References;
-	b=RvBAoFPkDZs3ltUxVkZMu5Vo0E+IkHtH4imzi9XFQY6rL3XzqN/UTtCAztj36ViR
-	 nSuNQ15iabcrPNMNSv2gjThTnG84DjXv7+A+wwqvpzVeFvkqGjTdLgeq1SGzxCCxH
-	 d/J5th/78wf+yDoRAJEtXQP0mz/LVkSUCLczBtKGid7y0Lrbv1IH9U5UbcNfHGk34
-	 lSsmbonQfwnnXyz4O/x0UtVEBK83UUTkXvJ/uMqx0yA1FWTBzBzaFtabGCYKgJfWl
-	 lvcN7GSAgq3fcN01sD7SGi3pHKyiBNG6K3I3ExmFI0r92xa/UwiAawj+9G8Aq1XhU
-	 xLplmZ7BdEdOm26y7g==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from archbook.fritz.box ([217.249.70.154]) by
- mrelayeu.kundenserver.de (mreue012 [213.165.67.97]) with ESMTPSA (Nemesis) id
- 1MavF5-1r5ms727pb-00cMdL; Wed, 21 Feb 2024 22:51:36 +0100
-From: Valentin Obst <kernel@valentinobst.de>
-To: miguel.ojeda.sandonis@gmail.com
-Cc: a.hindborg@samsung.com,
-	david@readahead.eu,
-	gregkh@linuxfoundation.org,
-	hpa@zytor.com,
-	john.m.baublitz@gmail.com,
-	kernel@valentinobst.de,
-	linux-kernel@vger.kernel.org,
-	mhiramat@kernel.org,
-	mingo@kernel.org,
-	mingo@redhat.com,
-	ojeda@kernel.org,
-	peterz@infradead.org,
-	sergio.collado@gmail.com,
-	stable@vger.kernel.org,
-	tglx@linutronix.de,
-	x86@kernel.org
-Subject: Re: [PATCH] x86/tools: fix line number reported for malformed lines
-Date: Wed, 21 Feb 2024 22:49:32 +0100
-Message-ID: <20240221214939.4715-1-kernel@valentinobst.de>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <CANiq72=gYWZ24EEqRL71Vh+YjjK9Bu0QfxGEBzee16QAf4Q6XA@mail.gmail.com>
-References: <CANiq72=gYWZ24EEqRL71Vh+YjjK9Bu0QfxGEBzee16QAf4Q6XA@mail.gmail.com>
+	s=arc-20240116; t=1708552231; c=relaxed/simple;
+	bh=t9a+ea5soUDDDazhsg0btXEzeif/iF2NqR4czvKE9KI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NHyVWkU2lRPSDm3jPZWQX576lmHyYtwNISVbIKs0peCv6afhclHj6VnSD5zrsE6D3kQa450pTpWaqmH6foWKKvCJYsFqeWGvmou3czMd6Efu4087Vp5ph7C1a14tZGrcriBomqqR9tW2lbEyQvgB8KiwGzDZrU2EYogBodVWL0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=gq1KhCTY; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=R+Os6ZOI; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=0INANFlK; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=4jTNePOA; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:98])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id E2DCF22102;
+	Wed, 21 Feb 2024 21:50:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1708552228;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ECGe6+5vmwC3C7l32TsJdztrw16tg8DS3PIzlID04vk=;
+	b=gq1KhCTYvANhBIqTbTjb46LejIc3OT7JXxVqpT6svwIOQltpBeCcNklkE/Wf8V5TPd312q
+	mc2bLi3pyqIvuHAWlkjGWbGb7E2ybRQn+jaAc3Xkjyt97krqm39VpT9KKX47Caa7X5ANHA
+	tgfRX8vjPRiALnUBP9BKK58/4CoCZ+0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1708552228;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ECGe6+5vmwC3C7l32TsJdztrw16tg8DS3PIzlID04vk=;
+	b=R+Os6ZOIzAgHBEFEG/NAzWvy/KMNPq4xfU8cm1B0w/nJbquo/OZ3YB5qeZw+L1Qu7RW5VR
+	onPERYOxenZeeECw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1708552227;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ECGe6+5vmwC3C7l32TsJdztrw16tg8DS3PIzlID04vk=;
+	b=0INANFlKRpcTN5u0DdRap+YRu/we8S43m1EnQwF9UnHJtUvqQ0bt3VVY1gq9LIUmWYYdnG
+	xtpA21oHp4+NCKGFKhoyu8jQqzaHSv6y/z0whHg+VIdYW0RUH05nJEiS9rA5CkeVSljN4L
+	07DZIzgVHZYm2nG0NJMyoe4oUE5oEpU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1708552227;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ECGe6+5vmwC3C7l32TsJdztrw16tg8DS3PIzlID04vk=;
+	b=4jTNePOAVyUBPXz6CRG7ByD6GaulsmkGYJfEQKK5x93mXG13enKGJIxWHEq4GFG1x6fuNa
+	/2ni2xfULkXwtfDA==
+Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id C759413A42;
+	Wed, 21 Feb 2024 21:50:27 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+	by imap2.dmz-prg2.suse.org with ESMTPSA
+	id 0vV9MCNw1mXSJAAAn2gu4w
+	(envelope-from <dsterba@suse.cz>); Wed, 21 Feb 2024 21:50:27 +0000
+Date: Wed, 21 Feb 2024 22:49:50 +0100
+From: David Sterba <dsterba@suse.cz>
+To: Anand Jain <anand.jain@oracle.com>
+Cc: dsterba@suse.cz, Filipe Manana <fdmanana@kernel.org>,
+	linux-btrfs@vger.kernel.org, dsterba@suse.com, aromosan@gmail.com,
+	bernd.feige@gmx.net, CHECK_1234543212345@protonmail.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] btrfs: do not skip re-registration for the mounted
+ device
+Message-ID: <20240221214949.GL355@twin.jikos.cz>
+Reply-To: dsterba@suse.cz
+References: <88673c60b1d866c289ef019945647adfc8ab51d0.1707781507.git.anand.jain@oracle.com>
+ <20240214071620.GL355@twin.jikos.cz>
+ <CAL3q7H5wx5rKmSzGWP7mRqaSfAY88g=35N4OBrbJB61rK0mt2w@mail.gmail.com>
+ <20240220181236.GF355@suse.cz>
+ <bdaa5790-56d8-4490-9eab-9a47e4926661@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:WW7p1+B4htmtBfW2x6I9T6uskQjvijUcuFVC6Pqcxdich+azJUw
- qmMgxKKJZsEuziGBdXIaiOokAujPVQlssvay9UqRD4+fLNmAQFZVaXiEkgaluX1HkNVLkW6
- lIdZKx60UPGYU4CJPeEjjvOC5PQs/SQxKZUJjwN/mVlrGoat20iSi59yocWcwAyrsxYrYHi
- Tezy9PHa4OXOnxdT+VwqA==
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <bdaa5790-56d8-4490-9eab-9a47e4926661@oracle.com>
+User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=0INANFlK;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=4jTNePOA
+X-Spamd-Result: default: False [-0.07 / 50.00];
+	 HAS_REPLYTO(0.30)[dsterba@suse.cz];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	 ARC_NA(0.00)[];
+	 FROM_HAS_DN(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.net,protonmail.com];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 MIME_GOOD(-0.10)[text/plain];
+	 REPLYTO_ADDR_EQ_FROM(0.00)[];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	 MX_GOOD(-0.01)[];
+	 DKIM_TRACE(0.00)[suse.cz:+];
+	 RCPT_COUNT_SEVEN(0.00)[9];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:dkim,suse.cz:email];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 FREEMAIL_CC(0.00)[suse.cz,kernel.org,vger.kernel.org,suse.com,gmail.com,gmx.net,protonmail.com];
+	 RCVD_TLS_ALL(0.00)[];
+	 BAYES_HAM(-0.06)[61.34%]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Score: -0.07
+X-Rspamd-Queue-Id: E2DCF22102
+X-Spam-Level: 
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:mOOoXRIRWVQ=;kxOewaJtG6hZXrCnHemyZf/SZrx
- QQ/Q+2L73TzGrKO2bu0S6XlU3HcPKWw7Rzm/0CstjBGrSiMIvOMpA3mjerIkMfPA85ENlvqiO
- oG+N6zVs4Jiyzwapz3JUW21+DhI9MhP7kaRmKcAXbRw0Kc+22XNubcetaXPk5ptrIkwHmoNYk
- vuK8EBaL3+OKf4Be+i5yvcYkC5x3Y0VdK9OQUWypSvBaONhscT+X3BhQ8fdYcoq7bj9SgIjlw
- bhHMO35bgNV9JUfexPKDPLgt37o7xkw51NkTKOIwrwSP9QIjWohMwFGVbI26UEOolSena7OZy
- ewPGNvePYYb2DPWNgUvtzdXo4XuIsc9KZZ9AMqltppIzct0YC/sEtimbdQ6Lg0C1x5VewNJq7
- vdbvwrgFkNcoDyFYBbzWIalK/TTAj2PJ9uFM8D4BEKKTZ6YC6WDo8fqM+QNH0Q1IjxVlT3xDV
- V8rKbfhoQiIvpiEq1Vyedm6vckWTllAw4DGAUWCGf7dyXsQcXFYpOHf4y3sBJTEwEgknL3YvG
- RKFlsE7SxFTln3jlDSlSwBnTPk0LOOAR4XeXj9x8duNdzKh2C9M6j9BQ2/KtAdXYdsbF2C/ls
- r+Rc9mbEdx7HdC62kFlQvB1NtLLpz7/CnpWzNoi8PSbig3tlBM5Mreji4uQcfVM6s0EUEqptT
- qHT90jIX3GJ20xOAUDM7E7nxf1Wn9/FCa4RLCpCXDlC/UfQe2/HLvIe9BDoSd+31HqgBJIIYO
- t74x7AwE/GuYbpMlFNajsNmySR/RH3oHaqsCSPu2k2BlYfiv719eUw=
+X-Spamd-Bar: /
 
-> On Wed, Feb 21, 2024 at 10:00=E2=80=AFAM Valentin Obst <kernel@valentino=
-bst.de> wrote:
-> >
-> > While debugging the `X86_DECODER_SELFTEST` failure first reported in [=
-1],
-> > [In this case the line causing the failure is interpreted as two lines=
- by
-> > the tool (due to its length, but this is fixed by [1, 2]), and the sec=
-ond
-> > line is reported. Still the spatial closeness between the reported lin=
-e and
-> > the line causing the failure would have made debugging a lot easier.]
->
-> Thanks Valentin, John et al. for digging into this (and the related
-> issue) -- very much appreciated.
->
-> It looks good to me:
->
-> Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
-> Tested-by: Miguel Ojeda <ojeda@kernel.org>
+On Wed, Feb 21, 2024 at 10:09:59PM +0530, Anand Jain wrote:
+> On 2/20/24 23:42, David Sterba wrote:
+> > On Tue, Feb 20, 2024 at 02:08:00PM +0000, Filipe Manana wrote:
+> >> On Wed, Feb 14, 2024 at 7:17 AM David Sterba <dsterba@suse.cz> wrote:
+> >>> On Tue, Feb 13, 2024 at 09:13:56AM +0800, Anand Jain wrote:
+> >>> https://btrfs.readthedocs.io/en/latest/dev/Developer-s-FAQ.html#ordering
+> >>
+> >> So this introduces a regression.
+> >>
+> >> $ ./check btrfs/14[6-9] btrfs/15[8-9]
+> > 
+> > Thanks, with this I can reproduce it and have some ideas what could go
+> > wrong.
+> 
+> Thanks indeed.
 
-Thanks!
+I tested the following, it fixes the fsid problems and has passed full
+fstests run. The temp-fsid test coverage needs to be done still.
 
->
-> This should probably have a Fixes tag -- from a quick look, the
-> original test did not seem to have the problem because `insns` was
-> equivalent to the number of lines since there was no `if ... {
-> continue; }` for the symbol case. At some point that branch was added,
-> so that was not true anymore, thus that one should probably be the
-> Fixes tag, though please double-check:
->
->     Fixes: 35039eb6b199 ("x86: Show symbol name if insn decoder test fai=
-led")
-
-Cross checked this as well, can confirm your assessment. Thanks for
-bringing this up.
-
->
-> It is a minor issue for sure, so perhaps not worth backporting, but
-> nevertheless the hash is in a very old kernel, and thus the issue
-> applies to all stable kernels. So it does not hurt flagging it to the
-> stable team:
->
->     Cc: stable@vger.kernel.org
->
-> In addition, John reported the original issue, but this one was found
-> due to that one, and I am not exactly sure who did what here. Please
-> consider whether one of the following (or similar) may be fair:
->
->     Reported-by: John Baublitz <john.m.baublitz@gmail.com>
->     Debugged-by: John Baublitz <john.m.baublitz@gmail.com>
-
-Absolutely, without him reporting the test failure and narrowing down the
-config I'd have never looked at this file. Adding him for **both** is fair=
-.
-(This particular fix was not discussed on Zulip though, its just something
-I noticed along the way.)
-
->
-> An extra Link to the discussion in Zulip could be nice too:
->
->     Link: https://rust-for-linux.zulipchat.com/#narrow/stream/291565-Hel=
-p/topic/insn_decoder_test.20failure/near/421075039
-
-Didn't add it because the discussion does not mention this particular
-issue, but it might indeed be good for some context.
-
-Will this need a v2, or are all of the 'Fixes', 'Reported-By',
-'Debugged-By', 'Tested-By', 'Reviewed-By' and 'Link' tags something that
-maintainers may add when merging?
-
-    - Best Valentin
-
->
-> Finally, a nit: links are typically written like the following -- you
-> can still use bracket references at the end:
->
->     Link: https://lore.kernel.org/lkml/Y9ES4UKl%2F+DtvAVS@gmail.com/T/ [=
-1]
->     Link: https://lore.kernel.org/rust-for-linux/20231119180145.157455-1=
--sergio.collado@gmail.com/
-> [2]
->
-> Cheers,
-> Miguel
+@@ -1388,6 +1388,10 @@ struct btrfs_device *btrfs_scan_one_device(const char *path, blk_mode_t flags,
+        if (ret)
+                btrfs_warn(NULL, "lookup bdev failed for path %s: %d",
+                           path, ret);
++       if (devt) {
++               printk(KERN_ERR "free stale devt (for path %s)\n", path);
++               btrfs_free_stale_devices(devt, NULL);
++       }
 
