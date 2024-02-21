@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-22714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A51C85DD64
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:05:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8476085DE50
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:17:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D47C52826C9
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:04:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B66331C23B3B
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:17:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D80BF7CF1D;
-	Wed, 21 Feb 2024 14:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC1AE7F465;
+	Wed, 21 Feb 2024 14:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="usmyYIDI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vqa0B+L1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 967337C6E5;
-	Wed, 21 Feb 2024 14:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BAEA7EF17;
+	Wed, 21 Feb 2024 14:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524270; cv=none; b=eteQ9sepvfDJYI3YyaYroDdZDXlQw3G8w6Wj7Hyu3dqn1VF7C7oI+O8wVmkIpZOEn33Mz+b18TRxRSC5I/9puHSHg8kaZ3fxfu1MQuReOsuweXklToOYVwKJwxa+nfCEopXvpguRqlebhHMFw4SsWec+S6XQdxsQzIG3rx6WGUc=
+	t=1708524982; cv=none; b=jt8JeRiWSeQvGF918JXx1V4JdO3QQDY0zBfLpFQZIygKp9F5/mZ2+zqJOXkg1cOZAhyC7CxA9Zw6PTUpjgTHZEkdd5Xymky1cmLawa/tdu2LtTD/e19B1931mGCYTcryUXP0KTVV51DMkn1HMgrBVzmgWTJPd6dnslPryonGlDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524270; c=relaxed/simple;
-	bh=aUwwTqNXidOz+eT2RiW4xR+Gt5sosqMPk0DlRi/WEOI=;
+	s=arc-20240116; t=1708524982; c=relaxed/simple;
+	bh=Te6fQEzLMKMMq6fSXrbW82K2VfWSxRjGJY8RqIDRK5o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GW0Mf9D/GTNs8gTFiEGeJfYimAapnMtYOgNu2HpKePyba5j4N4xUHYxeaj9nu1uhaBgD3EKsrbDIo95MpPlSCt7cvkY+4CA14N9qZx9i5haCSY63mYQtptorlgoRCIkSXYMUP/gBnF9CezhhVSOqrFbMhSZ5v6lsztM4caL2TkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=usmyYIDI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2A16C433B1;
-	Wed, 21 Feb 2024 14:04:29 +0000 (UTC)
+	 MIME-Version; b=RAaSNx/1twB5uDfMVeijNPX8VbM+Op5k48RF8jlJ3sC3rurnYLc/35qOHOedokSWwzd1o4dXS1EXweTxHi/Kgr9hbf3dNkAX9UbjHbPx/FwYhcsofYpKJEdwHwlcLZA2gh1VKURQpKle9grnmUKodBpz4eTwl7pLr729rwKI5AI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vqa0B+L1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF441C43390;
+	Wed, 21 Feb 2024 14:16:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524270;
-	bh=aUwwTqNXidOz+eT2RiW4xR+Gt5sosqMPk0DlRi/WEOI=;
+	s=korg; t=1708524982;
+	bh=Te6fQEzLMKMMq6fSXrbW82K2VfWSxRjGJY8RqIDRK5o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=usmyYIDIzoOlze7oyfjy+57IWFtGfattEUY5Rj9RWxvOyz2a0gSTzf0H/HH6nHkng
-	 v2Uhgn0ITl9V1sYnLR4o3SVXO7EEwvmmjEl/58vlQUwI1F2l7C+fDH4upPws+Aq0Y5
-	 VtFEHLT+zwvW89ZnbGeq3S/QdHJB/zPesYin/tf4=
+	b=vqa0B+L1r0O3XUJyuVEvkwvEy6UTT+x9ZHn698KzXSarZqRZFC1oTszPx1rHWd902
+	 VO/XLMX6eqPij7SySHYtF9XOGV5+X7wF2DcQPGas2m/d0LwV1qcoBYXVlhUuKYiLoN
+	 CKYkxwoGkgxFCSgbefzcD/yLei++A519h2FE+H30=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Tretter <m.tretter@pengutronix.de>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 186/379] media: rockchip: rga: fix swizzling for RGB formats
+	"stable@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,  linux-kbuild@vger.kernel.org, llvm@lists.linux.dev,  Nathan Chancellor" <nathan@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 5.4 024/267] powerpc: Use always instead of always-y in for crtsavres.o
 Date: Wed, 21 Feb 2024 14:06:05 +0100
-Message-ID: <20240221130000.408077360@linuxfoundation.org>
+Message-ID: <20240221125940.809177172@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Tretter <m.tretter@pengutronix.de>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 9e7dc39260edac180c206bb6149595a40eabae3e ]
+This commit is for linux-5.4.y only, it has no direct upstream
+equivalent.
 
-When using 32 bit RGB formats, the RGA on the rk3568 produces wrong
-colors as the wrong color channels are read or written.  The reason is
-that the format description for the channel swizzeling is wrong and the
-wrong bits are configured. For example, when converting ARGB32 to NV12,
-the alpha channel is used as blue channel.. This doesn't happen if the
-color format is the same on both sides.
+Prior to commit 5f2fb52fac15 ("kbuild: rename hostprogs-y/always to
+hostprogs/always-y"), always-y did not exist, making the backport of
+mainline commit 1b1e38002648 ("powerpc: add crtsavres.o to always-y
+instead of extra-y") to linux-5.4.y as commit 245da9eebba0 ("powerpc:
+add crtsavres.o to always-y instead of extra-y") incorrect, breaking the
+build with linkers that need crtsavres.o:
 
-Fix the color_swap settings of the formats to correctly handle 32 bit
-RGB formats.
+  ld.lld: error: cannot open arch/powerpc/lib/crtsavres.o: No such file or directory
 
-For RGA_COLOR_FMT_XBGR8888, the RGA_COLOR_ALPHA_SWAP bit doesn't have an
-effect. Thus, it isn't possible to handle the V4L2_PIX_FMT_XRGB32. Thus,
-it is removed from the list of supported formats.
+Backporting the aforementioned kbuild commit is not suitable for stable
+due to its size and number of conflicts, so transform the always-y usage
+to an equivalent form using always, which resolves the build issues.
 
-Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 245da9eebba0 ("powerpc: add crtsavres.o to always-y instead of extra-y")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/rockchip/rga/rga.c | 15 +++------------
- 1 file changed, 3 insertions(+), 12 deletions(-)
+ arch/powerpc/lib/Makefile |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/platform/rockchip/rga/rga.c b/drivers/media/platform/rockchip/rga/rga.c
-index e3246344fb72..bcbbd1408b36 100644
---- a/drivers/media/platform/rockchip/rga/rga.c
-+++ b/drivers/media/platform/rockchip/rga/rga.c
-@@ -187,25 +187,16 @@ static int rga_setup_ctrls(struct rga_ctx *ctx)
- static struct rga_fmt formats[] = {
- 	{
- 		.fourcc = V4L2_PIX_FMT_ARGB32,
--		.color_swap = RGA_COLOR_RB_SWAP,
-+		.color_swap = RGA_COLOR_ALPHA_SWAP,
- 		.hw_format = RGA_COLOR_FMT_ABGR8888,
- 		.depth = 32,
- 		.uv_factor = 1,
- 		.y_div = 1,
- 		.x_div = 1,
- 	},
--	{
--		.fourcc = V4L2_PIX_FMT_XRGB32,
--		.color_swap = RGA_COLOR_RB_SWAP,
--		.hw_format = RGA_COLOR_FMT_XBGR8888,
--		.depth = 32,
--		.uv_factor = 1,
--		.y_div = 1,
--		.x_div = 1,
--	},
- 	{
- 		.fourcc = V4L2_PIX_FMT_ABGR32,
--		.color_swap = RGA_COLOR_ALPHA_SWAP,
-+		.color_swap = RGA_COLOR_RB_SWAP,
- 		.hw_format = RGA_COLOR_FMT_ABGR8888,
- 		.depth = 32,
- 		.uv_factor = 1,
-@@ -214,7 +205,7 @@ static struct rga_fmt formats[] = {
- 	},
- 	{
- 		.fourcc = V4L2_PIX_FMT_XBGR32,
--		.color_swap = RGA_COLOR_ALPHA_SWAP,
-+		.color_swap = RGA_COLOR_RB_SWAP,
- 		.hw_format = RGA_COLOR_FMT_XBGR8888,
- 		.depth = 32,
- 		.uv_factor = 1,
--- 
-2.43.0
-
+--- a/arch/powerpc/lib/Makefile
++++ b/arch/powerpc/lib/Makefile
+@@ -34,8 +34,8 @@ obj-$(CONFIG_FUNCTION_ERROR_INJECTION)	+
+ # 64-bit linker creates .sfpr on demand for final link (vmlinux),
+ # so it is only needed for modules, and only for older linkers which
+ # do not support --save-restore-funcs
+-ifeq ($(call ld-ifversion, -lt, 225000000, y),y)
+-always-$(CONFIG_PPC64)	+= crtsavres.o
++ifeq ($(call ld-ifversion, -lt, 225000000, y)$(CONFIG_PPC64),yy)
++always	+= crtsavres.o
+ endif
+ 
+ obj-$(CONFIG_PPC_BOOK3S_64) += copyuser_power7.o copypage_power7.o \
 
 
 
