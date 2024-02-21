@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-23070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7B7385DF1A
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:24:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29BB485D9DC
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:23:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DE081F22B2F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:24:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF113B25D8B
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:23:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55A6B7BB03;
-	Wed, 21 Feb 2024 14:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14EAB7641B;
+	Wed, 21 Feb 2024 13:23:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XFioN3o+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OVw9FYAo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 134D57A708;
-	Wed, 21 Feb 2024 14:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C39976A8D6;
+	Wed, 21 Feb 2024 13:23:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525480; cv=none; b=R5BSVpQ83SAHWi0BSp01PydjVsXGjTAXzMxBsCGU1Eh04LNs5MTxJWYulta+YWCHQOyqKxACtwlDlvd2iAyY6Ag/kRzteF0K90vFXptxo7iVgNgsC4RvnNRFLXsP6xakKyqOiKigHwx4WY4dWUKyO7DOnZ4TQ3RcFg0D3VLmLO0=
+	t=1708521794; cv=none; b=Nbj54CCqrbdRsiziY4/BOrLod27nnPDuZtlrry5eMeZa4iQAoXbC5QB6kWeS/w3ewud2HUEvlkqaKZNhBrltPmXxu0/9wNWzmP4Yu4rfQVTzQCq88ZYkGdoFRbcQu//uIz/+id/OXSMjven/kfDP7+R2jav21lYEJw2p49XQbIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525480; c=relaxed/simple;
-	bh=Pm8U5EVzPyzPEjvPzE2xiL3E/Z9hxVEkvyUdQqKovvI=;
+	s=arc-20240116; t=1708521794; c=relaxed/simple;
+	bh=dv7q2iV/qLgrRt5kA80/FNCDvgx76HwlWBjaVJ55UQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tMoD6J5fIlO1SFQT5KTMMxeqoCmAEqOyXdqvvGB1JpCC6m0KuRLEHkaaJiJA9A4F/2mOXV1Lq4dmmBRRKY+Vgn5hMgIc3S9C1yBXm/EUBptAw8D6MhtXP5fkdvClvoib3ZnTBlkxlkJBWGMgZzx/8qdWnEDQWd8R5sSZ0xbKVMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XFioN3o+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 326B2C43390;
-	Wed, 21 Feb 2024 14:24:39 +0000 (UTC)
+	 MIME-Version; b=FOrHC3T/7e8AqrzK17o9C6rGup3bEuFp4aEOAlzSpdcrRCE+Z5qCgY8cAxU/wJZbl5ATBs/23tc+sFhT9lkcpJ/PY8ytNL+fIAWaA/bfgETPwoNMbLwbmgk/KKyE/riuoYy2CJJATnx9WSfK+yqbjmOUBGkGa1xs2OH5lfXvK9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OVw9FYAo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D8E2C433C7;
+	Wed, 21 Feb 2024 13:23:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525479;
-	bh=Pm8U5EVzPyzPEjvPzE2xiL3E/Z9hxVEkvyUdQqKovvI=;
+	s=korg; t=1708521794;
+	bh=dv7q2iV/qLgrRt5kA80/FNCDvgx76HwlWBjaVJ55UQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XFioN3o+8QJZ/ZcWz0QWijl87zXG29NWomuP3FmZA99PIORCAKcCyOJQe8NBoxjaw
-	 73ZqarowdfrlKHjBZgXAEPK1JRFPVrrqLnZvwTFYZipoGPOBgjuLTvnGN6BWLEnSLm
-	 /hZWIfOwsn7gD6CnbODmAkJFg026a6Z2/wGKOq98=
+	b=OVw9FYAoeMnyUwlHH18c+DZjZZtiPf2TW2bGbReOP51wm8cbd7Tr+XTNvPe+btE79
+	 zv1hREEzqQyyQbwc5PO+ArsAjJuYfIIDETy19rzq2xOmPMHncEoiz3OZPmoQpoLVac
+	 T5QSkcRDQ2TJtwQRle6nx0nQp9VIcQO9QHFUXIY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Kuehling <Felix.Kuehling@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 139/267] drm/amdgpu: Drop fence check in to_amdgpu_amdkfd_fence()
+	Lee Duncan <lduncan@suse.com>,
+	Hannes Reinecke <hare@suse.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 4.19 179/202] scsi: Revert "scsi: fcoe: Fix potential deadlock on &fip->ctlr_lock"
 Date: Wed, 21 Feb 2024 14:08:00 +0100
-Message-ID: <20240221125944.415470441@linuxfoundation.org>
+Message-ID: <20240221125937.613728448@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +60,120 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Lee Duncan <lduncan@suse.com>
 
-[ Upstream commit bf2ad4fb8adca89374b54b225d494e0b1956dbea ]
+commit 977fe773dcc7098d8eaf4ee6382cb51e13e784cb upstream.
 
-Return value of container_of(...) can't be null, so null check is not
-required for 'fence'. Hence drop its NULL check.
+This reverts commit 1a1975551943f681772720f639ff42fbaa746212.
 
-Fixes the below:
-drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_fence.c:93 to_amdgpu_amdkfd_fence() warn: can 'fence' even be NULL?
+This commit causes interrupts to be lost for FCoE devices, since it changed
+sping locks from "bh" to "irqsave".
 
-Cc: Felix Kuehling <Felix.Kuehling@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Instead, a work queue should be used, and will be addressed in a separate
+commit.
+
+Fixes: 1a1975551943 ("scsi: fcoe: Fix potential deadlock on &fip->ctlr_lock")
+Signed-off-by: Lee Duncan <lduncan@suse.com>
+Link: https://lore.kernel.org/r/c578cdcd46b60470535c4c4a953e6a1feca0dffd.1707500786.git.lduncan@suse.com
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_fence.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/fcoe/fcoe_ctlr.c |   20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_fence.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_fence.c
-index 3107b9575929..eef7517c9d24 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_fence.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_fence.c
-@@ -88,7 +88,7 @@ struct amdgpu_amdkfd_fence *to_amdgpu_amdkfd_fence(struct dma_fence *f)
- 		return NULL;
+--- a/drivers/scsi/fcoe/fcoe_ctlr.c
++++ b/drivers/scsi/fcoe/fcoe_ctlr.c
+@@ -330,17 +330,16 @@ static void fcoe_ctlr_announce(struct fc
+ {
+ 	struct fcoe_fcf *sel;
+ 	struct fcoe_fcf *fcf;
+-	unsigned long flags;
  
- 	fence = container_of(f, struct amdgpu_amdkfd_fence, base);
--	if (fence && f->ops == &amdkfd_fence_ops)
-+	if (f->ops == &amdkfd_fence_ops)
- 		return fence;
+ 	mutex_lock(&fip->ctlr_mutex);
+-	spin_lock_irqsave(&fip->ctlr_lock, flags);
++	spin_lock_bh(&fip->ctlr_lock);
  
- 	return NULL;
--- 
-2.43.0
-
+ 	kfree_skb(fip->flogi_req);
+ 	fip->flogi_req = NULL;
+ 	list_for_each_entry(fcf, &fip->fcfs, list)
+ 		fcf->flogi_sent = 0;
+ 
+-	spin_unlock_irqrestore(&fip->ctlr_lock, flags);
++	spin_unlock_bh(&fip->ctlr_lock);
+ 	sel = fip->sel_fcf;
+ 
+ 	if (sel && ether_addr_equal(sel->fcf_mac, fip->dest_addr))
+@@ -710,7 +709,6 @@ int fcoe_ctlr_els_send(struct fcoe_ctlr
+ {
+ 	struct fc_frame *fp;
+ 	struct fc_frame_header *fh;
+-	unsigned long flags;
+ 	u16 old_xid;
+ 	u8 op;
+ 	u8 mac[ETH_ALEN];
+@@ -744,11 +742,11 @@ int fcoe_ctlr_els_send(struct fcoe_ctlr
+ 		op = FIP_DT_FLOGI;
+ 		if (fip->mode == FIP_MODE_VN2VN)
+ 			break;
+-		spin_lock_irqsave(&fip->ctlr_lock, flags);
++		spin_lock_bh(&fip->ctlr_lock);
+ 		kfree_skb(fip->flogi_req);
+ 		fip->flogi_req = skb;
+ 		fip->flogi_req_send = 1;
+-		spin_unlock_irqrestore(&fip->ctlr_lock, flags);
++		spin_unlock_bh(&fip->ctlr_lock);
+ 		schedule_work(&fip->timer_work);
+ 		return -EINPROGRESS;
+ 	case ELS_FDISC:
+@@ -1725,11 +1723,10 @@ static int fcoe_ctlr_flogi_send_locked(s
+ static int fcoe_ctlr_flogi_retry(struct fcoe_ctlr *fip)
+ {
+ 	struct fcoe_fcf *fcf;
+-	unsigned long flags;
+ 	int error;
+ 
+ 	mutex_lock(&fip->ctlr_mutex);
+-	spin_lock_irqsave(&fip->ctlr_lock, flags);
++	spin_lock_bh(&fip->ctlr_lock);
+ 	LIBFCOE_FIP_DBG(fip, "re-sending FLOGI - reselect\n");
+ 	fcf = fcoe_ctlr_select(fip);
+ 	if (!fcf || fcf->flogi_sent) {
+@@ -1740,7 +1737,7 @@ static int fcoe_ctlr_flogi_retry(struct
+ 		fcoe_ctlr_solicit(fip, NULL);
+ 		error = fcoe_ctlr_flogi_send_locked(fip);
+ 	}
+-	spin_unlock_irqrestore(&fip->ctlr_lock, flags);
++	spin_unlock_bh(&fip->ctlr_lock);
+ 	mutex_unlock(&fip->ctlr_mutex);
+ 	return error;
+ }
+@@ -1757,9 +1754,8 @@ static int fcoe_ctlr_flogi_retry(struct
+ static void fcoe_ctlr_flogi_send(struct fcoe_ctlr *fip)
+ {
+ 	struct fcoe_fcf *fcf;
+-	unsigned long flags;
+ 
+-	spin_lock_irqsave(&fip->ctlr_lock, flags);
++	spin_lock_bh(&fip->ctlr_lock);
+ 	fcf = fip->sel_fcf;
+ 	if (!fcf || !fip->flogi_req_send)
+ 		goto unlock;
+@@ -1786,7 +1782,7 @@ static void fcoe_ctlr_flogi_send(struct
+ 	} else /* XXX */
+ 		LIBFCOE_FIP_DBG(fip, "No FCF selected - defer send\n");
+ unlock:
+-	spin_unlock_irqrestore(&fip->ctlr_lock, flags);
++	spin_unlock_bh(&fip->ctlr_lock);
+ }
+ 
+ /**
 
 
 
