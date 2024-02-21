@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-22533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF9C685DC7E
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:54:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0DA785DAC4
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:34:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F341D1C23671
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:54:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4FCE2822DB
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:34:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5A647BAFF;
-	Wed, 21 Feb 2024 13:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DF6778B7C;
+	Wed, 21 Feb 2024 13:32:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KcmeJ6IG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dnLhOMeM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 800CB79DAB;
-	Wed, 21 Feb 2024 13:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF457E58D;
+	Wed, 21 Feb 2024 13:32:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523628; cv=none; b=njaVsXoJNjgPBjCKQwNOY4jR2bsYH0iZDqfGNPw1ShQZRcExexzGJ//0UsZ52TnukeQ06YYYCzhULLGjjXWhYgGVCL+rVoMxjIboHidVlmP2gtjeMrVCQ5cMcNCkH7XQ9PU5wiCuFLS2uNEOFjQI18PLOqUHkN5RluzJt2z8gmc=
+	t=1708522363; cv=none; b=syCXCx5hORV0DtHSNG2I+8O06ncZes9P959SzYHphwger4A82BI51qvMYCwbEGsE6VIr+CyJ3SgtBUoXRfSqPy/Z6wq1OLsR6hhcnehyxjCb0qENssmIUf+7zDz2S+bIE3tdZW4qfBqyKjOhjg2oVp6+BaJ5+1sWwhSNlQ9KfV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523628; c=relaxed/simple;
-	bh=e70K0FmgMhZkIV3r1JyLDfhx6vUP+uQkeR5TBr32R/U=;
+	s=arc-20240116; t=1708522363; c=relaxed/simple;
+	bh=h23FF4Q4P3vUni37rGfZjxX78TimbNT/QmChD0fPzMQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lstVeiFSFZ9ofNL7SiTpEMJY/ilooiL4XYgVaMhPbvRNh3GDZtIU5cevnFv8BkfGQ+idD5uP+XjYRc/gj0sTz1Dak88zWPChDexA1JWBZZUIRtQElDI8gz39IA8Ys/Lh66cDRWHq7YthcXosgugyTa6Z84TJZcuzSmBlNB0GUYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KcmeJ6IG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D34B7C433F1;
-	Wed, 21 Feb 2024 13:53:47 +0000 (UTC)
+	 MIME-Version; b=dykDbCaxH7Z7a+bTUn488lSAZ2C2hsFkxIrZncZqn1Vff40yyRkyBWCgLnEzxoVw3s0pwBL7BKXYn1mSCxN+zXs8ngdyCfFH+9J409C+EUvx0uXsKz8NMdq/V5eCNrHTMa+Eg2t2TXvPDlQ97S9tNHTYiDX45ko/mK6kXee34TA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dnLhOMeM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1573BC433F1;
+	Wed, 21 Feb 2024 13:32:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523628;
-	bh=e70K0FmgMhZkIV3r1JyLDfhx6vUP+uQkeR5TBr32R/U=;
+	s=korg; t=1708522362;
+	bh=h23FF4Q4P3vUni37rGfZjxX78TimbNT/QmChD0fPzMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KcmeJ6IGGnU5JsXMoy3yk3YQ/zrxsthJ5fR6/NuX4xbtVb7ZW/iAVE88gy7vAx6Kp
-	 O+7FqXj2xEfdxG+6jN6loQB6Ze/f9REx1TPtDUZaMUUNAfl5sK+vvmzZycqOk3qxxd
-	 5HdF3k3eu5/zcFb4KxAeizp4q3xFiOaL7Dq6M6d8=
+	b=dnLhOMeMB2le1qe7BEECK1OlpjOeGmL8M+YbSsR4bIDTgJ6lTfbK76u+d5dAQ3Dtj
+	 E38Pu2fjNSdgXuUTrnmPdP+V+B5RvN4OLpZZumD4ufNbUMnGeZcOeD/z2b9pfloRPp
+	 EEoSwenKlQMN+qDprVLOhXKTjO4hw+w+xvm7YbNU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Joyyoung Huang <huangzaiyang@oppo.com>,
+	MyungJoo Ham <myungjoo.ham@samsung.com>,
+	Mukesh Ojha <quic_mojha@quicinc.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 013/379] iio: adc: ad7091r: Allow users to configure device events
-Date: Wed, 21 Feb 2024 14:03:12 +0100
-Message-ID: <20240221125955.313389567@linuxfoundation.org>
+Subject: [PATCH 5.15 142/476] PM / devfreq: Synchronize devfreq_monitor_[start/stop]
+Date: Wed, 21 Feb 2024 14:03:13 +0100
+Message-ID: <20240221130013.179566282@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,300 +64,167 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcelo Schmitt <marcelo.schmitt@analog.com>
+From: Mukesh Ojha <quic_mojha@quicinc.com>
 
-[ Upstream commit 020e71c7ffc25dfe29ed9be6c2d39af7bd7f661f ]
+[ Upstream commit aed5ed595960c6d301dcd4ed31aeaa7a8054c0c6 ]
 
-AD7091R-5 devices are supported by the ad7091r-5 driver together with
-the ad7091r-base driver. Those drivers declared iio events for notifying
-user space when ADC readings fall bellow the thresholds of low limit
-registers or above the values set in high limit registers.
-However, to configure iio events and their thresholds, a set of callback
-functions must be implemented and those were not present until now.
-The consequence of trying to configure ad7091r-5 events without the
-proper callback functions was a null pointer dereference in the kernel
-because the pointers to the callback functions were not set.
+There is a chance if a frequent switch of the governor
+done in a loop result in timer list corruption where
+timer cancel being done from two place one from
+cancel_delayed_work_sync() and followed by expire_timers()
+can be seen from the traces[1].
 
-Implement event configuration callbacks allowing users to read/write
-event thresholds and enable/disable event generation.
+while true
+do
+        echo "simple_ondemand" > /sys/class/devfreq/1d84000.ufshc/governor
+        echo "performance" > /sys/class/devfreq/1d84000.ufshc/governor
+done
 
-Since the event spec structs are generic to AD7091R devices, also move
-those from the ad7091r-5 driver the base driver so they can be reused
-when support for ad7091r-2/-4/-8 be added.
+It looks to be issue with devfreq driver where
+device_monitor_[start/stop] need to synchronized so that
+delayed work should get corrupted while it is either
+being queued or running or being cancelled.
 
-Fixes: ca69300173b6 ("iio: adc: Add support for AD7091R5 ADC")
-Suggested-by: David Lechner <dlechner@baylibre.com>
-Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Link: https://lore.kernel.org/r/59552d3548dabd56adc3107b7b4869afee2b0c3c.1703013352.git.marcelo.schmitt1@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Let's use polling flag and devfreq lock to synchronize the
+queueing the timer instance twice and work data being
+corrupted.
+
+[1]
+...
+..
+<idle>-0    [003]   9436.209662:  timer_cancel   timer=0xffffff80444f0428
+<idle>-0    [003]   9436.209664:  timer_expire_entry   timer=0xffffff80444f0428  now=0x10022da1c  function=__typeid__ZTSFvP10timer_listE_global_addr  baseclk=0x10022da1c
+<idle>-0    [003]   9436.209718:  timer_expire_exit   timer=0xffffff80444f0428
+kworker/u16:6-14217    [003]   9436.209863:  timer_start   timer=0xffffff80444f0428  function=__typeid__ZTSFvP10timer_listE_global_addr  expires=0x10022da2b  now=0x10022da1c  flags=182452227
+vendor.xxxyyy.ha-1593    [004]   9436.209888:  timer_cancel   timer=0xffffff80444f0428
+vendor.xxxyyy.ha-1593    [004]   9436.216390:  timer_init   timer=0xffffff80444f0428
+vendor.xxxyyy.ha-1593    [004]   9436.216392:  timer_start   timer=0xffffff80444f0428  function=__typeid__ZTSFvP10timer_listE_global_addr  expires=0x10022da2c  now=0x10022da1d  flags=186646532
+vendor.xxxyyy.ha-1593    [005]   9436.220992:  timer_cancel   timer=0xffffff80444f0428
+xxxyyyTraceManag-7795    [004]   9436.261641:  timer_cancel   timer=0xffffff80444f0428
+
+[2]
+
+ 9436.261653][    C4] Unable to handle kernel paging request at virtual address dead00000000012a
+[ 9436.261664][    C4] Mem abort info:
+[ 9436.261666][    C4]   ESR = 0x96000044
+[ 9436.261669][    C4]   EC = 0x25: DABT (current EL), IL = 32 bits
+[ 9436.261671][    C4]   SET = 0, FnV = 0
+[ 9436.261673][    C4]   EA = 0, S1PTW = 0
+[ 9436.261675][    C4] Data abort info:
+[ 9436.261677][    C4]   ISV = 0, ISS = 0x00000044
+[ 9436.261680][    C4]   CM = 0, WnR = 1
+[ 9436.261682][    C4] [dead00000000012a] address between user and kernel address ranges
+[ 9436.261685][    C4] Internal error: Oops: 96000044 [#1] PREEMPT SMP
+[ 9436.261701][    C4] Skip md ftrace buffer dump for: 0x3a982d0
+...
+
+[ 9436.262138][    C4] CPU: 4 PID: 7795 Comm: TraceManag Tainted: G S      W  O      5.10.149-android12-9-o-g17f915d29d0c #1
+[ 9436.262141][    C4] Hardware name: Qualcomm Technologies, Inc.  (DT)
+[ 9436.262144][    C4] pstate: 22400085 (nzCv daIf +PAN -UAO +TCO BTYPE=--)
+[ 9436.262161][    C4] pc : expire_timers+0x9c/0x438
+[ 9436.262164][    C4] lr : expire_timers+0x2a4/0x438
+[ 9436.262168][    C4] sp : ffffffc010023dd0
+[ 9436.262171][    C4] x29: ffffffc010023df0 x28: ffffffd0636fdc18
+[ 9436.262178][    C4] x27: ffffffd063569dd0 x26: ffffffd063536008
+[ 9436.262182][    C4] x25: 0000000000000001 x24: ffffff88f7c69280
+[ 9436.262185][    C4] x23: 00000000000000e0 x22: dead000000000122
+[ 9436.262188][    C4] x21: 000000010022da29 x20: ffffff8af72b4e80
+[ 9436.262191][    C4] x19: ffffffc010023e50 x18: ffffffc010025038
+[ 9436.262195][    C4] x17: 0000000000000240 x16: 0000000000000201
+[ 9436.262199][    C4] x15: ffffffffffffffff x14: ffffff889f3c3100
+[ 9436.262203][    C4] x13: ffffff889f3c3100 x12: 00000000049f56b8
+[ 9436.262207][    C4] x11: 00000000049f56b8 x10: 00000000ffffffff
+[ 9436.262212][    C4] x9 : ffffffc010023e50 x8 : dead000000000122
+[ 9436.262216][    C4] x7 : ffffffffffffffff x6 : ffffffc0100239d8
+[ 9436.262220][    C4] x5 : 0000000000000000 x4 : 0000000000000101
+[ 9436.262223][    C4] x3 : 0000000000000080 x2 : ffffff889edc155c
+[ 9436.262227][    C4] x1 : ffffff8001005200 x0 : ffffff80444f0428
+[ 9436.262232][    C4] Call trace:
+[ 9436.262236][    C4]  expire_timers+0x9c/0x438
+[ 9436.262240][    C4]  __run_timers+0x1f0/0x330
+[ 9436.262245][    C4]  run_timer_softirq+0x28/0x58
+[ 9436.262255][    C4]  efi_header_end+0x168/0x5ec
+[ 9436.262265][    C4]  __irq_exit_rcu+0x108/0x124
+[ 9436.262274][    C4]  __handle_domain_irq+0x118/0x1e4
+[ 9436.262282][    C4]  gic_handle_irq.30369+0x6c/0x2bc
+[ 9436.262286][    C4]  el0_irq_naked+0x60/0x6c
+
+Link: https://lore.kernel.org/all/1700860318-4025-1-git-send-email-quic_mojha@quicinc.com/
+Reported-by: Joyyoung Huang <huangzaiyang@oppo.com>
+Acked-by: MyungJoo Ham <myungjoo.ham@samsung.com>
+Signed-off-by: Mukesh Ojha <quic_mojha@quicinc.com>
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7091r-base.c | 156 +++++++++++++++++++++++++++++++++
- drivers/iio/adc/ad7091r-base.h |   6 ++
- drivers/iio/adc/ad7091r5.c     |  28 +-----
- 3 files changed, 166 insertions(+), 24 deletions(-)
+ drivers/devfreq/devfreq.c |   24 ++++++++++++++++++++++--
+ 1 file changed, 22 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7091r-base.c b/drivers/iio/adc/ad7091r-base.c
-index ad089c0ff953..9ddda08918db 100644
---- a/drivers/iio/adc/ad7091r-base.c
-+++ b/drivers/iio/adc/ad7091r-base.c
-@@ -6,6 +6,7 @@
-  */
+--- a/drivers/devfreq/devfreq.c
++++ b/drivers/devfreq/devfreq.c
+@@ -464,10 +464,14 @@ static void devfreq_monitor(struct work_
+ 	if (err)
+ 		dev_err(&devfreq->dev, "dvfs failed with (%d) error\n", err);
  
- #include <linux/bitops.h>
-+#include <linux/bitfield.h>
- #include <linux/iio/events.h>
- #include <linux/iio/iio.h>
- #include <linux/interrupt.h>
-@@ -50,6 +51,27 @@ struct ad7091r_state {
- 	struct mutex lock; /*lock to prevent concurent reads */
- };
- 
-+const struct iio_event_spec ad7091r_events[] = {
-+	{
-+		.type = IIO_EV_TYPE_THRESH,
-+		.dir = IIO_EV_DIR_RISING,
-+		.mask_separate = BIT(IIO_EV_INFO_VALUE) |
-+				 BIT(IIO_EV_INFO_ENABLE),
-+	},
-+	{
-+		.type = IIO_EV_TYPE_THRESH,
-+		.dir = IIO_EV_DIR_FALLING,
-+		.mask_separate = BIT(IIO_EV_INFO_VALUE) |
-+				 BIT(IIO_EV_INFO_ENABLE),
-+	},
-+	{
-+		.type = IIO_EV_TYPE_THRESH,
-+		.dir = IIO_EV_DIR_EITHER,
-+		.mask_separate = BIT(IIO_EV_INFO_HYSTERESIS),
-+	},
-+};
-+EXPORT_SYMBOL_NS_GPL(ad7091r_events, IIO_AD7091R);
++	if (devfreq->stop_polling)
++		goto out;
 +
- static int ad7091r_set_mode(struct ad7091r_state *st, enum ad7091r_mode mode)
- {
- 	int ret, conf;
-@@ -169,8 +191,142 @@ static int ad7091r_read_raw(struct iio_dev *iio_dev,
- 	return ret;
+ 	queue_delayed_work(devfreq_wq, &devfreq->work,
+ 				msecs_to_jiffies(devfreq->profile->polling_ms));
+-	mutex_unlock(&devfreq->lock);
+ 
++out:
++	mutex_unlock(&devfreq->lock);
+ 	trace_devfreq_monitor(devfreq);
  }
  
-+static int ad7091r_read_event_config(struct iio_dev *indio_dev,
-+				     const struct iio_chan_spec *chan,
-+				     enum iio_event_type type,
-+				     enum iio_event_direction dir)
-+{
-+	struct ad7091r_state *st = iio_priv(indio_dev);
-+	int val, ret;
-+
-+	switch (dir) {
-+	case IIO_EV_DIR_RISING:
-+		ret = regmap_read(st->map,
-+				  AD7091R_REG_CH_HIGH_LIMIT(chan->channel),
-+				  &val);
-+		if (ret)
-+			return ret;
-+		return val != AD7091R_HIGH_LIMIT;
-+	case IIO_EV_DIR_FALLING:
-+		ret = regmap_read(st->map,
-+				  AD7091R_REG_CH_LOW_LIMIT(chan->channel),
-+				  &val);
-+		if (ret)
-+			return ret;
-+		return val != AD7091R_LOW_LIMIT;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int ad7091r_write_event_config(struct iio_dev *indio_dev,
-+				      const struct iio_chan_spec *chan,
-+				      enum iio_event_type type,
-+				      enum iio_event_direction dir, int state)
-+{
-+	struct ad7091r_state *st = iio_priv(indio_dev);
-+
-+	if (state) {
-+		return regmap_set_bits(st->map, AD7091R_REG_CONF,
-+				       AD7091R_REG_CONF_ALERT_EN);
-+	} else {
-+		/*
-+		 * Set thresholds either to 0 or to 2^12 - 1 as appropriate to
-+		 * prevent alerts and thus disable event generation.
-+		 */
-+		switch (dir) {
-+		case IIO_EV_DIR_RISING:
-+			return regmap_write(st->map,
-+					    AD7091R_REG_CH_HIGH_LIMIT(chan->channel),
-+					    AD7091R_HIGH_LIMIT);
-+		case IIO_EV_DIR_FALLING:
-+			return regmap_write(st->map,
-+					    AD7091R_REG_CH_LOW_LIMIT(chan->channel),
-+					    AD7091R_LOW_LIMIT);
-+		default:
-+			return -EINVAL;
-+		}
-+	}
-+}
-+
-+static int ad7091r_read_event_value(struct iio_dev *indio_dev,
-+				    const struct iio_chan_spec *chan,
-+				    enum iio_event_type type,
-+				    enum iio_event_direction dir,
-+				    enum iio_event_info info, int *val, int *val2)
-+{
-+	struct ad7091r_state *st = iio_priv(indio_dev);
-+	int ret;
-+
-+	switch (info) {
-+	case IIO_EV_INFO_VALUE:
-+		switch (dir) {
-+		case IIO_EV_DIR_RISING:
-+			ret = regmap_read(st->map,
-+					  AD7091R_REG_CH_HIGH_LIMIT(chan->channel),
-+					  val);
-+			if (ret)
-+				return ret;
-+			return IIO_VAL_INT;
-+		case IIO_EV_DIR_FALLING:
-+			ret = regmap_read(st->map,
-+					  AD7091R_REG_CH_LOW_LIMIT(chan->channel),
-+					  val);
-+			if (ret)
-+				return ret;
-+			return IIO_VAL_INT;
-+		default:
-+			return -EINVAL;
-+		}
-+	case IIO_EV_INFO_HYSTERESIS:
-+		ret = regmap_read(st->map,
-+				  AD7091R_REG_CH_HYSTERESIS(chan->channel),
-+				  val);
-+		if (ret)
-+			return ret;
-+		return IIO_VAL_INT;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int ad7091r_write_event_value(struct iio_dev *indio_dev,
-+				     const struct iio_chan_spec *chan,
-+				     enum iio_event_type type,
-+				     enum iio_event_direction dir,
-+				     enum iio_event_info info, int val, int val2)
-+{
-+	struct ad7091r_state *st = iio_priv(indio_dev);
-+
-+	switch (info) {
-+	case IIO_EV_INFO_VALUE:
-+		switch (dir) {
-+		case IIO_EV_DIR_RISING:
-+			return regmap_write(st->map,
-+					    AD7091R_REG_CH_HIGH_LIMIT(chan->channel),
-+					    val);
-+		case IIO_EV_DIR_FALLING:
-+			return regmap_write(st->map,
-+					    AD7091R_REG_CH_LOW_LIMIT(chan->channel),
-+					    val);
-+		default:
-+			return -EINVAL;
-+		}
-+	case IIO_EV_INFO_HYSTERESIS:
-+		return regmap_write(st->map,
-+				    AD7091R_REG_CH_HYSTERESIS(chan->channel),
-+				    val);
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
- static const struct iio_info ad7091r_info = {
- 	.read_raw = ad7091r_read_raw,
-+	.read_event_config = &ad7091r_read_event_config,
-+	.write_event_config = &ad7091r_write_event_config,
-+	.read_event_value = &ad7091r_read_event_value,
-+	.write_event_value = &ad7091r_write_event_value,
- };
+@@ -485,6 +489,10 @@ void devfreq_monitor_start(struct devfre
+ 	if (IS_SUPPORTED_FLAG(devfreq->governor->flags, IRQ_DRIVEN))
+ 		return;
  
- static irqreturn_t ad7091r_event_handler(int irq, void *private)
-diff --git a/drivers/iio/adc/ad7091r-base.h b/drivers/iio/adc/ad7091r-base.h
-index 509748aef9b1..7a78976a2f80 100644
---- a/drivers/iio/adc/ad7091r-base.h
-+++ b/drivers/iio/adc/ad7091r-base.h
-@@ -8,6 +8,10 @@
- #ifndef __DRIVERS_IIO_ADC_AD7091R_BASE_H__
- #define __DRIVERS_IIO_ADC_AD7091R_BASE_H__
- 
-+/* AD7091R_REG_CH_LIMIT */
-+#define AD7091R_HIGH_LIMIT		0xFFF
-+#define AD7091R_LOW_LIMIT		0x0
++	mutex_lock(&devfreq->lock);
++	if (delayed_work_pending(&devfreq->work))
++		goto out;
 +
- struct device;
- struct ad7091r_state;
+ 	switch (devfreq->profile->timer) {
+ 	case DEVFREQ_TIMER_DEFERRABLE:
+ 		INIT_DEFERRABLE_WORK(&devfreq->work, devfreq_monitor);
+@@ -493,12 +501,16 @@ void devfreq_monitor_start(struct devfre
+ 		INIT_DELAYED_WORK(&devfreq->work, devfreq_monitor);
+ 		break;
+ 	default:
+-		return;
++		goto out;
+ 	}
  
-@@ -17,6 +21,8 @@ struct ad7091r_chip_info {
- 	unsigned int vref_mV;
- };
- 
-+extern const struct iio_event_spec ad7091r_events[3];
+ 	if (devfreq->profile->polling_ms)
+ 		queue_delayed_work(devfreq_wq, &devfreq->work,
+ 			msecs_to_jiffies(devfreq->profile->polling_ms));
 +
- extern const struct regmap_config ad7091r_regmap_config;
- 
- int ad7091r_probe(struct device *dev, const char *name,
-diff --git a/drivers/iio/adc/ad7091r5.c b/drivers/iio/adc/ad7091r5.c
-index 9665679c3ea6..e60511460786 100644
---- a/drivers/iio/adc/ad7091r5.c
-+++ b/drivers/iio/adc/ad7091r5.c
-@@ -12,26 +12,6 @@
- 
- #include "ad7091r-base.h"
- 
--static const struct iio_event_spec ad7091r5_events[] = {
--	{
--		.type = IIO_EV_TYPE_THRESH,
--		.dir = IIO_EV_DIR_RISING,
--		.mask_separate = BIT(IIO_EV_INFO_VALUE) |
--				 BIT(IIO_EV_INFO_ENABLE),
--	},
--	{
--		.type = IIO_EV_TYPE_THRESH,
--		.dir = IIO_EV_DIR_FALLING,
--		.mask_separate = BIT(IIO_EV_INFO_VALUE) |
--				 BIT(IIO_EV_INFO_ENABLE),
--	},
--	{
--		.type = IIO_EV_TYPE_THRESH,
--		.dir = IIO_EV_DIR_EITHER,
--		.mask_separate = BIT(IIO_EV_INFO_HYSTERESIS),
--	},
--};
--
- #define AD7091R_CHANNEL(idx, bits, ev, num_ev) { \
- 	.type = IIO_VOLTAGE, \
- 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW), \
-@@ -44,10 +24,10 @@ static const struct iio_event_spec ad7091r5_events[] = {
- 	.scan_type.realbits = bits, \
++out:
++	devfreq->stop_polling = false;
++	mutex_unlock(&devfreq->lock);
  }
- static const struct iio_chan_spec ad7091r5_channels_irq[] = {
--	AD7091R_CHANNEL(0, 12, ad7091r5_events, ARRAY_SIZE(ad7091r5_events)),
--	AD7091R_CHANNEL(1, 12, ad7091r5_events, ARRAY_SIZE(ad7091r5_events)),
--	AD7091R_CHANNEL(2, 12, ad7091r5_events, ARRAY_SIZE(ad7091r5_events)),
--	AD7091R_CHANNEL(3, 12, ad7091r5_events, ARRAY_SIZE(ad7091r5_events)),
-+	AD7091R_CHANNEL(0, 12, ad7091r_events, ARRAY_SIZE(ad7091r_events)),
-+	AD7091R_CHANNEL(1, 12, ad7091r_events, ARRAY_SIZE(ad7091r_events)),
-+	AD7091R_CHANNEL(2, 12, ad7091r_events, ARRAY_SIZE(ad7091r_events)),
-+	AD7091R_CHANNEL(3, 12, ad7091r_events, ARRAY_SIZE(ad7091r_events)),
- };
+ EXPORT_SYMBOL(devfreq_monitor_start);
  
- static const struct iio_chan_spec ad7091r5_channels_noirq[] = {
--- 
-2.43.0
-
+@@ -515,6 +527,14 @@ void devfreq_monitor_stop(struct devfreq
+ 	if (IS_SUPPORTED_FLAG(devfreq->governor->flags, IRQ_DRIVEN))
+ 		return;
+ 
++	mutex_lock(&devfreq->lock);
++	if (devfreq->stop_polling) {
++		mutex_unlock(&devfreq->lock);
++		return;
++	}
++
++	devfreq->stop_polling = true;
++	mutex_unlock(&devfreq->lock);
+ 	cancel_delayed_work_sync(&devfreq->work);
+ }
+ EXPORT_SYMBOL(devfreq_monitor_stop);
 
 
 
