@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-22158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C55785DAA5
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:33:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB3DB85DACF
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:35:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EEB61C22EB8
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:33:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC9501C22FA4
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:35:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E01E67C083;
-	Wed, 21 Feb 2024 13:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64A8C7E77B;
+	Wed, 21 Feb 2024 13:33:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RvzADBXQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e1NF9obC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DA9A1E4B2;
-	Wed, 21 Feb 2024 13:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 217726F074;
+	Wed, 21 Feb 2024 13:33:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522249; cv=none; b=UrorBf64jjFQx7GYjeU2vixgL5lA1GgyMxla1cgYghMvz1HTHgRbwT+EvBgJalAjED84EJaPxO8y6gXeXup4gdXWi0lBI1AYq7LkzE6nqMXXi9bUi07pGGD3ZsjkoMOs4Uc72e2960P8zs+4XKsNDnJqcPMSCAESKHteOw5xJHw=
+	t=1708522392; cv=none; b=XjhcqEdv0n8O13nE4qE6xWx7ToAjh4k+4y6jEP86DsuFBexYoQtVkwJwKq7oj8ifrFiHdxpAmdbVy9COWrZ0qH0Mgdwb1byNeHKIA5qj32FYIOFKjLOZ+oYxG2VltKk486MH+7QnPgQX4IocJihdNtXc4VEAPtDQMuT0fPnQoXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522249; c=relaxed/simple;
-	bh=dI7hBryEKVHoGj9B8xH3dAxOEdYuyTFj9SOXIPaLT78=;
+	s=arc-20240116; t=1708522392; c=relaxed/simple;
+	bh=wy4mZ99YuqORxH2bceluzgguMyQJNYCsBWJaf/GPDHc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LnKz+r3FQzgqZw8tklxvPcF+GxTUloSVW4Vg2y/TBcq2Dd+fvF9XMEQIPZwx03avKDocq+iD7Sx1GWh3CVxfQm/XZkvsSqyJKh5QO+j8F0C+bxnmlEgikdxi7vNm9lrVQc9AQkEa9m3G6naOYYHyGm9YHr0KBGMOqdH7NSqhHJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RvzADBXQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09239C433A6;
-	Wed, 21 Feb 2024 13:30:48 +0000 (UTC)
+	 MIME-Version; b=Ry0i7PWONoYnScUbWhmdxcBv4Gresn6NVGTQvn0bEdCTaRqEIH5Act2Bn/SiggMFj4+NQuY5Jm5YZo4i5mJD70Qazfj+dGoJpaKYoATLu7kMm4IE2TdE9l9wucTasDpvu7G/3KA7LoayjJg17bHKqUVDGPp7KT5/291hBiCVB1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e1NF9obC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54C47C433C7;
+	Wed, 21 Feb 2024 13:33:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522249;
-	bh=dI7hBryEKVHoGj9B8xH3dAxOEdYuyTFj9SOXIPaLT78=;
+	s=korg; t=1708522390;
+	bh=wy4mZ99YuqORxH2bceluzgguMyQJNYCsBWJaf/GPDHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RvzADBXQ+BgFzFH70Y/YmnSHmwWEVz58Y4EouVqlaAj5XMYuogVNwx+qEmkL0rCl5
-	 5An/B/oebPqQQR9dhFN18zthP2VdhxCXiCUe0WXyBkT3cilP+WhwA25dLazN3SzBul
-	 ko452v8IPYcPKsVee1YJRuDWxx6bk/BsIj4iDubw=
+	b=e1NF9obCc48a1zCOobp79O7AcTu7LA4CrV/fWVS8y+E1PQEl/tUM5Hc1CMp2UOvcN
+	 4qG5qlTfSOXPkjcL+hoh7iqCUhIAdnfEa2kcOjuPFi+QbQ0KNi8AkxfQVrAyV3FPcF
+	 0QiUW4YWnnA5ZWsl6p2KCscgXERZhMaMuzV+eqJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lin Ma <linma@zju.edu.cn>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 113/476] ksmbd: fix global oob in ksmbd_nl_policy
-Date: Wed, 21 Feb 2024 14:02:44 +0100
-Message-ID: <20240221130012.164659508@linuxfoundation.org>
+Subject: [PATCH 5.15 114/476] cpufreq: intel_pstate: Drop redundant intel_pstate_get_hwp_cap() call
+Date: Wed, 21 Feb 2024 14:02:45 +0100
+Message-ID: <20240221130012.202488106@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
 References: <20240221130007.738356493@linuxfoundation.org>
@@ -67,131 +65,62 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit ebeae8adf89d9a82359f6659b1663d09beec2faa ]
+[ Upstream commit 458b03f81afbb27143c45d47c2d8f418b2ba2407 ]
 
-Similar to a reported issue (check the commit b33fb5b801c6 ("net:
-qualcomm: rmnet: fix global oob in rmnet_policy"), my local fuzzer finds
-another global out-of-bounds read for policy ksmbd_nl_policy. See bug
-trace below:
+It is not necessary to call intel_pstate_get_hwp_cap() from
+intel_pstate_update_perf_limits(), because it gets called from
+intel_pstate_verify_cpu_policy() which is either invoked directly
+right before intel_pstate_update_perf_limits(), in
+intel_cpufreq_verify_policy() in the passive mode, or called
+from driver callbacks in a sequence that causes it to be followed
+by an immediate intel_pstate_update_perf_limits().
 
-==================================================================
-BUG: KASAN: global-out-of-bounds in validate_nla lib/nlattr.c:386 [inline]
-BUG: KASAN: global-out-of-bounds in __nla_validate_parse+0x24af/0x2750 lib/nlattr.c:600
-Read of size 1 at addr ffffffff8f24b100 by task syz-executor.1/62810
+Namely, in the active mode intel_cpufreq_verify_policy() is called
+by intel_pstate_verify_policy() which is the ->verify() callback
+routine of intel_pstate and gets called by the cpufreq core right
+before intel_pstate_set_policy(), which is the driver's ->setoplicy()
+callback routine, where intel_pstate_update_perf_limits() is called.
 
-CPU: 0 PID: 62810 Comm: syz-executor.1 Tainted: G                 N 6.1.0 #3
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x8b/0xb3 lib/dump_stack.c:106
- print_address_description mm/kasan/report.c:284 [inline]
- print_report+0x172/0x475 mm/kasan/report.c:395
- kasan_report+0xbb/0x1c0 mm/kasan/report.c:495
- validate_nla lib/nlattr.c:386 [inline]
- __nla_validate_parse+0x24af/0x2750 lib/nlattr.c:600
- __nla_parse+0x3e/0x50 lib/nlattr.c:697
- __nlmsg_parse include/net/netlink.h:748 [inline]
- genl_family_rcv_msg_attrs_parse.constprop.0+0x1b0/0x290 net/netlink/genetlink.c:565
- genl_family_rcv_msg_doit+0xda/0x330 net/netlink/genetlink.c:734
- genl_family_rcv_msg net/netlink/genetlink.c:833 [inline]
- genl_rcv_msg+0x441/0x780 net/netlink/genetlink.c:850
- netlink_rcv_skb+0x14f/0x410 net/netlink/af_netlink.c:2540
- genl_rcv+0x24/0x40 net/netlink/genetlink.c:861
- netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
- netlink_unicast+0x54e/0x800 net/netlink/af_netlink.c:1345
- netlink_sendmsg+0x930/0xe50 net/netlink/af_netlink.c:1921
- sock_sendmsg_nosec net/socket.c:714 [inline]
- sock_sendmsg+0x154/0x190 net/socket.c:734
- ____sys_sendmsg+0x6df/0x840 net/socket.c:2482
- ___sys_sendmsg+0x110/0x1b0 net/socket.c:2536
- __sys_sendmsg+0xf3/0x1c0 net/socket.c:2565
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-RIP: 0033:0x7fdd66a8f359
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 f1 19 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fdd65e00168 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007fdd66bbcf80 RCX: 00007fdd66a8f359
-RDX: 0000000000000000 RSI: 0000000020000500 RDI: 0000000000000003
-RBP: 00007fdd66ada493 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007ffc84b81aff R14: 00007fdd65e00300 R15: 0000000000022000
- </TASK>
-
-The buggy address belongs to the variable:
- ksmbd_nl_policy+0x100/0xa80
-
-The buggy address belongs to the physical page:
-page:0000000034f47940 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x1ccc4b
-flags: 0x200000000001000(reserved|node=0|zone=2)
-raw: 0200000000001000 ffffea00073312c8 ffffea00073312c8 0000000000000000
-raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
- ffffffff8f24b000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- ffffffff8f24b080: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->ffffffff8f24b100: f9 f9 f9 f9 00 00 f9 f9 f9 f9 f9 f9 00 00 07 f9
-                   ^
- ffffffff8f24b180: f9 f9 f9 f9 00 05 f9 f9 f9 f9 f9 f9 00 00 00 05
- ffffffff8f24b200: f9 f9 f9 f9 00 00 03 f9 f9 f9 f9 f9 00 00 04 f9
-==================================================================
-
-To fix it, add a placeholder named __KSMBD_EVENT_MAX and let
-KSMBD_EVENT_MAX to be its original value - 1 according to what other
-netlink families do. Also change two sites that refer the
-KSMBD_EVENT_MAX to correct value.
-
-Cc: stable@vger.kernel.org
-Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: 192cdb1c907f ("cpufreq: intel_pstate: Refine computation of P-state for given frequency")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ksmbd/ksmbd_netlink.h | 3 ++-
- fs/ksmbd/transport_ipc.c | 4 ++--
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ drivers/cpufreq/intel_pstate.c | 20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/fs/ksmbd/ksmbd_netlink.h b/fs/ksmbd/ksmbd_netlink.h
-index 821ed8e3cbee..ecffcb8a1557 100644
---- a/fs/ksmbd/ksmbd_netlink.h
-+++ b/fs/ksmbd/ksmbd_netlink.h
-@@ -304,7 +304,8 @@ enum ksmbd_event {
- 	KSMBD_EVENT_SPNEGO_AUTHEN_REQUEST,
- 	KSMBD_EVENT_SPNEGO_AUTHEN_RESPONSE	= 15,
- 
--	KSMBD_EVENT_MAX
-+	__KSMBD_EVENT_MAX,
-+	KSMBD_EVENT_MAX = __KSMBD_EVENT_MAX - 1
- };
- 
- /*
-diff --git a/fs/ksmbd/transport_ipc.c b/fs/ksmbd/transport_ipc.c
-index 9560c704033e..2c9662e32799 100644
---- a/fs/ksmbd/transport_ipc.c
-+++ b/fs/ksmbd/transport_ipc.c
-@@ -74,7 +74,7 @@ static int handle_unsupported_event(struct sk_buff *skb, struct genl_info *info)
- static int handle_generic_event(struct sk_buff *skb, struct genl_info *info);
- static int ksmbd_ipc_heartbeat_request(void);
- 
--static const struct nla_policy ksmbd_nl_policy[KSMBD_EVENT_MAX] = {
-+static const struct nla_policy ksmbd_nl_policy[KSMBD_EVENT_MAX + 1] = {
- 	[KSMBD_EVENT_UNSPEC] = {
- 		.len = 0,
- 	},
-@@ -402,7 +402,7 @@ static int handle_generic_event(struct sk_buff *skb, struct genl_info *info)
- 		return -EPERM;
- #endif
- 
--	if (type >= KSMBD_EVENT_MAX) {
-+	if (type > KSMBD_EVENT_MAX) {
- 		WARN_ON(1);
- 		return -EINVAL;
+diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
+index 736cb2cfcbb0..f2a94afb6eec 100644
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -2332,18 +2332,14 @@ static void intel_pstate_update_perf_limits(struct cpudata *cpu,
+ 	 * HWP needs some special consideration, because HWP_REQUEST uses
+ 	 * abstract values to represent performance rather than pure ratios.
+ 	 */
+-	if (hwp_active) {
+-		intel_pstate_get_hwp_cap(cpu);
+-
+-		if (cpu->pstate.scaling != perf_ctl_scaling) {
+-			int scaling = cpu->pstate.scaling;
+-			int freq;
+-
+-			freq = max_policy_perf * perf_ctl_scaling;
+-			max_policy_perf = DIV_ROUND_UP(freq, scaling);
+-			freq = min_policy_perf * perf_ctl_scaling;
+-			min_policy_perf = DIV_ROUND_UP(freq, scaling);
+-		}
++	if (hwp_active && cpu->pstate.scaling != perf_ctl_scaling) {
++		int scaling = cpu->pstate.scaling;
++		int freq;
++
++		freq = max_policy_perf * perf_ctl_scaling;
++		max_policy_perf = DIV_ROUND_UP(freq, scaling);
++		freq = min_policy_perf * perf_ctl_scaling;
++		min_policy_perf = DIV_ROUND_UP(freq, scaling);
  	}
+ 
+ 	pr_debug("cpu:%d min_policy_perf:%d max_policy_perf:%d\n",
 -- 
 2.43.0
 
