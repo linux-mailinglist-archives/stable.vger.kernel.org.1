@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-22947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E0E885DE62
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:18:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C28885DD51
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:04:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7BBA1F2460A
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:18:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24B2A283858
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:04:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8A867E574;
-	Wed, 21 Feb 2024 14:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C17057BB19;
+	Wed, 21 Feb 2024 14:03:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u5wa1q4M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Rip1DzU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B057E110;
-	Wed, 21 Feb 2024 14:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F9D869E08;
+	Wed, 21 Feb 2024 14:03:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525053; cv=none; b=mxTrKkI1gGDIEZHZXVqoTK2FoS46OhtB+l46tB2hxmZm8oyk2SpFDM+Nyjx5sPKNGy8YcFpX6XTnBiYT80CyFQRU3b0DW++IAJyaz28e6oktEXKdfwwEo5OymLfpFx/QT0Ci1BkwZEpURCFrD+1gWoJpfB9Ca5+eBwZyHgS12Gc=
+	t=1708524219; cv=none; b=mxQlP71Bcv/nya+im41hLQt9xiLxvgst7r3BrV2hLWpJqvNhFtjGMkr/lF7bbTsfYS4aZL+om9fgnqEkMZrzYPyUUIt1hyUg9x1NPnmu8dq9NKyG6VqJtJ61EmvNd6AnyQsBbUZUhtL5Yz5KZm5bKG20fVv9K1DhUBqFO+SyBEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525053; c=relaxed/simple;
-	bh=R57DPq9Sm+ctCaYKTcdYCG5gKODlcZwyX1x7cqtov8I=;
+	s=arc-20240116; t=1708524219; c=relaxed/simple;
+	bh=TUT4uzpSo1rWQzSi43CVaOmrCUHOOlOJM8QmWCA0lAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qzyyN/unhtko21+50TV8+sf6y9CDOO1Ip5U/xhnA7KqV2k4BUfha3FbewCOMO/0FVg9ndeegv7Lfg6mHif+5aUI+yScGa+Dctnl7n2ehM4UPrxNjI1YcHHJRMWyXyd5QKbgr49Dao8w5OPiBXK7EjLeIYJiW0rIW5nr/7Bf/OP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u5wa1q4M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7566C433F1;
-	Wed, 21 Feb 2024 14:17:32 +0000 (UTC)
+	 MIME-Version; b=h75Ca1E1gzE1gRGrke2+VSApDuOIGFiAM0shwBuPEYvuXhDXD0lwLsn31Zx5HsTf2543H/DjgTudc/PxahAPKN6qg8Ae8w9fP+/bZa4QcK8ytiXU1HMCmsYVy2ChyvDQ5vWh3yiT1V0Z7TsGbUA+1QvM0vDfNwL5rsfEMZf3NNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Rip1DzU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96866C433F1;
+	Wed, 21 Feb 2024 14:03:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525053;
-	bh=R57DPq9Sm+ctCaYKTcdYCG5gKODlcZwyX1x7cqtov8I=;
+	s=korg; t=1708524219;
+	bh=TUT4uzpSo1rWQzSi43CVaOmrCUHOOlOJM8QmWCA0lAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u5wa1q4MsKXJkzdnUgajg02AC2VauTSd7TzRVLe/F5stEzmMeRmwV0aL+197K9BHq
-	 f4Ncg+2zXzAlNfSzjvPWl4vgy6UDoVGhXPlN8uRwNiNYzjiom4+uvtpa5u3KI2t0op
-	 uzbKCD+Ma3Chwn9njHtx6or4u3ae3858hS4MbjRs=
+	b=2Rip1DzUXiuzb77vfAHljlTzg4/jupvd1CjKzeSjwjz8KsD6qWxhlWsZ7MPUt5wZd
+	 e3CwxfmilEgMl3Zjoso71EPAx76hsdJh8XjmXfHIaiOuOFLgTLaqjRVnCn35K1lNPy
+	 0eQHBfzVQhdkFoVDQ8+TmcoRoLiE79bjyZnYn9xQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Eric Biggers <ebiggers@google.com>,
-	Richard Weinberger <richard@nod.at>
-Subject: [PATCH 5.4 018/267] ubifs: ubifs_symlink: Fix memleak of inode->i_link in error path
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Meenakshikumar Somasundaram <meenakshikumar.somasundaram@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 180/379] drm/amd/display: Fix tiled display misalignment
 Date: Wed, 21 Feb 2024 14:05:59 +0100
-Message-ID: <20240221125940.624029313@linuxfoundation.org>
+Message-ID: <20240221130000.233711447@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+From: Meenakshikumar Somasundaram <meenakshikumar.somasundaram@amd.com>
 
-commit 1e022216dcd248326a5bb95609d12a6815bca4e2 upstream.
+[ Upstream commit c4b8394e76adba4f50a3c2696c75b214a291e24a ]
 
-For error handling path in ubifs_symlink(), inode will be marked as
-bad first, then iput() is invoked. If inode->i_link is initialized by
-fscrypt_encrypt_symlink() in encryption scenario, inode->i_link won't
-be freed by callchain ubifs_free_inode -> fscrypt_free_inode in error
-handling path, because make_bad_inode() has changed 'inode->i_mode' as
-'S_IFREG'.
-Following kmemleak is easy to be reproduced by injecting error in
-ubifs_jnl_update() when doing symlink in encryption scenario:
- unreferenced object 0xffff888103da3d98 (size 8):
-  comm "ln", pid 1692, jiffies 4294914701 (age 12.045s)
-  backtrace:
-   kmemdup+0x32/0x70
-   __fscrypt_encrypt_symlink+0xed/0x1c0
-   ubifs_symlink+0x210/0x300 [ubifs]
-   vfs_symlink+0x216/0x360
-   do_symlinkat+0x11a/0x190
-   do_syscall_64+0x3b/0xe0
-There are two ways fixing it:
- 1. Remove make_bad_inode() in error handling path. We can do that
-    because ubifs_evict_inode() will do same processes for good
-    symlink inode and bad symlink inode, for inode->i_nlink checking
-    is before is_bad_inode().
- 2. Free inode->i_link before marking inode bad.
-Method 2 is picked, it has less influence, personally, I think.
+[Why]
+When otg workaround is applied during clock update, otgs of
+tiled display went out of sync.
 
-Cc: stable@vger.kernel.org
-Fixes: 2c58d548f570 ("fscrypt: cache decrypted symlink target in ->i_link")
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Suggested-by: Eric Biggers <ebiggers@kernel.org>
-Reviewed-by: Eric Biggers <ebiggers@google.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[How]
+To call dc_trigger_sync() after clock update to sync otgs again.
+
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Meenakshikumar Somasundaram <meenakshikumar.somasundaram@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ubifs/dir.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/display/dc/core/dc.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/fs/ubifs/dir.c
-+++ b/fs/ubifs/dir.c
-@@ -1206,6 +1206,8 @@ out_cancel:
- 	dir_ui->ui_size = dir->i_size;
- 	mutex_unlock(&dir_ui->ui_mutex);
- out_inode:
-+	/* Free inode->i_link before inode is marked as bad. */
-+	fscrypt_free_inode(inode);
- 	make_bad_inode(inode);
- 	iput(inode);
- out_fname:
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+index 36a9e9c84ed4..272252cd0500 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -1440,6 +1440,10 @@ static enum dc_status dc_commit_state_no_check(struct dc *dc, struct dc_state *c
+ 		wait_for_no_pipes_pending(dc, context);
+ 		/* pplib is notified if disp_num changed */
+ 		dc->hwss.optimize_bandwidth(dc, context);
++		/* Need to do otg sync again as otg could be out of sync due to otg
++		 * workaround applied during clock update
++		 */
++		dc_trigger_sync(dc, context);
+ 	}
+ 
+ 	context->stream_mask = get_stream_mask(dc, context);
+-- 
+2.43.0
+
 
 
 
