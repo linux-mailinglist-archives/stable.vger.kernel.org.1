@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-22449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAA7985DC19
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:49:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD80F85D999
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:21:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 801EF1F21137
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:49:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4E9C1C23054
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:21:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE6697CF27;
-	Wed, 21 Feb 2024 13:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA7C07A715;
+	Wed, 21 Feb 2024 13:20:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yQoEjon7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dteaVfvR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5AB7B3F2;
-	Wed, 21 Feb 2024 13:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7D217762F;
+	Wed, 21 Feb 2024 13:20:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523336; cv=none; b=pU4XR9L37wo5NK1hjD/Lld8YTp7Fmght63SsViylVn651NTP+s7aoqQGwc0rYCWOrVVXQw85rhJzVj/nbRDVmpa6DGZUvKY0VQ0g/R94Pm5NGdVBxla43SLAR/F1JdN8ZC+6UsgQA5nBw2p7xchuqcaS8txi+NMaCVlwqE0AWzw=
+	t=1708521603; cv=none; b=jPjcxglISYOy69DnyLrjla5Lu0sbn0yVTdHODQ48Tp6yAarTLJzaGI8dz4yOli4CEEbxGFUcRwTpySjUF+zi61kjdlZ40xeg3xUWcF+Ejv52DSFQCdYgLuW+9qw0a34Oawx5jdIGqi3Gnw71qTKyKA6E+PHy6przRfUckMeRGbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523336; c=relaxed/simple;
-	bh=1qXKn1DgeW3XihGioOwBVhFpOj4jL5btg+4VWQwqk1k=;
+	s=arc-20240116; t=1708521603; c=relaxed/simple;
+	bh=12910xynjxCnlWv7k/gyJSFzoF0Qo/6zl8w4zwE4zrY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gt8WZsSZzw6dCsIrT/tHg+eVICt9AtLGkL8ikG2TFGDMu+p5RdLgD177z+PJKAo/ACgyGsIwl4aRYfetBxIMY42eeaUCjm67hvFruFR1EzaTdSJo5rf+NNJKscn4gPQFO4Eqd5RmTAeORB/P6kmwPcKr0x5537wS3Vjjc/plAqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yQoEjon7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FE60C43399;
-	Wed, 21 Feb 2024 13:48:56 +0000 (UTC)
+	 MIME-Version; b=o5MRozvUOArLXbzYfEYXStGYaLz/KcXlHYSJFgfbujyOCbXV4GNtvkYJkBdQAcFsYA1vOEE1xbk5DpNOlgIxH622Lx3fmqCZ4i14eG1YflO3qSXRuKVQftjhMbwdDSuodjPSSZhnlYmso5nka/a+CTltVzK/c2nN30QxuM4wzAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dteaVfvR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15B42C433C7;
+	Wed, 21 Feb 2024 13:20:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523336;
-	bh=1qXKn1DgeW3XihGioOwBVhFpOj4jL5btg+4VWQwqk1k=;
+	s=korg; t=1708521603;
+	bh=12910xynjxCnlWv7k/gyJSFzoF0Qo/6zl8w4zwE4zrY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yQoEjon7o7yg5vsqxFMeW+9eoeYfeValEVuAZ6gZi7Q854ZXZcTCxTLRb/9WDJx4p
-	 LjtDLv3J1ovlSxq1RZEDJ57Z4PEiaWm0m8xHZLkd0Obd5pOllIuUbaHwasm9VGaozg
-	 pS7hiBM5/6UJTzxQZyDnxNTlUO7qfUgMTfK9k+jQ=
+	b=dteaVfvRnmziVJ6K05PTwsfrmc+d8KLqYNSiud+rFDnLqVpVMDN0sDRZri5hv/0gv
+	 heXkXrefX36/PmUM7w/Y9yATLcC+1j9Z31xXbFEHMQaX331KWY5gqvXn/GNVACB54r
+	 psb/6CF5nk/O1YPzF6jZFMotBl22nVScbNURt6wI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	bo liu <bo.liu@senarytech.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 406/476] ALSA: hda/conexant: Add quirk for SWS JS201D
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 156/202] netfilter: nft_compat: reject unused compat flag
 Date: Wed, 21 Feb 2024 14:07:37 +0100
-Message-ID: <20240221130023.010729181@linuxfoundation.org>
+Message-ID: <20240221125936.731574193@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,81 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: bo liu <bo.liu@senarytech.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 4639c5021029d49fd2f97fa8d74731f167f98919 upstream.
+[ Upstream commit 292781c3c5485ce33bd22b2ef1b2bed709b4d672 ]
 
-The SWS JS201D need a different pinconfig from windows driver.
-Add a quirk to use a specific pinconfig to SWS JS201D.
+Flag (1 << 0) is ignored is set, never used, reject it it with EINVAL
+instead.
 
-Signed-off-by: bo liu <bo.liu@senarytech.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240205013802.51907-1-bo.liu@senarytech.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0ca743a55991 ("netfilter: nf_tables: add compatibility layer for x_tables")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_conexant.c |   18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ include/uapi/linux/netfilter/nf_tables.h | 2 ++
+ net/netfilter/nft_compat.c               | 3 ++-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_conexant.c
-+++ b/sound/pci/hda/patch_conexant.c
-@@ -344,6 +344,7 @@ enum {
- 	CXT_FIXUP_HP_ZBOOK_MUTE_LED,
- 	CXT_FIXUP_HEADSET_MIC,
- 	CXT_FIXUP_HP_MIC_NO_PRESENCE,
-+	CXT_PINCFG_SWS_JS201D,
+diff --git a/include/uapi/linux/netfilter/nf_tables.h b/include/uapi/linux/netfilter/nf_tables.h
+index cc00be102b9f..39774870c864 100644
+--- a/include/uapi/linux/netfilter/nf_tables.h
++++ b/include/uapi/linux/netfilter/nf_tables.h
+@@ -238,9 +238,11 @@ enum nft_rule_attributes {
+ /**
+  * enum nft_rule_compat_flags - nf_tables rule compat flags
+  *
++ * @NFT_RULE_COMPAT_F_UNUSED: unused
+  * @NFT_RULE_COMPAT_F_INV: invert the check result
+  */
+ enum nft_rule_compat_flags {
++	NFT_RULE_COMPAT_F_UNUSED = (1 << 0),
+ 	NFT_RULE_COMPAT_F_INV	= (1 << 1),
+ 	NFT_RULE_COMPAT_F_MASK	= NFT_RULE_COMPAT_F_INV,
  };
+diff --git a/net/netfilter/nft_compat.c b/net/netfilter/nft_compat.c
+index 2846d64659f2..95af1dbc28c1 100644
+--- a/net/netfilter/nft_compat.c
++++ b/net/netfilter/nft_compat.c
+@@ -207,7 +207,8 @@ static int nft_parse_compat(const struct nlattr *attr, u16 *proto, bool *inv)
+ 		return -EINVAL;
  
- /* for hda_fixup_thinkpad_acpi() */
-@@ -841,6 +842,17 @@ static const struct hda_pintbl cxt_pincf
- 	{}
- };
- 
-+/* SuoWoSi/South-holding JS201D with sn6140 */
-+static const struct hda_pintbl cxt_pincfg_sws_js201d[] = {
-+	{ 0x16, 0x03211040 }, /* hp out */
-+	{ 0x17, 0x91170110 }, /* SPK/Class_D */
-+	{ 0x18, 0x95a70130 }, /* Internal mic */
-+	{ 0x19, 0x03a11020 }, /* Headset Mic */
-+	{ 0x1a, 0x40f001f0 }, /* Not used */
-+	{ 0x21, 0x40f001f0 }, /* Not used */
-+	{}
-+};
-+
- static const struct hda_fixup cxt_fixups[] = {
- 	[CXT_PINCFG_LENOVO_X200] = {
- 		.type = HDA_FIXUP_PINS,
-@@ -996,6 +1008,10 @@ static const struct hda_fixup cxt_fixups
- 		.chained = true,
- 		.chain_id = CXT_FIXUP_HEADSET_MIC,
- 	},
-+	[CXT_PINCFG_SWS_JS201D] = {
-+		.type = HDA_FIXUP_PINS,
-+		.v.pins = cxt_pincfg_sws_js201d,
-+	},
- };
- 
- static const struct snd_pci_quirk cxt5045_fixups[] = {
-@@ -1069,6 +1085,7 @@ static const struct snd_pci_quirk cxt506
- 	SND_PCI_QUIRK(0x103c, 0x8457, "HP Z2 G4 mini", CXT_FIXUP_HP_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x103c, 0x8458, "HP Z2 G4 mini premium", CXT_FIXUP_HP_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x138d, "Asus", CXT_FIXUP_HEADPHONE_MIC_PIN),
-+	SND_PCI_QUIRK(0x14f1, 0x0265, "SWS JS201D", CXT_PINCFG_SWS_JS201D),
- 	SND_PCI_QUIRK(0x152d, 0x0833, "OLPC XO-1.5", CXT_FIXUP_OLPC_XO),
- 	SND_PCI_QUIRK(0x17aa, 0x20f2, "Lenovo T400", CXT_PINCFG_LENOVO_TP410),
- 	SND_PCI_QUIRK(0x17aa, 0x215e, "Lenovo T410", CXT_PINCFG_LENOVO_TP410),
-@@ -1109,6 +1126,7 @@ static const struct hda_model_fixup cxt5
- 	{ .id = CXT_FIXUP_HP_ZBOOK_MUTE_LED, .name = "hp-zbook-mute-led" },
- 	{ .id = CXT_FIXUP_HP_MIC_NO_PRESENCE, .name = "hp-mic-fix" },
- 	{ .id = CXT_PINCFG_LENOVO_NOTEBOOK, .name = "lenovo-20149" },
-+	{ .id = CXT_PINCFG_SWS_JS201D, .name = "sws-js201d" },
- 	{}
- };
- 
+ 	flags = ntohl(nla_get_be32(tb[NFTA_RULE_COMPAT_FLAGS]));
+-	if (flags & ~NFT_RULE_COMPAT_F_MASK)
++	if (flags & NFT_RULE_COMPAT_F_UNUSED ||
++	    flags & ~NFT_RULE_COMPAT_F_MASK)
+ 		return -EINVAL;
+ 	if (flags & NFT_RULE_COMPAT_F_INV)
+ 		*inv = true;
+-- 
+2.43.0
+
 
 
 
