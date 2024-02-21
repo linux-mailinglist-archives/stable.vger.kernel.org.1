@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-23112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13B2B85DF53
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:26:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15AC785DE39
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:16:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6CBC1F241FF
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:26:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9E0B1F21B7F
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:16:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EF8C7C6D5;
-	Wed, 21 Feb 2024 14:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54BC97E773;
+	Wed, 21 Feb 2024 14:14:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oSGuhqWO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lT88eta9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 155DE78B73;
-	Wed, 21 Feb 2024 14:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 147A37D413;
+	Wed, 21 Feb 2024 14:14:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525613; cv=none; b=o6j2vuabDwdgRyVzvVyXUGJ8dueJ4jCMHzTAHmpAReGPSNdvF0SusnzCi+q/AB+ojr0sZFjM3OokQQGG29a8JjHxW2hF8lyl8p1xVvQt3OLxP1I0/56TUwU3LI42NQBqHHRIvP0w+q0pZYSP35YyuxembLyyNUMBbyA6qpKI0Qk=
+	t=1708524892; cv=none; b=tNQgyiUZdB2fEeLPdjBE0sPaLx66sS8dbydkr6CzC3dTT8g9Dc/81LE72DhR7d6crkM9y5INGhIPALsDdo3g+JkhjLzFybHRrK/qPf2QlfT6Yawh+WU0dPrUgA5pWhajHCC3fCfV4gszhcEKsqYfNuDvIeEyNdRoYzrWUKYBRGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525613; c=relaxed/simple;
-	bh=s38D0c4HOp1YF/MbXehLWjyqsR5WazeNqbq6Ul0I//o=;
+	s=arc-20240116; t=1708524892; c=relaxed/simple;
+	bh=eB87sL85vHSQVIUbA4OHpqNmNip9AYcVslrJdoPybzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ejcOLyr9Nbcbgpy2ihfZS0Ff3jmA7dSr3+z69CGbBaFmB3/C6Y07+yWJQewRD49zoA0p09dgzhnbJBn2bHwQyAHUm17bQSR2Owa1/YXO5WWnW82gJ4ZKPKTnj1ftw6NxqZQT8n+gY4fznUSo6X16g4Qih8BGrjT0SQyYKxaF6Yk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oSGuhqWO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A430C433C7;
-	Wed, 21 Feb 2024 14:26:52 +0000 (UTC)
+	 MIME-Version; b=gqbGBB6OHMdGswUfTd0FyTJi5OaFgx0IR/2+c7J35rvRrTQWNLDmbeiylnI+4PKcRyt1rAE96TlDWmECjshPXcON01s8r2kyXf1BUqv/egjilrczDxTSsN7OrJ6hhkNkwDZiy3kH0O8P4777ihE8xW1RQyV1Do3LF9Su2y8ykF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lT88eta9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79D64C433C7;
+	Wed, 21 Feb 2024 14:14:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525613;
-	bh=s38D0c4HOp1YF/MbXehLWjyqsR5WazeNqbq6Ul0I//o=;
+	s=korg; t=1708524892;
+	bh=eB87sL85vHSQVIUbA4OHpqNmNip9AYcVslrJdoPybzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oSGuhqWObCOiVqmMQNwAjs1H93egIkSPGeDJZp6Mwcfh1Lv/XBVOlxBbNWq9iyvG8
-	 VEDD4CiTgjmUW/OI4Zs0VOMy4/nL4JmMPg1jtMo+Ms4pq/64zITGmujt1iUenawijw
-	 inp4Iqnl+iYSiXJDKPlKx6i+2SoPvlLYi3l5imZo=
+	b=lT88eta9XNzScv6+zG0JNP+00OK4JU9kFYddT5/BEeq4wbsSNoZmg70wM8jBJDpqA
+	 uVxi+Rdq6zjn/cWqDGgz6PZmZ8j2WQJsMpQhMwbTIDYpA3UOchatI2b1UjCCgWfZ2I
+	 XDvQLZaS+TK8C3b0JHm8/+q2zxor4uuA2KJs9bXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 209/267] spi: ppc4xx: Drop write-only variable
-Date: Wed, 21 Feb 2024 14:09:10 +0100
-Message-ID: <20240221125946.744765349@linuxfoundation.org>
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+5d5d25f90f195a3cfcb4@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 372/379] nilfs2: replace WARN_ONs for invalid DAT metadata block requests
+Date: Wed, 21 Feb 2024 14:09:11 +0100
+Message-ID: <20240221130006.069136139@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +60,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit b3aa619a8b4706f35cb62f780c14e68796b37f3f ]
+commit 5124a0a549857c4b87173280e192eea24dea72ad upstream.
 
-Since commit 24778be20f87 ("spi: convert drivers to use
-bits_per_word_mask") the bits_per_word variable is only written to. The
-check that was there before isn't needed any more as the spi core
-ensures that only 8 bit transfers are used, so the variable can go away
-together with all assignments to it.
+If DAT metadata file block access fails due to corruption of the DAT file
+or abnormal virtual block numbers held by b-trees or inodes, a kernel
+warning is generated.
 
-Fixes: 24778be20f87 ("spi: convert drivers to use bits_per_word_mask")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/20240210164006.208149-8-u.kleine-koenig@pengutronix.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This replaces the WARN_ONs by error output, so that a kernel, booted with
+panic_on_warn, does not panic.  This patch also replaces the detected
+return code -ENOENT with another internal code -EINVAL to notify the bmap
+layer of metadata corruption.  When the bmap layer sees -EINVAL, it
+handles the abnormal situation with nilfs_bmap_convert_error() and finally
+returns code -EIO as it should.
+
+Link: https://lkml.kernel.org/r/0000000000005cc3d205ea23ddcf@google.com
+Link: https://lkml.kernel.org/r/20230126164114.6911-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: <syzbot+5d5d25f90f195a3cfcb4@syzkaller.appspotmail.com>
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-ppc4xx.c | 5 -----
- 1 file changed, 5 deletions(-)
+ fs/nilfs2/dat.c |   27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/spi/spi-ppc4xx.c b/drivers/spi/spi-ppc4xx.c
-index 0ea2d9a369d9..738a1e4e445e 100644
---- a/drivers/spi/spi-ppc4xx.c
-+++ b/drivers/spi/spi-ppc4xx.c
-@@ -170,10 +170,8 @@ static int spi_ppc4xx_setupxfer(struct spi_device *spi, struct spi_transfer *t)
- 	int scr;
- 	u8 cdm = 0;
- 	u32 speed;
--	u8 bits_per_word;
+--- a/fs/nilfs2/dat.c
++++ b/fs/nilfs2/dat.c
+@@ -40,8 +40,21 @@ static inline struct nilfs_dat_info *NIL
+ static int nilfs_dat_prepare_entry(struct inode *dat,
+ 				   struct nilfs_palloc_req *req, int create)
+ {
+-	return nilfs_palloc_get_entry_block(dat, req->pr_entry_nr,
+-					    create, &req->pr_entry_bh);
++	int ret;
++
++	ret = nilfs_palloc_get_entry_block(dat, req->pr_entry_nr,
++					   create, &req->pr_entry_bh);
++	if (unlikely(ret == -ENOENT)) {
++		nilfs_err(dat->i_sb,
++			  "DAT doesn't have a block to manage vblocknr = %llu",
++			  (unsigned long long)req->pr_entry_nr);
++		/*
++		 * Return internal code -EINVAL to notify bmap layer of
++		 * metadata corruption.
++		 */
++		ret = -EINVAL;
++	}
++	return ret;
+ }
  
- 	/* Start with the generic configuration for this device. */
--	bits_per_word = spi->bits_per_word;
- 	speed = spi->max_speed_hz;
+ static void nilfs_dat_commit_entry(struct inode *dat,
+@@ -123,11 +136,7 @@ static void nilfs_dat_commit_free(struct
  
- 	/*
-@@ -181,9 +179,6 @@ static int spi_ppc4xx_setupxfer(struct spi_device *spi, struct spi_transfer *t)
- 	 * the transfer to overwrite the generic configuration with zeros.
- 	 */
- 	if (t) {
--		if (t->bits_per_word)
--			bits_per_word = t->bits_per_word;
+ int nilfs_dat_prepare_start(struct inode *dat, struct nilfs_palloc_req *req)
+ {
+-	int ret;
 -
- 		if (t->speed_hz)
- 			speed = min(t->speed_hz, spi->max_speed_hz);
- 	}
--- 
-2.43.0
-
+-	ret = nilfs_dat_prepare_entry(dat, req, 0);
+-	WARN_ON(ret == -ENOENT);
+-	return ret;
++	return nilfs_dat_prepare_entry(dat, req, 0);
+ }
+ 
+ void nilfs_dat_commit_start(struct inode *dat, struct nilfs_palloc_req *req,
+@@ -154,10 +163,8 @@ int nilfs_dat_prepare_end(struct inode *
+ 	int ret;
+ 
+ 	ret = nilfs_dat_prepare_entry(dat, req, 0);
+-	if (ret < 0) {
+-		WARN_ON(ret == -ENOENT);
++	if (ret < 0)
+ 		return ret;
+-	}
+ 
+ 	kaddr = kmap_atomic(req->pr_entry_bh->b_page);
+ 	entry = nilfs_palloc_block_get_entry(dat, req->pr_entry_nr,
 
 
 
