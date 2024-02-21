@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-22478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 860CC85DC3A
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:50:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F28B485D9C3
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:22:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B2301F2112E
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:50:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A95DB1F2384B
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:22:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5EF238398;
-	Wed, 21 Feb 2024 13:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 761067BAF2;
+	Wed, 21 Feb 2024 13:21:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XedqjC+2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nl9WQMQ2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAFAD7C092;
-	Wed, 21 Feb 2024 13:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 325F37BAF7;
+	Wed, 21 Feb 2024 13:21:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523431; cv=none; b=P/ZyJSjfo6n0rn6lYOgXY8MVxn+95UaAtfmDIwPK9+fMtXOBrGrBRmwS+G6npJk5lsH7eIp6SENIE2KFERKOB0wW1m7J3xUEWu9V8ZEtlM1OehmbXgvPGc0JdwW1/31bVgrX/znEdqxLIkYDLmGs8OHcZvqvyk2uufN1VgZYSDk=
+	t=1708521715; cv=none; b=BCLsuuZa3jjvNJjUMWU2H3loV74y2M9vWxLswcaD81hVRBK7oZ22Dd3Vppco/qyTZKfdySDIErfIDed6HCZaJEqmRd2BxjGs1oB2v32YYU2AI0mnJVY3KXEiXcxs/fb2EP+90ghXZNp1JlQjn2L/12JtD8inFv3pvCCPAH/nndg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523431; c=relaxed/simple;
-	bh=qxtnmXtLJwhIeqr6U1/VkB2VCA58fUFQmEO/877sshI=;
+	s=arc-20240116; t=1708521715; c=relaxed/simple;
+	bh=p34sylDwDvYT6SDqv6/Fvo4L/SXBavWYGlMKrlWtlbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pFN2gbEZ4vFQBkOmzlPkVJoEJ55/ZEPg+/AFrwRMYzNPbtWKMEpKc6Zo1HIkII4OsCbNHpJjaXfyRbRJocX6h4ZE2Ce6C1n/4ZDaaXZPnLqriIn31pDAPkVg43zG0VG9ILwExQ3NNLuMT7GdpaFLDBncXOBblrvHuh9QnpKD0Ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XedqjC+2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E851EC433F1;
-	Wed, 21 Feb 2024 13:50:30 +0000 (UTC)
+	 MIME-Version; b=XaH+OgW0xbhQUgZvJNqz493vneRO4aAMmDALUnx8slZeI9RJrdGxeBAa3Q9GvLxdPmDN6N403hggkla8sp1Fzo8zeSspqQOHQvPMwZkrUHrb/iq9Tr2DZPeuyLzUCcea4aRVaqxFc2TguEaqcdRj7YNbg2NyfdQTsDifLQhpe1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nl9WQMQ2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 942FCC433C7;
+	Wed, 21 Feb 2024 13:21:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523431;
-	bh=qxtnmXtLJwhIeqr6U1/VkB2VCA58fUFQmEO/877sshI=;
+	s=korg; t=1708521715;
+	bh=p34sylDwDvYT6SDqv6/Fvo4L/SXBavWYGlMKrlWtlbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XedqjC+28xlUCzaGzUzUgWaSrJhf0lMPQhGM4o/wn5mWW36M/Cxub+KyxOooQYGvG
-	 ty3JajQN/kWrkPeBsnU0ctPhyqYd2H/Dv6ZqwRGN1P4GV/pIr8R5iTfgK/6c5KpDJG
-	 PxgW9Vjd/1ifestPjsjBe+MIzODAbYPeJxb/UVrY=
+	b=Nl9WQMQ268gAtKhjv6iMUO6fZwShc5xZpMj33xTMmqZNct/k6TlpLoLPO4dEylxCq
+	 pZiJ1o48RDE9G60+OCAn0y8Z6Ezn9pN/pizCijzWFuBrF6NdLtTfPfQ18mVUA6jExY
+	 Xmd+Af97rAf0vdLApc2eONhztt1WsLPKPNInw6oA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 435/476] usb: dwc3: gadget: Only End Transfer for ep0 data phase
+	David Schiller <david.schiller@jku.at>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 4.19 185/202] staging: iio: ad5933: fix type mismatch regression
 Date: Wed, 21 Feb 2024 14:08:06 +0100
-Message-ID: <20240221130024.106939141@linuxfoundation.org>
+Message-ID: <20240221125937.791865314@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+From: David Schiller <david.schiller@jku.at>
 
-[ Upstream commit ace17b6ee4f92ab0375d12a1b42494f8590a96b6 ]
+commit 6db053cd949fcd6254cea9f2cd5d39f7bd64379c upstream.
 
-The driver shouldn't be able to issue End Transfer to the control
-endpoint at anytime. Typically we should only do so in error cases such
-as invalid/unexpected direction of Data Phase as described in the
-control transfer flow of the programming guide. It _may_ end started
-data phase during controller deinitialization from soft disconnect or
-driver removal. However, that should not happen because the driver
-should be maintained in EP0_SETUP_PHASE during driver tear-down. On
-soft-connect, the controller should be reset from a soft-reset and there
-should be no issue starting the control endpoint.
+Commit 4c3577db3e4f ("Staging: iio: impedance-analyzer: Fix sparse
+warning") fixed a compiler warning, but introduced a bug that resulted
+in one of the two 16 bit IIO channels always being zero (when both are
+enabled).
 
-Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/3c6643678863a26702e4115e9e19d7d94a30d49c.1650593829.git.Thinh.Nguyen@synopsys.com
+This is because int is 32 bits wide on most architectures and in the
+case of a little-endian machine the two most significant bytes would
+occupy the buffer for the second channel as 'val' is being passed as a
+void pointer to 'iio_push_to_buffers()'.
+
+Fix by defining 'val' as u16. Tested working on ARM64.
+
+Fixes: 4c3577db3e4f ("Staging: iio: impedance-analyzer: Fix sparse warning")
+Signed-off-by: David Schiller <david.schiller@jku.at>
+Link: https://lore.kernel.org/r/20240122134916.2137957-1-david.schiller@jku.at
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 730e12fbec53 ("usb: dwc3: gadget: Handle EP0 request dequeuing properly")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/gadget.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/staging/iio/impedance-analyzer/ad5933.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index 2afe6784f1df..4d830ba7d824 100644
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -3647,6 +3647,17 @@ static void dwc3_reset_gadget(struct dwc3 *dwc)
- void dwc3_stop_active_transfer(struct dwc3_ep *dep, bool force,
- 	bool interrupt)
- {
-+	struct dwc3 *dwc = dep->dwc;
-+
-+	/*
-+	 * Only issue End Transfer command to the control endpoint of a started
-+	 * Data Phase. Typically we should only do so in error cases such as
-+	 * invalid/unexpected direction as described in the control transfer
-+	 * flow of the programming guide.
-+	 */
-+	if (dep->number <= 1 && dwc->ep0state != EP0_DATA_PHASE)
-+		return;
-+
- 	if (!(dep->flags & DWC3_EP_TRANSFER_STARTED) ||
- 	    (dep->flags & DWC3_EP_DELAY_STOP) ||
- 	    (dep->flags & DWC3_EP_END_TRANSFER_PENDING))
--- 
-2.43.0
-
+--- a/drivers/staging/iio/impedance-analyzer/ad5933.c
++++ b/drivers/staging/iio/impedance-analyzer/ad5933.c
+@@ -638,7 +638,7 @@ static void ad5933_work(struct work_stru
+ 		struct ad5933_state, work.work);
+ 	struct iio_dev *indio_dev = i2c_get_clientdata(st->client);
+ 	__be16 buf[2];
+-	int val[2];
++	u16 val[2];
+ 	unsigned char status;
+ 	int ret;
+ 
 
 
 
