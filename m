@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-22985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1E2385DECF
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:22:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28FD085D968
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:18:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1714B2882D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:20:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BEE48B249C4
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:18:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF1ED79DAE;
-	Wed, 21 Feb 2024 14:19:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A38E76C73;
+	Wed, 21 Feb 2024 13:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z4Rh5mDW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hubNL36z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC3BA762C1;
-	Wed, 21 Feb 2024 14:19:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093EB46B9B;
+	Wed, 21 Feb 2024 13:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525182; cv=none; b=qllTZkaGA3bQEqxJ+avXTgxp+Mtu85W8rafkRBIlv6TCDu18wEUt3S2JvK/OVzuJcm9PZoYmtOn5D6l/uJGAIjyXUcCJYW8c+A0rEw5kTEi7Bv+pfuHolM9RxvaAWosI3IqSuUijcC0ZNjS9xjxkjG3WNJCJKEEn0beKMpVBmg8=
+	t=1708521482; cv=none; b=GVNBJdWKhPqRzAZHwIl80E514PMaA2+ipQv07vU/NUlkcnJiyesK3A5une0dSL5L80yOgxZUcVY6DopYndichMHcAroKfKwxODSo+O4P7qYGtORaCwTs4NgPwtvOQBZtLveZUAGf/Tw/xlx2Po4bJBPTW8P+iAGHDeLw5legQDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525182; c=relaxed/simple;
-	bh=zwgAhRmwiY7PsEQCrmLjIrGSoJ7Gi/3Oi8oxB/MzhPE=;
+	s=arc-20240116; t=1708521482; c=relaxed/simple;
+	bh=iw5ReQfPe/odWn9rvdwP+TcpddKTXEN3q3cJ51GwUMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q1lzH4sYWNa6ZP/4MNYzt8rsURrc154RRjd8uz2gH21mj8apUP8YZ+9Wr5IYLPxmRAQohNlyDK+FX0ipQ9+oZiA9U5sXbCIw2I++pgj9ZJlkGLv0lOkes4uDwL2A3QPoaSpScRqzFvQr5RkDW2yAtPJ2OIhEod/fweXHdnqTyMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z4Rh5mDW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AE94C43399;
-	Wed, 21 Feb 2024 14:19:41 +0000 (UTC)
+	 MIME-Version; b=HhJhKpkVt+/IdW2EHJ3H9CQwYJbXKbMfPlHbn0JiR85VcYSbPMRhdzbB3R9fGFSO5Zz+9G6dzHLgtEuGaQHvoZOoxjqteDuN5fmKZiPmwTXznR3u4FI+BFR3VujtyIjzTIvkqw3bGLACI/VTmTijcPPh1IpdlKm2o0mZgFGHDb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hubNL36z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52639C433F1;
+	Wed, 21 Feb 2024 13:18:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525182;
-	bh=zwgAhRmwiY7PsEQCrmLjIrGSoJ7Gi/3Oi8oxB/MzhPE=;
+	s=korg; t=1708521481;
+	bh=iw5ReQfPe/odWn9rvdwP+TcpddKTXEN3q3cJ51GwUMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z4Rh5mDWcMcE9priHEh2EMpp5BZjInONXeCsGOHeLQitQ6K9mdYXK2boXF/Y3ivTf
-	 pN0lrOkU4cTbIgTy0S8i1dof1A4E33Njl2itYmOiAaiOW8QQOB8Ji6jPRt2FNCMtEA
-	 TijC6SMJWv25T5oivgrlM7sCVCPH+BCNL7GWw4BA=
+	b=hubNL36znEIsHk/SmBJ689MeoGyMKTU10OuGt9H9tMPqEgfkqsNFyxMS+9lj5WI0X
+	 p/3UXHKsS/LT/is+bIqMeSRrBsuPkbX91NhbXB4tNJzoqzWsD0lfv0qgn0PcNbPiYL
+	 47GNxjhlpjlabU/SY9us4KDtOdBqcCAu2OqdpB6M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Chenyuan Mi <cymi20@fudan.edu.cn>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 084/267] KVM: s390: fix setting of fpc register
+Subject: [PATCH 4.19 124/202] libsubcmd: Fix memory leak in uniq()
 Date: Wed, 21 Feb 2024 14:07:05 +0100
-Message-ID: <20240221125942.602323841@linuxfoundation.org>
+Message-ID: <20240221125935.717054254@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +70,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit b988b1bb0053c0dcd26187d29ef07566a565cf55 ]
+[ Upstream commit ad30469a841b50dbb541df4d6971d891f703c297 ]
 
-kvm_arch_vcpu_ioctl_set_fpu() allows to set the floating point control
-(fpc) register of a guest cpu. The new value is tested for validity by
-temporarily loading it into the fpc register.
+uniq() will write one command name over another causing the overwritten
+string to be leaked. Fix by doing a pass that removes duplicates and a
+second that removes the holes.
 
-This may lead to corruption of the fpc register of the host process:
-if an interrupt happens while the value is temporarily loaded into the fpc
-register, and within interrupt context floating point or vector registers
-are used, the current fp/vx registers are saved with save_fpu_regs()
-assuming they belong to user space and will be loaded into fp/vx registers
-when returning to user space.
-
-test_fp_ctl() restores the original user space / host process fpc register
-value, however it will be discarded, when returning to user space.
-
-In result the host process will incorrectly continue to run with the value
-that was supposed to be used for a guest cpu.
-
-Fix this by simply removing the test. There is another test right before
-the SIE context is entered which will handles invalid values.
-
-This results in a change of behaviour: invalid values will now be accepted
-instead of that the ioctl fails with -EINVAL. This seems to be acceptable,
-given that this interface is most likely not used anymore, and this is in
-addition the same behaviour implemented with the memory mapped interface
-(replace invalid values with zero) - see sync_regs() in kvm-s390.c.
-
-Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Chenyuan Mi <cymi20@fudan.edu.cn>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20231208000515.1693746-1-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kvm/kvm-s390.c | 5 -----
- 1 file changed, 5 deletions(-)
+ tools/lib/subcmd/help.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-index b11eb11e2f49..6a1b46e85dac 100644
---- a/arch/s390/kvm/kvm-s390.c
-+++ b/arch/s390/kvm/kvm-s390.c
-@@ -3348,10 +3348,6 @@ int kvm_arch_vcpu_ioctl_set_fpu(struct kvm_vcpu *vcpu, struct kvm_fpu *fpu)
+diff --git a/tools/lib/subcmd/help.c b/tools/lib/subcmd/help.c
+index 2859f107abc8..4260c8b4257b 100644
+--- a/tools/lib/subcmd/help.c
++++ b/tools/lib/subcmd/help.c
+@@ -50,11 +50,21 @@ void uniq(struct cmdnames *cmds)
+ 	if (!cmds->cnt)
+ 		return;
  
- 	vcpu_load(vcpu);
- 
--	if (test_fp_ctl(fpu->fpc)) {
--		ret = -EINVAL;
--		goto out;
--	}
- 	vcpu->run->s.regs.fpc = fpu->fpc;
- 	if (MACHINE_HAS_VX)
- 		convert_fp_to_vx((__vector128 *) vcpu->run->s.regs.vrs,
-@@ -3359,7 +3355,6 @@ int kvm_arch_vcpu_ioctl_set_fpu(struct kvm_vcpu *vcpu, struct kvm_fpu *fpu)
- 	else
- 		memcpy(vcpu->run->s.regs.fprs, &fpu->fprs, sizeof(fpu->fprs));
- 
--out:
- 	vcpu_put(vcpu);
- 	return ret;
+-	for (i = j = 1; i < cmds->cnt; i++)
+-		if (strcmp(cmds->names[i]->name, cmds->names[i-1]->name))
+-			cmds->names[j++] = cmds->names[i];
+-
++	for (i = 1; i < cmds->cnt; i++) {
++		if (!strcmp(cmds->names[i]->name, cmds->names[i-1]->name))
++			zfree(&cmds->names[i - 1]);
++	}
++	for (i = 0, j = 0; i < cmds->cnt; i++) {
++		if (cmds->names[i]) {
++			if (i == j)
++				j++;
++			else
++				cmds->names[j++] = cmds->names[i];
++		}
++	}
+ 	cmds->cnt = j;
++	while (j < i)
++		cmds->names[j++] = NULL;
  }
+ 
+ void exclude_cmds(struct cmdnames *cmds, struct cmdnames *excludes)
 -- 
 2.43.0
 
