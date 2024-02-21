@@ -1,116 +1,101 @@
-Return-Path: <stable+bounces-21783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3118485D177
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 08:34:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F383185D217
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 09:05:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E07E328AC81
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 07:33:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 83D76B26A7E
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 08:05:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 795BA3A8E9;
-	Wed, 21 Feb 2024 07:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93AD33BB2D;
+	Wed, 21 Feb 2024 08:04:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GCK2Hgl8"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="TXgN36s+"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FD863AC12
-	for <stable@vger.kernel.org>; Wed, 21 Feb 2024 07:33:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A723A8EF
+	for <stable@vger.kernel.org>; Wed, 21 Feb 2024 08:04:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708500830; cv=none; b=RyQ2mP9OV/pJD1KkyT+o5gvMQP+IDrk/W1+fncvXvIfY2RMUwQ8qSbCX3RglB47j1evOMe3Z5L8VLaOPxFhv/TKkbshyClHfGxJZ4Y49RLxx1PgaiogTApAudDJ7lhBSM66yvuW0OVnuUInx9dkRz258QvWfyK/WIyiVHNgGeq4=
+	t=1708502646; cv=none; b=POhZLLgulzvgsyV7antsYN5RzfoDgxFH5/n8kdb1R9YQFFWFwQF+dWr6hVWThqWmlCFumqReN6DmIvKIIXCdltaYj8YrkvE5P3FoVUWjtqSHUJZECeahFJW4bXRIseyMCquEq00L333B7+WJV59Kxii4zICPj8ZigHa9HWVdisI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708500830; c=relaxed/simple;
-	bh=WtzN/zuuF5Giq3H1uYH21SKzPx18aViDs45cU0spU+I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oLH+MuMweTTW0vDKhVSlLXnUItf27+C/oOB+y04n9U5+TiUbWe4WUhJQm5tWPbIkfKyk9BI7ZtUHIdL47SnqGW/KyLYggvpzxnUQtFXRo6Co6MDQ9arRj06C6aPhIVSIkFFwuPOMg6XIwIOMMCwtz9DhrcILyJGJFwLahxAEyck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GCK2Hgl8; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708500828; x=1740036828;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=WtzN/zuuF5Giq3H1uYH21SKzPx18aViDs45cU0spU+I=;
-  b=GCK2Hgl8C5kEswBM44U7UDUP0KCKIIxu7xcNi+RuEvaRoAmhHWSRTaaz
-   eRxyXvqEInK4RE9Canak/pXp3xb2fISPji6Afli09vfAhH+WKly1mFAFU
-   xNq1/NeW6buDzMM+jlOYc67n6Pe4tQ/9K8dSpdwzfx/Tp2AWZ5eCIMuco
-   maFJIzk1YLI99vWj6BCdk+gsLlFnSdPa70lVJR7uq69Y0/tMC0V5s7s6T
-   nsUUyorUsjYz/H3EhfpUnKtJO9XFFu++JqT1+JsudEf5f/ClWXdZfKN+I
-   m4BcRSh5Fsr4Mi8SwDLMddx7NAEvGELGWicyJOCyloYYps26H9cIYTvc6
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="13266414"
-X-IronPort-AV: E=Sophos;i="6.06,175,1705392000"; 
-   d="scan'208";a="13266414"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 23:33:48 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,175,1705392000"; 
-   d="scan'208";a="5273376"
-Received: from ahashmi-mobl.ger.corp.intel.com (HELO fedora..) ([10.249.254.166])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 23:33:45 -0800
-From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-To: intel-xe@lists.freedesktop.org,
-	intel-gfx@lists.freedesktop.org
-Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Dave Airlie <airlied@redhat.com>,
-	Huang Rui <ray.huang@amd.com>,
-	dri-devel@lists.freedesktop.org,
-	stable@vger.kernel.org
-Subject: [PATCH] drm/ttm: Fix an invalid freeing on already freed page in error path
-Date: Wed, 21 Feb 2024 08:33:24 +0100
-Message-ID: <20240221073324.3303-1-thomas.hellstrom@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1708502646; c=relaxed/simple;
+	bh=Xlmeetw085DuaqiFxm9wsy9UTenb8e44B5Ow7mPywuY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Bq+AwaewIYmE3Zqxi8ZHHfdCUF9AmoNbhbNRgkQBlhoPkeX5OVoxBGB1Qr1xDH+LZjDUcCPInAkRgzrjwPtAoAdlW4WMOQfU+/Xf2dv+iTRj/E4d581Wu8mGVlMzIHGz/2HeUSbKFdstpYt1vVYH0hd+kvZECgFOE1Uu0kzq+AU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=TXgN36s+; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Received: from francesco-nb (31-10-206-125.static.upc.ch [31.10.206.125])
+	by mail11.truemail.it (Postfix) with ESMTPA id C14B72155B;
+	Wed, 21 Feb 2024 09:03:54 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1708502635;
+	bh=pdYH5n/IXnfBISfef+cF5+AWDA7+4uPdRZNYOigC4hU=; h=From:To:Subject;
+	b=TXgN36s+lzCAOJb+VJ6/kmmxux8GwzFGUm0ljY6jozvIh0b2ahoAevzT2unK8fPV9
+	 pxc3NYumem1P3xHOOEyrMNpuxRx4o3XstVoRsotQSrzoL+iRmbOid5KPT64d4feA2w
+	 QytuobRTIZyvlOEXTk3ECCj5nZOfqmukNOgI31amG9zrmnBrXLRb87Bt1JJMi2LFwO
+	 dq6FW42c9U2KX3anLeSoRNEhd3i4fJv/zhMqHb7/LpGaxhmo55TLqlHBADE6EUCKYp
+	 wRust8JCYG9BovDClt8QWn+82S1WwiOWYNdhWFAScZu1sjGnftQMO+C2/d2vltR5k4
+	 4u7yJdsKeSlaQ==
+Date: Wed, 21 Feb 2024 09:03:53 +0100
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Lukas Wunner <lukas@wunner.de>, Kalle Valo <kvalo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.1 174/197] wifi: mwifiex: Support SD8978 chipset
+Message-ID: <20240221080353.GB5131@francesco-nb>
+References: <20240220204841.073267068@linuxfoundation.org>
+ <20240220204846.279064097@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240220204846.279064097@linuxfoundation.org>
 
-If caching mode change fails due to, for example, OOM we
-free the allocated pages in a two-step process. First the pages
-for which the caching change has already succeeded. Secondly
-the pages for which a caching change did not succeed.
+On Tue, Feb 20, 2024 at 09:52:13PM +0100, Greg Kroah-Hartman wrote:
+> 6.1-stable review patch.  If anyone has any objections, please let me know.
+> 
+> ------------------
+> 
+> From: Lukas Wunner <lukas@wunner.de>
+> 
+> [ Upstream commit bba047f15851c8b053221f1b276eb7682d59f755 ]
+> 
+> The Marvell SD8978 (aka NXP IW416) uses identical registers as SD8987,
+> so reuse the existing mwifiex_reg_sd8987 definition.
+> 
+> Note that mwifiex_reg_sd8977 and mwifiex_reg_sd8997 are likewise
+> identical, save for the fw_dump_ctrl register:  They define it as 0xf0
+> whereas mwifiex_reg_sd8987 defines it as 0xf9.  I've verified that
+> 0xf9 is the correct value on SD8978.  NXP's out-of-tree driver uses
+> 0xf9 for all of them, so there's a chance that 0xf0 is not correct
+> in the mwifiex_reg_sd8977 and mwifiex_reg_sd8997 definitions.  I cannot
+> test that for lack of hardware, hence am leaving it as is.
+> 
+> NXP has only released a firmware which runs Bluetooth over UART.
+> Perhaps Bluetooth over SDIO is unsupported by this chipset.
+> Consequently, only an "sdiouart" firmware image is referenced, not an
+> alternative "sdsd" image.
+> 
+> Signed-off-by: Lukas Wunner <lukas@wunner.de>
+> Signed-off-by: Kalle Valo <kvalo@kernel.org>
+> Link: https://lore.kernel.org/r/536b4f17a72ca460ad1b07045757043fb0778988.1674827105.git.lukas@wunner.de
+> Stable-dep-of: 1c5d463c0770 ("wifi: mwifiex: add extra delay for firmware ready")
 
-However the second step was incorrectly freeing the pages already
-freed in the first step.
+I would drop this and 1c5d463c0770.
 
-Fix.
-
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Fixes: 379989e7cbdc ("drm/ttm/pool: Fix ttm_pool_alloc error path")
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: Christian Koenig <christian.koenig@amd.com>
-Cc: Huang Rui <ray.huang@amd.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v6.4+
----
- drivers/gpu/drm/ttm/ttm_pool.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/ttm/ttm_pool.c b/drivers/gpu/drm/ttm/ttm_pool.c
-index b62f420a9f96..112438d965ff 100644
---- a/drivers/gpu/drm/ttm/ttm_pool.c
-+++ b/drivers/gpu/drm/ttm/ttm_pool.c
-@@ -387,7 +387,7 @@ static void ttm_pool_free_range(struct ttm_pool *pool, struct ttm_tt *tt,
- 				enum ttm_caching caching,
- 				pgoff_t start_page, pgoff_t end_page)
- {
--	struct page **pages = tt->pages;
-+	struct page **pages = &tt->pages[start_page];
- 	unsigned int order;
- 	pgoff_t i, nr;
- 
--- 
-2.43.0
+Thanks,
+Francesco
 
 
