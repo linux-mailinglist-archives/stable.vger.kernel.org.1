@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-22263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B42085DB25
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:37:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE2F985DD13
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:01:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AFB5EB26890
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:37:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEA721C233B0
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:01:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF43E7BB10;
-	Wed, 21 Feb 2024 13:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B26897BB14;
+	Wed, 21 Feb 2024 14:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RSIQvkGG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SC4C7g7p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CCF57BAFF;
-	Wed, 21 Feb 2024 13:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7336A47A7C;
+	Wed, 21 Feb 2024 14:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522646; cv=none; b=hcEB5AWyntttaelybXsyy6HGJU/3On7YEzUft1CsPxJ3n/yNlSFYvmNciqSxbDAWnY2BA16+sGsGGRoAG7PaWAzWA1TJ3GFQKk7VbsOOTujMubxG7f4Z/A2MWMNMaXESY7zcfCLFA7qhbX1Fuu9KkVYFzZHjIwlTJJUGkIqGdZg=
+	t=1708524051; cv=none; b=ROB0l7prRXHYhoiCM2zoI79fNANkqNDUdiN2i60Zn09f0/FZjmFFHuxJEJj1uFjfeLEBM2F5TYlrIp1YoQ1asD4DkP63s5/HXTH4VFjSsESY4Zd5YvTkNAg59in405TMP9PB3VddJcQM3uhqjCjGhmLUYJeeWky2Rv8EcOy8Kks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522646; c=relaxed/simple;
-	bh=COBy+Ueg3wOdqdAFM42iyABrSlhESbXbttaw8kICoNA=;
+	s=arc-20240116; t=1708524051; c=relaxed/simple;
+	bh=YpyWVYswGpziSy3HhcIZxNBwCd0d8KAAi+gDYlV/m1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JFPKT3gk6BO41yVESYEez0I9zpDvh7w6ORURcolaAML8+WZyUL85u1oZ+LNKo/mpNp2iBKxULg3apedbZQm4IImd9RojC2ar49v4BYoGpv0FUzUtZ0SUNE2LuXC4YrD+au9LAhqSlMFH48Eg08mTgK1HpX7lUiwqCu72aEoXNuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RSIQvkGG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A553C433F1;
-	Wed, 21 Feb 2024 13:37:26 +0000 (UTC)
+	 MIME-Version; b=nXKver4CltkBp8fiWzOY8iS6MLcnoqL/qXvJvoyy3wGhWgyI7SWge2xdKZvLliE6r76kDpL9Q60XM3scrGTv0X7g+uJwszDPASsIWXOo1sg54Ticc/va3SknKggfienPkJJCGsc7ZrbO/LmvXNTbMg74wbvmonMclgpPgnANbEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SC4C7g7p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7736C433C7;
+	Wed, 21 Feb 2024 14:00:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522646;
-	bh=COBy+Ueg3wOdqdAFM42iyABrSlhESbXbttaw8kICoNA=;
+	s=korg; t=1708524051;
+	bh=YpyWVYswGpziSy3HhcIZxNBwCd0d8KAAi+gDYlV/m1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RSIQvkGGlT1sSUl/TUXSridcd1s9zHek5jUi3f2b44xyIMqveyAiAXElQRt7JWdzW
-	 W3mGKuSF3aVAyMxjDV/h8Em+gx4W3K+1CepPXuiv0zBq0XSLHAKm/5QSashQckd/xo
-	 8yBUOZF8M+D3PTg8jVpJd3w1io567ACSAP6Zf0CA=
+	b=SC4C7g7pZqrDJ79Nq4piYUA2CPEsG88qytJgLbQopbJghOKk9AogXEK650l2LL3O4
+	 CUNI/yg2UgKxw6kzPOhng6O3Qd/FPW/KnSZzwEUVoMDvFxadi0XKDS7vb9aBZ65TY/
+	 IQP7ULhK/9eBa3f/ny+c9gLgiaHglImy/NUEb83U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Takashi Iwai <tiwai@suse.de>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 220/476] PCI: add INTEL_HDA_ARL to pci_ids.h
+Subject: [PATCH 5.10 092/379] NFSD: Add documenting comment for nfsd4_release_lockowner()
 Date: Wed, 21 Feb 2024 14:04:31 +0100
-Message-ID: <20240221130016.022999185@linuxfoundation.org>
+Message-ID: <20240221125957.626899942@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +59,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 5ec42bf04d72fd6d0a6855810cc779e0ee31dfd7 ]
+[ Upstream commit 043862b09cc00273e35e6c3a6389957953a34207 ]
 
-The PCI ID insertion follows the increasing order in the table, but
-this hardware follows MTL (MeteorLake).
+And return explicit nfserr values that match what is documented in the
+new comment / API contract.
 
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Acked-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20231204212710.185976-2-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Stable-dep-of: edcf9725150e ("nfsd: fix RELEASE_LOCKOWNER")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/pci_ids.h | 1 +
- 1 file changed, 1 insertion(+)
+ fs/nfsd/nfs4state.c | 23 ++++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
-index d2d5e854c692..2590ccda29ab 100644
---- a/include/linux/pci_ids.h
-+++ b/include/linux/pci_ids.h
-@@ -2999,6 +2999,7 @@
- #define PCI_DEVICE_ID_INTEL_82443GX_0	0x71a0
- #define PCI_DEVICE_ID_INTEL_82443GX_2	0x71a2
- #define PCI_DEVICE_ID_INTEL_82372FB_1	0x7601
-+#define PCI_DEVICE_ID_INTEL_HDA_ARL	0x7728
- #define PCI_DEVICE_ID_INTEL_SCH_LPC	0x8119
- #define PCI_DEVICE_ID_INTEL_SCH_IDE	0x811a
- #define PCI_DEVICE_ID_INTEL_E6XX_CU	0x8183
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index 1b40b2197ce6..b6480be7b5e6 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -7107,6 +7107,23 @@ check_for_locks(struct nfs4_file *fp, struct nfs4_lockowner *lowner)
+ 	return status;
+ }
+ 
++/**
++ * nfsd4_release_lockowner - process NFSv4.0 RELEASE_LOCKOWNER operations
++ * @rqstp: RPC transaction
++ * @cstate: NFSv4 COMPOUND state
++ * @u: RELEASE_LOCKOWNER arguments
++ *
++ * The lockowner's so_count is bumped when a lock record is added
++ * or when copying a conflicting lock. The latter case is brief,
++ * but can lead to fleeting false positives when looking for
++ * locks-in-use.
++ *
++ * Return values:
++ *   %nfs_ok: lockowner released or not found
++ *   %nfserr_locks_held: lockowner still in use
++ *   %nfserr_stale_clientid: clientid no longer active
++ *   %nfserr_expired: clientid not recognized
++ */
+ __be32
+ nfsd4_release_lockowner(struct svc_rqst *rqstp,
+ 			struct nfsd4_compound_state *cstate,
+@@ -7133,7 +7150,7 @@ nfsd4_release_lockowner(struct svc_rqst *rqstp,
+ 	lo = find_lockowner_str_locked(clp, &rlockowner->rl_owner);
+ 	if (!lo) {
+ 		spin_unlock(&clp->cl_lock);
+-		return status;
++		return nfs_ok;
+ 	}
+ 	if (atomic_read(&lo->lo_owner.so_count) != 2) {
+ 		spin_unlock(&clp->cl_lock);
+@@ -7149,11 +7166,11 @@ nfsd4_release_lockowner(struct svc_rqst *rqstp,
+ 		put_ol_stateid_locked(stp, &reaplist);
+ 	}
+ 	spin_unlock(&clp->cl_lock);
++
+ 	free_ol_stateid_reaplist(&reaplist);
+ 	remove_blocked_locks(lo);
+ 	nfs4_put_stateowner(&lo->lo_owner);
+-
+-	return status;
++	return nfs_ok;
+ }
+ 
+ static inline struct nfs4_client_reclaim *
 -- 
 2.43.0
 
