@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-21848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44FBD85D8D2
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:10:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2478985DB5C
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:40:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76E641C216B1
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:10:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 98562B21B60
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:40:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3BF469D2B;
-	Wed, 21 Feb 2024 13:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA50773161;
+	Wed, 21 Feb 2024 13:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JlN18AIw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YNTxzCLa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AC572A1D7;
-	Wed, 21 Feb 2024 13:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B2D69951;
+	Wed, 21 Feb 2024 13:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521051; cv=none; b=RpFvltBY4sLe6sG2ZsWTVEwOcyp1mSrfY2mJEPAQJ/6yym0T6QtCWRBPK/vyKJ50Pa55wuq/WkiayUnsciwonVEdqC6Nq44F0oFKUVT6Hls2xAR81UTQFTF1WFIgnhWsqk5r70DRyrvms4Sf7zSyOqhkSUZuJ2qYmThyBQ8O7nE=
+	t=1708522797; cv=none; b=Qfn9UoYikciExE7IUrR7EIlP/lwX5qSFD0KNTNBAEq/GQ4jke7urKpQzSOTEkmu2liZQgvmKGPkOYbXRtAqd7eEE0kocffW4OE9xl7yykR3OPp0X55VkLlHv2TKwUVvFQ6esSMlTBNNta46UfDbUO1ZXzDsYdv56NsRrK+1aqzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521051; c=relaxed/simple;
-	bh=Yo75dkLHc7uAIYaTwINjmauf9N+hmdATbPfeLJxMkZ8=;
+	s=arc-20240116; t=1708522797; c=relaxed/simple;
+	bh=ZmkvINYhUfuH7B0uEfrPR0rVWOOA9a+Tjc20xt/sIm4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qyzd4VQAHl5GSuqtpKCB5lwkNBDhK4044++oZ2Z4I9j0J6yfm4PPqDXhkLsDf4j69DnhVATXaDthqM7GkaepIpVlhbkZs6HmZQxmf4Y6pX++gxlrCTA5+97Ld209+E3EinB84eAz0FG+f1uw5bXp1s4RyDNrinP53wtjjskj8ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JlN18AIw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3D89C433F1;
-	Wed, 21 Feb 2024 13:10:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HeLm/LxcpmS2n0kzMinAzi/anX9XFKSVgCacAL9LAn9a0sVCsaQhZH0bQOEzw/R0/mUp9ek4MchIDJHirFoxU1a5vOiiyFyzqIgZnUY7BUwH4EfKNCzgqoXx4HNTEOW+tXJwsvMy0L9AXQFC/7bbX9MZrOsO0f3M5C/PQtTtVU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YNTxzCLa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04030C433C7;
+	Wed, 21 Feb 2024 13:39:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521051;
-	bh=Yo75dkLHc7uAIYaTwINjmauf9N+hmdATbPfeLJxMkZ8=;
+	s=korg; t=1708522797;
+	bh=ZmkvINYhUfuH7B0uEfrPR0rVWOOA9a+Tjc20xt/sIm4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JlN18AIwQscf7suTrDvYuNa+NRY191qMsLV30IPdZaM+lTSYi02XyGhsOSqvyVzNZ
-	 QqHzyyagHy3ah/2rS2bvIx7AlsnsVm7MUeFcJenhhCf/seJg7LIMEiGM83sbUDiFPV
-	 jcrzwLKYFAO2KeQM0pz1mze2fMmgIAkhUdHFEJgs=
+	b=YNTxzCLa5TeWYIhMI1za4LV3C4qQXp+t+rMDGfIJ314wTKvvTthIzW5x30a8P7DJm
+	 Xuhl/Npwz9dAI7iMI/4IQcvFgXBTtE7p6nOGpXxwXgZwETua03WUxNvSc+GlJPIwgf
+	 FncgWpbPKIvsKQLSl3VKnFyTe3nbrno3y9js4e2c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suraj Jitindar Singh <surajjs@amazon.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 4.19 010/202] ext4: allow for the last group to be marked as trimmed
-Date: Wed, 21 Feb 2024 14:05:11 +0100
-Message-ID: <20240221125932.085548616@linuxfoundation.org>
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: =?UTF-8?q?=5BPATCH=205=2E15=20261/476=5D=20=3D=3FUTF-8=3Fq=3Fvirtio=3D5Fnet=3A=3D20Fix=3D20=22=3DE2=3D80=3D98=25d=3DE2=3D80=3D99=3D20directive=3F=3D=20=3D=3FUTF-8=3Fq=3F=3D20writing=3D20between=3D201=3D20and=3D2011=3D20bytes=3D20into=3D20a=3D20region=3F=3D=20=3D=3FUTF-8=3Fq=3F=3D20of=3D20size=3D2010=22=3D20warnings=3F=3D?=
+Date: Wed, 21 Feb 2024 14:05:12 +0100
+Message-ID: <20240221130017.498575027@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,93 +61,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suraj Jitindar Singh <surajjs@amazon.com>
+From: Zhu Yanjun <yanjun.zhu@linux.dev>
 
-commit 7c784d624819acbeefb0018bac89e632467cca5a upstream.
+[ Upstream commit e3fe8d28c67bf6c291e920c6d04fa22afa14e6e4 ]
 
-The ext4 filesystem tracks the trim status of blocks at the group
-level.  When an entire group has been trimmed then it is marked as
-such and subsequent trim invocations with the same minimum trim size
-will not be attempted on that group unless it is marked as able to be
-trimmed again such as when a block is freed.
+Fix the warnings when building virtio_net driver.
 
-Currently the last group can't be marked as trimmed due to incorrect
-logic in ext4_last_grp_cluster(). ext4_last_grp_cluster() is supposed
-to return the zero based index of the last cluster in a group. This is
-then used by ext4_try_to_trim_range() to determine if the trim
-operation spans the entire group and as such if the trim status of the
-group should be recorded.
+"
+drivers/net/virtio_net.c: In function ‘init_vqs’:
+drivers/net/virtio_net.c:4551:48: warning: ‘%d’ directive writing between 1 and 11 bytes into a region of size 10 [-Wformat-overflow=]
+ 4551 |                 sprintf(vi->rq[i].name, "input.%d", i);
+      |                                                ^~
+In function ‘virtnet_find_vqs’,
+    inlined from ‘init_vqs’ at drivers/net/virtio_net.c:4645:8:
+drivers/net/virtio_net.c:4551:41: note: directive argument in the range [-2147483643, 65534]
+ 4551 |                 sprintf(vi->rq[i].name, "input.%d", i);
+      |                                         ^~~~~~~~~~
+drivers/net/virtio_net.c:4551:17: note: ‘sprintf’ output between 8 and 18 bytes into a destination of size 16
+ 4551 |                 sprintf(vi->rq[i].name, "input.%d", i);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/net/virtio_net.c: In function ‘init_vqs’:
+drivers/net/virtio_net.c:4552:49: warning: ‘%d’ directive writing between 1 and 11 bytes into a region of size 9 [-Wformat-overflow=]
+ 4552 |                 sprintf(vi->sq[i].name, "output.%d", i);
+      |                                                 ^~
+In function ‘virtnet_find_vqs’,
+    inlined from ‘init_vqs’ at drivers/net/virtio_net.c:4645:8:
+drivers/net/virtio_net.c:4552:41: note: directive argument in the range [-2147483643, 65534]
+ 4552 |                 sprintf(vi->sq[i].name, "output.%d", i);
+      |                                         ^~~~~~~~~~~
+drivers/net/virtio_net.c:4552:17: note: ‘sprintf’ output between 9 and 19 bytes into a destination of size 16
+ 4552 |                 sprintf(vi->sq[i].name, "output.%d", i);
 
-ext4_last_grp_cluster() takes a 0 based group index, thus the valid
-values for grp are 0..(ext4_get_groups_count - 1). Any group index
-less than (ext4_get_groups_count - 1) is not the last group and must
-have EXT4_CLUSTERS_PER_GROUP(sb) clusters. For the last group we need
-to calculate the number of clusters based on the number of blocks in
-the group. Finally subtract 1 from the number of clusters as zero
-based indexing is expected.  Rearrange the function slightly to make
-it clear what we are calculating and returning.
+"
 
-Reproducer:
-// Create file system where the last group has fewer blocks than
-// blocks per group
-$ mkfs.ext4 -b 4096 -g 8192 /dev/nvme0n1 8191
-$ mount /dev/nvme0n1 /mnt
-
-Before Patch:
-$ fstrim -v /mnt
-/mnt: 25.9 MiB (27156480 bytes) trimmed
-// Group not marked as trimmed so second invocation still discards blocks
-$ fstrim -v /mnt
-/mnt: 25.9 MiB (27156480 bytes) trimmed
-
-After Patch:
-fstrim -v /mnt
-/mnt: 25.9 MiB (27156480 bytes) trimmed
-// Group marked as trimmed so second invocation DOESN'T discard any blocks
-fstrim -v /mnt
-/mnt: 0 B (0 bytes) trimmed
-
-Fixes: 45e4ab320c9b ("ext4: move setting of trimmed bit into ext4_try_to_trim_range()")
-Cc:  <stable@vger.kernel.org> # 4.19+
-Signed-off-by: Suraj Jitindar Singh <surajjs@amazon.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20231213051635.37731-1-surajjs@amazon.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Link: https://lore.kernel.org/r/20240104020902.2753599-1-yanjun.zhu@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c |   15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ drivers/net/virtio_net.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -5192,11 +5192,16 @@ __acquires(bitlock)
- static ext4_grpblk_t ext4_last_grp_cluster(struct super_block *sb,
- 					   ext4_group_t grp)
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 3eefe8171925..6a655bd442fe 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -2913,10 +2913,11 @@ static int virtnet_find_vqs(struct virtnet_info *vi)
  {
--	if (grp < ext4_get_groups_count(sb))
--		return EXT4_CLUSTERS_PER_GROUP(sb) - 1;
--	return (ext4_blocks_count(EXT4_SB(sb)->s_es) -
--		ext4_group_first_block_no(sb, grp) - 1) >>
--					EXT4_CLUSTER_BITS(sb);
-+	unsigned long nr_clusters_in_group;
-+
-+	if (grp < (ext4_get_groups_count(sb) - 1))
-+		nr_clusters_in_group = EXT4_CLUSTERS_PER_GROUP(sb);
-+	else
-+		nr_clusters_in_group = (ext4_blocks_count(EXT4_SB(sb)->s_es) -
-+					ext4_group_first_block_no(sb, grp))
-+				       >> EXT4_CLUSTER_BITS(sb);
-+
-+	return nr_clusters_in_group - 1;
- }
+ 	vq_callback_t **callbacks;
+ 	struct virtqueue **vqs;
+-	int ret = -ENOMEM;
+-	int i, total_vqs;
+ 	const char **names;
++	int ret = -ENOMEM;
++	int total_vqs;
+ 	bool *ctx;
++	u16 i;
  
- static bool ext4_trim_interrupted(void)
+ 	/* We expect 1 RX virtqueue followed by 1 TX virtqueue, followed by
+ 	 * possible N-1 RX/TX queue pairs used in multiqueue mode, followed by
+@@ -2953,8 +2954,8 @@ static int virtnet_find_vqs(struct virtnet_info *vi)
+ 	for (i = 0; i < vi->max_queue_pairs; i++) {
+ 		callbacks[rxq2vq(i)] = skb_recv_done;
+ 		callbacks[txq2vq(i)] = skb_xmit_done;
+-		sprintf(vi->rq[i].name, "input.%d", i);
+-		sprintf(vi->sq[i].name, "output.%d", i);
++		sprintf(vi->rq[i].name, "input.%u", i);
++		sprintf(vi->sq[i].name, "output.%u", i);
+ 		names[rxq2vq(i)] = vi->rq[i].name;
+ 		names[txq2vq(i)] = vi->sq[i].name;
+ 		if (ctx)
+-- 
+2.43.0
+
 
 
 
