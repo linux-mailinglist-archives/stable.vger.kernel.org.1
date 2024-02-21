@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-22730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E8AE85DD84
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:06:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6677085D934
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:16:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2DBF0B22366
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:06:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 07AE7B24767
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:16:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD1B378B4B;
-	Wed, 21 Feb 2024 14:05:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15A406BFCF;
+	Wed, 21 Feb 2024 13:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1jznhORk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kJ0xLY11"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CEE47C6C0;
-	Wed, 21 Feb 2024 14:05:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8F1069972;
+	Wed, 21 Feb 2024 13:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524326; cv=none; b=om8wrHtjLkwo5zZGOvRf62R0VHoMN14/zwGz6sy3YAlqcs8xrQb5stSwetHIJWvHjz8vtMHRL9L6CiCLWWAs4hGLHm/rX+lWN9VmcEKOyS77bRDub97VfBxN//O3oZ1w2hhb9DeA64P5/ztz6TD5YnvSRLx6m7nmXEbp2KmPUKs=
+	t=1708521336; cv=none; b=n+nInuRIpOG/fG5Z/Y0/XtdTvbmGA7aV6CSlZWQ/AL+W6c1Qwlskqf3jJjOL0CtY6gkQhms1u/MP/9hvx0M97kEE6tA3Hx3fo/q/E2WghaWZAyDYdYRFNcCtfzxbHIEw7G63RFY6v+sVcr10HYivC4MuZjcrZlEUmdU4i+/ieJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524326; c=relaxed/simple;
-	bh=J8l4JK05Ou/CxZa335wf5JVfHg56LSGaEo/cxd9Hn0k=;
+	s=arc-20240116; t=1708521336; c=relaxed/simple;
+	bh=AZfGF/vo317lH1VTaM7a47ExxBZxtdjbASpnnK9kaIY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bvLX4XCPGs4Gevn8F6/Ph+DMt7e/bL6k2NIW5Xnv3jFW9dV33ltLs1/3u9i5851KBzXlfDlime8ehPhO995dVVshdjeinM7ZBZiLiBu7v9Ss3QJdL3/tWGHkPYaRb/0McIlnHqek3smJ6mAjUVAKbaqoPdQcYLHHXoiK0pOXW8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1jznhORk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66ACAC433C7;
-	Wed, 21 Feb 2024 14:05:25 +0000 (UTC)
+	 MIME-Version; b=qf1BSXI5rTZBvv49ec/NO1ZG7IYZAWDcLiRh277Pa622hIFEHhb64/TdULfmm2WMvwJJkCxPIlDXWuiGZnKz8PLnGvqmbkOURhl78E2W5gKV4erSP/YZFm8FyXMkZ8U2jmT00zr+3DtzuYOpqawFXVFzrQqqOB1PF8Tm0xj3xWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kJ0xLY11; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3909DC433C7;
+	Wed, 21 Feb 2024 13:15:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524325;
-	bh=J8l4JK05Ou/CxZa335wf5JVfHg56LSGaEo/cxd9Hn0k=;
+	s=korg; t=1708521336;
+	bh=AZfGF/vo317lH1VTaM7a47ExxBZxtdjbASpnnK9kaIY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1jznhORkD7OHkxZBLo7AU9xRVVPyoww35JVOtWLsC7r7eaH5bmiEg0MhMnQiPI3FL
-	 0BJujUzYVekX5zF2tqAJjDTuBbnemm5nDD1/5n/5W7+bOjFh7QAjL5gIbVyPXsAJ0T
-	 lsV0E9hPpyeqCRPK+7hB8itJoMA2N58Gmz7hdpnQ=
+	b=kJ0xLY11MVPwoIjFsGCT0hXI7qTlhZqVFvBifDPEaqZ9qnrlSienaN77cni+2sdAO
+	 74kSQgRLJmLvhyLqLaDSJFWoMPQgN+CQnN/SCjzAP1Cm7SHoXvXjzjG0dBHGRlmZZh
+	 G5oZm7Kix3/Li3OurlWwEvOyqkKlTmXJwiAdy7mk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hardik Gajjar <hgajjar@de.adit-jv.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
+	Fabio Estevam <festevam@denx.de>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 209/379] usb: hub: Replace hardcoded quirk value with BIT() macro
+Subject: [PATCH 4.19 087/202] ARM: dts: imx27: Fix sram node
 Date: Wed, 21 Feb 2024 14:06:28 +0100
-Message-ID: <20240221130001.084278308@linuxfoundation.org>
+Message-ID: <20240221125934.606841158@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hardik Gajjar <hgajjar@de.adit-jv.com>
+From: Fabio Estevam <festevam@denx.de>
 
-[ Upstream commit 6666ea93d2c422ebeb8039d11e642552da682070 ]
+[ Upstream commit 2fb7b2a2f06bb3f8321cf26c33e4e820c5b238b6 ]
 
-This patch replaces the hardcoded quirk value in the macro with
-BIT().
+Per sram.yaml, address-cells, size-cells and ranges are mandatory.
 
-Signed-off-by: Hardik Gajjar <hgajjar@de.adit-jv.com>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20231205181829.127353-1-hgajjar@de.adit-jv.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Pass them to fix the following dt-schema warnings:
+
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/hub.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/imx27.dtsi | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
-index 331f41c6cc75..a3a7dd7d3326 100644
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -46,8 +46,8 @@
- #define USB_VENDOR_TEXAS_INSTRUMENTS		0x0451
- #define USB_PRODUCT_TUSB8041_USB3		0x8140
- #define USB_PRODUCT_TUSB8041_USB2		0x8142
--#define HUB_QUIRK_CHECK_PORT_AUTOSUSPEND	0x01
--#define HUB_QUIRK_DISABLE_AUTOSUSPEND		0x02
-+#define HUB_QUIRK_CHECK_PORT_AUTOSUSPEND	BIT(0)
-+#define HUB_QUIRK_DISABLE_AUTOSUSPEND		BIT(1)
- 
- #define USB_TP_TRANSMISSION_DELAY	40	/* ns */
- #define USB_TP_TRANSMISSION_DELAY_MAX	65535	/* ns */
+diff --git a/arch/arm/boot/dts/imx27.dtsi b/arch/arm/boot/dts/imx27.dtsi
+index 39e75b997bdc..ecfb07c8e185 100644
+--- a/arch/arm/boot/dts/imx27.dtsi
++++ b/arch/arm/boot/dts/imx27.dtsi
+@@ -588,6 +588,9 @@
+ 		iram: iram@ffff4c00 {
+ 			compatible = "mmio-sram";
+ 			reg = <0xffff4c00 0xb400>;
++			ranges = <0 0xffff4c00 0xb400>;
++			#address-cells = <1>;
++			#size-cells = <1>;
+ 		};
+ 	};
+ };
 -- 
 2.43.0
 
