@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-22838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C694F85DE07
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:14:26 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A06E885DF78
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:28:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D1961F23FFE
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8F07B25DAA
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:23:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E17138061F;
-	Wed, 21 Feb 2024 14:11:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0194D3D0A1;
+	Wed, 21 Feb 2024 14:23:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="knkjWeSG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GNyBBwof"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09DC80622;
-	Wed, 21 Feb 2024 14:11:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1DBC3CF42;
+	Wed, 21 Feb 2024 14:23:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524681; cv=none; b=d8HkmABI2OKeEKY/iFaF6L/BigEG9YWjE9JxbjsixNEICzdqg2WQEM0FOcWgGmxN8yxBYOUNAnLOqADapeiOOpsLo7xkvxCL+FN4ox2X2hRtSuwHaBgdSNfPMx5+ArRCDk4FiXuMzAnm6XPGnyqZXoR8MhPsCfrAeQ4U17gxzNU=
+	t=1708525411; cv=none; b=Bpn93UHHO8KSDuNgak/lVcj00HcJEFghtZ0tod2UpWndahdagwRc7I+ZfVQAMGUtuMPVhZ7ANeqoDs24v/849vwyr1CJkNKu4bFtBGQsa2hbf2pYY6HkKtJzdJW2YgT9amUERLhVdSDs8/RrdQkgumK17QscgnJmIkaLlC0N/Ec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524681; c=relaxed/simple;
-	bh=iSc2w5fCR6QNEf1TRVLdks9Z5qBBVmD8nEhCPjxZyTI=;
+	s=arc-20240116; t=1708525411; c=relaxed/simple;
+	bh=nEf9B/U5ez7kcTtWz954Q2pSw9NcAXRCunCi/oXctl0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=obXRBrETS/NTOCwqZNoErKz49UjHLUT2TXXLI2BvjTrY7NifE96IIrzLFkwSdjIe5PVX3wOaqXkzDlykti8tir3Gz6Ds6+XhabGkVU9SNFU6oAOXVEyIpAQaOXjw5vcvV7T9U/+nF5LICAGDyTfe9nxwPLJeDZEviBu/MSPZ5Uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=knkjWeSG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1ECAC433F1;
-	Wed, 21 Feb 2024 14:11:20 +0000 (UTC)
+	 MIME-Version; b=tDi1w7gY/KE23WRwxm46l5HKjESMCUrj4tOnfqZJeiDhKuwzCi+Amo2m+kwt3Mb8AYAwmERpcJtss9rJN6qOkpSNVByMa+oV+R6pPFVsQbBh6f61dDNWY04cJ9btVCbjlv2DvMwo7YTFoPlSnhkUSrPFG4gRHgrNaL+aYbEY+iQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GNyBBwof; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCC75C433F1;
+	Wed, 21 Feb 2024 14:23:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524681;
-	bh=iSc2w5fCR6QNEf1TRVLdks9Z5qBBVmD8nEhCPjxZyTI=;
+	s=korg; t=1708525411;
+	bh=nEf9B/U5ez7kcTtWz954Q2pSw9NcAXRCunCi/oXctl0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=knkjWeSGscJtLzmLpv451aFPM6LWHksJSxKxTxXVW4h8UXLEwld4qE2ewC4NuUosb
-	 Qv6CR29elFRC2KHu4jz/5nTW75cFwHJciDdoBG7T+voO6IJufyOw+HOEqiodxZXEP0
-	 6R95661tQEffKZ/3kV2w8XNgjpLWQ6t93SUgFwkU=
+	b=GNyBBwofNwIFZYBI2UxqEcsyYt5OYnY+w8gqybTz021H8yuFXW5PNeoDmezOdCe4U
+	 rb1w3TgJwWsL4d3GTRKdfYKPBAC50mdbvjJManynI53lt5jxpnsxxMD8CAwH0uTIln
+	 J6mWFNpXiCdGLYZmLRjTEWgZzEPhKq/tGh8oaRAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Radek Krejci <radek.krejci@oracle.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	Hardik Gajjar <hgajjar@de.adit-jv.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 310/379] modpost: trim leading spaces when processing source files list
+Subject: [PATCH 5.4 148/267] usb: hub: Replace hardcoded quirk value with BIT() macro
 Date: Wed, 21 Feb 2024 14:08:09 +0100
-Message-ID: <20240221130004.097036053@linuxfoundation.org>
+Message-ID: <20240221125944.709664955@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Radek Krejci <radek.krejci@oracle.com>
+From: Hardik Gajjar <hgajjar@de.adit-jv.com>
 
-[ Upstream commit 5d9a16b2a4d9e8fa028892ded43f6501bc2969e5 ]
+[ Upstream commit 6666ea93d2c422ebeb8039d11e642552da682070 ]
 
-get_line() does not trim the leading spaces, but the
-parse_source_files() expects to get lines with source files paths where
-the first space occurs after the file path.
+This patch replaces the hardcoded quirk value in the macro with
+BIT().
 
-Fixes: 70f30cfe5b89 ("modpost: use read_text_file() and get_line() for reading text files")
-Signed-off-by: Radek Krejci <radek.krejci@oracle.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Hardik Gajjar <hgajjar@de.adit-jv.com>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20231205181829.127353-1-hgajjar@de.adit-jv.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/mod/sumversion.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/usb/core/hub.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/mod/sumversion.c b/scripts/mod/sumversion.c
-index d587f40f1117..b6eda411be15 100644
---- a/scripts/mod/sumversion.c
-+++ b/scripts/mod/sumversion.c
-@@ -328,7 +328,12 @@ static int parse_source_files(const char *objfile, struct md4_ctx *md)
+diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+index 9a1954e9f6f1..8e55eadb8feb 100644
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -44,8 +44,8 @@
+ #define USB_VENDOR_TEXAS_INSTRUMENTS		0x0451
+ #define USB_PRODUCT_TUSB8041_USB3		0x8140
+ #define USB_PRODUCT_TUSB8041_USB2		0x8142
+-#define HUB_QUIRK_CHECK_PORT_AUTOSUSPEND	0x01
+-#define HUB_QUIRK_DISABLE_AUTOSUSPEND		0x02
++#define HUB_QUIRK_CHECK_PORT_AUTOSUSPEND	BIT(0)
++#define HUB_QUIRK_DISABLE_AUTOSUSPEND		BIT(1)
  
- 	/* Sum all files in the same dir or subdirs. */
- 	while ((line = get_line(&pos))) {
--		char* p = line;
-+		char* p;
-+
-+		/* trim the leading spaces away */
-+		while (isspace(*line))
-+			line++;
-+		p = line;
- 
- 		if (strncmp(line, "source_", sizeof("source_")-1) == 0) {
- 			p = strrchr(line, ' ');
+ #define USB_TP_TRANSMISSION_DELAY	40	/* ns */
+ #define USB_TP_TRANSMISSION_DELAY_MAX	65535	/* ns */
 -- 
 2.43.0
 
