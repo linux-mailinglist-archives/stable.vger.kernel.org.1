@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-22390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44B9385DBD0
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:45:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66C2E85D946
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:17:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F36B4285BAA
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:45:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1FBE1F21565
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:17:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 101D07BB16;
-	Wed, 21 Feb 2024 13:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D739276C99;
+	Wed, 21 Feb 2024 13:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fzSdPMTJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WMk9GZs5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3ED57BB0C;
-	Wed, 21 Feb 2024 13:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 940C876C62;
+	Wed, 21 Feb 2024 13:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523123; cv=none; b=PD7zy5Dxjb0WYYIoUuh1eHh1Br8xEZ+4Yd9N+vTHY5Um6US6NgMl5eOrAuKFBwJItx/w1M59QOgQPEuz9GgfjBfw6yDpj89GI8dKiGOekFgIPKPsIiLHPr6HRosDyd8AO5fwMgw3v25GDmXjPy78a2o2WfuBCW5G3oUY746Cxt8=
+	t=1708521382; cv=none; b=p/t1Ulz0XVoOZD8tKpnmkWZdYOBusJKGgXpSceykrA4zcSkB3bMXynjLeaYDoHdmzyi/ErzJ2PPEknHeXfw5g9gkgab55rD2A0iNXhh1ELzCrz/uUp74DHd//5sjOklVTRC6W4F4pw2rGk4y3qn7A8j9f/Zj+SwKHYK/yQskCtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523123; c=relaxed/simple;
-	bh=ZgSaCyZxtcdNoT3nq6/oG3ezZOqEjssBGRFzt8tKizQ=;
+	s=arc-20240116; t=1708521382; c=relaxed/simple;
+	bh=+1aEl7sEgewXRlGBfUFlRuVFHX5MuGEDRf+b5CFacNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rv8QS1AHWxDGA7KCfLrrrv72yPeE/vvJGtNWVn6osHab5HOQhHzXrM42wlCSuv3lSL8hPBbxpTK3Mt4fkSRHrhTCYejip/1ASLekISyU6BQnkeBg3/uxrRPJcWt7NwNT8b+gQLQP30216W0PH3FEQgxjXbVBICLIvYc0cGpt38A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fzSdPMTJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5189DC433F1;
-	Wed, 21 Feb 2024 13:45:23 +0000 (UTC)
+	 MIME-Version; b=jrDl9Ij7bfEnWq0oEAt+NrqlYF1Ed1rjtDRPSoDkOZyQ9MrAjXX9ewBkW88ulwKVlPW+R9DKsAuGX7vqQddtCO0MZmEUQYpSHJamMtWD29ZruEiXb3rzfVHXeO5daGAx1CgPvIN5DI54uVYFJfWR6KNM6cZ9cRTOJwXDXsjpGWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WMk9GZs5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 012D6C433F1;
+	Wed, 21 Feb 2024 13:16:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523123;
-	bh=ZgSaCyZxtcdNoT3nq6/oG3ezZOqEjssBGRFzt8tKizQ=;
+	s=korg; t=1708521382;
+	bh=+1aEl7sEgewXRlGBfUFlRuVFHX5MuGEDRf+b5CFacNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fzSdPMTJc9hujjwgcZEc7Yt1l+1g0JUpYzC3SxeJDCTYwTBPfTj1gc8aJuO/rmSP1
-	 TWpFZ7eV7u6k6a8bsHkI71xY7c7GkfAByR6zF+JYbuVjYwekMiDQaX30IqK7zHoRic
-	 WUZ8bvBBifmQ8uUzvv1y4VIjancFmKXDs7p2wwNU=
+	b=WMk9GZs5YGMI8GzHnv68x11VKcstIXd3LD31RmK+M43fSuhR7Eo3E8dSNSWjbuDIt
+	 +Zz5YdmyUmJokj08n6k8cfMG7UzogXx+l3QEb8AlHAnWLMB/nEb8gwAMMHiwBOCCh1
+	 zR6WIyNBvq4Ds7edWPMQhjhC976UJAKoFHnEAQrk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.15 346/476] btrfs: forbid deleting live subvol qgroup
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 096/202] f2fs: fix to check return value of f2fs_reserve_new_block()
 Date: Wed, 21 Feb 2024 14:06:37 +0100
-Message-ID: <20240221130020.777531144@linuxfoundation.org>
+Message-ID: <20240221125934.885348219@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: Chao Yu <chao@kernel.org>
 
-commit a8df35619948bd8363d330c20a90c9a7fbff28c0 upstream.
+[ Upstream commit 956fa1ddc132e028f3b7d4cf17e6bfc8cb36c7fd ]
 
-If a subvolume still exists, forbid deleting its qgroup 0/subvolid.
-This behavior generally leads to incorrect behavior in squotas and
-doesn't have a legitimate purpose.
+Let's check return value of f2fs_reserve_new_block() in do_recover_data()
+rather than letting it fails silently.
 
-Fixes: cecbb533b5fc ("btrfs: record simple quota deltas in delayed refs")
-CC: stable@vger.kernel.org # 5.4+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Also refactoring check condition on return value of f2fs_reserve_new_block()
+as below:
+- trigger f2fs_bug_on() only for ENOSPC case;
+- use do-while statement to avoid redundant codes;
+
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/qgroup.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ fs/f2fs/recovery.c | 23 +++++++++++++++++------
+ 1 file changed, 17 insertions(+), 6 deletions(-)
 
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -1608,6 +1608,15 @@ out:
- 	return ret;
- }
+diff --git a/fs/f2fs/recovery.c b/fs/f2fs/recovery.c
+index ad0486beee2c..fffc7a9de04b 100644
+--- a/fs/f2fs/recovery.c
++++ b/fs/f2fs/recovery.c
+@@ -548,7 +548,16 @@ static int do_recover_data(struct f2fs_sb_info *sbi, struct inode *inode,
+ 		 */
+ 		if (dest == NEW_ADDR) {
+ 			f2fs_truncate_data_blocks_range(&dn, 1);
+-			f2fs_reserve_new_block(&dn);
++			do {
++				err = f2fs_reserve_new_block(&dn);
++				if (err == -ENOSPC) {
++					f2fs_bug_on(sbi, 1);
++					break;
++				}
++			} while (err &&
++				IS_ENABLED(CONFIG_F2FS_FAULT_INJECTION));
++			if (err)
++				goto err;
+ 			continue;
+ 		}
  
-+static bool qgroup_has_usage(struct btrfs_qgroup *qgroup)
-+{
-+	return (qgroup->rfer > 0 || qgroup->rfer_cmpr > 0 ||
-+		qgroup->excl > 0 || qgroup->excl_cmpr > 0 ||
-+		qgroup->rsv.values[BTRFS_QGROUP_RSV_DATA] > 0 ||
-+		qgroup->rsv.values[BTRFS_QGROUP_RSV_META_PREALLOC] > 0 ||
-+		qgroup->rsv.values[BTRFS_QGROUP_RSV_META_PERTRANS] > 0);
-+}
-+
- int btrfs_remove_qgroup(struct btrfs_trans_handle *trans, u64 qgroupid)
- {
- 	struct btrfs_fs_info *fs_info = trans->fs_info;
-@@ -1627,6 +1636,11 @@ int btrfs_remove_qgroup(struct btrfs_tra
- 		goto out;
- 	}
+@@ -556,12 +565,14 @@ static int do_recover_data(struct f2fs_sb_info *sbi, struct inode *inode,
+ 		if (f2fs_is_valid_blkaddr(sbi, dest, META_POR)) {
  
-+	if (is_fstree(qgroupid) && qgroup_has_usage(qgroup)) {
-+		ret = -EBUSY;
-+		goto out;
-+	}
-+
- 	/* Check if there are no children of this qgroup */
- 	if (!list_empty(&qgroup->members)) {
- 		ret = -EBUSY;
+ 			if (src == NULL_ADDR) {
+-				err = f2fs_reserve_new_block(&dn);
+-				while (err &&
+-				       IS_ENABLED(CONFIG_F2FS_FAULT_INJECTION))
++				do {
+ 					err = f2fs_reserve_new_block(&dn);
+-				/* We should not get -ENOSPC */
+-				f2fs_bug_on(sbi, err);
++					if (err == -ENOSPC) {
++						f2fs_bug_on(sbi, 1);
++						break;
++					}
++				} while (err &&
++					IS_ENABLED(CONFIG_F2FS_FAULT_INJECTION));
+ 				if (err)
+ 					goto err;
+ 			}
+-- 
+2.43.0
+
 
 
 
