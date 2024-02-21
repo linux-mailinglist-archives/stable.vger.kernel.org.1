@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-21902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9397185D914
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E24785DE45
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:17:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A1B5B22783
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:14:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D74B1C23B07
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:17:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DD0D69D2B;
-	Wed, 21 Feb 2024 13:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D241D7BB1F;
+	Wed, 21 Feb 2024 14:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pJgnjptm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vzD8WXh7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5B153816;
-	Wed, 21 Feb 2024 13:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F86078B5E;
+	Wed, 21 Feb 2024 14:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521258; cv=none; b=dkLsHOQsrw080DeeoVRKv99fwbxBvb8F0mazefijm/GcYyj63ruiUkNZa5l+xtPMqqHN4ynYWcRIN17rggH0uHaNcVB/ZccUUpbNVVqC/YozsUEZ4ksfYr1DS+yZAyX8p4eSER4RHMfKJIUtQVsg7IIXyNQ3hoe9zvvwE9R2XvQ=
+	t=1708524951; cv=none; b=j+VqkeoSoO6hXLXh0YjsXGFbLQesUnHtp5qtBCVrZUQPuhFEXFoe1UjZupEf7VTzKiK5r+7j1wPidRnaV1Zzucg5rtIsAubtkQ6MCGj2Z+xvt/u2HyVm1P8LEO+D/ClXbvb5Olp27FY86j31/m545pFcjFEtCaJENUoZXCdLMI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521258; c=relaxed/simple;
-	bh=hMLZc7bZWZGoXAU+2PiHGUd0WaJCv5Uy5oWKD7HDTek=;
+	s=arc-20240116; t=1708524951; c=relaxed/simple;
+	bh=zNf16ppu1uZTPwXoBXBnMwQ/95EgVpiZsDrmINEnKqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XNDjsQZcbv76zvJyruGJowXBDOj3frYrJlhRxAk3RCayPthjOu02PZHp+cJNBcbJGlg0/Pe6DWPVbJKNKwrByH1PigKMXgspTHt95gDtVQtpvtEEoTG+Iz0Bbf6KBcwCf3cCQ0NcqU9tF10Wfk+k2+NPJpjSp8j70r4fB/xtdEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pJgnjptm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96823C433F1;
-	Wed, 21 Feb 2024 13:14:17 +0000 (UTC)
+	 MIME-Version; b=anezaPJydOqT7PtXr5KcRzNymxBj+95c0xAFaIqvvvTSzbD9zuaZW6EizcEOlj8uciPAtEqWmn/MQrZGa1l9viV4mYe5iE4aNxZtNzBVIziZ0ANUSD3/NVvVuOuHQdIq/oBP8mib2wj7wL7jc9Yaqy5HgLWPPhmGkg/yYNmy9Y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vzD8WXh7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F23CEC433F1;
+	Wed, 21 Feb 2024 14:15:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521258;
-	bh=hMLZc7bZWZGoXAU+2PiHGUd0WaJCv5Uy5oWKD7HDTek=;
+	s=korg; t=1708524951;
+	bh=zNf16ppu1uZTPwXoBXBnMwQ/95EgVpiZsDrmINEnKqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pJgnjptmkaWbcgJz7rqYx2vzIbq5sA9SNHQRzSkwhF67Glsy2xaytw/ZgQQfUfXZl
-	 gs0JhA3KwhvdAmRipT8l1w63iQTtpZUk/yW9kGQvjlL0uONrd4vtwltGrtQ7lpEO/X
-	 zXhHly4jnpN29aW6InU7tm4S0QEW9bf3OuztPdMY=
+	b=vzD8WXh7/MSJ8iw5vPImvaHDCFXZhQ9oKdHzeDSd4yTP7vwk9TLvrQa4YhfQy8Gnu
+	 yhKx7u/DQ9Zxb8IWLn313w/DQcgw2bnlxHv5srZSeZbo2CWfEKicmovNpvSIIpgqLv
+	 jEMnh29R4v+Z4lvnlEQkWoYVNPp7PIUTrAXcTu6c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xi Ruoyao <xry111@xry111.site>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 4.19 046/202] mips: Call lose_fpu(0) before initializing fcr31 in mips_set_personality_nan
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 006/267] serial: sc16is7xx: set safe default SPI clock frequency
 Date: Wed, 21 Feb 2024 14:05:47 +0100
-Message-ID: <20240221125933.300934214@linuxfoundation.org>
+Message-ID: <20240221125940.266201729@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xi Ruoyao <xry111@xry111.site>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-commit 59be5c35850171e307ca5d3d703ee9ff4096b948 upstream.
+[ Upstream commit 3ef79cd1412236d884ab0c46b4d1921380807b48 ]
 
-If we still own the FPU after initializing fcr31, when we are preempted
-the dirty value in the FPU will be read out and stored into fcr31,
-clobbering our setting.  This can cause an improper floating-point
-environment after execve().  For example:
+15 MHz is supported only by 76x variants.
 
-    zsh% cat measure.c
-    #include <fenv.h>
-    int main() { return fetestexcept(FE_INEXACT); }
-    zsh% cc measure.c -o measure -lm
-    zsh% echo $((1.0/3)) # raising FE_INEXACT
-    0.33333333333333331
-    zsh% while ./measure; do ; done
-    (stopped in seconds)
+If the SPI clock frequency is not specified, use a safe default clock value
+of 4 MHz that is supported by all variants.
 
-Call lose_fpu(0) before setting fcr31 to prevent this.
+Also use HZ_PER_MHZ macro to improve readability.
 
-Closes: https://lore.kernel.org/linux-mips/7a6aa1bbdbbe2e63ae96ff163fab0349f58f1b9e.camel@xry111.site/
-Fixes: 9b26616c8d9d ("MIPS: Respect the ISA level in FCSR handling")
-Cc: stable@vger.kernel.org
-Signed-off-by: Xi Ruoyao <xry111@xry111.site>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: 2c837a8a8f9f ("sc16is7xx: spi interface is added")
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20231221231823.2327894-4-hugo@hugovil.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/kernel/elf.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/tty/serial/sc16is7xx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/mips/kernel/elf.c
-+++ b/arch/mips/kernel/elf.c
-@@ -15,6 +15,7 @@
+diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
+index 42e1e6101485..ce0681ba7734 100644
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -24,6 +24,7 @@
+ #include <linux/tty_flip.h>
+ #include <linux/spi/spi.h>
+ #include <linux/uaccess.h>
++#include <linux/units.h>
+ #include <uapi/linux/sched/types.h>
  
- #include <asm/cpu-features.h>
- #include <asm/cpu-info.h>
-+#include <asm/fpu.h>
- 
- /* Whether to accept legacy-NaN and 2008-NaN user binaries.  */
- bool mips_use_nan_legacy;
-@@ -311,6 +312,11 @@ void mips_set_personality_nan(struct arc
- 	struct cpuinfo_mips *c = &boot_cpu_data;
- 	struct task_struct *t = current;
- 
-+	/* Do this early so t->thread.fpu.fcr31 won't be clobbered in case
-+	 * we are preempted before the lose_fpu(0) in start_thread.
-+	 */
-+	lose_fpu(0);
-+
- 	t->thread.fpu.fcr31 = c->fpu_csr31;
- 	switch (state->nan_2008) {
- 	case 0:
+ #define SC16IS7XX_NAME			"sc16is7xx"
+@@ -1414,7 +1415,7 @@ static int sc16is7xx_spi_probe(struct spi_device *spi)
+ 	spi->bits_per_word	= 8;
+ 	/* only supports mode 0 on SC16IS762 */
+ 	spi->mode		= spi->mode ? : SPI_MODE_0;
+-	spi->max_speed_hz	= spi->max_speed_hz ? : 15000000;
++	spi->max_speed_hz	= spi->max_speed_hz ? : 4 * HZ_PER_MHZ;
+ 	ret = spi_setup(spi);
+ 	if (ret)
+ 		return ret;
+-- 
+2.43.0
+
 
 
 
