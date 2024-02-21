@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-21988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18CC785D98F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:20:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E967785DC0F
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:49:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2D3C1F228C7
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:20:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4FA8283CE0
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:49:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0B697BB18;
-	Wed, 21 Feb 2024 13:19:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B26F79DAB;
+	Wed, 21 Feb 2024 13:48:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PMHaLnEk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NOuEQ3OL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B066A7BB12;
-	Wed, 21 Feb 2024 13:19:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17CD869951;
+	Wed, 21 Feb 2024 13:48:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521579; cv=none; b=TBcvMvzHxqCfDgOTIzQfrOSIH+LRJCr750CXJ/sFLtndoRJ5IShbGid648VfunObhMJwTeg8Zc8MIu+yaxdIQZJm934MXyPftIzAe9sDGrVsVWgAozsmR/aA5V1AZ1LZCqZ1Ja5WhNHfWIiff0iZwvLvV7MjMluJu4MKqUWbenM=
+	t=1708523318; cv=none; b=kQrjlHOSV93IVMlW0gD2qxJH12fY/Y7b+CHA8+i4gDAfd9v7vO3ou6fluB2OPpNz7SKn/1416E486zhvrJBpECdpjEpB8WKYT10vBJySjDHfUWWzHpKeIp210vikCqNF2jaCncFbYSkqLLsiYhpidsv6W9nHN/rPEmPpz2mz1P0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521579; c=relaxed/simple;
-	bh=Ih0qyMy0n6m6BdzQ8sd7zz2Z/9jrsC9wa9wGvFjIVaM=;
+	s=arc-20240116; t=1708523318; c=relaxed/simple;
+	bh=66cd3gbpG1h0ui20vF9r5oGw9NVA5q1b5DMhLOKGY10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=htyy8KS341WRluCowP/3pjJnGX521sRTnKEObN5tCiUx/Ru41eRemkPcn3v0FklGe8jeeoIGmaOzlLgZM1C75YrofuoWl8LVoYCGgCcOx3fzKjiklAByHm7Xs28SPGB8q49CXxypBrbvocl+U2l+0SePwDDThutiwB+1WcTniAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PMHaLnEk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E9DCC433F1;
-	Wed, 21 Feb 2024 13:19:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=l067OLWW6EExGoKI2UPrsdCKLe+Jr5GiFxqa4DCRb+BeSvJSTSsHIZK6QR8sNIHJy9ZFpz3lj+hpvu0Lfg1Su0JcQONTCPTS9xwPP2xi4Ml+voRgt0hboIoPVt8czh3oZPFRYFKR3W6JoMU5lDlVRzo7teABjYT9MQsFqM4gHUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NOuEQ3OL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90D64C433F1;
+	Wed, 21 Feb 2024 13:48:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521579;
-	bh=Ih0qyMy0n6m6BdzQ8sd7zz2Z/9jrsC9wa9wGvFjIVaM=;
+	s=korg; t=1708523318;
+	bh=66cd3gbpG1h0ui20vF9r5oGw9NVA5q1b5DMhLOKGY10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PMHaLnEkSWGw7le+H4+I9nHuCT/+zcKgJtmLRP9xn6ezXY6OOwmsqE0caCSQ6FdfX
-	 WXmrQAElzNoxC0yUVvfDNl7o52C9oaAGC9PhvlzmoesXBwbWKggDRxAXS7Ao9+Ho+W
-	 On5H3AP5Obho0lGomnhdhk7g3en6DJcnbJdt/kzE=
+	b=NOuEQ3OLKpBYOCFttIxymrwrdwVNhPkJC5AK5oQalZizew1BMyLPGBgFF0HXasMy9
+	 0msEYvKPdPHxG3hvFOsYMWtpGNHHXUnfnwFEocNxYsKxFDWP4hpMW1DW5sfZijz2df
+	 iISX4cz5Gqm+FpWQnc8xptNb+h+e0Vydup444QA4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Rui <rui.zhang@intel.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 150/202] hwmon: (coretemp) Fix out-of-bounds memory access
+	=?UTF-8?q?Jan=20Kundr=C3=A1t?= <jan.kundrat@cesnet.cz>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Subject: [PATCH 5.15 400/476] serial: max310x: improve crystal stable clock detection
 Date: Wed, 21 Feb 2024 14:07:31 +0100
-Message-ID: <20240221125936.546066126@linuxfoundation.org>
+Message-ID: <20240221130022.781282920@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +59,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Rui <rui.zhang@intel.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[ Upstream commit 4e440abc894585a34c2904a32cd54af1742311b3 ]
+commit 93cd256ab224c2519e7c4e5f58bb4f1ac2bf0965 upstream.
 
-Fix a bug that pdata->cpu_map[] is set before out-of-bounds check.
-The problem might be triggered on systems with more than 128 cores per
-package.
+Some people are seeing a warning similar to this when using a crystal:
 
-Fixes: 7108b80a542b ("hwmon/coretemp: Handle large core ID value")
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240202092144.71180-2-rui.zhang@intel.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Stable-dep-of: fdaf0c8629d4 ("hwmon: (coretemp) Fix bogus core_id to attr name mapping")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    max310x 11-006c: clock is not stable yet
+
+The datasheet doesn't mention the maximum time to wait for the clock to be
+stable when using a crystal, and it seems that the 10ms delay in the driver
+is not always sufficient.
+
+Jan Kundrát reported that it took three tries (each separated by 10ms) to
+get a stable clock.
+
+Modify behavior to check stable clock ready bit multiple times (20), and
+waiting 10ms between each try.
+
+Note: the first draft of the driver originally used a 50ms delay, without
+checking the clock stable bit.
+Then a loop with 1000 retries was implemented, each time reading the clock
+stable bit.
+
+Fixes: 4cf9a888fd3c ("serial: max310x: Check the clock readiness")
+Cc: stable@vger.kernel.org
+Suggested-by: Jan Kundrát <jan.kundrat@cesnet.cz>
+Link: https://www.spinics.net/lists/linux-serial/msg35773.html
+Link: https://lore.kernel.org/all/20240110174015.6f20195fde08e5c9e64e5675@hugovil.com/raw
+Link: https://github.com/boundarydevices/linux/commit/e5dfe3e4a751392515d78051973190301a37ca9a
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20240116213001.3691629-3-hugo@hugovil.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/coretemp.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/tty/serial/max310x.c |   21 ++++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/hwmon/coretemp.c b/drivers/hwmon/coretemp.c
-index 33371f7a4c0f..6832569c9bac 100644
---- a/drivers/hwmon/coretemp.c
-+++ b/drivers/hwmon/coretemp.c
-@@ -480,18 +480,14 @@ static int create_core_data(struct platform_device *pdev, unsigned int cpu,
- 	if (pkg_flag) {
- 		attr_no = PKG_SYSFS_ATTR_NO;
- 	} else {
--		index = ida_alloc(&pdata->ida, GFP_KERNEL);
-+		index = ida_alloc_max(&pdata->ida, NUM_REAL_CORES - 1, GFP_KERNEL);
- 		if (index < 0)
- 			return index;
+--- a/drivers/tty/serial/max310x.c
++++ b/drivers/tty/serial/max310x.c
+@@ -235,6 +235,10 @@
+ #define MAX310x_REV_MASK		(0xf8)
+ #define MAX310X_WRITE_BIT		0x80
+ 
++/* Crystal-related definitions */
++#define MAX310X_XTAL_WAIT_RETRIES	20 /* Number of retries */
++#define MAX310X_XTAL_WAIT_DELAY_MS	10 /* Delay between retries */
 +
- 		pdata->cpu_map[index] = topology_core_id(cpu);
- 		attr_no = index + BASE_SYSFS_ATTR_NO;
+ /* MAX3107 specific */
+ #define MAX3107_REV_ID			(0xa0)
+ 
+@@ -610,12 +614,19 @@ static u32 max310x_set_ref_clk(struct de
+ 
+ 	/* Wait for crystal */
+ 	if (xtal) {
+-		unsigned int val = 0;
+-		msleep(10);
+-		regmap_read(s->regmap, MAX310X_STS_IRQSTS_REG, &val);
+-		if (!(val & MAX310X_STS_CLKREADY_BIT)) {
++		bool stable = false;
++		unsigned int try = 0, val = 0;
++
++		do {
++			msleep(MAX310X_XTAL_WAIT_DELAY_MS);
++			regmap_read(s->regmap, MAX310X_STS_IRQSTS_REG, &val);
++
++			if (val & MAX310X_STS_CLKREADY_BIT)
++				stable = true;
++		} while (!stable && (++try < MAX310X_XTAL_WAIT_RETRIES));
++
++		if (!stable)
+ 			dev_warn(dev, "clock is not stable yet\n");
+-		}
  	}
  
--	if (attr_no > MAX_CORE_DATA - 1) {
--		err = -ERANGE;
--		goto ida_free;
--	}
--
- 	tdata = init_temp_data(cpu, pkg_flag);
- 	if (!tdata) {
- 		err = -ENOMEM;
--- 
-2.43.0
-
+ 	return bestfreq;
 
 
 
