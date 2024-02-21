@@ -1,115 +1,105 @@
-Return-Path: <stable+bounces-23183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3D7885E020
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:44:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C4A285E031
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:47:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5559F1F23D21
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:44:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35F321C20446
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:47:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27E007FBBC;
-	Wed, 21 Feb 2024 14:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13FBE7FBA7;
+	Wed, 21 Feb 2024 14:47:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rh+r5COi"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="Iq5WhoK1"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90EAA35;
-	Wed, 21 Feb 2024 14:43:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292097EF03;
+	Wed, 21 Feb 2024 14:47:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708526599; cv=none; b=EvHjHYumj/hBpNJGN45smsg5gM+pNAWNh81TRCzaKaBKoxYcQRco9TGykoZTPPRQ0dB1X5VOebCn5YjhHVLizKvfysr2Um1Fjz749ROkJTdq8tOGBVIyeAJXvw5LHCM/GklxxpjpGDiYmcqVKzr6ZNEncXyJk8yjN9wtkNLKwdE=
+	t=1708526850; cv=none; b=g0VdB0+jYChN40x5lLkY6a9CnoQRMZhfnUh3vxIcSurSesYO/AOyXT4zw1ii5RJqpQnbBx5qwhHKoZ/w+A8yIKh/BxM5wvb9JgW0EJ/KdjTVR1UK34JZZik4sR+OjDboFnvdyVT8ufaGK212wEHoZnr13RvgoGwRWAs8/eIFdxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708526599; c=relaxed/simple;
-	bh=g208PeeCjQUWdSouRHCJy7e/n13eV/bEbILTkdMsC/I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rknCaXbKmmO7KPcKsRwbahqZ9SAK70V8DCFqzsgqPdR4qLArVY5NODJDbAhapaQfdT2VDn5IwWU/GIqaM3mkPQI1SRWFBvKHA31PxtW2/T1u2MCHcKWgxrgXu6DWfEN5tS37bzDiwFlicL2lT6WUOiRYnzVInB2iX4yjHkjDR2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rh+r5COi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2C1CC433C7;
-	Wed, 21 Feb 2024 14:43:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708526599;
-	bh=g208PeeCjQUWdSouRHCJy7e/n13eV/bEbILTkdMsC/I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Rh+r5COiXiaZ9Iekc6LC3gHFLFBKC1QJ3rAQqRz6ONSqWQA9MOLhwj/y5s3Q9wiaN
-	 7f3B/2r2Mj4y23i/Mx5gHNK1EqORnkFR1qYRl3oXr9ssXFDlxR5BJsmuE2bVD+eXDr
-	 ZiokHNwKTPOxP/4Wd64aCvZkOaWxu1FszTI5jEEPJAsBMbglO1D0HObG47VdcmPUr/
-	 RAoaq54aWhHeqInoPutDmld/VNpRUORUs19PvxqQrhtkwoutI869XarNwZZha6rZUW
-	 ZOvzla4wlgb0Sce10X6uetYMnGCZs3EHXzrr7cflnmgi93/fq9l0dUnEmH2ndHyxrW
-	 KVr1bLKYNgUaw==
-Date: Wed, 21 Feb 2024 14:43:16 +0000
-From: Simon Horman <horms@kernel.org>
-To: Tom Parkin <tparkin@katalix.com>
-Cc: netdev@vger.kernel.org, David Howells <dhowells@redhat.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] l2tp: pass correct message length to ip6_append_data
-Message-ID: <20240221144316.GA722610@kernel.org>
-References: <20240220122156.43131-1-tparkin@katalix.com>
+	s=arc-20240116; t=1708526850; c=relaxed/simple;
+	bh=9og4WWPF+xnEe/tmLQY9eA9wdGamFn3Kri3F4sczeZM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=R9gGLi1+duEn2tMuCpk0BpSjeRpcOQDnwjuIC50UTCR5wU4MUYf6GpxdmunYOFec+wIrhfRjLRpvykSCjv2xAkfpiz2d5aALS/iiiIWf6n9JtyDvZUjrxQ2W0NdfHHNBPUevIpR3mwQEPFBG+zHZZM4HMHgWR5LVKiugUHdyzII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=Iq5WhoK1; arc=none smtp.client-ip=212.227.17.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+	t=1708526845; x=1709131645; i=rwarsow@gmx.de;
+	bh=9og4WWPF+xnEe/tmLQY9eA9wdGamFn3Kri3F4sczeZM=;
+	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
+	 In-Reply-To;
+	b=Iq5WhoK1vKq1vSvMqFgwNe7kK1q0BM79/M+oAfTrL/kJVs0Ktu92sWCllWZISDR6
+	 xa6W1A4590qaX3bS1AG8WelO9P4JX8Ys5MlSX4YgAedAmqOEBCf8MXciIFl8SQ+3Z
+	 MIY0q6tbXoJZcznEf6+SHmA0FAMIKQs+lB/kDqz3IlXDVOs+20zxe120wiQdbNKbM
+	 gtHwonJq46IKjgNqHqX7cEzv3NWVAzP/g+icKkflu/rlxODZ2VfRVr1jwRMvFgefJ
+	 iHdbbfzrZ8fpGsQrSmEg+1e7BQfLeBsQF3OxbojnSCptwlGb85M8/0jLUxABk9W3G
+	 G0FZvbHKtYvLmRgkUw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.100.20] ([46.142.35.10]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MSc1B-1rWZef47IH-00SvTo; Wed, 21
+ Feb 2024 15:47:25 +0100
+Message-ID: <2cc27421-8791-47bd-a3d6-83188332ad3c@gmx.de>
+Date: Wed, 21 Feb 2024 15:47:23 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240220122156.43131-1-tparkin@katalix.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.7 000/313] 6.7.6-rc2 review
+Content-Language: de-DE, en-US
+To: Luna Jernberg <droidbittin@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <ed9e1bca-d07b-42fa-9ceb-d0eef3976168@gmx.de>
+ <CADo9pHg2jgYqE1qxpV40E6GHL1s+G+mNm1JCcB9GgA-4XM59+w@mail.gmail.com>
+From: Ronald Warsow <rwarsow@gmx.de>
+In-Reply-To: <CADo9pHg2jgYqE1qxpV40E6GHL1s+G+mNm1JCcB9GgA-4XM59+w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:6qBb6lE7ryyqGfoevmJBjZsvkWVd5Lv08+njlEABeejarAwHy7V
+ Jy8bRvwKb/J521PXxy1DLTqI3BhkuBOFtm+g+O57wgXH10OhCQgWpydD9gdFYQEWja5B0cP
+ zwtm/McdzQKiTHowhVT0upBatnDkKIoR+jOBZyXKVlr89itt8+nLZ3VwU9kslyMZOA8awqp
+ m6/z6a5f8Ves7Ib6Vl7Ig==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:HfbXWP8WQfo=;yU4TXNtTTeD48SYsiIl2ECddhcq
+ AAbvwpTMOEh1HZ0GjvPV4m2Hc/Y0La3F1ytvu6bKLFgNQYc1tR/vjRKrpE51D7Phm5E33VX1D
+ eE3CSdqvE+BQaVzFIVSMrfKUdyM2RM8Cv+kX6fplvqtAw26ROdELBUFWBrGSnugxEjMI9tWLL
+ 8P5yd3fooC9A8QGpbJskGSCguBz7gIui++yDfs7mqzkRI+jMnpzsoSeXxp2FCu9AHLzumu51u
+ apUp1kyZDeokvw22KSEYa/M0CZ5Xn482bPjiSyvMEGX8Mxm7cEvquDpThIUNFKvDmZZBxDbKB
+ 4XFbeCmAHGZuQagHMacLGwi001MAEWNkAE2kkAo5wOQYaENVplvH1aeNq28rYxahn3inxmna9
+ CrMospaNT1JWB9FUDybm6ZBgwd3SSAql4Tz5on3qB68RsPuuZLb787ipQlwtpaDFNtGYL3lUf
+ GGkkYwE3XVxTmxK5emvG4+TWVbgFMFPIanC4WbJG07Kg553XtaNlEXOUWSFkYSLiUfjzlspzW
+ d6MxkwdXx/5UZmLqDbeEoBpce+muahV9hVo4HRPLV4UODf+PGMz4rno/Ix9vALugBqjfFC0Cm
+ EI8xRcVj2VzGg7wUOcXWtq+NqALhubdU2cI7SqwnYPEXbkKvVP+XcyFZiePuTCMtCDUmnZo62
+ LZbTMKCYB6pzVQVTo6N3PmLa94l1qU4NtAXC2ucbNntVhRaH4kis/IhHemmq8q8kd8cM17WoJ
+ C3YuoVnYZD/mFBgZ7UFBQxA0vIl2GPmnqEfVB4IoRSDucOi1Z10f7CTDnsdrwTpn7R3qmMrjR
+ tUy7ZIbDeflaSbo9jI+CwBMfV9e0odSVJ8QL5+EXR6yDA=
 
-On Tue, Feb 20, 2024 at 12:21:56PM +0000, Tom Parkin wrote:
-> l2tp_ip6_sendmsg needs to avoid accounting for the transport header
-> twice when splicing more data into an already partially-occupied skbuff.
-> 
-> To manage this, we check whether the skbuff contains data using
-> skb_queue_empty when deciding how much data to append using
-> ip6_append_data.
-> 
-> However, the code which performed the calculation was incorrect:
-> 
->      ulen = len + skb_queue_empty(&sk->sk_write_queue) ? transhdrlen : 0;
-> 
-> ...due to C operator precedence, this ends up setting ulen to
-> transhdrlen for messages with a non-zero length, which results in
-> corrupted packets on the wire.
-> 
-> Add parentheses to correct the calculation in line with the original
-> intent.
-> 
-> Fixes: 9d4c75800f61 ("ipv4, ipv6: Fix handling of transhdrlen in __ip{,6}_append_data()")
-> Cc: David Howells <dhowells@redhat.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Tom Parkin <tparkin@katalix.com>
+On 21.02.24 15:25, Luna Jernberg wrote:
+> Works fine on my desktop with model name    : AMD Ryzen 5 5600 6-Core
+> Processor and Arch Linux
+>
+> Tested-by: Luna Jernberg <droidbittin@gmail.com>
+>
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+du meine deinem Scheiss Top Posting immer !!!
+:-(
 
-> ---
-> This issue was uncovered by Debian build-testing for the
-> golang-github-katalix-go-l2tp package[1].
-> 
-> It seems 9d4c75800f61 has been backported to the linux-6.1.y stable
-> kernel (and possibly others), so I think this fix will also need
-> backporting.
-> 
-> The bug is currently seen on at least Debian Bookworm, Ubuntu Jammy, and 
-> Debian testing/unstable.
-
-In that case perhaps this is appropriate - citing the patch that 9d4c75800f61
-tried to fix?
-
-	Fixes: a32e0eec7042 ("l2tp: introduce L2TPv3 IP encapsulation support for IPv6")
+get the fuck out of it !
 
 
-> 
-> Unfortunately tests using "ip l2tp" and which focus on dataplane
-> transport will not uncover this bug: it's necessary to send a packet
-> using an L2TPIP6 socket opened by userspace, and to verify the packet on
-> the wire.  The l2tp-ktest[2] test suite has been extended to cover this.
-> 
-> [1]. https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1063746
-> [2]. https://github.com/katalix/l2tp-ktest
 
-...
+>>
+>> Tested-by: Ronald Warsow <rwarsow@gmx.de>
+
 
