@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-22041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF6E785D9D9
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:23:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5163885DF0D
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:24:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3CAEDB25D02
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:23:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C2E0282CA4
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:24:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23A88763FF;
-	Wed, 21 Feb 2024 13:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4FF273161;
+	Wed, 21 Feb 2024 14:24:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ry9IVB/t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EYf6yJb7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D541673161;
-	Wed, 21 Feb 2024 13:22:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 714793CF42;
+	Wed, 21 Feb 2024 14:24:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521773; cv=none; b=ZpLHAD31MsfClWKyIlCQK07IVHaiLRGjXR/1baFG+W9y9sNrl5SRW8h93D1h2TNxuM/qIq8PLOA6jxAcH6+WQz79Ub/ASprs3BJru7O/lKX1djhznvfmbwebacTbjpGYzrDkR6BJdnognzkHhBjzQvmxgG4Ocftwhqj+TagFvhE=
+	t=1708525461; cv=none; b=QJlkTBktnsEO2icz4CoeVQgP6uO51UDiVuFlGjxMzJriH5LMMxcc3mCnXLcxjKdraYb8swR/lqos7heXoxVtuMBgfyU6QkRHoGJNxRSjNZbyNWCsT+koTcUDtOGdkh6H+Nu1PPqsXeX7t9IXB9xQXdB9UV+Jqoi2jLxNXUhgiME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521773; c=relaxed/simple;
-	bh=aPjV3nVjStsz0oxFXFsvurJj91KzdGQG44w/A1Ay9vY=;
+	s=arc-20240116; t=1708525461; c=relaxed/simple;
+	bh=iVBA2IAGulJy4NUBllSA75uAFh8KZL27Yr2PBpgjw2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hhFRwXjySS11lAaqIgdN7L6sT3+HIzxVa5Jjx9E5XIjTkyIZSUlafsB3nfPuyKevzLGSVPuzg9g1czxS70ScOh3zQScqa8cpP84ZTd8t0ya1BXiuVsvheUitqMXvHzCP9kbkqX8hYaTq9IryoD3bzihKDQ8ADehPHIl8Orm/C0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ry9IVB/t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DD87C433C7;
-	Wed, 21 Feb 2024 13:22:53 +0000 (UTC)
+	 MIME-Version; b=s61hTo/KX/vzZ1TurYB2zU79j4GaLr8XbZAiB1y7bLuFLzNMscEHTWE/4BXccy6HX8b8Dh3IO75iKK7VX7U74MGtSuNLhujIEsVnpFDbhKrgFxCIVqafDbT90/LI35Yf1iG5WBes9YWZ5PDapxI9KsFLTUqNxem1+2NbaUQ+p1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EYf6yJb7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CDD1C433F1;
+	Wed, 21 Feb 2024 14:24:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521773;
-	bh=aPjV3nVjStsz0oxFXFsvurJj91KzdGQG44w/A1Ay9vY=;
+	s=korg; t=1708525461;
+	bh=iVBA2IAGulJy4NUBllSA75uAFh8KZL27Yr2PBpgjw2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ry9IVB/tsxt+ntjiWM0Xw8rVfFfVzlDveVUjpSU5LtK72wuixfQtSb1XpDW2AEcLM
-	 dN+shpehAxxbIJAly6e6xUVBtAbclBknBnT3M699IiN7VY8BKKdUFUUwOBLu0RxHWw
-	 Q3FzX1P19FLsdbcDvWS/Z2oHvbbhAWHY1qDpkgXM=
+	b=EYf6yJb7OVS2hMOIMqrKZsROWJusPUZNGP9kDzq3mhRTa6qxzaPlnmaq6qWDlObEh
+	 bofQrBxZPtTr0HnlRuBtz1bCKh+wJPcb+sQWI8lO2mFYM+uVxRlxk+MxmGGy45dLaI
+	 /z3VUxpxlGMYjkYwzuDWGiUjXMZKp2ndElZMsj9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zach OKeefe <zokeefe@google.com>,
-	Maxim Patlasov <MPatlasov@parallels.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.19 174/202] mm/writeback: fix possible divide-by-zero in wb_dirty_limits(), again
+	Rob Clark <robdclark@chromium.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 134/267] drm/msm/dpu: Ratelimit framedone timeout msgs
 Date: Wed, 21 Feb 2024 14:07:55 +0100
-Message-ID: <20240221125937.431280850@linuxfoundation.org>
+Message-ID: <20240221125944.262494900@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zach O'Keefe <zokeefe@google.com>
+From: Rob Clark <robdclark@chromium.org>
 
-commit 9319b647902cbd5cc884ac08a8a6d54ce111fc78 upstream.
+[ Upstream commit 2b72e50c62de60ad2d6bcd86aa38d4ccbdd633f2 ]
 
-(struct dirty_throttle_control *)->thresh is an unsigned long, but is
-passed as the u32 divisor argument to div_u64().  On architectures where
-unsigned long is 64 bytes, the argument will be implicitly truncated.
+When we start getting these, we get a *lot*.  So ratelimit it to not
+flood dmesg.
 
-Use div64_u64() instead of div_u64() so that the value used in the "is
-this a safe division" check is the same as the divisor.
-
-Also, remove redundant cast of the numerator to u64, as that should happen
-implicitly.
-
-This would be difficult to exploit in memcg domain, given the ratio-based
-arithmetic domain_drity_limits() uses, but is much easier in global
-writeback domain with a BDI_CAP_STRICTLIMIT-backing device, using e.g.
-vm.dirty_bytes=(1<<32)*PAGE_SIZE so that dtc->thresh == (1<<32)
-
-Link: https://lkml.kernel.org/r/20240118181954.1415197-1-zokeefe@google.com
-Fixes: f6789593d5ce ("mm/page-writeback.c: fix divide by zero in bdi_dirty_limits()")
-Signed-off-by: Zach O'Keefe <zokeefe@google.com>
-Cc: Maxim Patlasov <MPatlasov@parallels.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
+Patchwork: https://patchwork.freedesktop.org/patch/571584/
+Link: https://lore.kernel.org/r/20231211182000.218088-1-robdclark@gmail.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/page-writeback.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c | 5 ++++-
+ drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h     | 1 +
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
---- a/mm/page-writeback.c
-+++ b/mm/page-writeback.c
-@@ -1529,7 +1529,7 @@ static inline void wb_dirty_limits(struc
- 	 */
- 	dtc->wb_thresh = __wb_calc_thresh(dtc);
- 	dtc->wb_bg_thresh = dtc->thresh ?
--		div_u64((u64)dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0;
-+		div64_u64(dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0;
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
+index 99d449ce4a07..03d671d23bf7 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
+@@ -44,6 +44,9 @@
+ 		(p) ? ((p)->hw_pp ? (p)->hw_pp->idx - PINGPONG_0 : -1) : -1, \
+ 		##__VA_ARGS__)
  
- 	/*
- 	 * In order to avoid the stacked BDI deadlock we need
++#define DPU_ERROR_ENC_RATELIMITED(e, fmt, ...) DPU_ERROR_RATELIMITED("enc%d " fmt,\
++		(e) ? (e)->base.base.id : -1, ##__VA_ARGS__)
++
+ /*
+  * Two to anticipate panels that can do cmd/vid dynamic switching
+  * plan is to create all possible physical encoder types, and switch between
+@@ -2151,7 +2154,7 @@ static void dpu_encoder_frame_done_timeout(struct timer_list *t)
+ 		return;
+ 	}
+ 
+-	DPU_ERROR_ENC(dpu_enc, "frame done timeout\n");
++	DPU_ERROR_ENC_RATELIMITED(dpu_enc, "frame done timeout\n");
+ 
+ 	event = DPU_ENCODER_FRAME_EVENT_ERROR;
+ 	trace_dpu_enc_frame_done_timeout(DRMID(drm_enc), event);
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
+index 4c889aabdaf9..6a4813505c33 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
+@@ -50,6 +50,7 @@
+ 	} while (0)
+ 
+ #define DPU_ERROR(fmt, ...) pr_err("[dpu error]" fmt, ##__VA_ARGS__)
++#define DPU_ERROR_RATELIMITED(fmt, ...) pr_err_ratelimited("[dpu error]" fmt, ##__VA_ARGS__)
+ 
+ /**
+  * ktime_compare_safe - compare two ktime structures
+-- 
+2.43.0
+
 
 
 
