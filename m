@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-22833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 235C585DE02
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:14:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 291E785DF7A
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:28:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCA681F23F46
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0DCE6B28E69
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:22:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F56A8060D;
-	Wed, 21 Feb 2024 14:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0E207BB01;
+	Wed, 21 Feb 2024 14:22:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NYCZRH/U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K5EiClsW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1B28005F;
-	Wed, 21 Feb 2024 14:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F6BE69317;
+	Wed, 21 Feb 2024 14:22:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524665; cv=none; b=XAA1Y19PtWATGXecnBPhPCEp9vWN9UuSqir5X48nM+ftmc1sQwxCkmBa2TdPMx9PTs8xlGX3KN007Iamf66vV2oYAg1lovbQXlQm/Nc9M6tm4J+Nuz6H18UB6vfDR4Ax4SWWwwItS+r65eKfFN55IBjdLsWL8kl8wK99f4PqcKI=
+	t=1708525331; cv=none; b=jtzRWhzxX93uZts4o6RB6LS3/9FZ7hyS0wEkl0tQPS1WrvBILkrNt+ZzvURiQr4TKn3suq0/gmAEk/xkTMaZHhXMrPWs40aA8GE+eMkJ9JHsvcUVUhLdAmi9mVlJEsBQAxeEJh6jsgHOy9UWNoIc4qurJjWX+Q9f1sQzNK07B54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524665; c=relaxed/simple;
-	bh=MDBzLrW18T+Ey7+r8nS4XLFv0xbKhzMK3PuvPLYPFyA=;
+	s=arc-20240116; t=1708525331; c=relaxed/simple;
+	bh=KzhvFE2KTOLFgZfLHVE4p9BWrdlJRtJXbMGiUX7QvQI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YFtSqg6TEQ/id6LcgDXfxPchYcwNHTnFPlfTelEQ8LLTBs39xznoql2cnYn7DcfScqVIBndvvnRjAGY2M3reMcHEp55MJmqtjM6xhEsKp9FmGkKQvDkxuYiGOqJNqNHbQ4TIDO1nFI3V9OEWItIH+T17ADxrcOfWaHL7zUsk29g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NYCZRH/U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BDE2C433F1;
-	Wed, 21 Feb 2024 14:11:04 +0000 (UTC)
+	 MIME-Version; b=QvPy6z0KDh3nda7FWdYLSdhJrgKWrQjkuaRdshBH2oN83dQ7D9E6AgImP4whKjzJokgepS9IW61RsTrigcHZqd/Af9k05z3iUHMYg9CjXUkYnXZUhtFNXsVM+YIa3DNXLIgjqimoKL2nLtYBvniZraq4I91CqWieJVpic0aokSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K5EiClsW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C294CC433F1;
+	Wed, 21 Feb 2024 14:22:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524664;
-	bh=MDBzLrW18T+Ey7+r8nS4XLFv0xbKhzMK3PuvPLYPFyA=;
+	s=korg; t=1708525331;
+	bh=KzhvFE2KTOLFgZfLHVE4p9BWrdlJRtJXbMGiUX7QvQI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NYCZRH/UFMbnPw6uQvbgQkWA08DTZgCqcK7LFuAhO1/32Sm+Y0HqRXktrIb4NG41x
-	 XmbSqabtf9Lx/YjvoT2bcC8PrpWxWAMJPcLu5UNvdBRKRkwHYU9b2auvO0ddNoElx7
-	 kXT6Kz2dO5QCXdrktO+/nEJ2HdL8UVlpQ2Nafjls=
+	b=K5EiClsWmAXTmuFdtv/zpUs7+Xz2SG2ATD7csr7ludHVj+vR79qQnut8eTMvrz8lN
+	 1wfiYe6wE6dpxH+WMNa9NOyEH95QjEeNm9nt309AefO8osuXZ1p4oyF8b77sZ9yBDp
+	 ueTCLTYtD7Ccg4aKj1hdWxEZTv3wjTeeZRlKyHyA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Furong Xu <0x1207@gmail.com>,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.10 284/379] net: stmmac: xgmac: fix a typo of register name in DPP safety handling
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 122/267] fast_dput(): handle underflows gracefully
 Date: Wed, 21 Feb 2024 14:07:43 +0100
-Message-ID: <20240221130003.310976354@linuxfoundation.org>
+Message-ID: <20240221125943.834105585@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Furong Xu <0x1207@gmail.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-commit 1ce2654d87e2fb91fea83b288bd9b2641045e42a upstream.
+[ Upstream commit 504e08cebe1d4e1efe25f915234f646e74a364a8 ]
 
-DDPP is copied from Synopsys Data book:
+If refcount is less than 1, we should just warn, unlock dentry and
+return true, so that the caller doesn't try to do anything else.
 
-DDPP: Disable Data path Parity Protection.
-    When it is 0x0, Data path Parity Protection is enabled.
-    When it is 0x1, Data path Parity Protection is disabled.
+Taking care of that leaves the rest of "lockref_put_return() has
+failed" case equivalent to "decrement refcount and rejoin the
+normal slow path after the point where we grab ->d_lock".
 
-The macro name should be XGMAC_DPP_DISABLE.
+NOTE: lockref_put_return() is strictly a fastpath thing - unlike
+the rest of lockref primitives, it does not contain a fallback.
+Caller (and it looks like fast_dput() is the only legitimate one
+in the entire kernel) has to do that itself.  Reasons for
+lockref_put_return() failures:
+	* ->d_lock held by somebody
+	* refcount <= 0
+	* ... or an architecture not supporting lockref use of
+cmpxchg - sparc, anything non-SMP, config with spinlock debugging...
 
-Fixes: 46eba193d04f ("net: stmmac: xgmac: fix handling of DPP safety error for DMA channels")
-Signed-off-by: Furong Xu <0x1207@gmail.com>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Link: https://lore.kernel.org/r/20240203053133.1129236-1-0x1207@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+We could add a fallback, but it would be a clumsy API - we'd have
+to distinguish between:
+	(1) refcount > 1 - decremented, lock not held on return
+	(2) refcount < 1 - left alone, probably no sense to hold the lock
+	(3) refcount is 1, no cmphxcg - decremented, lock held on return
+	(4) refcount is 1, cmphxcg supported - decremented, lock *NOT* held
+	    on return.
+We want to return with no lock held in case (4); that's the whole point of that
+thing.  We very much do not want to have the fallback in case (3) return without
+a lock, since the caller might have to retake it in that case.
+So it wouldn't be more convenient than doing the fallback in the caller and
+it would be very easy to screw up, especially since the test coverage would
+suck - no way to test (3) and (4) on the same kernel build.
+
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h      |    2 +-
- drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ fs/dcache.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
-@@ -283,7 +283,7 @@
- #define XGMAC_TXCEIE			BIT(0)
- #define XGMAC_MTL_ECC_INT_STATUS	0x000010cc
- #define XGMAC_MTL_DPP_CONTROL		0x000010e0
--#define XGMAC_DDPP_DISABLE		BIT(0)
-+#define XGMAC_DPP_DISABLE		BIT(0)
- #define XGMAC_MTL_TXQ_OPMODE(x)		(0x00001100 + (0x80 * (x)))
- #define XGMAC_TQS			GENMASK(25, 16)
- #define XGMAC_TQS_SHIFT			16
---- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-@@ -883,7 +883,7 @@ static int dwxgmac3_safety_feat_config(v
- 	/* 5. Enable Data Path Parity Protection */
- 	value = readl(ioaddr + XGMAC_MTL_DPP_CONTROL);
- 	/* already enabled by default, explicit enable it again */
--	value &= ~XGMAC_DDPP_DISABLE;
-+	value &= ~XGMAC_DPP_DISABLE;
- 	writel(value, ioaddr + XGMAC_MTL_DPP_CONTROL);
+diff --git a/fs/dcache.c b/fs/dcache.c
+index b2a7f1765f0b..43864a276faa 100644
+--- a/fs/dcache.c
++++ b/fs/dcache.c
+@@ -740,12 +740,12 @@ static inline bool fast_dput(struct dentry *dentry)
+ 	 */
+ 	if (unlikely(ret < 0)) {
+ 		spin_lock(&dentry->d_lock);
+-		if (dentry->d_lockref.count > 1) {
+-			dentry->d_lockref.count--;
++		if (WARN_ON_ONCE(dentry->d_lockref.count <= 0)) {
+ 			spin_unlock(&dentry->d_lock);
+ 			return true;
+ 		}
+-		return false;
++		dentry->d_lockref.count--;
++		goto locked;
+ 	}
  
- 	return 0;
+ 	/*
+@@ -796,6 +796,7 @@ static inline bool fast_dput(struct dentry *dentry)
+ 	 * else could have killed it and marked it dead. Either way, we
+ 	 * don't need to do anything else.
+ 	 */
++locked:
+ 	if (dentry->d_lockref.count) {
+ 		spin_unlock(&dentry->d_lock);
+ 		return true;
+-- 
+2.43.0
+
 
 
 
