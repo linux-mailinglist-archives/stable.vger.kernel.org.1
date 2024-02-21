@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-22343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D92F85DB8E
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:42:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA40185D8E1
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:11:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2DDD1F22E2F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:42:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 298C9B224CD
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:11:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E138763F6;
-	Wed, 21 Feb 2024 13:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F10D3EA71;
+	Wed, 21 Feb 2024 13:11:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V0U0Uzcb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ho75R7Ib"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B57E1E4B2;
-	Wed, 21 Feb 2024 13:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CDC069E00;
+	Wed, 21 Feb 2024 13:11:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522952; cv=none; b=fAdiaLj+IigS2putKNIFRRIneMn0204fzqWMzSej/x45i3CosRgsEYMfiS2RgWoubNv+jQfHbpapdvr3hYxJLAYSTeEdey4Oe32IsPYkeoYaBM5c1Zd6eVDU03Nb7LzOtjrmD6qmNR71Sq1MsXsudYOAQtd+cJHWYkMUhj0DFus=
+	t=1708521090; cv=none; b=VGOUnlVACr/6dZtnnE2FAPazLzepi5yNUQX7TKHtxGuLNUvgHpLbNOYMXHugobIYDHursu9mQENa6UmHnvxsTnwMF0ylIisWmQ//yzzJwAp1ueY0CDt961Cpqf4CbjfsRZkEcYFxD46slnACSH9SYxfzB+F9Nd0+Xmxk9/uiSpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522952; c=relaxed/simple;
-	bh=SITxeQpW+GRQKi0folSu5aNmliCxa8Xx/+63UP394dA=;
+	s=arc-20240116; t=1708521090; c=relaxed/simple;
+	bh=wkdeTaCjMlxGrDJGkInp5NrGlao3clkU1/3RmYR1byA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JsHiAonsjwlhunZktLi3N+81E3bzNjJ1Su2dNUMAg3bdloW276fHBuDWDNiF0YU/5BBQfG+4E5J4TL2cBXUknRa77XmnXU7bcAxMa6HtuEnCUeJ6a+o0PFgq7tIaF0/jMmTs704BXwAfyFdidGVi6TSVrjLzf1u8TluP4CSR8NI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V0U0Uzcb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BECDC433C7;
-	Wed, 21 Feb 2024 13:42:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aBmf+sPq15E/gd9lxtu8kGumgn2/apc8P/Wa3BgSUfDXzRd/jVbzY8piH7vQmcTIy9uKdYq2pj0B+TKQ/ATDEj8Cy3+UbTiCBB/HeNn++UJ9nEVVCVq8eN+Vk0RiwOHasBRjOUC2S4a1vzXeKayMGJjuVXUTQVJZ3NTGseejR9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ho75R7Ib; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D4F7C43390;
+	Wed, 21 Feb 2024 13:11:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522952;
-	bh=SITxeQpW+GRQKi0folSu5aNmliCxa8Xx/+63UP394dA=;
+	s=korg; t=1708521089;
+	bh=wkdeTaCjMlxGrDJGkInp5NrGlao3clkU1/3RmYR1byA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V0U0Uzcb/hI3C++wWYle79jbHlRrYLXu94j9p2tujSn3GDxXXefHrL8qonOh3aUb7
-	 prenjhQeAn5GjK103c7czHIsCZiM+wZx4RsXR0LwJ592kAoJknXiedp5cdtvuPmjIE
-	 Jw1nM6owLJul97jCWMFSwGjCUVNYETK4A+KPs2WM=
+	b=ho75R7Ib8RVkPcNgBm6YP3H4mn2Jw1BWsjGOs9pnUfNDPD138ZryONE82UeKaLRha
+	 iHRcDyJYNa5G5mPd1LFI+Hxe7+BTSS710fSmK99+Q+DmtUPGSIwyZi/uBFTRDyFCnA
+	 3WHocfqh75CDD7Ki8W4/7HX+eULMzjdZpGOxVCF8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 272/476] selftests: net: give more time for GRO aggregation
+	=?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>
+Subject: [PATCH 4.19 022/202] driver code: print symbolic error code
 Date: Wed, 21 Feb 2024 14:05:23 +0100
-Message-ID: <20240221130018.029546241@linuxfoundation.org>
+Message-ID: <20240221125932.489711379@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +58,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Michał Mirosław <mirq-linux@rere.qmqm.pl>
 
-[ Upstream commit 89abe628375301fedb68770644df845d49018d8b ]
+commit 693a8e936590f93451e6f5a3d748616f5a59c80b upstream.
 
-The gro.sh test-case relay on the gro_flush_timeout to ensure
-that all the segments belonging to any given batch are properly
-aggregated.
+dev_err_probe() prepends the message with an error code. Let's make it
+more readable by translating the code to a more recognisable symbol.
 
-The other end, the sender is a user-space program transmitting
-each packet with a separate write syscall. A busy host and/or
-stracing the sender program can make the relevant segments reach
-the GRO engine after the flush timeout triggers.
-
-Give the GRO flush timeout more slack, to avoid sporadic self-tests
-failures.
-
-Fixes: 9af771d2ec04 ("selftests/net: allow GRO coalesce test on veth")
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Tested-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/bffec2beab3a5672dd13ecabe4fad81d2155b367.1706206101.git.pabeni@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a787e5400a1c ("driver core: add device probe log helper")
+Signed-off-by: Michał Mirosław <mirq-linux@rere.qmqm.pl>
+Link: https://lore.kernel.org/r/ea3f973e4708919573026fdce52c264db147626d.1598630856.git.mirq-linux@rere.qmqm.pl
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/setup_veth.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/base/core.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/net/setup_veth.sh b/tools/testing/selftests/net/setup_veth.sh
-index 1003ddf7b3b2..227fd1076f21 100644
---- a/tools/testing/selftests/net/setup_veth.sh
-+++ b/tools/testing/selftests/net/setup_veth.sh
-@@ -8,7 +8,7 @@ setup_veth_ns() {
- 	local -r ns_mac="$4"
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -3366,9 +3366,9 @@ int dev_err_probe(const struct device *d
+ 	vaf.va = &args;
  
- 	[[ -e /var/run/netns/"${ns_name}" ]] || ip netns add "${ns_name}"
--	echo 100000 > "/sys/class/net/${ns_dev}/gro_flush_timeout"
-+	echo 1000000 > "/sys/class/net/${ns_dev}/gro_flush_timeout"
- 	ip link set dev "${ns_dev}" netns "${ns_name}" mtu 65535
- 	ip -netns "${ns_name}" link set dev "${ns_dev}" up
+ 	if (err != -EPROBE_DEFER)
+-		dev_err(dev, "error %d: %pV", err, &vaf);
++		dev_err(dev, "error %pe: %pV", ERR_PTR(err), &vaf);
+ 	else
+-		dev_dbg(dev, "error %d: %pV", err, &vaf);
++		dev_dbg(dev, "error %pe: %pV", ERR_PTR(err), &vaf);
  
--- 
-2.43.0
-
+ 	va_end(args);
+ 
 
 
 
