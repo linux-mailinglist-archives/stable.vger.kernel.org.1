@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-22416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7584585DBEF
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:47:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D3DE85DE1A
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:14:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 05F88B21574
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:47:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EED88B2A9B7
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:11:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44F9269D21;
-	Wed, 21 Feb 2024 13:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1338A7E79F;
+	Wed, 21 Feb 2024 14:07:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v47rjpcc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w7wmtqt1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF13B4D5B7;
-	Wed, 21 Feb 2024 13:47:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C61CE7E78F;
+	Wed, 21 Feb 2024 14:07:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523229; cv=none; b=rBhjUK+ifPqxpE4CfmTV5JOiHR1p5G/ccbpbhjvatwJyO2eNknt6x4TV/m9OrDzyNtTb6dpeLwzx5KB6hfs/rtqNZHEhDQNdHFT5cNoFN2ss89Pn5ChN59Gh+9jMOFQdX5+QMrtoaek/Y/Z7Eplu9ofXHK1Jto4HVt4MGI5bD2I=
+	t=1708524443; cv=none; b=U51qQgXyBHKY0ryoMq4xIP2YgVA/66dFJGZord+lEAg9kwnHl8RC3LWSeeotOQO24X2Clu5q8BndMB2WbRqLhC4mmfRIsfiRAHJ3IGozp/QvGywzls2otOsqkEdtr/Lzqe6GdeZCejScYFv6ORcSrO77Ms3s3ivphKGpTpLBckI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523229; c=relaxed/simple;
-	bh=phkmQbiJ7rSiVv/9/cG9pgqSdj5eLxXkAFuntwOAo+k=;
+	s=arc-20240116; t=1708524443; c=relaxed/simple;
+	bh=PxwlP9XENhhbsBO2ZFtAGUBa7l+4/q5TOu85Occ1Va4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=amnviw38NBpV+pPwZApMnUAhcKx97inHbmWN86AnyyYPXddD6yYCpZQhHcbthSXQ1O8kSQHxqMyD/5QzWPpi5CjZ3IoJ+Rsc3RPp08tHYEY/WlxyfzDeR7sM5+bhFYVdLZ9Mq6IswxZtaiMx3nyGLI3aT5yEjAk+BH4Ofq1GrJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v47rjpcc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74D29C433C7;
-	Wed, 21 Feb 2024 13:47:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UglmOmSNeGjVMLS6a02W3jsf3s8FS87a9HCP2qPAHourtZKpjOeUhwuR6O7utx2GA8viStxdCrTkhKknrTECEgGka89NEiJubnSDiuFJ0YQ3tLvV647emmGyqEOTSYK1C9TZxbGPlJW8Kb2bGr8nWeWbeqGQTteRwdfhUvUahmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w7wmtqt1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C977C433F1;
+	Wed, 21 Feb 2024 14:07:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523228;
-	bh=phkmQbiJ7rSiVv/9/cG9pgqSdj5eLxXkAFuntwOAo+k=;
+	s=korg; t=1708524443;
+	bh=PxwlP9XENhhbsBO2ZFtAGUBa7l+4/q5TOu85Occ1Va4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v47rjpccRUqoL3hCseJqEzpzYU0m4V2x3JQ0pJ6AdVv4QSJQAe9n1QS42KugsQuPT
-	 wFv3My6fVEPpgDiwCAGav7YIaHsgjseesGD6GaXGNDdgBNM3GsdFt2ybqfnnbNncXD
-	 DlmToFzE+NY91xXwCjoxcQQtrh7mirQTGbv5AE0w=
+	b=w7wmtqt1IzhiOo8HJtxqyHBQxivnev0LW9Sfc3Y7qihi0ETK5UgXXgQQTpWI0HU3b
+	 Vjsmq7vObrID8OyVD1eF0AZnGnLxs/ltCgi2Q1RhQ8IPSIQgNS7newu5RPSOewFp6i
+	 lkQ64UK7x1Jlx2rrIJ359yJCX03HbcLOkwSD/zj8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean Delvare <jdelvare@suse.de>,
-	Piotr Zakowski <piotr.zakowski@intel.com>,
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 373/476] i2c: i801: Fix block process call transactions
+Subject: [PATCH 5.10 245/379] PM: sleep: Fix error handling in dpm_prepare()
 Date: Wed, 21 Feb 2024 14:07:04 +0100
-Message-ID: <20240221130021.819058122@linuxfoundation.org>
+Message-ID: <20240221130002.158766520@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +61,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jean Delvare <jdelvare@suse.de>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit c1c9d0f6f7f1dbf29db996bd8e166242843a5f21 ]
+[ Upstream commit 544e737dea5ad1a457f25dbddf68761ff25e028b ]
 
-According to the Intel datasheets, software must reset the block
-buffer index twice for block process call transactions: once before
-writing the outgoing data to the buffer, and once again before
-reading the incoming data from the buffer.
+Commit 2aa36604e824 ("PM: sleep: Avoid calling put_device() under
+dpm_list_mtx") forgot to update the while () loop termination
+condition to also break the loop if error is nonzero, which
+causes the loop to become infinite if device_prepare() returns
+an error for one device.
 
-The driver is currently missing the second reset, causing the wrong
-portion of the block buffer to be read.
+Add the missing !error check.
 
-Signed-off-by: Jean Delvare <jdelvare@suse.de>
-Reported-by: Piotr Zakowski <piotr.zakowski@intel.com>
-Closes: https://lore.kernel.org/linux-i2c/20240213120553.7b0ab120@endymion.delvare/
-Fixes: 315cd67c9453 ("i2c: i801: Add Block Write-Block Read Process Call support")
-Reviewed-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Fixes: 2aa36604e824 ("PM: sleep: Avoid calling put_device() under dpm_list_mtx")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reported-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: All applicable <stable@vger.kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-i801.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/base/power/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/busses/i2c-i801.c b/drivers/i2c/busses/i2c-i801.c
-index 8ecba1ca9236..87c2c7c84736 100644
---- a/drivers/i2c/busses/i2c-i801.c
-+++ b/drivers/i2c/busses/i2c-i801.c
-@@ -522,11 +522,10 @@ static int i801_block_transaction_by_block(struct i801_priv *priv,
- 	/* Set block buffer mode */
- 	outb_p(inb_p(SMBAUXCTL(priv)) | SMBAUXCTL_E32B, SMBAUXCTL(priv));
+diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
+index c493e48e420f..fbc57c4fcdd0 100644
+--- a/drivers/base/power/main.c
++++ b/drivers/base/power/main.c
+@@ -1897,7 +1897,7 @@ int dpm_prepare(pm_message_t state)
+ 	device_block_probing();
  
--	inb_p(SMBHSTCNT(priv)); /* reset the data buffer index */
--
- 	if (read_write == I2C_SMBUS_WRITE) {
- 		len = data->block[0];
- 		outb_p(len, SMBHSTDAT0(priv));
-+		inb_p(SMBHSTCNT(priv));	/* reset the data buffer index */
- 		for (i = 0; i < len; i++)
- 			outb_p(data->block[i+1], SMBBLKDAT(priv));
- 	}
-@@ -542,6 +541,7 @@ static int i801_block_transaction_by_block(struct i801_priv *priv,
- 			return -EPROTO;
+ 	mutex_lock(&dpm_list_mtx);
+-	while (!list_empty(&dpm_list)) {
++	while (!list_empty(&dpm_list) && !error) {
+ 		struct device *dev = to_device(dpm_list.next);
  
- 		data->block[0] = len;
-+		inb_p(SMBHSTCNT(priv));	/* reset the data buffer index */
- 		for (i = 0; i < len; i++)
- 			data->block[i + 1] = inb_p(SMBBLKDAT(priv));
- 	}
+ 		get_device(dev);
 -- 
 2.43.0
 
