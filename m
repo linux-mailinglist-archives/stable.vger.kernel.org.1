@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-22931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B12E85DEDA
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:22:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8050D85D91B
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6205BB2C949
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:17:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 376F41F23A6B
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:14:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 302E57CF33;
-	Wed, 21 Feb 2024 14:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC7F469D30;
+	Wed, 21 Feb 2024 13:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZNSZGwgs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FiFjTZS9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E23026A8D6;
-	Wed, 21 Feb 2024 14:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1D069D02;
+	Wed, 21 Feb 2024 13:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525004; cv=none; b=UGwMMiTibEWECvTXSP0yCf4qELE/VpvHwO+OqJ0vEXYJ5vwcA4nqejYb08gXFJYIfm6IqMbUFhNIXQxV2OHr4784R/GT0O+vR4TW1niSMUor/dr+nBYlo+dgeYPMxV3Ir0+u29FHPsNSXmCq3PzkeJoasIYcZrsQqYT+yjFb5IY=
+	t=1708521280; cv=none; b=aAwEXC/I0a5CIHW3S7c2ihmDwDVsI7qM56tM5HuIuf1ifs10s20FtYIo0tkga2gyV90DQx1p2P/Vs5aE2qNM3Vngd2XGUnQURyhGM6Eys6fXGIbhGiD0fA5D/EqPG/9TnLbon8/p55TPQMrd30wwgQJkBzIxk35gUu3j5kNzq+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525004; c=relaxed/simple;
-	bh=kag4PtrrdQ0Px7B1PCmZZJ0/xy987hT2r59awfozZA8=;
+	s=arc-20240116; t=1708521280; c=relaxed/simple;
+	bh=Xt9Ljeg4g1w9JOIsUywQyT6l0HI7YhWWaN/xw766+4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g57JiRkFcExGYis6/C43N+cRpOYl16eV7SyQ+Xosu7h7IPn5Gn18FCfbFi6BAwS+Qd8w/5KwihWVr3/coS2hBIEIqFjv0xSIY4a3F9bfIMbsH9YDi0xta2zvNMRJTIP8UsMbzp9tKsY4dR45Ar042RiZR+SDw8+jNbkG+Iw6ygc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZNSZGwgs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59B53C433F1;
-	Wed, 21 Feb 2024 14:16:43 +0000 (UTC)
+	 MIME-Version; b=Amh/iMruKulO96AN8Vbdh/nblhfJo6xx/6g34d02EBezrogrucO7nbLsQgKS6B2XZeXx/EnCRf356KbiPSbUAXzvnQ2WCLAHK0L7ToxrjrdUwVIF3LgRxfZpztPRlWu+8Dy5AnJdEQgN+5Fxl4sGq0v29JzxELD6bCY5JnwZVbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FiFjTZS9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEED5C433F1;
+	Wed, 21 Feb 2024 13:14:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525003;
-	bh=kag4PtrrdQ0Px7B1PCmZZJ0/xy987hT2r59awfozZA8=;
+	s=korg; t=1708521280;
+	bh=Xt9Ljeg4g1w9JOIsUywQyT6l0HI7YhWWaN/xw766+4k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZNSZGwgs8vE1zceFenuirWLm1nZ8QhzhtJsRQULv3is/sJdxh1Ht8yT2JsRgtsYJb
-	 ZzIY8Z9yQOt0p5HY2xZbnbR7p3B4A3G/F3XV2PUQC6ZMJ+eE93aDtX/WcQtSNIFdJj
-	 cJ3PWgAY2NWJAWALXf09PWKyjHkjEDyCA1VYSH34=
+	b=FiFjTZS9Hzs28DerqsQy5L56FNgUEEFPbgQutCzR7jgYuTDOKXh+BQLK76cGHnES2
+	 cuFgvaTGWpw2MiPLZBWLxXPwqrZCysKrhxizEJaGKjo7qawku8Fq6/pELUZe80y6b3
+	 MLMMo5Xpdg4iuBhj3nukaSosJpFKJAdEqr/fSy7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	Sharath Srinivasan <sharath.srinivasan@oracle.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Jeff Layton <jlayton@kernel.org>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 030/267] net/rds: Fix UBSAN: array-index-out-of-bounds in rds_cmsg_recv
+Subject: [PATCH 4.19 070/202] SUNRPC: Fix a suspicious RCU usage warning
 Date: Wed, 21 Feb 2024 14:06:11 +0100
-Message-ID: <20240221125940.986179127@linuxfoundation.org>
+Message-ID: <20240221125934.084137315@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +62,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sharath Srinivasan <sharath.srinivasan@oracle.com>
+From: Anna Schumaker <Anna.Schumaker@Netapp.com>
 
-[ Upstream commit 13e788deb7348cc88df34bed736c3b3b9927ea52 ]
+[ Upstream commit 31b62908693c90d4d07db597e685d9f25a120073 ]
 
-Syzcaller UBSAN crash occurs in rds_cmsg_recv(),
-which reads inc->i_rx_lat_trace[j + 1] with index 4 (3 + 1),
-but with array size of 4 (RDS_RX_MAX_TRACES).
-Here 'j' is assigned from rs->rs_rx_trace[i] and in-turn from
-trace.rx_trace_pos[i] in rds_recv_track_latency(),
-with both arrays sized 3 (RDS_MSG_RX_DGRAM_TRACE_MAX). So fix the
-off-by-one bounds check in rds_recv_track_latency() to prevent
-a potential crash in rds_cmsg_recv().
+I received the following warning while running cthon against an ontap
+server running pNFS:
 
-Found by syzcaller:
-=================================================================
-UBSAN: array-index-out-of-bounds in net/rds/recv.c:585:39
-index 4 is out of range for type 'u64 [4]'
-CPU: 1 PID: 8058 Comm: syz-executor228 Not tainted 6.6.0-gd2f51b3516da #1
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
-BIOS 1.15.0-1 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x136/0x150 lib/dump_stack.c:106
- ubsan_epilogue lib/ubsan.c:217 [inline]
- __ubsan_handle_out_of_bounds+0xd5/0x130 lib/ubsan.c:348
- rds_cmsg_recv+0x60d/0x700 net/rds/recv.c:585
- rds_recvmsg+0x3fb/0x1610 net/rds/recv.c:716
- sock_recvmsg_nosec net/socket.c:1044 [inline]
- sock_recvmsg+0xe2/0x160 net/socket.c:1066
- __sys_recvfrom+0x1b6/0x2f0 net/socket.c:2246
- __do_sys_recvfrom net/socket.c:2264 [inline]
- __se_sys_recvfrom net/socket.c:2260 [inline]
- __x64_sys_recvfrom+0xe0/0x1b0 net/socket.c:2260
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x40/0x110 arch/x86/entry/common.c:82
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
-==================================================================
+[   57.202521] =============================
+[   57.202522] WARNING: suspicious RCU usage
+[   57.202523] 6.7.0-rc3-g2cc14f52aeb7 #41492 Not tainted
+[   57.202525] -----------------------------
+[   57.202525] net/sunrpc/xprtmultipath.c:349 RCU-list traversed in non-reader section!!
+[   57.202527]
+               other info that might help us debug this:
 
-Fixes: 3289025aedc0 ("RDS: add receive message trace used by application")
-Reported-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Closes: https://lore.kernel.org/linux-rdma/CALGdzuoVdq-wtQ4Az9iottBqC5cv9ZhcE5q8N7LfYFvkRsOVcw@mail.gmail.com/
-Signed-off-by: Sharath Srinivasan <sharath.srinivasan@oracle.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+[   57.202528]
+               rcu_scheduler_active = 2, debug_locks = 1
+[   57.202529] no locks held by test5/3567.
+[   57.202530]
+               stack backtrace:
+[   57.202532] CPU: 0 PID: 3567 Comm: test5 Not tainted 6.7.0-rc3-g2cc14f52aeb7 #41492 5b09971b4965c0aceba19f3eea324a4a806e227e
+[   57.202534] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS unknown 2/2/2022
+[   57.202536] Call Trace:
+[   57.202537]  <TASK>
+[   57.202540]  dump_stack_lvl+0x77/0xb0
+[   57.202551]  lockdep_rcu_suspicious+0x154/0x1a0
+[   57.202556]  rpc_xprt_switch_has_addr+0x17c/0x190 [sunrpc ebe02571b9a8ceebf7d98e71675af20c19bdb1f6]
+[   57.202596]  rpc_clnt_setup_test_and_add_xprt+0x50/0x180 [sunrpc ebe02571b9a8ceebf7d98e71675af20c19bdb1f6]
+[   57.202621]  ? rpc_clnt_add_xprt+0x254/0x300 [sunrpc ebe02571b9a8ceebf7d98e71675af20c19bdb1f6]
+[   57.202646]  rpc_clnt_add_xprt+0x27a/0x300 [sunrpc ebe02571b9a8ceebf7d98e71675af20c19bdb1f6]
+[   57.202671]  ? __pfx_rpc_clnt_setup_test_and_add_xprt+0x10/0x10 [sunrpc ebe02571b9a8ceebf7d98e71675af20c19bdb1f6]
+[   57.202696]  nfs4_pnfs_ds_connect+0x345/0x760 [nfsv4 c716d88496ded0ea6d289bbea684fa996f9b57a9]
+[   57.202728]  ? __pfx_nfs4_test_session_trunk+0x10/0x10 [nfsv4 c716d88496ded0ea6d289bbea684fa996f9b57a9]
+[   57.202754]  nfs4_fl_prepare_ds+0x75/0xc0 [nfs_layout_nfsv41_files e3a4187f18ae8a27b630f9feae6831b584a9360a]
+[   57.202760]  filelayout_write_pagelist+0x4a/0x200 [nfs_layout_nfsv41_files e3a4187f18ae8a27b630f9feae6831b584a9360a]
+[   57.202765]  pnfs_generic_pg_writepages+0xbe/0x230 [nfsv4 c716d88496ded0ea6d289bbea684fa996f9b57a9]
+[   57.202788]  __nfs_pageio_add_request+0x3fd/0x520 [nfs 6c976fa593a7c2976f5a0aeb4965514a828e6902]
+[   57.202813]  nfs_pageio_add_request+0x18b/0x390 [nfs 6c976fa593a7c2976f5a0aeb4965514a828e6902]
+[   57.202831]  nfs_do_writepage+0x116/0x1e0 [nfs 6c976fa593a7c2976f5a0aeb4965514a828e6902]
+[   57.202849]  nfs_writepages_callback+0x13/0x30 [nfs 6c976fa593a7c2976f5a0aeb4965514a828e6902]
+[   57.202866]  write_cache_pages+0x265/0x450
+[   57.202870]  ? __pfx_nfs_writepages_callback+0x10/0x10 [nfs 6c976fa593a7c2976f5a0aeb4965514a828e6902]
+[   57.202891]  nfs_writepages+0x141/0x230 [nfs 6c976fa593a7c2976f5a0aeb4965514a828e6902]
+[   57.202913]  do_writepages+0xd2/0x230
+[   57.202917]  ? filemap_fdatawrite_wbc+0x5c/0x80
+[   57.202921]  filemap_fdatawrite_wbc+0x67/0x80
+[   57.202924]  filemap_write_and_wait_range+0xd9/0x170
+[   57.202930]  nfs_wb_all+0x49/0x180 [nfs 6c976fa593a7c2976f5a0aeb4965514a828e6902]
+[   57.202947]  nfs4_file_flush+0x72/0xb0 [nfsv4 c716d88496ded0ea6d289bbea684fa996f9b57a9]
+[   57.202969]  __se_sys_close+0x46/0xd0
+[   57.202972]  do_syscall_64+0x68/0x100
+[   57.202975]  ? do_syscall_64+0x77/0x100
+[   57.202976]  ? do_syscall_64+0x77/0x100
+[   57.202979]  entry_SYSCALL_64_after_hwframe+0x6e/0x76
+[   57.202982] RIP: 0033:0x7fe2b12e4a94
+[   57.202985] Code: 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 80 3d d5 18 0e 00 00 74 13 b8 03 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 44 c3 0f 1f 00 48 83 ec 18 89 7c 24 0c e8 c3
+[   57.202987] RSP: 002b:00007ffe857ddb38 EFLAGS: 00000202 ORIG_RAX: 0000000000000003
+[   57.202989] RAX: ffffffffffffffda RBX: 00007ffe857dfd68 RCX: 00007fe2b12e4a94
+[   57.202991] RDX: 0000000000002000 RSI: 00007ffe857ddc40 RDI: 0000000000000003
+[   57.202992] RBP: 00007ffe857dfc50 R08: 7fffffffffffffff R09: 0000000065650f49
+[   57.202993] R10: 00007fe2b11f8300 R11: 0000000000000202 R12: 0000000000000000
+[   57.202994] R13: 00007ffe857dfd80 R14: 00007fe2b1445000 R15: 0000000000000000
+[   57.202999]  </TASK>
+
+The problem seems to be that two out of three callers aren't taking the
+rcu_read_lock() before calling the list_for_each_entry_rcu() function in
+rpc_xprt_switch_has_addr(). I fix this by having
+rpc_xprt_switch_has_addr() unconditionaly take the rcu_read_lock(),
+which is okay to do recursively in the case that the lock has already
+been taken by a caller.
+
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rds/af_rds.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sunrpc/xprtmultipath.c | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/net/rds/af_rds.c b/net/rds/af_rds.c
-index 1a5bf3fa4578..af22f47c8612 100644
---- a/net/rds/af_rds.c
-+++ b/net/rds/af_rds.c
-@@ -421,7 +421,7 @@ static int rds_recv_track_latency(struct rds_sock *rs, char __user *optval,
+diff --git a/net/sunrpc/xprtmultipath.c b/net/sunrpc/xprtmultipath.c
+index e2d64c7138c3..699d5ba128fa 100644
+--- a/net/sunrpc/xprtmultipath.c
++++ b/net/sunrpc/xprtmultipath.c
+@@ -235,8 +235,9 @@ struct rpc_xprt *xprt_iter_current_entry(struct rpc_xprt_iter *xpi)
+ 	return xprt_switch_find_current_entry(head, xpi->xpi_cursor);
+ }
  
- 	rs->rs_rx_traces = trace.rx_traces;
- 	for (i = 0; i < rs->rs_rx_traces; i++) {
--		if (trace.rx_trace_pos[i] > RDS_MSG_RX_DGRAM_TRACE_MAX) {
-+		if (trace.rx_trace_pos[i] >= RDS_MSG_RX_DGRAM_TRACE_MAX) {
- 			rs->rs_rx_traces = 0;
- 			return -EFAULT;
- 		}
+-bool rpc_xprt_switch_has_addr(struct rpc_xprt_switch *xps,
+-			      const struct sockaddr *sap)
++static
++bool __rpc_xprt_switch_has_addr(struct rpc_xprt_switch *xps,
++				const struct sockaddr *sap)
+ {
+ 	struct list_head *head;
+ 	struct rpc_xprt *pos;
+@@ -255,6 +256,18 @@ bool rpc_xprt_switch_has_addr(struct rpc_xprt_switch *xps,
+ 	return false;
+ }
+ 
++bool rpc_xprt_switch_has_addr(struct rpc_xprt_switch *xps,
++			      const struct sockaddr *sap)
++{
++	bool res;
++
++	rcu_read_lock();
++	res = __rpc_xprt_switch_has_addr(xps, sap);
++	rcu_read_unlock();
++
++	return res;
++}
++
+ static
+ struct rpc_xprt *xprt_switch_find_next_entry(struct list_head *head,
+ 		const struct rpc_xprt *cur)
 -- 
 2.43.0
 
