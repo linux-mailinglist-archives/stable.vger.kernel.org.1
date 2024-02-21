@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-22015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9017385D9B0
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:21:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC3D885DEEA
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:22:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4AF202878DD
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:21:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6730B283B43
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:22:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D23037762F;
-	Wed, 21 Feb 2024 13:21:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C23097CF32;
+	Wed, 21 Feb 2024 14:22:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a5EVPRuz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aNL8Dot2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FB6E53816;
-	Wed, 21 Feb 2024 13:21:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EBA87BB11;
+	Wed, 21 Feb 2024 14:22:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521666; cv=none; b=fTffMUp+TcBtoqrpgdHYUO7nJsaK7MUGSeetqp/PChC1UCV09fXGRgivtSP8WgmHj3HoqBHxVZ3Ynox7q4sF1unLT0sMnT4p3OPLhQqFeMw0O9GdAOgrUax3fAtBjsdELKCpT0v82shlqjYeGpfB7ceTHiXx6GT45XYGxm5sHzg=
+	t=1708525366; cv=none; b=T2GHmNb7wlSqdgt1WQv4ElLim0Dl98WYn6xjMO7ZY5JQUbS3Q4d5rNhyKbN4Ts//Kvp62i6ZukkiQTOpcf+b8CFSpvhoW+XnCczb1dY9qSIWrkoXhMMiIKAx9NEVguItzzoyKYISD4M2efzL+A121RraHD+frucma6xh5rPPMJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521666; c=relaxed/simple;
-	bh=D9lpnnXmYJOGgKFhJL2wKhCd90/x4P9fYTg2u+AJpmA=;
+	s=arc-20240116; t=1708525366; c=relaxed/simple;
+	bh=Kg32uw1cu/zwgXhTDKmwJFDd+nMvcBU3M+bExbMg3tU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iMJsMCdA0FHPqzmlACJT0v6jYoVc0w5l022JE/TuUhe8ERCHJTHTtuMqBKaB+/KhNrjM+C0q8l5rFnqc0YBQU8QqTm0dfkHMmFn4T+u1I9MvMfeNVV8cJ4eOdR25rYmAp+V6Tb2Xxv06u3wjtQyogw7XomBQOz0ux+eKvdKaTMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a5EVPRuz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBEE6C433C7;
-	Wed, 21 Feb 2024 13:21:05 +0000 (UTC)
+	 MIME-Version; b=fYkdDP0FSfKT3wAbI0JJqRQv/pQj8cYZ4Z9USff1MtERk8fq9KD680r1+eSAGoF57ZIPFkq0SB1ggHGSED523KRvFkIvyC/uvit95D2J8GlQ7iJOu2BEA8vsKvsCzn2dK9w4CG5KdSeKeUXSRryecZKpb1PiV303nCT4AfPoVH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aNL8Dot2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E08E0C433F1;
+	Wed, 21 Feb 2024 14:22:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521666;
-	bh=D9lpnnXmYJOGgKFhJL2wKhCd90/x4P9fYTg2u+AJpmA=;
+	s=korg; t=1708525366;
+	bh=Kg32uw1cu/zwgXhTDKmwJFDd+nMvcBU3M+bExbMg3tU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a5EVPRuzxQEj7D9bL7pQpv/fKXqM32ZYFyIiI8QIvgHCh0NyeGgP3c0y3kJOhN3mE
-	 EbAWGyFwuqiK2lJJUI4GxalZic4cLYaDzDgOnTj7vB6IK731ARw17R/aR863I8ubPW
-	 xomLuOtLe3iDjaDF8rgt2+ZzClOHS436TaE+b7gY=
+	b=aNL8Dot2xdi3Cv6LtqCKBiVn6coxjrkFXNdCZMiyTvT64GGzO+TpBgaioludU2TnD
+	 mSLnLNvlNRzxaNfr/G4cJiL9L162O7rLE9CztEc2z2u5esK18jw7sYXB+IgBQYMHVI
+	 IMoNXPRYE0nAz5s6kL2ZoC84AnYQVcXo2etLUsVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Fabio Estevam <festevam@denx.de>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 146/202] dmaengine: fix is_slave_direction() return false when DMA_DEV_TO_DEV
+Subject: [PATCH 5.4 106/267] ARM: dts: imx: Use flash@0,0 pattern
 Date: Wed, 21 Feb 2024 14:07:27 +0100
-Message-ID: <20240221125936.424108251@linuxfoundation.org>
+Message-ID: <20240221125943.270310898@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Fabio Estevam <festevam@denx.de>
 
-[ Upstream commit a22fe1d6dec7e98535b97249fdc95c2be79120bb ]
+[ Upstream commit 1e1d7cc478fb16816de09740e3c323c0c188d58f ]
 
-is_slave_direction() should return true when direction is DMA_DEV_TO_DEV.
+Per mtd-physmap.yaml, 'nor@0,0' is not a valid node pattern.
 
-Fixes: 49920bc66984 ("dmaengine: add new enum dma_transfer_direction")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20240123172842.3764529-1-Frank.Li@nxp.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Change it to 'flash@0,0' to fix the following dt-schema warning:
+
+imx1-ads.dtb: nor@0,0: $nodename:0: 'nor@0,0' does not match '^(flash|.*sram|nand)(@.*)?$'
+	from schema $id: http://devicetree.org/schemas/mtd/mtd-physmap.yaml#
+
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/dmaengine.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/imx1-ads.dts                  | 2 +-
+ arch/arm/boot/dts/imx1-apf9328.dts              | 2 +-
+ arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi    | 2 +-
+ arch/arm/boot/dts/imx27-phytec-phycore-som.dtsi | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/dmaengine.h b/include/linux/dmaengine.h
-index 50128c36f0b4..6e869419ab17 100644
---- a/include/linux/dmaengine.h
-+++ b/include/linux/dmaengine.h
-@@ -827,7 +827,8 @@ static inline int dmaengine_slave_config(struct dma_chan *chan,
+diff --git a/arch/arm/boot/dts/imx1-ads.dts b/arch/arm/boot/dts/imx1-ads.dts
+index 5833fb6f15d8..2c817c4a4c68 100644
+--- a/arch/arm/boot/dts/imx1-ads.dts
++++ b/arch/arm/boot/dts/imx1-ads.dts
+@@ -65,7 +65,7 @@
+ 	pinctrl-0 = <&pinctrl_weim>;
+ 	status = "okay";
  
- static inline bool is_slave_direction(enum dma_transfer_direction direction)
- {
--	return (direction == DMA_MEM_TO_DEV) || (direction == DMA_DEV_TO_MEM);
-+	return (direction == DMA_MEM_TO_DEV) || (direction == DMA_DEV_TO_MEM) ||
-+	       (direction == DMA_DEV_TO_DEV);
- }
+-	nor: nor@0,0 {
++	nor: flash@0,0 {
+ 		compatible = "cfi-flash";
+ 		reg = <0 0x00000000 0x02000000>;
+ 		bank-width = <4>;
+diff --git a/arch/arm/boot/dts/imx1-apf9328.dts b/arch/arm/boot/dts/imx1-apf9328.dts
+index 77b21aa7a146..27e72b07b517 100644
+--- a/arch/arm/boot/dts/imx1-apf9328.dts
++++ b/arch/arm/boot/dts/imx1-apf9328.dts
+@@ -45,7 +45,7 @@
+ 	pinctrl-0 = <&pinctrl_weim>;
+ 	status = "okay";
  
- static inline struct dma_async_tx_descriptor *dmaengine_prep_slave_single(
+-	nor: nor@0,0 {
++	nor: flash@0,0 {
+ 		compatible = "cfi-flash";
+ 		reg = <0 0x00000000 0x02000000>;
+ 		bank-width = <2>;
+diff --git a/arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi b/arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi
+index 4b83e2918b55..c7e923584878 100644
+--- a/arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi
++++ b/arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi
+@@ -90,7 +90,7 @@
+ &weim {
+ 	status = "okay";
+ 
+-	nor: nor@0,0 {
++	nor: flash@0,0 {
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+ 		compatible = "cfi-flash";
+diff --git a/arch/arm/boot/dts/imx27-phytec-phycore-som.dtsi b/arch/arm/boot/dts/imx27-phytec-phycore-som.dtsi
+index 3d10273177e9..a5fdc2fd4ce5 100644
+--- a/arch/arm/boot/dts/imx27-phytec-phycore-som.dtsi
++++ b/arch/arm/boot/dts/imx27-phytec-phycore-som.dtsi
+@@ -322,7 +322,7 @@
+ &weim {
+ 	status = "okay";
+ 
+-	nor: nor@0,0 {
++	nor: flash@0,0 {
+ 		compatible = "cfi-flash";
+ 		reg = <0 0x00000000 0x02000000>;
+ 		bank-width = <2>;
 -- 
 2.43.0
 
