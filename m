@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-22418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98DB985DBF0
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:47:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 795C185DE10
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:14:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB2921C22C3F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:47:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 92F1DB26CBF
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:13:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C07D69D21;
-	Wed, 21 Feb 2024 13:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC9B77FBC0;
+	Wed, 21 Feb 2024 14:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HNTi8PQw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FL/gEsPs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE473C2F;
-	Wed, 21 Feb 2024 13:47:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A6517FBBA;
+	Wed, 21 Feb 2024 14:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523235; cv=none; b=Xj5y1AdipyUWl3TqB4XDlW/wk9l1lJ4HOLpGipI1sn9CMG9dDsAYOitvAibYArZC8bb+caChQH2XwJ1pPGJJMzSeils4aAawgMzXmzeH4Fc+htoN5oNhZlYrRQp0ng0DDLr6lRUJovUKZ3JCF7wDVXOPY4CG3QIOpg2wPRpkzzU=
+	t=1708524574; cv=none; b=S8RdyGNDEEj2KbeLxJL4JhkgoWSD8lwjkGVb0terXLKtoMWRwDGFwtCzU1UaKASeIhq72O+j78N4FgtXpdsnjEDMH2GlnTku6fjVlMYI00i2ULFOYxO7fCpEPt95XF9B/BfsxLE8s3w+9XAtZkdod6FlpPH1RMnelT96DdiCpEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523235; c=relaxed/simple;
-	bh=DEEh3Qr2NxmADGR5S9dyILj6H/2aAU3c7pZQUVLdKCU=;
+	s=arc-20240116; t=1708524574; c=relaxed/simple;
+	bh=yOmXw6GS2nGW4yARH+/Vo4vGD+dKcxSZ3+0izUBTPL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u+asXWyRbsnB/iw5qDS6m9/PGLRi18zb9NXyE127qZ8LNB83cjXNPoHHy6x4A9EdD94ArdCXlkaufGIG7JzqmRMxfZBKEeWpBhzbaYqpzlkhh1voFKcu7pN34gwNUjORew48z+BwD5ubNFHs01V0pNCwW5rQHaHLPAZQEt3pfNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HNTi8PQw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C002C433C7;
-	Wed, 21 Feb 2024 13:47:14 +0000 (UTC)
+	 MIME-Version; b=T6e6dql65ZegqLIxuMO97QVzAvZAKK+qNF2o/7ftnM8MQGbaz8C4XWBD9piqk6NxctJf959ejx4koas6G6eOwUaX9iAaalETRwHrGbnyHTdL5FgDt6rMY5HlR1+z1bRLlpT5bM9oPf8GO+KPGmW1ZXwQx1Qlep/kORxQ8nh44jY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FL/gEsPs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4BA4C433C7;
+	Wed, 21 Feb 2024 14:09:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523234;
-	bh=DEEh3Qr2NxmADGR5S9dyILj6H/2aAU3c7pZQUVLdKCU=;
+	s=korg; t=1708524574;
+	bh=yOmXw6GS2nGW4yARH+/Vo4vGD+dKcxSZ3+0izUBTPL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HNTi8PQwy9nvv1sZl4OQ76rUoJkAl+rqRhgoJIejexgoOpdgL3jy9jf5L4FO/v89T
-	 l2E2H3BB90m6WIdXSx0ozTAm//X8OELRn1OpmtBCZJxFCRrXIeZ253JAjcsc4MFfVN
-	 3ERd60Es27LmYnGy+yFNURytgDm7i1GI7FFCfKzU=
+	b=FL/gEsPsv5DXm5TAlIshuRf4JFvUptjAURt19nds/CWnA+3Qct/E/OnP8XqvfX6pE
+	 FFXAvD3Bq+uRmMiLlxlIAp6vmGNBH3dblJKDgTV28Q599URH28lrc7hj/7VVCsYR4E
+	 WHXp+r8y1k/ybQ6K3gY21Dnocl2rwtNHk4SsUNxw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 375/476] mptcp: fix data re-injection from stale subflow
+	Jai Luthra <j-luthra@ti.com>,
+	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 247/379] dmaengine: ti: k3-udma: Report short packet errors
 Date: Wed, 21 Feb 2024 14:07:06 +0100
-Message-ID: <20240221130021.885274184@linuxfoundation.org>
+Message-ID: <20240221130002.217275426@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Jai Luthra <j-luthra@ti.com>
 
-commit b6c620dc43ccb4e802894e54b651cf81495e9598 upstream.
+[ Upstream commit bc9847c9ba134cfe3398011e343dcf6588c1c902 ]
 
-When the MPTCP PM detects that a subflow is stale, all the packet
-scheduler must re-inject all the mptcp-level unacked data. To avoid
-acquiring unneeded locks, it first try to check if any unacked data
-is present at all in the RTX queue, but such check is currently
-broken, as it uses TCP-specific helper on an MPTCP socket.
+Propagate the TR response status to the device using BCDMA
+split-channels. For example CSI-RX driver should be able to check if a
+frame was not transferred completely (short packet) and needs to be
+discarded.
 
-Funnily enough fuzzers and static checkers are happy, as the accessed
-memory still belongs to the mptcp_sock struct, and even from a
-functional perspective the recovery completed successfully, as
-the short-cut test always failed.
-
-A recent unrelated TCP change - commit d5fed5addb2b ("tcp: reorganize
-tcp_sock fast path variables") - exposed the issue, as the tcp field
-reorganization makes the mptcp code always skip the re-inection.
-
-Fix the issue dropping the bogus call: we are on a slow path, the early
-optimization proved once again to be evil.
-
-Fixes: 1e1d9d6f119c ("mptcp: handle pending data on closed subflow")
-Cc: stable@vger.kernel.org
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/468
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240131-upstream-net-20240131-mptcp-ci-issues-v1-1-4c1c11e571ff@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 25dcb5dd7b7c ("dmaengine: ti: New driver for K3 UDMA")
+Signed-off-by: Jai Luthra <j-luthra@ti.com>
+Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Link: https://lore.kernel.org/r/20240103-tr_resp_err-v1-1-2fdf6d48ab92@ti.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c |    3 ---
- 1 file changed, 3 deletions(-)
+ drivers/dma/ti/k3-udma.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2203,9 +2203,6 @@ bool __mptcp_retransmit_pending_data(str
- 	if (__mptcp_check_fallback(mptcp_sk(sk)))
- 		return false;
+diff --git a/drivers/dma/ti/k3-udma.c b/drivers/dma/ti/k3-udma.c
+index d3902784cae2..15eecb757619 100644
+--- a/drivers/dma/ti/k3-udma.c
++++ b/drivers/dma/ti/k3-udma.c
+@@ -2877,6 +2877,7 @@ static void udma_desc_pre_callback(struct virt_dma_chan *vc,
+ {
+ 	struct udma_chan *uc = to_udma_chan(&vc->chan);
+ 	struct udma_desc *d;
++	u8 status;
  
--	if (tcp_rtx_and_write_queues_empty(sk))
--		return false;
--
- 	/* the closing socket has some data untransmitted and/or unacked:
- 	 * some data in the mptcp rtx queue has not really xmitted yet.
- 	 * keep it simple and re-inject the whole mptcp level rtx queue
+ 	if (!vd)
+ 		return;
+@@ -2886,12 +2887,12 @@ static void udma_desc_pre_callback(struct virt_dma_chan *vc,
+ 	if (d->metadata_size)
+ 		udma_fetch_epib(uc, d);
+ 
+-	/* Provide residue information for the client */
+ 	if (result) {
+ 		void *desc_vaddr = udma_curr_cppi5_desc_vaddr(d, d->desc_idx);
+ 
+ 		if (cppi5_desc_get_type(desc_vaddr) ==
+ 		    CPPI5_INFO0_DESC_TYPE_VAL_HOST) {
++			/* Provide residue information for the client */
+ 			result->residue = d->residue -
+ 					  cppi5_hdesc_get_pktlen(desc_vaddr);
+ 			if (result->residue)
+@@ -2900,7 +2901,12 @@ static void udma_desc_pre_callback(struct virt_dma_chan *vc,
+ 				result->result = DMA_TRANS_NOERROR;
+ 		} else {
+ 			result->residue = 0;
+-			result->result = DMA_TRANS_NOERROR;
++			/* Propagate TR Response errors to the client */
++			status = d->hwdesc[0].tr_resp_base->status;
++			if (status)
++				result->result = DMA_TRANS_ABORTED;
++			else
++				result->result = DMA_TRANS_NOERROR;
+ 		}
+ 	}
+ }
+-- 
+2.43.0
+
 
 
 
