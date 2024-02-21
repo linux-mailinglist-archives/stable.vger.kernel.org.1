@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-22269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0E1F85DB30
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:38:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B32B285DD0C
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:01:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70AE1B26B1D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:38:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3E421C2275D
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:01:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD04769E08;
-	Wed, 21 Feb 2024 13:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70C737BB1B;
+	Wed, 21 Feb 2024 14:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WsfzZLoO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YqRpksc6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A9232A1D7;
-	Wed, 21 Feb 2024 13:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30FAB78B7C;
+	Wed, 21 Feb 2024 14:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522670; cv=none; b=RtZdUF9KOOe8FxMOK0NcJz+DzIAAzcISYLgRZfHTeqVlo5vOwQ65rnN1Tqy3bY+SYppykQzJgTZSsgIw5g+WRbXWTVphryXFDwNGq+GoxBb8FORmalMyaYF5jfzQiPnNCEa5uLVeD2tGGe8eDcDmSY0nNLAHHZbFyktT3p/88ys=
+	t=1708524035; cv=none; b=jAXjFKjlE+6bEtVhaSIAJU13pry2WdgpXcEgA0m11W7YV/4hgZ9qSy5Lc/z4sWPpIzU83Er9hL44DpjR6Gfy6MPGAUflI1a2xq6it90VH04Z9h5TWcbNojyhBZFc7lq4qy47/FAXZQjsarWm4BpRo5a/fpxRS83QDPsF5OqA858=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522670; c=relaxed/simple;
-	bh=3I8bfyOEy/+erh/+cG1NRGRwf9ozni25dm1OP0jUbbE=;
+	s=arc-20240116; t=1708524035; c=relaxed/simple;
+	bh=a609K5upoLcs+ZqWFJeN068anj/8nS1IXaNqGi/kQbw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TnBodNzirEEYsA8QBWmboMRnrWlowB71GeTUmElJf7bwkYejOEKUPQdwUMmOssjmKcUgrFQSPO3/87qvgFrRiqytg7xIXOO+Tu/ATVsIeUfB3WwbCCs2eHeMpAdp1CnE29EQvZrw5u9ODBLWYBh+QFPP79LqxoZuXxzQVMH4CMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WsfzZLoO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 915A7C433C7;
-	Wed, 21 Feb 2024 13:37:49 +0000 (UTC)
+	 MIME-Version; b=CcrqRXPcUb7RfUwlO0Dcej/M4YCr2jOmVjiwCM4uWGaTba9iIxJlw3dCEOWV11DFN+LgEzRHbamLXOA1S8Sk5B5g2P/X9K15t9jIfoHftWTuytCedNMcrXoXf+mKpV6c/o3Cvz+FGfhDBni2JGnSpdGFbfjp1NSpknvRymB/INc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YqRpksc6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1786C433C7;
+	Wed, 21 Feb 2024 14:00:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522670;
-	bh=3I8bfyOEy/+erh/+cG1NRGRwf9ozni25dm1OP0jUbbE=;
+	s=korg; t=1708524035;
+	bh=a609K5upoLcs+ZqWFJeN068anj/8nS1IXaNqGi/kQbw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WsfzZLoOuQwhxTyJJPbGgtUFxz01o2fGFhFuT6+j9v8rfOR9ujoI8v15RM8nvQ1zb
-	 ytAo9rPy7XTFB4ZKoFiMT7bFlYUYHZEq1NjDAvDJekZjsWXxMd5jOdH2Jy6+vkgNlu
-	 x52mgqR23wPPtdYd5Ta2h2KPXrxSSPR0vqgaTSLw=
+	b=YqRpksc6Qcj36QlI5j0Fhc8HI0vM8S2tuiSA/aA+9FrkgHEzEibdyxkQGIhMz7prC
+	 IE5ilFYqWzgLzhmzloZGyvFrytLYYYW4YJz0TYN3+DC+LT6KLQsT0qKA6GJHN8vC81
+	 dpP+dagWaORbEC+okqQTSk//MJTGEUJp5dTv+K58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Inki Dae <inki.dae@samsung.com>,
+	Kamal Dasu <kamal.dasu@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 225/476] drm/exynos: Call drm_atomic_helper_shutdown() at shutdown/unbind time
+Subject: [PATCH 5.10 097/379] spi: bcm-qspi: fix SFDP BFPT read by usig mspi read
 Date: Wed, 21 Feb 2024 14:04:36 +0100
-Message-ID: <20240221130016.208813658@linuxfoundation.org>
+Message-ID: <20240221125957.792424067@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Kamal Dasu <kamal.dasu@broadcom.com>
 
-[ Upstream commit 16ac5b21b31b439f03cdf44c153c5f5af94fb3eb ]
+[ Upstream commit 574bf7bbe83794a902679846770f75a9b7f28176 ]
 
-Based on grepping through the source code this driver appears to be
-missing a call to drm_atomic_helper_shutdown() at system shutdown time
-and at driver unbind time. Among other things, this means that if a
-panel is in use that it won't be cleanly powered off at system
-shutdown time.
+SFDP read shall use the mspi reads when using the bcm_qspi_exec_mem_op()
+call. This fixes SFDP parameter page read failures seen with parts that
+now use SFDP protocol to read the basic flash parameter table.
 
-The fact that we should call drm_atomic_helper_shutdown() in the case
-of OS shutdown/restart and at driver remove (or unbind) time comes
-straight out of the kernel doc "driver instance overview" in
-drm_drv.c.
-
-A few notes about this fix:
-- When adding drm_atomic_helper_shutdown() to the unbind path, I added
-  it after drm_kms_helper_poll_fini() since that's when other drivers
-  seemed to have it.
-- Technically with a previous patch, ("drm/atomic-helper:
-  drm_atomic_helper_shutdown(NULL) should be a noop"), we don't
-  actually need to check to see if our "drm" pointer is NULL before
-  calling drm_atomic_helper_shutdown(). We'll leave the "if" test in,
-  though, so that this patch can land without any dependencies. It
-  could potentially be removed later.
-- This patch also makes sure to set the drvdata to NULL in the case of
-  bind errors to make sure that shutdown can't access freed data.
-
-Suggested-by: Maxime Ripard <mripard@kernel.org>
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Reviewed-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Fixes: 5f195ee7d830 ("spi: bcm-qspi: Implement the spi_mem interface")
+Signed-off-by: Kamal Dasu <kamal.dasu@broadcom.com>
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://msgid.link/r/20240109210033.43249-1-kamal.dasu@broadcom.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/exynos/exynos_drm_drv.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/spi/spi-bcm-qspi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_drv.c b/drivers/gpu/drm/exynos/exynos_drm_drv.c
-index d8f1cf4d6b69..2a7f96237f95 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_drv.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_drv.c
-@@ -324,6 +324,7 @@ static int exynos_drm_bind(struct device *dev)
- 	drm_mode_config_cleanup(drm);
- 	exynos_drm_cleanup_dma(drm);
- 	kfree(private);
-+	dev_set_drvdata(dev, NULL);
- err_free_drm:
- 	drm_dev_put(drm);
+diff --git a/drivers/spi/spi-bcm-qspi.c b/drivers/spi/spi-bcm-qspi.c
+index 2c734ea0784b..898658ab1dcd 100644
+--- a/drivers/spi/spi-bcm-qspi.c
++++ b/drivers/spi/spi-bcm-qspi.c
+@@ -19,7 +19,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/slab.h>
+ #include <linux/spi/spi.h>
+-#include <linux/spi/spi-mem.h>
++#include <linux/mtd/spi-nor.h>
+ #include <linux/sysfs.h>
+ #include <linux/types.h>
+ #include "spi-bcm-qspi.h"
+@@ -1048,7 +1048,7 @@ static int bcm_qspi_exec_mem_op(struct spi_mem *mem,
  
-@@ -338,6 +339,7 @@ static void exynos_drm_unbind(struct device *dev)
+ 	/* non-aligned and very short transfers are handled by MSPI */
+ 	if (!IS_ALIGNED((uintptr_t)addr, 4) || !IS_ALIGNED((uintptr_t)buf, 4) ||
+-	    len < 4)
++	    len < 4 || op->cmd.opcode == SPINOR_OP_RDSFDP)
+ 		mspi_read = true;
  
- 	exynos_drm_fbdev_fini(drm);
- 	drm_kms_helper_poll_fini(drm);
-+	drm_atomic_helper_shutdown(drm);
- 
- 	component_unbind_all(drm->dev, drm);
- 	drm_mode_config_cleanup(drm);
-@@ -375,9 +377,18 @@ static int exynos_drm_platform_remove(struct platform_device *pdev)
- 	return 0;
- }
- 
-+static void exynos_drm_platform_shutdown(struct platform_device *pdev)
-+{
-+	struct drm_device *drm = platform_get_drvdata(pdev);
-+
-+	if (drm)
-+		drm_atomic_helper_shutdown(drm);
-+}
-+
- static struct platform_driver exynos_drm_platform_driver = {
- 	.probe	= exynos_drm_platform_probe,
- 	.remove	= exynos_drm_platform_remove,
-+	.shutdown = exynos_drm_platform_shutdown,
- 	.driver	= {
- 		.name	= "exynos-drm",
- 		.pm	= &exynos_drm_pm_ops,
+ 	if (!has_bspi(qspi) || mspi_read)
 -- 
 2.43.0
 
