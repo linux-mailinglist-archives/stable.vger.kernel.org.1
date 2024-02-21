@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-22949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3386385DE64
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:18:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1783985D957
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:17:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64F881C23B1F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:18:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 487471C22D84
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:17:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 241F47E567;
-	Wed, 21 Feb 2024 14:17:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4982277A03;
+	Wed, 21 Feb 2024 13:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tocY1OnR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sy6cTEbX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D81333D981;
-	Wed, 21 Feb 2024 14:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0763877F33;
+	Wed, 21 Feb 2024 13:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525059; cv=none; b=jnadcEhm2pZsL9VYLSDAwo8vq9d2Qh7L0wR3y9WvQDCcnkN+ow33zkmoK3pS308BFbl1NG3RAHxtHJvUflU68RaldKoTj4GLaR96zgURyNa2CCqJINJnOaf6gODWqyBwV0nn5jLqgdDPLyiUMyx3FOHdiAI0WzcAZmiopbRuN8c=
+	t=1708521439; cv=none; b=Z6bN1ly+JXqhQKN3oBaD1nWhS1SMP4uK9UGGqX40v+wkYv2nJt64dP/7Rc5J+cOgFafQIo2jwbYbhk5qeo6u2UulmLYyqxatl5yL30XhYSef8HvQBeYoe5XbfZAWtQgN0NODwVjlc2iNbJ9GYvS8QgnDZvnlvN2LRS5e22ePBg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525059; c=relaxed/simple;
-	bh=DbUCl7Da1v6+hxfh9OtbI5bkuIKTn08mEMXRSDN60lQ=;
+	s=arc-20240116; t=1708521439; c=relaxed/simple;
+	bh=bXiDKBGXVHGt1AfJ7HsEgxqHB52M08WhE05YHhJKCAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nx6YHq+t5w8AMtmk0qnpRRGRL7zPc6IZZZ6pnYIT6WOeXFzFHLDU6OpPlb3hUPy+pH4RNBtIttIyNiBiQYFwC7qZ7p7xKE1/ikP5NBYjAaEIp36UBtE43vJKHg5JbpYuuOrB3iVVEJAPGa5g/fIQlQ9YcXoSRd5EVXeYDb76vck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tocY1OnR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10E62C433C7;
-	Wed, 21 Feb 2024 14:17:38 +0000 (UTC)
+	 MIME-Version; b=YsQQsdfkEVN2cJGCAnXkVdDO9wZC6UFn9+NjKVCndR8EG5ku4BbmMkkatQd1sxkQ8XK+ptokauWWfbai1Zo8ajP3yyuJXzYZ/ITFxqRKcmMxUwe2xCp9b2utJIQo8szMnqcOw3DIyYvMHim26OldUmMlxGhKS1SbK0aABUkv/Es=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sy6cTEbX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 695F4C43390;
+	Wed, 21 Feb 2024 13:17:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525059;
-	bh=DbUCl7Da1v6+hxfh9OtbI5bkuIKTn08mEMXRSDN60lQ=;
+	s=korg; t=1708521438;
+	bh=bXiDKBGXVHGt1AfJ7HsEgxqHB52M08WhE05YHhJKCAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tocY1OnRw8HOy3/072tKr/6Bjo2Mq5M8cu5lWZcCMnOeAxajL2sIkzvhty5OteOnF
-	 June7fGmLTDg+51CneKZU25JeqE5eYopnWkr2NciSvWmYxfhUz8+byGPcLEMV+bIaP
-	 hMmIBBSZ+YY7AgclvEkCw7JndI797Uc9+cOdTMF8=
+	b=sy6cTEbXqo7uObUNwaazAlf0rvOBuM9hkpYRjaG6HgGSyza/QaYXy++gETL0NhG+a
+	 ks1ASEKiffM2O65Bj6fVizfU0nWjRZ+4lJafziHkZHC0V0DoYKdkklHIH5Fb3XEK39
+	 Bb8c6UynbVPod+mfVhx+mMsbZSt2xGZd7AjKiwU4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shenwei Wang <shenwei.wang@nxp.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 041/267] net: fec: fix the unhandled context fault from smmu
-Date: Wed, 21 Feb 2024 14:06:22 +0100
-Message-ID: <20240221125941.308541156@linuxfoundation.org>
+Subject: [PATCH 4.19 082/202] scsi: libfc: Dont schedule abort twice
+Date: Wed, 21 Feb 2024 14:06:23 +0100
+Message-ID: <20240221125934.450243792@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shenwei Wang <shenwei.wang@nxp.com>
+From: Hannes Reinecke <hare@suse.de>
 
-[ Upstream commit 5e344807735023cd3a67c37a1852b849caa42620 ]
+[ Upstream commit b57c4db5d23b9df0118a25e2441c9288edd73710 ]
 
-When repeatedly changing the interface link speed using the command below:
+The current FC error recovery is sending up to three REC (recovery) frames
+in 10 second intervals, and as a final step sending an ABTS after 30
+seconds for the command itself.  Unfortunately sending an ABTS is also the
+action for the SCSI abort handler, and the default timeout for SCSI
+commands is also 30 seconds. This causes two ABTS to be scheduled, with the
+libfc one slightly earlier. The ABTS scheduled by SCSI EH then sees the
+command to be already aborted, and will always return with a 'GOOD' status
+irrespective on the actual result from the first ABTS.  This causes the
+SCSI EH abort handler to always succeed, and SCSI EH never to be engaged.
+Fix this by not issuing an ABTS when a SCSI command is present for the
+exchange, but rather wait for the abort scheduled from SCSI EH.  And warn
+if an abort is already scheduled to avoid similar errors in the future.
 
-ethtool -s eth0 speed 100 duplex full
-ethtool -s eth0 speed 1000 duplex full
-
-The following errors may sometimes be reported by the ARM SMMU driver:
-
-[ 5395.035364] fec 5b040000.ethernet eth0: Link is Down
-[ 5395.039255] arm-smmu 51400000.iommu: Unhandled context fault:
-fsr=0x402, iova=0x00000000, fsynr=0x100001, cbfrsynra=0x852, cb=2
-[ 5398.108460] fec 5b040000.ethernet eth0: Link is Up - 100Mbps/Full -
-flow control off
-
-It is identified that the FEC driver does not properly stop the TX queue
-during the link speed transitions, and this results in the invalid virtual
-I/O address translations from the SMMU and causes the context faults.
-
-Fixes: dbc64a8ea231 ("net: fec: move calls to quiesce/resume packet processing out of fec_restart()")
-Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-Link: https://lore.kernel.org/r/20240123165141.2008104-1-shenwei.wang@nxp.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Hannes Reinecke <hare@suse.de>
+Link: https://lore.kernel.org/r/20231129165832.224100-2-hare@kernel.org
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/scsi/libfc/fc_fcp.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index f67f104049db..b55d6ed9aa13 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -1795,6 +1795,7 @@ static void fec_enet_adjust_link(struct net_device *ndev)
+diff --git a/drivers/scsi/libfc/fc_fcp.c b/drivers/scsi/libfc/fc_fcp.c
+index 4fae253d4f3d..119117443496 100644
+--- a/drivers/scsi/libfc/fc_fcp.c
++++ b/drivers/scsi/libfc/fc_fcp.c
+@@ -282,6 +282,11 @@ static int fc_fcp_send_abort(struct fc_fcp_pkt *fsp)
+ 	if (!fsp->seq_ptr)
+ 		return -EINVAL;
  
- 		/* if any of the above changed restart the FEC */
- 		if (status_change) {
-+			netif_stop_queue(ndev);
- 			napi_disable(&fep->napi);
- 			netif_tx_lock_bh(ndev);
- 			fec_restart(ndev);
-@@ -1804,6 +1805,7 @@ static void fec_enet_adjust_link(struct net_device *ndev)
- 		}
- 	} else {
- 		if (fep->link) {
-+			netif_stop_queue(ndev);
- 			napi_disable(&fep->napi);
- 			netif_tx_lock_bh(ndev);
- 			fec_stop(ndev);
++	if (fsp->state & FC_SRB_ABORT_PENDING) {
++		FC_FCP_DBG(fsp, "abort already pending\n");
++		return -EBUSY;
++	}
++
+ 	per_cpu_ptr(fsp->lp->stats, get_cpu())->FcpPktAborts++;
+ 	put_cpu();
+ 
+@@ -1710,11 +1715,12 @@ static void fc_fcp_recovery(struct fc_fcp_pkt *fsp, u8 code)
+ 	fsp->status_code = code;
+ 	fsp->cdb_status = 0;
+ 	fsp->io_status = 0;
+-	/*
+-	 * if this fails then we let the scsi command timer fire and
+-	 * scsi-ml escalate.
+-	 */
+-	fc_fcp_send_abort(fsp);
++	if (!fsp->cmd)
++		/*
++		 * Only abort non-scsi commands; otherwise let the
++		 * scsi command timer fire and scsi-ml escalate.
++		 */
++		fc_fcp_send_abort(fsp);
+ }
+ 
+ /**
 -- 
 2.43.0
 
