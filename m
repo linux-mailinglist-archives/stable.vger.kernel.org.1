@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-22841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 602CF85DE0A
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:14:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E899E85DF0A
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:24:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 921D71C23801
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3FB4282E5C
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:24:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C632E7D41D;
-	Wed, 21 Feb 2024 14:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71D1673161;
+	Wed, 21 Feb 2024 14:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qNQYsJK1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pOR3FaU3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E7B79DAE;
-	Wed, 21 Feb 2024 14:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3009369962;
+	Wed, 21 Feb 2024 14:24:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524695; cv=none; b=HogPHQcUrSRPJu01BDQnY/Xju+bnvOitxbhMXbDHADJE4P3ZIOdCOUd+YVthL/fvYR3lZFIUqFjTVMLKH8jmjhlTYz1wbT9Rs6TAQzwOR55vVevBaSmoHGCAOqn4MOcrOk+S+Z2pwr2KXMwAQSL9Yfj7MskXVI5eK8+JxxCPA7U=
+	t=1708525455; cv=none; b=ZKkTsWedmcnJBqvJ6Mt5RZlddxWsfb5n0hZ6YRF7KFgkzkMoDX7NZAXuVzf/9eeYPqqXdXjh2JiAH9L29zHGxlYzEnLtbv0DSUeMKAQWRO2vMywIGmOQpqusDul700jvdX6n/X2mXw5JYXVtOF9mCv6ndQpR9ZZT0dFzgjOif3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524695; c=relaxed/simple;
-	bh=Mtb2DUwpXrnBpboYG2Pdy4HGqkRy02jU/YlYQ/XAV2o=;
+	s=arc-20240116; t=1708525455; c=relaxed/simple;
+	bh=vJIKdxYx7H5YHTxG24o8GsvY0M6Dot2VkW3P0/ETgEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t7BXDf8WajRAqAzhCwIJ7oPmSMJVW3RDe0VTrvAsaDKvKlCxJNnGBGPuSndc4d0MM35UMD8IM3qLZ+GLh5BMRvyaA8jvzLDg78Ce66q/Ko144s0l4vIcf3ixsClhvtRrdvEGorjrF5iydXUSinezGZyFShpYeKsIj+NXgG6kOdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qNQYsJK1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 064A9C433C7;
-	Wed, 21 Feb 2024 14:11:34 +0000 (UTC)
+	 MIME-Version; b=dNBu1wlqNGms5lQp1xVcXYNVoSlgJmhlgUYO8YN2GaRgaujD0TJMXaxtY5QYxaA3FuEVsJcOfk5pgOt6qwn5pgKpqo8GX9jcNnePWKfk+Zh4Fk7MX2LQC8Of5aYfaKbrvuXY13DxDi1vqvJbUeEVUQ3VuJ9wivv5NLU3r5EkERg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pOR3FaU3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46E2BC433F1;
+	Wed, 21 Feb 2024 14:24:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524695;
-	bh=Mtb2DUwpXrnBpboYG2Pdy4HGqkRy02jU/YlYQ/XAV2o=;
+	s=korg; t=1708525454;
+	bh=vJIKdxYx7H5YHTxG24o8GsvY0M6Dot2VkW3P0/ETgEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qNQYsJK1eUn5LLjkACpQe9tyui31AsHmZNliuXj9cNquCDTEzNeeRj9f0kVXBnNeL
-	 FJAMWRb1q1fyxVx5fGNFepvsoECfVt2tFrqXBputtVNYD1baFfIFctDa1YLT1381ut
-	 cdEikjfi4bCEDFwch18dETspQUO+YJj6JtGeDKxI=
+	b=pOR3FaU32mTTASjjnBLfTH8YIXVGIKLYqSbOm6v3yRTzjzTy/h/iwjkeF6sYt2rZd
+	 XSOZZkkrHabgiLhlNWigBBg1g8SzwUoU1suzGHmYObYg2GdC8+TeWJeKaEQJhQtsHZ
+	 3WBoV2ZQLS059VPY1yusnQr5rheQDaEH7l8nhytw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Chen <harperchen1110@gmail.com>,
-	xingwei lee <xrivendell7@gmail.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.10 321/379] ext4: fix double-free of blocks due to wrong extents moved_len
+	Su Hui <suhui@nfschina.com>,
+	Artur Paszkiewicz <artur.paszkiewicz@intel.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 159/267] scsi: isci: Fix an error code problem in isci_io_request_build()
 Date: Wed, 21 Feb 2024 14:08:20 +0100
-Message-ID: <20240221130004.440944441@linuxfoundation.org>
+Message-ID: <20240221125945.072773742@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Su Hui <suhui@nfschina.com>
 
-commit 55583e899a5357308274601364741a83e78d6ac4 upstream.
+[ Upstream commit 658365c6b0857e6a306436e315a8633937e3af42 ]
 
-In ext4_move_extents(), moved_len is only updated when all moves are
-successfully executed, and only discards orig_inode and donor_inode
-preallocations when moved_len is not zero. When the loop fails to exit
-after successfully moving some extents, moved_len is not updated and
-remains at 0, so it does not discard the preallocations.
+Clang static complains that Value stored to 'status' is never read. Return
+'status' rather than 'SCI_SUCCESS'.
 
-If the moved extents overlap with the preallocated extents, the
-overlapped extents are freed twice in ext4_mb_release_inode_pa() and
-ext4_process_freed_data() (as described in commit 94d7c16cbbbd ("ext4:
-Fix double-free of blocks with EXT4_IOC_MOVE_EXT")), and bb_free is
-incremented twice. Hence when trim is executed, a zero-division bug is
-triggered in mb_update_avg_fragment_size() because bb_free is not zero
-and bb_fragments is zero.
-
-Therefore, update move_len after each extent move to avoid the issue.
-
-Reported-by: Wei Chen <harperchen1110@gmail.com>
-Reported-by: xingwei lee <xrivendell7@gmail.com>
-Closes: https://lore.kernel.org/r/CAO4mrferzqBUnCag8R3m2zf897ts9UEuhjFQGPtODT92rYyR2Q@mail.gmail.com
-Fixes: fcf6b1b729bc ("ext4: refactor ext4_move_extents code base")
-CC:  <stable@vger.kernel.org> # 3.18
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240104142040.2835097-2-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f1f52e75939b ("isci: uplevel request infrastructure")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Link: https://lore.kernel.org/r/20240112041926.3924315-1-suhui@nfschina.com
+Reviewed-by: Artur Paszkiewicz <artur.paszkiewicz@intel.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/move_extent.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/scsi/isci/request.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ext4/move_extent.c
-+++ b/fs/ext4/move_extent.c
-@@ -615,6 +615,7 @@ ext4_move_extents(struct file *o_filp, s
- 		goto out;
- 	o_end = o_start + len;
- 
-+	*moved_len = 0;
- 	while (o_start < o_end) {
- 		struct ext4_extent *ex;
- 		ext4_lblk_t cur_blk, next_blk;
-@@ -670,7 +671,7 @@ ext4_move_extents(struct file *o_filp, s
- 		 */
- 		ext4_double_up_write_data_sem(orig_inode, donor_inode);
- 		/* Swap original branches with new branches */
--		move_extent_per_page(o_filp, donor_inode,
-+		*moved_len += move_extent_per_page(o_filp, donor_inode,
- 				     orig_page_index, donor_page_index,
- 				     offset_in_page, cur_len,
- 				     unwritten, &ret);
-@@ -680,9 +681,6 @@ ext4_move_extents(struct file *o_filp, s
- 		o_start += cur_len;
- 		d_start += cur_len;
+diff --git a/drivers/scsi/isci/request.c b/drivers/scsi/isci/request.c
+index 343d24c7e788..591aebb40a0f 100644
+--- a/drivers/scsi/isci/request.c
++++ b/drivers/scsi/isci/request.c
+@@ -3398,7 +3398,7 @@ static enum sci_status isci_io_request_build(struct isci_host *ihost,
+ 		return SCI_FAILURE;
  	}
--	*moved_len = o_start - orig_blk;
--	if (*moved_len > len)
--		*moved_len = len;
  
- out:
- 	if (*moved_len) {
+-	return SCI_SUCCESS;
++	return status;
+ }
+ 
+ static struct isci_request *isci_request_from_tag(struct isci_host *ihost, u16 tag)
+-- 
+2.43.0
+
 
 
 
