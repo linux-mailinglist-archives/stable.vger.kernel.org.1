@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-22670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 318EC85DD2F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:03:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E757F85D8E4
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:11:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 633F21C227EE
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:03:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98779282822
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:11:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B85D7F467;
-	Wed, 21 Feb 2024 14:01:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A29469D28;
+	Wed, 21 Feb 2024 13:11:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kLxClsS5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wZqz10tm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F19627BB05;
-	Wed, 21 Feb 2024 14:01:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC77869973;
+	Wed, 21 Feb 2024 13:11:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524116; cv=none; b=DbZDVewK1G+oOfFPel6mA1yywdY3xQHDpLjw4Fga6YXyS3FwZWJfC33oOt5848ju6V3quxMmwBnX+9b6kYQDl9XcWbHbLjoF3A3MIvmF5XnCU44UCMc6sxiYTXDXlvPXuuAvrJC8AYXATec9aV0mSMxCum+30X2yymy3k3aw8ow=
+	t=1708521111; cv=none; b=WRteyYsHHb5H7hJy9REyThFO2iAyeNuI+ctcFOTBCKnQQy/lu61kVBfPGfNBwV+hsFFXtSMTZopBpSNUV1afnpYu5e4gyjyVwye3ATzi5W+yo86kvj23gRroSWKEb2dmmit9m8+4/G6Xv60S9ajUHSbMjfNr8VhXxKRzWoKc8wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524116; c=relaxed/simple;
-	bh=hlcg/HDnOGIuyiqfSLpEDwK5OIH5e/PtsrxlPXOztW8=;
+	s=arc-20240116; t=1708521111; c=relaxed/simple;
+	bh=/s2wEMRujHtnmXY1HzVUPVofEuhE1j0C3oc47nfxdmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hfEXCfO4z3NznCBNM1Rc6T/xYBQMAgNkXGdNsNAQFhzJ2+yz2j3BOVN2jYjhoAeifIb9QtEy7REHJswCE5BiOuMIpQthCXP7+7w5Vrr+g/L51cT/ScK0YUA7MkbQjzCz4zBtUfuFvUK9OqHgoxuy5TxvqoqRbkoxuyHUL02+0a8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kLxClsS5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 617EFC433C7;
-	Wed, 21 Feb 2024 14:01:55 +0000 (UTC)
+	 MIME-Version; b=hiePHhl9V4yBpDlSPQSnbIPEWBcbV/n/SVBeJmgKxzmLyCx2rPohVPNjZ67PG8WyV4YHAe2wscN2sKMO9pqP/3dvlkGanAIzAyFaRaZw7ed27VUCQUHtCBD5bZwLB8dtoZyWlvT/qkhQQ8vGerKw5h8Udp3LoRrhxF8rGba/Qgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wZqz10tm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 526ADC433F1;
+	Wed, 21 Feb 2024 13:11:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524115;
-	bh=hlcg/HDnOGIuyiqfSLpEDwK5OIH5e/PtsrxlPXOztW8=;
+	s=korg; t=1708521110;
+	bh=/s2wEMRujHtnmXY1HzVUPVofEuhE1j0C3oc47nfxdmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kLxClsS5e+0CcQVsWVkiVGp6x6Li4WG+66JutcMCTz5+WDVGy9ZnvOD32kvBUw/rP
-	 HsU67du3Lq99SsvBq7XGaeCYSsnR5xd6ZY4QNj+SP2+NTEStweHQlxX6dF5YSB+FbB
-	 VxH+YKf/aWwMZtUgO1UhDkyB52w/f5HBKV6U71cU=
+	b=wZqz10tmaIW2pOsbGnH+5ST2pmYm3L1d8FjF+IY5GVOj188jNxpsYhTVPYZRfuiK4
+	 dyDjZXq+/5jfeypDd/ENn/4O5cUUT8PZyqGis7G09TdCZOvsc/2+X59HuDMHE7smQp
+	 hW1XgWhKs/efDvz4DkLUVY0iJww6n9Mq4NZm5cik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@suse.de>,
-	Christoph Hellwig <hch@lst.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	syzbot+b5ad66046b913bc04c6f@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 149/379] scsi: libfc: Dont schedule abort twice
+Subject: [PATCH 4.19 027/202] llc: Drop support for ETH_P_TR_802_2.
 Date: Wed, 21 Feb 2024 14:05:28 +0100
-Message-ID: <20240221125959.329929053@linuxfoundation.org>
+Message-ID: <20240221125932.662332024@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +64,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hannes Reinecke <hare@suse.de>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit b57c4db5d23b9df0118a25e2441c9288edd73710 ]
+[ Upstream commit e3f9bed9bee261e3347131764e42aeedf1ffea61 ]
 
-The current FC error recovery is sending up to three REC (recovery) frames
-in 10 second intervals, and as a final step sending an ABTS after 30
-seconds for the command itself.  Unfortunately sending an ABTS is also the
-action for the SCSI abort handler, and the default timeout for SCSI
-commands is also 30 seconds. This causes two ABTS to be scheduled, with the
-libfc one slightly earlier. The ABTS scheduled by SCSI EH then sees the
-command to be already aborted, and will always return with a 'GOOD' status
-irrespective on the actual result from the first ABTS.  This causes the
-SCSI EH abort handler to always succeed, and SCSI EH never to be engaged.
-Fix this by not issuing an ABTS when a SCSI command is present for the
-exchange, but rather wait for the abort scheduled from SCSI EH.  And warn
-if an abort is already scheduled to avoid similar errors in the future.
+syzbot reported an uninit-value bug below. [0]
 
-Signed-off-by: Hannes Reinecke <hare@suse.de>
-Link: https://lore.kernel.org/r/20231129165832.224100-2-hare@kernel.org
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+llc supports ETH_P_802_2 (0x0004) and used to support ETH_P_TR_802_2
+(0x0011), and syzbot abused the latter to trigger the bug.
+
+  write$tun(r0, &(0x7f0000000040)={@val={0x0, 0x11}, @val, @mpls={[], @llc={@snap={0xaa, 0x1, ')', "90e5dd"}}}}, 0x16)
+
+llc_conn_handler() initialises local variables {saddr,daddr}.mac
+based on skb in llc_pdu_decode_sa()/llc_pdu_decode_da() and passes
+them to __llc_lookup().
+
+However, the initialisation is done only when skb->protocol is
+htons(ETH_P_802_2), otherwise, __llc_lookup_established() and
+__llc_lookup_listener() will read garbage.
+
+The missing initialisation existed prior to commit 211ed865108e
+("net: delete all instances of special processing for token ring").
+
+It removed the part to kick out the token ring stuff but forgot to
+close the door allowing ETH_P_TR_802_2 packets to sneak into llc_rcv().
+
+Let's remove llc_tr_packet_type and complete the deprecation.
+
+[0]:
+BUG: KMSAN: uninit-value in __llc_lookup_established+0xe9d/0xf90
+ __llc_lookup_established+0xe9d/0xf90
+ __llc_lookup net/llc/llc_conn.c:611 [inline]
+ llc_conn_handler+0x4bd/0x1360 net/llc/llc_conn.c:791
+ llc_rcv+0xfbb/0x14a0 net/llc/llc_input.c:206
+ __netif_receive_skb_one_core net/core/dev.c:5527 [inline]
+ __netif_receive_skb+0x1a6/0x5a0 net/core/dev.c:5641
+ netif_receive_skb_internal net/core/dev.c:5727 [inline]
+ netif_receive_skb+0x58/0x660 net/core/dev.c:5786
+ tun_rx_batched+0x3ee/0x980 drivers/net/tun.c:1555
+ tun_get_user+0x53af/0x66d0 drivers/net/tun.c:2002
+ tun_chr_write_iter+0x3af/0x5d0 drivers/net/tun.c:2048
+ call_write_iter include/linux/fs.h:2020 [inline]
+ new_sync_write fs/read_write.c:491 [inline]
+ vfs_write+0x8ef/0x1490 fs/read_write.c:584
+ ksys_write+0x20f/0x4c0 fs/read_write.c:637
+ __do_sys_write fs/read_write.c:649 [inline]
+ __se_sys_write fs/read_write.c:646 [inline]
+ __x64_sys_write+0x93/0xd0 fs/read_write.c:646
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x44/0x110 arch/x86/entry/common.c:82
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
+
+Local variable daddr created at:
+ llc_conn_handler+0x53/0x1360 net/llc/llc_conn.c:783
+ llc_rcv+0xfbb/0x14a0 net/llc/llc_input.c:206
+
+CPU: 1 PID: 5004 Comm: syz-executor994 Not tainted 6.6.0-syzkaller-14500-g1c41041124bd #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/09/2023
+
+Fixes: 211ed865108e ("net: delete all instances of special processing for token ring")
+Reported-by: syzbot+b5ad66046b913bc04c6f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b5ad66046b913bc04c6f
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240119015515.61898-1-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/libfc/fc_fcp.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ include/net/llc_pdu.h | 6 ++----
+ net/llc/llc_core.c    | 7 -------
+ 2 files changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/scsi/libfc/fc_fcp.c b/drivers/scsi/libfc/fc_fcp.c
-index 7cfeb6886237..6f005ada489b 100644
---- a/drivers/scsi/libfc/fc_fcp.c
-+++ b/drivers/scsi/libfc/fc_fcp.c
-@@ -270,6 +270,11 @@ static int fc_fcp_send_abort(struct fc_fcp_pkt *fsp)
- 	if (!fsp->seq_ptr)
- 		return -EINVAL;
- 
-+	if (fsp->state & FC_SRB_ABORT_PENDING) {
-+		FC_FCP_DBG(fsp, "abort already pending\n");
-+		return -EBUSY;
-+	}
-+
- 	per_cpu_ptr(fsp->lp->stats, get_cpu())->FcpPktAborts++;
- 	put_cpu();
- 
-@@ -1700,11 +1705,12 @@ static void fc_fcp_recovery(struct fc_fcp_pkt *fsp, u8 code)
- 	fsp->status_code = code;
- 	fsp->cdb_status = 0;
- 	fsp->io_status = 0;
--	/*
--	 * if this fails then we let the scsi command timer fire and
--	 * scsi-ml escalate.
--	 */
--	fc_fcp_send_abort(fsp);
-+	if (!fsp->cmd)
-+		/*
-+		 * Only abort non-scsi commands; otherwise let the
-+		 * scsi command timer fire and scsi-ml escalate.
-+		 */
-+		fc_fcp_send_abort(fsp);
+diff --git a/include/net/llc_pdu.h b/include/net/llc_pdu.h
+index 49aa79c7b278..581cd37aa98b 100644
+--- a/include/net/llc_pdu.h
++++ b/include/net/llc_pdu.h
+@@ -262,8 +262,7 @@ static inline void llc_pdu_header_init(struct sk_buff *skb, u8 type,
+  */
+ static inline void llc_pdu_decode_sa(struct sk_buff *skb, u8 *sa)
+ {
+-	if (skb->protocol == htons(ETH_P_802_2))
+-		memcpy(sa, eth_hdr(skb)->h_source, ETH_ALEN);
++	memcpy(sa, eth_hdr(skb)->h_source, ETH_ALEN);
  }
  
  /**
+@@ -275,8 +274,7 @@ static inline void llc_pdu_decode_sa(struct sk_buff *skb, u8 *sa)
+  */
+ static inline void llc_pdu_decode_da(struct sk_buff *skb, u8 *da)
+ {
+-	if (skb->protocol == htons(ETH_P_802_2))
+-		memcpy(da, eth_hdr(skb)->h_dest, ETH_ALEN);
++	memcpy(da, eth_hdr(skb)->h_dest, ETH_ALEN);
+ }
+ 
+ /**
+diff --git a/net/llc/llc_core.c b/net/llc/llc_core.c
+index 64d4bef04e73..4900a27b5176 100644
+--- a/net/llc/llc_core.c
++++ b/net/llc/llc_core.c
+@@ -135,22 +135,15 @@ static struct packet_type llc_packet_type __read_mostly = {
+ 	.func = llc_rcv,
+ };
+ 
+-static struct packet_type llc_tr_packet_type __read_mostly = {
+-	.type = cpu_to_be16(ETH_P_TR_802_2),
+-	.func = llc_rcv,
+-};
+-
+ static int __init llc_init(void)
+ {
+ 	dev_add_pack(&llc_packet_type);
+-	dev_add_pack(&llc_tr_packet_type);
+ 	return 0;
+ }
+ 
+ static void __exit llc_exit(void)
+ {
+ 	dev_remove_pack(&llc_packet_type);
+-	dev_remove_pack(&llc_tr_packet_type);
+ }
+ 
+ module_init(llc_init);
 -- 
 2.43.0
 
