@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-22348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FE0985DB94
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:42:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D063485DE46
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:17:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30C221F23334
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:42:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AA702856AC
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:17:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B66AF73161;
-	Wed, 21 Feb 2024 13:42:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA9A17E796;
+	Wed, 21 Feb 2024 14:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dy6Pacp0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zU/rl8xc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73E792A1D7;
-	Wed, 21 Feb 2024 13:42:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 886E27C6E9;
+	Wed, 21 Feb 2024 14:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522967; cv=none; b=LWMOZw5sjUkFNuY5wa/o+eG/ioRjDyQGpFt0wevYrIX65V4WDxNDSfuQYSAs2ga7kpmH15SK5nHigEji73U7gBKaLmqdRZIleXeT9rGtJXuYEyTij5YbFj00RtgVc0mYxxldGh07ZPytPrsXkDeEaY3YYWVXnVAfaGEJ7piFxvM=
+	t=1708524954; cv=none; b=EnVVlSCgGK3FIshlOk3RnSb3TdxnpFn5/eg3kXXX8W5AZ9U78JD4uCLRsgZQ0p5NDxU8kLsqlL5yKb+LNmGv9smq+sxmpm45fApcTFWkmKoSR8JMv0gNuzXgL6ETwYsdeQguYUWST43vQ74ZuAZDVkCsyzQAWyMTzArNEqEjPWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522967; c=relaxed/simple;
-	bh=dnA/W/5mOsialqV7SAgxAjVo66y2H/cPpyFzhQDx+No=;
+	s=arc-20240116; t=1708524954; c=relaxed/simple;
+	bh=c/BjF3T+yrK6ezmNPoH/FM6dwO9HTFKPG5nm7fMRSAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=unDdYZ3711ZTZIhSnYV9J5wf3332f3Ef9kVRrSeBezIoFFVb5Htkr+8XGSo0iPMBBep3ygquiw5aYs40wEc9jIcPm6uO+Lt9YPQtW0R+5u5qsL7qPP0FW4zEtegOw+7WW5B+rIWYQ7LdipRviTwazRWaRvu5homVkrnMulpqHM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dy6Pacp0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4BCFC43390;
-	Wed, 21 Feb 2024 13:42:46 +0000 (UTC)
+	 MIME-Version; b=Xv1/oPQATTzYlknDEVOf05kfkpHpJBNfFBVou0qaq+Ay8HutS6BERU9sPXp0LHyrztBN6+l0s5BRHAP3qanrTP3Sb4IOUv0EldDdQ2Z3/EiDPE2DOnrAsSC4t/Ks6h1hJFYCb775cfgGMp6slzjNFBcnrqi6qLDHqp4rTpBk078=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zU/rl8xc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9E5DC433C7;
+	Wed, 21 Feb 2024 14:15:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522967;
-	bh=dnA/W/5mOsialqV7SAgxAjVo66y2H/cPpyFzhQDx+No=;
+	s=korg; t=1708524954;
+	bh=c/BjF3T+yrK6ezmNPoH/FM6dwO9HTFKPG5nm7fMRSAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dy6Pacp0SCAqb0uDNTymd0AzXPIitU9a+BLV1HbWsPs3RcpmzKaoeFJPW7mu6dv37
-	 8UOng3+zNRqVqMbKUzncMDQXsA1uL6tgxHw2k4KgMS9K9j3sy+yB21CUKeaLctehy6
-	 naL/7je42tCnfW3NrajkBwOEFcd+j1OQa51CRV0M=
+	b=zU/rl8xcQeIvClI8QhAG/Fxo06ygobUL2YDBIIcOgbiTc1C/ghhuJbaK53smGRRnJ
+	 6VBg5i/WbQNUMp0Guj/v48iWLlLxrI6Vp27hijtfUFrBPx2ZlNkGNJszNjNMl0Ixie
+	 ly2aBj8Zqw32MHIP3jNNiNBtyYQMSpGRD7OtF90A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jai Luthra <j-luthra@ti.com>,
-	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 297/476] dmaengine: ti: k3-udma: Report short packet errors
+Subject: [PATCH 5.4 007/267] spi: introduce SPI_MODE_X_MASK macro
 Date: Wed, 21 Feb 2024 14:05:48 +0100
-Message-ID: <20240221130018.984484419@linuxfoundation.org>
+Message-ID: <20240221125940.296120342@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jai Luthra <j-luthra@ti.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-[ Upstream commit bc9847c9ba134cfe3398011e343dcf6588c1c902 ]
+[ Upstream commit 029b42d8519cef70c4fb5fcaccd08f1053ed2bf0 ]
 
-Propagate the TR response status to the device using BCDMA
-split-channels. For example CSI-RX driver should be able to check if a
-frame was not transferred completely (short packet) and needs to be
-discarded.
+Provide a macro to filter all SPI_MODE_0,1,2,3 mode in one run.
 
-Fixes: 25dcb5dd7b7c ("dmaengine: ti: New driver for K3 UDMA")
-Signed-off-by: Jai Luthra <j-luthra@ti.com>
-Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Link: https://lore.kernel.org/r/20240103-tr_resp_err-v1-1-2fdf6d48ab92@ti.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+The latest SPI framework will parse the devicetree in following call
+sequence: of_register_spi_device() -> of_spi_parse_dt()
+So, driver do not need to pars the devicetree and will get prepared
+flags in the probe.
+
+On one hand it is good far most drivers. On other hand some drivers need to
+filter flags provide by SPI framework and apply know to work flags. This drivers
+may use SPI_MODE_X_MASK to filter MODE flags and set own, known flags:
+  spi->flags &= ~SPI_MODE_X_MASK;
+  spi->flags |= SPI_MODE_0;
+
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://lore.kernel.org/r/20201027095724.18654-2-o.rempel@pengutronix.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 6d710b769c1f ("serial: sc16is7xx: add check for unsupported SPI modes during probe")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/ti/k3-udma.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ include/linux/spi/spi.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/dma/ti/k3-udma.c b/drivers/dma/ti/k3-udma.c
-index d796e50dfe99..698fb898847c 100644
---- a/drivers/dma/ti/k3-udma.c
-+++ b/drivers/dma/ti/k3-udma.c
-@@ -3957,6 +3957,7 @@ static void udma_desc_pre_callback(struct virt_dma_chan *vc,
- {
- 	struct udma_chan *uc = to_udma_chan(&vc->chan);
- 	struct udma_desc *d;
-+	u8 status;
- 
- 	if (!vd)
- 		return;
-@@ -3966,12 +3967,12 @@ static void udma_desc_pre_callback(struct virt_dma_chan *vc,
- 	if (d->metadata_size)
- 		udma_fetch_epib(uc, d);
- 
--	/* Provide residue information for the client */
- 	if (result) {
- 		void *desc_vaddr = udma_curr_cppi5_desc_vaddr(d, d->desc_idx);
- 
- 		if (cppi5_desc_get_type(desc_vaddr) ==
- 		    CPPI5_INFO0_DESC_TYPE_VAL_HOST) {
-+			/* Provide residue information for the client */
- 			result->residue = d->residue -
- 					  cppi5_hdesc_get_pktlen(desc_vaddr);
- 			if (result->residue)
-@@ -3980,7 +3981,12 @@ static void udma_desc_pre_callback(struct virt_dma_chan *vc,
- 				result->result = DMA_TRANS_NOERROR;
- 		} else {
- 			result->residue = 0;
--			result->result = DMA_TRANS_NOERROR;
-+			/* Propagate TR Response errors to the client */
-+			status = d->hwdesc[0].tr_resp_base->status;
-+			if (status)
-+				result->result = DMA_TRANS_ABORTED;
-+			else
-+				result->result = DMA_TRANS_NOERROR;
- 		}
- 	}
- }
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 7067f85cef0b..ca39b33105bd 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -152,6 +152,7 @@ struct spi_device {
+ #define	SPI_MODE_1	(0|SPI_CPHA)
+ #define	SPI_MODE_2	(SPI_CPOL|0)
+ #define	SPI_MODE_3	(SPI_CPOL|SPI_CPHA)
++#define	SPI_MODE_X_MASK	(SPI_CPOL|SPI_CPHA)
+ #define	SPI_CS_HIGH	0x04			/* chipselect active high? */
+ #define	SPI_LSB_FIRST	0x08			/* per-word bits-on-wire */
+ #define	SPI_3WIRE	0x10			/* SI/SO signals shared */
 -- 
 2.43.0
 
