@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-22392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F34E685DBD4
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:45:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 037A785D948
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:17:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95CBD1F247B5
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:45:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1950283523
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:17:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AAEB78B53;
-	Wed, 21 Feb 2024 13:45:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82AD979DAB;
+	Wed, 21 Feb 2024 13:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VqEn5T79"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QZLGFz4I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBDAC4D5B7;
-	Wed, 21 Feb 2024 13:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4063378B57;
+	Wed, 21 Feb 2024 13:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523130; cv=none; b=njyj+l9ScWoEHEMCkmcLGcdNeFFGDLG47OO7DIdttUGNPk5PJuxRt+WldVdhovDsgCn+RLH25YM1xkSaYozKXFzYvDCMRCVZe9CViXJFVODIILwX2QAH03IeinhMgTz4uOHZ5Tbp33VYv+n28BlrvyorrjF2BGmHZj5R+xwRD2E=
+	t=1708521397; cv=none; b=YKRD3I05f7wrZbvE2G+7DRDO6HAzFT8QlUCuaZv8wwB1sPcCwxwYvHiWO0X0vMdiIRiJBMysYL4NI5BxXl0Gx4r7d15GUukITtQKT5e0+euiU0CUmT11ss6dTJJhn/orW4E0aMF3Q8pHHRy5ktrhTIBkOzoQi4blKYVTJsKVz+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523130; c=relaxed/simple;
-	bh=F2G7T2J4jiaa3056xinUA+kERB4U86O9JzQJotv7vdc=;
+	s=arc-20240116; t=1708521397; c=relaxed/simple;
+	bh=pDJG0GR6EgAe3VNkYN4bgSdaIlbEd2s+azEQpJb0w0w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UM8WkDncxuLXGA1yRvYjkZ0dLIIp24OIDaZ5mPiBO7KNPbM4SDPLXgBfzV7XKDsN+qRSjgp6xt23d8K+Z1N8dvVHIReUdXx2xDTKI67F8WSJ1B8BXkmn3Z0YHWc+YF0Zw25MxSCKecyEPnCvH7kSCajtkMdthH0iIRSkJmHgfMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VqEn5T79; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C738C433C7;
-	Wed, 21 Feb 2024 13:45:29 +0000 (UTC)
+	 MIME-Version; b=U3mEUgxjG6JRrd3cNv9nNR9TYxwMHX4Seg6OD+R8IBSvNuvLjNJS0XoZ9YDI2aRlBIJ3pHuk4x4zlN+Q56phJd9eksboHXwDxNaJhxj8H5PgkVk5KA5FvI2RTkgH30apDIQEpo/jmYIBHymwdDBhyX67gdzHseUrDLuFI311DvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QZLGFz4I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39D6FC43390;
+	Wed, 21 Feb 2024 13:16:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523129;
-	bh=F2G7T2J4jiaa3056xinUA+kERB4U86O9JzQJotv7vdc=;
+	s=korg; t=1708521396;
+	bh=pDJG0GR6EgAe3VNkYN4bgSdaIlbEd2s+azEQpJb0w0w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VqEn5T79z/2Nadd0PgHAKWa4uM3MTFRov42NNz0CYACMaCrmTAWKC3v/U8HXdl4Pn
-	 JQOEVM9p6H0ApoIpUfchJm/R+oskV5p49zp9oqJrnLWqJLbqXZeqvh79IUBKMVeyHV
-	 0QFiVZPjmkpju3LIwkEW0qostNRMFhIceP6HCbkE=
+	b=QZLGFz4IdJBXedLIry/46GSpC8s02oXVnZw/wxAcmi9TUv8YXkB4CpeFiUUaY752y
+	 WyNwPdLLsrLySLbkMCeQG97o6Kz9REyVKl99CrUjgg3mcFpnrIqLu3otqyPbAMz/zK
+	 iOkJcq996jY/k+jWufrU8B0Ztpj7fesNi9ow2xjU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
-	Rob Herring <robh@kernel.org>,
+	Jack Wang <jinpu.wang@ionos.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 348/476] of: unittest: Fix compile in the non-dynamic case
-Date: Wed, 21 Feb 2024 14:06:39 +0100
-Message-ID: <20240221130020.850474709@linuxfoundation.org>
+Subject: [PATCH 4.19 099/202] RDMA/IPoIB: Fix error code return in ipoib_mcast_join
+Date: Wed, 21 Feb 2024 14:06:40 +0100
+Message-ID: <20240221125934.974843940@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +62,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian A. Ehrhardt <lk@c--e.de>
+From: Jack Wang <jinpu.wang@ionos.com>
 
-[ Upstream commit 607aad1e4356c210dbef9022955a3089377909b2 ]
+[ Upstream commit 753fff78f430704548f45eda52d6d55371a52c0f ]
 
-If CONFIG_OF_KOBJ is not set, a device_node does not contain a
-kobj and attempts to access the embedded kobj via kref_read break
-the compile.
+Return the error code in case of ib_sa_join_multicast fail.
 
-Replace affected kref_read calls with a macro that reads the
-refcount if it exists and returns 1 if there is no embedded kobj.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202401291740.VP219WIz-lkp@intel.com/
-Fixes: 4dde83569832 ("of: Fix double free in of_parse_phandle_with_args_map")
-Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
-Link: https://lore.kernel.org/r/20240129192556.403271-1-lk@c--e.de
-Signed-off-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
+Link: https://lore.kernel.org/r/20231121130316.126364-2-jinpu.wang@ionos.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/unittest.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/infiniband/ulp/ipoib/ipoib_multicast.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
-index 699daf0645d1..5a8d37cef0ba 100644
---- a/drivers/of/unittest.c
-+++ b/drivers/of/unittest.c
-@@ -49,6 +49,12 @@ static struct unittest_results {
- 	failed; \
- })
- 
-+#ifdef CONFIG_OF_KOBJ
-+#define OF_KREF_READ(NODE) kref_read(&(NODE)->kobj.kref)
-+#else
-+#define OF_KREF_READ(NODE) 1
-+#endif
-+
- /*
-  * Expected message may have a message level other than KERN_INFO.
-  * Print the expected message only if the current loglevel will allow
-@@ -562,7 +568,7 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
- 			pr_err("missing testcase data\n");
- 			return;
- 		}
--		prefs[i] = kref_read(&p[i]->kobj.kref);
-+		prefs[i] = OF_KREF_READ(p[i]);
+diff --git a/drivers/infiniband/ulp/ipoib/ipoib_multicast.c b/drivers/infiniband/ulp/ipoib/ipoib_multicast.c
+index b9e9562f5034..805df1fcba84 100644
+--- a/drivers/infiniband/ulp/ipoib/ipoib_multicast.c
++++ b/drivers/infiniband/ulp/ipoib/ipoib_multicast.c
+@@ -558,6 +558,7 @@ static int ipoib_mcast_join(struct net_device *dev, struct ipoib_mcast *mcast)
+ 		spin_unlock_irq(&priv->lock);
+ 		complete(&mcast->done);
+ 		spin_lock_irq(&priv->lock);
++		return ret;
  	}
- 
- 	rc = of_count_phandle_with_args(np, "phandle-list", "#phandle-cells");
-@@ -685,9 +691,9 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
- 	unittest(rc == -EINVAL, "expected:%i got:%i\n", -EINVAL, rc);
- 
- 	for (i = 0; i < ARRAY_SIZE(p); ++i) {
--		unittest(prefs[i] == kref_read(&p[i]->kobj.kref),
-+		unittest(prefs[i] == OF_KREF_READ(p[i]),
- 			 "provider%d: expected:%d got:%d\n",
--			 i, prefs[i], kref_read(&p[i]->kobj.kref));
-+			 i, prefs[i], OF_KREF_READ(p[i]));
- 		of_node_put(p[i]);
- 	}
+ 	return 0;
  }
 -- 
 2.43.0
