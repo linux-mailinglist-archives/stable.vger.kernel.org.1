@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-22307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87AB385DB5D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:40:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C39385D8EA
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:12:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B91AE1C232E8
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:40:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86CCBB226F2
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:12:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ABBB69E08;
-	Wed, 21 Feb 2024 13:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3D2469D2D;
+	Wed, 21 Feb 2024 13:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Danzuzq5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vl9VtLNW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCEA63FB21;
-	Wed, 21 Feb 2024 13:40:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EDC669954;
+	Wed, 21 Feb 2024 13:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522803; cv=none; b=oQkTqvmWRNtQ6xQT5+Jyctc679McD+5WGqY9+gjEGRfHRbev8jfAjbHeEYVHJkHeNU5D0LR83LsCILv9f1hTYmdQZN5jRuTfT4Xlhn5kp47NpTsre1FtOMw9UUUNzC7mIN3yLpSJezLLnoHxqHG3eFhIYaSYMtc3QjCTWg3tNfg=
+	t=1708521133; cv=none; b=rFRXWiT4mIl4aTLJpTBxwQpJAG1qkdR6IgsQqYxGOoMv9CXnz7iK3c4UVKV1srjh7nbQli5ufZnGo6JyP3J5EEP2VGf/YbO++2zc/Fmj6FDLlGldUxez0P7SiM2PgPwJdSqSiG+Bk118tD6JqcdkD7OFhjeBGUIR6wCqfOdSsRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522803; c=relaxed/simple;
-	bh=z3ZfeLVzKTEIW+LaDzlZLPTp1+LfCJFf3Ad3GelIEvY=;
+	s=arc-20240116; t=1708521133; c=relaxed/simple;
+	bh=Yx6Q5mYCLL+p77N1zMNhbPxLovHKd7Om/wAivbmJiaM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nv5jN8IYsXqD/CA/WYW0FAh24qBg+nP4TcZBtx7Z4SnSMiyxO9mkgqbBzTPad7goV8rrYwMWBoD2vxSb5iU1pRDCJIlxot3hbpil2xuNIl2y5mWgOPRLO5E8yuAx4ORhZ6lIKofKSSvK+bN8WrNNEC9GAMxeedZ3f9WcWYloGXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Danzuzq5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC0D7C433C7;
-	Wed, 21 Feb 2024 13:40:02 +0000 (UTC)
+	 MIME-Version; b=XiftNvAHsSp4/qs6RQg5k4CKsu5mHLnYuTZBfXmy4YoZsQaYyeJbDViWQQN1relVwHmiyetLDzyg5L+ZlWnGewA3tAbCuw6WOjMLIbtgIiOhTS3MlvAHsZljxCfzlRuMPE49Qt53SqUIBDrJOhJ/TG4RBHUrrJIac1N61mRfrqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vl9VtLNW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3619C433F1;
+	Wed, 21 Feb 2024 13:12:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522803;
-	bh=z3ZfeLVzKTEIW+LaDzlZLPTp1+LfCJFf3Ad3GelIEvY=;
+	s=korg; t=1708521133;
+	bh=Yx6Q5mYCLL+p77N1zMNhbPxLovHKd7Om/wAivbmJiaM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Danzuzq5ijPnaznUiZj+f4iyHxWEa4u4ekUIsRicCUzjD6LPEUQ2st3/uCC1iL4aX
-	 t70rpYF6IFlO0p82GlONe0fUqcRK8k5rRDcLsEENU2On/yqexzm8sqVen1Re3P+S8d
-	 udlQQc2a/gfrVCfb9HCVKshiZYvuE+XuOlMfqMVo=
+	b=vl9VtLNWHmHmUpkY7szbKe9TVWSTUlBofUWUCpiE1Yk8lqr2y2tmxNWOELfwDbC48
+	 DV7dzelhIxgRpM2uf/JZOYbhTPtIhM1k2IPtIu9+ysqhLdKQq2fTkTe2I7DpHASoSu
+	 dnQIdVPHgQ2E18t2C+4+XkpKZBxRZ8FSK41mEpb0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Xiubo Li <xiubli@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 263/476] ceph: fix deadlock or deadcode of misusing dget()
+	Edward Adam Davis <eadavis@qq.com>,
+	syzbot+c52ab18308964d248092@syzkaller.appspotmail.com,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 4.19 013/202] hwrng: core - Fix page fault dead lock on mmap-ed hwrng
 Date: Wed, 21 Feb 2024 14:05:14 +0100
-Message-ID: <20240221130017.564060454@linuxfoundation.org>
+Message-ID: <20240221125932.178994049@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +62,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiubo Li <xiubli@redhat.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit b493ad718b1f0357394d2cdecbf00a44a36fa085 ]
+commit 78aafb3884f6bc6636efcc1760c891c8500b9922 upstream.
 
-The lock order is incorrect between denty and its parent, we should
-always make sure that the parent get the lock first.
+There is a dead-lock in the hwrng device read path.  This triggers
+when the user reads from /dev/hwrng into memory also mmap-ed from
+/dev/hwrng.  The resulting page fault triggers a recursive read
+which then dead-locks.
 
-But since this deadcode is never used and the parent dir will always
-be set from the callers, let's just remove it.
+Fix this by using a stack buffer when calling copy_to_user.
 
-Link: https://lore.kernel.org/r/20231116081919.GZ1957730@ZenIV
-Reported-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Xiubo Li <xiubli@redhat.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Edward Adam Davis <eadavis@qq.com>
+Reported-by: syzbot+c52ab18308964d248092@syzkaller.appspotmail.com
+Fixes: 9996508b3353 ("hwrng: core - Replace u32 in driver API with byte array")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ceph/caps.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ drivers/char/hw_random/core.c |   34 +++++++++++++++++++++-------------
+ 1 file changed, 21 insertions(+), 13 deletions(-)
 
-diff --git a/fs/ceph/caps.c b/fs/ceph/caps.c
-index ca92f2d2f3c7..e4e79392a2df 100644
---- a/fs/ceph/caps.c
-+++ b/fs/ceph/caps.c
-@@ -4536,12 +4536,14 @@ int ceph_encode_dentry_release(void **p, struct dentry *dentry,
- 			       struct inode *dir,
- 			       int mds, int drop, int unless)
- {
--	struct dentry *parent = NULL;
- 	struct ceph_mds_request_release *rel = *p;
- 	struct ceph_dentry_info *di = ceph_dentry(dentry);
- 	int force = 0;
- 	int ret;
+--- a/drivers/char/hw_random/core.c
++++ b/drivers/char/hw_random/core.c
+@@ -24,10 +24,13 @@
+ #include <linux/random.h>
+ #include <linux/sched.h>
+ #include <linux/slab.h>
++#include <linux/string.h>
+ #include <linux/uaccess.h>
  
-+	/* This shouldn't happen */
-+	BUG_ON(!dir);
+ #define RNG_MODULE_NAME		"hw_random"
+ 
++#define RNG_BUFFER_SIZE (SMP_CACHE_BYTES < 32 ? 32 : SMP_CACHE_BYTES)
 +
- 	/*
- 	 * force an record for the directory caps if we have a dentry lease.
- 	 * this is racy (can't take i_ceph_lock and d_lock together), but it
-@@ -4551,14 +4553,9 @@ int ceph_encode_dentry_release(void **p, struct dentry *dentry,
- 	spin_lock(&dentry->d_lock);
- 	if (di->lease_session && di->lease_session->s_mds == mds)
- 		force = 1;
--	if (!dir) {
--		parent = dget(dentry->d_parent);
--		dir = d_inode(parent);
--	}
- 	spin_unlock(&dentry->d_lock);
+ static struct hwrng *current_rng;
+ /* the current rng has been explicitly chosen by user via sysfs */
+ static int cur_rng_set_by_user;
+@@ -59,7 +62,7 @@ static inline int rng_get_data(struct hw
  
- 	ret = ceph_encode_inode_release(p, dir, mds, drop, unless, force);
--	dput(parent);
+ static size_t rng_buffer_size(void)
+ {
+-	return SMP_CACHE_BYTES < 32 ? 32 : SMP_CACHE_BYTES;
++	return RNG_BUFFER_SIZE;
+ }
  
- 	spin_lock(&dentry->d_lock);
- 	if (ret && di->lease_session && di->lease_session->s_mds == mds) {
--- 
-2.43.0
-
+ static void add_early_randomness(struct hwrng *rng)
+@@ -202,6 +205,7 @@ static inline int rng_get_data(struct hw
+ static ssize_t rng_dev_read(struct file *filp, char __user *buf,
+ 			    size_t size, loff_t *offp)
+ {
++	u8 buffer[RNG_BUFFER_SIZE];
+ 	ssize_t ret = 0;
+ 	int err = 0;
+ 	int bytes_read, len;
+@@ -229,34 +233,37 @@ static ssize_t rng_dev_read(struct file
+ 			if (bytes_read < 0) {
+ 				err = bytes_read;
+ 				goto out_unlock_reading;
++			} else if (bytes_read == 0 &&
++				   (filp->f_flags & O_NONBLOCK)) {
++				err = -EAGAIN;
++				goto out_unlock_reading;
+ 			}
++
+ 			data_avail = bytes_read;
+ 		}
+ 
+-		if (!data_avail) {
+-			if (filp->f_flags & O_NONBLOCK) {
+-				err = -EAGAIN;
+-				goto out_unlock_reading;
+-			}
+-		} else {
+-			len = data_avail;
++		len = data_avail;
++		if (len) {
+ 			if (len > size)
+ 				len = size;
+ 
+ 			data_avail -= len;
+ 
+-			if (copy_to_user(buf + ret, rng_buffer + data_avail,
+-								len)) {
++			memcpy(buffer, rng_buffer + data_avail, len);
++		}
++		mutex_unlock(&reading_mutex);
++		put_rng(rng);
++
++		if (len) {
++			if (copy_to_user(buf + ret, buffer, len)) {
+ 				err = -EFAULT;
+-				goto out_unlock_reading;
++				goto out;
+ 			}
+ 
+ 			size -= len;
+ 			ret += len;
+ 		}
+ 
+-		mutex_unlock(&reading_mutex);
+-		put_rng(rng);
+ 
+ 		if (need_resched())
+ 			schedule_timeout_interruptible(1);
+@@ -267,6 +274,7 @@ static ssize_t rng_dev_read(struct file
+ 		}
+ 	}
+ out:
++	memzero_explicit(buffer, sizeof(buffer));
+ 	return ret ? : err;
+ 
+ out_unlock_reading:
 
 
 
