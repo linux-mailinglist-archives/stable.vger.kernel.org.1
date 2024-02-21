@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-22570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3533985DCA8
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:56:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B05C885DB07
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:37:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC21E2823AE
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:56:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC7E41C21F51
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:37:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D7D278B53;
-	Wed, 21 Feb 2024 13:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94CF7BAF7;
+	Wed, 21 Feb 2024 13:35:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hW/jSGjT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xahV4+O/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8DB78B7C;
-	Wed, 21 Feb 2024 13:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A57714D5BA;
+	Wed, 21 Feb 2024 13:35:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523761; cv=none; b=i4ifY7zGsfKRzcgCF/wL9sG4EyoQ/WfdgEuBb7i083fS0awVKiOkqxpEb531eC161SCsE9Z7Ypt0DDetgP8tFdipln/Hmd57b0pPcdLYcP+troK6OEM0uRhryvCEA4hjO6OgzfbLNhBncl1x0OUoQAip03WtXe5UHZJh/OpzJL4=
+	t=1708522552; cv=none; b=puS1OLov9T/R3xhnuLcu1/o4qn2evMGivOgahizzOnitdlQqf/EqQBYta41lYsKL6Wq4lVeCo19UkWABCUaEX6g6V6JwJHRM7Bae0XUGKOG9meb4kvybmEdleb+lasnPot/Rb0Vl0hAaKvfrTn98mw0hKOw5oFYIyFNszYxVDjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523761; c=relaxed/simple;
-	bh=1DPrXvAN1nkahD9By3dw5N/m12SE3OTucYFdzZxIuzo=;
+	s=arc-20240116; t=1708522552; c=relaxed/simple;
+	bh=zNkjvWYcoIbn0mNGKOmBvlLlgvoo+zBdxgGYoBPvD4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NPVxa7pXqo7ZSz1N0CJcSCM3NHBCKyhY306icHHQv8uR2hnGj3sLrM/ARKQtb0QoR1EF9YDKSYwmaRk2pkSBglhHpFJMch/4ZEqpbaQ+auDEhl1Fnb8cxulKMmffyVeLu8Hr8zEVQ7QDx+amQ3JnEADCdvUKcCwjhUTzrk2qQmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hW/jSGjT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F28C5C433F1;
-	Wed, 21 Feb 2024 13:55:58 +0000 (UTC)
+	 MIME-Version; b=Pem6BRvzIAPLHYfRBqmglDxReOpUbLjIqVo6CsPEtKW85Lxne+murpN2EWQC7iclxQMp5jd/q+4n9uO1wVnHfte/3vRN1xfVrIKCA5MXtv08SoKq84viK20UMox9oCDSPCaFK3LaBDX2EqFxE5nV8NN/utGSr0Wqw6hmlaiHJVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xahV4+O/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE26C433C7;
+	Wed, 21 Feb 2024 13:35:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523761;
-	bh=1DPrXvAN1nkahD9By3dw5N/m12SE3OTucYFdzZxIuzo=;
+	s=korg; t=1708522552;
+	bh=zNkjvWYcoIbn0mNGKOmBvlLlgvoo+zBdxgGYoBPvD4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hW/jSGjT8ubchC7VXubexInxsoEGBUhzbTQyFaq1LzUpYCzYXV5OtpNsGb2h0Yn9J
-	 JKOLHawZuTHON5SY2mEs6jQ6cmdaq9pZkGZFwY3osUDmZieOCshAAbXpnpfpgvCuKd
-	 wlMkdautur35UHgtLDH0AVtrfMCZr179Ln5dB/Bs=
+	b=xahV4+O/2c8qZ0BAoAcySejsroHy0aw14LBLJQUE+ZH7QxN/F3QjJdRvP+51MeRH1
+	 1YIacihXRPVzQuH5INE6sM/U8zIn5wGhKgNkA0QuiFIat2HtniS68zRsAFnNZ/t+RE
+	 pCRNa1MMdT5rX6Kf8F1512faI2QCc1P+jXpPks1k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Tom Zanussi <tom.zanussi@linux.intel.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Hou Tao <houtao1@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 049/379] tracing: Ensure visibility when inserting an element into tracing_map
+Subject: [PATCH 5.15 177/476] bpf: Add map and need_defer parameters to .map_fd_put_ptr()
 Date: Wed, 21 Feb 2024 14:03:48 +0100
-Message-ID: <20240221125956.368638683@linuxfoundation.org>
+Message-ID: <20240221130014.443066304@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,131 +62,175 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Pavlu <petr.pavlu@suse.com>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit 2b44760609e9eaafc9d234a6883d042fc21132a7 ]
+[ Upstream commit 20c20bd11a0702ce4dc9300c3da58acf551d9725 ]
 
-Running the following two commands in parallel on a multi-processor
-AArch64 machine can sporadically produce an unexpected warning about
-duplicate histogram entries:
+map is the pointer of outer map, and need_defer needs some explanation.
+need_defer tells the implementation to defer the reference release of
+the passed element and ensure that the element is still alive before
+the bpf program, which may manipulate it, exits.
 
- $ while true; do
-     echo hist:key=id.syscall:val=hitcount > \
-       /sys/kernel/debug/tracing/events/raw_syscalls/sys_enter/trigger
-     cat /sys/kernel/debug/tracing/events/raw_syscalls/sys_enter/hist
-     sleep 0.001
-   done
- $ stress-ng --sysbadaddr $(nproc)
+The following three cases will invoke map_fd_put_ptr() and different
+need_defer values will be passed to these callers:
 
-The warning looks as follows:
+1) release the reference of the old element in the map during map update
+   or map deletion. The release must be deferred, otherwise the bpf
+   program may incur use-after-free problem, so need_defer needs to be
+   true.
+2) release the reference of the to-be-added element in the error path of
+   map update. The to-be-added element is not visible to any bpf
+   program, so it is OK to pass false for need_defer parameter.
+3) release the references of all elements in the map during map release.
+   Any bpf program which has access to the map must have been exited and
+   released, so need_defer=false will be OK.
 
-[ 2911.172474] ------------[ cut here ]------------
-[ 2911.173111] Duplicates detected: 1
-[ 2911.173574] WARNING: CPU: 2 PID: 12247 at kernel/trace/tracing_map.c:983 tracing_map_sort_entries+0x3e0/0x408
-[ 2911.174702] Modules linked in: iscsi_ibft(E) iscsi_boot_sysfs(E) rfkill(E) af_packet(E) nls_iso8859_1(E) nls_cp437(E) vfat(E) fat(E) ena(E) tiny_power_button(E) qemu_fw_cfg(E) button(E) fuse(E) efi_pstore(E) ip_tables(E) x_tables(E) xfs(E) libcrc32c(E) aes_ce_blk(E) aes_ce_cipher(E) crct10dif_ce(E) polyval_ce(E) polyval_generic(E) ghash_ce(E) gf128mul(E) sm4_ce_gcm(E) sm4_ce_ccm(E) sm4_ce(E) sm4_ce_cipher(E) sm4(E) sm3_ce(E) sm3(E) sha3_ce(E) sha512_ce(E) sha512_arm64(E) sha2_ce(E) sha256_arm64(E) nvme(E) sha1_ce(E) nvme_core(E) nvme_auth(E) t10_pi(E) sg(E) scsi_mod(E) scsi_common(E) efivarfs(E)
-[ 2911.174738] Unloaded tainted modules: cppc_cpufreq(E):1
-[ 2911.180985] CPU: 2 PID: 12247 Comm: cat Kdump: loaded Tainted: G            E      6.7.0-default #2 1b58bbb22c97e4399dc09f92d309344f69c44a01
-[ 2911.182398] Hardware name: Amazon EC2 c7g.8xlarge/, BIOS 1.0 11/1/2018
-[ 2911.183208] pstate: 61400005 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-[ 2911.184038] pc : tracing_map_sort_entries+0x3e0/0x408
-[ 2911.184667] lr : tracing_map_sort_entries+0x3e0/0x408
-[ 2911.185310] sp : ffff8000a1513900
-[ 2911.185750] x29: ffff8000a1513900 x28: ffff0003f272fe80 x27: 0000000000000001
-[ 2911.186600] x26: ffff0003f272fe80 x25: 0000000000000030 x24: 0000000000000008
-[ 2911.187458] x23: ffff0003c5788000 x22: ffff0003c16710c8 x21: ffff80008017f180
-[ 2911.188310] x20: ffff80008017f000 x19: ffff80008017f180 x18: ffffffffffffffff
-[ 2911.189160] x17: 0000000000000000 x16: 0000000000000000 x15: ffff8000a15134b8
-[ 2911.190015] x14: 0000000000000000 x13: 205d373432323154 x12: 5b5d313131333731
-[ 2911.190844] x11: 00000000fffeffff x10: 00000000fffeffff x9 : ffffd1b78274a13c
-[ 2911.191716] x8 : 000000000017ffe8 x7 : c0000000fffeffff x6 : 000000000057ffa8
-[ 2911.192554] x5 : ffff0012f6c24ec0 x4 : 0000000000000000 x3 : ffff2e5b72b5d000
-[ 2911.193404] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0003ff254480
-[ 2911.194259] Call trace:
-[ 2911.194626]  tracing_map_sort_entries+0x3e0/0x408
-[ 2911.195220]  hist_show+0x124/0x800
-[ 2911.195692]  seq_read_iter+0x1d4/0x4e8
-[ 2911.196193]  seq_read+0xe8/0x138
-[ 2911.196638]  vfs_read+0xc8/0x300
-[ 2911.197078]  ksys_read+0x70/0x108
-[ 2911.197534]  __arm64_sys_read+0x24/0x38
-[ 2911.198046]  invoke_syscall+0x78/0x108
-[ 2911.198553]  el0_svc_common.constprop.0+0xd0/0xf8
-[ 2911.199157]  do_el0_svc+0x28/0x40
-[ 2911.199613]  el0_svc+0x40/0x178
-[ 2911.200048]  el0t_64_sync_handler+0x13c/0x158
-[ 2911.200621]  el0t_64_sync+0x1a8/0x1b0
-[ 2911.201115] ---[ end trace 0000000000000000 ]---
+These two parameters will be used by the following patches to fix the
+potential use-after-free problem for map-in-map.
 
-The problem appears to be caused by CPU reordering of writes issued from
-__tracing_map_insert().
-
-The check for the presence of an element with a given key in this
-function is:
-
- val = READ_ONCE(entry->val);
- if (val && keys_match(key, val->key, map->key_size)) ...
-
-The write of a new entry is:
-
- elt = get_free_elt(map);
- memcpy(elt->key, key, map->key_size);
- entry->val = elt;
-
-The "memcpy(elt->key, key, map->key_size);" and "entry->val = elt;"
-stores may become visible in the reversed order on another CPU. This
-second CPU might then incorrectly determine that a new key doesn't match
-an already present val->key and subsequently insert a new element,
-resulting in a duplicate.
-
-Fix the problem by adding a write barrier between
-"memcpy(elt->key, key, map->key_size);" and "entry->val = elt;", and for
-good measure, also use WRITE_ONCE(entry->val, elt) for publishing the
-element. The sequence pairs with the mentioned "READ_ONCE(entry->val);"
-and the "val->key" check which has an address dependency.
-
-The barrier is placed on a path executed when adding an element for
-a new key. Subsequent updates targeting the same key remain unaffected.
-
->From the user's perspective, the issue was introduced by commit
-c193707dde77 ("tracing: Remove code which merges duplicates"), which
-followed commit cbf4100efb8f ("tracing: Add support to detect and avoid
-duplicates"). The previous code operated differently; it inherently
-expected potential races which result in duplicates but merged them
-later when they occurred.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240122150928.27725-1-petr.pavlu@suse.com
-
-Fixes: c193707dde77 ("tracing: Remove code which merges duplicates")
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Acked-by: Tom Zanussi <tom.zanussi@linux.intel.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/r/20231204140425.1480317-3-houtao@huaweicloud.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/tracing_map.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ include/linux/bpf.h     |  6 +++++-
+ kernel/bpf/arraymap.c   | 12 +++++++-----
+ kernel/bpf/hashtab.c    |  6 +++---
+ kernel/bpf/map_in_map.c |  2 +-
+ kernel/bpf/map_in_map.h |  2 +-
+ 5 files changed, 17 insertions(+), 11 deletions(-)
 
-diff --git a/kernel/trace/tracing_map.c b/kernel/trace/tracing_map.c
-index 51a9d1185033..d47641f9740b 100644
---- a/kernel/trace/tracing_map.c
-+++ b/kernel/trace/tracing_map.c
-@@ -574,7 +574,12 @@ __tracing_map_insert(struct tracing_map *map, void *key, bool lookup_only)
- 				}
+diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+index 00c615fc8ec3..48f3cc3bafea 100644
+--- a/include/linux/bpf.h
++++ b/include/linux/bpf.h
+@@ -91,7 +91,11 @@ struct bpf_map_ops {
+ 	/* funcs called by prog_array and perf_event_array map */
+ 	void *(*map_fd_get_ptr)(struct bpf_map *map, struct file *map_file,
+ 				int fd);
+-	void (*map_fd_put_ptr)(void *ptr);
++	/* If need_defer is true, the implementation should guarantee that
++	 * the to-be-put element is still alive before the bpf program, which
++	 * may manipulate it, exists.
++	 */
++	void (*map_fd_put_ptr)(struct bpf_map *map, void *ptr, bool need_defer);
+ 	int (*map_gen_lookup)(struct bpf_map *map, struct bpf_insn *insn_buf);
+ 	u32 (*map_fd_sys_lookup_elem)(void *ptr);
+ 	void (*map_seq_show_elem)(struct bpf_map *map, void *key,
+diff --git a/kernel/bpf/arraymap.c b/kernel/bpf/arraymap.c
+index 23ffb8f0b5d7..c76870bfd816 100644
+--- a/kernel/bpf/arraymap.c
++++ b/kernel/bpf/arraymap.c
+@@ -811,7 +811,7 @@ int bpf_fd_array_map_update_elem(struct bpf_map *map, struct file *map_file,
+ 	}
  
- 				memcpy(elt->key, key, map->key_size);
--				entry->val = elt;
-+				/*
-+				 * Ensure the initialization is visible and
-+				 * publish the elt.
-+				 */
-+				smp_wmb();
-+				WRITE_ONCE(entry->val, elt);
- 				atomic64_inc(&map->hits);
+ 	if (old_ptr)
+-		map->ops->map_fd_put_ptr(old_ptr);
++		map->ops->map_fd_put_ptr(map, old_ptr, true);
+ 	return 0;
+ }
  
- 				return entry->val;
+@@ -834,7 +834,7 @@ static int fd_array_map_delete_elem(struct bpf_map *map, void *key)
+ 	}
+ 
+ 	if (old_ptr) {
+-		map->ops->map_fd_put_ptr(old_ptr);
++		map->ops->map_fd_put_ptr(map, old_ptr, true);
+ 		return 0;
+ 	} else {
+ 		return -ENOENT;
+@@ -858,8 +858,9 @@ static void *prog_fd_array_get_ptr(struct bpf_map *map,
+ 	return prog;
+ }
+ 
+-static void prog_fd_array_put_ptr(void *ptr)
++static void prog_fd_array_put_ptr(struct bpf_map *map, void *ptr, bool need_defer)
+ {
++	/* bpf_prog is freed after one RCU or tasks trace grace period */
+ 	bpf_prog_put(ptr);
+ }
+ 
+@@ -1148,8 +1149,9 @@ static void *perf_event_fd_array_get_ptr(struct bpf_map *map,
+ 	return ee;
+ }
+ 
+-static void perf_event_fd_array_put_ptr(void *ptr)
++static void perf_event_fd_array_put_ptr(struct bpf_map *map, void *ptr, bool need_defer)
+ {
++	/* bpf_perf_event is freed after one RCU grace period */
+ 	bpf_event_entry_free_rcu(ptr);
+ }
+ 
+@@ -1204,7 +1206,7 @@ static void *cgroup_fd_array_get_ptr(struct bpf_map *map,
+ 	return cgroup_get_from_fd(fd);
+ }
+ 
+-static void cgroup_fd_array_put_ptr(void *ptr)
++static void cgroup_fd_array_put_ptr(struct bpf_map *map, void *ptr, bool need_defer)
+ {
+ 	/* cgroup_put free cgrp after a rcu grace period */
+ 	cgroup_put(ptr);
+diff --git a/kernel/bpf/hashtab.c b/kernel/bpf/hashtab.c
+index a63c68f5945c..28b43642c059 100644
+--- a/kernel/bpf/hashtab.c
++++ b/kernel/bpf/hashtab.c
+@@ -857,7 +857,7 @@ static void htab_put_fd_value(struct bpf_htab *htab, struct htab_elem *l)
+ 
+ 	if (map->ops->map_fd_put_ptr) {
+ 		ptr = fd_htab_map_get_ptr(map, l);
+-		map->ops->map_fd_put_ptr(ptr);
++		map->ops->map_fd_put_ptr(map, ptr, true);
+ 	}
+ }
+ 
+@@ -2330,7 +2330,7 @@ static void fd_htab_map_free(struct bpf_map *map)
+ 		hlist_nulls_for_each_entry_safe(l, n, head, hash_node) {
+ 			void *ptr = fd_htab_map_get_ptr(map, l);
+ 
+-			map->ops->map_fd_put_ptr(ptr);
++			map->ops->map_fd_put_ptr(map, ptr, false);
+ 		}
+ 	}
+ 
+@@ -2371,7 +2371,7 @@ int bpf_fd_htab_map_update_elem(struct bpf_map *map, struct file *map_file,
+ 
+ 	ret = htab_map_update_elem(map, key, &ptr, map_flags);
+ 	if (ret)
+-		map->ops->map_fd_put_ptr(ptr);
++		map->ops->map_fd_put_ptr(map, ptr, false);
+ 
+ 	return ret;
+ }
+diff --git a/kernel/bpf/map_in_map.c b/kernel/bpf/map_in_map.c
+index 5cd8f5277279..af0f15db1bf9 100644
+--- a/kernel/bpf/map_in_map.c
++++ b/kernel/bpf/map_in_map.c
+@@ -108,7 +108,7 @@ void *bpf_map_fd_get_ptr(struct bpf_map *map,
+ 	return inner_map;
+ }
+ 
+-void bpf_map_fd_put_ptr(void *ptr)
++void bpf_map_fd_put_ptr(struct bpf_map *map, void *ptr, bool need_defer)
+ {
+ 	/* ptr->ops->map_free() has to go through one
+ 	 * rcu grace period by itself.
+diff --git a/kernel/bpf/map_in_map.h b/kernel/bpf/map_in_map.h
+index bcb7534afb3c..7d61602354de 100644
+--- a/kernel/bpf/map_in_map.h
++++ b/kernel/bpf/map_in_map.h
+@@ -13,7 +13,7 @@ struct bpf_map *bpf_map_meta_alloc(int inner_map_ufd);
+ void bpf_map_meta_free(struct bpf_map *map_meta);
+ void *bpf_map_fd_get_ptr(struct bpf_map *map, struct file *map_file,
+ 			 int ufd);
+-void bpf_map_fd_put_ptr(void *ptr);
++void bpf_map_fd_put_ptr(struct bpf_map *map, void *ptr, bool need_defer);
+ u32 bpf_map_fd_sys_lookup_elem(void *ptr);
+ 
+ #endif
 -- 
 2.43.0
 
