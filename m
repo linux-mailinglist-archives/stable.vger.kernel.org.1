@@ -1,180 +1,173 @@
-Return-Path: <stable+bounces-21785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F86285D23F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 09:11:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0131E85D264
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 09:19:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D7411F24E7F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 08:11:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94E981F24BC6
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 08:19:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D8F3BB2F;
-	Wed, 21 Feb 2024 08:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 503BE3BB46;
+	Wed, 21 Feb 2024 08:19:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ciEeTiS5"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A79A3B78D;
-	Wed, 21 Feb 2024 08:11:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50B723BB21
+	for <stable@vger.kernel.org>; Wed, 21 Feb 2024 08:19:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708503106; cv=none; b=AFbgVSTOv7glz1Zao6s6au5FzpTIaCiqEkJpZmOxNxN/v6H/4uloTU1AWZImgnaHIQR9NhLLncyFr8kn5zv9U+t0L0zliJApjqqIiTiaIdNkYKnMY499HWg/XjGg5A3g2c7ww/s8/qDijsr7aZM3BOpEFH+F50pxzE96vFKnJNc=
+	t=1708503581; cv=none; b=N/wezVEhIVo+6Igd34FXl7Dwhc1/8ycjSNmmbVpDZ1EK3BcY7hlklCPyx6eYhktIwM0RVmH26kby93r5VQkuh13AYCXHHaD4kax/gunZWlPW2wDD9Ed11WXTxXRGTZX2+CRrAvF/hH22Fv84Sl60R92SPb4MGFs4p7i9nl49NvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708503106; c=relaxed/simple;
-	bh=+2+yAJpVza7viz8w2DkLR7wHx5qlz5d/JWVKzbzMLbQ=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RzDpM62x27hkspPPn1/iriHDBUb3p7k4KbYvGisfS0d8kZRrUB5NMlWsIGatJjMjc0osLYhOSdSfTr4X2PIlbdRk9nssijDZKm8K8ZpgAQV+nG4x0rpUfhhWaCFmvzJTo0/ipNMhkrwWxUCLwGZOhV1gxIHsIi4HFaXamBUUmgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.105])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4Tfpq72rMSzNlm7;
-	Wed, 21 Feb 2024 16:10:11 +0800 (CST)
-Received: from dggpemd100002.china.huawei.com (unknown [7.185.36.164])
-	by mail.maildlp.com (Postfix) with ESMTPS id 55334140114;
-	Wed, 21 Feb 2024 16:11:34 +0800 (CST)
-Received: from huawei.com (10.67.174.33) by dggpemd100002.china.huawei.com
- (7.185.36.164) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.1258.28; Wed, 21 Feb
- 2024 16:11:34 +0800
-From: "GONG, Ruiqi" <gongruiqi1@huawei.com>
-To: <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, Johannes Weiner
-	<hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, Roman Gushchin
-	<roman.gushchin@linux.dev>, Shakeel Butt <shakeelb@google.com>, Muchun Song
-	<muchun.song@linux.dev>
-CC: <cgroups@vger.kernel.org>, <linux-mm@kvack.org>, Wang Weiyang
-	<wangweiyang2@huawei.com>, Xiu Jianfeng <xiujianfeng@huawei.com>
-Subject: [PATCH stable] memcg: add refcnt for pcpu stock to avoid UAF problem in drain_all_stock()
-Date: Wed, 21 Feb 2024 16:18:01 +0800
-Message-ID: <20240221081801.69764-1-gongruiqi1@huawei.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1708503581; c=relaxed/simple;
+	bh=wptzrfEDZ7uY8tFslAuxaFNxpRuvhwWRUzq5HlNzcp0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CL5TIvYXSI113382Smx2o9EE1RiI80pSS/LMCdnePqLkPGvwSVip0xnfzrfdQn3zGDXyluY79sqCjdIDZr9tyb1l9vhZWxlk7PUOq8PgTcUdCv92vBO6YPgiZJzM5pXyAVKftniIVYK7omSwp/eBcSKJ0CuATG6oOVwBaSy0f2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ciEeTiS5; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708503580; x=1740039580;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=wptzrfEDZ7uY8tFslAuxaFNxpRuvhwWRUzq5HlNzcp0=;
+  b=ciEeTiS5R/RGtqwEkK/dqf6Up0XntiArmaMikbkFBxn+bR+Idsa5UBdp
+   R9DG6fFXCj74SpEaz8Z1PDAozTJng03x9A7Aq4rcfvYb3XwESqb//JdEV
+   jmzxmEmocvicfA08npCjg+ksezalTH7ap+HcN9ugic84868d1uwJkgBwN
+   0/95pphGA26ygPjDSwuWvOmIwGwhH3PIC51un+FQl+K6lp2iKWFBxH+AB
+   NgsERaoz9UnlGsOcTc2oDzs4wR34XQMs2KZpMgYDw0ltMH6cVIajfsO/p
+   +qbKxzFp3NvRIlln5/gYPlLeVdZfR6yKF9/logT6Ho3O5ufeNSuY0GYZ9
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="6466098"
+X-IronPort-AV: E=Sophos;i="6.06,175,1705392000"; 
+   d="scan'208";a="6466098"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2024 00:19:39 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,175,1705392000"; 
+   d="scan'208";a="9620605"
+Received: from jdoyle1x-mobl2.ger.corp.intel.com (HELO [10.213.204.109]) ([10.213.204.109])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2024 00:19:36 -0800
+Message-ID: <a0f66a4d-12f9-4852-a1bb-a6d27538b436@linux.intel.com>
+Date: Wed, 21 Feb 2024 08:19:34 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggpemd100002.china.huawei.com (7.185.36.164)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] drm/i915/gt: Enable only one CCS for compute
+ workload
+Content-Language: en-US
+To: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: intel-gfx <intel-gfx@lists.freedesktop.org>,
+ dri-devel <dri-devel@lists.freedesktop.org>,
+ Chris Wilson <chris.p.wilson@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Matt Roper <matthew.d.roper@intel.com>,
+ John Harrison <John.C.Harrison@intel.com>, stable@vger.kernel.org,
+ Andi Shyti <andi.shyti@kernel.org>
+References: <20240220143526.259109-1-andi.shyti@linux.intel.com>
+ <20240220143526.259109-3-andi.shyti@linux.intel.com>
+ <af007641-9705-4259-b29c-3cb78f67fc64@linux.intel.com>
+ <ZdVAd3NxUNBZofts@ashyti-mobl2.lan>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Organization: Intel Corporation UK Plc
+In-Reply-To: <ZdVAd3NxUNBZofts@ashyti-mobl2.lan>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-commit 1a3e1f40962c445b997151a542314f3c6097f8c3 upstream.
 
-There was a kernel panic happened on an in-house environment running
-3.10, and the same problem was reproduced on 4.19:
+On 21/02/2024 00:14, Andi Shyti wrote:
+> Hi Tvrtko,
+> 
+> On Tue, Feb 20, 2024 at 02:48:31PM +0000, Tvrtko Ursulin wrote:
+>> On 20/02/2024 14:35, Andi Shyti wrote:
+>>> Enable only one CCS engine by default with all the compute sices
+>>
+>> slices
+> 
+> Thanks!
+> 
+>>> diff --git a/drivers/gpu/drm/i915/gt/intel_engine_user.c b/drivers/gpu/drm/i915/gt/intel_engine_user.c
+>>> index 833987015b8b..7041acc77810 100644
+>>> --- a/drivers/gpu/drm/i915/gt/intel_engine_user.c
+>>> +++ b/drivers/gpu/drm/i915/gt/intel_engine_user.c
+>>> @@ -243,6 +243,15 @@ void intel_engines_driver_register(struct drm_i915_private *i915)
+>>>    		if (engine->uabi_class == I915_NO_UABI_CLASS)
+>>>    			continue;
+>>> +		/*
+>>> +		 * Do not list and do not count CCS engines other than the first
+>>> +		 */
+>>> +		if (engine->uabi_class == I915_ENGINE_CLASS_COMPUTE &&
+>>> +		    engine->uabi_instance > 0) {
+>>> +			i915->engine_uabi_class_count[engine->uabi_class]--;
+>>> +			continue;
+>>> +		}
+>>
+>> It's a bit ugly to decrement after increment, instead of somehow
+>> restructuring the loop to satisfy both cases more elegantly.
+> 
+> yes, agree, indeed I had a hard time here to accept this change
+> myself.
+> 
+> But moving the check above where the counter was incremented it
+> would have been much uglier.
+> 
+> This check looks ugly everywhere you place it :-)
 
-general protection fault: 0000 [#1] SMP PTI
-CPU: 1 PID: 2085 Comm: bash Kdump: loaded Tainted: G             L    4.19.90+ #7
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.15.0-0-g2dd4b9b3f840-prebuilt.qemu.org 04/01/2014
-RIP: 0010 drain_all_stock+0xad/0x140
-Code: 00 00 4d 85 ff 74 2c 45 85 c9 74 27 4d 39 fc 74 42 41 80 bc 24 28 04 00 00 00 74 17 49 8b 04 24 49 8b 17 48 8b 88 90 02 00 00 <48> 39 8a 90 02 00 00 74 02 eb 86 48 63 88 3c 01 00 00 39 8a 3c 01
-RSP: 0018:ffffa7efc5813d70 EFLAGS: 00010202
-RAX: ffff8cb185548800 RBX: ffff8cb89f420160 RCX: ffff8cb1867b6000
-RDX: babababababababa RSI: 0000000000000001 RDI: 0000000000231876
-RBP: 0000000000000000 R08: 0000000000000415 R09: 0000000000000002
-R10: 0000000000000000 R11: 0000000000000001 R12: ffff8cb186f89040
-R13: 0000000000020160 R14: 0000000000000001 R15: ffff8cb186b27040
-FS:  00007f4a308d3740(0000) GS:ffff8cb89f440000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ffe4d634a68 CR3: 000000010b022000 CR4: 00000000000006e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- mem_cgroup_force_empty_write+0x31/0xb0
- cgroup_file_write+0x60/0x140
- ? __check_object_size+0x136/0x147
- kernfs_fop_write+0x10e/0x190
- __vfs_write+0x37/0x1b0
- ? selinux_file_permission+0xe8/0x130
- ? security_file_permission+0x2e/0xb0
- vfs_write+0xb6/0x1a0
- ksys_write+0x57/0xd0
- do_syscall_64+0x63/0x250
- ? async_page_fault+0x8/0x30
- entry_SYSCALL_64_after_hwframe+0x5c/0xc1
-Modules linked in: ...
+One idea would be to introduce a separate local counter array for 
+name_instance, so not use i915->engine_uabi_class_count[]. First one 
+increments for every engine, second only for the exposed ones. That way 
+feels wouldn't be too ugly.
 
-It is found that in case of stock->nr_pages == 0, the memcg on
-stock->cached could be freed due to its refcnt decreased to 0, which
-made stock->cached become a dangling pointer. It could cause a UAF
-problem in drain_all_stock() in the following concurrent scenario. Note
-that drain_all_stock() doesn't disable irq but only preemption.
+> In any case, I'm working on a patch that is splitting this
+> function in two parts and there is some refactoring happening
+> here (for the first initialization and the dynamic update).
+> 
+> Please let me know if it's OK with you or you want me to fix it
+> in this run.
+> 
+>> And I wonder if
+>> internally (in dmesg when engine name is logged) we don't end up with ccs0
+>> ccs0 ccs0 ccs0.. for all instances.
+> 
+> I don't see this. Even in sysfs we see only one ccs. Where is it?
 
-CPU1                             CPU2
-==============================================================================
-stock->cached = memcgA (freed)
-                                 drain_all_stock(memcgB)
-                                  rcu_read_lock()
-                                  memcg = CPU1's stock->cached (memcgA)
-                                  (interrupted)
-refill_stock(memcgC)
- drain_stock(memcgA)
- stock->cached = memcgC
- stock->nr_pages += xxx (> 0)
-                                  stock->nr_pages > 0
-                                  mem_cgroup_is_descendant(memcgA, memcgB) [UAF]
-                                  rcu_read_unlock()
+When you run this patch on something with two or more ccs-es, the 
+"renamed ccs... to ccs.." debug logs do not all log the new name as ccs0?
 
-This problem is, unintenionally, fixed at 5.9, where commit 1a3e1f40962c
-("mm: memcontrol: decouple reference counting from page accounting")
-adds memcg refcnt for stock. Therefore affected LTS versions include
-4.19 and 5.4.
+Regards,
 
-For 4.19, memcg's css offline process doesn't call drain_all_stock(). so
-it's easier for the released memcg to be left on the stock. For 5.4,
-although mem_cgroup_css_offline() does call drain_all_stock(), but the
-flushing could be skipped when stock->nr_pages happens to be 0, and
-besides the async draining could be delayed and take place after the UAF
-problem has happened.
+Tvrtko
 
-Fix this problem by adding (and decreasing) memcg's refcnt when memcg is
-put onto (and removed from) stock, just like how commit 1a3e1f40962c
-("mm: memcontrol: decouple reference counting from page accounting")
-does. After all, "being on the stock" is a kind of reference with
-regards to memcg. As such, it's guaranteed that a css on stock would not
-be freed.
-
-Cc: stable@vger.kernel.org      # 4.19 5.4
-Fixes: cdec2e4265df ("memcg: coalesce charging via percpu storage")
-Signed-off-by: GONG, Ruiqi <gongruiqi1@huawei.com>
----
- mm/memcontrol.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 5a366cf79821..8c04296df1c7 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -2015,6 +2015,9 @@ static void drain_stock(struct memcg_stock_pcp *stock)
- {
- 	struct mem_cgroup *old = stock->cached;
- 
-+	if (!old)
-+		return;
-+
- 	if (stock->nr_pages) {
- 		page_counter_uncharge(&old->memory, stock->nr_pages);
- 		if (do_memsw_account())
-@@ -2022,6 +2025,8 @@ static void drain_stock(struct memcg_stock_pcp *stock)
- 		css_put_many(&old->css, stock->nr_pages);
- 		stock->nr_pages = 0;
- 	}
-+
-+	css_put(&old->css);
- 	stock->cached = NULL;
- }
- 
-@@ -2057,6 +2062,7 @@ static void refill_stock(struct mem_cgroup *memcg, unsigned int nr_pages)
- 	stock = this_cpu_ptr(&memcg_stock);
- 	if (stock->cached != memcg) { /* reset if necessary */
- 		drain_stock(stock);
-+		css_get(&memcg->css);
- 		stock->cached = memcg;
- 	}
- 	stock->nr_pages += nr_pages;
--- 
-2.25.1
-
+> 
+>>> +
+>>>    		rb_link_node(&engine->uabi_node, prev, p);
+>>>    		rb_insert_color(&engine->uabi_node, &i915->uabi_engines);
+> 
+> [...]
+> 
+>>> diff --git a/drivers/gpu/drm/i915/i915_query.c b/drivers/gpu/drm/i915/i915_query.c
+>>> index 3baa2f54a86e..d5a5143971f5 100644
+>>> --- a/drivers/gpu/drm/i915/i915_query.c
+>>> +++ b/drivers/gpu/drm/i915/i915_query.c
+>>> @@ -124,6 +124,7 @@ static int query_geometry_subslices(struct drm_i915_private *i915,
+>>>    	return fill_topology_info(sseu, query_item, sseu->geometry_subslice_mask);
+>>>    }
+>>> +
+>>
+>> Zap please.
+> 
+> yes... yes... I noticed it after sending the patch :-)
+> 
+> Thanks,
+> Andi
 
