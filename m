@@ -1,110 +1,118 @@
-Return-Path: <stable+bounces-23195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19B3385E16B
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 16:38:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C730B85E181
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 16:40:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C88C2286F45
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:38:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 67A2EB225D5
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:40:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 744788063D;
-	Wed, 21 Feb 2024 15:38:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D151E80BE3;
+	Wed, 21 Feb 2024 15:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="EnMRUP10"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IDY6k2Px"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
+Received: from mail-io1-f44.google.com (mail-io1-f44.google.com [209.85.166.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF6A7FBC8
-	for <stable@vger.kernel.org>; Wed, 21 Feb 2024 15:38:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8F180629
+	for <stable@vger.kernel.org>; Wed, 21 Feb 2024 15:39:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708529886; cv=none; b=J3nPER30JVXSsZ3+2ECHzYhkCsi87KyRqBruXZs4HlhvZTLUmWCUr99FBXuJZYUJimhmaT2EYv/hR9OkR7UD7QAE2tZp+eE8RvJVE2YQPpviUTyhP3oXL+hIiNqqH4bFnAlrclhGRK8T3s6yPLlRdIYGcoPEXmuCTL+VZNw1NM8=
+	t=1708529995; cv=none; b=OtQGYlC/uO28xEkMXWI2Nx56zXwtMCXdfmaPVZ9X8h7q66xPSwZ/aEdTYWY0hdhoKExntJu63NXuHzG45PnVrG+R/XEPCQHpr9JQk7Yo5WqVs9VZPQOkV67vxzatSNEqkJ/1o+941DhVARdZJMG1WNIpvKAuEtQ1p7IBTKHmGiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708529886; c=relaxed/simple;
-	bh=grCOSi8XLFLNaMwkvCBLU81kgrXCuEK7+6nsE0tIJwM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mLZl/hFbQDvbsDHkapyZFrMt5hTmWrXLgGDJWHVhbyEh2vauBQx1Gh7eZiDh7hvADukJASipyGCSw1UhOaBMDyAh/KmIYxNzQeSptvX/3EeCDNBgmiLeLWsMBXSomkqgpt1kod8tFWZ5PhbUysXMuzL/7NVrUvF6BwkLb45D9AM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=EnMRUP10; arc=none smtp.client-ip=209.85.161.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-59f7d59d3f1so355582eaf.1
-        for <stable@vger.kernel.org>; Wed, 21 Feb 2024 07:38:04 -0800 (PST)
+	s=arc-20240116; t=1708529995; c=relaxed/simple;
+	bh=/hWKAeRud0kuMn433Dl2jo5S7vqk594oIcvCbmHWLfk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kY6XzVIkV4eOv4TZdsR/ONyBlqNqVdGacjt3N6b9mg2JyBEtHfr7SWQJvIt1LTFDyjDPmziJtdMcmelbk/Ne7HIHahdTCv8Q8mJ+pnFNY2ucqRpHCziRqiHF/IpapgtFf3Ps2GvrefrI/yyRDm1i2aTXj5/XU0Ba0eYe5EVu5Hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IDY6k2Px; arc=none smtp.client-ip=209.85.166.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-io1-f44.google.com with SMTP id ca18e2360f4ac-7bff8f21b74so60159339f.0
+        for <stable@vger.kernel.org>; Wed, 21 Feb 2024 07:39:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1708529884; x=1709134684; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NEHN5AeQw8GvEzpiKivhi/yJeQapwymDAxDl0UXRrHY=;
-        b=EnMRUP10tj4gX39sl5/sdn49FmzXvoX2UP0BbEP0GMvc9LCGsBlilOaTp0aoKcujqZ
-         FqLNxXj/GmXhlUh13/wNZpsFCXCyp8aNCuUE6GBE2In26ltDatXBYJ7AVOa5F9ZOA1SU
-         jCVYztHu6ij7bLLNEsylbmk1BgEwtSpr7J9UE=
+        d=linuxfoundation.org; s=google; t=1708529992; x=1709134792; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4ihCoGD8YoiAtANW7gUYHEwJtMSG4/0XxP+tNu2DuZY=;
+        b=IDY6k2PxHa7FiUpYLmI8mR2r7n86TCwNKBNB4unNmYINkg2j7BtZ5KEbezZETdXXjN
+         KdxJi7LaHFZRT9WfTpfngO1Hch3JLKj6s52pOKyKa4DuUjRB8MBnbul7VeRM5kvfmUJ/
+         Fi2lKTOLTn99ttTKFYhS+3sfHUehcGL7QIAI0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708529884; x=1709134684;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NEHN5AeQw8GvEzpiKivhi/yJeQapwymDAxDl0UXRrHY=;
-        b=Ne3jqAQOfeJq5dWnTpXAZiwvUVwkjwMQEi2aEGm/fM3YGfwR3CpID50yYT9hQCmU5E
-         QA2Qi9sQSMDxU+14PtcqmtG3Y9CV0rXRsXGYtnfKxN7XbjVv/Va5bjluQrjwXS7NpOk3
-         iUBSOrf4GUmqwNuMnuoU0uiVeWVqbQnAmYdIYnLym7uqRpQTT0CqS5W5qEuiGTjMdIHb
-         cECcI+fw1tjdgATaDZ26Tbc7C93n3AayD8RANOe5hjCWbc+R4GpzVeLVtjvxG4Ybr3zc
-         6uzCq5E0GXBwbSYAGIMWFWK1Dd5Xbva7nckeKnUws84BmnG8C4EHSqWNfOzdBqGgCalH
-         aOvA==
-X-Forwarded-Encrypted: i=1; AJvYcCUIzMyXaSPnk8F+j/SCE7KXin36y2bqcUoT39zqCcJi3smfAfOrLm0Ee8tAh9Q8/OU/naLeO86N2oVYT1f8oL+s6CteozLn
-X-Gm-Message-State: AOJu0YxTKK3lRMQjI4e8eEQRiNxIv7J/A5xHET79dRr93n4kZ/xUkbiC
-	acXK8SjqtoNwuWh+GAqPscO5E6AngLGB//jjFxn4d2z94mR2cCx/37EDOgVQkIHBETZ5uwal+E0
-	yx6K8AJq20/FO20ERw3qIrw3ujne5t8DY0kq/
-X-Google-Smtp-Source: AGHT+IEChvW8BSTbCSiTLMx41zznTkN+GvBMzZXbANOmOD7tZt6WMkfBtn5etm2aIN7Reqjdjh6UJ1h4VL7WfSOjNEc=
-X-Received: by 2002:a4a:b78b:0:b0:59f:8466:5748 with SMTP id
- a11-20020a4ab78b000000b0059f84665748mr16124819oop.0.1708529883981; Wed, 21
- Feb 2024 07:38:03 -0800 (PST)
+        d=1e100.net; s=20230601; t=1708529992; x=1709134792;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4ihCoGD8YoiAtANW7gUYHEwJtMSG4/0XxP+tNu2DuZY=;
+        b=l4VLg56rUqFKrnOIAF610BmJg1ONihTZYXbhjE5JEMNR5mNWeJEgre36PhQsiJ0BDX
+         Y4DFwo2qjSC3EE7nU9/8NVmHk4MoScdDad3jbzwFQWT2QhyhkckdzTghxxP8TQ/LFKO2
+         85v8mASttQlUDTJ+S1GlXfzBAhHUofsLfhG1h2GwVqW4iSXCE6kPjFiYKUTKhDt6aSKq
+         ycgjR8YoHy245obUfR9+8ljWoJ8rdF2GZAWicundJGFRP0lj8nj78x8pn2jjM8QhXdGb
+         g1DhPHfXG+Wskb0DAMwgc6TfxdD+PBTJzP8zpxpBsDE3AlxOjNUqaM0Sk/y3HRRESdnY
+         Ujgg==
+X-Forwarded-Encrypted: i=1; AJvYcCWaZppceBJF6wzYb/zEWaqboTqzxV3hwf5I09n/5JUDymn+LrODW9YsKEj+pEy3sIuJSyb2A/5i9yHvOVUGZR0O/OBx6QPR
+X-Gm-Message-State: AOJu0YyUmCn2qxEIPbaL0Np7vKn/jckFudtoPA3AC6bkD+TsCxiWhhzW
+	3B0X6pGmW+BxdHYyf86t5OMPi6II9kBzqZhWKwJcKevibQhdVZKw2FqPDmp1QoU=
+X-Google-Smtp-Source: AGHT+IE40mVcFx9SdHZh/rfdZg9KERS45XtNgRegwEDd/xTtiSrXpdBzPTYo06768NFczi36UWEffw==
+X-Received: by 2002:a05:6602:f15:b0:7c7:28f7:cc81 with SMTP id hl21-20020a0566020f1500b007c728f7cc81mr12863789iob.1.1708529992670;
+        Wed, 21 Feb 2024 07:39:52 -0800 (PST)
+Received: from [192.168.1.128] ([38.175.170.29])
+        by smtp.gmail.com with ESMTPSA id et19-20020a0566382a1300b004741e00a5d6sm2159096jab.63.2024.02.21.07.39.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 21 Feb 2024 07:39:52 -0800 (PST)
+Message-ID: <005a3dba-4092-44df-9544-7366f267de29@linuxfoundation.org>
+Date: Wed, 21 Feb 2024 08:39:51 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240214170720.v1.1.Ic3de2566a7fd3de8501b2f18afa9f94eadb2df0a@changeid>
- <87jzn0ofdb.wl-tiwai@suse.de> <235ab5aa-90a4-4dd7-b2c6-70469605bcfb@suse.cz>
- <CAG-rBihs_xMKb3wrMO1+-+p4fowP9oy1pa_OTkfxBzPUVOZF+g@mail.gmail.com> <87le7e6um3.wl-tiwai@suse.de>
-In-Reply-To: <87le7e6um3.wl-tiwai@suse.de>
-From: Sven van Ashbrook <svenva@chromium.org>
-Date: Wed, 21 Feb 2024 10:37:53 -0500
-Message-ID: <CAG-rBigASZpsxEpjUnCWYpfmjuyJTQ44AXBr90fYbQWvit_YXA@mail.gmail.com>
-Subject: Re: Stall at page allocations with __GFP_RETRY_MAYFAIL (Re: [PATCH
- v1] ALSA: memalloc: Fix indefinite hang in non-iommu case)
-To: Takashi Iwai <tiwai@suse.de>
-Cc: Vlastimil Babka <vbabka@suse.cz>, Karthikeyan Ramasubramanian <kramasub@chromium.org>, 
-	LKML <linux-kernel@vger.kernel.org>, Brian Geffon <bgeffon@google.com>, 
-	stable@vger.kernel.org, Curtis Malainey <cujomalainey@chromium.org>, 
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, linux-sound@vger.kernel.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1 000/197] 6.1.79-rc1 review
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20240220204841.073267068@linuxfoundation.org>
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20240220204841.073267068@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Takashi,
+On 2/20/24 13:49, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.79 release.
+> There are 197 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 22 Feb 2024 20:48:08 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.79-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+> 
 
-On Wed, Feb 21, 2024 at 4:21=E2=80=AFAM Takashi Iwai <tiwai@suse.de> wrote:
->
-> Both look like the code path via async PM resume.
-> Were both from the runtime PM resume? Or the system resume?
+Compiled and booted on my test system. No dmesg regressions.
 
-The large firmware allocation that triggers the stall happens in
-runtime resume.
+Tested-by: Shuah Khan <skhan@linuxfoundation.org>
 
-This means runtime resume and system resume are affected.
-
-Due to the way runtime PM works, the system suspend path is also affected.
-Because system suspend first wakes up any runtime suspended devices,
-before executing their system suspend callback.
-
-So we get:
-system active, SOF runtime suspended (audio not active)
-  -> system suspend request
-    -> calls SOF runtime resume callback (stall happens here)
-    -> calls SOF system suspend callback
+thanks,
+-- Shuah
 
