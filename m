@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-22094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DBA585DA4B
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:30:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17B0385DA4F
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:30:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD0B1B27336
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:30:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97FD21F240D3
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:30:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D20A79DAB;
-	Wed, 21 Feb 2024 13:26:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5261580627;
+	Wed, 21 Feb 2024 13:26:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0uHHL1QG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cwTOFoEZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE65A8060E;
-	Wed, 21 Feb 2024 13:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F2E78061A;
+	Wed, 21 Feb 2024 13:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522002; cv=none; b=YuiOOROicemZYHCej8HW253fMHUVJg3Y2mkgfkAQ36ol+FIeDnGs/SJjOlxFuZiv1ey1sI2iPFv5sOl8hTAtNNgLjFBZJeM4ZvZwN4qDCiUFY3aEvSWX1zsOsh8sLXm8fnIEBYE6Uf4Bs03h8H24GZfT7vvKF1gcVZU+tXdL+B8=
+	t=1708522010; cv=none; b=D9Zky5d5oeZXswMO3ZyXFgwy4+6RkCXxiePd2bP9rrqcU8EKwXESMjDUwe2Nlv1dKzI3es0oSwxDcCnjFTx/niG1Q7RKv50wz350FSKuvp1TEC4PHmkx8aN9unoS5Pw7+pcnT1NU3SELUViy4C/XCmy0lhbel+7ZiP/hE+Csx/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522002; c=relaxed/simple;
-	bh=1/8wWtyJkD4WFwGDpSDr7iU9gtjn7CiDPy969ugB0Zg=;
+	s=arc-20240116; t=1708522010; c=relaxed/simple;
+	bh=QD7puo81+envmGbBrcX2+QtoFClEDXLSL/0Agyafvi4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lh/FbxOvIujJOWW7Bh1C2OYBigrmepXKWnNmJk/vMXOGLUcJe+lEV/CUxcTODGwKtxH2T4COEBlUd4qvoJOdZhksZNU7HPwDAqqWOv27sc/efciLbZk6h0ndpRgFQEKsUXKvTkJa1fP+ffxAH00DevLarABFXCjYi9Vdjg7C4hM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0uHHL1QG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C1FDC43399;
-	Wed, 21 Feb 2024 13:26:42 +0000 (UTC)
+	 MIME-Version; b=S/6TXneoKPdWDbbcMF03k3WfFMsbXUTENOqBSu65Fxcd/L5/IMjMfGzvH6/Oh1f7l2diNJB2zfVPwk/W39thDiK+8cqJ8R+I043o3rzLdewHVi0/0t1pOn0Y1KNj9K4z//YiYWid65KWscN4/mSZ3bthxTo1CBr3Dtvd0QZ5Ons=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cwTOFoEZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B4E1C43399;
+	Wed, 21 Feb 2024 13:26:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522002;
-	bh=1/8wWtyJkD4WFwGDpSDr7iU9gtjn7CiDPy969ugB0Zg=;
+	s=korg; t=1708522009;
+	bh=QD7puo81+envmGbBrcX2+QtoFClEDXLSL/0Agyafvi4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0uHHL1QGeAvkveTj+/C9OSGi/zcTwB65TWTFOWkP1ckE+wNkhXHPUvyoEtgZhLkib
-	 N66Y16sCZyBuLxKzfVA15nfG0E3OoxbIGTnC4jRo9OSyHC0fmIDGXE5kwAZ5tIYIuD
-	 IL4xiqY4zojxmxk7KjBIMBJVdP6Z3QyMvAiyyeKU=
+	b=cwTOFoEZ7LvBolTFV7qKVrgM/SeEYBYbfDiSB3faG9kWLcrnr028soFkxw3pTh/Vu
+	 LKirqtVD3P15OcpYX3kQhWPT3HHcRAVSVnNfkaFSVjQjhjeoBrPzk4E6xD3kTWnyLy
+	 eAzhJ6PVvA/MbC8PJO+hpL4kB8wmQQKoX9uLwjeA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	Sharath Srinivasan <sharath.srinivasan@oracle.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Tom Zanussi <tom.zanussi@linux.intel.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 051/476] net/rds: Fix UBSAN: array-index-out-of-bounds in rds_cmsg_recv
-Date: Wed, 21 Feb 2024 14:01:42 +0100
-Message-ID: <20240221130009.807029901@linuxfoundation.org>
+Subject: [PATCH 5.15 052/476] tracing: Ensure visibility when inserting an element into tracing_map
+Date: Wed, 21 Feb 2024 14:01:43 +0100
+Message-ID: <20240221130009.848339445@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
 References: <20240221130007.738356493@linuxfoundation.org>
@@ -68,69 +67,127 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sharath Srinivasan <sharath.srinivasan@oracle.com>
+From: Petr Pavlu <petr.pavlu@suse.com>
 
-[ Upstream commit 13e788deb7348cc88df34bed736c3b3b9927ea52 ]
+[ Upstream commit 2b44760609e9eaafc9d234a6883d042fc21132a7 ]
 
-Syzcaller UBSAN crash occurs in rds_cmsg_recv(),
-which reads inc->i_rx_lat_trace[j + 1] with index 4 (3 + 1),
-but with array size of 4 (RDS_RX_MAX_TRACES).
-Here 'j' is assigned from rs->rs_rx_trace[i] and in-turn from
-trace.rx_trace_pos[i] in rds_recv_track_latency(),
-with both arrays sized 3 (RDS_MSG_RX_DGRAM_TRACE_MAX). So fix the
-off-by-one bounds check in rds_recv_track_latency() to prevent
-a potential crash in rds_cmsg_recv().
+Running the following two commands in parallel on a multi-processor
+AArch64 machine can sporadically produce an unexpected warning about
+duplicate histogram entries:
 
-Found by syzcaller:
-=================================================================
-UBSAN: array-index-out-of-bounds in net/rds/recv.c:585:39
-index 4 is out of range for type 'u64 [4]'
-CPU: 1 PID: 8058 Comm: syz-executor228 Not tainted 6.6.0-gd2f51b3516da #1
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
-BIOS 1.15.0-1 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x136/0x150 lib/dump_stack.c:106
- ubsan_epilogue lib/ubsan.c:217 [inline]
- __ubsan_handle_out_of_bounds+0xd5/0x130 lib/ubsan.c:348
- rds_cmsg_recv+0x60d/0x700 net/rds/recv.c:585
- rds_recvmsg+0x3fb/0x1610 net/rds/recv.c:716
- sock_recvmsg_nosec net/socket.c:1044 [inline]
- sock_recvmsg+0xe2/0x160 net/socket.c:1066
- __sys_recvfrom+0x1b6/0x2f0 net/socket.c:2246
- __do_sys_recvfrom net/socket.c:2264 [inline]
- __se_sys_recvfrom net/socket.c:2260 [inline]
- __x64_sys_recvfrom+0xe0/0x1b0 net/socket.c:2260
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x40/0x110 arch/x86/entry/common.c:82
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
-==================================================================
+ $ while true; do
+     echo hist:key=id.syscall:val=hitcount > \
+       /sys/kernel/debug/tracing/events/raw_syscalls/sys_enter/trigger
+     cat /sys/kernel/debug/tracing/events/raw_syscalls/sys_enter/hist
+     sleep 0.001
+   done
+ $ stress-ng --sysbadaddr $(nproc)
 
-Fixes: 3289025aedc0 ("RDS: add receive message trace used by application")
-Reported-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Closes: https://lore.kernel.org/linux-rdma/CALGdzuoVdq-wtQ4Az9iottBqC5cv9ZhcE5q8N7LfYFvkRsOVcw@mail.gmail.com/
-Signed-off-by: Sharath Srinivasan <sharath.srinivasan@oracle.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+The warning looks as follows:
+
+[ 2911.172474] ------------[ cut here ]------------
+[ 2911.173111] Duplicates detected: 1
+[ 2911.173574] WARNING: CPU: 2 PID: 12247 at kernel/trace/tracing_map.c:983 tracing_map_sort_entries+0x3e0/0x408
+[ 2911.174702] Modules linked in: iscsi_ibft(E) iscsi_boot_sysfs(E) rfkill(E) af_packet(E) nls_iso8859_1(E) nls_cp437(E) vfat(E) fat(E) ena(E) tiny_power_button(E) qemu_fw_cfg(E) button(E) fuse(E) efi_pstore(E) ip_tables(E) x_tables(E) xfs(E) libcrc32c(E) aes_ce_blk(E) aes_ce_cipher(E) crct10dif_ce(E) polyval_ce(E) polyval_generic(E) ghash_ce(E) gf128mul(E) sm4_ce_gcm(E) sm4_ce_ccm(E) sm4_ce(E) sm4_ce_cipher(E) sm4(E) sm3_ce(E) sm3(E) sha3_ce(E) sha512_ce(E) sha512_arm64(E) sha2_ce(E) sha256_arm64(E) nvme(E) sha1_ce(E) nvme_core(E) nvme_auth(E) t10_pi(E) sg(E) scsi_mod(E) scsi_common(E) efivarfs(E)
+[ 2911.174738] Unloaded tainted modules: cppc_cpufreq(E):1
+[ 2911.180985] CPU: 2 PID: 12247 Comm: cat Kdump: loaded Tainted: G            E      6.7.0-default #2 1b58bbb22c97e4399dc09f92d309344f69c44a01
+[ 2911.182398] Hardware name: Amazon EC2 c7g.8xlarge/, BIOS 1.0 11/1/2018
+[ 2911.183208] pstate: 61400005 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+[ 2911.184038] pc : tracing_map_sort_entries+0x3e0/0x408
+[ 2911.184667] lr : tracing_map_sort_entries+0x3e0/0x408
+[ 2911.185310] sp : ffff8000a1513900
+[ 2911.185750] x29: ffff8000a1513900 x28: ffff0003f272fe80 x27: 0000000000000001
+[ 2911.186600] x26: ffff0003f272fe80 x25: 0000000000000030 x24: 0000000000000008
+[ 2911.187458] x23: ffff0003c5788000 x22: ffff0003c16710c8 x21: ffff80008017f180
+[ 2911.188310] x20: ffff80008017f000 x19: ffff80008017f180 x18: ffffffffffffffff
+[ 2911.189160] x17: 0000000000000000 x16: 0000000000000000 x15: ffff8000a15134b8
+[ 2911.190015] x14: 0000000000000000 x13: 205d373432323154 x12: 5b5d313131333731
+[ 2911.190844] x11: 00000000fffeffff x10: 00000000fffeffff x9 : ffffd1b78274a13c
+[ 2911.191716] x8 : 000000000017ffe8 x7 : c0000000fffeffff x6 : 000000000057ffa8
+[ 2911.192554] x5 : ffff0012f6c24ec0 x4 : 0000000000000000 x3 : ffff2e5b72b5d000
+[ 2911.193404] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0003ff254480
+[ 2911.194259] Call trace:
+[ 2911.194626]  tracing_map_sort_entries+0x3e0/0x408
+[ 2911.195220]  hist_show+0x124/0x800
+[ 2911.195692]  seq_read_iter+0x1d4/0x4e8
+[ 2911.196193]  seq_read+0xe8/0x138
+[ 2911.196638]  vfs_read+0xc8/0x300
+[ 2911.197078]  ksys_read+0x70/0x108
+[ 2911.197534]  __arm64_sys_read+0x24/0x38
+[ 2911.198046]  invoke_syscall+0x78/0x108
+[ 2911.198553]  el0_svc_common.constprop.0+0xd0/0xf8
+[ 2911.199157]  do_el0_svc+0x28/0x40
+[ 2911.199613]  el0_svc+0x40/0x178
+[ 2911.200048]  el0t_64_sync_handler+0x13c/0x158
+[ 2911.200621]  el0t_64_sync+0x1a8/0x1b0
+[ 2911.201115] ---[ end trace 0000000000000000 ]---
+
+The problem appears to be caused by CPU reordering of writes issued from
+__tracing_map_insert().
+
+The check for the presence of an element with a given key in this
+function is:
+
+ val = READ_ONCE(entry->val);
+ if (val && keys_match(key, val->key, map->key_size)) ...
+
+The write of a new entry is:
+
+ elt = get_free_elt(map);
+ memcpy(elt->key, key, map->key_size);
+ entry->val = elt;
+
+The "memcpy(elt->key, key, map->key_size);" and "entry->val = elt;"
+stores may become visible in the reversed order on another CPU. This
+second CPU might then incorrectly determine that a new key doesn't match
+an already present val->key and subsequently insert a new element,
+resulting in a duplicate.
+
+Fix the problem by adding a write barrier between
+"memcpy(elt->key, key, map->key_size);" and "entry->val = elt;", and for
+good measure, also use WRITE_ONCE(entry->val, elt) for publishing the
+element. The sequence pairs with the mentioned "READ_ONCE(entry->val);"
+and the "val->key" check which has an address dependency.
+
+The barrier is placed on a path executed when adding an element for
+a new key. Subsequent updates targeting the same key remain unaffected.
+
+>From the user's perspective, the issue was introduced by commit
+c193707dde77 ("tracing: Remove code which merges duplicates"), which
+followed commit cbf4100efb8f ("tracing: Add support to detect and avoid
+duplicates"). The previous code operated differently; it inherently
+expected potential races which result in duplicates but merged them
+later when they occurred.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20240122150928.27725-1-petr.pavlu@suse.com
+
+Fixes: c193707dde77 ("tracing: Remove code which merges duplicates")
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Acked-by: Tom Zanussi <tom.zanussi@linux.intel.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rds/af_rds.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/tracing_map.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/net/rds/af_rds.c b/net/rds/af_rds.c
-index b239120dd9ca..0ec0ae148349 100644
---- a/net/rds/af_rds.c
-+++ b/net/rds/af_rds.c
-@@ -419,7 +419,7 @@ static int rds_recv_track_latency(struct rds_sock *rs, sockptr_t optval,
+diff --git a/kernel/trace/tracing_map.c b/kernel/trace/tracing_map.c
+index 9628b5571846..3edf5e515813 100644
+--- a/kernel/trace/tracing_map.c
++++ b/kernel/trace/tracing_map.c
+@@ -574,7 +574,12 @@ __tracing_map_insert(struct tracing_map *map, void *key, bool lookup_only)
+ 				}
  
- 	rs->rs_rx_traces = trace.rx_traces;
- 	for (i = 0; i < rs->rs_rx_traces; i++) {
--		if (trace.rx_trace_pos[i] > RDS_MSG_RX_DGRAM_TRACE_MAX) {
-+		if (trace.rx_trace_pos[i] >= RDS_MSG_RX_DGRAM_TRACE_MAX) {
- 			rs->rs_rx_traces = 0;
- 			return -EFAULT;
- 		}
+ 				memcpy(elt->key, key, map->key_size);
+-				entry->val = elt;
++				/*
++				 * Ensure the initialization is visible and
++				 * publish the elt.
++				 */
++				smp_wmb();
++				WRITE_ONCE(entry->val, elt);
+ 				atomic64_inc(&map->hits);
+ 
+ 				return entry->val;
 -- 
 2.43.0
 
