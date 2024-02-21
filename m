@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-22787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 905BA85DDD9
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:12:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9805C85D96C
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:18:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BFD3283D77
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:12:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 516E9284E72
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:18:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A8767CF03;
-	Wed, 21 Feb 2024 14:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17C2629AB;
+	Wed, 21 Feb 2024 13:18:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RrerSy8o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ty6cHpl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 587FC78B4B;
-	Wed, 21 Feb 2024 14:08:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBBB076C70;
+	Wed, 21 Feb 2024 13:18:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524511; cv=none; b=P7nsR71RUgDYOcxvwjTsTigFRK5YD+DuAZawEea3qHOE8vczN1ixHyBxiOLv03TY92xvRqm2hSuT1xDKMyZDinmD35DYI7gzhRV7+s/IObsX0LjYiMbleh0+As9D2d3Oy48d6p0aCO0j29O+UM2GvTb4xFOzfgf5nPjBvTUeRV0=
+	t=1708521494; cv=none; b=gVkZRBd/dr9McZ/OoPVJu8CjxicRlrhYRkLDRQ9fZrksYlR8pgQnl3qb/AV2rNcxn8DpD4t2m3mXE6aVO84lsdBA22PfHQ4ORUsFLQ8aRlmuFQPR2XyvoMAiBW6EakJHQwUng3293BQEqHeL2TL7Xu0GmjTs7HxZGP/BltBlKFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524511; c=relaxed/simple;
-	bh=z1pl1m/RHZxMaFKCcA2kEyoiTgXI30agEZraT6xG6kk=;
+	s=arc-20240116; t=1708521494; c=relaxed/simple;
+	bh=m3iVq532Ay4FQ8ypfOTBhTNlv8dF5EUOOhfBR27s0To=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QPCdvNFAAW0+F8oopGBT1W7UM7vhtEEIOUgsnJKEU7UdGD/Qd/viJ2TcPgn4d8to5wmFEsNaXFvHjLertEg/tBA/PP2a5XLCQEfenBXjco3Qb5LlQmOPNSCRY98ABNQQ8JRx9FPR15+EioV28ezrHHoJU7c+9Yz3YNF60zb1tkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RrerSy8o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B55E9C433F1;
-	Wed, 21 Feb 2024 14:08:29 +0000 (UTC)
+	 MIME-Version; b=X7dq7QGzF0B66XjGzNcc+KjEr1hosdCne2f4t8Hx98GubdTBjcr28qHv+3lNy6iKe0XCr2Dq+DenDg0aXEZ6Ly4YvZV5O7CCjesPye2pkV9LhixxwoNIdByhbnxPowdHSI1YQdPrRN/fDX6TGUhs+BH8nm36I11vw/p2VyIrEcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ty6cHpl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39441C433C7;
+	Wed, 21 Feb 2024 13:18:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524510;
-	bh=z1pl1m/RHZxMaFKCcA2kEyoiTgXI30agEZraT6xG6kk=;
+	s=korg; t=1708521494;
+	bh=m3iVq532Ay4FQ8ypfOTBhTNlv8dF5EUOOhfBR27s0To=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RrerSy8oRxbzOPbLzv/HLwKDtzhvNjuacttgwCA7S+jNfTUWTlUUlvxmDbPgky4f6
-	 ytrjdMe3Y8fKY0xT7XbQa19O8SMSULVG7eDhVNR0zPq9qdJc1QmZijZ7R2MJADA8NK
-	 m3A1Q/9mJgQKEHPG73SFYy9aBb4P4N1XbJMm7M9A=
+	b=2ty6cHpl5aU9oI3K2JDa99QgB3rRPGT4mxLr9elebcAlXbm5h0sbNFYkHSUpvJYSN
+	 3ywWrl5avQArkZYvEHWmkS1J6akpkJKw9mF5Cvc8ByN/RDReROgWCoUKsuHV9ydJk6
+	 uE0iIMJuoNFUFHzudQIJ8fpWvC0n0djge2003sbg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Vinod Koul <vkoul@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Xiubo Li <xiubli@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Ilya Dryomov <idryomov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 249/379] dmaengine: fsl-qdma: Fix a memory leak related to the queue command DMA
+Subject: [PATCH 4.19 127/202] ceph: fix deadlock or deadcode of misusing dget()
 Date: Wed, 21 Feb 2024 14:07:08 +0100
-Message-ID: <20240221130002.274947676@linuxfoundation.org>
+Message-ID: <20240221125935.806996812@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +64,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Xiubo Li <xiubli@redhat.com>
 
-[ Upstream commit 3aa58cb51318e329d203857f7a191678e60bb714 ]
+[ Upstream commit b493ad718b1f0357394d2cdecbf00a44a36fa085 ]
 
-This dma_alloc_coherent() is undone neither in the remove function, nor in
-the error handling path of fsl_qdma_probe().
+The lock order is incorrect between denty and its parent, we should
+always make sure that the parent get the lock first.
 
-Switch to the managed version to fix both issues.
+But since this deadcode is never used and the parent dir will always
+be set from the callers, let's just remove it.
 
-Fixes: b092529e0aa0 ("dmaengine: fsl-qdma: Add qDMA controller driver for Layerscape SoCs")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/7f66aa14f59d32b13672dde28602b47deb294e1f.1704621515.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Link: https://lore.kernel.org/r/20231116081919.GZ1957730@ZenIV
+Reported-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/fsl-qdma.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/ceph/caps.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/dma/fsl-qdma.c b/drivers/dma/fsl-qdma.c
-index 5cc887acb05b..69385f32e275 100644
---- a/drivers/dma/fsl-qdma.c
-+++ b/drivers/dma/fsl-qdma.c
-@@ -514,11 +514,11 @@ static struct fsl_qdma_queue
- 			queue_temp = queue_head + i + (j * queue_num);
+diff --git a/fs/ceph/caps.c b/fs/ceph/caps.c
+index fcfba2af5f98..729a67700a4f 100644
+--- a/fs/ceph/caps.c
++++ b/fs/ceph/caps.c
+@@ -4216,12 +4216,14 @@ int ceph_encode_dentry_release(void **p, struct dentry *dentry,
+ 			       struct inode *dir,
+ 			       int mds, int drop, int unless)
+ {
+-	struct dentry *parent = NULL;
+ 	struct ceph_mds_request_release *rel = *p;
+ 	struct ceph_dentry_info *di = ceph_dentry(dentry);
+ 	int force = 0;
+ 	int ret;
  
- 			queue_temp->cq =
--			dma_alloc_coherent(&pdev->dev,
--					   sizeof(struct fsl_qdma_format) *
--					   queue_size[i],
--					   &queue_temp->bus_addr,
--					   GFP_KERNEL);
-+			dmam_alloc_coherent(&pdev->dev,
-+					    sizeof(struct fsl_qdma_format) *
-+					    queue_size[i],
-+					    &queue_temp->bus_addr,
-+					    GFP_KERNEL);
- 			if (!queue_temp->cq)
- 				return NULL;
- 			queue_temp->block_base = fsl_qdma->block_base +
++	/* This shouldn't happen */
++	BUG_ON(!dir);
++
+ 	/*
+ 	 * force an record for the directory caps if we have a dentry lease.
+ 	 * this is racy (can't take i_ceph_lock and d_lock together), but it
+@@ -4231,14 +4233,9 @@ int ceph_encode_dentry_release(void **p, struct dentry *dentry,
+ 	spin_lock(&dentry->d_lock);
+ 	if (di->lease_session && di->lease_session->s_mds == mds)
+ 		force = 1;
+-	if (!dir) {
+-		parent = dget(dentry->d_parent);
+-		dir = d_inode(parent);
+-	}
+ 	spin_unlock(&dentry->d_lock);
+ 
+ 	ret = ceph_encode_inode_release(p, dir, mds, drop, unless, force);
+-	dput(parent);
+ 
+ 	spin_lock(&dentry->d_lock);
+ 	if (ret && di->lease_session && di->lease_session->s_mds == mds) {
 -- 
 2.43.0
 
