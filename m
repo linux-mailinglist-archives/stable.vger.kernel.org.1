@@ -1,151 +1,87 @@
-Return-Path: <stable+bounces-23215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F32DF85E4E2
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 18:47:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCFBC85E511
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 18:58:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A6EEB22092
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 17:47:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76A1A285256
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 17:58:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCE5584052;
-	Wed, 21 Feb 2024 17:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 353AC83CDF;
+	Wed, 21 Feb 2024 17:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CSRv2iw0";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LnJAvQn3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ilwzFD52"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263E183CD2;
-	Wed, 21 Feb 2024 17:47:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8DD61C20
+	for <stable@vger.kernel.org>; Wed, 21 Feb 2024 17:57:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708537670; cv=none; b=qGDoSvYC2CErMw/pBNHfbgyx4M1SB/7Q0vKI8jZk+WiIqIEi54VCsMtP/drtiqUWJ/y3oICFsYXzbzaD+H05MOAhZtMpP/ZQGnMShIHHJMzGyP22/QSZFui4BTHS6kJa8nhnTrzq9kCzoVkrGys3LLCizv4/i7A3KVIzOuNrgYw=
+	t=1708538278; cv=none; b=Z0anS7YDRJy8Qjp8ZYkBVjFVhhNv2SnVXJrpgpsW8ziBBV149ii7YB2U/Dt7HXPKNvLaSqQ6JoOi1PGJ4ei0qytPBJMeEQ+EM3+vPCSkQTmUVd1ZgKEE5t365bCuA07Fx/y854tE/tdhl1JRSS+//DoTaZe+wnpP+cScJ+VZgJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708537670; c=relaxed/simple;
-	bh=PRauaF92682VwsAMg09wdHVxsDKlTxRn384p1w/3jJk=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=aOfNb7NxDq1Sj7QY5I6zQjBf0VXi9jy6IwKOTt2U/0SfnlYSkATTPsxFOzrUQac6LpeZzQIMgMvazOtHie8WMGVmAEnneEoMJC7J2Dl5yJT8kqWErec4CYW9QJP7X73LQBvHozoYo4qghou4Qw0DSi8msc6bqpuKEi/+jrF5dRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CSRv2iw0; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LnJAvQn3; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 21 Feb 2024 17:47:46 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1708537667;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=31NN7dBlQk+cSYn0Xu5M/e75MI8J5Cmp6IemxlCIL0A=;
-	b=CSRv2iw0nAmYDmU83rlI0JrOr7g0HAw379vheiLTpZ242XXqcBfxXOIJ50eAk20TQ9D91p
-	Pejfquj83aAPOa+tF/VVo2Bel3Ehi/mCwq4XDuXzPz0rd1zIFxTcT/KbUeTZ5/qxR0abaH
-	rQarnzPkwOAYGivfT2kvyOw3UGaGtuA0mfYgPXgyU1dl0q6uqINOwYeRKhO6q5Zk+yA8jo
-	tFu1RiLTn9HO24DxHADv8vsbgAdpE4TJ86up6pdPw/7eDhRG8/Dx3eoRaO39SwXNOfyXXU
-	iJg+SXA/23T3kAkpKStrqOd3fZD26WUMAPyx7AQf/qkbK2gYKqhwnjomIRBvzQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1708537667;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=31NN7dBlQk+cSYn0Xu5M/e75MI8J5Cmp6IemxlCIL0A=;
-	b=LnJAvQn3KY+kokh2F9pFI5qUHIXgfkAok5MounSHgdg/Bkb43vTi7doeRDOBSE+tqBjYJ7
-	MfucnJzk4JVvi/CA==
-From: "tip-bot2 for Chen Jun" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] irqchip/mbigen: Don't use bus_get_dev_root() to
- find the parent
-Cc: Chen Jun <chenjun102@huawei.com>, Thomas Gleixner <tglx@linutronix.de>,
- stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
- maz@kernel.org
-In-Reply-To: <20240220111429.110666-1-chenjun102@huawei.com>
-References: <20240220111429.110666-1-chenjun102@huawei.com>
+	s=arc-20240116; t=1708538278; c=relaxed/simple;
+	bh=cMQNIy6Syx25aQIR/uFvi2t38is2Xd6+hybnV9ggKb4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S67U48MeprP+eh9yxbVoFJDtW5mt97yO8/1LCJ84RLzc9T47Fj8JuXf1rtfxmau4PaMfPkdJUiQaxvWCupUIQ9eKVA9KvCn+EoBfo0viWviCqXGShJ7fvWlma0emW1/VGZu8z1yWjgEky4x8+xSriC6Ov19+2rZ413FcJFutM08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ilwzFD52; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB798C433F1;
+	Wed, 21 Feb 2024 17:57:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1708538277;
+	bh=cMQNIy6Syx25aQIR/uFvi2t38is2Xd6+hybnV9ggKb4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ilwzFD52z0IGLYs9JQUzNUolv2uErrn3gBdlnp2bmHCQ95tuvsHpB6juXguPtVaLy
+	 POythSxuT2VJRjD76+LkWlQa23hdiESWUCCcMSPlNOknKai71Q65Zh95FcJbcqE8Y2
+	 L300o3Fzw4JAhs1zip67VoqzmxRvs76H2aV7W0UI=
+Date: Wed, 21 Feb 2024 18:57:54 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Oleksandr Natalenko <oleksandr@natalenko.name>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>,
+	Jiri Benc <jbenc@redhat.com>, Sasha Levin <sashal@kernel.org>,
+	stable@vger.kernel.org, Vlastimil Babka <vbabka@suse.cz>,
+	Thorsten Leemhuis <regressions@leemhuis.info>
+Subject: Re: fs/bcachefs/
+Message-ID: <2024022155-reformat-scorer-98ae@gregkh>
+References: <g6el7eghhdk2v5osukhobvi4pige5bsfu5koqtmoyeknat36t7@irmmk7zo7edh>
+ <uknxc26o6td7g6rawxffvsez46djmvcy2532kza2zyjuj33k7p@4jdywourgtqg>
+ <2024022103-municipal-filter-fb3f@gregkh>
+ <4900587.31r3eYUQgx@natalenko.name>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170853766628.398.14228390574695320909.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <4900587.31r3eYUQgx@natalenko.name>
 
-The following commit has been merged into the irq/urgent branch of tip:
+On Wed, Feb 21, 2024 at 05:00:05PM +0100, Oleksandr Natalenko wrote:
+> On středa 21. února 2024 15:53:11 CET Greg KH wrote:
+> > 	Given the huge patch volume that the stable tree manages (30-40 changes
+> > 	accepted a day, 7 days a week), any one kernel subsystem that wishes to
+> > 	do something different only slows down everyone else.
+> 
+> Lower down the volume then? Raise the bar for what gets backported?
+> Stable kernel releases got unnecessarily big [1] (Jiří is in Cc).
+> Those 40 changes a day cannot get a proper review. Each stable release
+> tries to mimic -rc except -rc is in consistent state while "stable" is
+> just a bunch of changes picked here and there.
 
-Commit-ID:     fb33a46cd75e18773dd5a414744507d84ae90870
-Gitweb:        https://git.kernel.org/tip/fb33a46cd75e18773dd5a414744507d84ae90870
-Author:        Chen Jun <chenjun102@huawei.com>
-AuthorDate:    Tue, 20 Feb 2024 19:14:29 +08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 21 Feb 2024 18:40:00 +01:00
+If you can point out any specific commits that we should not be taking,
+please let us know.
 
-irqchip/mbigen: Don't use bus_get_dev_root() to find the parent
+Personally I think we are not taking enough, and are still missing real
+fixes.  Overall, this is only a very small % of what goes into Linus's
+tree every day, so by that measure alone, we know we are missing things.
 
-bus_get_dev_root() returns sp->dev_root which is set in subsys_register(),
-but subsys_register() is not called by platform_bus_init().
+thanks,
 
-Therefor for the platform_bus_type, bus_get_dev_root() always returns NULL.
-This makes mbigen_of_create_domain() always return -ENODEV.
-
-Don't try to retrieve the parent via bus_get_dev_root() and
-unconditionally hand a NULL pointer to of_platform_device_create() to
-fix this.
-
-Fixes: fea087fc291b ("irqchip/mbigen: move to use bus_get_dev_root()")
-Signed-off-by: Chen Jun <chenjun102@huawei.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240220111429.110666-1-chenjun102@huawei.com
-
----
- drivers/irqchip/irq-mbigen.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
-
-diff --git a/drivers/irqchip/irq-mbigen.c b/drivers/irqchip/irq-mbigen.c
-index 5101a3f..58881d3 100644
---- a/drivers/irqchip/irq-mbigen.c
-+++ b/drivers/irqchip/irq-mbigen.c
-@@ -235,22 +235,17 @@ static const struct irq_domain_ops mbigen_domain_ops = {
- static int mbigen_of_create_domain(struct platform_device *pdev,
- 				   struct mbigen_device *mgn_chip)
- {
--	struct device *parent;
- 	struct platform_device *child;
- 	struct irq_domain *domain;
- 	struct device_node *np;
- 	u32 num_pins;
- 	int ret = 0;
- 
--	parent = bus_get_dev_root(&platform_bus_type);
--	if (!parent)
--		return -ENODEV;
--
- 	for_each_child_of_node(pdev->dev.of_node, np) {
- 		if (!of_property_read_bool(np, "interrupt-controller"))
- 			continue;
- 
--		child = of_platform_device_create(np, NULL, parent);
-+		child = of_platform_device_create(np, NULL, NULL);
- 		if (!child) {
- 			ret = -ENOMEM;
- 			break;
-@@ -273,7 +268,6 @@ static int mbigen_of_create_domain(struct platform_device *pdev,
- 		}
- 	}
- 
--	put_device(parent);
- 	if (ret)
- 		of_node_put(np);
- 
+greg k-h
 
