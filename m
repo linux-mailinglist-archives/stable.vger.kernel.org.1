@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-22606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59B8A85DCD1
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:58:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75D0685DB45
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:39:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B1481C23747
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:58:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F95E284BC7
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:39:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0018178B73;
-	Wed, 21 Feb 2024 13:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 873EB7992D;
+	Wed, 21 Feb 2024 13:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xllS6R/q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ACsrtfrP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1C0755E5E;
-	Wed, 21 Feb 2024 13:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 443F6763F6;
+	Wed, 21 Feb 2024 13:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523899; cv=none; b=BkAR5yDRk0XK+OXgWHdQUi9W87dxsohwfxATSaP/lQYP7ouAVMDTG7eFuvQs4SOLVcK67uiEXmzi7lFdlbX1YBauqoRXUYNIkgtvcdM4kJ3GrVTOr0rwAFp54PsWO+wIy0Orm1HYqbXbacUJ24CmQ+3C7vNPhaLlGLNARzpl288=
+	t=1708522730; cv=none; b=Rqmgm7rNd0FqJwFlU5bA5xa6gznNOsbVR+3zCHUYCAkzZvNn4m7yPbvb0Y82784Dpa8HNZq5jqqM1I3JU7AJL4vyeuwBcEEY0pkWbEkzzzc5vhLjvTBGssdAYS+2go74g/hA8ZHBvB7XzUKId7CyRZUFMxtJch45xbg6dpZ4SHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523899; c=relaxed/simple;
-	bh=LK4JbSdqw0nEFce7Xie4+MH2eAMjD3ZLDoeLSpODz94=;
+	s=arc-20240116; t=1708522730; c=relaxed/simple;
+	bh=cO6ejIwLajDoipaqFll6Ex03AxhgVvIqYUvY1Q3b8NU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ikI8RUO+Pl5ZU/QDFX/PQeHSQIuBiygvS6Wo9MOhS0txQ96exsCgt3ARrH11mnghCsevdOmaCkmx7iYPOeqQaakwEHPEZApVvzW/yVnf9mUpgo1/PRQeiZOdrFGvZreA/m3Ywy8B81u4EadLzqAwweKweHXtzqW74VpV9aMRt2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xllS6R/q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 388E9C433F1;
-	Wed, 21 Feb 2024 13:58:19 +0000 (UTC)
+	 MIME-Version; b=sMCMPGw0t3wdPnwoo5ynBa9ETboC3K2/6wQqIK0YKGQ0vLNtU259uJ9zsDNBxUIngc4cuq2n+v/yTRyiXldok0oOdcR9wr9Ucl+zrH/rNFx/BCIw4H9GRDakiVlscOdaoDMaAzWGSLSMZ5j8cimZhczgjavj4H3jE2OhBk2ogkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ACsrtfrP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC81DC433F1;
+	Wed, 21 Feb 2024 13:38:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523899;
-	bh=LK4JbSdqw0nEFce7Xie4+MH2eAMjD3ZLDoeLSpODz94=;
+	s=korg; t=1708522730;
+	bh=cO6ejIwLajDoipaqFll6Ex03AxhgVvIqYUvY1Q3b8NU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xllS6R/qrkcDpPfTxSLxXmSQ7Rxr1ixelYE97H6A6BFA5u7S7Jp/mSyKgRO/udJG/
-	 QKDx+35/sp0Qo4Ou+O8NitesJrwesrXfmirZ+eCxuN484+VVCNXSLB17sqBVCetKtZ
-	 vQQeY9jCXyLiokOaX3uJ6LogZuy07wWfANeUI5hQ=
+	b=ACsrtfrPpAPIJFz+kclzY6MztHKn+WiL9v/Q4+W8wmJ201J4CNQpnjXHEsDeNSWB0
+	 m1T3S8likvVI6ajdmpPP9PScs5YaYaMgbJGEZ6Lli3MvidXBHN9itArvlbqH3FbDIL
+	 WYF1XmAsyA/V7JmVuJEFmOxdoSvv587FgsRFtNZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Meenakshikumar Somasundaram <meenakshikumar.somasundaram@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 085/379] arm64: dts: qcom: sc7180: fix USB wakeup interrupt types
+Subject: [PATCH 5.15 213/476] drm/amd/display: Fix tiled display misalignment
 Date: Wed, 21 Feb 2024 14:04:24 +0100
-Message-ID: <20240221125957.422301749@linuxfoundation.org>
+Message-ID: <20240221130015.775217130@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Meenakshikumar Somasundaram <meenakshikumar.somasundaram@amd.com>
 
-[ Upstream commit 9b956999bf725fd62613f719c3178fdbee6e5f47 ]
+[ Upstream commit c4b8394e76adba4f50a3c2696c75b214a291e24a ]
 
-The DP/DM wakeup interrupts are edge triggered and which edge to trigger
-on depends on use-case and whether a Low speed or Full/High speed device
-is connected.
+[Why]
+When otg workaround is applied during clock update, otgs of
+tiled display went out of sync.
 
-Fixes: 0b766e7fe5a2 ("arm64: dts: qcom: sc7180: Add USB related nodes")
-Cc: stable@vger.kernel.org      # 5.10
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20231120164331.8116-4-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+[How]
+To call dc_trigger_sync() after clock update to sync otgs again.
+
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Meenakshikumar Somasundaram <meenakshikumar.somasundaram@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc7180.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/core/dc.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc7180.dtsi b/arch/arm64/boot/dts/qcom/sc7180.dtsi
-index 6eb82699a4a1..be40821dfeb9 100644
---- a/arch/arm64/boot/dts/qcom/sc7180.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7180.dtsi
-@@ -2690,8 +2690,8 @@ usb_1: usb@a6f8800 {
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+index 3919e75fec16..ef151a1bc31c 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -1680,6 +1680,10 @@ static enum dc_status dc_commit_state_no_check(struct dc *dc, struct dc_state *c
+ 		wait_for_no_pipes_pending(dc, context);
+ 		/* pplib is notified if disp_num changed */
+ 		dc->hwss.optimize_bandwidth(dc, context);
++		/* Need to do otg sync again as otg could be out of sync due to otg
++		 * workaround applied during clock update
++		 */
++		dc_trigger_sync(dc, context);
+ 	}
  
- 			interrupts-extended = <&intc GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
- 					      <&pdc 6 IRQ_TYPE_LEVEL_HIGH>,
--					      <&pdc 8 IRQ_TYPE_LEVEL_HIGH>,
--					      <&pdc 9 IRQ_TYPE_LEVEL_HIGH>;
-+					      <&pdc 8 IRQ_TYPE_EDGE_BOTH>,
-+					      <&pdc 9 IRQ_TYPE_EDGE_BOTH>;
- 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
- 					  "dm_hs_phy_irq", "dp_hs_phy_irq";
- 
+ 	if (dc->ctx->dce_version >= DCE_VERSION_MAX)
 -- 
 2.43.0
 
