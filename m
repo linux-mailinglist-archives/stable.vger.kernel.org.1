@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-22898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 660CE85DE97
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:20:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B334585DF35
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:25:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 28213B2AA0A
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:16:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 699701F23D69
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:25:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B3937E767;
-	Wed, 21 Feb 2024 14:14:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28D877A708;
+	Wed, 21 Feb 2024 14:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hOHy3aox"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d0XP+69z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE26A6A8D6;
-	Wed, 21 Feb 2024 14:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7DFB69962;
+	Wed, 21 Feb 2024 14:25:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524885; cv=none; b=jeVrbwRcvC/ybXRY4Loyveoql8ZRkPrbORh5TnPLwOGd6/PUKLd0BQujUV6PHvK6Bv36Txa13IAtFuBM+R4ZnWrOlJCX1IKMwp+eBJbYTjLzmroC3p+e4Byh3Tw4uXSoOq5NLWYq9g6v6GUcXF61lkF+aLEp05vA9nJhKf6k/uE=
+	t=1708525543; cv=none; b=UPie/mgBHMUzz+N0cY74s6Y3RC1oAqoOFGxfxmHO3zLyR3MQyeHmmrzRoeXyxUnHJhhHRhN8JeSCPbeyxKt1baZreA0qabNyZW+bg5mcUahWwstEtCItJFd6qWv55I3M36CDV4+UrSL+oy+SlmOx7qk9bh+vOoarXfh//hUB+qM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524885; c=relaxed/simple;
-	bh=mKeYm75DgcQoz8Vn8N26jKFUMu1KAMdFx09G4XLGyTo=;
+	s=arc-20240116; t=1708525543; c=relaxed/simple;
+	bh=33xWNptVJ7lwM3jsP+vAg6yNHkSj/oR/I0le7WdhQMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QDFvv/8q9xERDNs8kfU6mQQ59ms1zC1xCWmR6mRpGoiSTKdl7eTBRn+9nwPSwqvivZL03tTkiEq3VlCrMIi4bD3EQrnp+ygtqBvl8zrFdCo7lu3NYs9IBngXqkA3Xbzlfw8f66KRXRtx03iMY1cs9Rm8KIABlEQ5txJ3NFf7WNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hOHy3aox; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C860C433F1;
-	Wed, 21 Feb 2024 14:14:45 +0000 (UTC)
+	 MIME-Version; b=And/38eaZOom2tHLy6r7jFeiXKfZxGQsq6xarLN5LPwBvxMRFuo1EYEq4uBGVA6PWC6yeNLsPZODiQGt2NzQw0hMF5JARU+Qh0/GRKzrzCW2jo8aMGO4IieZZkxSQov8ra1xTolMZN5sVW5ddkG85Y3Y6jHYOnk8660L7kwfRoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d0XP+69z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44782C433F1;
+	Wed, 21 Feb 2024 14:25:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524885;
-	bh=mKeYm75DgcQoz8Vn8N26jKFUMu1KAMdFx09G4XLGyTo=;
+	s=korg; t=1708525543;
+	bh=33xWNptVJ7lwM3jsP+vAg6yNHkSj/oR/I0le7WdhQMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hOHy3aoxcRlDM6bgm4HWEpZKSkV1gvJSSl6M8buyvpOY/AWwZxSzNP9j+7wWwjw1L
-	 cmeoEsZB1s8uPsKVfbz7HtSdSLX5Z5VBPDnTdi5cmkiwwA6d6hSXBxOwuTxfinyrT5
-	 c+mgJFWK9fW07Aot7pazEE0kYGz+GLz79UvDICeo=
+	b=d0XP+69zK1tZwXmaU6QBv5zwNEMHFaBQvTksthnhTDI7bo2LbSKI6sMlKxPRKJ/+x
+	 VEns7UKJPJX0H1hyX+tfuB9G6u3p240sVzU6MScOyp5YL+riCPIuYlhOGhzMT7XpY2
+	 naDn4Obaj7fYaDxsOrFa9gA9JXWUqV5hBCPXBdc8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Song Liu <song@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-afs@lists.infradead.org,
+	netdev@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 349/379] Revert "md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d"
-Date: Wed, 21 Feb 2024 14:08:48 +0100
-Message-ID: <20240221130005.334880023@linuxfoundation.org>
+Subject: [PATCH 5.4 188/267] rxrpc: Fix response to PING RESPONSE ACKs to a dead call
+Date: Wed, 21 Feb 2024 14:08:49 +0100
+Message-ID: <20240221125946.033678471@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +68,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxiao Bi <junxiao.bi@oracle.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit bed9e27baf52a09b7ba2a3714f1e24e17ced386d ]
+[ Upstream commit 6f769f22822aa4124b556339781b04d810f0e038 ]
 
-This reverts commit 5e2cf333b7bd5d3e62595a44d598a254c697cd74.
+Stop rxrpc from sending a DUP ACK in response to a PING RESPONSE ACK on a
+dead call.  We may have initiated the ping but the call may have beaten the
+response to completion.
 
-That commit introduced the following race and can cause system hung.
-
- md_write_start:             raid5d:
- // mddev->in_sync == 1
- set "MD_SB_CHANGE_PENDING"
-                            // running before md_write_start wakeup it
-                             waiting "MD_SB_CHANGE_PENDING" cleared
-                             >>>>>>>>> hung
- wakeup mddev->thread
- ...
- waiting "MD_SB_CHANGE_PENDING" cleared
- >>>> hung, raid5d should clear this flag
- but get hung by same flag.
-
-The issue reverted commit fixing is fixed by last patch in a new way.
-
-Fixes: 5e2cf333b7bd ("md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d")
-Cc: stable@vger.kernel.org # v5.19+
-Signed-off-by: Junxiao Bi <junxiao.bi@oracle.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20231108182216.73611-2-junxiao.bi@oracle.com
+Fixes: 18bfeba50dfd ("rxrpc: Perform terminal call ACK/ABORT retransmission from conn processor")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: "David S. Miller" <davem@davemloft.net>
+cc: Eric Dumazet <edumazet@google.com>
+cc: Jakub Kicinski <kuba@kernel.org>
+cc: Paolo Abeni <pabeni@redhat.com>
+cc: linux-afs@lists.infradead.org
+cc: netdev@vger.kernel.org
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid5.c | 12 ------------
- 1 file changed, 12 deletions(-)
+ net/rxrpc/conn_event.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
-index 9f114b9d8dc6..00995e60d46b 100644
---- a/drivers/md/raid5.c
-+++ b/drivers/md/raid5.c
-@@ -36,7 +36,6 @@
-  */
+diff --git a/net/rxrpc/conn_event.c b/net/rxrpc/conn_event.c
+index b5864683f200..49669055ee9d 100644
+--- a/net/rxrpc/conn_event.c
++++ b/net/rxrpc/conn_event.c
+@@ -41,6 +41,14 @@ static void rxrpc_conn_retransmit_call(struct rxrpc_connection *conn,
  
- #include <linux/blkdev.h>
--#include <linux/delay.h>
- #include <linux/kthread.h>
- #include <linux/raid/pq.h>
- #include <linux/async_tx.h>
-@@ -6520,18 +6519,7 @@ static void raid5d(struct md_thread *thread)
- 			spin_unlock_irq(&conf->device_lock);
- 			md_check_recovery(mddev);
- 			spin_lock_irq(&conf->device_lock);
--
--			/*
--			 * Waiting on MD_SB_CHANGE_PENDING below may deadlock
--			 * seeing md_check_recovery() is needed to clear
--			 * the flag when using mdmon.
--			 */
--			continue;
- 		}
--
--		wait_event_lock_irq(mddev->sb_wait,
--			!test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags),
--			conf->device_lock);
- 	}
- 	pr_debug("%d stripes handled\n", handled);
+ 	_enter("%d", conn->debug_id);
  
++	if (sp && sp->hdr.type == RXRPC_PACKET_TYPE_ACK) {
++		if (skb_copy_bits(skb, sizeof(struct rxrpc_wire_header),
++				  &pkt.ack, sizeof(pkt.ack)) < 0)
++			return;
++		if (pkt.ack.reason == RXRPC_ACK_PING_RESPONSE)
++			return;
++	}
++
+ 	chan = &conn->channels[channel];
+ 
+ 	/* If the last call got moved on whilst we were waiting to run, just
 -- 
 2.43.0
 
