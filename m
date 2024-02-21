@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-21850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E56585D8D4
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:11:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82AE385DB52
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:39:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B679A1C21BC3
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:10:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B432A1C23362
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:39:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23D9769D1C;
-	Wed, 21 Feb 2024 13:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EF1476C99;
+	Wed, 21 Feb 2024 13:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tlBFIt6i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o7QGJwcr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C816769954;
-	Wed, 21 Feb 2024 13:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF8FE3C2F;
+	Wed, 21 Feb 2024 13:39:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521057; cv=none; b=o8gcBfTrdbt81JVI8NJYb7mLwO7DP8Qf2m6YiE9OkF/cguD+OrX1pLUYJDUJWYzYZRXEPpQFrYz07c/w++qwD2+BRxVWNBWx5j7Dhr3+2/euTYcvSD93CVXMuW5nujqq9QIo9qbad7ngE2WbKpbBWrRM/BnplPcuvDqf59VC1Zs=
+	t=1708522770; cv=none; b=MweYoNQUGNN04XkucaTwJ6psrqQXPVkqtfTI8p9+wS51U81+eRaYF/0vrgLvq9AlwDfNaUqqcKrOjcHdDC3jbn8OIt8PBedPPh63iIeJgLteXm4EVdYIBMJQgRAkAm8+c8XSfKCFv28BA07/rELfvfldPwI23+BwQRnE5eRR68o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521057; c=relaxed/simple;
-	bh=/SQ3J1eerQX3jkU33eY1tkCooqzV9c4pbrL26sx2NBI=;
+	s=arc-20240116; t=1708522770; c=relaxed/simple;
+	bh=GxnaKloaGzF5OfDVUH8K+NTjc3LsaQknFHO7cVju4dc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ejcl1rJhvbK3YMgr79HHvoCjrOxxcuhst2Q/tYNZWQz1I0g9qthauhvlq028RAGFeJqpPU27i92NXTeLgQueCvzeydvap3VaYMVexILgQ4anmlNbM44v8YmJh+E0He5E/a1FW8NmQ76v/49bGQPTtMouUUmN2UXsZNq6z9MfVvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tlBFIt6i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C8EC433C7;
-	Wed, 21 Feb 2024 13:10:56 +0000 (UTC)
+	 MIME-Version; b=GWFSgE1qWTHRfTHPIibtIsLKoHTdVktXJNGBCBXix1DB+sA39f5qmH/tWhUBEJgxaVPsolXEXVHvqL/BEAzPE70fVrvIbMQyl1PhrB6InTdaWRBwck1DvbVV9OLk+CyEWXMOq0MmEEENnBKEqZnpI7qmdD7+QTj6BQaNR+HtFX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o7QGJwcr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48BA8C433F1;
+	Wed, 21 Feb 2024 13:39:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521057;
-	bh=/SQ3J1eerQX3jkU33eY1tkCooqzV9c4pbrL26sx2NBI=;
+	s=korg; t=1708522770;
+	bh=GxnaKloaGzF5OfDVUH8K+NTjc3LsaQknFHO7cVju4dc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tlBFIt6igKzORwEBrxq8OgAfbXGzZOyk3RI9TMq0zUcw21TExp/BmDHQvF0qyGbpY
-	 WD1M+VZ29iGyQAVJyc99Rj4DjmJ7fQDAaa/PPIBfKXpvk71vNpeoM6FFLvkuaIC4lS
-	 rbZDWvaz4td4W65r68ArtJlJZXK1TYSYSUgGAHUw=
+	b=o7QGJwcrDPbfEhoC/QyB9XnfWS8qSFYtAKQ5KD+HL+40A5Yvo21lsLLdnN2VFrlMV
+	 UuoPfbGr/FgwTKSHl8fxo2d7mSvPoL5eGH4HbtN2RvQBQY36uC0EhVG4Qd3NaL5Kkz
+	 zaU78qJNdhj82xQC93BYC8REd/IDza6ANbv7mUew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 003/202] units: Add Watt units
+Subject: [PATCH 5.15 253/476] selftests/sgx: Fix linker script asserts
 Date: Wed, 21 Feb 2024 14:05:04 +0100
-Message-ID: <20240221125931.851676624@linuxfoundation.org>
+Message-ID: <20240221130017.194958310@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
+From: Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
 
-[ Upstream commit 2ee5f8f05949735fa2f4c463a5e13fcb3660c719 ]
+[ Upstream commit 9fd552ee32c6c1e27c125016b87d295bea6faea7 ]
 
-As there are the temperature units, let's add the Watt macros definition.
+DEFINED only considers symbols, not section names. Hence, replace the
+check for .got.plt with the _GLOBAL_OFFSET_TABLE_ symbol and remove other
+(non-essential) asserts.
 
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: 3ef79cd14122 ("serial: sc16is7xx: set safe default SPI clock frequency")
+Signed-off-by: Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Link: https://lore.kernel.org/all/20231005153854.25566-10-jo.vanbulck%40cs.kuleuven.be
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/units.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ tools/testing/selftests/sgx/test_encl.lds | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/include/linux/units.h b/include/linux/units.h
-index aaf716364ec3..92c234e71cab 100644
---- a/include/linux/units.h
-+++ b/include/linux/units.h
-@@ -4,6 +4,10 @@
+diff --git a/tools/testing/selftests/sgx/test_encl.lds b/tools/testing/selftests/sgx/test_encl.lds
+index a1ec64f7d91f..108bc11d1d8c 100644
+--- a/tools/testing/selftests/sgx/test_encl.lds
++++ b/tools/testing/selftests/sgx/test_encl.lds
+@@ -34,8 +34,4 @@ SECTIONS
+ 	}
+ }
  
- #include <linux/kernel.h>
- 
-+#define MILLIWATT_PER_WATT	1000L
-+#define MICROWATT_PER_MILLIWATT	1000L
-+#define MICROWATT_PER_WATT	1000000L
-+
- #define ABSOLUTE_ZERO_MILLICELSIUS -273150
- 
- static inline long milli_kelvin_to_millicelsius(long t)
+-ASSERT(!DEFINED(.altinstructions), "ALTERNATIVES are not supported in enclaves")
+-ASSERT(!DEFINED(.altinstr_replacement), "ALTERNATIVES are not supported in enclaves")
+-ASSERT(!DEFINED(.discard.retpoline_safe), "RETPOLINE ALTERNATIVES are not supported in enclaves")
+-ASSERT(!DEFINED(.discard.nospec), "RETPOLINE ALTERNATIVES are not supported in enclaves")
+-ASSERT(!DEFINED(.got.plt), "Libcalls are not supported in enclaves")
++ASSERT(!DEFINED(_GLOBAL_OFFSET_TABLE_), "Libcalls through GOT are not supported in enclaves")
 -- 
 2.43.0
 
