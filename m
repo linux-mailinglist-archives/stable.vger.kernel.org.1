@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-23075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9415885DF1F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:24:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE87485DC56
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:52:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C637B1C23D24
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:24:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79FD128515D
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:52:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C32AB7BAF7;
-	Wed, 21 Feb 2024 14:24:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBC0E7C092;
+	Wed, 21 Feb 2024 13:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZkRM6SX5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j8QHHEOb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 807903D0A1;
-	Wed, 21 Feb 2024 14:24:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3106E7CF26;
+	Wed, 21 Feb 2024 13:52:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525494; cv=none; b=HdTQ1o9M7ysD6ek2PQmmKrHPYkVFhCEc97b8So375VPfr0w3CaqmXLl4ewa1LfMcJsbYt1jmTFWwGPI20uFy86H1qXsIF5rhusHTGgTpLeMK9MfKgDG4diCHbOHyQHU51kF3qtDLUu2ffjSY/ZPgS7ybVlOvyEx8YqPPLlvvfMM=
+	t=1708523526; cv=none; b=HCQHidL5e3/GslIMBFqk0r2xyoyhG1AwJsrPedwxm1nBI42Wra9/7g9oVCT7PCUT7DNxIgEwEWd1jmDAAYVCoz6Nfq24x/D7dY5qvgpgWzcf6+tm+3BbOfHUzSApGBM0lrIfg6dSiAu2BG6tnqw5WfeoW49e7PrMAWk/GcgU1eY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525494; c=relaxed/simple;
-	bh=GCKlt25qMD629veop97TpmR1z1aUBIWvOa/RjkU/UgU=;
+	s=arc-20240116; t=1708523526; c=relaxed/simple;
+	bh=xsdmKh8XIgG0C6ONNJHn9lcHrplb4o80zpvUZEq3GWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=saGE5I7KlJjRDaTjwt5HT/AAm6scVUmjzJ+P+0qucJgzxmiyD44aV1zSP1iGlUbQWn4S51CL2k/8pn1KnKtdA4rKbjzC9TRUZYPB0h8hIKJzMSCQn+JcKjmMDsrc90UDwVtgAmjVpOW6+TZRokpTCaOVnvSDwWFm8uVtoThMM3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZkRM6SX5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 064A5C433F1;
-	Wed, 21 Feb 2024 14:24:53 +0000 (UTC)
+	 MIME-Version; b=HZpsclu3NepTUv26G9fk8i+KRs79SIYVG3nYzTCITL4rEXFGbuwc3yuIXdnUFrQwp3xQAe0RTYUh3/gMw/SLwZFl0C50pBYnFhcvjozlcW/99iDoWTrqLMMW2wDiHhv5y+6kul9uqX2F9XFx4c8d2DBKp9rJRtYE6yq+Lf+2E4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j8QHHEOb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F927C433F1;
+	Wed, 21 Feb 2024 13:52:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525494;
-	bh=GCKlt25qMD629veop97TpmR1z1aUBIWvOa/RjkU/UgU=;
+	s=korg; t=1708523525;
+	bh=xsdmKh8XIgG0C6ONNJHn9lcHrplb4o80zpvUZEq3GWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZkRM6SX583Bm1OosWG3rprmzmlPIGvFtmoVDAiOgQZgXSrgHvsfdnfHiF2ae1C2f4
-	 RtZO/125vbv9TCbltsM9hB0LZBiZ0/WgPN33OLR8X0mYPdJbYcyvicsJlJXjOpJL2V
-	 nxKYAov9TJL6jaeDXuq9jtJenMbskMn8lcpYl6Yk=
+	b=j8QHHEObRM9b6r52hXbmwN7LNLfSARdiMhpqdZXDu/6JZNeW5ND3POlaIfS704PbA
+	 Ix5GxfflJTKmLNrEOblbwAkrceyEV0xHeFD1I8ATWbH7KgME2ElobEjSMY+QPJyqG9
+	 8Ug/KKZJOfD1qvA9XgyP5MXu/rsWi4NX3Net0Zao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zakhar Semenov <mail@free5lot.com>,
-	Jiri Kosina <jkosina@suse.cz>,
-	Aseda Aboagye <aaboagye@chromium.org>
-Subject: [PATCH 5.4 173/267] HID: apple: Swap the Fn and Left Control keys on Apple keyboards
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+5d5d25f90f195a3cfcb4@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 463/476] nilfs2: replace WARN_ONs for invalid DAT metadata block requests
 Date: Wed, 21 Feb 2024 14:08:34 +0100
-Message-ID: <20240221125945.563477125@linuxfoundation.org>
+Message-ID: <20240221130025.155386970@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,94 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: free5lot <mail@free5lot.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit 346338ef00d35bf8338ded171f9abeb9b10b43df upstream.
+commit 5124a0a549857c4b87173280e192eea24dea72ad upstream.
 
-This patch allows users to swap the Fn and left Control keys on all Apple
-keyboards: internal (e.g. Macbooks) and external (both wired and wireless).
-The patch adds a new hid-apple module param: swap_fn_leftctrl (off by default).
+If DAT metadata file block access fails due to corruption of the DAT file
+or abnormal virtual block numbers held by b-trees or inodes, a kernel
+warning is generated.
 
-Signed-off-by: Zakhar Semenov <mail@free5lot.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
-Cc: Aseda Aboagye <aaboagye@chromium.org>
+This replaces the WARN_ONs by error output, so that a kernel, booted with
+panic_on_warn, does not panic.  This patch also replaces the detected
+return code -ENOENT with another internal code -EINVAL to notify the bmap
+layer of metadata corruption.  When the bmap layer sees -EINVAL, it
+handles the abnormal situation with nilfs_bmap_convert_error() and finally
+returns code -EIO as it should.
+
+Link: https://lkml.kernel.org/r/0000000000005cc3d205ea23ddcf@google.com
+Link: https://lkml.kernel.org/r/20230126164114.6911-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: <syzbot+5d5d25f90f195a3cfcb4@syzkaller.appspotmail.com>
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-apple.c |   30 ++++++++++++++++++++++++++++--
- 1 file changed, 28 insertions(+), 2 deletions(-)
+ fs/nilfs2/dat.c |   27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
---- a/drivers/hid/hid-apple.c
-+++ b/drivers/hid/hid-apple.c
-@@ -51,6 +51,12 @@ MODULE_PARM_DESC(swap_opt_cmd, "Swap the
- 		"(For people who want to keep Windows PC keyboard muscle memory. "
- 		"[0] = as-is, Mac layout. 1 = swapped, Windows layout.)");
- 
-+static unsigned int swap_fn_leftctrl;
-+module_param(swap_fn_leftctrl, uint, 0644);
-+MODULE_PARM_DESC(swap_fn_leftctrl, "Swap the Fn and left Control keys. "
-+		"(For people who want to keep PC keyboard muscle memory. "
-+		"[0] = as-is, Mac layout, 1 = swapped, PC layout)");
-+
- struct apple_sc {
- 	unsigned long quirks;
- 	unsigned int fn_on;
-@@ -163,6 +169,11 @@ static const struct apple_key_translatio
- 	{ }
- };
- 
-+static const struct apple_key_translation swapped_fn_leftctrl_keys[] = {
-+	{ KEY_FN, KEY_LEFTCTRL },
-+	{ }
-+};
-+
- static const struct apple_key_translation *apple_find_translation(
- 		const struct apple_key_translation *table, u16 from)
+--- a/fs/nilfs2/dat.c
++++ b/fs/nilfs2/dat.c
+@@ -40,8 +40,21 @@ static inline struct nilfs_dat_info *NIL
+ static int nilfs_dat_prepare_entry(struct inode *dat,
+ 				   struct nilfs_palloc_req *req, int create)
  {
-@@ -184,9 +195,11 @@ static int hidinput_apple_event(struct h
- 	bool do_translate;
- 	u16 code = 0;
- 
--	if (usage->code == KEY_FN) {
-+	u16 fn_keycode = (swap_fn_leftctrl) ? (KEY_LEFTCTRL) : (KEY_FN);
+-	return nilfs_palloc_get_entry_block(dat, req->pr_entry_nr,
+-					    create, &req->pr_entry_bh);
++	int ret;
 +
-+	if (usage->code == fn_keycode) {
- 		asc->fn_on = !!value;
--		input_event(input, usage->type, usage->code, value);
-+		input_event(input, usage->type, KEY_FN, value);
- 		return 1;
- 	}
- 
-@@ -271,6 +284,14 @@ static int hidinput_apple_event(struct h
- 		}
- 	}
- 
-+	if (swap_fn_leftctrl) {
-+		trans = apple_find_translation(swapped_fn_leftctrl_keys, usage->code);
-+		if (trans) {
-+			input_event(input, usage->type, trans->to, value);
-+			return 1;
-+		}
++	ret = nilfs_palloc_get_entry_block(dat, req->pr_entry_nr,
++					   create, &req->pr_entry_bh);
++	if (unlikely(ret == -ENOENT)) {
++		nilfs_err(dat->i_sb,
++			  "DAT doesn't have a block to manage vblocknr = %llu",
++			  (unsigned long long)req->pr_entry_nr);
++		/*
++		 * Return internal code -EINVAL to notify bmap layer of
++		 * metadata corruption.
++		 */
++		ret = -EINVAL;
 +	}
-+
- 	return 0;
++	return ret;
  }
  
-@@ -341,6 +362,11 @@ static void apple_setup_input(struct inp
+ static void nilfs_dat_commit_entry(struct inode *dat,
+@@ -123,11 +136,7 @@ static void nilfs_dat_commit_free(struct
  
- 	for (trans = apple_iso_keyboard; trans->from; trans++)
- 		set_bit(trans->to, input->keybit);
-+
-+	if (swap_fn_leftctrl) {
-+		for (trans = swapped_fn_leftctrl_keys; trans->from; trans++)
-+			set_bit(trans->to, input->keybit);
-+	}
+ int nilfs_dat_prepare_start(struct inode *dat, struct nilfs_palloc_req *req)
+ {
+-	int ret;
+-
+-	ret = nilfs_dat_prepare_entry(dat, req, 0);
+-	WARN_ON(ret == -ENOENT);
+-	return ret;
++	return nilfs_dat_prepare_entry(dat, req, 0);
  }
  
- static int apple_input_mapping(struct hid_device *hdev, struct hid_input *hi,
+ void nilfs_dat_commit_start(struct inode *dat, struct nilfs_palloc_req *req,
+@@ -154,10 +163,8 @@ int nilfs_dat_prepare_end(struct inode *
+ 	int ret;
+ 
+ 	ret = nilfs_dat_prepare_entry(dat, req, 0);
+-	if (ret < 0) {
+-		WARN_ON(ret == -ENOENT);
++	if (ret < 0)
+ 		return ret;
+-	}
+ 
+ 	kaddr = kmap_atomic(req->pr_entry_bh->b_page);
+ 	entry = nilfs_palloc_block_get_entry(dat, req->pr_entry_nr,
 
 
 
