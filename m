@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-22874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 155B585DE20
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:15:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 080A785DF3D
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:26:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF4091C225AC
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:15:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C50F1F24672
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:26:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF3507CF2D;
-	Wed, 21 Feb 2024 14:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0ADA7C097;
+	Wed, 21 Feb 2024 14:25:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OmriWO/G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g+ZpcQkN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEF543CF42;
-	Wed, 21 Feb 2024 14:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F66269962;
+	Wed, 21 Feb 2024 14:25:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524804; cv=none; b=Q5vg6Y2dDPGJrprqylyxTZ8GZeR++gosO8DfwJR0UY0UqDEdp2nWTWp0p41c7iunCJDPMF8wrbCjT73zAvdyhlvpn116Q8dKrVs27XXWT5/RbLo/YdyLB6PBrPJPUCXgOPV75Q8uDbQu5mnFt3vCuGEhmvCeXoOYSHGPa9QCXgE=
+	t=1708525559; cv=none; b=KLLad7zODDbFCK1jIvadtVr/7QWEvUGIPGmjc7CIlJGYNa6RM0nZKXvuJ1/rJbYImdKT7G1wT2RE5wm/k13tEI2qnj9dGJNB2kv9kbP8UAaQgmD28c5NwqwWpIAy8pqzLZNrdCV978ZO6SWSjmqROkSDnqKzLi5A661c1MjzujQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524804; c=relaxed/simple;
-	bh=Vts7DhFppRGGTpPnqUzpexQq9MkeIvjyExg8oXthACk=;
+	s=arc-20240116; t=1708525559; c=relaxed/simple;
+	bh=kV6L4zFPo6ftjJpC3XNtjgw/OmyUatiZP7c3S6WaoIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EmLl7pXhMipinDB75DIClSlHmDoge0nmFWc/BPMgCo02dSBR4fTKuiVNKtHM0kMTlp0LA//JgqTF9ZsOMVHrP/xfdKsWzFXgqGaMzF+iwyEOjTWwrXMXKSi5+svPqVfmMpCvnHpArarByBk9OnVcHkgih/c+X4xTv2XTuljB+MY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OmriWO/G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B78AC433F1;
-	Wed, 21 Feb 2024 14:13:23 +0000 (UTC)
+	 MIME-Version; b=D6H44QCT/j/lJNFVkxXyzXr5t1iBqYbQCqEqHWm2fdixDMYBHnPWHLBedmahDA6GWt/sEUbutqMtAqJ3EH0+rJBjrywCu/Ig2KIWd5fj0p/1bZOIkA8m+12Yg6CK9OCECUuryYoUteTAEDAZ0J2RINmw+h8AWZ3t1WEp9XPQ98g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g+ZpcQkN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2186BC433C7;
+	Wed, 21 Feb 2024 14:25:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524804;
-	bh=Vts7DhFppRGGTpPnqUzpexQq9MkeIvjyExg8oXthACk=;
+	s=korg; t=1708525559;
+	bh=kV6L4zFPo6ftjJpC3XNtjgw/OmyUatiZP7c3S6WaoIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OmriWO/GRFPWmI8oMxEJMYUE0VHFxfiRpotroL1e5zFUHwzfRTdxD0ksSXJrGHp1I
-	 cDKsDgRT2d8ix7bpSqqWBmslcC40uafsonmLKAjJR3LZQOMdTkFyE8qQFyWsDoXJm9
-	 jETfCvf7WksTpay8ZgeUVgImPjGu5o418U3AlNPc=
+	b=g+ZpcQkNSO62gsnCNxBLwTCW1Jcvd38WRyZMAoD+ggC/BONrk478YA7cykhfLKEGw
+	 EnktE4xRft/1WmvYkJPrLc3g1Qkcj0jKQYe6GsND7jZYukwHnK4Qcge01qzmjzyNLU
+	 CbERVGGFpB9JHVjy5ZTCPWzigLa/VF9CgGGIY2Tc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Cassel <niklas.cassel@wdc.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 354/379] PCI: dwc: endpoint: Fix dw_pcie_ep_raise_msix_irq() alignment support
+Subject: [PATCH 5.4 192/267] netfilter: nft_compat: restrict match/target protocol to u16
 Date: Wed, 21 Feb 2024 14:08:53 +0100
-Message-ID: <20240221130005.501717467@linuxfoundation.org>
+Message-ID: <20240221125946.162703338@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +59,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <niklas.cassel@wdc.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 2217fffcd63f86776c985d42e76daa43a56abdf1 ]
+[ Upstream commit d694b754894c93fb4d71a7f3699439dec111decc ]
 
-Commit 6f5e193bfb55 ("PCI: dwc: Fix dw_pcie_ep_raise_msix_irq() to get
-correct MSI-X table address") modified dw_pcie_ep_raise_msix_irq() to
-support iATUs which require a specific alignment.
+xt_check_{match,target} expects u16, but NFTA_RULE_COMPAT_PROTO is u32.
 
-However, this support cannot have been properly tested.
+NLA_POLICY_MAX(NLA_BE32, 65535) cannot be used because .max in
+nla_policy is s16, see 3e48be05f3c7 ("netlink: add attribute range
+validation to policy").
 
-The whole point is for the iATU to map an address that is aligned,
-using dw_pcie_ep_map_addr(), and then let the writel() write to
-ep->msi_mem + aligned_offset.
-
-Thus, modify the address that is mapped such that it is aligned.
-With this change, dw_pcie_ep_raise_msix_irq() matches the logic in
-dw_pcie_ep_raise_msi_irq().
-
-Link: https://lore.kernel.org/linux-pci/20231128132231.2221614-1-nks@flawful.org
-Fixes: 6f5e193bfb55 ("PCI: dwc: Fix dw_pcie_ep_raise_msix_irq() to get correct MSI-X table address")
-Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: stable@vger.kernel.org # 5.7
-Cc: Kishon Vijay Abraham I <kishon@kernel.org>
+Fixes: 0ca743a55991 ("netfilter: nf_tables: add compatibility layer for x_tables")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-designware-ep.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/netfilter/nft_compat.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
-index 95ed719402d7..e27bac623684 100644
---- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-@@ -593,6 +593,7 @@ int dw_pcie_ep_raise_msix_irq(struct dw_pcie_ep *ep, u8 func_no,
- 	}
+diff --git a/net/netfilter/nft_compat.c b/net/netfilter/nft_compat.c
+index 44583da6ec6b..2372f0bbb133 100644
+--- a/net/netfilter/nft_compat.c
++++ b/net/netfilter/nft_compat.c
+@@ -192,6 +192,7 @@ static const struct nla_policy nft_rule_compat_policy[NFTA_RULE_COMPAT_MAX + 1]
+ static int nft_parse_compat(const struct nlattr *attr, u16 *proto, bool *inv)
+ {
+ 	struct nlattr *tb[NFTA_RULE_COMPAT_MAX+1];
++	u32 l4proto;
+ 	u32 flags;
+ 	int err;
  
- 	aligned_offset = msg_addr & (epc->mem->window.page_size - 1);
-+	msg_addr &= ~aligned_offset;
- 	ret = dw_pcie_ep_map_addr(epc, func_no, ep->msi_mem_phys,  msg_addr,
- 				  epc->mem->window.page_size);
- 	if (ret)
+@@ -210,7 +211,12 @@ static int nft_parse_compat(const struct nlattr *attr, u16 *proto, bool *inv)
+ 	if (flags & NFT_RULE_COMPAT_F_INV)
+ 		*inv = true;
+ 
+-	*proto = ntohl(nla_get_be32(tb[NFTA_RULE_COMPAT_PROTO]));
++	l4proto = ntohl(nla_get_be32(tb[NFTA_RULE_COMPAT_PROTO]));
++	if (l4proto > U16_MAX)
++		return -EINVAL;
++
++	*proto = l4proto;
++
+ 	return 0;
+ }
+ 
 -- 
 2.43.0
 
