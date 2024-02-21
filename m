@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-22286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD79485DB48
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:39:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A899E85DCCA
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:57:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8273C1F21005
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:39:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC3E41C22FE6
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:57:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99B4A7993D;
-	Wed, 21 Feb 2024 13:38:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1B5855E5E;
+	Wed, 21 Feb 2024 13:57:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XPzt5gS7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hk8auFli"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5878769E08;
-	Wed, 21 Feb 2024 13:38:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC8878B73;
+	Wed, 21 Feb 2024 13:57:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522736; cv=none; b=B8Eeu0JsuSSNmKHjB1FQu29F8ob5IXigptd2NfWXzUxLw1HphqUB5HlrNBcG9c1jl8RVUuO3P7eP3KUE5GwD1oKMLuxwmqXR/qxp0nbGgH7CnBxqTIe1U5A7zpbJxIfCChZliF6hH3taDzXNrJ7utsxUcs9R0jmv5f4JiBV9Aks=
+	t=1708523873; cv=none; b=dVFjKBGmV74T962VC0s/Z6AxLml26CkSenim3ZGzjJAot1Y7Mxrf9IrkR4+GYkIEoApjCEqriVjZL6UwuvbI+ctRW8Fc1Cjf8lvep65n6Q0irRmGlbkaNiOq4VGwxt9+MvC18GnIiF/tX+1yI1Xq/LsPBc6x6lDNlvp1wOa66RE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522736; c=relaxed/simple;
-	bh=ULMJIpUvi2o7bI0yht+7ZnpWPlNhUPiJMjkaLgQxMUc=;
+	s=arc-20240116; t=1708523873; c=relaxed/simple;
+	bh=sAjNXT2LosJz+uV0SrWxBB3ejC3v9O6WQnIWwRaiqlQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c4u8doC4uZ8198ze3pGl15g/1lKqYcIqkyDzpEik+M1qw683eZO7qNmMSk0VWPUQ/8UaSG0v8I7mcUb7zGSd3ZXHWmk2aRty3VbnEHXf7RRtOa2lOyPne9LcT1ToHGuaNM6unKFBHgUJE1IUYX6hM/80+210ZhkY4buZl40dZ0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XPzt5gS7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78176C433C7;
-	Wed, 21 Feb 2024 13:38:55 +0000 (UTC)
+	 MIME-Version; b=Lhv0kNdUXimDOFQBS0n73WUN1A82S0L6Io2LifLjP6G+jjDNSXA0IKrJVflasShMY03NZGxNwKBLQ6uEheUQjW//Ql7Yc9GOecs9a+os+5AzXZvAeKBAL2nHk0kHBM2Zrlk+9y+Wkv6I/KSTXcsjfLbZD+iAvGzFkGPwsR8aueA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hk8auFli; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CEB6C433C7;
+	Wed, 21 Feb 2024 13:57:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522735;
-	bh=ULMJIpUvi2o7bI0yht+7ZnpWPlNhUPiJMjkaLgQxMUc=;
+	s=korg; t=1708523873;
+	bh=sAjNXT2LosJz+uV0SrWxBB3ejC3v9O6WQnIWwRaiqlQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XPzt5gS7ou4eQivFQ4bMrWbYOg2Yv7zeTudFJWtYk97YCd4JLPORnBK2dK73/+ONI
-	 BszntBtAs4k8jiD7RkH5W2lGdGspX6LQMrYYaoZsgn1v9x0HNyUjlQ1iSkrempPA4a
-	 RbM7UK0FvDiMI6GRt56fps3t3oJZfHrkgpPxUcDA=
+	b=hk8auFliTAKOX2FACAXDyou7UA8v7/LJo8o4+Je9nfAyiHLvM6RsKuk55u5ml24Bg
+	 Tg23pKVk0FTkfXYXaHbvNbUsMZRIeZl3FJ85bLyahuUOr6AAe7gV5QAgvU4HR1Gl5S
+	 u6+YTg8Asc95W988F8EEavtr4fXbySi/SIQ3BGec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lin Ma <linma@zju.edu.cn>,
-	Simon Horman <horms@kernel.org>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 205/476] bridge: cfm: fix enum typo in br_cc_ccm_tx_parse
-Date: Wed, 21 Feb 2024 14:04:16 +0100
-Message-ID: <20240221130015.496218051@linuxfoundation.org>
+Subject: [PATCH 5.10 078/379] PM: sleep: Avoid calling put_device() under dpm_list_mtx
+Date: Wed, 21 Feb 2024 14:04:17 +0100
+Message-ID: <20240221125957.217273339@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +61,373 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit c2b2ee36250d967c21890cb801e24af4b6a9eaa5 ]
+[ Upstream commit 2aa36604e8243698ff22bd5fef0dd0c6bb07ba92 ]
 
-It appears that there is a typo in the code where the nlattr array is
-being parsed with policy br_cfm_cc_ccm_tx_policy, but the instance is
-being accessed via IFLA_BRIDGE_CFM_CC_RDI_INSTANCE, which is associated
-with the policy br_cfm_cc_rdi_policy.
+It is generally unsafe to call put_device() with dpm_list_mtx held,
+because the given device's release routine may carry out an action
+depending on that lock which then may deadlock, so modify the
+system-wide suspend and resume of devices to always drop dpm_list_mtx
+before calling put_device() (and adjust white space somewhat while
+at it).
 
-This problem was introduced by commit 2be665c3940d ("bridge: cfm: Netlink
-SET configuration Interface.").
+For instance, this prevents the following splat from showing up in
+the kernel log after a system resume in certain configurations:
 
-Though it seems like a harmless typo since these two enum owns the exact
-same value (1 here), it is quite misleading hence fix it by using the
-correct enum IFLA_BRIDGE_CFM_CC_CCM_TX_INSTANCE here.
+[ 3290.969514] ======================================================
+[ 3290.969517] WARNING: possible circular locking dependency detected
+[ 3290.969519] 5.15.0+ #2420 Tainted: G S
+[ 3290.969523] ------------------------------------------------------
+[ 3290.969525] systemd-sleep/4553 is trying to acquire lock:
+[ 3290.969529] ffff888117ab1138 ((wq_completion)hci0#2){+.+.}-{0:0}, at: flush_workqueue+0x87/0x4a0
+[ 3290.969554]
+               but task is already holding lock:
+[ 3290.969556] ffffffff8280fca8 (dpm_list_mtx){+.+.}-{3:3}, at: dpm_resume+0x12e/0x3e0
+[ 3290.969571]
+               which lock already depends on the new lock.
 
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+[ 3290.969573]
+               the existing dependency chain (in reverse order) is:
+[ 3290.969575]
+               -> #3 (dpm_list_mtx){+.+.}-{3:3}:
+[ 3290.969583]        __mutex_lock+0x9d/0xa30
+[ 3290.969591]        device_pm_add+0x2e/0xe0
+[ 3290.969597]        device_add+0x4d5/0x8f0
+[ 3290.969605]        hci_conn_add_sysfs+0x43/0xb0 [bluetooth]
+[ 3290.969689]        hci_conn_complete_evt.isra.71+0x124/0x750 [bluetooth]
+[ 3290.969747]        hci_event_packet+0xd6c/0x28a0 [bluetooth]
+[ 3290.969798]        hci_rx_work+0x213/0x640 [bluetooth]
+[ 3290.969842]        process_one_work+0x2aa/0x650
+[ 3290.969851]        worker_thread+0x39/0x400
+[ 3290.969859]        kthread+0x142/0x170
+[ 3290.969865]        ret_from_fork+0x22/0x30
+[ 3290.969872]
+               -> #2 (&hdev->lock){+.+.}-{3:3}:
+[ 3290.969881]        __mutex_lock+0x9d/0xa30
+[ 3290.969887]        hci_event_packet+0xba/0x28a0 [bluetooth]
+[ 3290.969935]        hci_rx_work+0x213/0x640 [bluetooth]
+[ 3290.969978]        process_one_work+0x2aa/0x650
+[ 3290.969985]        worker_thread+0x39/0x400
+[ 3290.969993]        kthread+0x142/0x170
+[ 3290.969999]        ret_from_fork+0x22/0x30
+[ 3290.970004]
+               -> #1 ((work_completion)(&hdev->rx_work)){+.+.}-{0:0}:
+[ 3290.970013]        process_one_work+0x27d/0x650
+[ 3290.970020]        worker_thread+0x39/0x400
+[ 3290.970028]        kthread+0x142/0x170
+[ 3290.970033]        ret_from_fork+0x22/0x30
+[ 3290.970038]
+               -> #0 ((wq_completion)hci0#2){+.+.}-{0:0}:
+[ 3290.970047]        __lock_acquire+0x15cb/0x1b50
+[ 3290.970054]        lock_acquire+0x26c/0x300
+[ 3290.970059]        flush_workqueue+0xae/0x4a0
+[ 3290.970066]        drain_workqueue+0xa1/0x130
+[ 3290.970073]        destroy_workqueue+0x34/0x1f0
+[ 3290.970081]        hci_release_dev+0x49/0x180 [bluetooth]
+[ 3290.970130]        bt_host_release+0x1d/0x30 [bluetooth]
+[ 3290.970195]        device_release+0x33/0x90
+[ 3290.970201]        kobject_release+0x63/0x160
+[ 3290.970211]        dpm_resume+0x164/0x3e0
+[ 3290.970215]        dpm_resume_end+0xd/0x20
+[ 3290.970220]        suspend_devices_and_enter+0x1a4/0xba0
+[ 3290.970229]        pm_suspend+0x26b/0x310
+[ 3290.970236]        state_store+0x42/0x90
+[ 3290.970243]        kernfs_fop_write_iter+0x135/0x1b0
+[ 3290.970251]        new_sync_write+0x125/0x1c0
+[ 3290.970257]        vfs_write+0x360/0x3c0
+[ 3290.970263]        ksys_write+0xa7/0xe0
+[ 3290.970269]        do_syscall_64+0x3a/0x80
+[ 3290.970276]        entry_SYSCALL_64_after_hwframe+0x44/0xae
+[ 3290.970284]
+               other info that might help us debug this:
+
+[ 3290.970285] Chain exists of:
+                 (wq_completion)hci0#2 --> &hdev->lock --> dpm_list_mtx
+
+[ 3290.970297]  Possible unsafe locking scenario:
+
+[ 3290.970299]        CPU0                    CPU1
+[ 3290.970300]        ----                    ----
+[ 3290.970302]   lock(dpm_list_mtx);
+[ 3290.970306]                                lock(&hdev->lock);
+[ 3290.970310]                                lock(dpm_list_mtx);
+[ 3290.970314]   lock((wq_completion)hci0#2);
+[ 3290.970319]
+                *** DEADLOCK ***
+
+[ 3290.970321] 7 locks held by systemd-sleep/4553:
+[ 3290.970325]  #0: ffff888103bcd448 (sb_writers#4){.+.+}-{0:0}, at: ksys_write+0xa7/0xe0
+[ 3290.970341]  #1: ffff888115a14488 (&of->mutex){+.+.}-{3:3}, at: kernfs_fop_write_iter+0x103/0x1b0
+[ 3290.970355]  #2: ffff888100f719e0 (kn->active#233){.+.+}-{0:0}, at: kernfs_fop_write_iter+0x10c/0x1b0
+[ 3290.970369]  #3: ffffffff82661048 (autosleep_lock){+.+.}-{3:3}, at: state_store+0x12/0x90
+[ 3290.970384]  #4: ffffffff82658ac8 (system_transition_mutex){+.+.}-{3:3}, at: pm_suspend+0x9f/0x310
+[ 3290.970399]  #5: ffffffff827f2a48 (acpi_scan_lock){+.+.}-{3:3}, at: acpi_suspend_begin+0x4c/0x80
+[ 3290.970416]  #6: ffffffff8280fca8 (dpm_list_mtx){+.+.}-{3:3}, at: dpm_resume+0x12e/0x3e0
+[ 3290.970428]
+               stack backtrace:
+[ 3290.970431] CPU: 3 PID: 4553 Comm: systemd-sleep Tainted: G S                5.15.0+ #2420
+[ 3290.970438] Hardware name: Dell Inc. XPS 13 9380/0RYJWW, BIOS 1.5.0 06/03/2019
+[ 3290.970441] Call Trace:
+[ 3290.970446]  dump_stack_lvl+0x44/0x57
+[ 3290.970454]  check_noncircular+0x105/0x120
+[ 3290.970468]  ? __lock_acquire+0x15cb/0x1b50
+[ 3290.970474]  __lock_acquire+0x15cb/0x1b50
+[ 3290.970487]  lock_acquire+0x26c/0x300
+[ 3290.970493]  ? flush_workqueue+0x87/0x4a0
+[ 3290.970503]  ? __raw_spin_lock_init+0x3b/0x60
+[ 3290.970510]  ? lockdep_init_map_type+0x58/0x240
+[ 3290.970519]  flush_workqueue+0xae/0x4a0
+[ 3290.970526]  ? flush_workqueue+0x87/0x4a0
+[ 3290.970544]  ? drain_workqueue+0xa1/0x130
+[ 3290.970552]  drain_workqueue+0xa1/0x130
+[ 3290.970561]  destroy_workqueue+0x34/0x1f0
+[ 3290.970572]  hci_release_dev+0x49/0x180 [bluetooth]
+[ 3290.970624]  bt_host_release+0x1d/0x30 [bluetooth]
+[ 3290.970687]  device_release+0x33/0x90
+[ 3290.970695]  kobject_release+0x63/0x160
+[ 3290.970705]  dpm_resume+0x164/0x3e0
+[ 3290.970710]  ? dpm_resume_early+0x251/0x3b0
+[ 3290.970718]  dpm_resume_end+0xd/0x20
+[ 3290.970723]  suspend_devices_and_enter+0x1a4/0xba0
+[ 3290.970737]  pm_suspend+0x26b/0x310
+[ 3290.970746]  state_store+0x42/0x90
+[ 3290.970755]  kernfs_fop_write_iter+0x135/0x1b0
+[ 3290.970764]  new_sync_write+0x125/0x1c0
+[ 3290.970777]  vfs_write+0x360/0x3c0
+[ 3290.970785]  ksys_write+0xa7/0xe0
+[ 3290.970794]  do_syscall_64+0x3a/0x80
+[ 3290.970803]  entry_SYSCALL_64_after_hwframe+0x44/0xae
+[ 3290.970811] RIP: 0033:0x7f41b1328164
+[ 3290.970819] Code: 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b7 0f 1f 80 00 00 00 00 8b 05 4a d2 2c 00 48 63 ff 85 c0 75 13 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 54 f3 c3 66 90 55 53 48 89 d5 48 89 f3 48 83
+[ 3290.970824] RSP: 002b:00007ffe6ae21b28 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+[ 3290.970831] RAX: ffffffffffffffda RBX: 0000000000000004 RCX: 00007f41b1328164
+[ 3290.970836] RDX: 0000000000000004 RSI: 000055965e651070 RDI: 0000000000000004
+[ 3290.970839] RBP: 000055965e651070 R08: 000055965e64f390 R09: 00007f41b1e3d1c0
+[ 3290.970843] R10: 000000000000000a R11: 0000000000000246 R12: 0000000000000004
+[ 3290.970846] R13: 0000000000000001 R14: 000055965e64f2b0 R15: 0000000000000004
+
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: 7839d0078e0d ("PM: sleep: Fix possible deadlocks in core system-wide PM code")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_cfm_netlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/base/power/main.c | 84 ++++++++++++++++++++++++++-------------
+ 1 file changed, 57 insertions(+), 27 deletions(-)
 
-diff --git a/net/bridge/br_cfm_netlink.c b/net/bridge/br_cfm_netlink.c
-index 5c4c369f8536..2faab44652e7 100644
---- a/net/bridge/br_cfm_netlink.c
-+++ b/net/bridge/br_cfm_netlink.c
-@@ -362,7 +362,7 @@ static int br_cc_ccm_tx_parse(struct net_bridge *br, struct nlattr *attr,
+diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
+index a4714a025315..6c334a65644c 100644
+--- a/drivers/base/power/main.c
++++ b/drivers/base/power/main.c
+@@ -714,6 +714,7 @@ static void dpm_noirq_resume_devices(pm_message_t state)
+ 		dev = to_device(dpm_noirq_list.next);
+ 		get_device(dev);
+ 		list_move_tail(&dev->power.entry, &dpm_late_early_list);
++
+ 		mutex_unlock(&dpm_list_mtx);
  
- 	memset(&tx_info, 0, sizeof(tx_info));
+ 		if (!is_async(dev)) {
+@@ -728,8 +729,9 @@ static void dpm_noirq_resume_devices(pm_message_t state)
+ 			}
+ 		}
  
--	instance = nla_get_u32(tb[IFLA_BRIDGE_CFM_CC_RDI_INSTANCE]);
-+	instance = nla_get_u32(tb[IFLA_BRIDGE_CFM_CC_CCM_TX_INSTANCE]);
- 	nla_memcpy(&tx_info.dmac.addr,
- 		   tb[IFLA_BRIDGE_CFM_CC_CCM_TX_DMAC],
- 		   sizeof(tx_info.dmac.addr));
+-		mutex_lock(&dpm_list_mtx);
+ 		put_device(dev);
++
++		mutex_lock(&dpm_list_mtx);
+ 	}
+ 	mutex_unlock(&dpm_list_mtx);
+ 	async_synchronize_full();
+@@ -855,6 +857,7 @@ void dpm_resume_early(pm_message_t state)
+ 		dev = to_device(dpm_late_early_list.next);
+ 		get_device(dev);
+ 		list_move_tail(&dev->power.entry, &dpm_suspended_list);
++
+ 		mutex_unlock(&dpm_list_mtx);
+ 
+ 		if (!is_async(dev)) {
+@@ -868,8 +871,10 @@ void dpm_resume_early(pm_message_t state)
+ 				pm_dev_err(dev, state, " early", error);
+ 			}
+ 		}
+-		mutex_lock(&dpm_list_mtx);
++
+ 		put_device(dev);
++
++		mutex_lock(&dpm_list_mtx);
+ 	}
+ 	mutex_unlock(&dpm_list_mtx);
+ 	async_synchronize_full();
+@@ -1032,7 +1037,12 @@ void dpm_resume(pm_message_t state)
+ 		}
+ 		if (!list_empty(&dev->power.entry))
+ 			list_move_tail(&dev->power.entry, &dpm_prepared_list);
++
++		mutex_unlock(&dpm_list_mtx);
++
+ 		put_device(dev);
++
++		mutex_lock(&dpm_list_mtx);
+ 	}
+ 	mutex_unlock(&dpm_list_mtx);
+ 	async_synchronize_full();
+@@ -1110,14 +1120,16 @@ void dpm_complete(pm_message_t state)
+ 		get_device(dev);
+ 		dev->power.is_prepared = false;
+ 		list_move(&dev->power.entry, &list);
++
+ 		mutex_unlock(&dpm_list_mtx);
+ 
+ 		trace_device_pm_callback_start(dev, "", state.event);
+ 		device_complete(dev, state);
+ 		trace_device_pm_callback_end(dev, 0);
+ 
+-		mutex_lock(&dpm_list_mtx);
+ 		put_device(dev);
++
++		mutex_lock(&dpm_list_mtx);
+ 	}
+ 	list_splice(&list, &dpm_list);
+ 	mutex_unlock(&dpm_list_mtx);
+@@ -1302,17 +1314,21 @@ static int dpm_noirq_suspend_devices(pm_message_t state)
+ 		error = device_suspend_noirq(dev);
+ 
+ 		mutex_lock(&dpm_list_mtx);
++
+ 		if (error) {
+ 			pm_dev_err(dev, state, " noirq", error);
+ 			dpm_save_failed_dev(dev_name(dev));
+-			put_device(dev);
+-			break;
+-		}
+-		if (!list_empty(&dev->power.entry))
++		} else if (!list_empty(&dev->power.entry)) {
+ 			list_move(&dev->power.entry, &dpm_noirq_list);
++		}
++
++		mutex_unlock(&dpm_list_mtx);
++
+ 		put_device(dev);
+ 
+-		if (async_error)
++		mutex_lock(&dpm_list_mtx);
++
++		if (error || async_error)
+ 			break;
+ 	}
+ 	mutex_unlock(&dpm_list_mtx);
+@@ -1479,23 +1495,28 @@ int dpm_suspend_late(pm_message_t state)
+ 		struct device *dev = to_device(dpm_suspended_list.prev);
+ 
+ 		get_device(dev);
++
+ 		mutex_unlock(&dpm_list_mtx);
+ 
+ 		error = device_suspend_late(dev);
+ 
+ 		mutex_lock(&dpm_list_mtx);
++
+ 		if (!list_empty(&dev->power.entry))
+ 			list_move(&dev->power.entry, &dpm_late_early_list);
+ 
+ 		if (error) {
+ 			pm_dev_err(dev, state, " late", error);
+ 			dpm_save_failed_dev(dev_name(dev));
+-			put_device(dev);
+-			break;
+ 		}
++
++		mutex_unlock(&dpm_list_mtx);
++
+ 		put_device(dev);
+ 
+-		if (async_error)
++		mutex_lock(&dpm_list_mtx);
++
++		if (error || async_error)
+ 			break;
+ 	}
+ 	mutex_unlock(&dpm_list_mtx);
+@@ -1755,21 +1776,27 @@ int dpm_suspend(pm_message_t state)
+ 		struct device *dev = to_device(dpm_prepared_list.prev);
+ 
+ 		get_device(dev);
++
+ 		mutex_unlock(&dpm_list_mtx);
+ 
+ 		error = device_suspend(dev);
+ 
+ 		mutex_lock(&dpm_list_mtx);
++
+ 		if (error) {
+ 			pm_dev_err(dev, state, "", error);
+ 			dpm_save_failed_dev(dev_name(dev));
+-			put_device(dev);
+-			break;
+-		}
+-		if (!list_empty(&dev->power.entry))
++		} else if (!list_empty(&dev->power.entry)) {
+ 			list_move(&dev->power.entry, &dpm_suspended_list);
++		}
++
++		mutex_unlock(&dpm_list_mtx);
++
+ 		put_device(dev);
+-		if (async_error)
++
++		mutex_lock(&dpm_list_mtx);
++
++		if (error || async_error)
+ 			break;
+ 	}
+ 	mutex_unlock(&dpm_list_mtx);
+@@ -1886,6 +1913,7 @@ int dpm_prepare(pm_message_t state)
+ 		struct device *dev = to_device(dpm_list.next);
+ 
+ 		get_device(dev);
++
+ 		mutex_unlock(&dpm_list_mtx);
+ 
+ 		trace_device_pm_callback_start(dev, "", state.event);
+@@ -1893,21 +1921,23 @@ int dpm_prepare(pm_message_t state)
+ 		trace_device_pm_callback_end(dev, error);
+ 
+ 		mutex_lock(&dpm_list_mtx);
+-		if (error) {
+-			if (error == -EAGAIN) {
+-				put_device(dev);
+-				error = 0;
+-				continue;
+-			}
++
++		if (!error) {
++			dev->power.is_prepared = true;
++			if (!list_empty(&dev->power.entry))
++				list_move_tail(&dev->power.entry, &dpm_prepared_list);
++		} else if (error == -EAGAIN) {
++			error = 0;
++		} else {
+ 			dev_info(dev, "not prepared for power transition: code %d\n",
+ 				 error);
+-			put_device(dev);
+-			break;
+ 		}
+-		dev->power.is_prepared = true;
+-		if (!list_empty(&dev->power.entry))
+-			list_move_tail(&dev->power.entry, &dpm_prepared_list);
++
++		mutex_unlock(&dpm_list_mtx);
++
+ 		put_device(dev);
++
++		mutex_lock(&dpm_list_mtx);
+ 	}
+ 	mutex_unlock(&dpm_list_mtx);
+ 	trace_suspend_resume(TPS("dpm_prepare"), state.event, false);
 -- 
 2.43.0
 
