@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-23147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D41B585DF99
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:29:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 634A285DF7B
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:28:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A34AB2261D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:28:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E3D2284746
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:28:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C90C07BB1F;
-	Wed, 21 Feb 2024 14:28:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C50047C08D;
+	Wed, 21 Feb 2024 14:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qsIN1+s+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HbOgqm7F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8672E79DBF;
-	Wed, 21 Feb 2024 14:28:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82A437BB01;
+	Wed, 21 Feb 2024 14:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525719; cv=none; b=tcaKYthsOw+y7jmYNqjtA5zPnw4GgibC/Bhl5w2n9zNyY5wLCQC6hX/WGi5W4WY39HhmMubtxYfpk+iTDbSvZ31XtnazN7vc591Bu1mIXnDUle0MW6PnluoQ9yxtGHO4YhMXa3K2Uq90Gb/5H1UFcBeBc+3Oyu+kMv1Xk8OQiys=
+	t=1708525725; cv=none; b=VP98P1xbamUZC1NtOn7eGmOLuAgillQB/8AfuuOrarE2/vbhL8Cy8ucTD6jmkgNjUIKZHQqYIqTnEi5RD1osqxked14MP+mg2n2PGb/DgMBeydZVAMNav1L8N+ZD1uZ+MCJpS920cdQRKAa8izuzUPYVMZA48FMcfiCCKyjGOk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525719; c=relaxed/simple;
-	bh=Qaz8uEiEuh3KXk+IFHaIPXPF0vIrgJqZBd96zMwbJr8=;
+	s=arc-20240116; t=1708525725; c=relaxed/simple;
+	bh=t2fVBATn52jtXCiqM3ud7mrMGmYpYQo8vzLt0OiBiT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ovwniJAjE9EgNMjj+PwQ8pPEw/hjYL4ijAWs9c5LiSR9G3ohzOIU8GKunAsXO44HXIH25LhuEUttwe+08bwHowJpgNeddkCjJz4iBdYnAOD6+rQPQhdQPs+uxogaj8aYZ1biK26s3xwYGpgzf4vhhsn+s8StD5Wtel0ppV+Y38U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qsIN1+s+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A07CEC433F1;
-	Wed, 21 Feb 2024 14:28:38 +0000 (UTC)
+	 MIME-Version; b=XsluM0Avz87OfccK5Tlu977IUMsVIwLDM7heJur1XsdfMjhLY4RgkI10HLpqAKTtOb8DOr6BvzOpF1S4i6u4EXR+mg36Zx5S/DOBp9Zn/fga7/PCtNGq8JFukacAV1LGU69NYBu6ZRBUWVDvfLzBjtuCZX20V2LDeSvOztlrfFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HbOgqm7F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5F1FC433C7;
+	Wed, 21 Feb 2024 14:28:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525719;
-	bh=Qaz8uEiEuh3KXk+IFHaIPXPF0vIrgJqZBd96zMwbJr8=;
+	s=korg; t=1708525725;
+	bh=t2fVBATn52jtXCiqM3ud7mrMGmYpYQo8vzLt0OiBiT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qsIN1+s+mCnLe5ejcAxrdZx+SjDxf18EKeTlPMCGheyMSheM1GTxS3XGn3AGJeYDv
-	 vSnD7N1lh8mNCVA7JSVbFc0xgriIXFV6MMXUT/hGyegLoDNWeZIYcy9lh/ZAY0atiU
-	 glsV+rHS83+xwNi8026kmN/aat6j8secJolZbqk8=
+	b=HbOgqm7F7k8Zq/AUbTl7Uij9SjUlNF4hmdk+OEml4PVseQdn7z+SCye6qQ8ss0A/r
+	 kmmiPVSZlDedWF9N2YJKyGDflQxcSWqBwNxGo8QLoX0wPoYTB1AyopCXTCspPtIgEJ
+	 xnSPTxdOQngKb8X34QxQXRjLjeARS/34cz6uDIYo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel de Villiers <daniel.devilliers@corigine.com>,
-	Louis Peens <louis.peens@corigine.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.4 243/267] nfp: flower: prevent re-adding mac index for bonded port
-Date: Wed, 21 Feb 2024 14:09:44 +0100
-Message-ID: <20240221125947.876437166@linuxfoundation.org>
+	Doug Berger <opendmb@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 5.4 244/267] irqchip/irq-brcmstb-l2: Add write memory barrier before exit
+Date: Wed, 21 Feb 2024 14:09:45 +0100
+Message-ID: <20240221125947.908759332@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
 References: <20240221125940.058369148@linuxfoundation.org>
@@ -66,51 +67,64 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Daniel de Villiers <daniel.devilliers@corigine.com>
+From: Doug Berger <opendmb@gmail.com>
 
-commit 1a1c13303ff6d64e6f718dc8aa614e580ca8d9b4 upstream.
+commit b0344d6854d25a8b3b901c778b1728885dd99007 upstream.
 
-When physical ports are reset (either through link failure or manually
-toggled down and up again) that are slaved to a Linux bond with a tunnel
-endpoint IP address on the bond device, not all tunnel packets arriving
-on the bond port are decapped as expected.
+It was observed on Broadcom devices that use GIC v3 architecture L1
+interrupt controllers as the parent of brcmstb-l2 interrupt controllers
+that the deactivation of the parent interrupt could happen before the
+brcmstb-l2 deasserted its output. This would lead the GIC to reactivate the
+interrupt only to find that no L2 interrupt was pending. The result was a
+spurious interrupt invoking handle_bad_irq() with its associated
+messaging. While this did not create a functional problem it is a waste of
+cycles.
 
-The bond dev assigns the same MAC address to itself and each of its
-slaves. When toggling a slave device, the same MAC address is therefore
-offloaded to the NFP multiple times with different indexes.
+The hazard exists because the memory mapped bus writes to the brcmstb-l2
+registers are buffered and the GIC v3 architecture uses a very efficient
+system register write to deactivate the interrupt.
 
-The issue only occurs when re-adding the shared mac. The
-nfp_tunnel_add_shared_mac() function has a conditional check early on
-that checks if a mac entry already exists and if that mac entry is
-global: (entry && nfp_tunnel_is_mac_idx_global(entry->index)). In the
-case of a bonded device (For example br-ex), the mac index is obtained,
-and no new index is assigned.
+Add a write memory barrier prior to invoking chained_irq_exit() to
+introduce a dsb(st) on those systems to ensure the system register write
+cannot be executed until the memory mapped writes are visible to the
+system.
 
-We therefore modify the conditional in nfp_tunnel_add_shared_mac() to
-check if the port belongs to the LAG along with the existing checks to
-prevent a new global mac index from being re-assigned to the slave port.
+[ florian: Added Fixes tag ]
 
-Fixes: 20cce8865098 ("nfp: flower: enable MAC address sharing for offloadable devs")
-CC: stable@vger.kernel.org # 5.1+
-Signed-off-by: Daniel de Villiers <daniel.devilliers@corigine.com>
-Signed-off-by: Louis Peens <louis.peens@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 7f646e92766e ("irqchip: brcmstb-l2: Add Broadcom Set Top Box  Level-2 interrupt controller")
+Signed-off-by: Doug Berger <opendmb@gmail.com>
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Acked-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240210012449.3009125-1-florian.fainelli@broadcom.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/netronome/nfp/flower/tunnel_conf.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/irqchip/irq-brcmstb-l2.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/netronome/nfp/flower/tunnel_conf.c
-+++ b/drivers/net/ethernet/netronome/nfp/flower/tunnel_conf.c
-@@ -593,7 +593,7 @@ nfp_tunnel_add_shared_mac(struct nfp_app
- 	u16 nfp_mac_idx = 0;
+--- a/drivers/irqchip/irq-brcmstb-l2.c
++++ b/drivers/irqchip/irq-brcmstb-l2.c
+@@ -2,7 +2,7 @@
+ /*
+  * Generic Broadcom Set Top Box Level 2 Interrupt controller driver
+  *
+- * Copyright (C) 2014-2017 Broadcom
++ * Copyright (C) 2014-2024 Broadcom
+  */
  
- 	entry = nfp_tunnel_lookup_offloaded_macs(app, netdev->dev_addr);
--	if (entry && nfp_tunnel_is_mac_idx_global(entry->index)) {
-+	if (entry && (nfp_tunnel_is_mac_idx_global(entry->index) || netif_is_lag_port(netdev))) {
- 		if (entry->bridge_count ||
- 		    !nfp_flower_is_supported_bridge(netdev)) {
- 			nfp_tunnel_offloaded_macs_inc_ref_and_link(entry,
+ #define pr_fmt(fmt)	KBUILD_MODNAME	": " fmt
+@@ -113,6 +113,9 @@ static void brcmstb_l2_intc_irq_handle(s
+ 		generic_handle_irq(irq_linear_revmap(b->domain, irq));
+ 	} while (status);
+ out:
++	/* Don't ack parent before all device writes are done */
++	wmb();
++
+ 	chained_irq_exit(chip, desc);
+ }
+ 
 
 
 
