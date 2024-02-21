@@ -1,160 +1,130 @@
-Return-Path: <stable+bounces-23244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B504E85EB1A
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 22:38:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2697685EB38
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 22:47:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 677741F286FA
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 21:38:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D56E4282DF8
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 21:46:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EAEC1339A6;
-	Wed, 21 Feb 2024 21:35:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BD7A1272CB;
+	Wed, 21 Feb 2024 21:46:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MxjvrMMI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BrML/Wl7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f46.google.com (mail-io1-f46.google.com [209.85.166.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C0D412DD81;
-	Wed, 21 Feb 2024 21:35:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7B14A1D;
+	Wed, 21 Feb 2024 21:46:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708551358; cv=none; b=oO5k34ddnqqxwmKoXCvb8IUiCSxHK0KprAsUzG+8M9CIxKwfej8gMUbyB4MEYZy7Xcp6wsfH7BgDTa7c3t2WkYzp4mZJLb8M6ewfMsPW12saKuTNmj42dM8h98kBUb0HJLh9aRH8EydR9Mvgqie3XTb7OkH/ADZOdM7bPWVa44E=
+	t=1708551987; cv=none; b=Hw1x8YtKJrgkkls6xRuLVVUc9fjmK0FB9R7/g+MP4MIjt6p/zoTtLLtI+QxME+LVdjtqSgUeHEcNXXKRqjm40HpCGaJJ8Di+iZnXPYt5FZ5QylTcOp9UVekuAvwpcMF+2Hx0OhEFeds9u0GvDA/8f6JOPIu11z6sU/LW/JcVff0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708551358; c=relaxed/simple;
-	bh=7kAfcN1/13WrOj7hm7Y4/wFCohh865CFE4P/KUkvp1c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rJ9W/S4jyJGaaYvE6kmuMEP20SgK+f3rB6MfRgYQu6/bIGFUtE+Kfd32zX+c5oFkctZGWANoq5nO1/Mj+5Nocyb+uXYtHdWY2imv87GPTw/EeCTeGqHxJ2D+0dXDEgk9d4U0ISCY6roKthUA+ajR7A7ic8FwS/qNFZ5qavqmyb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MxjvrMMI; arc=none smtp.client-ip=209.85.166.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-io1-f46.google.com with SMTP id ca18e2360f4ac-7c488a5af5eso6964539f.1;
-        Wed, 21 Feb 2024 13:35:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708551356; x=1709156156; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=hEhygBtosGq+EZCjwlVt0RPtsTFLG976dZg39gbKTO0=;
-        b=MxjvrMMIEUwucQ17vwd1WU657hQ3Mm/unPdh9zSRwzcimFA0yUD8FAOLu8iYnRz9P0
-         vZQOub1Qpr3nRaHhDXIVA+QwLmtW6FPuElHS/mtn2k8ypdW9xX4bTI8eyBMJcTIHvRyh
-         E9+wO0PjkpbWDpJHMepg/81PHMr4VGEgvHyw/+lOxQYBgwjsK868aGtXfvJ6p69HsUJx
-         z/R1Q2uY7b97PPcGBVWtxlrxt+kaYO6mss9BnbwiRrtuTNgr6+LH8Lc44oocoKUAreJC
-         isQC8kPnhh0xiYdNPLMeAdI6714LYR4sCoWh8D4pvrmY8rnO2qtgzxFBI0oeyEykgp4Z
-         h+Rg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708551356; x=1709156156;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hEhygBtosGq+EZCjwlVt0RPtsTFLG976dZg39gbKTO0=;
-        b=eagmxiH88QEgN2sfeU8tc9ur4z3BoIcnD9SLGjQ0zpUOqNDZZh8GywJxbBtBHcCkJy
-         pSgaTMrehvYlIWFuxwLSj+m7Sn39uLkHwVBF5Zq6O/DcgPuPdijNd9eTohese8aLN2tE
-         BtEwf7yJW6b9ti2MPHJVqaduK8ufGm/TKvCLS31EhmRElZE2WqcjALiECJ4jHOZmRfoe
-         KqLDksQYhL9BYoQQVwayL2ONnN5Bi9FdnWQO/ZTyZjqRFRaaUZtoQU5rjltRoJuj9C8A
-         0Cr51WqK3XWCPMJb5nDiqqqM8gQPXQqxKViQXF6iNJHPPZSALvDKiyVzjVk0/BV04SLA
-         n0/g==
-X-Forwarded-Encrypted: i=1; AJvYcCWuw0QrLmmRumJi2PxUvMCY/0nbMRV3m1h4TaUi4kcfUeTR3N/G/iOgaGyuRHKEpqDNEhgAD+q4A8ZDj+RBH0jgokKjayDAb5FZNPWSQ4xUWVIn3IGnkzxRfJqB7zugrc9JfaD1UwCwA+u/eBoaRT0m1l7JJGN7Gdaqp1hGA3/9S8pe6+9FuJN/unIcXR6/sxSgwtEEYLX3z2PmQbzuF4pM1E0hYRXMZXESqa+F
-X-Gm-Message-State: AOJu0Yzi+wEBAYtX7uHT0kiKQV6E4TxRlrva4A6xsmNoj55iHmMfAyDZ
-	WoDtuzoYMfNFrU4khwuZc4ZHwu+8LCVx9OdmE3rmGBFcd3ctTprCidKktZjT
-X-Google-Smtp-Source: AGHT+IFmF1+6vZPUdEg3sXIJoAZI1kHF31CDjrsju8l+yXoRnYkhWW8unvAUdMdGtN7NXXgO7XVipQ==
-X-Received: by 2002:a6b:6f15:0:b0:7bf:e57f:3ecf with SMTP id k21-20020a6b6f15000000b007bfe57f3ecfmr657115ioc.0.1708551356458;
-        Wed, 21 Feb 2024 13:35:56 -0800 (PST)
-Received: from localhost ([2a02:168:59f0:1:63b6:5e21:e19f:4684])
-        by smtp.gmail.com with ESMTPSA id f32-20020a0284a3000000b00473c8573648sm3007942jai.146.2024.02.21.13.35.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Feb 2024 13:35:56 -0800 (PST)
-Date: Wed, 21 Feb 2024 22:35:50 +0100
-From: =?iso-8859-1?Q?G=FCnther?= Noack <gnoack3000@gmail.com>
-To: =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>
-Cc: =?iso-8859-1?Q?G=FCnther?= Noack <gnoack@google.com>,
-	Paul Moore <paul@paul-moore.com>,
-	"Serge E . Hallyn" <serge@hallyn.com>,
-	Konstantin Meskhidze <konstantin.meskhidze@huawei.com>,
-	Shervin Oloumi <enlightened@chromium.org>,
-	linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-security-module@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] landlock: Warn once if a Landlock action is requested
- while disabled
-Message-ID: <20240221.b8dcd9590c37@gnoack.org>
-References: <20240219191804.2978911-1-mic@digikod.net>
+	s=arc-20240116; t=1708551987; c=relaxed/simple;
+	bh=leo9okhKBaTR0GDpOuoa10LU3SThMLpEnLrULNmIs+o=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=KPNfmdfYJyyW5jE6A8Egath8ryodQrHlRPrEw567k7qAmrkrF1nAj1Zql3xMvDJ2LgLXriqHBqpgulsn2EnTFVBodR38w6Ua+tsiY6Lre9h4rG0Jo3Zja/coboybD5h+eNEbqt0kMljk6s7NfPJYJK34iQhSg3nAHxuC7++1Qos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BrML/Wl7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6A29C433F1;
+	Wed, 21 Feb 2024 21:46:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708551986;
+	bh=leo9okhKBaTR0GDpOuoa10LU3SThMLpEnLrULNmIs+o=;
+	h=From:Date:Subject:To:Cc:From;
+	b=BrML/Wl7vTXK6gRt5ngkvHhM8Zu5In5gYTawYmzzns0JtFYCQoQm6prGPimEGlTp6
+	 AD6gVp0I4wt+lNjotFMN+N0pD95H9/hSCNDFG2/eTD3gM67CD5Yeio3JO5fMPP4knz
+	 OF5bBC8ZIIFjqa4WcanSlNx7zicYxhQPfrYdmhb8veg+Hpa7ZjmC3Mhcj8OO8q1ufi
+	 UwnambY1azv1Xb28D9wsIlEfALgl1GwY/wyuISdHUximCv42eHAqyHB5wIgQC9zZLn
+	 lWaz5ltfSle+i0QDLvBDBZR0BmESIl4zC9rHBzkV9QKgjBzv+S90inJBkIhv4Q/dQD
+	 zVIXMqrsTh3gw==
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Wed, 21 Feb 2024 14:46:21 -0700
+Subject: [PATCH net] xfrm: Avoid clang fortify warning in
+ copy_to_user_tmpl()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240219191804.2978911-1-mic@digikod.net>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240221-xfrm-avoid-clang-fortify-warning-copy_to_user_tmpl-v1-1-254a788ab8ba@kernel.org>
+X-B4-Tracking: v=1; b=H4sIACxv1mUC/x3NQQqDMBCF4avIrDswia56lVKCxkk7oElIUquId
+ +/Q5QeP/51QuQhXuHcnFN6kSooKc+vAv8f4YpRZDZbsQNYa3ENZcdySzOgXHWBIpUk48DuWKGq
+ f8uFach8tu7bmBQfyk6GJqOceNJwLB9n/pw+I3OB5XT/6XTGmiQAAAA==
+To: steffen.klassert@secunet.com, herbert@gondor.apana.org.au, 
+ davem@davemloft.net
+Cc: edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+ morbo@google.com, justinstitt@google.com, keescook@chromium.org, 
+ netdev@vger.kernel.org, llvm@lists.linux.dev, patches@lists.linux.dev, 
+ stable@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>
+X-Mailer: b4 0.14-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2264; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=leo9okhKBaTR0GDpOuoa10LU3SThMLpEnLrULNmIs+o=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDKnX8g39NsbKLClpzlhxvdGKaVqfjcSDSU/O5udu28Sy3
+ +oNa/fVjlIWBjEuBlkxRZbqx6rHDQ3nnGW8cWoSzBxWJpAhDFycAjCRJfcZGc69fpYy54us44cZ
+ RwIvvtD8rMKdd0gsdIX36sKM1GKTbHOGP3y3v3od2+m5LV2Za83SVq6L7owTnj/rNHq9MZ7/8Vm
+ TOnYA
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 
-Hello!
+After a couple recent changes in LLVM, there is a warning (or error with
+CONFIG_WERROR=y or W=e) from the compile time fortify source routines,
+specifically the memset() in copy_to_user_tmpl().
 
-I think this is a good idea.
-Some minor implementation remarks below.
+  In file included from net/xfrm/xfrm_user.c:14:
+  ...
+  include/linux/fortify-string.h:438:4: error: call to '__write_overflow_field' declared with 'warning' attribute: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror,-Wattribute-warning]
+    438 |                         __write_overflow_field(p_size_field, size);
+        |                         ^
+  1 error generated.
 
-On Mon, Feb 19, 2024 at 08:18:04PM +0100, Mickaël Salaün wrote:
-> Because sandboxing can be used as an opportunistic security measure,
-> user space may not log unsupported features.  Let the system
-> administrator know if an application tries to use Landlock but failed
-> because it isn't enabled at boot time.  This may be caused by bootloader
-> configurations with outdated "lsm" kernel's command-line parameter.
-> 
-> Cc: Günther Noack <gnoack@google.com>
-> Cc: stable@vger.kernel.org
-> Fixes: 265885daf3e5 ("landlock: Add syscall implementations")
-> Signed-off-by: Mickaël Salaün <mic@digikod.net>
-> ---
->  security/landlock/syscalls.c | 18 +++++++++++++++---
->  1 file changed, 15 insertions(+), 3 deletions(-)
-> 
-> diff --git a/security/landlock/syscalls.c b/security/landlock/syscalls.c
-> index f0bc50003b46..b5b424819dee 100644
-> --- a/security/landlock/syscalls.c
-> +++ b/security/landlock/syscalls.c
-> @@ -33,6 +33,18 @@
->  #include "ruleset.h"
->  #include "setup.h"
->  
-> +static bool is_not_initialized(void)
-> +{
-> +	if (likely(landlock_initialized))
-> +		return false;
+While ->xfrm_nr has been validated against XFRM_MAX_DEPTH when its value
+is first assigned in copy_templates() by calling validate_tmpl() first
+(so there should not be any issue in practice), LLVM/clang cannot really
+deduce that across the boundaries of these functions. Without that
+knowledge, it cannot assume that the loop stops before i is greater than
+XFRM_MAX_DEPTH, which would indeed result a stack buffer overflow in the
+memset().
 
-Optional stylistic remark; I try to avoid predicate functions which
-have a "negated" meaning, because double negations are slightly more
-error prone.  (We return false here, so Landlock is not not
-initialized.)
+To make the bounds of ->xfrm_nr clear to the compiler and add additional
+defense in case copy_to_user_tmpl() is ever used in a path where
+->xfrm_nr has not been properly validated against XFRM_MAX_DEPTH first,
+add an explicit bound check and early return, which clears up the
+warning.
 
-> +
-> +	pr_warn_once(
-> +		"Disabled but requested by user space. "
-> +		"You should enable Landlock at boot time: "
-> +		"https://docs.kernel.org/userspace-api/landlock.html#kernel-support\n");
-> +	return true;
-> +}
-> +
->  /**
->   * copy_min_struct_from_user - Safe future-proof argument copying
->   *
-> @@ -173,7 +185,7 @@ SYSCALL_DEFINE3(landlock_create_ruleset,
->  	/* Build-time checks. */
->  	build_check_abi();
->  
-> -	if (!landlock_initialized)
-> +	if (is_not_initialized())
->  		return -EOPNOTSUPP;
+Cc: stable@vger.kernel.org
+Link: https://github.com/ClangBuiltLinux/linux/issues/1985
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+ net/xfrm/xfrm_user.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Technically, any Landlock user needs to go through the
-landlock_create_ruleset() system call anyway; it might be enough to
-just add it in that place and leave the other system calls as they
-were.  Then you could also omit the special function.
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index f037be190bae..912c1189ba41 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -2017,6 +2017,9 @@ static int copy_to_user_tmpl(struct xfrm_policy *xp, struct sk_buff *skb)
+ 	if (xp->xfrm_nr == 0)
+ 		return 0;
+ 
++	if (xp->xfrm_nr > XFRM_MAX_DEPTH)
++		return -ENOBUFS;
++
+ 	for (i = 0; i < xp->xfrm_nr; i++) {
+ 		struct xfrm_user_tmpl *up = &vec[i];
+ 		struct xfrm_tmpl *kp = &xp->xfrm_vec[i];
 
-Reviewed-by: Günther Noack <gnoack3000@gmail.com>
+---
+base-commit: 14dec56fdd4c70a0ebe40077368e367421ea6fef
+change-id: 20240221-xfrm-avoid-clang-fortify-warning-copy_to_user_tmpl-40cb10b003e3
 
-–Günther
+Best regards,
+-- 
+Nathan Chancellor <nathan@kernel.org>
+
 
