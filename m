@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-22574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF07A85DCAD
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:56:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D71385DB17
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:37:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28A351C227D7
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:56:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B25F91C20A65
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:37:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 794BE79DAE;
-	Wed, 21 Feb 2024 13:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 192BB763F6;
+	Wed, 21 Feb 2024 13:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vkmt1xSs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YRba+sxB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371E376C99;
-	Wed, 21 Feb 2024 13:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD13669318;
+	Wed, 21 Feb 2024 13:36:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523775; cv=none; b=lU9aNp7HN0yS8Us6ZW4D0TxzivajTYD5yPh9QbTvR9pwQGHSlhRdmyIelDxS+R79IvKTTnVaSL9LRf+WqI31nHCaz+Bigr4G31BMbpWLYdJ09gKf0wkwKtvqGurdsKqUVGEkmu/kQle+MJSviT1HF8bHCcHM8EoFPpCkLP6Woxk=
+	t=1708522608; cv=none; b=Mu9xoz7JjLYqj+xlMjsLBtF6wvDsD0mdSWmwU+agyJx7iRra18Exj7qjU55/81AxDQhkhyPCLkMcHc+sWap1c6NZnaCe7ftkn5qV8CtQ/Z+9OukaSUdpkoPJiZgI9+y+hoGXRpS2VbvRUIyy7PM1/TxlsKrgCAQv4fl7ZczpMNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523775; c=relaxed/simple;
-	bh=vIUsHJ1ly/bOWynOcCRVSEbhZ6afQbAUwJZBGuki1aU=;
+	s=arc-20240116; t=1708522608; c=relaxed/simple;
+	bh=8B+OgOdpXUNwB6UKX2s/2SWWQHr4BuNMS/fUaZcP/Bo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UXRo03i72Pk98ZbxWrZhWHt+WsMQjRgyncLU4K8BB8m0n5NKnq3DEmoDkbLzeSKpXKDuii73Jj+rfjxQXPaO9lOZm4RmFuLbzKIWzEFrFiOHUPnTVW9FDkGVQ5rOzVxRYl69ZDhJvK32yugN8n/wz1V8mBpJkQsHxGDVKhjECx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vkmt1xSs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B92F1C433F1;
-	Wed, 21 Feb 2024 13:56:14 +0000 (UTC)
+	 MIME-Version; b=gtzU3AbjeTAIYsE3F0V6KGQUWXT24kET0gtHfcndh/KIx/VU/8+QTCiZCuSW+sMnj4Rrm6xzII8Q5KWzqmDrHUkmwkOayIatdCT9YqJGkowshrFyowPIDCGek2PgjWD1YoJbSOhQiIfPlnS/4sF9O8xQ5x799XSCRiKTOp9Ctdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YRba+sxB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5472BC433C7;
+	Wed, 21 Feb 2024 13:36:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523775;
-	bh=vIUsHJ1ly/bOWynOcCRVSEbhZ6afQbAUwJZBGuki1aU=;
+	s=korg; t=1708522608;
+	bh=8B+OgOdpXUNwB6UKX2s/2SWWQHr4BuNMS/fUaZcP/Bo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vkmt1xSsNCNVNGJ/Xq+8kaCX0vktGjCNZaD1zKqoygU0BXWww8HY7TnoHqX0M5qzJ
-	 GmlmkrZNJiYRvMHnYJkD+sQMBA/68bdSHhR72ACnBXPs9iwn1icmHdLy8+Cr29XvfR
-	 kYN0cpiborvpjOpGN7G2l+nZ3e0JObbOEIQltVSM=
+	b=YRba+sxBYW2uI/e/J09+Ncqg7Q4431vx5FalgmxqZLgraBpXqJHhslsK+r9N1eEIZ
+	 iCcEmRYu6iyh/90sZ9DKXXWGUQB1rGEzBauvDF/JKuoep075VvlqmR+wQ0zow7E3YH
+	 PiP9pcDwLvMFM86I9oENZ4fj6AXIu20E8dpEX0hE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhengchao Shao <shaozhengchao@huawei.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Johan Jonker <jbx6244@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 053/379] ipv6: init the accept_queues spinlocks in inet6_create
+Subject: [PATCH 5.15 181/476] ARM: dts: rockchip: fix rk3036 hdmi ports node
 Date: Wed, 21 Feb 2024 14:03:52 +0100
-Message-ID: <20240221125956.486084710@linuxfoundation.org>
+Message-ID: <20240221130014.589097203@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchao Shao <shaozhengchao@huawei.com>
+From: Johan Jonker <jbx6244@gmail.com>
 
-[ Upstream commit 435e202d645c197dcfd39d7372eb2a56529b6640 ]
+[ Upstream commit 27ded76ef0fcfcf939914532aae575cf23c221b4 ]
 
-In commit 198bc90e0e73("tcp: make sure init the accept_queue's spinlocks
-once"), the spinlocks of accept_queue are initialized only when socket is
-created in the inet4 scenario. The locks are not initialized when socket
-is created in the inet6 scenario. The kernel reports the following error:
-INFO: trying to register non-static key.
-The code is fine but needs lockdep annotation, or maybe
-you didn't initialize this object before use?
-turning off the locking correctness validator.
-Hardware name: Red Hat KVM, BIOS 0.5.1 01/01/2011
-Call Trace:
-<TASK>
-	dump_stack_lvl (lib/dump_stack.c:107)
-	register_lock_class (kernel/locking/lockdep.c:1289)
-	__lock_acquire (kernel/locking/lockdep.c:5015)
-	lock_acquire.part.0 (kernel/locking/lockdep.c:5756)
-	_raw_spin_lock_bh (kernel/locking/spinlock.c:178)
-	inet_csk_listen_stop (net/ipv4/inet_connection_sock.c:1386)
-	tcp_disconnect (net/ipv4/tcp.c:2981)
-	inet_shutdown (net/ipv4/af_inet.c:935)
-	__sys_shutdown (./include/linux/file.h:32 net/socket.c:2438)
-	__x64_sys_shutdown (net/socket.c:2445)
-	do_syscall_64 (arch/x86/entry/common.c:52)
-	entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:129)
-RIP: 0033:0x7f52ecd05a3d
-Code: 5b 41 5c c3 66 0f 1f 84 00 00 00 00 00 f3 0f 1e fa 48 89 f8 48 89 f7
-48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff
-ff 73 01 c3 48 8b 0d ab a3 0e 00 f7 d8 64 89 01 48
-RSP: 002b:00007f52ecf5dde8 EFLAGS: 00000293 ORIG_RAX: 0000000000000030
-RAX: ffffffffffffffda RBX: 00007f52ecf5e640 RCX: 00007f52ecd05a3d
-RDX: 00007f52ecc8b188 RSI: 0000000000000000 RDI: 0000000000000004
-RBP: 00007f52ecf5de20 R08: 00007ffdae45c69f R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000293 R12: 00007f52ecf5e640
-R13: 0000000000000000 R14: 00007f52ecc8b060 R15: 00007ffdae45c6e0
+Fix hdmi ports node so that it matches the
+rockchip,inno-hdmi.yaml binding.
 
-Fixes: 198bc90e0e73 ("tcp: make sure init the accept_queue's spinlocks once")
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240122102001.2851701-1-shaozhengchao@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Johan Jonker <jbx6244@gmail.com>
+Link: https://lore.kernel.org/r/9a2afac1-ed5c-382d-02b0-b2f5f1af3abb@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/af_inet6.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm/boot/dts/rk3036.dtsi | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv6/af_inet6.c b/net/ipv6/af_inet6.c
-index 4247997077bf..329b3b36688a 100644
---- a/net/ipv6/af_inet6.c
-+++ b/net/ipv6/af_inet6.c
-@@ -197,6 +197,9 @@ static int inet6_create(struct net *net, struct socket *sock, int protocol,
- 	if (INET_PROTOSW_REUSE & answer_flags)
- 		sk->sk_reuse = SK_CAN_REUSE;
+diff --git a/arch/arm/boot/dts/rk3036.dtsi b/arch/arm/boot/dts/rk3036.dtsi
+index ffa9bc7ed3d0..0af1a86f9dc4 100644
+--- a/arch/arm/boot/dts/rk3036.dtsi
++++ b/arch/arm/boot/dts/rk3036.dtsi
+@@ -402,12 +402,20 @@
+ 		pinctrl-0 = <&hdmi_ctl>;
+ 		status = "disabled";
  
-+	if (INET_PROTOSW_ICSK & answer_flags)
-+		inet_init_csk_locks(sk);
+-		hdmi_in: port {
++		ports {
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
+-			hdmi_in_vop: endpoint@0 {
 +
- 	inet = inet_sk(sk);
- 	inet->is_icsk = (INET_PROTOSW_ICSK & answer_flags) != 0;
- 
++			hdmi_in: port@0 {
+ 				reg = <0>;
+-				remote-endpoint = <&vop_out_hdmi>;
++
++				hdmi_in_vop: endpoint {
++					remote-endpoint = <&vop_out_hdmi>;
++				};
++			};
++
++			hdmi_out: port@1 {
++				reg = <1>;
+ 			};
+ 		};
+ 	};
 -- 
 2.43.0
 
