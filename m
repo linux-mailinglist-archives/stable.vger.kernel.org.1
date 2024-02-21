@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-22834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6470785DE04
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:14:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C650C85DC25
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:50:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C85E28464C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 67977B242BA
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:49:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62EF580604;
-	Wed, 21 Feb 2024 14:11:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B874469942;
+	Wed, 21 Feb 2024 13:49:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z1NFeiNX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1jXgkgLo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20DC080616;
-	Wed, 21 Feb 2024 14:11:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39097EEF6;
+	Wed, 21 Feb 2024 13:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524668; cv=none; b=axt7MWsI0kPDCRGyGROPSw5svmSIRFmm16krsdZxAPej1gN4Dy6BMDJamyCU3AL2tEhZP/sH8BDEUBpyqzjuiLTbWHU3GOwKrB5OmZh+qsBE1dLyoOlVdb536YLY86C7vyX7OwnCHxs8b6iGYA8uk0cR9Qx/Ke1h/D9R8mS4gmI=
+	t=1708523365; cv=none; b=HCVHVAj5oSnNjibmrHFR2Hp6B2FGgwPS/pi8pGcVEYzdbl/O4CazuRJ02j8hQpA5A574XT4r4OIMc55Qwmgr4Ly/Ozt5i8laM1EQ1YB+kybqTOlmQRpL0DBNUVNlSGYCdj26dexgskVJ60TcKhtfj7Kb4uzhZ79Sov7VzA04wM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524668; c=relaxed/simple;
-	bh=po3HOLoxoWO6GdQN/K4hXHCP9gVWgt193pfZUbOMIs0=;
+	s=arc-20240116; t=1708523365; c=relaxed/simple;
+	bh=+rbt65n4sVWc8bZVVofkUMq5Sf8HB2oAHcCgJRvbi88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z9cTqBAqXIEHu/pnmUwL6ey8J1sUnf6yzTSbstLIGcUdxiQ6nZnDbZLrkjoCgpnsTVhNzm2B/jVw2ighsIw5r6/yokpfXYMl2qjMAdcQATgvIq1hplgAj3p2UY9zK05ZafPKTe71kovKhiOwYI2Rks9Jmits23L4Y6GQHYbH19c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z1NFeiNX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DBE2C433C7;
-	Wed, 21 Feb 2024 14:11:07 +0000 (UTC)
+	 MIME-Version; b=sAGzOlv5E7hX2J6ZWc7czzpdB4EJiF5Xxl1HPss3wD0zJLR9K1YEXEoEekRFMkkKI7zJ2O/vhaipxQVWRR1nwDmPsm3Sf/P/QBrL2ruRf76varLOKm8tczSxHgtsDamI2Mk8gAt+LaZNY+9asyhCvHZ4UhyznzBtQuLgmA4L42k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1jXgkgLo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 221C4C433F1;
+	Wed, 21 Feb 2024 13:49:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524668;
-	bh=po3HOLoxoWO6GdQN/K4hXHCP9gVWgt193pfZUbOMIs0=;
+	s=korg; t=1708523364;
+	bh=+rbt65n4sVWc8bZVVofkUMq5Sf8HB2oAHcCgJRvbi88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z1NFeiNXqDZOiHeCQocPfI2Th0sz5s4j/4EDQjrtj5IiVTLT3ZtofxMIoLwu1mDW5
-	 514gar+xtCMWHlTraIr5LiS7v4nQf3WfMMrdpIWRwF0Y9m/RMZxA/fy/9A7v7CMklQ
-	 eVsOTMv6uJ+cBMFr5ijBDsThei9mgO6+5jIK7Kks=
+	b=1jXgkgLoQeaqZM51f30j/juxfD5VUWqZj6oenxppyZgy3y/7biRzhoIEsSbVZNb/i
+	 7hzvpXPcE7uJPCI0kyuTIQ3rnVVMZYNHX8K2f23y78dfBFBPEarETPASE50qsaDiwl
+	 EkV4uzLZB3ZJ3x/0rofISxaEF2M6klMHDWZMxS+g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	lonial con <kongln9170@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.10 285/379] netfilter: nft_set_rbtree: skip end interval element from gc
-Date: Wed, 21 Feb 2024 14:07:44 +0100
-Message-ID: <20240221130003.340642719@linuxfoundation.org>
+	Kunkun Jiang <jiangkunkun@huawei.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 5.15 414/476] irqchip/gic-v3-its: Fix GICv4.1 VPE affinity update
+Date: Wed, 21 Feb 2024 14:07:45 +0100
+Message-ID: <20240221130023.326143747@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Marc Zyngier <maz@kernel.org>
 
-commit 60c0c230c6f046da536d3df8b39a20b9a9fd6af0 upstream.
+commit af9acbfc2c4b72c378d0b9a2ee023ed01055d3e2 upstream.
 
-rbtree lazy gc on insert might collect an end interval element that has
-been just added in this transactions, skip end interval elements that
-are not yet active.
+When updating the affinity of a VPE, the VMOVP command is currently skipped
+if the two CPUs are part of the same VPE affinity.
 
-Fixes: f718863aca46 ("netfilter: nft_set_rbtree: fix overlap expiration walk")
+But this is wrong, as the doorbell corresponding to this VPE is still
+delivered on the 'old' CPU, which screws up the balancing.  Furthermore,
+offlining that 'old' CPU results in doorbell interrupts generated for this
+VPE being discarded.
+
+The harsh reality is that VMOVP cannot be elided when a set_affinity()
+request occurs. It needs to be obeyed, and if an optimisation is to be
+made, it is at the point where the affinity change request is made (such as
+in KVM).
+
+Drop the VMOVP elision altogether, and only use the vpe_table_mask
+to try and stay within the same ITS affinity group if at all possible.
+
+Fixes: dd3f050a216e (irqchip/gic-v4.1: Implement the v4.1 flavour of VMOVP)
+Reported-by: Kunkun Jiang <jiangkunkun@huawei.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Reported-by: lonial con <kongln9170@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Link: https://lore.kernel.org/r/20240213101206.2137483-4-maz@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_set_rbtree.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/irqchip/irq-gic-v3-its.c |   22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
---- a/net/netfilter/nft_set_rbtree.c
-+++ b/net/netfilter/nft_set_rbtree.c
-@@ -237,7 +237,7 @@ static void nft_rbtree_gc_remove(struct
- 
- static const struct nft_rbtree_elem *
- nft_rbtree_gc_elem(const struct nft_set *__set, struct nft_rbtree *priv,
--		   struct nft_rbtree_elem *rbe, u8 genmask)
-+		   struct nft_rbtree_elem *rbe)
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -3800,8 +3800,9 @@ static int its_vpe_set_affinity(struct i
+ 				bool force)
  {
- 	struct nft_set *set = (struct nft_set *)__set;
- 	struct rb_node *prev = rb_prev(&rbe->node);
-@@ -256,7 +256,7 @@ nft_rbtree_gc_elem(const struct nft_set
- 	while (prev) {
- 		rbe_prev = rb_entry(prev, struct nft_rbtree_elem, node);
- 		if (nft_rbtree_interval_end(rbe_prev) &&
--		    nft_set_elem_active(&rbe_prev->ext, genmask))
-+		    nft_set_elem_active(&rbe_prev->ext, NFT_GENMASK_ANY))
- 			break;
+ 	struct its_vpe *vpe = irq_data_get_irq_chip_data(d);
+-	int from, cpu = cpumask_first(mask_val);
++	struct cpumask common, *table_mask;
+ 	unsigned long flags;
++	int from, cpu;
  
- 		prev = rb_prev(prev);
-@@ -367,7 +367,7 @@ static int __nft_rbtree_insert(const str
- 		    nft_set_elem_active(&rbe->ext, cur_genmask)) {
- 			const struct nft_rbtree_elem *removed_end;
+ 	/*
+ 	 * Changing affinity is mega expensive, so let's be as lazy as
+@@ -3817,19 +3818,22 @@ static int its_vpe_set_affinity(struct i
+ 	 * taken on any vLPI handling path that evaluates vpe->col_idx.
+ 	 */
+ 	from = vpe_to_cpuid_lock(vpe, &flags);
+-	if (from == cpu)
+-		goto out;
+-
+-	vpe->col_idx = cpu;
++	table_mask = gic_data_rdist_cpu(from)->vpe_table_mask;
  
--			removed_end = nft_rbtree_gc_elem(set, priv, rbe, genmask);
-+			removed_end = nft_rbtree_gc_elem(set, priv, rbe);
- 			if (IS_ERR(removed_end))
- 				return PTR_ERR(removed_end);
+ 	/*
+-	 * GICv4.1 allows us to skip VMOVP if moving to a cpu whose RD
+-	 * is sharing its VPE table with the current one.
++	 * If we are offered another CPU in the same GICv4.1 ITS
++	 * affinity, pick this one. Otherwise, any CPU will do.
+ 	 */
+-	if (gic_data_rdist_cpu(cpu)->vpe_table_mask &&
+-	    cpumask_test_cpu(from, gic_data_rdist_cpu(cpu)->vpe_table_mask))
++	if (table_mask && cpumask_and(&common, mask_val, table_mask))
++		cpu = cpumask_test_cpu(from, &common) ? from : cpumask_first(&common);
++	else
++		cpu = cpumask_first(mask_val);
++
++	if (from == cpu)
+ 		goto out;
+ 
++	vpe->col_idx = cpu;
++
+ 	its_send_vmovp(vpe);
+ 	its_vpe_db_proxy_move(vpe, from, cpu);
  
 
 
