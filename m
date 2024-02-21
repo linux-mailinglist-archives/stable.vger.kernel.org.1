@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-22132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7135585DA84
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:32:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAF2B85DA5F
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:31:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 12BBBB274B5
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:32:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 842F3281AA4
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:31:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E9657992D;
-	Wed, 21 Feb 2024 13:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0189B7C0BD;
+	Wed, 21 Feb 2024 13:27:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HNw1P4Bk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2dqNcgyX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A13973161;
-	Wed, 21 Feb 2024 13:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91FB69D2E;
+	Wed, 21 Feb 2024 13:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522140; cv=none; b=Hyv9qNF2e5SmvpfHdWRa6mXIer69k2Q6OBQX9Obd6cr+faQA/I4c+lpXs37dt+wl9XSsL2Y4wWrL/GMBdR0fdzcjgYXmkc0cITo+B9quyKppgP20hrMmPg1+qVO8hn5ZxfBV3FmE316WzZbCNbOkLU1tQzaLLZYIdg0Wsi1aGnk=
+	t=1708522037; cv=none; b=ma0cXd9jozPxIA3eu05zLO9kP9844axbt2I1pZZ1kCSw2jv4XcSpLj/KdtiwndkJ56sztIrqOCkPuUqxuvLpll0gga8YMeOTQ7ZfewzPO7TyRGWFCqRwzRGCOXPvgP/tikv24l0lA+vCJJ6uFT3svzPuYBnBsMLraqxnVWNXA30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522140; c=relaxed/simple;
-	bh=AsUr1qpPW/OWQBc1PV7+HxaVGMmW2DiV/OzzoNbGiSM=;
+	s=arc-20240116; t=1708522037; c=relaxed/simple;
+	bh=/iH7i1U4+nbrRg70LOYZSDuVVBn9sifEjT3gouJ1jLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cv2mhX0RwUtRIlfH1i0RV/6PeA9cYDAhEUZLs7s/+fmp0siXeXTE2BrOxJi3VvB3rKwau4ESiSZNHctBtSdmwsmJfCC2fmwh4KOfKGdA4Aq5W6IX4IvVz2HQkXuWREp9D7FsFBBCUbnvZeJOHFinheoefMON491iSNrFurBWKis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HNw1P4Bk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AEA7C433C7;
-	Wed, 21 Feb 2024 13:28:59 +0000 (UTC)
+	 MIME-Version; b=PY0oT6A+5Rl/PzK102O0taCbbSt9kRqm/DYFoJjxS1miS58tjLkfhn9lSzT1YSJCTY+kDatBBjQ+3K0WkSZqt1MKmj4Gck+VUD15ANLyTuUb01/D+LFuiXmPBVLpmkk+V1juB8W4gZ05R4+BGmaGsQWRwgy1+rXWYpu4T1DpulY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2dqNcgyX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3980AC433C7;
+	Wed, 21 Feb 2024 13:27:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522140;
-	bh=AsUr1qpPW/OWQBc1PV7+HxaVGMmW2DiV/OzzoNbGiSM=;
+	s=korg; t=1708522037;
+	bh=/iH7i1U4+nbrRg70LOYZSDuVVBn9sifEjT3gouJ1jLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HNw1P4BkhpzpV7lRXMpCRsBg+ZVEi4ID923ibdYE4Ko0eZWoc+XVHWyRDoE/xYq3K
-	 jtWzD3COSbwAeP4n7QPJGJpHDPjy1oJtQTf5IkNKGpccZUrDUoAKTo5Mls4BSZj9FP
-	 WD5JVFrX48u+Xf1fQokyPpr7PI0mjJWurS5V2WBc=
+	b=2dqNcgyXa0mZ2HlqJ7JTe9YdP6XKbnye78XtIWYCrcliy891yp7/M7Nn3Nle8/eYH
+	 Df4mwREW+iNwON+rVzUw5RorTvN64MmRlfZBd2DzqJGzzPlX7oCNkVOyzaRuryIv2F
+	 QLrCtits1H6At/XSFWCxd8A1/tPOnfcPonGlzICs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dinghao Liu <dinghao.liu@zju.edu.cn>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 062/476] net/mlx5e: fix a potential double-free in fs_any_create_groups
-Date: Wed, 21 Feb 2024 14:01:53 +0100
-Message-ID: <20240221130010.224239262@linuxfoundation.org>
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	linux-hardening@vger.kernel.org,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Kees Cook <keescook@chromium.org>
+Subject: [PATCH 5.15 063/476] overflow: Allow mixed type arguments
+Date: Wed, 21 Feb 2024 14:01:54 +0100
+Message-ID: <20240221130010.264862772@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
 References: <20240221130007.738356493@linuxfoundation.org>
@@ -68,41 +70,124 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dinghao Liu <dinghao.liu@zju.edu.cn>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit aef855df7e1bbd5aa4484851561211500b22707e ]
+commit d219d2a9a92e39aa92799efe8f2aa21259b6dd82 upstream.
 
-When kcalloc() for ft->g succeeds but kvzalloc() for in fails,
-fs_any_create_groups() will free ft->g. However, its caller
-fs_any_create_table() will free ft->g again through calling
-mlx5e_destroy_flow_table(), which will lead to a double-free.
-Fix this by setting ft->g to NULL in fs_any_create_groups().
+When the check_[op]_overflow() helpers were introduced, all arguments
+were required to be the same type to make the fallback macros simpler.
+However, now that the fallback macros have been removed[1], it is fine
+to allow mixed types, which makes using the helpers much more useful,
+as they can be used to test for type-based overflows (e.g. adding two
+large ints but storing into a u8), as would be handy in the drm core[2].
 
-Fixes: 0f575c20bf06 ("net/mlx5e: Introduce Flow Steering ANY API")
-Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Remove the restriction, and add additional self-tests that exercise
+some of the mixed-type overflow cases, and double-check for accidental
+macro side-effects.
+
+[1] https://git.kernel.org/linus/4eb6bd55cfb22ffc20652732340c4962f3ac9a91
+[2] https://lore.kernel.org/lkml/20220824084514.2261614-2-gwan-gyeong.mun@intel.com
+
+Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: linux-hardening@vger.kernel.org
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Reviewed-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+Tested-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+Signed-off-by: Kees Cook <keescook@chromium.org>
+[ dropped the test portion of the commit as that doesn't apply to
+  5.15.y - gregkh]
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/fs_tt_redirect.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/overflow.h |   72 ++++++++++++++++++++++++++---------------------
+ 1 file changed, 41 insertions(+), 31 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/fs_tt_redirect.c b/drivers/net/ethernet/mellanox/mlx5/core/en/fs_tt_redirect.c
-index b26edbc53cad..05905e988431 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/fs_tt_redirect.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/fs_tt_redirect.c
-@@ -435,6 +435,7 @@ static int fs_any_create_groups(struct mlx5e_flow_table *ft)
- 	in = kvzalloc(inlen, GFP_KERNEL);
- 	if  (!in || !ft->g) {
- 		kfree(ft->g);
-+		ft->g = NULL;
- 		kvfree(in);
- 		return -ENOMEM;
- 	}
--- 
-2.43.0
-
+--- a/include/linux/overflow.h
++++ b/include/linux/overflow.h
+@@ -51,40 +51,50 @@ static inline bool __must_check __must_c
+ 	return unlikely(overflow);
+ }
+ 
+-/*
+- * For simplicity and code hygiene, the fallback code below insists on
+- * a, b and *d having the same type (similar to the min() and max()
+- * macros), whereas gcc's type-generic overflow checkers accept
+- * different types. Hence we don't just make check_add_overflow an
+- * alias for __builtin_add_overflow, but add type checks similar to
+- * below.
++/** check_add_overflow() - Calculate addition with overflow checking
++ *
++ * @a: first addend
++ * @b: second addend
++ * @d: pointer to store sum
++ *
++ * Returns 0 on success.
++ *
++ * *@d holds the results of the attempted addition, but is not considered
++ * "safe for use" on a non-zero return value, which indicates that the
++ * sum has overflowed or been truncated.
+  */
+-#define check_add_overflow(a, b, d) __must_check_overflow(({	\
+-	typeof(a) __a = (a);			\
+-	typeof(b) __b = (b);			\
+-	typeof(d) __d = (d);			\
+-	(void) (&__a == &__b);			\
+-	(void) (&__a == __d);			\
+-	__builtin_add_overflow(__a, __b, __d);	\
+-}))
++#define check_add_overflow(a, b, d)	\
++	__must_check_overflow(__builtin_add_overflow(a, b, d))
+ 
+-#define check_sub_overflow(a, b, d) __must_check_overflow(({	\
+-	typeof(a) __a = (a);			\
+-	typeof(b) __b = (b);			\
+-	typeof(d) __d = (d);			\
+-	(void) (&__a == &__b);			\
+-	(void) (&__a == __d);			\
+-	__builtin_sub_overflow(__a, __b, __d);	\
+-}))
++/** check_sub_overflow() - Calculate subtraction with overflow checking
++ *
++ * @a: minuend; value to subtract from
++ * @b: subtrahend; value to subtract from @a
++ * @d: pointer to store difference
++ *
++ * Returns 0 on success.
++ *
++ * *@d holds the results of the attempted subtraction, but is not considered
++ * "safe for use" on a non-zero return value, which indicates that the
++ * difference has underflowed or been truncated.
++ */
++#define check_sub_overflow(a, b, d)	\
++	__must_check_overflow(__builtin_sub_overflow(a, b, d))
+ 
+-#define check_mul_overflow(a, b, d) __must_check_overflow(({	\
+-	typeof(a) __a = (a);			\
+-	typeof(b) __b = (b);			\
+-	typeof(d) __d = (d);			\
+-	(void) (&__a == &__b);			\
+-	(void) (&__a == __d);			\
+-	__builtin_mul_overflow(__a, __b, __d);	\
+-}))
++/** check_mul_overflow() - Calculate multiplication with overflow checking
++ *
++ * @a: first factor
++ * @b: second factor
++ * @d: pointer to store product
++ *
++ * Returns 0 on success.
++ *
++ * *@d holds the results of the attempted multiplication, but is not
++ * considered "safe for use" on a non-zero return value, which indicates
++ * that the product has overflowed or been truncated.
++ */
++#define check_mul_overflow(a, b, d)	\
++	__must_check_overflow(__builtin_mul_overflow(a, b, d))
+ 
+ /** check_shl_overflow() - Calculate a left-shifted value and check overflow
+  *
 
 
 
