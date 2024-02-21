@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-22827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2E5285DDFC
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:14:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4CD785DEF9
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:23:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D453A1C237F4
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6CF21C23C19
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:23:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C02E80058;
-	Wed, 21 Feb 2024 14:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 467D97A708;
+	Wed, 21 Feb 2024 14:23:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Na20rqdG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s+HxzJzU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA127C0BD;
-	Wed, 21 Feb 2024 14:10:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053F969E00;
+	Wed, 21 Feb 2024 14:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524646; cv=none; b=RlxXUqyV8D93MtoMwYcUd80EgNDJnb/KJL8hc2W4PAbQCCsClhHP8Tb0w90bIJHniqY9va44V4fGKJG+uKE0ubykx5tUnhoZLDmdigfyqK5Fp4l9/hbtBm8qNwoBUxZDZSv1IqboQ6ELAvb8N82CiAJO2rpfRuRubqQmz0Qm1RU=
+	t=1708525402; cv=none; b=QkGjMTTKu9iMy4FF5Fj/a1zBs7XYQ+UUe7o8NmwQHpLNRfpCZWjpDLKWnOK+iYZEXapIEZB/mUFmW1ZHJcAy1Uwautss1rLu43Q8Yo6NNvNjQPJwAofKMeZ5soC7Dar2DqWN2BW3VUfmoHD+poxBKdtGoq9O645BogvJlM+vKZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524646; c=relaxed/simple;
-	bh=PTUblDmFXtoFAtIczjcb1R5D4x80gmw0/6NHVKzV4dY=;
+	s=arc-20240116; t=1708525402; c=relaxed/simple;
+	bh=oYumFGgQYTznrV+PU+BEBiMiWhIr6If6PBPYeTnRQwo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PZQVleUyglvNbmYvR5Eg2F0HB7mB8sVwUKgVNw1VpLCXDVD0tAZE/gfcI4ulHkP0YbexkAg9VZpvBjFoiyvncPtV3fIi98rpP+TnEz/cG39bQkCWlsi+l9rqyY9T6r/9eAc9YXSUPg83/+N79vTDn9iYUzN3kbquWQ7gB5QxUlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Na20rqdG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C7E1C433F1;
-	Wed, 21 Feb 2024 14:10:46 +0000 (UTC)
+	 MIME-Version; b=XUyFWlVfYz4MQfVwfwzliAfZuiDgOKkjRet4/NttdAdNUn0qNFbYBNpy2FwKp3VYBxY6dNJcwQSQZpvJWDS9qqmo+5D6w/SkplTuH+spimkDScuy2LRELQ1IZwASYCDWpUhfW9f2vyjDfYsqUIMQIAcpjynXQ95LePwFUAelJhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s+HxzJzU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24A18C433F1;
+	Wed, 21 Feb 2024 14:23:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524646;
-	bh=PTUblDmFXtoFAtIczjcb1R5D4x80gmw0/6NHVKzV4dY=;
+	s=korg; t=1708525401;
+	bh=oYumFGgQYTznrV+PU+BEBiMiWhIr6If6PBPYeTnRQwo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Na20rqdGfnPPyAipAF82ByF4d/NTZGYXk5CQv2QXjS5vzui9mBQGbYwbRS1ElFY0k
-	 dAdx7S52NRXToAAi3MtGgQbN+3LsPErOvAysOEd+2cMwV1jDzp6ER9kPzeC2DkGfaO
-	 mWb0apkg73PmlThX0KuIeuCoPCX6ubHWUJfyGpII=
+	b=s+HxzJzUn1w9+ikNgwNADowb6Q/f52UlO622xwGN8KKU93/glKLCVp4YFR0J3r59r
+	 NdNIcd1axa7wMyD0N12Q1AWrpZHdikj7xmJKVHzZjAZnp7Gh0+wu13r5iFEegtuzuk
+	 XOVkoG4btW7oFLwqRYcSn13kxvs+Ke5djCFLWlN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Sean Young <sean@mess.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Peter Robinson <pbrobinson@gmail.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 306/379] media: ir_toy: fix a memleak in irtoy_tx
-Date: Wed, 21 Feb 2024 14:08:05 +0100
-Message-ID: <20240221130003.972166266@linuxfoundation.org>
+Subject: [PATCH 5.4 145/267] mfd: ti_am335x_tscadc: Fix TI SoC dependencies
+Date: Wed, 21 Feb 2024 14:08:06 +0100
+Message-ID: <20240221125944.611309746@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Peter Robinson <pbrobinson@gmail.com>
 
-[ Upstream commit dc9ceb90c4b42c6e5c6757df1d6257110433788e ]
+[ Upstream commit 284d16c456e5d4b143f375b8ccc4038ab3f4ee0f ]
 
-When irtoy_command fails, buf should be freed since it is allocated by
-irtoy_tx, or there is a memleak.
+The ti_am335x_tscadc is specific to some TI SoCs, update
+the dependencies for those SoCs and compile testing.
 
-Fixes: 4114978dcd24 ("media: ir_toy: prevent device from hanging during transmit")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
+Link: https://lore.kernel.org/r/20231220155643.445849-1-pbrobinson@gmail.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/rc/ir_toy.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/mfd/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/media/rc/ir_toy.c b/drivers/media/rc/ir_toy.c
-index 7f394277478b..cd2fddf003bd 100644
---- a/drivers/media/rc/ir_toy.c
-+++ b/drivers/media/rc/ir_toy.c
-@@ -324,6 +324,7 @@ static int irtoy_tx(struct rc_dev *rc, uint *txbuf, uint count)
- 			    sizeof(COMMAND_SMODE_EXIT), STATE_RESET);
- 	if (err) {
- 		dev_err(irtoy->dev, "exit sample mode: %d\n", err);
-+		kfree(buf);
- 		return err;
- 	}
+diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+index 43169f25da1f..385db201fe9a 100644
+--- a/drivers/mfd/Kconfig
++++ b/drivers/mfd/Kconfig
+@@ -1299,6 +1299,7 @@ config MFD_DAVINCI_VOICECODEC
  
-@@ -331,6 +332,7 @@ static int irtoy_tx(struct rc_dev *rc, uint *txbuf, uint count)
- 			    sizeof(COMMAND_SMODE_ENTER), STATE_COMMAND);
- 	if (err) {
- 		dev_err(irtoy->dev, "enter sample mode: %d\n", err);
-+		kfree(buf);
- 		return err;
- 	}
- 
+ config MFD_TI_AM335X_TSCADC
+ 	tristate "TI ADC / Touch Screen chip support"
++	depends on ARCH_OMAP2PLUS || ARCH_K3 || COMPILE_TEST
+ 	select MFD_CORE
+ 	select REGMAP
+ 	select REGMAP_MMIO
 -- 
 2.43.0
 
