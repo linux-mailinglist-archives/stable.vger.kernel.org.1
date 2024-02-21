@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-22560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85D4A85DC9E
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:55:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95CBD85DAE2
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:35:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2690FB23622
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:55:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40931281D24
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:35:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41B727BB10;
-	Wed, 21 Feb 2024 13:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A5D276905;
+	Wed, 21 Feb 2024 13:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="swOI2eeG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jEqQVu2m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 001AA7BAFB;
-	Wed, 21 Feb 2024 13:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36FA353816;
+	Wed, 21 Feb 2024 13:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523724; cv=none; b=rQt9WDAcAIE/R28FVdf9AIJAuPzhC4M7mpC8CRL1yJAQFUuD6fvF+EP5eAeJsKW1cbZDOLImqk8+CGRvyg479JO4U/UMqACPHwOMWa8+BniJ2c159tLB+agFdAbY8IWwd5rlJDkHyzR7unstNgyCFDxyP9dpZdzuzf/xGHfdzN4=
+	t=1708522462; cv=none; b=QWezCV4n8yG1GXlT9DkHlU+75tKgGmnUazC27UI0mhZEOHxqCgOSTNaAnOZPbpQnHBACt6Mr5+E5EeGzHRUVanfw7Smn83hxeMgRIA6Ia3abfciAX3MQHR7ZvRfXArCHdtroN3dMby/YgJrfzBwpbdvzZJ3pel51hbecBjpw30k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523724; c=relaxed/simple;
-	bh=HSFlTWYLrggUnjhdp3I1yDa+Vv1FzqVsZ/pzg5z7qrU=;
+	s=arc-20240116; t=1708522462; c=relaxed/simple;
+	bh=breWKp9xRUzk1/J3iVGTmhPfZt45A/kbrs37t5XrELs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RwD2FcMQxpXhZA9GlNNl5W6uxYnTEi/m3FRa4Km/W436zQn0U4OiLqOg1FHG0YDgfhmlUgmh0BYU/BRB31iTjYpAZQeHhd8Np/uPSOFoS5dkl1XfGYz6QloDi39g+E0vKHL4S9Q8Ae3Lo5MbbiGWDDFnK0ThH6jknfsgYiEBxF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=swOI2eeG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CCC6C433C7;
-	Wed, 21 Feb 2024 13:55:23 +0000 (UTC)
+	 MIME-Version; b=ZEd+A+JqE3E5brXbecxeDhdk7jesczsmsSL/BEpVS83fKivQ+b6FkV4h5jSrikQVVnM2VzFesUp+yC5TFxkQvoNTJjZ2WNZatkVqVwsIUt+an9NoSrw4PN4lDhHl5iXv74cyxZ9EgdaE6Cvd6zROXIQSN+efoFGR+XjRZwbc5+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jEqQVu2m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0FEBC433F1;
+	Wed, 21 Feb 2024 13:34:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523723;
-	bh=HSFlTWYLrggUnjhdp3I1yDa+Vv1FzqVsZ/pzg5z7qrU=;
+	s=korg; t=1708522462;
+	bh=breWKp9xRUzk1/J3iVGTmhPfZt45A/kbrs37t5XrELs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=swOI2eeGWbpImpOmPzQGFOxz6jTFo3e1BAuwxHs879H8WLv+4B98sys+xv2T7JkAW
-	 T4wjeS97A9NrvclI19CY8ZCp/b8OaoMbVjvyAzPpIEGiOoYU96YBkNYT2+8oVP+PVm
-	 I/u/ryrkdakTGSqMZkgUp6XWjD5hKx/S/WKr1Yxc=
+	b=jEqQVu2m6eqdVRVRmU3Dt358m5HSpAAXRZZUKXEsUC5pjMlepya5MPbPF3FXimQOH
+	 XFvFaVaxLZ4i654n5vQ1jjL+A4ekAYHWE8lKAXTZ2cvP2Yv1zJSr/uuaIqwLcCe2hD
+	 96w2lHtZPPd+M8C5YQRF4V7Gt/FogCiU8CuWlPcs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Hocko <mhocko@suse.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Alexander Ofitserov <oficerovas@altlinux.org>
-Subject: [PATCH 5.10 040/379] mm: vmalloc: introduce array allocation functions
-Date: Wed, 21 Feb 2024 14:03:39 +0100
-Message-ID: <20240221125956.103618087@linuxfoundation.org>
+	Justin Tee <justin.tee@broadcom.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 169/476] scsi: lpfc: Fix possible file string name overflow when updating firmware
+Date: Wed, 21 Feb 2024 14:03:40 +0100
+Message-ID: <20240221130014.175795353@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,101 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Justin Tee <justin.tee@broadcom.com>
 
-commit a8749a35c39903120ec421ef2525acc8e0daa55c upstream.
+[ Upstream commit f5779b529240b715f0e358489ad0ed933bf77c97 ]
 
-Linux has dozens of occurrences of vmalloc(array_size()) and
-vzalloc(array_size()).  Allow to simplify the code by providing
-vmalloc_array and vcalloc, as well as the underscored variants that let
-the caller specify the GFP flags.
+Because file_name and phba->ModelName are both declared a size 80 bytes,
+the extra ".grp" file extension could cause an overflow into file_name.
 
-Acked-by: Michal Hocko <mhocko@suse.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Alexander Ofitserov <oficerovas@altlinux.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Define a ELX_FW_NAME_SIZE macro with value 84.  84 incorporates the 4 extra
+characters from ".grp".  file_name is changed to be declared as a char and
+initialized to zeros i.e. null chars.
+
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20231031191224.150862-3-justintee8345@gmail.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/vmalloc.h |    5 ++++
- mm/util.c               |   50 ++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 55 insertions(+)
+ drivers/scsi/lpfc/lpfc.h      | 1 +
+ drivers/scsi/lpfc/lpfc_init.c | 4 ++--
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
---- a/include/linux/vmalloc.h
-+++ b/include/linux/vmalloc.h
-@@ -112,6 +112,11 @@ extern void *__vmalloc_node_range(unsign
- void *__vmalloc_node(unsigned long size, unsigned long align, gfp_t gfp_mask,
- 		int node, const void *caller);
+diff --git a/drivers/scsi/lpfc/lpfc.h b/drivers/scsi/lpfc/lpfc.h
+index 457ff86e02b3..65ac952b767f 100644
+--- a/drivers/scsi/lpfc/lpfc.h
++++ b/drivers/scsi/lpfc/lpfc.h
+@@ -32,6 +32,7 @@
+ struct lpfc_sli2_slim;
  
-+extern void *__vmalloc_array(size_t n, size_t size, gfp_t flags);
-+extern void *vmalloc_array(size_t n, size_t size);
-+extern void *__vcalloc(size_t n, size_t size, gfp_t flags);
-+extern void *vcalloc(size_t n, size_t size);
-+
- extern void vfree(const void *addr);
- extern void vfree_atomic(const void *addr);
+ #define ELX_MODEL_NAME_SIZE	80
++#define ELX_FW_NAME_SIZE	84
  
---- a/mm/util.c
-+++ b/mm/util.c
-@@ -686,6 +686,56 @@ static inline void *__page_rmapping(stru
- 	return (void *)mapping;
- }
- 
-+/**
-+ * __vmalloc_array - allocate memory for a virtually contiguous array.
-+ * @n: number of elements.
-+ * @size: element size.
-+ * @flags: the type of memory to allocate (see kmalloc).
-+ */
-+void *__vmalloc_array(size_t n, size_t size, gfp_t flags)
-+{
-+	size_t bytes;
-+
-+	if (unlikely(check_mul_overflow(n, size, &bytes)))
-+		return NULL;
-+	return __vmalloc(bytes, flags);
-+}
-+EXPORT_SYMBOL(__vmalloc_array);
-+
-+/**
-+ * vmalloc_array - allocate memory for a virtually contiguous array.
-+ * @n: number of elements.
-+ * @size: element size.
-+ */
-+void *vmalloc_array(size_t n, size_t size)
-+{
-+	return __vmalloc_array(n, size, GFP_KERNEL);
-+}
-+EXPORT_SYMBOL(vmalloc_array);
-+
-+/**
-+ * __vcalloc - allocate and zero memory for a virtually contiguous array.
-+ * @n: number of elements.
-+ * @size: element size.
-+ * @flags: the type of memory to allocate (see kmalloc).
-+ */
-+void *__vcalloc(size_t n, size_t size, gfp_t flags)
-+{
-+	return __vmalloc_array(n, size, flags | __GFP_ZERO);
-+}
-+EXPORT_SYMBOL(__vcalloc);
-+
-+/**
-+ * vcalloc - allocate and zero memory for a virtually contiguous array.
-+ * @n: number of elements.
-+ * @size: element size.
-+ */
-+void *vcalloc(size_t n, size_t size)
-+{
-+	return __vmalloc_array(n, size, GFP_KERNEL | __GFP_ZERO);
-+}
-+EXPORT_SYMBOL(vcalloc);
-+
- /* Neutral page->mapping pointer to address_space or anon_vma or other */
- void *page_rmapping(struct page *page)
+ #define LPFC_PCI_DEV_LP		0x1
+ #define LPFC_PCI_DEV_OC		0x2
+diff --git a/drivers/scsi/lpfc/lpfc_init.c b/drivers/scsi/lpfc/lpfc_init.c
+index 2ca4cf1b58c4..bba51ce4276a 100644
+--- a/drivers/scsi/lpfc/lpfc_init.c
++++ b/drivers/scsi/lpfc/lpfc_init.c
+@@ -14516,7 +14516,7 @@ lpfc_write_firmware(const struct firmware *fw, void *context)
+ int
+ lpfc_sli4_request_firmware_update(struct lpfc_hba *phba, uint8_t fw_upgrade)
  {
+-	uint8_t file_name[ELX_MODEL_NAME_SIZE];
++	char file_name[ELX_FW_NAME_SIZE] = {0};
+ 	int ret;
+ 	const struct firmware *fw;
+ 
+@@ -14525,7 +14525,7 @@ lpfc_sli4_request_firmware_update(struct lpfc_hba *phba, uint8_t fw_upgrade)
+ 	    LPFC_SLI_INTF_IF_TYPE_2)
+ 		return -EPERM;
+ 
+-	snprintf(file_name, ELX_MODEL_NAME_SIZE, "%s.grp", phba->ModelName);
++	scnprintf(file_name, sizeof(file_name), "%s.grp", phba->ModelName);
+ 
+ 	if (fw_upgrade == INT_FW_UPGRADE) {
+ 		ret = request_firmware_nowait(THIS_MODULE, FW_ACTION_UEVENT,
+-- 
+2.43.0
+
 
 
 
