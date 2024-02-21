@@ -1,189 +1,163 @@
-Return-Path: <stable+bounces-21807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8F8685D52D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 11:08:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FDBD85D548
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 11:15:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 803D0281B87
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 10:08:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C9E57B21EEB
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 10:15:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B346A3D579;
-	Wed, 21 Feb 2024 10:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 692DB3D566;
+	Wed, 21 Feb 2024 10:15:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="BAbuwTrz";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="eznXXzg4"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="unjQKVka";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="y6j3qvVZ";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="unjQKVka";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="y6j3qvVZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B09A13C493;
-	Wed, 21 Feb 2024 10:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF733C493;
+	Wed, 21 Feb 2024 10:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708510087; cv=none; b=o8UTyAxs9OHrlk0E8jOL+8O5yk0kGjWBoWELJdoiGFxVpG0SBEtAOp04n/NBWuWhRnzTBmDEzHb7jojOceTXZlH+BEX+4xgFGXRIcPmWYJ5+gZ8s+DhYOhtC+Kj9zh0NZ+//LMi+dyoIuPqvWL9bO8ei1lLbEHxatlQSomVsmBU=
+	t=1708510538; cv=none; b=fN2GUONedA1vHNQQecyMlYcjsD2gQp5tMIfyO8yCW7KBUCWHp73tgQE6hKtDPMir7w6AzbTXk3N1tcd0yAbCuJLYd/LNHSNeU7N/DJWdsH6cDmB1qufcn5MLMK74eiHi6wab+BpV6qsOqskmQIYZRH6tb++YyoI7ovWuxzDuGcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708510087; c=relaxed/simple;
-	bh=7XYolvuFmbS0LBqmUQ9KKTmR9uu6+pL4kH1WaTQzMk0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cNYVvwa1CUSv8OO8aFBTWkV4hubeLx+PAg5/6qc8UVcQCLqis2rqBeOzjTJEggi0hHcHpJKJX0+t95XAfJjJCtOIyRBwnowFsEcGDRu83hUvMPVHoa/Hi3nyuZGBIpvuz0LJoy7i2EVWGX81kP22X5ntpRIT/l+lLOISNaxzKkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=BAbuwTrz; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=eznXXzg4; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1708510538; c=relaxed/simple;
+	bh=FFhzB5J0U7oDf1Def7V0K2KK57vojCXFuzsSXD8TFBM=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Vm9qNo3+A+lWUJNl9ypB9VOYReCjaXGzBSd0od0RhPY4k5rqqGRYgB57M6INCrFFwbeTpoYtpZxVGgqlDbd8FRIrA/d6aBwjhX4OynUTnTEr26qr5WrOA2CcZFri463PB0+4kMKBMGjS7/5h62YTPwzHLuSNcHbg++VJHh03ivo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=unjQKVka; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=y6j3qvVZ; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=unjQKVka; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=y6j3qvVZ; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id C9C9A1FB4A;
-	Wed, 21 Feb 2024 10:08:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1708510083; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	by smtp-out2.suse.de (Postfix) with ESMTPS id A81731FB4C;
+	Wed, 21 Feb 2024 10:15:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1708510534; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xZGJ3olY1kWj1dk7MtZO1ibtEdnIoZrzoUYLjjxmvX0=;
-	b=BAbuwTrzJs/DVFKRHFbDFTMrOfHETXJMisKC7tj8M6JjdNEOXo93jcYFaNdeQJjEAyfekQ
-	CrWyK55GtVGUQVgEG0K6dxNYX167qbb3oWip8LFfLjTQ6Xe1gF1jehGKrTY0i0DAvPcKNH
-	EDKodBHi1qarR9EShsI0U7wX2BQobl8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1708510082; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	bh=YnEpfxCF7g+UuoIAlRYfvXg3wCMzx5yNP4QWoEWyTKc=;
+	b=unjQKVkaMfH6X9pDCO/+Q+i5tb6iPxxIGdXg5MpX/quYRXylOl3gFK07m5BrSOYN9qp1rs
+	H43x/7IXDkreY6nf1fw3Fba4fih+jKN9diNc9StoNvKTQ7AtkVmyXtYgHLtaAuMZceczuR
+	5XVjar+lYYTttSJFVQGBoa1MfgwJO0Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1708510534;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xZGJ3olY1kWj1dk7MtZO1ibtEdnIoZrzoUYLjjxmvX0=;
-	b=eznXXzg4qM0A3TmtjnVpTQmOa20c6dDKPyNZj3w3j7MVgFsxv/M5WS8FbQNP/f2QOO1VnF
-	nvww1JNkoDaOiWtTt/Vga4ezs7hNrjfk0TWvaU7SBvELlCYWYPJglPfWuXzv/l7B1nQyfm
-	HFJxqzEV5z/gbJCCXo07IFcHySDtCEE=
+	bh=YnEpfxCF7g+UuoIAlRYfvXg3wCMzx5yNP4QWoEWyTKc=;
+	b=y6j3qvVZNBxZYXlwPRbQ0cvtYXK0pnPnmicK81HuSDyQ61dedLe23K413zxGLCwNG0Kazx
+	xXDPj+E+VzJK6IBA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1708510534; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YnEpfxCF7g+UuoIAlRYfvXg3wCMzx5yNP4QWoEWyTKc=;
+	b=unjQKVkaMfH6X9pDCO/+Q+i5tb6iPxxIGdXg5MpX/quYRXylOl3gFK07m5BrSOYN9qp1rs
+	H43x/7IXDkreY6nf1fw3Fba4fih+jKN9diNc9StoNvKTQ7AtkVmyXtYgHLtaAuMZceczuR
+	5XVjar+lYYTttSJFVQGBoa1MfgwJO0Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1708510534;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YnEpfxCF7g+UuoIAlRYfvXg3wCMzx5yNP4QWoEWyTKc=;
+	b=y6j3qvVZNBxZYXlwPRbQ0cvtYXK0pnPnmicK81HuSDyQ61dedLe23K413zxGLCwNG0Kazx
+	xXDPj+E+VzJK6IBA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AA4A813A69;
-	Wed, 21 Feb 2024 10:08:02 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6B91513A69;
+	Wed, 21 Feb 2024 10:15:34 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id qRKQJoLL1WXHQAAAD6G6ig
-	(envelope-from <mhocko@suse.com>); Wed, 21 Feb 2024 10:08:02 +0000
-Date: Wed, 21 Feb 2024 11:08:02 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Gong Ruiqi <gongruiqi1@huawei.com>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeelb@google.com>,
-	Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, Wang Weiyang <wangweiyang2@huawei.com>,
-	Xiu Jianfeng <xiujianfeng@huawei.com>
-Subject: Re: [PATCH stable] memcg: add refcnt for pcpu stock to avoid UAF
- problem in drain_all_stock()
-Message-ID: <ZdXLgjpUfpwEwAe0@tiehlicka>
-References: <20240221081801.69764-1-gongruiqi1@huawei.com>
- <ZdW2gMajIw_cUN2-@tiehlicka>
- <5436af7a-26d4-7c04-466a-7163d5a26040@huawei.com>
+	id GCCbGEbN1WXdQgAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Wed, 21 Feb 2024 10:15:34 +0000
+Date: Wed, 21 Feb 2024 11:15:34 +0100
+Message-ID: <87edd66s3d.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Alexandru Gagniuc <alexandru.gagniuc@hp.com>
+Cc: linux-sound@vger.kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	linux-kernel@vger.kernel.org,
+	eniac-xw.zhang@hp.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] ALSA: hda/realtek: fix mute/micmute LED For HP mt440
+In-Reply-To: <20240220175812.782687-1-alexandru.gagniuc@hp.com>
+References: <87frxteoil.wl-tiwai@suse.de>
+	<20240220175812.782687-1-alexandru.gagniuc@hp.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5436af7a-26d4-7c04-466a-7163d5a26040@huawei.com>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
 Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.com header.s=susede1 header.b=eznXXzg4
-X-Spamd-Result: default: False [-2.81 / 50.00];
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=unjQKVka;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=y6j3qvVZ
+X-Spamd-Result: default: False [-0.02 / 50.00];
 	 ARC_NA(0.00)[];
 	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
+	 R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
 	 FROM_HAS_DN(0.00)[];
 	 TO_DN_SOME(0.00)[];
 	 TO_MATCH_ENVRCPT_ALL(0.00)[];
 	 MIME_GOOD(-0.10)[text/plain];
+	 DWL_DNSWL_BLOCKED(0.00)[suse.de:dkim];
 	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	 DKIM_TRACE(0.00)[suse.com:+];
+	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 DKIM_TRACE(0.00)[suse.de:+];
 	 MX_GOOD(-0.01)[];
-	 RCPT_COUNT_SEVEN(0.00)[11];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:dkim,suse.com:email,huawei.com:email];
+	 RCPT_COUNT_SEVEN(0.00)[7];
+	 MID_CONTAINS_FROM(1.00)[];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim];
 	 FUZZY_BLOCKED(0.00)[rspamd.com];
 	 FROM_EQ_ENVFROM(0.00)[];
 	 MIME_TRACE(0.00)[0:+];
-	 MID_RHS_NOT_FQDN(0.50)[];
 	 RCVD_TLS_ALL(0.00)[];
-	 BAYES_HAM(-3.00)[100.00%];
+	 BAYES_HAM(-0.71)[83.51%];
 	 RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]
 X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: C9C9A1FB4A
+X-Spam-Score: -0.02
+X-Rspamd-Queue-Id: A81731FB4C
 X-Spam-Level: 
-X-Spam-Score: -2.81
 X-Spam-Flag: NO
+X-Spamd-Bar: /
 
-On Wed 21-02-24 17:50:27, Gong Ruiqi wrote:
+On Tue, 20 Feb 2024 18:58:12 +0100,
+Alexandru Gagniuc wrote:
 > 
-> On 2024/02/21 16:38, Michal Hocko wrote:
-> > On Wed 21-02-24 16:18:01, GONG, Ruiqi wrote:
-> >> commit 1a3e1f40962c445b997151a542314f3c6097f8c3 upstream.
-> > 
-> > I think it would be good to mention that this is only a partial backport
-> > and also explain why to do a partial rather than the full one.
-> >
+> From: Eniac Zhang <eniac-xw.zhang@hp.com>
 > 
-> Okay. I think to fix this problem we should add refcnt relation between
-> memcg and stock, and since higher versions have achieved this, maybe
-> it's better to use the same code and align with them. So I put a "commit
-> xxx upstream" here, as requested in kernel docs[1]. So yes it's a
-> partial backport as we only need the stock part.
-
-I think it is sufficient to mention that this is a partial backport to
-minimize the fix to the bare minimum.
-
-[...]
-> > What does prevent from the following?
-> > 
-> > refill_stock(memcgC)		drain_all_stock(memcgB)
-> >   drain_stock(memcgA)		  rcu_read_lock()
-> >     css_put(old->css)		  memcgA = stock->cached
-> >                                   mem_cgroup_is_descendant(memcgA, memcgB) UAF
-> >     stock->cached = NULL
-> > 
+> The HP mt440 Thin Client uses an ALC236 codec and needs the
+> ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF quirk to make the mute and
+> micmute LEDs work.
 > 
-> I think it's not a problem since refill_stock() has disabled irq before
-> calling drain_stock():
+> There are two variants of the USB-C PD chip on this device. Each uses
+> a different BIOS and board ID, hence the two entries.
 > 
-> refill_stock(memcgC)
->   local_irq_save
->   drain_stock(memcgA)
->     css_put(old->css)
->     <1>
->     stock->cached = NULL
->   local_irq_restore
->   <2>
-> 
-> And since css_put(old->css) is an RCU free, memcgA would not be freed at
-> <1> as it's still in grace period. The actual release of memcgA could
-> happen only after irq is enabled (at <2>).
-> 
-> And for CPU2, the access to stock->cached in drain_all_stock() is
-> protected by rcu_read_lock(), so from stock->cached we get either NULL,
-> or a memcgA that is still not freed.
-> 
-> Please correct me if I have some wrong understanding to RCU.
+> Signed-off-by: Eniac Zhang <eniac-xw.zhang@hp.com>
+> Signed-off-by: Alexandru Gagniuc <alexandru.gagniuc@hp.com>
+> Cc: <stable@vger.kernel.org>
 
-You are right. Thanks! IRQ disabling is there in one form or the other
-since db2ba40c277d ("mm: memcontrol: make per-cpu charge cache IRQ-safe
-for socket accounting") so 4.8+ is safe. Backports to older kernels
-would nee to pull this one as well.
+Thanks, applied now.
 
-> >> Cc: stable@vger.kernel.org      # 4.19 5.4
-> >> Fixes: cdec2e4265df ("memcg: coalesce charging via percpu storage")
-> >> Signed-off-by: GONG, Ruiqi <gongruiqi1@huawei.com>
+But at the next time, don't hang on the existing thread when
+submitting a new patch.
 
-Acked-by: Michal Hocko <mhocko@suse.com>
 
-Thanks!
-
--- 
-Michal Hocko
-SUSE Labs
+Takashi
 
