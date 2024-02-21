@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-21912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F91385D91E
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6926485DBAD
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:44:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B20B71C22DB6
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:14:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AF2A1C2355D
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:44:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2342769D32;
-	Wed, 21 Feb 2024 13:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BC8973161;
+	Wed, 21 Feb 2024 13:44:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JCk6uOMc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="upxl24Oj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A7169D09;
-	Wed, 21 Feb 2024 13:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED8041E4B2;
+	Wed, 21 Feb 2024 13:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521290; cv=none; b=UwKDqq9YZsBO2EPwuo+ARGpQ5XSpimk0Z18TwYHNI+es6I7WJ0FHbenATVVWgP3Xoddz91ZqjrXWkdHRyOPoe9sEUh6cQGYtOITMeuLbB4h2KyvqBDohZ7/Ip1kQ1Vmd7Y9SnT/PvxEqS52oHPj65uR2rkrE98RlH1Wk5Ze3RRg=
+	t=1708523045; cv=none; b=htNJXWejOP2O3TAddyRUneePnkyrapP/DYWL5OXCRnRF6MaO57KwxUkyhjEn2GA7DOFxf844Zj0/BYOxEZFoP6nWoBBBAh+plwE7SXw7cdfj+5x4T0yMkpYQc8YbMDvPukbP5hVhMRz9C44IQkgm53980pe1OwwS26aXq2VPDNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521290; c=relaxed/simple;
-	bh=qOzdr7xwOGJw+lbDjlvkbhn4y6BmSaL/MeH+8W5qeb8=;
+	s=arc-20240116; t=1708523045; c=relaxed/simple;
+	bh=K216+rwsdNe1C2PB+YE2/oUKLuepsSssGZX58QsgcsE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cjRL2ICna5uezxA47VWpkenuWp0DHzwdoUVwCdD2ROST/SGWtG2m8AVAidlGLB3cy8FaloKkDC1d688gDqwkSCaUxhwYEKiglU+MA2ncullqK8HOmEk9c8nCpsWe6ve7vV05zRJQMRopwwAUDe9Fk0elrl3EnCLBoOQ13mwf8u8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JCk6uOMc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D5F6C433F1;
-	Wed, 21 Feb 2024 13:14:50 +0000 (UTC)
+	 MIME-Version; b=q4Ns/Q9NQDP5jDwBCUiEff6bNny/pS+HWZrIVHdki6hRYGQoAToR3w0hIcwMfhbN4a2xLTWT30d2BPDMxeoawqLZjD6pnxXA6+AT4yvPd+5hdClWEAxvzXCcp4v2Hr1fsW4JhyaA/ceqhyevwCzNM77UZRAxJwUBIS7iJK4az54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=upxl24Oj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DB07C433F1;
+	Wed, 21 Feb 2024 13:44:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521290;
-	bh=qOzdr7xwOGJw+lbDjlvkbhn4y6BmSaL/MeH+8W5qeb8=;
+	s=korg; t=1708523044;
+	bh=K216+rwsdNe1C2PB+YE2/oUKLuepsSssGZX58QsgcsE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JCk6uOMcKl2OMgKiciRl4AbPCa4EoUkZ+9bhN3zBebf97na9iKyH2IyciCbisecDu
-	 N3h3GdGBbzonVNpf1Emh8p20cKgA4UBNOH7rxyAO7TQP+GvUMDXn+vit2G5Ci4uUnu
-	 UhyRSpf26xGSLBtO8nTgmA3k1HC90skvA3QlnxP8=
+	b=upxl24Ojst6qNkZb7ck6sfbO8LPhc3XYeWKQBbgEFRDxxlPHNmQX8SzEEjeDVQQLb
+	 8OGQduBE4jikYyWoJpIRWOh/GUdCimjRFrEb7X0O0S14KZKbWnp+6WTSI7zDfgP9Jt
+	 MCJuccUizLWDcbwcaMDkhojR+BpI0zkPflBS8rPw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Stefano Brivio <sbrivio@redhat.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 073/202] ext4: remove unnecessary check from alloc_flex_gd()
-Date: Wed, 21 Feb 2024 14:06:14 +0100
-Message-ID: <20240221125934.174464720@linuxfoundation.org>
+Subject: [PATCH 5.15 324/476] netfilter: nft_set_pipapo: add helper to release pcpu scratch area
+Date: Wed, 21 Feb 2024 14:06:15 +0100
+Message-ID: <20240221130020.015278812@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit b099eb87de105cf07cad731ded6fb40b2675108b ]
+[ Upstream commit 47b1c03c3c1a119435480a1e73f27197dc59131d ]
 
-In commit 967ac8af4475 ("ext4: fix potential integer overflow in
-alloc_flex_gd()"), an overflow check is added to alloc_flex_gd() to
-prevent the allocated memory from being smaller than expected due to
-the overflow. However, after kmalloc() is replaced with kmalloc_array()
-in commit 6da2ec56059c ("treewide: kmalloc() -> kmalloc_array()"), the
-kmalloc_array() function has an overflow check, so the above problem
-will not occur. Therefore, the extra check is removed.
+After next patch simple kfree() is not enough anymore, so add
+a helper for it.
 
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20231023013057.2117948-3-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: 5a8cdf6fd860 ("netfilter: nft_set_pipapo: remove scratch_aligned pointer")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/resize.c | 3 ---
- 1 file changed, 3 deletions(-)
+ net/netfilter/nft_set_pipapo.c | 28 +++++++++++++++++++++++-----
+ 1 file changed, 23 insertions(+), 5 deletions(-)
 
-diff --git a/fs/ext4/resize.c b/fs/ext4/resize.c
-index 2d27d4e06f7b..d9a8742873c9 100644
---- a/fs/ext4/resize.c
-+++ b/fs/ext4/resize.c
-@@ -245,10 +245,7 @@ static struct ext4_new_flex_group_data *alloc_flex_gd(unsigned int flexbg_size)
- 	if (flex_gd == NULL)
- 		goto out3;
+diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
+index fbd0dbf9b965..977bf724fb7e 100644
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -1101,6 +1101,24 @@ static void pipapo_map(struct nft_pipapo_match *m,
+ 		f->mt[map[i].to + j].e = e;
+ }
  
--	if (flexbg_size >= UINT_MAX / sizeof(struct ext4_new_group_data))
--		goto out2;
- 	flex_gd->count = flexbg_size;
--
- 	flex_gd->groups = kmalloc_array(flexbg_size,
- 					sizeof(struct ext4_new_group_data),
- 					GFP_NOFS);
++/**
++ * pipapo_free_scratch() - Free per-CPU map at original (not aligned) address
++ * @m:		Matching data
++ * @cpu:	CPU number
++ */
++static void pipapo_free_scratch(const struct nft_pipapo_match *m, unsigned int cpu)
++{
++	struct nft_pipapo_scratch *s;
++	void *mem;
++
++	s = *per_cpu_ptr(m->scratch, cpu);
++	if (!s)
++		return;
++
++	mem = s;
++	kfree(mem);
++}
++
+ /**
+  * pipapo_realloc_scratch() - Reallocate scratch maps for partial match results
+  * @clone:	Copy of matching data with pending insertions and deletions
+@@ -1133,7 +1151,7 @@ static int pipapo_realloc_scratch(struct nft_pipapo_match *clone,
+ 			return -ENOMEM;
+ 		}
+ 
+-		kfree(*per_cpu_ptr(clone->scratch, i));
++		pipapo_free_scratch(clone, i);
+ 
+ 		*per_cpu_ptr(clone->scratch, i) = scratch;
+ 
+@@ -1359,7 +1377,7 @@ static struct nft_pipapo_match *pipapo_clone(struct nft_pipapo_match *old)
+ 	}
+ out_scratch_realloc:
+ 	for_each_possible_cpu(i)
+-		kfree(*per_cpu_ptr(new->scratch, i));
++		pipapo_free_scratch(new, i);
+ #ifdef NFT_PIPAPO_ALIGN
+ 	free_percpu(new->scratch_aligned);
+ #endif
+@@ -1647,7 +1665,7 @@ static void pipapo_free_match(struct nft_pipapo_match *m)
+ 	int i;
+ 
+ 	for_each_possible_cpu(i)
+-		kfree(*per_cpu_ptr(m->scratch, i));
++		pipapo_free_scratch(m, i);
+ 
+ #ifdef NFT_PIPAPO_ALIGN
+ 	free_percpu(m->scratch_aligned);
+@@ -2249,7 +2267,7 @@ static void nft_pipapo_destroy(const struct nft_ctx *ctx,
+ 		free_percpu(m->scratch_aligned);
+ #endif
+ 		for_each_possible_cpu(cpu)
+-			kfree(*per_cpu_ptr(m->scratch, cpu));
++			pipapo_free_scratch(m, cpu);
+ 		free_percpu(m->scratch);
+ 		pipapo_free_fields(m);
+ 		kfree(m);
+@@ -2266,7 +2284,7 @@ static void nft_pipapo_destroy(const struct nft_ctx *ctx,
+ 		free_percpu(priv->clone->scratch_aligned);
+ #endif
+ 		for_each_possible_cpu(cpu)
+-			kfree(*per_cpu_ptr(priv->clone->scratch, cpu));
++			pipapo_free_scratch(priv->clone, cpu);
+ 		free_percpu(priv->clone->scratch);
+ 
+ 		pipapo_free_fields(priv->clone);
 -- 
 2.43.0
 
