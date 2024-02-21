@@ -1,111 +1,119 @@
-Return-Path: <stable+bounces-23192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DA1C85E13F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 16:33:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8732C85E136
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 16:32:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F32A1C23922
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:33:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D6141F2534F
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:32:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A90E280BED;
-	Wed, 21 Feb 2024 15:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0B7E69D24;
+	Wed, 21 Feb 2024 15:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K4tne/0o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UywHCwMC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f42.google.com (mail-io1-f42.google.com [209.85.166.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64C7E80BEB;
-	Wed, 21 Feb 2024 15:32:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB6E180C07
+	for <stable@vger.kernel.org>; Wed, 21 Feb 2024 15:32:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708529573; cv=none; b=gAWsoWpmE29LFqoUcTupjnbbEirRSkpXpVudwwC8KVNJBUfLE/+11hWqOQo6jmU2n/BhkYrB3plSpN01pPf4ZZATIu8mntpP8g+dTyGU5ka+A80VgXPrnvL6/iCma9L52Dp3AJ1y+gKe0XgO9L4kY8G4+5mUDHyS//lrH2/Iy9g=
+	t=1708529564; cv=none; b=CjitpfFtX3rO9c6KQi4x0WYoULXTkU3lc59MPvEOWu8xJAP8Qw9bm+xGWLHCthPHCXOP8X95xPH2wvjpl+uU3DdKcfnleQ67t2uNX2fzgAo+6HLdDMNNh7KBovAq+PTgzNaZaOStjTRQRDnyoNDAJrHB8PNtbpTE4yxLLuzuyDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708529573; c=relaxed/simple;
-	bh=ini15tE19mitrKkG+HJLkGZ4AXHSX+Bhi6ca/Nfuh/0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZEwfBc6vaCEgYkGbPBKPNI5MMkJKoRNVp8q914Bn/ejdE7NN+ClfsryDii38R5E7Nl7JDyOWvqvBEfIK63jtsCpJxLIOpnkCdrIvkwZ7ZErk1gA29FbbrJVNIyA67BiNKVY5jt0sCLLDECnw3ysxWl/w4mTG5Mhf6FX5/8w3rw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K4tne/0o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF3E9C43390;
-	Wed, 21 Feb 2024 15:32:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708529573;
-	bh=ini15tE19mitrKkG+HJLkGZ4AXHSX+Bhi6ca/Nfuh/0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K4tne/0o3ReHxJpYIG981esY1f85ra9Flh/637W4yf8qYLkVxCP3vVmGuAPCZE3e1
-	 d23jzgdy2MOsW0HaeTnOExIW4sEH6fbsa9F5sLkAlLxiGhgqijGL/Vs6SjZ46YsqGz
-	 p/dlhP1gnkuhKYG19eCZlUFpwr+zdjBVlQw2l56g9t4YJ8UnLSgXha2jMgcUorotG/
-	 1BER956nu3JXKrFHWsMlVceoWrepBJ1m+setcDEVljJwLahZV4bq8DeBQBHxGNK3cK
-	 F0l07N17Hkiboqw+p6EMVDJ2etau/kwDGGZogJYnvtPwf614d7GMkw9NnW+o9NISAc
-	 jk4LjWAG1AUDA==
-From: Christian Brauner <brauner@kernel.org>
-To: Bart Van Assche <bvanassche@acm.org>,
-	Jens Axboe <axboe@kernel.dk>
-Cc: Christian Brauner <brauner@kernel.org>,
-	linux-fsdevel@vger.kernel.org,
-	Christoph Hellwig <hch@lst.de>,
-	Avi Kivity <avi@scylladb.com>,
-	Sandeep Dhavale <dhavale@google.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	stable@vger.kernel.org,
-	Alexander Viro <viro@zeniv.linux.org.uk>
-Subject: Re: (subset) [PATCH v4 1/2] fs/aio: Restrict kiocb_set_cancel_fn() to I/O submitted via libaio
-Date: Wed, 21 Feb 2024 16:32:19 +0100
-Message-ID: <20240221-postleitzahl-flanieren-799c28d3ad95@brauner>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240215204739.2677806-2-bvanassche@acm.org>
-References: <20240215204739.2677806-1-bvanassche@acm.org> <20240215204739.2677806-2-bvanassche@acm.org>
+	s=arc-20240116; t=1708529564; c=relaxed/simple;
+	bh=V7d0HSjRnHzOfU+EEKSUCWwEtLbsiZEB5+rydMOHck8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kXiBcXhAEvd5VrBI8HiN6hCGQg2Sw+lmgwUavguvNe8BjXWB8xz6xoW82P4DZC+CwbXAG/gYoKBtmnul93Q5RDgn+JR5ps3vowUzTUAoQQdRKBsJw23UbYSv+gxp96aM+6vvyhkot6BoCwBkQgVquBOuuQyCu+BHs3H7DX8Y7O0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UywHCwMC; arc=none smtp.client-ip=209.85.166.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-io1-f42.google.com with SMTP id ca18e2360f4ac-7c49c979b5dso110967939f.1
+        for <stable@vger.kernel.org>; Wed, 21 Feb 2024 07:32:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1708529562; x=1709134362; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=rTUWS3ITPqTvVHNlrNDdtxwJD4AyTQiAHNyBeZPU4ps=;
+        b=UywHCwMCyRhpzKcw84pCaY/tJ0RV+xQE+s/etFllRxxYUfTQ+EcZkGZSpxCMQ0+AkJ
+         vU/i6bxXmPX8koM7nzRH3V6wfw0NvMOTrwa8rBIQzG1qa7Q71ZP4LGVXBSIiR7XgpDgG
+         DFDwvgiRRN17NEEyxVG7i1ahm/lALiBCt3zBU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708529562; x=1709134362;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rTUWS3ITPqTvVHNlrNDdtxwJD4AyTQiAHNyBeZPU4ps=;
+        b=gfF6ep0wyLLjYT9j/daw4pd2eAnZOOnDhLkrMdXotKiIpTc2gy3VHFWibdSo4cPd+F
+         1C2MIwjbgHgblZeXVzNKJGmhFtF8A2YmznXzb3rVZETQB/Vzc4LK3KXByDXatairZecM
+         XClt+RtUgtfHl/rCSFuSOMbN1mEiGPwJuChDMev4pQf4jux2ZIMQbxhyb5XTpRyiHttw
+         IvfKRY8U9qQ4/flUynYXcLvqrmRV/IMtVT6vm14ptRZN57tOfkUTOKFG+2k9tN2gl2h/
+         kOhk0ZT7fE+KM2w2X/mIF9D8Qh9aGyHOP6GXL8zvLYfr55H2jtyaDlnONBdUiV3uMU2m
+         ExUg==
+X-Forwarded-Encrypted: i=1; AJvYcCV9KX4BG2H2Tzs5iCGV/sL2ff4v2/O9Ps2ILwPCPxdRIsRj3lHmUNBk9iSkpjBKded6o+wtUH8EDjW+A/r2xF45YoMfguAd
+X-Gm-Message-State: AOJu0YzRbzpB37700Fg1vRzT+86h4UCUDCNH2RtBv7Ytu9MrpnqI6ig0
+	BcFdCBYxkIive33M733gcMoqqPYDexu+1GTK87+7RPci+EOxHFHilVDtVTVHz/k=
+X-Google-Smtp-Source: AGHT+IGsafhl7SWuEo6yvVNtfR8RuWLkNqrVmSIk/bzAZaHH0TBGFMabmNdsRvlZhXzy453/7nPXrw==
+X-Received: by 2002:a05:6602:1d47:b0:7c4:655:6e05 with SMTP id hi7-20020a0566021d4700b007c406556e05mr17213245iob.2.1708529562000;
+        Wed, 21 Feb 2024 07:32:42 -0800 (PST)
+Received: from [192.168.1.128] ([38.175.170.29])
+        by smtp.gmail.com with ESMTPSA id q11-20020a0566380ecb00b00474269ff209sm1796067jas.119.2024.02.21.07.32.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 21 Feb 2024 07:32:41 -0800 (PST)
+Message-ID: <bc6e74d1-4354-4881-929f-ae45ea1e35c6@linuxfoundation.org>
+Date: Wed, 21 Feb 2024 08:32:40 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1426; i=brauner@kernel.org; h=from:subject:message-id; bh=ini15tE19mitrKkG+HJLkGZ4AXHSX+Bhi6ca/Nfuh/0=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaReE5/7gaHDuGIbMyOTeuQaGTnlZ4/WSvFIF6aev2+yc +/Tg8+FOkpZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACbSs5LhN1tdzvr97M/rj959 4atT93117vEri6KFlSo5pXILXaRl/jEybJ7FbCAduU+o+qrVR9mvXr5ru6x8rLdmJPxs+hgsVl/ DBwA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.7 000/309] 6.7.6-rc1 review
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20240220205633.096363225@linuxfoundation.org>
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20240220205633.096363225@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, 15 Feb 2024 12:47:38 -0800, Bart Van Assche wrote:
-> If kiocb_set_cancel_fn() is called for I/O submitted via io_uring, the
-> following kernel warning appears:
+On 2/20/24 13:52, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.7.6 release.
+> There are 309 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> WARNING: CPU: 3 PID: 368 at fs/aio.c:598 kiocb_set_cancel_fn+0x9c/0xa8
-> Call trace:
->  kiocb_set_cancel_fn+0x9c/0xa8
->  ffs_epfile_read_iter+0x144/0x1d0
->  io_read+0x19c/0x498
->  io_issue_sqe+0x118/0x27c
->  io_submit_sqes+0x25c/0x5fc
->  __arm64_sys_io_uring_enter+0x104/0xab0
->  invoke_syscall+0x58/0x11c
->  el0_svc_common+0xb4/0xf4
->  do_el0_svc+0x2c/0xb0
->  el0_svc+0x2c/0xa4
->  el0t_64_sync_handler+0x68/0xb4
->  el0t_64_sync+0x1a4/0x1a8
+> Responses should be made by Thu, 22 Feb 2024 20:55:42 +0000.
+> Anything received after that time might be too late.
 > 
-> [...]
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.7.6-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.7.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+> 
 
-Applied to the vfs.fixes branch of the vfs/vfs.git tree.
-Patches in the vfs.fixes branch should appear in linux-next soon.
+Compiled and booted on my test system. No dmesg regressions.
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+Tested-by: Shuah Khan <skhan@linuxfoundation.org>
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+thanks,
+-- Shuah
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.fixes
-
-[1/2] fs/aio: Restrict kiocb_set_cancel_fn() to I/O submitted via libaio
-      https://git.kernel.org/vfs/vfs/c/b820de741ae4
 
