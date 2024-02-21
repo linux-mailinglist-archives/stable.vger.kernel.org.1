@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-21976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8977F85D976
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:18:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D68F85DDA7
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:08:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BAFD21C22DFE
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:18:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7E8ACB22145
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:08:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C1DA69DF6;
-	Wed, 21 Feb 2024 13:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59EE27BB10;
+	Wed, 21 Feb 2024 14:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GtmO/rs4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jTqUVAtM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFEE629AB;
-	Wed, 21 Feb 2024 13:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1823376037;
+	Wed, 21 Feb 2024 14:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521537; cv=none; b=LIFiVR6L8p07FuWXHXYQ56LdbSnIh6WLLdsIuhyBpoKLCIQSCBJGLTF32x8VBoAb4F+55eNveEbo1LCOldsdErRpyVjyDrXykjdXlvRiY/NkSBddkAoLvRaCpc3M51fkoHAd6sBn9eTc5g5T0qvPxKHkPt7fBMpLuG1RbuIN7SI=
+	t=1708524397; cv=none; b=ZqeLwb8Wgg+kT5Y7Muylytw9NiaAJ1aciqzn1Bt5I64QNtqAOAnHMqFcdCMBs0fQ7iW80Eg1itgEw+Edu5cULf5JsPuUHfi6VMCxPTMXldgMgvIrICIoO5I2QNUs48XF0JuXPE6+k3sG6P1nuwm0rRk2yJCJ94Z1Bswhy+EbaEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521537; c=relaxed/simple;
-	bh=+R4bM7YDBJ5RSUVeTFpxm1pFj4PWAbVCFQHbZVAWpvc=;
+	s=arc-20240116; t=1708524397; c=relaxed/simple;
+	bh=KKEXaxvJq4DELO6LthjRE+n2jf2tD0h2KGPE5Hrgtkw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gw6j6UB/eXByP7prnRsTgeTJE4oUofzxldmdcOTwgEaOC55ylCTkZApctno0aF7cwOySdJKYuypn39l3/AOWqcSFS3kLkbm5kx9t/5yH9FQojMAqJBpUGA3JDhNzQ+NP/4JNYdqSqRrjCs8aMu9EvoskLvZ9+ozxaRudnOuZLKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GtmO/rs4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FD6CC433C7;
-	Wed, 21 Feb 2024 13:18:56 +0000 (UTC)
+	 MIME-Version; b=sjTFossGkw1sRnNZmZV/X7Jrvh7Eka+RC/uIDh1c2GjCZMYnq8rv+mXrXHZ5UhB4GoXSxJrAoVwiHD6wzK00Zsjh8zL6OWnJ5t8WF6gp+HnISgf9VK9fzsfvgJoOvk96Mnq3wK3v9hHqB9NXrcqaTA0XdUE9MOG/XVeoXhGMXcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jTqUVAtM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A743C433C7;
+	Wed, 21 Feb 2024 14:06:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521536;
-	bh=+R4bM7YDBJ5RSUVeTFpxm1pFj4PWAbVCFQHbZVAWpvc=;
+	s=korg; t=1708524397;
+	bh=KKEXaxvJq4DELO6LthjRE+n2jf2tD0h2KGPE5Hrgtkw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GtmO/rs4ABlBW9jIaUUFJFcSH8w6oA/u+vzcWwB85LSiQC8fXTMBSLquoPwiVYrM0
-	 LlN2wjBcz2PgVGIkDj6qZc68RJp3Rfio+MHtTXsZ4qFz/AgxydaIHaVkJhdCZf5CQj
-	 xG0zWpUuOplHIulugH6dglMgdA6qdBeVB1tShihQ=
+	b=jTqUVAtMu1jxoJB5wdLUTyVUkIw3p2psMDmG3qrIJRc/FcZ0qZpzzndaMaPfQGUal
+	 Nyh422nv0rdopL7Fovrm8Y6PMxEbXzjauTtOKe9g9PnTX5xSzB51vDB+NA9Ou2iMAK
+	 JRUPHAu9hEPX+W46Bq3CMnLjEHTuPMFpHH+C30OQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Clark <robdclark@chromium.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 110/202] drm/msm/dpu: Ratelimit framedone timeout msgs
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Sunitha Mekala <sunithax.d.mekala@intel.com>
+Subject: [PATCH 5.10 232/379] ixgbe: Refactor overtemp event handling
 Date: Wed, 21 Feb 2024 14:06:51 +0100
-Message-ID: <20240221125935.301604579@linuxfoundation.org>
+Message-ID: <20240221130001.775993380@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +66,295 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robdclark@chromium.org>
+From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
 
-[ Upstream commit 2b72e50c62de60ad2d6bcd86aa38d4ccbdd633f2 ]
+[ Upstream commit 6c1b4af8c1b20c70dde01e58381685d6a4a1d2c8 ]
 
-When we start getting these, we get a *lot*.  So ratelimit it to not
-flood dmesg.
+Currently ixgbe driver is notified of overheating events
+via internal IXGBE_ERR_OVERTEMP error code.
 
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
-Patchwork: https://patchwork.freedesktop.org/patch/571584/
-Link: https://lore.kernel.org/r/20231211182000.218088-1-robdclark@gmail.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Change the approach for handle_lasi() to use freshly introduced
+is_overtemp function parameter which set when such event occurs.
+Change check_overtemp() to bool and return true if overtemp
+event occurs.
+
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c | 5 ++++-
- drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h     | 1 +
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 16 +++-----
+ drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c  | 21 +++++-----
+ drivers/net/ethernet/intel/ixgbe/ixgbe_phy.h  |  2 +-
+ drivers/net/ethernet/intel/ixgbe/ixgbe_type.h |  4 +-
+ drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c | 41 +++++++++++--------
+ 5 files changed, 43 insertions(+), 41 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-index 19e2753ffe07..a411cfe76998 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-@@ -53,6 +53,9 @@
- 		(p) ? ((p)->hw_pp ? (p)->hw_pp->idx - PINGPONG_0 : -1) : -1, \
- 		##__VA_ARGS__)
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+index 3692e73f5339..b16cb2365d96 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+@@ -2766,7 +2766,6 @@ static void ixgbe_check_overtemp_subtask(struct ixgbe_adapter *adapter)
+ {
+ 	struct ixgbe_hw *hw = &adapter->hw;
+ 	u32 eicr = adapter->interrupt_event;
+-	s32 rc;
  
-+#define DPU_ERROR_ENC_RATELIMITED(e, fmt, ...) DPU_ERROR_RATELIMITED("enc%d " fmt,\
-+		(e) ? (e)->base.base.id : -1, ##__VA_ARGS__)
-+
- /*
-  * Two to anticipate panels that can do cmd/vid dynamic switching
-  * plan is to create all possible physical encoder types, and switch between
-@@ -2326,7 +2329,7 @@ static void dpu_encoder_frame_done_timeout(struct timer_list *t)
+ 	if (test_bit(__IXGBE_DOWN, &adapter->state))
  		return;
+@@ -2800,14 +2799,13 @@ static void ixgbe_check_overtemp_subtask(struct ixgbe_adapter *adapter)
+ 		}
+ 
+ 		/* Check if this is not due to overtemp */
+-		if (hw->phy.ops.check_overtemp(hw) != IXGBE_ERR_OVERTEMP)
++		if (!hw->phy.ops.check_overtemp(hw))
+ 			return;
+ 
+ 		break;
+ 	case IXGBE_DEV_ID_X550EM_A_1G_T:
+ 	case IXGBE_DEV_ID_X550EM_A_1G_T_L:
+-		rc = hw->phy.ops.check_overtemp(hw);
+-		if (rc != IXGBE_ERR_OVERTEMP)
++		if (!hw->phy.ops.check_overtemp(hw))
+ 			return;
+ 		break;
+ 	default:
+@@ -7844,7 +7842,7 @@ static void ixgbe_service_timer(struct timer_list *t)
+ static void ixgbe_phy_interrupt_subtask(struct ixgbe_adapter *adapter)
+ {
+ 	struct ixgbe_hw *hw = &adapter->hw;
+-	u32 status;
++	bool overtemp;
+ 
+ 	if (!(adapter->flags2 & IXGBE_FLAG2_PHY_INTERRUPT))
+ 		return;
+@@ -7854,11 +7852,9 @@ static void ixgbe_phy_interrupt_subtask(struct ixgbe_adapter *adapter)
+ 	if (!hw->phy.ops.handle_lasi)
+ 		return;
+ 
+-	status = hw->phy.ops.handle_lasi(&adapter->hw);
+-	if (status != IXGBE_ERR_OVERTEMP)
+-		return;
+-
+-	e_crit(drv, "%s\n", ixgbe_overheat_msg);
++	hw->phy.ops.handle_lasi(&adapter->hw, &overtemp);
++	if (overtemp)
++		e_crit(drv, "%s\n", ixgbe_overheat_msg);
+ }
+ 
+ static void ixgbe_reset_subtask(struct ixgbe_adapter *adapter)
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c
+index acc2596596b5..9d8b018b4f23 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c
+@@ -405,8 +405,7 @@ s32 ixgbe_reset_phy_generic(struct ixgbe_hw *hw)
+ 		return status;
+ 
+ 	/* Don't reset PHY if it's shut down due to overtemp. */
+-	if (!hw->phy.reset_if_overtemp &&
+-	    (IXGBE_ERR_OVERTEMP == hw->phy.ops.check_overtemp(hw)))
++	if (!hw->phy.reset_if_overtemp && hw->phy.ops.check_overtemp(hw))
+ 		return 0;
+ 
+ 	/* Blocked by MNG FW so bail */
+@@ -2617,22 +2616,24 @@ static void ixgbe_i2c_bus_clear(struct ixgbe_hw *hw)
+  *  @hw: pointer to hardware structure
+  *
+  *  Checks if the LASI temp alarm status was triggered due to overtemp
++ *
++ *  Return true when an overtemp event detected, otherwise false.
+  **/
+-s32 ixgbe_tn_check_overtemp(struct ixgbe_hw *hw)
++bool ixgbe_tn_check_overtemp(struct ixgbe_hw *hw)
+ {
+ 	u16 phy_data = 0;
++	u32 status;
+ 
+ 	if (hw->device_id != IXGBE_DEV_ID_82599_T3_LOM)
+-		return 0;
++		return false;
+ 
+ 	/* Check that the LASI temp alarm status was triggered */
+-	hw->phy.ops.read_reg(hw, IXGBE_TN_LASI_STATUS_REG,
+-			     MDIO_MMD_PMAPMD, &phy_data);
+-
+-	if (!(phy_data & IXGBE_TN_LASI_STATUS_TEMP_ALARM))
+-		return 0;
++	status = hw->phy.ops.read_reg(hw, IXGBE_TN_LASI_STATUS_REG,
++				      MDIO_MMD_PMAPMD, &phy_data);
++	if (status)
++		return false;
+ 
+-	return IXGBE_ERR_OVERTEMP;
++	return !!(phy_data & IXGBE_TN_LASI_STATUS_TEMP_ALARM);
+ }
+ 
+ /** ixgbe_set_copper_phy_power - Control power for copper phy
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.h
+index 6544c4539c0d..ef72729d7c93 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.h
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.h
+@@ -155,7 +155,7 @@ s32 ixgbe_identify_sfp_module_generic(struct ixgbe_hw *hw);
+ s32 ixgbe_get_sfp_init_sequence_offsets(struct ixgbe_hw *hw,
+ 					u16 *list_offset,
+ 					u16 *data_offset);
+-s32 ixgbe_tn_check_overtemp(struct ixgbe_hw *hw);
++bool ixgbe_tn_check_overtemp(struct ixgbe_hw *hw);
+ s32 ixgbe_read_i2c_byte_generic(struct ixgbe_hw *hw, u8 byte_offset,
+ 				u8 dev_addr, u8 *data);
+ s32 ixgbe_read_i2c_byte_generic_unlocked(struct ixgbe_hw *hw, u8 byte_offset,
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h
+index 66963e142024..e84dbf6a3cb8 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h
+@@ -3505,10 +3505,10 @@ struct ixgbe_phy_operations {
+ 	s32 (*read_i2c_sff8472)(struct ixgbe_hw *, u8 , u8 *);
+ 	s32 (*read_i2c_eeprom)(struct ixgbe_hw *, u8 , u8 *);
+ 	s32 (*write_i2c_eeprom)(struct ixgbe_hw *, u8, u8);
+-	s32 (*check_overtemp)(struct ixgbe_hw *);
++	bool (*check_overtemp)(struct ixgbe_hw *);
+ 	s32 (*set_phy_power)(struct ixgbe_hw *, bool on);
+ 	s32 (*enter_lplu)(struct ixgbe_hw *);
+-	s32 (*handle_lasi)(struct ixgbe_hw *hw);
++	s32 (*handle_lasi)(struct ixgbe_hw *hw, bool *);
+ 	s32 (*read_i2c_byte_unlocked)(struct ixgbe_hw *, u8 offset, u8 addr,
+ 				      u8 *value);
+ 	s32 (*write_i2c_byte_unlocked)(struct ixgbe_hw *, u8 offset, u8 addr,
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c
+index ec532f469535..73d1a8b85449 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c
+@@ -600,8 +600,10 @@ static s32 ixgbe_setup_fw_link(struct ixgbe_hw *hw)
+ 	rc = ixgbe_fw_phy_activity(hw, FW_PHY_ACT_SETUP_LINK, &setup);
+ 	if (rc)
+ 		return rc;
++
+ 	if (setup[0] == FW_PHY_ACT_SETUP_LINK_RSP_DOWN)
+-		return IXGBE_ERR_OVERTEMP;
++		return -EIO;
++
+ 	return 0;
+ }
+ 
+@@ -2319,18 +2321,18 @@ static s32 ixgbe_get_link_capabilities_X550em(struct ixgbe_hw *hw,
+  * @hw: pointer to hardware structure
+  * @lsc: pointer to boolean flag which indicates whether external Base T
+  *	 PHY interrupt is lsc
++ * @is_overtemp: indicate whether an overtemp event encountered
+  *
+  * Determime if external Base T PHY interrupt cause is high temperature
+  * failure alarm or link status change.
+- *
+- * Return IXGBE_ERR_OVERTEMP if interrupt is high temperature
+- * failure alarm, else return PHY access status.
+  **/
+-static s32 ixgbe_get_lasi_ext_t_x550em(struct ixgbe_hw *hw, bool *lsc)
++static s32 ixgbe_get_lasi_ext_t_x550em(struct ixgbe_hw *hw, bool *lsc,
++				       bool *is_overtemp)
+ {
+ 	u32 status;
+ 	u16 reg;
+ 
++	*is_overtemp = false;
+ 	*lsc = false;
+ 
+ 	/* Vendor alarm triggered */
+@@ -2362,7 +2364,8 @@ static s32 ixgbe_get_lasi_ext_t_x550em(struct ixgbe_hw *hw, bool *lsc)
+ 	if (reg & IXGBE_MDIO_GLOBAL_ALM_1_HI_TMP_FAIL) {
+ 		/* power down the PHY in case the PHY FW didn't already */
+ 		ixgbe_set_copper_phy_power(hw, false);
+-		return IXGBE_ERR_OVERTEMP;
++		*is_overtemp = true;
++		return -EIO;
+ 	}
+ 	if (reg & IXGBE_MDIO_GLOBAL_ALM_1_DEV_FAULT) {
+ 		/*  device fault alarm triggered */
+@@ -2376,7 +2379,8 @@ static s32 ixgbe_get_lasi_ext_t_x550em(struct ixgbe_hw *hw, bool *lsc)
+ 		if (reg == IXGBE_MDIO_GLOBAL_FAULT_MSG_HI_TMP) {
+ 			/* power down the PHY in case the PHY FW didn't */
+ 			ixgbe_set_copper_phy_power(hw, false);
+-			return IXGBE_ERR_OVERTEMP;
++			*is_overtemp = true;
++			return -EIO;
+ 		}
  	}
  
--	DPU_ERROR_ENC(dpu_enc, "frame done timeout\n");
-+	DPU_ERROR_ENC_RATELIMITED(dpu_enc, "frame done timeout\n");
+@@ -2412,12 +2416,12 @@ static s32 ixgbe_get_lasi_ext_t_x550em(struct ixgbe_hw *hw, bool *lsc)
+  **/
+ static s32 ixgbe_enable_lasi_ext_t_x550em(struct ixgbe_hw *hw)
+ {
++	bool lsc, overtemp;
+ 	u32 status;
+ 	u16 reg;
+-	bool lsc;
  
- 	event = DPU_ENCODER_FRAME_EVENT_ERROR;
- 	trace_dpu_enc_frame_done_timeout(DRMID(drm_enc), event);
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
-index 66d466628e2b..56ae888e18fc 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
-@@ -61,6 +61,7 @@
- 	} while (0)
+ 	/* Clear interrupt flags */
+-	status = ixgbe_get_lasi_ext_t_x550em(hw, &lsc);
++	status = ixgbe_get_lasi_ext_t_x550em(hw, &lsc, &overtemp);
  
- #define DPU_ERROR(fmt, ...) pr_err("[dpu error]" fmt, ##__VA_ARGS__)
-+#define DPU_ERROR_RATELIMITED(fmt, ...) pr_err_ratelimited("[dpu error]" fmt, ##__VA_ARGS__)
+ 	/* Enable link status change alarm */
+ 
+@@ -2496,21 +2500,20 @@ static s32 ixgbe_enable_lasi_ext_t_x550em(struct ixgbe_hw *hw)
+ /**
+  * ixgbe_handle_lasi_ext_t_x550em - Handle external Base T PHY interrupt
+  * @hw: pointer to hardware structure
++ * @is_overtemp: indicate whether an overtemp event encountered
+  *
+  * Handle external Base T PHY interrupt. If high temperature
+  * failure alarm then return error, else if link status change
+  * then setup internal/external PHY link
+- *
+- * Return IXGBE_ERR_OVERTEMP if interrupt is high temperature
+- * failure alarm, else return PHY access status.
+  **/
+-static s32 ixgbe_handle_lasi_ext_t_x550em(struct ixgbe_hw *hw)
++static s32 ixgbe_handle_lasi_ext_t_x550em(struct ixgbe_hw *hw,
++					  bool *is_overtemp)
+ {
+ 	struct ixgbe_phy_info *phy = &hw->phy;
+ 	bool lsc;
+ 	u32 status;
+ 
+-	status = ixgbe_get_lasi_ext_t_x550em(hw, &lsc);
++	status = ixgbe_get_lasi_ext_t_x550em(hw, &lsc, is_overtemp);
+ 	if (status)
+ 		return status;
+ 
+@@ -3138,21 +3141,23 @@ static s32 ixgbe_reset_phy_fw(struct ixgbe_hw *hw)
+ /**
+  * ixgbe_check_overtemp_fw - Check firmware-controlled PHYs for overtemp
+  * @hw: pointer to hardware structure
++ *
++ * Return true when an overtemp event detected, otherwise false.
+  */
+-static s32 ixgbe_check_overtemp_fw(struct ixgbe_hw *hw)
++static bool ixgbe_check_overtemp_fw(struct ixgbe_hw *hw)
+ {
+ 	u32 store[FW_PHY_ACT_DATA_COUNT] = { 0 };
+ 	s32 rc;
+ 
+ 	rc = ixgbe_fw_phy_activity(hw, FW_PHY_ACT_GET_LINK_INFO, &store);
+ 	if (rc)
+-		return rc;
++		return false;
+ 
+ 	if (store[0] & FW_PHY_ACT_GET_LINK_INFO_TEMP) {
+ 		ixgbe_shutdown_fw_phy(hw);
+-		return IXGBE_ERR_OVERTEMP;
++		return true;
+ 	}
+-	return 0;
++	return false;
+ }
  
  /**
-  * ktime_compare_safe - compare two ktime structures
 -- 
 2.43.0
 
