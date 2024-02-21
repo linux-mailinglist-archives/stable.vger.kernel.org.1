@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-22359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14D0685DBA7
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:43:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 306E085DD46
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:04:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 99ACFB27151
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:43:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 619AB1C228E7
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:04:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61CDA79DA2;
-	Wed, 21 Feb 2024 13:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC5EF7C6E5;
+	Wed, 21 Feb 2024 14:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VR7iASuS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FmMUcbTV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EBDB69D21;
-	Wed, 21 Feb 2024 13:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A97807BAFB;
+	Wed, 21 Feb 2024 14:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523017; cv=none; b=B0WbT0OKAOiyxotwV0SSbM/MRy48CMGTUxlJVRsZyrZ9P/dbe5P95X4TkCL03JWPQ9vP5Pyx7zm9CFpxkVWpYbWbzxDToIi0tvWNc6ibn4awMSOPww4d0izJ8NEVoFMYLd1H5logA/4qEp9dHpbd+48XfA5UnZoBVnvfgU62zZg=
+	t=1708524184; cv=none; b=QoJ0KNG4Id0xP8o/jpxQnSOncx0bxtkGA7BFsI9RTVcV+tvaEjhMxHj4aN+IPIB1rDpY+BJyyFIxVMrBAPrNLdm8gbmRBlh0iqa/9VuIZm0JSlfB96awT6VVtqLx4qGhbgGVUOHu8KsgozRBI7A2M4wmvZT7SZsaUNvCpFynal8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523017; c=relaxed/simple;
-	bh=Z071QmREvq0miPOF6lYHzf0d8uHvCyKdQan3pRB+064=;
+	s=arc-20240116; t=1708524184; c=relaxed/simple;
+	bh=jMh4qL9KHXZsjDz/JHrfPlonoiNB+2KC7v1aPoLgJ0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CgBlJmgjj3382TTjQ/MU/WPJxH/yjDJ4G56McplyaNT/u5cs4AbloR71LrnRpGoaAPehEgjlxuyx20NQNJmdQw7+0REJfOIIkUUbLsBTHaS4l/67aVB5YGRsJb2ZwyoUhRK4lBzdAmIYPV23v/Rxh3tO855wfOyzNykeYLiDjlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VR7iASuS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91325C433C7;
-	Wed, 21 Feb 2024 13:43:36 +0000 (UTC)
+	 MIME-Version; b=pdeZrQ4e0tstrN2D+xQ6MWUqJm9vSYlXJnd1z/H7gZypO1QSzUiD+/kCDidWFib+GOUaLMAH2RkSiP8F31zO0sj/HLzodrBpxoaYLtP6KhZXPtWE0JwLkJCZy6OyBjY4I6TCFgOO34cCxeUayktvMRGBxYJqqKKrkm97zF60AD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FmMUcbTV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A6C8C433C7;
+	Wed, 21 Feb 2024 14:03:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523017;
-	bh=Z071QmREvq0miPOF6lYHzf0d8uHvCyKdQan3pRB+064=;
+	s=korg; t=1708524184;
+	bh=jMh4qL9KHXZsjDz/JHrfPlonoiNB+2KC7v1aPoLgJ0Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VR7iASuSRKE9y9FlXQQwmO/LIZcQjTnMcGgJZXa1nGThvUYW93dHnezjx9wtX6SI5
-	 pJCdCxIl1gVi/mf4pZD+4sn5XLC0XybNNVXMzZcxlBbSS+wOUPm7ypJrJ2X4eDtDvc
-	 A/oNZQwZ1m7Q1qKdW4Uxdq3xSwqIH1dSy2OkYxTM=
+	b=FmMUcbTV7aGSpyK1O+zoBGFmRwhIohx0VpIb/OQH1LfFHIiLm1zONwIj2wTNCqRuF
+	 bZPJgWc3mLnsMH6Md4kiOQf8H2kOpJqI4UF1yUEqNOBX9Szo27/RR+IkpEpm49Ksig
+	 NpTokDNMibmeTr3sWHermqO4uIib3cA338IrQd2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Vinod Koul <vkoul@kernel.org>,
+	Su Hui <suhui@nfschina.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 298/476] dmaengine: fsl-qdma: Fix a memory leak related to the status queue DMA
+Subject: [PATCH 5.10 170/379] wifi: rtlwifi: rtl8723{be,ae}: using calculate_bit_shift()
 Date: Wed, 21 Feb 2024 14:05:49 +0100
-Message-ID: <20240221130019.021495543@linuxfoundation.org>
+Message-ID: <20240221125959.946091969@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit 968bc1d7203d384e72afe34124a1801b7af76514 ]
+[ Upstream commit 5c16618bc06a41ad68fd8499a21d35ef57ca06c2 ]
 
-This dma_alloc_coherent() is undone in the remove function, but not in the
-error handling path of fsl_qdma_probe().
+Using calculate_bit_shift() to replace rtl8723_phy_calculate_bit_shift().
+And fix an undefined bitwise shift behavior problem.
 
-Switch to the managed version to fix the issue in the probe and simplify
-the remove function.
-
-Fixes: b092529e0aa0 ("dmaengine: fsl-qdma: Add qDMA controller driver for Layerscape SoCs")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/a0ef5d0f5a47381617ef339df776ddc68ce48173.1704621515.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20231219065739.1895666-12-suhui@nfschina.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/fsl-qdma.c | 17 +++++------------
- 1 file changed, 5 insertions(+), 12 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c | 6 +++---
+ drivers/net/wireless/realtek/rtlwifi/rtl8723be/phy.c | 4 ++--
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/dma/fsl-qdma.c b/drivers/dma/fsl-qdma.c
-index 045ead46ec8f..5cc887acb05b 100644
---- a/drivers/dma/fsl-qdma.c
-+++ b/drivers/dma/fsl-qdma.c
-@@ -563,11 +563,11 @@ static struct fsl_qdma_queue
- 	/*
- 	 * Buffer for queue command
- 	 */
--	status_head->cq = dma_alloc_coherent(&pdev->dev,
--					     sizeof(struct fsl_qdma_format) *
--					     status_size,
--					     &status_head->bus_addr,
--					     GFP_KERNEL);
-+	status_head->cq = dmam_alloc_coherent(&pdev->dev,
-+					      sizeof(struct fsl_qdma_format) *
-+					      status_size,
-+					      &status_head->bus_addr,
-+					      GFP_KERNEL);
- 	if (!status_head->cq) {
- 		devm_kfree(&pdev->dev, status_head);
- 		return NULL;
-@@ -1272,8 +1272,6 @@ static void fsl_qdma_cleanup_vchan(struct dma_device *dmadev)
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c
+index fa0eed434d4f..d26dda8e46fd 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c
+@@ -49,7 +49,7 @@ u32 rtl8723e_phy_query_rf_reg(struct ieee80211_hw *hw,
+ 							    rfpath, regaddr);
+ 	}
  
- static int fsl_qdma_remove(struct platform_device *pdev)
- {
--	int i;
--	struct fsl_qdma_queue *status;
- 	struct device_node *np = pdev->dev.of_node;
- 	struct fsl_qdma_engine *fsl_qdma = platform_get_drvdata(pdev);
+-	bitshift = rtl8723_phy_calculate_bit_shift(bitmask);
++	bitshift = calculate_bit_shift(bitmask);
+ 	readback_value = (original_value & bitmask) >> bitshift;
  
-@@ -1282,11 +1280,6 @@ static int fsl_qdma_remove(struct platform_device *pdev)
- 	of_dma_controller_free(np);
- 	dma_async_device_unregister(&fsl_qdma->dma_dev);
+ 	spin_unlock(&rtlpriv->locks.rf_lock);
+@@ -80,7 +80,7 @@ void rtl8723e_phy_set_rf_reg(struct ieee80211_hw *hw,
+ 			original_value = rtl8723_phy_rf_serial_read(hw,
+ 								    rfpath,
+ 								    regaddr);
+-			bitshift = rtl8723_phy_calculate_bit_shift(bitmask);
++			bitshift = calculate_bit_shift(bitmask);
+ 			data =
+ 			    ((original_value & (~bitmask)) |
+ 			     (data << bitshift));
+@@ -89,7 +89,7 @@ void rtl8723e_phy_set_rf_reg(struct ieee80211_hw *hw,
+ 		rtl8723_phy_rf_serial_write(hw, rfpath, regaddr, data);
+ 	} else {
+ 		if (bitmask != RFREG_OFFSET_MASK) {
+-			bitshift = rtl8723_phy_calculate_bit_shift(bitmask);
++			bitshift = calculate_bit_shift(bitmask);
+ 			data =
+ 			    ((original_value & (~bitmask)) |
+ 			     (data << bitshift));
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/phy.c
+index f09f55b0468a..35dfea54ae9c 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/phy.c
+@@ -41,7 +41,7 @@ u32 rtl8723be_phy_query_rf_reg(struct ieee80211_hw *hw, enum radio_path rfpath,
+ 	spin_lock(&rtlpriv->locks.rf_lock);
  
--	for (i = 0; i < fsl_qdma->block_number; i++) {
--		status = fsl_qdma->status[i];
--		dma_free_coherent(&pdev->dev, sizeof(struct fsl_qdma_format) *
--				status->n_cq, status->cq, status->bus_addr);
--	}
- 	return 0;
- }
+ 	original_value = rtl8723_phy_rf_serial_read(hw, rfpath, regaddr);
+-	bitshift = rtl8723_phy_calculate_bit_shift(bitmask);
++	bitshift = calculate_bit_shift(bitmask);
+ 	readback_value = (original_value & bitmask) >> bitshift;
  
+ 	spin_unlock(&rtlpriv->locks.rf_lock);
+@@ -68,7 +68,7 @@ void rtl8723be_phy_set_rf_reg(struct ieee80211_hw *hw, enum radio_path path,
+ 	if (bitmask != RFREG_OFFSET_MASK) {
+ 			original_value = rtl8723_phy_rf_serial_read(hw, path,
+ 								    regaddr);
+-			bitshift = rtl8723_phy_calculate_bit_shift(bitmask);
++			bitshift = calculate_bit_shift(bitmask);
+ 			data = ((original_value & (~bitmask)) |
+ 				(data << bitshift));
+ 		}
 -- 
 2.43.0
 
