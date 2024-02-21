@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-22185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3A3285DAC2
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:34:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF9C685DC7E
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:54:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 904F6283796
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:34:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F341D1C23671
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:54:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 129417E581;
-	Wed, 21 Feb 2024 13:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5A647BAFF;
+	Wed, 21 Feb 2024 13:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SHYu+Pcw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KcmeJ6IG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0AB57E112;
-	Wed, 21 Feb 2024 13:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 800CB79DAB;
+	Wed, 21 Feb 2024 13:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522359; cv=none; b=ZxxBoUNfhgdGVveHjsAPRqq615VmDSiCqT1C2NIN/MAe4IMwwmEk4I9uxj6AtIBJmpdSou7i0YeIJZ5RI74y1TrqP3R73F8PuGCtOgeQbKOhWezCuMRzWDKE/il0H7dfVcdfEH+jSInrtVLog+xM6JgBtPwZna3vRhmq11W5a3M=
+	t=1708523628; cv=none; b=njaVsXoJNjgPBjCKQwNOY4jR2bsYH0iZDqfGNPw1ShQZRcExexzGJ//0UsZ52TnukeQ06YYYCzhULLGjjXWhYgGVCL+rVoMxjIboHidVlmP2gtjeMrVCQ5cMcNCkH7XQ9PU5wiCuFLS2uNEOFjQI18PLOqUHkN5RluzJt2z8gmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522359; c=relaxed/simple;
-	bh=VwfIdADSYB4KqqPZFXXKaPzmJYJdDJnYUsrZZ0htsh8=;
+	s=arc-20240116; t=1708523628; c=relaxed/simple;
+	bh=e70K0FmgMhZkIV3r1JyLDfhx6vUP+uQkeR5TBr32R/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XqQC9Wlh4ASf5YwFx2aBhGEoHisXdMo/RmXF//KWOzWafbq33uVFsy2ISp40xEo7zvHeBh9jkYmXTzE3RIx1eryPbAIBWWrFF4o/Fntpz6rIQYpWc4qQV0cKi8AlrEZyb1e9rhXD1M1vsjyYVRnO+rlnX8FA/pFhTufCtVqrJ+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SHYu+Pcw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF156C433F1;
-	Wed, 21 Feb 2024 13:32:38 +0000 (UTC)
+	 MIME-Version; b=lstVeiFSFZ9ofNL7SiTpEMJY/ilooiL4XYgVaMhPbvRNh3GDZtIU5cevnFv8BkfGQ+idD5uP+XjYRc/gj0sTz1Dak88zWPChDexA1JWBZZUIRtQElDI8gz39IA8Ys/Lh66cDRWHq7YthcXosgugyTa6Z84TJZcuzSmBlNB0GUYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KcmeJ6IG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D34B7C433F1;
+	Wed, 21 Feb 2024 13:53:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522359;
-	bh=VwfIdADSYB4KqqPZFXXKaPzmJYJdDJnYUsrZZ0htsh8=;
+	s=korg; t=1708523628;
+	bh=e70K0FmgMhZkIV3r1JyLDfhx6vUP+uQkeR5TBr32R/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SHYu+PcwakrevtghTf2vloB+C1+oETSFXn9g67xbT0LjYW2jiK8g3RJ9meplLq1sE
-	 TS0w8a8JrI9kx+rHNIf8kkvkZyx/JbnreBWEP+aZRixvakd5amCVTWBrgGWpCBH63I
-	 y5ebOys13X+k9Z1Jxm9bdqBPMKVqG3ttXsCHU7l4=
+	b=KcmeJ6IGGnU5JsXMoy3yk3YQ/zrxsthJ5fR6/NuX4xbtVb7ZW/iAVE88gy7vAx6Kp
+	 O+7FqXj2xEfdxG+6jN6loQB6Ze/f9REx1TPtDUZaMUUNAfl5sK+vvmzZycqOk3qxxd
+	 5HdF3k3eu5/zcFb4KxAeizp4q3xFiOaL7Dq6M6d8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prarit Bhargava <prarit@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 141/476] ACPI: extlog: fix NULL pointer dereference check
+Subject: [PATCH 5.10 013/379] iio: adc: ad7091r: Allow users to configure device events
 Date: Wed, 21 Feb 2024 14:03:12 +0100
-Message-ID: <20240221130013.143601251@linuxfoundation.org>
+Message-ID: <20240221125955.313389567@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +62,299 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prarit Bhargava <prarit@redhat.com>
+From: Marcelo Schmitt <marcelo.schmitt@analog.com>
 
-[ Upstream commit 72d9b9747e78979510e9aafdd32eb99c7aa30dd1 ]
+[ Upstream commit 020e71c7ffc25dfe29ed9be6c2d39af7bd7f661f ]
 
-The gcc plugin -fanalyzer [1] tries to detect various
-patterns of incorrect behaviour.  The tool reports:
+AD7091R-5 devices are supported by the ad7091r-5 driver together with
+the ad7091r-base driver. Those drivers declared iio events for notifying
+user space when ADC readings fall bellow the thresholds of low limit
+registers or above the values set in high limit registers.
+However, to configure iio events and their thresholds, a set of callback
+functions must be implemented and those were not present until now.
+The consequence of trying to configure ad7091r-5 events without the
+proper callback functions was a null pointer dereference in the kernel
+because the pointers to the callback functions were not set.
 
-drivers/acpi/acpi_extlog.c: In function ‘extlog_exit’:
-drivers/acpi/acpi_extlog.c:307:12: warning: check of ‘extlog_l1_addr’ for NULL after already dereferencing it [-Wanalyzer-deref-before-check]
-    |
-    |  306 |         ((struct extlog_l1_head *)extlog_l1_addr)->flags &= ~FLAG_OS_OPTIN;
-    |      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
-    |      |                                                  |
-    |      |                                                  (1) pointer ‘extlog_l1_addr’ is dereferenced here
-    |  307 |         if (extlog_l1_addr)
-    |      |            ~
-    |      |            |
-    |      |            (2) pointer ‘extlog_l1_addr’ is checked for NULL here but it was already dereferenced at (1)
-    |
+Implement event configuration callbacks allowing users to read/write
+event thresholds and enable/disable event generation.
 
-Fix the NULL pointer dereference check in extlog_exit().
+Since the event spec structs are generic to AD7091R devices, also move
+those from the ad7091r-5 driver the base driver so they can be reused
+when support for ad7091r-2/-4/-8 be added.
 
-Link: https://gcc.gnu.org/onlinedocs/gcc-10.1.0/gcc/Static-Analyzer-Options.html # [1]
-
-Signed-off-by: Prarit Bhargava <prarit@redhat.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: ca69300173b6 ("iio: adc: Add support for AD7091R5 ADC")
+Suggested-by: David Lechner <dlechner@baylibre.com>
+Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Link: https://lore.kernel.org/r/59552d3548dabd56adc3107b7b4869afee2b0c3c.1703013352.git.marcelo.schmitt1@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpi_extlog.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/iio/adc/ad7091r-base.c | 156 +++++++++++++++++++++++++++++++++
+ drivers/iio/adc/ad7091r-base.h |   6 ++
+ drivers/iio/adc/ad7091r5.c     |  28 +-----
+ 3 files changed, 166 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
-index 088db2356998..0a84d5afd37c 100644
---- a/drivers/acpi/acpi_extlog.c
-+++ b/drivers/acpi/acpi_extlog.c
-@@ -308,9 +308,10 @@ static int __init extlog_init(void)
- static void __exit extlog_exit(void)
+diff --git a/drivers/iio/adc/ad7091r-base.c b/drivers/iio/adc/ad7091r-base.c
+index ad089c0ff953..9ddda08918db 100644
+--- a/drivers/iio/adc/ad7091r-base.c
++++ b/drivers/iio/adc/ad7091r-base.c
+@@ -6,6 +6,7 @@
+  */
+ 
+ #include <linux/bitops.h>
++#include <linux/bitfield.h>
+ #include <linux/iio/events.h>
+ #include <linux/iio/iio.h>
+ #include <linux/interrupt.h>
+@@ -50,6 +51,27 @@ struct ad7091r_state {
+ 	struct mutex lock; /*lock to prevent concurent reads */
+ };
+ 
++const struct iio_event_spec ad7091r_events[] = {
++	{
++		.type = IIO_EV_TYPE_THRESH,
++		.dir = IIO_EV_DIR_RISING,
++		.mask_separate = BIT(IIO_EV_INFO_VALUE) |
++				 BIT(IIO_EV_INFO_ENABLE),
++	},
++	{
++		.type = IIO_EV_TYPE_THRESH,
++		.dir = IIO_EV_DIR_FALLING,
++		.mask_separate = BIT(IIO_EV_INFO_VALUE) |
++				 BIT(IIO_EV_INFO_ENABLE),
++	},
++	{
++		.type = IIO_EV_TYPE_THRESH,
++		.dir = IIO_EV_DIR_EITHER,
++		.mask_separate = BIT(IIO_EV_INFO_HYSTERESIS),
++	},
++};
++EXPORT_SYMBOL_NS_GPL(ad7091r_events, IIO_AD7091R);
++
+ static int ad7091r_set_mode(struct ad7091r_state *st, enum ad7091r_mode mode)
  {
- 	mce_unregister_decode_chain(&extlog_mce_dec);
--	((struct extlog_l1_head *)extlog_l1_addr)->flags &= ~FLAG_OS_OPTIN;
--	if (extlog_l1_addr)
-+	if (extlog_l1_addr) {
-+		((struct extlog_l1_head *)extlog_l1_addr)->flags &= ~FLAG_OS_OPTIN;
- 		acpi_os_unmap_iomem(extlog_l1_addr, l1_size);
+ 	int ret, conf;
+@@ -169,8 +191,142 @@ static int ad7091r_read_raw(struct iio_dev *iio_dev,
+ 	return ret;
+ }
+ 
++static int ad7091r_read_event_config(struct iio_dev *indio_dev,
++				     const struct iio_chan_spec *chan,
++				     enum iio_event_type type,
++				     enum iio_event_direction dir)
++{
++	struct ad7091r_state *st = iio_priv(indio_dev);
++	int val, ret;
++
++	switch (dir) {
++	case IIO_EV_DIR_RISING:
++		ret = regmap_read(st->map,
++				  AD7091R_REG_CH_HIGH_LIMIT(chan->channel),
++				  &val);
++		if (ret)
++			return ret;
++		return val != AD7091R_HIGH_LIMIT;
++	case IIO_EV_DIR_FALLING:
++		ret = regmap_read(st->map,
++				  AD7091R_REG_CH_LOW_LIMIT(chan->channel),
++				  &val);
++		if (ret)
++			return ret;
++		return val != AD7091R_LOW_LIMIT;
++	default:
++		return -EINVAL;
 +	}
- 	if (elog_addr)
- 		acpi_os_unmap_iomem(elog_addr, elog_size);
- 	release_mem_region(elog_base, elog_size);
++}
++
++static int ad7091r_write_event_config(struct iio_dev *indio_dev,
++				      const struct iio_chan_spec *chan,
++				      enum iio_event_type type,
++				      enum iio_event_direction dir, int state)
++{
++	struct ad7091r_state *st = iio_priv(indio_dev);
++
++	if (state) {
++		return regmap_set_bits(st->map, AD7091R_REG_CONF,
++				       AD7091R_REG_CONF_ALERT_EN);
++	} else {
++		/*
++		 * Set thresholds either to 0 or to 2^12 - 1 as appropriate to
++		 * prevent alerts and thus disable event generation.
++		 */
++		switch (dir) {
++		case IIO_EV_DIR_RISING:
++			return regmap_write(st->map,
++					    AD7091R_REG_CH_HIGH_LIMIT(chan->channel),
++					    AD7091R_HIGH_LIMIT);
++		case IIO_EV_DIR_FALLING:
++			return regmap_write(st->map,
++					    AD7091R_REG_CH_LOW_LIMIT(chan->channel),
++					    AD7091R_LOW_LIMIT);
++		default:
++			return -EINVAL;
++		}
++	}
++}
++
++static int ad7091r_read_event_value(struct iio_dev *indio_dev,
++				    const struct iio_chan_spec *chan,
++				    enum iio_event_type type,
++				    enum iio_event_direction dir,
++				    enum iio_event_info info, int *val, int *val2)
++{
++	struct ad7091r_state *st = iio_priv(indio_dev);
++	int ret;
++
++	switch (info) {
++	case IIO_EV_INFO_VALUE:
++		switch (dir) {
++		case IIO_EV_DIR_RISING:
++			ret = regmap_read(st->map,
++					  AD7091R_REG_CH_HIGH_LIMIT(chan->channel),
++					  val);
++			if (ret)
++				return ret;
++			return IIO_VAL_INT;
++		case IIO_EV_DIR_FALLING:
++			ret = regmap_read(st->map,
++					  AD7091R_REG_CH_LOW_LIMIT(chan->channel),
++					  val);
++			if (ret)
++				return ret;
++			return IIO_VAL_INT;
++		default:
++			return -EINVAL;
++		}
++	case IIO_EV_INFO_HYSTERESIS:
++		ret = regmap_read(st->map,
++				  AD7091R_REG_CH_HYSTERESIS(chan->channel),
++				  val);
++		if (ret)
++			return ret;
++		return IIO_VAL_INT;
++	default:
++		return -EINVAL;
++	}
++}
++
++static int ad7091r_write_event_value(struct iio_dev *indio_dev,
++				     const struct iio_chan_spec *chan,
++				     enum iio_event_type type,
++				     enum iio_event_direction dir,
++				     enum iio_event_info info, int val, int val2)
++{
++	struct ad7091r_state *st = iio_priv(indio_dev);
++
++	switch (info) {
++	case IIO_EV_INFO_VALUE:
++		switch (dir) {
++		case IIO_EV_DIR_RISING:
++			return regmap_write(st->map,
++					    AD7091R_REG_CH_HIGH_LIMIT(chan->channel),
++					    val);
++		case IIO_EV_DIR_FALLING:
++			return regmap_write(st->map,
++					    AD7091R_REG_CH_LOW_LIMIT(chan->channel),
++					    val);
++		default:
++			return -EINVAL;
++		}
++	case IIO_EV_INFO_HYSTERESIS:
++		return regmap_write(st->map,
++				    AD7091R_REG_CH_HYSTERESIS(chan->channel),
++				    val);
++	default:
++		return -EINVAL;
++	}
++}
++
+ static const struct iio_info ad7091r_info = {
+ 	.read_raw = ad7091r_read_raw,
++	.read_event_config = &ad7091r_read_event_config,
++	.write_event_config = &ad7091r_write_event_config,
++	.read_event_value = &ad7091r_read_event_value,
++	.write_event_value = &ad7091r_write_event_value,
+ };
+ 
+ static irqreturn_t ad7091r_event_handler(int irq, void *private)
+diff --git a/drivers/iio/adc/ad7091r-base.h b/drivers/iio/adc/ad7091r-base.h
+index 509748aef9b1..7a78976a2f80 100644
+--- a/drivers/iio/adc/ad7091r-base.h
++++ b/drivers/iio/adc/ad7091r-base.h
+@@ -8,6 +8,10 @@
+ #ifndef __DRIVERS_IIO_ADC_AD7091R_BASE_H__
+ #define __DRIVERS_IIO_ADC_AD7091R_BASE_H__
+ 
++/* AD7091R_REG_CH_LIMIT */
++#define AD7091R_HIGH_LIMIT		0xFFF
++#define AD7091R_LOW_LIMIT		0x0
++
+ struct device;
+ struct ad7091r_state;
+ 
+@@ -17,6 +21,8 @@ struct ad7091r_chip_info {
+ 	unsigned int vref_mV;
+ };
+ 
++extern const struct iio_event_spec ad7091r_events[3];
++
+ extern const struct regmap_config ad7091r_regmap_config;
+ 
+ int ad7091r_probe(struct device *dev, const char *name,
+diff --git a/drivers/iio/adc/ad7091r5.c b/drivers/iio/adc/ad7091r5.c
+index 9665679c3ea6..e60511460786 100644
+--- a/drivers/iio/adc/ad7091r5.c
++++ b/drivers/iio/adc/ad7091r5.c
+@@ -12,26 +12,6 @@
+ 
+ #include "ad7091r-base.h"
+ 
+-static const struct iio_event_spec ad7091r5_events[] = {
+-	{
+-		.type = IIO_EV_TYPE_THRESH,
+-		.dir = IIO_EV_DIR_RISING,
+-		.mask_separate = BIT(IIO_EV_INFO_VALUE) |
+-				 BIT(IIO_EV_INFO_ENABLE),
+-	},
+-	{
+-		.type = IIO_EV_TYPE_THRESH,
+-		.dir = IIO_EV_DIR_FALLING,
+-		.mask_separate = BIT(IIO_EV_INFO_VALUE) |
+-				 BIT(IIO_EV_INFO_ENABLE),
+-	},
+-	{
+-		.type = IIO_EV_TYPE_THRESH,
+-		.dir = IIO_EV_DIR_EITHER,
+-		.mask_separate = BIT(IIO_EV_INFO_HYSTERESIS),
+-	},
+-};
+-
+ #define AD7091R_CHANNEL(idx, bits, ev, num_ev) { \
+ 	.type = IIO_VOLTAGE, \
+ 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW), \
+@@ -44,10 +24,10 @@ static const struct iio_event_spec ad7091r5_events[] = {
+ 	.scan_type.realbits = bits, \
+ }
+ static const struct iio_chan_spec ad7091r5_channels_irq[] = {
+-	AD7091R_CHANNEL(0, 12, ad7091r5_events, ARRAY_SIZE(ad7091r5_events)),
+-	AD7091R_CHANNEL(1, 12, ad7091r5_events, ARRAY_SIZE(ad7091r5_events)),
+-	AD7091R_CHANNEL(2, 12, ad7091r5_events, ARRAY_SIZE(ad7091r5_events)),
+-	AD7091R_CHANNEL(3, 12, ad7091r5_events, ARRAY_SIZE(ad7091r5_events)),
++	AD7091R_CHANNEL(0, 12, ad7091r_events, ARRAY_SIZE(ad7091r_events)),
++	AD7091R_CHANNEL(1, 12, ad7091r_events, ARRAY_SIZE(ad7091r_events)),
++	AD7091R_CHANNEL(2, 12, ad7091r_events, ARRAY_SIZE(ad7091r_events)),
++	AD7091R_CHANNEL(3, 12, ad7091r_events, ARRAY_SIZE(ad7091r_events)),
+ };
+ 
+ static const struct iio_chan_spec ad7091r5_channels_noirq[] = {
 -- 
 2.43.0
 
