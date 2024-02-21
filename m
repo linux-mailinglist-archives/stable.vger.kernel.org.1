@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-22386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94B7D85DBC6
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:45:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1CF885D940
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:16:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 364D31F2229C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:45:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81F751F21574
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:16:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6367D78B50;
-	Wed, 21 Feb 2024 13:45:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 052B729AB;
+	Wed, 21 Feb 2024 13:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EgV7Rpfw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OBGZfIxR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2124F4D5B7;
-	Wed, 21 Feb 2024 13:45:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01637866C;
+	Wed, 21 Feb 2024 13:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523111; cv=none; b=lm36dF3H+d3Wlagq29Jhqt38F3jBfXv3unkfTmblwbaFefjSQPZPdhPyNXbLbg6KOlVlnmeYGMfgdDEflKFVEhHNW+FMw5PXDxObm5Ig3R+kqAkuEa0lUrTl7J1xI/QRu44Oq6D1yMtR8V8iPI3SAhRM+JtnIXFliYHhhwlxfw4=
+	t=1708521360; cv=none; b=b5dJPBe/YWI2u/DQGzCPD/4MpgRoQy+Y4euCpe4M3iAlgvYaYdrIdFhiZ9bNZqdZZsBTtGyuYRzWq8o956lNY8PURnTbm+dUr9uUzs/394+C2J0jvHqOTPCfZYbj7UL+ZcR9KyYEajHQnY3C5T17yaurZm9Qlrh01ZHcjFN6tSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523111; c=relaxed/simple;
-	bh=PAxHFpP1DTW/mCkzaczQfaVyrN7q752ZHucVpXKw5yU=;
+	s=arc-20240116; t=1708521360; c=relaxed/simple;
+	bh=s5fdk2VWs5Aym1FqKLH1fkaZ+d5nmIMI/a0sgytaC10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HOk0BlIrOJ/vp72BqQEZ/GeZzsFs0VrRxffHmIzbUQ0zbL9tA6VIAGr1QVbLD/Y+kS8png/xala9RMbRbMKd4pdUmujD7j2S0kAcqx8eVjV22Ad8stJLhiMXBP/hSnHc9dZIwc4wHWyH1yj9SE6mg8U3OPYR/+P9qPD2MbZ3wyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EgV7Rpfw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91EDEC433F1;
-	Wed, 21 Feb 2024 13:45:10 +0000 (UTC)
+	 MIME-Version; b=Lf6KZx0Ih1RTjzPOAx2ugog/AHhZSHBy4dhp9ESDUJIBP3FoYPXtLLwHM21KRRt7/lbSaMtOZkq6Eik/m5/p7k2M5sbsXXrR/ACic9JFFc7NCOodS5fRAVt5WxnCXpSlYYru5qgJNgvstdjiHZqClYbLdAIiMgLvzmkXjmSlMkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OBGZfIxR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BED3C433F1;
+	Wed, 21 Feb 2024 13:15:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523111;
-	bh=PAxHFpP1DTW/mCkzaczQfaVyrN7q752ZHucVpXKw5yU=;
+	s=korg; t=1708521360;
+	bh=s5fdk2VWs5Aym1FqKLH1fkaZ+d5nmIMI/a0sgytaC10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EgV7Rpfw4xGhI7rI8cynk6Kgv2lyL3BnQWkYN7+vFygjj2600N1kWZFWtlIPFYQHJ
-	 0gBVcCMCiWuVcBBmm6cLD85KHLtsRJH+vxIrf/73ftxI9NByFz888Gof8TMQJKqDTE
-	 vqhVoPGKwBsJhC496sMK1jEM7KtMpGKWfJD0THMI=
+	b=OBGZfIxR85RO2kzr2rK6tIGSX48OMW2eravnyDuhMNpFr8WVWl8CsIRwGf5IHLUbi
+	 M+Y+lhhDFPT6PRjS+E7DvuapBDyk2we4Vg/ImmIID9s0j5tK/WQrU4OiEiuXR2uO2j
+	 eM62UlfqeHNVCwIkfZ/IDNq6119EjSDZIFFbhXHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	lonial con <kongln9170@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.15 343/476] netfilter: nft_set_rbtree: skip end interval element from gc
+	Zenm Chen <zenmchen@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 093/202] wifi: rtl8xxxu: Add additional USB IDs for RTL8192EU devices
 Date: Wed, 21 Feb 2024 14:06:34 +0100
-Message-ID: <20240221130020.680349527@linuxfoundation.org>
+Message-ID: <20240221125934.793327537@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Zenm Chen <zenmchen@gmail.com>
 
-commit 60c0c230c6f046da536d3df8b39a20b9a9fd6af0 upstream.
+[ Upstream commit 4e87ca403e2008b9e182239e1abbf6876a55eb33 ]
 
-rbtree lazy gc on insert might collect an end interval element that has
-been just added in this transactions, skip end interval elements that
-are not yet active.
+Add additional USB IDs found in the vendor driver from
+https://github.com/Mange/rtl8192eu-linux-driver to support more
+RTL8192EU devices.
 
-Fixes: f718863aca46 ("netfilter: nft_set_rbtree: fix overlap expiration walk")
-Cc: stable@vger.kernel.org
-Reported-by: lonial con <kongln9170@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Zenm Chen <zenmchen@gmail.com>
+Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20231217123017.1982-1-zenmchen@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_rbtree.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ .../net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c    | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/net/netfilter/nft_set_rbtree.c
-+++ b/net/netfilter/nft_set_rbtree.c
-@@ -235,7 +235,7 @@ static void nft_rbtree_gc_remove(struct
- 
- static const struct nft_rbtree_elem *
- nft_rbtree_gc_elem(const struct nft_set *__set, struct nft_rbtree *priv,
--		   struct nft_rbtree_elem *rbe, u8 genmask)
-+		   struct nft_rbtree_elem *rbe)
- {
- 	struct nft_set *set = (struct nft_set *)__set;
- 	struct rb_node *prev = rb_prev(&rbe->node);
-@@ -254,7 +254,7 @@ nft_rbtree_gc_elem(const struct nft_set
- 	while (prev) {
- 		rbe_prev = rb_entry(prev, struct nft_rbtree_elem, node);
- 		if (nft_rbtree_interval_end(rbe_prev) &&
--		    nft_set_elem_active(&rbe_prev->ext, genmask))
-+		    nft_set_elem_active(&rbe_prev->ext, NFT_GENMASK_ANY))
- 			break;
- 
- 		prev = rb_prev(prev);
-@@ -365,7 +365,7 @@ static int __nft_rbtree_insert(const str
- 		    nft_set_elem_active(&rbe->ext, cur_genmask)) {
- 			const struct nft_rbtree_elem *removed_end;
- 
--			removed_end = nft_rbtree_gc_elem(set, priv, rbe, genmask);
-+			removed_end = nft_rbtree_gc_elem(set, priv, rbe);
- 			if (IS_ERR(removed_end))
- 				return PTR_ERR(removed_end);
- 
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+index 780dab276829..9c5a7ea1479e 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -6366,6 +6366,18 @@ static const struct usb_device_id dev_table[] = {
+ 	.driver_info = (unsigned long)&rtl8192eu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x818c, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192eu_fops},
++/* D-Link DWA-131 rev C1 */
++{USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x3312, 0xff, 0xff, 0xff),
++	.driver_info = (unsigned long)&rtl8192eu_fops},
++/* TP-Link TL-WN8200ND V2 */
++{USB_DEVICE_AND_INTERFACE_INFO(0x2357, 0x0126, 0xff, 0xff, 0xff),
++	.driver_info = (unsigned long)&rtl8192eu_fops},
++/* Mercusys MW300UM */
++{USB_DEVICE_AND_INTERFACE_INFO(0x2c4e, 0x0100, 0xff, 0xff, 0xff),
++	.driver_info = (unsigned long)&rtl8192eu_fops},
++/* Mercusys MW300UH */
++{USB_DEVICE_AND_INTERFACE_INFO(0x2c4e, 0x0104, 0xff, 0xff, 0xff),
++	.driver_info = (unsigned long)&rtl8192eu_fops},
+ #endif
+ { }
+ };
+-- 
+2.43.0
+
 
 
 
