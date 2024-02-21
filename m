@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-22854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 867E585DE12
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:14:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 903EA85DF1E
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:24:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B872C1C237ED
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1DE31C23D02
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:24:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A2E57E792;
-	Wed, 21 Feb 2024 14:12:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C942E76037;
+	Wed, 21 Feb 2024 14:24:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BSNjZse7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W9cgBlIo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 078DD1E4B2;
-	Wed, 21 Feb 2024 14:12:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85EA63D0A1;
+	Wed, 21 Feb 2024 14:24:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524736; cv=none; b=Xm03mRZDKEeztWlu1ETlSFlZImTVDYdLzELXKJvvMtkBz1fuzl3LO5sykrFjyXrRunFuf5BwY04qHduT5gVGZniki0UrPOvO9jSeGdG+ZVU2/XCSFAf8gxOtVyJ9zfRkvOHmIOl5yLRg+DrvZF9FA8DGPLrOiWJCGP5zv3d1044=
+	t=1708525491; cv=none; b=PLieeee/X5bftRGhRQ8jCUa6bKJ0DOgc9hnHlWS0b8vezL0ob2JN1yjss2L4E7G3HzGIhATNrbSwxV2JOTnw11WND58RELOetY/IS+ObE/DgoSxQ5m4CyS0pC1gTcbFSWsH7hOUvQxN37G8w8a59XZK6Qo4Na0UxkgeBWMxaLLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524736; c=relaxed/simple;
-	bh=JS/AYKQzinsUiLb0Z3g07qAvp7pEpOhD57Z1n8CoktA=;
+	s=arc-20240116; t=1708525491; c=relaxed/simple;
+	bh=E3tCCEkVQksYd4+bYBx2BnfdKdYVVURnZ5rVG1NpvXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I1C2oiowvhVjCTFoC6POjxhxKRdqg2vxUZPGf2GkZG7be71hf+YqFao5fqG9vfAuLK0ykRsAYFesaZXWajcn7MBe83dy3ZLu0RzJoq7YMtesoQ7Q6+MlseGPkiL3A7F6cb2G45mQkRGNOYsKF5V+v6vtUR+hwcJiXcslM8tcFG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BSNjZse7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B9F0C433C7;
-	Wed, 21 Feb 2024 14:12:15 +0000 (UTC)
+	 MIME-Version; b=ELqDP5II+h2bxroTOFYJWn6IZkdG6rQZsK2sK6ACjgYpJR5ad3dfko1lcEqmOT7kHCjrUiO3pKARyYE2VIcUtRzfuhiZ0pp1/zxdf92qF70ShJylXqSIT08t0Spn/0F8pW4hm4QoHpIkYo685XC9x7x3JbBp7qagZGtMyzauLOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W9cgBlIo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C95C433F1;
+	Wed, 21 Feb 2024 14:24:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524735;
-	bh=JS/AYKQzinsUiLb0Z3g07qAvp7pEpOhD57Z1n8CoktA=;
+	s=korg; t=1708525491;
+	bh=E3tCCEkVQksYd4+bYBx2BnfdKdYVVURnZ5rVG1NpvXs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BSNjZse7uzWqLyWHOsDCrVdMY4Ugq7YIh894rYwpaty7hr6D/UVZOYXbMhguAsLKt
-	 wAPj66SXJ9+OXBUY6eYhcYb/wJJ5EnUQZVJFwOCHEiAfPsYkSb7VXLMkR/VSh1WkuU
-	 yzRsno7nNhKuoy2yPdVIwa201MgTiIkFfwDhBbRg=
+	b=W9cgBlIooGIJ/GLqpam7PLf8pq7JOxO5K3bGv/j//rKQUxqWu/MU29wtj0aasXPxX
+	 XyqakvW1UoUFn0Agd+ZuL/dINiek+t3ZdlRmopFsIh6qav3XKLoAn5mhbfWCmmXpXm
+	 Lfm0XD6HjpqPgbdUGpOzNP6DaGXjlWJFhM+rZCsM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.10 333/379] mmc: slot-gpio: Allow non-sleeping GPIO ro
-Date: Wed, 21 Feb 2024 14:08:32 +0100
-Message-ID: <20240221130004.826886859@linuxfoundation.org>
+	Alex Henrie <alexhenrie24@gmail.com>,
+	Jiri Kosina <jkosina@suse.cz>,
+	Aseda Aboagye <aaboagye@chromium.org>
+Subject: [PATCH 5.4 172/267] HID: apple: Add support for the 2021 Magic Keyboard
+Date: Wed, 21 Feb 2024 14:08:33 +0100
+Message-ID: <20240221125945.534322057@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Alex Henrie <alexhenrie24@gmail.com>
 
-commit cc9432c4fb159a3913e0ce3173b8218cd5bad2e0 upstream.
+commit 0cd3be51733febb4f8acb92bcf55b75fe824dd05 upstream.
 
-This change uses the appropriate _cansleep or non-sleeping API for
-reading GPIO read-only state. This allows users with GPIOs that
-never sleepbeing called in atomic context.
-
-Implement the same mechanism as in commit 52af318c93e97 ("mmc: Allow
-non-sleeping GPIO cd").
-
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240206083912.2543142-1-alexander.stein@ew.tq-group.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Alex Henrie <alexhenrie24@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Cc: Aseda Aboagye <aaboagye@chromium.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/core/slot-gpio.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/hid/hid-apple.c  |    4 ++++
+ drivers/hid/hid-ids.h    |    1 +
+ drivers/hid/hid-quirks.c |    1 +
+ 3 files changed, 6 insertions(+)
 
---- a/drivers/mmc/core/slot-gpio.c
-+++ b/drivers/mmc/core/slot-gpio.c
-@@ -62,11 +62,15 @@ int mmc_gpio_alloc(struct mmc_host *host
- int mmc_gpio_get_ro(struct mmc_host *host)
- {
- 	struct mmc_gpio *ctx = host->slot.handler_priv;
-+	int cansleep;
+--- a/drivers/hid/hid-apple.c
++++ b/drivers/hid/hid-apple.c
+@@ -596,6 +596,10 @@ static const struct hid_device_id apple_
+ 		.driver_data = APPLE_NUMLOCK_EMULATION | APPLE_HAS_FN },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_GEYSER1_TP_ONLY),
+ 		.driver_data = APPLE_NUMLOCK_EMULATION | APPLE_HAS_FN },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2021),
++		.driver_data = APPLE_HAS_FN },
++	{ HID_BLUETOOTH_DEVICE(BT_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2021),
++		.driver_data = APPLE_HAS_FN },
  
- 	if (!ctx || !ctx->ro_gpio)
- 		return -ENOSYS;
+ 	{ }
+ };
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -175,6 +175,7 @@
+ #define USB_DEVICE_ID_APPLE_IRCONTROL3	0x8241
+ #define USB_DEVICE_ID_APPLE_IRCONTROL4	0x8242
+ #define USB_DEVICE_ID_APPLE_IRCONTROL5	0x8243
++#define USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2021   0x029c
  
--	return gpiod_get_value_cansleep(ctx->ro_gpio);
-+	cansleep = gpiod_cansleep(ctx->ro_gpio);
-+	return cansleep ?
-+		gpiod_get_value_cansleep(ctx->ro_gpio) :
-+		gpiod_get_value(ctx->ro_gpio);
- }
- EXPORT_SYMBOL(mmc_gpio_get_ro);
- 
+ #define USB_VENDOR_ID_ASUS		0x0486
+ #define USB_DEVICE_ID_ASUS_T91MT	0x0185
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -308,6 +308,7 @@ static const struct hid_device_id hid_ha
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_ANSI) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_FOUNTAIN_TP_ONLY) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_GEYSER1_TP_ONLY) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2021) },
+ #endif
+ #if IS_ENABLED(CONFIG_HID_APPLEIR)
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_IRCONTROL) },
 
 
 
