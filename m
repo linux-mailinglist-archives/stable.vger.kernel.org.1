@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-22801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30F5F85DE91
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:19:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ECC385DBF7
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:47:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2017BB26281
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:13:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0F951C22CB6
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:47:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC2BE7F7DC;
-	Wed, 21 Feb 2024 14:09:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4013F69D21;
+	Wed, 21 Feb 2024 13:47:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ACaFG0lS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SGeyQNBM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92E8269D38;
-	Wed, 21 Feb 2024 14:09:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CF73C2F;
+	Wed, 21 Feb 2024 13:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524554; cv=none; b=ABdkK2p+jSJ0iUdGwazCBpjF7KVrSYDESTcEbHqnr+xcrPKMNUm/e0KgDsWW9WXefNVy1v+bFD/naw0Fx0cHHkLf/0SjbzCmbre2KtcIuBrFnRhMf9P+9ycWxNAl6DyhmP6fYjAPEZPmWkskDpw50vipT2g11TUsSYr1zjipsKw=
+	t=1708523259; cv=none; b=o91fFrFxvlc/17/px4HzS9zMvjdmNhVeqglTwFxdkr3m82qrD7DYsVI6qzX6Shbm2LEgclQImwt3r4j8saxIHE1wL4i1xDezfIBrJwPvZYeZmI+Mh0J+3F22znvrp6/q59xOTH+8SkHwf/qHDDOrloXUuoUer3uw37Rkxc7I/lY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524554; c=relaxed/simple;
-	bh=J8HoHve3urriIfexYn2jsUotr5MvTcP+P8vtE/qbQ/s=;
+	s=arc-20240116; t=1708523259; c=relaxed/simple;
+	bh=ohK9PlLIN7TmNElA2isQX3j8J0hl3G96l7/3YtitKEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jWsGMSpVaeGUwE95+fc9PXWIHYHSm81musU7xIfkcQJJz1A5dTfSYQT6Jbxhfz8DU79WuwU0vxnwm/8aehERbpM72Tw387oPt5u25EpjmZM1W5PsZVYZ9CFYaSlPIB6438BKmEF+yCFTQU4z6Gpjj4O7yLCo+Lhz7x59gpuj8ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ACaFG0lS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E548C433F1;
-	Wed, 21 Feb 2024 14:09:13 +0000 (UTC)
+	 MIME-Version; b=F3s+soFzQ7L/jah8XuZ9dVxDNtwYksd7xsvHwvuxyYRxV9Q2iUdKLx2OlZsQQ2Au1kQfcVBDdk3BZEWe/tkdeQUsSlGiC1HRvn21wNMynVLpqSqd/2dXj1+UpaVHn9iffN9lW4nAEykYrTsx950HatO81kHbfsqE51QYP15Z3fQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SGeyQNBM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F22F2C433F1;
+	Wed, 21 Feb 2024 13:47:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524554;
-	bh=J8HoHve3urriIfexYn2jsUotr5MvTcP+P8vtE/qbQ/s=;
+	s=korg; t=1708523258;
+	bh=ohK9PlLIN7TmNElA2isQX3j8J0hl3G96l7/3YtitKEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ACaFG0lSEMnsean36JphAk2K/lDW7/AW+PviYj9M0+xApm7Gf6vTfM0RtJkSlfQ20
-	 CMzD/vEJwJ1NuZBjSIw6GUgQ1bWEpM2RBwRDZQSJDwzVdSTqJvPom6jomfI/6LO/zs
-	 dM0+a27H5no4No5CLFxkXZQNsWeqXej/sXva64zQ=
+	b=SGeyQNBMBsCmFlOftNFs7+jeW/LZoJWueoGhl1+KsTkJRHmn/zEoVtg7UDAwAVBfW
+	 dcs0EsfGTJju40lVXTC4lCv/5XN86co1RmZtrSJqnpsTW/yzddsfxb+CH3ZqmcOyd8
+	 F1wVc5mImmxF8kLTJt6BX9FH3hinH6s3lLKQuYN8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Lindgren <tony@atomide.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 252/379] phy: ti: phy-omap-usb2: Fix NULL pointer dereference for SRP
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Fangrui Song <maskray@google.com>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Kees Cook <keescook@chromium.org>,
+	Justin Stitt <justinstitt@google.com>
+Subject: [PATCH 5.15 380/476] kbuild: Fix changing ELF file type for output of gen_btf for big endian
 Date: Wed, 21 Feb 2024 14:07:11 +0100
-Message-ID: <20240221130002.369189284@linuxfoundation.org>
+Message-ID: <20240221130022.096353982@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +65,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 7104ba0f1958adb250319e68a15eff89ec4fd36d ]
+commit e3a9ee963ad8ba677ca925149812c5932b49af69 upstream.
 
-If the external phy working together with phy-omap-usb2 does not implement
-send_srp(), we may still attempt to call it. This can happen on an idle
-Ethernet gadget triggering a wakeup for example:
+Commit 90ceddcb4950 ("bpf: Support llvm-objcopy for vmlinux BTF")
+changed the ELF type of .btf.vmlinux.bin.o to ET_REL via dd, which works
+fine for little endian platforms:
 
-configfs-gadget.g1 gadget.0: ECM Suspend
-configfs-gadget.g1 gadget.0: Port suspended. Triggering wakeup
-...
-Unable to handle kernel NULL pointer dereference at virtual address
-00000000 when execute
-...
-PC is at 0x0
-LR is at musb_gadget_wakeup+0x1d4/0x254 [musb_hdrc]
-...
-musb_gadget_wakeup [musb_hdrc] from usb_gadget_wakeup+0x1c/0x3c [udc_core]
-usb_gadget_wakeup [udc_core] from eth_start_xmit+0x3b0/0x3d4 [u_ether]
-eth_start_xmit [u_ether] from dev_hard_start_xmit+0x94/0x24c
-dev_hard_start_xmit from sch_direct_xmit+0x104/0x2e4
-sch_direct_xmit from __dev_queue_xmit+0x334/0xd88
-__dev_queue_xmit from arp_solicit+0xf0/0x268
-arp_solicit from neigh_probe+0x54/0x7c
-neigh_probe from __neigh_event_send+0x22c/0x47c
-__neigh_event_send from neigh_resolve_output+0x14c/0x1c0
-neigh_resolve_output from ip_finish_output2+0x1c8/0x628
-ip_finish_output2 from ip_send_skb+0x40/0xd8
-ip_send_skb from udp_send_skb+0x124/0x340
-udp_send_skb from udp_sendmsg+0x780/0x984
-udp_sendmsg from __sys_sendto+0xd8/0x158
-__sys_sendto from ret_fast_syscall+0x0/0x58
+   00000000  7f 45 4c 46 02 01 01 00  00 00 00 00 00 00 00 00  |.ELF............|
+  -00000010  03 00 b7 00 01 00 00 00  00 00 00 80 00 80 ff ff  |................|
+  +00000010  01 00 b7 00 01 00 00 00  00 00 00 80 00 80 ff ff  |................|
 
-Let's fix the issue by checking for send_srp() and set_vbus() before
-calling them. For USB peripheral only cases these both could be NULL.
+However, for big endian platforms, it changes the wrong byte, resulting
+in an invalid ELF file type, which ld.lld rejects:
 
-Fixes: 657b306a7bdf ("usb: phy: add a new driver for omap usb2 phy")
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Link: https://lore.kernel.org/r/20240128120556.8848-1-tony@atomide.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+   00000000  7f 45 4c 46 02 02 01 00  00 00 00 00 00 00 00 00  |.ELF............|
+  -00000010  00 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |................|
+  +00000010  01 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |................|
+
+  Type:                              <unknown>: 103
+
+  ld.lld: error: .btf.vmlinux.bin.o: unknown file type
+
+Fix this by updating the entire 16-bit e_type field rather than just a
+single byte, so that everything works correctly for all platforms and
+linkers.
+
+   00000000  7f 45 4c 46 02 02 01 00  00 00 00 00 00 00 00 00  |.ELF............|
+  -00000010  00 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |................|
+  +00000010  00 01 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |................|
+
+  Type:                              REL (Relocatable file)
+
+While in the area, update the comment to mention that binutils 2.35+
+matches LLD's behavior of rejecting an ET_EXEC input, which occurred
+after the comment was added.
+
+Cc: stable@vger.kernel.org
+Fixes: 90ceddcb4950 ("bpf: Support llvm-objcopy for vmlinux BTF")
+Link: https://github.com/llvm/llvm-project/pull/75643
+Suggested-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Fangrui Song <maskray@google.com>
+Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Justin Stitt <justinstitt@google.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/ti/phy-omap-usb2.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ scripts/link-vmlinux.sh |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/phy/ti/phy-omap-usb2.c b/drivers/phy/ti/phy-omap-usb2.c
-index f77ac041d836..95e72f7a3199 100644
---- a/drivers/phy/ti/phy-omap-usb2.c
-+++ b/drivers/phy/ti/phy-omap-usb2.c
-@@ -116,7 +116,7 @@ static int omap_usb_set_vbus(struct usb_otg *otg, bool enabled)
- {
- 	struct omap_usb *phy = phy_to_omapusb(otg->usb_phy);
+--- a/scripts/link-vmlinux.sh
++++ b/scripts/link-vmlinux.sh
+@@ -236,8 +236,13 @@ gen_btf()
+ 	${OBJCOPY} --only-section=.BTF --set-section-flags .BTF=alloc,readonly \
+ 		--strip-all ${1} ${2} 2>/dev/null
+ 	# Change e_type to ET_REL so that it can be used to link final vmlinux.
+-	# Unlike GNU ld, lld does not allow an ET_EXEC input.
+-	printf '\1' | dd of=${2} conv=notrunc bs=1 seek=16 status=none
++	# GNU ld 2.35+ and lld do not allow an ET_EXEC input.
++	if is_enabled CONFIG_CPU_BIG_ENDIAN; then
++		et_rel='\0\1'
++	else
++		et_rel='\1\0'
++	fi
++	printf "${et_rel}" | dd of=${2} conv=notrunc bs=1 seek=16 status=none
+ }
  
--	if (!phy->comparator)
-+	if (!phy->comparator || !phy->comparator->set_vbus)
- 		return -ENODEV;
- 
- 	return phy->comparator->set_vbus(phy->comparator, enabled);
-@@ -126,7 +126,7 @@ static int omap_usb_start_srp(struct usb_otg *otg)
- {
- 	struct omap_usb *phy = phy_to_omapusb(otg->usb_phy);
- 
--	if (!phy->comparator)
-+	if (!phy->comparator || !phy->comparator->start_srp)
- 		return -ENODEV;
- 
- 	return phy->comparator->start_srp(phy->comparator);
--- 
-2.43.0
-
+ # Create ${2} .S file with all symbols from the ${1} object file
 
 
 
