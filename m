@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-22564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5809485DCA2
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:55:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF39A85DAE6
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:35:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1ADAB27DBE
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:55:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9543F282B9D
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:35:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A01BA79DAE;
-	Wed, 21 Feb 2024 13:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49BD57BAF6;
+	Wed, 21 Feb 2024 13:34:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JAp0m3V/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vRPx6Z2T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EFC5762C1;
-	Wed, 21 Feb 2024 13:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0907D78B70;
+	Wed, 21 Feb 2024 13:34:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523736; cv=none; b=fic1a2UVqv1V8bY8menHktRb+F3jODanT7PfViNbtC0gtaZ4Aekz+L16mCPlWXzDXFuQULVWU46tC9VMN/yTufWBrTeev4hInSkj+la2hKz09qnHdbOj/cJ4hUYYPxrhBsjmyWEfWlyYGVcSCvy6lXEZfbKVMUVq1JZv+mD0wko=
+	t=1708522474; cv=none; b=Y28StZn6FAg/j1ySSPFmmj8YHr8pXl8nfIeZcKfe2nwRUzIVRWhWSY2DCYFT8xREmmEoW9fJ+KynU74A0tEtgJOCtmP4lrt43z3SR+EMogPO8IjxYdW8tGk/UZCHa9oQawtIdqxYg+80ymyGoLAlK2Vkq95ngqeOxneahdNLKpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523736; c=relaxed/simple;
-	bh=4WFsQ1H+fe+oP8VM0QWYBjJCDKqCoRrM6P75oaLCimY=;
+	s=arc-20240116; t=1708522474; c=relaxed/simple;
+	bh=jWphhX46sHrgBoSCej0YYla8MMBZYqdYAx9wGHmGXYk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y567RC0cxAgbw35q4Ek1ycQGWnYtuoJV2rLcPAdLjkFw3m7U0hrHOQg4k2HD7U+ONtpGI+op4SQLE0T2j3cR9oxqg39Q6sVPsGXaUDCGeG+sgmWfUXKAcLQ1tdRmGN1s5ZoPnW1NcfHMrAvV+UPzA0+ujhQtD6JHzqy2cpEJ08g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JAp0m3V/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2AB3C433F1;
-	Wed, 21 Feb 2024 13:55:35 +0000 (UTC)
+	 MIME-Version; b=fb1KAgnZiRdur/+VX972jXNHZz9q9+sxYkYbDMu3c2lgiVJyNwsz5PA6XSfdnR2lYHWIH5TD3VtYy7VOR7jv4IcxhBOS2i347XOyrfZVXNTNWyXgWABpb/LHV5iMrLeokOd4KBN93fYTzGPXFIYMvW+ZapY5+/r2rfGCmclb8tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vRPx6Z2T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81EC9C43394;
+	Wed, 21 Feb 2024 13:34:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523736;
-	bh=4WFsQ1H+fe+oP8VM0QWYBjJCDKqCoRrM6P75oaLCimY=;
+	s=korg; t=1708522473;
+	bh=jWphhX46sHrgBoSCej0YYla8MMBZYqdYAx9wGHmGXYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JAp0m3V/t52EtuYWc5CJck2BBhbIienTkwKIxxqEusqGADcHdrtnN/6dBBo7d9LNK
-	 ro1pfPBQ/DhDB2FRSsp+2l8M0aBArEjGMSCgBq6WGdYkmKtbYCaZOntF7nID9QTfjn
-	 FKRr9vVgQNxWMc4m0w2yga1MjEQkvAjBIRGE6/yo=
+	b=vRPx6Z2TVKp8jtIqQ1ndxeXIg5gCyNXv0fyb/TOATI32+qX/odMmj+JC1hxQECYTE
+	 5mbWbpSewDgDskKnyiw5Rty7q5rq2Re7n5QknO846YImhaJXIvRF3yFo/eqmmHbeuC
+	 QX0FFaKyGZa35dIBdUXputlXwNeU9RBt6kWORj9c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 044/379] bnxt_en: Wait for FLR to complete during probe
-Date: Wed, 21 Feb 2024 14:03:43 +0100
-Message-ID: <20240221125956.221107894@linuxfoundation.org>
+Subject: [PATCH 5.15 173/476] ARM: dts: imx7d: Fix coresight funnel ports
+Date: Wed, 21 Feb 2024 14:03:44 +0100
+Message-ID: <20240221130014.311963801@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Chan <michael.chan@broadcom.com>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit 3c1069fa42872f95cf3c6fedf80723d391e12d57 ]
+[ Upstream commit 0d4ac04fa7c3f6dc263dba6f575a2ec7a2d4eca8 ]
 
-The first message to firmware may fail if the device is undergoing FLR.
-The driver has some recovery logic for this failure scenario but we must
-wait 100 msec for FLR to complete before proceeding.  Otherwise the
-recovery will always fail.
+imx7d uses two ports for 'in-ports', so the syntax port@<num> has to
+be used. imx7d has both port and port@1 nodes present, raising these
+error:
+funnel@30041000: in-ports: More than one condition true in oneOf schema
+funnel@30041000: Unevaluated properties are not allowed
+('in-ports' was unexpected)
 
-Fixes: ba02629ff6cb ("bnxt_en: log firmware status on firmware init failure")
-Reviewed-by: Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://lore.kernel.org/r/20240117234515.226944-2-michael.chan@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix this by also using port@0 for imx7s as well.
+
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/arm/boot/dts/imx7d.dtsi | 3 ---
+ arch/arm/boot/dts/imx7s.dtsi | 6 +++++-
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 584f365de563..059552f4154d 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -11331,6 +11331,11 @@ static int bnxt_fw_init_one_p1(struct bnxt *bp)
+diff --git a/arch/arm/boot/dts/imx7d.dtsi b/arch/arm/boot/dts/imx7d.dtsi
+index b0bcfa9094a3..8ad3e60fd7d1 100644
+--- a/arch/arm/boot/dts/imx7d.dtsi
++++ b/arch/arm/boot/dts/imx7d.dtsi
+@@ -209,9 +209,6 @@
+ };
  
- 	bp->fw_cap = 0;
- 	rc = bnxt_hwrm_ver_get(bp);
-+	/* FW may be unresponsive after FLR. FLR must complete within 100 msec
-+	 * so wait before continuing with recovery.
-+	 */
-+	if (rc)
-+		msleep(100);
- 	bnxt_try_map_fw_health_reg(bp);
- 	if (rc) {
- 		if (bp->fw_health && bp->fw_health->status_reliable) {
+ &ca_funnel_in_ports {
+-	#address-cells = <1>;
+-	#size-cells = <0>;
+-
+ 	port@1 {
+ 		reg = <1>;
+ 		ca_funnel_in_port1: endpoint {
+diff --git a/arch/arm/boot/dts/imx7s.dtsi b/arch/arm/boot/dts/imx7s.dtsi
+index 406e8870c680..6cdaaacd9e36 100644
+--- a/arch/arm/boot/dts/imx7s.dtsi
++++ b/arch/arm/boot/dts/imx7s.dtsi
+@@ -174,7 +174,11 @@
+ 			clock-names = "apb_pclk";
+ 
+ 			ca_funnel_in_ports: in-ports {
+-				port {
++				#address-cells = <1>;
++				#size-cells = <0>;
++
++				port@0 {
++					reg = <0>;
+ 					ca_funnel_in_port0: endpoint {
+ 						remote-endpoint = <&etm0_out_port>;
+ 					};
 -- 
 2.43.0
 
