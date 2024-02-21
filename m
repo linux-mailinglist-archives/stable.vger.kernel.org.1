@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-21917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D5A285D923
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:15:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3B0085DBB1
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:44:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 226C51F23E8D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:15:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD784285293
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:44:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A642B69D30;
-	Wed, 21 Feb 2024 13:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CFA478B53;
+	Wed, 21 Feb 2024 13:44:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qLi8vw22"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJq3VnuQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 667041E522;
-	Wed, 21 Feb 2024 13:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7D76F074;
+	Wed, 21 Feb 2024 13:44:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521306; cv=none; b=gitqNACHcm/42vc8IP+dSPg+wXnHjez5zcy4hgkdFfuYHmyNVsgqx3J09CPHk1tEt8+tUEJ8sMZPzi6gMO2UOEixorVGMXsdyCQZF4n4yDXguAWn2+0Xr178rENzleLPqBKRxQwZC+98kZmUXS7/70yx/cnUGIQ+tTreWAKPHM0=
+	t=1708523054; cv=none; b=ulMCwI+Ip4in3FWp8qPNZd5ygU94GOujo+KOfQIZYGq4EuJD16BeuCIEls7/4ZUEvjE/tqH0qHg781iiWbGxWpOnwPRWcm+lRAX0CUf+Wx+KYNKu8/1ptwsO+9eDtHiVWTtFMUpM3sI6Bpgr/i5xEhCcd+DeIjlN0SC3W+DUqjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521306; c=relaxed/simple;
-	bh=TsuVqB8mrgSCVis7g51TcOAX0pIfylDrmXa/DCV0cWM=;
+	s=arc-20240116; t=1708523054; c=relaxed/simple;
+	bh=ukGeJR6QhregJD+vOO0hdCIsgZX0SWh4RuQaQ5RtXdw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hvQ/qSwtL9/pYpG9wTXG8D/4NPJ5hWq5g+BGmFWNeMTqwW0AWGYbGn8wrF7P4oVfAskxkAyvnT//ieSx0NtpOquroJ2mwPvZMN8O0GlcyO0o4Db0Kd5qiGDUEwACfeaM1135Xn0ak8Y6f6JVv86pEzD3zU94GXOdDOoBWcIqg9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qLi8vw22; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9F4EC433C7;
-	Wed, 21 Feb 2024 13:15:05 +0000 (UTC)
+	 MIME-Version; b=md6OlXwjHxbiE6T9x5qeWI3Jgz4f+2o3azTXMdWrAUrFo9ES6V1MfTz+kVjgq2MKlGvmdL8sVMfxC8lfG/mqRwwbvnnAw7FtOEvW1ph9zhn8oHAyGe6vSCSycuMhJDc5nH+yiCSSrOaNRDX6r9+J+3xPCW8WWjSPmIz1QgklTWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJq3VnuQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC5BDC43394;
+	Wed, 21 Feb 2024 13:44:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521306;
-	bh=TsuVqB8mrgSCVis7g51TcOAX0pIfylDrmXa/DCV0cWM=;
+	s=korg; t=1708523054;
+	bh=ukGeJR6QhregJD+vOO0hdCIsgZX0SWh4RuQaQ5RtXdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qLi8vw22ZlBbhCzOrZJV8J9QJ2eP1MQooUN2LhvS0W2oAjTcdC/u5+aZt7DDruRuw
-	 Tq6clLuRLn7ZXLIEkRI6uv+NH06gkQKIwGCV7/9/0qfzdmhsS26E4xXHTOp9lSN7Dg
-	 F6TOghLT1c7Es6ipatpngs/mGHkblLEWWC180YTc=
+	b=RJq3VnuQe0sVNL6Cxgd3z/BOVMsEvzXBIthsD60gjBDJfsGQKs7W9pIRpYXos1I/M
+	 2WZLZ7MMZAYFYpessV1a9TBRWauFga+0YkEpXkhQRNggr4I6Cz6Q8E1DmIFTaQp7fS
+	 tkVfmkhnk9cqaHrCbWerVjoNUPdfOHrJ/uLI+Gp0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Kunwu Chan <chentao@kylinos.cn>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <error27@gmail.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 050/202] powerpc/mm: Fix null-pointer dereference in pgtable_cache_add
+Subject: [PATCH 5.15 300/476] phy: renesas: rcar-gen3-usb2: Fix returning wrong error code
 Date: Wed, 21 Feb 2024 14:05:51 +0100
-Message-ID: <20240221125933.449533106@linuxfoundation.org>
+Message-ID: <20240221130019.088721507@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +65,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 
-[ Upstream commit f46c8a75263f97bda13c739ba1c90aced0d3b071 ]
+[ Upstream commit 249abaf3bf0dd07f5ddebbb2fe2e8f4d675f074e ]
 
-kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure. Ensure the allocation was successful
-by checking the pointer validity.
+Even if device_create_file() returns error code,
+rcar_gen3_phy_usb2_probe() will return zero because the "ret" is
+variable shadowing.
 
-Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231204023223.2447523-1-chentao@kylinos.cn
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <error27@gmail.com>
+Closes: https://lore.kernel.org/r/202312161021.gOLDl48K-lkp@intel.com/
+Fixes: 441a681b8843 ("phy: rcar-gen3-usb2: fix implementation for runtime PM")
+Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20240105093703.3359949-1-yoshihiro.shimoda.uh@renesas.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/mm/init-common.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/phy/renesas/phy-rcar-gen3-usb2.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/arch/powerpc/mm/init-common.c b/arch/powerpc/mm/init-common.c
-index 2b656e67f2ea..927703af49be 100644
---- a/arch/powerpc/mm/init-common.c
-+++ b/arch/powerpc/mm/init-common.c
-@@ -65,7 +65,7 @@ void pgtable_cache_add(unsigned shift, void (*ctor)(void *))
- 	 * as to leave enough 0 bits in the address to contain it. */
- 	unsigned long minalign = max(MAX_PGTABLE_INDEX_SIZE + 1,
- 				     HUGEPD_SHIFT_MASK + 1);
--	struct kmem_cache *new;
-+	struct kmem_cache *new = NULL;
- 
- 	/* It would be nice if this was a BUILD_BUG_ON(), but at the
- 	 * moment, gcc doesn't seem to recognize is_power_of_2 as a
-@@ -78,7 +78,8 @@ void pgtable_cache_add(unsigned shift, void (*ctor)(void *))
- 
- 	align = max_t(unsigned long, align, minalign);
- 	name = kasprintf(GFP_KERNEL, "pgtable-2^%d", shift);
--	new = kmem_cache_create(name, table_size, align, 0, ctor);
-+	if (name)
-+		new = kmem_cache_create(name, table_size, align, 0, ctor);
- 	if (!new)
- 		panic("Could not allocate pgtable cache for order %d", shift);
- 
+diff --git a/drivers/phy/renesas/phy-rcar-gen3-usb2.c b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
+index 9de617ca9daa..7e61c6b278a7 100644
+--- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
++++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
+@@ -675,8 +675,6 @@ static int rcar_gen3_phy_usb2_probe(struct platform_device *pdev)
+ 	channel->irq = platform_get_irq_optional(pdev, 0);
+ 	channel->dr_mode = rcar_gen3_get_dr_mode(dev->of_node);
+ 	if (channel->dr_mode != USB_DR_MODE_UNKNOWN) {
+-		int ret;
+-
+ 		channel->is_otg_channel = true;
+ 		channel->uses_otg_pins = !of_property_read_bool(dev->of_node,
+ 							"renesas,no-otg-pins");
+@@ -740,8 +738,6 @@ static int rcar_gen3_phy_usb2_probe(struct platform_device *pdev)
+ 		ret = PTR_ERR(provider);
+ 		goto error;
+ 	} else if (channel->is_otg_channel) {
+-		int ret;
+-
+ 		ret = device_create_file(dev, &dev_attr_role);
+ 		if (ret < 0)
+ 			goto error;
 -- 
 2.43.0
 
