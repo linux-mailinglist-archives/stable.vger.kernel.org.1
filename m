@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-22988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF45185DEA3
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:20:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 905BA85DDD9
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:12:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FF0D1F247B9
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:20:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BFD3283D77
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:12:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD3793CF42;
-	Wed, 21 Feb 2024 14:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A8767CF03;
+	Wed, 21 Feb 2024 14:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ryVsYLgD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RrerSy8o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7616B7BB10;
-	Wed, 21 Feb 2024 14:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 587FC78B4B;
+	Wed, 21 Feb 2024 14:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525192; cv=none; b=nxs7mPV/HNpTKA5im8qr1H+sNvZiM+6EJ9XgaU00mZSqaYW5OD/+DkaHLZNahrk76/cyjsDOo9bYx23tWDLaMZ+Zny+qAGpb3Iku+ShOc1Chrj1qjOEdZ5rJySd7Mkr/VDkP25TAJKgt++dd52veGS05l6ravgRIFRYqg5RHdXk=
+	t=1708524511; cv=none; b=P7nsR71RUgDYOcxvwjTsTigFRK5YD+DuAZawEea3qHOE8vczN1ixHyBxiOLv03TY92xvRqm2hSuT1xDKMyZDinmD35DYI7gzhRV7+s/IObsX0LjYiMbleh0+As9D2d3Oy48d6p0aCO0j29O+UM2GvTb4xFOzfgf5nPjBvTUeRV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525192; c=relaxed/simple;
-	bh=lhlx7bxDvrGSJFlHEDdeguFiJ5G/yn8nMwJRfLtQQ5U=;
+	s=arc-20240116; t=1708524511; c=relaxed/simple;
+	bh=z1pl1m/RHZxMaFKCcA2kEyoiTgXI30agEZraT6xG6kk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S3fw4S7LbE6Bz2rjfxbmOWlAKHiTbgHcXyxPXO2/Ljq/J6sJfuZbqWclGTEgwlWL/PDDDeuC2YqE1JQXGlOKUEIhq5UvJHIJHSUPChW5x3/vtwpfJGV657WGSOgdfbGZEtYgebl3veBtJphEUqYnk5GXGaC12dQXyV9Z3PKGo5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ryVsYLgD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8147DC433C7;
-	Wed, 21 Feb 2024 14:19:51 +0000 (UTC)
+	 MIME-Version; b=QPCdvNFAAW0+F8oopGBT1W7UM7vhtEEIOUgsnJKEU7UdGD/Qd/viJ2TcPgn4d8to5wmFEsNaXFvHjLertEg/tBA/PP2a5XLCQEfenBXjco3Qb5LlQmOPNSCRY98ABNQQ8JRx9FPR15+EioV28ezrHHoJU7c+9Yz3YNF60zb1tkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RrerSy8o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B55E9C433F1;
+	Wed, 21 Feb 2024 14:08:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525192;
-	bh=lhlx7bxDvrGSJFlHEDdeguFiJ5G/yn8nMwJRfLtQQ5U=;
+	s=korg; t=1708524510;
+	bh=z1pl1m/RHZxMaFKCcA2kEyoiTgXI30agEZraT6xG6kk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ryVsYLgDkDdrk/KHUl88OxR94zBDm4jfNiH/x4DVpX9urj7ABjjo6yy5WdAW3wE+z
-	 b5tWfxKj4Py13LEuanlI2+g0Ppu/kbRLeqLRfUyloXiEPPFaEZyXaggNAHX/6GZne0
-	 iBsjLvEKbF2NCDnJl273WhGr0HlmcA41XlATb/r0=
+	b=RrerSy8oRxbzOPbLzv/HLwKDtzhvNjuacttgwCA7S+jNfTUWTlUUlvxmDbPgky4f6
+	 ytrjdMe3Y8fKY0xT7XbQa19O8SMSULVG7eDhVNR0zPq9qdJc1QmZijZ7R2MJADA8NK
+	 m3A1Q/9mJgQKEHPG73SFYy9aBb4P4N1XbJMm7M9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 087/267] ext4: fix inconsistent between segment fstrim and full fstrim
+Subject: [PATCH 5.10 249/379] dmaengine: fsl-qdma: Fix a memory leak related to the queue command DMA
 Date: Wed, 21 Feb 2024 14:07:08 +0100
-Message-ID: <20240221125942.690820128@linuxfoundation.org>
+Message-ID: <20240221130002.274947676@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 68da4c44b994aea797eb9821acb3a4a36015293e ]
+[ Upstream commit 3aa58cb51318e329d203857f7a191678e60bb714 ]
 
-Suppose we issue two FITRIM ioctls for ranges [0,15] and [16,31] with
-mininum length of trimmed range set to 8 blocks. If we have say a range of
-blocks 10-22 free, this range will not be trimmed because it straddles the
-boundary of the two FITRIM ranges and neither part is big enough. This is a
-bit surprising to some users that call FITRIM on smaller ranges of blocks
-to limit impact on the system. Also XFS trims all free space extents that
-overlap with the specified range so we are inconsistent among filesystems.
-Let's change ext4_try_to_trim_range() to consider for trimming the whole
-free space extent that straddles the end of specified range, not just the
-part of it within the range.
+This dma_alloc_coherent() is undone neither in the remove function, nor in
+the error handling path of fsl_qdma_probe().
 
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20231216010919.1995851-1-yebin10@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Switch to the managed version to fix both issues.
+
+Fixes: b092529e0aa0 ("dmaengine: fsl-qdma: Add qDMA controller driver for Layerscape SoCs")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/7f66aa14f59d32b13672dde28602b47deb294e1f.1704621515.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/dma/fsl-qdma.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 00b2459819b3..0745330228cf 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -5216,13 +5216,15 @@ static int ext4_try_to_trim_range(struct super_block *sb,
- 		struct ext4_buddy *e4b, ext4_grpblk_t start,
- 		ext4_grpblk_t max, ext4_grpblk_t minblocks)
- {
--	ext4_grpblk_t next, count, free_count;
-+	ext4_grpblk_t next, count, free_count, last, origin_start;
- 	bool set_trimmed = false;
- 	void *bitmap;
+diff --git a/drivers/dma/fsl-qdma.c b/drivers/dma/fsl-qdma.c
+index 5cc887acb05b..69385f32e275 100644
+--- a/drivers/dma/fsl-qdma.c
++++ b/drivers/dma/fsl-qdma.c
+@@ -514,11 +514,11 @@ static struct fsl_qdma_queue
+ 			queue_temp = queue_head + i + (j * queue_num);
  
-+	last = ext4_last_grp_cluster(sb, e4b->bd_group);
- 	bitmap = e4b->bd_bitmap;
--	if (start == 0 && max >= ext4_last_grp_cluster(sb, e4b->bd_group))
-+	if (start == 0 && max >= last)
- 		set_trimmed = true;
-+	origin_start = start;
- 	start = max(e4b->bd_info->bb_first_free, start);
- 	count = 0;
- 	free_count = 0;
-@@ -5231,7 +5233,10 @@ static int ext4_try_to_trim_range(struct super_block *sb,
- 		start = mb_find_next_zero_bit(bitmap, max + 1, start);
- 		if (start > max)
- 			break;
--		next = mb_find_next_bit(bitmap, max + 1, start);
-+
-+		next = mb_find_next_bit(bitmap, last + 1, start);
-+		if (origin_start == 0 && next >= last)
-+			set_trimmed = true;
- 
- 		if ((next - start) >= minblocks) {
- 			int ret = ext4_trim_extent(sb, start, next - start, e4b);
+ 			queue_temp->cq =
+-			dma_alloc_coherent(&pdev->dev,
+-					   sizeof(struct fsl_qdma_format) *
+-					   queue_size[i],
+-					   &queue_temp->bus_addr,
+-					   GFP_KERNEL);
++			dmam_alloc_coherent(&pdev->dev,
++					    sizeof(struct fsl_qdma_format) *
++					    queue_size[i],
++					    &queue_temp->bus_addr,
++					    GFP_KERNEL);
+ 			if (!queue_temp->cq)
+ 				return NULL;
+ 			queue_temp->block_base = fsl_qdma->block_base +
 -- 
 2.43.0
 
