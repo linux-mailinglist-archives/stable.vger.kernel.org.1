@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-22710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C43285DD5B
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:04:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D2C385DB82
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:42:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CD8A1F21776
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:04:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA3DFB24707
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:42:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E96327BAF8;
-	Wed, 21 Feb 2024 14:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A848478B73;
+	Wed, 21 Feb 2024 13:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KpG9VWaw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P5w8bQ01"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B2078B4B;
-	Wed, 21 Feb 2024 14:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 677B576905;
+	Wed, 21 Feb 2024 13:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524247; cv=none; b=lj5yw0U7XMs3CpAqr+rt8hSu8UZlRxRKPxQSkNjtMgeiGMXQBJDCyG9X2sG5Vub43PFnwo/Bx7GKu35/pVRTE/alUGPeQww59lyct6YSg2Bkoglsk/r7+300Vy0COMlT5mqMw2LOPtZQW5UqyZTgBFrae2pxuOgNC5prXEOB+KY=
+	t=1708522906; cv=none; b=JNGliQ3xLZN6E8qjovUY+yXWyoHQFYgzBfu2DGMCR/6Swzb00BV0ZjYDJ4bBGy9+gxIlq39Y4L/KQkDwri1xRYqdEW4n2+Q/rW6ziw97JniBBBdTTzA8LeMq1NIphsEn8urg6Sqxhi/RRv60b0v/PQYR5KS4ISnKJ8rkwK5fpa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524247; c=relaxed/simple;
-	bh=zXzjFrVGFWRXUlJ93zfphXKdISAS4rWTyRs9rIUXYAg=;
+	s=arc-20240116; t=1708522906; c=relaxed/simple;
+	bh=Qe1eSQFSCMHtbZhTxLbBRD5HEfjl+PIuB9kBr1R2B4I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qwacgYqMAokI1OFTLD0Tr5yxEnv2XxJ3cGpg52yYAFjE9SRaKA72ZPwuWPV3ZoZ2unK2FcCYH338cJPu4IUHgSB2P6586DdjbCNWl0PmRb9pUaIAUz1qjgt0IvVvBd555Cy1hUl9fndeB/AblkQCchYbEH8uAVGCjsQjDBdscjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KpG9VWaw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1471EC433F1;
-	Wed, 21 Feb 2024 14:04:06 +0000 (UTC)
+	 MIME-Version; b=dnKM63WVjieEVvY1iudIbm0WTGkv53XHCKr+6lWtQZwSYswO2KoZ+NLGOeUEyRl7TSjPr3WlVsXBmDbTEZn74nFfo40SugjfQSn0dQv+RF8Rday1DgG+KceWqfPMizDQEeEzoiVXhk5QWQl9D5YCFSauJwxXBsy24TdJr0DPIfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P5w8bQ01; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8BEFC433C7;
+	Wed, 21 Feb 2024 13:41:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524247;
-	bh=zXzjFrVGFWRXUlJ93zfphXKdISAS4rWTyRs9rIUXYAg=;
+	s=korg; t=1708522906;
+	bh=Qe1eSQFSCMHtbZhTxLbBRD5HEfjl+PIuB9kBr1R2B4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KpG9VWaw5Fixo8h4eu+ME7cuwIgllOGZ2aJPrnmnpl9GNCdGmffvJsY6GLP38dT6Q
-	 fwow9C1/5iWTBF9S8cFLxADwcgTCVJj7zw8BpTex71iI46whoGLuz5l/l3YXUwuS7N
-	 ZqSIrSSasK5MbZ+MxpdxwtlJ4vHkw08JDIt40btw=
+	b=P5w8bQ01XkpegHxtvPV9hGnAFUbqYwwq3NntDCdbLtQPXt/rIuFJzTZ3j8S/pZj3S
+	 AkFi3GmDCaOZpqH+qcGKtBxDFEe96zBKtv4UbeWJAxGBteyA+BEoYV2zR80mYjT6Hq
+	 Um7OIUrdswltatXa2Z8tw6i07zXTN7+HGCxIis4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 161/379] ARM: dts: imx27-apf27dev: Fix LED name
+Subject: [PATCH 5.15 289/476] net: sysfs: Fix /sys/class/net/<iface> path
 Date: Wed, 21 Feb 2024 14:05:40 +0100
-Message-ID: <20240221125959.680623796@linuxfoundation.org>
+Message-ID: <20240221130018.674553445@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit dc35e253d032b959d92e12f081db5b00db26ae64 ]
+[ Upstream commit ae3f4b44641dfff969604735a0dcbf931f383285 ]
 
-Per leds-gpio.yaml, the led names should start with 'led'.
+The documentation is pointing to the wrong path for the interface.
+Documentation is pointing to /sys/class/<iface>, instead of
+/sys/class/net/<iface>.
 
-Change it to fix the following dt-schema warning:
+Fix it by adding the `net/` directory before the interface.
 
-imx27-apf27dev.dtb: leds: 'user' does not match any of the regexes: '(^led-[0-9a-f]$|led)', 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/leds/leds-gpio.yaml#
-
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: 1a02ef76acfa ("net: sysfs: add documentation entries for /sys/class/<iface>/queues")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Link: https://lore.kernel.org/r/20240131102150.728960-2-leitao@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/imx27-apf27dev.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../ABI/testing/sysfs-class-net-queues        | 22 +++++++++----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/arch/arm/boot/dts/imx27-apf27dev.dts b/arch/arm/boot/dts/imx27-apf27dev.dts
-index 68fcb5ce9a9e..3d9bb7fc3be2 100644
---- a/arch/arm/boot/dts/imx27-apf27dev.dts
-+++ b/arch/arm/boot/dts/imx27-apf27dev.dts
-@@ -47,7 +47,7 @@
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&pinctrl_gpio_leds>;
+diff --git a/Documentation/ABI/testing/sysfs-class-net-queues b/Documentation/ABI/testing/sysfs-class-net-queues
+index 978b76358661..40d5aab8452d 100644
+--- a/Documentation/ABI/testing/sysfs-class-net-queues
++++ b/Documentation/ABI/testing/sysfs-class-net-queues
+@@ -1,4 +1,4 @@
+-What:		/sys/class/<iface>/queues/rx-<queue>/rps_cpus
++What:		/sys/class/net/<iface>/queues/rx-<queue>/rps_cpus
+ Date:		March 2010
+ KernelVersion:	2.6.35
+ Contact:	netdev@vger.kernel.org
+@@ -8,7 +8,7 @@ Description:
+ 		network device queue. Possible values depend on the number
+ 		of available CPU(s) in the system.
  
--		user {
-+		led-user {
- 			label = "Heartbeat";
- 			gpios = <&gpio6 14 GPIO_ACTIVE_HIGH>;
- 			linux,default-trigger = "heartbeat";
+-What:		/sys/class/<iface>/queues/rx-<queue>/rps_flow_cnt
++What:		/sys/class/net/<iface>/queues/rx-<queue>/rps_flow_cnt
+ Date:		April 2010
+ KernelVersion:	2.6.35
+ Contact:	netdev@vger.kernel.org
+@@ -16,7 +16,7 @@ Description:
+ 		Number of Receive Packet Steering flows being currently
+ 		processed by this particular network device receive queue.
+ 
+-What:		/sys/class/<iface>/queues/tx-<queue>/tx_timeout
++What:		/sys/class/net/<iface>/queues/tx-<queue>/tx_timeout
+ Date:		November 2011
+ KernelVersion:	3.3
+ Contact:	netdev@vger.kernel.org
+@@ -24,7 +24,7 @@ Description:
+ 		Indicates the number of transmit timeout events seen by this
+ 		network interface transmit queue.
+ 
+-What:		/sys/class/<iface>/queues/tx-<queue>/tx_maxrate
++What:		/sys/class/net/<iface>/queues/tx-<queue>/tx_maxrate
+ Date:		March 2015
+ KernelVersion:	4.1
+ Contact:	netdev@vger.kernel.org
+@@ -32,7 +32,7 @@ Description:
+ 		A Mbps max-rate set for the queue, a value of zero means disabled,
+ 		default is disabled.
+ 
+-What:		/sys/class/<iface>/queues/tx-<queue>/xps_cpus
++What:		/sys/class/net/<iface>/queues/tx-<queue>/xps_cpus
+ Date:		November 2010
+ KernelVersion:	2.6.38
+ Contact:	netdev@vger.kernel.org
+@@ -42,7 +42,7 @@ Description:
+ 		network device transmit queue. Possible vaules depend on the
+ 		number of available CPU(s) in the system.
+ 
+-What:		/sys/class/<iface>/queues/tx-<queue>/xps_rxqs
++What:		/sys/class/net/<iface>/queues/tx-<queue>/xps_rxqs
+ Date:		June 2018
+ KernelVersion:	4.18.0
+ Contact:	netdev@vger.kernel.org
+@@ -53,7 +53,7 @@ Description:
+ 		number of available receive queue(s) in the network device.
+ 		Default is disabled.
+ 
+-What:		/sys/class/<iface>/queues/tx-<queue>/byte_queue_limits/hold_time
++What:		/sys/class/net/<iface>/queues/tx-<queue>/byte_queue_limits/hold_time
+ Date:		November 2011
+ KernelVersion:	3.3
+ Contact:	netdev@vger.kernel.org
+@@ -62,7 +62,7 @@ Description:
+ 		of this particular network device transmit queue.
+ 		Default value is 1000.
+ 
+-What:		/sys/class/<iface>/queues/tx-<queue>/byte_queue_limits/inflight
++What:		/sys/class/net/<iface>/queues/tx-<queue>/byte_queue_limits/inflight
+ Date:		November 2011
+ KernelVersion:	3.3
+ Contact:	netdev@vger.kernel.org
+@@ -70,7 +70,7 @@ Description:
+ 		Indicates the number of bytes (objects) in flight on this
+ 		network device transmit queue.
+ 
+-What:		/sys/class/<iface>/queues/tx-<queue>/byte_queue_limits/limit
++What:		/sys/class/net/<iface>/queues/tx-<queue>/byte_queue_limits/limit
+ Date:		November 2011
+ KernelVersion:	3.3
+ Contact:	netdev@vger.kernel.org
+@@ -79,7 +79,7 @@ Description:
+ 		on this network device transmit queue. This value is clamped
+ 		to be within the bounds defined by limit_max and limit_min.
+ 
+-What:		/sys/class/<iface>/queues/tx-<queue>/byte_queue_limits/limit_max
++What:		/sys/class/net/<iface>/queues/tx-<queue>/byte_queue_limits/limit_max
+ Date:		November 2011
+ KernelVersion:	3.3
+ Contact:	netdev@vger.kernel.org
+@@ -88,7 +88,7 @@ Description:
+ 		queued on this network device transmit queue. See
+ 		include/linux/dynamic_queue_limits.h for the default value.
+ 
+-What:		/sys/class/<iface>/queues/tx-<queue>/byte_queue_limits/limit_min
++What:		/sys/class/net/<iface>/queues/tx-<queue>/byte_queue_limits/limit_min
+ Date:		November 2011
+ KernelVersion:	3.3
+ Contact:	netdev@vger.kernel.org
 -- 
 2.43.0
 
