@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-22663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2A0A85DD22
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:02:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E56585D8D4
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:11:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16F3A1C23685
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:02:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B679A1C21BC3
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:10:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEE4E69317;
-	Wed, 21 Feb 2024 14:01:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23D9769D1C;
+	Wed, 21 Feb 2024 13:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OXDvrQWS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tlBFIt6i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3A47EEF2;
-	Wed, 21 Feb 2024 14:01:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C816769954;
+	Wed, 21 Feb 2024 13:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524089; cv=none; b=K9O7RBm0AgnS8iQNQeVTpMw+4sXkUq7M6uiawu//cZqeaWqSJ3fbfuewL+yopgB5krT5NtG8PIICSodF1Bk17DOeuBTKB/t+96UFqrWgV7vX07kLRAcKvIsCbO2wXzfjnEBtGkuRMXtb5e2oGYyVQzA4lccUfmtZj2iylgZ7DSM=
+	t=1708521057; cv=none; b=o8gcBfTrdbt81JVI8NJYb7mLwO7DP8Qf2m6YiE9OkF/cguD+OrX1pLUYJDUJWYzYZRXEPpQFrYz07c/w++qwD2+BRxVWNBWx5j7Dhr3+2/euTYcvSD93CVXMuW5nujqq9QIo9qbad7ngE2WbKpbBWrRM/BnplPcuvDqf59VC1Zs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524089; c=relaxed/simple;
-	bh=13W7gM6fncSyktI/Q/UUTJnJ9pgJq3JD50QIGB+gZtg=;
+	s=arc-20240116; t=1708521057; c=relaxed/simple;
+	bh=/SQ3J1eerQX3jkU33eY1tkCooqzV9c4pbrL26sx2NBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tZFtJ7Tqz7AGKBXvP3MlACIrO0vc9WL3kkl36F2gFk7BcuLwbGlmbw3Y2XVpVRVRhIS3/ywVEx3hFNlT3IWF907u2cL4NPmShSK1T+ITxWsUHgcW7q47AKr5tyJ2dSci5qpDS+dj665Qsx7uPuXoqwUwTr7Fkf5O/4LA5TMAWPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OXDvrQWS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C594C433C7;
-	Wed, 21 Feb 2024 14:01:28 +0000 (UTC)
+	 MIME-Version; b=ejcl1rJhvbK3YMgr79HHvoCjrOxxcuhst2Q/tYNZWQz1I0g9qthauhvlq028RAGFeJqpPU27i92NXTeLgQueCvzeydvap3VaYMVexILgQ4anmlNbM44v8YmJh+E0He5E/a1FW8NmQ76v/49bGQPTtMouUUmN2UXsZNq6z9MfVvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tlBFIt6i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C8EC433C7;
+	Wed, 21 Feb 2024 13:10:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524089;
-	bh=13W7gM6fncSyktI/Q/UUTJnJ9pgJq3JD50QIGB+gZtg=;
+	s=korg; t=1708521057;
+	bh=/SQ3J1eerQX3jkU33eY1tkCooqzV9c4pbrL26sx2NBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OXDvrQWSmBTm/3xCtPfmPUet98e0ii5Wqk+hgRXdqKBdRVSjPTJ76P8tf+EioeFw4
-	 Ke8C5AitI+n1BY/rylS8oAKrmh0P4X3ZwfBLOvKioX6xhMkT3K0qyHSP3ZfAfhedtp
-	 vLb0c7m5QoqnPbg3/o+u8X2mQwGXNUlQYA95CIDs=
+	b=tlBFIt6igKzORwEBrxq8OgAfbXGzZOyk3RI9TMq0zUcw21TExp/BmDHQvF0qyGbpY
+	 WD1M+VZ29iGyQAVJyc99Rj4DjmJ7fQDAaa/PPIBfKXpvk71vNpeoM6FFLvkuaIC4lS
+	 rbZDWvaz4td4W65r68ArtJlJZXK1TYSYSUgGAHUw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleg Nesterov <oleg@redhat.com>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 125/379] afs: fix the usage of read_seqbegin_or_lock() in afs_lookup_volume_rcu()
+Subject: [PATCH 4.19 003/202] units: Add Watt units
 Date: Wed, 21 Feb 2024 14:05:04 +0100
-Message-ID: <20240221125958.625999367@linuxfoundation.org>
+Message-ID: <20240221125931.851676624@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
 
-[ Upstream commit 4121b4337146b64560d1e46ebec77196d9287802 ]
+[ Upstream commit 2ee5f8f05949735fa2f4c463a5e13fcb3660c719 ]
 
-David Howells says:
+As there are the temperature units, let's add the Watt macros definition.
 
- (2) afs_lookup_volume_rcu().
-
-     There can be a lot of volumes known by a system.  A thousand would
-     require a 10-step walk and this is drivable by remote operation, so I
-     think this should probably take a lock on the second pass too.
-
-Make the "seq" counter odd on the 2nd pass, otherwise read_seqbegin_or_lock()
-never takes the lock.
-
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-Link: https://lore.kernel.org/r/20231130115606.GA21571@redhat.com/
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: 3ef79cd14122 ("serial: sc16is7xx: set safe default SPI clock frequency")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/callback.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/linux/units.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/afs/callback.c b/fs/afs/callback.c
-index 7d9b23d981bf..229308c7f744 100644
---- a/fs/afs/callback.c
-+++ b/fs/afs/callback.c
-@@ -70,13 +70,14 @@ static struct afs_volume *afs_lookup_volume_rcu(struct afs_cell *cell,
- {
- 	struct afs_volume *volume = NULL;
- 	struct rb_node *p;
--	int seq = 0;
-+	int seq = 1;
+diff --git a/include/linux/units.h b/include/linux/units.h
+index aaf716364ec3..92c234e71cab 100644
+--- a/include/linux/units.h
++++ b/include/linux/units.h
+@@ -4,6 +4,10 @@
  
- 	do {
- 		/* Unfortunately, rbtree walking doesn't give reliable results
- 		 * under just the RCU read lock, so we have to check for
- 		 * changes.
- 		 */
-+		seq++; /* 2 on the 1st/lockless path, otherwise odd */
- 		read_seqbegin_or_lock(&cell->volume_lock, &seq);
+ #include <linux/kernel.h>
  
- 		p = rcu_dereference_raw(cell->volumes.rb_node);
++#define MILLIWATT_PER_WATT	1000L
++#define MICROWATT_PER_MILLIWATT	1000L
++#define MICROWATT_PER_WATT	1000000L
++
+ #define ABSOLUTE_ZERO_MILLICELSIUS -273150
+ 
+ static inline long milli_kelvin_to_millicelsius(long t)
 -- 
 2.43.0
 
