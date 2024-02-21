@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-23255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2903F85EC96
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 00:12:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDAC485ECDE
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 00:25:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BAA01C213BB
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 23:12:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7231BB25692
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 23:25:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50FCD85268;
-	Wed, 21 Feb 2024 23:12:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48CA7126F11;
+	Wed, 21 Feb 2024 23:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="WI6Ang84"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="enu4yqBB"
 X-Original-To: stable@vger.kernel.org
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0A2269DE5
-	for <stable@vger.kernel.org>; Wed, 21 Feb 2024 23:12:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 027D1A35;
+	Wed, 21 Feb 2024 23:25:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708557170; cv=none; b=kV62iCXKwDZvQDHfj0x/JJj0SXmznJ27sOibMUhdKQSAMIkiB8nIlp5csXPs/JkoRoQPtg1090AqyTY86tsDjiqQ8AwsrPfrtpIUhVgpaKIK8Av169+c7ARTZvoJbDmprDlFMFRFehgp6Em1wu+IAfnNrLVICZPT52RuRhy104s=
+	t=1708557928; cv=none; b=Y3oV3WjpQPKnmsmYsPqxLTI7KHTD5s31fY5epGOBSmqG4pZZUxhVnsGOmX1bp3QQoX8qwF9TbUl50x9W8BRQby9PM0hH+u9J6bM0ebEPE3tf7ac7YmN74ZfH24YyUolfCPmOFUP25g9EfJPxLvoXeQxe9LTgaM/7CNxy2DEbVpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708557170; c=relaxed/simple;
-	bh=NCMeNA+uWJ/CnwPDj9AvZfPVRnUch9fzunFJPUKmt3w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fDy+Oam8UTW3q77IiZf5V+U4I+pvMjEC4CXV4PcjBaBM0mM8za7tdTxJEUEMillmQbWqh4gK2uVf5Va9eROVnNl6E9lxwv9kTvPGRY9AW7FhF+48qUeKHWUuFPYXbq+w/Kolw7aCJIEsKSyR6gWobuK0eZhMQ0BLSTd8U5YcdIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=WI6Ang84; arc=none smtp.client-ip=91.218.175.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Wed, 21 Feb 2024 18:12:42 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1708557165;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5nBl0mzI5a01pEbFmRvjS+u5c2tyrRqZlr4+/lzHMr4=;
-	b=WI6Ang84KT9rIOWxAoQXgifHIil1vP+/FoqE+pjT/8atjGW7QqP1fdSYluE6P2QiNPsRur
-	joZu8hUSKE6f9kWP9U6Cz48Z+g2EVMR5s37HyGh4NKgqMoVE4jXn7BtyxM3PEyQkY2/NGP
-	MYMt3kXSbFBy565/ojwD936Y6RAjzFs=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: Sasha Levin <sashal@kernel.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>, Greg KH <gregkh@linuxfoundation.org>, 
-	Oleksandr Natalenko <oleksandr@natalenko.name>, Jiri Benc <jbenc@redhat.com>, stable@vger.kernel.org, 
-	Thorsten Leemhuis <regressions@leemhuis.info>
-Subject: Re: fs/bcachefs/
-Message-ID: <yp7osx43maofpmebvkrevi6qnuwwa2nrvx6uly4utny33j3o4u@jgrvcn5ylowo>
-References: <g6el7eghhdk2v5osukhobvi4pige5bsfu5koqtmoyeknat36t7@irmmk7zo7edh>
- <uknxc26o6td7g6rawxffvsez46djmvcy2532kza2zyjuj33k7p@4jdywourgtqg>
- <2024022103-municipal-filter-fb3f@gregkh>
- <4900587.31r3eYUQgx@natalenko.name>
- <2024022155-reformat-scorer-98ae@gregkh>
- <aaf2f030-b6f4-437b-bb4e-79aa4891ae56@suse.cz>
- <ZdaAFt_Isq9dGMtP@sashalap>
+	s=arc-20240116; t=1708557928; c=relaxed/simple;
+	bh=cm0rXHuYpdUHHEiy4MG/nHpcI2fGOqCABwVVztVbBUA=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=D2WAWxpVXmcxP22dPL/aLsIyuaXwJARdbPoW+JxYktpv0wK3N4qHzqs5zdfJmeCtBOV5+JVktqPXYZ9cLRCFjs+6/TlWik0VoXL2y7F5LN5lkT5HpgvlEquujDkfBZ1ydP9EsYUm2qX5sTRXrQbr11LDvUvYQcqw9ugKkYYNZgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=enu4yqBB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E6CEC433C7;
+	Wed, 21 Feb 2024 23:25:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708557927;
+	bh=cm0rXHuYpdUHHEiy4MG/nHpcI2fGOqCABwVVztVbBUA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=enu4yqBBb/AYies9CfHBzeZEXCn6XnamsV5WkPgFOTTIcWY47IDWEmHA8bHBhcYew
+	 AJpLO1EARhcu+Quv0pwf5hx78d5KRcIQD7N6x5wbqxxdFc7Nnn7l19gcU1M+JULo55
+	 iv9mNLg4BvCXr+7DgAbh0nWL4BDkc8ciRNSbnMR0LfnS7t9DUEBuOCwMSb/LbMC8cv
+	 ZTN1wWwCMQ/UXAeQ+6G44z2C4KiWKmwQLEoCVCxDULQ7fpDVed9ad6dQbGJrwtEJG+
+	 aAqYIFKnHd2UytSpCUCINY1bmW5Sck71AX2iu3FeA8DxyD0ru7Jh8/8l4U6YOJpqh8
+	 DdZhkeWuFIvSw==
+Date: Wed, 21 Feb 2024 17:25:23 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Bjorn Helgaas <bhelgaas@google.com>, stable@vger.kernel.org,
+	Matthew W Carlis <mattc@purestorage.com>,
+	Keith Busch <kbusch@kernel.org>, Lukas Wunner <lukas@wunner.de>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Jesse Brandeburg <jesse.brandeburg@intel.com>
+Subject: Re: [PATCH] PCI/DPC: Request DPC only if also requesting AER
+Message-ID: <20240221232523.GA1533169@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,102 +61,98 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZdaAFt_Isq9dGMtP@sashalap>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <39ef1387-609c-45ca-9bfa-e01b72cacaaa@linux.intel.com>
 
-On Wed, Feb 21, 2024 at 05:58:30PM -0500, Sasha Levin wrote:
-> On Wed, Feb 21, 2024 at 07:10:02PM +0100, Vlastimil Babka wrote:
-> > On 2/21/24 18:57, Greg KH wrote:
-> > > On Wed, Feb 21, 2024 at 05:00:05PM +0100, Oleksandr Natalenko wrote:
-> > > > On středa 21. února 2024 15:53:11 CET Greg KH wrote:
-> > > > > 	Given the huge patch volume that the stable tree manages (30-40 changes
-> > > > > 	accepted a day, 7 days a week), any one kernel subsystem that wishes to
-> > > > > 	do something different only slows down everyone else.
-> > > > 
-> > > > Lower down the volume then? Raise the bar for what gets backported?
-> > > > Stable kernel releases got unnecessarily big [1] (Jiří is in Cc).
-> > > > Those 40 changes a day cannot get a proper review. Each stable release
-> > > > tries to mimic -rc except -rc is in consistent state while "stable" is
-> > > > just a bunch of changes picked here and there.
-> > > 
-> > > If you can point out any specific commits that we should not be taking,
-> > > please let us know.
-> > > 
-> > > Personally I think we are not taking enough, and are still missing real
-> > > fixes.  Overall, this is only a very small % of what goes into Linus's
-> > > tree every day, so by that measure alone, we know we are missing things.
-> > 
-> > What % of what goes into Linus's tree do you think fits within the rules
-> > stated in Documentation/process/stable-kernel-rules.rst ? I don't know but
-> > "very small" would be my guess, so we should be fine as it is?
-> > 
-> > Or are the rules actually still being observed? I doubt e.g. many of the
-> > AUTOSEL backports fit them? Should we rename the file to
-> > stable-rules-nonsense.rst?
+On Tue, Feb 20, 2024 at 06:45:32PM -0800, Kuppuswamy Sathyanarayanan wrote:
+> On 2/20/24 3:55 PM, Bjorn Helgaas wrote:
+> > From: Bjorn Helgaas <bhelgaas@google.com>
+> >
+> > When booting with "pci=noaer", we don't request control of AER, but we
+> > previously *did* request control of DPC, as in the dmesg log attached at
+> > the bugzilla below:
+> >
+> >   Command line: ... pci=noaer
+> >   acpi PNP0A08:00: _OSC: OS supports [ExtendedConfig ASPM ClockPM Segments MSI EDR HPX-Type3]
+> >   acpi PNP0A08:00: _OSC: OS now controls [PCIeHotplug SHPCHotplug PME PCIeCapability LTR DPC]
+> >
+> > That's illegal per PCI Firmware Spec, r3.3, sec 4.5.1, table 4-5, which
+> > says:
+> >
+> >   If the operating system sets this bit [OSC_PCI_EXPRESS_DPC_CONTROL], it
+> >   must also set bit 7 of the Support field (indicating support for Error
+> >   Disconnect Recover notifications) and bits 3 and 4 of the Control field
+> >   (requesting control of PCI Express Advanced Error Reporting and the PCI
+> >   Express Capability Structure).
+> >
+> > Request DPC control only if we have also requested AER control.
 > 
-> Hey, I have an exercise for you which came up last week during the whole
-> CVE thing!
+> Can you also add similar check in calculate_support call?
 > 
-> Take a look at a random LTS kernel (I picked 5.10), in particular at the
-> CVEs assigned to the kernel (in my case I relied on
-> https://github.com/nluedtke/linux_kernel_cves/blob/master/data/5.10/5.10_security.txt).
+>         if (pci_aer_available() && IS_ENABLED(CONFIG_PCIE_EDR))
+>                 support |= OSC_PCI_EDR_SUPPORT;
+
+That doesn't seem right to me.  The implementation note in sec 4.6.12
+suggests that EDR Notifications may be used even when the firmware
+maintains control of AER and DPC.  Maybe that note is wrong or
+misleading, but as written, I interpret that as meaning that it may be
+useful for the platform to know that the OS supports EDR even if it
+AER control isn't requested or granted.
+
+> > Fixes: ac1c8e35a326 ("PCI/DPC: Add Error Disconnect Recover (EDR) support")
+> > Link: https://bugzilla.kernel.org/show_bug.cgi?id=218491#c12
+> > Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+> > Cc: <stable@vger.kernel.org>	# v5.7+
+> > Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+> > Cc: Matthew W Carlis <mattc@purestorage.com>
+> > Cc: Keith Busch <kbusch@kernel.org>
+> > Cc: Lukas Wunner <lukas@wunner.de>
+> > Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
+> > Cc: Jesse Brandeburg <jesse.brandeburg@intel.com>
+> > ---
+> >  drivers/acpi/pci_root.c | 20 +++++++++++---------
+> >  1 file changed, 11 insertions(+), 9 deletions(-)
+> >
+> > diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+> > index 58b89b8d950e..1c16965427b3 100644
+> > --- a/drivers/acpi/pci_root.c
+> > +++ b/drivers/acpi/pci_root.c
+> > @@ -518,17 +518,19 @@ static u32 calculate_control(void)
+> >  	if (IS_ENABLED(CONFIG_HOTPLUG_PCI_SHPC))
+> >  		control |= OSC_PCI_SHPC_NATIVE_HP_CONTROL;
+> >  
+> > -	if (pci_aer_available())
+> > +	if (pci_aer_available()) {
+> >  		control |= OSC_PCI_EXPRESS_AER_CONTROL;
+> >  
+> > -	/*
+> > -	 * Per the Downstream Port Containment Related Enhancements ECN to
+> > -	 * the PCI Firmware Spec, r3.2, sec 4.5.1, table 4-5,
+> > -	 * OSC_PCI_EXPRESS_DPC_CONTROL indicates the OS supports both DPC
+> > -	 * and EDR.
+> > -	 */
+> > -	if (IS_ENABLED(CONFIG_PCIE_DPC) && IS_ENABLED(CONFIG_PCIE_EDR))
+> > -		control |= OSC_PCI_EXPRESS_DPC_CONTROL;
+> > +		/*
+> > +		 * Per PCI Firmware Spec, r3.3, sec 4.5.1, table 4-5, the
+> > +		 * OS can request DPC control only if it has advertised
+> > +		 * OSC_PCI_EDR_SUPPORT and requested both
+> > +		 * OSC_PCI_EXPRESS_CAPABILITY_CONTROL and
+>
+> I think you mean OSC_PCI_EXPRESS_DPC_CONTROL.
+
+No, I just tried to rephrase the text for _OSC Control, bit 7 (quoted
+in the commit log), so I think requesting control of bits 3 and 4 (AER
+and PCIe Capability) is right.
+
+> > +		 * OSC_PCI_EXPRESS_AER_CONTROL.
+> > +		 */
+> > +		if (IS_ENABLED(CONFIG_PCIE_DPC) && IS_ENABLED(CONFIG_PCIE_EDR))
+> > +			control |= OSC_PCI_EXPRESS_DPC_CONTROL;
 > 
-> See how many of those actually have a stable@ tag to let us know that we
-> need to pull that commit. (spoiler alert: in the 5.10 case it was ~33%)
-> 
-> Do you have a better way for us to fish for the remaining 67%?
-> 
-> Yeah, some have a Fixes tag, (it's not in stable-kernel-rules.rst!), and
-> in the 5.10 case it would have helped with about half of the commits,
-> but even then - what do we do with the remaining half?
-> 
-> The argument you're making is in favor of just ignoring it until they
-> get a CVE assigned (and even then, would we take them if it goes against
-> stable-kernel-rules.rst?), but then we end up leaving users exposed for *years*
-> as evidenced by some CVEs.
+> Since you are cleaning up this part, why not add a patch to remove
+> CONFIG_PCIE_EDR?
 
-No, I'm not in favor of ignoring things either. What I want is better
-collaboration between subsystem maintainers and you guys. Awhile back I
-was proposing some sort of shared dashboard where we could all track and
-annotate which patches should be considered for backporting when,
-because the current email based workflow sucks.
+Good idea, I'll do that, too.
 
-We need to be working together better, which is why I'm so _damn
-annoyed_ over the crap with the Fixes: tag, and Greg not taking my
-signed pull request as an atomic unit.
-
-You guys shouldn't be doing all this work yourselves; the subsystem
-maintainers, the people who know the code best, should be involved. But
-your attitude 100% pushes people away.
-
-I need a workflow that works for me, if I'm going to do the backporting
-for bcachefs patches, as I intend to: fuckups in filesystem land can
-have _far_ too high a cost for me to leave this work to anyone else.
-
-What I need is:
-
- - A way to unambigiously tag a patch as something that I need to look
-   at later when I'm doing backports; and I do _not_ want to have to go
-   git blame spelunking when I'm doing that, distracting me from
-   whatever else I'm working on; if you insist on the Fixes: tag
-   conforming to your tools then this won't get done and bugfixes will
-   get lost.
-
- - Signed pull requests to not get tweaked and rebased.
-
-   Tweaking and hand editing patches is one thing when it's being done
-   by the subsystem maintainer, the person who at least nominally knows
-   the code best and is best qualified to review those changes.
-
-   You guys should not be doing that, because then I have to go back and
-   check your work (and even if you swear you aren't changing the code;
-   how do I know unless I look at the diffs? Remember all the talk about
-   supply chain attacks?) and I'm just not going to do that. That adds
-   too much to my workload, and there's no reason for it.
-
-And please, you guys, make a bit more of an effort to work with people,
-and listen to and address their concerns. I hear _way_ too much grousing
-in private about -stable bullshit, and despite that I went in to this
-optimistic that we'd be able to cut past the bullshit and establish a
-good working relationship. Let's see if we still can...
+Bjorn
 
