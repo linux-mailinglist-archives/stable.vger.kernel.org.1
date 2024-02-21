@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-22785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8371F85DDD7
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:12:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 052E385D9AD
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:21:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C3571F21B79
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:12:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B464E287815
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:21:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 562DD7A715;
-	Wed, 21 Feb 2024 14:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9180E76C70;
+	Wed, 21 Feb 2024 13:20:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lUgN+IlO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hOT8cECJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1681F69317;
-	Wed, 21 Feb 2024 14:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF5276905;
+	Wed, 21 Feb 2024 13:20:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524504; cv=none; b=mCs+lHcIkw8E1CEZspJeXiCQlM/Mw4FV5TDr+IbEXLz6+Y93qYkewKU2Hl+VhygFWgx6vJjqsUMXuBL6APnlQ6nXcGC88JiS28Q1zNwrjX7faly/Ps4iWKB6FwBPFqPUgd3u9meV5479z+VW0X2WuGXTsPjjpwPkUXc/tT/mT9M=
+	t=1708521657; cv=none; b=siv3Tf1KozSBG5yWSdTy1Kns9lLWPdcMvKU8UTBGuuvu+JdAox9NAwVVpQ3ate+4nwWf+3QzGcjxguwCgCoxdEoq0/sDRxjR2nMnBhGVlbSkKQYs3ICdgMCbx5rWYGFZUHP9KQjWxAXZn6300uG2mJK3mIgRV/eRvjc6xmLmhr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524504; c=relaxed/simple;
-	bh=xSsX7u9zm91v3aI6HlQQd5vNO0sIEbjGRxpkbGwZ5p8=;
+	s=arc-20240116; t=1708521657; c=relaxed/simple;
+	bh=RJtOfqCo4UCaut2WRj1Yn+hTSZUm7+s96oc5CAGDZPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uM3LCT7VoWIXuGJxDdG/R6t6of/WAkF3RCp5fpQp68jd4NX5f4drkcnePYppFqKBAfRf7p6WAsuBwl3TFNLAcyxvVrWqEhLgn2LhPsIPfxrjt4QlW+Pqn0BtnHlN1VJsKzjtO5LdrrcdvvYcwtSbEb9XVfv+dWIwTWH2vCZCdD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lUgN+IlO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73D91C433C7;
-	Wed, 21 Feb 2024 14:08:23 +0000 (UTC)
+	 MIME-Version; b=Iou+rVZ+82YNZWgOWOH1PFFlugB2YHUO9AZdOtUrfRCMeOrfqeHQWZGI01zLBQXqhZsAhwyNIekpwwx2Fv6me/YtgZ+oAm/HlmLFYMhW8If26Qr+UB++CcPBRSL12DMkipziTAo3OhIPKYgnyLeCSjxXPObMvlqfHZyR15oeA0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hOT8cECJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7734C433F1;
+	Wed, 21 Feb 2024 13:20:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524503;
-	bh=xSsX7u9zm91v3aI6HlQQd5vNO0sIEbjGRxpkbGwZ5p8=;
+	s=korg; t=1708521657;
+	bh=RJtOfqCo4UCaut2WRj1Yn+hTSZUm7+s96oc5CAGDZPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lUgN+IlOa4TLOF0H2cxpymVz2rV79/obzOdIkUKfNRl0BZJZK5/bdlcXsfsHFuADU
-	 eQrY3DqPEB9BLzBapOtb+pB3yQfXNF9Fbox3zMFNJzBKtgXQ35c8saMeSZ3e7M89dg
-	 5bLFGVgIK4pXHl4LhR/+M7gR/m9FR2cIks7aIb7g=
+	b=hOT8cECJHfQmkw39wzWPa4vrJlnC+tTBH79LeyC7mao0TakeziEuV1AOx7gZuvrIs
+	 d4hMphLV+IHmwO16oNzaakH5Qf/lOgcdaCkICjEk9g+TNmS+QoBDA+LTgzEY11fUUR
+	 3sGkg82mrdZV62kNAGkwXV7WmI7gH35+bYipEalc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 265/379] netfilter: nft_compat: reject unused compat flag
+	Zakhar Semenov <mail@free5lot.com>,
+	Jiri Kosina <jkosina@suse.cz>,
+	Aseda Aboagye <aaboagye@chromium.org>
+Subject: [PATCH 4.19 143/202] HID: apple: Swap the Fn and Left Control keys on Apple keyboards
 Date: Wed, 21 Feb 2024 14:07:24 +0100
-Message-ID: <20240221130002.752228472@linuxfoundation.org>
+Message-ID: <20240221125936.334493871@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: free5lot <mail@free5lot.com>
 
-[ Upstream commit 292781c3c5485ce33bd22b2ef1b2bed709b4d672 ]
+commit 346338ef00d35bf8338ded171f9abeb9b10b43df upstream.
 
-Flag (1 << 0) is ignored is set, never used, reject it it with EINVAL
-instead.
+This patch allows users to swap the Fn and left Control keys on all Apple
+keyboards: internal (e.g. Macbooks) and external (both wired and wireless).
+The patch adds a new hid-apple module param: swap_fn_leftctrl (off by default).
 
-Fixes: 0ca743a55991 ("netfilter: nf_tables: add compatibility layer for x_tables")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Zakhar Semenov <mail@free5lot.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Cc: Aseda Aboagye <aaboagye@chromium.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/uapi/linux/netfilter/nf_tables.h | 2 ++
- net/netfilter/nft_compat.c               | 3 ++-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ drivers/hid/hid-apple.c |   30 ++++++++++++++++++++++++++++--
+ 1 file changed, 28 insertions(+), 2 deletions(-)
 
-diff --git a/include/uapi/linux/netfilter/nf_tables.h b/include/uapi/linux/netfilter/nf_tables.h
-index 163b7ec577e7..f93ffb1b6739 100644
---- a/include/uapi/linux/netfilter/nf_tables.h
-+++ b/include/uapi/linux/netfilter/nf_tables.h
-@@ -262,9 +262,11 @@ enum nft_rule_attributes {
- /**
-  * enum nft_rule_compat_flags - nf_tables rule compat flags
-  *
-+ * @NFT_RULE_COMPAT_F_UNUSED: unused
-  * @NFT_RULE_COMPAT_F_INV: invert the check result
-  */
- enum nft_rule_compat_flags {
-+	NFT_RULE_COMPAT_F_UNUSED = (1 << 0),
- 	NFT_RULE_COMPAT_F_INV	= (1 << 1),
- 	NFT_RULE_COMPAT_F_MASK	= NFT_RULE_COMPAT_F_INV,
- };
-diff --git a/net/netfilter/nft_compat.c b/net/netfilter/nft_compat.c
-index 3f1e272efbb9..025f5189f2ce 100644
---- a/net/netfilter/nft_compat.c
-+++ b/net/netfilter/nft_compat.c
-@@ -204,7 +204,8 @@ static int nft_parse_compat(const struct nlattr *attr, u16 *proto, bool *inv)
- 		return -EINVAL;
+--- a/drivers/hid/hid-apple.c
++++ b/drivers/hid/hid-apple.c
+@@ -54,6 +54,12 @@ MODULE_PARM_DESC(swap_opt_cmd, "Swap the
+ 		"(For people who want to keep Windows PC keyboard muscle memory. "
+ 		"[0] = as-is, Mac layout. 1 = swapped, Windows layout.)");
  
- 	flags = ntohl(nla_get_be32(tb[NFTA_RULE_COMPAT_FLAGS]));
--	if (flags & ~NFT_RULE_COMPAT_F_MASK)
-+	if (flags & NFT_RULE_COMPAT_F_UNUSED ||
-+	    flags & ~NFT_RULE_COMPAT_F_MASK)
- 		return -EINVAL;
- 	if (flags & NFT_RULE_COMPAT_F_INV)
- 		*inv = true;
--- 
-2.43.0
-
++static unsigned int swap_fn_leftctrl;
++module_param(swap_fn_leftctrl, uint, 0644);
++MODULE_PARM_DESC(swap_fn_leftctrl, "Swap the Fn and left Control keys. "
++		"(For people who want to keep PC keyboard muscle memory. "
++		"[0] = as-is, Mac layout, 1 = swapped, PC layout)");
++
+ struct apple_sc {
+ 	unsigned long quirks;
+ 	unsigned int fn_on;
+@@ -166,6 +172,11 @@ static const struct apple_key_translatio
+ 	{ }
+ };
+ 
++static const struct apple_key_translation swapped_fn_leftctrl_keys[] = {
++	{ KEY_FN, KEY_LEFTCTRL },
++	{ }
++};
++
+ static const struct apple_key_translation *apple_find_translation(
+ 		const struct apple_key_translation *table, u16 from)
+ {
+@@ -187,9 +198,11 @@ static int hidinput_apple_event(struct h
+ 	bool do_translate;
+ 	u16 code = 0;
+ 
+-	if (usage->code == KEY_FN) {
++	u16 fn_keycode = (swap_fn_leftctrl) ? (KEY_LEFTCTRL) : (KEY_FN);
++
++	if (usage->code == fn_keycode) {
+ 		asc->fn_on = !!value;
+-		input_event(input, usage->type, usage->code, value);
++		input_event(input, usage->type, KEY_FN, value);
+ 		return 1;
+ 	}
+ 
+@@ -274,6 +287,14 @@ static int hidinput_apple_event(struct h
+ 		}
+ 	}
+ 
++	if (swap_fn_leftctrl) {
++		trans = apple_find_translation(swapped_fn_leftctrl_keys, usage->code);
++		if (trans) {
++			input_event(input, usage->type, trans->to, value);
++			return 1;
++		}
++	}
++
+ 	return 0;
+ }
+ 
+@@ -344,6 +365,11 @@ static void apple_setup_input(struct inp
+ 
+ 	for (trans = apple_iso_keyboard; trans->from; trans++)
+ 		set_bit(trans->to, input->keybit);
++
++	if (swap_fn_leftctrl) {
++		for (trans = swapped_fn_leftctrl_keys; trans->from; trans++)
++			set_bit(trans->to, input->keybit);
++	}
+ }
+ 
+ static int apple_input_mapping(struct hid_device *hdev, struct hid_input *hi,
 
 
 
