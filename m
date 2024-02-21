@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-22461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C75C685DC28
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:50:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76E3C85DEB2
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:21:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 346721F2168D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:50:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6FCE1C212CB
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:20:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FDB47CF32;
-	Wed, 21 Feb 2024 13:49:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C06BF7E58D;
+	Wed, 21 Feb 2024 14:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mNRbuJ5v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rgtRUnsy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5916E7C6C0;
-	Wed, 21 Feb 2024 13:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 714727C0B8;
+	Wed, 21 Feb 2024 14:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523380; cv=none; b=M2b3rpyBsvBv4P4HOjR+bJYbL2T2pkbmijrIAQmHKVmqVV4zjiXQ6vrKVbhTd2MO0dJyVRxDHhYzpSbUgVsLgPK+M5988Gslq8HFODh0WmPFSvmgkWo2GtLS2yYOjHusIA03ECn16vtK9ar9KdZFjKIvdn1zbcSUVcXlpa5ddcU=
+	t=1708525251; cv=none; b=iq3K34Dfn6vPaGjQdnY/JTQ8bVSJRJg5BUO3PRSmuOFLwbmLciTuQYrmZmhVl8PloXyRXEtQKzL1VrPqjvlCQbPCtAPmM5/I7W1LDmWY1F1sQXCI2eORa+zp7i8xJ5FRJuSeyMl/mR35gyTlAaDHgqlbCeSMWrVZ0QazthmoTF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523380; c=relaxed/simple;
-	bh=wqqpnxbcPEXmw6k9cNVveimLQI0VdgsaBlr3Z7RZKy8=;
+	s=arc-20240116; t=1708525251; c=relaxed/simple;
+	bh=/J9m/YOZPEN6062s7FY7QHsCb5fr0QWy2WJjRotX5jI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LOLBxOXn819pTw22scp5JQX/TLMb4LevRJOR0y8ZroS4q9de7GFJaSGglG5NuNkW7R7BmbGjv7RETYActb3QuER6QTY6MWU6RXaoXd10wWuS18GcLWSZS5iJXJQ6Xm7RpMI6IAiIJ9NkGwudVXylj4yOKOr3VCa8caT5pCpCbcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mNRbuJ5v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98703C433F1;
-	Wed, 21 Feb 2024 13:49:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IJGE6huseNibuvEQZgfkrGkBX34TC89pJc+cZaPru7ZdQBYai8tm2ieEQ6JGDgcURNL/WA0IdkMxbwqf+rnMQkVxA0eojcMQnwMCaQKMRT3i+iOgdptz5XdphNnvdtx6B8is5vDqjXWciQItAp3ds1NxIWYhCSI3skaZZWvpuAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rgtRUnsy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57290C433C7;
+	Wed, 21 Feb 2024 14:20:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523379;
-	bh=wqqpnxbcPEXmw6k9cNVveimLQI0VdgsaBlr3Z7RZKy8=;
+	s=korg; t=1708525249;
+	bh=/J9m/YOZPEN6062s7FY7QHsCb5fr0QWy2WJjRotX5jI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mNRbuJ5vjCAwx9+CsjIjStdM2wPzLgYdxNeSzDlFwni/1uQX7D/xG9turRqoBm6mN
-	 bff+4Ffun3sWVZ48jrLKLjwdBOF+AIUdWHLFncxoDufoNRiPJmyoONVHLRT9J5GXwu
-	 1uqGTzpjbAkIn/0UtH5Nx/uYjjS/IBImoBmD97Ek=
+	b=rgtRUnsyvZLKc0loNokIU3oCNt2NU+LWHXUPjn0mCKKJMPjTj6EoRawMxUBQa0nL1
+	 w2UWFBOYhb8BZAW9/OAVmMbVZXaOPSePh1qU5CFjzJ1EeK/zwyiSYKSRRbDxl60McD
+	 MeTofAFbeUw/Oa1dInGog1W+mKFg09cG61abwiqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Vincent Donnefort <vdonnefort@google.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Mete Durlu <meted@linux.ibm.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.15 390/476] tracing: Fix wasted memory in saved_cmdlines logic
+	Minsuk Kang <linuxlovemin@yonsei.ac.kr>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 100/267] wifi: ath9k: Fix potential array-index-out-of-bounds read in ath9k_htc_txstatus()
 Date: Wed, 21 Feb 2024 14:07:21 +0100
-Message-ID: <20240221130022.445093638@linuxfoundation.org>
+Message-ID: <20240221125943.081910202@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,188 +61,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
 
-commit 44dc5c41b5b1267d4dd037d26afc0c4d3a568acb upstream.
+[ Upstream commit 2adc886244dff60f948497b59affb6c6ebb3c348 ]
 
-While looking at improving the saved_cmdlines cache I found a huge amount
-of wasted memory that should be used for the cmdlines.
+Fix an array-index-out-of-bounds read in ath9k_htc_txstatus(). The bug
+occurs when txs->cnt, data from a URB provided by a USB device, is
+bigger than the size of the array txs->txstatus, which is
+HTC_MAX_TX_STATUS. WARN_ON() already checks it, but there is no bug
+handling code after the check. Make the function return if that is the
+case.
 
-The tracing data saves pids during the trace. At sched switch, if a trace
-occurred, it will save the comm of the task that did the trace. This is
-saved in a "cache" that maps pids to comms and exposed to user space via
-the /sys/kernel/tracing/saved_cmdlines file. Currently it only caches by
-default 128 comms.
+Found by a modified version of syzkaller.
 
-The structure that uses this creates an array to store the pids using
-PID_MAX_DEFAULT (which is usually set to 32768). This causes the structure
-to be of the size of 131104 bytes on 64 bit machines.
+UBSAN: array-index-out-of-bounds in htc_drv_txrx.c
+index 13 is out of range for type '__wmi_event_txstatus [12]'
+Call Trace:
+ ath9k_htc_txstatus
+ ath9k_wmi_event_tasklet
+ tasklet_action_common
+ __do_softirq
+ irq_exit_rxu
+ sysvec_apic_timer_interrupt
 
-In hex: 131104 = 0x20020, and since the kernel allocates generic memory in
-powers of two, the kernel would allocate 0x40000 or 262144 bytes to store
-this structure. That leaves 131040 bytes of wasted space.
-
-Worse, the structure points to an allocated array to store the comm names,
-which is 16 bytes times the amount of names to save (currently 128), which
-is 2048 bytes. Instead of allocating a separate array, make the structure
-end with a variable length string and use the extra space for that.
-
-This is similar to a recommendation that Linus had made about eventfs_inode names:
-
-  https://lore.kernel.org/all/20240130190355.11486-5-torvalds@linux-foundation.org/
-
-Instead of allocating a separate string array to hold the saved comms,
-have the structure end with: char saved_cmdlines[]; and round up to the
-next power of two over sizeof(struct saved_cmdline_buffers) + num_cmdlines * TASK_COMM_LEN
-It will use this extra space for the saved_cmdline portion.
-
-Now, instead of saving only 128 comms by default, by using this wasted
-space at the end of the structure it can save over 8000 comms and even
-saves space by removing the need for allocating the other array.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240209063622.1f7b6d5f@rorschach.local.home
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Vincent Donnefort <vdonnefort@google.com>
-Cc: Sven Schnelle <svens@linux.ibm.com>
-Cc: Mete Durlu <meted@linux.ibm.com>
-Fixes: 939c7a4f04fcd ("tracing: Introduce saved_cmdlines_size file")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20231113065756.1491991-1-linuxlovemin@yonsei.ac.kr
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.c |   75 +++++++++++++++++++++++++--------------------------
- 1 file changed, 37 insertions(+), 38 deletions(-)
+ drivers/net/wireless/ath/ath9k/htc_drv_txrx.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -2236,7 +2236,7 @@ struct saved_cmdlines_buffer {
- 	unsigned *map_cmdline_to_pid;
- 	unsigned cmdline_num;
- 	int cmdline_idx;
--	char *saved_cmdlines;
-+	char saved_cmdlines[];
- };
- static struct saved_cmdlines_buffer *savedcmd;
+diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
+index ee021738bef0..be4fa41bdb12 100644
+--- a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
++++ b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
+@@ -647,9 +647,10 @@ void ath9k_htc_txstatus(struct ath9k_htc_priv *priv, void *wmi_event)
+ 	struct ath9k_htc_tx_event *tx_pend;
+ 	int i;
  
-@@ -2250,47 +2250,58 @@ static inline void set_cmdline(int idx,
- 	strncpy(get_saved_cmdlines(idx), cmdline, TASK_COMM_LEN);
- }
+-	for (i = 0; i < txs->cnt; i++) {
+-		WARN_ON(txs->cnt > HTC_MAX_TX_STATUS);
++	if (WARN_ON_ONCE(txs->cnt > HTC_MAX_TX_STATUS))
++		return;
  
--static int allocate_cmdlines_buffer(unsigned int val,
--				    struct saved_cmdlines_buffer *s)
-+static void free_saved_cmdlines_buffer(struct saved_cmdlines_buffer *s)
- {
-+	int order = get_order(sizeof(*s) + s->cmdline_num * TASK_COMM_LEN);
-+
-+	kfree(s->map_cmdline_to_pid);
-+	free_pages((unsigned long)s, order);
-+}
-+
-+static struct saved_cmdlines_buffer *allocate_cmdlines_buffer(unsigned int val)
-+{
-+	struct saved_cmdlines_buffer *s;
-+	struct page *page;
-+	int orig_size, size;
-+	int order;
-+
-+	/* Figure out how much is needed to hold the given number of cmdlines */
-+	orig_size = sizeof(*s) + val * TASK_COMM_LEN;
-+	order = get_order(orig_size);
-+	size = 1 << (order + PAGE_SHIFT);
-+	page = alloc_pages(GFP_KERNEL, order);
-+	if (!page)
-+		return NULL;
-+
-+	s = page_address(page);
-+	memset(s, 0, sizeof(*s));
-+
-+	/* Round up to actual allocation */
-+	val = (size - sizeof(*s)) / TASK_COMM_LEN;
-+	s->cmdline_num = val;
-+
- 	s->map_cmdline_to_pid = kmalloc_array(val,
- 					      sizeof(*s->map_cmdline_to_pid),
- 					      GFP_KERNEL);
--	if (!s->map_cmdline_to_pid)
--		return -ENOMEM;
--
--	s->saved_cmdlines = kmalloc_array(TASK_COMM_LEN, val, GFP_KERNEL);
--	if (!s->saved_cmdlines) {
--		kfree(s->map_cmdline_to_pid);
--		return -ENOMEM;
-+	if (!s->map_cmdline_to_pid) {
-+		free_saved_cmdlines_buffer(s);
-+		return NULL;
- 	}
++	for (i = 0; i < txs->cnt; i++) {
+ 		__txs = &txs->txstatus[i];
  
- 	s->cmdline_idx = 0;
--	s->cmdline_num = val;
- 	memset(&s->map_pid_to_cmdline, NO_CMDLINE_MAP,
- 	       sizeof(s->map_pid_to_cmdline));
- 	memset(s->map_cmdline_to_pid, NO_CMDLINE_MAP,
- 	       val * sizeof(*s->map_cmdline_to_pid));
- 
--	return 0;
-+	return s;
- }
- 
- static int trace_create_savedcmd(void)
- {
--	int ret;
--
--	savedcmd = kmalloc(sizeof(*savedcmd), GFP_KERNEL);
--	if (!savedcmd)
--		return -ENOMEM;
-+	savedcmd = allocate_cmdlines_buffer(SAVED_CMDLINES_DEFAULT);
- 
--	ret = allocate_cmdlines_buffer(SAVED_CMDLINES_DEFAULT, savedcmd);
--	if (ret < 0) {
--		kfree(savedcmd);
--		savedcmd = NULL;
--		return -ENOMEM;
--	}
--
--	return 0;
-+	return savedcmd ? 0 : -ENOMEM;
- }
- 
- int is_tracing_stopped(void)
-@@ -5947,26 +5958,14 @@ tracing_saved_cmdlines_size_read(struct
- 	return simple_read_from_buffer(ubuf, cnt, ppos, buf, r);
- }
- 
--static void free_saved_cmdlines_buffer(struct saved_cmdlines_buffer *s)
--{
--	kfree(s->saved_cmdlines);
--	kfree(s->map_cmdline_to_pid);
--	kfree(s);
--}
--
- static int tracing_resize_saved_cmdlines(unsigned int val)
- {
- 	struct saved_cmdlines_buffer *s, *savedcmd_temp;
- 
--	s = kmalloc(sizeof(*s), GFP_KERNEL);
-+	s = allocate_cmdlines_buffer(val);
- 	if (!s)
- 		return -ENOMEM;
- 
--	if (allocate_cmdlines_buffer(val, s) < 0) {
--		kfree(s);
--		return -ENOMEM;
--	}
--
- 	preempt_disable();
- 	arch_spin_lock(&trace_cmdline_lock);
- 	savedcmd_temp = savedcmd;
+ 		skb = ath9k_htc_tx_get_packet(priv, __txs);
+-- 
+2.43.0
+
 
 
 
