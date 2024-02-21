@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-22822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F4FB85DDF8
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:14:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF05385DC34
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:50:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86E7E1C23844
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93F98282EB6
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:50:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C25F78B73;
-	Wed, 21 Feb 2024 14:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A80C338398;
+	Wed, 21 Feb 2024 13:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kWlkAWIu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n7UVbFrW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59F4C7D401;
-	Wed, 21 Feb 2024 14:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65BA378B7C;
+	Wed, 21 Feb 2024 13:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524632; cv=none; b=X3FtMsmWOpnnGXo9zPC7H3/UDtmCOBF5K/LcYbRMI2PknoDj7yXK62shrhL8eaolQ9n/fHi+bEosSd/nC5qRKohrkC8ScEP51LSnvwZxGjcE3+LirW3FKhcsfCNSCAx3rtNYCI2+qxg0qunW6D5CX1sTNtbQUh2Gektv0t7bA4k=
+	t=1708523413; cv=none; b=Ff7j1L3d8q9s+Eis0+Byr7BHs1UN6ANRJ9/vnN3+z2CqwxNN/Tdk74ZCwahiH9o7GwoX6TyQfESGmeH0k+pqzHNNML8VXsvYA7aa2d1nRyLUEscj7Pc0hA2R4QW1a+NmUF++A3GF73f1oOU7BxndUcBzCWPwmhtkUpbiBJHsimw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524632; c=relaxed/simple;
-	bh=bx9lxK0xciznlBgBNIEa+NSsR8JLYvNJP+aWzirvL8A=;
+	s=arc-20240116; t=1708523413; c=relaxed/simple;
+	bh=x5Mp+s8lo1PdqFDJHw6Nn2sXnJLnbWFKAME2kQq/1IQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B3uyt3oKFGScYXowhyMNEa9RdtFxYYPW/i/MeMaYpz/Z6/D2YATDn4OYNewMvI6VgL90hFsUx0r0DJG4+6afQMFw0Guj4ve5WBxg5sKev7tWmhD8v3ohWddI7RhFC2uvL+fM9RyUvMUcJoxs7VF0fuMoMhODOk9Pp2pAHeuIOL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kWlkAWIu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9DCFC433F1;
-	Wed, 21 Feb 2024 14:10:29 +0000 (UTC)
+	 MIME-Version; b=a9T85wpjVEt+JSW5bTDBY/D+oqFqJwtm5HV5bUabtKiNn4xd2wGd63scmqmwBdqiEIAJCF1u5uYjZytsX5kFTRKP0nHq+VO3k66gBr4xTJVpt/4Cp/vp0UZMvyxOUl4VMHvocLoWK+cPiXanrWUwQCrfck9wEpoLX7CsGHUyhrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n7UVbFrW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A72FFC433C7;
+	Wed, 21 Feb 2024 13:50:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524630;
-	bh=bx9lxK0xciznlBgBNIEa+NSsR8JLYvNJP+aWzirvL8A=;
+	s=korg; t=1708523413;
+	bh=x5Mp+s8lo1PdqFDJHw6Nn2sXnJLnbWFKAME2kQq/1IQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kWlkAWIukunrSTvdNuwcLpsyEIjlyk74ulOP5xQ58uPFWAbR326dI/xyWq4bSyjXu
-	 LRNmtUQIMmbSvy+UhcBDKK8vqLUDk1PWJxYWLwNsR64foltFrGWLS8oSjCWG3JJ3X7
-	 O6h1CJC/LxxlMp4iveiqVlfg4RjsEID9SsU6NQQE=
+	b=n7UVbFrWGwONmvjxHtCQVl5j5t/dGY3JFgiO9x5dG6RUw5VffjrRFdGMOSFdtQlZP
+	 jHWadfrtsdf/FBkMBuB93+Sp9repFjq5f99MXlSS72Aj2wRzNggDwBZJrmthcKbicW
+	 Iye/1FuYIZsNydxaewbcyv3EkMXPvXGIMUcaEdgA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gerecke <jason.gerecke@wacom.com>,
-	Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 5.10 301/379] HID: wacom: generic: Avoid reporting a serial of 0 to userspace
+	David Lin <yu-hao.lin@nxp.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Brian Norris <briannorris@chromium.org>,
+	Kalle Valo <kvalo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Marcel Ziswiler <marcel.ziswiler@toradex.com>
+Subject: [PATCH 5.15 429/476] wifi: mwifiex: add extra delay for firmware ready
 Date: Wed, 21 Feb 2024 14:08:00 +0100
-Message-ID: <20240221130003.826073977@linuxfoundation.org>
+Message-ID: <20240221130023.877183671@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +65,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>
+From: David Lin <yu-hao.lin@nxp.com>
 
-commit ab41a31dd5e2681803642b6d08590b61867840ec upstream.
+[ Upstream commit 1c5d463c0770c6fa2037511a24fb17966fd07d97 ]
 
-The xf86-input-wacom driver does not treat '0' as a valid serial
-number and will drop any input report which contains an
-MSC_SERIAL = 0 event. The kernel driver already takes care to
-avoid sending any MSC_SERIAL event if the value of serial[0] == 0
-(which is the case for devices that don't actually report a
-serial number), but this is not quite sufficient.
-Only the lower 32 bits of the serial get reported to userspace,
-so if this portion of the serial is zero then there can still
-be problems.
+For SDIO IW416, due to a bug, FW may return ready before complete full
+initialization. Command timeout may occur at driver load after reboot.
+Workaround by adding 100ms delay at checking FW status.
 
-This commit allows the driver to report either the lower 32 bits
-if they are non-zero or the upper 32 bits otherwise.
-
-Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
-Signed-off-by: Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>
-Fixes: f85c9dc678a5 ("HID: wacom: generic: Support tool ID and additional tool types")
-CC: stable@vger.kernel.org # v4.10
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: David Lin <yu-hao.lin@nxp.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Acked-by: Brian Norris <briannorris@chromium.org>
+Tested-by: Marcel Ziswiler <marcel.ziswiler@toradex.com> # Verdin AM62 (IW416)
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20231208234029.2197-1-yu-hao.lin@nxp.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/wacom_wac.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/wireless/marvell/mwifiex/sdio.c | 19 +++++++++++++++++++
+ drivers/net/wireless/marvell/mwifiex/sdio.h |  2 ++
+ 2 files changed, 21 insertions(+)
 
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -2540,7 +2540,14 @@ static void wacom_wac_pen_report(struct
- 				wacom_wac->hid_data.tipswitch);
- 		input_report_key(input, wacom_wac->tool[0], sense);
- 		if (wacom_wac->serial[0]) {
--			input_event(input, EV_MSC, MSC_SERIAL, wacom_wac->serial[0]);
-+			/*
-+			 * xf86-input-wacom does not accept a serial number
-+			 * of '0'. Report the low 32 bits if possible, but
-+			 * if they are zero, report the upper ones instead.
-+			 */
-+			__u32 serial_lo = wacom_wac->serial[0] & 0xFFFFFFFFu;
-+			__u32 serial_hi = wacom_wac->serial[0] >> 32;
-+			input_event(input, EV_MSC, MSC_SERIAL, (int)(serial_lo ? serial_lo : serial_hi));
- 			input_report_abs(input, ABS_MISC, sense ? id : 0);
- 		}
+diff --git a/drivers/net/wireless/marvell/mwifiex/sdio.c b/drivers/net/wireless/marvell/mwifiex/sdio.c
+index 919f1bae61dc..dd4bfb7d71ee 100644
+--- a/drivers/net/wireless/marvell/mwifiex/sdio.c
++++ b/drivers/net/wireless/marvell/mwifiex/sdio.c
+@@ -343,6 +343,7 @@ static const struct mwifiex_sdio_device mwifiex_sdio_sd8786 = {
+ 	.can_dump_fw = false,
+ 	.can_auto_tdls = false,
+ 	.can_ext_scan = false,
++	.fw_ready_extra_delay = false,
+ };
  
+ static const struct mwifiex_sdio_device mwifiex_sdio_sd8787 = {
+@@ -358,6 +359,7 @@ static const struct mwifiex_sdio_device mwifiex_sdio_sd8787 = {
+ 	.can_dump_fw = false,
+ 	.can_auto_tdls = false,
+ 	.can_ext_scan = true,
++	.fw_ready_extra_delay = false,
+ };
+ 
+ static const struct mwifiex_sdio_device mwifiex_sdio_sd8797 = {
+@@ -373,6 +375,7 @@ static const struct mwifiex_sdio_device mwifiex_sdio_sd8797 = {
+ 	.can_dump_fw = false,
+ 	.can_auto_tdls = false,
+ 	.can_ext_scan = true,
++	.fw_ready_extra_delay = false,
+ };
+ 
+ static const struct mwifiex_sdio_device mwifiex_sdio_sd8897 = {
+@@ -388,6 +391,7 @@ static const struct mwifiex_sdio_device mwifiex_sdio_sd8897 = {
+ 	.can_dump_fw = true,
+ 	.can_auto_tdls = false,
+ 	.can_ext_scan = true,
++	.fw_ready_extra_delay = false,
+ };
+ 
+ static const struct mwifiex_sdio_device mwifiex_sdio_sd8977 = {
+@@ -404,6 +408,7 @@ static const struct mwifiex_sdio_device mwifiex_sdio_sd8977 = {
+ 	.fw_dump_enh = true,
+ 	.can_auto_tdls = false,
+ 	.can_ext_scan = true,
++	.fw_ready_extra_delay = false,
+ };
+ 
+ static const struct mwifiex_sdio_device mwifiex_sdio_sd8978 = {
+@@ -420,6 +425,7 @@ static const struct mwifiex_sdio_device mwifiex_sdio_sd8978 = {
+ 	.fw_dump_enh = true,
+ 	.can_auto_tdls = false,
+ 	.can_ext_scan = true,
++	.fw_ready_extra_delay = true,
+ };
+ 
+ static const struct mwifiex_sdio_device mwifiex_sdio_sd8997 = {
+@@ -436,6 +442,7 @@ static const struct mwifiex_sdio_device mwifiex_sdio_sd8997 = {
+ 	.fw_dump_enh = true,
+ 	.can_auto_tdls = false,
+ 	.can_ext_scan = true,
++	.fw_ready_extra_delay = false,
+ };
+ 
+ static const struct mwifiex_sdio_device mwifiex_sdio_sd8887 = {
+@@ -451,6 +458,7 @@ static const struct mwifiex_sdio_device mwifiex_sdio_sd8887 = {
+ 	.can_dump_fw = false,
+ 	.can_auto_tdls = true,
+ 	.can_ext_scan = true,
++	.fw_ready_extra_delay = false,
+ };
+ 
+ static const struct mwifiex_sdio_device mwifiex_sdio_sd8987 = {
+@@ -467,6 +475,7 @@ static const struct mwifiex_sdio_device mwifiex_sdio_sd8987 = {
+ 	.fw_dump_enh = true,
+ 	.can_auto_tdls = true,
+ 	.can_ext_scan = true,
++	.fw_ready_extra_delay = false,
+ };
+ 
+ static const struct mwifiex_sdio_device mwifiex_sdio_sd8801 = {
+@@ -482,6 +491,7 @@ static const struct mwifiex_sdio_device mwifiex_sdio_sd8801 = {
+ 	.can_dump_fw = false,
+ 	.can_auto_tdls = false,
+ 	.can_ext_scan = true,
++	.fw_ready_extra_delay = false,
+ };
+ 
+ static struct memory_type_mapping generic_mem_type_map[] = {
+@@ -574,6 +584,7 @@ mwifiex_sdio_probe(struct sdio_func *func, const struct sdio_device_id *id)
+ 		card->fw_dump_enh = data->fw_dump_enh;
+ 		card->can_auto_tdls = data->can_auto_tdls;
+ 		card->can_ext_scan = data->can_ext_scan;
++		card->fw_ready_extra_delay = data->fw_ready_extra_delay;
+ 		INIT_WORK(&card->work, mwifiex_sdio_work);
+ 	}
+ 
+@@ -777,6 +788,7 @@ mwifiex_sdio_read_fw_status(struct mwifiex_adapter *adapter, u16 *dat)
+ static int mwifiex_check_fw_status(struct mwifiex_adapter *adapter,
+ 				   u32 poll_num)
+ {
++	struct sdio_mmc_card *card = adapter->card;
+ 	int ret = 0;
+ 	u16 firmware_stat;
+ 	u32 tries;
+@@ -794,6 +806,13 @@ static int mwifiex_check_fw_status(struct mwifiex_adapter *adapter,
+ 		ret = -1;
+ 	}
+ 
++	if (card->fw_ready_extra_delay &&
++	    firmware_stat == FIRMWARE_READY_SDIO)
++		/* firmware might pretend to be ready, when it's not.
++		 * Wait a little bit more as a workaround.
++		 */
++		msleep(100);
++
+ 	return ret;
+ }
+ 
+diff --git a/drivers/net/wireless/marvell/mwifiex/sdio.h b/drivers/net/wireless/marvell/mwifiex/sdio.h
+index e9a9de566cc8..8f11fed8eae9 100644
+--- a/drivers/net/wireless/marvell/mwifiex/sdio.h
++++ b/drivers/net/wireless/marvell/mwifiex/sdio.h
+@@ -269,6 +269,7 @@ struct sdio_mmc_card {
+ 	bool fw_dump_enh;
+ 	bool can_auto_tdls;
+ 	bool can_ext_scan;
++	bool fw_ready_extra_delay;
+ 
+ 	struct mwifiex_sdio_mpa_tx mpa_tx;
+ 	struct mwifiex_sdio_mpa_rx mpa_rx;
+@@ -292,6 +293,7 @@ struct mwifiex_sdio_device {
+ 	bool fw_dump_enh;
+ 	bool can_auto_tdls;
+ 	bool can_ext_scan;
++	bool fw_ready_extra_delay;
+ };
+ 
+ /*
+-- 
+2.43.0
+
 
 
 
