@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-23012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2ED885DEBA
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:21:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61C3085DDD6
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:12:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D5962826B7
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:21:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9ECE928250E
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:12:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC98A7BB01;
-	Wed, 21 Feb 2024 14:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B1877BB01;
+	Wed, 21 Feb 2024 14:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1jfRRcHr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AuwoR65x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 730866A8D6;
-	Wed, 21 Feb 2024 14:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1930D78B5E;
+	Wed, 21 Feb 2024 14:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525285; cv=none; b=OxrzgVOMB5NYLqB+Jj5Nkc64tZYAxDcctX27t/c9RhOHoIGzhpRQvQnv+rikQkTtL0R4hj8LoN2UqUsJH6c6FTl0NtV0i7xTH9M82imwHGV2pGFSRvtkdjFzf1YnOSsnBbAvXc8a+3Z/feQ4G1cg6dWA5DERMx4WE5HCcBoTPpc=
+	t=1708524501; cv=none; b=QaIpc+e+yCdPboTjA21DVW5f56Ujrk5o7zb9JEKdsUptn9ndcGtJFT+d26oZx5fPh8T+tBNCLTZvxc/iMWvGMmsGgv6wbZhFm6F/I4Q6eE1LhvIWBMhBEGTzdMZzl2Jtu3UUBO9U/2xECL7VPLe7DJcxbS6wrasRMwPHZFiU96Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525285; c=relaxed/simple;
-	bh=LpsVml/HRqemTNjBn2Gpumxk1xSJ0F2l4mfpYglaPGs=;
+	s=arc-20240116; t=1708524501; c=relaxed/simple;
+	bh=RzIK9GWZqoCagQwgziKL8xamhBukx2RPHlS78DhsjfQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GlZoNA7DD43wmBId/m+bmi5wn5Sosd7qc2FjyKmnlFgprLNJD5vQlUxeLgTn9z7IaSN0V7mGGIi/axdEGjQR4+Z2aUXAr8+jLpb+gPx5FEC3WLMfnwk9vJRJAczUibBbEiBwpCepDL9OD6fRlTT/5BN1LczKYgpnOLPKD2cTpP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1jfRRcHr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 954BDC433F1;
-	Wed, 21 Feb 2024 14:21:24 +0000 (UTC)
+	 MIME-Version; b=WKqMltAg0duoaEHuSghu5Irjjx6pnyBPb0WhodDeXbWOqWTUefCS/i0NHuj7PcG3ty4r3+6gv+digHEi+2p77ibEjwlcVuQnU8Ge52e/qu6cza2dYcyZ84mPNgsEuYZcL8Qmu37qgy3srJWkEPy1M7db1AbuGWy0yen6SDEZW7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AuwoR65x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3582DC433C7;
+	Wed, 21 Feb 2024 14:08:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525285;
-	bh=LpsVml/HRqemTNjBn2Gpumxk1xSJ0F2l4mfpYglaPGs=;
+	s=korg; t=1708524500;
+	bh=RzIK9GWZqoCagQwgziKL8xamhBukx2RPHlS78DhsjfQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1jfRRcHr+xudHeNFwoCpTHlN2H6eKiev9czQZ88HnZMWlxtVi3n/8lT5G77mgdNIa
-	 wPJb0G88prmdKF19C/6eoTi/OiDjuXXhBXVkdq/4aIEh/tUy4rllI7qf7ahS9UBLtC
-	 X+5WOItBxWT6aBX4e5AybVYWk+77P8SNlVfISmlc=
+	b=AuwoR65xiUewbP358QsuW//5/cr/zNumqJTZvxlG1ixy8aCpKmUgKJw5YEsKYD+Wo
+	 A8/nLCsKDn5elFfXEvFmmL6T6z4Fdxd9gc42MBl0OtbQBaRWGzAoAoCGxiJ9wPbz0k
+	 I3tW5Giy6Cphxk1y9unGwb33KgFfrtvDqAiYY2NU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@suse.de>,
-	Christoph Hellwig <hch@lst.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 102/267] scsi: libfc: Dont schedule abort twice
+	Eric Dumazet <edumazet@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+c5da1f087c9e4ec6c933@syzkaller.appspotmail.com
+Subject: [PATCH 5.10 264/379] ppp_async: limit MRU to 64K
 Date: Wed, 21 Feb 2024 14:07:23 +0100
-Message-ID: <20240221125943.141886096@linuxfoundation.org>
+Message-ID: <20240221130002.723297342@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +64,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hannes Reinecke <hare@suse.de>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit b57c4db5d23b9df0118a25e2441c9288edd73710 ]
+[ Upstream commit cb88cb53badb8aeb3955ad6ce80b07b598e310b8 ]
 
-The current FC error recovery is sending up to three REC (recovery) frames
-in 10 second intervals, and as a final step sending an ABTS after 30
-seconds for the command itself.  Unfortunately sending an ABTS is also the
-action for the SCSI abort handler, and the default timeout for SCSI
-commands is also 30 seconds. This causes two ABTS to be scheduled, with the
-libfc one slightly earlier. The ABTS scheduled by SCSI EH then sees the
-command to be already aborted, and will always return with a 'GOOD' status
-irrespective on the actual result from the first ABTS.  This causes the
-SCSI EH abort handler to always succeed, and SCSI EH never to be engaged.
-Fix this by not issuing an ABTS when a SCSI command is present for the
-exchange, but rather wait for the abort scheduled from SCSI EH.  And warn
-if an abort is already scheduled to avoid similar errors in the future.
+syzbot triggered a warning [1] in __alloc_pages():
 
-Signed-off-by: Hannes Reinecke <hare@suse.de>
-Link: https://lore.kernel.org/r/20231129165832.224100-2-hare@kernel.org
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+WARN_ON_ONCE_GFP(order > MAX_PAGE_ORDER, gfp)
+
+Willem fixed a similar issue in commit c0a2a1b0d631 ("ppp: limit MRU to 64K")
+
+Adopt the same sanity check for ppp_async_ioctl(PPPIOCSMRU)
+
+[1]:
+
+ WARNING: CPU: 1 PID: 11 at mm/page_alloc.c:4543 __alloc_pages+0x308/0x698 mm/page_alloc.c:4543
+Modules linked in:
+CPU: 1 PID: 11 Comm: kworker/u4:0 Not tainted 6.8.0-rc2-syzkaller-g41bccc98fb79 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/17/2023
+Workqueue: events_unbound flush_to_ldisc
+pstate: 204000c5 (nzCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+ pc : __alloc_pages+0x308/0x698 mm/page_alloc.c:4543
+ lr : __alloc_pages+0xc8/0x698 mm/page_alloc.c:4537
+sp : ffff800093967580
+x29: ffff800093967660 x28: ffff8000939675a0 x27: dfff800000000000
+x26: ffff70001272ceb4 x25: 0000000000000000 x24: ffff8000939675c0
+x23: 0000000000000000 x22: 0000000000060820 x21: 1ffff0001272ceb8
+x20: ffff8000939675e0 x19: 0000000000000010 x18: ffff800093967120
+x17: ffff800083bded5c x16: ffff80008ac97500 x15: 0000000000000005
+x14: 1ffff0001272cebc x13: 0000000000000000 x12: 0000000000000000
+x11: ffff70001272cec1 x10: 1ffff0001272cec0 x9 : 0000000000000001
+x8 : ffff800091c91000 x7 : 0000000000000000 x6 : 000000000000003f
+x5 : 00000000ffffffff x4 : 0000000000000000 x3 : 0000000000000020
+x2 : 0000000000000008 x1 : 0000000000000000 x0 : ffff8000939675e0
+Call trace:
+  __alloc_pages+0x308/0x698 mm/page_alloc.c:4543
+  __alloc_pages_node include/linux/gfp.h:238 [inline]
+  alloc_pages_node include/linux/gfp.h:261 [inline]
+  __kmalloc_large_node+0xbc/0x1fc mm/slub.c:3926
+  __do_kmalloc_node mm/slub.c:3969 [inline]
+  __kmalloc_node_track_caller+0x418/0x620 mm/slub.c:4001
+  kmalloc_reserve+0x17c/0x23c net/core/skbuff.c:590
+  __alloc_skb+0x1c8/0x3d8 net/core/skbuff.c:651
+  __netdev_alloc_skb+0xb8/0x3e8 net/core/skbuff.c:715
+  netdev_alloc_skb include/linux/skbuff.h:3235 [inline]
+  dev_alloc_skb include/linux/skbuff.h:3248 [inline]
+  ppp_async_input drivers/net/ppp/ppp_async.c:863 [inline]
+  ppp_asynctty_receive+0x588/0x186c drivers/net/ppp/ppp_async.c:341
+  tty_ldisc_receive_buf+0x12c/0x15c drivers/tty/tty_buffer.c:390
+  tty_port_default_receive_buf+0x74/0xac drivers/tty/tty_port.c:37
+  receive_buf drivers/tty/tty_buffer.c:444 [inline]
+  flush_to_ldisc+0x284/0x6e4 drivers/tty/tty_buffer.c:494
+  process_one_work+0x694/0x1204 kernel/workqueue.c:2633
+  process_scheduled_works kernel/workqueue.c:2706 [inline]
+  worker_thread+0x938/0xef4 kernel/workqueue.c:2787
+  kthread+0x288/0x310 kernel/kthread.c:388
+  ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:860
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-and-tested-by: syzbot+c5da1f087c9e4ec6c933@syzkaller.appspotmail.com
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://lore.kernel.org/r/20240205171004.1059724-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/libfc/fc_fcp.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/net/ppp/ppp_async.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/scsi/libfc/fc_fcp.c b/drivers/scsi/libfc/fc_fcp.c
-index bf2cc9656e19..22e286f920f4 100644
---- a/drivers/scsi/libfc/fc_fcp.c
-+++ b/drivers/scsi/libfc/fc_fcp.c
-@@ -270,6 +270,11 @@ static int fc_fcp_send_abort(struct fc_fcp_pkt *fsp)
- 	if (!fsp->seq_ptr)
- 		return -EINVAL;
- 
-+	if (fsp->state & FC_SRB_ABORT_PENDING) {
-+		FC_FCP_DBG(fsp, "abort already pending\n");
-+		return -EBUSY;
-+	}
-+
- 	per_cpu_ptr(fsp->lp->stats, get_cpu())->FcpPktAborts++;
- 	put_cpu();
- 
-@@ -1698,11 +1703,12 @@ static void fc_fcp_recovery(struct fc_fcp_pkt *fsp, u8 code)
- 	fsp->status_code = code;
- 	fsp->cdb_status = 0;
- 	fsp->io_status = 0;
--	/*
--	 * if this fails then we let the scsi command timer fire and
--	 * scsi-ml escalate.
--	 */
--	fc_fcp_send_abort(fsp);
-+	if (!fsp->cmd)
-+		/*
-+		 * Only abort non-scsi commands; otherwise let the
-+		 * scsi command timer fire and scsi-ml escalate.
-+		 */
-+		fc_fcp_send_abort(fsp);
- }
- 
- /**
+diff --git a/drivers/net/ppp/ppp_async.c b/drivers/net/ppp/ppp_async.c
+index f14a9d190de9..aada8a3c1821 100644
+--- a/drivers/net/ppp/ppp_async.c
++++ b/drivers/net/ppp/ppp_async.c
+@@ -471,6 +471,10 @@ ppp_async_ioctl(struct ppp_channel *chan, unsigned int cmd, unsigned long arg)
+ 	case PPPIOCSMRU:
+ 		if (get_user(val, p))
+ 			break;
++		if (val > U16_MAX) {
++			err = -EINVAL;
++			break;
++		}
+ 		if (val < PPP_MRU)
+ 			val = PPP_MRU;
+ 		ap->mru = val;
 -- 
 2.43.0
 
