@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-22019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 624D785D9B7
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:22:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A144885DF1B
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:24:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E8441C23141
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:22:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AD75283F01
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:24:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B65C87BB04;
-	Wed, 21 Feb 2024 13:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C42A87C08D;
+	Wed, 21 Feb 2024 14:24:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qSC9lCha"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bbs1hgm+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 743897BB02;
-	Wed, 21 Feb 2024 13:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 816827A708;
+	Wed, 21 Feb 2024 14:24:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521684; cv=none; b=T27P9emOPD86vAoYfp4mdhHMpdhT97JbZploZOGknXq6W/oQmMPRT6YpN/JMbVFwEZdpStdbwEUnM5L6divqVTuH5aWyx3xFAjub6V3ylNOV01mJnSrl/O0wgz1gWrOacAVzWbwLnGu1rE5B5ZR2aN2tA5RgQ6aXUjCi/B9LTtM=
+	t=1708525482; cv=none; b=pnRdIgxB5TT6pX0bWfWgfqBAMx8SYnPGf92CGpAouBr89AiFIqE5r7CaDz4tM1EqCfr/Fx26yh+bB3PxKEHkNc7X4BuzZ8P/sYxBEWo+F6JmsFNjfu+9XIXfrKO8HbVRMWPEL/r2vjFG/yCAoqAIV4Hmeaomt1CYS5CCjOm7OAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521684; c=relaxed/simple;
-	bh=9YHTKauxD/edZYNeXR2I0jEEeMooEc7sdLULlQKoMIk=;
+	s=arc-20240116; t=1708525482; c=relaxed/simple;
+	bh=hrVzOSnu1PBi3XAn6im9iCBfJ/GyaglrRKuZzXeamvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QNY/SX4CKtgu8ca0zpYdA0j+xZ7gFrJ30j/N7HWE/7PV956D9aefYSmeYezwug5bQOrA1mzGDciPXqNAN/Az2ReEmZbTQYw1npN3frq6za8x/YPhyRso3PB75ceMm0bT9Fb/PxkJCYIt8giELP4hDSYnTE6OeSdiuwsiZJIuEwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qSC9lCha; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0A82C433F1;
-	Wed, 21 Feb 2024 13:21:23 +0000 (UTC)
+	 MIME-Version; b=u+aliW/STHu6ICVHnndY4XYqupdLrO4/dcaVrnZ+PBZHiyRi7L6ZxPOkOINaIhw4HoyR1myZQQ2N3u1gB6duzbqgry03pidQiPmOpJbrcVUooPz9GqXdi4OQsXOkmuSR2rZpJFPfMYosLkCU60pu+HTrCgoZ0CAmZsoG26EG/qc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bbs1hgm+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9783C433C7;
+	Wed, 21 Feb 2024 14:24:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521684;
-	bh=9YHTKauxD/edZYNeXR2I0jEEeMooEc7sdLULlQKoMIk=;
+	s=korg; t=1708525482;
+	bh=hrVzOSnu1PBi3XAn6im9iCBfJ/GyaglrRKuZzXeamvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qSC9lChaa/tX4zuPzz642fxpD2eCqfUQgR1vc1DXv/G/p8N48S4XGkh7KsoqCBtd2
-	 F5nPkau/eq+NeD0LhXjjqw9Ni7mu0o19zMQKPnact/beaH8iPZPY0OJ0bvjKfvIoVk
-	 XavCwlzmcQfjYl5gEtAJqDsqlUNmPmQSj4ZM6FkI=
+	b=Bbs1hgm+40QtcDWJpWpCRVQLOnBZ1AjgXRCWn67Co2G8X+KdDrI4uWaKiUZufTFgb
+	 IgF4P0MfUSLMYIj8bb/tLAWjIPEXJoDDa6df/z51uxZbSd/yNrWUr/FevH2HzEPMkH
+	 SNtsHERSHHamBnnDjmo+7m+IKLiI00mJOXXjQTcw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Subject: [PATCH 4.19 180/202] firewire: core: correct documentation of fw_csr_string() kernel API
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 140/267] leds: trigger: panic: Dont register panic notifier if creating the trigger failed
 Date: Wed, 21 Feb 2024 14:08:01 +0100
-Message-ID: <20240221125937.642506619@linuxfoundation.org>
+Message-ID: <20240221125944.446019310@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-commit 5f9ab17394f831cb7986ec50900fa37507a127f1 upstream.
+[ Upstream commit afacb21834bb02785ddb0c3ec197208803b74faa ]
 
-Against its current description, the kernel API can accepts all types of
-directory entries.
+It doesn't make sense to register the panic notifier if creating the
+panic trigger failed.
 
-This commit corrects the documentation.
-
-Cc: stable@vger.kernel.org
-Fixes: 3c2c58cb33b3 ("firewire: core: fw_csr_string addendum")
-Link: https://lore.kernel.org/r/20240130100409.30128-2-o-takashi@sakamocchi.jp
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://lore.kernel.org/r/8a61e229-5388-46c7-919a-4d18cc7362b2@gmail.com
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firewire/core-device.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/leds/trigger/ledtrig-panic.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/firewire/core-device.c
-+++ b/drivers/firewire/core-device.c
-@@ -113,10 +113,9 @@ static int textual_leaf_to_string(const
-  * @buf:	where to put the string
-  * @size:	size of @buf, in bytes
-  *
-- * The string is taken from a minimal ASCII text descriptor leaf after
-- * the immediate entry with @key.  The string is zero-terminated.
-- * An overlong string is silently truncated such that it and the
-- * zero byte fit into @size.
-+ * The string is taken from a minimal ASCII text descriptor leaf just after the entry with the
-+ * @key. The string is zero-terminated. An overlong string is silently truncated such that it
-+ * and the zero byte fit into @size.
-  *
-  * Returns strlen(buf) or a negative error code.
-  */
+diff --git a/drivers/leds/trigger/ledtrig-panic.c b/drivers/leds/trigger/ledtrig-panic.c
+index 5751cd032f9d..4bf232465dfd 100644
+--- a/drivers/leds/trigger/ledtrig-panic.c
++++ b/drivers/leds/trigger/ledtrig-panic.c
+@@ -63,10 +63,13 @@ static long led_panic_blink(int state)
+ 
+ static int __init ledtrig_panic_init(void)
+ {
++	led_trigger_register_simple("panic", &trigger);
++	if (!trigger)
++		return -ENOMEM;
++
+ 	atomic_notifier_chain_register(&panic_notifier_list,
+ 				       &led_trigger_panic_nb);
+ 
+-	led_trigger_register_simple("panic", &trigger);
+ 	panic_blink = led_panic_blink;
+ 	return 0;
+ }
+-- 
+2.43.0
+
 
 
 
