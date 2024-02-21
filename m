@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-22480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60FC585DC3C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:50:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D24685DE1D
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:15:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC50B1F2103E
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:50:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C35C81F24252
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:15:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E797BB18;
-	Wed, 21 Feb 2024 13:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC09A7BB1B;
+	Wed, 21 Feb 2024 14:13:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="US0UcFYc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FSEqs6t/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A2D78B70;
-	Wed, 21 Feb 2024 13:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ACB83CF42;
+	Wed, 21 Feb 2024 14:13:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523441; cv=none; b=gAYzr+N+shO2YmkwHeOba0Y9spKOp/vTrvM/36y1ez8BCsMzJuzqh8kiUV1bMw8DxZY3TxnmwGeVK8oTOoSundy5UxZ1fjRO8gnPG08ozxG01mR29dLV8TQBlH5DQn9+u6zutJqanqcRU6gq3Vg1taw+kwkvmTBOkRXksisJNQ0=
+	t=1708524785; cv=none; b=fdrg/R8jlixg6C1AU+R5fohI9yfJtG1muZ3GOibGkCF2ndlYtZ7mQIWHu2+1tEXIpUeL8vfXJiUBSlYInnnLSIWoHfHQQyKmJRyif2oAMRk6p3T05UCd2yA0AxtjrdK0kb2bdXH/OO9laxsgGnb+9eBBZMFW47ZZQz0VjfDw5ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523441; c=relaxed/simple;
-	bh=dJxDYqWIePra83pIldEGEc39cK5ewTTNJWYMaQ35dok=;
+	s=arc-20240116; t=1708524785; c=relaxed/simple;
+	bh=HfdF/b1L00uBkVyyVhzIFPhi1QxsdN5n120po4MUvwo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PGqLONQl8BW6Ast1EiUf7oMUrxQNl9WmoJLMyVYlKL5OLx3mCNyYYB/EuHnE6esaO9c/K2X4gkqiiPhtazpdZvO0kQaVdVppCYHRZmQCCaUmeVtvYJJC1cQ4ZThUFlo9+2J+va05At5fA45PJEjb57yrdUM9Wp72uex21e71tJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=US0UcFYc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 447BDC433C7;
-	Wed, 21 Feb 2024 13:50:40 +0000 (UTC)
+	 MIME-Version; b=jgWaP8ePRk/pRydg9fDX5ITAv4od67QCTBcraeg98gRpyio7Fq5sFBZ0sQkDqMjLpAth+0msaTgjdQuDFoa5NdG6LaVIVJNUTODjRaQ3n5tJS4G03/0KI2WJwCBTw6zOTTJtQgw/zv+QvAZ5GXlUfsovcEYmogNs55wV9IuzjT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FSEqs6t/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1CC6C433F1;
+	Wed, 21 Feb 2024 14:13:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523440;
-	bh=dJxDYqWIePra83pIldEGEc39cK5ewTTNJWYMaQ35dok=;
+	s=korg; t=1708524785;
+	bh=HfdF/b1L00uBkVyyVhzIFPhi1QxsdN5n120po4MUvwo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=US0UcFYcUSlAVhSeK9OtmZf5LbOwNqPlJAdyZhmzu+U3Sde0J98veN1poZl19qp9K
-	 Yw/+XlymcoaX6l/gcqzgnQIscYNsrvhV+wW9yRfrDp5FfcVVrcag+TuK39jtQ+NPsf
-	 g22Z2z93FyJfs0vRQXPtHpw/3hfAjE7bDEDzRoaA=
+	b=FSEqs6t/BSHihC6OFFVs5b/CSFjUQ3SfWFjFbfRP80DcR4lBMBRNlWGt6D1u7hiQ9
+	 NCFyJ8gEEGrvHd5xFJe7hifIL1RSOYYFWt1r7LgicaLbpxouUyfn3im8yaMC3HSnZE
+	 yi5aDjxP8om5B5sksfd2llymVRUSktZ8ripk9JwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mayank Rana <quic_mrana@quicinc.com>,
+	Jean Delvare <jdelvare@suse.de>,
+	Piotr Zakowski <piotr.zakowski@intel.com>,
+	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 437/476] usb: dwc3: Fix ep0 handling when getting reset while doing control transfer
+Subject: [PATCH 5.10 309/379] i2c: i801: Fix block process call transactions
 Date: Wed, 21 Feb 2024 14:08:08 +0100
-Message-ID: <20240221130024.188309947@linuxfoundation.org>
+Message-ID: <20240221130004.068146212@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,139 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mayank Rana <quic_mrana@quicinc.com>
+From: Jean Delvare <jdelvare@suse.de>
 
-[ Upstream commit 9d778f0c5f95ca5aa2ff628ea281978697e8d89b ]
+[ Upstream commit c1c9d0f6f7f1dbf29db996bd8e166242843a5f21 ]
 
-According to the databook ep0 should be in setup phase during reset.
-If host issues reset between control transfers, ep0 will be  in an
-invalid state. Fix this by issuing stall and restart on ep0 if it
-is not in setup phase.
+According to the Intel datasheets, software must reset the block
+buffer index twice for block process call transactions: once before
+writing the outgoing data to the buffer, and once again before
+reading the incoming data from the buffer.
 
-Also SW needs to complete pending control transfer and setup core for
-next setup stage as per data book. Hence check ep0 state during reset
-interrupt handling and make sure active transfers on ep0 out/in
-endpoint are stopped by queuing ENDXFER command for that endpoint and
-restart ep0 out again to receive next setup packet.
+The driver is currently missing the second reset, causing the wrong
+portion of the block buffer to be read.
 
-Signed-off-by: Mayank Rana <quic_mrana@quicinc.com>
-Link: https://lore.kernel.org/r/1651693001-29891-1-git-send-email-quic_mrana@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 730e12fbec53 ("usb: dwc3: gadget: Handle EP0 request dequeuing properly")
+Signed-off-by: Jean Delvare <jdelvare@suse.de>
+Reported-by: Piotr Zakowski <piotr.zakowski@intel.com>
+Closes: https://lore.kernel.org/linux-i2c/20240213120553.7b0ab120@endymion.delvare/
+Fixes: 315cd67c9453 ("i2c: i801: Add Block Write-Block Read Process Call support")
+Reviewed-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/ep0.c    | 11 ++++++++---
- drivers/usb/dwc3/gadget.c | 27 +++++++++++++++++++++++++--
- drivers/usb/dwc3/gadget.h |  2 ++
- 3 files changed, 35 insertions(+), 5 deletions(-)
+ drivers/i2c/busses/i2c-i801.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/dwc3/ep0.c b/drivers/usb/dwc3/ep0.c
-index 624de23782b5..f402c66039af 100644
---- a/drivers/usb/dwc3/ep0.c
-+++ b/drivers/usb/dwc3/ep0.c
-@@ -218,7 +218,7 @@ int dwc3_gadget_ep0_queue(struct usb_ep *ep, struct usb_request *request,
- 	return ret;
- }
+diff --git a/drivers/i2c/busses/i2c-i801.c b/drivers/i2c/busses/i2c-i801.c
+index 15520d491140..d6b945f5b887 100644
+--- a/drivers/i2c/busses/i2c-i801.c
++++ b/drivers/i2c/busses/i2c-i801.c
+@@ -543,11 +543,10 @@ static int i801_block_transaction_by_block(struct i801_priv *priv,
+ 	/* Set block buffer mode */
+ 	outb_p(inb_p(SMBAUXCTL(priv)) | SMBAUXCTL_E32B, SMBAUXCTL(priv));
  
--static void dwc3_ep0_stall_and_restart(struct dwc3 *dwc)
-+void dwc3_ep0_stall_and_restart(struct dwc3 *dwc)
- {
- 	struct dwc3_ep		*dep;
- 
-@@ -1090,13 +1090,18 @@ void dwc3_ep0_send_delayed_status(struct dwc3 *dwc)
- 	__dwc3_ep0_do_control_status(dwc, dwc->eps[direction]);
- }
- 
--static void dwc3_ep0_end_control_data(struct dwc3 *dwc, struct dwc3_ep *dep)
-+void dwc3_ep0_end_control_data(struct dwc3 *dwc, struct dwc3_ep *dep)
- {
- 	struct dwc3_gadget_ep_cmd_params params;
- 	u32			cmd;
- 	int			ret;
- 
--	if (!dep->resource_index)
-+	/*
-+	 * For status/DATA OUT stage, TRB will be queued on ep0 out
-+	 * endpoint for which resource index is zero. Hence allow
-+	 * queuing ENDXFER command for ep0 out endpoint.
-+	 */
-+	if (!dep->resource_index && dep->number)
- 		return;
- 
- 	cmd = DWC3_DEPCMD_ENDTRANSFER;
-diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index 5cf2fb165a56..b978e42ace75 100644
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -869,12 +869,13 @@ static int __dwc3_gadget_ep_enable(struct dwc3_ep *dep, unsigned int action)
- 		reg |= DWC3_DALEPENA_EP(dep->number);
- 		dwc3_writel(dwc->regs, DWC3_DALEPENA, reg);
- 
-+		dep->trb_dequeue = 0;
-+		dep->trb_enqueue = 0;
-+
- 		if (usb_endpoint_xfer_control(desc))
- 			goto out;
- 
- 		/* Initialize the TRB ring */
--		dep->trb_dequeue = 0;
--		dep->trb_enqueue = 0;
- 		memset(dep->trb_pool, 0,
- 		       sizeof(struct dwc3_trb) * DWC3_TRB_NUM);
- 
-@@ -2702,6 +2703,7 @@ static int __dwc3_gadget_start(struct dwc3 *dwc)
- 
- 	/* begin to receive SETUP packets */
- 	dwc->ep0state = EP0_SETUP_PHASE;
-+	dwc->ep0_bounced = false;
- 	dwc->link_state = DWC3_LINK_STATE_SS_DIS;
- 	dwc->delayed_status = false;
- 	dwc3_ep0_out_start(dwc);
-@@ -3790,6 +3792,27 @@ static void dwc3_gadget_reset_interrupt(struct dwc3 *dwc)
+-	inb_p(SMBHSTCNT(priv)); /* reset the data buffer index */
+-
+ 	if (read_write == I2C_SMBUS_WRITE) {
+ 		len = data->block[0];
+ 		outb_p(len, SMBHSTDAT0(priv));
++		inb_p(SMBHSTCNT(priv));	/* reset the data buffer index */
+ 		for (i = 0; i < len; i++)
+ 			outb_p(data->block[i+1], SMBBLKDAT(priv));
  	}
+@@ -563,6 +562,7 @@ static int i801_block_transaction_by_block(struct i801_priv *priv,
+ 			return -EPROTO;
  
- 	dwc3_reset_gadget(dwc);
-+
-+	/*
-+	 * From SNPS databook section 8.1.2, the EP0 should be in setup
-+	 * phase. So ensure that EP0 is in setup phase by issuing a stall
-+	 * and restart if EP0 is not in setup phase.
-+	 */
-+	if (dwc->ep0state != EP0_SETUP_PHASE) {
-+		unsigned int	dir;
-+
-+		dir = !!dwc->ep0_expect_in;
-+		if (dwc->ep0state == EP0_DATA_PHASE)
-+			dwc3_ep0_end_control_data(dwc, dwc->eps[dir]);
-+		else
-+			dwc3_ep0_end_control_data(dwc, dwc->eps[!dir]);
-+
-+		dwc->eps[0]->trb_enqueue = 0;
-+		dwc->eps[1]->trb_enqueue = 0;
-+
-+		dwc3_ep0_stall_and_restart(dwc);
-+	}
-+
- 	/*
- 	 * In the Synopsis DesignWare Cores USB3 Databook Rev. 3.30a
- 	 * Section 4.1.2 Table 4-2, it states that during a USB reset, the SW
-diff --git a/drivers/usb/dwc3/gadget.h b/drivers/usb/dwc3/gadget.h
-index f763380e672e..55a56cf67d73 100644
---- a/drivers/usb/dwc3/gadget.h
-+++ b/drivers/usb/dwc3/gadget.h
-@@ -110,6 +110,8 @@ void dwc3_gadget_giveback(struct dwc3_ep *dep, struct dwc3_request *req,
- void dwc3_ep0_interrupt(struct dwc3 *dwc,
- 		const struct dwc3_event_depevt *event);
- void dwc3_ep0_out_start(struct dwc3 *dwc);
-+void dwc3_ep0_end_control_data(struct dwc3 *dwc, struct dwc3_ep *dep);
-+void dwc3_ep0_stall_and_restart(struct dwc3 *dwc);
- int __dwc3_gadget_ep0_set_halt(struct usb_ep *ep, int value);
- int dwc3_gadget_ep0_set_halt(struct usb_ep *ep, int value);
- int dwc3_gadget_ep0_queue(struct usb_ep *ep, struct usb_request *request,
+ 		data->block[0] = len;
++		inb_p(SMBHSTCNT(priv));	/* reset the data buffer index */
+ 		for (i = 0; i < len; i++)
+ 			data->block[i + 1] = inb_p(SMBBLKDAT(priv));
+ 	}
 -- 
 2.43.0
 
