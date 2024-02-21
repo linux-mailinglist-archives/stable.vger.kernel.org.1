@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-22213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95CBD85DAE2
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:35:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E27285DC9F
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:55:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40931281D24
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:35:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5402282CC4
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:55:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A5D276905;
-	Wed, 21 Feb 2024 13:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D93E7BB0E;
+	Wed, 21 Feb 2024 13:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jEqQVu2m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WKtOtxPn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36FA353816;
-	Wed, 21 Feb 2024 13:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B81E7B3F2;
+	Wed, 21 Feb 2024 13:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522462; cv=none; b=QWezCV4n8yG1GXlT9DkHlU+75tKgGmnUazC27UI0mhZEOHxqCgOSTNaAnOZPbpQnHBACt6Mr5+E5EeGzHRUVanfw7Smn83hxeMgRIA6Ia3abfciAX3MQHR7ZvRfXArCHdtroN3dMby/YgJrfzBwpbdvzZJ3pel51hbecBjpw30k=
+	t=1708523727; cv=none; b=K8UxY+breWWXAAQKEl6vU6tkoxHcDDPO9LFrbbnWup04w5nJl5WtCkPE/HdPYOLIBPhVh27zAOnMm6kSXGZoI2WGkA24VPbd8XrhzuDpOQY/rRNwdPPmlItnJ2mvSz+sBJoUUbhLstgZDxIgD9LGwvOdjx0MDtiBr5Xjw2hIvkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522462; c=relaxed/simple;
-	bh=breWKp9xRUzk1/J3iVGTmhPfZt45A/kbrs37t5XrELs=;
+	s=arc-20240116; t=1708523727; c=relaxed/simple;
+	bh=K1tGlxw11V84qbdk8J6n27Xb7oytJ+AZSzda1EsG+Fc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZEd+A+JqE3E5brXbecxeDhdk7jesczsmsSL/BEpVS83fKivQ+b6FkV4h5jSrikQVVnM2VzFesUp+yC5TFxkQvoNTJjZ2WNZatkVqVwsIUt+an9NoSrw4PN4lDhHl5iXv74cyxZ9EgdaE6Cvd6zROXIQSN+efoFGR+XjRZwbc5+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jEqQVu2m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0FEBC433F1;
-	Wed, 21 Feb 2024 13:34:21 +0000 (UTC)
+	 MIME-Version; b=itBKzajP4G4siodXlegalI3cJvmmqyTK+VZOvUSjajG/dcwVgaRqLu/kT74JiRnVPYSqxKt3gQUCf9G4OygX0C23ocPbdDjGSYKCfmUT7sKPfQR6rZkpr+iZsEUPHz0OuOewolUqDIGIeLbIlDPGI7WjgaNzXnRw1lscEQfWU6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WKtOtxPn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DEA3C433C7;
+	Wed, 21 Feb 2024 13:55:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522462;
-	bh=breWKp9xRUzk1/J3iVGTmhPfZt45A/kbrs37t5XrELs=;
+	s=korg; t=1708523727;
+	bh=K1tGlxw11V84qbdk8J6n27Xb7oytJ+AZSzda1EsG+Fc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jEqQVu2m6eqdVRVRmU3Dt358m5HSpAAXRZZUKXEsUC5pjMlepya5MPbPF3FXimQOH
-	 XFvFaVaxLZ4i654n5vQ1jjL+A4ekAYHWE8lKAXTZ2cvP2Yv1zJSr/uuaIqwLcCe2hD
-	 96w2lHtZPPd+M8C5YQRF4V7Gt/FogCiU8CuWlPcs=
+	b=WKtOtxPnhWBURGF6r46FDS1RpvvF1ve2OZoOrfO6mIjKRocDShMa5g2d22dAizdRg
+	 Yz7UEkZ8DtjC8wfT5k8c95r26WRJMfnLoAApOgx0Iv0NVnfcDZnonKSHuI10V8Gu4V
+	 D0/c/xbiwh/AkmjVY7ShJxzJFXQIQ1QEvRsQ7F44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 169/476] scsi: lpfc: Fix possible file string name overflow when updating firmware
+	David Hildenbrand <david@redhat.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Alexander Ofitserov <oficerovas@altlinux.org>
+Subject: [PATCH 5.10 041/379] KVM: use __vcalloc for very large allocations
 Date: Wed, 21 Feb 2024 14:03:40 +0100
-Message-ID: <20240221130014.175795353@linuxfoundation.org>
+Message-ID: <20240221125956.132558957@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-[ Upstream commit f5779b529240b715f0e358489ad0ed933bf77c97 ]
+commit 37b2a6510a48ca361ced679f92682b7b7d7d0330 upstream.
 
-Because file_name and phba->ModelName are both declared a size 80 bytes,
-the extra ".grp" file extension could cause an overflow into file_name.
+Allocations whose size is related to the memslot size can be arbitrarily
+large.  Do not use kvzalloc/kvcalloc, as those are limited to "not crazy"
+sizes that fit in 32 bits.
 
-Define a ELX_FW_NAME_SIZE macro with value 84.  84 incorporates the 4 extra
-characters from ".grp".  file_name is changed to be declared as a char and
-initialized to zeros i.e. null chars.
-
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20231031191224.150862-3-justintee8345@gmail.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 7661809d493b ("mm: don't allow oversized kvmalloc() calls")
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Alexander Ofitserov <oficerovas@altlinux.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/lpfc/lpfc.h      | 1 +
- drivers/scsi/lpfc/lpfc_init.c | 4 ++--
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ arch/powerpc/kvm/book3s_hv_uvmem.c |    2 +-
+ arch/x86/kvm/mmu/page_track.c      |    2 +-
+ arch/x86/kvm/x86.c                 |    4 ++--
+ virt/kvm/kvm_main.c                |    4 ++--
+ 4 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc.h b/drivers/scsi/lpfc/lpfc.h
-index 457ff86e02b3..65ac952b767f 100644
---- a/drivers/scsi/lpfc/lpfc.h
-+++ b/drivers/scsi/lpfc/lpfc.h
-@@ -32,6 +32,7 @@
- struct lpfc_sli2_slim;
+--- a/arch/powerpc/kvm/book3s_hv_uvmem.c
++++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
+@@ -250,7 +250,7 @@ int kvmppc_uvmem_slot_init(struct kvm *k
+ 	p = kzalloc(sizeof(*p), GFP_KERNEL);
+ 	if (!p)
+ 		return -ENOMEM;
+-	p->pfns = vzalloc(array_size(slot->npages, sizeof(*p->pfns)));
++	p->pfns = vcalloc(slot->npages, sizeof(*p->pfns));
+ 	if (!p->pfns) {
+ 		kfree(p);
+ 		return -ENOMEM;
+--- a/arch/x86/kvm/mmu/page_track.c
++++ b/arch/x86/kvm/mmu/page_track.c
+@@ -35,7 +35,7 @@ int kvm_page_track_create_memslot(struct
  
- #define ELX_MODEL_NAME_SIZE	80
-+#define ELX_FW_NAME_SIZE	84
+ 	for (i = 0; i < KVM_PAGE_TRACK_MAX; i++) {
+ 		slot->arch.gfn_track[i] =
+-			kvcalloc(npages, sizeof(*slot->arch.gfn_track[i]),
++			__vcalloc(npages, sizeof(*slot->arch.gfn_track[i]),
+ 				 GFP_KERNEL_ACCOUNT);
+ 		if (!slot->arch.gfn_track[i])
+ 			goto track_free;
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -10826,14 +10826,14 @@ static int kvm_alloc_memslot_metadata(st
+ 				      slot->base_gfn, level) + 1;
  
- #define LPFC_PCI_DEV_LP		0x1
- #define LPFC_PCI_DEV_OC		0x2
-diff --git a/drivers/scsi/lpfc/lpfc_init.c b/drivers/scsi/lpfc/lpfc_init.c
-index 2ca4cf1b58c4..bba51ce4276a 100644
---- a/drivers/scsi/lpfc/lpfc_init.c
-+++ b/drivers/scsi/lpfc/lpfc_init.c
-@@ -14516,7 +14516,7 @@ lpfc_write_firmware(const struct firmware *fw, void *context)
- int
- lpfc_sli4_request_firmware_update(struct lpfc_hba *phba, uint8_t fw_upgrade)
+ 		slot->arch.rmap[i] =
+-			kvcalloc(lpages, sizeof(*slot->arch.rmap[i]),
++			__vcalloc(lpages, sizeof(*slot->arch.rmap[i]),
+ 				 GFP_KERNEL_ACCOUNT);
+ 		if (!slot->arch.rmap[i])
+ 			goto out_free;
+ 		if (i == 0)
+ 			continue;
+ 
+-		linfo = kvcalloc(lpages, sizeof(*linfo), GFP_KERNEL_ACCOUNT);
++		linfo = __vcalloc(lpages, sizeof(*linfo), GFP_KERNEL_ACCOUNT);
+ 		if (!linfo)
+ 			goto out_free;
+ 
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -1008,9 +1008,9 @@ static int kvm_vm_release(struct inode *
+  */
+ static int kvm_alloc_dirty_bitmap(struct kvm_memory_slot *memslot)
  {
--	uint8_t file_name[ELX_MODEL_NAME_SIZE];
-+	char file_name[ELX_FW_NAME_SIZE] = {0};
- 	int ret;
- 	const struct firmware *fw;
+-	unsigned long dirty_bytes = 2 * kvm_dirty_bitmap_bytes(memslot);
++	unsigned long dirty_bytes = kvm_dirty_bitmap_bytes(memslot);
  
-@@ -14525,7 +14525,7 @@ lpfc_sli4_request_firmware_update(struct lpfc_hba *phba, uint8_t fw_upgrade)
- 	    LPFC_SLI_INTF_IF_TYPE_2)
- 		return -EPERM;
+-	memslot->dirty_bitmap = kvzalloc(dirty_bytes, GFP_KERNEL_ACCOUNT);
++	memslot->dirty_bitmap = __vcalloc(2, dirty_bytes, GFP_KERNEL_ACCOUNT);
+ 	if (!memslot->dirty_bitmap)
+ 		return -ENOMEM;
  
--	snprintf(file_name, ELX_MODEL_NAME_SIZE, "%s.grp", phba->ModelName);
-+	scnprintf(file_name, sizeof(file_name), "%s.grp", phba->ModelName);
- 
- 	if (fw_upgrade == INT_FW_UPGRADE) {
- 		ret = request_firmware_nowait(THIS_MODULE, FW_ACTION_UEVENT,
--- 
-2.43.0
-
 
 
 
