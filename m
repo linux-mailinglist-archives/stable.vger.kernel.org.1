@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-22172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 775F285DAB4
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:34:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23C0285DC7A
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:54:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31F48284F68
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:33:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 553071C236E1
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:54:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EA5C7C0BA;
-	Wed, 21 Feb 2024 13:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B7307BB0C;
+	Wed, 21 Feb 2024 13:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YVqy1SEj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jJEzsqPH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6497D414;
-	Wed, 21 Feb 2024 13:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2925869D29;
+	Wed, 21 Feb 2024 13:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522309; cv=none; b=LxhFiO5/iJxVnXAj3wXPjbhRY95WXc6HWfW9xav3lbFoVwgBfW/B9DbPA6kZVuQ/A+jE61GiiG4olRuDG24R2NHNur6B7w9edsTs8TEjGagVcp1cY5qa0cMn2tuWGfKhgiMHRKenq8oMYGdKZf5ibNP+cmmS/6OI54AzWLaZhbE=
+	t=1708523610; cv=none; b=f+TE7w5jbRMjJ9ysJhzfc4eZDKxK7BSqEIbpe7yfW2yDj21sbmKGzFqWMs9lhkzcomzfWHvOyHcBjxEvKEPhjpnEUPjaU17gkp197uHYj96M5aHG8iL391NPbQA4N2HcgT5N5NVJVLguDq1NeY+ewzH1R5/nCvitg1W/dRpDYyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522309; c=relaxed/simple;
-	bh=eJA08cV1KZTMOiGxLlfKoSNiLeunpXUfZE5PWwGifzU=;
+	s=arc-20240116; t=1708523610; c=relaxed/simple;
+	bh=Lxm0poAaUf6+mInwasvx/+nEyInXVe0j7n1Nmb+/lJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gJuOOn7ESNkqcOSH6xGz093RxfGDQ9VmKSx3a3iqPcVtvj+D5hlQZ8G/UoMzZzCvwqhwDvwcLLYTeBAfYbz9jnQgic+xiegxajW9vQ+rnSpXJvqGMGikIWe2DcIgY2Ord5TM0VJ+WHdZIWfkUIHZD1e1XHtyWJLGtugnaEm3NE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YVqy1SEj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B30FC433C7;
-	Wed, 21 Feb 2024 13:31:47 +0000 (UTC)
+	 MIME-Version; b=QcY7VEqQ9kStU0xdu7xmaQelzwAoVybu8kdWyBJawLmYSDk8SHJ+cTF2XKFPz1L+amawpQajtVEXHye2sq7Tw074uPlKtV2iXhU177a/6OfBoCNv5hVH+TmQHHORcqNNYFpd74Jsssjk52mYkD/GjDdRAcN0Je04ANN4txl82ow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jJEzsqPH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 842F1C433F1;
+	Wed, 21 Feb 2024 13:53:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522307;
-	bh=eJA08cV1KZTMOiGxLlfKoSNiLeunpXUfZE5PWwGifzU=;
+	s=korg; t=1708523610;
+	bh=Lxm0poAaUf6+mInwasvx/+nEyInXVe0j7n1Nmb+/lJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YVqy1SEjk7DDe6hGQFhvHIqbo9+sRvuzISWkNx6Mky5I3QiSOys3KhQPEPABrYow1
-	 kCuiUgha8ISOMl29VRgxBaEmXdZzWFeQc3lPRXJAEs7pBLxxVII3knYJUXxcBNPnA4
-	 n/ryP9HkTC+dwPdFjJGtINAFTPZV5gkMovs4Srjs=
+	b=jJEzsqPHCTbCI2JGJZB2cYQS5P+VgwB7lgvyBSlx0d5q9NpcxAciK3e+GXxIR7vc8
+	 6dBhZ6QNpXqlu1heZX4q2q/dzARnj5XFn2kexas2IocKSTcaRYv8XaEbTmQHS+f7E7
+	 RLifsaVByVk8QkoVBwzd9i0LuRObXdQ7MfONBaUc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	kernel test robot <lkp@intel.com>,
+	Pawel Laszczak <pawell@cadence.com>,
+	Peter Chen <peter.chen@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 129/476] powerpc/mm: Fix build failures due to arch_reserved_kernel_pages()
+Subject: [PATCH 5.10 001/379] usb: cdns3: Fixes for sparse warnings
 Date: Wed, 21 Feb 2024 14:03:00 +0100
-Message-ID: <20240221130012.726436059@linuxfoundation.org>
+Message-ID: <20240221125954.966035072@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,70 +61,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Pawel Laszczak <pawell@cadence.com>
 
-[ Upstream commit d8c3f243d4db24675b653f0568bb65dae34e6455 ]
+[ Upstream commit fba8701baed76eac00b84b59f09f6a077f24c534 ]
 
-With NUMA=n and FA_DUMP=y or PRESERVE_FA_DUMP=y the build fails with:
+Patch fixes the following warnings:
+cdns3-gadget.c:1203: sparse: warning: incorrect type
+                     in assignment (different base types)
+cdns3-gadget.c:1203: sparse:  expected restricted __le32 [usertype] length
+cdns3-gadget.c:1203: sparse:  got unsigned long
+cdns3-gadget.c:1250: sparse: warning: invalid assignment: |=
+cdns3-gadget.c:1250: sparse:  left side has type restricted __le32
+cdns3-gadget.c:1250: sparse:  right side has type unsigned long
+cdns3-gadget.c:1253: sparse: warning: invalid assignment: |=
+cdns3-gadget.c:1253: sparse:  left side has type restricted __le32
+cdns3-gadget.c:1253: sparse:  right side has type unsigned long
+cdns3-ep0.c:367: sparse: warning: restricted __le16 degrades to integer
+cdns3-ep0.c:792: sparse: warning: symbol 'cdns3_gadget_ep0_ops' was not
+                                  declared. Should it be static?
 
-  arch/powerpc/kernel/fadump.c:1739:22: error: no previous prototype for ‘arch_reserved_kernel_pages’ [-Werror=missing-prototypes]
-  1739 | unsigned long __init arch_reserved_kernel_pages(void)
-       |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The prototype for arch_reserved_kernel_pages() is in include/linux/mm.h,
-but it's guarded by __HAVE_ARCH_RESERVED_KERNEL_PAGES. The powerpc
-headers define __HAVE_ARCH_RESERVED_KERNEL_PAGES in asm/mmzone.h, which
-is not included into the generic headers when NUMA=n.
-
-Move the definition of __HAVE_ARCH_RESERVED_KERNEL_PAGES into asm/mmu.h
-which is included regardless of NUMA=n.
-
-Additionally the ifdef around __HAVE_ARCH_RESERVED_KERNEL_PAGES needs to
-also check for CONFIG_PRESERVE_FA_DUMP.
-
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231130114433.3053544-1-mpe@ellerman.id.au
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Pawel Laszczak <pawell@cadence.com>
+Signed-off-by: Peter Chen <peter.chen@nxp.com>
+Stable-dep-of: 1b8be5ecff26 ("usb: cdns3: fix uvc failure work since sg support enabled")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/mmu.h    | 4 ++++
- arch/powerpc/include/asm/mmzone.h | 3 ---
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ drivers/usb/cdns3/ep0.c    | 4 ++--
+ drivers/usb/cdns3/gadget.c | 6 +++---
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/mmu.h b/arch/powerpc/include/asm/mmu.h
-index 8abe8e42e045..de0bb77f54e0 100644
---- a/arch/powerpc/include/asm/mmu.h
-+++ b/arch/powerpc/include/asm/mmu.h
-@@ -416,5 +416,9 @@ extern void *abatron_pteptrs[2];
- #include <asm/nohash/mmu.h>
- #endif
+diff --git a/drivers/usb/cdns3/ep0.c b/drivers/usb/cdns3/ep0.c
+index 30d3516c7f98..4241c513b9f6 100644
+--- a/drivers/usb/cdns3/ep0.c
++++ b/drivers/usb/cdns3/ep0.c
+@@ -364,7 +364,7 @@ static int cdns3_ep0_feature_handle_endpoint(struct cdns3_device *priv_dev,
+ 	if (le16_to_cpu(ctrl->wValue) != USB_ENDPOINT_HALT)
+ 		return -EINVAL;
  
-+#if defined(CONFIG_FA_DUMP) || defined(CONFIG_PRESERVE_FA_DUMP)
-+#define __HAVE_ARCH_RESERVED_KERNEL_PAGES
-+#endif
-+
- #endif /* __KERNEL__ */
- #endif /* _ASM_POWERPC_MMU_H_ */
-diff --git a/arch/powerpc/include/asm/mmzone.h b/arch/powerpc/include/asm/mmzone.h
-index 4c6c6dbd182f..3764d3585d30 100644
---- a/arch/powerpc/include/asm/mmzone.h
-+++ b/arch/powerpc/include/asm/mmzone.h
-@@ -42,9 +42,6 @@ u64 memory_hotplug_max(void);
- #else
- #define memory_hotplug_max() memblock_end_of_DRAM()
- #endif /* CONFIG_NUMA */
--#ifdef CONFIG_FA_DUMP
--#define __HAVE_ARCH_RESERVED_KERNEL_PAGES
--#endif
+-	if (!(ctrl->wIndex & ~USB_DIR_IN))
++	if (!(le16_to_cpu(ctrl->wIndex) & ~USB_DIR_IN))
+ 		return 0;
  
- #ifdef CONFIG_MEMORY_HOTPLUG
- extern int create_section_mapping(unsigned long start, unsigned long end,
+ 	index = cdns3_ep_addr_to_index(le16_to_cpu(ctrl->wIndex));
+@@ -790,7 +790,7 @@ int cdns3_gadget_ep_set_wedge(struct usb_ep *ep)
+ 	return 0;
+ }
+ 
+-const struct usb_ep_ops cdns3_gadget_ep0_ops = {
++static const struct usb_ep_ops cdns3_gadget_ep0_ops = {
+ 	.enable = cdns3_gadget_ep0_enable,
+ 	.disable = cdns3_gadget_ep0_disable,
+ 	.alloc_request = cdns3_gadget_ep_alloc_request,
+diff --git a/drivers/usb/cdns3/gadget.c b/drivers/usb/cdns3/gadget.c
+index 210c1d615082..82b6fd2bc890 100644
+--- a/drivers/usb/cdns3/gadget.c
++++ b/drivers/usb/cdns3/gadget.c
+@@ -1200,7 +1200,7 @@ static int cdns3_ep_run_transfer(struct cdns3_endpoint *priv_ep,
+ 		td_size = DIV_ROUND_UP(request->length,
+ 				       priv_ep->endpoint.maxpacket);
+ 		if (priv_dev->gadget.speed == USB_SPEED_SUPER)
+-			trb->length = TRB_TDL_SS_SIZE(td_size);
++			trb->length = cpu_to_le32(TRB_TDL_SS_SIZE(td_size));
+ 		else
+ 			control |= TRB_TDL_HS_SIZE(td_size);
+ 	}
+@@ -1247,10 +1247,10 @@ static int cdns3_ep_run_transfer(struct cdns3_endpoint *priv_ep,
+ 			priv_req->trb->control = cpu_to_le32(control);
+ 
+ 		if (sg_supported) {
+-			trb->control |= TRB_ISP;
++			trb->control |= cpu_to_le32(TRB_ISP);
+ 			/* Don't set chain bit for last TRB */
+ 			if (sg_iter < num_trb - 1)
+-				trb->control |= TRB_CHAIN;
++				trb->control |= cpu_to_le32(TRB_CHAIN);
+ 
+ 			s = sg_next(s);
+ 		}
 -- 
 2.43.0
 
