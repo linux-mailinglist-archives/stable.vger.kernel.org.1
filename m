@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-21920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D67EF85D926
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:15:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAE4E85DBB7
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:44:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13FE21C22BCC
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:15:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70AF31F24606
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:44:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5915869D36;
-	Wed, 21 Feb 2024 13:15:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F5AC69D21;
+	Wed, 21 Feb 2024 13:44:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jkCFKOpK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sjp5Z8E2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1702B69D28;
-	Wed, 21 Feb 2024 13:15:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D965173161;
+	Wed, 21 Feb 2024 13:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521316; cv=none; b=GYe1m5AhoJUg2hnBLMcyp3gIbQRZ80K+kBcMK5T9o9RoNE0AJeIJUnmamEQD7a85R20slAiCuEXCmiaSBun+36qWKMy0wNCx9GXurTafChQYwtRMnWcg3T3MgSQnM+7OgAM+0284K2JC3vEZeN+ecBAZAZILjv0JkkwtUKAWHQ0=
+	t=1708523064; cv=none; b=Bh4s6d+5VSNaDU9PSl3n1AAKGYffRJCjfOAxJHEUAJSQ/3m+09MpLQ7+0qb/wdlpAI1DmFEA55fQz2vMnTjsz8Vvce+sMGGFFfaXnOcX/80QNsOW7cJOCMpPH7F1qyfUXcKMLRxiJEYUe1J1/abDqfaXNBH+eitsw/Uff203Rpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521316; c=relaxed/simple;
-	bh=r3xY8sWuuQjtvS89qcMxH+vjgj+nM3/WNCK0c5hf3T0=;
+	s=arc-20240116; t=1708523064; c=relaxed/simple;
+	bh=7qzgHFcr6JVsg2RDmqO9DhskZHlBzAy2hp6f5t+4BRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tYq7E+UkiMBMGEHjLoPN6QbRlMZ5dwsEHnZb6zeDjXNnO2KtgIviqF8GE3/OqA5r1v2/oTTUFg9lN75qlj/SAClY38bwopxKjtImtAsnrnkmAHkaDiAEtWkUkJko3KSge+7L3541ji7ll8X2ksyOIV/jqJcHjIDfEK2gBxHRxrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jkCFKOpK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21495C433F1;
-	Wed, 21 Feb 2024 13:15:14 +0000 (UTC)
+	 MIME-Version; b=IVxTfoK/W7Td4jIbTlymwfoIJtanTBhRfMcf9pmU5AZcWzugXBCH3zQjU1rbat557VSJWBGqNmXG373qZEmCSPgyGjk5xTNJ1NSc7fMIh+F7iYcNsFz/vip0r+11BtBqNana0/NRejw9qOBR3lC2xGGDvcu9g1Ov3YUIi6bAk2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sjp5Z8E2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 690C8C433C7;
+	Wed, 21 Feb 2024 13:44:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521315;
-	bh=r3xY8sWuuQjtvS89qcMxH+vjgj+nM3/WNCK0c5hf3T0=;
+	s=korg; t=1708523063;
+	bh=7qzgHFcr6JVsg2RDmqO9DhskZHlBzAy2hp6f5t+4BRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jkCFKOpKkOAsv6erqjbtpLLSQeBuMff0lHwKDOXBr4v5QfL24hUhy4mxR9XhHKcRy
-	 lbz0Zka78gVpTHIuFnNmjR+L43aTDhblwFqxoQSMV2kt6v5w8m/nPIlOW9CJKS1wvq
-	 J5aH3PJzM1QyI9YFpXD9FNb4oElvpTA7Ao8Q/P3c=
+	b=Sjp5Z8E224ViFd5+AnXaS59VFZ5x0bn/H7vfNhwU5mF4N6qxckLQSSpTDIlJX6LKP
+	 lwv0uTUPfYJkusEBJICvRHNgNqJUEV/w0IxSX3MvacFM9tvw5B/Xq16RrO/oyH3C5r
+	 xvn2pRHfc/YJUvofiOW43aC9zobyPkX1YfZvTAh0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naveen N Rao <naveen@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Kuogee Hsieh <quic_khsieh@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 053/202] powerpc/lib: Validate size for vector operations
+Subject: [PATCH 5.15 303/476] drm/msm/dp: return correct Colorimetry for DP_TEST_DYNAMIC_RANGE_CEA case
 Date: Wed, 21 Feb 2024 14:05:54 +0100
-Message-ID: <20240221125933.553791935@linuxfoundation.org>
+Message-ID: <20240221130019.198854875@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naveen N Rao <naveen@kernel.org>
+From: Kuogee Hsieh <quic_khsieh@quicinc.com>
 
-[ Upstream commit 8f9abaa6d7de0a70fc68acaedce290c1f96e2e59 ]
+[ Upstream commit fcccdafd91f8bdde568b86ff70848cf83f029add ]
 
-Some of the fp/vmx code in sstep.c assume a certain maximum size for the
-instructions being emulated. The size of those operations however is
-determined separately in analyse_instr().
+MSA MISC0 bit 1 to 7 contains Colorimetry Indicator Field.
+dp_link_get_colorimetry_config() returns wrong colorimetry value
+in the DP_TEST_DYNAMIC_RANGE_CEA case in the current implementation.
+Hence fix this problem by having dp_link_get_colorimetry_config()
+return defined CEA RGB colorimetry value in the case of
+DP_TEST_DYNAMIC_RANGE_CEA.
 
-Add a check to validate the assumption on the maximum size of the
-operations, so as to prevent any unintended kernel stack corruption.
+Changes in V2:
+-- drop retrieving colorimetry from colorspace
+-- drop dr = link->dp_link.test_video.test_dyn_range assignment
 
-Signed-off-by: Naveen N Rao <naveen@kernel.org>
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Build-tested-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231123071705.397625-1-naveen@kernel.org
+Changes in V3:
+-- move defined MISCr0a Colorimetry vale to dp_reg.h
+-- rewording commit title
+-- rewording commit text to more precise describe this patch
+
+Fixes: c943b4948b58 ("drm/msm/dp: add displayPort driver support")
+Signed-off-by: Kuogee Hsieh <quic_khsieh@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/574888/
+Link: https://lore.kernel.org/r/1705526010-597-1-git-send-email-quic_khsieh@quicinc.com
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/lib/sstep.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/gpu/drm/msm/dp/dp_link.c | 12 +++++++-----
+ drivers/gpu/drm/msm/dp/dp_reg.h  |  3 +++
+ 2 files changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
-index 30c434abe861..3da6290e3ccc 100644
---- a/arch/powerpc/lib/sstep.c
-+++ b/arch/powerpc/lib/sstep.c
-@@ -473,6 +473,8 @@ static int do_fp_load(struct instruction_op *op, unsigned long ea,
- 	} u;
+diff --git a/drivers/gpu/drm/msm/dp/dp_link.c b/drivers/gpu/drm/msm/dp/dp_link.c
+index d4d31e5bda07..0b4539be0685 100644
+--- a/drivers/gpu/drm/msm/dp/dp_link.c
++++ b/drivers/gpu/drm/msm/dp/dp_link.c
+@@ -7,6 +7,7 @@
  
- 	nb = GETSIZE(op->type);
-+	if (nb > sizeof(u))
-+		return -EINVAL;
- 	if (!address_ok(regs, ea, nb))
- 		return -EFAULT;
- 	rn = op->reg;
-@@ -523,6 +525,8 @@ static int do_fp_store(struct instruction_op *op, unsigned long ea,
- 	} u;
+ #include <drm/drm_print.h>
  
- 	nb = GETSIZE(op->type);
-+	if (nb > sizeof(u))
-+		return -EINVAL;
- 	if (!address_ok(regs, ea, nb))
- 		return -EFAULT;
- 	rn = op->reg;
-@@ -567,6 +571,9 @@ static nokprobe_inline int do_vec_load(int rn, unsigned long ea,
- 		u8 b[sizeof(__vector128)];
- 	} u = {};
++#include "dp_reg.h"
+ #include "dp_link.h"
+ #include "dp_panel.h"
  
-+	if (size > sizeof(u))
-+		return -EINVAL;
+@@ -1064,7 +1065,7 @@ int dp_link_process_request(struct dp_link *dp_link)
+ 
+ int dp_link_get_colorimetry_config(struct dp_link *dp_link)
+ {
+-	u32 cc;
++	u32 cc = DP_MISC0_COLORIMERY_CFG_LEGACY_RGB;
+ 	struct dp_link_private *link;
+ 
+ 	if (!dp_link) {
+@@ -1078,10 +1079,11 @@ int dp_link_get_colorimetry_config(struct dp_link *dp_link)
+ 	 * Unless a video pattern CTS test is ongoing, use RGB_VESA
+ 	 * Only RGB_VESA and RGB_CEA supported for now
+ 	 */
+-	if (dp_link_is_video_pattern_requested(link))
+-		cc = link->dp_link.test_video.test_dyn_range;
+-	else
+-		cc = DP_TEST_DYNAMIC_RANGE_VESA;
++	if (dp_link_is_video_pattern_requested(link)) {
++		if (link->dp_link.test_video.test_dyn_range &
++					DP_TEST_DYNAMIC_RANGE_CEA)
++			cc = DP_MISC0_COLORIMERY_CFG_CEA_RGB;
++	}
+ 
+ 	return cc;
+ }
+diff --git a/drivers/gpu/drm/msm/dp/dp_reg.h b/drivers/gpu/drm/msm/dp/dp_reg.h
+index 268602803d9a..176a503ece9c 100644
+--- a/drivers/gpu/drm/msm/dp/dp_reg.h
++++ b/drivers/gpu/drm/msm/dp/dp_reg.h
+@@ -129,6 +129,9 @@
+ #define DP_MISC0_COLORIMETRY_CFG_SHIFT		(0x00000001)
+ #define DP_MISC0_TEST_BITS_DEPTH_SHIFT		(0x00000005)
+ 
++#define DP_MISC0_COLORIMERY_CFG_LEGACY_RGB	(0)
++#define DP_MISC0_COLORIMERY_CFG_CEA_RGB		(0x04)
 +
- 	if (!address_ok(regs, ea & ~0xfUL, 16))
- 		return -EFAULT;
- 	/* align to multiple of size */
-@@ -594,6 +601,9 @@ static nokprobe_inline int do_vec_store(int rn, unsigned long ea,
- 		u8 b[sizeof(__vector128)];
- 	} u;
+ #define REG_DP_VALID_BOUNDARY			(0x00000030)
+ #define REG_DP_VALID_BOUNDARY_2			(0x00000034)
  
-+	if (size > sizeof(u))
-+		return -EINVAL;
-+
- 	if (!address_ok(regs, ea & ~0xfUL, 16))
- 		return -EFAULT;
- 	/* align to multiple of size */
 -- 
 2.43.0
 
