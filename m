@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-22758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD76485DDBD
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:11:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C107485DBE8
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:46:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7377A1F23A32
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:11:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F31161C22FC9
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:46:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BD1B7E773;
-	Wed, 21 Feb 2024 14:06:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF61369951;
+	Wed, 21 Feb 2024 13:46:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vWHHJ7FM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OtcX0H8q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AC6A7E767;
-	Wed, 21 Feb 2024 14:06:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E8C31E4B2;
+	Wed, 21 Feb 2024 13:46:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524418; cv=none; b=It2RI9qzSYQrK3XUbV7wR1SncqQ2PLpiNdSHzv8IQNunlyODl8lD8s9VJQbJXGtoK1YGpStobMLz5X1l5+Md/4ldv0tZOpX8VWccbsCCQfNd9ArLfdXgRDcmAi5sd4ka53FJarV1Yb1texMHiqUKLXzEMhUXPAwQ5gaV92gQZlY=
+	t=1708523202; cv=none; b=M13v3QfziyarxmTUVQy0DohNKI7kF9P5/FznHYB+wYf0iJLJlx2P3bj5a0ItxCyrf0OdYAIJOUDBggzmtFeZ/hieiuK2+DlE7CboTkKb2ctNH8dbY/JL/k0fSkYjKV14qNLiXinIEYbxIPhnKb2Q2q9vn7jpOjJJ6WyUbTECoRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524418; c=relaxed/simple;
-	bh=63NfB0phzh4spG1ZxMdIe6xRlNryNStt9lIhbMweCkI=;
+	s=arc-20240116; t=1708523202; c=relaxed/simple;
+	bh=llwHlXrtnhWFBlexRiSln0jFBvN3t5BwGAJP79ab3sU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ck699BEGYh3MFYbh0HKoLlot+XKraQ4gRP2Iv09wYqMwfXQkHmBMjfLMZikP5ZAfwN5M/NgxQN4S9k4obQiZiucT9x1fsAk86pQLb2wH6kBRWnTNO/V+Pw1apFIEdUMMLqn4Ip4NFDAsWW8o36jEIZKLqH1IW8BmCQpvcexo2rQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vWHHJ7FM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88B09C433F1;
-	Wed, 21 Feb 2024 14:06:57 +0000 (UTC)
+	 MIME-Version; b=AczOaD6nNo8SCAngyFtehCC847AOMZ/J9ulCyETyA344NVukVjA7Mjy0QlE4VetCvwvBJVB4xItzx72aTbQUQHjlc0F5W3Il9nCdyx8/r+3flkOtuxQLEp3j8me+HA0lCxD+tfYDtcjqjt1dgDhCsggiUmCWWvqQTzeTdItCgiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OtcX0H8q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90DCAC43390;
+	Wed, 21 Feb 2024 13:46:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524417;
-	bh=63NfB0phzh4spG1ZxMdIe6xRlNryNStt9lIhbMweCkI=;
+	s=korg; t=1708523202;
+	bh=llwHlXrtnhWFBlexRiSln0jFBvN3t5BwGAJP79ab3sU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vWHHJ7FM8rvwrD95tKr5DwvRyy5Ox7NzLA+zBonMQestzxieorJdjc4yajj1BbL5H
-	 awXO5WVYeWzoWOF7yI0N8ZkKweNAHsrdBen43YFGcp6/QiSXL2dsk9YFxKlVp1D2sZ
-	 821rJoTv1mXXIeR1wWh/L8YSwRIC53VQDF27lGv4=
+	b=OtcX0H8qZISNxD5ZMU2sDQnXhM6TwsAoRhRK8N8m2mns1RFwJIXtYWZZa94v7SFa+
+	 /NuK72z62T3LKKeMQMCdAR7C1spaZJvpNBEHT9K3QxEOM9SMMjru596tsx9vDrDboW
+	 KBIvCdA30RCSUkrjU4flNe2oTmSSF6zWgzNKVgeI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 237/379] netfilter: nft_ct: sanitize layer 3 and 4 protocol number in custom expectations
-Date: Wed, 21 Feb 2024 14:06:56 +0100
-Message-ID: <20240221130001.925365226@linuxfoundation.org>
+	"Christian A. Ehrhardt" <lk@c--e.de>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 5.15 366/476] usb: ucsi_acpi: Fix command completion handling
+Date: Wed, 21 Feb 2024 14:06:57 +0100
+Message-ID: <20240221130021.556237422@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +61,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Christian A. Ehrhardt <lk@c--e.de>
 
-[ Upstream commit 8059918a1377f2f1fff06af4f5a4ed3d5acd6bc4 ]
+commit 2840143e393a4ddc1caab4372969ea337371168c upstream.
 
-- Disallow families other than NFPROTO_{IPV4,IPV6,INET}.
-- Disallow layer 4 protocol with no ports, since destination port is a
-  mandatory attribute for this object.
+In case of a spurious or otherwise delayed notification it is
+possible that CCI still reports the previous completion. The
+UCSI spec is aware of this and provides two completion bits in
+CCI, one for normal commands and one for acks. As acks and commands
+alternate the notification handler can determine if the completion
+bit is from the current command.
 
-Fixes: 857b46027d6f ("netfilter: nft_ct: add ct expectations support")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The initial UCSI code correctly handled this but the distinction
+between the two completion bits was lost with the introduction of
+the new API.
+
+To fix this revive the ACK_PENDING bit for ucsi_acpi and only complete
+commands if the completion bit matches.
+
+Fixes: f56de278e8ec ("usb: typec: ucsi: acpi: Move to the new API")
+Cc: stable@vger.kernel.org
+Signed-off-by: "Christian A. Ehrhardt" <lk@c--e.de>
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240121204123.275441-3-lk@c--e.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_ct.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ drivers/usb/typec/ucsi/ucsi_acpi.c |   17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/net/netfilter/nft_ct.c b/net/netfilter/nft_ct.c
-index 14093d86e682..5b16161526e7 100644
---- a/net/netfilter/nft_ct.c
-+++ b/net/netfilter/nft_ct.c
-@@ -1182,7 +1182,31 @@ static int nft_ct_expect_obj_init(const struct nft_ctx *ctx,
- 	if (tb[NFTA_CT_EXPECT_L3PROTO])
- 		priv->l3num = ntohs(nla_get_be16(tb[NFTA_CT_EXPECT_L3PROTO]));
+--- a/drivers/usb/typec/ucsi/ucsi_acpi.c
++++ b/drivers/usb/typec/ucsi/ucsi_acpi.c
+@@ -70,9 +70,13 @@ static int ucsi_acpi_sync_write(struct u
+ 				const void *val, size_t val_len)
+ {
+ 	struct ucsi_acpi *ua = ucsi_get_drvdata(ucsi);
++	bool ack = UCSI_COMMAND(*(u64 *)val) == UCSI_ACK_CC_CI;
+ 	int ret;
  
-+	switch (priv->l3num) {
-+	case NFPROTO_IPV4:
-+	case NFPROTO_IPV6:
-+		if (priv->l3num != ctx->family)
-+			return -EINVAL;
-+
-+		fallthrough;
-+	case NFPROTO_INET:
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+
- 	priv->l4proto = nla_get_u8(tb[NFTA_CT_EXPECT_L4PROTO]);
-+	switch (priv->l4proto) {
-+	case IPPROTO_TCP:
-+	case IPPROTO_UDP:
-+	case IPPROTO_UDPLITE:
-+	case IPPROTO_DCCP:
-+	case IPPROTO_SCTP:
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+
- 	priv->dport = nla_get_be16(tb[NFTA_CT_EXPECT_DPORT]);
- 	priv->timeout = nla_get_u32(tb[NFTA_CT_EXPECT_TIMEOUT]);
- 	priv->size = nla_get_u8(tb[NFTA_CT_EXPECT_SIZE]);
--- 
-2.43.0
-
+-	set_bit(COMMAND_PENDING, &ua->flags);
++	if (ack)
++		set_bit(ACK_PENDING, &ua->flags);
++	else
++		set_bit(COMMAND_PENDING, &ua->flags);
+ 
+ 	ret = ucsi_acpi_async_write(ucsi, offset, val, val_len);
+ 	if (ret)
+@@ -82,7 +86,10 @@ static int ucsi_acpi_sync_write(struct u
+ 		ret = -ETIMEDOUT;
+ 
+ out_clear_bit:
+-	clear_bit(COMMAND_PENDING, &ua->flags);
++	if (ack)
++		clear_bit(ACK_PENDING, &ua->flags);
++	else
++		clear_bit(COMMAND_PENDING, &ua->flags);
+ 
+ 	return ret;
+ }
+@@ -106,8 +113,10 @@ static void ucsi_acpi_notify(acpi_handle
+ 	if (UCSI_CCI_CONNECTOR(cci))
+ 		ucsi_connector_change(ua->ucsi, UCSI_CCI_CONNECTOR(cci));
+ 
+-	if (test_bit(COMMAND_PENDING, &ua->flags) &&
+-	    cci & (UCSI_CCI_ACK_COMPLETE | UCSI_CCI_COMMAND_COMPLETE))
++	if (cci & UCSI_CCI_ACK_COMPLETE && test_bit(ACK_PENDING, &ua->flags))
++		complete(&ua->complete);
++	if (cci & UCSI_CCI_COMMAND_COMPLETE &&
++	    test_bit(COMMAND_PENDING, &ua->flags))
+ 		complete(&ua->complete);
+ }
+ 
 
 
 
