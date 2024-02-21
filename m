@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-22483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8CC185DC3F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:50:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 596C485DE18
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:14:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 799A7B247AA
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:50:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B37B1C238BB
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0D8878B5E;
-	Wed, 21 Feb 2024 13:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47CEC7E579;
+	Wed, 21 Feb 2024 14:12:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rN3Y2Vnm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RBPdbs3E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E92F55E5E;
-	Wed, 21 Feb 2024 13:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0659F7E115;
+	Wed, 21 Feb 2024 14:12:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523452; cv=none; b=fvR1bPk5OX8w+TmhHdAAsEIy1O3g2hyTGYL6pFCSN1cIOJrxDxqEeMW55a3TY54Cj//OzOpTaxCUr4jq1epkJoHvd7TB9W5mxIqXcF6nB7ZTqOv+U7uCWZ61g9c0CUSf5rW3pAxCKehL9t6x4SEKn5d+2bo2bj5dAUFfgPS56PI=
+	t=1708524760; cv=none; b=FNNuN7Wsck+SkvKFb/wqVSxN3PjDCuCEjqw5yZPHAnjeQAHDSEXzZwvrMZsKda9owcK2uvUwF8BLEXVI1WxtE7Doy9d552K1nNHi3V2btTn725QSNRebuMhNP1r0rrsdkOKluDfbR4CeqCV9xO8VveFxZ6HHLepoF8hMAsqH0wA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523452; c=relaxed/simple;
-	bh=+ZSYjfVp2LzuH1NaV9ZNzb5+avtu1/5dJ9SHaQ4enDk=;
+	s=arc-20240116; t=1708524760; c=relaxed/simple;
+	bh=anG3fuM12QvkboLUW2CAH3LyujcA//WzageQIlc0VLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mz1WVEbOOa2iyttV8f8v1q73ts5hhRkjL+jdIglcgA9mUX/p6yI9KNAeqq6SRtt8Zggp4f40qQu/BiNGDZIWo6hSiRwGlU1Sd8HGM2/uCU1Gpf9Vmkrgd7McyxLaXFqfL7SBlUGNtIOEOoRthG1jJvU1wnee63Sy6yFdoYLOJgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rN3Y2Vnm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A4CCC433C7;
-	Wed, 21 Feb 2024 13:50:51 +0000 (UTC)
+	 MIME-Version; b=Tp5jawpF1QdSsa57jGphgvvvNI+25k3q44rcmdzVXuDB5cqJ2v+HfNN7vwN7pPJBZmzi0gQXf0m8oFLD2w4dgDhm1rnG6IDelaTstqnB6w7WUZjfyyPL//kt639m9NouPW1ea+IKdOsFo8mrcQnufUBJOprJ55Fgvy6aB6+hDiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RBPdbs3E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63A87C433F1;
+	Wed, 21 Feb 2024 14:12:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523452;
-	bh=+ZSYjfVp2LzuH1NaV9ZNzb5+avtu1/5dJ9SHaQ4enDk=;
+	s=korg; t=1708524759;
+	bh=anG3fuM12QvkboLUW2CAH3LyujcA//WzageQIlc0VLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rN3Y2VnmURxj5xKjrYX6PQ812Esmzx0XvKJDTJzh1FRwj5Z3NQDs2QRGIldZeKgKE
-	 U55HPUY7jz4VsW6cLfE6EcnOd6EWO0p29uo7phOjfXFG4rbWjp6nyP6mZE7OvFVwXG
-	 a6qZOlNArnjCgRd4j25N6rwrtrusimCERLyd2lGM=
+	b=RBPdbs3EVAhBb+4d6FOR3CNtTX2+nhZfyP4l+tLzvoQ+cJEwmKy5yBnHzNX4mfQpk
+	 3r2KXyj+m16XqwDmkV8IlRLDr5AlU57La/FLrlknwQrgl5veFUKo7tQFrkKNlj/GWq
+	 MMQXlYEk72rDg8zW/Nhgwbk2m8pyxTBGxuHERdYs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Wesley Cheng <quic_wcheng@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 439/476] usb: dwc3: gadget: Submit endxfer command if delayed during disconnect
-Date: Wed, 21 Feb 2024 14:08:10 +0100
-Message-ID: <20240221130024.258708200@linuxfoundation.org>
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	Casey Schaufler <casey@schaufler-ca.com>,
+	Paul Moore <paul@paul-moore.com>
+Subject: [PATCH 5.10 312/379] lsm: fix the logic in security_inode_getsecctx()
+Date: Wed, 21 Feb 2024 14:08:11 +0100
+Message-ID: <20240221130004.154053307@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wesley Cheng <quic_wcheng@quicinc.com>
+From: Ondrej Mosnacek <omosnace@redhat.com>
 
-[ Upstream commit 8422b769fa46bd429dc0f324012629a4691f0dd9 ]
+commit 99b817c173cd213671daecd25ca27f56b0c7c4ec upstream.
 
-During a cable disconnect sequence, if ep0state is not in the SETUP phase,
-then nothing will trigger any pending end transfer commands.  Force
-stopping of any pending SETUP transaction, and move back to the SETUP
-phase.
+The inode_getsecctx LSM hook has previously been corrected to have
+-EOPNOTSUPP instead of 0 as the default return value to fix BPF LSM
+behavior. However, the call_int_hook()-generated loop in
+security_inode_getsecctx() was left treating 0 as the neutral value, so
+after an LSM returns 0, the loop continues to try other LSMs, and if one
+of them returns a non-zero value, the function immediately returns with
+said value. So in a situation where SELinux and the BPF LSMs registered
+this hook, -EOPNOTSUPP would be incorrectly returned whenever SELinux
+returned 0.
 
-Reviewed-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
-Link: https://lore.kernel.org/r/20220901193625.8727-6-quic_wcheng@quicinc.com
+Fix this by open-coding the call_int_hook() loop and making it use the
+correct LSM_RET_DEFAULT() value as the neutral one, similar to what
+other hooks do.
+
+Cc: stable@vger.kernel.org
+Reported-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+Link: https://lore.kernel.org/selinux/CAEjxPJ4ev-pasUwGx48fDhnmjBnq_Wh90jYPwRQRAqXxmOKD4Q@mail.gmail.com/
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2257983
+Fixes: b36995b8609a ("lsm: fix default return value for inode_getsecctx")
+Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+Reviewed-by: Casey Schaufler <casey@schaufler-ca.com>
+[PM: subject line tweak]
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 730e12fbec53 ("usb: dwc3: gadget: Handle EP0 request dequeuing properly")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/gadget.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ security/security.c |   14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index ba1b2e70b351..c61b6f49701a 100644
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -3739,13 +3739,24 @@ static void dwc3_gadget_disconnect_interrupt(struct dwc3 *dwc)
- 	reg &= ~DWC3_DCTL_INITU2ENA;
- 	dwc3_gadget_dctl_write_safe(dwc, reg);
+--- a/security/security.c
++++ b/security/security.c
+@@ -2098,7 +2098,19 @@ EXPORT_SYMBOL(security_inode_setsecctx);
  
-+	dwc->connected = false;
+ int security_inode_getsecctx(struct inode *inode, void **ctx, u32 *ctxlen)
+ {
+-	return call_int_hook(inode_getsecctx, -EOPNOTSUPP, inode, ctx, ctxlen);
++	struct security_hook_list *hp;
++	int rc;
 +
- 	dwc3_disconnect_gadget(dwc);
- 
- 	dwc->gadget->speed = USB_SPEED_UNKNOWN;
- 	dwc->setup_packet_pending = false;
- 	usb_gadget_set_state(dwc->gadget, USB_STATE_NOTATTACHED);
- 
--	dwc->connected = false;
-+	if (dwc->ep0state != EP0_SETUP_PHASE) {
-+		unsigned int    dir;
-+
-+		dir = !!dwc->ep0_expect_in;
-+		if (dwc->ep0state == EP0_DATA_PHASE)
-+			dwc3_ep0_end_control_data(dwc, dwc->eps[dir]);
-+		else
-+			dwc3_ep0_end_control_data(dwc, dwc->eps[!dir]);
-+		dwc3_ep0_stall_and_restart(dwc);
++	/*
++	 * Only one module will provide a security context.
++	 */
++	hlist_for_each_entry(hp, &security_hook_heads.inode_getsecctx, list) {
++		rc = hp->hook.inode_getsecctx(inode, ctx, ctxlen);
++		if (rc != LSM_RET_DEFAULT(inode_getsecctx))
++			return rc;
 +	}
++
++	return LSM_RET_DEFAULT(inode_getsecctx);
  }
+ EXPORT_SYMBOL(security_inode_getsecctx);
  
- static void dwc3_gadget_reset_interrupt(struct dwc3 *dwc)
--- 
-2.43.0
-
 
 
 
