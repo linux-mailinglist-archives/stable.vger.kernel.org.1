@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-23087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CA9F85DF2F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:25:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6989485DC64
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:52:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FB36284284
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:25:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A7871F21F33
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:52:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0376A7C093;
-	Wed, 21 Feb 2024 14:25:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0BF578B5E;
+	Wed, 21 Feb 2024 13:52:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="THW2QrX8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bgwrO4M8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD4293D0A1;
-	Wed, 21 Feb 2024 14:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F28D55E5E;
+	Wed, 21 Feb 2024 13:52:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525528; cv=none; b=lHW7IMmUB3ejgxXui/fxjaGlCz4LggrrZ3OzE3oqaEB63qBaHfu8p0ZEi1fcsEbBX6iU1iAouJYuLyeMUYVidIpVJWc2MJv8YfYcYxOscauAjQOSMpdlC7VMRN0PmYHxz7ybwGCzPIU/GKBO0ml0FAWG04MV4vx/tf4LXunBvx4=
+	t=1708523562; cv=none; b=CO+TFi3nbOopbNWeZzp/ZkLV1dtPDXyYE+BCPtAjnBGss+t10znt+Me9gT5MVCEzZKitAMjrfcHKD9cpwoCvw5d45buFjqQJ1F6Ro3aTi1VwQMAZrXLBhPtIkbNPvyXJ6GM+Bu5ridKMM6crsDvA03f+y/Hf5CdjSUO2pCvXlA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525528; c=relaxed/simple;
-	bh=0a6TuoKdfS4f/djxn2eo0fhW0Vovc7bSsDDgAp/KDs8=;
+	s=arc-20240116; t=1708523562; c=relaxed/simple;
+	bh=oq262k9KVw41qURcLRm2bh+muuixBB6gpJzeb0/zadk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ICGS2pgcgS4/hm68oY9972txf6hsfJKnxU/8CHsbRBNKuik9vt9Q23lUlQozzBvE/wcX859ZYfKZHdyIIAW2F6DxhEWhoytsyHsFWxsF84JuyO8SEe993eDHzSQng0kZleVAX5RXMBw1o5yuvDsVHPm33jpNlg1pxU6fg3RJuVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=THW2QrX8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6E70C433C7;
-	Wed, 21 Feb 2024 14:25:27 +0000 (UTC)
+	 MIME-Version; b=nGaQgOtwiGw/8eSNRmHYgvY3fiAHZVpju1lA6VLnlwgsKC5Ztw5YyuTXjK6BEsIRYB+URqEUcVRuj/g0yobD54U27MjZVN5H8v93/WqfClyx7cbGGnIU3O6BKk4hJYcS/J/kENi1uQYfxv3+cJjoEWAQt5qg6ukYHQjzZxtV4Hk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bgwrO4M8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D06BC433C7;
+	Wed, 21 Feb 2024 13:52:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525528;
-	bh=0a6TuoKdfS4f/djxn2eo0fhW0Vovc7bSsDDgAp/KDs8=;
+	s=korg; t=1708523562;
+	bh=oq262k9KVw41qURcLRm2bh+muuixBB6gpJzeb0/zadk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=THW2QrX8bMao3rD4mUF+bkf2TrClDpi3tdLD/uJib/kNzGJKv4Q58YLEn7XrK5XM5
-	 cTeVWS5EOaEE4xXDVjRh/yfCI2mcbBxztVtIIw31Ddtfv7i4mceUaLGSophB0//JWJ
-	 K3UEs8nJeMei0ZZ5i1LpFM3R9OrnOafq01SVTgu4=
+	b=bgwrO4M8NkFoUvQyGyWaIFbf8Yh7MQsOkvv1FzdtLrfPUznLlGRr2yeeuJFcBXH/Z
+	 vrrpUtGD70eCEXtXDION74Yb7sSjhn9D3nZkNr6YvHEIRee8EcLZd2Hi50XM+Nc5C3
+	 lS0OHCAYS63Qp7EXa8zGpqVhdNzp4SnzIk2t/nuo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Jiri Pirko <jiri@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 183/267] atm: idt77252: fix a memleak in open_card_ubr0
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 5.15 473/476] usb: dwc3: gadget: Dont delay End Transfer on delayed_status
 Date: Wed, 21 Feb 2024 14:08:44 +0100
-Message-ID: <20240221125945.870534780@linuxfoundation.org>
+Message-ID: <20240221130025.478306505@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +60,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-[ Upstream commit f3616173bf9be9bf39d131b120d6eea4e6324cb5 ]
+commit 4db0fbb601361767144e712beb96704b966339f5 upstream.
 
-When alloc_scq fails, card->vcs[0] (i.e. vc) should be freed. Otherwise,
-in the following call chain:
+The gadget driver may wait on the request completion when it sets the
+USB_GADGET_DELAYED_STATUS. Make sure that the End Transfer command can
+go through if the dwc->delayed_status is set so that the request can
+complete. When the delayed_status is set, the Setup packet is already
+processed, and the next phase should be either Data or Status. It's
+unlikely that the host would cancel the control transfer and send a new
+Setup packet during End Transfer command. But if that's the case, we can
+try again when ep0state returns to EP0_SETUP_PHASE.
 
-idt77252_init_one
-  |-> idt77252_dev_open
-        |-> open_card_ubr0
-              |-> alloc_scq [failed]
-  |-> deinit_card
-        |-> vfree(card->vcs);
-
-card->vcs is freed and card->vcs[0] is leaked.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e1ee843488d5 ("usb: dwc3: gadget: Force sending delayed status during soft disconnect")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/3f9f59e5d74efcbaee444cf4b30ef639cc7b124e.1666146954.git.Thinh.Nguyen@synopsys.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/atm/idt77252.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/dwc3/gadget.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/atm/idt77252.c b/drivers/atm/idt77252.c
-index c60611196786..605e992d25df 100644
---- a/drivers/atm/idt77252.c
-+++ b/drivers/atm/idt77252.c
-@@ -2935,6 +2935,8 @@ open_card_ubr0(struct idt77252_dev *card)
- 	vc->scq = alloc_scq(card, vc->class);
- 	if (!vc->scq) {
- 		printk("%s: can't get SCQ.\n", card->name);
-+		kfree(card->vcs[0]);
-+		card->vcs[0] = NULL;
- 		return -ENOMEM;
- 	}
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -1680,6 +1680,16 @@ static int __dwc3_stop_active_transfer(s
+ 	cmd |= DWC3_DEPCMD_PARAM(dep->resource_index);
+ 	memset(&params, 0, sizeof(params));
+ 	ret = dwc3_send_gadget_ep_cmd(dep, cmd, &params);
++	/*
++	 * If the End Transfer command was timed out while the device is
++	 * not in SETUP phase, it's possible that an incoming Setup packet
++	 * may prevent the command's completion. Let's retry when the
++	 * ep0state returns to EP0_SETUP_PHASE.
++	 */
++	if (ret == -ETIMEDOUT && dep->dwc->ep0state != EP0_SETUP_PHASE) {
++		dep->flags |= DWC3_EP_DELAY_STOP;
++		return 0;
++	}
+ 	WARN_ON_ONCE(ret);
+ 	dep->resource_index = 0;
  
--- 
-2.43.0
-
+@@ -3701,7 +3711,7 @@ void dwc3_stop_active_transfer(struct dw
+ 	 * timeout. Delay issuing the End Transfer command until the Setup TRB is
+ 	 * prepared.
+ 	 */
+-	if (dwc->ep0state != EP0_SETUP_PHASE) {
++	if (dwc->ep0state != EP0_SETUP_PHASE && !dwc->delayed_status) {
+ 		dep->flags |= DWC3_EP_DELAY_STOP;
+ 		return;
+ 	}
 
 
 
