@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-22256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E0E985DB1B
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:37:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E83FE85DCA6
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:55:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FE9D1C20F17
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:37:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 252B71C20D6A
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:55:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E3FA7993E;
-	Wed, 21 Feb 2024 13:37:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBFA778B73;
+	Wed, 21 Feb 2024 13:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N8Pc4vLN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BsH/Gq8f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B4E769953;
-	Wed, 21 Feb 2024 13:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A5C762C1;
+	Wed, 21 Feb 2024 13:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522626; cv=none; b=OBN7W+KvdsT5glGq0QPWbHHCEjDZMXHroXg27sBptUEyUdJQP6LFV9oUJbsG50kIzpOl4BNRIR81Tk6WU8ltCzngsBgUtjvKKTTINZty4K1ighPQnVzRuP4u9jlsjb9Lmn3wKMMbDRL/4jg+zwIowRmDdqWwdh+tFwq80iw77zY=
+	t=1708523753; cv=none; b=pRk2N8aIQxrCZiG9GzGoSLk4kw7JmQxHYAKMbyUqREUT329yoRceqi0btZvRD5+Pu0OdOzj9JEOnKqRjRznwETm6lu5rihRFAvLLsvXy1e+g46OZxicezJHyD8oQ5F9CW1tJWNLrQmOF+1aaqV4xhzgvoq4KcJPzrQlYvxjc/Qs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522626; c=relaxed/simple;
-	bh=OJKfBr3iYZod7TKPppYEqIPW4hsaJZv/4Ux4e9+++PU=;
+	s=arc-20240116; t=1708523753; c=relaxed/simple;
+	bh=pRG0FZNwgLkmzSYJnMbhzYxl3MvrW8h4MqeR0dJCq1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MbHzKTU11gjSue+PdcNDiq2vfubrRklp2aooAoFpEItgt7i+Vknxt/Z73luyYst7gcxSIq5juTUvA+1jKk3tBOV/ncDPOOpxG5YQWnSQ3F3mVoKFfGlv0EkfLtyTxEz/kpSnv2LqjWZcStlr6LV53yy1eCn6lW5dGIzO05sFxU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N8Pc4vLN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 719EAC433F1;
-	Wed, 21 Feb 2024 13:37:05 +0000 (UTC)
+	 MIME-Version; b=nCc7aDVt9eQlquGtQVbfWQWKUWlqef2lvyrZmd8KxPE/sL/nSlA82LqSAcM1wO5rtJFMepsQbXr5PvOMWJLprmMl+/Ilz+gQ2q78jlg2FlPTFqduB5jCdSzF/C8xfaMnA2xN/lbp3m80BIf43gqXuGpsiulmyqlhzCSL3jPsZPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BsH/Gq8f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 303C4C433C7;
+	Wed, 21 Feb 2024 13:55:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522625;
-	bh=OJKfBr3iYZod7TKPppYEqIPW4hsaJZv/4Ux4e9+++PU=;
+	s=korg; t=1708523753;
+	bh=pRG0FZNwgLkmzSYJnMbhzYxl3MvrW8h4MqeR0dJCq1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N8Pc4vLN9pOWgQRLRHfb+iHSWMxD9HrJf0/8GBq57wAVwwnUV+TmhDf0HnbZHkw9i
-	 9OojyGUVt32pVkr2thWUopiLEZzJB1HbFgNLBVMbVd3fHJ8WbxQU0l5n8kkq5v4S+Z
-	 MUGBvRMb1Otj6PvWO8dj1r6wkmbeIPeHP+tNJ4L4=
+	b=BsH/Gq8fZvGjPU7aJAWB/gvc+FkJge+lddO0IgbpBpDOQisuuSJDYHxPAbfJl3X9u
+	 If1sB5UDBPnM/07J++SF5+KLPkSfLvE5YV4MfsYjlHW4rbHLCOn2Grjkd9OHDHgY4c
+	 KUj6WoRLwyblCeQjEivSfBWwCg2oFBJJOqIjzehQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	Sharath Srinivasan <sharath.srinivasan@oracle.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 175/476] ARM: dts: imx7s: Fix nand-controller #size-cells
-Date: Wed, 21 Feb 2024 14:03:46 +0100
-Message-ID: <20240221130014.372170164@linuxfoundation.org>
+Subject: [PATCH 5.10 048/379] net/rds: Fix UBSAN: array-index-out-of-bounds in rds_cmsg_recv
+Date: Wed, 21 Feb 2024 14:03:47 +0100
+Message-ID: <20240221125956.338911429@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +64,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Sharath Srinivasan <sharath.srinivasan@oracle.com>
 
-[ Upstream commit 4aadb841ed49bada1415c48c44d21f5b69e01299 ]
+[ Upstream commit 13e788deb7348cc88df34bed736c3b3b9927ea52 ]
 
-nand-controller.yaml bindings says #size-cells shall be set to 0.
-Fixes the dtbs_check warning:
-arch/arm/boot/dts/nxp/imx/imx7s-mba7.dtb: nand-controller@33002000:
- #size-cells:0:0: 0 was expected
-  from schema $id: http://devicetree.org/schemas/mtd/gpmi-nand.yaml#
+Syzcaller UBSAN crash occurs in rds_cmsg_recv(),
+which reads inc->i_rx_lat_trace[j + 1] with index 4 (3 + 1),
+but with array size of 4 (RDS_RX_MAX_TRACES).
+Here 'j' is assigned from rs->rs_rx_trace[i] and in-turn from
+trace.rx_trace_pos[i] in rds_recv_track_latency(),
+with both arrays sized 3 (RDS_MSG_RX_DGRAM_TRACE_MAX). So fix the
+off-by-one bounds check in rds_recv_track_latency() to prevent
+a potential crash in rds_cmsg_recv().
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Found by syzcaller:
+=================================================================
+UBSAN: array-index-out-of-bounds in net/rds/recv.c:585:39
+index 4 is out of range for type 'u64 [4]'
+CPU: 1 PID: 8058 Comm: syz-executor228 Not tainted 6.6.0-gd2f51b3516da #1
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
+BIOS 1.15.0-1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x136/0x150 lib/dump_stack.c:106
+ ubsan_epilogue lib/ubsan.c:217 [inline]
+ __ubsan_handle_out_of_bounds+0xd5/0x130 lib/ubsan.c:348
+ rds_cmsg_recv+0x60d/0x700 net/rds/recv.c:585
+ rds_recvmsg+0x3fb/0x1610 net/rds/recv.c:716
+ sock_recvmsg_nosec net/socket.c:1044 [inline]
+ sock_recvmsg+0xe2/0x160 net/socket.c:1066
+ __sys_recvfrom+0x1b6/0x2f0 net/socket.c:2246
+ __do_sys_recvfrom net/socket.c:2264 [inline]
+ __se_sys_recvfrom net/socket.c:2260 [inline]
+ __x64_sys_recvfrom+0xe0/0x1b0 net/socket.c:2260
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x40/0x110 arch/x86/entry/common.c:82
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
+==================================================================
+
+Fixes: 3289025aedc0 ("RDS: add receive message trace used by application")
+Reported-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Closes: https://lore.kernel.org/linux-rdma/CALGdzuoVdq-wtQ4Az9iottBqC5cv9ZhcE5q8N7LfYFvkRsOVcw@mail.gmail.com/
+Signed-off-by: Sharath Srinivasan <sharath.srinivasan@oracle.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/imx7s.dtsi | 2 +-
+ net/rds/af_rds.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/imx7s.dtsi b/arch/arm/boot/dts/imx7s.dtsi
-index 35ee179e5ae3..5b960849c3ab 100644
---- a/arch/arm/boot/dts/imx7s.dtsi
-+++ b/arch/arm/boot/dts/imx7s.dtsi
-@@ -1264,7 +1264,7 @@
- 		gpmi: nand-controller@33002000{
- 			compatible = "fsl,imx7d-gpmi-nand";
- 			#address-cells = <1>;
--			#size-cells = <1>;
-+			#size-cells = <0>;
- 			reg = <0x33002000 0x2000>, <0x33004000 0x4000>;
- 			reg-names = "gpmi-nand", "bch";
- 			interrupts = <GIC_SPI 14 IRQ_TYPE_LEVEL_HIGH>;
+diff --git a/net/rds/af_rds.c b/net/rds/af_rds.c
+index b239120dd9ca..0ec0ae148349 100644
+--- a/net/rds/af_rds.c
++++ b/net/rds/af_rds.c
+@@ -419,7 +419,7 @@ static int rds_recv_track_latency(struct rds_sock *rs, sockptr_t optval,
+ 
+ 	rs->rs_rx_traces = trace.rx_traces;
+ 	for (i = 0; i < rs->rs_rx_traces; i++) {
+-		if (trace.rx_trace_pos[i] > RDS_MSG_RX_DGRAM_TRACE_MAX) {
++		if (trace.rx_trace_pos[i] >= RDS_MSG_RX_DGRAM_TRACE_MAX) {
+ 			rs->rs_rx_traces = 0;
+ 			return -EFAULT;
+ 		}
 -- 
 2.43.0
 
