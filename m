@@ -1,72 +1,57 @@
-Return-Path: <stable+bounces-21851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 947DB85D8D5
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:11:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C561C85DB53
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:39:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B81FA1C21F15
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:11:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 021941C23329
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:39:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25E7669D28;
-	Wed, 21 Feb 2024 13:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 688016996B;
+	Wed, 21 Feb 2024 13:39:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C7HQsGEE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="THKISXb2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D561569954;
-	Wed, 21 Feb 2024 13:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 269F73C2F;
+	Wed, 21 Feb 2024 13:39:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521060; cv=none; b=co8zuWAoq98WYovD+2ozZDHcVXWIJ/SAKwup/714F4pUQAkhVySV/QTURUrbCft+uWfqX6URpucf3711sW6RBnBwoDZdip6RlKuBspnJXp6ZrllQETAQ6cqUgeotSiyYHXvKZJi7D4HOmu8ue5rTmLlnofcwX7zK/z3nAEfTtjE=
+	t=1708522774; cv=none; b=Nlvs6fGuD57OuOp9bZGnSc4oBXcAATKEMCXeSufbD+AlOk0o3Lbszvv2p8g0xcSV2CC+VjuuomS9JNXYOyRtsZRSiVeODYc14fXvD84pQAOVELcfbhLG/Go8lCk8q/uV4CeEu4AcLamUiH4X0E+G2Nk2oX8u+VfqZsqcqvds5Xc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521060; c=relaxed/simple;
-	bh=asPHZnKKMrQdY/GFYH45W2U5tOQjZLoyaRARoM5R1n4=;
+	s=arc-20240116; t=1708522774; c=relaxed/simple;
+	bh=0+FlTxdcJMFflO6IL1R+EjRJOdiimC2Mze/fRdx/8Qc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e220rsfHJN7YetNgjdzT1ZkBbssOG6ucajl8/qPGk+Hz7K90C6e/cdX9ShMPgwT7JB7nHD8DehyX7AKDXYJXYcCOS/yETSWDeBHAFtPHTfsAA8Wh07o+EdV7JBFUDHahdU2SkCwjnpBBexk/NUV/7QGPcj+vFmuEK1VEiR+87O4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C7HQsGEE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF948C433C7;
-	Wed, 21 Feb 2024 13:10:59 +0000 (UTC)
+	 MIME-Version; b=QtNnX5fZqE1vTWAh3ppo6FXNk6ke9WyMl8PEJKD7Od/mOpo4ftYrcHIr4gEVmJmgbenaaWg/HB/JEJ1lOxgX07XJVJJQc4Qp8u80AFGARL3xdkVfdJ8824A6qYL+oKkv0CkG7yL2rgubRiAcX3JiSgp2Pu8FWsSGIEDFRheUHDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=THKISXb2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BCDDC433C7;
+	Wed, 21 Feb 2024 13:39:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521060;
-	bh=asPHZnKKMrQdY/GFYH45W2U5tOQjZLoyaRARoM5R1n4=;
+	s=korg; t=1708522773;
+	bh=0+FlTxdcJMFflO6IL1R+EjRJOdiimC2Mze/fRdx/8Qc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C7HQsGEERzdp0LCFgAQ0zLEx+JV8GPfI1EoT8uIY+0bDJxp51x90w4eLOzNq1MFCH
-	 nESYDqHLNmjk6ss97ELM6SymHeSXy7N7Jwfj5LgEbbP20rKpsFpBsYm8yBgTvF+Bk9
-	 51WXL69sSlmLtOepq1MZBymgM6oz2GPcLIAOGeyI=
+	b=THKISXb2OelWq2VE1trmNpcIrDIIqDFvFIyYeZYu8qzk6KbQg8f3WHvvLEEl4Sf/1
+	 64Vp/7y+gLc19Z7ABQq1fuwLL8p6ejFNAYld9r+pJhGHV7wGIMlnLZK0+aUBlSSW1w
+	 BRTlYY/atnlL1Ax/GE/PAaMoEXc1RTUWXmFvKRLw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Christian Eggers <ceggers@arri.de>,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	MyungJoo Ham <myungjoo.ham@samsung.com>,
-	Kyungmin Park <kyungmin.park@samsung.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Peter Meerwald <pmeerw@pmeerw.net>,
-	Zhang Rui <rui.zhang@intel.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Adrian Reber <areber@redhat.com>,
+	Andrei Vagin <avagin@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 004/202] units: change from L to UL
+Subject: [PATCH 5.15 254/476] tty: allow TIOCSLCKTRMIOS with CAP_CHECKPOINT_RESTORE
 Date: Wed, 21 Feb 2024 14:05:05 +0100
-Message-ID: <20240221125931.881594647@linuxfoundation.org>
+Message-ID: <20240221130017.238287280@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,73 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
+From: Adrian Reber <areber@redhat.com>
 
-[ Upstream commit c9221919a2d2df5741ab074dfec5bdfc6f1e043b ]
+[ Upstream commit e0f25b8992345aa5f113da2815f5add98738c611 ]
 
-Patch series "Add Hz macros", v3.
+The capability CAP_CHECKPOINT_RESTORE was introduced to allow non-root
+users to checkpoint and restore processes as non-root with CRIU.
 
-There are multiple definitions of the HZ_PER_MHZ or HZ_PER_KHZ in the
-different drivers.  Instead of duplicating this definition again and
-again, add one in the units.h header to be reused in all the place the
-redefiniton occurs.
+This change extends CAP_CHECKPOINT_RESTORE to enable the CRIU option
+'--shell-job' as non-root. CRIU's man-page describes the '--shell-job'
+option like this:
 
-At the same time, change the type of the Watts, as they can not be
-negative.
+  Allow one to dump shell jobs. This implies the restored task will
+  inherit session and process group ID from the criu itself. This option
+  also allows to migrate a single external tty connection, to migrate
+  applications like top.
 
-This patch (of 10):
+TIOCSLCKTRMIOS can only be done if the process has CAP_SYS_ADMIN and
+this change extends it to CAP_SYS_ADMIN or CAP_CHECKPOINT_RESTORE.
 
-The users of the macros are safe to be assigned with an unsigned instead
-of signed as the variables using them are themselves unsigned.
+With this change it is possible to checkpoint and restore processes
+which have a tty connection as non-root if CAP_CHECKPOINT_RESTORE is
+set.
 
-Link: https://lkml.kernel.org/r/20210816114732.1834145-1-daniel.lezcano@linaro.org
-Link: https://lkml.kernel.org/r/20210816114732.1834145-2-daniel.lezcano@linaro.org
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Jonathan Cameron <jic23@kernel.org>
-Cc: Christian Eggers <ceggers@arri.de>
-Cc: Lukasz Luba <lukasz.luba@arm.com>
-Cc: MyungJoo Ham <myungjoo.ham@samsung.com>
-Cc: Kyungmin Park <kyungmin.park@samsung.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>
-Cc: Peter Meerwald <pmeerw@pmeerw.net>
-Cc: Zhang Rui <rui.zhang@intel.com>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc: Chanwoo Choi <cw00.choi@samsung.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Stable-dep-of: 3ef79cd14122 ("serial: sc16is7xx: set safe default SPI clock frequency")
+Acked-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Adrian Reber <areber@redhat.com>
+Acked-by: Andrei Vagin <avagin@gmail.com>
+Link: https://lore.kernel.org/r/20231208143656.1019-1-areber@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/units.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/tty/tty_ioctl.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/units.h b/include/linux/units.h
-index 92c234e71cab..4a23e39acc7b 100644
---- a/include/linux/units.h
-+++ b/include/linux/units.h
-@@ -4,9 +4,9 @@
- 
- #include <linux/kernel.h>
- 
--#define MILLIWATT_PER_WATT	1000L
--#define MICROWATT_PER_MILLIWATT	1000L
--#define MICROWATT_PER_WATT	1000000L
-+#define MILLIWATT_PER_WATT	1000UL
-+#define MICROWATT_PER_MILLIWATT	1000UL
-+#define MICROWATT_PER_WATT	1000000UL
- 
- #define ABSOLUTE_ZERO_MILLICELSIUS -273150
- 
+diff --git a/drivers/tty/tty_ioctl.c b/drivers/tty/tty_ioctl.c
+index dac1e2568803..224f13b98312 100644
+--- a/drivers/tty/tty_ioctl.c
++++ b/drivers/tty/tty_ioctl.c
+@@ -786,7 +786,7 @@ int tty_mode_ioctl(struct tty_struct *tty, struct file *file,
+ 			ret = -EFAULT;
+ 		return ret;
+ 	case TIOCSLCKTRMIOS:
+-		if (!capable(CAP_SYS_ADMIN))
++		if (!checkpoint_restore_ns_capable(&init_user_ns))
+ 			return -EPERM;
+ 		copy_termios_locked(real_tty, &kterm);
+ 		if (user_termios_to_kernel_termios(&kterm,
+@@ -803,7 +803,7 @@ int tty_mode_ioctl(struct tty_struct *tty, struct file *file,
+ 			ret = -EFAULT;
+ 		return ret;
+ 	case TIOCSLCKTRMIOS:
+-		if (!capable(CAP_SYS_ADMIN))
++		if (!checkpoint_restore_ns_capable(&init_user_ns))
+ 			return -EPERM;
+ 		copy_termios_locked(real_tty, &kterm);
+ 		if (user_termios_to_kernel_termios_1(&kterm,
 -- 
 2.43.0
 
