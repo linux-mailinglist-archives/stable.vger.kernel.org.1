@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-23005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 610B885DED3
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:22:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BF2085DC06
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:48:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 20F42B21787
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:21:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D3F61C2356B
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:48:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A5496A8D6;
-	Wed, 21 Feb 2024 14:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8591278B5E;
+	Wed, 21 Feb 2024 13:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gAMQ5mDJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WouC7FCZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276A77E77A;
-	Wed, 21 Feb 2024 14:20:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B2B79DBF;
+	Wed, 21 Feb 2024 13:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525253; cv=none; b=VZ7I07BWGh2acYzdz3/0G35ryxcfm934oVHa3NX7O0jD8lqe4x+O1CH55HVHCqubyrqaelcuyqJtagA2ybm9PwslMWutKgq6DnXUfqSQSn9KXuoIQ0J2rRpxMEnlu/cHbTJqlweWXBAkQZqrpww2yQ3hnfdveu4o9YkIn2an9g4=
+	t=1708523296; cv=none; b=dJjNOqeAQOOxaa/yQ99+CM84kyNouyLOxJnax3FsVDpnikPhFEmpUkgSeshNUZev79YEo9Xf+LgxTBTAmbvFsapQhY+dlZrwdCbBDgJqXt75vwCv8MOzJMKbLSfwVCmaNLSr6P8g7uInDZGrDoZ5FU4MBrjYfr3b8l1RmHs8nts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525253; c=relaxed/simple;
-	bh=nk+t4LFm5+Xi28FTftIfhEu9b9WrYK+f3Onen8xjAk0=;
+	s=arc-20240116; t=1708523296; c=relaxed/simple;
+	bh=dNndUvI0WHXR+oLIGQZ7OLFSRTFxqu3yOIBXJ0fstRw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C9IfKxG0U/tg5tQe1TmQ/uK/ZXKZbE72Y4euUsMnAt9BMyFmN7t4v1H4mF13CzODI6g7dBxrudChiJma9EYSh6Mzw/Ugy+DwuS0dh51MvP12Tmvzr0Cphemyq/r0BNwITQMWbwejmsmY+9U1a1S60QgmBEmLHk9qh31of8wdtSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gAMQ5mDJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91FE0C433F1;
-	Wed, 21 Feb 2024 14:20:52 +0000 (UTC)
+	 MIME-Version; b=ocf5y/IUK5t/++bOr2jH/HQUdZx7IZ1kh0ruwXHOF9hdTFGBPhgrN255be9Ekp1aXJBY1awLuG35pk0nQw79UfMFd2mkPeXOHUV9nAP2oLPZ1LJ6vQojXZ1brWwCJLRlC4l88Dj2sl2f+WKSxKf1VVHJne6ykEDutF2CzzPUYuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WouC7FCZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5E09C43394;
+	Wed, 21 Feb 2024 13:48:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525252;
-	bh=nk+t4LFm5+Xi28FTftIfhEu9b9WrYK+f3Onen8xjAk0=;
+	s=korg; t=1708523296;
+	bh=dNndUvI0WHXR+oLIGQZ7OLFSRTFxqu3yOIBXJ0fstRw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gAMQ5mDJexACLPmJe9388UEz9zBCnIRtRSbU9rxyhpyioRWOjElVGEF1yCKLtf0Xe
-	 fQmPJcgsuOIMMbRkBQTMy75wIQUdoPvj18WnEodMRb94YOXmL18me28gZEqY3Yotim
-	 nY5yEN4Tn6hJ45bIFMpDIKr9MSK9da965MJflRQo=
+	b=WouC7FCZfmXm4qeyPh3IY5eXzbCB4s98NryLvpUNvZ5FhASok9Z/rtHxInTkoNgwl
+	 ZkwZ5CAl6ZdBnuTX94SJ1x4dl5drg1iM9dsqvGzQdQ5sbr05eG7cBSgtEse+Uz0DvQ
+	 T87YdRbtK0xs2+H+Dzz3wto9CNuCJStT8+S0ywcY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Osama Muhammad <osmtendev@gmail.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+d4b1df2e9d4ded6488ec@syzkaller.appspotmail.com
-Subject: [PATCH 5.4 074/267] UBSAN: array-index-out-of-bounds in dtSplitRoot
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Jason Gerecke <jason.gerecke@wacom.com>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 5.15 364/476] HID: wacom: Do not register input devices until after hid_hw_start
 Date: Wed, 21 Feb 2024 14:06:55 +0100
-Message-ID: <20240221125942.300112783@linuxfoundation.org>
+Message-ID: <20240221130021.464326539@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +62,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Osama Muhammad <osmtendev@gmail.com>
+From: Jason Gerecke <killertofu@gmail.com>
 
-[ Upstream commit 27e56f59bab5ddafbcfe69ad7a4a6ea1279c1b16 ]
+commit c1d6708bf0d3dd976460d435373cf5abf21ce258 upstream.
 
-Syzkaller reported the following issue:
+If a input device is opened before hid_hw_start is called, events may
+not be received from the hardware. In the case of USB-backed devices,
+for example, the hid_hw_start function is responsible for filling in
+the URB which is submitted when the input device is opened. If a device
+is opened prematurely, polling will never start because the device will
+not have been in the correct state to send the URB.
 
-oop0: detected capacity change from 0 to 32768
+Because the wacom driver registers its input devices before calling
+hid_hw_start, there is a window of time where a device can be opened
+and end up in an inoperable state. Some ARM-based Chromebooks in particular
+reliably trigger this bug.
 
-UBSAN: array-index-out-of-bounds in fs/jfs/jfs_dtree.c:1971:9
-index -2 is out of range for type 'struct dtslot [128]'
-CPU: 0 PID: 3613 Comm: syz-executor270 Not tainted 6.0.0-syzkaller-09423-g493ffd6605b2 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/22/2022
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x1b1/0x28e lib/dump_stack.c:106
- ubsan_epilogue lib/ubsan.c:151 [inline]
- __ubsan_handle_out_of_bounds+0xdb/0x130 lib/ubsan.c:283
- dtSplitRoot+0x8d8/0x1900 fs/jfs/jfs_dtree.c:1971
- dtSplitUp fs/jfs/jfs_dtree.c:985 [inline]
- dtInsert+0x1189/0x6b80 fs/jfs/jfs_dtree.c:863
- jfs_mkdir+0x757/0xb00 fs/jfs/namei.c:270
- vfs_mkdir+0x3b3/0x590 fs/namei.c:4013
- do_mkdirat+0x279/0x550 fs/namei.c:4038
- __do_sys_mkdirat fs/namei.c:4053 [inline]
- __se_sys_mkdirat fs/namei.c:4051 [inline]
- __x64_sys_mkdirat+0x85/0x90 fs/namei.c:4051
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-RIP: 0033:0x7fcdc0113fd9
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 c0 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffeb8bc67d8 EFLAGS: 00000246 ORIG_RAX: 0000000000000102
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fcdc0113fd9
-RDX: 0000000000000000 RSI: 0000000020000340 RDI: 0000000000000003
-RBP: 00007fcdc00d37a0 R08: 0000000000000000 R09: 00007fcdc00d37a0
-R10: 00005555559a72c0 R11: 0000000000000246 R12: 00000000f8008000
-R13: 0000000000000000 R14: 00083878000000f8 R15: 0000000000000000
- </TASK>
+This commit splits the wacom_register_inputs function into two pieces.
+One which is responsible for setting up the allocated inputs (and runs
+prior to hid_hw_start so that devices are ready for any input events
+they may end up receiving) and another which only registers the devices
+(and runs after hid_hw_start to ensure devices can be immediately opened
+without issue). Note that the functions to initialize the LEDs and remotes
+are also moved after hid_hw_start to maintain their own dependency chains.
 
-The issue is caused when the value of fsi becomes less than -1.
-The check to break the loop when fsi value becomes -1 is present
-but syzbot was able to produce value less than -1 which cause the error.
-This patch simply add the change for the values less than 0.
-
-The patch is tested via syzbot.
-
-Reported-and-tested-by: syzbot+d4b1df2e9d4ded6488ec@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?extid=d4b1df2e9d4ded6488ec
-Signed-off-by: Osama Muhammad <osmtendev@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7704ac937345 ("HID: wacom: implement generic HID handling for pen generic devices")
+Cc: stable@vger.kernel.org # v3.18+
+Suggested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
+Tested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/jfs_dtree.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hid/wacom_sys.c |   63 ++++++++++++++++++++++++++++++++----------------
+ 1 file changed, 43 insertions(+), 20 deletions(-)
 
-diff --git a/fs/jfs/jfs_dtree.c b/fs/jfs/jfs_dtree.c
-index 3acc954f7c04..a6d42e49d156 100644
---- a/fs/jfs/jfs_dtree.c
-+++ b/fs/jfs/jfs_dtree.c
-@@ -1970,7 +1970,7 @@ static int dtSplitRoot(tid_t tid,
- 		do {
- 			f = &rp->slot[fsi];
- 			fsi = f->next;
--		} while (fsi != -1);
-+		} while (fsi >= 0);
+--- a/drivers/hid/wacom_sys.c
++++ b/drivers/hid/wacom_sys.c
+@@ -2088,7 +2088,7 @@ static int wacom_allocate_inputs(struct
+ 	return 0;
+ }
  
- 		f->next = n;
+-static int wacom_register_inputs(struct wacom *wacom)
++static int wacom_setup_inputs(struct wacom *wacom)
+ {
+ 	struct input_dev *pen_input_dev, *touch_input_dev, *pad_input_dev;
+ 	struct wacom_wac *wacom_wac = &(wacom->wacom_wac);
+@@ -2107,10 +2107,6 @@ static int wacom_register_inputs(struct
+ 		input_free_device(pen_input_dev);
+ 		wacom_wac->pen_input = NULL;
+ 		pen_input_dev = NULL;
+-	} else {
+-		error = input_register_device(pen_input_dev);
+-		if (error)
+-			goto fail;
  	}
--- 
-2.43.0
-
+ 
+ 	error = wacom_setup_touch_input_capabilities(touch_input_dev, wacom_wac);
+@@ -2119,10 +2115,6 @@ static int wacom_register_inputs(struct
+ 		input_free_device(touch_input_dev);
+ 		wacom_wac->touch_input = NULL;
+ 		touch_input_dev = NULL;
+-	} else {
+-		error = input_register_device(touch_input_dev);
+-		if (error)
+-			goto fail;
+ 	}
+ 
+ 	error = wacom_setup_pad_input_capabilities(pad_input_dev, wacom_wac);
+@@ -2131,7 +2123,34 @@ static int wacom_register_inputs(struct
+ 		input_free_device(pad_input_dev);
+ 		wacom_wac->pad_input = NULL;
+ 		pad_input_dev = NULL;
+-	} else {
++	}
++
++	return 0;
++}
++
++static int wacom_register_inputs(struct wacom *wacom)
++{
++	struct input_dev *pen_input_dev, *touch_input_dev, *pad_input_dev;
++	struct wacom_wac *wacom_wac = &(wacom->wacom_wac);
++	int error = 0;
++
++	pen_input_dev = wacom_wac->pen_input;
++	touch_input_dev = wacom_wac->touch_input;
++	pad_input_dev = wacom_wac->pad_input;
++
++	if (pen_input_dev) {
++		error = input_register_device(pen_input_dev);
++		if (error)
++			goto fail;
++	}
++
++	if (touch_input_dev) {
++		error = input_register_device(touch_input_dev);
++		if (error)
++			goto fail;
++	}
++
++	if (pad_input_dev) {
+ 		error = input_register_device(pad_input_dev);
+ 		if (error)
+ 			goto fail;
+@@ -2387,6 +2406,20 @@ static int wacom_parse_and_register(stru
+ 			goto fail;
+ 	}
+ 
++	error = wacom_setup_inputs(wacom);
++	if (error)
++		goto fail;
++
++	if (features->type == HID_GENERIC)
++		connect_mask |= HID_CONNECT_DRIVER;
++
++	/* Regular HID work starts now */
++	error = hid_hw_start(hdev, connect_mask);
++	if (error) {
++		hid_err(hdev, "hw start failed\n");
++		goto fail;
++	}
++
+ 	error = wacom_register_inputs(wacom);
+ 	if (error)
+ 		goto fail;
+@@ -2401,16 +2434,6 @@ static int wacom_parse_and_register(stru
+ 			goto fail;
+ 	}
+ 
+-	if (features->type == HID_GENERIC)
+-		connect_mask |= HID_CONNECT_DRIVER;
+-
+-	/* Regular HID work starts now */
+-	error = hid_hw_start(hdev, connect_mask);
+-	if (error) {
+-		hid_err(hdev, "hw start failed\n");
+-		goto fail;
+-	}
+-
+ 	if (!wireless) {
+ 		/* Note that if query fails it is not a hard failure */
+ 		wacom_query_tablet_data(wacom);
 
 
 
