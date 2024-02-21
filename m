@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-22316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D52F885DB67
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:40:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C29785DD05
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:01:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6AC3AB22EE6
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:40:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B4500B28BEC
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:01:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B8896996B;
-	Wed, 21 Feb 2024 13:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33E127F466;
+	Wed, 21 Feb 2024 14:00:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vN3bO0yB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wSH9X3Zg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3930C3C2F;
-	Wed, 21 Feb 2024 13:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A697E593;
+	Wed, 21 Feb 2024 14:00:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522830; cv=none; b=XS2mHR3eoqB7Bz1Tta7sLKcWcLdoTZo63wo0cXN6NRFP1VWKTJ4swMGvrE2rEU+FzFiiFhaSw9R973fxqgy7hZoanaT14SHJI7gnN9dJxUb/JIDlh+6HahcK6oCGwYaMcWUXnZfJyWcgr5t/Glfgu3nQP/Q5AZ0OUawBmoaEsn0=
+	t=1708524007; cv=none; b=csgoZidVbzDCQwCAfDjWSKjV/6sIinhVMIR2nWEyQdQ5Ah3EWUVugLp54QGngodmatT0OAxKnUg87u+l7Jxco9oMqAw1iXFTgy7svPSgohK8xADt0GbvDGo9S33+vwPmuIVgJx+y8MMIj09vMXPyqfUpW64HTfrwE5wSdYOAJ8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522830; c=relaxed/simple;
-	bh=F11wl5CMCy5q5NmrKyFrCEcFze6bVDwFJgSCfiP77Mg=;
+	s=arc-20240116; t=1708524007; c=relaxed/simple;
+	bh=8J2xOxQaKR3fjo++sItRRrkMyiEBcIIdaROTOOm4/kQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cR+stxHmH5KI/aGwRE6esnbOHKPISiCr/xQ01hOoCIMNGm5XoBbQHyxARnGX2gCNsXmNoNlVhKGk3mKZ+i4uZh8w1y+l6YVHZFX+dRXw65NpSKrIHeWAKxk7/XaOjeHLZsgFLp3jZYRj/o+OVCKnSbVTY4F2Lmzb1QTSUcHGno8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vN3bO0yB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE65CC433F1;
-	Wed, 21 Feb 2024 13:40:29 +0000 (UTC)
+	 MIME-Version; b=W/v7RKWXcCdrEXmUPoAa8Wd0l0h6I6iL2OyXesni2uNZcHxD3iEUSw1BLZdgIVQykxTefHEW0z0g/WHQRwVzzKmW2u0TDj9FVZq8csB8vCdJp06++YIAQzPFmPfVK6PeX0m3Pie6Aj589A/kI+Bwkm4gMH2+ZykAGGbq9dPpNkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wSH9X3Zg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 537C3C43390;
+	Wed, 21 Feb 2024 14:00:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522830;
-	bh=F11wl5CMCy5q5NmrKyFrCEcFze6bVDwFJgSCfiP77Mg=;
+	s=korg; t=1708524006;
+	bh=8J2xOxQaKR3fjo++sItRRrkMyiEBcIIdaROTOOm4/kQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vN3bO0yB/vPHQjkMe6MOwh6b3FWdzgqCwK6qPh9OD7zuUO3ZuSvEpn9FI8dcVNy/k
-	 bACmTooGY7OIqnPoBXLkAh25mZq8fEAf+7eD10afJzbji6KHMQuFb48FSp4L4rrcCT
-	 wZtHfXdAsIc7rNkzP1wJSLRz5gphDWRykXSAJgzQ=
+	b=wSH9X3ZglYenypmiWvAbM/GBfD0xbq/Z8z0e0KFWLVeFd/6wI4j7fAsgaCKgaBzm4
+	 CmwNTAg5+LXT12HUBL4sIxBMB97+cwfugoVJPJYQkpl6jjvbLNDnqHJ9p4eJywSzrs
+	 27TsA7upDfh6tHSPVm7uxqX2fj7Qs8Zb6vvYDA1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Whitchurch <Vincent.Whitchurch@axis.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Richard Weinberger <richard@nod.at>,
+	Joyyoung Huang <huangzaiyang@oppo.com>,
+	MyungJoo Ham <myungjoo.ham@samsung.com>,
+	Mukesh Ojha <quic_mojha@quicinc.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 244/476] um: time-travel: fix time corruption
+Subject: [PATCH 5.10 116/379] PM / devfreq: Synchronize devfreq_monitor_[start/stop]
 Date: Wed, 21 Feb 2024 14:04:55 +0100
-Message-ID: <20240221130016.892674402@linuxfoundation.org>
+Message-ID: <20240221125958.359555521@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,95 +64,169 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Mukesh Ojha <quic_mojha@quicinc.com>
 
-[ Upstream commit abe4eaa8618bb36c2b33e9cdde0499296a23448c ]
+[ Upstream commit aed5ed595960c6d301dcd4ed31aeaa7a8054c0c6 ]
 
-In 'basic' time-travel mode (without =inf-cpu or =ext), we
-still get timer interrupts. These can happen at arbitrary
-points in time, i.e. while in timer_read(), which pushes
-time forward just a little bit. Then, if we happen to get
-the interrupt after calculating the new time to push to,
-but before actually finishing that, the interrupt will set
-the time to a value that's incompatible with the forward,
-and we'll crash because time goes backwards when we do the
-forwarding.
+There is a chance if a frequent switch of the governor
+done in a loop result in timer list corruption where
+timer cancel being done from two place one from
+cancel_delayed_work_sync() and followed by expire_timers()
+can be seen from the traces[1].
 
-Fix this by reading the time_travel_time, calculating the
-adjustment, and doing the adjustment all with interrupts
-disabled.
+while true
+do
+        echo "simple_ondemand" > /sys/class/devfreq/1d84000.ufshc/governor
+        echo "performance" > /sys/class/devfreq/1d84000.ufshc/governor
+done
 
-Reported-by: Vincent Whitchurch <Vincent.Whitchurch@axis.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+It looks to be issue with devfreq driver where
+device_monitor_[start/stop] need to synchronized so that
+delayed work should get corrupted while it is either
+being queued or running or being cancelled.
+
+Let's use polling flag and devfreq lock to synchronize the
+queueing the timer instance twice and work data being
+corrupted.
+
+[1]
+...
+..
+<idle>-0    [003]   9436.209662:  timer_cancel   timer=0xffffff80444f0428
+<idle>-0    [003]   9436.209664:  timer_expire_entry   timer=0xffffff80444f0428  now=0x10022da1c  function=__typeid__ZTSFvP10timer_listE_global_addr  baseclk=0x10022da1c
+<idle>-0    [003]   9436.209718:  timer_expire_exit   timer=0xffffff80444f0428
+kworker/u16:6-14217    [003]   9436.209863:  timer_start   timer=0xffffff80444f0428  function=__typeid__ZTSFvP10timer_listE_global_addr  expires=0x10022da2b  now=0x10022da1c  flags=182452227
+vendor.xxxyyy.ha-1593    [004]   9436.209888:  timer_cancel   timer=0xffffff80444f0428
+vendor.xxxyyy.ha-1593    [004]   9436.216390:  timer_init   timer=0xffffff80444f0428
+vendor.xxxyyy.ha-1593    [004]   9436.216392:  timer_start   timer=0xffffff80444f0428  function=__typeid__ZTSFvP10timer_listE_global_addr  expires=0x10022da2c  now=0x10022da1d  flags=186646532
+vendor.xxxyyy.ha-1593    [005]   9436.220992:  timer_cancel   timer=0xffffff80444f0428
+xxxyyyTraceManag-7795    [004]   9436.261641:  timer_cancel   timer=0xffffff80444f0428
+
+[2]
+
+ 9436.261653][    C4] Unable to handle kernel paging request at virtual address dead00000000012a
+[ 9436.261664][    C4] Mem abort info:
+[ 9436.261666][    C4]   ESR = 0x96000044
+[ 9436.261669][    C4]   EC = 0x25: DABT (current EL), IL = 32 bits
+[ 9436.261671][    C4]   SET = 0, FnV = 0
+[ 9436.261673][    C4]   EA = 0, S1PTW = 0
+[ 9436.261675][    C4] Data abort info:
+[ 9436.261677][    C4]   ISV = 0, ISS = 0x00000044
+[ 9436.261680][    C4]   CM = 0, WnR = 1
+[ 9436.261682][    C4] [dead00000000012a] address between user and kernel address ranges
+[ 9436.261685][    C4] Internal error: Oops: 96000044 [#1] PREEMPT SMP
+[ 9436.261701][    C4] Skip md ftrace buffer dump for: 0x3a982d0
+...
+
+[ 9436.262138][    C4] CPU: 4 PID: 7795 Comm: TraceManag Tainted: G S      W  O      5.10.149-android12-9-o-g17f915d29d0c #1
+[ 9436.262141][    C4] Hardware name: Qualcomm Technologies, Inc.  (DT)
+[ 9436.262144][    C4] pstate: 22400085 (nzCv daIf +PAN -UAO +TCO BTYPE=--)
+[ 9436.262161][    C4] pc : expire_timers+0x9c/0x438
+[ 9436.262164][    C4] lr : expire_timers+0x2a4/0x438
+[ 9436.262168][    C4] sp : ffffffc010023dd0
+[ 9436.262171][    C4] x29: ffffffc010023df0 x28: ffffffd0636fdc18
+[ 9436.262178][    C4] x27: ffffffd063569dd0 x26: ffffffd063536008
+[ 9436.262182][    C4] x25: 0000000000000001 x24: ffffff88f7c69280
+[ 9436.262185][    C4] x23: 00000000000000e0 x22: dead000000000122
+[ 9436.262188][    C4] x21: 000000010022da29 x20: ffffff8af72b4e80
+[ 9436.262191][    C4] x19: ffffffc010023e50 x18: ffffffc010025038
+[ 9436.262195][    C4] x17: 0000000000000240 x16: 0000000000000201
+[ 9436.262199][    C4] x15: ffffffffffffffff x14: ffffff889f3c3100
+[ 9436.262203][    C4] x13: ffffff889f3c3100 x12: 00000000049f56b8
+[ 9436.262207][    C4] x11: 00000000049f56b8 x10: 00000000ffffffff
+[ 9436.262212][    C4] x9 : ffffffc010023e50 x8 : dead000000000122
+[ 9436.262216][    C4] x7 : ffffffffffffffff x6 : ffffffc0100239d8
+[ 9436.262220][    C4] x5 : 0000000000000000 x4 : 0000000000000101
+[ 9436.262223][    C4] x3 : 0000000000000080 x2 : ffffff889edc155c
+[ 9436.262227][    C4] x1 : ffffff8001005200 x0 : ffffff80444f0428
+[ 9436.262232][    C4] Call trace:
+[ 9436.262236][    C4]  expire_timers+0x9c/0x438
+[ 9436.262240][    C4]  __run_timers+0x1f0/0x330
+[ 9436.262245][    C4]  run_timer_softirq+0x28/0x58
+[ 9436.262255][    C4]  efi_header_end+0x168/0x5ec
+[ 9436.262265][    C4]  __irq_exit_rcu+0x108/0x124
+[ 9436.262274][    C4]  __handle_domain_irq+0x118/0x1e4
+[ 9436.262282][    C4]  gic_handle_irq.30369+0x6c/0x2bc
+[ 9436.262286][    C4]  el0_irq_naked+0x60/0x6c
+
+Link: https://lore.kernel.org/all/1700860318-4025-1-git-send-email-quic_mojha@quicinc.com/
+Reported-by: Joyyoung Huang <huangzaiyang@oppo.com>
+Acked-by: MyungJoo Ham <myungjoo.ham@samsung.com>
+Signed-off-by: Mukesh Ojha <quic_mojha@quicinc.com>
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/kernel/time.c | 32 +++++++++++++++++++++++++++-----
- 1 file changed, 27 insertions(+), 5 deletions(-)
+ drivers/devfreq/devfreq.c | 24 ++++++++++++++++++++++--
+ 1 file changed, 22 insertions(+), 2 deletions(-)
 
-diff --git a/arch/um/kernel/time.c b/arch/um/kernel/time.c
-index fddd1dec27e6..3e270da6b6f6 100644
---- a/arch/um/kernel/time.c
-+++ b/arch/um/kernel/time.c
-@@ -432,9 +432,29 @@ static void time_travel_update_time(unsigned long long next, bool idle)
- 	time_travel_del_event(&ne);
+diff --git a/drivers/devfreq/devfreq.c b/drivers/devfreq/devfreq.c
+index 42c1eed44529..216594b86119 100644
+--- a/drivers/devfreq/devfreq.c
++++ b/drivers/devfreq/devfreq.c
+@@ -438,10 +438,14 @@ static void devfreq_monitor(struct work_struct *work)
+ 	if (err)
+ 		dev_err(&devfreq->dev, "dvfs failed with (%d) error\n", err);
+ 
++	if (devfreq->stop_polling)
++		goto out;
++
+ 	queue_delayed_work(devfreq_wq, &devfreq->work,
+ 				msecs_to_jiffies(devfreq->profile->polling_ms));
+-	mutex_unlock(&devfreq->lock);
+ 
++out:
++	mutex_unlock(&devfreq->lock);
+ 	trace_devfreq_monitor(devfreq);
  }
  
-+static void time_travel_update_time_rel(unsigned long long offs)
-+{
-+	unsigned long flags;
-+
-+	/*
-+	 * Disable interrupts before calculating the new time so
-+	 * that a real timer interrupt (signal) can't happen at
-+	 * a bad time e.g. after we read time_travel_time but
-+	 * before we've completed updating the time.
-+	 */
-+	local_irq_save(flags);
-+	time_travel_update_time(time_travel_time + offs, false);
-+	local_irq_restore(flags);
-+}
-+
- void time_travel_ndelay(unsigned long nsec)
- {
--	time_travel_update_time(time_travel_time + nsec, false);
-+	/*
-+	 * Not strictly needed to use _rel() version since this is
-+	 * only used in INFCPU/EXT modes, but it doesn't hurt and
-+	 * is more readable too.
-+	 */
-+	time_travel_update_time_rel(nsec);
- }
- EXPORT_SYMBOL(time_travel_ndelay);
+@@ -459,6 +463,10 @@ void devfreq_monitor_start(struct devfreq *devfreq)
+ 	if (devfreq->governor->interrupt_driven)
+ 		return;
  
-@@ -568,7 +588,11 @@ static void time_travel_set_start(void)
- #define time_travel_time 0
- #define time_travel_ext_waiting 0
- 
--static inline void time_travel_update_time(unsigned long long ns, bool retearly)
-+static inline void time_travel_update_time(unsigned long long ns, bool idle)
-+{
-+}
++	mutex_lock(&devfreq->lock);
++	if (delayed_work_pending(&devfreq->work))
++		goto out;
 +
-+static inline void time_travel_update_time_rel(unsigned long long offs)
- {
- }
- 
-@@ -720,9 +744,7 @@ static u64 timer_read(struct clocksource *cs)
- 		 */
- 		if (!irqs_disabled() && !in_interrupt() && !in_softirq() &&
- 		    !time_travel_ext_waiting)
--			time_travel_update_time(time_travel_time +
--						TIMER_MULTIPLIER,
--						false);
-+			time_travel_update_time_rel(TIMER_MULTIPLIER);
- 		return time_travel_time / TIMER_MULTIPLIER;
+ 	switch (devfreq->profile->timer) {
+ 	case DEVFREQ_TIMER_DEFERRABLE:
+ 		INIT_DEFERRABLE_WORK(&devfreq->work, devfreq_monitor);
+@@ -467,12 +475,16 @@ void devfreq_monitor_start(struct devfreq *devfreq)
+ 		INIT_DELAYED_WORK(&devfreq->work, devfreq_monitor);
+ 		break;
+ 	default:
+-		return;
++		goto out;
  	}
  
+ 	if (devfreq->profile->polling_ms)
+ 		queue_delayed_work(devfreq_wq, &devfreq->work,
+ 			msecs_to_jiffies(devfreq->profile->polling_ms));
++
++out:
++	devfreq->stop_polling = false;
++	mutex_unlock(&devfreq->lock);
+ }
+ EXPORT_SYMBOL(devfreq_monitor_start);
+ 
+@@ -489,6 +501,14 @@ void devfreq_monitor_stop(struct devfreq *devfreq)
+ 	if (devfreq->governor->interrupt_driven)
+ 		return;
+ 
++	mutex_lock(&devfreq->lock);
++	if (devfreq->stop_polling) {
++		mutex_unlock(&devfreq->lock);
++		return;
++	}
++
++	devfreq->stop_polling = true;
++	mutex_unlock(&devfreq->lock);
+ 	cancel_delayed_work_sync(&devfreq->work);
+ }
+ EXPORT_SYMBOL(devfreq_monitor_stop);
 -- 
 2.43.0
 
