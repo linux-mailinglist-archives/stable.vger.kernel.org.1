@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-22344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46A1385DB8F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:42:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07C1085D8DF
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:11:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBBF61F210B1
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:42:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29CA11C22D6E
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:11:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CC2079953;
-	Wed, 21 Feb 2024 13:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C338969D3F;
+	Wed, 21 Feb 2024 13:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DirKMdn+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AP5tZjsg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09FBF78B7C;
-	Wed, 21 Feb 2024 13:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812EA69D34;
+	Wed, 21 Feb 2024 13:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522955; cv=none; b=hPlmN0P5523a5qHelC8Jp8eTs7ntvNVNGFzP5ct+4GRt6JPOEEuWmgCtaOFtvKG9IT0Fkm1oqLFMQymv6USf+m1qLpebmaxUcCmwRA6jOYUn15OgfzN70V1Qtggx+7NHGi7vq9ffcMFdkFmQE+yPtW+/1nMoUZG9v8DhLnW1Sso=
+	t=1708521093; cv=none; b=R4mZ75d8cvfGpCyYLJmIYQwy4qiSFqPNkSDHh5LdLNbvtuvk2OrjsNphkcusWn2i6n2Q7TDRrt7zOKi20NkVoA9d+vnoTkzCm+aqNsH3h+eH8pj4HsJQqh23CdNGF/1xhMongwxQX76rcZ5uwqNu4eUZHKd2mIawLkhAbqhkMkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522955; c=relaxed/simple;
-	bh=/v/dm77vYOI1zCD8HZtSOOyYmmpfiiF/UlbQfSZGNyw=;
+	s=arc-20240116; t=1708521093; c=relaxed/simple;
+	bh=dZ4nkN4axFMcPJ7wJASVbL3qjIKUSpwC93fapJRRQqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LnQxl6aYr9eEPk29sa2hj5FfqjJg5BNQKDqrt1LWKuEWHf12HMx/roUiYu8BXseguIURcjf1TDdGHlKZCI2dDfVx0rBjauINUENiVTZ8Xx0U+19INVghGa59znrfJTzoE2mz+ohvTRuxUfWXJmIbcltVvqvtZ7bFIPRrCGmHPyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DirKMdn+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 822BAC433F1;
-	Wed, 21 Feb 2024 13:42:34 +0000 (UTC)
+	 MIME-Version; b=B4hZw+iukxdYKpmN6EH1XHSoX2D/DqPXe4j0TwfMDy4WohH7VFOmj+KWucYNYqVnrhFAO1m110ccv2K2+mh82qwC/Zmw1xeiKre0pOkQBf/HBW4iDc8+o6zVur7OUE4Xv4/IvZM4Pr5BZCrQLLA/SKD+PxofXp+R/VfRvpHdjoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AP5tZjsg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92E76C433C7;
+	Wed, 21 Feb 2024 13:11:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522954;
-	bh=/v/dm77vYOI1zCD8HZtSOOyYmmpfiiF/UlbQfSZGNyw=;
+	s=korg; t=1708521093;
+	bh=dZ4nkN4axFMcPJ7wJASVbL3qjIKUSpwC93fapJRRQqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DirKMdn+AGnHVLBiptnftUSveLJog0gzu0FQ9gg/Lt3ccwtIJNsHcN2hgAZS2XYtC
-	 nQryzr9V/BN9i2CvJ67pdc9TrM3XdPorPFaWFF+oD7wUK2Lm1+BJgZY2eZMGneU/jz
-	 Ytww8YU4fdOClzvDyP48B6deCNEdnmKFuEyHn46U=
+	b=AP5tZjsgA15uhxxPZXh9poWnXIMIfJ0AxuUH/KLpbw3rIRUGO6lLusiGCpYGYb6Vc
+	 UM5dbmTiY4LTbBP1o0w6+QsjZcMN/H0dxdq3NEcu5cgPw/nZ1vlyey2Cj73AJUqG4w
+	 TThXWhgumEVHq/S5+Mqkh+sCWFmzQc3wmW9bFgv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 273/476] ip6_tunnel: use dev_sw_netstats_rx_add()
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 4.19 023/202] drivers: core: fix kernel-doc markup for dev_err_probe()
 Date: Wed, 21 Feb 2024 14:05:24 +0100
-Message-ID: <20240221130018.065485382@linuxfoundation.org>
+Message-ID: <20240221125932.520626075@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +60,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-[ Upstream commit afd2051b18404640a116fd3bb2460da214ccbda4 ]
+commit 074b3aad307de6126fbac1fff4996d1034b48fee upstream.
 
-We have a convenient helper, let's use it.
+There are two literal blocks there. Fix the markups, in order
+to produce the right html output and solve those warnings:
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 8d975c15c0cd ("ip6_tunnel: make sure to pull inner header in __ip6_tnl_rcv()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+	./drivers/base/core.c:4218: WARNING: Unexpected indentation.
+	./drivers/base/core.c:4222: WARNING: Definition list ends without a blank line; unexpected unindent.
+	./drivers/base/core.c:4223: WARNING: Block quote ends without a blank line; unexpected unindent.
+
+Fixes: a787e5400a1c ("driver core: add device probe log helper")
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ip6_tunnel.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ drivers/base/core.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-index a41ba4b161c4..35bd93347b8b 100644
---- a/net/ipv6/ip6_tunnel.c
-+++ b/net/ipv6/ip6_tunnel.c
-@@ -798,7 +798,6 @@ static int __ip6_tnl_rcv(struct ip6_tnl *tunnel, struct sk_buff *skb,
- 						struct sk_buff *skb),
- 			 bool log_ecn_err)
- {
--	struct pcpu_sw_netstats *tstats;
- 	const struct ipv6hdr *ipv6h = ipv6_hdr(skb);
- 	int err;
- 
-@@ -858,11 +857,7 @@ static int __ip6_tnl_rcv(struct ip6_tnl *tunnel, struct sk_buff *skb,
- 		}
- 	}
- 
--	tstats = this_cpu_ptr(tunnel->dev->tstats);
--	u64_stats_update_begin(&tstats->syncp);
--	tstats->rx_packets++;
--	tstats->rx_bytes += skb->len;
--	u64_stats_update_end(&tstats->syncp);
-+	dev_sw_netstats_rx_add(tunnel->dev, skb->len);
- 
- 	skb_scrub_packet(skb, !net_eq(tunnel->net, dev_net(tunnel->dev)));
- 
--- 
-2.43.0
-
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -3344,13 +3344,15 @@ define_dev_printk_level(_dev_info, KERN_
+  * This helper implements common pattern present in probe functions for error
+  * checking: print debug or error message depending if the error value is
+  * -EPROBE_DEFER and propagate error upwards.
+- * It replaces code sequence:
++ * It replaces code sequence::
+  * 	if (err != -EPROBE_DEFER)
+  * 		dev_err(dev, ...);
+  * 	else
+  * 		dev_dbg(dev, ...);
+  * 	return err;
+- * with
++ *
++ * with::
++ *
+  * 	return dev_err_probe(dev, err, ...);
+  *
+  * Returns @err.
 
 
 
