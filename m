@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-21937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FC6685D949
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:17:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F34E685DBD4
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:45:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C45C8B24D3A
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:17:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95CBD1F247B5
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:45:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77D327994B;
-	Wed, 21 Feb 2024 13:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AAEB78B53;
+	Wed, 21 Feb 2024 13:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jB+ZzZdX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VqEn5T79"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA6779940;
-	Wed, 21 Feb 2024 13:16:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBDAC4D5B7;
+	Wed, 21 Feb 2024 13:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521394; cv=none; b=LtH+HiimDwQ+L+h3oOKtmqjw6H/jpPu00hlMrk/9c4jBtkXZ6emYhY1sGx3WL15CGnztp8DkEyCasUNRIESbQYN96Nm39UfzkDNEnHqPXRutomnryoqDiIJalmSsaAxQfPOEuH7pgJVTTX+VPtbywZfOWWUQMybkk6SYC5LDiTQ=
+	t=1708523130; cv=none; b=njyj+l9ScWoEHEMCkmcLGcdNeFFGDLG47OO7DIdttUGNPk5PJuxRt+WldVdhovDsgCn+RLH25YM1xkSaYozKXFzYvDCMRCVZe9CViXJFVODIILwX2QAH03IeinhMgTz4uOHZ5Tbp33VYv+n28BlrvyorrjF2BGmHZj5R+xwRD2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521394; c=relaxed/simple;
-	bh=atuBQcd5gBvT6W8u64b4Ohjz1sJANfCLnVzOaorTNLI=;
+	s=arc-20240116; t=1708523130; c=relaxed/simple;
+	bh=F2G7T2J4jiaa3056xinUA+kERB4U86O9JzQJotv7vdc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BNLAALnlAfiXgpCOxPkiSDLloPji4PxoUy/1FbhJb6ed622poBund10NJU88aEChZSoKyEubM/Xp2nvuPRuNxVQJMdIFdIlk7nV/byQxhWmLW36cazUKRolJiDwWHJfSVaB1BkjDOlO5t9XdPGsLsaDB5mqKu2xiKJqkcmoxzW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jB+ZzZdX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 293A0C433C7;
-	Wed, 21 Feb 2024 13:16:32 +0000 (UTC)
+	 MIME-Version; b=UM8WkDncxuLXGA1yRvYjkZ0dLIIp24OIDaZ5mPiBO7KNPbM4SDPLXgBfzV7XKDsN+qRSjgp6xt23d8K+Z1N8dvVHIReUdXx2xDTKI67F8WSJ1B8BXkmn3Z0YHWc+YF0Zw25MxSCKecyEPnCvH7kSCajtkMdthH0iIRSkJmHgfMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VqEn5T79; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C738C433C7;
+	Wed, 21 Feb 2024 13:45:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521393;
-	bh=atuBQcd5gBvT6W8u64b4Ohjz1sJANfCLnVzOaorTNLI=;
+	s=korg; t=1708523129;
+	bh=F2G7T2J4jiaa3056xinUA+kERB4U86O9JzQJotv7vdc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jB+ZzZdX6f7yCQ2Z8DngeeeQrogJBBlA8xd5vSKUoZR2LacuUdNhHXQPof7jkdW8C
-	 qfS9LZYZeTzsVcTVyFPPd3W/H/k/8Lw9X8TQd5GqCOp8ILDCXzU/yfg5+al0bavpzm
-	 VQG5zY0bHGYLC3/yERLy8se/ri2JVAJP4ppcxCrU=
+	b=VqEn5T79z/2Nadd0PgHAKWa4uM3MTFRov42NNz0CYACMaCrmTAWKC3v/U8HXdl4Pn
+	 JQOEVM9p6H0ApoIpUfchJm/R+oskV5p49zp9oqJrnLWqJLbqXZeqvh79IUBKMVeyHV
+	 0QFiVZPjmkpju3LIwkEW0qostNRMFhIceP6HCbkE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	kernel test robot <lkp@intel.com>,
+	"Christian A. Ehrhardt" <lk@c--e.de>,
+	Rob Herring <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 098/202] fast_dput(): handle underflows gracefully
+Subject: [PATCH 5.15 348/476] of: unittest: Fix compile in the non-dynamic case
 Date: Wed, 21 Feb 2024 14:06:39 +0100
-Message-ID: <20240221125934.945627562@linuxfoundation.org>
+Message-ID: <20240221130020.850474709@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Christian A. Ehrhardt <lk@c--e.de>
 
-[ Upstream commit 504e08cebe1d4e1efe25f915234f646e74a364a8 ]
+[ Upstream commit 607aad1e4356c210dbef9022955a3089377909b2 ]
 
-If refcount is less than 1, we should just warn, unlock dentry and
-return true, so that the caller doesn't try to do anything else.
+If CONFIG_OF_KOBJ is not set, a device_node does not contain a
+kobj and attempts to access the embedded kobj via kref_read break
+the compile.
 
-Taking care of that leaves the rest of "lockref_put_return() has
-failed" case equivalent to "decrement refcount and rejoin the
-normal slow path after the point where we grab ->d_lock".
+Replace affected kref_read calls with a macro that reads the
+refcount if it exists and returns 1 if there is no embedded kobj.
 
-NOTE: lockref_put_return() is strictly a fastpath thing - unlike
-the rest of lockref primitives, it does not contain a fallback.
-Caller (and it looks like fast_dput() is the only legitimate one
-in the entire kernel) has to do that itself.  Reasons for
-lockref_put_return() failures:
-	* ->d_lock held by somebody
-	* refcount <= 0
-	* ... or an architecture not supporting lockref use of
-cmpxchg - sparc, anything non-SMP, config with spinlock debugging...
-
-We could add a fallback, but it would be a clumsy API - we'd have
-to distinguish between:
-	(1) refcount > 1 - decremented, lock not held on return
-	(2) refcount < 1 - left alone, probably no sense to hold the lock
-	(3) refcount is 1, no cmphxcg - decremented, lock held on return
-	(4) refcount is 1, cmphxcg supported - decremented, lock *NOT* held
-	    on return.
-We want to return with no lock held in case (4); that's the whole point of that
-thing.  We very much do not want to have the fallback in case (3) return without
-a lock, since the caller might have to retake it in that case.
-So it wouldn't be more convenient than doing the fallback in the caller and
-it would be very easy to screw up, especially since the test coverage would
-suck - no way to test (3) and (4) on the same kernel build.
-
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202401291740.VP219WIz-lkp@intel.com/
+Fixes: 4dde83569832 ("of: Fix double free in of_parse_phandle_with_args_map")
+Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+Link: https://lore.kernel.org/r/20240129192556.403271-1-lk@c--e.de
+Signed-off-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/dcache.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/of/unittest.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/fs/dcache.c b/fs/dcache.c
-index 1897833a4668..4d96eb591f5d 100644
---- a/fs/dcache.c
-+++ b/fs/dcache.c
-@@ -727,12 +727,12 @@ static inline bool fast_dput(struct dentry *dentry)
- 	 */
- 	if (unlikely(ret < 0)) {
- 		spin_lock(&dentry->d_lock);
--		if (dentry->d_lockref.count > 1) {
--			dentry->d_lockref.count--;
-+		if (WARN_ON_ONCE(dentry->d_lockref.count <= 0)) {
- 			spin_unlock(&dentry->d_lock);
- 			return true;
+diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
+index 699daf0645d1..5a8d37cef0ba 100644
+--- a/drivers/of/unittest.c
++++ b/drivers/of/unittest.c
+@@ -49,6 +49,12 @@ static struct unittest_results {
+ 	failed; \
+ })
+ 
++#ifdef CONFIG_OF_KOBJ
++#define OF_KREF_READ(NODE) kref_read(&(NODE)->kobj.kref)
++#else
++#define OF_KREF_READ(NODE) 1
++#endif
++
+ /*
+  * Expected message may have a message level other than KERN_INFO.
+  * Print the expected message only if the current loglevel will allow
+@@ -562,7 +568,7 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
+ 			pr_err("missing testcase data\n");
+ 			return;
  		}
--		return false;
-+		dentry->d_lockref.count--;
-+		goto locked;
+-		prefs[i] = kref_read(&p[i]->kobj.kref);
++		prefs[i] = OF_KREF_READ(p[i]);
  	}
  
- 	/*
-@@ -783,6 +783,7 @@ static inline bool fast_dput(struct dentry *dentry)
- 	 * else could have killed it and marked it dead. Either way, we
- 	 * don't need to do anything else.
- 	 */
-+locked:
- 	if (dentry->d_lockref.count) {
- 		spin_unlock(&dentry->d_lock);
- 		return true;
+ 	rc = of_count_phandle_with_args(np, "phandle-list", "#phandle-cells");
+@@ -685,9 +691,9 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
+ 	unittest(rc == -EINVAL, "expected:%i got:%i\n", -EINVAL, rc);
+ 
+ 	for (i = 0; i < ARRAY_SIZE(p); ++i) {
+-		unittest(prefs[i] == kref_read(&p[i]->kobj.kref),
++		unittest(prefs[i] == OF_KREF_READ(p[i]),
+ 			 "provider%d: expected:%d got:%d\n",
+-			 i, prefs[i], kref_read(&p[i]->kobj.kref));
++			 i, prefs[i], OF_KREF_READ(p[i]));
+ 		of_node_put(p[i]);
+ 	}
+ }
 -- 
 2.43.0
 
