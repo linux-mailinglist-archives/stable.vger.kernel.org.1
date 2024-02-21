@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-22181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFB6E85DABF
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:34:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BD8385DC7B
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:54:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F66D1C22D21
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:34:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47B54282A26
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:54:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D8B87E115;
-	Wed, 21 Feb 2024 13:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A801E7BB11;
+	Wed, 21 Feb 2024 13:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z/woIlmr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BLxnIeNr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A53C3D96B;
-	Wed, 21 Feb 2024 13:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65BA369D29;
+	Wed, 21 Feb 2024 13:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522347; cv=none; b=RTVjBSTHM4+8eLII5RHdQM49Pka/L3kgC6oILnrPMi+IHkmqeGLED24mh7vnQMKHX06tTtIbUW5UJ11K3sxSNIRoEr2cWkNP9K4KIBvQHhPI+iPACWXH5IR4e2k4IypIaMZUtrH2U6ur6he/LyL4NrsyVJMtsNObqRUmkESrEwM=
+	t=1708523613; cv=none; b=ppENEgDkE4i5Li19eT2fGsK+s691kybong10g88MuKARcreww/oUOLfMVVh4Jp9qP5aP6Snyn7kfzUZjHw0XE3PRNtisdQKKPsv7mRCa356e3BloM4Bxb7pNhhSKoS9hOUGFfbgpzfsgzVHaFpODbRBPOPJsFL5d5NRF0koaONc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522347; c=relaxed/simple;
-	bh=vync62f7JKQ8375cPLYsitLUTm4o9DOGn2Ckxpi7izw=;
+	s=arc-20240116; t=1708523613; c=relaxed/simple;
+	bh=ysDLfNlqLgnNzh9cMCxSg0czJbIPc83KWr+p8Q0nFG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i/6GBUc0C29p1ne93lm8PbF1399eY2dPDCWS9v7/p9ubWV186puE+N/pPS6dZN4Pcg5v9ggloKY2G1iQLtEd2s86XTVeSNQ0b/PEVd0litjfs+e95jk6t0zBx9soZ7yQppjcPAcWmTjydUbwQEJW1zZvO5rOEX8j0fJXvjk6Md4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z/woIlmr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34C91C43390;
-	Wed, 21 Feb 2024 13:32:26 +0000 (UTC)
+	 MIME-Version; b=e9AH3XI50o6ENh1ftHDXK9IB6gBqZ3afMNx0g1l6DP4LGkujdkin0i+EqjCWx8VUZxzZmDs+tJHmrNVWPkZFXo+x6zSW/uKpshq+5SSZS+F363VIyZsBt7Puf3w6FpjtSD3cwmaFKOOK6RqRvPm8UYhKSB06f29g9MGtAzbwZqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BLxnIeNr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D34EDC433F1;
+	Wed, 21 Feb 2024 13:53:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522346;
-	bh=vync62f7JKQ8375cPLYsitLUTm4o9DOGn2Ckxpi7izw=;
+	s=korg; t=1708523613;
+	bh=ysDLfNlqLgnNzh9cMCxSg0czJbIPc83KWr+p8Q0nFG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z/woIlmr7s8SzbyjFibO5DN9FlosmLD2rKzTrNUi7k8BT57hC7QdeX7FvdUIxhAam
-	 SZXO2nUETO4kBuWYhPM0NLaDfg/Iutlbo6D1eqQFvI2LRIWnvR/MsDFj4PdOFziBZP
-	 5c0vvuzhl5W+ELwcLVn2fUlrkuiAP1TkH+znlGWU=
+	b=BLxnIeNrleNy29xrIrDANxT6LnKGYYZCVQ/DEN45ZuySjhyR6yQY3K8dgSQDmwPPK
+	 L2GWNaxNgqExlqGtroiPi1Y6K6aHrmFVSgkz+HmHsxAzho5zquhEE0Nn/TsdK+YJhx
+	 G7GLLLEfY6pm4HHP3TkAxbgqDQlS0f+gJObUFAY0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rui Zhang <zr.zhang@vivo.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 137/476] regulator: core: Only increment use_count when enable_count changes
-Date: Wed, 21 Feb 2024 14:03:08 +0100
-Message-ID: <20240221130013.008200778@linuxfoundation.org>
+Subject: [PATCH 5.10 010/379] spi: introduce SPI_MODE_X_MASK macro
+Date: Wed, 21 Feb 2024 14:03:09 +0100
+Message-ID: <20240221125955.226895586@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,115 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rui Zhang <zr.zhang@vivo.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-[ Upstream commit 7993d3a9c34f609c02171e115fd12c10e2105ff4 ]
+[ Upstream commit 029b42d8519cef70c4fb5fcaccd08f1053ed2bf0 ]
 
-The use_count of a regulator should only be incremented when the
-enable_count changes from 0 to 1. Similarly, the use_count should
-only be decremented when the enable_count changes from 1 to 0.
+Provide a macro to filter all SPI_MODE_0,1,2,3 mode in one run.
 
-In the previous implementation, use_count was sometimes decremented
-to 0 when some consumer called unbalanced disable,
-leading to unexpected disable even the regulator is enabled by
-other consumers. With this change, the use_count accurately reflects
-the number of users which the regulator is enabled.
+The latest SPI framework will parse the devicetree in following call
+sequence: of_register_spi_device() -> of_spi_parse_dt()
+So, driver do not need to pars the devicetree and will get prepared
+flags in the probe.
 
-This should make things more robust in the case where a consumer does
-leak references.
+On one hand it is good far most drivers. On other hand some drivers need to
+filter flags provide by SPI framework and apply know to work flags. This drivers
+may use SPI_MODE_X_MASK to filter MODE flags and set own, known flags:
+  spi->flags &= ~SPI_MODE_X_MASK;
+  spi->flags |= SPI_MODE_0;
 
-Signed-off-by: Rui Zhang <zr.zhang@vivo.com>
-Link: https://lore.kernel.org/r/20231103074231.8031-1-zr.zhang@vivo.com
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://lore.kernel.org/r/20201027095724.18654-2-o.rempel@pengutronix.de
 Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 6d710b769c1f ("serial: sc16is7xx: add check for unsupported SPI modes during probe")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/core.c | 56 +++++++++++++++++++++-------------------
- 1 file changed, 30 insertions(+), 26 deletions(-)
+ include/linux/spi/spi.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index 8ad50dc8fb35..9b1f27f87c95 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -2881,7 +2881,8 @@ static int _regulator_enable(struct regulator *regulator)
- 		/* Fallthrough on positive return values - already enabled */
- 	}
- 
--	rdev->use_count++;
-+	if (regulator->enable_count == 1)
-+		rdev->use_count++;
- 
- 	return 0;
- 
-@@ -2956,37 +2957,40 @@ static int _regulator_disable(struct regulator *regulator)
- 
- 	lockdep_assert_held_once(&rdev->mutex.base);
- 
--	if (WARN(rdev->use_count <= 0,
-+	if (WARN(regulator->enable_count == 0,
- 		 "unbalanced disables for %s\n", rdev_get_name(rdev)))
- 		return -EIO;
- 
--	/* are we the last user and permitted to disable ? */
--	if (rdev->use_count == 1 &&
--	    (rdev->constraints && !rdev->constraints->always_on)) {
--
--		/* we are last user */
--		if (regulator_ops_is_valid(rdev, REGULATOR_CHANGE_STATUS)) {
--			ret = _notifier_call_chain(rdev,
--						   REGULATOR_EVENT_PRE_DISABLE,
--						   NULL);
--			if (ret & NOTIFY_STOP_MASK)
--				return -EINVAL;
--
--			ret = _regulator_do_disable(rdev);
--			if (ret < 0) {
--				rdev_err(rdev, "failed to disable: %pe\n", ERR_PTR(ret));
--				_notifier_call_chain(rdev,
--						REGULATOR_EVENT_ABORT_DISABLE,
-+	if (regulator->enable_count == 1) {
-+	/* disabling last enable_count from this regulator */
-+		/* are we the last user and permitted to disable ? */
-+		if (rdev->use_count == 1 &&
-+		    (rdev->constraints && !rdev->constraints->always_on)) {
-+
-+			/* we are last user */
-+			if (regulator_ops_is_valid(rdev, REGULATOR_CHANGE_STATUS)) {
-+				ret = _notifier_call_chain(rdev,
-+							   REGULATOR_EVENT_PRE_DISABLE,
-+							   NULL);
-+				if (ret & NOTIFY_STOP_MASK)
-+					return -EINVAL;
-+
-+				ret = _regulator_do_disable(rdev);
-+				if (ret < 0) {
-+					rdev_err(rdev, "failed to disable: %pe\n", ERR_PTR(ret));
-+					_notifier_call_chain(rdev,
-+							REGULATOR_EVENT_ABORT_DISABLE,
-+							NULL);
-+					return ret;
-+				}
-+				_notifier_call_chain(rdev, REGULATOR_EVENT_DISABLE,
- 						NULL);
--				return ret;
- 			}
--			_notifier_call_chain(rdev, REGULATOR_EVENT_DISABLE,
--					NULL);
--		}
- 
--		rdev->use_count = 0;
--	} else if (rdev->use_count > 1) {
--		rdev->use_count--;
-+			rdev->use_count = 0;
-+		} else if (rdev->use_count > 1) {
-+			rdev->use_count--;
-+		}
- 	}
- 
- 	if (ret == 0)
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index e1d88630ff24..ab7747549d23 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -171,6 +171,7 @@ struct spi_device {
+ #define	SPI_MODE_1	(0|SPI_CPHA)
+ #define	SPI_MODE_2	(SPI_CPOL|0)
+ #define	SPI_MODE_3	(SPI_CPOL|SPI_CPHA)
++#define	SPI_MODE_X_MASK	(SPI_CPOL|SPI_CPHA)
+ #define	SPI_CS_HIGH	0x04			/* chipselect active high? */
+ #define	SPI_LSB_FIRST	0x08			/* per-word bits-on-wire */
+ #define	SPI_3WIRE	0x10			/* SI/SO signals shared */
 -- 
 2.43.0
 
