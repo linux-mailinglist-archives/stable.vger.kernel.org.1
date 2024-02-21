@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-22962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E61A985DE72
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:18:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89DFB85D94C
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:17:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 165961C23C04
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:18:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2ADB1B23F15
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:17:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7579C79DAE;
-	Wed, 21 Feb 2024 14:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4B5A79DD7;
+	Wed, 21 Feb 2024 13:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nfgqd6eX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WWSOu2hS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C9F78B5E;
-	Wed, 21 Feb 2024 14:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A3A478B7B;
+	Wed, 21 Feb 2024 13:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525105; cv=none; b=kmVBjfoxx276iAJ6Ht6F1K13aC9gVOWEAWX2ilftGfgKCP5/Gct5bKnRwE22OMHI8QIknyeaVt2OtdX8YZw2/zthuZYHT6nIU8zJJJb9L2Au9dHSfT1w24nyg8KavRvJzNNq3Kx5qtcjhftFToCJQFkcbF2NiA7G5nGYET/ZZRg=
+	t=1708521400; cv=none; b=YlIJjVXk345lC4I6auyGD2j5UxLqsS2hPUG5Yl/tu1t5LCH/hR6vJ8ZwMB61GlrJn5by+Alwh+tgv7hP5zYyAh9L0n4NFRCnTDUXA48kx7M+w0MXFUHK96vnqKZfdZg8TRP/IRGk554qiI27Bkklzd7tAgOD7JuxOEk3jQUKfVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525105; c=relaxed/simple;
-	bh=93hxTLOjHW+WWThGtfIaDm4rzoye02vPiw0HFiAaLl8=;
+	s=arc-20240116; t=1708521400; c=relaxed/simple;
+	bh=P7Hc9Nj//DCFT7FfcRyE/7JTdasHwfn4BqgKUxn0GAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SCJfthGocOrDOykcc2z5y9Gd4129gfPKfIXAdf6glWtJHPXV8OQYl/vWxv5B3TgZw0DLIxh6uixatWLjPDZzmQMiT45HetapTdB3hdkVnS/05M6foCUXK6zMsA3/6N8Gtlza6wzRIRJPlFfU+X5mHMnpqMe8ThC2gBgT31nFLZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nfgqd6eX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9016EC433C7;
-	Wed, 21 Feb 2024 14:18:24 +0000 (UTC)
+	 MIME-Version; b=mXAe/tG4/5ls+7kKRRWXe9sUvRTjt2n1IZjx17rKuW/e6NewAzb8HcEwEIi3HVtaS9Ka44V63tSNMtg6Gol24p+lyYPvu09YiRdWtcahjuadZabJpzXyGcs/fgZ+9adQAIuExy47mKXbDbJysecaKXXNgtzJNNrRDJw2BtIrhdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WWSOu2hS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65299C433F1;
+	Wed, 21 Feb 2024 13:16:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525105;
-	bh=93hxTLOjHW+WWThGtfIaDm4rzoye02vPiw0HFiAaLl8=;
+	s=korg; t=1708521399;
+	bh=P7Hc9Nj//DCFT7FfcRyE/7JTdasHwfn4BqgKUxn0GAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nfgqd6eXLCynrM3lJ4/ZwvxKawCnUdWlR8jmRSMXpcO1SmyDPDhUNmNkfkWsZ91ih
-	 QXqgXj9Z5+yejLT2R+zzvzbwHU4vQay+zoJQPwLq7wGoa69LzzgHl0YC3OHUwfrQ5t
-	 Sp4ipruni7vJgKOQZH+8cS0YEtLxBbKKR4Dogv5Y=
+	b=WWSOu2hSrZsAPRd0D0mm8J7N7dOeRHrKDJSXFJvx3d57mFrdf68kFmyHckfQSyOUM
+	 mID68hhmdp+g1m+9K8gm5PcJ5jTHU+bssfukLv7tqPJjSo+STR3zVC5+CPhcr04f8/
+	 8Lz4348xWiPx8jQLCZ2e8CV3yc1lDtY3fXaa1eZo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Richard Palethorpe <rpalethorpe@suse.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 5.4 060/267] x86/entry/ia32: Ensure s32 is sign extended to s64
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 100/202] drm/drm_file: fix use of uninitialized variable
 Date: Wed, 21 Feb 2024 14:06:41 +0100
-Message-ID: <20240221125941.887545848@linuxfoundation.org>
+Message-ID: <20240221125935.004205947@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Palethorpe <rpalethorpe@suse.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-commit 56062d60f117dccfb5281869e0ab61e090baf864 upstream.
+[ Upstream commit 1d3062fad9c7313fff9970a88e0538a24480ffb8 ]
 
-Presently ia32 registers stored in ptregs are unconditionally cast to
-unsigned int by the ia32 stub. They are then cast to long when passed to
-__se_sys*, but will not be sign extended.
+smatch reports:
 
-This takes the sign of the syscall argument into account in the ia32
-stub. It still casts to unsigned int to avoid implementation specific
-behavior. However then casts to int or unsigned int as necessary. So that
-the following cast to long sign extends the value.
+drivers/gpu/drm/drm_file.c:967 drm_show_memory_stats() error: uninitialized symbol 'supported_status'.
 
-This fixes the io_pgetevents02 LTP test when compiled with -m32. Presently
-the systemcall io_pgetevents_time64() unexpectedly accepts -1 for the
-maximum number of events.
+'supported_status' is only set in one code path. I'm not familiar with
+the code to say if that path will always be ran in real life, but
+whether that is the case or not, I think it is good to initialize
+'supported_status' to 0 to silence the warning (and possibly fix a bug).
 
-It doesn't appear other systemcalls with signed arguments are effected
-because they all have compat variants defined and wired up.
-
-Fixes: ebeb8c82ffaf ("syscalls/x86: Use 'struct pt_regs' based syscall calling for IA32_EMULATION and x32")
-Suggested-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Richard Palethorpe <rpalethorpe@suse.com>
-Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240110130122.3836513-1-nik.borisov@suse.com
-Link: https://lore.kernel.org/ltp/20210921130127.24131-1-rpalethorpe@suse.com/
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Acked-by: Maxime Ripard <mripard@kernel.org>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231103-uninit-fixes-v2-1-c22b2444f5f5@ideasonboard.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/syscall_wrapper.h |   25 +++++++++++++++++++++----
- include/linux/syscalls.h               |    1 +
- 2 files changed, 22 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/drm_file.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/include/asm/syscall_wrapper.h
-+++ b/arch/x86/include/asm/syscall_wrapper.h
-@@ -14,12 +14,29 @@ struct pt_regs;
- 		,,regs->di,,regs->si,,regs->dx				\
- 		,,regs->r10,,regs->r8,,regs->r9)			\
+diff --git a/drivers/gpu/drm/drm_file.c b/drivers/gpu/drm/drm_file.c
+index 334addaca9c5..06cdae6f598c 100644
+--- a/drivers/gpu/drm/drm_file.c
++++ b/drivers/gpu/drm/drm_file.c
+@@ -299,7 +299,7 @@ int drm_open(struct inode *inode, struct file *filp)
+ {
+ 	struct drm_device *dev;
+ 	struct drm_minor *minor;
+-	int retcode;
++	int retcode = 0;
+ 	int need_setup = 0;
  
-+
-+/* SYSCALL_PT_ARGS is Adapted from s390x */
-+#define SYSCALL_PT_ARG6(m, t1, t2, t3, t4, t5, t6)			\
-+	SYSCALL_PT_ARG5(m, t1, t2, t3, t4, t5), m(t6, (regs->bp))
-+#define SYSCALL_PT_ARG5(m, t1, t2, t3, t4, t5)				\
-+	SYSCALL_PT_ARG4(m, t1, t2, t3, t4),  m(t5, (regs->di))
-+#define SYSCALL_PT_ARG4(m, t1, t2, t3, t4)				\
-+	SYSCALL_PT_ARG3(m, t1, t2, t3),  m(t4, (regs->si))
-+#define SYSCALL_PT_ARG3(m, t1, t2, t3)					\
-+	SYSCALL_PT_ARG2(m, t1, t2), m(t3, (regs->dx))
-+#define SYSCALL_PT_ARG2(m, t1, t2)					\
-+	SYSCALL_PT_ARG1(m, t1), m(t2, (regs->cx))
-+#define SYSCALL_PT_ARG1(m, t1) m(t1, (regs->bx))
-+#define SYSCALL_PT_ARGS(x, ...) SYSCALL_PT_ARG##x(__VA_ARGS__)
-+
-+#define __SC_COMPAT_CAST(t, a)						\
-+	(__typeof(__builtin_choose_expr(__TYPE_IS_L(t), 0, 0U)))	\
-+	(unsigned int)a
-+
- /* Mapping of registers to parameters for syscalls on i386 */
- #define SC_IA32_REGS_TO_ARGS(x, ...)					\
--	__MAP(x,__SC_ARGS						\
--	      ,,(unsigned int)regs->bx,,(unsigned int)regs->cx		\
--	      ,,(unsigned int)regs->dx,,(unsigned int)regs->si		\
--	      ,,(unsigned int)regs->di,,(unsigned int)regs->bp)
-+	SYSCALL_PT_ARGS(x, __SC_COMPAT_CAST,				\
-+			__MAP(x, __SC_TYPE, __VA_ARGS__))		\
- 
- #ifdef CONFIG_IA32_EMULATION
- /*
---- a/include/linux/syscalls.h
-+++ b/include/linux/syscalls.h
-@@ -120,6 +120,7 @@ struct clone_args;
- #define __TYPE_IS_LL(t) (__TYPE_AS(t, 0LL) || __TYPE_AS(t, 0ULL))
- #define __SC_LONG(t, a) __typeof(__builtin_choose_expr(__TYPE_IS_LL(t), 0LL, 0L)) a
- #define __SC_CAST(t, a)	(__force t) a
-+#define __SC_TYPE(t, a)	t
- #define __SC_ARGS(t, a)	a
- #define __SC_TEST(t, a) (void)BUILD_BUG_ON_ZERO(!__TYPE_IS_LL(t) && sizeof(t) > sizeof(long))
- 
+ 	minor = drm_minor_acquire(iminor(inode));
+-- 
+2.43.0
+
 
 
 
