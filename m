@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-22166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A2BE85DAAE
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:33:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3256985DAB9
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:34:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88A631F2392C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:33:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64BB51C2160E
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:34:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 837E478B53;
-	Wed, 21 Feb 2024 13:31:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B8667BB1B;
+	Wed, 21 Feb 2024 13:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y5cjWuJs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PFjDD1yz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 429311E4B2;
-	Wed, 21 Feb 2024 13:31:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC21A7C09C;
+	Wed, 21 Feb 2024 13:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522274; cv=none; b=X2MihzFeRZiDzo4dJyO9kZH2wORhNAi1pYY2eAlQVaUzSfhcW6KhGwz0qd3Wre9VWXrkDt8gsNa0X6XafaVQlGrWmRt7LYTq1RIU8dD7Sdntax61rUkCrHigKunL+Tdr92lTuJ+GASz2KkThiQOEhcPCmVjQ8SIlFnD6PNMck8c=
+	t=1708522328; cv=none; b=BpdGI1kKM6GrSZ80va+ehLSvl1c6LMnhWnZzFMu9SsiBAtWQNTnGIsB4ahUUaFNhaIPiOZ+yEv3C+CJ2CjZXqvZA+I3b3LK0QCW8sksR73eGk4YnkxL4QiCepZTyA+/tVgXCeH68mK3YZLJ0b8NHbL2sz2ZCal/dC4bNnnNkCXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522274; c=relaxed/simple;
-	bh=L+cBp99oB6z2XjpGWeWXkOBSrSfxsrxWlpRSG0hhBJs=;
+	s=arc-20240116; t=1708522328; c=relaxed/simple;
+	bh=DRcEepM2aV8hDH8+v2+SX3lBIYYrhDbnV6fqwMueHoU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kT+o+u2+HWMUKKfGbtYTCmsDVwCSIse9cgQvs6iQKLDmkZ+tu89Ev0gviIC3d1vthiZgqbP3e1OyvTUWMJbA0SviXqv0V1iXAopLY3kipb+oSaf4NRLWhJg3Bty/7eP1w3NQbrLO5ECZiXjVKrb2cIh47QvXeU6fDQdQn1sJ5qE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y5cjWuJs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2319C433F1;
-	Wed, 21 Feb 2024 13:31:13 +0000 (UTC)
+	 MIME-Version; b=JbMPb9nlz3NfjuLLA+wksZ4bUIGlzHNFAJUfxQvDnvwgxGTpMqz7fp22eOMMlAU+Msat7S8qUi+lEwGmiSWHAzMShJihAi1zd/fXidW2n2zRIrdfJx3G/2yBSeo2FrQV+3/EYamglJyMHa9tkkul9qAMLVITcsbqJaJ+LNEoINU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PFjDD1yz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 166E9C433C7;
+	Wed, 21 Feb 2024 13:32:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522274;
-	bh=L+cBp99oB6z2XjpGWeWXkOBSrSfxsrxWlpRSG0hhBJs=;
+	s=korg; t=1708522328;
+	bh=DRcEepM2aV8hDH8+v2+SX3lBIYYrhDbnV6fqwMueHoU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y5cjWuJsTGGPMLOuO4alkEpdCScIyzesh+9NsazfKKANEEEp3uCrl5mDQFDHRbJRI
-	 qGd0tbKcYHtYXzErS9OsfXyHXLXw9UogXXu8M9z2QkPaaUy4ZMFrikbrAUE6rdiOKH
-	 M6RqN/clJM8Si/KgBfO62X75XXfDk1xpFYwZjdKo=
+	b=PFjDD1yzQlGzpiJFfNfIeJfX/zqXtlGJHYkZ5WO7KFszF+FePh1dxgN1ekLGhXzyQ
+	 SBkDnrFal+My5CYT6BHg+vQlkNq6uv5ub++DYboMKL4Ny3Sk3DFEugDDzYZTxFxH1h
+	 KoO75WQ97e4X6soSmTHV5elKolbJUCut9ygj/c3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 115/476] cpufreq: intel_pstate: Refine computation of P-state for given frequency
-Date: Wed, 21 Feb 2024 14:02:46 +0100
-Message-ID: <20240221130012.241348067@linuxfoundation.org>
+Subject: [PATCH 5.15 116/476] drm: panel-simple: add missing bus flags for Tianma tm070jvhg[30/33]
+Date: Wed, 21 Feb 2024 14:02:47 +0100
+Message-ID: <20240221130012.283573385@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
 References: <20240221130007.738356493@linuxfoundation.org>
@@ -66,141 +68,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
 
-[ Upstream commit 192cdb1c907fd8df2d764c5bb17496e415e59391 ]
+[ Upstream commit 45dd7df26cee741b31c25ffdd44fb8794eb45ccd ]
 
-On systems using HWP, if a given frequency is equal to the maximum turbo
-frequency or the maximum non-turbo frequency, the HWP performance level
-corresponding to it is already known and can be used directly without
-any computation.
+The DE signal is active high on this display, fill in the missing
+bus_flags. This aligns panel_desc with its display_timing.
 
-Accordingly, adjust the code to use the known HWP performance levels in
-the cases mentioned above.
+Fixes: 9a2654c0f62a ("drm/panel: Add and fill drm_panel type field")
+Fixes: b3bfcdf8a3b6 ("drm/panel: simple: add Tianma TM070JVHG33")
 
-This also helps to avoid limiting CPU capacity artificially in some
-cases when the BIOS produces the HWP_CAP numbers using a different
-E-core-to-P-core performance scaling factor than expected by the kernel.
-
-Fixes: f5c8cf2a4992 ("cpufreq: intel_pstate: hybrid: Use known scaling factor for P-cores")
-Cc: 6.1+ <stable@vger.kernel.org> # 6.1+
-Tested-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+Link: https://lore.kernel.org/r/20231012084208.2731650-1-alexander.stein@ew.tq-group.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231012084208.2731650-1-alexander.stein@ew.tq-group.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/intel_pstate.c | 55 +++++++++++++++++++++-------------
- 1 file changed, 34 insertions(+), 21 deletions(-)
+ drivers/gpu/drm/panel/panel-simple.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
-index f2a94afb6eec..dd5f4eee9ffb 100644
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -490,6 +490,30 @@ static inline int intel_pstate_get_cppc_guaranteed(int cpu)
- }
- #endif /* CONFIG_ACPI_CPPC_LIB */
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index d9f1675c348e..671bd1d1ad19 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -4173,6 +4173,7 @@ static const struct panel_desc tianma_tm070jdhg30 = {
+ 	},
+ 	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_SPWG,
+ 	.connector_type = DRM_MODE_CONNECTOR_LVDS,
++	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
+ };
  
-+static int intel_pstate_freq_to_hwp_rel(struct cpudata *cpu, int freq,
-+					unsigned int relation)
-+{
-+	if (freq == cpu->pstate.turbo_freq)
-+		return cpu->pstate.turbo_pstate;
-+
-+	if (freq == cpu->pstate.max_freq)
-+		return cpu->pstate.max_pstate;
-+
-+	switch (relation) {
-+	case CPUFREQ_RELATION_H:
-+		return freq / cpu->pstate.scaling;
-+	case CPUFREQ_RELATION_C:
-+		return DIV_ROUND_CLOSEST(freq, cpu->pstate.scaling);
-+	}
-+
-+	return DIV_ROUND_UP(freq, cpu->pstate.scaling);
-+}
-+
-+static int intel_pstate_freq_to_hwp(struct cpudata *cpu, int freq)
-+{
-+	return intel_pstate_freq_to_hwp_rel(cpu, freq, CPUFREQ_RELATION_L);
-+}
-+
- /**
-  * intel_pstate_hybrid_hwp_adjust - Calibrate HWP performance levels.
-  * @cpu: Target CPU.
-@@ -507,6 +531,7 @@ static void intel_pstate_hybrid_hwp_adjust(struct cpudata *cpu)
- 	int perf_ctl_scaling = cpu->pstate.perf_ctl_scaling;
- 	int perf_ctl_turbo = pstate_funcs.get_turbo(cpu->cpu);
- 	int scaling = cpu->pstate.scaling;
-+	int freq;
+ static const struct panel_desc tianma_tm070jvhg33 = {
+@@ -4185,6 +4186,7 @@ static const struct panel_desc tianma_tm070jvhg33 = {
+ 	},
+ 	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_SPWG,
+ 	.connector_type = DRM_MODE_CONNECTOR_LVDS,
++	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
+ };
  
- 	pr_debug("CPU%d: perf_ctl_max_phys = %d\n", cpu->cpu, perf_ctl_max_phys);
- 	pr_debug("CPU%d: perf_ctl_turbo = %d\n", cpu->cpu, perf_ctl_turbo);
-@@ -520,16 +545,16 @@ static void intel_pstate_hybrid_hwp_adjust(struct cpudata *cpu)
- 	cpu->pstate.max_freq = rounddown(cpu->pstate.max_pstate * scaling,
- 					 perf_ctl_scaling);
- 
--	cpu->pstate.max_pstate_physical =
--			DIV_ROUND_UP(perf_ctl_max_phys * perf_ctl_scaling,
--				     scaling);
-+	freq = perf_ctl_max_phys * perf_ctl_scaling;
-+	cpu->pstate.max_pstate_physical = intel_pstate_freq_to_hwp(cpu, freq);
- 
--	cpu->pstate.min_freq = cpu->pstate.min_pstate * perf_ctl_scaling;
-+	freq = cpu->pstate.min_pstate * perf_ctl_scaling;
-+	cpu->pstate.min_freq = freq;
- 	/*
- 	 * Cast the min P-state value retrieved via pstate_funcs.get_min() to
- 	 * the effective range of HWP performance levels.
- 	 */
--	cpu->pstate.min_pstate = DIV_ROUND_UP(cpu->pstate.min_freq, scaling);
-+	cpu->pstate.min_pstate = intel_pstate_freq_to_hwp(cpu, freq);
- }
- 
- static inline void update_turbo_state(void)
-@@ -2333,13 +2358,12 @@ static void intel_pstate_update_perf_limits(struct cpudata *cpu,
- 	 * abstract values to represent performance rather than pure ratios.
- 	 */
- 	if (hwp_active && cpu->pstate.scaling != perf_ctl_scaling) {
--		int scaling = cpu->pstate.scaling;
- 		int freq;
- 
- 		freq = max_policy_perf * perf_ctl_scaling;
--		max_policy_perf = DIV_ROUND_UP(freq, scaling);
-+		max_policy_perf = intel_pstate_freq_to_hwp(cpu, freq);
- 		freq = min_policy_perf * perf_ctl_scaling;
--		min_policy_perf = DIV_ROUND_UP(freq, scaling);
-+		min_policy_perf = intel_pstate_freq_to_hwp(cpu, freq);
- 	}
- 
- 	pr_debug("cpu:%d min_policy_perf:%d max_policy_perf:%d\n",
-@@ -2708,18 +2732,7 @@ static int intel_cpufreq_target(struct cpufreq_policy *policy,
- 
- 	cpufreq_freq_transition_begin(policy, &freqs);
- 
--	switch (relation) {
--	case CPUFREQ_RELATION_L:
--		target_pstate = DIV_ROUND_UP(freqs.new, cpu->pstate.scaling);
--		break;
--	case CPUFREQ_RELATION_H:
--		target_pstate = freqs.new / cpu->pstate.scaling;
--		break;
--	default:
--		target_pstate = DIV_ROUND_CLOSEST(freqs.new, cpu->pstate.scaling);
--		break;
--	}
--
-+	target_pstate = intel_pstate_freq_to_hwp_rel(cpu, freqs.new, relation);
- 	target_pstate = intel_cpufreq_update_pstate(policy, target_pstate, false);
- 
- 	freqs.new = target_pstate * cpu->pstate.scaling;
-@@ -2737,7 +2750,7 @@ static unsigned int intel_cpufreq_fast_switch(struct cpufreq_policy *policy,
- 
- 	update_turbo_state();
- 
--	target_pstate = DIV_ROUND_UP(target_freq, cpu->pstate.scaling);
-+	target_pstate = intel_pstate_freq_to_hwp(cpu, target_freq);
- 
- 	target_pstate = intel_cpufreq_update_pstate(policy, target_pstate, true);
- 
+ static const struct display_timing tianma_tm070rvhg71_timing = {
 -- 
 2.43.0
 
