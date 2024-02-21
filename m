@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-22002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54DDD85D9A5
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:21:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 034FF85DC23
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:49:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B57ACB2507C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:21:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1E052847BD
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:49:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AF0E7869D;
-	Wed, 21 Feb 2024 13:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ED647CF37;
+	Wed, 21 Feb 2024 13:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mPKNxCuY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZEyGsaIs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD05B779F8;
-	Wed, 21 Feb 2024 13:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8C87A715;
+	Wed, 21 Feb 2024 13:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521625; cv=none; b=m6W4+8DaaEDLJGFY1dDYyIMD2tuVDnOGBTOS0zfAeyjfLvScfSoLHgRCUn5KzB3XN1zTscYwF/qKmpo1OiUJpTUunSMvekR2G6oLGD89NxQit1z+DdRZSic2LkXfi6PPpTPxZ9xh0bVrDvNbEuHbLCnBGPZ2VQu/wxupuqiFfKc=
+	t=1708523359; cv=none; b=u6soaJnrH8aHRKetfpQYZfPXXvcje6dvf2xuByhPGtZzyHUJK+bBmojh7Fmu4fdgSDIbdPXABbia58wv8Pkt/vlxkWDlj7GOBz+WQFwQs4RTADzYNAP4d3rf/k3q7duGO7wFMhtRlIlBTNLO2stvBB4O32VwQjXYre9h5ozYmP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521625; c=relaxed/simple;
-	bh=/xE8ljW95fiZHcN6kwIz4H0my6ahGieTQSz0UOmH310=;
+	s=arc-20240116; t=1708523359; c=relaxed/simple;
+	bh=EutInXz4LP9+lCK9w9kEhAEMgTbIIXBouew+7j85v+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cAw7HaE6xbbowWKfwtwxWTD3aBvjsptbS9CIyUWbyRUe2EULJu4QwfWUOAJ2YnKyPj20kupcnKEPfQFZceG0fLEuhGl7epti5HhWOq24V6VcrlbkKSyCh3efXYeBmv1RFIC2CBMewR4oWGOgwFC9K5q1TkRtZgx2lBu5CJyr1EA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mPKNxCuY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3268EC433C7;
-	Wed, 21 Feb 2024 13:20:24 +0000 (UTC)
+	 MIME-Version; b=Q9vrAp5atEg4Ok/ETQkh+Lsd3PN347C7TL1r503jaDd1BkCSQpttXAWlT0fQgkP6fVPnJI0Rskzj5ShCN1S7T6gxZtut7uRKl5unrWbs7RvdkJgbKuslcta6p2VqBrS+kuR/ZsBCTcHrK4HTz5ux6y4e/ewFcg2kx4dhevRp8mg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZEyGsaIs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5708C433C7;
+	Wed, 21 Feb 2024 13:49:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521625;
-	bh=/xE8ljW95fiZHcN6kwIz4H0my6ahGieTQSz0UOmH310=;
+	s=korg; t=1708523358;
+	bh=EutInXz4LP9+lCK9w9kEhAEMgTbIIXBouew+7j85v+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mPKNxCuY9BMlWxq+RaCCovap+pmdhx/rf7vSJHmBjszbjp659ndn8/uamGgO0kr5A
-	 n1xhL2wkGVooYiZ+Z4zWEI26vs6Ma4gTuD6axBwwNMP1jGqRGHzx6f4aH6YMcluCyW
-	 4OHBvAMy66olwQqAt0VmKvPoHFuUltCOMoQ/yxaQ=
+	b=ZEyGsaIsL8nQr2CoMrtzOJEIK4DBUNSa7sKu4r/FXTFEuYU7tpPxni6FC7QM6OjH+
+	 zb7BJhnES4HPOr7Ii1D4BkwRlN71PWfUBTZXBzQRE+TWonhR0phRJl8PmiFVyUQC4L
+	 0eO80h3WPHPvbGkUmu/ybkqCLdhIoc/gwRZHLKX0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 4.19 162/202] Input: atkbd - skip ATKBD_CMD_SETLEDS when skipping ATKBD_CMD_GETID
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 5.15 412/476] wifi: mac80211: reload info pointer in ieee80211_tx_dequeue()
 Date: Wed, 21 Feb 2024 14:07:43 +0100
-Message-ID: <20240221125936.960246750@linuxfoundation.org>
+Message-ID: <20240221130023.232413476@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit 683cd8259a9b883a51973511f860976db2550a6e upstream.
+commit c98d8836b817d11fdff4ca7749cbbe04ff7f0c64 upstream.
 
-After commit 936e4d49ecbc ("Input: atkbd - skip ATKBD_CMD_GETID in
-translated mode") the keyboard on Dell XPS 13 9350 / 9360 / 9370 models
-has stopped working after a suspend/resume.
+This pointer can change here since the SKB can change, so we
+actually later open-coded IEEE80211_SKB_CB() again. Reload
+the pointer where needed, so the monitor-mode case using it
+gets fixed, and then use info-> later as well.
 
-The problem appears to be that atkbd_probe() fails when called
-from atkbd_reconnect() on resume, which on systems where
-ATKBD_CMD_GETID is skipped can only happen by ATKBD_CMD_SETLEDS
-failing. ATKBD_CMD_SETLEDS failing because ATKBD_CMD_GETID was
-skipped is weird, but apparently that is what is happening.
-
-Fix this by also skipping ATKBD_CMD_SETLEDS when skipping
-ATKBD_CMD_GETID.
-
-Fixes: 936e4d49ecbc ("Input: atkbd - skip ATKBD_CMD_GETID in translated mode")
-Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Closes: https://lore.kernel.org/linux-input/0aa4a61f-c939-46fe-a572-08022e8931c7@molgen.mpg.de/
-Closes: https://bbs.archlinux.org/viewtopic.php?pid=2146300
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218424
-Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2260517
-Tested-by: Paul Menzel <pmenzel@molgen.mpg.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240126160724.13278-2-hdegoede@redhat.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Fixes: 531682159092 ("mac80211: fix VLAN handling with TXQs")
+Link: https://msgid.link/20240131164910.b54c28d583bc.I29450cec84ea6773cff5d9c16ff92b836c331471@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/keyboard/atkbd.c |   13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ net/mac80211/tx.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/input/keyboard/atkbd.c
-+++ b/drivers/input/keyboard/atkbd.c
-@@ -763,7 +763,6 @@ static int atkbd_probe(struct atkbd *atk
- {
- 	struct ps2dev *ps2dev = &atkbd->ps2dev;
- 	unsigned char param[2];
--	bool skip_getid;
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -3746,6 +3746,7 @@ begin:
+ 			goto begin;
  
- /*
-  * Some systems, where the bit-twiddling when testing the io-lines of the
-@@ -777,6 +776,11 @@ static int atkbd_probe(struct atkbd *atk
- 				 "keyboard reset failed on %s\n",
- 				 ps2dev->serio->phys);
+ 		skb = __skb_dequeue(&tx.skbs);
++		info = IEEE80211_SKB_CB(skb);
  
-+	if (atkbd_skip_getid(atkbd)) {
-+		atkbd->id = 0xab83;
-+		return 0;
-+	}
-+
- /*
-  * Then we check the keyboard ID. We should get 0xab83 under normal conditions.
-  * Some keyboards report different values, but the first byte is always 0xab or
-@@ -785,18 +789,17 @@ static int atkbd_probe(struct atkbd *atk
-  */
- 
- 	param[0] = param[1] = 0xa5;	/* initialize with invalid values */
--	skip_getid = atkbd_skip_getid(atkbd);
--	if (skip_getid || ps2_command(ps2dev, param, ATKBD_CMD_GETID)) {
-+	if (ps2_command(ps2dev, param, ATKBD_CMD_GETID)) {
- 
- /*
-- * If the get ID command was skipped or failed, we check if we can at least set
-+ * If the get ID command failed, we check if we can at least set
-  * the LEDs on the keyboard. This should work on every keyboard out there.
-  * It also turns the LEDs off, which we want anyway.
-  */
- 		param[0] = 0;
- 		if (ps2_command(ps2dev, param, ATKBD_CMD_SETLEDS))
- 			return -1;
--		atkbd->id = skip_getid ? 0xab83 : 0xabba;
-+		atkbd->id = 0xabba;
- 		return 0;
+ 		if (!skb_queue_empty(&tx.skbs)) {
+ 			spin_lock_bh(&fq->lock);
+@@ -3790,7 +3791,7 @@ begin:
  	}
  
+ encap_out:
+-	IEEE80211_SKB_CB(skb)->control.vif = vif;
++	info->control.vif = vif;
+ 
+ 	if (vif &&
+ 	    wiphy_ext_feature_isset(local->hw.wiphy, NL80211_EXT_FEATURE_AQL)) {
 
 
 
