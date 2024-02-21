@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-22411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D72AA85DBEA
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:46:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7164985DF28
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:25:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E2851F2147C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:46:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70F8AB228A1
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:21:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D4F369951;
-	Wed, 21 Feb 2024 13:46:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B15A476C99;
+	Wed, 21 Feb 2024 14:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U3+V8E11"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uzvhCl4q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BBD11E4B2;
-	Wed, 21 Feb 2024 13:46:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 701704C62;
+	Wed, 21 Feb 2024 14:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523208; cv=none; b=dx870AHVUdedX+5eDUuB6iyxqpRITRudsJEw29YJsbDi9uLtdX6YVZSMpal2dRy09N6y0KhBVWoB4g/HNSaYcthPzBDK8+pPs9aG+rhm9Kwh9c0dqvTVF2VGZcIq/GgvYOzTUH5JsLeNYpQ34M4vDYGs9pE3MsQ7a2UdKtDqI1Q=
+	t=1708525271; cv=none; b=jVc7rhb1D8QDA0FBY0XG/buldZAj755KyHDo3IM3g0HL2+8687iyyQXYIMYJcYttB8xUnc7D6wgzyu2vMKMgUK3sixHhXDEDpV64qsqL/I/vLPkbtsOTSzjYMwTZRMAd4YltkAnnFeyG5stshlakkagtOuVVnBn8PVyCy/vnl8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523208; c=relaxed/simple;
-	bh=Iu9NehMCB7LgB0EqbLz3LdnCOSk3JK4kiEIkAP0RsU8=;
+	s=arc-20240116; t=1708525271; c=relaxed/simple;
+	bh=iTpDmgYXQiJCGfdKv1+GNt/MrWdqP0JaOV19moeCXKI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KH5/s5ixD0KdGkAotY2NTsDhAWUnjMjTMv4tibsjGuB8k/4bF0sdKBt06iPtE342e7OxXJ/f0JOak4iw2FS98/dtalYfJ1mdPtTuBGHz8nDAq48RaGxzHxr/vUORSswOGanCpFfE99pct8bgw9fkzFfbf19mPHLHTHSMSAFV3V8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U3+V8E11; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9223EC433F1;
-	Wed, 21 Feb 2024 13:46:47 +0000 (UTC)
+	 MIME-Version; b=qB+8vzBQFfzRYffQrZcsoiAYPZ9GGwRMHIGUFUxwfjU1a5gU7ici6VgbQbxq8d4gGXPktvFWHVoKRzAPoyPn6WdEXYyCCRqyDaNi/NFWXvZNRtDo1NZ0tLI57XVO9nR6jJUSsNTVLuB/QDGeaZoK8gMysqZNpozwBFVhgUkhMJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uzvhCl4q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EED5C433C7;
+	Wed, 21 Feb 2024 14:21:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523208;
-	bh=Iu9NehMCB7LgB0EqbLz3LdnCOSk3JK4kiEIkAP0RsU8=;
+	s=korg; t=1708525270;
+	bh=iTpDmgYXQiJCGfdKv1+GNt/MrWdqP0JaOV19moeCXKI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U3+V8E11D+h/g1CSbotinbVRraIfP9zQwgbCHQRXZosWBrhtkH3lc2gxmI2HsWAOC
-	 1XO76LMvvUHYgfs948Q9ndMJq1xeDo72pIx62r9NyuiVB94EiiizlexrUOQN5WVlQ7
-	 lAGrpK4UISgsyNJgAWjWuOssWJQC/8y/DqsHY1T0=
+	b=uzvhCl4q7gvfUgrinRccg2P8f86HheJRSccRiuX1DfxSr8prhG7kgMHKh+6Vguh0s
+	 ZF3ICjtvWH/Q1Gss1bXD8NbB6bcunMjylS52EQHWJdB484XeF0iRcxKCaH87JA44at
+	 ljRN/DIxJV9GZe8eQE/gWMJJS4cjsMTV8f+S0NAs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	yuan linyu <yuanlinyu@hihonor.com>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 5.15 368/476] usb: f_mass_storage: forbid async queue when shutdown happen
+	Weichen Chen <weichen.chen@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Kees Cook <keescook@chromium.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 078/267] pstore/ram: Fix crash when setting number of cpus to an odd number
 Date: Wed, 21 Feb 2024 14:06:59 +0100
-Message-ID: <20240221130021.640660748@linuxfoundation.org>
+Message-ID: <20240221125942.427357982@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: yuan linyu <yuanlinyu@hihonor.com>
+From: Weichen Chen <weichen.chen@mediatek.com>
 
-commit b2d2d7ea0dd09802cf5a0545bf54d8ad8987d20c upstream.
+[ Upstream commit d49270a04623ce3c0afddbf3e984cb245aa48e9c ]
 
-When write UDC to empty and unbind gadget driver from gadget device, it is
-possible that there are many queue failures for mass storage function.
+When the number of cpu cores is adjusted to 7 or other odd numbers,
+the zone size will become an odd number.
+The address of the zone will become:
+    addr of zone0 = BASE
+    addr of zone1 = BASE + zone_size
+    addr of zone2 = BASE + zone_size*2
+    ...
+The address of zone1/3/5/7 will be mapped to non-alignment va.
+Eventually crashes will occur when accessing these va.
 
-The root cause is mass storage main thread alaways try to queue request to
-receive a command from host if running flag is on, on platform like dwc3,
-if pull down called, it will not queue request again and return
--ESHUTDOWN, but it not affect running flag of mass storage function.
+So, use ALIGN_DOWN() to make sure the zone size is even
+to avoid this bug.
 
-Check return code from mass storage function and clear running flag if it
-is -ESHUTDOWN, also indicate start in/out transfer failure to break loops.
-
-Cc: stable <stable@kernel.org>
-Signed-off-by: yuan linyu <yuanlinyu@hihonor.com>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20240123034829.3848409-1-yuanlinyu@hihonor.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Weichen Chen <weichen.chen@mediatek.com>
+Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
+Tested-by: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+Link: https://lore.kernel.org/r/20230224023632.6840-1-weichen.chen@mediatek.com
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_mass_storage.c |   20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ fs/pstore/ram.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/gadget/function/f_mass_storage.c
-+++ b/drivers/usb/gadget/function/f_mass_storage.c
-@@ -543,21 +543,37 @@ static int start_transfer(struct fsg_dev
+diff --git a/fs/pstore/ram.c b/fs/pstore/ram.c
+index 65cbc8a60ca3..9f83d8eba0e6 100644
+--- a/fs/pstore/ram.c
++++ b/fs/pstore/ram.c
+@@ -563,6 +563,7 @@ static int ramoops_init_przs(const char *name,
+ 	}
  
- static bool start_in_transfer(struct fsg_common *common, struct fsg_buffhd *bh)
- {
-+	int rc;
-+
- 	if (!fsg_is_set(common))
- 		return false;
- 	bh->state = BUF_STATE_SENDING;
--	if (start_transfer(common->fsg, common->fsg->bulk_in, bh->inreq))
-+	rc = start_transfer(common->fsg, common->fsg->bulk_in, bh->inreq);
-+	if (rc) {
- 		bh->state = BUF_STATE_EMPTY;
-+		if (rc == -ESHUTDOWN) {
-+			common->running = 0;
-+			return false;
-+		}
-+	}
- 	return true;
- }
- 
- static bool start_out_transfer(struct fsg_common *common, struct fsg_buffhd *bh)
- {
-+	int rc;
-+
- 	if (!fsg_is_set(common))
- 		return false;
- 	bh->state = BUF_STATE_RECEIVING;
--	if (start_transfer(common->fsg, common->fsg->bulk_out, bh->outreq))
-+	rc = start_transfer(common->fsg, common->fsg->bulk_out, bh->outreq);
-+	if (rc) {
- 		bh->state = BUF_STATE_FULL;
-+		if (rc == -ESHUTDOWN) {
-+			common->running = 0;
-+			return false;
-+		}
-+	}
- 	return true;
- }
- 
+ 	zone_sz = mem_sz / *cnt;
++	zone_sz = ALIGN_DOWN(zone_sz, 2);
+ 	if (!zone_sz) {
+ 		dev_err(dev, "%s zone size == 0\n", name);
+ 		goto fail;
+-- 
+2.43.0
+
 
 
 
