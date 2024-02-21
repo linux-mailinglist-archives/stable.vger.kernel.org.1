@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-22631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2944A85DCF7
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:00:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B04C385DB61
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:40:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 84AE5B27182
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:00:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 282F51F238C3
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:40:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A6ED7CF1D;
-	Wed, 21 Feb 2024 13:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 851C4763F6;
+	Wed, 21 Feb 2024 13:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NdgNSQQq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ouny3Kzw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59507CF0B;
-	Wed, 21 Feb 2024 13:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 451763C2F;
+	Wed, 21 Feb 2024 13:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523988; cv=none; b=AhLtrwqZWDxLgUNV4rCg66lra1+pipb7v9DouHHQm3EsvXOa0cGwwnthdJPbDQXleeOGckb3m3VAZcovZ40NchbQlOqD+g2Ehr08RhfV1gLUtrjkEpY7fVGOcO2NYhsuRiNN6lZzAbes0E8LeVPx5o7DIND82lvSDi82c5x1qgE=
+	t=1708522815; cv=none; b=M90nx2I2A/nxFIbSb6ZhuFa9WZoP40n7jC3bQAv8b8QLWwhWjuFNH4IXNvHAiZs98iGo/3eJ7t4UgyVtX4o6ngeo1M6YXfzVo1merwYoH3+oiU3YO1KMYWU38zM05ne/zAeqVihG2K7n0SpQLO8YipZXT2cVme9Gj3RQ/bjYJ8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523988; c=relaxed/simple;
-	bh=1d2mH0cMCH6EDQ7tl176EEnczPGqt4lwaCNqQdcbobE=;
+	s=arc-20240116; t=1708522815; c=relaxed/simple;
+	bh=649NF9DRWaHPfmIqH0g79wxI/M9SBIaEEQoTH4Oy6OU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zofiy8lnchCKitRFSzps1uNYKG7an71Nhvr0ZIe1XkkxkAxKZhdeDx48TuBRKN8TtDJDRrURUTM4MmoDpCv37ef0gytJlcZyzFRA7T3zkj9rKMsqGBLTPJfl+4V0V9XCLy/nm+i1najfCXH4fI2VJ5M4ze3/ZuVilQrCjH5wmpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NdgNSQQq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FC23C43390;
-	Wed, 21 Feb 2024 13:59:46 +0000 (UTC)
+	 MIME-Version; b=iw8yOeDzdrsPO1pSZMn4cr1rMI5K0JNR1YhcbVh4mWLh3Xk/EC4EQb8a57LrPrSsNZnYi0ZmD93Qo3s7CsG0l6Am45WU14ZYe8gZCHj5DjZ8dvSGq/KN6+XiSTRYO+u6rNx4SuHlAWKWwFvXjdjYP7KUjJHbcPosHKLcg2txq9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ouny3Kzw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE0D9C43390;
+	Wed, 21 Feb 2024 13:40:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523987;
-	bh=1d2mH0cMCH6EDQ7tl176EEnczPGqt4lwaCNqQdcbobE=;
+	s=korg; t=1708522815;
+	bh=649NF9DRWaHPfmIqH0g79wxI/M9SBIaEEQoTH4Oy6OU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NdgNSQQqJfDDCGevQHHL7D1CXWVZbb0/KTLU7x0GXV3IhkQ81cK9oRYGP2hTOkfyp
-	 NHhuQ1ik7lejzZiWkoYZM/H5PI4IGzlLcJ7PGpk4R82cJDONz2FHJIeld4K2htJzEL
-	 U9pGNlteZGp32FaM/ZBg4ySv3kI+TjlKB9UQBopY=
+	b=ouny3KzwlMJgpqrDDxoCQqlkGyWtDAWn7RLQxuIFSvsd3KkOGY9DAp+nOXgwtx5oJ
+	 cNALfsJ8faHsAR+Rei39kvUGsmRdQFesE5hdxe/kiR9TrxItWVP/IBT8fUgoM4v7pd
+	 j0CeIGgNd4nn3U9zHu8m2lfgiDT1NSdNGJpP2bz0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rui Zhang <zr.zhang@vivo.com>,
-	Mark Brown <broonie@kernel.org>,
+	bo liu <bo.liu@senarytech.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 111/379] regulator: core: Only increment use_count when enable_count changes
+Subject: [PATCH 5.15 239/476] ALSA: hda/conexant: Fix headset auto detect fail in cx8070 and SN6140
 Date: Wed, 21 Feb 2024 14:04:50 +0100
-Message-ID: <20240221125958.208966843@linuxfoundation.org>
+Message-ID: <20240221130016.726834311@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,115 +62,202 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rui Zhang <zr.zhang@vivo.com>
+From: bo liu <bo.liu@senarytech.com>
 
-[ Upstream commit 7993d3a9c34f609c02171e115fd12c10e2105ff4 ]
+[ Upstream commit 7aeb259086487417f0fecf66e325bee133e8813a ]
 
-The use_count of a regulator should only be incremented when the
-enable_count changes from 0 to 1. Similarly, the use_count should
-only be decremented when the enable_count changes from 1 to 0.
+When OMTP headset plugin the headset jack of CX8070 and SN6160 sound cards,
+the headset type detection circuit will recognize the headset type as CTIA.
+At this point, plugout and plugin the headset will get the correct headset
+type as OMTP.
+The reason for the failure of headset type recognition is that the sound
+card creation will enable the VREF voltage of the headset mic, which
+interferes with the headset type automatic detection circuit. Plugout and
+plugin the headset will restart the headset detection and get the correct
+headset type.
+The patch is disable the VREF voltage when the headset is not present, and
+will enable the VREF voltage when the headset is present.
 
-In the previous implementation, use_count was sometimes decremented
-to 0 when some consumer called unbalanced disable,
-leading to unexpected disable even the regulator is enabled by
-other consumers. With this change, the use_count accurately reflects
-the number of users which the regulator is enabled.
-
-This should make things more robust in the case where a consumer does
-leak references.
-
-Signed-off-by: Rui Zhang <zr.zhang@vivo.com>
-Link: https://lore.kernel.org/r/20231103074231.8031-1-zr.zhang@vivo.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: bo liu <bo.liu@senarytech.com>
+Link: https://lore.kernel.org/r/20240108110235.3867-1-bo.liu@senarytech.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/core.c | 56 +++++++++++++++++++++-------------------
- 1 file changed, 30 insertions(+), 26 deletions(-)
+ sound/pci/hda/patch_conexant.c | 115 ++++++++++++++++++++++++++++++++-
+ 1 file changed, 113 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index 51c4f604d3b2..54330eb0d03b 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -2768,7 +2768,8 @@ static int _regulator_enable(struct regulator *regulator)
- 		/* Fallthrough on positive return values - already enabled */
+diff --git a/sound/pci/hda/patch_conexant.c b/sound/pci/hda/patch_conexant.c
+index deff4a3d7a78..0980c7de2183 100644
+--- a/sound/pci/hda/patch_conexant.c
++++ b/sound/pci/hda/patch_conexant.c
+@@ -21,6 +21,12 @@
+ #include "hda_jack.h"
+ #include "hda_generic.h"
+ 
++enum {
++	CX_HEADSET_NOPRESENT = 0,
++	CX_HEADSET_PARTPRESENT,
++	CX_HEADSET_ALLPRESENT,
++};
++
+ struct conexant_spec {
+ 	struct hda_gen_spec gen;
+ 
+@@ -42,7 +48,8 @@ struct conexant_spec {
+ 	unsigned int gpio_led;
+ 	unsigned int gpio_mute_led_mask;
+ 	unsigned int gpio_mic_led_mask;
+-
++	unsigned int headset_present_flag;
++	bool is_cx8070_sn6140;
+ };
+ 
+ 
+@@ -164,6 +171,27 @@ static void cxt_init_gpio_led(struct hda_codec *codec)
  	}
+ }
  
--	rdev->use_count++;
-+	if (regulator->enable_count == 1)
-+		rdev->use_count++;
++static void cx_fixup_headset_recog(struct hda_codec *codec)
++{
++	unsigned int mic_persent;
++
++	/* fix some headset type recognize fail issue, such as EDIFIER headset */
++	/* set micbiasd output current comparator threshold from 66% to 55%. */
++	snd_hda_codec_write(codec, 0x1c, 0, 0x320, 0x010);
++	/* set OFF voltage for DFET from -1.2V to -0.8V, set headset micbias registor
++	 * value adjustment trim from 2.2K ohms to 2.0K ohms.
++	 */
++	snd_hda_codec_write(codec, 0x1c, 0, 0x3b0, 0xe10);
++	/* fix reboot headset type recognize fail issue */
++	mic_persent = snd_hda_codec_read(codec, 0x19, 0, AC_VERB_GET_PIN_SENSE, 0x0);
++	if (mic_persent & AC_PINSENSE_PRESENCE)
++		/* enable headset mic VREF */
++		snd_hda_codec_write(codec, 0x19, 0, AC_VERB_SET_PIN_WIDGET_CONTROL, 0x24);
++	else
++		/* disable headset mic VREF */
++		snd_hda_codec_write(codec, 0x19, 0, AC_VERB_SET_PIN_WIDGET_CONTROL, 0x20);
++}
++
+ static int cx_auto_init(struct hda_codec *codec)
+ {
+ 	struct conexant_spec *spec = codec->spec;
+@@ -174,6 +202,9 @@ static int cx_auto_init(struct hda_codec *codec)
+ 	cxt_init_gpio_led(codec);
+ 	snd_hda_apply_fixup(codec, HDA_FIXUP_ACT_INIT);
  
++	if (spec->is_cx8070_sn6140)
++		cx_fixup_headset_recog(codec);
++
  	return 0;
+ }
  
-@@ -2846,37 +2847,40 @@ static int _regulator_disable(struct regulator *regulator)
+@@ -192,6 +223,77 @@ static void cx_auto_free(struct hda_codec *codec)
+ 	snd_hda_gen_free(codec);
+ }
  
- 	lockdep_assert_held_once(&rdev->mutex.base);
- 
--	if (WARN(rdev->use_count <= 0,
-+	if (WARN(regulator->enable_count == 0,
- 		 "unbalanced disables for %s\n", rdev_get_name(rdev)))
- 		return -EIO;
- 
--	/* are we the last user and permitted to disable ? */
--	if (rdev->use_count == 1 &&
--	    (rdev->constraints && !rdev->constraints->always_on)) {
--
--		/* we are last user */
--		if (regulator_ops_is_valid(rdev, REGULATOR_CHANGE_STATUS)) {
--			ret = _notifier_call_chain(rdev,
--						   REGULATOR_EVENT_PRE_DISABLE,
--						   NULL);
--			if (ret & NOTIFY_STOP_MASK)
--				return -EINVAL;
--
--			ret = _regulator_do_disable(rdev);
--			if (ret < 0) {
--				rdev_err(rdev, "failed to disable: %pe\n", ERR_PTR(ret));
--				_notifier_call_chain(rdev,
--						REGULATOR_EVENT_ABORT_DISABLE,
-+	if (regulator->enable_count == 1) {
-+	/* disabling last enable_count from this regulator */
-+		/* are we the last user and permitted to disable ? */
-+		if (rdev->use_count == 1 &&
-+		    (rdev->constraints && !rdev->constraints->always_on)) {
++static void cx_process_headset_plugin(struct hda_codec *codec)
++{
++	unsigned int val;
++	unsigned int count = 0;
 +
-+			/* we are last user */
-+			if (regulator_ops_is_valid(rdev, REGULATOR_CHANGE_STATUS)) {
-+				ret = _notifier_call_chain(rdev,
-+							   REGULATOR_EVENT_PRE_DISABLE,
-+							   NULL);
-+				if (ret & NOTIFY_STOP_MASK)
-+					return -EINVAL;
-+
-+				ret = _regulator_do_disable(rdev);
-+				if (ret < 0) {
-+					rdev_err(rdev, "failed to disable: %pe\n", ERR_PTR(ret));
-+					_notifier_call_chain(rdev,
-+							REGULATOR_EVENT_ABORT_DISABLE,
-+							NULL);
-+					return ret;
-+				}
-+				_notifier_call_chain(rdev, REGULATOR_EVENT_DISABLE,
- 						NULL);
--				return ret;
- 			}
--			_notifier_call_chain(rdev, REGULATOR_EVENT_DISABLE,
--					NULL);
--		}
- 
--		rdev->use_count = 0;
--	} else if (rdev->use_count > 1) {
--		rdev->use_count--;
-+			rdev->use_count = 0;
-+		} else if (rdev->use_count > 1) {
-+			rdev->use_count--;
++	/* Wait headset detect done. */
++	do {
++		val = snd_hda_codec_read(codec, 0x1c, 0, 0xca0, 0x0);
++		if (val & 0x080) {
++			codec_dbg(codec, "headset type detect done!\n");
++			break;
 +		}
- 	}
++		msleep(20);
++		count++;
++	} while (count < 3);
++	val = snd_hda_codec_read(codec, 0x1c, 0, 0xcb0, 0x0);
++	if (val & 0x800) {
++		codec_dbg(codec, "headset plugin, type is CTIA\n");
++		snd_hda_codec_write(codec, 0x19, 0, AC_VERB_SET_PIN_WIDGET_CONTROL, 0x24);
++	} else if (val & 0x400) {
++		codec_dbg(codec, "headset plugin, type is OMTP\n");
++		snd_hda_codec_write(codec, 0x19, 0, AC_VERB_SET_PIN_WIDGET_CONTROL, 0x24);
++	} else {
++		codec_dbg(codec, "headphone plugin\n");
++	}
++}
++
++static void cx_update_headset_mic_vref(struct hda_codec *codec, unsigned int res)
++{
++	unsigned int phone_present, mic_persent, phone_tag, mic_tag;
++	struct conexant_spec *spec = codec->spec;
++
++	/* In cx8070 and sn6140, the node 16 can only be config to headphone or disabled,
++	 * the node 19 can only be config to microphone or disabled.
++	 * Check hp&mic tag to process headset pulgin&plugout.
++	 */
++	phone_tag = snd_hda_codec_read(codec, 0x16, 0, AC_VERB_GET_UNSOLICITED_RESPONSE, 0x0);
++	mic_tag = snd_hda_codec_read(codec, 0x19, 0, AC_VERB_GET_UNSOLICITED_RESPONSE, 0x0);
++	if ((phone_tag & (res >> AC_UNSOL_RES_TAG_SHIFT)) ||
++	    (mic_tag & (res >> AC_UNSOL_RES_TAG_SHIFT))) {
++		phone_present = snd_hda_codec_read(codec, 0x16, 0, AC_VERB_GET_PIN_SENSE, 0x0);
++		if (!(phone_present & AC_PINSENSE_PRESENCE)) {/* headphone plugout */
++			spec->headset_present_flag = CX_HEADSET_NOPRESENT;
++			snd_hda_codec_write(codec, 0x19, 0, AC_VERB_SET_PIN_WIDGET_CONTROL, 0x20);
++			return;
++		}
++		if (spec->headset_present_flag == CX_HEADSET_NOPRESENT) {
++			spec->headset_present_flag = CX_HEADSET_PARTPRESENT;
++		} else if (spec->headset_present_flag == CX_HEADSET_PARTPRESENT) {
++			mic_persent = snd_hda_codec_read(codec, 0x19, 0,
++							 AC_VERB_GET_PIN_SENSE, 0x0);
++			/* headset is present */
++			if ((phone_present & AC_PINSENSE_PRESENCE) &&
++			    (mic_persent & AC_PINSENSE_PRESENCE)) {
++				cx_process_headset_plugin(codec);
++				spec->headset_present_flag = CX_HEADSET_ALLPRESENT;
++			}
++		}
++	}
++}
++
++static void cx_jack_unsol_event(struct hda_codec *codec, unsigned int res)
++{
++	struct conexant_spec *spec = codec->spec;
++
++	if (spec->is_cx8070_sn6140)
++		cx_update_headset_mic_vref(codec, res);
++
++	snd_hda_jack_unsol_event(codec, res);
++}
++
+ #ifdef CONFIG_PM
+ static int cx_auto_suspend(struct hda_codec *codec)
+ {
+@@ -205,7 +307,7 @@ static const struct hda_codec_ops cx_auto_patch_ops = {
+ 	.build_pcms = snd_hda_gen_build_pcms,
+ 	.init = cx_auto_init,
+ 	.free = cx_auto_free,
+-	.unsol_event = snd_hda_jack_unsol_event,
++	.unsol_event = cx_jack_unsol_event,
+ #ifdef CONFIG_PM
+ 	.suspend = cx_auto_suspend,
+ 	.check_power_status = snd_hda_gen_check_power_status,
+@@ -1042,6 +1144,15 @@ static int patch_conexant_auto(struct hda_codec *codec)
+ 	codec->spec = spec;
+ 	codec->patch_ops = cx_auto_patch_ops;
  
- 	if (ret == 0)
++	/* init cx8070/sn6140 flag and reset headset_present_flag */
++	switch (codec->core.vendor_id) {
++	case 0x14f11f86:
++	case 0x14f11f87:
++		spec->is_cx8070_sn6140 = true;
++		spec->headset_present_flag = CX_HEADSET_NOPRESENT;
++		break;
++	}
++
+ 	cx_auto_parse_eapd(codec);
+ 	spec->gen.own_eapd_ctl = 1;
+ 
 -- 
 2.43.0
 
