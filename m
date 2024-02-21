@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-22693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD5B585DD48
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:04:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91CA585DE54
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:17:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D2181F21937
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:04:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48D012857A8
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:17:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33BF77E58F;
-	Wed, 21 Feb 2024 14:03:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B23C7D41B;
+	Wed, 21 Feb 2024 14:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z+3EsTJU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GhczRHDC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D057BB01;
-	Wed, 21 Feb 2024 14:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDCEF78B60;
+	Wed, 21 Feb 2024 14:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524194; cv=none; b=UtQKIpfSh92mVBfWBQCYqzJkPm79i0sN6GaYcKku25o1zodUzZcBEzYPq2OQmTVNzJN/Vymg5TbRCHSnSiaLDSoMrcufnlw+utqmnbyOQF3XaUMfrbMQmfsZ3vtCbKqewEkpk6uWOE3QJ7rIUoQfN8fmKV9t/DOPyHch4pdOQos=
+	t=1708524998; cv=none; b=caEBQu7rIAoyddtvPnbNzbxT07MSC8h/RgLtAGbJThw+eQGk/+ZSSTGjngkxFCi8Hk4pUXj0hfQgwK3FdKnzSWkvRN/ovpGlWEymWP4lWxljmAjwQ2VS8jiFqUqeiKPxR1iYzaii6O1Z094VuZTAl8eYomG4QFXi7gL5yXT7iIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524194; c=relaxed/simple;
-	bh=CyexDbKluc7PPsJxJxQOZ6+hlKT6zPIb9rQux3C7zxw=;
+	s=arc-20240116; t=1708524998; c=relaxed/simple;
+	bh=Ibbp1vXvSh/90E17kPjUAZ7KegSVp+rQqemNMuRmQjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rdAvPNRDOqVDWC++nuEXnQN0QPGaXou/GEEVmcOtLOWqHYtidIe7J205JO4U5Q+ThcNbrAV2FOPM+ga5eFtNIkR25erT5Koo8jOPCpomRXqtnWq/FB7Ro4IetZNArkOniI87qmKEstDDkDJ1N7uayGCTw9mgY3KMM5VRmcQSj6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z+3EsTJU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 732A4C433F1;
-	Wed, 21 Feb 2024 14:03:13 +0000 (UTC)
+	 MIME-Version; b=Z3yHkC8rdUDCxq0+2fjrJEvbd3iGrh4lPn9sJcUolgIjpO06aDVCuOvyp7IrszT1d+AS44Cf5uFJH+ffSgWEk+PLNlLj6FBTflHe2jhCNInO8Cj+2IAiE1okBAN1Qviqd6c0Gd8wOwdc7nYoUb9fbNifrhUb66QdAHKPJAej2uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GhczRHDC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C3E9C433C7;
+	Wed, 21 Feb 2024 14:16:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524193;
-	bh=CyexDbKluc7PPsJxJxQOZ6+hlKT6zPIb9rQux3C7zxw=;
+	s=korg; t=1708524997;
+	bh=Ibbp1vXvSh/90E17kPjUAZ7KegSVp+rQqemNMuRmQjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z+3EsTJUBlrXBSAMMAIwt7JYFl60iGE3w82szduV+JWFtJG115Ef1CnjxBqwZ2WsQ
-	 9TK8XHkEp67HRMimpnOM+B2mPh5jbHjyxUV8i3MeaeQLZ0mmojyK24BatIRnI5mRII
-	 8OheuaR9mISH7WS8swP9jmcKMn3XvGP1IQmA7zFA=
+	b=GhczRHDCEsyP+CnM9QXr7X6o34z54TuXkvX9ScIDHUP6YHl5ODZSkmkdbNisys9q/
+	 /leGm/WGI/aNvlju//igy80O4YPRbFo5V4yM44/o4ei6+m9HBJTHSd8x9vE3cZu5bn
+	 x2ru/Ismdl1v1H9uoY6pKeYvQJbK+iMV7lebVNDI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Danis?= <frederic.danis@collabora.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 173/379] Bluetooth: L2CAP: Fix possible multiple reject send
+	Hongchen Zhang <zhanghongchen@loongson.cn>,
+	Weihao Li <liweihao@loongson.cn>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.4 011/267] PM: hibernate: Enforce ordering during image compression/decompression
 Date: Wed, 21 Feb 2024 14:05:52 +0100
-Message-ID: <20240221130000.033408524@linuxfoundation.org>
+Message-ID: <20240221125940.415150759@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +60,209 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frédéric Danis <frederic.danis@collabora.com>
+From: Hongchen Zhang <zhanghongchen@loongson.cn>
 
-[ Upstream commit 96a3398b467ab8aada3df2f3a79f4b7835d068b8 ]
+commit 71cd7e80cfde548959952eac7063aeaea1f2e1c6 upstream.
 
-In case of an incomplete command or a command with a null identifier 2
-reject packets will be sent, one with the identifier and one with 0.
-Consuming the data of the command will prevent it.
-This allows to send a reject packet for each corrupted command in a
-multi-command packet.
+An S4 (suspend to disk) test on the LoongArch 3A6000 platform sometimes
+fails with the following error messaged in the dmesg log:
 
-Signed-off-by: Frédéric Danis <frederic.danis@collabora.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+	Invalid LZO compressed length
+
+That happens because when compressing/decompressing the image, the
+synchronization between the control thread and the compress/decompress/crc
+thread is based on a relaxed ordering interface, which is unreliable, and the
+following situation may occur:
+
+CPU 0					CPU 1
+save_image_lzo				lzo_compress_threadfn
+					  atomic_set(&d->stop, 1);
+  atomic_read(&data[thr].stop)
+  data[thr].cmp = data[thr].cmp_len;
+	  				  WRITE data[thr].cmp_len
+
+Then CPU0 gets a stale cmp_len and writes it to disk. During resume from S4,
+wrong cmp_len is loaded.
+
+To maintain data consistency between the two threads, use the acquire/release
+variants of atomic set and read operations.
+
+Fixes: 081a9d043c98 ("PM / Hibernate: Improve performance of LZO/plain hibernation, checksum image")
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Hongchen Zhang <zhanghongchen@loongson.cn>
+Co-developed-by: Weihao Li <liweihao@loongson.cn>
+Signed-off-by: Weihao Li <liweihao@loongson.cn>
+[ rjw: Subject rewrite and changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/l2cap_core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/power/swap.c |   38 +++++++++++++++++++-------------------
+ 1 file changed, 19 insertions(+), 19 deletions(-)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index cf78a48085ed..a752032e12fc 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -6522,7 +6522,8 @@ static inline void l2cap_sig_channel(struct l2cap_conn *conn,
- 		if (len > skb->len || !cmd->ident) {
- 			BT_DBG("corrupted command");
- 			l2cap_sig_send_rej(conn, cmd->ident);
--			break;
-+			skb_pull(skb, len > skb->len ? skb->len : len);
-+			continue;
+--- a/kernel/power/swap.c
++++ b/kernel/power/swap.c
+@@ -594,11 +594,11 @@ static int crc32_threadfn(void *data)
+ 	unsigned i;
+ 
+ 	while (1) {
+-		wait_event(d->go, atomic_read(&d->ready) ||
++		wait_event(d->go, atomic_read_acquire(&d->ready) ||
+ 		                  kthread_should_stop());
+ 		if (kthread_should_stop()) {
+ 			d->thr = NULL;
+-			atomic_set(&d->stop, 1);
++			atomic_set_release(&d->stop, 1);
+ 			wake_up(&d->done);
+ 			break;
+ 		}
+@@ -607,7 +607,7 @@ static int crc32_threadfn(void *data)
+ 		for (i = 0; i < d->run_threads; i++)
+ 			*d->crc32 = crc32_le(*d->crc32,
+ 			                     d->unc[i], *d->unc_len[i]);
+-		atomic_set(&d->stop, 1);
++		atomic_set_release(&d->stop, 1);
+ 		wake_up(&d->done);
+ 	}
+ 	return 0;
+@@ -637,12 +637,12 @@ static int lzo_compress_threadfn(void *d
+ 	struct cmp_data *d = data;
+ 
+ 	while (1) {
+-		wait_event(d->go, atomic_read(&d->ready) ||
++		wait_event(d->go, atomic_read_acquire(&d->ready) ||
+ 		                  kthread_should_stop());
+ 		if (kthread_should_stop()) {
+ 			d->thr = NULL;
+ 			d->ret = -1;
+-			atomic_set(&d->stop, 1);
++			atomic_set_release(&d->stop, 1);
+ 			wake_up(&d->done);
+ 			break;
+ 		}
+@@ -651,7 +651,7 @@ static int lzo_compress_threadfn(void *d
+ 		d->ret = lzo1x_1_compress(d->unc, d->unc_len,
+ 		                          d->cmp + LZO_HEADER, &d->cmp_len,
+ 		                          d->wrk);
+-		atomic_set(&d->stop, 1);
++		atomic_set_release(&d->stop, 1);
+ 		wake_up(&d->done);
+ 	}
+ 	return 0;
+@@ -789,7 +789,7 @@ static int save_image_lzo(struct swap_ma
+ 
+ 			data[thr].unc_len = off;
+ 
+-			atomic_set(&data[thr].ready, 1);
++			atomic_set_release(&data[thr].ready, 1);
+ 			wake_up(&data[thr].go);
  		}
  
- 		err = l2cap_bredr_sig_cmd(conn, cmd, len, skb->data);
--- 
-2.43.0
-
+@@ -797,12 +797,12 @@ static int save_image_lzo(struct swap_ma
+ 			break;
+ 
+ 		crc->run_threads = thr;
+-		atomic_set(&crc->ready, 1);
++		atomic_set_release(&crc->ready, 1);
+ 		wake_up(&crc->go);
+ 
+ 		for (run_threads = thr, thr = 0; thr < run_threads; thr++) {
+ 			wait_event(data[thr].done,
+-			           atomic_read(&data[thr].stop));
++				atomic_read_acquire(&data[thr].stop));
+ 			atomic_set(&data[thr].stop, 0);
+ 
+ 			ret = data[thr].ret;
+@@ -841,7 +841,7 @@ static int save_image_lzo(struct swap_ma
+ 			}
+ 		}
+ 
+-		wait_event(crc->done, atomic_read(&crc->stop));
++		wait_event(crc->done, atomic_read_acquire(&crc->stop));
+ 		atomic_set(&crc->stop, 0);
+ 	}
+ 
+@@ -1121,12 +1121,12 @@ static int lzo_decompress_threadfn(void
+ 	struct dec_data *d = data;
+ 
+ 	while (1) {
+-		wait_event(d->go, atomic_read(&d->ready) ||
++		wait_event(d->go, atomic_read_acquire(&d->ready) ||
+ 		                  kthread_should_stop());
+ 		if (kthread_should_stop()) {
+ 			d->thr = NULL;
+ 			d->ret = -1;
+-			atomic_set(&d->stop, 1);
++			atomic_set_release(&d->stop, 1);
+ 			wake_up(&d->done);
+ 			break;
+ 		}
+@@ -1139,7 +1139,7 @@ static int lzo_decompress_threadfn(void
+ 			flush_icache_range((unsigned long)d->unc,
+ 					   (unsigned long)d->unc + d->unc_len);
+ 
+-		atomic_set(&d->stop, 1);
++		atomic_set_release(&d->stop, 1);
+ 		wake_up(&d->done);
+ 	}
+ 	return 0;
+@@ -1327,7 +1327,7 @@ static int load_image_lzo(struct swap_ma
+ 		}
+ 
+ 		if (crc->run_threads) {
+-			wait_event(crc->done, atomic_read(&crc->stop));
++			wait_event(crc->done, atomic_read_acquire(&crc->stop));
+ 			atomic_set(&crc->stop, 0);
+ 			crc->run_threads = 0;
+ 		}
+@@ -1363,7 +1363,7 @@ static int load_image_lzo(struct swap_ma
+ 					pg = 0;
+ 			}
+ 
+-			atomic_set(&data[thr].ready, 1);
++			atomic_set_release(&data[thr].ready, 1);
+ 			wake_up(&data[thr].go);
+ 		}
+ 
+@@ -1382,7 +1382,7 @@ static int load_image_lzo(struct swap_ma
+ 
+ 		for (run_threads = thr, thr = 0; thr < run_threads; thr++) {
+ 			wait_event(data[thr].done,
+-			           atomic_read(&data[thr].stop));
++				atomic_read_acquire(&data[thr].stop));
+ 			atomic_set(&data[thr].stop, 0);
+ 
+ 			ret = data[thr].ret;
+@@ -1413,7 +1413,7 @@ static int load_image_lzo(struct swap_ma
+ 				ret = snapshot_write_next(snapshot);
+ 				if (ret <= 0) {
+ 					crc->run_threads = thr + 1;
+-					atomic_set(&crc->ready, 1);
++					atomic_set_release(&crc->ready, 1);
+ 					wake_up(&crc->go);
+ 					goto out_finish;
+ 				}
+@@ -1421,13 +1421,13 @@ static int load_image_lzo(struct swap_ma
+ 		}
+ 
+ 		crc->run_threads = thr;
+-		atomic_set(&crc->ready, 1);
++		atomic_set_release(&crc->ready, 1);
+ 		wake_up(&crc->go);
+ 	}
+ 
+ out_finish:
+ 	if (crc->run_threads) {
+-		wait_event(crc->done, atomic_read(&crc->stop));
++		wait_event(crc->done, atomic_read_acquire(&crc->stop));
+ 		atomic_set(&crc->stop, 0);
+ 	}
+ 	stop = ktime_get();
 
 
 
