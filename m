@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-22591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D329985DCC3
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:57:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A25685DB10
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:37:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 73DCD1F20FAF
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:57:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15028284955
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:37:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B49479DAE;
-	Wed, 21 Feb 2024 13:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D55A7D3FB;
+	Wed, 21 Feb 2024 13:36:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g5uYZwA5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DSeDh3OU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 194AF762C1;
-	Wed, 21 Feb 2024 13:57:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59BC06F074;
+	Wed, 21 Feb 2024 13:36:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523831; cv=none; b=XC9UkB5xGUr0XjRBXTa2L4lCd25AjQrMT4y/wOwxHyNHzZ+J2lnFVpxpljtCjbJtPZwLHxJQER/xbZSPFCVStDssfKCa90OZ/f4MZzMmqUDkTvX/33uTiYy9kDLNZPKuJcZIBDUmywVi1YOLIulqB8Xtq0od0OrOLCrcJfebsEk=
+	t=1708522585; cv=none; b=Y+ASBTsjWORl+RgtP4ntVcoA48PkOebxd0cyAlNBBAAiq/VClFE1ZImR89YppGPz8whhU7Hdsoo7mbQwvmBG60QiJ41lOMsqB0yhEKKaqauUmHv5VQdw3FKU86srxN3YmUL70rWYCoICywnBZ/+xZvN+MoqMuux03I8G+y65ru8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523831; c=relaxed/simple;
-	bh=uov3ReQzE10/Z3Q++bTIericHx0Svi3UlF/I7zKff74=;
+	s=arc-20240116; t=1708522585; c=relaxed/simple;
+	bh=O1OuDe6advn7nE6oKRSa532AiD4d2wNDbw2ouvu4TqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sedkGthe/4Lxb5W9nYTgkK9Qx3pq3E1neT1gWdoLFfsGpLIlxreF+j68MZMlOYdEL/Vlh2w5IcP2DZYY5cr2I8J0NH+Ubb1v7R9b4aDqfkDQnaz55eIWsqD1OioarXE9SzC9x2PIVuXDYnINGMghM/2GFBP23q0ZLbLW9Awuh30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g5uYZwA5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3D53C433F1;
-	Wed, 21 Feb 2024 13:57:09 +0000 (UTC)
+	 MIME-Version; b=I/u8K64S1WSGS9I6Kj0+9/BUnvVgJHzdpsJmPikJ27XKeeUGogN2Lu3iqYEWCe6yN58hdThhF5qgn99G4kOLzROE2cSn5Q4MDGX79zDj8EBqA4n9LGBZ0tLqQB/8s5nBQFRUvNISy32nR/V+QldtYyAdA7e3BA5NNYcwN8JN+zQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DSeDh3OU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDF0AC433F1;
+	Wed, 21 Feb 2024 13:36:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523830;
-	bh=uov3ReQzE10/Z3Q++bTIericHx0Svi3UlF/I7zKff74=;
+	s=korg; t=1708522585;
+	bh=O1OuDe6advn7nE6oKRSa532AiD4d2wNDbw2ouvu4TqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g5uYZwA5hnfg6umzGbEhrVOqof4FJQEpZQQ9IgorRjRiw2bqDYWbtDsY+Zcz1C+Tr
-	 ZGAEvCSuZ4HjerSSWwk30sEjElV5Yt1FU3cFO5l30iUovG7QgEKPdXgYYiwyFuDR5x
-	 jVV6CrMbk6clCYaby9D43W0wOFhb+7LN1aPLXxhQ=
+	b=DSeDh3OUhYrnXzauyA/FAVaPFCtKd86BI/eJJzSrC2EbiQgu9O5cNW5ClNDQ5/ayj
+	 aJD0GSATQF8gJWMH9ntBc2SwO+wrK223sUld4eu6pc9pIk6/UpUMvwJ1Bexbe1Iz7x
+	 ofTfS2AXbIN7OgWIOV8cfKx3cA13jZzELUNu+WuE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Notselwyn <notselwyn@pwning.tech>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.10 071/379] netfilter: nf_tables: reject QUEUE/DROP verdict parameters
-Date: Wed, 21 Feb 2024 14:04:10 +0100
-Message-ID: <20240221125957.015911032@linuxfoundation.org>
+	Alexander Tsoy <alexander@tsoy.me>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 200/476] ALSA: usb-audio: Add delay quirk for MOTU M Series 2nd revision
+Date: Wed, 21 Feb 2024 14:04:11 +0100
+Message-ID: <20240221130015.312303475@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Alexander Tsoy <alexander@tsoy.me>
 
-commit f342de4e2f33e0e39165d8639387aa6c19dff660 upstream.
+commit d915a6850e27efb383cd4400caadfe47792623df upstream.
 
-This reverts commit e0abdadcc6e1.
+Audio control requests that sets sampling frequency sometimes fail on
+this card. Adding delay between control messages eliminates that problem.
 
-core.c:nf_hook_slow assumes that the upper 16 bits of NF_DROP
-verdicts contain a valid errno, i.e. -EPERM, -EHOSTUNREACH or similar,
-or 0.
-
-Due to the reverted commit, its possible to provide a positive
-value, e.g. NF_ACCEPT (1), which results in use-after-free.
-
-Its not clear to me why this commit was made.
-
-NF_QUEUE is not used by nftables; "queue" rules in nftables
-will result in use of "nft_queue" expression.
-
-If we later need to allow specifiying errno values from userspace
-(do not know why), this has to call NF_DROP_GETERR and check that
-"err <= 0" holds true.
-
-Fixes: e0abdadcc6e1 ("netfilter: nf_tables: accept QUEUE/DROP verdict parameters")
-Cc: stable@vger.kernel.org
-Reported-by: Notselwyn <notselwyn@pwning.tech>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217601
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Alexander Tsoy <alexander@tsoy.me>
+Link: https://lore.kernel.org/r/20240124130239.358298-1-alexander@tsoy.me
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c |   16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+ sound/usb/quirks.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -9340,16 +9340,10 @@ static int nft_verdict_init(const struct
- 	data->verdict.code = ntohl(nla_get_be32(tb[NFTA_VERDICT_CODE]));
- 
- 	switch (data->verdict.code) {
--	default:
--		switch (data->verdict.code & NF_VERDICT_MASK) {
--		case NF_ACCEPT:
--		case NF_DROP:
--		case NF_QUEUE:
--			break;
--		default:
--			return -EINVAL;
--		}
--		fallthrough;
-+	case NF_ACCEPT:
-+	case NF_DROP:
-+	case NF_QUEUE:
-+		break;
- 	case NFT_CONTINUE:
- 	case NFT_BREAK:
- 	case NFT_RETURN:
-@@ -9384,6 +9378,8 @@ static int nft_verdict_init(const struct
- 
- 		data->verdict.chain = chain;
- 		break;
-+	default:
-+		return -EINVAL;
- 	}
- 
- 	desc->len = sizeof(data->verdict);
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -1796,6 +1796,8 @@ static const struct usb_audio_quirk_flag
+ 		   QUIRK_FLAG_GENERIC_IMPLICIT_FB),
+ 	DEVICE_FLG(0x0763, 0x2031, /* M-Audio Fast Track C600 */
+ 		   QUIRK_FLAG_GENERIC_IMPLICIT_FB),
++	DEVICE_FLG(0x07fd, 0x000b, /* MOTU M Series 2nd hardware revision */
++		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
+ 	DEVICE_FLG(0x08bb, 0x2702, /* LineX FM Transmitter */
+ 		   QUIRK_FLAG_IGNORE_CTL_ERROR),
+ 	DEVICE_FLG(0x0951, 0x16ad, /* Kingston HyperX */
 
 
 
