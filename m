@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-23069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17A9D85DF4A
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:26:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BCDA85DE93
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:19:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5F17B20BF5
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:24:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 46C56B2BB36
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 234A176037;
-	Wed, 21 Feb 2024 14:24:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 538408003D;
+	Wed, 21 Feb 2024 14:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1XBNkNou"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hIMgcJpP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D518D3D0A1;
-	Wed, 21 Feb 2024 14:24:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1139376037;
+	Wed, 21 Feb 2024 14:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525476; cv=none; b=FMgQQoCKiH3mqKln0rlyJb1vKKHOA5AAIIK2XGdqTQ5RHDjMQjP338fU4sL3WZMnbNOMdcBm+H/BhZEcAFAmHnzW8r2jjB/4X2BijEmeRN88Oy1Wpzrcvu5Dxud2MV5/BhUw1ArzpfxdbMyKrUjlpYlGJ/QfI6kPhHhSpe1607w=
+	t=1708524627; cv=none; b=ph57vHqa2WVA1ofiuK8eXIIcGmdwSBBILIRAuV0GzKPbB0z7mpRpPLNPu2tXR5sksaZoOLfqsIaNSsfFXS92PJQhb79430ZmXCNQXXQokmpEvMmqBn+aBKAPUdO0h+RKO+yY2ASOqES6s+j1sDTq3oihJCtny7CnsnYc9Ujb908=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525476; c=relaxed/simple;
-	bh=vuKME5r6vdivSxKZ9uT8Lmzfwpr7rz+7tStSkB2PBmI=;
+	s=arc-20240116; t=1708524627; c=relaxed/simple;
+	bh=krm8yX6kK/maOXqCMaDkLsnMR45Rl9DjIJ4WYt0HxVQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BtLpB/1NNHbLz8p5p+o6OPYctWAIo492JrOeBmYKnEPEsvjhaicdH6RPIdsByETUAg0sKDcvK7cA/L/3x50CZIpKtqqu/OSJQlKGWIQog66BbELgn2ydocD9dYQanmMO/8xA1GQxFgdwchgHspjpoaEZAjBZAcEeM7l02jdhA3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1XBNkNou; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C2ACC433C7;
-	Wed, 21 Feb 2024 14:24:36 +0000 (UTC)
+	 MIME-Version; b=SI9DWW5RUqfHTZgjCUiZbcYWBGqqQY8cB8cVcqDRYaWCoDLbkcs0EQkORuzqH01zUQvpMZjJxi++3YLrLqmWUWjY2YsGk5tCm74CXOV1wCUPVOlDObKVaYWern0y4aQUK7WbAY56mvvJyOqz0r4wTQ70rXmkWderzFY09pWbhhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hIMgcJpP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7528DC433C7;
+	Wed, 21 Feb 2024 14:10:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525476;
-	bh=vuKME5r6vdivSxKZ9uT8Lmzfwpr7rz+7tStSkB2PBmI=;
+	s=korg; t=1708524626;
+	bh=krm8yX6kK/maOXqCMaDkLsnMR45Rl9DjIJ4WYt0HxVQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1XBNkNoudHlk8Jg8/972uHlZqZWAkwPg+BIZSPBgOWCH0vi48omWKfAHQ7BAh/gMa
-	 35lyXvpb273Ymdb6+Xxm4dgtS7AS7PYtq0YtxgqQXW0Z0Cjbtj27owWv32hzm+8bo3
-	 9FwQ94gsZ2s1dfRyreC+6p5UD4Zl/T7N7hh+QDIQ=
+	b=hIMgcJpPKhkUK+Xw9JoHjrNmgKyIwjccZuUOPHpNadBXsEar+PZA/XdvVt3+ZbdFD
+	 RejU9zzNYc9nTo5mOx6nsrK02jy6bTiHuPeNBJ/VLlqBtlNMznT6h49X24Jx3z2+7S
+	 DOX1jsSO+t0XObQPlSmx6f2zGwmJhK0ib8xChNCM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Kuehling <Felix.Kuehling@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 138/267] drm/amdgpu: Let KFD sync with VM fences
+	Luka Guzenko <l.guzenko@web.de>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 300/379] ALSA: hda/realtek: Enable Mute LED on HP Laptop 14-fq0xxx
 Date: Wed, 21 Feb 2024 14:07:59 +0100
-Message-ID: <20240221125944.381277298@linuxfoundation.org>
+Message-ID: <20240221130003.797323277@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +59,38 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Kuehling <Felix.Kuehling@amd.com>
+From: Luka Guzenko <l.guzenko@web.de>
 
-[ Upstream commit ec9ba4821fa52b5efdbc4cdf0a77497990655231 ]
+commit f0d78972f27dc1d1d51fbace2713ad3cdc60a877 upstream.
 
-Change the rules for amdgpu_sync_resv to let KFD synchronize with VM
-fences on page table reservations. This fixes intermittent memory
-corruption after evictions when using amdgpu_vm_handle_moved to update
-page tables for VM mappings managed through render nodes.
+This HP Laptop uses ALC236 codec with COEF 0x07 controlling the
+mute LED. Enable existing quirk for this device.
 
-Signed-off-by: Felix Kuehling <Felix.Kuehling@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Luka Guzenko <l.guzenko@web.de>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240128155704.2333812-1-l.guzenko@web.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_sync.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_sync.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_sync.c
-index 95e5e93edd18..7e840e560513 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_sync.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_sync.c
-@@ -218,7 +218,8 @@ int amdgpu_sync_resv(struct amdgpu_device *adev,
- 		 */
- 		fence_owner = amdgpu_sync_get_owner(f);
- 		if (fence_owner == AMDGPU_FENCE_OWNER_KFD &&
--		    owner != AMDGPU_FENCE_OWNER_UNDEFINED)
-+		    owner != AMDGPU_FENCE_OWNER_UNDEFINED &&
-+	    owner != AMDGPU_FENCE_OWNER_KFD)
- 			continue;
- 
- 		if (amdgpu_sync_same_dev(adev, f)) {
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9026,6 +9026,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x8786, "HP OMEN 15", ALC285_FIXUP_HP_MUTE_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8787, "HP OMEN 15", ALC285_FIXUP_HP_MUTE_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8788, "HP OMEN 15", ALC285_FIXUP_HP_MUTE_LED),
++	SND_PCI_QUIRK(0x103c, 0x87b7, "HP Laptop 14-fq0xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x87c8, "HP", ALC287_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x87e5, "HP ProBook 440 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x87e7, "HP ProBook 450 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
 
 
 
