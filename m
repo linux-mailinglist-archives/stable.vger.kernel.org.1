@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-22797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BD3085DDE2
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:13:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D2BE85DEC2
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:21:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2672F281001
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:13:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 230A9282E5A
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:21:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E2407F7CB;
-	Wed, 21 Feb 2024 14:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D743A7C6D5;
+	Wed, 21 Feb 2024 14:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a/jeUqk4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T6vzKyYg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0C3E7D3EE;
-	Wed, 21 Feb 2024 14:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B547C0BA;
+	Wed, 21 Feb 2024 14:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524542; cv=none; b=e8dsOcL+Vrc2tzw87HFRSTKKoANbiUREBbRT2eyW/dNhlmzJPb5zE/BK9VCftPAtCL/Mo6p5rIBX5OgPyUXlobeRDJQbFxt/OPqC1STkGafdMATF4kcaguMOLW3G7vlDU81z7U0OB8h2oTVx3ig1Kz+UBiqJMUw8kCZsCJL3lIA=
+	t=1708525301; cv=none; b=hdySfjigk8phgv0y9PMevRtPe29iYgm4Xnfdr4lW7WpDWYnaXd722bdLWuntsb4F9QCsqL2PaMqrenD7z9cU3cWylVwXTbX0gvrXIAJ2kNhw/HL4bExp3S+9vHyOePQ6U+egyNM/pzGfFsMOtdBEP/srwq3Ci8orkt0QkuM21So=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524542; c=relaxed/simple;
-	bh=ehFmc/qQy2LtbUW+zpIli2z++BY0P42g1TFuXbJ/UoI=;
+	s=arc-20240116; t=1708525301; c=relaxed/simple;
+	bh=erI7XGqaLj8+XkPfPcViPpStaOR/oKrl3sLZYsdc134=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W4GYKPvqfPn1FCpnHMKJG17Izp/G1plFLzC3rtH2Swqkk0sxCfDBS/+1c4oMjO/Td5iUx3UdsJcMy2MWfY1BzpW0M9C98YMaegLQrFcfcPFlmLALPGwY8xTDtSxp6Ai0FkZLhe+8yWZh+LRYgNabiHZnzlSNuhacSFzyrC2R5zM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a/jeUqk4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F076C433C7;
-	Wed, 21 Feb 2024 14:09:01 +0000 (UTC)
+	 MIME-Version; b=tnNQxqmDk/Bcph/5aXmrL88+8MdHBrNbfiR4NiLYVLApZAg6w8K0MBX5O5jfl3RxHfXvPPKRtO20AjuTMU1wUNaftVZs/SRM9+/E10Bnc7OX4gGtG4XSker3HrYVNIr+eBCtkdUxKDdwxlTHI9y71h9Gilc+SqRPFetI9LVoF4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T6vzKyYg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACF25C433F1;
+	Wed, 21 Feb 2024 14:21:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524541;
-	bh=ehFmc/qQy2LtbUW+zpIli2z++BY0P42g1TFuXbJ/UoI=;
+	s=korg; t=1708525301;
+	bh=erI7XGqaLj8+XkPfPcViPpStaOR/oKrl3sLZYsdc134=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a/jeUqk4zrGgYMJK1QHGOEluDigCWTZ/mKlKCq3Ybv29D3OYu9E4D/jy5qtfKV7f/
-	 2Le6df0wpwvSFISoMIFxsCGViUVcNLz6a6B+77t3pSfNmCwrC3v7FaKCDbjCKYjtCd
-	 SfxuikEKVRk8FkzKPhiwy2TF9U33cEzINbJFvE7Y=
+	b=T6vzKyYg2XhTFK9kkHO98XaKyuamndj/7BeO4RtMmsMn8LDmCz7rel1Y8F3EioWpT
+	 8Bk3wylO77l97xK7BRqAmsjJYFpdtPaTghFJ2gRXnHTRzjtmrP/yLCit5XZOmMJwVI
+	 VZWmwvR9ZT0O9rHpt1r0ZHZmkjoZX771i/mb/0HE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leonard Dallmayr <leonard.dallmayr@mailbox.org>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.10 276/379] USB: serial: cp210x: add ID for IMST iM871A-USB
-Date: Wed, 21 Feb 2024 14:07:35 +0100
-Message-ID: <20240221130003.070182291@linuxfoundation.org>
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Mao Jinlong <quic_jinlmao@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 115/267] arm64: dts: qcom: msm8996: Fix in-ports is a required property
+Date: Wed, 21 Feb 2024 14:07:36 +0100
+Message-ID: <20240221125943.578743553@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leonard Dallmayr <leonard.dallmayr@mailbox.org>
+From: Mao Jinlong <quic_jinlmao@quicinc.com>
 
-commit 12b17b4eb82a41977eb848048137b5908d52845c upstream.
+[ Upstream commit 9a6fc510a6a3ec150cb7450aec1e5f257e6fc77b ]
 
-The device IMST USB-Stick for Smart Meter is a rebranded IMST iM871A-USB
-Wireless M-Bus USB-adapter. It is used to read wireless water, gas and
-electricity meters.
+Add the inport of funnel@3023000 to fix 'in-ports' is a required property
+warning.
 
-Signed-off-by: Leonard Dallmayr <leonard.dallmayr@mailbox.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Mao Jinlong <quic_jinlmao@quicinc.com>
+Link: https://lore.kernel.org/r/20231210072633.4243-3-quic_jinlmao@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/cp210x.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/qcom/msm8996.dtsi | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
---- a/drivers/usb/serial/cp210x.c
-+++ b/drivers/usb/serial/cp210x.c
-@@ -150,6 +150,7 @@ static const struct usb_device_id id_tab
- 	{ USB_DEVICE(0x10C4, 0x85F8) }, /* Virtenio Preon32 */
- 	{ USB_DEVICE(0x10C4, 0x8664) }, /* AC-Services CAN-IF */
- 	{ USB_DEVICE(0x10C4, 0x8665) }, /* AC-Services OBD-IF */
-+	{ USB_DEVICE(0x10C4, 0x87ED) }, /* IMST USB-Stick for Smart Meter */
- 	{ USB_DEVICE(0x10C4, 0x8856) },	/* CEL EM357 ZigBee USB Stick - LR */
- 	{ USB_DEVICE(0x10C4, 0x8857) },	/* CEL EM357 ZigBee USB Stick */
- 	{ USB_DEVICE(0x10C4, 0x88A4) }, /* MMB Networks ZigBee USB Device */
+diff --git a/arch/arm64/boot/dts/qcom/msm8996.dtsi b/arch/arm64/boot/dts/qcom/msm8996.dtsi
+index f1d3c51ea8d0..fb9556f57f55 100644
+--- a/arch/arm64/boot/dts/qcom/msm8996.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8996.dtsi
+@@ -433,6 +433,19 @@
+ 		};
+ 	};
+ 
++	etm {
++		compatible = "qcom,coresight-remote-etm";
++
++		out-ports {
++			port {
++				modem_etm_out_funnel_in2: endpoint {
++					remote-endpoint =
++					  <&funnel_in2_in_modem_etm>;
++				};
++			};
++		};
++	};
++
+ 	psci {
+ 		compatible = "arm,psci-1.0";
+ 		method = "smc";
+@@ -736,6 +749,14 @@
+ 			clocks = <&rpmcc RPM_QDSS_CLK>, <&rpmcc RPM_QDSS_A_CLK>;
+ 			clock-names = "apb_pclk", "atclk";
+ 
++			in-ports {
++				port {
++					funnel_in2_in_modem_etm: endpoint {
++						remote-endpoint =
++						  <&modem_etm_out_funnel_in2>;
++					};
++				};
++			};
+ 
+ 			out-ports {
+ 				port {
+-- 
+2.43.0
+
 
 
 
