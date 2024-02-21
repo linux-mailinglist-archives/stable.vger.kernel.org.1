@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-22795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3306585DE31
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:16:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE45485DC13
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:49:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BBC40B220D4
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:13:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8DD4EB27A9A
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:49:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E03A07F7C8;
-	Wed, 21 Feb 2024 14:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9ED47BAF6;
+	Wed, 21 Feb 2024 13:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fY6fh+yw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bqkfSWh4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D0CA7F48F;
-	Wed, 21 Feb 2024 14:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B0978B53;
+	Wed, 21 Feb 2024 13:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524535; cv=none; b=ldqx4hs8Gbb0VVJVX1zdFfukDbsQaAkHwnJW1B4gF9npa+zEATacOwYm5iUC1pzFRP4ScRCcyk+ddPVpGLtHXYQS2KVCVzUtaW+E09pUQq8vTjHdO1zc+vV94Qo6s04CTL9H1zDKL7V/D8UlsXDuX8R2IxhsEizwHifOLYP3TgQ=
+	t=1708523324; cv=none; b=I04TFLigoKOqXac7oN8pPMTB9toOzTlViNlwcgjyS04lm19q+sMFsq3g56PFYz6pF79xr66i2v9E5bb521RoWkQW7196nFNlbWbyJ/licUUNY/W4XiBr1iGNhF2r45uN+D37ayLRA7CVtdV9dVLqX8t0PYRhkkguXXaSCLfZ0Xs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524535; c=relaxed/simple;
-	bh=joBs+MEJWf6w3jwbLibw/At5t5KEjd/Yo6YSAdw6n8o=;
+	s=arc-20240116; t=1708523324; c=relaxed/simple;
+	bh=scB8eRB5K67HrhhQlA+z1i7FVS0qaPWCk9ZGToiAlNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E+7LY0K/HpfDM+DhRU0tfc4omP3RfRfva8icKMgA568QDfo6k1a2jbCs4w40P2EtFtxoQbvrlY2d5fvXUeUwDZHra7olU5rzWTQe5Kenw9lG7/hmj6HrBkiuKLGnCsDtutRRzn5oePMHkmdlNPiwv4Q4gQaNKGMgIEIgMEnIqpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fY6fh+yw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 097AAC433C7;
-	Wed, 21 Feb 2024 14:08:54 +0000 (UTC)
+	 MIME-Version; b=UuvxP4xukYOdWq/EEtDBIMXWyXkzdMwnV7q/vEKpoEOhBhukPLn/yWhNFEhEHKgIV3gbEDmIys+zGZJKB2ffmNdxAYDZXCh7Kh2/+uQ6ZNwoOJRrd2gcZvILa7Wnkiy0kDEycoVlRaIf2p9lvUsiDAChhN9d0k9MKDjI8XT80UY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bqkfSWh4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD970C433C7;
+	Wed, 21 Feb 2024 13:48:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524535;
-	bh=joBs+MEJWf6w3jwbLibw/At5t5KEjd/Yo6YSAdw6n8o=;
+	s=korg; t=1708523324;
+	bh=scB8eRB5K67HrhhQlA+z1i7FVS0qaPWCk9ZGToiAlNU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fY6fh+ywXwIciH5lZKc8iDl3G2e75WpmGQgbpKmZhR7juQqMWu1z5oUSyaUbgwfWE
-	 Vo0kqR5DTV70hKFQ79eFJk+nCP7cb+1sKD1Gp0KgXV/HwAX64FHkW+kSWP2UWy1zxG
-	 v8WkbQYyYFEs7V/tGbRirk7Nt6A6weegGiEbvzZ4=
+	b=bqkfSWh4nLwAKqUuU/yPFuwilPpZyV8iziR338S6z9SsLrNv2icL8n3/o4DW+FxxY
+	 Xk1mhF23cVwaiaG9/emRtznTAjy5ew9yPwfIUztUjkca1tbxYUp++OLaH6V0LaOZEo
+	 M4sKf2H/YmbUgmlQOP/Uqa4MuKNNGfE1NLipKpoY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	JackBB Wu <wojackbb@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.10 274/379] USB: serial: qcserial: add new usb-id for Dell Wireless DW5826e
+	"Nysal Jan K.A" <nysal@linux.ibm.com>,
+	Naveen N Rao <naveen@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 5.15 402/476] powerpc/64: Set task pt_regs->link to the LR value on scv entry
 Date: Wed, 21 Feb 2024 14:07:33 +0100
-Message-ID: <20240221130003.012541439@linuxfoundation.org>
+Message-ID: <20240221130022.865075499@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +62,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: JackBB Wu <wojackbb@gmail.com>
+From: Naveen N Rao <naveen@kernel.org>
 
-commit 129690fb229a20b6e563a77a2c85266acecf20bc upstream.
+commit aad98efd0b121f63a2e1c221dcb4d4850128c697 upstream.
 
-Add support for Dell DW5826e with USB-id 0x413c:0x8217 & 0x413c:0x8218.
+Nysal reported that userspace backtraces are missing in offcputime bcc
+tool. As an example:
+    $ sudo ./bcc/tools/offcputime.py -uU
+    Tracing off-CPU time (us) of user threads by user stack... Hit Ctrl-C to end.
 
-It is 0x413c:0x8217
-T:  Bus=02 Lev=01 Prnt=01 Port=05 Cnt=01 Dev#=  4 Spd=480  MxCh= 0
-D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=413c ProdID=8217 Rev= 5.04
-S:  Manufacturer=DELL
-S:  Product=COMPAL Electronics EXM-G1A
-S:  SerialNumber=359302940050401
-C:* #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=qcserial
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=qcserial
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=qcserial
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
-E:  Ad=87(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:* If#= 8 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=88(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+    ^C
+	write
+	-                python (9107)
+	    8
 
-It is 0x413c:0x8218
-T:  Bus=02 Lev=01 Prnt=01 Port=05 Cnt=01 Dev#=  3 Spd=480  MxCh= 0
-D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=413c ProdID=8218 Rev= 0.00
-S:  Manufacturer=DELL
-S:  Product=COMPAL Electronics EXM-G1A
-S:  SerialNumber=359302940050401
-C:* #Ifs= 1 Cfg#= 1 Atr=a0 MxPwr=  2mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=qcserial
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+	write
+	-                sudo (9105)
+	    9
 
-Signed-off-by: JackBB Wu <wojackbb@gmail.com>
+	mmap
+	-                python (9107)
+	    16
+
+	clock_nanosleep
+	-                multipathd (697)
+	    3001604
+
+The offcputime bcc tool attaches a bpf program to a kprobe on
+finish_task_switch(), which is usually hit on a syscall from userspace.
+With the switch to system call vectored, we started setting
+pt_regs->link to zero. This is because system call vectored behaves like
+a function call with LR pointing to the system call return address, and
+with no modification to SRR0/SRR1. The LR value does indicate our next
+instruction, so it is being saved as pt_regs->nip, and pt_regs->link is
+being set to zero. This is not a problem by itself, but BPF uses perf
+callchain infrastructure for capturing stack traces, and that stores LR
+as the second entry in the stack trace. perf has code to cope with the
+second entry being zero, and skips over it. However, generic userspace
+unwinders assume that a zero entry indicates end of the stack trace,
+resulting in a truncated userspace stack trace.
+
+Rather than fixing all userspace unwinders to ignore/skip past the
+second entry, store the real LR value in pt_regs->link so that there
+continues to be a valid, though duplicate entry in the stack trace.
+
+With this change:
+    $ sudo ./bcc/tools/offcputime.py -uU
+    Tracing off-CPU time (us) of user threads by user stack... Hit Ctrl-C to end.
+
+    ^C
+	write
+	write
+	[unknown]
+	[unknown]
+	[unknown]
+	[unknown]
+	[unknown]
+	PyObject_VectorcallMethod
+	[unknown]
+	[unknown]
+	PyObject_CallOneArg
+	PyFile_WriteObject
+	PyFile_WriteString
+	[unknown]
+	[unknown]
+	PyObject_Vectorcall
+	_PyEval_EvalFrameDefault
+	PyEval_EvalCode
+	[unknown]
+	[unknown]
+	[unknown]
+	_PyRun_SimpleFileObject
+	_PyRun_AnyFileObject
+	Py_RunMain
+	[unknown]
+	Py_BytesMain
+	[unknown]
+	__libc_start_main
+	-                python (1293)
+	    7
+
+	write
+	write
+	[unknown]
+	sudo_ev_loop_v1
+	sudo_ev_dispatch_v1
+	[unknown]
+	[unknown]
+	[unknown]
+	[unknown]
+	__libc_start_main
+	-                sudo (1291)
+	    7
+
+	syscall
+	syscall
+	bpf_open_perf_buffer_opts
+	[unknown]
+	[unknown]
+	[unknown]
+	[unknown]
+	_PyObject_MakeTpCall
+	PyObject_Vectorcall
+	_PyEval_EvalFrameDefault
+	PyEval_EvalCode
+	[unknown]
+	[unknown]
+	[unknown]
+	_PyRun_SimpleFileObject
+	_PyRun_AnyFileObject
+	Py_RunMain
+	[unknown]
+	Py_BytesMain
+	[unknown]
+	__libc_start_main
+	-                python (1293)
+	    11
+
+	clock_nanosleep
+	clock_nanosleep
+	nanosleep
+	sleep
+	[unknown]
+	[unknown]
+	__clone
+	-                multipathd (698)
+	    3001661
+
+Fixes: 7fa95f9adaee ("powerpc/64s: system call support for scv/rfscv instructions")
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Reported-by: "Nysal Jan K.A" <nysal@linux.ibm.com>
+Signed-off-by: Naveen N Rao <naveen@kernel.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240202154316.395276-1-naveen@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/qcserial.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/powerpc/kernel/interrupt_64.S |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/serial/qcserial.c
-+++ b/drivers/usb/serial/qcserial.c
-@@ -184,6 +184,8 @@ static const struct usb_device_id id_tab
- 	{DEVICE_SWI(0x413c, 0x81d0)},   /* Dell Wireless 5819 */
- 	{DEVICE_SWI(0x413c, 0x81d1)},   /* Dell Wireless 5818 */
- 	{DEVICE_SWI(0x413c, 0x81d2)},   /* Dell Wireless 5818 */
-+	{DEVICE_SWI(0x413c, 0x8217)},	/* Dell Wireless DW5826e */
-+	{DEVICE_SWI(0x413c, 0x8218)},	/* Dell Wireless DW5826e QDL */
+--- a/arch/powerpc/kernel/interrupt_64.S
++++ b/arch/powerpc/kernel/interrupt_64.S
+@@ -62,7 +62,8 @@ _ASM_NOKPROBE_SYMBOL(system_call_vectore
+ 	mr	r10,r1
+ 	ld	r1,PACAKSAVE(r13)
+ 	std	r10,0(r1)
+-	std	r11,_NIP(r1)
++	std	r11,_LINK(r1)
++	std	r11,_NIP(r1)	/* Saved LR is also the next instruction */
+ 	std	r12,_MSR(r1)
+ 	std	r0,GPR0(r1)
+ 	std	r10,GPR1(r1)
+@@ -85,7 +86,6 @@ _ASM_NOKPROBE_SYMBOL(system_call_vectore
+ 	std	r9,GPR13(r1)
+ 	SAVE_NVGPRS(r1)
+ 	std	r11,_XER(r1)
+-	std	r11,_LINK(r1)
+ 	std	r11,_CTR(r1)
  
- 	/* Huawei devices */
- 	{DEVICE_HWI(0x03f0, 0x581d)},	/* HP lt4112 LTE/HSPA+ Gobi 4G Modem (Huawei me906e) */
+ 	li	r11,\trapnr
 
 
 
