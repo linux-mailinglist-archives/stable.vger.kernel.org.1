@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-22205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0F0D85DADB
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:35:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 885E485DCBB
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:57:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7284BB2626D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:35:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC69D1C236EB
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:57:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16F8A79DD7;
-	Wed, 21 Feb 2024 13:33:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E33B7BB0C;
+	Wed, 21 Feb 2024 13:56:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nUA/9Z5V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F1KGn4L8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C98353FB21;
-	Wed, 21 Feb 2024 13:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D1A876C99;
+	Wed, 21 Feb 2024 13:56:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522427; cv=none; b=pc8dkJP/ivG7C3o0kuH/Chx9UW5V+kpArVorpIcn8PD1GTYUzWrZltH4Qfpl2fLFEQAogcn8uYqsY17SsVmDYnhfn97XlYlMcGXfxx5aupVVS3nTtgHvo17mZMrSowSyxvr6mpKU3/6BoZs1kO/rmzYAMFzyFloXTEB40e51xrc=
+	t=1708523803; cv=none; b=XoLAx3M0owSy5srblFgc9QJL0pnGMtW6WfIkVFwqw8zGHZREce8TtRNyfWRJElW6Ucp/6lafjzQP3XQmVS0UWDCDl/xh5gqaejb589IsF3gBbnzFTLYVJY+l5QptdHG5APr7gwuK//FqNmixbzcgrcyOTUNY8E/JA9vn1JyQAFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522427; c=relaxed/simple;
-	bh=EMfySOiWCOwyh6wyEJxAnIn7x4mrXUjATTP1iP19pjU=;
+	s=arc-20240116; t=1708523803; c=relaxed/simple;
+	bh=eY5qt8OLz8ljHauk47ZZjJvJulPVGYnhb5uPfGrd/KU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BwkZdjXO/lXyULVYXwcU7LcQ1h47F9puFoldpw32fAz9sVdYwBDFPAJCY2+FDDT7XdvIcg+5jBxUnMpeI2qC4sRVnALHd/cV7IuzZzXcYJtRJXNa2K2ZKkLCm7x6qGIx01ReaRT/9dMMlQwV8J6CaZ8Tp5lnXxBYzDk0C+gZxC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nUA/9Z5V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCB6CC433F1;
-	Wed, 21 Feb 2024 13:33:46 +0000 (UTC)
+	 MIME-Version; b=YtmuGkBAlNnDGak67AgGJ16BvxuwqV730HRdVLel16/s8odaYuOsIAKvo1ItiuYEhKUpNHKcgu4cqViS3YSTkPS7gCe1PGmH7EK5BuJtq2Aoyy7/UPI/fU4/rEp4SWi1IkMrMs8YurdfT32HfU8k1b7yeuBf8Z/G/HU7efiwDBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F1KGn4L8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADD2FC433F1;
+	Wed, 21 Feb 2024 13:56:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522427;
-	bh=EMfySOiWCOwyh6wyEJxAnIn7x4mrXUjATTP1iP19pjU=;
+	s=korg; t=1708523803;
+	bh=eY5qt8OLz8ljHauk47ZZjJvJulPVGYnhb5uPfGrd/KU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nUA/9Z5VhZiNJtQ7rYevHxDVh6BCwylJOifxQfY5Nauz9EBzVfx2K5VZ6rRBho6rc
-	 zevcKg0VKeFENWMjgdzq0cSHqDDv2qqKhO543u+jhhcCJz4H7Pn0XTgWOjLGz/bD4J
-	 +vIaSNLGeBwxJ1bBrSk32DZoHl3MpJmUWokkBwVg=
+	b=F1KGn4L8wkpR54NC8Xi/lu0ZZ2Hk3kAcFme1UfK8pcvODmZQ50T8yESIzEqQmLohT
+	 wRzNdTtCWkbVuA5FmVXBL+Jpb6jthd+BEv1JT2H7EFBPmIXzgXyJovR3qpyzGxZh5/
+	 lwWFd2ez4PqV/E476xY19cNT2YzTPhvBQ7m8XC0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 162/476] ext4: unify the type of flexbg_size to unsigned int
+	Faith Ekstrand <faith.ekstrand@collabora.com>,
+	Dave Airlie <airlied@redhat.com>
+Subject: [PATCH 5.10 034/379] nouveau/vmm: dont set addr on the fail path to avoid warning
 Date: Wed, 21 Feb 2024 14:03:33 +0100
-Message-ID: <20240221130013.928716864@linuxfoundation.org>
+Message-ID: <20240221125955.926264655@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,96 +59,121 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Dave Airlie <airlied@redhat.com>
 
-[ Upstream commit 658a52344fb139f9531e7543a6e0015b630feb38 ]
+commit cacea81390fd8c8c85404e5eb2adeb83d87a912e upstream.
 
-The maximum value of flexbg_size is 2^31, but the maximum value of int
-is (2^31 - 1), so overflow may occur when the type of flexbg_size is
-declared as int.
+nvif_vmm_put gets called if addr is set, but if the allocation
+fails we don't need to call put, otherwise we get a warning like
 
-For example, when uninit_mask is initialized in ext4_alloc_group_tables(),
-if flexbg_size == 2^31, the initialized uninit_mask is incorrect, and this
-may causes set_flexbg_block_bitmap() to trigger a BUG_ON().
+[523232.435671] ------------[ cut here ]------------
+[523232.435674] WARNING: CPU: 8 PID: 1505697 at drivers/gpu/drm/nouveau/nvi=
+f/vmm.c:68 nvif_vmm_put+0x72/0x80 [nouveau]
+[523232.435795] Modules linked in: uinput rfcomm snd_seq_dummy snd_hrtimer =
+nf_conntrack_netbios_ns nf_conntrack_broadcast nft_fib_inet nft_fib_ipv4 nf=
+t_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject=
+ nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 ip_=
+set nf_tables nfnetlink qrtr bnep sunrpc binfmt_misc intel_rapl_msr intel_r=
+apl_common intel_uncore_frequency intel_uncore_frequency_common isst_if_com=
+mon iwlmvm nfit libnvdimm vfat fat x86_pkg_temp_thermal intel_powerclamp ma=
+c80211 snd_soc_avs snd_soc_hda_codec coretemp snd_hda_ext_core snd_soc_core=
+ snd_hda_codec_realtek kvm_intel snd_hda_codec_hdmi snd_compress snd_hda_co=
+dec_generic ac97_bus snd_pcm_dmaengine snd_hda_intel libarc4 snd_intel_dspc=
+fg snd_intel_sdw_acpi snd_hda_codec kvm iwlwifi snd_hda_core btusb snd_hwde=
+p btrtl snd_seq btintel irqbypass btbcm rapl snd_seq_device eeepc_wmi btmtk=
+ intel_cstate iTCO_wdt cfg80211 snd_pcm asus_wmi bluetooth intel_pmc_bxt iT=
+CO_vendor_support snd_timer ledtrig_audio pktcdvd snd mei_me
+[523232.435828]  sparse_keymap intel_uncore i2c_i801 platform_profile wmi_b=
+mof mei pcspkr ioatdma soundcore i2c_smbus rfkill idma64 dca joydev acpi_ta=
+d loop zram nouveau drm_ttm_helper ttm video drm_exec drm_gpuvm gpu_sched c=
+rct10dif_pclmul i2c_algo_bit nvme crc32_pclmul crc32c_intel drm_display_hel=
+per polyval_clmulni nvme_core polyval_generic e1000e mxm_wmi cec ghash_clmu=
+lni_intel r8169 sha512_ssse3 nvme_common wmi pinctrl_sunrisepoint uas usb_s=
+torage ip6_tables ip_tables fuse
+[523232.435849] CPU: 8 PID: 1505697 Comm: gnome-shell Tainted: G        W  =
+        6.6.0-rc7-nvk-uapi+ #12
+[523232.435851] Hardware name: System manufacturer System Product Name/ROG =
+STRIX X299-E GAMING II, BIOS 1301 09/24/2021
+[523232.435852] RIP: 0010:nvif_vmm_put+0x72/0x80 [nouveau]
+[523232.435934] Code: 00 00 48 89 e2 be 02 00 00 00 48 c7 04 24 00 00 00 00=
+ 48 89 44 24 08 e8 fc bf ff ff 85
+c0 75 0a 48 c7 43 08 00 00 00 00 eb b3 <0f> 0b eb f2 e8 f5 c9 b2 e6 0f 1f 4=
+4 00 00 90 90 90 90 90 90 90 90
+[523232.435936] RSP: 0018:ffffc900077ffbd8 EFLAGS: 00010282
+[523232.435937] RAX: 00000000fffffffe RBX: ffffc900077ffc00 RCX: 0000000000=
+000010
+[523232.435938] RDX: 0000000000000010 RSI: ffffc900077ffb38 RDI: ffffc90007=
+7ffbd8
+[523232.435940] RBP: ffff888e1c4f2140 R08: 0000000000000000 R09: 0000000000=
+000000
+[523232.435940] R10: 0000000000000000 R11: 0000000000000000 R12: ffff888503=
+811800
+[523232.435941] R13: ffffc900077ffca0 R14: ffff888e1c4f2140 R15: ffff888103=
+17e1e0
+[523232.435942] FS:  00007f933a769640(0000) GS:ffff88905fa00000(0000) knlGS=
+:0000000000000000
+[523232.435943] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[523232.435944] CR2: 00007f930bef7000 CR3: 00000005d0322001 CR4: 0000000000=
+3706e0
+[523232.435945] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000=
+000000
+[523232.435946] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000=
+000400
+[523232.435964] Call Trace:
+[523232.435965]  <TASK>
+[523232.435966]  ? nvif_vmm_put+0x72/0x80 [nouveau]
+[523232.436051]  ? __warn+0x81/0x130
+[523232.436055]  ? nvif_vmm_put+0x72/0x80 [nouveau]
+[523232.436138]  ? report_bug+0x171/0x1a0
+[523232.436142]  ? handle_bug+0x3c/0x80
+[523232.436144]  ? exc_invalid_op+0x17/0x70
+[523232.436145]  ? asm_exc_invalid_op+0x1a/0x20
+[523232.436149]  ? nvif_vmm_put+0x72/0x80 [nouveau]
+[523232.436230]  ? nvif_vmm_put+0x64/0x80 [nouveau]
+[523232.436342]  nouveau_vma_del+0x80/0xd0 [nouveau]
+[523232.436506]  nouveau_vma_new+0x1a0/0x210 [nouveau]
+[523232.436671]  nouveau_gem_object_open+0x1d0/0x1f0 [nouveau]
+[523232.436835]  drm_gem_handle_create_tail+0xd1/0x180
+[523232.436840]  drm_prime_fd_to_handle_ioctl+0x12e/0x200
+[523232.436844]  ? __pfx_drm_prime_fd_to_handle_ioctl+0x10/0x10
+[523232.436847]  drm_ioctl_kernel+0xd3/0x180
+[523232.436849]  drm_ioctl+0x26d/0x4b0
+[523232.436851]  ? __pfx_drm_prime_fd_to_handle_ioctl+0x10/0x10
+[523232.436855]  nouveau_drm_ioctl+0x5a/0xb0 [nouveau]
+[523232.437032]  __x64_sys_ioctl+0x94/0xd0
+[523232.437036]  do_syscall_64+0x5d/0x90
+[523232.437040]  ? syscall_exit_to_user_mode+0x2b/0x40
+[523232.437044]  ? do_syscall_64+0x6c/0x90
+[523232.437046]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
 
-Therefore, the flexbg_size type is declared as unsigned int to avoid
-overflow and memory waste.
-
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20231023013057.2117948-2-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Faith Ekstrand <faith.ekstrand@collabora.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240117213852.295565-1=
+-airlied@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/resize.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_vmm.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/ext4/resize.c b/fs/ext4/resize.c
-index d0c41343a5c4..492683235423 100644
---- a/fs/ext4/resize.c
-+++ b/fs/ext4/resize.c
-@@ -237,7 +237,7 @@ struct ext4_new_flex_group_data {
-  *
-  * Returns NULL on failure otherwise address of the allocated structure.
-  */
--static struct ext4_new_flex_group_data *alloc_flex_gd(unsigned long flexbg_size)
-+static struct ext4_new_flex_group_data *alloc_flex_gd(unsigned int flexbg_size)
- {
- 	struct ext4_new_flex_group_data *flex_gd;
- 
-@@ -292,7 +292,7 @@ static void free_flex_gd(struct ext4_new_flex_group_data *flex_gd)
-  */
- static int ext4_alloc_group_tables(struct super_block *sb,
- 				struct ext4_new_flex_group_data *flex_gd,
--				int flexbg_size)
-+				unsigned int flexbg_size)
- {
- 	struct ext4_new_group_data *group_data = flex_gd->groups;
- 	ext4_fsblk_t start_blk;
-@@ -393,12 +393,12 @@ static int ext4_alloc_group_tables(struct super_block *sb,
- 		group = group_data[0].group;
- 
- 		printk(KERN_DEBUG "EXT4-fs: adding a flex group with "
--		       "%d groups, flexbg size is %d:\n", flex_gd->count,
-+		       "%u groups, flexbg size is %u:\n", flex_gd->count,
- 		       flexbg_size);
- 
- 		for (i = 0; i < flex_gd->count; i++) {
- 			ext4_debug(
--			       "adding %s group %u: %u blocks (%d free, %d mdata blocks)\n",
-+			       "adding %s group %u: %u blocks (%u free, %u mdata blocks)\n",
- 			       ext4_bg_has_super(sb, group + i) ? "normal" :
- 			       "no-super", group + i,
- 			       group_data[i].blocks_count,
-@@ -1577,7 +1577,7 @@ static int ext4_flex_group_add(struct super_block *sb,
- static int ext4_setup_next_flex_gd(struct super_block *sb,
- 				    struct ext4_new_flex_group_data *flex_gd,
- 				    ext4_fsblk_t n_blocks_count,
--				    unsigned long flexbg_size)
-+				    unsigned int flexbg_size)
- {
- 	struct ext4_sb_info *sbi = EXT4_SB(sb);
- 	struct ext4_super_block *es = sbi->s_es;
-@@ -1963,8 +1963,9 @@ int ext4_resize_fs(struct super_block *sb, ext4_fsblk_t n_blocks_count)
- 	ext4_fsblk_t o_blocks_count;
- 	ext4_fsblk_t n_blocks_count_retry = 0;
- 	unsigned long last_update_time = 0;
--	int err = 0, flexbg_size = 1 << sbi->s_log_groups_per_flex;
-+	int err = 0;
- 	int meta_bg;
-+	unsigned int flexbg_size = ext4_flex_bg_size(sbi);
- 
- 	/* See if the device is actually as big as what was requested */
- 	bh = ext4_sb_bread(sb, n_blocks_count - 1, 0);
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/nouveau/nouveau_vmm.c
++++ b/drivers/gpu/drm/nouveau/nouveau_vmm.c
+@@ -108,6 +108,9 @@ nouveau_vma_new(struct nouveau_bo *nvbo,
+ 	} else {
+ 		ret =3D nvif_vmm_get(&vmm->vmm, PTES, false, mem->mem.page, 0,
+ 				   mem->mem.size, &tmp);
++		if (ret)
++			goto done;
++
+ 		vma->addr =3D tmp.addr;
+ 	}
+=20
 
 
 
