@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-22748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4D4F85DD9E
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:07:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A1CA85DE81
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:19:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B1981F222BE
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:07:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7F712857C1
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:19:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0DC87E110;
-	Wed, 21 Feb 2024 14:06:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 636A47CF29;
+	Wed, 21 Feb 2024 14:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CKuKXV94"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ALI+3vW4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D3C7C09A;
-	Wed, 21 Feb 2024 14:06:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 215587BB10;
+	Wed, 21 Feb 2024 14:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524382; cv=none; b=CeXaRWls4wYak7QxmAKey6CmiVKal5PH7O/YWmFd+0hFsn5rVWLnibBu1hxu9J0iKl1yQ90jLU/oKKIspaQxvK8mFHwISNXluwauGGVt67kikrxY2Q7uFCBRnkL1pVjGYCBZMiBSGOjKnSml11T+yOvzZs2GOIlv2U3HdDCU2Oc=
+	t=1708525124; cv=none; b=GCfmEIFHhHi/BGsNUY+WXPcy10X4FibkNQ7srqBQJ4/kDW0szmAurc/ADFr0xy0UjgV3nK1wvqA4r0rm06uLZBo1WJd9GI7l4yz6VMOQNvdz2X0odYHxxuaq47K3t1TS9XoliAQG9ne4cF2n+KvdQdChWjeyUfUkNHMGJJxjzng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524382; c=relaxed/simple;
-	bh=I2WpASzRV60LC6TTkX6zxn8viD+1XhUjbRzE7zkGXgo=;
+	s=arc-20240116; t=1708525124; c=relaxed/simple;
+	bh=kiVSikLLzhvTM/MnKTZ8rD3zBlR1LVetxSBmYMuboeA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mipUWvsp/2oI1Pzj3Mr+Jlygk4b5zIfL5fXXxUlbwAY4nnTLCSw7muoZJkxmicbDYTucMkIGBr3SNzjnXc1qbgcFPV2FsSFwgxMoIF0PgzF7y5P2/WUALcFGSGrMThynT59YB02M00ZtF51GHJC0D51d3JwrSCXcxHRQ4peuPYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CKuKXV94; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEB82C433C7;
-	Wed, 21 Feb 2024 14:06:21 +0000 (UTC)
+	 MIME-Version; b=azzk/fwkqRBo+f+1RAM6ZoJ3FoI0KZa0ri9XsVvREkjTzl3AEqfZiBczFpiVTe5zbUHKN1ML1mA2P2/9gi9lhZ2ZgwB1N66n0NI2QgXTFNqG02bm/3eq7tM4TNvXsw6C+65UYJgj5QSW/iQOsF35v1snxFfAHIRiuOqHneLGFyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ALI+3vW4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82881C433F1;
+	Wed, 21 Feb 2024 14:18:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524382;
-	bh=I2WpASzRV60LC6TTkX6zxn8viD+1XhUjbRzE7zkGXgo=;
+	s=korg; t=1708525124;
+	bh=kiVSikLLzhvTM/MnKTZ8rD3zBlR1LVetxSBmYMuboeA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CKuKXV94szSZJTnmUJza5/Ek6tlEEcVX07X8mHml5DTd0dbXk7I7n4ZZB0nPeXxAN
-	 poZtFS375Wo9enRJ2FJiS2vSDkcQBb4GGaTWnzXNXaIAaljUIRNQA4mnYDiLeMTjBM
-	 Ko4qGJr/ZryEJz1VBfgcG33ERxbbE6cjvUt/kCo4=
+	b=ALI+3vW4267XMgw79+gqTlY1IRRT+06QufA0/pftPwEixEpZaTJtqgRCb/BKmXOSy
+	 O2x/1ioT94mL7TPDyF8iHPwm5+ET+yx2A8u9uI23SvYmw7u3NtQFMT44WUTEk4/hM2
+	 dFu/oXLS8D/ku6VOItaGbefdSRtG86Sc02S7tx3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arjun Roy <arjunroy@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Soheil Hassas Yeganeh <soheil@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Youquan Song <youquan.song@intel.com>,
+	Zhiquan Li <zhiquan1.li@intel.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Naoya Horiguchi <naoya.horiguchi@nec.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 228/379] net-zerocopy: Refactor frag-is-remappable test.
+Subject: [PATCH 5.4 066/267] x86/mce: Mark fatal MCEs page as poison to avoid panic in the kdump kernel
 Date: Wed, 21 Feb 2024 14:06:47 +0100
-Message-ID: <20240221130001.642129937@linuxfoundation.org>
+Message-ID: <20240221125942.065862053@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,89 +64,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arjun Roy <arjunroy@google.com>
+From: Zhiquan Li <zhiquan1.li@intel.com>
 
-[ Upstream commit 98917cf0d6eda01e8c3c34d35398d46b247b6fd3 ]
+[ Upstream commit 9f3b130048bfa2e44a8cfb1b616f826d9d5d8188 ]
 
-Refactor frag-is-remappable test for tcp receive zerocopy. This is
-part of a patch set that introduces short-circuited hybrid copies
-for small receive operations, which results in roughly 33% fewer
-syscalls for small RPC scenarios.
+Memory errors don't happen very often, especially fatal ones. However,
+in large-scale scenarios such as data centers, that probability
+increases with the amount of machines present.
 
-Signed-off-by: Arjun Roy <arjunroy@google.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Soheil Hassas Yeganeh <soheil@google.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 577e4432f3ac ("tcp: add sanity checks to rx zerocopy")
+When a fatal machine check happens, mce_panic() is called based on the
+severity grading of that error. The page containing the error is not
+marked as poison.
+
+However, when kexec is enabled, tools like makedumpfile understand when
+pages are marked as poison and do not touch them so as not to cause
+a fatal machine check exception again while dumping the previous
+kernel's memory.
+
+Therefore, mark the page containing the error as poisoned so that the
+kexec'ed kernel can avoid accessing the page.
+
+  [ bp: Rewrite commit message and comment. ]
+
+Co-developed-by: Youquan Song <youquan.song@intel.com>
+Signed-off-by: Youquan Song <youquan.song@intel.com>
+Signed-off-by: Zhiquan Li <zhiquan1.li@intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Naoya Horiguchi <naoya.horiguchi@nec.com>
+Link: https://lore.kernel.org/r/20231014051754.3759099-1-zhiquan1.li@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp.c | 34 ++++++++++++++++++++++++++--------
- 1 file changed, 26 insertions(+), 8 deletions(-)
+ arch/x86/kernel/cpu/mce/core.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 27e0d3dfc5bd..18541527abce 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -1778,6 +1778,26 @@ static skb_frag_t *skb_advance_to_frag(struct sk_buff *skb, u32 offset_skb,
- 	return frag;
- }
+diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
+index 9b98a7d8ac60..84c0e5c2518c 100644
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -42,6 +42,7 @@
+ #include <linux/export.h>
+ #include <linux/jump_label.h>
+ #include <linux/set_memory.h>
++#include <linux/kexec.h>
  
-+static bool can_map_frag(const skb_frag_t *frag)
-+{
-+	return skb_frag_size(frag) == PAGE_SIZE && !skb_frag_off(frag);
-+}
-+
-+static int find_next_mappable_frag(const skb_frag_t *frag,
-+				   int remaining_in_skb)
-+{
-+	int offset = 0;
-+
-+	if (likely(can_map_frag(frag)))
-+		return 0;
-+
-+	while (offset < remaining_in_skb && !can_map_frag(frag)) {
-+		offset += skb_frag_size(frag);
-+		++frag;
-+	}
-+	return offset;
-+}
-+
- static int tcp_copy_straggler_data(struct tcp_zerocopy_receive *zc,
- 				   struct sk_buff *skb, u32 copylen,
- 				   u32 *offset, u32 *seq)
-@@ -1903,6 +1923,8 @@ static int tcp_zerocopy_receive(struct sock *sk,
- 	ret = 0;
- 	curr_addr = address;
- 	while (length + PAGE_SIZE <= zc->length) {
-+		int mappable_offset;
-+
- 		if (zc->recv_skip_hint < PAGE_SIZE) {
- 			u32 offset_frag;
+ #include <asm/intel-family.h>
+ #include <asm/processor.h>
+@@ -315,6 +316,7 @@ static noinstr void mce_panic(const char *msg, struct mce *final, char *exp)
+ 	struct llist_node *pending;
+ 	struct mce_evt_llist *l;
+ 	int apei_err = 0;
++	struct page *p;
  
-@@ -1930,15 +1952,11 @@ static int tcp_zerocopy_receive(struct sock *sk,
- 			if (!frags || offset_frag)
- 				break;
- 		}
--		if (skb_frag_size(frags) != PAGE_SIZE || skb_frag_off(frags)) {
--			int remaining = zc->recv_skip_hint;
- 
--			while (remaining && (skb_frag_size(frags) != PAGE_SIZE ||
--					     skb_frag_off(frags))) {
--				remaining -= skb_frag_size(frags);
--				frags++;
--			}
--			zc->recv_skip_hint -= remaining;
-+		mappable_offset = find_next_mappable_frag(frags,
-+							  zc->recv_skip_hint);
-+		if (mappable_offset) {
-+			zc->recv_skip_hint = mappable_offset;
- 			break;
- 		}
- 		pages[pg_idx] = skb_frag_page(frags);
+ 	/*
+ 	 * Allow instrumentation around external facilities usage. Not that it
+@@ -370,6 +372,20 @@ static noinstr void mce_panic(const char *msg, struct mce *final, char *exp)
+ 	if (!fake_panic) {
+ 		if (panic_timeout == 0)
+ 			panic_timeout = mca_cfg.panic_timeout;
++
++		/*
++		 * Kdump skips the poisoned page in order to avoid
++		 * touching the error bits again. Poison the page even
++		 * if the error is fatal and the machine is about to
++		 * panic.
++		 */
++		if (kexec_crash_loaded()) {
++			if (final && (final->status & MCI_STATUS_ADDRV)) {
++				p = pfn_to_online_page(final->addr >> PAGE_SHIFT);
++				if (p)
++					SetPageHWPoison(p);
++			}
++		}
+ 		panic(msg);
+ 	} else
+ 		pr_emerg(HW_ERR "Fake kernel panic: %s\n", msg);
 -- 
 2.43.0
 
