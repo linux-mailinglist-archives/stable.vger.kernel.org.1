@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-22935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81B3B85DE59
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:17:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D56485DD73
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:05:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DC40285803
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:17:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D04461F231C9
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:05:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57E617BB11;
-	Wed, 21 Feb 2024 14:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52EE57EF09;
+	Wed, 21 Feb 2024 14:04:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0rJb9vzk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TzwGy6Dy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16D6869942;
-	Wed, 21 Feb 2024 14:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7937EEFF;
+	Wed, 21 Feb 2024 14:04:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525016; cv=none; b=Nv0wP55cuvx+6YDLrdyP1SggeYpyFpsz7z7c1AhQVjTOKQOtEu0bixzo4FYPwYFh02S6hLQVduL32a4zhfRTrq1Ny/cn8qnatJ0jWode7j5esD3togkyfQwaDzrXQ3p2qSKOQoy9CtNmrl1emFcGRy45Fpx5fF7DYo4VDxHNPk4=
+	t=1708524277; cv=none; b=LGdOOCP81+wYIEbyVI2fcpkPMKLHAmVeUJYtnDD8620wSNaRWw4YbCbamGmI15gdXwpDLVp0a65Cqk/eq+5bxnueokkXJJDLRCSd8N7XszpjwEwaAY5iuGx4Z4I3mIfcOrUuZwqAKhHOnmGlVzN0V5sipFbf9TToD4teC6qPnSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525016; c=relaxed/simple;
-	bh=Rn50Vn/MtdohU0VqS9KI6Xl6tMsGAZm5Jx0x5ixNEiA=;
+	s=arc-20240116; t=1708524277; c=relaxed/simple;
+	bh=eQzQC0fsKl09h0zP5TXDxn2YIAcZ4an0mlRClf0MUC4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lw05tepKjDsVd0a9/je5otxno6svQuGVmuMWJ7JFYIpGB8tsZlop/ObpEBIu1W17eNt6G9VzKFSoWRaDIsWCKUYFm+FORS19ApUjo4xlQiaksej9QHn8FdEV3UJ6vhAXecVm5AHi0SiHx/05gcK2YN/cbkyG35sMWul9qg+c8b4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0rJb9vzk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C08AC433F1;
-	Wed, 21 Feb 2024 14:16:55 +0000 (UTC)
+	 MIME-Version; b=PcD3L75aT3Tb7koPQtWkHgSf8YkWtswFuLHrjgc1yablvOlvBDaoAkhTZ5Cx4FmYOyZE3N+PN/2g1pOsOWSDO6IMIDo2ZIlhujI0VCEsm/Dj484Hivn2zm5t7s3PhOBvudsVrdgu6QiVTmPYDt0LuMsvD7O1U2/SXI9JxZk6XoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TzwGy6Dy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83730C41612;
+	Wed, 21 Feb 2024 14:04:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525016;
-	bh=Rn50Vn/MtdohU0VqS9KI6Xl6tMsGAZm5Jx0x5ixNEiA=;
+	s=korg; t=1708524276;
+	bh=eQzQC0fsKl09h0zP5TXDxn2YIAcZ4an0mlRClf0MUC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0rJb9vzkdfQK7KBuTH1QtuFMynhLYvUayjaC0Hr371X1/MAFP5BL9xPYhczXtM72J
-	 rmLnqX7zOOA1KbtSwbh3HaQLssqCD6hQ5RJZkdUF5Vkz2/5NlNUuTbnicMGNdWxeqh
-	 cBc1IbS75O3wmt+8Vo949JH30aoM9pLTERrIRUaw=
+	b=TzwGy6DyytblDxv7HhXSi4/da0OEPraF/rmtjPJVJgWo3srPokD1iGSDg5fWgrS6A
+	 5mEfbyjRZOeVqbdhPdt20uoxgjV9NkTIZBRLCpuZNDOFhpBkgOYLX60ShoTrZR0ARd
+	 3OMCS0uUsaVMfxceK196HhWDlAQN4Rn3pzrDz+Lk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhengchao Shao <shaozhengchao@huawei.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Werner Fischer <devlists@wefi.net>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 034/267] netlink: fix potential sleeping issue in mqueue_flush_file
+Subject: [PATCH 5.10 196/379] watchdog: it87_wdt: Keep WDTCTRL bit 3 unmodified for IT8784/IT8786
 Date: Wed, 21 Feb 2024 14:06:15 +0100
-Message-ID: <20240221125941.103408505@linuxfoundation.org>
+Message-ID: <20240221130000.703138418@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchao Shao <shaozhengchao@huawei.com>
+From: Werner Fischer <devlists@wefi.net>
 
-[ Upstream commit 234ec0b6034b16869d45128b8cd2dc6ffe596f04 ]
+[ Upstream commit d12971849d71781c1e4ffd1117d4878ce233d319 ]
 
-I analyze the potential sleeping issue of the following processes:
-Thread A                                Thread B
-...                                     netlink_create  //ref = 1
-do_mq_notify                            ...
-  sock = netlink_getsockbyfilp          ...     //ref = 2
-  info->notify_sock = sock;             ...
-...                                     netlink_sendmsg
-...                                       skb = netlink_alloc_large_skb  //skb->head is vmalloced
-...                                       netlink_unicast
-...                                         sk = netlink_getsockbyportid //ref = 3
-...                                         netlink_sendskb
-...                                           __netlink_sendskb
-...                                             skb_queue_tail //put skb to sk_receive_queue
-...                                         sock_put //ref = 2
-...                                     ...
-...                                     netlink_release
-...                                       deferred_put_nlk_sk //ref = 1
-mqueue_flush_file
-  spin_lock
-  remove_notification
-    netlink_sendskb
-      sock_put  //ref = 0
-        sk_free
-          ...
-          __sk_destruct
-            netlink_sock_destruct
-              skb_queue_purge  //get skb from sk_receive_queue
-                ...
-                __skb_queue_purge_reason
-                  kfree_skb_reason
-                    __kfree_skb
-                    ...
-                    skb_release_all
-                      skb_release_head_state
-                        netlink_skb_destructor
-                          vfree(skb->head)  //sleeping while holding spinlock
+WDTCTRL bit 3 sets the mode choice for the clock input of IT8784/IT8786.
+Some motherboards require this bit to be set to 1 (= PCICLK mode),
+otherwise the watchdog functionality gets broken. The BIOS of those
+motherboards sets WDTCTRL bit 3 already to 1.
 
-In netlink_sendmsg, if the memory pointed to by skb->head is allocated by
-vmalloc, and is put to sk_receive_queue queue, also the skb is not freed.
-When the mqueue executes flush, the sleeping bug will occur. Use
-vfree_atomic instead of vfree in netlink_skb_destructor to solve the issue.
+Instead of setting all bits of WDTCTRL to 0 by writing 0x00 to it, keep
+bit 3 of it unchanged for IT8784/IT8786 chips. In this way, bit 3 keeps
+the status as set by the BIOS of the motherboard.
 
-Fixes: c05cdb1b864f ("netlink: allow large data transfers from user-space")
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Link: https://lore.kernel.org/r/20240122011807.2110357-1-shaozhengchao@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Watchdog tests have been successful with this patch with the following
+systems:
+  IT8784: Thomas-Krenn LES plus v2 (YANLING YL-KBRL2 V2)
+  IT8786: Thomas-Krenn LES plus v3 (YANLING YL-CLU L2)
+  IT8786: Thomas-Krenn LES network 6L v2 (YANLING YL-CLU6L)
+
+Link: https://lore.kernel.org/all/140b264d-341f-465b-8715-dacfe84b3f71@roeck-us.net/
+
+Signed-off-by: Werner Fischer <devlists@wefi.net>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20231213094525.11849-4-devlists@wefi.net
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netlink/af_netlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/watchdog/it87_wdt.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-index 3cb27a27b420..bd9b3cd25a76 100644
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -365,7 +365,7 @@ static void netlink_skb_destructor(struct sk_buff *skb)
- 	if (is_vmalloc_addr(skb->head)) {
- 		if (!skb->cloned ||
- 		    !atomic_dec_return(&(skb_shinfo(skb)->dataref)))
--			vfree(skb->head);
-+			vfree_atomic(skb->head);
+diff --git a/drivers/watchdog/it87_wdt.c b/drivers/watchdog/it87_wdt.c
+index 2b4831842162..6340ca058f89 100644
+--- a/drivers/watchdog/it87_wdt.c
++++ b/drivers/watchdog/it87_wdt.c
+@@ -263,6 +263,7 @@ static struct watchdog_device wdt_dev = {
+ static int __init it87_wdt_init(void)
+ {
+ 	u8  chip_rev;
++	u8 ctrl;
+ 	int rc;
  
- 		skb->head = NULL;
- 	}
+ 	rc = superio_enter();
+@@ -321,7 +322,18 @@ static int __init it87_wdt_init(void)
+ 
+ 	superio_select(GPIO);
+ 	superio_outb(WDT_TOV1, WDTCFG);
+-	superio_outb(0x00, WDTCTRL);
++
++	switch (chip_type) {
++	case IT8784_ID:
++	case IT8786_ID:
++		ctrl = superio_inb(WDTCTRL);
++		ctrl &= 0x08;
++		superio_outb(ctrl, WDTCTRL);
++		break;
++	default:
++		superio_outb(0x00, WDTCTRL);
++	}
++
+ 	superio_exit();
+ 
+ 	if (timeout < 1 || timeout > max_units * 60) {
 -- 
 2.43.0
 
