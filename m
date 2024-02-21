@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-22353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3044385DB9C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:43:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F60285DF32
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:25:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A85E5B26E65
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:43:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6AF53B264ED
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:17:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3157F77A03;
-	Wed, 21 Feb 2024 13:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62BCB7EF08;
+	Wed, 21 Feb 2024 14:16:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hjjncxJR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y8xHTeqd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35B71E4B2;
-	Wed, 21 Feb 2024 13:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2005A7EEF7;
+	Wed, 21 Feb 2024 14:16:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522993; cv=none; b=BoQ1Q0OaNZgEJ2LTAFHMsduKv9uIRwrc4HJishhtnFKF5+1ajPhUQxzPEHoxFYicM8I+jrIMytS6nxz8AD8asEzB3AMQRRnG7jvhziSh3FSQjiJYzXJPhLD9oN5xZK2G64VzJ+nBz8DrcqaHyvcsXevIo1nHjouYLgApWq4/8j8=
+	t=1708524971; cv=none; b=uZEgDHBuxxSzQwT1HTQ+E0AIIn11jxY5iNc1rsqBsHv0PwbdsGxaWGrbADuaQEp+QrsFMYfWCe9zBOcKp4dbyUxIDGxIlEM8hTJ01Q+TEhVke+gqjfUtd5KI7mKAHAPGEPq+zfEU4zcWmpKCRYD8ZkJPCWF9KQPpLQPbKDlPxc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522993; c=relaxed/simple;
-	bh=5+/z8bytpaaJtSXdULuyjm++hpsrV1DNBAiXn9U+K6w=;
+	s=arc-20240116; t=1708524971; c=relaxed/simple;
+	bh=5vzBi9xoK9jjfntcpkgV+QUVedwdoSZ5U62wJFw9ajk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=evxFpX7C4l6inPNih32yooeBtmXdquDWw+d6S5BamuEMxgIksuZW9CDDk3AUdWPQaNpdNB4gN95b7RQ5Soy33tUs0jvUAGbJSkyXoa7AhyMUMhKk07qGghITjMTqmOAcMA41Z4TZ+TYrFJ11h8p4lMwr/PTSJXFzDO7kW1PzLsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hjjncxJR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 719E7C433A6;
-	Wed, 21 Feb 2024 13:43:12 +0000 (UTC)
+	 MIME-Version; b=Y1xcVxbRw/a/gsOlpfM+o0IBUWRbHIfEXTv9kBdnY730XYP9WUKWakOVMH3SGjZvj4nyESqnhzjqyGGaNgZBYblCMPfqY7XpWgJz3Ru4m1rjSX2v1AqHDjjZklQ3wv5MbarlCjwcHq5xKJ+cBIaQh8TMXbyEU6YkX2zNUxXVBWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y8xHTeqd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E642C43390;
+	Wed, 21 Feb 2024 14:16:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522992;
-	bh=5+/z8bytpaaJtSXdULuyjm++hpsrV1DNBAiXn9U+K6w=;
+	s=korg; t=1708524969;
+	bh=5vzBi9xoK9jjfntcpkgV+QUVedwdoSZ5U62wJFw9ajk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hjjncxJR/e363boxgaPq/pVw14qSu1lc/mGFHYXDppWDs0ZQ4IAYsZQ7xrxS5Xt1B
-	 n7F4H8l3d+NPgow5phoqa2ExtdJFQiIIIPSRYVG/5TmlxMGS6Y9xgB3UHa9ytQy74E
-	 Shx6EiProVGeUNyafXgYUiM9W8HYZGL7ispDIeX4=
+	b=Y8xHTeqdmfpga8qpxY5Osym2JJN3a0LZ8XPJPiLC0i5JKyvF0dklZ5mXGhCfcH2Xm
+	 snSq84+fRd1yqu3qiEgqnPRN4cufy01zS5jNfwlPSsEq0W26E9saAwXYfDUDwIdre2
+	 XTmv79BAXdInJejsW5sOhZQcuvqBLYGO9v41pwW8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Loic Prylli <lprylli@netflix.com>,
-	Alexander Hansen <alexander.hansen@9elements.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 310/476] hwmon: (aspeed-pwm-tacho) mutex for tach reading
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.4 020/267] block: Remove special-casing of compound pages
 Date: Wed, 21 Feb 2024 14:06:01 +0100
-Message-ID: <20240221130019.482364752@linuxfoundation.org>
+Message-ID: <20240221125940.684073698@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +61,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Loic Prylli <lprylli@netflix.com>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-[ Upstream commit 1168491e7f53581ba7b6014a39a49cfbbb722feb ]
+commit 1b151e2435fc3a9b10c8946c6aebe9f3e1938c55 upstream.
 
-the ASPEED_PTCR_RESULT Register can only hold the result for a
-single fan input. Adding a mutex to protect the register until the
-reading is done.
+The special casing was originally added in pre-git history; reproducing
+the commit log here:
 
-Signed-off-by: Loic Prylli <lprylli@netflix.com>
-Signed-off-by: Alexander Hansen <alexander.hansen@9elements.com>
-Fixes: 2d7a548a3eff ("drivers: hwmon: Support for ASPEED PWM/Fan tach")
-Link: https://lore.kernel.org/r/121d888762a1232ef403cf35230ccf7b3887083a.1699007401.git.alexander.hansen@9elements.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+> commit a318a92567d77
+> Author: Andrew Morton <akpm@osdl.org>
+> Date:   Sun Sep 21 01:42:22 2003 -0700
+>
+>     [PATCH] Speed up direct-io hugetlbpage handling
+>
+>     This patch short-circuits all the direct-io page dirtying logic for
+>     higher-order pages.  Without this, we pointlessly bounce BIOs up to
+>     keventd all the time.
+
+In the last twenty years, compound pages have become used for more than
+just hugetlb.  Rewrite these functions to operate on folios instead
+of pages and remove the special case for hugetlbfs; I don't think
+it's needed any more (and if it is, we can put it back in as a call
+to folio_test_hugetlb()).
+
+This was found by inspection; as far as I can tell, this bug can lead
+to pages used as the destination of a direct I/O read not being marked
+as dirty.  If those pages are then reclaimed by the MM without being
+dirtied for some other reason, they won't be written out.  Then when
+they're faulted back in, they will not contain the data they should.
+It'll take a pretty unusual setup to produce this problem with several
+races all going the wrong way.
+
+This problem predates the folio work; it could for example have been
+triggered by mmaping a THP in tmpfs and using that as the target of an
+O_DIRECT read.
+
+Fixes: 800d8c63b2e98 ("shmem: add huge pages support")
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/aspeed-pwm-tacho.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ block/bio.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hwmon/aspeed-pwm-tacho.c b/drivers/hwmon/aspeed-pwm-tacho.c
-index 3cb88d6fbec0..424613e5b14f 100644
---- a/drivers/hwmon/aspeed-pwm-tacho.c
-+++ b/drivers/hwmon/aspeed-pwm-tacho.c
-@@ -194,6 +194,8 @@ struct aspeed_pwm_tacho_data {
- 	u8 fan_tach_ch_source[16];
- 	struct aspeed_cooling_device *cdev[8];
- 	const struct attribute_group *groups[3];
-+	/* protects access to shared ASPEED_PTCR_RESULT */
-+	struct mutex tach_lock;
- };
+--- a/block/bio.c
++++ b/block/bio.c
+@@ -884,7 +884,7 @@ void bio_release_pages(struct bio *bio,
+ 		return;
  
- enum type { TYPEM, TYPEN, TYPEO };
-@@ -528,6 +530,8 @@ static int aspeed_get_fan_tach_ch_rpm(struct aspeed_pwm_tacho_data *priv,
- 	u8 fan_tach_ch_source, type, mode, both;
- 	int ret;
+ 	bio_for_each_segment_all(bvec, bio, iter_all) {
+-		if (mark_dirty && !PageCompound(bvec->bv_page))
++		if (mark_dirty)
+ 			set_page_dirty_lock(bvec->bv_page);
+ 		put_page(bvec->bv_page);
+ 	}
+@@ -1691,8 +1691,7 @@ void bio_set_pages_dirty(struct bio *bio
+ 	struct bvec_iter_all iter_all;
  
-+	mutex_lock(&priv->tach_lock);
-+
- 	regmap_write(priv->regmap, ASPEED_PTCR_TRIGGER, 0);
- 	regmap_write(priv->regmap, ASPEED_PTCR_TRIGGER, 0x1 << fan_tach_ch);
+ 	bio_for_each_segment_all(bvec, bio, iter_all) {
+-		if (!PageCompound(bvec->bv_page))
+-			set_page_dirty_lock(bvec->bv_page);
++		set_page_dirty_lock(bvec->bv_page);
+ 	}
+ }
  
-@@ -545,6 +549,8 @@ static int aspeed_get_fan_tach_ch_rpm(struct aspeed_pwm_tacho_data *priv,
- 		ASPEED_RPM_STATUS_SLEEP_USEC,
- 		usec);
+@@ -1740,7 +1739,7 @@ void bio_check_pages_dirty(struct bio *b
+ 	struct bvec_iter_all iter_all;
  
-+	mutex_unlock(&priv->tach_lock);
-+
- 	/* return -ETIMEDOUT if we didn't get an answer. */
- 	if (ret)
- 		return ret;
-@@ -904,6 +910,7 @@ static int aspeed_pwm_tacho_probe(struct platform_device *pdev)
- 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
- 	if (!priv)
- 		return -ENOMEM;
-+	mutex_init(&priv->tach_lock);
- 	priv->regmap = devm_regmap_init(dev, NULL, (__force void *)regs,
- 			&aspeed_pwm_tacho_regmap_config);
- 	if (IS_ERR(priv->regmap))
--- 
-2.43.0
-
+ 	bio_for_each_segment_all(bvec, bio, iter_all) {
+-		if (!PageDirty(bvec->bv_page) && !PageCompound(bvec->bv_page))
++		if (!PageDirty(bvec->bv_page))
+ 			goto defer;
+ 	}
+ 
 
 
 
