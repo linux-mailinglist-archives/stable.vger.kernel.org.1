@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-23060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1114C85DF08
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:24:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF44985DE08
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:14:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4320F1C23CF0
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:24:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BE07283F2D
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27F7A69E00;
-	Wed, 21 Feb 2024 14:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0133E80621;
+	Wed, 21 Feb 2024 14:11:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d9+qvnyo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XHkp4f/l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBD2A3CF42;
-	Wed, 21 Feb 2024 14:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2BD07CF32;
+	Wed, 21 Feb 2024 14:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525448; cv=none; b=ry1sQ1hX8QjAqKlD/cyfDfPpZAXeNrxd+x8RhS3KDMRo3tf48ppMgCre+f1AMQwXdpv9X8d4R7pjSnKoPhdBqQNh14xcXOG5qggZO1le0hcEhSshdBDKg8MOQx4CK7KMhV+3iFXOFHpooMQ6vGMmwQDi/11Z/Z7sekjwDN37gOk=
+	t=1708524684; cv=none; b=jNZnRGvPihHp5HCIAbBqgMkxjeWYNZDTJEbFWr4mOWUtBZIvkWAXv8uZt/zBv4iAhP/uYCCqOjNNhc7iDS2Un2BBAxTq6kSdhfBJNr+U7VLh60U0aElMQ0m1uhC2Y00FHiw1LgRdDIyQfpP64CdpWyOtSv4MTn15bqe5SMIieMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525448; c=relaxed/simple;
-	bh=WVC0KxXho6P5b2SY1S4VORYeGFuBKMDFrpfeBEvY+xM=;
+	s=arc-20240116; t=1708524684; c=relaxed/simple;
+	bh=6YMS2WwaJ4KjOzFKuj3Fpdi0SdPs7M1fiv9Eda5aU7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IYceETKNcYhhseY9Pn80BgiSYoPpJU4ZvmvqPy7NTKO/b+DXEuu6keTgN27QRgXLblWsIMGv4LtCDWpD+EePLe/vyYSf8VXgwAVjWsJMcABvYK4NZJQ508LDtA/F2lK5p52euum0rrFAhmhGmAp/OjTmL1GUCE4u20+owWhiJLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d9+qvnyo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AD6AC433C7;
-	Wed, 21 Feb 2024 14:24:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KfuzgHQqzp4SaNSf3qHn9hnxloG0erNVPTe8ViLpX3v60uwOkxP6R44xgvpLPNEqAhggEPIe/JRxp7fPFGW8pnvGWwx5IVkfEVXAm7RKkcs8pxA71/eSeuwLSHPYzYsdVpFncefz0w7GiJDfZCArcK1EmvpwKy9oFjlH5gKIbng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XHkp4f/l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0DE0C433C7;
+	Wed, 21 Feb 2024 14:11:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525448;
-	bh=WVC0KxXho6P5b2SY1S4VORYeGFuBKMDFrpfeBEvY+xM=;
+	s=korg; t=1708524684;
+	bh=6YMS2WwaJ4KjOzFKuj3Fpdi0SdPs7M1fiv9Eda5aU7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d9+qvnyov7lt4l0YowHB4nLbtFfpDVxNKZOrEQh4DWqEWcYhBz8vH+z6hKPhlerli
-	 0qDiPWXJVjJoc8kQ9VP156x0KD5OFm5DV1rSQ9BS0E//Fw/JgfzVHsYOONosDBmly2
-	 z/W75oXO469spWxJCof8ym2a7Pd4KcNv19ESwXiA=
+	b=XHkp4f/lSfSKcyQoU3RPc9cjq0Z5ZgevbZA2+88VjEjN9UO5k+pLFT8XBklMNUWjf
+	 AtUIdw+InI5BgZSW0ARJ9aXNTuvjo6YTp+1YtU+o17oLXKDwy18Ob4V6IJa9FninRo
+	 +FZBarrCZd0jnnLQKbggo7At9jkWrMpjaiGgbSHA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Richter <tmricht@linux.ibm.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 157/267] perf: Fix the nr_addr_filters fix
+	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+	Martijn Coenen <maco@android.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Steven Moreland <smoreland@google.com>,
+	Carlos Llamas <cmllamas@google.com>
+Subject: [PATCH 5.10 319/379] binder: signal epoll threads of self-work
 Date: Wed, 21 Feb 2024 14:08:18 +0100
-Message-ID: <20240221125945.003883258@linuxfoundation.org>
+Message-ID: <20240221130004.382005339@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +62,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Carlos Llamas <cmllamas@google.com>
 
-[ Upstream commit 388a1fb7da6aaa1970c7e2a7d7fcd983a87a8484 ]
+commit 97830f3c3088638ff90b20dfba2eb4d487bf14d7 upstream.
 
-Thomas reported that commit 652ffc2104ec ("perf/core: Fix narrow
-startup race when creating the perf nr_addr_filters sysfs file") made
-the entire attribute group vanish, instead of only the nr_addr_filters
-attribute.
+In (e)poll mode, threads often depend on I/O events to determine when
+data is ready for consumption. Within binder, a thread may initiate a
+command via BINDER_WRITE_READ without a read buffer and then make use
+of epoll_wait() or similar to consume any responses afterwards.
 
-Additionally a stray return.
+It is then crucial that epoll threads are signaled via wakeup when they
+queue their own work. Otherwise, they risk waiting indefinitely for an
+event leaving their work unhandled. What is worse, subsequent commands
+won't trigger a wakeup either as the thread has pending work.
 
-Insufficient coffee was involved with both writing and merging the
-patch.
-
-Fixes: 652ffc2104ec ("perf/core: Fix narrow startup race when creating the perf nr_addr_filters sysfs file")
-Reported-by: Thomas Richter <tmricht@linux.ibm.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Thomas Richter <tmricht@linux.ibm.com>
-Link: https://lkml.kernel.org/r/20231122100756.GP8262@noisy.programming.kicks-ass.net
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 457b9a6f09f0 ("Staging: android: add binder driver")
+Cc: Arve Hjønnevåg <arve@android.com>
+Cc: Martijn Coenen <maco@android.com>
+Cc: Alice Ryhl <aliceryhl@google.com>
+Cc: Steven Moreland <smoreland@google.com>
+Cc: stable@vger.kernel.org # v4.19+
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Link: https://lore.kernel.org/r/20240131215347.1808751-1-cmllamas@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/events/core.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/android/binder.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 3ec29a27d877..f18a5bbc66ef 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -10089,12 +10089,10 @@ static umode_t pmu_dev_is_visible(struct kobject *kobj, struct attribute *a, int
- 	struct device *dev = kobj_to_dev(kobj);
- 	struct pmu *pmu = dev_get_drvdata(dev);
- 
--	if (!pmu->nr_addr_filters)
-+	if (n == 2 && !pmu->nr_addr_filters)
- 		return 0;
- 
- 	return a->mode;
--
--	return 0;
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -836,6 +836,16 @@ binder_enqueue_thread_work_ilocked(struc
+ {
+ 	WARN_ON(!list_empty(&thread->waiting_thread_node));
+ 	binder_enqueue_work_ilocked(work, &thread->todo);
++
++	/* (e)poll-based threads require an explicit wakeup signal when
++	 * queuing their own work; they rely on these events to consume
++	 * messages without I/O block. Without it, threads risk waiting
++	 * indefinitely without handling the work.
++	 */
++	if (thread->looper & BINDER_LOOPER_STATE_POLL &&
++	    thread->pid == current->pid && !thread->process_todo)
++		wake_up_interruptible_sync(&thread->wait);
++
+ 	thread->process_todo = true;
  }
  
- static struct attribute_group pmu_dev_attr_group = {
--- 
-2.43.0
-
 
 
 
