@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-23134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E06885DF6D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:28:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE96985DEE7
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:22:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39FAB28503A
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:28:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A188CB2C0FE
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:15:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E02587C08D;
-	Wed, 21 Feb 2024 14:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC787F480;
+	Wed, 21 Feb 2024 14:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KFxiNHQU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s0aUuo2H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FAA24C62;
-	Wed, 21 Feb 2024 14:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C3D67BB1F;
+	Wed, 21 Feb 2024 14:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525679; cv=none; b=mciH0Q/JeacMUvq1o9ykknZuntj6g6u4uWOtavV3DWuvxY+3uGiuALnhxtRnZDKdHnMngg84pJjI8QkvXSxMMCBbWzFfIVs3PnL3ge8ch5AB/c1EPbeaJEbQnIP5EsTcO+DiB3EU/r0TYj20212nLQx6Z7X9AKoxRqynbuNBkUk=
+	t=1708524836; cv=none; b=WW8obyNCPcd8ltxNavZV/O53PjyjHgcvWkY/LFMbzv1jDlzxd8YEQBlbfChvZ+YsuGDI7PDK3KM3aJjJKCEfSlx4i7vyRMnWDMGxc8P4lITgfZnnPE11uVxO1EmTCOsWNsuMDGOgJCQCOSfruzQ+soq1NKuYd50aBPxLZC0mcfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525679; c=relaxed/simple;
-	bh=xWN2Lo9R4wYRE2/5m0wk21rIhR1dfrBjiEvJBjNyuNE=;
+	s=arc-20240116; t=1708524836; c=relaxed/simple;
+	bh=UEb7zeyuLRrcDmUObbMW8S74OZJMLyHcbxYg9FNaQi4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cQtkx8GmiPGiEdPRYmIGyiLUBYgHEdBE10Lh7ikhk2B1AZUrcyg1UAXskH+GenH4IWgrAQx9oesWTm8HoapySlWTncdkaF9QwPH9jp9kCjLvbCigt6FLndWrn8/gBwJLXVFXmG8+9BBCDUPJLckfQmRa1t1NxLTTzcHtC7smV+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KFxiNHQU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 116D9C433C7;
-	Wed, 21 Feb 2024 14:27:58 +0000 (UTC)
+	 MIME-Version; b=EFWslOov2yVJvKpi+5i3hLU0JaI4g2YKjPsgiETorjgORc4Dyxe5Ew7R0pUOY3cnhWKCQ4XKQb+HY3DtnK9yMFHhQbN3yAVX+Qcc9jvFn5KnoFV0DNxUZE5HE9d8V7NgG1k78r/0qyPocru32CTQ+ROiYAoSWrv1BUqflzRYHQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s0aUuo2H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7352C433C7;
+	Wed, 21 Feb 2024 14:13:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525679;
-	bh=xWN2Lo9R4wYRE2/5m0wk21rIhR1dfrBjiEvJBjNyuNE=;
+	s=korg; t=1708524836;
+	bh=UEb7zeyuLRrcDmUObbMW8S74OZJMLyHcbxYg9FNaQi4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KFxiNHQU4Aw7dCkz0Be73WvYKmtsMhf4mDLQujpdQe6iCt8z7LaKHWLRnk5LQoOlX
-	 D6HrUwqz7/xuCG2C3+WTUoTH3oD0rZdXmcfFjcvfcJw2KcXk4ftzMWfjGelV2vqcr/
-	 +FV/KIQ5Be4uJK71mwc1GxCh57Awtc9qPrM4U75c=
+	b=s0aUuo2HKg4qaa0I1EVeDQHgkAB7WztrCjWWFoUZgJ9hmhVeukQr1r63ONRoxdmFd
+	 DSvz8Uaskg+sB7NJYo09Ll9Tc2Sd/hckaCMwoUIViiGZLRVrJEoUj979qx4JrOymxQ
+	 L+7906YrI8Z8hdvGa4OriKWAo6G9wKS88Vimu2mA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jon Hunter <jonathanh@nvidia.com>,
-	kernel test robot <lkp@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.4 201/267] net: stmmac: xgmac: use #define for string constants
+	Kees Cook <keescook@chromium.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 363/379] scripts: decode_stacktrace: demangle Rust symbols
 Date: Wed, 21 Feb 2024 14:09:02 +0100
-Message-ID: <20240221125946.475986260@linuxfoundation.org>
+Message-ID: <20240221130005.804185033@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,129 +64,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Horman <horms@kernel.org>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-commit 1692b9775e745f84b69dc8ad0075b0855a43db4e upstream.
+[ Upstream commit 99115db4ecc87af73415939439ec604ea0531e6f ]
 
-The cited commit introduces and uses the string constants dpp_tx_err and
-dpp_rx_err. These are assigned to constant fields of the array
-dwxgmac3_error_desc.
+Recent versions of both Binutils (`c++filt`) and LLVM (`llvm-cxxfilt`)
+provide Rust v0 mangling support.
 
-It has been reported that on GCC 6 and 7.5.0 this results in warnings
-such as:
-
-  .../dwxgmac2_core.c:836:20: error: initialiser element is not constant
-   { true, "TDPES0", dpp_tx_err },
-
-I have been able to reproduce this using: GCC 7.5.0, 8.4.0, 9.4.0 and 10.5.0.
-But not GCC 13.2.0.
-
-So it seems this effects older compilers but not newer ones.
-As Jon points out in his report, the minimum compiler supported by
-the kernel is GCC 5.1, so it does seem that this ought to be fixed.
-
-It is not clear to me what combination of 'const', if any, would address
-this problem.  So this patch takes of using #defines for the string
-constants
-
-Compile tested only.
-
-Fixes: 46eba193d04f ("net: stmmac: xgmac: fix handling of DPP safety error for DMA channels")
-Reported-by: Jon Hunter <jonathanh@nvidia.com>
-Closes: https://lore.kernel.org/netdev/c25eb595-8d91-40ea-9f52-efa15ebafdbc@nvidia.com/
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202402081135.lAxxBXHk-lkp@intel.com/
-Signed-off-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240208-xgmac-const-v1-1-e69a1eeabfc8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Co-developed-by: Alex Gaynor <alex.gaynor@gmail.com>
+Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
+Co-developed-by: Wedson Almeida Filho <wedsonaf@google.com>
+Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Stable-dep-of: efbd63983533 ("scripts/decode_stacktrace.sh: optionally use LLVM utilities")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c |   69 ++++++++++----------
- 1 file changed, 35 insertions(+), 34 deletions(-)
+ scripts/decode_stacktrace.sh | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-@@ -757,41 +757,42 @@ static const struct dwxgmac3_error_desc
- 	{ false, "UNKNOWN", "Unknown Error" }, /* 31 */
- };
+diff --git a/scripts/decode_stacktrace.sh b/scripts/decode_stacktrace.sh
+index 51d48bf65fd7..2157332750d5 100755
+--- a/scripts/decode_stacktrace.sh
++++ b/scripts/decode_stacktrace.sh
+@@ -9,6 +9,14 @@ if [[ $# < 1 ]]; then
+ 	exit 1
+ fi
  
--static const char * const dpp_rx_err = "Read Rx Descriptor Parity checker Error";
--static const char * const dpp_tx_err = "Read Tx Descriptor Parity checker Error";
-+#define DPP_RX_ERR "Read Rx Descriptor Parity checker Error"
-+#define DPP_TX_ERR "Read Tx Descriptor Parity checker Error"
++# Try to find a Rust demangler
++if type llvm-cxxfilt >/dev/null 2>&1 ; then
++	cppfilt=llvm-cxxfilt
++elif type c++filt >/dev/null 2>&1 ; then
++	cppfilt=c++filt
++	cppfilt_opts=-i
++fi
 +
- static const struct dwxgmac3_error_desc dwxgmac3_dma_dpp_errors[32] = {
--	{ true, "TDPES0", dpp_tx_err },
--	{ true, "TDPES1", dpp_tx_err },
--	{ true, "TDPES2", dpp_tx_err },
--	{ true, "TDPES3", dpp_tx_err },
--	{ true, "TDPES4", dpp_tx_err },
--	{ true, "TDPES5", dpp_tx_err },
--	{ true, "TDPES6", dpp_tx_err },
--	{ true, "TDPES7", dpp_tx_err },
--	{ true, "TDPES8", dpp_tx_err },
--	{ true, "TDPES9", dpp_tx_err },
--	{ true, "TDPES10", dpp_tx_err },
--	{ true, "TDPES11", dpp_tx_err },
--	{ true, "TDPES12", dpp_tx_err },
--	{ true, "TDPES13", dpp_tx_err },
--	{ true, "TDPES14", dpp_tx_err },
--	{ true, "TDPES15", dpp_tx_err },
--	{ true, "RDPES0", dpp_rx_err },
--	{ true, "RDPES1", dpp_rx_err },
--	{ true, "RDPES2", dpp_rx_err },
--	{ true, "RDPES3", dpp_rx_err },
--	{ true, "RDPES4", dpp_rx_err },
--	{ true, "RDPES5", dpp_rx_err },
--	{ true, "RDPES6", dpp_rx_err },
--	{ true, "RDPES7", dpp_rx_err },
--	{ true, "RDPES8", dpp_rx_err },
--	{ true, "RDPES9", dpp_rx_err },
--	{ true, "RDPES10", dpp_rx_err },
--	{ true, "RDPES11", dpp_rx_err },
--	{ true, "RDPES12", dpp_rx_err },
--	{ true, "RDPES13", dpp_rx_err },
--	{ true, "RDPES14", dpp_rx_err },
--	{ true, "RDPES15", dpp_rx_err },
-+	{ true, "TDPES0", DPP_TX_ERR },
-+	{ true, "TDPES1", DPP_TX_ERR },
-+	{ true, "TDPES2", DPP_TX_ERR },
-+	{ true, "TDPES3", DPP_TX_ERR },
-+	{ true, "TDPES4", DPP_TX_ERR },
-+	{ true, "TDPES5", DPP_TX_ERR },
-+	{ true, "TDPES6", DPP_TX_ERR },
-+	{ true, "TDPES7", DPP_TX_ERR },
-+	{ true, "TDPES8", DPP_TX_ERR },
-+	{ true, "TDPES9", DPP_TX_ERR },
-+	{ true, "TDPES10", DPP_TX_ERR },
-+	{ true, "TDPES11", DPP_TX_ERR },
-+	{ true, "TDPES12", DPP_TX_ERR },
-+	{ true, "TDPES13", DPP_TX_ERR },
-+	{ true, "TDPES14", DPP_TX_ERR },
-+	{ true, "TDPES15", DPP_TX_ERR },
-+	{ true, "RDPES0", DPP_RX_ERR },
-+	{ true, "RDPES1", DPP_RX_ERR },
-+	{ true, "RDPES2", DPP_RX_ERR },
-+	{ true, "RDPES3", DPP_RX_ERR },
-+	{ true, "RDPES4", DPP_RX_ERR },
-+	{ true, "RDPES5", DPP_RX_ERR },
-+	{ true, "RDPES6", DPP_RX_ERR },
-+	{ true, "RDPES7", DPP_RX_ERR },
-+	{ true, "RDPES8", DPP_RX_ERR },
-+	{ true, "RDPES9", DPP_RX_ERR },
-+	{ true, "RDPES10", DPP_RX_ERR },
-+	{ true, "RDPES11", DPP_RX_ERR },
-+	{ true, "RDPES12", DPP_RX_ERR },
-+	{ true, "RDPES13", DPP_RX_ERR },
-+	{ true, "RDPES14", DPP_RX_ERR },
-+	{ true, "RDPES15", DPP_RX_ERR },
- };
+ if [[ $1 == "-r" ]] ; then
+ 	vmlinux=""
+ 	basepath="auto"
+@@ -157,6 +165,12 @@ parse_symbol() {
+ 	# In the case of inlines, move everything to same line
+ 	code=${code//$'\n'/' '}
  
- static void dwxgmac3_handle_dma_err(struct net_device *ndev,
++	# Demangle if the name looks like a Rust symbol and if
++	# we got a Rust demangler
++	if [[ $name =~ ^_R && $cppfilt != "" ]] ; then
++		name=$("$cppfilt" "$cppfilt_opts" "$name")
++	fi
++
+ 	# Replace old address with pretty line numbers
+ 	symbol="$segment$name ($code)"
+ }
+-- 
+2.43.0
+
 
 
 
