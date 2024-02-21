@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-23043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5CC085DEF4
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:23:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3474E85DC35
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:50:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 552661F22655
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:23:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65CEC1C2352E
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:50:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 346ED7BAF7;
-	Wed, 21 Feb 2024 14:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E432379DAB;
+	Wed, 21 Feb 2024 13:50:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0VR1dsn3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zuCo2Gv0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7A1D79DAE;
-	Wed, 21 Feb 2024 14:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A383969942;
+	Wed, 21 Feb 2024 13:50:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525389; cv=none; b=tYMqnq3MJC9zRO+5oGNzZBiL+nI5Vvmp2MzW5fOh8jRMFVR5QJkfLFwOgD94bGxyFtzG//vQYGzj3ioPJ5Ps0+VxPUkxWAcCMZkPa4yfJKzj1Wns+lt9KXfo8C2ENvkwxVY0k3iFUxgfhSPsCQyFBie4sAjgD+EZ9MhkuRlsnkw=
+	t=1708523419; cv=none; b=fdqhVGBd/gn0mraBViKj1gh76eY/tQUS4lvIdbH2zP2jh14S0iwzLTiBKW0G8vcQQFP+Ua4Xc2JfPlc0FVqjcM+b8ux/L+hkOLXiTpROwLqfMD6GDTYM9YSjQ3Nzfyhrx5/KAnz2F8k1oXmiLfw1Hz37EN7g9+6HEHLu8ams7HQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525389; c=relaxed/simple;
-	bh=qHjmAa91sfAcpKdlQvJev4QsmBaREOqcLZGFFPNGyJ8=;
+	s=arc-20240116; t=1708523419; c=relaxed/simple;
+	bh=cp89iE8V4iT78vY2rPN7fEhJbu2PhOGx9jb9x06c+8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JMRtdkZ9RQHw8mWbO/X0q7tKUoLNlj4aN5VnvTgVDMX8xs8ikS4RGtvqqOUKyGuR3dNFYnXV+uPDkkpr0e9Eip1RJ82QJXNNArTHpI+Y9W3pCXTHSxBZVh3XdaMRYE/V/tLy/C0zYN0lVD1FAxSP0Nn7vg33D0H6LBmCkqFa+M0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0VR1dsn3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DF1DC433F1;
-	Wed, 21 Feb 2024 14:23:08 +0000 (UTC)
+	 MIME-Version; b=Q+W7lUvdeAXGbspjpMZ4s8VHKfvdoTySWcVW5WdeMcdmGa5MpENoNlndEwoK+VQzipxVUDpkFulyaVv7J5jtKlbQey3izQwYcvNc8Pq++7nLFs0q+whOAqfVsC4Ue2vh5guBDcAuljWUzvbCSwkMaY9kx39PmvQuJIGHouyTLWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zuCo2Gv0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AEB2C433F1;
+	Wed, 21 Feb 2024 13:50:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525388;
-	bh=qHjmAa91sfAcpKdlQvJev4QsmBaREOqcLZGFFPNGyJ8=;
+	s=korg; t=1708523419;
+	bh=cp89iE8V4iT78vY2rPN7fEhJbu2PhOGx9jb9x06c+8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0VR1dsn3pfNRcmjvWj7esMfbvHrS6IcxK1DgpfLwY52T9OkawBwuqytSdoJtICb4h
-	 a2ye/thA9Jnr/fvtnS8pMdCYxQ6+RxDYNqN8flHPw8FiNyQbtZfRo+tfWLwosPOWWZ
-	 D3yj6dnYJ/fbppkd/1GPOhiTPdt801QebfvHxEj0=
+	b=zuCo2Gv0EvuKdgLgKVYE2L6CxNaegNrQrqfaD4JllsSjVxrRBEvRR6BURHAyEcy9U
+	 zV9mJ4odl9YPo+C5u/bGxbTxP1cCv7kGqEG6Zu/YQ4rOxcnEM2EKK2RVyUv0+coFcM
+	 eKyDLqybCxK2xP12ZzNdtN/DCNY9CR+TIMUZSVCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Peter Lafreniere <peter@n8pjl.ca>,
-	Richard Weinberger <richard@nod.at>,
+	David Lin <yu-hao.lin@nxp.com>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <error27@gmail.com>,
+	Brian Norris <briannorris@chromium.org>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 141/267] um: Fix naming clash between UML and scheduler
+Subject: [PATCH 5.15 431/476] wifi: mwifiex: fix uninitialized firmware_stat
 Date: Wed, 21 Feb 2024 14:08:02 +0100
-Message-ID: <20240221125944.476300530@linuxfoundation.org>
+Message-ID: <20240221130023.958578187@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +65,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+From: David Lin <yu-hao.lin@nxp.com>
 
-[ Upstream commit 541d4e4d435c8b9bfd29f70a1da4a2db97794e0a ]
+[ Upstream commit 3df95e265924ac898c1a38a0c01846dd0bd3b354 ]
 
-__cant_sleep was already used and exported by the scheduler.
-The name had to be changed to a UML specific one.
+Variable firmware_stat is possible to be used without initialization.
 
-Signed-off-by: Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Reviewed-by: Peter Lafreniere <peter@n8pjl.ca>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: David Lin <yu-hao.lin@nxp.com>
+Fixes: 1c5d463c0770 ("wifi: mwifiex: add extra delay for firmware ready")
+Cc: stable@vger.kernel.org
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <error27@gmail.com>
+Closes: https://lore.kernel.org/r/202312192236.ZflaWYCw-lkp@intel.com/
+Acked-by: Brian Norris <briannorris@chromium.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20231221015511.1032128-1-yu-hao.lin@nxp.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/include/shared/kern_util.h | 2 +-
- arch/um/kernel/process.c           | 2 +-
- arch/um/os-Linux/helper.c          | 6 +++---
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/sdio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/um/include/shared/kern_util.h b/arch/um/include/shared/kern_util.h
-index ccafb62e8cce..42dc0e47d3ad 100644
---- a/arch/um/include/shared/kern_util.h
-+++ b/arch/um/include/shared/kern_util.h
-@@ -49,7 +49,7 @@ extern void do_uml_exitcalls(void);
-  * Are we disallowed to sleep? Used to choose between GFP_KERNEL and
-  * GFP_ATOMIC.
-  */
--extern int __cant_sleep(void);
-+extern int __uml_cant_sleep(void);
- extern int get_current_pid(void);
- extern int copy_from_user_proc(void *to, void *from, int size);
- extern int cpu(void);
-diff --git a/arch/um/kernel/process.c b/arch/um/kernel/process.c
-index d71dd7725bef..f185d19fd9b6 100644
---- a/arch/um/kernel/process.c
-+++ b/arch/um/kernel/process.c
-@@ -258,7 +258,7 @@ void arch_cpu_idle(void)
- 	local_irq_enable();
- }
+diff --git a/drivers/net/wireless/marvell/mwifiex/sdio.c b/drivers/net/wireless/marvell/mwifiex/sdio.c
+index dd4bfb7d71ee..45f46a445a6c 100644
+--- a/drivers/net/wireless/marvell/mwifiex/sdio.c
++++ b/drivers/net/wireless/marvell/mwifiex/sdio.c
+@@ -790,7 +790,7 @@ static int mwifiex_check_fw_status(struct mwifiex_adapter *adapter,
+ {
+ 	struct sdio_mmc_card *card = adapter->card;
+ 	int ret = 0;
+-	u16 firmware_stat;
++	u16 firmware_stat = 0;
+ 	u32 tries;
  
--int __cant_sleep(void) {
-+int __uml_cant_sleep(void) {
- 	return in_atomic() || irqs_disabled() || in_interrupt();
- 	/* Is in_interrupt() really needed? */
- }
-diff --git a/arch/um/os-Linux/helper.c b/arch/um/os-Linux/helper.c
-index 9fa6e4187d4f..57a27555092f 100644
---- a/arch/um/os-Linux/helper.c
-+++ b/arch/um/os-Linux/helper.c
-@@ -45,7 +45,7 @@ int run_helper(void (*pre_exec)(void *), void *pre_data, char **argv)
- 	unsigned long stack, sp;
- 	int pid, fds[2], ret, n;
- 
--	stack = alloc_stack(0, __cant_sleep());
-+	stack = alloc_stack(0, __uml_cant_sleep());
- 	if (stack == 0)
- 		return -ENOMEM;
- 
-@@ -69,7 +69,7 @@ int run_helper(void (*pre_exec)(void *), void *pre_data, char **argv)
- 	data.pre_data = pre_data;
- 	data.argv = argv;
- 	data.fd = fds[1];
--	data.buf = __cant_sleep() ? uml_kmalloc(PATH_MAX, UM_GFP_ATOMIC) :
-+	data.buf = __uml_cant_sleep() ? uml_kmalloc(PATH_MAX, UM_GFP_ATOMIC) :
- 					uml_kmalloc(PATH_MAX, UM_GFP_KERNEL);
- 	pid = clone(helper_child, (void *) sp, CLONE_VM, &data);
- 	if (pid < 0) {
-@@ -116,7 +116,7 @@ int run_helper_thread(int (*proc)(void *), void *arg, unsigned int flags,
- 	unsigned long stack, sp;
- 	int pid, status, err;
- 
--	stack = alloc_stack(0, __cant_sleep());
-+	stack = alloc_stack(0, __uml_cant_sleep());
- 	if (stack == 0)
- 		return -ENOMEM;
- 
+ 	for (tries = 0; tries < poll_num; tries++) {
 -- 
 2.43.0
 
