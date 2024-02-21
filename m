@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-22133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 457AB85DA83
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:32:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C7AC85DA5E
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:31:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F100A281E5D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:32:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E146F1F23CAC
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:31:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0FAA73161;
-	Wed, 21 Feb 2024 13:29:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 131227C09C;
+	Wed, 21 Feb 2024 13:27:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2dcRhzcc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pZdITSzm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EBEE7B3EA;
-	Wed, 21 Feb 2024 13:29:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09C07C08D;
+	Wed, 21 Feb 2024 13:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522143; cv=none; b=AY8zBTFE7e1+jFoW9TyfrRRZRdPF4jmoPr/fPibKQfB0DTaqOnwCC00Ja2gNioXgA3liDhbFS3KP/ix2uhhsAPVV1y60kQTQLYkwldQx3oJrZ3rdHiTTRLxxleGtpScu2RnrPL0RwWv88nKeym6IHgQOPxxsGlYu6siL/KsFMc8=
+	t=1708522034; cv=none; b=Y9t5p8xxsyWPowYPXYbSqxCkmWdRzW2HrQhTb6j/ujSwkMz+SAbXFmivbdi3Nsczwt8Q7ZdHCtCUCJ/6DhOXtWXD8gpdjc6DMSrBLLXbLIT4pywwiuWE1emVVrhgW3i7hsBJvDQG2Vf1gpwf0GP3983gLfoPsXNtrbs1ANe74X4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522143; c=relaxed/simple;
-	bh=rdIS2Eo574y+jEJlYZduh+DFMWE/QBUFMqJkLLYMy68=;
+	s=arc-20240116; t=1708522034; c=relaxed/simple;
+	bh=H085vX9IPKzFhBYGAZjFchiEeDfs61g/xm/kuvq8cZg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bogzQF244Yur5T5OUQzAkWuSlUabMraLMfYBSXgPtfBYf8v9OYflc3C1nT3609TswQEOshYuEKILPvSyB0CEIWuTB/nefV1nMaiHJNg6X9/nq0OlTEv6QdLDpVBF+yPrBvTM4YF1PrZzJ7U9MAkll0rGghz7RxlGe26m3Il9Y/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2dcRhzcc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5B05C433C7;
-	Wed, 21 Feb 2024 13:29:02 +0000 (UTC)
+	 MIME-Version; b=YwtN3EqxZYOFgpTJ+u91cYrTjQTF+IzzH75WIlK4FFOBiEeJUydxu5BXL4CNte1CM1b+JLedHnpcH0zbWONTf3y4xJYCzdBKQTJvcdkpPxyE+PRzmiovzSujoJENCsC4tVnKUQMkvJBPGe+XJo1o/NGaAv7gWHAYZdrr0k5nt1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pZdITSzm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48C22C433C7;
+	Wed, 21 Feb 2024 13:27:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522143;
-	bh=rdIS2Eo574y+jEJlYZduh+DFMWE/QBUFMqJkLLYMy68=;
+	s=korg; t=1708522034;
+	bh=H085vX9IPKzFhBYGAZjFchiEeDfs61g/xm/kuvq8cZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2dcRhzccz4P8wwClmAP3j70BHP5hKLmRO4CLX8A6dcWrVhSJOZDUGCfKIG78zuYB2
-	 Pp6C1KnfG8AnGdLLYBmyXG17UkkJPIB5OCc+A+tx3/zHFVV8hNt/c1oUFhGaiU8YNZ
-	 gRPl9T+tgnxY1l4dfspSuUxAJt2KQis/D8yyzcV8=
+	b=pZdITSzmby/zVq8BSbjApPsZByApoKLGg993+4+jRBRcakcY6vSbGRhNTHQBvdfYu
+	 jnB+v5V56LQu8OgFN8QmDAM0y2jZszPRAkkESE7KbcTByGrP7JTN8tfb2sJYGmsq+6
+	 5BrSMKsTHzV7BiRAYmQUuK40989PrvGXH2M+lOg4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
+	Salvatore Dipietro <dipiets@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 053/476] afs: Hide silly-rename files from userspace
-Date: Wed, 21 Feb 2024 14:01:44 +0100
-Message-ID: <20240221130009.884956991@linuxfoundation.org>
+Subject: [PATCH 5.15 054/476] tcp: Add memory barrier to tcp_push()
+Date: Wed, 21 Feb 2024 14:01:45 +0100
+Message-ID: <20240221130009.920247008@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
 References: <20240221130007.738356493@linuxfoundation.org>
@@ -67,52 +67,99 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Salvatore Dipietro <dipiets@amazon.com>
 
-[ Upstream commit 57e9d49c54528c49b8bffe6d99d782ea051ea534 ]
+[ Upstream commit 7267e8dcad6b2f9fce05a6a06335d7040acbc2b6 ]
 
-There appears to be a race between silly-rename files being created/removed
-and various userspace tools iterating over the contents of a directory,
-leading to such errors as:
+On CPUs with weak memory models, reads and updates performed by tcp_push
+to the sk variables can get reordered leaving the socket throttled when
+it should not. The tasklet running tcp_wfree() may also not observe the
+memory updates in time and will skip flushing any packets throttled by
+tcp_push(), delaying the sending. This can pathologically cause 40ms
+extra latency due to bad interactions with delayed acks.
 
-	find: './kernel/.tmp_cpio_dir/include/dt-bindings/reset/.__afs2080': No such file or directory
-	tar: ./include/linux/greybus/.__afs3C95: File removed before we read it
+Adding a memory barrier in tcp_push removes the bug, similarly to the
+previous commit bf06200e732d ("tcp: tsq: fix nonagle handling").
+smp_mb__after_atomic() is used to not incur in unnecessary overhead
+on x86 since not affected.
 
-when building a kernel.
+Patch has been tested using an AWS c7g.2xlarge instance with Ubuntu
+22.04 and Apache Tomcat 9.0.83 running the basic servlet below:
 
-Fix afs_readdir() so that it doesn't return .__afsXXXX silly-rename files
-to userspace.  This doesn't stop them being looked up directly by name as
-we need to be able to look them up from within the kernel as part of the
-silly-rename algorithm.
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-Fixes: 79ddbfa500b3 ("afs: Implement sillyrename for unlink and rename")
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
+public class HelloWorldServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+        response.setContentType("text/html;charset=utf-8");
+        OutputStreamWriter osw = new OutputStreamWriter(response.getOutputStream(),"UTF-8");
+        String s = "a".repeat(3096);
+        osw.write(s,0,s.length());
+        osw.flush();
+    }
+}
+
+Load was applied using wrk2 (https://github.com/kinvolk/wrk2) from an AWS
+c6i.8xlarge instance. Before the patch an additional 40ms latency from P99.99+
+values is observed while, with the patch, the extra latency disappears.
+
+No patch and tcp_autocorking=1
+./wrk -t32 -c128 -d40s --latency -R10000  http://172.31.60.173:8080/hello/hello
+  ...
+ 50.000%    0.91ms
+ 75.000%    1.13ms
+ 90.000%    1.46ms
+ 99.000%    1.74ms
+ 99.900%    1.89ms
+ 99.990%   41.95ms  <<< 40+ ms extra latency
+ 99.999%   48.32ms
+100.000%   48.96ms
+
+With patch and tcp_autocorking=1
+./wrk -t32 -c128 -d40s --latency -R10000  http://172.31.60.173:8080/hello/hello
+  ...
+ 50.000%    0.90ms
+ 75.000%    1.13ms
+ 90.000%    1.45ms
+ 99.000%    1.72ms
+ 99.900%    1.83ms
+ 99.990%    2.11ms  <<< no 40+ ms extra latency
+ 99.999%    2.53ms
+100.000%    2.62ms
+
+Patch has been also tested on x86 (m7i.2xlarge instance) which it is not
+affected by this issue and the patch doesn't introduce any additional
+delay.
+
+Fixes: 7aa5470c2c09 ("tcp: tsq: move tsq_flags close to sk_wmem_alloc")
+Signed-off-by: Salvatore Dipietro <dipiets@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240119190133.43698-1-dipiets@amazon.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/dir.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/ipv4/tcp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/afs/dir.c b/fs/afs/dir.c
-index cec18f9f8bd7..106426de5027 100644
---- a/fs/afs/dir.c
-+++ b/fs/afs/dir.c
-@@ -492,6 +492,14 @@ static int afs_dir_iterate_block(struct afs_vnode *dvnode,
- 			continue;
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 86dff7abdfd6..0659f0d9414d 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -722,6 +722,7 @@ void tcp_push(struct sock *sk, int flags, int mss_now,
+ 		if (!test_bit(TSQ_THROTTLED, &sk->sk_tsq_flags)) {
+ 			NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPAUTOCORKING);
+ 			set_bit(TSQ_THROTTLED, &sk->sk_tsq_flags);
++			smp_mb__after_atomic();
  		}
- 
-+		/* Don't expose silly rename entries to userspace. */
-+		if (nlen > 6 &&
-+		    dire->u.name[0] == '.' &&
-+		    ctx->actor != afs_lookup_filldir &&
-+		    ctx->actor != afs_lookup_one_filldir &&
-+		    memcmp(dire->u.name, ".__afs", 6) == 0)
-+			continue;
-+
- 		/* found the next entry */
- 		if (!dir_emit(ctx, dire->u.name, nlen,
- 			      ntohl(dire->u.vnode),
+ 		/* It is possible TX completion already happened
+ 		 * before we set TSQ_THROTTLED.
 -- 
 2.43.0
 
