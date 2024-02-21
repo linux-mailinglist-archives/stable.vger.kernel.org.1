@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-22956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68C7685DE6A
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:18:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8047D85DBC9
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:45:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2458B28572F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:18:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2140A1F2229C
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:45:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 524CB76037;
-	Wed, 21 Feb 2024 14:18:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 831AA77A03;
+	Wed, 21 Feb 2024 13:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xM1DutKt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DZR8uOTQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1062F4C62;
-	Wed, 21 Feb 2024 14:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4383555E5E;
+	Wed, 21 Feb 2024 13:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525081; cv=none; b=MwOith2gg2NdZQPibAXgsCSUKPkSaELTkSqEfsE50zwoihs6x3JnKC02vgyTX56s8gf2Ae/W83HIRcfE5jM6XweDud0Wko3k7gxA4QoQuw7HBJuTNP4qe5lDHWy27ViELLHiArMi10Cy+tr7BIlAE0YTrY2s571SXtYlbneDatQ=
+	t=1708523117; cv=none; b=hmBuimNbPWV40vO85XXI/1lf2DnCtDpmYs+G2YDqxFGQmPvAsytTL46nY2HD3IkI2ICBvT6gnXYyX8VWezyDJa4rAJqjlbmyF07w5zN9XpXJCNpgsZzPKubiXJGINglklJAp5wFeJA2uODdWA3Fi8K7LutJR2UXCHe65UFyBp8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525081; c=relaxed/simple;
-	bh=dTyrfBhwwblB1bRAj/061aSoa7V0ACBTrfTFSC00Nv0=;
+	s=arc-20240116; t=1708523117; c=relaxed/simple;
+	bh=6GzJ62gpls329yMN1WNuaLQCtEQTfitNEnJ9kq8fGTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C3gNBRVBg2fMsDNvvHPUt5B+dUf+R5QnxHAWK0cvQHaHeVaISLkDNN4AUOMipjw7Ia8xnYc5yz6jnyl/2EOlrqw5jaYoIGoGjz18+TZ/UTV/Y6Pj7RqI4imz8naXcayrCn+u4dkqPrvnU7T1Dv16fqjU0MVsNNkkSfcWS9NFwWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xM1DutKt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DC4BC433C7;
-	Wed, 21 Feb 2024 14:18:00 +0000 (UTC)
+	 MIME-Version; b=EuNOBosV9QlEIASoP5Pt05A+A0O+/n9CG+6pZdXYVg69qFGxHL6OiXeinA6UZOZaUXJCYl5QJNV5csDURbRhy2DKSVhlrb9EZsVvoivqitQZwlrNgw26Cb9Qae+a8K45OLoXCm3ScNh30r/zRQLCZxFpaOTpP2mswe/dcTCl4+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DZR8uOTQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A68B1C433F1;
+	Wed, 21 Feb 2024 13:45:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525080;
-	bh=dTyrfBhwwblB1bRAj/061aSoa7V0ACBTrfTFSC00Nv0=;
+	s=korg; t=1708523117;
+	bh=6GzJ62gpls329yMN1WNuaLQCtEQTfitNEnJ9kq8fGTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xM1DutKtpv4l3OxZeuBN4uvFJ6A/y9pAgXq/b0a/rWiBU4LhQdV47wf1FW3lHmx0v
-	 jm1BdQl/wcx5NHhLiEJJw3COzUw2G+/U1z9G+3JkhJzaaD27dMp+csFrc/L09mj1Up
-	 fIuw712Wxz9qaexSnL1tmxcKQiVOFmLxAoORTzBk=
+	b=DZR8uOTQe3CRI0dKWIF8/m357JyHtRuFNWtXDcuxlngdeUT/IACPmOHMqSbubFvn1
+	 t66E6yb5q4CVGQb6yFr1S6hPqpF4fJokz1X247+riOiupMioY1DXZeU3+ZRM4jl95r
+	 lGty8PmwyRBP8cTMJShp31a1AgMrD9bEZ+NbFp+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Inki Dae <inki.dae@samsung.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 055/267] drm/exynos: gsc: minor fix for loop iteration in gsc_runtime_resume
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.15 345/476] btrfs: do not ASSERT() if the newly created subvolume already got read
 Date: Wed, 21 Feb 2024 14:06:36 +0100
-Message-ID: <20240221125941.741884826@linuxfoundation.org>
+Message-ID: <20240221130020.747947159@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 4050957c7c2c14aa795dbf423b4180d5ac04e113 ]
+commit e03ee2fe873eb68c1f9ba5112fee70303ebf9dfb upstream.
 
-Do not forget to call clk_disable_unprepare() on the first element of
-ctx->clocks array.
+[BUG]
+There is a syzbot crash, triggered by the ASSERT() during subvolume
+creation:
 
-Found by Linux Verification Center (linuxtesting.org).
+ assertion failed: !anon_dev, in fs/btrfs/disk-io.c:1319
+ ------------[ cut here ]------------
+ kernel BUG at fs/btrfs/disk-io.c:1319!
+ invalid opcode: 0000 [#1] PREEMPT SMP KASAN
+ RIP: 0010:btrfs_get_root_ref.part.0+0x9aa/0xa60
+  <TASK>
+  btrfs_get_new_fs_root+0xd3/0xf0
+  create_subvol+0xd02/0x1650
+  btrfs_mksubvol+0xe95/0x12b0
+  __btrfs_ioctl_snap_create+0x2f9/0x4f0
+  btrfs_ioctl_snap_create+0x16b/0x200
+  btrfs_ioctl+0x35f0/0x5cf0
+  __x64_sys_ioctl+0x19d/0x210
+  do_syscall_64+0x3f/0xe0
+  entry_SYSCALL_64_after_hwframe+0x63/0x6b
+ ---[ end trace 0000000000000000 ]---
 
-Fixes: 8b7d3ec83aba ("drm/exynos: gsc: Convert driver to IPP v2 core API")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Reviewed-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[CAUSE]
+During create_subvol(), after inserting root item for the newly created
+subvolume, we would trigger btrfs_get_new_fs_root() to get the
+btrfs_root of that subvolume.
+
+The idea here is, we have preallocated an anonymous device number for
+the subvolume, thus we can assign it to the new subvolume.
+
+But there is really nothing preventing things like backref walk to read
+the new subvolume.
+If that happens before we call btrfs_get_new_fs_root(), the subvolume
+would be read out, with a new anonymous device number assigned already.
+
+In that case, we would trigger ASSERT(), as we really expect no one to
+read out that subvolume (which is not yet accessible from the fs).
+But things like backref walk is still possible to trigger the read on
+the subvolume.
+
+Thus our assumption on the ASSERT() is not correct in the first place.
+
+[FIX]
+Fix it by removing the ASSERT(), and just free the @anon_dev, reset it
+to 0, and continue.
+
+If the subvolume tree is read out by something else, it should have
+already get a new anon_dev assigned thus we only need to free the
+preallocated one.
+
+Reported-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Fixes: 2dfb1e43f57d ("btrfs: preallocate anon block device at first phase of snapshot creation")
+CC: stable@vger.kernel.org # 5.15+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/exynos/exynos_drm_gsc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/disk-io.c |   13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_gsc.c b/drivers/gpu/drm/exynos/exynos_drm_gsc.c
-index 45e9aee8366a..bcf830c5b8ea 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_gsc.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_gsc.c
-@@ -1344,7 +1344,7 @@ static int __maybe_unused gsc_runtime_resume(struct device *dev)
- 	for (i = 0; i < ctx->num_clocks; i++) {
- 		ret = clk_prepare_enable(ctx->clocks[i]);
- 		if (ret) {
--			while (--i > 0)
-+			while (--i >= 0)
- 				clk_disable_unprepare(ctx->clocks[i]);
- 			return ret;
- 		}
--- 
-2.43.0
-
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -1619,8 +1619,17 @@ static struct btrfs_root *btrfs_get_root
+ again:
+ 	root = btrfs_lookup_fs_root(fs_info, objectid);
+ 	if (root) {
+-		/* Shouldn't get preallocated anon_dev for cached roots */
+-		ASSERT(!anon_dev);
++		/*
++		 * Some other caller may have read out the newly inserted
++		 * subvolume already (for things like backref walk etc).  Not
++		 * that common but still possible.  In that case, we just need
++		 * to free the anon_dev.
++		 */
++		if (unlikely(anon_dev)) {
++			free_anon_bdev(anon_dev);
++			anon_dev = 0;
++		}
++
+ 		if (check_ref && btrfs_root_refs(&root->root_item) == 0) {
+ 			btrfs_put_root(root);
+ 			return ERR_PTR(-ENOENT);
 
 
 
