@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-22809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9273985DDEF
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:13:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D69985DEDC
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:22:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DF61280A06
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:13:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC2AA283396
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:22:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF0397FBCE;
-	Wed, 21 Feb 2024 14:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2B247A708;
+	Wed, 21 Feb 2024 14:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RwK43MUg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JXzburwW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BD647FBC8;
-	Wed, 21 Feb 2024 14:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF7769317;
+	Wed, 21 Feb 2024 14:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524584; cv=none; b=DO617g4+DysQrNG+/O+M0jaXjyjDUE+am/sRKHV5ntOQd5nBXYZFh9vk5YIjAmVKS6zkPVQgPWlJFAf7qmvPKpDHHBX7iQ55qPEU8jPuv+id5U7kr2cQZKktKC0FTy36ThpJ/RDceaISj+0njPoGiban1gQD6HPrUwl6MtA0F7A=
+	t=1708525347; cv=none; b=t77YMArDI9H2rxvOkRk19oP7s35cG07pULtHDq5PlbMfiPXJPW/wCglS/XMFjBqkdd7h3j5eBOz6qYNvopOh3B7LbS6FjuMj0m9e8M1YgU1gcf0XxunSaRRdyKKIZdPlcS1SFN7S59mIePYe/6TTTKVhj2PP4BsV0EQjEKtRRH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524584; c=relaxed/simple;
-	bh=Y81jBjDsXrqbM+zcprjjRPMaM0e7vR40gFWS9lrKe7g=;
+	s=arc-20240116; t=1708525347; c=relaxed/simple;
+	bh=0vFxMKzXTDrYteu3pxh18YA8nah9/EX93y2KuY2EQEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=obILO7TrI0va3xLp2LU8RhRQZQ/rgKNlkqtLS+A+Q60FNxqU6w7LaZPiYVz/tyK4cVOVCi3uLPYBLw+a7OZmIYd1GDTVtMsyPRC0P5uIVPhzXH0hYBbHklUKiM/5RldB9T66oT9weHCfJCk5HQFqWIXcmqsl3AJIYxI83DbnCUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RwK43MUg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC07EC433F1;
-	Wed, 21 Feb 2024 14:09:43 +0000 (UTC)
+	 MIME-Version; b=q1VhjVcqmb0HUpqaJTJ14BgZ84h8H9DSQXWxc8tEx46RPR3C29Q2uM378QKuhSIfISfjDsOc9hPF8/hRXgTV/uRhFwIifpkHoBV/tzaIY4LJpjgEoajCWY6JhIOtvZqBfUko/Oj5krBK/ZMZHqes62gCU8YKQFbZi5mmPAGLSUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JXzburwW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC6BCC433F1;
+	Wed, 21 Feb 2024 14:22:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524584;
-	bh=Y81jBjDsXrqbM+zcprjjRPMaM0e7vR40gFWS9lrKe7g=;
+	s=korg; t=1708525347;
+	bh=0vFxMKzXTDrYteu3pxh18YA8nah9/EX93y2KuY2EQEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RwK43MUgIP9PAFE3YqcStvfKSttShmkCxdHIN0WOy5Kj2wGwT0viznKWvvj0r40QP
-	 q+FhZLGL0b9KjKWW1Qk0gtAVHfwrI0C4lxXUbB3uAi5glfUPd/oQqo8YZsvlSQupoK
-	 FsPe/lUNn5sVjV49wIZf0A/mWwOXsF04H8wLKMnY=
+	b=JXzburwW9sKGW6DKMDKNrxyGQN3CMwFa6VITGbpbOr7g+o8skTINXynGdKy1xKz22
+	 wAKTluOkjBf+o0hUDBEWf1rRm+if+Nb66uzEMEpjYdLynqGLnDrA8jN2aDvhf5Weoi
+	 VJHWWF66T4nO5a2STTs59srFVOnPaWvD6EzyQrNI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.10 289/379] btrfs: send: return EOPNOTSUPP on unknown flags
+	Phillip Potter <phil@philpotter.co.uk>,
+	Ghanshyam Agrawal <ghanshyam1898@gmail.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 127/267] media: stk1160: Fixed high volume of stk1160_dbg messages
 Date: Wed, 21 Feb 2024 14:07:48 +0100
-Message-ID: <20240221130003.458337274@linuxfoundation.org>
+Message-ID: <20240221125944.021576018@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
 
-commit f884a9f9e59206a2d41f265e7e403f080d10b493 upstream.
+[ Upstream commit b3695e86d25aafbe175dd51f6aaf6f68d341d590 ]
 
-When some ioctl flags are checked we return EOPNOTSUPP, like for
-BTRFS_SCRUB_SUPPORTED_FLAGS, BTRFS_SUBVOL_CREATE_ARGS_MASK or fallocate
-modes. The EINVAL is supposed to be for a supported but invalid
-values or combination of options. Fix that when checking send flags so
-it's consistent with the rest.
+The function stk1160_dbg gets called too many times, which causes
+the output to get flooded with messages. Since stk1160_dbg uses
+printk, it is now replaced with printk_ratelimited.
 
-CC: stable@vger.kernel.org # 4.14+
-Link: https://lore.kernel.org/linux-btrfs/CAL3q7H5rryOLzp3EKq8RTbjMHMHeaJubfpsVLF6H4qJnKCUR1w@mail.gmail.com/
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Phillip Potter <phil@philpotter.co.uk>
+Signed-off-by: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/send.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/usb/stk1160/stk1160-video.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/fs/btrfs/send.c
-+++ b/fs/btrfs/send.c
-@@ -7285,7 +7285,7 @@ long btrfs_ioctl_send(struct file *mnt_f
+diff --git a/drivers/media/usb/stk1160/stk1160-video.c b/drivers/media/usb/stk1160/stk1160-video.c
+index 202b084f65a2..4cf540d1b250 100644
+--- a/drivers/media/usb/stk1160/stk1160-video.c
++++ b/drivers/media/usb/stk1160/stk1160-video.c
+@@ -107,8 +107,7 @@ void stk1160_copy_video(struct stk1160 *dev, u8 *src, int len)
+ 
+ 	/*
+ 	 * TODO: These stk1160_dbg are very spammy!
+-	 * We should 1) check why we are getting them
+-	 * and 2) add ratelimit.
++	 * We should check why we are getting them.
+ 	 *
+ 	 * UPDATE: One of the reasons (the only one?) for getting these
+ 	 * is incorrect standard (mismatch between expected and configured).
+@@ -151,7 +150,7 @@ void stk1160_copy_video(struct stk1160 *dev, u8 *src, int len)
+ 
+ 	/* Let the bug hunt begin! sanity checks! */
+ 	if (lencopy < 0) {
+-		stk1160_dbg("copy skipped: negative lencopy\n");
++		printk_ratelimited(KERN_DEBUG "copy skipped: negative lencopy\n");
+ 		return;
  	}
  
- 	if (arg->flags & ~BTRFS_SEND_FLAG_MASK) {
--		ret = -EINVAL;
-+		ret = -EOPNOTSUPP;
- 		goto out;
- 	}
- 
+-- 
+2.43.0
+
 
 
 
