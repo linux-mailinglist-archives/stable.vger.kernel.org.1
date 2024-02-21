@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-23074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 903EA85DF1E
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:24:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0769485DC54
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:52:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1DE31C23D02
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:24:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38C6C1C2356B
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:52:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C942E76037;
-	Wed, 21 Feb 2024 14:24:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8558D7BB0F;
+	Wed, 21 Feb 2024 13:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W9cgBlIo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oz21U6I7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85EA63D0A1;
-	Wed, 21 Feb 2024 14:24:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FC287C0BD;
+	Wed, 21 Feb 2024 13:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525491; cv=none; b=PLieeee/X5bftRGhRQ8jCUa6bKJ0DOgc9hnHlWS0b8vezL0ob2JN1yjss2L4E7G3HzGIhATNrbSwxV2JOTnw11WND58RELOetY/IS+ObE/DgoSxQ5m4CyS0pC1gTcbFSWsH7hOUvQxN37G8w8a59XZK6Qo4Na0UxkgeBWMxaLLc=
+	t=1708523523; cv=none; b=K4g9ZdgXpN1wAjRnqF29awf116eNe3pF/VMZLAkQ+prrd3tS38a6ajAZfd0AV8oO3qXs1md6GC6NeK+zulzeIM5NvinFe0O07XLBZextkZqfbs1CMMyoLvJHwmzjAgOr0u+i/gO8/ijEPTcmDhurx6lf6sUnRHhYVYAp9twUkps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525491; c=relaxed/simple;
-	bh=E3tCCEkVQksYd4+bYBx2BnfdKdYVVURnZ5rVG1NpvXs=;
+	s=arc-20240116; t=1708523523; c=relaxed/simple;
+	bh=XHckwHWCRWPt8MIs7xwnueDYIu/qSXXTDMw5jdirTNg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ELqDP5II+h2bxroTOFYJWn6IZkdG6rQZsK2sK6ACjgYpJR5ad3dfko1lcEqmOT7kHCjrUiO3pKARyYE2VIcUtRzfuhiZ0pp1/zxdf92qF70ShJylXqSIT08t0Spn/0F8pW4hm4QoHpIkYo685XC9x7x3JbBp7qagZGtMyzauLOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W9cgBlIo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C95C433F1;
-	Wed, 21 Feb 2024 14:24:50 +0000 (UTC)
+	 MIME-Version; b=dYE1MMYOSOqAzDrXypAtTfVonbUnW2uv9wadwAZjIKJGKwdNxGrb/j2BI/8MZq+KMFwtMyWrxTIF1mjq5dmieCIJ2bY5sTzxuKWbJWw62eleLAHtgtYP2wX3mneyOEiKv3gq88AItm8sL9cbNHi6MRuQrzkb35zPNlNcuCwF7Wc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oz21U6I7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1553BC433C7;
+	Wed, 21 Feb 2024 13:52:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525491;
-	bh=E3tCCEkVQksYd4+bYBx2BnfdKdYVVURnZ5rVG1NpvXs=;
+	s=korg; t=1708523522;
+	bh=XHckwHWCRWPt8MIs7xwnueDYIu/qSXXTDMw5jdirTNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W9cgBlIooGIJ/GLqpam7PLf8pq7JOxO5K3bGv/j//rKQUxqWu/MU29wtj0aasXPxX
-	 XyqakvW1UoUFn0Agd+ZuL/dINiek+t3ZdlRmopFsIh6qav3XKLoAn5mhbfWCmmXpXm
-	 Lfm0XD6HjpqPgbdUGpOzNP6DaGXjlWJFhM+rZCsM=
+	b=Oz21U6I7scBFC2rD0v8WKnVRbKcqHpMPGVFgx6q5KajBCFu547lk0tX5ckxu/tncY
+	 edSXchOnkzhsgGOxSi8FPG2ylRj9Dn8ua5jnkhbN0EuCPaUCxNipZPw/MlBMXA7DJm
+	 oJ9PBWf2mnApC3YcL63KCv0ZuS6PZOqJmqE0lgMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Henrie <alexhenrie24@gmail.com>,
-	Jiri Kosina <jkosina@suse.cz>,
-	Aseda Aboagye <aaboagye@chromium.org>
-Subject: [PATCH 5.4 172/267] HID: apple: Add support for the 2021 Magic Keyboard
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+5c04210f7c7f897c1e7f@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 462/476] nilfs2: fix potential bug in end_buffer_async_write
 Date: Wed, 21 Feb 2024 14:08:33 +0100
-Message-ID: <20240221125945.534322057@linuxfoundation.org>
+Message-ID: <20240221130025.126829028@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Henrie <alexhenrie24@gmail.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit 0cd3be51733febb4f8acb92bcf55b75fe824dd05 upstream.
+commit 5bc09b397cbf1221f8a8aacb1152650c9195b02b upstream.
 
-Signed-off-by: Alex Henrie <alexhenrie24@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
-Cc: Aseda Aboagye <aaboagye@chromium.org>
+According to a syzbot report, end_buffer_async_write(), which handles the
+completion of block device writes, may detect abnormal condition of the
+buffer async_write flag and cause a BUG_ON failure when using nilfs2.
+
+Nilfs2 itself does not use end_buffer_async_write().  But, the async_write
+flag is now used as a marker by commit 7f42ec394156 ("nilfs2: fix issue
+with race condition of competition between segments for dirty blocks") as
+a means of resolving double list insertion of dirty blocks in
+nilfs_lookup_dirty_data_buffers() and nilfs_lookup_node_buffers() and the
+resulting crash.
+
+This modification is safe as long as it is used for file data and b-tree
+node blocks where the page caches are independent.  However, it was
+irrelevant and redundant to also introduce async_write for segment summary
+and super root blocks that share buffers with the backing device.  This
+led to the possibility that the BUG_ON check in end_buffer_async_write
+would fail as described above, if independent writebacks of the backing
+device occurred in parallel.
+
+The use of async_write for segment summary buffers has already been
+removed in a previous change.
+
+Fix this issue by removing the manipulation of the async_write flag for
+the remaining super root block buffer.
+
+Link: https://lkml.kernel.org/r/20240203161645.4992-1-konishi.ryusuke@gmail.com
+Fixes: 7f42ec394156 ("nilfs2: fix issue with race condition of competition between segments for dirty blocks")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+5c04210f7c7f897c1e7f@syzkaller.appspotmail.com
+Closes: https://lkml.kernel.org/r/00000000000019a97c05fd42f8c8@google.com
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-apple.c  |    4 ++++
- drivers/hid/hid-ids.h    |    1 +
- drivers/hid/hid-quirks.c |    1 +
- 3 files changed, 6 insertions(+)
+ fs/nilfs2/segment.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/hid/hid-apple.c
-+++ b/drivers/hid/hid-apple.c
-@@ -596,6 +596,10 @@ static const struct hid_device_id apple_
- 		.driver_data = APPLE_NUMLOCK_EMULATION | APPLE_HAS_FN },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_GEYSER1_TP_ONLY),
- 		.driver_data = APPLE_NUMLOCK_EMULATION | APPLE_HAS_FN },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2021),
-+		.driver_data = APPLE_HAS_FN },
-+	{ HID_BLUETOOTH_DEVICE(BT_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2021),
-+		.driver_data = APPLE_HAS_FN },
+--- a/fs/nilfs2/segment.c
++++ b/fs/nilfs2/segment.c
+@@ -1702,7 +1702,6 @@ static void nilfs_segctor_prepare_write(
  
- 	{ }
- };
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -175,6 +175,7 @@
- #define USB_DEVICE_ID_APPLE_IRCONTROL3	0x8241
- #define USB_DEVICE_ID_APPLE_IRCONTROL4	0x8242
- #define USB_DEVICE_ID_APPLE_IRCONTROL5	0x8243
-+#define USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2021   0x029c
+ 		list_for_each_entry(bh, &segbuf->sb_payload_buffers,
+ 				    b_assoc_buffers) {
+-			set_buffer_async_write(bh);
+ 			if (bh == segbuf->sb_super_root) {
+ 				if (bh->b_page != bd_page) {
+ 					lock_page(bd_page);
+@@ -1713,6 +1712,7 @@ static void nilfs_segctor_prepare_write(
+ 				}
+ 				break;
+ 			}
++			set_buffer_async_write(bh);
+ 			if (bh->b_page != fs_page) {
+ 				nilfs_begin_page_io(fs_page);
+ 				fs_page = bh->b_page;
+@@ -1798,7 +1798,6 @@ static void nilfs_abort_logs(struct list
  
- #define USB_VENDOR_ID_ASUS		0x0486
- #define USB_DEVICE_ID_ASUS_T91MT	0x0185
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -308,6 +308,7 @@ static const struct hid_device_id hid_ha
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_ANSI) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_FOUNTAIN_TP_ONLY) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_GEYSER1_TP_ONLY) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2021) },
- #endif
- #if IS_ENABLED(CONFIG_HID_APPLEIR)
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_IRCONTROL) },
+ 		list_for_each_entry(bh, &segbuf->sb_payload_buffers,
+ 				    b_assoc_buffers) {
+-			clear_buffer_async_write(bh);
+ 			if (bh == segbuf->sb_super_root) {
+ 				clear_buffer_uptodate(bh);
+ 				if (bh->b_page != bd_page) {
+@@ -1807,6 +1806,7 @@ static void nilfs_abort_logs(struct list
+ 				}
+ 				break;
+ 			}
++			clear_buffer_async_write(bh);
+ 			if (bh->b_page != fs_page) {
+ 				nilfs_end_page_io(fs_page, err);
+ 				fs_page = bh->b_page;
+@@ -1894,8 +1894,9 @@ static void nilfs_segctor_complete_write
+ 				 BIT(BH_Delay) | BIT(BH_NILFS_Volatile) |
+ 				 BIT(BH_NILFS_Redirected));
+ 
+-			set_mask_bits(&bh->b_state, clear_bits, set_bits);
+ 			if (bh == segbuf->sb_super_root) {
++				set_buffer_uptodate(bh);
++				clear_buffer_dirty(bh);
+ 				if (bh->b_page != bd_page) {
+ 					end_page_writeback(bd_page);
+ 					bd_page = bh->b_page;
+@@ -1903,6 +1904,7 @@ static void nilfs_segctor_complete_write
+ 				update_sr = true;
+ 				break;
+ 			}
++			set_mask_bits(&bh->b_state, clear_bits, set_bits);
+ 			if (bh->b_page != fs_page) {
+ 				nilfs_end_page_io(fs_page, 0);
+ 				fs_page = bh->b_page;
 
 
 
