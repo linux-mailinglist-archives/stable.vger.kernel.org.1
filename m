@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-22520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7648C85DC6B
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:53:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2290A85DF43
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:26:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 168C5B2669C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:53:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81EEAB27319
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:25:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C81A7C6E5;
-	Wed, 21 Feb 2024 13:52:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA44B7BB03;
+	Wed, 21 Feb 2024 14:25:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OLRI8Opw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mJDSEnmn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE177C0BD;
-	Wed, 21 Feb 2024 13:52:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9B626A8D6;
+	Wed, 21 Feb 2024 14:25:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523576; cv=none; b=jrqiHqEZaCTcw/CF5Z+bt0+EMNfvm2gMhx8qgkSaoSixMYA4jTTE6mTHedxSNdGn39Bc/rFHZJ+Gi8wHJW7o+CxR4UfxO4MOIBSA3v4TqeqZvyPg6DvfSZw+Iu/DtPNhzhXvexa2USzTWKKkwlfBvhYKR5Vx+rb0KgxMfS4zKGA=
+	t=1708525540; cv=none; b=LY9DDYGalniChHdm1lJp5IDS7Qa6m0Qhj7Nu5zALcQvnat+rKWV/JtDRozXl6n8L0hg5gB8UZEjU9XXBExzUUx2gRNtz3IKCeA51nhJYvZdnRtrHL/WuFUOisBUyI24s00ooemqIEpS7ApnnyzqBw3DM24bsUVeDbSwneUh7ix4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523576; c=relaxed/simple;
-	bh=2CjHgdx1611UfKdHF+04xDBzMVrIqSuTfhRD7tIAvAk=;
+	s=arc-20240116; t=1708525540; c=relaxed/simple;
+	bh=PYKVGFIeQrofqW6qQMLSVY/tyxd4uC1iqYWuEsS4WK8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fL7dom61txYlYQv74NuLn+0K9sN+8CsOEH5ng85w14zpjer6/xhUfbyGuSBpY+cqzo+1guO3o33HtHxNbtQBrJTTPd6FRWlfGX6ErikkWwb9kZrGeqtFWh27pKLiBeel0InhFG2b4oyZoXNYhFfu4KqZaI/uvjZyaIQz2EmttXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OLRI8Opw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F089C433C7;
-	Wed, 21 Feb 2024 13:52:56 +0000 (UTC)
+	 MIME-Version; b=CWXhJk/wMmsr4EZUCn9BPdBX1acpoKXv3m59LuD8PEVpUNkGkx4EqvuXkJcBeeTTZyyiQZkysxj3BOKH1lTZE6lrQDTdLWmQ1ydjf15GD0CI/JXOUPj6yEdqIKfTSBfKoeomaiBpkdfC95C6mem8jVW0Cxm0rabTOz74ZRjTg+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mJDSEnmn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18A53C433F1;
+	Wed, 21 Feb 2024 14:25:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523576;
-	bh=2CjHgdx1611UfKdHF+04xDBzMVrIqSuTfhRD7tIAvAk=;
+	s=korg; t=1708525540;
+	bh=PYKVGFIeQrofqW6qQMLSVY/tyxd4uC1iqYWuEsS4WK8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OLRI8OpwXyC7qlnua8yZt2+LLy6KspCBAT6BxP/6cAuwBKE9RLtPXxAqM3SPjt7Rh
-	 Td8fOMrRM1ZW9I2rzUivS1bj6AAkElocEPXI4lzbS/ZYFA91yyDjz7C+P8YWUtb6eB
-	 Kwhu4NwDGNUOkq0R3Nk4WR1rmhWL0XbkJSkzlNtE=
+	b=mJDSEnmn73JFh778B1rGO7u8DR14bnxEPVjdZQBKb9PT7JzwunIyUoHZ21ONJAgbY
+	 fjb6pGf9LfejMNLxCKCD4rYEwJCb5xpHNEXyCa9bcEQaS8i20AsgzmH2XKbijWkmh9
+	 WwkLw3NhSiz4BosN5uB7hI7dZ2GGl7yMyYFtvSlM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 5.15 476/476] usb: dwc3: gadget: Ignore End Transfer delay on teardown
-Date: Wed, 21 Feb 2024 14:08:47 +0100
-Message-ID: <20240221130025.577794706@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 187/267] inet: read sk->sk_family once in inet_recv_error()
+Date: Wed, 21 Feb 2024 14:08:48 +0100
+Message-ID: <20240221125946.002940473@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit c4e3ef5685393c5051b52cf1e94b8891d49793ab upstream.
+[ Upstream commit eef00a82c568944f113f2de738156ac591bbd5cd ]
 
-If we delay sending End Transfer for Setup TRB to be prepared, we need
-to check if the End Transfer was in preparation for a driver
-teardown/soft-disconnect. In those cases, just send the End Transfer
-command without delay.
+inet_recv_error() is called without holding the socket lock.
 
-In the case of soft-disconnect, there's a very small chance the command
-may not go through immediately. But should it happen, the Setup TRB will
-be prepared during the polling of the controller halted state, allowing
-the command to go through then.
+IPv6 socket could mutate to IPv4 with IPV6_ADDRFORM
+socket option and trigger a KCSAN warning.
 
-In the case of disabling endpoint due to reconfiguration (e.g.
-set_interface(alt-setting) or usb reset), then it's driven by the host.
-Typically the host wouldn't immediately cancel the control request and
-send another control transfer to trigger the End Transfer command
-timeout.
-
-Fixes: 4db0fbb60136 ("usb: dwc3: gadget: Don't delay End Transfer on delayed_status")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/f1617a323e190b9cc408fb8b65456e32b5814113.1670546756.git.Thinh.Nguyen@synopsys.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f4713a3dfad0 ("net-timestamp: make tcp_recvmsg call ipv6_recv_error for AF_INET6 socks")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/gadget.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/ipv4/af_inet.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -1701,6 +1701,7 @@ static int __dwc3_stop_active_transfer(s
- 		dep->flags |= DWC3_EP_END_TRANSFER_PENDING;
- 	}
+diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
+index a3f77ac173b5..e05cdc608850 100644
+--- a/net/ipv4/af_inet.c
++++ b/net/ipv4/af_inet.c
+@@ -1572,10 +1572,12 @@ EXPORT_SYMBOL(inet_current_timestamp);
  
-+	dep->flags &= ~DWC3_EP_DELAY_STOP;
- 	return ret;
- }
- 
-@@ -3710,8 +3711,10 @@ void dwc3_stop_active_transfer(struct dw
- 	if (dep->number <= 1 && dwc->ep0state != EP0_DATA_PHASE)
- 		return;
- 
-+	if (interrupt && (dep->flags & DWC3_EP_DELAY_STOP))
-+		return;
+ int inet_recv_error(struct sock *sk, struct msghdr *msg, int len, int *addr_len)
+ {
+-	if (sk->sk_family == AF_INET)
++	unsigned int family = READ_ONCE(sk->sk_family);
 +
- 	if (!(dep->flags & DWC3_EP_TRANSFER_STARTED) ||
--	    (dep->flags & DWC3_EP_DELAY_STOP) ||
- 	    (dep->flags & DWC3_EP_END_TRANSFER_PENDING))
- 		return;
- 
++	if (family == AF_INET)
+ 		return ip_recv_error(sk, msg, len, addr_len);
+ #if IS_ENABLED(CONFIG_IPV6)
+-	if (sk->sk_family == AF_INET6)
++	if (family == AF_INET6)
+ 		return pingv6_ops.ipv6_recv_error(sk, msg, len, addr_len);
+ #endif
+ 	return -EINVAL;
+-- 
+2.43.0
+
 
 
 
