@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-22031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B1ED85D9CA
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:22:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8148085DC42
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:51:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEC931F22E2E
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:22:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14091B246E8
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:51:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EE6677F33;
-	Wed, 21 Feb 2024 13:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98CFC78B73;
+	Wed, 21 Feb 2024 13:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U952NIhd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tEFidDzH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5AC53816;
-	Wed, 21 Feb 2024 13:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 572F838398;
+	Wed, 21 Feb 2024 13:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521738; cv=none; b=WioxaVa1W4zSViGMblKcoGw9a6gl5s/NES179fGHWTyyLMjn7jUqjJ4Fk4IS0a75OeCdwncfJiehhixupwqMt/6GL6ImVOOaCyFxBcpYUoCvqOtuy4dzhid0tc4V/e/c1z8B+JCVhJJxio3tdUHS/LSoXSTzT2vEdshGICOQqFY=
+	t=1708523462; cv=none; b=MBKsiAwf2KDqDzNDG52UInaQUtjclrBN/RnDldeJaJ3wQ8xFx0UE+IJxnqDPAiiMpIaQFxSVzVXdl8N0CZqhsIMPw4UzRKAkGdM0ntwLxFdgPLfTkkT73iDjlLm+y02Eszfa0zCvf3Zu5WjaWEqWu5by2WHVmzV6DqCXA1APFsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521738; c=relaxed/simple;
-	bh=P4DqFx2y1IKIPXGzFQMVjOQWISwuCw4+NASLAGn9WD8=;
+	s=arc-20240116; t=1708523462; c=relaxed/simple;
+	bh=bWoFotOnLpxZ9o81QeKpToBQPQJt0tww3qMtn8vqht0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=frI0qjF4yaJWaxCq/aPmzwmCINO6+8x2b2CcPgIe6MlX24eQLPX8b4XkMt1kd9/Wz2KluLNRJ8biDTnWu3uW/JYgaaFFgnMYtpOX4Qjxmms+vDIcLiCdRDlEBXXOEqVi5+9mt8CbsuA17Vso36zO3KPW7KjKd7z8UxdxdKwDUEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U952NIhd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2084DC433C7;
-	Wed, 21 Feb 2024 13:22:16 +0000 (UTC)
+	 MIME-Version; b=lqwfCR460sI7sozDRI1oVnRLnUjLvSj8YVFaZC9t2Y41XUNmz0Cpcgw6Ytf/FwEyqcPxJnFKWi0soX16DUDc/EBzczRgZ7pqjtBOirkZBZcpnWewOV4WwJsRAj64KQmJh8+GE5PG3ZIgjjhQQvaLtOEfg0hybMemEWTuxLS7qAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tEFidDzH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA99C433F1;
+	Wed, 21 Feb 2024 13:51:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521737;
-	bh=P4DqFx2y1IKIPXGzFQMVjOQWISwuCw4+NASLAGn9WD8=;
+	s=korg; t=1708523462;
+	bh=bWoFotOnLpxZ9o81QeKpToBQPQJt0tww3qMtn8vqht0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U952NIhd1jTsoGK9ooTPl2YFL/MlC6ZxO8205V9AsOr75Thzi+xfJJo/qHgmwT9MS
-	 rg0tYil45D7A5aj2ILa+efce2lF8NVIpChLZ0j4iRCVYvq8q5idaFgRd0C27EZi9cG
-	 q9jXgWKCOt6Af1eZjXPYH6I1NwkqLa9K4ZmRulU4=
+	b=tEFidDzHrQglWI9RU80trL3S7OaN0uy/b5Z/tWii1oLn3fy9urCmgpTFmz/iEZQgj
+	 SQFoDlQM25gB3NGM1D6TVD8bhRAnFrhCHzTgZKQIQi+I8q6zjSUCjiJglyA76Kys17
+	 hFSDV7FGSwzCEQhGyd2NvVp3rhMPekiQwupZFR6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	bo liu <bo.liu@senarytech.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 4.19 191/202] ALSA: hda/conexant: Add quirk for SWS JS201D
-Date: Wed, 21 Feb 2024 14:08:12 +0100
-Message-ID: <20240221125937.968537862@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Wesley Cheng <quic_wcheng@quicinc.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 442/476] usb: dwc3: gadget: Handle EP0 request dequeuing properly
+Date: Wed, 21 Feb 2024 14:08:13 +0100
+Message-ID: <20240221130024.384668878@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,81 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: bo liu <bo.liu@senarytech.com>
+From: Wesley Cheng <quic_wcheng@quicinc.com>
 
-commit 4639c5021029d49fd2f97fa8d74731f167f98919 upstream.
+[ Upstream commit 730e12fbec53ab59dd807d981a204258a4cfb29a ]
 
-The SWS JS201D need a different pinconfig from windows driver.
-Add a quirk to use a specific pinconfig to SWS JS201D.
+Current EP0 dequeue path will share the same as other EPs.  However, there
+are some special considerations that need to be made for EP0 transfers:
 
-Signed-off-by: bo liu <bo.liu@senarytech.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240205013802.51907-1-bo.liu@senarytech.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+  - EP0 transfers never transition into the started_list
+  - EP0 only has one active request at a time
+
+In case there is a vendor specific control message for a function over USB
+FFS, then there is no guarantee on the timeline which the DATA/STATUS stage
+is responded to.  While this occurs, any attempt to end transfers on
+non-control EPs will end up having the DWC3_EP_DELAY_STOP flag set, and
+defer issuing of the end transfer command.  If the USB FFS application
+decides to timeout the control transfer, or if USB FFS AIO path exits, the
+USB FFS driver will issue a call to usb_ep_dequeue() for the ep0 request.
+
+In case of the AIO exit path, the AIO FS blocks until all pending USB
+requests utilizing the AIO path is completed.  However, since the dequeue
+of ep0 req does not happen properly, all non-control EPs with the
+DWC3_EP_DELAY_STOP flag set will not be handled, and the AIO exit path will
+be stuck waiting for the USB FFS data endpoints to receive a completion
+callback.
+
+Fix is to utilize dwc3_ep0_reset_state() in the dequeue API to ensure EP0
+is brought back to the SETUP state, and ensures that any deferred end
+transfer commands are handled.  This also will end any active transfers
+on EP0, compared to the previous implementation which directly called
+giveback only.
+
+Fixes: fcd2def66392 ("usb: dwc3: gadget: Refactor dwc3_gadget_ep_dequeue")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20231206201814.32664-1-quic_wcheng@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_conexant.c |   18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/usb/dwc3/gadget.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_conexant.c
-+++ b/sound/pci/hda/patch_conexant.c
-@@ -229,6 +229,7 @@ enum {
- 	CXT_FIXUP_MUTE_LED_GPIO,
- 	CXT_FIXUP_HEADSET_MIC,
- 	CXT_FIXUP_HP_MIC_NO_PRESENCE,
-+	CXT_PINCFG_SWS_JS201D,
- };
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index 7704e2444b4b..d472dab16889 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -2039,7 +2039,17 @@ static int dwc3_gadget_ep_dequeue(struct usb_ep *ep,
  
- /* for hda_fixup_thinkpad_acpi() */
-@@ -717,6 +718,17 @@ static const struct hda_pintbl cxt_pincf
- 	{}
- };
- 
-+/* SuoWoSi/South-holding JS201D with sn6140 */
-+static const struct hda_pintbl cxt_pincfg_sws_js201d[] = {
-+	{ 0x16, 0x03211040 }, /* hp out */
-+	{ 0x17, 0x91170110 }, /* SPK/Class_D */
-+	{ 0x18, 0x95a70130 }, /* Internal mic */
-+	{ 0x19, 0x03a11020 }, /* Headset Mic */
-+	{ 0x1a, 0x40f001f0 }, /* Not used */
-+	{ 0x21, 0x40f001f0 }, /* Not used */
-+	{}
-+};
-+
- static const struct hda_fixup cxt_fixups[] = {
- 	[CXT_PINCFG_LENOVO_X200] = {
- 		.type = HDA_FIXUP_PINS,
-@@ -868,6 +880,10 @@ static const struct hda_fixup cxt_fixups
- 		.chained = true,
- 		.chain_id = CXT_FIXUP_HEADSET_MIC,
- 	},
-+	[CXT_PINCFG_SWS_JS201D] = {
-+		.type = HDA_FIXUP_PINS,
-+		.v.pins = cxt_pincfg_sws_js201d,
-+	},
- };
- 
- static const struct snd_pci_quirk cxt5045_fixups[] = {
-@@ -939,6 +955,7 @@ static const struct snd_pci_quirk cxt506
- 	SND_PCI_QUIRK(0x103c, 0x8457, "HP Z2 G4 mini", CXT_FIXUP_HP_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x103c, 0x8458, "HP Z2 G4 mini premium", CXT_FIXUP_HP_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x138d, "Asus", CXT_FIXUP_HEADPHONE_MIC_PIN),
-+	SND_PCI_QUIRK(0x14f1, 0x0265, "SWS JS201D", CXT_PINCFG_SWS_JS201D),
- 	SND_PCI_QUIRK(0x152d, 0x0833, "OLPC XO-1.5", CXT_FIXUP_OLPC_XO),
- 	SND_PCI_QUIRK(0x17aa, 0x20f2, "Lenovo T400", CXT_PINCFG_LENOVO_TP410),
- 	SND_PCI_QUIRK(0x17aa, 0x215e, "Lenovo T410", CXT_PINCFG_LENOVO_TP410),
-@@ -978,6 +995,7 @@ static const struct hda_model_fixup cxt5
- 	{ .id = CXT_FIXUP_MUTE_LED_GPIO, .name = "mute-led-gpio" },
- 	{ .id = CXT_FIXUP_HP_MIC_NO_PRESENCE, .name = "hp-mic-fix" },
- 	{ .id = CXT_PINCFG_LENOVO_NOTEBOOK, .name = "lenovo-20149" },
-+	{ .id = CXT_PINCFG_SWS_JS201D, .name = "sws-js201d" },
- 	{}
- };
- 
+ 	list_for_each_entry(r, &dep->pending_list, list) {
+ 		if (r == req) {
+-			dwc3_gadget_giveback(dep, req, -ECONNRESET);
++			/*
++			 * Explicitly check for EP0/1 as dequeue for those
++			 * EPs need to be handled differently.  Control EP
++			 * only deals with one USB req, and giveback will
++			 * occur during dwc3_ep0_stall_and_restart().  EP0
++			 * requests are never added to started_list.
++			 */
++			if (dep->number > 1)
++				dwc3_gadget_giveback(dep, req, -ECONNRESET);
++			else
++				dwc3_ep0_reset_state(dwc);
+ 			goto out;
+ 		}
+ 	}
+-- 
+2.43.0
+
 
 
 
