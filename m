@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-22525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D6B985DC70
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:53:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8638F85DE0E
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:14:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E4E01C236EB
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:53:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40F95281067
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DACE978B5E;
-	Wed, 21 Feb 2024 13:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46D517E777;
+	Wed, 21 Feb 2024 14:11:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CmpWl+fq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gjsToLND"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98AF0762C1;
-	Wed, 21 Feb 2024 13:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0520179DAE;
+	Wed, 21 Feb 2024 14:11:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523592; cv=none; b=MNNvVtToEV2YIscJA90SEA8ba7hQrnVelaMPk96WvfwwQ0wrDI4OAaAWv1/prJuVUiCB3YcWhFZwr2QbkPFiBUGdl9a/QN1zAsw03XHVrrsfjoDmvK8XvDm3ZLuIXlgOzGdHP3a1esANvhZh9Bpi0wYbzivdEeaBe80fD1N2TK4=
+	t=1708524714; cv=none; b=UYdRH2u4LEnzvYdyTElCbaHlpkfl15HocFUNgC1zs7Em0eRVB0wKPbc1RQGzDqzsksQ1S5SCoSawU3iAnMrR+oNZG7fmh9emF/jwAv9KBQhWpM0kT0ODBEH19lpM/A0YWymHNYsXa9tO20ePGmuwU2k4JTiWwZedtxdI6Y+4Ydk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523592; c=relaxed/simple;
-	bh=xe4YFakJTFwxcOPNvNCTWt4YAVbR4gfkl75aaNyTJQE=;
+	s=arc-20240116; t=1708524714; c=relaxed/simple;
+	bh=q8vEuxScqBWiPt3aS7z/QWmwu42HkLXnsJmqb+quWm4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ohv8yssLG4t036RUhhj/weXL7rM93/SV4sXBR+Bu1rKpPQgBx75/6WDNt1AsvpSxY1XXyC88gTFyXP5Yul3J3TN7Wnx/uEYIboBPuNzJdBTJCQVepE3/vz+b0732FU3+ayEwo+4az/MOHO56NbHOkxhUpI7FfkTru//sBFYgXAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CmpWl+fq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 073B5C433F1;
-	Wed, 21 Feb 2024 13:53:11 +0000 (UTC)
+	 MIME-Version; b=o6M1/Q67CsiAxnI0HdGMNiC9Mf6J9N2UbGEFHe2ijH0mGFlP1sQ3jZB5taModaFjL+84y/JzOoxi0ncbRe4atNzx08uYci+rLNF1ekQsUBsXufmX4r83P19AuT4z+dnkFnF5ZU5YEKkBQkJITa/nNhgwFD2sJqR66i1IzYTsyiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gjsToLND; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 642CCC433C7;
+	Wed, 21 Feb 2024 14:11:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523592;
-	bh=xe4YFakJTFwxcOPNvNCTWt4YAVbR4gfkl75aaNyTJQE=;
+	s=korg; t=1708524713;
+	bh=q8vEuxScqBWiPt3aS7z/QWmwu42HkLXnsJmqb+quWm4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CmpWl+fq1fRP/CcgOfGbVccqI7IbT+eHMFmdKJpyEkltFwMNvQwMQlEojLr2am1PH
-	 Jcrf1PiDmh7lPilG+bJCD0NJ8kxBPzWoVg9DDAXf79aqJFkjCGIUMSRVvz71xyMS1V
-	 zfg/v9f4nUqgOmmciD0URgHCZ3/HhKYBXbYiojlA=
+	b=gjsToLNDGN4GZJHMQeP/NwIvzk43TDm/r8q/9XPFvNnle4gpbbeJiYaZg/XyswOcb
+	 DCd4rBGoxhj+CgVyWlyZmSYrpFkJFf7M3kbkYRPnDBwzkzX1JnZMpMgAIFRCUlZVmi
+	 J631e1Ezx6fAVFCzUqXzUTItpTj8lfYKwwjY64eM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <keescook@chromium.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 455/476] scripts: decode_stacktrace: demangle Rust symbols
+	Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>,
+	Dexuan Cui <decui@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 327/379] hv_netvsc: Fix race condition between netvsc_probe and netvsc_remove
 Date: Wed, 21 Feb 2024 14:08:26 +0100
-Message-ID: <20240221130024.859760697@linuxfoundation.org>
+Message-ID: <20240221130004.635575834@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,65 +64,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
 
-[ Upstream commit 99115db4ecc87af73415939439ec604ea0531e6f ]
+commit e0526ec5360a48ad3ab2e26e802b0532302a7e11 upstream.
 
-Recent versions of both Binutils (`c++filt`) and LLVM (`llvm-cxxfilt`)
-provide Rust v0 mangling support.
+In commit ac5047671758 ("hv_netvsc: Disable NAPI before closing the
+VMBus channel"), napi_disable was getting called for all channels,
+including all subchannels without confirming if they are enabled or not.
 
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Co-developed-by: Alex Gaynor <alex.gaynor@gmail.com>
-Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
-Co-developed-by: Wedson Almeida Filho <wedsonaf@google.com>
-Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Stable-dep-of: efbd63983533 ("scripts/decode_stacktrace.sh: optionally use LLVM utilities")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This caused hv_netvsc getting hung at napi_disable, when netvsc_probe()
+has finished running but nvdev->subchan_work has not started yet.
+netvsc_subchan_work() -> rndis_set_subchannel() has not created the
+sub-channels and because of that netvsc_sc_open() is not running.
+netvsc_remove() calls cancel_work_sync(&nvdev->subchan_work), for which
+netvsc_subchan_work did not run.
+
+netif_napi_add() sets the bit NAPI_STATE_SCHED because it ensures NAPI
+cannot be scheduled. Then netvsc_sc_open() -> napi_enable will clear the
+NAPIF_STATE_SCHED bit, so it can be scheduled. napi_disable() does the
+opposite.
+
+Now during netvsc_device_remove(), when napi_disable is called for those
+subchannels, napi_disable gets stuck on infinite msleep.
+
+This fix addresses this problem by ensuring that napi_disable() is not
+getting called for non-enabled NAPI struct.
+But netif_napi_del() is still necessary for these non-enabled NAPI struct
+for cleanup purpose.
+
+Call trace:
+[  654.559417] task:modprobe        state:D stack:    0 pid: 2321 ppid:  1091 flags:0x00004002
+[  654.568030] Call Trace:
+[  654.571221]  <TASK>
+[  654.573790]  __schedule+0x2d6/0x960
+[  654.577733]  schedule+0x69/0xf0
+[  654.581214]  schedule_timeout+0x87/0x140
+[  654.585463]  ? __bpf_trace_tick_stop+0x20/0x20
+[  654.590291]  msleep+0x2d/0x40
+[  654.593625]  napi_disable+0x2b/0x80
+[  654.597437]  netvsc_device_remove+0x8a/0x1f0 [hv_netvsc]
+[  654.603935]  rndis_filter_device_remove+0x194/0x1c0 [hv_netvsc]
+[  654.611101]  ? do_wait_intr+0xb0/0xb0
+[  654.615753]  netvsc_remove+0x7c/0x120 [hv_netvsc]
+[  654.621675]  vmbus_remove+0x27/0x40 [hv_vmbus]
+
+Cc: stable@vger.kernel.org
+Fixes: ac5047671758 ("hv_netvsc: Disable NAPI before closing the VMBus channel")
+Signed-off-by: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
+Reviewed-by: Dexuan Cui <decui@microsoft.com>
+Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/1706686551-28510-1-git-send-email-schakrabarti@linux.microsoft.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/decode_stacktrace.sh | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/net/hyperv/netvsc.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/scripts/decode_stacktrace.sh b/scripts/decode_stacktrace.sh
-index 7075e26ab2c4..564c5632e1a2 100755
---- a/scripts/decode_stacktrace.sh
-+++ b/scripts/decode_stacktrace.sh
-@@ -8,6 +8,14 @@ usage() {
- 	echo "	$0 -r <release> | <vmlinux> [<base path>|auto] [<modules path>]"
- }
- 
-+# Try to find a Rust demangler
-+if type llvm-cxxfilt >/dev/null 2>&1 ; then
-+	cppfilt=llvm-cxxfilt
-+elif type c++filt >/dev/null 2>&1 ; then
-+	cppfilt=c++filt
-+	cppfilt_opts=-i
-+fi
+--- a/drivers/net/hyperv/netvsc.c
++++ b/drivers/net/hyperv/netvsc.c
+@@ -654,7 +654,10 @@ void netvsc_device_remove(struct hv_devi
+ 	/* Disable NAPI and disassociate its context from the device. */
+ 	for (i = 0; i < net_device->num_chn; i++) {
+ 		/* See also vmbus_reset_channel_cb(). */
+-		napi_disable(&net_device->chan_table[i].napi);
++		/* only disable enabled NAPI channel */
++		if (i < ndev->real_num_rx_queues)
++			napi_disable(&net_device->chan_table[i].napi);
 +
- if [[ $1 == "-r" ]] ; then
- 	vmlinux=""
- 	basepath="auto"
-@@ -180,6 +188,12 @@ parse_symbol() {
- 	# In the case of inlines, move everything to same line
- 	code=${code//$'\n'/' '}
+ 		netif_napi_del(&net_device->chan_table[i].napi);
+ 	}
  
-+	# Demangle if the name looks like a Rust symbol and if
-+	# we got a Rust demangler
-+	if [[ $name =~ ^_R && $cppfilt != "" ]] ; then
-+		name=$("$cppfilt" "$cppfilt_opts" "$name")
-+	fi
-+
- 	# Replace old address with pretty line numbers
- 	symbol="$segment$name ($code)"
- }
--- 
-2.43.0
-
 
 
 
