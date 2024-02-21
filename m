@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-21847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C200185D8D1
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:10:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1806485DD14
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:01:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6110A1F240C6
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:10:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5D65280F9A
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:01:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85D6569D02;
-	Wed, 21 Feb 2024 13:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E25207C08C;
+	Wed, 21 Feb 2024 14:00:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bNbNlFRP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C6TmhV7R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D49E2A1D7;
-	Wed, 21 Feb 2024 13:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A058678B4F;
+	Wed, 21 Feb 2024 14:00:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521048; cv=none; b=FOOiUfh/GiRRcUN3d2JJWFCIg61FKLg80Rv+c/WSUV3UJsxGZSrY4LWVgRTW7sFo2gGDh99Iv7TxYCxDbQMM53ExrXZUgFJZp7hftol0f6sCiWoottwMWEuCE+7ulCp+Rjom4I2oLbGUmWd+6/2ymxNlBYzvcgGDoNCTuNXiYGc=
+	t=1708524054; cv=none; b=Ju8Tz7cOxixzPCv9gSu8QTNfD17qh1VxotMtB4EMaBOlrjDN/FK2Ij0F1t0JBfkk5Hf37uZ57+0wR1sCn0p7RhkwewmrH78zl6D7kUXOnyvDJN73RigvR8nNdKWQH94lGS/YrDqVj+LsPkYvixXyOoDeyfrZ75udI7o2HbyfLqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521048; c=relaxed/simple;
-	bh=ca+KgbvqbiGKCzZ/EHYMN+vJkgjslVsf/7UMipDBxzU=;
+	s=arc-20240116; t=1708524054; c=relaxed/simple;
+	bh=vMQTxP+PvTjCTSh0Rmk0XUCR8CG9NB2OL8c7L1ORA/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AM7k/C/VBN6hBiAfH7+CIbXLirmjvLOI6Yi2dtTnBPQ1HxuVw+oFQAtaB8NqtDNyyAseA/cDqcz4IetQGj6z9XyLUNB9EkzMg6gi8MPLPWbQWWblvS4AaBMm0IHcHSvgTAQR881ccjBGQLKiKc8iQR0JMhZixQkObRn8d6/PuCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bNbNlFRP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5843CC433C7;
-	Wed, 21 Feb 2024 13:10:47 +0000 (UTC)
+	 MIME-Version; b=esP7zAPVD19u348QsoFjKzZzkco1zQEr6eh9aL9uC3lQExVRrLZZE2uYhRtWIcShzetGzalV5gpjQdtmkvP4mrcNevv4tMxoss228Bvtp3MOLoqugXOlO27+IwKDPN+mXKsOycO+Xv+HA1ENEogYjft37c6UrU7g3eKYgb6ZXxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C6TmhV7R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E9C0C433C7;
+	Wed, 21 Feb 2024 14:00:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521047;
-	bh=ca+KgbvqbiGKCzZ/EHYMN+vJkgjslVsf/7UMipDBxzU=;
+	s=korg; t=1708524054;
+	bh=vMQTxP+PvTjCTSh0Rmk0XUCR8CG9NB2OL8c7L1ORA/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bNbNlFRP+Ng/O5tTZHEkyT7AvkZutkWYChldA5WAajX+y0QygQBf821sxS2LYbYTx
-	 jEMSXtWXZhtbIkL9xe6aWjBlDxigGXTGcrNGx3yTGcXny4Rsme8H8g1AVUZQgSSsMy
-	 H4o/nFatxfgFWcWBeP4J2p211uSGtmFko6vCoOvM=
+	b=C6TmhV7RZ5y4Wk0RwkYmHru4u5iAJP1jen8jhU35aGu0w+TFl7cnZaWKLDDb+FQBw
+	 vzGUs+w6t6bP4WdxVlbIauOQsF2y1Xp7pzqZyO5fMQ0mZ51x7TyBtaa3oPXfztkOmT
+	 atfVIMcbEBE9WF0nu7w2eaA+uSB2MBfKFpjRtEo8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	qizhong cheng <qizhong.cheng@mediatek.com>,
-	Jianjun Wang <jianjun.wang@mediatek.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <error27@gmail.com>,
+	Thomas Bourgoin <thomas.bourgoin@foss.st.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 001/202] PCI: mediatek: Clear interrupt status before dispatching handler
-Date: Wed, 21 Feb 2024 14:05:02 +0100
-Message-ID: <20240221125931.790603468@linuxfoundation.org>
+Subject: [PATCH 5.10 124/379] crypto: stm32/crc32 - fix parsing list of devices
+Date: Wed, 21 Feb 2024 14:05:03 +0100
+Message-ID: <20240221125958.596683910@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: qizhong cheng <qizhong.cheng@mediatek.com>
+From: Thomas Bourgoin <thomas.bourgoin@foss.st.com>
 
-[ Upstream commit 4e11c29873a8a296a20f99b3e03095e65ebf897d ]
+[ Upstream commit 0eaef675b94c746900dcea7f6c41b9a103ed5d53 ]
 
-We found a failure when using the iperf tool during WiFi performance
-testing, where some MSIs were received while clearing the interrupt
-status, and these MSIs cannot be serviced.
+smatch warnings:
+drivers/crypto/stm32/stm32-crc32.c:108 stm32_crc_get_next_crc() warn:
+can 'crc' even be NULL?
 
-The interrupt status can be cleared even if the MSI status remains pending.
-As such, given the edge-triggered interrupt type, its status should be
-cleared before being dispatched to the handler of the underling device.
+Use list_first_entry_or_null instead of list_first_entry to retrieve
+the first device registered.
+The function list_first_entry always return a non NULL pointer even if
+the list is empty. Hence checking if the pointer returned is NULL does
+not tell if the list is empty or not.
 
-[kwilczynski: commit log, code comment wording]
-Link: https://lore.kernel.org/linux-pci/20231211094923.31967-1-jianjun.wang@mediatek.com
-Fixes: 43e6409db64d ("PCI: mediatek: Add MSI support for MT2712 and MT7622")
-Signed-off-by: qizhong cheng <qizhong.cheng@mediatek.com>
-Signed-off-by: Jianjun Wang <jianjun.wang@mediatek.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-[bhelgaas: rewrap comment]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc:  <stable@vger.kernel.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/r/202311281111.ou2oUL2i-lkp@intel.com/
+Reported-by: Dan Carpenter <error27@gmail.com>
+Closes: https://lore.kernel.org/r/202311281111.ou2oUL2i-lkp@intel.com/
+Signed-off-by: Thomas Bourgoin <thomas.bourgoin@foss.st.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-mediatek.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/crypto/stm32/stm32-crc32.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/pcie-mediatek.c b/drivers/pci/controller/pcie-mediatek.c
-index 066e9e00de11..0d5be37660aa 100644
---- a/drivers/pci/controller/pcie-mediatek.c
-+++ b/drivers/pci/controller/pcie-mediatek.c
-@@ -605,14 +605,20 @@ static void mtk_pcie_intr_handler(struct irq_desc *desc)
- 		if (status & MSI_STATUS){
- 			unsigned long imsi_status;
+diff --git a/drivers/crypto/stm32/stm32-crc32.c b/drivers/crypto/stm32/stm32-crc32.c
+index 90a920e7f664..c439be1650c8 100644
+--- a/drivers/crypto/stm32/stm32-crc32.c
++++ b/drivers/crypto/stm32/stm32-crc32.c
+@@ -104,7 +104,7 @@ static struct stm32_crc *stm32_crc_get_next_crc(void)
+ 	struct stm32_crc *crc;
  
-+			/*
-+			 * The interrupt status can be cleared even if the
-+			 * MSI status remains pending. As such, given the
-+			 * edge-triggered interrupt type, its status should
-+			 * be cleared before being dispatched to the
-+			 * handler of the underlying device.
-+			 */
-+			writel(MSI_STATUS, port->base + PCIE_INT_STATUS);
- 			while ((imsi_status = readl(port->base + PCIE_IMSI_STATUS))) {
- 				for_each_set_bit(bit, &imsi_status, MTK_MSI_IRQS_NUM) {
- 					virq = irq_find_mapping(port->inner_domain, bit);
- 					generic_handle_irq(virq);
- 				}
- 			}
--			/* Clear MSI interrupt status */
--			writel(MSI_STATUS, port->base + PCIE_INT_STATUS);
- 		}
- 	}
- 
+ 	spin_lock_bh(&crc_list.lock);
+-	crc = list_first_entry(&crc_list.dev_list, struct stm32_crc, list);
++	crc = list_first_entry_or_null(&crc_list.dev_list, struct stm32_crc, list);
+ 	if (crc)
+ 		list_move_tail(&crc->list, &crc_list.dev_list);
+ 	spin_unlock_bh(&crc_list.lock);
 -- 
 2.43.0
 
