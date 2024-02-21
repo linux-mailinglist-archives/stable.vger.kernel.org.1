@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-22892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52B6B85DE33
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:16:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47A5E85DE3C
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:16:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 845F51C23842
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:16:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F19441F21C98
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:16:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19FFF7FBB4;
-	Wed, 21 Feb 2024 14:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D6DA7C08D;
+	Wed, 21 Feb 2024 14:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MoUoNc7l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KPm71mET"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF0D7F7D6;
-	Wed, 21 Feb 2024 14:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D17B69317;
+	Wed, 21 Feb 2024 14:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524866; cv=none; b=rf9k/r6vo0d0qs+LRjSzwA++e05BeodoJRCNpVJJzbOZgazyaHiAYeVg2HfVw+lypaOFYvUbF7TBLVK/plTjICRa62D9s4p4tEBz5fHP8SfgI/DVTKJiKWuACgvGegW7nvyfvvHwBNUtOdP+8tLmZrR6bXcUwhlMqI7Y8RY38EI=
+	t=1708524932; cv=none; b=N0fp7FjZ6K70u7gkLwcH0R0U1VVxezV4sGqYuQ1Qk2EJc6jg/Jz2ijsioVivPLl8ffSXgqDaSu2VgtOGV4HtwmiZy0qoSrhVC6SxZjh9mE5AnRdbKingABCYtB2sewBkswmUq0LXT3bzINFbMwsv0X2M+QLLa8M/dc+8FbM47lw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524866; c=relaxed/simple;
-	bh=zj6OODDNS0LXvHAFmwgIbBP48DWfPmwuJhzy+dLOjEI=;
+	s=arc-20240116; t=1708524932; c=relaxed/simple;
+	bh=gRtWD8zCyYLZ3yLW+JXR7SuFPqTQW5CnHGiQY4iJd+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KFFoSFFZiWCfwP33kFYfVkTlohactYGalHQTDS+K3/mMYkM7H9R1sDSph84ya4+0I0qUFyhZ0MxtGpcPIoe9F/TVP/Hq2Zno2WbgYLJGkQzlMz215TDVrhmxWHFwZ/AaT5v2fCg4/XmKjCA8Y9yDROwMrN2WDsrisPL1ZD/JmEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MoUoNc7l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 325B3C433C7;
-	Wed, 21 Feb 2024 14:14:26 +0000 (UTC)
+	 MIME-Version; b=VSGPVSi9jqktnYES7X8aFJcFA+JRYg92BjooUD/JtG4E9IBuZDJAK9vqZuw9SKUfwUQUYaUCwu7wRutFcUddMyZUGChYVh+3/MW1ifiG8+StwSPxYM8EKyuZGw7Nho7TLy1Qy9h0QCqnnVe6x9FnwLNihpjHRlARE2jLrgTMgZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KPm71mET; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 829F0C433F1;
+	Wed, 21 Feb 2024 14:15:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524866;
-	bh=zj6OODDNS0LXvHAFmwgIbBP48DWfPmwuJhzy+dLOjEI=;
+	s=korg; t=1708524932;
+	bh=gRtWD8zCyYLZ3yLW+JXR7SuFPqTQW5CnHGiQY4iJd+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MoUoNc7lfgCxCDTE1tv0VvaM69u/CZhcRK2JnJF6EY3v0grShaAzhPfJDESa1ps0j
-	 UVk0IeTTpzIYdqLEfp31N0YPcDfwcTNgmgS7Sq6IBgmvnbvhMsJ2pyyn+5+jsNtRbZ
-	 Y1ImpinFCrMvontTmMGpCV1m24UUa8VAGhEzlqz8=
+	b=KPm71mETMDVbmjpypjHfI6KPQ/oe4iE5PUtRAy8tYjMOcADOuKfjFLgDjZnhFSo7h
+	 2gDE14ZzilaOokI/ZbBGdEH3o6qrz8Uz8U0jeaau9E/2+xrxH02se35V6zEBXRBbq3
+	 d+q3PR8SphIi4Ky717CliFUw4C6tHFnfjH4it3XM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Borislav Petkov <bp@alien8.de>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Subject: [PATCH 5.10 370/379] sched/membarrier: reduce the ability to hammer on sys_membarrier
-Date: Wed, 21 Feb 2024 14:09:09 +0100
-Message-ID: <20240221130006.007379036@linuxfoundation.org>
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+5c04210f7c7f897c1e7f@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 371/379] nilfs2: fix potential bug in end_buffer_async_write
+Date: Wed, 21 Feb 2024 14:09:10 +0100
+Message-ID: <20240221130006.035511212@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
 References: <20240221125954.917878865@linuxfoundation.org>
@@ -66,87 +66,100 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Linus Torvalds <torvalds@linuxfoundation.org>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit 944d5fe50f3f03daacfea16300e656a1691c4a23 upstream.
+commit 5bc09b397cbf1221f8a8aacb1152650c9195b02b upstream.
 
-On some systems, sys_membarrier can be very expensive, causing overall
-slowdowns for everything.  So put a lock on the path in order to
-serialize the accesses to prevent the ability for this to be called at
-too high of a frequency and saturate the machine.
+According to a syzbot report, end_buffer_async_write(), which handles the
+completion of block device writes, may detect abnormal condition of the
+buffer async_write flag and cause a BUG_ON failure when using nilfs2.
 
-Reviewed-and-tested-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Acked-by: Borislav Petkov <bp@alien8.de>
-Fixes: 22e4ebb97582 ("membarrier: Provide expedited private command")
-Fixes: c5f58bd58f43 ("membarrier: Provide GLOBAL_EXPEDITED command")
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-[ converted to explicit mutex_*() calls - cleanup.h is not in this stable
-  branch - gregkh ]
+Nilfs2 itself does not use end_buffer_async_write().  But, the async_write
+flag is now used as a marker by commit 7f42ec394156 ("nilfs2: fix issue
+with race condition of competition between segments for dirty blocks") as
+a means of resolving double list insertion of dirty blocks in
+nilfs_lookup_dirty_data_buffers() and nilfs_lookup_node_buffers() and the
+resulting crash.
+
+This modification is safe as long as it is used for file data and b-tree
+node blocks where the page caches are independent.  However, it was
+irrelevant and redundant to also introduce async_write for segment summary
+and super root blocks that share buffers with the backing device.  This
+led to the possibility that the BUG_ON check in end_buffer_async_write
+would fail as described above, if independent writebacks of the backing
+device occurred in parallel.
+
+The use of async_write for segment summary buffers has already been
+removed in a previous change.
+
+Fix this issue by removing the manipulation of the async_write flag for
+the remaining super root block buffer.
+
+Link: https://lkml.kernel.org/r/20240203161645.4992-1-konishi.ryusuke@gmail.com
+Fixes: 7f42ec394156 ("nilfs2: fix issue with race condition of competition between segments for dirty blocks")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+5c04210f7c7f897c1e7f@syzkaller.appspotmail.com
+Closes: https://lkml.kernel.org/r/00000000000019a97c05fd42f8c8@google.com
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/membarrier.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ fs/nilfs2/segment.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/kernel/sched/membarrier.c
-+++ b/kernel/sched/membarrier.c
-@@ -34,6 +34,8 @@
- 	| MEMBARRIER_PRIVATE_EXPEDITED_SYNC_CORE_BITMASK		\
- 	| MEMBARRIER_PRIVATE_EXPEDITED_RSEQ_BITMASK)
+--- a/fs/nilfs2/segment.c
++++ b/fs/nilfs2/segment.c
+@@ -1707,7 +1707,6 @@ static void nilfs_segctor_prepare_write(
  
-+static DEFINE_MUTEX(membarrier_ipi_mutex);
-+
- static void ipi_mb(void *info)
- {
- 	smp_mb();	/* IPIs should be serializing but paranoid. */
-@@ -119,6 +121,7 @@ static int membarrier_global_expedited(v
- 	if (!zalloc_cpumask_var(&tmpmask, GFP_KERNEL))
- 		return -ENOMEM;
+ 		list_for_each_entry(bh, &segbuf->sb_payload_buffers,
+ 				    b_assoc_buffers) {
+-			set_buffer_async_write(bh);
+ 			if (bh == segbuf->sb_super_root) {
+ 				if (bh->b_page != bd_page) {
+ 					lock_page(bd_page);
+@@ -1718,6 +1717,7 @@ static void nilfs_segctor_prepare_write(
+ 				}
+ 				break;
+ 			}
++			set_buffer_async_write(bh);
+ 			if (bh->b_page != fs_page) {
+ 				nilfs_begin_page_io(fs_page);
+ 				fs_page = bh->b_page;
+@@ -1803,7 +1803,6 @@ static void nilfs_abort_logs(struct list
  
-+	mutex_lock(&membarrier_ipi_mutex);
- 	cpus_read_lock();
- 	rcu_read_lock();
- 	for_each_online_cpu(cpu) {
-@@ -165,6 +168,8 @@ static int membarrier_global_expedited(v
- 	 * rq->curr modification in scheduler.
- 	 */
- 	smp_mb();	/* exit from system call is not a mb */
-+	mutex_unlock(&membarrier_ipi_mutex);
-+
- 	return 0;
- }
+ 		list_for_each_entry(bh, &segbuf->sb_payload_buffers,
+ 				    b_assoc_buffers) {
+-			clear_buffer_async_write(bh);
+ 			if (bh == segbuf->sb_super_root) {
+ 				clear_buffer_uptodate(bh);
+ 				if (bh->b_page != bd_page) {
+@@ -1812,6 +1811,7 @@ static void nilfs_abort_logs(struct list
+ 				}
+ 				break;
+ 			}
++			clear_buffer_async_write(bh);
+ 			if (bh->b_page != fs_page) {
+ 				nilfs_end_page_io(fs_page, err);
+ 				fs_page = bh->b_page;
+@@ -1899,8 +1899,9 @@ static void nilfs_segctor_complete_write
+ 				 BIT(BH_Delay) | BIT(BH_NILFS_Volatile) |
+ 				 BIT(BH_NILFS_Redirected));
  
-@@ -208,6 +213,7 @@ static int membarrier_private_expedited(
- 	if (cpu_id < 0 && !zalloc_cpumask_var(&tmpmask, GFP_KERNEL))
- 		return -ENOMEM;
- 
-+	mutex_lock(&membarrier_ipi_mutex);
- 	cpus_read_lock();
- 
- 	if (cpu_id >= 0) {
-@@ -280,6 +286,7 @@ out:
- 	 * rq->curr modification in scheduler.
- 	 */
- 	smp_mb();	/* exit from system call is not a mb */
-+	mutex_unlock(&membarrier_ipi_mutex);
- 
- 	return 0;
- }
-@@ -321,6 +328,7 @@ static int sync_runqueues_membarrier_sta
- 	 * between threads which are users of @mm has its membarrier state
- 	 * updated.
- 	 */
-+	mutex_lock(&membarrier_ipi_mutex);
- 	cpus_read_lock();
- 	rcu_read_lock();
- 	for_each_online_cpu(cpu) {
-@@ -337,6 +345,7 @@ static int sync_runqueues_membarrier_sta
- 
- 	free_cpumask_var(tmpmask);
- 	cpus_read_unlock();
-+	mutex_unlock(&membarrier_ipi_mutex);
- 
- 	return 0;
- }
+-			set_mask_bits(&bh->b_state, clear_bits, set_bits);
+ 			if (bh == segbuf->sb_super_root) {
++				set_buffer_uptodate(bh);
++				clear_buffer_dirty(bh);
+ 				if (bh->b_page != bd_page) {
+ 					end_page_writeback(bd_page);
+ 					bd_page = bh->b_page;
+@@ -1908,6 +1909,7 @@ static void nilfs_segctor_complete_write
+ 				update_sr = true;
+ 				break;
+ 			}
++			set_mask_bits(&bh->b_state, clear_bits, set_bits);
+ 			if (bh->b_page != fs_page) {
+ 				nilfs_end_page_io(fs_page, 0);
+ 				fs_page = bh->b_page;
 
 
 
