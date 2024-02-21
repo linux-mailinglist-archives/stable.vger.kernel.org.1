@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-21989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F30B785D990
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:20:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0C0F85DEBE
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:21:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D6A71C214C0
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:20:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C2F8280E57
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:21:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0591478B60;
-	Wed, 21 Feb 2024 13:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA1BE78B4F;
+	Wed, 21 Feb 2024 14:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ypy1DKlu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J/u/NZMd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B83F578B4B;
-	Wed, 21 Feb 2024 13:19:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799B54C62;
+	Wed, 21 Feb 2024 14:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521582; cv=none; b=bsKMCO2eX/GtA8+1GuwLsjkkyxVscuXokFknI/OFcAbajpu8iP+oCNnVXFCHyd53LUXjNU0aztAApfOnsLPPKV+gGNsx9abyfdgQVneNiDfpKf6FoAA9veNPi65W+o8P/d8B1euPzzsWJRli7s39VgHqS1huy4tHM94+2ftnUKA=
+	t=1708525288; cv=none; b=OmlnN40dP04ROAGLMSnkVj3rzI8EGzCiB7nrLveF752BXFe9R3DklfA52MTqLtTAQrbE6hh1H7Gfl+KLodFnWJe/s1amaTLBI9sW95P9gqM+ZLlmTUaw91NdJ2f/43BfaE6M8JU58NZzWR/r0c+4QV1OW9lkcUsdJBNTnym9Hok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521582; c=relaxed/simple;
-	bh=I7aMRVhFtrnVT2TNbbG/fwU9vQm6G0K12auf8aaYgXk=;
+	s=arc-20240116; t=1708525288; c=relaxed/simple;
+	bh=Z+0FSEkNASmaHQOf9ch1HvU+nr9gSXXI6HjGcf64oj0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OAL6YCWUIh3k/R38m+UjQdPIGc56zPp55FvLuprHRtv54PQPfpEbHrJ31Zm0M1dzHxFxdwKQtIlef1wlc1sx7t6odkc0TmiHpr0+XcCwNpfDx+ed/+3BzpSrymPLMHhGbcyYtlq+DL76w8rP9Tu3+9b1D1yiqW1VI1t9LtPZMG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ypy1DKlu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 302CDC433F1;
-	Wed, 21 Feb 2024 13:19:41 +0000 (UTC)
+	 MIME-Version; b=qJ5PoDFVkmLX/Tjv4sATxImhgH9emliABa2Y/bvuvsi1McBRitsrVnJTGVrDaig7wSix3tK84VDTmdEIoY4B+7Pz0MzSSryiXCIMNQ06dctH+KFPq5tllv0vsbyx3m9mAFYfrgdqY/M3frM6M5B1QG3ZnsyojJFe/EIndn+bnT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J/u/NZMd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6D80C433F1;
+	Wed, 21 Feb 2024 14:21:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521582;
-	bh=I7aMRVhFtrnVT2TNbbG/fwU9vQm6G0K12auf8aaYgXk=;
+	s=korg; t=1708525288;
+	bh=Z+0FSEkNASmaHQOf9ch1HvU+nr9gSXXI6HjGcf64oj0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ypy1DKluS+vlrIZkotTGmtrid7w9uOG+ynM4kLAE7domo3oBMPFuhf+W6ylC71C7T
-	 u0XEsLh6IUIKwcEHQT0dCviPEz6f9N6kMTe7302osDvhDyAV3VdhOawe4ofDVczuBF
-	 +l0tAcz1qorghNk2yQtKWadUT/ip/7pLpvMXAKRg=
+	b=J/u/NZMd1uRy/g51z2IBJKUsUUjEh2mrUq6Afo7AFiY/XApQ3Mh45jfEwmkKhtADt
+	 QZw8QeSNiXapdXzMxsmt7EZSlXz16W5rjIx2TX0JKOJRgYSrV6rRbElBqaK2LiqDDK
+	 2tf8u6xSumsmnfnfHn8JiuJbIenXz3oTzZ0cxe3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Rui <rui.zhang@intel.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Fabio Estevam <festevam@denx.de>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 151/202] hwmon: (coretemp) Fix bogus core_id to attr name mapping
+Subject: [PATCH 5.4 111/267] ARM: dts: imx23-sansa: Use preferred i2c-gpios properties
 Date: Wed, 21 Feb 2024 14:07:32 +0100
-Message-ID: <20240221125936.575975679@linuxfoundation.org>
+Message-ID: <20240221125943.448429864@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,150 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Rui <rui.zhang@intel.com>
+From: Fabio Estevam <festevam@denx.de>
 
-[ Upstream commit fdaf0c8629d4524a168cb9e4ad4231875749b28c ]
+[ Upstream commit e3aa1a82fb20ee97597022f6528823a8ab82bde6 ]
 
-Before commit 7108b80a542b ("hwmon/coretemp: Handle large core ID
-value"), there is a fixed mapping between
-1. cpu_core_id
-2. the index in pdata->core_data[] array
-3. the sysfs attr name, aka "tempX_"
-The later two always equal cpu_core_id + 2.
+The 'gpios' property to describe the SDA and SCL GPIOs is considered
+deprecated according to i2c-gpio.yaml.
 
-After the commit, pdata->core_data[] index is got from ida so that it
-can handle sparse core ids and support more cores within a package.
+Switch to the preferred 'sda-gpios' and 'scl-gpios' properties.
 
-However, the commit erroneously maps the sysfs attr name to
-pdata->core_data[] index instead of cpu_core_id + 2.
+This fixes the following schema warnings:
 
-As a result, the code is not aligned with the comments, and brings user
-visible changes in hwmon sysfs on systems with sparse core id.
+imx23-sansa.dtb: i2c-0: 'sda-gpios' is a required property
+	from schema $id: http://devicetree.org/schemas/i2c/i2c-gpio.yaml#
+imx23-sansa.dtb: i2c-0: 'scl-gpios' is a required property
+	from schema $id: http://devicetree.org/schemas/i2c/i2c-gpio.yaml#
 
-For example, before commit 7108b80a542b ("hwmon/coretemp: Handle large
-core ID value"),
-/sys/class/hwmon/hwmon2/temp2_label:Core 0
-/sys/class/hwmon/hwmon2/temp3_label:Core 1
-/sys/class/hwmon/hwmon2/temp4_label:Core 2
-/sys/class/hwmon/hwmon2/temp5_label:Core 3
-/sys/class/hwmon/hwmon2/temp6_label:Core 4
-/sys/class/hwmon/hwmon3/temp10_label:Core 8
-/sys/class/hwmon/hwmon3/temp11_label:Core 9
-after commit,
-/sys/class/hwmon/hwmon2/temp2_label:Core 0
-/sys/class/hwmon/hwmon2/temp3_label:Core 1
-/sys/class/hwmon/hwmon2/temp4_label:Core 2
-/sys/class/hwmon/hwmon2/temp5_label:Core 3
-/sys/class/hwmon/hwmon2/temp6_label:Core 4
-/sys/class/hwmon/hwmon2/temp7_label:Core 8
-/sys/class/hwmon/hwmon2/temp8_label:Core 9
-
-Restore the previous behavior and rework the code, comments and variable
-names to avoid future confusions.
-
-Fixes: 7108b80a542b ("hwmon/coretemp: Handle large core ID value")
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-Link: https://lore.kernel.org/r/20240202092144.71180-3-rui.zhang@intel.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/coretemp.c | 32 +++++++++++++++++++-------------
- 1 file changed, 19 insertions(+), 13 deletions(-)
+ arch/arm/boot/dts/imx23-sansa.dts | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/hwmon/coretemp.c b/drivers/hwmon/coretemp.c
-index 6832569c9bac..d06e88477588 100644
---- a/drivers/hwmon/coretemp.c
-+++ b/drivers/hwmon/coretemp.c
-@@ -393,7 +393,7 @@ static int get_tjmax(struct cpuinfo_x86 *c, u32 id, struct device *dev)
- }
- 
- static int create_core_attrs(struct temp_data *tdata, struct device *dev,
--			     int attr_no)
-+			     int index)
- {
- 	int i;
- 	static ssize_t (*const rd_ptr[TOTAL_ATTRS]) (struct device *dev,
-@@ -405,13 +405,20 @@ static int create_core_attrs(struct temp_data *tdata, struct device *dev,
+diff --git a/arch/arm/boot/dts/imx23-sansa.dts b/arch/arm/boot/dts/imx23-sansa.dts
+index 46057d9bf555..c2efcc20ae80 100644
+--- a/arch/arm/boot/dts/imx23-sansa.dts
++++ b/arch/arm/boot/dts/imx23-sansa.dts
+@@ -175,10 +175,8 @@
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+ 		compatible = "i2c-gpio";
+-		gpios = <
+-			&gpio1 24 0		/* SDA */
+-			&gpio1 22 0		/* SCL */
+-		>;
++		sda-gpios = <&gpio1 24 0>;
++		scl-gpios = <&gpio1 22 0>;
+ 		i2c-gpio,delay-us = <2>;	/* ~100 kHz */
  	};
  
- 	for (i = 0; i < tdata->attr_size; i++) {
-+		/*
-+		 * We map the attr number to core id of the CPU
-+		 * The attr number is always core id + 2
-+		 * The Pkgtemp will always show up as temp1_*, if available
-+		 */
-+		int attr_no = tdata->is_pkg_data ? 1 : tdata->cpu_core_id + 2;
-+
- 		snprintf(tdata->attr_name[i], CORETEMP_NAME_LENGTH,
- 			 "temp%d_%s", attr_no, suffixes[i]);
- 		sysfs_attr_init(&tdata->sd_attrs[i].dev_attr.attr);
- 		tdata->sd_attrs[i].dev_attr.attr.name = tdata->attr_name[i];
- 		tdata->sd_attrs[i].dev_attr.attr.mode = S_IRUGO;
- 		tdata->sd_attrs[i].dev_attr.show = rd_ptr[i];
--		tdata->sd_attrs[i].index = attr_no;
-+		tdata->sd_attrs[i].index = index;
- 		tdata->attrs[i] = &tdata->sd_attrs[i].dev_attr.attr;
- 	}
- 	tdata->attr_group.attrs = tdata->attrs;
-@@ -469,23 +476,22 @@ static int create_core_data(struct platform_device *pdev, unsigned int cpu,
- 	struct platform_data *pdata = platform_get_drvdata(pdev);
- 	struct cpuinfo_x86 *c = &cpu_data(cpu);
- 	u32 eax, edx;
--	int err, index, attr_no;
-+	int err, index;
+@@ -186,10 +184,8 @@
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+ 		compatible = "i2c-gpio";
+-		gpios = <
+-			&gpio0 31 0		/* SDA */
+-			&gpio0 30 0		/* SCL */
+-		>;
++		sda-gpios = <&gpio0 31 0>;
++		scl-gpios = <&gpio0 30 0>;
+ 		i2c-gpio,delay-us = <2>;	/* ~100 kHz */
  
- 	/*
--	 * Find attr number for sysfs:
--	 * We map the attr number to core id of the CPU
--	 * The attr number is always core id + 2
--	 * The Pkgtemp will always show up as temp1_*, if available
-+	 * Get the index of tdata in pdata->core_data[]
-+	 * tdata for package: pdata->core_data[1]
-+	 * tdata for core: pdata->core_data[2] .. pdata->core_data[NUM_REAL_CORES + 1]
- 	 */
- 	if (pkg_flag) {
--		attr_no = PKG_SYSFS_ATTR_NO;
-+		index = PKG_SYSFS_ATTR_NO;
- 	} else {
- 		index = ida_alloc_max(&pdata->ida, NUM_REAL_CORES - 1, GFP_KERNEL);
- 		if (index < 0)
- 			return index;
- 
- 		pdata->cpu_map[index] = topology_core_id(cpu);
--		attr_no = index + BASE_SYSFS_ATTR_NO;
-+		index += BASE_SYSFS_ATTR_NO;
- 	}
- 
- 	tdata = init_temp_data(cpu, pkg_flag);
-@@ -517,20 +523,20 @@ static int create_core_data(struct platform_device *pdev, unsigned int cpu,
- 		}
- 	}
- 
--	pdata->core_data[attr_no] = tdata;
-+	pdata->core_data[index] = tdata;
- 
- 	/* Create sysfs interfaces */
--	err = create_core_attrs(tdata, pdata->hwmon_dev, attr_no);
-+	err = create_core_attrs(tdata, pdata->hwmon_dev, index);
- 	if (err)
- 		goto exit_free;
- 
- 	return 0;
- exit_free:
--	pdata->core_data[attr_no] = NULL;
-+	pdata->core_data[index] = NULL;
- 	kfree(tdata);
- ida_free:
- 	if (!pkg_flag)
--		ida_free(&pdata->ida, index);
-+		ida_free(&pdata->ida, index - BASE_SYSFS_ATTR_NO);
- 	return err;
- }
- 
+ 		touch: touch@20 {
 -- 
 2.43.0
 
