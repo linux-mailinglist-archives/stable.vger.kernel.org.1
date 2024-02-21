@@ -1,53 +1,61 @@
-Return-Path: <stable+bounces-23184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C4A285E031
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:47:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B023485E039
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:50:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35F321C20446
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:47:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6AA7D284A0E
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:50:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13FBE7FBA7;
-	Wed, 21 Feb 2024 14:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 545697FBB6;
+	Wed, 21 Feb 2024 14:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="Iq5WhoK1"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IgWRcekg"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292097EF03;
-	Wed, 21 Feb 2024 14:47:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB8527FBA6;
+	Wed, 21 Feb 2024 14:50:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708526850; cv=none; b=g0VdB0+jYChN40x5lLkY6a9CnoQRMZhfnUh3vxIcSurSesYO/AOyXT4zw1ii5RJqpQnbBx5qwhHKoZ/w+A8yIKh/BxM5wvb9JgW0EJ/KdjTVR1UK34JZZik4sR+OjDboFnvdyVT8ufaGK212wEHoZnr13RvgoGwRWAs8/eIFdxg=
+	t=1708527033; cv=none; b=pp1ZAEr9VNdUTL2b57eDieK0l8ANbhWWGjEGmNFc5evJhYEZC3frSmO9eTxvcoi0scCXxFaa0o6Hma/EQD6X6/wBqtKgBCycWITRpEf3TIEdJgXzpiYYj8taibrd/4HAmriCl3Crlc1B0dUiZ6PR1575c41ono7070+WIc19enY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708526850; c=relaxed/simple;
-	bh=9og4WWPF+xnEe/tmLQY9eA9wdGamFn3Kri3F4sczeZM=;
+	s=arc-20240116; t=1708527033; c=relaxed/simple;
+	bh=qbUVDRq1sTiEeH5NjYGofdTZsYOvTMvZCIFACRNBirg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=R9gGLi1+duEn2tMuCpk0BpSjeRpcOQDnwjuIC50UTCR5wU4MUYf6GpxdmunYOFec+wIrhfRjLRpvykSCjv2xAkfpiz2d5aALS/iiiIWf6n9JtyDvZUjrxQ2W0NdfHHNBPUevIpR3mwQEPFBG+zHZZM4HMHgWR5LVKiugUHdyzII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=Iq5WhoK1; arc=none smtp.client-ip=212.227.17.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1708526845; x=1709131645; i=rwarsow@gmx.de;
-	bh=9og4WWPF+xnEe/tmLQY9eA9wdGamFn3Kri3F4sczeZM=;
-	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
-	 In-Reply-To;
-	b=Iq5WhoK1vKq1vSvMqFgwNe7kK1q0BM79/M+oAfTrL/kJVs0Ktu92sWCllWZISDR6
-	 xa6W1A4590qaX3bS1AG8WelO9P4JX8Ys5MlSX4YgAedAmqOEBCf8MXciIFl8SQ+3Z
-	 MIY0q6tbXoJZcznEf6+SHmA0FAMIKQs+lB/kDqz3IlXDVOs+20zxe120wiQdbNKbM
-	 gtHwonJq46IKjgNqHqX7cEzv3NWVAzP/g+icKkflu/rlxODZ2VfRVr1jwRMvFgefJ
-	 iHdbbfzrZ8fpGsQrSmEg+1e7BQfLeBsQF3OxbojnSCptwlGb85M8/0jLUxABk9W3G
-	 G0FZvbHKtYvLmRgkUw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.100.20] ([46.142.35.10]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MSc1B-1rWZef47IH-00SvTo; Wed, 21
- Feb 2024 15:47:25 +0100
-Message-ID: <2cc27421-8791-47bd-a3d6-83188332ad3c@gmx.de>
-Date: Wed, 21 Feb 2024 15:47:23 +0100
+	 In-Reply-To:Content-Type; b=MhPVk14pU/6VK2kqZupepRJbD1I17qBVyVxZEpM9N6icT1Q38RIQ8QRqHuK+hR/TUXzK8y0Rrwpkbd8Y0fy6BvZK8RWJc7zpn//uODULckYUjN7SuVJTc4qKbN0RXSCBmaMR+ED8QpN2kIdHK543HCcl7fgs82eNNZCf9cwAcGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IgWRcekg; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708527033; x=1740063033;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=qbUVDRq1sTiEeH5NjYGofdTZsYOvTMvZCIFACRNBirg=;
+  b=IgWRcekgrfegu8A53FqRkEMFwzvcL+oH9PYZ2caqaed/7Ec4eXxl2vXD
+   9Df0/4Xpg4jdh//r0i9eBHr4xj0lPcgvaoiyebfBC1u0UXw/gyl1vYk6S
+   si+bl9yaXNONOE/OKbcyLu6jObt/uCWr+rq062WZETFrY6A1llfxQcn+y
+   Q3pU9Z89rgkeoO8j49eXCrnkggiYUoNyvEjMKLATxkehuDB8NREchDj9Z
+   zMvS1cfKjk9vsyRwDBRbjTnQhiWZbGr3HsRHQNDGV2BnT2FWz0pghpDs6
+   +Iej4LMm+W1ovWhgF4ynj62B+vH/anr+LX6h1V2bFd7ZtgEc68Wkl3ywM
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="20124566"
+X-IronPort-AV: E=Sophos;i="6.06,175,1705392000"; 
+   d="scan'208";a="20124566"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2024 06:50:32 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,175,1705392000"; 
+   d="scan'208";a="5325538"
+Received: from mkusiak-mobl1.ger.corp.intel.com (HELO [10.246.34.229]) ([10.246.34.229])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2024 06:50:29 -0800
+Message-ID: <2b5daa31-af66-4297-932b-d2fd341b63e6@linux.intel.com>
+Date: Wed, 21 Feb 2024 15:50:26 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,51 +63,41 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.7 000/313] 6.7.6-rc2 review
-Content-Language: de-DE, en-US
-To: Luna Jernberg <droidbittin@gmail.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <ed9e1bca-d07b-42fa-9ceb-d0eef3976168@gmx.de>
- <CADo9pHg2jgYqE1qxpV40E6GHL1s+G+mNm1JCcB9GgA-4XM59+w@mail.gmail.com>
-From: Ronald Warsow <rwarsow@gmx.de>
-In-Reply-To: <CADo9pHg2jgYqE1qxpV40E6GHL1s+G+mNm1JCcB9GgA-4XM59+w@mail.gmail.com>
+Subject: Re: [REGRESSION] 6.7.1: md: raid5 hang and unresponsive system;
+ successfully bisected
+To: junxiao.bi@oracle.com, Dan Moulding <dan@danm.net>
+Cc: gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
+ linux-raid@vger.kernel.org, regressions@lists.linux.dev, song@kernel.org,
+ stable@vger.kernel.org
+References: <20240123005700.9302-1-dan@danm.net>
+ <20240220230658.11069-1-dan@danm.net>
+ <f32cd478-a905-4e98-a46c-0612bc10c38e@oracle.com>
+Content-Language: pl
+From: Mateusz Kusiak <mateusz.kusiak@linux.intel.com>
+In-Reply-To: <f32cd478-a905-4e98-a46c-0612bc10c38e@oracle.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:6qBb6lE7ryyqGfoevmJBjZsvkWVd5Lv08+njlEABeejarAwHy7V
- Jy8bRvwKb/J521PXxy1DLTqI3BhkuBOFtm+g+O57wgXH10OhCQgWpydD9gdFYQEWja5B0cP
- zwtm/McdzQKiTHowhVT0upBatnDkKIoR+jOBZyXKVlr89itt8+nLZ3VwU9kslyMZOA8awqp
- m6/z6a5f8Ves7Ib6Vl7Ig==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:HfbXWP8WQfo=;yU4TXNtTTeD48SYsiIl2ECddhcq
- AAbvwpTMOEh1HZ0GjvPV4m2Hc/Y0La3F1ytvu6bKLFgNQYc1tR/vjRKrpE51D7Phm5E33VX1D
- eE3CSdqvE+BQaVzFIVSMrfKUdyM2RM8Cv+kX6fplvqtAw26ROdELBUFWBrGSnugxEjMI9tWLL
- 8P5yd3fooC9A8QGpbJskGSCguBz7gIui++yDfs7mqzkRI+jMnpzsoSeXxp2FCu9AHLzumu51u
- apUp1kyZDeokvw22KSEYa/M0CZ5Xn482bPjiSyvMEGX8Mxm7cEvquDpThIUNFKvDmZZBxDbKB
- 4XFbeCmAHGZuQagHMacLGwi001MAEWNkAE2kkAo5wOQYaENVplvH1aeNq28rYxahn3inxmna9
- CrMospaNT1JWB9FUDybm6ZBgwd3SSAql4Tz5on3qB68RsPuuZLb787ipQlwtpaDFNtGYL3lUf
- GGkkYwE3XVxTmxK5emvG4+TWVbgFMFPIanC4WbJG07Kg553XtaNlEXOUWSFkYSLiUfjzlspzW
- d6MxkwdXx/5UZmLqDbeEoBpce+muahV9hVo4HRPLV4UODf+PGMz4rno/Ix9vALugBqjfFC0Cm
- EI8xRcVj2VzGg7wUOcXWtq+NqALhubdU2cI7SqwnYPEXbkKvVP+XcyFZiePuTCMtCDUmnZo62
- LZbTMKCYB6pzVQVTo6N3PmLa94l1qU4NtAXC2ucbNntVhRaH4kis/IhHemmq8q8kd8cM17WoJ
- C3YuoVnYZD/mFBgZ7UFBQxA0vIl2GPmnqEfVB4IoRSDucOi1Z10f7CTDnsdrwTpn7R3qmMrjR
- tUy7ZIbDeflaSbo9jI+CwBMfV9e0odSVJ8QL5+EXR6yDA=
+Content-Transfer-Encoding: 8bit
 
-On 21.02.24 15:25, Luna Jernberg wrote:
-> Works fine on my desktop with model name    : AMD Ryzen 5 5600 6-Core
-> Processor and Arch Linux
+On 21.02.2024 00:15, junxiao.bi@oracle.com wrote:
 >
-> Tested-by: Luna Jernberg <droidbittin@gmail.com>
+> The thing is we can't reproduce this issue at all. If you can generate 
+> a vmcore when the hung happened, then we can review which processes 
+> are stuck.
 >
+Hi,
+don't know if that be any of help, but I run below scenario with SATA 
+and NVMe drives. For me, the issue is reproducible on NVMe drives only.
 
-du meine deinem Scheiss Top Posting immer !!!
-:-(
+Scenario:
+1. Create R5D3 with native metadata
+     # mdadm -CR /dev/md/vol -l5 -n3 /dev/nvme[0-2]n1 --assume-clean
+2. Create FS on the array
+     # mkfs.ext4 /dev/md/vol -F
+3. Remove single member drive via "--incremental --fail"
+     # mdadm -If nvme0n1
 
-get the fuck out of it !
+The result is almost instant.
 
-
-
->>
->> Tested-by: Ronald Warsow <rwarsow@gmx.de>
-
+Thanks,
+Mateusz
 
