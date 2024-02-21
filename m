@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-22545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3F4185DC8E
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:54:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7D7585DAF0
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:36:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44512B23631
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:54:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 891D31F23946
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:36:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7202E7BB0E;
-	Wed, 21 Feb 2024 13:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB3787D3EE;
+	Wed, 21 Feb 2024 13:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XFIdGFtL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AYxP2mnp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282FE38398;
-	Wed, 21 Feb 2024 13:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A5707B3EA;
+	Wed, 21 Feb 2024 13:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523671; cv=none; b=MemtI5ipvjB51cvaksaEVudmjyM3kSNxSEJ7pOwMWn0QYF7R4CTmac6qDmR7cxiHQS5uFw2j13qet4qvBFtSOtnTIm1CASQZgBp7nv7QYd7ZAsUHr8KKikix7OmtA+8nJRfciFxfFN3Wk14NcWbYXjBSfJslS37OP92nxULuQ/E=
+	t=1708522506; cv=none; b=S9hpz+3h9BGfJSW3xZ2Tt/FEV0x7kqmtSH42ulu8baSf5EzF0WQZxYf4XwptBfPzfTWVj8zHyCVPQcigTPaO+oLrWYwDqjH+pijlcVbRh3VwIOIhng2qycCA5pG2qLiuk8BKv6/ZkgZ1denMvA2YJ5H+lWQ4a5wXIMhLSF5pJ2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523671; c=relaxed/simple;
-	bh=b7xp/vhLQHTYAua7tj61jDc9OV8Rm4t2UCDlb/RGLRM=;
+	s=arc-20240116; t=1708522506; c=relaxed/simple;
+	bh=XJ6iT5fpnVqc03g48RUfmksKJP/n6Xyq0EUvfd/xEQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=As0W0dejySbgX8NVWmmdHZ287ofkLTKx/r0V81ERv8uMb9y7YQQkOIrhcDnDYuKgwepT2eRai2Bit5WFUzjWbtcFT80lWXsojuYTLSItU57dRbaEa2Dl2YirkOVvZzviBAZmUGK7LhMB4suoudBxcpKWBR8mS0W/tatSc13zcE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XFIdGFtL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DCAAC433F1;
-	Wed, 21 Feb 2024 13:54:30 +0000 (UTC)
+	 MIME-Version; b=KPTSXRRgyB0pX/I/V/oTZHGdi4vGdulSQbJNP7qgdTov3hZmJKkB2btdJERd2yZLeofCRWUeMFeZpHAp3+Vw013RGeI3W/6Uwhlm/QrXZc9wImlwbUHTPA42Y38PQMepn/ERrYWR4a5PQ0tlH1QK/FBj3o9Inr93DsZWhw0aRjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AYxP2mnp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5825C433B1;
+	Wed, 21 Feb 2024 13:35:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523671;
-	bh=b7xp/vhLQHTYAua7tj61jDc9OV8Rm4t2UCDlb/RGLRM=;
+	s=korg; t=1708522506;
+	bh=XJ6iT5fpnVqc03g48RUfmksKJP/n6Xyq0EUvfd/xEQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XFIdGFtL0V+DzJdZnzFk0H9vQIcvqRggYc/c5DmlTzuDQnKSlo/Y4qzUSJgA1Zbs4
-	 d1utJAa/06aCkLldjKXzDEuu0hUakjjOdZbOsPOhpslzDzS7d/d02A8Hh/u5tKYamo
-	 eESNnVkKkCOx2cQQD0wObTOBZVtUc2uw1tT1+QN8=
+	b=AYxP2mnpACqHIqCWSerifbpGps/khuyKXSN3cD3RdPRHTVpR3VWIb/uNFR/TAp12I
+	 ibXetR8Y7IX4A5SHeUelsPhUHq/5bjBahkka1qEzPe0z2O9XuwUdI+UMdiyY88teWR
+	 5D31i3coPZ5attY2OiwvePD7Lq8P/IbAFuhCI3kI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.10 024/379] parisc/firmware: Fix F-extend for PDC addresses
+	Oleg Nesterov <oleg@redhat.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 152/476] afs: fix the usage of read_seqbegin_or_lock() in afs_lookup_volume_rcu()
 Date: Wed, 21 Feb 2024 14:03:23 +0100
-Message-ID: <20240221125955.634126437@linuxfoundation.org>
+Message-ID: <20240221130013.559921767@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Oleg Nesterov <oleg@redhat.com>
 
-commit 735ae74f73e55c191d48689bd11ff4a06ea0508f upstream.
+[ Upstream commit 4121b4337146b64560d1e46ebec77196d9287802 ]
 
-When running with narrow firmware (64-bit kernel using a 32-bit
-firmware), extend PDC addresses into the 0xfffffff0.00000000
-region instead of the 0xf0f0f0f0.00000000 region.
+David Howells says:
 
-This fixes the power button on the C3700 machine in qemu (64-bit CPU
-with 32-bit firmware), and my assumption is that the previous code was
-really never used (because most 64-bit machines have a 64-bit firmware),
-or it just worked on very old machines because they may only decode
-40-bit of virtual addresses.
+ (2) afs_lookup_volume_rcu().
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+     There can be a lot of volumes known by a system.  A thousand would
+     require a 10-step walk and this is drivable by remote operation, so I
+     think this should probably take a lock on the second pass too.
+
+Make the "seq" counter odd on the 2nd pass, otherwise read_seqbegin_or_lock()
+never takes the lock.
+
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Link: https://lore.kernel.org/r/20231130115606.GA21571@redhat.com/
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/firmware.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/afs/callback.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/parisc/kernel/firmware.c
-+++ b/arch/parisc/kernel/firmware.c
-@@ -123,10 +123,10 @@ static unsigned long f_extend(unsigned l
- #ifdef CONFIG_64BIT
- 	if(unlikely(parisc_narrow_firmware)) {
- 		if((address & 0xff000000) == 0xf0000000)
--			return 0xf0f0f0f000000000UL | (u32)address;
-+			return (0xfffffff0UL << 32) | (u32)address;
+diff --git a/fs/afs/callback.c b/fs/afs/callback.c
+index 1b4d5809808d..e0f5dcffe4e3 100644
+--- a/fs/afs/callback.c
++++ b/fs/afs/callback.c
+@@ -110,13 +110,14 @@ static struct afs_volume *afs_lookup_volume_rcu(struct afs_cell *cell,
+ {
+ 	struct afs_volume *volume = NULL;
+ 	struct rb_node *p;
+-	int seq = 0;
++	int seq = 1;
  
- 		if((address & 0xf0000000) == 0xf0000000)
--			return 0xffffffff00000000UL | (u32)address;
-+			return (0xffffffffUL << 32) | (u32)address;
- 	}
- #endif
- 	return address;
+ 	do {
+ 		/* Unfortunately, rbtree walking doesn't give reliable results
+ 		 * under just the RCU read lock, so we have to check for
+ 		 * changes.
+ 		 */
++		seq++; /* 2 on the 1st/lockless path, otherwise odd */
+ 		read_seqbegin_or_lock(&cell->volume_lock, &seq);
+ 
+ 		p = rcu_dereference_raw(cell->volumes.rb_node);
+-- 
+2.43.0
+
 
 
 
