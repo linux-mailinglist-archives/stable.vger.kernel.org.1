@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-22479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE40C85DC3B
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:50:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE24985D9C4
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:22:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B8B71C22891
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:50:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B7E81C231C7
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:22:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A6FC7BB18;
-	Wed, 21 Feb 2024 13:50:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E0E17BAFB;
+	Wed, 21 Feb 2024 13:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K3BY0vPG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hOcdP537"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A61217BB01;
-	Wed, 21 Feb 2024 13:50:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5572E763F6;
+	Wed, 21 Feb 2024 13:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523435; cv=none; b=JMRxLM1zoPZmHaDoHmdpCdlWBcGj0NH/uiCjdXAXiTvZa8ZESte8Md8Cce+U21fH/EArZF4sipe1dloDIZ0h7VhxJ7A//xe2S3jp2pr59LR/8XRWykCty/+ZKv4Y9ahHt+dlGkfFqyIe/0BYn4xnJBY6c6/xPLKkcSKegoYJ/44=
+	t=1708521718; cv=none; b=ZvqZdNBsfpzfhHZgzOfexL8CR02JDKhxK2Ns+lfxWrelK1bSbMED7fm/5AQVFPLbxvqyoNuH+T68VtNIt5ygIvVV3DnPMKW2Hl4+01UcC3LLXghyG9KaxGafE2LE8zs/K5XrnmzwuFlrXm/vk/2SXaxT1hUhSO5HWDgr5gvtYVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523435; c=relaxed/simple;
-	bh=NcNiIDeksB+8HI3imukBz4JFb7c/39qWVprYVCx95HI=;
+	s=arc-20240116; t=1708521718; c=relaxed/simple;
+	bh=5Ah1NTqH80hvILYxu/r6F1TX1zzwhiBx4x34jxJlPI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qtu3vPvnT4K1XnDEzSa0UpVDxKjlAOnbNK6aLRNhLbWnKsLDw+1Ca7YxFs3wMvaivZ+40jPGo0RDecrurM/y1rLynZu8EBOJ2fLijPmRR3qrr/+l/j2cML0ZxWzcMqCrtG+CJkVSYeS2XTjADN8sRc+gCnkig9dORIdesz14ZUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K3BY0vPG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 270C1C433C7;
-	Wed, 21 Feb 2024 13:50:33 +0000 (UTC)
+	 MIME-Version; b=gVYzclfBMBW5E/eTaAz+g4z2MenrGLPCRDhzgQPdI3S8k3WXcy7k52un5uTK2c2nVqWLijW9MzCf8cn9NkvNVVQPdibjRoCKVR7yYo4031384mxMGOus730VJT9/WcHyauSqqzT35q47ishV2QMesTihXWF4cV02CmIyiLBSll0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hOcdP537; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4899C433F1;
+	Wed, 21 Feb 2024 13:21:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523434;
-	bh=NcNiIDeksB+8HI3imukBz4JFb7c/39qWVprYVCx95HI=;
+	s=korg; t=1708521718;
+	bh=5Ah1NTqH80hvILYxu/r6F1TX1zzwhiBx4x34jxJlPI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K3BY0vPGr6JYDV2MxEbMwVGZVbBi4cdG3nepEjTTqzs8mjGnwWlM4zCEvygQeKeym
-	 3CGYAZwaa8y1/SlCE1kXdyCUFXW/hWPo6uhafb1vyu9w5wnZl3St/bPmykQQTXRUGn
-	 cUEplNyEZp6xaNC/oKE5IDnROLeD+yub9Ur8Zh58=
+	b=hOcdP537zrmKtEvRnpSr9ZmIfLz6h+4mHdj16j/t0nwjVGn7iQze4oSi6JrX3YsCG
+	 /P9L0gWd5h4SGdVWlygnJk3Lzu3uom7A6C/J1xZpq5MooxMTbq/erc8SGoKTWGxms3
+	 ttuWL0Ct7fdKnBx8ZCTXI5Iooki4Gom0Hban50JM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 436/476] usb: dwc3: gadget: Delay issuing End Transfer
+	Vincent Donnefort <vdonnefort@google.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 4.19 186/202] ring-buffer: Clean ring_buffer_poll_wait() error return
 Date: Wed, 21 Feb 2024 14:08:07 +0100
-Message-ID: <20240221130024.155860682@linuxfoundation.org>
+Message-ID: <20240221125937.821512649@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,72 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+From: Vincent Donnefort <vdonnefort@google.com>
 
-[ Upstream commit f66eef8fb8989a7193cafc3870f7c7b2b97f16cb ]
+commit 66bbea9ed6446b8471d365a22734dc00556c4785 upstream.
 
-If the controller hasn't DMA'ed the Setup data from its fifo, it won't
-process the End Transfer command. Polling for the command completion may
-block the driver from servicing the Setup phase and cause a timeout.
-Previously we only check and delay issuing End Transfer in the case of
-endpoint dequeue. Let's do that for all End Transfer scenarios.
+The return type for ring_buffer_poll_wait() is __poll_t. This is behind
+the scenes an unsigned where we can set event bits. In case of a
+non-allocated CPU, we do return instead -EINVAL (0xffffffea). Lucky us,
+this ends up setting few error bits (EPOLLERR | EPOLLHUP | EPOLLNVAL), so
+user-space at least is aware something went wrong.
 
-Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/2fcf3b5d90068d549589a57a27a79f76c6769b04.1650593829.git.Thinh.Nguyen@synopsys.com
+Nonetheless, this is an incorrect code. Replace that -EINVAL with a
+proper EPOLLERR to clean that output. As this doesn't change the
+behaviour, there's no need to treat this change as a bug fix.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20240131140955.3322792-1-vdonnefort@google.com
+
+Cc: stable@vger.kernel.org
+Fixes: 6721cb6002262 ("ring-buffer: Do not poll non allocated cpu buffers")
+Signed-off-by: Vincent Donnefort <vdonnefort@google.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 730e12fbec53 ("usb: dwc3: gadget: Handle EP0 request dequeuing properly")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/gadget.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ kernel/trace/ring_buffer.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index 4d830ba7d824..5cf2fb165a56 100644
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -2029,16 +2029,6 @@ static int dwc3_gadget_ep_dequeue(struct usb_ep *ep,
- 		if (r == req) {
- 			struct dwc3_request *t;
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -676,7 +676,7 @@ __poll_t ring_buffer_poll_wait(struct ri
+ 		work = &buffer->irq_work;
+ 	else {
+ 		if (!cpumask_test_cpu(cpu, buffer->cpumask))
+-			return -EINVAL;
++			return EPOLLERR;
  
--			/*
--			 * If a Setup packet is received but yet to DMA out, the controller will
--			 * not process the End Transfer command of any endpoint. Polling of its
--			 * DEPCMD.CmdAct may block setting up TRB for Setup packet, causing a
--			 * timeout. Delay issuing the End Transfer command until the Setup TRB is
--			 * prepared.
--			 */
--			if (dwc->ep0state != EP0_SETUP_PHASE && !dwc->delayed_status)
--				dep->flags |= DWC3_EP_DELAY_STOP;
--
- 			/* wait until it is processed */
- 			dwc3_stop_active_transfer(dep, true, true);
- 
-@@ -3663,6 +3653,18 @@ void dwc3_stop_active_transfer(struct dwc3_ep *dep, bool force,
- 	    (dep->flags & DWC3_EP_END_TRANSFER_PENDING))
- 		return;
- 
-+	/*
-+	 * If a Setup packet is received but yet to DMA out, the controller will
-+	 * not process the End Transfer command of any endpoint. Polling of its
-+	 * DEPCMD.CmdAct may block setting up TRB for Setup packet, causing a
-+	 * timeout. Delay issuing the End Transfer command until the Setup TRB is
-+	 * prepared.
-+	 */
-+	if (dwc->ep0state != EP0_SETUP_PHASE && !dwc->delayed_status) {
-+		dep->flags |= DWC3_EP_DELAY_STOP;
-+		return;
-+	}
-+
- 	/*
- 	 * NOTICE: We are violating what the Databook says about the
- 	 * EndTransfer command. Ideally we would _always_ wait for the
--- 
-2.43.0
-
+ 		cpu_buffer = buffer->buffers[cpu];
+ 		work = &cpu_buffer->irq_work;
 
 
 
