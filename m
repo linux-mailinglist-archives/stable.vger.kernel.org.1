@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-22902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC57A85DE8B
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:19:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B02985DF5A
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:27:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7E266B25410
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:16:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29CCB1F243A7
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:27:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 959CD7CF33;
-	Wed, 21 Feb 2024 14:14:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF5187BB11;
+	Wed, 21 Feb 2024 14:27:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ay/v77HS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iXH3Xk4Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D1A78B7C;
-	Wed, 21 Feb 2024 14:14:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D3284C62;
+	Wed, 21 Feb 2024 14:27:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524898; cv=none; b=u/Bk6VyKF/bUNPMtGy0Qj3SbhuCxOZtNyUSIJvu+0ba3FrSzi1m8mb8TCR3mvcY9EgF3+jwot2J9+U3uia3ghe/35UCC48cqOT0rUXTG9MAe0jc8CEr4dHjZCzf3RH/Ntq/Q+oKSrAonaYkShrE8hAHfhoiye8ZSJBq8QRIy6o0=
+	t=1708525628; cv=none; b=oCz79IfmuSHjgvKwiRglil/MQasiphEG9kB3b7VKmdRhxdV06xqh4kXddPUHKoVsGvxQuhrHv+inHuai1eIingLYlgBz+HPIlmarvkSKjv4gYWio7/xNmWJPHb2v14pSFQUkgPx4n95qFV/KFx6C2mg+aR9JP5KyDYuKpJq3HwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524898; c=relaxed/simple;
-	bh=ETTZJOmTH/NTz/cd3rQ8WuX9TF/E7bjDUtPDf2EuRJg=;
+	s=arc-20240116; t=1708525628; c=relaxed/simple;
+	bh=6BJmONngOnGTA7gbuB4RB8MZqndroCtX1PnCE3DIryg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NSuK6T663KhoW/0IdCXD3kjGLN7wls1YyFzR3HqCokEAUMciLmuNPxYFv2FXVne24FGOovwLSGF4/xUPU1qg2W7VWV2WH3HKIrBJUFE2h6Ti1Q1yj4IW/K6uXWjKXSokwCuTvcdNLpays6cQKZjNk43np9tobvMsby6RYA1YqgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ay/v77HS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C763AC433C7;
-	Wed, 21 Feb 2024 14:14:57 +0000 (UTC)
+	 MIME-Version; b=Z8U2L0prWYeh1Kt4dnIcyzrCKpCMa/LKnQcSFZ4sTo3h5n6D8zXlr6Yq/47RzDDxjv6bacevgRjI/5YCqJUWNaR5aAsqu+9+bFivvf+E/wlrnExnxhyU16Ts0VjKppJoBP7KIRN1UJcjJ7PzRv+SBPOnCjiG3akv7lbhBxfKh1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iXH3Xk4Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D243DC433F1;
+	Wed, 21 Feb 2024 14:27:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524898;
-	bh=ETTZJOmTH/NTz/cd3rQ8WuX9TF/E7bjDUtPDf2EuRJg=;
+	s=korg; t=1708525628;
+	bh=6BJmONngOnGTA7gbuB4RB8MZqndroCtX1PnCE3DIryg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ay/v77HSL4YrTMmKQp2qF0XVg1fp4GSfHG1AjH0W+/7h43ThwoqwB7OJD77fca7SX
-	 +frzJK285Fo9woSjXowvu7L5W0099gXP8cYMiJJ5uMNX0EVS5Q5ckFtZ/Jeino3dZH
-	 jO2BZjKP7GeDqNG9XoM920IB6ZI47eJWFdWU0T6M=
+	b=iXH3Xk4Z1OU3D/Z5aHIKhrkbdL9dl/L/Pa0Djgx1KfO4Z98UHTa+ydUi+wtvQjUio
+	 07mYza1+JOIChQngVq9NKJSFWs8mTU8HhMUmktMAIkCwYygVC6HLsmyQW1c55tmmK4
+	 ooWTZh3y/iFD1mXVImZCXGUd5nZGg/3bVWeY3T6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Amit Pundir <amit.pundir@linaro.org>
-Subject: [PATCH 5.10 374/379] PM: runtime: add devm_pm_runtime_enable helper
-Date: Wed, 21 Feb 2024 14:09:13 +0100
-Message-ID: <20240221130006.126681301@linuxfoundation.org>
+	Vincent Donnefort <vdonnefort@google.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.4 213/267] tracing/trigger: Fix to return error if failed to alloc snapshot
+Date: Wed, 21 Feb 2024 14:09:14 +0100
+Message-ID: <20240221125946.894200215@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit b3636a3a2c51715736d3ec45f635ed03191962ce ]
+commit 0958b33ef5a04ed91f61cef4760ac412080c4e08 upstream.
 
-A typical code pattern for pm_runtime_enable() call is to call it in the
-_probe function and to call pm_runtime_disable() both from _probe error
-path and from _remove function. For some drivers the whole remove
-function would consist of the call to pm_remove_disable().
+Fix register_snapshot_trigger() to return error code if it failed to
+allocate a snapshot instead of 0 (success). Unless that, it will register
+snapshot trigger without an error.
 
-Add helper function to replace this bolierplate piece of code. Calling
-devm_pm_runtime_enable() removes the need for calling
-pm_runtime_disable() both in the probe()'s error path and in the
-remove() function.
+Link: https://lore.kernel.org/linux-trace-kernel/170622977792.270660.2789298642759362200.stgit@devnote2
 
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20210731195034.979084-2-dmitry.baryshkov@linaro.org
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Stable-dep-of: 3d07a411b4fa ("drm/msm/dsi: Use pm_runtime_resume_and_get to prevent refcnt leaks")
-Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+Fixes: 0bbe7f719985 ("tracing: Fix the race between registering 'snapshot' event trigger and triggering 'snapshot' operation")
+Cc: stable@vger.kernel.org
+Cc: Vincent Donnefort <vdonnefort@google.com>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/power/runtime.c |   17 +++++++++++++++++
- include/linux/pm_runtime.h   |    4 ++++
- 2 files changed, 21 insertions(+)
+ kernel/trace/trace_events_trigger.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/base/power/runtime.c
-+++ b/drivers/base/power/runtime.c
-@@ -1479,6 +1479,23 @@ void pm_runtime_enable(struct device *de
+--- a/kernel/trace/trace_events_trigger.c
++++ b/kernel/trace/trace_events_trigger.c
+@@ -1140,8 +1140,10 @@ register_snapshot_trigger(char *glob, st
+ 			  struct event_trigger_data *data,
+ 			  struct trace_event_file *file)
+ {
+-	if (tracing_alloc_snapshot_instance(file->tr) != 0)
+-		return 0;
++	int ret = tracing_alloc_snapshot_instance(file->tr);
++
++	if (ret < 0)
++		return ret;
+ 
+ 	return register_trigger(glob, ops, data, file);
  }
- EXPORT_SYMBOL_GPL(pm_runtime_enable);
- 
-+static void pm_runtime_disable_action(void *data)
-+{
-+	pm_runtime_disable(data);
-+}
-+
-+/**
-+ * devm_pm_runtime_enable - devres-enabled version of pm_runtime_enable.
-+ * @dev: Device to handle.
-+ */
-+int devm_pm_runtime_enable(struct device *dev)
-+{
-+	pm_runtime_enable(dev);
-+
-+	return devm_add_action_or_reset(dev, pm_runtime_disable_action, dev);
-+}
-+EXPORT_SYMBOL_GPL(devm_pm_runtime_enable);
-+
- /**
-  * pm_runtime_forbid - Block runtime PM of a device.
-  * @dev: Device to handle.
---- a/include/linux/pm_runtime.h
-+++ b/include/linux/pm_runtime.h
-@@ -60,6 +60,8 @@ extern void pm_runtime_new_link(struct d
- extern void pm_runtime_drop_link(struct device_link *link);
- extern void pm_runtime_release_supplier(struct device_link *link);
- 
-+extern int devm_pm_runtime_enable(struct device *dev);
-+
- /**
-  * pm_runtime_get_if_in_use - Conditionally bump up runtime PM usage counter.
-  * @dev: Target device.
-@@ -254,6 +256,8 @@ static inline void __pm_runtime_disable(
- static inline void pm_runtime_allow(struct device *dev) {}
- static inline void pm_runtime_forbid(struct device *dev) {}
- 
-+static inline int devm_pm_runtime_enable(struct device *dev) { return 0; }
-+
- static inline void pm_suspend_ignore_children(struct device *dev, bool enable) {}
- static inline void pm_runtime_get_noresume(struct device *dev) {}
- static inline void pm_runtime_put_noidle(struct device *dev) {}
 
 
 
