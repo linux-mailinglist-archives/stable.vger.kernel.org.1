@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-21887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9222D85D8FF
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:13:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15D1685DB79
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:41:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3DEC1C22E53
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:13:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFA461F21CCD
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:41:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B40869DE9;
-	Wed, 21 Feb 2024 13:13:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 652027BAFB;
+	Wed, 21 Feb 2024 13:41:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JJxox+aZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vN6zWBcK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C1669D2B;
-	Wed, 21 Feb 2024 13:13:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA4678B7C;
+	Wed, 21 Feb 2024 13:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521200; cv=none; b=dNldAWcDfcggGhhAK9hOufO7KjomGzJtYvpFUfDcw4WoIDLggZFmMoXmBmtJzAqSWxNKOTe/gwmUPaX0Ih0pbxMRtHpLRqiSOvMHVW+XRYuMjv8oMZy8SBq6BDI3JUErx3v4KSZuEcacf06R3cLEOqGLiWsdfZdQWn+2nlsGHeI=
+	t=1708522895; cv=none; b=IW4ZhoSjKg22kgHjbACLH6OWzVdqj2bYCUX2URkkyyvryBARVICpEQnTCTY8ZiuiYiNJlwJmsdsMa2jamqUwEa47n57ov/rgJ6Ec99Em8WLK5/lY5Y5Pc9/TsYIyEWjIGMXsPX+8hejdW1iMdpxBclC+WfSWhjxAi1R3HPlMGGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521200; c=relaxed/simple;
-	bh=XWphp+VEBVar9rl9cAKfZ1ZjCAGB3jfyJILwn1KX6LU=;
+	s=arc-20240116; t=1708522895; c=relaxed/simple;
+	bh=Op92VbqnCGfwMlHiNWzGhM5/NYNV3vEYN1EfrAsKh7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cxNIxgySNHeqB1z/0HBoVui8aVo9OLLhb08PjI4LbTaczf7i81JFWJv916zgI5k1u+JgpFRQBV/9zbQGBGk55PS1nNpA+cDoKN4Y1/a/PysQJf77mHlkHvHos5IwPyxJXfLcJnOdtfdKpbYnyP/yDdVGTrQFVJeX8HC4PSEjL8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JJxox+aZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A46BC433C7;
-	Wed, 21 Feb 2024 13:13:19 +0000 (UTC)
+	 MIME-Version; b=XLUlHglL8KnCcn57ogj4orY/ji2I0BXz8HCHBwE1WQC861eGZnYflAzR7zpj0PvC9XvwU6XXNCmR/AQsJwyDzcpD7sxtQen0cdYIcKHmxMlnTghc4H3ivRerH+gLTcp3DEn4kM0Xh7vb8uuHHAN6WWMkMKOFJFc6i0AY7P9GVHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vN6zWBcK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46728C433F1;
+	Wed, 21 Feb 2024 13:41:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521200;
-	bh=XWphp+VEBVar9rl9cAKfZ1ZjCAGB3jfyJILwn1KX6LU=;
+	s=korg; t=1708522894;
+	bh=Op92VbqnCGfwMlHiNWzGhM5/NYNV3vEYN1EfrAsKh7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JJxox+aZuzVy5KbzekN3IXlq4DiysfC2idJ8m/h2jbut+//TKSbu9sqFaOV6XC77Q
-	 /qUo/1JWl4AM6+9JmsRJ3DXL5I4vfxcfRFkS81A4VByogMpdy7u97In2Wv38WJ5Rsk
-	 L/uk8/HLE0eO1aJE/UjGE8f0A5a3wkKARudhkLuE=
+	b=vN6zWBcKNfwWbM1n7yn6LSemwzfvFpwONWNYDM2CrT0/Jg7RuY40FLMsIWe/ZFytF
+	 epj7LLkHHw0dXy9N0Q8RB+YtoFdjOXLMyHza++9p0qW+NeP5sL8C5aBv/1wAIwQo5g
+	 ZWJErUOFUeMMRAAaYYYQjFo/f48+tWk/blKYLIV4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"stable@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,  linux-kbuild@vger.kernel.org, llvm@lists.linux.dev,  Nathan Chancellor" <nathan@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 4.19 018/202] powerpc: Use always instead of always-y in for crtsavres.o
+	Edward Adam Davis <eadavis@qq.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+864a269c27ee06b58374@syzkaller.appspotmail.com
+Subject: [PATCH 5.15 268/476] wifi: cfg80211: fix RCU dereference in __cfg80211_bss_update
 Date: Wed, 21 Feb 2024 14:05:19 +0100
-Message-ID: <20240221125932.342861096@linuxfoundation.org>
+Message-ID: <20240221130017.754547685@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Edward Adam Davis <eadavis@qq.com>
 
-This commit is for linux-4.19.y only, it has no direct upstream
-equivalent.
+[ Upstream commit 1184950e341c11b6f82bc5b59564411d9537ab27 ]
 
-Prior to commit 5f2fb52fac15 ("kbuild: rename hostprogs-y/always to
-hostprogs/always-y"), always-y did not exist, making the backport of
-mainline commit 1b1e38002648 ("powerpc: add crtsavres.o to always-y
-instead of extra-y") to linux-4.19.y as commit b7b85ec5ec15 ("powerpc:
-add crtsavres.o to always-y instead of extra-y") incorrect, breaking the
-build with linkers that need crtsavres.o:
+Replace rcu_dereference() with rcu_access_pointer() since we hold
+the lock here (and aren't in an RCU critical section).
 
-  ld.lld: error: cannot open arch/powerpc/lib/crtsavres.o: No such file or directory
-
-Backporting the aforementioned kbuild commit is not suitable for stable
-due to its size and number of conflicts, so transform the always-y usage
-to an equivalent form using always, which resolves the build issues.
-
-Fixes: b7b85ec5ec15 ("powerpc: add crtsavres.o to always-y instead of extra-y")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 32af9a9e1069 ("wifi: cfg80211: free beacon_ies when overridden from hidden BSS")
+Reported-and-tested-by: syzbot+864a269c27ee06b58374@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Link: https://msgid.link/tencent_BF8F0DF0258C8DBF124CDDE4DD8D992DCF07@qq.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/lib/Makefile |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/wireless/scan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/powerpc/lib/Makefile
-+++ b/arch/powerpc/lib/Makefile
-@@ -21,8 +21,8 @@ obj-$(CONFIG_PPC32)	+= div64.o copy_32.o
- # 64-bit linker creates .sfpr on demand for final link (vmlinux),
- # so it is only needed for modules, and only for older linkers which
- # do not support --save-restore-funcs
--ifeq ($(call ld-ifversion, -lt, 225000000, y),y)
--always-$(CONFIG_PPC64)	+= crtsavres.o
-+ifeq ($(call ld-ifversion, -lt, 225000000, y)$(CONFIG_PPC64),yy)
-+always	+= crtsavres.o
- endif
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index 68c48970ebf7..2898df10a72a 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -1809,7 +1809,7 @@ cfg80211_bss_update(struct cfg80211_registered_device *rdev,
+ 					 &hidden->hidden_list);
+ 				hidden->refcount++;
  
- obj-$(CONFIG_PPC_BOOK3S_64) += copyuser_power7.o copypage_power7.o \
+-				ies = (void *)rcu_dereference(new->pub.beacon_ies);
++				ies = (void *)rcu_access_pointer(new->pub.beacon_ies);
+ 				rcu_assign_pointer(new->pub.beacon_ies,
+ 						   hidden->pub.beacon_ies);
+ 				if (ies)
+-- 
+2.43.0
+
 
 
 
