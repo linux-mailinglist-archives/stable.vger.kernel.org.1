@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-22665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED94D85DD23
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:02:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D92F85DB8E
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:42:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 774231F21876
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:02:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2DDD1F22E2F
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:42:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 065157E76B;
-	Wed, 21 Feb 2024 14:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E138763F6;
+	Wed, 21 Feb 2024 13:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PH25fgSR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V0U0Uzcb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B84CB7E595;
-	Wed, 21 Feb 2024 14:01:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B57E1E4B2;
+	Wed, 21 Feb 2024 13:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524100; cv=none; b=BvTk8iNx/pI9CkHWWJHLGuGQIbHwwyqecY68issGUxFOSAu10h24MomqTUh7XKQSPa3pBJvLRRy62galJnDxZgaCNF/MiSGdM+pi//gr+ZBlEAGCsE99jt/x4rvDPhonLXtsrb0EguANxkXxuyzceRq38nmDh+y+zMfesD7KYKY=
+	t=1708522952; cv=none; b=fAdiaLj+IigS2putKNIFRRIneMn0204fzqWMzSej/x45i3CosRgsEYMfiS2RgWoubNv+jQfHbpapdvr3hYxJLAYSTeEdey4Oe32IsPYkeoYaBM5c1Zd6eVDU03Nb7LzOtjrmD6qmNR71Sq1MsXsudYOAQtd+cJHWYkMUhj0DFus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524100; c=relaxed/simple;
-	bh=+4UsmNIrZO9UjhwbY2LcYZifShIxK3ykd5Pbm2/5Qpc=;
+	s=arc-20240116; t=1708522952; c=relaxed/simple;
+	bh=SITxeQpW+GRQKi0folSu5aNmliCxa8Xx/+63UP394dA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SrD7348iQ3aLE4rOD5sM2TtXMqyCKTwl2k1OvfiJ3ub/nJkhNrqXnA+cdGNlUtx9gwWThAPY0i715XSlR/2vpvqdJuYfSHf5h8lRFOVReAUjfn0uPMbGKlQM6iC4TJSidNJHZj1I9U32ymiAm+HEF7FsXn0UIKJKqXcLK935MZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PH25fgSR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AC17C433F1;
-	Wed, 21 Feb 2024 14:01:39 +0000 (UTC)
+	 MIME-Version; b=JsHiAonsjwlhunZktLi3N+81E3bzNjJ1Su2dNUMAg3bdloW276fHBuDWDNiF0YU/5BBQfG+4E5J4TL2cBXUknRa77XmnXU7bcAxMa6HtuEnCUeJ6a+o0PFgq7tIaF0/jMmTs704BXwAfyFdidGVi6TSVrjLzf1u8TluP4CSR8NI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V0U0Uzcb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BECDC433C7;
+	Wed, 21 Feb 2024 13:42:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524100;
-	bh=+4UsmNIrZO9UjhwbY2LcYZifShIxK3ykd5Pbm2/5Qpc=;
+	s=korg; t=1708522952;
+	bh=SITxeQpW+GRQKi0folSu5aNmliCxa8Xx/+63UP394dA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PH25fgSRV+/qoTQy+qCT7I4HJadfMWIooDDhMKMXJJP0tuQ5+sGwKvgu/eo7x19bu
-	 gmp5HJOLhRqQt6HiMgdkQZ6Zs7d1B81pg+0uL4DW9rGdmTKIbryxyxzU9x8rmbjwmF
-	 UT7ab7BWoubIiMgfDhK0a8YvJ+DdU59GUufx6XLk=
+	b=V0U0Uzcb/hI3C++wWYle79jbHlRrYLXu94j9p2tujSn3GDxXXefHrL8qonOh3aUb7
+	 prenjhQeAn5GjK103c7czHIsCZiM+wZx4RsXR0LwJ592kAoJknXiedp5cdtvuPmjIE
+	 Jw1nM6owLJul97jCWMFSwGjCUVNYETK4A+KPs2WM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 144/379] ARM: dts: imx7d: Fix coresight funnel ports
+Subject: [PATCH 5.15 272/476] selftests: net: give more time for GRO aggregation
 Date: Wed, 21 Feb 2024 14:05:23 +0100
-Message-ID: <20240221125959.184937577@linuxfoundation.org>
+Message-ID: <20240221130018.029546241@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 0d4ac04fa7c3f6dc263dba6f575a2ec7a2d4eca8 ]
+[ Upstream commit 89abe628375301fedb68770644df845d49018d8b ]
 
-imx7d uses two ports for 'in-ports', so the syntax port@<num> has to
-be used. imx7d has both port and port@1 nodes present, raising these
-error:
-funnel@30041000: in-ports: More than one condition true in oneOf schema
-funnel@30041000: Unevaluated properties are not allowed
-('in-ports' was unexpected)
+The gro.sh test-case relay on the gro_flush_timeout to ensure
+that all the segments belonging to any given batch are properly
+aggregated.
 
-Fix this by also using port@0 for imx7s as well.
+The other end, the sender is a user-space program transmitting
+each packet with a separate write syscall. A busy host and/or
+stracing the sender program can make the relevant segments reach
+the GRO engine after the flush timeout triggers.
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Give the GRO flush timeout more slack, to avoid sporadic self-tests
+failures.
+
+Fixes: 9af771d2ec04 ("selftests/net: allow GRO coalesce test on veth")
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Tested-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/bffec2beab3a5672dd13ecabe4fad81d2155b367.1706206101.git.pabeni@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/imx7d.dtsi | 3 ---
- arch/arm/boot/dts/imx7s.dtsi | 6 +++++-
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ tools/testing/selftests/net/setup_veth.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/imx7d.dtsi b/arch/arm/boot/dts/imx7d.dtsi
-index b0bcfa9094a3..8ad3e60fd7d1 100644
---- a/arch/arm/boot/dts/imx7d.dtsi
-+++ b/arch/arm/boot/dts/imx7d.dtsi
-@@ -209,9 +209,6 @@
- };
+diff --git a/tools/testing/selftests/net/setup_veth.sh b/tools/testing/selftests/net/setup_veth.sh
+index 1003ddf7b3b2..227fd1076f21 100644
+--- a/tools/testing/selftests/net/setup_veth.sh
++++ b/tools/testing/selftests/net/setup_veth.sh
+@@ -8,7 +8,7 @@ setup_veth_ns() {
+ 	local -r ns_mac="$4"
  
- &ca_funnel_in_ports {
--	#address-cells = <1>;
--	#size-cells = <0>;
--
- 	port@1 {
- 		reg = <1>;
- 		ca_funnel_in_port1: endpoint {
-diff --git a/arch/arm/boot/dts/imx7s.dtsi b/arch/arm/boot/dts/imx7s.dtsi
-index 03bde2fb9bb1..622c60bd8b75 100644
---- a/arch/arm/boot/dts/imx7s.dtsi
-+++ b/arch/arm/boot/dts/imx7s.dtsi
-@@ -173,7 +173,11 @@
- 			clock-names = "apb_pclk";
+ 	[[ -e /var/run/netns/"${ns_name}" ]] || ip netns add "${ns_name}"
+-	echo 100000 > "/sys/class/net/${ns_dev}/gro_flush_timeout"
++	echo 1000000 > "/sys/class/net/${ns_dev}/gro_flush_timeout"
+ 	ip link set dev "${ns_dev}" netns "${ns_name}" mtu 65535
+ 	ip -netns "${ns_name}" link set dev "${ns_dev}" up
  
- 			ca_funnel_in_ports: in-ports {
--				port {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+
-+				port@0 {
-+					reg = <0>;
- 					ca_funnel_in_port0: endpoint {
- 						remote-endpoint = <&etm0_out_port>;
- 					};
 -- 
 2.43.0
 
