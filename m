@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-22027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDFD985D9C8
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:22:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A94A85DC3E
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:50:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E463B25957
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:22:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05B01281BE4
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:50:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A9917BAE2;
-	Wed, 21 Feb 2024 13:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C2E47BB16;
+	Wed, 21 Feb 2024 13:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kLeZ0631"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TG5hQBt1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 199C7763F6;
-	Wed, 21 Feb 2024 13:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA3078B5E;
+	Wed, 21 Feb 2024 13:50:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521725; cv=none; b=gQ+SeKLXqQw3MqsgmmgKiTZhHxeNbW9rIFhHmWchVLmJ7f3JAn0gXu+xbanduMtLJR4cGsPRMb6Uq1aHATmPZGCM9wltbWXALPSAmnpqIisGMIS93z9usIPVCikuFvDjyqOx8lZUv5MhF1pqaTOxqnOSyGPdiC0hJWkAjF4ATSY=
+	t=1708523449; cv=none; b=k7Z9b5RPViSdLvWeXAK9u6jV/0KmC/boEvwt7XdIjNR7PprW50G6dv6aECol7dgPCtw3oIJeaHeKoCMay1WZS6GrPLIMdRU3sOJSdre3dPoMOuA+DoY3Gir18REeSS3eDZKLZXlkTqfVfN5EgdVExD0TevJL5++UKzHzBzjwz20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521725; c=relaxed/simple;
-	bh=SDvzDTtArtkXy++YzCaqdmyFRiLfCLp2mMs2huSqy4I=;
+	s=arc-20240116; t=1708523449; c=relaxed/simple;
+	bh=+RO6b0dufx9FIi7axtzZS56SuOhGFwMiKUs2dMaSgEQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sGn5RGiEvJ5YVlNHBG00o+5Ct7vazUh6NxzquYji4yd848q07SqXLId6ZsSVlypsK3ySti3nMesi03uYEwOX6zXrmE4hqJLLMSLSypr/sMV17QE7hnOFMGWnHSaelTtg1eRm1IdiUcqV0MQZP9N0GJOFGr1j9V+Vc+do1cvs+IU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kLeZ0631; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F98BC433F1;
-	Wed, 21 Feb 2024 13:22:03 +0000 (UTC)
+	 MIME-Version; b=K1VI97LQW7Pv0bgDUYy9kwwUNqnrCen17kaPaRhmxYGPS8IVV0ZcGOxZSh/g3RpT7HcZZe4VBCg3i8+TACyChoz+MF4EO4xzJHUbWUGiZQpYr13/uQBGBG5qMyrLCoM42u0U5vDSLnGtEDTjmjS8FKxHQjTDfn7fP2CYeZ9qQlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TG5hQBt1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57EB9C433F1;
+	Wed, 21 Feb 2024 13:50:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521724;
-	bh=SDvzDTtArtkXy++YzCaqdmyFRiLfCLp2mMs2huSqy4I=;
+	s=korg; t=1708523448;
+	bh=+RO6b0dufx9FIi7axtzZS56SuOhGFwMiKUs2dMaSgEQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kLeZ0631hftkP7yGmK+yExg6J/q19MJo8a0/HXQbJ7ErnhWYOmM8HK4nZHfowNRz9
-	 hsgzwOCNPF0Nwd00PIGb+0ZVb58bJxbwhQ6nktyiz6ZbL6bnzrQ1VF7K/m8sXwTJb6
-	 jzKNAt/2pUVvl6dKVsHrKpSb8tN5qLUDYJM58NCU=
+	b=TG5hQBt1G2UsStXBzPoBWi2LCXquoAgcmpo+j+MAu9MpVJi+k7vlI2q/uLk8Ujuec
+	 nqdS1TRk6L4B335F7rpDF8APGTS/1Q5YJRmjKxRX0elLM8aKCOjSizu573nVOF/neY
+	 ykhpsJ/meDU3GZYqy4cZSD+VMz+tJFtIIEn2mktk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jan=20Kundr=C3=A1t?= <jan.kundrat@cesnet.cz>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Subject: [PATCH 4.19 188/202] serial: max310x: improve crystal stable clock detection
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Wesley Cheng <quic_wcheng@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 438/476] usb: dwc3: gadget: Force sending delayed status during soft disconnect
 Date: Wed, 21 Feb 2024 14:08:09 +0100
-Message-ID: <20240221125937.880702899@linuxfoundation.org>
+Message-ID: <20240221130024.221416978@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,87 +60,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Wesley Cheng <quic_wcheng@quicinc.com>
 
-commit 93cd256ab224c2519e7c4e5f58bb4f1ac2bf0965 upstream.
+[ Upstream commit e1ee843488d58099a89979627ef85d5bd6c5cacd ]
 
-Some people are seeing a warning similar to this when using a crystal:
+If any function drivers request for a delayed status phase, this leads to a
+SETUP transfer timeout error, since the function may take longer to process
+the DATA stage.  This eventually results in end transfer timeouts, as there
+is a pending SETUP transaction.
 
-    max310x 11-006c: clock is not stable yet
+In addition, allow the DWC3_EP_DELAY_STOP to be set for if there is a
+delayed status requested.  Ocasionally, a host may abort the current SETUP
+transaction, by issuing a subsequent SETUP token.  In those situations, it
+would result in an endxfer timeout as well.
 
-The datasheet doesn't mention the maximum time to wait for the clock to be
-stable when using a crystal, and it seems that the 10ms delay in the driver
-is not always sufficient.
-
-Jan Kundrát reported that it took three tries (each separated by 10ms) to
-get a stable clock.
-
-Modify behavior to check stable clock ready bit multiple times (20), and
-waiting 10ms between each try.
-
-Note: the first draft of the driver originally used a 50ms delay, without
-checking the clock stable bit.
-Then a loop with 1000 retries was implemented, each time reading the clock
-stable bit.
-
-Fixes: 4cf9a888fd3c ("serial: max310x: Check the clock readiness")
-Cc: stable@vger.kernel.org
-Suggested-by: Jan Kundrát <jan.kundrat@cesnet.cz>
-Link: https://www.spinics.net/lists/linux-serial/msg35773.html
-Link: https://lore.kernel.org/all/20240110174015.6f20195fde08e5c9e64e5675@hugovil.com/raw
-Link: https://github.com/boundarydevices/linux/commit/e5dfe3e4a751392515d78051973190301a37ca9a
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20240116213001.3691629-3-hugo@hugovil.com
+Reviewed-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
+Link: https://lore.kernel.org/r/20220817182359.13550-3-quic_wcheng@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 730e12fbec53 ("usb: dwc3: gadget: Handle EP0 request dequeuing properly")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/max310x.c |   21 ++++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
+ drivers/usb/dwc3/gadget.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/tty/serial/max310x.c
-+++ b/drivers/tty/serial/max310x.c
-@@ -235,6 +235,10 @@
- #define MAX310x_REV_MASK		(0xf8)
- #define MAX310X_WRITE_BIT		0x80
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index b978e42ace75..ba1b2e70b351 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -2470,6 +2470,9 @@ static int dwc3_gadget_soft_disconnect(struct dwc3 *dwc)
+ 	if (dwc->ep0state != EP0_SETUP_PHASE) {
+ 		int ret;
  
-+/* Crystal-related definitions */
-+#define MAX310X_XTAL_WAIT_RETRIES	20 /* Number of retries */
-+#define MAX310X_XTAL_WAIT_DELAY_MS	10 /* Delay between retries */
++		if (dwc->delayed_status)
++			dwc3_ep0_send_delayed_status(dwc);
 +
- /* MAX3107 specific */
- #define MAX3107_REV_ID			(0xa0)
+ 		reinit_completion(&dwc->ep0_in_setup);
  
-@@ -600,12 +604,19 @@ static int max310x_set_ref_clk(struct de
- 
- 	/* Wait for crystal */
- 	if (xtal) {
--		unsigned int val = 0;
--		msleep(10);
--		regmap_read(s->regmap, MAX310X_STS_IRQSTS_REG, &val);
--		if (!(val & MAX310X_STS_CLKREADY_BIT)) {
-+		bool stable = false;
-+		unsigned int try = 0, val = 0;
-+
-+		do {
-+			msleep(MAX310X_XTAL_WAIT_DELAY_MS);
-+			regmap_read(s->regmap, MAX310X_STS_IRQSTS_REG, &val);
-+
-+			if (val & MAX310X_STS_CLKREADY_BIT)
-+				stable = true;
-+		} while (!stable && (++try < MAX310X_XTAL_WAIT_RETRIES));
-+
-+		if (!stable)
- 			dev_warn(dev, "clock is not stable yet\n");
--		}
+ 		spin_unlock_irqrestore(&dwc->lock, flags);
+@@ -3662,7 +3665,7 @@ void dwc3_stop_active_transfer(struct dwc3_ep *dep, bool force,
+ 	 * timeout. Delay issuing the End Transfer command until the Setup TRB is
+ 	 * prepared.
+ 	 */
+-	if (dwc->ep0state != EP0_SETUP_PHASE && !dwc->delayed_status) {
++	if (dwc->ep0state != EP0_SETUP_PHASE) {
+ 		dep->flags |= DWC3_EP_DELAY_STOP;
+ 		return;
  	}
- 
- 	return (int)bestfreq;
+-- 
+2.43.0
+
 
 
 
