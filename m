@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-22350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 145F585DB96
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:43:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBDF085D90D
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 954B9283D0F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:43:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D48B1F240C6
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:14:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1552469D21;
-	Wed, 21 Feb 2024 13:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D60069E02;
+	Wed, 21 Feb 2024 13:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lsUPoSMN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NRaEUUPD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B261E4B2;
-	Wed, 21 Feb 2024 13:42:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF35D53816;
+	Wed, 21 Feb 2024 13:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522978; cv=none; b=DJRl6kVeuZgHy1qhz4OmC0rhPjwHRcDfASxfLKPOkOXrT/JVFbNoZ1RUyCrABBTfTDQWWPRtg8+RGXwSIjmNbl21dSGN7pVZfOtJhj2ECp7IKJ3O7rLu46CJgmteBspb6Rcw5EiS6A2HZZn6VnY/IckXqD/3GZx1VYVqMV5eeZs=
+	t=1708521234; cv=none; b=QSxQeromJIIB7dyw23RrrsI1bljbeNQFS9hcG05crWzNk3lh6FTD4qDuIEIaDavS9pSt1VZ4WiBvKvHlHYr2puI0f+MUTB3Ojku7JNZVRUaW3oReNUyB5mYjoAmJZhyqSFTRfeNZAFpA6w1g7gBdQtH+c4QYUe8urAcWsbqSmKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522978; c=relaxed/simple;
-	bh=5GTUTUO794I6YsiJhQ+ntaqpj6Qx2nVEyUCjjxd6z7w=;
+	s=arc-20240116; t=1708521234; c=relaxed/simple;
+	bh=IB99hAXDU4i/+AD1yzjOgp43b3yXn0iwdGkp6h/+HTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YXf5EeECgHpr1LBD0y9Obow9okkH6UhckcuaKVLF7SN78vdmwkXAA2ASqSyab/yLO77i6GVwBH6m3ocmn9GzdHBA9aUAHjiWCKDERlemX+gaUvT/4piY5utLLOPqspoH4KzQKcjk4NB7QyRrr48R+nxwwAGNc8OGhu+GtZWLivU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lsUPoSMN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A35DC433F1;
-	Wed, 21 Feb 2024 13:42:57 +0000 (UTC)
+	 MIME-Version; b=bJWPFnVzkhrpR2XF+zpKeCDrjdXq/FkkyMigSZR3KkS/UE2TiN+JlA0d7Y8F/bqkANtNJPEYxGShshpg6KGvG9WHNyClfbag0D9rgRB4nIYGwueUaeqw2tr960JzRYuYFIc3h9P6/rRVvD9m11IDh8zQPA3nSw1KauZipCqY+KU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NRaEUUPD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EEBFC433C7;
+	Wed, 21 Feb 2024 13:13:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522978;
-	bh=5GTUTUO794I6YsiJhQ+ntaqpj6Qx2nVEyUCjjxd6z7w=;
+	s=korg; t=1708521233;
+	bh=IB99hAXDU4i/+AD1yzjOgp43b3yXn0iwdGkp6h/+HTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lsUPoSMNTPKGrStdbb/X/gQajMuHtVOe66tI+Rg5YZAQPOjsbD/sxBMHbkluLkhpJ
-	 TDfncB6TX1EBgCNo+kffBUNdgRQlphEV3GrYTmcNjRA+q18nWfrtu07wk2j8B/JQnx
-	 PGda3bqCA/4MhO/xbR1T7r651sXRSiLvNdiDDoGg=
+	b=NRaEUUPD7gKD7hugvUvyBliRBeSW1EvVwszj8rud7qa6+JuNG3eA3II6/837Z1J3b
+	 dxZgTNC9aPYqimQC9o6XFCJ4vyLU2h1kTwIgsellWkLGP0lhqgFMyF5zezoiHeCF2U
+	 Cm5Qj+WthOREeuCQEbkW8BscDXm3W/AIzENO6PFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoine Tenart <atenart@kernel.org>,
-	Jiri Pirko <jiri@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	syzbot+39ba34a099ac2e9bd3cb@syzkaller.appspotmail.com,
+	Osama Muhammad <osmtendev@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 307/476] tunnels: fix out of bounds access when building IPv6 PMTU error
-Date: Wed, 21 Feb 2024 14:05:58 +0100
-Message-ID: <20240221130019.368804488@linuxfoundation.org>
+Subject: [PATCH 4.19 058/202] FS:JFS:UBSAN:array-index-out-of-bounds in dbAdjTree
+Date: Wed, 21 Feb 2024 14:05:59 +0100
+Message-ID: <20240221125933.724783081@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoine Tenart <atenart@kernel.org>
+From: Osama Muhammad <osmtendev@gmail.com>
 
-[ Upstream commit d75abeec401f8c86b470e7028a13fcdc87e5dd06 ]
+[ Upstream commit 9862ec7ac1cbc6eb5ee4a045b5d5b8edbb2f7e68 ]
 
-If the ICMPv6 error is built from a non-linear skb we get the following
-splat,
+Syzkaller reported the following issue:
 
-  BUG: KASAN: slab-out-of-bounds in do_csum+0x220/0x240
-  Read of size 4 at addr ffff88811d402c80 by task netperf/820
-  CPU: 0 PID: 820 Comm: netperf Not tainted 6.8.0-rc1+ #543
-  ...
-   kasan_report+0xd8/0x110
-   do_csum+0x220/0x240
-   csum_partial+0xc/0x20
-   skb_tunnel_check_pmtu+0xeb9/0x3280
-   vxlan_xmit_one+0x14c2/0x4080
-   vxlan_xmit+0xf61/0x5c00
-   dev_hard_start_xmit+0xfb/0x510
-   __dev_queue_xmit+0x7cd/0x32a0
-   br_dev_queue_push_xmit+0x39d/0x6a0
+UBSAN: array-index-out-of-bounds in fs/jfs/jfs_dmap.c:2867:6
+index 196694 is out of range for type 's8[1365]' (aka 'signed char[1365]')
+CPU: 1 PID: 109 Comm: jfsCommit Not tainted 6.6.0-rc3-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/04/2023
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x1e7/0x2d0 lib/dump_stack.c:106
+ ubsan_epilogue lib/ubsan.c:217 [inline]
+ __ubsan_handle_out_of_bounds+0x11c/0x150 lib/ubsan.c:348
+ dbAdjTree+0x474/0x4f0 fs/jfs/jfs_dmap.c:2867
+ dbJoin+0x210/0x2d0 fs/jfs/jfs_dmap.c:2834
+ dbFreeBits+0x4eb/0xda0 fs/jfs/jfs_dmap.c:2331
+ dbFreeDmap fs/jfs/jfs_dmap.c:2080 [inline]
+ dbFree+0x343/0x650 fs/jfs/jfs_dmap.c:402
+ txFreeMap+0x798/0xd50 fs/jfs/jfs_txnmgr.c:2534
+ txUpdateMap+0x342/0x9e0
+ txLazyCommit fs/jfs/jfs_txnmgr.c:2664 [inline]
+ jfs_lazycommit+0x47a/0xb70 fs/jfs/jfs_txnmgr.c:2732
+ kthread+0x2d3/0x370 kernel/kthread.c:388
+ ret_from_fork+0x48/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
+ </TASK>
+================================================================================
+Kernel panic - not syncing: UBSAN: panic_on_warn set ...
+CPU: 1 PID: 109 Comm: jfsCommit Not tainted 6.6.0-rc3-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/04/2023
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x1e7/0x2d0 lib/dump_stack.c:106
+ panic+0x30f/0x770 kernel/panic.c:340
+ check_panic_on_warn+0x82/0xa0 kernel/panic.c:236
+ ubsan_epilogue lib/ubsan.c:223 [inline]
+ __ubsan_handle_out_of_bounds+0x13c/0x150 lib/ubsan.c:348
+ dbAdjTree+0x474/0x4f0 fs/jfs/jfs_dmap.c:2867
+ dbJoin+0x210/0x2d0 fs/jfs/jfs_dmap.c:2834
+ dbFreeBits+0x4eb/0xda0 fs/jfs/jfs_dmap.c:2331
+ dbFreeDmap fs/jfs/jfs_dmap.c:2080 [inline]
+ dbFree+0x343/0x650 fs/jfs/jfs_dmap.c:402
+ txFreeMap+0x798/0xd50 fs/jfs/jfs_txnmgr.c:2534
+ txUpdateMap+0x342/0x9e0
+ txLazyCommit fs/jfs/jfs_txnmgr.c:2664 [inline]
+ jfs_lazycommit+0x47a/0xb70 fs/jfs/jfs_txnmgr.c:2732
+ kthread+0x2d3/0x370 kernel/kthread.c:388
+ ret_from_fork+0x48/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
+ </TASK>
+Kernel Offset: disabled
+Rebooting in 86400 seconds..
 
-Use skb_checksum instead of csum_partial who cannot deal with non-linear
-SKBs.
+The issue is caused when the value of lp becomes greater than
+CTLTREESIZE which is the max size of stree. Adding a simple check
+solves this issue.
 
-Fixes: 4cb47a8644cc ("tunnels: PMTU discovery support for directly bridged IP packets")
-Signed-off-by: Antoine Tenart <atenart@kernel.org>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Dave:
+As the function returns a void, good error handling
+would require a more intrusive code reorganization, so I modified
+Osama's patch at use WARN_ON_ONCE for lack of a cleaner option.
+
+The patch is tested via syzbot.
+
+Reported-by: syzbot+39ba34a099ac2e9bd3cb@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=39ba34a099ac2e9bd3cb
+Signed-off-by: Osama Muhammad <osmtendev@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/ip_tunnel_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/jfs/jfs_dmap.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/ipv4/ip_tunnel_core.c b/net/ipv4/ip_tunnel_core.c
-index d3275d1ed260..50ddbd7021f0 100644
---- a/net/ipv4/ip_tunnel_core.c
-+++ b/net/ipv4/ip_tunnel_core.c
-@@ -332,7 +332,7 @@ static int iptunnel_pmtud_build_icmpv6(struct sk_buff *skb, int mtu)
- 	};
- 	skb_reset_network_header(skb);
- 
--	csum = csum_partial(icmp6h, len, 0);
-+	csum = skb_checksum(skb, skb_transport_offset(skb), len, 0);
- 	icmp6h->icmp6_cksum = csum_ipv6_magic(&nip6h->saddr, &nip6h->daddr, len,
- 					      IPPROTO_ICMPV6, csum);
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index 2f452b5ee731..b7fc47907d96 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -2948,6 +2948,9 @@ static void dbAdjTree(dmtree_t * tp, int leafno, int newval)
+ 	/* is the current value the same as the old value ?  if so,
+ 	 * there is nothing to do.
+ 	 */
++	if (WARN_ON_ONCE(lp >= CTLTREESIZE))
++		return;
++
+ 	if (tp->dmt_stree[lp] == newval)
+ 		return;
  
 -- 
 2.43.0
