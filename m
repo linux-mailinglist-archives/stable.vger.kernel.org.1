@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-21968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 959E785D96F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:18:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0B4A85DDE5
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:13:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1AAA5B24A4D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:18:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 898531F23FFE
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:13:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4431278B4A;
-	Wed, 21 Feb 2024 13:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9B917F7D9;
+	Wed, 21 Feb 2024 14:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o5qr+U7P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dMUU04wr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF93A77638;
-	Wed, 21 Feb 2024 13:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F0A69D38;
+	Wed, 21 Feb 2024 14:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521501; cv=none; b=kiEFUdxO/47Alk+MS3codvcbvEAlIVObjBGClSDMLZmq1Kuc7JDXRBbTxBklswPFgAGhmoPajrmFH10VgQz6czQwTLDB3s0JWLhZtP1ULb/9qemPcij2JE5xez+ouudYmRdHD8wXwnX7woL+rzIpPl2/U90ucZlkAofZMt2LVtQ=
+	t=1708524551; cv=none; b=SmoHS0vmHuSP/JLEurM+rNZLWDgzuAhQvAaoSfDH7H/+vF9ITPqEwYhkr8QIH6SUiGRb9jMe8W/S+AhComKNMneMjqvDpEV4DfG58VZqzTiCoGcK/BpBEuNOvB3v+ZqS301cN4DtwSE1UDqWL2QAtcR4/rfZCKp+rm3dz+hWOPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521501; c=relaxed/simple;
-	bh=U3CL0RSIEGwHIU3i05GEmSbSvPPUgQwg0OG3khopTtE=;
+	s=arc-20240116; t=1708524551; c=relaxed/simple;
+	bh=OFFMLXRN92IHraWF2FJmlIEZ2Q04DLrJN8Brnunn3+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y6Rg8RN5SdLVpJhg0gNHmmyVOdITbZwONZHhxbTGU66GV2DqwM36sKMMubTq1VXPQGz9xnlNuiiR3aep8FTyxOdzJABtZwDISkW44+KVg37bH22Ronqm3hB1UU6tsj0Gn5LDQ6PbUUMZ+zX/0uah5cerZlMXcdJZ2w3GTG1YFEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o5qr+U7P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A059C433C7;
-	Wed, 21 Feb 2024 13:18:20 +0000 (UTC)
+	 MIME-Version; b=DrdEfMTduZrPV0q4y/mrAOBE4BlTKySsS1zmT44Q6p6gHLsIc/IkyDXdKtgOnCn2uh5B2tXkn5qRmHYeVohArEQhwz4sc9pKJk9ny7ss66UggWZVPUP3xJcy+KODAPM59MYTSbGlhmiD0TBN03cUSSV1ljG5GfjmefIu7E8xM3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dMUU04wr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08310C433C7;
+	Wed, 21 Feb 2024 14:09:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521500;
-	bh=U3CL0RSIEGwHIU3i05GEmSbSvPPUgQwg0OG3khopTtE=;
+	s=korg; t=1708524551;
+	bh=OFFMLXRN92IHraWF2FJmlIEZ2Q04DLrJN8Brnunn3+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o5qr+U7Pyzs8A/GOrgjqwJ3DUq3zAa1IT/2U//RnbT5//jbUxUpvZ6Phs5TkENinp
-	 cMix/al7n5mhzWctcYJuLcgG77/VaxXqykhxDDxTFEoZhp0RiT+HWfyI2VYDU8QOBM
-	 U2KpymTx/kkP2eSlJbL2v9O+uxwae++zYyfjT7Ts=
+	b=dMUU04wreuVJMALqs0XrutCzM3SxCu83XjANrb7KoH87avf4IwfFh/u/kuoHtsr40
+	 2YEFTtbNx8EdcQM0U59cnEwHsRf9XeGS37zYgOabrLRCswiY3M3SnppuvJiqJzryku
+	 wHDt5UXgj8dztDT8TLVH5WuHAzGCNLqaQjaEkLgw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Adam Davis <eadavis@qq.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+864a269c27ee06b58374@syzkaller.appspotmail.com
-Subject: [PATCH 4.19 129/202] wifi: cfg80211: fix RCU dereference in __cfg80211_bss_update
+	Frank Li <Frank.Li@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 251/379] dmaengine: fix is_slave_direction() return false when DMA_DEV_TO_DEV
 Date: Wed, 21 Feb 2024 14:07:10 +0100
-Message-ID: <20240221125935.876171402@linuxfoundation.org>
+Message-ID: <20240221130002.340313034@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit 1184950e341c11b6f82bc5b59564411d9537ab27 ]
+[ Upstream commit a22fe1d6dec7e98535b97249fdc95c2be79120bb ]
 
-Replace rcu_dereference() with rcu_access_pointer() since we hold
-the lock here (and aren't in an RCU critical section).
+is_slave_direction() should return true when direction is DMA_DEV_TO_DEV.
 
-Fixes: 32af9a9e1069 ("wifi: cfg80211: free beacon_ies when overridden from hidden BSS")
-Reported-and-tested-by: syzbot+864a269c27ee06b58374@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Link: https://msgid.link/tencent_BF8F0DF0258C8DBF124CDDE4DD8D992DCF07@qq.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 49920bc66984 ("dmaengine: add new enum dma_transfer_direction")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20240123172842.3764529-1-Frank.Li@nxp.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/scan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/dmaengine.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 7f1a4ba975dd..dacb9ceee3ef 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -1019,7 +1019,7 @@ cfg80211_bss_update(struct cfg80211_registered_device *rdev,
- 					 &hidden->hidden_list);
- 				hidden->refcount++;
+diff --git a/include/linux/dmaengine.h b/include/linux/dmaengine.h
+index dd357a747780..4e4cce0ad4d7 100644
+--- a/include/linux/dmaengine.h
++++ b/include/linux/dmaengine.h
+@@ -949,7 +949,8 @@ static inline int dmaengine_slave_config(struct dma_chan *chan,
  
--				ies = (void *)rcu_dereference(new->pub.beacon_ies);
-+				ies = (void *)rcu_access_pointer(new->pub.beacon_ies);
- 				rcu_assign_pointer(new->pub.beacon_ies,
- 						   hidden->pub.beacon_ies);
- 				if (ies)
+ static inline bool is_slave_direction(enum dma_transfer_direction direction)
+ {
+-	return (direction == DMA_MEM_TO_DEV) || (direction == DMA_DEV_TO_MEM);
++	return (direction == DMA_MEM_TO_DEV) || (direction == DMA_DEV_TO_MEM) ||
++	       (direction == DMA_DEV_TO_DEV);
+ }
+ 
+ static inline struct dma_async_tx_descriptor *dmaengine_prep_slave_single(
 -- 
 2.43.0
 
