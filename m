@@ -1,130 +1,184 @@
-Return-Path: <stable+bounces-23245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2697685EB38
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 22:47:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33D1785EB75
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 22:58:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D56E4282DF8
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 21:46:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56AB51C21993
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 21:58:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BD7A1272CB;
-	Wed, 21 Feb 2024 21:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B09981272CB;
+	Wed, 21 Feb 2024 21:58:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BrML/Wl7"
+	dkim=pass (2048-bit key) header.d=valentinobst.de header.i=kernel@valentinobst.de header.b="RvBAoFPk"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7B14A1D;
-	Wed, 21 Feb 2024 21:46:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A63EEB3;
+	Wed, 21 Feb 2024 21:58:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708551987; cv=none; b=Hw1x8YtKJrgkkls6xRuLVVUc9fjmK0FB9R7/g+MP4MIjt6p/zoTtLLtI+QxME+LVdjtqSgUeHEcNXXKRqjm40HpCGaJJ8Di+iZnXPYt5FZ5QylTcOp9UVekuAvwpcMF+2Hx0OhEFeds9u0GvDA/8f6JOPIu11z6sU/LW/JcVff0=
+	t=1708552690; cv=none; b=B+0ibRukL//XMpPZuZa8mha4DrJ+fUjzGGmINW+3/s4emqIpGFAW08hAQusFqLzZNa8RNWvtOVhzdO3FkfubioX5yvP9cfDl1fHXPJv2lR8RSAR4izKukYKS+FA/fowjdoKa8K8l0A/h2uYL5VqJfWCo4UYsPzyeRONeshrX8mo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708551987; c=relaxed/simple;
-	bh=leo9okhKBaTR0GDpOuoa10LU3SThMLpEnLrULNmIs+o=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=KPNfmdfYJyyW5jE6A8Egath8ryodQrHlRPrEw567k7qAmrkrF1nAj1Zql3xMvDJ2LgLXriqHBqpgulsn2EnTFVBodR38w6Ua+tsiY6Lre9h4rG0Jo3Zja/coboybD5h+eNEbqt0kMljk6s7NfPJYJK34iQhSg3nAHxuC7++1Qos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BrML/Wl7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6A29C433F1;
-	Wed, 21 Feb 2024 21:46:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708551986;
-	bh=leo9okhKBaTR0GDpOuoa10LU3SThMLpEnLrULNmIs+o=;
-	h=From:Date:Subject:To:Cc:From;
-	b=BrML/Wl7vTXK6gRt5ngkvHhM8Zu5In5gYTawYmzzns0JtFYCQoQm6prGPimEGlTp6
-	 AD6gVp0I4wt+lNjotFMN+N0pD95H9/hSCNDFG2/eTD3gM67CD5Yeio3JO5fMPP4knz
-	 OF5bBC8ZIIFjqa4WcanSlNx7zicYxhQPfrYdmhb8veg+Hpa7ZjmC3Mhcj8OO8q1ufi
-	 UwnambY1azv1Xb28D9wsIlEfALgl1GwY/wyuISdHUximCv42eHAqyHB5wIgQC9zZLn
-	 lWaz5ltfSle+i0QDLvBDBZR0BmESIl4zC9rHBzkV9QKgjBzv+S90inJBkIhv4Q/dQD
-	 zVIXMqrsTh3gw==
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Wed, 21 Feb 2024 14:46:21 -0700
-Subject: [PATCH net] xfrm: Avoid clang fortify warning in
- copy_to_user_tmpl()
+	s=arc-20240116; t=1708552690; c=relaxed/simple;
+	bh=dF9IwFLl0Po1lq5MLlVQLSbQsLpawdVgsA5ipOvGk4w=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qsbKpO1tQZ4QuMyYtcop5ocM5EcsxGDBuY3nbLXdPeBy/0Rtwemb6YUX6jmrsM7Jq7Nz5XPBvCIl7iqKq2LX0oggtDOT2SRiEdT1i0JAAeUgZ5lYKzskDcGp1gzqxEWC//E+kr/uHEAseNOUVjiZ5GyS4pq+RPWgWAsaBU8r3b4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de; spf=pass smtp.mailfrom=valentinobst.de; dkim=pass (2048-bit key) header.d=valentinobst.de header.i=kernel@valentinobst.de header.b=RvBAoFPk; arc=none smtp.client-ip=212.227.126.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valentinobst.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=valentinobst.de;
+	s=s1-ionos; t=1708552677; x=1709157477; i=kernel@valentinobst.de;
+	bh=dF9IwFLl0Po1lq5MLlVQLSbQsLpawdVgsA5ipOvGk4w=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:
+	 References;
+	b=RvBAoFPkDZs3ltUxVkZMu5Vo0E+IkHtH4imzi9XFQY6rL3XzqN/UTtCAztj36ViR
+	 nSuNQ15iabcrPNMNSv2gjThTnG84DjXv7+A+wwqvpzVeFvkqGjTdLgeq1SGzxCCxH
+	 d/J5th/78wf+yDoRAJEtXQP0mz/LVkSUCLczBtKGid7y0Lrbv1IH9U5UbcNfHGk34
+	 lSsmbonQfwnnXyz4O/x0UtVEBK83UUTkXvJ/uMqx0yA1FWTBzBzaFtabGCYKgJfWl
+	 lvcN7GSAgq3fcN01sD7SGi3pHKyiBNG6K3I3ExmFI0r92xa/UwiAawj+9G8Aq1XhU
+	 xLplmZ7BdEdOm26y7g==
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+Received: from archbook.fritz.box ([217.249.70.154]) by
+ mrelayeu.kundenserver.de (mreue012 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1MavF5-1r5ms727pb-00cMdL; Wed, 21 Feb 2024 22:51:36 +0100
+From: Valentin Obst <kernel@valentinobst.de>
+To: miguel.ojeda.sandonis@gmail.com
+Cc: a.hindborg@samsung.com,
+	david@readahead.eu,
+	gregkh@linuxfoundation.org,
+	hpa@zytor.com,
+	john.m.baublitz@gmail.com,
+	kernel@valentinobst.de,
+	linux-kernel@vger.kernel.org,
+	mhiramat@kernel.org,
+	mingo@kernel.org,
+	mingo@redhat.com,
+	ojeda@kernel.org,
+	peterz@infradead.org,
+	sergio.collado@gmail.com,
+	stable@vger.kernel.org,
+	tglx@linutronix.de,
+	x86@kernel.org
+Subject: Re: [PATCH] x86/tools: fix line number reported for malformed lines
+Date: Wed, 21 Feb 2024 22:49:32 +0100
+Message-ID: <20240221214939.4715-1-kernel@valentinobst.de>
+X-Mailer: git-send-email 2.43.2
+In-Reply-To: <CANiq72=gYWZ24EEqRL71Vh+YjjK9Bu0QfxGEBzee16QAf4Q6XA@mail.gmail.com>
+References: <CANiq72=gYWZ24EEqRL71Vh+YjjK9Bu0QfxGEBzee16QAf4Q6XA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240221-xfrm-avoid-clang-fortify-warning-copy_to_user_tmpl-v1-1-254a788ab8ba@kernel.org>
-X-B4-Tracking: v=1; b=H4sIACxv1mUC/x3NQQqDMBCF4avIrDswia56lVKCxkk7oElIUquId
- +/Q5QeP/51QuQhXuHcnFN6kSooKc+vAv8f4YpRZDZbsQNYa3ENZcdySzOgXHWBIpUk48DuWKGq
- f8uFach8tu7bmBQfyk6GJqOceNJwLB9n/pw+I3OB5XT/6XTGmiQAAAA==
-To: steffen.klassert@secunet.com, herbert@gondor.apana.org.au, 
- davem@davemloft.net
-Cc: edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
- morbo@google.com, justinstitt@google.com, keescook@chromium.org, 
- netdev@vger.kernel.org, llvm@lists.linux.dev, patches@lists.linux.dev, 
- stable@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>
-X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2264; i=nathan@kernel.org;
- h=from:subject:message-id; bh=leo9okhKBaTR0GDpOuoa10LU3SThMLpEnLrULNmIs+o=;
- b=owGbwMvMwCUmm602sfCA1DTG02pJDKnX8g39NsbKLClpzlhxvdGKaVqfjcSDSU/O5udu28Sy3
- +oNa/fVjlIWBjEuBlkxRZbqx6rHDQ3nnGW8cWoSzBxWJpAhDFycAjCRJfcZGc69fpYy54us44cZ
- RwIvvtD8rMKdd0gsdIX36sKM1GKTbHOGP3y3v3od2+m5LV2Za83SVq6L7owTnj/rNHq9MZ7/8Vm
- TOnYA
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:WW7p1+B4htmtBfW2x6I9T6uskQjvijUcuFVC6Pqcxdich+azJUw
+ qmMgxKKJZsEuziGBdXIaiOokAujPVQlssvay9UqRD4+fLNmAQFZVaXiEkgaluX1HkNVLkW6
+ lIdZKx60UPGYU4CJPeEjjvOC5PQs/SQxKZUJjwN/mVlrGoat20iSi59yocWcwAyrsxYrYHi
+ Tezy9PHa4OXOnxdT+VwqA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:mOOoXRIRWVQ=;kxOewaJtG6hZXrCnHemyZf/SZrx
+ QQ/Q+2L73TzGrKO2bu0S6XlU3HcPKWw7Rzm/0CstjBGrSiMIvOMpA3mjerIkMfPA85ENlvqiO
+ oG+N6zVs4Jiyzwapz3JUW21+DhI9MhP7kaRmKcAXbRw0Kc+22XNubcetaXPk5ptrIkwHmoNYk
+ vuK8EBaL3+OKf4Be+i5yvcYkC5x3Y0VdK9OQUWypSvBaONhscT+X3BhQ8fdYcoq7bj9SgIjlw
+ bhHMO35bgNV9JUfexPKDPLgt37o7xkw51NkTKOIwrwSP9QIjWohMwFGVbI26UEOolSena7OZy
+ ewPGNvePYYb2DPWNgUvtzdXo4XuIsc9KZZ9AMqltppIzct0YC/sEtimbdQ6Lg0C1x5VewNJq7
+ vdbvwrgFkNcoDyFYBbzWIalK/TTAj2PJ9uFM8D4BEKKTZ6YC6WDo8fqM+QNH0Q1IjxVlT3xDV
+ V8rKbfhoQiIvpiEq1Vyedm6vckWTllAw4DGAUWCGf7dyXsQcXFYpOHf4y3sBJTEwEgknL3YvG
+ RKFlsE7SxFTln3jlDSlSwBnTPk0LOOAR4XeXj9x8duNdzKh2C9M6j9BQ2/KtAdXYdsbF2C/ls
+ r+Rc9mbEdx7HdC62kFlQvB1NtLLpz7/CnpWzNoi8PSbig3tlBM5Mreji4uQcfVM6s0EUEqptT
+ qHT90jIX3GJ20xOAUDM7E7nxf1Wn9/FCa4RLCpCXDlC/UfQe2/HLvIe9BDoSd+31HqgBJIIYO
+ t74x7AwE/GuYbpMlFNajsNmySR/RH3oHaqsCSPu2k2BlYfiv719eUw=
 
-After a couple recent changes in LLVM, there is a warning (or error with
-CONFIG_WERROR=y or W=e) from the compile time fortify source routines,
-specifically the memset() in copy_to_user_tmpl().
+> On Wed, Feb 21, 2024 at 10:00=E2=80=AFAM Valentin Obst <kernel@valentino=
+bst.de> wrote:
+> >
+> > While debugging the `X86_DECODER_SELFTEST` failure first reported in [=
+1],
+> > [In this case the line causing the failure is interpreted as two lines=
+ by
+> > the tool (due to its length, but this is fixed by [1, 2]), and the sec=
+ond
+> > line is reported. Still the spatial closeness between the reported lin=
+e and
+> > the line causing the failure would have made debugging a lot easier.]
+>
+> Thanks Valentin, John et al. for digging into this (and the related
+> issue) -- very much appreciated.
+>
+> It looks good to me:
+>
+> Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
+> Tested-by: Miguel Ojeda <ojeda@kernel.org>
 
-  In file included from net/xfrm/xfrm_user.c:14:
-  ...
-  include/linux/fortify-string.h:438:4: error: call to '__write_overflow_field' declared with 'warning' attribute: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror,-Wattribute-warning]
-    438 |                         __write_overflow_field(p_size_field, size);
-        |                         ^
-  1 error generated.
+Thanks!
 
-While ->xfrm_nr has been validated against XFRM_MAX_DEPTH when its value
-is first assigned in copy_templates() by calling validate_tmpl() first
-(so there should not be any issue in practice), LLVM/clang cannot really
-deduce that across the boundaries of these functions. Without that
-knowledge, it cannot assume that the loop stops before i is greater than
-XFRM_MAX_DEPTH, which would indeed result a stack buffer overflow in the
-memset().
+>
+> This should probably have a Fixes tag -- from a quick look, the
+> original test did not seem to have the problem because `insns` was
+> equivalent to the number of lines since there was no `if ... {
+> continue; }` for the symbol case. At some point that branch was added,
+> so that was not true anymore, thus that one should probably be the
+> Fixes tag, though please double-check:
+>
+>     Fixes: 35039eb6b199 ("x86: Show symbol name if insn decoder test fai=
+led")
 
-To make the bounds of ->xfrm_nr clear to the compiler and add additional
-defense in case copy_to_user_tmpl() is ever used in a path where
-->xfrm_nr has not been properly validated against XFRM_MAX_DEPTH first,
-add an explicit bound check and early return, which clears up the
-warning.
+Cross checked this as well, can confirm your assessment. Thanks for
+bringing this up.
 
-Cc: stable@vger.kernel.org
-Link: https://github.com/ClangBuiltLinux/linux/issues/1985
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
- net/xfrm/xfrm_user.c | 3 +++
- 1 file changed, 3 insertions(+)
+>
+> It is a minor issue for sure, so perhaps not worth backporting, but
+> nevertheless the hash is in a very old kernel, and thus the issue
+> applies to all stable kernels. So it does not hurt flagging it to the
+> stable team:
+>
+>     Cc: stable@vger.kernel.org
+>
+> In addition, John reported the original issue, but this one was found
+> due to that one, and I am not exactly sure who did what here. Please
+> consider whether one of the following (or similar) may be fair:
+>
+>     Reported-by: John Baublitz <john.m.baublitz@gmail.com>
+>     Debugged-by: John Baublitz <john.m.baublitz@gmail.com>
 
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index f037be190bae..912c1189ba41 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -2017,6 +2017,9 @@ static int copy_to_user_tmpl(struct xfrm_policy *xp, struct sk_buff *skb)
- 	if (xp->xfrm_nr == 0)
- 		return 0;
- 
-+	if (xp->xfrm_nr > XFRM_MAX_DEPTH)
-+		return -ENOBUFS;
-+
- 	for (i = 0; i < xp->xfrm_nr; i++) {
- 		struct xfrm_user_tmpl *up = &vec[i];
- 		struct xfrm_tmpl *kp = &xp->xfrm_vec[i];
+Absolutely, without him reporting the test failure and narrowing down the
+config I'd have never looked at this file. Adding him for **both** is fair=
+.
+(This particular fix was not discussed on Zulip though, its just something
+I noticed along the way.)
 
----
-base-commit: 14dec56fdd4c70a0ebe40077368e367421ea6fef
-change-id: 20240221-xfrm-avoid-clang-fortify-warning-copy_to_user_tmpl-40cb10b003e3
+>
+> An extra Link to the discussion in Zulip could be nice too:
+>
+>     Link: https://rust-for-linux.zulipchat.com/#narrow/stream/291565-Hel=
+p/topic/insn_decoder_test.20failure/near/421075039
 
-Best regards,
--- 
-Nathan Chancellor <nathan@kernel.org>
+Didn't add it because the discussion does not mention this particular
+issue, but it might indeed be good for some context.
 
+Will this need a v2, or are all of the 'Fixes', 'Reported-By',
+'Debugged-By', 'Tested-By', 'Reviewed-By' and 'Link' tags something that
+maintainers may add when merging?
+
+    - Best Valentin
+
+>
+> Finally, a nit: links are typically written like the following -- you
+> can still use bracket references at the end:
+>
+>     Link: https://lore.kernel.org/lkml/Y9ES4UKl%2F+DtvAVS@gmail.com/T/ [=
+1]
+>     Link: https://lore.kernel.org/rust-for-linux/20231119180145.157455-1=
+-sergio.collado@gmail.com/
+> [2]
+>
+> Cheers,
+> Miguel
 
