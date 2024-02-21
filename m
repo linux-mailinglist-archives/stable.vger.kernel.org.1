@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-23026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45A1D85DED7
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:22:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6470785DE04
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:14:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0D9A1F22845
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:22:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C85E28464C
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E315A7BB11;
-	Wed, 21 Feb 2024 14:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62EF580604;
+	Wed, 21 Feb 2024 14:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0/7zvHc6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z1NFeiNX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F6469E00;
-	Wed, 21 Feb 2024 14:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20DC080616;
+	Wed, 21 Feb 2024 14:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525334; cv=none; b=kx3NTrYmaI4iv9aseFR06ZBv7R8CmUAGq6WMDWBQET22w8VXTn6EzgYjSVNVq6RbaqoyrMOS+yeaOqPgAy5Zp52hT0X8/59plW8AQPMtaA78Ss9IOO6Ot+X7N64csC0Btfwog7QvRXcotm3EacpzVHENmvGcrKsqYFzlfozCRrE=
+	t=1708524668; cv=none; b=axt7MWsI0kPDCRGyGROPSw5svmSIRFmm16krsdZxAPej1gN4Dy6BMDJamyCU3AL2tEhZP/sH8BDEUBpyqzjuiLTbWHU3GOwKrB5OmZh+qsBE1dLyoOlVdb536YLY86C7vyX7OwnCHxs8b6iGYA8uk0cR9Qx/Ke1h/D9R8mS4gmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525334; c=relaxed/simple;
-	bh=wU0bc3vp0V/75VvWXezWckKZqt65DL1A2WBJFjl7N6k=;
+	s=arc-20240116; t=1708524668; c=relaxed/simple;
+	bh=po3HOLoxoWO6GdQN/K4hXHCP9gVWgt193pfZUbOMIs0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RYLt/o9MsIV8F6rj1jKAH/OpsYSiDiWNCvanEi2ro47shN0ItNHBC7Om9RRK2zOTQYaUr2EoBjtQxi9efYvSuWb5Jz3LPa1bB4P4fo1LKdkiuwrlLHiwn0Pe1dPmn81sxLChL5kztghjMl4azeCZFvpPVXtpDpZni9PUMDGGHy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0/7zvHc6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12735C433C7;
-	Wed, 21 Feb 2024 14:22:13 +0000 (UTC)
+	 MIME-Version; b=Z9cTqBAqXIEHu/pnmUwL6ey8J1sUnf6yzTSbstLIGcUdxiQ6nZnDbZLrkjoCgpnsTVhNzm2B/jVw2ighsIw5r6/yokpfXYMl2qjMAdcQATgvIq1hplgAj3p2UY9zK05ZafPKTe71kovKhiOwYI2Rks9Jmits23L4Y6GQHYbH19c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z1NFeiNX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DBE2C433C7;
+	Wed, 21 Feb 2024 14:11:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525334;
-	bh=wU0bc3vp0V/75VvWXezWckKZqt65DL1A2WBJFjl7N6k=;
+	s=korg; t=1708524668;
+	bh=po3HOLoxoWO6GdQN/K4hXHCP9gVWgt193pfZUbOMIs0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0/7zvHc6MCcuJiIzJvLy/FhcLDq552H9DfMg9we3jGDLmdHGqJx3XeJsdafTG/2OW
-	 ONEPAm4nw9559NK6lSsEzoZofDo7D8MVolkOv/y0dRj74yj/6SWGf7ivmrjQfqMNP/
-	 KVhnnxECvIsqBATqpu1615i0mQdRbC1oAx6j1kG0=
+	b=Z1NFeiNXqDZOiHeCQocPfI2Th0sz5s4j/4EDQjrtj5IiVTLT3ZtofxMIoLwu1mDW5
+	 514gar+xtCMWHlTraIr5LiS7v4nQf3WfMMrdpIWRwF0Y9m/RMZxA/fy/9A7v7CMklQ
+	 eVsOTMv6uJ+cBMFr5ijBDsThei9mgO6+5jIK7Kks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jack Wang <jinpu.wang@ionos.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 123/267] RDMA/IPoIB: Fix error code return in ipoib_mcast_join
+	lonial con <kongln9170@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.10 285/379] netfilter: nft_set_rbtree: skip end interval element from gc
 Date: Wed, 21 Feb 2024 14:07:44 +0100
-Message-ID: <20240221125943.880470874@linuxfoundation.org>
+Message-ID: <20240221130003.340642719@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jack Wang <jinpu.wang@ionos.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 753fff78f430704548f45eda52d6d55371a52c0f ]
+commit 60c0c230c6f046da536d3df8b39a20b9a9fd6af0 upstream.
 
-Return the error code in case of ib_sa_join_multicast fail.
+rbtree lazy gc on insert might collect an end interval element that has
+been just added in this transactions, skip end interval elements that
+are not yet active.
 
-Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
-Link: https://lore.kernel.org/r/20231121130316.126364-2-jinpu.wang@ionos.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f718863aca46 ("netfilter: nft_set_rbtree: fix overlap expiration walk")
+Cc: stable@vger.kernel.org
+Reported-by: lonial con <kongln9170@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/ulp/ipoib/ipoib_multicast.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/netfilter/nft_set_rbtree.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/ipoib/ipoib_multicast.c b/drivers/infiniband/ulp/ipoib/ipoib_multicast.c
-index b9e9562f5034..805df1fcba84 100644
---- a/drivers/infiniband/ulp/ipoib/ipoib_multicast.c
-+++ b/drivers/infiniband/ulp/ipoib/ipoib_multicast.c
-@@ -558,6 +558,7 @@ static int ipoib_mcast_join(struct net_device *dev, struct ipoib_mcast *mcast)
- 		spin_unlock_irq(&priv->lock);
- 		complete(&mcast->done);
- 		spin_lock_irq(&priv->lock);
-+		return ret;
- 	}
- 	return 0;
- }
--- 
-2.43.0
-
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -237,7 +237,7 @@ static void nft_rbtree_gc_remove(struct
+ 
+ static const struct nft_rbtree_elem *
+ nft_rbtree_gc_elem(const struct nft_set *__set, struct nft_rbtree *priv,
+-		   struct nft_rbtree_elem *rbe, u8 genmask)
++		   struct nft_rbtree_elem *rbe)
+ {
+ 	struct nft_set *set = (struct nft_set *)__set;
+ 	struct rb_node *prev = rb_prev(&rbe->node);
+@@ -256,7 +256,7 @@ nft_rbtree_gc_elem(const struct nft_set
+ 	while (prev) {
+ 		rbe_prev = rb_entry(prev, struct nft_rbtree_elem, node);
+ 		if (nft_rbtree_interval_end(rbe_prev) &&
+-		    nft_set_elem_active(&rbe_prev->ext, genmask))
++		    nft_set_elem_active(&rbe_prev->ext, NFT_GENMASK_ANY))
+ 			break;
+ 
+ 		prev = rb_prev(prev);
+@@ -367,7 +367,7 @@ static int __nft_rbtree_insert(const str
+ 		    nft_set_elem_active(&rbe->ext, cur_genmask)) {
+ 			const struct nft_rbtree_elem *removed_end;
+ 
+-			removed_end = nft_rbtree_gc_elem(set, priv, rbe, genmask);
++			removed_end = nft_rbtree_gc_elem(set, priv, rbe);
+ 			if (IS_ERR(removed_end))
+ 				return PTR_ERR(removed_end);
+ 
 
 
 
