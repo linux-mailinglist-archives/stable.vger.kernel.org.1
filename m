@@ -1,80 +1,80 @@
-Return-Path: <stable+bounces-23220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 044CB85E553
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 19:16:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BC9085E555
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 19:16:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6090D1F23475
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 18:16:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2184E1F23610
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 18:16:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3232D85270;
-	Wed, 21 Feb 2024 18:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A4BA85268;
+	Wed, 21 Feb 2024 18:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="A5bSu343"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KpUubJVC"
 X-Original-To: stable@vger.kernel.org
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64D1B85265
-	for <stable@vger.kernel.org>; Wed, 21 Feb 2024 18:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53EB85261
+	for <stable@vger.kernel.org>; Wed, 21 Feb 2024 18:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708539365; cv=none; b=HMsx5azQDcTKKtD4n7vBPoOgrqlOYFgFwWEZIy++f4M0/sCpbKhoca1C/mQAWqAPXD9+6UopyC5TO4KRA3TuafX06xcq5XYO0MOD3y0GABBK/7ljKS3YDLySgxUExCE2zWTwZAKtqpC2WeTExYx24ZVT3jBkcWysRzDknY26NLo=
+	t=1708539377; cv=none; b=qP2oJBLdgzzIuzqiUFQUcw3+9xSQp7iZ8sVrh2bxFZadfa/9UTiaXNq/2SrDLmXWhlVtezv8c3ykmSOCVHEhDQwxGjVmYFl3cftQ7Ta8YQKiQjaAzX/gim1PY0oNAdJh9/QHVXCvyhabaInd52FzvCH7//pA1RmJbeNtzduVvLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708539365; c=relaxed/simple;
-	bh=aaVj+7+xcUJ0TAvfKQmReKsq542AIgczhjpa+od3Ivw=;
+	s=arc-20240116; t=1708539377; c=relaxed/simple;
+	bh=hgsWyRrSep4NiW1tKez/ELNs28gAM9XzOhMl90iKF7M=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=leSC0FX3Bhic2i5jMGV2rGmucpOgoC9ffB7qyaLc2jvafdsDrycjGER4hg2OiWgGYiXy3cX+C4BN3w6I69FT2M7wrSihjv1gzPrv/lLZG2oyT75lPPhYzPlHCYMzeGDapEz3ceKBG+Y6fmRsW5D27iTZqG3kjLpBIdch9Nf6wfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=A5bSu343; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=gQ/OQXEfcinufi0qLtDNfJPuKxeo2pdACqM8X5M+qOPQNNcScZ/LMoFZv40Lx4DDv0ioUJjh1gR9JNMhHqI+hzxXa//3Jk+A0zhDI8RpTaPsQNh1rY55KL+Z4D1Tin7ibgEDkisFU7C+qN3MQGIiUCCn2qPXCr7pkRrtfcP5II4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KpUubJVC; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1708539362;
+	s=mimecast20190719; t=1708539374;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=aIgwniDVwi1Yc8NbtGih2FZGklnZfTaCbp1/IK9Qqik=;
-	b=A5bSu343bfftgzOsrHMmadAu+pR9aiagJs21QFAX2t5X5lYGkU3Nzc1LKG/fPm8Tp41mRA
-	MBvdOGp+xdNRBz1IF0xfUl4z/Dm5EC1IAZ5WkvHMQzlsPm9Byp++ytfipt1xTx/NcmXcfZ
-	ovR2np2ikrVLVy18/gbTZJ9zotbDlos=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=4GEaNZlEBloWbRyh4jy2wv42oZbqaCNyc3k53XAux/o=;
+	b=KpUubJVCx7UX1cvmOxjNt9IUCl5IwVLbIRoVp9w2E+Q0i4lTEEVjGk7bg+GvXeYxkF4r3o
+	nDBj585tcOt80LICgq+oriueJeopt2wWBeI3cVjacEvuTIeEn1z2Sfvp0TADmSbNUX8gGv
+	Pac6uw6oE4mHlfBT/Wq4tHE9QpkZBjY=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-435-TCtzvc40N32UI9uNHXsHmg-1; Wed, 21 Feb 2024 13:15:58 -0500
-X-MC-Unique: TCtzvc40N32UI9uNHXsHmg-1
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-a2b6c2a5fddso462947966b.1
-        for <stable@vger.kernel.org>; Wed, 21 Feb 2024 10:15:58 -0800 (PST)
+ us-mta-439-1bzdhp7TMOKJEP4jxq4peA-1; Wed, 21 Feb 2024 13:16:13 -0500
+X-MC-Unique: 1bzdhp7TMOKJEP4jxq4peA-1
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-a3ef988b742so131231166b.3
+        for <stable@vger.kernel.org>; Wed, 21 Feb 2024 10:16:12 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708539357; x=1709144157;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1708539372; x=1709144172;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aIgwniDVwi1Yc8NbtGih2FZGklnZfTaCbp1/IK9Qqik=;
-        b=l+mMhUKQH2qDdZesAW/xZmtsZQzESDmsu+PWUvWpg1+F/TosSHfub/HmSRt3gJ3hVE
-         rt7Pb95ugQLri/xLecqOWBda7x2kFJTRUIcEO2lyw9dkc5QOeCJzAP6w2jkDvrVUVMDR
-         sKeZc+61T8/4u/qu88fL8+H8KvSoh2EyaBS2qoYH09WuEuM67vVOp3R1K9mTt4aqifrs
-         t9ghLWc88/w+tDNxmS6W/cM5O1JrTT0hNAi4TPP1WVwyL3NMm+nQlftKLM3kKrcYxsTs
-         bem8ufPquI53elpAsG6fr6rm0UsunA8fSs4kzix9pALUomjMJpiCKmzm7ZI9TpCDPVU3
-         CKpA==
-X-Forwarded-Encrypted: i=1; AJvYcCXwd8EmYpqK1Df9UU7/ME/u/8XHVhvOWKai0LZtz0qYIvHFXN0XTxAWydSyUj1/z9LL5w2eipmVqZP+zXT3a1qU/hx5ewC2
-X-Gm-Message-State: AOJu0YxDwskCtlsF7ZQpMe9dBCSCWlKxVGOkmPuxwApkA2u5A6/VoHWh
-	W6RgtXqBHikEq8/xKOj/UN2H4RhRw4q3hFgeUFSUWVffr29hTEmkejgHN5hC+lyXTOLgBs/PUgi
-	m5ndo8z9lb0ccqFMXxIz96ZeKLOykf4ceUROs9o0rF22wqChsigo63mgCxyrgDQ==
-X-Received: by 2002:a17:906:7c92:b0:a3f:357b:d98f with SMTP id w18-20020a1709067c9200b00a3f357bd98fmr1969958ejo.15.1708539357532;
-        Wed, 21 Feb 2024 10:15:57 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHuH6grTG4y8T2kFIfCnDQrx/fkFGCMrWQiDqoxqB7nI9P0ezkXpHigx1S3szqLYPLjgCzvYw==
-X-Received: by 2002:a17:906:7c92:b0:a3f:357b:d98f with SMTP id w18-20020a1709067c9200b00a3f357bd98fmr1969946ejo.15.1708539357233;
-        Wed, 21 Feb 2024 10:15:57 -0800 (PST)
+        bh=4GEaNZlEBloWbRyh4jy2wv42oZbqaCNyc3k53XAux/o=;
+        b=Uu5chM6ZuWO+mefLEB+EJBZ3l9z8pvmhBCCvUf8LQMvxsMfNUM+lapn7zC12BzVxmo
+         L/H082iEMo6sPQmwcwPJJaUn+8pMlnS+F3xq7lzqnZl9u74Ka05JVggKs+b1vbYaOaPr
+         xhHEja/4nqprdxy8FAiSD5dR0G0bEevomv5pYl3h/dg0Yf/hU5bIldDWVQJex2bjVodN
+         qjXnw393LX5drjplXErlh++fYTXimPLlHwEBPPiVaoo9rVhYYMMtHRPMAU6kK0Ywt32m
+         S/ZO5XnSoSA+3PI5/od6LqoWz0kw7E1FuOHKgKJvSmBKNwWtzhjIquqgsD6xiNDOne1G
+         rrDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWMnqRaaZiWgbHL2uZQp6vT96tJ6Wm5JrzNlEdElqJJbUXJq94e+fSmNuJAgoINNkeva4erjwpxZ2nlST0nsqbHS4yYwmee
+X-Gm-Message-State: AOJu0YzS+BQARcuprIgHPtD0hs71kaNGmJImioFyATUCfEuHOg0VZYFc
+	pVf+jQPZbQgp/HFnEkhleolwUVPTviKaNIrMuRgJw6CGVkTRJY2Ze8mnQRBvlNMhMv/4+Q0Q3nG
+	eOwWliezExs76cWeAFuRC5A596w/GfY7XxrMhjcNuPTeTs0MarB9UzQ==
+X-Received: by 2002:a17:906:c9c8:b0:a3f:436a:1e41 with SMTP id hk8-20020a170906c9c800b00a3f436a1e41mr1550831ejb.53.1708539372084;
+        Wed, 21 Feb 2024 10:16:12 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGKm19QZl7AKSibJClPAOaQHmbakjqT8cRQsA9KQB2ClIfBY/eBkbEsL0K13tlEIaXhr4W5Dg==
+X-Received: by 2002:a17:906:c9c8:b0:a3f:436a:1e41 with SMTP id hk8-20020a170906c9c800b00a3f436a1e41mr1550823ejb.53.1708539371709;
+        Wed, 21 Feb 2024 10:16:11 -0800 (PST)
 Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id k9-20020a1709063fc900b00a3cfd838f32sm5247099ejj.178.2024.02.21.10.15.56
+        by smtp.gmail.com with ESMTPSA id k9-20020a1709063fc900b00a3cfd838f32sm5247099ejj.178.2024.02.21.10.16.11
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 21 Feb 2024 10:15:56 -0800 (PST)
-Message-ID: <5c172ec4-c3ec-4daf-95de-79b27351502e@redhat.com>
-Date: Wed, 21 Feb 2024 19:15:56 +0100
+        Wed, 21 Feb 2024 10:16:11 -0800 (PST)
+Message-ID: <f364367d-b096-48e4-b074-8fd45a05aa9c@redhat.com>
+Date: Wed, 21 Feb 2024 19:16:11 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -82,22 +82,22 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15 258/476] misc: lis3lv02d_i2c: Add missing setting of
+Subject: Re: [PATCH 5.10 213/379] misc: lis3lv02d_i2c: Add missing setting of
  the reg_ctrl callback
+Content-Language: en-US, nl
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
 Cc: patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
-References: <20240221130007.738356493@linuxfoundation.org>
- <20240221130017.380309277@linuxfoundation.org>
-Content-Language: en-US, nl
+References: <20240221125954.917878865@linuxfoundation.org>
+ <20240221130001.205668819@linuxfoundation.org>
 From: Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20240221130017.380309277@linuxfoundation.org>
+In-Reply-To: <20240221130001.205668819@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 Hi Greg,
 
-On 2/21/24 14:05, Greg Kroah-Hartman wrote:
-> 5.15-stable review patch.  If anyone has any objections, please let me know.
+On 2/21/24 14:06, Greg Kroah-Hartman wrote:
+> 5.10-stable review patch.  If anyone has any objections, please let me know.
 
 This is known to cause a regression (WARN triggering on suspend,
 possible panic if panic-on-warn is set).
@@ -117,7 +117,6 @@ branches.
 Regards,
 
 Hans
-
 
 
 
