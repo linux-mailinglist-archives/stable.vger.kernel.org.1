@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-22814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEDDE85DDF4
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:13:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 851E785DC4A
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:51:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A69F1F242C4
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:13:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A89B28515E
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:51:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97E2E7FBD9;
-	Wed, 21 Feb 2024 14:10:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D024479DA2;
+	Wed, 21 Feb 2024 13:51:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fIZ1AQJh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ztEbF1QB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E8BE7C6E9;
-	Wed, 21 Feb 2024 14:10:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB057BB0F;
+	Wed, 21 Feb 2024 13:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524603; cv=none; b=NWTDU8ud5SeuHc/wcs0/8tGhymQ/HDL0ob8G1xGeFDiJJ6/KDll0s53ZDdvVWrB9j2x7MDBF7uM5yRU5C7HlXEBrvAgZ7i0YOu3jvzS0t8kQhC/xS5oDdM44JRbNQQKjKqq+2drrs0C5tfxp3q5zn7Tv0MBCXLDKPX7DIxxqzO0=
+	t=1708523491; cv=none; b=DzYD8sor7yTIUqklqgj7uSXE6LMRWwpwBXyWb+Dd0eRkeNwCnm6zqsWoig6yQo7esja3GiNPKbs6FXv1ra2TaV8KgseyZHXOspzsWwq2mCDNMau0LaA+LtrzyaoJNLv2KAEOkcAPpDLadii+YxH/sdoYzVAjMJuYdp2mjCTT31I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524603; c=relaxed/simple;
-	bh=QpxItLlf5h8J6ggJY7PDZ1mQ1dzIeOcKSTzUViECsVE=;
+	s=arc-20240116; t=1708523491; c=relaxed/simple;
+	bh=2VYPbcEWJbSNvXUbUQqD8fP3XahO0BnPF/lTi7yk7DE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tY2p17qjpfOYwFtfHom/pFaMRKO9sXTpIZIdPoCAe+9dXLt16pyNYj6kB8eVj5e7jaQjLjDugvynUAn+oORebjGM9quP898I6ZFNXIJvxVmyCByLoccjQPi85ZRDO66bJ6LgHebFwbmVHv2ytW6ZiMz87ht3UYMC/s5Z5R2lL28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fIZ1AQJh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCFCAC433F1;
-	Wed, 21 Feb 2024 14:10:02 +0000 (UTC)
+	 MIME-Version; b=lHt4uD98scSMy5MMyzr2UA/448ed4kAZ0qMTUB5mqSfHzWVp75N/FV5gFM9mfP/mcjY23uRWKwxbdGSaeRIEc/PBRAvmA97wGfSx6qMEJQXne5zAQGrpwET+0MWypAzSC0FcdWZpJxodUcAP2Do8kGyDNA+G7droa+wIyv0aItI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ztEbF1QB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C498EC433C7;
+	Wed, 21 Feb 2024 13:51:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524603;
-	bh=QpxItLlf5h8J6ggJY7PDZ1mQ1dzIeOcKSTzUViECsVE=;
+	s=korg; t=1708523491;
+	bh=2VYPbcEWJbSNvXUbUQqD8fP3XahO0BnPF/lTi7yk7DE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fIZ1AQJhJm/099iaTOOO+7K0gAXL6y9QCWQt/pau0UJWfjuNEAc3iKNYrlptNV/w4
-	 YWi2YGlPNJ6F73gfF8eh6wbRy7TY8vGskSF5KZsQ0NOzlFsBWVuplts3qWfqWrxHfW
-	 ZjbsQUitAHf7pq8K0oTnQ72uY0o8+xQF5gKs1IL8=
+	b=ztEbF1QBPoQui2kEwcgGfJE1ow0/T0oShrmwUSuxI4uGT+1/b+QPCWlU6p2RZIvAP
+	 SV0WVI8S0z9e6tNLUEsC8i5DycoIgPLjXqQ0fpzuNmVHm57cCGAd7W8AIDVp91R+lT
+	 U/jkDb/m43DQwHW8lvQfurf4fh5VZQWXYQ3mvI9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 294/379] net: sysfs: Fix /sys/class/net/<iface> path for statistics
+	Sili Luo <rootlab@huawei.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 5.15 422/476] can: j1939: Fix UAF in j1939_sk_match_filter during setsockopt(SO_J1939_FILTER)
 Date: Wed, 21 Feb 2024 14:07:53 +0100
-Message-ID: <20240221130003.603921155@linuxfoundation.org>
+Message-ID: <20240221130023.633307820@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,249 +62,199 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-[ Upstream commit 5b3fbd61b9d1f4ed2db95aaf03f9adae0373784d ]
+commit efe7cf828039aedb297c1f9920b638fffee6aabc upstream.
 
-The Documentation/ABI/testing/sysfs-class-net-statistics documentation
-is pointing to the wrong path for the interface.  Documentation is
-pointing to /sys/class/<iface>, instead of /sys/class/net/<iface>.
+Lock jsk->sk to prevent UAF when setsockopt(..., SO_J1939_FILTER, ...)
+modifies jsk->filters while receiving packets.
 
-Fix it by adding the `net/` directory before the interface.
+Following trace was seen on affected system:
+ ==================================================================
+ BUG: KASAN: slab-use-after-free in j1939_sk_recv_match_one+0x1af/0x2d0 [can_j1939]
+ Read of size 4 at addr ffff888012144014 by task j1939/350
 
-Fixes: 6044f9700645 ("net: sysfs: document /sys/class/net/statistics/*")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ CPU: 0 PID: 350 Comm: j1939 Tainted: G        W  OE      6.5.0-rc5 #1
+ Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+ Call Trace:
+  print_report+0xd3/0x620
+  ? kasan_complete_mode_report_info+0x7d/0x200
+  ? j1939_sk_recv_match_one+0x1af/0x2d0 [can_j1939]
+  kasan_report+0xc2/0x100
+  ? j1939_sk_recv_match_one+0x1af/0x2d0 [can_j1939]
+  __asan_load4+0x84/0xb0
+  j1939_sk_recv_match_one+0x1af/0x2d0 [can_j1939]
+  j1939_sk_recv+0x20b/0x320 [can_j1939]
+  ? __kasan_check_write+0x18/0x20
+  ? __pfx_j1939_sk_recv+0x10/0x10 [can_j1939]
+  ? j1939_simple_recv+0x69/0x280 [can_j1939]
+  ? j1939_ac_recv+0x5e/0x310 [can_j1939]
+  j1939_can_recv+0x43f/0x580 [can_j1939]
+  ? __pfx_j1939_can_recv+0x10/0x10 [can_j1939]
+  ? raw_rcv+0x42/0x3c0 [can_raw]
+  ? __pfx_j1939_can_recv+0x10/0x10 [can_j1939]
+  can_rcv_filter+0x11f/0x350 [can]
+  can_receive+0x12f/0x190 [can]
+  ? __pfx_can_rcv+0x10/0x10 [can]
+  can_rcv+0xdd/0x130 [can]
+  ? __pfx_can_rcv+0x10/0x10 [can]
+  __netif_receive_skb_one_core+0x13d/0x150
+  ? __pfx___netif_receive_skb_one_core+0x10/0x10
+  ? __kasan_check_write+0x18/0x20
+  ? _raw_spin_lock_irq+0x8c/0xe0
+  __netif_receive_skb+0x23/0xb0
+  process_backlog+0x107/0x260
+  __napi_poll+0x69/0x310
+  net_rx_action+0x2a1/0x580
+  ? __pfx_net_rx_action+0x10/0x10
+  ? __pfx__raw_spin_lock+0x10/0x10
+  ? handle_irq_event+0x7d/0xa0
+  __do_softirq+0xf3/0x3f8
+  do_softirq+0x53/0x80
+  </IRQ>
+  <TASK>
+  __local_bh_enable_ip+0x6e/0x70
+  netif_rx+0x16b/0x180
+  can_send+0x32b/0x520 [can]
+  ? __pfx_can_send+0x10/0x10 [can]
+  ? __check_object_size+0x299/0x410
+  raw_sendmsg+0x572/0x6d0 [can_raw]
+  ? __pfx_raw_sendmsg+0x10/0x10 [can_raw]
+  ? apparmor_socket_sendmsg+0x2f/0x40
+  ? __pfx_raw_sendmsg+0x10/0x10 [can_raw]
+  sock_sendmsg+0xef/0x100
+  sock_write_iter+0x162/0x220
+  ? __pfx_sock_write_iter+0x10/0x10
+  ? __rtnl_unlock+0x47/0x80
+  ? security_file_permission+0x54/0x320
+  vfs_write+0x6ba/0x750
+  ? __pfx_vfs_write+0x10/0x10
+  ? __fget_light+0x1ca/0x1f0
+  ? __rcu_read_unlock+0x5b/0x280
+  ksys_write+0x143/0x170
+  ? __pfx_ksys_write+0x10/0x10
+  ? __kasan_check_read+0x15/0x20
+  ? fpregs_assert_state_consistent+0x62/0x70
+  __x64_sys_write+0x47/0x60
+  do_syscall_64+0x60/0x90
+  ? do_syscall_64+0x6d/0x90
+  ? irqentry_exit+0x3f/0x50
+  ? exc_page_fault+0x79/0xf0
+  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+ Allocated by task 348:
+  kasan_save_stack+0x2a/0x50
+  kasan_set_track+0x29/0x40
+  kasan_save_alloc_info+0x1f/0x30
+  __kasan_kmalloc+0xb5/0xc0
+  __kmalloc_node_track_caller+0x67/0x160
+  j1939_sk_setsockopt+0x284/0x450 [can_j1939]
+  __sys_setsockopt+0x15c/0x2f0
+  __x64_sys_setsockopt+0x6b/0x80
+  do_syscall_64+0x60/0x90
+  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+ Freed by task 349:
+  kasan_save_stack+0x2a/0x50
+  kasan_set_track+0x29/0x40
+  kasan_save_free_info+0x2f/0x50
+  __kasan_slab_free+0x12e/0x1c0
+  __kmem_cache_free+0x1b9/0x380
+  kfree+0x7a/0x120
+  j1939_sk_setsockopt+0x3b2/0x450 [can_j1939]
+  __sys_setsockopt+0x15c/0x2f0
+  __x64_sys_setsockopt+0x6b/0x80
+  do_syscall_64+0x60/0x90
+  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+Fixes: 9d71dd0c70099 ("can: add support of SAE J1939 protocol")
+Reported-by: Sili Luo <rootlab@huawei.com>
+Suggested-by: Sili Luo <rootlab@huawei.com>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://lore.kernel.org/all/20231020133814.383996-1-o.rempel@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../ABI/testing/sysfs-class-net-statistics    | 48 +++++++++----------
- 1 file changed, 24 insertions(+), 24 deletions(-)
+ net/can/j1939/j1939-priv.h |    1 +
+ net/can/j1939/socket.c     |   22 ++++++++++++++++++----
+ 2 files changed, 19 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-class-net-statistics b/Documentation/ABI/testing/sysfs-class-net-statistics
-index 55db27815361..53e508c6936a 100644
---- a/Documentation/ABI/testing/sysfs-class-net-statistics
-+++ b/Documentation/ABI/testing/sysfs-class-net-statistics
-@@ -1,4 +1,4 @@
--What:		/sys/class/<iface>/statistics/collisions
-+What:		/sys/class/net/<iface>/statistics/collisions
- Date:		April 2005
- KernelVersion:	2.6.12
- Contact:	netdev@vger.kernel.org
-@@ -6,7 +6,7 @@ Description:
- 		Indicates the number of collisions seen by this network device.
- 		This value might not be relevant with all MAC layers.
+--- a/net/can/j1939/j1939-priv.h
++++ b/net/can/j1939/j1939-priv.h
+@@ -301,6 +301,7 @@ struct j1939_sock {
  
--What:		/sys/class/<iface>/statistics/multicast
-+What:		/sys/class/net/<iface>/statistics/multicast
- Date:		April 2005
- KernelVersion:	2.6.12
- Contact:	netdev@vger.kernel.org
-@@ -14,7 +14,7 @@ Description:
- 		Indicates the number of multicast packets received by this
- 		network device.
+ 	int ifindex;
+ 	struct j1939_addr addr;
++	spinlock_t filters_lock;
+ 	struct j1939_filter *filters;
+ 	int nfilters;
+ 	pgn_t pgn_rx_filter;
+--- a/net/can/j1939/socket.c
++++ b/net/can/j1939/socket.c
+@@ -262,12 +262,17 @@ static bool j1939_sk_match_dst(struct j1
+ static bool j1939_sk_match_filter(struct j1939_sock *jsk,
+ 				  const struct j1939_sk_buff_cb *skcb)
+ {
+-	const struct j1939_filter *f = jsk->filters;
+-	int nfilter = jsk->nfilters;
++	const struct j1939_filter *f;
++	int nfilter;
++
++	spin_lock_bh(&jsk->filters_lock);
++
++	f = jsk->filters;
++	nfilter = jsk->nfilters;
  
--What:		/sys/class/<iface>/statistics/rx_bytes
-+What:		/sys/class/net/<iface>/statistics/rx_bytes
- Date:		April 2005
- KernelVersion:	2.6.12
- Contact:	netdev@vger.kernel.org
-@@ -23,7 +23,7 @@ Description:
- 		See the network driver for the exact meaning of when this
- 		value is incremented.
+ 	if (!nfilter)
+ 		/* receive all when no filters are assigned */
+-		return true;
++		goto filter_match_found;
  
--What:		/sys/class/<iface>/statistics/rx_compressed
-+What:		/sys/class/net/<iface>/statistics/rx_compressed
- Date:		April 2005
- KernelVersion:	2.6.12
- Contact:	netdev@vger.kernel.org
-@@ -32,7 +32,7 @@ Description:
- 		network device. This value might only be relevant for interfaces
- 		that support packet compression (e.g: PPP).
+ 	for (; nfilter; ++f, --nfilter) {
+ 		if ((skcb->addr.pgn & f->pgn_mask) != f->pgn)
+@@ -276,9 +281,15 @@ static bool j1939_sk_match_filter(struct
+ 			continue;
+ 		if ((skcb->addr.src_name & f->name_mask) != f->name)
+ 			continue;
+-		return true;
++		goto filter_match_found;
+ 	}
++
++	spin_unlock_bh(&jsk->filters_lock);
+ 	return false;
++
++filter_match_found:
++	spin_unlock_bh(&jsk->filters_lock);
++	return true;
+ }
  
--What:		/sys/class/<iface>/statistics/rx_crc_errors
-+What:		/sys/class/net/<iface>/statistics/rx_crc_errors
- Date:		April 2005
- KernelVersion:	2.6.12
- Contact:	netdev@vger.kernel.org
-@@ -41,7 +41,7 @@ Description:
- 		by this network device. Note that the specific meaning might
- 		depend on the MAC layer used by the interface.
+ static bool j1939_sk_recv_match_one(struct j1939_sock *jsk,
+@@ -401,6 +412,7 @@ static int j1939_sk_init(struct sock *sk
+ 	atomic_set(&jsk->skb_pending, 0);
+ 	spin_lock_init(&jsk->sk_session_queue_lock);
+ 	INIT_LIST_HEAD(&jsk->sk_session_queue);
++	spin_lock_init(&jsk->filters_lock);
  
--What:		/sys/class/<iface>/statistics/rx_dropped
-+What:		/sys/class/net/<iface>/statistics/rx_dropped
- Date:		April 2005
- KernelVersion:	2.6.12
- Contact:	netdev@vger.kernel.org
-@@ -51,7 +51,7 @@ Description:
- 		packet processing. See the network driver for the exact
- 		meaning of this value.
+ 	/* j1939_sk_sock_destruct() depends on SOCK_RCU_FREE flag */
+ 	sock_set_flag(sk, SOCK_RCU_FREE);
+@@ -703,9 +715,11 @@ static int j1939_sk_setsockopt(struct so
+ 		}
  
--What:		/sys/class/<iface>/statistics/rx_errors
-+What:		/sys/class/net/<iface>/statistics/rx_errors
- Date:		April 2005
- KernelVersion:	2.6.12
- Contact:	netdev@vger.kernel.org
-@@ -59,7 +59,7 @@ Description:
- 		Indicates the number of receive errors on this network device.
- 		See the network driver for the exact meaning of this value.
- 
--What:		/sys/class/<iface>/statistics/rx_fifo_errors
-+What:		/sys/class/net/<iface>/statistics/rx_fifo_errors
- Date:		April 2005
- KernelVersion:	2.6.12
- Contact:	netdev@vger.kernel.org
-@@ -68,7 +68,7 @@ Description:
- 		network device. See the network driver for the exact
- 		meaning of this value.
- 
--What:		/sys/class/<iface>/statistics/rx_frame_errors
-+What:		/sys/class/net/<iface>/statistics/rx_frame_errors
- Date:		April 2005
- KernelVersion:	2.6.12
- Contact:	netdev@vger.kernel.org
-@@ -78,7 +78,7 @@ Description:
- 		on the MAC layer protocol used. See the network driver for
- 		the exact meaning of this value.
- 
--What:		/sys/class/<iface>/statistics/rx_length_errors
-+What:		/sys/class/net/<iface>/statistics/rx_length_errors
- Date:		April 2005
- KernelVersion:	2.6.12
- Contact:	netdev@vger.kernel.org
-@@ -87,7 +87,7 @@ Description:
- 		error, oversized or undersized. See the network driver for the
- 		exact meaning of this value.
- 
--What:		/sys/class/<iface>/statistics/rx_missed_errors
-+What:		/sys/class/net/<iface>/statistics/rx_missed_errors
- Date:		April 2005
- KernelVersion:	2.6.12
- Contact:	netdev@vger.kernel.org
-@@ -96,7 +96,7 @@ Description:
- 		due to lack of capacity in the receive side. See the network
- 		driver for the exact meaning of this value.
- 
--What:		/sys/class/<iface>/statistics/rx_nohandler
-+What:		/sys/class/net/<iface>/statistics/rx_nohandler
- Date:		February 2016
- KernelVersion:	4.6
- Contact:	netdev@vger.kernel.org
-@@ -104,7 +104,7 @@ Description:
- 		Indicates the number of received packets that were dropped on
- 		an inactive device by the network core.
- 
--What:		/sys/class/<iface>/statistics/rx_over_errors
-+What:		/sys/class/net/<iface>/statistics/rx_over_errors
- Date:		April 2005
- KernelVersion:	2.6.12
- Contact:	netdev@vger.kernel.org
-@@ -114,7 +114,7 @@ Description:
- 		(e.g: larger than MTU). See the network driver for the exact
- 		meaning of this value.
- 
--What:		/sys/class/<iface>/statistics/rx_packets
-+What:		/sys/class/net/<iface>/statistics/rx_packets
- Date:		April 2005
- KernelVersion:	2.6.12
- Contact:	netdev@vger.kernel.org
-@@ -122,7 +122,7 @@ Description:
- 		Indicates the total number of good packets received by this
- 		network device.
- 
--What:		/sys/class/<iface>/statistics/tx_aborted_errors
-+What:		/sys/class/net/<iface>/statistics/tx_aborted_errors
- Date:		April 2005
- KernelVersion:	2.6.12
- Contact:	netdev@vger.kernel.org
-@@ -132,7 +132,7 @@ Description:
- 		a medium collision). See the network driver for the exact
- 		meaning of this value.
- 
--What:		/sys/class/<iface>/statistics/tx_bytes
-+What:		/sys/class/net/<iface>/statistics/tx_bytes
- Date:		April 2005
- KernelVersion:	2.6.12
- Contact:	netdev@vger.kernel.org
-@@ -143,7 +143,7 @@ Description:
- 		transmitted packets or all packets that have been queued for
- 		transmission.
- 
--What:		/sys/class/<iface>/statistics/tx_carrier_errors
-+What:		/sys/class/net/<iface>/statistics/tx_carrier_errors
- Date:		April 2005
- KernelVersion:	2.6.12
- Contact:	netdev@vger.kernel.org
-@@ -152,7 +152,7 @@ Description:
- 		because of carrier errors (e.g: physical link down). See the
- 		network driver for the exact meaning of this value.
- 
--What:		/sys/class/<iface>/statistics/tx_compressed
-+What:		/sys/class/net/<iface>/statistics/tx_compressed
- Date:		April 2005
- KernelVersion:	2.6.12
- Contact:	netdev@vger.kernel.org
-@@ -161,7 +161,7 @@ Description:
- 		this might only be relevant for devices that support
- 		compression (e.g: PPP).
- 
--What:		/sys/class/<iface>/statistics/tx_dropped
-+What:		/sys/class/net/<iface>/statistics/tx_dropped
- Date:		April 2005
- KernelVersion:	2.6.12
- Contact:	netdev@vger.kernel.org
-@@ -170,7 +170,7 @@ Description:
- 		See the driver for the exact reasons as to why the packets were
- 		dropped.
- 
--What:		/sys/class/<iface>/statistics/tx_errors
-+What:		/sys/class/net/<iface>/statistics/tx_errors
- Date:		April 2005
- KernelVersion:	2.6.12
- Contact:	netdev@vger.kernel.org
-@@ -179,7 +179,7 @@ Description:
- 		a network device. See the driver for the exact reasons as to
- 		why the packets were dropped.
- 
--What:		/sys/class/<iface>/statistics/tx_fifo_errors
-+What:		/sys/class/net/<iface>/statistics/tx_fifo_errors
- Date:		April 2005
- KernelVersion:	2.6.12
- Contact:	netdev@vger.kernel.org
-@@ -188,7 +188,7 @@ Description:
- 		FIFO error. See the driver for the exact reasons as to why the
- 		packets were dropped.
- 
--What:		/sys/class/<iface>/statistics/tx_heartbeat_errors
-+What:		/sys/class/net/<iface>/statistics/tx_heartbeat_errors
- Date:		April 2005
- KernelVersion:	2.6.12
- Contact:	netdev@vger.kernel.org
-@@ -197,7 +197,7 @@ Description:
- 		reported as heartbeat errors. See the driver for the exact
- 		reasons as to why the packets were dropped.
- 
--What:		/sys/class/<iface>/statistics/tx_packets
-+What:		/sys/class/net/<iface>/statistics/tx_packets
- Date:		April 2005
- KernelVersion:	2.6.12
- Contact:	netdev@vger.kernel.org
-@@ -206,7 +206,7 @@ Description:
- 		device. See the driver for whether this reports the number of all
- 		attempted or successful transmissions.
- 
--What:		/sys/class/<iface>/statistics/tx_window_errors
-+What:		/sys/class/net/<iface>/statistics/tx_window_errors
- Date:		April 2005
- KernelVersion:	2.6.12
- Contact:	netdev@vger.kernel.org
--- 
-2.43.0
-
+ 		lock_sock(&jsk->sk);
++		spin_lock_bh(&jsk->filters_lock);
+ 		ofilters = jsk->filters;
+ 		jsk->filters = filters;
+ 		jsk->nfilters = count;
++		spin_unlock_bh(&jsk->filters_lock);
+ 		release_sock(&jsk->sk);
+ 		kfree(ofilters);
+ 		return 0;
 
 
 
