@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-22391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2B6885DBD3
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:45:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E7B485DDC6
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:11:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53F261F2481C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:45:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FEAD1C22A2F
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:11:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1130E7C6E5;
-	Wed, 21 Feb 2024 13:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C19F7EEE5;
+	Wed, 21 Feb 2024 14:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y4jqshk1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bGdGyf4m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C38D979DBC;
-	Wed, 21 Feb 2024 13:45:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E70A978B7C;
+	Wed, 21 Feb 2024 14:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523126; cv=none; b=sV47ouREZQcoDIQ/JxcL7RfynPvYAoHTXbjUCFt8vnRaHvaWbVDIcMp35WPTyvLjG4GbTlvaJUBLBxn4bWiSmWeiCI8o+Xj3DCgW6FIsBJve4ziHdg2mx1eX2+CXg4qSN4mrhDQN042IvlHgI6CeTsfvrp8X3BV4/POAn0CW3ng=
+	t=1708524447; cv=none; b=eVhBoOS3sAIrGOtAFlH8SSulH+HpxvuN4YvrSGEQujOn9S8Mdv3bMoNTEW2LCE9k52VMtWgRj2MRH8FqphGedzAlzaqMiMD4Yihs11XNr63NuWdppFYwOUSxF9XZVFKIaoeyZRa7duz0G4QlvtfaXA9vQNgLtx18t+zLuaW3mDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523126; c=relaxed/simple;
-	bh=TUOWCmHJFs5rU1Emt/V1NA0n16Aa+ZpTG432rziKkA4=;
+	s=arc-20240116; t=1708524447; c=relaxed/simple;
+	bh=PtngySrfTBpKbfpvllwb36DmL3TwADLVZJKyxwGy0+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NXfUPCB075MNr9SD6CYa9eX2oUi5tLkrhKbV38H+gIa6snzwbL0wPkepFUyecliopCeAjv5U/FexaltUYZP5SXUbiq50N1EEdTXY3bcJh73meB+QJJqpG6ZYgnoMZgpTtkoQIDF2L2WqX51UIYQL/En3l/ZAqgv+dKr24p2Ujj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y4jqshk1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32ED0C433C7;
-	Wed, 21 Feb 2024 13:45:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qIlNswRxL15cKsic9ylm1Ga96/PRQxKOxl4wYw/PMfjN7GOwwIqQhP8olFsHn9ohSzqkFzK7xswg70tf/CuLddWeBw5jknMXy+ff2jS9APA8E/QWA45s/E1jVcFLaJTue8X2pBo+vSqhLvkcWChtG+09Q2wL3bJWXKaTLA/xtVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bGdGyf4m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58A4AC433F1;
+	Wed, 21 Feb 2024 14:07:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523126;
-	bh=TUOWCmHJFs5rU1Emt/V1NA0n16Aa+ZpTG432rziKkA4=;
+	s=korg; t=1708524446;
+	bh=PtngySrfTBpKbfpvllwb36DmL3TwADLVZJKyxwGy0+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y4jqshk1r43r49u3ysF4FGdaaDjJziaqaVpGQbC6pwtO87S8d13Kswzm3UlMh+vF1
-	 so5mqmMB9SPSvbZ54GTSjWRINKtyAPYrpbQrHhIQ+ZSnI2n0cYR9KqG7uS6qiK1F/t
-	 UddB+BmSmGOf8RTKYiWbsXhQI6yEA7q6m12fSeS8=
+	b=bGdGyf4mowsBeffRgD7bRxJwWekgdkBdBioBldvYtwZyALBkLU1e47S9c0HLNIyv7
+	 PuHoWmOrmBn3aO9M/8OgPexTg8vCKQsdg8h7w+LFJk1peH0srLnONhrYL0QYwHeVqR
+	 PtuvVnoy75NMEAhEdPfslhef0QH4L9fQCkZ3l76I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.15 347/476] btrfs: send: return EOPNOTSUPP on unknown flags
+	Monk Liu <Monk.Liu@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 219/379] drm/amdgpu: Release adev->pm.fw before return in amdgpu_device_need_post()
 Date: Wed, 21 Feb 2024 14:06:38 +0100
-Message-ID: <20240221130020.814105061@linuxfoundation.org>
+Message-ID: <20240221130001.380540168@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,42 +63,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-commit f884a9f9e59206a2d41f265e7e403f080d10b493 upstream.
+[ Upstream commit 8a44fdd3cf91debbd09b43bd2519ad2b2486ccf4 ]
 
-When some ioctl flags are checked we return EOPNOTSUPP, like for
-BTRFS_SCRUB_SUPPORTED_FLAGS, BTRFS_SUBVOL_CREATE_ARGS_MASK or fallocate
-modes. The EINVAL is supposed to be for a supported but invalid
-values or combination of options. Fix that when checking send flags so
-it's consistent with the rest.
+In function 'amdgpu_device_need_post(struct amdgpu_device *adev)' -
+'adev->pm.fw' may not be released before return.
 
-CC: stable@vger.kernel.org # 4.14+
-Link: https://lore.kernel.org/linux-btrfs/CAL3q7H5rryOLzp3EKq8RTbjMHMHeaJubfpsVLF6H4qJnKCUR1w@mail.gmail.com/
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Using the function release_firmware() to release adev->pm.fw.
+
+Thus fixing the below:
+drivers/gpu/drm/amd/amdgpu/amdgpu_device.c:1571 amdgpu_device_need_post() warn: 'adev->pm.fw' from request_firmware() not released on lines: 1554.
+
+Cc: Monk Liu <Monk.Liu@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Suggested-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/send.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/btrfs/send.c
-+++ b/fs/btrfs/send.c
-@@ -7558,7 +7558,7 @@ long btrfs_ioctl_send(struct file *mnt_f
- 	}
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index a093f1b27724..e833c02fabff 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -1184,6 +1184,7 @@ bool amdgpu_device_need_post(struct amdgpu_device *adev)
+ 				return true;
  
- 	if (arg->flags & ~BTRFS_SEND_FLAG_MASK) {
--		ret = -EINVAL;
-+		ret = -EOPNOTSUPP;
- 		goto out;
- 	}
- 
+ 			fw_ver = *((uint32_t *)adev->pm.fw->data + 69);
++			release_firmware(adev->pm.fw);
+ 			if (fw_ver < 0x00160e00)
+ 				return true;
+ 		}
+-- 
+2.43.0
+
 
 
 
