@@ -1,72 +1,55 @@
-Return-Path: <stable+bounces-22913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB0CD85DE44
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:17:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9397185D914
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DBE21C23A21
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:17:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A1B5B22783
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:14:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 625087E78D;
-	Wed, 21 Feb 2024 14:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DD0D69D2B;
+	Wed, 21 Feb 2024 13:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sf8o+9F+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pJgnjptm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 212B27BB1F;
-	Wed, 21 Feb 2024 14:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5B153816;
+	Wed, 21 Feb 2024 13:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524948; cv=none; b=hmO9St8LokgjVc8rZT+xblz6Z973IlbvR5n9+KPMWWw2TW8NYrF5SGdB0XhyYPtokWfBjZ7MlxOJuogGORpgJGH6IoENIqWGLqFG2lLo0UeZiAurYNrRdzKX7IEwqu/ZJQUvwiy4lHhQx4xZSqKnD1vBCoJmdxlUgG773L6InD0=
+	t=1708521258; cv=none; b=dkLsHOQsrw080DeeoVRKv99fwbxBvb8F0mazefijm/GcYyj63ruiUkNZa5l+xtPMqqHN4ynYWcRIN17rggH0uHaNcVB/ZccUUpbNVVqC/YozsUEZ4ksfYr1DS+yZAyX8p4eSER4RHMfKJIUtQVsg7IIXyNQ3hoe9zvvwE9R2XvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524948; c=relaxed/simple;
-	bh=4zKIUcfsPfQkYowtx5OsnIlq00Bbcq1Okb5McTTp3SU=;
+	s=arc-20240116; t=1708521258; c=relaxed/simple;
+	bh=hMLZc7bZWZGoXAU+2PiHGUd0WaJCv5Uy5oWKD7HDTek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gdO4k4y3CyKhPgsfgSga/bgftaBdYss3J7p87Zf13YGkMwqZmO/wPcUywF41lqAiiIVsRd70AjSxx8IH2f4lA1adpfyhezEN03kYCicC/97K4HEa1hXUAKwIlngAufbIYOmBm86JDxZYFXi8yUoNgUoOSlxxh6qOEHtjkdWWmuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sf8o+9F+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 589B8C433F1;
-	Wed, 21 Feb 2024 14:15:47 +0000 (UTC)
+	 MIME-Version; b=XNDjsQZcbv76zvJyruGJowXBDOj3frYrJlhRxAk3RCayPthjOu02PZHp+cJNBcbJGlg0/Pe6DWPVbJKNKwrByH1PigKMXgspTHt95gDtVQtpvtEEoTG+Iz0Bbf6KBcwCf3cCQ0NcqU9tF10Wfk+k2+NPJpjSp8j70r4fB/xtdEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pJgnjptm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96823C433F1;
+	Wed, 21 Feb 2024 13:14:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524948;
-	bh=4zKIUcfsPfQkYowtx5OsnIlq00Bbcq1Okb5McTTp3SU=;
+	s=korg; t=1708521258;
+	bh=hMLZc7bZWZGoXAU+2PiHGUd0WaJCv5Uy5oWKD7HDTek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sf8o+9F+REUH5ve9DwNrBjr4CzvcwcH2w2PianJlDwiKZcMg35n4EAoU/3zdGe0Bh
-	 54RKhhm5nkC2hREp2apOZpRvmon94C+kZ7JNCx21kjRGFAeBGfA0lf4HLZNS5CVfg/
-	 goabW29R+yy59M1krmeCE+mmQjKcydAcRHpESgOA=
+	b=pJgnjptmkaWbcgJz7rqYx2vzIbq5sA9SNHQRzSkwhF67Glsy2xaytw/ZgQQfUfXZl
+	 gs0JhA3KwhvdAmRipT8l1w63iQTtpZUk/yW9kGQvjlL0uONrd4vtwltGrtQ7lpEO/X
+	 zXhHly4jnpN29aW6InU7tm4S0QEW9bf3OuztPdMY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Christian Eggers <ceggers@arri.de>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Kyungmin Park <kyungmin.park@samsung.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	MyungJoo Ham <myungjoo.ham@samsung.com>,
-	Peter Meerwald <pmeerw@pmeerw.net>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Zhang Rui <rui.zhang@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 005/267] units: add the HZ macros
-Date: Wed, 21 Feb 2024 14:05:46 +0100
-Message-ID: <20240221125940.233681045@linuxfoundation.org>
+	Xi Ruoyao <xry111@xry111.site>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 4.19 046/202] mips: Call lose_fpu(0) before initializing fcr31 in mips_set_personality_nan
+Date: Wed, 21 Feb 2024 14:05:47 +0100
+Message-ID: <20240221125933.300934214@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,62 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
+From: Xi Ruoyao <xry111@xry111.site>
 
-[ Upstream commit e2c77032fcbe515194107994d12cd72ddb77b022 ]
+commit 59be5c35850171e307ca5d3d703ee9ff4096b948 upstream.
 
-The macros for the unit conversion for frequency are duplicated in
-different places.
+If we still own the FPU after initializing fcr31, when we are preempted
+the dirty value in the FPU will be read out and stored into fcr31,
+clobbering our setting.  This can cause an improper floating-point
+environment after execve().  For example:
 
-Provide these macros in the 'units' header, so they can be reused.
+    zsh% cat measure.c
+    #include <fenv.h>
+    int main() { return fetestexcept(FE_INEXACT); }
+    zsh% cc measure.c -o measure -lm
+    zsh% echo $((1.0/3)) # raising FE_INEXACT
+    0.33333333333333331
+    zsh% while ./measure; do ; done
+    (stopped in seconds)
 
-Link: https://lkml.kernel.org/r/20210816114732.1834145-3-daniel.lezcano@linaro.org
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Reviewed-by: Christian Eggers <ceggers@arri.de>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Chanwoo Choi <cw00.choi@samsung.com>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Cc: Jonathan Cameron <jic23@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Kyungmin Park <kyungmin.park@samsung.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>
-Cc: Lukasz Luba <lukasz.luba@arm.com>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: MyungJoo Ham <myungjoo.ham@samsung.com>
-Cc: Peter Meerwald <pmeerw@pmeerw.net>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Zhang Rui <rui.zhang@intel.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Stable-dep-of: 3ef79cd14122 ("serial: sc16is7xx: set safe default SPI clock frequency")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Call lose_fpu(0) before setting fcr31 to prevent this.
+
+Closes: https://lore.kernel.org/linux-mips/7a6aa1bbdbbe2e63ae96ff163fab0349f58f1b9e.camel@xry111.site/
+Fixes: 9b26616c8d9d ("MIPS: Respect the ISA level in FCSR handling")
+Cc: stable@vger.kernel.org
+Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/units.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/mips/kernel/elf.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/include/linux/units.h b/include/linux/units.h
-index 4a23e39acc7b..a0af6d2ef4e5 100644
---- a/include/linux/units.h
-+++ b/include/linux/units.h
-@@ -4,6 +4,10 @@
+--- a/arch/mips/kernel/elf.c
++++ b/arch/mips/kernel/elf.c
+@@ -15,6 +15,7 @@
  
- #include <linux/kernel.h>
+ #include <asm/cpu-features.h>
+ #include <asm/cpu-info.h>
++#include <asm/fpu.h>
  
-+#define HZ_PER_KHZ		1000UL
-+#define KHZ_PER_MHZ		1000UL
-+#define HZ_PER_MHZ		1000000UL
+ /* Whether to accept legacy-NaN and 2008-NaN user binaries.  */
+ bool mips_use_nan_legacy;
+@@ -311,6 +312,11 @@ void mips_set_personality_nan(struct arc
+ 	struct cpuinfo_mips *c = &boot_cpu_data;
+ 	struct task_struct *t = current;
+ 
++	/* Do this early so t->thread.fpu.fcr31 won't be clobbered in case
++	 * we are preempted before the lose_fpu(0) in start_thread.
++	 */
++	lose_fpu(0);
 +
- #define MILLIWATT_PER_WATT	1000UL
- #define MICROWATT_PER_MILLIWATT	1000UL
- #define MICROWATT_PER_WATT	1000000UL
--- 
-2.43.0
-
+ 	t->thread.fpu.fcr31 = c->fpu_csr31;
+ 	switch (state->nan_2008) {
+ 	case 0:
 
 
 
