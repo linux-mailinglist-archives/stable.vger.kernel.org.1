@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-21922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD03685D92B
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:15:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9293A85D942
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:16:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E3EBB235B6
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:15:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2FA72B24BAE
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:16:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CC326BFA6;
-	Wed, 21 Feb 2024 13:15:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFE9669318;
+	Wed, 21 Feb 2024 13:16:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vMtt/X8F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QK3ylbT3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB7C6A32A;
-	Wed, 21 Feb 2024 13:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DC5B6A037;
+	Wed, 21 Feb 2024 13:16:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521322; cv=none; b=X14VGzj9w4yryUNlKOuCwloKQwAhxj/WVJsXvJgXaXJ+oxLkoAu2ZgQHPv5cAQUDEP0nSgKZq9kQbOldK1T27tEGBCYlLn6DgPqUM9gd9bvjGgDqOl1e4bQiqRDNEfffT6WHmis7ZOl3bMeAu9kOoML3tlh3SpHrYlM1ePkKsCg=
+	t=1708521371; cv=none; b=nITFMSGZeFxnIF8I/Ur1nESwdyvIvJ7U4YJ5i1n1QE1858WAl8VGntd+/KDsNQgNTMaIOoHvsgCUfWzThCj6VFSH8o74yd5UzY89XVAbJwlr7frPaqSsQkY9ONiCYIzeXDkpgKy0lGU/qJWaW2np6nUMYzJMeiacQT0CnDNnekg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521322; c=relaxed/simple;
-	bh=a1nvfOlbRd0LZLO+4LajvGaS6i5mW7gwC2JzQvK/g54=;
+	s=arc-20240116; t=1708521371; c=relaxed/simple;
+	bh=5pPnKQaXcNcoUZW2JgajkqrpHZZfWTZQgyDtnWU86ho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NzNuxWfPEGUsDPc3yH23caXSEDVAvpzD4ZOFUaZDrgaH7SaNSDm5HVKOmRJU5r30Rx9Gt4QKA582SMW952LZ5LIB4ZkX99KmSb1XMezbRgj6NPnVRUqGWDsmmo0S+ule+XwVm8P9QmbvMfm7JZ0TO2SNl3h27NUp/Nxah5FrU2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vMtt/X8F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D3D0C43390;
-	Wed, 21 Feb 2024 13:15:21 +0000 (UTC)
+	 MIME-Version; b=pZ3b1pxrmOCAivqOuOUukXc17DptePhNqErXfGtwJk3UduUVcgRPzetXouu1I4XvKVld0hMfrQ0NGMbzx34S5qoysXhnVINg3uHzE8oeUhHgYegnFwhn5xZgj+mbhoKfM3w9UvB0igqGbq+3pKcI2DkyIVRXoPUMx6gFvpc26zQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QK3ylbT3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 246ECC43390;
+	Wed, 21 Feb 2024 13:16:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521321;
-	bh=a1nvfOlbRd0LZLO+4LajvGaS6i5mW7gwC2JzQvK/g54=;
+	s=korg; t=1708521371;
+	bh=5pPnKQaXcNcoUZW2JgajkqrpHZZfWTZQgyDtnWU86ho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vMtt/X8FRFpAwICUUNuLAi7Sab8Ur1gQPCxdCTejWCi2q9izCpSCcZMsJc3gUsBNS
-	 kg/hwIp1EnUk6WlksDjI10u4httGMjSzsX/e5zvvWVMx061na+z/7kT+jpidprhZMx
-	 ss3MeFDkjr+XH170BnEltbvA9HSiXnmGeU9bp+YA=
+	b=QK3ylbT3sQto0AV741JaIrqf0BLu9CDW7x1ntMQFTn/aH9pjQv2bWH28vyibDiaIG
+	 qN8K5p1JzlPsyFzQTIybgW6PsFmTpm2HbuJzQzL1FmMZu+rXzmJNg9O39r/vS527UY
+	 zAvHlh3T8AJ+ooMDro+2vO+cc1g2PYpj5buiZWTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Petr Machata <petrm@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Zhengchao Shao <shaozhengchao@huawei.com>,
+	Jay Vosburgh <jay.vosburgh@canonical.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 076/202] PCI: Add no PM reset quirk for NVIDIA Spectrum devices
-Date: Wed, 21 Feb 2024 14:06:17 +0100
-Message-ID: <20240221125934.268506409@linuxfoundation.org>
+Subject: [PATCH 4.19 077/202] bonding: return -ENOMEM instead of BUG in alb_upper_dev_walk
+Date: Wed, 21 Feb 2024 14:06:18 +0100
+Message-ID: <20240221125934.298460412@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
 References: <20240221125931.742034354@linuxfoundation.org>
@@ -68,60 +67,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Zhengchao Shao <shaozhengchao@huawei.com>
 
-[ Upstream commit 3ed48c80b28d8dcd584d6ddaf00c75b7673e1a05 ]
+[ Upstream commit d6b83f1e3707c4d60acfa58afd3515e17e5d5384 ]
 
-Spectrum-{1,2,3,4} devices report that a D3hot->D0 transition causes a
-reset (i.e., they advertise NoSoftRst-). However, this transition does
-not have any effect on the device: It continues to be operational and
-network ports remain up. Advertising this support makes it seem as if a
-PM reset is viable for these devices. Mark it as unavailable to skip it
-when testing reset methods.
+If failed to allocate "tags" or could not find the final upper device from
+start_dev's upper list in bond_verify_device_path(), only the loopback
+detection of the current upper device should be affected, and the system is
+no need to be panic.
+So return -ENOMEM in alb_upper_dev_walk to stop walking, print some warn
+information when failed to allocate memory for vlan tags in
+bond_verify_device_path.
 
-Before:
+I also think that the following function calls
+netdev_walk_all_upper_dev_rcu
+---->>>alb_upper_dev_walk
+---------->>>bond_verify_device_path
+>From this way, "end device" can eventually be obtained from "start device"
+in bond_verify_device_path, IS_ERR(tags) could be instead of
+IS_ERR_OR_NULL(tags) in alb_upper_dev_walk.
 
- # cat /sys/bus/pci/devices/0000\:03\:00.0/reset_method
- pm bus
-
-After:
-
- # cat /sys/bus/pci/devices/0000\:03\:00.0/reset_method
- bus
-
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Acked-by: Jay Vosburgh <jay.vosburgh@canonical.com>
+Link: https://lore.kernel.org/r/20231118081653.1481260-1-shaozhengchao@huawei.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/net/bonding/bond_alb.c  | 3 ++-
+ drivers/net/bonding/bond_main.c | 5 ++++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index eb507751c115..a5d49f75e1ac 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -3532,6 +3532,19 @@ static void quirk_no_pm_reset(struct pci_dev *dev)
- DECLARE_PCI_FIXUP_CLASS_HEADER(PCI_VENDOR_ID_ATI, PCI_ANY_ID,
- 			       PCI_CLASS_DISPLAY_VGA, 8, quirk_no_pm_reset);
- 
-+/*
-+ * Spectrum-{1,2,3,4} devices report that a D3hot->D0 transition causes a reset
-+ * (i.e., they advertise NoSoftRst-). However, this transition does not have
-+ * any effect on the device: It continues to be operational and network ports
-+ * remain up. Advertising this support makes it seem as if a PM reset is viable
-+ * for these devices. Mark it as unavailable to skip it when testing reset
-+ * methods.
-+ */
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_MELLANOX, 0xcb84, quirk_no_pm_reset);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_MELLANOX, 0xcf6c, quirk_no_pm_reset);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_MELLANOX, 0xcf70, quirk_no_pm_reset);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_MELLANOX, 0xcf80, quirk_no_pm_reset);
+diff --git a/drivers/net/bonding/bond_alb.c b/drivers/net/bonding/bond_alb.c
+index e03f4883858a..5947c1305527 100644
+--- a/drivers/net/bonding/bond_alb.c
++++ b/drivers/net/bonding/bond_alb.c
+@@ -984,7 +984,8 @@ static int alb_upper_dev_walk(struct net_device *upper, void *_data)
+ 	if (netif_is_macvlan(upper) && !strict_match) {
+ 		tags = bond_verify_device_path(bond->dev, upper, 0);
+ 		if (IS_ERR_OR_NULL(tags))
+-			BUG();
++			return -ENOMEM;
 +
- /*
-  * Thunderbolt controllers with broken MSI hotplug signaling:
-  * Entire 1st generation (Light Ridge, Eagle Ridge, Light Peak) and part
+ 		alb_send_lp_vid(slave, upper->dev_addr,
+ 				tags[0].vlan_proto, tags[0].vlan_id);
+ 		kfree(tags);
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 79b36f1c50ae..920b491bd4cd 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -2460,8 +2460,11 @@ struct bond_vlan_tag *bond_verify_device_path(struct net_device *start_dev,
+ 
+ 	if (start_dev == end_dev) {
+ 		tags = kcalloc(level + 1, sizeof(*tags), GFP_ATOMIC);
+-		if (!tags)
++		if (!tags) {
++			net_err_ratelimited("%s: %s: Failed to allocate tags\n",
++					    __func__, start_dev->name);
+ 			return ERR_PTR(-ENOMEM);
++		}
+ 		tags[level].vlan_proto = VLAN_N_VID;
+ 		return tags;
+ 	}
 -- 
 2.43.0
 
