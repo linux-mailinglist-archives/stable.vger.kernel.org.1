@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-22863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3991985DEC9
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:22:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 927C985DC43
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:51:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8FDF2B225D5
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3383FB24CEF
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:51:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 009F07E567;
-	Wed, 21 Feb 2024 14:12:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C83579DA2;
+	Wed, 21 Feb 2024 13:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gJjLiq+0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GwZ088k1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B22E469942;
-	Wed, 21 Feb 2024 14:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B19D76C99;
+	Wed, 21 Feb 2024 13:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524769; cv=none; b=PQ7OM59w3GbF1B2FTV0zkvCB73NAlR/tKaD2mJahZYdAlLHfaTfIjMhcFawk/rJsCCKtHrxSlNzkOc3KQsk9z1ZTN+Fy4mtuh3VcBzIuvtJkrk1eFXJvoICA3Ib7iODYfnYP2Q275Dkqys+i4BGMC7ZSf+3xKN5VdGC9joJXErY=
+	t=1708523465; cv=none; b=RJXsTxA2ba2C8DrsbLQpljt0UsNtpuqwjAqDxYp2VMz8mOus3sab1nslFaOtABktiz2BLqxUCgtrqQlRfV1hHVhIS+7/+GNF2MlPojD2U4jGNwc1l046RcVbSkaE3BKGpc/LdoE5Sf8qZzq52CSdt511vH01M7jo2XaFujBTk0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524769; c=relaxed/simple;
-	bh=QNoeo6GXacMuI6P6q1N+6772ntRvVJgazweulcJUrZc=;
+	s=arc-20240116; t=1708523465; c=relaxed/simple;
+	bh=HsJgRa01iEqAeELGgLaDi0EUmCXxAB74YxXg9kA5ztc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EAaD+Ii2HnrMN4WfOP8qyds6x9aYOBCYEth12wo2ZrivRoz1yngqoaJlcItSnmHug8zae4vproQjTXGmB9fM4+Hlnra03ZCni5VjX4i7nupgQTxqA2/PM3D9mT649sgTz4zJGuMNaVOdDzJBcouAFIw8VFX29NHtSf4DU39u4ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJjLiq+0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D29F7C433C7;
-	Wed, 21 Feb 2024 14:12:48 +0000 (UTC)
+	 MIME-Version; b=MhiNi4JqeAwpN5to4FrYLZzyDXwzHb3McDLQPfb4Tq4l3fiRZrHGJpVT1tXcOIkJNa8nkYIsnLcWjObSOSKHMpBK6FJJUbZinuYdJ1/py8N1sGXnoxAkB8YIloGT6g1FLY+BHMIBWwBgSfcbgttX1aTOuWA20RBlOFiWusH6r0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GwZ088k1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB853C433F1;
+	Wed, 21 Feb 2024 13:51:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524769;
-	bh=QNoeo6GXacMuI6P6q1N+6772ntRvVJgazweulcJUrZc=;
+	s=korg; t=1708523465;
+	bh=HsJgRa01iEqAeELGgLaDi0EUmCXxAB74YxXg9kA5ztc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gJjLiq+07AHgE/SMatz74FH0NrZNeHpLhwlY/33AOD5RCwg/LjoSdMEZ0l46CYiog
-	 dMdyQ+GSt0uLAOJC/ik2aBvF2drLNnVhY/iROeJW2j26TmZcP5kiT6vqnQfI+E+11b
-	 RnpNi9W6EJ+2xyEgOeAo/rYyo+nYXgBIpXRLR+qQ=
+	b=GwZ088k18zzA5hWILk7tfCT6kAGoerwt+GmJc7PyVgTT5+Q16VICnPxXrmhoKQnDr
+	 faSbOfZrtAZPqPIylISJeOm+E3YvL3herM3auMWpE96BK2pjThQOa2avpW0SiSjMtQ
+	 Hf/IH8suWh+jv1yf+w8gJl2RSLopmSy7rCz3BvM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Fangrui Song <maskray@google.com>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Kees Cook <keescook@chromium.org>,
-	Justin Stitt <justinstitt@google.com>
-Subject: [PATCH 5.10 314/379] kbuild: Fix changing ELF file type for output of gen_btf for big endian
-Date: Wed, 21 Feb 2024 14:08:13 +0100
-Message-ID: <20240221130004.220937794@linuxfoundation.org>
+	Wesley Cheng <quic_wcheng@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 443/476] usb: dwc3: gadget: Queue PM runtime idle on disconnect event
+Date: Wed, 21 Feb 2024 14:08:14 +0100
+Message-ID: <20240221130024.421907610@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,80 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Wesley Cheng <quic_wcheng@quicinc.com>
 
-commit e3a9ee963ad8ba677ca925149812c5932b49af69 upstream.
+[ Upstream commit 3c7af52c7616c3aa6dacd2336ec748d4a65df8f4 ]
 
-Commit 90ceddcb4950 ("bpf: Support llvm-objcopy for vmlinux BTF")
-changed the ELF type of .btf.vmlinux.bin.o to ET_REL via dd, which works
-fine for little endian platforms:
+There is a scenario where DWC3 runtime suspend is blocked due to the
+dwc->connected flag still being true while PM usage_count is zero after
+DWC3 giveback is completed and the USB gadget session is being terminated.
+This leads to a case where nothing schedules a PM runtime idle for the
+device.
 
-   00000000  7f 45 4c 46 02 01 01 00  00 00 00 00 00 00 00 00  |.ELF............|
-  -00000010  03 00 b7 00 01 00 00 00  00 00 00 80 00 80 ff ff  |................|
-  +00000010  01 00 b7 00 01 00 00 00  00 00 00 80 00 80 ff ff  |................|
+The exact condition is seen with the following sequence:
+  1.  USB bus reset is issued by the host
+  2.  Shortly after, or concurrently, a USB PD DR SWAP request is received
+      (sink->source)
+  3.  USB bus reset event handler runs and issues
+      dwc3_stop_active_transfers(), and pending transfer are stopped
+  4.  DWC3 usage_count decremented to 0, and runtime idle occurs while
+      dwc->connected == true, returns -EBUSY
+  5.  DWC3 disconnect event seen, dwc->connected set to false due to DR
+      swap handling
+  6.  No runtime idle after this point
 
-However, for big endian platforms, it changes the wrong byte, resulting
-in an invalid ELF file type, which ld.lld rejects:
+Address this by issuing an asynchronous PM runtime idle call after the
+disconnect event is completed, as it modifies the dwc->connected flag,
+which is what blocks the initial runtime idle.
 
-   00000000  7f 45 4c 46 02 02 01 00  00 00 00 00 00 00 00 00  |.ELF............|
-  -00000010  00 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |................|
-  +00000010  01 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |................|
-
-  Type:                              <unknown>: 103
-
-  ld.lld: error: .btf.vmlinux.bin.o: unknown file type
-
-Fix this by updating the entire 16-bit e_type field rather than just a
-single byte, so that everything works correctly for all platforms and
-linkers.
-
-   00000000  7f 45 4c 46 02 02 01 00  00 00 00 00 00 00 00 00  |.ELF............|
-  -00000010  00 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |................|
-  +00000010  00 01 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |................|
-
-  Type:                              REL (Relocatable file)
-
-While in the area, update the comment to mention that binutils 2.35+
-matches LLD's behavior of rejecting an ET_EXEC input, which occurred
-after the comment was added.
-
-Cc: stable@vger.kernel.org
-Fixes: 90ceddcb4950 ("bpf: Support llvm-objcopy for vmlinux BTF")
-Link: https://github.com/llvm/llvm-project/pull/75643
-Suggested-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Fangrui Song <maskray@google.com>
-Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Justin Stitt <justinstitt@google.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Fixes: fc8bb91bc83e ("usb: dwc3: implement runtime PM")
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
+Link: https://lore.kernel.org/r/20240103214946.2596-1-quic_wcheng@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/link-vmlinux.sh |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/usb/dwc3/gadget.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/scripts/link-vmlinux.sh
-+++ b/scripts/link-vmlinux.sh
-@@ -171,8 +171,13 @@ gen_btf()
- 	${OBJCOPY} --only-section=.BTF --set-section-flags .BTF=alloc,readonly \
- 		--strip-all ${1} ${2} 2>/dev/null
- 	# Change e_type to ET_REL so that it can be used to link final vmlinux.
--	# Unlike GNU ld, lld does not allow an ET_EXEC input.
--	printf '\1' | dd of=${2} conv=notrunc bs=1 seek=16 status=none
-+	# GNU ld 2.35+ and lld do not allow an ET_EXEC input.
-+	if is_enabled CONFIG_CPU_BIG_ENDIAN; then
-+		et_rel='\0\1'
-+	else
-+		et_rel='\1\0'
-+	fi
-+	printf "${et_rel}" | dd of=${2} conv=notrunc bs=1 seek=16 status=none
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index d472dab16889..8bd063f4eff2 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -3784,6 +3784,13 @@ static void dwc3_gadget_disconnect_interrupt(struct dwc3 *dwc)
+ 	usb_gadget_set_state(dwc->gadget, USB_STATE_NOTATTACHED);
+ 
+ 	dwc3_ep0_reset_state(dwc);
++
++	/*
++	 * Request PM idle to address condition where usage count is
++	 * already decremented to zero, but waiting for the disconnect
++	 * interrupt to set dwc->connected to FALSE.
++	 */
++	pm_request_idle(dwc->dev);
  }
  
- # Create ${2} .S file with all symbols from the ${1} object file
+ static void dwc3_gadget_reset_interrupt(struct dwc3 *dwc)
+-- 
+2.43.0
+
 
 
 
