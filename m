@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-21987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCAD585D98D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:20:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42DC885DC11
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:49:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D7FDB23547
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:20:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C62C1B27AC2
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:49:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E044B7BAFE;
-	Wed, 21 Feb 2024 13:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 458497C08D;
+	Wed, 21 Feb 2024 13:48:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DJcGzjWR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KgYUAVxT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E55C7BAF7;
-	Wed, 21 Feb 2024 13:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047BE69951;
+	Wed, 21 Feb 2024 13:48:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521576; cv=none; b=HGiZvD2Us2xyUBunW6uTs0mdhTVuW39ovEBBwbxaDSkNmkycP6hAGvwn7VurjVAJ2MT+sKhPAThwgWmpG+vZnev+cY3IZWi1elhIP/wIr5lJwVvNjvyKDXhM2tmDFNeuaMorB4uPC/MqgbSYeyrFD2h4G2dvN6jf4/ITCz5EOzE=
+	t=1708523315; cv=none; b=Uz5VvDK5n5zWMIhXPPivvh7SVYUt20xsbSJzctOl64VtxnVmvFgg6Jm/SimTNp4yS5xWCVXp9HPNVONOqLFx106RHT4Gk4QvF3t2aaTfASthRJEsIRO6NzPYBFAsGMVJ3V5OornHrJ9PIJdmrv3BJYuww7slcgzVHnMjjhljdoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521576; c=relaxed/simple;
-	bh=UvPzTnaQgYXvP3gn6QHcatCcwRTKoGRvG8fgfdZHzwA=;
+	s=arc-20240116; t=1708523315; c=relaxed/simple;
+	bh=GH5lNgmk9Jc9Q5iRx6F4rLp1Mor1qVoOQ2Lsbo13Yjg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BSYSsC9VR2pNqG/PVQJgFpJzQU3u53gzFh9pKfGDyRQFoUXdc8FZEFJG7gW4UlKyBtqSaaARtHTdBBxYyGawJe/CMRKuqVDcW29P75xHmYNi06+mZoLgf08W3DtBCQ0xc6oU5wozMQse0Vg/0IIaBVtSYTvyD9qbgD+FxS3pfY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DJcGzjWR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DF01C433F1;
-	Wed, 21 Feb 2024 13:19:35 +0000 (UTC)
+	 MIME-Version; b=CeaVGgWfMxTiW8AvJ/5etTzN2L/o7zGjcjbM35GBOVcML9xarZUClrfoQmwqgF1mvpu7DABTGXfM8Nv8oPL3+q5TRuauAJffWcLkL62KFLg+o39qxCTFO7FaJpQNPAWctjrmiLkQPo2b3xn1Z4cSUnwYtK+IIWQYai9u7MGNrPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KgYUAVxT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66105C433C7;
+	Wed, 21 Feb 2024 13:48:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521576;
-	bh=UvPzTnaQgYXvP3gn6QHcatCcwRTKoGRvG8fgfdZHzwA=;
+	s=korg; t=1708523314;
+	bh=GH5lNgmk9Jc9Q5iRx6F4rLp1Mor1qVoOQ2Lsbo13Yjg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DJcGzjWR12RsUdeVHSOZZgNfbE3w7kg6dJMb1Tx+qfOPJXV0HGqB0ZlDP4y1bgkLB
-	 jtqn6BxiXaaCHsFui38YOuCqynJS9/YaG2H8e21UVm79i4jOJe0kh5FYHKEYk8dM5G
-	 8oYr/8cG+StWglRv9FzLcMTTQiq3Bq3UnY3fCqL8=
+	b=KgYUAVxTJH4WMlrg9nWneq2kFmiZZ886DuP8IsmSbkFm3BasMYr3YIVzhH1Ua9wRp
+	 CiJXRTPQx8PlnJNYzrqvZkjx3bApTYUsjY0yz9BkI0uWfrWhamtW3zp0p1jHembyeZ
+	 lflQg8wbVFZr01vFurNhjl3D/q2CdnDn0SQ+0bcE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Loic Prylli <lprylli@netflix.com>,
-	Alexander Hansen <alexander.hansen@9elements.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 149/202] hwmon: (aspeed-pwm-tacho) mutex for tach reading
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Subject: [PATCH 5.15 399/476] serial: max310x: set default value when reading clock ready bit
 Date: Wed, 21 Feb 2024 14:07:30 +0100
-Message-ID: <20240221125936.517518944@linuxfoundation.org>
+Message-ID: <20240221130022.751991473@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +60,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Loic Prylli <lprylli@netflix.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[ Upstream commit 1168491e7f53581ba7b6014a39a49cfbbb722feb ]
+commit 0419373333c2f2024966d36261fd82a453281e80 upstream.
 
-the ASPEED_PTCR_RESULT Register can only hold the result for a
-single fan input. Adding a mutex to protect the register until the
-reading is done.
+If regmap_read() returns a non-zero value, the 'val' variable can be left
+uninitialized.
 
-Signed-off-by: Loic Prylli <lprylli@netflix.com>
-Signed-off-by: Alexander Hansen <alexander.hansen@9elements.com>
-Fixes: 2d7a548a3eff ("drivers: hwmon: Support for ASPEED PWM/Fan tach")
-Link: https://lore.kernel.org/r/121d888762a1232ef403cf35230ccf7b3887083a.1699007401.git.alexander.hansen@9elements.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Clear it before calling regmap_read() to make sure we properly detect
+the clock ready bit.
+
+Fixes: 4cf9a888fd3c ("serial: max310x: Check the clock readiness")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20240116213001.3691629-2-hugo@hugovil.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/aspeed-pwm-tacho.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/tty/serial/max310x.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/aspeed-pwm-tacho.c b/drivers/hwmon/aspeed-pwm-tacho.c
-index a43fa730a513..4097ae62e9a4 100644
---- a/drivers/hwmon/aspeed-pwm-tacho.c
-+++ b/drivers/hwmon/aspeed-pwm-tacho.c
-@@ -197,6 +197,8 @@ struct aspeed_pwm_tacho_data {
- 	u8 fan_tach_ch_source[16];
- 	struct aspeed_cooling_device *cdev[8];
- 	const struct attribute_group *groups[3];
-+	/* protects access to shared ASPEED_PTCR_RESULT */
-+	struct mutex tach_lock;
- };
+--- a/drivers/tty/serial/max310x.c
++++ b/drivers/tty/serial/max310x.c
+@@ -610,7 +610,7 @@ static u32 max310x_set_ref_clk(struct de
  
- enum type { TYPEM, TYPEN, TYPEO };
-@@ -531,6 +533,8 @@ static int aspeed_get_fan_tach_ch_rpm(struct aspeed_pwm_tacho_data *priv,
- 	u8 fan_tach_ch_source, type, mode, both;
- 	int ret;
- 
-+	mutex_lock(&priv->tach_lock);
-+
- 	regmap_write(priv->regmap, ASPEED_PTCR_TRIGGER, 0);
- 	regmap_write(priv->regmap, ASPEED_PTCR_TRIGGER, 0x1 << fan_tach_ch);
- 
-@@ -548,6 +552,8 @@ static int aspeed_get_fan_tach_ch_rpm(struct aspeed_pwm_tacho_data *priv,
- 		ASPEED_RPM_STATUS_SLEEP_USEC,
- 		usec);
- 
-+	mutex_unlock(&priv->tach_lock);
-+
- 	/* return -ETIMEDOUT if we didn't get an answer. */
- 	if (ret)
- 		return ret;
-@@ -938,6 +944,7 @@ static int aspeed_pwm_tacho_probe(struct platform_device *pdev)
- 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
- 	if (!priv)
- 		return -ENOMEM;
-+	mutex_init(&priv->tach_lock);
- 	priv->regmap = devm_regmap_init(dev, NULL, (__force void *)regs,
- 			&aspeed_pwm_tacho_regmap_config);
- 	if (IS_ERR(priv->regmap))
--- 
-2.43.0
-
+ 	/* Wait for crystal */
+ 	if (xtal) {
+-		unsigned int val;
++		unsigned int val = 0;
+ 		msleep(10);
+ 		regmap_read(s->regmap, MAX310X_STS_IRQSTS_REG, &val);
+ 		if (!(val & MAX310X_STS_CLKREADY_BIT)) {
 
 
 
