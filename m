@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-22984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F6A385DEA0
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:20:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7626085D966
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:18:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2557C284E22
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:20:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 322BF284C22
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:18:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38F647E78B;
-	Wed, 21 Feb 2024 14:19:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94980762FF;
+	Wed, 21 Feb 2024 13:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GQ5oMx3k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gZzimgfn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E807E78B73;
-	Wed, 21 Feb 2024 14:19:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A2246B9B;
+	Wed, 21 Feb 2024 13:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525180; cv=none; b=Pn5MyevyiD+0ZJXw2QmSP/MqNyuJb3usNh2+LngSuutgf6nMAX9RsdkDzHzsiaIT/p2em2GNSshY6Pe/S2lna4QiLT2hRZnLxFb2QPirPKxGLMsfjEs9JKf2WvNNHsJwbhfJrtTHdp6agxSyqjwhANWuT5zVWaR3AoEa9uhop90=
+	t=1708521479; cv=none; b=eSG98m4M1d9xIE5JUKukNuxKjw3Ce38UUjx7vpPru0zIv9F+VSHAqL3JA+x0G6uESOsdxAjLFYShhfw/8qyw6Ta+RdevRG06Tt2HHfHUUDqpYpCRC3WNRNaE30Y538teKGIH9ewl/Qs/czZd+IHpWKN0g/80C/x75dcGy9RFt7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525180; c=relaxed/simple;
-	bh=Uz4ffUujdoD1MtwuaHYtzUcswFbrz7sT6f/74CQepf8=;
+	s=arc-20240116; t=1708521479; c=relaxed/simple;
+	bh=6AeqA+UKEZYSlrhSPn1l64W5m3J47tnjiIPQrOlEk38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jbzi8wNdpkG3ektoFtRKLwAknbC17kmwkYVkE7KzXaZxsG6Yk6aAru2hGmb1/w6/U5GOslSOiYadB2UP3P+Hgkf3MKuo2fuBPW1T8t/MtYjcuzgZO8YFGbnlVLDv4duPq8Jpb9kRY2puNkqt9uM4vofc7cj338R8DEC44EW8LbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GQ5oMx3k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 094A8C433F1;
-	Wed, 21 Feb 2024 14:19:38 +0000 (UTC)
+	 MIME-Version; b=DxuVtBxr1IHDJ0kO1pbpY1mQ1vSoHAcs1pDklmpMIAXOMjHdyYMTnWkDhOckZqa8JJaIe8TM/w0C6QdhjLNuUjriFp4dyMe9e0esfBueNocpW0tV+PJBm5nNDVK00ViqJ8zorU+Z7txkRExrtQrusUUH78nVj0W02ba3QAaINag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gZzimgfn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 598B7C433C7;
+	Wed, 21 Feb 2024 13:17:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525179;
-	bh=Uz4ffUujdoD1MtwuaHYtzUcswFbrz7sT6f/74CQepf8=;
+	s=korg; t=1708521478;
+	bh=6AeqA+UKEZYSlrhSPn1l64W5m3J47tnjiIPQrOlEk38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GQ5oMx3kGwRXd2rsjp2MWaobNGI+z7vIjW8IEQh+AUwA+lk0117gpLxCHMmRtRNKp
-	 h5IkPieWlU+Bhlk/usSv/XeK46fz8A38zIdkoXu2hLTbW9H2L/fRI5/KcvdrO2yy/d
-	 S65PyK6wsnAAH9Skl2wyzyYYkSLVIqzxMubvJK1Q=
+	b=gZzimgfn5X/hmgTvq6pbnMeeP6CEJ0MgjPIR7afCf9pp0QuTjBQOpj/DXIUtf58SH
+	 RQKT5x4LquSGBm3eH1r3SyAd9QO+GwoEgkbQWh8etak7UTd34Ff02RdFNGB5gG6zjb
+	 LuJQAsfbDKT//7W8v2mXGNlLsCenk1OTgobi5nPE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 083/267] s390/ptrace: handle setting of fpc register correctly
+Subject: [PATCH 4.19 123/202] misc: lis3lv02d_i2c: Add missing setting of the reg_ctrl callback
 Date: Wed, 21 Feb 2024 14:07:04 +0100
-Message-ID: <20240221125942.574062157@linuxfoundation.org>
+Message-ID: <20240221125935.687309540@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 8b13601d19c541158a6e18b278c00ba69ae37829 ]
+[ Upstream commit b1b9f7a494400c0c39f8cd83de3aaa6111c55087 ]
 
-If the content of the floating point control (fpc) register of a traced
-process is modified with the ptrace interface the new value is tested for
-validity by temporarily loading it into the fpc register.
+The lis3lv02d_i2c driver was missing a line to set the lis3_dev's
+reg_ctrl callback.
 
-This may lead to corruption of the fpc register of the tracing process:
-if an interrupt happens while the value is temporarily loaded into the
-fpc register, and within interrupt context floating point or vector
-registers are used, the current fp/vx registers are saved with
-save_fpu_regs() assuming they belong to user space and will be loaded into
-fp/vx registers when returning to user space.
+lis3_reg_ctrl(on) is called from the init callback, but due to
+the missing reg_ctrl callback the regulators where never turned off
+again leading to the following oops/backtrace when detaching the driver:
 
-test_fp_ctl() restores the original user space fpc register value, however
-it will be discarded, when returning to user space.
+[   82.313527] ------------[ cut here ]------------
+[   82.313546] WARNING: CPU: 1 PID: 1724 at drivers/regulator/core.c:2396 _regulator_put+0x219/0x230
+...
+[   82.313695] RIP: 0010:_regulator_put+0x219/0x230
+...
+[   82.314767] Call Trace:
+[   82.314770]  <TASK>
+[   82.314772]  ? _regulator_put+0x219/0x230
+[   82.314777]  ? __warn+0x81/0x170
+[   82.314784]  ? _regulator_put+0x219/0x230
+[   82.314791]  ? report_bug+0x18d/0x1c0
+[   82.314801]  ? handle_bug+0x3c/0x80
+[   82.314806]  ? exc_invalid_op+0x13/0x60
+[   82.314812]  ? asm_exc_invalid_op+0x16/0x20
+[   82.314845]  ? _regulator_put+0x219/0x230
+[   82.314857]  regulator_bulk_free+0x39/0x60
+[   82.314865]  i2c_device_remove+0x22/0xb0
 
-In result the tracer will incorrectly continue to run with the value that
-was supposed to be used for the traced process.
+Add the missing setting of the callback so that the regulators
+properly get turned off again when not used.
 
-Fix this by saving fpu register contents with save_fpu_regs() before using
-test_fp_ctl().
-
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20231224183402.95640-1-hdegoede@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/ptrace.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/misc/lis3lv02d/lis3lv02d_i2c.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/s390/kernel/ptrace.c b/arch/s390/kernel/ptrace.c
-index 34ca344039bb..05e1367c23d5 100644
---- a/arch/s390/kernel/ptrace.c
-+++ b/arch/s390/kernel/ptrace.c
-@@ -413,6 +413,7 @@ static int __poke_user(struct task_struct *child, addr_t addr, addr_t data)
- 		/*
- 		 * floating point control reg. is in the thread structure
- 		 */
-+		save_fpu_regs();
- 		if ((unsigned int) data != 0 ||
- 		    test_fp_ctl(data >> (BITS_PER_LONG - 32)))
- 			return -EINVAL;
-@@ -773,6 +774,7 @@ static int __poke_user_compat(struct task_struct *child,
- 		/*
- 		 * floating point control reg. is in the thread structure
- 		 */
-+		save_fpu_regs();
- 		if (test_fp_ctl(tmp))
- 			return -EINVAL;
- 		child->thread.fpu.fpc = data;
-@@ -1006,9 +1008,7 @@ static int s390_fpregs_set(struct task_struct *target,
- 	int rc = 0;
- 	freg_t fprs[__NUM_FPRS];
- 
--	if (target == current)
--		save_fpu_regs();
--
-+	save_fpu_regs();
- 	if (MACHINE_HAS_VX)
- 		convert_vx_to_fp(fprs, target->thread.fpu.vxrs);
- 	else
+diff --git a/drivers/misc/lis3lv02d/lis3lv02d_i2c.c b/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
+index 14b7d539fed6..e8da06020c81 100644
+--- a/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
++++ b/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
+@@ -164,6 +164,7 @@ static int lis3lv02d_i2c_probe(struct i2c_client *client,
+ 	lis3_dev.init	  = lis3_i2c_init;
+ 	lis3_dev.read	  = lis3_i2c_read;
+ 	lis3_dev.write	  = lis3_i2c_write;
++	lis3_dev.reg_ctrl = lis3_reg_ctrl;
+ 	lis3_dev.irq	  = client->irq;
+ 	lis3_dev.ac	  = lis3lv02d_axis_map;
+ 	lis3_dev.pm_dev	  = &client->dev;
 -- 
 2.43.0
 
