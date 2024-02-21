@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-21791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74C6585D2AC
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 09:39:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BFA485D2B0
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 09:40:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73EEA1C23564
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 08:39:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0B7CFB2547E
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 08:40:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CECF13C684;
-	Wed, 21 Feb 2024 08:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F87F3C6A4;
+	Wed, 21 Feb 2024 08:40:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="sCBh7wf/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B3depReg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B243C493
-	for <stable@vger.kernel.org>; Wed, 21 Feb 2024 08:39:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E90473B793;
+	Wed, 21 Feb 2024 08:40:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708504753; cv=none; b=IyZXzdnLjpR7qWwslNPxl0ir0zTChF6HsMR2Bcjkjw/dUEKIcw0yNcdv06lYZYtUqrkUXuNhZ+UfRXTsJvI4uUXridrrRAmStfHcMERv+aMTveobudyi1GW33hiLY67h0vKgrzxtU9JIeG3cGnwTCSLyi7NObIjxtyJUGpOaP24=
+	t=1708504834; cv=none; b=JunIH0YVdaABl7hOHVDnsjLfiEVGwBhon/QUGHM0pR/6JCXwEPz5a9JvPhjMZZrl560JqHqt1sBL7TmdAyuyXCGhzES28cykLrv0R+Uv5ssJ97wcr2Ud3lQ0MtEk1/jeFMu9XI6EDa6QCRT9h8gSMPska4Cl3Hez/biOOfVmdb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708504753; c=relaxed/simple;
-	bh=7xuuAgXnq3NtSUZgao9fIVu1WKzYNnMu76nRlz0Q4fg=;
+	s=arc-20240116; t=1708504834; c=relaxed/simple;
+	bh=7xitJWaFMoGdC6EmLXwVDyXLfZ/qyA8Ri94E+4oSwBo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PWH8RHbuSqfQ0h0mVbJiZfZ/uoLEWGCPKXHkhqQrYgIHJ8Iu8PR10k9V9ZwjTi7VZZrUh8C+RC7PsvrgRvnyAONweMLwH2ZRLRr8577FEKiJn4INZcr+Y67UOac0JDCqsguqAtPfMLmTNknNnU3AW0mC3DSQ2xbDdda1pU9kp3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=sCBh7wf/; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
-Received: from francesco-nb (31-10-206-125.static.upc.ch [31.10.206.125])
-	by mail11.truemail.it (Postfix) with ESMTPA id 06A342212C;
-	Wed, 21 Feb 2024 09:39:08 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1708504748;
-	bh=fe/oFgkFR0NQ27A9TiXiKt/mNSjEI5EhIHLy0lmYY9I=; h=From:To:Subject;
-	b=sCBh7wf/AhoqbS5ZROHIsFby4qjwpnufbdXKV/aLHfyymaq8EtXq5kw94LK7g1NmJ
-	 UMNO3ynGJfiN/+tHNyGf3GfEDXZTY+fGU6AcOAuanPG1RI3iTHjlR3KKC/wnvbuh7o
-	 Wd6i/aSCkcjcvYNCN0wnPTsYhTC33guz3y53v2yRhC5Up948sXSSb7VSoKfDo1pEYB
-	 rZsFxZYgptCZAfEv637bDnzi3/xD3H7pwg7tc8yEi0Os+JV67zRK0/3Isr2aAN0kzs
-	 qYkPKldCIhh+U4HtDsd8ZgIVD4pkmmk2AjBOjqDYT4vkQjbi1/ncAaGBv4DgoKdjqH
-	 YEXvUN/IugywQ==
-Date: Wed, 21 Feb 2024 09:39:04 +0100
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Francesco Dolcini <francesco@dolcini.it>, stable@vger.kernel.org,
-	patches@lists.linux.dev, Lukas Wunner <lukas@wunner.de>,
-	Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1 174/197] wifi: mwifiex: Support SD8978 chipset
-Message-ID: <20240221083904.GA5872@francesco-nb>
-References: <20240220204841.073267068@linuxfoundation.org>
- <20240220204846.279064097@linuxfoundation.org>
- <20240221080353.GB5131@francesco-nb>
- <2024022106-speculate-scallion-67a7@gregkh>
+	 Content-Type:Content-Disposition:In-Reply-To; b=e2joHhXrQFeIH7Pm1u/d0FDUL6kzPNEVymhtcB9IBIrCMDyUS+GiNceogfy2eNeTN2hTzXTCQUS1QTC75/E54l7WmH/eP6BuLBJrFgQLW4A9Gm0IhhO16+h/CrILGZBat5+zteZ1U+DzA3rTz9GQgMt4t9WdufVuns5zUkNbOMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B3depReg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCBB3C433F1;
+	Wed, 21 Feb 2024 08:40:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1708504833;
+	bh=7xitJWaFMoGdC6EmLXwVDyXLfZ/qyA8Ri94E+4oSwBo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=B3depReg/IGMEtUNuDRiMZ2IiMTU9kg4eUCMLIafaOgPrEcPIb0N2BqxURQDkLZTW
+	 JNwXF2Hn8lBCQlv0hLLvPFkns39+Oe43La/4jxTbRtPmWe9D5fI8v1PoqsiUs9SpN+
+	 K7I4WTktlu4X8t+TaPf7TXK8FOvSL2PshK62RxQA=
+Date: Wed, 21 Feb 2024 09:40:29 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: "GONG, Ruiqi" <gongruiqi1@huawei.com>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeelb@google.com>,
+	Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, Wang Weiyang <wangweiyang2@huawei.com>,
+	Xiu Jianfeng <xiujianfeng@huawei.com>
+Subject: Re: [PATCH stable] memcg: add refcnt for pcpu stock to avoid UAF
+ problem in drain_all_stock()
+Message-ID: <2024022119-bogged-action-c877@gregkh>
+References: <20240221081801.69764-1-gongruiqi1@huawei.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,57 +61,15 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2024022106-speculate-scallion-67a7@gregkh>
+In-Reply-To: <20240221081801.69764-1-gongruiqi1@huawei.com>
 
-On Wed, Feb 21, 2024 at 09:12:23AM +0100, Greg Kroah-Hartman wrote:
-> On Wed, Feb 21, 2024 at 09:03:53AM +0100, Francesco Dolcini wrote:
-> > On Tue, Feb 20, 2024 at 09:52:13PM +0100, Greg Kroah-Hartman wrote:
-> > > 6.1-stable review patch.  If anyone has any objections, please let me know.
-> > > 
-> > > ------------------
-> > > 
-> > > From: Lukas Wunner <lukas@wunner.de>
-> > > 
-> > > [ Upstream commit bba047f15851c8b053221f1b276eb7682d59f755 ]
-> > > 
-> > > The Marvell SD8978 (aka NXP IW416) uses identical registers as SD8987,
-> > > so reuse the existing mwifiex_reg_sd8987 definition.
-> > > 
-> > > Note that mwifiex_reg_sd8977 and mwifiex_reg_sd8997 are likewise
-> > > identical, save for the fw_dump_ctrl register:  They define it as 0xf0
-> > > whereas mwifiex_reg_sd8987 defines it as 0xf9.  I've verified that
-> > > 0xf9 is the correct value on SD8978.  NXP's out-of-tree driver uses
-> > > 0xf9 for all of them, so there's a chance that 0xf0 is not correct
-> > > in the mwifiex_reg_sd8977 and mwifiex_reg_sd8997 definitions.  I cannot
-> > > test that for lack of hardware, hence am leaving it as is.
-> > > 
-> > > NXP has only released a firmware which runs Bluetooth over UART.
-> > > Perhaps Bluetooth over SDIO is unsupported by this chipset.
-> > > Consequently, only an "sdiouart" firmware image is referenced, not an
-> > > alternative "sdsd" image.
-> > > 
-> > > Signed-off-by: Lukas Wunner <lukas@wunner.de>
-> > > Signed-off-by: Kalle Valo <kvalo@kernel.org>
-> > > Link: https://lore.kernel.org/r/536b4f17a72ca460ad1b07045757043fb0778988.1674827105.git.lukas@wunner.de
-> > > Stable-dep-of: 1c5d463c0770 ("wifi: mwifiex: add extra delay for firmware ready")
-> > 
-> > I would drop this and 1c5d463c0770.
+On Wed, Feb 21, 2024 at 04:18:01PM +0800, GONG, Ruiqi wrote:
+> commit 1a3e1f40962c445b997151a542314f3c6097f8c3 upstream.
 > 
-> Why?  Commit 1c5d463c0770 was explicitly tagged for stable inclusion,
-> what changed?
+> There was a kernel panic happened on an in-house environment running
+> 3.10, and the same problem was reproduced on 4.19:
 
-1c5d463c0770 is a fix for bba047f15851c8b053221f1b276eb7682d59f755.
+Now queued up, thanks!
 
-So there is no bug, unless bba047f15851c8b053221f1b276eb7682d59f755 is
-there.
-
-The mistake that we did at that time is that it should have been
-
-Cc: stable@vger.kernel.org
-Fixes: bba047f15851 ("wifi: mwifiex: Support SD8978 chipset")
-
-Sorry about that.
-
-Francesco
-
+greg k-h
 
