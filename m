@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-22356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 167C785DBA0
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:43:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 740CE85DD9A
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:07:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98218285611
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:43:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E2272855BC
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:07:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B777078B70;
-	Wed, 21 Feb 2024 13:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05BBA7F7C6;
+	Wed, 21 Feb 2024 14:06:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NfWqj+m6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hvBkON1u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E9077A03;
-	Wed, 21 Feb 2024 13:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA0917E105;
+	Wed, 21 Feb 2024 14:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523002; cv=none; b=cE+dMZkiwdU/0aSXUFLmc1BzzDiA+kMaPenFg2tp2o4zis1F+rAOpsgdJfNXqt7cdsfrL2XfFpF3/HCEBG6/BQmQHQUfQpzybFDcRe/9b0oTkE4PbmR4BmiJ9psG7fyijhqtCZoxaqr9PqRpAKlT77Y8/IKsBSM+XnJaVraZoxU=
+	t=1708524370; cv=none; b=e8eNIMEIRrSNKYHiXs0WZDojWzf7/61TabFLWYGYyi9y4ugBwPRVZA1/0gVkRYePH82u94hiozr6d5arhsJR74q09Gv3MExL20UMwTmm0tf42w/wrsHUG0YwfvFVR6ENdJYqg8L1wK09r+Jn489kmC6RaFrhl9gGMXtyEcpgxkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523002; c=relaxed/simple;
-	bh=Cwt1Hdn0+pMh8ic+XOZmdZWdtiA6YHKcIbroZmtlN10=;
+	s=arc-20240116; t=1708524370; c=relaxed/simple;
+	bh=DZ6cWtXE96n4irvy7U0atArlhRFP7RTVcGAyhk1urS0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X1AxXQvoGyQaLuiL5WTUEt0RBZ7lrD15W2M2YQht61pE4B0hsg/G1KjbmnGkwwP5dzlBm3Vf3c9kgWsT/XBMoPCQT6FH7fX0vOPPnI+vyfICGMVTC0hlWX4mbhZtKNtsemrnouDZwBWEyE/sBPS54wwVc6bj6yokOR/qXdEaRLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NfWqj+m6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA755C433F1;
-	Wed, 21 Feb 2024 13:43:21 +0000 (UTC)
+	 MIME-Version; b=LwdGN0mkMLS0kOfZdiXRcK6d1AotkWPzO/6/YrclgRJKDeA9fJHYwcypGaUDT4IAAwb1ECUYy4zR/jKoT8Oiw4Hk2t2VUzeN4bti6GlXdrf2+SaUMaEp7kufptjTRll2tv0kz1OuImJB7kl1BRMRhMjZ0RjRMVTNijX/qrRKDRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hvBkON1u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40BD7C433A6;
+	Wed, 21 Feb 2024 14:06:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523002;
-	bh=Cwt1Hdn0+pMh8ic+XOZmdZWdtiA6YHKcIbroZmtlN10=;
+	s=korg; t=1708524370;
+	bh=DZ6cWtXE96n4irvy7U0atArlhRFP7RTVcGAyhk1urS0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NfWqj+m6Q3bkbQCpauCeGl8QBL4P6O3GeG0AtAfXdb2jCIl68SkIGBfXjgQN2MdVT
-	 STHsG+YDl4F0RVcXzT9vjI3X2swUC40pJ8pDM+vau3lu95ZmgT1y3JK3hlR4N9oEwL
-	 hvVn7t12khasDTQGbRCPLHAjxtPZRLPzcD3xvcSg=
+	b=hvBkON1uZtnDObdeeOsMNsLKTRKrgNSt+a1MCOviZqdVkgQG/9a0RuTZUIk5eN+lH
+	 eyqQBjkyU3LK2XPioAEqt4aDGRHQgi7oPmvK0kDbkrYURjsp7oKg2+WR9Th8pTdGwJ
+	 i9MCdorZUNHhO1VPRFPFuG71QD1VscRE05XFdQjo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Phillip Potter <phil@philpotter.co.uk>,
+	Ghanshyam Agrawal <ghanshyam1898@gmail.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 313/476] inet: read sk->sk_family once in inet_recv_error()
+Subject: [PATCH 5.10 185/379] media: stk1160: Fixed high volume of stk1160_dbg messages
 Date: Wed, 21 Feb 2024 14:06:04 +0100
-Message-ID: <20240221130019.598548907@linuxfoundation.org>
+Message-ID: <20240221130000.379509278@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
 
-[ Upstream commit eef00a82c568944f113f2de738156ac591bbd5cd ]
+[ Upstream commit b3695e86d25aafbe175dd51f6aaf6f68d341d590 ]
 
-inet_recv_error() is called without holding the socket lock.
+The function stk1160_dbg gets called too many times, which causes
+the output to get flooded with messages. Since stk1160_dbg uses
+printk, it is now replaced with printk_ratelimited.
 
-IPv6 socket could mutate to IPv4 with IPV6_ADDRFORM
-socket option and trigger a KCSAN warning.
-
-Fixes: f4713a3dfad0 ("net-timestamp: make tcp_recvmsg call ipv6_recv_error for AF_INET6 socks")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Suggested-by: Phillip Potter <phil@philpotter.co.uk>
+Signed-off-by: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/af_inet.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/media/usb/stk1160/stk1160-video.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
-index 6f6c05f198da..487f75993bf4 100644
---- a/net/ipv4/af_inet.c
-+++ b/net/ipv4/af_inet.c
-@@ -1605,10 +1605,12 @@ EXPORT_SYMBOL(inet_current_timestamp);
+diff --git a/drivers/media/usb/stk1160/stk1160-video.c b/drivers/media/usb/stk1160/stk1160-video.c
+index 202b084f65a2..4cf540d1b250 100644
+--- a/drivers/media/usb/stk1160/stk1160-video.c
++++ b/drivers/media/usb/stk1160/stk1160-video.c
+@@ -107,8 +107,7 @@ void stk1160_copy_video(struct stk1160 *dev, u8 *src, int len)
  
- int inet_recv_error(struct sock *sk, struct msghdr *msg, int len, int *addr_len)
- {
--	if (sk->sk_family == AF_INET)
-+	unsigned int family = READ_ONCE(sk->sk_family);
-+
-+	if (family == AF_INET)
- 		return ip_recv_error(sk, msg, len, addr_len);
- #if IS_ENABLED(CONFIG_IPV6)
--	if (sk->sk_family == AF_INET6)
-+	if (family == AF_INET6)
- 		return pingv6_ops.ipv6_recv_error(sk, msg, len, addr_len);
- #endif
- 	return -EINVAL;
+ 	/*
+ 	 * TODO: These stk1160_dbg are very spammy!
+-	 * We should 1) check why we are getting them
+-	 * and 2) add ratelimit.
++	 * We should check why we are getting them.
+ 	 *
+ 	 * UPDATE: One of the reasons (the only one?) for getting these
+ 	 * is incorrect standard (mismatch between expected and configured).
+@@ -151,7 +150,7 @@ void stk1160_copy_video(struct stk1160 *dev, u8 *src, int len)
+ 
+ 	/* Let the bug hunt begin! sanity checks! */
+ 	if (lencopy < 0) {
+-		stk1160_dbg("copy skipped: negative lencopy\n");
++		printk_ratelimited(KERN_DEBUG "copy skipped: negative lencopy\n");
+ 		return;
+ 	}
+ 
 -- 
 2.43.0
 
