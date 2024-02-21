@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-22725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A0D985DD7E
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:06:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B903885DE88
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:19:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E90211F22BDF
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:06:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0CCEEB2C810
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:17:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8CE47C093;
-	Wed, 21 Feb 2024 14:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7A597F46A;
+	Wed, 21 Feb 2024 14:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vbqbWHWV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ghGYoAhN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 892DB7BB18;
-	Wed, 21 Feb 2024 14:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A8D7EF1E;
+	Wed, 21 Feb 2024 14:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524305; cv=none; b=QHzRtmFzC0NBe/1wLtlRbhG2DvYgIBgodAOUjf4zZXdDdFCAt7RFux2sMt7E74nltvufSV9c8QllA2i0j4M5kyioWyCSLju9RNY2wsQgPucr2V5JUVBp8mX5ovmTC6dPhKM42nkclPmjJhe79t6xiwNpOEgt/G/DLq/PvoDAGSA=
+	t=1708524985; cv=none; b=HZm3pbg9GrLt6HzzVIiCABboMuJwWcMx/yPGV02AJnV1Ef0G+iJ5fP6BlO3pP4yUvuU1s/0QuV3HyPP5js/TZMh9EUvAkaI/RPSXa5XOX+slbvA1qooy9G/wYOEWTceCmr9duJD950myBCtPlw5YNPgh6Dwxh0gleNW9UwVxLa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524305; c=relaxed/simple;
-	bh=tMMvAy3h/5fRrY+CfLwu+4zUhM8k5bUhEMIwXRjXYVU=;
+	s=arc-20240116; t=1708524985; c=relaxed/simple;
+	bh=Znrv2NMVT2o2XbVOdmrrAjsT8jRmL/qUUTMVKVrZvUY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KcwOwLsGfLOao7xA/7tV+6WmkkDzDg49X6zyAv7j+8mvOcwGW8YnqIY3hpUWUKA5wyAaR6Q++oV8CMG/euJ2Hr97xi1mg1WHCUAkkKTLawEdNXmi2r4+ZOXAkeDjb4GCbpd8JjFjTVKfEUKlf0mCboQ+64/Mg0yyL1EmNiLhoe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vbqbWHWV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B972C433C7;
-	Wed, 21 Feb 2024 14:05:04 +0000 (UTC)
+	 MIME-Version; b=tFh4NqEFHHiar5C4QkfZZvEhY2LA4O6X7Epy6ZTLLSUSbvSc4/nga+meaR1mkr1Q8kTIUeqiaKTBOwFJLnzxjz3VuJRhtxZxV8xxqpNZ27eAv49NhXntUdPtaw4Xs/ph2vTJab/AC00aCsVs+quJJaWJyy/hUs101QMlt3PA0cA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ghGYoAhN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3261C433F1;
+	Wed, 21 Feb 2024 14:16:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524305;
-	bh=tMMvAy3h/5fRrY+CfLwu+4zUhM8k5bUhEMIwXRjXYVU=;
+	s=korg; t=1708524985;
+	bh=Znrv2NMVT2o2XbVOdmrrAjsT8jRmL/qUUTMVKVrZvUY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vbqbWHWVn7s/DFCbZ7mbySQbyZSsCBvz54kMNRCqHgf57DSQuaXKQhsXoqFfWvfub
-	 qZbPhN04pSy370Pdii4mPv0egnDk7woVeyrIWAEN3/PPEwi/zxwh1MSesOvKzHCNE5
-	 AtlANtPzrp4ACetYjl6qDwHfteEkkoUaArS/9UJM=
+	b=ghGYoAhNbHjh2RPUFoh4Bagbxybwm+T/rMXQxkDzvtlGuh16k3dQcJjEkhYHPQygq
+	 GZ4d1hwacldzZ0/69T1wWt/kFyT188jM/sratxrDBlWfe1kMzFgtGBwDf6nbuY39ze
+	 RJ3FOc0UsV22/CA3j7lgytlMF2mC5znLsXgQBqOA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 187/379] PCI: add INTEL_HDA_ARL to pci_ids.h
+	"Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+Subject: [PATCH 5.4 025/267] x86/CPU/AMD: Fix disabling XSAVES on AMD family 0x17 due to erratum
 Date: Wed, 21 Feb 2024 14:06:06 +0100
-Message-ID: <20240221130000.441267270@linuxfoundation.org>
+Message-ID: <20240221125940.838738137@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +58,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-[ Upstream commit 5ec42bf04d72fd6d0a6855810cc779e0ee31dfd7 ]
+The stable kernel version backport of the patch disabling XSAVES on AMD
+Zen family 0x17 applied this change to the wrong function (init_amd_k6()),
+one which isn't called for Zen CPUs.
 
-The PCI ID insertion follows the increasing order in the table, but
-this hardware follows MTL (MeteorLake).
+Move the erratum to the init_amd_zn() function instead.
 
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Acked-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20231204212710.185976-2-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add an explicit family 0x17 check to the erratum so nothing will break if
+someone naively makes this kernel version call init_amd_zn() also for
+family 0x19 in the future (as the current upstream code does).
+
+Fixes: e40c1e9da1ec ("x86/CPU/AMD: Disable XSAVES on AMD family 0x17")
+Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/pci_ids.h | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kernel/cpu/amd.c |   20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
-index 1a41147b22e8..80744a7b5e33 100644
---- a/include/linux/pci_ids.h
-+++ b/include/linux/pci_ids.h
-@@ -3020,6 +3020,7 @@
- #define PCI_DEVICE_ID_INTEL_82443GX_0	0x71a0
- #define PCI_DEVICE_ID_INTEL_82443GX_2	0x71a2
- #define PCI_DEVICE_ID_INTEL_82372FB_1	0x7601
-+#define PCI_DEVICE_ID_INTEL_HDA_ARL	0x7728
- #define PCI_DEVICE_ID_INTEL_SCH_LPC	0x8119
- #define PCI_DEVICE_ID_INTEL_SCH_IDE	0x811a
- #define PCI_DEVICE_ID_INTEL_E6XX_CU	0x8183
--- 
-2.43.0
-
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -277,15 +277,6 @@ static void init_amd_k6(struct cpuinfo_x
+ 		return;
+ 	}
+ #endif
+-	/*
+-	 * Work around Erratum 1386.  The XSAVES instruction malfunctions in
+-	 * certain circumstances on Zen1/2 uarch, and not all parts have had
+-	 * updated microcode at the time of writing (March 2023).
+-	 *
+-	 * Affected parts all have no supervisor XSAVE states, meaning that
+-	 * the XSAVEC instruction (which works fine) is equivalent.
+-	 */
+-	clear_cpu_cap(c, X86_FEATURE_XSAVES);
+ }
+ 
+ static void init_amd_k7(struct cpuinfo_x86 *c)
+@@ -989,6 +980,17 @@ static void init_amd_zn(struct cpuinfo_x
+ 		if (c->x86 == 0x19 && !cpu_has(c, X86_FEATURE_BTC_NO))
+ 			set_cpu_cap(c, X86_FEATURE_BTC_NO);
+ 	}
++
++	/*
++	 * Work around Erratum 1386.  The XSAVES instruction malfunctions in
++	 * certain circumstances on Zen1/2 uarch, and not all parts have had
++	 * updated microcode at the time of writing (March 2023).
++	 *
++	 * Affected parts all have no supervisor XSAVE states, meaning that
++	 * the XSAVEC instruction (which works fine) is equivalent.
++	 */
++	if (c->x86 == 0x17)
++		clear_cpu_cap(c, X86_FEATURE_XSAVES);
+ }
+ 
+ static bool cpu_has_zenbleed_microcode(void)
 
 
 
