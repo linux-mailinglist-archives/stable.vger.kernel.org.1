@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-21975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2C6985D975
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:18:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40A1D85DDD2
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:12:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B20E28511C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:18:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D43761F222A5
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:12:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CABA69E08;
-	Wed, 21 Feb 2024 13:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0B3A76C99;
+	Wed, 21 Feb 2024 14:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U2YKOGFi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zH4PGR+9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF79346B9B;
-	Wed, 21 Feb 2024 13:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DA397CF33;
+	Wed, 21 Feb 2024 14:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521534; cv=none; b=pTjMHmQnLohrE5J2hhGcF9Wf7Li4Hv0eiWQNUak5g9LVs3fQ6lejdrNU1jF68LW5mNCnDxGGE+0Z4GpEOVdD8Lzg0m5hwGqWuN0p9pycB1bQ6ja0NxNCEEx4hhcuLRBaZAeBK8KKgBJ+u6jWHfWiYzNkDhpVzI+mAgjiyMDNdpM=
+	t=1708524484; cv=none; b=QXYxLKctCRN6wqZ0F3o8nyTkGX2GPJXIOaLzRSoor/kmwIKjImlLvKnMbl9tnFu7rq7DcFMYuRpBqNf/lVMb1sKqMN+l/lBWEAJfscf0BE5AOCYn/bdgrcu+/wWnlmpJqH6z+xTSCbanC1Iw2LuPZCpYb+ZlmuCjzgcX9L9BA84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521534; c=relaxed/simple;
-	bh=xp8O+8pJkX/te6xxfU9towpQYfd4L+deoXSLJV/yIIE=;
+	s=arc-20240116; t=1708524484; c=relaxed/simple;
+	bh=imJmeiK4IN5Qih0oq8eYNc+KicEACC8YYtKGpifX8d0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iaT003lk1L0k3BOHYfeNrZsq05P2oGCXzY7z6ui3DroLS7UQu2p5JznTYLBUaImHdHpjplD67HdUCgpJewNQbK14rUDVc8IO2+uynzYasFUM0HKx3TjrZCZr24SJO+C8gGX1p4NS+YGa8e7FHGmo15yFdyRwq0jZJbk/Uy6Tw0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U2YKOGFi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C5D4C433C7;
-	Wed, 21 Feb 2024 13:18:52 +0000 (UTC)
+	 MIME-Version; b=TnrfYNsldEkLsB6rbHiMH8Kl5Dw0OQ7PrxJCcF1nmKVf9n5/pCFn/a4yXoHbCnI8fzkUCYAXoepu70rs9TvvDdBgJ2l4+F30F5eat+mdaq5DBeZdvcYi6d6uREJuQBafbgH3jkm3SixeDpHtYSVwTqfGEu3F9OhjjYhzgMxbhL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zH4PGR+9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5FBCC433C7;
+	Wed, 21 Feb 2024 14:08:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521533;
-	bh=xp8O+8pJkX/te6xxfU9towpQYfd4L+deoXSLJV/yIIE=;
+	s=korg; t=1708524484;
+	bh=imJmeiK4IN5Qih0oq8eYNc+KicEACC8YYtKGpifX8d0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U2YKOGFilHqyPDtgRo61bIux2VD0pVkwqgyelvV/7cN6mzdUfxOZBLJr7N3UyHx2t
-	 UrI8vxugYC2GIvdFMZFsCF0SY6kFbJWiS1ZuT+Cos/cfUq6dGnghR6d2aYb6aW4Kl6
-	 7TnpwsNc14MG+ylDpy97DFl9yHr8qNY+H+fKYXN4=
+	b=zH4PGR+9PKLXeE0uxFGTpUYL/fdLcED68bSaQwZmQmjCu0p1bACAo/pnrSHg2MKW8
+	 QjrAPozrTLvUkSPwYuC8ugAIE/+CXVn1y/BdRBcHQKelEERYYFoFGDN8wkjqXcAhqz
+	 upxlsgRt1MC0NUkpTAjeDYjrDGcij5+1H+wKPmEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Zhang Rui <rui.zhang@intel.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 136/202] ipv6: Ensure natural alignment of const ipv6 loopback and router addresses
-Date: Wed, 21 Feb 2024 14:07:17 +0100
-Message-ID: <20240221125936.101119306@linuxfoundation.org>
+Subject: [PATCH 5.10 259/379] hwmon: (coretemp) Fix out-of-bounds memory access
+Date: Wed, 21 Feb 2024 14:07:18 +0100
+Message-ID: <20240221130002.579059961@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@kernel.org>
+From: Zhang Rui <rui.zhang@intel.com>
 
-[ Upstream commit 60365049ccbacd101654a66ddcb299abfabd4fc5 ]
+[ Upstream commit 4e440abc894585a34c2904a32cd54af1742311b3 ]
 
-On a parisc64 kernel I sometimes notice this kernel warning:
-Kernel unaligned access to 0x40ff8814 at ndisc_send_skb+0xc0/0x4d8
+Fix a bug that pdata->cpu_map[] is set before out-of-bounds check.
+The problem might be triggered on systems with more than 128 cores per
+package.
 
-The address 0x40ff8814 points to the in6addr_linklocal_allrouters
-variable and the warning simply means that some ipv6 function tries to
-read a 64-bit word directly from the not-64-bit aligned
-in6addr_linklocal_allrouters variable.
-
-Unaligned accesses are non-critical as the architecture or exception
-handlers usually will fix it up at runtime. Nevertheless it may trigger
-a performance penality for some architectures. For details read the
-"unaligned-memory-access" kernel documentation.
-
-The patch below ensures that the ipv6 loopback and router addresses will
-always be naturally aligned. This prevents the unaligned accesses for
-all architectures.
-
-Signed-off-by: Helge Deller <deller@gmx.de>
-Fixes: 034dfc5df99eb ("ipv6: export in6addr_loopback to modules")
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/r/ZbNuFM1bFqoH-UoY@p100
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 7108b80a542b ("hwmon/coretemp: Handle large core ID value")
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240202092144.71180-2-rui.zhang@intel.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Stable-dep-of: fdaf0c8629d4 ("hwmon: (coretemp) Fix bogus core_id to attr name mapping")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/addrconf_core.c | 21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ drivers/hwmon/coretemp.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/net/ipv6/addrconf_core.c b/net/ipv6/addrconf_core.c
-index 66a1a0eb2ed0..9c2c7baa3929 100644
---- a/net/ipv6/addrconf_core.c
-+++ b/net/ipv6/addrconf_core.c
-@@ -180,19 +180,26 @@ const struct ipv6_stub *ipv6_stub __read_mostly = &(struct ipv6_stub) {
- EXPORT_SYMBOL_GPL(ipv6_stub);
+diff --git a/drivers/hwmon/coretemp.c b/drivers/hwmon/coretemp.c
+index 5b2057ce5a59..7f6615ef8c88 100644
+--- a/drivers/hwmon/coretemp.c
++++ b/drivers/hwmon/coretemp.c
+@@ -467,18 +467,14 @@ static int create_core_data(struct platform_device *pdev, unsigned int cpu,
+ 	if (pkg_flag) {
+ 		attr_no = PKG_SYSFS_ATTR_NO;
+ 	} else {
+-		index = ida_alloc(&pdata->ida, GFP_KERNEL);
++		index = ida_alloc_max(&pdata->ida, NUM_REAL_CORES - 1, GFP_KERNEL);
+ 		if (index < 0)
+ 			return index;
++
+ 		pdata->cpu_map[index] = topology_core_id(cpu);
+ 		attr_no = index + BASE_SYSFS_ATTR_NO;
+ 	}
  
- /* IPv6 Wildcard Address and Loopback Address defined by RFC2553 */
--const struct in6_addr in6addr_loopback = IN6ADDR_LOOPBACK_INIT;
-+const struct in6_addr in6addr_loopback __aligned(BITS_PER_LONG/8)
-+	= IN6ADDR_LOOPBACK_INIT;
- EXPORT_SYMBOL(in6addr_loopback);
--const struct in6_addr in6addr_any = IN6ADDR_ANY_INIT;
-+const struct in6_addr in6addr_any __aligned(BITS_PER_LONG/8)
-+	= IN6ADDR_ANY_INIT;
- EXPORT_SYMBOL(in6addr_any);
--const struct in6_addr in6addr_linklocal_allnodes = IN6ADDR_LINKLOCAL_ALLNODES_INIT;
-+const struct in6_addr in6addr_linklocal_allnodes __aligned(BITS_PER_LONG/8)
-+	= IN6ADDR_LINKLOCAL_ALLNODES_INIT;
- EXPORT_SYMBOL(in6addr_linklocal_allnodes);
--const struct in6_addr in6addr_linklocal_allrouters = IN6ADDR_LINKLOCAL_ALLROUTERS_INIT;
-+const struct in6_addr in6addr_linklocal_allrouters __aligned(BITS_PER_LONG/8)
-+	= IN6ADDR_LINKLOCAL_ALLROUTERS_INIT;
- EXPORT_SYMBOL(in6addr_linklocal_allrouters);
--const struct in6_addr in6addr_interfacelocal_allnodes = IN6ADDR_INTERFACELOCAL_ALLNODES_INIT;
-+const struct in6_addr in6addr_interfacelocal_allnodes __aligned(BITS_PER_LONG/8)
-+	= IN6ADDR_INTERFACELOCAL_ALLNODES_INIT;
- EXPORT_SYMBOL(in6addr_interfacelocal_allnodes);
--const struct in6_addr in6addr_interfacelocal_allrouters = IN6ADDR_INTERFACELOCAL_ALLROUTERS_INIT;
-+const struct in6_addr in6addr_interfacelocal_allrouters __aligned(BITS_PER_LONG/8)
-+	= IN6ADDR_INTERFACELOCAL_ALLROUTERS_INIT;
- EXPORT_SYMBOL(in6addr_interfacelocal_allrouters);
--const struct in6_addr in6addr_sitelocal_allrouters = IN6ADDR_SITELOCAL_ALLROUTERS_INIT;
-+const struct in6_addr in6addr_sitelocal_allrouters __aligned(BITS_PER_LONG/8)
-+	= IN6ADDR_SITELOCAL_ALLROUTERS_INIT;
- EXPORT_SYMBOL(in6addr_sitelocal_allrouters);
- 
- static void snmp6_free_dev(struct inet6_dev *idev)
+-	if (attr_no > MAX_CORE_DATA - 1) {
+-		err = -ERANGE;
+-		goto ida_free;
+-	}
+-
+ 	tdata = init_temp_data(cpu, pkg_flag);
+ 	if (!tdata) {
+ 		err = -ENOMEM;
 -- 
 2.43.0
 
