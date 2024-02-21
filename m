@@ -1,57 +1,72 @@
-Return-Path: <stable+bounces-21921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE14885D927
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:15:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC53C85DE43
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:17:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9413F1F23E8D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:15:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B27E1F24422
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:17:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1230169DF2;
-	Wed, 21 Feb 2024 13:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 306997C093;
+	Wed, 21 Feb 2024 14:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u90ze7pG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZTWladq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A7169DF6;
-	Wed, 21 Feb 2024 13:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E190178B5E;
+	Wed, 21 Feb 2024 14:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521318; cv=none; b=Ryo7ed12hvnPWuNTkcR6qDToQU+9AOSs2Pom0qW+NKDYEefJsJgCCHKPQybQsWjKARtPijeTdNs1i58NoazsqnLDgSXOQaNRX218euih3FaWBii1rtfix3Mr0X6UKsjLow/n8eZgnzuOu1PNS6VowtS42sFQKjT7rhNV/ioPLKA=
+	t=1708524945; cv=none; b=BfUazjtA9ZO41lyOeB62/DXeV5Vx8S0VqlPj4E6l5Ns2y3gJJq9jWlEGpfXMTWHiLzlfpUfNLeGOKaRYpZPYs+y9lPk1CYSbdJMHMtQAi4+a1dV3lIWewFePQHAnjuh6P1mm40dwmDwsx9CxA8fVb6dHAYGX6GnyneAKKZMIYLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521318; c=relaxed/simple;
-	bh=x0GmVb018WY1+mkDw7d3wOPH0kIgb/EHFBd1yTONMi8=;
+	s=arc-20240116; t=1708524945; c=relaxed/simple;
+	bh=8uUe9hpjEtja52FBIFLm+WmtnomxeLoECGciGiVCsE8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LZ95nyl+8Cn0j6OWiu1uxYq28ao8zHDF1BsmVuwLzL39Sl/hTPEC5kRbFrtQmSeALh65M0p3TMccTgridz7CbxouDR8Pg6JgLuc2R6jb9CyxAQ5oZOKVZ3SIbxshr1uF7FODgcwGv7q8UuPZthq8jPM6uPEuzl2RXptdyHO8BIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u90ze7pG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BCC1C43390;
-	Wed, 21 Feb 2024 13:15:18 +0000 (UTC)
+	 MIME-Version; b=fCSQZmsup5T/p9JV3UX6KZDhXwTNO0nUoO0hmbuxSniApHFm1aMdXk3IflfBgu3hjmmXxWc9+wQT4r8a3IIEkvff6cwb8Jwx6AxaFWGOiYM/0/+XUbXiphjNohX9CDpEwkIUN1xm1G6c3EKf58zOBCmbOay9qEFS3Fz5AFWVap8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZTWladq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16436C433C7;
+	Wed, 21 Feb 2024 14:15:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521318;
-	bh=x0GmVb018WY1+mkDw7d3wOPH0kIgb/EHFBd1yTONMi8=;
+	s=korg; t=1708524944;
+	bh=8uUe9hpjEtja52FBIFLm+WmtnomxeLoECGciGiVCsE8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u90ze7pGUTyVnIaGFxQ6KhKjIvO9NfOJslMLeR4MJPklJK+XMqNP9qWALCAC5mJPQ
-	 e32JX00fEn7+LLvjbriLEBCpgmaQXtNf9VWLVHUwwun7zfe8vaBArRPuAwTAvKQ9S6
-	 pJNrc2+pp3Eo6DhKcg+oJehnhfDyi3ct3+btLf6U=
+	b=XZTWladq/s329m8WCQ0vaS6KXT33wuw2ejgnRjVbQHJW/9igeSAU8kLq7xuP3/Iss
+	 P5tP8Ti3ZnmM7hWCeUOC6YJkurQtJF6Z3EK+X1Y1cPY1f2yeD2rblnXkVx+klnrx9D
+	 tvbWYAVfKuvhxCD4wcU0RcikQnpHNqNdrs2VO45o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Inki Dae <inki.dae@samsung.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Christian Eggers <ceggers@arri.de>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	MyungJoo Ham <myungjoo.ham@samsung.com>,
+	Kyungmin Park <kyungmin.park@samsung.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Peter Meerwald <pmeerw@pmeerw.net>,
+	Zhang Rui <rui.zhang@intel.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 044/202] drm/exynos: gsc: minor fix for loop iteration in gsc_runtime_resume
+Subject: [PATCH 5.4 004/267] units: change from L to UL
 Date: Wed, 21 Feb 2024 14:05:45 +0100
-Message-ID: <20240221125933.228263358@linuxfoundation.org>
+Message-ID: <20240221125940.203704583@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +78,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
 
-[ Upstream commit 4050957c7c2c14aa795dbf423b4180d5ac04e113 ]
+[ Upstream commit c9221919a2d2df5741ab074dfec5bdfc6f1e043b ]
 
-Do not forget to call clk_disable_unprepare() on the first element of
-ctx->clocks array.
+Patch series "Add Hz macros", v3.
 
-Found by Linux Verification Center (linuxtesting.org).
+There are multiple definitions of the HZ_PER_MHZ or HZ_PER_KHZ in the
+different drivers.  Instead of duplicating this definition again and
+again, add one in the units.h header to be reused in all the place the
+redefiniton occurs.
 
-Fixes: 8b7d3ec83aba ("drm/exynos: gsc: Convert driver to IPP v2 core API")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Reviewed-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
+At the same time, change the type of the Watts, as they can not be
+negative.
+
+This patch (of 10):
+
+The users of the macros are safe to be assigned with an unsigned instead
+of signed as the variables using them are themselves unsigned.
+
+Link: https://lkml.kernel.org/r/20210816114732.1834145-1-daniel.lezcano@linaro.org
+Link: https://lkml.kernel.org/r/20210816114732.1834145-2-daniel.lezcano@linaro.org
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: Christian Eggers <ceggers@arri.de>
+Cc: Lukasz Luba <lukasz.luba@arm.com>
+Cc: MyungJoo Ham <myungjoo.ham@samsung.com>
+Cc: Kyungmin Park <kyungmin.park@samsung.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: Peter Meerwald <pmeerw@pmeerw.net>
+Cc: Zhang Rui <rui.zhang@intel.com>
+Cc: Guenter Roeck <linux@roeck-us.net>
+Cc: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc: Chanwoo Choi <cw00.choi@samsung.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Stable-dep-of: 3ef79cd14122 ("serial: sc16is7xx: set safe default SPI clock frequency")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/exynos/exynos_drm_gsc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/units.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_gsc.c b/drivers/gpu/drm/exynos/exynos_drm_gsc.c
-index d71188b982cb..4a93d87c2096 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_gsc.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_gsc.c
-@@ -1322,7 +1322,7 @@ static int __maybe_unused gsc_runtime_resume(struct device *dev)
- 	for (i = 0; i < ctx->num_clocks; i++) {
- 		ret = clk_prepare_enable(ctx->clocks[i]);
- 		if (ret) {
--			while (--i > 0)
-+			while (--i >= 0)
- 				clk_disable_unprepare(ctx->clocks[i]);
- 			return ret;
- 		}
+diff --git a/include/linux/units.h b/include/linux/units.h
+index 92c234e71cab..4a23e39acc7b 100644
+--- a/include/linux/units.h
++++ b/include/linux/units.h
+@@ -4,9 +4,9 @@
+ 
+ #include <linux/kernel.h>
+ 
+-#define MILLIWATT_PER_WATT	1000L
+-#define MICROWATT_PER_MILLIWATT	1000L
+-#define MICROWATT_PER_WATT	1000000L
++#define MILLIWATT_PER_WATT	1000UL
++#define MICROWATT_PER_MILLIWATT	1000UL
++#define MICROWATT_PER_WATT	1000000UL
+ 
+ #define ABSOLUTE_ZERO_MILLICELSIUS -273150
+ 
 -- 
 2.43.0
 
