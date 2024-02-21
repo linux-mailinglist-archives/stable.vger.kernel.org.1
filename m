@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-22184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D570385DAC1
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:34:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 429B885DC7F
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:54:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89F721F23822
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:34:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D73EBB26BA4
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:54:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F03B07BAFB;
-	Wed, 21 Feb 2024 13:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C7217BB1E;
+	Wed, 21 Feb 2024 13:53:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pED8eg9K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xdKHbYyO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE7B3D96B;
-	Wed, 21 Feb 2024 13:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC59269D29;
+	Wed, 21 Feb 2024 13:53:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522356; cv=none; b=A4bD+wlq8p5LN/cVWopbLXwM/t8jyPBkTRWyY/NMXZxKriXhQ/qgutOai8iHCHpdKCtoBTVGligSc31de0i+o8Jk2dtBaV23FuYi9McDDjxpOQhoHVWT+r7wL280oQ1XUMDClERLhMJvJPCOvOJBvhCzHpR5fRhJrFL8PV6reC8=
+	t=1708523620; cv=none; b=Eja0G4Sx3Za8MfX8qAbpdHBIgnm73iuv1ARJBzJeijz2zgNRidZ5rsO66Ts6MN9QwdKvMIndPYlff+RnQdhl93ZNw3/CHhh1Ax3wUvPU2g4ZGBzD0u46B38L85R0hOL4amkiF6QSrF5damwcZnLnBGmSaQqs5D0HssRGJ8ruKAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522356; c=relaxed/simple;
-	bh=L6tLDlncmYyM9coGIplWzXoN/4K3qnX5oe5+206mxy4=;
+	s=arc-20240116; t=1708523620; c=relaxed/simple;
+	bh=WnE+AlANifbe/VEWRrlf/oC0PFPGqpc2ogPuxH5pvto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ra/lhDExtaVmuzuEWeTIEKf/VWqCa3sCGCURmp7UbSHbK6EusgAovqf4vA1u8MuFKqv+1rQcdgGOQJvzRl0oZD300x9pPkVSxWKkJq+5nV22kUEDcJU1wAvewDv04l0iO9/i4eGmTIe7Iqsq5QuXfwsRSD98dIW12DPzr7J37cE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pED8eg9K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD9B8C433C7;
-	Wed, 21 Feb 2024 13:32:35 +0000 (UTC)
+	 MIME-Version; b=Zd2AjpL9oo0kN93KAeNHtZMuhxt0ifQPnyGwd/b/AUqRPuvSsMvnrMZJf0alWKUDMZwPkeOhkpW1i+5zF+whJ1Sgw+IQzQXyq9a1bGPb75b4rKeRmRhKPOob5XXs7v1eN10wFtULXhfZsvo58ofsRtrAZtPqClbfYXKroYLZShY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xdKHbYyO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A937C433F1;
+	Wed, 21 Feb 2024 13:53:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522356;
-	bh=L6tLDlncmYyM9coGIplWzXoN/4K3qnX5oe5+206mxy4=;
+	s=korg; t=1708523619;
+	bh=WnE+AlANifbe/VEWRrlf/oC0PFPGqpc2ogPuxH5pvto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pED8eg9KGkBwzzUCwc/cL8mGS+MHT2lHzoP5xALkijufNVqTz1izU3A0wfTjDTUkE
-	 jV9x+tatNZB3PHqg+aWpm/t9n7u7TJk2GYRECwmL1nEPaDxRtJ+wge4/Xhe/JLW8Lz
-	 7FuTfEmnGsThBMxBOqwPnDrNZsCscoZ01t1qttcM=
+	b=xdKHbYyOw6ncU7fVE1T+LhID7M4bM/LXLCtTpG29OSrVURlinhEzKk/yVH5id7VfX
+	 srqqkd3ueQzEd0wp04E39D4rOF0fjCJnOMrejUBwV9XT9IuLAH4mi/z+7jlS0Dm6CZ
+	 U9Rf3d4OD3j6Y1g8l5wAduicUKWCDPKUZSBojG8s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Kees Cook <keescook@chromium.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 140/476] PNP: ACPI: fix fortify warning
+Subject: [PATCH 5.10 012/379] iio: adc: ad7091r: Set alert bit in config register
 Date: Wed, 21 Feb 2024 14:03:11 +0100
-Message-ID: <20240221130013.102530575@linuxfoundation.org>
+Message-ID: <20240221125955.284619956@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Marcelo Schmitt <marcelo.schmitt@analog.com>
 
-[ Upstream commit ba3f5058db437d919f8468db50483dd9028ff688 ]
+[ Upstream commit 149694f5e79b0c7a36ceb76e7c0d590db8f151c1 ]
 
-When compiling with gcc version 14.0.0 20231126 (experimental)
-and CONFIG_FORTIFY_SOURCE=y, I've noticed the following:
+The ad7091r-base driver sets up an interrupt handler for firing events
+when inputs are either above or below a certain threshold.
+However, for the interrupt signal to come from the device it must be
+configured to enable the ALERT/BUSY/GPO pin to be used as ALERT, which
+was not being done until now.
+Enable interrupt signals on the ALERT/BUSY/GPO pin by setting the proper
+bit in the configuration register.
 
-In file included from ./include/linux/string.h:295,
-                 from ./include/linux/bitmap.h:12,
-                 from ./include/linux/cpumask.h:12,
-                 from ./arch/x86/include/asm/paravirt.h:17,
-                 from ./arch/x86/include/asm/cpuid.h:62,
-                 from ./arch/x86/include/asm/processor.h:19,
-                 from ./arch/x86/include/asm/cpufeature.h:5,
-                 from ./arch/x86/include/asm/thread_info.h:53,
-                 from ./include/linux/thread_info.h:60,
-                 from ./arch/x86/include/asm/preempt.h:9,
-                 from ./include/linux/preempt.h:79,
-                 from ./include/linux/spinlock.h:56,
-                 from ./include/linux/mmzone.h:8,
-                 from ./include/linux/gfp.h:7,
-                 from ./include/linux/slab.h:16,
-                 from ./include/linux/resource_ext.h:11,
-                 from ./include/linux/acpi.h:13,
-                 from drivers/pnp/pnpacpi/rsparser.c:11:
-In function 'fortify_memcpy_chk',
-    inlined from 'pnpacpi_parse_allocated_vendor' at drivers/pnp/pnpacpi/rsparser.c:158:3,
-    inlined from 'pnpacpi_allocated_resource' at drivers/pnp/pnpacpi/rsparser.c:249:3:
-./include/linux/fortify-string.h:588:25: warning: call to '__read_overflow2_field'
-declared with attribute warning: detected read beyond size of field (2nd parameter);
-maybe use struct_group()? [-Wattribute-warning]
-  588 |                         __read_overflow2_field(q_size_field, size);
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-According to the comments in include/linux/fortify-string.h, 'memcpy()',
-'memmove()' and 'memset()' must not be used beyond individual struct
-members to ensure that the compiler can enforce protection against
-buffer overflows, and, IIUC, this also applies to partial copies from
-the particular member ('vendor->byte_data' in this case). So it should
-be better (and safer) to do both copies at once (and 'byte_data' of
-'struct acpi_resource_vendor_typed' seems to be a good candidate for
-'__counted_by(byte_length)' as well).
-
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Link: https://lore.kernel.org/r/e8da2ee98d6df88318b14baf3dc9630e20218418.1702746240.git.marcelo.schmitt1@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: 020e71c7ffc2 ("iio: adc: ad7091r: Allow users to configure device events")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pnp/pnpacpi/rsparser.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/iio/adc/ad7091r-base.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/pnp/pnpacpi/rsparser.c b/drivers/pnp/pnpacpi/rsparser.c
-index da78dc77aed3..9879deb4dc0b 100644
---- a/drivers/pnp/pnpacpi/rsparser.c
-+++ b/drivers/pnp/pnpacpi/rsparser.c
-@@ -151,13 +151,13 @@ static int vendor_resource_matches(struct pnp_dev *dev,
- static void pnpacpi_parse_allocated_vendor(struct pnp_dev *dev,
- 				    struct acpi_resource_vendor_typed *vendor)
- {
--	if (vendor_resource_matches(dev, vendor, &hp_ccsr_uuid, 16)) {
--		u64 start, length;
-+	struct { u64 start, length; } range;
+diff --git a/drivers/iio/adc/ad7091r-base.c b/drivers/iio/adc/ad7091r-base.c
+index 811f04448d8d..ad089c0ff953 100644
+--- a/drivers/iio/adc/ad7091r-base.c
++++ b/drivers/iio/adc/ad7091r-base.c
+@@ -28,6 +28,7 @@
+ #define AD7091R_REG_RESULT_CONV_RESULT(x)   ((x) & 0xfff)
  
--		memcpy(&start, vendor->byte_data, sizeof(start));
--		memcpy(&length, vendor->byte_data + 8, sizeof(length));
--
--		pnp_add_mem_resource(dev, start, start + length - 1, 0);
-+	if (vendor_resource_matches(dev, vendor, &hp_ccsr_uuid,
-+				    sizeof(range))) {
-+		memcpy(&range, vendor->byte_data, sizeof(range));
-+		pnp_add_mem_resource(dev, range.start, range.start +
-+				     range.length - 1, 0);
- 	}
- }
+ /* AD7091R_REG_CONF */
++#define AD7091R_REG_CONF_ALERT_EN   BIT(4)
+ #define AD7091R_REG_CONF_AUTO   BIT(8)
+ #define AD7091R_REG_CONF_CMD    BIT(10)
  
+@@ -232,6 +233,11 @@ int ad7091r_probe(struct device *dev, const char *name,
+ 	iio_dev->channels = chip_info->channels;
+ 
+ 	if (irq) {
++		ret = regmap_update_bits(st->map, AD7091R_REG_CONF,
++					 AD7091R_REG_CONF_ALERT_EN, BIT(4));
++		if (ret)
++			return ret;
++
+ 		ret = devm_request_threaded_irq(dev, irq, NULL,
+ 				ad7091r_event_handler,
+ 				IRQF_TRIGGER_FALLING | IRQF_ONESHOT, name, iio_dev);
 -- 
 2.43.0
 
