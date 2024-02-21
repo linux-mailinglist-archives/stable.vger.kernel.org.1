@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-22658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86EA985DD1A
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:02:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E87C085D8FE
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:13:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E2B11F2159E
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:02:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 808B41F233E8
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:13:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C02AE7E77C;
-	Wed, 21 Feb 2024 14:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6997153816;
+	Wed, 21 Feb 2024 13:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wpsirc7f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SYsoJ9qm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D8D869317;
-	Wed, 21 Feb 2024 14:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A1669D37;
+	Wed, 21 Feb 2024 13:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524074; cv=none; b=oM+QE4CXTc60ILdHSrZltP+XqcbfG7xsAkQk/T3FdNXm9eGhh7cit2Hxm2sIxCt/duo9Z8AFQrk0W6a3Gm0kpeaqqPJAvUfNpG2kC2Ht042grmzQ/RwxcPcRr1jVjgTr+RMDxeZ2qRlOUYSd7yARV2NWQtkvBzQ6LDg2beTfPYU=
+	t=1708521197; cv=none; b=KFqjYHjoelRA0hrMnKpMgzShuybuRIIBuL0QdV1TVeoj88uRP2p3Ms7WK7lo0GqHWgMkdHXBBdsuD6olOQ4qZj756vzLY0mAe2mZucOx4G2zq5M3yH5PdLa0RUAEISVCQbfQE6ghFmaNkRmt7kwClCoaitIezDfyv3Y+/xxqgrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524074; c=relaxed/simple;
-	bh=s1ywjxsZ2JQhtCKoOKSMxxQBxE+wlirqnjIQeucf0zA=;
+	s=arc-20240116; t=1708521197; c=relaxed/simple;
+	bh=/xHIYzBeZkH5PT9YUCodD+eqBc7NKDxXVV+Msr/ls2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JhHmDcXJdZWg/UvaamMFHjEfBV+H1SphlXyg9bkGrx0jpavcfwSNDCE9vngXdzYo45tkUHsWvFbcKvidez5jncoIk6IyyRnu+kxS/VP05WXj0iHjGX3bWbW9H39NGiE57FWWk8PuUjQgLI/X23Jnmd6au82z+ouC19qZLS2k1JI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wpsirc7f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D38B1C433F1;
-	Wed, 21 Feb 2024 14:01:13 +0000 (UTC)
+	 MIME-Version; b=rKn4PjmWGvg+i7e3pywneHeVjZhHIIkwk6ILbaDILOhVlk45F3Wpxs9mMiewB/67k3NDTil3NQ3zC30K8n9f6AHFi08GiQ9bgeSZAsleF1WXOg6w98jhgKBdqJvnEWDgeDpVcalxRsqu4V/72GcB4iu/H67TMyhYAyFPF44Doa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SYsoJ9qm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 887C1C43390;
+	Wed, 21 Feb 2024 13:13:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524074;
-	bh=s1ywjxsZ2JQhtCKoOKSMxxQBxE+wlirqnjIQeucf0zA=;
+	s=korg; t=1708521197;
+	bh=/xHIYzBeZkH5PT9YUCodD+eqBc7NKDxXVV+Msr/ls2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wpsirc7fOd+FzBajy9HvMs4vIBJBOawmb3XK7T+TXAHXiAN52gKrvw6eQM8/ufPSJ
-	 52mytzcxLfPm9P7qnZkmXFgdDvvnhWa7ZYKBoZAG3DdRmvadKZtXU/aVYcK4Kf2QBU
-	 0HlZvC8CgdgFYoDuAm/NgaTHEUTmrz0GYh2mp5sU=
+	b=SYsoJ9qmVZ9oYPC+UAwvMaOUB/OHH0Xt/PNzIb3xBogL60cxeo7BQGjqQoXoNuvtC
+	 Uc2/DuPtF9RaGWjzFWIsUsrveGdhnKiOXgKmyhei7ssutXJ9x0ZVftuQCfsj4WYbNY
+	 dq9ub03HM+ohgqJuHzJHlOS1e+9xr/GyPisk+G4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 138/379] selftests/bpf: satisfy compiler by having explicit return in btf test
-Date: Wed, 21 Feb 2024 14:05:17 +0100
-Message-ID: <20240221125959.011349829@linuxfoundation.org>
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 4.19 017/202] block: Remove special-casing of compound pages
+Date: Wed, 21 Feb 2024 14:05:18 +0100
+Message-ID: <20240221125932.312761204@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +61,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-[ Upstream commit f4c7e887324f5776eef6e6e47a90e0ac8058a7a8 ]
+commit 1b151e2435fc3a9b10c8946c6aebe9f3e1938c55 upstream.
 
-Some compilers complain about get_pprint_mapv_size() not returning value
-in some code paths. Fix with explicit return.
+The special casing was originally added in pre-git history; reproducing
+the commit log here:
 
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20231102033759.2541186-3-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+> commit a318a92567d77
+> Author: Andrew Morton <akpm@osdl.org>
+> Date:   Sun Sep 21 01:42:22 2003 -0700
+>
+>     [PATCH] Speed up direct-io hugetlbpage handling
+>
+>     This patch short-circuits all the direct-io page dirtying logic for
+>     higher-order pages.  Without this, we pointlessly bounce BIOs up to
+>     keventd all the time.
+
+In the last twenty years, compound pages have become used for more than
+just hugetlb.  Rewrite these functions to operate on folios instead
+of pages and remove the special case for hugetlbfs; I don't think
+it's needed any more (and if it is, we can put it back in as a call
+to folio_test_hugetlb()).
+
+This was found by inspection; as far as I can tell, this bug can lead
+to pages used as the destination of a direct I/O read not being marked
+as dirty.  If those pages are then reclaimed by the MM without being
+dirtied for some other reason, they won't be written out.  Then when
+they're faulted back in, they will not contain the data they should.
+It'll take a pretty unusual setup to produce this problem with several
+races all going the wrong way.
+
+This problem predates the folio work; it could for example have been
+triggered by mmaping a THP in tmpfs and using that as the target of an
+O_DIRECT read.
+
+Fixes: 800d8c63b2e98 ("shmem: add huge pages support")
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/bpf/prog_tests/btf.c | 1 +
- 1 file changed, 1 insertion(+)
+ block/bio.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/btf.c b/tools/testing/selftests/bpf/prog_tests/btf.c
-index 28d22265b825..cbdc2839904e 100644
---- a/tools/testing/selftests/bpf/prog_tests/btf.c
-+++ b/tools/testing/selftests/bpf/prog_tests/btf.c
-@@ -4611,6 +4611,7 @@ static size_t get_pprint_mapv_size(enum pprint_mapv_kind_t mapv_kind)
- #endif
+--- a/block/bio.c
++++ b/block/bio.c
+@@ -1592,8 +1592,7 @@ void bio_set_pages_dirty(struct bio *bio
+ 	int i;
  
- 	assert(0);
-+	return 0;
+ 	bio_for_each_segment_all(bvec, bio, i) {
+-		if (!PageCompound(bvec->bv_page))
+-			set_page_dirty_lock(bvec->bv_page);
++		set_page_dirty_lock(bvec->bv_page);
+ 	}
  }
+ EXPORT_SYMBOL_GPL(bio_set_pages_dirty);
+@@ -1652,7 +1651,7 @@ void bio_check_pages_dirty(struct bio *b
+ 	int i;
  
- static void set_pprint_mapv(enum pprint_mapv_kind_t mapv_kind,
--- 
-2.43.0
-
+ 	bio_for_each_segment_all(bvec, bio, i) {
+-		if (!PageDirty(bvec->bv_page) && !PageCompound(bvec->bv_page))
++		if (!PageDirty(bvec->bv_page))
+ 			goto defer;
+ 	}
+ 
 
 
 
