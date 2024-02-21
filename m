@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-22589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 074C685DCC1
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:57:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D74385DAFC
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:36:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B041D1F221FC
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:57:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 884EBB2479C
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:36:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34EE278B53;
-	Wed, 21 Feb 2024 13:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1C107E78B;
+	Wed, 21 Feb 2024 13:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wPGjWL/m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mlaTm9PT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E743D55E5E;
-	Wed, 21 Feb 2024 13:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF177E78A;
+	Wed, 21 Feb 2024 13:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523824; cv=none; b=pWYsv5k9f/I5hFfwSCwT7DLkuCcR7sG3EDIFNQPlvUr3uiWgo/GmRBjWx/+O1+LWl1VjheMBLjwnUkir9Cx46h8yCHFXud/KbKN01fxyI+gaLFsDvjoK3f1aS9lARWPc0P0dcyfvJd1Lat4jXk0nmQpq1gjsZCmbAxF9FqGAhLI=
+	t=1708522529; cv=none; b=RCAz2JrBQe4tJwy+9cOb/V1vsm58FzTgeT/3uWXpjsJUyQ0/tv6CQ0arlPgdRI+i2+6jCl6G/8i2t4PAYzgs8anrWOXMWHS881PuizWmAQQ2LFZYxbqDLkvqLGJvy4blPro9IXQSuqJ9FcaiTTq5EVTsniXt3fqUTt5IgiBrBDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523824; c=relaxed/simple;
-	bh=4as6G4uzySnBMm7vUTbFPr3h+wEmVrGilZ++qwDgkNw=;
+	s=arc-20240116; t=1708522529; c=relaxed/simple;
+	bh=hHu/s2hDT6aYH23hc359hkm1t4AiptSj7usCB7I92sU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oDSIejpwzdoxotkGs/UUUmHaZ9gpKWnYl0z7YPaXg15Y3CRxSissG7Ynt0D8Vbswl3PQn6MH+AGbxyokRWBAUDr7reg8uDkr48pFu1MD9VFtKrY7PfaLvMCsYH9IMIZYd0DsXammTcsVI/wndXZmoZXYTsZn+aSk+v4l+jO8944=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wPGjWL/m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E1E6C433C7;
-	Wed, 21 Feb 2024 13:57:03 +0000 (UTC)
+	 MIME-Version; b=sssqplPnVtBsUxD0/ta88OqvcmUY3W4alcId35ANmavPRVaL6OaWvDQZmJfOb9pDrnuJqjp9san0WThdy579Pbq6KTZt5LfdTUSICjcc/LVkWHPn3WJIFq3jQHa++U327wF5GQv58enD7gZtesLp1i+Vc0Cx1fR4u3TWo3VxAtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mlaTm9PT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C877C433C7;
+	Wed, 21 Feb 2024 13:35:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523823;
-	bh=4as6G4uzySnBMm7vUTbFPr3h+wEmVrGilZ++qwDgkNw=;
+	s=korg; t=1708522529;
+	bh=hHu/s2hDT6aYH23hc359hkm1t4AiptSj7usCB7I92sU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wPGjWL/m5OsSvQ0Lyu4xrZxT9GGoTc9CnobYchDdvwKi+YPGd6IIpDKIghK0LRBYb
-	 6jY9epvTWrGGW4c/kY0Pt7cgkRb4lle7p1XPRMubFJWukoAZlYjpINTkboJc11QkJM
-	 atDFEDEz7Kyk4V4Ax/EQoLeas4XmjPYrOd7tb5nw=
+	b=mlaTm9PTANISXLEIG6KmB5AyduR25OJxhZJrSD2a2ha2k6dBIhOd7gRoBl1+w+pub
+	 i6sYZHQSG5OGUJ2ixBGtG8Yeb3QlfY59whZ0i5QNl77kam2kI6+3u0mg+t3rnzZDPV
+	 pARf1hqDi7bsk4OMLpUiNQQGg/GnnX8BsPtxAp7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shenwei Wang <shenwei.wang@nxp.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Fabio Estevam <festevam@denx.de>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 061/379] net: fec: fix the unhandled context fault from smmu
+Subject: [PATCH 5.15 189/476] ARM: dts: imx25/27: Pass timing0
 Date: Wed, 21 Feb 2024 14:04:00 +0100
-Message-ID: <20240221125956.717761426@linuxfoundation.org>
+Message-ID: <20240221130014.878784426@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shenwei Wang <shenwei.wang@nxp.com>
+From: Fabio Estevam <festevam@denx.de>
 
-[ Upstream commit 5e344807735023cd3a67c37a1852b849caa42620 ]
+[ Upstream commit 11ab7ad6f795ae23c398a4a5c56505d3dab27c4c ]
 
-When repeatedly changing the interface link speed using the command below:
+Per display-timings.yaml, the 'timing' pattern should be used to
+describe the display timings.
 
-ethtool -s eth0 speed 100 duplex full
-ethtool -s eth0 speed 1000 duplex full
+Change it accordingly to fix the following dt-schema warning:
 
-The following errors may sometimes be reported by the ARM SMMU driver:
+imx27-apf27dev.dtb: display-timings: '800x480' does not match any of the regexes: '^timing', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/display/panel/display-timings.yaml#
 
-[ 5395.035364] fec 5b040000.ethernet eth0: Link is Down
-[ 5395.039255] arm-smmu 51400000.iommu: Unhandled context fault:
-fsr=0x402, iova=0x00000000, fsynr=0x100001, cbfrsynra=0x852, cb=2
-[ 5398.108460] fec 5b040000.ethernet eth0: Link is Up - 100Mbps/Full -
-flow control off
-
-It is identified that the FEC driver does not properly stop the TX queue
-during the link speed transitions, and this results in the invalid virtual
-I/O address translations from the SMMU and causes the context faults.
-
-Fixes: dbc64a8ea231 ("net: fec: move calls to quiesce/resume packet processing out of fec_restart()")
-Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-Link: https://lore.kernel.org/r/20240123165141.2008104-1-shenwei.wang@nxp.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-cmo-qvga.dts | 2 +-
+ arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-svga.dts | 2 +-
+ arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-vga.dts  | 2 +-
+ arch/arm/boot/dts/imx25-pdk.dts                                 | 2 +-
+ arch/arm/boot/dts/imx27-apf27dev.dts                            | 2 +-
+ arch/arm/boot/dts/imx27-eukrea-mbimxsd27-baseboard.dts          | 2 +-
+ arch/arm/boot/dts/imx27-phytec-phycard-s-rdk.dts                | 2 +-
+ arch/arm/boot/dts/imx27-phytec-phycore-rdk.dts                  | 2 +-
+ 8 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 4ce913559c91..fe29769cb158 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -1766,6 +1766,7 @@ static void fec_enet_adjust_link(struct net_device *ndev)
+diff --git a/arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-cmo-qvga.dts b/arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-cmo-qvga.dts
+index 7d4301b22b90..1ed3fb7b9ce6 100644
+--- a/arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-cmo-qvga.dts
++++ b/arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-cmo-qvga.dts
+@@ -16,7 +16,7 @@
+ 		bus-width = <18>;
+ 		display-timings {
+ 			native-mode = <&qvga_timings>;
+-			qvga_timings: 320x240 {
++			qvga_timings: timing0 {
+ 				clock-frequency = <6500000>;
+ 				hactive = <320>;
+ 				vactive = <240>;
+diff --git a/arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-svga.dts b/arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-svga.dts
+index 80a7f96de4c6..64b2ffac463b 100644
+--- a/arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-svga.dts
++++ b/arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-svga.dts
+@@ -16,7 +16,7 @@
+ 		bus-width = <18>;
+ 		display-timings {
+ 			native-mode = <&dvi_svga_timings>;
+-			dvi_svga_timings: 800x600 {
++			dvi_svga_timings: timing0 {
+ 				clock-frequency = <40000000>;
+ 				hactive = <800>;
+ 				vactive = <600>;
+diff --git a/arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-vga.dts b/arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-vga.dts
+index 24027a1fb46d..fb074bfdaa8d 100644
+--- a/arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-vga.dts
++++ b/arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-vga.dts
+@@ -16,7 +16,7 @@
+ 		bus-width = <18>;
+ 		display-timings {
+ 			native-mode = <&dvi_vga_timings>;
+-			dvi_vga_timings: 640x480 {
++			dvi_vga_timings: timing0 {
+ 				clock-frequency = <31250000>;
+ 				hactive = <640>;
+ 				vactive = <480>;
+diff --git a/arch/arm/boot/dts/imx25-pdk.dts b/arch/arm/boot/dts/imx25-pdk.dts
+index fb66884d8a2f..59b40d13a640 100644
+--- a/arch/arm/boot/dts/imx25-pdk.dts
++++ b/arch/arm/boot/dts/imx25-pdk.dts
+@@ -78,7 +78,7 @@
+ 		bus-width = <18>;
+ 		display-timings {
+ 			native-mode = <&wvga_timings>;
+-			wvga_timings: 640x480 {
++			wvga_timings: timing0 {
+ 				hactive = <640>;
+ 				vactive = <480>;
+ 				hback-porch = <45>;
+diff --git a/arch/arm/boot/dts/imx27-apf27dev.dts b/arch/arm/boot/dts/imx27-apf27dev.dts
+index 6f1e8ce9e76e..68fcb5ce9a9e 100644
+--- a/arch/arm/boot/dts/imx27-apf27dev.dts
++++ b/arch/arm/boot/dts/imx27-apf27dev.dts
+@@ -16,7 +16,7 @@
+ 		fsl,pcr = <0xfae80083>;	/* non-standard but required */
+ 		display-timings {
+ 			native-mode = <&timing0>;
+-			timing0: 800x480 {
++			timing0: timing0 {
+ 				clock-frequency = <33000033>;
+ 				hactive = <800>;
+ 				vactive = <480>;
+diff --git a/arch/arm/boot/dts/imx27-eukrea-mbimxsd27-baseboard.dts b/arch/arm/boot/dts/imx27-eukrea-mbimxsd27-baseboard.dts
+index 9c3ec82ec7e5..50fa0bd4c8a1 100644
+--- a/arch/arm/boot/dts/imx27-eukrea-mbimxsd27-baseboard.dts
++++ b/arch/arm/boot/dts/imx27-eukrea-mbimxsd27-baseboard.dts
+@@ -16,7 +16,7 @@
  
- 		/* if any of the above changed restart the FEC */
- 		if (status_change) {
-+			netif_stop_queue(ndev);
- 			napi_disable(&fep->napi);
- 			netif_tx_lock_bh(ndev);
- 			fec_restart(ndev);
-@@ -1775,6 +1776,7 @@ static void fec_enet_adjust_link(struct net_device *ndev)
- 		}
- 	} else {
- 		if (fep->link) {
-+			netif_stop_queue(ndev);
- 			napi_disable(&fep->napi);
- 			netif_tx_lock_bh(ndev);
- 			fec_stop(ndev);
+ 		display-timings {
+ 			native-mode = <&timing0>;
+-			timing0: 320x240 {
++			timing0: timing0 {
+ 				clock-frequency = <6500000>;
+ 				hactive = <320>;
+ 				vactive = <240>;
+diff --git a/arch/arm/boot/dts/imx27-phytec-phycard-s-rdk.dts b/arch/arm/boot/dts/imx27-phytec-phycard-s-rdk.dts
+index 188639738dc3..7f36af150a25 100644
+--- a/arch/arm/boot/dts/imx27-phytec-phycard-s-rdk.dts
++++ b/arch/arm/boot/dts/imx27-phytec-phycard-s-rdk.dts
+@@ -19,7 +19,7 @@
+ 		fsl,pcr = <0xf0c88080>;	/* non-standard but required */
+ 		display-timings {
+ 			native-mode = <&timing0>;
+-			timing0: 640x480 {
++			timing0: timing0 {
+ 				hactive = <640>;
+ 				vactive = <480>;
+ 				hback-porch = <112>;
+diff --git a/arch/arm/boot/dts/imx27-phytec-phycore-rdk.dts b/arch/arm/boot/dts/imx27-phytec-phycore-rdk.dts
+index 344e77790152..d133b9f08b3a 100644
+--- a/arch/arm/boot/dts/imx27-phytec-phycore-rdk.dts
++++ b/arch/arm/boot/dts/imx27-phytec-phycore-rdk.dts
+@@ -19,7 +19,7 @@
+ 
+ 		display-timings {
+ 			native-mode = <&timing0>;
+-			timing0: 240x320 {
++			timing0: timing0 {
+ 				clock-frequency = <5500000>;
+ 				hactive = <240>;
+ 				vactive = <320>;
 -- 
 2.43.0
 
