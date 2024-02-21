@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-22444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A0A685DC10
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:49:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F30B785D990
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:20:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4183283588
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:49:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D6A71C214C0
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:20:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C613079DAE;
-	Wed, 21 Feb 2024 13:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0591478B60;
+	Wed, 21 Feb 2024 13:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YtsUS0ab"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ypy1DKlu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8419347A7C;
-	Wed, 21 Feb 2024 13:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B83F578B4B;
+	Wed, 21 Feb 2024 13:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523321; cv=none; b=lP5Inu+D+KQCORsAAHsBV7bnOqUzbiVvNR7zIAXOAM2+WB8xQHhdb13jgkVMt+jkVd2nLuoXc2lbyhuGru4b5VXpxkXUkrJUBAOb9j2gMZhPaU8wjdTgAFMF5XCh4TU1u6MumcjByWYLpeZyEtBdHfaqiWS92FioEFZ5tVNoCgo=
+	t=1708521582; cv=none; b=bsKMCO2eX/GtA8+1GuwLsjkkyxVscuXokFknI/OFcAbajpu8iP+oCNnVXFCHyd53LUXjNU0aztAApfOnsLPPKV+gGNsx9abyfdgQVneNiDfpKf6FoAA9veNPi65W+o8P/d8B1euPzzsWJRli7s39VgHqS1huy4tHM94+2ftnUKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523321; c=relaxed/simple;
-	bh=sCbiJp3pzgqZHK5q0qEHmFWJREqO3lLMi5aVvaT/+Uo=;
+	s=arc-20240116; t=1708521582; c=relaxed/simple;
+	bh=I7aMRVhFtrnVT2TNbbG/fwU9vQm6G0K12auf8aaYgXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=B6FmkUH2zREmlvt8n1NjANRBoCc/R2GNR+eyERr2TEEqdmCZspFHRUiwAUBcao94qFRq24gFglVofx8VQ1KaP6I+QKoUoV19EWUgCWIf46u45eWsVxXwDDc9a+zE0VFMyR2pUqkQ/UJw4jBXT0w4nKJER8DloWDWNdoZaxcoNQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YtsUS0ab; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1B0CC433F1;
-	Wed, 21 Feb 2024 13:48:40 +0000 (UTC)
+	 MIME-Version; b=OAL6YCWUIh3k/R38m+UjQdPIGc56zPp55FvLuprHRtv54PQPfpEbHrJ31Zm0M1dzHxFxdwKQtIlef1wlc1sx7t6odkc0TmiHpr0+XcCwNpfDx+ed/+3BzpSrymPLMHhGbcyYtlq+DL76w8rP9Tu3+9b1D1yiqW1VI1t9LtPZMG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ypy1DKlu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 302CDC433F1;
+	Wed, 21 Feb 2024 13:19:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523321;
-	bh=sCbiJp3pzgqZHK5q0qEHmFWJREqO3lLMi5aVvaT/+Uo=;
+	s=korg; t=1708521582;
+	bh=I7aMRVhFtrnVT2TNbbG/fwU9vQm6G0K12auf8aaYgXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YtsUS0abupcbqGq+S169zveq8DzgWmdtP+nRBO6R4dXd8ONO3GhIEVdtND67wlPCc
-	 vCOomFeYjy9qC9MXjmh866joz2un+JpX1+R2xf10Qsria4egJYtSbXSZeHpetMbGJC
-	 m9pB+n3SdoN7BQj/xwnPqH4tZxfvRoXEF6B6PMuo=
+	b=Ypy1DKluS+vlrIZkotTGmtrid7w9uOG+ynM4kLAE7domo3oBMPFuhf+W6ylC71C7T
+	 u0XEsLh6IUIKwcEHQT0dCviPEz6f9N6kMTe7302osDvhDyAV3VdhOawe4ofDVczuBF
+	 +l0tAcz1qorghNk2yQtKWadUT/ip/7pLpvMXAKRg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jan=20Kundr=C3=A1t?= <jan.kundrat@cesnet.cz>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Subject: [PATCH 5.15 401/476] serial: max310x: fail probe if clock crystal is unstable
+	Zhang Rui <rui.zhang@intel.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 151/202] hwmon: (coretemp) Fix bogus core_id to attr name mapping
 Date: Wed, 21 Feb 2024 14:07:32 +0100
-Message-ID: <20240221130022.824994767@linuxfoundation.org>
+Message-ID: <20240221125936.575975679@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,74 +60,155 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Zhang Rui <rui.zhang@intel.com>
 
-commit 8afa6c6decea37e7cb473d2c60473f37f46cea35 upstream.
+[ Upstream commit fdaf0c8629d4524a168cb9e4ad4231875749b28c ]
 
-A stable clock is really required in order to use this UART, so log an
-error message and bail out if the chip reports that the clock is not
-stable.
+Before commit 7108b80a542b ("hwmon/coretemp: Handle large core ID
+value"), there is a fixed mapping between
+1. cpu_core_id
+2. the index in pdata->core_data[] array
+3. the sysfs attr name, aka "tempX_"
+The later two always equal cpu_core_id + 2.
 
-Fixes: 4cf9a888fd3c ("serial: max310x: Check the clock readiness")
-Cc: stable@vger.kernel.org
-Suggested-by: Jan Kundrát <jan.kundrat@cesnet.cz>
-Link: https://www.spinics.net/lists/linux-serial/msg35773.html
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20240116213001.3691629-4-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+After the commit, pdata->core_data[] index is got from ida so that it
+can handle sparse core ids and support more cores within a package.
+
+However, the commit erroneously maps the sysfs attr name to
+pdata->core_data[] index instead of cpu_core_id + 2.
+
+As a result, the code is not aligned with the comments, and brings user
+visible changes in hwmon sysfs on systems with sparse core id.
+
+For example, before commit 7108b80a542b ("hwmon/coretemp: Handle large
+core ID value"),
+/sys/class/hwmon/hwmon2/temp2_label:Core 0
+/sys/class/hwmon/hwmon2/temp3_label:Core 1
+/sys/class/hwmon/hwmon2/temp4_label:Core 2
+/sys/class/hwmon/hwmon2/temp5_label:Core 3
+/sys/class/hwmon/hwmon2/temp6_label:Core 4
+/sys/class/hwmon/hwmon3/temp10_label:Core 8
+/sys/class/hwmon/hwmon3/temp11_label:Core 9
+after commit,
+/sys/class/hwmon/hwmon2/temp2_label:Core 0
+/sys/class/hwmon/hwmon2/temp3_label:Core 1
+/sys/class/hwmon/hwmon2/temp4_label:Core 2
+/sys/class/hwmon/hwmon2/temp5_label:Core 3
+/sys/class/hwmon/hwmon2/temp6_label:Core 4
+/sys/class/hwmon/hwmon2/temp7_label:Core 8
+/sys/class/hwmon/hwmon2/temp8_label:Core 9
+
+Restore the previous behavior and rework the code, comments and variable
+names to avoid future confusions.
+
+Fixes: 7108b80a542b ("hwmon/coretemp: Handle large core ID value")
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Link: https://lore.kernel.org/r/20240202092144.71180-3-rui.zhang@intel.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/max310x.c |   12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/hwmon/coretemp.c | 32 +++++++++++++++++++-------------
+ 1 file changed, 19 insertions(+), 13 deletions(-)
 
---- a/drivers/tty/serial/max310x.c
-+++ b/drivers/tty/serial/max310x.c
-@@ -556,7 +556,7 @@ static int max310x_update_best_err(unsig
- 	return 1;
+diff --git a/drivers/hwmon/coretemp.c b/drivers/hwmon/coretemp.c
+index 6832569c9bac..d06e88477588 100644
+--- a/drivers/hwmon/coretemp.c
++++ b/drivers/hwmon/coretemp.c
+@@ -393,7 +393,7 @@ static int get_tjmax(struct cpuinfo_x86 *c, u32 id, struct device *dev)
  }
  
--static u32 max310x_set_ref_clk(struct device *dev, struct max310x_port *s,
-+static s32 max310x_set_ref_clk(struct device *dev, struct max310x_port *s,
- 			       unsigned long freq, bool xtal)
+ static int create_core_attrs(struct temp_data *tdata, struct device *dev,
+-			     int attr_no)
++			     int index)
  {
- 	unsigned int div, clksrc, pllcfg = 0;
-@@ -626,7 +626,8 @@ static u32 max310x_set_ref_clk(struct de
- 		} while (!stable && (++try < MAX310X_XTAL_WAIT_RETRIES));
+ 	int i;
+ 	static ssize_t (*const rd_ptr[TOTAL_ATTRS]) (struct device *dev,
+@@ -405,13 +405,20 @@ static int create_core_attrs(struct temp_data *tdata, struct device *dev,
+ 	};
  
- 		if (!stable)
--			dev_warn(dev, "clock is not stable yet\n");
-+			return dev_err_probe(dev, -EAGAIN,
-+					     "clock is not stable\n");
- 	}
- 
- 	return bestfreq;
-@@ -1266,7 +1267,7 @@ static int max310x_probe(struct device *
- {
- 	int i, ret, fmin, fmax, freq;
- 	struct max310x_port *s;
--	u32 uartclk = 0;
-+	s32 uartclk = 0;
- 	bool xtal;
- 
- 	if (IS_ERR(regmap))
-@@ -1346,6 +1347,11 @@ static int max310x_probe(struct device *
- 	}
- 
- 	uartclk = max310x_set_ref_clk(dev, s, freq, xtal);
-+	if (uartclk < 0) {
-+		ret = uartclk;
-+		goto out_uart;
-+	}
+ 	for (i = 0; i < tdata->attr_size; i++) {
++		/*
++		 * We map the attr number to core id of the CPU
++		 * The attr number is always core id + 2
++		 * The Pkgtemp will always show up as temp1_*, if available
++		 */
++		int attr_no = tdata->is_pkg_data ? 1 : tdata->cpu_core_id + 2;
 +
- 	dev_dbg(dev, "Reference clock set to %i Hz\n", uartclk);
+ 		snprintf(tdata->attr_name[i], CORETEMP_NAME_LENGTH,
+ 			 "temp%d_%s", attr_no, suffixes[i]);
+ 		sysfs_attr_init(&tdata->sd_attrs[i].dev_attr.attr);
+ 		tdata->sd_attrs[i].dev_attr.attr.name = tdata->attr_name[i];
+ 		tdata->sd_attrs[i].dev_attr.attr.mode = S_IRUGO;
+ 		tdata->sd_attrs[i].dev_attr.show = rd_ptr[i];
+-		tdata->sd_attrs[i].index = attr_no;
++		tdata->sd_attrs[i].index = index;
+ 		tdata->attrs[i] = &tdata->sd_attrs[i].dev_attr.attr;
+ 	}
+ 	tdata->attr_group.attrs = tdata->attrs;
+@@ -469,23 +476,22 @@ static int create_core_data(struct platform_device *pdev, unsigned int cpu,
+ 	struct platform_data *pdata = platform_get_drvdata(pdev);
+ 	struct cpuinfo_x86 *c = &cpu_data(cpu);
+ 	u32 eax, edx;
+-	int err, index, attr_no;
++	int err, index;
  
- 	for (i = 0; i < devtype->nr; i++) {
+ 	/*
+-	 * Find attr number for sysfs:
+-	 * We map the attr number to core id of the CPU
+-	 * The attr number is always core id + 2
+-	 * The Pkgtemp will always show up as temp1_*, if available
++	 * Get the index of tdata in pdata->core_data[]
++	 * tdata for package: pdata->core_data[1]
++	 * tdata for core: pdata->core_data[2] .. pdata->core_data[NUM_REAL_CORES + 1]
+ 	 */
+ 	if (pkg_flag) {
+-		attr_no = PKG_SYSFS_ATTR_NO;
++		index = PKG_SYSFS_ATTR_NO;
+ 	} else {
+ 		index = ida_alloc_max(&pdata->ida, NUM_REAL_CORES - 1, GFP_KERNEL);
+ 		if (index < 0)
+ 			return index;
+ 
+ 		pdata->cpu_map[index] = topology_core_id(cpu);
+-		attr_no = index + BASE_SYSFS_ATTR_NO;
++		index += BASE_SYSFS_ATTR_NO;
+ 	}
+ 
+ 	tdata = init_temp_data(cpu, pkg_flag);
+@@ -517,20 +523,20 @@ static int create_core_data(struct platform_device *pdev, unsigned int cpu,
+ 		}
+ 	}
+ 
+-	pdata->core_data[attr_no] = tdata;
++	pdata->core_data[index] = tdata;
+ 
+ 	/* Create sysfs interfaces */
+-	err = create_core_attrs(tdata, pdata->hwmon_dev, attr_no);
++	err = create_core_attrs(tdata, pdata->hwmon_dev, index);
+ 	if (err)
+ 		goto exit_free;
+ 
+ 	return 0;
+ exit_free:
+-	pdata->core_data[attr_no] = NULL;
++	pdata->core_data[index] = NULL;
+ 	kfree(tdata);
+ ida_free:
+ 	if (!pkg_flag)
+-		ida_free(&pdata->ida, index);
++		ida_free(&pdata->ida, index - BASE_SYSFS_ATTR_NO);
+ 	return err;
+ }
+ 
+-- 
+2.43.0
+
 
 
 
