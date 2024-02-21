@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-23077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F4A885DF21
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:25:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D4D385DC58
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:52:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90E3C1C23CF3
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:25:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D44F6285232
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:52:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAF8278B73;
-	Wed, 21 Feb 2024 14:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 569787BB18;
+	Wed, 21 Feb 2024 13:52:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xUQHLIg3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jfYuLKpW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D123D0A1;
-	Wed, 21 Feb 2024 14:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05547BB14;
+	Wed, 21 Feb 2024 13:52:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525500; cv=none; b=Onf/oMxIO0kJbx9IAJhdSYMicyVyGBiPQQ+rWf6ojYmgYY1TO34cqjFZ+gN1V8nFBQoPp/4r8Pgesx28efJJs5s4xw5Ul5ccMLMMXOBsOAJd/KsSBRyo+DQe34zHAtVs5Rm4/dqCHoZfpw22EJPKz9wdtwNoO3TCsVc3gXkkynY=
+	t=1708523531; cv=none; b=ghZWQU7O1zLn5ahhOTG6FbTLUx4XQWGgJtNRtlqhV7vK3gJoAd6A7m+eJm+78i7HZlLEWSGweQLWr7rTG8rf6J92xlEsstSbGBAavG1pbnPh0QiPqt5Xx6j9IwLUkx1rCipHuwzmEN+wX1tsKyCZklRf3Qgx1bw6fpEC15ofDNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525500; c=relaxed/simple;
-	bh=sLkl8R7cyNTnIPlZR+TrwPfUkmxBq8TPN9hKktXbp9w=;
+	s=arc-20240116; t=1708523531; c=relaxed/simple;
+	bh=9EnkRPWTAhQhTRaSaWAAWzmMos/pUK6LYKRYJSJLa/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M03wVfirSzXilB+zwSbuyd3L17i7+XdBs4/sG4B0OculGEn0KSZa2pFDwAD1jQVYpIMOMuOQA2tYnvau6u7H3+wj8xrdOyy6DxDV2dPkUrxYrljkh+iofjzmV7JzKBsqB3j0Y+Zvdv5AAKWGtViHf2JjLGLyu57Y1Y80B/w1+u0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xUQHLIg3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10191C433F1;
-	Wed, 21 Feb 2024 14:24:59 +0000 (UTC)
+	 MIME-Version; b=mpi8/rb2IcMIQRkwG8Zk32d/MLbKau7hhp2sGrg+6CCyJEHZFgSmNn2VvW9JOlnK7PzD7z1K+2c9+3IBjyBCAf0aae5x/+swHdtvZ4hzLb+NK/LRp2KvY5b4PW5XyyLWDwvtigxqymocxjFFkmw08DQYjIEoz4zmZyLhzNcEnTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jfYuLKpW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1840DC433C7;
+	Wed, 21 Feb 2024 13:52:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525500;
-	bh=sLkl8R7cyNTnIPlZR+TrwPfUkmxBq8TPN9hKktXbp9w=;
+	s=korg; t=1708523531;
+	bh=9EnkRPWTAhQhTRaSaWAAWzmMos/pUK6LYKRYJSJLa/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xUQHLIg3UxM+bJRvK2tOy3CqazC5WcYFqGRGn/bPb1yGr4i7mpAi6XgYC1WW3jrhy
-	 VQXttA4qoHNxG+4PcMSV0Qptd3A81LFLSyHgdSZFiDn16/pXM1yU8vKGPKoky/w18Y
-	 9UOozOFVLskayP18Icvetz9ijeiL644wZf8vl5O8=
+	b=jfYuLKpW53uHWwsO3K3bYGtbEJilnei+6T64gHlkEvzvyw3SqIxyxuQbkXPD3AKfF
+	 SiPaTaEoGclKHUy77jgOXzD9fycJCN7lMEW94F22flOOaRrryyV9cQXj4DIegzt/yh
+	 6ayhRGoDG07brid4658z7nk+xolCnB+KCQDTmJoU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Zhengchao Shao <shaozhengchao@huawei.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.4 175/267] bonding: remove print in bond_verify_device_path
+	Easwar Hariharan <eahariha@linux.microsoft.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 5.15 465/476] arm64: Subscribe Microsoft Azure Cobalt 100 to ARM Neoverse N2 errata
 Date: Wed, 21 Feb 2024 14:08:36 +0100
-Message-ID: <20240221125945.628667734@linuxfoundation.org>
+Message-ID: <20240221130025.225916912@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +65,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchao Shao <shaozhengchao@huawei.com>
+From: Easwar Hariharan <eahariha@linux.microsoft.com>
 
-commit 486058f42a4728053ae69ebbf78e9731d8ce6f8b upstream.
+commit fb091ff394792c018527b3211bbdfae93ea4ac02 upstream.
 
-As suggested by Paolo in link[1], if the memory allocation fails, the mm
-layer will emit a lot warning comprising the backtrace, so remove the
-print.
+Add the MIDR value of Microsoft Azure Cobalt 100, which is a Microsoft
+implemented CPU based on r0p0 of the ARM Neoverse N2 CPU, and therefore
+suffers from all the same errata.
 
-[1] https://lore.kernel.org/all/20231118081653.1481260-1-shaozhengchao@huawei.com/
-
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+CC: stable@vger.kernel.org # 5.15+
+Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Acked-by: Marc Zyngier <maz@kernel.org>
+Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
+Link: https://lore.kernel.org/r/20240214175522.2457857-1-eahariha@linux.microsoft.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/bonding/bond_main.c |    5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ Documentation/arm64/silicon-errata.rst |    7 +++++++
+ arch/arm64/include/asm/cputype.h       |    4 ++++
+ arch/arm64/kernel/cpu_errata.c         |    3 +++
+ 3 files changed, 14 insertions(+)
 
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -2482,11 +2482,8 @@ struct bond_vlan_tag *bond_verify_device
+--- a/Documentation/arm64/silicon-errata.rst
++++ b/Documentation/arm64/silicon-errata.rst
+@@ -198,3 +198,10 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | Fujitsu        | A64FX           | E#010001        | FUJITSU_ERRATUM_010001      |
+ +----------------+-----------------+-----------------+-----------------------------+
+++----------------+-----------------+-----------------+-----------------------------+
++| Microsoft      | Azure Cobalt 100| #2139208        | ARM64_ERRATUM_2139208       |
+++----------------+-----------------+-----------------+-----------------------------+
++| Microsoft      | Azure Cobalt 100| #2067961        | ARM64_ERRATUM_2067961       |
+++----------------+-----------------+-----------------+-----------------------------+
++| Microsoft      | Azure Cobalt 100| #2253138        | ARM64_ERRATUM_2253138       |
+++----------------+-----------------+-----------------+-----------------------------+
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -61,6 +61,7 @@
+ #define ARM_CPU_IMP_HISI		0x48
+ #define ARM_CPU_IMP_APPLE		0x61
+ #define ARM_CPU_IMP_AMPERE		0xC0
++#define ARM_CPU_IMP_MICROSOFT		0x6D
  
- 	if (start_dev == end_dev) {
- 		tags = kcalloc(level + 1, sizeof(*tags), GFP_ATOMIC);
--		if (!tags) {
--			net_err_ratelimited("%s: %s: Failed to allocate tags\n",
--					    __func__, start_dev->name);
-+		if (!tags)
- 			return ERR_PTR(-ENOMEM);
--		}
- 		tags[level].vlan_proto = VLAN_N_VID;
- 		return tags;
- 	}
+ #define ARM_CPU_PART_AEM_V8		0xD0F
+ #define ARM_CPU_PART_FOUNDATION		0xD00
+@@ -116,6 +117,8 @@
+ 
+ #define AMPERE_CPU_PART_AMPERE1		0xAC3
+ 
++#define MICROSOFT_CPU_PART_AZURE_COBALT_100	0xD49 /* Based on r0p0 of ARM Neoverse N2 */
++
+ #define MIDR_CORTEX_A53 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A53)
+ #define MIDR_CORTEX_A57 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A57)
+ #define MIDR_CORTEX_A72 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A72)
+@@ -157,6 +160,7 @@
+ #define MIDR_APPLE_M1_ICESTORM MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M1_ICESTORM)
+ #define MIDR_APPLE_M1_FIRESTORM MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M1_FIRESTORM)
+ #define MIDR_AMPERE1 MIDR_CPU_MODEL(ARM_CPU_IMP_AMPERE, AMPERE_CPU_PART_AMPERE1)
++#define MIDR_MICROSOFT_AZURE_COBALT_100 MIDR_CPU_MODEL(ARM_CPU_IMP_MICROSOFT, MICROSOFT_CPU_PART_AZURE_COBALT_100)
+ 
+ /* Fujitsu Erratum 010001 affects A64FX 1.0 and 1.1, (v0r0 and v1r0) */
+ #define MIDR_FUJITSU_ERRATUM_010001		MIDR_FUJITSU_A64FX
+--- a/arch/arm64/kernel/cpu_errata.c
++++ b/arch/arm64/kernel/cpu_errata.c
+@@ -367,6 +367,7 @@ static struct midr_range broken_aarch32_
+ static const struct midr_range trbe_overwrite_fill_mode_cpus[] = {
+ #ifdef CONFIG_ARM64_ERRATUM_2139208
+ 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
++	MIDR_ALL_VERSIONS(MIDR_MICROSOFT_AZURE_COBALT_100),
+ #endif
+ #ifdef CONFIG_ARM64_ERRATUM_2119858
+ 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
+@@ -379,6 +380,7 @@ static const struct midr_range trbe_over
+ static const struct midr_range tsb_flush_fail_cpus[] = {
+ #ifdef CONFIG_ARM64_ERRATUM_2067961
+ 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
++	MIDR_ALL_VERSIONS(MIDR_MICROSOFT_AZURE_COBALT_100),
+ #endif
+ #ifdef CONFIG_ARM64_ERRATUM_2054223
+ 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
+@@ -391,6 +393,7 @@ static const struct midr_range tsb_flush
+ static struct midr_range trbe_write_out_of_range_cpus[] = {
+ #ifdef CONFIG_ARM64_ERRATUM_2253138
+ 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
++	MIDR_ALL_VERSIONS(MIDR_MICROSOFT_AZURE_COBALT_100),
+ #endif
+ #ifdef CONFIG_ARM64_ERRATUM_2224489
+ 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
 
 
 
