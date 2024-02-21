@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-22484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB8BB85DC40
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:50:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF59485D9C9
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:22:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D823B24E67
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:50:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB0CC2886FA
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:22:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 709EB78B70;
-	Wed, 21 Feb 2024 13:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81F776C99;
+	Wed, 21 Feb 2024 13:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y2K3pWq8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cxZmMLNn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E27E55E5E;
-	Wed, 21 Feb 2024 13:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8662253816;
+	Wed, 21 Feb 2024 13:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523455; cv=none; b=Dhmpgd6b1E4L5XkxZwmIohBUDybYtGFqdSUPqVlfEO2VfdqAyzymfam/QFH57T4DIk83ojXwk9uJt/uT2oA5/7WSugRfgSs7qJSIF/r3J9HaL3O16d/zqF5smqkVJldSGB+Q0LLYg3OMoZlPYMDoddOc74yfmM1ZlUbZ4qwGVAY=
+	t=1708521734; cv=none; b=sMeiYkq1fG4upUrt7TcHXPMqtqKkyOKOjyHgCXYNsvjcyf3ZSXq0n42tEGya92XwNsopsGO3mrGIjwTAYyyFnKFwsKoHVk5pTt3cnv3y5NXHwqzEkh9KdjZsszDU6vgWb1JgVEXjjWj4P27+lI/byHSf+QoJO3fs9Qv9xGpdxAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523455; c=relaxed/simple;
-	bh=LlP3jfWLWiEYoeAxH+TwvrOaNFg1JB5nHvtcoS3eSKQ=;
+	s=arc-20240116; t=1708521734; c=relaxed/simple;
+	bh=AWGB5XTET2+UX7jcOKsbj680tUarbcKg9yqBddXWkIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b+1HfLFQA0A6s7Ahc7nwi4vXc6RML0Cq3ZiwFroF3bvrxkFmPBmVn+HdH2aCSgO+gJLW6iE1qACQwuF9XxZO3v3Lft0gMmaUJXYjAEoe5y91c/mynrlyndgUeF7FeuQzbMgqJg40iKCoL8uk+KZJNLDK36KAyNhiF3ruuY87Hzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y2K3pWq8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 936DFC433F1;
-	Wed, 21 Feb 2024 13:50:54 +0000 (UTC)
+	 MIME-Version; b=S0Ssz1P255ygVy5l6uLLEmAO5gBpdi6gv0aE/E3XKQE9PIe9QQZke8DTGsy+wVlOnc5ZKfDVUpjQhbDseCRTWkr6coF9Ccy4pf+pG73nFrO1OhtJHx5pI+epxgVTLKXp3pT2P0dcwHUwhbz8rAf7nr/Kqo22HsvvLDPVhC41QOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cxZmMLNn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA8F3C433F1;
+	Wed, 21 Feb 2024 13:22:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523455;
-	bh=LlP3jfWLWiEYoeAxH+TwvrOaNFg1JB5nHvtcoS3eSKQ=;
+	s=korg; t=1708521734;
+	bh=AWGB5XTET2+UX7jcOKsbj680tUarbcKg9yqBddXWkIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y2K3pWq8PNqcBH3kDWTUmbYdb3WGH0a7SuzZtb6ETB/bogA6YuJ9XBxVASr9SK5IA
-	 C+7PHOLzVPkXETZ/DotaxDrzcHuFVekJLHD9vVR5M7i/IlpCzTczLhdVhpIeyl4k0F
-	 5W4KDzpM155eAM16HNegSM+Cl2DWCk3z6xP6GYkM=
+	b=cxZmMLNnCkWWpDjy33kj+Yv2WCODvvjTKjsY8oDyFBWb/mmkLGMveC3f0s/onf0gN
+	 ujIcjRT89cnmMhk/Y/jie4jeHW13CWtVJw5VKZfUoNQjZ+7VJ7lowVPXSWFMNzxoyN
+	 RFuMI2tBCXJ+6k+/BZwwEkac2nrYc5643Eb0SskA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Wesley Cheng <quic_wcheng@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 440/476] usb: dwc3: gadget: Stall and restart EP0 if host is unresponsive
+	Steve Wahl <steve.wahl@hpe.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>
+Subject: [PATCH 4.19 190/202] x86/mm/ident_map: Use gbpages only where full GB page should be mapped.
 Date: Wed, 21 Feb 2024 14:08:11 +0100
-Message-ID: <20240221130024.303993266@linuxfoundation.org>
+Message-ID: <20240221125937.939785810@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,133 +61,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wesley Cheng <quic_wcheng@quicinc.com>
+From: Steve Wahl <steve.wahl@hpe.com>
 
-[ Upstream commit 02435a739b81ae24aff5d6e930efef9458e2af3c ]
+commit d794734c9bbfe22f86686dc2909c25f5ffe1a572 upstream.
 
-It was observed that there are hosts that may complete pending SETUP
-transactions before the stop active transfers and controller halt occurs,
-leading to lingering endxfer commands on DEPs on subsequent pullup/gadget
-start iterations.
+When ident_pud_init() uses only gbpages to create identity maps, large
+ranges of addresses not actually requested can be included in the
+resulting table; a 4K request will map a full GB.  On UV systems, this
+ends up including regions that will cause hardware to halt the system
+if accessed (these are marked "reserved" by BIOS).  Even processor
+speculation into these regions is enough to trigger the system halt.
 
-  dwc3_gadget_ep_disable   name=ep8in flags=0x3009  direction=1
-  dwc3_gadget_ep_disable   name=ep4in flags=1  direction=1
-  dwc3_gadget_ep_disable   name=ep3out flags=1  direction=0
-  usb_gadget_disconnect   deactivated=0  connected=0  ret=0
+Only use gbpages when map creation requests include the full GB page
+of space.  Fall back to using smaller 2M pages when only portions of a
+GB page are included in the request.
 
-The sequence shows that the USB gadget disconnect (dwc3_gadget_pullup(0))
-routine completed successfully, allowing for the USB gadget to proceed with
-a USB gadget connect.  However, if this occurs the system runs into an
-issue where:
+No attempt is made to coalesce mapping requests. If a request requires
+a map entry at the 2M (pmd) level, subsequent mapping requests within
+the same 1G region will also be at the pmd level, even if adjacent or
+overlapping such requests could have been combined to map a full
+gbpage.  Existing usage starts with larger regions and then adds
+smaller regions, so this should not have any great consequence.
 
-  BUG: spinlock already unlocked on CPU
-  spin_bug+0x0
-  dwc3_remove_requests+0x278
-  dwc3_ep0_out_start+0xb0
-  __dwc3_gadget_start+0x25c
+[ dhansen: fix up comment formatting, simplifty changelog ]
 
-This is due to the pending endxfers, leading to gadget start (w/o lock
-held) to execute the remove requests, which will unlock the dwc3
-spinlock as part of giveback.
-
-To mitigate this, resolve the pending endxfers on the pullup disable
-path by re-locating the SETUP phase check after stop active transfers, since
-that is where the DWC3_EP_DELAY_STOP is potentially set.  This also allows
-for handling of a host that may be unresponsive by using the completion
-timeout to trigger the stall and restart for EP0.
-
-Fixes: c96683798e27 ("usb: dwc3: ep0: Don't prepare beyond Setup stage")
+Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
 Cc: stable@vger.kernel.org
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
-Link: https://lore.kernel.org/r/20230413195742.11821-2-quic_wcheng@quicinc.com
+Link: https://lore.kernel.org/all/20240126164841.170866-1-steve.wahl%40hpe.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 730e12fbec53 ("usb: dwc3: gadget: Handle EP0 request dequeuing properly")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/gadget.c | 49 +++++++++++++++++++++++++--------------
- 1 file changed, 32 insertions(+), 17 deletions(-)
+ arch/x86/mm/ident_map.c |   23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index c61b6f49701a..a74ac44c6cd8 100644
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -2459,29 +2459,17 @@ static int __dwc3_gadget_start(struct dwc3 *dwc);
- static int dwc3_gadget_soft_disconnect(struct dwc3 *dwc)
- {
- 	unsigned long flags;
-+	int ret;
+--- a/arch/x86/mm/ident_map.c
++++ b/arch/x86/mm/ident_map.c
+@@ -26,18 +26,31 @@ static int ident_pud_init(struct x86_map
+ 	for (; addr < end; addr = next) {
+ 		pud_t *pud = pud_page + pud_index(addr);
+ 		pmd_t *pmd;
++		bool use_gbpage;
  
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	dwc->connected = false;
+ 		next = (addr & PUD_MASK) + PUD_SIZE;
+ 		if (next > end)
+ 			next = end;
  
- 	/*
--	 * Per databook, when we want to stop the gadget, if a control transfer
--	 * is still in process, complete it and get the core into setup phase.
-+	 * Attempt to end pending SETUP status phase, and not wait for the
-+	 * function to do so.
- 	 */
--	if (dwc->ep0state != EP0_SETUP_PHASE) {
--		int ret;
--
--		if (dwc->delayed_status)
--			dwc3_ep0_send_delayed_status(dwc);
--
--		reinit_completion(&dwc->ep0_in_setup);
--
--		spin_unlock_irqrestore(&dwc->lock, flags);
--		ret = wait_for_completion_timeout(&dwc->ep0_in_setup,
--				msecs_to_jiffies(DWC3_PULL_UP_TIMEOUT));
--		spin_lock_irqsave(&dwc->lock, flags);
--		if (ret == 0)
--			dev_warn(dwc->dev, "timed out waiting for SETUP phase\n");
--	}
-+	if (dwc->delayed_status)
-+		dwc3_ep0_send_delayed_status(dwc);
- 
- 	/*
- 	 * In the Synopsys DesignWare Cores USB3 Databook Rev. 3.30a
-@@ -2494,6 +2482,33 @@ static int dwc3_gadget_soft_disconnect(struct dwc3 *dwc)
- 	__dwc3_gadget_stop(dwc);
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
-+	/*
-+	 * Per databook, when we want to stop the gadget, if a control transfer
-+	 * is still in process, complete it and get the core into setup phase.
-+	 * In case the host is unresponsive to a SETUP transaction, forcefully
-+	 * stall the transfer, and move back to the SETUP phase, so that any
-+	 * pending endxfers can be executed.
-+	 */
-+	if (dwc->ep0state != EP0_SETUP_PHASE) {
-+		reinit_completion(&dwc->ep0_in_setup);
+-		if (info->direct_gbpages) {
+-			pud_t pudval;
++		/* if this is already a gbpage, this portion is already mapped */
++		if (pud_large(*pud))
++			continue;
 +
-+		ret = wait_for_completion_timeout(&dwc->ep0_in_setup,
-+				msecs_to_jiffies(DWC3_PULL_UP_TIMEOUT));
-+		if (ret == 0) {
-+			unsigned int    dir;
++		/* Is using a gbpage allowed? */
++		use_gbpage = info->direct_gbpages;
+ 
+-			if (pud_present(*pud))
+-				continue;
++		/* Don't use gbpage if it maps more than the requested region. */
++		/* at the begining: */
++		use_gbpage &= ((addr & ~PUD_MASK) == 0);
++		/* ... or at the end: */
++		use_gbpage &= ((next & ~PUD_MASK) == 0);
 +
-+			dev_warn(dwc->dev, "wait for SETUP phase timed out\n");
-+			spin_lock_irqsave(&dwc->lock, flags);
-+			dir = !!dwc->ep0_expect_in;
-+			if (dwc->ep0state == EP0_DATA_PHASE)
-+				dwc3_ep0_end_control_data(dwc, dwc->eps[dir]);
-+			else
-+				dwc3_ep0_end_control_data(dwc, dwc->eps[!dir]);
-+			dwc3_ep0_stall_and_restart(dwc);
-+			spin_unlock_irqrestore(&dwc->lock, flags);
-+		}
-+	}
++		/* Never overwrite existing mappings */
++		use_gbpage &= !pud_present(*pud);
 +
- 	/*
- 	 * Note: if the GEVNTCOUNT indicates events in the event buffer, the
- 	 * driver needs to acknowledge them before the controller can halt.
--- 
-2.43.0
-
++		if (use_gbpage) {
++			pud_t pudval;
+ 
+-			addr &= PUD_MASK;
+ 			pudval = __pud((addr - info->offset) | info->page_flag);
+ 			set_pud(pud, pudval);
+ 			continue;
 
 
 
