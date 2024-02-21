@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-22769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A3A485DE03
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:14:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FC6685D949
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:17:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 497D8B2A23A
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:11:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C45C8B24D3A
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:17:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56E127EEEA;
-	Wed, 21 Feb 2024 14:07:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77D327994B;
+	Wed, 21 Feb 2024 13:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tvSPpl/C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jB+ZzZdX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160097E0FB;
-	Wed, 21 Feb 2024 14:07:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA6779940;
+	Wed, 21 Feb 2024 13:16:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524453; cv=none; b=f+Spv9HLJHzzpyAViwdTWWf+1mFwkG4onZWh6ARDWMdHoGbScDdFLdCxIcc8sDO4UEGx/lvtJ0n/naMe1S4ruvPO1uTyUwjwmACKiG1N/3drFtCGxIPDtXSVdfisyisd5s9vxEEQuSh/7iGyNPUDsy9RHm7uFfY2g2agYoWdSRU=
+	t=1708521394; cv=none; b=LtH+HiimDwQ+L+h3oOKtmqjw6H/jpPu00hlMrk/9c4jBtkXZ6emYhY1sGx3WL15CGnztp8DkEyCasUNRIESbQYN96Nm39UfzkDNEnHqPXRutomnryoqDiIJalmSsaAxQfPOEuH7pgJVTTX+VPtbywZfOWWUQMybkk6SYC5LDiTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524453; c=relaxed/simple;
-	bh=1rPnaXsuqIknVG3YRW3zYe16Uder4BRSJP+SWCdi+lc=;
+	s=arc-20240116; t=1708521394; c=relaxed/simple;
+	bh=atuBQcd5gBvT6W8u64b4Ohjz1sJANfCLnVzOaorTNLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=THnrkuS2yna1GN/ARTOcBo4uCwqgC0PmLZ7zecvdEqknAYa73zi+00EgsD8r/X6WcAj17RNwzPw1YogmDcFleecynQl6jdJ2Lwk20IoBPPZfzLkpMQfsBh0WCyTo37kgsns49spQTkTz+aLxks+i+eZKWydGXHwjNzFQxwdkTAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tvSPpl/C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91A48C433C7;
-	Wed, 21 Feb 2024 14:07:32 +0000 (UTC)
+	 MIME-Version; b=BNLAALnlAfiXgpCOxPkiSDLloPji4PxoUy/1FbhJb6ed622poBund10NJU88aEChZSoKyEubM/Xp2nvuPRuNxVQJMdIFdIlk7nV/byQxhWmLW36cazUKRolJiDwWHJfSVaB1BkjDOlO5t9XdPGsLsaDB5mqKu2xiKJqkcmoxzW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jB+ZzZdX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 293A0C433C7;
+	Wed, 21 Feb 2024 13:16:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524453;
-	bh=1rPnaXsuqIknVG3YRW3zYe16Uder4BRSJP+SWCdi+lc=;
+	s=korg; t=1708521393;
+	bh=atuBQcd5gBvT6W8u64b4Ohjz1sJANfCLnVzOaorTNLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tvSPpl/C2fG/0Y+Q6iTqdu0gXdDlbf3IR0zdstT8p4MchaAjvtCEnUEmnms3AEn7i
-	 8tvfMk4S/uiTaHsBSrCulZ4ZE76MqXfqVlicS+1mdIFJZ/9qIQ6Euze6CHh99o48mi
-	 FtihtyBQgpmhJHEpUHdMpVahAQzfAEfi40RUMchA=
+	b=jB+ZzZdX6f7yCQ2Z8DngeeeQrogJBBlA8xd5vSKUoZR2LacuUdNhHXQPof7jkdW8C
+	 qfS9LZYZeTzsVcTVyFPPd3W/H/k/8Lw9X8TQd5GqCOp8ILDCXzU/yfg5+al0bavpzm
+	 VQG5zY0bHGYLC3/yERLy8se/ri2JVAJP4ppcxCrU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Richter <tmricht@linux.ibm.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 220/379] perf: Fix the nr_addr_filters fix
+Subject: [PATCH 4.19 098/202] fast_dput(): handle underflows gracefully
 Date: Wed, 21 Feb 2024 14:06:39 +0100
-Message-ID: <20240221130001.409613577@linuxfoundation.org>
+Message-ID: <20240221125934.945627562@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 388a1fb7da6aaa1970c7e2a7d7fcd983a87a8484 ]
+[ Upstream commit 504e08cebe1d4e1efe25f915234f646e74a364a8 ]
 
-Thomas reported that commit 652ffc2104ec ("perf/core: Fix narrow
-startup race when creating the perf nr_addr_filters sysfs file") made
-the entire attribute group vanish, instead of only the nr_addr_filters
-attribute.
+If refcount is less than 1, we should just warn, unlock dentry and
+return true, so that the caller doesn't try to do anything else.
 
-Additionally a stray return.
+Taking care of that leaves the rest of "lockref_put_return() has
+failed" case equivalent to "decrement refcount and rejoin the
+normal slow path after the point where we grab ->d_lock".
 
-Insufficient coffee was involved with both writing and merging the
-patch.
+NOTE: lockref_put_return() is strictly a fastpath thing - unlike
+the rest of lockref primitives, it does not contain a fallback.
+Caller (and it looks like fast_dput() is the only legitimate one
+in the entire kernel) has to do that itself.  Reasons for
+lockref_put_return() failures:
+	* ->d_lock held by somebody
+	* refcount <= 0
+	* ... or an architecture not supporting lockref use of
+cmpxchg - sparc, anything non-SMP, config with spinlock debugging...
 
-Fixes: 652ffc2104ec ("perf/core: Fix narrow startup race when creating the perf nr_addr_filters sysfs file")
-Reported-by: Thomas Richter <tmricht@linux.ibm.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Thomas Richter <tmricht@linux.ibm.com>
-Link: https://lkml.kernel.org/r/20231122100756.GP8262@noisy.programming.kicks-ass.net
+We could add a fallback, but it would be a clumsy API - we'd have
+to distinguish between:
+	(1) refcount > 1 - decremented, lock not held on return
+	(2) refcount < 1 - left alone, probably no sense to hold the lock
+	(3) refcount is 1, no cmphxcg - decremented, lock held on return
+	(4) refcount is 1, cmphxcg supported - decremented, lock *NOT* held
+	    on return.
+We want to return with no lock held in case (4); that's the whole point of that
+thing.  We very much do not want to have the fallback in case (3) return without
+a lock, since the caller might have to retake it in that case.
+So it wouldn't be more convenient than doing the fallback in the caller and
+it would be very easy to screw up, especially since the test coverage would
+suck - no way to test (3) and (4) on the same kernel build.
+
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ fs/dcache.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index ab5b75f3b886..bd569cf23569 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -10864,12 +10864,10 @@ static umode_t pmu_dev_is_visible(struct kobject *kobj, struct attribute *a, int
- 	struct device *dev = kobj_to_dev(kobj);
- 	struct pmu *pmu = dev_get_drvdata(dev);
+diff --git a/fs/dcache.c b/fs/dcache.c
+index 1897833a4668..4d96eb591f5d 100644
+--- a/fs/dcache.c
++++ b/fs/dcache.c
+@@ -727,12 +727,12 @@ static inline bool fast_dput(struct dentry *dentry)
+ 	 */
+ 	if (unlikely(ret < 0)) {
+ 		spin_lock(&dentry->d_lock);
+-		if (dentry->d_lockref.count > 1) {
+-			dentry->d_lockref.count--;
++		if (WARN_ON_ONCE(dentry->d_lockref.count <= 0)) {
+ 			spin_unlock(&dentry->d_lock);
+ 			return true;
+ 		}
+-		return false;
++		dentry->d_lockref.count--;
++		goto locked;
+ 	}
  
--	if (!pmu->nr_addr_filters)
-+	if (n == 2 && !pmu->nr_addr_filters)
- 		return 0;
- 
- 	return a->mode;
--
--	return 0;
- }
- 
- static struct attribute_group pmu_dev_attr_group = {
+ 	/*
+@@ -783,6 +783,7 @@ static inline bool fast_dput(struct dentry *dentry)
+ 	 * else could have killed it and marked it dead. Either way, we
+ 	 * don't need to do anything else.
+ 	 */
++locked:
+ 	if (dentry->d_lockref.count) {
+ 		spin_unlock(&dentry->d_lock);
+ 		return true;
 -- 
 2.43.0
 
