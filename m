@@ -1,142 +1,265 @@
-Return-Path: <stable+bounces-23237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E9C585E8F2
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 21:22:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54EDA85E907
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 21:28:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA88728527B
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 20:22:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9770282C69
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 20:28:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 453258663A;
-	Wed, 21 Feb 2024 20:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09601128364;
+	Wed, 21 Feb 2024 20:28:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LbgD4kWu";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="iDeVqb1X"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="e5MuZbi6"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEDDA85958;
-	Wed, 21 Feb 2024 20:21:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9274C85958;
+	Wed, 21 Feb 2024 20:27:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708546921; cv=none; b=JHlpKtOeKDcAopxhanRJfbU2lYuxtv58IBc899sqi2LC9Ft3eYAU4HAgzUPL8LAHmMfOj9rM/nLlQi8N2BKKEZDkX7CdMRabqmVcwLK53kahc3Dvy6bUEcu9W0c1hg4m222rHVIo9X7fZFWxoNLxb8ob4W2lkqBrzH5FUFp3L8M=
+	t=1708547279; cv=none; b=iLxyr5ea8z6XWALNlRAYvidPdlUHsLVhu5aVRjoeTW18WO/FBRCq6sK8/UGTsT22KyOioGjnvfUu204iPRKYpwDsU+oMF7dDfttuRfh3jjDWc46sncMIXFlSgtcsfJZpaMeS8c+qnKrIa1lcqYi9fxLMEs7aQ5PpKvvS8jPEwQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708546921; c=relaxed/simple;
-	bh=ImC36rMMHpLz4+5E+KQEQoxCcH+ZOWrg6nxm1kytxdU=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=davt3baTd1T1N0byLQPsVXDAajVrjnxd3oKC7KD55yW7J3uyoyn/0/Vz/cn0ObNkYXec8RPaNPCXOOhchkFdBXOYZ2a2bu4mRaraUB3/Uh3/88a3toq4QlnSxeX9o/LvpXw/Wv+tXei7o+rtJLqzJgfFi81YQZe1h9Rz30Lgf9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LbgD4kWu; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=iDeVqb1X; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 21 Feb 2024 20:21:55 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1708546916;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LYXevElDZUwwcuCssk+PoziO3z76J9Zi3RvRyDyoi1s=;
-	b=LbgD4kWufpeq1TOYGRUKiQExZAnKWyLFII5hLKB2PjBeRis7FYENAIloe9k+vw2+QbB4SK
-	gGTQWL+bYEBqGCZh7uV/TqtkzSq9qxZN2oVpEBmSN6EmNpmFBpaPSU/q/dFwri7CAVFMCE
-	7k6lfdLES/RIzA2kESPD5TWWZoDsgmEURn1V17jRFBbEAFg7uHmXS3blR+sauZLTUXI/D1
-	qdrVdeqa+5PKNLYgxDCnjRcwQhXonK9RXcftuoPSeV1GKoinD4khk31AmY+hkAhUGlulf+
-	yLhbjqw4J2CIhOrI+q/sfhQedtr8RF6E8YH8JPHL5HcDCJzXsbFEYqwAFuOLLg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1708546916;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LYXevElDZUwwcuCssk+PoziO3z76J9Zi3RvRyDyoi1s=;
-	b=iDeVqb1X9KcQD36OakGQakXKCEVOt0v4bcQ5UJE6B7e0pMKkkATdkpRAYENpEQ5iciA6t4
-	iu89mD3oIctU6KCw==
-From: "tip-bot2 for Oliver Upton" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] irqchip/gic-v3-its: Do not assume vPE tables are
- preallocated
-Cc: George Cherian <gcherian@marvell.com>, Marc Zyngier <maz@kernel.org>,
- Oliver Upton <oliver.upton@linux.dev>, Thomas Gleixner <tglx@linutronix.de>,
- stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240219185809.286724-2-oliver.upton@linux.dev>
-References: <20240219185809.286724-2-oliver.upton@linux.dev>
+	s=arc-20240116; t=1708547279; c=relaxed/simple;
+	bh=bCp1vKo+oZ7/SLYFwatkFSMs7y4ORrvBQy6AiqJRmVI=;
+	h=Date:To:From:Subject:Message-Id; b=V13kR25YfdrcW8MDtKyxesxdJtujzD/iQkHhiVbAqL0kZ2dFrbUjcTMULZhspzwj2eqeykzpe2amZNqKDgGqFizVgBpeDfOLoTbCgatw0qHF1KOEewMIZXnvSTsvBOZXa6KVeq2YiHB0O2tqNhp5wfqEw2EPrGDT5vexy2mWwjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=e5MuZbi6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AB89C433F1;
+	Wed, 21 Feb 2024 20:27:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1708547276;
+	bh=bCp1vKo+oZ7/SLYFwatkFSMs7y4ORrvBQy6AiqJRmVI=;
+	h=Date:To:From:Subject:From;
+	b=e5MuZbi6Op5zrJPpS3fUuOrm5Yl/C4muHXnG81AhzLB1CpFJirWxmHAQgTiW+XTCP
+	 ZlNdDh3mpFR+dRkw8dTgowyxB0YEDl2uXGq43Qe06tkmtWz1gya3rYogAb4VEn96bV
+	 B06s4rH7MBSOyXTFy3TDd6z2xk2E0OlNgaTEH+74=
+Date: Wed, 21 Feb 2024 12:27:55 -0800
+To: mm-commits@vger.kernel.org,tiwai@suse.com,svenva@chromium.org,stable@vger.kernel.org,perex@perex.cz,mhocko@kernel.org,mgorman@techsingularity.net,cujomalainey@chromium.org,bgeffon@google.com,vbabka@suse.cz,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-vmscan-prevent-infinite-loop-for-costly-gfp_noio-__gfp_retry_mayfail-allocations.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240221202756.5AB89C433F1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Message-ID: <170854691584.398.7536977527591129636.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     ec4308ecfc887128a468f03fb66b767559c57c23
-Gitweb:        https://git.kernel.org/tip/ec4308ecfc887128a468f03fb66b767559c57c23
-Author:        Oliver Upton <oliver.upton@linux.dev>
-AuthorDate:    Mon, 19 Feb 2024 18:58:06 
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 21 Feb 2024 21:11:20 +01:00
+The patch titled
+     Subject: mm, vmscan: prevent infinite loop for costly GFP_NOIO | __GFP_RETRY_MAYFAIL allocations
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-vmscan-prevent-infinite-loop-for-costly-gfp_noio-__gfp_retry_mayfail-allocations.patch
 
-irqchip/gic-v3-its: Do not assume vPE tables are preallocated
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-vmscan-prevent-infinite-loop-for-costly-gfp_noio-__gfp_retry_mayfail-allocations.patch
 
-The GIC/ITS code is designed to ensure to pick up any preallocated LPI
-tables on the redistributors, as enabling LPIs is a one-way switch. There
-is no such restriction for vLPIs, and for GICv4.1 it is expected to
-allocate a new vPE table at boot.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-This works as intended when initializing an ITS, however when setting up a
-redistributor in cpu_init_lpis() the early return for preallocated RD
-tables skips straight past the GICv4 setup. This all comes to a head when
-trying to kexec() into a new kernel, as the new kernel silently fails to
-set up GICv4, leading to a complete loss of SGIs and LPIs for KVM VMs.
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-Slap a band-aid on the problem by ensuring its_cpu_init_lpis() always
-initializes GICv4 on the way out, even if the other RD tables were
-preallocated.
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-Fixes: 6479450f72c1 ("irqchip/gic-v4: Fix occasional VLPI drop")
-Reported-by: George Cherian <gcherian@marvell.com>
-Co-developed-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240219185809.286724-2-oliver.upton@linux.dev
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Vlastimil Babka <vbabka@suse.cz>
+Subject: mm, vmscan: prevent infinite loop for costly GFP_NOIO | __GFP_RETRY_MAYFAIL allocations
+Date: Wed, 21 Feb 2024 12:43:58 +0100
+
+Sven reports an infinite loop in __alloc_pages_slowpath() for costly order
+__GFP_RETRY_MAYFAIL allocations that are also GFP_NOIO.  Such combination
+can happen in a suspend/resume context where a GFP_KERNEL allocation can
+have __GFP_IO masked out via gfp_allowed_mask.
+
+Quoting Sven:
+
+1. try to do a "costly" allocation (order > PAGE_ALLOC_COSTLY_ORDER)
+   with __GFP_RETRY_MAYFAIL set.
+
+2. page alloc's __alloc_pages_slowpath tries to get a page from the
+   freelist. This fails because there is nothing free of that costly
+   order.
+
+3. page alloc tries to reclaim by calling __alloc_pages_direct_reclaim,
+   which bails out because a zone is ready to be compacted; it pretends
+   to have made a single page of progress.
+
+4. page alloc tries to compact, but this always bails out early because
+   __GFP_IO is not set (it's not passed by the snd allocator, and even
+   if it were, we are suspending so the __GFP_IO flag would be cleared
+   anyway).
+
+5. page alloc believes reclaim progress was made (because of the
+   pretense in item 3) and so it checks whether it should retry
+   compaction. The compaction retry logic thinks it should try again,
+   because:
+    a) reclaim is needed because of the early bail-out in item 4
+    b) a zonelist is suitable for compaction
+
+6. goto 2. indefinite stall.
+
+(end quote)
+
+The immediate root cause is confusing the COMPACT_SKIPPED returned from
+__alloc_pages_direct_compact() (step 4) due to lack of __GFP_IO to be
+indicating a lack of order-0 pages, and in step 5 evaluating that in
+should_compact_retry() as a reason to retry, before incrementing and
+limiting the number of retries.  There are however other places that
+wrongly assume that compaction can happen while we lack __GFP_IO.
+
+To fix this, introduce gfp_compaction_allowed() to abstract the __GFP_IO
+evaluation and switch the open-coded test in try_to_compact_pages() to use
+it.
+
+Also use the new helper in:
+- compaction_ready(), which will make reclaim not bail out in step 3, so
+  there's at least one attempt to actually reclaim, even if chances are
+  small for a costly order
+- in_reclaim_compaction() which will make should_continue_reclaim()
+  return false and we don't over-reclaim unnecessarily
+- in __alloc_pages_slowpath() to set a local variable can_compact,
+  which is then used to avoid retrying reclaim/compaction for costly
+  allocations (step 5) if we can't compact and also to skip the early
+  compaction attempt that we do in some cases
+
+Link: https://lkml.kernel.org/r/20240221114357.13655-2-vbabka@suse.cz
+Fixes: 3250845d0526 ("Revert "mm, oom: prevent premature OOM killer invocation for high order request"")
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Reported-by: Sven van Ashbrook <svenva@chromium.org>
+Closes: https://lore.kernel.org/all/CAG-rBihs_xMKb3wrMO1%2B-%2Bp4fowP9oy1pa_OTkfxBzPUVOZF%2Bg@mail.gmail.com/
+Cc: Brian Geffon <bgeffon@google.com>
+Cc: Curtis Malainey <cujomalainey@chromium.org>
+Cc: Jaroslav Kysela <perex@perex.cz>
+Cc: Mel Gorman <mgorman@techsingularity.net>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Takashi Iwai <tiwai@suse.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- drivers/irqchip/irq-gic-v3-its.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
-index 53abd47..b822752 100644
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -3181,6 +3181,7 @@ static void its_cpu_init_lpis(void)
- 	val |= GICR_CTLR_ENABLE_LPIS;
- 	writel_relaxed(val, rbase + GICR_CTLR);
+ include/linux/gfp.h |    9 +++++++++
+ mm/compaction.c     |    7 +------
+ mm/page_alloc.c     |   10 ++++++----
+ mm/vmscan.c         |    5 ++++-
+ 4 files changed, 20 insertions(+), 11 deletions(-)
+
+--- a/include/linux/gfp.h~mm-vmscan-prevent-infinite-loop-for-costly-gfp_noio-__gfp_retry_mayfail-allocations
++++ a/include/linux/gfp.h
+@@ -353,6 +353,15 @@ static inline bool gfp_has_io_fs(gfp_t g
+ 	return (gfp & (__GFP_IO | __GFP_FS)) == (__GFP_IO | __GFP_FS);
+ }
  
-+out:
- 	if (gic_rdists->has_vlpis && !gic_rdists->has_rvpeid) {
- 		void __iomem *vlpi_base = gic_data_rdist_vlpi_base();
++/*
++ * Check if the gfp flags allow compaction - GFP_NOIO is a really
++ * tricky context because the migration might require IO.
++ */
++static inline bool gfp_compaction_allowed(gfp_t gfp_mask)
++{
++	return IS_ENABLED(CONFIG_COMPACTION) && (gfp_mask & __GFP_IO);
++}
++
+ extern gfp_t vma_thp_gfp_mask(struct vm_area_struct *vma);
  
-@@ -3216,7 +3217,6 @@ static void its_cpu_init_lpis(void)
+ #ifdef CONFIG_CONTIG_ALLOC
+--- a/mm/compaction.c~mm-vmscan-prevent-infinite-loop-for-costly-gfp_noio-__gfp_retry_mayfail-allocations
++++ a/mm/compaction.c
+@@ -2723,16 +2723,11 @@ enum compact_result try_to_compact_pages
+ 		unsigned int alloc_flags, const struct alloc_context *ac,
+ 		enum compact_priority prio, struct page **capture)
+ {
+-	int may_perform_io = (__force int)(gfp_mask & __GFP_IO);
+ 	struct zoneref *z;
+ 	struct zone *zone;
+ 	enum compact_result rc = COMPACT_SKIPPED;
  
- 	/* Make sure the GIC has seen the above */
- 	dsb(sy);
--out:
- 	gic_data_rdist()->flags |= RD_LOCAL_LPI_ENABLED;
- 	pr_info("GICv3: CPU%d: using %s LPI pending table @%pa\n",
- 		smp_processor_id(),
+-	/*
+-	 * Check if the GFP flags allow compaction - GFP_NOIO is really
+-	 * tricky context because the migration might require IO
+-	 */
+-	if (!may_perform_io)
++	if (!gfp_compaction_allowed(gfp_mask))
+ 		return COMPACT_SKIPPED;
+ 
+ 	trace_mm_compaction_try_to_compact_pages(order, gfp_mask, prio);
+--- a/mm/page_alloc.c~mm-vmscan-prevent-infinite-loop-for-costly-gfp_noio-__gfp_retry_mayfail-allocations
++++ a/mm/page_alloc.c
+@@ -4041,6 +4041,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, u
+ 						struct alloc_context *ac)
+ {
+ 	bool can_direct_reclaim = gfp_mask & __GFP_DIRECT_RECLAIM;
++	bool can_compact = gfp_compaction_allowed(gfp_mask);
+ 	const bool costly_order = order > PAGE_ALLOC_COSTLY_ORDER;
+ 	struct page *page = NULL;
+ 	unsigned int alloc_flags;
+@@ -4111,7 +4112,7 @@ restart:
+ 	 * Don't try this for allocations that are allowed to ignore
+ 	 * watermarks, as the ALLOC_NO_WATERMARKS attempt didn't yet happen.
+ 	 */
+-	if (can_direct_reclaim &&
++	if (can_direct_reclaim && can_compact &&
+ 			(costly_order ||
+ 			   (order > 0 && ac->migratetype != MIGRATE_MOVABLE))
+ 			&& !gfp_pfmemalloc_allowed(gfp_mask)) {
+@@ -4209,9 +4210,10 @@ retry:
+ 
+ 	/*
+ 	 * Do not retry costly high order allocations unless they are
+-	 * __GFP_RETRY_MAYFAIL
++	 * __GFP_RETRY_MAYFAIL and we can compact
+ 	 */
+-	if (costly_order && !(gfp_mask & __GFP_RETRY_MAYFAIL))
++	if (costly_order && (!can_compact ||
++			     !(gfp_mask & __GFP_RETRY_MAYFAIL)))
+ 		goto nopage;
+ 
+ 	if (should_reclaim_retry(gfp_mask, order, ac, alloc_flags,
+@@ -4224,7 +4226,7 @@ retry:
+ 	 * implementation of the compaction depends on the sufficient amount
+ 	 * of free memory (see __compaction_suitable)
+ 	 */
+-	if (did_some_progress > 0 &&
++	if (did_some_progress > 0 && can_compact &&
+ 			should_compact_retry(ac, order, alloc_flags,
+ 				compact_result, &compact_priority,
+ 				&compaction_retries))
+--- a/mm/vmscan.c~mm-vmscan-prevent-infinite-loop-for-costly-gfp_noio-__gfp_retry_mayfail-allocations
++++ a/mm/vmscan.c
+@@ -5753,7 +5753,7 @@ static void shrink_lruvec(struct lruvec
+ /* Use reclaim/compaction for costly allocs or under memory pressure */
+ static bool in_reclaim_compaction(struct scan_control *sc)
+ {
+-	if (IS_ENABLED(CONFIG_COMPACTION) && sc->order &&
++	if (gfp_compaction_allowed(sc->gfp_mask) && sc->order &&
+ 			(sc->order > PAGE_ALLOC_COSTLY_ORDER ||
+ 			 sc->priority < DEF_PRIORITY - 2))
+ 		return true;
+@@ -5998,6 +5998,9 @@ static inline bool compaction_ready(stru
+ {
+ 	unsigned long watermark;
+ 
++	if (!gfp_compaction_allowed(sc->gfp_mask))
++		return false;
++
+ 	/* Allocation can already succeed, nothing to do */
+ 	if (zone_watermark_ok(zone, sc->order, min_wmark_pages(zone),
+ 			      sc->reclaim_idx, 0))
+_
+
+Patches currently in -mm which might be from vbabka@suse.cz are
+
+mm-vmscan-prevent-infinite-loop-for-costly-gfp_noio-__gfp_retry_mayfail-allocations.patch
+mm-document-memalloc_noreclaim_save-and-memalloc_pin_save.patch
+mm-document-memalloc_noreclaim_save-and-memalloc_pin_save-v2.patch
+
 
