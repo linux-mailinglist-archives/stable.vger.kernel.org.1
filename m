@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-21996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A0B185D99B
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:21:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E386385DC1C
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:49:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1B6A8B25025
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:21:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D9ABB21F81
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:49:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F3FE7762F;
-	Wed, 21 Feb 2024 13:20:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EB447BB0F;
+	Wed, 21 Feb 2024 13:49:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2KVDQYao"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AVoyU/S2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D157673161;
-	Wed, 21 Feb 2024 13:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D13B478B7C;
+	Wed, 21 Feb 2024 13:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521606; cv=none; b=i5Hlrj1tZ343Dfa+D5kuCdte8h13scvq95SfrmxaOfr99HOb9o90Rh0YPr1ELxo5cE4rjJdr055hZPAEjXE21uYrXr8KDHw4XhXq66f+ZnmKyzHy/nRUi9pVzWBi8NB371nxmLYwfLlaHdmH+5h2rqprQUtw2ft6B1VZdjyXAtc=
+	t=1708523342; cv=none; b=BVTrE44iWyNOSdbHS+fU66SDfGZzh7tcVC+EfNkja0cPE0wTb7aKC81udOpn1A55bb+KGXP+de2hJwFpZBVs0/1z+Y1W1r2EtWv3OKX/syDsW0J6O5qIpJLI0d5i6Tolu1TCFejyhAnH3yTLgTgO+Af5pAICMuh83DmQF0VM+9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521606; c=relaxed/simple;
-	bh=tkqSTUuAYjY0amJ/kQd2m+AXj3CaU2njiQa32y5BH7g=;
+	s=arc-20240116; t=1708523342; c=relaxed/simple;
+	bh=gOXAgDxea0uTHDji1qz7Q7OtiOxO8VdOwKeuwLeZwsQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ysb7180+l8BWaq3+1IshbRkIDEnxM7CO/+CDzzHDhRLI8xxd8oCoQJB5sqcr12R13ucL7+Cm6qNhpLB9X+66ljm3bZMGrsO4oqaeTs3NBglt6N9FHJ8WzmcLiFWyktZAI7UoBC9uCjhCVnGW9lhbFG07WfGSVoa0vrwWijsxaAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2KVDQYao; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40AEAC433C7;
-	Wed, 21 Feb 2024 13:20:06 +0000 (UTC)
+	 MIME-Version; b=Eo0c50kv+D9Qq8rCwBcS5gqF3pQUqouNChPG8rhCVgeYsCNaKXwkyolRWa518mDbb77dwY2mS9tiZSgYAs8tAVA4KTbTluTvHSbwfXwJE7SXj6Tz7vEqwcd4H/582cwI5ObI0zs04+1sG0gJdUk3HiaQ8MTzfPlgG+SqTn+HqTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AVoyU/S2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A546C433F1;
+	Wed, 21 Feb 2024 13:49:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521606;
-	bh=tkqSTUuAYjY0amJ/kQd2m+AXj3CaU2njiQa32y5BH7g=;
+	s=korg; t=1708523342;
+	bh=gOXAgDxea0uTHDji1qz7Q7OtiOxO8VdOwKeuwLeZwsQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2KVDQYao5yHBGYlLkDeFsYiPu8wq3TRgmv+rflYWCx7q2CXRXuHLE1B+rtN6rC42r
-	 v/DIGHJBz16nCtKRzaHBPJzXrYQoWXMgoXOYBnh96Uo847I+VGw4B083a0jUwCTcMk
-	 E8KPWIWFV0OYTZgWiNc3ElQ8gKrXHEZL4MIak5EI=
+	b=AVoyU/S2oZtEENRheYNnDcXPbFht22ktntGomKnyP6fN+SwwPsFaRjOakIv7MBibw
+	 I6kmCgPdJ8t6sMDz+JsnseA5KXzOWNum0w7VTjxTsTApfVqSC1IjBvBQ2ndwALolhp
+	 rmtDiJRXr5JWfa3Uftr52o4J6J51uTMTRlBoA2vQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 157/202] netfilter: nft_compat: restrict match/target protocol to u16
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 407/476] nilfs2: fix data corruption in dsync block recovery for small block sizes
 Date: Wed, 21 Feb 2024 14:07:38 +0100
-Message-ID: <20240221125936.765234050@linuxfoundation.org>
+Message-ID: <20240221130023.049012006@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit d694b754894c93fb4d71a7f3699439dec111decc ]
+commit 67b8bcbaed4777871bb0dcc888fb02a614a98ab1 upstream.
 
-xt_check_{match,target} expects u16, but NFTA_RULE_COMPAT_PROTO is u32.
+The helper function nilfs_recovery_copy_block() of
+nilfs_recovery_dsync_blocks(), which recovers data from logs created by
+data sync writes during a mount after an unclean shutdown, incorrectly
+calculates the on-page offset when copying repair data to the file's page
+cache.  In environments where the block size is smaller than the page
+size, this flaw can cause data corruption and leak uninitialized memory
+bytes during the recovery process.
 
-NLA_POLICY_MAX(NLA_BE32, 65535) cannot be used because .max in
-nla_policy is s16, see 3e48be05f3c7 ("netlink: add attribute range
-validation to policy").
+Fix these issues by correcting this byte offset calculation on the page.
 
-Fixes: 0ca743a55991 ("netfilter: nf_tables: add compatibility layer for x_tables")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20240124121936.10575-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_compat.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ fs/nilfs2/recovery.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nft_compat.c b/net/netfilter/nft_compat.c
-index 95af1dbc28c1..763ba07a58ab 100644
---- a/net/netfilter/nft_compat.c
-+++ b/net/netfilter/nft_compat.c
-@@ -195,6 +195,7 @@ static const struct nla_policy nft_rule_compat_policy[NFTA_RULE_COMPAT_MAX + 1]
- static int nft_parse_compat(const struct nlattr *attr, u16 *proto, bool *inv)
+--- a/fs/nilfs2/recovery.c
++++ b/fs/nilfs2/recovery.c
+@@ -472,9 +472,10 @@ static int nilfs_prepare_segment_for_rec
+ 
+ static int nilfs_recovery_copy_block(struct the_nilfs *nilfs,
+ 				     struct nilfs_recovery_block *rb,
+-				     struct page *page)
++				     loff_t pos, struct page *page)
  {
- 	struct nlattr *tb[NFTA_RULE_COMPAT_MAX+1];
-+	u32 l4proto;
- 	u32 flags;
- 	int err;
+ 	struct buffer_head *bh_org;
++	size_t from = pos & ~PAGE_MASK;
+ 	void *kaddr;
  
-@@ -213,7 +214,12 @@ static int nft_parse_compat(const struct nlattr *attr, u16 *proto, bool *inv)
- 	if (flags & NFT_RULE_COMPAT_F_INV)
- 		*inv = true;
+ 	bh_org = __bread(nilfs->ns_bdev, rb->blocknr, nilfs->ns_blocksize);
+@@ -482,7 +483,7 @@ static int nilfs_recovery_copy_block(str
+ 		return -EIO;
  
--	*proto = ntohl(nla_get_be32(tb[NFTA_RULE_COMPAT_PROTO]));
-+	l4proto = ntohl(nla_get_be32(tb[NFTA_RULE_COMPAT_PROTO]));
-+	if (l4proto > U16_MAX)
-+		return -EINVAL;
-+
-+	*proto = l4proto;
-+
+ 	kaddr = kmap_atomic(page);
+-	memcpy(kaddr + bh_offset(bh_org), bh_org->b_data, bh_org->b_size);
++	memcpy(kaddr + from, bh_org->b_data, bh_org->b_size);
+ 	kunmap_atomic(kaddr);
+ 	brelse(bh_org);
  	return 0;
- }
+@@ -521,7 +522,7 @@ static int nilfs_recover_dsync_blocks(st
+ 			goto failed_inode;
+ 		}
  
--- 
-2.43.0
-
+-		err = nilfs_recovery_copy_block(nilfs, rb, page);
++		err = nilfs_recovery_copy_block(nilfs, rb, pos, page);
+ 		if (unlikely(err))
+ 			goto failed_page;
+ 
 
 
 
