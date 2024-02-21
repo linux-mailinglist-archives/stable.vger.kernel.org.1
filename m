@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-23039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58E3385DF66
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:27:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DD6385DDDF
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:13:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 95F35B28FB1
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:23:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD807282B44
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:13:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B06737BAF7;
-	Wed, 21 Feb 2024 14:22:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B882C7CF02;
+	Wed, 21 Feb 2024 14:08:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a6c/x8PZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FAAA3dMA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E54276037;
-	Wed, 21 Feb 2024 14:22:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 781134C62;
+	Wed, 21 Feb 2024 14:08:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525376; cv=none; b=b24BbIWDIK+5mwQrAapqXAGWLLE0T2hhIlEURyQ1HU9BnyM4uu9b1Bt7sG74poi2v8gL2E4A/C2cZRSjhAteShtQnWUtcNStbLIYLecrJGm20SBq7Oq62XlnaDEN+5JTcwD3VLi1w8l4hQE3ZUVsBkqlq2g1Xc907/TaEQpL4Vg=
+	t=1708524529; cv=none; b=mK+KbILHM9HT9wKTf3OzEdL3kyYSVh7ZBe+AfHzumSrQKB8m/6gWEZDgu0bgpA2RhF2DO959iwC3DP5N1yf8BKr2fuv5Xq4Yux6P4VHGYAMxqNJwZ5Yy885Yo2zOATk2xJfEQXDHd0yPmOnCPxZ0MAUFQV6WItKFY4cvm+3ybRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525376; c=relaxed/simple;
-	bh=Ic+omibeQsLz++CzXXo8vaJ42MUuaKnCNtW0Vy7zNW0=;
+	s=arc-20240116; t=1708524529; c=relaxed/simple;
+	bh=/VkEQEpKH1JVQQxbKFgpP/+YElPl3iPu3S/hdBxE4UI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NOq/SFZQN+eIlJZZo6ilS9SBDqYqrfV8IdGGoapjJs7mKlUsm0KiT5fMWc98JNkGO4Fd8ES8GBPh0Tild+5dVNIT5MpNrxyERgwBAgOncN7kWLweK38Ya+QyhdO6lHJuajRVM8BalHpgDZXCzMmlTU6XsRLrvoQYtxFvTef7AY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a6c/x8PZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BCC1C433F1;
-	Wed, 21 Feb 2024 14:22:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Yugfmvb/hMJSqeGD6C3yxhCWfbTHWP14B67sNA2a8IQnJNPY10Imz34qbLtEUPDS9HJV2zNyecLykw7V6Z9pkEIXl1SKl+097p6Tof8RrUBb5fikkyup1PrUYYiKNOZKnKCt/q++GHdux+WcVpW2vreLzI5WA6Aqrec/zzry+Q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FAAA3dMA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1B5AC433F1;
+	Wed, 21 Feb 2024 14:08:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525375;
-	bh=Ic+omibeQsLz++CzXXo8vaJ42MUuaKnCNtW0Vy7zNW0=;
+	s=korg; t=1708524529;
+	bh=/VkEQEpKH1JVQQxbKFgpP/+YElPl3iPu3S/hdBxE4UI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a6c/x8PZArL45Fqd5Erjo0D1iT/0cN89OdXcFleCL01Ee7U7+6xZ5pxeip+vbI8wi
-	 5kGq2nDH8EcTKqvdpTfJwaUcwM+QekfvUl6wp7uW9DFgN7ECfHerdgyF+cFXQhQeOc
-	 i/ZKa4LD6GrZKJUKUD92HiWYCe5bQsJXX1+m8hRM=
+	b=FAAA3dMAKpWzfrNMR2wiy5dbMywLIHHxRrcZ+IRdO46hXRosMLNZEOIGP4ppJptt3
+	 8EKccbtqydh7ymc94hf1ogy/5BAjeO5m+SO1IgaeAVHBMDmsMGQxOQ7PAXs3NfcqJQ
+	 4XyQ3jq0NJvt0uMTEljo9Vg2XGOTvTwacgHQbnnM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	=?UTF-8?q?Breno=20Leit=C3=A3o?= <leitao@debian.org>,
+	Tejun Heo <tj@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 109/267] ARM: dts: imx25/27: Pass timing0
-Date: Wed, 21 Feb 2024 14:07:30 +0100
-Message-ID: <20240221125943.370511103@linuxfoundation.org>
+Subject: [PATCH 5.10 272/379] blk-iocost: Fix an UBSAN shift-out-of-bounds warning
+Date: Wed, 21 Feb 2024 14:07:31 +0100
+Message-ID: <20240221130002.954218784@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,142 +61,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Tejun Heo <tj@kernel.org>
 
-[ Upstream commit 11ab7ad6f795ae23c398a4a5c56505d3dab27c4c ]
+[ Upstream commit 2a427b49d02995ea4a6ff93a1432c40fa4d36821 ]
 
-Per display-timings.yaml, the 'timing' pattern should be used to
-describe the display timings.
+When iocg_kick_delay() is called from a CPU different than the one which set
+the delay, @now may be in the past of @iocg->delay_at leading to the
+following warning:
 
-Change it accordingly to fix the following dt-schema warning:
+  UBSAN: shift-out-of-bounds in block/blk-iocost.c:1359:23
+  shift exponent 18446744073709 is too large for 64-bit type 'u64' (aka 'unsigned long long')
+  ...
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x79/0xc0
+   __ubsan_handle_shift_out_of_bounds+0x2ab/0x300
+   iocg_kick_delay+0x222/0x230
+   ioc_rqos_merge+0x1d7/0x2c0
+   __rq_qos_merge+0x2c/0x80
+   bio_attempt_back_merge+0x83/0x190
+   blk_attempt_plug_merge+0x101/0x150
+   blk_mq_submit_bio+0x2b1/0x720
+   submit_bio_noacct_nocheck+0x320/0x3e0
+   __swap_writepage+0x2ab/0x9d0
 
-imx27-apf27dev.dtb: display-timings: '800x480' does not match any of the regexes: '^timing', 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/display/panel/display-timings.yaml#
+The underflow itself doesn't really affect the behavior in any meaningful
+way; however, the past timestamp may exaggerate the delay amount calculated
+later in the code, which shouldn't be a material problem given the nature of
+the delay mechanism.
 
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+If @now is in the past, this CPU is racing another CPU which recently set up
+the delay and there's nothing this CPU can contribute w.r.t. the delay.
+Let's bail early from iocg_kick_delay() in such cases.
+
+Reported-by: Breno Leitão <leitao@debian.org>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: 5160a5a53c0c ("blk-iocost: implement delay adjustment hysteresis")
+Link: https://lore.kernel.org/r/ZVvc9L_CYk5LO1fT@slm.duckdns.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-cmo-qvga.dts | 2 +-
- arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-svga.dts | 2 +-
- arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-vga.dts  | 2 +-
- arch/arm/boot/dts/imx25-pdk.dts                                 | 2 +-
- arch/arm/boot/dts/imx27-apf27dev.dts                            | 2 +-
- arch/arm/boot/dts/imx27-eukrea-mbimxsd27-baseboard.dts          | 2 +-
- arch/arm/boot/dts/imx27-phytec-phycard-s-rdk.dts                | 2 +-
- arch/arm/boot/dts/imx27-phytec-phycore-rdk.dts                  | 2 +-
- 8 files changed, 8 insertions(+), 8 deletions(-)
+ block/blk-iocost.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-cmo-qvga.dts b/arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-cmo-qvga.dts
-index 7d4301b22b90..1ed3fb7b9ce6 100644
---- a/arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-cmo-qvga.dts
-+++ b/arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-cmo-qvga.dts
-@@ -16,7 +16,7 @@
- 		bus-width = <18>;
- 		display-timings {
- 			native-mode = <&qvga_timings>;
--			qvga_timings: 320x240 {
-+			qvga_timings: timing0 {
- 				clock-frequency = <6500000>;
- 				hactive = <320>;
- 				vactive = <240>;
-diff --git a/arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-svga.dts b/arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-svga.dts
-index 80a7f96de4c6..64b2ffac463b 100644
---- a/arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-svga.dts
-+++ b/arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-svga.dts
-@@ -16,7 +16,7 @@
- 		bus-width = <18>;
- 		display-timings {
- 			native-mode = <&dvi_svga_timings>;
--			dvi_svga_timings: 800x600 {
-+			dvi_svga_timings: timing0 {
- 				clock-frequency = <40000000>;
- 				hactive = <800>;
- 				vactive = <600>;
-diff --git a/arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-vga.dts b/arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-vga.dts
-index 24027a1fb46d..fb074bfdaa8d 100644
---- a/arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-vga.dts
-+++ b/arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-vga.dts
-@@ -16,7 +16,7 @@
- 		bus-width = <18>;
- 		display-timings {
- 			native-mode = <&dvi_vga_timings>;
--			dvi_vga_timings: 640x480 {
-+			dvi_vga_timings: timing0 {
- 				clock-frequency = <31250000>;
- 				hactive = <640>;
- 				vactive = <480>;
-diff --git a/arch/arm/boot/dts/imx25-pdk.dts b/arch/arm/boot/dts/imx25-pdk.dts
-index 05cccd12624c..876b101ce3e6 100644
---- a/arch/arm/boot/dts/imx25-pdk.dts
-+++ b/arch/arm/boot/dts/imx25-pdk.dts
-@@ -78,7 +78,7 @@
- 		bus-width = <18>;
- 		display-timings {
- 			native-mode = <&wvga_timings>;
--			wvga_timings: 640x480 {
-+			wvga_timings: timing0 {
- 				hactive = <640>;
- 				vactive = <480>;
- 				hback-porch = <45>;
-diff --git a/arch/arm/boot/dts/imx27-apf27dev.dts b/arch/arm/boot/dts/imx27-apf27dev.dts
-index 6f1e8ce9e76e..68fcb5ce9a9e 100644
---- a/arch/arm/boot/dts/imx27-apf27dev.dts
-+++ b/arch/arm/boot/dts/imx27-apf27dev.dts
-@@ -16,7 +16,7 @@
- 		fsl,pcr = <0xfae80083>;	/* non-standard but required */
- 		display-timings {
- 			native-mode = <&timing0>;
--			timing0: 800x480 {
-+			timing0: timing0 {
- 				clock-frequency = <33000033>;
- 				hactive = <800>;
- 				vactive = <480>;
-diff --git a/arch/arm/boot/dts/imx27-eukrea-mbimxsd27-baseboard.dts b/arch/arm/boot/dts/imx27-eukrea-mbimxsd27-baseboard.dts
-index 9c3ec82ec7e5..50fa0bd4c8a1 100644
---- a/arch/arm/boot/dts/imx27-eukrea-mbimxsd27-baseboard.dts
-+++ b/arch/arm/boot/dts/imx27-eukrea-mbimxsd27-baseboard.dts
-@@ -16,7 +16,7 @@
+diff --git a/block/blk-iocost.c b/block/blk-iocost.c
+index 7ba7c4e4e4c9..63a8fb456b28 100644
+--- a/block/blk-iocost.c
++++ b/block/blk-iocost.c
+@@ -1296,6 +1296,13 @@ static bool iocg_kick_delay(struct ioc_gq *iocg, struct ioc_now *now)
  
- 		display-timings {
- 			native-mode = <&timing0>;
--			timing0: 320x240 {
-+			timing0: timing0 {
- 				clock-frequency = <6500000>;
- 				hactive = <320>;
- 				vactive = <240>;
-diff --git a/arch/arm/boot/dts/imx27-phytec-phycard-s-rdk.dts b/arch/arm/boot/dts/imx27-phytec-phycard-s-rdk.dts
-index 188639738dc3..7f36af150a25 100644
---- a/arch/arm/boot/dts/imx27-phytec-phycard-s-rdk.dts
-+++ b/arch/arm/boot/dts/imx27-phytec-phycard-s-rdk.dts
-@@ -19,7 +19,7 @@
- 		fsl,pcr = <0xf0c88080>;	/* non-standard but required */
- 		display-timings {
- 			native-mode = <&timing0>;
--			timing0: 640x480 {
-+			timing0: timing0 {
- 				hactive = <640>;
- 				vactive = <480>;
- 				hback-porch = <112>;
-diff --git a/arch/arm/boot/dts/imx27-phytec-phycore-rdk.dts b/arch/arm/boot/dts/imx27-phytec-phycore-rdk.dts
-index bf883e45576a..39e0fcb12d23 100644
---- a/arch/arm/boot/dts/imx27-phytec-phycore-rdk.dts
-+++ b/arch/arm/boot/dts/imx27-phytec-phycore-rdk.dts
-@@ -19,7 +19,7 @@
+ 	lockdep_assert_held(&iocg->waitq.lock);
  
- 		display-timings {
- 			native-mode = <&timing0>;
--			timing0: 240x320 {
-+			timing0: timing0 {
- 				clock-frequency = <5500000>;
- 				hactive = <240>;
- 				vactive = <320>;
++	/*
++	 * If the delay is set by another CPU, we may be in the past. No need to
++	 * change anything if so. This avoids decay calculation underflow.
++	 */
++	if (time_before64(now->now, iocg->delay_at))
++		return false;
++
+ 	/* calculate the current delay in effect - 1/2 every second */
+ 	tdelta = now->now - iocg->delay_at;
+ 	if (iocg->delay)
 -- 
 2.43.0
 
