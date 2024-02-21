@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-21962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28FD085D968
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:18:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98DB985DBF0
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:47:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BEE48B249C4
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:18:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB2921C22C3F
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:47:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A38E76C73;
-	Wed, 21 Feb 2024 13:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C07D69D21;
+	Wed, 21 Feb 2024 13:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hubNL36z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HNTi8PQw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093EB46B9B;
-	Wed, 21 Feb 2024 13:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE473C2F;
+	Wed, 21 Feb 2024 13:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521482; cv=none; b=GVNBJdWKhPqRzAZHwIl80E514PMaA2+ipQv07vU/NUlkcnJiyesK3A5une0dSL5L80yOgxZUcVY6DopYndichMHcAroKfKwxODSo+O4P7qYGtORaCwTs4NgPwtvOQBZtLveZUAGf/Tw/xlx2Po4bJBPTW8P+iAGHDeLw5legQDg=
+	t=1708523235; cv=none; b=Xj5y1AdipyUWl3TqB4XDlW/wk9l1lJ4HOLpGipI1sn9CMG9dDsAYOitvAibYArZC8bb+caChQH2XwJ1pPGJJMzSeils4aAawgMzXmzeH4Fc+htoN5oNhZlYrRQp0ng0DDLr6lRUJovUKZ3JCF7wDVXOPY4CG3QIOpg2wPRpkzzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521482; c=relaxed/simple;
-	bh=iw5ReQfPe/odWn9rvdwP+TcpddKTXEN3q3cJ51GwUMY=;
+	s=arc-20240116; t=1708523235; c=relaxed/simple;
+	bh=DEEh3Qr2NxmADGR5S9dyILj6H/2aAU3c7pZQUVLdKCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HhJhKpkVt+/IdW2EHJ3H9CQwYJbXKbMfPlHbn0JiR85VcYSbPMRhdzbB3R9fGFSO5Zz+9G6dzHLgtEuGaQHvoZOoxjqteDuN5fmKZiPmwTXznR3u4FI+BFR3VujtyIjzTIvkqw3bGLACI/VTmTijcPPh1IpdlKm2o0mZgFGHDb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hubNL36z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52639C433F1;
-	Wed, 21 Feb 2024 13:18:01 +0000 (UTC)
+	 MIME-Version; b=u+asXWyRbsnB/iw5qDS6m9/PGLRi18zb9NXyE127qZ8LNB83cjXNPoHHy6x4A9EdD94ArdCXlkaufGIG7JzqmRMxfZBKEeWpBhzbaYqpzlkhh1voFKcu7pN34gwNUjORew48z+BwD5ubNFHs01V0pNCwW5rQHaHLPAZQEt3pfNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HNTi8PQw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C002C433C7;
+	Wed, 21 Feb 2024 13:47:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521481;
-	bh=iw5ReQfPe/odWn9rvdwP+TcpddKTXEN3q3cJ51GwUMY=;
+	s=korg; t=1708523234;
+	bh=DEEh3Qr2NxmADGR5S9dyILj6H/2aAU3c7pZQUVLdKCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hubNL36znEIsHk/SmBJ689MeoGyMKTU10OuGt9H9tMPqEgfkqsNFyxMS+9lj5WI0X
-	 p/3UXHKsS/LT/is+bIqMeSRrBsuPkbX91NhbXB4tNJzoqzWsD0lfv0qgn0PcNbPiYL
-	 47GNxjhlpjlabU/SY9us4KDtOdBqcCAu2OqdpB6M=
+	b=HNTi8PQwy9nvv1sZl4OQ76rUoJkAl+rqRhgoJIejexgoOpdgL3jy9jf5L4FO/v89T
+	 l2E2H3BB90m6WIdXSx0ozTAm//X8OELRn1OpmtBCZJxFCRrXIeZ253JAjcsc4MFfVN
+	 3ERd60Es27LmYnGy+yFNURytgDm7i1GI7FFCfKzU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Chenyuan Mi <cymi20@fudan.edu.cn>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 124/202] libsubcmd: Fix memory leak in uniq()
-Date: Wed, 21 Feb 2024 14:07:05 +0100
-Message-ID: <20240221125935.717054254@linuxfoundation.org>
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 375/476] mptcp: fix data re-injection from stale subflow
+Date: Wed, 21 Feb 2024 14:07:06 +0100
+Message-ID: <20240221130021.885274184@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,67 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit ad30469a841b50dbb541df4d6971d891f703c297 ]
+commit b6c620dc43ccb4e802894e54b651cf81495e9598 upstream.
 
-uniq() will write one command name over another causing the overwritten
-string to be leaked. Fix by doing a pass that removes duplicates and a
-second that removes the holes.
+When the MPTCP PM detects that a subflow is stale, all the packet
+scheduler must re-inject all the mptcp-level unacked data. To avoid
+acquiring unneeded locks, it first try to check if any unacked data
+is present at all in the RTX queue, but such check is currently
+broken, as it uses TCP-specific helper on an MPTCP socket.
 
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Chenyuan Mi <cymi20@fudan.edu.cn>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20231208000515.1693746-1-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Funnily enough fuzzers and static checkers are happy, as the accessed
+memory still belongs to the mptcp_sock struct, and even from a
+functional perspective the recovery completed successfully, as
+the short-cut test always failed.
+
+A recent unrelated TCP change - commit d5fed5addb2b ("tcp: reorganize
+tcp_sock fast path variables") - exposed the issue, as the tcp field
+reorganization makes the mptcp code always skip the re-inection.
+
+Fix the issue dropping the bogus call: we are on a slow path, the early
+optimization proved once again to be evil.
+
+Fixes: 1e1d9d6f119c ("mptcp: handle pending data on closed subflow")
+Cc: stable@vger.kernel.org
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/468
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/20240131-upstream-net-20240131-mptcp-ci-issues-v1-1-4c1c11e571ff@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/lib/subcmd/help.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ net/mptcp/protocol.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/tools/lib/subcmd/help.c b/tools/lib/subcmd/help.c
-index 2859f107abc8..4260c8b4257b 100644
---- a/tools/lib/subcmd/help.c
-+++ b/tools/lib/subcmd/help.c
-@@ -50,11 +50,21 @@ void uniq(struct cmdnames *cmds)
- 	if (!cmds->cnt)
- 		return;
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2203,9 +2203,6 @@ bool __mptcp_retransmit_pending_data(str
+ 	if (__mptcp_check_fallback(mptcp_sk(sk)))
+ 		return false;
  
--	for (i = j = 1; i < cmds->cnt; i++)
--		if (strcmp(cmds->names[i]->name, cmds->names[i-1]->name))
--			cmds->names[j++] = cmds->names[i];
+-	if (tcp_rtx_and_write_queues_empty(sk))
+-		return false;
 -
-+	for (i = 1; i < cmds->cnt; i++) {
-+		if (!strcmp(cmds->names[i]->name, cmds->names[i-1]->name))
-+			zfree(&cmds->names[i - 1]);
-+	}
-+	for (i = 0, j = 0; i < cmds->cnt; i++) {
-+		if (cmds->names[i]) {
-+			if (i == j)
-+				j++;
-+			else
-+				cmds->names[j++] = cmds->names[i];
-+		}
-+	}
- 	cmds->cnt = j;
-+	while (j < i)
-+		cmds->names[j++] = NULL;
- }
- 
- void exclude_cmds(struct cmdnames *cmds, struct cmdnames *excludes)
--- 
-2.43.0
-
+ 	/* the closing socket has some data untransmitted and/or unacked:
+ 	 * some data in the mptcp rtx queue has not really xmitted yet.
+ 	 * keep it simple and re-inject the whole mptcp level rtx queue
 
 
 
