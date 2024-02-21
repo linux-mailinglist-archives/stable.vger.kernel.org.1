@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-22389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A1E485DBCA
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:45:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF47385DE94
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:20:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C30661F24734
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:45:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93809B2AB8A
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:18:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28A0278B53;
-	Wed, 21 Feb 2024 13:45:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAE3A7C0BA;
+	Wed, 21 Feb 2024 14:17:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GFxlLWxK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VPAY7zNp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB07A7868A;
-	Wed, 21 Feb 2024 13:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FF2269942;
+	Wed, 21 Feb 2024 14:17:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523120; cv=none; b=fncZdSrNvuj8uTde1TbJVP3YCYh7SN0tREECGuYtgxAEj0yFCL1X6WcxkQbe/a8TsXdojw3Y2MBa4OcSX8Kq28X2rjS7JRDXuZfvJ7kSx5SbwlwQUPUaYTBC9eokP2eHL8UY4YF0ABNB6XkfkU8KLoKyVAPO2uvluoW2Wafeto4=
+	t=1708525028; cv=none; b=F8qiSNje3gytSeaX4Lvv/nyUpOlB1wjV975mONhkftfkX8otn8k4unI5T5k4irhvFfL8jIy9Mc/WyPtvbxN5q6UOeN/EJf2JHQZ0olwdafrCFg2Rr7wUu/9DMt3nlfermm879ufSE9aQB/QzYi5nFfXq6xv+v9HJh5JDNzUqQj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523120; c=relaxed/simple;
-	bh=u/xfvsfP93cocH/Qo8ejGSvwlVxqG525W6AJAJTYgyI=;
+	s=arc-20240116; t=1708525028; c=relaxed/simple;
+	bh=RovVNGdt3j+glhWlc2bhQzDLqW0OQDMts8/IkPTElDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UIe08KBWJVdsNVDV47MzdR3EOIkkxQKvqZnefe3XLwpskmZRG+G9zboq0OkkX1wciHY1188XokJHRLH9HEF6oP8FPj//Amshad2kcyetPSmWe3AbUiA41zGIXPfGNPDQ8ZzzuF0Hvflhju8iz482Wf6+W8kfNeT26MCdP/DxoZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GFxlLWxK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA11EC433C7;
-	Wed, 21 Feb 2024 13:45:19 +0000 (UTC)
+	 MIME-Version; b=emi8dGWk+I1INfouBWIT+OtYz1iC68+Ra9FCYra575TYKHcn5KqA7ra+wDvnYc8rcMqRwXCGg57OcqxcjWQsWlKz/xzx+c2qjnG7bxXBfzZns3m9tVLD2EIVlB8rkaI7f79gPvovLDdjR9WyGybAyy5bT/Tz0ofm7295BYIes9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VPAY7zNp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1328C433C7;
+	Wed, 21 Feb 2024 14:17:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523120;
-	bh=u/xfvsfP93cocH/Qo8ejGSvwlVxqG525W6AJAJTYgyI=;
+	s=korg; t=1708525028;
+	bh=RovVNGdt3j+glhWlc2bhQzDLqW0OQDMts8/IkPTElDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GFxlLWxKXuLWWLe9Gi64q43r+6rPvm1GYLXym8YV3nQ2NhkhfUVOrO/loMZ+Vzsrm
-	 jE4ybTlSCoicy6fGr0YBsi/sqjqYJIxWgrmwhktG7vwDpBBTwRkpxbXUFdax4ra4EA
-	 FlzSPuQ74gwnUj1MtNxQmr81I+qaXMIsdA9inu4s=
+	b=VPAY7zNpUEwjB+EkFcwfcpeF/QXGqnmGKWBiNIMaeZ2LN5UdWR7VcC907XJdN9k7p
+	 NenQ7XASJhclvXFIcoZkPO5JXe3xpZkHqBeqCoa30iHEoPJt3uZO9PXSc/YJGCBi7Z
+	 /14B6N4heOAmdmIbDD878Hb4jbJEmcqPIz1CZ5SI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Breno=20Leit=C3=A3o?= <leitao@debian.org>,
-	Tejun Heo <tj@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 328/476] blk-iocost: Fix an UBSAN shift-out-of-bounds warning
+Subject: [PATCH 5.4 038/267] netfilter: nf_tables: restrict anonymous set and map names to 16 bytes
 Date: Wed, 21 Feb 2024 14:06:19 +0100
-Message-ID: <20240221130020.148480740@linuxfoundation.org>
+Message-ID: <20240221125941.221121311@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +60,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tejun Heo <tj@kernel.org>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 2a427b49d02995ea4a6ff93a1432c40fa4d36821 ]
+[ Upstream commit b462579b2b86a8f5230543cadd3a4836be27baf7 ]
 
-When iocg_kick_delay() is called from a CPU different than the one which set
-the delay, @now may be in the past of @iocg->delay_at leading to the
-following warning:
+nftables has two types of sets/maps, one where userspace defines the
+name, and anonymous sets/maps, where userspace defines a template name.
 
-  UBSAN: shift-out-of-bounds in block/blk-iocost.c:1359:23
-  shift exponent 18446744073709 is too large for 64-bit type 'u64' (aka 'unsigned long long')
-  ...
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x79/0xc0
-   __ubsan_handle_shift_out_of_bounds+0x2ab/0x300
-   iocg_kick_delay+0x222/0x230
-   ioc_rqos_merge+0x1d7/0x2c0
-   __rq_qos_merge+0x2c/0x80
-   bio_attempt_back_merge+0x83/0x190
-   blk_attempt_plug_merge+0x101/0x150
-   blk_mq_submit_bio+0x2b1/0x720
-   submit_bio_noacct_nocheck+0x320/0x3e0
-   __swap_writepage+0x2ab/0x9d0
+For the latter, kernel requires presence of exactly one "%d".
+nftables uses "__set%d" and "__map%d" for this.  The kernel will
+expand the format specifier and replaces it with the smallest unused
+number.
 
-The underflow itself doesn't really affect the behavior in any meaningful
-way; however, the past timestamp may exaggerate the delay amount calculated
-later in the code, which shouldn't be a material problem given the nature of
-the delay mechanism.
+As-is, userspace could define a template name that allows to move
+the set name past the 256 bytes upperlimit (post-expansion).
 
-If @now is in the past, this CPU is racing another CPU which recently set up
-the delay and there's nothing this CPU can contribute w.r.t. the delay.
-Let's bail early from iocg_kick_delay() in such cases.
+I don't see how this could be a problem, but I would prefer if userspace
+cannot do this, so add a limit of 16 bytes for the '%d' template name.
 
-Reported-by: Breno Leitão <leitao@debian.org>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Fixes: 5160a5a53c0c ("blk-iocost: implement delay adjustment hysteresis")
-Link: https://lore.kernel.org/r/ZVvc9L_CYk5LO1fT@slm.duckdns.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+16 bytes is the old total upper limit for set names that existed when
+nf_tables was merged initially.
+
+Fixes: 387454901bd6 ("netfilter: nf_tables: Allow set names of up to 255 chars")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-iocost.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ net/netfilter/nf_tables_api.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/block/blk-iocost.c b/block/blk-iocost.c
-index f95feabb3ca8..645a589edda8 100644
---- a/block/blk-iocost.c
-+++ b/block/blk-iocost.c
-@@ -1342,6 +1342,13 @@ static bool iocg_kick_delay(struct ioc_gq *iocg, struct ioc_now *now)
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 534126f3687b..49e4ffa33a4e 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -24,6 +24,7 @@
+ #include <net/sock.h>
  
- 	lockdep_assert_held(&iocg->waitq.lock);
+ #define NFT_MODULE_AUTOLOAD_LIMIT (MODULE_NAME_LEN - sizeof("nft-expr-255-"))
++#define NFT_SET_MAX_ANONLEN 16
  
-+	/*
-+	 * If the delay is set by another CPU, we may be in the past. No need to
-+	 * change anything if so. This avoids decay calculation underflow.
-+	 */
-+	if (time_before64(now->now, iocg->delay_at))
-+		return false;
+ unsigned int nf_tables_net_id __read_mostly;
+ EXPORT_SYMBOL_GPL(nf_tables_net_id);
+@@ -3395,6 +3396,9 @@ static int nf_tables_set_alloc_name(struct nft_ctx *ctx, struct nft_set *set,
+ 		if (p[1] != 'd' || strchr(p + 2, '%'))
+ 			return -EINVAL;
+ 
++		if (strnlen(name, NFT_SET_MAX_ANONLEN) >= NFT_SET_MAX_ANONLEN)
++			return -EINVAL;
 +
- 	/* calculate the current delay in effect - 1/2 every second */
- 	tdelta = now->now - iocg->delay_at;
- 	if (iocg->delay)
+ 		inuse = (unsigned long *)get_zeroed_page(GFP_KERNEL);
+ 		if (inuse == NULL)
+ 			return -ENOMEM;
 -- 
 2.43.0
 
