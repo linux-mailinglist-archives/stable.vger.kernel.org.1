@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-21992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EAA385D997
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:20:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8C1585DF0B
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:24:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2FDE7B24FC0
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:20:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB5E3B2699B
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:21:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57E3C7C0A4;
-	Wed, 21 Feb 2024 13:19:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1595779DAE;
+	Wed, 21 Feb 2024 14:21:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="woBLoTeB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XeK3OQeu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15086763F6;
-	Wed, 21 Feb 2024 13:19:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8E0D69D29;
+	Wed, 21 Feb 2024 14:21:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521594; cv=none; b=MO8q561DU+GkGp0kNpxJ122W08WxSCHbRRZuNeTd3Upl6zPvd3KN5QWFxrStilagGiSbUEcwu+DEOH08bpyP0nCjJCtwRVr+Gnt7Plxj2fz4VultRlCVOydUnMqh1vhd/7ufLj2bWKYPztdZP6LgXfZcqidgbsoWkFtaZbieSkc=
+	t=1708525294; cv=none; b=jiz5j1O7CFT9ggd7zj54tbEAM+fkJIZMNL86QnwCWCz9qOM/FgoniqpxrgosEd1M3L6cnxmtnc/YU+Z6Ruqo7CpB0XlOmCTb7hQhcq9TPWvYirP3ie+coclqNZaevKIfgGemHTinYujNqfXdapGPZAkOcWDgr6u2sa8XPsWQAWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521594; c=relaxed/simple;
-	bh=LbFv/9KabQfjhDV5YKlwmWtzfbB85+f/a2TFZCMq5jI=;
+	s=arc-20240116; t=1708525294; c=relaxed/simple;
+	bh=8hnQW2Nf32AOyO+BL/tn9ey3JKmFTugdWbi3vi/MFLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g42an0zlG11adNPA1Bu4L/yBshl7/VHYGhx+G9cwGnqzbYcg0Nj9JTdCdxzrsFu+ZL3e+AZ6pUIHOVwAy8QNNeKl2j3s5/rAsv6Ht/sqXPtVdTLJjQfzJC692ZL/PEw4a5tEmAaJ9+lUV/VGTVpVMC1lpxCnZiTo1aPT+6WqD1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=woBLoTeB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 847A4C43390;
-	Wed, 21 Feb 2024 13:19:53 +0000 (UTC)
+	 MIME-Version; b=Sgw0nx3MKAPMZKJ2qaOB8rahuUwy1HFsUGM+i4fkXzD0zl9Vaj2ulxNxGgenaOoiWqf6Ose+CzfEoPMvpOQz+fDHUzsZdDo5DemIwz1fON2D4s2gq5qWWbdCTs4m4hothB+76VigTRUbJbKiKVRQNB5ChMklRxz8JLwG1GC22Ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XeK3OQeu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B3B4C433C7;
+	Wed, 21 Feb 2024 14:21:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521593;
-	bh=LbFv/9KabQfjhDV5YKlwmWtzfbB85+f/a2TFZCMq5jI=;
+	s=korg; t=1708525294;
+	bh=8hnQW2Nf32AOyO+BL/tn9ey3JKmFTugdWbi3vi/MFLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=woBLoTeBBtlzDHtt+18UfU+3YdJkwSuWeoVsm9sj3yi+UW7aVFw+bO7SvJk9sJGrj
-	 1mHBdR5DFOopebFbjv7ZPSy6CKr6u+iEKXhV+GeY6TNDiXjkJajLFa8OLLsBa+hfBu
-	 1YiHHYAiIsrLT8HX5aGskwmtDL6TLtcYMvdT7+40=
+	b=XeK3OQeujrvG+asyKm8+SUBSVTzLHhIqDVBMeW43KhGjQeohfU2JQk3ozG6T85p3M
+	 X5d5hMnaXGH/H4oYn+aXyhFUetTjYv0myUV6kvBqcP3KrIZcV84rzzxn45Tbxhbwa2
+	 tSdVuNfZjq6ssmY71Y44e1dEt/6w8cSaH+GafXnE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-afs@lists.infradead.org,
-	netdev@vger.kernel.org,
+	Christoph Hellwig <hch@lst.de>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 153/202] rxrpc: Fix response to PING RESPONSE ACKs to a dead call
+Subject: [PATCH 5.4 113/267] block: prevent an integer overflow in bvec_try_merge_hw_page
 Date: Wed, 21 Feb 2024 14:07:34 +0100
-Message-ID: <20240221125936.634735812@linuxfoundation.org>
+Message-ID: <20240221125943.511519908@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,52 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 6f769f22822aa4124b556339781b04d810f0e038 ]
+[ Upstream commit 3f034c374ad55773c12dd8f3c1607328e17c0072 ]
 
-Stop rxrpc from sending a DUP ACK in response to a PING RESPONSE ACK on a
-dead call.  We may have initiated the ping but the call may have beaten the
-response to completion.
+Reordered a check to avoid a possible overflow when adding len to bv_len.
 
-Fixes: 18bfeba50dfd ("rxrpc: Perform terminal call ACK/ABORT retransmission from conn processor")
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Eric Dumazet <edumazet@google.com>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: linux-afs@lists.infradead.org
-cc: netdev@vger.kernel.org
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Link: https://lore.kernel.org/r/20231204173419.782378-2-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rxrpc/conn_event.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ block/bio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/rxrpc/conn_event.c b/net/rxrpc/conn_event.c
-index 04213afd7710..84a70d7d0285 100644
---- a/net/rxrpc/conn_event.c
-+++ b/net/rxrpc/conn_event.c
-@@ -45,6 +45,14 @@ static void rxrpc_conn_retransmit_call(struct rxrpc_connection *conn,
+diff --git a/block/bio.c b/block/bio.c
+index 6bdb95174adc..e3d3e75c97e0 100644
+--- a/block/bio.c
++++ b/block/bio.c
+@@ -710,7 +710,7 @@ static bool bio_try_merge_pc_page(struct request_queue *q, struct bio *bio,
  
- 	_enter("%d", conn->debug_id);
- 
-+	if (sp && sp->hdr.type == RXRPC_PACKET_TYPE_ACK) {
-+		if (skb_copy_bits(skb, sizeof(struct rxrpc_wire_header),
-+				  &pkt.ack, sizeof(pkt.ack)) < 0)
-+			return;
-+		if (pkt.ack.reason == RXRPC_ACK_PING_RESPONSE)
-+			return;
-+	}
-+
- 	chan = &conn->channels[channel];
- 
- 	/* If the last call got moved on whilst we were waiting to run, just
+ 	if ((addr1 | mask) != (addr2 | mask))
+ 		return false;
+-	if (bv->bv_len + len > queue_max_segment_size(q))
++	if (len > queue_max_segment_size(q) - bv->bv_len)
+ 		return false;
+ 	return __bio_try_merge_page(bio, page, len, offset, same_page);
+ }
 -- 
 2.43.0
 
