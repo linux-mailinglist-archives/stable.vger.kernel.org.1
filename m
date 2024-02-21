@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-22556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E45CD85DC98
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:55:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFB6E85DABF
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:34:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CF0D2820B2
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:55:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F66D1C22D21
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:34:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50A0979DA2;
-	Wed, 21 Feb 2024 13:55:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D8B87E115;
+	Wed, 21 Feb 2024 13:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WDXcV8uN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z/woIlmr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E2BB762C1;
-	Wed, 21 Feb 2024 13:55:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A53C3D96B;
+	Wed, 21 Feb 2024 13:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523711; cv=none; b=QRqpBlvcubKzv4eG4gVsxUEwR2XoZphmph51Xlqbsdq2/XqBBtoqUTI4Gafw05g8w8KpOUVpf3PCB9dB4OnzZqkjqFaqsOJ+74EjdhsAmuZW4zkrbFPVEy/bGarFPi19lp0+5QqvZ/MB4YhrFFeFrwyZ0LhYtzSVG9IypjHvvQo=
+	t=1708522347; cv=none; b=RTVjBSTHM4+8eLII5RHdQM49Pka/L3kgC6oILnrPMi+IHkmqeGLED24mh7vnQMKHX06tTtIbUW5UJ11K3sxSNIRoEr2cWkNP9K4KIBvQHhPI+iPACWXH5IR4e2k4IypIaMZUtrH2U6ur6he/LyL4NrsyVJMtsNObqRUmkESrEwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523711; c=relaxed/simple;
-	bh=2gehHLWTPGm8yfGO1k78ygGNtx6WtdJtECot882DVIs=;
+	s=arc-20240116; t=1708522347; c=relaxed/simple;
+	bh=vync62f7JKQ8375cPLYsitLUTm4o9DOGn2Ckxpi7izw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tQlB6IH/CAghOh17YuVbv1g/hNrvfUlKUJoyZkAbiKAgR1MdwCXj2cfoeTT9YbvzmCaAGNDOJV47JbHvFbLGm5g499uNBdFhlIVbOQarDGAOc/KOaF/wu7cuNh5x1d+WuNbwFH03yIGgxCxmUsAnNqxIg7rB3AcImL3TzjnDyE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WDXcV8uN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62B66C433C7;
-	Wed, 21 Feb 2024 13:55:10 +0000 (UTC)
+	 MIME-Version; b=i/6GBUc0C29p1ne93lm8PbF1399eY2dPDCWS9v7/p9ubWV186puE+N/pPS6dZN4Pcg5v9ggloKY2G1iQLtEd2s86XTVeSNQ0b/PEVd0litjfs+e95jk6t0zBx9soZ7yQppjcPAcWmTjydUbwQEJW1zZvO5rOEX8j0fJXvjk6Md4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z/woIlmr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34C91C43390;
+	Wed, 21 Feb 2024 13:32:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523710;
-	bh=2gehHLWTPGm8yfGO1k78ygGNtx6WtdJtECot882DVIs=;
+	s=korg; t=1708522346;
+	bh=vync62f7JKQ8375cPLYsitLUTm4o9DOGn2Ckxpi7izw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WDXcV8uNZKQIBiaUpjbEpR40giyjq99hF4LQE9CBCNLfISJYgrXbM/4fmdjPM4Jr9
-	 vyflR3VglqUpbrKgdTTrSVYA2yUapS8T8HaiDZ1F6/MKxWsqwjngoTGW3iyS/EXfgS
-	 oX+gyT7QToymoLUFRS7S0mJx7Wy9FWOSDhjb3DIs=
+	b=z/woIlmr7s8SzbyjFibO5DN9FlosmLD2rKzTrNUi7k8BT57hC7QdeX7FvdUIxhAam
+	 SZXO2nUETO4kBuWYhPM0NLaDfg/Iutlbo6D1eqQFvI2LRIWnvR/MsDFj4PdOFziBZP
+	 5c0vvuzhl5W+ELwcLVn2fUlrkuiAP1TkH+znlGWU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Rui Zhang <zr.zhang@vivo.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 009/379] serial: sc16is7xx: set safe default SPI clock frequency
+Subject: [PATCH 5.15 137/476] regulator: core: Only increment use_count when enable_count changes
 Date: Wed, 21 Feb 2024 14:03:08 +0100
-Message-ID: <20240221125955.198241584@linuxfoundation.org>
+Message-ID: <20240221130013.008200778@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Rui Zhang <zr.zhang@vivo.com>
 
-[ Upstream commit 3ef79cd1412236d884ab0c46b4d1921380807b48 ]
+[ Upstream commit 7993d3a9c34f609c02171e115fd12c10e2105ff4 ]
 
-15 MHz is supported only by 76x variants.
+The use_count of a regulator should only be incremented when the
+enable_count changes from 0 to 1. Similarly, the use_count should
+only be decremented when the enable_count changes from 1 to 0.
 
-If the SPI clock frequency is not specified, use a safe default clock value
-of 4 MHz that is supported by all variants.
+In the previous implementation, use_count was sometimes decremented
+to 0 when some consumer called unbalanced disable,
+leading to unexpected disable even the regulator is enabled by
+other consumers. With this change, the use_count accurately reflects
+the number of users which the regulator is enabled.
 
-Also use HZ_PER_MHZ macro to improve readability.
+This should make things more robust in the case where a consumer does
+leak references.
 
-Fixes: 2c837a8a8f9f ("sc16is7xx: spi interface is added")
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20231221231823.2327894-4-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Rui Zhang <zr.zhang@vivo.com>
+Link: https://lore.kernel.org/r/20231103074231.8031-1-zr.zhang@vivo.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sc16is7xx.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/regulator/core.c | 56 +++++++++++++++++++++-------------------
+ 1 file changed, 30 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index fd9be81bcfd8..dfaca09de79b 100644
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -24,6 +24,7 @@
- #include <linux/tty_flip.h>
- #include <linux/spi/spi.h>
- #include <linux/uaccess.h>
-+#include <linux/units.h>
- #include <uapi/linux/sched/types.h>
+diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+index 8ad50dc8fb35..9b1f27f87c95 100644
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -2881,7 +2881,8 @@ static int _regulator_enable(struct regulator *regulator)
+ 		/* Fallthrough on positive return values - already enabled */
+ 	}
  
- #define SC16IS7XX_NAME			"sc16is7xx"
-@@ -1451,7 +1452,7 @@ static int sc16is7xx_spi_probe(struct spi_device *spi)
- 	spi->bits_per_word	= 8;
- 	/* only supports mode 0 on SC16IS762 */
- 	spi->mode		= spi->mode ? : SPI_MODE_0;
--	spi->max_speed_hz	= spi->max_speed_hz ? : 15000000;
-+	spi->max_speed_hz	= spi->max_speed_hz ? : 4 * HZ_PER_MHZ;
- 	ret = spi_setup(spi);
- 	if (ret)
- 		return ret;
+-	rdev->use_count++;
++	if (regulator->enable_count == 1)
++		rdev->use_count++;
+ 
+ 	return 0;
+ 
+@@ -2956,37 +2957,40 @@ static int _regulator_disable(struct regulator *regulator)
+ 
+ 	lockdep_assert_held_once(&rdev->mutex.base);
+ 
+-	if (WARN(rdev->use_count <= 0,
++	if (WARN(regulator->enable_count == 0,
+ 		 "unbalanced disables for %s\n", rdev_get_name(rdev)))
+ 		return -EIO;
+ 
+-	/* are we the last user and permitted to disable ? */
+-	if (rdev->use_count == 1 &&
+-	    (rdev->constraints && !rdev->constraints->always_on)) {
+-
+-		/* we are last user */
+-		if (regulator_ops_is_valid(rdev, REGULATOR_CHANGE_STATUS)) {
+-			ret = _notifier_call_chain(rdev,
+-						   REGULATOR_EVENT_PRE_DISABLE,
+-						   NULL);
+-			if (ret & NOTIFY_STOP_MASK)
+-				return -EINVAL;
+-
+-			ret = _regulator_do_disable(rdev);
+-			if (ret < 0) {
+-				rdev_err(rdev, "failed to disable: %pe\n", ERR_PTR(ret));
+-				_notifier_call_chain(rdev,
+-						REGULATOR_EVENT_ABORT_DISABLE,
++	if (regulator->enable_count == 1) {
++	/* disabling last enable_count from this regulator */
++		/* are we the last user and permitted to disable ? */
++		if (rdev->use_count == 1 &&
++		    (rdev->constraints && !rdev->constraints->always_on)) {
++
++			/* we are last user */
++			if (regulator_ops_is_valid(rdev, REGULATOR_CHANGE_STATUS)) {
++				ret = _notifier_call_chain(rdev,
++							   REGULATOR_EVENT_PRE_DISABLE,
++							   NULL);
++				if (ret & NOTIFY_STOP_MASK)
++					return -EINVAL;
++
++				ret = _regulator_do_disable(rdev);
++				if (ret < 0) {
++					rdev_err(rdev, "failed to disable: %pe\n", ERR_PTR(ret));
++					_notifier_call_chain(rdev,
++							REGULATOR_EVENT_ABORT_DISABLE,
++							NULL);
++					return ret;
++				}
++				_notifier_call_chain(rdev, REGULATOR_EVENT_DISABLE,
+ 						NULL);
+-				return ret;
+ 			}
+-			_notifier_call_chain(rdev, REGULATOR_EVENT_DISABLE,
+-					NULL);
+-		}
+ 
+-		rdev->use_count = 0;
+-	} else if (rdev->use_count > 1) {
+-		rdev->use_count--;
++			rdev->use_count = 0;
++		} else if (rdev->use_count > 1) {
++			rdev->use_count--;
++		}
+ 	}
+ 
+ 	if (ret == 0)
 -- 
 2.43.0
 
