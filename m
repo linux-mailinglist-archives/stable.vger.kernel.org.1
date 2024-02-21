@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-22407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61E1C85DBE6
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:46:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96FF485DD77
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:06:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02A901F21343
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:46:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5BC51C22689
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:06:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4475269D21;
-	Wed, 21 Feb 2024 13:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8D147F483;
+	Wed, 21 Feb 2024 14:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V42I3rbL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v2eGwGYL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018B755E5E;
-	Wed, 21 Feb 2024 13:46:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 867A67E590;
+	Wed, 21 Feb 2024 14:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523191; cv=none; b=GNn8wR40PK/ZUmpam5drJt1PPVCTHQ56ap20sSEjPodE5sHMw/kYI37WytoMqqiyQIEUGe4rBzXqDjxClDo3J53MYG5G65YzGWnwt+7zftd+GxpSHx74T7JLkxIPNZPWPfDU1773DTCM2Qrz4skEYRK7HuNjqUesRNfrxvO4Q/o=
+	t=1708524283; cv=none; b=ufNj9pNkVTfMT+BUYMIvmHQlIhjFeIOHNb8qOZLeHQenrIEaeB9uEVfpUbvY7OsAExwCegZa2SNrfk6obj+cWHmh+iANhWg98qU1gLwZ0cNNa72vf4Jc+kdnasp8q2NMkJQicu4Eij7dMB0qok7LFSdA9GuRpMlF3sBHfC64jac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523191; c=relaxed/simple;
-	bh=YXrGCMmjNfntABRzSm8Hfd+dKLSBGzXpiGZJA8jjcDc=;
+	s=arc-20240116; t=1708524283; c=relaxed/simple;
+	bh=ZIT1MzNY38bneWJWNVIJGloj3EFumNvvNPhk7jSO9b8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BfdbUFuMYaP5xVCICJn0fvDkr3/bKfOn68sjM+TELhhMFfmsC4GwBCfDTwM4tWByAerHKTtdB4j0mFIRAnIdibw9mdiXOF/JEmjBhrKrWLGb/JBY39tjaVPve+qL8nyOt1RsZ4vcCIV44mZtyenXwnvTlGCTEah2OqI2h/u/mOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V42I3rbL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76CB9C433C7;
-	Wed, 21 Feb 2024 13:46:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IFoz9QqwtiVn9A7BdIT9M4b4xEIxPnLYYq0g0U08aQf1Wmaw1fvmn07nkco9Fda6e3+k2FMqw53tOGbHykR7trPC27L6knxTWROv0HIZLjZvLf55Btcrp6onJbwEAtKddEaFJR8Zdi5/wn9DjmRAS+gt6C7Bl6mKnVsEcqypsDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v2eGwGYL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A480BC433F1;
+	Wed, 21 Feb 2024 14:04:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523190;
-	bh=YXrGCMmjNfntABRzSm8Hfd+dKLSBGzXpiGZJA8jjcDc=;
+	s=korg; t=1708524283;
+	bh=ZIT1MzNY38bneWJWNVIJGloj3EFumNvvNPhk7jSO9b8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V42I3rbLcG2MpTivabllUHlv+Xo7SRIeood/b3bY+GdCjL6NvHfMUCIoW4oKl5XFq
-	 Yi287ks+LSh8bA0688F/EXOetuP3S5OKOJmCtWQESyY8qmvjCFoHxEv92R+79Hl+ot
-	 G2k42FiWfcJPc2iIxOnOxCXKSzCUg6fKqSL5/6n0=
+	b=v2eGwGYLAenNCrXKI+5+4G1JWp95goc0TyeRlBwqr81QG86kWcNWtk2rWtYyu71bD
+	 2q9ENgLABjebofatmRxGUKAOl4nMH8GTxKnCLuTJ4Au7mTZ40mhObTp4DBjN0i1IAQ
+	 PifytO9OKCzXG2WGfStNzUowlNY4OT7VxP1yOSY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Felix Kuehling <Felix.Kuehling@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 326/476] fs/ntfs3: Fix an NULL dereference bug
+Subject: [PATCH 5.10 198/379] drm/amdgpu: Let KFD sync with VM fences
 Date: Wed, 21 Feb 2024 14:06:17 +0100
-Message-ID: <20240221130020.082898564@linuxfoundation.org>
+Message-ID: <20240221130000.760377131@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +61,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Felix Kuehling <Felix.Kuehling@amd.com>
 
-[ Upstream commit b2dd7b953c25ffd5912dda17e980e7168bebcf6c ]
+[ Upstream commit ec9ba4821fa52b5efdbc4cdf0a77497990655231 ]
 
-The issue here is when this is called from ntfs_load_attr_list().  The
-"size" comes from le32_to_cpu(attr->res.data_size) so it can't overflow
-on a 64bit systems but on 32bit systems the "+ 1023" can overflow and
-the result is zero.  This means that the kmalloc will succeed by
-returning the ZERO_SIZE_PTR and then the memcpy() will crash with an
-Oops on the next line.
+Change the rules for amdgpu_sync_resv to let KFD synchronize with VM
+fences on page table reservations. This fixes intermittent memory
+corruption after evictions when using amdgpu_vm_handle_moved to update
+page tables for VM mappings managed through render nodes.
 
-Fixes: be71b5cba2e6 ("fs/ntfs3: Add attrib operations")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Felix Kuehling <Felix.Kuehling@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/ntfs_fs.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_sync.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ntfs3/ntfs_fs.h b/fs/ntfs3/ntfs_fs.h
-index 510ed2ea1c48..981276500043 100644
---- a/fs/ntfs3/ntfs_fs.h
-+++ b/fs/ntfs3/ntfs_fs.h
-@@ -468,7 +468,7 @@ bool al_delete_le(struct ntfs_inode *ni, enum ATTR_TYPE type, CLST vcn,
- int al_update(struct ntfs_inode *ni, int sync);
- static inline size_t al_aligned(size_t size)
- {
--	return (size + 1023) & ~(size_t)1023;
-+	return size_add(size, 1023) & ~(size_t)1023;
- }
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_sync.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_sync.c
+index 8ea6c49529e7..6a22bc41c205 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_sync.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_sync.c
+@@ -241,7 +241,8 @@ int amdgpu_sync_resv(struct amdgpu_device *adev, struct amdgpu_sync *sync,
  
- /* Globals from bitfunc.c */
+ 		/* Never sync to VM updates either. */
+ 		if (fence_owner == AMDGPU_FENCE_OWNER_VM &&
+-		    owner != AMDGPU_FENCE_OWNER_UNDEFINED)
++		    owner != AMDGPU_FENCE_OWNER_UNDEFINED &&
++	    owner != AMDGPU_FENCE_OWNER_KFD)
+ 			continue;
+ 
+ 		/* Ignore fences depending on the sync mode */
 -- 
 2.43.0
 
