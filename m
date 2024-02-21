@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-23032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6E8385DEDE
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:22:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E95085DDF2
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:13:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 506901F22C56
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:22:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A78F283D09
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:13:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 666A97A708;
-	Wed, 21 Feb 2024 14:22:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F1D07C093;
+	Wed, 21 Feb 2024 14:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ez2bi3oR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0CnUcv++"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21BBA78B60;
-	Wed, 21 Feb 2024 14:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B58D27F7E8;
+	Wed, 21 Feb 2024 14:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525354; cv=none; b=HfJej2DGNy1DShgr0GX1jM7K2WurqxBrDKb5qFVvZxnewKvjP060VT+rhdKEvMabxnXHDiTv1AFlPVDmeHQkmjxM7CaJSY2+bnkD3/NuLJL2afayZDT9ab2eJCxXSAjzAVC4/CnU4pZI7NB479LLJmSk+WspOh+2nFFLh008cjM=
+	t=1708524595; cv=none; b=oP8fHwudz4Phui+dICoj1iWG7ILw0+s7aETW//Vih+gldkxJtUpnANTd+oTjFzBBVuHE6311FHI01sv1qfHQ+c7Cg8SgmvIBWlM4BuiARefs2DfXxfQbnmvhE3ZT6+2oG8M5/po21UJnKt3swTZmIeuibVIrOtiTnkj0VC8Ubbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525354; c=relaxed/simple;
-	bh=88XqzxTWOhau6l0FQ5bLhEUfZGZpQ+MdCxYeoK6OCe0=;
+	s=arc-20240116; t=1708524595; c=relaxed/simple;
+	bh=f8vBwz4+4UEjZES6TjqhsOwwbJT+UpRPprjzDsKoShM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dn/RnlDVMh4zpWXcPAt7ryuvmS3ldPapMoTYCSDMXTHcLjtV1/gqVcIthZI7c26r42EK8PTVkTVJmJYkc+4SFzHyYaIocRVe5O2nSKnUcfHhP8CF5+yQ/lJaPTTVe9Sc9JptMWdHfvIvBwe6aPgeVzbxiX2xnkJff1kmmq+R2ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ez2bi3oR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 371F9C433C7;
-	Wed, 21 Feb 2024 14:22:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SOONlKlwp5heDLQPeTWI894/QYF9n4TD2/tlbG7tpar8Kxl6+4tV4YhCQig8ON/8XTWPKQAZHnHLW61bkkzXzkH4lw933Cv1n451gqTOWqdxlROEaRU9dhnz//YqbGr1tGR8YZrwlSqPxMW4dR5zuK9oJDB32kVbx+3m1mL8UTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0CnUcv++; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D794C433C7;
+	Wed, 21 Feb 2024 14:09:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525353;
-	bh=88XqzxTWOhau6l0FQ5bLhEUfZGZpQ+MdCxYeoK6OCe0=;
+	s=korg; t=1708524595;
+	bh=f8vBwz4+4UEjZES6TjqhsOwwbJT+UpRPprjzDsKoShM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ez2bi3oREyZZn2xjMNCxT+yIHOb3Rx8P4zcrtGdfnOYnDsEONN9u17rdu2ySg/eT7
-	 yRfc5lF362bRDH6ooKs4jCR/G8MSKWIGGVZ+T3MhCQix6ol2e9BbDvKbqhDY7kVAap
-	 JeJ2lrI17Q0NWzSuU0Yh/TllbAVHesm7HZaZN3Ts=
+	b=0CnUcv++Dmwx+Vz9WukW5N4wAt807vtNrSlcTjhip7/xarTC4d4qT7ESFbIHCre6z
+	 wNDAPWTIaHhM0Ac8QGo0aWCgPEZsyWN6v3o9nukHdN0Skatlo46mTRwyjZpfqJBsI+
+	 GySvL/ZfED4egPL8Xwgn6i1aDUaPF+/W9gI+pl3A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
 	Mark Brown <broonie@kernel.org>,
-	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 129/267] PCI: add INTEL_HDA_ARL to pci_ids.h
-Date: Wed, 21 Feb 2024 14:07:50 +0100
-Message-ID: <20240221125944.085401496@linuxfoundation.org>
+Subject: [PATCH 5.10 292/379] spi: ppc4xx: Drop write-only variable
+Date: Wed, 21 Feb 2024 14:07:51 +0100
+Message-ID: <20240221130003.546117886@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,40 +63,54 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 5ec42bf04d72fd6d0a6855810cc779e0ee31dfd7 ]
+[ Upstream commit b3aa619a8b4706f35cb62f780c14e68796b37f3f ]
 
-The PCI ID insertion follows the increasing order in the table, but
-this hardware follows MTL (MeteorLake).
+Since commit 24778be20f87 ("spi: convert drivers to use
+bits_per_word_mask") the bits_per_word variable is only written to. The
+check that was there before isn't needed any more as the spi core
+ensures that only 8 bit transfers are used, so the variable can go away
+together with all assignments to it.
 
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Acked-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20231204212710.185976-2-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 24778be20f87 ("spi: convert drivers to use bits_per_word_mask")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/20240210164006.208149-8-u.kleine-koenig@pengutronix.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/pci_ids.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-ppc4xx.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
-index fcacf2334704..d8b188643a87 100644
---- a/include/linux/pci_ids.h
-+++ b/include/linux/pci_ids.h
-@@ -3011,6 +3011,7 @@
- #define PCI_DEVICE_ID_INTEL_82443GX_0	0x71a0
- #define PCI_DEVICE_ID_INTEL_82443GX_2	0x71a2
- #define PCI_DEVICE_ID_INTEL_82372FB_1	0x7601
-+#define PCI_DEVICE_ID_INTEL_HDA_ARL	0x7728
- #define PCI_DEVICE_ID_INTEL_SCH_LPC	0x8119
- #define PCI_DEVICE_ID_INTEL_SCH_IDE	0x811a
- #define PCI_DEVICE_ID_INTEL_E6XX_CU	0x8183
+diff --git a/drivers/spi/spi-ppc4xx.c b/drivers/spi/spi-ppc4xx.c
+index d8ee363fb714..4200b12fc347 100644
+--- a/drivers/spi/spi-ppc4xx.c
++++ b/drivers/spi/spi-ppc4xx.c
+@@ -166,10 +166,8 @@ static int spi_ppc4xx_setupxfer(struct spi_device *spi, struct spi_transfer *t)
+ 	int scr;
+ 	u8 cdm = 0;
+ 	u32 speed;
+-	u8 bits_per_word;
+ 
+ 	/* Start with the generic configuration for this device. */
+-	bits_per_word = spi->bits_per_word;
+ 	speed = spi->max_speed_hz;
+ 
+ 	/*
+@@ -177,9 +175,6 @@ static int spi_ppc4xx_setupxfer(struct spi_device *spi, struct spi_transfer *t)
+ 	 * the transfer to overwrite the generic configuration with zeros.
+ 	 */
+ 	if (t) {
+-		if (t->bits_per_word)
+-			bits_per_word = t->bits_per_word;
+-
+ 		if (t->speed_hz)
+ 			speed = min(t->speed_hz, spi->max_speed_hz);
+ 	}
 -- 
 2.43.0
 
