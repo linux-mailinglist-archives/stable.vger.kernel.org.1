@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-22839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF44985DE08
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:14:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E8FF85DC48
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:51:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BE07283F2D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5DBB2851F4
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:51:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0133E80621;
-	Wed, 21 Feb 2024 14:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 918DE7992D;
+	Wed, 21 Feb 2024 13:51:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XHkp4f/l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xxq9wVrJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2BD07CF32;
-	Wed, 21 Feb 2024 14:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB3D55E5E;
+	Wed, 21 Feb 2024 13:51:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524684; cv=none; b=jNZnRGvPihHp5HCIAbBqgMkxjeWYNZDTJEbFWr4mOWUtBZIvkWAXv8uZt/zBv4iAhP/uYCCqOjNNhc7iDS2Un2BBAxTq6kSdhfBJNr+U7VLh60U0aElMQ0m1uhC2Y00FHiw1LgRdDIyQfpP64CdpWyOtSv4MTn15bqe5SMIieMg=
+	t=1708523485; cv=none; b=PJTKvO2M5s71fQoELYlnfKzBl2bQLoSnFcgsWdYfyUwyjm5WQIJDSIB7xKUmm1bJZFAIk1kanc1jKlM48Gy+CnU5ogWtiOIR7yi0XSTVPvtTy3bM6wPCIqkdzMaLHKzwDopG0b2ebm93uTgbiMhAuTlWZTfCDOT/qXXk7oKEAqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524684; c=relaxed/simple;
-	bh=6YMS2WwaJ4KjOzFKuj3Fpdi0SdPs7M1fiv9Eda5aU7E=;
+	s=arc-20240116; t=1708523485; c=relaxed/simple;
+	bh=3d+8lN8ssKpk/zdhfADUg4mvP+E6ki0M8x9g+XJAFr4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KfuzgHQqzp4SaNSf3qHn9hnxloG0erNVPTe8ViLpX3v60uwOkxP6R44xgvpLPNEqAhggEPIe/JRxp7fPFGW8pnvGWwx5IVkfEVXAm7RKkcs8pxA71/eSeuwLSHPYzYsdVpFncefz0w7GiJDfZCArcK1EmvpwKy9oFjlH5gKIbng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XHkp4f/l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0DE0C433C7;
-	Wed, 21 Feb 2024 14:11:23 +0000 (UTC)
+	 MIME-Version; b=nQJPCKl447+4/Gva9cm6WrevdvtbMKQUEqRpej2vhkZHGFMfP8PJVGZV6/skiYZPMZn8QY8l314/aeogTaB6/ghdadyBXsskFXT8vaBTRdU34t3TqD7Q++Mvydmj55RSaBR7DbHIjC/SHMLhsRtOVz5eQsI1dR9J2hYXx58Ipu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xxq9wVrJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC613C433C7;
+	Wed, 21 Feb 2024 13:51:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524684;
-	bh=6YMS2WwaJ4KjOzFKuj3Fpdi0SdPs7M1fiv9Eda5aU7E=;
+	s=korg; t=1708523485;
+	bh=3d+8lN8ssKpk/zdhfADUg4mvP+E6ki0M8x9g+XJAFr4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XHkp4f/lSfSKcyQoU3RPc9cjq0Z5ZgevbZA2+88VjEjN9UO5k+pLFT8XBklMNUWjf
-	 AtUIdw+InI5BgZSW0ARJ9aXNTuvjo6YTp+1YtU+o17oLXKDwy18Ob4V6IJa9FninRo
-	 +FZBarrCZd0jnnLQKbggo7At9jkWrMpjaiGgbSHA=
+	b=xxq9wVrJuVhxd6SvXQ+5gGF8Bvxkd08K/nz3uxFK3ftkoRcUHMg7bbVyvsYcGuNpe
+	 gjLwax7bA0SCdaYSxzAUtAHV8kOhn28MDlqshMPVgp4fSR82diZNolod9qkDclELwk
+	 ayr+SNRu+tga575YiSmKKXEZrZL4fkJUqpqFwgRs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
-	Martijn Coenen <maco@android.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Steven Moreland <smoreland@google.com>,
-	Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH 5.10 319/379] binder: signal epoll threads of self-work
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 447/476] fbdev: Dont sort deferred-I/O pages by default
 Date: Wed, 21 Feb 2024 14:08:18 +0100
-Message-ID: <20240221130004.382005339@linuxfoundation.org>
+Message-ID: <20240221130024.555704253@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +61,194 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit 97830f3c3088638ff90b20dfba2eb4d487bf14d7 upstream.
+[ Upstream commit 8c30e2d81bfddc5ab9f6b04db1c0f7d6ca7bdf46 ]
 
-In (e)poll mode, threads often depend on I/O events to determine when
-data is ready for consumption. Within binder, a thread may initiate a
-command via BINDER_WRITE_READ without a read buffer and then make use
-of epoll_wait() or similar to consume any responses afterwards.
+Fbdev's deferred I/O sorts all dirty pages by default, which incurs a
+significant overhead. Make the sorting step optional and update the few
+drivers that require it. Use a FIFO list by default.
 
-It is then crucial that epoll threads are signaled via wakeup when they
-queue their own work. Otherwise, they risk waiting indefinitely for an
-event leaving their work unhandled. What is worse, subsequent commands
-won't trigger a wakeup either as the thread has pending work.
+Most fbdev drivers with deferred I/O build a bounding rectangle around
+the dirty pages or simply flush the whole screen. The only two affected
+DRM drivers, generic fbdev and vmwgfx, both use a bounding rectangle.
+In those cases, the exact order of the pages doesn't matter. The other
+drivers look at the page index or handle pages one-by-one. The patch
+sets the sort_pagelist flag for those, even though some of them would
+probably work correctly without sorting. Driver maintainers should update
+their driver accordingly.
 
-Fixes: 457b9a6f09f0 ("Staging: android: add binder driver")
-Cc: Arve Hjønnevåg <arve@android.com>
-Cc: Martijn Coenen <maco@android.com>
-Cc: Alice Ryhl <aliceryhl@google.com>
-Cc: Steven Moreland <smoreland@google.com>
-Cc: stable@vger.kernel.org # v4.19+
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Link: https://lore.kernel.org/r/20240131215347.1808751-1-cmllamas@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Sorting pages by memory offset for deferred I/O performs an implicit
+bubble-sort step on the list of dirty pages. The algorithm goes through
+the list of dirty pages and inserts each new page according to its
+index field. Even worse, list traversal always starts at the first
+entry. As video memory is most likely updated scanline by scanline, the
+algorithm traverses through the complete list for each updated page.
+
+For example, with 1024x768x32bpp each page covers exactly one scanline.
+Writing a single screen update from top to bottom requires updating
+768 pages. With an average list length of 384 entries, a screen update
+creates (768 * 384 =) 294912 compare operation.
+
+Fix this by making the sorting step opt-in and update the few drivers
+that require it. All other drivers work with unsorted page lists. Pages
+are appended to the list. Therefore, in the common case of writing the
+framebuffer top to bottom, pages are still sorted by offset, which may
+have a positive effect on performance.
+
+Playing a video [1] in mplayer's benchmark mode shows the difference
+(i7-4790, FullHD, simpledrm, kernel with debugging).
+
+  mplayer -benchmark -nosound -vo fbdev ./big_buck_bunny_720p_stereo.ogg
+
+With sorted page lists:
+
+  BENCHMARKs: VC:  32.960s VO:  73.068s A:   0.000s Sys:   2.413s =  108.441s
+  BENCHMARK%: VC: 30.3947% VO: 67.3802% A:  0.0000% Sys:  2.2251% = 100.0000%
+
+With unsorted page lists:
+
+  BENCHMARKs: VC:  31.005s VO:  42.889s A:   0.000s Sys:   2.256s =   76.150s
+  BENCHMARK%: VC: 40.7156% VO: 56.3219% A:  0.0000% Sys:  2.9625% = 100.0000%
+
+VC shows the overhead of video decoding, VO shows the overhead of the
+video output. Using unsorted page lists reduces the benchmark's run time
+by ~32s/~25%.
+
+v2:
+	* Make sorted pagelists the special case (Sam)
+	* Comment on drivers' use of pagelist (Sam)
+	* Warn about the overhead in comment
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Acked-by: Sam Ravnborg <sam@ravnborg.org>
+Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_720p_stereo.ogg # [1]
+Link: https://patchwork.freedesktop.org/patch/msgid/20220211094640.21632-3-tzimmermann@suse.de
+Stable-dep-of: 33cd6ea9c067 ("fbdev: flush deferred IO before closing")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/staging/fbtft/fbtft-core.c  |  1 +
+ drivers/video/fbdev/broadsheetfb.c  |  1 +
+ drivers/video/fbdev/core/fb_defio.c | 24 +++++++++++++++++-------
+ drivers/video/fbdev/metronomefb.c   |  1 +
+ drivers/video/fbdev/udlfb.c         |  1 +
+ include/linux/fb.h                  |  1 +
+ 6 files changed, 22 insertions(+), 7 deletions(-)
 
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -836,6 +836,16 @@ binder_enqueue_thread_work_ilocked(struc
- {
- 	WARN_ON(!list_empty(&thread->waiting_thread_node));
- 	binder_enqueue_work_ilocked(work, &thread->todo);
-+
-+	/* (e)poll-based threads require an explicit wakeup signal when
-+	 * queuing their own work; they rely on these events to consume
-+	 * messages without I/O block. Without it, threads risk waiting
-+	 * indefinitely without handling the work.
-+	 */
-+	if (thread->looper & BINDER_LOOPER_STATE_POLL &&
-+	    thread->pid == current->pid && !thread->process_todo)
-+		wake_up_interruptible_sync(&thread->wait);
-+
- 	thread->process_todo = true;
- }
+diff --git a/drivers/staging/fbtft/fbtft-core.c b/drivers/staging/fbtft/fbtft-core.c
+index 1690358b8f01..52b19ec580a4 100644
+--- a/drivers/staging/fbtft/fbtft-core.c
++++ b/drivers/staging/fbtft/fbtft-core.c
+@@ -654,6 +654,7 @@ struct fb_info *fbtft_framebuffer_alloc(struct fbtft_display *display,
+ 	fbops->fb_blank     =      fbtft_fb_blank;
  
+ 	fbdefio->delay =           HZ / fps;
++	fbdefio->sort_pagelist =   true;
+ 	fbdefio->deferred_io =     fbtft_deferred_io;
+ 	fb_deferred_io_init(info);
+ 
+diff --git a/drivers/video/fbdev/broadsheetfb.c b/drivers/video/fbdev/broadsheetfb.c
+index fd66f4d4a621..b9054f658838 100644
+--- a/drivers/video/fbdev/broadsheetfb.c
++++ b/drivers/video/fbdev/broadsheetfb.c
+@@ -1059,6 +1059,7 @@ static const struct fb_ops broadsheetfb_ops = {
+ 
+ static struct fb_deferred_io broadsheetfb_defio = {
+ 	.delay		= HZ/4,
++	.sort_pagelist	= true,
+ 	.deferred_io	= broadsheetfb_dpy_deferred_io,
+ };
+ 
+diff --git a/drivers/video/fbdev/core/fb_defio.c b/drivers/video/fbdev/core/fb_defio.c
+index 95264a621221..bead69f39ffc 100644
+--- a/drivers/video/fbdev/core/fb_defio.c
++++ b/drivers/video/fbdev/core/fb_defio.c
+@@ -92,7 +92,7 @@ static vm_fault_t fb_deferred_io_mkwrite(struct vm_fault *vmf)
+ 	struct page *page = vmf->page;
+ 	struct fb_info *info = vmf->vma->vm_private_data;
+ 	struct fb_deferred_io *fbdefio = info->fbdefio;
+-	struct page *cur;
++	struct list_head *pos = &fbdefio->pagelist;
+ 
+ 	/* this is a callback we get when userspace first tries to
+ 	write to the page. we schedule a workqueue. that workqueue
+@@ -133,14 +133,24 @@ static vm_fault_t fb_deferred_io_mkwrite(struct vm_fault *vmf)
+ 	if (!list_empty(&page->lru))
+ 		goto page_already_added;
+ 
+-	/* we loop through the pagelist before adding in order
+-	to keep the pagelist sorted */
+-	list_for_each_entry(cur, &fbdefio->pagelist, lru) {
+-		if (cur->index > page->index)
+-			break;
++	if (unlikely(fbdefio->sort_pagelist)) {
++		/*
++		 * We loop through the pagelist before adding in order to
++		 * keep the pagelist sorted. This has significant overhead
++		 * of O(n^2) with n being the number of written pages. If
++		 * possible, drivers should try to work with unsorted page
++		 * lists instead.
++		 */
++		struct page *cur;
++
++		list_for_each_entry(cur, &fbdefio->pagelist, lru) {
++			if (cur->index > page->index)
++				break;
++		}
++		pos = &cur->lru;
+ 	}
+ 
+-	list_add_tail(&page->lru, &cur->lru);
++	list_add_tail(&page->lru, pos);
+ 
+ page_already_added:
+ 	mutex_unlock(&fbdefio->lock);
+diff --git a/drivers/video/fbdev/metronomefb.c b/drivers/video/fbdev/metronomefb.c
+index 952826557a0c..af858dd23ea6 100644
+--- a/drivers/video/fbdev/metronomefb.c
++++ b/drivers/video/fbdev/metronomefb.c
+@@ -568,6 +568,7 @@ static const struct fb_ops metronomefb_ops = {
+ 
+ static struct fb_deferred_io metronomefb_defio = {
+ 	.delay		= HZ,
++	.sort_pagelist	= true,
+ 	.deferred_io	= metronomefb_dpy_deferred_io,
+ };
+ 
+diff --git a/drivers/video/fbdev/udlfb.c b/drivers/video/fbdev/udlfb.c
+index 0de7b867714a..8603898bf37e 100644
+--- a/drivers/video/fbdev/udlfb.c
++++ b/drivers/video/fbdev/udlfb.c
+@@ -982,6 +982,7 @@ static int dlfb_ops_open(struct fb_info *info, int user)
+ 
+ 		if (fbdefio) {
+ 			fbdefio->delay = DL_DEFIO_WRITE_DELAY;
++			fbdefio->sort_pagelist = true;
+ 			fbdefio->deferred_io = dlfb_dpy_deferred_io;
+ 		}
+ 
+diff --git a/include/linux/fb.h b/include/linux/fb.h
+index 3d7306c9a706..9a77ab615c36 100644
+--- a/include/linux/fb.h
++++ b/include/linux/fb.h
+@@ -204,6 +204,7 @@ struct fb_pixmap {
+ struct fb_deferred_io {
+ 	/* delay between mkwrite and deferred handler */
+ 	unsigned long delay;
++	bool sort_pagelist; /* sort pagelist by offset */
+ 	struct mutex lock; /* mutex that protects the page list */
+ 	struct list_head pagelist; /* list of touched pages */
+ 	/* callback */
+-- 
+2.43.0
+
 
 
 
