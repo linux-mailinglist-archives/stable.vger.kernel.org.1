@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-22394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A12C85DBD8
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:46:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A26885DDCA
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:12:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CA8F282450
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:46:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1E0D283C48
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:12:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9592F7BB0E;
-	Wed, 21 Feb 2024 13:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 629A981AB1;
+	Wed, 21 Feb 2024 14:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XKaE3MHl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nG7Lijr1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 549957BB02;
-	Wed, 21 Feb 2024 13:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 206BB81AAE;
+	Wed, 21 Feb 2024 14:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523141; cv=none; b=UDeyHbbjTwuEO0JY7OImB2/1YaL2iWZMbQua83D4EOpjXjnfJ+fAFvaGf4toOfLx0Fq3j5xI59+8ZLC8GAMSLIdlm1r/e/o3jZQ4ZxGatKjztznhgBqroDZ+1QS5zMSn2el4rARudBercnh4JX0sNTH3qATNuc+h10QeK3QhBeE=
+	t=1708524459; cv=none; b=uknZTDsMTAUeWUJWSjYkB11y3TWQtYURwdyXJ6FkWbU2bFA+dh2aTwkWzIX2ifXzaJz/cP3yCBQZej+dqS6QRkKBvewiThVdvm3uFeIERoduX89SPXwAmCcudJUn+LuUfRZ5f8RaEsbMO9C2bw2pxfCQwo+Mo/5JVx4LSOwKrLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523141; c=relaxed/simple;
-	bh=S8B5tGorv7+DRzJe7LX/udX5nzlcbF7k+ZbtpLIxcdM=;
+	s=arc-20240116; t=1708524459; c=relaxed/simple;
+	bh=p9+JhdxkoE2cQw33eAFST2av7kbaSPQSP9q+6sgTCP4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ezH5b+ohrtmumVS87wzoHI0uqQxavQyjoK4hxDHMPvrtyHq3uWIlSqtB44efMNe9/LL+3v7Z4Oprmn3BvMLOZu4WRWQ0bbwHvBC1edapQR9BoKN072sjFX794YfR09h580+1YgWEE4sT3z+O+JkHh3OerJEVWxcXKJ46NW9iNXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XKaE3MHl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D276BC43390;
-	Wed, 21 Feb 2024 13:45:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FTcvvBDJo9Ik4W2pUrzDq42r6OU6LEP1KFWizxub2Vn6UHNobGoUAM7c1kq/A3cUj0Q1P6n8oPzKRWi86X/Djk0HZqqpX8CWVZJKbzPrwa2c4oWOo6Buiwc0cNb61lU9gaF2JdEJh60YFV2p2IjDIIE4ft+VsloUUm9NI5ZbZes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nG7Lijr1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94DFAC43399;
+	Wed, 21 Feb 2024 14:07:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523141;
-	bh=S8B5tGorv7+DRzJe7LX/udX5nzlcbF7k+ZbtpLIxcdM=;
+	s=korg; t=1708524459;
+	bh=p9+JhdxkoE2cQw33eAFST2av7kbaSPQSP9q+6sgTCP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XKaE3MHly2W/saK5VxY1C8Yeg7Cx6U95XXYoEnhGB5nzJvD4iNBlJLkejxIdU+FCk
-	 jRL3yj6EzLsmeMbWpWoEplBXiuxTmd4sG3sqdYseTM4v6gdTVLS9ydROeQ292Pelyq
-	 6RmTa46sp3JUmufQcpJFLpoPBaZts/BpXDMonvPI=
+	b=nG7Lijr1QjUe2H1DE7iHRzzqlavTbhmQcy4/tf/EkvxCqRr5mM9GoQ1qYBcFjJowr
+	 c/6n1cA/hbwcWii9qtyog0DwEF7WWSKBt8nhXPNLCp+50ccqcoMa+ErjNIqITBtKLv
+	 Hv/URbrhfMZNkRml9r0IETlS02LXmX6PI1ZyTT7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaron Conole <aconole@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 350/476] net: openvswitch: limit the number of recursions from action sets
+Subject: [PATCH 5.10 222/379] drm: using mul_u32_u32() requires linux/math64.h
 Date: Wed, 21 Feb 2024 14:06:41 +0100
-Message-ID: <20240221130020.920473085@linuxfoundation.org>
+Message-ID: <20240221130001.467539146@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,218 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaron Conole <aconole@redhat.com>
+From: Stephen Rothwell <sfr@canb.auug.org.au>
 
-[ Upstream commit 6e2f90d31fe09f2b852de25125ca875aabd81367 ]
+[ Upstream commit 933a2a376fb3f22ba4774f74233571504ac56b02 ]
 
-The ovs module allows for some actions to recursively contain an action
-list for complex scenarios, such as sampling, checking lengths, etc.
-When these actions are copied into the internal flow table, they are
-evaluated to validate that such actions make sense, and these calls
-happen recursively.
+Some pending include file cleanups produced this error:
 
-The ovs-vswitchd userspace won't emit more than 16 recursion levels
-deep.  However, the module has no such limit and will happily accept
-limits larger than 16 levels nested.  Prevent this by tracking the
-number of recursions happening and manually limiting it to 16 levels
-nested.
+In file included from include/linux/kernel.h:27,
+                 from drivers/gpu/ipu-v3/ipu-dp.c:7:
+include/drm/drm_color_mgmt.h: In function 'drm_color_lut_extract':
+include/drm/drm_color_mgmt.h:45:46: error: implicit declaration of function 'mul_u32_u32' [-Werror=implicit-function-declaration]
+   45 |                 return DIV_ROUND_CLOSEST_ULL(mul_u32_u32(user_input, (1 << bit_precision) - 1),
+      |                                              ^~~~~~~~~~~
 
-The initial implementation of the sample action would track this depth
-and prevent more than 3 levels of recursion, but this was removed to
-support the clone use case, rather than limited at the current userspace
-limit.
-
-Fixes: 798c166173ff ("openvswitch: Optimize sample action for the clone use cases")
-Signed-off-by: Aaron Conole <aconole@redhat.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240207132416.1488485-2-aconole@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c6fbb6bca108 ("drm: Fix color LUT rounding")
+Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231219145734.13e40e1e@canb.auug.org.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/openvswitch/flow_netlink.c | 49 +++++++++++++++++++++++-----------
- 1 file changed, 33 insertions(+), 16 deletions(-)
+ include/drm/drm_color_mgmt.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/openvswitch/flow_netlink.c b/net/openvswitch/flow_netlink.c
-index d77c21ff066c..1cf431d04a46 100644
---- a/net/openvswitch/flow_netlink.c
-+++ b/net/openvswitch/flow_netlink.c
-@@ -47,6 +47,7 @@ struct ovs_len_tbl {
+diff --git a/include/drm/drm_color_mgmt.h b/include/drm/drm_color_mgmt.h
+index 54b2b2467bfd..ed81741036d7 100644
+--- a/include/drm/drm_color_mgmt.h
++++ b/include/drm/drm_color_mgmt.h
+@@ -24,6 +24,7 @@
+ #define __DRM_COLOR_MGMT_H__
  
- #define OVS_ATTR_NESTED -1
- #define OVS_ATTR_VARIABLE -2
-+#define OVS_COPY_ACTIONS_MAX_DEPTH 16
+ #include <linux/ctype.h>
++#include <linux/math64.h>
+ #include <drm/drm_property.h>
  
- static bool actions_may_change_flow(const struct nlattr *actions)
- {
-@@ -2514,13 +2515,15 @@ static int __ovs_nla_copy_actions(struct net *net, const struct nlattr *attr,
- 				  const struct sw_flow_key *key,
- 				  struct sw_flow_actions **sfa,
- 				  __be16 eth_type, __be16 vlan_tci,
--				  u32 mpls_label_count, bool log);
-+				  u32 mpls_label_count, bool log,
-+				  u32 depth);
- 
- static int validate_and_copy_sample(struct net *net, const struct nlattr *attr,
- 				    const struct sw_flow_key *key,
- 				    struct sw_flow_actions **sfa,
- 				    __be16 eth_type, __be16 vlan_tci,
--				    u32 mpls_label_count, bool log, bool last)
-+				    u32 mpls_label_count, bool log, bool last,
-+				    u32 depth)
- {
- 	const struct nlattr *attrs[OVS_SAMPLE_ATTR_MAX + 1];
- 	const struct nlattr *probability, *actions;
-@@ -2571,7 +2574,8 @@ static int validate_and_copy_sample(struct net *net, const struct nlattr *attr,
- 		return err;
- 
- 	err = __ovs_nla_copy_actions(net, actions, key, sfa,
--				     eth_type, vlan_tci, mpls_label_count, log);
-+				     eth_type, vlan_tci, mpls_label_count, log,
-+				     depth + 1);
- 
- 	if (err)
- 		return err;
-@@ -2586,7 +2590,8 @@ static int validate_and_copy_dec_ttl(struct net *net,
- 				     const struct sw_flow_key *key,
- 				     struct sw_flow_actions **sfa,
- 				     __be16 eth_type, __be16 vlan_tci,
--				     u32 mpls_label_count, bool log)
-+				     u32 mpls_label_count, bool log,
-+				     u32 depth)
- {
- 	const struct nlattr *attrs[OVS_DEC_TTL_ATTR_MAX + 1];
- 	int start, action_start, err, rem;
-@@ -2629,7 +2634,8 @@ static int validate_and_copy_dec_ttl(struct net *net,
- 		return action_start;
- 
- 	err = __ovs_nla_copy_actions(net, actions, key, sfa, eth_type,
--				     vlan_tci, mpls_label_count, log);
-+				     vlan_tci, mpls_label_count, log,
-+				     depth + 1);
- 	if (err)
- 		return err;
- 
-@@ -2643,7 +2649,8 @@ static int validate_and_copy_clone(struct net *net,
- 				   const struct sw_flow_key *key,
- 				   struct sw_flow_actions **sfa,
- 				   __be16 eth_type, __be16 vlan_tci,
--				   u32 mpls_label_count, bool log, bool last)
-+				   u32 mpls_label_count, bool log, bool last,
-+				   u32 depth)
- {
- 	int start, err;
- 	u32 exec;
-@@ -2663,7 +2670,8 @@ static int validate_and_copy_clone(struct net *net,
- 		return err;
- 
- 	err = __ovs_nla_copy_actions(net, attr, key, sfa,
--				     eth_type, vlan_tci, mpls_label_count, log);
-+				     eth_type, vlan_tci, mpls_label_count, log,
-+				     depth + 1);
- 	if (err)
- 		return err;
- 
-@@ -3032,7 +3040,7 @@ static int validate_and_copy_check_pkt_len(struct net *net,
- 					   struct sw_flow_actions **sfa,
- 					   __be16 eth_type, __be16 vlan_tci,
- 					   u32 mpls_label_count,
--					   bool log, bool last)
-+					   bool log, bool last, u32 depth)
- {
- 	const struct nlattr *acts_if_greater, *acts_if_lesser_eq;
- 	struct nlattr *a[OVS_CHECK_PKT_LEN_ATTR_MAX + 1];
-@@ -3080,7 +3088,8 @@ static int validate_and_copy_check_pkt_len(struct net *net,
- 		return nested_acts_start;
- 
- 	err = __ovs_nla_copy_actions(net, acts_if_lesser_eq, key, sfa,
--				     eth_type, vlan_tci, mpls_label_count, log);
-+				     eth_type, vlan_tci, mpls_label_count, log,
-+				     depth + 1);
- 
- 	if (err)
- 		return err;
-@@ -3093,7 +3102,8 @@ static int validate_and_copy_check_pkt_len(struct net *net,
- 		return nested_acts_start;
- 
- 	err = __ovs_nla_copy_actions(net, acts_if_greater, key, sfa,
--				     eth_type, vlan_tci, mpls_label_count, log);
-+				     eth_type, vlan_tci, mpls_label_count, log,
-+				     depth + 1);
- 
- 	if (err)
- 		return err;
-@@ -3121,12 +3131,16 @@ static int __ovs_nla_copy_actions(struct net *net, const struct nlattr *attr,
- 				  const struct sw_flow_key *key,
- 				  struct sw_flow_actions **sfa,
- 				  __be16 eth_type, __be16 vlan_tci,
--				  u32 mpls_label_count, bool log)
-+				  u32 mpls_label_count, bool log,
-+				  u32 depth)
- {
- 	u8 mac_proto = ovs_key_mac_proto(key);
- 	const struct nlattr *a;
- 	int rem, err;
- 
-+	if (depth > OVS_COPY_ACTIONS_MAX_DEPTH)
-+		return -EOVERFLOW;
-+
- 	nla_for_each_nested(a, attr, rem) {
- 		/* Expected argument lengths, (u32)-1 for variable length. */
- 		static const u32 action_lens[OVS_ACTION_ATTR_MAX + 1] = {
-@@ -3321,7 +3335,7 @@ static int __ovs_nla_copy_actions(struct net *net, const struct nlattr *attr,
- 			err = validate_and_copy_sample(net, a, key, sfa,
- 						       eth_type, vlan_tci,
- 						       mpls_label_count,
--						       log, last);
-+						       log, last, depth);
- 			if (err)
- 				return err;
- 			skip_copy = true;
-@@ -3392,7 +3406,7 @@ static int __ovs_nla_copy_actions(struct net *net, const struct nlattr *attr,
- 			err = validate_and_copy_clone(net, a, key, sfa,
- 						      eth_type, vlan_tci,
- 						      mpls_label_count,
--						      log, last);
-+						      log, last, depth);
- 			if (err)
- 				return err;
- 			skip_copy = true;
-@@ -3406,7 +3420,8 @@ static int __ovs_nla_copy_actions(struct net *net, const struct nlattr *attr,
- 							      eth_type,
- 							      vlan_tci,
- 							      mpls_label_count,
--							      log, last);
-+							      log, last,
-+							      depth);
- 			if (err)
- 				return err;
- 			skip_copy = true;
-@@ -3416,7 +3431,8 @@ static int __ovs_nla_copy_actions(struct net *net, const struct nlattr *attr,
- 		case OVS_ACTION_ATTR_DEC_TTL:
- 			err = validate_and_copy_dec_ttl(net, a, key, sfa,
- 							eth_type, vlan_tci,
--							mpls_label_count, log);
-+							mpls_label_count, log,
-+							depth);
- 			if (err)
- 				return err;
- 			skip_copy = true;
-@@ -3456,7 +3472,8 @@ int ovs_nla_copy_actions(struct net *net, const struct nlattr *attr,
- 
- 	(*sfa)->orig_len = nla_len(attr);
- 	err = __ovs_nla_copy_actions(net, attr, key, sfa, key->eth.type,
--				     key->eth.vlan.tci, mpls_label_count, log);
-+				     key->eth.vlan.tci, mpls_label_count, log,
-+				     0);
- 	if (err)
- 		ovs_nla_free_flow_actions(*sfa);
- 
+ struct drm_crtc;
 -- 
 2.43.0
 
