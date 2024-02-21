@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-23082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1780A85DF27
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:25:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C2E885DE32
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:16:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C783928397E
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:25:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C0D71F243B4
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:16:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B9977BB16;
-	Wed, 21 Feb 2024 14:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A61FC7FBB5;
+	Wed, 21 Feb 2024 14:14:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MztxvLUG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c7WeZt1j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC78879DAE;
-	Wed, 21 Feb 2024 14:25:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662857F7FA;
+	Wed, 21 Feb 2024 14:14:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525516; cv=none; b=phIJlbfnOoRrBMqD6QAv9JQFmwvw+nt9J5LwWhKYkKShu5R/jGhGhH65Mkdrqj4tUmr7N1yvKJ+ygieRqczkq/Anh2tO5HPWLxjMae32jBLnh9d+h3UR6JiZsZMw9toQ/4g/D2kN2wlKQXZNoWArjdP0LdHTMNcJXg1zePHewkM=
+	t=1708524863; cv=none; b=KCPjDgG9GO+2biglHoPkCmOWf81gsTo4QpK1MGA5XCnIWyvnWqdN06921EsqkdWJQqj4IO353/eUe5OnWliEw1iQ/XZ5EyXLxPftSxyGmUEvLNYceMMoDhzERtn0sonEN47n43nSzq0zYRRNJyvT3ial6WRSRd08g84byIDllfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525516; c=relaxed/simple;
-	bh=TOjAD8uaRuP29MNhcPRVhpCo+PbcJDUI2gNA6Kriq8A=;
+	s=arc-20240116; t=1708524863; c=relaxed/simple;
+	bh=qWLqr4i95JYBR9A9FwJnEDF6y8o3QAPW1lXLxnLCVI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S3/89hF6DQsb2QGmofEwCKtjBCM4bbLIwlxyS4PC1PZ3T42aizgSLKOS5P3bRy+KXgk/Jm82FKHp3Q9FyU28541jD80GVUktYND4H6AdNwduGM387OHoFEoaykp7BONt34w6k/EpcZG+uVP/3+dK0QyuZZbNgSpZuy2JpbOrAb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MztxvLUG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0952DC433F1;
-	Wed, 21 Feb 2024 14:25:15 +0000 (UTC)
+	 MIME-Version; b=uoyKR++Ab5SA4DLU7EEiHW5pykKcHF6S1hPxY7ZIPH5tBIiTF7Zt6gVnv194VMypmBmZvAHiPzQ1uUY0YdAydtbLUZ0MpLlBnaFSWEnyGhPB57s41PLd5VKyChPYQ+CXLjnjIsT2WyX0Kb/i94UMyqupOtZhxi52kto26DOlRtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c7WeZt1j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C975EC433C7;
+	Wed, 21 Feb 2024 14:14:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525516;
-	bh=TOjAD8uaRuP29MNhcPRVhpCo+PbcJDUI2gNA6Kriq8A=;
+	s=korg; t=1708524863;
+	bh=qWLqr4i95JYBR9A9FwJnEDF6y8o3QAPW1lXLxnLCVI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MztxvLUG9CuzZ5wLWPN3HGDbHNE1H0rVr+9NsfX/rIDgTVVj7UAp8oEqA50/SISFL
-	 h9qmqDi3SMqpmABN1WUeG9JyWUs1NuX1JqTuX3+Aqmpws2hcfVxh90SzRwlXdB1S/n
-	 PYTxIQl1XjuzGTSW2R5ZsZ27/VLoiAby/B1JWiCU=
+	b=c7WeZt1jv2NrEtckwtu3Q9Ud6ZwJpvxG/pBK4u2D+nmU5o1YNGA7yt8OdsBSJtEqf
+	 Q5FK6hLXe+taFiDWGMNeR6N7+AuCNXRbEvDZWhXN7LhmgGJpu3L+/whOu5nmcPE12U
+	 QV1OzYyX3/shEYHYj2vSJW7zAb7dazAsNHcFN7XQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Lindgren <tony@atomide.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 180/267] phy: ti: phy-omap-usb2: Fix NULL pointer dereference for SRP
-Date: Wed, 21 Feb 2024 14:08:41 +0100
-Message-ID: <20240221125945.782119412@linuxfoundation.org>
+	Alexandra Winter <wintera@linux.ibm.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.10 343/379] s390/qeth: Fix potential loss of L3-IP@ in case of network issues
+Date: Wed, 21 Feb 2024 14:08:42 +0100
+Message-ID: <20240221130005.135414723@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +61,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Alexandra Winter <wintera@linux.ibm.com>
 
-[ Upstream commit 7104ba0f1958adb250319e68a15eff89ec4fd36d ]
+commit 2fe8a236436fe40d8d26a1af8d150fc80f04ee1a upstream.
 
-If the external phy working together with phy-omap-usb2 does not implement
-send_srp(), we may still attempt to call it. This can happen on an idle
-Ethernet gadget triggering a wakeup for example:
+Symptom:
+In case of a bad cable connection (e.g. dirty optics) a fast sequence of
+network DOWN-UP-DOWN-UP could happen. UP triggers recovery of the qeth
+interface. In case of a second DOWN while recovery is still ongoing, it
+can happen that the IP@ of a Layer3 qeth interface is lost and will not
+be recovered by the second UP.
 
-configfs-gadget.g1 gadget.0: ECM Suspend
-configfs-gadget.g1 gadget.0: Port suspended. Triggering wakeup
-...
-Unable to handle kernel NULL pointer dereference at virtual address
-00000000 when execute
-...
-PC is at 0x0
-LR is at musb_gadget_wakeup+0x1d4/0x254 [musb_hdrc]
-...
-musb_gadget_wakeup [musb_hdrc] from usb_gadget_wakeup+0x1c/0x3c [udc_core]
-usb_gadget_wakeup [udc_core] from eth_start_xmit+0x3b0/0x3d4 [u_ether]
-eth_start_xmit [u_ether] from dev_hard_start_xmit+0x94/0x24c
-dev_hard_start_xmit from sch_direct_xmit+0x104/0x2e4
-sch_direct_xmit from __dev_queue_xmit+0x334/0xd88
-__dev_queue_xmit from arp_solicit+0xf0/0x268
-arp_solicit from neigh_probe+0x54/0x7c
-neigh_probe from __neigh_event_send+0x22c/0x47c
-__neigh_event_send from neigh_resolve_output+0x14c/0x1c0
-neigh_resolve_output from ip_finish_output2+0x1c8/0x628
-ip_finish_output2 from ip_send_skb+0x40/0xd8
-ip_send_skb from udp_send_skb+0x124/0x340
-udp_send_skb from udp_sendmsg+0x780/0x984
-udp_sendmsg from __sys_sendto+0xd8/0x158
-__sys_sendto from ret_fast_syscall+0x0/0x58
+Problem:
+When registration of IP addresses with Layer 3 qeth devices fails, (e.g.
+because of bad address format) the respective IP address is deleted from
+its hash-table in the driver. If registration fails because of a ENETDOWN
+condition, the address should stay in the hashtable, so a subsequent
+recovery can restore it.
 
-Let's fix the issue by checking for send_srp() and set_vbus() before
-calling them. For USB peripheral only cases these both could be NULL.
+3caa4af834df ("qeth: keep ip-address after LAN_OFFLINE failure")
+fixes this for registration failures during normal operation, but not
+during recovery.
 
-Fixes: 657b306a7bdf ("usb: phy: add a new driver for omap usb2 phy")
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Link: https://lore.kernel.org/r/20240128120556.8848-1-tony@atomide.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Solution:
+Keep L3-IP address in case of ENETDOWN in qeth_l3_recover_ip(). For
+consistency with qeth_l3_add_ip() we also keep it in case of EADDRINUSE,
+i.e. for some reason the card already/still has this address registered.
+
+Fixes: 4a71df50047f ("qeth: new qeth device driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240206085849.2902775-1-wintera@linux.ibm.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/ti/phy-omap-usb2.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/s390/net/qeth_l3_main.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/phy/ti/phy-omap-usb2.c b/drivers/phy/ti/phy-omap-usb2.c
-index 471fe2e80f4e..fc2fee6d532d 100644
---- a/drivers/phy/ti/phy-omap-usb2.c
-+++ b/drivers/phy/ti/phy-omap-usb2.c
-@@ -58,7 +58,7 @@ static int omap_usb_set_vbus(struct usb_otg *otg, bool enabled)
- {
- 	struct omap_usb *phy = phy_to_omapusb(otg->usb_phy);
+--- a/drivers/s390/net/qeth_l3_main.c
++++ b/drivers/s390/net/qeth_l3_main.c
+@@ -257,9 +257,10 @@ static void qeth_l3_clear_ip_htable(stru
+ 		if (!recover) {
+ 			hash_del(&addr->hnode);
+ 			kfree(addr);
+-			continue;
++		} else {
++			/* prepare for recovery */
++			addr->disp_flag = QETH_DISP_ADDR_ADD;
+ 		}
+-		addr->disp_flag = QETH_DISP_ADDR_ADD;
+ 	}
  
--	if (!phy->comparator)
-+	if (!phy->comparator || !phy->comparator->set_vbus)
- 		return -ENODEV;
+ 	mutex_unlock(&card->ip_lock);
+@@ -280,9 +281,11 @@ static void qeth_l3_recover_ip(struct qe
+ 		if (addr->disp_flag == QETH_DISP_ADDR_ADD) {
+ 			rc = qeth_l3_register_addr_entry(card, addr);
  
- 	return phy->comparator->set_vbus(phy->comparator, enabled);
-@@ -68,7 +68,7 @@ static int omap_usb_start_srp(struct usb_otg *otg)
- {
- 	struct omap_usb *phy = phy_to_omapusb(otg->usb_phy);
- 
--	if (!phy->comparator)
-+	if (!phy->comparator || !phy->comparator->start_srp)
- 		return -ENODEV;
- 
- 	return phy->comparator->start_srp(phy->comparator);
--- 
-2.43.0
-
+-			if (!rc) {
++			if (!rc || rc == -EADDRINUSE || rc == -ENETDOWN) {
++				/* keep it in the records */
+ 				addr->disp_flag = QETH_DISP_ADDR_DO_NOTHING;
+ 			} else {
++				/* bad address */
+ 				hash_del(&addr->hnode);
+ 				kfree(addr);
+ 			}
 
 
 
