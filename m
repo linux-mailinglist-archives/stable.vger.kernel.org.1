@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-23018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAB1885DF37
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:25:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA48E85DDED
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:13:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BDC78B28D58
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:21:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85950283498
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:13:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32B616A8D6;
-	Wed, 21 Feb 2024 14:21:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6769F7FBBC;
+	Wed, 21 Feb 2024 14:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cavg5MFY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mmg6Lwmu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E27194C62;
-	Wed, 21 Feb 2024 14:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 243CE7BB1E;
+	Wed, 21 Feb 2024 14:09:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525310; cv=none; b=TGtI57lhAclJLxU8w9TUQoCNfQ4ws/BHo/w880bN2RiWvs9awTXh39FVyU1/Wgyaa8zproql87aSBr0bB0/mPdFurbnI1XrvgXXn2Dv63zymqGY3qBpZsn00cxRrqV6Dp4iF/eoc/kahLvvb5s0RuhWjMw/YLompL/R3M6oc+VY=
+	t=1708524578; cv=none; b=PCsFk+hzkdCQMdbO+8WQYx755Fuy4clLd/93tG57Z6jpeAPfg2JcKNE9WjxUP0fBw53oM9KiClIMtf7u7QINklzkYZLbZhpKyq3J467M3LNogdWseNXftJQCBH9liD5DFTQbNFtRVL7wSPD5vCpwc6W22MPWSMKwWf1fSVl3vqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525310; c=relaxed/simple;
-	bh=b6d8RiaNq+Pg0vp6RnUlLB5I8CMbjRRxf1G81EuPjNg=;
+	s=arc-20240116; t=1708524578; c=relaxed/simple;
+	bh=dFo5akkvB4FaFc7jbFYuoWYsAwVuKktPC/GBi8w4Jro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OdoF4BFtDbsAX9IM+bhYShamIX72DVpwxl6Xb8f15NTZMKtru5jSkVKBH/qEG+RQhJmbNZ97kuxig84OJhbjYpoN5tNqJjZiekvaJNCtUbDyda5JBSycjqoge3COP+ZGVr9HKUqFjdBZ2Zy16oc7M2RVdS1QCq5hgTt1cY33RKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cavg5MFY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF14AC433C7;
-	Wed, 21 Feb 2024 14:21:48 +0000 (UTC)
+	 MIME-Version; b=P7XAlFddfDyuKEE6QCFU29SZoKfj0egawemDpC0fHthm873HSOwzy8802WSjcb02V4moVH6zVou5fAW7pfG7CHN+THiLm58j6K+jtDa0mYtFvkvIummmhIBX82Hww84sH2MYjxViLgcuiwS0oa2kz9P1izDGyP+/c6I8IaWdBSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mmg6Lwmu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D4B0C433F1;
+	Wed, 21 Feb 2024 14:09:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525309;
-	bh=b6d8RiaNq+Pg0vp6RnUlLB5I8CMbjRRxf1G81EuPjNg=;
+	s=korg; t=1708524577;
+	bh=dFo5akkvB4FaFc7jbFYuoWYsAwVuKktPC/GBi8w4Jro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cavg5MFYsu6yxImbw7l98K8khameuvl+G1xD66FHDlau8PUbeC0QbKibqcWrAUmi1
-	 exQY9VKVLx0XBwcxdOpelVQTjA5D2yB1WoDXJgWtacXWx7R0drgVkxt+JUrQ3l4X/t
-	 iukzrr/rowbRoIXuaPymkVPgf11RbzcG0Dlq4LEg=
+	b=Mmg6LwmuMtGuO9G4ooOe9KQDpODa8S3FehHigrHT2qV8SGu1bH52xknpfzkxUyXP+
+	 ELmhMjbQhpCuFkGCJkBfvtLGjj/gKirfPPuEOudtUDAHTyiCN1O9vj9gNGRZLwweIc
+	 DqvHKsglqIHlzDATzVEMJRuRufauUYkCcW6lhyAY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Mao Jinlong <quic_jinlmao@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 116/267] arm64: dts: qcom: msm8998: Fix out-ports is a required property
-Date: Wed, 21 Feb 2024 14:07:37 +0100
-Message-ID: <20240221125943.609375311@linuxfoundation.org>
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 5.10 279/379] Input: i8042 - fix strange behavior of touchpad on Clevo NS70PU
+Date: Wed, 21 Feb 2024 14:07:38 +0100
+Message-ID: <20240221130003.157654976@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mao Jinlong <quic_jinlmao@quicinc.com>
+From: Werner Sembach <wse@tuxedocomputers.com>
 
-[ Upstream commit ae5ee3562a2519214b12228545e88a203dd68bbd ]
+commit a60e6c3918d20848906ffcdfcf72ca6a8cfbcf2e upstream.
 
-out-ports is a required property for coresight ETM. Add out-ports for
-ETM nodes to fix the warning.
+When closing the laptop lid with an external screen connected, the mouse
+pointer has a constant movement to the lower right corner. Opening the
+lid again stops this movement, but after that the touchpad does no longer
+register clicks.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Mao Jinlong <quic_jinlmao@quicinc.com>
-Link: https://lore.kernel.org/r/20231210072633.4243-4-quic_jinlmao@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The touchpad is connected both via i2c-hid and PS/2, the predecessor of
+this device (NS70MU) has the same layout in this regard and also strange
+behaviour caused by the psmouse and the i2c-hid driver fighting over
+touchpad control. This fix is reusing the same workaround by just
+disabling the PS/2 aux port, that is only used by the touchpad, to give the
+i2c-hid driver the lone control over the touchpad.
+
+v2: Rebased on current master
+
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20231205163602.16106-1-wse@tuxedocomputers.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/msm8998.dtsi | 32 +++++++++++++++++----------
- 1 file changed, 20 insertions(+), 12 deletions(-)
+ drivers/input/serio/i8042-acpipnpio.h |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8998.dtsi b/arch/arm64/boot/dts/qcom/msm8998.dtsi
-index dcb79003ca0e..9cb7163c5714 100644
---- a/arch/arm64/boot/dts/qcom/msm8998.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8998.dtsi
-@@ -1396,9 +1396,11 @@
- 
- 			cpu = <&CPU4>;
- 
--			port{
--				etm4_out: endpoint {
--					remote-endpoint = <&apss_funnel_in4>;
-+			out-ports {
-+				port{
-+					etm4_out: endpoint {
-+						remote-endpoint = <&apss_funnel_in4>;
-+					};
- 				};
- 			};
- 		};
-@@ -1413,9 +1415,11 @@
- 
- 			cpu = <&CPU5>;
- 
--			port{
--				etm5_out: endpoint {
--					remote-endpoint = <&apss_funnel_in5>;
-+			out-ports {
-+				port{
-+					etm5_out: endpoint {
-+						remote-endpoint = <&apss_funnel_in5>;
-+					};
- 				};
- 			};
- 		};
-@@ -1430,9 +1434,11 @@
- 
- 			cpu = <&CPU6>;
- 
--			port{
--				etm6_out: endpoint {
--					remote-endpoint = <&apss_funnel_in6>;
-+			out-ports {
-+				port{
-+					etm6_out: endpoint {
-+						remote-endpoint = <&apss_funnel_in6>;
-+					};
- 				};
- 			};
- 		};
-@@ -1447,9 +1453,11 @@
- 
- 			cpu = <&CPU7>;
- 
--			port{
--				etm7_out: endpoint {
--					remote-endpoint = <&apss_funnel_in7>;
-+			out-ports {
-+				port{
-+					etm7_out: endpoint {
-+						remote-endpoint = <&apss_funnel_in7>;
-+					};
- 				};
- 			};
- 		};
--- 
-2.43.0
-
+--- a/drivers/input/serio/i8042-acpipnpio.h
++++ b/drivers/input/serio/i8042-acpipnpio.h
+@@ -1181,6 +1181,12 @@ static const struct dmi_system_id i8042_
+ 	},
+ 	{
+ 		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "NS5x_7xPU"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_NOAUX)
++	},
++	{
++		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "NJ50_70CU"),
+ 		},
+ 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
 
 
 
