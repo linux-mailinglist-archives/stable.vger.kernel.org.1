@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-22402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 494EE85DBE1
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:46:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A24F185DD7C
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:06:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF733B2748F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:46:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54599282B7E
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:06:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32CBD762C1;
-	Wed, 21 Feb 2024 13:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 261E07BB1F;
+	Wed, 21 Feb 2024 14:04:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VZnLq2Bp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ijzLo5Fb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E57EE4D5B7;
-	Wed, 21 Feb 2024 13:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D89FC7BB16;
+	Wed, 21 Feb 2024 14:04:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523176; cv=none; b=KNx91yJE6ogejPkKu78mMW4+/4wTwx+E+iHpLHascuiUnFxVMJ+Ybugy6nESmm4sLAV0etjM8BuLnzv5+qu3bU56EzTo+i7cetVuFATGBpbJFUaunm/kXTx+Jo3+RhuNMj2GWoWp0dWPqJKw6zcnBu5ayrzGVHu9g2gRfcgKIxc=
+	t=1708524298; cv=none; b=EJ+LKRYwQcs5ih7b01fd79tlhkzn0jprGt2lOPCsOXi2BT/fTKeqhrb0FyN0aLHCnbf3fFLiMAB+YohP6r/Q2tIX0mwEiBhCx5Fpo9qKgTpVMqpm9jmq39TUralakhJE8McFklsLv0X39UqP5Ln/kMF+CxY94WrRQ3M9OH4zeYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523176; c=relaxed/simple;
-	bh=tj5XoYB1dSqINipV+O7busyXy2TeEi5MufqkunvBn+I=;
+	s=arc-20240116; t=1708524298; c=relaxed/simple;
+	bh=zHp5tgIwvDaplmC6uCKEag2BQ0rY10Te9XTkyAQ1sk4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nc5iEbRjGI4dSw7BFcTqqBcPlX5fE6UEFNWKGQIMSBx5KED5c/x93+zKeg3qRmXGYM0yeo8EvlsMxzpNx1nwZeZXZ2tZDZcVLVvPQ/bZCo2FlRfitp1P53UVUbgBlz8I/S2FDEMlwF6CsmT8EtO4tTzVqqjYs1Fbv5FTIgXg6ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VZnLq2Bp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56A01C433F1;
-	Wed, 21 Feb 2024 13:46:15 +0000 (UTC)
+	 MIME-Version; b=XQeRhOuZqrR7YDKGreBfmI8BXTdOl5eUvrxzFpd3MwhKPLaj25W4iN1K/eqIngcvr8Ubur3edoFKAWqC35uh1Rzbx9ZkPWnd9ZqvXGcwuK7zFqgqxxcl6IZEmZiO5gJBMFEvETDfymkE25DYLJV1+QgqavNWDvakP8zYkPW7IOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ijzLo5Fb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CCFAC433F1;
+	Wed, 21 Feb 2024 14:04:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523175;
-	bh=tj5XoYB1dSqINipV+O7busyXy2TeEi5MufqkunvBn+I=;
+	s=korg; t=1708524298;
+	bh=zHp5tgIwvDaplmC6uCKEag2BQ0rY10Te9XTkyAQ1sk4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VZnLq2BpXlQe38yziteWA9CASsHifcQEgrzSxLinR7YFlFXZK5BvgsfrDijawjt0i
-	 rrNQSmMEyNrexpukv3HDB+DAk4EN2g+ptDCYTUo6OoLaNSBU7e9nZCMN6W84vksDdm
-	 2k9wxgQfdSm7bbWo6GuTFsWSGEJwV30fXRG8aF3k=
+	b=ijzLo5FbDmUxkFLQHS02m8vowbpxZ56g8ZOchsgmonqQVw1HgYr+cIiSnXvThaNzE
+	 GYRqpH60FMU8GLJHocRHejiSlqLuHx0HNJFerDz7baKbu1ykM76gNyj1ddguKBX6Tf
+	 1hAGoVLi4VUnBO/Rj8fCBVJSD0EvpAHEw7AGDbrk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	JackBB Wu <wojackbb@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.15 331/476] USB: serial: qcserial: add new usb-id for Dell Wireless DW5826e
+	kernel test robot <lkp@intel.com>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Richard Weinberger <richard@nod.at>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 203/379] um: net: Fix return type of uml_net_start_xmit()
 Date: Wed, 21 Feb 2024 14:06:22 +0100
-Message-ID: <20240221130020.248011020@linuxfoundation.org>
+Message-ID: <20240221130000.907772831@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: JackBB Wu <wojackbb@gmail.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 129690fb229a20b6e563a77a2c85266acecf20bc upstream.
+[ Upstream commit 7d748f60a4b82b50bf25fad1bd42d33f049f76aa ]
 
-Add support for Dell DW5826e with USB-id 0x413c:0x8217 & 0x413c:0x8218.
+With clang's kernel control flow integrity (kCFI, CONFIG_CFI_CLANG),
+indirect call targets are validated against the expected function
+pointer prototype to make sure the call target is valid to help mitigate
+ROP attacks. If they are not identical, there is a failure at run time,
+which manifests as either a kernel panic or thread getting killed. A
+warning in clang aims to catch these at compile time, which reveals:
 
-It is 0x413c:0x8217
-T:  Bus=02 Lev=01 Prnt=01 Port=05 Cnt=01 Dev#=  4 Spd=480  MxCh= 0
-D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=413c ProdID=8217 Rev= 5.04
-S:  Manufacturer=DELL
-S:  Product=COMPAL Electronics EXM-G1A
-S:  SerialNumber=359302940050401
-C:* #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=qcserial
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=qcserial
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=qcserial
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
-E:  Ad=87(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:* If#= 8 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=88(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+  arch/um/drivers/net_kern.c:353:21: warning: incompatible function pointer types initializing 'netdev_tx_t (*)(struct sk_buff *, struct net_device *)' (aka 'enum netdev_tx (*)(struct sk_buff *, struct net_device *)') with an expression of type 'int (struct sk_buff *, struct net_device *)' [-Wincompatible-function-pointer-types-strict]
+    353 |         .ndo_start_xmit         = uml_net_start_xmit,
+        |                                   ^~~~~~~~~~~~~~~~~~
+  1 warning generated.
 
-It is 0x413c:0x8218
-T:  Bus=02 Lev=01 Prnt=01 Port=05 Cnt=01 Dev#=  3 Spd=480  MxCh= 0
-D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=413c ProdID=8218 Rev= 0.00
-S:  Manufacturer=DELL
-S:  Product=COMPAL Electronics EXM-G1A
-S:  SerialNumber=359302940050401
-C:* #Ifs= 1 Cfg#= 1 Atr=a0 MxPwr=  2mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=qcserial
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+->ndo_start_xmit() in 'struct net_device_ops' expects a return type of
+'netdev_tx_t', not 'int'. Adjust the return type of uml_net_start_xmit()
+to match the prototype's to resolve the warning. While UML does not
+currently implement support for kCFI, it could in the future, which
+means this warning becomes a fatal CFI failure at run time.
 
-Signed-off-by: JackBB Wu <wojackbb@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202310031340.v1vPh207-lkp@intel.com/
+Acked-by: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/qcserial.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/um/drivers/net_kern.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/serial/qcserial.c
-+++ b/drivers/usb/serial/qcserial.c
-@@ -184,6 +184,8 @@ static const struct usb_device_id id_tab
- 	{DEVICE_SWI(0x413c, 0x81d0)},   /* Dell Wireless 5819 */
- 	{DEVICE_SWI(0x413c, 0x81d1)},   /* Dell Wireless 5818 */
- 	{DEVICE_SWI(0x413c, 0x81d2)},   /* Dell Wireless 5818 */
-+	{DEVICE_SWI(0x413c, 0x8217)},	/* Dell Wireless DW5826e */
-+	{DEVICE_SWI(0x413c, 0x8218)},	/* Dell Wireless DW5826e QDL */
+diff --git a/arch/um/drivers/net_kern.c b/arch/um/drivers/net_kern.c
+index 1802cf4ef5a5..ee55333255d0 100644
+--- a/arch/um/drivers/net_kern.c
++++ b/arch/um/drivers/net_kern.c
+@@ -204,7 +204,7 @@ static int uml_net_close(struct net_device *dev)
+ 	return 0;
+ }
  
- 	/* Huawei devices */
- 	{DEVICE_HWI(0x03f0, 0x581d)},	/* HP lt4112 LTE/HSPA+ Gobi 4G Modem (Huawei me906e) */
+-static int uml_net_start_xmit(struct sk_buff *skb, struct net_device *dev)
++static netdev_tx_t uml_net_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ {
+ 	struct uml_net_private *lp = netdev_priv(dev);
+ 	unsigned long flags;
+-- 
+2.43.0
+
 
 
 
