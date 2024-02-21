@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-22903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D81585DF11
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:24:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3172285DF5B
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:27:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B0AC3B26AA7
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:16:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 154B11C23851
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:27:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8F5A7E115;
-	Wed, 21 Feb 2024 14:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 475A07BB01;
+	Wed, 21 Feb 2024 14:27:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I2DjueLu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QbQwvxQZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 974B576C99;
-	Wed, 21 Feb 2024 14:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0719D4C62;
+	Wed, 21 Feb 2024 14:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524901; cv=none; b=h7UgBpGRy4bLwCUo54a277uxDhsSrDuIz0L/GRrhxbKZdyMsm3kJQAs4zo7ygUs2Ij0/QPmbG9Y1khru7OQfQ2CN+jsDbFP2Wflyr55xXrKcWDrHE43APFae09XjS5tV4NPB2isKLFEH+1GWF245EKK6Yt+WzfFgc5TcuqbGvLY=
+	t=1708525632; cv=none; b=gns6RN6v07a8z5zvDD6W5CSaleu3/COO17LvQE86ffWoeAWAC6dNceBL51HjMhyQTcfBr89zj/leokVBdRdP5GNWmHA8Hf219KGCCQeSXNlKkT7yri/4dixuqj/MizJJmxbER8TohWUONSB1aFmd7KShbEheENLb6HTIcB2fygk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524901; c=relaxed/simple;
-	bh=B5ipLj0UUxkPXb39vpInLq0B+4guqqB0jsZ/vglS/wI=;
+	s=arc-20240116; t=1708525632; c=relaxed/simple;
+	bh=7BjqHf244sB3cOJrCRElSc27HTMZI1a5qX5j42lcUdY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W1N0DshSeLlplsGK2fkPS2L1fO/QJPTEku2wFLoastHRxDfcANUIKsdEbgrOGVlYH6SwE70BjRqHqlGJUe/31Dg4mcQNFoiMMeQFTbkoMcrzqHH1t0UFpVHJk3FNnveP4/2avmWuxR9AExtmRPJzI2ZSud+p2o7pxQYw0Eu3rRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I2DjueLu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0245C433C7;
-	Wed, 21 Feb 2024 14:15:00 +0000 (UTC)
+	 MIME-Version; b=mECXr8KspuNc0j9LY49nLdAj4fDWx0q/pOIAzrJaoJJr6zW5PNA9IdiYKniihzWCi6dQP5GcoGNwuUv/xvOSjWbMVLLULMarx08WYVyirc0qkrvE/K3RHF4rtDECJuWEzsBhipY0tUpEC2oakZP9TA1cH4SSRhARH6vrtRqU/do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QbQwvxQZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0958BC433C7;
+	Wed, 21 Feb 2024 14:27:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524901;
-	bh=B5ipLj0UUxkPXb39vpInLq0B+4guqqB0jsZ/vglS/wI=;
+	s=korg; t=1708525631;
+	bh=7BjqHf244sB3cOJrCRElSc27HTMZI1a5qX5j42lcUdY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I2DjueLuLv3fEU31ktAsQJHOfF+W2VV8JUnvsljp9+mEbYoMwl7ZFiz89w4LAaNjM
-	 mCouDz5piEnRoGRy2RTcKyF5QIPXEHAriPAAq/XptJJdHuUZPyZ1K5YgmNN7trP+iH
-	 93cG8yXLycE85pbqxPovFPWA7+RXnrCVgQpgUkYo=
+	b=QbQwvxQZrtdV8V+bTaxj6fyLPN9tX9koMsCLp8l68Pbbvmgocvowf+cjC7o0oyGrk
+	 Wlx2pplU0wIMz5BqAZX0YJBiMGFkSm6YT9lD3l6X1LhQFT/a3qo/5l6IjC96Vd81MT
+	 AtoZAq1z+BQOsWiF6lZ4dxK298dyu+WFtwIClViM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Amit Pundir <amit.pundir@linaro.org>
-Subject: [PATCH 5.10 375/379] PM: runtime: Have devm_pm_runtime_enable() handle pm_runtime_dont_use_autosuspend()
-Date: Wed, 21 Feb 2024 14:09:14 +0100
-Message-ID: <20240221130006.155815799@linuxfoundation.org>
+	Zach OKeefe <zokeefe@google.com>,
+	Maxim Patlasov <MPatlasov@parallels.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.4 214/267] mm/writeback: fix possible divide-by-zero in wb_dirty_limits(), again
+Date: Wed, 21 Feb 2024 14:09:15 +0100
+Message-ID: <20240221125946.933043806@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Zach O'Keefe <zokeefe@google.com>
 
-[ Upstream commit b4060db9251f919506e4d672737c6b8ab9a84701 ]
+commit 9319b647902cbd5cc884ac08a8a6d54ce111fc78 upstream.
 
-The PM Runtime docs say:
+(struct dirty_throttle_control *)->thresh is an unsigned long, but is
+passed as the u32 divisor argument to div_u64().  On architectures where
+unsigned long is 64 bytes, the argument will be implicitly truncated.
 
-  Drivers in ->remove() callback should undo the runtime PM changes done
-  in ->probe(). Usually this means calling pm_runtime_disable(),
-  pm_runtime_dont_use_autosuspend() etc.
+Use div64_u64() instead of div_u64() so that the value used in the "is
+this a safe division" check is the same as the divisor.
 
->From grepping code, it's clear that many people aren't aware of the
-need to call pm_runtime_dont_use_autosuspend().
+Also, remove redundant cast of the numerator to u64, as that should happen
+implicitly.
 
-When brainstorming solutions, one idea that came up was to leverage
-the new-ish devm_pm_runtime_enable() function. The idea here is that:
+This would be difficult to exploit in memcg domain, given the ratio-based
+arithmetic domain_drity_limits() uses, but is much easier in global
+writeback domain with a BDI_CAP_STRICTLIMIT-backing device, using e.g.
+vm.dirty_bytes=(1<<32)*PAGE_SIZE so that dtc->thresh == (1<<32)
 
- * When the devm action is called we know that the driver is being
-   removed. It's the perfect time to undo the use_autosuspend.
-
- * The code of pm_runtime_dont_use_autosuspend() already handles the
-   case of being called when autosuspend wasn't enabled.
-
-Suggested-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: 3d07a411b4fa ("drm/msm/dsi: Use pm_runtime_resume_and_get to prevent refcnt leaks")
-Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+Link: https://lkml.kernel.org/r/20240118181954.1415197-1-zokeefe@google.com
+Fixes: f6789593d5ce ("mm/page-writeback.c: fix divide by zero in bdi_dirty_limits()")
+Signed-off-by: Zach O'Keefe <zokeefe@google.com>
+Cc: Maxim Patlasov <MPatlasov@parallels.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/power/runtime.c |    5 +++++
- include/linux/pm_runtime.h   |    4 ++++
- 2 files changed, 9 insertions(+)
+ mm/page-writeback.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/base/power/runtime.c
-+++ b/drivers/base/power/runtime.c
-@@ -1481,11 +1481,16 @@ EXPORT_SYMBOL_GPL(pm_runtime_enable);
+--- a/mm/page-writeback.c
++++ b/mm/page-writeback.c
+@@ -1530,7 +1530,7 @@ static inline void wb_dirty_limits(struc
+ 	 */
+ 	dtc->wb_thresh = __wb_calc_thresh(dtc);
+ 	dtc->wb_bg_thresh = dtc->thresh ?
+-		div_u64((u64)dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0;
++		div64_u64(dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0;
  
- static void pm_runtime_disable_action(void *data)
- {
-+	pm_runtime_dont_use_autosuspend(data);
- 	pm_runtime_disable(data);
- }
- 
- /**
-  * devm_pm_runtime_enable - devres-enabled version of pm_runtime_enable.
-+ *
-+ * NOTE: this will also handle calling pm_runtime_dont_use_autosuspend() for
-+ * you at driver exit time if needed.
-+ *
-  * @dev: Device to handle.
-  */
- int devm_pm_runtime_enable(struct device *dev)
---- a/include/linux/pm_runtime.h
-+++ b/include/linux/pm_runtime.h
-@@ -539,6 +539,10 @@ static inline void pm_runtime_disable(st
-  * Allow the runtime PM autosuspend mechanism to be used for @dev whenever
-  * requested (or "autosuspend" will be handled as direct runtime-suspend for
-  * it).
-+ *
-+ * NOTE: It's important to undo this with pm_runtime_dont_use_autosuspend()
-+ * at driver exit time unless your driver initially enabled pm_runtime
-+ * with devm_pm_runtime_enable() (which handles it for you).
-  */
- static inline void pm_runtime_use_autosuspend(struct device *dev)
- {
+ 	/*
+ 	 * In order to avoid the stacked BDI deadlock we need
 
 
 
