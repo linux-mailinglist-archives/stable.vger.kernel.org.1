@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-21927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4BA485D936
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:16:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74EC585DD87
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:06:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 75B20B23EEC
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:16:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98FAC1C2365E
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:06:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE1596EB77;
-	Wed, 21 Feb 2024 13:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6898D7E77F;
+	Wed, 21 Feb 2024 14:05:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gOwSSKcd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZoJHHxou"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE5E69D09;
-	Wed, 21 Feb 2024 13:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25BEA7C6C0;
+	Wed, 21 Feb 2024 14:05:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521343; cv=none; b=XW/lpbuzWjxDtbOBe8FKXVLcmCCNTU0izlOgm983lkXRX1b8nCUwcq7fZjDc5v2QJDPHxeHXqvRdGWndKs2uF5j1AiJHOjlb6ikp5dhhIjEytP54PJZt5ilUveRkkPaTRxpd8QbLii9QiXvdcTP/UbOjof/7Rop4xGvsU8PSZkE=
+	t=1708524336; cv=none; b=L4KfFchEqJq79fAO7wgLW1bzTkdUuiGmWPdz1DdFdNexpS+n5OIh5eJbEyS7tgQtjmKC7bNTFSv9odigVo2UkGj2mU781TOZGbw20ug9rUWlX8voX6rihxbrZlXqCc4iPx/l86jDespsQuHPeln7Fa0cLz4Fa4pKdJBf2IUkv7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521343; c=relaxed/simple;
-	bh=Bq7yhqBPNA/oJzl0wS5Ukv3XUZpNDCDM9WCrMDbLjH8=;
+	s=arc-20240116; t=1708524336; c=relaxed/simple;
+	bh=SvLgrEWk4K/c5bAlB7oVxdDSLGwPcu+BXO+lT2H9md8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C8Gesa5fEvBh+52t1AITH1o1mGBBlsnlRRBGkXwzUlTEglO1VZfZkzGmPboTs2MTpvPRt7aHjI9yYfs9ezZlkX9t7pq00Li53yNYPbGrfqrJFY0P/BMz3QGvSyNjC3IHHmDJdt7TZbaH9j/knw6hHm3vjlsrKFzrEmEc8hBUX1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gOwSSKcd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D523AC433C7;
-	Wed, 21 Feb 2024 13:15:42 +0000 (UTC)
+	 MIME-Version; b=bG6kwWtcxwbEkCrwxPNfIlYsThMJuLHRj1Q177OGHXCFhdKep2YxEMXKVCV5pBqprdcIn9prT+CPqzHIBH0Sh50GNU64x1mFA2PQB1X64DscRFH+nP2rVNbsdeCSO2YD/+zQsEWqST8AKCv8bpcv9G9ujBjQgVvrXPxxNiLFGWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZoJHHxou; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56187C433C7;
+	Wed, 21 Feb 2024 14:05:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521343;
-	bh=Bq7yhqBPNA/oJzl0wS5Ukv3XUZpNDCDM9WCrMDbLjH8=;
+	s=korg; t=1708524336;
+	bh=SvLgrEWk4K/c5bAlB7oVxdDSLGwPcu+BXO+lT2H9md8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gOwSSKcdPRnrL1PzxFUcaKrbp5Vcx1hGw7L2LmrBYILiqDtFzEZQyu+TDmr4Ebl8V
-	 zgOY7LT6FXqzWDvC3xB3LFvucEmW5jh/Qb96/PWUYlnmyOk+B4t+QhQ7gKhJbtSpIG
-	 iho2/Epe2mqtL8/ztwilghX9PLuAwBK9MlxHHZeM=
+	b=ZoJHHxouawRT5RW6KlIZMFvwssk7l4S4/guoFOhREFTNjZ7Dn0iwr1Tyw7VSXc07C
+	 bh8B4P5paeoCegvmxQsjp5qYycNWdKo7c9DKREbV9nMMWtLCE4bnT0mrZnCY5I7ops
+	 qZYJzlzRavD9jOVUSQXS72v1UBbHo6jdLVqpEEZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 089/202] ARM: dts: imx27-apf27dev: Fix LED name
-Date: Wed, 21 Feb 2024 14:06:30 +0100
-Message-ID: <20240221125934.666844453@linuxfoundation.org>
+Subject: [PATCH 5.10 212/379] PCI/AER: Decode Requester ID when no error info found
+Date: Wed, 21 Feb 2024 14:06:31 +0100
+Message-ID: <20240221130001.171328816@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Bjorn Helgaas <bhelgaas@google.com>
 
-[ Upstream commit dc35e253d032b959d92e12f081db5b00db26ae64 ]
+[ Upstream commit 1291b716bbf969e101d517bfb8ba18d958f758b8 ]
 
-Per leds-gpio.yaml, the led names should start with 'led'.
+When a device with AER detects an error, it logs error information in its
+own AER Error Status registers.  It may send an Error Message to the Root
+Port (RCEC in the case of an RCiEP), which logs the fact that an Error
+Message was received (Root Error Status) and the Requester ID of the
+message source (Error Source Identification).
 
-Change it to fix the following dt-schema warning:
+aer_print_port_info() prints the Requester ID from the Root Port Error
+Source in the usual Linux "bb:dd.f" format, but when find_source_device()
+finds no error details in the hierarchy below the Root Port, it printed the
+raw Requester ID without decoding it.
 
-imx27-apf27dev.dtb: leds: 'user' does not match any of the regexes: '(^led-[0-9a-f]$|led)', 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/leds/leds-gpio.yaml#
+Decode the Requester ID in the usual Linux format so it matches other
+messages.
 
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Sample message changes:
+
+  - pcieport 0000:00:1c.5: AER: Correctable error received: 0000:00:1c.5
+  - pcieport 0000:00:1c.5: AER: can't find device of ID00e5
+  + pcieport 0000:00:1c.5: AER: Correctable error message received from 0000:00:1c.5
+  + pcieport 0000:00:1c.5: AER: found no error details for 0000:00:1c.5
+
+Link: https://lore.kernel.org/r/20231206224231.732765-3-helgaas@kernel.org
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/imx27-apf27dev.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/pcie/aer.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/imx27-apf27dev.dts b/arch/arm/boot/dts/imx27-apf27dev.dts
-index 5f84b598e0d0..167f21434fbf 100644
---- a/arch/arm/boot/dts/imx27-apf27dev.dts
-+++ b/arch/arm/boot/dts/imx27-apf27dev.dts
-@@ -53,7 +53,7 @@
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&pinctrl_gpio_leds>;
+diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+index 9564b74003f0..d58b02237075 100644
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -741,7 +741,7 @@ static void aer_print_port_info(struct pci_dev *dev, struct aer_err_info *info)
+ 	u8 bus = info->id >> 8;
+ 	u8 devfn = info->id & 0xff;
  
--		user {
-+		led-user {
- 			label = "Heartbeat";
- 			gpios = <&gpio6 14 GPIO_ACTIVE_HIGH>;
- 			linux,default-trigger = "heartbeat";
+-	pci_info(dev, "%s%s error received: %04x:%02x:%02x.%d\n",
++	pci_info(dev, "%s%s error message received from %04x:%02x:%02x.%d\n",
+ 		 info->multi_error_valid ? "Multiple " : "",
+ 		 aer_error_severity_string[info->severity],
+ 		 pci_domain_nr(dev->bus), bus, PCI_SLOT(devfn),
+@@ -926,7 +926,12 @@ static bool find_source_device(struct pci_dev *parent,
+ 	pci_walk_bus(parent->subordinate, find_device_iter, e_info);
+ 
+ 	if (!e_info->error_dev_num) {
+-		pci_info(parent, "can't find device of ID%04x\n", e_info->id);
++		u8 bus = e_info->id >> 8;
++		u8 devfn = e_info->id & 0xff;
++
++		pci_info(parent, "found no error details for %04x:%02x:%02x.%d\n",
++			 pci_domain_nr(parent->bus), bus, PCI_SLOT(devfn),
++			 PCI_FUNC(devfn));
+ 		return false;
+ 	}
+ 	return true;
 -- 
 2.43.0
 
