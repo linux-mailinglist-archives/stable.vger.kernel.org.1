@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-22824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FDF585DE37
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:16:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5CC085DEF4
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:23:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4721DB2BB6F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 552661F22655
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:23:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 756A580047;
-	Wed, 21 Feb 2024 14:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 346ED7BAF7;
+	Wed, 21 Feb 2024 14:23:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mjmkPdw4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0VR1dsn3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33B857D401;
-	Wed, 21 Feb 2024 14:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7A1D79DAE;
+	Wed, 21 Feb 2024 14:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524637; cv=none; b=ae0i78PRD9afFDNhPcIgdSFin6ojJeue/CJfr77P1MGUWq7XHl8P4AR+ChQJNKwju1UTwY8vFFPvG9EDqxQ7hSgH41F6THw8AmNN1ZdDdxI5DnYyTQXsuFyEQCs8WwSr9gdDjEQE5cIuCHq68zE7xeGb+DYsFTN1Q64wsziz6KU=
+	t=1708525389; cv=none; b=tYMqnq3MJC9zRO+5oGNzZBiL+nI5Vvmp2MzW5fOh8jRMFVR5QJkfLFwOgD94bGxyFtzG//vQYGzj3ioPJ5Ps0+VxPUkxWAcCMZkPa4yfJKzj1Wns+lt9KXfo8C2ENvkwxVY0k3iFUxgfhSPsCQyFBie4sAjgD+EZ9MhkuRlsnkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524637; c=relaxed/simple;
-	bh=yK4lBRHLiYXtvbOXdmXDD305X58PZKcuv0COvmhqVY4=;
+	s=arc-20240116; t=1708525389; c=relaxed/simple;
+	bh=qHjmAa91sfAcpKdlQvJev4QsmBaREOqcLZGFFPNGyJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mOj+Al+S9AZMr1dz+MyAwqgd15wtcRvPyxyR+qFs/SxwOwMAvgZl6B2cbZViNIPI1oD13nY0b4aYjzOh5Qn2INqQRl4MgzrgMPNbpzR9q5HOvJKj+VvatR3TzSlBmuQrlliqY90SjRXbpYlmHIRSE6pgiupKlUej2OdUdQj2U60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mjmkPdw4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A998DC433F1;
-	Wed, 21 Feb 2024 14:10:36 +0000 (UTC)
+	 MIME-Version; b=JMRtdkZ9RQHw8mWbO/X0q7tKUoLNlj4aN5VnvTgVDMX8xs8ikS4RGtvqqOUKyGuR3dNFYnXV+uPDkkpr0e9Eip1RJ82QJXNNArTHpI+Y9W3pCXTHSxBZVh3XdaMRYE/V/tLy/C0zYN0lVD1FAxSP0Nn7vg33D0H6LBmCkqFa+M0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0VR1dsn3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DF1DC433F1;
+	Wed, 21 Feb 2024 14:23:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524637;
-	bh=yK4lBRHLiYXtvbOXdmXDD305X58PZKcuv0COvmhqVY4=;
+	s=korg; t=1708525388;
+	bh=qHjmAa91sfAcpKdlQvJev4QsmBaREOqcLZGFFPNGyJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mjmkPdw4TXjZPsQdXcXy6DoFK1I16n0PE0w+Iru57ta/dGK/oRq6/YqGSt+kwGxmh
-	 qB+DZjlhn+ilm2qQbzs04S5CMdQn3H+gq9/SvxvBeol2pgU4bzPkUEoZXW702TnC41
-	 Q/6PnapRGOqaia+0ZurGC6njUtnS0UhkEdIohWQ0=
+	b=0VR1dsn3pfNRcmjvWj7esMfbvHrS6IcxK1DgpfLwY52T9OkawBwuqytSdoJtICb4h
+	 a2ye/thA9Jnr/fvtnS8pMdCYxQ6+RxDYNqN8flHPw8FiNyQbtZfRo+tfWLwosPOWWZ
+	 D3yj6dnYJ/fbppkd/1GPOhiTPdt801QebfvHxEj0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 5.10 303/379] usb: ucsi_acpi: Fix command completion handling
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Peter Lafreniere <peter@n8pjl.ca>,
+	Richard Weinberger <richard@nod.at>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 141/267] um: Fix naming clash between UML and scheduler
 Date: Wed, 21 Feb 2024 14:08:02 +0100
-Message-ID: <20240221130003.886037803@linuxfoundation.org>
+Message-ID: <20240221125944.476300530@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +63,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian A. Ehrhardt <lk@c--e.de>
+From: Anton Ivanov <anton.ivanov@cambridgegreys.com>
 
-commit 2840143e393a4ddc1caab4372969ea337371168c upstream.
+[ Upstream commit 541d4e4d435c8b9bfd29f70a1da4a2db97794e0a ]
 
-In case of a spurious or otherwise delayed notification it is
-possible that CCI still reports the previous completion. The
-UCSI spec is aware of this and provides two completion bits in
-CCI, one for normal commands and one for acks. As acks and commands
-alternate the notification handler can determine if the completion
-bit is from the current command.
+__cant_sleep was already used and exported by the scheduler.
+The name had to be changed to a UML specific one.
 
-The initial UCSI code correctly handled this but the distinction
-between the two completion bits was lost with the introduction of
-the new API.
-
-To fix this revive the ACK_PENDING bit for ucsi_acpi and only complete
-commands if the completion bit matches.
-
-Fixes: f56de278e8ec ("usb: typec: ucsi: acpi: Move to the new API")
-Cc: stable@vger.kernel.org
-Signed-off-by: "Christian A. Ehrhardt" <lk@c--e.de>
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240121204123.275441-3-lk@c--e.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Reviewed-by: Peter Lafreniere <peter@n8pjl.ca>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi_acpi.c |   17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ arch/um/include/shared/kern_util.h | 2 +-
+ arch/um/kernel/process.c           | 2 +-
+ arch/um/os-Linux/helper.c          | 6 +++---
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/usb/typec/ucsi/ucsi_acpi.c
-+++ b/drivers/usb/typec/ucsi/ucsi_acpi.c
-@@ -70,9 +70,13 @@ static int ucsi_acpi_sync_write(struct u
- 				const void *val, size_t val_len)
- {
- 	struct ucsi_acpi *ua = ucsi_get_drvdata(ucsi);
-+	bool ack = UCSI_COMMAND(*(u64 *)val) == UCSI_ACK_CC_CI;
- 	int ret;
- 
--	set_bit(COMMAND_PENDING, &ua->flags);
-+	if (ack)
-+		set_bit(ACK_PENDING, &ua->flags);
-+	else
-+		set_bit(COMMAND_PENDING, &ua->flags);
- 
- 	ret = ucsi_acpi_async_write(ucsi, offset, val, val_len);
- 	if (ret)
-@@ -82,7 +86,10 @@ static int ucsi_acpi_sync_write(struct u
- 		ret = -ETIMEDOUT;
- 
- out_clear_bit:
--	clear_bit(COMMAND_PENDING, &ua->flags);
-+	if (ack)
-+		clear_bit(ACK_PENDING, &ua->flags);
-+	else
-+		clear_bit(COMMAND_PENDING, &ua->flags);
- 
- 	return ret;
- }
-@@ -106,8 +113,10 @@ static void ucsi_acpi_notify(acpi_handle
- 	if (UCSI_CCI_CONNECTOR(cci))
- 		ucsi_connector_change(ua->ucsi, UCSI_CCI_CONNECTOR(cci));
- 
--	if (test_bit(COMMAND_PENDING, &ua->flags) &&
--	    cci & (UCSI_CCI_ACK_COMPLETE | UCSI_CCI_COMMAND_COMPLETE))
-+	if (cci & UCSI_CCI_ACK_COMPLETE && test_bit(ACK_PENDING, &ua->flags))
-+		complete(&ua->complete);
-+	if (cci & UCSI_CCI_COMMAND_COMPLETE &&
-+	    test_bit(COMMAND_PENDING, &ua->flags))
- 		complete(&ua->complete);
+diff --git a/arch/um/include/shared/kern_util.h b/arch/um/include/shared/kern_util.h
+index ccafb62e8cce..42dc0e47d3ad 100644
+--- a/arch/um/include/shared/kern_util.h
++++ b/arch/um/include/shared/kern_util.h
+@@ -49,7 +49,7 @@ extern void do_uml_exitcalls(void);
+  * Are we disallowed to sleep? Used to choose between GFP_KERNEL and
+  * GFP_ATOMIC.
+  */
+-extern int __cant_sleep(void);
++extern int __uml_cant_sleep(void);
+ extern int get_current_pid(void);
+ extern int copy_from_user_proc(void *to, void *from, int size);
+ extern int cpu(void);
+diff --git a/arch/um/kernel/process.c b/arch/um/kernel/process.c
+index d71dd7725bef..f185d19fd9b6 100644
+--- a/arch/um/kernel/process.c
++++ b/arch/um/kernel/process.c
+@@ -258,7 +258,7 @@ void arch_cpu_idle(void)
+ 	local_irq_enable();
  }
  
+-int __cant_sleep(void) {
++int __uml_cant_sleep(void) {
+ 	return in_atomic() || irqs_disabled() || in_interrupt();
+ 	/* Is in_interrupt() really needed? */
+ }
+diff --git a/arch/um/os-Linux/helper.c b/arch/um/os-Linux/helper.c
+index 9fa6e4187d4f..57a27555092f 100644
+--- a/arch/um/os-Linux/helper.c
++++ b/arch/um/os-Linux/helper.c
+@@ -45,7 +45,7 @@ int run_helper(void (*pre_exec)(void *), void *pre_data, char **argv)
+ 	unsigned long stack, sp;
+ 	int pid, fds[2], ret, n;
+ 
+-	stack = alloc_stack(0, __cant_sleep());
++	stack = alloc_stack(0, __uml_cant_sleep());
+ 	if (stack == 0)
+ 		return -ENOMEM;
+ 
+@@ -69,7 +69,7 @@ int run_helper(void (*pre_exec)(void *), void *pre_data, char **argv)
+ 	data.pre_data = pre_data;
+ 	data.argv = argv;
+ 	data.fd = fds[1];
+-	data.buf = __cant_sleep() ? uml_kmalloc(PATH_MAX, UM_GFP_ATOMIC) :
++	data.buf = __uml_cant_sleep() ? uml_kmalloc(PATH_MAX, UM_GFP_ATOMIC) :
+ 					uml_kmalloc(PATH_MAX, UM_GFP_KERNEL);
+ 	pid = clone(helper_child, (void *) sp, CLONE_VM, &data);
+ 	if (pid < 0) {
+@@ -116,7 +116,7 @@ int run_helper_thread(int (*proc)(void *), void *arg, unsigned int flags,
+ 	unsigned long stack, sp;
+ 	int pid, status, err;
+ 
+-	stack = alloc_stack(0, __cant_sleep());
++	stack = alloc_stack(0, __uml_cant_sleep());
+ 	if (stack == 0)
+ 		return -ENOMEM;
+ 
+-- 
+2.43.0
+
 
 
 
