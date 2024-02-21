@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-22540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C771885DC87
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:54:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EFE385DAB5
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:34:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40B8E1F22FD4
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:54:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C3AD0B21370
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:34:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1478779DA2;
-	Wed, 21 Feb 2024 13:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C0207EF04;
+	Wed, 21 Feb 2024 13:31:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cbMMx0tj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HKr6Sj4A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBFE169942;
-	Wed, 21 Feb 2024 13:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64137EF02;
+	Wed, 21 Feb 2024 13:31:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523655; cv=none; b=aU3LrO1CtwdK9/MIOWIEajf6QOIdWtZyRTitll0w3GxfCbE0A+CCZnhw6vT1nkwTLHuge0T/3p+BZiiao6A47J111OKhY7CiuSw/yz6UsB5ZCpb2OCYtIO7DdGLxREsVUNiThFIxAAva2TROc62REpdmbuQ/e8CKj4p+/7zUIak=
+	t=1708522312; cv=none; b=IGwe+D5MDJOcshXgmR52TErWb60P3beR6IhSE6TqyhxtthLFrH0w/77Cnz1VMny2K32zGI3uGWKFxHsTszv1Jb4e7V05Y8cFXY/c1WJcvFRlDnFubJ5Hvjx1k35gOYSRXN5YGe++E6/3AqIlOgSJUBj/xDhmWMq+yi/essbWpnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523655; c=relaxed/simple;
-	bh=jYX4O9t2zkMIVxdMTNyiEIFM7S7sJFm/oxpp3n+hjVM=;
+	s=arc-20240116; t=1708522312; c=relaxed/simple;
+	bh=W5tDHLLe9LQQ8WStPZT5R/VXXtAAqCWnC3cHP6/fvo0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c4d6ixzc2vsrws6S9TQeiAzsRS5Wyy8F+MHcpuTAp7d9xh6f6A/+YYcigaOq+G1OBJI4XaCBh2zi2zFPCt2bxTmiHke4pZtvemNg4Olhn/htythG7TLODZOIrF0b4ZXl3RHMuSTLkgfLtcQ1X73alCJtzlZ+cl83R1u+G3d7m1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cbMMx0tj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32239C433F1;
-	Wed, 21 Feb 2024 13:54:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iA93dzHmaptnVrS1517VbkhONuWrNH2U/7OBgT+Q+fRNwcU5fR78wxjPsqosYaXtspfUlK/JDEAiRg4EhMyOXp0qQHEtAiZ3QZJOdp0axxm5rBwrJpuFaSrkr5kmpvD0k4dXHEjk+wQ57pYPxbxGBBEK7yhpuzhkqwA6uchta9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HKr6Sj4A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73F63C433C7;
+	Wed, 21 Feb 2024 13:31:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523655;
-	bh=jYX4O9t2zkMIVxdMTNyiEIFM7S7sJFm/oxpp3n+hjVM=;
+	s=korg; t=1708522310;
+	bh=W5tDHLLe9LQQ8WStPZT5R/VXXtAAqCWnC3cHP6/fvo0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cbMMx0tjRs13vogXhQ2nBzRk//L0tBVox2GPrMBWpuvzCZWx1e2MtzK6pVqPEx3vU
-	 EUfJezT2JFCa1oDQ3lXjkhzc3QCHz7wakJQd2IIaRn99EII8CS0sGNnerHvX7xTR8U
-	 KW/GpPagvXKRYSpwxKq+tMrAVEmXNUpJUpu6SEOk=
+	b=HKr6Sj4AZupDetLbrpm9+ybdlsdvcrTe9cLpPTP8iSF5IcRljiJW6OtqwUm+SWUoc
+	 do1Mg4QAu8TumPJ6Iy3PgG6Lm3U70876aSqxMp0/ytg258TQT2t/QANL+JwJmw5u6l
+	 hYjtCIuWUzyh/mpSXeBVL2mJkLzMhDbEhyO2aQl8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 002/379] usb: cdns3: fix uvc failure work since sg support enabled
+Subject: [PATCH 5.15 130/476] powerpc/64s: Fix CONFIG_NUMA=n build due to create_section_mapping()
 Date: Wed, 21 Feb 2024 14:03:01 +0100
-Message-ID: <20240221125954.994805413@linuxfoundation.org>
+Message-ID: <20240221130012.760953629@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,163 +59,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 1b8be5ecff26201bafb0a554c74e91571299fb94 ]
+[ Upstream commit ede66cd22441820cbd399936bf84fdc4294bc7fa ]
 
-When IP version >= DEV_VER_V2, gadget:sg_supported is true. So uvc gadget
-function driver will use sg to equeue data, first is 8bytes header, the
-second is 1016bytes data.
+With CONFIG_NUMA=n the build fails with:
 
-    cdns3_prepare_trb: ep2in: trb 0000000000ac755f, dma buf: 0xbf455000, size: 8, burst: 128 ctrl: 0x00000415 (C=1, T=0, ISP, CHAIN, Normal)
-    cdns3_prepare_trb: ep2in: trb 00000000a574e693, dma buf: 0xc0200fe0, size: 1016, burst: 128 ctrl: 0x00000405 (C=1, T=0, ISP, Normal)
+  arch/powerpc/mm/book3s64/pgtable.c:275:15: error: no previous prototype for ‘create_section_mapping’ [-Werror=missing-prototypes]
+  275 | int __meminit create_section_mapping(unsigned long start, unsigned long end,
+      |               ^~~~~~~~~~~~~~~~~~~~~~
 
-But cdns3_ep_run_transfer() can't correctly handle this case, which only
-support one TRB for ISO transfer.
+That happens because the prototype for create_section_mapping() is in
+asm/mmzone.h, but asm/mmzone.h is only included by linux/mmzone.h
+when CONFIG_NUMA=y.
 
-The controller requires duplicate the TD for each SOF if priv_ep->interval
-is not 1. DMA will read data from DDR to internal FIFO when get SOF. Send
-data to bus when receive IN token. DMA always refill FIFO when get SOF
-regardless host send IN token or not. If host send IN token later, some
-frames data will be lost.
+In fact the prototype is only needed by arch/powerpc/mm code, so move
+the prototype into arch/powerpc/mm/mmu_decl.h, which also fixes the
+build error.
 
-Fixed it by below major steps:
-
-1. Calculate numembers of TRB base on sg_nums and priv_ep->interval.
-2. Remove CHAIN flags for each end TRB of TD when duplicate TD.
-3. The controller requires LINK TRB must be first TRB of TD. When check
-there are not enough TRBs lefts, just fill LINK TRB for left TRBs.
-
-.... CHAIN_TRB DATA_TRB, CHAIN_TRB DATA_TRB,  LINK_TRB ... LINK_TRB
-                                                           ^End of TRB List
-
-Cc:  <stable@vger.kernel.org>
-Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20231224153816.1664687-2-Frank.Li@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231129131919.2528517-5-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/cdns3/gadget.c | 51 ++++++++++++++++++++++++++++++--------
- 1 file changed, 40 insertions(+), 11 deletions(-)
+ arch/powerpc/include/asm/mmzone.h | 5 -----
+ arch/powerpc/mm/mmu_decl.h        | 5 +++++
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/usb/cdns3/gadget.c b/drivers/usb/cdns3/gadget.c
-index 82b6fd2bc890..575180a59ad4 100644
---- a/drivers/usb/cdns3/gadget.c
-+++ b/drivers/usb/cdns3/gadget.c
-@@ -1118,6 +1118,7 @@ static int cdns3_ep_run_transfer(struct cdns3_endpoint *priv_ep,
- 	dma_addr_t trb_dma;
- 	u32 togle_pcs = 1;
- 	int sg_iter = 0;
-+	int num_trb_req;
- 	int num_trb;
- 	int address;
- 	u32 control;
-@@ -1126,15 +1127,13 @@ static int cdns3_ep_run_transfer(struct cdns3_endpoint *priv_ep,
- 	struct scatterlist *s = NULL;
- 	bool sg_supported = !!(request->num_mapped_sgs);
+diff --git a/arch/powerpc/include/asm/mmzone.h b/arch/powerpc/include/asm/mmzone.h
+index 3764d3585d30..da827d2d0866 100644
+--- a/arch/powerpc/include/asm/mmzone.h
++++ b/arch/powerpc/include/asm/mmzone.h
+@@ -43,10 +43,5 @@ u64 memory_hotplug_max(void);
+ #define memory_hotplug_max() memblock_end_of_DRAM()
+ #endif /* CONFIG_NUMA */
  
-+	num_trb_req = sg_supported ? request->num_mapped_sgs : 1;
-+
-+	/* ISO transfer require each SOF have a TD, each TD include some TRBs */
- 	if (priv_ep->type == USB_ENDPOINT_XFER_ISOC)
--		num_trb = priv_ep->interval;
-+		num_trb = priv_ep->interval * num_trb_req;
- 	else
--		num_trb = sg_supported ? request->num_mapped_sgs : 1;
+-#ifdef CONFIG_MEMORY_HOTPLUG
+-extern int create_section_mapping(unsigned long start, unsigned long end,
+-				  int nid, pgprot_t prot);
+-#endif
 -
--	if (num_trb > priv_ep->free_trbs) {
--		priv_ep->flags |= EP_RING_FULL;
--		return -ENOBUFS;
--	}
-+		num_trb = num_trb_req;
- 
- 	priv_req = to_cdns3_request(request);
- 	address = priv_ep->endpoint.desc->bEndpointAddress;
-@@ -1183,14 +1182,31 @@ static int cdns3_ep_run_transfer(struct cdns3_endpoint *priv_ep,
- 
- 		link_trb->control = cpu_to_le32(((priv_ep->pcs) ? TRB_CYCLE : 0) |
- 				    TRB_TYPE(TRB_LINK) | TRB_TOGGLE | ch_bit);
+ #endif /* __KERNEL__ */
+ #endif /* _ASM_MMZONE_H_ */
+diff --git a/arch/powerpc/mm/mmu_decl.h b/arch/powerpc/mm/mmu_decl.h
+index dd1cabc2ea0f..21996b9e0a64 100644
+--- a/arch/powerpc/mm/mmu_decl.h
++++ b/arch/powerpc/mm/mmu_decl.h
+@@ -190,3 +190,8 @@ static inline bool debug_pagealloc_enabled_or_kfence(void)
+ {
+ 	return IS_ENABLED(CONFIG_KFENCE) || debug_pagealloc_enabled();
+ }
 +
-+		if (priv_ep->type == USB_ENDPOINT_XFER_ISOC) {
-+			/*
-+			 * ISO require LINK TRB must be first one of TD.
-+			 * Fill LINK TRBs for left trb space to simply software process logic.
-+			 */
-+			while (priv_ep->enqueue) {
-+				*trb = *link_trb;
-+				trace_cdns3_prepare_trb(priv_ep, trb);
-+
-+				cdns3_ep_inc_enq(priv_ep);
-+				trb = priv_ep->trb_pool + priv_ep->enqueue;
-+				priv_req->trb = trb;
-+			}
-+		}
-+	}
-+
-+	if (num_trb > priv_ep->free_trbs) {
-+		priv_ep->flags |= EP_RING_FULL;
-+		return -ENOBUFS;
- 	}
- 
- 	if (priv_dev->dev_ver <= DEV_VER_V2)
- 		togle_pcs = cdns3_wa1_update_guard(priv_ep, trb);
- 
--	if (sg_supported)
--		s = request->sg;
--
- 	/* set incorrect Cycle Bit for first trb*/
- 	control = priv_ep->pcs ? 0 : TRB_CYCLE;
- 	trb->length = 0;
-@@ -1208,6 +1224,9 @@ static int cdns3_ep_run_transfer(struct cdns3_endpoint *priv_ep,
- 	do {
- 		u32 length;
- 
-+		if (!(sg_iter % num_trb_req) && sg_supported)
-+			s = request->sg;
-+
- 		/* fill TRB */
- 		control |= TRB_TYPE(TRB_NORMAL);
- 		if (sg_supported) {
-@@ -1249,7 +1268,7 @@ static int cdns3_ep_run_transfer(struct cdns3_endpoint *priv_ep,
- 		if (sg_supported) {
- 			trb->control |= cpu_to_le32(TRB_ISP);
- 			/* Don't set chain bit for last TRB */
--			if (sg_iter < num_trb - 1)
-+			if ((sg_iter % num_trb_req) < num_trb_req - 1)
- 				trb->control |= cpu_to_le32(TRB_CHAIN);
- 
- 			s = sg_next(s);
-@@ -1507,6 +1526,12 @@ static void cdns3_transfer_completed(struct cdns3_device *priv_dev,
- 
- 		/* The TRB was changed as link TRB, and the request was handled at ep_dequeue */
- 		while (TRB_FIELD_TO_TYPE(le32_to_cpu(trb->control)) == TRB_LINK) {
-+
-+			/* ISO ep_traddr may stop at LINK TRB */
-+			if (priv_ep->dequeue == cdns3_get_dma_pos(priv_dev, priv_ep) &&
-+			    priv_ep->type == USB_ENDPOINT_XFER_ISOC)
-+				break;
-+
- 			trace_cdns3_complete_trb(priv_ep, trb);
- 			cdns3_ep_inc_deq(priv_ep);
- 			trb = priv_ep->trb_pool + priv_ep->dequeue;
-@@ -1539,6 +1564,10 @@ static void cdns3_transfer_completed(struct cdns3_device *priv_dev,
- 			}
- 
- 			if (request_handled) {
-+				/* TRBs are duplicated by priv_ep->interval time for ISO IN */
-+				if (priv_ep->type == USB_ENDPOINT_XFER_ISOC && priv_ep->dir)
-+					request->actual /= priv_ep->interval;
-+
- 				cdns3_gadget_giveback(priv_ep, priv_req, 0);
- 				request_handled = false;
- 				transfer_end = false;
++#ifdef CONFIG_MEMORY_HOTPLUG
++int create_section_mapping(unsigned long start, unsigned long end,
++			   int nid, pgprot_t prot);
++#endif
 -- 
 2.43.0
 
