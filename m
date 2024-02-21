@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-22835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9BA585DE06
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:14:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21B0385D9A6
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:21:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F2F91F242E6
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49C5E1C230EE
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:21:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB79480614;
-	Wed, 21 Feb 2024 14:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBC9D76037;
+	Wed, 21 Feb 2024 13:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Axs1R1Ql"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pFDFC/ot"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B21380616;
-	Wed, 21 Feb 2024 14:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A5CE69953;
+	Wed, 21 Feb 2024 13:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524671; cv=none; b=tXmqemsEvxwra2hfQtwLvn1FxqWuICw7ppVba3WeTU6lVUz7DQZWRFsb///dwyTWD6ISSRJ7b1KoTsAecysuQk9dzZYbjQdc//V8bq/o92GFrUHr2OzdkPs5ZL3oeJo2MZIq9OjPx23RPalR4eL0rQdGAM11J552qRfKl4pBEEM=
+	t=1708521635; cv=none; b=XIwgF1bEP45QSq8ojmxJaG6d6oRuoicWDS5W18X++/G/bXUZQXrlAblJo3KKTnqYYVGH08Hnwknyxxmw2Z/fEDh1GE2xyUe6RPCpu0yUIv7TEKBbH++SARjlFQf19LmCxdX/KovLVsa2HaYlLc+k8Wg0ogt9yswbAEnrSQIYwd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524671; c=relaxed/simple;
-	bh=qsGcm/MjQ4sHs5Wkk6DT5zBObVpA2l7f9tif2sdzb+I=;
+	s=arc-20240116; t=1708521635; c=relaxed/simple;
+	bh=lXwza2IAWTW4FbeJkr0TOOUkLDDBVZHtDhwxntVOrHE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MtU7RPdzjIM0IcdKjsXJBATRS2eoqriZOMIWYqeu3rDyQpb1ZyGoOrz430MtNBBYu+ouh/th9KEBsgrIoUx53mpwjjinRCTaDbd8Q3d+xqO+oH2N8nH+mQvIrhM3hd+O6QZKXFWw9F6ymtRymM9f5eVhJaVoEGO1t6jLEcI9ey4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Axs1R1Ql; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06BCBC433F1;
-	Wed, 21 Feb 2024 14:11:10 +0000 (UTC)
+	 MIME-Version; b=OiJrdtK76rd9IgHpY3dMLauhIj+FP3qBEAeHj+tJXIMp7Tmvyx2lrEmfHR99oAT36NCFgoIAwTn4JKNtpR8mPwamwrkzUj+Hxy5KH6vJcNoC/4z4ADW4tDm21gpCPy7lusKtV/tKM81/SKxzcheERtRp3DcgqDtYOJEq9S8PxeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pFDFC/ot; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09365C433C7;
+	Wed, 21 Feb 2024 13:20:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524671;
-	bh=qsGcm/MjQ4sHs5Wkk6DT5zBObVpA2l7f9tif2sdzb+I=;
+	s=korg; t=1708521635;
+	bh=lXwza2IAWTW4FbeJkr0TOOUkLDDBVZHtDhwxntVOrHE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Axs1R1QlGyWT4ybITXRGxalRVTliN9Px2GoxLG6iMq+ZzZGfO27Oq57Fy53abVyab
-	 do1Dm1uJY2I112uRXa9jlvnqOp6KH5VxTFTkioPpEuLJNwd+a4/nxVxuRmz3zghLqu
-	 o+/IJbjMHzmL3i2isz1qEYIW9DWWp5n8LiYteqP0=
+	b=pFDFC/otzJW7mgy7eMMrC8WvhYoDZpl7CTrLvcDMKTHFXppGTuEy8J6v1H5A4lB+7
+	 c16EnqLqD6jd3M6o6ynFeC0/VGIzyhRkCIsUu6VpRHtjQrFfjYX5BCvLJJSt6JtRJk
+	 OwF0HT7x9oQ2RAj9mBNymMopXPNR6JKc9U59K8Mo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Qu Wenruo <wqu@suse.com>,
 	Boris Burkov <boris@bur.io>,
 	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.10 286/379] btrfs: forbid creating subvol qgroups
-Date: Wed, 21 Feb 2024 14:07:45 +0100
-Message-ID: <20240221130003.369630068@linuxfoundation.org>
+Subject: [PATCH 4.19 165/202] btrfs: forbid creating subvol qgroups
+Date: Wed, 21 Feb 2024 14:07:46 +0100
+Message-ID: <20240221125937.072522533@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -89,7 +89,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/fs/btrfs/ioctl.c
 +++ b/fs/btrfs/ioctl.c
-@@ -4325,6 +4325,11 @@ static long btrfs_ioctl_qgroup_create(st
+@@ -5343,6 +5343,11 @@ static long btrfs_ioctl_qgroup_create(st
  		goto out;
  	}
  
