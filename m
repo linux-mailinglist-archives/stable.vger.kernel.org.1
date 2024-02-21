@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-22428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 707A785DBFB
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:47:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DEB185DDEC
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:13:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1137D1F2115E
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:47:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0EC41F2270B
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:13:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A065D78B50;
-	Wed, 21 Feb 2024 13:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A24D78B5E;
+	Wed, 21 Feb 2024 14:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lUn/8n1r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w5e27Ruw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F48B3C2F;
-	Wed, 21 Feb 2024 13:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9F97FBBA;
+	Wed, 21 Feb 2024 14:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523271; cv=none; b=G5SGU3lLdDHYtGsdN5MLcd+QH9SwivHIHOFov2LIEDPMKg83SslyizSP+1Oe5+VX8PTFBD8WdvqlmtQC3jau10BlbcYlXjM1kQZHcrVds6H3S4+tQal1W1yQApivjHUAHQsssf/sdfmzBlGKSIhvEAL3lom9msC8C/Ll0ugzXO0=
+	t=1708524570; cv=none; b=KD4t66620j93F+J23PobbUrJeqV9QYDDtbIyY7p3zFiWuFsTW93Al/XhCIc53F+LJCCg6D+vuY875peVAtOygWWPYWJ6U5/KVxgJ3fXwpwByQ7Y7KmgI+x/Ql1msQQysQeYwP1wTYVJRLu/xagVxcwmJjP3nXz9hopbWtrKiO2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523271; c=relaxed/simple;
-	bh=u7UlUr+EGhFeKaLlsyn3GsjEg39miwmyoSOAnbh0iYE=;
+	s=arc-20240116; t=1708524570; c=relaxed/simple;
+	bh=wSNl075VGAsP3TOjNmxTk/xPEqoX8MJ1qhkbXV2w244=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tu9DNI7HL8AGuEar6XqubmJIzgi1KuX/i1Ah9g6I8utqcpPmJUfrKQqfzRYIXncbAtmN01ECGZvVdkzZudJtLHOFqX4zQIdSHeKvKIT6hxf+hTxxA7xxpetVZwF9u19PuKLhYxeBnlgXzLbkMG4Hq7lzuWeZbfRAbtEOQViiSdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lUn/8n1r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1565C433C7;
-	Wed, 21 Feb 2024 13:47:50 +0000 (UTC)
+	 MIME-Version; b=RXut8hE7lwGihgXMNBcPbG8wxpfc7rgDPwdbcEZbO3hDXJwGQA/r6nLVrZsDM4z6jm9nYok5tOXBqIpDLcPRuqv+79DcHUhFsWcRJgW2D4s/lQMXQ37QeNJSEsaWKf6bD7QmYVAkmLFYQWOmoTliYobdfS9k8nwjH7cXOlbzCq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w5e27Ruw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14F37C433C7;
+	Wed, 21 Feb 2024 14:09:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523271;
-	bh=u7UlUr+EGhFeKaLlsyn3GsjEg39miwmyoSOAnbh0iYE=;
+	s=korg; t=1708524569;
+	bh=wSNl075VGAsP3TOjNmxTk/xPEqoX8MJ1qhkbXV2w244=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lUn/8n1r2iYQ1JhQJj92Xt5trjPCwvwwPz4KPXDD1mwvJy/xlvFDeEisT2BCmWe6Z
-	 F7Wdbdx18svn0Ya5WXLaNdgctMq1TsE63wKWbdtyFhSPQu+KEmg9NE6hw4hiLeWueI
-	 4Yb/6YDgnHNWzizHjHDtabGFx/YoEiA5VhgmpSxw=
+	b=w5e27RuwjaOaOOraG31zvFCJ3DpDNTNqFOrnwuH1HPnQgSwZFg6sDw/wpHsMFdu3A
+	 I7Fa507LXhmFvVzvEP7qzlYM7V6HL9QE7/jfusVzvFy1TNAxHly90trUiQFPSyeZHW
+	 M0dusivwU5ogSZMp0I68StOar5Xoms7w6RILq90E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edson Juliano Drosdeck <edson.drosdeck@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 384/476] ALSA: hda/realtek: Enable headset mic on Vaio VJFE-ADL
+	Antoine Tenart <atenart@kernel.org>,
+	Jiri Pirko <jiri@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 256/379] tunnels: fix out of bounds access when building IPv6 PMTU error
 Date: Wed, 21 Feb 2024 14:07:15 +0100
-Message-ID: <20240221130022.235222011@linuxfoundation.org>
+Message-ID: <20240221130002.489998227@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+From: Antoine Tenart <atenart@kernel.org>
 
-commit c7de2d9bb68a5fc71c25ff96705a80a76c8436eb upstream.
+[ Upstream commit d75abeec401f8c86b470e7028a13fcdc87e5dd06 ]
 
-Vaio VJFE-ADL is equipped with ALC269VC, and it needs
-ALC298_FIXUP_SPK_VOLUME quirk to make its headset mic work.
+If the ICMPv6 error is built from a non-linear skb we get the following
+splat,
 
-Signed-off-by: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240201122114.30080-1-edson.drosdeck@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  BUG: KASAN: slab-out-of-bounds in do_csum+0x220/0x240
+  Read of size 4 at addr ffff88811d402c80 by task netperf/820
+  CPU: 0 PID: 820 Comm: netperf Not tainted 6.8.0-rc1+ #543
+  ...
+   kasan_report+0xd8/0x110
+   do_csum+0x220/0x240
+   csum_partial+0xc/0x20
+   skb_tunnel_check_pmtu+0xeb9/0x3280
+   vxlan_xmit_one+0x14c2/0x4080
+   vxlan_xmit+0xf61/0x5c00
+   dev_hard_start_xmit+0xfb/0x510
+   __dev_queue_xmit+0x7cd/0x32a0
+   br_dev_queue_push_xmit+0x39d/0x6a0
+
+Use skb_checksum instead of csum_partial who cannot deal with non-linear
+SKBs.
+
+Fixes: 4cb47a8644cc ("tunnels: PMTU discovery support for directly bridged IP packets")
+Signed-off-by: Antoine Tenart <atenart@kernel.org>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/ipv4/ip_tunnel_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9415,6 +9415,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x1d72, 0x1945, "Redmi G", ALC256_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1d72, 0x1947, "RedmiBook Air", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
-+	SND_PCI_QUIRK(0x2782, 0x1707, "Vaio VJFE-ADL", ALC298_FIXUP_SPK_VOLUME),
- 	SND_PCI_QUIRK(0x8086, 0x2074, "Intel NUC 8", ALC233_FIXUP_INTEL_NUC8_DMIC),
- 	SND_PCI_QUIRK(0x8086, 0x2080, "Intel NUC 8 Rugged", ALC256_FIXUP_INTEL_NUC8_RUGGED),
- 	SND_PCI_QUIRK(0x8086, 0x2081, "Intel NUC 10", ALC256_FIXUP_INTEL_NUC10),
+diff --git a/net/ipv4/ip_tunnel_core.c b/net/ipv4/ip_tunnel_core.c
+index da9a55c68e11..ba1388ba6c6e 100644
+--- a/net/ipv4/ip_tunnel_core.c
++++ b/net/ipv4/ip_tunnel_core.c
+@@ -332,7 +332,7 @@ static int iptunnel_pmtud_build_icmpv6(struct sk_buff *skb, int mtu)
+ 	};
+ 	skb_reset_network_header(skb);
+ 
+-	csum = csum_partial(icmp6h, len, 0);
++	csum = skb_checksum(skb, skb_transport_offset(skb), len, 0);
+ 	icmp6h->icmp6_cksum = csum_ipv6_magic(&nip6h->saddr, &nip6h->daddr, len,
+ 					      IPPROTO_ICMPV6, csum);
+ 
+-- 
+2.43.0
+
 
 
 
