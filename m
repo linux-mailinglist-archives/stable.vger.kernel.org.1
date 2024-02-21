@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-22972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D10685DE84
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:19:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C0E685DBE2
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:46:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C5D91F245B5
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:19:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40DFC1F2153F
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:46:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3012669D29;
-	Wed, 21 Feb 2024 14:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AC9A7BB02;
+	Wed, 21 Feb 2024 13:46:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WG3eX3b4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uKQWd8p+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29053D981;
-	Wed, 21 Feb 2024 14:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 195E64D5B7;
+	Wed, 21 Feb 2024 13:46:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525137; cv=none; b=M/NcLuCEb9K/p1IZ5LNwQsj7RI1YhOFsOIG61boru+hSGx6VpKAl1AW2/uge6bSrt1yhiajmU7EPcB4wK7m/y9xyGCy4w14TPcoK33TdRI2+/U+ed8ahJT2cdzSX0/7Uk/+9R4sRAE5VwhtsCxS9EaradWbGrItBgrM3oQR6ot4=
+	t=1708523182; cv=none; b=ECEELfmg6AVxoAUmveU9dypMW+qGoVCfM9dRd4xM9bfUz68buGqXdSXBQOE7YJUjBjCT9HhreB8G+z8b3zbO7VCl/5vZIaUBbJMo5HtUSm5jbY0IISO5Hf2L0lXZ+Y/zsv+9issb+frVK/CAsaPtshiGLJIbzWLrKHrum5WM4i0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525137; c=relaxed/simple;
-	bh=uYP6ShDtyna7wYsx2SonbMgg1GjrbOk/q2MA0yIxZqI=;
+	s=arc-20240116; t=1708523182; c=relaxed/simple;
+	bh=mLdSNEl69BGYLgW+7F4Z6ppWrh8jR+DTaLa5V8oiShA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qi5fabGO7UeC1QCazCqRX3jhUzi8ad+YhRFMEzR2/HDo37b5ckh+EADcH26hd2n02aWootqmK1QMOE6GWKwZJy6ZOHzfmVjvqLQbbbHB7v8oGeM/SgMo27O1BtF9pCBxqSQqxmyOe9BX3xtGgH2mtQrKlRE8eOz3c/1zeLhyfsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WG3eX3b4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AB86C433C7;
-	Wed, 21 Feb 2024 14:18:56 +0000 (UTC)
+	 MIME-Version; b=i2ORKColGiKcia0dU+6LXnyeVHevEDJ+PjRH36LZeY/QAVVJ72/q9/AQgke0nuwyRJk1C475njH4Xix+2BpKQQaC9w2ym7BlLCHtkws47Zj6PksBPKQGljC+ZsEKgMWXR/LMSiBcd7NSYY9+S8/4F4N2JO+aovhilVw7lgfyCLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uKQWd8p+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 940B4C433C7;
+	Wed, 21 Feb 2024 13:46:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525136;
-	bh=uYP6ShDtyna7wYsx2SonbMgg1GjrbOk/q2MA0yIxZqI=;
+	s=korg; t=1708523182;
+	bh=mLdSNEl69BGYLgW+7F4Z6ppWrh8jR+DTaLa5V8oiShA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WG3eX3b4K81FWV+adZaFDYM7yEonstJQMc/nKPjVH8pUtozL8TaGICy1cpT+CDCzY
-	 r7P4hYFsU1+cvO8ItgwUh52ti2BmpkjpwRC//M8UlKM27K0ZleqI73bAlzeF2Fy9vR
-	 31HnUPnbFcO/uQQS3Xfzt8fKm7EqQjI4jIsCgiwU=
+	b=uKQWd8p+4a83u/9kBDU/OSVfTdBrtVgtkk9jMlAg0RHuaPnH6ONgR8vbDUboW4dda
+	 zzX6NSrIcr3SVuStAHapry4CMJiZEKTljoqPPVoUHw0hAnme/vPZGCdrMgknZ2sIn9
+	 VGiAFZy13udT01uNHirCMrY5HYBrVXDl6CdViK80=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	Chung-Chiang Cheng <cccheng@synology.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.4 043/267] btrfs: tree-checker: fix inline ref size in error messages
+	Leonard Dallmayr <leonard.dallmayr@mailbox.org>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.15 333/476] USB: serial: cp210x: add ID for IMST iM871A-USB
 Date: Wed, 21 Feb 2024 14:06:24 +0100
-Message-ID: <20240221125941.368388512@linuxfoundation.org>
+Message-ID: <20240221130020.326237248@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chung-Chiang Cheng <cccheng@synology.com>
+From: Leonard Dallmayr <leonard.dallmayr@mailbox.org>
 
-commit f398e70dd69e6ceea71463a5380e6118f219197e upstream.
+commit 12b17b4eb82a41977eb848048137b5908d52845c upstream.
 
-The error message should accurately reflect the size rather than the
-type.
+The device IMST USB-Stick for Smart Meter is a rebranded IMST iM871A-USB
+Wireless M-Bus USB-adapter. It is used to read wireless water, gas and
+electricity meters.
 
-Fixes: f82d1c7ca8ae ("btrfs: tree-checker: Add EXTENT_ITEM and METADATA_ITEM check")
-CC: stable@vger.kernel.org # 5.4+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Chung-Chiang Cheng <cccheng@synology.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Leonard Dallmayr <leonard.dallmayr@mailbox.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/tree-checker.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/serial/cp210x.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/btrfs/tree-checker.c
-+++ b/fs/btrfs/tree-checker.c
-@@ -1165,7 +1165,7 @@ static int check_extent_item(struct exte
- 		if (ptr + btrfs_extent_inline_ref_size(inline_type) > end) {
- 			extent_err(leaf, slot,
- "inline ref item overflows extent item, ptr %lu iref size %u end %lu",
--				   ptr, inline_type, end);
-+				   ptr, btrfs_extent_inline_ref_size(inline_type), end);
- 			return -EUCLEAN;
- 		}
- 
+--- a/drivers/usb/serial/cp210x.c
++++ b/drivers/usb/serial/cp210x.c
+@@ -146,6 +146,7 @@ static const struct usb_device_id id_tab
+ 	{ USB_DEVICE(0x10C4, 0x85F8) }, /* Virtenio Preon32 */
+ 	{ USB_DEVICE(0x10C4, 0x8664) }, /* AC-Services CAN-IF */
+ 	{ USB_DEVICE(0x10C4, 0x8665) }, /* AC-Services OBD-IF */
++	{ USB_DEVICE(0x10C4, 0x87ED) }, /* IMST USB-Stick for Smart Meter */
+ 	{ USB_DEVICE(0x10C4, 0x8856) },	/* CEL EM357 ZigBee USB Stick - LR */
+ 	{ USB_DEVICE(0x10C4, 0x8857) },	/* CEL EM357 ZigBee USB Stick */
+ 	{ USB_DEVICE(0x10C4, 0x88A4) }, /* MMB Networks ZigBee USB Device */
 
 
 
