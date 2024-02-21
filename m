@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-23111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E768D85DF52
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:26:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52B6B85DE33
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:16:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9338D283DA1
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:26:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 845F51C23842
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:16:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 823B27C0A4;
-	Wed, 21 Feb 2024 14:26:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19FFF7FBB4;
+	Wed, 21 Feb 2024 14:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N/MoAYLR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MoUoNc7l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FEB369962;
-	Wed, 21 Feb 2024 14:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF0D7F7D6;
+	Wed, 21 Feb 2024 14:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525610; cv=none; b=j4ssDjEs0BJUMqPEUzOIn6rT3G05WPKYFvcWdaxt02zAO6h17p545b9VoMhRapxAOA+XnDEPiB8lIDnEiI2M2pdP4JwJ6dTrxGH8DeMIkFObkRCGXf0hexglFhvxnGOVBNlkxb+8XLRZnZ6VKMV/2Kod7eDOvHXHxQgwtdGHwi8=
+	t=1708524866; cv=none; b=rf9k/r6vo0d0qs+LRjSzwA++e05BeodoJRCNpVJJzbOZgazyaHiAYeVg2HfVw+lypaOFYvUbF7TBLVK/plTjICRa62D9s4p4tEBz5fHP8SfgI/DVTKJiKWuACgvGegW7nvyfvvHwBNUtOdP+8tLmZrR6bXcUwhlMqI7Y8RY38EI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525610; c=relaxed/simple;
-	bh=rceEOwf1quwCN2iP/l6BghS+Dr44Ek0Cfpny3s+6kRg=;
+	s=arc-20240116; t=1708524866; c=relaxed/simple;
+	bh=zj6OODDNS0LXvHAFmwgIbBP48DWfPmwuJhzy+dLOjEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HIUPcy2MloghjdEDOUSMoVgYg5EjCZvp3aUapSovckaJGM/MLU++/KT0s64CFSw+YpjF9KkbfsVDUdyP80iLCTbnaCcm4pHyQ371xQy5Ms2BWa9C0ny4745MSVYb7JiGVpUA3r3A2IEvzIzL1OFlqcNVx7Y6nx4arbAoQgF4YRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N/MoAYLR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F891C433C7;
-	Wed, 21 Feb 2024 14:26:49 +0000 (UTC)
+	 MIME-Version; b=KFFoSFFZiWCfwP33kFYfVkTlohactYGalHQTDS+K3/mMYkM7H9R1sDSph84ya4+0I0qUFyhZ0MxtGpcPIoe9F/TVP/Hq2Zno2WbgYLJGkQzlMz215TDVrhmxWHFwZ/AaT5v2fCg4/XmKjCA8Y9yDROwMrN2WDsrisPL1ZD/JmEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MoUoNc7l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 325B3C433C7;
+	Wed, 21 Feb 2024 14:14:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525609;
-	bh=rceEOwf1quwCN2iP/l6BghS+Dr44Ek0Cfpny3s+6kRg=;
+	s=korg; t=1708524866;
+	bh=zj6OODDNS0LXvHAFmwgIbBP48DWfPmwuJhzy+dLOjEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N/MoAYLRWKsqcc9WeH57AROfPAMlCVsJSCoJjqTVNvHHYG+IV8XPhrvySDAffxuMx
-	 pZ/c/Q68SFqLeVLaRnGcuzTvweP417sbheLhGENAHUo6eiX/TSxR83bFC1FSBVVKpC
-	 wW7b2tTIiV14iGDbseJSyoPl9k44KzE1jyS/Ot0c=
+	b=MoUoNc7lfgCxCDTE1tv0VvaM69u/CZhcRK2JnJF6EY3v0grShaAzhPfJDESa1ps0j
+	 UVk0IeTTpzIYdqLEfp31N0YPcDfwcTNgmgS7Sq6IBgmvnbvhMsJ2pyyn+5+jsNtRbZ
+	 Y1ImpinFCrMvontTmMGpCV1m24UUa8VAGhEzlqz8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
-	Rob Herring <robh@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 208/267] of: unittest: Fix compile in the non-dynamic case
+	Borislav Petkov <bp@alien8.de>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Subject: [PATCH 5.10 370/379] sched/membarrier: reduce the ability to hammer on sys_membarrier
 Date: Wed, 21 Feb 2024 14:09:09 +0100
-Message-ID: <20240221125946.714638947@linuxfoundation.org>
+Message-ID: <20240221130006.007379036@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian A. Ehrhardt <lk@c--e.de>
+From: Linus Torvalds <torvalds@linuxfoundation.org>
 
-[ Upstream commit 607aad1e4356c210dbef9022955a3089377909b2 ]
+commit 944d5fe50f3f03daacfea16300e656a1691c4a23 upstream.
 
-If CONFIG_OF_KOBJ is not set, a device_node does not contain a
-kobj and attempts to access the embedded kobj via kref_read break
-the compile.
+On some systems, sys_membarrier can be very expensive, causing overall
+slowdowns for everything.  So put a lock on the path in order to
+serialize the accesses to prevent the ability for this to be called at
+too high of a frequency and saturate the machine.
 
-Replace affected kref_read calls with a macro that reads the
-refcount if it exists and returns 1 if there is no embedded kobj.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202401291740.VP219WIz-lkp@intel.com/
-Fixes: 4dde83569832 ("of: Fix double free in of_parse_phandle_with_args_map")
-Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
-Link: https://lore.kernel.org/r/20240129192556.403271-1-lk@c--e.de
-Signed-off-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-and-tested-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Acked-by: Borislav Petkov <bp@alien8.de>
+Fixes: 22e4ebb97582 ("membarrier: Provide expedited private command")
+Fixes: c5f58bd58f43 ("membarrier: Provide GLOBAL_EXPEDITED command")
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+[ converted to explicit mutex_*() calls - cleanup.h is not in this stable
+  branch - gregkh ]
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/unittest.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ kernel/sched/membarrier.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
-index 7585df5e3daf..799519872f85 100644
---- a/drivers/of/unittest.c
-+++ b/drivers/of/unittest.c
-@@ -46,6 +46,12 @@ static struct unittest_results {
- 	failed; \
- })
+--- a/kernel/sched/membarrier.c
++++ b/kernel/sched/membarrier.c
+@@ -34,6 +34,8 @@
+ 	| MEMBARRIER_PRIVATE_EXPEDITED_SYNC_CORE_BITMASK		\
+ 	| MEMBARRIER_PRIVATE_EXPEDITED_RSEQ_BITMASK)
  
-+#ifdef CONFIG_OF_KOBJ
-+#define OF_KREF_READ(NODE) kref_read(&(NODE)->kobj.kref)
-+#else
-+#define OF_KREF_READ(NODE) 1
-+#endif
++static DEFINE_MUTEX(membarrier_ipi_mutex);
 +
- /*
-  * Expected message may have a message level other than KERN_INFO.
-  * Print the expected message only if the current loglevel will allow
-@@ -588,7 +594,7 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
- 			pr_err("missing testcase data\n");
- 			return;
- 		}
--		prefs[i] = kref_read(&p[i]->kobj.kref);
-+		prefs[i] = OF_KREF_READ(p[i]);
- 	}
+ static void ipi_mb(void *info)
+ {
+ 	smp_mb();	/* IPIs should be serializing but paranoid. */
+@@ -119,6 +121,7 @@ static int membarrier_global_expedited(v
+ 	if (!zalloc_cpumask_var(&tmpmask, GFP_KERNEL))
+ 		return -ENOMEM;
  
- 	rc = of_count_phandle_with_args(np, "phandle-list", "#phandle-cells");
-@@ -690,9 +696,9 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
- 	unittest(rc == -EINVAL, "expected:%i got:%i\n", -EINVAL, rc);
- 
- 	for (i = 0; i < ARRAY_SIZE(p); ++i) {
--		unittest(prefs[i] == kref_read(&p[i]->kobj.kref),
-+		unittest(prefs[i] == OF_KREF_READ(p[i]),
- 			 "provider%d: expected:%d got:%d\n",
--			 i, prefs[i], kref_read(&p[i]->kobj.kref));
-+			 i, prefs[i], OF_KREF_READ(p[i]));
- 		of_node_put(p[i]);
- 	}
++	mutex_lock(&membarrier_ipi_mutex);
+ 	cpus_read_lock();
+ 	rcu_read_lock();
+ 	for_each_online_cpu(cpu) {
+@@ -165,6 +168,8 @@ static int membarrier_global_expedited(v
+ 	 * rq->curr modification in scheduler.
+ 	 */
+ 	smp_mb();	/* exit from system call is not a mb */
++	mutex_unlock(&membarrier_ipi_mutex);
++
+ 	return 0;
  }
--- 
-2.43.0
-
+ 
+@@ -208,6 +213,7 @@ static int membarrier_private_expedited(
+ 	if (cpu_id < 0 && !zalloc_cpumask_var(&tmpmask, GFP_KERNEL))
+ 		return -ENOMEM;
+ 
++	mutex_lock(&membarrier_ipi_mutex);
+ 	cpus_read_lock();
+ 
+ 	if (cpu_id >= 0) {
+@@ -280,6 +286,7 @@ out:
+ 	 * rq->curr modification in scheduler.
+ 	 */
+ 	smp_mb();	/* exit from system call is not a mb */
++	mutex_unlock(&membarrier_ipi_mutex);
+ 
+ 	return 0;
+ }
+@@ -321,6 +328,7 @@ static int sync_runqueues_membarrier_sta
+ 	 * between threads which are users of @mm has its membarrier state
+ 	 * updated.
+ 	 */
++	mutex_lock(&membarrier_ipi_mutex);
+ 	cpus_read_lock();
+ 	rcu_read_lock();
+ 	for_each_online_cpu(cpu) {
+@@ -337,6 +345,7 @@ static int sync_runqueues_membarrier_sta
+ 
+ 	free_cpumask_var(tmpmask);
+ 	cpus_read_unlock();
++	mutex_unlock(&membarrier_ipi_mutex);
+ 
+ 	return 0;
+ }
 
 
 
