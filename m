@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-22349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D90FC85DB95
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:42:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D0CD85DF18
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:24:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A89A1F21CCD
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:42:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B89AEB2CA28
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:18:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 025B878B4A;
-	Wed, 21 Feb 2024 13:42:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93D2A7D411;
+	Wed, 21 Feb 2024 14:17:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dv9R0sSI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SlOyw9U7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B452A1D7;
-	Wed, 21 Feb 2024 13:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 518CA3D981;
+	Wed, 21 Feb 2024 14:17:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522970; cv=none; b=L7k06UbklXI210Pl5lLZLA7jLdldpiY6mOxXl6g7SCbEtzhLxi7GMehOaV52U+hX3jOKCH55wOl7XF0tnWItt/URsCkn5138IRleRemyQdQt/AYb1egGAZPluNRvYHGcYX+syjjZDP0iWafhJzjTjJnoS+/KmdGHnxCRHHLaspg=
+	t=1708525050; cv=none; b=rIb58Nw2t3se3Q4XSXLbNGu7mOjBNcJ4Smv8ApfrwO3sysqEqB6oh1XfkulhnGNxK2hClly363cNsQfOTpMIHcPNn7iR6ZRlUx4eS3mgB9FE2A5fmWFbqVTDpX+sEGE/tpmNRwjX+T+3dkBWWDRQuS8wSzCm2TnmelkY8JW77VU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522970; c=relaxed/simple;
-	bh=bg3I3NvyHBMBTfuRU71+giDWkMMN+0uYfDbEd22APE8=;
+	s=arc-20240116; t=1708525050; c=relaxed/simple;
+	bh=S76vDaAZZ4HoyVwPIcrsng5hjQiRi5rVOD2rATuXhKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IsHUnlF69qvA2NnZmTXiULAELMpTmh87iJeqA8Rk3sno5VXKyJttDAdxDxOVIQvpxEyxgdj5H7t922dLZGaeUC/vqHIHmthvTWWjiSU1pB58SgShBnGHA6dVQOMS6NPqaFmdbI4+pBsNt+yddwWp94Fjirth2s+tE3uG75zQXP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dv9R0sSI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22D31C433F1;
-	Wed, 21 Feb 2024 13:42:49 +0000 (UTC)
+	 MIME-Version; b=HTOvMAUv5wqcicDOe90lxDjiLf0f/xpWeLtqG0KdkL3uiHpOtWbXAjz4phGw4GA+e0e/H6c7CeRgts/9s7+J7XYVUMlZCbVzdFis2ej1UJ3mwBfiRBMMso798JEwV6jXzcwS1HIuXJXXm+K+uPkIgCyfblz25xKqgvAIR70nVkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SlOyw9U7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE5D1C433F1;
+	Wed, 21 Feb 2024 14:17:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522970;
-	bh=bg3I3NvyHBMBTfuRU71+giDWkMMN+0uYfDbEd22APE8=;
+	s=korg; t=1708525050;
+	bh=S76vDaAZZ4HoyVwPIcrsng5hjQiRi5rVOD2rATuXhKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dv9R0sSI7wWZSt/QZqnUr31INMEMh/FuqlNpFvI0ybzuL34okibMpQXvhKyMc90bC
-	 e0zDZuenqvGq6QK+ex643oi/mMbDA6I+J9Lehhuo1SNXV4Za6zWmWGjbJleHvR4uhi
-	 z8izapdl50YZKCAPDpwiWd5T+tXAFqlRGFP+uJRQ=
+	b=SlOyw9U7m851d7JLZOw//KUH/YZmkS8w7UZpno52LzoHU7/q7sq7tane65r8TTgbk
+	 c71B0i2nZ74GdUakxY1/JW8eaX4O20nY4TDpHPeZ0rmWumDzyOlfaGcFuM57Igj93X
+	 V8KSvB2xjaRPYByJ3WhQQvPoZmnvW76aKRSFkF0w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 306/476] selftests: net: avoid just another constant wait
-Date: Wed, 21 Feb 2024 14:05:57 +0100
-Message-ID: <20240221130019.322947616@linuxfoundation.org>
+	Faith Ekstrand <faith.ekstrand@collabora.com>,
+	Dave Airlie <airlied@redhat.com>
+Subject: [PATCH 5.4 017/267] nouveau/vmm: dont set addr on the fail path to avoid warning
+Date: Wed, 21 Feb 2024 14:05:58 +0100
+Message-ID: <20240221125940.595099723@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +59,121 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Dave Airlie <airlied@redhat.com>
 
-[ Upstream commit 691bb4e49c98a47bc643dd808453136ce78b15b4 ]
+commit cacea81390fd8c8c85404e5eb2adeb83d87a912e upstream.
 
-Using hard-coded constant timeout to wait for some expected
-event is deemed to fail sooner or later, especially in slow
-env.
+nvif_vmm_put gets called if addr is set, but if the allocation
+fails we don't need to call put, otherwise we get a warning like
 
-Our CI has spotted another of such race:
-   # TEST: ipv6: cleanup of cached exceptions - nexthop objects          [FAIL]
-   #   can't delete veth device in a timely manner, PMTU dst likely leaked
+[523232.435671] ------------[ cut here ]------------
+[523232.435674] WARNING: CPU: 8 PID: 1505697 at drivers/gpu/drm/nouveau/nvi=
+f/vmm.c:68 nvif_vmm_put+0x72/0x80 [nouveau]
+[523232.435795] Modules linked in: uinput rfcomm snd_seq_dummy snd_hrtimer =
+nf_conntrack_netbios_ns nf_conntrack_broadcast nft_fib_inet nft_fib_ipv4 nf=
+t_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject=
+ nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 ip_=
+set nf_tables nfnetlink qrtr bnep sunrpc binfmt_misc intel_rapl_msr intel_r=
+apl_common intel_uncore_frequency intel_uncore_frequency_common isst_if_com=
+mon iwlmvm nfit libnvdimm vfat fat x86_pkg_temp_thermal intel_powerclamp ma=
+c80211 snd_soc_avs snd_soc_hda_codec coretemp snd_hda_ext_core snd_soc_core=
+ snd_hda_codec_realtek kvm_intel snd_hda_codec_hdmi snd_compress snd_hda_co=
+dec_generic ac97_bus snd_pcm_dmaengine snd_hda_intel libarc4 snd_intel_dspc=
+fg snd_intel_sdw_acpi snd_hda_codec kvm iwlwifi snd_hda_core btusb snd_hwde=
+p btrtl snd_seq btintel irqbypass btbcm rapl snd_seq_device eeepc_wmi btmtk=
+ intel_cstate iTCO_wdt cfg80211 snd_pcm asus_wmi bluetooth intel_pmc_bxt iT=
+CO_vendor_support snd_timer ledtrig_audio pktcdvd snd mei_me
+[523232.435828]  sparse_keymap intel_uncore i2c_i801 platform_profile wmi_b=
+mof mei pcspkr ioatdma soundcore i2c_smbus rfkill idma64 dca joydev acpi_ta=
+d loop zram nouveau drm_ttm_helper ttm video drm_exec drm_gpuvm gpu_sched c=
+rct10dif_pclmul i2c_algo_bit nvme crc32_pclmul crc32c_intel drm_display_hel=
+per polyval_clmulni nvme_core polyval_generic e1000e mxm_wmi cec ghash_clmu=
+lni_intel r8169 sha512_ssse3 nvme_common wmi pinctrl_sunrisepoint uas usb_s=
+torage ip6_tables ip_tables fuse
+[523232.435849] CPU: 8 PID: 1505697 Comm: gnome-shell Tainted: G        W  =
+        6.6.0-rc7-nvk-uapi+ #12
+[523232.435851] Hardware name: System manufacturer System Product Name/ROG =
+STRIX X299-E GAMING II, BIOS 1301 09/24/2021
+[523232.435852] RIP: 0010:nvif_vmm_put+0x72/0x80 [nouveau]
+[523232.435934] Code: 00 00 48 89 e2 be 02 00 00 00 48 c7 04 24 00 00 00 00=
+ 48 89 44 24 08 e8 fc bf ff ff 85
+c0 75 0a 48 c7 43 08 00 00 00 00 eb b3 <0f> 0b eb f2 e8 f5 c9 b2 e6 0f 1f 4=
+4 00 00 90 90 90 90 90 90 90 90
+[523232.435936] RSP: 0018:ffffc900077ffbd8 EFLAGS: 00010282
+[523232.435937] RAX: 00000000fffffffe RBX: ffffc900077ffc00 RCX: 0000000000=
+000010
+[523232.435938] RDX: 0000000000000010 RSI: ffffc900077ffb38 RDI: ffffc90007=
+7ffbd8
+[523232.435940] RBP: ffff888e1c4f2140 R08: 0000000000000000 R09: 0000000000=
+000000
+[523232.435940] R10: 0000000000000000 R11: 0000000000000000 R12: ffff888503=
+811800
+[523232.435941] R13: ffffc900077ffca0 R14: ffff888e1c4f2140 R15: ffff888103=
+17e1e0
+[523232.435942] FS:  00007f933a769640(0000) GS:ffff88905fa00000(0000) knlGS=
+:0000000000000000
+[523232.435943] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[523232.435944] CR2: 00007f930bef7000 CR3: 00000005d0322001 CR4: 0000000000=
+3706e0
+[523232.435945] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000=
+000000
+[523232.435946] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000=
+000400
+[523232.435964] Call Trace:
+[523232.435965]  <TASK>
+[523232.435966]  ? nvif_vmm_put+0x72/0x80 [nouveau]
+[523232.436051]  ? __warn+0x81/0x130
+[523232.436055]  ? nvif_vmm_put+0x72/0x80 [nouveau]
+[523232.436138]  ? report_bug+0x171/0x1a0
+[523232.436142]  ? handle_bug+0x3c/0x80
+[523232.436144]  ? exc_invalid_op+0x17/0x70
+[523232.436145]  ? asm_exc_invalid_op+0x1a/0x20
+[523232.436149]  ? nvif_vmm_put+0x72/0x80 [nouveau]
+[523232.436230]  ? nvif_vmm_put+0x64/0x80 [nouveau]
+[523232.436342]  nouveau_vma_del+0x80/0xd0 [nouveau]
+[523232.436506]  nouveau_vma_new+0x1a0/0x210 [nouveau]
+[523232.436671]  nouveau_gem_object_open+0x1d0/0x1f0 [nouveau]
+[523232.436835]  drm_gem_handle_create_tail+0xd1/0x180
+[523232.436840]  drm_prime_fd_to_handle_ioctl+0x12e/0x200
+[523232.436844]  ? __pfx_drm_prime_fd_to_handle_ioctl+0x10/0x10
+[523232.436847]  drm_ioctl_kernel+0xd3/0x180
+[523232.436849]  drm_ioctl+0x26d/0x4b0
+[523232.436851]  ? __pfx_drm_prime_fd_to_handle_ioctl+0x10/0x10
+[523232.436855]  nouveau_drm_ioctl+0x5a/0xb0 [nouveau]
+[523232.437032]  __x64_sys_ioctl+0x94/0xd0
+[523232.437036]  do_syscall_64+0x5d/0x90
+[523232.437040]  ? syscall_exit_to_user_mode+0x2b/0x40
+[523232.437044]  ? do_syscall_64+0x6c/0x90
+[523232.437046]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
 
-Replace the crude sleep with a loop looking for the expected condition
-at low interval for a much longer range.
-
-Fixes: b3cc4f8a8a41 ("selftests: pmtu: add explicit tests for PMTU exceptions cleanup")
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/fd5c745e9bb665b724473af6a9373a8c2a62b247.1706812005.git.pabeni@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Faith Ekstrand <faith.ekstrand@collabora.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240117213852.295565-1=
+-airlied@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/pmtu.sh | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_vmm.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/testing/selftests/net/pmtu.sh b/tools/testing/selftests/net/pmtu.sh
-index 8797f7b5fb83..31e3d0db7a12 100755
---- a/tools/testing/selftests/net/pmtu.sh
-+++ b/tools/testing/selftests/net/pmtu.sh
-@@ -1795,6 +1795,13 @@ check_command() {
- 	return 0
- }
- 
-+check_running() {
-+	pid=${1}
-+	cmd=${2}
+--- a/drivers/gpu/drm/nouveau/nouveau_vmm.c
++++ b/drivers/gpu/drm/nouveau/nouveau_vmm.c
+@@ -108,6 +108,9 @@ nouveau_vma_new(struct nouveau_bo *nvbo,
+ 	} else {
+ 		ret =3D nvif_vmm_get(&vmm->vmm, PTES, false, mem->mem.page, 0,
+ 				   mem->mem.size, &tmp);
++		if (ret)
++			goto done;
 +
-+	[ "$(cat /proc/${pid}/cmdline 2>/dev/null | tr -d '\0')" = "{cmd}" ]
-+}
-+
- test_cleanup_vxlanX_exception() {
- 	outer="${1}"
- 	encap="vxlan"
-@@ -1825,11 +1832,12 @@ test_cleanup_vxlanX_exception() {
- 
- 	${ns_a} ip link del dev veth_A-R1 &
- 	iplink_pid=$!
--	sleep 1
--	if [ "$(cat /proc/${iplink_pid}/cmdline 2>/dev/null | tr -d '\0')" = "iplinkdeldevveth_A-R1" ]; then
--		err "  can't delete veth device in a timely manner, PMTU dst likely leaked"
--		return 1
--	fi
-+	for i in $(seq 1 20); do
-+		check_running ${iplink_pid} "iplinkdeldevveth_A-R1" || return 0
-+		sleep 0.1
-+	done
-+	err "  can't delete veth device in a timely manner, PMTU dst likely leaked"
-+	return 1
- }
- 
- test_cleanup_ipv6_exception() {
--- 
-2.43.0
-
+ 		vma->addr =3D tmp.addr;
+ 	}
+=20
 
 
 
