@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-22285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A280B85DB46
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:39:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6365D85DCD4
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:58:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D8ED284A57
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:39:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94A4B1C2087C
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:58:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64E0378B50;
-	Wed, 21 Feb 2024 13:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AB9E78B53;
+	Wed, 21 Feb 2024 13:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HLDG0bkl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uc1sun3p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2383069E08;
-	Wed, 21 Feb 2024 13:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC62755E5E;
+	Wed, 21 Feb 2024 13:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522733; cv=none; b=AnswBJY09UZhP+eaCVkNWO+p9hbOtp6t6UQhFTSZJk0H6ixBraeKOIk2EKNYYTHDZ6g8UamomtRjPGNwm5O7TW+0ZbwtwYYfArQnzkCYY5Sp9sWND0TmrKCxNhp9jVe4331xUJVM34/4BzByFyaiuxBNKLutizPOSeO3h4WQQN4=
+	t=1708523905; cv=none; b=MUQGJI6nieKw/WoiZ7c9tBgYQ+lTybds0eN3OWWjB2XBar6TyomTyqdjRv9YCzBsuFAXQZGY39Gr85f4ivf0bbb7Yymu+PaYlrXaaphxOYMML3wM9oukOB3Bv00z1nfZQk2fBwJ8DzUb3oePlNRQxcmn/4VGTApQrDA4k+5+5pw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522733; c=relaxed/simple;
-	bh=Ozw+Enq0DRSfuZwtO+er6txZ4gCIx3Qqgdhw6UjSLuE=;
+	s=arc-20240116; t=1708523905; c=relaxed/simple;
+	bh=2y+12xqCjiw6o6wuaek9GrcRHTljtq+HmzFWu/F5Z38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DgcPiswkbrZTyv8zWV08wl9p9bwsATkXlonjZa1uJAsuMAUwl/9nxmykrM1Z7yifNJGHv2FmvRH/WcC9bRRCfqmuqC6CwA2eIgS6dZVLcLCgsC74dFbg0PMzBQUF6d7lH8tM/fatZLQsxRM4nQwj4BIDw5Rax/rPvtddu8krcKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HLDG0bkl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8280C433F1;
-	Wed, 21 Feb 2024 13:38:52 +0000 (UTC)
+	 MIME-Version; b=aieNiGhF6XfCLoKTXXp9qKyR/SgHyanFX407nSBFfU6pHZCzjLn10hHBZ7Ws0fWXJLRRer+VuSI4RLP4w/fytOZcyaN9jLSfjwY2NnyhAVbEHsqhWlkp5eNstTnc4IVU5zTxdT8oLZIefZpM2fY3RV6ZJtypYBYKSnCkxAjYtI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uc1sun3p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29C16C433F1;
+	Wed, 21 Feb 2024 13:58:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522733;
-	bh=Ozw+Enq0DRSfuZwtO+er6txZ4gCIx3Qqgdhw6UjSLuE=;
+	s=korg; t=1708523905;
+	bh=2y+12xqCjiw6o6wuaek9GrcRHTljtq+HmzFWu/F5Z38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HLDG0bklUfyryDA9ZkBbHFDDY4YRGS4aIC6MUtZbe/RGPBXwmqmkyZcHnZZdmxPIQ
-	 L4+SOUxfTbCdWb2/yBZ7EdN+eIBjXjU2ktC+e1hYo4H+3B33XvlthOeC5zLg7s99Bd
-	 GccEf+fbzkdVmjnhzgcyCB5VmwnUcr0Ycen7NDmo=
+	b=uc1sun3pxPE6tIBtnPN6ewMWpoWScrJYQDkC8cUJCjjW51cqlvitkOGaVxYJ5LJdg
+	 WHx3V0yuwmc6yv6V9kLkIQ2iHr/Qp012LVlMyTMxcsAbTpLzoVqryyN4TWaz24NvhZ
+	 ku2L73m51aYmHH2eqM1EZzWrDeXb9279m7nG9Shc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daeho Jeong <daehojeong@google.com>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Rolf Eike Beer <eb@emlix.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 214/476] f2fs: fix write pointers on zoned device after roll forward
-Date: Wed, 21 Feb 2024 14:04:25 +0100
-Message-ID: <20240221130015.813920492@linuxfoundation.org>
+Subject: [PATCH 5.10 087/379] mm: use __pfn_to_section() instead of open coding it
+Date: Wed, 21 Feb 2024 14:04:26 +0100
+Message-ID: <20240221125957.480778415@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jaegeuk Kim <jaegeuk@kernel.org>
+From: Rolf Eike Beer <eb@emlix.com>
 
-[ Upstream commit 9dad4d964291295ef48243d4e03972b85138bc9f ]
+[ Upstream commit f1dc0db296bd25960273649fc6ef2ecbf5aaa0e0 ]
 
-1. do roll forward recovery
-2. update current segments pointers
-3. fix the entire zones' write pointers
-4. do checkpoint
+It is defined in the same file just a few lines above.
 
-Reviewed-by: Daeho Jeong <daehojeong@google.com>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Link: https://lkml.kernel.org/r/4598487.Rc0NezkW7i@mobilepool36.emlix.com
+Signed-off-by: Rolf Eike Beer <eb@emlix.com>
+Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Stable-dep-of: 5ec8e8ea8b77 ("mm/sparsemem: fix race in accessing memory_section->usage")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/recovery.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/linux/mmzone.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/f2fs/recovery.c b/fs/f2fs/recovery.c
-index da0801aa4118..f07ae58d266d 100644
---- a/fs/f2fs/recovery.c
-+++ b/fs/f2fs/recovery.c
-@@ -871,6 +871,8 @@ int f2fs_recover_fsync_data(struct f2fs_sb_info *sbi, bool check_only)
- 	if (!err && fix_curseg_write_pointer && !f2fs_readonly(sbi->sb) &&
- 			f2fs_sb_has_blkzoned(sbi)) {
- 		err = f2fs_fix_curseg_write_pointer(sbi);
-+		if (!err)
-+			err = f2fs_check_write_pointer(sbi);
- 		ret = err;
- 	}
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index b2e4599b8883..11fa11c31fda 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -1369,7 +1369,7 @@ static inline int pfn_valid(unsigned long pfn)
  
+ 	if (pfn_to_section_nr(pfn) >= NR_MEM_SECTIONS)
+ 		return 0;
+-	ms = __nr_to_section(pfn_to_section_nr(pfn));
++	ms = __pfn_to_section(pfn);
+ 	if (!valid_section(ms))
+ 		return 0;
+ 	/*
+@@ -1384,7 +1384,7 @@ static inline int pfn_in_present_section(unsigned long pfn)
+ {
+ 	if (pfn_to_section_nr(pfn) >= NR_MEM_SECTIONS)
+ 		return 0;
+-	return present_section(__nr_to_section(pfn_to_section_nr(pfn)));
++	return present_section(__pfn_to_section(pfn));
+ }
+ 
+ static inline unsigned long next_present_section_nr(unsigned long section_nr)
 -- 
 2.43.0
 
