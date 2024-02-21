@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-22918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47CC685DF19
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:24:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 781BE85DD47
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:04:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14268B2B7FB
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:17:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 334B8283C53
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:04:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C0D67EEEF;
-	Wed, 21 Feb 2024 14:16:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 887BB76037;
+	Wed, 21 Feb 2024 14:03:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CWZLFfRr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tVp2zPqz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC64D7EEE4;
-	Wed, 21 Feb 2024 14:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45CC579DAE;
+	Wed, 21 Feb 2024 14:03:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524963; cv=none; b=SCl+uipp59KBksRGo3gNzcJ0it2xvF92QOIBTLRnUf8OayFXau+pVs5Nh3+C7KOM3ajCo210hOrZaPTXiDFgUFyUUNrL4NeQDrF8VuAiSE5ADFNYsySNeNxKmGwv2Lcutf/lJFazoLtDcQE3PCdJQJpQyRg8S75qCvJ6MSbSoAc=
+	t=1708524191; cv=none; b=q3dai1oVPbfWpDmWJiGw21IYBaD8+rkjLQp9PyL8NGMP4EA4O19c3uuIvQT2PZRX4SqCjs5xyYJLxTpY50DcU+LKRtR9XBCxzrijh6/ZgXu0eBcpOScoT74Y/0603XITk5ZCWSn8snxfPSr8WfoJa2xwIn6KRN9xg4pofX0veHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524963; c=relaxed/simple;
-	bh=3y/bl14743TIWb04DSaupAwcQMcl1bKGO/gYBBpeoMM=;
+	s=arc-20240116; t=1708524191; c=relaxed/simple;
+	bh=jaytldXrqRyHZ4GARDwUHctdl8Tf8xbYseCWFnCYlqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VpcoTGmlnISTC1E/A9bs//I2WpExHR09tLzkyRQhks8JBJVIAovpRgJUEC08VtLsUDeir7g7f/j0iEmRLzKQLP30RZEAKmplfi4GD+2d0ThgbvzClAm/lIR61alnWDiOZMsN8of9tyhJW+nBeCah4nFsiK5zNjn4qA44YUSiAso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CWZLFfRr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69531C433C7;
-	Wed, 21 Feb 2024 14:16:03 +0000 (UTC)
+	 MIME-Version; b=fvQA3MQbr8UjeZ5bsx8z+RtIRoSrQll3l8s3Brwx16KbXGlZxtqlJ73eRe6AE9rPe7IMhcIBpZnmU248jzVaKjg3H2SJB6X+9yowu1sAH9JIYQbUODGKiEdeTEXbX9R9a34ERWIk61fcKtdNdWs9iWEiu78yQCxN6oEQ7JvDW3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tVp2zPqz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70597C433C7;
+	Wed, 21 Feb 2024 14:03:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524963;
-	bh=3y/bl14743TIWb04DSaupAwcQMcl1bKGO/gYBBpeoMM=;
+	s=korg; t=1708524190;
+	bh=jaytldXrqRyHZ4GARDwUHctdl8Tf8xbYseCWFnCYlqI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CWZLFfRrtSeEfCkJI/+S1KqhACOfkKR2VFokYIMYGPu4iT7IGwzUd92IYYNBK3E03
-	 z4063cfXI5nF2IcURrMktobBzir1zQW82DSYmxxhv4zv3powHzMRAdaLmDX1nQS8D7
-	 Ws7ofF4uo+Cpq7Y01XrqJ57+1tDl+WwqXFzDwwqc=
+	b=tVp2zPqzxDy5+xZv5IPekrKNkLO8W+5MC4r9YiAeLT8lfiBWgYn+pspKFzxb/5rZB
+	 lJa9WKtArINwzT9P67IenffWKSnIVErBW387EVnrgcERNQGHP0gA4j0PA2YXn3hO57
+	 pnThm/bCTFHbmADzmPXEuFgXr4rA8f9R3lbovX7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait@windriver.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 5.4 010/267] crypto: api - Disallow identical driver names
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 172/379] Bluetooth: qca: Set both WIDEBAND_SPEECH and LE_STATES quirks for QCA2066
 Date: Wed, 21 Feb 2024 14:05:51 +0100
-Message-ID: <20240221125940.385035917@linuxfoundation.org>
+Message-ID: <20240221130000.004129826@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,34 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit 27016f75f5ed47e2d8e0ca75a8ff1f40bc1a5e27 upstream.
+[ Upstream commit 5d192b697c7417254cdd9edc3d5e9e0364eb9045 ]
 
-Disallow registration of two algorithms with identical driver names.
+Set both WIDEBAND_SPEECH_SUPPORTED and VALID_LE_STATES quirks
+for QCA2066.
 
-Cc: <stable@vger.kernel.org>
-Reported-by: Ovidiu Panait <ovidiu.panait@windriver.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/algapi.c |    1 +
+ drivers/bluetooth/hci_qca.c | 1 +
  1 file changed, 1 insertion(+)
 
---- a/crypto/algapi.c
-+++ b/crypto/algapi.c
-@@ -217,6 +217,7 @@ static struct crypto_larval *__crypto_re
- 		}
+diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
+index bc0850d3f7d2..6e0c0762fbab 100644
+--- a/drivers/bluetooth/hci_qca.c
++++ b/drivers/bluetooth/hci_qca.c
+@@ -1814,6 +1814,7 @@ static const struct qca_device_data qca_soc_data_wcn3998 = {
+ static const struct qca_device_data qca_soc_data_qca6390 = {
+ 	.soc_type = QCA_QCA6390,
+ 	.num_vregs = 0,
++	.capabilities = QCA_CAP_WIDEBAND_SPEECH | QCA_CAP_VALID_LE_STATES,
+ };
  
- 		if (!strcmp(q->cra_driver_name, alg->cra_name) ||
-+		    !strcmp(q->cra_driver_name, alg->cra_driver_name) ||
- 		    !strcmp(q->cra_name, alg->cra_driver_name))
- 			goto err;
- 	}
+ static void qca_power_shutdown(struct hci_uart *hu)
+-- 
+2.43.0
+
 
 
 
