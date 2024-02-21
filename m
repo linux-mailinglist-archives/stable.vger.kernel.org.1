@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-22867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F8A185DE1C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:15:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 725CD85D9D1
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:23:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B15DC1C23873
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:15:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13EB7B25BBE
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:22:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80C9A1E4B2;
-	Wed, 21 Feb 2024 14:13:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 625EF78B4F;
+	Wed, 21 Feb 2024 13:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qyMHkQIb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ONwW33z2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 364D97C08C;
-	Wed, 21 Feb 2024 14:13:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ADF6763FE;
+	Wed, 21 Feb 2024 13:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524782; cv=none; b=WUFuYcN0hLKVrPCuEstKHoPvPhNzSc5RdQaTaj2NZDzGTK8/eBP5ohL1avri6cBPfomgdhzb/VxXsNsYcvqanuFze2fFPLHP33QkS/E+3Qf2/z6c3L2J9oNILT0KpS+gXS6TBhN+mZUc/GUu7vQpO1ZVsT1LHCxSkQW6bgqHrbA=
+	t=1708521758; cv=none; b=mLU3u00tsE6PwbYbqTd/3GrXIw/5WIXm6RDjOJmPSR201mmXVCI61MOb9XLGq7WkRRLChBROw6+njlBNnq/r5+OCRK2iMUe54UO3nFH3eUotgkJjdbMBrL2trOUN1DoQ+cu5Co7kBWhxra7SS1sPy2E2gF3dK6F0a1GtHwevLOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524782; c=relaxed/simple;
-	bh=c4yYcwfjZOHEJKCLLVSzABm4kWmEzuJL2U5xcyNrXU0=;
+	s=arc-20240116; t=1708521758; c=relaxed/simple;
+	bh=qQcP0oFSN9RR40+te1j65J34tmqKnzD8quYbnin9y9U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F3wN2vZojuqKz5DrH9Cr2zbckwdmd1yifP4+X76IKypodtqH6aEPgwlCbqzj1GZyljWRqOvpxwA7TFg1i0G8wh9FAizc/cjYgzHXaUpVYPCaWTNbX71m43E7SzdY67eCMgrme52SzN2W5YXrDPIZl2qd0b7F1pts4WtJVpkvR+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qyMHkQIb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 968AFC433C7;
-	Wed, 21 Feb 2024 14:13:01 +0000 (UTC)
+	 MIME-Version; b=nFhcNZphDwq/TKdexx5k2ZxH7T23z2yGEP1uDG4f3AFDm8l73wtX2zHuyHFs2SkQyTTDnKf3jQrb6cAhEV4GDzZ6weOVCKtQdQvF0em5+MF2aetfQ1OjHyEzwmOwCSa5IOtFZrxcfp0v0BrKtvLRFXHq/0umZhmhdXClM0hjzTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ONwW33z2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93401C433C7;
+	Wed, 21 Feb 2024 13:22:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524782;
-	bh=c4yYcwfjZOHEJKCLLVSzABm4kWmEzuJL2U5xcyNrXU0=;
+	s=korg; t=1708521758;
+	bh=qQcP0oFSN9RR40+te1j65J34tmqKnzD8quYbnin9y9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qyMHkQIb7rs2mIyWnWfIm9fQ/veNTaX4D0l/btJDtaDUdOlB1kVXySxGHbQbzYfj0
-	 CpLrge0MDAB2KmXLIqb3B5w9w8JVSvfLqN5s/R/JGlyTme08K6EY7PykBzYOau91K6
-	 G3Dfwv1YVMHtsv1llrafLE+g3g53RFTgqDXOt98M=
+	b=ONwW33z23YhMRJF5rBZ2Voq55oM+SerYOatpixk3ElMdWlpkFjwaZ/+IRSwnP9O7O
+	 1UDEA8YIIrjDyssMmvdC2nfleQkBYAbYFMSSP/FC8UvGoGF17Y0c79IQ6fU2ak0VxN
+	 3uuAz3ypbw8pSHm8rNaWr6SdaV2tq/A1UFCyz2qY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edson Juliano Drosdeck <edson.drosdeck@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.10 318/379] ALSA: hda/realtek: Enable headset mic on Vaio VJFE-ADL
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 4.19 196/202] pmdomain: core: Move the unused cleanup to a _sync initcall
 Date: Wed, 21 Feb 2024 14:08:17 +0100
-Message-ID: <20240221130004.347775756@linuxfoundation.org>
+Message-ID: <20240221125938.125257117@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-commit c7de2d9bb68a5fc71c25ff96705a80a76c8436eb upstream.
+commit 741ba0134fa7822fcf4e4a0a537a5c4cfd706b20 upstream.
 
-Vaio VJFE-ADL is equipped with ALC269VC, and it needs
-ALC298_FIXUP_SPK_VOLUME quirk to make its headset mic work.
+The unused clock cleanup uses the _sync initcall to give all users at
+earlier initcalls time to probe. Do the same to avoid leaving some PDs
+dangling at "on" (which actually happened on qcom!).
 
-Signed-off-by: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240201122114.30080-1-edson.drosdeck@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 2fe71dcdfd10 ("PM / domains: Add late_initcall to disable unused PM domains")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20231227-topic-pmdomain_sync_cleanup-v1-1-5f36769d538b@linaro.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/base/power/domain.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9333,6 +9333,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x1d72, 0x1945, "Redmi G", ALC256_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1d72, 0x1947, "RedmiBook Air", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
-+	SND_PCI_QUIRK(0x2782, 0x1707, "Vaio VJFE-ADL", ALC298_FIXUP_SPK_VOLUME),
- 	SND_PCI_QUIRK(0x8086, 0x2074, "Intel NUC 8", ALC233_FIXUP_INTEL_NUC8_DMIC),
- 	SND_PCI_QUIRK(0x8086, 0x2080, "Intel NUC 8 Rugged", ALC256_FIXUP_INTEL_NUC8_RUGGED),
- 	SND_PCI_QUIRK(0x8086, 0x2081, "Intel NUC 10", ALC256_FIXUP_INTEL_NUC10),
+--- a/drivers/base/power/domain.c
++++ b/drivers/base/power/domain.c
+@@ -847,7 +847,7 @@ static int __init genpd_power_off_unused
+ 
+ 	return 0;
+ }
+-late_initcall(genpd_power_off_unused);
++late_initcall_sync(genpd_power_off_unused);
+ 
+ #if defined(CONFIG_PM_SLEEP) || defined(CONFIG_PM_GENERIC_DOMAINS_OF)
+ 
 
 
 
