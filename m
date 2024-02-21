@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-21901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D68C085D913
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 167C785DBA0
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:43:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1396D1C22E94
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:14:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98218285611
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:43:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6441369D30;
-	Wed, 21 Feb 2024 13:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B777078B70;
+	Wed, 21 Feb 2024 13:43:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pG65JAGG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NfWqj+m6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23DA153816;
-	Wed, 21 Feb 2024 13:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E9077A03;
+	Wed, 21 Feb 2024 13:43:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521255; cv=none; b=IRm2WfCAmlTnoxrVRnDomM0plQy/uf792X5SkoGim4OPBzIEvlF0rLNbVqDKR38hr7+ec0G6MtAQptiJGj6LsUdzPUhz2afQ8DQaGe29g0FwRdlzfhM3JsufWmWmDhDIizSXSphjOKHRw5LApe2AGcOmrTAaRP1HJeFrO4aSKDE=
+	t=1708523002; cv=none; b=cE+dMZkiwdU/0aSXUFLmc1BzzDiA+kMaPenFg2tp2o4zis1F+rAOpsgdJfNXqt7cdsfrL2XfFpF3/HCEBG6/BQmQHQUfQpzybFDcRe/9b0oTkE4PbmR4BmiJ9psG7fyijhqtCZoxaqr9PqRpAKlT77Y8/IKsBSM+XnJaVraZoxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521255; c=relaxed/simple;
-	bh=8C7t+WNKrkhGU1/I57HVYE1noqlD578F0tg4xjgHdLs=;
+	s=arc-20240116; t=1708523002; c=relaxed/simple;
+	bh=Cwt1Hdn0+pMh8ic+XOZmdZWdtiA6YHKcIbroZmtlN10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DjD6cyTpbw+xQrZj4JZwM8dKJzcM9XY1JmMvb4RoDm72GxGklNmqUrWyVv3syaLbJlbfxJePkAoYdqsKGYp5yZGAsFanM8p48OYaYfVJZfiOOmUZWV/OmIV4mf1SLUO9QQacY7tBQK260ZKUM8kIpynYUbEEZNTTZair7Lc2Rrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pG65JAGG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F0BFC433F1;
-	Wed, 21 Feb 2024 13:14:14 +0000 (UTC)
+	 MIME-Version; b=X1AxXQvoGyQaLuiL5WTUEt0RBZ7lrD15W2M2YQht61pE4B0hsg/G1KjbmnGkwwP5dzlBm3Vf3c9kgWsT/XBMoPCQT6FH7fX0vOPPnI+vyfICGMVTC0hlWX4mbhZtKNtsemrnouDZwBWEyE/sBPS54wwVc6bj6yokOR/qXdEaRLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NfWqj+m6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA755C433F1;
+	Wed, 21 Feb 2024 13:43:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521255;
-	bh=8C7t+WNKrkhGU1/I57HVYE1noqlD578F0tg4xjgHdLs=;
+	s=korg; t=1708523002;
+	bh=Cwt1Hdn0+pMh8ic+XOZmdZWdtiA6YHKcIbroZmtlN10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pG65JAGGm5m6/5BidprTR2Rv0x2yE0+icVIrHDVSBTR78KM8SSOV2qTeIkcEIV1sa
-	 0SZfV7/4Yj7Su9XoonZrH5lTjtEjKk0gs4i2hkThiGPPJLZRpHtSWDU7P1jCHy4pS6
-	 wLnXf0wnN59d67zVOS8iqtaHJNiXIJg+xfj/Po54=
+	b=NfWqj+m6Q3bkbQCpauCeGl8QBL4P6O3GeG0AtAfXdb2jCIl68SkIGBfXjgQN2MdVT
+	 STHsG+YDl4F0RVcXzT9vjI3X2swUC40pJ8pDM+vau3lu95ZmgT1y3JK3hlR4N9oEwL
+	 hvVn7t12khasDTQGbRCPLHAjxtPZRLPzcD3xvcSg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weichen Chen <weichen.chen@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	Kees Cook <keescook@chromium.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 063/202] pstore/ram: Fix crash when setting number of cpus to an odd number
+Subject: [PATCH 5.15 313/476] inet: read sk->sk_family once in inet_recv_error()
 Date: Wed, 21 Feb 2024 14:06:04 +0100
-Message-ID: <20240221125933.875031822@linuxfoundation.org>
+Message-ID: <20240221130019.598548907@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weichen Chen <weichen.chen@mediatek.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit d49270a04623ce3c0afddbf3e984cb245aa48e9c ]
+[ Upstream commit eef00a82c568944f113f2de738156ac591bbd5cd ]
 
-When the number of cpu cores is adjusted to 7 or other odd numbers,
-the zone size will become an odd number.
-The address of the zone will become:
-    addr of zone0 = BASE
-    addr of zone1 = BASE + zone_size
-    addr of zone2 = BASE + zone_size*2
-    ...
-The address of zone1/3/5/7 will be mapped to non-alignment va.
-Eventually crashes will occur when accessing these va.
+inet_recv_error() is called without holding the socket lock.
 
-So, use ALIGN_DOWN() to make sure the zone size is even
-to avoid this bug.
+IPv6 socket could mutate to IPv4 with IPV6_ADDRFORM
+socket option and trigger a KCSAN warning.
 
-Signed-off-by: Weichen Chen <weichen.chen@mediatek.com>
-Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
-Tested-by: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Link: https://lore.kernel.org/r/20230224023632.6840-1-weichen.chen@mediatek.com
-Signed-off-by: Kees Cook <keescook@chromium.org>
+Fixes: f4713a3dfad0 ("net-timestamp: make tcp_recvmsg call ipv6_recv_error for AF_INET6 socks")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/pstore/ram.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/ipv4/af_inet.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/pstore/ram.c b/fs/pstore/ram.c
-index 33294dee7d7f..0050aa56b0fa 100644
---- a/fs/pstore/ram.c
-+++ b/fs/pstore/ram.c
-@@ -590,6 +590,7 @@ static int ramoops_init_przs(const char *name,
- 	}
+diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
+index 6f6c05f198da..487f75993bf4 100644
+--- a/net/ipv4/af_inet.c
++++ b/net/ipv4/af_inet.c
+@@ -1605,10 +1605,12 @@ EXPORT_SYMBOL(inet_current_timestamp);
  
- 	zone_sz = mem_sz / *cnt;
-+	zone_sz = ALIGN_DOWN(zone_sz, 2);
- 	if (!zone_sz) {
- 		dev_err(dev, "%s zone size == 0\n", name);
- 		goto fail;
+ int inet_recv_error(struct sock *sk, struct msghdr *msg, int len, int *addr_len)
+ {
+-	if (sk->sk_family == AF_INET)
++	unsigned int family = READ_ONCE(sk->sk_family);
++
++	if (family == AF_INET)
+ 		return ip_recv_error(sk, msg, len, addr_len);
+ #if IS_ENABLED(CONFIG_IPV6)
+-	if (sk->sk_family == AF_INET6)
++	if (family == AF_INET6)
+ 		return pingv6_ops.ipv6_recv_error(sk, msg, len, addr_len);
+ #endif
+ 	return -EINVAL;
 -- 
 2.43.0
 
