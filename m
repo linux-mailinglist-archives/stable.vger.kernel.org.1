@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-22728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E992885DD80
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:06:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76DE585DE85
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:19:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 893C31F23511
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:06:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A84901C23BC3
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:19:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DB4E78B53;
-	Wed, 21 Feb 2024 14:05:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AD707BB10;
+	Wed, 21 Feb 2024 14:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gs7arh7t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pKtf/ss3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E094279DBF;
-	Wed, 21 Feb 2024 14:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A9ED3CF42;
+	Wed, 21 Feb 2024 14:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524315; cv=none; b=QHeOJp/YPypBGSq+nh34vbhC816on63EYUvBzqZ3DfLm4Sh4F6Kq1bNBFdFRWcUrsVco8nGvKuGnn1VIns3fDKO1MHDzkyI/1G3UkT37M52RWQr01MaM/h5FWJM2OIgQeBXIT9KNAU5RxTtki7cMjJW5CvFJJF7t6H4PXbcup9E=
+	t=1708525143; cv=none; b=c1DbGEMJ6Fkr7c0+uEMx9WZuUafF8n9LV4WX/hm7009fw0RdzS6uuH8/A7o74uQW/c/13WpDkHItFSKAdwrFNq5b7Vy0dyg8fZtisSaSqfsLtOWr8+CvurMdsfeuJnUFMrpFVmmDsZ0n5PyGMHQadvUINGMBXcw+qYOAn9JsAkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524315; c=relaxed/simple;
-	bh=hSBKY5jNF50ROsynj2hYNHSA02iumKQR2Ljzhw+okK0=;
+	s=arc-20240116; t=1708525143; c=relaxed/simple;
+	bh=riBfJ836mLM57mShagqu0vv5qZHbEYBhn/cvj6iyLag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q5VLev+j4uSORfBrTsNdwJjEeAjxxIn13p5QiTukllgYtvpWb9nx4e4SWBx/vAToRt5c23TYclx0vHEbdWbOmNca2n+D3UQN4i0f6GeqrlEZWim+eUIMhIpXIwhuZYODq11wV6qQV4t0ygXrZGJFvVpE1U3kmrW4/ZPBkeosP5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gs7arh7t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 184EEC433C7;
-	Wed, 21 Feb 2024 14:05:13 +0000 (UTC)
+	 MIME-Version; b=oFbKFDX+bavjHs8ZAK7ekef1UCoNX6/wQIwx0L0ileC8yTWLx1UGjamTIgTuCJ2j4/raHog74KtPe7JThaW7qM7HP/xE25LHZ5ub3qeaZRvUZyrgBhVz7aTcEYk3ktVu0hA3MoWgeVaI+2L5yxXCYZ34oTuSGb8vTsbQKUuR6wY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pKtf/ss3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DC76C433F1;
+	Wed, 21 Feb 2024 14:19:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524314;
-	bh=hSBKY5jNF50ROsynj2hYNHSA02iumKQR2Ljzhw+okK0=;
+	s=korg; t=1708525143;
+	bh=riBfJ836mLM57mShagqu0vv5qZHbEYBhn/cvj6iyLag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gs7arh7ticG8g4BUH8lJuEb88gQxaALurVVNgh8kBTkqmq7CHPSBs6S0yRkjkJrrg
-	 nCH1CSqNK2qAz5D6DijdZegGX5cJcG+kqlHlsheSlAFdPiawD8OAHTwqFbJbGFfijK
-	 Kh7C6ZJXj/xXvhnWaNkyD2sy47JBkYXk7D5+btL0=
+	b=pKtf/ss3pBtVrgBFqx1wukXAcdmkvnRFX0d0fSk8GnFnZi+emn124sfVcJZPgWhoO
+	 BmLuFv070jBah4F0FxG/u9PcxzGxekPOUYmhNnLJBdTndqHIQOs0l2Jv/cVsTEhMOn
+	 RMdtCxnyj2dtcO/0Mjk06Ajn9yhLPSUFfpkdZq44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Huang Rui <ray.huang@amd.com>,
-	Vicki Pfau <vi@endrift.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 207/379] PCI: Only override AMD USB controller if required
+	Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.4 045/267] btrfs: defrag: reject unknown flags of btrfs_ioctl_defrag_range_args
 Date: Wed, 21 Feb 2024 14:06:26 +0100
-Message-ID: <20240221130001.024708571@linuxfoundation.org>
+Message-ID: <20240221125941.429940484@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guilherme G. Piccoli <gpiccoli@igalia.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit e585a37e5061f6d5060517aed1ca4ccb2e56a34c ]
+commit 173431b274a9a54fc10b273b46e67f46bcf62d2e upstream.
 
-By running a Van Gogh device (Steam Deck), the following message
-was noticed in the kernel log:
+Add extra sanity check for btrfs_ioctl_defrag_range_args::flags.
 
-  pci 0000:04:00.3: PCI class overridden (0x0c03fe -> 0x0c03fe) so dwc3 driver can claim this instead of xhci
+This is not really to enhance fuzzing tests, but as a preparation for
+future expansion on btrfs_ioctl_defrag_range_args.
 
-Effectively this means the quirk executed but changed nothing, since the
-class of this device was already the proper one (likely adjusted by newer
-firmware versions).
+In the future we're going to add new members, allowing more fine tuning
+for btrfs defrag.  Without the -ENONOTSUPP error, there would be no way
+to detect if the kernel supports those new defrag features.
 
-Check and perform the override only if necessary.
-
-Link: https://lore.kernel.org/r/20231120160531.361552-1-gpiccoli@igalia.com
-Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: Huang Rui <ray.huang@amd.com>
-Cc: Vicki Pfau <vi@endrift.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org # 4.14+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/quirks.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ fs/btrfs/ioctl.c           |    4 ++++
+ include/uapi/linux/btrfs.h |    3 +++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 03a30734cdc6..b67aea8d8f19 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -609,10 +609,13 @@ static void quirk_amd_dwc_class(struct pci_dev *pdev)
- {
- 	u32 class = pdev->class;
- 
--	/* Use "USB Device (not host controller)" class */
--	pdev->class = PCI_CLASS_SERIAL_USB_DEVICE;
--	pci_info(pdev, "PCI class overridden (%#08x -> %#08x) so dwc3 driver can claim this instead of xhci\n",
--		 class, pdev->class);
-+	if (class != PCI_CLASS_SERIAL_USB_DEVICE) {
-+		/* Use "USB Device (not host controller)" class */
-+		pdev->class = PCI_CLASS_SERIAL_USB_DEVICE;
-+		pci_info(pdev,
-+			"PCI class overridden (%#08x -> %#08x) so dwc3 driver can claim this instead of xhci\n",
-+			class, pdev->class);
-+	}
- }
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_NL_USB,
- 		quirk_amd_dwc_class);
--- 
-2.43.0
-
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -3102,6 +3102,10 @@ static int btrfs_ioctl_defrag(struct fil
+ 				kfree(range);
+ 				goto out;
+ 			}
++			if (range->flags & ~BTRFS_DEFRAG_RANGE_FLAGS_SUPP) {
++				ret = -EOPNOTSUPP;
++				goto out;
++			}
+ 			/* compression requires us to start the IO */
+ 			if ((range->flags & BTRFS_DEFRAG_RANGE_COMPRESS)) {
+ 				range->flags |= BTRFS_DEFRAG_RANGE_START_IO;
+--- a/include/uapi/linux/btrfs.h
++++ b/include/uapi/linux/btrfs.h
+@@ -539,6 +539,9 @@ struct btrfs_ioctl_clone_range_args {
+  */
+ #define BTRFS_DEFRAG_RANGE_COMPRESS 1
+ #define BTRFS_DEFRAG_RANGE_START_IO 2
++#define BTRFS_DEFRAG_RANGE_FLAGS_SUPP	(BTRFS_DEFRAG_RANGE_COMPRESS |		\
++					 BTRFS_DEFRAG_RANGE_START_IO)
++
+ struct btrfs_ioctl_defrag_range_args {
+ 	/* start of the defrag operation */
+ 	__u64 start;
 
 
 
