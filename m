@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-22283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6446985DB43
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:39:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D49085DCD2
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:58:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DC681C233AB
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:39:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C648CB253A5
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:58:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6D1269951;
-	Wed, 21 Feb 2024 13:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9B207B3F2;
+	Wed, 21 Feb 2024 13:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fxyiq0fN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0dUFBL/5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7521973161;
-	Wed, 21 Feb 2024 13:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871D776C99;
+	Wed, 21 Feb 2024 13:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522727; cv=none; b=YqAr0QegYhIY7OO0/W3EWBK7JDZa0ImpC6QLEGTSl2tqpPQWqrXB2QqkUYkLrYXRIVo1GGTCzxAOLaqCJF7dI7t+UJMTnbPyYJvtxexIKxYjWYJcWPHeBoOm9GaKuf6pfZ44jtCgMllIvz6YvbN6PPEVVSHdEd/LkMVu0qzAXSY=
+	t=1708523896; cv=none; b=U8HJMybx3RaOXqqngBFjqsolSoJu3YRWBal+FbwcIjOOWLJJxhs8fIIkUfCAIiLPMV8VCwxffK9fodnl+mQjlvzb5xcnj0O5N90OHNcoFEnAzSgtJmo+EPO8hBYaKqrJl97JNo9ABvxtLdWwVWhFTm6LrP2vM+a6wIpE3TcjBz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522727; c=relaxed/simple;
-	bh=c4MvLX9DdRywYq7B3K+lZL1CywstmINL8hOj8iKBV5I=;
+	s=arc-20240116; t=1708523896; c=relaxed/simple;
+	bh=QPNzf+Wecf9ofXYfNwpZ52YdkkjiHV395XME/SdDyO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HPe72eXa1F739tPsF05mN/YjSD2j2oTtrmmqPF4uq8bPqYRBiORz98HaZoFoNQwDytjhxWJttm6ac0g5iCnvKKCzLEFN/uBueiLUjT7IMunyqY07CodTwTyFfjAiH2FDddldH6DosSanxTRabETFzbRYB5p4bya+fHxiNGkT5Zw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fxyiq0fN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 823F2C433C7;
-	Wed, 21 Feb 2024 13:38:46 +0000 (UTC)
+	 MIME-Version; b=BADCTpnJqZHDX7033g5/7o1sj2aiOuG72X72YCRw9TvI9ymkpwQEiTIRSOkWh4j+w1aEEewjhlYd671wLLq2M4SS9opNLYBrlznAGalMlSMDVzoqCP5zJ7815i5GKa4v51wjO56/hLuxuFpjYN9MIyiwCYmR9h+l1OBBGHN+g+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0dUFBL/5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B70E3C433F1;
+	Wed, 21 Feb 2024 13:58:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522727;
-	bh=c4MvLX9DdRywYq7B3K+lZL1CywstmINL8hOj8iKBV5I=;
+	s=korg; t=1708523896;
+	bh=QPNzf+Wecf9ofXYfNwpZ52YdkkjiHV395XME/SdDyO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fxyiq0fNacxQ//garFmHZkVDuFyIbMlyPCgT97wRpZZuiU/Rlql8zVaTIy2Tuom+Z
-	 Wtjzm3wUX3lCRfHq8gthzQBHoEJhOGGUF9WnLuROcEvRUzO0ZllH/cintsEAzsLfgx
-	 AHe0IjUaJVB31gRxctc9fcpt1rWX2XN0R7kgrWCw=
+	b=0dUFBL/568BaG8Obuj9cpqdJreMemZa28U5vx2EWRuZTWr/Bba09zp+q7RCiN9seb
+	 /bVDBwvmQ2uxfG871d24KGVTLRYt534H5J4s4GGZ6c7UYqpsi9iw/frOHh2+4Dw6Qq
+	 SSUVFWr6IPiRuf9hkR2Vh+VR25r7kkQhR+k7PnNI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jack Wang <jinpu.wang@ionos.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Stephen Boyd <swboyd@chromium.org>,
+	Sandeep Maheswaram <sanm@codeaurora.org>,
+	Bjorn Andersson <bjorn.andersson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 212/476] RDMA/IPoIB: Fix error code return in ipoib_mcast_join
+Subject: [PATCH 5.10 084/379] arm64: dts: qcom: sc7180: Use pdc interrupts for USB instead of GIC interrupts
 Date: Wed, 21 Feb 2024 14:04:23 +0100
-Message-ID: <20240221130015.737418681@linuxfoundation.org>
+Message-ID: <20240221125957.393671797@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,36 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jack Wang <jinpu.wang@ionos.com>
+From: Sandeep Maheswaram <sanm@codeaurora.org>
 
-[ Upstream commit 753fff78f430704548f45eda52d6d55371a52c0f ]
+[ Upstream commit 1e6e6e7a080ca3c1e807473e067ef04d4d005097 ]
 
-Return the error code in case of ib_sa_join_multicast fail.
+Using pdc interrupts for USB instead of GIC interrupts to
+support wake up in case xo shutdown.
 
-Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
-Link: https://lore.kernel.org/r/20231121130316.126364-2-jinpu.wang@ionos.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Signed-off-by: Sandeep Maheswaram <sanm@codeaurora.org>
+Link: https://lore.kernel.org/r/1594235417-23066-4-git-send-email-sanm@codeaurora.org
+Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+Stable-dep-of: 9b956999bf72 ("arm64: dts: qcom: sc7180: fix USB wakeup interrupt types")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/ipoib/ipoib_multicast.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/qcom/sc7180.dtsi | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/ipoib/ipoib_multicast.c b/drivers/infiniband/ulp/ipoib/ipoib_multicast.c
-index 5b3154503bf4..9e6967a40042 100644
---- a/drivers/infiniband/ulp/ipoib/ipoib_multicast.c
-+++ b/drivers/infiniband/ulp/ipoib/ipoib_multicast.c
-@@ -546,6 +546,7 @@ static int ipoib_mcast_join(struct net_device *dev, struct ipoib_mcast *mcast)
- 		spin_unlock_irq(&priv->lock);
- 		complete(&mcast->done);
- 		spin_lock_irq(&priv->lock);
-+		return ret;
- 	}
- 	return 0;
- }
+diff --git a/arch/arm64/boot/dts/qcom/sc7180.dtsi b/arch/arm64/boot/dts/qcom/sc7180.dtsi
+index eb07a882d43b..6eb82699a4a1 100644
+--- a/arch/arm64/boot/dts/qcom/sc7180.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7180.dtsi
+@@ -2688,10 +2688,10 @@ usb_1: usb@a6f8800 {
+ 					  <&gcc GCC_USB30_PRIM_MASTER_CLK>;
+ 			assigned-clock-rates = <19200000>, <150000000>;
+ 
+-			interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 486 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 488 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 489 IRQ_TYPE_LEVEL_HIGH>;
++			interrupts-extended = <&intc GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
++					      <&pdc 6 IRQ_TYPE_LEVEL_HIGH>,
++					      <&pdc 8 IRQ_TYPE_LEVEL_HIGH>,
++					      <&pdc 9 IRQ_TYPE_LEVEL_HIGH>;
+ 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
+ 					  "dm_hs_phy_irq", "dp_hs_phy_irq";
+ 
 -- 
 2.43.0
 
