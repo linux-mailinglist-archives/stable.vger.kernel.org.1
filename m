@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-23088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72C1285DF30
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:25:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47C7185DC63
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:52:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B3BB1C23D72
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:25:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 022CF2853FD
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:52:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95FB57BB01;
-	Wed, 21 Feb 2024 14:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC49978B50;
+	Wed, 21 Feb 2024 13:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kgZbjXOA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yA8t2b5C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5524F3D0A1;
-	Wed, 21 Feb 2024 14:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AAF855E5E;
+	Wed, 21 Feb 2024 13:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525531; cv=none; b=iieDdlbQ606jP+p6kzjFKfu5owYlBACUS2yW9Zn60cgQu7u+QX59QPE1obqiH2R53E4ixMTvnsKHZulffhKc+GduiRXuDv7xtsygZ4R+vomYC2Op6SVw02+ghxxt6zw19XbmX4AaH8aRuz6iemlq/mbRBcYN8OFU/7VQYyepWJI=
+	t=1708523565; cv=none; b=WQTs7l35toB5O0bP/30Zvc2n6vu5q2OcbWOFEZfo/KHA4WUvNdlA6BkVZ4fKtBY8AsRe8LaH66yzRMa3yTWqoZqYsikcDlm6G/GAFsc4yBkRFC+dEtybUeBsP0aP3Ci6ijT3SWEDHGJz684FGKz1sMxfvbHTf7X4Y3i+d+xGYCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525531; c=relaxed/simple;
-	bh=WGAA8e78iqAaGCCLUyHgv/Yo4FQHnKwuySJbSUB+Izk=;
+	s=arc-20240116; t=1708523565; c=relaxed/simple;
+	bh=4IPddyWVEUfRYKADp4PcwXWlVpXpfXsmM2TUVhUuZK8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cnpGGnhiTIeq1Ght5NYbM7irsXEP1TNPBKskKi0ItZoK7KIpLxSE+sJMBIMraloo0m5FL7BCXY22UOOI4AvBBVKYXSrHDUkGTLuU7YPQhx35Q5SBS/gKHyUvQ+HB5WbPhFcjzRRgA2BACNVtF2NHXMivAXyFcRvl4Eu4xzkUh2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kgZbjXOA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF520C433F1;
-	Wed, 21 Feb 2024 14:25:30 +0000 (UTC)
+	 MIME-Version; b=jQivNKUiD+L6xzJxIkixrnSd5PEBMZ2MT0WcmpEXIdYVI46X9MEIZhSF0D5QpZhWQzwtzhO4eFCyFDYGJbflFX+rh8YWMQjJ6DgbKMceOtqT3zJCXot5BoAEq3aLL2JOBTTY0h3LPE3EGw05wvK1UB5B2CuH5LaTa/CGZDvrOvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yA8t2b5C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7200C43142;
+	Wed, 21 Feb 2024 13:52:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525531;
-	bh=WGAA8e78iqAaGCCLUyHgv/Yo4FQHnKwuySJbSUB+Izk=;
+	s=korg; t=1708523565;
+	bh=4IPddyWVEUfRYKADp4PcwXWlVpXpfXsmM2TUVhUuZK8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kgZbjXOAv4/c47597gF5zIOSbdvW0zAlQeSNmRnGELEao6p8REQtUSeUH/WiAY71b
-	 3F7p+P2ybPIVdFuqzew4LhMj/oK44Qa91+kXV6RBXccRP0legYBhq7p51IqICgZj9K
-	 7TQ6gC/akpoq0UIdUUAFcv8Pl7yYIpEgh8g+zo2Q=
+	b=yA8t2b5COmDymJYATH1ptQi85GOE77OjDXGdS7LZWIJnSikYnotgE9vibopXv4q9+
+	 0RV/TYeq6x3WFyvtKOHZe6eZHasXo0Hqs3nmy97+2aJs2Y3cXd1oGZYbjQFlad/VhL
+	 Iv8jY71Lj5U6bxfH+kVZdkSd63m5DLynfERsBnTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Loic Prylli <lprylli@netflix.com>,
-	Alexander Hansen <alexander.hansen@9elements.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 184/267] hwmon: (aspeed-pwm-tacho) mutex for tach reading
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Wesley Cheng <quic_wcheng@quicinc.com>
+Subject: [PATCH 5.15 474/476] usb: dwc3: gadget: Execute gadget stop after halting the controller
 Date: Wed, 21 Feb 2024 14:08:45 +0100
-Message-ID: <20240221125945.900302654@linuxfoundation.org>
+Message-ID: <20240221130025.513137333@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Loic Prylli <lprylli@netflix.com>
+From: Wesley Cheng <quic_wcheng@quicinc.com>
 
-[ Upstream commit 1168491e7f53581ba7b6014a39a49cfbbb722feb ]
+commit 39674be56fba1cd3a03bf4617f523a35f85fd2c1 upstream.
 
-the ASPEED_PTCR_RESULT Register can only hold the result for a
-single fan input. Adding a mutex to protect the register until the
-reading is done.
+Do not call gadget stop until the poll for controller halt is
+completed.  DEVTEN is cleared as part of gadget stop, so the intention to
+allow ep0 events to continue while waiting for controller halt is not
+happening.
 
-Signed-off-by: Loic Prylli <lprylli@netflix.com>
-Signed-off-by: Alexander Hansen <alexander.hansen@9elements.com>
-Fixes: 2d7a548a3eff ("drivers: hwmon: Support for ASPEED PWM/Fan tach")
-Link: https://lore.kernel.org/r/121d888762a1232ef403cf35230ccf7b3887083a.1699007401.git.alexander.hansen@9elements.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c96683798e27 ("usb: dwc3: ep0: Don't prepare beyond Setup stage")
+Cc: stable@vger.kernel.org
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
+Link: https://lore.kernel.org/r/20230420212759.29429-2-quic_wcheng@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/aspeed-pwm-tacho.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/usb/dwc3/gadget.c |   15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/aspeed-pwm-tacho.c b/drivers/hwmon/aspeed-pwm-tacho.c
-index 40f3139f1e02..dca5d3bf0629 100644
---- a/drivers/hwmon/aspeed-pwm-tacho.c
-+++ b/drivers/hwmon/aspeed-pwm-tacho.c
-@@ -194,6 +194,8 @@ struct aspeed_pwm_tacho_data {
- 	u8 fan_tach_ch_source[16];
- 	struct aspeed_cooling_device *cdev[8];
- 	const struct attribute_group *groups[3];
-+	/* protects access to shared ASPEED_PTCR_RESULT */
-+	struct mutex tach_lock;
- };
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -2517,7 +2517,6 @@ static int dwc3_gadget_soft_disconnect(s
+ 	 * bit.
+ 	 */
+ 	dwc3_stop_active_transfers(dwc);
+-	__dwc3_gadget_stop(dwc);
+ 	spin_unlock_irqrestore(&dwc->lock, flags);
  
- enum type { TYPEM, TYPEN, TYPEO };
-@@ -528,6 +530,8 @@ static int aspeed_get_fan_tach_ch_rpm(struct aspeed_pwm_tacho_data *priv,
- 	u8 fan_tach_ch_source, type, mode, both;
- 	int ret;
- 
-+	mutex_lock(&priv->tach_lock);
+ 	/*
+@@ -2547,7 +2546,19 @@ static int dwc3_gadget_soft_disconnect(s
+ 	 * remaining event generated by the controller while polling for
+ 	 * DSTS.DEVCTLHLT.
+ 	 */
+-	return dwc3_gadget_run_stop(dwc, false);
++	ret = dwc3_gadget_run_stop(dwc, false);
 +
- 	regmap_write(priv->regmap, ASPEED_PTCR_TRIGGER, 0);
- 	regmap_write(priv->regmap, ASPEED_PTCR_TRIGGER, 0x1 << fan_tach_ch);
- 
-@@ -545,6 +549,8 @@ static int aspeed_get_fan_tach_ch_rpm(struct aspeed_pwm_tacho_data *priv,
- 		ASPEED_RPM_STATUS_SLEEP_USEC,
- 		usec);
- 
-+	mutex_unlock(&priv->tach_lock);
++	/*
++	 * Stop the gadget after controller is halted, so that if needed, the
++	 * events to update EP0 state can still occur while the run/stop
++	 * routine polls for the halted state.  DEVTEN is cleared as part of
++	 * gadget stop.
++	 */
++	spin_lock_irqsave(&dwc->lock, flags);
++	__dwc3_gadget_stop(dwc);
++	spin_unlock_irqrestore(&dwc->lock, flags);
 +
- 	/* return -ETIMEDOUT if we didn't get an answer. */
- 	if (ret)
- 		return ret;
-@@ -909,6 +915,7 @@ static int aspeed_pwm_tacho_probe(struct platform_device *pdev)
- 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
- 	if (!priv)
- 		return -ENOMEM;
-+	mutex_init(&priv->tach_lock);
- 	priv->regmap = devm_regmap_init(dev, NULL, (__force void *)regs,
- 			&aspeed_pwm_tacho_regmap_config);
- 	if (IS_ERR(priv->regmap))
--- 
-2.43.0
-
++	return ret;
+ }
+ 
+ static int dwc3_gadget_soft_connect(struct dwc3 *dwc)
 
 
 
