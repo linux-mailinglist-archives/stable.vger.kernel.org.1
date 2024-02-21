@@ -1,254 +1,146 @@
-Return-Path: <stable+bounces-21838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F9F585D7B7
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:11:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C496585D7F8
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:37:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F11871F22A4C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 12:11:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A9D21F21F55
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 12:37:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B2CF4F201;
-	Wed, 21 Feb 2024 12:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDB5B69D0A;
+	Wed, 21 Feb 2024 12:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RWD/JApL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YO1nHeeq"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC0DB47F46
-	for <stable@vger.kernel.org>; Wed, 21 Feb 2024 12:11:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ACD369D02;
+	Wed, 21 Feb 2024 12:37:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708517510; cv=none; b=npxpbSSnNvf47aNB3DMG1q9pDxvlEBgxy8Z9MnX+tJR+yNgF9ccyvey1rbJxaoSw8n7W4+3yL+Gp2dTfX7kbF4wDmsMIiFoKfm6zIxfbR57oXieBL8kD0Znz6FHLgsFyn9XW3atkqycxyNqQJlXeCcfqgAyFKjeIJMIcDSCnAfA=
+	t=1708519053; cv=none; b=MZ2t4LHa2rzd2b9STx2tLkrlLZKpM/zLRHt/tLvKgqNOqjWUGGZs38ExCsrwSoN/Vd57eX9MGpQNh2QGVjPEWeIgTUnLHU7LKtrXVDc2fcPFQnyD90BDxWLmwNO5BtsAQQOTP412YB0AQQRxBMUefdpf24ZlM5oRw54tZJZ+iq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708517510; c=relaxed/simple;
-	bh=dqfyNnu4bNsFKmVcqnf/1j02hAHVp6dX+VCXNi9ZwT0=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=bwA5QGNy8hBYevoeDNr7SUxmsiIMA8gwZN4i/Ta7SMHViRdkknzWfNWBagmZIjCCxc09kQ/JuXBRsCjYBK3Dopz1opbsfxCiOjfySAVy4q0VKiJYjgr43Hb1lGia4byyv2sydS7Dq7/kope7U1b0lPqbsqAmINcZ7udvEJjQ0BY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RWD/JApL; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708517508; x=1740053508;
-  h=message-id:date:mime-version:subject:from:to:cc:
-   references:in-reply-to:content-transfer-encoding;
-  bh=dqfyNnu4bNsFKmVcqnf/1j02hAHVp6dX+VCXNi9ZwT0=;
-  b=RWD/JApLvU6q7RQFuM1JLKBfe7/DEXdkBeRQHU9o3VQBQ0z10i4vfM2G
-   3QgOTqDYtU5f6a47SRi7j5fFStoA7mQc1qenyapbnCaN4WyWG9JPFvngr
-   4Q8H9THM6tZd8J6sGvHv0U8Wr34KaXXEjGOiAolW60BXO++6oaJXWkNU8
-   hBqOQF8H2hyHN5999jHHWuBbbg5VQvGTse/FEeVt0MOOIosBt6t/MhN26
-   5TobTtWwz51VC4WVF1xjneV4AJ2ZdgGyl9baBymnqD1ketUr/rcmF67rh
-   dgoq679kiMEjZyYMFeUDXUojYag5t8rYZ2NvNhGO3nz7kpiqI7CepS0tz
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="20213610"
-X-IronPort-AV: E=Sophos;i="6.06,175,1705392000"; 
-   d="scan'208";a="20213610"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2024 04:11:48 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,175,1705392000"; 
-   d="scan'208";a="9739876"
-Received: from jdoyle1x-mobl2.ger.corp.intel.com (HELO [10.213.204.109]) ([10.213.204.109])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2024 04:11:46 -0800
-Message-ID: <11075294-487b-4465-a544-f49796f61e64@linux.intel.com>
-Date: Wed, 21 Feb 2024 12:11:44 +0000
+	s=arc-20240116; t=1708519053; c=relaxed/simple;
+	bh=ESR5FUVH7HdQuYDC2PkSSIiu8ZJk0BRHYo1/BQuDM/w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GHpvzDEWmJNX9PR0fDVuXA1Gnc9wbRLgMsAzyFGBcl17LvF3kn92S6CBZzV2SIBOn4CYH3PuzGETi+Sg7NEEN11AzbjwI4JwHUQGf/KwG7QPrW7O7I4toYsCDZi0K3VrYbfxOrOcHf7X8bgVDS4ZTF4U6mgKQlFe1yRJpAUPMjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YO1nHeeq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B3C8C433C7;
+	Wed, 21 Feb 2024 12:37:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1708519053;
+	bh=ESR5FUVH7HdQuYDC2PkSSIiu8ZJk0BRHYo1/BQuDM/w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YO1nHeeqGoI+x+F6a3bmVPJFPcdxoe6zwkhq9LxK4lbUfYKnN90wjj4moyiPoQC8y
+	 PiUKWbGfeZI8Ozr/omEKFkiAzKTKDc5BfW4u2DlvoV73mdb8M7D/9jBSxyQfaZu/I+
+	 lApKCHtWM1Jul6kevOEi+qf1/loA78A+AglWToxU=
+Date: Wed, 21 Feb 2024 13:37:30 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+Cc: Daniel =?iso-8859-1?Q?D=EDaz?= <daniel.diaz@linaro.org>,
+	stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH 6.1 000/197] 6.1.79-rc1 review
+Message-ID: <2024022122-diminish-astrology-3635@gregkh>
+References: <20240220204841.073267068@linuxfoundation.org>
+ <c873370c-c12f-4f03-a722-1ae59743089b@linaro.org>
+ <7e1faa29-a154-41fc-aebc-38d5f355ea90@linaro.org>
+ <10ad8f935e598244d4cb68aa20130952a26ba2ef.camel@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] drm/i915/gt: Enable only one CCS for compute
- workload
-Content-Language: en-US
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-To: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: intel-gfx <intel-gfx@lists.freedesktop.org>,
- dri-devel <dri-devel@lists.freedesktop.org>,
- Chris Wilson <chris.p.wilson@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Matt Roper <matthew.d.roper@intel.com>,
- John Harrison <John.C.Harrison@intel.com>, stable@vger.kernel.org,
- Andi Shyti <andi.shyti@kernel.org>
-References: <20240220143526.259109-1-andi.shyti@linux.intel.com>
- <20240220143526.259109-3-andi.shyti@linux.intel.com>
- <af007641-9705-4259-b29c-3cb78f67fc64@linux.intel.com>
- <ZdVAd3NxUNBZofts@ashyti-mobl2.lan>
- <a0f66a4d-12f9-4852-a1bb-a6d27538b436@linux.intel.com>
- <ZdXcRat8OcTeVozx@ashyti-mobl2.lan>
- <150592ba-9d98-4ec7-a593-c218f4d4f74a@linux.intel.com>
-Organization: Intel Corporation UK Plc
-In-Reply-To: <150592ba-9d98-4ec7-a593-c218f4d4f74a@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <10ad8f935e598244d4cb68aa20130952a26ba2ef.camel@ew.tq-group.com>
 
+On Wed, Feb 21, 2024 at 09:16:32AM +0100, Matthias Schiffer wrote:
+> On Tue, 2024-02-20 at 19:40 -0600, Daniel D�az wrote:
+> > ********************
+> > Achtung externe E-Mail: �ffnen Sie Anh�nge und Links nur, wenn Sie wissen, dass diese aus einer sicheren Quelle stammen und sicher sind. Leiten Sie die E-Mail im Zweifelsfall zur Pr�fung an den IT-Helpdesk weiter.
+> > Attention external email: Open attachments and links only if you know that they are from a secure source and are safe. In doubt forward the email to the IT-Helpdesk to check it.
+> > ********************
+> > 
+> > Hello!
+> > 
+> > On 20/02/24 7:04 p.�m., Daniel D�az wrote:
+> > > On 20/02/24 2:49 p.�m., Greg Kroah-Hartman wrote:
+> > > > This is the start of the stable review cycle for the 6.1.79 release.
+> > > > There are 197 patches in this series, all will be posted as a response
+> > > > to this one.� If anyone has any issues with these being applied, please
+> > > > let me know.
+> > > > 
+> > > > Responses should be made by Thu, 22 Feb 2024 20:48:08 +0000.
+> > > > Anything received after that time might be too late.
+> > > > 
+> > > > The whole patch series can be found in one patch at:
+> > > > ����https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.79-rc1.gz
+> > > > or in the git tree and branch at:
+> > > > ����git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> > > > and the diffstat can be found below.
+> > > > 
+> > > > thanks,
+> > > > 
+> > > > greg k-h
+> > > 
+> > > We see a regression with PowerPC:
+> > > 
+> > > -----8<-----
+> > >  � /builds/linux/arch/powerpc/kernel/cpu_setup_6xx.S: Assembler messages:
+> > >  � /builds/linux/arch/powerpc/kernel/cpu_setup_6xx.S:124: Error: unrecognized opcode: `sym_func_start_local(setup_g2_le_hid2)'
+> > >  � /builds/linux/arch/powerpc/kernel/cpu_setup_6xx.S:131: Error: unrecognized opcode: `sym_func_end(setup_g2_le_hid2)'
+> > >  � make[4]: *** [/builds/linux/scripts/Makefile.build:382: arch/powerpc/kernel/cpu_setup_6xx.o] Error 1
+> > > ----->8-----
+> > > 
+> > > This is seen only on PowerPC with GCC 8, GCC 13, Clang 17, Clang nightly, on:
+> > > * allnoconfig
+> > > * tinyconfig
+> > > * mpc83xx_defconfig
+> > > * ppc6xx_defconfig
+> > > (at least)
+> > > 
+> > > Reproducer:
+> > > 
+> > >  � tuxmake \
+> > >  ��� --runtime podman \
+> > >  ��� --target-arch powerpc \
+> > >  ��� --toolchain gcc-8 \
+> > >  ��� --kconfig tinyconfig
+> > > 
+> > 
+> > Bisection points to:
+> > 
+> >    commit a65d7a833f486d0c162fdc854d2d5dd2e66ddd95
+> >    Author: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+> >    Date:   Wed Jan 24 11:38:38 2024 +0100
+> > 
+> >        powerpc/6xx: set High BAT Enable flag on G2_LE cores
+> >        
+> >        [ Upstream commit a038a3ff8c6582404834852c043dadc73a5b68b4 ]
+> > 
+> > 
+> > Reverting that commit makes the build pass again.
+> 
+> It seems that backporting the mentioned commit verbatim would also require
+> 2da37761671b5bdedbe04e6469cfa57cd6b6ae45 ("powerpc/32: Fix objtool unannotated intra-function call
+> warnings") to make SYM_FUNC_START_LOCAL/SYM_FUNC_END available. Please drop this patch from 6.1 and
+> older for now.
 
+Now dropped, thanks!
 
-On 21/02/2024 12:08, Tvrtko Ursulin wrote:
-> 
-> On 21/02/2024 11:19, Andi Shyti wrote:
->> Hi Tvrtko,
->>
->> On Wed, Feb 21, 2024 at 08:19:34AM +0000, Tvrtko Ursulin wrote:
->>> On 21/02/2024 00:14, Andi Shyti wrote:
->>>> On Tue, Feb 20, 2024 at 02:48:31PM +0000, Tvrtko Ursulin wrote:
->>>>> On 20/02/2024 14:35, Andi Shyti wrote:
->>>>>> Enable only one CCS engine by default with all the compute sices
->>>>>
->>>>> slices
->>>>
->>>> Thanks!
->>>>
->>>>>> diff --git a/drivers/gpu/drm/i915/gt/intel_engine_user.c 
->>>>>> b/drivers/gpu/drm/i915/gt/intel_engine_user.c
->>>>>> index 833987015b8b..7041acc77810 100644
->>>>>> --- a/drivers/gpu/drm/i915/gt/intel_engine_user.c
->>>>>> +++ b/drivers/gpu/drm/i915/gt/intel_engine_user.c
->>>>>> @@ -243,6 +243,15 @@ void intel_engines_driver_register(struct 
->>>>>> drm_i915_private *i915)
->>>>>>             if (engine->uabi_class == I915_NO_UABI_CLASS)
->>>>>>                 continue;
->>>>>> +        /*
->>>>>> +         * Do not list and do not count CCS engines other than 
->>>>>> the first
->>>>>> +         */
->>>>>> +        if (engine->uabi_class == I915_ENGINE_CLASS_COMPUTE &&
->>>>>> +            engine->uabi_instance > 0) {
->>>>>> +            i915->engine_uabi_class_count[engine->uabi_class]--;
->>>>>> +            continue;
->>>>>> +        }
->>>>>
->>>>> It's a bit ugly to decrement after increment, instead of somehow
->>>>> restructuring the loop to satisfy both cases more elegantly.
->>>>
->>>> yes, agree, indeed I had a hard time here to accept this change
->>>> myself.
->>>>
->>>> But moving the check above where the counter was incremented it
->>>> would have been much uglier.
->>>>
->>>> This check looks ugly everywhere you place it :-)
->>>
->>> One idea would be to introduce a separate local counter array for
->>> name_instance, so not use i915->engine_uabi_class_count[]. First one
->>> increments for every engine, second only for the exposed ones. That way
->>> feels wouldn't be too ugly.
->>
->> Ah... you mean that whenever we change the CCS mode, we update
->> the indexes of the exposed engines from list of the real engines.
->> Will try.
->>
->> My approach was to regenerate the list everytime the CCS mode was
->> changed, but your suggestion looks a bit simplier.
-> 
-> No, I meant just for this first stage of permanently single engine. For 
-> avoiding the decrement after increment. Something like this, but not 
-> compile tested even:
-> 
-> diff --git a/drivers/gpu/drm/i915/gt/intel_engine_user.c 
-> b/drivers/gpu/drm/i915/gt/intel_engine_user.c
-> index 833987015b8b..4c33f30612c4 100644
-> --- a/drivers/gpu/drm/i915/gt/intel_engine_user.c
-> +++ b/drivers/gpu/drm/i915/gt/intel_engine_user.c
-> @@ -203,7 +203,8 @@ static void engine_rename(struct intel_engine_cs 
-> *engine, const char *name, u16
-> 
->   void intel_engines_driver_register(struct drm_i915_private *i915)
->   {
-> -       u16 name_instance, other_instance = 0;
-> +       u16 class_instance[I915_LAST_UABI_ENGINE_CLASS + 2] = { };
-> +       u16 uabi_class, other_instance = 0;
->          struct legacy_ring ring = {};
->          struct list_head *it, *next;
->          struct rb_node **p, *prev;
-> @@ -222,15 +223,14 @@ void intel_engines_driver_register(struct 
-> drm_i915_private *i915)
-> 
->                  GEM_BUG_ON(engine->class >= ARRAY_SIZE(uabi_classes));
->                  engine->uabi_class = uabi_classes[engine->class];
-> +
->                  if (engine->uabi_class == I915_NO_UABI_CLASS) {
-> -                       name_instance = other_instance++;
-> -               } else {
-> -                       GEM_BUG_ON(engine->uabi_class >=
-> -                                  
-> ARRAY_SIZE(i915->engine_uabi_class_count));
-> -                       name_instance =
-> -                               
-> i915->engine_uabi_class_count[engine->uabi_class]++;
-> -               }
-> -               engine->uabi_instance = name_instance;
-> +                       uabi_class = I915_LAST_UABI_ENGINE_CLASS + 1;
-> +               else
-> +                       uabi_class = engine->uabi_class;
-> +
-> +               GEM_BUG_ON(uabi_class >= ARRAY_SIZE(class_instance));
-> +               engine->uabi_instance = class_instance[uabi_class]++;
-> 
->                  /*
->                   * Replace the internal name with the final user and 
-> log facing
-> @@ -238,11 +238,15 @@ void intel_engines_driver_register(struct 
-> drm_i915_private *i915)
->                   */
->                  engine_rename(engine,
->                                intel_engine_class_repr(engine->class),
-> -                             name_instance);
-> +                             engine->uabi_instance);
-> 
-> -               if (engine->uabi_class == I915_NO_UABI_CLASS)
-> +               if (uabi_class == I915_NO_UABI_CLASS)
->                          continue;
-
-Here you just add the ccs skip condition.
-
-Anyway.. I rushed it a bit so see what you think.
-
-Regards,
-
-Tvrtko
-
-> 
-> +               GEM_BUG_ON(uabi_class >=
-> +                          ARRAY_SIZE(i915->engine_uabi_class_count));
-> +               i915->engine_uabi_class_count[uabi_class]++;
-> +
->                  rb_link_node(&engine->uabi_node, prev, p);
->                  rb_insert_color(&engine->uabi_node, &i915->uabi_engines);
-> 
-> 
->>>> In any case, I'm working on a patch that is splitting this
->>>> function in two parts and there is some refactoring happening
->>>> here (for the first initialization and the dynamic update).
->>>>
->>>> Please let me know if it's OK with you or you want me to fix it
->>>> in this run.
->>>>
->>>>> And I wonder if
->>>>> internally (in dmesg when engine name is logged) we don't end up 
->>>>> with ccs0
->>>>> ccs0 ccs0 ccs0.. for all instances.
->>>>
->>>> I don't see this. Even in sysfs we see only one ccs. Where is it?
->>>
->>> When you run this patch on something with two or more ccs-es, the 
->>> "renamed
->>> ccs... to ccs.." debug logs do not all log the new name as ccs0?
->>
->> it shouldn't, because the name_instance is anyway incremented
->> normally... anyway, I will test it.
-> 
-> Hm maybe it needs more than two ccs engines and then it would be ccs0, 
-> ccs1, ccs2, ccs2, on a four ccs part. Or something.. It just feels the 
-> decrement of i915->engine_uabi_class_count, which engine_instance 
-> currently uses, has to mess this up somehow.
-> 
-> Regards,
-> 
-> Tvrtko
+greg k-h
 
