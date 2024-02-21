@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-22608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6365D85DCD4
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:58:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BD3485DB1E
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:37:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94A4B1C2087C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:58:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BBAB7B26848
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:37:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AB9E78B53;
-	Wed, 21 Feb 2024 13:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9A003FB21;
+	Wed, 21 Feb 2024 13:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uc1sun3p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2nMoP7sa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC62755E5E;
-	Wed, 21 Feb 2024 13:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DFBD6F074;
+	Wed, 21 Feb 2024 13:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523905; cv=none; b=MUQGJI6nieKw/WoiZ7c9tBgYQ+lTybds0eN3OWWjB2XBar6TyomTyqdjRv9YCzBsuFAXQZGY39Gr85f4ivf0bbb7Yymu+PaYlrXaaphxOYMML3wM9oukOB3Bv00z1nfZQk2fBwJ8DzUb3oePlNRQxcmn/4VGTApQrDA4k+5+5pw=
+	t=1708522632; cv=none; b=X/lKjT0tdLcU1uk2WEhTaXbFUuMoZa6n7relloYxjx84pBwwvRekkENS0SZJIfo4LufQT9i4YP9V4Xwh0cxZCUDWpWuPd4bCRYvpuQAnSXaI+vYJQrOIwRQW+OYx+V871o0+pakXbCeQptnNTWYmkK3944HgUCJuHmLf7iwU6Nk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523905; c=relaxed/simple;
-	bh=2y+12xqCjiw6o6wuaek9GrcRHTljtq+HmzFWu/F5Z38=;
+	s=arc-20240116; t=1708522632; c=relaxed/simple;
+	bh=Sw0MQeDUslEG4WLJYFltQTPMBa92PeqIdmUXdKOXozc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aieNiGhF6XfCLoKTXXp9qKyR/SgHyanFX407nSBFfU6pHZCzjLn10hHBZ7Ws0fWXJLRRer+VuSI4RLP4w/fytOZcyaN9jLSfjwY2NnyhAVbEHsqhWlkp5eNstTnc4IVU5zTxdT8oLZIefZpM2fY3RV6ZJtypYBYKSnCkxAjYtI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uc1sun3p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29C16C433F1;
-	Wed, 21 Feb 2024 13:58:24 +0000 (UTC)
+	 MIME-Version; b=evwEF9Tt/lsg1zBp+vMjEcp5Vq6xTcgb7cfIBdmQs7InyLco/Q62R+ReF4YomwA4fuNZCcSE3NtWmX4bKSMj5Msh9kIOnYhWAqIuUgT7u/1YF11xgvXZv2HuMAGBWUtmbLHvqj9GU7QNn+z89wbxGZbhQ2QzhK7Rq6fJXEvm3OI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2nMoP7sa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A5E3C43390;
+	Wed, 21 Feb 2024 13:37:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523905;
-	bh=2y+12xqCjiw6o6wuaek9GrcRHTljtq+HmzFWu/F5Z38=;
+	s=korg; t=1708522632;
+	bh=Sw0MQeDUslEG4WLJYFltQTPMBa92PeqIdmUXdKOXozc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uc1sun3pxPE6tIBtnPN6ewMWpoWScrJYQDkC8cUJCjjW51cqlvitkOGaVxYJ5LJdg
-	 WHx3V0yuwmc6yv6V9kLkIQ2iHr/Qp012LVlMyTMxcsAbTpLzoVqryyN4TWaz24NvhZ
-	 ku2L73m51aYmHH2eqM1EZzWrDeXb9279m7nG9Shc=
+	b=2nMoP7saLhl3jmAp0aEQJLyxyJfA+VsZmqfP2ZU31Ma1AVe982KVOAyb/S6eC1dJc
+	 QIPsW6MPH2I+xH/hE0nL4Ug/AOXbXTnvVuwc65wbFYKPO+29Lsfop7BQTTz4bJJVXl
+	 8THhSzfKEJFVLYhOPN5yqyulvwyKKNMwb8W3ezjI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rolf Eike Beer <eb@emlix.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 087/379] mm: use __pfn_to_section() instead of open coding it
+Subject: [PATCH 5.15 215/476] drm/drm_file: fix use of uninitialized variable
 Date: Wed, 21 Feb 2024 14:04:26 +0100
-Message-ID: <20240221125957.480778415@linuxfoundation.org>
+Message-ID: <20240221130015.849093689@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rolf Eike Beer <eb@emlix.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit f1dc0db296bd25960273649fc6ef2ecbf5aaa0e0 ]
+[ Upstream commit 1d3062fad9c7313fff9970a88e0538a24480ffb8 ]
 
-It is defined in the same file just a few lines above.
+smatch reports:
 
-Link: https://lkml.kernel.org/r/4598487.Rc0NezkW7i@mobilepool36.emlix.com
-Signed-off-by: Rolf Eike Beer <eb@emlix.com>
-Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Stable-dep-of: 5ec8e8ea8b77 ("mm/sparsemem: fix race in accessing memory_section->usage")
+drivers/gpu/drm/drm_file.c:967 drm_show_memory_stats() error: uninitialized symbol 'supported_status'.
+
+'supported_status' is only set in one code path. I'm not familiar with
+the code to say if that path will always be ran in real life, but
+whether that is the case or not, I think it is good to initialize
+'supported_status' to 0 to silence the warning (and possibly fix a bug).
+
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Acked-by: Maxime Ripard <mripard@kernel.org>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231103-uninit-fixes-v2-1-c22b2444f5f5@ideasonboard.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/mmzone.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/drm_file.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index b2e4599b8883..11fa11c31fda 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -1369,7 +1369,7 @@ static inline int pfn_valid(unsigned long pfn)
- 
- 	if (pfn_to_section_nr(pfn) >= NR_MEM_SECTIONS)
- 		return 0;
--	ms = __nr_to_section(pfn_to_section_nr(pfn));
-+	ms = __pfn_to_section(pfn);
- 	if (!valid_section(ms))
- 		return 0;
- 	/*
-@@ -1384,7 +1384,7 @@ static inline int pfn_in_present_section(unsigned long pfn)
+diff --git a/drivers/gpu/drm/drm_file.c b/drivers/gpu/drm/drm_file.c
+index ed25168619fc..5062f13808f2 100644
+--- a/drivers/gpu/drm/drm_file.c
++++ b/drivers/gpu/drm/drm_file.c
+@@ -411,7 +411,7 @@ int drm_open(struct inode *inode, struct file *filp)
  {
- 	if (pfn_to_section_nr(pfn) >= NR_MEM_SECTIONS)
- 		return 0;
--	return present_section(__nr_to_section(pfn_to_section_nr(pfn)));
-+	return present_section(__pfn_to_section(pfn));
- }
+ 	struct drm_device *dev;
+ 	struct drm_minor *minor;
+-	int retcode;
++	int retcode = 0;
+ 	int need_setup = 0;
  
- static inline unsigned long next_present_section_nr(unsigned long section_nr)
+ 	minor = drm_minor_acquire(iminor(inode));
 -- 
 2.43.0
 
