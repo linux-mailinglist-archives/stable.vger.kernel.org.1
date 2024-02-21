@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-22495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FD8D85DC4B
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:51:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF6E785D9D9
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:23:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF53EB24F35
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:51:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3CAEDB25D02
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:23:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A5EA7CF29;
-	Wed, 21 Feb 2024 13:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23A88763FF;
+	Wed, 21 Feb 2024 13:22:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X8FMdmp/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ry9IVB/t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C1D79DAE;
-	Wed, 21 Feb 2024 13:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D541673161;
+	Wed, 21 Feb 2024 13:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523495; cv=none; b=UJod49tbzoPBIU+//0M9ndM+zR+TvY9RwqCxjYquS2Hnq3AwcMzc9bY9+C5cxpA9jcH/SLtY3z2+j1a951188804fntAzTstzAbRaPy5XtPS8s5mP7VCqYmoR2bjQM8sqLEVJF3ql8zN1a4ePOJIYsY6OzsKAA6MoZCFPjwT4/s=
+	t=1708521773; cv=none; b=ZpLHAD31MsfClWKyIlCQK07IVHaiLRGjXR/1baFG+W9y9sNrl5SRW8h93D1h2TNxuM/qIq8PLOA6jxAcH6+WQz79Ub/ASprs3BJru7O/lKX1djhznvfmbwebacTbjpGYzrDkR6BJdnognzkHhBjzQvmxgG4Ocftwhqj+TagFvhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523495; c=relaxed/simple;
-	bh=skPU2jBzRpS0YJ8IZKH0PmIl/JU+vda100MnNbzOXAA=;
+	s=arc-20240116; t=1708521773; c=relaxed/simple;
+	bh=aPjV3nVjStsz0oxFXFsvurJj91KzdGQG44w/A1Ay9vY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NdzOA9X2i6gsghQEE4c3y8rI0toAsKUAnDad9A0TI32gGBmgM/T+Imhj1ZKTKemYNDFhR2/ziT9smjOpIifI40GzD1Pgt67LqpRY1Q6yJrp+325PjmPRDFnWgza7vOzWMYax+kM1fjuBeL0rk6A7s5c5ZDzqClSpJhsxKhCjN4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X8FMdmp/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A371C433F1;
-	Wed, 21 Feb 2024 13:51:33 +0000 (UTC)
+	 MIME-Version; b=hhFRwXjySS11lAaqIgdN7L6sT3+HIzxVa5Jjx9E5XIjTkyIZSUlafsB3nfPuyKevzLGSVPuzg9g1czxS70ScOh3zQScqa8cpP84ZTd8t0ya1BXiuVsvheUitqMXvHzCP9kbkqX8hYaTq9IryoD3bzihKDQ8ADehPHIl8Orm/C0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ry9IVB/t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DD87C433C7;
+	Wed, 21 Feb 2024 13:22:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523494;
-	bh=skPU2jBzRpS0YJ8IZKH0PmIl/JU+vda100MnNbzOXAA=;
+	s=korg; t=1708521773;
+	bh=aPjV3nVjStsz0oxFXFsvurJj91KzdGQG44w/A1Ay9vY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X8FMdmp/FcriSw1nkcjyGOQdXBUPAY5TzavdBMezcAgVsbXIWMQ5sivR9AScYBChJ
-	 xyxa1b9hSx5juoKG15SNxNTezI3pPtFEpdtZ9B0IPovBqf597seYBL/8wXrlGk/eNw
-	 KryQnuz4T1v7zgyMdW3j/PnjmLNLhuLfU2AExac4=
+	b=ry9IVB/tsxt+ntjiWM0Xw8rVfFfVzlDveVUjpSU5LtK72wuixfQtSb1XpDW2AEcLM
+	 dN+shpehAxxbIJAly6e6xUVBtAbclBknBnT3M699IiN7VY8BKKdUFUUwOBLu0RxHWw
+	 Q3FzX1P19FLsdbcDvWS/Z2oHvbbhAWHY1qDpkgXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.15 423/476] pmdomain: core: Move the unused cleanup to a _sync initcall
-Date: Wed, 21 Feb 2024 14:07:54 +0100
-Message-ID: <20240221130023.670839120@linuxfoundation.org>
+	Zach OKeefe <zokeefe@google.com>,
+	Maxim Patlasov <MPatlasov@parallels.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 174/202] mm/writeback: fix possible divide-by-zero in wb_dirty_limits(), again
+Date: Wed, 21 Feb 2024 14:07:55 +0100
+Message-ID: <20240221125937.431280850@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Zach O'Keefe <zokeefe@google.com>
 
-commit 741ba0134fa7822fcf4e4a0a537a5c4cfd706b20 upstream.
+commit 9319b647902cbd5cc884ac08a8a6d54ce111fc78 upstream.
 
-The unused clock cleanup uses the _sync initcall to give all users at
-earlier initcalls time to probe. Do the same to avoid leaving some PDs
-dangling at "on" (which actually happened on qcom!).
+(struct dirty_throttle_control *)->thresh is an unsigned long, but is
+passed as the u32 divisor argument to div_u64().  On architectures where
+unsigned long is 64 bytes, the argument will be implicitly truncated.
 
-Fixes: 2fe71dcdfd10 ("PM / domains: Add late_initcall to disable unused PM domains")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231227-topic-pmdomain_sync_cleanup-v1-1-5f36769d538b@linaro.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Use div64_u64() instead of div_u64() so that the value used in the "is
+this a safe division" check is the same as the divisor.
+
+Also, remove redundant cast of the numerator to u64, as that should happen
+implicitly.
+
+This would be difficult to exploit in memcg domain, given the ratio-based
+arithmetic domain_drity_limits() uses, but is much easier in global
+writeback domain with a BDI_CAP_STRICTLIMIT-backing device, using e.g.
+vm.dirty_bytes=(1<<32)*PAGE_SIZE so that dtc->thresh == (1<<32)
+
+Link: https://lkml.kernel.org/r/20240118181954.1415197-1-zokeefe@google.com
+Fixes: f6789593d5ce ("mm/page-writeback.c: fix divide by zero in bdi_dirty_limits()")
+Signed-off-by: Zach O'Keefe <zokeefe@google.com>
+Cc: Maxim Patlasov <MPatlasov@parallels.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/power/domain.c |    2 +-
+ mm/page-writeback.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/base/power/domain.c
-+++ b/drivers/base/power/domain.c
-@@ -1044,7 +1044,7 @@ static int __init genpd_power_off_unused
+--- a/mm/page-writeback.c
++++ b/mm/page-writeback.c
+@@ -1529,7 +1529,7 @@ static inline void wb_dirty_limits(struc
+ 	 */
+ 	dtc->wb_thresh = __wb_calc_thresh(dtc);
+ 	dtc->wb_bg_thresh = dtc->thresh ?
+-		div_u64((u64)dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0;
++		div64_u64(dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0;
  
- 	return 0;
- }
--late_initcall(genpd_power_off_unused);
-+late_initcall_sync(genpd_power_off_unused);
- 
- #ifdef CONFIG_PM_SLEEP
- 
+ 	/*
+ 	 * In order to avoid the stacked BDI deadlock we need
 
 
 
