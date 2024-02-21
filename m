@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-22490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C309685DC46
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:51:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C59085DF06
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:24:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0096C1C227C9
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:51:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35B4C1C23CA5
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:24:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CAAA78B70;
-	Wed, 21 Feb 2024 13:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9927A78B60;
+	Wed, 21 Feb 2024 14:24:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WAOgVcXG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yDVT5ZsT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD5338398;
-	Wed, 21 Feb 2024 13:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B5C6A8D6;
+	Wed, 21 Feb 2024 14:24:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523474; cv=none; b=jsXomNNyyAw3fdyspXYSg9MtVLBg4abUIyGF3A3+9GVrr+zT2HX6TSAW02WOeeEUvmOYlCnj63IQunYMoBa9ThWjCiUByY/ubj/bU9A5aHA4Bpg1I3OBipg/eNnesd2VJPQ96Z5kEhYWJDzg3mTC72SMNwuRhjDFGnqHufYzCeI=
+	t=1708525440; cv=none; b=e/Ivy7bLwCrwxtbza16Xvj9X6AZjcndlixLl2XE/YtA1Mv6a2kFhYozwDhOnSt16wZg/XnGjdueT8iLLZpTZqkaDYTPbGvkGse6fadFfy+jUibsNZegUoPt1sjGyA86dkwSQ6v3OUIHwGSBasdPHGKcm3qTXOivwVWC7jmR3/EE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523474; c=relaxed/simple;
-	bh=GanLoMuCQY/Ji0alC5JRXo/QaiOQWm7UHliD7uktXQI=;
+	s=arc-20240116; t=1708525440; c=relaxed/simple;
+	bh=9GbE1nv24KzijyyFu8pWhocWTc+IYZPrkMAvjEVkmmQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I7dm5S7G2MRTKL2cCmJyJ2IWS6ib+F+3zVH+a/tbIk7ZNLr0WXwdejEohr1IC+Jscx+7M5tjClGUfTvKrI9OaVoDAZobiwD7UBmdRozkb/Kwn60bigosmmzFuy7J/VtV6zY3hlCU7jXctK5x75Hu8WMgFJ62/Xif4ssj//7a3Rg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WAOgVcXG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B8C0C433F1;
-	Wed, 21 Feb 2024 13:51:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=t8N96HLQXNmQNpZY9ZXYNDrb3NDJ/128ojIRqzgWRhVrYWQ5pjjWGdO2dQth1kDtM1oFaRFuo/Nwlk52zn/XD4pIgmqJ38vIas+k1/LfUGFWoub0JzAbEeBLcH221xRhaKquZOQ3Ouk9qkiP2CB/zykFDWcLDnSrgjBO2hhnaVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yDVT5ZsT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B80D6C433C7;
+	Wed, 21 Feb 2024 14:23:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523473;
-	bh=GanLoMuCQY/Ji0alC5JRXo/QaiOQWm7UHliD7uktXQI=;
+	s=korg; t=1708525440;
+	bh=9GbE1nv24KzijyyFu8pWhocWTc+IYZPrkMAvjEVkmmQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WAOgVcXGu/mBskj2sHdvfI1/RqQ0kekMZkJ2NSpsDDUS2Pq2/wYvEtFEhyiUuxIwp
-	 S6JJ34vL9Lrna3hZacOCdsu28s+rowr4vvaiLlSZOlrSDxSRGQApvzHgdWz5v40qAQ
-	 6WAkS2PCzWOf9qbOSzUuxNzX0CECKl0JyBpv4yGM=
+	b=yDVT5ZsTF9ndPqk5qh00wyZYW3eVU+hT+mk8a1e4fPfIgPaXtLXggfbcvYtEtNMmQ
+	 p9yGNVaPaY5V4Gf0miXZ0zrZPZ/AxOraSzFGWQiMXQk/UhCmpvlikumgdMQFL80tR3
+	 BmXfO/pevRJZzFPve4WI5QorKzGMLizOxLoYrwuw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Sam Ravnborg <sam@ravnborg.org>,
+	Monk Liu <Monk.Liu@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 446/476] fbdev/defio: Early-out if page is already enlisted
+Subject: [PATCH 5.4 156/267] drm/amdgpu: Release adev->pm.fw before return in amdgpu_device_need_post()
 Date: Wed, 21 Feb 2024 14:08:17 +0100
-Message-ID: <20240221130024.519467424@linuxfoundation.org>
+Message-ID: <20240221125944.974632841@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,87 +63,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 105a940416fc622406653b6fe54732897642dfbc ]
+[ Upstream commit 8a44fdd3cf91debbd09b43bd2519ad2b2486ccf4 ]
 
-Return early if a page is already in the list of dirty pages for
-deferred I/O. This can be detected if the page's list head is not
-empty. Keep the list head initialized while the page is not enlisted
-to make this work reliably.
+In function 'amdgpu_device_need_post(struct amdgpu_device *adev)' -
+'adev->pm.fw' may not be released before return.
 
-v2:
-	* update comment and fix spelling (Sam)
+Using the function release_firmware() to release adev->pm.fw.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Acked-by: Sam Ravnborg <sam@ravnborg.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20220211094640.21632-2-tzimmermann@suse.de
-Stable-dep-of: 33cd6ea9c067 ("fbdev: flush deferred IO before closing")
+Thus fixing the below:
+drivers/gpu/drm/amd/amdgpu/amdgpu_device.c:1571 amdgpu_device_need_post() warn: 'adev->pm.fw' from request_firmware() not released on lines: 1554.
+
+Cc: Monk Liu <Monk.Liu@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Suggested-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/fb_defio.c | 26 +++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/video/fbdev/core/fb_defio.c b/drivers/video/fbdev/core/fb_defio.c
-index 0708e214c5a3..95264a621221 100644
---- a/drivers/video/fbdev/core/fb_defio.c
-+++ b/drivers/video/fbdev/core/fb_defio.c
-@@ -59,6 +59,7 @@ static vm_fault_t fb_deferred_io_fault(struct vm_fault *vmf)
- 		printk(KERN_ERR "no mapping available\n");
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index e5032eb9ae29..9dcb38bab0e1 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -847,6 +847,7 @@ bool amdgpu_device_need_post(struct amdgpu_device *adev)
+ 				return true;
  
- 	BUG_ON(!page->mapping);
-+	INIT_LIST_HEAD(&page->lru);
- 	page->index = vmf->pgoff;
- 
- 	vmf->page = page;
-@@ -118,17 +119,24 @@ static vm_fault_t fb_deferred_io_mkwrite(struct vm_fault *vmf)
- 	 */
- 	lock_page(page);
- 
-+	/*
-+	 * This check is to catch the case where a new process could start
-+	 * writing to the same page through a new PTE. This new access
-+	 * can cause a call to .page_mkwrite even if the original process'
-+	 * PTE is marked writable.
-+	 *
-+	 * TODO: The lru field is owned by the page cache; hence the name.
-+	 *       We dequeue in fb_deferred_io_work() after flushing the
-+	 *       page's content into video memory. Instead of lru, fbdefio
-+	 *       should have it's own field.
-+	 */
-+	if (!list_empty(&page->lru))
-+		goto page_already_added;
-+
- 	/* we loop through the pagelist before adding in order
- 	to keep the pagelist sorted */
- 	list_for_each_entry(cur, &fbdefio->pagelist, lru) {
--		/* this check is to catch the case where a new
--		process could start writing to the same page
--		through a new pte. this new access can cause the
--		mkwrite even when the original ps's pte is marked
--		writable */
--		if (unlikely(cur == page))
--			goto page_already_added;
--		else if (cur->index > page->index)
-+		if (cur->index > page->index)
- 			break;
- 	}
- 
-@@ -190,7 +198,7 @@ static void fb_deferred_io_work(struct work_struct *work)
- 
- 	/* clear the list */
- 	list_for_each_safe(node, next, &fbdefio->pagelist) {
--		list_del(node);
-+		list_del_init(node);
- 	}
- 	mutex_unlock(&fbdefio->lock);
- }
+ 			fw_ver = *((uint32_t *)adev->pm.fw->data + 69);
++			release_firmware(adev->pm.fw);
+ 			if (fw_ver < 0x00160e00)
+ 				return true;
+ 		}
 -- 
 2.43.0
 
