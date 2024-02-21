@@ -1,136 +1,168 @@
-Return-Path: <stable+bounces-21776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 987F685CE2D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 03:42:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A416485CE3D
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 03:45:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32EF61F21ADB
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 02:42:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C136282959
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 02:45:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6619228DDE;
-	Wed, 21 Feb 2024 02:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5181D25777;
+	Wed, 21 Feb 2024 02:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MGBi+ee9"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Fo8+X5x2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97F7D2B9DE
-	for <stable@vger.kernel.org>; Wed, 21 Feb 2024 02:41:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1533B2B9CC;
+	Wed, 21 Feb 2024 02:45:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708483304; cv=none; b=LHOCQqbV8m+VBbC+8NXDRAxF/aZLMkU+wrbpp86NCj0KVXIsE6zbcUt51cC90q3P9Xb6Cs01LnLUprczaF51vtupYC6Brureb3rjRmYYavWt/BpM1X49bC9IJmGHVdpSgKUErWy/CBYP3KdikrWe0RkFq57+SptA3BYyNU9qoV0=
+	t=1708483537; cv=none; b=GJvoszCR+XQjklVZ+BTbD+rFOlrepmAheObMpUUPICvRquPCDgHzdipVLFfBBG7xmSd0GukfZrSYC/FBZVp7Ny9m9rtcApsHcCyMv80oHo84nvwDa4KAyq+80f6zUY0/gxU5RbvHFbE+GNY7IcUbfNapZHUV9j1cP6x7iNNrL1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708483304; c=relaxed/simple;
-	bh=MQ5ZpMmlffngwzChP1jrn1j3ATSYiqKQ0sV/hlR9U5g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lvzZ5DbnMHU0JQGbyJRpvMoMbDTvqBdFJ1upIQKCQnLavQeDRv2mnyA2kFN5VUhjL0PCfDvs5Im+nR7p7Z06uiWRedNdr/PrO+OMPnw4SZcbFOp+Njddlpi3tIWNUy2us2zu837Y+YJD7mGYtti+OVXWPdBZgJww8p2FjCfk4/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MGBi+ee9; arc=none smtp.client-ip=209.85.160.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-428405a0205so114681cf.1
-        for <stable@vger.kernel.org>; Tue, 20 Feb 2024 18:41:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1708483301; x=1709088101; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dlaOAVUzvLSqTrdriYw3ZKjCNZqye24W7wyuPTRYiKQ=;
-        b=MGBi+ee9IWuywT8RK1t9vLh2lRYUtDtbWW9Gu8Qm2vkluUyNdTRAMgDw+Ro5988jSW
-         6pdtlgmFYbGaDXCMuvMxOo0317ieNYWhfBctGJAfPJjeRCRhrB03YM8XO0H6IPsbvtPh
-         SGA3TfRxz8sqfDXeFB7GUkJqri0UTVP54RXXQUimrKC7ZrRhyCwH0k31m2IpcsCUKwcp
-         6KFKckV39jduJF2Xmoq4p2BvEU0JfCFNlmDj+PsickBagMuSHE/KeSPaNxgq8jkDuSge
-         8n6FA5OHNuN0Bg9Cwv4mDgR+pfF6Ve2Fbh9iKTUGYob8jH8EOfRhVeem9ugqhXhttTC3
-         V/Cw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708483301; x=1709088101;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dlaOAVUzvLSqTrdriYw3ZKjCNZqye24W7wyuPTRYiKQ=;
-        b=gTD5TXPjjY81HF0pvtAyGDBZgrQFoL+fgPK+42m8R+x1HIz+LHvF3/KsGUBkw7kioz
-         792ujW7Wroai7+IpF4ab0CQCebkHGGetnR8kae58KCgOpiTjCz25qXLW1OYfmX2lKgjv
-         59Vqk4fHhNy+wVZbaMDRJ4QyW6YhY8aTt6TRum5J80mipSMOYfgCl8E/GYIOfJzyMP7y
-         7YHa+3tiSK9US66TCUxBYs3k4A3s2SzPnWyOxAjbC8CsiaJ2OkcvOws/co8yBatsVKv4
-         hkFevSyIDXsXd9F3DG71bN22nOzUbrCRuDYyvsBcvCTjfC9QI3S8UkPpL3jIZbI2Onqz
-         QMcA==
-X-Forwarded-Encrypted: i=1; AJvYcCXRseS+FIwYc1mhUKxdX2os8uvGSd15UKBczsRnYYV10xPmMWztDF1xlVjJDBA3cbMaDDMpsTWq8kcX8bkYq1v4YXL1N6VF
-X-Gm-Message-State: AOJu0Yzb4coxlZBTYZvtZNIz5tlnUUs8XnqEVnaUC1ID03U7WWUxhIcM
-	+GrmhgSYmJGsLFfq7sfZb/NplJ1s4jxdAeO0dgYByT9VAsUlvd4BHwVA9kzs8CISiA/Zicg3kdI
-	dNCLUZxmjLgSEO0uXgydwxixBrEwNWDHkha+A
-X-Google-Smtp-Source: AGHT+IGoHaIkqV5TgAikVH+jfTnIiTonx9vk90IId4418PKx6X2reN3g2z+rKO58uIUY+TDNo51CiEKl/yEYHV7mK/M=
-X-Received: by 2002:a05:622a:307:b0:42c:1aba:c8c4 with SMTP id
- q7-20020a05622a030700b0042c1abac8c4mr164699qtw.12.1708483301458; Tue, 20 Feb
- 2024 18:41:41 -0800 (PST)
+	s=arc-20240116; t=1708483537; c=relaxed/simple;
+	bh=obtYbZZ9g4Ih4ksC+MZPfSTGjvsL7/Xd7/k5rk/le/s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sUZIeEPG8wYA9Cjj4Ajv9Y/Pu3o4Z5kD3NdM+m7H90LnCPCrwrN3ev4sMSZFeHoXfmJhDLnOLphFrzKxfWFh4tILZKHrtNVRix7uHrEnAbXYHIUTV563hzxTAHWTohCMSjowEObv2NL+mduI+0NPhLBKurraxHrAkGVV5X9oc2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Fo8+X5x2; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708483535; x=1740019535;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=obtYbZZ9g4Ih4ksC+MZPfSTGjvsL7/Xd7/k5rk/le/s=;
+  b=Fo8+X5x29Zw3DZ3UZcHSyPA9nijTRjbT3KxZyP+Pqt24FQB+KK0nk6NE
+   c1dodl1U2EJ2iCW31H3bYM3EeRkvj/U5rkOx4Oxcvnl+qd7vdolW8O8g5
+   1ltG9rD+agUbOjh6LsBSFSOH7GGw10Qiy7kPEyk/8pkjfFnzDVatqa9CA
+   hUtjt0zGN/3vxkVzXUAzHtzbIZCEcTwDLP8l28DAlllRWMBMEyRoTDw6b
+   cnu3mQtJvY51IJi6G2YIroGUobsTvnQ06llJl2DlC9xSDiPqaHAtY8Vtb
+   9sO4K+afOtpMz3nToiuRhKj12ruBOII5T8Pv8nSiJ0jMOLSVsaQS86Mw5
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="13247242"
+X-IronPort-AV: E=Sophos;i="6.06,174,1705392000"; 
+   d="scan'208";a="13247242"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 18:45:34 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,174,1705392000"; 
+   d="scan'208";a="5349724"
+Received: from msbabaa-mobl.amr.corp.intel.com (HELO [10.209.28.248]) ([10.209.28.248])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 18:45:34 -0800
+Message-ID: <39ef1387-609c-45ca-9bfa-e01b72cacaaa@linux.intel.com>
+Date: Tue, 20 Feb 2024 18:45:32 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240220111044.133776-1-herve.codina@bootlin.com> <20240220111044.133776-2-herve.codina@bootlin.com>
-In-Reply-To: <20240220111044.133776-2-herve.codina@bootlin.com>
-From: Saravana Kannan <saravanak@google.com>
-Date: Tue, 20 Feb 2024 18:41:03 -0800
-Message-ID: <CAGETcx-4RkuvsW5W5zPS4HMjSAGq5Yi9P2O0KPanA8HVJV0bvg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] driver core: Clear FWNODE_FLAG_NOT_DEVICE when a
- device is added
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Rob Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Wolfram Sang <wsa@kernel.org>, Mark Brown <broonie@kernel.org>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Rob Herring <robh@kernel.org>, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, stable@vger.kernel.org, 
-	Android Kernel Team <kernel-team@android.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] PCI/DPC: Request DPC only if also requesting AER
+Content-Language: en-US
+To: Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
+ stable@vger.kernel.org, Matthew W Carlis <mattc@purestorage.com>,
+ Keith Busch <kbusch@kernel.org>, Lukas Wunner <lukas@wunner.de>,
+ Mika Westerberg <mika.westerberg@linux.intel.com>,
+ Jesse Brandeburg <jesse.brandeburg@intel.com>
+References: <20240220235520.1514548-1-helgaas@kernel.org>
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <20240220235520.1514548-1-helgaas@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Feb 20, 2024 at 3:10=E2=80=AFAM Herve Codina <herve.codina@bootlin.=
-com> wrote:
+
+On 2/20/24 3:55 PM, Bjorn Helgaas wrote:
+> From: Bjorn Helgaas <bhelgaas@google.com>
 >
-> Since commit 1a50d9403fb9 ("treewide: Fix probing of devices in DT
-> overlays"), when using device-tree overlays, the FWNODE_FLAG_NOT_DEVICE
-> is set on each overlay nodes.
-> When an overlay contains a node related to a bus (i2c for instance)
-> and its children nodes representing i2c devices, the flag is cleared for
-> the bus node by the OF notifier but the "standard" probe sequence takes
-> place (the same one is performed without an overlay) for the bus and
-> children devices are created simply by walking the children DT nodes
-> without clearing the FWNODE_FLAG_NOT_DEVICE flag for these devices.
+> When booting with "pci=noaer", we don't request control of AER, but we
+> previously *did* request control of DPC, as in the dmesg log attached at
+> the bugzilla below:
 >
-> Clear the FWNODE_FLAG_NOT_DEVICE when the device is added, no matter if
-> an overlay is used or not.
+>   Command line: ... pci=noaer
+>   acpi PNP0A08:00: _OSC: OS supports [ExtendedConfig ASPM ClockPM Segments MSI EDR HPX-Type3]
+>   acpi PNP0A08:00: _OSC: OS now controls [PCIeHotplug SHPCHotplug PME PCIeCapability LTR DPC]
 >
-> Fixes: 1a50d9403fb9 ("treewide: Fix probing of devices in DT overlays")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> That's illegal per PCI Firmware Spec, r3.3, sec 4.5.1, table 4-5, which
+> says:
+>
+>   If the operating system sets this bit [OSC_PCI_EXPRESS_DPC_CONTROL], it
+>   must also set bit 7 of the Support field (indicating support for Error
+>   Disconnect Recover notifications) and bits 3 and 4 of the Control field
+>   (requesting control of PCI Express Advanced Error Reporting and the PCI
+>   Express Capability Structure).
+>
+> Request DPC control only if we have also requested AER control.
+
+Can you also add similar check in calculate_support call?
+
+        if (pci_aer_available() && IS_ENABLED(CONFIG_PCIE_EDR))
+                support |= OSC_PCI_EDR_SUPPORT;
+
+
+>
+> Fixes: ac1c8e35a326 ("PCI/DPC: Add Error Disconnect Recover (EDR) support")
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=218491#c12
+> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+> Cc: <stable@vger.kernel.org>	# v5.7+
+> Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+> Cc: Matthew W Carlis <mattc@purestorage.com>
+> Cc: Keith Busch <kbusch@kernel.org>
+> Cc: Lukas Wunner <lukas@wunner.de>
+> Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
+> Cc: Jesse Brandeburg <jesse.brandeburg@intel.com>
 > ---
->  drivers/base/core.c | 1 +
->  1 file changed, 1 insertion(+)
+>  drivers/acpi/pci_root.c | 20 +++++++++++---------
+>  1 file changed, 11 insertions(+), 9 deletions(-)
 >
-> diff --git a/drivers/base/core.c b/drivers/base/core.c
-> index 14d46af40f9a..61d09ac57bfb 100644
-> --- a/drivers/base/core.c
-> +++ b/drivers/base/core.c
-> @@ -3619,6 +3619,7 @@ int device_add(struct device *dev)
->          */
->         if (dev->fwnode && !dev->fwnode->dev) {
->                 dev->fwnode->dev =3D dev;
-> +               dev->fwnode->flags &=3D ~FWNODE_FLAG_NOT_DEVICE;
->                 fw_devlink_link_device(dev);
->         }
+> diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+> index 58b89b8d950e..1c16965427b3 100644
+> --- a/drivers/acpi/pci_root.c
+> +++ b/drivers/acpi/pci_root.c
+> @@ -518,17 +518,19 @@ static u32 calculate_control(void)
+>  	if (IS_ENABLED(CONFIG_HOTPLUG_PCI_SHPC))
+>  		control |= OSC_PCI_SHPC_NATIVE_HP_CONTROL;
+>  
+> -	if (pci_aer_available())
+> +	if (pci_aer_available()) {
+>  		control |= OSC_PCI_EXPRESS_AER_CONTROL;
+>  
+> -	/*
+> -	 * Per the Downstream Port Containment Related Enhancements ECN to
+> -	 * the PCI Firmware Spec, r3.2, sec 4.5.1, table 4-5,
+> -	 * OSC_PCI_EXPRESS_DPC_CONTROL indicates the OS supports both DPC
+> -	 * and EDR.
+> -	 */
+> -	if (IS_ENABLED(CONFIG_PCIE_DPC) && IS_ENABLED(CONFIG_PCIE_EDR))
+> -		control |= OSC_PCI_EXPRESS_DPC_CONTROL;
+> +		/*
+> +		 * Per PCI Firmware Spec, r3.3, sec 4.5.1, table 4-5, the
+> +		 * OS can request DPC control only if it has advertised
+> +		 * OSC_PCI_EDR_SUPPORT and requested both
+> +		 * OSC_PCI_EXPRESS_CAPABILITY_CONTROL and
+I think you mean OSC_PCI_EXPRESS_DPC_CONTROL.
+> +		 * OSC_PCI_EXPRESS_AER_CONTROL.
+> +		 */
+> +		if (IS_ENABLED(CONFIG_PCIE_DPC) && IS_ENABLED(CONFIG_PCIE_EDR))
+> +			control |= OSC_PCI_EXPRESS_DPC_CONTROL;
 
-Temporary Nack on this. I think depending on how we address patch 2/2
-this patch might not be necessary.
-
-Also, I'd ideally prefer this gets cleared before the device is added,
-but it's a position that I'd be willing to change.
+Since you are cleaning up this part, why not add a patch to remove
+CONFIG_PCIE_EDR?
 
 
+> +	}
+>  
+>  	return control;
+>  }
 
--Saravana
+-- 
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
+
 
