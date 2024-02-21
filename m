@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-22861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F16FF85DECB
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:22:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E28385DF25
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:25:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13ADEB2A469
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E78181F23D69
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:25:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62D0B7CF33;
-	Wed, 21 Feb 2024 14:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C10C3D0A1;
+	Wed, 21 Feb 2024 14:25:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Syr9fKEx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gAaPyIn1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 228DD3D0A1;
-	Wed, 21 Feb 2024 14:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F017A69E00;
+	Wed, 21 Feb 2024 14:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524763; cv=none; b=avYzXAp42EWdJXHQrXob0z1pnOpoYrKbA6HlqtTDQmKVfrP4DS/IL2gEusGgUnD8uBhzTQdRe8aPF0EsH+mRJanQauOLkhJis7hV25vbskTQ/QIGmEuZLJubdM5QHkhM+6MO86ogaOm7QQduLeNcpbbNNbYPPUzA+GsVqYlbaM4=
+	t=1708525511; cv=none; b=LfyuruswCSa35XRBVJ64jNpT4X/6HG3DeEt/77KDwIirddPBYfsuKEFQlkqKcL+q+srRYkMdgLEJAOc0wdd+SHmKx4b7EDtCqhdVlpfdLz+fR2xai17tp6iBDBdRAyVKfRl8s/KG2JaCVPbe526Cs8Ar8OViJrERZ/8/Eu6cCrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524763; c=relaxed/simple;
-	bh=romxvoU/8p5rhvK4h0SrjMCaTkbHsdHC/KfMSC1vjvk=;
+	s=arc-20240116; t=1708525511; c=relaxed/simple;
+	bh=TUVNUJIiNBtMN/2dc7TvB5Z5fdRcPMzIOle+jC/XPsQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UJ0HQp2lJGL4cU2E7DQlKAtYICB49exlT/FVsfYYHwcJKi9VmnAlHEyJZ0UO23zREPq+QUrUX5TMDOlypzRzULEwD8qpgepCUUPXc+aUMV8MhMfDoyVR5UATA/nR+FLmfQNm6OP54qxVKQsujYUS4g/1IeLioxTxkw3p9eqrhcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Syr9fKEx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C079C433C7;
-	Wed, 21 Feb 2024 14:12:42 +0000 (UTC)
+	 MIME-Version; b=bR5ABYwqgaWxW5snumfttY34BhEKID0obXt3+Ba+FpOMCM/q0tPbwTNcT7hlJCOA6dE2zuJ/ENh0/olW/GS0053VJbu6Z0RPks5XYaEITGVD7WtCmCHS8VS9B1TYXZ0w8dJs9NWxZb9m5KbGpt/Jes1qqbNQVLVduJlbgE7uXvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gAaPyIn1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00536C43390;
+	Wed, 21 Feb 2024 14:25:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524763;
-	bh=romxvoU/8p5rhvK4h0SrjMCaTkbHsdHC/KfMSC1vjvk=;
+	s=korg; t=1708525510;
+	bh=TUVNUJIiNBtMN/2dc7TvB5Z5fdRcPMzIOle+jC/XPsQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Syr9fKExbN7Pigk+0klfLc9hSbI2k4/VLIYM1Iq9mVzsJYAtm3AQ0Y153VYzP8mBh
-	 wWQTmz9o6g0QxubuhYKvfTlfbmBZ7hj/d2LmYhLGFPYACRVLlRKMDth6k78aOaMoDO
-	 C+jX9fytx9gCkF1qTet+IPDktgW3eYgSatvLQIu0=
+	b=gAaPyIn1vd31xj7Nx1ST14XkD6cR2alMhLV941pqA/vOsoAKznYpMIYfB7YHt6vu1
+	 pKEukv1JoZyOq95AL0yQ2Ktty7m4ZdH4POsRzDIClA5tQDn0oi7bXjhvixdQWSxlS1
+	 ZhSv36VmMQOw0zLt1Us2+FWr16LNr7BjVxryNIq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel de Villiers <daniel.devilliers@corigine.com>,
-	Louis Peens <louis.peens@corigine.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.10 339/379] nfp: flower: prevent re-adding mac index for bonded port
-Date: Wed, 21 Feb 2024 14:08:38 +0100
-Message-ID: <20240221130005.015456854@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <error27@gmail.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 178/267] phy: renesas: rcar-gen3-usb2: Fix returning wrong error code
+Date: Wed, 21 Feb 2024 14:08:39 +0100
+Message-ID: <20240221125945.722934382@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +65,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel de Villiers <daniel.devilliers@corigine.com>
+From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 
-commit 1a1c13303ff6d64e6f718dc8aa614e580ca8d9b4 upstream.
+[ Upstream commit 249abaf3bf0dd07f5ddebbb2fe2e8f4d675f074e ]
 
-When physical ports are reset (either through link failure or manually
-toggled down and up again) that are slaved to a Linux bond with a tunnel
-endpoint IP address on the bond device, not all tunnel packets arriving
-on the bond port are decapped as expected.
+Even if device_create_file() returns error code,
+rcar_gen3_phy_usb2_probe() will return zero because the "ret" is
+variable shadowing.
 
-The bond dev assigns the same MAC address to itself and each of its
-slaves. When toggling a slave device, the same MAC address is therefore
-offloaded to the NFP multiple times with different indexes.
-
-The issue only occurs when re-adding the shared mac. The
-nfp_tunnel_add_shared_mac() function has a conditional check early on
-that checks if a mac entry already exists and if that mac entry is
-global: (entry && nfp_tunnel_is_mac_idx_global(entry->index)). In the
-case of a bonded device (For example br-ex), the mac index is obtained,
-and no new index is assigned.
-
-We therefore modify the conditional in nfp_tunnel_add_shared_mac() to
-check if the port belongs to the LAG along with the existing checks to
-prevent a new global mac index from being re-assigned to the slave port.
-
-Fixes: 20cce8865098 ("nfp: flower: enable MAC address sharing for offloadable devs")
-CC: stable@vger.kernel.org # 5.1+
-Signed-off-by: Daniel de Villiers <daniel.devilliers@corigine.com>
-Signed-off-by: Louis Peens <louis.peens@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <error27@gmail.com>
+Closes: https://lore.kernel.org/r/202312161021.gOLDl48K-lkp@intel.com/
+Fixes: 441a681b8843 ("phy: rcar-gen3-usb2: fix implementation for runtime PM")
+Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20240105093703.3359949-1-yoshihiro.shimoda.uh@renesas.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/netronome/nfp/flower/tunnel_conf.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/phy/renesas/phy-rcar-gen3-usb2.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
---- a/drivers/net/ethernet/netronome/nfp/flower/tunnel_conf.c
-+++ b/drivers/net/ethernet/netronome/nfp/flower/tunnel_conf.c
-@@ -927,7 +927,7 @@ nfp_tunnel_add_shared_mac(struct nfp_app
- 	u16 nfp_mac_idx = 0;
- 
- 	entry = nfp_tunnel_lookup_offloaded_macs(app, netdev->dev_addr);
--	if (entry && nfp_tunnel_is_mac_idx_global(entry->index)) {
-+	if (entry && (nfp_tunnel_is_mac_idx_global(entry->index) || netif_is_lag_port(netdev))) {
- 		if (entry->bridge_count ||
- 		    !nfp_flower_is_supported_bridge(netdev)) {
- 			nfp_tunnel_offloaded_macs_inc_ref_and_link(entry,
+diff --git a/drivers/phy/renesas/phy-rcar-gen3-usb2.c b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
+index cfb98bba7715..ddc41db1f65a 100644
+--- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
++++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
+@@ -631,8 +631,6 @@ static int rcar_gen3_phy_usb2_probe(struct platform_device *pdev)
+ 	channel->irq = platform_get_irq_optional(pdev, 0);
+ 	channel->dr_mode = rcar_gen3_get_dr_mode(dev->of_node);
+ 	if (channel->dr_mode != USB_DR_MODE_UNKNOWN) {
+-		int ret;
+-
+ 		channel->is_otg_channel = true;
+ 		channel->uses_otg_pins = !of_property_read_bool(dev->of_node,
+ 							"renesas,no-otg-pins");
+@@ -691,8 +689,6 @@ static int rcar_gen3_phy_usb2_probe(struct platform_device *pdev)
+ 		ret = PTR_ERR(provider);
+ 		goto error;
+ 	} else if (channel->is_otg_channel) {
+-		int ret;
+-
+ 		ret = device_create_file(dev, &dev_attr_role);
+ 		if (ret < 0)
+ 			goto error;
+-- 
+2.43.0
+
 
 
 
