@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-22329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15D1685DB79
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:41:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B23D85DD1D
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:02:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFA461F21CCD
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:41:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 574AB281A0A
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:02:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 652027BAFB;
-	Wed, 21 Feb 2024 13:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAE0E7E780;
+	Wed, 21 Feb 2024 14:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vN6zWBcK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N4Wdl24s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA4678B7C;
-	Wed, 21 Feb 2024 13:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A90469317;
+	Wed, 21 Feb 2024 14:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522895; cv=none; b=IW4ZhoSjKg22kgHjbACLH6OWzVdqj2bYCUX2URkkyyvryBARVICpEQnTCTY8ZiuiYiNJlwJmsdsMa2jamqUwEa47n57ov/rgJ6Ec99Em8WLK5/lY5Y5Pc9/TsYIyEWjIGMXsPX+8hejdW1iMdpxBclC+WfSWhjxAi1R3HPlMGGk=
+	t=1708524080; cv=none; b=F0zv409u05JJpUc7yJxyb7LDt3fXbNLlN+i/O1L1xWAvKOuI1aHMl/Cg9eZMDcqJDY1WAOaY2FBr4TtxqYW58VyAF9xjAfWS/YhT/cTyzAqpDunj5xYYVn07BjQOIKzVWVB29UbKmP1y46/vKqBdamk8Q47tCG1tWjMruY1e+tU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522895; c=relaxed/simple;
-	bh=Op92VbqnCGfwMlHiNWzGhM5/NYNV3vEYN1EfrAsKh7Q=;
+	s=arc-20240116; t=1708524080; c=relaxed/simple;
+	bh=FvYRLOglrn0XWHXmmaSKgD/i+DducUs3KkrsA0jn2FA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XLUlHglL8KnCcn57ogj4orY/ji2I0BXz8HCHBwE1WQC861eGZnYflAzR7zpj0PvC9XvwU6XXNCmR/AQsJwyDzcpD7sxtQen0cdYIcKHmxMlnTghc4H3ivRerH+gLTcp3DEn4kM0Xh7vb8uuHHAN6WWMkMKOFJFc6i0AY7P9GVHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vN6zWBcK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46728C433F1;
-	Wed, 21 Feb 2024 13:41:34 +0000 (UTC)
+	 MIME-Version; b=t69d8WqgcL2/At5Fa2oHBTgTXk3/wFRKIt2mleov/dVLt0x8Ma82HFTGABHbWZ09brH+ZbfKt5kWdTQlSUXDvWrMlKysWbqkIniuc3SSqh+rEk/socEuQmo8MGQ9oz4PSo1Yrpr4xzxstY1rGWA63+cIMQ7srZaPzDvbKFcpH1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N4Wdl24s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0725DC433F1;
+	Wed, 21 Feb 2024 14:01:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522894;
-	bh=Op92VbqnCGfwMlHiNWzGhM5/NYNV3vEYN1EfrAsKh7Q=;
+	s=korg; t=1708524080;
+	bh=FvYRLOglrn0XWHXmmaSKgD/i+DducUs3KkrsA0jn2FA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vN6zWBcKNfwWbM1n7yn6LSemwzfvFpwONWNYDM2CrT0/Jg7RuY40FLMsIWe/ZFytF
-	 epj7LLkHHw0dXy9N0Q8RB+YtoFdjOXLMyHza++9p0qW+NeP5sL8C5aBv/1wAIwQo5g
-	 ZWJErUOFUeMMRAAaYYYQjFo/f48+tWk/blKYLIV4=
+	b=N4Wdl24sG+3HwyjAUgoMdldw+T0sMmVAAApEABsUWrPWNZktHRlqQ/AU26bkqpb8M
+	 iPK9VSnUHAgpWBTvqqP7aqxbQo5YMJ3uifWYUBGjCWl9wS/IX8lxJ6IHR2g/EyONBs
+	 eL8vFlmEQzMDFMUIs9BZjHqcGRxVdfnkOF4opXNA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Adam Davis <eadavis@qq.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+864a269c27ee06b58374@syzkaller.appspotmail.com
-Subject: [PATCH 5.15 268/476] wifi: cfg80211: fix RCU dereference in __cfg80211_bss_update
+	Justin Tee <justin.tee@broadcom.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 140/379] scsi: lpfc: Fix possible file string name overflow when updating firmware
 Date: Wed, 21 Feb 2024 14:05:19 +0100
-Message-ID: <20240221130017.754547685@linuxfoundation.org>
+Message-ID: <20240221125959.068931860@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit 1184950e341c11b6f82bc5b59564411d9537ab27 ]
+[ Upstream commit f5779b529240b715f0e358489ad0ed933bf77c97 ]
 
-Replace rcu_dereference() with rcu_access_pointer() since we hold
-the lock here (and aren't in an RCU critical section).
+Because file_name and phba->ModelName are both declared a size 80 bytes,
+the extra ".grp" file extension could cause an overflow into file_name.
 
-Fixes: 32af9a9e1069 ("wifi: cfg80211: free beacon_ies when overridden from hidden BSS")
-Reported-and-tested-by: syzbot+864a269c27ee06b58374@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Link: https://msgid.link/tencent_BF8F0DF0258C8DBF124CDDE4DD8D992DCF07@qq.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Define a ELX_FW_NAME_SIZE macro with value 84.  84 incorporates the 4 extra
+characters from ".grp".  file_name is changed to be declared as a char and
+initialized to zeros i.e. null chars.
+
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20231031191224.150862-3-justintee8345@gmail.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/scan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/lpfc/lpfc.h      | 1 +
+ drivers/scsi/lpfc/lpfc_init.c | 4 ++--
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 68c48970ebf7..2898df10a72a 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -1809,7 +1809,7 @@ cfg80211_bss_update(struct cfg80211_registered_device *rdev,
- 					 &hidden->hidden_list);
- 				hidden->refcount++;
+diff --git a/drivers/scsi/lpfc/lpfc.h b/drivers/scsi/lpfc/lpfc.h
+index 03bc472f302a..cf69f831a725 100644
+--- a/drivers/scsi/lpfc/lpfc.h
++++ b/drivers/scsi/lpfc/lpfc.h
+@@ -32,6 +32,7 @@
+ struct lpfc_sli2_slim;
  
--				ies = (void *)rcu_dereference(new->pub.beacon_ies);
-+				ies = (void *)rcu_access_pointer(new->pub.beacon_ies);
- 				rcu_assign_pointer(new->pub.beacon_ies,
- 						   hidden->pub.beacon_ies);
- 				if (ies)
+ #define ELX_MODEL_NAME_SIZE	80
++#define ELX_FW_NAME_SIZE	84
+ 
+ #define LPFC_PCI_DEV_LP		0x1
+ #define LPFC_PCI_DEV_OC		0x2
+diff --git a/drivers/scsi/lpfc/lpfc_init.c b/drivers/scsi/lpfc/lpfc_init.c
+index 1bb3c96a04bd..5f2009327a59 100644
+--- a/drivers/scsi/lpfc/lpfc_init.c
++++ b/drivers/scsi/lpfc/lpfc_init.c
+@@ -13026,7 +13026,7 @@ lpfc_write_firmware(const struct firmware *fw, void *context)
+ int
+ lpfc_sli4_request_firmware_update(struct lpfc_hba *phba, uint8_t fw_upgrade)
+ {
+-	uint8_t file_name[ELX_MODEL_NAME_SIZE];
++	char file_name[ELX_FW_NAME_SIZE] = {0};
+ 	int ret;
+ 	const struct firmware *fw;
+ 
+@@ -13035,7 +13035,7 @@ lpfc_sli4_request_firmware_update(struct lpfc_hba *phba, uint8_t fw_upgrade)
+ 	    LPFC_SLI_INTF_IF_TYPE_2)
+ 		return -EPERM;
+ 
+-	snprintf(file_name, ELX_MODEL_NAME_SIZE, "%s.grp", phba->ModelName);
++	scnprintf(file_name, sizeof(file_name), "%s.grp", phba->ModelName);
+ 
+ 	if (fw_upgrade == INT_FW_UPGRADE) {
+ 		ret = request_firmware_nowait(THIS_MODULE, FW_ACTION_HOTPLUG,
 -- 
 2.43.0
 
