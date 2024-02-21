@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-22532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 429B885DC7F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:54:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3A3285DAC2
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:34:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D73EBB26BA4
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:54:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 904F6283796
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:34:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C7217BB1E;
-	Wed, 21 Feb 2024 13:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 129417E581;
+	Wed, 21 Feb 2024 13:32:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xdKHbYyO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SHYu+Pcw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC59269D29;
-	Wed, 21 Feb 2024 13:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0AB57E112;
+	Wed, 21 Feb 2024 13:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523620; cv=none; b=Eja0G4Sx3Za8MfX8qAbpdHBIgnm73iuv1ARJBzJeijz2zgNRidZ5rsO66Ts6MN9QwdKvMIndPYlff+RnQdhl93ZNw3/CHhh1Ax3wUvPU2g4ZGBzD0u46B38L85R0hOL4amkiF6QSrF5damwcZnLnBGmSaQqs5D0HssRGJ8ruKAM=
+	t=1708522359; cv=none; b=ZxxBoUNfhgdGVveHjsAPRqq615VmDSiCqT1C2NIN/MAe4IMwwmEk4I9uxj6AtIBJmpdSou7i0YeIJZ5RI74y1TrqP3R73F8PuGCtOgeQbKOhWezCuMRzWDKE/il0H7dfVcdfEH+jSInrtVLog+xM6JgBtPwZna3vRhmq11W5a3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523620; c=relaxed/simple;
-	bh=WnE+AlANifbe/VEWRrlf/oC0PFPGqpc2ogPuxH5pvto=;
+	s=arc-20240116; t=1708522359; c=relaxed/simple;
+	bh=VwfIdADSYB4KqqPZFXXKaPzmJYJdDJnYUsrZZ0htsh8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zd2AjpL9oo0kN93KAeNHtZMuhxt0ifQPnyGwd/b/AUqRPuvSsMvnrMZJf0alWKUDMZwPkeOhkpW1i+5zF+whJ1Sgw+IQzQXyq9a1bGPb75b4rKeRmRhKPOob5XXs7v1eN10wFtULXhfZsvo58ofsRtrAZtPqClbfYXKroYLZShY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xdKHbYyO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A937C433F1;
-	Wed, 21 Feb 2024 13:53:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XqQC9Wlh4ASf5YwFx2aBhGEoHisXdMo/RmXF//KWOzWafbq33uVFsy2ISp40xEo7zvHeBh9jkYmXTzE3RIx1eryPbAIBWWrFF4o/Fntpz6rIQYpWc4qQV0cKi8AlrEZyb1e9rhXD1M1vsjyYVRnO+rlnX8FA/pFhTufCtVqrJ+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SHYu+Pcw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF156C433F1;
+	Wed, 21 Feb 2024 13:32:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523619;
-	bh=WnE+AlANifbe/VEWRrlf/oC0PFPGqpc2ogPuxH5pvto=;
+	s=korg; t=1708522359;
+	bh=VwfIdADSYB4KqqPZFXXKaPzmJYJdDJnYUsrZZ0htsh8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xdKHbYyOw6ncU7fVE1T+LhID7M4bM/LXLCtTpG29OSrVURlinhEzKk/yVH5id7VfX
-	 srqqkd3ueQzEd0wp04E39D4rOF0fjCJnOMrejUBwV9XT9IuLAH4mi/z+7jlS0Dm6CZ
-	 U9Rf3d4OD3j6Y1g8l5wAduicUKWCDPKUZSBojG8s=
+	b=SHYu+PcwakrevtghTf2vloB+C1+oETSFXn9g67xbT0LjYW2jiK8g3RJ9meplLq1sE
+	 TS0w8a8JrI9kx+rHNIf8kkvkZyx/JbnreBWEP+aZRixvakd5amCVTWBrgGWpCBH63I
+	 y5ebOys13X+k9Z1Jxm9bdqBPMKVqG3ttXsCHU7l4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Prarit Bhargava <prarit@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 012/379] iio: adc: ad7091r: Set alert bit in config register
-Date: Wed, 21 Feb 2024 14:03:11 +0100
-Message-ID: <20240221125955.284619956@linuxfoundation.org>
+Subject: [PATCH 5.15 141/476] ACPI: extlog: fix NULL pointer dereference check
+Date: Wed, 21 Feb 2024 14:03:12 +0100
+Message-ID: <20240221130013.143601251@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +60,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcelo Schmitt <marcelo.schmitt@analog.com>
+From: Prarit Bhargava <prarit@redhat.com>
 
-[ Upstream commit 149694f5e79b0c7a36ceb76e7c0d590db8f151c1 ]
+[ Upstream commit 72d9b9747e78979510e9aafdd32eb99c7aa30dd1 ]
 
-The ad7091r-base driver sets up an interrupt handler for firing events
-when inputs are either above or below a certain threshold.
-However, for the interrupt signal to come from the device it must be
-configured to enable the ALERT/BUSY/GPO pin to be used as ALERT, which
-was not being done until now.
-Enable interrupt signals on the ALERT/BUSY/GPO pin by setting the proper
-bit in the configuration register.
+The gcc plugin -fanalyzer [1] tries to detect various
+patterns of incorrect behaviour.  The tool reports:
 
-Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Link: https://lore.kernel.org/r/e8da2ee98d6df88318b14baf3dc9630e20218418.1702746240.git.marcelo.schmitt1@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: 020e71c7ffc2 ("iio: adc: ad7091r: Allow users to configure device events")
+drivers/acpi/acpi_extlog.c: In function ‘extlog_exit’:
+drivers/acpi/acpi_extlog.c:307:12: warning: check of ‘extlog_l1_addr’ for NULL after already dereferencing it [-Wanalyzer-deref-before-check]
+    |
+    |  306 |         ((struct extlog_l1_head *)extlog_l1_addr)->flags &= ~FLAG_OS_OPTIN;
+    |      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
+    |      |                                                  |
+    |      |                                                  (1) pointer ‘extlog_l1_addr’ is dereferenced here
+    |  307 |         if (extlog_l1_addr)
+    |      |            ~
+    |      |            |
+    |      |            (2) pointer ‘extlog_l1_addr’ is checked for NULL here but it was already dereferenced at (1)
+    |
+
+Fix the NULL pointer dereference check in extlog_exit().
+
+Link: https://gcc.gnu.org/onlinedocs/gcc-10.1.0/gcc/Static-Analyzer-Options.html # [1]
+
+Signed-off-by: Prarit Bhargava <prarit@redhat.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7091r-base.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/acpi/acpi_extlog.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7091r-base.c b/drivers/iio/adc/ad7091r-base.c
-index 811f04448d8d..ad089c0ff953 100644
---- a/drivers/iio/adc/ad7091r-base.c
-+++ b/drivers/iio/adc/ad7091r-base.c
-@@ -28,6 +28,7 @@
- #define AD7091R_REG_RESULT_CONV_RESULT(x)   ((x) & 0xfff)
- 
- /* AD7091R_REG_CONF */
-+#define AD7091R_REG_CONF_ALERT_EN   BIT(4)
- #define AD7091R_REG_CONF_AUTO   BIT(8)
- #define AD7091R_REG_CONF_CMD    BIT(10)
- 
-@@ -232,6 +233,11 @@ int ad7091r_probe(struct device *dev, const char *name,
- 	iio_dev->channels = chip_info->channels;
- 
- 	if (irq) {
-+		ret = regmap_update_bits(st->map, AD7091R_REG_CONF,
-+					 AD7091R_REG_CONF_ALERT_EN, BIT(4));
-+		if (ret)
-+			return ret;
-+
- 		ret = devm_request_threaded_irq(dev, irq, NULL,
- 				ad7091r_event_handler,
- 				IRQF_TRIGGER_FALLING | IRQF_ONESHOT, name, iio_dev);
+diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
+index 088db2356998..0a84d5afd37c 100644
+--- a/drivers/acpi/acpi_extlog.c
++++ b/drivers/acpi/acpi_extlog.c
+@@ -308,9 +308,10 @@ static int __init extlog_init(void)
+ static void __exit extlog_exit(void)
+ {
+ 	mce_unregister_decode_chain(&extlog_mce_dec);
+-	((struct extlog_l1_head *)extlog_l1_addr)->flags &= ~FLAG_OS_OPTIN;
+-	if (extlog_l1_addr)
++	if (extlog_l1_addr) {
++		((struct extlog_l1_head *)extlog_l1_addr)->flags &= ~FLAG_OS_OPTIN;
+ 		acpi_os_unmap_iomem(extlog_l1_addr, l1_size);
++	}
+ 	if (elog_addr)
+ 		acpi_os_unmap_iomem(elog_addr, elog_size);
+ 	release_mem_region(elog_base, elog_size);
 -- 
 2.43.0
 
