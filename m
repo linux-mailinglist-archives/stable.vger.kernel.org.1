@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-22738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4033485DD8C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:07:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8483885DE52
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:17:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E67701F21C88
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:07:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5DBB1C23B48
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:17:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77AC07EEE2;
-	Wed, 21 Feb 2024 14:05:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDC6E7F472;
+	Wed, 21 Feb 2024 14:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xnvGKkvF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HUtLoMty"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374047E77B;
-	Wed, 21 Feb 2024 14:05:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC0E57C6E9;
+	Wed, 21 Feb 2024 14:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524352; cv=none; b=haqz80/OGCSW6AEv3PIUZrLLXEfOD4NG+JgNmx8FigcwvYqICJ6rj0QWehv6H65XkPl51Hgxr44zvui+3YOvNqcDQgfyWMwZIEdNH/u/4+clNsN2w+gZj3DAU8sweAGQH7HJc4IUmIXtnb0lNgcMftbNHd743UzyF1Q8Qjusr1c=
+	t=1708524991; cv=none; b=UPmHJOTBqQErmx5pJQ/henZOS/mU/St4fEfo102WY1YvBhW5YCt13Am5fN42XBgPnIrs7jJsn14nqmYBhItjgBLX7wCm6kGlhsoHq3GvJjTddGjT8QpHuX9cVEYW7mEC3tQlaJFwPwQ/S7vuCYbeJz70fVRF6ct7ZdfbPW9aMG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524352; c=relaxed/simple;
-	bh=Nws2t9hVcN8KiOUz79h+H8JfO+gzTw7iZ3DaQdABNxA=;
+	s=arc-20240116; t=1708524991; c=relaxed/simple;
+	bh=5W4BEMQ4b6mWEG7zZZxc18CTP1Hkl2NoHjf+rW1FJc4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MQEs/GHtyUqIAG/mRJ+jeDONOP583MxF5ElnNuH7iBRFUhY+F/0C9ERbVLMf8UOPnlzTTEpTntpSMtj9axhmI1fs2koIDAZYr3TCsdxfSZ/00c4OPkhaSAqJe+zamqNASkHVgyrCizMTKi9hp0b6RvXUy1D4O9tiHTEg2fXVsAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xnvGKkvF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4BF3C433F1;
-	Wed, 21 Feb 2024 14:05:51 +0000 (UTC)
+	 MIME-Version; b=evWiR4sSf1xnz+WEBpsOoLjHH599LJaViXctzRf3TXxY/xMGtKWwfD8XlwIZ+/WMQYM7AaBlDOqVXIC7EE7lzD3lAgOttjMO86YQFX5goMkaRWje7Bcq6kmdLNfie2KuAJc4TlbAtlT7SldrG7Y3+YY5dHXQvnzfHn0AyR+Zqaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HUtLoMty; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20D47C433F1;
+	Wed, 21 Feb 2024 14:16:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524352;
-	bh=Nws2t9hVcN8KiOUz79h+H8JfO+gzTw7iZ3DaQdABNxA=;
+	s=korg; t=1708524991;
+	bh=5W4BEMQ4b6mWEG7zZZxc18CTP1Hkl2NoHjf+rW1FJc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xnvGKkvFqj/jzopcfANcmRG3l7d4Zxfhr20YYbMqw4r1M4KHDKtG7pYWnF3U6en7l
-	 ShVxJTCrRrRBlHf71NshqsjFcCHqpaJPR+K7OD7UWab4pK+F/rv0oY41UBMXiiHJeE
-	 vx+4bFmT/REyGEKABgxo72zNDlOceua8cnnkvqA4=
+	b=HUtLoMty2zYdXZgOFzxYic/Yy0WDOAo6Gu7hi0zc8j3TrVRR/mGSB+fk1HX7sFTWp
+	 cNwm+5uT6wzNJgYsfTJCduJ4yFt5estVSxRIesBjewMOR1++rkRBLpOIvqhXBBwAqe
+	 r47BommLpHznOhd8lbcJiG6ax+3Uxl3sEMaLn1Gs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Takashi Iwai <tiwai@suse.de>,
+	Lin Ma <linma@zju.edu.cn>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 189/379] ALSA: hda: intel-dspcfg: add filters for ARL-S and ARL
+Subject: [PATCH 5.4 027/267] vlan: skip nested type that is not IFLA_VLAN_QOS_MAPPING
 Date: Wed, 21 Feb 2024 14:06:08 +0100
-Message-ID: <20240221130000.499995364@linuxfoundation.org>
+Message-ID: <20240221125940.898565783@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit 7a9d6bbe8a663c817080be55d9fecf19a4a8fd8f ]
+[ Upstream commit 6c21660fe221a15c789dee2bc2fd95516bc5aeaf ]
 
-Same usual filters, SOF is required for DMIC and/or SoundWire support.
+In the vlan_changelink function, a loop is used to parse the nested
+attributes IFLA_VLAN_EGRESS_QOS and IFLA_VLAN_INGRESS_QOS in order to
+obtain the struct ifla_vlan_qos_mapping. These two nested attributes are
+checked in the vlan_validate_qos_map function, which calls
+nla_validate_nested_deprecated with the vlan_map_policy.
 
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Acked-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20231204212710.185976-4-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+However, this deprecated validator applies a LIBERAL strictness, allowing
+the presence of an attribute with the type IFLA_VLAN_QOS_UNSPEC.
+Consequently, the loop in vlan_changelink may parse an attribute of type
+IFLA_VLAN_QOS_UNSPEC and believe it carries a payload of
+struct ifla_vlan_qos_mapping, which is not necessarily true.
+
+To address this issue and ensure compatibility, this patch introduces two
+type checks that skip attributes whose type is not IFLA_VLAN_QOS_MAPPING.
+
+Fixes: 07b5b17e157b ("[VLAN]: Use rtnl_link API")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240118130306.1644001-1-linma@zju.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/intel-dsp-config.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ net/8021q/vlan_netlink.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/sound/hda/intel-dsp-config.c b/sound/hda/intel-dsp-config.c
-index 48c78388c1d2..ea0a2b1d23a3 100644
---- a/sound/hda/intel-dsp-config.c
-+++ b/sound/hda/intel-dsp-config.c
-@@ -372,6 +372,16 @@ static const struct config_entry config_table[] = {
- 		.flags = FLAG_SOF | FLAG_SOF_ONLY_IF_DMIC_OR_SOUNDWIRE,
- 		.device = 0x7e28,
- 	},
-+	/* ArrowLake-S */
-+	{
-+		.flags = FLAG_SOF | FLAG_SOF_ONLY_IF_DMIC_OR_SOUNDWIRE,
-+		.device = PCI_DEVICE_ID_INTEL_HDA_ARL_S,
-+	},
-+	/* ArrowLake */
-+	{
-+		.flags = FLAG_SOF | FLAG_SOF_ONLY_IF_DMIC_OR_SOUNDWIRE,
-+		.device = PCI_DEVICE_ID_INTEL_HDA_ARL,
-+	},
- #endif
- 
- /* Lunar Lake */
+diff --git a/net/8021q/vlan_netlink.c b/net/8021q/vlan_netlink.c
+index 0db85aeb119b..99b277775257 100644
+--- a/net/8021q/vlan_netlink.c
++++ b/net/8021q/vlan_netlink.c
+@@ -118,12 +118,16 @@ static int vlan_changelink(struct net_device *dev, struct nlattr *tb[],
+ 	}
+ 	if (data[IFLA_VLAN_INGRESS_QOS]) {
+ 		nla_for_each_nested(attr, data[IFLA_VLAN_INGRESS_QOS], rem) {
++			if (nla_type(attr) != IFLA_VLAN_QOS_MAPPING)
++				continue;
+ 			m = nla_data(attr);
+ 			vlan_dev_set_ingress_priority(dev, m->to, m->from);
+ 		}
+ 	}
+ 	if (data[IFLA_VLAN_EGRESS_QOS]) {
+ 		nla_for_each_nested(attr, data[IFLA_VLAN_EGRESS_QOS], rem) {
++			if (nla_type(attr) != IFLA_VLAN_QOS_MAPPING)
++				continue;
+ 			m = nla_data(attr);
+ 			err = vlan_dev_set_egress_priority(dev, m->from, m->to);
+ 			if (err)
 -- 
 2.43.0
 
