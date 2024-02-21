@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-22310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67E7585DB60
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:40:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D16F85D8FB
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:13:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D17C1F23F88
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:40:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 384242826D0
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:13:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1E9177A03;
-	Wed, 21 Feb 2024 13:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64EF869D30;
+	Wed, 21 Feb 2024 13:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KQHqkPTo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BFb/nUUh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F2683C2F;
-	Wed, 21 Feb 2024 13:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A4B69D2B;
+	Wed, 21 Feb 2024 13:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522812; cv=none; b=trNORXo0fxRfjM5Or+EaecxWqbS6v42mil806l49abDGllZztWLdcPeyy2wUR6d7/QA+pxe578GJIIg3rAJWYagaldhnXYGnc7W1m337SdSSpeyDz7WzxwRJKL/MYIc7EwV+/476VH7SQBj/C7YT+KgP26TliC0X89SOvV5ppMw=
+	t=1708521191; cv=none; b=Dm862ZJwR4q/Z+EsaSVo4RUvF7nH9DDw8aaR9XYyo5qibPflWMlOYYiaI463yUXir28cr3Onjf+ox1UCvVI5tPmisiR0+R9GGyd9wV2kCjimxvufhVwEht6ezI/1JPxc1jCjKjdMa0Xgr2BTFTW+wv+Cdx/+k3fbcMqxm/YciCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522812; c=relaxed/simple;
-	bh=WbQikY2yGhI21ZRI5XFre8iVD7cG+ed6PZb0rqkcmRM=;
+	s=arc-20240116; t=1708521191; c=relaxed/simple;
+	bh=IGDPAZoMU1lfGQ8LhLEApoABS8tbamW5TzM2nQePsfY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=heBJ+KdUQGqm7ZQcg3KW/2sIxyUZiGL7urD28hwfU8e3pkF4mF52dRZ+/QJ3ij2K5Yxmj12qPMUm581+KaUEuQP628GkRtIQEhppoiDHxLqXHCDFSrFVaveS21QcPxjCMqGJUHDvqSJ+Pz2RnoLXKY3z6wovWH4LrlyA57uX8uA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KQHqkPTo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBDC7C43390;
-	Wed, 21 Feb 2024 13:40:11 +0000 (UTC)
+	 MIME-Version; b=ksci+PLhiTralGaPi6do7lkMTn4j9KqjI7GeS/AlsMY6N5GM0vH/ic4/PY4oH6QUxW9vbmuqFP/rIZ5SoJBTf2hsAEXp1yejodGMQSCVZMyvhD9fLYZdUhNqSbPCiG0zD9JYyKjVG8nRAMNNWzF1aaFnptNA25Zu+ZY3/zWla5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BFb/nUUh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D26DC433F1;
+	Wed, 21 Feb 2024 13:13:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522812;
-	bh=WbQikY2yGhI21ZRI5XFre8iVD7cG+ed6PZb0rqkcmRM=;
+	s=korg; t=1708521191;
+	bh=IGDPAZoMU1lfGQ8LhLEApoABS8tbamW5TzM2nQePsfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KQHqkPTo36/4iGThKnCY4/zzGrSErPrjmhT5OPt0BSg4W91Wu/lti9myv84p53l5g
-	 v8cduNy+6rv+s37GtJ7KUwXhQy+WwzY+fl0SqndlMeZkB+xO5Mpa28zQKHPYJO+sUK
-	 nBjLhPQUvrM00gAHM6Fk2amqJuErvp9fdODj+ZZw=
+	b=BFb/nUUhnDc7W0jpwoS1sx5PNwqxZ0yHAlzXX4dIawhtFrFmCtJb3QxAhKcBIDziY
+	 myTP0MLdTidjv5OIPPyEmhayZxu8q274f8Bfgp19i6vq/gMuTtEDSr+gGBJ+/My/oc
+	 01Fn9J8UMLOHmvkxPrlZ55ZbeixBmP2fFKT+CG9k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Monk Liu <Monk.Liu@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 265/476] drm/amdgpu: Release adev->pm.fw before return in amdgpu_device_need_post()
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 4.19 015/202] parisc/firmware: Fix F-extend for PDC addresses
 Date: Wed, 21 Feb 2024 14:05:16 +0100
-Message-ID: <20240221130017.642445631@linuxfoundation.org>
+Message-ID: <20240221125932.248501328@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +58,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 8a44fdd3cf91debbd09b43bd2519ad2b2486ccf4 ]
+commit 735ae74f73e55c191d48689bd11ff4a06ea0508f upstream.
 
-In function 'amdgpu_device_need_post(struct amdgpu_device *adev)' -
-'adev->pm.fw' may not be released before return.
+When running with narrow firmware (64-bit kernel using a 32-bit
+firmware), extend PDC addresses into the 0xfffffff0.00000000
+region instead of the 0xf0f0f0f0.00000000 region.
 
-Using the function release_firmware() to release adev->pm.fw.
+This fixes the power button on the C3700 machine in qemu (64-bit CPU
+with 32-bit firmware), and my assumption is that the previous code was
+really never used (because most 64-bit machines have a 64-bit firmware),
+or it just worked on very old machines because they may only decode
+40-bit of virtual addresses.
 
-Thus fixing the below:
-drivers/gpu/drm/amd/amdgpu/amdgpu_device.c:1571 amdgpu_device_need_post() warn: 'adev->pm.fw' from request_firmware() not released on lines: 1554.
-
-Cc: Monk Liu <Monk.Liu@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Suggested-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/parisc/kernel/firmware.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 19e32f38a4c4..816dd59212c1 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -1292,6 +1292,7 @@ bool amdgpu_device_need_post(struct amdgpu_device *adev)
- 				return true;
+--- a/arch/parisc/kernel/firmware.c
++++ b/arch/parisc/kernel/firmware.c
+@@ -127,10 +127,10 @@ static unsigned long f_extend(unsigned l
+ #ifdef CONFIG_64BIT
+ 	if(unlikely(parisc_narrow_firmware)) {
+ 		if((address & 0xff000000) == 0xf0000000)
+-			return 0xf0f0f0f000000000UL | (u32)address;
++			return (0xfffffff0UL << 32) | (u32)address;
  
- 			fw_ver = *((uint32_t *)adev->pm.fw->data + 69);
-+			release_firmware(adev->pm.fw);
- 			if (fw_ver < 0x00160e00)
- 				return true;
- 		}
--- 
-2.43.0
-
+ 		if((address & 0xf0000000) == 0xf0000000)
+-			return 0xffffffff00000000UL | (u32)address;
++			return (0xffffffffUL << 32) | (u32)address;
+ 	}
+ #endif
+ 	return address;
 
 
 
