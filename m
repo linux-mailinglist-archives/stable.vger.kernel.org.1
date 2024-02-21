@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-22550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 595E085DC92
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:54:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FA7D85DAB8
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:34:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89B3C1C236F4
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:54:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19053B27DD5
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:34:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC2B378B70;
-	Wed, 21 Feb 2024 13:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2984F78B4F;
+	Wed, 21 Feb 2024 13:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="naBxYy0C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i9O6ctSq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F4038398;
-	Wed, 21 Feb 2024 13:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 921AC7D40E;
+	Wed, 21 Feb 2024 13:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523692; cv=none; b=QOaFRBy9leEAGugMibAqRsgxuOiwUWx4WI08iA6VfazIWumkh505H5jQvCCVaY680Fgdgpg4AEaJTj+V7Njx5zu3aw6iboKoOWmmZ5XeDnKa4CsKwdZX+Y4P/auJsj07fhxIkIh18bLo2mzc8HZqj3u/7uBtkjTTWuegEMf5DhA=
+	t=1708522314; cv=none; b=uLsbon6Mx1s1Pi+Bj5FyaLM2tMnawOQ++ENgpmN1cPN5SJTdExjeXRqEmmZ7aBxjQvj+pFYUpBW8Trs1kGDAMOiioArGpY1CTNZulZh0BEvmkKf9CUvvvYBJrwG/hNJ+ZG5n3xIlvDk8H1QciTY8Jz+/WMWc2iQZPfcNON8QcaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523692; c=relaxed/simple;
-	bh=dqqbjycNx694mxCfz/Md1YHQLTM7LO52ktv82Tepb9c=;
+	s=arc-20240116; t=1708522314; c=relaxed/simple;
+	bh=uNonjg08Ncj20R1LhY2ZUp/OKI2HcXHA+cp5MFKeLUw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k/oPpo3f/mS9iDKjVTOuMNjuKMhB7UxNSDLShIOCl/J0htHEpmBMh33yj2gSwk9mZ+r+/bJU+k7Zc0PFhBz9DHyw7hAPKDsyReHZ+Oahm/iJa04uAxK7+7U9/A1kOBRPqN3n4BwrR1ejtRbi61P7pCAP2ftJ1YxeSkbd3CLlvrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=naBxYy0C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3BC8C433C7;
-	Wed, 21 Feb 2024 13:54:51 +0000 (UTC)
+	 MIME-Version; b=UGb3tPx+LKql+vZpuiJr2+SHq4Y8uesooa5BduqDyb56NEE2IACCiDTceYWEEOmUQvzN2F51B8lv8hCO27BZMnt7H3TwJ/ZBGVKrcHn7E81eCWScWaI/15P7hjKEiHDI/qXPFdAhKVNrxj4a4rPLaSFNbFOuFolTGThDe9VY+JI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i9O6ctSq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93519C433F1;
+	Wed, 21 Feb 2024 13:31:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523692;
-	bh=dqqbjycNx694mxCfz/Md1YHQLTM7LO52ktv82Tepb9c=;
+	s=korg; t=1708522314;
+	bh=uNonjg08Ncj20R1LhY2ZUp/OKI2HcXHA+cp5MFKeLUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=naBxYy0CEK3r1m5OvoK8bXx4RNvkhnkfmsJQDNllx+thhEuP0yHB6ssr/zhsZJMeD
-	 wiFRNNkU+25VwNIs/n/msS1d0JfQUeuHy1hE4tsp1XCMMyuJZwSGI/Y2MZTPPAQYpl
-	 Od0LeCDRxvcOzNPL5py7yBkTkaczCyicZT3mZdj0=
+	b=i9O6ctSq1qlL1bY+/lAn2K/9BGyuvxPKOlGQx9YcuFsCpRzLCaZkL8iRB6V6QcFY7
+	 HH4CATAgaR4q9kO9mbF5n10doLotoajbYOYqzMgUuLBhquDqa06gZfNjvLoPGquIJV
+	 PsFp2gUMx+9UUGsqHlQubDr3yt4cdPf9Lr+Cicfc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ravi Gunasekaran <r-gunasekaran@ti.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Peter Chen <peter.chen@kernel.org>,
+	Junichi Nomura <junichi.nomura@nec.com>,
+	Derek Barbosa <debarbos@redhat.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Kees Cook <keescook@chromium.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Peter Zijlstra <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 003/379] usb: cdns3: fix incorrect calculation of ep_buf_size when more than one config
+Subject: [PATCH 5.15 131/476] x86/boot: Ignore NMIs during very early boot
 Date: Wed, 21 Feb 2024 14:03:02 +0100
-Message-ID: <20240221125955.023428385@linuxfoundation.org>
+Message-ID: <20240221130012.804863415@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +69,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Jun'ichi Nomura <junichi.nomura@nec.com>
 
-[ Upstream commit 2627335a1329a0d39d8d277994678571c4f21800 ]
+[ Upstream commit 78a509fba9c9b1fcb77f95b7c6be30da3d24823a ]
 
-Previously, the cdns3_gadget_check_config() function in the cdns3 driver
-mistakenly calculated the ep_buf_size by considering only one
-configuration's endpoint information because "claimed" will be clear after
-call usb_gadget_check_config().
+When there are two racing NMIs on x86, the first NMI invokes NMI handler and
+the 2nd NMI is latched until IRET is executed.
 
-The fix involves checking the private flags EP_CLAIMED instead of relying
-on the "claimed" flag.
+If panic on NMI and panic kexec are enabled, the first NMI triggers
+panic and starts booting the next kernel via kexec. Note that the 2nd
+NMI is still latched. During the early boot of the next kernel, once
+an IRET is executed as a result of a page fault, then the 2nd NMI is
+unlatched and invokes the NMI handler.
 
-Fixes: dce49449e04f ("usb: cdns3: allocate TX FIFO size according to composite EP number")
-Cc: stable <stable@kernel.org>
-Reported-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Tested-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
-Link: https://lore.kernel.org/r/20230707230015.494999-2-Frank.Li@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 92f02efa1d86 ("usb: cdns3: fix iso transfer error when mult is not zero")
+However, NMI handler is not set up at the early stage of boot, which
+results in a boot failure.
+
+Avoid such problems by setting up a NOP handler for early NMIs.
+
+[ mingo: Refined the changelog. ]
+
+Signed-off-by: Jun'ichi Nomura <junichi.nomura@nec.com>
+Signed-off-by: Derek Barbosa <debarbos@redhat.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Paul E. McKenney <paulmck@kernel.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/cdns3/gadget.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/x86/boot/compressed/ident_map_64.c    | 5 +++++
+ arch/x86/boot/compressed/idt_64.c          | 1 +
+ arch/x86/boot/compressed/idt_handlers_64.S | 1 +
+ arch/x86/boot/compressed/misc.h            | 1 +
+ 4 files changed, 8 insertions(+)
 
-diff --git a/drivers/usb/cdns3/gadget.c b/drivers/usb/cdns3/gadget.c
-index 575180a59ad4..ee64c4ab8dd2 100644
---- a/drivers/usb/cdns3/gadget.c
-+++ b/drivers/usb/cdns3/gadget.c
-@@ -3030,12 +3030,14 @@ static int cdns3_gadget_udc_stop(struct usb_gadget *gadget)
- static int cdns3_gadget_check_config(struct usb_gadget *gadget)
- {
- 	struct cdns3_device *priv_dev = gadget_to_cdns3_device(gadget);
-+	struct cdns3_endpoint *priv_ep;
- 	struct usb_ep *ep;
- 	int n_in = 0;
- 	int total;
+diff --git a/arch/x86/boot/compressed/ident_map_64.c b/arch/x86/boot/compressed/ident_map_64.c
+index 575d881ff86e..b72dea92cd96 100644
+--- a/arch/x86/boot/compressed/ident_map_64.c
++++ b/arch/x86/boot/compressed/ident_map_64.c
+@@ -357,3 +357,8 @@ void do_boot_page_fault(struct pt_regs *regs, unsigned long error_code)
+ 	 */
+ 	add_identity_map(address, end);
+ }
++
++void do_boot_nmi_trap(struct pt_regs *regs, unsigned long error_code)
++{
++	/* Empty handler to ignore NMI during early boot */
++}
+diff --git a/arch/x86/boot/compressed/idt_64.c b/arch/x86/boot/compressed/idt_64.c
+index 9b93567d663a..9620883485ac 100644
+--- a/arch/x86/boot/compressed/idt_64.c
++++ b/arch/x86/boot/compressed/idt_64.c
+@@ -45,6 +45,7 @@ void load_stage2_idt(void)
+ 	boot_idt_desc.address = (unsigned long)boot_idt;
  
- 	list_for_each_entry(ep, &gadget->ep_list, ep_list) {
--		if (ep->claimed && (ep->address & USB_DIR_IN))
-+		priv_ep = ep_to_cdns3_ep(ep);
-+		if ((priv_ep->flags & EP_CLAIMED) && (ep->address & USB_DIR_IN))
- 			n_in++;
- 	}
+ 	set_idt_entry(X86_TRAP_PF, boot_page_fault);
++	set_idt_entry(X86_TRAP_NMI, boot_nmi_trap);
+ 
+ #ifdef CONFIG_AMD_MEM_ENCRYPT
+ 	set_idt_entry(X86_TRAP_VC, boot_stage2_vc);
+diff --git a/arch/x86/boot/compressed/idt_handlers_64.S b/arch/x86/boot/compressed/idt_handlers_64.S
+index 22890e199f5b..4d03c8562f63 100644
+--- a/arch/x86/boot/compressed/idt_handlers_64.S
++++ b/arch/x86/boot/compressed/idt_handlers_64.S
+@@ -70,6 +70,7 @@ SYM_FUNC_END(\name)
+ 	.code64
+ 
+ EXCEPTION_HANDLER	boot_page_fault do_boot_page_fault error_code=1
++EXCEPTION_HANDLER	boot_nmi_trap do_boot_nmi_trap error_code=0
+ 
+ #ifdef CONFIG_AMD_MEM_ENCRYPT
+ EXCEPTION_HANDLER	boot_stage1_vc do_vc_no_ghcb		error_code=1
+diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/misc.h
+index 31139256859f..cea1b96c48b2 100644
+--- a/arch/x86/boot/compressed/misc.h
++++ b/arch/x86/boot/compressed/misc.h
+@@ -163,6 +163,7 @@ static inline void cleanup_exception_handling(void) { }
+ 
+ /* IDT Entry Points */
+ void boot_page_fault(void);
++void boot_nmi_trap(void);
+ void boot_stage1_vc(void);
+ void boot_stage2_vc(void);
  
 -- 
 2.43.0
