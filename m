@@ -1,204 +1,171 @@
-Return-Path: <stable+bounces-23201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E4C985E36B
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 17:32:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E08185E377
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 17:36:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 046521F22566
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 16:32:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 67CAAB227C9
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 16:36:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 945E680628;
-	Wed, 21 Feb 2024 16:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21D8A7FBD2;
+	Wed, 21 Feb 2024 16:36:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="Cn7r0iZ7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OyVxku0C"
 X-Original-To: stable@vger.kernel.org
-Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11FDB7FBB8
-	for <stable@vger.kernel.org>; Wed, 21 Feb 2024 16:32:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.132.182.106
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 618A54436C
+	for <stable@vger.kernel.org>; Wed, 21 Feb 2024 16:36:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708533137; cv=none; b=EuLqPUFdSD8qnCLEZXFN11pjqEMyYsm0xPda36g2J+OTgnN3+A0aXI0+HJSjxU0bcrcV2pVIkdgF6xhdVE02UvCD/xxhj8I+Rdu4WFUpIynT7zMuUsAOGq/jNNX/UU6VdAydip3WU4mSeBzmPO3v5Oze/c5Xg47XEI+8X+RBpeA=
+	t=1708533382; cv=none; b=YrO6lZ+A5Vs6ZivwBa3zU4UggtBW6vUvHoP87NyQYT/JrPnOQa8E69eAqZ3iAXhuXIQIm9/r6NQF7AgwA1XyQcAjRjOuH6XZTQ/SqFP6ahqkaQrk4hakVFXGZcMihjxKrVy7dfR4jTvoUjzFJIbD6o3UantOyyHxyd6/at5paCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708533137; c=relaxed/simple;
-	bh=Qhnnq21WvmUtary5xYLxQzZvmF5bro5PLGcnOVAmL4o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=AptjavNIbrzuYRrLokEi+GZN9Hm6wGRBtjFThti4KFvH59vgjavu3yYBQ6Ck0GK3qrOM+L7+a90/jmXAx7N0x/es5jKg87kSjbpK2JZIPKGMFpWNbp6jmL5NC/1LywydYlYDi4SwR+5ck4i7qrIQSakitkpKRmlP/gc5QosVjpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=Cn7r0iZ7; arc=none smtp.client-ip=185.132.182.106
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
-Received: from pps.filterd (m0288072.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41LBQkT0027891;
-	Wed, 21 Feb 2024 17:31:18 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	selector1; bh=RgA97dYX4Od/frVDv9EeyOJvDvfZfZ84xgDgXSNIrPY=; b=Cn
-	7r0iZ7b0iqY1dX0racFiikHG1ikeqF20ws9xFUbUjcSZjKKASBG7IlQN3QHtm1oC
-	Se+M6TJz1ex2mc4JX/pKRZZ425FjBksCbfP+YpNOXR3FEeOVVeE7+UXuHOQys3/F
-	eJQEWjLZ6xzKM4dpPAEJbjEIX4n1oGL5n7GQLvptSk/A6kJMDaXNAvXb4Pq1L6KP
-	rOO35s6A3Ps+42VQcz/EEHfliB/81B+nxxk60JTqGLxr96xvr3+EtuVefdLJfWZo
-	/XKvmLeaEPrlAV2qznuKRz4emm3qbNSb2I5SjrfHFdYTf3vgx5PMSIwDgbE6yEfm
-	Hw8VXTTe6/xLxssqKIrA==
-Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3wd201m79j-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 21 Feb 2024 17:31:18 +0100 (CET)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id F108B40044;
-	Wed, 21 Feb 2024 17:31:06 +0100 (CET)
-Received: from Webmail-eu.st.com (shfdag1node3.st.com [10.75.129.71])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 1D95F28CFA5;
-	Wed, 21 Feb 2024 17:29:58 +0100 (CET)
-Received: from [10.201.21.177] (10.201.21.177) by SHFDAG1NODE3.st.com
- (10.75.129.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Wed, 21 Feb
- 2024 17:29:57 +0100
-Message-ID: <8ed32443-1343-4970-9f5a-34285850b372@foss.st.com>
-Date: Wed, 21 Feb 2024 17:29:45 +0100
+	s=arc-20240116; t=1708533382; c=relaxed/simple;
+	bh=xzh1MU7f9HaHOo9h7VnbOedXYRbj+OXXK89ckVDOtuQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MsRmtLg9Yg2Rq8Zj06zDD5VXCvonA9sNcUsEeXmm4DOD42fOIPhBwkh01tJFulAd8BDstHyXrutkEpZITa2zYBqGJ0S6/MABBAHVYHzguXVV01SmGwwA1b2XbLXTT4XIo7iX2MO6lv63KbGBcou7vsy1prPNCoKHClYOax0lnUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OyVxku0C; arc=none smtp.client-ip=209.85.160.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-21eea6aab5eso2338483fac.0
+        for <stable@vger.kernel.org>; Wed, 21 Feb 2024 08:36:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708533380; x=1709138180; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KkQBw5FsGQdBcawGN493vMEju9xJFrfDZMYFWYJyFn8=;
+        b=OyVxku0CAcZmHqUed1rp16qX7nTV4QL9ygkmgS3qALjnwvKTXq/CcljsNijwD12b30
+         15WhZ5aLRaH/dPrEsMgroojGaihhbEaPp9OeaJOGHW2VYbT+VJpby7b8JWla5uZi05Tx
+         mmvI6tTApLpwSF5QcuzEb6+qQE54kErJO4qE+TcBFArbZ2Ew/bJlpt58UIq3UC6i8fwv
+         wVdM0a9FO9MiPys+6iMx3/kRepSeT/oOx6X78hfqf1Qgfj5ACO+S0eoUzLDVtO5/Zijq
+         KuBggRgPEUFt7Aw7wzYQ0E4NVGRV1iyryAPljlsn0duVm7Pumb2SxPxPoEy7jjkIh5+0
+         qPZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708533380; x=1709138180;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KkQBw5FsGQdBcawGN493vMEju9xJFrfDZMYFWYJyFn8=;
+        b=mKKrK/g1JWIDCR3ktBYG/sbSlV9dD0B84MF/d2EconT60fbMjrTr59AkifOZD+MgLM
+         VghUjKEujZmiqJ8mPwtG07wbO/ULumws5UPFjvQAnlArEFJL9IdtJj6XH3R3UbEMlRAH
+         RGKQ4hXLc/JPKLfLePEhSIADfG4lR64FO3zX3LROSuoMpapyq3dcMNW+2S1Rg1VVH2rZ
+         hPlxkqcnGnUfhK3tCxQCoEZEQ1s1fGUSjVIUWh5LFm5hIIUueeqD4e9YxycclX5Sg+pr
+         8Ms5FAnhjd/XypQFFZKX2EoN3fYHR/SNAr+OySsUJ+LrcXae1BZKcODxU4zsF4zwCpUL
+         w7zQ==
+X-Gm-Message-State: AOJu0Yx2m6SDR6DCRaYjXBfbjhSeWyfOZYQbRPGeZQLRPCHtHDBJmGPJ
+	LBVraWvTuvyeKMGUkWCGFfVTKbph2Cne1nCHOkpnyiJDDwsq7Wowt6zs2x4i
+X-Google-Smtp-Source: AGHT+IGYBNxZ8yWDVs1jXS+7wTGhfIEQqa7KAkEatTGeQ/Z6qpawJjQt8hywuWy6fSSvYWhQ+LuQDw==
+X-Received: by 2002:a05:6871:b22:b0:21e:b386:3c96 with SMTP id fq34-20020a0568710b2200b0021eb3863c96mr13129883oab.11.1708533379958;
+        Wed, 21 Feb 2024 08:36:19 -0800 (PST)
+Received: from carrot.. (i223-217-149-232.s42.a014.ap.plala.or.jp. [223.217.149.232])
+        by smtp.gmail.com with ESMTPSA id t1-20020a632d01000000b005dc9ab425c2sm8850885pgt.35.2024.02.21.08.36.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Feb 2024 08:36:19 -0800 (PST)
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 5.4] nilfs2: replace WARN_ONs for invalid DAT metadata block requests
+Date: Thu, 22 Feb 2024 01:36:24 +0900
+Message-Id: <20240221163624.3831-1-konishi.ryusuke@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] mtd: rawnand: Clarify conditions to enable continuous
- reads
-Content-Language: en-US
-To: Miquel Raynal <miquel.raynal@bootlin.com>
-CC: Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra
-	<vigneshr@ti.com>,
-        Tudor Ambarus <tudor.ambarus@linaro.org>,
-        Pratyush Yadav
-	<pratyush@kernel.org>,
-        Michael Walle <michael@walle.cc>, <linux-mtd@lists.infradead.org>,
-        Thomas Petazzoni
-	<thomas.petazzoni@bootlin.com>,
-        Julien Su <juliensu@mxic.com.tw>, Jaime Liao
-	<jaimeliao@mxic.com.tw>,
-        Jaime Liao <jaimeliao.tw@gmail.com>,
-        Alvin Zhou
-	<alvinzhou@mxic.com.tw>, <eagle.alexander923@gmail.com>,
-        <mans@mansr.com>, <martin@geanix.com>,
-        =?UTF-8?Q?Sean_Nyekj=C3=A6r?= <sean@geanix.com>,
-        <stable@vger.kernel.org>
-References: <20231222113730.786693-1-miquel.raynal@bootlin.com>
- <cce57281-4149-459f-b741-0f3c08af7d20@foss.st.com>
- <20240221122032.502fbf3f@xps-13>
-From: Christophe Kerello <christophe.kerello@foss.st.com>
-In-Reply-To: <20240221122032.502fbf3f@xps-13>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: EQNCAS1NODE3.st.com (10.75.129.80) To SHFDAG1NODE3.st.com
- (10.75.129.71)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-21_03,2024-02-21_02,2023-05-22_02
 
-Hi Miquel,
+commit 5124a0a549857c4b87173280e192eea24dea72ad upstream.
 
-On 2/21/24 12:20, Miquel Raynal wrote:
-> Hi Christophe,
-> 
-> christophe.kerello@foss.st.com wrote on Fri, 9 Feb 2024 14:35:44 +0100:
-> 
->> Hi Miquel,
->>
->> I am testing last nand/next branch with the MP1 board, and i get an issue since this patch was applied.
->>
->> When I read the SLC NAND using nandump tool (reading page 0 and page 1), the OOB is not displayed at expected. For page 1, oob is displayed when for page 0 the first data of the page are displayed.
->>
->> The nanddump command used is: nanddump -c -o -l 0x2000 /dev/mtd9
-> 
-> I believe the issue is not in the indexes but related to the OOB. I
-> currently test on a device on which I would prefer not to smash the
-> content, so this is just compile tested and not run time verified, but
-> could you tell me if this solves the issue:
-> 
-> --- a/drivers/mtd/nand/raw/nand_base.c
-> +++ b/drivers/mtd/nand/raw/nand_base.c
-> @@ -3577,7 +3577,8 @@ static int nand_do_read_ops(struct nand_chip *chip, loff_t from,
->          oob = ops->oobbuf;
->          oob_required = oob ? 1 : 0;
->   
-> -       rawnand_enable_cont_reads(chip, page, readlen, col);
-> +       if (!oob_required)
-> +               rawnand_enable_cont_reads(chip, page, readlen, col);
+If DAT metadata file block access fails due to corruption of the DAT file
+or abnormal virtual block numbers held by b-trees or inodes, a kernel
+warning is generated.
 
-I am still able to reproduce the problem with the patch applied.
-In fact, when nanddump reads the OOB, nand_do_read_ops is not called, 
-but nand_read_oob_op is called, and as cont_read.ongoing=1, we are not 
-dumping the oob but the first data of the page.
+This replaces the WARN_ONs by error output, so that a kernel, booted with
+panic_on_warn, does not panic.  This patch also replaces the detected
+return code -ENOENT with another internal code -EINVAL to notify the bmap
+layer of metadata corruption.  When the bmap layer sees -EINVAL, it
+handles the abnormal situation with nilfs_bmap_convert_error() and finally
+returns code -EIO as it should.
 
-page 0:
-[   57.642144] rawnand_enable_cont_reads: page=0, col=0, readlen=4096, 
-mtd->writesize=4096
-[   57.650210] rawnand_enable_cont_reads: end_page=1
-[   57.654858] nand_do_read_ops: cont_read.ongoing=1
-[   59.352562] nand_read_oob_op
-page 1:
-[   59.355966] rawnand_enable_cont_reads: page=1, col=0, readlen=4096, 
-mtd->writesize=4096
-[   59.364045] rawnand_enable_cont_reads: end_page=1
-[   59.368757] nand_do_read_ops: cont_read.ongoing=0
-[   61.390098] nand_read_oob_op
+Link: https://lkml.kernel.org/r/0000000000005cc3d205ea23ddcf@google.com
+Link: https://lkml.kernel.org/r/20230126164114.6911-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: <syzbot+5d5d25f90f195a3cfcb4@syzkaller.appspotmail.com>
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+Please use this patch for these versions instead of the patch I asked
+you to drop in the previous review comments.
 
-I have not currently bandwidth to work on this topic and I need to 
-understand how continuous read is working, but I have made a patch and I 
-do not have issues with it when I am using nanddump or mtd_debug tools.
+This replacement patch uses an equivalent call using nilfs_msg()
+instead of nilfs_err(), which does not exist in these versions.
 
-I have not tested it on a file system, so it is just a proposal.
+Thanks,
+Ryusuke Konishi
 
---- a/drivers/mtd/nand/raw/nand_base.c
-+++ b/drivers/mtd/nand/raw/nand_base.c
-@@ -3466,22 +3466,18 @@ static void rawnand_enable_cont_reads(struct 
-nand_chip *chip, unsigned int page,
-  				      u32 readlen, int col)
-  {
-  	struct mtd_info *mtd = nand_to_mtd(chip);
--	unsigned int end_page, end_col;
-+	unsigned int end_page;
+ fs/nilfs2/dat.c | 27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
-  	chip->cont_read.ongoing = false;
-
--	if (!chip->controller->supported_op.cont_read)
-+	if (!chip->controller->supported_op.cont_read || col + readlen <= 
-mtd->writesize)
-  		return;
-
--	end_page = DIV_ROUND_UP(col + readlen, mtd->writesize);
--	end_col = (col + readlen) % mtd->writesize;
-+	end_page = page + DIV_ROUND_UP(col + readlen, mtd->writesize) - 1;
-
-  	if (col)
-  		page++;
-
--	if (end_col && end_page)
--		end_page--;
+diff --git a/fs/nilfs2/dat.c b/fs/nilfs2/dat.c
+index e2a5320f2718..b9c759addd50 100644
+--- a/fs/nilfs2/dat.c
++++ b/fs/nilfs2/dat.c
+@@ -40,8 +40,21 @@ static inline struct nilfs_dat_info *NILFS_DAT_I(struct inode *dat)
+ static int nilfs_dat_prepare_entry(struct inode *dat,
+ 				   struct nilfs_palloc_req *req, int create)
+ {
+-	return nilfs_palloc_get_entry_block(dat, req->pr_entry_nr,
+-					    create, &req->pr_entry_bh);
++	int ret;
++
++	ret = nilfs_palloc_get_entry_block(dat, req->pr_entry_nr,
++					   create, &req->pr_entry_bh);
++	if (unlikely(ret == -ENOENT)) {
++		nilfs_msg(dat->i_sb, KERN_ERR,
++			  "DAT doesn't have a block to manage vblocknr = %llu",
++			  (unsigned long long)req->pr_entry_nr);
++		/*
++		 * Return internal code -EINVAL to notify bmap layer of
++		 * metadata corruption.
++		 */
++		ret = -EINVAL;
++	}
++	return ret;
+ }
+ 
+ static void nilfs_dat_commit_entry(struct inode *dat,
+@@ -123,11 +136,7 @@ static void nilfs_dat_commit_free(struct inode *dat,
+ 
+ int nilfs_dat_prepare_start(struct inode *dat, struct nilfs_palloc_req *req)
+ {
+-	int ret;
 -
-  	if (page + 1 > end_page)
-  		return;
+-	ret = nilfs_dat_prepare_entry(dat, req, 0);
+-	WARN_ON(ret == -ENOENT);
+-	return ret;
++	return nilfs_dat_prepare_entry(dat, req, 0);
+ }
+ 
+ void nilfs_dat_commit_start(struct inode *dat, struct nilfs_palloc_req *req,
+@@ -154,10 +163,8 @@ int nilfs_dat_prepare_end(struct inode *dat, struct nilfs_palloc_req *req)
+ 	int ret;
+ 
+ 	ret = nilfs_dat_prepare_entry(dat, req, 0);
+-	if (ret < 0) {
+-		WARN_ON(ret == -ENOENT);
++	if (ret < 0)
+ 		return ret;
+-	}
+ 
+ 	kaddr = kmap_atomic(req->pr_entry_bh->b_page);
+ 	entry = nilfs_palloc_block_get_entry(dat, req->pr_entry_nr,
+-- 
+2.39.3
 
-Tell me if this patch is breaking the continuous read feature or if it 
-can be pushed on the mailing list.
-
-Regards,
-Christophe Kerello.
-
->   
->          while (1) {
->                  struct mtd_ecc_stats ecc_stats = mtd->ecc_stats;
-> 
-> 
-> If that does not work, I'll destroy the content of the flash and
-> properly reproduce.
-> 
-> Thanks,
-> Miquèl
 
