@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-22711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6396685DD5C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:04:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFE1A85D8F4
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:12:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E8B42847B3
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:04:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C5D71C22E1F
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:12:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23A8278B4B;
-	Wed, 21 Feb 2024 14:04:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E18169D28;
+	Wed, 21 Feb 2024 13:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0NxKGqlp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fiu7xzQm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D57E0762C1;
-	Wed, 21 Feb 2024 14:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB5B3EA71;
+	Wed, 21 Feb 2024 13:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524255; cv=none; b=ap0r8m6/Kk/SVDY9lxuzxtSifIYnqLyN5Ko1JB/+R6KLzZd4cooRDUYKz2va/WEEJcKv9I6HoGywHzFPpQgBAr2l0h8qUU91TliGxkexC0U0GQ63wa2BJeH9WYRnE+QQJNk+pDwdDsIzebOm18om6UPNX8P49zf2uqrVOc59q78=
+	t=1708521170; cv=none; b=oP1IBWiLiKFy+SBjv0wEgtUTICEnRpJDMM3IXcQfr0+9rnKhCsOo6k5O9AFwgQIwTkr0Aq8KpAXrv+lgfCuKMHubRNWb4BnFSC2VGCiJOB+9GN19fa/7evEb1UlkwKtOyONWG+0WNPwHZQVSDItz798e2cW5jwY+XNieP1XLVmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524255; c=relaxed/simple;
-	bh=BzhEEgiueNEmoKiHd+eRJHFAAmU5XJRaNJfbuRSYdXI=;
+	s=arc-20240116; t=1708521170; c=relaxed/simple;
+	bh=sw8Iy8FcKBzgZ8T/7a+DiNKlHqGlkMxa/ey4nCT3IFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a+HxlUlyjTnlqbwykJ/VI4KPo7F4EAB0kXD9cGXQgBBSOiL7/SdnjAt0bYBI6LzI2bWCwChmd2XgYexVTVE4WcUIVGKRbZ/XEi4eQZaQCs7nADIwgkh0cO49qWK7bqsPBACBcZ+Z793x0sK28rDztsZ6AKq6CmIpIQjF2A3hhWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0NxKGqlp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46020C433F1;
-	Wed, 21 Feb 2024 14:04:15 +0000 (UTC)
+	 MIME-Version; b=eWVzCY2OFWh9CIA8YztQPNTZ2IyesAIHTpksp27DipsG0gOrlpe+Zo0nOVRD0Be4OzSCmvJQjd24bThN/Sa/AQ4IzKBKBuqirKdsXFzr9y1j2PaiByEz4ALREXfSXPt87KTA66iOTYTs3Y3ecIO5J2NN/xRUQcZXQy3In0idZDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fiu7xzQm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 954C1C433F1;
+	Wed, 21 Feb 2024 13:12:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524255;
-	bh=BzhEEgiueNEmoKiHd+eRJHFAAmU5XJRaNJfbuRSYdXI=;
+	s=korg; t=1708521170;
+	bh=sw8Iy8FcKBzgZ8T/7a+DiNKlHqGlkMxa/ey4nCT3IFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0NxKGqlpIYpQ+YTkjKCfb+f1kJaHO1pemSarfXA+8YCD8co5ceMnga5aKs0f+0Rwx
-	 XLr6cGPZB7zlW1pl4mnVWPckqC2YJIdZpPuZOJXCWknr/GsX/4JuGmmS12lWF8K5gv
-	 GK0X1V7/33NeF+S6NNy6B7T8IPETuZNni+wqxZXc=
+	b=fiu7xzQmwrnB+a/rswlonINtGnA9A4zCgRzkmtZqF1uxbimfsYny75HBZntKvbeu4
+	 Aww3ume6hvQv7xuhUCkLi5M7PLEZCj3Pxcu3/gwScoW1FY8mlsbMXG70SuiU9JAg02
+	 eeYp6fy8jsNb+BJ/45UFiG2Ucq5f9tFQbU+i/wI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 162/379] ARM: dts: imx23-sansa: Use preferred i2c-gpios properties
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	George Melikov <mail@gmelikov.ru>
+Subject: [PATCH 4.19 040/202] gpiolib: acpi: Ignore touchpad wakeup on GPD G1619-04
 Date: Wed, 21 Feb 2024 14:05:41 +0100
-Message-ID: <20240221125959.709838814@linuxfoundation.org>
+Message-ID: <20240221125933.090702280@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit e3aa1a82fb20ee97597022f6528823a8ab82bde6 ]
+commit 805c74eac8cb306dc69b87b6b066ab4da77ceaf1 upstream.
 
-The 'gpios' property to describe the SDA and SCL GPIOs is considered
-deprecated according to i2c-gpio.yaml.
+Spurious wakeups are reported on the GPD G1619-04 which
+can be absolved by programming the GPIO to ignore wakeups.
 
-Switch to the preferred 'sda-gpios' and 'scl-gpios' properties.
-
-This fixes the following schema warnings:
-
-imx23-sansa.dtb: i2c-0: 'sda-gpios' is a required property
-	from schema $id: http://devicetree.org/schemas/i2c/i2c-gpio.yaml#
-imx23-sansa.dtb: i2c-0: 'scl-gpios' is a required property
-	from schema $id: http://devicetree.org/schemas/i2c/i2c-gpio.yaml#
-
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-and-tested-by: George Melikov <mail@gmelikov.ru>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3073
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/imx23-sansa.dts | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ drivers/gpio/gpiolib-acpi.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/arch/arm/boot/dts/imx23-sansa.dts b/arch/arm/boot/dts/imx23-sansa.dts
-index 46057d9bf555..c2efcc20ae80 100644
---- a/arch/arm/boot/dts/imx23-sansa.dts
-+++ b/arch/arm/boot/dts/imx23-sansa.dts
-@@ -175,10 +175,8 @@
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		compatible = "i2c-gpio";
--		gpios = <
--			&gpio1 24 0		/* SDA */
--			&gpio1 22 0		/* SCL */
--		>;
-+		sda-gpios = <&gpio1 24 0>;
-+		scl-gpios = <&gpio1 22 0>;
- 		i2c-gpio,delay-us = <2>;	/* ~100 kHz */
- 	};
+--- a/drivers/gpio/gpiolib-acpi.c
++++ b/drivers/gpio/gpiolib-acpi.c
+@@ -1427,6 +1427,20 @@ static const struct dmi_system_id gpioli
+ 			.ignore_wake = "INT33FF:01@0",
+ 		},
+ 	},
++	{
++		/*
++		 * Spurious wakeups from TP_ATTN# pin
++		 * Found in BIOS 0.35
++		 * https://gitlab.freedesktop.org/drm/amd/-/issues/3073
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "GPD"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "G1619-04"),
++		},
++		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
++			.ignore_wake = "PNP0C50:00@8",
++		},
++	},
+ 	{} /* Terminating entry */
+ };
  
-@@ -186,10 +184,8 @@
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		compatible = "i2c-gpio";
--		gpios = <
--			&gpio0 31 0		/* SDA */
--			&gpio0 30 0		/* SCL */
--		>;
-+		sda-gpios = <&gpio0 31 0>;
-+		scl-gpios = <&gpio0 30 0>;
- 		i2c-gpio,delay-us = <2>;	/* ~100 kHz */
- 
- 		touch: touch@20 {
--- 
-2.43.0
-
 
 
 
