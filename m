@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-22491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37AFE85DC47
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:51:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A84185DF1C
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:24:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7C3528515C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:51:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BA081C22291
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:24:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A7B678B7C;
-	Wed, 21 Feb 2024 13:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BFC07C097;
+	Wed, 21 Feb 2024 14:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y8TQ99Wv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2dEadze7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3718955E5E;
-	Wed, 21 Feb 2024 13:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB7E7A708;
+	Wed, 21 Feb 2024 14:24:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523482; cv=none; b=fuxkckxeeZ3WE5dQ1wOmHRApSQ41txj5tYwFkgoN1p8U+JZCFstNPPJhb4Smq2Obd4pNwHnjm3yJrD4j8XlPwmJIA5ZglweySuSx+PxPiKFDFSia1hu8cP9gojAzs6tP1qMnroHZ6Kb1XrJ6y27Jd4HrvQHoSmpn+iOhquZk/SY=
+	t=1708525485; cv=none; b=fgW6/ip5GMAGMq3n8JRe8FScHHNBMtsu6el2na/SLKRityuddw4oyKRRHp3UsnFPz4CGsNNpf9J6UuLqdeFelUtlZ/82XJdCb+ec8QMjAvIe4/EUKCCrRc+VAoXmSr/538Ipizsj1aJwx5bq0JPBwLziec2s77GN997zgTEB6oo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523482; c=relaxed/simple;
-	bh=alihBCFHwDb8S6TNCbtX9Y1wJIzdRfJB5qiVkSOykpI=;
+	s=arc-20240116; t=1708525485; c=relaxed/simple;
+	bh=GLE1EcRK0EE10DWFPWHCiXhIFO0FyhAzVN5lFRRadIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pgYFFMHoexDncAJHmNkVlBkcm0IE0NxckSXySo511I+omHC0cF3Dw02IIkKA5kGbd3YSE1A1r/oLproyUKbbgmco0k38MvPar+0YSU1qFQ/wghvgJZ3uuGMDuGMaAk6wOHt/rBzgjxMwP4Umf6W2KJpVa4nD2n//s+h3oc9qnC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y8TQ99Wv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B5CDC433C7;
-	Wed, 21 Feb 2024 13:51:21 +0000 (UTC)
+	 MIME-Version; b=NXhmp1nrtUH44YLKD2Hg+JmJ82qGir2An2mwo/RIu4KiNhOdPgSRWkoG9QNLg0yvPFxL5mmoMGnBiC43gF+1PiInL/twHKWwUuQRtao4OBymGmhOf42LIo09D7jnu4smLepa4Bo5IQlpMlHRs9mgLYjd7fZ3MqJVpjOG53KIMcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2dEadze7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E72C1C433F1;
+	Wed, 21 Feb 2024 14:24:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523482;
-	bh=alihBCFHwDb8S6TNCbtX9Y1wJIzdRfJB5qiVkSOykpI=;
+	s=korg; t=1708525485;
+	bh=GLE1EcRK0EE10DWFPWHCiXhIFO0FyhAzVN5lFRRadIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y8TQ99Wv/UahedH7hNpMeFSB8YxXyCxqKQxuMV+7d9aldSFoD8wxKqNaTxt2oEu5J
-	 Ma0GEV0mK6FDO+KhqjaB0yVom8+MgFRpwwF+e5VZB16joWli7gI6qWw/BN3ECuGC2r
-	 53SvYN4fwjMp1IOyqTQvnri5z8bKpC6Y6oWmldbo=
+	b=2dEadze7aZfZ/JDMoOFE3bqmYZQRDNmFq/ubQf6562zsc2zbiAnicmXPjRY6v7AoW
+	 Tjo0YNXHfygChnePpO4cJ26hyan8KUKklDxvyJ3s/IWpadRdYkJgja5qMuPbO04daj
+	 m8hksLZTd6Ra1j1wB1XR1jeCJTSWuukBTsSBjhDE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nuno Sa <nuno.sa@analog.com>,
-	Saravana Kannan <saravanak@google.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Rob Herring <robh@kernel.org>
-Subject: [PATCH 5.15 420/476] of: property: fix typo in io-channels
-Date: Wed, 21 Feb 2024 14:07:51 +0100
-Message-ID: <20240221130023.559347042@linuxfoundation.org>
+	Maxime Ripard <mripard@kernel.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Inki Dae <inki.dae@samsung.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 131/267] drm/exynos: Call drm_atomic_helper_shutdown() at shutdown/unbind time
+Date: Wed, 21 Feb 2024 14:07:52 +0100
+Message-ID: <20240221125944.163585074@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +64,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sa <nuno.sa@analog.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-commit 8f7e917907385e112a845d668ae2832f41e64bf5 upstream.
+[ Upstream commit 16ac5b21b31b439f03cdf44c153c5f5af94fb3eb ]
 
-The property is io-channels and not io-channel. This was effectively
-preventing the devlink creation.
+Based on grepping through the source code this driver appears to be
+missing a call to drm_atomic_helper_shutdown() at system shutdown time
+and at driver unbind time. Among other things, this means that if a
+panel is in use that it won't be cleanly powered off at system
+shutdown time.
 
-Fixes: 8e12257dead7 ("of: property: Add device link support for iommus, mboxes and io-channels")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Reviewed-by: Saravana Kannan <saravanak@google.com>
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Link: https://lore.kernel.org/r/20240123-iio-backend-v7-1-1bff236b8693@analog.com
-Signed-off-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The fact that we should call drm_atomic_helper_shutdown() in the case
+of OS shutdown/restart and at driver remove (or unbind) time comes
+straight out of the kernel doc "driver instance overview" in
+drm_drv.c.
+
+A few notes about this fix:
+- When adding drm_atomic_helper_shutdown() to the unbind path, I added
+  it after drm_kms_helper_poll_fini() since that's when other drivers
+  seemed to have it.
+- Technically with a previous patch, ("drm/atomic-helper:
+  drm_atomic_helper_shutdown(NULL) should be a noop"), we don't
+  actually need to check to see if our "drm" pointer is NULL before
+  calling drm_atomic_helper_shutdown(). We'll leave the "if" test in,
+  though, so that this patch can land without any dependencies. It
+  could potentially be removed later.
+- This patch also makes sure to set the drvdata to NULL in the case of
+  bind errors to make sure that shutdown can't access freed data.
+
+Suggested-by: Maxime Ripard <mripard@kernel.org>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/property.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/exynos/exynos_drm_drv.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/of/property.c
-+++ b/drivers/of/property.c
-@@ -1270,7 +1270,7 @@ DEFINE_SIMPLE_PROP(clocks, "clocks", "#c
- DEFINE_SIMPLE_PROP(interconnects, "interconnects", "#interconnect-cells")
- DEFINE_SIMPLE_PROP(iommus, "iommus", "#iommu-cells")
- DEFINE_SIMPLE_PROP(mboxes, "mboxes", "#mbox-cells")
--DEFINE_SIMPLE_PROP(io_channels, "io-channel", "#io-channel-cells")
-+DEFINE_SIMPLE_PROP(io_channels, "io-channels", "#io-channel-cells")
- DEFINE_SIMPLE_PROP(interrupt_parent, "interrupt-parent", NULL)
- DEFINE_SIMPLE_PROP(dmas, "dmas", "#dma-cells")
- DEFINE_SIMPLE_PROP(power_domains, "power-domains", "#power-domain-cells")
+diff --git a/drivers/gpu/drm/exynos/exynos_drm_drv.c b/drivers/gpu/drm/exynos/exynos_drm_drv.c
+index ba0f868b2477..29577a7eaea8 100644
+--- a/drivers/gpu/drm/exynos/exynos_drm_drv.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_drv.c
+@@ -346,6 +346,7 @@ static int exynos_drm_bind(struct device *dev)
+ 	drm_mode_config_cleanup(drm);
+ 	exynos_drm_cleanup_dma(drm);
+ 	kfree(private);
++	dev_set_drvdata(dev, NULL);
+ err_free_drm:
+ 	drm_dev_put(drm);
+ 
+@@ -360,6 +361,7 @@ static void exynos_drm_unbind(struct device *dev)
+ 
+ 	exynos_drm_fbdev_fini(drm);
+ 	drm_kms_helper_poll_fini(drm);
++	drm_atomic_helper_shutdown(drm);
+ 
+ 	component_unbind_all(drm->dev, drm);
+ 	drm_mode_config_cleanup(drm);
+@@ -397,9 +399,18 @@ static int exynos_drm_platform_remove(struct platform_device *pdev)
+ 	return 0;
+ }
+ 
++static void exynos_drm_platform_shutdown(struct platform_device *pdev)
++{
++	struct drm_device *drm = platform_get_drvdata(pdev);
++
++	if (drm)
++		drm_atomic_helper_shutdown(drm);
++}
++
+ static struct platform_driver exynos_drm_platform_driver = {
+ 	.probe	= exynos_drm_platform_probe,
+ 	.remove	= exynos_drm_platform_remove,
++	.shutdown = exynos_drm_platform_shutdown,
+ 	.driver	= {
+ 		.name	= "exynos-drm",
+ 		.pm	= &exynos_drm_pm_ops,
+-- 
+2.43.0
+
 
 
 
