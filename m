@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-23034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ACB185DEE5
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:22:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E6CD85DDD8
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:12:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 262F0283995
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:22:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD807283C88
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:12:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52D967C099;
-	Wed, 21 Feb 2024 14:22:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7572F7BB1B;
+	Wed, 21 Feb 2024 14:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cOdYek4r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jm9mLf0e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1031B7BB16;
-	Wed, 21 Feb 2024 14:22:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3103478B4B;
+	Wed, 21 Feb 2024 14:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525360; cv=none; b=mGH5Stiq+d5hnhP/XED3cdYYcOWsWoKt4Je7fnVKsRxZPAog5aj5qktVWvapZMfjYpuwzRWPLVVEyYw7SNBff5SGiI+SYreOEIlgvTsLH3TEUK4uK8ATE/RgQw2QBhrecOz2zLinJ+5OUq1sdWLljRFMQUGkNMbTl4SYxDqAekU=
+	t=1708524507; cv=none; b=XmYhi4tujHES6sgnCNOvLsrDA0HFMXs7Wfuh1L0/zQI4EbB7cGmGHHqiGyt+TfNvGz77kLbqjDSGh/nwAYXkmkZ//TfZ+9f74Zgo7lmJV1rB0ytsHmI6P8PtxGUD7ePCoPpZQ1xnYrNc/qSv6NR+o5zrd3PxwefRJtpyNO78AEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525360; c=relaxed/simple;
-	bh=8NzoKZPo2u1BiPPA/nsGJ4DcxBiXL0dh05IaQ44RZv0=;
+	s=arc-20240116; t=1708524507; c=relaxed/simple;
+	bh=7LWXAh/TF6gz8DT7VWGAVxpjsEI2nP8EHWfFuViOJxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Aq1N5gW5VYkz0e4snsGHBjmHHCsJq7MhDHprwC9QKB2P10rp5Ckhyq37ucnQp4TnG6BlGSb1vVd1apNf9/OlB+g0pg1OvOg8tC2tA0cOTW3+Cbvhc4iKvQpGh9k4FgSAxkCWcW/UdfrPK/wOmPoXAkaAyze1fEOPQsrx9UQIbho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cOdYek4r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72ED6C433C7;
-	Wed, 21 Feb 2024 14:22:39 +0000 (UTC)
+	 MIME-Version; b=DxPeFau8Ew+qXr7wCggff4rs7LYMntpj+TajjsMWLN8m8b4bJJXqE34QZKKV4E6hXhc5s6Bq67J5fqDEj6qKBk1iTyyxiSCYrStRKKbLtNNUKK7h7M/EsX45Lh9JcYSdNmT3n/x7Y0a5va6ia00BvzXVlx7APLaVhIdulcjrKvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jm9mLf0e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B343C433F1;
+	Wed, 21 Feb 2024 14:08:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525359;
-	bh=8NzoKZPo2u1BiPPA/nsGJ4DcxBiXL0dh05IaQ44RZv0=;
+	s=korg; t=1708524507;
+	bh=7LWXAh/TF6gz8DT7VWGAVxpjsEI2nP8EHWfFuViOJxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cOdYek4rjiQKx8sC0s3ITcrzZyzqgWhYcu/WNcBAL0o6ySv3zrbgVmEdus6EzDlwZ
-	 yuWd+kQLndeWfbVqesla+Xk0i0N5Ar4Jqi03hLra1k+cU4uOZWQk4ufVMWIWsoFU6D
-	 4XrFNmLMVvrKAFiw5qR/gqsXLwIEXgojXI+KUaBE=
+	b=Jm9mLf0eoYp6NsQDsuhXAnTvWhP4NBSc3CtFqJF1zFfrMG/FSSA3mYHF5VAfKaer6
+	 JXPMAVlM4aqR6y7j60iCD0Zf9mGwDvcH1Shhi8kunP/DPBJlWT9eMZO4/x78m0++wW
+	 D+EMoc2+RzcilDEsEKNfNbf/X2xi/BEStM/yqGs8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Jonker <jbx6244@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 104/267] ARM: dts: rockchip: fix rk3036 hdmi ports node
+Subject: [PATCH 5.10 266/379] netfilter: nft_compat: restrict match/target protocol to u16
 Date: Wed, 21 Feb 2024 14:07:25 +0100
-Message-ID: <20240221125943.202649545@linuxfoundation.org>
+Message-ID: <20240221130002.780859993@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Jonker <jbx6244@gmail.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 27ded76ef0fcfcf939914532aae575cf23c221b4 ]
+[ Upstream commit d694b754894c93fb4d71a7f3699439dec111decc ]
 
-Fix hdmi ports node so that it matches the
-rockchip,inno-hdmi.yaml binding.
+xt_check_{match,target} expects u16, but NFTA_RULE_COMPAT_PROTO is u32.
 
-Signed-off-by: Johan Jonker <jbx6244@gmail.com>
-Link: https://lore.kernel.org/r/9a2afac1-ed5c-382d-02b0-b2f5f1af3abb@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+NLA_POLICY_MAX(NLA_BE32, 65535) cannot be used because .max in
+nla_policy is s16, see 3e48be05f3c7 ("netlink: add attribute range
+validation to policy").
+
+Fixes: 0ca743a55991 ("netfilter: nf_tables: add compatibility layer for x_tables")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/rk3036.dtsi | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ net/netfilter/nft_compat.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/rk3036.dtsi b/arch/arm/boot/dts/rk3036.dtsi
-index d282a7b638d8..cc2d596da7d4 100644
---- a/arch/arm/boot/dts/rk3036.dtsi
-+++ b/arch/arm/boot/dts/rk3036.dtsi
-@@ -337,12 +337,20 @@
- 		pinctrl-0 = <&hdmi_ctl>;
- 		status = "disabled";
+diff --git a/net/netfilter/nft_compat.c b/net/netfilter/nft_compat.c
+index 025f5189f2ce..77c7362a7db8 100644
+--- a/net/netfilter/nft_compat.c
++++ b/net/netfilter/nft_compat.c
+@@ -192,6 +192,7 @@ static const struct nla_policy nft_rule_compat_policy[NFTA_RULE_COMPAT_MAX + 1]
+ static int nft_parse_compat(const struct nlattr *attr, u16 *proto, bool *inv)
+ {
+ 	struct nlattr *tb[NFTA_RULE_COMPAT_MAX+1];
++	u32 l4proto;
+ 	u32 flags;
+ 	int err;
  
--		hdmi_in: port {
-+		ports {
- 			#address-cells = <1>;
- 			#size-cells = <0>;
--			hdmi_in_vop: endpoint@0 {
+@@ -210,7 +211,12 @@ static int nft_parse_compat(const struct nlattr *attr, u16 *proto, bool *inv)
+ 	if (flags & NFT_RULE_COMPAT_F_INV)
+ 		*inv = true;
+ 
+-	*proto = ntohl(nla_get_be32(tb[NFTA_RULE_COMPAT_PROTO]));
++	l4proto = ntohl(nla_get_be32(tb[NFTA_RULE_COMPAT_PROTO]));
++	if (l4proto > U16_MAX)
++		return -EINVAL;
 +
-+			hdmi_in: port@0 {
- 				reg = <0>;
--				remote-endpoint = <&vop_out_hdmi>;
++	*proto = l4proto;
 +
-+				hdmi_in_vop: endpoint {
-+					remote-endpoint = <&vop_out_hdmi>;
-+				};
-+			};
-+
-+			hdmi_out: port@1 {
-+				reg = <1>;
- 			};
- 		};
- 	};
+ 	return 0;
+ }
+ 
 -- 
 2.43.0
 
