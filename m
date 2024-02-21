@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-22636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65A2F85DD04
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:01:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D915F85DB65
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:40:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F11BFB28AE1
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:01:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 795AD1F24091
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:40:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37B2E7EF1B;
-	Wed, 21 Feb 2024 14:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 820F077A03;
+	Wed, 21 Feb 2024 13:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TFwUGkOg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PpMFD/BN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9E027EF13;
-	Wed, 21 Feb 2024 14:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D7269951;
+	Wed, 21 Feb 2024 13:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524004; cv=none; b=H+juFf7umElUVWIKnuC+GJ7BNi9AEimRjQS0Mw5IfVBce/apzQBcfnrXudDKcA1X12clCDzn0YgNCe8eVz3QmYy7xqwljSbtGrwKkeXXzJguYN2kSVv0inNovlkax7onbw+6c2hNSiHUKHlFju93v/R09ydUEkt8vtxbSASfcgc=
+	t=1708522827; cv=none; b=o58xTanV35YNjpacsHx0gAqV9KgRcE7mYswSlMOK4A2fLkRbhtYatXJvkgbeReWQAojtupjt0fV7v3AuXKGRnocVXvmB44jnizKxaKK8j6zJQ3C86yePFQ8CLrno6wNITh/a0eM9kZCCFzVANr5vdr7Df3a10Sw2pKMsbtFlhRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524004; c=relaxed/simple;
-	bh=CCrjdk8qgXXhEqpHACcXLI7UlTqW5auzexVJ6mBuRok=;
+	s=arc-20240116; t=1708522827; c=relaxed/simple;
+	bh=NJZCUMtI0iQWRAcvRIaFgovZT/nh2hIovrwnQaZ+GOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=plHqAQq//KUje9bd0ijOkfdRRC9CkVDVvjaifWclWoCvb4l1rhoJL3H2A8hlI6uJ5savHjIiMzL+Zs2jNuJL7WHOZvkqaWwDOsdqz/DQMMiewpCJJeIf74c643AgMN4aLaRr6xlE+eN9kYdRk/76ITZw41oCN2ilvongSCtcIVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TFwUGkOg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21E44C433C7;
-	Wed, 21 Feb 2024 14:00:02 +0000 (UTC)
+	 MIME-Version; b=Sjh1yBCCndcLtFoYIvqEOvZqDt6T+LI3SFSuokmaodCushqzptO5uAsikVEb0ZuZIGLUua9rk7sAMpkURbkUnGhFPrlRkzePxF0/sBYxUSQI0RA+VIzA5vANvFM+/O6HAvguwHyMmk6jpmxZjiEUK5u8QXZAyaJzYLyQjl97Iyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PpMFD/BN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE9FDC433F1;
+	Wed, 21 Feb 2024 13:40:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524003;
-	bh=CCrjdk8qgXXhEqpHACcXLI7UlTqW5auzexVJ6mBuRok=;
+	s=korg; t=1708522827;
+	bh=NJZCUMtI0iQWRAcvRIaFgovZT/nh2hIovrwnQaZ+GOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TFwUGkOgeUbgw9rrftlHZSQaj5AKOnlRIwkc+awfZa78Y6epSE/QsMooUGtl13B2H
-	 oxaTZpvLtGANZwURvZ/LyECSHAziZvgmTPlmgonE0PVugHDRJrVWx0MFc+G60oouKO
-	 wZkkwma9Dc4V7HV6BkKoDMcEqjGF+YKIgTXP1SAQ=
+	b=PpMFD/BNyNfzM1snZYWWmYewMu3RjicEQA4qWYZeo5SEjigHbGw0A2yArYX3ODwpq
+	 EdWWeAXEJO23UgWx6wQU53a66rqJW94xIunnHW9zmP4Y7ManToWdrR/I2RISSK+2uk
+	 VBzPwcItGItMG5SJRI/E5ZfjpqWFI5bs/aD+olKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prarit Bhargava <prarit@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	kernel test robot <lkp@intel.com>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 115/379] ACPI: extlog: fix NULL pointer dereference check
+Subject: [PATCH 5.15 243/476] um: net: Fix return type of uml_net_start_xmit()
 Date: Wed, 21 Feb 2024 14:04:54 +0100
-Message-ID: <20240221125958.330108595@linuxfoundation.org>
+Message-ID: <20240221130016.854622937@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +62,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prarit Bhargava <prarit@redhat.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 72d9b9747e78979510e9aafdd32eb99c7aa30dd1 ]
+[ Upstream commit 7d748f60a4b82b50bf25fad1bd42d33f049f76aa ]
 
-The gcc plugin -fanalyzer [1] tries to detect various
-patterns of incorrect behaviour.  The tool reports:
+With clang's kernel control flow integrity (kCFI, CONFIG_CFI_CLANG),
+indirect call targets are validated against the expected function
+pointer prototype to make sure the call target is valid to help mitigate
+ROP attacks. If they are not identical, there is a failure at run time,
+which manifests as either a kernel panic or thread getting killed. A
+warning in clang aims to catch these at compile time, which reveals:
 
-drivers/acpi/acpi_extlog.c: In function ‘extlog_exit’:
-drivers/acpi/acpi_extlog.c:307:12: warning: check of ‘extlog_l1_addr’ for NULL after already dereferencing it [-Wanalyzer-deref-before-check]
-    |
-    |  306 |         ((struct extlog_l1_head *)extlog_l1_addr)->flags &= ~FLAG_OS_OPTIN;
-    |      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
-    |      |                                                  |
-    |      |                                                  (1) pointer ‘extlog_l1_addr’ is dereferenced here
-    |  307 |         if (extlog_l1_addr)
-    |      |            ~
-    |      |            |
-    |      |            (2) pointer ‘extlog_l1_addr’ is checked for NULL here but it was already dereferenced at (1)
-    |
+  arch/um/drivers/net_kern.c:353:21: warning: incompatible function pointer types initializing 'netdev_tx_t (*)(struct sk_buff *, struct net_device *)' (aka 'enum netdev_tx (*)(struct sk_buff *, struct net_device *)') with an expression of type 'int (struct sk_buff *, struct net_device *)' [-Wincompatible-function-pointer-types-strict]
+    353 |         .ndo_start_xmit         = uml_net_start_xmit,
+        |                                   ^~~~~~~~~~~~~~~~~~
+  1 warning generated.
 
-Fix the NULL pointer dereference check in extlog_exit().
+->ndo_start_xmit() in 'struct net_device_ops' expects a return type of
+'netdev_tx_t', not 'int'. Adjust the return type of uml_net_start_xmit()
+to match the prototype's to resolve the warning. While UML does not
+currently implement support for kCFI, it could in the future, which
+means this warning becomes a fatal CFI failure at run time.
 
-Link: https://gcc.gnu.org/onlinedocs/gcc-10.1.0/gcc/Static-Analyzer-Options.html # [1]
-
-Signed-off-by: Prarit Bhargava <prarit@redhat.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202310031340.v1vPh207-lkp@intel.com/
+Acked-by: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpi_extlog.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/um/drivers/net_kern.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
-index 088db2356998..0a84d5afd37c 100644
---- a/drivers/acpi/acpi_extlog.c
-+++ b/drivers/acpi/acpi_extlog.c
-@@ -308,9 +308,10 @@ static int __init extlog_init(void)
- static void __exit extlog_exit(void)
+diff --git a/arch/um/drivers/net_kern.c b/arch/um/drivers/net_kern.c
+index 2fc0b038ff8a..e24bc9aaff4a 100644
+--- a/arch/um/drivers/net_kern.c
++++ b/arch/um/drivers/net_kern.c
+@@ -204,7 +204,7 @@ static int uml_net_close(struct net_device *dev)
+ 	return 0;
+ }
+ 
+-static int uml_net_start_xmit(struct sk_buff *skb, struct net_device *dev)
++static netdev_tx_t uml_net_start_xmit(struct sk_buff *skb, struct net_device *dev)
  {
- 	mce_unregister_decode_chain(&extlog_mce_dec);
--	((struct extlog_l1_head *)extlog_l1_addr)->flags &= ~FLAG_OS_OPTIN;
--	if (extlog_l1_addr)
-+	if (extlog_l1_addr) {
-+		((struct extlog_l1_head *)extlog_l1_addr)->flags &= ~FLAG_OS_OPTIN;
- 		acpi_os_unmap_iomem(extlog_l1_addr, l1_size);
-+	}
- 	if (elog_addr)
- 		acpi_os_unmap_iomem(elog_addr, elog_size);
- 	release_mem_region(elog_base, elog_size);
+ 	struct uml_net_private *lp = netdev_priv(dev);
+ 	unsigned long flags;
 -- 
 2.43.0
 
