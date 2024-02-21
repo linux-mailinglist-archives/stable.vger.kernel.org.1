@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-21951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DD3C85D958
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:17:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBE9C85DF3A
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:25:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F58F1C22EDC
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:17:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F898B2AAF4
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:19:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9156778B49;
-	Wed, 21 Feb 2024 13:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EBCA7A708;
+	Wed, 21 Feb 2024 14:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f89IkzYq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="etThYVgq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50E1D69D36;
-	Wed, 21 Feb 2024 13:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D9B3CF42;
+	Wed, 21 Feb 2024 14:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521442; cv=none; b=HYEeZN7OJNsCYDCk1UhENZ/zypzQuwgdOGUdzwe1rLWaygPfFMOEKzkICJfxuNgSng07wW38FcB/hhQQqfY0iqmFgrLNuZ8OBTGa9m0dwUnep68AbZ8lVUIZDLtQl9HM9UPta2IWr0bjZAhFl4hiZ77T3wksj5baTj87f+JQ/FQ=
+	t=1708525140; cv=none; b=f/f4+s9dqxKUUvELAXk8olm9LTr1098ASFgHUBeqEgapx3/gWe3f2wsJtPMsmy0IDcn6aOzeBj91Bwu2jwv6O9ihWHrIjZ0RKUUF9CDJyLeBRy4DLam7xRv4rB0/1bddWyaWdMiyYH8aMQSjedJNI/kCsoShIRgbZwn4sLiN42s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521442; c=relaxed/simple;
-	bh=0ObuXGYlrtfGyBC6koMOgWyaQDeMc53e9jtLw/JjbsU=;
+	s=arc-20240116; t=1708525140; c=relaxed/simple;
+	bh=D6D5zR4q7x+BDJSRCWfZSoRtesi/2fMyD8NkObLwGJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e4gVDasf8Df4gP7zNGHS1oZ2emFfPQC3JheaRZu3fN6EpA/duumr2IxXDwJM5C08usEZRlRiVmZUTCmW5J3m4RJVlIqlum4qeDUeE+2+8TW1RyF/AdjcGMjbsVG6P47IK3CG/yoPGgYnuTwSigSZACVEN5vhwuah/0Ar5XDxfBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f89IkzYq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93BE6C433C7;
-	Wed, 21 Feb 2024 13:17:21 +0000 (UTC)
+	 MIME-Version; b=IsF/IWNsrxRmcqUqPEU5LChW+eFV6JDB6nmxgAleDyTtX034oVKS8MJV3Q/kG++6A8tDQCzL1+RwiIOwyBAhf642X3QJjSvqanGxn9g76y5mdlAjdAajPO+JXLt8wq4bqeXFSX3idglRdbhwPezSunHc+2P466VV3BsuA8HGx/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=etThYVgq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64674C433F1;
+	Wed, 21 Feb 2024 14:18:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521442;
-	bh=0ObuXGYlrtfGyBC6koMOgWyaQDeMc53e9jtLw/JjbsU=;
+	s=korg; t=1708525139;
+	bh=D6D5zR4q7x+BDJSRCWfZSoRtesi/2fMyD8NkObLwGJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f89IkzYqBOGiYB7E2FPQF0aDWk3c/l72YpfZvdyI+VhMHzyfZhXACtZrSLl+eUfJ+
-	 w2aIh8kBXxH8iK+ld4rBwfxF+gAZbxN6wcBAjXbah+u9w6k4MnNnlzIAb1a097gznC
-	 8A2eWmLbcuVRZPSGL41hO6grgeU5xr99u7Q+Izs8=
+	b=etThYVgq9dgZwWP+FLSFq09UekXoeeAPfn9A1OMF5soBDglmt9PlTR8prNmJfxKOv
+	 zFVuKcTQnmjIfHp2BdwYIZR4r/NAwMW9GbCeB9XGNcLS4zBYXgpgxHaUZ99p0riaqq
+	 9SVWo1f7JxDXMraKRbGv+GjXrjosrBkfpYdxHJg0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@suse.de>,
-	Christoph Hellwig <hch@lst.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 083/202] scsi: libfc: Fix up timeout error in fc_fcp_rec_error()
-Date: Wed, 21 Feb 2024 14:06:24 +0100
-Message-ID: <20240221125934.480165435@linuxfoundation.org>
+	syzbot+4a4f1eba14eb5c3417d1@syzkaller.appspotmail.com,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Anand Jain <anand.jain@oracle.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.4 044/267] btrfs: dont warn if discard range is not aligned to sector
+Date: Wed, 21 Feb 2024 14:06:25 +0100
+Message-ID: <20240221125941.399573985@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hannes Reinecke <hare@suse.de>
+From: David Sterba <dsterba@suse.com>
 
-[ Upstream commit 53122a49f49796beb2c4a1bb702303b66347e29f ]
+commit a208b3f132b48e1f94f620024e66fea635925877 upstream.
 
-We should set the status to FC_TIMED_OUT when a timeout error is passed to
-fc_fcp_rec_error().
+There's a warning in btrfs_issue_discard() when the range is not aligned
+to 512 bytes, originally added in 4d89d377bbb0 ("btrfs:
+btrfs_issue_discard ensure offset/length are aligned to sector
+boundaries"). We can't do sub-sector writes anyway so the adjustment is
+the only thing that we can do and the warning is unnecessary.
 
-Signed-off-by: Hannes Reinecke <hare@suse.de>
-Link: https://lore.kernel.org/r/20231129165832.224100-3-hare@kernel.org
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org # 4.19+
+Reported-by: syzbot+4a4f1eba14eb5c3417d1@syzkaller.appspotmail.com
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/libfc/fc_fcp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/extent-tree.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/libfc/fc_fcp.c b/drivers/scsi/libfc/fc_fcp.c
-index 119117443496..faea7333c7e8 100644
---- a/drivers/scsi/libfc/fc_fcp.c
-+++ b/drivers/scsi/libfc/fc_fcp.c
-@@ -1697,7 +1697,7 @@ static void fc_fcp_rec_error(struct fc_fcp_pkt *fsp, struct fc_frame *fp)
- 		if (fsp->recov_retry++ < FC_MAX_RECOV_RETRY)
- 			fc_fcp_rec(fsp);
- 		else
--			fc_fcp_recovery(fsp, FC_ERROR);
-+			fc_fcp_recovery(fsp, FC_TIMED_OUT);
- 		break;
- 	}
- 	fc_fcp_unlock_pkt(fsp);
--- 
-2.43.0
-
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -1243,7 +1243,8 @@ static int btrfs_issue_discard(struct bl
+ 	u64 bytes_left, end;
+ 	u64 aligned_start = ALIGN(start, 1 << 9);
+ 
+-	if (WARN_ON(start != aligned_start)) {
++	/* Adjust the range to be aligned to 512B sectors if necessary. */
++	if (start != aligned_start) {
+ 		len -= aligned_start - start;
+ 		len = round_down(len, 1 << 9);
+ 		start = aligned_start;
 
 
 
