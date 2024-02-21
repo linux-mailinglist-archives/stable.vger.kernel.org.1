@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-22010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E00685D9AC
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:21:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6E8385DEDE
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:22:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB6A51C2305E
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:21:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 506901F22C56
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:22:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A43C7BB1A;
-	Wed, 21 Feb 2024 13:20:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 666A97A708;
+	Wed, 21 Feb 2024 14:22:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sM0VhNzE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ez2bi3oR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 163ED76C85;
-	Wed, 21 Feb 2024 13:20:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21BBA78B60;
+	Wed, 21 Feb 2024 14:22:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521651; cv=none; b=HYBQ4c/3WZUECRdmVWLNx6uGQHSFiH3MK2C4UHeqBVdjv/fSDFj7igSBWXdmcd+MCxgPQoQ7yUDdFb6HCnkF60R3YgvnArJHSj+0FUrQYbf0UH9bc7jYL/OBZgYE65PQG4SIe1s4qzyzcRyFaLwm9V9+aMC6uM7MkjcGuFI/9oI=
+	t=1708525354; cv=none; b=HfJej2DGNy1DShgr0GX1jM7K2WurqxBrDKb5qFVvZxnewKvjP060VT+rhdKEvMabxnXHDiTv1AFlPVDmeHQkmjxM7CaJSY2+bnkD3/NuLJL2afayZDT9ab2eJCxXSAjzAVC4/CnU4pZI7NB479LLJmSk+WspOh+2nFFLh008cjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521651; c=relaxed/simple;
-	bh=f2NrzF4nzvcnaYODmp0YAgL9skWT5fcG6qSGQ2kXZHM=;
+	s=arc-20240116; t=1708525354; c=relaxed/simple;
+	bh=88XqzxTWOhau6l0FQ5bLhEUfZGZpQ+MdCxYeoK6OCe0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KlwumhV9XXOpO0wASB8mE5nmSPAphZeYLVujss/4e3vVi4qT5rh6q0F6mb70fHAqEV182qxFHBmG3UZS3Rw9sEHmUw2wZa5SXmnaJfe9lHGkT+/MuYnEQbESiQ5BscBO4lBya5CHZKlgOrDj31QwIu04pxdg3N+WqtzD2JEJkhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sM0VhNzE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A0F0C433F1;
-	Wed, 21 Feb 2024 13:20:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dn/RnlDVMh4zpWXcPAt7ryuvmS3ldPapMoTYCSDMXTHcLjtV1/gqVcIthZI7c26r42EK8PTVkTVJmJYkc+4SFzHyYaIocRVe5O2nSKnUcfHhP8CF5+yQ/lJaPTTVe9Sc9JptMWdHfvIvBwe6aPgeVzbxiX2xnkJff1kmmq+R2ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ez2bi3oR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 371F9C433C7;
+	Wed, 21 Feb 2024 14:22:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521651;
-	bh=f2NrzF4nzvcnaYODmp0YAgL9skWT5fcG6qSGQ2kXZHM=;
+	s=korg; t=1708525353;
+	bh=88XqzxTWOhau6l0FQ5bLhEUfZGZpQ+MdCxYeoK6OCe0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sM0VhNzEU1kTwH7FSBnrMrRf0rJIGfhmub+HKrMXk7zmFZ570ejKa5zFqdK2rMDtA
-	 +rfQxU/ZYC7YWm4RcTPuIU+VuEMengbjXsfQ+isdwPg4uBc4b8eB43dwkV2QDfhV3Q
-	 TlBrWej1MPXx6wxz7VZipT3ELQCwxxvYYvvJl3yg=
+	b=ez2bi3oREyZZn2xjMNCxT+yIHOb3Rx8P4zcrtGdfnOYnDsEONN9u17rdu2ySg/eT7
+	 yRfc5lF362bRDH6ooKs4jCR/G8MSKWIGGVZ+T3MhCQix6ol2e9BbDvKbqhDY7kVAap
+	 JeJ2lrI17Q0NWzSuU0Yh/TllbAVHesm7HZaZN3Ts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jarod Wilson <jarod@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	linux-doc@vger.kernel.org,
-	Julian Wiedmann <jwi@linux.ibm.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 169/202] Documentation: net-sysfs: describe missing statistics
+Subject: [PATCH 5.4 129/267] PCI: add INTEL_HDA_ARL to pci_ids.h
 Date: Wed, 21 Feb 2024 14:07:50 +0100
-Message-ID: <20240221125937.220638328@linuxfoundation.org>
+Message-ID: <20240221125944.085401496@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +63,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Julian Wiedmann <jwi@linux.ibm.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit e528afb72a481977456bb18345d4e7f6b85fa7b1 ]
+[ Upstream commit 5ec42bf04d72fd6d0a6855810cc779e0ee31dfd7 ]
 
-Sync the ABI description with the interface statistics that are currently
-available through sysfs.
+The PCI ID insertion follows the increasing order in the table, but
+this hardware follows MTL (MeteorLake).
 
-CC: Jarod Wilson <jarod@redhat.com>
-CC: Jonathan Corbet <corbet@lwn.net>
-CC: linux-doc@vger.kernel.org
-Signed-off-by: Julian Wiedmann <jwi@linux.ibm.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 5b3fbd61b9d1 ("net: sysfs: Fix /sys/class/net/<iface> path for statistics")
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Acked-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20231204212710.185976-2-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ABI/testing/sysfs-class-net-statistics       | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ include/linux/pci_ids.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/ABI/testing/sysfs-class-net-statistics b/Documentation/ABI/testing/sysfs-class-net-statistics
-index 397118de7b5e..55db27815361 100644
---- a/Documentation/ABI/testing/sysfs-class-net-statistics
-+++ b/Documentation/ABI/testing/sysfs-class-net-statistics
-@@ -51,6 +51,14 @@ Description:
- 		packet processing. See the network driver for the exact
- 		meaning of this value.
- 
-+What:		/sys/class/<iface>/statistics/rx_errors
-+Date:		April 2005
-+KernelVersion:	2.6.12
-+Contact:	netdev@vger.kernel.org
-+Description:
-+		Indicates the number of receive errors on this network device.
-+		See the network driver for the exact meaning of this value.
-+
- What:		/sys/class/<iface>/statistics/rx_fifo_errors
- Date:		April 2005
- KernelVersion:	2.6.12
-@@ -88,6 +96,14 @@ Description:
- 		due to lack of capacity in the receive side. See the network
- 		driver for the exact meaning of this value.
- 
-+What:		/sys/class/<iface>/statistics/rx_nohandler
-+Date:		February 2016
-+KernelVersion:	4.6
-+Contact:	netdev@vger.kernel.org
-+Description:
-+		Indicates the number of received packets that were dropped on
-+		an inactive device by the network core.
-+
- What:		/sys/class/<iface>/statistics/rx_over_errors
- Date:		April 2005
- KernelVersion:	2.6.12
+diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
+index fcacf2334704..d8b188643a87 100644
+--- a/include/linux/pci_ids.h
++++ b/include/linux/pci_ids.h
+@@ -3011,6 +3011,7 @@
+ #define PCI_DEVICE_ID_INTEL_82443GX_0	0x71a0
+ #define PCI_DEVICE_ID_INTEL_82443GX_2	0x71a2
+ #define PCI_DEVICE_ID_INTEL_82372FB_1	0x7601
++#define PCI_DEVICE_ID_INTEL_HDA_ARL	0x7728
+ #define PCI_DEVICE_ID_INTEL_SCH_LPC	0x8119
+ #define PCI_DEVICE_ID_INTEL_SCH_IDE	0x811a
+ #define PCI_DEVICE_ID_INTEL_E6XX_CU	0x8183
 -- 
 2.43.0
 
