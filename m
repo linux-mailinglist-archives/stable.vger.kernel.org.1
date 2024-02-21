@@ -1,116 +1,83 @@
-Return-Path: <stable+bounces-22042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C4D685D9D7
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:23:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F4F785D8C4
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:08:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0737E2889AD
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:23:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A7471F2374F
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:08:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53D377641B;
-	Wed, 21 Feb 2024 13:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A10A6995E;
+	Wed, 21 Feb 2024 13:07:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LTun4dXY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s92/mDN0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13BA76A8D6;
-	Wed, 21 Feb 2024 13:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 433AE29AB;
+	Wed, 21 Feb 2024 13:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521777; cv=none; b=JKz/AUn4MzZ/hhKD6B1ce6zp9XHgX6r8i0JYdhD/c8jsOtnpaI7py2XVklNBHeBeWV58FH9zqBTU/84Qa/L2kHRbjUGq0xz06JQorT1sf1srcdj3vkAbu1FIZOLcobfWS2eCjmAUm31iEekxHp3C1Etcivr0ZXkiMlK9MIb6Hys=
+	t=1708520879; cv=none; b=hjnFGG/OdwgsC0U8rnmdIvyGHrFsyofMWkIbn3FuuHWM1GuZ+W/ypLue+CG+MdWAdSmUKnTF2+0FxRntDAhuQB40Ht3/7A5IQ8LW0it3vOlSAoeZbkeV6BgP/izY19l9gIFcstu+qD2LUgn2imbngKhmmatjsmIE8OGbnf2Llz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521777; c=relaxed/simple;
-	bh=xErzFKzoqh2jIgqwHlq430LMVDBJi1yxqIGZPXsJROQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g/WGQqDAcT4BFsZGdqd+xtI3cClXrGyc6dPICWzUTIyXiKt9US400wRUhOqj0AkVsuFo4Y81O0+cq6rUJZ42oLcvV31HNm8CBxsnh516/JFpQld3C0lw1Vrl0iy2ek3CiYK/PwAWZwVrlGzqNmLOE+oZ9MfgyVcJ8droSQeDuZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LTun4dXY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 719D0C433F1;
-	Wed, 21 Feb 2024 13:22:56 +0000 (UTC)
+	s=arc-20240116; t=1708520879; c=relaxed/simple;
+	bh=7ExkksBPK+mQaI2810aWKVFf5/cXXYe8R3b49O1Z1Bg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rjRIvDXCJdcOOwoo1I23PR6qUhm1ZZDC5Px09iPIRz87vDBd7cjQcgvpkr/dh26PAAw+TIjjxWHb7PQQ3ERb3QVws3JCVd5gmpUFVF6zW3PPfuDNPkrKgoyHPYTssSrmUcslaol2C9ImJfDTQGYhicdOVDePaXTLjuiHCDLTWi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s92/mDN0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 266D1C433C7;
+	Wed, 21 Feb 2024 13:07:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521776;
-	bh=xErzFKzoqh2jIgqwHlq430LMVDBJi1yxqIGZPXsJROQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LTun4dXY5eikHwshHPhda693QkRFeZV2wAPf+m0r4+euoOINpudWkGd1W8xz4r5gD
-	 OtMZHlWnbJMnR62icwF+4eA4uFYkVrq4QlyH3xjYyc9QFbMcmruOPvIGkCszhG7DfM
-	 jLdHU6kBrLiMp6UuK6J/TWc0cjuUbAFWUzI9hHgQ=
+	s=korg; t=1708520878;
+	bh=7ExkksBPK+mQaI2810aWKVFf5/cXXYe8R3b49O1Z1Bg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=s92/mDN039RWwaPp68GlRz9VI0Ngl2a9aSctuj4SlcRun1xy03sYMHB2aeipSAWeB
+	 LIOVR1iqF+Az5W/Y2j76meVmiFbJZGBXlHJIp8PNe9n0jWIE+rQ9v7Axes2tvfRa8k
+	 NQsNEwkS+xno1QR5KkV1V+7AFP2l52xq+TNv+bAE=
+Date: Wed, 21 Feb 2024 14:07:56 +0100
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Jason Gerecke <jason.gerecke@wacom.com>,
-	Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 4.19 175/202] HID: wacom: generic: Avoid reporting a serial of 0 to userspace
-Date: Wed, 21 Feb 2024 14:07:56 +0100
-Message-ID: <20240221125937.473251030@linuxfoundation.org>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	allen.lkml@gmail.com
+Subject: Re: [PATCH 6.1 000/206] 6.1.79-rc1 review
+Message-ID: <2024022140-arbitrate-freefall-81c3@gregkh>
+References: <20240221125936.478639123@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240221125936.478639123@linuxfoundation.org>
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+On Wed, Feb 21, 2024 at 01:58:04PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.79 release.
+> There are 206 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri, 23 Feb 2024 12:59:02 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.79-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
 
-------------------
+Oops, nope, this should have been -rc2, will fix that up and resend,
+sorry for the noise.
 
-From: Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>
-
-commit ab41a31dd5e2681803642b6d08590b61867840ec upstream.
-
-The xf86-input-wacom driver does not treat '0' as a valid serial
-number and will drop any input report which contains an
-MSC_SERIAL = 0 event. The kernel driver already takes care to
-avoid sending any MSC_SERIAL event if the value of serial[0] == 0
-(which is the case for devices that don't actually report a
-serial number), but this is not quite sufficient.
-Only the lower 32 bits of the serial get reported to userspace,
-so if this portion of the serial is zero then there can still
-be problems.
-
-This commit allows the driver to report either the lower 32 bits
-if they are non-zero or the upper 32 bits otherwise.
-
-Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
-Signed-off-by: Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>
-Fixes: f85c9dc678a5 ("HID: wacom: generic: Support tool ID and additional tool types")
-CC: stable@vger.kernel.org # v4.10
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/hid/wacom_wac.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
-
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -2461,7 +2461,14 @@ static void wacom_wac_pen_report(struct
- 				wacom_wac->hid_data.tipswitch);
- 		input_report_key(input, wacom_wac->tool[0], sense);
- 		if (wacom_wac->serial[0]) {
--			input_event(input, EV_MSC, MSC_SERIAL, wacom_wac->serial[0]);
-+			/*
-+			 * xf86-input-wacom does not accept a serial number
-+			 * of '0'. Report the low 32 bits if possible, but
-+			 * if they are zero, report the upper ones instead.
-+			 */
-+			__u32 serial_lo = wacom_wac->serial[0] & 0xFFFFFFFFu;
-+			__u32 serial_hi = wacom_wac->serial[0] >> 32;
-+			input_event(input, EV_MSC, MSC_SERIAL, (int)(serial_lo ? serial_lo : serial_hi));
- 			input_report_abs(input, ABS_MISC, sense ? id : 0);
- 		}
- 
-
-
+greg k-h
 
