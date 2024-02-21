@@ -1,64 +1,55 @@
-Return-Path: <stable+bounces-22526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CD3285DC72
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:53:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14BE785DEAE
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:20:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D28F1F225F1
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:53:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD62BB27ECB
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 108FE79DBF;
-	Wed, 21 Feb 2024 13:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 718E57E77E;
+	Wed, 21 Feb 2024 14:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lxjsyHT8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iV+AV9GP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C340279DAB;
-	Wed, 21 Feb 2024 13:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EFAA7E787;
+	Wed, 21 Feb 2024 14:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523595; cv=none; b=Aa5IYWQarJJQNXsRoRQBzpCLcN1/XM3De6mXrYEj57AaPM5vgQa1cImSdK1vnXWvcoCpVEyMQNPTG5kIeA8M6TIbZwJTwfrx2N5TdAlauyzEh0EUIEfo+d8zpOjlFUyEnwcyznHashEU9S3+URq7clr+/M/w5XQghER405nLDLw=
+	t=1708524717; cv=none; b=ottPEBnrF8K804QvCEW8/26zuboHsYU0AER5uDAoQ/BEPKs/FXYolO10/2QulxAxAqOh0l2egai7CEMw43+JI4hkyhd9swV6N70eHItIbhoKhaONnXwIWSNkhUJMkdzUNL6Mq0gW81+pNH7OYlq0lwM30aBHquT9zf2vA19UETU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523595; c=relaxed/simple;
-	bh=apG4KkGyj49eZ7mUUIZafXeLt3jasV9jJxNWrIR91FI=;
+	s=arc-20240116; t=1708524717; c=relaxed/simple;
+	bh=fX0XDcRwomZXHUDi5TXnkd3YX3J0GnfrpPdnFkAKNPM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aIYGmhOr0llOu/KzKjp1tS9pjw1iaT3w+AERXOgk1rvjPq0pMOBxXURysFA/3/BEGw9JHz1B5lB+M/lAq1HekOlhHx2cpOT9Ek/TydWpV4XghA0UCCAImu+Nez5psG9aCtTJCnRxkVFVXi0RW/OB2Dbw1HaP8PZT4v+KED3NUNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lxjsyHT8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB78AC433C7;
-	Wed, 21 Feb 2024 13:53:14 +0000 (UTC)
+	 MIME-Version; b=SYX27v8iqSM6YJi8dOjo7RscmJBRgHyoJYSFtZbgeugAAi0PQ3SsjckteNyIXVV131MIKpjgEB/SPioTaujDF7pKd3olU1GLcMrj0ZTgm/BZidZ3wfpLYQuCf/3thVzOLN/T5h73HcE0mzOTmY5Pcph3pfdjIbY1YzR4e4zXJZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iV+AV9GP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91AF3C433F1;
+	Wed, 21 Feb 2024 14:11:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523595;
-	bh=apG4KkGyj49eZ7mUUIZafXeLt3jasV9jJxNWrIR91FI=;
+	s=korg; t=1708524717;
+	bh=fX0XDcRwomZXHUDi5TXnkd3YX3J0GnfrpPdnFkAKNPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lxjsyHT8d7UE5xH9fDrQNVej9miwcgHGyz6SzdLuZqsgZJJvWgKpAkvRvhP21n++9
-	 k+/VUHKZbPn7sqwUyOBPsi9Lr1q/5P/nrM8UcHOCjqOnH0t3BkUEyIX3nE78E8hpzp
-	 w06YeAFKeBd/5JwaFY8cRpgWYOYUYDGQMDE+7DZQ=
+	b=iV+AV9GPcMmD49dhMRSRuyJ8GNW/3UH0Djw4uMvKJORcXU/owOHQQv8RfeNPnmCBe
+	 T1rEQoTe9GYbE5HRsdWqrhBCjx50elcYHbYNPXLtIShixENEvhkbXGrHiV5/BjWT17
+	 crcMjvInYoYAGeL6PLLgm3/zpv8sX39Lmf4gQ+FA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carlos Llamas <cmllamas@google.com>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Elliot Berman <quic_eberman@quicinc.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Will Deacon <will@kernel.org>,
-	John Stultz <jstultz@google.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Tom Rix <trix@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 456/476] scripts/decode_stacktrace.sh: optionally use LLVM utilities
+	Vincent Donnefort <vdonnefort@google.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.10 328/379] ring-buffer: Clean ring_buffer_poll_wait() error return
 Date: Wed, 21 Feb 2024 14:08:27 +0100
-Message-ID: <20240221130024.898419459@linuxfoundation.org>
+Message-ID: <20240221130004.666261362@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,107 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Vincent Donnefort <vdonnefort@google.com>
 
-[ Upstream commit efbd6398353315b7018e6943e41fee9ec35e875f ]
+commit 66bbea9ed6446b8471d365a22734dc00556c4785 upstream.
 
-GNU's addr2line can have problems parsing a vmlinux built with LLVM,
-particularly when LTO was used.  In order to decode the traces correctly
-this patch adds the ability to switch to LLVM's utilities readelf and
-addr2line.  The same approach is followed by Will in [1].
+The return type for ring_buffer_poll_wait() is __poll_t. This is behind
+the scenes an unsigned where we can set event bits. In case of a
+non-allocated CPU, we do return instead -EINVAL (0xffffffea). Lucky us,
+this ends up setting few error bits (EPOLLERR | EPOLLHUP | EPOLLNVAL), so
+user-space at least is aware something went wrong.
 
-Before:
-  $ scripts/decode_stacktrace.sh vmlinux < kernel.log
-  [17716.240635] Call trace:
-  [17716.240646] skb_cow_data (??:?)
-  [17716.240654] esp6_input (ld-temp.o:?)
-  [17716.240666] xfrm_input (ld-temp.o:?)
-  [17716.240674] xfrm6_rcv (??:?)
-  [...]
+Nonetheless, this is an incorrect code. Replace that -EINVAL with a
+proper EPOLLERR to clean that output. As this doesn't change the
+behaviour, there's no need to treat this change as a bug fix.
 
-After:
-  $ LLVM=1 scripts/decode_stacktrace.sh vmlinux < kernel.log
-  [17716.240635] Call trace:
-  [17716.240646] skb_cow_data (include/linux/skbuff.h:2172 net/core/skbuff.c:4503)
-  [17716.240654] esp6_input (net/ipv6/esp6.c:977)
-  [17716.240666] xfrm_input (net/xfrm/xfrm_input.c:659)
-  [17716.240674] xfrm6_rcv (net/ipv6/xfrm6_input.c:172)
-  [...]
+Link: https://lore.kernel.org/linux-trace-kernel/20240131140955.3322792-1-vdonnefort@google.com
 
-Note that one could set CROSS_COMPILE=llvm- instead to hack around this
-issue.  However, doing so can break the decodecode routine as it will
-force the selection of other LLVM utilities down the line e.g.  llvm-as.
-
-[1] https://lore.kernel.org/all/20230914131225.13415-3-will@kernel.org/
-
-Link: https://lkml.kernel.org/r/20230929034836.403735-1-cmllamas@google.com
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-Reviewed-by: Elliot Berman <quic_eberman@quicinc.com>
-Tested-by: Justin Stitt <justinstitt@google.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: John Stultz <jstultz@google.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Tom Rix <trix@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 6721cb6002262 ("ring-buffer: Do not poll non allocated cpu buffers")
+Signed-off-by: Vincent Donnefort <vdonnefort@google.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/decode_stacktrace.sh | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ kernel/trace/ring_buffer.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/scripts/decode_stacktrace.sh b/scripts/decode_stacktrace.sh
-index 564c5632e1a2..bfe5a4082d8e 100755
---- a/scripts/decode_stacktrace.sh
-+++ b/scripts/decode_stacktrace.sh
-@@ -16,6 +16,21 @@ elif type c++filt >/dev/null 2>&1 ; then
- 	cppfilt_opts=-i
- fi
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -1008,7 +1008,7 @@ __poll_t ring_buffer_poll_wait(struct tr
+ 		full = 0;
+ 	} else {
+ 		if (!cpumask_test_cpu(cpu, buffer->cpumask))
+-			return -EINVAL;
++			return EPOLLERR;
  
-+UTIL_SUFFIX=
-+if [[ -z ${LLVM:-} ]]; then
-+	UTIL_PREFIX=${CROSS_COMPILE:-}
-+else
-+	UTIL_PREFIX=llvm-
-+	if [[ ${LLVM} == */ ]]; then
-+		UTIL_PREFIX=${LLVM}${UTIL_PREFIX}
-+	elif [[ ${LLVM} == -* ]]; then
-+		UTIL_SUFFIX=${LLVM}
-+	fi
-+fi
-+
-+READELF=${UTIL_PREFIX}readelf${UTIL_SUFFIX}
-+ADDR2LINE=${UTIL_PREFIX}addr2line${UTIL_SUFFIX}
-+
- if [[ $1 == "-r" ]] ; then
- 	vmlinux=""
- 	basepath="auto"
-@@ -75,7 +90,7 @@ find_module() {
- 
- 	if [[ "$modpath" != "" ]] ; then
- 		for fn in $(find "$modpath" -name "${module//_/[-_]}.ko*") ; do
--			if readelf -WS "$fn" | grep -qwF .debug_line ; then
-+			if ${READELF} -WS "$fn" | grep -qwF .debug_line ; then
- 				echo $fn
- 				return
- 			fi
-@@ -169,7 +184,7 @@ parse_symbol() {
- 	if [[ $aarray_support == true && "${cache[$module,$address]+isset}" == "isset" ]]; then
- 		local code=${cache[$module,$address]}
- 	else
--		local code=$(${CROSS_COMPILE}addr2line -i -e "$objfile" "$address" 2>/dev/null)
-+		local code=$(${ADDR2LINE} -i -e "$objfile" "$address" 2>/dev/null)
- 		if [[ $aarray_support == true ]]; then
- 			cache[$module,$address]=$code
- 		fi
--- 
-2.43.0
-
+ 		cpu_buffer = buffer->buffers[cpu];
+ 		work = &cpu_buffer->irq_work;
 
 
 
