@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-22398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 237C585DBDD
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:46:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6114D85DE7E
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:19:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C0FD2822E2
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:46:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 785DD1C23BE5
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:19:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E372C7992D;
-	Wed, 21 Feb 2024 13:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B7AF7E590;
+	Wed, 21 Feb 2024 14:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f/zuABEn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eWOw1x/e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0AC278B53;
-	Wed, 21 Feb 2024 13:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB2B7E581;
+	Wed, 21 Feb 2024 14:18:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523163; cv=none; b=LUt8kdQtaGk8HB/OyKwAQT/NlpEBmNle2QbDa/GIHz/EVGa3u+Zzn1fVv8rKU0uueKNVMcAoknh4NzverlDkSG+dD4rWlUtDllH1SSzkVszWePFKaiTQdxVCeCag8X3P4BHt0US95FEcZ5CEFStgOxd/oJVKBv8ZY8+0xFTlkqE=
+	t=1708525117; cv=none; b=b94S1moR1EiCEliH41EyA7VJ1TYtJvAg14osLSorQHsxxw0NdgzHUp1h2cHc04yEJ3eLvia9DF+ud9O5cfb+dWbtsdT/xxgXUYs0mX9DlyNpDNXG6HlgScYwyypbgApQNhmi6xjdWNgj/CxU2ksZ7NT8Q0sioyrAAtzpZIFqyww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523163; c=relaxed/simple;
-	bh=vuktrPgCLNgTq8npsNk9EOKAfWsLeHUkPGDpHRcPnV0=;
+	s=arc-20240116; t=1708525117; c=relaxed/simple;
+	bh=JYADzpHKEPvSzq2WcmZYnwweBe6VL58GaNqZUjCE54Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JNfTuMWx7DobJwrgKiPNIDX9KtFgtu0kNvkJWJlxYu1UOXHDnr34ccwqIJn8qxMhhnNAwf1YtQjvwHHOMXxJW5uU/zQRoYK+snJ8lOFhwHvYp1EM0qS2/G3UURj0XeNrjsd4foF7EpaoAazH7BOdcHt1mAOT8cbKyQtKq71eKp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f/zuABEn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29A9EC433F1;
-	Wed, 21 Feb 2024 13:46:02 +0000 (UTC)
+	 MIME-Version; b=hkEzwiMGq+WtOvpRQxBs1qh/raPMWIZWL3sRub3xzcVu6UT13kZGu7/529y9J9r9gnLWyJsNmjLqnuCaIIY2YEpIWQBrb9BTYEaT30NQ+MUnbcDyBES+Z5o6iQowagmI3w9WxNkqWUy44okVrM36WC5hh92DhcNx1kay2PoJJZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eWOw1x/e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E368C433C7;
+	Wed, 21 Feb 2024 14:18:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523163;
-	bh=vuktrPgCLNgTq8npsNk9EOKAfWsLeHUkPGDpHRcPnV0=;
+	s=korg; t=1708525117;
+	bh=JYADzpHKEPvSzq2WcmZYnwweBe6VL58GaNqZUjCE54Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f/zuABEnEJetMFjzqZbvYFC/E6mqh6pUdoDyaJGBRkYAc3GfFuik0qjCHJyLyQ96P
-	 Hcd48tyKBdx1lH9j1lmUHyX34ccF+u7JjFjuU+kuzoAWn9/6ZPJ7cLOWr1LPAmJ7Ew
-	 /3ABsTKko6I5YXXWeWt5uOY82/42CiNFNMUL7JYM=
+	b=eWOw1x/eNABAiyi+dAF4uWSigtlEfxRc47uU5zzdueXxGMhj8EQJV1dPonSSv0EES
+	 ZLZPNxMCqaDBAqs+4e35oysHpBBOZ4b0DGCdDCnA0g1G7slgx81Lmd7uCEmQ+7v6M7
+	 hkRKzlX5l8vowc3Owszdrs/Vrtt4FAbvxcAI/TRk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 354/476] MIPS: Add memory clobber to csum_ipv6_magic() inline assembler
+Subject: [PATCH 5.4 064/267] powerpc: pmd_move_must_withdraw() is only needed for CONFIG_TRANSPARENT_HUGEPAGE
 Date: Wed, 21 Feb 2024 14:06:45 +0100
-Message-ID: <20240221130021.087974454@linuxfoundation.org>
+Message-ID: <20240221125942.008268843@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Stephen Rothwell <sfr@canb.auug.org.au>
 
-[ Upstream commit d55347bfe4e66dce2e1e7501e5492f4af3e315f8 ]
+[ Upstream commit 0d555b57ee660d8a871781c0eebf006e855e918d ]
 
-After 'lib: checksum: Use aligned accesses for ip_fast_csum and
-csum_ipv6_magic tests' was applied, the test_csum_ipv6_magic unit test
-started failing for all mips platforms, both little and bit endian.
-Oddly enough, adding debug code into test_csum_ipv6_magic() made the
-problem disappear.
+The linux-next build of powerpc64 allnoconfig fails with:
 
-The gcc manual says:
+  arch/powerpc/mm/book3s64/pgtable.c:557:5: error: no previous prototype for 'pmd_move_must_withdraw'
+    557 | int pmd_move_must_withdraw(struct spinlock *new_pmd_ptl,
+        |     ^~~~~~~~~~~~~~~~~~~~~~
 
-"The "memory" clobber tells the compiler that the assembly code performs
- memory reads or writes to items other than those listed in the input
- and output operands (for example, accessing the memory pointed to by one
- of the input parameters)
-"
+Caused by commit:
 
-This is definitely the case for csum_ipv6_magic(). Indeed, adding the
-'memory' clobber fixes the problem.
+  c6345dfa6e3e ("Makefile.extrawarn: turn on missing-prototypes globally")
 
-Cc: Charlie Jenkins <charlie@rivosinc.com>
-Cc: Palmer Dabbelt <palmer@rivosinc.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fix it by moving the function definition under
+CONFIG_TRANSPARENT_HUGEPAGE like the prototype. The function is only
+called when CONFIG_TRANSPARENT_HUGEPAGE=y.
+
+Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
+[mpe: Flesh out change log from linux-next patch]
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231127132809.45c2b398@canb.auug.org.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/checksum.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/powerpc/mm/book3s64/pgtable.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/mips/include/asm/checksum.h b/arch/mips/include/asm/checksum.h
-index 1e6c1354f245..eb15339e58fd 100644
---- a/arch/mips/include/asm/checksum.h
-+++ b/arch/mips/include/asm/checksum.h
-@@ -244,7 +244,8 @@ static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
- 	"	.set	pop"
- 	: "=&r" (sum), "=&r" (tmp)
- 	: "r" (saddr), "r" (daddr),
--	  "0" (htonl(len)), "r" (htonl(proto)), "r" (sum));
-+	  "0" (htonl(len)), "r" (htonl(proto)), "r" (sum)
-+	: "memory");
- 
- 	return csum_fold(sum);
+diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
+index 2bf7e1b4fd82..c4890f4b0b6c 100644
+--- a/arch/powerpc/mm/book3s64/pgtable.c
++++ b/arch/powerpc/mm/book3s64/pgtable.c
+@@ -442,6 +442,7 @@ void ptep_modify_prot_commit(struct vm_area_struct *vma, unsigned long addr,
+ 	set_pte_at(vma->vm_mm, addr, ptep, pte);
  }
+ 
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ /*
+  * For hash translation mode, we use the deposited table to store hash slot
+  * information and they are stored at PTRS_PER_PMD offset from related pmd
+@@ -463,6 +464,7 @@ int pmd_move_must_withdraw(struct spinlock *new_pmd_ptl,
+ 
+ 	return true;
+ }
++#endif
+ 
+ /*
+  * Does the CPU support tlbie?
 -- 
 2.43.0
 
