@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-22836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C958785DE4B
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:17:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC69085DC27
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:50:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 352B2B27DBA
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C8FAB23056
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:50:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11C9080618;
-	Wed, 21 Feb 2024 14:11:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D0FE7C0AB;
+	Wed, 21 Feb 2024 13:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MVqXPVww"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="no2zQDZ6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3D9080603;
-	Wed, 21 Feb 2024 14:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FF6A78B70;
+	Wed, 21 Feb 2024 13:49:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524674; cv=none; b=uXsLN+alt60MKo0hmN+lDgDAcQBi4Uz3vFaCdDhjMPT8eNy4xEbQnYzw8DdVFpA4tzvycC92CLm4faVNYf0QEhjAkWqoIkZW1/VrYPlCadyIOk7vdeSCl0QcH5w1yqEcTl/Tu47VVq4zT2La0CjFJFMmy+fqf5GqDJEha0vtHa4=
+	t=1708523370; cv=none; b=dlADWoimxV1kaleD+/fNGP27e/bgbXiO4azx8G3tdho0WFooWEDqLUZVhTYI0l5AO6UfmtwQPqe5QgCc8IQV4BdNSWhSg3f68/SQ9vyox302zVZrxggAqyGohSO+I114+lJvfZP9dig7EUwUS/akzeuZZACRcYfHDoHxRCV5zd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524674; c=relaxed/simple;
-	bh=Fm58CDfWF20/Xfd4WrQsSMo7gQKpdRicjkFYYJk3aEw=;
+	s=arc-20240116; t=1708523370; c=relaxed/simple;
+	bh=bKnrItrAjV1chRqk1lqOBt5TJD66rLSGjFT6PdShlCI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MQ+zE8UDWt0q66gD1vErC7n7Iolbu7CpE8K8Kb1XzpqPgP+qtmI3Hn11hRh2e9C5msHhWGEpMyBJFge5j5pGP04BE9Ho9LNagySqKwVbl8ccwJU8oyRlIAVUJ2enuFNeoS5zdabjyLXZxLjLHN/JE+LI8A9LgvCGaqWCBXPjgJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MVqXPVww; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3F62C433F1;
-	Wed, 21 Feb 2024 14:11:13 +0000 (UTC)
+	 MIME-Version; b=W6qsWzNkbzmUtlY5SQWfBwRnJN+lE5dUl5fsiUd10b4Ji0WWqgWBj1hdbUuSMkoUi/rJhZd4zgJ0rmFravlrlEjxc+ttXo7KRHclhBn92hSY2wmZL5CKrBicMLLXoAQf6FSWTF3AAw9WmU2+5+RR2/zmBc2Kow/KN/3mQl3QocE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=no2zQDZ6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3556FC433C7;
+	Wed, 21 Feb 2024 13:49:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524674;
-	bh=Fm58CDfWF20/Xfd4WrQsSMo7gQKpdRicjkFYYJk3aEw=;
+	s=korg; t=1708523367;
+	bh=bKnrItrAjV1chRqk1lqOBt5TJD66rLSGjFT6PdShlCI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MVqXPVwwS3ywbgmD0mJrbaWYuPt5aKQ06iYeeNcrKP0B0GISLnxJoEnC8A7mm2Se6
-	 +cq6IM5U83aDJB7ETcognh2dZBtxRLOvUYcr3yCnZiiaieoR8noq/91kwWXr+X/Ow6
-	 DIKzitw92jzPkygOiT2Hbj+fjFhB+mnTWZcdzM4Q=
+	b=no2zQDZ6eYQAr8VkMCUNB2gb1s/wEBxAYUCGrlP1edTAn6thfQ1BzjiUCO0WGdNgW
+	 ZpwuSjKmP8c2xZqRFq+K5aCDvrwHkQ+ywxA2kJSTZFoG6KpB6NRHg/atcx0hgac+/y
+	 9LA+JzRLrhL5ile2ejGXJFoa7B25D3TdfbEOCtTg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.10 287/379] btrfs: do not ASSERT() if the newly created subvolume already got read
+	Sinthu Raja <sinthu.raja@ti.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.15 415/476] net: ethernet: ti: cpsw: enable mac_managed_pm to fix mdio
 Date: Wed, 21 Feb 2024 14:07:46 +0100
-Message-ID: <20240221130003.399065444@linuxfoundation.org>
+Message-ID: <20240221130023.362958862@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,97 +61,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Sinthu Raja <sinthu.raja@ti.com>
 
-commit e03ee2fe873eb68c1f9ba5112fee70303ebf9dfb upstream.
+commit bc4ce46b1e3d1da4309405cd4afc7c0fcddd0b90 upstream.
 
-[BUG]
-There is a syzbot crash, triggered by the ASSERT() during subvolume
-creation:
+The below commit  introduced a WARN when phy state is not in the states:
+PHY_HALTED, PHY_READY and PHY_UP.
+commit 744d23c71af3 ("net: phy: Warn about incorrect mdio_bus_phy_resume() state")
 
- assertion failed: !anon_dev, in fs/btrfs/disk-io.c:1319
- ------------[ cut here ]------------
- kernel BUG at fs/btrfs/disk-io.c:1319!
- invalid opcode: 0000 [#1] PREEMPT SMP KASAN
- RIP: 0010:btrfs_get_root_ref.part.0+0x9aa/0xa60
-  <TASK>
-  btrfs_get_new_fs_root+0xd3/0xf0
-  create_subvol+0xd02/0x1650
-  btrfs_mksubvol+0xe95/0x12b0
-  __btrfs_ioctl_snap_create+0x2f9/0x4f0
-  btrfs_ioctl_snap_create+0x16b/0x200
-  btrfs_ioctl+0x35f0/0x5cf0
-  __x64_sys_ioctl+0x19d/0x210
-  do_syscall_64+0x3f/0xe0
-  entry_SYSCALL_64_after_hwframe+0x63/0x6b
- ---[ end trace 0000000000000000 ]---
+When cpsw resumes, there have port in PHY_NOLINK state, so the below
+warning comes out. Set mac_managed_pm be true to tell mdio that the phy
+resume/suspend is managed by the mac, to fix the following warning:
 
-[CAUSE]
-During create_subvol(), after inserting root item for the newly created
-subvolume, we would trigger btrfs_get_new_fs_root() to get the
-btrfs_root of that subvolume.
+WARNING: CPU: 0 PID: 965 at drivers/net/phy/phy_device.c:326 mdio_bus_phy_resume+0x140/0x144
+CPU: 0 PID: 965 Comm: sh Tainted: G           O       6.1.46-g247b2535b2 #1
+Hardware name: Generic AM33XX (Flattened Device Tree)
+ unwind_backtrace from show_stack+0x18/0x1c
+ show_stack from dump_stack_lvl+0x24/0x2c
+ dump_stack_lvl from __warn+0x84/0x15c
+ __warn from warn_slowpath_fmt+0x1a8/0x1c8
+ warn_slowpath_fmt from mdio_bus_phy_resume+0x140/0x144
+ mdio_bus_phy_resume from dpm_run_callback+0x3c/0x140
+ dpm_run_callback from device_resume+0xb8/0x2b8
+ device_resume from dpm_resume+0x144/0x314
+ dpm_resume from dpm_resume_end+0x14/0x20
+ dpm_resume_end from suspend_devices_and_enter+0xd0/0x924
+ suspend_devices_and_enter from pm_suspend+0x2e0/0x33c
+ pm_suspend from state_store+0x74/0xd0
+ state_store from kernfs_fop_write_iter+0x104/0x1ec
+ kernfs_fop_write_iter from vfs_write+0x1b8/0x358
+ vfs_write from ksys_write+0x78/0xf8
+ ksys_write from ret_fast_syscall+0x0/0x54
+Exception stack(0xe094dfa8 to 0xe094dff0)
+dfa0:                   00000004 005c3fb8 00000001 005c3fb8 00000004 00000001
+dfc0: 00000004 005c3fb8 b6f6bba0 00000004 00000004 0059edb8 00000000 00000000
+dfe0: 00000004 bed918f0 b6f09bd3 b6e89a66
 
-The idea here is, we have preallocated an anonymous device number for
-the subvolume, thus we can assign it to the new subvolume.
-
-But there is really nothing preventing things like backref walk to read
-the new subvolume.
-If that happens before we call btrfs_get_new_fs_root(), the subvolume
-would be read out, with a new anonymous device number assigned already.
-
-In that case, we would trigger ASSERT(), as we really expect no one to
-read out that subvolume (which is not yet accessible from the fs).
-But things like backref walk is still possible to trigger the read on
-the subvolume.
-
-Thus our assumption on the ASSERT() is not correct in the first place.
-
-[FIX]
-Fix it by removing the ASSERT(), and just free the @anon_dev, reset it
-to 0, and continue.
-
-If the subvolume tree is read out by something else, it should have
-already get a new anon_dev assigned thus we only need to free the
-preallocated one.
-
-Reported-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Fixes: 2dfb1e43f57d ("btrfs: preallocate anon block device at first phase of snapshot creation")
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Cc: <stable@vger.kernel.org> # v6.0+
+Fixes: 744d23c71af3 ("net: phy: Warn about incorrect mdio_bus_phy_resume() state")
+Fixes: fba863b81604 ("net: phy: make PHY PM ops a no-op if MAC driver manages PHY PM")
+Signed-off-by: Sinthu Raja <sinthu.raja@ti.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/disk-io.c |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/ti/cpsw.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -1553,8 +1553,17 @@ static struct btrfs_root *btrfs_get_root
- again:
- 	root = btrfs_lookup_fs_root(fs_info, objectid);
- 	if (root) {
--		/* Shouldn't get preallocated anon_dev for cached roots */
--		ASSERT(!anon_dev);
-+		/*
-+		 * Some other caller may have read out the newly inserted
-+		 * subvolume already (for things like backref walk etc).  Not
-+		 * that common but still possible.  In that case, we just need
-+		 * to free the anon_dev.
-+		 */
-+		if (unlikely(anon_dev)) {
-+			free_anon_bdev(anon_dev);
-+			anon_dev = 0;
-+		}
+diff --git a/drivers/net/ethernet/ti/cpsw.c b/drivers/net/ethernet/ti/cpsw.c
+index ea85c6dd5484..c0a5abd8d9a8 100644
+--- a/drivers/net/ethernet/ti/cpsw.c
++++ b/drivers/net/ethernet/ti/cpsw.c
+@@ -631,6 +631,8 @@ static void cpsw_slave_open(struct cpsw_slave *slave, struct cpsw_priv *priv)
+ 		}
+ 	}
+ 
++	phy->mac_managed_pm = true;
 +
- 		if (check_ref && btrfs_root_refs(&root->root_item) == 0) {
- 			btrfs_put_root(root);
- 			return ERR_PTR(-ENOENT);
+ 	slave->phy = phy;
+ 
+ 	phy_attached_info(slave->phy);
+-- 
+2.43.2
+
 
 
 
