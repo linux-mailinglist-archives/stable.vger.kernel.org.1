@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-22209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A36C85DADE
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:35:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2B8485DCBF
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:57:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE87D281DF1
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:35:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 226B61C2365F
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:57:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47B0B69318;
-	Wed, 21 Feb 2024 13:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24F287BB03;
+	Wed, 21 Feb 2024 13:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s5krjPI+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WWj4VB4t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 044BE3C2F;
-	Wed, 21 Feb 2024 13:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D61C8762C1;
+	Wed, 21 Feb 2024 13:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522445; cv=none; b=rdkTfstFqVk1PRWRDt6C9i/U7LYKbIrAVr+BUv3FtfPXYxKWe7tIoZuaB6GmldnQ5RxvaEMTcEpouk85DcFGMOn0ELTBkvhLrOyMH5opIci5q5iShIJbLyR/Ayz3GaitGhSZIVerCqOG4ugw/Hq8qA/+iaLUZmSLuYHMiuGO26k=
+	t=1708523815; cv=none; b=qGMpPLopcBg8AygcVKr7gNHq9GiTclk7UO6SXaLPb9pZjJBGJDZ4IizM6r8/Ib+OUIbu9E+481bwUiyYXvD911T0+LXjwtHzMTaBiAPVBqyZ4ASwAZxJflQb4wOQe0eyjYB3vLojt9vm/G79vQE65oZMkV/hK89neV15pTcsSPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522445; c=relaxed/simple;
-	bh=kagAMGh3WIni5H3MNxDwXmwTKKNjFt09IS6auYbMrAE=;
+	s=arc-20240116; t=1708523815; c=relaxed/simple;
+	bh=gBla84KzREMsVDywJ92xiN0/Djw1dWGlHCutEmX/f/g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=phvINKHmLek0mwvyOvLseVRZtB9ky6vKmyGFV9bCXrueDm//J8MhVe7dBC6ZtD6rs+9TIwt7WvdgcYVW7VmQRKetqRX79sKKv3GrALzG2k2lrGYhzBfOUzqVgubta6fP/nx+uVVy0ilRmsHK4x3OcYiGGX6kl8kBTs68936dqiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s5krjPI+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6523FC433F1;
-	Wed, 21 Feb 2024 13:34:04 +0000 (UTC)
+	 MIME-Version; b=PPvhFq6Bcq9CI4i7PNLSCMPeLrckX66hPv2ZXORu2/h+09xxBhGqN7SDa++ZcVYPJSQb2MlGKjbXnfDdg8CdsBdi29LiJEfPcd7qEN93XtmYURtYvjYVUnHFe7Kf211s9UtM6LdkDDr+eCBw8kL6yiX/kp7/tcx4UvIvmax2brg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WWj4VB4t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36578C433F1;
+	Wed, 21 Feb 2024 13:56:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522444;
-	bh=kagAMGh3WIni5H3MNxDwXmwTKKNjFt09IS6auYbMrAE=;
+	s=korg; t=1708523815;
+	bh=gBla84KzREMsVDywJ92xiN0/Djw1dWGlHCutEmX/f/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s5krjPI+tQaFCJJnRwS0WcS4vvNyJ0AOU4KdM7bBflKCOvYeP9LEZNzBNyObZeG3V
-	 rEdfrGK+7u1mCEq49LWdOk6SrOpYkb1tMTnU0PmpSGX5xqRnj7VWfGunG1omipzd9S
-	 2YrIOENAQwrDg7jzZg+UKId02i8CyPZVJfLT3PVY=
+	b=WWj4VB4tC7KYCeqom5ZLbX6XoRALM5/HQ5F/9pHv+hPBxQHmNUT6f6CWkKZDrsduH
+	 vrrZbFp1/ex8lCbui1+yilG4udOy/2QykgBPE0cQ1MWzgM5nx1lI3H5LQBTkjCFfph
+	 B0b65A0eVh4IK6JyE1GyMRSPpOU3ZY0Yq0cbBxt0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shiji Yang <yangshiji66@outlook.com>,
-	Stanislaw Gruszka <stf_xl@wp.pl>,
-	Kalle Valo <kvalo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 165/476] wifi: rt2x00: restart beacon queue when hardware reset
-Date: Wed, 21 Feb 2024 14:03:36 +0100
-Message-ID: <20240221130014.032398156@linuxfoundation.org>
+	Arnd Bergmann <arnd@arndb.de>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Kees Cook <keescook@chromium.org>,
+	Vasiliy Kovalev <kovalev@altlinux.org>
+Subject: [PATCH 5.10 038/379] stddef: Introduce DECLARE_FLEX_ARRAY() helper
+Date: Wed, 21 Feb 2024 14:03:37 +0100
+Message-ID: <20240221125956.042144003@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +63,154 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shiji Yang <yangshiji66@outlook.com>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit a11d965a218f0cd95b13fe44d0bcd8a20ce134a8 ]
+commit 3080ea5553cc909b000d1f1d964a9041962f2c5b upstream.
 
-When a hardware reset is triggered, all registers are reset, so all
-queues are forced to stop in hardware interface. However, mac80211
-will not automatically stop the queue. If we don't manually stop the
-beacon queue, the queue will be deadlocked and unable to start again.
-This patch fixes the issue where Apple devices cannot connect to the
-AP after calling ieee80211_restart_hw().
+There are many places where kernel code wants to have several different
+typed trailing flexible arrays. This would normally be done with multiple
+flexible arrays in a union, but since GCC and Clang don't (on the surface)
+allow this, there have been many open-coded workarounds, usually involving
+neighboring 0-element arrays at the end of a structure. For example,
+instead of something like this:
 
-Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
-Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/TYAP286MB031530EB6D98DCE4DF20766CBCA4A@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+struct thing {
+	...
+	union {
+		struct type1 foo[];
+		struct type2 bar[];
+	};
+};
+
+code works around the compiler with:
+
+struct thing {
+	...
+	struct type1 foo[0];
+	struct type2 bar[];
+};
+
+Another case is when a flexible array is wanted as the single member
+within a struct (which itself is usually in a union). For example, this
+would be worked around as:
+
+union many {
+	...
+	struct {
+		struct type3 baz[0];
+	};
+};
+
+These kinds of work-arounds cause problems with size checks against such
+zero-element arrays (for example when building with -Warray-bounds and
+-Wzero-length-bounds, and with the coming FORTIFY_SOURCE improvements),
+so they must all be converted to "real" flexible arrays, avoiding warnings
+like this:
+
+fs/hpfs/anode.c: In function 'hpfs_add_sector_to_btree':
+fs/hpfs/anode.c:209:27: warning: array subscript 0 is outside the bounds of an interior zero-length array 'struct bplus_internal_node[0]' [-Wzero-length-bounds]
+  209 |    anode->btree.u.internal[0].down = cpu_to_le32(a);
+      |    ~~~~~~~~~~~~~~~~~~~~~~~^~~
+In file included from fs/hpfs/hpfs_fn.h:26,
+                 from fs/hpfs/anode.c:10:
+fs/hpfs/hpfs.h:412:32: note: while referencing 'internal'
+  412 |     struct bplus_internal_node internal[0]; /* (internal) 2-word entries giving
+      |                                ^~~~~~~~
+
+drivers/net/can/usb/etas_es58x/es58x_fd.c: In function 'es58x_fd_tx_can_msg':
+drivers/net/can/usb/etas_es58x/es58x_fd.c:360:35: warning: array subscript 65535 is outside the bounds of an interior zero-length array 'u8[0]' {aka 'unsigned char[]'} [-Wzero-length-bounds]
+  360 |  tx_can_msg = (typeof(tx_can_msg))&es58x_fd_urb_cmd->raw_msg[msg_len];
+      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from drivers/net/can/usb/etas_es58x/es58x_core.h:22,
+                 from drivers/net/can/usb/etas_es58x/es58x_fd.c:17:
+drivers/net/can/usb/etas_es58x/es58x_fd.h:231:6: note: while referencing 'raw_msg'
+  231 |   u8 raw_msg[0];
+      |      ^~~~~~~
+
+However, it _is_ entirely possible to have one or more flexible arrays
+in a struct or union: it just has to be in another struct. And since it
+cannot be alone in a struct, such a struct must have at least 1 other
+named member -- but that member can be zero sized. Wrap all this nonsense
+into the new DECLARE_FLEX_ARRAY() in support of having flexible arrays
+in unions (or alone in a struct).
+
+As with struct_group(), since this is needed in UAPI headers as well,
+implement the core there, with a non-UAPI wrapper.
+
+Additionally update kernel-doc to understand its existence.
+
+https://github.com/KSPP/linux/issues/137
+
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ralink/rt2x00/rt2x00dev.c |  3 +++
- drivers/net/wireless/ralink/rt2x00/rt2x00mac.c | 11 +++++++++++
- 2 files changed, 14 insertions(+)
+ include/linux/stddef.h      |   13 +++++++++++++
+ include/uapi/linux/stddef.h |   16 ++++++++++++++++
+ scripts/kernel-doc          |    3 ++-
+ 3 files changed, 31 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-index 388675d073ce..10ae5e313dda 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-@@ -101,6 +101,7 @@ void rt2x00lib_disable_radio(struct rt2x00_dev *rt2x00dev)
- 	rt2x00link_stop_tuner(rt2x00dev);
- 	rt2x00queue_stop_queues(rt2x00dev);
- 	rt2x00queue_flush_queues(rt2x00dev, true);
-+	rt2x00queue_stop_queue(rt2x00dev->bcn);
+--- a/include/linux/stddef.h
++++ b/include/linux/stddef.h
+@@ -84,4 +84,17 @@ enum {
+ #define struct_group_tagged(TAG, NAME, MEMBERS...) \
+ 	__struct_group(TAG, NAME, /* no attrs */, MEMBERS)
  
- 	/*
- 	 * Disable radio.
-@@ -1268,6 +1269,7 @@ int rt2x00lib_start(struct rt2x00_dev *rt2x00dev)
- 	rt2x00dev->intf_ap_count = 0;
- 	rt2x00dev->intf_sta_count = 0;
- 	rt2x00dev->intf_associated = 0;
-+	rt2x00dev->intf_beaconing = 0;
- 
- 	/* Enable the radio */
- 	retval = rt2x00lib_enable_radio(rt2x00dev);
-@@ -1294,6 +1296,7 @@ void rt2x00lib_stop(struct rt2x00_dev *rt2x00dev)
- 	rt2x00dev->intf_ap_count = 0;
- 	rt2x00dev->intf_sta_count = 0;
- 	rt2x00dev->intf_associated = 0;
-+	rt2x00dev->intf_beaconing = 0;
- }
- 
- static inline void rt2x00lib_set_if_combinations(struct rt2x00_dev *rt2x00dev)
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c b/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
-index dea5babd30fe..f81b0ab0b4c5 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
-@@ -598,6 +598,17 @@ void rt2x00mac_bss_info_changed(struct ieee80211_hw *hw,
- 	 */
- 	if (changes & BSS_CHANGED_BEACON_ENABLED) {
- 		mutex_lock(&intf->beacon_skb_mutex);
++/**
++ * DECLARE_FLEX_ARRAY() - Declare a flexible array usable in a union
++ *
++ * @TYPE: The type of each flexible array element
++ * @NAME: The name of the flexible array member
++ *
++ * In order to have a flexible array member in a union or alone in a
++ * struct, it needs to be wrapped in an anonymous struct with at least 1
++ * named member, but that member can be empty.
++ */
++#define DECLARE_FLEX_ARRAY(TYPE, NAME) \
++	__DECLARE_FLEX_ARRAY(TYPE, NAME)
 +
-+		/*
-+		 * Clear the 'enable_beacon' flag and clear beacon because
-+		 * the beacon queue has been stopped after hardware reset.
-+		 */
-+		if (test_bit(DEVICE_STATE_RESET, &rt2x00dev->flags) &&
-+		    intf->enable_beacon) {
-+			intf->enable_beacon = false;
-+			rt2x00queue_clear_beacon(rt2x00dev, vif);
-+		}
+ #endif
+--- a/include/uapi/linux/stddef.h
++++ b/include/uapi/linux/stddef.h
+@@ -28,4 +28,20 @@
+ 		struct { MEMBERS } ATTRS; \
+ 		struct TAG { MEMBERS } ATTRS NAME; \
+ 	}
 +
- 		if (!bss_conf->enable_beacon && intf->enable_beacon) {
- 			rt2x00dev->intf_beaconing--;
- 			intf->enable_beacon = false;
--- 
-2.43.0
-
++/**
++ * __DECLARE_FLEX_ARRAY() - Declare a flexible array usable in a union
++ *
++ * @TYPE: The type of each flexible array element
++ * @NAME: The name of the flexible array member
++ *
++ * In order to have a flexible array member in a union or alone in a
++ * struct, it needs to be wrapped in an anonymous struct with at least 1
++ * named member, but that member can be empty.
++ */
++#define __DECLARE_FLEX_ARRAY(TYPE, NAME)	\
++	struct { \
++		struct { } __empty_ ## NAME; \
++		TYPE NAME[]; \
++	}
+ #endif
+--- a/scripts/kernel-doc
++++ b/scripts/kernel-doc
+@@ -1232,7 +1232,8 @@ sub dump_struct($$) {
+ 	$members =~ s/DECLARE_KFIFO\s*\(([^,)]+),\s*([^,)]+),\s*([^,)]+)\)/$2 \*$1/gos;
+ 	# replace DECLARE_KFIFO_PTR
+ 	$members =~ s/DECLARE_KFIFO_PTR\s*\(([^,)]+),\s*([^,)]+)\)/$2 \*$1/gos;
+-
++	# replace DECLARE_FLEX_ARRAY
++	$members =~ s/(?:__)?DECLARE_FLEX_ARRAY\s*\($args,\s*$args\)/$1 $2\[\]/gos;
+ 	my $declaration = $members;
+ 
+ 	# Split nested struct/union elements as newer ones
 
 
 
