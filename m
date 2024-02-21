@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-22868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D24685DE1D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:15:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B22085D9C5
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:22:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C35C81F24252
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:15:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C2AD1C23252
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:22:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC09A7BB1B;
-	Wed, 21 Feb 2024 14:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E20D7BAFE;
+	Wed, 21 Feb 2024 13:22:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FSEqs6t/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iw4LqTxY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ACB83CF42;
-	Wed, 21 Feb 2024 14:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF667993D;
+	Wed, 21 Feb 2024 13:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524785; cv=none; b=fdrg/R8jlixg6C1AU+R5fohI9yfJtG1muZ3GOibGkCF2ndlYtZ7mQIWHu2+1tEXIpUeL8vfXJiUBSlYInnnLSIWoHfHQQyKmJRyif2oAMRk6p3T05UCd2yA0AxtjrdK0kb2bdXH/OO9laxsgGnb+9eBBZMFW47ZZQz0VjfDw5ng=
+	t=1708521722; cv=none; b=c0Pkp5rqUOaa58itoqWzz2eq/wJ3WRt8IgAa57wlLyWucwUX3GO6ekB8MLo+tw+WnpMtnHN0Xmrh1LDtF37/fCVdlKvZPvefuZcgSvjj39vuZxcmlSMKolLp3qGPsumFoxUL/NDoCWPs4PKmw0MqQAISkKNngHmwihyGkiXf7+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524785; c=relaxed/simple;
-	bh=HfdF/b1L00uBkVyyVhzIFPhi1QxsdN5n120po4MUvwo=;
+	s=arc-20240116; t=1708521722; c=relaxed/simple;
+	bh=U9Yrb5nvleG/rbIp6EYYbA9FU8tc1ueDXHOAxJczF/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jgWaP8ePRk/pRydg9fDX5ITAv4od67QCTBcraeg98gRpyio7Fq5sFBZ0sQkDqMjLpAth+0msaTgjdQuDFoa5NdG6LaVIVJNUTODjRaQ3n5tJS4G03/0KI2WJwCBTw6zOTTJtQgw/zv+QvAZ5GXlUfsovcEYmogNs55wV9IuzjT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FSEqs6t/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1CC6C433F1;
-	Wed, 21 Feb 2024 14:13:04 +0000 (UTC)
+	 MIME-Version; b=aDrp0IGlkzt+48ybuAYWlBliNXl0NBgD8lydlLRk4d4imvIjVO/cKNs2QisDTIPwn9HpBYS6IqFQgZtWS9lEZeM0SmV8wdTBHGFjrLxan20C3EZRPyClLFOn14pl+4hByWAj4dHjzuurm22TtnRw9yeWs5Y2r9gZKM5IVlSX5OM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iw4LqTxY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E95A6C433F1;
+	Wed, 21 Feb 2024 13:22:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524785;
-	bh=HfdF/b1L00uBkVyyVhzIFPhi1QxsdN5n120po4MUvwo=;
+	s=korg; t=1708521721;
+	bh=U9Yrb5nvleG/rbIp6EYYbA9FU8tc1ueDXHOAxJczF/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FSEqs6t/BSHihC6OFFVs5b/CSFjUQ3SfWFjFbfRP80DcR4lBMBRNlWGt6D1u7hiQ9
-	 NCFyJ8gEEGrvHd5xFJe7hifIL1RSOYYFWt1r7LgicaLbpxouUyfn3im8yaMC3HSnZE
-	 yi5aDjxP8om5B5sksfd2llymVRUSktZ8ripk9JwU=
+	b=Iw4LqTxYWhEr5zoY6x8e0/XG6dq6htrOxln0uGumKJaEyapw/ODyhO9fEV4hIvuH7
+	 IwaAVBuzB50U17vUYkRCehQbD/DhXkBa66FbfonTVj1sfTiFsCNG12YXwQGZYHe5Xu
+	 T5YvxOkadnpCSYDcJCHduvLQRVRJbQE0jT4WIhro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean Delvare <jdelvare@suse.de>,
-	Piotr Zakowski <piotr.zakowski@intel.com>,
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 309/379] i2c: i801: Fix block process call transactions
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Subject: [PATCH 4.19 187/202] serial: max310x: set default value when reading clock ready bit
 Date: Wed, 21 Feb 2024 14:08:08 +0100
-Message-ID: <20240221130004.068146212@linuxfoundation.org>
+Message-ID: <20240221125937.851748690@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +60,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jean Delvare <jdelvare@suse.de>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[ Upstream commit c1c9d0f6f7f1dbf29db996bd8e166242843a5f21 ]
+commit 0419373333c2f2024966d36261fd82a453281e80 upstream.
 
-According to the Intel datasheets, software must reset the block
-buffer index twice for block process call transactions: once before
-writing the outgoing data to the buffer, and once again before
-reading the incoming data from the buffer.
+If regmap_read() returns a non-zero value, the 'val' variable can be left
+uninitialized.
 
-The driver is currently missing the second reset, causing the wrong
-portion of the block buffer to be read.
+Clear it before calling regmap_read() to make sure we properly detect
+the clock ready bit.
 
-Signed-off-by: Jean Delvare <jdelvare@suse.de>
-Reported-by: Piotr Zakowski <piotr.zakowski@intel.com>
-Closes: https://lore.kernel.org/linux-i2c/20240213120553.7b0ab120@endymion.delvare/
-Fixes: 315cd67c9453 ("i2c: i801: Add Block Write-Block Read Process Call support")
-Reviewed-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4cf9a888fd3c ("serial: max310x: Check the clock readiness")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20240116213001.3691629-2-hugo@hugovil.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-i801.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/tty/serial/max310x.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/busses/i2c-i801.c b/drivers/i2c/busses/i2c-i801.c
-index 15520d491140..d6b945f5b887 100644
---- a/drivers/i2c/busses/i2c-i801.c
-+++ b/drivers/i2c/busses/i2c-i801.c
-@@ -543,11 +543,10 @@ static int i801_block_transaction_by_block(struct i801_priv *priv,
- 	/* Set block buffer mode */
- 	outb_p(inb_p(SMBAUXCTL(priv)) | SMBAUXCTL_E32B, SMBAUXCTL(priv));
+--- a/drivers/tty/serial/max310x.c
++++ b/drivers/tty/serial/max310x.c
+@@ -600,7 +600,7 @@ static int max310x_set_ref_clk(struct de
  
--	inb_p(SMBHSTCNT(priv)); /* reset the data buffer index */
--
- 	if (read_write == I2C_SMBUS_WRITE) {
- 		len = data->block[0];
- 		outb_p(len, SMBHSTDAT0(priv));
-+		inb_p(SMBHSTCNT(priv));	/* reset the data buffer index */
- 		for (i = 0; i < len; i++)
- 			outb_p(data->block[i+1], SMBBLKDAT(priv));
- 	}
-@@ -563,6 +562,7 @@ static int i801_block_transaction_by_block(struct i801_priv *priv,
- 			return -EPROTO;
- 
- 		data->block[0] = len;
-+		inb_p(SMBHSTCNT(priv));	/* reset the data buffer index */
- 		for (i = 0; i < len; i++)
- 			data->block[i + 1] = inb_p(SMBBLKDAT(priv));
- 	}
--- 
-2.43.0
-
+ 	/* Wait for crystal */
+ 	if (xtal) {
+-		unsigned int val;
++		unsigned int val = 0;
+ 		msleep(10);
+ 		regmap_read(s->regmap, MAX310X_STS_IRQSTS_REG, &val);
+ 		if (!(val & MAX310X_STS_CLKREADY_BIT)) {
 
 
 
