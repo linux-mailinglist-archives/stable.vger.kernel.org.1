@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-22731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D3DA85DD83
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:06:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C023685DE8A
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:19:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EADB283F8B
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:06:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F17A61C23C23
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:19:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A86907CF1D;
-	Wed, 21 Feb 2024 14:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAF4D7CF27;
+	Wed, 21 Feb 2024 14:19:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A9apgEaN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sy7q1ONO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6482879DBF;
-	Wed, 21 Feb 2024 14:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA3D37CF02;
+	Wed, 21 Feb 2024 14:19:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524329; cv=none; b=gU1IfBLwDrF7Uk9XiO4y4JiZvyHfofewOZPByq+ONGNmv45wkIZMYndHVvbOc5hSu+f/Ro3XkxM7DO9AkOrAfN7kup++VHDSgr40IXzH8J9h7PCaRQ4Q+sRP3WLRnWHStaac/vQGze+jDe4Zu1EM1gelK4BRCunDg/3Wa+Wiiws=
+	t=1708525152; cv=none; b=E+vsgn9O0NTiwWYvwpxc1CHH/PDnMwuGTmkxc7plF007AmpLCqm/BAhke4OqkT2nlgCQncCNA+611TDodXUVnZS8m4C3C9ZKyQFio5B70CSDBr9fpUcM5q2ouOn9fcdfS4yHQA9LFyNaneJ/YzSQEvWRu4FAFpXLCiAuxBGSXuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524329; c=relaxed/simple;
-	bh=jrj298DkiZB5G8L0m9FYzgXQTyZn+GrHlSa9mS181kI=;
+	s=arc-20240116; t=1708525152; c=relaxed/simple;
+	bh=YWhuTpE87olzsHG5+puQt/4nXDxQP5LXzFBU7cm5VHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=elTMcyLl5riMERYZaGz0ra0z13uxuS14p39JqJUex8ObBBOnR1VNOpdRqjF4NuQV/KxPBvuTVjsQA2jKTN38W3U2FZ7OQwo2fbq4PInYePWkg3XvUksn3rdQ9t5DoEHXh8R8IVwtBL9F5baIIpoQI9KybvKKn8u+u7VSVYgX9hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A9apgEaN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C36EEC43394;
-	Wed, 21 Feb 2024 14:05:28 +0000 (UTC)
+	 MIME-Version; b=otxLjhqPLQNH/8Vw5pHxT79+YLkJRHNmGP6ctmGzg1jCY6rJu5YsGlk2hzdLuhToc/nd24aSFGawVZ3koZNk5QuHIguy8TB799WKTNkjrocuoLGBsrYjnGZGdWqdGUTnYpqlJ4wvSEKiMfobD6ulAQRHOiiq9fdn+ViIHeB0qL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sy7q1ONO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A878C433C7;
+	Wed, 21 Feb 2024 14:19:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524329;
-	bh=jrj298DkiZB5G8L0m9FYzgXQTyZn+GrHlSa9mS181kI=;
+	s=korg; t=1708525152;
+	bh=YWhuTpE87olzsHG5+puQt/4nXDxQP5LXzFBU7cm5VHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A9apgEaNjGK5tJ489FIboDtZChN35/3wxG5kZBfn4GSo0/w0uBbd87AYSsg9NzLkZ
-	 GCe6eXvm3rs4EN8Mg3jjSVSehDegWq0IMFsn4hKR5u/IOMPVHCGMuoBD3gmGMvQVGO
-	 IMsRs1wiC6T/XvGc0I4zuTc3n1MfrUfDeBWnQjgE=
+	b=Sy7q1ONOtXE0U0/8pEsdg+FnUrj67dTfp6NB3ywGdOOZ5VYyhhjD/W3mtgQ+b8KQK
+	 CbViNyArhc7sfi/mdnDV2Uw97QEhp15q9Zcmg2kf5/a0Hf66xAGhFolASHtOboKcnQ
+	 lMeZ8OOJaaFkmW06GGSHSk9zXnlh/JSymThLHDws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	Adrian Reber <areber@redhat.com>,
-	Andrei Vagin <avagin@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 210/379] tty: allow TIOCSLCKTRMIOS with CAP_CHECKPOINT_RESTORE
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	George Melikov <mail@gmelikov.ru>
+Subject: [PATCH 5.4 048/267] gpiolib: acpi: Ignore touchpad wakeup on GPD G1619-04
 Date: Wed, 21 Feb 2024 14:06:29 +0100
-Message-ID: <20240221130001.113226078@linuxfoundation.org>
+Message-ID: <20240221125941.519147288@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Reber <areber@redhat.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit e0f25b8992345aa5f113da2815f5add98738c611 ]
+commit 805c74eac8cb306dc69b87b6b066ab4da77ceaf1 upstream.
 
-The capability CAP_CHECKPOINT_RESTORE was introduced to allow non-root
-users to checkpoint and restore processes as non-root with CRIU.
+Spurious wakeups are reported on the GPD G1619-04 which
+can be absolved by programming the GPIO to ignore wakeups.
 
-This change extends CAP_CHECKPOINT_RESTORE to enable the CRIU option
-'--shell-job' as non-root. CRIU's man-page describes the '--shell-job'
-option like this:
-
-  Allow one to dump shell jobs. This implies the restored task will
-  inherit session and process group ID from the criu itself. This option
-  also allows to migrate a single external tty connection, to migrate
-  applications like top.
-
-TIOCSLCKTRMIOS can only be done if the process has CAP_SYS_ADMIN and
-this change extends it to CAP_SYS_ADMIN or CAP_CHECKPOINT_RESTORE.
-
-With this change it is possible to checkpoint and restore processes
-which have a tty connection as non-root if CAP_CHECKPOINT_RESTORE is
-set.
-
-Acked-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Adrian Reber <areber@redhat.com>
-Acked-by: Andrei Vagin <avagin@gmail.com>
-Link: https://lore.kernel.org/r/20231208143656.1019-1-areber@redhat.com
+Cc: stable@vger.kernel.org
+Reported-and-tested-by: George Melikov <mail@gmelikov.ru>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3073
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/tty_ioctl.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpio/gpiolib-acpi.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/tty/tty_ioctl.c b/drivers/tty/tty_ioctl.c
-index 12a30329abdb..7ae2630cb750 100644
---- a/drivers/tty/tty_ioctl.c
-+++ b/drivers/tty/tty_ioctl.c
-@@ -763,7 +763,7 @@ int tty_mode_ioctl(struct tty_struct *tty, struct file *file,
- 			ret = -EFAULT;
- 		return ret;
- 	case TIOCSLCKTRMIOS:
--		if (!capable(CAP_SYS_ADMIN))
-+		if (!checkpoint_restore_ns_capable(&init_user_ns))
- 			return -EPERM;
- 		copy_termios_locked(real_tty, &kterm);
- 		if (user_termios_to_kernel_termios(&kterm,
-@@ -780,7 +780,7 @@ int tty_mode_ioctl(struct tty_struct *tty, struct file *file,
- 			ret = -EFAULT;
- 		return ret;
- 	case TIOCSLCKTRMIOS:
--		if (!capable(CAP_SYS_ADMIN))
-+		if (!checkpoint_restore_ns_capable(&init_user_ns))
- 			return -EPERM;
- 		copy_termios_locked(real_tty, &kterm);
- 		if (user_termios_to_kernel_termios_1(&kterm,
--- 
-2.43.0
-
+--- a/drivers/gpio/gpiolib-acpi.c
++++ b/drivers/gpio/gpiolib-acpi.c
+@@ -1466,6 +1466,20 @@ static const struct dmi_system_id gpioli
+ 			.ignore_wake = "INT33FF:01@0",
+ 		},
+ 	},
++	{
++		/*
++		 * Spurious wakeups from TP_ATTN# pin
++		 * Found in BIOS 0.35
++		 * https://gitlab.freedesktop.org/drm/amd/-/issues/3073
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "GPD"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "G1619-04"),
++		},
++		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
++			.ignore_wake = "PNP0C50:00@8",
++		},
++	},
+ 	{} /* Terminating entry */
+ };
+ 
 
 
 
