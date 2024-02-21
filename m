@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-22979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04EB585DE8D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:19:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 717D685D956
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:17:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B03CE28587F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:19:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE9C4B23FA5
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:17:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD44E7A708;
-	Wed, 21 Feb 2024 14:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 834237762D;
+	Wed, 21 Feb 2024 13:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KGxLyK8R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nkbdhlib"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ADBB69D38;
-	Wed, 21 Feb 2024 14:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FAD676C62;
+	Wed, 21 Feb 2024 13:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525158; cv=none; b=hLoCykNYYry/YuK9QBADyjm34XDzGg1eCK2cSkGOirI2TQAmHddvBkwLREU6xJR2Ts/Y0+bt0VlMwpaikN0aPVAfGWs/mnhOWwQv6NkfV4ve4VUvh0dzbtNUk59XiBd34iz/jjKDtA85fjr1OeFA8zX7z8BLtW86gRMAqYT4DSk=
+	t=1708521433; cv=none; b=pywkP4mtJ9yg9nnyHWLjeaWhZDWnMh75Ytqb/FjNEYSAiePvSh8jkw5AMbrfWOPbc2Od2z5lVCjeAIU2ayqJi8DdwOac79rILX5w4vTH48C7bUReMGuU2yr8/g2mnDaDZWmuJ16mjtmOEcCfDeHSKinncSqMkyysIT2rDQt7zl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525158; c=relaxed/simple;
-	bh=yry7HrmUWshi4fmF0LCqrp/G4VVBz1sVu/0BOm0JtIk=;
+	s=arc-20240116; t=1708521433; c=relaxed/simple;
+	bh=sy4G68/8enhobcHWIwSfBNcDr/NYOzzzYPrPoDviA5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k+RC2SLQtEEKoXJlAE3+G6lOrzGm1tLCtq57IjsCi5sZ2c1Ge+0c0CbYnx/QkOR6EGJ2HAt5YH0DyOyKLb4gsx6Bd5NLesvoKZ7Xp9dLJJFHi5VgLPF227k/K3epVQYSTyUyL9+JxUGfoBqf35FIq1xjqrFImBknaQEJveQATxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KGxLyK8R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6EFCC433C7;
-	Wed, 21 Feb 2024 14:19:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=U9jFggBcGKibRuaa5roHFGyTmNjdM74KyLLFGr3222yovKMAhSSxMWpPaeokqfbjJF0yRoJw0QzizIPcQmdP7WYl3nt8BQyAv1Ss55fJ1hT88WWOJeYk8dQHqWJMMaRNDYfpp8haDuksSKU6yUe+8QoXq0unBCeZe6LJCzi5Prc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nkbdhlib; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A008C433F1;
+	Wed, 21 Feb 2024 13:17:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525158;
-	bh=yry7HrmUWshi4fmF0LCqrp/G4VVBz1sVu/0BOm0JtIk=;
+	s=korg; t=1708521432;
+	bh=sy4G68/8enhobcHWIwSfBNcDr/NYOzzzYPrPoDviA5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KGxLyK8RZeO/XVOjKf4ZIUFONl4egpT/pMqJ55NVcct86IM3GcSccSQv7iiYowrXL
-	 p500T9WC7sSRu8rtAM+6n0gQcpvGOX4NNnizYu1sIKWLBhf5e+W6GIOk4WjIHQm9v/
-	 6emST/4eWr+U2cfGc6y8JfoGqb1uz8vVj2cOxKxw=
+	b=nkbdhlibpZV7prx19UbPbM9xIS+yjLkNGvwEW902TbU5h3cpJx/Ga4WJF7gABzP3f
+	 cSFJucoYI+q5ljH5oqenKn01fqrMhRxdgCLwQUxPWalOWg0SJP5+KlXJzTiAu1fKNX
+	 hglK6qlgJLzYD0PMnjwNoqIDQpgvGQcuFTXPm050=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Minsuk Kang <linuxlovemin@yonsei.ac.kr>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 040/267] fjes: fix memleaks in fjes_hw_setup
+Subject: [PATCH 4.19 080/202] wifi: ath9k: Fix potential array-index-out-of-bounds read in ath9k_htc_txstatus()
 Date: Wed, 21 Feb 2024 14:06:21 +0100
-Message-ID: <20240221125941.279009110@linuxfoundation.org>
+Message-ID: <20240221125934.389782460@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,113 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
 
-[ Upstream commit f6cc4b6a3ae53df425771000e9c9540cce9b7bb1 ]
+[ Upstream commit 2adc886244dff60f948497b59affb6c6ebb3c348 ]
 
-In fjes_hw_setup, it allocates several memory and delay the deallocation
-to the fjes_hw_exit in fjes_probe through the following call chain:
+Fix an array-index-out-of-bounds read in ath9k_htc_txstatus(). The bug
+occurs when txs->cnt, data from a URB provided by a USB device, is
+bigger than the size of the array txs->txstatus, which is
+HTC_MAX_TX_STATUS. WARN_ON() already checks it, but there is no bug
+handling code after the check. Make the function return if that is the
+case.
 
-fjes_probe
-  |-> fjes_hw_init
-        |-> fjes_hw_setup
-  |-> fjes_hw_exit
+Found by a modified version of syzkaller.
 
-However, when fjes_hw_setup fails, fjes_hw_exit won't be called and thus
-all the resources allocated in fjes_hw_setup will be leaked. In this
-patch, we free those resources in fjes_hw_setup and prevents such leaks.
+UBSAN: array-index-out-of-bounds in htc_drv_txrx.c
+index 13 is out of range for type '__wmi_event_txstatus [12]'
+Call Trace:
+ ath9k_htc_txstatus
+ ath9k_wmi_event_tasklet
+ tasklet_action_common
+ __do_softirq
+ irq_exit_rxu
+ sysvec_apic_timer_interrupt
 
-Fixes: 2fcbca687702 ("fjes: platform_driver's .probe and .remove routine")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240122172445.3841883-1-alexious@zju.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20231113065756.1491991-1-linuxlovemin@yonsei.ac.kr
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/fjes/fjes_hw.c | 37 ++++++++++++++++++++++++++++++-------
- 1 file changed, 30 insertions(+), 7 deletions(-)
+ drivers/net/wireless/ath/ath9k/htc_drv_txrx.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/fjes/fjes_hw.c b/drivers/net/fjes/fjes_hw.c
-index 8a4fbfacad7e..a4d3c7fa9ad3 100644
---- a/drivers/net/fjes/fjes_hw.c
-+++ b/drivers/net/fjes/fjes_hw.c
-@@ -220,21 +220,25 @@ static int fjes_hw_setup(struct fjes_hw *hw)
+diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
+index 979ac31a77a0..527bca8f7deb 100644
+--- a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
++++ b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
+@@ -647,9 +647,10 @@ void ath9k_htc_txstatus(struct ath9k_htc_priv *priv, void *wmi_event)
+ 	struct ath9k_htc_tx_event *tx_pend;
+ 	int i;
  
- 	mem_size = FJES_DEV_REQ_BUF_SIZE(hw->max_epid);
- 	hw->hw_info.req_buf = kzalloc(mem_size, GFP_KERNEL);
--	if (!(hw->hw_info.req_buf))
--		return -ENOMEM;
-+	if (!(hw->hw_info.req_buf)) {
-+		result = -ENOMEM;
-+		goto free_ep_info;
-+	}
+-	for (i = 0; i < txs->cnt; i++) {
+-		WARN_ON(txs->cnt > HTC_MAX_TX_STATUS);
++	if (WARN_ON_ONCE(txs->cnt > HTC_MAX_TX_STATUS))
++		return;
  
- 	hw->hw_info.req_buf_size = mem_size;
++	for (i = 0; i < txs->cnt; i++) {
+ 		__txs = &txs->txstatus[i];
  
- 	mem_size = FJES_DEV_RES_BUF_SIZE(hw->max_epid);
- 	hw->hw_info.res_buf = kzalloc(mem_size, GFP_KERNEL);
--	if (!(hw->hw_info.res_buf))
--		return -ENOMEM;
-+	if (!(hw->hw_info.res_buf)) {
-+		result = -ENOMEM;
-+		goto free_req_buf;
-+	}
- 
- 	hw->hw_info.res_buf_size = mem_size;
- 
- 	result = fjes_hw_alloc_shared_status_region(hw);
- 	if (result)
--		return result;
-+		goto free_res_buf;
- 
- 	hw->hw_info.buffer_share_bit = 0;
- 	hw->hw_info.buffer_unshare_reserve_bit = 0;
-@@ -245,11 +249,11 @@ static int fjes_hw_setup(struct fjes_hw *hw)
- 
- 			result = fjes_hw_alloc_epbuf(&buf_pair->tx);
- 			if (result)
--				return result;
-+				goto free_epbuf;
- 
- 			result = fjes_hw_alloc_epbuf(&buf_pair->rx);
- 			if (result)
--				return result;
-+				goto free_epbuf;
- 
- 			spin_lock_irqsave(&hw->rx_status_lock, flags);
- 			fjes_hw_setup_epbuf(&buf_pair->tx, mac,
-@@ -272,6 +276,25 @@ static int fjes_hw_setup(struct fjes_hw *hw)
- 	fjes_hw_init_command_registers(hw, &param);
- 
- 	return 0;
-+
-+free_epbuf:
-+	for (epidx = 0; epidx < hw->max_epid ; epidx++) {
-+		if (epidx == hw->my_epid)
-+			continue;
-+		fjes_hw_free_epbuf(&hw->ep_shm_info[epidx].tx);
-+		fjes_hw_free_epbuf(&hw->ep_shm_info[epidx].rx);
-+	}
-+	fjes_hw_free_shared_status_region(hw);
-+free_res_buf:
-+	kfree(hw->hw_info.res_buf);
-+	hw->hw_info.res_buf = NULL;
-+free_req_buf:
-+	kfree(hw->hw_info.req_buf);
-+	hw->hw_info.req_buf = NULL;
-+free_ep_info:
-+	kfree(hw->ep_shm_info);
-+	hw->ep_shm_info = NULL;
-+	return result;
- }
- 
- static void fjes_hw_cleanup(struct fjes_hw *hw)
+ 		skb = ath9k_htc_tx_get_packet(priv, __txs);
 -- 
 2.43.0
 
