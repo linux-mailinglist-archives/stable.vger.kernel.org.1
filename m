@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-22016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EED6385D9B4
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:21:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 592C885DDDC
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:13:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B7061C23144
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:21:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13E4E2832D1
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:13:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB2EA7C08C;
-	Wed, 21 Feb 2024 13:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61B457C097;
+	Wed, 21 Feb 2024 14:08:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xykQKsZs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aiuMagFT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B8D7BAE4;
-	Wed, 21 Feb 2024 13:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 205A47CF1A;
+	Wed, 21 Feb 2024 14:08:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521674; cv=none; b=YExvLxH0zwUsgmMZ4B1F1vTVQoKoNil1ASWKJ3+7+8o24IIuGXisiwwMulhYheqJfMkqH0HtaKc+4Bk94enr+BINr2KgyTvuewEIMFAk8iMk9kagrIrXANM/KY+BZtGElHvkJWF9vTWnc1mpC9ThPJyjVjw65yTFv6umSUCzcL4=
+	t=1708524520; cv=none; b=H/lBEWaWhZMh/DdMRucuVQ9rzNDMLeK4pOyv2YN/hRg0gNlon7gl5D74ak1TROyvJQ/qrXInFHXRUBUErrtqP8/8yUo6+XxChjof1ybJKntWYLTtGJ5NyljxTEa4FOG1suVkLk/Yqi7VYnrSEHY5YA4MUj/Dtox27n7kUBFt5wA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521674; c=relaxed/simple;
-	bh=MZfYX5mB29S7dSncBpuFOpOZa01rOJZdYnZYECQtVBk=;
+	s=arc-20240116; t=1708524520; c=relaxed/simple;
+	bh=E3pO7Wf0GaANLXrd75wNGFdwx+MEmWsmBPl5IapTyzk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ptbr9qjLvw1xXrF1QtaNubAz806LlC7LkDEWEcpKOSbIhhOXIQlNYQDhgWu6bBGtv0f/cTPCRRLMkkiKE0w9cGQ9HpUI9tr6whocWaPi1+gZIDwnWvNDBF7uixni9EcmLtDKWr+lmUznMyijHoN/Z1TYs/MwbK43oAPi+CKXO84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xykQKsZs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC886C433F1;
-	Wed, 21 Feb 2024 13:21:13 +0000 (UTC)
+	 MIME-Version; b=cJT6s8RwvfhJRq14ETMaVaeu90ZwUgZZyxFj+b3l2aEu/K8rMMzIGfWjzcmxKcSn13VHgw9PA5+CMV81I6XXoMifj0ntbv4BhtxEbXyqpLCYmvN2Jirzo0w0WdELKV+HW1SO2Yht0ysqvIEVAJ/v9GlIoM4XdWTVQ7APvPmarV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aiuMagFT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 737A7C433F1;
+	Wed, 21 Feb 2024 14:08:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521674;
-	bh=MZfYX5mB29S7dSncBpuFOpOZa01rOJZdYnZYECQtVBk=;
+	s=korg; t=1708524519;
+	bh=E3pO7Wf0GaANLXrd75wNGFdwx+MEmWsmBPl5IapTyzk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xykQKsZsunUzyxfbx7+nWbuP/ssrJbRf9BTWZZeqgBjR7HvelYOsHLQ9vU9hm5he2
-	 pEoNUcSsZW4AA62hzogsxmkmc+Hty1GdeOAhq1WgQ0FwHxx0DvG3vZy725xQgYp1cm
-	 RkYvnj+oKDoWOcQm//24eLlJLmn49S+DolIGzOAQ=
+	b=aiuMagFTSEmwdff6tH5zCsNJ6JwujuJaXlD1YGojbI69WikHtUqCfUmI7OFU91shy
+	 u+Wpg6+HUe2xvhwsX9zFk3EMRI8e3Lo/jR/9079YjdMOqFUM1gm49aYd8+ncvyrFSe
+	 fcTvpSGA+TwAOqYZQwXS732WbM8v1dSGlwsLBYaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Lindgren <tony@atomide.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Stefano Brivio <sbrivio@redhat.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 147/202] phy: ti: phy-omap-usb2: Fix NULL pointer dereference for SRP
+Subject: [PATCH 5.10 269/379] netfilter: nft_set_pipapo: add helper to release pcpu scratch area
 Date: Wed, 21 Feb 2024 14:07:28 +0100
-Message-ID: <20240221125936.454503660@linuxfoundation.org>
+Message-ID: <20240221130002.867341906@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 7104ba0f1958adb250319e68a15eff89ec4fd36d ]
+[ Upstream commit 47b1c03c3c1a119435480a1e73f27197dc59131d ]
 
-If the external phy working together with phy-omap-usb2 does not implement
-send_srp(), we may still attempt to call it. This can happen on an idle
-Ethernet gadget triggering a wakeup for example:
+After next patch simple kfree() is not enough anymore, so add
+a helper for it.
 
-configfs-gadget.g1 gadget.0: ECM Suspend
-configfs-gadget.g1 gadget.0: Port suspended. Triggering wakeup
-...
-Unable to handle kernel NULL pointer dereference at virtual address
-00000000 when execute
-...
-PC is at 0x0
-LR is at musb_gadget_wakeup+0x1d4/0x254 [musb_hdrc]
-...
-musb_gadget_wakeup [musb_hdrc] from usb_gadget_wakeup+0x1c/0x3c [udc_core]
-usb_gadget_wakeup [udc_core] from eth_start_xmit+0x3b0/0x3d4 [u_ether]
-eth_start_xmit [u_ether] from dev_hard_start_xmit+0x94/0x24c
-dev_hard_start_xmit from sch_direct_xmit+0x104/0x2e4
-sch_direct_xmit from __dev_queue_xmit+0x334/0xd88
-__dev_queue_xmit from arp_solicit+0xf0/0x268
-arp_solicit from neigh_probe+0x54/0x7c
-neigh_probe from __neigh_event_send+0x22c/0x47c
-__neigh_event_send from neigh_resolve_output+0x14c/0x1c0
-neigh_resolve_output from ip_finish_output2+0x1c8/0x628
-ip_finish_output2 from ip_send_skb+0x40/0xd8
-ip_send_skb from udp_send_skb+0x124/0x340
-udp_send_skb from udp_sendmsg+0x780/0x984
-udp_sendmsg from __sys_sendto+0xd8/0x158
-__sys_sendto from ret_fast_syscall+0x0/0x58
-
-Let's fix the issue by checking for send_srp() and set_vbus() before
-calling them. For USB peripheral only cases these both could be NULL.
-
-Fixes: 657b306a7bdf ("usb: phy: add a new driver for omap usb2 phy")
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Link: https://lore.kernel.org/r/20240128120556.8848-1-tony@atomide.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: 5a8cdf6fd860 ("netfilter: nft_set_pipapo: remove scratch_aligned pointer")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/ti/phy-omap-usb2.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/netfilter/nft_set_pipapo.c | 28 +++++++++++++++++++++++-----
+ 1 file changed, 23 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/phy/ti/phy-omap-usb2.c b/drivers/phy/ti/phy-omap-usb2.c
-index fe909fd8144f..ae94e1e66bcc 100644
---- a/drivers/phy/ti/phy-omap-usb2.c
-+++ b/drivers/phy/ti/phy-omap-usb2.c
-@@ -64,7 +64,7 @@ static int omap_usb_set_vbus(struct usb_otg *otg, bool enabled)
- {
- 	struct omap_usb *phy = phy_to_omapusb(otg->usb_phy);
+diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
+index c5cd017ae8ca..e4ff783503e1 100644
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -1101,6 +1101,24 @@ static void pipapo_map(struct nft_pipapo_match *m,
+ 		f->mt[map[i].to + j].e = e;
+ }
  
--	if (!phy->comparator)
-+	if (!phy->comparator || !phy->comparator->set_vbus)
- 		return -ENODEV;
++/**
++ * pipapo_free_scratch() - Free per-CPU map at original (not aligned) address
++ * @m:		Matching data
++ * @cpu:	CPU number
++ */
++static void pipapo_free_scratch(const struct nft_pipapo_match *m, unsigned int cpu)
++{
++	struct nft_pipapo_scratch *s;
++	void *mem;
++
++	s = *per_cpu_ptr(m->scratch, cpu);
++	if (!s)
++		return;
++
++	mem = s;
++	kfree(mem);
++}
++
+ /**
+  * pipapo_realloc_scratch() - Reallocate scratch maps for partial match results
+  * @clone:	Copy of matching data with pending insertions and deletions
+@@ -1133,7 +1151,7 @@ static int pipapo_realloc_scratch(struct nft_pipapo_match *clone,
+ 			return -ENOMEM;
+ 		}
  
- 	return phy->comparator->set_vbus(phy->comparator, enabled);
-@@ -74,7 +74,7 @@ static int omap_usb_start_srp(struct usb_otg *otg)
- {
- 	struct omap_usb *phy = phy_to_omapusb(otg->usb_phy);
+-		kfree(*per_cpu_ptr(clone->scratch, i));
++		pipapo_free_scratch(clone, i);
  
--	if (!phy->comparator)
-+	if (!phy->comparator || !phy->comparator->start_srp)
- 		return -ENODEV;
+ 		*per_cpu_ptr(clone->scratch, i) = scratch;
  
- 	return phy->comparator->start_srp(phy->comparator);
+@@ -1359,7 +1377,7 @@ static struct nft_pipapo_match *pipapo_clone(struct nft_pipapo_match *old)
+ 	}
+ out_scratch_realloc:
+ 	for_each_possible_cpu(i)
+-		kfree(*per_cpu_ptr(new->scratch, i));
++		pipapo_free_scratch(new, i);
+ #ifdef NFT_PIPAPO_ALIGN
+ 	free_percpu(new->scratch_aligned);
+ #endif
+@@ -1644,7 +1662,7 @@ static void pipapo_free_match(struct nft_pipapo_match *m)
+ 	int i;
+ 
+ 	for_each_possible_cpu(i)
+-		kfree(*per_cpu_ptr(m->scratch, i));
++		pipapo_free_scratch(m, i);
+ 
+ #ifdef NFT_PIPAPO_ALIGN
+ 	free_percpu(m->scratch_aligned);
+@@ -2235,7 +2253,7 @@ static void nft_pipapo_destroy(const struct nft_ctx *ctx,
+ 		free_percpu(m->scratch_aligned);
+ #endif
+ 		for_each_possible_cpu(cpu)
+-			kfree(*per_cpu_ptr(m->scratch, cpu));
++			pipapo_free_scratch(m, cpu);
+ 		free_percpu(m->scratch);
+ 		pipapo_free_fields(m);
+ 		kfree(m);
+@@ -2252,7 +2270,7 @@ static void nft_pipapo_destroy(const struct nft_ctx *ctx,
+ 		free_percpu(priv->clone->scratch_aligned);
+ #endif
+ 		for_each_possible_cpu(cpu)
+-			kfree(*per_cpu_ptr(priv->clone->scratch, cpu));
++			pipapo_free_scratch(priv->clone, cpu);
+ 		free_percpu(priv->clone->scratch);
+ 
+ 		pipapo_free_fields(priv->clone);
 -- 
 2.43.0
 
