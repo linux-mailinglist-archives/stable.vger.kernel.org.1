@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-22990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F86385DF02
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:23:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 959E785D96F
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:18:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A502B28B3C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:20:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1AAA5B24A4D
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:18:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8465B7C099;
-	Wed, 21 Feb 2024 14:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4431278B4A;
+	Wed, 21 Feb 2024 13:18:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DVLvwnIR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o5qr+U7P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 415894C62;
-	Wed, 21 Feb 2024 14:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF93A77638;
+	Wed, 21 Feb 2024 13:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525198; cv=none; b=Sg0QpZ9+zRDnR+GrD99dHkZ/0VzfXduLEvFjYnqjdcCx0AzMzlkgmkuGHBqP8rjqvc0x3zTkZdAupggvHGJMdMpDiClPA9s1w/xfXjz9+wQbivkKC4fejBXLPWuszI+1Wiq2BrBVo6J/+pomTWr5r8B5+GxIQObB+lNDV7Et5wI=
+	t=1708521501; cv=none; b=kiEFUdxO/47Alk+MS3codvcbvEAlIVObjBGClSDMLZmq1Kuc7JDXRBbTxBklswPFgAGhmoPajrmFH10VgQz6czQwTLDB3s0JWLhZtP1ULb/9qemPcij2JE5xez+ouudYmRdHD8wXwnX7woL+rzIpPl2/U90ucZlkAofZMt2LVtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525198; c=relaxed/simple;
-	bh=YQCOLen3U86Jq6RBC+4TFQj0jzEjX7i/djZ2KhxFuCI=;
+	s=arc-20240116; t=1708521501; c=relaxed/simple;
+	bh=U3CL0RSIEGwHIU3i05GEmSbSvPPUgQwg0OG3khopTtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KF1HHi+kmZ7EiqoqHojQO5TWAGopmf6ZtyB5pcwEZN1GbTHnEfha6A58wzZosPSE1xTY63p7AOcStbVxQFZnf8BhXnzW77KntMuRnhEWjCERF8Or2QCluvrZwF2fXxvwCxAGVRXne6vWv0i8ejjXf+OtnPvTW3GAtRwDgOguBJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DVLvwnIR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5247C433F1;
-	Wed, 21 Feb 2024 14:19:57 +0000 (UTC)
+	 MIME-Version; b=Y6Rg8RN5SdLVpJhg0gNHmmyVOdITbZwONZHhxbTGU66GV2DqwM36sKMMubTq1VXPQGz9xnlNuiiR3aep8FTyxOdzJABtZwDISkW44+KVg37bH22Ronqm3hB1UU6tsj0Gn5LDQ6PbUUMZ+zX/0uah5cerZlMXcdJZ2w3GTG1YFEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o5qr+U7P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A059C433C7;
+	Wed, 21 Feb 2024 13:18:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525198;
-	bh=YQCOLen3U86Jq6RBC+4TFQj0jzEjX7i/djZ2KhxFuCI=;
+	s=korg; t=1708521500;
+	bh=U3CL0RSIEGwHIU3i05GEmSbSvPPUgQwg0OG3khopTtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DVLvwnIRgA92bVxcGTlp7lCFMAVB9jwru9dS2o2rTPtDT1dLK6XqiLZ6pnX/yJyJe
-	 Zgtq+kKnDgCW1RYKYZukr0x7HDkJq15AKSSHhN0jGTdrU0nmZM+e2CKHBwg/SbtZbG
-	 3rYMhe3hpjnxRxFc0PVjBtFkPqR9+dRvNpC53hqE=
+	b=o5qr+U7Pyzs8A/GOrgjqwJ3DUq3zAa1IT/2U//RnbT5//jbUxUpvZ6Phs5TkENinp
+	 cMix/al7n5mhzWctcYJuLcgG77/VaxXqykhxDDxTFEoZhp0RiT+HWfyI2VYDU8QOBM
+	 U2KpymTx/kkP2eSlJbL2v9O+uxwae++zYyfjT7Ts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 089/267] ext4: remove unnecessary check from alloc_flex_gd()
+	Edward Adam Davis <eadavis@qq.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+864a269c27ee06b58374@syzkaller.appspotmail.com
+Subject: [PATCH 4.19 129/202] wifi: cfg80211: fix RCU dereference in __cfg80211_bss_update
 Date: Wed, 21 Feb 2024 14:07:10 +0100
-Message-ID: <20240221125942.753830692@linuxfoundation.org>
+Message-ID: <20240221125935.876171402@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit b099eb87de105cf07cad731ded6fb40b2675108b ]
+[ Upstream commit 1184950e341c11b6f82bc5b59564411d9537ab27 ]
 
-In commit 967ac8af4475 ("ext4: fix potential integer overflow in
-alloc_flex_gd()"), an overflow check is added to alloc_flex_gd() to
-prevent the allocated memory from being smaller than expected due to
-the overflow. However, after kmalloc() is replaced with kmalloc_array()
-in commit 6da2ec56059c ("treewide: kmalloc() -> kmalloc_array()"), the
-kmalloc_array() function has an overflow check, so the above problem
-will not occur. Therefore, the extra check is removed.
+Replace rcu_dereference() with rcu_access_pointer() since we hold
+the lock here (and aren't in an RCU critical section).
 
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20231023013057.2117948-3-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 32af9a9e1069 ("wifi: cfg80211: free beacon_ies when overridden from hidden BSS")
+Reported-and-tested-by: syzbot+864a269c27ee06b58374@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Link: https://msgid.link/tencent_BF8F0DF0258C8DBF124CDDE4DD8D992DCF07@qq.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/resize.c | 3 ---
- 1 file changed, 3 deletions(-)
+ net/wireless/scan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ext4/resize.c b/fs/ext4/resize.c
-index ae768fdbafa8..682596f3205f 100644
---- a/fs/ext4/resize.c
-+++ b/fs/ext4/resize.c
-@@ -245,10 +245,7 @@ static struct ext4_new_flex_group_data *alloc_flex_gd(unsigned int flexbg_size)
- 	if (flex_gd == NULL)
- 		goto out3;
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index 7f1a4ba975dd..dacb9ceee3ef 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -1019,7 +1019,7 @@ cfg80211_bss_update(struct cfg80211_registered_device *rdev,
+ 					 &hidden->hidden_list);
+ 				hidden->refcount++;
  
--	if (flexbg_size >= UINT_MAX / sizeof(struct ext4_new_group_data))
--		goto out2;
- 	flex_gd->count = flexbg_size;
--
- 	flex_gd->groups = kmalloc_array(flexbg_size,
- 					sizeof(struct ext4_new_group_data),
- 					GFP_NOFS);
+-				ies = (void *)rcu_dereference(new->pub.beacon_ies);
++				ies = (void *)rcu_access_pointer(new->pub.beacon_ies);
+ 				rcu_assign_pointer(new->pub.beacon_ies,
+ 						   hidden->pub.beacon_ies);
+ 				if (ies)
 -- 
 2.43.0
 
