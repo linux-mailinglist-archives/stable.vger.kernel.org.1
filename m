@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-22712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7D7B85DD5E
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:04:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2796885D8F6
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:13:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57DF81F22C24
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:04:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B75BD1F20FB0
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:13:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E91F7BAFB;
-	Wed, 21 Feb 2024 14:04:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AE9969D2E;
+	Wed, 21 Feb 2024 13:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ByovN7J/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kj0BK/LX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C84B762C1;
-	Wed, 21 Feb 2024 14:04:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4D13EA71;
+	Wed, 21 Feb 2024 13:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524259; cv=none; b=IOwanVA4c2L0rIb6othYwM/+g5jWdyHHvO9OPilC1BIPu64UvZZGE4PDuEWfwjReOKWDpqeJx4vYZe61jbdI0prXxU98S675iG70OSBn/Xqc8Zd9AuhBvQ/pSQ+Tx3rNIK6ifn6wb+N2+FYhlatYvt0aO8Y2wBxBBIlNMtFj21A=
+	t=1708521181; cv=none; b=htOEq0Swh/SicwN4EcoOqGcj7gdlyzl9Br3T+DhOqIvWn0E04tZ/LK+6koXWq6XSU8Ume7fJXieObKjY85BvNea80PGeLyGecvqb1M/jfrRZ4m7ZGN9cd0AVPf6uQUovi9QzCMHrZAgjJ9SrEdeOtB0ahkDt4qbsvHHvGQcOnP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524259; c=relaxed/simple;
-	bh=8xhiUY1rhSxifl40RyqWgolkY1zzhkbi7bKIkTLc1+M=;
+	s=arc-20240116; t=1708521181; c=relaxed/simple;
+	bh=bBzYYVawFcMEN75xIRIwx47zSFgvhpjF7Nn/zrW6UKU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XdhqstfGO9wsZlFXq8qaj+ezqmM5SVq2HmgyBF2gKpZ5X2hlwQKKhol/PBdFvWlDKY/Mrx3sY9vE7s/05gFZc6bYarJVWPfxSsuLh6sON19rUikrj8e9jrV8PoRRKvErSVmsRkLxMKD7ic/pcbtroOxCy+qiQUB6yeIwXtldCRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ByovN7J/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C92BC433F1;
-	Wed, 21 Feb 2024 14:04:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lEvsq5FEk2j2KeuR2iFA3ayssni3woNWVO7tJSG7whxK5JOff+mPb77RTP7Y03h+XrUSjmZS9R3A1SNmFgk6EyR6pkTqZEvwNNtEpmRr+G08FZ5OYKlBrD6QZwqiyxFnqN2pWMokAefZAjHgbU+DZ9MO7c4WE3cEJ6xomRo94wU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kj0BK/LX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1B8FC433C7;
+	Wed, 21 Feb 2024 13:13:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524258;
-	bh=8xhiUY1rhSxifl40RyqWgolkY1zzhkbi7bKIkTLc1+M=;
+	s=korg; t=1708521181;
+	bh=bBzYYVawFcMEN75xIRIwx47zSFgvhpjF7Nn/zrW6UKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ByovN7J/NPPoyhDO+MK5zfd896hzaPmaoM/MxLagdXnQy8PVo0+5+jjipoNtmXapz
-	 6T674bBfT1As8ttbJabRFma1iN+dTxVuQDwKhrArUkWyKV5kLvj2UkmfIyv83tbU8j
-	 bzOjlGLhN/IT8sJrWUEKvQXhiRdL21Zf0kYfEbFw=
+	b=Kj0BK/LXS1516dRys0McEBanheauaH8Ers6CZSDJ1RuezLHp1BwfsBqyKNQVF7xL3
+	 3NPNKdFp6dRwjPAe84o3lQLFtEUKn6nd20eJxgn/61z2ShV804zNcoJGniFGmXUNm0
+	 KIHFPIxP1cdrm7yrbo0NvD+PWQU/rHc796g3BCjA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 163/379] ARM: dts: imx23/28: Fix the DMA controller node name
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Javier Martinez Canillas <javierm@redhat.com>
+Subject: [PATCH 4.19 041/202] drm: Dont unref the same fb many times by mistake due to deadlock handling
 Date: Wed, 21 Feb 2024 14:05:42 +0100
-Message-ID: <20240221125959.739157631@linuxfoundation.org>
+Message-ID: <20240221125933.120874811@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +59,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit 858d83ca4b50bbc8693d95cc94310e6d791fb2e6 ]
+commit cb4daf271302d71a6b9a7c01bd0b6d76febd8f0c upstream.
 
-Per fsl,mxs-dma.yaml, the node name should be 'dma-controller'.
+If we get a deadlock after the fb lookup in drm_mode_page_flip_ioctl()
+we proceed to unref the fb and then retry the whole thing from the top.
+But we forget to reset the fb pointer back to NULL, and so if we then
+get another error during the retry, before the fb lookup, we proceed
+the unref the same fb again without having gotten another reference.
+The end result is that the fb will (eventually) end up being freed
+while it's still in use.
 
-Change it to fix the following dt-schema warning.
+Reset fb to NULL once we've unreffed it to avoid doing it again
+until we've done another fb lookup.
 
-imx28-apf28.dtb: dma-apbx@80024000: $nodename:0: 'dma-apbx@80024000' does not match '^dma-controller(@.*)?$'
-	from schema $id: http://devicetree.org/schemas/dma/fsl,mxs-dma.yaml#
+This turned out to be pretty easy to hit on a DG2 when doing async
+flips (and CONFIG_DEBUG_WW_MUTEX_SLOWPATH=y). The first symptom I
+saw that drm_closefb() simply got stuck in a busy loop while walking
+the framebuffer list. Fortunately I was able to convince it to oops
+instead, and from there it was easier to track down the culprit.
 
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231211081625.25704-1-ville.syrjala@linux.intel.com
+Acked-by: Javier Martinez Canillas <javierm@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/imx23.dtsi | 2 +-
- arch/arm/boot/dts/imx28.dtsi | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/drm_plane.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/boot/dts/imx23.dtsi b/arch/arm/boot/dts/imx23.dtsi
-index ce3d6360a7ef..b236d23f8071 100644
---- a/arch/arm/boot/dts/imx23.dtsi
-+++ b/arch/arm/boot/dts/imx23.dtsi
-@@ -414,7 +414,7 @@
- 				status = "disabled";
- 			};
- 
--			dma_apbx: dma-apbx@80024000 {
-+			dma_apbx: dma-controller@80024000 {
- 				compatible = "fsl,imx23-dma-apbx";
- 				reg = <0x80024000 0x2000>;
- 				interrupts = <7 5 9 26
-diff --git a/arch/arm/boot/dts/imx28.dtsi b/arch/arm/boot/dts/imx28.dtsi
-index 6cab8b66db80..23ef4a322995 100644
---- a/arch/arm/boot/dts/imx28.dtsi
-+++ b/arch/arm/boot/dts/imx28.dtsi
-@@ -982,7 +982,7 @@
- 				status = "disabled";
- 			};
- 
--			dma_apbx: dma-apbx@80024000 {
-+			dma_apbx: dma-controller@80024000 {
- 				compatible = "fsl,imx28-dma-apbx";
- 				reg = <0x80024000 0x2000>;
- 				interrupts = <78 79 66 0
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/drm_plane.c
++++ b/drivers/gpu/drm/drm_plane.c
+@@ -1183,6 +1183,7 @@ retry:
+ out:
+ 	if (fb)
+ 		drm_framebuffer_put(fb);
++	fb = NULL;
+ 	if (plane->old_fb)
+ 		drm_framebuffer_put(plane->old_fb);
+ 	plane->old_fb = NULL;
 
 
 
