@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-22694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDE3485DD4A
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:04:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3E6085DB72
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:41:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E80A1F227B8
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:04:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97BEA1F219D4
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:41:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5997B7C098;
-	Wed, 21 Feb 2024 14:03:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 356DC76905;
+	Wed, 21 Feb 2024 13:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="crop6bKi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aVsrDur5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1654679DAE;
-	Wed, 21 Feb 2024 14:03:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E547869951;
+	Wed, 21 Feb 2024 13:41:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524197; cv=none; b=eCKtq1Y68McYV3gETxfG5kfMLcdZfNWSPI4SSTncoXiph4k7uIHUfcJlERSiCi1yZ8lCvJFss19rSXyoG4SZl9NLAL0z80bYGqUf+zuCEAaZ3jFfoU1O5R0gMkYkB/2ZY0PF6DIKCT8MRvO+YsmGBjRc5pzT1gXrWKuYCcZWvbo=
+	t=1708522889; cv=none; b=FMwrJv+Vcc/Dy6Rqm9VflmGFxOvYOTvpvI5SvqtJydQ5KwBEmWChcEbIQvGU3GXSjbCIqXfzCE0jzkgenLTgrbJjg0gn4oxK9rFOWGF+RHM25+hMOde/O1ZCnyVUyteQHcK1Q8MMpoZjIFWcE5hZCdDJ4PnwYVdA2Uozp038toc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524197; c=relaxed/simple;
-	bh=hSyROmg61W4hMOY4e/Ih1FVamFq+tmlx5Cwy06vvor4=;
+	s=arc-20240116; t=1708522889; c=relaxed/simple;
+	bh=h9/HYGKhkJGUW1OQCtqOIyKno/UK7rCco8hAXmvg1tU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j3KFQ0+03/cycXEbd2ug863K2nEgWk52bT56HLTZn8oU15tGGs1JZfKP6BXAbDKBmBfMInRwadmto781pAUtriAKCe6uEE0PcSyQFDWXUI/a9rCNMQ0qanx79JlfMMaUU6csUZQSzeVCFGoqBKYDjJaH7HZKxHwTdFHLSSA3F2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=crop6bKi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A070C43390;
-	Wed, 21 Feb 2024 14:03:16 +0000 (UTC)
+	 MIME-Version; b=OMs24Po3EIY3P1SIYOxFNC7V5h14CRxEKyVnFtXSgSs97S6hdz09bBFH/L7kflc4HDlR2S+EbsIZ10fa5WNKkACdxPcaZYpSSVzFSWL9CS0+PXVnkwJLcYiIi3MbbQ+4aPhvy0UOuUneguvymd7KZDZmub+2MJRDBXI0tB48u5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aVsrDur5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DAF3C433C7;
+	Wed, 21 Feb 2024 13:41:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524197;
-	bh=hSyROmg61W4hMOY4e/Ih1FVamFq+tmlx5Cwy06vvor4=;
+	s=korg; t=1708522888;
+	bh=h9/HYGKhkJGUW1OQCtqOIyKno/UK7rCco8hAXmvg1tU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=crop6bKi1h0CRBkGNs1rt3zX83SMGr/5fEo/JoYcGBgXghDX857V0QPgDpt3fW0KH
-	 QULUkULvyQRiuPtmnNVqyfwPtpIuZsoUcU6B0E3XnlcbkZsaAKa0rM5o6kY5Bryyte
-	 mxHqxIKDNw4H757UFpAPr2cWI+PU+ilpa9MGDDhM=
+	b=aVsrDur5z0JO3EpgITuUvokPgTWfJsvEyWSTXk3vsihcXYcwoNIAw+bIu9CTvYMy3
+	 XlvzciWhaNK6iPkQUS1lx/BEmwaIhNhNg+ZUDJ11mZq2yVTZGafg97pNiiCvNoHBob
+	 Z25/BBfo5iMzb1q8ya8uhyGH4/ungsrH15INPBdI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 156/379] ARM: dts: imx1: Fix sram node
+Subject: [PATCH 5.15 284/476] netfilter: nf_log: replace BUG_ON by WARN_ON_ONCE when putting logger
 Date: Wed, 21 Feb 2024 14:05:35 +0100
-Message-ID: <20240221125959.533534944@linuxfoundation.org>
+Message-ID: <20240221130018.501398574@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit c248e535973088ba7071ff6f26ab7951143450af ]
+[ Upstream commit 259eb32971e9eb24d1777a28d82730659f50fdcb ]
 
-Per sram.yaml, address-cells, size-cells and ranges are mandatory.
+Module reference is bumped for each user, this should not ever happen.
 
-The node name should be sram.
+But BUG_ON check should use rcu_access_pointer() instead.
 
-Change the node name and pass the required properties to fix the
-following dt-schema warnings:
+If this ever happens, do WARN_ON_ONCE() instead of BUG_ON() and
+consolidate pointer check under the rcu read side lock section.
 
-imx1-apf9328.dtb: esram@300000: $nodename:0: 'esram@300000' does not match '^sram(@.*)?'
-	from schema $id: http://devicetree.org/schemas/sram/sram.yaml#
-imx1-apf9328.dtb: esram@300000: '#address-cells' is a required property
-	from schema $id: http://devicetree.org/schemas/sram/sram.yaml#
-imx1-apf9328.dtb: esram@300000: '#size-cells' is a required property
-	from schema $id: http://devicetree.org/schemas/sram/sram.yaml#
-imx1-apf9328.dtb: esram@300000: 'ranges' is a required property
-	from schema $id: http://devicetree.org/schemas/sram/sram.yaml#
-
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: fab4085f4e24 ("netfilter: log: nf_log_packet() as real unified interface")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/imx1.dtsi | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/netfilter/nf_log.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/boot/dts/imx1.dtsi b/arch/arm/boot/dts/imx1.dtsi
-index 9b940987864c..8d6e900a9081 100644
---- a/arch/arm/boot/dts/imx1.dtsi
-+++ b/arch/arm/boot/dts/imx1.dtsi
-@@ -268,9 +268,12 @@
- 			status = "disabled";
- 		};
+diff --git a/net/netfilter/nf_log.c b/net/netfilter/nf_log.c
+index edee7fa944c1..8f5362a19b15 100644
+--- a/net/netfilter/nf_log.c
++++ b/net/netfilter/nf_log.c
+@@ -193,11 +193,12 @@ void nf_logger_put(int pf, enum nf_log_type type)
+ 		return;
+ 	}
  
--		esram: esram@300000 {
-+		esram: sram@300000 {
- 			compatible = "mmio-sram";
- 			reg = <0x00300000 0x20000>;
-+			ranges = <0 0x00300000 0x20000>;
-+			#address-cells = <1>;
-+			#size-cells = <1>;
- 		};
- 	};
- };
+-	BUG_ON(loggers[pf][type] == NULL);
+-
+ 	rcu_read_lock();
+ 	logger = rcu_dereference(loggers[pf][type]);
+-	module_put(logger->me);
++	if (!logger)
++		WARN_ON_ONCE(1);
++	else
++		module_put(logger->me);
+ 	rcu_read_unlock();
+ }
+ EXPORT_SYMBOL_GPL(nf_logger_put);
 -- 
 2.43.0
 
