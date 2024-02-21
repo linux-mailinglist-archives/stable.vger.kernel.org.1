@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-23159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 983FA85DF8E
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:29:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCF6385DF91
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:29:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54477285457
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:29:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 743891F21B79
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:29:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91EE17C6C0;
-	Wed, 21 Feb 2024 14:29:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE7D7C0BA;
+	Wed, 21 Feb 2024 14:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ph4Je8bk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OgZtz5QU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51B087BB01;
-	Wed, 21 Feb 2024 14:29:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF9097A708;
+	Wed, 21 Feb 2024 14:29:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525756; cv=none; b=S6dxirNOx0c6/kBHodmNCCZx7SBz0YEDvwRohKZ2niIRy3oPtkBj9pqdNB3UesY8LPTc42/5+aExEMsvkySBp0kboCQkYMujSWYxsfh4uDpT7pkbdKXXVpa3iddja+4n2v7lcsd6ZCoA3TOSEQlY7BBCa0Hnp4DWvVbHmH2ve/Q=
+	t=1708525763; cv=none; b=u57Zbz9PrOLDJAXYgBLjpmt2lN1DLUaVJxt3zfZJYcGnu8tMY2QXlCo67bxCQT4PDILnnQHkkqg26uI6RBFIiKP/jhxgcJENTYMe4zBxJiVrcKNYE2NDvtXod4lxBgynk8F4YZ/rOHpKkkite4VIrVnQcGJ6lEwRV7dB9tYNFk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525756; c=relaxed/simple;
-	bh=uJCAjZZU0IoyNnKiejbnvck7t9EsOPJvijpUjwb39Es=;
+	s=arc-20240116; t=1708525763; c=relaxed/simple;
+	bh=+hHomsUPq8mp9cQA4GbGSqokdDKOCnmknHPfQ2M6XKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QrDto8NdvCa+4CO5VcuXCHNekgY7ESWGeUP6Ptv6/+s59DTYq1vbubvbM3e6jF1DQh00flo9no8eYU4bteeAhYOc/9Jh04FHNt+FppCiJMlQpt86DWPEGJv6Cc37zEIUDKPagsDRYQBwF5+I2o7Dz7ryg0WYC9CzfEwFIMxgbKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ph4Je8bk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3CA7C433C7;
-	Wed, 21 Feb 2024 14:29:15 +0000 (UTC)
+	 MIME-Version; b=eQW535nvz2XLqpTw9vmQKD8w/oOdJZtvlNctQEr4ovm3WKAtVA/qmXCeWyiXNMuhzFej7hGCx73hKuTFsI3Nv5y74zZBZZYHD3acGdX45Y5Y3/UazplZeKDsbM1Vx78cz+8+NV1fRzwKpdbxinWmJ9tgBOVKrgNL0popT8tF3qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OgZtz5QU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D848C433F1;
+	Wed, 21 Feb 2024 14:29:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525756;
-	bh=uJCAjZZU0IoyNnKiejbnvck7t9EsOPJvijpUjwb39Es=;
+	s=korg; t=1708525762;
+	bh=+hHomsUPq8mp9cQA4GbGSqokdDKOCnmknHPfQ2M6XKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ph4Je8bkSXxsZPcOxtoTtj42GrsXxNqPwSAQAdwO2prbAOS0SKa4KD47X7YQG2J3X
-	 qO17c4sDQvNgBqDvOBA6n2TB5ayOuVNgnXIMGa1auNwtPesjPr1XcQhqoYXt/8D7V7
-	 APYSiN+ZTwkbFIPPYSyPy8YVKTm9PTAEXEg9xoJM=
+	b=OgZtz5QU1GZ4AbSrtBeiEfmK/AOLTMaRAQgun9wdBfT6RjeqF7Wo4TL1yWHS+dfbv
+	 nnDQ8a07olAeRfquKDFAI2OOt7k6EHp1B0XqRXEX0d9X720tP5nvVqQnSU+8zIxKWL
+	 vQJ6h8SM1P127esMw3j6a2cpZgJ8Pic2dt1iaFFg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
-	Martijn Coenen <maco@android.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Steven Moreland <smoreland@google.com>,
-	Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH 5.4 227/267] binder: signal epoll threads of self-work
-Date: Wed, 21 Feb 2024 14:09:28 +0100
-Message-ID: <20240221125947.367050402@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Ekansh Gupta <quic_ekangupt@quicinc.com>
+Subject: [PATCH 5.4 228/267] misc: fastrpc: Mark all sessions as invalid in cb_remove
+Date: Wed, 21 Feb 2024 14:09:29 +0100
+Message-ID: <20240221125947.407317443@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
 References: <20240221125940.058369148@linuxfoundation.org>
@@ -62,60 +59,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Ekansh Gupta <quic_ekangupt@quicinc.com>
 
-commit 97830f3c3088638ff90b20dfba2eb4d487bf14d7 upstream.
+commit a4e61de63e34860c36a71d1a364edba16fb6203b upstream.
 
-In (e)poll mode, threads often depend on I/O events to determine when
-data is ready for consumption. Within binder, a thread may initiate a
-command via BINDER_WRITE_READ without a read buffer and then make use
-of epoll_wait() or similar to consume any responses afterwards.
+In remoteproc shutdown sequence, rpmsg_remove will get called which
+would depopulate all the child nodes that have been created during
+rpmsg_probe. This would result in cb_remove call for all the context
+banks for the remoteproc. In cb_remove function, session 0 is
+getting skipped which is not correct as session 0 will never become
+available again. Add changes to mark session 0 also as invalid.
 
-It is then crucial that epoll threads are signaled via wakeup when they
-queue their own work. Otherwise, they risk waiting indefinitely for an
-event leaving their work unhandled. What is worse, subsequent commands
-won't trigger a wakeup either as the thread has pending work.
-
-Fixes: 457b9a6f09f0 ("Staging: android: add binder driver")
-Cc: Arve Hjønnevåg <arve@android.com>
-Cc: Martijn Coenen <maco@android.com>
-Cc: Alice Ryhl <aliceryhl@google.com>
-Cc: Steven Moreland <smoreland@google.com>
-Cc: stable@vger.kernel.org # v4.19+
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Link: https://lore.kernel.org/r/20240131215347.1808751-1-cmllamas@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f6f9279f2bf0 ("misc: fastrpc: Add Qualcomm fastrpc basic driver model")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
+Link: https://lore.kernel.org/r/20240108114833.20480-1-quic_ekangupt@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/android/binder.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/misc/fastrpc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -840,6 +840,16 @@ binder_enqueue_thread_work_ilocked(struc
- {
- 	WARN_ON(!list_empty(&thread->waiting_thread_node));
- 	binder_enqueue_work_ilocked(work, &thread->todo);
-+
-+	/* (e)poll-based threads require an explicit wakeup signal when
-+	 * queuing their own work; they rely on these events to consume
-+	 * messages without I/O block. Without it, threads risk waiting
-+	 * indefinitely without handling the work.
-+	 */
-+	if (thread->looper & BINDER_LOOPER_STATE_POLL &&
-+	    thread->pid == current->pid && !thread->process_todo)
-+		wake_up_interruptible_sync(&thread->wait);
-+
- 	thread->process_todo = true;
- }
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -1401,7 +1401,7 @@ static int fastrpc_cb_remove(struct plat
+ 	int i;
  
+ 	spin_lock_irqsave(&cctx->lock, flags);
+-	for (i = 1; i < FASTRPC_MAX_SESSIONS; i++) {
++	for (i = 0; i < FASTRPC_MAX_SESSIONS; i++) {
+ 		if (cctx->session[i].sid == sess->sid) {
+ 			cctx->session[i].valid = false;
+ 			cctx->sesscount--;
 
 
 
