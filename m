@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-21886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E87C085D8FE
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:13:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B71085DD1C
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:02:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 808B41F233E8
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:13:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34B971F21973
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:02:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6997153816;
-	Wed, 21 Feb 2024 13:13:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEE197E115;
+	Wed, 21 Feb 2024 14:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SYsoJ9qm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r1/nKfAg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A1669D37;
-	Wed, 21 Feb 2024 13:13:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EC247E57B;
+	Wed, 21 Feb 2024 14:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521197; cv=none; b=KFqjYHjoelRA0hrMnKpMgzShuybuRIIBuL0QdV1TVeoj88uRP2p3Ms7WK7lo0GqHWgMkdHXBBdsuD6olOQ4qZj756vzLY0mAe2mZucOx4G2zq5M3yH5PdLa0RUAEISVCQbfQE6ghFmaNkRmt7kwClCoaitIezDfyv3Y+/xxqgrE=
+	t=1708524077; cv=none; b=HnnBrv5+vE9WKXCgVNh4N9xkQ7jStsLYF9F8FM3t8z3waGIukLMxTHlc5TOFW4ngO3zJQ+oMv7F7zs2TB5sNF/vv1DnWEhSNjJ5bZjzxftEofkUGSbzEoetbLjC3TcbMjuuYHmhCMXB5nNAYj1xkqsHedyrZxplyvRdoCmEbEKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521197; c=relaxed/simple;
-	bh=/xHIYzBeZkH5PT9YUCodD+eqBc7NKDxXVV+Msr/ls2s=;
+	s=arc-20240116; t=1708524077; c=relaxed/simple;
+	bh=EsayUnlxFqSSTBM7CT+lT1CV0tX5x9uBi2oQ50bQg98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rKn4PjmWGvg+i7e3pywneHeVjZhHIIkwk6ILbaDILOhVlk45F3Wpxs9mMiewB/67k3NDTil3NQ3zC30K8n9f6AHFi08GiQ9bgeSZAsleF1WXOg6w98jhgKBdqJvnEWDgeDpVcalxRsqu4V/72GcB4iu/H67TMyhYAyFPF44Doa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SYsoJ9qm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 887C1C43390;
-	Wed, 21 Feb 2024 13:13:16 +0000 (UTC)
+	 MIME-Version; b=jQoeUWQj4dNLoVa/YaXsDSewexPm++9utubY7E8iF7hqPjXKZm+KEOYOYoW1z2ZEw40FYgLda5Y3OXMOBvNzVX7uFGjNdg5Rg+pnkDLlxZ9hCoKj41ZlS4gJU9PnzaIT5ewP6ih2pJAaFteZSy49po2FVf8geaBm1sittacSIqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r1/nKfAg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3126C43390;
+	Wed, 21 Feb 2024 14:01:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521197;
-	bh=/xHIYzBeZkH5PT9YUCodD+eqBc7NKDxXVV+Msr/ls2s=;
+	s=korg; t=1708524077;
+	bh=EsayUnlxFqSSTBM7CT+lT1CV0tX5x9uBi2oQ50bQg98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SYsoJ9qmVZ9oYPC+UAwvMaOUB/OHH0Xt/PNzIb3xBogL60cxeo7BQGjqQoXoNuvtC
-	 Uc2/DuPtF9RaGWjzFWIsUsrveGdhnKiOXgKmyhei7ssutXJ9x0ZVftuQCfsj4WYbNY
-	 dq9ub03HM+ohgqJuHzJHlOS1e+9xr/GyPisk+G4Y=
+	b=r1/nKfAgtN6YSqBcPNEalUn1dAke6iSAeSXr158PyvtV+DrXYXJmDVXh/cwaGk1ZA
+	 5+hac2aY4TJyKd5Jq9pI45DdsKceeSBH+fVtBpvSg+i6o+tesN4YoozlCtcGaVFefj
+	 pBYJJ1hJC50loCIKTspOK2lx1hwEK2UJHgfu6yuQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 4.19 017/202] block: Remove special-casing of compound pages
+	Yonghong Song <yonghong.song@linux.dev>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alan Maguire <alan.maguire@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 139/379] selftests/bpf: Fix pyperf180 compilation failure with clang18
 Date: Wed, 21 Feb 2024 14:05:18 +0100
-Message-ID: <20240221125932.312761204@linuxfoundation.org>
+Message-ID: <20240221125959.040045380@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,75 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Yonghong Song <yonghong.song@linux.dev>
 
-commit 1b151e2435fc3a9b10c8946c6aebe9f3e1938c55 upstream.
+[ Upstream commit 100888fb6d8a185866b1520031ee7e3182b173de ]
 
-The special casing was originally added in pre-git history; reproducing
-the commit log here:
+With latest clang18 (main branch of llvm-project repo), when building bpf selftests,
+    [~/work/bpf-next (master)]$ make -C tools/testing/selftests/bpf LLVM=1 -j
 
-> commit a318a92567d77
-> Author: Andrew Morton <akpm@osdl.org>
-> Date:   Sun Sep 21 01:42:22 2003 -0700
->
->     [PATCH] Speed up direct-io hugetlbpage handling
->
->     This patch short-circuits all the direct-io page dirtying logic for
->     higher-order pages.  Without this, we pointlessly bounce BIOs up to
->     keventd all the time.
+The following compilation error happens:
+    fatal error: error in backend: Branch target out of insn range
+    ...
+    Stack dump:
+    0.      Program arguments: clang -g -Wall -Werror -D__TARGET_ARCH_x86 -mlittle-endian
+      -I/home/yhs/work/bpf-next/tools/testing/selftests/bpf/tools/include
+      -I/home/yhs/work/bpf-next/tools/testing/selftests/bpf -I/home/yhs/work/bpf-next/tools/include/uapi
+      -I/home/yhs/work/bpf-next/tools/testing/selftests/usr/include -idirafter
+      /home/yhs/work/llvm-project/llvm/build.18/install/lib/clang/18/include -idirafter /usr/local/include
+      -idirafter /usr/include -Wno-compare-distinct-pointer-types -DENABLE_ATOMICS_TESTS -O2 --target=bpf
+      -c progs/pyperf180.c -mcpu=v3 -o /home/yhs/work/bpf-next/tools/testing/selftests/bpf/pyperf180.bpf.o
+    1.      <eof> parser at end of file
+    2.      Code generation
+    ...
 
-In the last twenty years, compound pages have become used for more than
-just hugetlb.  Rewrite these functions to operate on folios instead
-of pages and remove the special case for hugetlbfs; I don't think
-it's needed any more (and if it is, we can put it back in as a call
-to folio_test_hugetlb()).
+The compilation failure only happens to cpu=v2 and cpu=v3. cpu=v4 is okay
+since cpu=v4 supports 32-bit branch target offset.
 
-This was found by inspection; as far as I can tell, this bug can lead
-to pages used as the destination of a direct I/O read not being marked
-as dirty.  If those pages are then reclaimed by the MM without being
-dirtied for some other reason, they won't be written out.  Then when
-they're faulted back in, they will not contain the data they should.
-It'll take a pretty unusual setup to produce this problem with several
-races all going the wrong way.
+The above failure is due to upstream llvm patch [1] where some inlining behavior
+are changed in clang18.
 
-This problem predates the folio work; it could for example have been
-triggered by mmaping a THP in tmpfs and using that as the target of an
-O_DIRECT read.
+To workaround the issue, previously all 180 loop iterations are fully unrolled.
+The bpf macro __BPF_CPU_VERSION__ (implemented in clang18 recently) is used to avoid
+unrolling changes if cpu=v4. If __BPF_CPU_VERSION__ is not available and the
+compiler is clang18, the unrollng amount is unconditionally reduced.
 
-Fixes: 800d8c63b2e98 ("shmem: add huge pages support")
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  [1] https://github.com/llvm/llvm-project/commit/1a2e77cf9e11dbf56b5720c607313a566eebb16e
+
+Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Tested-by: Alan Maguire <alan.maguire@oracle.com>
+Link: https://lore.kernel.org/bpf/20231110193644.3130906-1-yonghong.song@linux.dev
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/bio.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ tools/testing/selftests/bpf/progs/pyperf180.c | 22 +++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
---- a/block/bio.c
-+++ b/block/bio.c
-@@ -1592,8 +1592,7 @@ void bio_set_pages_dirty(struct bio *bio
- 	int i;
- 
- 	bio_for_each_segment_all(bvec, bio, i) {
--		if (!PageCompound(bvec->bv_page))
--			set_page_dirty_lock(bvec->bv_page);
-+		set_page_dirty_lock(bvec->bv_page);
- 	}
- }
- EXPORT_SYMBOL_GPL(bio_set_pages_dirty);
-@@ -1652,7 +1651,7 @@ void bio_check_pages_dirty(struct bio *b
- 	int i;
- 
- 	bio_for_each_segment_all(bvec, bio, i) {
--		if (!PageDirty(bvec->bv_page) && !PageCompound(bvec->bv_page))
-+		if (!PageDirty(bvec->bv_page))
- 			goto defer;
- 	}
- 
+diff --git a/tools/testing/selftests/bpf/progs/pyperf180.c b/tools/testing/selftests/bpf/progs/pyperf180.c
+index c39f559d3100..42c4a8b62e36 100644
+--- a/tools/testing/selftests/bpf/progs/pyperf180.c
++++ b/tools/testing/selftests/bpf/progs/pyperf180.c
+@@ -1,4 +1,26 @@
+ // SPDX-License-Identifier: GPL-2.0
+ // Copyright (c) 2019 Facebook
+ #define STACK_MAX_LEN 180
++
++/* llvm upstream commit at clang18
++ *   https://github.com/llvm/llvm-project/commit/1a2e77cf9e11dbf56b5720c607313a566eebb16e
++ * changed inlining behavior and caused compilation failure as some branch
++ * target distance exceeded 16bit representation which is the maximum for
++ * cpu v1/v2/v3. Macro __BPF_CPU_VERSION__ is later implemented in clang18
++ * to specify which cpu version is used for compilation. So a smaller
++ * unroll_count can be set if __BPF_CPU_VERSION__ is less than 4, which
++ * reduced some branch target distances and resolved the compilation failure.
++ *
++ * To capture the case where a developer/ci uses clang18 but the corresponding
++ * repo checkpoint does not have __BPF_CPU_VERSION__, a smaller unroll_count
++ * will be set as well to prevent potential compilation failures.
++ */
++#ifdef __BPF_CPU_VERSION__
++#if __BPF_CPU_VERSION__ < 4
++#define UNROLL_COUNT 90
++#endif
++#elif __clang_major__ == 18
++#define UNROLL_COUNT 90
++#endif
++
+ #include "pyperf.h"
+-- 
+2.43.0
+
 
 
 
