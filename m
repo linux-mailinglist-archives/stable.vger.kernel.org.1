@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-22976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C42EA85DEE2
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:22:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A81DC85D935
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:16:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6855EB2B2C1
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:19:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3104AB24552
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:16:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF8F27C097;
-	Wed, 21 Feb 2024 14:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D36206F074;
+	Wed, 21 Feb 2024 13:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AQeWmDIv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TR2CPOWX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 661657BB1B;
-	Wed, 21 Feb 2024 14:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A756A037;
+	Wed, 21 Feb 2024 13:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525149; cv=none; b=kTUt7fbHA74HS6yVwhJrXjRYSvmmYgQeKZ2AGi8rFoOyPz2vv6O9UdJ22dmz4YjsmKfr5lD77DO74LLg7I5R9TIRYc702TPeIgtn6ADxuR5EyRwRtFJTlwLfHzx4tE5rCyEv3k2Gu5GAyEIwJA6o5EAAAJzt96CUbU3jMZTZLGY=
+	t=1708521340; cv=none; b=fC7AsfNlPsQHy4dashNxp3enPKMpAh3You2NPgJJgSNCs+iy60puHagMdSiTzyb2QkiFCy2227hgMj2XCLybvqIxIHbrCU3yKr4jBFvaLEezA3TiIlCR2qtgDxvKpuBSWtQAg3vhzxozVen5kjZ0yR1sGmLhptweaOy262JKsqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525149; c=relaxed/simple;
-	bh=1IY4d0k13MTJHOBn9yv0dlnQXoB0LwhcoQpB6QIInmk=;
+	s=arc-20240116; t=1708521340; c=relaxed/simple;
+	bh=aeeGFiMkS+BGqPAbPDJJ27jAr8GMRHfyyZt9N7MuNLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tcizz73P0k2mp7qeYrPH58BeAQ7T+yNGsAIfwkAOV0Ll2iDhGHW2rLeFfTcuW7uDZXorqaHudOROsrRpM0Ssph3hqGyxqXARUBq9Zr6/SrHbPtTNvgdo2tQhrxAyXz663FHNat5kvUUN5wJgA7jqtrNDdMYjG0lPBxKww2nQQOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AQeWmDIv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA287C43394;
-	Wed, 21 Feb 2024 14:19:08 +0000 (UTC)
+	 MIME-Version; b=EBdxVSGSIdA1gtp5mBRg/TMCeE/utXFXa2PXZhnsqLPMRtFogloZJmPwd9/mykrWzaVJBvgQq6Q897k3zjyvCENLLYH49y4rsNMnnLCQEZp/Cz+8QIzuoOM302B8htdumM8KOztdg4Rn5A9b665xO0/J3Nwx5jnPDCMSATQFD28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TR2CPOWX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 628FBC433C7;
+	Wed, 21 Feb 2024 13:15:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525149;
-	bh=1IY4d0k13MTJHOBn9yv0dlnQXoB0LwhcoQpB6QIInmk=;
+	s=korg; t=1708521340;
+	bh=aeeGFiMkS+BGqPAbPDJJ27jAr8GMRHfyyZt9N7MuNLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AQeWmDIvyJRwocxJdUmcU9vJl7M1Nwx8JmK719widDTUQZZvbSGsYWLM8ISAiou2Z
-	 lQ0kuC+D4EQ4kpvdgW4ctZdVZk/itRTy7SSUqwvvUYYRmyiTQW2GG5xNZsQQMx6zzC
-	 CPb7wz8ct67oc19M2PsDw770rNLaXQhbCxUfDi4U=
+	b=TR2CPOWXTWJVDOv8o219/aiyctdUIh4yj0tDfLyQDRb0FpxQf6iTKLqwG06iRjNfR
+	 cyp8mP7zqukiPHiFJMyJNL2MXYhRY33XSszp8GrIzQvbbTQFH4Be5OZEf0x/ej4G+6
+	 7P4KUU+4K6w/YLxiJEjThGg5ZCGXAgcHgDIRDzjQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Notselwyn <notselwyn@pwning.tech>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.4 047/267] netfilter: nf_tables: reject QUEUE/DROP verdict parameters
-Date: Wed, 21 Feb 2024 14:06:28 +0100
-Message-ID: <20240221125941.489419143@linuxfoundation.org>
+	Fabio Estevam <festevam@denx.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 088/202] ARM: dts: imx1: Fix sram node
+Date: Wed, 21 Feb 2024 14:06:29 +0100
+Message-ID: <20240221125934.636478433@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Fabio Estevam <festevam@denx.de>
 
-commit f342de4e2f33e0e39165d8639387aa6c19dff660 upstream.
+[ Upstream commit c248e535973088ba7071ff6f26ab7951143450af ]
 
-This reverts commit e0abdadcc6e1.
+Per sram.yaml, address-cells, size-cells and ranges are mandatory.
 
-core.c:nf_hook_slow assumes that the upper 16 bits of NF_DROP
-verdicts contain a valid errno, i.e. -EPERM, -EHOSTUNREACH or similar,
-or 0.
+The node name should be sram.
 
-Due to the reverted commit, its possible to provide a positive
-value, e.g. NF_ACCEPT (1), which results in use-after-free.
+Change the node name and pass the required properties to fix the
+following dt-schema warnings:
 
-Its not clear to me why this commit was made.
+imx1-apf9328.dtb: esram@300000: $nodename:0: 'esram@300000' does not match '^sram(@.*)?'
+	from schema $id: http://devicetree.org/schemas/sram/sram.yaml#
+imx1-apf9328.dtb: esram@300000: '#address-cells' is a required property
+	from schema $id: http://devicetree.org/schemas/sram/sram.yaml#
+imx1-apf9328.dtb: esram@300000: '#size-cells' is a required property
+	from schema $id: http://devicetree.org/schemas/sram/sram.yaml#
+imx1-apf9328.dtb: esram@300000: 'ranges' is a required property
+	from schema $id: http://devicetree.org/schemas/sram/sram.yaml#
 
-NF_QUEUE is not used by nftables; "queue" rules in nftables
-will result in use of "nft_queue" expression.
-
-If we later need to allow specifiying errno values from userspace
-(do not know why), this has to call NF_DROP_GETERR and check that
-"err <= 0" holds true.
-
-Fixes: e0abdadcc6e1 ("netfilter: nf_tables: accept QUEUE/DROP verdict parameters")
-Cc: stable@vger.kernel.org
-Reported-by: Notselwyn <notselwyn@pwning.tech>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c |   16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+ arch/arm/boot/dts/imx1.dtsi | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -8058,16 +8058,10 @@ static int nft_verdict_init(const struct
- 	data->verdict.code = ntohl(nla_get_be32(tb[NFTA_VERDICT_CODE]));
+diff --git a/arch/arm/boot/dts/imx1.dtsi b/arch/arm/boot/dts/imx1.dtsi
+index 2b6e77029de4..8c4c7464b133 100644
+--- a/arch/arm/boot/dts/imx1.dtsi
++++ b/arch/arm/boot/dts/imx1.dtsi
+@@ -268,9 +268,12 @@
+ 			status = "disabled";
+ 		};
  
- 	switch (data->verdict.code) {
--	default:
--		switch (data->verdict.code & NF_VERDICT_MASK) {
--		case NF_ACCEPT:
--		case NF_DROP:
--		case NF_QUEUE:
--			break;
--		default:
--			return -EINVAL;
--		}
--		/* fall through */
-+	case NF_ACCEPT:
-+	case NF_DROP:
-+	case NF_QUEUE:
-+		break;
- 	case NFT_CONTINUE:
- 	case NFT_BREAK:
- 	case NFT_RETURN:
-@@ -8087,6 +8081,8 @@ static int nft_verdict_init(const struct
- 
- 		data->verdict.chain = chain;
- 		break;
-+	default:
-+		return -EINVAL;
- 	}
- 
- 	desc->len = sizeof(data->verdict);
+-		esram: esram@300000 {
++		esram: sram@300000 {
+ 			compatible = "mmio-sram";
+ 			reg = <0x00300000 0x20000>;
++			ranges = <0 0x00300000 0x20000>;
++			#address-cells = <1>;
++			#size-cells = <1>;
+ 		};
+ 	};
+ };
+-- 
+2.43.0
+
 
 
 
