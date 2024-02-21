@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-23045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 816BA85DEF7
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:23:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E98BC85D9BE
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:22:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C2E61F2166C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:23:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A0C6B256EE
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:22:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B72478B60;
-	Wed, 21 Feb 2024 14:23:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C96F7762F;
+	Wed, 21 Feb 2024 13:21:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNyjWRdC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lNRYycRp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A08E6A8D6;
-	Wed, 21 Feb 2024 14:23:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A7993D96B;
+	Wed, 21 Feb 2024 13:21:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525395; cv=none; b=CktlqkCJBxFgiLZU3pEoxieTV6jI0UAJU5pCyXsWYRU4lB+kzfPLIgAS2uVAbYeNHYvdwQPebxKoHs5SLNtwONioEJ5Dk+aUARmnpQeX4VgaQiBKcgVaVZOVsGlfoLO8xFv7zUtc4pnKqnqvRtn5svOZqAYPBueriZyNBz68fyY=
+	t=1708521704; cv=none; b=OXRzHYjrsKfQ6yKOqr8/VwQhznrQ/e5+4pcxDZyW2uX4Y78j17l1un90RlfWjraFtAEC5mJ0/QorX7/je0ecl3uGmJQIOeXBdExxLqqmS8G6u7KTYA1RxSdqnqfQgnhh7htpnZy7zCnfVxXBNVxYhF1pMIpZ5D8Zy5AJA/gpXyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525395; c=relaxed/simple;
-	bh=sWGr9EviMK9s1aNttGLCDPPNZbP5wFALsA1xZSDi5W8=;
+	s=arc-20240116; t=1708521704; c=relaxed/simple;
+	bh=uotP+/tewV1BTKh/x1aF39wVPTQ0cJZGNJXsVi4E9nw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eLU7CCCViES5VPuvo8VqkBceyQ3kwpiEZ9AKKJLpRa5utrm2X+xRIFFWSCpMxHNvGFXBN9T5LZDINzKNRXxTpUsIih38PhVqSrCHnq8lcgcSkGujTpvnaZfcDh9nzEuA/zQ/7tZ47OjfzzzlN94qwaCC5JwYC/eaTv/L3e9CLJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNyjWRdC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA5A1C433C7;
-	Wed, 21 Feb 2024 14:23:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oksSqgBJA56VMZj5tDKDQYIhbvD1VU0xDHNbSfvZ345ea7WAt+eisNcDRZ8vq7ryXBBWRDrkEVTBxAGiLILnZlKuaubuiH38CaE8DfWqOywriB+X4ETokGXyYnXmhMYboO2CETsQ4tvyMGke/mRTFmhrkWlu7DZy89U12qFD+LU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lNRYycRp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 990D7C43394;
+	Wed, 21 Feb 2024 13:21:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525395;
-	bh=sWGr9EviMK9s1aNttGLCDPPNZbP5wFALsA1xZSDi5W8=;
+	s=korg; t=1708521704;
+	bh=uotP+/tewV1BTKh/x1aF39wVPTQ0cJZGNJXsVi4E9nw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TNyjWRdCcG6G6g7jFglg0HcuafwcqDi5gGAaoD/M9QniT35puLVaS59q31uD9xJ+X
-	 Sw3lCAuXHEapxzEGCVPozZUT5DeBnDzIrKTd9A6RSCmO19jJNjQbOf5N4Lb3h1ldVa
-	 ZSdiR7GqHMoUWLl62p7E8DmIs8BmjOR0trY9sTEw=
+	b=lNRYycRpWsyCvb4oDcBlYQQPYpjF8++fJmLPA1rHczuA/5xmUeQdtbcXCK6L0u8ie
+	 FqYvGj1ajPF+VpfF5us5Xa2qeVv9iPSKCohVHsVI3uTgLgVenerW+6RiXryHWpmvIq
+	 X0osUSCc3803CAFBgLZzL2UKFSZ2AVmu245eeL3I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Richard Weinberger <richard@nod.at>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 143/267] um: net: Fix return type of uml_net_start_xmit()
+	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+	Martijn Coenen <maco@android.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Steven Moreland <smoreland@google.com>,
+	Carlos Llamas <cmllamas@google.com>
+Subject: [PATCH 4.19 183/202] binder: signal epoll threads of self-work
 Date: Wed, 21 Feb 2024 14:08:04 +0100
-Message-ID: <20240221125944.543727873@linuxfoundation.org>
+Message-ID: <20240221125937.731435573@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Carlos Llamas <cmllamas@google.com>
 
-[ Upstream commit 7d748f60a4b82b50bf25fad1bd42d33f049f76aa ]
+commit 97830f3c3088638ff90b20dfba2eb4d487bf14d7 upstream.
 
-With clang's kernel control flow integrity (kCFI, CONFIG_CFI_CLANG),
-indirect call targets are validated against the expected function
-pointer prototype to make sure the call target is valid to help mitigate
-ROP attacks. If they are not identical, there is a failure at run time,
-which manifests as either a kernel panic or thread getting killed. A
-warning in clang aims to catch these at compile time, which reveals:
+In (e)poll mode, threads often depend on I/O events to determine when
+data is ready for consumption. Within binder, a thread may initiate a
+command via BINDER_WRITE_READ without a read buffer and then make use
+of epoll_wait() or similar to consume any responses afterwards.
 
-  arch/um/drivers/net_kern.c:353:21: warning: incompatible function pointer types initializing 'netdev_tx_t (*)(struct sk_buff *, struct net_device *)' (aka 'enum netdev_tx (*)(struct sk_buff *, struct net_device *)') with an expression of type 'int (struct sk_buff *, struct net_device *)' [-Wincompatible-function-pointer-types-strict]
-    353 |         .ndo_start_xmit         = uml_net_start_xmit,
-        |                                   ^~~~~~~~~~~~~~~~~~
-  1 warning generated.
+It is then crucial that epoll threads are signaled via wakeup when they
+queue their own work. Otherwise, they risk waiting indefinitely for an
+event leaving their work unhandled. What is worse, subsequent commands
+won't trigger a wakeup either as the thread has pending work.
 
-->ndo_start_xmit() in 'struct net_device_ops' expects a return type of
-'netdev_tx_t', not 'int'. Adjust the return type of uml_net_start_xmit()
-to match the prototype's to resolve the warning. While UML does not
-currently implement support for kCFI, it could in the future, which
-means this warning becomes a fatal CFI failure at run time.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202310031340.v1vPh207-lkp@intel.com/
-Acked-by: Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 457b9a6f09f0 ("Staging: android: add binder driver")
+Cc: Arve Hjønnevåg <arve@android.com>
+Cc: Martijn Coenen <maco@android.com>
+Cc: Alice Ryhl <aliceryhl@google.com>
+Cc: Steven Moreland <smoreland@google.com>
+Cc: stable@vger.kernel.org # v4.19+
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Link: https://lore.kernel.org/r/20240131215347.1808751-1-cmllamas@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/um/drivers/net_kern.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/android/binder.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/arch/um/drivers/net_kern.c b/arch/um/drivers/net_kern.c
-index 327b728f7244..db15a456482f 100644
---- a/arch/um/drivers/net_kern.c
-+++ b/arch/um/drivers/net_kern.c
-@@ -204,7 +204,7 @@ static int uml_net_close(struct net_device *dev)
- 	return 0;
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -846,6 +846,16 @@ binder_enqueue_thread_work_ilocked(struc
+ {
+ 	WARN_ON(!list_empty(&thread->waiting_thread_node));
+ 	binder_enqueue_work_ilocked(work, &thread->todo);
++
++	/* (e)poll-based threads require an explicit wakeup signal when
++	 * queuing their own work; they rely on these events to consume
++	 * messages without I/O block. Without it, threads risk waiting
++	 * indefinitely without handling the work.
++	 */
++	if (thread->looper & BINDER_LOOPER_STATE_POLL &&
++	    thread->pid == current->pid && !thread->process_todo)
++		wake_up_interruptible_sync(&thread->wait);
++
+ 	thread->process_todo = true;
  }
  
--static int uml_net_start_xmit(struct sk_buff *skb, struct net_device *dev)
-+static netdev_tx_t uml_net_start_xmit(struct sk_buff *skb, struct net_device *dev)
- {
- 	struct uml_net_private *lp = netdev_priv(dev);
- 	unsigned long flags;
--- 
-2.43.0
-
 
 
 
