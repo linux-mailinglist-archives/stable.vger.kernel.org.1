@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-22508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D4D385DC58
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:52:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 213A485DE17
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:14:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D44F6285232
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:52:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1B15283AEB
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 569787BB18;
-	Wed, 21 Feb 2024 13:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3033F7EEEB;
+	Wed, 21 Feb 2024 14:12:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jfYuLKpW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VnjoLGT5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05547BB14;
-	Wed, 21 Feb 2024 13:52:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E28323D0A1;
+	Wed, 21 Feb 2024 14:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523531; cv=none; b=ghZWQU7O1zLn5ahhOTG6FbTLUx4XQWGgJtNRtlqhV7vK3gJoAd6A7m+eJm+78i7HZlLEWSGweQLWr7rTG8rf6J92xlEsstSbGBAavG1pbnPh0QiPqt5Xx6j9IwLUkx1rCipHuwzmEN+wX1tsKyCZklRf3Qgx1bw6fpEC15ofDNQ=
+	t=1708524757; cv=none; b=sH6xvmPID4+nbrUbneLqSdivyGnxNzXoOnPgf5WJ19CeFpktRi7H344ZhSbhXNxj7cOfrAXT56ylVqOqhxCCuchAflxkOFTYSIThOg+uvgIt3A8dGmYb4K5NgZm/iNtDe/0J5cKRnJFkGDltsjIkx5s5VkH5IINnrG7CNSdaGAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523531; c=relaxed/simple;
-	bh=9EnkRPWTAhQhTRaSaWAAWzmMos/pUK6LYKRYJSJLa/M=;
+	s=arc-20240116; t=1708524757; c=relaxed/simple;
+	bh=3LF2Nu+JyFyH+DbnW7/OQeALxdH2IL7J8d1D5KngKts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mpi8/rb2IcMIQRkwG8Zk32d/MLbKau7hhp2sGrg+6CCyJEHZFgSmNn2VvW9JOlnK7PzD7z1K+2c9+3IBjyBCAf0aae5x/+swHdtvZ4hzLb+NK/LRp2KvY5b4PW5XyyLWDwvtigxqymocxjFFkmw08DQYjIEoz4zmZyLhzNcEnTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jfYuLKpW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1840DC433C7;
-	Wed, 21 Feb 2024 13:52:10 +0000 (UTC)
+	 MIME-Version; b=TLokfuqGlBi3bFbnTt8gjtiu0ESchOtEcpi56Noc/9WmfFzPVvseM21wJbsH4p+mKdTZgfbTi0kdRVOUICXmN8jrzyf8aY2E3gNYq0D5aDBsUQD4L3TDCwcRcXS/OyjnH453pdGDoateY2hCa6QMB/0aX8tD5M6/eM2lCUq5Mkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VnjoLGT5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51164C433F1;
+	Wed, 21 Feb 2024 14:12:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523531;
-	bh=9EnkRPWTAhQhTRaSaWAAWzmMos/pUK6LYKRYJSJLa/M=;
+	s=korg; t=1708524756;
+	bh=3LF2Nu+JyFyH+DbnW7/OQeALxdH2IL7J8d1D5KngKts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jfYuLKpW53uHWwsO3K3bYGtbEJilnei+6T64gHlkEvzvyw3SqIxyxuQbkXPD3AKfF
-	 SiPaTaEoGclKHUy77jgOXzD9fycJCN7lMEW94F22flOOaRrryyV9cQXj4DIegzt/yh
-	 6ayhRGoDG07brid4658z7nk+xolCnB+KCQDTmJoU=
+	b=VnjoLGT5n0P5NKv1LGRCN84Vza2Wl4He45L+SuFUu/aMsPPLUJIHAJt2T+joxoHqz
+	 nntoYMZDgpklmig6hkPoTALYee6E/ZaWv8poA4FaQsZJA8usJi1QWOC1fy7sVELf5F
+	 bEAMW9VxbW6zD8OmqDrmt2JR8FWzbZQEysBxtlZo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Easwar Hariharan <eahariha@linux.microsoft.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 5.15 465/476] arm64: Subscribe Microsoft Azure Cobalt 100 to ARM Neoverse N2 errata
-Date: Wed, 21 Feb 2024 14:08:36 +0100
-Message-ID: <20240221130025.225916912@linuxfoundation.org>
+	Daniel Basilio <daniel.basilio@corigine.com>,
+	Louis Peens <louis.peens@corigine.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.10 338/379] nfp: use correct macro for LengthSelect in BAR config
+Date: Wed, 21 Feb 2024 14:08:37 +0100
+Message-ID: <20240221130004.978483580@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,100 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Easwar Hariharan <eahariha@linux.microsoft.com>
+From: Daniel Basilio <daniel.basilio@corigine.com>
 
-commit fb091ff394792c018527b3211bbdfae93ea4ac02 upstream.
+commit b3d4f7f2288901ed2392695919b3c0e24c1b4084 upstream.
 
-Add the MIDR value of Microsoft Azure Cobalt 100, which is a Microsoft
-implemented CPU based on r0p0 of the ARM Neoverse N2 CPU, and therefore
-suffers from all the same errata.
+The 1st and 2nd expansion BAR configuration registers are configured,
+when the driver starts up, in variables 'barcfg_msix_general' and
+'barcfg_msix_xpb', respectively. The 'LengthSelect' field is ORed in
+from bit 0, which is incorrect. The 'LengthSelect' field should
+start from bit 27.
 
-CC: stable@vger.kernel.org # 5.15+
-Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Acked-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
-Link: https://lore.kernel.org/r/20240214175522.2457857-1-eahariha@linux.microsoft.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+This has largely gone un-noticed because
+NFP_PCIE_BAR_PCIE2CPP_LengthSelect_32BIT happens to be 0.
+
+Fixes: 4cb584e0ee7d ("nfp: add CPP access core")
+Cc: stable@vger.kernel.org # 4.11+
+Signed-off-by: Daniel Basilio <daniel.basilio@corigine.com>
+Signed-off-by: Louis Peens <louis.peens@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/arm64/silicon-errata.rst |    7 +++++++
- arch/arm64/include/asm/cputype.h       |    4 ++++
- arch/arm64/kernel/cpu_errata.c         |    3 +++
- 3 files changed, 14 insertions(+)
+ drivers/net/ethernet/netronome/nfp/nfpcore/nfp6000_pcie.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/Documentation/arm64/silicon-errata.rst
-+++ b/Documentation/arm64/silicon-errata.rst
-@@ -198,3 +198,10 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | Fujitsu        | A64FX           | E#010001        | FUJITSU_ERRATUM_010001      |
- +----------------+-----------------+-----------------+-----------------------------+
-++----------------+-----------------+-----------------+-----------------------------+
-+| Microsoft      | Azure Cobalt 100| #2139208        | ARM64_ERRATUM_2139208       |
-++----------------+-----------------+-----------------+-----------------------------+
-+| Microsoft      | Azure Cobalt 100| #2067961        | ARM64_ERRATUM_2067961       |
-++----------------+-----------------+-----------------+-----------------------------+
-+| Microsoft      | Azure Cobalt 100| #2253138        | ARM64_ERRATUM_2253138       |
-++----------------+-----------------+-----------------+-----------------------------+
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -61,6 +61,7 @@
- #define ARM_CPU_IMP_HISI		0x48
- #define ARM_CPU_IMP_APPLE		0x61
- #define ARM_CPU_IMP_AMPERE		0xC0
-+#define ARM_CPU_IMP_MICROSOFT		0x6D
- 
- #define ARM_CPU_PART_AEM_V8		0xD0F
- #define ARM_CPU_PART_FOUNDATION		0xD00
-@@ -116,6 +117,8 @@
- 
- #define AMPERE_CPU_PART_AMPERE1		0xAC3
- 
-+#define MICROSOFT_CPU_PART_AZURE_COBALT_100	0xD49 /* Based on r0p0 of ARM Neoverse N2 */
-+
- #define MIDR_CORTEX_A53 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A53)
- #define MIDR_CORTEX_A57 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A57)
- #define MIDR_CORTEX_A72 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A72)
-@@ -157,6 +160,7 @@
- #define MIDR_APPLE_M1_ICESTORM MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M1_ICESTORM)
- #define MIDR_APPLE_M1_FIRESTORM MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M1_FIRESTORM)
- #define MIDR_AMPERE1 MIDR_CPU_MODEL(ARM_CPU_IMP_AMPERE, AMPERE_CPU_PART_AMPERE1)
-+#define MIDR_MICROSOFT_AZURE_COBALT_100 MIDR_CPU_MODEL(ARM_CPU_IMP_MICROSOFT, MICROSOFT_CPU_PART_AZURE_COBALT_100)
- 
- /* Fujitsu Erratum 010001 affects A64FX 1.0 and 1.1, (v0r0 and v1r0) */
- #define MIDR_FUJITSU_ERRATUM_010001		MIDR_FUJITSU_A64FX
---- a/arch/arm64/kernel/cpu_errata.c
-+++ b/arch/arm64/kernel/cpu_errata.c
-@@ -367,6 +367,7 @@ static struct midr_range broken_aarch32_
- static const struct midr_range trbe_overwrite_fill_mode_cpus[] = {
- #ifdef CONFIG_ARM64_ERRATUM_2139208
- 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
-+	MIDR_ALL_VERSIONS(MIDR_MICROSOFT_AZURE_COBALT_100),
- #endif
- #ifdef CONFIG_ARM64_ERRATUM_2119858
- 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
-@@ -379,6 +380,7 @@ static const struct midr_range trbe_over
- static const struct midr_range tsb_flush_fail_cpus[] = {
- #ifdef CONFIG_ARM64_ERRATUM_2067961
- 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
-+	MIDR_ALL_VERSIONS(MIDR_MICROSOFT_AZURE_COBALT_100),
- #endif
- #ifdef CONFIG_ARM64_ERRATUM_2054223
- 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
-@@ -391,6 +393,7 @@ static const struct midr_range tsb_flush
- static struct midr_range trbe_write_out_of_range_cpus[] = {
- #ifdef CONFIG_ARM64_ERRATUM_2253138
- 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
-+	MIDR_ALL_VERSIONS(MIDR_MICROSOFT_AZURE_COBALT_100),
- #endif
- #ifdef CONFIG_ARM64_ERRATUM_2224489
- 	MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
+--- a/drivers/net/ethernet/netronome/nfp/nfpcore/nfp6000_pcie.c
++++ b/drivers/net/ethernet/netronome/nfp/nfpcore/nfp6000_pcie.c
+@@ -542,11 +542,13 @@ static int enable_bars(struct nfp6000_pc
+ 	const u32 barcfg_msix_general =
+ 		NFP_PCIE_BAR_PCIE2CPP_MapType(
+ 			NFP_PCIE_BAR_PCIE2CPP_MapType_GENERAL) |
+-		NFP_PCIE_BAR_PCIE2CPP_LengthSelect_32BIT;
++		NFP_PCIE_BAR_PCIE2CPP_LengthSelect(
++			NFP_PCIE_BAR_PCIE2CPP_LengthSelect_32BIT);
+ 	const u32 barcfg_msix_xpb =
+ 		NFP_PCIE_BAR_PCIE2CPP_MapType(
+ 			NFP_PCIE_BAR_PCIE2CPP_MapType_BULK) |
+-		NFP_PCIE_BAR_PCIE2CPP_LengthSelect_32BIT |
++		NFP_PCIE_BAR_PCIE2CPP_LengthSelect(
++			NFP_PCIE_BAR_PCIE2CPP_LengthSelect_32BIT) |
+ 		NFP_PCIE_BAR_PCIE2CPP_Target_BaseAddress(
+ 			NFP_CPP_TARGET_ISLAND_XPB);
+ 	const u32 barcfg_explicit[4] = {
 
 
 
