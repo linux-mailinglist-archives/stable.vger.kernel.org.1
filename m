@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-22573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58D4F85DCAC
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:56:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4D8385DB16
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:37:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A031528240B
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:56:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83E651F2170E
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:37:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C92A77BB0C;
-	Wed, 21 Feb 2024 13:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F4747BB0D;
+	Wed, 21 Feb 2024 13:36:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GIvtxEWR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q+LSDayv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86013762C1;
-	Wed, 21 Feb 2024 13:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CBE86F074;
+	Wed, 21 Feb 2024 13:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523772; cv=none; b=IvlxyOpbklamzA0jA2FtFqvAR1mj2g7lzTs4R6llXuYjQ2lDkGEgiKonK0/lczk2NXDyfgZo0xMVyyhCx6T57wc0x6mTe/yxJWDLL89LZ/lAco3j/Ruq/6KAJMpXKZsP2gfPhaq38fGbMpold0JGJ4oDsqCZmAYOjGrIZxjdKdg=
+	t=1708522606; cv=none; b=lQMPvhDOY1BGRs1fSCP1tHr9lk37W25s7eMLIhEvjfNze2hZR9kiuV8ssNLGDraI7DVkkxssKiMu6cg4G9FBQS/xg4/W1aMPfFyEpDbrChLeVrJhm+8wlQ+cvIwvE5jOahoep60dMQGi33sWyB/5WcP9AN+dh3eFPtmQy8bAWyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523772; c=relaxed/simple;
-	bh=UEi7c8lp035BTOfoCCPyusGa+4THaPZxVuoUOM1BAWs=;
+	s=arc-20240116; t=1708522606; c=relaxed/simple;
+	bh=ZRCXTLPJIPYw/fwZM5N6yqLKSJ37XJBlmgPb9He6Cfw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SZXuG2nta122YUGfSPvHqg1fFrzdBVutvHCRXSVFudJh4LN/TQzd21GmYnLu60KZw9Gj49IL/dWhn3ZpbdheioGSByDn6kJCX0JRP8lcW/dhYYTklG8OZhK8xTJRF5/ijXtwZCgsl5qOHwWC9a8ydiv5T2ohmQ7CLQmQy71+TLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GIvtxEWR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16305C433C7;
-	Wed, 21 Feb 2024 13:56:11 +0000 (UTC)
+	 MIME-Version; b=m2Xdgp3MEpWqGWc4LjDy7R+QuK34iS3z755b6d3eS7AXglnvziPrbTjGKRvr+fJ2QvpcdUViOeh/PiFmAlA+OY3q4dzZRHapeAw2Qd6WShXHXFnXx8jxLMBvaaV0z5rWBomA5vtXmYS52Nmdnxg3MkZ0Ty8C9kqXTrkcddCu5tg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q+LSDayv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46739C433C7;
+	Wed, 21 Feb 2024 13:36:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523772;
-	bh=UEi7c8lp035BTOfoCCPyusGa+4THaPZxVuoUOM1BAWs=;
+	s=korg; t=1708522605;
+	bh=ZRCXTLPJIPYw/fwZM5N6yqLKSJ37XJBlmgPb9He6Cfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GIvtxEWRDq8+Avl5+5xCOf6nymoy8gx25d2xymBhPE9133DFALVvBJQQbtKzHDWJ5
-	 8OkmhV1kmeXDdQeYNtQl6ThKLvUjaoju0GNLPBjV/XgCcuWuBUAw4Z5nKOR5cL2WhV
-	 kdbUlJ9E0OGTdWXGjPeQ7ho2EWlJA8jkx89ltCN0=
+	b=q+LSDayvnH2f99TcjlA9Tkug3NZJDy2w8u0kFizgaXHBLMxJXimOVdlR1U958PZTj
+	 gpfq0o3YSZ1VcuOMTepTu5Zr2UjjsRtPX/hC2wjulwKSkmB2VNSeDbXGnBYfwOlZCi
+	 56koSj+54M0wrJCu3Nar5Pk3Yqd1Nvoh8jVYHjWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhengchao Shao <shaozhengchao@huawei.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Hou Tao <houtao1@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 052/379] netlink: fix potential sleeping issue in mqueue_flush_file
+Subject: [PATCH 5.15 180/476] bpf: Set uattr->batch.count as zero before batched update or deletion
 Date: Wed, 21 Feb 2024 14:03:51 +0100
-Message-ID: <20240221125956.456456865@linuxfoundation.org>
+Message-ID: <20240221130014.557139494@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchao Shao <shaozhengchao@huawei.com>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit 234ec0b6034b16869d45128b8cd2dc6ffe596f04 ]
+[ Upstream commit 06e5c999f10269a532304e89a6adb2fbfeb0593c ]
 
-I analyze the potential sleeping issue of the following processes:
-Thread A                                Thread B
-...                                     netlink_create  //ref = 1
-do_mq_notify                            ...
-  sock = netlink_getsockbyfilp          ...     //ref = 2
-  info->notify_sock = sock;             ...
-...                                     netlink_sendmsg
-...                                       skb = netlink_alloc_large_skb  //skb->head is vmalloced
-...                                       netlink_unicast
-...                                         sk = netlink_getsockbyportid //ref = 3
-...                                         netlink_sendskb
-...                                           __netlink_sendskb
-...                                             skb_queue_tail //put skb to sk_receive_queue
-...                                         sock_put //ref = 2
-...                                     ...
-...                                     netlink_release
-...                                       deferred_put_nlk_sk //ref = 1
-mqueue_flush_file
-  spin_lock
-  remove_notification
-    netlink_sendskb
-      sock_put  //ref = 0
-        sk_free
-          ...
-          __sk_destruct
-            netlink_sock_destruct
-              skb_queue_purge  //get skb from sk_receive_queue
-                ...
-                __skb_queue_purge_reason
-                  kfree_skb_reason
-                    __kfree_skb
-                    ...
-                    skb_release_all
-                      skb_release_head_state
-                        netlink_skb_destructor
-                          vfree(skb->head)  //sleeping while holding spinlock
+generic_map_{delete,update}_batch() doesn't set uattr->batch.count as
+zero before it tries to allocate memory for key. If the memory
+allocation fails, the value of uattr->batch.count will be incorrect.
 
-In netlink_sendmsg, if the memory pointed to by skb->head is allocated by
-vmalloc, and is put to sk_receive_queue queue, also the skb is not freed.
-When the mqueue executes flush, the sleeping bug will occur. Use
-vfree_atomic instead of vfree in netlink_skb_destructor to solve the issue.
+Fix it by setting uattr->batch.count as zero beore batched update or
+deletion.
 
-Fixes: c05cdb1b864f ("netlink: allow large data transfers from user-space")
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Link: https://lore.kernel.org/r/20240122011807.2110357-1-shaozhengchao@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/r/20231208102355.2628918-6-houtao@huaweicloud.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netlink/af_netlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/bpf/syscall.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-index 901358a5b593..359f07a53ecc 100644
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -366,7 +366,7 @@ static void netlink_skb_destructor(struct sk_buff *skb)
- 	if (is_vmalloc_addr(skb->head)) {
- 		if (!skb->cloned ||
- 		    !atomic_dec_return(&(skb_shinfo(skb)->dataref)))
--			vfree(skb->head);
-+			vfree_atomic(skb->head);
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index dbe98040e855..64206856a05c 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -1314,6 +1314,9 @@ int generic_map_delete_batch(struct bpf_map *map,
+ 	if (!max_count)
+ 		return 0;
  
- 		skb->head = NULL;
- 	}
++	if (put_user(0, &uattr->batch.count))
++		return -EFAULT;
++
+ 	key = kvmalloc(map->key_size, GFP_USER | __GFP_NOWARN);
+ 	if (!key)
+ 		return -ENOMEM;
+@@ -1372,6 +1375,9 @@ int generic_map_update_batch(struct bpf_map *map,
+ 	if (!max_count)
+ 		return 0;
+ 
++	if (put_user(0, &uattr->batch.count))
++		return -EFAULT;
++
+ 	key = kvmalloc(map->key_size, GFP_USER | __GFP_NOWARN);
+ 	if (!key)
+ 		return -ENOMEM;
 -- 
 2.43.0
 
