@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-23011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE26485DF01
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:23:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECE1885D97A
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:19:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF6F5B22C34
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:21:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 244201C22F33
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:19:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F60278B5E;
-	Wed, 21 Feb 2024 14:21:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6961A76905;
+	Wed, 21 Feb 2024 13:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hVzT9uUp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z44zx4be"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A44569D29;
-	Wed, 21 Feb 2024 14:21:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2927529AB;
+	Wed, 21 Feb 2024 13:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525282; cv=none; b=co4WXxRSJtVyBmEO0BWEU+3t6vPMWoDjxAxMbpcDbcptRs4QWmXTmY4b694oVOnv6D3/4vVJ5oKhYNR5EHt37yKd015p0ulcWbbLmBpiQHDYIqrfQ+JARtwasT9tEYkDJy1JFFqOD6nIq8bK+Dz25HIA4j0w43r1OkCsCx3kbxM=
+	t=1708521543; cv=none; b=iL0Avl6VC5hyUxwJTO2cRDrkWOJEdMdiHbshL8mz8lb8c/IO4t7O2R3FGLqeMjqs1rkNr3F8+VX8QskL8560lkJL3yREs4MI/FcA9DIhp40y2GE5/s/69x3zkMLGe6mNOICwhwHCxEYm1MBoREug1Z76WmGaWWKrVgwwwHs7weM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525282; c=relaxed/simple;
-	bh=eGJVFEtvM73fqZiN5KAs2kV6sswxncFEO/nC0hQJA7I=;
+	s=arc-20240116; t=1708521543; c=relaxed/simple;
+	bh=d52kfQFeUTVggFyKzfaNxh1ByiyZ4ppFz8jXY+ES2kQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ub4LmZEcIF7MYjvjvye+2208DV+9ei263uW7f2zq6L1M+dyrvk9ZJxBEDRwXwgRLs9JvEEKTA9GjMDrqDVx+v1dPDHYzh6loSd3u7TWcw8fWbVASMRpw3tTxM/U9Z+Mn/jn2EwWKFlRnyq1DTD1gW3ML5jLgqlSY0U1JWBV4pvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hVzT9uUp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84A4BC433C7;
-	Wed, 21 Feb 2024 14:21:21 +0000 (UTC)
+	 MIME-Version; b=oSla7x4NI6cur9sSphCssJ3cS0qr2d1nDv7d9gb5x9h2e+e3rjgaoQOiWC18PKVmnno7RVccZ/IlQsnVrb8nIgKrMuI9TLH57YIF70JenFVIMGZQZCVi8rJYkN+G8UZiW9n9AkDZOoBPgOtfNI5JY37BZgdMl2ld4rcKItKRzh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z44zx4be; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AD42C433F1;
+	Wed, 21 Feb 2024 13:19:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525281;
-	bh=eGJVFEtvM73fqZiN5KAs2kV6sswxncFEO/nC0hQJA7I=;
+	s=korg; t=1708521543;
+	bh=d52kfQFeUTVggFyKzfaNxh1ByiyZ4ppFz8jXY+ES2kQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hVzT9uUpN4N6/bBXdz0ZTN5Svtu1ORxPqXLNPAAT+xNfhIY7QGWZdYVmWZDQaMOoF
-	 NPxfYVsxWqEPE7bgvKtiAUvA8/NyUAgyBH3yEXOrrwDYBGsYuEPyJ0A0STy8xOgPI/
-	 65a7EDSBwBQ6c8e7ekdz/MgkNn/6PT8bMNiYYihg=
+	b=z44zx4beQfU6TnpS40UD+H6QYZW4GYTL6Y3xLMjtPNsvii/Q3FPJDCCqprJd+3Plz
+	 0Z++RNAfeFclFJ6E8JuxljXWLASYPdwrMT25wjFMdUt1hAEw3EcHuUrlM3V3ikVgTh
+	 aNjMkdlhiLdRuroxedTR2JR/gVY2+OEkKIryqY+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuluo Qiu <qyl27@outlook.com>,
-	Celeste Liu <CoelacanthusHex@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 070/267] ACPI: video: Add quirk for the Colorful X15 AT 23 Laptop
-Date: Wed, 21 Feb 2024 14:06:51 +0100
-Message-ID: <20240221125942.182881674@linuxfoundation.org>
+Subject: [PATCH 4.19 111/202] clk: hi3620: Fix memory leak in hi3620_mmc_clk_init()
+Date: Wed, 21 Feb 2024 14:06:52 +0100
+Message-ID: <20240221125935.332114058@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuluo Qiu <qyl27@outlook.com>
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
 
-[ Upstream commit 143176a46bdd3bfbe9ba2462bf94458e80d65ebf ]
+[ Upstream commit bfbea9e5667cfa9552c3d88f023386f017f6c308 ]
 
-The Colorful X15 AT 23 ACPI video-bus device report spurious
-ACPI_VIDEO_NOTIFY_CYCLE events resulting in spurious KEY_SWITCHVIDEOMODE
-events being reported to userspace (and causing trouble there) when
-an external screen plugged in.
+In cases where kcalloc() fails for the 'clk_data->clks' allocation, the
+code path does not handle the failure gracefully, potentially leading
+to a memory leak. This fix ensures proper cleanup by freeing the
+allocated memory for 'clk_data' before returning.
 
-Add a quirk setting the report_key_events mask to
-REPORT_BRIGHTNESS_KEY_EVENTS so that the ACPI_VIDEO_NOTIFY_CYCLE
-events will be ignored, while still reporting brightness up/down
-hotkey-presses to userspace normally.
-
-Signed-off-by: Yuluo Qiu <qyl27@outlook.com>
-Co-developed-by: Celeste Liu <CoelacanthusHex@gmail.com>
-Signed-off-by: Celeste Liu <CoelacanthusHex@gmail.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Link: https://lore.kernel.org/r/20231210165040.3407545-1-visitorckw@gmail.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpi_video.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/clk/hisilicon/clk-hi3620.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
-index 9648ec76de2b..fd33fdbaffa9 100644
---- a/drivers/acpi/acpi_video.c
-+++ b/drivers/acpi/acpi_video.c
-@@ -568,6 +568,15 @@ static const struct dmi_system_id video_dmi_table[] = {
- 		DMI_MATCH(DMI_PRODUCT_NAME, "Vostro 3350"),
- 		},
- 	},
-+	{
-+	 .callback = video_set_report_key_events,
-+	 .driver_data = (void *)((uintptr_t)REPORT_BRIGHTNESS_KEY_EVENTS),
-+	 .ident = "COLORFUL X15 AT 23",
-+	 .matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "COLORFUL"),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "X15 AT 23"),
-+		},
-+	},
- 	/*
- 	 * Some machines change the brightness themselves when a brightness
- 	 * hotkey gets pressed, despite us telling them not to. In this case
+diff --git a/drivers/clk/hisilicon/clk-hi3620.c b/drivers/clk/hisilicon/clk-hi3620.c
+index 77072c7778b9..93b4d8933797 100644
+--- a/drivers/clk/hisilicon/clk-hi3620.c
++++ b/drivers/clk/hisilicon/clk-hi3620.c
+@@ -481,8 +481,10 @@ static void __init hi3620_mmc_clk_init(struct device_node *node)
+ 		return;
+ 
+ 	clk_data->clks = kcalloc(num, sizeof(*clk_data->clks), GFP_KERNEL);
+-	if (!clk_data->clks)
++	if (!clk_data->clks) {
++		kfree(clk_data);
+ 		return;
++	}
+ 
+ 	for (i = 0; i < num; i++) {
+ 		struct hisi_mmc_clock *mmc_clk = &hi3620_mmc_clks[i];
 -- 
 2.43.0
 
