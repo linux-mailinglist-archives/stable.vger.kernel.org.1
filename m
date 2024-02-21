@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-21929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20B3585D93C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:16:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75C3385DE67
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:18:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC5DA1F221F8
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:16:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CA531F2443B
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:18:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E4A978685;
-	Wed, 21 Feb 2024 13:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F36E7E769;
+	Wed, 21 Feb 2024 14:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UkwrJviz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k57zSscw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE236A038;
-	Wed, 21 Feb 2024 13:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500517E59A;
+	Wed, 21 Feb 2024 14:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521354; cv=none; b=CsmlveUTSRgpKsmIvaAvdae+myIXY8A1XsTUrjmfjwXkez80juhzsfPMhJA86S46+RUnQaqpWhdR6XeYxHSVGTh5FZTl2cbHf1Ld8F6bK5XuuaSSTOL17Lv43wz0zLOfn7cBFEEo9xpM54FdXjDaPtu1EyKO9CY8f9aANu2w4oE=
+	t=1708525068; cv=none; b=cIYzwCuVe2EpcjF4bvmOlI0w4OObnSA9JMRJTX0yQwbEoEQ7zDcGeydULnvyLIAxgXjk/BZ8n+9D3bNPDgytrKCtb6ScBud9GXskYhN5i6X9ij7ww/k90gE2bRAiMJ2tFJbaHWtMZj6AUoypwLP+XuRTYOpK+lXRy02VbqfDu7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521354; c=relaxed/simple;
-	bh=5zPZo+PD2Jq+Da21pmYAv5Tm1uHIP1OZFqwBuqre21U=;
+	s=arc-20240116; t=1708525068; c=relaxed/simple;
+	bh=TVwJ8f+xN43LuaWjSSlBK1+/b07TnzJdfgHJ2HWdANM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ug/t0/IuXlKj/Cp6nafD8lHm6ZpTb4jziBk+szjYFSYcrHXcymp0bmyAMmWlt2JvTMdgo9ZFLtPdKVq8hAAHnfEd1flbrdG/ES+eXMyw8O48zvw6ZnhAXQBqjhAd4bUS4a8b0Kh7TTTflLIGNG+ztbG/02ZosknitJ+xawie2rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UkwrJviz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24D2FC433C7;
-	Wed, 21 Feb 2024 13:15:53 +0000 (UTC)
+	 MIME-Version; b=RhxFiuHUCPKtencJQbgkfOSLu/wP+u/KZA6vkQQ63mqxQvbK5A4DVmTFMAbu4HMm7e3+VUvVG8NW9il17gRCHiFlXxQFoptO8qtqbslNAn9FePJu8i2BY2gpfEIEamWYyHqb8YVcxzZHLciQR2tkuZ/rXgiAuY3nFCOlJT7uwEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k57zSscw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9368C433F1;
+	Wed, 21 Feb 2024 14:17:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521354;
-	bh=5zPZo+PD2Jq+Da21pmYAv5Tm1uHIP1OZFqwBuqre21U=;
+	s=korg; t=1708525068;
+	bh=TVwJ8f+xN43LuaWjSSlBK1+/b07TnzJdfgHJ2HWdANM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UkwrJviz0DDlgFYcJdiioqY4B34jvMTMqdGylJdOGkwCPmpTyMaZVDBKCUCZgFgyK
-	 h0WrI6CyrlG4fYWnNSfKiO29VTc2dIdEW6AtP2ar0rTCw+u71EVxsNqa9kwLfrAkqw
-	 ZW9irpiajQhvGYPpeVY+1XZzpCP7tQoYOCfhiaPM=
+	b=k57zSscwp40l4nh4kWpo8XCN/9JYFxjx1ztaqdhR/pATNBsVNAiVHF1/fWd23/rjG
+	 rzDO8ShiCX7MammEePtp3y/0B9lSDJ5MGhzM9psNJxVTWHYT4VIj7vCWLIwdotDrfe
+	 vQfRs8ggVVem+5FcrZ8oeglCeF8CzTnv9noDdBJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 091/202] ARM: dts: imx23/28: Fix the DMA controller node name
-Date: Wed, 21 Feb 2024 14:06:32 +0100
-Message-ID: <20240221125934.725346867@linuxfoundation.org>
+Subject: [PATCH 5.4 052/267] NFSD: Modernize nfsd4_release_lockowner()
+Date: Wed, 21 Feb 2024 14:06:33 +0100
+Message-ID: <20240221125941.636617894@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +61,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 858d83ca4b50bbc8693d95cc94310e6d791fb2e6 ]
+[ Upstream commit bd8fdb6e545f950f4654a9a10d7e819ad48146e5 ]
 
-Per fsl,mxs-dma.yaml, the node name should be 'dma-controller'.
+Refactor: Use existing helpers that other lock operations use. This
+change removes several automatic variables, so re-organize the
+variable declarations for readability.
 
-Change it to fix the following dt-schema warning.
-
-imx28-apf28.dtb: dma-apbx@80024000: $nodename:0: 'dma-apbx@80024000' does not match '^dma-controller(@.*)?$'
-	from schema $id: http://devicetree.org/schemas/dma/fsl,mxs-dma.yaml#
-
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Stable-dep-of: edcf9725150e ("nfsd: fix RELEASE_LOCKOWNER")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/imx23.dtsi | 2 +-
- arch/arm/boot/dts/imx28.dtsi | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ fs/nfsd/nfs4state.c | 36 +++++++++++-------------------------
+ 1 file changed, 11 insertions(+), 25 deletions(-)
 
-diff --git a/arch/arm/boot/dts/imx23.dtsi b/arch/arm/boot/dts/imx23.dtsi
-index aaaa987d8eff..223c5171edab 100644
---- a/arch/arm/boot/dts/imx23.dtsi
-+++ b/arch/arm/boot/dts/imx23.dtsi
-@@ -406,7 +406,7 @@
- 				status = "disabled";
- 			};
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index a0aa7e63739d..9a77a3eac4ac 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -6873,16 +6873,13 @@ nfsd4_release_lockowner(struct svc_rqst *rqstp,
+ 			union nfsd4_op_u *u)
+ {
+ 	struct nfsd4_release_lockowner *rlockowner = &u->release_lockowner;
++	struct nfsd_net *nn = net_generic(SVC_NET(rqstp), nfsd_net_id);
+ 	clientid_t *clid = &rlockowner->rl_clientid;
+-	struct nfs4_stateowner *sop;
+-	struct nfs4_lockowner *lo = NULL;
+ 	struct nfs4_ol_stateid *stp;
+-	struct xdr_netobj *owner = &rlockowner->rl_owner;
+-	unsigned int hashval = ownerstr_hashval(owner);
+-	__be32 status;
+-	struct nfsd_net *nn = net_generic(SVC_NET(rqstp), nfsd_net_id);
++	struct nfs4_lockowner *lo;
+ 	struct nfs4_client *clp;
+-	LIST_HEAD (reaplist);
++	LIST_HEAD(reaplist);
++	__be32 status;
  
--			dma_apbx: dma-apbx@80024000 {
-+			dma_apbx: dma-controller@80024000 {
- 				compatible = "fsl,imx23-dma-apbx";
- 				reg = <0x80024000 0x2000>;
- 				interrupts = <7 5 9 26
-diff --git a/arch/arm/boot/dts/imx28.dtsi b/arch/arm/boot/dts/imx28.dtsi
-index 5107fdc482ea..84f7c86373b5 100644
---- a/arch/arm/boot/dts/imx28.dtsi
-+++ b/arch/arm/boot/dts/imx28.dtsi
-@@ -984,7 +984,7 @@
- 				status = "disabled";
- 			};
+ 	dprintk("nfsd4_release_lockowner clientid: (%08x/%08x):\n",
+ 		clid->cl_boot, clid->cl_id);
+@@ -6890,30 +6887,19 @@ nfsd4_release_lockowner(struct svc_rqst *rqstp,
+ 	status = lookup_clientid(clid, cstate, nn);
+ 	if (status)
+ 		return status;
+-
+ 	clp = cstate->clp;
+-	/* Find the matching lock stateowner */
+-	spin_lock(&clp->cl_lock);
+-	list_for_each_entry(sop, &clp->cl_ownerstr_hashtbl[hashval],
+-			    so_strhash) {
  
--			dma_apbx: dma-apbx@80024000 {
-+			dma_apbx: dma-controller@80024000 {
- 				compatible = "fsl,imx28-dma-apbx";
- 				reg = <0x80024000 0x2000>;
- 				interrupts = <78 79 66 0
+-		if (sop->so_is_open_owner || !same_owner_str(sop, owner))
+-			continue;
+-
+-		if (atomic_read(&sop->so_count) != 1) {
+-			spin_unlock(&clp->cl_lock);
+-			return nfserr_locks_held;
+-		}
+-
+-		lo = lockowner(sop);
+-		nfs4_get_stateowner(sop);
+-		break;
+-	}
++	spin_lock(&clp->cl_lock);
++	lo = find_lockowner_str_locked(clp, &rlockowner->rl_owner);
+ 	if (!lo) {
+ 		spin_unlock(&clp->cl_lock);
+ 		return status;
+ 	}
+-
++	if (atomic_read(&lo->lo_owner.so_count) != 2) {
++		spin_unlock(&clp->cl_lock);
++		nfs4_put_stateowner(&lo->lo_owner);
++		return nfserr_locks_held;
++	}
+ 	unhash_lockowner_locked(lo);
+ 	while (!list_empty(&lo->lo_owner.so_stateids)) {
+ 		stp = list_first_entry(&lo->lo_owner.so_stateids,
 -- 
 2.43.0
 
