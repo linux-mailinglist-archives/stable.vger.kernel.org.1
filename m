@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-22375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E94A85DBBA
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:44:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA9C985D909
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:13:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06343B256E0
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:44:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4475D1F22CDA
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:13:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 406A27993D;
-	Wed, 21 Feb 2024 13:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CBB769D2F;
+	Wed, 21 Feb 2024 13:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o64QFJKt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r1kxuBLP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F24B873161;
-	Wed, 21 Feb 2024 13:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CBC953816;
+	Wed, 21 Feb 2024 13:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523067; cv=none; b=EeHV3hYLAs6Pj5p7K7dGYFvRoCPnQjHRq8uBjeyEWOnwRvzRLLdDSpoFa49ucF23m7o5HuA2dj7X7chmvIvKErSi31vqxd2XcJ0kfOJ0SuCFWxiW6YucPgYzEzgrMZYhfyxmhj/4wIzLtYpCgqTtc3NpYuseDTyR+ey3zo7XdL0=
+	t=1708521221; cv=none; b=FjR4b8JNk7juxtvmzcm9IwBT2xafereG3Z8d5KqvY365yxOt2sSymk445ym1HpCdNPUB45ngDldKXyMduxEBxoEoJ+LL3DpUS5Ian9NGaUl7VrrZwDPy1w8EL/OGOGF4RJk01QJ/5ae4UFzHPZy72vybQF7gF3+mt9G+1qu+TS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523067; c=relaxed/simple;
-	bh=qyTTtMP183EW/RGmNWf3yf4yo5ouj/bxUscOiR/CibI=;
+	s=arc-20240116; t=1708521221; c=relaxed/simple;
+	bh=1aSim8fNRA9kYTeeZxf/A3l1mAPkMqv7Nlbx75YV41s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SsudGx2Ft3Z5jsvfP8+hIdAiPXkNRzwWcwdyjIlSIzyr6kuW1COwF8MsNaoK4NsC8zYnl329D41g223fhgVKGDeNuoVCv/PvU9qRrBDcjCwAROELfUNVZqDwXQyyr/3mNfgLpBIHo+o2NmNTHd65FpAKdLqXJdft7xZLLfRRbUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o64QFJKt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71D0FC433F1;
-	Wed, 21 Feb 2024 13:44:26 +0000 (UTC)
+	 MIME-Version; b=IC4PJbnqZ5MyRul1XSLoVcwis6AdK2rxkY6ClvQ2Mp7DWe+m34UHigSQ+QH+Y1ZXCYYkraAOPI6z3GNXottnvkYlrRNJ6smL6dBuzTpDxTugQ75hfcUZrmtS123GOWSDRVf+A13iJXRo7NJ5DLEIQC2bsO0+j+OnINvwnpHIu4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r1kxuBLP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E2CAC43390;
+	Wed, 21 Feb 2024 13:13:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523066;
-	bh=qyTTtMP183EW/RGmNWf3yf4yo5ouj/bxUscOiR/CibI=;
+	s=korg; t=1708521221;
+	bh=1aSim8fNRA9kYTeeZxf/A3l1mAPkMqv7Nlbx75YV41s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o64QFJKtYcEiQAOAuHiT7XZ4Muku6JiMdUjc0x3y6WtsPU8fR0Obu/XOctp3oMoWP
-	 EKXyDLc3kZKShL74iSM+bKcESIjQLzQ1WXLwyn8xWz6ORO+WOdcz8QBDgPCt4Tfclm
-	 Y/rdAEdiTfAhWvkqmQ5NF8qwbVGF2lOePUJIMi68=
+	b=r1kxuBLPiOEYSyGrr/kxdMgPa+Jinw6pqUJ7TiCq4FOyR0LM+AwQVMsG/7BC+qyF2
+	 h5d8czzfh0I1kKEXX6OsBVtjRGq2GY2TwKFXx3aGUYgwxV6x8PoxAM85KwzakM2uwF
+	 3t5yne/KBkeMTQwt0hUgiCNQ5IYurbnGKfUwo13Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Furong Xu <0x1207@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Chris Riches <chris.riches@nutanix.com>,
+	Paul Moore <paul@paul-moore.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 304/476] net: stmmac: xgmac: fix handling of DPP safety error for DMA channels
+Subject: [PATCH 4.19 054/202] audit: Send netlink ACK before setting connection in auditd_set
 Date: Wed, 21 Feb 2024 14:05:55 +0100
-Message-ID: <20240221130019.236891562@linuxfoundation.org>
+Message-ID: <20240221125933.583565179@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,160 +62,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Furong Xu <0x1207@gmail.com>
+From: Chris Riches <chris.riches@nutanix.com>
 
-[ Upstream commit 46eba193d04f8bd717e525eb4110f3c46c12aec3 ]
+[ Upstream commit 022732e3d846e197539712e51ecada90ded0572a ]
 
-Commit 56e58d6c8a56 ("net: stmmac: Implement Safety Features in
-XGMAC core") checks and reports safety errors, but leaves the
-Data Path Parity Errors for each channel in DMA unhandled at all, lead to
-a storm of interrupt.
-Fix it by checking and clearing the DMA_DPP_Interrupt_Status register.
+When auditd_set sets the auditd_conn pointer, audit messages can
+immediately be put on the socket by other kernel threads. If the backlog
+is large or the rate is high, this can immediately fill the socket
+buffer. If the audit daemon requested an ACK for this operation, a full
+socket buffer causes the ACK to get dropped, also setting ENOBUFS on the
+socket.
 
-Fixes: 56e58d6c8a56 ("net: stmmac: Implement Safety Features in XGMAC core")
-Signed-off-by: Furong Xu <0x1207@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+To avoid this race and ensure ACKs get through, fast-track the ACK in
+this specific case to ensure it is sent before auditd_conn is set.
+
+Signed-off-by: Chris Riches <chris.riches@nutanix.com>
+[PM: fix some tab vs space damage]
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/common.h  |  1 +
- .../net/ethernet/stmicro/stmmac/dwxgmac2.h    |  3 +
- .../ethernet/stmicro/stmmac/dwxgmac2_core.c   | 57 ++++++++++++++++++-
- 3 files changed, 60 insertions(+), 1 deletion(-)
+ kernel/audit.c | 31 ++++++++++++++++++++++++-------
+ 1 file changed, 24 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/common.h b/drivers/net/ethernet/stmicro/stmmac/common.h
-index c03ac229e936..d9e8602f866d 100644
---- a/drivers/net/ethernet/stmicro/stmmac/common.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/common.h
-@@ -209,6 +209,7 @@ struct stmmac_safety_stats {
- 	unsigned long mac_errors[32];
- 	unsigned long mtl_errors[32];
- 	unsigned long dma_errors[32];
-+	unsigned long dma_dpp_errors[32];
- };
+diff --git a/kernel/audit.c b/kernel/audit.c
+index 471d3ad910aa..5fb87eccb8c2 100644
+--- a/kernel/audit.c
++++ b/kernel/audit.c
+@@ -498,15 +498,19 @@ static void auditd_conn_free(struct rcu_head *rcu)
+  * @pid: auditd PID
+  * @portid: auditd netlink portid
+  * @net: auditd network namespace pointer
++ * @skb: the netlink command from the audit daemon
++ * @ack: netlink ack flag, cleared if ack'd here
+  *
+  * Description:
+  * This function will obtain and drop network namespace references as
+  * necessary.  Returns zero on success, negative values on failure.
+  */
+-static int auditd_set(struct pid *pid, u32 portid, struct net *net)
++static int auditd_set(struct pid *pid, u32 portid, struct net *net,
++		      struct sk_buff *skb, bool *ack)
+ {
+ 	unsigned long flags;
+ 	struct auditd_connection *ac_old, *ac_new;
++	struct nlmsghdr *nlh;
  
- /* Number of fields in Safety Stats */
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
-index 880a75bf2eb1..e67a880ebf64 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
-@@ -282,6 +282,8 @@
- #define XGMAC_RXCEIE			BIT(4)
- #define XGMAC_TXCEIE			BIT(0)
- #define XGMAC_MTL_ECC_INT_STATUS	0x000010cc
-+#define XGMAC_MTL_DPP_CONTROL		0x000010e0
-+#define XGMAC_DDPP_DISABLE		BIT(0)
- #define XGMAC_MTL_TXQ_OPMODE(x)		(0x00001100 + (0x80 * (x)))
- #define XGMAC_TQS			GENMASK(25, 16)
- #define XGMAC_TQS_SHIFT			16
-@@ -364,6 +366,7 @@
- #define XGMAC_DCEIE			BIT(1)
- #define XGMAC_TCEIE			BIT(0)
- #define XGMAC_DMA_ECC_INT_STATUS	0x0000306c
-+#define XGMAC_DMA_DPP_INT_STATUS	0x00003074
- #define XGMAC_DMA_CH_CONTROL(x)		(0x00003100 + (0x80 * (x)))
- #define XGMAC_SPH			BIT(24)
- #define XGMAC_PBLx8			BIT(16)
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-index c2181c277291..c24cd019460a 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-@@ -789,6 +789,43 @@ static const struct dwxgmac3_error_desc dwxgmac3_dma_errors[32]= {
- 	{ false, "UNKNOWN", "Unknown Error" }, /* 31 */
- };
+ 	if (!pid || !net)
+ 		return -EINVAL;
+@@ -518,6 +522,13 @@ static int auditd_set(struct pid *pid, u32 portid, struct net *net)
+ 	ac_new->portid = portid;
+ 	ac_new->net = get_net(net);
  
-+static const char * const dpp_rx_err = "Read Rx Descriptor Parity checker Error";
-+static const char * const dpp_tx_err = "Read Tx Descriptor Parity checker Error";
-+static const struct dwxgmac3_error_desc dwxgmac3_dma_dpp_errors[32] = {
-+	{ true, "TDPES0", dpp_tx_err },
-+	{ true, "TDPES1", dpp_tx_err },
-+	{ true, "TDPES2", dpp_tx_err },
-+	{ true, "TDPES3", dpp_tx_err },
-+	{ true, "TDPES4", dpp_tx_err },
-+	{ true, "TDPES5", dpp_tx_err },
-+	{ true, "TDPES6", dpp_tx_err },
-+	{ true, "TDPES7", dpp_tx_err },
-+	{ true, "TDPES8", dpp_tx_err },
-+	{ true, "TDPES9", dpp_tx_err },
-+	{ true, "TDPES10", dpp_tx_err },
-+	{ true, "TDPES11", dpp_tx_err },
-+	{ true, "TDPES12", dpp_tx_err },
-+	{ true, "TDPES13", dpp_tx_err },
-+	{ true, "TDPES14", dpp_tx_err },
-+	{ true, "TDPES15", dpp_tx_err },
-+	{ true, "RDPES0", dpp_rx_err },
-+	{ true, "RDPES1", dpp_rx_err },
-+	{ true, "RDPES2", dpp_rx_err },
-+	{ true, "RDPES3", dpp_rx_err },
-+	{ true, "RDPES4", dpp_rx_err },
-+	{ true, "RDPES5", dpp_rx_err },
-+	{ true, "RDPES6", dpp_rx_err },
-+	{ true, "RDPES7", dpp_rx_err },
-+	{ true, "RDPES8", dpp_rx_err },
-+	{ true, "RDPES9", dpp_rx_err },
-+	{ true, "RDPES10", dpp_rx_err },
-+	{ true, "RDPES11", dpp_rx_err },
-+	{ true, "RDPES12", dpp_rx_err },
-+	{ true, "RDPES13", dpp_rx_err },
-+	{ true, "RDPES14", dpp_rx_err },
-+	{ true, "RDPES15", dpp_rx_err },
-+};
++	/* send the ack now to avoid a race with the queue backlog */
++	if (*ack) {
++		nlh = nlmsg_hdr(skb);
++		netlink_ack(skb, nlh, 0, NULL);
++		*ack = false;
++	}
 +
- static void dwxgmac3_handle_dma_err(struct net_device *ndev,
- 				    void __iomem *ioaddr, bool correctable,
- 				    struct stmmac_safety_stats *stats)
-@@ -800,6 +837,13 @@ static void dwxgmac3_handle_dma_err(struct net_device *ndev,
- 
- 	dwxgmac3_log_error(ndev, value, correctable, "DMA",
- 			   dwxgmac3_dma_errors, STAT_OFF(dma_errors), stats);
-+
-+	value = readl(ioaddr + XGMAC_DMA_DPP_INT_STATUS);
-+	writel(value, ioaddr + XGMAC_DMA_DPP_INT_STATUS);
-+
-+	dwxgmac3_log_error(ndev, value, false, "DMA_DPP",
-+			   dwxgmac3_dma_dpp_errors,
-+			   STAT_OFF(dma_dpp_errors), stats);
+ 	spin_lock_irqsave(&auditd_conn_lock, flags);
+ 	ac_old = rcu_dereference_protected(auditd_conn,
+ 					   lockdep_is_held(&auditd_conn_lock));
+@@ -1204,7 +1215,8 @@ static int audit_replace(struct pid *pid)
+ 	return auditd_send_unicast_skb(skb);
  }
  
- static int
-@@ -838,6 +882,12 @@ dwxgmac3_safety_feat_config(void __iomem *ioaddr, unsigned int asp,
- 	value |= XGMAC_TMOUTEN; /* FSM Timeout Feature */
- 	writel(value, ioaddr + XGMAC_MAC_FSM_CONTROL);
+-static int audit_receive_msg(struct sk_buff *skb, struct nlmsghdr *nlh)
++static int audit_receive_msg(struct sk_buff *skb, struct nlmsghdr *nlh,
++			     bool *ack)
+ {
+ 	u32			seq;
+ 	void			*data;
+@@ -1296,7 +1308,8 @@ static int audit_receive_msg(struct sk_buff *skb, struct nlmsghdr *nlh)
+ 				/* register a new auditd connection */
+ 				err = auditd_set(req_pid,
+ 						 NETLINK_CB(skb).portid,
+-						 sock_net(NETLINK_CB(skb).sk));
++						 sock_net(NETLINK_CB(skb).sk),
++						 skb, ack);
+ 				if (audit_enabled != AUDIT_OFF)
+ 					audit_log_config_change("audit_pid",
+ 								new_pid,
+@@ -1529,9 +1542,10 @@ static int audit_receive_msg(struct sk_buff *skb, struct nlmsghdr *nlh)
+  * Parse the provided skb and deal with any messages that may be present,
+  * malformed skbs are discarded.
+  */
+-static void audit_receive(struct sk_buff  *skb)
++static void audit_receive(struct sk_buff *skb)
+ {
+ 	struct nlmsghdr *nlh;
++	bool ack;
+ 	/*
+ 	 * len MUST be signed for nlmsg_next to be able to dec it below 0
+ 	 * if the nlmsg_len was not aligned
+@@ -1544,9 +1558,12 @@ static void audit_receive(struct sk_buff  *skb)
  
-+	/* 5. Enable Data Path Parity Protection */
-+	value = readl(ioaddr + XGMAC_MTL_DPP_CONTROL);
-+	/* already enabled by default, explicit enable it again */
-+	value &= ~XGMAC_DDPP_DISABLE;
-+	writel(value, ioaddr + XGMAC_MTL_DPP_CONTROL);
+ 	audit_ctl_lock();
+ 	while (nlmsg_ok(nlh, len)) {
+-		err = audit_receive_msg(skb, nlh);
+-		/* if err or if this message says it wants a response */
+-		if (err || (nlh->nlmsg_flags & NLM_F_ACK))
++		ack = nlh->nlmsg_flags & NLM_F_ACK;
++		err = audit_receive_msg(skb, nlh, &ack);
 +
- 	return 0;
- }
++		/* send an ack if the user asked for one and audit_receive_msg
++		 * didn't already do it, or if there was an error. */
++		if (ack || err)
+ 			netlink_ack(skb, nlh, err, NULL);
  
-@@ -871,7 +921,11 @@ static int dwxgmac3_safety_feat_irq_status(struct net_device *ndev,
- 		ret |= !corr;
- 	}
- 
--	err = dma & (XGMAC_DEUIS | XGMAC_DECIS);
-+	/* DMA_DPP_Interrupt_Status is indicated by MCSIS bit in
-+	 * DMA_Safety_Interrupt_Status, so we handle DMA Data Path
-+	 * Parity Errors here
-+	 */
-+	err = dma & (XGMAC_DEUIS | XGMAC_DECIS | XGMAC_MCSIS);
- 	corr = dma & XGMAC_DECIS;
- 	if (err) {
- 		dwxgmac3_handle_dma_err(ndev, ioaddr, corr, stats);
-@@ -887,6 +941,7 @@ static const struct dwxgmac3_error {
- 	{ dwxgmac3_mac_errors },
- 	{ dwxgmac3_mtl_errors },
- 	{ dwxgmac3_dma_errors },
-+	{ dwxgmac3_dma_dpp_errors },
- };
- 
- static int dwxgmac3_safety_feat_dump(struct stmmac_safety_stats *stats,
+ 		nlh = nlmsg_next(nlh, &len);
 -- 
 2.43.0
 
