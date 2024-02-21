@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-22146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C29BD85DA98
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:33:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B591685DAA7
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:33:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 630921F21271
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:33:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 20D7EB20B33
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:33:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 256067FBB2;
-	Wed, 21 Feb 2024 13:30:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9804F79DD7;
+	Wed, 21 Feb 2024 13:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OaXOzRMl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zALaOkIO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7DF27EEE7;
-	Wed, 21 Feb 2024 13:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B3169953;
+	Wed, 21 Feb 2024 13:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522200; cv=none; b=AWGjs6vnaUOg5spPvbI/MJN4kagNZK9EEhlMqheWCL69OxwYGWolcctYE+EKd7H8dz1AeXmlDMyP32Tx3dHrUn0F2MCjbV9MEJJFt4HJhG+hTWhs4o+XsQDkRKpW1bSZ8caIuSoPZSh7YHEW3faRIR/M+fGzmXCvYeO9S+IZFRQ=
+	t=1708522246; cv=none; b=GWz/7bHeFFU9BlPfrgVIzeZFSG/LCja/+mTPAp+DPnHK7VvLK29jIXxTWNLCxRsFS9qH/tvll80zmxl3i1vS/tQ8NsUgWKKiSeOxCLN+Eff4TYbQZMDT6SZosvjejRir/nrdrvYAnH5h4O7TuPWMzfmRf0/hRMWghKXlWCBscD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522200; c=relaxed/simple;
-	bh=ppGXb7+LrvHzmpghAraMwVs6vMM5O7tzPB1FA/cDzn4=;
+	s=arc-20240116; t=1708522246; c=relaxed/simple;
+	bh=BA5IR95nauOo3IqDhdZ+wHR/wVQusLErrJMcjZg/cEM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hfy6TTL5kEO2ZICggfCSGPjQLp3ZdUvnM0WeAawfw32cmP73yKsEy7TzJV2yxZRLSl5+pKMdPqqUT9Moa7iGOFybfCzjv1sMNKD//8G9tRM74sn+8lXaVNtb2+RqVyWiA4MdlR/zGdAJczw8+/gIfPgEs1x+nxyGMTQZkQ8fXLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OaXOzRMl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6127DC43390;
-	Wed, 21 Feb 2024 13:30:00 +0000 (UTC)
+	 MIME-Version; b=EWiCA1G5OKfNtEUapQ/wn40zFLonxtoeVp9ps60Set9+B+rY6A4CDiUkSpiUeRPYgXZge9w+W7vufYDKlWVcfgCx4YE7zg4iOxbz0U+hSE0srlERq/J3ekOHgi4J8UvaLDyvciryK3NNqN98cY1+rxZfgSZqPQ3p575nf7u8t9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zALaOkIO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B97BBC433A6;
+	Wed, 21 Feb 2024 13:30:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522200;
-	bh=ppGXb7+LrvHzmpghAraMwVs6vMM5O7tzPB1FA/cDzn4=;
+	s=korg; t=1708522246;
+	bh=BA5IR95nauOo3IqDhdZ+wHR/wVQusLErrJMcjZg/cEM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OaXOzRMltcEcmx/Gx5KXcnDdxV6pOvCmxJNcjpwSJf8Wc5sxuirqxH+YyvE+3Ds+1
-	 sjzvRdr8pGpcFbJxkSYfQQPcDz4O2yOk37+t02cckamWIMckEoOh++Wo8qzJSXgtZP
-	 w1DNihoyG3FJuJlHla9rJtBE1xcBtEVjIpKxUTpw=
+	b=zALaOkIOgGyJVvYfUTHLMV0xRtOyKilvCL9sveaB2KMx8BaimjaTASjgRpKUzLLcT
+	 Enb1oIBSGcJTrBcxQyE6bRFEgxPTOrOQjZpJVGJkO+79RZnOCE04ITpc0qZe9mi2fK
+	 B23UIs2C/xHkZdZsVDZFNvaDaQD2XG/w4M7LM7vo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Kelley <mhklinux@outlook.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 085/476] hv_netvsc: Calculate correct ring size when PAGE_SIZE is not 4 Kbytes
-Date: Wed, 21 Feb 2024 14:02:16 +0100
-Message-ID: <20240221130011.132590394@linuxfoundation.org>
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.15 086/476] netfilter: nft_chain_filter: handle NETDEV_UNREGISTER for inet/ingress basechain
+Date: Wed, 21 Feb 2024 14:02:17 +0100
+Message-ID: <20240221130011.168071308@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
 References: <20240221130007.738356493@linuxfoundation.org>
@@ -65,57 +64,58 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Michael Kelley <mhklinux@outlook.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 6941f67ad37d5465b75b9ffc498fcf6897a3c00e upstream.
+commit 01acb2e8666a6529697141a6017edbf206921913 upstream.
 
-Current code in netvsc_drv_init() incorrectly assumes that PAGE_SIZE
-is 4 Kbytes, which is wrong on ARM64 with 16K or 64K page size. As a
-result, the default VMBus ring buffer size on ARM64 with 64K page size
-is 8 Mbytes instead of the expected 512 Kbytes. While this doesn't break
-anything, a typical VM with 8 vCPUs and 8 netvsc channels wastes 120
-Mbytes (8 channels * 2 ring buffers/channel * 7.5 Mbytes/ring buffer).
+Remove netdevice from inet/ingress basechain in case NETDEV_UNREGISTER
+event is reported, otherwise a stale reference to netdevice remains in
+the hook list.
 
-Unfortunately, the module parameter specifying the ring buffer size
-is in units of 4 Kbyte pages. Ideally, it should be in units that
-are independent of PAGE_SIZE, but backwards compatibility prevents
-changing that now.
-
-Fix this by having netvsc_drv_init() hardcode 4096 instead of using
-PAGE_SIZE when calculating the ring buffer size in bytes. Also
-use the VMBUS_RING_SIZE macro to ensure proper alignment when running
-with page size larger than 4K.
-
-Cc: <stable@vger.kernel.org> # 5.15.x
-Fixes: 7aff79e297ee ("Drivers: hv: Enable Hyper-V code to be built on ARM64")
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-Link: https://lore.kernel.org/r/20240122162028.348885-1-mhklinux@outlook.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 60a3815da702 ("netfilter: add inet ingress support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/hyperv/netvsc_drv.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/netfilter/nft_chain_filter.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/drivers/net/hyperv/netvsc_drv.c
-+++ b/drivers/net/hyperv/netvsc_drv.c
-@@ -44,7 +44,7 @@
+--- a/net/netfilter/nft_chain_filter.c
++++ b/net/netfilter/nft_chain_filter.c
+@@ -355,9 +355,10 @@ static int nf_tables_netdev_event(struct
+ 				  unsigned long event, void *ptr)
+ {
+ 	struct net_device *dev = netdev_notifier_info_to_dev(ptr);
++	struct nft_base_chain *basechain;
+ 	struct nftables_pernet *nft_net;
+-	struct nft_table *table;
+ 	struct nft_chain *chain, *nr;
++	struct nft_table *table;
+ 	struct nft_ctx ctx = {
+ 		.net	= dev_net(dev),
+ 	};
+@@ -369,7 +370,8 @@ static int nf_tables_netdev_event(struct
+ 	nft_net = nft_pernet(ctx.net);
+ 	mutex_lock(&nft_net->commit_mutex);
+ 	list_for_each_entry(table, &nft_net->tables, list) {
+-		if (table->family != NFPROTO_NETDEV)
++		if (table->family != NFPROTO_NETDEV &&
++		    table->family != NFPROTO_INET)
+ 			continue;
  
- static unsigned int ring_size __ro_after_init = 128;
- module_param(ring_size, uint, 0444);
--MODULE_PARM_DESC(ring_size, "Ring buffer size (# of pages)");
-+MODULE_PARM_DESC(ring_size, "Ring buffer size (# of 4K pages)");
- unsigned int netvsc_ring_bytes __ro_after_init;
+ 		ctx.family = table->family;
+@@ -378,6 +380,11 @@ static int nf_tables_netdev_event(struct
+ 			if (!nft_is_base_chain(chain))
+ 				continue;
  
- static const u32 default_msg = NETIF_MSG_DRV | NETIF_MSG_PROBE |
-@@ -2824,7 +2824,7 @@ static int __init netvsc_drv_init(void)
- 		pr_info("Increased ring_size to %u (min allowed)\n",
- 			ring_size);
- 	}
--	netvsc_ring_bytes = ring_size * PAGE_SIZE;
-+	netvsc_ring_bytes = VMBUS_RING_SIZE(ring_size * 4096);
- 
- 	register_netdevice_notifier(&netvsc_netdev_notifier);
- 
++			basechain = nft_base_chain(chain);
++			if (table->family == NFPROTO_INET &&
++			    basechain->ops.hooknum != NF_INET_INGRESS)
++				continue;
++
+ 			ctx.chain = chain;
+ 			nft_netdev_event(event, dev, &ctx);
+ 		}
 
 
 
