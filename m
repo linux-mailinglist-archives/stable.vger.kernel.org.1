@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-22200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFEA585DAD5
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:35:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22D7285DC9A
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:55:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 802BD1F238C3
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:35:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44ADA1C20AFF
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:55:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CA857E78B;
-	Wed, 21 Feb 2024 13:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F047E7BB02;
+	Wed, 21 Feb 2024 13:55:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XwffnNZw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ny9Ew/GI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB8C77655;
-	Wed, 21 Feb 2024 13:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE4517BAE5;
+	Wed, 21 Feb 2024 13:55:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522411; cv=none; b=Lf39GN0jNA7SdR7WdyNxiypOKsReonLRYId0SvTfVP7/+LVy8QRm+eDcLs/gABEQXGiWmJBaL1WEMOW7dwbp1bbuD6/xcSS3iCdwUUUcor8ULKhulW1lB7qEeXEG6LFrCtai9CtYQaWKjosnhSPFVgudmDpgaF6bK2nkln0HaQk=
+	t=1708523717; cv=none; b=Mte+JHoFBWezoJEJCR/2EJ5h4aMfwW56+JOGvrJR4Inb+RKlbMRSxB3cu5wYqgBBETK1oSgkQR5+N8EYBFmvkDiff267O6+ItDH7ec4lTcFxnCT4JJBzUQh2XKnzsmaryXA7iZxfenOGNpgKCv9RSxEFuZS1cyv+InRjgfgEkf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522411; c=relaxed/simple;
-	bh=4Kp5oRUH2Np2+NMjGx3GNSnj4GEifUS8/ozL7pDgkvk=;
+	s=arc-20240116; t=1708523717; c=relaxed/simple;
+	bh=jBT721L1q76VdZN5RJeI2EbDyvAA4BzaT8QVaM4m1wY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GHeXLQ+bxlnESvNfvUN2OGI4C/VuKQ6N7Ku4Eac0Bht/IYqFCNj21Kz0A4MyifT9KqQSW1EpXiqMjwY8W7KyP+cdpRYs+8Rywd7PZW7ih6aGw94uzFIsJgHqOyS59xqgXxLVe3Vs5zOcl6hS+H+sBjissjXAjvvHWPyLXvv/rz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XwffnNZw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DCF6C433A6;
-	Wed, 21 Feb 2024 13:33:30 +0000 (UTC)
+	 MIME-Version; b=Vdl2jUr6bKLLyk029hz++76N7EC+lnypjcD4aeZP8IoyaUprV7TurE9HJ/1XzGKVWRkXu+mOfX7aynAxzEgLoy/5NBlwAxIa5ZlZNIiDjQDj8bayXXYV9U52kFBE0eqtTl1C472zYQYwpjevg8oqXYVJeQ/cXQRbejKcnoEqhqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ny9Ew/GI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D3B8C433F1;
+	Wed, 21 Feb 2024 13:55:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522411;
-	bh=4Kp5oRUH2Np2+NMjGx3GNSnj4GEifUS8/ozL7pDgkvk=;
+	s=korg; t=1708523717;
+	bh=jBT721L1q76VdZN5RJeI2EbDyvAA4BzaT8QVaM4m1wY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XwffnNZwYr8QOlSeQWhx/atjEWRSEg95Dll2QJlcZFkm8k1dRjttbyHloXLzvU+xA
-	 nZJSb4bfcMMCCmkH0BWe8wNXxsJPCqtG8Rb1SZryiEsKHLzhEYZQDU/dLC/I7X83ZD
-	 r2sRj1iZbD/v2mJ3rcZu3S5pGs8YsIdyww9MAEXg=
+	b=Ny9Ew/GIjLUOPrA9ech0XWuWgqmtzlBA+0Fc8wWbv6ohed3r0KMiuFatXDxNp5um+
+	 3RSCW3wt2IuL5iyZ7v9o2xLyx8AWZWYbflrC7uWpeFi09TRrU6lGHrBx4fJujS9TRd
+	 sPuCt2iKoe1X+xBXEuxt9ENLXX3izZtAKr+LKgc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 157/476] s390/ptrace: handle setting of fpc register correctly
-Date: Wed, 21 Feb 2024 14:03:28 +0100
-Message-ID: <20240221130013.726760953@linuxfoundation.org>
+	Jani Nikula <jani.nikula@intel.com>,
+	Vegard Nossum <vegard.nossum@oracle.com>,
+	Jonathan Corbet <corbet@lwn.net>
+Subject: [PATCH 5.10 030/379] scripts/get_abi: fix source path leak
+Date: Wed, 21 Feb 2024 14:03:29 +0100
+Message-ID: <20240221125955.809384014@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Vegard Nossum <vegard.nossum@oracle.com>
 
-[ Upstream commit 8b13601d19c541158a6e18b278c00ba69ae37829 ]
+commit 5889d6ede53bc17252f79c142387e007224aa554 upstream.
 
-If the content of the floating point control (fpc) register of a traced
-process is modified with the ptrace interface the new value is tested for
-validity by temporarily loading it into the fpc register.
+The code currently leaks the absolute path of the ABI files into the
+rendered documentation.
 
-This may lead to corruption of the fpc register of the tracing process:
-if an interrupt happens while the value is temporarily loaded into the
-fpc register, and within interrupt context floating point or vector
-registers are used, the current fp/vx registers are saved with
-save_fpu_regs() assuming they belong to user space and will be loaded into
-fp/vx registers when returning to user space.
+There exists code to prevent this, but it is not effective when an
+absolute path is passed, which it is when $srctree is used.
 
-test_fp_ctl() restores the original user space fpc register value, however
-it will be discarded, when returning to user space.
+I consider this to be a minimal, stop-gap fix; a better fix would strip
+off the actual prefix instead of hacking it off with a regex.
 
-In result the tracer will incorrectly continue to run with the value that
-was supposed to be used for the traced process.
-
-Fix this by saving fpu register contents with save_fpu_regs() before using
-test_fp_ctl().
-
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://mastodon.social/@vegard/111677490643495163
+Cc: Jani Nikula <jani.nikula@intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Vegard Nossum <vegard.nossum@oracle.com>
+Signed-off-by: Jonathan Corbet <corbet@lwn.net>
+Link: https://lore.kernel.org/r/20231231235959.3342928-1-vegard.nossum@oracle.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/kernel/ptrace.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ scripts/get_abi.pl |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/s390/kernel/ptrace.c b/arch/s390/kernel/ptrace.c
-index 516c21baf3ad..014ed5b27027 100644
---- a/arch/s390/kernel/ptrace.c
-+++ b/arch/s390/kernel/ptrace.c
-@@ -392,6 +392,7 @@ static int __poke_user(struct task_struct *child, addr_t addr, addr_t data)
- 		/*
- 		 * floating point control reg. is in the thread structure
- 		 */
-+		save_fpu_regs();
- 		if ((unsigned int) data != 0 ||
- 		    test_fp_ctl(data >> (BITS_PER_LONG - 32)))
- 			return -EINVAL;
-@@ -754,6 +755,7 @@ static int __poke_user_compat(struct task_struct *child,
- 		/*
- 		 * floating point control reg. is in the thread structure
- 		 */
-+		save_fpu_regs();
- 		if (test_fp_ctl(tmp))
- 			return -EINVAL;
- 		child->thread.fpu.fpc = data;
-@@ -917,9 +919,7 @@ static int s390_fpregs_set(struct task_struct *target,
- 	int rc = 0;
- 	freg_t fprs[__NUM_FPRS];
+--- a/scripts/get_abi.pl
++++ b/scripts/get_abi.pl
+@@ -75,7 +75,7 @@ sub parse_abi {
+ 	$name =~ s,.*/,,;
  
--	if (target == current)
--		save_fpu_regs();
--
-+	save_fpu_regs();
- 	if (MACHINE_HAS_VX)
- 		convert_vx_to_fp(fprs, target->thread.fpu.vxrs);
- 	else
--- 
-2.43.0
-
+ 	my $fn = $file;
+-	$fn =~ s,Documentation/ABI/,,;
++	$fn =~ s,.*Documentation/ABI/,,;
+ 
+ 	my $nametag = "File $fn";
+ 	$data{$nametag}->{what} = "File $name";
 
 
 
