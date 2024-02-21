@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-22517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6989485DC64
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:52:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72C1285DF30
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:25:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A7871F21F33
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:52:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B3BB1C23D72
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:25:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0BF578B5E;
-	Wed, 21 Feb 2024 13:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95FB57BB01;
+	Wed, 21 Feb 2024 14:25:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bgwrO4M8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kgZbjXOA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F28D55E5E;
-	Wed, 21 Feb 2024 13:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5524F3D0A1;
+	Wed, 21 Feb 2024 14:25:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523562; cv=none; b=CO+TFi3nbOopbNWeZzp/ZkLV1dtPDXyYE+BCPtAjnBGss+t10znt+Me9gT5MVCEzZKitAMjrfcHKD9cpwoCvw5d45buFjqQJ1F6Ro3aTi1VwQMAZrXLBhPtIkbNPvyXJ6GM+Bu5ridKMM6crsDvA03f+y/Hf5CdjSUO2pCvXlA8=
+	t=1708525531; cv=none; b=iieDdlbQ606jP+p6kzjFKfu5owYlBACUS2yW9Zn60cgQu7u+QX59QPE1obqiH2R53E4ixMTvnsKHZulffhKc+GduiRXuDv7xtsygZ4R+vomYC2Op6SVw02+ghxxt6zw19XbmX4AaH8aRuz6iemlq/mbRBcYN8OFU/7VQYyepWJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523562; c=relaxed/simple;
-	bh=oq262k9KVw41qURcLRm2bh+muuixBB6gpJzeb0/zadk=;
+	s=arc-20240116; t=1708525531; c=relaxed/simple;
+	bh=WGAA8e78iqAaGCCLUyHgv/Yo4FQHnKwuySJbSUB+Izk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nGaQgOtwiGw/8eSNRmHYgvY3fiAHZVpju1lA6VLnlwgsKC5Ztw5YyuTXjK6BEsIRYB+URqEUcVRuj/g0yobD54U27MjZVN5H8v93/WqfClyx7cbGGnIU3O6BKk4hJYcS/J/kENi1uQYfxv3+cJjoEWAQt5qg6ukYHQjzZxtV4Hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bgwrO4M8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D06BC433C7;
-	Wed, 21 Feb 2024 13:52:41 +0000 (UTC)
+	 MIME-Version; b=cnpGGnhiTIeq1Ght5NYbM7irsXEP1TNPBKskKi0ItZoK7KIpLxSE+sJMBIMraloo0m5FL7BCXY22UOOI4AvBBVKYXSrHDUkGTLuU7YPQhx35Q5SBS/gKHyUvQ+HB5WbPhFcjzRRgA2BACNVtF2NHXMivAXyFcRvl4Eu4xzkUh2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kgZbjXOA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF520C433F1;
+	Wed, 21 Feb 2024 14:25:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523562;
-	bh=oq262k9KVw41qURcLRm2bh+muuixBB6gpJzeb0/zadk=;
+	s=korg; t=1708525531;
+	bh=WGAA8e78iqAaGCCLUyHgv/Yo4FQHnKwuySJbSUB+Izk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bgwrO4M8NkFoUvQyGyWaIFbf8Yh7MQsOkvv1FzdtLrfPUznLlGRr2yeeuJFcBXH/Z
-	 vrrpUtGD70eCEXtXDION74Yb7sSjhn9D3nZkNr6YvHEIRee8EcLZd2Hi50XM+Nc5C3
-	 lS0OHCAYS63Qp7EXa8zGpqVhdNzp4SnzIk2t/nuo=
+	b=kgZbjXOAv4/c47597gF5zIOSbdvW0zAlQeSNmRnGELEao6p8REQtUSeUH/WiAY71b
+	 3F7p+P2ybPIVdFuqzew4LhMj/oK44Qa91+kXV6RBXccRP0legYBhq7p51IqICgZj9K
+	 7TQ6gC/akpoq0UIdUUAFcv8Pl7yYIpEgh8g+zo2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 5.15 473/476] usb: dwc3: gadget: Dont delay End Transfer on delayed_status
-Date: Wed, 21 Feb 2024 14:08:44 +0100
-Message-ID: <20240221130025.478306505@linuxfoundation.org>
+	Loic Prylli <lprylli@netflix.com>,
+	Alexander Hansen <alexander.hansen@9elements.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 184/267] hwmon: (aspeed-pwm-tacho) mutex for tach reading
+Date: Wed, 21 Feb 2024 14:08:45 +0100
+Message-ID: <20240221125945.900302654@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+From: Loic Prylli <lprylli@netflix.com>
 
-commit 4db0fbb601361767144e712beb96704b966339f5 upstream.
+[ Upstream commit 1168491e7f53581ba7b6014a39a49cfbbb722feb ]
 
-The gadget driver may wait on the request completion when it sets the
-USB_GADGET_DELAYED_STATUS. Make sure that the End Transfer command can
-go through if the dwc->delayed_status is set so that the request can
-complete. When the delayed_status is set, the Setup packet is already
-processed, and the next phase should be either Data or Status. It's
-unlikely that the host would cancel the control transfer and send a new
-Setup packet during End Transfer command. But if that's the case, we can
-try again when ep0state returns to EP0_SETUP_PHASE.
+the ASPEED_PTCR_RESULT Register can only hold the result for a
+single fan input. Adding a mutex to protect the register until the
+reading is done.
 
-Fixes: e1ee843488d5 ("usb: dwc3: gadget: Force sending delayed status during soft disconnect")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/3f9f59e5d74efcbaee444cf4b30ef639cc7b124e.1666146954.git.Thinh.Nguyen@synopsys.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Loic Prylli <lprylli@netflix.com>
+Signed-off-by: Alexander Hansen <alexander.hansen@9elements.com>
+Fixes: 2d7a548a3eff ("drivers: hwmon: Support for ASPEED PWM/Fan tach")
+Link: https://lore.kernel.org/r/121d888762a1232ef403cf35230ccf7b3887083a.1699007401.git.alexander.hansen@9elements.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/gadget.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/hwmon/aspeed-pwm-tacho.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -1680,6 +1680,16 @@ static int __dwc3_stop_active_transfer(s
- 	cmd |= DWC3_DEPCMD_PARAM(dep->resource_index);
- 	memset(&params, 0, sizeof(params));
- 	ret = dwc3_send_gadget_ep_cmd(dep, cmd, &params);
-+	/*
-+	 * If the End Transfer command was timed out while the device is
-+	 * not in SETUP phase, it's possible that an incoming Setup packet
-+	 * may prevent the command's completion. Let's retry when the
-+	 * ep0state returns to EP0_SETUP_PHASE.
-+	 */
-+	if (ret == -ETIMEDOUT && dep->dwc->ep0state != EP0_SETUP_PHASE) {
-+		dep->flags |= DWC3_EP_DELAY_STOP;
-+		return 0;
-+	}
- 	WARN_ON_ONCE(ret);
- 	dep->resource_index = 0;
+diff --git a/drivers/hwmon/aspeed-pwm-tacho.c b/drivers/hwmon/aspeed-pwm-tacho.c
+index 40f3139f1e02..dca5d3bf0629 100644
+--- a/drivers/hwmon/aspeed-pwm-tacho.c
++++ b/drivers/hwmon/aspeed-pwm-tacho.c
+@@ -194,6 +194,8 @@ struct aspeed_pwm_tacho_data {
+ 	u8 fan_tach_ch_source[16];
+ 	struct aspeed_cooling_device *cdev[8];
+ 	const struct attribute_group *groups[3];
++	/* protects access to shared ASPEED_PTCR_RESULT */
++	struct mutex tach_lock;
+ };
  
-@@ -3701,7 +3711,7 @@ void dwc3_stop_active_transfer(struct dw
- 	 * timeout. Delay issuing the End Transfer command until the Setup TRB is
- 	 * prepared.
- 	 */
--	if (dwc->ep0state != EP0_SETUP_PHASE) {
-+	if (dwc->ep0state != EP0_SETUP_PHASE && !dwc->delayed_status) {
- 		dep->flags |= DWC3_EP_DELAY_STOP;
- 		return;
- 	}
+ enum type { TYPEM, TYPEN, TYPEO };
+@@ -528,6 +530,8 @@ static int aspeed_get_fan_tach_ch_rpm(struct aspeed_pwm_tacho_data *priv,
+ 	u8 fan_tach_ch_source, type, mode, both;
+ 	int ret;
+ 
++	mutex_lock(&priv->tach_lock);
++
+ 	regmap_write(priv->regmap, ASPEED_PTCR_TRIGGER, 0);
+ 	regmap_write(priv->regmap, ASPEED_PTCR_TRIGGER, 0x1 << fan_tach_ch);
+ 
+@@ -545,6 +549,8 @@ static int aspeed_get_fan_tach_ch_rpm(struct aspeed_pwm_tacho_data *priv,
+ 		ASPEED_RPM_STATUS_SLEEP_USEC,
+ 		usec);
+ 
++	mutex_unlock(&priv->tach_lock);
++
+ 	/* return -ETIMEDOUT if we didn't get an answer. */
+ 	if (ret)
+ 		return ret;
+@@ -909,6 +915,7 @@ static int aspeed_pwm_tacho_probe(struct platform_device *pdev)
+ 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+ 	if (!priv)
+ 		return -ENOMEM;
++	mutex_init(&priv->tach_lock);
+ 	priv->regmap = devm_regmap_init(dev, NULL, (__force void *)regs,
+ 			&aspeed_pwm_tacho_regmap_config);
+ 	if (IS_ERR(priv->regmap))
+-- 
+2.43.0
+
 
 
 
