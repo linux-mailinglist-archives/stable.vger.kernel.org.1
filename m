@@ -1,172 +1,86 @@
-Return-Path: <stable+bounces-23224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C9D385E566
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 19:20:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DD4285E5F6
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 19:28:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28E911F24AAF
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 18:20:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD830285DCD
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 18:28:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC97C8526A;
-	Wed, 21 Feb 2024 18:20:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DFE885290;
+	Wed, 21 Feb 2024 18:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="g4FWW2wW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O3xbOfWD"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AB3684FD8;
-	Wed, 21 Feb 2024 18:20:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA4C485C7A;
+	Wed, 21 Feb 2024 18:26:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708539630; cv=none; b=aczU2N/YDtMuNxUE4/H7mgoSIkzmziMh0VGAiw15EXdbGruI4USwZVjpiU10xSNmroz/k96GbSlAyWYCPQm5miiFol5MpVMFWNxlKU6Bm5ongCc6jZgVFZQaH7pAuE1ANL8WyqT8Mkb/bvpjZg2AEH21bM0lPJj1Xr0kXa3dAz0=
+	t=1708540017; cv=none; b=iAOF0vPguCkA3h3VuBlWxkEe1P+cfPxkfmtmf87Ejb4eOPgSzZ9hrJ0BZWyBrDk/nkpxiUCCEjJW9ieFV2Q/nwhUtnGJ/5eTSH0VB13TGC2Zjz7tSWJXQ2oVDiSqbiBoIQ6gt8dE2QBW1t78k1ETmJbL7octrTUSuMe/8nTmD7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708539630; c=relaxed/simple;
-	bh=SvTDEY+0QcaH0E2UrMugQ8Cuiud8mCTZP++Vpeo4srs=;
+	s=arc-20240116; t=1708540017; c=relaxed/simple;
+	bh=58AJTvRqsidy6n69RFy69mDV+GDJW6WJ657BWr7Jjy8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ug7GBVyPdScUQD8x1KVPLfUKwUx+vsqmuVKvo2w1NxWgay51C7JQv8MQcEQoUBLR8OzWjx7y02jsP1lf4LbuKs7K2p7Jbi5L0B2sp0RuoLMVpuFlaJjK9fsKpHI9WzmzqKSVXjmkLsXNdiRl5pZQsIN33Ceu88xiKrqfS07iqdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=g4FWW2wW; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708539628; x=1740075628;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=SvTDEY+0QcaH0E2UrMugQ8Cuiud8mCTZP++Vpeo4srs=;
-  b=g4FWW2wWthybHSTxVNMghbwA5IRJ3TOWvF+1wOIf9ZlK01d8aB3NzHiV
-   5xOuApIe0jHQoYXOZeVmzmFrCSsOVQT6+ftE0Tinjqdd4qU9x9N6n2k4L
-   nk3KKGKXaBbotKMpcw4avq4p81sL2jUfpR98mIkfyLfhjv0gaLWNOu1hu
-   WAMoiH+1M0EzZwBYJ2xXltLtJn4w/KeZQ0drDlr0qfBeBDEBrIekWpmaB
-   8k+nzjzTrhu+Y9WxWHqfqHTFydM7Bmsryw2m8+6RG2vi4h7NbioqNyf3Z
-   tiQZrF4cnpWvuM8fOuHFvKMlEDhP66M2Sfw4bD6LVk+IXtbTp8bxZKpWH
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="20263716"
-X-IronPort-AV: E=Sophos;i="6.06,176,1705392000"; 
-   d="scan'208";a="20263716"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2024 10:20:27 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="827390066"
-X-IronPort-AV: E=Sophos;i="6.06,176,1705392000"; 
-   d="scan'208";a="827390066"
-Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
-  by orsmga001.jf.intel.com with SMTP; 21 Feb 2024 10:20:22 -0800
-Received: by stinkbox (sSMTP sendmail emulation); Wed, 21 Feb 2024 20:20:22 +0200
-Date: Wed, 21 Feb 2024 20:20:22 +0200
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Karthikeyan Ramasubramanian <kramasub@chromium.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org,
-	Jani Nikula <jani.nikula@intel.com>,
-	Daniel Vetter <daniel@ffwll.ch>, David Airlie <airlied@gmail.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
-	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org
-Subject: Re: [PATCH v1] drivers/i915/intel_bios: Fix parsing backlight BDB
- data
-Message-ID: <ZdY-5pcLQMNosnYt@intel.com>
-References: <20240220141256.v1.1.I0690aa3e96a83a43b3fc33f50395d334b2981826@changeid>
+	 Content-Type:Content-Disposition:In-Reply-To; b=lFnu0wBAdC4T//EnbDAcwmf9p8nY7ewb6HalAViVTKnbxB56h/NJSGofTyLRhJW/DjGethTZua6CReOckZW7LauAw3ItppLjPV/FsqBqlzkruM/dFjBKuUoB8TWHCLRLRL0KLVsakQjqUA2iQoFOKfEwTdhkdAeLWus8MjhfFIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O3xbOfWD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F194C433F1;
+	Wed, 21 Feb 2024 18:26:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1708540016;
+	bh=58AJTvRqsidy6n69RFy69mDV+GDJW6WJ657BWr7Jjy8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=O3xbOfWDhNH4cclhGhPilcMMAyGGLp4M6g/f+0HfFJBV9RQXD7A+V9UWKBLTuFhyf
+	 I6DD0TMl0FdEmIBDe89WrV6fr3Mp2nXKODm09ty0XfZVJ7kxwLp9p5sW0XsAHXDGhv
+	 O7QxwoByJMd8Zo0x65/aimMwzhv1iQ3LBWtGcx5g=
+Date: Wed, 21 Feb 2024 19:26:51 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Hans de Goede <hdegoede@redhat.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.4 151/267] misc: lis3lv02d_i2c: Add missing setting of
+ the reg_ctrl callback
+Message-ID: <2024022140-pond-plant-ad19@gregkh>
+References: <20240221125940.058369148@linuxfoundation.org>
+ <20240221125944.808861688@linuxfoundation.org>
+ <1943e2b2-6232-4566-9793-2b24eed89d59@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240220141256.v1.1.I0690aa3e96a83a43b3fc33f50395d334b2981826@changeid>
-X-Patchwork-Hint: comment
+In-Reply-To: <1943e2b2-6232-4566-9793-2b24eed89d59@redhat.com>
 
-On Tue, Feb 20, 2024 at 02:12:57PM -0700, Karthikeyan Ramasubramanian wrote:
-> Starting BDB version 239, hdr_dpcd_refresh_timeout is introduced to
-> backlight BDB data. Commit 700034566d68 ("drm/i915/bios: Define more BDB
-> contents") updated the backlight BDB data accordingly. This broke the
-> parsing of backlight BDB data in VBT for versions 236 - 238 (both
-> inclusive) and hence the backlight controls are not responding on units
-> with the concerned BDB version.
+On Wed, Feb 21, 2024 at 07:16:38PM +0100, Hans de Goede wrote:
+> Hi Greg,
 > 
-> backlight_control information has been present in backlight BDB data
-> from at least BDB version 191 onwards, if not before. Hence this patch
-> extracts the backlight_control information if the block size of
-> backlight BDB is >= version 191 backlight BDB block size.
-> Tested on Chromebooks using Jasperlake SoC (reports bdb->version = 236).
-> Tested on Chromebooks using Raptorlake SoC (reports bdb->version = 251).
+> On 2/21/24 14:08, Greg Kroah-Hartman wrote:
+> > 5.4-stable review patch.  If anyone has any objections, please let me know.
 > 
-> Fixes: 700034566d68 ("drm/i915/bios: Define more BDB contents")
-> Cc: stable@vger.kernel.org
-> Cc: Jani Nikula <jani.nikula@intel.com>
-> Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> Signed-off-by: Karthikeyan Ramasubramanian <kramasub@chromium.org>
-> ---
+> This is known to cause a regression (WARN triggering on suspend,
+> possible panic if panic-on-warn is set).
 > 
->  drivers/gpu/drm/i915/display/intel_bios.c     | 22 +++++--------------
->  drivers/gpu/drm/i915/display/intel_vbt_defs.h |  2 --
->  2 files changed, 6 insertions(+), 18 deletions(-)
+> A fix for the regression is pending:
 > 
-> diff --git a/drivers/gpu/drm/i915/display/intel_bios.c b/drivers/gpu/drm/i915/display/intel_bios.c
-> index aa169b0055e97..4ec50903b9e64 100644
-> --- a/drivers/gpu/drm/i915/display/intel_bios.c
-> +++ b/drivers/gpu/drm/i915/display/intel_bios.c
-> @@ -1041,23 +1041,13 @@ parse_lfp_backlight(struct drm_i915_private *i915,
->  
->  	panel->vbt.backlight.type = INTEL_BACKLIGHT_DISPLAY_DDI;
->  	panel->vbt.backlight.controller = 0;
-> -	if (i915->display.vbt.version >= 191) {
-> -		size_t exp_size;
-> +	if (i915->display.vbt.version >= 191 &&
-> +	    get_blocksize(backlight_data) >= EXP_BDB_LFP_BL_DATA_SIZE_REV_191) {
+> https://lore.kernel.org/regressions/20240220190035.53402-1-hdegoede@redhat.com/T/#u
+> 
+> but it has not been merged yet, so please hold of on merging this 
+> patch until you can apply both at once.
+> 
+> I see that you are also planning to apply this to other stable
+> branches. I'm not sure if this is necessary but to be safe
+> I'll copy and paste this reply to the emails for the other stable
+> branches.
 
-The size checks looks like nonsense to me. I guess maybe
-we needed it before we were guaranteed to have the full
-struct's worth of memory. But there should be no need for
-this anymore.
+Not necessary, I'll drop it from all, thanks.
 
-> +		const struct lfp_backlight_control_method *method;
->  
-> -		if (i915->display.vbt.version >= 236)
-> -			exp_size = sizeof(struct bdb_lfp_backlight_data);
-> -		else if (i915->display.vbt.version >= 234)
-> -			exp_size = EXP_BDB_LFP_BL_DATA_SIZE_REV_234;
-> -		else
-> -			exp_size = EXP_BDB_LFP_BL_DATA_SIZE_REV_191;
-> -
-> -		if (get_blocksize(backlight_data) >= exp_size) {
-> -			const struct lfp_backlight_control_method *method;
-> -
-> -			method = &backlight_data->backlight_control[panel_type];
-> -			panel->vbt.backlight.type = method->type;
-> -			panel->vbt.backlight.controller = method->controller;
-> -		}
-> +		method = &backlight_data->backlight_control[panel_type];
-> +		panel->vbt.backlight.type = method->type;
-> +		panel->vbt.backlight.controller = method->controller;
->  	}
->  
->  	panel->vbt.backlight.pwm_freq_hz = entry->pwm_freq_hz;
-> diff --git a/drivers/gpu/drm/i915/display/intel_vbt_defs.h b/drivers/gpu/drm/i915/display/intel_vbt_defs.h
-> index a9f44abfc9fc2..aeea5635a37ff 100644
-> --- a/drivers/gpu/drm/i915/display/intel_vbt_defs.h
-> +++ b/drivers/gpu/drm/i915/display/intel_vbt_defs.h
-> @@ -899,8 +899,6 @@ struct lfp_brightness_level {
->  
->  #define EXP_BDB_LFP_BL_DATA_SIZE_REV_191 \
->  	offsetof(struct bdb_lfp_backlight_data, brightness_level)
-> -#define EXP_BDB_LFP_BL_DATA_SIZE_REV_234 \
-> -	offsetof(struct bdb_lfp_backlight_data, brightness_precision_bits)
->  
->  struct bdb_lfp_backlight_data {
->  	u8 entry_size;
-> -- 
-> 2.44.0.rc0.258.g7320e95886-goog
-
--- 
-Ville Syrjälä
-Intel
+greg k-h
 
