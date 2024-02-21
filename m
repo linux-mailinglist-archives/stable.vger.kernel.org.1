@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-22008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FA5A85D9AB
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:21:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66B2C85D9AF
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:21:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCCEAB25438
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:21:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF472B2482C
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:21:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3783A78B4F;
-	Wed, 21 Feb 2024 13:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A5617994B;
+	Wed, 21 Feb 2024 13:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P6J2qsVQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dimt/ojO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD86A69953;
-	Wed, 21 Feb 2024 13:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B302763FE;
+	Wed, 21 Feb 2024 13:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521644; cv=none; b=sht18ug7XY9uaN3WA9XeDeUOoielBVNfB/OXUucwW3PxSoYcXPQD6lZg8jOv0Y9/RQ5WkBi9so2PgMpsfPAMwsDgN1q67PoNwo3UwdplQxJNm8Zl7pHGgDRJaUIToCOtxYDxC/muH5iS+NeVFCyWSO2ZkUaDeGPvyhGhQErlZO4=
+	t=1708521654; cv=none; b=WBH5Nbu2spsY2ZSiHzbR/yaVWGqaGZiREHPCb4XxQZQZQh7+9mo6ZEiZaaBN5HkoZMfsexPg/Q12s7kgpY2x0jBU5s+E2nUWFyIjz4YrqiMaEsmhZdA/BrhLlgsS1qed2UtsPOQMnu23q20rNG9SqjcjeSCsZTBfMApQOUdovUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521644; c=relaxed/simple;
-	bh=o1Yb4sXwz62RbVwk1JSrhpA/pg7VsHHZCLLN1bgPQ4Y=;
+	s=arc-20240116; t=1708521654; c=relaxed/simple;
+	bh=2Cray4e2mIxdOeO+E9OMSosVPxqN+++uL6Te6bKWGvM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I9B29hbrH4hlIL8y+48H4cFS1n842hA8EOC1YqhV8MjDfQbE8nYy9MvufWNvNrhQXb2lzEdff0dXEI50K0/+JTWpkaaosl2r095dr5Srbqo7mlRWtON7opQt0slXSNLIW3DnROIWCXYqYyrnrLB6Uid3l/ujD4hvLyIbRs1aaA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P6J2qsVQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48B03C433C7;
-	Wed, 21 Feb 2024 13:20:44 +0000 (UTC)
+	 MIME-Version; b=u9GkRLaugee2zd4hezg9k/Aa4Kq4WIaY1bmcSUdTEde9kOG7+Ia5siqpmCqULeEp9/JDoYvqXAuRC1GAvxPCtrJdhUkcvPKvTmQrA/ppmXjZkfEkG1s6sAbd1LwSLBS/1dOVMRC6ds+DlNmPF6su0Aox4ukDtI76E7mjN3fd9KA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dimt/ojO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 915EEC433C7;
+	Wed, 21 Feb 2024 13:20:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521644;
-	bh=o1Yb4sXwz62RbVwk1JSrhpA/pg7VsHHZCLLN1bgPQ4Y=;
+	s=korg; t=1708521654;
+	bh=2Cray4e2mIxdOeO+E9OMSosVPxqN+++uL6Te6bKWGvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P6J2qsVQXq/JbZbFVXuOr+L878k5oh2KoLKeoXw7hos3NKuSaXr2cFvB8m1knyCq2
-	 TLDM4GWf/7qoND5bnN4MKFVLcIiw6m8EP9rlEJHRK5Q20DoBYIztHQ3ur06ePy9vIn
-	 GYOJrMDLdFPv1MF6+ny9fp//Wmdk87Qp7wZW/GAk=
+	b=dimt/ojOnygsdlIKTi9Qi9dpkn/uY1rU5JgE7oJ1If2TkDdCuUZ8Hb5OToyAM9uO7
+	 blULtEkcAvVVvexCV/oDYqfc+htb2ER8bifFYo+Yce+YLv+eqKcu8wX4hv+EhazxQK
+	 Z7t5U2+Af06E2i3pEtVlfzbdpwDACErdsY0ACBpU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 141/202] net: sysfs: Fix /sys/class/net/<iface> path
-Date: Wed, 21 Feb 2024 14:07:22 +0100
-Message-ID: <20240221125936.268509457@linuxfoundation.org>
+	Alex Henrie <alexhenrie24@gmail.com>,
+	Jiri Kosina <jkosina@suse.cz>,
+	Aseda Aboagye <aaboagye@chromium.org>
+Subject: [PATCH 4.19 142/202] HID: apple: Add support for the 2021 Magic Keyboard
+Date: Wed, 21 Feb 2024 14:07:23 +0100
+Message-ID: <20240221125936.298626839@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
 References: <20240221125931.742034354@linuxfoundation.org>
@@ -66,128 +66,53 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Alex Henrie <alexhenrie24@gmail.com>
 
-[ Upstream commit ae3f4b44641dfff969604735a0dcbf931f383285 ]
+commit 0cd3be51733febb4f8acb92bcf55b75fe824dd05 upstream.
 
-The documentation is pointing to the wrong path for the interface.
-Documentation is pointing to /sys/class/<iface>, instead of
-/sys/class/net/<iface>.
-
-Fix it by adding the `net/` directory before the interface.
-
-Fixes: 1a02ef76acfa ("net: sysfs: add documentation entries for /sys/class/<iface>/queues")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://lore.kernel.org/r/20240131102150.728960-2-leitao@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Alex Henrie <alexhenrie24@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Cc: Aseda Aboagye <aaboagye@chromium.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../ABI/testing/sysfs-class-net-queues        | 22 +++++++++----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ drivers/hid/hid-apple.c  |    4 ++++
+ drivers/hid/hid-ids.h    |    1 +
+ drivers/hid/hid-quirks.c |    1 +
+ 3 files changed, 6 insertions(+)
 
-diff --git a/Documentation/ABI/testing/sysfs-class-net-queues b/Documentation/ABI/testing/sysfs-class-net-queues
-index 978b76358661..40d5aab8452d 100644
---- a/Documentation/ABI/testing/sysfs-class-net-queues
-+++ b/Documentation/ABI/testing/sysfs-class-net-queues
-@@ -1,4 +1,4 @@
--What:		/sys/class/<iface>/queues/rx-<queue>/rps_cpus
-+What:		/sys/class/net/<iface>/queues/rx-<queue>/rps_cpus
- Date:		March 2010
- KernelVersion:	2.6.35
- Contact:	netdev@vger.kernel.org
-@@ -8,7 +8,7 @@ Description:
- 		network device queue. Possible values depend on the number
- 		of available CPU(s) in the system.
+--- a/drivers/hid/hid-apple.c
++++ b/drivers/hid/hid-apple.c
+@@ -599,6 +599,10 @@ static const struct hid_device_id apple_
+ 		.driver_data = APPLE_NUMLOCK_EMULATION | APPLE_HAS_FN },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_GEYSER1_TP_ONLY),
+ 		.driver_data = APPLE_NUMLOCK_EMULATION | APPLE_HAS_FN },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2021),
++		.driver_data = APPLE_HAS_FN },
++	{ HID_BLUETOOTH_DEVICE(BT_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2021),
++		.driver_data = APPLE_HAS_FN },
  
--What:		/sys/class/<iface>/queues/rx-<queue>/rps_flow_cnt
-+What:		/sys/class/net/<iface>/queues/rx-<queue>/rps_flow_cnt
- Date:		April 2010
- KernelVersion:	2.6.35
- Contact:	netdev@vger.kernel.org
-@@ -16,7 +16,7 @@ Description:
- 		Number of Receive Packet Steering flows being currently
- 		processed by this particular network device receive queue.
+ 	{ }
+ };
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -176,6 +176,7 @@
+ #define USB_DEVICE_ID_APPLE_IRCONTROL3	0x8241
+ #define USB_DEVICE_ID_APPLE_IRCONTROL4	0x8242
+ #define USB_DEVICE_ID_APPLE_IRCONTROL5	0x8243
++#define USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2021   0x029c
  
--What:		/sys/class/<iface>/queues/tx-<queue>/tx_timeout
-+What:		/sys/class/net/<iface>/queues/tx-<queue>/tx_timeout
- Date:		November 2011
- KernelVersion:	3.3
- Contact:	netdev@vger.kernel.org
-@@ -24,7 +24,7 @@ Description:
- 		Indicates the number of transmit timeout events seen by this
- 		network interface transmit queue.
- 
--What:		/sys/class/<iface>/queues/tx-<queue>/tx_maxrate
-+What:		/sys/class/net/<iface>/queues/tx-<queue>/tx_maxrate
- Date:		March 2015
- KernelVersion:	4.1
- Contact:	netdev@vger.kernel.org
-@@ -32,7 +32,7 @@ Description:
- 		A Mbps max-rate set for the queue, a value of zero means disabled,
- 		default is disabled.
- 
--What:		/sys/class/<iface>/queues/tx-<queue>/xps_cpus
-+What:		/sys/class/net/<iface>/queues/tx-<queue>/xps_cpus
- Date:		November 2010
- KernelVersion:	2.6.38
- Contact:	netdev@vger.kernel.org
-@@ -42,7 +42,7 @@ Description:
- 		network device transmit queue. Possible vaules depend on the
- 		number of available CPU(s) in the system.
- 
--What:		/sys/class/<iface>/queues/tx-<queue>/xps_rxqs
-+What:		/sys/class/net/<iface>/queues/tx-<queue>/xps_rxqs
- Date:		June 2018
- KernelVersion:	4.18.0
- Contact:	netdev@vger.kernel.org
-@@ -53,7 +53,7 @@ Description:
- 		number of available receive queue(s) in the network device.
- 		Default is disabled.
- 
--What:		/sys/class/<iface>/queues/tx-<queue>/byte_queue_limits/hold_time
-+What:		/sys/class/net/<iface>/queues/tx-<queue>/byte_queue_limits/hold_time
- Date:		November 2011
- KernelVersion:	3.3
- Contact:	netdev@vger.kernel.org
-@@ -62,7 +62,7 @@ Description:
- 		of this particular network device transmit queue.
- 		Default value is 1000.
- 
--What:		/sys/class/<iface>/queues/tx-<queue>/byte_queue_limits/inflight
-+What:		/sys/class/net/<iface>/queues/tx-<queue>/byte_queue_limits/inflight
- Date:		November 2011
- KernelVersion:	3.3
- Contact:	netdev@vger.kernel.org
-@@ -70,7 +70,7 @@ Description:
- 		Indicates the number of bytes (objects) in flight on this
- 		network device transmit queue.
- 
--What:		/sys/class/<iface>/queues/tx-<queue>/byte_queue_limits/limit
-+What:		/sys/class/net/<iface>/queues/tx-<queue>/byte_queue_limits/limit
- Date:		November 2011
- KernelVersion:	3.3
- Contact:	netdev@vger.kernel.org
-@@ -79,7 +79,7 @@ Description:
- 		on this network device transmit queue. This value is clamped
- 		to be within the bounds defined by limit_max and limit_min.
- 
--What:		/sys/class/<iface>/queues/tx-<queue>/byte_queue_limits/limit_max
-+What:		/sys/class/net/<iface>/queues/tx-<queue>/byte_queue_limits/limit_max
- Date:		November 2011
- KernelVersion:	3.3
- Contact:	netdev@vger.kernel.org
-@@ -88,7 +88,7 @@ Description:
- 		queued on this network device transmit queue. See
- 		include/linux/dynamic_queue_limits.h for the default value.
- 
--What:		/sys/class/<iface>/queues/tx-<queue>/byte_queue_limits/limit_min
-+What:		/sys/class/net/<iface>/queues/tx-<queue>/byte_queue_limits/limit_min
- Date:		November 2011
- KernelVersion:	3.3
- Contact:	netdev@vger.kernel.org
--- 
-2.43.0
-
+ #define USB_VENDOR_ID_ASUS		0x0486
+ #define USB_DEVICE_ID_ASUS_T91MT	0x0185
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -301,6 +301,7 @@ static const struct hid_device_id hid_ha
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_ANSI) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_FOUNTAIN_TP_ONLY) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_GEYSER1_TP_ONLY) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2021) },
+ #endif
+ #if IS_ENABLED(CONFIG_HID_APPLEIR)
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_IRCONTROL) },
 
 
 
