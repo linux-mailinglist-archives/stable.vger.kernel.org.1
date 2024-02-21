@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-22249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0E9885DB15
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:37:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 016A185DCA9
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:56:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 659B1B27F01
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:37:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95BEE1F2227C
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:56:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3709B7C0AB;
-	Wed, 21 Feb 2024 13:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3EA87BB05;
+	Wed, 21 Feb 2024 13:56:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1XHqxpCC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IpI6os2q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E834177655;
-	Wed, 21 Feb 2024 13:36:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD5F79DAE;
+	Wed, 21 Feb 2024 13:56:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522600; cv=none; b=b8X8/oJkwMsEOs6blphYRrEEntXNv+zbr8iVMvQr9HSiNmBbhuejXXjJ8Xnt5ois5Si//P25KGfxTczk8zcr59dJQqKf7o+rqOsm9WyKN0dOzbOhcVC2vAhbPM4IE/p8Vr2qlJSoQmpv9mHSoTRdG+HJUC/FMvWUDhZRVRwoVOg=
+	t=1708523765; cv=none; b=TJdhbslwnh7dDbLaBwnEEY9sJOmbUcOuSjQIw2xjajo1R6HmmrU/BXmRxjBafxHBOJeUXRPnG1koIcMd5sz7VCqnqBpJVkq/Vt10m/kz9P9pI68CcL/jPTYescHbDu6v7pLVp2GCPjt13CloG7gnq6TETjyDG4eCteCnu8wOcNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522600; c=relaxed/simple;
-	bh=20CnadMqg96OjLURS9DinjWOfu6PJuswjS9J93zhAfQ=;
+	s=arc-20240116; t=1708523765; c=relaxed/simple;
+	bh=Lm6S0C9HtI1knn4jBzBJfMcZ1xaS72NV87/1Kzqc4cI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XBvV1yidufrue6+tgoRzB+YKkPpO3C+txzShvmDa/P2tDUrPOQiUggqUhS4aw33WIH7x+hwLbnF9M6Gqbpi+ry/Tvtvtk9sUsAfZDLhTQ0B/BaepIVct5BmRLVoEPnNXq74npUgEZe4XtULbjuZmiqhFhIcO3+pltkx+cv1hm+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1XHqxpCC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 741DCC433F1;
-	Wed, 21 Feb 2024 13:36:39 +0000 (UTC)
+	 MIME-Version; b=sVYgSuTe3BSujQlCKtOUTfOzfa6rmEBwgHZH0B15DkMtuF7YCJn5X2ameU3MMHvd1/lID/ZlBTRMJKN1Ekz4LV/JEJkyWHR68AAPZ3x212BwKFS1+rmD3qx3HwgjepEuj1uo/wJKc2Vinc2zl17BNINuhjA0CIVHMkye4zrfWQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IpI6os2q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ADDCC43394;
+	Wed, 21 Feb 2024 13:56:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522599;
-	bh=20CnadMqg96OjLURS9DinjWOfu6PJuswjS9J93zhAfQ=;
+	s=korg; t=1708523765;
+	bh=Lm6S0C9HtI1knn4jBzBJfMcZ1xaS72NV87/1Kzqc4cI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1XHqxpCC0++sVIe2O9vMGXY2prlTadhuyanVRRPfBSkF+qs+0f2KVUasvCyRQoeD3
-	 4BMP8t4aEq4BTfl13RyXzCemXJR99A+bUp1vF+2JmMYCjGWoq/Tajizkd1cDKZiD+p
-	 cizhK8wcmUTVIn+SFZ9H6qfbjUsiV9iJWAsbOH5c=
+	b=IpI6os2qmeD0MUs1FVLnVChZFOnCIHWyuYbXJsqtOh1j7H0AVqUxwqDgRaNy4ToMn
+	 gMy3AmWHq8Ni6KL5/Ri2KlIfatU9UXPZWG16LkFIpnMHtaPUicFvJhFerCs5dgu+b+
+	 wDJYmt5Mh60zqHzX9QMiGTVbiwG9rd/4uzrU7Yb8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@suse.de>,
-	Christoph Hellwig <hch@lst.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 178/476] scsi: libfc: Dont schedule abort twice
+Subject: [PATCH 5.10 050/379] afs: Hide silly-rename files from userspace
 Date: Wed, 21 Feb 2024 14:03:49 +0100
-Message-ID: <20240221130014.480474455@linuxfoundation.org>
+Message-ID: <20240221125956.397961570@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hannes Reinecke <hare@suse.de>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit b57c4db5d23b9df0118a25e2441c9288edd73710 ]
+[ Upstream commit 57e9d49c54528c49b8bffe6d99d782ea051ea534 ]
 
-The current FC error recovery is sending up to three REC (recovery) frames
-in 10 second intervals, and as a final step sending an ABTS after 30
-seconds for the command itself.  Unfortunately sending an ABTS is also the
-action for the SCSI abort handler, and the default timeout for SCSI
-commands is also 30 seconds. This causes two ABTS to be scheduled, with the
-libfc one slightly earlier. The ABTS scheduled by SCSI EH then sees the
-command to be already aborted, and will always return with a 'GOOD' status
-irrespective on the actual result from the first ABTS.  This causes the
-SCSI EH abort handler to always succeed, and SCSI EH never to be engaged.
-Fix this by not issuing an ABTS when a SCSI command is present for the
-exchange, but rather wait for the abort scheduled from SCSI EH.  And warn
-if an abort is already scheduled to avoid similar errors in the future.
+There appears to be a race between silly-rename files being created/removed
+and various userspace tools iterating over the contents of a directory,
+leading to such errors as:
 
-Signed-off-by: Hannes Reinecke <hare@suse.de>
-Link: https://lore.kernel.org/r/20231129165832.224100-2-hare@kernel.org
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+	find: './kernel/.tmp_cpio_dir/include/dt-bindings/reset/.__afs2080': No such file or directory
+	tar: ./include/linux/greybus/.__afs3C95: File removed before we read it
+
+when building a kernel.
+
+Fix afs_readdir() so that it doesn't return .__afsXXXX silly-rename files
+to userspace.  This doesn't stop them being looked up directly by name as
+we need to be able to look them up from within the kernel as part of the
+silly-rename algorithm.
+
+Fixes: 79ddbfa500b3 ("afs: Implement sillyrename for unlink and rename")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/libfc/fc_fcp.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ fs/afs/dir.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/scsi/libfc/fc_fcp.c b/drivers/scsi/libfc/fc_fcp.c
-index 509eacd7893d..a1015a81e86e 100644
---- a/drivers/scsi/libfc/fc_fcp.c
-+++ b/drivers/scsi/libfc/fc_fcp.c
-@@ -270,6 +270,11 @@ static int fc_fcp_send_abort(struct fc_fcp_pkt *fsp)
- 	if (!fsp->seq_ptr)
- 		return -EINVAL;
+diff --git a/fs/afs/dir.c b/fs/afs/dir.c
+index a59d6293a32b..0b927736ca72 100644
+--- a/fs/afs/dir.c
++++ b/fs/afs/dir.c
+@@ -418,6 +418,14 @@ static int afs_dir_iterate_block(struct afs_vnode *dvnode,
+ 			continue;
+ 		}
  
-+	if (fsp->state & FC_SRB_ABORT_PENDING) {
-+		FC_FCP_DBG(fsp, "abort already pending\n");
-+		return -EBUSY;
-+	}
++		/* Don't expose silly rename entries to userspace. */
++		if (nlen > 6 &&
++		    dire->u.name[0] == '.' &&
++		    ctx->actor != afs_lookup_filldir &&
++		    ctx->actor != afs_lookup_one_filldir &&
++		    memcmp(dire->u.name, ".__afs", 6) == 0)
++			continue;
 +
- 	per_cpu_ptr(fsp->lp->stats, get_cpu())->FcpPktAborts++;
- 	put_cpu();
- 
-@@ -1700,11 +1705,12 @@ static void fc_fcp_recovery(struct fc_fcp_pkt *fsp, u8 code)
- 	fsp->status_code = code;
- 	fsp->cdb_status = 0;
- 	fsp->io_status = 0;
--	/*
--	 * if this fails then we let the scsi command timer fire and
--	 * scsi-ml escalate.
--	 */
--	fc_fcp_send_abort(fsp);
-+	if (!fsp->cmd)
-+		/*
-+		 * Only abort non-scsi commands; otherwise let the
-+		 * scsi command timer fire and scsi-ml escalate.
-+		 */
-+		fc_fcp_send_abort(fsp);
- }
- 
- /**
+ 		/* found the next entry */
+ 		if (!dir_emit(ctx, dire->u.name, nlen,
+ 			      ntohl(dire->u.vnode),
 -- 
 2.43.0
 
