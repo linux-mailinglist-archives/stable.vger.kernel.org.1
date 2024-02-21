@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-22357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A7AA85DBA3
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:43:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BFD085D915
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BB541F24734
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:43:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41D691F24243
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:14:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 092A379DBC;
-	Wed, 21 Feb 2024 13:43:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9996D69D2F;
+	Wed, 21 Feb 2024 13:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eQ/p85pP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ohyHGJeA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B79E877A03;
-	Wed, 21 Feb 2024 13:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58BB853816;
+	Wed, 21 Feb 2024 13:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523005; cv=none; b=KiBc48P/C9RM3ZmpYZeBlkAJnlNBzVjDPcNNLdWfeZzgv7VEQvL5LQ2caJbsNz0HDrzKpAKjQF/bgdepZOO0Ei0Po7CsVID05X8o8mkuf1HvZKt0f20Ux3Ow/uqd+36Kvv0SJ3YM86593H6DZgoNyXTnbPO14SuR7ZJ+3SG9oF0=
+	t=1708521261; cv=none; b=bK7i5+oipyaERJAQ/v7F/ZBCNTo5jHu9z5h2CtTLJyb0MdmE9MM/pwHNuJgxLHGgXxlmr5KeQ0JJeb7WCZM+S1BEj0VJrhRMpVuZIsWYxFjWrXrtHHMfp19DEtwdObWZWbYXHI3HyrjNrc1cXjGzKXvZKV7EaZmcOcaldpH4p/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523005; c=relaxed/simple;
-	bh=uP/Ea56hthg40vZx1OB5rsYksI5y9kJrZSiuhjyvWtY=;
+	s=arc-20240116; t=1708521261; c=relaxed/simple;
+	bh=2z1cob3ILXosoxfYZLvxW2Lo2acx8QzPB7VW2iyW/vI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pNtkhy0GtQUqpVDPof5yCvAvXCSxtb6/0fFLBM/B1rxIXfAnMxpZId18vNTzaxNTq7XZs2OuCC+UotK1uT2Yor9duwxf1ErHIUA1IU/t1aqu0TfghZi5o9PcC7FDpWchU93h7kv67uT5ooqgiviGpT50QWLL2k/NlcDBdDE3Y+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eQ/p85pP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08484C433C7;
-	Wed, 21 Feb 2024 13:43:24 +0000 (UTC)
+	 MIME-Version; b=DePT9LJGONAF0yIaHV99F8rBLUiEtHBMCn+jGtFEhHjLif3kMdAX4Y/0Lj19G/Icw1z9Dx1sHNRJg5WoUHYJD9jivlVepO32l79kZkuR6S8fHIiicQuSc2QERfB7NeWKp7P1g8EcDWpD7k+ZyzylQSt/ay2I+rLYjQy0yQsj30A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ohyHGJeA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9846C433C7;
+	Wed, 21 Feb 2024 13:14:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523005;
-	bh=uP/Ea56hthg40vZx1OB5rsYksI5y9kJrZSiuhjyvWtY=;
+	s=korg; t=1708521261;
+	bh=2z1cob3ILXosoxfYZLvxW2Lo2acx8QzPB7VW2iyW/vI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eQ/p85pPv1QWbjgcQFa3iUmNecA1lY8djq/jyVld8oyBhrG1zpFnWxsDhz6+0aNSE
-	 zyhNuO3r0vR0cMpf5yA2/KIrMeFTve/NP4R+8TifUVFuJugmp9gl48IzNU+8HQGnRr
-	 kS4y1O6Lu82DZSJqJoG/xLeXrnynt+AYcTZ5kfDs=
+	b=ohyHGJeACIZy5tzQwYxZ1td0QgOq7HNr1rFzUjuYZMzPgmQb4Y4NL8LloJr6P8nmY
+	 vuUhglJY5LC2elOpyWADGSxKLhCLM5zayqq/5LjRjIdejMxxj1O6eindlRERt+NWht
+	 LxEDUhnU26366CEyHh/03Ym+nshh3Y3zkIsfOS34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-afs@lists.infradead.org,
-	netdev@vger.kernel.org,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <error27@gmail.com>,
+	Thomas Bourgoin <thomas.bourgoin@foss.st.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 314/476] rxrpc: Fix response to PING RESPONSE ACKs to a dead call
+Subject: [PATCH 4.19 064/202] crypto: stm32/crc32 - fix parsing list of devices
 Date: Wed, 21 Feb 2024 14:06:05 +0100
-Message-ID: <20240221130019.636627513@linuxfoundation.org>
+Message-ID: <20240221125933.905325722@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,52 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Thomas Bourgoin <thomas.bourgoin@foss.st.com>
 
-[ Upstream commit 6f769f22822aa4124b556339781b04d810f0e038 ]
+[ Upstream commit 0eaef675b94c746900dcea7f6c41b9a103ed5d53 ]
 
-Stop rxrpc from sending a DUP ACK in response to a PING RESPONSE ACK on a
-dead call.  We may have initiated the ping but the call may have beaten the
-response to completion.
+smatch warnings:
+drivers/crypto/stm32/stm32-crc32.c:108 stm32_crc_get_next_crc() warn:
+can 'crc' even be NULL?
 
-Fixes: 18bfeba50dfd ("rxrpc: Perform terminal call ACK/ABORT retransmission from conn processor")
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Eric Dumazet <edumazet@google.com>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: linux-afs@lists.infradead.org
-cc: netdev@vger.kernel.org
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Use list_first_entry_or_null instead of list_first_entry to retrieve
+the first device registered.
+The function list_first_entry always return a non NULL pointer even if
+the list is empty. Hence checking if the pointer returned is NULL does
+not tell if the list is empty or not.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/r/202311281111.ou2oUL2i-lkp@intel.com/
+Reported-by: Dan Carpenter <error27@gmail.com>
+Closes: https://lore.kernel.org/r/202311281111.ou2oUL2i-lkp@intel.com/
+Signed-off-by: Thomas Bourgoin <thomas.bourgoin@foss.st.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rxrpc/conn_event.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/crypto/stm32/stm32_crc32.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/rxrpc/conn_event.c b/net/rxrpc/conn_event.c
-index aab069701398..5d91ef562ff7 100644
---- a/net/rxrpc/conn_event.c
-+++ b/net/rxrpc/conn_event.c
-@@ -41,6 +41,14 @@ static void rxrpc_conn_retransmit_call(struct rxrpc_connection *conn,
+diff --git a/drivers/crypto/stm32/stm32_crc32.c b/drivers/crypto/stm32/stm32_crc32.c
+index de645bf84980..04adc84d677c 100644
+--- a/drivers/crypto/stm32/stm32_crc32.c
++++ b/drivers/crypto/stm32/stm32_crc32.c
+@@ -98,7 +98,7 @@ static struct stm32_crc *stm32_crc_get_next_crc(void)
+ 	struct stm32_crc *crc;
  
- 	_enter("%d", conn->debug_id);
- 
-+	if (sp && sp->hdr.type == RXRPC_PACKET_TYPE_ACK) {
-+		if (skb_copy_bits(skb, sizeof(struct rxrpc_wire_header),
-+				  &pkt.ack, sizeof(pkt.ack)) < 0)
-+			return;
-+		if (pkt.ack.reason == RXRPC_ACK_PING_RESPONSE)
-+			return;
-+	}
-+
- 	chan = &conn->channels[channel];
- 
- 	/* If the last call got moved on whilst we were waiting to run, just
+ 	spin_lock_bh(&crc_list.lock);
+-	crc = list_first_entry(&crc_list.dev_list, struct stm32_crc, list);
++	crc = list_first_entry_or_null(&crc_list.dev_list, struct stm32_crc, list);
+ 	if (crc)
+ 		list_move_tail(&crc->list, &crc_list.dev_list);
+ 	spin_unlock_bh(&crc_list.lock);
 -- 
 2.43.0
 
