@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-22977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C023685DE8A
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:19:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5119985DBC3
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:45:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F17A61C23C23
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:19:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E6FBCB25E2F
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:45:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAF4D7CF27;
-	Wed, 21 Feb 2024 14:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACFFD7BAF6;
+	Wed, 21 Feb 2024 13:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sy7q1ONO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Gax7n60"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA3D37CF02;
-	Wed, 21 Feb 2024 14:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C13F7992D;
+	Wed, 21 Feb 2024 13:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525152; cv=none; b=E+vsgn9O0NTiwWYvwpxc1CHH/PDnMwuGTmkxc7plF007AmpLCqm/BAhke4OqkT2nlgCQncCNA+611TDodXUVnZS8m4C3C9ZKyQFio5B70CSDBr9fpUcM5q2ouOn9fcdfS4yHQA9LFyNaneJ/YzSQEvWRu4FAFpXLCiAuxBGSXuo=
+	t=1708523095; cv=none; b=fvfEQk3CZDptiXMNdkpTkEg1EbfGEfsd0s1MROhVdllVf2BGjWu5C1S++JDEh5sU4cR2v3PhjYQZ32Ve0O1PTcMjDMUpb+qWMXfDQY6QGAROMk/uXV7CQuVhoYGHigICe3BpzBPPdxWpXCvL/Uz1Ki3gtkg4Kw6TZuSfZSXsoUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525152; c=relaxed/simple;
-	bh=YWhuTpE87olzsHG5+puQt/4nXDxQP5LXzFBU7cm5VHU=;
+	s=arc-20240116; t=1708523095; c=relaxed/simple;
+	bh=yBkIbr99ZXDzYNVQmrBY2cU6NhfJ0gSmYcypqwiyjYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=otxLjhqPLQNH/8Vw5pHxT79+YLkJRHNmGP6ctmGzg1jCY6rJu5YsGlk2hzdLuhToc/nd24aSFGawVZ3koZNk5QuHIguy8TB799WKTNkjrocuoLGBsrYjnGZGdWqdGUTnYpqlJ4wvSEKiMfobD6ulAQRHOiiq9fdn+ViIHeB0qL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sy7q1ONO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A878C433C7;
-	Wed, 21 Feb 2024 14:19:11 +0000 (UTC)
+	 MIME-Version; b=fLeD/ZVzFpSW7w7URhW1Fy3SuwZ1XzNNpHznByJ2b7g5TEcn8a13Na1zQ7EzLSxN7gfcedE440eaSWsLBf+9fO0j1GizLL9B0lqPYe7gWmet9HENVKWyf+AxkH3L9vqX+WnISr3bHCvDpNQs8y4ahIGnAam+5xaiy/fJOhVJu2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Gax7n60; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE3CDC433C7;
+	Wed, 21 Feb 2024 13:44:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525152;
-	bh=YWhuTpE87olzsHG5+puQt/4nXDxQP5LXzFBU7cm5VHU=;
+	s=korg; t=1708523095;
+	bh=yBkIbr99ZXDzYNVQmrBY2cU6NhfJ0gSmYcypqwiyjYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sy7q1ONOtXE0U0/8pEsdg+FnUrj67dTfp6NB3ywGdOOZ5VYyhhjD/W3mtgQ+b8KQK
-	 CbViNyArhc7sfi/mdnDV2Uw97QEhp15q9Zcmg2kf5/a0Hf66xAGhFolASHtOboKcnQ
-	 lMeZ8OOJaaFkmW06GGSHSk9zXnlh/JSymThLHDws=
+	b=0Gax7n60O3SNmcoUJ7H1WJB/53ravMvVAEVw8sM9Kh/kDUwZt4dF7c7TlOQsQzHVh
+	 x17sRTdOjRMBRtmeP/nKZvqegyCyjZvsj9wSt+pt/SJew+ANYqGwp7c72wBosk4LqV
+	 BX5YK0XUb/hctm5GtULUyIrqeeLmcqJbzcjemDJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	George Melikov <mail@gmelikov.ru>
-Subject: [PATCH 5.4 048/267] gpiolib: acpi: Ignore touchpad wakeup on GPD G1619-04
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 5.15 338/476] Input: atkbd - skip ATKBD_CMD_SETLEDS when skipping ATKBD_CMD_GETID
 Date: Wed, 21 Feb 2024 14:06:29 +0100
-Message-ID: <20240221125941.519147288@linuxfoundation.org>
+Message-ID: <20240221130020.525335001@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 805c74eac8cb306dc69b87b6b066ab4da77ceaf1 upstream.
+commit 683cd8259a9b883a51973511f860976db2550a6e upstream.
 
-Spurious wakeups are reported on the GPD G1619-04 which
-can be absolved by programming the GPIO to ignore wakeups.
+After commit 936e4d49ecbc ("Input: atkbd - skip ATKBD_CMD_GETID in
+translated mode") the keyboard on Dell XPS 13 9350 / 9360 / 9370 models
+has stopped working after a suspend/resume.
 
+The problem appears to be that atkbd_probe() fails when called
+from atkbd_reconnect() on resume, which on systems where
+ATKBD_CMD_GETID is skipped can only happen by ATKBD_CMD_SETLEDS
+failing. ATKBD_CMD_SETLEDS failing because ATKBD_CMD_GETID was
+skipped is weird, but apparently that is what is happening.
+
+Fix this by also skipping ATKBD_CMD_SETLEDS when skipping
+ATKBD_CMD_GETID.
+
+Fixes: 936e4d49ecbc ("Input: atkbd - skip ATKBD_CMD_GETID in translated mode")
+Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Closes: https://lore.kernel.org/linux-input/0aa4a61f-c939-46fe-a572-08022e8931c7@molgen.mpg.de/
+Closes: https://bbs.archlinux.org/viewtopic.php?pid=2146300
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218424
+Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2260517
+Tested-by: Paul Menzel <pmenzel@molgen.mpg.de>
 Cc: stable@vger.kernel.org
-Reported-and-tested-by: George Melikov <mail@gmelikov.ru>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3073
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240126160724.13278-2-hdegoede@redhat.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpiolib-acpi.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/input/keyboard/atkbd.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/drivers/gpio/gpiolib-acpi.c
-+++ b/drivers/gpio/gpiolib-acpi.c
-@@ -1466,6 +1466,20 @@ static const struct dmi_system_id gpioli
- 			.ignore_wake = "INT33FF:01@0",
- 		},
- 	},
-+	{
-+		/*
-+		 * Spurious wakeups from TP_ATTN# pin
-+		 * Found in BIOS 0.35
-+		 * https://gitlab.freedesktop.org/drm/amd/-/issues/3073
-+		 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "GPD"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "G1619-04"),
-+		},
-+		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
-+			.ignore_wake = "PNP0C50:00@8",
-+		},
-+	},
- 	{} /* Terminating entry */
- };
+--- a/drivers/input/keyboard/atkbd.c
++++ b/drivers/input/keyboard/atkbd.c
+@@ -802,7 +802,6 @@ static int atkbd_probe(struct atkbd *atk
+ {
+ 	struct ps2dev *ps2dev = &atkbd->ps2dev;
+ 	unsigned char param[2];
+-	bool skip_getid;
+ 
+ /*
+  * Some systems, where the bit-twiddling when testing the io-lines of the
+@@ -816,6 +815,11 @@ static int atkbd_probe(struct atkbd *atk
+ 				 "keyboard reset failed on %s\n",
+ 				 ps2dev->serio->phys);
+ 
++	if (atkbd_skip_getid(atkbd)) {
++		atkbd->id = 0xab83;
++		return 0;
++	}
++
+ /*
+  * Then we check the keyboard ID. We should get 0xab83 under normal conditions.
+  * Some keyboards report different values, but the first byte is always 0xab or
+@@ -824,18 +828,17 @@ static int atkbd_probe(struct atkbd *atk
+  */
+ 
+ 	param[0] = param[1] = 0xa5;	/* initialize with invalid values */
+-	skip_getid = atkbd_skip_getid(atkbd);
+-	if (skip_getid || ps2_command(ps2dev, param, ATKBD_CMD_GETID)) {
++	if (ps2_command(ps2dev, param, ATKBD_CMD_GETID)) {
+ 
+ /*
+- * If the get ID command was skipped or failed, we check if we can at least set
++ * If the get ID command failed, we check if we can at least set
+  * the LEDs on the keyboard. This should work on every keyboard out there.
+  * It also turns the LEDs off, which we want anyway.
+  */
+ 		param[0] = 0;
+ 		if (ps2_command(ps2dev, param, ATKBD_CMD_SETLEDS))
+ 			return -1;
+-		atkbd->id = skip_getid ? 0xab83 : 0xabba;
++		atkbd->id = 0xabba;
+ 		return 0;
+ 	}
  
 
 
