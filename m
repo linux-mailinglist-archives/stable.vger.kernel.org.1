@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-22505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0769485DC54
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:52:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D05F785DE41
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:17:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38C6C1C2356B
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:52:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B4CDB26858
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8558D7BB0F;
-	Wed, 21 Feb 2024 13:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79D557EEE7;
+	Wed, 21 Feb 2024 14:12:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oz21U6I7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FOEG4AI0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FC287C0BD;
-	Wed, 21 Feb 2024 13:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389DD7E590;
+	Wed, 21 Feb 2024 14:12:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523523; cv=none; b=K4g9ZdgXpN1wAjRnqF29awf116eNe3pF/VMZLAkQ+prrd3tS38a6ajAZfd0AV8oO3qXs1md6GC6NeK+zulzeIM5NvinFe0O07XLBZextkZqfbs1CMMyoLvJHwmzjAgOr0u+i/gO8/ijEPTcmDhurx6lf6sUnRHhYVYAp9twUkps=
+	t=1708524744; cv=none; b=aarJ1GZCvLG2ULES2BVDkt/gs8XCCibMf1x6vD0SCuqKnPkc6pIobOXLscM44mYdCx5tsnpSrwqQq19dCN9cpHh3LIDjpYAjzYTkfeXOgo6HIUWwnPsDNnRhTtA4mPozrd3Ak8MJbo3sYJHNHdTOH5+wjJ0U8PWLk5YGB7RcvMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523523; c=relaxed/simple;
-	bh=XHckwHWCRWPt8MIs7xwnueDYIu/qSXXTDMw5jdirTNg=;
+	s=arc-20240116; t=1708524744; c=relaxed/simple;
+	bh=F+vcePkSGuBkFCOSt1C7vfE7t6oQM0nCPSZo19XXbEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dYE1MMYOSOqAzDrXypAtTfVonbUnW2uv9wadwAZjIKJGKwdNxGrb/j2BI/8MZq+KMFwtMyWrxTIF1mjq5dmieCIJ2bY5sTzxuKWbJWw62eleLAHtgtYP2wX3mneyOEiKv3gq88AItm8sL9cbNHi6MRuQrzkb35zPNlNcuCwF7Wc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oz21U6I7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1553BC433C7;
-	Wed, 21 Feb 2024 13:52:01 +0000 (UTC)
+	 MIME-Version; b=b5AuRrvZFZcevPxDzAXvo0P3VH+6/pSbHDJlkVK4vRMgtw32Fl+OQNJxD+fw2BciTNbJrgSC+6pfl7NkfK2XUDUkhFJYEdx66wV8tXgH58henwhoSNd2nheka086b384EO/slKGIryYpdmj5KQaZmaIKEDk2RYLK39/PgtMgFTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FOEG4AI0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F8DFC433F1;
+	Wed, 21 Feb 2024 14:12:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523522;
-	bh=XHckwHWCRWPt8MIs7xwnueDYIu/qSXXTDMw5jdirTNg=;
+	s=korg; t=1708524744;
+	bh=F+vcePkSGuBkFCOSt1C7vfE7t6oQM0nCPSZo19XXbEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Oz21U6I7scBFC2rD0v8WKnVRbKcqHpMPGVFgx6q5KajBCFu547lk0tX5ckxu/tncY
-	 edSXchOnkzhsgGOxSi8FPG2ylRj9Dn8ua5jnkhbN0EuCPaUCxNipZPw/MlBMXA7DJm
-	 oJ9PBWf2mnApC3YcL63KCv0ZuS6PZOqJmqE0lgMw=
+	b=FOEG4AI0topDbWtyRJNfVLROKuaRLjYAYFD4q7Axpnl8/6FHPugRG7GRD7Xqsdwch
+	 ztneroumBB2DWNOdv4y7mbN2HFJh7ZPJaNJ0t253uHSKwexOoG/vcB2T4rjJpjw5we
+	 zInnzA4IEZEBnUh/Ws54flWY/wavjNKEhC0J3Se0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+5c04210f7c7f897c1e7f@syzkaller.appspotmail.com,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 462/476] nilfs2: fix potential bug in end_buffer_async_write
+	bo liu <bo.liu@senarytech.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 334/379] ALSA: hda/conexant: Add quirk for SWS JS201D
 Date: Wed, 21 Feb 2024 14:08:33 +0100
-Message-ID: <20240221130025.126829028@linuxfoundation.org>
+Message-ID: <20240221130004.861410970@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,104 +61,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: bo liu <bo.liu@senarytech.com>
 
-commit 5bc09b397cbf1221f8a8aacb1152650c9195b02b upstream.
+commit 4639c5021029d49fd2f97fa8d74731f167f98919 upstream.
 
-According to a syzbot report, end_buffer_async_write(), which handles the
-completion of block device writes, may detect abnormal condition of the
-buffer async_write flag and cause a BUG_ON failure when using nilfs2.
+The SWS JS201D need a different pinconfig from windows driver.
+Add a quirk to use a specific pinconfig to SWS JS201D.
 
-Nilfs2 itself does not use end_buffer_async_write().  But, the async_write
-flag is now used as a marker by commit 7f42ec394156 ("nilfs2: fix issue
-with race condition of competition between segments for dirty blocks") as
-a means of resolving double list insertion of dirty blocks in
-nilfs_lookup_dirty_data_buffers() and nilfs_lookup_node_buffers() and the
-resulting crash.
-
-This modification is safe as long as it is used for file data and b-tree
-node blocks where the page caches are independent.  However, it was
-irrelevant and redundant to also introduce async_write for segment summary
-and super root blocks that share buffers with the backing device.  This
-led to the possibility that the BUG_ON check in end_buffer_async_write
-would fail as described above, if independent writebacks of the backing
-device occurred in parallel.
-
-The use of async_write for segment summary buffers has already been
-removed in a previous change.
-
-Fix this issue by removing the manipulation of the async_write flag for
-the remaining super root block buffer.
-
-Link: https://lkml.kernel.org/r/20240203161645.4992-1-konishi.ryusuke@gmail.com
-Fixes: 7f42ec394156 ("nilfs2: fix issue with race condition of competition between segments for dirty blocks")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+5c04210f7c7f897c1e7f@syzkaller.appspotmail.com
-Closes: https://lkml.kernel.org/r/00000000000019a97c05fd42f8c8@google.com
+Signed-off-by: bo liu <bo.liu@senarytech.com>
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Link: https://lore.kernel.org/r/20240205013802.51907-1-bo.liu@senarytech.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/segment.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ sound/pci/hda/patch_conexant.c |   18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
---- a/fs/nilfs2/segment.c
-+++ b/fs/nilfs2/segment.c
-@@ -1702,7 +1702,6 @@ static void nilfs_segctor_prepare_write(
+--- a/sound/pci/hda/patch_conexant.c
++++ b/sound/pci/hda/patch_conexant.c
+@@ -235,6 +235,7 @@ enum {
+ 	CXT_FIXUP_HP_ZBOOK_MUTE_LED,
+ 	CXT_FIXUP_HEADSET_MIC,
+ 	CXT_FIXUP_HP_MIC_NO_PRESENCE,
++	CXT_PINCFG_SWS_JS201D,
+ };
  
- 		list_for_each_entry(bh, &segbuf->sb_payload_buffers,
- 				    b_assoc_buffers) {
--			set_buffer_async_write(bh);
- 			if (bh == segbuf->sb_super_root) {
- 				if (bh->b_page != bd_page) {
- 					lock_page(bd_page);
-@@ -1713,6 +1712,7 @@ static void nilfs_segctor_prepare_write(
- 				}
- 				break;
- 			}
-+			set_buffer_async_write(bh);
- 			if (bh->b_page != fs_page) {
- 				nilfs_begin_page_io(fs_page);
- 				fs_page = bh->b_page;
-@@ -1798,7 +1798,6 @@ static void nilfs_abort_logs(struct list
+ /* for hda_fixup_thinkpad_acpi() */
+@@ -732,6 +733,17 @@ static const struct hda_pintbl cxt_pincf
+ 	{}
+ };
  
- 		list_for_each_entry(bh, &segbuf->sb_payload_buffers,
- 				    b_assoc_buffers) {
--			clear_buffer_async_write(bh);
- 			if (bh == segbuf->sb_super_root) {
- 				clear_buffer_uptodate(bh);
- 				if (bh->b_page != bd_page) {
-@@ -1807,6 +1806,7 @@ static void nilfs_abort_logs(struct list
- 				}
- 				break;
- 			}
-+			clear_buffer_async_write(bh);
- 			if (bh->b_page != fs_page) {
- 				nilfs_end_page_io(fs_page, err);
- 				fs_page = bh->b_page;
-@@ -1894,8 +1894,9 @@ static void nilfs_segctor_complete_write
- 				 BIT(BH_Delay) | BIT(BH_NILFS_Volatile) |
- 				 BIT(BH_NILFS_Redirected));
++/* SuoWoSi/South-holding JS201D with sn6140 */
++static const struct hda_pintbl cxt_pincfg_sws_js201d[] = {
++	{ 0x16, 0x03211040 }, /* hp out */
++	{ 0x17, 0x91170110 }, /* SPK/Class_D */
++	{ 0x18, 0x95a70130 }, /* Internal mic */
++	{ 0x19, 0x03a11020 }, /* Headset Mic */
++	{ 0x1a, 0x40f001f0 }, /* Not used */
++	{ 0x21, 0x40f001f0 }, /* Not used */
++	{}
++};
++
+ static const struct hda_fixup cxt_fixups[] = {
+ 	[CXT_PINCFG_LENOVO_X200] = {
+ 		.type = HDA_FIXUP_PINS,
+@@ -887,6 +899,10 @@ static const struct hda_fixup cxt_fixups
+ 		.chained = true,
+ 		.chain_id = CXT_FIXUP_HEADSET_MIC,
+ 	},
++	[CXT_PINCFG_SWS_JS201D] = {
++		.type = HDA_FIXUP_PINS,
++		.v.pins = cxt_pincfg_sws_js201d,
++	},
+ };
  
--			set_mask_bits(&bh->b_state, clear_bits, set_bits);
- 			if (bh == segbuf->sb_super_root) {
-+				set_buffer_uptodate(bh);
-+				clear_buffer_dirty(bh);
- 				if (bh->b_page != bd_page) {
- 					end_page_writeback(bd_page);
- 					bd_page = bh->b_page;
-@@ -1903,6 +1904,7 @@ static void nilfs_segctor_complete_write
- 				update_sr = true;
- 				break;
- 			}
-+			set_mask_bits(&bh->b_state, clear_bits, set_bits);
- 			if (bh->b_page != fs_page) {
- 				nilfs_end_page_io(fs_page, 0);
- 				fs_page = bh->b_page;
+ static const struct snd_pci_quirk cxt5045_fixups[] = {
+@@ -960,6 +976,7 @@ static const struct snd_pci_quirk cxt506
+ 	SND_PCI_QUIRK(0x103c, 0x8457, "HP Z2 G4 mini", CXT_FIXUP_HP_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x103c, 0x8458, "HP Z2 G4 mini premium", CXT_FIXUP_HP_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x138d, "Asus", CXT_FIXUP_HEADPHONE_MIC_PIN),
++	SND_PCI_QUIRK(0x14f1, 0x0265, "SWS JS201D", CXT_PINCFG_SWS_JS201D),
+ 	SND_PCI_QUIRK(0x152d, 0x0833, "OLPC XO-1.5", CXT_FIXUP_OLPC_XO),
+ 	SND_PCI_QUIRK(0x17aa, 0x20f2, "Lenovo T400", CXT_PINCFG_LENOVO_TP410),
+ 	SND_PCI_QUIRK(0x17aa, 0x215e, "Lenovo T410", CXT_PINCFG_LENOVO_TP410),
+@@ -1000,6 +1017,7 @@ static const struct hda_model_fixup cxt5
+ 	{ .id = CXT_FIXUP_HP_ZBOOK_MUTE_LED, .name = "hp-zbook-mute-led" },
+ 	{ .id = CXT_FIXUP_HP_MIC_NO_PRESENCE, .name = "hp-mic-fix" },
+ 	{ .id = CXT_PINCFG_LENOVO_NOTEBOOK, .name = "lenovo-20149" },
++	{ .id = CXT_PINCFG_SWS_JS201D, .name = "sws-js201d" },
+ 	{}
+ };
+ 
 
 
 
