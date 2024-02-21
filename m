@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-22692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 781BE85DD47
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:04:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D5A285D923
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:15:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 334B8283C53
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:04:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 226C51F23E8D
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:15:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 887BB76037;
-	Wed, 21 Feb 2024 14:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A642B69D30;
+	Wed, 21 Feb 2024 13:15:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tVp2zPqz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qLi8vw22"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45CC579DAE;
-	Wed, 21 Feb 2024 14:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 667041E522;
+	Wed, 21 Feb 2024 13:15:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524191; cv=none; b=q3dai1oVPbfWpDmWJiGw21IYBaD8+rkjLQp9PyL8NGMP4EA4O19c3uuIvQT2PZRX4SqCjs5xyYJLxTpY50DcU+LKRtR9XBCxzrijh6/ZgXu0eBcpOScoT74Y/0603XITk5ZCWSn8snxfPSr8WfoJa2xwIn6KRN9xg4pofX0veHU=
+	t=1708521306; cv=none; b=gitqNACHcm/42vc8IP+dSPg+wXnHjez5zcy4hgkdFfuYHmyNVsgqx3J09CPHk1tEt8+tUEJ8sMZPzi6gMO2UOEixorVGMXsdyCQZF4n4yDXguAWn2+0Xr178rENzleLPqBKRxQwZC+98kZmUXS7/70yx/cnUGIQ+tTreWAKPHM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524191; c=relaxed/simple;
-	bh=jaytldXrqRyHZ4GARDwUHctdl8Tf8xbYseCWFnCYlqI=;
+	s=arc-20240116; t=1708521306; c=relaxed/simple;
+	bh=TsuVqB8mrgSCVis7g51TcOAX0pIfylDrmXa/DCV0cWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fvQA3MQbr8UjeZ5bsx8z+RtIRoSrQll3l8s3Brwx16KbXGlZxtqlJ73eRe6AE9rPe7IMhcIBpZnmU248jzVaKjg3H2SJB6X+9yowu1sAH9JIYQbUODGKiEdeTEXbX9R9a34ERWIk61fcKtdNdWs9iWEiu78yQCxN6oEQ7JvDW3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tVp2zPqz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70597C433C7;
-	Wed, 21 Feb 2024 14:03:10 +0000 (UTC)
+	 MIME-Version; b=hvQ/qSwtL9/pYpG9wTXG8D/4NPJ5hWq5g+BGmFWNeMTqwW0AWGYbGn8wrF7P4oVfAskxkAyvnT//ieSx0NtpOquroJ2mwPvZMN8O0GlcyO0o4Db0Kd5qiGDUEwACfeaM1135Xn0ak8Y6f6JVv86pEzD3zU94GXOdDOoBWcIqg9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qLi8vw22; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9F4EC433C7;
+	Wed, 21 Feb 2024 13:15:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524190;
-	bh=jaytldXrqRyHZ4GARDwUHctdl8Tf8xbYseCWFnCYlqI=;
+	s=korg; t=1708521306;
+	bh=TsuVqB8mrgSCVis7g51TcOAX0pIfylDrmXa/DCV0cWM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tVp2zPqzxDy5+xZv5IPekrKNkLO8W+5MC4r9YiAeLT8lfiBWgYn+pspKFzxb/5rZB
-	 lJa9WKtArINwzT9P67IenffWKSnIVErBW387EVnrgcERNQGHP0gA4j0PA2YXn3hO57
-	 pnThm/bCTFHbmADzmPXEuFgXr4rA8f9R3lbovX7w=
+	b=qLi8vw22ZlBbhCzOrZJV8J9QJ2eP1MQooUN2LhvS0W2oAjTcdC/u5+aZt7DDruRuw
+	 Tq6clLuRLn7ZXLIEkRI6uv+NH06gkQKIwGCV7/9/0qfzdmhsS26E4xXHTOp9lSN7Dg
+	 F6TOghLT1c7Es6ipatpngs/mGHkblLEWWC180YTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Kunwu Chan <chentao@kylinos.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 172/379] Bluetooth: qca: Set both WIDEBAND_SPEECH and LE_STATES quirks for QCA2066
+Subject: [PATCH 4.19 050/202] powerpc/mm: Fix null-pointer dereference in pgtable_cache_add
 Date: Wed, 21 Feb 2024 14:05:51 +0100
-Message-ID: <20240221130000.004129826@linuxfoundation.org>
+Message-ID: <20240221125933.449533106@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,36 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-[ Upstream commit 5d192b697c7417254cdd9edc3d5e9e0364eb9045 ]
+[ Upstream commit f46c8a75263f97bda13c739ba1c90aced0d3b071 ]
 
-Set both WIDEBAND_SPEECH_SUPPORTED and VALID_LE_STATES quirks
-for QCA2066.
+kasprintf() returns a pointer to dynamically allocated memory
+which can be NULL upon failure. Ensure the allocation was successful
+by checking the pointer validity.
 
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231204023223.2447523-1-chentao@kylinos.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/hci_qca.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/mm/init-common.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
-index bc0850d3f7d2..6e0c0762fbab 100644
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -1814,6 +1814,7 @@ static const struct qca_device_data qca_soc_data_wcn3998 = {
- static const struct qca_device_data qca_soc_data_qca6390 = {
- 	.soc_type = QCA_QCA6390,
- 	.num_vregs = 0,
-+	.capabilities = QCA_CAP_WIDEBAND_SPEECH | QCA_CAP_VALID_LE_STATES,
- };
+diff --git a/arch/powerpc/mm/init-common.c b/arch/powerpc/mm/init-common.c
+index 2b656e67f2ea..927703af49be 100644
+--- a/arch/powerpc/mm/init-common.c
++++ b/arch/powerpc/mm/init-common.c
+@@ -65,7 +65,7 @@ void pgtable_cache_add(unsigned shift, void (*ctor)(void *))
+ 	 * as to leave enough 0 bits in the address to contain it. */
+ 	unsigned long minalign = max(MAX_PGTABLE_INDEX_SIZE + 1,
+ 				     HUGEPD_SHIFT_MASK + 1);
+-	struct kmem_cache *new;
++	struct kmem_cache *new = NULL;
  
- static void qca_power_shutdown(struct hci_uart *hu)
+ 	/* It would be nice if this was a BUILD_BUG_ON(), but at the
+ 	 * moment, gcc doesn't seem to recognize is_power_of_2 as a
+@@ -78,7 +78,8 @@ void pgtable_cache_add(unsigned shift, void (*ctor)(void *))
+ 
+ 	align = max_t(unsigned long, align, minalign);
+ 	name = kasprintf(GFP_KERNEL, "pgtable-2^%d", shift);
+-	new = kmem_cache_create(name, table_size, align, 0, ctor);
++	if (name)
++		new = kmem_cache_create(name, table_size, align, 0, ctor);
+ 	if (!new)
+ 		panic("Could not allocate pgtable cache for order %d", shift);
+ 
 -- 
 2.43.0
 
