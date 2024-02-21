@@ -1,121 +1,151 @@
-Return-Path: <stable+bounces-23241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 903AC85E941
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 21:52:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B58585E96A
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 22:04:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 461D11F22E5B
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 20:52:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCFEE1F22B8D
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 21:04:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB0573A1DB;
-	Wed, 21 Feb 2024 20:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1810886AFC;
+	Wed, 21 Feb 2024 21:03:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="FzcIr0Ig"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XkYVzpiq"
 X-Original-To: stable@vger.kernel.org
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75432574F
-	for <stable@vger.kernel.org>; Wed, 21 Feb 2024 20:52:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D7D7CF03
+	for <stable@vger.kernel.org>; Wed, 21 Feb 2024 21:03:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708548754; cv=none; b=p145rN9iVDcGTKnwdwqM8p2O9dg657fvg+WQP5Ki8bLhzZJCl1CxKqbzlG6TliUZqor9NczUNKYzbHcMDfWV+CK7xJCu1ZWZ7JmH7FHWHl/IiWzgzDxKROZa+VPZ+FCHvzUxVQuvoORMofbZbnZj+pnAUfDiM3GogkUfUzq7EPI=
+	t=1708549437; cv=none; b=V7mp7YkMeg9s/HtrXc2LQh2oSjOzsaDnZxF/HAWRA3oAskSfygVgPqYTCURdWqxzyySwNDGmmnJEcQ5dWYG9Lut/bf4uXgwOY0bKy//neCZrlnQjlGV7TFxC5UW4odlMIqM4tGgGwysL1ZlmOpQXLLclG0d8zVv6i/U+gUbqfNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708548754; c=relaxed/simple;
-	bh=E7YJqhkO9TTKcrlQDwJfDb4kzxHh24EHIBQLOWzdMDY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D1o9I6gxNVYTLjR+14ilWxz6Uz38ZYlFJ4ebffihACD7zdNoTSEAeV7xXr8/ZdAC8yM/HOGiEfmPIVddpeHJ9Mwxf3p0oHIKbfNONBPDgld8Y/ud+vwNM1fmu5ZHgE2sNdffaPXgbUxKrux7POySF4GDSwVomsG3njA3U29uYs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=FzcIr0Ig; arc=none smtp.client-ip=91.218.175.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Wed, 21 Feb 2024 15:52:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1708548749;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TaQvwiNWMiXtOAkVZAd3cKZiurfyS4+h2v2SCroQ62Y=;
-	b=FzcIr0Ig2y3sP8Hm/A9fqh/p2ndiaKOWU3vFhd8nq//c8TGQwmTPo1ZMdkawzRB5p1Fvlc
-	ghOVBCJAj4HdCjsvX3/kp2zSL8lNeyPsfljtNeTJsYs9W2WCTo0QuJCJNEkNJH6SJp1eou
-	GEZyQyUMkl13Sej4UrfNcE5kvlDd/gY=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Greg KH <gregkh@linuxfoundation.org>, 
-	Oleksandr Natalenko <oleksandr@natalenko.name>, Jiri Benc <jbenc@redhat.com>, Sasha Levin <sashal@kernel.org>, 
-	stable@vger.kernel.org, Thorsten Leemhuis <regressions@leemhuis.info>
-Subject: Re: fs/bcachefs/
-Message-ID: <diyeogauri6pqd2hqjn5tvtmgfb7yvtrbe4fc3xzp5xmpfhui3@czcp47ql2jgm>
-References: <g6el7eghhdk2v5osukhobvi4pige5bsfu5koqtmoyeknat36t7@irmmk7zo7edh>
- <uknxc26o6td7g6rawxffvsez46djmvcy2532kza2zyjuj33k7p@4jdywourgtqg>
- <2024022103-municipal-filter-fb3f@gregkh>
- <4900587.31r3eYUQgx@natalenko.name>
- <2024022155-reformat-scorer-98ae@gregkh>
- <aaf2f030-b6f4-437b-bb4e-79aa4891ae56@suse.cz>
+	s=arc-20240116; t=1708549437; c=relaxed/simple;
+	bh=ohb243JcxVMv87lHKJOrwlHRXzxPcwkUVNHaZxmOKQc=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=UV0hjbFk17q7aD3Rvawa3QcZVibGi5k577XO7Mmtlq1SYGDNXhPeSeGEyMYgSb8ZewMnjp48jgejoIgeWElwok1+8sDc5br6+lgIST26DdS8mouHQckiiEyXpKdhtLKySqPHTC/qnyi66EH0Ix/RqWmgtU1WUgMgYy1iHOApJfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--dhavale.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XkYVzpiq; arc=none smtp.client-ip=209.85.219.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--dhavale.bounces.google.com
+Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dc6b26783b4so6904879276.0
+        for <stable@vger.kernel.org>; Wed, 21 Feb 2024 13:03:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1708549434; x=1709154234; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=7SrJM1oyxiJBee5rhTbp+mwhYJ/a30jfajx9Ht8Agks=;
+        b=XkYVzpiqe9fl7KoD+u8Q5nDChNIcsunBNiRAFuXr6iUOprEDFc3Ds5mxPGuJI+ap6n
+         0t4u+LCIQJ7R19UHG4QhqUIeSMQgB/zMsJZlUcJF0qhBb4Dr93McDs211lzb//3/AMZp
+         3/bV+LbmaZKiZ7g3EkS1hgvfpaf6jbdPHNcyscVSUqaIFVxNhItvoni3ZPOzguxVDCQ/
+         t8oVMpIDtjxxNOw++Ngs7KuMhwlv/zFiRrE4rqOaRnV15hayHSPCCMlVAOjuRviiNpLa
+         dCLuO996tSsfrqevRTu/ucyGW7sEf8MjaWxvMk06w37R6py9PghQgqxZvWh1482eH27a
+         bFiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708549434; x=1709154234;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7SrJM1oyxiJBee5rhTbp+mwhYJ/a30jfajx9Ht8Agks=;
+        b=OFeczw1RqheC9kpUU/+2qiTK9RWeTholGVGCOs7yWpF3usxlz34eUfOYSy7mt67TOK
+         tN5/gsYKJleVn/mceJhf9wbfEr5FGqiOagbAzm8UtTiRJrITDmrd+AIf+GgkFr3aLsj9
+         SBMVV+dVNuroZKSNC00QSbwSNXxEl48kZuLgSdb708a2UNulTOh/Tysg0aKrzp6Fz60i
+         /PWRZ0gsYC3YOh4K6sRqVaBdGkXTAYgb4xwL9Dia4f8DrDS3pKATz2jtexClLIiUHT58
+         6ITW/UF3px+iVbBK3/kMBGB5NobO1qxXoR7UcpOIQFKWUF9RqcCrSDHCETCfRZgPs3qG
+         RDlA==
+X-Forwarded-Encrypted: i=1; AJvYcCX18GNUr8GxKVDkDdO+kZEi6nLrqB56C/cDccBm0K046ZSDnfG3hmrgQqMCEShbZIxEhRYAQo4hei+cdAvgmdTekEDjhgW0
+X-Gm-Message-State: AOJu0Yw1vNXpZKC2YgO6RwMEkOYOCcOad+0CLrlKXknaR9NZwT7ntHls
+	R8lsIS6cps3zr04Bk3xqiQ8jVQiydQWlWUTrrL8k3hR2VaPQp7a3uRugUXbmpW4SKCxneICh6gs
+	R4HLT3A==
+X-Google-Smtp-Source: AGHT+IGfQ7tP0IsEPfMeTEUa+hP//eArvfxvolLuo29MkXjSjnUdg2wVPoB/uWCNVbaUgyFPLcxJaw3bv2eA
+X-Received: from dhavale-desktop.mtv.corp.google.com ([2620:15c:211:201:e195:1d33:bc5c:369a])
+ (user=dhavale job=sendgmr) by 2002:a05:6902:1505:b0:dc6:c94e:fb85 with SMTP
+ id q5-20020a056902150500b00dc6c94efb85mr19718ybu.2.1708549434314; Wed, 21 Feb
+ 2024 13:03:54 -0800 (PST)
+Date: Wed, 21 Feb 2024 13:03:47 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aaf2f030-b6f4-437b-bb4e-79aa4891ae56@suse.cz>
-X-Migadu-Flow: FLOW_OUT
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.44.0.rc0.258.g7320e95886-goog
+Message-ID: <20240221210348.3667795-1-dhavale@google.com>
+Subject: [PATCH v2] erofs: fix refcount on the metabuf used for inode lookup
+From: Sandeep Dhavale <dhavale@google.com>
+To: Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, Yue Hu <huyue2@coolpad.com>, 
+	Jeffle Xu <jefflexu@linux.alibaba.com>
+Cc: quic_wenjieli@quicinc.com, Sandeep Dhavale <dhavale@google.com>, stable@vger.kernel.org, 
+	kernel-team@android.com, linux-erofs@lists.ozlabs.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Feb 21, 2024 at 07:10:02PM +0100, Vlastimil Babka wrote:
-> On 2/21/24 18:57, Greg KH wrote:
-> > On Wed, Feb 21, 2024 at 05:00:05PM +0100, Oleksandr Natalenko wrote:
-> >> On středa 21. února 2024 15:53:11 CET Greg KH wrote:
-> >> > 	Given the huge patch volume that the stable tree manages (30-40 changes
-> >> > 	accepted a day, 7 days a week), any one kernel subsystem that wishes to
-> >> > 	do something different only slows down everyone else.
-> >> 
-> >> Lower down the volume then? Raise the bar for what gets backported?
-> >> Stable kernel releases got unnecessarily big [1] (Jiří is in Cc).
-> >> Those 40 changes a day cannot get a proper review. Each stable release
-> >> tries to mimic -rc except -rc is in consistent state while "stable" is
-> >> just a bunch of changes picked here and there.
-> > 
-> > If you can point out any specific commits that we should not be taking,
-> > please let us know.
-> > 
-> > Personally I think we are not taking enough, and are still missing real
-> > fixes.  Overall, this is only a very small % of what goes into Linus's
-> > tree every day, so by that measure alone, we know we are missing things.
-> 
-> What % of what goes into Linus's tree do you think fits within the rules
-> stated in Documentation/process/stable-kernel-rules.rst ? I don't know but
-> "very small" would be my guess, so we should be fine as it is?
-> 
-> Or are the rules actually still being observed? I doubt e.g. many of the
-> AUTOSEL backports fit them? Should we rename the file to
-> stable-rules-nonsense.rst?
+In erofs_find_target_block() when erofs_dirnamecmp() returns 0,
+we do not assign the target metabuf. This causes the caller
+erofs_namei()'s erofs_put_metabuf() at the end to be not effective
+leaving the refcount on the page.
+As the page from metabuf (buf->page) is never put, such page cannot be
+migrated or reclaimed. Fix it now by putting the metabuf from
+previous loop and assigning the current metabuf to target before
+returning so caller erofs_namei() can do the final put as it was
+intended.
 
-Yeah, I'd say around half of the backports I see being done really had
-no justification at all - i.e. were for fixes for bugs that weren't
-present on the kernel being backported to, including most of the autosel
-patches.
+Fixes: 500edd095648 ("erofs: use meta buffers for inode lookup")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sandeep Dhavale <dhavale@google.com>
+---
+Changes since v1
+- Rearrange the cases as suggested by Gao so there is less duplication
+    of the code and it is more readable
 
-There's clearly a balance to be struck with what we backport - but it
-doesn't seem like Greg and Sasha are trying to find that balance, it
-seems to be all pedal-to-the-metal backport-everything.
+ fs/erofs/namei.c | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-And the "process" seems to be whatever makes things most convenient for
-Greg and Sasha, and they _really_ want to be doing everything
-themselves. That form letter response quite illustrates that.
+diff --git a/fs/erofs/namei.c b/fs/erofs/namei.c
+index d4f631d39f0f..f0110a78acb2 100644
+--- a/fs/erofs/namei.c
++++ b/fs/erofs/namei.c
+@@ -130,24 +130,24 @@ static void *erofs_find_target_block(struct erofs_buf *target,
+ 			/* string comparison without already matched prefix */
+ 			diff = erofs_dirnamecmp(name, &dname, &matched);
+ 
+-			if (!diff) {
+-				*_ndirents = 0;
+-				goto out;
+-			} else if (diff > 0) {
+-				head = mid + 1;
+-				startprfx = matched;
+-
+-				if (!IS_ERR(candidate))
+-					erofs_put_metabuf(target);
+-				*target = buf;
+-				candidate = de;
+-				*_ndirents = ndirents;
+-			} else {
++			if (diff < 0) {
+ 				erofs_put_metabuf(&buf);
+-
+ 				back = mid - 1;
+ 				endprfx = matched;
++				continue;
++			}
++
++			if (!IS_ERR(candidate))
++				erofs_put_metabuf(target);
++			*target = buf;
++			if (!diff) {
++				*_ndirents = 0;
++				return de;
+ 			}
++			head = mid + 1;
++			startprfx = matched;
++			candidate = de;
++			*_ndirents = ndirents;
+ 			continue;
+ 		}
+ out:		/* free if the candidate is valid */
+-- 
+2.44.0.rc0.258.g7320e95886-goog
 
-This doesn't scale.
-
-And Greg not taking signed pull requests is a _real_ what the fuck. If
-we care about supply chain attacks at all, surely we care about them for
-stable, because those are the kernels most people actually run!
-
-Greg, you're doing an end run around a lot of the process the
-_community_ has built up.
 
