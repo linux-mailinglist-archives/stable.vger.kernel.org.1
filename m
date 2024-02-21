@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-23121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FE4685DF89
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:29:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 756DF85DEBD
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:21:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 94357B22AFE
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:27:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A5703B254B4
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:16:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC4F07BB11;
-	Wed, 21 Feb 2024 14:27:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E85CD69D29;
+	Wed, 21 Feb 2024 14:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BZLmg1w+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xER8sqRh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89F244C62;
-	Wed, 21 Feb 2024 14:27:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A527078B4F;
+	Wed, 21 Feb 2024 14:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525637; cv=none; b=guzPkiAEZ24tGwSO/B462S4ks0LY6VsQci+doHngSCJhkssDaPkx1DoYR+SwlWSXEyc1gk8gICggarnI4ZJBgqvLT2CP7AjCAH6jxIwPF/StN9bHgHyzrZzboCt15FPkprQYj6lEBmYvBaLyrQ8FTvizcn4B0cyVaKejGZotamw=
+	t=1708524920; cv=none; b=dzsCJ9eFLBCkM6tIBGjlkLCEy68yUOm/6uI3hfz7JgQkBcMiievCxAq3Zyb9ZDNgB2XghV5bNEaaiIDf/e2o2Ye4+hwbgcR/oY0H78HA72K7xrGeovj1xYww3e2wHbFawwlMibBJeu2J+BPhAkLMp2AdFLl3wV31EAu4DGyM+xU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525637; c=relaxed/simple;
-	bh=gw8JERSiSovd3fAYstutUctWKPBlMy384Yj0u/kc+eA=;
+	s=arc-20240116; t=1708524920; c=relaxed/simple;
+	bh=QOH+weBv3C3hdmsf8z8322WMF36MxiIN8JK9wBhkIhQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IupOYFgfaKBVm6wGMd6RuI2A5aW0upVHKgmzY2mqMGs9NG4GQUZFmkySSyIBw3Mdyvisv7ynvpnnJjWGGDwaXNhRa2HHP3OvZ0dHN/RUWlFAbcWCSDDyofI9h7urtlrmzwW+fIxuleymuuh65nlHVq42nQV6jmikD19UGd9kdp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BZLmg1w+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F40B0C433F1;
-	Wed, 21 Feb 2024 14:27:16 +0000 (UTC)
+	 MIME-Version; b=FDaGEXQrlQQqT7Iq8jMdTkXC/mAzupNWXJi3YOfIa87qD38cVQGbdeKA/7u67uhfdJcr4x8wXaH/gR1QKPk8XGWpeI0hpPqRt2b5rn8iHprJ4Kl+cTz8U3tjUrTpIyi/DKxvemw9RCdwCXWg/RrcmF9RWC9RpWhyM/iqc1Scmq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xER8sqRh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29A7EC433C7;
+	Wed, 21 Feb 2024 14:15:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525637;
-	bh=gw8JERSiSovd3fAYstutUctWKPBlMy384Yj0u/kc+eA=;
+	s=korg; t=1708524920;
+	bh=QOH+weBv3C3hdmsf8z8322WMF36MxiIN8JK9wBhkIhQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BZLmg1w+porGfix7FSEhBJ7xxVtaaGB1gnvVWVTq4Y/F8DdU+2Jz8SC2gspV4BfdM
-	 oWmPshFQLCX3xHYOusCf9dKlFhbsl+i11Z6Qvvfjum7ogCjFvvX188lIbnItuFJ50C
-	 xD59PXI8bUchz8mB3cgB5mAkAV8uUEd+PV8b1o0k=
+	b=xER8sqRh2k7nbc+7yVP5mHR63hGocd8UhsUGqd3aU4rNB+lfRs+8EBwMRywL3bBe/
+	 Ehd1F9SwucT/Nt8piBGyUSJZQXobMOLy0uNjVv22fFA+pSRGYYkNopSatVY6fcW+nF
+	 EZAMgUKuFazfpZet2wlbrKNgOsadkkiGyFYbvg9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Jason Gerecke <jason.gerecke@wacom.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 5.4 216/267] HID: wacom: Do not register input devices until after hid_hw_start
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 378/379] net: bcmgenet: Fix EEE implementation
 Date: Wed, 21 Feb 2024 14:09:17 +0100
-Message-ID: <20240221125946.995040407@linuxfoundation.org>
+Message-ID: <20240221130006.242696568@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,152 +62,147 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gerecke <killertofu@gmail.com>
+From: Florian Fainelli <florian.fainelli@broadcom.com>
 
-commit c1d6708bf0d3dd976460d435373cf5abf21ce258 upstream.
+commit a9f31047baca57d47440c879cf259b86f900260c upstream.
 
-If a input device is opened before hid_hw_start is called, events may
-not be received from the hardware. In the case of USB-backed devices,
-for example, the hid_hw_start function is responsible for filling in
-the URB which is submitted when the input device is opened. If a device
-is opened prematurely, polling will never start because the device will
-not have been in the correct state to send the URB.
+We had a number of short comings:
 
-Because the wacom driver registers its input devices before calling
-hid_hw_start, there is a window of time where a device can be opened
-and end up in an inoperable state. Some ARM-based Chromebooks in particular
-reliably trigger this bug.
+- EEE must be re-evaluated whenever the state machine detects a link
+  change as wight be switching from a link partner with EEE
+  enabled/disabled
 
-This commit splits the wacom_register_inputs function into two pieces.
-One which is responsible for setting up the allocated inputs (and runs
-prior to hid_hw_start so that devices are ready for any input events
-they may end up receiving) and another which only registers the devices
-(and runs after hid_hw_start to ensure devices can be immediately opened
-without issue). Note that the functions to initialize the LEDs and remotes
-are also moved after hid_hw_start to maintain their own dependency chains.
+- tx_lpi_enabled controls whether EEE should be enabled/disabled for the
+  transmit path, which applies to the TBUF block
 
-Fixes: 7704ac937345 ("HID: wacom: implement generic HID handling for pen generic devices")
-Cc: stable@vger.kernel.org # v3.18+
-Suggested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
-Tested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+- We do not need to forcibly enable EEE upon system resume, as the PHY
+  state machine will trigger a link event that will do that, too
+
+Fixes: 6ef398ea60d9 ("net: bcmgenet: add EEE support")
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://lore.kernel.org/r/20230606214348.2408018-1-florian.fainelli@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/wacom_sys.c |   63 ++++++++++++++++++++++++++++++++----------------
- 1 file changed, 43 insertions(+), 20 deletions(-)
 
---- a/drivers/hid/wacom_sys.c
-+++ b/drivers/hid/wacom_sys.c
-@@ -2088,7 +2088,7 @@ static int wacom_allocate_inputs(struct
- 	return 0;
+---
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c |   22 ++++++++--------------
+ drivers/net/ethernet/broadcom/genet/bcmgenet.h |    3 +++
+ drivers/net/ethernet/broadcom/genet/bcmmii.c   |    6 ++++++
+ 3 files changed, 17 insertions(+), 14 deletions(-)
+
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -1244,7 +1244,8 @@ static void bcmgenet_get_ethtool_stats(s
+ 	}
  }
  
--static int wacom_register_inputs(struct wacom *wacom)
-+static int wacom_setup_inputs(struct wacom *wacom)
+-static void bcmgenet_eee_enable_set(struct net_device *dev, bool enable)
++void bcmgenet_eee_enable_set(struct net_device *dev, bool enable,
++			     bool tx_lpi_enabled)
  {
- 	struct input_dev *pen_input_dev, *touch_input_dev, *pad_input_dev;
- 	struct wacom_wac *wacom_wac = &(wacom->wacom_wac);
-@@ -2107,10 +2107,6 @@ static int wacom_register_inputs(struct
- 		input_free_device(pen_input_dev);
- 		wacom_wac->pen_input = NULL;
- 		pen_input_dev = NULL;
--	} else {
--		error = input_register_device(pen_input_dev);
--		if (error)
--			goto fail;
- 	}
+ 	struct bcmgenet_priv *priv = netdev_priv(dev);
+ 	u32 off = priv->hw_params->tbuf_offset + TBUF_ENERGY_CTRL;
+@@ -1264,7 +1265,7 @@ static void bcmgenet_eee_enable_set(stru
  
- 	error = wacom_setup_touch_input_capabilities(touch_input_dev, wacom_wac);
-@@ -2119,10 +2115,6 @@ static int wacom_register_inputs(struct
- 		input_free_device(touch_input_dev);
- 		wacom_wac->touch_input = NULL;
- 		touch_input_dev = NULL;
--	} else {
--		error = input_register_device(touch_input_dev);
--		if (error)
--			goto fail;
- 	}
+ 	/* Enable EEE and switch to a 27Mhz clock automatically */
+ 	reg = bcmgenet_readl(priv->base + off);
+-	if (enable)
++	if (tx_lpi_enabled)
+ 		reg |= TBUF_EEE_EN | TBUF_PM_EN;
+ 	else
+ 		reg &= ~(TBUF_EEE_EN | TBUF_PM_EN);
+@@ -1285,6 +1286,7 @@ static void bcmgenet_eee_enable_set(stru
  
- 	error = wacom_setup_pad_input_capabilities(pad_input_dev, wacom_wac);
-@@ -2131,7 +2123,34 @@ static int wacom_register_inputs(struct
- 		input_free_device(pad_input_dev);
- 		wacom_wac->pad_input = NULL;
- 		pad_input_dev = NULL;
--	} else {
-+	}
-+
-+	return 0;
-+}
-+
-+static int wacom_register_inputs(struct wacom *wacom)
-+{
-+	struct input_dev *pen_input_dev, *touch_input_dev, *pad_input_dev;
-+	struct wacom_wac *wacom_wac = &(wacom->wacom_wac);
-+	int error = 0;
-+
-+	pen_input_dev = wacom_wac->pen_input;
-+	touch_input_dev = wacom_wac->touch_input;
-+	pad_input_dev = wacom_wac->pad_input;
-+
-+	if (pen_input_dev) {
-+		error = input_register_device(pen_input_dev);
-+		if (error)
-+			goto fail;
-+	}
-+
-+	if (touch_input_dev) {
-+		error = input_register_device(touch_input_dev);
-+		if (error)
-+			goto fail;
-+	}
-+
-+	if (pad_input_dev) {
- 		error = input_register_device(pad_input_dev);
- 		if (error)
- 			goto fail;
-@@ -2381,6 +2400,20 @@ static int wacom_parse_and_register(stru
- 			goto fail;
- 	}
+ 	priv->eee.eee_enabled = enable;
+ 	priv->eee.eee_active = enable;
++	priv->eee.tx_lpi_enabled = tx_lpi_enabled;
+ }
  
-+	error = wacom_setup_inputs(wacom);
-+	if (error)
-+		goto fail;
-+
-+	if (features->type == HID_GENERIC)
-+		connect_mask |= HID_CONNECT_DRIVER;
-+
-+	/* Regular HID work starts now */
-+	error = hid_hw_start(hdev, connect_mask);
-+	if (error) {
-+		hid_err(hdev, "hw start failed\n");
-+		goto fail;
-+	}
-+
- 	error = wacom_register_inputs(wacom);
- 	if (error)
- 		goto fail;
-@@ -2395,16 +2428,6 @@ static int wacom_parse_and_register(stru
- 			goto fail;
- 	}
+ static int bcmgenet_get_eee(struct net_device *dev, struct ethtool_eee *e)
+@@ -1300,6 +1302,7 @@ static int bcmgenet_get_eee(struct net_d
  
--	if (features->type == HID_GENERIC)
--		connect_mask |= HID_CONNECT_DRIVER;
+ 	e->eee_enabled = p->eee_enabled;
+ 	e->eee_active = p->eee_active;
++	e->tx_lpi_enabled = p->tx_lpi_enabled;
+ 	e->tx_lpi_timer = bcmgenet_umac_readl(priv, UMAC_EEE_LPI_TIMER);
+ 
+ 	return phy_ethtool_get_eee(dev->phydev, e);
+@@ -1309,7 +1312,6 @@ static int bcmgenet_set_eee(struct net_d
+ {
+ 	struct bcmgenet_priv *priv = netdev_priv(dev);
+ 	struct ethtool_eee *p = &priv->eee;
+-	int ret = 0;
+ 
+ 	if (GENET_IS_V1(priv))
+ 		return -EOPNOTSUPP;
+@@ -1320,16 +1322,11 @@ static int bcmgenet_set_eee(struct net_d
+ 	p->eee_enabled = e->eee_enabled;
+ 
+ 	if (!p->eee_enabled) {
+-		bcmgenet_eee_enable_set(dev, false);
++		bcmgenet_eee_enable_set(dev, false, false);
+ 	} else {
+-		ret = phy_init_eee(dev->phydev, 0);
+-		if (ret) {
+-			netif_err(priv, hw, dev, "EEE initialization failed\n");
+-			return ret;
+-		}
 -
--	/* Regular HID work starts now */
--	error = hid_hw_start(hdev, connect_mask);
--	if (error) {
--		hid_err(hdev, "hw start failed\n");
--		goto fail;
--	}
++		p->eee_active = phy_init_eee(dev->phydev, false) >= 0;
+ 		bcmgenet_umac_writel(priv, e->tx_lpi_timer, UMAC_EEE_LPI_TIMER);
+-		bcmgenet_eee_enable_set(dev, true);
++		bcmgenet_eee_enable_set(dev, p->eee_active, e->tx_lpi_enabled);
+ 	}
+ 
+ 	return phy_ethtool_set_eee(dev->phydev, e);
+@@ -4217,9 +4214,6 @@ static int bcmgenet_resume(struct device
+ 	if (!device_may_wakeup(d))
+ 		phy_resume(dev->phydev);
+ 
+-	if (priv->eee.eee_enabled)
+-		bcmgenet_eee_enable_set(dev, true);
 -
- 	if (!wireless) {
- 		/* Note that if query fails it is not a hard failure */
- 		wacom_query_tablet_data(wacom);
+ 	bcmgenet_netif_start(dev);
+ 
+ 	netif_device_attach(dev);
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
+@@ -756,4 +756,7 @@ int bcmgenet_wol_power_down_cfg(struct b
+ void bcmgenet_wol_power_up_cfg(struct bcmgenet_priv *priv,
+ 			       enum bcmgenet_power_mode mode);
+ 
++void bcmgenet_eee_enable_set(struct net_device *dev, bool enable,
++			     bool tx_lpi_enabled);
++
+ #endif /* __BCMGENET_H__ */
+--- a/drivers/net/ethernet/broadcom/genet/bcmmii.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmmii.c
+@@ -25,6 +25,7 @@
+ 
+ #include "bcmgenet.h"
+ 
++
+ /* setup netdev link state when PHY link status change and
+  * update UMAC and RGMII block when link up
+  */
+@@ -102,6 +103,11 @@ void bcmgenet_mii_setup(struct net_devic
+ 			reg |= CMD_TX_EN | CMD_RX_EN;
+ 		}
+ 		bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++
++		priv->eee.eee_active = phy_init_eee(phydev, 0) >= 0;
++		bcmgenet_eee_enable_set(dev,
++					priv->eee.eee_enabled && priv->eee.eee_active,
++					priv->eee.tx_lpi_enabled);
+ 	} else {
+ 		/* done if nothing has changed */
+ 		if (!status_changed)
 
 
 
