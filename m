@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-22830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC84D85DDFE
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:14:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE40C85DC3B
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:50:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14AB21C23878
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B8B71C22891
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:50:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6C208060A;
-	Wed, 21 Feb 2024 14:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A6FC7BB18;
+	Wed, 21 Feb 2024 13:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dULLBpjm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K3BY0vPG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773A280604;
-	Wed, 21 Feb 2024 14:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A61217BB01;
+	Wed, 21 Feb 2024 13:50:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524656; cv=none; b=NXms2qc9fDDsW41GWtcPzBdNESEa4B7t7+z7hEYVCziro7mdSfjHkHw2BKsKyAPAOWPtryFiFHxZQ1svLHIx2DBnwC/90QnUIHjDxxQxe6xPFN05f8UGG+Xd7gamfHccbEVmVMtZaiIB8tpkBKGzp548z3PGb9wZLVjDlTNsY+E=
+	t=1708523435; cv=none; b=JMRxLM1zoPZmHaDoHmdpCdlWBcGj0NH/uiCjdXAXiTvZa8ZESte8Md8Cce+U21fH/EArZF4sipe1dloDIZ0h7VhxJ7A//xe2S3jp2pr59LR/8XRWykCty/+ZKv4Y9ahHt+dlGkfFqyIe/0BYn4xnJBY6c6/xPLKkcSKegoYJ/44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524656; c=relaxed/simple;
-	bh=ziw5RVNGJZU+hELz9Xr/4NFwaYkIwMTNWT/PFO0KRH0=;
+	s=arc-20240116; t=1708523435; c=relaxed/simple;
+	bh=NcNiIDeksB+8HI3imukBz4JFb7c/39qWVprYVCx95HI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u63IWusSXJKZ+KHcS156hLzotmEUS9LBo9DiC5BonFrcKjA1KFl0A5o0BKH8BQmxHN+A5mjVNZAFFwCmCKIF8OY00UgFb1nhli4VbUqwcCjry61dUl77pq/lfejxcV3AHQq6jZEkTalMzZHwbHks54QAxwTyvo1FP2E76U8y3Kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dULLBpjm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C6BC433F1;
-	Wed, 21 Feb 2024 14:10:55 +0000 (UTC)
+	 MIME-Version; b=Qtu3vPvnT4K1XnDEzSa0UpVDxKjlAOnbNK6aLRNhLbWnKsLDw+1Ca7YxFs3wMvaivZ+40jPGo0RDecrurM/y1rLynZu8EBOJ2fLijPmRR3qrr/+l/j2cML0ZxWzcMqCrtG+CJkVSYeS2XTjADN8sRc+gCnkig9dORIdesz14ZUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K3BY0vPG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 270C1C433C7;
+	Wed, 21 Feb 2024 13:50:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524656;
-	bh=ziw5RVNGJZU+hELz9Xr/4NFwaYkIwMTNWT/PFO0KRH0=;
+	s=korg; t=1708523434;
+	bh=NcNiIDeksB+8HI3imukBz4JFb7c/39qWVprYVCx95HI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dULLBpjmyDWh6uxdsq7cq1LbEUqT3FXqH8mDgAc/gSNp0LPKZo7CeCSsCSyKypTC7
-	 j8dqqr0V7rahRx1Uiot0TsGs/CgqE/xfcQ02K0atY9aCGwDK3E7BlFaPXqINNotUk6
-	 kqGnENn44k2pqOT/erzsyz3sE9wLx+zrcT1tsC1g=
+	b=K3BY0vPGr6JYDV2MxEbMwVGZVbBi4cdG3nepEjTTqzs8mjGnwWlM4zCEvygQeKeym
+	 3CGYAZwaa8y1/SlCE1kXdyCUFXW/hWPo6uhafb1vyu9w5wnZl3St/bPmykQQTXRUGn
+	 cUEplNyEZp6xaNC/oKE5IDnROLeD+yub9Ur8Zh58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jean Delvare <jdelvare@suse.de>,
-	Wolfram Sang <wsa@kernel.org>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 308/379] i2c: i801: Remove i801_set_block_buffer_mode
+Subject: [PATCH 5.15 436/476] usb: dwc3: gadget: Delay issuing End Transfer
 Date: Wed, 21 Feb 2024 14:08:07 +0100
-Message-ID: <20240221130004.039523480@linuxfoundation.org>
+Message-ID: <20240221130024.155860682@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +61,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-[ Upstream commit 1e1d6582f483a4dba4ea03445e6f2f05d9de5bcf ]
+[ Upstream commit f66eef8fb8989a7193cafc3870f7c7b2b97f16cb ]
 
-If FEATURE_BLOCK_BUFFER is set then bit SMBAUXCTL_E32B is supported
-and there's no benefit in reading it back. Origin of this check
-seems to be 14 yrs ago when people were not completely sure which
-chip versions support the block buffer mode.
+If the controller hasn't DMA'ed the Setup data from its fifo, it won't
+process the End Transfer command. Polling for the command completion may
+block the driver from servicing the Setup phase and cause a timeout.
+Previously we only check and delay issuing End Transfer in the case of
+endpoint dequeue. Let's do that for all End Transfer scenarios.
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Jean Delvare <jdelvare@suse.de>
-Tested-by: Jean Delvare <jdelvare@suse.de>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
-Stable-dep-of: c1c9d0f6f7f1 ("i2c: i801: Fix block process call transactions")
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/2fcf3b5d90068d549589a57a27a79f76c6769b04.1650593829.git.Thinh.Nguyen@synopsys.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 730e12fbec53 ("usb: dwc3: gadget: Handle EP0 request dequeuing properly")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-i801.c | 17 +++++------------
- 1 file changed, 5 insertions(+), 12 deletions(-)
+ drivers/usb/dwc3/gadget.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-i801.c b/drivers/i2c/busses/i2c-i801.c
-index cb8f56022592..15520d491140 100644
---- a/drivers/i2c/busses/i2c-i801.c
-+++ b/drivers/i2c/busses/i2c-i801.c
-@@ -540,9 +540,11 @@ static int i801_block_transaction_by_block(struct i801_priv *priv,
- 		return -EOPNOTSUPP;
- 	}
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index 4d830ba7d824..5cf2fb165a56 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -2029,16 +2029,6 @@ static int dwc3_gadget_ep_dequeue(struct usb_ep *ep,
+ 		if (r == req) {
+ 			struct dwc3_request *t;
  
-+	/* Set block buffer mode */
-+	outb_p(inb_p(SMBAUXCTL(priv)) | SMBAUXCTL_E32B, SMBAUXCTL(priv));
-+
- 	inb_p(SMBHSTCNT(priv)); /* reset the data buffer index */
- 
--	/* Use 32-byte buffer to process this transaction */
- 	if (read_write == I2C_SMBUS_WRITE) {
- 		len = data->block[0];
- 		outb_p(len, SMBHSTDAT0(priv));
-@@ -780,14 +782,6 @@ static int i801_block_transaction_byte_by_byte(struct i801_priv *priv,
- 	return i801_check_post(priv, status);
- }
- 
--static int i801_set_block_buffer_mode(struct i801_priv *priv)
--{
--	outb_p(inb_p(SMBAUXCTL(priv)) | SMBAUXCTL_E32B, SMBAUXCTL(priv));
--	if ((inb_p(SMBAUXCTL(priv)) & SMBAUXCTL_E32B) == 0)
--		return -EIO;
--	return 0;
--}
+-			/*
+-			 * If a Setup packet is received but yet to DMA out, the controller will
+-			 * not process the End Transfer command of any endpoint. Polling of its
+-			 * DEPCMD.CmdAct may block setting up TRB for Setup packet, causing a
+-			 * timeout. Delay issuing the End Transfer command until the Setup TRB is
+-			 * prepared.
+-			 */
+-			if (dwc->ep0state != EP0_SETUP_PHASE && !dwc->delayed_status)
+-				dep->flags |= DWC3_EP_DELAY_STOP;
 -
- /* Block transaction function */
- static int i801_block_transaction(struct i801_priv *priv,
- 				  union i2c_smbus_data *data, char read_write,
-@@ -817,9 +811,8 @@ static int i801_block_transaction(struct i801_priv *priv,
- 	/* Experience has shown that the block buffer can only be used for
- 	   SMBus (not I2C) block transactions, even though the datasheet
- 	   doesn't mention this limitation. */
--	if ((priv->features & FEATURE_BLOCK_BUFFER)
--	 && command != I2C_SMBUS_I2C_BLOCK_DATA
--	 && i801_set_block_buffer_mode(priv) == 0)
-+	if ((priv->features & FEATURE_BLOCK_BUFFER) &&
-+	    command != I2C_SMBUS_I2C_BLOCK_DATA)
- 		result = i801_block_transaction_by_block(priv, data,
- 							 read_write,
- 							 command, hwpec);
+ 			/* wait until it is processed */
+ 			dwc3_stop_active_transfer(dep, true, true);
+ 
+@@ -3663,6 +3653,18 @@ void dwc3_stop_active_transfer(struct dwc3_ep *dep, bool force,
+ 	    (dep->flags & DWC3_EP_END_TRANSFER_PENDING))
+ 		return;
+ 
++	/*
++	 * If a Setup packet is received but yet to DMA out, the controller will
++	 * not process the End Transfer command of any endpoint. Polling of its
++	 * DEPCMD.CmdAct may block setting up TRB for Setup packet, causing a
++	 * timeout. Delay issuing the End Transfer command until the Setup TRB is
++	 * prepared.
++	 */
++	if (dwc->ep0state != EP0_SETUP_PHASE && !dwc->delayed_status) {
++		dep->flags |= DWC3_EP_DELAY_STOP;
++		return;
++	}
++
+ 	/*
+ 	 * NOTICE: We are violating what the Databook says about the
+ 	 * EndTransfer command. Ideally we would _always_ wait for the
 -- 
 2.43.0
 
