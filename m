@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-22431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A27C285DBFE
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:48:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2C6985D975
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:18:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58D101F2148A
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:48:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B20E28511C
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:18:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA69878B53;
-	Wed, 21 Feb 2024 13:48:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CABA69E08;
+	Wed, 21 Feb 2024 13:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0imCjc8c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U2YKOGFi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7CF64D5B7;
-	Wed, 21 Feb 2024 13:48:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF79346B9B;
+	Wed, 21 Feb 2024 13:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523280; cv=none; b=jYgu0Ks46Tn8tGgS1dzQ7YQk+KqgzOIB5h1w1Y0W2ATyS7r9yKV4j6YQNC844JCfqfKhqVAnRoPYYsEWUe+NaNV+kJuGHhfJdvsLkFRzrPg3WnMPfT5Vkg7rxyDLmm2FK4nem1Qvw08UNpjB1uaGpZP/DE0H9KsOX3l721yCSZ4=
+	t=1708521534; cv=none; b=pTjMHmQnLohrE5J2hhGcF9Wf7Li4Hv0eiWQNUak5g9LVs3fQ6lejdrNU1jF68LW5mNCnDxGGE+0Z4GpEOVdD8Lzg0m5hwGqWuN0p9pycB1bQ6ja0NxNCEEx4hhcuLRBaZAeBK8KKgBJ+u6jWHfWiYzNkDhpVzI+mAgjiyMDNdpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523280; c=relaxed/simple;
-	bh=V/HneihaETKNmlKuBjFubDXYnv/ieF0sNE1kD0JNrsI=;
+	s=arc-20240116; t=1708521534; c=relaxed/simple;
+	bh=xp8O+8pJkX/te6xxfU9towpQYfd4L+deoXSLJV/yIIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jVjSlSkemwdMXdmbCqOyH6e5NCPkYYR74RYw/4HP9tXhooWLpPzIM42HbKgSSAR84xWF2UILbvwIwAGJ4CCLkaOVWSuDWr1xXLjJIO3HE1A0nnJQlVLM63a6n+saPSy7Sm0lQzOI0UytnaBzerBMEPFUEZX/gfVy50MSZ9IV+wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0imCjc8c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 352CFC433C7;
-	Wed, 21 Feb 2024 13:47:59 +0000 (UTC)
+	 MIME-Version; b=iaT003lk1L0k3BOHYfeNrZsq05P2oGCXzY7z6ui3DroLS7UQu2p5JznTYLBUaImHdHpjplD67HdUCgpJewNQbK14rUDVc8IO2+uynzYasFUM0HKx3TjrZCZr24SJO+C8gGX1p4NS+YGa8e7FHGmo15yFdyRwq0jZJbk/Uy6Tw0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U2YKOGFi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C5D4C433C7;
+	Wed, 21 Feb 2024 13:18:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523280;
-	bh=V/HneihaETKNmlKuBjFubDXYnv/ieF0sNE1kD0JNrsI=;
+	s=korg; t=1708521533;
+	bh=xp8O+8pJkX/te6xxfU9towpQYfd4L+deoXSLJV/yIIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0imCjc8cSSjTPBwCu3aZ+YpRL+7WM9ewK3TQWxSHcBXHtbEucZs5n2YIRB0tiizeX
-	 cMQwtsPAqggAysKTesbjcJOsvVNuQ3zW1/YmaxSbyz43Jx8OdiJ7aCTh5/d3JpyGN2
-	 GS+Ov4l57ubafTuigrT9z9cFnp6SvCl3HJttz1s0=
+	b=U2YKOGFilHqyPDtgRo61bIux2VD0pVkwqgyelvV/7cN6mzdUfxOZBLJr7N3UyHx2t
+	 UrI8vxugYC2GIvdFMZFsCF0SY6kFbJWiS1ZuT+Cos/cfUq6dGnghR6d2aYb6aW4Kl6
+	 7TnpwsNc14MG+ylDpy97DFl9yHr8qNY+H+fKYXN4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Rodionov <vitalyr@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 386/476] ALSA: hda/cs8409: Suppress vmaster control for Dolphin models
+	Helge Deller <deller@gmx.de>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 136/202] ipv6: Ensure natural alignment of const ipv6 loopback and router addresses
 Date: Wed, 21 Feb 2024 14:07:17 +0100
-Message-ID: <20240221130022.308175845@linuxfoundation.org>
+Message-ID: <20240221125936.101119306@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Rodionov <vitalyr@opensource.cirrus.com>
+From: Helge Deller <deller@kernel.org>
 
-commit a2ed0a44d637ef9deca595054c206da7d6cbdcbc upstream.
+[ Upstream commit 60365049ccbacd101654a66ddcb299abfabd4fc5 ]
 
-Customer has reported an issue with specific desktop platform
-where two CS42L42 codecs are connected to CS8409 HDA bridge.
-If "Master Volume Control" is created then on Ubuntu OS UCM
-left/right balance slider in UI audio settings has no effect.
-This patch will fix this issue for a target paltform.
+On a parisc64 kernel I sometimes notice this kernel warning:
+Kernel unaligned access to 0x40ff8814 at ndisc_send_skb+0xc0/0x4d8
 
-Fixes: 20e507724113 ("ALSA: hda/cs8409: Add support for dolphin")
-Signed-off-by: Vitaly Rodionov <vitalyr@opensource.cirrus.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240122184710.5802-1-vitalyr@opensource.cirrus.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The address 0x40ff8814 points to the in6addr_linklocal_allrouters
+variable and the warning simply means that some ipv6 function tries to
+read a 64-bit word directly from the not-64-bit aligned
+in6addr_linklocal_allrouters variable.
+
+Unaligned accesses are non-critical as the architecture or exception
+handlers usually will fix it up at runtime. Nevertheless it may trigger
+a performance penality for some architectures. For details read the
+"unaligned-memory-access" kernel documentation.
+
+The patch below ensures that the ipv6 loopback and router addresses will
+always be naturally aligned. This prevents the unaligned accesses for
+all architectures.
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 034dfc5df99eb ("ipv6: export in6addr_loopback to modules")
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/ZbNuFM1bFqoH-UoY@p100
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_cs8409.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/ipv6/addrconf_core.c | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
---- a/sound/pci/hda/patch_cs8409.c
-+++ b/sound/pci/hda/patch_cs8409.c
-@@ -1200,6 +1200,7 @@ void dolphin_fixups(struct hda_codec *co
- 		spec->scodecs[CS8409_CODEC1] = &dolphin_cs42l42_1;
- 		spec->scodecs[CS8409_CODEC1]->codec = codec;
- 		spec->num_scodecs = 2;
-+		spec->gen.suppress_vmaster = 1;
+diff --git a/net/ipv6/addrconf_core.c b/net/ipv6/addrconf_core.c
+index 66a1a0eb2ed0..9c2c7baa3929 100644
+--- a/net/ipv6/addrconf_core.c
++++ b/net/ipv6/addrconf_core.c
+@@ -180,19 +180,26 @@ const struct ipv6_stub *ipv6_stub __read_mostly = &(struct ipv6_stub) {
+ EXPORT_SYMBOL_GPL(ipv6_stub);
  
- 		codec->patch_ops = cs8409_dolphin_patch_ops;
+ /* IPv6 Wildcard Address and Loopback Address defined by RFC2553 */
+-const struct in6_addr in6addr_loopback = IN6ADDR_LOOPBACK_INIT;
++const struct in6_addr in6addr_loopback __aligned(BITS_PER_LONG/8)
++	= IN6ADDR_LOOPBACK_INIT;
+ EXPORT_SYMBOL(in6addr_loopback);
+-const struct in6_addr in6addr_any = IN6ADDR_ANY_INIT;
++const struct in6_addr in6addr_any __aligned(BITS_PER_LONG/8)
++	= IN6ADDR_ANY_INIT;
+ EXPORT_SYMBOL(in6addr_any);
+-const struct in6_addr in6addr_linklocal_allnodes = IN6ADDR_LINKLOCAL_ALLNODES_INIT;
++const struct in6_addr in6addr_linklocal_allnodes __aligned(BITS_PER_LONG/8)
++	= IN6ADDR_LINKLOCAL_ALLNODES_INIT;
+ EXPORT_SYMBOL(in6addr_linklocal_allnodes);
+-const struct in6_addr in6addr_linklocal_allrouters = IN6ADDR_LINKLOCAL_ALLROUTERS_INIT;
++const struct in6_addr in6addr_linklocal_allrouters __aligned(BITS_PER_LONG/8)
++	= IN6ADDR_LINKLOCAL_ALLROUTERS_INIT;
+ EXPORT_SYMBOL(in6addr_linklocal_allrouters);
+-const struct in6_addr in6addr_interfacelocal_allnodes = IN6ADDR_INTERFACELOCAL_ALLNODES_INIT;
++const struct in6_addr in6addr_interfacelocal_allnodes __aligned(BITS_PER_LONG/8)
++	= IN6ADDR_INTERFACELOCAL_ALLNODES_INIT;
+ EXPORT_SYMBOL(in6addr_interfacelocal_allnodes);
+-const struct in6_addr in6addr_interfacelocal_allrouters = IN6ADDR_INTERFACELOCAL_ALLROUTERS_INIT;
++const struct in6_addr in6addr_interfacelocal_allrouters __aligned(BITS_PER_LONG/8)
++	= IN6ADDR_INTERFACELOCAL_ALLROUTERS_INIT;
+ EXPORT_SYMBOL(in6addr_interfacelocal_allrouters);
+-const struct in6_addr in6addr_sitelocal_allrouters = IN6ADDR_SITELOCAL_ALLROUTERS_INIT;
++const struct in6_addr in6addr_sitelocal_allrouters __aligned(BITS_PER_LONG/8)
++	= IN6ADDR_SITELOCAL_ALLROUTERS_INIT;
+ EXPORT_SYMBOL(in6addr_sitelocal_allrouters);
  
+ static void snmp6_free_dev(struct inet6_dev *idev)
+-- 
+2.43.0
+
 
 
 
