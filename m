@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-21908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E95285D91A
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B12E85DEDA
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:22:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 602D41C22DD6
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:14:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6205BB2C949
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:17:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9E6169D2E;
-	Wed, 21 Feb 2024 13:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 302E57CF33;
+	Wed, 21 Feb 2024 14:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bH70GHWQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZNSZGwgs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C14A69D09;
-	Wed, 21 Feb 2024 13:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E23026A8D6;
+	Wed, 21 Feb 2024 14:16:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521277; cv=none; b=ml7/Td7M4X8wAzjjYRJOJH8R9fZt0J5hI460GHhlH9W2hR2780loguDpQmc1s5fOmmUlnD0JOU2owjXj3menY9+g54pSig2bIwWd33BjytuFfyUwkO1EdbNOlXyZA+mNX2tJPaIQ98cMCJXg9lOK1in9SdewuyMl3qtTJ5NLDbg=
+	t=1708525004; cv=none; b=UGwMMiTibEWECvTXSP0yCf4qELE/VpvHwO+OqJ0vEXYJ5vwcA4nqejYb08gXFJYIfm6IqMbUFhNIXQxV2OHr4784R/GT0O+vR4TW1niSMUor/dr+nBYlo+dgeYPMxV3Ir0+u29FHPsNSXmCq3PzkeJoasIYcZrsQqYT+yjFb5IY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521277; c=relaxed/simple;
-	bh=/7ePqoOkCgebyyS2VfmypzqDY/C9RQJ/N8tM+dpZE80=;
+	s=arc-20240116; t=1708525004; c=relaxed/simple;
+	bh=kag4PtrrdQ0Px7B1PCmZZJ0/xy987hT2r59awfozZA8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g23ry5TgvfuzZuQGvMaWJNJ3CUKhjkh9Lv/PItio3+VGeCaf5/uewhudfgCek3KOo0TLnxlcbu1fmKPePIoCGGHlytLYa1DdFBH/MIzh0hAcbzJgIMg2vH4dXveZma88Ot9deusmyMsIxvl9kqlmA05pxVp+T1RiLKe2Hv+YnI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bH70GHWQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4766C433F1;
-	Wed, 21 Feb 2024 13:14:36 +0000 (UTC)
+	 MIME-Version; b=g57JiRkFcExGYis6/C43N+cRpOYl16eV7SyQ+Xosu7h7IPn5Gn18FCfbFi6BAwS+Qd8w/5KwihWVr3/coS2hBIEIqFjv0xSIY4a3F9bfIMbsH9YDi0xta2zvNMRJTIP8UsMbzp9tKsY4dR45Ar042RiZR+SDw8+jNbkG+Iw6ygc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZNSZGwgs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59B53C433F1;
+	Wed, 21 Feb 2024 14:16:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521277;
-	bh=/7ePqoOkCgebyyS2VfmypzqDY/C9RQJ/N8tM+dpZE80=;
+	s=korg; t=1708525003;
+	bh=kag4PtrrdQ0Px7B1PCmZZJ0/xy987hT2r59awfozZA8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bH70GHWQqJNK1t2QvjtAqRxjHc6WqMtZKAPBwDKfnyrrUe2l04Y7wWinWwYvhHYUH
-	 6xhrTca6MQdM1SxyUeyU0DN9tXtcwuFH7QhZWq58C35xVZAvSPh8NKOtxe3l6p19QA
-	 vMeR/ExI3XO6cxrsXDne0i+g5LYPjehIpX9Y91MA=
+	b=ZNSZGwgs8vE1zceFenuirWLm1nZ8QhzhtJsRQULv3is/sJdxh1Ht8yT2JsRgtsYJb
+	 ZzIY8Z9yQOt0p5HY2xZbnbR7p3B4A3G/F3XV2PUQC6ZMJ+eE93aDtX/WcQtSNIFdJj
+	 cJ3PWgAY2NWJAWALXf09PWKyjHkjEDyCA1VYSH34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	Sharath Srinivasan <sharath.srinivasan@oracle.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 069/202] KVM: s390: fix setting of fpc register
-Date: Wed, 21 Feb 2024 14:06:10 +0100
-Message-ID: <20240221125934.053618896@linuxfoundation.org>
+Subject: [PATCH 5.4 030/267] net/rds: Fix UBSAN: array-index-out-of-bounds in rds_cmsg_recv
+Date: Wed, 21 Feb 2024 14:06:11 +0100
+Message-ID: <20240221125940.986179127@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +64,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Sharath Srinivasan <sharath.srinivasan@oracle.com>
 
-[ Upstream commit b988b1bb0053c0dcd26187d29ef07566a565cf55 ]
+[ Upstream commit 13e788deb7348cc88df34bed736c3b3b9927ea52 ]
 
-kvm_arch_vcpu_ioctl_set_fpu() allows to set the floating point control
-(fpc) register of a guest cpu. The new value is tested for validity by
-temporarily loading it into the fpc register.
+Syzcaller UBSAN crash occurs in rds_cmsg_recv(),
+which reads inc->i_rx_lat_trace[j + 1] with index 4 (3 + 1),
+but with array size of 4 (RDS_RX_MAX_TRACES).
+Here 'j' is assigned from rs->rs_rx_trace[i] and in-turn from
+trace.rx_trace_pos[i] in rds_recv_track_latency(),
+with both arrays sized 3 (RDS_MSG_RX_DGRAM_TRACE_MAX). So fix the
+off-by-one bounds check in rds_recv_track_latency() to prevent
+a potential crash in rds_cmsg_recv().
 
-This may lead to corruption of the fpc register of the host process:
-if an interrupt happens while the value is temporarily loaded into the fpc
-register, and within interrupt context floating point or vector registers
-are used, the current fp/vx registers are saved with save_fpu_regs()
-assuming they belong to user space and will be loaded into fp/vx registers
-when returning to user space.
+Found by syzcaller:
+=================================================================
+UBSAN: array-index-out-of-bounds in net/rds/recv.c:585:39
+index 4 is out of range for type 'u64 [4]'
+CPU: 1 PID: 8058 Comm: syz-executor228 Not tainted 6.6.0-gd2f51b3516da #1
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
+BIOS 1.15.0-1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x136/0x150 lib/dump_stack.c:106
+ ubsan_epilogue lib/ubsan.c:217 [inline]
+ __ubsan_handle_out_of_bounds+0xd5/0x130 lib/ubsan.c:348
+ rds_cmsg_recv+0x60d/0x700 net/rds/recv.c:585
+ rds_recvmsg+0x3fb/0x1610 net/rds/recv.c:716
+ sock_recvmsg_nosec net/socket.c:1044 [inline]
+ sock_recvmsg+0xe2/0x160 net/socket.c:1066
+ __sys_recvfrom+0x1b6/0x2f0 net/socket.c:2246
+ __do_sys_recvfrom net/socket.c:2264 [inline]
+ __se_sys_recvfrom net/socket.c:2260 [inline]
+ __x64_sys_recvfrom+0xe0/0x1b0 net/socket.c:2260
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x40/0x110 arch/x86/entry/common.c:82
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
+==================================================================
 
-test_fp_ctl() restores the original user space / host process fpc register
-value, however it will be discarded, when returning to user space.
-
-In result the host process will incorrectly continue to run with the value
-that was supposed to be used for a guest cpu.
-
-Fix this by simply removing the test. There is another test right before
-the SIE context is entered which will handles invalid values.
-
-This results in a change of behaviour: invalid values will now be accepted
-instead of that the ioctl fails with -EINVAL. This seems to be acceptable,
-given that this interface is most likely not used anymore, and this is in
-addition the same behaviour implemented with the memory mapped interface
-(replace invalid values with zero) - see sync_regs() in kvm-s390.c.
-
-Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Fixes: 3289025aedc0 ("RDS: add receive message trace used by application")
+Reported-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Closes: https://lore.kernel.org/linux-rdma/CALGdzuoVdq-wtQ4Az9iottBqC5cv9ZhcE5q8N7LfYFvkRsOVcw@mail.gmail.com/
+Signed-off-by: Sharath Srinivasan <sharath.srinivasan@oracle.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kvm/kvm-s390.c | 5 -----
- 1 file changed, 5 deletions(-)
+ net/rds/af_rds.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-index 92041d442d2e..bc700cb9fc53 100644
---- a/arch/s390/kvm/kvm-s390.c
-+++ b/arch/s390/kvm/kvm-s390.c
-@@ -2995,10 +2995,6 @@ int kvm_arch_vcpu_ioctl_set_fpu(struct kvm_vcpu *vcpu, struct kvm_fpu *fpu)
+diff --git a/net/rds/af_rds.c b/net/rds/af_rds.c
+index 1a5bf3fa4578..af22f47c8612 100644
+--- a/net/rds/af_rds.c
++++ b/net/rds/af_rds.c
+@@ -421,7 +421,7 @@ static int rds_recv_track_latency(struct rds_sock *rs, char __user *optval,
  
- 	vcpu_load(vcpu);
- 
--	if (test_fp_ctl(fpu->fpc)) {
--		ret = -EINVAL;
--		goto out;
--	}
- 	vcpu->run->s.regs.fpc = fpu->fpc;
- 	if (MACHINE_HAS_VX)
- 		convert_fp_to_vx((__vector128 *) vcpu->run->s.regs.vrs,
-@@ -3006,7 +3002,6 @@ int kvm_arch_vcpu_ioctl_set_fpu(struct kvm_vcpu *vcpu, struct kvm_fpu *fpu)
- 	else
- 		memcpy(vcpu->run->s.regs.fprs, &fpu->fprs, sizeof(fpu->fprs));
- 
--out:
- 	vcpu_put(vcpu);
- 	return ret;
- }
+ 	rs->rs_rx_traces = trace.rx_traces;
+ 	for (i = 0; i < rs->rs_rx_traces; i++) {
+-		if (trace.rx_trace_pos[i] > RDS_MSG_RX_DGRAM_TRACE_MAX) {
++		if (trace.rx_trace_pos[i] >= RDS_MSG_RX_DGRAM_TRACE_MAX) {
+ 			rs->rs_rx_traces = 0;
+ 			return -EFAULT;
+ 		}
 -- 
 2.43.0
 
