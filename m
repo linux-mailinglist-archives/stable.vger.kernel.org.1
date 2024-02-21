@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-23113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0766385DF55
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:27:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71C1A85DEBC
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:21:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3920D1C23AB8
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:27:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31084B2C471
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:16:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA367BB01;
-	Wed, 21 Feb 2024 14:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 827AE7E779;
+	Wed, 21 Feb 2024 14:14:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D4a6LWA9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RdDckFx2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27EAD78B73;
-	Wed, 21 Feb 2024 14:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4190A78B7C;
+	Wed, 21 Feb 2024 14:14:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525616; cv=none; b=gfGqcSTusjwjYLsuvdFvopx5T8q8VB4/9o6fqzboe9KFOu32dAvBeD+JrPL8C6MjPhSNcDhwFmNmTGgkhrHSI1Sn0FoRQU154BjW0YyTuveakAXWm9qhxj9Zx/F2KUY8EXLdOVV67TDm0lUPOrT6GXECQtNKiNisPROLbGLLNys=
+	t=1708524895; cv=none; b=VSuvpNi6u0YG+naijd9EfG95Qz24xGjonu++1GfZTq396iTrO637EReY7NgeG6tFd9vYJwdD+TvQMl1UI8tFTCNywjemN++i9i0BlMLKr39hNl7vnSyGsPpnXzzgRdlomkuTwb3VjwvnstU9brWWkdjTMk5R9c9nPbAHsUCbFBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525616; c=relaxed/simple;
-	bh=hw3wAlGIfCQK+yiPBCzuyggFrFniM0ekHWiJ7EPSzG0=;
+	s=arc-20240116; t=1708524895; c=relaxed/simple;
+	bh=wjxiL/xM9gISPe9huV+/6UAbQMpjjtdij7Ai/HEOiOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ApVoMXUCdf+xFweQssY6IbKIlJZD3rufDcZBF3RQ4+A7O+zmX5ozK9wlGzIUre00wDZe16tUqRyN6YomRX/LsnQ4FeQDT0Y8TURJYCdEhS/huJC6SlqqVI4j56v+ZjejVz9BbjHgP72JL5oKRHpW4sELkbaq6Cl0LdW6LPYyF+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D4a6LWA9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C615C433C7;
-	Wed, 21 Feb 2024 14:26:55 +0000 (UTC)
+	 MIME-Version; b=dFhIfcy+KUtXQ0sHoJlCK+mI2919aiLyFQZEDb5FcdOYcWbgskcSZdTTR2jVoygF6NBxIgbFVcW/MpV42H8mYciSjXKuE3jcQCrRyytNtX6AYt0t5JKqpIiNNhPbW2do8Ffg7BlwOVvIVVWTJgL/T0Bx718rQD2llf3JCw9UOvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RdDckFx2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A32BDC433C7;
+	Wed, 21 Feb 2024 14:14:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525616;
-	bh=hw3wAlGIfCQK+yiPBCzuyggFrFniM0ekHWiJ7EPSzG0=;
+	s=korg; t=1708524895;
+	bh=wjxiL/xM9gISPe9huV+/6UAbQMpjjtdij7Ai/HEOiOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D4a6LWA9/Q3TvMdzsKCkK8VgB1Tn44ly/rWQblN/pDCEzMLD5yYRhMlRODAj0ODQs
-	 IEo9ZbU4ToKJlkyOz7XVr88KGEYsV5pJrsXTXwxAI5sM5Foipg5Tuy+w4WHQUXMg2h
-	 9fxE8WB2GIQhiec8MJmVnWoOd+V1/8QbWuXCs0Qo=
+	b=RdDckFx2eZKkE+AsTJYxn1QQJlDg7d1MUqiui3Xoxr6187mZCCM1COgc8FOn1YbHf
+	 Ot5URD2qnnAgfRmvDmtWBFAnlvi9vMM9eF1FOby3FrsHsaxCaGIV3o10lUEBt15jCF
+	 AGTHPEnyFOMzMNbN/NQ57eODrN87c9kd8tS8Xxgw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Khoroshilov <khoroshilov@ispras.ru>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 210/267] ASoC: rt5645: Fix deadlock in rt5645_jack_detect_work()
-Date: Wed, 21 Feb 2024 14:09:11 +0100
-Message-ID: <20240221125946.783464881@linuxfoundation.org>
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
+	He Gao <hegao@google.com>
+Subject: [PATCH 5.10 373/379] dm: limit the number of targets and parameter size area
+Date: Wed, 21 Feb 2024 14:09:12 +0100
+Message-ID: <20240221130006.097771511@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Khoroshilov <khoroshilov@ispras.ru>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit 6ef5d5b92f7117b324efaac72b3db27ae8bb3082 ]
+commit bd504bcfec41a503b32054da5472904b404341a4 upstream.
 
-There is a path in rt5645_jack_detect_work(), where rt5645->jd_mutex
-is left locked forever. That may lead to deadlock
-when rt5645_jack_detect_work() is called for the second time.
+The kvmalloc function fails with a warning if the size is larger than
+INT_MAX. The warning was triggered by a syscall testing robot.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+In order to avoid the warning, this commit limits the number of targets to
+1048576 and the size of the parameter area to 1073741824.
 
-Fixes: cdba4301adda ("ASoC: rt5650: add mutex to avoid the jack detection failure")
-Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
-Link: https://lore.kernel.org/r/1707645514-21196-1-git-send-email-khoroshilov@ispras.ru
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: He Gao <hegao@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/rt5645.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/md/dm-core.h  |    2 ++
+ drivers/md/dm-ioctl.c |    3 ++-
+ drivers/md/dm-table.c |    9 +++++++--
+ 3 files changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/codecs/rt5645.c b/sound/soc/codecs/rt5645.c
-index c9512e97c12e..88093e58dd84 100644
---- a/sound/soc/codecs/rt5645.c
-+++ b/sound/soc/codecs/rt5645.c
-@@ -3276,6 +3276,7 @@ static void rt5645_jack_detect_work(struct work_struct *work)
- 				    report, SND_JACK_HEADPHONE);
- 		snd_soc_jack_report(rt5645->mic_jack,
- 				    report, SND_JACK_MICROPHONE);
-+		mutex_unlock(&rt5645->jd_mutex);
- 		return;
- 	case 4:
- 		val = snd_soc_component_read32(rt5645->component, RT5645_A_JD_CTRL1) & 0x0020;
--- 
-2.43.0
-
+--- a/drivers/md/dm-core.h
++++ b/drivers/md/dm-core.h
+@@ -19,6 +19,8 @@
+ #include "dm.h"
+ 
+ #define DM_RESERVED_MAX_IOS		1024
++#define DM_MAX_TARGETS			1048576
++#define DM_MAX_TARGET_PARAMS		1024
+ 
+ struct dm_kobject_holder {
+ 	struct kobject kobj;
+--- a/drivers/md/dm-ioctl.c
++++ b/drivers/md/dm-ioctl.c
+@@ -1760,7 +1760,8 @@ static int copy_params(struct dm_ioctl _
+ 	if (copy_from_user(param_kernel, user, minimum_data_size))
+ 		return -EFAULT;
+ 
+-	if (param_kernel->data_size < minimum_data_size)
++	if (unlikely(param_kernel->data_size < minimum_data_size) ||
++	    unlikely(param_kernel->data_size > DM_MAX_TARGETS * DM_MAX_TARGET_PARAMS))
+ 		return -EINVAL;
+ 
+ 	secure_data = param_kernel->flags & DM_SECURE_DATA_FLAG;
+--- a/drivers/md/dm-table.c
++++ b/drivers/md/dm-table.c
+@@ -144,7 +144,12 @@ static int alloc_targets(struct dm_table
+ int dm_table_create(struct dm_table **result, fmode_t mode,
+ 		    unsigned num_targets, struct mapped_device *md)
+ {
+-	struct dm_table *t = kzalloc(sizeof(*t), GFP_KERNEL);
++	struct dm_table *t;
++
++	if (num_targets > DM_MAX_TARGETS)
++		return -EOVERFLOW;
++
++	t = kzalloc(sizeof(*t), GFP_KERNEL);
+ 
+ 	if (!t)
+ 		return -ENOMEM;
+@@ -158,7 +163,7 @@ int dm_table_create(struct dm_table **re
+ 
+ 	if (!num_targets) {
+ 		kfree(t);
+-		return -ENOMEM;
++		return -EOVERFLOW;
+ 	}
+ 
+ 	if (alloc_targets(t, num_targets)) {
 
 
 
