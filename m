@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-22220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4846F85DAE9
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:35:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E41685DC88
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:54:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD4B32820F2
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:35:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFCBA1C2373B
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:54:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD7567BB1B;
-	Wed, 21 Feb 2024 13:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E8A579DAB;
+	Wed, 21 Feb 2024 13:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJlVoAlN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KvidqamS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C81A3FB21;
-	Wed, 21 Feb 2024 13:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B1F669942;
+	Wed, 21 Feb 2024 13:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522488; cv=none; b=ac9KcPct5An29iDCSB1U21QuM1cWiuPEnyrweWuBnSVz0xxuJjJ/fNdcYKnvRmDCipkumbCFwEvsST0QGx8fLlBQhwYOVuclN4NBljZ6r3iXlc3lVZorVW5M/+rYXIieRKbBWXZv6hWi7GOwUZe8D72C9ESNcQQhrB/V1D00l/A=
+	t=1708523659; cv=none; b=VVD9IylqToRREXa0eYC7ZLdLXz62BxCyY6g5YKVcSxaM6yl+VbwmP8WDvZ97bmYcpiOpqqZdGSU0xReWxY7X2hp6k5OUIXSQ5r8IddgEnbRFcUfaFeydfhfoFRsoNrprkwhDb64uUCAB0EHgEgNtJs2OsyrYUv3Mpx/hWdp46FA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522488; c=relaxed/simple;
-	bh=2836fKI8HXdbF5YYyi3OvS/M9G9CJDLxVCHKeAsdAvE=;
+	s=arc-20240116; t=1708523659; c=relaxed/simple;
+	bh=qZMZv04+fcx6BiNJoTcZXzT3gwOnTwyEG1jlr7eWZDo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n1JNnk5Ci6v41SEbRnfurxQisNCvel5TkzfQCAbxwnFhrVTthuc0kJ+ySO+ThWx3kLR62mcbGNJZ8V61g+wKV4rtU8f+N/p/NDTg6nI+2e54yq1w2Wgvs0uWdJ3tUWOMSR5C8/K0CO1gTb6RKfv0WNYSa7iCMqdwpGQPyorSImI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lJlVoAlN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A011C433F1;
-	Wed, 21 Feb 2024 13:34:47 +0000 (UTC)
+	 MIME-Version; b=MiECW6iIDBxVPW2xCB/yGGb13Nto74qyN7NwiN61PK9EarM7HxD9hEVY1MJBAbcMtSBvMZQ0x8/d2CIYYlIt3CIgOAxOMSVG103+nfBx5bwayH1KAWFyWEwt0ds+PWsNh3Tq6LPnFdsJbysFGIhNm+9FAEniO712TxCu5+eXOKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KvidqamS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DBA6C433F1;
+	Wed, 21 Feb 2024 13:54:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522488;
-	bh=2836fKI8HXdbF5YYyi3OvS/M9G9CJDLxVCHKeAsdAvE=;
+	s=korg; t=1708523658;
+	bh=qZMZv04+fcx6BiNJoTcZXzT3gwOnTwyEG1jlr7eWZDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lJlVoAlN/sD/8Wmi7CAdj8uPmCZ3o5XVbONHRtXGOBp75NYjZ5HNWO8aDmTs9nTSM
-	 ar8omQWUaTBUkVgyDeWfjJKKYWs1Mmkz0A/D99c3KkW0ZWyr6r1fi4VZqC8HZ6GyPQ
-	 JErKXOiU6s7nFz9ZNHUHH+8S4CHeJ+8zP9yVJEvQ=
+	b=KvidqamS12Y17+Vim0oBDSHkmnCbUH8FC02A6OYLzAOCikyFUIUbCp62DfXdMGSQo
+	 NxnoBQzH4g22nOXjEEuc/drqLlclUS46E00M2L3nSTvNhZ8M7m4Do/sL/2Gw28tvQW
+	 Em4TT+IKGnZLztS2cDDl0QtfOL0ZBbQePctL6FPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Edward Adam Davis <eadavis@qq.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+01cf2dbcbe2022454388@syzkaller.appspotmail.com
-Subject: [PATCH 5.15 148/476] jfs: fix uaf in jfs_evict_inode
+	syzbot+c52ab18308964d248092@syzkaller.appspotmail.com,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 5.10 020/379] hwrng: core - Fix page fault dead lock on mmap-ed hwrng
 Date: Wed, 21 Feb 2024 14:03:19 +0100
-Message-ID: <20240221130013.396101872@linuxfoundation.org>
+Message-ID: <20240221125955.517581554@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +62,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit e0e1958f4c365e380b17ccb35617345b31ef7bf3 ]
+commit 78aafb3884f6bc6636efcc1760c891c8500b9922 upstream.
 
-When the execution of diMount(ipimap) fails, the object ipimap that has been
-released may be accessed in diFreeSpecial(). Asynchronous ipimap release occurs
-when rcu_core() calls jfs_free_node().
+There is a dead-lock in the hwrng device read path.  This triggers
+when the user reads from /dev/hwrng into memory also mmap-ed from
+/dev/hwrng.  The resulting page fault triggers a recursive read
+which then dead-locks.
 
-Therefore, when diMount(ipimap) fails, sbi->ipimap should not be initialized as
-ipimap.
+Fix this by using a stack buffer when calling copy_to_user.
 
-Reported-and-tested-by: syzbot+01cf2dbcbe2022454388@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Edward Adam Davis <eadavis@qq.com>
+Reported-by: syzbot+c52ab18308964d248092@syzkaller.appspotmail.com
+Fixes: 9996508b3353 ("hwrng: core - Replace u32 in driver API with byte array")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/jfs_mount.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/char/hw_random/core.c |   34 +++++++++++++++++++++-------------
+ 1 file changed, 21 insertions(+), 13 deletions(-)
 
-diff --git a/fs/jfs/jfs_mount.c b/fs/jfs/jfs_mount.c
-index aa4ff7bcaff2..55702b31ab3c 100644
---- a/fs/jfs/jfs_mount.c
-+++ b/fs/jfs/jfs_mount.c
-@@ -172,15 +172,15 @@ int jfs_mount(struct super_block *sb)
- 	}
- 	jfs_info("jfs_mount: ipimap:0x%p", ipimap);
+--- a/drivers/char/hw_random/core.c
++++ b/drivers/char/hw_random/core.c
+@@ -24,10 +24,13 @@
+ #include <linux/random.h>
+ #include <linux/sched.h>
+ #include <linux/slab.h>
++#include <linux/string.h>
+ #include <linux/uaccess.h>
  
--	/* map further access of per fileset inodes by the fileset inode */
--	sbi->ipimap = ipimap;
--
- 	/* initialize fileset inode allocation map */
- 	if ((rc = diMount(ipimap))) {
- 		jfs_err("jfs_mount: diMount failed w/rc = %d", rc);
- 		goto err_ipimap;
- 	}
+ #define RNG_MODULE_NAME		"hw_random"
  
-+	/* map further access of per fileset inodes by the fileset inode */
-+	sbi->ipimap = ipimap;
++#define RNG_BUFFER_SIZE (SMP_CACHE_BYTES < 32 ? 32 : SMP_CACHE_BYTES)
 +
- 	return rc;
+ static struct hwrng *current_rng;
+ /* the current rng has been explicitly chosen by user via sysfs */
+ static int cur_rng_set_by_user;
+@@ -59,7 +62,7 @@ static inline int rng_get_data(struct hw
  
- 	/*
--- 
-2.43.0
-
+ static size_t rng_buffer_size(void)
+ {
+-	return SMP_CACHE_BYTES < 32 ? 32 : SMP_CACHE_BYTES;
++	return RNG_BUFFER_SIZE;
+ }
+ 
+ static void add_early_randomness(struct hwrng *rng)
+@@ -206,6 +209,7 @@ static inline int rng_get_data(struct hw
+ static ssize_t rng_dev_read(struct file *filp, char __user *buf,
+ 			    size_t size, loff_t *offp)
+ {
++	u8 buffer[RNG_BUFFER_SIZE];
+ 	ssize_t ret = 0;
+ 	int err = 0;
+ 	int bytes_read, len;
+@@ -233,34 +237,37 @@ static ssize_t rng_dev_read(struct file
+ 			if (bytes_read < 0) {
+ 				err = bytes_read;
+ 				goto out_unlock_reading;
++			} else if (bytes_read == 0 &&
++				   (filp->f_flags & O_NONBLOCK)) {
++				err = -EAGAIN;
++				goto out_unlock_reading;
+ 			}
++
+ 			data_avail = bytes_read;
+ 		}
+ 
+-		if (!data_avail) {
+-			if (filp->f_flags & O_NONBLOCK) {
+-				err = -EAGAIN;
+-				goto out_unlock_reading;
+-			}
+-		} else {
+-			len = data_avail;
++		len = data_avail;
++		if (len) {
+ 			if (len > size)
+ 				len = size;
+ 
+ 			data_avail -= len;
+ 
+-			if (copy_to_user(buf + ret, rng_buffer + data_avail,
+-								len)) {
++			memcpy(buffer, rng_buffer + data_avail, len);
++		}
++		mutex_unlock(&reading_mutex);
++		put_rng(rng);
++
++		if (len) {
++			if (copy_to_user(buf + ret, buffer, len)) {
+ 				err = -EFAULT;
+-				goto out_unlock_reading;
++				goto out;
+ 			}
+ 
+ 			size -= len;
+ 			ret += len;
+ 		}
+ 
+-		mutex_unlock(&reading_mutex);
+-		put_rng(rng);
+ 
+ 		if (need_resched())
+ 			schedule_timeout_interruptible(1);
+@@ -271,6 +278,7 @@ static ssize_t rng_dev_read(struct file
+ 		}
+ 	}
+ out:
++	memzero_explicit(buffer, sizeof(buffer));
+ 	return ret ? : err;
+ 
+ out_unlock_reading:
 
 
 
