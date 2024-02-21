@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-21872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2792385D8EC
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:12:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 083F285DB71
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:41:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D25991F22D28
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:12:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AFE11C224D1
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:41:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6747269D09;
-	Wed, 21 Feb 2024 13:12:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44E79763F6;
+	Wed, 21 Feb 2024 13:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fngf9OMe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y9itXbJV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2415753816;
-	Wed, 21 Feb 2024 13:12:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03CC71E4B2;
+	Wed, 21 Feb 2024 13:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521148; cv=none; b=Q/RkmcdblD5uCMVhdAvqPHE3VnEt4ryu6xG4mZ4FN1491oeC6kbRyRE9GB+aErWwedXoBVLBORk7CFm6BRTT9CJ8Sb96kWJqoysKPu9pZtEQRMsMWFjlAK9QhDkJHoaWQTi7lkCj3wdDh8b0QNPf0do/efh0X9ZJgUen90NTJpc=
+	t=1708522886; cv=none; b=G38PVAc8cb9R2FAX6n4F96m7/gDPKzTnzdcodG2BB4CDLLaq6AXwljqoA6+9dBwcEwyfbviSFG6Se+ac2pv5KhYRq6Pc0Sea54OXyXkI7wONSObtpW0BFkMfIg22nHcvidIlItG86ZjVp+Qr9DkQz8zsqCPVDlgYzLLI61GKLFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521148; c=relaxed/simple;
-	bh=mNghhMmMHch01W5imPB1SL0kDJ/tKTuiV19QMzKQPjw=;
+	s=arc-20240116; t=1708522886; c=relaxed/simple;
+	bh=I4iyKYTpGHKaQ+xU1Wn4Cq04IqOYjdwsKSx7xhP0TaM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jCU3/ElYxndOveEQwqhl5/lNT1wJs+tiUDUGqpWRW/q02ggilAUouPScyhC3Z4BIFqgKaetV59GU6WH/GMjekDtYRo7ip6zPnzSBdIOXAVURRQrurYE51EmNeaECl+/6iuKVSE9UEX/5ay5ZRRz8P1YYQN9mdfIGvsqFOwYwgUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fngf9OMe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6242AC433C7;
-	Wed, 21 Feb 2024 13:12:27 +0000 (UTC)
+	 MIME-Version; b=BIyJarTOLgYcueWnDjm6XD5YHPCllmyuTmUNbp/4kSQAi9r49OLPFhFxjX29VhNExAQ8zpVhiZfoYwvwEQL5V/C0DvTHnOGnxM2oaO/UzD3rMM3LVg5IwEQ5gCYPujXNd1U8dk3Z7+XbkQ6r0NGStMNiYLB0yzAcnbC0Im1PCk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y9itXbJV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74AA2C433C7;
+	Wed, 21 Feb 2024 13:41:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521147;
-	bh=mNghhMmMHch01W5imPB1SL0kDJ/tKTuiV19QMzKQPjw=;
+	s=korg; t=1708522885;
+	bh=I4iyKYTpGHKaQ+xU1Wn4Cq04IqOYjdwsKSx7xhP0TaM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fngf9OMe7WC3QeTNVeApCUKPW+ZWMhVXdyU+UuGx7IV9sWXQTyge1NMr0av7g5SfZ
-	 tJ73IuoUROe1ejtUl5XkNo1rsTMF/kSCZ+husEOeK7cFEfL8IUfEbcLV+KPoFcNSV0
-	 NDnm+gaoJjhSw83uF9QES2Skx9jz80ShwQmFiOWk=
+	b=Y9itXbJVScUs6F+TkfhBdl1X3vgWEzVABHOkVw6le7q0/lABUUJDmZg+vxh1ka+Rb
+	 DUkTjESGunlqX73j4zjaI4v9OXba7ZbeEgPKBg3/GLAiOsW/FoeWadW1JrD67bVdZw
+	 VtE1egWbIiEVZdbLKlLVWsTXCJAAku78QS3mOtkc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Simon Horman <horms@kernel.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 033/202] net/mlx5e: fix a double-free in arfs_create_groups
+Subject: [PATCH 5.15 283/476] netfilter: nf_tables: restrict tunnel object to NFPROTO_NETDEV
 Date: Wed, 21 Feb 2024 14:05:34 +0100
-Message-ID: <20240221125932.856560211@linuxfoundation.org>
+Message-ID: <20240221130018.459890062@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +61,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 3c6d5189246f590e4e1f167991558bdb72a4738b ]
+[ Upstream commit 776d451648443f9884be4a1b4e38e8faf1c621f9 ]
 
-When `in` allocated by kvzalloc fails, arfs_create_groups will free
-ft->g and return an error. However, arfs_create_table, the only caller of
-arfs_create_groups, will hold this error and call to
-mlx5e_destroy_flow_table, in which the ft->g will be freed again.
+Bail out on using the tunnel dst template from other than netdev family.
+Add the infrastructure to check for the family in objects.
 
-Fixes: 1cabe6b0965e ("net/mlx5e: Create aRFS flow tables")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Fixes: af308b94a2a4 ("netfilter: nf_tables: add tunnel support")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/en_arfs.c | 26 +++++++++++--------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+ include/net/netfilter/nf_tables.h |  2 ++
+ net/netfilter/nf_tables_api.c     | 14 +++++++++-----
+ net/netfilter/nft_tunnel.c        |  1 +
+ 3 files changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c b/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c
-index 13496d93e7bc..31da51b74c16 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c
-@@ -227,11 +227,13 @@ static int arfs_create_groups(struct mlx5e_flow_table *ft,
- 
- 	ft->g = kcalloc(MLX5E_ARFS_NUM_GROUPS,
- 			sizeof(*ft->g), GFP_KERNEL);
--	in = kvzalloc(inlen, GFP_KERNEL);
--	if  (!in || !ft->g) {
--		kfree(ft->g);
--		kvfree(in);
-+	if (!ft->g)
- 		return -ENOMEM;
-+
-+	in = kvzalloc(inlen, GFP_KERNEL);
-+	if (!in) {
-+		err = -ENOMEM;
-+		goto err_free_g;
- 	}
- 
- 	mc = MLX5_ADDR_OF(create_flow_group_in, in, match_criteria);
-@@ -251,7 +253,7 @@ static int arfs_create_groups(struct mlx5e_flow_table *ft,
- 		break;
- 	default:
- 		err = -EINVAL;
--		goto out;
-+		goto err_free_in;
- 	}
- 
- 	switch (type) {
-@@ -273,7 +275,7 @@ static int arfs_create_groups(struct mlx5e_flow_table *ft,
- 		break;
- 	default:
- 		err = -EINVAL;
--		goto out;
-+		goto err_free_in;
- 	}
- 
- 	MLX5_SET_CFG(in, match_criteria_enable, MLX5_MATCH_OUTER_HEADERS);
-@@ -282,7 +284,7 @@ static int arfs_create_groups(struct mlx5e_flow_table *ft,
- 	MLX5_SET_CFG(in, end_flow_index, ix - 1);
- 	ft->g[ft->num_groups] = mlx5_create_flow_group(ft->t, in);
- 	if (IS_ERR(ft->g[ft->num_groups]))
--		goto err;
-+		goto err_clean_group;
- 	ft->num_groups++;
- 
- 	memset(in, 0, inlen);
-@@ -291,18 +293,20 @@ static int arfs_create_groups(struct mlx5e_flow_table *ft,
- 	MLX5_SET_CFG(in, end_flow_index, ix - 1);
- 	ft->g[ft->num_groups] = mlx5_create_flow_group(ft->t, in);
- 	if (IS_ERR(ft->g[ft->num_groups]))
--		goto err;
-+		goto err_clean_group;
- 	ft->num_groups++;
- 
- 	kvfree(in);
- 	return 0;
- 
--err:
-+err_clean_group:
- 	err = PTR_ERR(ft->g[ft->num_groups]);
- 	ft->g[ft->num_groups] = NULL;
--out:
-+err_free_in:
- 	kvfree(in);
--
-+err_free_g:
-+	kfree(ft->g);
-+	ft->g = NULL;
- 	return err;
+diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
+index 8e9c5bc1a9e6..1e6e4af4df0a 100644
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -1253,6 +1253,7 @@ void nft_obj_notify(struct net *net, const struct nft_table *table,
+  *	@type: stateful object numeric type
+  *	@owner: module owner
+  *	@maxattr: maximum netlink attribute
++ *	@family: address family for AF-specific object types
+  *	@policy: netlink attribute policy
+  */
+ struct nft_object_type {
+@@ -1262,6 +1263,7 @@ struct nft_object_type {
+ 	struct list_head		list;
+ 	u32				type;
+ 	unsigned int                    maxattr;
++	u8				family;
+ 	struct module			*owner;
+ 	const struct nla_policy		*policy;
+ };
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 996238f0ca54..3ad2b22886ff 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -6999,11 +6999,15 @@ static int nft_object_dump(struct sk_buff *skb, unsigned int attr,
+ 	return -1;
  }
  
+-static const struct nft_object_type *__nft_obj_type_get(u32 objtype)
++static const struct nft_object_type *__nft_obj_type_get(u32 objtype, u8 family)
+ {
+ 	const struct nft_object_type *type;
+ 
+ 	list_for_each_entry(type, &nf_tables_objects, list) {
++		if (type->family != NFPROTO_UNSPEC &&
++		    type->family != family)
++			continue;
++
+ 		if (objtype == type->type)
+ 			return type;
+ 	}
+@@ -7011,11 +7015,11 @@ static const struct nft_object_type *__nft_obj_type_get(u32 objtype)
+ }
+ 
+ static const struct nft_object_type *
+-nft_obj_type_get(struct net *net, u32 objtype)
++nft_obj_type_get(struct net *net, u32 objtype, u8 family)
+ {
+ 	const struct nft_object_type *type;
+ 
+-	type = __nft_obj_type_get(objtype);
++	type = __nft_obj_type_get(objtype, family);
+ 	if (type != NULL && try_module_get(type->owner))
+ 		return type;
+ 
+@@ -7108,7 +7112,7 @@ static int nf_tables_newobj(struct sk_buff *skb, const struct nfnl_info *info,
+ 		if (info->nlh->nlmsg_flags & NLM_F_REPLACE)
+ 			return -EOPNOTSUPP;
+ 
+-		type = __nft_obj_type_get(objtype);
++		type = __nft_obj_type_get(objtype, family);
+ 		if (WARN_ON_ONCE(!type))
+ 			return -ENOENT;
+ 
+@@ -7122,7 +7126,7 @@ static int nf_tables_newobj(struct sk_buff *skb, const struct nfnl_info *info,
+ 	if (!nft_use_inc(&table->use))
+ 		return -EMFILE;
+ 
+-	type = nft_obj_type_get(net, objtype);
++	type = nft_obj_type_get(net, objtype, family);
+ 	if (IS_ERR(type)) {
+ 		err = PTR_ERR(type);
+ 		goto err_type;
+diff --git a/net/netfilter/nft_tunnel.c b/net/netfilter/nft_tunnel.c
+index 2ee50996da8c..c8822fa8196d 100644
+--- a/net/netfilter/nft_tunnel.c
++++ b/net/netfilter/nft_tunnel.c
+@@ -684,6 +684,7 @@ static const struct nft_object_ops nft_tunnel_obj_ops = {
+ 
+ static struct nft_object_type nft_tunnel_obj_type __read_mostly = {
+ 	.type		= NFT_OBJECT_TUNNEL,
++	.family		= NFPROTO_NETDEV,
+ 	.ops		= &nft_tunnel_obj_ops,
+ 	.maxattr	= NFTA_TUNNEL_KEY_MAX,
+ 	.policy		= nft_tunnel_key_policy,
 -- 
 2.43.0
 
