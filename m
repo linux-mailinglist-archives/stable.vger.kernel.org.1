@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-22104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C7AC85DA5E
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:31:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1911685DA6A
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:31:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E146F1F23CAC
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:31:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D8AF1C2143C
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:31:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 131227C09C;
-	Wed, 21 Feb 2024 13:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A4097D413;
+	Wed, 21 Feb 2024 13:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pZdITSzm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YfNtPTZs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09C07C08D;
-	Wed, 21 Feb 2024 13:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 180BF69D2E;
+	Wed, 21 Feb 2024 13:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522034; cv=none; b=Y9t5p8xxsyWPowYPXYbSqxCkmWdRzW2HrQhTb6j/ujSwkMz+SAbXFmivbdi3Nsczwt8Q7ZdHCtCUCJ/6DhOXtWXD8gpdjc6DMSrBLLXbLIT4pywwiuWE1emVVrhgW3i7hsBJvDQG2Vf1gpwf0GP3983gLfoPsXNtrbs1ANe74X4=
+	t=1708522075; cv=none; b=Xl2quoMImbrIU7v7hRxZddtSdzLzWm0jYIfUk1aknNXjuWmrnPlA+6SDwQSP9dWKo8O78F6cua1Zl3E3tjVyLvZKK8tGXLzv4/23znQA7Iwt+jlW1HsZQbojLtoUAEhZKJtgSNM7025Kp3N0BfXAhXQDMVZAkBY5w980awz1zYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522034; c=relaxed/simple;
-	bh=H085vX9IPKzFhBYGAZjFchiEeDfs61g/xm/kuvq8cZg=;
+	s=arc-20240116; t=1708522075; c=relaxed/simple;
+	bh=m5gHg5UrwSuHHfYJmegYsXWsZVoU7oVFCAQDpCZpI6U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YwtN3EqxZYOFgpTJ+u91cYrTjQTF+IzzH75WIlK4FFOBiEeJUydxu5BXL4CNte1CM1b+JLedHnpcH0zbWONTf3y4xJYCzdBKQTJvcdkpPxyE+PRzmiovzSujoJENCsC4tVnKUQMkvJBPGe+XJo1o/NGaAv7gWHAYZdrr0k5nt1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pZdITSzm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48C22C433C7;
-	Wed, 21 Feb 2024 13:27:14 +0000 (UTC)
+	 MIME-Version; b=UbBfPGEyVutE/dJXlDH34TUB9+U6Loy0hntsm6YJFt5ar6qFpq8cUwdZ3JX2W4yreHqsEuH176zXjYq02UdLPl1e2Kx1qtY6imUr3iOXxYoyFHGVYSEH+16280KzeoEzxVc/F6Gxpf+/NxJVnCSzQLlBQNKm3BnH/WGfjq62Y58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YfNtPTZs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21D47C433C7;
+	Wed, 21 Feb 2024 13:27:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522034;
-	bh=H085vX9IPKzFhBYGAZjFchiEeDfs61g/xm/kuvq8cZg=;
+	s=korg; t=1708522074;
+	bh=m5gHg5UrwSuHHfYJmegYsXWsZVoU7oVFCAQDpCZpI6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pZdITSzmby/zVq8BSbjApPsZByApoKLGg993+4+jRBRcakcY6vSbGRhNTHQBvdfYu
-	 jnB+v5V56LQu8OgFN8QmDAM0y2jZszPRAkkESE7KbcTByGrP7JTN8tfb2sJYGmsq+6
-	 5BrSMKsTHzV7BiRAYmQUuK40989PrvGXH2M+lOg4=
+	b=YfNtPTZsT2HpfpzXOJ5zcLTT1JRKqj50f0TseaQRCxMs98maQiBd533Tli0tAhSG+
+	 JZq8DX2KD+jbfblqC8b7XKybe3aVZDGpqRNYlPc1Qcu4tYQ32q9qm0eAgxNxksx4dv
+	 TMqCqlJTN1cQY44GZ8clI3XmbZ21Qr2IYGJMHFts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Salvatore Dipietro <dipiets@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
+	Zhengchao Shao <shaozhengchao@huawei.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 054/476] tcp: Add memory barrier to tcp_push()
-Date: Wed, 21 Feb 2024 14:01:45 +0100
-Message-ID: <20240221130009.920247008@linuxfoundation.org>
+Subject: [PATCH 5.15 055/476] netlink: fix potential sleeping issue in mqueue_flush_file
+Date: Wed, 21 Feb 2024 14:01:46 +0100
+Message-ID: <20240221130009.968255195@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
 References: <20240221130007.738356493@linuxfoundation.org>
@@ -67,99 +66,74 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Salvatore Dipietro <dipiets@amazon.com>
+From: Zhengchao Shao <shaozhengchao@huawei.com>
 
-[ Upstream commit 7267e8dcad6b2f9fce05a6a06335d7040acbc2b6 ]
+[ Upstream commit 234ec0b6034b16869d45128b8cd2dc6ffe596f04 ]
 
-On CPUs with weak memory models, reads and updates performed by tcp_push
-to the sk variables can get reordered leaving the socket throttled when
-it should not. The tasklet running tcp_wfree() may also not observe the
-memory updates in time and will skip flushing any packets throttled by
-tcp_push(), delaying the sending. This can pathologically cause 40ms
-extra latency due to bad interactions with delayed acks.
+I analyze the potential sleeping issue of the following processes:
+Thread A                                Thread B
+...                                     netlink_create  //ref = 1
+do_mq_notify                            ...
+  sock = netlink_getsockbyfilp          ...     //ref = 2
+  info->notify_sock = sock;             ...
+...                                     netlink_sendmsg
+...                                       skb = netlink_alloc_large_skb  //skb->head is vmalloced
+...                                       netlink_unicast
+...                                         sk = netlink_getsockbyportid //ref = 3
+...                                         netlink_sendskb
+...                                           __netlink_sendskb
+...                                             skb_queue_tail //put skb to sk_receive_queue
+...                                         sock_put //ref = 2
+...                                     ...
+...                                     netlink_release
+...                                       deferred_put_nlk_sk //ref = 1
+mqueue_flush_file
+  spin_lock
+  remove_notification
+    netlink_sendskb
+      sock_put  //ref = 0
+        sk_free
+          ...
+          __sk_destruct
+            netlink_sock_destruct
+              skb_queue_purge  //get skb from sk_receive_queue
+                ...
+                __skb_queue_purge_reason
+                  kfree_skb_reason
+                    __kfree_skb
+                    ...
+                    skb_release_all
+                      skb_release_head_state
+                        netlink_skb_destructor
+                          vfree(skb->head)  //sleeping while holding spinlock
 
-Adding a memory barrier in tcp_push removes the bug, similarly to the
-previous commit bf06200e732d ("tcp: tsq: fix nonagle handling").
-smp_mb__after_atomic() is used to not incur in unnecessary overhead
-on x86 since not affected.
+In netlink_sendmsg, if the memory pointed to by skb->head is allocated by
+vmalloc, and is put to sk_receive_queue queue, also the skb is not freed.
+When the mqueue executes flush, the sleeping bug will occur. Use
+vfree_atomic instead of vfree in netlink_skb_destructor to solve the issue.
 
-Patch has been tested using an AWS c7g.2xlarge instance with Ubuntu
-22.04 and Apache Tomcat 9.0.83 running the basic servlet below:
-
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-public class HelloWorldServlet extends HttpServlet {
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
-        response.setContentType("text/html;charset=utf-8");
-        OutputStreamWriter osw = new OutputStreamWriter(response.getOutputStream(),"UTF-8");
-        String s = "a".repeat(3096);
-        osw.write(s,0,s.length());
-        osw.flush();
-    }
-}
-
-Load was applied using wrk2 (https://github.com/kinvolk/wrk2) from an AWS
-c6i.8xlarge instance. Before the patch an additional 40ms latency from P99.99+
-values is observed while, with the patch, the extra latency disappears.
-
-No patch and tcp_autocorking=1
-./wrk -t32 -c128 -d40s --latency -R10000  http://172.31.60.173:8080/hello/hello
-  ...
- 50.000%    0.91ms
- 75.000%    1.13ms
- 90.000%    1.46ms
- 99.000%    1.74ms
- 99.900%    1.89ms
- 99.990%   41.95ms  <<< 40+ ms extra latency
- 99.999%   48.32ms
-100.000%   48.96ms
-
-With patch and tcp_autocorking=1
-./wrk -t32 -c128 -d40s --latency -R10000  http://172.31.60.173:8080/hello/hello
-  ...
- 50.000%    0.90ms
- 75.000%    1.13ms
- 90.000%    1.45ms
- 99.000%    1.72ms
- 99.900%    1.83ms
- 99.990%    2.11ms  <<< no 40+ ms extra latency
- 99.999%    2.53ms
-100.000%    2.62ms
-
-Patch has been also tested on x86 (m7i.2xlarge instance) which it is not
-affected by this issue and the patch doesn't introduce any additional
-delay.
-
-Fixes: 7aa5470c2c09 ("tcp: tsq: move tsq_flags close to sk_wmem_alloc")
-Signed-off-by: Salvatore Dipietro <dipiets@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240119190133.43698-1-dipiets@amazon.com
+Fixes: c05cdb1b864f ("netlink: allow large data transfers from user-space")
+Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Link: https://lore.kernel.org/r/20240122011807.2110357-1-shaozhengchao@huawei.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/netlink/af_netlink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 86dff7abdfd6..0659f0d9414d 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -722,6 +722,7 @@ void tcp_push(struct sock *sk, int flags, int mss_now,
- 		if (!test_bit(TSQ_THROTTLED, &sk->sk_tsq_flags)) {
- 			NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPAUTOCORKING);
- 			set_bit(TSQ_THROTTLED, &sk->sk_tsq_flags);
-+			smp_mb__after_atomic();
- 		}
- 		/* It is possible TX completion already happened
- 		 * before we set TSQ_THROTTLED.
+diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+index f41e130a812f..2169a9c3da1c 100644
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -374,7 +374,7 @@ static void netlink_skb_destructor(struct sk_buff *skb)
+ 	if (is_vmalloc_addr(skb->head)) {
+ 		if (!skb->cloned ||
+ 		    !atomic_dec_return(&(skb_shinfo(skb)->dataref)))
+-			vfree(skb->head);
++			vfree_atomic(skb->head);
+ 
+ 		skb->head = NULL;
+ 	}
 -- 
 2.43.0
 
