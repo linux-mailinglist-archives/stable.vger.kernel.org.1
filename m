@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-22421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 094A685DBF4
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:47:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF45185DEA3
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:20:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AE1E1C23117
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:47:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FF0D1F247B9
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:20:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E05477A03;
-	Wed, 21 Feb 2024 13:47:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD3793CF42;
+	Wed, 21 Feb 2024 14:19:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HLcyDakV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ryVsYLgD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DD863C2F;
-	Wed, 21 Feb 2024 13:47:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7616B7BB10;
+	Wed, 21 Feb 2024 14:19:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523249; cv=none; b=FUckIDsiojwqDel1ogzhnhNcA0U2rp9NsawwDM3imDkKHQicSnSpm8yzxFyXoWOvgolLS9sPGKgPAoi1Zx/sj46ZEF3HgGgR/wctmxfz0bc6Ra9WUNDsO0nPhCdpR984mNEPzylB+WOrd693Lfo4MIa5CilKFTCIRNAysxmiRZE=
+	t=1708525192; cv=none; b=nxs7mPV/HNpTKA5im8qr1H+sNvZiM+6EJ9XgaU00mZSqaYW5OD/+DkaHLZNahrk76/cyjsDOo9bYx23tWDLaMZ+Zny+qAGpb3Iku+ShOc1Chrj1qjOEdZ5rJySd7Mkr/VDkP25TAJKgt++dd52veGS05l6ravgRIFRYqg5RHdXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523249; c=relaxed/simple;
-	bh=GyhbAIXsSq0Fknkzw5uj0FP7P9w6qmwvKkrV8LY9hq4=;
+	s=arc-20240116; t=1708525192; c=relaxed/simple;
+	bh=lhlx7bxDvrGSJFlHEDdeguFiJ5G/yn8nMwJRfLtQQ5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TEi6MXVPYJthchrh31YlM7qISVnydw4ZF/Xjj+KjwTXZ5gle6Mq/IZ5jZfOQTAVIB5u0P4e4cM9Y0eFQlsbVE6oNgybgGnZ/8kmMDIGRoOJdkwkoFYK5P4kLlBJmuy58fSZwYLSzxffOglcH0to5JJ6/fQgreIVQqjquva0WGyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HLcyDakV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE5BBC433F1;
-	Wed, 21 Feb 2024 13:47:28 +0000 (UTC)
+	 MIME-Version; b=S3fw4S7LbE6Bz2rjfxbmOWlAKHiTbgHcXyxPXO2/Ljq/J6sJfuZbqWclGTEgwlWL/PDDDeuC2YqE1JQXGlOKUEIhq5UvJHIJHSUPChW5x3/vtwpfJGV657WGSOgdfbGZEtYgebl3veBtJphEUqYnk5GXGaC12dQXyV9Z3PKGo5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ryVsYLgD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8147DC433C7;
+	Wed, 21 Feb 2024 14:19:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523249;
-	bh=GyhbAIXsSq0Fknkzw5uj0FP7P9w6qmwvKkrV8LY9hq4=;
+	s=korg; t=1708525192;
+	bh=lhlx7bxDvrGSJFlHEDdeguFiJ5G/yn8nMwJRfLtQQ5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HLcyDakVDyiGCn8vteGVmAi0FfqWtfe486gy/L+merlhK7Xs/wZdWERFH4gEuFoKQ
-	 k1K13FG41CeWqm3pdcm9iurtFS2fYpZZz9prEuEES8pQhUmvvS5tMYQ4Uv3mKF4xB8
-	 5HwE7s79d2XCfQ4r/ZFRseERqtsHEYx5jurqTcLI=
+	b=ryVsYLgDkDdrk/KHUl88OxR94zBDm4jfNiH/x4DVpX9urj7ABjjo6yy5WdAW3wE+z
+	 b5tWfxKj4Py13LEuanlI2+g0Ppu/kbRLeqLRfUyloXiEPPFaEZyXaggNAHX/6GZne0
+	 iBsjLvEKbF2NCDnJl273WhGr0HlmcA41XlATb/r0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 5.15 377/476] Revert "drm/amd: flush any delayed gfxoff on suspend entry"
+	Ye Bin <yebin10@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 087/267] ext4: fix inconsistent between segment fstrim and full fstrim
 Date: Wed, 21 Feb 2024 14:07:08 +0100
-Message-ID: <20240221130021.980929281@linuxfoundation.org>
+Message-ID: <20240221125942.690820128@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Ye Bin <yebin10@huawei.com>
 
-commit 916361685319098f696b798ef1560f69ed96e934 upstream.
+[ Upstream commit 68da4c44b994aea797eb9821acb3a4a36015293e ]
 
-commit ab4750332dbe ("drm/amdgpu/sdma5.2: add begin/end_use ring
-callbacks") caused GFXOFF control to be used more heavily and the
-codepath that was removed from commit 0dee72639533 ("drm/amd: flush any
-delayed gfxoff on suspend entry") now can be exercised at suspend again.
+Suppose we issue two FITRIM ioctls for ranges [0,15] and [16,31] with
+mininum length of trimmed range set to 8 blocks. If we have say a range of
+blocks 10-22 free, this range will not be trimmed because it straddles the
+boundary of the two FITRIM ranges and neither part is big enough. This is a
+bit surprising to some users that call FITRIM on smaller ranges of blocks
+to limit impact on the system. Also XFS trims all free space extents that
+overlap with the specified range so we are inconsistent among filesystems.
+Let's change ext4_try_to_trim_range() to consider for trimming the whole
+free space extent that straddles the end of specified range, not just the
+part of it within the range.
 
-Users report that by using GNOME to suspend the lockscreen trigger will
-cause SDMA traffic and the system can deadlock.
-
-This reverts commit 0dee726395333fea833eaaf838bc80962df886c8.
-
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Fixes: ab4750332dbe ("drm/amdgpu/sdma5.2: add begin/end_use ring callbacks")
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20231216010919.1995851-1-yebin10@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |    1 -
- drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c    |    9 ++++++++-
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ fs/ext4/mballoc.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -4089,7 +4089,6 @@ int amdgpu_device_suspend(struct drm_dev
- 		amdgpu_fbdev_set_suspend(adev, 1);
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 00b2459819b3..0745330228cf 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -5216,13 +5216,15 @@ static int ext4_try_to_trim_range(struct super_block *sb,
+ 		struct ext4_buddy *e4b, ext4_grpblk_t start,
+ 		ext4_grpblk_t max, ext4_grpblk_t minblocks)
+ {
+-	ext4_grpblk_t next, count, free_count;
++	ext4_grpblk_t next, count, free_count, last, origin_start;
+ 	bool set_trimmed = false;
+ 	void *bitmap;
  
- 	cancel_delayed_work_sync(&adev->delayed_init_work);
--	flush_delayed_work(&adev->gfx.gfx_off_delay_work);
++	last = ext4_last_grp_cluster(sb, e4b->bd_group);
+ 	bitmap = e4b->bd_bitmap;
+-	if (start == 0 && max >= ext4_last_grp_cluster(sb, e4b->bd_group))
++	if (start == 0 && max >= last)
+ 		set_trimmed = true;
++	origin_start = start;
+ 	start = max(e4b->bd_info->bb_first_free, start);
+ 	count = 0;
+ 	free_count = 0;
+@@ -5231,7 +5233,10 @@ static int ext4_try_to_trim_range(struct super_block *sb,
+ 		start = mb_find_next_zero_bit(bitmap, max + 1, start);
+ 		if (start > max)
+ 			break;
+-		next = mb_find_next_bit(bitmap, max + 1, start);
++
++		next = mb_find_next_bit(bitmap, last + 1, start);
++		if (origin_start == 0 && next >= last)
++			set_trimmed = true;
  
- 	amdgpu_ras_suspend(adev);
- 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
-@@ -579,8 +579,15 @@ void amdgpu_gfx_off_ctrl(struct amdgpu_d
- 
- 		if (adev->gfx.gfx_off_req_count == 0 &&
- 		    !adev->gfx.gfx_off_state) {
--			schedule_delayed_work(&adev->gfx.gfx_off_delay_work,
-+			/* If going to s2idle, no need to wait */
-+			if (adev->in_s0ix) {
-+				if (!amdgpu_dpm_set_powergating_by_smu(adev,
-+						AMD_IP_BLOCK_TYPE_GFX, true))
-+					adev->gfx.gfx_off_state = true;
-+			} else {
-+				schedule_delayed_work(&adev->gfx.gfx_off_delay_work,
- 					      delay);
-+			}
- 		}
- 	} else {
- 		if (adev->gfx.gfx_off_req_count == 0) {
+ 		if ((next - start) >= minblocks) {
+ 			int ret = ext4_trim_extent(sb, start, next - start, e4b);
+-- 
+2.43.0
+
 
 
 
