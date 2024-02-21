@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-22593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00ADE85DCC5
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:57:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0A2485DB12
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:37:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31A781C23616
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:57:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A47011F22DD6
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:37:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A4EF78B50;
-	Wed, 21 Feb 2024 13:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3D7B7BB08;
+	Wed, 21 Feb 2024 13:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pCCmoyHD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m3gSf8lj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC659762C1;
-	Wed, 21 Feb 2024 13:57:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E1B6F074;
+	Wed, 21 Feb 2024 13:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523843; cv=none; b=Hg7aAE44JYsCEG71pERm2mrrhjqxO2/gCbFxBy0j4tgofX3x6EJ/QjsIlqGF+2EdaD1+hJGeDqOY0qaSQKyDT4lBN1S26ZPwwceZG4yDNZlk7d+9W0Ct+uLuGd6fb/jMcmjRtfArn25XjK0AjVXo7pYcvmGv4dR0RXYYBJB1Wbc=
+	t=1708522591; cv=none; b=gTT21oSiBsNvBP9PfiWtbAXguXKsvy584X0Rokm7FiCcp0WjtZitO9aJWSHZCbiH0RLcWzmzFYvmKshe1PrfhMyU/WKZ8HazSUcbUDtyXxGQsu0JtJBM42w+Oeri4wVDWdtp3F4ng2Rgaxa8nwMY46lSxibXcCeNFY+OtcgqD9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523843; c=relaxed/simple;
-	bh=1JaGKvmN5DUnSlMIyQ7uTP3Y2L2efOYF//BRuIUvNFw=;
+	s=arc-20240116; t=1708522591; c=relaxed/simple;
+	bh=vPiICDbIPi/cu3Y9WPyS/Mko8PtpQRFVxlDMLNzdkL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=vDb+XGL6q3BpS/nk4j8Cv71sGwpxxaDVnDImWl/CjFfow5JJ5qDbjvtFBW5/pN3UlxdJSuDM7RW+7LgPbmll7Ct1Ey+MyIMdDdUFJcNBijdNml66GzAdOSc/A4aLMBqy84T8yBRVCEE93A0Dh4CRBxXwEj/gzIj6F3I46+T+jbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pCCmoyHD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 793DAC433F1;
-	Wed, 21 Feb 2024 13:57:22 +0000 (UTC)
+	 MIME-Version; b=PQ6QEwnwXbTHUPmY7hcXnPd9VOfkLSfMKo2ILaYsvrnMAUSRnXRMwpY9tntW8VVfpU3pO57SWUL4A44lWXJDl/xADj05CccmOy5XyW1xf7cQOShcfvqyxBnlhCwPURULnCDa6gdJdDwJ0e2H5lfsXGD1VGpEyQj62kEOftIhX+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m3gSf8lj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D23D3C433C7;
+	Wed, 21 Feb 2024 13:36:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523842;
-	bh=1JaGKvmN5DUnSlMIyQ7uTP3Y2L2efOYF//BRuIUvNFw=;
+	s=korg; t=1708522591;
+	bh=vPiICDbIPi/cu3Y9WPyS/Mko8PtpQRFVxlDMLNzdkL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pCCmoyHD+eHPvR35qjreBZKBVgUwtR6GKWZ1FwrPGQIY7mhwdWbWEmMyju8kmxXgL
-	 qdS5VU3/Mv519KwU1NAeSj4f/iMwPSGLkoO2Vr8C5zzyW284SJTEsZzgW4/KZvNP4u
-	 2vACI2Ia6jLXC1b/wzEGZJKvrvh6HujOHANPichQ=
+	b=m3gSf8ljTCfLI1og0JHjt75VZp4R3zR+kPiWLduqEYGHT9nPyxHBDmWLSxdicelsT
+	 rIIO6wVHqCJzUovARpnQVVNdyAPAbQpNv3hCjDcW0WtxZ/tb+NeGmwLsIsI8q5m7BI
+	 uTpMvSYsKwOrh5rN1wSIUknHjMb1yXF6+h0QaT2w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Javier Martinez Canillas <javierm@redhat.com>
-Subject: [PATCH 5.10 073/379] drm: Dont unref the same fb many times by mistake due to deadlock handling
-Date: Wed, 21 Feb 2024 14:04:12 +0100
-Message-ID: <20240221125957.072702859@linuxfoundation.org>
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 202/476] wifi: cfg80211: free beacon_ies when overridden from hidden BSS
+Date: Wed, 21 Feb 2024 14:04:13 +0100
+Message-ID: <20240221130015.381176668@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,53 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-commit cb4daf271302d71a6b9a7c01bd0b6d76febd8f0c upstream.
+[ Upstream commit 32af9a9e1069e55bc02741fb00ac9d0ca1a2eaef ]
 
-If we get a deadlock after the fb lookup in drm_mode_page_flip_ioctl()
-we proceed to unref the fb and then retry the whole thing from the top.
-But we forget to reset the fb pointer back to NULL, and so if we then
-get another error during the retry, before the fb lookup, we proceed
-the unref the same fb again without having gotten another reference.
-The end result is that the fb will (eventually) end up being freed
-while it's still in use.
+This is a more of a cosmetic fix. The branch will only be taken if
+proberesp_ies is set, which implies that beacon_ies is not set unless we
+are connected to an AP that just did a channel switch. And, in that case
+we should have found the BSS in the internal storage to begin with.
 
-Reset fb to NULL once we've unreffed it to avoid doing it again
-until we've done another fb lookup.
-
-This turned out to be pretty easy to hit on a DG2 when doing async
-flips (and CONFIG_DEBUG_WW_MUTEX_SLOWPATH=y). The first symptom I
-saw that drm_closefb() simply got stuck in a busy loop while walking
-the framebuffer list. Fortunately I was able to convince it to oops
-instead, and from there it was easier to track down the culprit.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231211081625.25704-1-ville.syrjala@linux.intel.com
-Acked-by: Javier Martinez Canillas <javierm@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20231220133549.b898e22dadff.Id8c4c10aedd176ef2e18a4cad747b299f150f9df@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_plane.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/wireless/scan.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/gpu/drm/drm_plane.c
-+++ b/drivers/gpu/drm/drm_plane.c
-@@ -1213,6 +1213,7 @@ retry:
- out:
- 	if (fb)
- 		drm_framebuffer_put(fb);
-+	fb = NULL;
- 	if (plane->old_fb)
- 		drm_framebuffer_put(plane->old_fb);
- 	plane->old_fb = NULL;
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index 4decdc2c601f..68c48970ebf7 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -1808,8 +1808,12 @@ cfg80211_bss_update(struct cfg80211_registered_device *rdev,
+ 				list_add(&new->hidden_list,
+ 					 &hidden->hidden_list);
+ 				hidden->refcount++;
++
++				ies = (void *)rcu_dereference(new->pub.beacon_ies);
+ 				rcu_assign_pointer(new->pub.beacon_ies,
+ 						   hidden->pub.beacon_ies);
++				if (ies)
++					kfree_rcu(ies, rcu_head);
+ 			}
+ 		} else {
+ 			/*
+-- 
+2.43.0
+
 
 
 
