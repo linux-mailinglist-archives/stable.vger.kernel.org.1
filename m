@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-22594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B90E85DCC6
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:57:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED9AF85DB13
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:37:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15094282450
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:57:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A84FA281FCD
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:37:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 226AF79DAE;
-	Wed, 21 Feb 2024 13:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD00A69D21;
+	Wed, 21 Feb 2024 13:36:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qZUKbT/E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VjlgLk2g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D66BB3FE5D;
-	Wed, 21 Feb 2024 13:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A7897BB00;
+	Wed, 21 Feb 2024 13:36:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523845; cv=none; b=s6hqwTYZaSXksEncUsDm7anM/Sz/SF3ok8fwHXEEc0ovHiHyvhjRJOWEz9g7VBNFbgtM1/OkmLLpEyuYOvYDBTBKU8po4a6uPeGbEEVvW3k/WSEJHJWyCMRMQXch+vKKH+gpq7q67BeKWqLo0ZmZXSDr9Wul0VkMSjGoHJg7kU8=
+	t=1708522594; cv=none; b=iJ7UhBo+jVDIa0L5S3P30dKeTJcrFbdHzESrAR2Cl5TPyjpa0fcpka9xhNniKGL/MWBXk8ejZm1SUdoMe+xG/LlyF3C2mDLSjArbFAxnQWb9r5KjxSNSsJ3ZyRkoUGJ9K9zpPJdyRki9T8VitLv6AJaasAh6o1u9FIhWOFJfdLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523845; c=relaxed/simple;
-	bh=GinWe6V3hCkFphjbr694RSmyWE3LaydsR3Gl9AIusOQ=;
+	s=arc-20240116; t=1708522594; c=relaxed/simple;
+	bh=pDEVcUIu0VSopUVFJyxdgA3Ifz8GMQmj7KCr9eJNK5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ne+0aYoM1F/bxkW7smunrlzlY1+PgZbLA+m1xVXDQWat69Gc3tJARrH7CJmjZN7c7/7ZFTjIyxgbjmTyn0u+RgCthCLimrT9fWLluaIaWz2dulyNfq8D4j4HG/3GEpQzbE0IaPGPfOjUoGagD3gyEutLpKm7dfbMz886jpC1iww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qZUKbT/E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62A47C433F1;
-	Wed, 21 Feb 2024 13:57:25 +0000 (UTC)
+	 MIME-Version; b=AxHmz90o6cajH8dKN2xoVBoJ7UvI5l7dxUhe7txAoBPMLdVQp8jpliPtwxGNqGeVbUSB2bjg4RvsujIAQw3JbgYkiJMloCBn3wNfvWqjk9rwKuRacEQoN5hCf+/bLmWq5wqbg45n+qLQ6zm3vCBPTw6/bRE4Nl04EfBu0GyZAqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VjlgLk2g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA5B6C433F1;
+	Wed, 21 Feb 2024 13:36:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523845;
-	bh=GinWe6V3hCkFphjbr694RSmyWE3LaydsR3Gl9AIusOQ=;
+	s=korg; t=1708522594;
+	bh=pDEVcUIu0VSopUVFJyxdgA3Ifz8GMQmj7KCr9eJNK5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qZUKbT/EnhKAAoI50cVvdxjSUK8H1eGOs7oTVeWHJ5Uji0xr1TELup4WTUusI58to
-	 VzlRepBtdyJ19NagxETqPsmqOwU8u5jsFiSX4TwUc2MlXX5+ZE0QzyPx3Ik8vmHwfP
-	 35ePSvPnVuUhvy4Foh6xD1+09R+gYuvZ2faYtNLg=
+	b=VjlgLk2gg9OJpkHJjld1sqHzCwULEWHTMW1MbxHZW/I4L2Jbdy6h0etAQeLWDW+EL
+	 ZIvXaX3Dcd/DFT5TLEp1wHx55sL9IOART/mEgqd6PRbXy99cwQT7yJH0BQA5l3Iuh2
+	 k9jSn0KT/0o2LPyynDd3Hebs8mRNURAcz1Km0TYg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Robert Foss <rfoss@kernel.org>
-Subject: [PATCH 5.10 074/379] drm/bridge: nxp-ptn3460: fix i2c_master_send() error checking
-Date: Wed, 21 Feb 2024 14:04:13 +0100
-Message-ID: <20240221125957.101270081@linuxfoundation.org>
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 203/476] Bluetooth: qca: Set both WIDEBAND_SPEECH and LE_STATES quirks for QCA2066
+Date: Wed, 21 Feb 2024 14:04:14 +0100
+Message-ID: <20240221130015.410752013@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit 914437992876838662c968cb416f832110fb1093 upstream.
+[ Upstream commit 5d192b697c7417254cdd9edc3d5e9e0364eb9045 ]
 
-The i2c_master_send/recv() functions return negative error codes or the
-number of bytes that were able to be sent/received.  This code has
-two problems.  1)  Instead of checking if all the bytes were sent or
-received, it checks that at least one byte was sent or received.
-2) If there was a partial send/receive then we should return a negative
-error code but this code returns success.
+Set both WIDEBAND_SPEECH_SUPPORTED and VALID_LE_STATES quirks
+for QCA2066.
 
-Fixes: a9fe713d7d45 ("drm/bridge: Add PTN3460 bridge driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Robert Foss <rfoss@kernel.org>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/0cdc2dce-ca89-451a-9774-1482ab2f4762@moroto.mountain
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/nxp-ptn3460.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/bluetooth/hci_qca.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/bridge/nxp-ptn3460.c
-+++ b/drivers/gpu/drm/bridge/nxp-ptn3460.c
-@@ -56,13 +56,13 @@ static int ptn3460_read_bytes(struct ptn
- 	ret = i2c_master_send(ptn_bridge->client, &addr, 1);
- 	if (ret <= 0) {
- 		DRM_ERROR("Failed to send i2c command, ret=%d\n", ret);
--		return ret;
-+		return ret ?: -EIO;
- 	}
+diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
+index 56b4b7248483..d10f1fe0f5fa 100644
+--- a/drivers/bluetooth/hci_qca.c
++++ b/drivers/bluetooth/hci_qca.c
+@@ -1860,6 +1860,7 @@ static const struct qca_device_data qca_soc_data_wcn3998 = {
+ static const struct qca_device_data qca_soc_data_qca6390 = {
+ 	.soc_type = QCA_QCA6390,
+ 	.num_vregs = 0,
++	.capabilities = QCA_CAP_WIDEBAND_SPEECH | QCA_CAP_VALID_LE_STATES,
+ };
  
- 	ret = i2c_master_recv(ptn_bridge->client, buf, len);
--	if (ret <= 0) {
-+	if (ret != len) {
- 		DRM_ERROR("Failed to recv i2c data, ret=%d\n", ret);
--		return ret;
-+		return ret < 0 ? ret : -EIO;
- 	}
- 
- 	return 0;
-@@ -78,9 +78,9 @@ static int ptn3460_write_byte(struct ptn
- 	buf[1] = val;
- 
- 	ret = i2c_master_send(ptn_bridge->client, buf, ARRAY_SIZE(buf));
--	if (ret <= 0) {
-+	if (ret != ARRAY_SIZE(buf)) {
- 		DRM_ERROR("Failed to send i2c command, ret=%d\n", ret);
--		return ret;
-+		return ret < 0 ? ret : -EIO;
- 	}
- 
- 	return 0;
+ static const struct qca_device_data qca_soc_data_wcn6750 = {
+-- 
+2.43.0
+
 
 
 
