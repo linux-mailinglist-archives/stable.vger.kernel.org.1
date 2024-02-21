@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-22468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DACD985DC2F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:50:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3099185D977
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:19:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96BC0283C88
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:50:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D99612851A1
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:19:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13F5379DAE;
-	Wed, 21 Feb 2024 13:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D6FF6BB52;
+	Wed, 21 Feb 2024 13:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0b8Djbgz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NGBLL9a5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E2D38398;
-	Wed, 21 Feb 2024 13:50:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A63146B9B;
+	Wed, 21 Feb 2024 13:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523400; cv=none; b=ATOykzPkxt4C7pIOy8ncD0pXbC6aHso8oJBgjuGyHryE7A+NB6CyrCx/kMwuKgLTjid0kvdCMPXAD3tyv0WqcT19lSssvypMxGNiwoZlivIVHVcGxktrXxDO1P6Bo5T1KMCHq6wGOKSWL70/WemWRKYWz0h6Tyg9FsHsu/KZAgE=
+	t=1708521540; cv=none; b=BiMPUzKN/DXLOfbA1KbwfPIZtZ5d8l396TVsLO9N5rBeHlfapGTmj5k2pWNF3Zh1DU4O1XOZVBI3ZMkqFojFjIqascrRYCZieuubjjlgyY3KDECVJQVwi4i1zn0j5xzJmQLDSxSdQ2ViFy08OtoRNQIKo5OltuRYk1l94SO3y/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523400; c=relaxed/simple;
-	bh=c5kuHDUtMRSK53Szc86MBl+fFKT7aA2XQZmSYKOQE5E=;
+	s=arc-20240116; t=1708521540; c=relaxed/simple;
+	bh=TfcrojdBY0/L4Y4YbVl9wogBszoMu9HvZ/XErvOkW4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b3PN6dPaxdZvSInhKqN8r8vXwJKin61RE+Rm3GwCnSaWWHSJM02RalqzwXVg/L1qmqL9GNxLbcjJLR0L0Udl/lPMYnQnEx5Inbx0KOKiIIA6g/XzO7ErukXnPEUMRTLkFAbMHMO6zmO0WUr+suCpBRk9YMEYgYccYeNoI5fDLuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0b8Djbgz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 487F9C433F1;
-	Wed, 21 Feb 2024 13:50:00 +0000 (UTC)
+	 MIME-Version; b=gm+c1kLr5/jRrFnXy/k5lDHJt0Voccm9y1gyz3QSAPQuMsRDjucu9LnT4XoDxmiMBluyebfITylwVdidxu7pVIH45gbgwhNlQQno5zBN8PwBODt7MvQ+Z+lmHg1kMAvIJoE50alNEoep0bISmucbbZu6wzF7kALhlLx4vwIIGJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NGBLL9a5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A37CC433C7;
+	Wed, 21 Feb 2024 13:18:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523400;
-	bh=c5kuHDUtMRSK53Szc86MBl+fFKT7aA2XQZmSYKOQE5E=;
+	s=korg; t=1708521540;
+	bh=TfcrojdBY0/L4Y4YbVl9wogBszoMu9HvZ/XErvOkW4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0b8DjbgzbAIxKaE1bg5ib7KyQRvlFLrxemko/7LSSMoQOCB6+pz7rhkfCzahmNtsV
-	 gQKRAX3kdZQ+tMsMlEW1w0ez3NMbifjPFegsdusj9bKb/P6GFxM0VQMjsM2V/pMD8A
-	 L2VK6evG0ATF892ow5N3m7IUNAL39ZzcCzU1guJo=
+	b=NGBLL9a5AFgV1zdcEgZlVZQgS1Y31t/c86nAt5xtGMK1TCK1Lvfer+69RuGkCJtIC
+	 cEY8DYIKk+NXk0JBHHBhr/EaFxkPQC0kmU/rriwGEu0n8KPZIlpA+mql1D3XjJNFTi
+	 UMzfJ9lh5jagBuzAC6opkwEP80TVmonRk2qHp5KU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
-	Martijn Coenen <maco@android.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Steven Moreland <smoreland@google.com>,
-	Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH 5.15 387/476] binder: signal epoll threads of self-work
+	Eric Dumazet <edumazet@google.com>,
+	Eric Biggers <ebiggers@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+32b89eaa102b372ff76d@syzkaller.appspotmail.com
+Subject: [PATCH 4.19 137/202] llc: call sock_orphan() at release time
 Date: Wed, 21 Feb 2024 14:07:18 +0100
-Message-ID: <20240221130022.337935129@linuxfoundation.org>
+Message-ID: <20240221125936.139430121@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +63,212 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 97830f3c3088638ff90b20dfba2eb4d487bf14d7 upstream.
+[ Upstream commit aa2b2eb3934859904c287bf5434647ba72e14c1c ]
 
-In (e)poll mode, threads often depend on I/O events to determine when
-data is ready for consumption. Within binder, a thread may initiate a
-command via BINDER_WRITE_READ without a read buffer and then make use
-of epoll_wait() or similar to consume any responses afterwards.
+syzbot reported an interesting trace [1] caused by a stale sk->sk_wq
+pointer in a closed llc socket.
 
-It is then crucial that epoll threads are signaled via wakeup when they
-queue their own work. Otherwise, they risk waiting indefinitely for an
-event leaving their work unhandled. What is worse, subsequent commands
-won't trigger a wakeup either as the thread has pending work.
+In commit ff7b11aa481f ("net: socket: set sock->sk to NULL after
+calling proto_ops::release()") Eric Biggers hinted that some protocols
+are missing a sock_orphan(), we need to perform a full audit.
 
-Fixes: 457b9a6f09f0 ("Staging: android: add binder driver")
-Cc: Arve Hjønnevåg <arve@android.com>
-Cc: Martijn Coenen <maco@android.com>
-Cc: Alice Ryhl <aliceryhl@google.com>
-Cc: Steven Moreland <smoreland@google.com>
-Cc: stable@vger.kernel.org # v4.19+
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Link: https://lore.kernel.org/r/20240131215347.1808751-1-cmllamas@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In net-next, I plan to clear sock->sk from sock_orphan() and
+amend Eric patch to add a warning.
+
+[1]
+ BUG: KASAN: slab-use-after-free in list_empty include/linux/list.h:373 [inline]
+ BUG: KASAN: slab-use-after-free in waitqueue_active include/linux/wait.h:127 [inline]
+ BUG: KASAN: slab-use-after-free in sock_def_write_space_wfree net/core/sock.c:3384 [inline]
+ BUG: KASAN: slab-use-after-free in sock_wfree+0x9a8/0x9d0 net/core/sock.c:2468
+Read of size 8 at addr ffff88802f4fc880 by task ksoftirqd/1/27
+
+CPU: 1 PID: 27 Comm: ksoftirqd/1 Not tainted 6.8.0-rc1-syzkaller-00049-g6098d87eaf31 #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+Call Trace:
+ <TASK>
+  __dump_stack lib/dump_stack.c:88 [inline]
+  dump_stack_lvl+0xd9/0x1b0 lib/dump_stack.c:106
+  print_address_description mm/kasan/report.c:377 [inline]
+  print_report+0xc4/0x620 mm/kasan/report.c:488
+  kasan_report+0xda/0x110 mm/kasan/report.c:601
+  list_empty include/linux/list.h:373 [inline]
+  waitqueue_active include/linux/wait.h:127 [inline]
+  sock_def_write_space_wfree net/core/sock.c:3384 [inline]
+  sock_wfree+0x9a8/0x9d0 net/core/sock.c:2468
+  skb_release_head_state+0xa3/0x2b0 net/core/skbuff.c:1080
+  skb_release_all net/core/skbuff.c:1092 [inline]
+  napi_consume_skb+0x119/0x2b0 net/core/skbuff.c:1404
+  e1000_unmap_and_free_tx_resource+0x144/0x200 drivers/net/ethernet/intel/e1000/e1000_main.c:1970
+  e1000_clean_tx_irq drivers/net/ethernet/intel/e1000/e1000_main.c:3860 [inline]
+  e1000_clean+0x4a1/0x26e0 drivers/net/ethernet/intel/e1000/e1000_main.c:3801
+  __napi_poll.constprop.0+0xb4/0x540 net/core/dev.c:6576
+  napi_poll net/core/dev.c:6645 [inline]
+  net_rx_action+0x956/0xe90 net/core/dev.c:6778
+  __do_softirq+0x21a/0x8de kernel/softirq.c:553
+  run_ksoftirqd kernel/softirq.c:921 [inline]
+  run_ksoftirqd+0x31/0x60 kernel/softirq.c:913
+  smpboot_thread_fn+0x660/0xa10 kernel/smpboot.c:164
+  kthread+0x2c6/0x3a0 kernel/kthread.c:388
+  ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
+  ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:242
+ </TASK>
+
+Allocated by task 5167:
+  kasan_save_stack+0x33/0x50 mm/kasan/common.c:47
+  kasan_save_track+0x14/0x30 mm/kasan/common.c:68
+  unpoison_slab_object mm/kasan/common.c:314 [inline]
+  __kasan_slab_alloc+0x81/0x90 mm/kasan/common.c:340
+  kasan_slab_alloc include/linux/kasan.h:201 [inline]
+  slab_post_alloc_hook mm/slub.c:3813 [inline]
+  slab_alloc_node mm/slub.c:3860 [inline]
+  kmem_cache_alloc_lru+0x142/0x6f0 mm/slub.c:3879
+  alloc_inode_sb include/linux/fs.h:3019 [inline]
+  sock_alloc_inode+0x25/0x1c0 net/socket.c:308
+  alloc_inode+0x5d/0x220 fs/inode.c:260
+  new_inode_pseudo+0x16/0x80 fs/inode.c:1005
+  sock_alloc+0x40/0x270 net/socket.c:634
+  __sock_create+0xbc/0x800 net/socket.c:1535
+  sock_create net/socket.c:1622 [inline]
+  __sys_socket_create net/socket.c:1659 [inline]
+  __sys_socket+0x14c/0x260 net/socket.c:1706
+  __do_sys_socket net/socket.c:1720 [inline]
+  __se_sys_socket net/socket.c:1718 [inline]
+  __x64_sys_socket+0x72/0xb0 net/socket.c:1718
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xd3/0x250 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
+
+Freed by task 0:
+  kasan_save_stack+0x33/0x50 mm/kasan/common.c:47
+  kasan_save_track+0x14/0x30 mm/kasan/common.c:68
+  kasan_save_free_info+0x3f/0x60 mm/kasan/generic.c:640
+  poison_slab_object mm/kasan/common.c:241 [inline]
+  __kasan_slab_free+0x121/0x1b0 mm/kasan/common.c:257
+  kasan_slab_free include/linux/kasan.h:184 [inline]
+  slab_free_hook mm/slub.c:2121 [inline]
+  slab_free mm/slub.c:4299 [inline]
+  kmem_cache_free+0x129/0x350 mm/slub.c:4363
+  i_callback+0x43/0x70 fs/inode.c:249
+  rcu_do_batch kernel/rcu/tree.c:2158 [inline]
+  rcu_core+0x819/0x1680 kernel/rcu/tree.c:2433
+  __do_softirq+0x21a/0x8de kernel/softirq.c:553
+
+Last potentially related work creation:
+  kasan_save_stack+0x33/0x50 mm/kasan/common.c:47
+  __kasan_record_aux_stack+0xba/0x100 mm/kasan/generic.c:586
+  __call_rcu_common.constprop.0+0x9a/0x7b0 kernel/rcu/tree.c:2683
+  destroy_inode+0x129/0x1b0 fs/inode.c:315
+  iput_final fs/inode.c:1739 [inline]
+  iput.part.0+0x560/0x7b0 fs/inode.c:1765
+  iput+0x5c/0x80 fs/inode.c:1755
+  dentry_unlink_inode+0x292/0x430 fs/dcache.c:400
+  __dentry_kill+0x1ca/0x5f0 fs/dcache.c:603
+  dput.part.0+0x4ac/0x9a0 fs/dcache.c:845
+  dput+0x1f/0x30 fs/dcache.c:835
+  __fput+0x3b9/0xb70 fs/file_table.c:384
+  task_work_run+0x14d/0x240 kernel/task_work.c:180
+  exit_task_work include/linux/task_work.h:38 [inline]
+  do_exit+0xa8a/0x2ad0 kernel/exit.c:871
+  do_group_exit+0xd4/0x2a0 kernel/exit.c:1020
+  __do_sys_exit_group kernel/exit.c:1031 [inline]
+  __se_sys_exit_group kernel/exit.c:1029 [inline]
+  __x64_sys_exit_group+0x3e/0x50 kernel/exit.c:1029
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xd3/0x250 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
+
+The buggy address belongs to the object at ffff88802f4fc800
+ which belongs to the cache sock_inode_cache of size 1408
+The buggy address is located 128 bytes inside of
+ freed 1408-byte region [ffff88802f4fc800, ffff88802f4fcd80)
+
+The buggy address belongs to the physical page:
+page:ffffea0000bd3e00 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x2f4f8
+head:ffffea0000bd3e00 order:3 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+anon flags: 0xfff00000000840(slab|head|node=0|zone=1|lastcpupid=0x7ff)
+page_type: 0xffffffff()
+raw: 00fff00000000840 ffff888013b06b40 0000000000000000 0000000000000001
+raw: 0000000000000000 0000000080150015 00000001ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 3, migratetype Reclaimable, gfp_mask 0xd20d0(__GFP_IO|__GFP_FS|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC|__GFP_RECLAIMABLE), pid 4956, tgid 4956 (sshd), ts 31423924727, free_ts 0
+  set_page_owner include/linux/page_owner.h:31 [inline]
+  post_alloc_hook+0x2d0/0x350 mm/page_alloc.c:1533
+  prep_new_page mm/page_alloc.c:1540 [inline]
+  get_page_from_freelist+0xa28/0x3780 mm/page_alloc.c:3311
+  __alloc_pages+0x22f/0x2440 mm/page_alloc.c:4567
+  __alloc_pages_node include/linux/gfp.h:238 [inline]
+  alloc_pages_node include/linux/gfp.h:261 [inline]
+  alloc_slab_page mm/slub.c:2190 [inline]
+  allocate_slab mm/slub.c:2354 [inline]
+  new_slab+0xcc/0x3a0 mm/slub.c:2407
+  ___slab_alloc+0x4af/0x19a0 mm/slub.c:3540
+  __slab_alloc.constprop.0+0x56/0xa0 mm/slub.c:3625
+  __slab_alloc_node mm/slub.c:3678 [inline]
+  slab_alloc_node mm/slub.c:3850 [inline]
+  kmem_cache_alloc_lru+0x379/0x6f0 mm/slub.c:3879
+  alloc_inode_sb include/linux/fs.h:3019 [inline]
+  sock_alloc_inode+0x25/0x1c0 net/socket.c:308
+  alloc_inode+0x5d/0x220 fs/inode.c:260
+  new_inode_pseudo+0x16/0x80 fs/inode.c:1005
+  sock_alloc+0x40/0x270 net/socket.c:634
+  __sock_create+0xbc/0x800 net/socket.c:1535
+  sock_create net/socket.c:1622 [inline]
+  __sys_socket_create net/socket.c:1659 [inline]
+  __sys_socket+0x14c/0x260 net/socket.c:1706
+  __do_sys_socket net/socket.c:1720 [inline]
+  __se_sys_socket net/socket.c:1718 [inline]
+  __x64_sys_socket+0x72/0xb0 net/socket.c:1718
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xd3/0x250 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
+page_owner free stack trace missing
+
+Memory state around the buggy address:
+ ffff88802f4fc780: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+ ffff88802f4fc800: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+>ffff88802f4fc880: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                   ^
+ ffff88802f4fc900: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff88802f4fc980: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+
+Fixes: 43815482370c ("net: sock_def_readable() and friends RCU conversion")
+Reported-and-tested-by: syzbot+32b89eaa102b372ff76d@syzkaller.appspotmail.com
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Eric Biggers <ebiggers@google.com>
+Cc: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240126165532.3396702-1-edumazet@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ net/llc/af_llc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -450,6 +450,16 @@ binder_enqueue_thread_work_ilocked(struc
- {
- 	WARN_ON(!list_empty(&thread->waiting_thread_node));
- 	binder_enqueue_work_ilocked(work, &thread->todo);
-+
-+	/* (e)poll-based threads require an explicit wakeup signal when
-+	 * queuing their own work; they rely on these events to consume
-+	 * messages without I/O block. Without it, threads risk waiting
-+	 * indefinitely without handling the work.
-+	 */
-+	if (thread->looper & BINDER_LOOPER_STATE_POLL &&
-+	    thread->pid == current->pid && !thread->process_todo)
-+		wake_up_interruptible_sync(&thread->wait);
-+
- 	thread->process_todo = true;
- }
- 
+diff --git a/net/llc/af_llc.c b/net/llc/af_llc.c
+index a5c104ea477c..fc7507ccc667 100644
+--- a/net/llc/af_llc.c
++++ b/net/llc/af_llc.c
+@@ -227,6 +227,8 @@ static int llc_ui_release(struct socket *sock)
+ 	if (llc->dev)
+ 		dev_put(llc->dev);
+ 	sock_put(sk);
++	sock_orphan(sk);
++	sock->sk = NULL;
+ 	llc_sk_free(sk);
+ out:
+ 	return 0;
+-- 
+2.43.0
+
 
 
 
