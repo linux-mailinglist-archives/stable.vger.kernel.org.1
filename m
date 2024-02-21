@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-23002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8302185DF41
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:26:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1311185DDD3
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:12:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C12E8B27C5F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:20:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC8C11F240C8
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:12:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 288AC7D411;
-	Wed, 21 Feb 2024 14:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6587F7F48C;
+	Wed, 21 Feb 2024 14:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hn66/eJn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p4Jx+CCa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503EB7C093;
-	Wed, 21 Feb 2024 14:20:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C3D97E105;
+	Wed, 21 Feb 2024 14:08:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525239; cv=none; b=NDbTcz0BxFuH7A2uf+uY1A32FC3XJNRl4vL/TO3oPAlnYTu5oSLKJwHkp9posm8GfclZEfdkspOPm5FMgIZct8l5onygioSfYnvId1fs5gApajDoEoVqWQK4LT4e017WiDYUzi7BRQHV0HE1RHoQpu+7hgppAghXlG7dqpODDBY=
+	t=1708524491; cv=none; b=DWo7P+l4oZwBEgCQXBDBmmTc3bSBYkpciPjgw6BuIbKg9iMTgKg/T/kXrMKIIQL196A59WeWwLcHchzWM5N2s9RAA1b+DRL0EZj3tvLIsc6p+jWgADuHQFBQqNv1UJ05oYXcOAZw7QmoJLggkY1DimdiUWlfp8/0igDFUStZj2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525239; c=relaxed/simple;
-	bh=VZu+q89BWDI0gJv5x2sGSZFGRWxIq+BC+ScTxbldzMw=;
+	s=arc-20240116; t=1708524491; c=relaxed/simple;
+	bh=Bd6CecjJNsJBYOXBAjjmvJggb5bkiFj8U5PJingsx8Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XFrSih8G3S0b/NByyok2uOaPlYVbwmR7iACSAWk5WlDusNL2or3Yf6zprqrWuGvLUQypgrA7VTZGRXjga1LSoQoyXq8ZYvGeLDOOsGnKOo3TLiqNVgwvrqfX7Zo1jSpEHtVtgYqoi8MXAAjQ2MUz9mP8MmMmzRT9mU7k/sfSPS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hn66/eJn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6E67C433F1;
-	Wed, 21 Feb 2024 14:20:37 +0000 (UTC)
+	 MIME-Version; b=G15eFZ/l/zdC9AZ/ptOU7wu0/cQSra6BHR+y0JT/KqtORQJiBjcRO3R/OSGb7e0LLAp+H7gN948AlaYVL8I5JuDorePVn+hW89tzMG+6Wr8+fjfu5pzPg/Ga6xeYQ664cvSAgugGbn217NtYXDOJ8YRUtBgVoAeBOH+eLj2G4SQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p4Jx+CCa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6023AC433F1;
+	Wed, 21 Feb 2024 14:08:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525238;
-	bh=VZu+q89BWDI0gJv5x2sGSZFGRWxIq+BC+ScTxbldzMw=;
+	s=korg; t=1708524490;
+	bh=Bd6CecjJNsJBYOXBAjjmvJggb5bkiFj8U5PJingsx8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hn66/eJnlzdu2dnecvhuGInCFp5YJCPkLc1uWknvahvZRZ7E1B0+Tt4TYUPv3B3Is
-	 Mu69xC65NDYp1/ioThGra2VZm/MTS+VUuIkuKzzOy7T+H55oAuaUa2jc3sEa/nKcnz
-	 pXF3MCV5wPLl3NV4ocpKGm0heIhefvRPI6/ERWiw=
+	b=p4Jx+CCaDPWAfE+gRj6KUsvE8MQMqX0+mUFUXUyf3ucv5IueR4keVeBxjIPsNCMWm
+	 HiZNfLmkPM6UxGb/UXNBT/NZYAZmdvK8xXkBMuP7gcP/wDJmtUN6/mQZ6dviOUGB+8
+	 WqoplyvNC2PYdc8yjmg1f4mnytGsCjkGuk8vxfK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 099/267] ARM: dts: imx7s: Fix nand-controller #size-cells
+Subject: [PATCH 5.10 261/379] inet: read sk->sk_family once in inet_recv_error()
 Date: Wed, 21 Feb 2024 14:07:20 +0100
-Message-ID: <20240221125943.053506128@linuxfoundation.org>
+Message-ID: <20240221130002.636449943@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 4aadb841ed49bada1415c48c44d21f5b69e01299 ]
+[ Upstream commit eef00a82c568944f113f2de738156ac591bbd5cd ]
 
-nand-controller.yaml bindings says #size-cells shall be set to 0.
-Fixes the dtbs_check warning:
-arch/arm/boot/dts/nxp/imx/imx7s-mba7.dtb: nand-controller@33002000:
- #size-cells:0:0: 0 was expected
-  from schema $id: http://devicetree.org/schemas/mtd/gpmi-nand.yaml#
+inet_recv_error() is called without holding the socket lock.
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+IPv6 socket could mutate to IPv4 with IPV6_ADDRFORM
+socket option and trigger a KCSAN warning.
+
+Fixes: f4713a3dfad0 ("net-timestamp: make tcp_recvmsg call ipv6_recv_error for AF_INET6 socks")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/imx7s.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/af_inet.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/imx7s.dtsi b/arch/arm/boot/dts/imx7s.dtsi
-index a7ed880b12fc..8e86841ef4e6 100644
---- a/arch/arm/boot/dts/imx7s.dtsi
-+++ b/arch/arm/boot/dts/imx7s.dtsi
-@@ -1217,7 +1217,7 @@
- 		gpmi: gpmi-nand@33002000{
- 			compatible = "fsl,imx7d-gpmi-nand";
- 			#address-cells = <1>;
--			#size-cells = <1>;
-+			#size-cells = <0>;
- 			reg = <0x33002000 0x2000>, <0x33004000 0x4000>;
- 			reg-names = "gpmi-nand", "bch";
- 			interrupts = <GIC_SPI 14 IRQ_TYPE_LEVEL_HIGH>;
+diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
+index 27c433eedea1..5f1b334e64b3 100644
+--- a/net/ipv4/af_inet.c
++++ b/net/ipv4/af_inet.c
+@@ -1600,10 +1600,12 @@ EXPORT_SYMBOL(inet_current_timestamp);
+ 
+ int inet_recv_error(struct sock *sk, struct msghdr *msg, int len, int *addr_len)
+ {
+-	if (sk->sk_family == AF_INET)
++	unsigned int family = READ_ONCE(sk->sk_family);
++
++	if (family == AF_INET)
+ 		return ip_recv_error(sk, msg, len, addr_len);
+ #if IS_ENABLED(CONFIG_IPV6)
+-	if (sk->sk_family == AF_INET6)
++	if (family == AF_INET6)
+ 		return pingv6_ops.ipv6_recv_error(sk, msg, len, addr_len);
+ #endif
+ 	return -EINVAL;
 -- 
 2.43.0
 
