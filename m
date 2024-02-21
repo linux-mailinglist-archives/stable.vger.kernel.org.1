@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-22216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9536485DAE5
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:35:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5809485DCA2
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:55:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFA3E1C220C9
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:35:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1ADAB27DBE
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:55:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2FC37BB14;
-	Wed, 21 Feb 2024 13:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A01BA79DAE;
+	Wed, 21 Feb 2024 13:55:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TSeKZ+PM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JAp0m3V/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 815A97866C;
-	Wed, 21 Feb 2024 13:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EFC5762C1;
+	Wed, 21 Feb 2024 13:55:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522471; cv=none; b=mtX6RX5h2ZrRM8dAFsOXl3BiIHagwBVkQfSHPpLgO7mGQLQDtKmtF/cMDyR+eGj93up5RxQ8ao0PpPfm5J8Hq4uDkW0WaG8eFbbgc6nA3qG7Mm7TZCd9K42b39BbyoS4Uc42DO8GbhFxEelUALe/yqBneifLocQCrC2gXqyBR/I=
+	t=1708523736; cv=none; b=fic1a2UVqv1V8bY8menHktRb+F3jODanT7PfViNbtC0gtaZ4Aekz+L16mCPlWXzDXFuQULVWU46tC9VMN/yTufWBrTeev4hInSkj+la2hKz09qnHdbOj/cJ4hUYYPxrhBsjmyWEfWlyYGVcSCvy6lXEZfbKVMUVq1JZv+mD0wko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522471; c=relaxed/simple;
-	bh=n1lmMVVT703q6zubMJpAt29k3JJoygqDhvDMApFOFJw=;
+	s=arc-20240116; t=1708523736; c=relaxed/simple;
+	bh=4WFsQ1H+fe+oP8VM0QWYBjJCDKqCoRrM6P75oaLCimY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q/eoQmACdAirjg2+anzU84VbSgPtXTfk/wEQpPwuzV991zAFP9JZwWQa8Nu477fdh5yAQPFBhaNPzvuv6vY/Qk7Vfo9Yowd3+vKesM6OZwwzOa06qPLwUatKrrKKsbHblcHv5mxAAoL3u93zdqz8O7+8v3TOg6vWybJJu/4BGYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TSeKZ+PM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A35E4C433F1;
-	Wed, 21 Feb 2024 13:34:30 +0000 (UTC)
+	 MIME-Version; b=Y567RC0cxAgbw35q4Ek1ycQGWnYtuoJV2rLcPAdLjkFw3m7U0hrHOQg4k2HD7U+ONtpGI+op4SQLE0T2j3cR9oxqg39Q6sVPsGXaUDCGeG+sgmWfUXKAcLQ1tdRmGN1s5ZoPnW1NcfHMrAvV+UPzA0+ujhQtD6JHzqy2cpEJ08g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JAp0m3V/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2AB3C433F1;
+	Wed, 21 Feb 2024 13:55:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522471;
-	bh=n1lmMVVT703q6zubMJpAt29k3JJoygqDhvDMApFOFJw=;
+	s=korg; t=1708523736;
+	bh=4WFsQ1H+fe+oP8VM0QWYBjJCDKqCoRrM6P75oaLCimY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TSeKZ+PM40Jtz6UcWf0r3z3b87aiz5BNHzARDKyIsr8hc9VTL8fNDVkbD8B7h4n8A
-	 uZl7uvAb0XJabrUntDa+0lQpyGJfRGk2rGHZ7lXgCVI0Cki3vvsNpoLQETQ4G5BnqI
-	 emgmB5DjIqoM10H1s2DF0vHKGTcc70TOiKnUXTNk=
+	b=JAp0m3V/t52EtuYWc5CJck2BBhbIienTkwKIxxqEusqGADcHdrtnN/6dBBo7d9LNK
+	 ro1pfPBQ/DhDB2FRSsp+2l8M0aBArEjGMSCgBq6WGdYkmKtbYCaZOntF7nID9QTfjn
+	 FKRr9vVgQNxWMc4m0w2yga1MjEQkvAjBIRGE6/yo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ching Huang <ching2048@areca.com.tw>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 172/476] scsi: arcmsr: Support new PCI device IDs 1883 and 1886
+Subject: [PATCH 5.10 044/379] bnxt_en: Wait for FLR to complete during probe
 Date: Wed, 21 Feb 2024 14:03:43 +0100
-Message-ID: <20240221130014.279774924@linuxfoundation.org>
+Message-ID: <20240221125956.221107894@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ching Huang <ching2048@areca.com.tw>
+From: Michael Chan <michael.chan@broadcom.com>
 
-[ Upstream commit 41c8a1a1e90fa4721f856bf3cf71211fd16d6434 ]
+[ Upstream commit 3c1069fa42872f95cf3c6fedf80723d391e12d57 ]
 
-Add support for Areca RAID controllers with PCI device IDs 1883 and 1886.
+The first message to firmware may fail if the device is undergoing FLR.
+The driver has some recovery logic for this failure scenario but we must
+wait 100 msec for FLR to complete before proceeding.  Otherwise the
+recovery will always fail.
 
-Signed-off-by: ching Huang <ching2048@areca.com.tw>
-Link: https://lore.kernel.org/r/7732e743eaad57681b1552eec9c6a86c76dbe459.camel@areca.com.tw
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: ba02629ff6cb ("bnxt_en: log firmware status on firmware init failure")
+Reviewed-by: Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://lore.kernel.org/r/20240117234515.226944-2-michael.chan@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/arcmsr/arcmsr.h     | 4 ++++
- drivers/scsi/arcmsr/arcmsr_hba.c | 6 ++++++
- 2 files changed, 10 insertions(+)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/scsi/arcmsr/arcmsr.h b/drivers/scsi/arcmsr/arcmsr.h
-index 6ce57f031df5..3324114e6b06 100644
---- a/drivers/scsi/arcmsr/arcmsr.h
-+++ b/drivers/scsi/arcmsr/arcmsr.h
-@@ -77,9 +77,13 @@ struct device_attribute;
- #ifndef PCI_DEVICE_ID_ARECA_1203
- #define PCI_DEVICE_ID_ARECA_1203	0x1203
- #endif
-+#ifndef PCI_DEVICE_ID_ARECA_1883
-+#define PCI_DEVICE_ID_ARECA_1883	0x1883
-+#endif
- #ifndef PCI_DEVICE_ID_ARECA_1884
- #define PCI_DEVICE_ID_ARECA_1884	0x1884
- #endif
-+#define PCI_DEVICE_ID_ARECA_1886_0	0x1886
- #define PCI_DEVICE_ID_ARECA_1886	0x188A
- #define	ARCMSR_HOURS			(1000 * 60 * 60 * 4)
- #define	ARCMSR_MINUTES			(1000 * 60 * 60)
-diff --git a/drivers/scsi/arcmsr/arcmsr_hba.c b/drivers/scsi/arcmsr/arcmsr_hba.c
-index ec1a834c922d..e33298b2d51c 100644
---- a/drivers/scsi/arcmsr/arcmsr_hba.c
-+++ b/drivers/scsi/arcmsr/arcmsr_hba.c
-@@ -214,8 +214,12 @@ static struct pci_device_id arcmsr_device_id_table[] = {
- 		.driver_data = ACB_ADAPTER_TYPE_A},
- 	{PCI_DEVICE(PCI_VENDOR_ID_ARECA, PCI_DEVICE_ID_ARECA_1880),
- 		.driver_data = ACB_ADAPTER_TYPE_C},
-+	{PCI_DEVICE(PCI_VENDOR_ID_ARECA, PCI_DEVICE_ID_ARECA_1883),
-+		.driver_data = ACB_ADAPTER_TYPE_C},
- 	{PCI_DEVICE(PCI_VENDOR_ID_ARECA, PCI_DEVICE_ID_ARECA_1884),
- 		.driver_data = ACB_ADAPTER_TYPE_E},
-+	{PCI_DEVICE(PCI_VENDOR_ID_ARECA, PCI_DEVICE_ID_ARECA_1886_0),
-+		.driver_data = ACB_ADAPTER_TYPE_F},
- 	{PCI_DEVICE(PCI_VENDOR_ID_ARECA, PCI_DEVICE_ID_ARECA_1886),
- 		.driver_data = ACB_ADAPTER_TYPE_F},
- 	{0, 0}, /* Terminating entry */
-@@ -4710,9 +4714,11 @@ static const char *arcmsr_info(struct Scsi_Host *host)
- 	case PCI_DEVICE_ID_ARECA_1680:
- 	case PCI_DEVICE_ID_ARECA_1681:
- 	case PCI_DEVICE_ID_ARECA_1880:
-+	case PCI_DEVICE_ID_ARECA_1883:
- 	case PCI_DEVICE_ID_ARECA_1884:
- 		type = "SAS/SATA";
- 		break;
-+	case PCI_DEVICE_ID_ARECA_1886_0:
- 	case PCI_DEVICE_ID_ARECA_1886:
- 		type = "NVMe/SAS/SATA";
- 		break;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 584f365de563..059552f4154d 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -11331,6 +11331,11 @@ static int bnxt_fw_init_one_p1(struct bnxt *bp)
+ 
+ 	bp->fw_cap = 0;
+ 	rc = bnxt_hwrm_ver_get(bp);
++	/* FW may be unresponsive after FLR. FLR must complete within 100 msec
++	 * so wait before continuing with recovery.
++	 */
++	if (rc)
++		msleep(100);
+ 	bnxt_try_map_fw_health_reg(bp);
+ 	if (rc) {
+ 		if (bp->fw_health && bp->fw_health->status_reliable) {
 -- 
 2.43.0
 
