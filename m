@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-22294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F32485DB50
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:39:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C200185D8D1
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:10:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C418D1F23046
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:39:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6110A1F240C6
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:10:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4546069E08;
-	Wed, 21 Feb 2024 13:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85D6569D02;
+	Wed, 21 Feb 2024 13:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qMrDOMe9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bNbNlFRP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01B0D3C2F;
-	Wed, 21 Feb 2024 13:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D49E2A1D7;
+	Wed, 21 Feb 2024 13:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522765; cv=none; b=JrQm4LO2O12QB8uR0aRI+1Gm2LFRjUbuSRdAh+oGZXGR7Q1RymYATpkWdH6naHkGDkYruUK7GfSqrG7MhfHlUt0LmQ7GjR1cgvZZFg4zN8aEOX8TaVYL7SQKTZQ2F9H/YEXNFZUG8tX+wOZXfJVTbf4LaLuAed24IZlTl1d9DC8=
+	t=1708521048; cv=none; b=FOOiUfh/GiRRcUN3d2JJWFCIg61FKLg80Rv+c/WSUV3UJsxGZSrY4LWVgRTW7sFo2gGDh99Iv7TxYCxDbQMM53ExrXZUgFJZp7hftol0f6sCiWoottwMWEuCE+7ulCp+Rjom4I2oLbGUmWd+6/2ymxNlBYzvcgGDoNCTuNXiYGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522765; c=relaxed/simple;
-	bh=xcByPhYVNmXWU2lF19XIw8rvTanjZcKmLfcRosIfbxw=;
+	s=arc-20240116; t=1708521048; c=relaxed/simple;
+	bh=ca+KgbvqbiGKCzZ/EHYMN+vJkgjslVsf/7UMipDBxzU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G0vbrbVfZqDGOU+QTZwNxwhy2BT0HMyTg3DmdEnnYJPKhZPB3Ped5vXeJCVrYVTD0TicAec9C0ILDRI3TC3MUQAoC3WtdnZEIG+fPrfrQbZelpXzTAeYMXtI9RrXteWZDnbrcoYScrQEjkHf5LJCRfexDn5TY0oAFU4iTRseC7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qMrDOMe9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FEA6C433F1;
-	Wed, 21 Feb 2024 13:39:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AM7k/C/VBN6hBiAfH7+CIbXLirmjvLOI6Yi2dtTnBPQ1HxuVw+oFQAtaB8NqtDNyyAseA/cDqcz4IetQGj6z9XyLUNB9EkzMg6gi8MPLPWbQWWblvS4AaBMm0IHcHSvgTAQR881ccjBGQLKiKc8iQR0JMhZixQkObRn8d6/PuCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bNbNlFRP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5843CC433C7;
+	Wed, 21 Feb 2024 13:10:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522764;
-	bh=xcByPhYVNmXWU2lF19XIw8rvTanjZcKmLfcRosIfbxw=;
+	s=korg; t=1708521047;
+	bh=ca+KgbvqbiGKCzZ/EHYMN+vJkgjslVsf/7UMipDBxzU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qMrDOMe92Yd825/oNmzc8YqnBlXp+I33zyQ+prUvYWFoHN133b9B9IH0FKy8Y2jeW
-	 OEt8EA7mW5W+oXjbf/zn/gbnAFe6DhYYSuh4CFnVC67DDKLXaglKTovJ4k6egd3FHm
-	 x/XbXVX3EUVkGf+1yh8BnECIYQ2vIzfQ2RmzquJM=
+	b=bNbNlFRP+Ng/O5tTZHEkyT7AvkZutkWYChldA5WAajX+y0QygQBf821sxS2LYbYTx
+	 jEMSXtWXZhtbIkL9xe6aWjBlDxigGXTGcrNGx3yTGcXny4Rsme8H8g1AVUZQgSSsMy
+	 H4o/nFatxfgFWcWBeP4J2p211uSGtmFko6vCoOvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	James Clark <james.clark@arm.com>,
-	Leo Yan <leo.yan@linaro.org>,
-	John Garry <john.g.garry@oracle.com>,
-	Mike Leach <mike.leach@linaro.org>,
-	Will Deacon <will@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	qizhong cheng <qizhong.cheng@mediatek.com>,
+	Jianjun Wang <jianjun.wang@mediatek.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 251/476] perf cs-etm: Bump minimum OpenCSD version to ensure a bugfix is present
+Subject: [PATCH 4.19 001/202] PCI: mediatek: Clear interrupt status before dispatching handler
 Date: Wed, 21 Feb 2024 14:05:02 +0100
-Message-ID: <20240221130017.136027448@linuxfoundation.org>
+Message-ID: <20240221125931.790603468@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,62 +63,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@arm.com>
+From: qizhong cheng <qizhong.cheng@mediatek.com>
 
-[ Upstream commit 2dbba30fd69b604802a9535b74bddb5bcca23793 ]
+[ Upstream commit 4e11c29873a8a296a20f99b3e03095e65ebf897d ]
 
-Since commit d927ef5004ef ("perf cs-etm: Add exception level consistency
-check"), the exception that was added to Perf will be triggered unless
-the following bugfix from OpenCSD is present:
+We found a failure when using the iperf tool during WiFi performance
+testing, where some MSIs were received while clearing the interrupt
+status, and these MSIs cannot be serviced.
 
- - _Version 1.2.1_:
-  - __Bugfix__:
-    ETM4x / ETE - output of context elements to client can in some
-    circumstances be delayed until after subsequent atoms have been
-    processed leading to incorrect memory decode access via the client
-    callbacks. Fixed to flush context elements immediately they are
-    committed.
+The interrupt status can be cleared even if the MSI status remains pending.
+As such, given the edge-triggered interrupt type, its status should be
+cleared before being dispatched to the handler of the underling device.
 
-Rather than remove the assert and silently fail, just increase the
-minimum version requirement to avoid hard to debug issues and
-regressions.
-
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: James Clark <james.clark@arm.com>
-Tested-by: Leo Yan <leo.yan@linaro.org>
-Cc: John Garry <john.g.garry@oracle.com>
-Cc: Mike Leach <mike.leach@linaro.org>
-Cc: Will Deacon <will@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org
-Link: https://lore.kernel.org/r/20230901133716.677499-1-james.clark@arm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+[kwilczynski: commit log, code comment wording]
+Link: https://lore.kernel.org/linux-pci/20231211094923.31967-1-jianjun.wang@mediatek.com
+Fixes: 43e6409db64d ("PCI: mediatek: Add MSI support for MT2712 and MT7622")
+Signed-off-by: qizhong cheng <qizhong.cheng@mediatek.com>
+Signed-off-by: Jianjun Wang <jianjun.wang@mediatek.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+[bhelgaas: rewrap comment]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc:  <stable@vger.kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/build/feature/test-libopencsd.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pci/controller/pcie-mediatek.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/tools/build/feature/test-libopencsd.c b/tools/build/feature/test-libopencsd.c
-index eb6303ff446e..4cfcef9da3e4 100644
---- a/tools/build/feature/test-libopencsd.c
-+++ b/tools/build/feature/test-libopencsd.c
-@@ -4,9 +4,9 @@
- /*
-  * Check OpenCSD library version is sufficient to provide required features
-  */
--#define OCSD_MIN_VER ((1 << 16) | (1 << 8) | (1))
-+#define OCSD_MIN_VER ((1 << 16) | (2 << 8) | (1))
- #if !defined(OCSD_VER_NUM) || (OCSD_VER_NUM < OCSD_MIN_VER)
--#error "OpenCSD >= 1.1.1 is required"
-+#error "OpenCSD >= 1.2.1 is required"
- #endif
+diff --git a/drivers/pci/controller/pcie-mediatek.c b/drivers/pci/controller/pcie-mediatek.c
+index 066e9e00de11..0d5be37660aa 100644
+--- a/drivers/pci/controller/pcie-mediatek.c
++++ b/drivers/pci/controller/pcie-mediatek.c
+@@ -605,14 +605,20 @@ static void mtk_pcie_intr_handler(struct irq_desc *desc)
+ 		if (status & MSI_STATUS){
+ 			unsigned long imsi_status;
  
- int main(void)
++			/*
++			 * The interrupt status can be cleared even if the
++			 * MSI status remains pending. As such, given the
++			 * edge-triggered interrupt type, its status should
++			 * be cleared before being dispatched to the
++			 * handler of the underlying device.
++			 */
++			writel(MSI_STATUS, port->base + PCIE_INT_STATUS);
+ 			while ((imsi_status = readl(port->base + PCIE_IMSI_STATUS))) {
+ 				for_each_set_bit(bit, &imsi_status, MTK_MSI_IRQS_NUM) {
+ 					virq = irq_find_mapping(port->inner_domain, bit);
+ 					generic_handle_irq(virq);
+ 				}
+ 			}
+-			/* Clear MSI interrupt status */
+-			writel(MSI_STATUS, port->base + PCIE_INT_STATUS);
+ 		}
+ 	}
+ 
 -- 
 2.43.0
 
