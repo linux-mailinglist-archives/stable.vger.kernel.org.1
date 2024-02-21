@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-21981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F08785D97F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:19:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 610B885DED3
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:22:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 719671C22C50
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:19:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 20F42B21787
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:21:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4DEF6EB77;
-	Wed, 21 Feb 2024 13:19:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A5496A8D6;
+	Wed, 21 Feb 2024 14:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kPFmKoiQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gAMQ5mDJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9208053816;
-	Wed, 21 Feb 2024 13:19:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276A77E77A;
+	Wed, 21 Feb 2024 14:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521557; cv=none; b=ezoy6vPzsM9rq3cdGdqKk0IVUscXqLzFkZtsNqU5wy4BRE9JfmdDSyE3PxLLYi2Hsz8wFHATbVvX1X6noKOvqnhpxYjdj5HLg8QTT6pE9R+w/oluAF4r2gFm7bLbg/rmjKm4aLLv60fg8L0TiquZAnrjncXB7VNDQQMumWUwtKQ=
+	t=1708525253; cv=none; b=VZ7I07BWGh2acYzdz3/0G35ryxcfm934oVHa3NX7O0jD8lqe4x+O1CH55HVHCqubyrqaelcuyqJtagA2ybm9PwslMWutKgq6DnXUfqSQSn9KXuoIQ0J2rRpxMEnlu/cHbTJqlweWXBAkQZqrpww2yQ3hnfdveu4o9YkIn2an9g4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521557; c=relaxed/simple;
-	bh=9hJauWcuciE/MwP11IRDUjl9DSzON3ah4ibyHalizgM=;
+	s=arc-20240116; t=1708525253; c=relaxed/simple;
+	bh=nk+t4LFm5+Xi28FTftIfhEu9b9WrYK+f3Onen8xjAk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ac3bBa5TqY9vP6j2H1Pj73rs3hNvUqvjy4LwOZ2awdjsklX1UaiSnTnRgXNNJqGzF3q9XYD57y6OQoJ1tdutmfrYks/8JYpoF6aPBeEJhd9wRlNeeRdfj5u7z3jww9qR6ltJe0QlL7kdmLDJihFbkRyhzMXS8d3+ZNMCwBMqJ2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kPFmKoiQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01C2FC433C7;
-	Wed, 21 Feb 2024 13:19:16 +0000 (UTC)
+	 MIME-Version; b=C9IfKxG0U/tg5tQe1TmQ/uK/ZXKZbE72Y4euUsMnAt9BMyFmN7t4v1H4mF13CzODI6g7dBxrudChiJma9EYSh6Mzw/Ugy+DwuS0dh51MvP12Tmvzr0Cphemyq/r0BNwITQMWbwejmsmY+9U1a1S60QgmBEmLHk9qh31of8wdtSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gAMQ5mDJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91FE0C433F1;
+	Wed, 21 Feb 2024 14:20:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521557;
-	bh=9hJauWcuciE/MwP11IRDUjl9DSzON3ah4ibyHalizgM=;
+	s=korg; t=1708525252;
+	bh=nk+t4LFm5+Xi28FTftIfhEu9b9WrYK+f3Onen8xjAk0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kPFmKoiQYakQIwxGNjVTYc4PTpMepmDtVXBjZgcQ4D9q05c+QLBs4lKCxZhZXcJMS
-	 WwkfHdBcHEADPOFnZuYtEjj1T1Yz1uJBm5hrRvBLpTljKym76krI6VU47jA5Db/sb1
-	 Jg4iH4zbTy1Pn9zlUW7U0FVNOLS7gN8QDKg/b/30=
+	b=gAMQ5mDJexACLPmJe9388UEz9zBCnIRtRSbU9rxyhpyioRWOjElVGEF1yCKLtf0Xe
+	 fQmPJcgsuOIMMbRkBQTMy75wIQUdoPvj18WnEodMRb94YOXmL18me28gZEqY3Yotim
+	 nY5yEN4Tn6hJ45bIFMpDIKr9MSK9da965MJflRQo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Kuehling <Felix.Kuehling@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 114/202] drm/amdgpu: Let KFD sync with VM fences
+	Osama Muhammad <osmtendev@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+d4b1df2e9d4ded6488ec@syzkaller.appspotmail.com
+Subject: [PATCH 5.4 074/267] UBSAN: array-index-out-of-bounds in dtSplitRoot
 Date: Wed, 21 Feb 2024 14:06:55 +0100
-Message-ID: <20240221125935.421329811@linuxfoundation.org>
+Message-ID: <20240221125942.300112783@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +61,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Kuehling <Felix.Kuehling@amd.com>
+From: Osama Muhammad <osmtendev@gmail.com>
 
-[ Upstream commit ec9ba4821fa52b5efdbc4cdf0a77497990655231 ]
+[ Upstream commit 27e56f59bab5ddafbcfe69ad7a4a6ea1279c1b16 ]
 
-Change the rules for amdgpu_sync_resv to let KFD synchronize with VM
-fences on page table reservations. This fixes intermittent memory
-corruption after evictions when using amdgpu_vm_handle_moved to update
-page tables for VM mappings managed through render nodes.
+Syzkaller reported the following issue:
 
-Signed-off-by: Felix Kuehling <Felix.Kuehling@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+oop0: detected capacity change from 0 to 32768
+
+UBSAN: array-index-out-of-bounds in fs/jfs/jfs_dtree.c:1971:9
+index -2 is out of range for type 'struct dtslot [128]'
+CPU: 0 PID: 3613 Comm: syz-executor270 Not tainted 6.0.0-syzkaller-09423-g493ffd6605b2 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/22/2022
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x1b1/0x28e lib/dump_stack.c:106
+ ubsan_epilogue lib/ubsan.c:151 [inline]
+ __ubsan_handle_out_of_bounds+0xdb/0x130 lib/ubsan.c:283
+ dtSplitRoot+0x8d8/0x1900 fs/jfs/jfs_dtree.c:1971
+ dtSplitUp fs/jfs/jfs_dtree.c:985 [inline]
+ dtInsert+0x1189/0x6b80 fs/jfs/jfs_dtree.c:863
+ jfs_mkdir+0x757/0xb00 fs/jfs/namei.c:270
+ vfs_mkdir+0x3b3/0x590 fs/namei.c:4013
+ do_mkdirat+0x279/0x550 fs/namei.c:4038
+ __do_sys_mkdirat fs/namei.c:4053 [inline]
+ __se_sys_mkdirat fs/namei.c:4051 [inline]
+ __x64_sys_mkdirat+0x85/0x90 fs/namei.c:4051
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7fcdc0113fd9
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 c0 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffeb8bc67d8 EFLAGS: 00000246 ORIG_RAX: 0000000000000102
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fcdc0113fd9
+RDX: 0000000000000000 RSI: 0000000020000340 RDI: 0000000000000003
+RBP: 00007fcdc00d37a0 R08: 0000000000000000 R09: 00007fcdc00d37a0
+R10: 00005555559a72c0 R11: 0000000000000246 R12: 00000000f8008000
+R13: 0000000000000000 R14: 00083878000000f8 R15: 0000000000000000
+ </TASK>
+
+The issue is caused when the value of fsi becomes less than -1.
+The check to break the loop when fsi value becomes -1 is present
+but syzbot was able to produce value less than -1 which cause the error.
+This patch simply add the change for the values less than 0.
+
+The patch is tested via syzbot.
+
+Reported-and-tested-by: syzbot+d4b1df2e9d4ded6488ec@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=d4b1df2e9d4ded6488ec
+Signed-off-by: Osama Muhammad <osmtendev@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_sync.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/jfs/jfs_dtree.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_sync.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_sync.c
-index 2d6f5ec77a68..5eb8f93c7022 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_sync.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_sync.c
-@@ -219,7 +219,8 @@ int amdgpu_sync_resv(struct amdgpu_device *adev,
- 		 */
- 		fence_owner = amdgpu_sync_get_owner(f);
- 		if (fence_owner == AMDGPU_FENCE_OWNER_KFD &&
--		    owner != AMDGPU_FENCE_OWNER_UNDEFINED)
-+		    owner != AMDGPU_FENCE_OWNER_UNDEFINED &&
-+	    owner != AMDGPU_FENCE_OWNER_KFD)
- 			continue;
+diff --git a/fs/jfs/jfs_dtree.c b/fs/jfs/jfs_dtree.c
+index 3acc954f7c04..a6d42e49d156 100644
+--- a/fs/jfs/jfs_dtree.c
++++ b/fs/jfs/jfs_dtree.c
+@@ -1970,7 +1970,7 @@ static int dtSplitRoot(tid_t tid,
+ 		do {
+ 			f = &rp->slot[fsi];
+ 			fsi = f->next;
+-		} while (fsi != -1);
++		} while (fsi >= 0);
  
- 		if (amdgpu_sync_same_dev(adev, f)) {
+ 		f->next = n;
+ 	}
 -- 
 2.43.0
 
