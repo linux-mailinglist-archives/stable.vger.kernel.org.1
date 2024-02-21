@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-22851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E285B85DE2B
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:15:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93BB585DF5F
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:27:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A59FEB27E97
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0AAEBB237F4
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:26:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEEE47E78A;
-	Wed, 21 Feb 2024 14:12:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C9427BB01;
+	Wed, 21 Feb 2024 14:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wrQ9dbQy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iG+Te/MH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8AD7E77A;
-	Wed, 21 Feb 2024 14:12:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF0944379;
+	Wed, 21 Feb 2024 14:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524726; cv=none; b=TGXB+ym92kJZibuRmbtbC2X0bLLvdBCJelI2GqExJD2C/bWR5EVDKrbLtr36DQ0uO/wzNDmO9EZV30uvK0O0SNB6RZzAX8beFfmzub4c4NMJgilwjsHH6OGIZtczaClyBHZHZqB/NoDrlf6G7TdK5BB3toDLjIzA6CksxNlTFyY=
+	t=1708525574; cv=none; b=fcqWvd5IENMV4vyxsnMBksHzv4x+dxcXhsK65JW0+xzMbdrDz39UGtzNz1Uw3UzidM0xu67esMIlGo8qaoaClENlKhqEknnsuShBLbplGSM+ymtIxhr9vxrPnGvVsyfCv6VDdzi6wvGqWMheH1OWT8I6AxhOEq5qNzyphbuMoDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524726; c=relaxed/simple;
-	bh=mtBqJ1aM0oolRRh9YhEaNGGP2agAXIiBz07kosvZY/0=;
+	s=arc-20240116; t=1708525574; c=relaxed/simple;
+	bh=qgYmNsGfSSH+RUA2i2/+ne6revzSY9WyZ5e47hhMgz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EKFNJWqSIc3VA2L/4PmBix+dnMGVzm/AxPi3Wz1MVSZDNkx8KsgnSMApi/ZzirMuoywF+CF1BnH5YBe6riNJMuZ/vjK5ZgA0n5h6zZdNQqjApmt8oCNDwW9PSFy+aAOpbaSIzp/B+LwMYVQQCqqqogLGvw7K99SM5sIHEvzO7W0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wrQ9dbQy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF351C433F1;
-	Wed, 21 Feb 2024 14:12:05 +0000 (UTC)
+	 MIME-Version; b=Cl1K3Mcapm03nkE1PnibdpR+Z2kqFAC8Lxbm/0N4LO+jV+gazJMydIcry9qrCLwrobfdHylM8ndfFzddnbLbchryZwhu5VehgIX0h9NM5qeu8Nv5a9x/2s6I5zrAjOMtL4FJ6CgHBCj/zFR/0uSodQNtRacNhXWBBYxRNAPniLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iG+Te/MH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BBF8C433C7;
+	Wed, 21 Feb 2024 14:26:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524726;
-	bh=mtBqJ1aM0oolRRh9YhEaNGGP2agAXIiBz07kosvZY/0=;
+	s=korg; t=1708525574;
+	bh=qgYmNsGfSSH+RUA2i2/+ne6revzSY9WyZ5e47hhMgz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wrQ9dbQyhNG5fNJuJ3MD960IgZrNYHErEOF2b1tFKrlQqqcnIxLq2mLgSTqiMjDED
-	 DkBUyJvhh/jHWTL4vFz5xJiFCSVPBk6oKOGExB/fV5EE/Od6gj1JF8GY+aCCslPWAA
-	 AIbDowpq543YJN/XjEt7y3VW7BU91nh20jAQ16uM=
+	b=iG+Te/MHyqGqFqiHHWuyTm+dDiUV2oVlueWlETHZhoWCmGi0WHZTvtBLO9Wyt4VBy
+	 fdonoEmxFlHn80aOrMwDheWiEEIgEQe4r0IEHAjWrBj6Ufy5zIGYEkiEKTnUX3a4Sf
+	 ueH10D3Wrnw/QiUX7QYz0mtvV7tm2tTald7c181Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jan=20Kundr=C3=A1t?= <jan.kundrat@cesnet.cz>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Subject: [PATCH 5.10 330/379] serial: max310x: improve crystal stable clock detection
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 168/267] netfilter: nft_ct: sanitize layer 3 and 4 protocol number in custom expectations
 Date: Wed, 21 Feb 2024 14:08:29 +0100
-Message-ID: <20240221130004.732032096@linuxfoundation.org>
+Message-ID: <20240221125945.405031272@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,87 +59,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 93cd256ab224c2519e7c4e5f58bb4f1ac2bf0965 upstream.
+[ Upstream commit 8059918a1377f2f1fff06af4f5a4ed3d5acd6bc4 ]
 
-Some people are seeing a warning similar to this when using a crystal:
+- Disallow families other than NFPROTO_{IPV4,IPV6,INET}.
+- Disallow layer 4 protocol with no ports, since destination port is a
+  mandatory attribute for this object.
 
-    max310x 11-006c: clock is not stable yet
-
-The datasheet doesn't mention the maximum time to wait for the clock to be
-stable when using a crystal, and it seems that the 10ms delay in the driver
-is not always sufficient.
-
-Jan Kundrát reported that it took three tries (each separated by 10ms) to
-get a stable clock.
-
-Modify behavior to check stable clock ready bit multiple times (20), and
-waiting 10ms between each try.
-
-Note: the first draft of the driver originally used a 50ms delay, without
-checking the clock stable bit.
-Then a loop with 1000 retries was implemented, each time reading the clock
-stable bit.
-
-Fixes: 4cf9a888fd3c ("serial: max310x: Check the clock readiness")
-Cc: stable@vger.kernel.org
-Suggested-by: Jan Kundrát <jan.kundrat@cesnet.cz>
-Link: https://www.spinics.net/lists/linux-serial/msg35773.html
-Link: https://lore.kernel.org/all/20240110174015.6f20195fde08e5c9e64e5675@hugovil.com/raw
-Link: https://github.com/boundarydevices/linux/commit/e5dfe3e4a751392515d78051973190301a37ca9a
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20240116213001.3691629-3-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 857b46027d6f ("netfilter: nft_ct: add ct expectations support")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/max310x.c |   21 ++++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
+ net/netfilter/nft_ct.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
---- a/drivers/tty/serial/max310x.c
-+++ b/drivers/tty/serial/max310x.c
-@@ -235,6 +235,10 @@
- #define MAX310x_REV_MASK		(0xf8)
- #define MAX310X_WRITE_BIT		0x80
+diff --git a/net/netfilter/nft_ct.c b/net/netfilter/nft_ct.c
+index 7e269f7378cc..9507f1e56107 100644
+--- a/net/netfilter/nft_ct.c
++++ b/net/netfilter/nft_ct.c
+@@ -1174,7 +1174,31 @@ static int nft_ct_expect_obj_init(const struct nft_ctx *ctx,
+ 	if (tb[NFTA_CT_EXPECT_L3PROTO])
+ 		priv->l3num = ntohs(nla_get_be16(tb[NFTA_CT_EXPECT_L3PROTO]));
  
-+/* Crystal-related definitions */
-+#define MAX310X_XTAL_WAIT_RETRIES	20 /* Number of retries */
-+#define MAX310X_XTAL_WAIT_DELAY_MS	10 /* Delay between retries */
++	switch (priv->l3num) {
++	case NFPROTO_IPV4:
++	case NFPROTO_IPV6:
++		if (priv->l3num != ctx->family)
++			return -EINVAL;
 +
- /* MAX3107 specific */
- #define MAX3107_REV_ID			(0xa0)
- 
-@@ -610,12 +614,19 @@ static int max310x_set_ref_clk(struct de
- 
- 	/* Wait for crystal */
- 	if (xtal) {
--		unsigned int val = 0;
--		msleep(10);
--		regmap_read(s->regmap, MAX310X_STS_IRQSTS_REG, &val);
--		if (!(val & MAX310X_STS_CLKREADY_BIT)) {
-+		bool stable = false;
-+		unsigned int try = 0, val = 0;
++		fallthrough;
++	case NFPROTO_INET:
++		break;
++	default:
++		return -EOPNOTSUPP;
++	}
 +
-+		do {
-+			msleep(MAX310X_XTAL_WAIT_DELAY_MS);
-+			regmap_read(s->regmap, MAX310X_STS_IRQSTS_REG, &val);
+ 	priv->l4proto = nla_get_u8(tb[NFTA_CT_EXPECT_L4PROTO]);
++	switch (priv->l4proto) {
++	case IPPROTO_TCP:
++	case IPPROTO_UDP:
++	case IPPROTO_UDPLITE:
++	case IPPROTO_DCCP:
++	case IPPROTO_SCTP:
++		break;
++	default:
++		return -EOPNOTSUPP;
++	}
 +
-+			if (val & MAX310X_STS_CLKREADY_BIT)
-+				stable = true;
-+		} while (!stable && (++try < MAX310X_XTAL_WAIT_RETRIES));
-+
-+		if (!stable)
- 			dev_warn(dev, "clock is not stable yet\n");
--		}
- 	}
- 
- 	return (int)bestfreq;
+ 	priv->dport = nla_get_be16(tb[NFTA_CT_EXPECT_DPORT]);
+ 	priv->timeout = nla_get_u32(tb[NFTA_CT_EXPECT_TIMEOUT]);
+ 	priv->size = nla_get_u8(tb[NFTA_CT_EXPECT_SIZE]);
+-- 
+2.43.0
+
 
 
 
