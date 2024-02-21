@@ -1,208 +1,170 @@
-Return-Path: <stable+bounces-23204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CF5085E3C6
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 17:53:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2076785E3C9
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 17:54:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 550F6B22EAB
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 16:53:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45DFD1C213A4
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 16:54:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DBEA82D99;
-	Wed, 21 Feb 2024 16:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFA5082D99;
+	Wed, 21 Feb 2024 16:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="NifKBHox"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F4yglQW8"
 X-Original-To: stable@vger.kernel.org
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02C6782D6B
-	for <stable@vger.kernel.org>; Wed, 21 Feb 2024 16:53:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F837F7D7;
+	Wed, 21 Feb 2024 16:54:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708534414; cv=none; b=ZfKgTOT6/aBXUvdsmDEYNNLnEK9DvAOIhZcQeG+9QJ5U2BHzljztEdQx7rx5o2XiyYN9QVylvCVIkrChyY0H/3MyjYGoauJzzTB08j/zxaZJhRhHaWyatoakcaf6AObb+ACS359uPboS+6Km1gZ+hYnKRBzbh7fQNtzSQUXWbMg=
+	t=1708534467; cv=none; b=XTrX3izKvACn5ZuLfUfKkxgZcbHtZftL/XSxFy7D1Vrm+lVKVoSLfeeu9ziUblzLo3B8kDWwnnWxvWCScLW5Pz5cyXJza3i5f9qOaQ8/R5OI549XxylXYxr4XpA0SgvmjAn+X+2cuuAHISLC70zL9NK+5pNrTt+9sc6v0cgtgGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708534414; c=relaxed/simple;
-	bh=5u2SEUNdFenZeGcQm8hYpGPJL/jYMT0G5fxaeeTX7lw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JGNKHpidSOTRNaiOd2whjLM5T/b6piyhxLak1ZCWbaBeELxr3lfGAozcLXdnqUPnGxmlYY/WN556uyIZF2ioqqt/YJvlx0UHMGGwSD1gspe2IJLDtSaph1S7jFgX/5ueiU7mZG1ltcXtCdc+cg27cxGvtKRMEU7GlHX2E6HmYHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=NifKBHox; arc=none smtp.client-ip=217.70.183.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 84DFF40003;
-	Wed, 21 Feb 2024 16:53:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1708534410;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=t1hdeVQ8w9ifKc+NIqRjOz0AGu74hIuMo8Gh+iy8sYE=;
-	b=NifKBHoxcCIbXNFVEgVxBedop3PzRKuZdy0TkqyKpyjnApja9oltJ4EcQqhrQwx6FO2r1F
-	vfz3r3jI+XySvxXA8FixN0HFMTz/cN3Qy4+uX0N+h4rfPIVgdYX2Usy4LQuitzYSAWt2qX
-	hWTcr/EAybYn5tBkW/KW1SLJukGGDckgT00gEGrPbHI4EWhq/Qh2sDXr4bQnomWzAygeGM
-	VAHx7Q1UzYvLDIVIuEXv7kZPklFwbQ6L7HzFHDJXI6FkrK7Ks3/nBbMcxg87lfI0EKuizJ
-	obxUiLpIOljXalriynsRYvFWd6gF/w1DlWWLXsjp0mMpM4fkEkPIodbMhfshZw==
-Date: Wed, 21 Feb 2024 17:53:27 +0100
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Christophe Kerello <christophe.kerello@foss.st.com>
-Cc: Richard Weinberger <richard@nod.at>, Vignesh Raghavendra
- <vigneshr@ti.com>, Tudor Ambarus <tudor.ambarus@linaro.org>, Pratyush Yadav
- <pratyush@kernel.org>, Michael Walle <michael@walle.cc>,
- <linux-mtd@lists.infradead.org>, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>, Julien Su <juliensu@mxic.com.tw>, Jaime
- Liao <jaimeliao@mxic.com.tw>, Jaime Liao <jaimeliao.tw@gmail.com>, Alvin
- Zhou <alvinzhou@mxic.com.tw>, <eagle.alexander923@gmail.com>,
- <mans@mansr.com>, <martin@geanix.com>, Sean =?UTF-8?B?Tnlla2rDpnI=?=
- <sean@geanix.com>, <stable@vger.kernel.org>
-Subject: Re: [PATCH 4/4] mtd: rawnand: Clarify conditions to enable
- continuous reads
-Message-ID: <20240221175327.42f7076d@xps-13>
-In-Reply-To: <8ed32443-1343-4970-9f5a-34285850b372@foss.st.com>
-References: <20231222113730.786693-1-miquel.raynal@bootlin.com>
-	<cce57281-4149-459f-b741-0f3c08af7d20@foss.st.com>
-	<20240221122032.502fbf3f@xps-13>
-	<8ed32443-1343-4970-9f5a-34285850b372@foss.st.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1708534467; c=relaxed/simple;
+	bh=77aUkBq2D14lU0uBRL4qJmrXXMPNauDN+gtBYeK9HdM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AgYRmSCtk/rUs/gHYHu5mLIgFn7B/xrLM8YSPKH3Z0Bd2YMrcc2/vFnN5NPjlILjjRIaRQg9Kv+VR6EpcCGIaDNjdrmuhfNIC50RQIP8fwfmXv3RWpQjT3uGn7QpdfpKtyaqQryrkBTlAyiHq4TeLY8OqS4puTX2JxUCmv0EVLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F4yglQW8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FEB8C433C7;
+	Wed, 21 Feb 2024 16:54:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708534466;
+	bh=77aUkBq2D14lU0uBRL4qJmrXXMPNauDN+gtBYeK9HdM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=F4yglQW8JpRtA1PEObAT6svN+d2EBxpqVrL4rzNB2821UBbivxaUnVYEKwCzgYyTK
+	 xN6RaHBwMD+vC2/6bYDoPZp6xgeCnMi3ObIvMkO1cukwMNS5mr21G/xWPsauJfaEMn
+	 e0sdQ2zVhEBGMQlxGKVLrLqFGfz3bH74KhtZ8qcFuwOf34kbu1wmUW2ok0TgXj40hR
+	 dHZ17fcHjE2Yhomtqdb2O1DyvxkgYv3X2PSQMAEVxGQVPjLejzsxthD4aYivBLCDNQ
+	 nXt1ZDVpIw0zyASbwlernGbpldgDi627L01lTk8wsrOojRo37nofvO6QMUOm6fQAXD
+	 74yPiNjuBI+jw==
+Date: Wed, 21 Feb 2024 09:54:24 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Fangrui Song <maskray@google.com>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Kees Cook <keescook@chromium.org>,
+	Justin Stitt <justinstitt@google.com>
+Subject: Re: [PATCH 5.15 380/476] kbuild: Fix changing ELF file type for
+ output of gen_btf for big endian
+Message-ID: <20240221165424.GC1782141@dev-arch.thelio-3990X>
+References: <20240221130007.738356493@linuxfoundation.org>
+ <20240221130022.096353982@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: miquel.raynal@bootlin.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240221130022.096353982@linuxfoundation.org>
 
-Hi Christophe,
+Hi Greg,
 
-christophe.kerello@foss.st.com wrote on Wed, 21 Feb 2024 17:29:45 +0100:
+On Wed, Feb 21, 2024 at 02:07:11PM +0100, Greg Kroah-Hartman wrote:
+> 5.15-stable review patch.  If anyone has any objections, please let me know.
+> 
+> ------------------
+> 
+> From: Nathan Chancellor <nathan@kernel.org>
+> 
+> commit e3a9ee963ad8ba677ca925149812c5932b49af69 upstream.
+> 
+> Commit 90ceddcb4950 ("bpf: Support llvm-objcopy for vmlinux BTF")
+> changed the ELF type of .btf.vmlinux.bin.o to ET_REL via dd, which works
+> fine for little endian platforms:
+> 
+>    00000000  7f 45 4c 46 02 01 01 00  00 00 00 00 00 00 00 00  |.ELF............|
+>   -00000010  03 00 b7 00 01 00 00 00  00 00 00 80 00 80 ff ff  |................|
+>   +00000010  01 00 b7 00 01 00 00 00  00 00 00 80 00 80 ff ff  |................|
+> 
+> However, for big endian platforms, it changes the wrong byte, resulting
+> in an invalid ELF file type, which ld.lld rejects:
+> 
+>    00000000  7f 45 4c 46 02 02 01 00  00 00 00 00 00 00 00 00  |.ELF............|
+>   -00000010  00 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |................|
+>   +00000010  01 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |................|
+> 
+>   Type:                              <unknown>: 103
+> 
+>   ld.lld: error: .btf.vmlinux.bin.o: unknown file type
+> 
+> Fix this by updating the entire 16-bit e_type field rather than just a
+> single byte, so that everything works correctly for all platforms and
+> linkers.
+> 
+>    00000000  7f 45 4c 46 02 02 01 00  00 00 00 00 00 00 00 00  |.ELF............|
+>   -00000010  00 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |................|
+>   +00000010  00 01 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |................|
+> 
+>   Type:                              REL (Relocatable file)
+> 
+> While in the area, update the comment to mention that binutils 2.35+
+> matches LLD's behavior of rejecting an ET_EXEC input, which occurred
+> after the comment was added.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 90ceddcb4950 ("bpf: Support llvm-objcopy for vmlinux BTF")
+> Link: https://github.com/llvm/llvm-project/pull/75643
+> Suggested-by: Masahiro Yamada <masahiroy@kernel.org>
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> Reviewed-by: Fangrui Song <maskray@google.com>
+> Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
+> Reviewed-by: Kees Cook <keescook@chromium.org>
+> Reviewed-by: Justin Stitt <justinstitt@google.com>
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>  scripts/link-vmlinux.sh |    9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+> 
+> --- a/scripts/link-vmlinux.sh
+> +++ b/scripts/link-vmlinux.sh
+> @@ -236,8 +236,13 @@ gen_btf()
+>  	${OBJCOPY} --only-section=.BTF --set-section-flags .BTF=alloc,readonly \
+>  		--strip-all ${1} ${2} 2>/dev/null
+>  	# Change e_type to ET_REL so that it can be used to link final vmlinux.
+> -	# Unlike GNU ld, lld does not allow an ET_EXEC input.
+> -	printf '\1' | dd of=${2} conv=notrunc bs=1 seek=16 status=none
+> +	# GNU ld 2.35+ and lld do not allow an ET_EXEC input.
+> +	if is_enabled CONFIG_CPU_BIG_ENDIAN; then
 
-> Hi Miquel,
->=20
-> On 2/21/24 12:20, Miquel Raynal wrote:
-> > Hi Christophe,
-> >=20
-> > christophe.kerello@foss.st.com wrote on Fri, 9 Feb 2024 14:35:44 +0100:
-> >  =20
-> >> Hi Miquel,
-> >>
-> >> I am testing last nand/next branch with the MP1 board, and i get an is=
-sue since this patch was applied.
-> >>
-> >> When I read the SLC NAND using nandump tool (reading page 0 and page 1=
-), the OOB is not displayed at expected. For page 1, oob is displayed when =
-for page 0 the first data of the page are displayed.
-> >>
-> >> The nanddump command used is: nanddump -c -o -l 0x2000 /dev/mtd9 =20
-> >=20
-> > I believe the issue is not in the indexes but related to the OOB. I
-> > currently test on a device on which I would prefer not to smash the
-> > content, so this is just compile tested and not run time verified, but
-> > could you tell me if this solves the issue:
-> >=20
-> > --- a/drivers/mtd/nand/raw/nand_base.c
-> > +++ b/drivers/mtd/nand/raw/nand_base.c
-> > @@ -3577,7 +3577,8 @@ static int nand_do_read_ops(struct nand_chip *chi=
-p, loff_t from,
-> >          oob =3D ops->oobbuf;
-> >          oob_required =3D oob ? 1 : 0; =20
-> >   > -       rawnand_enable_cont_reads(chip, page, readlen, col); =20
-> > +       if (!oob_required)
-> > +               rawnand_enable_cont_reads(chip, page, readlen, col); =20
->=20
-> I am still able to reproduce the problem with the patch applied.
-> In fact, when nanddump reads the OOB, nand_do_read_ops is not called, but=
- nand_read_oob_op is called, and as cont_read.ongoing=3D1, we are not dumpi=
-ng the oob but the first data of the page.
->=20
-> page 0:
-> [   57.642144] rawnand_enable_cont_reads: page=3D0, col=3D0, readlen=3D40=
-96, mtd->writesize=3D4096
-> [   57.650210] rawnand_enable_cont_reads: end_page=3D1
-> [   57.654858] nand_do_read_ops: cont_read.ongoing=3D1
-> [   59.352562] nand_read_oob_op
-> page 1:
-> [   59.355966] rawnand_enable_cont_reads: page=3D1, col=3D0, readlen=3D40=
-96, mtd->writesize=3D4096
-> [   59.364045] rawnand_enable_cont_reads: end_page=3D1
-> [   59.368757] nand_do_read_ops: cont_read.ongoing=3D0
-> [   61.390098] nand_read_oob_op
->=20
-> I have not currently bandwidth to work on this topic and I need to unders=
-tand how continuous read is working, but I have made a patch and I do not h=
-ave issues with it when I am using nanddump or mtd_debug tools.
+You may have missed my mail on the email saying this had been applied (I
+didn't cc a lore list so no link):
 
-Actually since my previous answer I managed to reproduce the issue. I
-was unable to do it because I was testing at the beginning of the
-second partition, instead of the beginning of the device. I also
-observe the same behavior.
+I do not think this backport is correct for trees that do not have
+commit 7d153696e5db ("kbuild: do not include include/config/auto.conf
+from shell scripts"), even if it applies cleanly, as is_enabled() is not
+available.
 
-> I have not tested it on a file system, so it is just a proposal.
->
-> --- a/drivers/mtd/nand/raw/nand_base.c
-> +++ b/drivers/mtd/nand/raw/nand_base.c
-> @@ -3466,22 +3466,18 @@ static void rawnand_enable_cont_reads(struct nand=
-_chip *chip, unsigned int page,
->   				      u32 readlen, int col)
->   {
->   	struct mtd_info *mtd =3D nand_to_mtd(chip);
-> -	unsigned int end_page, end_col;
-> +	unsigned int end_page;
->=20
->   	chip->cont_read.ongoing =3D false;
->=20
-> -	if (!chip->controller->supported_op.cont_read)
-> +	if (!chip->controller->supported_op.cont_read || col + readlen <=3D mtd=
-->writesize)
->   		return;
->=20
-> -	end_page =3D DIV_ROUND_UP(col + readlen, mtd->writesize);
-> +	end_page =3D page + DIV_ROUND_UP(col + readlen, mtd->writesize) - 1;
+I think this diff should be squashed in to the patch for 5.15 and
+earlier, you can add
 
-I had a similar change on my side so I believe this is needed.
+  [nathan: Fix silent conflict due to lack of 7d153696e5db in older trees]
+  Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 
-> -	end_col =3D (col + readlen) % mtd->writesize;
+to the resulting patch if you would like.
 
-We shall ensure we only enable continuous reads on full pages, to avoid
-conflicts with the core trying to optimize things out. So I believe
-this change won't fly, but I get the idea, there is definitely
-something to fix there.
+Cheers,
+Nathan
 
->=20
->   	if (col)
->   		page++;
->=20
-> -	if (end_col && end_page)
-> -		end_page--;
-> -
->   	if (page + 1 > end_page)
->   		return;
->=20
-> Tell me if this patch is breaking the continuous read feature or if it ca=
-n be pushed on the mailing list.
-
-I'll have deeper look into this tomorrow and get back to you. Thanks a
-lot for the proposal though, I will work on it.
-
->=20
-> Regards,
-> Christophe Kerello.
->=20
-> >   >          while (1) { =20
-> >                  struct mtd_ecc_stats ecc_stats =3D mtd->ecc_stats;
-> >=20
-> >=20
-> > If that does not work, I'll destroy the content of the flash and
-> > properly reproduce.
-> >=20
-> > Thanks,
-> > Miqu=C3=A8l =20
-
-
-Thanks,
-Miqu=C3=A8l
+diff --git a/scripts/link-vmlinux.sh b/scripts/link-vmlinux.sh
+index 007bb773b222..5a5a0cfad69d 100755
+--- a/scripts/link-vmlinux.sh
++++ b/scripts/link-vmlinux.sh
+@@ -237,7 +237,7 @@ gen_btf()
+ 		--strip-all ${1} ${2} 2>/dev/null
+ 	# Change e_type to ET_REL so that it can be used to link final vmlinux.
+ 	# GNU ld 2.35+ and lld do not allow an ET_EXEC input.
+-	if is_enabled CONFIG_CPU_BIG_ENDIAN; then
++	if [ -n "${CONFIG_CPU_BIG_ENDIAN}" ]; then
+ 		et_rel='\0\1'
+ 	else
+ 		et_rel='\1\0'
 
