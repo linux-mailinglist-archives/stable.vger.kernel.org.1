@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-21916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAF9E85D922
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:15:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A7C985DBB0
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:44:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AB3F1C22E57
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:15:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDB061F24756
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:44:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63B1769D2E;
-	Wed, 21 Feb 2024 13:15:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 730907868A;
+	Wed, 21 Feb 2024 13:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AiYifguy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="geUYaeyu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22B391E522;
-	Wed, 21 Feb 2024 13:15:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335BD1E4B2;
+	Wed, 21 Feb 2024 13:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521303; cv=none; b=U0hBRQMjmSZ0V+g95WYJFzsmDTqFVzqp4KgnGaCoOkcIH6r5l3Xk9QgRxhy+CfAbkumDec0dxbDpzB428ugKz+C5BBc+unNoV0157S/kZQ265Af7xN5wS22t8+rvdAUj9h0L1WN9T28si2Tbtb6VKKHVXMyO0s2DdMr5DS0Cgik=
+	t=1708523051; cv=none; b=qh+cEm4oaYfzKBTSsv1EKyf02jNXDksWjH86VmAAKO9wg6XvTccNMQgmpyoEYKCg5xrtFfIfKsPMwT4fl2lG6X+gzmOdUtC3+nKbzaCFLk9m4f/dyteRgSFHqrfNy25QKJsqQcCIEMnmw6WuEUXp8hDaBMbsrAKmWYssxX6MmOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521303; c=relaxed/simple;
-	bh=PYIa/QigolERIMMGtvhKok6Yvtr93muyO1K76vxyOoI=;
+	s=arc-20240116; t=1708523051; c=relaxed/simple;
+	bh=9wrHB8EcUZOxhT840HadSESLMltv9ZA55avbte8wvyY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=buklcPCsE0o/kyP87V9TJ8Lw7qk3wYgpK7TtLq9ekujYrSbQjoy1T/lpS2fuLtEyDKc910HxI3KbkRGvT5aGUvbCM11dWZwEGcJR8TZoFsv822CsrZl6M08DLPHsIyyY9rO7jLpzFeQyOMljLFArcrFVD2jEjiLRzrcSGleXXAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AiYifguy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 917CFC433C7;
-	Wed, 21 Feb 2024 13:15:02 +0000 (UTC)
+	 MIME-Version; b=l9hk1lti0PzLm9cwCdYIgdtckhHI+PzBmROucUoHWD4dQy99ZOGQFSAo05G4dMK4v9rkXRfAgfrUNZcayY1mB6a6c/yxKsyDVmPMdG2FVrXgeDtE8oBajKJsJoyraxjnXYZB0+6hBdXu9sAAcGMRPwViZDvIwb1YSWX85T52hSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=geUYaeyu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EA25C433F1;
+	Wed, 21 Feb 2024 13:44:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521303;
-	bh=PYIa/QigolERIMMGtvhKok6Yvtr93muyO1K76vxyOoI=;
+	s=korg; t=1708523051;
+	bh=9wrHB8EcUZOxhT840HadSESLMltv9ZA55avbte8wvyY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AiYifguyORKsis5gmsIuPtDIylBOxMj7KT+JJGY/fB/U5S1Ng6oA6GuJKJCeKA6Om
-	 9UsCn/YIAHxgb6FhOfdDeASqeTy2AC996HbzgQZTLHmWEH3PQZGVYD9eHtZ/XTp5gF
-	 3AptQUD06byuTgmZ0Hh+FXCzHZxDNlKFQkZHIF4M=
+	b=geUYaeyuw23cdxG2oB+iqh35IUHYzJ7o68q3ux6/TSHWPPRU8eS2dOOqHCAqndA9d
+	 R70iPycJsiYcoD7lei9gWivzwn5eP0KgDHbPEmJVmPgJ1s47GL1LtkXF5To/Fi98Qz
+	 tHNATWejSj6xduIc/JTa9mYSk+IH4FO0HFDdACQw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 4.19 049/202] net/sched: cbs: Fix not adding cbs instance to list
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 299/476] dmaengine: fsl-qdma: Fix a memory leak related to the queue command DMA
 Date: Wed, 21 Feb 2024 14:05:50 +0100
-Message-ID: <20240221125933.410439817@linuxfoundation.org>
+Message-ID: <20240221130019.051522445@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,174 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit 3e8b9bfa110896f95d602d8c98d5f9d67e41d78c upstream.
+[ Upstream commit 3aa58cb51318e329d203857f7a191678e60bb714 ]
 
-When removing a cbs instance when offloading is enabled, the crash
-below can be observed.
+This dma_alloc_coherent() is undone neither in the remove function, nor in
+the error handling path of fsl_qdma_probe().
 
-The problem happens because that when offloading is enabled, the cbs
-instance is not added to the list.
+Switch to the managed version to fix both issues.
 
-Also, the current code doesn't handle correctly the case when offload
-is disabled without removing the qdisc: if the link speed changes the
-credit calculations will be wrong. When we create the cbs instance
-with offloading enabled, it's not added to the notification list, when
-later we disable offloading, it's not in the list, so link speed
-changes will not affect it.
-
-The solution for both issues is the same, add the cbs instance being
-created unconditionally to the global list, even if the link state
-notification isn't useful "right now".
-
-Crash log:
-
-[518758.189866] BUG: kernel NULL pointer dereference, address: 0000000000000000
-[518758.189870] #PF: supervisor read access in kernel mode
-[518758.189871] #PF: error_code(0x0000) - not-present page
-[518758.189872] PGD 0 P4D 0
-[518758.189874] Oops: 0000 [#1] SMP PTI
-[518758.189876] CPU: 3 PID: 4825 Comm: tc Not tainted 5.2.9 #1
-[518758.189877] Hardware name: Gigabyte Technology Co., Ltd. Z390 AORUS ULTRA/Z390 AORUS ULTRA-CF, BIOS F7 03/14/2019
-[518758.189881] RIP: 0010:__list_del_entry_valid+0x29/0xa0
-[518758.189883] Code: 90 48 b8 00 01 00 00 00 00 ad de 55 48 8b 17 4c 8b 47 08 48 89 e5 48 39 c2 74 27 48 b8 00 02 00 00 00 00 ad de 49 39 c0 74 2d <49> 8b 30 48 39 fe 75 3d 48 8b 52 08 48 39 f2 75 4c b8 01 00 00 00
-[518758.189885] RSP: 0018:ffffa27e43903990 EFLAGS: 00010207
-[518758.189887] RAX: dead000000000200 RBX: ffff8bce69f0f000 RCX: 0000000000000000
-[518758.189888] RDX: 0000000000000000 RSI: ffff8bce69f0f064 RDI: ffff8bce69f0f1e0
-[518758.189890] RBP: ffffa27e43903990 R08: 0000000000000000 R09: ffff8bce69e788c0
-[518758.189891] R10: ffff8bce62acd400 R11: 00000000000003cb R12: ffff8bce69e78000
-[518758.189892] R13: ffff8bce69f0f140 R14: 0000000000000000 R15: 0000000000000000
-[518758.189894] FS:  00007fa1572c8f80(0000) GS:ffff8bce6e0c0000(0000) knlGS:0000000000000000
-[518758.189895] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[518758.189896] CR2: 0000000000000000 CR3: 000000040a398006 CR4: 00000000003606e0
-[518758.189898] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[518758.189899] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[518758.189900] Call Trace:
-[518758.189904]  cbs_destroy+0x32/0xa0 [sch_cbs]
-[518758.189906]  qdisc_destroy+0x45/0x120
-[518758.189907]  qdisc_put+0x25/0x30
-[518758.189908]  qdisc_graft+0x2c1/0x450
-[518758.189910]  tc_get_qdisc+0x1c8/0x310
-[518758.189912]  ? get_page_from_freelist+0x91a/0xcb0
-[518758.189914]  rtnetlink_rcv_msg+0x293/0x360
-[518758.189916]  ? kmem_cache_alloc_node_trace+0x178/0x260
-[518758.189918]  ? __kmalloc_node_track_caller+0x38/0x50
-[518758.189920]  ? rtnl_calcit.isra.0+0xf0/0xf0
-[518758.189922]  netlink_rcv_skb+0x48/0x110
-[518758.189923]  rtnetlink_rcv+0x10/0x20
-[518758.189925]  netlink_unicast+0x15b/0x1d0
-[518758.189926]  netlink_sendmsg+0x1ea/0x380
-[518758.189929]  sock_sendmsg+0x2f/0x40
-[518758.189930]  ___sys_sendmsg+0x295/0x2f0
-[518758.189932]  ? ___sys_recvmsg+0x151/0x1e0
-[518758.189933]  ? do_wp_page+0x7e/0x450
-[518758.189935]  __sys_sendmsg+0x48/0x80
-[518758.189937]  __x64_sys_sendmsg+0x1a/0x20
-[518758.189939]  do_syscall_64+0x53/0x1f0
-[518758.189941]  entry_SYSCALL_64_after_hwframe+0x44/0xa9
-[518758.189942] RIP: 0033:0x7fa15755169a
-[518758.189944] Code: 48 c7 c0 ff ff ff ff eb be 0f 1f 80 00 00 00 00 f3 0f 1e fa 64 8b 04 25 18 00 00 00 85 c0 75 18 b8 2e 00 00 00 c5 fc 77 0f 05 <48> 3d 00 f0 ff ff 77 5e c3 0f 1f 44 00 00 48 83 ec 28 89 54 24 1c
-[518758.189946] RSP: 002b:00007ffda58b60b8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-[518758.189948] RAX: ffffffffffffffda RBX: 000055e4b836d9a0 RCX: 00007fa15755169a
-[518758.189949] RDX: 0000000000000000 RSI: 00007ffda58b6128 RDI: 0000000000000003
-[518758.189951] RBP: 00007ffda58b6190 R08: 0000000000000001 R09: 000055e4b9d848a0
-[518758.189952] R10: 0000000000000000 R11: 0000000000000246 R12: 000000005d654b49
-[518758.189953] R13: 0000000000000000 R14: 00007ffda58b6230 R15: 00007ffda58b6210
-[518758.189955] Modules linked in: sch_cbs sch_etf sch_mqprio netlink_diag unix_diag e1000e igb intel_pch_thermal thermal video backlight pcc_cpufreq
-[518758.189960] CR2: 0000000000000000
-[518758.189961] ---[ end trace 6a13f7aaf5376019 ]---
-[518758.189963] RIP: 0010:__list_del_entry_valid+0x29/0xa0
-[518758.189964] Code: 90 48 b8 00 01 00 00 00 00 ad de 55 48 8b 17 4c 8b 47 08 48 89 e5 48 39 c2 74 27 48 b8 00 02 00 00 00 00 ad de 49 39 c0 74 2d <49> 8b 30 48 39 fe 75 3d 48 8b 52 08 48 39 f2 75 4c b8 01 00 00 00
-[518758.189967] RSP: 0018:ffffa27e43903990 EFLAGS: 00010207
-[518758.189968] RAX: dead000000000200 RBX: ffff8bce69f0f000 RCX: 0000000000000000
-[518758.189969] RDX: 0000000000000000 RSI: ffff8bce69f0f064 RDI: ffff8bce69f0f1e0
-[518758.189971] RBP: ffffa27e43903990 R08: 0000000000000000 R09: ffff8bce69e788c0
-[518758.189972] R10: ffff8bce62acd400 R11: 00000000000003cb R12: ffff8bce69e78000
-[518758.189973] R13: ffff8bce69f0f140 R14: 0000000000000000 R15: 0000000000000000
-[518758.189975] FS:  00007fa1572c8f80(0000) GS:ffff8bce6e0c0000(0000) knlGS:0000000000000000
-[518758.189976] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[518758.189977] CR2: 0000000000000000 CR3: 000000040a398006 CR4: 00000000003606e0
-[518758.189979] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[518758.189980] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-
-Fixes: e0a7683d30e9 ("net/sched: cbs: fix port_rate miscalculation")
-Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Acked-by: Cong Wang <xiyou.wangcong@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b092529e0aa0 ("dmaengine: fsl-qdma: Add qDMA controller driver for Layerscape SoCs")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/7f66aa14f59d32b13672dde28602b47deb294e1f.1704621515.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_cbs.c |   30 +++++++++++++-----------------
- 1 file changed, 13 insertions(+), 17 deletions(-)
+ drivers/dma/fsl-qdma.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/net/sched/sch_cbs.c
-+++ b/net/sched/sch_cbs.c
-@@ -405,7 +405,6 @@ static int cbs_init(struct Qdisc *sch, s
- {
- 	struct cbs_sched_data *q = qdisc_priv(sch);
- 	struct net_device *dev = qdisc_dev(sch);
--	int err;
+diff --git a/drivers/dma/fsl-qdma.c b/drivers/dma/fsl-qdma.c
+index 5cc887acb05b..69385f32e275 100644
+--- a/drivers/dma/fsl-qdma.c
++++ b/drivers/dma/fsl-qdma.c
+@@ -514,11 +514,11 @@ static struct fsl_qdma_queue
+ 			queue_temp = queue_head + i + (j * queue_num);
  
- 	if (!opt) {
- 		NL_SET_ERR_MSG(extack, "Missing CBS qdisc options  which are mandatory");
-@@ -417,6 +416,10 @@ static int cbs_init(struct Qdisc *sch, s
- 	if (!q->qdisc)
- 		return -ENOMEM;
- 
-+	spin_lock(&cbs_list_lock);
-+	list_add(&q->cbs_list, &cbs_list);
-+	spin_unlock(&cbs_list_lock);
-+
- 	qdisc_hash_add(q->qdisc, false);
- 
- 	q->queue = sch->dev_queue - netdev_get_tx_queue(dev, 0);
-@@ -426,17 +429,7 @@ static int cbs_init(struct Qdisc *sch, s
- 
- 	qdisc_watchdog_init(&q->watchdog, sch);
- 
--	err = cbs_change(sch, opt, extack);
--	if (err)
--		return err;
--
--	if (!q->offload) {
--		spin_lock(&cbs_list_lock);
--		list_add(&q->cbs_list, &cbs_list);
--		spin_unlock(&cbs_list_lock);
--	}
--
--	return 0;
-+	return cbs_change(sch, opt, extack);
- }
- 
- static void cbs_destroy(struct Qdisc *sch)
-@@ -444,15 +437,18 @@ static void cbs_destroy(struct Qdisc *sc
- 	struct cbs_sched_data *q = qdisc_priv(sch);
- 	struct net_device *dev = qdisc_dev(sch);
- 
--	spin_lock(&cbs_list_lock);
--	list_del(&q->cbs_list);
--	spin_unlock(&cbs_list_lock);
-+	/* Nothing to do if we couldn't create the underlying qdisc */
-+	if (!q->qdisc)
-+		return;
- 
- 	qdisc_watchdog_cancel(&q->watchdog);
- 	cbs_disable_offload(dev, q);
- 
--	if (q->qdisc)
--		qdisc_put(q->qdisc);
-+	spin_lock(&cbs_list_lock);
-+	list_del(&q->cbs_list);
-+	spin_unlock(&cbs_list_lock);
-+
-+	qdisc_put(q->qdisc);
- }
- 
- static int cbs_dump(struct Qdisc *sch, struct sk_buff *skb)
+ 			queue_temp->cq =
+-			dma_alloc_coherent(&pdev->dev,
+-					   sizeof(struct fsl_qdma_format) *
+-					   queue_size[i],
+-					   &queue_temp->bus_addr,
+-					   GFP_KERNEL);
++			dmam_alloc_coherent(&pdev->dev,
++					    sizeof(struct fsl_qdma_format) *
++					    queue_size[i],
++					    &queue_temp->bus_addr,
++					    GFP_KERNEL);
+ 			if (!queue_temp->cq)
+ 				return NULL;
+ 			queue_temp->block_base = fsl_qdma->block_base +
+-- 
+2.43.0
+
 
 
 
