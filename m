@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-22745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E67A85DD9B
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:07:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19DB485D943
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:16:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B2C39B24316
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:07:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7698DB23148
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:16:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C137F497;
-	Wed, 21 Feb 2024 14:06:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21F0F762FF;
+	Wed, 21 Feb 2024 13:16:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="phuNm4PL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WE+o9HZD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 319B07E105;
-	Wed, 21 Feb 2024 14:06:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44C76A8D6;
+	Wed, 21 Feb 2024 13:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524374; cv=none; b=NZ+b4YQ55zMpmfU9rz0XmQ8F/ltGlt+CI3sjEAgF7Myr5e94tkdiCQCVZ7FcMr9S3PDRKHjouClTE4l7pf2UL3ukXraYaC7nQ19npRNUsXE6YqyJva3/spVBqWwtHA7CFAUY2WpyvrALmlh47uodoFo1eG9owPeLbfUKxK3MS+s=
+	t=1708521379; cv=none; b=bYOpiUXOhZ3XtHRRKGIGT9ibIwDf0ZBTK0K7ZJeGlM2Q+Sng9SnPLMYwfp1eZOoC2EatkyxDo4e59n1bN5fGuzbqtE77VmTBtp6uD0b2d9c2V5R0yaIbPN8NdpuvOqCSONKbwV2GigqGV4zXqXIfRPiY6TTV9JdOKkA7iZS08Ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524374; c=relaxed/simple;
-	bh=ydr+iPGAnik4SWUKHh89Bs1fx9YZ+V9tqAeF9/uj+h8=;
+	s=arc-20240116; t=1708521379; c=relaxed/simple;
+	bh=+gt1Sir5llkhnWls5OgBSQ5sLZrcR3PboPxu0n5o/0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ck2LXTeUeFjiJVJiVsxC0GFVBOlQ/brpYxLjrc3Vd6Y0munzGUBvZCp8cPQ5pQFB6O/TvtsuOC6rzlpXiarUjnGNYtOJedOSfd6XEFH5hBJQ0m13yfnuowkSyx/euj4EbhbrcrOa7EYGFpmMaW2cTjNgQGnttgeOW10kj8NwCws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=phuNm4PL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC2B3C433F1;
-	Wed, 21 Feb 2024 14:06:13 +0000 (UTC)
+	 MIME-Version; b=Pcdm5iK3NZ6As6qWP7N4DwXyDCTRMl5KMad7U3xexSKAO3YLnjJu1xXc5jDc0jBi/mCbGAClsl8zNJoQpEKq7BT330kMUwXNW0+gAuI+uP6f9yGVZxc8aRPtCAzMEPmBG+zkPiBikciCBOO8OjMFMnsJ2I6c66afUQlObKFzwX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WE+o9HZD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FF61C433C7;
+	Wed, 21 Feb 2024 13:16:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524374;
-	bh=ydr+iPGAnik4SWUKHh89Bs1fx9YZ+V9tqAeF9/uj+h8=;
+	s=korg; t=1708521379;
+	bh=+gt1Sir5llkhnWls5OgBSQ5sLZrcR3PboPxu0n5o/0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=phuNm4PLmxUjEHtP5VDtO8wgPmDlktozLuC8XtfBnNno/lsGFmwLsmqbWHE33ocww
-	 fWKW/Pt/zJiKBFz8BAvAQy4ovVwBTNxrb8MeaJbURODVT+DZBoeHwRsq+FcaTT3D/l
-	 nt9WsVUn3sYxapr5itNMzB/8QjyCVG6or4C3ETNM=
+	b=WE+o9HZDumpOn/BwWdakekfYh8Ritmg/+Mnno1TBTdoQeCcekexHiK5KtQ8r2DdtY
+	 PTQZR3+oChdGD2HUVOVHAT7s5TJ6cdDjsJYNz0hBKMYxoSyUi+OvKP8TvUPaddL7UT
+	 vcGNhB0zOZVBwyhQLEBKyVDkcZQ7Uw7bceR9my3Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Xiubo Li <xiubli@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Ilya Dryomov <idryomov@gmail.com>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 217/379] ceph: fix deadlock or deadcode of misusing dget()
+Subject: [PATCH 4.19 095/202] wifi: cfg80211: free beacon_ies when overridden from hidden BSS
 Date: Wed, 21 Feb 2024 14:06:36 +0100
-Message-ID: <20240221130001.322154532@linuxfoundation.org>
+Message-ID: <20240221125934.853305452@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,65 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiubo Li <xiubli@redhat.com>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-[ Upstream commit b493ad718b1f0357394d2cdecbf00a44a36fa085 ]
+[ Upstream commit 32af9a9e1069e55bc02741fb00ac9d0ca1a2eaef ]
 
-The lock order is incorrect between denty and its parent, we should
-always make sure that the parent get the lock first.
+This is a more of a cosmetic fix. The branch will only be taken if
+proberesp_ies is set, which implies that beacon_ies is not set unless we
+are connected to an AP that just did a channel switch. And, in that case
+we should have found the BSS in the internal storage to begin with.
 
-But since this deadcode is never used and the parent dir will always
-be set from the callers, let's just remove it.
-
-Link: https://lore.kernel.org/r/20231116081919.GZ1957730@ZenIV
-Reported-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Xiubo Li <xiubli@redhat.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20231220133549.b898e22dadff.Id8c4c10aedd176ef2e18a4cad747b299f150f9df@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/caps.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ net/wireless/scan.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/ceph/caps.c b/fs/ceph/caps.c
-index 432dc2a16e28..b0cf79b0dc49 100644
---- a/fs/ceph/caps.c
-+++ b/fs/ceph/caps.c
-@@ -4598,12 +4598,14 @@ int ceph_encode_dentry_release(void **p, struct dentry *dentry,
- 			       struct inode *dir,
- 			       int mds, int drop, int unless)
- {
--	struct dentry *parent = NULL;
- 	struct ceph_mds_request_release *rel = *p;
- 	struct ceph_dentry_info *di = ceph_dentry(dentry);
- 	int force = 0;
- 	int ret;
- 
-+	/* This shouldn't happen */
-+	BUG_ON(!dir);
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index d871349036a5..7f1a4ba975dd 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -1018,8 +1018,12 @@ cfg80211_bss_update(struct cfg80211_registered_device *rdev,
+ 				list_add(&new->hidden_list,
+ 					 &hidden->hidden_list);
+ 				hidden->refcount++;
 +
- 	/*
- 	 * force an record for the directory caps if we have a dentry lease.
- 	 * this is racy (can't take i_ceph_lock and d_lock together), but it
-@@ -4613,14 +4615,9 @@ int ceph_encode_dentry_release(void **p, struct dentry *dentry,
- 	spin_lock(&dentry->d_lock);
- 	if (di->lease_session && di->lease_session->s_mds == mds)
- 		force = 1;
--	if (!dir) {
--		parent = dget(dentry->d_parent);
--		dir = d_inode(parent);
--	}
- 	spin_unlock(&dentry->d_lock);
- 
- 	ret = ceph_encode_inode_release(p, dir, mds, drop, unless, force);
--	dput(parent);
- 
- 	spin_lock(&dentry->d_lock);
- 	if (ret && di->lease_session && di->lease_session->s_mds == mds) {
++				ies = (void *)rcu_dereference(new->pub.beacon_ies);
+ 				rcu_assign_pointer(new->pub.beacon_ies,
+ 						   hidden->pub.beacon_ies);
++				if (ies)
++					kfree_rcu(ies, rcu_head);
+ 			}
+ 		} else {
+ 			/*
 -- 
 2.43.0
 
