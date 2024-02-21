@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-22246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0A2485DB12
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:37:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B90E85DCC6
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:57:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A47011F22DD6
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:37:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15094282450
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:57:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3D7B7BB08;
-	Wed, 21 Feb 2024 13:36:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 226AF79DAE;
+	Wed, 21 Feb 2024 13:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m3gSf8lj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qZUKbT/E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E1B6F074;
-	Wed, 21 Feb 2024 13:36:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D66BB3FE5D;
+	Wed, 21 Feb 2024 13:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522591; cv=none; b=gTT21oSiBsNvBP9PfiWtbAXguXKsvy584X0Rokm7FiCcp0WjtZitO9aJWSHZCbiH0RLcWzmzFYvmKshe1PrfhMyU/WKZ8HazSUcbUDtyXxGQsu0JtJBM42w+Oeri4wVDWdtp3F4ng2Rgaxa8nwMY46lSxibXcCeNFY+OtcgqD9c=
+	t=1708523845; cv=none; b=s6hqwTYZaSXksEncUsDm7anM/Sz/SF3ok8fwHXEEc0ovHiHyvhjRJOWEz9g7VBNFbgtM1/OkmLLpEyuYOvYDBTBKU8po4a6uPeGbEEVvW3k/WSEJHJWyCMRMQXch+vKKH+gpq7q67BeKWqLo0ZmZXSDr9Wul0VkMSjGoHJg7kU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522591; c=relaxed/simple;
-	bh=vPiICDbIPi/cu3Y9WPyS/Mko8PtpQRFVxlDMLNzdkL4=;
+	s=arc-20240116; t=1708523845; c=relaxed/simple;
+	bh=GinWe6V3hCkFphjbr694RSmyWE3LaydsR3Gl9AIusOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PQ6QEwnwXbTHUPmY7hcXnPd9VOfkLSfMKo2ILaYsvrnMAUSRnXRMwpY9tntW8VVfpU3pO57SWUL4A44lWXJDl/xADj05CccmOy5XyW1xf7cQOShcfvqyxBnlhCwPURULnCDa6gdJdDwJ0e2H5lfsXGD1VGpEyQj62kEOftIhX+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m3gSf8lj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D23D3C433C7;
-	Wed, 21 Feb 2024 13:36:30 +0000 (UTC)
+	 MIME-Version; b=Ne+0aYoM1F/bxkW7smunrlzlY1+PgZbLA+m1xVXDQWat69Gc3tJARrH7CJmjZN7c7/7ZFTjIyxgbjmTyn0u+RgCthCLimrT9fWLluaIaWz2dulyNfq8D4j4HG/3GEpQzbE0IaPGPfOjUoGagD3gyEutLpKm7dfbMz886jpC1iww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qZUKbT/E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62A47C433F1;
+	Wed, 21 Feb 2024 13:57:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522591;
-	bh=vPiICDbIPi/cu3Y9WPyS/Mko8PtpQRFVxlDMLNzdkL4=;
+	s=korg; t=1708523845;
+	bh=GinWe6V3hCkFphjbr694RSmyWE3LaydsR3Gl9AIusOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m3gSf8ljTCfLI1og0JHjt75VZp4R3zR+kPiWLduqEYGHT9nPyxHBDmWLSxdicelsT
-	 rIIO6wVHqCJzUovARpnQVVNdyAPAbQpNv3hCjDcW0WtxZ/tb+NeGmwLsIsI8q5m7BI
-	 uTpMvSYsKwOrh5rN1wSIUknHjMb1yXF6+h0QaT2w=
+	b=qZUKbT/EnhKAAoI50cVvdxjSUK8H1eGOs7oTVeWHJ5Uji0xr1TELup4WTUusI58to
+	 VzlRepBtdyJ19NagxETqPsmqOwU8u5jsFiSX4TwUc2MlXX5+ZE0QzyPx3Ik8vmHwfP
+	 35ePSvPnVuUhvy4Foh6xD1+09R+gYuvZ2faYtNLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 202/476] wifi: cfg80211: free beacon_ies when overridden from hidden BSS
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Robert Foss <rfoss@kernel.org>
+Subject: [PATCH 5.10 074/379] drm/bridge: nxp-ptn3460: fix i2c_master_send() error checking
 Date: Wed, 21 Feb 2024 14:04:13 +0100
-Message-ID: <20240221130015.381176668@linuxfoundation.org>
+Message-ID: <20240221125957.101270081@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 32af9a9e1069e55bc02741fb00ac9d0ca1a2eaef ]
+commit 914437992876838662c968cb416f832110fb1093 upstream.
 
-This is a more of a cosmetic fix. The branch will only be taken if
-proberesp_ies is set, which implies that beacon_ies is not set unless we
-are connected to an AP that just did a channel switch. And, in that case
-we should have found the BSS in the internal storage to begin with.
+The i2c_master_send/recv() functions return negative error codes or the
+number of bytes that were able to be sent/received.  This code has
+two problems.  1)  Instead of checking if all the bytes were sent or
+received, it checks that at least one byte was sent or received.
+2) If there was a partial send/receive then we should return a negative
+error code but this code returns success.
 
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20231220133549.b898e22dadff.Id8c4c10aedd176ef2e18a4cad747b299f150f9df@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a9fe713d7d45 ("drm/bridge: Add PTN3460 bridge driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Robert Foss <rfoss@kernel.org>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/0cdc2dce-ca89-451a-9774-1482ab2f4762@moroto.mountain
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/scan.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/bridge/nxp-ptn3460.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 4decdc2c601f..68c48970ebf7 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -1808,8 +1808,12 @@ cfg80211_bss_update(struct cfg80211_registered_device *rdev,
- 				list_add(&new->hidden_list,
- 					 &hidden->hidden_list);
- 				hidden->refcount++;
-+
-+				ies = (void *)rcu_dereference(new->pub.beacon_ies);
- 				rcu_assign_pointer(new->pub.beacon_ies,
- 						   hidden->pub.beacon_ies);
-+				if (ies)
-+					kfree_rcu(ies, rcu_head);
- 			}
- 		} else {
- 			/*
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/bridge/nxp-ptn3460.c
++++ b/drivers/gpu/drm/bridge/nxp-ptn3460.c
+@@ -56,13 +56,13 @@ static int ptn3460_read_bytes(struct ptn
+ 	ret = i2c_master_send(ptn_bridge->client, &addr, 1);
+ 	if (ret <= 0) {
+ 		DRM_ERROR("Failed to send i2c command, ret=%d\n", ret);
+-		return ret;
++		return ret ?: -EIO;
+ 	}
+ 
+ 	ret = i2c_master_recv(ptn_bridge->client, buf, len);
+-	if (ret <= 0) {
++	if (ret != len) {
+ 		DRM_ERROR("Failed to recv i2c data, ret=%d\n", ret);
+-		return ret;
++		return ret < 0 ? ret : -EIO;
+ 	}
+ 
+ 	return 0;
+@@ -78,9 +78,9 @@ static int ptn3460_write_byte(struct ptn
+ 	buf[1] = val;
+ 
+ 	ret = i2c_master_send(ptn_bridge->client, buf, ARRAY_SIZE(buf));
+-	if (ret <= 0) {
++	if (ret != ARRAY_SIZE(buf)) {
+ 		DRM_ERROR("Failed to send i2c command, ret=%d\n", ret);
+-		return ret;
++		return ret < 0 ? ret : -EIO;
+ 	}
+ 
+ 	return 0;
 
 
 
