@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-22488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7268785DC44
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:51:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F17D485DE5E
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:18:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12E061F21137
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:51:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18237B2B4F1
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:15:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A516C78B50;
-	Wed, 21 Feb 2024 13:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BB757BB01;
+	Wed, 21 Feb 2024 14:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RUZAjQiz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZKNZionZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6428A38398;
-	Wed, 21 Feb 2024 13:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE62569942;
+	Wed, 21 Feb 2024 14:12:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523468; cv=none; b=UDmu1Hja0HitCiNb1qffJCz57NPphXQlXl5F1RJlOvh7GcqtQDLJHjH+x3S7qbaw1496GQk3QvAMFS71mXC0SrBJN1rJIGXCGQJYFtnhYfocM/kffagK2Z1ptwG5rRhyfxUht8dAUdr+tKGfPFCFar3Flm+CxyE8aFKFutTAIOs=
+	t=1708524776; cv=none; b=cHEX67EiqHDXKHr1wJaTv86P6xGyQa2+OdlKVz5zrTtU8KRtmvGqxJa6BFd8wEowQynDODgXVTdPxrULS2y6dv50j+QHQ/RG1Ab+h7siGAqlE3SeqF1A5qFRneP+9opR0ei0XQPrkXASs7HPguGQyrwJ5nMGyuAqoMHCKU0rNyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523468; c=relaxed/simple;
-	bh=mBO2ZKajVhciHqsdyGQGO0KcZuMOQBGQr9OIMzxMTf4=;
+	s=arc-20240116; t=1708524776; c=relaxed/simple;
+	bh=dL+ZWFVICiz1aoafzVREQs0aEJ8ZlAYFi6VJKSk1iOg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eBbGqXD8YBfy8mZJcWulD6iaqRc4jMSIffokXlaGMxtJDfrAyXvr+LnkZC6jjN678k3TP1H9MToRafjMBaUHBaNAF5Nc2s1ivmiccFgQl1ZKZL9AH07i64FtmslxMVu0V2dRtqGTvFFV1Pu+2VHwPFsQ23Q6JdBMT5GVsTZ4bJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RUZAjQiz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C67ADC433F1;
-	Wed, 21 Feb 2024 13:51:07 +0000 (UTC)
+	 MIME-Version; b=CW95Xm0+j/lRoD7fS0cxw8eLVkcvrvYCUTtaAqIzNcR60M/V4AxqwOZ3nuaCv2U2oTs2TaTvzPgP89nR/uwrCep3hX3gfZrJPzXchmjHhTKVnSHIr1nKWka62B8uJzNCYEPjW5WxO25zz8VD7aYfGKTmyov1to52r/g5EcGRXeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZKNZionZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BBC0C433F1;
+	Wed, 21 Feb 2024 14:12:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523468;
-	bh=mBO2ZKajVhciHqsdyGQGO0KcZuMOQBGQr9OIMzxMTf4=;
+	s=korg; t=1708524775;
+	bh=dL+ZWFVICiz1aoafzVREQs0aEJ8ZlAYFi6VJKSk1iOg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RUZAjQizCtwAkYZvTVliPkHVCsFLlfXFNLbAuCtJz0VHN5nCh/TqPb1augEr1ukKt
-	 TflY7Bys+UwVKsqe1ncGySwyUm9DJT5fCxFlcfAk5/zRzTu8AbXl/e40GmBu7Pk7SU
-	 hLaWTW8fiyDlLa8djY6At0fh18H+n1dbA2s3v+Q0=
+	b=ZKNZionZFlp/kTeXaafjSgeKK1GQKR5gKPUcHzAKtA/nk2z7+2KeDcurkvEB6ATNs
+	 7yLuMKeLM2fgXZeZDDY1zl1qpRXK2quWOu61f/69nnq9242EYmNKXP3UsYihplou2Z
+	 afny0NG0fa0iRWxwus9pdf1s45c8Zky3qeA00/Xs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 444/476] serial: 8250_exar: Fill in rs485_supported
+	syzbot+3ae0a3f42c84074b7c8e@syzkaller.appspotmail.com,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.10 316/379] net: hsr: remove WARN_ONCE() in send_hsr_supervision_frame()
 Date: Wed, 21 Feb 2024 14:08:15 +0100
-Message-ID: <20240221130024.451203037@linuxfoundation.org>
+Message-ID: <20240221130004.284642733@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,86 +60,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit 59c221f8e1269278161313048c71929c9950b2c4 ]
+commit 37e8c97e539015637cb920d3e6f1e404f707a06e upstream.
 
-Add information on supported serial_rs485 features.
+Syzkaller reported [1] hitting a warning after failing to allocate
+resources for skb in hsr_init_skb(). Since a WARN_ONCE() call will
+not help much in this case, it might be prudent to switch to
+netdev_warn_once(). At the very least it will suppress syzkaller
+reports such as [1].
 
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20220606100433.13793-8-ilpo.jarvinen@linux.intel.com
+Just in case, use netdev_warn_once() in send_prp_supervision_frame()
+for similar reasons.
+
+[1]
+HSR: Could not send supervision frame
+WARNING: CPU: 1 PID: 85 at net/hsr/hsr_device.c:294 send_hsr_supervision_frame+0x60a/0x810 net/hsr/hsr_device.c:294
+RIP: 0010:send_hsr_supervision_frame+0x60a/0x810 net/hsr/hsr_device.c:294
+...
+Call Trace:
+ <IRQ>
+ hsr_announce+0x114/0x370 net/hsr/hsr_device.c:382
+ call_timer_fn+0x193/0x590 kernel/time/timer.c:1700
+ expire_timers kernel/time/timer.c:1751 [inline]
+ __run_timers+0x764/0xb20 kernel/time/timer.c:2022
+ run_timer_softirq+0x58/0xd0 kernel/time/timer.c:2035
+ __do_softirq+0x21a/0x8de kernel/softirq.c:553
+ invoke_softirq kernel/softirq.c:427 [inline]
+ __irq_exit_rcu kernel/softirq.c:632 [inline]
+ irq_exit_rcu+0xb7/0x120 kernel/softirq.c:644
+ sysvec_apic_timer_interrupt+0x95/0xb0 arch/x86/kernel/apic/apic.c:1076
+ </IRQ>
+ <TASK>
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:649
+...
+
+This issue is also found in older kernels (at least up to 5.10).
+
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+3ae0a3f42c84074b7c8e@syzkaller.appspotmail.com
+Fixes: 121c33b07b31 ("net: hsr: introduce common code for skb initialization")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 0c2a5f471ce5 ("serial: 8250_exar: Set missing rs485_supported flag")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_exar.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ net/hsr/hsr_device.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/tty/serial/8250/8250_exar.c b/drivers/tty/serial/8250/8250_exar.c
-index 0b1976ceb01f..24878d5a6a05 100644
---- a/drivers/tty/serial/8250/8250_exar.c
-+++ b/drivers/tty/serial/8250/8250_exar.c
-@@ -123,6 +123,7 @@ struct exar8250;
+--- a/net/hsr/hsr_device.c
++++ b/net/hsr/hsr_device.c
+@@ -291,7 +291,7 @@ static void send_hsr_supervision_frame(s
  
- struct exar8250_platform {
- 	int (*rs485_config)(struct uart_port *, struct serial_rs485 *);
-+	const struct serial_rs485 *rs485_supported;
- 	int (*register_gpio)(struct pci_dev *, struct uart_8250_port *);
- 	void (*unregister_gpio)(struct uart_8250_port *);
- };
-@@ -441,10 +442,15 @@ static int generic_rs485_config(struct uart_port *port,
- 	return 0;
- }
+ 	skb = hsr_init_skb(master);
+ 	if (!skb) {
+-		WARN_ONCE(1, "HSR: Could not send supervision frame\n");
++		netdev_warn_once(master->dev, "HSR: Could not send supervision frame\n");
+ 		return;
+ 	}
  
-+static const struct serial_rs485 generic_rs485_supported = {
-+	.flags = SER_RS485_ENABLED,
-+};
-+
- static const struct exar8250_platform exar8250_default_platform = {
- 	.register_gpio = xr17v35x_register_gpio,
- 	.unregister_gpio = xr17v35x_unregister_gpio,
- 	.rs485_config = generic_rs485_config,
-+	.rs485_supported = &generic_rs485_supported,
- };
+@@ -338,7 +338,7 @@ static void send_prp_supervision_frame(s
  
- static int iot2040_rs485_config(struct uart_port *port,
-@@ -480,6 +486,10 @@ static int iot2040_rs485_config(struct uart_port *port,
- 	return generic_rs485_config(port, rs485);
- }
+ 	skb = hsr_init_skb(master);
+ 	if (!skb) {
+-		WARN_ONCE(1, "PRP: Could not send supervision frame\n");
++		netdev_warn_once(master->dev, "PRP: Could not send supervision frame\n");
+ 		return;
+ 	}
  
-+static const struct serial_rs485 iot2040_rs485_supported = {
-+	.flags = SER_RS485_ENABLED | SER_RS485_RX_DURING_TX | SER_RS485_TERMINATE_BUS,
-+};
-+
- static const struct property_entry iot2040_gpio_properties[] = {
- 	PROPERTY_ENTRY_U32("exar,first-pin", 10),
- 	PROPERTY_ENTRY_U32("ngpios", 1),
-@@ -508,6 +518,7 @@ static int iot2040_register_gpio(struct pci_dev *pcidev,
- 
- static const struct exar8250_platform iot2040_platform = {
- 	.rs485_config = iot2040_rs485_config,
-+	.rs485_supported = &iot2040_rs485_supported,
- 	.register_gpio = iot2040_register_gpio,
- 	.unregister_gpio = xr17v35x_unregister_gpio,
- };
-@@ -550,6 +561,7 @@ pci_xr17v35x_setup(struct exar8250 *priv, struct pci_dev *pcidev,
- 
- 	port->port.uartclk = baud * 16;
- 	port->port.rs485_config = platform->rs485_config;
-+	port->port.rs485_supported = platform->rs485_supported;
- 
- 	/*
- 	 * Setup the UART clock for the devices on expansion slot to
--- 
-2.43.0
-
 
 
 
