@@ -1,100 +1,131 @@
-Return-Path: <stable+bounces-23083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9A9A85DF29
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:25:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BE1B85DF54
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:27:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D76CF1C239DE
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:25:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78CB71C23AAA
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:26:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B38AA7C0A4;
-	Wed, 21 Feb 2024 14:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB89B7C6D5;
+	Wed, 21 Feb 2024 14:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lvh4Qw3D"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="KuM6aCiH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3458D7BB1F;
-	Wed, 21 Feb 2024 14:25:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA534EB29
+	for <stable@vger.kernel.org>; Wed, 21 Feb 2024 14:26:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525518; cv=none; b=Chrk484GbU8JLq6l+UsVFESnEg+TJxa1/YMaaOdfzBmNx7fds/BrCKltJDMMzDGwrHEQ2CVf0NPQAO5TOrJNJrHU+mffn/0I3p+dRHmsxbURUV1ZGiYCvw2izHfeh60CwJ40+ZluVNznkQZzs5nuUgBoLriPGHImUyaBe/w4jI4=
+	t=1708525617; cv=none; b=mKC/NRXCdAhymxsDLosMhtAD19yArcQ9ATMjcpqr2/MxAMzv1gQI+XSzeswhFO8eQa5uhOylV0oxb+yclgQ42b2in2YlX/DQk2xeZmhugya3+ci1q1hkmYERWYDGRsKc+Q4U3w5R6w8eGrmzo9lGZNVswGGMHxLjYW+bMo3CeQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525518; c=relaxed/simple;
-	bh=UVM0DRZ1oHezOdCtXDvvLtQjlYsIzZsQr3fBsdoISKM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Tml/Cx7Kxr9VnHx8wgPRZwoZpk+vz4S660mSegl6WbuijAw68Qe4v9exso5LId5Q7+W1em6yknkdYSQH+r2A8dfCCIzsGt8jya7IYYndoB9BClYRC+E8sgCRCowIWO0RrHSHiea5vmqLu3GG0tfh+QjiPM7jEBI/OKDWwrCdLJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lvh4Qw3D; arc=none smtp.client-ip=209.85.215.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-5cf2d73a183so5331145a12.1;
-        Wed, 21 Feb 2024 06:25:16 -0800 (PST)
+	s=arc-20240116; t=1708525617; c=relaxed/simple;
+	bh=5oWkD2FaqkD0kYMxDZ3B3sb6F6lGwW+CZXsdNRCDKWY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BcnwdcRK7E9bCiMviyj49ngLUaLzw67K9sZGBfwXyCYvZ94Ve1XTbBCXgpvSFNSY5a2YFGdH9k224NhSF6DiZzyyrkVG+FTgnQ6RZH6zLDm46/7TAgQfuZfTsQTzLtMRTdLzPX4fWSZ0wTu024TcLdrkIEy0b2JHyTMHH5sk1OU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=KuM6aCiH; arc=none smtp.client-ip=209.85.215.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-5a0dc313058so486572a12.0
+        for <stable@vger.kernel.org>; Wed, 21 Feb 2024 06:26:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708525516; x=1709130316; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=aCA1LRzpzSkzkscIXqCxM/LOuGsDIqBacOMOBHxNRPM=;
-        b=Lvh4Qw3DvbARRwXVpygaaHLicz8jmM4PFLgA4KjYzIeErkXEs4Bp80kEcqWLwztUFx
-         6qQ52ZW8V4lMqj30/7JBAsLaEnjjRjhcfOXfuS9JLlkQnb+EtzOwNQuyML2R7d6A93s/
-         ZVEMwAmgVA6RgQ3WCSRUypRBnFxujLUc3+s28lX7Lzb5JVvp5/QMi9OSRHc914OgzPJb
-         GIeLDQKSCHCIOBQ0sV4pD662VXLsScG40i3eAiG8Jsiu9t6YjSbaliRaqJlbJEleN1kp
-         tXNXS/htxPZ9qVdkwU5Lv7312+t3GON4NOoF8NQdEXbXnNlrE6po/6HV8Sd9vgc+U9qq
-         v9kA==
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1708525615; x=1709130415; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=SVGUs8JFv1/V93TlaR+90LP3Y6ZwxPBuwr1HDt3LFuw=;
+        b=KuM6aCiHvR8PUxA968/qSHOnfTh6waVcXLVnHkF2NEmYq1eI0qmKWDfdhynDa5MxiL
+         1KSfIJOsmSlixHwXWQ+53LN/U3cL5kTLk9aUep0FFezASMrLUI/sPkxFDzwVBCcy56T5
+         ZfNht8yW/ZfUAk/vzm2f0jG5cf9RkrmFtKH//SasFmpDLZJy3Y8rV7OzybpmEOJ0uBfI
+         O2Tzi9VtRXgvknyGEMFMJbWeNPZlxSxmkhtWjPvNcQlLTOUdIR41wak0SDoVoB2Cl20q
+         PWoYm4nLwnNQVvEl1ZXN4sStFzXCitX0HqKtDLq+gkUjfksrZI5a4LsOjXnPqIvw2GnR
+         ak4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708525516; x=1709130316;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=aCA1LRzpzSkzkscIXqCxM/LOuGsDIqBacOMOBHxNRPM=;
-        b=R2kg3WUK7T9yZonm79dezrRO0Vg4owygM/gL9sohZUbwXGaRSJjfuGHcReVxIfM2C0
-         fVJvbwntUMdUCy/D9eqnoi8G8G6zOYC0hFvmFEJ6kAqSrZigDJeOHuw+ziWOh+EIPSZi
-         jTmoHshuNWkyP0DfFJoB15TO1nFLMAElZIIKBCTY3sIr9M/eyrn6rm46ei9TDZoI/GFX
-         M4lYy9gbtiANrnzzjhgy28us9DkoskR7O84UB/S1msuLf1wje+v/hLUhX8qTT+p2e2zf
-         7UNzRmLGloChVcCfh6iy0NNSssTzaub9dhTIoeSNSEWI6mDD6UtraGHwORkw94Cpbqo4
-         EH8g==
-X-Forwarded-Encrypted: i=1; AJvYcCX7Tb08B6mnfj4XfunlwR3EZ6Iyv1sA+2DvZHXVSC8lUq9m1PEQAgX97ioSHTYUcqWLgIB2uHxD7p6x54+l3JRgfxWqa4Q29MMbg+yFaJgPUJKezX1tPeb+550g3/gX1hagkIGQ
-X-Gm-Message-State: AOJu0YxY3kLIShgNvKhwbKbFXEJ46dQ0W2s1JZtdp1RzcJ31tQkjzT7r
-	fDuGZXpphcQFfbFhl6jrA0ENTbGjwo03PdLPndvi5utTrzl4O5krsxjQ/KxzK5NIfACJqk7F9a3
-	vZAgcTC8EfOJHk1W0A1ytSC1f+l0=
-X-Google-Smtp-Source: AGHT+IGFya7agp5XWmTngJI8TfZ+xY7NrVXGQtyLMJU55/2t2PsmFK2GT/ZR6116dVJEk24agBbHnlfaeZDEau/2KF0=
-X-Received: by 2002:a17:90a:ae12:b0:298:ae3d:eb8c with SMTP id
- t18-20020a17090aae1200b00298ae3deb8cmr24420239pjq.22.1708525516507; Wed, 21
- Feb 2024 06:25:16 -0800 (PST)
+        d=1e100.net; s=20230601; t=1708525615; x=1709130415;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SVGUs8JFv1/V93TlaR+90LP3Y6ZwxPBuwr1HDt3LFuw=;
+        b=ZKZ4CrzrqI0xvGRKWjHNQGWwDJWlFNiG9Aa1MDPv29ts0bcNlu92kaK/PNOnSJ52HC
+         yZrTqWipoeQ6UIsIDbp7BmsJCroxv+fw7rtvAyInurJxmcQxrhPj9rMRYXO41m4doldj
+         hgYAdujkjCPiQ56h1Hexx7y49LBUlK6LWls9ie443vGkUQZ5eCXlmalzs20y9QHP+wSj
+         63RZZG5OaxFD1JTsTJbP8Flk7MNJLTPcFLXm2oKaxA5Oere2pWaiiVetXOfR3QULENHl
+         d2ht3OwuRRqlpyoaVGUE6uGExgXKyAj0KW6WOhvJcSaE9JpV1BhA6fP5bHMM9LJZu4Mh
+         faeg==
+X-Forwarded-Encrypted: i=1; AJvYcCV9bC09TJW0m69T2aXTeBO7uMUPb+AGZ0cXRi9cj6E/VVy4ZiO7LOKoYxGnTw24IwivF/kktZkxicC40ovzklgCuP37Ky/H
+X-Gm-Message-State: AOJu0Yw1yxCD7aaYZeehLSyyh+fqH2/oLjVx8dl5qJVPnZ+ytPtpkcvX
+	LKHNHuUEFn57hlSxIC03ERzBD730MlTc26T8/+g5xLDaFAwJ6PEWpZjr2ZiJDf8=
+X-Google-Smtp-Source: AGHT+IGWtrBI3YcMOy3hERvUjq7oUiTByRTeZL9iWcm9qeoPtIw2BqLDWLvNmt+3oej+p28dGt1SMA==
+X-Received: by 2002:a05:6a20:6a22:b0:1a0:c207:808c with SMTP id p34-20020a056a206a2200b001a0c207808cmr1763297pzk.0.1708525614866;
+        Wed, 21 Feb 2024 06:26:54 -0800 (PST)
+Received: from ?IPV6:2600:380:7677:4d94:4513:899f:6e45:a331? ([2600:380:7677:4d94:4513:899f:6e45:a331])
+        by smtp.gmail.com with ESMTPSA id h5-20020aa786c5000000b006e4452bd4c6sm6949123pfo.157.2024.02.21.06.26.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 21 Feb 2024 06:26:54 -0800 (PST)
+Message-ID: <b70345f6-f371-48b0-ad15-ca6d09d1365e@kernel.dk>
+Date: Wed, 21 Feb 2024 07:26:52 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <ed9e1bca-d07b-42fa-9ceb-d0eef3976168@gmx.de>
-In-Reply-To: <ed9e1bca-d07b-42fa-9ceb-d0eef3976168@gmx.de>
-From: Luna Jernberg <droidbittin@gmail.com>
-Date: Wed, 21 Feb 2024 15:25:03 +0100
-Message-ID: <CADo9pHg2jgYqE1qxpV40E6GHL1s+G+mNm1JCcB9GgA-4XM59+w@mail.gmail.com>
-Subject: Re: [PATCH 6.7 000/313] 6.7.6-rc2 review
-To: Ronald Warsow <rwarsow@gmx.de>, Luna Jernberg <droidbittin@gmail.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/2] fs/aio: Restrict kiocb_set_cancel_fn() to I/O
+ submitted via libaio
+Content-Language: en-US
+To: Bart Van Assche <bvanassche@acm.org>,
+ Christian Brauner <brauner@kernel.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: linux-fsdevel@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
+ Avi Kivity <avi@scylladb.com>, Sandeep Dhavale <dhavale@google.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Kent Overstreet <kent.overstreet@linux.dev>, stable@vger.kernel.org
+References: <20240215204739.2677806-1-bvanassche@acm.org>
+ <20240215204739.2677806-2-bvanassche@acm.org>
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <20240215204739.2677806-2-bvanassche@acm.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Works fine on my desktop with model name    : AMD Ryzen 5 5600 6-Core
-Processor and Arch Linux
+On 2/15/24 1:47 PM, Bart Van Assche wrote:
+> If kiocb_set_cancel_fn() is called for I/O submitted via io_uring, the
+> following kernel warning appears:
+> 
+> WARNING: CPU: 3 PID: 368 at fs/aio.c:598 kiocb_set_cancel_fn+0x9c/0xa8
+> Call trace:
+>  kiocb_set_cancel_fn+0x9c/0xa8
+>  ffs_epfile_read_iter+0x144/0x1d0
+>  io_read+0x19c/0x498
+>  io_issue_sqe+0x118/0x27c
+>  io_submit_sqes+0x25c/0x5fc
+>  __arm64_sys_io_uring_enter+0x104/0xab0
+>  invoke_syscall+0x58/0x11c
+>  el0_svc_common+0xb4/0xf4
+>  do_el0_svc+0x2c/0xb0
+>  el0_svc+0x2c/0xa4
+>  el0t_64_sync_handler+0x68/0xb4
+>  el0t_64_sync+0x1a4/0x1a8
+> 
+> Fix this by setting the IOCB_AIO_RW flag for read and write I/O that is
+> submitted by libaio.
 
-Tested-by: Luna Jernberg <droidbittin@gmail.com>
+Like I said weeks ago, let's please get this fix in NOW and we can
+debate what to do about cancelations in general for aio separately. This
+patch 1 is a real fix, and it'd be silly to keep this stalled while
+the other stuff is ongoing.
 
-Den ons 21 feb. 2024 kl 14:33 skrev Ronald Warsow <rwarsow@gmx.de>:
->
-> Hi Greg
->
-> *no* regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
->
-> Thanks
->
-> Tested-by: Ronald Warsow <rwarsow@gmx.de>
->
->
+This isn't a critique at at you Bart, really just wanted to reply to teh
+cover letter but there isn't one.
+
+Christian, can you queue this up for 6.8 and mark it for stable?
+
+-- 
+Jens Axboe
+
 
