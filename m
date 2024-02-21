@@ -1,131 +1,90 @@
-Return-Path: <stable+bounces-23114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BE1B85DF54
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:27:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7677585DFAD
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:30:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78CB71C23AAA
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:26:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15D971F2490E
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:30:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB89B7C6D5;
-	Wed, 21 Feb 2024 14:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BF297CF2D;
+	Wed, 21 Feb 2024 14:30:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="KuM6aCiH"
+	dkim=pass (1024-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b="fFq/tAUQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mta-64-228.siemens.flowmailer.net (mta-64-228.siemens.flowmailer.net [185.136.64.228])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA534EB29
-	for <stable@vger.kernel.org>; Wed, 21 Feb 2024 14:26:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F36F644377
+	for <stable@vger.kernel.org>; Wed, 21 Feb 2024 14:30:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.64.228
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525617; cv=none; b=mKC/NRXCdAhymxsDLosMhtAD19yArcQ9ATMjcpqr2/MxAMzv1gQI+XSzeswhFO8eQa5uhOylV0oxb+yclgQ42b2in2YlX/DQk2xeZmhugya3+ci1q1hkmYERWYDGRsKc+Q4U3w5R6w8eGrmzo9lGZNVswGGMHxLjYW+bMo3CeQI=
+	t=1708525842; cv=none; b=seVY/XagUrz7pSGuZ1F+Mez4CgmKAzcg+9tmMzz1atbDqWDAK1kc9QXJGO8yvc2hV8R/vwzfvxy7FOyRUgSdi/lDGnG7lNkIigBZODZyyw0A5Zauf0v9PzhSGTvqtVH/nSVu6xomatZPlSJA9hRMFMuuURWKamBpilzW2A8ilYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525617; c=relaxed/simple;
-	bh=5oWkD2FaqkD0kYMxDZ3B3sb6F6lGwW+CZXsdNRCDKWY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BcnwdcRK7E9bCiMviyj49ngLUaLzw67K9sZGBfwXyCYvZ94Ve1XTbBCXgpvSFNSY5a2YFGdH9k224NhSF6DiZzyyrkVG+FTgnQ6RZH6zLDm46/7TAgQfuZfTsQTzLtMRTdLzPX4fWSZ0wTu024TcLdrkIEy0b2JHyTMHH5sk1OU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=KuM6aCiH; arc=none smtp.client-ip=209.85.215.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-5a0dc313058so486572a12.0
-        for <stable@vger.kernel.org>; Wed, 21 Feb 2024 06:26:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1708525615; x=1709130415; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=SVGUs8JFv1/V93TlaR+90LP3Y6ZwxPBuwr1HDt3LFuw=;
-        b=KuM6aCiHvR8PUxA968/qSHOnfTh6waVcXLVnHkF2NEmYq1eI0qmKWDfdhynDa5MxiL
-         1KSfIJOsmSlixHwXWQ+53LN/U3cL5kTLk9aUep0FFezASMrLUI/sPkxFDzwVBCcy56T5
-         ZfNht8yW/ZfUAk/vzm2f0jG5cf9RkrmFtKH//SasFmpDLZJy3Y8rV7OzybpmEOJ0uBfI
-         O2Tzi9VtRXgvknyGEMFMJbWeNPZlxSxmkhtWjPvNcQlLTOUdIR41wak0SDoVoB2Cl20q
-         PWoYm4nLwnNQVvEl1ZXN4sStFzXCitX0HqKtDLq+gkUjfksrZI5a4LsOjXnPqIvw2GnR
-         ak4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708525615; x=1709130415;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SVGUs8JFv1/V93TlaR+90LP3Y6ZwxPBuwr1HDt3LFuw=;
-        b=ZKZ4CrzrqI0xvGRKWjHNQGWwDJWlFNiG9Aa1MDPv29ts0bcNlu92kaK/PNOnSJ52HC
-         yZrTqWipoeQ6UIsIDbp7BmsJCroxv+fw7rtvAyInurJxmcQxrhPj9rMRYXO41m4doldj
-         hgYAdujkjCPiQ56h1Hexx7y49LBUlK6LWls9ie443vGkUQZ5eCXlmalzs20y9QHP+wSj
-         63RZZG5OaxFD1JTsTJbP8Flk7MNJLTPcFLXm2oKaxA5Oere2pWaiiVetXOfR3QULENHl
-         d2ht3OwuRRqlpyoaVGUE6uGExgXKyAj0KW6WOhvJcSaE9JpV1BhA6fP5bHMM9LJZu4Mh
-         faeg==
-X-Forwarded-Encrypted: i=1; AJvYcCV9bC09TJW0m69T2aXTeBO7uMUPb+AGZ0cXRi9cj6E/VVy4ZiO7LOKoYxGnTw24IwivF/kktZkxicC40ovzklgCuP37Ky/H
-X-Gm-Message-State: AOJu0Yw1yxCD7aaYZeehLSyyh+fqH2/oLjVx8dl5qJVPnZ+ytPtpkcvX
-	LKHNHuUEFn57hlSxIC03ERzBD730MlTc26T8/+g5xLDaFAwJ6PEWpZjr2ZiJDf8=
-X-Google-Smtp-Source: AGHT+IGWtrBI3YcMOy3hERvUjq7oUiTByRTeZL9iWcm9qeoPtIw2BqLDWLvNmt+3oej+p28dGt1SMA==
-X-Received: by 2002:a05:6a20:6a22:b0:1a0:c207:808c with SMTP id p34-20020a056a206a2200b001a0c207808cmr1763297pzk.0.1708525614866;
-        Wed, 21 Feb 2024 06:26:54 -0800 (PST)
-Received: from ?IPV6:2600:380:7677:4d94:4513:899f:6e45:a331? ([2600:380:7677:4d94:4513:899f:6e45:a331])
-        by smtp.gmail.com with ESMTPSA id h5-20020aa786c5000000b006e4452bd4c6sm6949123pfo.157.2024.02.21.06.26.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 21 Feb 2024 06:26:54 -0800 (PST)
-Message-ID: <b70345f6-f371-48b0-ad15-ca6d09d1365e@kernel.dk>
-Date: Wed, 21 Feb 2024 07:26:52 -0700
+	s=arc-20240116; t=1708525842; c=relaxed/simple;
+	bh=GrxON3lYNCAufVUexAxR/Gp6ZPDPCKxndYGM/vP6fyQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Vr42tDGOoLKsVslpiZ/75vNob72nr6+OTQY/JeDv1U/fnFBeGs9Vz+sbpBonaUYBHbcRTZma7+ZbM1EBaJ7JkWJgF59ngQ2yIYgON8LmCVqRLOaEhBMcFPovXRux9reLH1EX1rBkyaDpdQc2KJShIwFuetvAsPIXvEOXItWEPyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (1024-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b=fFq/tAUQ; arc=none smtp.client-ip=185.136.64.228
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
+Received: by mta-64-228.siemens.flowmailer.net with ESMTPSA id 20240221143030851898b67a726f480b
+        for <stable@vger.kernel.org>;
+        Wed, 21 Feb 2024 15:30:30 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
+ d=siemens.com; i=alexander.sverdlin@siemens.com;
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
+ bh=WD5sp0uEiG8G/0YYO+dG4YqOi0XkzyajJD2J/jfY3c4=;
+ b=fFq/tAUQ+oYgNPMLW2f5fBEmJQ1PKMaHRI170KiT2rYs4goB+kFWJ+riOlAje8ruXayh9K
+ /D+hYJNERjToUeWrmY1wC546mOzW+gh8IJmk5bSMkhKgCTA7p58mlFUuQ6+v0wtnsBQlyLDl
+ actetFqLMOa2tMZjDS8nbRzvrFm0I=;
+From: "A. Sverdlin" <alexander.sverdlin@siemens.com>
+To: linux-kernel@vger.kernel.org
+Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Lee Jones <lee@kernel.org>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	stable@vger.kernel.org
+Subject: [PATCH] mfd: twl: select MFD_CORE
+Date: Wed, 21 Feb 2024 15:30:18 +0100
+Message-ID: <20240221143021.3542736-1-alexander.sverdlin@siemens.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/2] fs/aio: Restrict kiocb_set_cancel_fn() to I/O
- submitted via libaio
-Content-Language: en-US
-To: Bart Van Assche <bvanassche@acm.org>,
- Christian Brauner <brauner@kernel.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>
-Cc: linux-fsdevel@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
- Avi Kivity <avi@scylladb.com>, Sandeep Dhavale <dhavale@google.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Kent Overstreet <kent.overstreet@linux.dev>, stable@vger.kernel.org
-References: <20240215204739.2677806-1-bvanassche@acm.org>
- <20240215204739.2677806-2-bvanassche@acm.org>
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <20240215204739.2677806-2-bvanassche@acm.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Flowmailer-Platform: Siemens
+Feedback-ID: 519:519-456497:519-21489:flowmailer
 
-On 2/15/24 1:47 PM, Bart Van Assche wrote:
-> If kiocb_set_cancel_fn() is called for I/O submitted via io_uring, the
-> following kernel warning appears:
-> 
-> WARNING: CPU: 3 PID: 368 at fs/aio.c:598 kiocb_set_cancel_fn+0x9c/0xa8
-> Call trace:
->  kiocb_set_cancel_fn+0x9c/0xa8
->  ffs_epfile_read_iter+0x144/0x1d0
->  io_read+0x19c/0x498
->  io_issue_sqe+0x118/0x27c
->  io_submit_sqes+0x25c/0x5fc
->  __arm64_sys_io_uring_enter+0x104/0xab0
->  invoke_syscall+0x58/0x11c
->  el0_svc_common+0xb4/0xf4
->  do_el0_svc+0x2c/0xb0
->  el0_svc+0x2c/0xa4
->  el0t_64_sync_handler+0x68/0xb4
->  el0t_64_sync+0x1a4/0x1a8
-> 
-> Fix this by setting the IOCB_AIO_RW flag for read and write I/O that is
-> submitted by libaio.
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-Like I said weeks ago, let's please get this fix in NOW and we can
-debate what to do about cancelations in general for aio separately. This
-patch 1 is a real fix, and it'd be silly to keep this stalled while
-the other stuff is ongoing.
+Fix link error:
+ld.bfd: drivers/mfd/twl-core.o: in function `twl_probe':
+git/drivers/mfd/twl-core.c:846: undefined reference to `devm_mfd_add_devices'
 
-This isn't a critique at at you Bart, really just wanted to reply to teh
-cover letter but there isn't one.
+Cc: <stable@vger.kernel.org>
+Fixes: 63416320419e ("mfd: twl-core: Add a clock subdevice for the TWL6032")
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+---
+ drivers/mfd/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-Christian, can you queue this up for 6.8 and mark it for stable?
-
+diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+index 90ce58fd629e5..1195a27c881e4 100644
+--- a/drivers/mfd/Kconfig
++++ b/drivers/mfd/Kconfig
+@@ -1772,6 +1772,7 @@ config TWL4030_CORE
+ 	bool "TI TWL4030/TWL5030/TWL6030/TPS659x0 Support"
+ 	depends on I2C=y
+ 	select IRQ_DOMAIN
++	select MFD_CORE
+ 	select REGMAP_I2C
+ 	help
+ 	  Say yes here if you have TWL4030 / TWL6030 family chip on your board.
 -- 
-Jens Axboe
+2.43.0
 
 
