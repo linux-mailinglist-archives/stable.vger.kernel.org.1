@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-22373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C07FC85DBB8
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:44:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D653985DD4C
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:04:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 458A2B2479F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:44:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A8142842D8
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:04:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 447EF78B5E;
-	Wed, 21 Feb 2024 13:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3B3B7E76D;
+	Wed, 21 Feb 2024 14:03:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="neu+m7tm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DOMxwdqt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 020C973161;
-	Wed, 21 Feb 2024 13:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826A97CF1F;
+	Wed, 21 Feb 2024 14:03:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523061; cv=none; b=YgIBZ7ZjTryBogQCrI7UxjPhYkEdMAWPMQLc3rR4TMiglFocbRJ8e7vgxRUgCw7NGr+kC/tc4clv4LRRIJ5y+WnfCtlMH7aLLwhDme9GxPlzJurt9mIovX3mc+IEQugo5DieDV77Gy3BywF50M+U+/G9GVErTOFljmskJTdXtNs=
+	t=1708524200; cv=none; b=Q+Xd6nHFQ3HPHCEJgF3rK1S0937fKeIYBCw0PvYDAo/MRI+YWdPSEm1etIrfliyDif7yC5eyxZneh/9LEoS4rEukWhKjvr1SXd9qcfqh+2gJPdIjKHbqPe4qjsfaz1Dze6dhEfhOrDZXzCsOknLxZZFt1TLTkXnZEj7bFwVd/Zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523061; c=relaxed/simple;
-	bh=jFymhAY/Wzq73RghWY3Knq6HMfpXwi5D3fuKToz24es=;
+	s=arc-20240116; t=1708524200; c=relaxed/simple;
+	bh=gsRNTavbdjW5uYBTT49ao48pFPQW68OTcrzZeK4DETI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iJdS/vJMzVlci6H/RPR+IT7hqlpamERmwhqzXlHntv8eWnYu3UeUCQlbwRn4fYNr+IWUAQ1yNbtlCTOWkT13DCvrYM0leg10QDHh3VOmAKrmOCI+w07MjyZk/6/BKuvtLufnFc0b1nyKqcM0U/XwmSX8iPiXU/F0mjQed9/c/UE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=neu+m7tm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58E0DC433C7;
-	Wed, 21 Feb 2024 13:44:20 +0000 (UTC)
+	 MIME-Version; b=tGQiRPCbZlg9nZjxim4oYSargn8m/uy3klOw+P9LixtRsyiMSRYw9qh17SwE09L3ws3VVBp8UcB0Yh28Rw+u+RLJurOKVbRGNWyzT9yAfL5fiFK/0LjVE6xl3g09zSwjKNwo6jbXgy2ZoJqnfNvxzdBebI0QHsvJjorHcrdhg5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DOMxwdqt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A42C1C433C7;
+	Wed, 21 Feb 2024 14:03:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523060;
-	bh=jFymhAY/Wzq73RghWY3Knq6HMfpXwi5D3fuKToz24es=;
+	s=korg; t=1708524200;
+	bh=gsRNTavbdjW5uYBTT49ao48pFPQW68OTcrzZeK4DETI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=neu+m7tmHV4/LBOY0hvmjIyfkFJfHfXzarikdtkDOSzFDvfb6+L1VzmbtNX8UjQWp
-	 3wxQg2QX7lYnabPZ2Vccb/3MuIzFuUI4hcA0fTUyfSU82ppCNY6v73xHjREXLQKCfK
-	 YtU9NkxbWd8r722WPphTsznzOiv7A7pA1QVRBq9s=
+	b=DOMxwdqtIPnTDKmOPKlqF41O1qumB5cMD+vpj31KRhbeyUg3qW09pRBP/XnDS2vJ+
+	 YKvDwYzF0hhyGkoyKxv8GaIHPVoY6eSOdcCPgXRR+MOrHjRE5emhxdoZJE6j/tiu3v
+	 QcrCiLnfpdXAlsqWtUc8wR0K6DCz56KV9uiLgVWQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Lindgren <tony@atomide.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Jan Sokolowski <jan.sokolowski@intel.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrii Staikov <andrii.staikov@intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 302/476] phy: ti: phy-omap-usb2: Fix NULL pointer dereference for SRP
+Subject: [PATCH 5.10 174/379] i40e: Fix VF disable behavior to block all traffic
 Date: Wed, 21 Feb 2024 14:05:53 +0100
-Message-ID: <20240221130019.160832348@linuxfoundation.org>
+Message-ID: <20240221130000.062008606@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +67,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Andrii Staikov <andrii.staikov@intel.com>
 
-[ Upstream commit 7104ba0f1958adb250319e68a15eff89ec4fd36d ]
+[ Upstream commit 31deb12e85c35ddd2c037f0107d05d8674cab2c0 ]
 
-If the external phy working together with phy-omap-usb2 does not implement
-send_srp(), we may still attempt to call it. This can happen on an idle
-Ethernet gadget triggering a wakeup for example:
+Currently, if a VF is disabled using the
+'ip link set dev $ETHX vf $VF_NUM state disable' command, the VF is still
+able to receive traffic.
 
-configfs-gadget.g1 gadget.0: ECM Suspend
-configfs-gadget.g1 gadget.0: Port suspended. Triggering wakeup
-...
-Unable to handle kernel NULL pointer dereference at virtual address
-00000000 when execute
-...
-PC is at 0x0
-LR is at musb_gadget_wakeup+0x1d4/0x254 [musb_hdrc]
-...
-musb_gadget_wakeup [musb_hdrc] from usb_gadget_wakeup+0x1c/0x3c [udc_core]
-usb_gadget_wakeup [udc_core] from eth_start_xmit+0x3b0/0x3d4 [u_ether]
-eth_start_xmit [u_ether] from dev_hard_start_xmit+0x94/0x24c
-dev_hard_start_xmit from sch_direct_xmit+0x104/0x2e4
-sch_direct_xmit from __dev_queue_xmit+0x334/0xd88
-__dev_queue_xmit from arp_solicit+0xf0/0x268
-arp_solicit from neigh_probe+0x54/0x7c
-neigh_probe from __neigh_event_send+0x22c/0x47c
-__neigh_event_send from neigh_resolve_output+0x14c/0x1c0
-neigh_resolve_output from ip_finish_output2+0x1c8/0x628
-ip_finish_output2 from ip_send_skb+0x40/0xd8
-ip_send_skb from udp_send_skb+0x124/0x340
-udp_send_skb from udp_sendmsg+0x780/0x984
-udp_sendmsg from __sys_sendto+0xd8/0x158
-__sys_sendto from ret_fast_syscall+0x0/0x58
+Fix the behavior of the 'ip link set dev $ETHX vf $VF_NUM state disable'
+to completely shutdown the VF's queues making it entirely disabled and
+not able to receive or send any traffic.
 
-Let's fix the issue by checking for send_srp() and set_vbus() before
-calling them. For USB peripheral only cases these both could be NULL.
+Modify the behavior of the 'ip link set $ETHX vf $VF_NUM state enable'
+command to make a VF do reinitialization bringing the queues back up.
 
-Fixes: 657b306a7bdf ("usb: phy: add a new driver for omap usb2 phy")
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Link: https://lore.kernel.org/r/20240128120556.8848-1-tony@atomide.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Co-developed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Jan Sokolowski <jan.sokolowski@intel.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Andrii Staikov <andrii.staikov@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/ti/phy-omap-usb2.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../ethernet/intel/i40e/i40e_virtchnl_pf.c    | 32 +++++++++++++++++++
+ .../ethernet/intel/i40e/i40e_virtchnl_pf.h    |  1 +
+ 2 files changed, 33 insertions(+)
 
-diff --git a/drivers/phy/ti/phy-omap-usb2.c b/drivers/phy/ti/phy-omap-usb2.c
-index ca8532a3f193..59d3a692c725 100644
---- a/drivers/phy/ti/phy-omap-usb2.c
-+++ b/drivers/phy/ti/phy-omap-usb2.c
-@@ -116,7 +116,7 @@ static int omap_usb_set_vbus(struct usb_otg *otg, bool enabled)
- {
- 	struct omap_usb *phy = phy_to_omapusb(otg->usb_phy);
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+index 7b0ed15f4df3..f79795cc9152 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -2545,6 +2545,14 @@ static int i40e_vc_enable_queues_msg(struct i40e_vf *vf, u8 *msg)
+ 	i40e_status aq_ret = 0;
+ 	int i;
  
--	if (!phy->comparator)
-+	if (!phy->comparator || !phy->comparator->set_vbus)
- 		return -ENODEV;
++	if (vf->is_disabled_from_host) {
++		aq_ret = -EPERM;
++		dev_info(&pf->pdev->dev,
++			 "Admin has disabled VF %d, will not enable queues\n",
++			 vf->vf_id);
++		goto error_param;
++	}
++
+ 	if (!test_bit(I40E_VF_STATE_ACTIVE, &vf->vf_states)) {
+ 		aq_ret = I40E_ERR_PARAM;
+ 		goto error_param;
+@@ -4587,9 +4595,12 @@ int i40e_ndo_set_vf_link_state(struct net_device *netdev, int vf_id, int link)
+ 	struct i40e_pf *pf = np->vsi->back;
+ 	struct virtchnl_pf_event pfe;
+ 	struct i40e_hw *hw = &pf->hw;
++	struct i40e_vsi *vsi;
++	unsigned long q_map;
+ 	struct i40e_vf *vf;
+ 	int abs_vf_id;
+ 	int ret = 0;
++	int tmp;
  
- 	return phy->comparator->set_vbus(phy->comparator, enabled);
-@@ -126,7 +126,7 @@ static int omap_usb_start_srp(struct usb_otg *otg)
- {
- 	struct omap_usb *phy = phy_to_omapusb(otg->usb_phy);
+ 	if (test_and_set_bit(__I40E_VIRTCHNL_OP_PENDING, pf->state)) {
+ 		dev_warn(&pf->pdev->dev, "Unable to configure VFs, other operation is pending.\n");
+@@ -4612,6 +4623,9 @@ int i40e_ndo_set_vf_link_state(struct net_device *netdev, int vf_id, int link)
+ 	switch (link) {
+ 	case IFLA_VF_LINK_STATE_AUTO:
+ 		vf->link_forced = false;
++		vf->is_disabled_from_host = false;
++		/* reset needed to reinit VF resources */
++		i40e_vc_reset_vf(vf, true);
+ 		pfe.event_data.link_event.link_status =
+ 			pf->hw.phy.link_info.link_info & I40E_AQ_LINK_UP;
+ 		pfe.event_data.link_event.link_speed =
+@@ -4621,6 +4635,9 @@ int i40e_ndo_set_vf_link_state(struct net_device *netdev, int vf_id, int link)
+ 	case IFLA_VF_LINK_STATE_ENABLE:
+ 		vf->link_forced = true;
+ 		vf->link_up = true;
++		vf->is_disabled_from_host = false;
++		/* reset needed to reinit VF resources */
++		i40e_vc_reset_vf(vf, true);
+ 		pfe.event_data.link_event.link_status = true;
+ 		pfe.event_data.link_event.link_speed = VIRTCHNL_LINK_SPEED_40GB;
+ 		break;
+@@ -4629,6 +4646,21 @@ int i40e_ndo_set_vf_link_state(struct net_device *netdev, int vf_id, int link)
+ 		vf->link_up = false;
+ 		pfe.event_data.link_event.link_status = false;
+ 		pfe.event_data.link_event.link_speed = 0;
++
++		vsi = pf->vsi[vf->lan_vsi_idx];
++		q_map = BIT(vsi->num_queue_pairs) - 1;
++
++		vf->is_disabled_from_host = true;
++
++		/* Try to stop both Tx&Rx rings even if one of the calls fails
++		 * to ensure we stop the rings even in case of errors.
++		 * If any of them returns with an error then the first
++		 * error that occurred will be returned.
++		 */
++		tmp = i40e_ctrl_vf_tx_rings(vsi, q_map, false);
++		ret = i40e_ctrl_vf_rx_rings(vsi, q_map, false);
++
++		ret = tmp ? tmp : ret;
+ 		break;
+ 	default:
+ 		ret = -EINVAL;
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
+index bd497cc5303a..97e9c34d7c6c 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
+@@ -98,6 +98,7 @@ struct i40e_vf {
+ 	bool link_forced;
+ 	bool link_up;		/* only valid if VF link is forced */
+ 	bool spoofchk;
++	bool is_disabled_from_host; /* PF ctrl of VF enable/disable */
+ 	u16 num_vlan;
  
--	if (!phy->comparator)
-+	if (!phy->comparator || !phy->comparator->start_srp)
- 		return -ENODEV;
- 
- 	return phy->comparator->start_srp(phy->comparator);
+ 	/* ADq related variables */
 -- 
 2.43.0
 
