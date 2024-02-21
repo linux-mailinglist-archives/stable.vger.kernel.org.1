@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-21963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F17985D96B
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:18:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC12C85DEA1
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:20:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EFB28B211B6
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:18:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A7151C22FCD
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:20:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF7B7762D;
-	Wed, 21 Feb 2024 13:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 317FA7BB03;
+	Wed, 21 Feb 2024 14:19:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jGNr4RoV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PccLX/vp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4888729AB;
-	Wed, 21 Feb 2024 13:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DADAA78B73;
+	Wed, 21 Feb 2024 14:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521485; cv=none; b=C2oZzDSvNl5BbLnqi6pLeE14IiwjE7pU82iMuM3vIBoiGIXG0km4wUNjWelBmCPwY5+VT6WA/jz1pf900dhnIIEY1EizNa4ERWqJSEOCdmUWN68i0lmURYjs3/Tw19d1al4EBvT10ZA7O0+1D/2YKsfZnPLlR4zZLJSG/W+7c/g=
+	t=1708525186; cv=none; b=mPhZEfQy1PipkldWlZL0ASQUnh+kLp6v9w5ZtYVNXfuhN0WcVH68Kcr6HIep1tZLJkqSsJRzoEJJAYGgebuIScxXris6qYrGBOWxmYEyfjWru4oLqKuK6Oh8+SjigHlV983V8y7EwqcsAtCoXUhhuF3WV00oierI3S2L0JwDScQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521485; c=relaxed/simple;
-	bh=yfc9AfOOijCZr/sjyIAmZE6YqBxKQjHG2/gomUI6lfA=;
+	s=arc-20240116; t=1708525186; c=relaxed/simple;
+	bh=2YOlrTTSEvGmPqxzJozOfPs3zh3WgG1/F+ivl0Jqhak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oig6IrNlg4uQpCX6J+GTsPSxmJz6lRtmNJMVH3WjeHPtyopbNlwP2BIgTyPar1OxE37carO4yQxQEH2M0hDzAZaixu5VePejRqkPLzXXumCIpTdfK+zGPLD8HX4siwhzDmEAQ5PC9oLPWC2wKN2ky5M1hdFCBesKZxy+Z0UCWeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jGNr4RoV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9612FC433F1;
-	Wed, 21 Feb 2024 13:18:04 +0000 (UTC)
+	 MIME-Version; b=bVZ4PxT0ISaa5mRhev3oqTvxtMziv1+e7N+MM/+KbwUQoTywInBLHYurg2UysV+pi8DmXIpkR4kFDk9pXk80sW/s2oeCWioGxdmvLJfRgICSFQasdJHUrSisnzzwPsH6k5ndac5i9PuUBrfgtNH0ou86fX5wPPlzw4sa8dcYhfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PccLX/vp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4515FC433F1;
+	Wed, 21 Feb 2024 14:19:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521485;
-	bh=yfc9AfOOijCZr/sjyIAmZE6YqBxKQjHG2/gomUI6lfA=;
+	s=korg; t=1708525185;
+	bh=2YOlrTTSEvGmPqxzJozOfPs3zh3WgG1/F+ivl0Jqhak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jGNr4RoVCcR04lX8om4hXmVy97ejnbU7SabG8q4lGKSFhYZ7i8NvgZT8C5SJHMYJq
-	 S9y4kQOR8wICNZZ6GVTkgWHR2ZQ/oZOaLjwsE46HFEWTgBAmvPBpFyBOO/57xW+jPo
-	 BrB6fdw9pk2v63mhQFlWkSJro0R7LHbv7KCTMUQo=
+	b=PccLX/vpZTLn4xcqz+SL0SJ1rXbQPa6jlsq0rTcmKOjAccJAU4a6cgolbi9G4RkwO
+	 1squ2LoFEfjqrU8TjtoGCSYKVuAfQT/SE/XAQSIgwzckWUWZHDuSBWmgRM+O3EqImc
+	 XMC8oVGtnjSvPHoLpaQzBwxCFsAyuxD6gXpD864I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: =?UTF-8?q?=5BPATCH=204=2E19=20125/202=5D=20=3D=3FUTF-8=3Fq=3Fvirtio=3D5Fnet=3A=3D20Fix=3D20=22=3DE2=3D80=3D98=25d=3DE2=3D80=3D99=3D20directive=3F=3D=20=3D=3FUTF-8=3Fq=3F=3D20writing=3D20between=3D201=3D20and=3D2011=3D20bytes=3D20into=3D20a=3D20region=3F=3D=20=3D=3FUTF-8=3Fq=3F=3D20of=3D20size=3D2010=22=3D20warnings=3F=3D?=
+Subject: [PATCH 5.4 085/267] SUNRPC: Fix a suspicious RCU usage warning
 Date: Wed, 21 Feb 2024 14:07:06 +0100
-Message-ID: <20240221125935.747986090@linuxfoundation.org>
+Message-ID: <20240221125942.632197434@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +60,125 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
+From: Anna Schumaker <Anna.Schumaker@Netapp.com>
 
-[ Upstream commit e3fe8d28c67bf6c291e920c6d04fa22afa14e6e4 ]
+[ Upstream commit 31b62908693c90d4d07db597e685d9f25a120073 ]
 
-Fix the warnings when building virtio_net driver.
+I received the following warning while running cthon against an ontap
+server running pNFS:
 
-"
-drivers/net/virtio_net.c: In function ‘init_vqs’:
-drivers/net/virtio_net.c:4551:48: warning: ‘%d’ directive writing between 1 and 11 bytes into a region of size 10 [-Wformat-overflow=]
- 4551 |                 sprintf(vi->rq[i].name, "input.%d", i);
-      |                                                ^~
-In function ‘virtnet_find_vqs’,
-    inlined from ‘init_vqs’ at drivers/net/virtio_net.c:4645:8:
-drivers/net/virtio_net.c:4551:41: note: directive argument in the range [-2147483643, 65534]
- 4551 |                 sprintf(vi->rq[i].name, "input.%d", i);
-      |                                         ^~~~~~~~~~
-drivers/net/virtio_net.c:4551:17: note: ‘sprintf’ output between 8 and 18 bytes into a destination of size 16
- 4551 |                 sprintf(vi->rq[i].name, "input.%d", i);
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-drivers/net/virtio_net.c: In function ‘init_vqs’:
-drivers/net/virtio_net.c:4552:49: warning: ‘%d’ directive writing between 1 and 11 bytes into a region of size 9 [-Wformat-overflow=]
- 4552 |                 sprintf(vi->sq[i].name, "output.%d", i);
-      |                                                 ^~
-In function ‘virtnet_find_vqs’,
-    inlined from ‘init_vqs’ at drivers/net/virtio_net.c:4645:8:
-drivers/net/virtio_net.c:4552:41: note: directive argument in the range [-2147483643, 65534]
- 4552 |                 sprintf(vi->sq[i].name, "output.%d", i);
-      |                                         ^~~~~~~~~~~
-drivers/net/virtio_net.c:4552:17: note: ‘sprintf’ output between 9 and 19 bytes into a destination of size 16
- 4552 |                 sprintf(vi->sq[i].name, "output.%d", i);
+[   57.202521] =============================
+[   57.202522] WARNING: suspicious RCU usage
+[   57.202523] 6.7.0-rc3-g2cc14f52aeb7 #41492 Not tainted
+[   57.202525] -----------------------------
+[   57.202525] net/sunrpc/xprtmultipath.c:349 RCU-list traversed in non-reader section!!
+[   57.202527]
+               other info that might help us debug this:
 
-"
+[   57.202528]
+               rcu_scheduler_active = 2, debug_locks = 1
+[   57.202529] no locks held by test5/3567.
+[   57.202530]
+               stack backtrace:
+[   57.202532] CPU: 0 PID: 3567 Comm: test5 Not tainted 6.7.0-rc3-g2cc14f52aeb7 #41492 5b09971b4965c0aceba19f3eea324a4a806e227e
+[   57.202534] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS unknown 2/2/2022
+[   57.202536] Call Trace:
+[   57.202537]  <TASK>
+[   57.202540]  dump_stack_lvl+0x77/0xb0
+[   57.202551]  lockdep_rcu_suspicious+0x154/0x1a0
+[   57.202556]  rpc_xprt_switch_has_addr+0x17c/0x190 [sunrpc ebe02571b9a8ceebf7d98e71675af20c19bdb1f6]
+[   57.202596]  rpc_clnt_setup_test_and_add_xprt+0x50/0x180 [sunrpc ebe02571b9a8ceebf7d98e71675af20c19bdb1f6]
+[   57.202621]  ? rpc_clnt_add_xprt+0x254/0x300 [sunrpc ebe02571b9a8ceebf7d98e71675af20c19bdb1f6]
+[   57.202646]  rpc_clnt_add_xprt+0x27a/0x300 [sunrpc ebe02571b9a8ceebf7d98e71675af20c19bdb1f6]
+[   57.202671]  ? __pfx_rpc_clnt_setup_test_and_add_xprt+0x10/0x10 [sunrpc ebe02571b9a8ceebf7d98e71675af20c19bdb1f6]
+[   57.202696]  nfs4_pnfs_ds_connect+0x345/0x760 [nfsv4 c716d88496ded0ea6d289bbea684fa996f9b57a9]
+[   57.202728]  ? __pfx_nfs4_test_session_trunk+0x10/0x10 [nfsv4 c716d88496ded0ea6d289bbea684fa996f9b57a9]
+[   57.202754]  nfs4_fl_prepare_ds+0x75/0xc0 [nfs_layout_nfsv41_files e3a4187f18ae8a27b630f9feae6831b584a9360a]
+[   57.202760]  filelayout_write_pagelist+0x4a/0x200 [nfs_layout_nfsv41_files e3a4187f18ae8a27b630f9feae6831b584a9360a]
+[   57.202765]  pnfs_generic_pg_writepages+0xbe/0x230 [nfsv4 c716d88496ded0ea6d289bbea684fa996f9b57a9]
+[   57.202788]  __nfs_pageio_add_request+0x3fd/0x520 [nfs 6c976fa593a7c2976f5a0aeb4965514a828e6902]
+[   57.202813]  nfs_pageio_add_request+0x18b/0x390 [nfs 6c976fa593a7c2976f5a0aeb4965514a828e6902]
+[   57.202831]  nfs_do_writepage+0x116/0x1e0 [nfs 6c976fa593a7c2976f5a0aeb4965514a828e6902]
+[   57.202849]  nfs_writepages_callback+0x13/0x30 [nfs 6c976fa593a7c2976f5a0aeb4965514a828e6902]
+[   57.202866]  write_cache_pages+0x265/0x450
+[   57.202870]  ? __pfx_nfs_writepages_callback+0x10/0x10 [nfs 6c976fa593a7c2976f5a0aeb4965514a828e6902]
+[   57.202891]  nfs_writepages+0x141/0x230 [nfs 6c976fa593a7c2976f5a0aeb4965514a828e6902]
+[   57.202913]  do_writepages+0xd2/0x230
+[   57.202917]  ? filemap_fdatawrite_wbc+0x5c/0x80
+[   57.202921]  filemap_fdatawrite_wbc+0x67/0x80
+[   57.202924]  filemap_write_and_wait_range+0xd9/0x170
+[   57.202930]  nfs_wb_all+0x49/0x180 [nfs 6c976fa593a7c2976f5a0aeb4965514a828e6902]
+[   57.202947]  nfs4_file_flush+0x72/0xb0 [nfsv4 c716d88496ded0ea6d289bbea684fa996f9b57a9]
+[   57.202969]  __se_sys_close+0x46/0xd0
+[   57.202972]  do_syscall_64+0x68/0x100
+[   57.202975]  ? do_syscall_64+0x77/0x100
+[   57.202976]  ? do_syscall_64+0x77/0x100
+[   57.202979]  entry_SYSCALL_64_after_hwframe+0x6e/0x76
+[   57.202982] RIP: 0033:0x7fe2b12e4a94
+[   57.202985] Code: 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 80 3d d5 18 0e 00 00 74 13 b8 03 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 44 c3 0f 1f 00 48 83 ec 18 89 7c 24 0c e8 c3
+[   57.202987] RSP: 002b:00007ffe857ddb38 EFLAGS: 00000202 ORIG_RAX: 0000000000000003
+[   57.202989] RAX: ffffffffffffffda RBX: 00007ffe857dfd68 RCX: 00007fe2b12e4a94
+[   57.202991] RDX: 0000000000002000 RSI: 00007ffe857ddc40 RDI: 0000000000000003
+[   57.202992] RBP: 00007ffe857dfc50 R08: 7fffffffffffffff R09: 0000000065650f49
+[   57.202993] R10: 00007fe2b11f8300 R11: 0000000000000202 R12: 0000000000000000
+[   57.202994] R13: 00007ffe857dfd80 R14: 00007fe2b1445000 R15: 0000000000000000
+[   57.202999]  </TASK>
 
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Link: https://lore.kernel.org/r/20240104020902.2753599-1-yanjun.zhu@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The problem seems to be that two out of three callers aren't taking the
+rcu_read_lock() before calling the list_for_each_entry_rcu() function in
+rpc_xprt_switch_has_addr(). I fix this by having
+rpc_xprt_switch_has_addr() unconditionaly take the rcu_read_lock(),
+which is okay to do recursively in the case that the lock has already
+been taken by a caller.
+
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/virtio_net.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ net/sunrpc/xprtmultipath.c | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 331d74f9281b..2b012d7165cd 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -2727,10 +2727,11 @@ static int virtnet_find_vqs(struct virtnet_info *vi)
- {
- 	vq_callback_t **callbacks;
- 	struct virtqueue **vqs;
--	int ret = -ENOMEM;
--	int i, total_vqs;
- 	const char **names;
-+	int ret = -ENOMEM;
-+	int total_vqs;
- 	bool *ctx;
-+	u16 i;
+diff --git a/net/sunrpc/xprtmultipath.c b/net/sunrpc/xprtmultipath.c
+index 78c075a68c04..a11e80d17830 100644
+--- a/net/sunrpc/xprtmultipath.c
++++ b/net/sunrpc/xprtmultipath.c
+@@ -253,8 +253,9 @@ struct rpc_xprt *xprt_iter_current_entry(struct rpc_xprt_iter *xpi)
+ 	return xprt_switch_find_current_entry(head, xpi->xpi_cursor);
+ }
  
- 	/* We expect 1 RX virtqueue followed by 1 TX virtqueue, followed by
- 	 * possible N-1 RX/TX queue pairs used in multiqueue mode, followed by
-@@ -2767,8 +2768,8 @@ static int virtnet_find_vqs(struct virtnet_info *vi)
- 	for (i = 0; i < vi->max_queue_pairs; i++) {
- 		callbacks[rxq2vq(i)] = skb_recv_done;
- 		callbacks[txq2vq(i)] = skb_xmit_done;
--		sprintf(vi->rq[i].name, "input.%d", i);
--		sprintf(vi->sq[i].name, "output.%d", i);
-+		sprintf(vi->rq[i].name, "input.%u", i);
-+		sprintf(vi->sq[i].name, "output.%u", i);
- 		names[rxq2vq(i)] = vi->rq[i].name;
- 		names[txq2vq(i)] = vi->sq[i].name;
- 		if (ctx)
+-bool rpc_xprt_switch_has_addr(struct rpc_xprt_switch *xps,
+-			      const struct sockaddr *sap)
++static
++bool __rpc_xprt_switch_has_addr(struct rpc_xprt_switch *xps,
++				const struct sockaddr *sap)
+ {
+ 	struct list_head *head;
+ 	struct rpc_xprt *pos;
+@@ -273,6 +274,18 @@ bool rpc_xprt_switch_has_addr(struct rpc_xprt_switch *xps,
+ 	return false;
+ }
+ 
++bool rpc_xprt_switch_has_addr(struct rpc_xprt_switch *xps,
++			      const struct sockaddr *sap)
++{
++	bool res;
++
++	rcu_read_lock();
++	res = __rpc_xprt_switch_has_addr(xps, sap);
++	rcu_read_unlock();
++
++	return res;
++}
++
+ static
+ struct rpc_xprt *xprt_switch_find_next_entry(struct list_head *head,
+ 		const struct rpc_xprt *cur)
 -- 
 2.43.0
 
