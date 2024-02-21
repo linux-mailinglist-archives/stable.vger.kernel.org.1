@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-23044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6237185DEF6
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:23:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FDFF85DDFA
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:14:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFA591F22588
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:23:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE600282A9E
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6059C69D3B;
-	Wed, 21 Feb 2024 14:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 131C58004F;
+	Wed, 21 Feb 2024 14:10:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UX8Tg1i6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iqucCaHy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4963CF42;
-	Wed, 21 Feb 2024 14:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C43FA7D401;
+	Wed, 21 Feb 2024 14:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525392; cv=none; b=S8KREqs9D7VD9zpKkQ78pXUTGYJlF+Zqd1hkDunUlGaBmacI9bXOQmIQZIsuKWEkhgpe4Oete0qV54QNyn1cp1+qjths9/ILf+UeFjkxuDzkxgIJC5/CHdV51EgbQeAUrrBJQP58++GrXOOcth1G0+MRrVLTor081oCelVq0mA0=
+	t=1708524640; cv=none; b=jBhGbDS/TLvIL2GPYyxvlG0dcdn6CSDs5CFj1KE+D1jTtuu/mIfl62AKHrkk1sXRdpoGmSgL7T3E8CPr1/vnwxsbNaxGxlKBzqi69tw5AXWCjAEnIR3aIQ8ylnPFDS5FJTsKGP/mI2LmyDlhR48JHvldgSCSeK4fgdpEwrnl/uM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525392; c=relaxed/simple;
-	bh=7Qnkngq2wRA/tqMkCK2PQRtx+cTTSx2jksH6zWOvk90=;
+	s=arc-20240116; t=1708524640; c=relaxed/simple;
+	bh=aTIhFFw+Rf+BvmIxGC49BzMlKJFI4u1YZJSK0bh0peU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xgf5xtNI2yVhJSRMQ2G9TdiD7jGoGqDjz3J60izfN2sb3cf7UK6J+UnekKjQmZUcQvgDEttsxaLboIco3+HDhGHfbKsrHKi58faMmiGzRrZzEAfOro8EgiDCvfNmHRC8Efuu1AwJhQ7lmgowcYXf+mmyJFS/igu+FINJIiRDOgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UX8Tg1i6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E566C433C7;
-	Wed, 21 Feb 2024 14:23:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PUBSFGPb+myy96V0jrQyerTaY6GxTC/K6jqRs5ZeRaiGtUbU9YZQ3TDKVZA6x7tNRZB20lT2qmzQxNbbnhenpuyr8AClyNIO1ikDmzd5msRoh35V49TFGnPRn4rj7Q60xw7oiYZPWUvQxaITl2Q/uweqP5C2MCcxJXIlbnNsCcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iqucCaHy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBAE8C433C7;
+	Wed, 21 Feb 2024 14:10:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525392;
-	bh=7Qnkngq2wRA/tqMkCK2PQRtx+cTTSx2jksH6zWOvk90=;
+	s=korg; t=1708524640;
+	bh=aTIhFFw+Rf+BvmIxGC49BzMlKJFI4u1YZJSK0bh0peU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UX8Tg1i6IQuzo6+WhTGW/6jTug4YiPnSVUO8K4LXCkGNZuNu6aW2wHYFnHU28FHbx
-	 Ax0dHguqL6BsKivr6vk8KE48aGPA8dlaePgRcIRY1zz7s45gbTUuTwLWEHxhZd1HRR
-	 9XKlksoI6mGav3YVRcklgieZ0Mpby+FsZ/NLEwH4=
+	b=iqucCaHyuIIuylZSG4oX2Zjl/MJsmFgofCyyPUp75MXFLOAQvplFT39xogERSgGKb
+	 l/rH/g9E1IXc9lYkZNMS/1zWyO3IGGXaF8DXliPXCL7+qILXXAII3WCpo/72L1ZWf+
+	 /kPdLsxWB6gPwI1OHBWEGVkyxvw8jGv1a7w0SniU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin@sipsolutions.net>,
-	Richard Weinberger <richard@nod.at>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 142/267] um: Dont use vfprintf() for os_info()
+	Oliver Neukum <oneukum@suse.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.10 304/379] USB: hub: check for alternate port before enabling A_ALT_HNP_SUPPORT
 Date: Wed, 21 Feb 2024 14:08:03 +0100
-Message-ID: <20240221125944.513946329@linuxfoundation.org>
+Message-ID: <20240221130003.914617155@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,79 +59,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin@sipsolutions.net>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 236f9fe39b02c15fa5530b53e9cca48354394389 ]
+commit f17c34ffc792bbb520e4b61baa16b6cfc7d44b13 upstream.
 
-The threads allocated inside the kernel have only a single page of
-stack. Unfortunately, the vfprintf function in standard glibc may use
-too much stack-space, overflowing it.
+The OTG 1.3 spec has the feature A_ALT_HNP_SUPPORT, which tells
+a device that it is connected to the wrong port. Some devices
+refuse to operate if you enable that feature, because it indicates
+to them that they ought to request to be connected to another port.
 
-To make os_info safe to be used by helper threads, use the kernel
-vscnprintf function into a smallish buffer and write out the information
-to stderr.
+According to the spec this feature may be used based only the following
+three conditions:
 
-Signed-off-by: Benjamin Berg <benjamin@sipsolutions.net>
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+6.5.3 a_alt_hnp_support
+Setting this feature indicates to the B-device that it is connected to
+an A-device port that is not capable of HNP, but that the A-device does
+have an alternate port that is capable of HNP.
+The A-device is required to set this feature under the following conditions:
+• the A-device has multiple receptacles
+• the A-device port that connects to the B-device does not support HNP
+• the A-device has another port that does support HNP
+
+A check for the third and first condition is missing. Add it.
+
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Cc: stable <stable@kernel.org>
+Fixes: 7d2d641c44269 ("usb: otg: don't set a_alt_hnp_support feature for OTG 2.0 device")
+Link: https://lore.kernel.org/r/20240122153545.12284-1-oneukum@suse.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/um/os-Linux/util.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ drivers/usb/core/hub.c |   30 +++++++++++++++++++-----------
+ 1 file changed, 19 insertions(+), 11 deletions(-)
 
-diff --git a/arch/um/os-Linux/util.c b/arch/um/os-Linux/util.c
-index ecf2f390fad2..b76ac4df5da5 100644
---- a/arch/um/os-Linux/util.c
-+++ b/arch/um/os-Linux/util.c
-@@ -166,23 +166,38 @@ __uml_setup("quiet", quiet_cmd_param,
- "quiet\n"
- "    Turns off information messages during boot.\n\n");
- 
-+/*
-+ * The os_info/os_warn functions will be called by helper threads. These
-+ * have a very limited stack size and using the libc formatting functions
-+ * may overflow the stack.
-+ * So pull in the kernel vscnprintf and use that instead with a fixed
-+ * on-stack buffer.
-+ */
-+int vscnprintf(char *buf, size_t size, const char *fmt, va_list args);
-+
- void os_info(const char *fmt, ...)
- {
-+	char buf[256];
- 	va_list list;
-+	int len;
- 
- 	if (quiet_info)
- 		return;
- 
- 	va_start(list, fmt);
--	vfprintf(stderr, fmt, list);
-+	len = vscnprintf(buf, sizeof(buf), fmt, list);
-+	fwrite(buf, len, 1, stderr);
- 	va_end(list);
- }
- 
- void os_warn(const char *fmt, ...)
- {
-+	char buf[256];
- 	va_list list;
-+	int len;
- 
- 	va_start(list, fmt);
--	vfprintf(stderr, fmt, list);
-+	len = vscnprintf(buf, sizeof(buf), fmt, list);
-+	fwrite(buf, len, 1, stderr);
- 	va_end(list);
- }
--- 
-2.43.0
-
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -2367,17 +2367,25 @@ static int usb_enumerate_device_otg(stru
+ 			}
+ 		} else if (desc->bLength == sizeof
+ 				(struct usb_otg_descriptor)) {
+-			/* Set a_alt_hnp_support for legacy otg device */
+-			err = usb_control_msg(udev,
+-				usb_sndctrlpipe(udev, 0),
+-				USB_REQ_SET_FEATURE, 0,
+-				USB_DEVICE_A_ALT_HNP_SUPPORT,
+-				0, NULL, 0,
+-				USB_CTRL_SET_TIMEOUT);
+-			if (err < 0)
+-				dev_err(&udev->dev,
+-					"set a_alt_hnp_support failed: %d\n",
+-					err);
++			/*
++			 * We are operating on a legacy OTP device
++			 * These should be told that they are operating
++			 * on the wrong port if we have another port that does
++			 * support HNP
++			 */
++			if (bus->otg_port != 0) {
++				/* Set a_alt_hnp_support for legacy otg device */
++				err = usb_control_msg(udev,
++					usb_sndctrlpipe(udev, 0),
++					USB_REQ_SET_FEATURE, 0,
++					USB_DEVICE_A_ALT_HNP_SUPPORT,
++					0, NULL, 0,
++					USB_CTRL_SET_TIMEOUT);
++				if (err < 0)
++					dev_err(&udev->dev,
++						"set a_alt_hnp_support failed: %d\n",
++						err);
++			}
+ 		}
+ 	}
+ #endif
 
 
 
