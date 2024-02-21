@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-23132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10D4B85DF6B
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:27:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44DB385DEAD
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:20:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFD61285701
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:27:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 50655B2C0DB
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:15:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DD857BAF7;
-	Wed, 21 Feb 2024 14:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6771A7F471;
+	Wed, 21 Feb 2024 14:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XgMeOr/P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QEJIO+Pr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BDB04C62;
-	Wed, 21 Feb 2024 14:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F7D7BB18;
+	Wed, 21 Feb 2024 14:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525673; cv=none; b=WDg8R6kKeYcBn1H1jfwNyvqFECAxXTbmPXRN4TSCITitUfnr54HpC0/wNGfVI9MKBqvvapmR6HDfpfAkdNoVtDv+ovB95F2NU3mq5ovCl1ioI/60rj1ajgTmY4/OUfEj2UqVOZnEbgd+v2ptu/7VRz9Lou36yt3X+fykeJMOR5Y=
+	t=1708524833; cv=none; b=dKG+t6mwpISSm3v1hrUOsCHOccxsiJmY5Hapm1e9UdG52nKAaCsMY3SgGqE5ox4wAHrMWzpRp/51sl57AcU0fazPh7PxpaiXgi8juLW9BOZR0TTXfhiSnb8FqW1+04zAr9m8XI8RX7NYZdu+VQo02Xd8zk2Cyqx4Q1TrPZM3yqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525673; c=relaxed/simple;
-	bh=1blcRQjkYk1q4VdC+6TctMW5xy6pnuEu6kzNfDb0ytY=;
+	s=arc-20240116; t=1708524833; c=relaxed/simple;
+	bh=rVMo0GNB4RIjWbB+dxyGKg3K5Uozcnp5MP7QC9OZDcw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qar5hxmZq8JTeKqHJparJKv/b1pveRCSuGcNAYpPG4QffS01iha7QAU/hQ/qkEnIiC6Yhe+Aw/AFCSKn1fkSGFvMd0+bIAtIIuJRNQ6IOWu2bBt4Lwv807CSHKIwxaCdBQKzynLai+k+XrM1yVKTxjkRdkRDgdtoEnNEbdj4KbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XgMeOr/P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E0F7C433F1;
-	Wed, 21 Feb 2024 14:27:52 +0000 (UTC)
+	 MIME-Version; b=WFWNlZeCSSE4nFrezQUM480DD1DHfadqHRoaenOjubBLUFr7blfnuFTtCjIYxMQeno4z32JZNjU9U4n+5hQA+klF4U+2/pzZvND6akj7fYS1wDe3f2fADOxcY6wfEgwo6v/tUhDWJJVQYmF6FCx4yeYjQ0dQMWFzy+bDfDsbsRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QEJIO+Pr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D417C433C7;
+	Wed, 21 Feb 2024 14:13:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525673;
-	bh=1blcRQjkYk1q4VdC+6TctMW5xy6pnuEu6kzNfDb0ytY=;
+	s=korg; t=1708524833;
+	bh=rVMo0GNB4RIjWbB+dxyGKg3K5Uozcnp5MP7QC9OZDcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XgMeOr/P+2oloGcmCHVE+PF0/gbb6W3oGjUV4hnUFshD57UcgDCzjXojPKN0fXivf
-	 nZ2pdoFsfCZBZCeRD9HZV/xSEPlCgvyjY9GWxyfMEHKChHQSec4QIFIwOi/f5/Qall
-	 0VO1voVqUpQTC7ZxugM7w7RqcGne77wuqTvFr5gU=
+	b=QEJIO+PrAik6JyIVd3FxKN+4IYaZlX6NnNhJZ02od1bj+9SK3ibrxxzYsiLdN9bYS
+	 u/JMW8I8RQOQ6cdHFvpa0oUSKA6dnPJUw068nk93uriXjfXXg864VNvyTUc9Up1hhy
+	 gZzviUr3hA0HhMigf3yi8ggcXELV4BDx/Ad2Nj+g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 5.4 199/267] Input: atkbd - skip ATKBD_CMD_SETLEDS when skipping ATKBD_CMD_GETID
-Date: Wed, 21 Feb 2024 14:09:00 +0100
-Message-ID: <20240221125946.402885635@linuxfoundation.org>
+	Schspa Shi <schspa@gmail.com>,
+	Stephen Boyd <swboyd@chromium.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 362/379] scripts/decode_stacktrace.sh: support old bash version
+Date: Wed, 21 Feb 2024 14:09:01 +0100
+Message-ID: <20240221130005.774979565@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +63,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Schspa Shi <schspa@gmail.com>
 
-commit 683cd8259a9b883a51973511f860976db2550a6e upstream.
+[ Upstream commit 3af8acf6aff2a98731522b52927429760f0b8006 ]
 
-After commit 936e4d49ecbc ("Input: atkbd - skip ATKBD_CMD_GETID in
-translated mode") the keyboard on Dell XPS 13 9350 / 9360 / 9370 models
-has stopped working after a suspend/resume.
+Old bash version don't support associative array variables.  Avoid to use
+associative array variables to avoid error.
 
-The problem appears to be that atkbd_probe() fails when called
-from atkbd_reconnect() on resume, which on systems where
-ATKBD_CMD_GETID is skipped can only happen by ATKBD_CMD_SETLEDS
-failing. ATKBD_CMD_SETLEDS failing because ATKBD_CMD_GETID was
-skipped is weird, but apparently that is what is happening.
+Without this, old bash version will report error as fellowing
+[   15.954042] Kernel panic - not syncing: sysrq triggered crash
+[   15.955252] CPU: 1 PID: 167 Comm: sh Not tainted 5.18.0-rc1-00208-gb7d075db2fd5 #4
+[   15.956472] Hardware name: Hobot J5 Virtual development board (DT)
+[   15.957856] Call trace:
+./scripts/decode_stacktrace.sh: line 128: ,dump_backtrace: syntax error: operand expected (error token is ",dump_backtrace")
 
-Fix this by also skipping ATKBD_CMD_SETLEDS when skipping
-ATKBD_CMD_GETID.
-
-Fixes: 936e4d49ecbc ("Input: atkbd - skip ATKBD_CMD_GETID in translated mode")
-Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Closes: https://lore.kernel.org/linux-input/0aa4a61f-c939-46fe-a572-08022e8931c7@molgen.mpg.de/
-Closes: https://bbs.archlinux.org/viewtopic.php?pid=2146300
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218424
-Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2260517
-Tested-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240126160724.13278-2-hdegoede@redhat.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20220409180331.24047-1-schspa@gmail.com
+Signed-off-by: Schspa Shi <schspa@gmail.com>
+Cc: Stephen Boyd <swboyd@chromium.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: efbd63983533 ("scripts/decode_stacktrace.sh: optionally use LLVM utilities")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/keyboard/atkbd.c |   13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ scripts/decode_stacktrace.sh | 27 +++++++++++++++++++--------
+ 1 file changed, 19 insertions(+), 8 deletions(-)
 
---- a/drivers/input/keyboard/atkbd.c
-+++ b/drivers/input/keyboard/atkbd.c
-@@ -761,7 +761,6 @@ static int atkbd_probe(struct atkbd *atk
- {
- 	struct ps2dev *ps2dev = &atkbd->ps2dev;
- 	unsigned char param[2];
--	bool skip_getid;
+diff --git a/scripts/decode_stacktrace.sh b/scripts/decode_stacktrace.sh
+index 5bdf610f33d2..51d48bf65fd7 100755
+--- a/scripts/decode_stacktrace.sh
++++ b/scripts/decode_stacktrace.sh
+@@ -33,8 +33,13 @@ else
+ 	release=""
+ fi
  
- /*
-  * Some systems, where the bit-twiddling when testing the io-lines of the
-@@ -775,6 +774,11 @@ static int atkbd_probe(struct atkbd *atk
- 				 "keyboard reset failed on %s\n",
- 				 ps2dev->serio->phys);
+-declare -A cache
+-declare -A modcache
++declare aarray_support=true
++declare -A cache 2>/dev/null
++if [[ $? != 0 ]]; then
++	aarray_support=false
++else
++	declare -A modcache
++fi
  
-+	if (atkbd_skip_getid(atkbd)) {
-+		atkbd->id = 0xab83;
-+		return 0;
-+	}
-+
- /*
-  * Then we check the keyboard ID. We should get 0xab83 under normal conditions.
-  * Some keyboards report different values, but the first byte is always 0xab or
-@@ -783,18 +787,17 @@ static int atkbd_probe(struct atkbd *atk
-  */
+ find_module() {
+ 	if [[ "$modpath" != "" ]] ; then
+@@ -74,7 +79,7 @@ parse_symbol() {
  
- 	param[0] = param[1] = 0xa5;	/* initialize with invalid values */
--	skip_getid = atkbd_skip_getid(atkbd);
--	if (skip_getid || ps2_command(ps2dev, param, ATKBD_CMD_GETID)) {
-+	if (ps2_command(ps2dev, param, ATKBD_CMD_GETID)) {
+ 	if [[ $module == "" ]] ; then
+ 		local objfile=$vmlinux
+-	elif [[ "${modcache[$module]+isset}" == "isset" ]]; then
++	elif [[ $aarray_support == true && "${modcache[$module]+isset}" == "isset" ]]; then
+ 		local objfile=${modcache[$module]}
+ 	else
+ 		local objfile=$(find_module)
+@@ -82,7 +87,9 @@ parse_symbol() {
+ 			echo "WARNING! Modules path isn't set, but is needed to parse this symbol" >&2
+ 			return
+ 		fi
+-		modcache[$module]=$objfile
++		if [[ $aarray_support == true ]]; then
++			modcache[$module]=$objfile
++		fi
+ 	fi
  
- /*
-- * If the get ID command was skipped or failed, we check if we can at least set
-+ * If the get ID command failed, we check if we can at least set
-  * the LEDs on the keyboard. This should work on every keyboard out there.
-  * It also turns the LEDs off, which we want anyway.
-  */
- 		param[0] = 0;
- 		if (ps2_command(ps2dev, param, ATKBD_CMD_SETLEDS))
- 			return -1;
--		atkbd->id = skip_getid ? 0xab83 : 0xabba;
-+		atkbd->id = 0xabba;
- 		return 0;
- 	}
+ 	# Remove the englobing parenthesis
+@@ -102,7 +109,7 @@ parse_symbol() {
+ 	# Use 'nm vmlinux' to figure out the base address of said symbol.
+ 	# It's actually faster to call it every time than to load it
+ 	# all into bash.
+-	if [[ "${cache[$module,$name]+isset}" == "isset" ]]; then
++	if [[ $aarray_support == true && "${cache[$module,$name]+isset}" == "isset" ]]; then
+ 		local base_addr=${cache[$module,$name]}
+ 	else
+ 		local base_addr=$(nm "$objfile" 2>/dev/null | awk '$3 == "'$name'" && ($2 == "t" || $2 == "T") {print $1; exit}')
+@@ -110,7 +117,9 @@ parse_symbol() {
+ 			# address not found
+ 			return
+ 		fi
+-		cache[$module,$name]="$base_addr"
++		if [[ $aarray_support == true ]]; then
++			cache[$module,$name]="$base_addr"
++		fi
+ 	fi
+ 	# Let's start doing the math to get the exact address into the
+ 	# symbol. First, strip out the symbol total length.
+@@ -126,11 +135,13 @@ parse_symbol() {
  
+ 	# Pass it to addr2line to get filename and line number
+ 	# Could get more than one result
+-	if [[ "${cache[$module,$address]+isset}" == "isset" ]]; then
++	if [[ $aarray_support == true && "${cache[$module,$address]+isset}" == "isset" ]]; then
+ 		local code=${cache[$module,$address]}
+ 	else
+ 		local code=$(${CROSS_COMPILE}addr2line -i -e "$objfile" "$address" 2>/dev/null)
+-		cache[$module,$address]=$code
++		if [[ $aarray_support == true ]]; then
++			cache[$module,$address]=$code
++		fi
+ 	fi
+ 
+ 	# addr2line doesn't return a proper error code if it fails, so
+-- 
+2.43.0
+
 
 
 
