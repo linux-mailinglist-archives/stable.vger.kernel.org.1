@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-22772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C647E85DDCB
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:12:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C771185DE75
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:18:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 819F3282AB1
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:12:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6978E1F24550
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:18:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A91757F47D;
-	Wed, 21 Feb 2024 14:07:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07F1778B60;
+	Wed, 21 Feb 2024 14:18:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ktxoQXhS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a5EEZdq8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674F94C62;
-	Wed, 21 Feb 2024 14:07:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93C369D29;
+	Wed, 21 Feb 2024 14:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524462; cv=none; b=N75sEyC1kwEA6WxhKVzW/uvPQ4JFOsZVs7IMdM+x0Kriw7j4e1wJU2FiU1NwjXM/QNl2RUfqfz6fReVSUh/SM79qHKmL/6mwbNPFXYpY4P/RftEhstKZaD+NUHjVQaRw8QFx5KXNi11JfQTY6UKemgkW4bA6gxSRGFEQkGphGF4=
+	t=1708525111; cv=none; b=lk8lWO5UqBztsh1ifvK6VLurK5ewR9rSWJZxOtQFZfhBcw/NO/1/RduplEZ2nQBaz8Y3Y7Mq6Ndf8yQDERPas427ZBrtzElEiZz4ezZ1q68tJF+kVpDTCpk8Wug4JogiiOBxdbTChfSjmk/SJer5AKfExa/FiZlkIGj91zvxXbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524462; c=relaxed/simple;
-	bh=j/8FlocKoQiVjsaFXrlN5kg0nlNdiZvLVEOP+YuYLXw=;
+	s=arc-20240116; t=1708525111; c=relaxed/simple;
+	bh=Jy8/nesuAKgLH9kMo03NU9GIpWIQUSkqKapEYYg7Ccw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gMByWIfpW0xkX0Z/hqSjfExs3+PsvBf4ah5uoDujPkEXn1FDpzV+YZh3PQPdK4Tis72g6ocpVr+LQLIQkkAex18K+oraY0wu3NmAJqwiXMlekpZ3/yonIFiQ9R+jvPEM4Z6eQo74KI4SqnQP7k4/QztUJEjQkrrvdg3rSzR7MCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ktxoQXhS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3A05C43394;
-	Wed, 21 Feb 2024 14:07:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sN7TVKf1vBHr8zaWt9jRzfXlc4F0ONAXPNJCUYZAdK54cIGWKkqoH3k1AbfzuxsQ3I68nPkiMYyBc5BN0S9QohYNDBA1hAkxzWYi3tWSPebKnCKCZ53Ejy8y3U1L5iX4VPMfuQrXZcBI8iaBTEdxIgTMhKEZR1KiF0PXAJftEb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a5EEZdq8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E54ADC433F1;
+	Wed, 21 Feb 2024 14:18:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524462;
-	bh=j/8FlocKoQiVjsaFXrlN5kg0nlNdiZvLVEOP+YuYLXw=;
+	s=korg; t=1708525111;
+	bh=Jy8/nesuAKgLH9kMo03NU9GIpWIQUSkqKapEYYg7Ccw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ktxoQXhSr9hDcy2k/8M64Jbd1ch09ypEmEbV9RAqy9kIbW/c9nULdtmkF5XCVHnWI
-	 +RV13scqtjgV69SrOq43vSdMXL3MAI1n0tCrV3I8c0GG93hvByJZRMA22ZVsqY5ht/
-	 lijAURHM++5QXI3r7H0qQ1jPZ3tzxSx0qDoQFmbM=
+	b=a5EEZdq824wPQl5ZuHL0bzsqwHJ+bcOoMBab4y4BkOXl0HOzu0XtDjyz2sEk2gB+o
+	 TToHidL9y7VELXtF1oT8bJfvgwVo9PkLnnVZmBulfxK8fn/w+VC7V3xjdjV29mH2+a
+	 9lJnqYKHwlTqQlcrnuBqNj+9368uLwe9g1D47XDs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Artur Paszkiewicz <artur.paszkiewicz@intel.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 223/379] scsi: isci: Fix an error code problem in isci_io_request_build()
-Date: Wed, 21 Feb 2024 14:06:42 +0100
-Message-ID: <20240221130001.496718024@linuxfoundation.org>
+Subject: [PATCH 5.4 062/267] powerpc: Fix build error due to is_valid_bugaddr()
+Date: Wed, 21 Feb 2024 14:06:43 +0100
+Message-ID: <20240221125941.949843946@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +59,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 658365c6b0857e6a306436e315a8633937e3af42 ]
+[ Upstream commit f8d3555355653848082c351fa90775214fb8a4fa ]
 
-Clang static complains that Value stored to 'status' is never read. Return
-'status' rather than 'SCI_SUCCESS'.
+With CONFIG_GENERIC_BUG=n the build fails with:
 
-Fixes: f1f52e75939b ("isci: uplevel request infrastructure")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Link: https://lore.kernel.org/r/20240112041926.3924315-1-suhui@nfschina.com
-Reviewed-by: Artur Paszkiewicz <artur.paszkiewicz@intel.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+  arch/powerpc/kernel/traps.c:1442:5: error: no previous prototype for ‘is_valid_bugaddr’ [-Werror=missing-prototypes]
+  1442 | int is_valid_bugaddr(unsigned long addr)
+       |     ^~~~~~~~~~~~~~~~
+
+The prototype is only defined, and the function is only needed, when
+CONFIG_GENERIC_BUG=y, so move the implementation under that.
+
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231130114433.3053544-2-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/isci/request.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/kernel/traps.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/scsi/isci/request.c b/drivers/scsi/isci/request.c
-index b6d68d871b6c..a4129e456efa 100644
---- a/drivers/scsi/isci/request.c
-+++ b/drivers/scsi/isci/request.c
-@@ -3398,7 +3398,7 @@ static enum sci_status isci_io_request_build(struct isci_host *ihost,
- 		return SCI_FAILURE;
- 	}
- 
--	return SCI_SUCCESS;
-+	return status;
+diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
+index 70b99246dec4..402a05f3a484 100644
+--- a/arch/powerpc/kernel/traps.c
++++ b/arch/powerpc/kernel/traps.c
+@@ -1424,10 +1424,12 @@ static int emulate_instruction(struct pt_regs *regs)
+ 	return -EINVAL;
  }
  
- static struct isci_request *isci_request_from_tag(struct isci_host *ihost, u16 tag)
++#ifdef CONFIG_GENERIC_BUG
+ int is_valid_bugaddr(unsigned long addr)
+ {
+ 	return is_kernel_addr(addr);
+ }
++#endif
+ 
+ #ifdef CONFIG_MATH_EMULATION
+ static int emulate_math(struct pt_regs *regs)
 -- 
 2.43.0
 
