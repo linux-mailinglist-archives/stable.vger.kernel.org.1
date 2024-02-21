@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-22096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17B0385DA4F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:30:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 457AB85DA83
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:32:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97FD21F240D3
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:30:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F100A281E5D
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:32:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5261580627;
-	Wed, 21 Feb 2024 13:26:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0FAA73161;
+	Wed, 21 Feb 2024 13:29:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cwTOFoEZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2dcRhzcc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F2E78061A;
-	Wed, 21 Feb 2024 13:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EBEE7B3EA;
+	Wed, 21 Feb 2024 13:29:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522010; cv=none; b=D9Zky5d5oeZXswMO3ZyXFgwy4+6RkCXxiePd2bP9rrqcU8EKwXESMjDUwe2Nlv1dKzI3es0oSwxDcCnjFTx/niG1Q7RKv50wz350FSKuvp1TEC4PHmkx8aN9unoS5Pw7+pcnT1NU3SELUViy4C/XCmy0lhbel+7ZiP/hE+Csx/o=
+	t=1708522143; cv=none; b=AY8zBTFE7e1+jFoW9TyfrRRZRdPF4jmoPr/fPibKQfB0DTaqOnwCC00Ja2gNioXgA3liDhbFS3KP/ix2uhhsAPVV1y60kQTQLYkwldQx3oJrZ3rdHiTTRLxxleGtpScu2RnrPL0RwWv88nKeym6IHgQOPxxsGlYu6siL/KsFMc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522010; c=relaxed/simple;
-	bh=QD7puo81+envmGbBrcX2+QtoFClEDXLSL/0Agyafvi4=;
+	s=arc-20240116; t=1708522143; c=relaxed/simple;
+	bh=rdIS2Eo574y+jEJlYZduh+DFMWE/QBUFMqJkLLYMy68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S/6TXneoKPdWDbbcMF03k3WfFMsbXUTENOqBSu65Fxcd/L5/IMjMfGzvH6/Oh1f7l2diNJB2zfVPwk/W39thDiK+8cqJ8R+I043o3rzLdewHVi0/0t1pOn0Y1KNj9K4z//YiYWid65KWscN4/mSZ3bthxTo1CBr3Dtvd0QZ5Ons=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cwTOFoEZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B4E1C43399;
-	Wed, 21 Feb 2024 13:26:48 +0000 (UTC)
+	 MIME-Version; b=bogzQF244Yur5T5OUQzAkWuSlUabMraLMfYBSXgPtfBYf8v9OYflc3C1nT3609TswQEOshYuEKILPvSyB0CEIWuTB/nefV1nMaiHJNg6X9/nq0OlTEv6QdLDpVBF+yPrBvTM4YF1PrZzJ7U9MAkll0rGghz7RxlGe26m3Il9Y/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2dcRhzcc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5B05C433C7;
+	Wed, 21 Feb 2024 13:29:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522009;
-	bh=QD7puo81+envmGbBrcX2+QtoFClEDXLSL/0Agyafvi4=;
+	s=korg; t=1708522143;
+	bh=rdIS2Eo574y+jEJlYZduh+DFMWE/QBUFMqJkLLYMy68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cwTOFoEZ7LvBolTFV7qKVrgM/SeEYBYbfDiSB3faG9kWLcrnr028soFkxw3pTh/Vu
-	 LKirqtVD3P15OcpYX3kQhWPT3HHcRAVSVnNfkaFSVjQjhjeoBrPzk4E6xD3kTWnyLy
-	 eAzhJ6PVvA/MbC8PJO+hpL4kB8wmQQKoX9uLwjeA=
+	b=2dcRhzccz4P8wwClmAP3j70BHP5hKLmRO4CLX8A6dcWrVhSJOZDUGCfKIG78zuYB2
+	 Pp6C1KnfG8AnGdLLYBmyXG17UkkJPIB5OCc+A+tx3/zHFVV8hNt/c1oUFhGaiU8YNZ
+	 gRPl9T+tgnxY1l4dfspSuUxAJt2KQis/D8yyzcV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Tom Zanussi <tom.zanussi@linux.intel.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 052/476] tracing: Ensure visibility when inserting an element into tracing_map
-Date: Wed, 21 Feb 2024 14:01:43 +0100
-Message-ID: <20240221130009.848339445@linuxfoundation.org>
+Subject: [PATCH 5.15 053/476] afs: Hide silly-rename files from userspace
+Date: Wed, 21 Feb 2024 14:01:44 +0100
+Message-ID: <20240221130009.884956991@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
 References: <20240221130007.738356493@linuxfoundation.org>
@@ -67,127 +67,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Petr Pavlu <petr.pavlu@suse.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 2b44760609e9eaafc9d234a6883d042fc21132a7 ]
+[ Upstream commit 57e9d49c54528c49b8bffe6d99d782ea051ea534 ]
 
-Running the following two commands in parallel on a multi-processor
-AArch64 machine can sporadically produce an unexpected warning about
-duplicate histogram entries:
+There appears to be a race between silly-rename files being created/removed
+and various userspace tools iterating over the contents of a directory,
+leading to such errors as:
 
- $ while true; do
-     echo hist:key=id.syscall:val=hitcount > \
-       /sys/kernel/debug/tracing/events/raw_syscalls/sys_enter/trigger
-     cat /sys/kernel/debug/tracing/events/raw_syscalls/sys_enter/hist
-     sleep 0.001
-   done
- $ stress-ng --sysbadaddr $(nproc)
+	find: './kernel/.tmp_cpio_dir/include/dt-bindings/reset/.__afs2080': No such file or directory
+	tar: ./include/linux/greybus/.__afs3C95: File removed before we read it
 
-The warning looks as follows:
+when building a kernel.
 
-[ 2911.172474] ------------[ cut here ]------------
-[ 2911.173111] Duplicates detected: 1
-[ 2911.173574] WARNING: CPU: 2 PID: 12247 at kernel/trace/tracing_map.c:983 tracing_map_sort_entries+0x3e0/0x408
-[ 2911.174702] Modules linked in: iscsi_ibft(E) iscsi_boot_sysfs(E) rfkill(E) af_packet(E) nls_iso8859_1(E) nls_cp437(E) vfat(E) fat(E) ena(E) tiny_power_button(E) qemu_fw_cfg(E) button(E) fuse(E) efi_pstore(E) ip_tables(E) x_tables(E) xfs(E) libcrc32c(E) aes_ce_blk(E) aes_ce_cipher(E) crct10dif_ce(E) polyval_ce(E) polyval_generic(E) ghash_ce(E) gf128mul(E) sm4_ce_gcm(E) sm4_ce_ccm(E) sm4_ce(E) sm4_ce_cipher(E) sm4(E) sm3_ce(E) sm3(E) sha3_ce(E) sha512_ce(E) sha512_arm64(E) sha2_ce(E) sha256_arm64(E) nvme(E) sha1_ce(E) nvme_core(E) nvme_auth(E) t10_pi(E) sg(E) scsi_mod(E) scsi_common(E) efivarfs(E)
-[ 2911.174738] Unloaded tainted modules: cppc_cpufreq(E):1
-[ 2911.180985] CPU: 2 PID: 12247 Comm: cat Kdump: loaded Tainted: G            E      6.7.0-default #2 1b58bbb22c97e4399dc09f92d309344f69c44a01
-[ 2911.182398] Hardware name: Amazon EC2 c7g.8xlarge/, BIOS 1.0 11/1/2018
-[ 2911.183208] pstate: 61400005 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-[ 2911.184038] pc : tracing_map_sort_entries+0x3e0/0x408
-[ 2911.184667] lr : tracing_map_sort_entries+0x3e0/0x408
-[ 2911.185310] sp : ffff8000a1513900
-[ 2911.185750] x29: ffff8000a1513900 x28: ffff0003f272fe80 x27: 0000000000000001
-[ 2911.186600] x26: ffff0003f272fe80 x25: 0000000000000030 x24: 0000000000000008
-[ 2911.187458] x23: ffff0003c5788000 x22: ffff0003c16710c8 x21: ffff80008017f180
-[ 2911.188310] x20: ffff80008017f000 x19: ffff80008017f180 x18: ffffffffffffffff
-[ 2911.189160] x17: 0000000000000000 x16: 0000000000000000 x15: ffff8000a15134b8
-[ 2911.190015] x14: 0000000000000000 x13: 205d373432323154 x12: 5b5d313131333731
-[ 2911.190844] x11: 00000000fffeffff x10: 00000000fffeffff x9 : ffffd1b78274a13c
-[ 2911.191716] x8 : 000000000017ffe8 x7 : c0000000fffeffff x6 : 000000000057ffa8
-[ 2911.192554] x5 : ffff0012f6c24ec0 x4 : 0000000000000000 x3 : ffff2e5b72b5d000
-[ 2911.193404] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0003ff254480
-[ 2911.194259] Call trace:
-[ 2911.194626]  tracing_map_sort_entries+0x3e0/0x408
-[ 2911.195220]  hist_show+0x124/0x800
-[ 2911.195692]  seq_read_iter+0x1d4/0x4e8
-[ 2911.196193]  seq_read+0xe8/0x138
-[ 2911.196638]  vfs_read+0xc8/0x300
-[ 2911.197078]  ksys_read+0x70/0x108
-[ 2911.197534]  __arm64_sys_read+0x24/0x38
-[ 2911.198046]  invoke_syscall+0x78/0x108
-[ 2911.198553]  el0_svc_common.constprop.0+0xd0/0xf8
-[ 2911.199157]  do_el0_svc+0x28/0x40
-[ 2911.199613]  el0_svc+0x40/0x178
-[ 2911.200048]  el0t_64_sync_handler+0x13c/0x158
-[ 2911.200621]  el0t_64_sync+0x1a8/0x1b0
-[ 2911.201115] ---[ end trace 0000000000000000 ]---
+Fix afs_readdir() so that it doesn't return .__afsXXXX silly-rename files
+to userspace.  This doesn't stop them being looked up directly by name as
+we need to be able to look them up from within the kernel as part of the
+silly-rename algorithm.
 
-The problem appears to be caused by CPU reordering of writes issued from
-__tracing_map_insert().
-
-The check for the presence of an element with a given key in this
-function is:
-
- val = READ_ONCE(entry->val);
- if (val && keys_match(key, val->key, map->key_size)) ...
-
-The write of a new entry is:
-
- elt = get_free_elt(map);
- memcpy(elt->key, key, map->key_size);
- entry->val = elt;
-
-The "memcpy(elt->key, key, map->key_size);" and "entry->val = elt;"
-stores may become visible in the reversed order on another CPU. This
-second CPU might then incorrectly determine that a new key doesn't match
-an already present val->key and subsequently insert a new element,
-resulting in a duplicate.
-
-Fix the problem by adding a write barrier between
-"memcpy(elt->key, key, map->key_size);" and "entry->val = elt;", and for
-good measure, also use WRITE_ONCE(entry->val, elt) for publishing the
-element. The sequence pairs with the mentioned "READ_ONCE(entry->val);"
-and the "val->key" check which has an address dependency.
-
-The barrier is placed on a path executed when adding an element for
-a new key. Subsequent updates targeting the same key remain unaffected.
-
->From the user's perspective, the issue was introduced by commit
-c193707dde77 ("tracing: Remove code which merges duplicates"), which
-followed commit cbf4100efb8f ("tracing: Add support to detect and avoid
-duplicates"). The previous code operated differently; it inherently
-expected potential races which result in duplicates but merged them
-later when they occurred.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20240122150928.27725-1-petr.pavlu@suse.com
-
-Fixes: c193707dde77 ("tracing: Remove code which merges duplicates")
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Acked-by: Tom Zanussi <tom.zanussi@linux.intel.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 79ddbfa500b3 ("afs: Implement sillyrename for unlink and rename")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/tracing_map.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ fs/afs/dir.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/kernel/trace/tracing_map.c b/kernel/trace/tracing_map.c
-index 9628b5571846..3edf5e515813 100644
---- a/kernel/trace/tracing_map.c
-+++ b/kernel/trace/tracing_map.c
-@@ -574,7 +574,12 @@ __tracing_map_insert(struct tracing_map *map, void *key, bool lookup_only)
- 				}
+diff --git a/fs/afs/dir.c b/fs/afs/dir.c
+index cec18f9f8bd7..106426de5027 100644
+--- a/fs/afs/dir.c
++++ b/fs/afs/dir.c
+@@ -492,6 +492,14 @@ static int afs_dir_iterate_block(struct afs_vnode *dvnode,
+ 			continue;
+ 		}
  
- 				memcpy(elt->key, key, map->key_size);
--				entry->val = elt;
-+				/*
-+				 * Ensure the initialization is visible and
-+				 * publish the elt.
-+				 */
-+				smp_wmb();
-+				WRITE_ONCE(entry->val, elt);
- 				atomic64_inc(&map->hits);
- 
- 				return entry->val;
++		/* Don't expose silly rename entries to userspace. */
++		if (nlen > 6 &&
++		    dire->u.name[0] == '.' &&
++		    ctx->actor != afs_lookup_filldir &&
++		    ctx->actor != afs_lookup_one_filldir &&
++		    memcmp(dire->u.name, ".__afs", 6) == 0)
++			continue;
++
+ 		/* found the next entry */
+ 		if (!dir_emit(ctx, dire->u.name, nlen,
+ 			      ntohl(dire->u.vnode),
 -- 
 2.43.0
 
