@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-21877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 141CE85D8F2
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:12:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B590E85DD5D
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:04:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC9551F22FBB
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:12:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 22FAAB2414F
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:04:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 202F269D28;
-	Wed, 21 Feb 2024 13:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A892769317;
+	Wed, 21 Feb 2024 14:04:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r8aNwt0e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vzhRp/+l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D536E3EA71;
-	Wed, 21 Feb 2024 13:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6577F78B4F;
+	Wed, 21 Feb 2024 14:04:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521163; cv=none; b=LuH5uj2jNDkHZYJgtR6GEwCMRdVjeEIW6gyXGwIhR6EHYx3bqWLSkRzM0Nw96GCC6qKRUnN0QD7MnaqfTQTunkhU6+KEo9R9yDnpVNyR/SYhGmd0Lpv5VAul2A5kscDKWHbtlPHgJrcG/S4VO7jJijtelygOQ3c7VGCi2eqFvrY=
+	t=1708524244; cv=none; b=qRLrdxCGOe1dEviiDbzEN3n90kGkYzDKfqpHFHYp0wFjxAczg4klDIiJKNzCdtzx4nAux1ZodcIbO4DWLxuXPZfp6w1Exn23tgjesYBLMnBWmYeZAvVsG0vW2i1x6bL6kAFhGC+jAZpRZlnk1TW54q30rToZVPvaLxQhyfra7uE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521163; c=relaxed/simple;
-	bh=PWgArqj1XIm6XxVL2lbqqzE8u+kCKX30D1A34pE7eaI=;
+	s=arc-20240116; t=1708524244; c=relaxed/simple;
+	bh=H7tI6dB1pmJttOr7cQxh87sQeXG8miLGO7xoLJJrCn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RSk6ciDLXUIwj4C76ZeofevtbJoYfWkcJm1/zTr+XzjEbdoq4qmbds7ozx6HdUbmWD+a7CvjQrBBGvxfwSNsMjLu9jdjvs3ZEhwoWgH9E2msHhSUCS5nCo3/BEqmTW09IElTALNQSS+zFwe5Wzy9d7w+mxZduIdAyP3HUwDBHDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r8aNwt0e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58431C43390;
-	Wed, 21 Feb 2024 13:12:43 +0000 (UTC)
+	 MIME-Version; b=lzFG7XmVsBFFIOh5M7iwPQmYp7a34hf7cVrpPE5NGIeIfyq538Iri1ueptBXnxTXLVOf1aQ1eDmapBlQ38RnwM1rN9NvTwHrMsFWNYFpTvPWVatiPY19HWZ+pFRxFNvX6FGQSd7LjK0aFqa1CskcjX9svAN2sa9wTqAxXkSuU9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vzhRp/+l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C68DBC433C7;
+	Wed, 21 Feb 2024 14:04:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521163;
-	bh=PWgArqj1XIm6XxVL2lbqqzE8u+kCKX30D1A34pE7eaI=;
+	s=korg; t=1708524244;
+	bh=H7tI6dB1pmJttOr7cQxh87sQeXG8miLGO7xoLJJrCn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r8aNwt0ey4jp4p22zG/7GgqMp287baHrpqOBVwIgAyod/7wQ1CmocUHEP6I4PcKlk
-	 B3GlrUIfGzTffZgCfJLTmyJ4tDf10seXPy4CqjKo8HqJxR98mWsw3cC0ortrrbOuOA
-	 qpddTbnmJwS39SmejMztHU4o6lVn/6/i+JzSLBqc=
+	b=vzhRp/+l2LN9XPO9wOLFIC7b+CB+5L7PCnP+sTd1vNK1BFj8mWFvN01IlQKvl6DWb
+	 ockaZ2uGaJtN/CXI91dhoYcYvHGajT7D1MAY60PiX+PDB/hlcsJnWJ3js94iqtvF/m
+	 b+jYd1zOjLlP/3AxrUkb9BZsQoaXPt4SO7/iopbw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 4.19 038/202] btrfs: defrag: reject unknown flags of btrfs_ioctl_defrag_range_args
+	Fabio Estevam <festevam@denx.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 160/379] ARM: dts: imx25/27: Pass timing0
 Date: Wed, 21 Feb 2024 14:05:39 +0100
-Message-ID: <20240221125933.029599373@linuxfoundation.org>
+Message-ID: <20240221125959.651846105@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Fabio Estevam <festevam@denx.de>
 
-commit 173431b274a9a54fc10b273b46e67f46bcf62d2e upstream.
+[ Upstream commit 11ab7ad6f795ae23c398a4a5c56505d3dab27c4c ]
 
-Add extra sanity check for btrfs_ioctl_defrag_range_args::flags.
+Per display-timings.yaml, the 'timing' pattern should be used to
+describe the display timings.
 
-This is not really to enhance fuzzing tests, but as a preparation for
-future expansion on btrfs_ioctl_defrag_range_args.
+Change it accordingly to fix the following dt-schema warning:
 
-In the future we're going to add new members, allowing more fine tuning
-for btrfs defrag.  Without the -ENONOTSUPP error, there would be no way
-to detect if the kernel supports those new defrag features.
+imx27-apf27dev.dtb: display-timings: '800x480' does not match any of the regexes: '^timing', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/display/panel/display-timings.yaml#
 
-CC: stable@vger.kernel.org # 4.14+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/ioctl.c           |    4 ++++
- include/uapi/linux/btrfs.h |    3 +++
- 2 files changed, 7 insertions(+)
+ arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-cmo-qvga.dts | 2 +-
+ arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-svga.dts | 2 +-
+ arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-vga.dts  | 2 +-
+ arch/arm/boot/dts/imx25-pdk.dts                                 | 2 +-
+ arch/arm/boot/dts/imx27-apf27dev.dts                            | 2 +-
+ arch/arm/boot/dts/imx27-eukrea-mbimxsd27-baseboard.dts          | 2 +-
+ arch/arm/boot/dts/imx27-phytec-phycard-s-rdk.dts                | 2 +-
+ arch/arm/boot/dts/imx27-phytec-phycore-rdk.dts                  | 2 +-
+ 8 files changed, 8 insertions(+), 8 deletions(-)
 
---- a/fs/btrfs/ioctl.c
-+++ b/fs/btrfs/ioctl.c
-@@ -3037,6 +3037,10 @@ static int btrfs_ioctl_defrag(struct fil
- 				kfree(range);
- 				goto out;
- 			}
-+			if (range->flags & ~BTRFS_DEFRAG_RANGE_FLAGS_SUPP) {
-+				ret = -EOPNOTSUPP;
-+				goto out;
-+			}
- 			/* compression requires us to start the IO */
- 			if ((range->flags & BTRFS_DEFRAG_RANGE_COMPRESS)) {
- 				range->flags |= BTRFS_DEFRAG_RANGE_START_IO;
---- a/include/uapi/linux/btrfs.h
-+++ b/include/uapi/linux/btrfs.h
-@@ -538,6 +538,9 @@ struct btrfs_ioctl_clone_range_args {
-  */
- #define BTRFS_DEFRAG_RANGE_COMPRESS 1
- #define BTRFS_DEFRAG_RANGE_START_IO 2
-+#define BTRFS_DEFRAG_RANGE_FLAGS_SUPP	(BTRFS_DEFRAG_RANGE_COMPRESS |		\
-+					 BTRFS_DEFRAG_RANGE_START_IO)
-+
- struct btrfs_ioctl_defrag_range_args {
- 	/* start of the defrag operation */
- 	__u64 start;
+diff --git a/arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-cmo-qvga.dts b/arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-cmo-qvga.dts
+index 7d4301b22b90..1ed3fb7b9ce6 100644
+--- a/arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-cmo-qvga.dts
++++ b/arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-cmo-qvga.dts
+@@ -16,7 +16,7 @@
+ 		bus-width = <18>;
+ 		display-timings {
+ 			native-mode = <&qvga_timings>;
+-			qvga_timings: 320x240 {
++			qvga_timings: timing0 {
+ 				clock-frequency = <6500000>;
+ 				hactive = <320>;
+ 				vactive = <240>;
+diff --git a/arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-svga.dts b/arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-svga.dts
+index 80a7f96de4c6..64b2ffac463b 100644
+--- a/arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-svga.dts
++++ b/arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-svga.dts
+@@ -16,7 +16,7 @@
+ 		bus-width = <18>;
+ 		display-timings {
+ 			native-mode = <&dvi_svga_timings>;
+-			dvi_svga_timings: 800x600 {
++			dvi_svga_timings: timing0 {
+ 				clock-frequency = <40000000>;
+ 				hactive = <800>;
+ 				vactive = <600>;
+diff --git a/arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-vga.dts b/arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-vga.dts
+index 24027a1fb46d..fb074bfdaa8d 100644
+--- a/arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-vga.dts
++++ b/arch/arm/boot/dts/imx25-eukrea-mbimxsd25-baseboard-dvi-vga.dts
+@@ -16,7 +16,7 @@
+ 		bus-width = <18>;
+ 		display-timings {
+ 			native-mode = <&dvi_vga_timings>;
+-			dvi_vga_timings: 640x480 {
++			dvi_vga_timings: timing0 {
+ 				clock-frequency = <31250000>;
+ 				hactive = <640>;
+ 				vactive = <480>;
+diff --git a/arch/arm/boot/dts/imx25-pdk.dts b/arch/arm/boot/dts/imx25-pdk.dts
+index fb66884d8a2f..59b40d13a640 100644
+--- a/arch/arm/boot/dts/imx25-pdk.dts
++++ b/arch/arm/boot/dts/imx25-pdk.dts
+@@ -78,7 +78,7 @@
+ 		bus-width = <18>;
+ 		display-timings {
+ 			native-mode = <&wvga_timings>;
+-			wvga_timings: 640x480 {
++			wvga_timings: timing0 {
+ 				hactive = <640>;
+ 				vactive = <480>;
+ 				hback-porch = <45>;
+diff --git a/arch/arm/boot/dts/imx27-apf27dev.dts b/arch/arm/boot/dts/imx27-apf27dev.dts
+index 6f1e8ce9e76e..68fcb5ce9a9e 100644
+--- a/arch/arm/boot/dts/imx27-apf27dev.dts
++++ b/arch/arm/boot/dts/imx27-apf27dev.dts
+@@ -16,7 +16,7 @@
+ 		fsl,pcr = <0xfae80083>;	/* non-standard but required */
+ 		display-timings {
+ 			native-mode = <&timing0>;
+-			timing0: 800x480 {
++			timing0: timing0 {
+ 				clock-frequency = <33000033>;
+ 				hactive = <800>;
+ 				vactive = <480>;
+diff --git a/arch/arm/boot/dts/imx27-eukrea-mbimxsd27-baseboard.dts b/arch/arm/boot/dts/imx27-eukrea-mbimxsd27-baseboard.dts
+index 9c3ec82ec7e5..50fa0bd4c8a1 100644
+--- a/arch/arm/boot/dts/imx27-eukrea-mbimxsd27-baseboard.dts
++++ b/arch/arm/boot/dts/imx27-eukrea-mbimxsd27-baseboard.dts
+@@ -16,7 +16,7 @@
+ 
+ 		display-timings {
+ 			native-mode = <&timing0>;
+-			timing0: 320x240 {
++			timing0: timing0 {
+ 				clock-frequency = <6500000>;
+ 				hactive = <320>;
+ 				vactive = <240>;
+diff --git a/arch/arm/boot/dts/imx27-phytec-phycard-s-rdk.dts b/arch/arm/boot/dts/imx27-phytec-phycard-s-rdk.dts
+index 188639738dc3..7f36af150a25 100644
+--- a/arch/arm/boot/dts/imx27-phytec-phycard-s-rdk.dts
++++ b/arch/arm/boot/dts/imx27-phytec-phycard-s-rdk.dts
+@@ -19,7 +19,7 @@
+ 		fsl,pcr = <0xf0c88080>;	/* non-standard but required */
+ 		display-timings {
+ 			native-mode = <&timing0>;
+-			timing0: 640x480 {
++			timing0: timing0 {
+ 				hactive = <640>;
+ 				vactive = <480>;
+ 				hback-porch = <112>;
+diff --git a/arch/arm/boot/dts/imx27-phytec-phycore-rdk.dts b/arch/arm/boot/dts/imx27-phytec-phycore-rdk.dts
+index 344e77790152..d133b9f08b3a 100644
+--- a/arch/arm/boot/dts/imx27-phytec-phycore-rdk.dts
++++ b/arch/arm/boot/dts/imx27-phytec-phycore-rdk.dts
+@@ -19,7 +19,7 @@
+ 
+ 		display-timings {
+ 			native-mode = <&timing0>;
+-			timing0: 240x320 {
++			timing0: timing0 {
+ 				clock-frequency = <5500000>;
+ 				hactive = <240>;
+ 				vactive = <320>;
+-- 
+2.43.0
+
 
 
 
