@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-22786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E6CD85DDD8
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:12:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 061DB85D9B2
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:21:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD807283C88
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:12:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85829B253E0
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:21:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7572F7BB1B;
-	Wed, 21 Feb 2024 14:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F0BC79DA2;
+	Wed, 21 Feb 2024 13:21:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jm9mLf0e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ehmx0pe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3103478B4B;
-	Wed, 21 Feb 2024 14:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C80C763F6;
+	Wed, 21 Feb 2024 13:21:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524507; cv=none; b=XmYhi4tujHES6sgnCNOvLsrDA0HFMXs7Wfuh1L0/zQI4EbB7cGmGHHqiGyt+TfNvGz77kLbqjDSGh/nwAYXkmkZ//TfZ+9f74Zgo7lmJV1rB0ytsHmI6P8PtxGUD7ePCoPpZQ1xnYrNc/qSv6NR+o5zrd3PxwefRJtpyNO78AEQ=
+	t=1708521663; cv=none; b=cun+KaxVwnRgr8t6rrPxLE/MPVXbzwpWmdNHmR07VY/vCLgDt9wsiWEJh2JY1fWntNFR85D17sxWOvpEPA77ydfvtMNwMCCv5SNG8HN3KCMOhiw4yZtJkRqrvL4TnHJlf3H7epXhVBDb1HWSSSmMsi14pu47wxh4u96v3QEw41E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524507; c=relaxed/simple;
-	bh=7LWXAh/TF6gz8DT7VWGAVxpjsEI2nP8EHWfFuViOJxo=;
+	s=arc-20240116; t=1708521663; c=relaxed/simple;
+	bh=yB2H6YZnA5kl+JIL283Ui2F7W/CGbJpc4u95v+fu49Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DxPeFau8Ew+qXr7wCggff4rs7LYMntpj+TajjsMWLN8m8b4bJJXqE34QZKKV4E6hXhc5s6Bq67J5fqDEj6qKBk1iTyyxiSCYrStRKKbLtNNUKK7h7M/EsX45Lh9JcYSdNmT3n/x7Y0a5va6ia00BvzXVlx7APLaVhIdulcjrKvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jm9mLf0e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B343C433F1;
-	Wed, 21 Feb 2024 14:08:26 +0000 (UTC)
+	 MIME-Version; b=WFoBUit6ujH05QLSAka4xrfjV7/I4B6dBPL+LtvUY/1UXk8WIWKW18E97MozTU/2rJKtleOydanbvxI7OqrEPUS0HdjBWcgMsmz4A0d4ii9sgsvWt4pbi9vgg/V4sV/ZtA7zAsg/m+sqq9YXYl6GapDUFzyyIR+BL1Oz27be4Hc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ehmx0pe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C93AAC433C7;
+	Wed, 21 Feb 2024 13:21:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524507;
-	bh=7LWXAh/TF6gz8DT7VWGAVxpjsEI2nP8EHWfFuViOJxo=;
+	s=korg; t=1708521663;
+	bh=yB2H6YZnA5kl+JIL283Ui2F7W/CGbJpc4u95v+fu49Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jm9mLf0eoYp6NsQDsuhXAnTvWhP4NBSc3CtFqJF1zFfrMG/FSSA3mYHF5VAfKaer6
-	 JXPMAVlM4aqR6y7j60iCD0Zf9mGwDvcH1Shhi8kunP/DPBJlWT9eMZO4/x78m0++wW
-	 D+EMoc2+RzcilDEsEKNfNbf/X2xi/BEStM/yqGs8=
+	b=1ehmx0peYoJxqKs2CF5EB+F9QU7jnQ9/bmUe3agyuHF3mhuYNi2GL0OSbILtiJYdO
+	 NLP8Z++KoEVtDO2HHekxkdhp0EtBqZNd0Icjtve1aJhSZOThF6jITsoeAziEInKHbO
+	 Ae2+uXpTp1I8vXhcx3RSZyNgUqS469lEREcfoSQ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 266/379] netfilter: nft_compat: restrict match/target protocol to u16
-Date: Wed, 21 Feb 2024 14:07:25 +0100
-Message-ID: <20240221130002.780859993@linuxfoundation.org>
+	Paolo Abeni <pabeni@redhat.com>,
+	Zhengchao Shao <shaozhengchao@huawei.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 4.19 145/202] bonding: remove print in bond_verify_device_path
+Date: Wed, 21 Feb 2024 14:07:26 +0100
+Message-ID: <20240221125936.393828140@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Zhengchao Shao <shaozhengchao@huawei.com>
 
-[ Upstream commit d694b754894c93fb4d71a7f3699439dec111decc ]
+commit 486058f42a4728053ae69ebbf78e9731d8ce6f8b upstream.
 
-xt_check_{match,target} expects u16, but NFTA_RULE_COMPAT_PROTO is u32.
+As suggested by Paolo in link[1], if the memory allocation fails, the mm
+layer will emit a lot warning comprising the backtrace, so remove the
+print.
 
-NLA_POLICY_MAX(NLA_BE32, 65535) cannot be used because .max in
-nla_policy is s16, see 3e48be05f3c7 ("netlink: add attribute range
-validation to policy").
+[1] https://lore.kernel.org/all/20231118081653.1481260-1-shaozhengchao@huawei.com/
 
-Fixes: 0ca743a55991 ("netfilter: nf_tables: add compatibility layer for x_tables")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_compat.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/bonding/bond_main.c |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/net/netfilter/nft_compat.c b/net/netfilter/nft_compat.c
-index 025f5189f2ce..77c7362a7db8 100644
---- a/net/netfilter/nft_compat.c
-+++ b/net/netfilter/nft_compat.c
-@@ -192,6 +192,7 @@ static const struct nla_policy nft_rule_compat_policy[NFTA_RULE_COMPAT_MAX + 1]
- static int nft_parse_compat(const struct nlattr *attr, u16 *proto, bool *inv)
- {
- 	struct nlattr *tb[NFTA_RULE_COMPAT_MAX+1];
-+	u32 l4proto;
- 	u32 flags;
- 	int err;
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -2460,11 +2460,8 @@ struct bond_vlan_tag *bond_verify_device
  
-@@ -210,7 +211,12 @@ static int nft_parse_compat(const struct nlattr *attr, u16 *proto, bool *inv)
- 	if (flags & NFT_RULE_COMPAT_F_INV)
- 		*inv = true;
- 
--	*proto = ntohl(nla_get_be32(tb[NFTA_RULE_COMPAT_PROTO]));
-+	l4proto = ntohl(nla_get_be32(tb[NFTA_RULE_COMPAT_PROTO]));
-+	if (l4proto > U16_MAX)
-+		return -EINVAL;
-+
-+	*proto = l4proto;
-+
- 	return 0;
- }
- 
--- 
-2.43.0
-
+ 	if (start_dev == end_dev) {
+ 		tags = kcalloc(level + 1, sizeof(*tags), GFP_ATOMIC);
+-		if (!tags) {
+-			net_err_ratelimited("%s: %s: Failed to allocate tags\n",
+-					    __func__, start_dev->name);
++		if (!tags)
+ 			return ERR_PTR(-ENOMEM);
+-		}
+ 		tags[level].vlan_proto = VLAN_N_VID;
+ 		return tags;
+ 	}
 
 
 
