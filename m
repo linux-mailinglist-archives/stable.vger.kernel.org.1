@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-23020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B158485DEC5
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:21:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2369685D99E
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:21:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E15061C23C11
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:21:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0206B249BE
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:21:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B2D676905;
-	Wed, 21 Feb 2024 14:21:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 737407B3F2;
+	Wed, 21 Feb 2024 13:20:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LK8U5kRn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZRibocJ9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26EE94C62;
-	Wed, 21 Feb 2024 14:21:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 315F477636;
+	Wed, 21 Feb 2024 13:20:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525316; cv=none; b=SS0+wzwlzHsEwQGvC8aOVyxEakLTmE32gq+DpJXWsBRbo6czMSnzbNl0cYmXfUW4gPnwznJ4X7xq19GBNLz0t/zyt6UgosbqgyBr3Xb1E9qzGEh4gQRoFCIM0r19JQTFtt953g/USH0ov50ic+2jBWwRF+ixDPmkMSs71pIjR4o=
+	t=1708521613; cv=none; b=Et6ACoJfdqvmPAEoMNkvAn+bXWatNIWbFXobG3CMaLTrJPsUYQmBmHODRhmXEDSs16TiAV30ILF7xFpGJhupqmWUMTdPOKWiikdwOLhrJDesrAHtLgbS35SPqjBiT8eSA8Csg03yLEpBIqQV+vIImA4haPwfwr7kJho3yZ8UzMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525316; c=relaxed/simple;
-	bh=86EJbMckrzVkOLNTbiVB4iPSqrOHud7gPw2xlkbz7z0=;
+	s=arc-20240116; t=1708521613; c=relaxed/simple;
+	bh=r5wILG8Ea4Fki+m2s1Qn7cEPi9DlS8Jcj+ik5Or/Z8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fSYBEfbfSmNlBXXVYdQ3+kpDGZ2mntvC47exEE0VAUmiXqlK6u1Wnqq2LlSttWTsA00zEd9JGoggtPMCkGYGuZhgo8qLSBZjVAbne32sqIHwA/fAHkemPB8ZKbZBU5tDLqFhps5Uz2zEOGGx90vIAeWVa8cEi8R2lsbB9aF/rts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LK8U5kRn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3803BC433C7;
-	Wed, 21 Feb 2024 14:21:55 +0000 (UTC)
+	 MIME-Version; b=Md5BFzi8ytEgFwauIpEw96MpFqziepiw4Qh04ZtPyaAf7aoA8z+tPL7M01hIAJ/9gVb50mhEtOOn8rn0je8y82K2EJBdz8WukqkvzvhdQFohEFhR8gN04WxHQTWteA6ls+R0R80hL5k9VGEWSBA5hl3aHXylUWArn+xwpeUcSy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZRibocJ9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A80ACC43394;
+	Wed, 21 Feb 2024 13:20:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525315;
-	bh=86EJbMckrzVkOLNTbiVB4iPSqrOHud7gPw2xlkbz7z0=;
+	s=korg; t=1708521613;
+	bh=r5wILG8Ea4Fki+m2s1Qn7cEPi9DlS8Jcj+ik5Or/Z8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LK8U5kRngH77nILH2OImDkCtzhTsj7qvud7u0i0UFwRv3oS0wTvAoF+WLMw0BKkkA
-	 /ymROSPbOQMcoQ0aWj1ySWf4LVwGeP942Z1E4r/nS5iGp7VbPnZIiUTIDPd2yah4XH
-	 tnZhkEsaygrSoBbfeX6TBeHFMk9o6VYhodH63IRw=
+	b=ZRibocJ9EfwyMypCSAPGqkEHZjh1LpG3orgHl9+5J3EhcstpebFQFkc4Tblo/2gv+
+	 S5gmkYmcpgFf/n5UUL3vbnvQtRSKlqsmdJV99J2OuZM3uxnAoUL4S9Ww4pn+g9de8Y
+	 bWI3RmTb/hJ5ncGo3nH1eYQySW4M+b3aSiPacLfI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Julian Wiedmann <jwi@linux.ibm.com>,
+	Karsten Graul <kgraul@linux.ibm.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 118/267] wifi: rtlwifi: rtl8723{be,ae}: using calculate_bit_shift()
+Subject: [PATCH 4.19 158/202] net/af_iucv: clean up a try_then_request_module()
 Date: Wed, 21 Feb 2024 14:07:39 +0100
-Message-ID: <20240221125943.674521439@linuxfoundation.org>
+Message-ID: <20240221125936.804217260@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Julian Wiedmann <jwi@linux.ibm.com>
 
-[ Upstream commit 5c16618bc06a41ad68fd8499a21d35ef57ca06c2 ]
+[ Upstream commit 4eb9eda6ba64114d98827e2870e024d5ab7cd35b ]
 
-Using calculate_bit_shift() to replace rtl8723_phy_calculate_bit_shift().
-And fix an undefined bitwise shift behavior problem.
+Use IS_ENABLED(CONFIG_IUCV) to determine whether the iucv_if symbol
+is available, and let depmod deal with the module dependency.
 
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20231219065739.1895666-12-suhui@nfschina.com
+This was introduced back with commit 6fcd61f7bf5d ("af_iucv: use
+loadable iucv interface"). And to avoid sprinkling IS_ENABLED() over
+all the code, we're keeping the indirection through pr_iucv->...().
+
+Signed-off-by: Julian Wiedmann <jwi@linux.ibm.com>
+Signed-off-by: Karsten Graul <kgraul@linux.ibm.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c | 6 +++---
- drivers/net/wireless/realtek/rtlwifi/rtl8723be/phy.c | 4 ++--
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ net/iucv/af_iucv.c | 14 +++-----------
+ 1 file changed, 3 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c
-index 54a3aec1dfa7..bc42bfc394a5 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c
-@@ -50,7 +50,7 @@ u32 rtl8723e_phy_query_rf_reg(struct ieee80211_hw *hw,
- 							    rfpath, regaddr);
- 	}
+diff --git a/net/iucv/af_iucv.c b/net/iucv/af_iucv.c
+index d59f2341bfec..1ff2860dd3ff 100644
+--- a/net/iucv/af_iucv.c
++++ b/net/iucv/af_iucv.c
+@@ -2477,7 +2477,7 @@ static int __init afiucv_init(void)
+ {
+ 	int err;
  
--	bitshift = rtl8723_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	readback_value = (original_value & bitmask) >> bitshift;
- 
- 	spin_unlock_irqrestore(&rtlpriv->locks.rf_lock, flags);
-@@ -82,7 +82,7 @@ void rtl8723e_phy_set_rf_reg(struct ieee80211_hw *hw,
- 			original_value = rtl8723_phy_rf_serial_read(hw,
- 								    rfpath,
- 								    regaddr);
--			bitshift = rtl8723_phy_calculate_bit_shift(bitmask);
-+			bitshift = calculate_bit_shift(bitmask);
- 			data =
- 			    ((original_value & (~bitmask)) |
- 			     (data << bitshift));
-@@ -91,7 +91,7 @@ void rtl8723e_phy_set_rf_reg(struct ieee80211_hw *hw,
- 		rtl8723_phy_rf_serial_write(hw, rfpath, regaddr, data);
- 	} else {
- 		if (bitmask != RFREG_OFFSET_MASK) {
--			bitshift = rtl8723_phy_calculate_bit_shift(bitmask);
-+			bitshift = calculate_bit_shift(bitmask);
- 			data =
- 			    ((original_value & (~bitmask)) |
- 			     (data << bitshift));
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/phy.c
-index aa8a0950fcea..d753e3d15bdb 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/phy.c
-@@ -42,7 +42,7 @@ u32 rtl8723be_phy_query_rf_reg(struct ieee80211_hw *hw, enum radio_path rfpath,
- 	spin_lock_irqsave(&rtlpriv->locks.rf_lock, flags);
- 
- 	original_value = rtl8723_phy_rf_serial_read(hw, rfpath, regaddr);
--	bitshift = rtl8723_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	readback_value = (original_value & bitmask) >> bitshift;
- 
- 	spin_unlock_irqrestore(&rtlpriv->locks.rf_lock, flags);
-@@ -70,7 +70,7 @@ void rtl8723be_phy_set_rf_reg(struct ieee80211_hw *hw, enum radio_path path,
- 	if (bitmask != RFREG_OFFSET_MASK) {
- 			original_value = rtl8723_phy_rf_serial_read(hw, path,
- 								    regaddr);
--			bitshift = rtl8723_phy_calculate_bit_shift(bitmask);
-+			bitshift = calculate_bit_shift(bitmask);
- 			data = ((original_value & (~bitmask)) |
- 				(data << bitshift));
+-	if (MACHINE_IS_VM) {
++	if (MACHINE_IS_VM && IS_ENABLED(CONFIG_IUCV)) {
+ 		cpcmd("QUERY USERID", iucv_userid, sizeof(iucv_userid), &err);
+ 		if (unlikely(err)) {
+ 			WARN_ON(err);
+@@ -2485,11 +2485,7 @@ static int __init afiucv_init(void)
+ 			goto out;
  		}
+ 
+-		pr_iucv = try_then_request_module(symbol_get(iucv_if), "iucv");
+-		if (!pr_iucv) {
+-			printk(KERN_WARNING "iucv_if lookup failed\n");
+-			memset(&iucv_userid, 0, sizeof(iucv_userid));
+-		}
++		pr_iucv = &iucv_if;
+ 	} else {
+ 		memset(&iucv_userid, 0, sizeof(iucv_userid));
+ 		pr_iucv = NULL;
+@@ -2523,17 +2519,13 @@ static int __init afiucv_init(void)
+ out_proto:
+ 	proto_unregister(&iucv_proto);
+ out:
+-	if (pr_iucv)
+-		symbol_put(iucv_if);
+ 	return err;
+ }
+ 
+ static void __exit afiucv_exit(void)
+ {
+-	if (pr_iucv) {
++	if (pr_iucv)
+ 		afiucv_iucv_exit();
+-		symbol_put(iucv_if);
+-	}
+ 
+ 	unregister_netdevice_notifier(&afiucv_netdev_notifier);
+ 	dev_remove_pack(&iucv_packet_type);
 -- 
 2.43.0
 
