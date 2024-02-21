@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-22473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6DF485DC37
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:50:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 624D785D9B7
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:22:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 47EF9B247B1
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:50:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E8441C23141
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:22:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB11A78B73;
-	Wed, 21 Feb 2024 13:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B65C87BB04;
+	Wed, 21 Feb 2024 13:21:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bo94B5GE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qSC9lCha"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77CAE78B7C;
-	Wed, 21 Feb 2024 13:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 743897BB02;
+	Wed, 21 Feb 2024 13:21:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523416; cv=none; b=e7JVdSUwrsPPscvmK7woukeSVuHr00ZYfCTQtI5Ptwhcr5GpDkoi/H9Pg9yDEghriOOm6h96MnER06lRUceQ68i+b9PPFY+gmQGE/3QR1ftYJkxp5InBkAVIDc/lwuz8p1uBgSYTL2lzvjvdy3VhJgYiwTTSh1BkpEY5DkrQZT0=
+	t=1708521684; cv=none; b=T27P9emOPD86vAoYfp4mdhHMpdhT97JbZploZOGknXq6W/oQmMPRT6YpN/JMbVFwEZdpStdbwEUnM5L6divqVTuH5aWyx3xFAjub6V3ylNOV01mJnSrl/O0wgz1gWrOacAVzWbwLnGu1rE5B5ZR2aN2tA5RgQ6aXUjCi/B9LTtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523416; c=relaxed/simple;
-	bh=Psdqdni1z+6LpQUzWYUCD4w2yUrclVLIeat9vazyWKQ=;
+	s=arc-20240116; t=1708521684; c=relaxed/simple;
+	bh=9YHTKauxD/edZYNeXR2I0jEEeMooEc7sdLULlQKoMIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VUeoPOQtQzVTfzAJCQRIH/+l7pTyBHske/MWbmNOvaBwvspZHUmd/UJW579TiYSqvVACpUfY5xqeciRbAVYPnINLik6sAAC2pNUs0tmd8Hy7yyJfJFGxLKxDZlZZMkZVJYoUHNeGlvrDmo2qTWreAvP6aOJppleyJ5A7/B9c0UM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bo94B5GE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E789BC43390;
-	Wed, 21 Feb 2024 13:50:15 +0000 (UTC)
+	 MIME-Version; b=QNY/SX4CKtgu8ca0zpYdA0j+xZ7gFrJ30j/N7HWE/7PV956D9aefYSmeYezwug5bQOrA1mzGDciPXqNAN/Az2ReEmZbTQYw1npN3frq6za8x/YPhyRso3PB75ceMm0bT9Fb/PxkJCYIt8giELP4hDSYnTE6OeSdiuwsiZJIuEwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qSC9lCha; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0A82C433F1;
+	Wed, 21 Feb 2024 13:21:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523416;
-	bh=Psdqdni1z+6LpQUzWYUCD4w2yUrclVLIeat9vazyWKQ=;
+	s=korg; t=1708521684;
+	bh=9YHTKauxD/edZYNeXR2I0jEEeMooEc7sdLULlQKoMIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bo94B5GE4AsAEPQ2c99sQXyu7t20BWmGy3hKHuyt5FaYHh7D92D3vkI/IJSvbztxp
-	 G4B+F5sHTV2lVQQJ1D+me8K7Z0D+vLUOUqxWy/Tgad5TS0yrE8+PsfYnDlCu2j6/w3
-	 2WeYiiwR3nZZvQUHKyZptzFYFTIHqBL2T2v1j/kY=
+	b=qSC9lChaa/tX4zuPzz642fxpD2eCqfUQgR1vc1DXv/G/p8N48S4XGkh7KsoqCBtd2
+	 F5nPkau/eq+NeD0LhXjjqw9Ni7mu0o19zMQKPnact/beaH8iPZPY0OJ0bvjKfvIoVk
+	 XavCwlzmcQfjYl5gEtAJqDsqlUNmPmQSj4ZM6FkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sjoerd Simons <sjoerd@collabora.com>,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 430/476] bus: moxtet: Add spi device table
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Subject: [PATCH 4.19 180/202] firewire: core: correct documentation of fw_csr_string() kernel API
 Date: Wed, 21 Feb 2024 14:08:01 +0100
-Message-ID: <20240221130023.922634417@linuxfoundation.org>
+Message-ID: <20240221125937.642506619@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +58,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sjoerd Simons <sjoerd@collabora.com>
+From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
 
-[ Upstream commit aaafe88d5500ba18b33be72458439367ef878788 ]
+commit 5f9ab17394f831cb7986ec50900fa37507a127f1 upstream.
 
-The moxtet module fails to auto-load on. Add a SPI id table to
-allow it to do so.
+Against its current description, the kernel API can accepts all types of
+directory entries.
 
-Signed-off-by: Sjoerd Simons <sjoerd@collabora.com>
-Cc:  <stable@vger.kernel.org>
-Reviewed-by: Marek Behún <kabel@kernel.org>
-Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This commit corrects the documentation.
+
+Cc: stable@vger.kernel.org
+Fixes: 3c2c58cb33b3 ("firewire: core: fw_csr_string addendum")
+Link: https://lore.kernel.org/r/20240130100409.30128-2-o-takashi@sakamocchi.jp
+Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bus/moxtet.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/firewire/core-device.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/bus/moxtet.c b/drivers/bus/moxtet.c
-index fd87a59837fa..fbf0818933be 100644
---- a/drivers/bus/moxtet.c
-+++ b/drivers/bus/moxtet.c
-@@ -832,6 +832,12 @@ static int moxtet_remove(struct spi_device *spi)
- 	return 0;
- }
- 
-+static const struct spi_device_id moxtet_spi_ids[] = {
-+	{ "moxtet" },
-+	{ },
-+};
-+MODULE_DEVICE_TABLE(spi, moxtet_spi_ids);
-+
- static const struct of_device_id moxtet_dt_ids[] = {
- 	{ .compatible = "cznic,moxtet" },
- 	{},
-@@ -843,6 +849,7 @@ static struct spi_driver moxtet_spi_driver = {
- 		.name		= "moxtet",
- 		.of_match_table = moxtet_dt_ids,
- 	},
-+	.id_table	= moxtet_spi_ids,
- 	.probe		= moxtet_probe,
- 	.remove		= moxtet_remove,
- };
--- 
-2.43.0
-
+--- a/drivers/firewire/core-device.c
++++ b/drivers/firewire/core-device.c
+@@ -113,10 +113,9 @@ static int textual_leaf_to_string(const
+  * @buf:	where to put the string
+  * @size:	size of @buf, in bytes
+  *
+- * The string is taken from a minimal ASCII text descriptor leaf after
+- * the immediate entry with @key.  The string is zero-terminated.
+- * An overlong string is silently truncated such that it and the
+- * zero byte fit into @size.
++ * The string is taken from a minimal ASCII text descriptor leaf just after the entry with the
++ * @key. The string is zero-terminated. An overlong string is silently truncated such that it
++ * and the zero byte fit into @size.
+  *
+  * Returns strlen(buf) or a negative error code.
+  */
 
 
 
