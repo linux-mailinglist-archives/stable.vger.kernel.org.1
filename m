@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-22228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22578-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEE0985DAF6
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:36:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE0F985DCB2
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:56:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13FBB1C22E29
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:36:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 676421F215B8
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:56:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56C477E777;
-	Wed, 21 Feb 2024 13:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F9EE762C1;
+	Wed, 21 Feb 2024 13:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HzqQBlZE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v2XxrNOa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08A2D7E76D;
-	Wed, 21 Feb 2024 13:35:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F234D7BB0E;
+	Wed, 21 Feb 2024 13:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522518; cv=none; b=ZGHrxG6d3r/LY4+H14aEAxfr4hQZ4aYq1cUIz9gIrlYu5xhvgh7VE4NkW5Iy33/xPbQ06DHPLWdSeGFVvnvKMoODM/t2uJZAz1gQsoRCLiDiV/h2++uaPxno0PgkqbE4sV/AyoN8KUavseCdQV4wBroja/1kAYnjKBHUKdkUk1E=
+	t=1708523787; cv=none; b=k/FnF95/uyj5ZMFNMCgeZwMZr5RlJFmZJe+UXFcL+H6FvEcr3hfNH12V8nzS7bef/0rWWrgVX7VdPJ+Dyra0/OElpJkNtOgx6VhLoX/TNWrvACOkh74wxbZWmlSHk2GG/TYNnKl9n4FWyzzeyPjiAgWDHolAjlswVtjSRU1jP5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522518; c=relaxed/simple;
-	bh=bUaUtPicHIpWtnuSabfK9iWMb0oCL7ha3Jq4GLjVdiw=;
+	s=arc-20240116; t=1708523787; c=relaxed/simple;
+	bh=Op5rYmX+7loPYv4Zh3cc5238LK/WIkNJW/Gh9MVH8i0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SrkxZhaTflvwB2lEb2+B/O+uGavsuWtuHII9Ea+tnFUwz5IS9WOeWiJslKXX04V1s2DzFU67j+3jZwoOWIlY5WaFfu1nxEcN/kIgX54eoXX0dQfAxd13MsDJlysS/c3+sCTUngKdi2jE3dba948OyjGckfD/8GdW5gfAjIgzlJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HzqQBlZE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 441A0C43399;
-	Wed, 21 Feb 2024 13:35:17 +0000 (UTC)
+	 MIME-Version; b=SeyFPXHXokQjInrxVlPs5AASC5nH5H4jo32DfpOpYmV0OLXYLK8U258tKLT94IU0ws93BHnSeHVdvjXYRIynP1x6GLtXo+G9L+caS/0bbtTeYbXT9MUm2enB+d0Uy6aGnMg8l0oLT8lSbML5uBDncHeeVV+I29rB5beSmv9dvRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v2XxrNOa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F7CBC433C7;
+	Wed, 21 Feb 2024 13:56:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522517;
-	bh=bUaUtPicHIpWtnuSabfK9iWMb0oCL7ha3Jq4GLjVdiw=;
+	s=korg; t=1708523786;
+	bh=Op5rYmX+7loPYv4Zh3cc5238LK/WIkNJW/Gh9MVH8i0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HzqQBlZExVaodus2FSgSj6MuPyfhFyuz2k8VQX3OCaR51cZTPAAJwIOpOXSiI91oT
-	 ++IbXQrAfqnmQ4i3hqZa9CvpfSjrR57I37tErs9R5XCIsllVlg3SWEox3UYHVLKyAq
-	 Y/eL6EI9bb0ZTdSQheQ3HnNa1JnPf3XD5UQQ1Trg=
+	b=v2XxrNOa8WsMht7L5bRv5ICWHlR3J8hsqkCmBpFUwOxyGoldqebv9q4CfbMucDdRC
+	 eteR3MMIIZaljA7I+fwB+u7lMcHX+RUI9HtrmMNgbkKb0TcFpSxCigsWYwJpnUWHba
+	 A/aElT8U7zpgdZgQHbTg29Gzvq9kqVVtUbptq6RQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 185/476] ARM: dts: imx1: Fix sram node
+Subject: [PATCH 5.10 057/379] netfilter: nf_tables: validate NFPROTO_* family
 Date: Wed, 21 Feb 2024 14:03:56 +0100
-Message-ID: <20240221130014.725555167@linuxfoundation.org>
+Message-ID: <20240221125956.601674230@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +61,198 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit c248e535973088ba7071ff6f26ab7951143450af ]
+[ Upstream commit d0009effa8862c20a13af4cb7475d9771b905693 ]
 
-Per sram.yaml, address-cells, size-cells and ranges are mandatory.
+Several expressions explicitly refer to NF_INET_* hook definitions
+from expr->ops->validate, however, family is not validated.
 
-The node name should be sram.
+Bail out with EOPNOTSUPP in case they are used from unsupported
+families.
 
-Change the node name and pass the required properties to fix the
-following dt-schema warnings:
-
-imx1-apf9328.dtb: esram@300000: $nodename:0: 'esram@300000' does not match '^sram(@.*)?'
-	from schema $id: http://devicetree.org/schemas/sram/sram.yaml#
-imx1-apf9328.dtb: esram@300000: '#address-cells' is a required property
-	from schema $id: http://devicetree.org/schemas/sram/sram.yaml#
-imx1-apf9328.dtb: esram@300000: '#size-cells' is a required property
-	from schema $id: http://devicetree.org/schemas/sram/sram.yaml#
-imx1-apf9328.dtb: esram@300000: 'ranges' is a required property
-	from schema $id: http://devicetree.org/schemas/sram/sram.yaml#
-
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: 0ca743a55991 ("netfilter: nf_tables: add compatibility layer for x_tables")
+Fixes: a3c90f7a2323 ("netfilter: nf_tables: flow offload expression")
+Fixes: 2fa841938c64 ("netfilter: nf_tables: introduce routing expression")
+Fixes: 554ced0a6e29 ("netfilter: nf_tables: add support for native socket matching")
+Fixes: ad49d86e07a4 ("netfilter: nf_tables: Add synproxy support")
+Fixes: 4ed8eb6570a4 ("netfilter: nf_tables: Add native tproxy support")
+Fixes: 6c47260250fc ("netfilter: nf_tables: add xfrm expression")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/imx1.dtsi | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/netfilter/nft_compat.c       | 12 ++++++++++++
+ net/netfilter/nft_flow_offload.c |  5 +++++
+ net/netfilter/nft_nat.c          |  5 +++++
+ net/netfilter/nft_rt.c           |  5 +++++
+ net/netfilter/nft_socket.c       |  5 +++++
+ net/netfilter/nft_synproxy.c     |  7 +++++--
+ net/netfilter/nft_tproxy.c       |  5 +++++
+ net/netfilter/nft_xfrm.c         |  5 +++++
+ 8 files changed, 47 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/imx1.dtsi b/arch/arm/boot/dts/imx1.dtsi
-index 9b940987864c..8d6e900a9081 100644
---- a/arch/arm/boot/dts/imx1.dtsi
-+++ b/arch/arm/boot/dts/imx1.dtsi
-@@ -268,9 +268,12 @@
- 			status = "disabled";
- 		};
+diff --git a/net/netfilter/nft_compat.c b/net/netfilter/nft_compat.c
+index b8dbd20a6a4c..3f1e272efbb9 100644
+--- a/net/netfilter/nft_compat.c
++++ b/net/netfilter/nft_compat.c
+@@ -327,6 +327,12 @@ static int nft_target_validate(const struct nft_ctx *ctx,
+ 	unsigned int hook_mask = 0;
+ 	int ret;
  
--		esram: esram@300000 {
-+		esram: sram@300000 {
- 			compatible = "mmio-sram";
- 			reg = <0x00300000 0x20000>;
-+			ranges = <0 0x00300000 0x20000>;
-+			#address-cells = <1>;
-+			#size-cells = <1>;
- 		};
- 	};
- };
++	if (ctx->family != NFPROTO_IPV4 &&
++	    ctx->family != NFPROTO_IPV6 &&
++	    ctx->family != NFPROTO_BRIDGE &&
++	    ctx->family != NFPROTO_ARP)
++		return -EOPNOTSUPP;
++
+ 	if (nft_is_base_chain(ctx->chain)) {
+ 		const struct nft_base_chain *basechain =
+ 						nft_base_chain(ctx->chain);
+@@ -569,6 +575,12 @@ static int nft_match_validate(const struct nft_ctx *ctx,
+ 	unsigned int hook_mask = 0;
+ 	int ret;
+ 
++	if (ctx->family != NFPROTO_IPV4 &&
++	    ctx->family != NFPROTO_IPV6 &&
++	    ctx->family != NFPROTO_BRIDGE &&
++	    ctx->family != NFPROTO_ARP)
++		return -EOPNOTSUPP;
++
+ 	if (nft_is_base_chain(ctx->chain)) {
+ 		const struct nft_base_chain *basechain =
+ 						nft_base_chain(ctx->chain);
+diff --git a/net/netfilter/nft_flow_offload.c b/net/netfilter/nft_flow_offload.c
+index a44340dd3ce6..c2a5d05f501f 100644
+--- a/net/netfilter/nft_flow_offload.c
++++ b/net/netfilter/nft_flow_offload.c
+@@ -150,6 +150,11 @@ static int nft_flow_offload_validate(const struct nft_ctx *ctx,
+ {
+ 	unsigned int hook_mask = (1 << NF_INET_FORWARD);
+ 
++	if (ctx->family != NFPROTO_IPV4 &&
++	    ctx->family != NFPROTO_IPV6 &&
++	    ctx->family != NFPROTO_INET)
++		return -EOPNOTSUPP;
++
+ 	return nft_chain_validate_hooks(ctx->chain, hook_mask);
+ }
+ 
+diff --git a/net/netfilter/nft_nat.c b/net/netfilter/nft_nat.c
+index cd4eb4996aff..2e1ee7d9d9c3 100644
+--- a/net/netfilter/nft_nat.c
++++ b/net/netfilter/nft_nat.c
+@@ -142,6 +142,11 @@ static int nft_nat_validate(const struct nft_ctx *ctx,
+ 	struct nft_nat *priv = nft_expr_priv(expr);
+ 	int err;
+ 
++	if (ctx->family != NFPROTO_IPV4 &&
++	    ctx->family != NFPROTO_IPV6 &&
++	    ctx->family != NFPROTO_INET)
++		return -EOPNOTSUPP;
++
+ 	err = nft_chain_validate_dependency(ctx->chain, NFT_CHAIN_T_NAT);
+ 	if (err < 0)
+ 		return err;
+diff --git a/net/netfilter/nft_rt.c b/net/netfilter/nft_rt.c
+index bcd01a63e38f..f4a96164a5a1 100644
+--- a/net/netfilter/nft_rt.c
++++ b/net/netfilter/nft_rt.c
+@@ -166,6 +166,11 @@ static int nft_rt_validate(const struct nft_ctx *ctx, const struct nft_expr *exp
+ 	const struct nft_rt *priv = nft_expr_priv(expr);
+ 	unsigned int hooks;
+ 
++	if (ctx->family != NFPROTO_IPV4 &&
++	    ctx->family != NFPROTO_IPV6 &&
++	    ctx->family != NFPROTO_INET)
++		return -EOPNOTSUPP;
++
+ 	switch (priv->key) {
+ 	case NFT_RT_NEXTHOP4:
+ 	case NFT_RT_NEXTHOP6:
+diff --git a/net/netfilter/nft_socket.c b/net/netfilter/nft_socket.c
+index f6d517185d9c..826e5f8c78f3 100644
+--- a/net/netfilter/nft_socket.c
++++ b/net/netfilter/nft_socket.c
+@@ -166,6 +166,11 @@ static int nft_socket_validate(const struct nft_ctx *ctx,
+ 			       const struct nft_expr *expr,
+ 			       const struct nft_data **data)
+ {
++	if (ctx->family != NFPROTO_IPV4 &&
++	    ctx->family != NFPROTO_IPV6 &&
++	    ctx->family != NFPROTO_INET)
++		return -EOPNOTSUPP;
++
+ 	return nft_chain_validate_hooks(ctx->chain,
+ 					(1 << NF_INET_PRE_ROUTING) |
+ 					(1 << NF_INET_LOCAL_IN) |
+diff --git a/net/netfilter/nft_synproxy.c b/net/netfilter/nft_synproxy.c
+index 1133e06f3c40..0806813d3a76 100644
+--- a/net/netfilter/nft_synproxy.c
++++ b/net/netfilter/nft_synproxy.c
+@@ -186,7 +186,6 @@ static int nft_synproxy_do_init(const struct nft_ctx *ctx,
+ 		break;
+ #endif
+ 	case NFPROTO_INET:
+-	case NFPROTO_BRIDGE:
+ 		err = nf_synproxy_ipv4_init(snet, ctx->net);
+ 		if (err)
+ 			goto nf_ct_failure;
+@@ -219,7 +218,6 @@ static void nft_synproxy_do_destroy(const struct nft_ctx *ctx)
+ 		break;
+ #endif
+ 	case NFPROTO_INET:
+-	case NFPROTO_BRIDGE:
+ 		nf_synproxy_ipv4_fini(snet, ctx->net);
+ 		nf_synproxy_ipv6_fini(snet, ctx->net);
+ 		break;
+@@ -253,6 +251,11 @@ static int nft_synproxy_validate(const struct nft_ctx *ctx,
+ 				 const struct nft_expr *expr,
+ 				 const struct nft_data **data)
+ {
++	if (ctx->family != NFPROTO_IPV4 &&
++	    ctx->family != NFPROTO_IPV6 &&
++	    ctx->family != NFPROTO_INET)
++		return -EOPNOTSUPP;
++
+ 	return nft_chain_validate_hooks(ctx->chain, (1 << NF_INET_LOCAL_IN) |
+ 						    (1 << NF_INET_FORWARD));
+ }
+diff --git a/net/netfilter/nft_tproxy.c b/net/netfilter/nft_tproxy.c
+index f8d277e05ef4..6b606e83cdb6 100644
+--- a/net/netfilter/nft_tproxy.c
++++ b/net/netfilter/nft_tproxy.c
+@@ -293,6 +293,11 @@ static int nft_tproxy_validate(const struct nft_ctx *ctx,
+ 			       const struct nft_expr *expr,
+ 			       const struct nft_data **data)
+ {
++	if (ctx->family != NFPROTO_IPV4 &&
++	    ctx->family != NFPROTO_IPV6 &&
++	    ctx->family != NFPROTO_INET)
++		return -EOPNOTSUPP;
++
+ 	return nft_chain_validate_hooks(ctx->chain, 1 << NF_INET_PRE_ROUTING);
+ }
+ 
+diff --git a/net/netfilter/nft_xfrm.c b/net/netfilter/nft_xfrm.c
+index cbbbc4ecad3a..7f762fc42891 100644
+--- a/net/netfilter/nft_xfrm.c
++++ b/net/netfilter/nft_xfrm.c
+@@ -233,6 +233,11 @@ static int nft_xfrm_validate(const struct nft_ctx *ctx, const struct nft_expr *e
+ 	const struct nft_xfrm *priv = nft_expr_priv(expr);
+ 	unsigned int hooks;
+ 
++	if (ctx->family != NFPROTO_IPV4 &&
++	    ctx->family != NFPROTO_IPV6 &&
++	    ctx->family != NFPROTO_INET)
++		return -EOPNOTSUPP;
++
+ 	switch (priv->dir) {
+ 	case XFRM_POLICY_IN:
+ 		hooks = (1 << NF_INET_FORWARD) |
 -- 
 2.43.0
 
