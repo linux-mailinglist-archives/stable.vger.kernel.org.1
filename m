@@ -1,93 +1,123 @@
-Return-Path: <stable+bounces-23198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32AF285E1F9
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 16:53:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3048285E264
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 17:02:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62D551C244CA
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:53:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62D991C2087C
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 16:02:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 582F781AA2;
-	Wed, 21 Feb 2024 15:53:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D065069D05;
+	Wed, 21 Feb 2024 16:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="KPVNGf/J"
+	dkim=pass (1024-bit key) header.d=natalenko.name header.i=@natalenko.name header.b="b6lkggqY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com [209.85.161.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from prime.voidband.net (prime.voidband.net [199.247.17.104])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9EC78174B
-	for <stable@vger.kernel.org>; Wed, 21 Feb 2024 15:53:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 932FA823CA
+	for <stable@vger.kernel.org>; Wed, 21 Feb 2024 16:00:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.247.17.104
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708530785; cv=none; b=FTRi7UAI7GGcH7d7QWxm98UjSE3t6oJJCri+esadTQaCUqEjhRtwggwcSW7VSSQHxBEwNbfJUk6TA6Bu1q+519QiTaOVfz6/cDEjcDgwe1q1GXNEkEFjnQ33kbH/9iXB9j5i5qRq0b4Pn8kf6x/2PVToMSOAbU52hJ4C2kp5DjI=
+	t=1708531228; cv=none; b=n7hbiwTy9BltSybGXywpusdt8AkkL+H6lJImbAmZ143GOv4vV4c+r4Tfhakm46TSNwloPnnZFRyhwWUBCXyJ/6ur7yDCNeLWc5VEGkycBikMeTgyjHzI/3htpo9u3SIXC+7l/T2/OWtivvV7oloAPPqBAJVnc5niSMMLAJ9g0rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708530785; c=relaxed/simple;
-	bh=9VgNrg7E3WxzPLbpdW7b+fQZzMzEpRyOCT/6WT2Sf4Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HzdUUKzcSU/QtOUqAazee86C6TQ6J2xi+hrzYz3UU3QQkfHewbrH7yGklB0P/S6rADK0nEDYsamF2+lM7TZH4+mCUlBTFyJReSojt12XlMp+tZuJoMaDGiXUhf5yJniAAB5BdLFdi1AgHvzTusHITrWAv26SWrh9XyKtWF37YG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=KPVNGf/J; arc=none smtp.client-ip=209.85.161.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-59fd6684316so1643264eaf.0
-        for <stable@vger.kernel.org>; Wed, 21 Feb 2024 07:53:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1708530783; x=1709135583; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=9VgNrg7E3WxzPLbpdW7b+fQZzMzEpRyOCT/6WT2Sf4Y=;
-        b=KPVNGf/JFzGtwRewRMQg5bShOJa0Dgvza0OeCoUI1GWDo3nuIs/PNoWjuu8dwSGmAf
-         SZPCubx3OIjthO+2MmVHtovqUtncme4JxvyCFCCOmhxRsa6LoP9T/D5mw9loiBQBUzeo
-         HdjFsS431y7wY1GXtpOUY9cN0BW3QNQF26OSI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708530783; x=1709135583;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9VgNrg7E3WxzPLbpdW7b+fQZzMzEpRyOCT/6WT2Sf4Y=;
-        b=of/G7c/XXm9Jvbkq7WXPxHFqFPmUQz2TtAdYjQVqbzpsoB3yEs7VD9Qk0u6mX7tAQR
-         sq54rz36BsdXIhXYCAOzVqCf14p5o9kPWwAK0nZTsgEm8+PZYMztFJP43RCKHuXiJTes
-         GkV9a1vC3hRg7F43L813Hc4heWrIkzKxD39eSiPYMD7Jv1N9f907uw8yf05yx40HM1tf
-         H2erpM9dhM2vw+B14tkuc2KJpKv74kEFwe/Y7fe0pT1aTEpSw5RYPH1L1g7Cco69CihG
-         Ea5yALhZNZ2tpzEwt1Hxzu1Nop2k5+arlcSNZisZqElug/pnHEWpS5i/winT6pgMGg5k
-         I3xA==
-X-Forwarded-Encrypted: i=1; AJvYcCV3VoEnuuTrth8FGCB/epXlzGw9v7vTqIB3etO75WLBE17wwRZwli9JLV8Dl3N7djvH5MXNsY35Swb0TAfD3j0THG2TBOFA
-X-Gm-Message-State: AOJu0Yz0Utp3Am14vzGLwmpKRt/QbkPEix+nLt7iwxMIRHxljAj/oU3p
-	ceocJwHWp/5TDTi/lCxzEanPMFBq3hFbGHdqKD5SSNQszzYh2YpjKOb3KEwqz93iYruLWiT87og
-	l+k0o4pyaGwJyJa2P0k0vaQaz2GCdC3tz4ArC
-X-Google-Smtp-Source: AGHT+IHQpFoZXWJNF9xVniu1c31fdFShm2fJtfOtAD0LYOdmrGGoF9j9d5Fv7SW7EM5r/4boF5/8ahxD5g+W+hfI9X4=
-X-Received: by 2002:a4a:355a:0:b0:59f:fc30:d3aa with SMTP id
- w26-20020a4a355a000000b0059ffc30d3aamr5366824oog.3.1708530782898; Wed, 21 Feb
- 2024 07:53:02 -0800 (PST)
+	s=arc-20240116; t=1708531228; c=relaxed/simple;
+	bh=iLzZEaIIb7nONvllSFxKllpjccVdh747caWYiWadJbI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IdggADtDSkcmhKqwYbxgSjERTip8bOfLd8B/cmI0w06JPFgkfb4/7o5w/nA9FqicHUeS5oIxshqcBDiIqcjKLVISULfKtj4UzCkcWbA+GbGjuiS1G8INKwPSsaN6ZkMHDA0uMOAjQo30g7347Dl+UE2ICJsH3RzTyPocba0aPVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=natalenko.name; spf=pass smtp.mailfrom=natalenko.name; dkim=pass (1024-bit key) header.d=natalenko.name header.i=@natalenko.name header.b=b6lkggqY; arc=none smtp.client-ip=199.247.17.104
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=natalenko.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=natalenko.name
+Received: from spock.localnet (unknown [94.142.239.106])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by prime.voidband.net (Postfix) with ESMTPSA id C51F3635B057;
+	Wed, 21 Feb 2024 17:00:17 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
+	s=dkim-20170712; t=1708531217;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SVzKHavSue5Bj2ZdCpOec98aN+NumZEMWDQ9JF3grao=;
+	b=b6lkggqYHYJlCyq8KleBXA7NMqeg713sBfyHqtUPrs6t9CysXI+UAPqaGVOzA7LFX6lqab
+	F0M7jPIOGZqXiEMzmcmZtt1DloHaB4+AVyQP9g/80EcNjsQS8u+ECLpHuUds26pgqW+fLN
+	2a5Lf/9H6LtmPjl/5M0EQnuPED83TsU=
+From: Oleksandr Natalenko <oleksandr@natalenko.name>
+To: Kent Overstreet <kent.overstreet@linux.dev>,
+ Greg KH <gregkh@linuxfoundation.org>, Jiri Benc <jbenc@redhat.com>
+Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
+ Vlastimil Babka <vbabka@suse.cz>,
+ Thorsten Leemhuis <regressions@leemhuis.info>
+Subject: Re: fs/bcachefs/
+Date: Wed, 21 Feb 2024 17:00:05 +0100
+Message-ID: <4900587.31r3eYUQgx@natalenko.name>
+In-Reply-To: <2024022103-municipal-filter-fb3f@gregkh>
+References:
+ <g6el7eghhdk2v5osukhobvi4pige5bsfu5koqtmoyeknat36t7@irmmk7zo7edh>
+ <uknxc26o6td7g6rawxffvsez46djmvcy2532kza2zyjuj33k7p@4jdywourgtqg>
+ <2024022103-municipal-filter-fb3f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAG-rBihs_xMKb3wrMO1+-+p4fowP9oy1pa_OTkfxBzPUVOZF+g@mail.gmail.com>
- <20240221114357.13655-2-vbabka@suse.cz>
-In-Reply-To: <20240221114357.13655-2-vbabka@suse.cz>
-From: Sven van Ashbrook <svenva@chromium.org>
-Date: Wed, 21 Feb 2024 10:52:52 -0500
-Message-ID: <CAG-rBihOr+aAZhO4D2VBwSx-EGg_gbgBYKN3fSBTPKCXdz9AqA@mail.gmail.com>
-Subject: Re: [PATCH] mm, vmscan: prevent infinite loop for costly GFP_NOIO |
- __GFP_RETRY_MAYFAIL allocations
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Andrew Morton <akpm@linux-foundation.org>, bgeffon@google.com, 
-	cujomalainey@chromium.org, kramasub@chromium.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-sound@vger.kernel.org, 
-	perex@perex.cz, stable@vger.kernel.org, tiwai@suse.com, tiwai@suse.de, 
-	Michal Hocko <mhocko@kernel.org>, Mel Gorman <mgorman@techsingularity.net>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; boundary="nextPart4549049.LvFx2qVVIh";
+ micalg="pgp-sha256"; protocol="application/pgp-signature"
 
-Thanks so much ! We will stress test this on our side.
+--nextPart4549049.LvFx2qVVIh
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"; protected-headers="v1"
+From: Oleksandr Natalenko <oleksandr@natalenko.name>
+Subject: Re: fs/bcachefs/
+Date: Wed, 21 Feb 2024 17:00:05 +0100
+Message-ID: <4900587.31r3eYUQgx@natalenko.name>
+In-Reply-To: <2024022103-municipal-filter-fb3f@gregkh>
+MIME-Version: 1.0
 
-We do this by exhausting memory and triggering many suspend/resume
-cycles. This reliably reproduces the problem (before this patch).
+On st=C5=99eda 21. =C3=BAnora 2024 15:53:11 CET Greg KH wrote:
+> 	Given the huge patch volume that the stable tree manages (30-40 changes
+> 	accepted a day, 7 days a week), any one kernel subsystem that wishes to
+> 	do something different only slows down everyone else.
 
-Of course, as we all know, absence of evidence (no more stalls in stress tests)
-does not equal evidence of absence (stalls are gone in all code paths).
+Lower down the volume then? Raise the bar for what gets backported? Stable =
+kernel releases got unnecessarily big [1] (Ji=C5=99=C3=AD is in Cc). Those =
+40 changes a day cannot get a proper review. Each stable release tries to m=
+imic -rc except -rc is in consistent state while "stable" is just a bunch o=
+f changes picked here and there.
+
+[1] https://lwn.net/Articles/962131/
+
+=2D-=20
+Oleksandr Natalenko (post-factum)
+--nextPart4549049.LvFx2qVVIh
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEZUOOw5ESFLHZZtOKil/iNcg8M0sFAmXWHgUACgkQil/iNcg8
+M0uZCw//cCAX88t/OScNWPKYTjvmadYkYSbgIwoY/hoNTCuVSfpHLfBpx2530JIl
+Q+cF6gqHbkrtbfR5hOAIvRmFsEcvgU7csrhelQga6NvJeb8K2qXGu6pMgKgIknhj
+4LNUi80cRgKqfMlC71d8ZDAdZw+aOCR02NEsf5ltUGrhyQMPDEJfCl+p/vKYSieP
+8zQv1r9HZkSeRyeRoAINimhkgs4dSjIUD/qHCm5aEQzoabp/UGEpLlKdjjIGiEXE
+qPbz68xw1VzpwmO9Thx5EcKm8+uWqNdkqeZdIU/j7OpygP1NFJDiePyvKslaku7/
+oNElzybM72IYrbwLIj06UjvVqN2dTgHtFo2Axsemlr5uAeKz9rj6/TSqwDi5sXKV
+6R32Vz2yqx0ZrXUd3+aWFx8bveCVnCeEOTmes7+v8pX5lSzWxUuRyMEfvP6kp+oM
+OO0jbPD30IhLNorH8g8gE3VTaS5FY9XaxDPBJxl3KFchG/xgNgpLMjj/sI6PSrEp
+mL/1JZ+ncW1iliOsPTl/MWwVk3afK9YCzjS4ObUX7QDX9X82VjgyG1nnEV08Y+wW
+fnFlupR9lQBlFUwwILcPWsgz72fyJCQfVouZwoeGf8bVqQEb66IWuSjINwxImzRJ
+CEyjlKT1vAGsOsmqvdkFc99zIwdleyepi8Js44zV1svN7tc/ML0=
+=Gt4j
+-----END PGP SIGNATURE-----
+
+--nextPart4549049.LvFx2qVVIh--
+
+
+
 
