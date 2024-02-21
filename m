@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-21890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22653-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B021885D902
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:13:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF9CB85DD16
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:02:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 627561F22D13
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:13:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5058FB219F7
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:01:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0673069D2E;
-	Wed, 21 Feb 2024 13:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1199F7CF1A;
+	Wed, 21 Feb 2024 14:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZpzjFhXQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FGyf11j+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9F3A53816;
-	Wed, 21 Feb 2024 13:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C518E78B4F;
+	Wed, 21 Feb 2024 14:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521214; cv=none; b=BvhXQ6/0AQegEGswLOk/HZDvNWOhvu1m/cm9UvP5+/Lw5oN8rolfGLdoy/dMqMxqf7OXWSUO+wbOhPSI4Zrd3tTkvsMnelyTMwFMLRYegBoqicqVSgK8ILMAT3U4Dz0NgNkBWgBSie3zCsVmlLKiWqjKhCuymgVYfzKeSSehjhc=
+	t=1708524057; cv=none; b=kkBUrn41XN3Bze5PewnLtDsBLNlPosUVLjyN4zKpEdjFvZzbkoYGeHMTLtGcOB9m1ta1dZUwu1c4uEdKw4wb+wGZD9rXn8dcitCVQrZDz0hnilnIo66DFBmYr4oNwR0+f/PVzSZA/1a11e9cOgQl3Tp4qBClJiVonSwKdlwwl0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521214; c=relaxed/simple;
-	bh=g+Kpc4ruL3kD2MvqZsWlX92O/AdegvMBoLzaHWbPJzU=;
+	s=arc-20240116; t=1708524057; c=relaxed/simple;
+	bh=TiXYV5ts68jvB++gM6IhH0XdmSDe4kQNKq18+kb/wcI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OyClewBQ8q4JnCN/Pc+KN2XdUy7TaRHQwVcqJvmfOv8+9n3+9bX5Uik+By/AqsOe6YXgkjDVcnGAffPB+maHcrwEZfBvkJeFbw2Fp3gK6QiC1Pd++wpSxxf08X/TYb1MeVj6tiGyisJTqxQIl0xg/5Li6RSQGsZeqt6QvyJkg+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZpzjFhXQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28FAFC433F1;
-	Wed, 21 Feb 2024 13:13:33 +0000 (UTC)
+	 MIME-Version; b=KQBXYLSfnMYseoEoUj+Nkn4CAdj48UwwnN3y9XFAKqARGP/WZ1ca4dR12yNZO5JqOCANKtNXq9TJPHzs7MJO5EmmEyRBrM9YRGKkca4XfsvB2La+T3KJkQjgd2pfccOO+fYjUdQeNM3dBeUaChvGRHy/YpgJHLwa016D2/neKy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FGyf11j+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B94C433F1;
+	Wed, 21 Feb 2024 14:00:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521214;
-	bh=g+Kpc4ruL3kD2MvqZsWlX92O/AdegvMBoLzaHWbPJzU=;
+	s=korg; t=1708524057;
+	bh=TiXYV5ts68jvB++gM6IhH0XdmSDe4kQNKq18+kb/wcI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZpzjFhXQ4t/QpyQXaxQ8ZFmjJckB5++ELY10KnTs3UrBRi6r0ZSrKxZ6m6jkvdDS4
-	 c89xmvG6ioT4/mDIx8CRGhUeG6ffFhCxJTVynChikJ4HtgKxjuUQUyZfW2gxdMTsgr
-	 UQxKz4qcfA5EekHepBBkGRnesG3/+uyqmBLWunoc=
+	b=FGyf11j+i8v0W7EzqXGaFTLwc9dbq/pxH7JX98iV8BjAtGY8xXiOWSUyhJiJQSMyi
+	 qLJsdt1fAHo5UveNHWZ+mEZswMD9x4sdNzRnaTeCFNdgZAngCtMsTkQsvMdkgUSVDt
+	 3YujHNOi58P6JgvBj7RdCp8fXtvZCSXrhQFqI6vI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait@windriver.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 4.19 011/202] crypto: api - Disallow identical driver names
+	Ye Bin <yebin10@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 133/379] ext4: fix inconsistent between segment fstrim and full fstrim
 Date: Wed, 21 Feb 2024 14:05:12 +0100
-Message-ID: <20240221125932.118666997@linuxfoundation.org>
+Message-ID: <20240221125958.860438793@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,34 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Ye Bin <yebin10@huawei.com>
 
-commit 27016f75f5ed47e2d8e0ca75a8ff1f40bc1a5e27 upstream.
+[ Upstream commit 68da4c44b994aea797eb9821acb3a4a36015293e ]
 
-Disallow registration of two algorithms with identical driver names.
+Suppose we issue two FITRIM ioctls for ranges [0,15] and [16,31] with
+mininum length of trimmed range set to 8 blocks. If we have say a range of
+blocks 10-22 free, this range will not be trimmed because it straddles the
+boundary of the two FITRIM ranges and neither part is big enough. This is a
+bit surprising to some users that call FITRIM on smaller ranges of blocks
+to limit impact on the system. Also XFS trims all free space extents that
+overlap with the specified range so we are inconsistent among filesystems.
+Let's change ext4_try_to_trim_range() to consider for trimming the whole
+free space extent that straddles the end of specified range, not just the
+part of it within the range.
 
-Cc: <stable@vger.kernel.org>
-Reported-by: Ovidiu Panait <ovidiu.panait@windriver.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20231216010919.1995851-1-yebin10@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/algapi.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/ext4/mballoc.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/crypto/algapi.c
-+++ b/crypto/algapi.c
-@@ -231,6 +231,7 @@ static struct crypto_larval *__crypto_re
- 		}
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 39d03e0ef78b..9bec75847b85 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -5916,13 +5916,15 @@ static int ext4_try_to_trim_range(struct super_block *sb,
+ 		struct ext4_buddy *e4b, ext4_grpblk_t start,
+ 		ext4_grpblk_t max, ext4_grpblk_t minblocks)
+ {
+-	ext4_grpblk_t next, count, free_count;
++	ext4_grpblk_t next, count, free_count, last, origin_start;
+ 	bool set_trimmed = false;
+ 	void *bitmap;
  
- 		if (!strcmp(q->cra_driver_name, alg->cra_name) ||
-+		    !strcmp(q->cra_driver_name, alg->cra_driver_name) ||
- 		    !strcmp(q->cra_name, alg->cra_driver_name))
- 			goto err;
- 	}
++	last = ext4_last_grp_cluster(sb, e4b->bd_group);
+ 	bitmap = e4b->bd_bitmap;
+-	if (start == 0 && max >= ext4_last_grp_cluster(sb, e4b->bd_group))
++	if (start == 0 && max >= last)
+ 		set_trimmed = true;
++	origin_start = start;
+ 	start = max(e4b->bd_info->bb_first_free, start);
+ 	count = 0;
+ 	free_count = 0;
+@@ -5931,7 +5933,10 @@ static int ext4_try_to_trim_range(struct super_block *sb,
+ 		start = mb_find_next_zero_bit(bitmap, max + 1, start);
+ 		if (start > max)
+ 			break;
+-		next = mb_find_next_bit(bitmap, max + 1, start);
++
++		next = mb_find_next_bit(bitmap, last + 1, start);
++		if (origin_start == 0 && next >= last)
++			set_trimmed = true;
+ 
+ 		if ((next - start) >= minblocks) {
+ 			int ret = ext4_trim_extent(sb, start, next - start, e4b);
+-- 
+2.43.0
+
 
 
 
