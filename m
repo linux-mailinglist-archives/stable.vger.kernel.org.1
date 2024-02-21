@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-22206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CDE885DAD9
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:35:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F0B885DCBC
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:57:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B2531C20291
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:35:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC47C2830F2
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:57:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 474A47BB12;
-	Wed, 21 Feb 2024 13:33:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCE9A7BB16;
+	Wed, 21 Feb 2024 13:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dJWKKBkb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PR5BP4nf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F567BB0D;
-	Wed, 21 Feb 2024 13:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 956487BB10;
+	Wed, 21 Feb 2024 13:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522431; cv=none; b=dpP7vsL4s9YzAkFCXtogNusEVbXad+uRbKc+3NsjpVCRgB2CoGOVExK9+UQxS8R5TlSXHEvS5uggZ5hEdiN5mx4Zw4icZ5Li2lGqXVmGp/8Hnnx33ooSmHFIQQRlOGDQyOuWH0+MaxOmZ3s5IyWO+Utn2M57b4kJ/x184B6JNCo=
+	t=1708523807; cv=none; b=rzPLivzfVTEPnx1HmRxqrxPYoEYUNNdSmHOK4G+rMrf5OUdtcQaV4hhKwSvrTXGLNslXccsVJIQKexuxctXbgQEGOYBR+cqYVyHK0COrmws2AH5KUgs3rxNiRwqILskx3fkWYi8Y1pV+etzvGql7BoEiX+11tpzn0bT+O+c9yOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522431; c=relaxed/simple;
-	bh=gqQh826UFooSjZL84lunsTGzV1WA4i4Zt6xAtvHonow=;
+	s=arc-20240116; t=1708523807; c=relaxed/simple;
+	bh=9pWyZT3WR+QyAB4s+s/bx73tp6yH+mW9YedpvY6FXXU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ek+O2MtvmdlYQDQtCoWyuFD21jGGPDEZsWGeGwa1lsvk4uRevpIYWy2YWpzhmHvUvkf8fLZvYnURaNm3OWWVbnEu6nqoDATuRsjHL5ORFKbPQxe8SzYYsTF+xeFccy7qy6lNrXnZCpOXcVxkTY3qlBAeZcws1DsOqS1CtrtymZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dJWKKBkb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1414DC433C7;
-	Wed, 21 Feb 2024 13:33:49 +0000 (UTC)
+	 MIME-Version; b=GxMTqz8PjmDI/DGQsYQQ4GWuNca7JwUFYz7aH2zWIn83ooPvjgrH9p0QcNWORklNi7xl0c9fCAl/v8hx/O7Nu5hO/KO4J9CwfAM2Earea00n8P1/ka8efDgF4opGKMBtE4z/2Gnw+HeHuieIMrGu2JlfLNyHZmquUGE6c4n1uTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PR5BP4nf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5135C433F1;
+	Wed, 21 Feb 2024 13:56:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522430;
-	bh=gqQh826UFooSjZL84lunsTGzV1WA4i4Zt6xAtvHonow=;
+	s=korg; t=1708523806;
+	bh=9pWyZT3WR+QyAB4s+s/bx73tp6yH+mW9YedpvY6FXXU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dJWKKBkbFHvsl4EFHsBUH6bFG+nClRIUI+ID6wL4DzuvTN5VN+69gPG3AvOaiZZDS
-	 g4m/YHXWFucP2w6Gae7G415bEb5sMgF20ZIObWAvS+jferJrxA7nRS4YeiMt7quUdT
-	 D8m4t2cxtlMGab7vdd9AzS75gsG+MUrF5kSRuLBc=
+	b=PR5BP4nfsTCbRvgBRZ959QN0AcaxpsU9HR2wHlUDDD0YM4mB0XTXfBgX9OR/MBW1K
+	 nktref79ez09VhvDl7NESGn9hatyVq+aFTkYKpLuiupCYaDQpdVJ4IXiLktlfPxc3Z
+	 Ks4kDGoW8jhgA8T1dSLzJ2NGz42Or7ZExV5mn04Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 163/476] ext4: remove unnecessary check from alloc_flex_gd()
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Eric Biggers <ebiggers@google.com>,
+	Richard Weinberger <richard@nod.at>
+Subject: [PATCH 5.10 035/379] ubifs: ubifs_symlink: Fix memleak of inode->i_link in error path
 Date: Wed, 21 Feb 2024 14:03:34 +0100
-Message-ID: <20240221130013.968523229@linuxfoundation.org>
+Message-ID: <20240221125955.955185825@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-[ Upstream commit b099eb87de105cf07cad731ded6fb40b2675108b ]
+commit 1e022216dcd248326a5bb95609d12a6815bca4e2 upstream.
 
-In commit 967ac8af4475 ("ext4: fix potential integer overflow in
-alloc_flex_gd()"), an overflow check is added to alloc_flex_gd() to
-prevent the allocated memory from being smaller than expected due to
-the overflow. However, after kmalloc() is replaced with kmalloc_array()
-in commit 6da2ec56059c ("treewide: kmalloc() -> kmalloc_array()"), the
-kmalloc_array() function has an overflow check, so the above problem
-will not occur. Therefore, the extra check is removed.
+For error handling path in ubifs_symlink(), inode will be marked as
+bad first, then iput() is invoked. If inode->i_link is initialized by
+fscrypt_encrypt_symlink() in encryption scenario, inode->i_link won't
+be freed by callchain ubifs_free_inode -> fscrypt_free_inode in error
+handling path, because make_bad_inode() has changed 'inode->i_mode' as
+'S_IFREG'.
+Following kmemleak is easy to be reproduced by injecting error in
+ubifs_jnl_update() when doing symlink in encryption scenario:
+ unreferenced object 0xffff888103da3d98 (size 8):
+  comm "ln", pid 1692, jiffies 4294914701 (age 12.045s)
+  backtrace:
+   kmemdup+0x32/0x70
+   __fscrypt_encrypt_symlink+0xed/0x1c0
+   ubifs_symlink+0x210/0x300 [ubifs]
+   vfs_symlink+0x216/0x360
+   do_symlinkat+0x11a/0x190
+   do_syscall_64+0x3b/0xe0
+There are two ways fixing it:
+ 1. Remove make_bad_inode() in error handling path. We can do that
+    because ubifs_evict_inode() will do same processes for good
+    symlink inode and bad symlink inode, for inode->i_nlink checking
+    is before is_bad_inode().
+ 2. Free inode->i_link before marking inode bad.
+Method 2 is picked, it has less influence, personally, I think.
 
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20231023013057.2117948-3-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 2c58d548f570 ("fscrypt: cache decrypted symlink target in ->i_link")
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Suggested-by: Eric Biggers <ebiggers@kernel.org>
+Reviewed-by: Eric Biggers <ebiggers@google.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/resize.c | 3 ---
- 1 file changed, 3 deletions(-)
+ fs/ubifs/dir.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/ext4/resize.c b/fs/ext4/resize.c
-index 492683235423..6dcf7406b77e 100644
---- a/fs/ext4/resize.c
-+++ b/fs/ext4/resize.c
-@@ -245,10 +245,7 @@ static struct ext4_new_flex_group_data *alloc_flex_gd(unsigned int flexbg_size)
- 	if (flex_gd == NULL)
- 		goto out3;
- 
--	if (flexbg_size >= UINT_MAX / sizeof(struct ext4_new_group_data))
--		goto out2;
- 	flex_gd->count = flexbg_size;
--
- 	flex_gd->groups = kmalloc_array(flexbg_size,
- 					sizeof(struct ext4_new_group_data),
- 					GFP_NOFS);
--- 
-2.43.0
-
+--- a/fs/ubifs/dir.c
++++ b/fs/ubifs/dir.c
+@@ -1198,6 +1198,8 @@ out_cancel:
+ 	dir_ui->ui_size = dir->i_size;
+ 	mutex_unlock(&dir_ui->ui_mutex);
+ out_inode:
++	/* Free inode->i_link before inode is marked as bad. */
++	fscrypt_free_inode(inode);
+ 	make_bad_inode(inode);
+ 	iput(inode);
+ out_fname:
 
 
 
