@@ -1,109 +1,116 @@
-Return-Path: <stable+bounces-23211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B5DA85E411
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 18:10:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9708B85E421
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 18:13:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6817F1C226AC
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 17:10:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8C981C22B26
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 17:13:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82BCC839F7;
-	Wed, 21 Feb 2024 17:10:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WapNL/AG"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB38F83A00;
+	Wed, 21 Feb 2024 17:13:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com [209.85.222.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0ED47FBD2
-	for <stable@vger.kernel.org>; Wed, 21 Feb 2024 17:10:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.50
+Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A280733F7;
+	Wed, 21 Feb 2024 17:13:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.57
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708535430; cv=none; b=NUcqtND78eHd+tDqvZ6ToCko5tuvQz5G5hWzEehBK6dOl+53JG5f740tWLmcB5Z6elxozbgnN7UV0uT6JIC+VHvZmqISKsRHNiERs1luYeP3lXN+1ihalnr3rs8WvN1xm2XPJudPogzV59GrPZou74ZlpnkODz80kbf4FLEnz8Q=
+	t=1708535631; cv=none; b=VXJiBwY8cg3cdSBIWgfA/LYBKskpKmy/dhMoyT17Uz3Sp5yGiUYK5gSYf9zY+kq9uo2e1wDohuk3qh3boVRke4ivr7GBg4LeMNktjTM/sbLi2JF4f/EAvmYXhGM4Oyso82gyHPoAh1sFvEH/JEO4Q2e3JmKNK7VcTzaiCiWOwCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708535430; c=relaxed/simple;
-	bh=3tDTAL3bkuSeNF01dYYjqUmFFxUsUZInOi8GJnTJyoY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=G7utplj1lCPp6SWQvFhdQODfVlrEw6q10m8d9n+Q9OUb6s8fJ86m95fDz5rgE3BsEwCp6ZGRr7ZrRMg0EZ2Nn1mz3+r0h470v3DcC/hKtzLmiXYBBmHgnRQSqkKC5Hx6KqB46cn4uLZ/ER2Q7ZRPwbb2Jy6sktYM7X6g1CXdOcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WapNL/AG; arc=none smtp.client-ip=209.85.222.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f50.google.com with SMTP id a1e0cc1a2514c-7d2e1a0337bso3544966241.3
-        for <stable@vger.kernel.org>; Wed, 21 Feb 2024 09:10:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708535428; x=1709140228; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=L0XbTRXpjUJdsD0Ct/U8d4Gr21Ku2zlDm646h3XyY2E=;
-        b=WapNL/AGJ7b7Q9ULHoJfXZlq1cxE0QSKH2x2eZz4mgJNYt0LN8wzmGXKDs/opFBiGm
-         fO69+ExkfUO5spvo8AnBaohV4zD/O0K2BJyKCZeGzQ/Rzlmg5KMkauOtTCiWP11uqwfA
-         K3wmq3Ufxrc9dMwswq6aNIUAQcIWS5BDFlM0gJhEy0imUEtQs1CJYMCAB6Cra6vlDPqe
-         h+CgpLmabka6SmVjTNNp6VvrZ820cvBnaP9PDX1w6IDIbChnUmZXHVuARuNuVXDG5nIL
-         9KoXWLMYOV1U+SPZ7RmVpoefBO2bwO0NUKvOT8/VfFuamtegm2kBQgcIsKL0DzjLrSQo
-         nFSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708535428; x=1709140228;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=L0XbTRXpjUJdsD0Ct/U8d4Gr21Ku2zlDm646h3XyY2E=;
-        b=YsUrSTt/N0nOFS1Z3yLIlFi4DkSjqHNs1MeC7FBXWwzd/xN2xJ7LSczklb8NdWmalk
-         SzDnBUVYS5TIWAS/i8ePr/3ri2XFWMuPON7V0JkjUS/jY1mNjp/juSGmSjXJxD0Vg4fC
-         fS0dyQbcCHP83/abzOcxhNNolAHKuCIUBRdYuYgvZe/WyehwzsIYI7vT38SxYUhzpZG5
-         cLLolLDLCh5lr3tY8RZAwzvZ27daBaThkygtMTztMAxMsl8HHPw1g2qFnZ2E5emQwlt/
-         0RURMaqSYdlIPFNKJuqrYtVHcWDZlE5snyFEyW9Cq693iMHiqQWauvE4TXiKYt1OJj03
-         8JOA==
-X-Gm-Message-State: AOJu0YyhE+KZV+nkvKX388fF4tYhp8xFhsBxfL32Nl8LezgvitxTD+bX
-	BY+wUzFSHD0xxLZ7wUmcX3JuHdM/TOVolaqEunLLS4gIKdry/NfSLbDNG9abqhdnlZcHuoAg5/x
-	SaKj8CIugpgH/+JV2uzk+OW8FrlwX3UEI
-X-Google-Smtp-Source: AGHT+IHa+0CyfrxQoqLiE2FJC+OlCkL46CyHJ5yPDgC3s/oQkeqfvLi/77QFBbKmwwJZT68rGNgGFij+qW8pbKAXQW0=
-X-Received: by 2002:a05:6122:218c:b0:4d1:34a1:c892 with SMTP id
- j12-20020a056122218c00b004d134a1c892mr2852670vkd.13.1708535427662; Wed, 21
- Feb 2024 09:10:27 -0800 (PST)
+	s=arc-20240116; t=1708535631; c=relaxed/simple;
+	bh=jggTDE9oGVLyy1ERt5LYHY11LaM/dNOjk89c0ST+Bfw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MZN+f4rUa+2t3IvyuIjtXe1oW91OaYss/uK+KMYeu1Ncaa3VCtGf8fE5dzHXHbN/1AoMdNOt/QQOpvJufqs+qwSspueUYilnoBI+GRzbs1/ds7fdXZ2wxPRccdSlrNBJhL+xxRBRqOk/KrREIrFKMVkgYsUtO4ZbMhWEYUs4PaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
+Received: from imap.altlinux.org (imap.altlinux.org [194.107.17.38])
+	by vmicros1.altlinux.org (Postfix) with ESMTP id BA4B572C90D;
+	Wed, 21 Feb 2024 20:13:46 +0300 (MSK)
+Received: from altlinux.org (sole.flsd.net [185.75.180.6])
+	by imap.altlinux.org (Postfix) with ESMTPSA id AD97136D016F;
+	Wed, 21 Feb 2024 20:13:46 +0300 (MSK)
+Date: Wed, 21 Feb 2024 20:13:46 +0300
+From: Vitaly Chikunov <vt@altlinux.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
+	Kees Cook <keescook@chromium.org>, linux-cifs@vger.kernel.org
+Subject: Re: [PATCH] cifs: Convert struct fealist away from 1-element array
+Message-ID: <20240221171346.iur7yuuogg2bu3lq@altlinux.org>
+References: <20230215000832.never.591-kees@kernel.org>
+ <qjyfz2xftsbch6aozgplxyjfyqnuhn7j44udrucls4pqa5ey35@adxvvrdtagqf>
+ <202402091559.52D7C2AC@keescook>
+ <20240210003314.jyrvg57z6ox3is5u@altlinux.org>
+ <2024021034-populace-aerospace-03f3@gregkh>
+ <20240210102145.p4diskhnevicn6am@altlinux.org>
+ <20240217215016.emqr3stdm3yrh4dq@altlinux.org>
+ <2024021808-coach-wired-41cb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAOMdWSKyoAgFHiSnfbPKELB57295VTBqh-mvjPd--MCDU-uvyw@mail.gmail.com>
- <2024022141-bonus-boozy-44c8@gregkh>
-In-Reply-To: <2024022141-bonus-boozy-44c8@gregkh>
-From: Allen <allen.lkml@gmail.com>
-Date: Wed, 21 Feb 2024 09:09:40 -0800
-Message-ID: <CAOMdWSLr7zzux_gSRQG-6NEprF_SsHNhB=cWG=gnON7go=d2_w@mail.gmail.com>
-Subject: Re: Patches for v5.15.149-rc
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=koi8-r
+Content-Disposition: inline
+In-Reply-To: <2024021808-coach-wired-41cb@gregkh>
 
-> > Hi Greg,
-> >
-> >    I believe these patches are likely already on your radar. I just wanted to
-> > inform you that it would be highly appreciated if we could see their inclusion
-> > in the upcoming release.
-> >
-> > e0526ec5360a 2024-01-30hv_netvsc: Fix race condition between
-> > netvsc_probe and netvsc_remove [Jakub Kicinski]
-> >
-> >   We would like to even get:
-> >
-> > 9cae43da9867 hv_netvsc: Register VF in netvsc_probe if
-> > NET_DEVICE_REGISTER missed
-> >
-> > included, but the patch is still in netdev and has not made it into
-> > Linus's tree. If it does come in,
-> > could you please consider including it too.
->
-> This last did not apply to all of the relevent kernels, please provide
-> backports if you need them there.
->
+Greg,
 
- My bad. Am sorry, I should have checked and sent it out. Now that
-v5.15.149-rc1 is out, I will send this patch targeting v5.15.150
+On Sun, Feb 18, 2024 at 10:31:29AM +0100, Greg Kroah-Hartman wrote:
+> On Sun, Feb 18, 2024 at 12:50:16AM +0300, Vitaly Chikunov wrote:
+> > 
+> > On Sat, Feb 10, 2024 at 01:21:45PM +0300, Vitaly Chikunov wrote:
+> > > On Sat, Feb 10, 2024 at 10:19:46AM +0000, Greg Kroah-Hartman wrote:
+> > > > On Sat, Feb 10, 2024 at 03:33:14AM +0300, Vitaly Chikunov wrote:
+> > > > > 
+> > > > > Can you please backport this commit (below) to a stable 6.1.y tree, it's
+> > > > > confirmed be Kees this could cause kernel panic due to false positive
+> > > > > strncpy fortify, and this is already happened for some users.
+> > > > 
+> > > > What is the git commit id?
+> > > 
+> > > 398d5843c03261a2b68730f2f00643826bcec6ba
+> > 
+> > Can you please apply this to the next 6.1.y release?
+> > 
+> > There is still non-theoretical crash as reported in
+> >   https://lore.kernel.org/all/qjyfz2xftsbch6aozgplxyjfyqnuhn7j44udrucls4pqa5ey35@adxvvrdtagqf/
+> > 
+> > If commit hash was not enough:
+> > 
+> >   commit 398d5843c03261a2b68730f2f00643826bcec6ba
+> >   Author:     Kees Cook <keescook@chromium.org>
+> >   AuthorDate: Tue Feb 14 16:08:39 2023 -0800
+> > 
+> >       cifs: Convert struct fealist away from 1-element array
+> > 
+> > The commit is in mainline and is applying well to linux-6.1.y:
+> > 
+> >   (linux-6.1.y)$ git cherry-pick 398d5843c03261a2b68730f2f00643826bcec6ba
+> >   Auto-merging fs/smb/client/cifspdu.h
+> >   Auto-merging fs/smb/client/cifssmb.c
+> >   [linux-6.1.y 4a80b516f202] cifs: Convert struct fealist away from 1-element array
+> >    Author: Kees Cook <keescook@chromium.org>
+> >    Date: Tue Feb 14 16:08:39 2023 -0800
+> >    2 files changed, 10 insertions(+), 10 deletions(-)
+> 
+> It does not apply cleanly due to renames, can you provide a backported,
+> and tested, patch please?
 
-Thanks.
+I sent the backported patch as you suggested[1] but I don't see it
+appearing in 6.1.79-rc1 review. Did I make some mistake while sending
+it?
+
+Thanks,
+
+[1] https://lore.kernel.org/stable/20240218111538.2592901-1-vt@altlinux.org/
+
+> 
+> thanks,
+> 
+> greg k-h
 
