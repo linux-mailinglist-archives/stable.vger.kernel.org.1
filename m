@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-22241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5862B85DB0F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:37:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C35385DCE0
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:59:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6814B25029
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:37:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DB701C23743
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:59:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B370B7CF32;
-	Wed, 21 Feb 2024 13:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED9077BB10;
+	Wed, 21 Feb 2024 13:59:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vlCfscMJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kc6RGOT9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7343B7CF29;
-	Wed, 21 Feb 2024 13:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD0F7B3F2;
+	Wed, 21 Feb 2024 13:59:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522571; cv=none; b=SyECqjKUNUhcpaJ9dKaNaNfRDI6fprmp7a3HB6d/eM7oaXfK90y/gXLWOlXAiWs+fQWScAU4/Fmc8veyyDU8bjhDNAdgqL8JAA7dkKsN6+xi9Aia38JRTtBIHob+UTj1QmXEYsat+SiZG8ZpL2360aM8pH2kmxo7QXZU0VbFtuE=
+	t=1708523945; cv=none; b=H7kLQ0ifUXnaonPhPx8Noo1T08q7rtOE22kwIMbGSdU6CszzEhZ3Mdk7L5L9Wvpn4FHa373YrZQhgEy7Gswh888QuERkP9X8JNMatVZMrD3jg11q49eMrfy1I2UxHGLun3mEJVJNiXsgj27sAeAh2t6RrLM85RXzi1RrFJ94oGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522571; c=relaxed/simple;
-	bh=Ku+a2kt1ECAG0jDJUiZJTYL82EPLu3NhgzL93qiI/QQ=;
+	s=arc-20240116; t=1708523945; c=relaxed/simple;
+	bh=roQdJZfXg56mO8iKU7A0kpZ7Npg4phomjcptZZPJtnA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IXzrEWctHGoAtfGkD5C5yyf4HS74Sh82PXYJ3aMzuEZY7BZhkeLL2q8rWuJGNBhvsKkTYXQEgBu5MZ16hSvI7EnVNuB9NTRS2Y8Hu9JyLCG41d2PRbPxPwVrtevt8JNTa4GhSz8EgG9Q9ZHvnfn4Whap+bSpUtFJ2A/oCI5x03Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vlCfscMJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1F9BC43390;
-	Wed, 21 Feb 2024 13:36:10 +0000 (UTC)
+	 MIME-Version; b=QZS6NQs7hm4p1XZ+DOQI6G7feWN9v2e9K+gcwR2tgnoFCe4YxPKI8YH79JGE7foJIpFjg5XDmBWBx2Kq5nDn4YeJUGKKJsBQHVbAVi1xJm1eKj6p91si+S7bwIWLMmJAW+NQQM7jcUYiGaTDgoLhQG0WPGjgJYin9phDmLS5VwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kc6RGOT9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32558C433F1;
+	Wed, 21 Feb 2024 13:59:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522571;
-	bh=Ku+a2kt1ECAG0jDJUiZJTYL82EPLu3NhgzL93qiI/QQ=;
+	s=korg; t=1708523945;
+	bh=roQdJZfXg56mO8iKU7A0kpZ7Npg4phomjcptZZPJtnA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vlCfscMJTeFyuLXD3A0zWWYhrm9wLFDaL3tP6OD5upJ2tW0EFnaBDQPQOYyIx1mx7
-	 E9HoRJHuueUrYbw0Hyl2NojnS5dm4iDuBtXAFi6wKligflniw2K270VaMpxgtV0Tsf
-	 TmmRMzg1gcTH7w43OOImnIR+56hvfGCgYaNcP4wY=
+	b=kc6RGOT9xHMpCluVBXCUIW02iFFID7EofpeuVhncCq23ONnb7QlX8ihcqkI2UVRrO
+	 Q1U30jfKE79oz+FpO9qP1MeY6lzEgDpuduKJVA5/D3yWTv1tWHBbw5S8h381IKOfCn
+	 DXMQpTBCYbm0J+XAeNra0RuvhKwxcfJuG2NJ6whY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Mao Jinlong <quic_jinlmao@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 197/476] arm64: dts: qcom: msm8998: Fix out-ports is a required property
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 5.10 069/379] wifi: iwlwifi: fix a memory corruption
 Date: Wed, 21 Feb 2024 14:04:08 +0100
-Message-ID: <20240221130015.201092465@linuxfoundation.org>
+Message-ID: <20240221125956.958303391@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mao Jinlong <quic_jinlmao@quicinc.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-[ Upstream commit ae5ee3562a2519214b12228545e88a203dd68bbd ]
+commit cf4a0d840ecc72fcf16198d5e9c505ab7d5a5e4d upstream.
 
-out-ports is a required property for coresight ETM. Add out-ports for
-ETM nodes to fix the warning.
+iwl_fw_ini_trigger_tlv::data is a pointer to a __le32, which means that
+if we copy to iwl_fw_ini_trigger_tlv::data + offset while offset is in
+bytes, we'll write past the buffer.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Mao Jinlong <quic_jinlmao@quicinc.com>
-Link: https://lore.kernel.org/r/20231210072633.4243-4-quic_jinlmao@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218233
+Fixes: cf29c5b66b9f ("iwlwifi: dbg_ini: implement time point handling")
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240111150610.2d2b8b870194.I14ed76505a5cf87304e0c9cc05cc0ae85ed3bf91@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/msm8998.dtsi | 32 +++++++++++++++++----------
- 1 file changed, 20 insertions(+), 12 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8998.dtsi b/arch/arm64/boot/dts/qcom/msm8998.dtsi
-index b7d72b0d579e..7eadecba0175 100644
---- a/arch/arm64/boot/dts/qcom/msm8998.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8998.dtsi
-@@ -1863,9 +1863,11 @@
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
+@@ -876,7 +876,7 @@ static int iwl_dbg_tlv_override_trig_nod
+ 		node_trig = (void *)node_tlv->data;
+ 	}
  
- 			cpu = <&CPU4>;
+-	memcpy(node_trig->data + offset, trig->data, trig_data_len);
++	memcpy((u8 *)node_trig->data + offset, trig->data, trig_data_len);
+ 	node_tlv->length = cpu_to_le32(size);
  
--			port{
--				etm4_out: endpoint {
--					remote-endpoint = <&apss_funnel_in4>;
-+			out-ports {
-+				port{
-+					etm4_out: endpoint {
-+						remote-endpoint = <&apss_funnel_in4>;
-+					};
- 				};
- 			};
- 		};
-@@ -1880,9 +1882,11 @@
- 
- 			cpu = <&CPU5>;
- 
--			port{
--				etm5_out: endpoint {
--					remote-endpoint = <&apss_funnel_in5>;
-+			out-ports {
-+				port{
-+					etm5_out: endpoint {
-+						remote-endpoint = <&apss_funnel_in5>;
-+					};
- 				};
- 			};
- 		};
-@@ -1897,9 +1901,11 @@
- 
- 			cpu = <&CPU6>;
- 
--			port{
--				etm6_out: endpoint {
--					remote-endpoint = <&apss_funnel_in6>;
-+			out-ports {
-+				port{
-+					etm6_out: endpoint {
-+						remote-endpoint = <&apss_funnel_in6>;
-+					};
- 				};
- 			};
- 		};
-@@ -1914,9 +1920,11 @@
- 
- 			cpu = <&CPU7>;
- 
--			port{
--				etm7_out: endpoint {
--					remote-endpoint = <&apss_funnel_in7>;
-+			out-ports {
-+				port{
-+					etm7_out: endpoint {
-+						remote-endpoint = <&apss_funnel_in7>;
-+					};
- 				};
- 			};
- 		};
--- 
-2.43.0
-
+ 	if (policy & IWL_FW_INI_APPLY_POLICY_OVERRIDE_CFG) {
 
 
 
