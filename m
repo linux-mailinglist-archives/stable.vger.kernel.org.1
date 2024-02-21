@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-22051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A9A485D9E2
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:23:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5E8A85D9F9
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:25:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 07FA9B25C24
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:23:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 031C71C22442
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:25:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64FF9762C1;
-	Wed, 21 Feb 2024 13:23:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 436AA7E595;
+	Wed, 21 Feb 2024 13:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bv7aVCBc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2gmehXlB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2572A53816;
-	Wed, 21 Feb 2024 13:23:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01CED7E58F;
+	Wed, 21 Feb 2024 13:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521815; cv=none; b=tH0nTejboR8IgK/Q9l8H73YKNjZgd6JgFHJjpM8Q29es72iq7flk6jP+WdclbHQlt4uHAZPtcykdOJL73d7qcK67Qs3bTmc8TcWQcNfjxQcMA55gcdb+d6dDKxM+w7LcV/Yp1ZqSPZFvl+k7s43BF8pL9RG2uE0mZkOb+DvvtD4=
+	t=1708521865; cv=none; b=uM6hMRgi/ji6e556g5LpDW/tOjdYkio/xYCn9vRJUhixVVYUHFqgR33kKAvtgC5JOTW/vxldBjlf+Q0JOVtAQ7T1cMfeATEZ6XUxoyhW5Mps5g51IKooaCJ6DF3ZhcDf0mk5v/sc0yjG0+Zs6UIAOVZ92C456M2DsZFoAemOJyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521815; c=relaxed/simple;
-	bh=U1uhNcFwTlh+i5HqXJyrJyNcVY5doKyxxM0OGWB0FhI=;
+	s=arc-20240116; t=1708521865; c=relaxed/simple;
+	bh=JhPrqetecpsGu2ly+6URGrLWJSadjz0qVGbkcKy5xVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=heRicwZ6tHZlzPF42L32z0GrI49XTdfDOAfgtcmQX8t+K3P9WZxlqYAIAbD4oB2bJ7GW6PgqiTqSTvNpkkLkDVGyGYRQNOs0DAwp8ooewllFe6g9FVnhTKqSMETsyagz33D3Kuhvj3rmdXNLgpv9O4VApus6hKwgiOfntRBIBT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bv7aVCBc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8676DC433C7;
-	Wed, 21 Feb 2024 13:23:34 +0000 (UTC)
+	 MIME-Version; b=XVHSqDvd3ITYH+dLR0OzM+ZNbC1CFsnOYP34+N5U74JCXEIXG2CvRJo0kjvkUm9TPjsMkrvlq+NmqJQpak3lOmSeEFwEUCpV0MK83SoOSTYsm9A3ta3RgMAkaoCama1BpVAfQxsaG2fT6GKNjUOmbmQ29XUQfCF8m2MZwL9KIe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2gmehXlB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 787DFC433F1;
+	Wed, 21 Feb 2024 13:24:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521815;
-	bh=U1uhNcFwTlh+i5HqXJyrJyNcVY5doKyxxM0OGWB0FhI=;
+	s=korg; t=1708521864;
+	bh=JhPrqetecpsGu2ly+6URGrLWJSadjz0qVGbkcKy5xVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bv7aVCBc8cU44J2g+6HM0nMeBlkSU9T3DxxKyTydKFm9h0TCwu3s+VbResLvxk/+s
-	 JAVnntCjhH6qk+slELEiMOZZsvyi33sp10BaZlDZT0csbrxg6zTu3LNB5WI/kf9HkT
-	 rJ4I7NX6i8MsAqLhqErZV7a4pu/6Gify34YgZ2W0=
+	b=2gmehXlBjnYRUMJEeeaXgEySk/5jIWLwVzwtdmXR23QL/gE1MikxyMmI68Iv7vXwt
+	 g1xfu8VPZitg+MbPE/Esp9MvUaUwU2NbSKlnW4UoRNpguVivWb/MIKZphsic6bkYYo
+	 FxOzwtHq5y2bsR748VwUoDEMCRED777iJaPiyqKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
 	Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 001/476] ksmbd: free ppace array on error in parse_dacl
-Date: Wed, 21 Feb 2024 14:00:52 +0100
-Message-ID: <20240221130007.878386944@linuxfoundation.org>
+Subject: [PATCH 5.15 002/476] ksmbd: dont allow O_TRUNC open on read-only share
+Date: Wed, 21 Feb 2024 14:00:53 +0100
+Message-ID: <20240221130007.917483903@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
 References: <20240221130007.738356493@linuxfoundation.org>
@@ -67,59 +66,86 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 8cf9bedfc3c47d24bb0de386f808f925dc52863e ]
+[ Upstream commit d592a9158a112d419f341f035d18d02f8d232def ]
 
-The ppace array is not freed if one of the init_acl_state() calls inside
-parse_dacl() fails. At the moment the function may fail only due to the
-memory allocation errors so it's highly unlikely in this case but
-nevertheless a fix is needed.
+When file is changed using notepad on read-only share(read_only = yes in
+ksmbd.conf), There is a problem where existing data is truncated.
+notepad in windows try to O_TRUNC open(FILE_OVERWRITE_IF) and all data
+in file is truncated. This patch don't allow  O_TRUNC open on read-only
+share and add KSMBD_TREE_CONN_FLAG_WRITABLE check in smb2_set_info().
 
-Move ppace allocation after the init_acl_state() calls with proper error
-handling.
-
-Found by Linux Verification Center (linuxtesting.org).
-
-Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
 Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ksmbd/smbacl.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ fs/ksmbd/smb2pdu.c | 23 +++++++++--------------
+ 1 file changed, 9 insertions(+), 14 deletions(-)
 
-diff --git a/fs/ksmbd/smbacl.c b/fs/ksmbd/smbacl.c
-index 9ace5027684d..3a6c0abdb035 100644
---- a/fs/ksmbd/smbacl.c
-+++ b/fs/ksmbd/smbacl.c
-@@ -399,10 +399,6 @@ static void parse_dacl(struct user_namespace *user_ns,
- 	if (num_aces > ULONG_MAX / sizeof(struct smb_ace *))
- 		return;
+diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
+index 8875c04e8382..bf3bb37c00a9 100644
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -2968,7 +2968,7 @@ int smb2_open(struct ksmbd_work *work)
+ 					    &may_flags);
  
--	ppace = kmalloc_array(num_aces, sizeof(struct smb_ace *), GFP_KERNEL);
--	if (!ppace)
--		return;
+ 	if (!test_tree_conn_flag(tcon, KSMBD_TREE_CONN_FLAG_WRITABLE)) {
+-		if (open_flags & O_CREAT) {
++		if (open_flags & (O_CREAT | O_TRUNC)) {
+ 			ksmbd_debug(SMB,
+ 				    "User does not have write permission\n");
+ 			rc = -EACCES;
+@@ -5945,12 +5945,6 @@ static int smb2_set_info_file(struct ksmbd_work *work, struct ksmbd_file *fp,
+ 	}
+ 	case FILE_RENAME_INFORMATION:
+ 	{
+-		if (!test_tree_conn_flag(work->tcon, KSMBD_TREE_CONN_FLAG_WRITABLE)) {
+-			ksmbd_debug(SMB,
+-				    "User does not have write permission\n");
+-			return -EACCES;
+-		}
 -
- 	ret = init_acl_state(&acl_state, num_aces);
- 	if (ret)
- 		return;
-@@ -412,6 +408,13 @@ static void parse_dacl(struct user_namespace *user_ns,
- 		return;
+ 		if (buf_len < sizeof(struct smb2_file_rename_info))
+ 			return -EINVAL;
+ 
+@@ -5970,12 +5964,6 @@ static int smb2_set_info_file(struct ksmbd_work *work, struct ksmbd_file *fp,
+ 	}
+ 	case FILE_DISPOSITION_INFORMATION:
+ 	{
+-		if (!test_tree_conn_flag(work->tcon, KSMBD_TREE_CONN_FLAG_WRITABLE)) {
+-			ksmbd_debug(SMB,
+-				    "User does not have write permission\n");
+-			return -EACCES;
+-		}
+-
+ 		if (buf_len < sizeof(struct smb2_file_disposition_info))
+ 			return -EINVAL;
+ 
+@@ -6037,7 +6025,7 @@ int smb2_set_info(struct ksmbd_work *work)
+ {
+ 	struct smb2_set_info_req *req;
+ 	struct smb2_set_info_rsp *rsp;
+-	struct ksmbd_file *fp;
++	struct ksmbd_file *fp = NULL;
+ 	int rc = 0;
+ 	unsigned int id = KSMBD_NO_FID, pid = KSMBD_NO_FID;
+ 
+@@ -6057,6 +6045,13 @@ int smb2_set_info(struct ksmbd_work *work)
+ 		rsp = smb2_get_msg(work->response_buf);
  	}
  
-+	ppace = kmalloc_array(num_aces, sizeof(struct smb_ace *), GFP_KERNEL);
-+	if (!ppace) {
-+		free_acl_state(&default_acl_state);
-+		free_acl_state(&acl_state);
-+		return;
++	if (!test_tree_conn_flag(work->tcon, KSMBD_TREE_CONN_FLAG_WRITABLE)) {
++		ksmbd_debug(SMB, "User does not have write permission\n");
++		pr_err("User does not have write permission\n");
++		rc = -EACCES;
++		goto err_out;
 +	}
 +
- 	/*
- 	 * reset rwx permissions for user/group/other.
- 	 * Also, if num_aces is 0 i.e. DACL has no ACEs,
+ 	if (!has_file_id(id)) {
+ 		id = req->VolatileFileId;
+ 		pid = req->PersistentFileId;
 -- 
 2.43.0
 
