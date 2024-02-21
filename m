@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-22706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3B3285DD56
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:04:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B75A85DE4E
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:17:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 845411F22607
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:04:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A06D81F20F8E
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:17:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4795D7E110;
-	Wed, 21 Feb 2024 14:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 997387EF16;
+	Wed, 21 Feb 2024 14:16:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n/aA0YM7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g4fQfG7l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050247D411;
-	Wed, 21 Feb 2024 14:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 589AB7C6E9;
+	Wed, 21 Feb 2024 14:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524235; cv=none; b=O3HmCmRF8jZtuwuwKZDJc6Wt6kv+o3JNqiFz6F9IpljVqUR61jAk9yxlth7bcnAhUEo9Qd7JILvhr6M7MMxz+gP9R0zIVmNwfOoJZe/rqRUSmmxq2uo1pRBrr4szSkZs2x4DhSpDg7cLc2whd+t13bRDdOPG/ZT8OvcC9E8UfU4=
+	t=1708524976; cv=none; b=SMDBQpYY6bOuoRZU2QDVGfgrFy37nXNoMjI8ATDtKi56ljIPFrlIsBH8RrFU417hEvCbbu5u70NaeLiFzBi8J/pjBhizxl6s0VWdiHTpgtrJT1SN+nrfzwUf1xQyW5rc7RDyAuzQc1FR9uhcOSf5eShUm1/VygyRGYGQWoXQiq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524235; c=relaxed/simple;
-	bh=598AJZ0JfaGI1VJg8OX/EvbeG+y4flmWk6WQpFuD5I4=;
+	s=arc-20240116; t=1708524976; c=relaxed/simple;
+	bh=s448CnaVin2US6C1HATS7J88G6sbK4MZhMItcTef4Q0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j8aWgmGdhU96Cphp96oKORknGfhxuooMuJ+pcUV/mkjtz6PDXSOkgIRgZHV64pl+VvYC+/gJeJ8bMNgQ75hT6WaJO89ZcaTNUWqcxM21l+wltvksmhLj8VRpVuGZVVtws8Nrog/ZJJ7vXrEaQ9kQRkb9rZmtV0Gyz3DbD/PVyVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n/aA0YM7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60530C433A6;
-	Wed, 21 Feb 2024 14:03:54 +0000 (UTC)
+	 MIME-Version; b=UhMlZGc+U9FvVhP+kjVmYY11mlczvK6rPNCvQC+MsGa3l6k306a2URHD6F4qQlghS5e7/h9bbrr9Ix/Yuoi20LChzWi0RNAghtQ4HFIXs4nuQoLSNzTvLIyCXQqfgPeLY5ADofzYo14c6qrNgMONvVXcmo21weVilSGx4bGQ9i0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g4fQfG7l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71A8CC43390;
+	Wed, 21 Feb 2024 14:16:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524234;
-	bh=598AJZ0JfaGI1VJg8OX/EvbeG+y4flmWk6WQpFuD5I4=;
+	s=korg; t=1708524975;
+	bh=s448CnaVin2US6C1HATS7J88G6sbK4MZhMItcTef4Q0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n/aA0YM7/zYi6Cst+WHVfJ7TF6QV8vhivDN0bMXvSslmxSbZ9FKlZ/gapiqMiuOdW
-	 H9DHxh9pkYdh/Ul6jSlk5ipTX0Cqe3gGzQ5CNALIWn3HLp5OTxmyd1nzBGdbQ/ejFg
-	 X7iki27Ob4OpPu0KCg4COYBzghREXe6G1JGPqs5g=
+	b=g4fQfG7lx9r8Es8+1g/N+tCYZ5GpUvo0YbHpXpnF6PiEMP9ZGQuyJ+tCmwwzOHHt7
+	 ytAA8sElwksLJwecE5mXlcWSIXT/IO3jipn387S/+lSe65t/vQaunbFUxtSSbVgjTV
+	 TE61+5aXvKQndrjZ6JxpkIozzX3Agse1t2nWlGQ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"H. Nikolaus Schaller" <hns@goldelico.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 184/379] drm/mipi-dsi: Fix detach call without attach
+	"Darrick J. Wong" <djwong@kernel.org>,
+	"Christian Brauner (Microsoft)" <brauner@kernel.org>,
+	Yang Xu <xuyang2018.jy@fujitsu.com>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Mahmoud Adam <mngyadam@amazon.com>,
+	Jeff Layton <jlayton@kernel.org>
+Subject: [PATCH 5.4 022/267] fs: add mode_strip_sgid() helper
 Date: Wed, 21 Feb 2024 14:06:03 +0100
-Message-ID: <20240221130000.350052952@linuxfoundation.org>
+Message-ID: <20240221125940.747449739@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,143 +65,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Yang Xu <xuyang2018.jy@fujitsu.com>
 
-[ Upstream commit 90d50b8d85834e73536fdccd5aa913b30494fef0 ]
+commit 2b3416ceff5e6bd4922f6d1c61fb68113dd82302 upstream.
 
-It's been reported that DSI host driver's detach can be called without
-the attach ever happening:
+[remove userns argument of helper for 5.4.y backport]
 
-https://lore.kernel.org/all/20230412073954.20601-1-tony@atomide.com/
+Add a dedicated helper to handle the setgid bit when creating a new file
+in a setgid directory. This is a preparatory patch for moving setgid
+stripping into the vfs. The patch contains no functional changes.
 
-After reading the code, I think this is what happens:
+Currently the setgid stripping logic is open-coded directly in
+inode_init_owner() and the individual filesystems are responsible for
+handling setgid inheritance. Since this has proven to be brittle as
+evidenced by old issues we uncovered over the last months (see [1] to
+[3] below) we will try to move this logic into the vfs.
 
-We have a DSI host defined in the device tree and a DSI peripheral under
-that host (i.e. an i2c device using the DSI as data bus doesn't exhibit
-this behavior).
-
-The host driver calls mipi_dsi_host_register(), which causes (via a few
-functions) mipi_dsi_device_add() to be called for the DSI peripheral. So
-now we have a DSI device under the host, but attach hasn't been called.
-
-Normally the probing of the devices continues, and eventually the DSI
-peripheral's driver will call mipi_dsi_attach(), attaching the
-peripheral.
-
-However, if the host driver's probe encounters an error after calling
-mipi_dsi_host_register(), and before the peripheral has called
-mipi_dsi_attach(), the host driver will do cleanups and return an error
-from its probe function. The cleanups include calling
-mipi_dsi_host_unregister().
-
-mipi_dsi_host_unregister() will call two functions for all its DSI
-peripheral devices: mipi_dsi_detach() and mipi_dsi_device_unregister().
-The latter makes sense, as the device exists, but the former may be
-wrong as attach has not necessarily been done.
-
-To fix this, track the attached state of the peripheral, and only detach
-from mipi_dsi_host_unregister() if the peripheral was attached.
-
-Note that I have only tested this with a board with an i2c DSI
-peripheral, not with a "pure" DSI peripheral.
-
-However, slightly related, the unregister machinery still seems broken.
-E.g. if the DSI host driver is unbound, it'll detach and unregister the
-DSI peripherals. After that, when the DSI peripheral driver unbound
-it'll call detach either directly or using the devm variant, leading to
-a crash. And probably the driver will crash if it happens, for some
-reason, to try to send a message via the DSI bus.
-
-But that's another topic.
-
-Tested-by: H. Nikolaus Schaller <hns@goldelico.com>
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Tested-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230921-dsi-detach-fix-v1-1-d0de2d1621d9@ideasonboard.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: e014f37db1a2 ("xfs: use setattr_copy to set vfs inode attributes") [1]
+Link: 01ea173e103e ("xfs: fix up non-directory creation in SGID directories") [2]
+Link: fd84bfdddd16 ("ceph: fix up non-directory creation in SGID directories") [3]
+Link: https://lore.kernel.org/r/1657779088-2242-1-git-send-email-xuyang2018.jy@fujitsu.com
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christian Brauner (Microsoft) <brauner@kernel.org>
+Reviewed-and-Tested-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Yang Xu <xuyang2018.jy@fujitsu.com>
+Signed-off-by: Christian Brauner (Microsoft) <brauner@kernel.org>
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[commit 347750e1b69cef62966fbc5bd7dc579b4c00688a upstream
+	backported from 5.10.y, resolved context conflicts]
+Signed-off-by: Mahmoud Adam <mngyadam@amazon.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_mipi_dsi.c | 17 +++++++++++++++--
- include/drm/drm_mipi_dsi.h     |  2 ++
- 2 files changed, 17 insertions(+), 2 deletions(-)
+ fs/inode.c         |   34 ++++++++++++++++++++++++++++++----
+ include/linux/fs.h |    1 +
+ 2 files changed, 31 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_mipi_dsi.c b/drivers/gpu/drm/drm_mipi_dsi.c
-index 0c806e99e869..83918ac1f608 100644
---- a/drivers/gpu/drm/drm_mipi_dsi.c
-+++ b/drivers/gpu/drm/drm_mipi_dsi.c
-@@ -300,7 +300,8 @@ static int mipi_dsi_remove_device_fn(struct device *dev, void *priv)
- {
- 	struct mipi_dsi_device *dsi = to_mipi_dsi_device(dev);
- 
--	mipi_dsi_detach(dsi);
-+	if (dsi->attached)
-+		mipi_dsi_detach(dsi);
- 	mipi_dsi_device_unregister(dsi);
- 
+--- a/fs/inode.c
++++ b/fs/inode.c
+@@ -2100,10 +2100,8 @@ void inode_init_owner(struct inode *inod
+ 		/* Directories are special, and always inherit S_ISGID */
+ 		if (S_ISDIR(mode))
+ 			mode |= S_ISGID;
+-		else if ((mode & (S_ISGID | S_IXGRP)) == (S_ISGID | S_IXGRP) &&
+-			 !in_group_p(inode->i_gid) &&
+-			 !capable_wrt_inode_uidgid(dir, CAP_FSETID))
+-			mode &= ~S_ISGID;
++		else
++			mode = mode_strip_sgid(dir, mode);
+ 	} else
+ 		inode->i_gid = current_fsgid();
+ 	inode->i_mode = mode;
+@@ -2359,3 +2357,31 @@ int vfs_ioc_fssetxattr_check(struct inod
  	return 0;
-@@ -323,11 +324,18 @@ EXPORT_SYMBOL(mipi_dsi_host_unregister);
- int mipi_dsi_attach(struct mipi_dsi_device *dsi)
- {
- 	const struct mipi_dsi_host_ops *ops = dsi->host->ops;
-+	int ret;
- 
- 	if (!ops || !ops->attach)
- 		return -ENOSYS;
- 
--	return ops->attach(dsi->host, dsi);
-+	ret = ops->attach(dsi->host, dsi);
-+	if (ret)
-+		return ret;
-+
-+	dsi->attached = true;
-+
-+	return 0;
  }
- EXPORT_SYMBOL(mipi_dsi_attach);
- 
-@@ -339,9 +347,14 @@ int mipi_dsi_detach(struct mipi_dsi_device *dsi)
- {
- 	const struct mipi_dsi_host_ops *ops = dsi->host->ops;
- 
-+	if (WARN_ON(!dsi->attached))
-+		return -EINVAL;
+ EXPORT_SYMBOL(vfs_ioc_fssetxattr_check);
 +
- 	if (!ops || !ops->detach)
- 		return -ENOSYS;
- 
-+	dsi->attached = false;
++/**
++ * mode_strip_sgid - handle the sgid bit for non-directories
++ * @dir: parent directory inode
++ * @mode: mode of the file to be created in @dir
++ *
++ * If the @mode of the new file has both the S_ISGID and S_IXGRP bit
++ * raised and @dir has the S_ISGID bit raised ensure that the caller is
++ * either in the group of the parent directory or they have CAP_FSETID
++ * in their user namespace and are privileged over the parent directory.
++ * In all other cases, strip the S_ISGID bit from @mode.
++ *
++ * Return: the new mode to use for the file
++ */
++umode_t mode_strip_sgid(const struct inode *dir, umode_t mode)
++{
++	if ((mode & (S_ISGID | S_IXGRP)) != (S_ISGID | S_IXGRP))
++		return mode;
++	if (S_ISDIR(mode) || !dir || !(dir->i_mode & S_ISGID))
++		return mode;
++	if (in_group_p(dir->i_gid))
++		return mode;
++	if (capable_wrt_inode_uidgid(dir, CAP_FSETID))
++		return mode;
 +
- 	return ops->detach(dsi->host, dsi);
- }
- EXPORT_SYMBOL(mipi_dsi_detach);
-diff --git a/include/drm/drm_mipi_dsi.h b/include/drm/drm_mipi_dsi.h
-index 31ba85a4110a..3c0d1495c062 100644
---- a/include/drm/drm_mipi_dsi.h
-+++ b/include/drm/drm_mipi_dsi.h
-@@ -161,6 +161,7 @@ struct mipi_dsi_device_info {
-  * struct mipi_dsi_device - DSI peripheral device
-  * @host: DSI host for this peripheral
-  * @dev: driver model device node for this peripheral
-+ * @attached: the DSI device has been successfully attached
-  * @name: DSI peripheral chip type
-  * @channel: virtual channel assigned to the peripheral
-  * @format: pixel format for video mode
-@@ -176,6 +177,7 @@ struct mipi_dsi_device_info {
- struct mipi_dsi_device {
- 	struct mipi_dsi_host *host;
- 	struct device dev;
-+	bool attached;
- 
- 	char name[DSI_DEV_NAME_SIZE];
- 	unsigned int channel;
--- 
-2.43.0
-
++	return mode & ~S_ISGID;
++}
++EXPORT_SYMBOL(mode_strip_sgid);
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -1743,6 +1743,7 @@ extern long compat_ptr_ioctl(struct file
+ extern void inode_init_owner(struct inode *inode, const struct inode *dir,
+ 			umode_t mode);
+ extern bool may_open_dev(const struct path *path);
++umode_t mode_strip_sgid(const struct inode *dir, umode_t mode);
+ /*
+  * VFS FS_IOC_FIEMAP helper definitions.
+  */
 
 
 
