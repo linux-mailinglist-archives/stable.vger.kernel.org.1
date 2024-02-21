@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-23071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A144885DF1B
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:24:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FDF585DE37
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:16:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AD75283F01
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:24:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4721DB2BB6F
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C42A87C08D;
-	Wed, 21 Feb 2024 14:24:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 756A580047;
+	Wed, 21 Feb 2024 14:10:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bbs1hgm+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mjmkPdw4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 816827A708;
-	Wed, 21 Feb 2024 14:24:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33B857D401;
+	Wed, 21 Feb 2024 14:10:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525482; cv=none; b=pnRdIgxB5TT6pX0bWfWgfqBAMx8SYnPGf92CGpAouBr89AiFIqE5r7CaDz4tM1EqCfr/Fx26yh+bB3PxKEHkNc7X4BuzZ8P/sYxBEWo+F6JmsFNjfu+9XIXfrKO8HbVRMWPEL/r2vjFG/yCAoqAIV4Hmeaomt1CYS5CCjOm7OAM=
+	t=1708524637; cv=none; b=ae0i78PRD9afFDNhPcIgdSFin6ojJeue/CJfr77P1MGUWq7XHl8P4AR+ChQJNKwju1UTwY8vFFPvG9EDqxQ7hSgH41F6THw8AmNN1ZdDdxI5DnYyTQXsuFyEQCs8WwSr9gdDjEQE5cIuCHq68zE7xeGb+DYsFTN1Q64wsziz6KU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525482; c=relaxed/simple;
-	bh=hrVzOSnu1PBi3XAn6im9iCBfJ/GyaglrRKuZzXeamvE=;
+	s=arc-20240116; t=1708524637; c=relaxed/simple;
+	bh=yK4lBRHLiYXtvbOXdmXDD305X58PZKcuv0COvmhqVY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u+aliW/STHu6ICVHnndY4XYqupdLrO4/dcaVrnZ+PBZHiyRi7L6ZxPOkOINaIhw4HoyR1myZQQ2N3u1gB6duzbqgry03pidQiPmOpJbrcVUooPz9GqXdi4OQsXOkmuSR2rZpJFPfMYosLkCU60pu+HTrCgoZ0CAmZsoG26EG/qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bbs1hgm+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9783C433C7;
-	Wed, 21 Feb 2024 14:24:41 +0000 (UTC)
+	 MIME-Version; b=mOj+Al+S9AZMr1dz+MyAwqgd15wtcRvPyxyR+qFs/SxwOwMAvgZl6B2cbZViNIPI1oD13nY0b4aYjzOh5Qn2INqQRl4MgzrgMPNbpzR9q5HOvJKj+VvatR3TzSlBmuQrlliqY90SjRXbpYlmHIRSE6pgiupKlUej2OdUdQj2U60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mjmkPdw4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A998DC433F1;
+	Wed, 21 Feb 2024 14:10:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525482;
-	bh=hrVzOSnu1PBi3XAn6im9iCBfJ/GyaglrRKuZzXeamvE=;
+	s=korg; t=1708524637;
+	bh=yK4lBRHLiYXtvbOXdmXDD305X58PZKcuv0COvmhqVY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bbs1hgm+40QtcDWJpWpCRVQLOnBZ1AjgXRCWn67Co2G8X+KdDrI4uWaKiUZufTFgb
-	 IgF4P0MfUSLMYIj8bb/tLAWjIPEXJoDDa6df/z51uxZbSd/yNrWUr/FevH2HzEPMkH
-	 SNtsHERSHHamBnnDjmo+7m+IKLiI00mJOXXjQTcw=
+	b=mjmkPdw4TXjZPsQdXcXy6DoFK1I16n0PE0w+Iru57ta/dGK/oRq6/YqGSt+kwGxmh
+	 qB+DZjlhn+ilm2qQbzs04S5CMdQn3H+gq9/SvxvBeol2pgU4bzPkUEoZXW702TnC41
+	 Q/6PnapRGOqaia+0ZurGC6njUtnS0UhkEdIohWQ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 140/267] leds: trigger: panic: Dont register panic notifier if creating the trigger failed
-Date: Wed, 21 Feb 2024 14:08:01 +0100
-Message-ID: <20240221125944.446019310@linuxfoundation.org>
+	"Christian A. Ehrhardt" <lk@c--e.de>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 5.10 303/379] usb: ucsi_acpi: Fix command completion handling
+Date: Wed, 21 Feb 2024 14:08:02 +0100
+Message-ID: <20240221130003.886037803@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Christian A. Ehrhardt <lk@c--e.de>
 
-[ Upstream commit afacb21834bb02785ddb0c3ec197208803b74faa ]
+commit 2840143e393a4ddc1caab4372969ea337371168c upstream.
 
-It doesn't make sense to register the panic notifier if creating the
-panic trigger failed.
+In case of a spurious or otherwise delayed notification it is
+possible that CCI still reports the previous completion. The
+UCSI spec is aware of this and provides two completion bits in
+CCI, one for normal commands and one for acks. As acks and commands
+alternate the notification handler can determine if the completion
+bit is from the current command.
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Link: https://lore.kernel.org/r/8a61e229-5388-46c7-919a-4d18cc7362b2@gmail.com
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The initial UCSI code correctly handled this but the distinction
+between the two completion bits was lost with the introduction of
+the new API.
+
+To fix this revive the ACK_PENDING bit for ucsi_acpi and only complete
+commands if the completion bit matches.
+
+Fixes: f56de278e8ec ("usb: typec: ucsi: acpi: Move to the new API")
+Cc: stable@vger.kernel.org
+Signed-off-by: "Christian A. Ehrhardt" <lk@c--e.de>
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240121204123.275441-3-lk@c--e.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/leds/trigger/ledtrig-panic.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/usb/typec/ucsi/ucsi_acpi.c |   17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/leds/trigger/ledtrig-panic.c b/drivers/leds/trigger/ledtrig-panic.c
-index 5751cd032f9d..4bf232465dfd 100644
---- a/drivers/leds/trigger/ledtrig-panic.c
-+++ b/drivers/leds/trigger/ledtrig-panic.c
-@@ -63,10 +63,13 @@ static long led_panic_blink(int state)
- 
- static int __init ledtrig_panic_init(void)
+--- a/drivers/usb/typec/ucsi/ucsi_acpi.c
++++ b/drivers/usb/typec/ucsi/ucsi_acpi.c
+@@ -70,9 +70,13 @@ static int ucsi_acpi_sync_write(struct u
+ 				const void *val, size_t val_len)
  {
-+	led_trigger_register_simple("panic", &trigger);
-+	if (!trigger)
-+		return -ENOMEM;
-+
- 	atomic_notifier_chain_register(&panic_notifier_list,
- 				       &led_trigger_panic_nb);
+ 	struct ucsi_acpi *ua = ucsi_get_drvdata(ucsi);
++	bool ack = UCSI_COMMAND(*(u64 *)val) == UCSI_ACK_CC_CI;
+ 	int ret;
  
--	led_trigger_register_simple("panic", &trigger);
- 	panic_blink = led_panic_blink;
- 	return 0;
+-	set_bit(COMMAND_PENDING, &ua->flags);
++	if (ack)
++		set_bit(ACK_PENDING, &ua->flags);
++	else
++		set_bit(COMMAND_PENDING, &ua->flags);
+ 
+ 	ret = ucsi_acpi_async_write(ucsi, offset, val, val_len);
+ 	if (ret)
+@@ -82,7 +86,10 @@ static int ucsi_acpi_sync_write(struct u
+ 		ret = -ETIMEDOUT;
+ 
+ out_clear_bit:
+-	clear_bit(COMMAND_PENDING, &ua->flags);
++	if (ack)
++		clear_bit(ACK_PENDING, &ua->flags);
++	else
++		clear_bit(COMMAND_PENDING, &ua->flags);
+ 
+ 	return ret;
  }
--- 
-2.43.0
-
+@@ -106,8 +113,10 @@ static void ucsi_acpi_notify(acpi_handle
+ 	if (UCSI_CCI_CONNECTOR(cci))
+ 		ucsi_connector_change(ua->ucsi, UCSI_CCI_CONNECTOR(cci));
+ 
+-	if (test_bit(COMMAND_PENDING, &ua->flags) &&
+-	    cci & (UCSI_CCI_ACK_COMPLETE | UCSI_CCI_COMMAND_COMPLETE))
++	if (cci & UCSI_CCI_ACK_COMPLETE && test_bit(ACK_PENDING, &ua->flags))
++		complete(&ua->complete);
++	if (cci & UCSI_CCI_COMMAND_COMPLETE &&
++	    test_bit(COMMAND_PENDING, &ua->flags))
+ 		complete(&ua->complete);
+ }
+ 
 
 
 
