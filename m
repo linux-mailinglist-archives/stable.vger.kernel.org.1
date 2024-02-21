@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-21986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 418E785D98A
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:20:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 904FA85DEF1
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:23:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6FA5B23969
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:20:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44952282DA9
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:23:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A522577638;
-	Wed, 21 Feb 2024 13:19:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79A9F79DAE;
+	Wed, 21 Feb 2024 14:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="djIhrgMA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X12SWLdd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BDC17B3E5;
-	Wed, 21 Feb 2024 13:19:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35FD176037;
+	Wed, 21 Feb 2024 14:22:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521573; cv=none; b=PitYd0wUnwposGHxGYTgzjoQLz/JoBOvjnHdEQ4YeeF7BZTaM6/9fPKTzpWmGhsukcaveI189xrwfFaIsTub9bq6YouGxvmiXwRbmmKBHqIS5WEyzQGO99GjMTv2rU8EGOy8HS50xd/UUfABP77o5nYOLC/yGLbuvkAT8q7P9Sk=
+	t=1708525373; cv=none; b=TozJygtSwWe4KXadbfAJadOMdVXZzNWv0JuOy+XQLRTe94Q4VOE3uXnlUKT0tPBZhnacL2pjP7wMJuH8ARBq/U1kYaSqbFSTSlZdAepPltwZkxfIb6yalBVmTVpB2wJF2ZqayXDu3aS68Er3dAVZYfIFtFRUi+ef8hvx3f69MCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521573; c=relaxed/simple;
-	bh=zI2uQRdr+yOMvXaLcE3cQYT/0C7cGRMli1AKcZPuM1Q=;
+	s=arc-20240116; t=1708525373; c=relaxed/simple;
+	bh=EgjFWmL5+gh65aDq3fR/d26ZaO1imO+WgL7e4Wb6w5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RYDGsjEn7eVJT9rEmq6T+MalKGV/El9GjT4UkrVzm2m9cnRjJkpdK/oogKP72tk6WzDTC58M0YYj+eoHPIaxejdkCFYeDmXCm+P+tekSu0Q5tNx0TV+ZxHRRBvPZLsb+VFj9xJIehBy1Wf/Tz58vBwU76T5BJLjYilEjo28PF6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=djIhrgMA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF646C433F1;
-	Wed, 21 Feb 2024 13:19:32 +0000 (UTC)
+	 MIME-Version; b=bHYiPKaTSlR+fER5TDNnbuDpHj1ZmHiOl9oHiJrSPHrhYhSFBVfp6QDkoSEN3VCoxK7EMrInEL6kEMZUsv6Wxyq7Jc12UXm+M+LhxGpDPVQimiolxASGjqGQHQIYD+VgG2fxeT15bCbBC3tqMCfM/Fvc2XoKmtb48i5HY0iW8dw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X12SWLdd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42FDFC43394;
+	Wed, 21 Feb 2024 14:22:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521573;
-	bh=zI2uQRdr+yOMvXaLcE3cQYT/0C7cGRMli1AKcZPuM1Q=;
+	s=korg; t=1708525372;
+	bh=EgjFWmL5+gh65aDq3fR/d26ZaO1imO+WgL7e4Wb6w5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=djIhrgMAJUiyZ8x6m02GuwOUVS2eBHc3XUiBpgdb72kahAL0z3I4IfLUyAadylSzw
-	 ZpHqncCoYvBViKcw0VaOEVF9DneUmaSye/uith8rbMAqg1d+OxetdrAXJpsSRzWFKw
-	 qzoZZTD/mGVekQ2YR0uKM4pDWfIhcLgRUPGC2GPI=
+	b=X12SWLddKzTUkcx8nKHUOmroxnyGPp07ZHwuwJiHr03gmgSb/+wDGBVX7XHyb9Xta
+	 s7Tb6q3kQ7aEaUHXacq6Srun8Dgx14vviMyGOIMLUU4qP3FWnKWpadfmzgcnwu15s8
+	 fSgopxX5t9plRIGo9qym+D8uns5eCHXYOlwEcmRs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Jiri Pirko <jiri@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Fabio Estevam <festevam@denx.de>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 148/202] atm: idt77252: fix a memleak in open_card_ubr0
+Subject: [PATCH 5.4 108/267] ARM: dts: imx1: Fix sram node
 Date: Wed, 21 Feb 2024 14:07:29 +0100
-Message-ID: <20240221125936.488198157@linuxfoundation.org>
+Message-ID: <20240221125943.334519973@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Fabio Estevam <festevam@denx.de>
 
-[ Upstream commit f3616173bf9be9bf39d131b120d6eea4e6324cb5 ]
+[ Upstream commit c248e535973088ba7071ff6f26ab7951143450af ]
 
-When alloc_scq fails, card->vcs[0] (i.e. vc) should be freed. Otherwise,
-in the following call chain:
+Per sram.yaml, address-cells, size-cells and ranges are mandatory.
 
-idt77252_init_one
-  |-> idt77252_dev_open
-        |-> open_card_ubr0
-              |-> alloc_scq [failed]
-  |-> deinit_card
-        |-> vfree(card->vcs);
+The node name should be sram.
 
-card->vcs is freed and card->vcs[0] is leaked.
+Change the node name and pass the required properties to fix the
+following dt-schema warnings:
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+imx1-apf9328.dtb: esram@300000: $nodename:0: 'esram@300000' does not match '^sram(@.*)?'
+	from schema $id: http://devicetree.org/schemas/sram/sram.yaml#
+imx1-apf9328.dtb: esram@300000: '#address-cells' is a required property
+	from schema $id: http://devicetree.org/schemas/sram/sram.yaml#
+imx1-apf9328.dtb: esram@300000: '#size-cells' is a required property
+	from schema $id: http://devicetree.org/schemas/sram/sram.yaml#
+imx1-apf9328.dtb: esram@300000: 'ranges' is a required property
+	from schema $id: http://devicetree.org/schemas/sram/sram.yaml#
+
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/atm/idt77252.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm/boot/dts/imx1.dtsi | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/atm/idt77252.c b/drivers/atm/idt77252.c
-index 3380322df98e..36629633ae52 100644
---- a/drivers/atm/idt77252.c
-+++ b/drivers/atm/idt77252.c
-@@ -2936,6 +2936,8 @@ open_card_ubr0(struct idt77252_dev *card)
- 	vc->scq = alloc_scq(card, vc->class);
- 	if (!vc->scq) {
- 		printk("%s: can't get SCQ.\n", card->name);
-+		kfree(card->vcs[0]);
-+		card->vcs[0] = NULL;
- 		return -ENOMEM;
- 	}
+diff --git a/arch/arm/boot/dts/imx1.dtsi b/arch/arm/boot/dts/imx1.dtsi
+index b30448cde582..a74870d03a67 100644
+--- a/arch/arm/boot/dts/imx1.dtsi
++++ b/arch/arm/boot/dts/imx1.dtsi
+@@ -268,9 +268,12 @@
+ 			status = "disabled";
+ 		};
  
+-		esram: esram@300000 {
++		esram: sram@300000 {
+ 			compatible = "mmio-sram";
+ 			reg = <0x00300000 0x20000>;
++			ranges = <0 0x00300000 0x20000>;
++			#address-cells = <1>;
++			#size-cells = <1>;
+ 		};
+ 	};
+ };
 -- 
 2.43.0
 
