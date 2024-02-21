@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-21876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E99585D8F1
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:12:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2849F85DB81
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:42:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C94681F22D18
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:12:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 59D9DB216D2
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:42:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63C8B69D2B;
-	Wed, 21 Feb 2024 13:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 413386996B;
+	Wed, 21 Feb 2024 13:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cm+Ms9Or"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hisamrqN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21A833EA71;
-	Wed, 21 Feb 2024 13:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00DCA76905;
+	Wed, 21 Feb 2024 13:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521161; cv=none; b=nCUoFlck8X5PJ5jaXMW6Sok/tl975FTOvetI6DiPimpV2pHRGtAW42j0dKltzgzzcSlqsM3hnK22+coOvWWoRCk4Ms8fred+En4PU5Yw535o9ZG4WwsgnfeW/4vgzO45uS3TVY1wWCACDbkiFiMLmURbvDIbLOFT7fwtMZR164k=
+	t=1708522904; cv=none; b=qL5fPdbrVcwa7gALMB1R3HwrYiL/lhd0FmrtDUlX8+FRKZY5TDe8B3tWqCJSK3FmwOcOFDMijdvUpTYqcVM81aD+L56ovMHgxeiyhcE9I52hLR99XeQImqGpYixcF5KC0PxOv9/6Hi7fGsTfP+vFTEpKoONTUOZsPfs8PA/tzHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521161; c=relaxed/simple;
-	bh=9xgF1jwVIz+LKKLuxQOtL3galtLgrxyao6aIPIOMZmg=;
+	s=arc-20240116; t=1708522904; c=relaxed/simple;
+	bh=p4WRvP1/wDadlmEyZG2JAzG1AYUNBdUmfBihmEiJRC4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SLXwh8vJ6QO6NfCI9/W8pe6aAvYIxvQ+eTAwyYSyny/7lry384p3xV/w1a+G2EI5SFZVsL+RrDOjKnyrnLtbseBYH87U72X1VrX8f5AjBSbmhkWn1mw9dYUEaTY40AOXwp5Qk2uN4DCP2C9oX5qLNibJnaeZghS2oO5q+1FslOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cm+Ms9Or; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 354E7C433C7;
-	Wed, 21 Feb 2024 13:12:40 +0000 (UTC)
+	 MIME-Version; b=t+yq3VpFh/QSVqlhrsfWDA04uzamMX1EXMFKK7GK1SbHXtwzgYxp5RtIuTSGjPwgyrCMTuYTs/f4AZcFrNzRHLwXy/aV/UujVGFiWwTmKdsIWC8lu6d+QB54xQzOueERs8a7eAch9V+5COrNVvfLURc1AJ6xxinOD/RZB1eTzgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hisamrqN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A304C43390;
+	Wed, 21 Feb 2024 13:41:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521160;
-	bh=9xgF1jwVIz+LKKLuxQOtL3galtLgrxyao6aIPIOMZmg=;
+	s=korg; t=1708522903;
+	bh=p4WRvP1/wDadlmEyZG2JAzG1AYUNBdUmfBihmEiJRC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cm+Ms9OrRfXoleyLRkgWwo9Mb8nMbh5w4fyZkOgt101iHM0dPKEpFqckeKcyO2KzO
-	 4B/olt2UmtmFQovI3c1JwRdtrx62RC/vbBBHD4csf7CmU83zW8yq4cayAqp7bovHBE
-	 8kOkU2TnZUK/cD/xKefoyUKeya9Xs74EtunnzAMo=
+	b=hisamrqNBWtlVAD4C7LqgOQsGoigLAIvk4QjJq9PDkgCEOkK7Ak9xzongWOOkoqJv
+	 B5Y3mfKf7MaXizlqF1+TIuGJgjsP3j09NsAZRUxrQP7ZMSNUZpKtag4hh5MIEeQKqo
+	 KAQioDqogtuzpMZcsJuOdxRvKPOaqRFvDJH2rCvo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4a4f1eba14eb5c3417d1@syzkaller.appspotmail.com,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Anand Jain <anand.jain@oracle.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 4.19 037/202] btrfs: dont warn if discard range is not aligned to sector
-Date: Wed, 21 Feb 2024 14:05:38 +0100
-Message-ID: <20240221125932.994768544@linuxfoundation.org>
+	Paolo Abeni <pabeni@redhat.com>,
+	Guillaume Nault <gnault@redhat.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 288/476] selftests: net: fix available tunnels detection
+Date: Wed, 21 Feb 2024 14:05:39 +0100
+Message-ID: <20240221130018.644771742@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +64,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit a208b3f132b48e1f94f620024e66fea635925877 upstream.
+[ Upstream commit e4e4b6d568d2549583cbda3f8ce567e586cb05da ]
 
-There's a warning in btrfs_issue_discard() when the range is not aligned
-to 512 bytes, originally added in 4d89d377bbb0 ("btrfs:
-btrfs_issue_discard ensure offset/length are aligned to sector
-boundaries"). We can't do sub-sector writes anyway so the adjustment is
-the only thing that we can do and the warning is unnecessary.
+The pmtu.sh test tries to detect the tunnel protocols available
+in the running kernel and properly skip the unsupported cases.
 
-CC: stable@vger.kernel.org # 4.19+
-Reported-by: syzbot+4a4f1eba14eb5c3417d1@syzkaller.appspotmail.com
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In a few more complex setup, such detection is unsuccessful, as
+the script currently ignores some intermediate error code at
+setup time.
+
+Before:
+  # which: no nettest in (/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin)
+  # TEST: vti6: PMTU exceptions (ESP-in-UDP)                            [FAIL]
+  #   PMTU exception wasn't created after creating tunnel exceeding link layer MTU
+  # ./pmtu.sh: line 931: kill: (7543) - No such process
+  # ./pmtu.sh: line 931: kill: (7544) - No such process
+
+After:
+  #   xfrm4 not supported
+  # TEST: vti4: PMTU exceptions                                         [SKIP]
+
+Fixes: ece1278a9b81 ("selftests: net: add ESP-in-UDP PMTU test")
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Guillaume Nault <gnault@redhat.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/cab10e75fda618e6fff8c595b632f47db58b9309.1706635101.git.pabeni@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent-tree.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/pmtu.sh | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -1899,7 +1899,8 @@ static int btrfs_issue_discard(struct bl
- 	u64 bytes_left, end;
- 	u64 aligned_start = ALIGN(start, 1 << 9);
+diff --git a/tools/testing/selftests/net/pmtu.sh b/tools/testing/selftests/net/pmtu.sh
+index 0a9d482c5058..8797f7b5fb83 100755
+--- a/tools/testing/selftests/net/pmtu.sh
++++ b/tools/testing/selftests/net/pmtu.sh
+@@ -698,23 +698,23 @@ setup_xfrm6() {
+ }
  
--	if (WARN_ON(start != aligned_start)) {
-+	/* Adjust the range to be aligned to 512B sectors if necessary. */
-+	if (start != aligned_start) {
- 		len -= aligned_start - start;
- 		len = round_down(len, 1 << 9);
- 		start = aligned_start;
+ setup_xfrm4udp() {
+-	setup_xfrm 4 ${veth4_a_addr} ${veth4_b_addr} "encap espinudp 4500 4500 0.0.0.0"
+-	setup_nettest_xfrm 4 4500
++	setup_xfrm 4 ${veth4_a_addr} ${veth4_b_addr} "encap espinudp 4500 4500 0.0.0.0" && \
++		setup_nettest_xfrm 4 4500
+ }
+ 
+ setup_xfrm6udp() {
+-	setup_xfrm 6 ${veth6_a_addr} ${veth6_b_addr} "encap espinudp 4500 4500 0.0.0.0"
+-	setup_nettest_xfrm 6 4500
++	setup_xfrm 6 ${veth6_a_addr} ${veth6_b_addr} "encap espinudp 4500 4500 0.0.0.0" && \
++		setup_nettest_xfrm 6 4500
+ }
+ 
+ setup_xfrm4udprouted() {
+-	setup_xfrm 4 ${prefix4}.${a_r1}.1 ${prefix4}.${b_r1}.1 "encap espinudp 4500 4500 0.0.0.0"
+-	setup_nettest_xfrm 4 4500
++	setup_xfrm 4 ${prefix4}.${a_r1}.1 ${prefix4}.${b_r1}.1 "encap espinudp 4500 4500 0.0.0.0" && \
++		setup_nettest_xfrm 4 4500
+ }
+ 
+ setup_xfrm6udprouted() {
+-	setup_xfrm 6 ${prefix6}:${a_r1}::1 ${prefix6}:${b_r1}::1 "encap espinudp 4500 4500 0.0.0.0"
+-	setup_nettest_xfrm 6 4500
++	setup_xfrm 6 ${prefix6}:${a_r1}::1 ${prefix6}:${b_r1}::1 "encap espinudp 4500 4500 0.0.0.0" && \
++		setup_nettest_xfrm 6 4500
+ }
+ 
+ setup_routing_old() {
+-- 
+2.43.0
+
 
 
 
