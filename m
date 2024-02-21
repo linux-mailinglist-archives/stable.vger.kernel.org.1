@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-22695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D653985DD4C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:04:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D67EF85D926
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:15:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A8142842D8
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:04:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13FE21C22BCC
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:15:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3B3B7E76D;
-	Wed, 21 Feb 2024 14:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5915869D36;
+	Wed, 21 Feb 2024 13:15:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DOMxwdqt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jkCFKOpK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826A97CF1F;
-	Wed, 21 Feb 2024 14:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1702B69D28;
+	Wed, 21 Feb 2024 13:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524200; cv=none; b=Q+Xd6nHFQ3HPHCEJgF3rK1S0937fKeIYBCw0PvYDAo/MRI+YWdPSEm1etIrfliyDif7yC5eyxZneh/9LEoS4rEukWhKjvr1SXd9qcfqh+2gJPdIjKHbqPe4qjsfaz1Dze6dhEfhOrDZXzCsOknLxZZFt1TLTkXnZEj7bFwVd/Zg=
+	t=1708521316; cv=none; b=GYe1m5AhoJUg2hnBLMcyp3gIbQRZ80K+kBcMK5T9o9RoNE0AJeIJUnmamEQD7a85R20slAiCuEXCmiaSBun+36qWKMy0wNCx9GXurTafChQYwtRMnWcg3T3MgSQnM+7OgAM+0284K2JC3vEZeN+ecBAZAZILjv0JkkwtUKAWHQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524200; c=relaxed/simple;
-	bh=gsRNTavbdjW5uYBTT49ao48pFPQW68OTcrzZeK4DETI=;
+	s=arc-20240116; t=1708521316; c=relaxed/simple;
+	bh=r3xY8sWuuQjtvS89qcMxH+vjgj+nM3/WNCK0c5hf3T0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tGQiRPCbZlg9nZjxim4oYSargn8m/uy3klOw+P9LixtRsyiMSRYw9qh17SwE09L3ws3VVBp8UcB0Yh28Rw+u+RLJurOKVbRGNWyzT9yAfL5fiFK/0LjVE6xl3g09zSwjKNwo6jbXgy2ZoJqnfNvxzdBebI0QHsvJjorHcrdhg5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DOMxwdqt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A42C1C433C7;
-	Wed, 21 Feb 2024 14:03:19 +0000 (UTC)
+	 MIME-Version; b=tYq7E+UkiMBMGEHjLoPN6QbRlMZ5dwsEHnZb6zeDjXNnO2KtgIviqF8GE3/OqA5r1v2/oTTUFg9lN75qlj/SAClY38bwopxKjtImtAsnrnkmAHkaDiAEtWkUkJko3KSge+7L3541ji7ll8X2ksyOIV/jqJcHjIDfEK2gBxHRxrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jkCFKOpK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21495C433F1;
+	Wed, 21 Feb 2024 13:15:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524200;
-	bh=gsRNTavbdjW5uYBTT49ao48pFPQW68OTcrzZeK4DETI=;
+	s=korg; t=1708521315;
+	bh=r3xY8sWuuQjtvS89qcMxH+vjgj+nM3/WNCK0c5hf3T0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DOMxwdqtIPnTDKmOPKlqF41O1qumB5cMD+vpj31KRhbeyUg3qW09pRBP/XnDS2vJ+
-	 YKvDwYzF0hhyGkoyKxv8GaIHPVoY6eSOdcCPgXRR+MOrHjRE5emhxdoZJE6j/tiu3v
-	 QcrCiLnfpdXAlsqWtUc8wR0K6DCz56KV9uiLgVWQ=
+	b=jkCFKOpKkOAsv6erqjbtpLLSQeBuMff0lHwKDOXBr4v5QfL24hUhy4mxR9XhHKcRy
+	 lbz0Zka78gVpTHIuFnNmjR+L43aTDhblwFqxoQSMV2kt6v5w8m/nPIlOW9CJKS1wvq
+	 J5aH3PJzM1QyI9YFpXD9FNb4oElvpTA7Ao8Q/P3c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Jan Sokolowski <jan.sokolowski@intel.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrii Staikov <andrii.staikov@intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Naveen N Rao <naveen@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 174/379] i40e: Fix VF disable behavior to block all traffic
-Date: Wed, 21 Feb 2024 14:05:53 +0100
-Message-ID: <20240221130000.062008606@linuxfoundation.org>
+Subject: [PATCH 4.19 053/202] powerpc/lib: Validate size for vector operations
+Date: Wed, 21 Feb 2024 14:05:54 +0100
+Message-ID: <20240221125933.553791935@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,125 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Staikov <andrii.staikov@intel.com>
+From: Naveen N Rao <naveen@kernel.org>
 
-[ Upstream commit 31deb12e85c35ddd2c037f0107d05d8674cab2c0 ]
+[ Upstream commit 8f9abaa6d7de0a70fc68acaedce290c1f96e2e59 ]
 
-Currently, if a VF is disabled using the
-'ip link set dev $ETHX vf $VF_NUM state disable' command, the VF is still
-able to receive traffic.
+Some of the fp/vmx code in sstep.c assume a certain maximum size for the
+instructions being emulated. The size of those operations however is
+determined separately in analyse_instr().
 
-Fix the behavior of the 'ip link set dev $ETHX vf $VF_NUM state disable'
-to completely shutdown the VF's queues making it entirely disabled and
-not able to receive or send any traffic.
+Add a check to validate the assumption on the maximum size of the
+operations, so as to prevent any unintended kernel stack corruption.
 
-Modify the behavior of the 'ip link set $ETHX vf $VF_NUM state enable'
-command to make a VF do reinitialization bringing the queues back up.
-
-Co-developed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Jan Sokolowski <jan.sokolowski@intel.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Andrii Staikov <andrii.staikov@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Naveen N Rao <naveen@kernel.org>
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Build-tested-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231123071705.397625-1-naveen@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/intel/i40e/i40e_virtchnl_pf.c    | 32 +++++++++++++++++++
- .../ethernet/intel/i40e/i40e_virtchnl_pf.h    |  1 +
- 2 files changed, 33 insertions(+)
+ arch/powerpc/lib/sstep.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-index 7b0ed15f4df3..f79795cc9152 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -2545,6 +2545,14 @@ static int i40e_vc_enable_queues_msg(struct i40e_vf *vf, u8 *msg)
- 	i40e_status aq_ret = 0;
- 	int i;
+diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
+index 30c434abe861..3da6290e3ccc 100644
+--- a/arch/powerpc/lib/sstep.c
++++ b/arch/powerpc/lib/sstep.c
+@@ -473,6 +473,8 @@ static int do_fp_load(struct instruction_op *op, unsigned long ea,
+ 	} u;
  
-+	if (vf->is_disabled_from_host) {
-+		aq_ret = -EPERM;
-+		dev_info(&pf->pdev->dev,
-+			 "Admin has disabled VF %d, will not enable queues\n",
-+			 vf->vf_id);
-+		goto error_param;
-+	}
-+
- 	if (!test_bit(I40E_VF_STATE_ACTIVE, &vf->vf_states)) {
- 		aq_ret = I40E_ERR_PARAM;
- 		goto error_param;
-@@ -4587,9 +4595,12 @@ int i40e_ndo_set_vf_link_state(struct net_device *netdev, int vf_id, int link)
- 	struct i40e_pf *pf = np->vsi->back;
- 	struct virtchnl_pf_event pfe;
- 	struct i40e_hw *hw = &pf->hw;
-+	struct i40e_vsi *vsi;
-+	unsigned long q_map;
- 	struct i40e_vf *vf;
- 	int abs_vf_id;
- 	int ret = 0;
-+	int tmp;
+ 	nb = GETSIZE(op->type);
++	if (nb > sizeof(u))
++		return -EINVAL;
+ 	if (!address_ok(regs, ea, nb))
+ 		return -EFAULT;
+ 	rn = op->reg;
+@@ -523,6 +525,8 @@ static int do_fp_store(struct instruction_op *op, unsigned long ea,
+ 	} u;
  
- 	if (test_and_set_bit(__I40E_VIRTCHNL_OP_PENDING, pf->state)) {
- 		dev_warn(&pf->pdev->dev, "Unable to configure VFs, other operation is pending.\n");
-@@ -4612,6 +4623,9 @@ int i40e_ndo_set_vf_link_state(struct net_device *netdev, int vf_id, int link)
- 	switch (link) {
- 	case IFLA_VF_LINK_STATE_AUTO:
- 		vf->link_forced = false;
-+		vf->is_disabled_from_host = false;
-+		/* reset needed to reinit VF resources */
-+		i40e_vc_reset_vf(vf, true);
- 		pfe.event_data.link_event.link_status =
- 			pf->hw.phy.link_info.link_info & I40E_AQ_LINK_UP;
- 		pfe.event_data.link_event.link_speed =
-@@ -4621,6 +4635,9 @@ int i40e_ndo_set_vf_link_state(struct net_device *netdev, int vf_id, int link)
- 	case IFLA_VF_LINK_STATE_ENABLE:
- 		vf->link_forced = true;
- 		vf->link_up = true;
-+		vf->is_disabled_from_host = false;
-+		/* reset needed to reinit VF resources */
-+		i40e_vc_reset_vf(vf, true);
- 		pfe.event_data.link_event.link_status = true;
- 		pfe.event_data.link_event.link_speed = VIRTCHNL_LINK_SPEED_40GB;
- 		break;
-@@ -4629,6 +4646,21 @@ int i40e_ndo_set_vf_link_state(struct net_device *netdev, int vf_id, int link)
- 		vf->link_up = false;
- 		pfe.event_data.link_event.link_status = false;
- 		pfe.event_data.link_event.link_speed = 0;
-+
-+		vsi = pf->vsi[vf->lan_vsi_idx];
-+		q_map = BIT(vsi->num_queue_pairs) - 1;
-+
-+		vf->is_disabled_from_host = true;
-+
-+		/* Try to stop both Tx&Rx rings even if one of the calls fails
-+		 * to ensure we stop the rings even in case of errors.
-+		 * If any of them returns with an error then the first
-+		 * error that occurred will be returned.
-+		 */
-+		tmp = i40e_ctrl_vf_tx_rings(vsi, q_map, false);
-+		ret = i40e_ctrl_vf_rx_rings(vsi, q_map, false);
-+
-+		ret = tmp ? tmp : ret;
- 		break;
- 	default:
- 		ret = -EINVAL;
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
-index bd497cc5303a..97e9c34d7c6c 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
-@@ -98,6 +98,7 @@ struct i40e_vf {
- 	bool link_forced;
- 	bool link_up;		/* only valid if VF link is forced */
- 	bool spoofchk;
-+	bool is_disabled_from_host; /* PF ctrl of VF enable/disable */
- 	u16 num_vlan;
+ 	nb = GETSIZE(op->type);
++	if (nb > sizeof(u))
++		return -EINVAL;
+ 	if (!address_ok(regs, ea, nb))
+ 		return -EFAULT;
+ 	rn = op->reg;
+@@ -567,6 +571,9 @@ static nokprobe_inline int do_vec_load(int rn, unsigned long ea,
+ 		u8 b[sizeof(__vector128)];
+ 	} u = {};
  
- 	/* ADq related variables */
++	if (size > sizeof(u))
++		return -EINVAL;
++
+ 	if (!address_ok(regs, ea & ~0xfUL, 16))
+ 		return -EFAULT;
+ 	/* align to multiple of size */
+@@ -594,6 +601,9 @@ static nokprobe_inline int do_vec_store(int rn, unsigned long ea,
+ 		u8 b[sizeof(__vector128)];
+ 	} u;
+ 
++	if (size > sizeof(u))
++		return -EINVAL;
++
+ 	if (!address_ok(regs, ea & ~0xfUL, 16))
+ 		return -EFAULT;
+ 	/* align to multiple of size */
 -- 
 2.43.0
 
